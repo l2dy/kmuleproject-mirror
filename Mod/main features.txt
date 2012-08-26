@@ -1,0 +1,15 @@
+The main features of our new client are
+
+* first KAD ONLY client
+* up-to-date libraries
+* autoupdate system
+* automatic ipfilter/mediainfo updating
+* built-in CA leecher and search fake protection
+* filename disparity check
+* clear user interface
+* enhanced ed2k links and collections with folder support
+* per-directory sharing permissions
+* SNARL support (visit http://snarl.fullphat.net/ for download and information)
+* improved first start assistant incl. connection wizard
+* ICS, SOTN, Powershare, Anti-HideOS
+* searchCatch & passive src finding for more sources :)

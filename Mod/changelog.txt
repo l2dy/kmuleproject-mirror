@@ -1,0 +1,115 @@
+Legend:    + added    ~ changed    - removed    ! fixed    > updated
+           * comments/hints/explanations
+
+20120724 (Beta): based upon eMule v0.50a
+> updated libpng to v1.5.10
+> updated zlib to v1.2.7
+> updated CryptoPP to v5.6.1
+> updated miniupnplib support to v1.7 (24/05/2012)
+- mobilemule [WiZaRd]
+- kademlia wnd [WiZaRd]
+- server support [WiZaRd]
+- IRC [WiZaRd]
+- Search Related Files [Tuxman]
+~ kad always enabled [WiZaRd]
+~ transfer full chunks always enabled [WiZaRd]
+~ SUI always enabled [WiZaRd]
++ modder credits [WiZaRd]
+~ protocol obfuscation always supported [WiZaRd]
+! http downloads were aborting too early (http://forum.emule-project.net/index.php?showtopic=155048) [WiZaRd]
+~ code formatting [Tuxman]
++ IntelliFlush [WiZaRd]
+ * automatic flushing on chunk completion
+ * filebuffer timelimit default: 15min.
+ * filebuffer size: 0.5-20MB
+~ splashscreen and app icons [WiZaRd]
+~ client version: "kMule" [WiZaRd]
++ modversion [WiZaRd]
+~ spam filter always enabled [WiZaRd]
++ AntiFake [WiZaRd, parts from Netfinitys' FakeAlyzer]
++ Kad Term Cleanup [WiZaRd]
+~ simplified DL progress [WiZaRd]
+~ detect VLC automatically [WiZaRd]
+- scheduler [WiZaRd]
+~ credit system always enabled [Tuxman]
+<~> notifications and proxy settings are only visible when "extended controls" is enabled
+- web interface [WiZaRd]
+- sound/mail/speech notifications and built-in popups [Tuxman]
++ Snarl support [Tuxman & WiZaRd]
+ * replaces built-in notifier system
+ * visit http://snarl.fullphat.net/ for download and information
+~ connection wizard integrated into first start assistant [WiZaRd]
+- connection wizard removed from prefs [WiZaRd]
+~ search file colors changed [WiZaRd]
++ ICS by enkeyDev [WiZaRd]
+ * ICS replaces default chunk selection and cannot be deactivated
++ AntiHideOS by netfinity [WiZaRd]
+- "tooltip delay" option [Tuxman]
++ ClientAnalyzer [WiZaRd]
++ Small File Slot [WiZaRd]
++ Queue Size Fix [WiZaRd]
+- Peercache [WiZaRd]
+- Connect Button [WiZaRd]
++ ModVersion Display in ListCtrls [WiZaRd]
++ searchCatch by SLUGFILLER [Tuxman]
+~ message captchas always enabled [WiZaRd]
+~ automatically select an alternative port if port is in use [WiZaRd]
++ PowerShare [WiZaRd]
++ Intelligent SoTN [WiZaRd]
++ Payback First [WiZaRd]
++ SharedView Ed2kType [WiZaRd, parts by Avi3k]
+~ reserve at least max(10MB, 5% of HD) for kMule [WiZaRd]
+- removed nonsense "OK" button from networkinfo dialog [WiZaRd]
+- perflog [WiZaRd]
++ endgame improvement [WiZaRd]
+~ use "optimal" tempdir for preview backup creation [WiZaRd]
+~ minor cleanup in the Proxy settings [Tuxman]
+! fixed 2 memleaks in official KAD code [WiZaRd]
++ autoupdate system [WiZaRd]
++ ipfilter autoupdate [WiZaRd]
+~ ipfilters now filter Kad contacts on-the-fly [WiZaRd]
+ * i.e. we check all known contacts on ipfilter update and delete filtered ones
+- removed support for 4 and 8 bit desktop colors [WiZaRd]
+ * get real - get an update!
+~ enhanced ed2k links and collections with folder attributes [WiZaRd]
+ * downloaded files will retain their directory structure on completion :) 
+ * have fun with highly improved filesharing via collections
++ NoNeededRequeue by SlugFiller [WiZaRd]
+- statically enabled Win7 goodies [WiZaRd]
+- statically enabled advanced spam filter [WiZaRd]
+- statically enabled message smilies [WiZaRd]
+~ diskspace checks are done automatially and require max(10MB, 5% of HDD) [WiZaRd]
+
+20120810 (Beta):
+~ statically enabled crash dumps [Tuxman]
+! fixed possible crash in connections dialog - thx SS1900 [WiZaRd]
+~ change the connection globe icons [WiZaRd]
+~ fixed wrong tab order in prefs [WiZaRd]
+~ changed slotspeed estimation [WiZaRd]
+<+> added slotfocus - STATIC! [WiZaRd]
+~ changed popup order on startup [WiZaRd]
++ added version check to tools [WiZaRd]
+~ improved passive source finding [WiZaRd]
++ added trickle slot orientation slot opening [WiZaRd]
+! fixed possible crash in first start assistent - thx Nuberu [WiZaRd]
++ added FDC by BlueSonicBoy [WiZaRd]
+~ removed icons from options dialog [WiZaRd]
+! don't send empty directories [WiZaRd]
++ you can now adjust the sharing mode for each directory individually [WiZaRd]
++ added column for fake info to searchlistctrl [WiZaRd]
+! fixed stats bug - thx to jerrybg [WiZaRd]
++ ratio indicator smilies in sharedfiles list [WiZaRd]
++ ratio indicator smiliey added to preferences [WiZaRd] 
+ * help them looking friendly by sharing your stuff :)
++ mediainfo.dll autoupdate [WiZaRd]
+~ splash is now shown way earlier to compensate for ipfilter loading times [WiZaRd]
++ added restart confirmation popup [WiZaRd]
+! (mis)placement/size of the lower panes in the transfers window by jerrybg [WiZaRd]
++ ColorPreviewReadyFiles [WiZaRd, idea by jerrybg]
+ * PreviewReadyColor=0xABCDEF 
++ chat logging [WiZaRd, idea by CiccioBastardo]
++ advanced transfer window layout by Stulle [WiZaRd]
++ re-added option to enable default progress bar style via pref.ini [WiZaRd]
+ * UseSimpleProgress=0/1
++ diskspace checks now require min(1GB, max(10MB, 5% of HDD)) [WiZaRd]
+~ reduced CPU usage for Kad parts [WiZaRd, original by netfinity]
