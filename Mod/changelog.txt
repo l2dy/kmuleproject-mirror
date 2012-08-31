@@ -72,7 +72,7 @@ Legend:    + added    ~ changed    - removed    ! fixed    > updated
 - removed support for 4 and 8 bit desktop colors [WiZaRd]
  * get real - get an update!
 ~ enhanced ed2k links and collections with folder attributes [WiZaRd]
- * downloaded files will retain their directory structure on completion :) 
+ * downloaded files will retain their directory structure on completion :)
  * have fun with highly improved filesharing via collections
 + NoNeededRequeue by SlugFiller [WiZaRd]
 - statically enabled Win7 goodies [WiZaRd]
