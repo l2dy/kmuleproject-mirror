@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "emule", "emule_vc10.vcxproj", "{584EA69D-3443-4197-8994-364880FC1B9B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kMule", "emule_vc10.vcxproj", "{584EA69D-3443-4197-8994-364880FC1B9B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib_vc10", "..\zlib\zlib_vc10.vcxproj", "{0520C60D-0A55-4663-B30B-8C63614285E2}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "miniupnpc_vc10", "..\miniupnpc\miniupnpc_vc10.vcxproj", "{CC763AB0-5EBF-4A3F-884D-F5E2D12E12F3}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "id3lib_vc10", "..\id3lib\libprj\id3lib_vc10.vcxproj", "{4AACBF8D-B90F-41AD-A5BE-D5E557C668E3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Languages", "Languages", "{2F50C65A-AB15-4AB4-B6A7-DA0956DBD090}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

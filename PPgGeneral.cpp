@@ -356,7 +356,7 @@ void CPPgGeneral::OnLangChange()
                 // download file
                 // create url
                 CString strUrl;
-                strUrl.Format(MOD_LANG_URL, MOD_VERSION_BUILD);
+                strUrl.Format(MOD_LANG_URL, MOD_LANG_VERSION);
                 strUrl += thePrefs.GetLangDLLNameByID(byNewLang);
                 // safeto
                 CString strFilename = thePrefs.GetMuleDirectory(EMULE_ADDLANGDIR, true);
