@@ -2216,7 +2216,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_SV_ADD              "Add to list"
     IDS_SV_UPDATE           "Update"
     IDS_SF_FILES            "Shared Files"
     IDS_SF_STATISTICS       "Statistics"
@@ -2277,8 +2276,6 @@ STRINGTABLE
 BEGIN
     IDS_PW_MAXC             "Max. connections"
     IDS_PW_CLIENTPORT       "Client Port"
-    IDS_PW_AUTOCON          "Autoconnect on startup"
-    IDS_PW_RECON            "Reconnect on loss"
     IDS_PW_FILTER           "Filter client LAN IPs"
     IDS_PW_MISC             "Miscellaneous"
     IDS_PW_TRAY             "Minimize to system tray"
@@ -2479,7 +2476,7 @@ STRINGTABLE
 BEGIN
     IDS_KNOWN               "Known"
     IDS_RAU_RUNNING         "kMule running as unprivileged user ""%s"""
-    IDS_RAU_FAILED          "Failed to start kMule as unprivileged user ""eMule_Secure"". Keeping the privileges of the current user (""%s"")."
+    IDS_RAU_FAILED          "Failed to start kMule as unprivileged user ""kMule_Secure"". Keeping the privileges of the current user (""%s"")."
     IDS_KADCONTACTSREAD     "Read %u contacts from file."
     IDS_ERR_KADCONTACTS     "No contacts found, please bootstrap, or download a nodes.dat file."
     IDS_METATAGS            "Meta tag count:"
@@ -2533,7 +2530,6 @@ STRINGTABLE
 BEGIN
     IDS_PW_TBN_POP_ALWAYS   "Chat message received"
     IDS_PW_TBN_ONDOWNLOAD   "Download finished"
-    IDS_PW_EKDEV_OPTIONS    "Notifications"
     IDS_TBN_NEWCHATMSG      "Message from"
     IDS_PW_CON_CAPFRM       "Capacities"
     IDS_DL_TRY_TO_GET_PREVIEW_PARTS "Download parts needed for preview first"
@@ -2617,7 +2613,6 @@ BEGIN
     IDS_PW_MINREC           "Minimum Recommended\t%u "
     IDS_PW_UA               "Set Full Up/Down-Speed"
     IDS_PW_PA               "Throttle Up/Down-Speed"
-    IDS_WIZ_OS_FRAME        "Operating System"
     IDS_HASHINGFILE         "Hashing file:"
     IDS_WIZ_TRUEUPLOAD_TEXT "True Upload Bandwidth"
     IDS_WIZ_TRUEDOWNLOAD_TEXT "True Download Bandwidth"
@@ -2709,7 +2704,6 @@ BEGIN
     IDS_CHECK4UPDATE        "Check for new version"
     IDS_STARTUP             "Startup"
     IDS_NEWVERSIONAVL       "A new version of kMule is available! Check the projects' homepage for more information."
-    IDS_NEWVERSIONAVLPOPUP  "A new version of kMule is available. Click here to read about the new version!"
     IDS_NEWVERSIONFAILED    "Unable to check for new version."
     IDS_CB_TBN_ONNEWVERSION "New kMule version detected"
     IDS_NONEWERVERSION      "No new kMule version detected."
@@ -2737,7 +2731,6 @@ BEGIN
     IDS_DISABLEQUEUELIST    "Disable Queue list"
     IDS_FIRSTAUTODOWN       "Enable this option if you want kMule to manage your download priorities.\n\nTurning this on will allow kMule to make sure downloads with a lot of sources do not interfere with downloads that have few sources. This option will only affect future downloads."
     IDS_FIRSTAUTOUP         "Enable this option if you want kMule to manage your upload priorities.\n\nTurning this on will allow kMule to boost rare files meaning popular files will be harder for other people to get. Turning this off will allow kMule to upload popular files more often meaning rare files will be harder for other people to get. This option will only affect future shared files."
-    IDS_FIRSTAUTOCON        "Enable this option if you want kMule to connect at startup."
     IDS_FIRSTCOMPLETE       "You have now completed the first runtime wizard.\n\nAll these settings and more can be changed by clicking the Options icon. For explanations and support check out the help by pressing F1 in kMule!"
     IDS_ENTERUSERNAME       "Please enter your user name:"
     IDS_STATIC_CPUMEM       "Save CPU && Memory Usage"
@@ -2801,7 +2794,6 @@ STRINGTABLE
 BEGIN
     IDS_HM_LINKHP           "kMule Homepage"
     IDS_HM_LINKFAQ          "eMule FAQ"
-    IDS_HM_LINKVC           "eMule Versioncheck"
     IDS_DEBUG_SOURCE_EXCHANGE 
                             "Log client source exchange and server source queries/answers"
     IDS_SHAREDREQ1          "User %s (%u) requested your list of shared directories -> %s"
@@ -2917,9 +2909,6 @@ BEGIN
     IDS_DWL_IPFILTERFILE    "Downloading IP filter file"
     IDS_DWLIPFILTERFAILED   "IP filter download failed"
     IDS_FINDBUDDY           "Find Buddy"
-    IDS_ERR_IPFILTERZIPEXTR "Failed to extract IP filter file from downloaded IP filter ZIP file ""%s""."
-    IDS_ERR_IPFILTERCONTENTERR 
-                            "Downloaded IP filter file ""%s"" is a ZIP file with unexpected content."
     IDS_STORENOTES          "Store Notes"
     IDS_NOTES               "Notes"
     IDS_KADSEARCHALREADY    "Another search is already in progress. Please try again later!"
@@ -2951,7 +2940,6 @@ BEGIN
     IDS_ALWAYS              "Always"
     IDS_ONSHUTDOWN          "On shutdown"
     IDS_UNCFOLDERS          "UNC Paths"
-    IDS_ADVSPAMFILTER       "Advanced spam filter"
     IDS_CUT                 "Cut"
     IDS_STATS_SECUREIDENT   "Secure Ident (OK : Failed )"
     IDS_ONDISK              "Size on disk: "
@@ -3040,7 +3028,7 @@ BEGIN
     IDS_YOURHOSTNAME        "Host name for own eD2K links"
     IDS_INSUFFICIENT        "Insufficient Diskspace"
     IDS_WARNING             "Warning"
-    IDS_IMPORTSPLPF         "Import Downloads (eM,eD,ON)"
+    IDS_IMPORTSPLPF         "Import Downloads (*Mule,eDonkey,Overnet)"
     IDS_IMP_STEPREADPF      "Reading temp folder"
     IDS_IMP_STEPBASICINF    "Retrieving basic information from download info file"
     IDS_IMP_STEPCRDESTFILE  "Creating destination file"
@@ -3081,7 +3069,7 @@ BEGIN
     IDS_ESTTIMELEFT         "Estimated time left:"
     IDS_TRANSFER_RATE_LABEL "Transfer rate:"
     IDS_SAVELOG             "Save Log"
-    IDS_ASKDOWNLOADLANG     "The language you selected is not installed on your system. Do you want kMule to download it from http://emule-project.net?"
+    IDS_ASKDOWNLOADLANG     "The language you selected is not installed on your system. Do you want kMule to download it from http://kMule.emulefuture.de?"
     IDS_ASKDOWNLOADLANGCAP  "Download language files"
     IDS_DELETESELECTED      "Delete"
     IDS_ERR_FAILEDDOWNLOADLANG 
@@ -3147,7 +3135,7 @@ BEGIN
     IDS_TESTINFO            "Here you can test, if your TCP and UDP port can be connected to from remote. This success of this test is required for servers and clients to connect you. The TCP port have to succeed!"
     IDS_CONNECTIONTEST      "Connection Test"
     IDS_NOPORTCHANGEPOSSIBLE 
-                            "The change of ports is not possible after you connected with clients or while connected to a server/Kad!\n\nPlease restart kMule with the changed port settings."
+                            "The change of ports is not possible after you connected with clients or while connected to Kad!\n\nPlease restart kMule with the changed port settings."
     IDS_NETWORK_INFO        "Network Information"
     IDS_SP_TOTALUL          "Total uploads"
     IDS_SP_ULFRIENDS        "Upload friend slots"
@@ -3400,7 +3388,6 @@ BEGIN
     IDS_SPAM                "Spam"
     IDS_MARKSPAM            "Mark as Spam"
     IDS_MARKNOTSPAM         "Mark as not Spam"
-    IDS_SHOWSMILEYS         "Show smileys"
     IDS_CAPTCHAREQUEST      "In order to avoid spam messages, this user requires you to solve a captcha before you can send him a message. Please enter the letters you see on this image as response:"
     IDS_CAPTCHAFAILED       "Your response to the captcha was wrong and your message has been ignored. You can request a new captcha by sending a new message."
     IDS_CAPTCHASOLVED       "You have passed the captcha check and the user has received your message."

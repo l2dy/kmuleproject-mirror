@@ -58,7 +58,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_SOCKETS_INIT_FAILED "Fehler beim Initialisieren der Windows-Sockets."
-    IDS_ABOUTBOX            "&Über eMule..."
+    IDS_ABOUTBOX            "&Über kMule..."
     IDS_HTTPDOWNLOAD_FILESTATUS "%s von %s"
     IDS_HTTPDOWNLOAD_CONNECTED "Verbunden mit %s"
     IDS_HTTPDOWNLOAD_RESOLVING_NAME "Ermittle Name: %s"
@@ -83,10 +83,8 @@ BEGIN
     IDS_HTTPDOWNLOAD_PERCENTAGE "Download: %s%% von %s fertig"
     IDS_HTTPDOWNLOAD_RETREIVEING_FILE "Datei wird empfangen"
     IDS_HTTPDOWNLOAD_OF     "%s von %s"
-    IDS_FILELINK            "Datei Link"
     IDS_LD_BASICOPT         "Grundlegende Optionen"
     IDS_LD_ADDSOURCE        "Mich selber als Quelle hinzufügen"
-    IDS_LD_EMULEHASH        "Füge eMule AICH Hash für bessere Korruptionsbehandlung hinzu"
     IDS_LD_ADVANCEDOPT      "Erweiterte Optionen"
     IDS_CANCEL              "Abbruch"
     IDS_LD_ADDHTML          "Füge HTML-Tags hinzu"
@@ -94,7 +92,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_HTTP_CAPTION        "Aktualisiere Serverliste"
     IDS_HTTPDOWNLOAD_TIMELEFT "%s (%s kopiert)"
     IDS_LD_ADDHASHSET       "Füge kompletten Hashset hinzu"
     IDS_HSAV                "Hashset vorhanden"
@@ -107,16 +104,13 @@ BEGIN
                             "Ein Fehler trat beim Öffnen der herunterzuladenen Datei auf, Fehler:%s"
     IDS_HTTPDOWNLOAD_ABORTING_TRANSFER "Übertragung wird abgebrochen"
     IDS_FD_COMPR            "Kompression"
-    IDS_WIZARD_NETWORK      "Welche Netzwerke sollen benutzt werden?"
-    IDS_MAIN_READY          "eMule Version %s bereit"
-    IDS_WIZARD_ED2K         "eD2K-Netz Einstellungen"
+    IDS_MAIN_READY          "%s Build %s bereit"
     IDS_SEL_SKIN            "Wähle Skin..."
     IDS_MAIN_SOCKETERROR    "Schwerer Fehler: An Port %u konnte kein Socket erstellt werden"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_MAIN_BTN_DISCONNECT "T&rennen"
     IDS_ERR_WRONGFILEID     "Eine falsche Datei-ID wurde gesendet"
     IDS_ERR_BADHASHSET      "Korruptes oder ungültiges Hashset wurde empfangen"
     IDS_ERR_BADDATABLOCK    "Korrupter oder ungültiger Datenblock wurde empfangen"
@@ -139,7 +133,6 @@ STRINGTABLE
 BEGIN
     IDS_ERR_HASHERRORWARNING 
                             "Warnung: geladener Teil der Datei könnte nicht geprüft werden - Hashset unvollständig (%s)"
-    IDS_ERR_INCOMPLETEHASH  "Fehler: geladener Teil der Datei konnte nicht geprüft werden - Hashset unvollständig (%s). Dies sollte niemals vorkommen"
     IDS_DOWNLOADING         "Ladend"
     IDS_WAITING             "Warte"
     IDS_HASHING             "Überprüfe"
@@ -147,20 +140,11 @@ BEGIN
     IDS_COMPLETE            "Vollständig"
     IDS_PAUSED              "Angehalten"
     IDS_ERRORLIKE           "Fehlerhaft"
-    IDS_ASSIGNED2K          "eD2K-Links sind momentan nicht eMule zugewiesen. Möchten Sie eMule nun die eD2K-Links zuweisen? (empfohlen)"
-    IDS_ERR_EMPTYADRESSESDAT 
-                            "Keine Serverlisten-Adresse gefunden in adresses.dat. Bitte fügen Sie eine gültige URL zu einer Serverliste in diese Datei ein, um ein automatisches Update Ihrer Serverliste beim Start zu ermöglichen."
-    IDS_ERR_BADSERVERMETVERSION "Ungültiges Versiontag in server.met (0x%X)!"
-    IDS_SERVERSFOUND        "%u Server gefunden in server.met"
-    IDS_SERVERSADDED        "%u Server hinzugefügt, %u nicht Hinzugefügt (bereits gelistet/ungültig)"
-    IDS_ERR_BADSERVERLIST   "Fehler: die Datei server.met ist beschädigt, Serverliste konnte nicht geladen werden"
-    IDS_ERR_FILEERROR_SERVERMET 
-                            "Unerwarteter Dateifehler beim Lesen von server.met: %s, Serverliste konnte nicht geladen werden"
+    IDS_ASSIGNED2K          "eD2K-Links sind momentan nicht kMule zugewiesen. Möchten Sie kMule nun die eD2K-Links zuweisen? (empfohlen)"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_ERR_SAVESERVERMET   "Speichern von server.met fehlgeschlagen!"
     IDS_PASSIVE             "Passiv"
     IDS_MAIN_BTN_CANCEL     "A&bbruch"
     IDS_AVAIL               "Dateiteile: %u , verfügbar: %u (%.1f%%)\n\n"
@@ -168,34 +152,25 @@ BEGIN
     IDS_FILEID              "Datei ID"
     IDS_FILE                "Datei"
     IDS_DOWNLOAD            "Download" //!
-    IDS_SL_SERVERNAME       "Servername"
     IDS_IP                  "IP" //!
     IDS_DESCRIPTION         "Beschreibung"
     IDS_PING                "Ping" //!
     IDS_FILES               "Dateien"
-    IDS_PREFERENCE          "Präferenz"
-    IDS_PRIONOPREF          "Keine Präferenz"
-    IDS_CONNECTTHIS         "Verbindung zum gewählten Server herstellen"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_MAIN_BTN_CONNECT    "&Verbinden"
-    IDS_ERR_SAVESERVERMET2  "Fehler beim Speichern von server.met! Eventuell müssen Sie die Datei server.met löschen, und server.met.old umbenennen in server.met"
     IDS_NOTCONNECTED        "Nicht verbunden"
     IDS_DISCONNECTED        "Getrennt"
     IDS_USERS               "Benutzer: %u"
     IDS_UPDOWN              "Up: %.1f(%.1f) | Down: %.1f(%.1f)" //!
     IDS_CONNECTED           "Verbunden"
     IDS_LINKNOTADDED        "Konnte Link nicht hinzufügen"
-    IDS_MAIN_EXIT           "Wollen Sie eMule wirklich beenden?"
+    IDS_MAIN_EXIT           "Wollen Sie kMule wirklich beenden?"
     IDS_MAIN_POPUP_RESTORE  "Wiederherstellen"
-    IDS_CONNECTTOANYSERVER  "Verbinden zu einem Server"
     IDS_EXIT                "&Beenden"
     IDS_CONNECTING          "Verbindung wird hergestellt"
     IDS_FAILED              "Fehlgeschlagen"
-    IDS_ERR_BADSERVERREPLY  "Ungültige oder beschädigte Login-Antwort vom Server empfangen"
-    IDS_NEWCLIENTID         "Neue Client-ID ist %u"
 END
 
 STRINGTABLE 
@@ -213,7 +188,7 @@ BEGIN
     IDS_SE                  "Quellenaustausch"
     IDS_ERR_WRITEERROR      "Unerwarteter Dateifehler beim Schreiben %s : %s"
     IDS_ERR_COMPLETIONFAILED 
-                            "Unerwarteter Dateifehler beim Fertigstellen von %s. Datei wird pausiert; starten Sie eMule neu, um das Fertigstellen erneut zu versuchen."
+                            "Unerwarteter Dateifehler beim Fertigstellen von %s. Datei wird pausiert; starten Sie kMule neu, um das Fertigstellen erneut zu versuchen."
     IDS_ERR_DELETEFAILED    "%s konnte nicht gelöscht werden, Sie müssen dies manuell nachholen"
     IDS_DOWNLOADDONE        "Download von %s ist komplett :-)"
     IDS_ERR_DELETE          "%s konnte nicht gelöscht werden"
@@ -229,7 +204,6 @@ BEGIN
     IDS_PRIOHIGH            "Hoch"
     IDS_DOWNLOADMENUTITLE   "Downloads" //!
     IDS_PRIORITY            "Priorität"
-    IDS_NEWSERVERS          "%u neue Server empfangen"
     IDS_DL_STOP             "&Stop" //!
     IDS_DL_PAUSE            "&Pause" //!
     IDS_DL_RESUME           "Fo&rtsetzen"
@@ -265,7 +239,6 @@ BEGIN
     IDS_DL_SPEED            "Geschwindigkeit"
     IDS_DL_PROGRESS         "Fortschritt"
     IDS_DL_SOURCES          "Quellen"
-    IDS_ERR_BADSERVERLISTRECEIVED "Ungültiges Serverlisten-Paket empfangen"
     IDS_STATUS              "Status" //!
     IDS_DL_REMAINS          "Verbleibend"
     IDS_UPDATEFROM          "Aktualisiere von URL: (filter.dat oder PeerGuardian-Format)"
@@ -273,7 +246,6 @@ BEGIN
     IDS_LOADURL             "Laden"
     IDS_DELETEAFTERALLOC    "Datei '%s' reserviert gerade Festplattenplatz. Sie wird anschließend gelöscht werden."
     IDS_QL_RATING           "Bewertung"
-    IDS_CONNECTINGTO        "Verbinde zu %s (%s:%u)..."
     IDS_CLIENTS             "Clients" //!
     IDS_SEARCH_ANY          "Alle"
     IDS_SEARCH_AUDIO        "Audio" //!
@@ -288,15 +260,6 @@ BEGIN
     IDS_SEARCH_ARC          "Archive" //!
     IDS_ERR_INVALIDLINK     "Dieser eD2K-Link ist ungültig (%s)"
     IDS_ERR_LINKERROR       "Ungültiger Link: %s"
-    IDS_ERR_NOTCONNECTED    "Sie sind zu keinem Server verbunden!"
-    IDS_REMOVETHIS          "Lösche ausgewählte(n) Server"
-    IDS_REMOVEALL           "Lösche alle Server"
-    IDS_SRV_ADDR            "Bitte geben Sie eine Serveradresse ein"
-    IDS_SRV_PORT            "Unvollständiger Serverport: Bitte geben Sie einen Serverport ein"
-    IDS_SRV_NOTADDED        "Server nicht hinzugefügt!"
-    IDS_SRV_NOURLAV         "Keine URL verfügbar."
-    IDS_INVALIDURL          "Ungültige URL"
-    IDS_ERR_FAILEDDOWNLOADMET "Download der Serverliste von %s fehlgeschlagen"
 END
 
 STRINGTABLE 
@@ -305,14 +268,13 @@ BEGIN
     IDS_SHAREDFILES         "Freigegebene Dateien"
     IDS_PRIOVERYLOW         "Sehr niedrig"
     IDS_PRIORELEASE         "Release" //!
-    IDS_TRAYDLG_SPEED       "eMule Geschwindigkeit"
+    IDS_TRAYDLG_SPEED       "Geschwindigkeit"
     IDS_FSTATUS_FRIENDSONLY "Nur Freunde"
     IDS_VIAPASSIVE          "via passiv"
     IDS_ERR_RENAMESF        "Fehler beim Umbenennen der Datei\r\n    ""%s""\r\nin\r\n    ""%s""\r\n\r\n%s"
     IDS_AVAILABLE           "Verfügbar"
     IDS_FSTAT_TRANSFER      "Transfer" //!
     IDS_FSTAT_CONNECTION    "Verbindung"
-    IDS_FSTAT_SERVERS       "Server"
     IDS_FSTAT_WAITING       "Warte..."
     IDS_TIME                "Zeit"
     IDS_STATS_DDATA         "Heruntergeladen: %s"
@@ -353,8 +315,6 @@ BEGIN
     IDS_ERR_SERVERMET_BAD   "Fehler: die Datei known.met ist beschädigt, bekannte Dateien konnten nicht geladen werden"
     IDS_ERR_SERVERMET_UNKNOWN 
                             "Unerwarteter Dateifehler beim Lesen von known.met: %s, bekannte Dateien konnten nicht geladen werden"
-    IDS_ERR_CONNECTIONERROR "Fehler beim Herstellen der Verbindung zu %s (%s:%u): %s"
-    IDS_ERR_SOCKET          "Fehler im Serversocket: %s (%s:%u): %s"
     IDS_SHAREDFOUND         "%u bekannte freigegebene Dateien gefunden"
     IDS_SHAREDFOUNDHASHING  "%u bekannte freigegebene Dateien gefunden, %u neue Dateien warten aufs Hashing"
     IDS_ERR_INCOMPLETEBLOCK "Unvollständiger Block wurde angefordert"
@@ -367,16 +327,9 @@ BEGIN
     IDS_ERR_REQ_FNF         "Angeforderte Datei wurde nicht gefunden"
     IDS_DESC                "Beschreibung: %s"
     IDS_PORT                "Port" //!
-    IDS_ERR_NOVALIDSERVERSFOUND 
-                            "Keine gültigen Server in Serverliste gefunden"
-    IDS_CONNECTEDTOREQ      "Verbunden mit %s (%s:%u), sende Login Anforderung"
-    IDS_ERR_FATAL           "Schwerer Fehler beim Verbindungsaufbau. Möglicherweise ist die Internetverbindung unterbrochen."
-    IDS_ERR_LOSTC           "Verbindung zu %s (%s:%u) verloren"
-    IDS_ERR_DEAD            "%s (%s:%u) scheint tot zu sein"
-    IDS_ERR_FULL            "%s (%s:%u) scheint voll zu sein"
+    IDS_ERR_LOSTC           "Verbindung zu %s verloren"
     IDS_CONNECTEDTO         "Verbindung hergestellt zu: %s"
     IDS_DL_PREVIEW          "&Vorschau"
-    IDS_VIEWQUEUE           "Warteliste anzeigen"
     IDS_TW_UPLOADS          "Uploads" //!
     IDS_TW_DOWNLOADS        "Downloads" //!
 END
@@ -386,26 +339,17 @@ BEGIN
     IDS_TW_QUEUE            "Clients auf der Warteliste:"
     IDS_SW_SEARCHBOX        "Suche"
     IDS_SW_NAME             "Name" //!
-    IDS_SW_GLOBAL           "&Globale Suche"
     IDS_SW_DIRECTDOWNLOAD   "Download durch eD2K Link(s)"
     IDS_SW_LINK             "eD2K Link(s)"
     IDS_SW_START            "Sta&rt"
-    IDS_SCHEDULER           "Zeitplaner"
     IDS_IRC                 "&IRC" //!
     IDS_SW_RESULT           "Ergebnisse"
     IDS_SW_DOWNLOAD         "Auswahl downloaden"
-    IDS_SV_SERVERLIST       "Serverliste"
-    IDS_SV_SERVERINFO       "Serverinfo"
     IDS_SV_LOG              "Log" //!
-    IDS_SV_NEWSERVER        "Neuer Server"
-    IDS_SV_ADDRESS          "IP oder Adresse"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_SV_PORT             "Port" //!
-    IDS_SV_ADD              "Hinzufügen"
-    IDS_SV_MET              "Server.met von URL laden"
     IDS_SV_UPDATE           "Aktualisieren"
     IDS_SF_FILES            "Freigegebene Dateien"
     IDS_SF_STATISTICS       "Statistik"
@@ -424,26 +368,13 @@ END
 STRINGTABLE 
 BEGIN
     IDS_WS_PASS             "Passwort"
-    IDS_WS_ERR_LOADTEMPLATE "Die Vorlagen-Datei kann nicht geladen werden. Ersetze Datei %s durch eine neuere Version!"
-    IDS_WEB_CONLIMITS       "Verbindungslimit"
-    IDS_INFLST_USER_TOTALDOWNLOAD "Download total"
-    IDS_INFLST_USER_TOTALUPLOAD "Upload total"
-    IDS_SPEED_LIMITS        "Geschwindigkeits-Limits"
-    IDS_CAPACITY_LIMITS     "Bandbreiten Limits"
-    IDS_ADMIN               "Administrator" //!
-    IDS_ACCESSDENIED        "Zugriff verweigert!"
-    IDS_WEB_LOWUSER         "Gast"
-    IDS_WEB_ERR_CANTLOAD    "Kann Vorlagendatei nicht laden: %s"
-    IDS_GLOBALSEARCH        "Global (Server)"
     IDS_METHOD              "Methode"
     IDS_UNDO                "Rückgängig"
     IDS_DAYLY               "Täglich"
-    IDS_DAY_MO_FR           "Mo-Fr"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_DAY_SA_SO           "Sa-So"
     IDS_MO                  "Montag"
     IDS_DI                  "Dienstag"
     IDS_MI                  "Mittwoch"
@@ -451,14 +382,9 @@ BEGIN
     IDS_FR                  "Freitag"
     IDS_SA                  "Samstag"
     IDS_SO                  "Sonntag"
-    IDS_WEB_ADMINLOGIN      "Web-Interface: Admin-Login"
-    IDS_WEB_GUESTLOGIN      "Web-Interface: Gast-Login"
-    IDS_WEB_SESSIONEND      "Web-Interface: Logout"
     IDS_DETAILS             "Details" //!
-    IDS_ACTION              "Aktion"
     IDS_REMOVE              "Entfernen"
     IDS_NEW                 "Neu"
-    IDS_WEB_BADLOGINATTEMPT "Web-Interface: fehlgeschlagener Loginversuch!"
 END
 
 STRINGTABLE 
@@ -474,7 +400,6 @@ BEGIN
     IDS_PW_NICK             "Name"
     IDS_PW_INCOMING         "Eingehende Dateien"
     IDS_PW_TEMP             "Temporäre Dateien"
-    IDS_PW_BROWSE           "Durchsuchen"
     IDS_PW_SHARED           "Freig. Verzeichnisse (Strg+Klick für alle Unterverz.)"
     IDS_PW_CONNECTION       "Verbindung"
     IDS_PW_DOWNL            "Download Limit"
@@ -485,16 +410,7 @@ STRINGTABLE
 BEGIN
     IDS_PW_MAXC             "Max. Verbindungen"
     IDS_PW_CLIENTPORT       "Clientport"
-    IDS_PW_AUTOCON          "Automatisch Verbinden beim Start"
-    IDS_PW_RECON            "Wiederverbinden nach Trennung "
-    IDS_PW_SERVER           "Server" //!
-    IDS_PW_RDEAD            "Lösche tote Server nach"
-    IDS_PW_RETRIES          "Fehlversuchen"
-    IDS_PW_SCORE            "Benutze Prioritäts-System"
-    IDS_PW_USC              "Server-Adressen vom verbundenen Server beziehen"
-    IDS_PW_UCC              "Server-Adressen von verbundenen Clients beziehen"
-    IDS_PW_FILTER           "Server- und Client LAN-IPs filtern"
-    IDS_PW_USS              "Serverliste beim Programmstart aktualisieren"
+    IDS_PW_FILTER           "Client LAN-IPs filtern"
     IDS_PW_MISC             "Verschiedene Optionen"
     IDS_PW_TRAY             "Zum Systemicon minimieren"
     IDS_PW_PROMPT           "Sicherheitsabfrage bei Programmbeendigung"
@@ -504,18 +420,14 @@ STRINGTABLE
 BEGIN
     IDS_PW_SPLASH           "Logo beim Start anzeigen"
     IDS_PW_DBLCLICK         "Doppelklick öffnet Download"
-    IDS_PW_TOOL             "Tooltip Verzögerung (Sekunden)"
     IDS_PW_FRONT            "In den Vordergrund beim Linkklick"
     IDS_PW_LANG             "Sprache"
     IDS_PW_FILES            "Dateien"
     IDS_PW_SHARE            "Freigaben sichtbar für:"
     IDS_PW_EVER             "Alle"
-    IDS_PW_FRIENDS          "Freunde"
     IDS_PW_NOONE            "Niemanden"
     IDS_PW_RESET            "Reset" //!
-    IDS_PW_APPLY            "Übernehmen"
     IDS_EM_TRANS            "&Transfer"
-    IDS_EM_SERVER           "&Server"
     IDS_EM_SEARCH           "S&uche"
     IDS_EM_FILES            "&Dateien"
 END
@@ -536,7 +448,6 @@ BEGIN
     IDS_FD_DATARATE         "Datarate:" //!
     IDS_FD_COMPSIZE         "Komplett:"
     IDS_FD_CLOSE            "Schließen"
-    IDS_FD_TITLE            "Datei Details"
     IDS_CD_GENERAL          "Allgemein"
 END
 
@@ -547,7 +458,6 @@ BEGIN
     IDS_CD_CSOFT            "Software" //!
     IDS_CD_UIP              "IP Adresse:"
     IDS_CD_SIP              "Server IP:" //!
-    IDS_CD_VERSION          "Version:"
     IDS_CD_SNAME            "Servername:"
     IDS_CD_CDOWN            "Lädt derzeit:"
     IDS_CD_DOWN             "Downloaded (Session):"
@@ -566,13 +476,9 @@ BEGIN
     IDS_CD_RATING           "Bewertung (gesamt):"
     IDS_CD_USCORE           "Warteliste Punkte:"
     IDS_CD_TITLE            "Client Details" //!
-    IDS_EMULEW              "Klicke"
-    IDS_EMULEW2             "Um zu sehen ob eine neuere Version erhältlich ist"
-    IDS_EMULEW3             "Hier"
     IDS_PW_MAXSOURCES       "Max. Quellen je Datei"
     IDS_SHAREDFILESCOUNT    "Anzahl freigegebener Dateien: %u"
     IDS_SF_SIZE             "Gesamtgröße freigegebener Dateien: %s"
-    IDS_ERR_BADPORT         "Fehlerhafte Port-Nummer"
     IDS_ERR_NOHELLO         "Fragte nach etwas, ohne 'Hallo' zu sagen,"
     IDS_ERR_INVALIDPACKAGE  "Fehlerhaftes oder ungültiges Paket empfangen"
     IDS_ERR_CLIENTERROR     "Client '%s' (IP:%s) hat einen Fehler verursacht: %s. Trenne Client-Verbindung"
@@ -616,25 +522,16 @@ BEGIN
     IDS_REMOVESELECTED      "&Entferne markierte Ergebnisse"
     IDS_REMOVEALLSEARCH     "Schließe alle Ergebnisse"
     IDS_ENTERQUEUE          "Betrat Warteschlange"
-    IDS_SF_FAIL             "Server mit Login-Fehlversuchen"
-    IDS_SF_WUSER            "Benutzer auf funkt. Servern"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_SF_WFILE            "Dateien auf funkt. Servern"
-    IDS_SF_USER             "Gesamte Benutzeranzahl"
     IDS_SF_FILE             "Gesamte Dateianzahl"
     IDS_UPLOADTIME          "Upload Zeit"
     IDS_LASTSEENCOMPL       "Komplett entdeckt:"
     IDS_YES                 "Ja"
     IDS_NO                  "Nein"
     IDS_UNBAN               "Unban" //!
-    IDS_SF_WORKING          "Funktionierende Server"
-    IDS_ADDTOSTATIC         "Zur Liste fester Server hinzufügen"
-    IDS_ADDED2SSF           "Wurde zur Liste der festen Server hinzugefügt"
-    IDS_STATICSERVER        "Fest"
-    IDS_ERROR_SSF           "Fehler beim Öffnen der staticservers.dat"
     IDS_SF_ACTIVECON        "Aktive Verbindungen (geschätzt)"
     IDS_SF_MAXCONLIMITREACHED "Verbindungs-Limit erreicht"
     IDS_SF_AVGCON           "Durchschnittliche Verbindungen (geschätzt)"
@@ -645,7 +542,6 @@ BEGIN
     IDS_SF_PEAKCON          "Verbindungsspitze (geschätzt)"
     IDS_ST_ACTIVEC          "Aktive Verbindungen"
     IDS_NETWORK             "Netzwerk"
-    IDS_SF_DELCOUNT         "Gelöschte Server"
     IDS_QUEUEFULL           "Voll"
     IDS_AVG                 "Durchschnitt"
     IDS_BYTES               "Bytes"		//!
@@ -662,11 +558,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_RECONNECT           "Automatischer Verbindungsversuch wird in %u Sekunden gestartet..."
-    IDS_SERVERADDED         "Server hinzugefügt: %s"
-    IDS_IRC_IGNOREJOINMESSAGE "Ignoriere Raum-betreten-Infonachrichten (Join)"
     IDS_STATS_SUCCUPCOUNT   "Erfolgreiche Upload-Sessions: %u (%.2f%%)"
-    IDS_IRC_IGNOREPARTMESSAGE "Ignoriere Raum-verlassen-Nachrichten (Part)"
     IDS_STATS_FAILUPCOUNT   "Fehlgeschlagene Upload-Sessions: %u (%.2f%%)"
     IDS_STATS_AVEUPTIME     "Durchschnittliche Upload-Dauer: %s"
     IDS_SEARCHMINSIZE       "Min. Größe (MB)"
@@ -682,23 +574,16 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_PW_AUTOCONNECTSTATICONLY 
-                            "Automatisches Verbinden nur zu Servern aus statischer Liste"
     IDS_PW_CON_LIMITFRM     "Limits" //!
     IDS_STATS_AVGLABEL      "Durchschnittsgraphen über %u mins errechnen"
     IDS_GRAPHS              "Graphen"
     IDS_STREE               "Statistik-Baum"
-    IDS_IRC_IGNOREQUITMESSAGE "Ignoriere Chat-verlassen-Nachrichten (Quit)"
     IDS_STATSSETUPINFO      "Statistikanzeige"
-    IDS_IRC_SOUNDEVENTS     "Klänge für Ereignisse wiedergeben"
     IDS_HARDLIMIT           "Hard Limit"
     IDS_COL_MORECOLORS      "Weitere Farben"
     IDS_TOOMANYCONNS        "Zu viele Verbindungen"
     IDS_DOWNLOADRENAMED     "Eine Datei mit einem bereits existierenden Namen wurde gespeichert unter %s"
     IDS_TBN_DOWNLOADDONE    "Heruntergeladen:"
-    IDS_PW_TBN_USESOUND     "Klang wiedergeben"
-    IDS_PW_TBN_ONLOG        "Neuer Log-Eintrag"
-    IDS_PW_TBN_ONCHAT       "Neue Chatsitzung"
 END
 
 STRINGTABLE 
@@ -712,10 +597,6 @@ BEGIN
     IDS_MEGA                "M" //!
     IDS_GIGA                "G" //!
     IDS_TERRA               "T" //!
-    IDS_IRC_EMULEPROTO_IGNOREINFOMESSAGE 
-                            "Ignoriere Emule-IRC-Protokoll-Nachrichten"
-    IDS_SMARTLOWIDCHECK     "Benutze Smart-LowID-Prüfung beim Verbinden"
-    IDS_SF_SRVOCC           "Server Auslastung: %.2f%%"
     IDS_3DDEP               "Statusbalken Stil"
     IDS_AUTOTAKEED2KLINKS   "eD2K Links nur während der Laufzeit annehmen"
     IDS_ADDNEWFILESPAUSED   "Neue Dateien zum Download starten im Pause-Modus"
@@ -730,9 +611,6 @@ BEGIN
     IDS_RECOVERY_SUCCESSFUL "Archiv-Restaurierung erfolgreich."
     IDS_RECOVERY_FAILED     "Archiv-Restaurierung fehlgeschlagen."
     IDS_STARTNEXTFILE       "Bei fertigem Download, nächste Datei fortsetzen"
-    IDS_FULLCHUNKTRANS      "Versuche komplette Chunks hochzuladen"
-    IDS_MANUALSERVERHIGHPRIO 
-                            "Setze manuell hinzugefügte Server auf hohe Priorität"
     IDS_VERBOSE             "Verbose (zusätzliche Programmausgaben)"
     IDS_FLAT                "Flach"
     IDS_ROUND               "Rund"
@@ -746,61 +624,24 @@ STRINGTABLE
 BEGIN
     IDS_PW_TBN_POP_ALWAYS   "Eine neue Nachricht empfangen"
     IDS_PW_TBN_ONDOWNLOAD   "Download beendet"
-    IDS_PW_EKDEV_OPTIONS    "Benachrichtigung"
-    IDS_PW_TASKBARNOTIFIER  "Nachricht Popup"
-    IDS_PW_TBN_OPTIONS      "Einblenden wenn"
     IDS_TBN_NEWCHATMSG      "Nachricht von"
     IDS_PW_CON_CAPFRM       "Kapazitäten"
-    IDS_IRC_PRIVATECHANSTART "* Private Unterhaltung gestartet"
-    IDS_IRC_SLAPMSG         "* %s schlägt %s mit einem großen Babelfish!"
-    IDS_IRC_PRIVMESSAGE     "Private Nachricht"
-    IDS_WEB_REMOTE_LINK_ADDED "Link hinzugefügt: "
-    IDS_WEB_REMOTE_LINK_NOT_ADDED "Link nicht hinzugefügt. Falsches Passwort."
     IDS_DL_TRY_TO_GET_PREVIEW_PARTS 
                             "Zuerst Teile für eine Vorschau downloaden"
-    IDS_IRC_KICK            "Kick" //!
-    IDS_IRC_SLAP            "Slap" //!
-    IDS_IRC_JOIN            "Betreten"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_IRC_CHANNELLIST     "Raumliste"
-    IDS_IRC_CONNECT         "Verbinden"
-    IDS_IRC_DISCONNECT      "Trennen"
-    IDS_IRC_HASJOINED       "* %s betrat %s"
-    IDS_IRC_HASPARTED       "* %s verließ Raum %s (%s)"
-    IDS_IRC_WASKICKEDBY     "* %s wurde gekickt von %s (%s)"
     IDS_DOWNLOAD_ALPHABETICAL "Download in alphabetischer Reihenfolge"
-    IDS_IRC_HASQUIT         "* %s hat den Chat verlassen (%s)"
-    IDS_IRC_NOWKNOWNAS      "* %s heißt jetzt %s"
-    IDS_IRC_SETSMODE        "* %s setzt mode: %s %s"
-    IDS_IRC_NOTSUPPORTED    "** Einige Modes wurden gesetzt, welche noch nicht unterstützt werden.. Es kann nötig sein, den Raum zu verlassen und erneut zu betreten um die Nick-Liste zu aktualisieren."
-    IDS_IRC_CHANNEL         "Raum"
-    IDS_IRC_NICK            "Nick" //!
-    IDS_IRC_SEND            "Senden"
-    IDS_IRC_NAME            "Name" //!
-    IDS_IRC_SLAPMSGSEND     "PRIVMSG %s :\001ACTION schlägt %s mit einem großen Babelfish!\001"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_IRC_ADDTIMESTAMP    "Stelle Zeitstempel den Nachrichten voran"
-    IDS_IRC_USEFILTER       "Benutze Raumlisten-Filter"
-    IDS_IRC_PERFORM         "Ausführen"
-    IDS_IRC_USEPERFORM      "Führe die Zeichenkette beim Verbinden aus"
     IDS_IRC_ADDTOFRIENDLIST "Zur Freunde-Liste hinzufügen"
-    IDS_IRC_LOADCHANNELLISTONCON 
-                            "Lade beim Verbinden die Raumliste vom Server"
-    IDS_IRC_ADDASFRIEND     "Fügte dich als Freund hinzu!"
     IDS_PW_WARNING          "Die Anzahl für ""%s"" ist größer als es dein Betriebssystem unterstützt:  %u\nDies könnte das System instabil machen!\n\nWillst Du dennoch fortfahren?"
     IDS_TAKEOVER            "Ü&bernehmen"
     IDS_CLEANUP             "&Bereinigen"
     IDS_RENAME              "Umbenenne&n"
-    IDS_IRC_ADDLINKTOIRC    "In IRC-Zwischenablage kopieren"
-    IDS_IRC_SENDLINK        "Sende dies an Freunde:"
-    IDS_IRC_RECIEVEDLINK    "%s sendete (%s) um automatisch gestartet zu werden."
-    IDS_IRC_ACCEPTLINKS     "Akzeptiere eD2K-Links in IRC. (Vorsicht!)"
     IDS_SHARED              "Freigegeben"
 END
 
@@ -809,7 +650,6 @@ BEGIN
     IDS_DOWNLOADED          "Heruntergeladen"
     IDS_SOURCENAMES         "Quell-Dateinamen"
     IDS_PREF_STARTMIN       "Minimiert Starten"
-    IDS_PS_TBN_IMPORTANT    "Wichtiges: kein freier Platz auf Datenträger, Serververbindung verloren"
     IDS_COLORS              "Farben"
     IDS_SP_BACKGROUND       "Hintergrund"
     IDS_SP_GRID             "Gitternetz,Achsen"
@@ -826,13 +666,9 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_PW_UNLIMITED        "Unbegrenzt"
     IDS_PW_MINREC           "Empfohlenes Minimum\t%u "
     IDS_PW_UA               "Limits deaktivieren"
     IDS_PW_PA               "Up/Down-Limits auf 1kB/s"
-    IDS_IRC_IGNOREINFOMESSAGE "Ignoriere Info-Nachrichten"
-    IDS_CONNECTIONLOST      "Serververbindung verloren"
-    IDS_WIZ_OS_FRAME        "Betriebssystem"
     IDS_HASHINGFILE         "Hashe Datei:"
     IDS_WIZ_TRUEUPLOAD_TEXT "Upload-Bandbreite"
     IDS_WIZ_TRUEDOWNLOAD_TEXT "Download-Bandbreite"
@@ -841,7 +677,6 @@ BEGIN
     IDS_WIZARD              "Assistent"
     IDS_ADDFRIEND           "Zur Freundesliste hinzufügen"
     IDS_REMOVEFRIEND        "Entferne Freund"
-    IDS_REMOVEFROMSTATIC    "Von der Liste fester Server entfernen"
 END
 
 STRINGTABLE 
@@ -849,7 +684,6 @@ BEGIN
     IDS_LENGTH              "Laufzeit"
     IDS_VIDEO               "Video" //!
     IDS_AUDIO               "Audio" //!
-    IDS_FILEINFO            "Video-&Details"
     IDS_CODEC               "Codec" //!
     IDS_BITRATE             "Bitrate" //!
     IDS_WIDTH               "Breite"
@@ -866,23 +700,16 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_UDPDISABLED         "Deaktiviert"
     IDS_WIZ_CTFRAME         "Internetanbindung"
     IDS_CONCURDWL           "Gleichzeitige Downloads"
     IDS_WIZARD_CUSTOM       "Manuell"
     IDS_WIZARD_ENTERBELOW   "(Eingabe unten)"
     IDS_STATS_MAXAVGDL      "Max. Downloadrate Durchschnitt: %s"
     IDS_STATS_MAXDL         "Max. Downloadrate: %s"
-    IDS_IRC_EMULEPROTO_IGNOREADDFRIEND 
-                            "Ignoriere eMule Protokollnachrichten für Freunde hinzufügen"
-    IDS_PW_FASTSRVCON       "Sicheres / langsameres Verbinden zu Servern"
-    IDS_SOURCELINKFAILED    "Eine hohe ID ist notwendig, um gültige Quellenlinks zu erstellen."
-    IDS_ERR_LOADSERVERMET   "Server.met konnte nicht geladen werden!"
     IDS_ERR_CORRUPTCOMPRPKG "Fehlerhaftes komprimiertes Paket für %s empfangen (Fehler %u)"
     IDS_ERR_EMFRIENDSINVALID 
                             "Die Datei emfriends.met ist ungültig oder fehlerhaft!"
     IDS_ERR_READEMFRIENDS   "Unbekannter Fehler trat auf, während des Lesens der Datei emfriends.met: %s"
-    IDS_ERR_KNOWNSERVERINFOREC "Unbekannte Serverinformation empfangen!"
     IDS_WIZ_DOWN            "Down (kBit/s)" //!
 END
 
@@ -894,16 +721,12 @@ BEGIN
     IDS_PRIOAUTO            "Auto"				//!
     IDS_PRIOAUTONORMAL      "Auto [No]"		//!
     IDS_PRIOAUTOHIGH        "Auto [Ho]"
-    IDS_PRIOAUTORELEASE     "Auto [Re]"		//!
     IDS_PRIOAUTOLOW         "Auto [Ng]"
-    IDS_ERR_CONTIMEOUT      "Zeitlimit für Verbindungsversuch zu ""%s"" (%s:%u ) überschritten"
-    IDS_OUTOFSERVERS        "Keine weiteren Server zum Verbinden verfügbar. Beginne von vorne..."
     IDS_PW_CONLIMITS        "Verbindungs-Limits"
     IDS_MAXCON5SECLABEL     "Max. neue Verbindungen pro 5 Sek."
     IDS_PW_UAP              "Neue freigegebene Datei auf Autopriorität stellen"
-    IDS_MAXCLIENT           "Nutzer Maximum"
     IDS_PW_TWEAK            "Erweitert"
-    IDS_TWEAKS_WARNING      "Warnung: Ändere diese Einstellungen nicht, außer du weißt genau was du tust. Ansonsten können negative Effekte auftreten! eMule funktioniert auch wunderbar, ohne diese Einstellungen zu verändern."
+    IDS_TWEAKS_WARNING      "Warnung: Ändere diese Einstellungen nicht, außer du weißt genau was du tust. Ansonsten können negative Effekte auftreten! kMule funktioniert auch wunderbar, ohne diese Einstellungen zu verändern."
 END
 
 STRINGTABLE 
@@ -918,7 +741,6 @@ BEGIN
     IDS_CMT_QUEST           "Gebe einen beliebigen Kommentar zu dieser Datei ab. Andere Nutzer können diesen einsehen:"
     IDS_CMT_AIDE            "Kommentiere die Datei hier. Für eine Videodatei zB. gebe die Laufzeit, Thema, Sprache,... an, oder informiere über einen Fake."
     IDS_CMT_ADD             "Datei-Kommentar ändern..."
-    IDS_CMT_NONE            "Keine Kommentare"
     IDS_CMT_READ            "Datei-Kommentar:"
     IDS_CMT_SHOWALL         "Zeige alle &Kommentare..."
     IDS_CMT_READALL         "Alle Kommentare"
@@ -931,21 +753,17 @@ STRINGTABLE
 BEGIN
     IDS_SHOWOVERHEAD        "Zeige Overhead-Bandbreite an"
     IDS_UPDOWNSMALL         "Up: %.1f | Down: %.1f" //!
-    IDS_EDITLIST            "Liste"
     IDS_SP_ICONBAR          "Balken im Systray-Icon"
     IDS_RATINGRECV          "Datei-Bewertung für '%s' empfangen: %u"
     IDS_DESCRIPTIONRECV     "Datei-Beschreibung für '%s' empfangen: %s"
     IDS_WEBSERVICES         "Web Dienste"
     IDS_WEBSVEDIT           "Webdienste ändern"
-    IDS_IRC_EMULEPROTO_IGNORESENDLINK 
-                            "Ignoriere eMule Protokollnachrichten für Link-Senden"
     IDS_CHECK4UPDATE        "Auf neuere Version prüfen"
     IDS_STARTUP             "Programmstart"
-    IDS_NEWVERSIONAVL       "Eine neuere Version von eMule ist verfügbar. Besuche die Projekt-Homepage um mehr Informationen zu erhalten."
-    IDS_NEWVERSIONAVLPOPUP  "Eine neuere Version von eMule ist verfügbar. Klicke hier um mehr über die neue Version zu erfahren!"
+    IDS_NEWVERSIONAVL       "Eine neue Version von kMule ist verfügbar. Besuche die Projekt-Homepage um mehr Informationen zu erhalten."
     IDS_NEWVERSIONFAILED    "Ein Fehler trat bei der Versionsüberprüfung auf."
-    IDS_CB_TBN_ONNEWVERSION "Neuere eMule Version gefunden"
-    IDS_NONEWERVERSION      "Es ist keine neuere eMule Version verfügbar."
+    IDS_CB_TBN_ONNEWVERSION "Neue kMule Version gefunden"
+    IDS_NONEWERVERSION      "Es ist keine neue kMule Version verfügbar."
 END
 
 STRINGTABLE 
@@ -954,7 +772,6 @@ BEGIN
     IDS_VISITVERSIONCHECK   "\n\nSoll jetzt die WWW-Seite mit Informationen zur neuen Version und Downloadmöglichkeit aufgerufen werden?"
     IDS_PW_VIDEOPLAYER      "Videowiedergabe Programm"
     IDS_VIDEOBACKUP         "Erstelle Kopie für die Vorschau"
-    IDS_MYINFO              "Meine Info"
     IDS_ID                  "ID" //!
     IDS_IDLOW               "Niedrige ID"
     IDS_IDHIGH              "Hohe ID"
@@ -982,7 +799,6 @@ BEGIN
     IDS_FILTERLABEL         "Filtere Nachrichten mit folgenden Strings: (Trennzeichen | )"
     IDS_ERR_LARGEREQBLOCK   "Client fragte einen zu großen Block an."
     IDS_SHOWRATEONTITLE     "Zeige Transferraten im Titel"
-    IDS_TBN_NOMESSAGEHISTORY "Keine gespeicherte Nachricht!"
     IDS_PW_DAP              "Neue Downloads auf Autopriorität stellen"
     IDS_FD_LASTCHANGE       "Letzter Empfang:"
     IDS_STATS_RUNTIME       "Programm-Laufzeit"
@@ -1014,8 +830,6 @@ STRINGTABLE
 BEGIN
     IDS_EDIT                "Bearbeiten"
     IDS_FILTERLEVEL         "Filterstufe"
-    IDS_FILTERSERVERBYIPFILTER 
-                            "Server anhand der IP filtern"
     IDS_FILTERCOMMENTSLABEL "Ignoriere Kommentare mit folgenden Strings: (Trennzeichen | )"
     IDS_CLIENTLIST          "Bekannte Clients"
     IDS_FOLDER              "Verzeichnis"
@@ -1023,8 +837,6 @@ BEGIN
     IDS_CL_TRANSFUP         "Hochgeladen"
     IDS_CL_DOWNLSTATUS      "Download Status" //!
     IDS_CL_TRANSFDOWN       "Heruntergeladen"
-    IDS_CL_PENDING          "Wartend"
-    IDS_CL_LOW2LOW          "Niedrige-ID zu niedrige-ID"
     IDS_ERROR               "Fehler"
     IDS_OPENINC             "Eingangsverzeichnis ö&ffnen"
     IDS_HOTMENU             "Hotmenu" //!
@@ -1034,11 +846,8 @@ END
 STRINGTABLE 
 BEGIN
     IDS_DISABLEQUEUELIST    "Warteschlangenanzeige deaktivieren"
-    IDS_USECREDITSYSTEM     "Credit System nutzen (Uploader belohnen)"
-    IDS_FIRSTAUTODOWN       "Soll eMule die Download-Prioritäten verwalten?\n\nIst diese Option aktiviert, ist es für eMule möglich sicherzustellen, dass Downloads mit vielen Quellen nicht Downloads mit wenigen Quellen stört. Diese Einstellung wirkt sich auf zukünftige Downloads aus."
-    IDS_FIRSTAUTOUP         "Soll eMule die Upload-Prioritäten verwalten?\n\nIst diese Option aktiviert, kann eMule seltene Dateien bevorzugen. Wird diese Option deaktiviert, verhält sich dies entgegengesetzt (seltene Dateien für andere schwerer zu bekommen, weit verbreitete Dateien besser). Diese Einstellung wirkt sich auf zukünftige freigegebene Dateien aus."
-    IDS_FIRSTSAFECON        "Soll eMule beim Verbinden zum Server ""Sicheres Verbinden"" aktivieren?\n\nWird diese Option deaktiviert, kann eMule etwas schneller zu Servern Verbindung aufnehmen, aber kann auch mehr falsche niedrige IDs hervorrufen."
-    IDS_FIRSTAUTOCON        "Soll eMule sich beim Programmstart mit einem Server verbinden?"
+    IDS_FIRSTAUTODOWN       "Soll kMule die Download-Prioritäten verwalten?\n\nIst diese Option aktiviert, ist es für kMule möglich sicherzustellen, dass Downloads mit vielen Quellen nicht Downloads mit wenigen Quellen stört. Diese Einstellung wirkt sich auf zukünftige Downloads aus."
+    IDS_FIRSTAUTOUP         "Soll kMule die Upload-Prioritäten verwalten?\n\nIst diese Option aktiviert, kann kMule seltene Dateien bevorzugen. Wird diese Option deaktiviert, verhält sich dies entgegengesetzt (seltene Dateien für andere schwerer zu bekommen, weit verbreitete Dateien besser). Diese Einstellung wirkt sich auf zukünftige freigegebene Dateien aus."
     IDS_FIRSTCOMPLETE       "Der Startassistent wurde nun durchgeführt.\n\nAlle diese Einstellungen und mehr können geändert werden, klicke dazu auf das Einstellungen-Symbol oben rechts in der Toolbar. Für Erklärungen und weitere Informationen schaue in die Hilfe, durch Drücken der F1-Taste!"
     IDS_ENTERUSERNAME       "Bitte gib Deinen Benutzernamen an:"
     IDS_STATIC_CPUMEM       "CPU- && Speicher schonen"
@@ -1050,54 +859,23 @@ BEGIN
     IDS_KAD_SEARCH_KEYWORD_INVALID 
                             "Ungültiges Kad Schlüsselwort.\r\n\r\nEin Kad Suchausdruck hat das folgende Format:\r\n\r\n\t<kad-schlüsselwort> [ <ed2k-suchausdruck> ]\r\n\r\nDas <kad-schlüsselwort> darf keine der folgenden Zeichen enthalten:\r\n\r\n\t%s"
     IDS_EDITCAT             "Kategorie-Eigenschaften bearbeiten"
-    IDS_PW_WS               "Webinterface"
 END
 
 STRINGTABLE 
 BEGIN
     IDS_ENABLED             "Aktiviert"
-    IDS_WEB_LOGIN           "Login" //!
-    IDS_WEB_ENTER_PASSWORD  "Bitte Passwort eingeben:"
-    IDS_WEB_LOGIN_NOW       "Jetzt einloggen"
-    IDS_WEB_CONFIRM_REMOVE_SERVER 
-                            "Sind Sie sich sicher, diesen Server zu entfernen?"
-    IDS_WEB_CONTROL         "Web-Interface"
-    IDS_WEB_LOGOUT          "Logout" //!
-    IDS_WEB_ACTIONS         "Befehle"
-    IDS_WEB_SHOW_UPLOAD_QUEUE "Warteschlange zeigen"
-    IDS_WEB_GZIP_COMPRESSION "Gzip Komprimierung"
-    IDS_WEB_GZIP_COMMENT    "Spart Bandbreite bei der Datenübertragung, besonders bei Grafikdarstellungen."
-    IDS_WEB_REFRESH_TIME    "Aktualisierungsintervall der Seiten"
-    IDS_WEB_REFRESH_COMMENT "Zeit in Sekunden (0=deaktiviert):"
     IDS_SV_URL              "URL" //!
-    IDS_WS_RELOAD_TMPL      "Layout-Vorlage"
-    IDS_SV_DEBUGLOG         "Debug Log" //!
 END
 
 STRINGTABLE 
 BEGIN
     IDS_ERR_TOOLARGEFILE    "Datei ist größer als vom Edonkey Protokoll unterstützt (>=256GB)"
     IDS_MSGONLYFRIENDS      "Nur von Freunden akzeptieren"
-    IDS_DAY_MO_SA           "Mo-Sa"
-    IDS_LIMITSOURCES        "Max. Quellen"
-    IDS_LIMITCONS5SEC       "Max. neue Verb./5sek"
-    IDS_SCHED_CATSTOP       "Kat:Downloads stoppen"
-    IDS_SCHED_CATRESUME     "Kat:Downloads fortsetzen"
-    IDS_S_DAYS              "Tage"
-    IDS_STARTTIME           "Startzeit"
     IDS_VALUE               "Wert"
-    IDS_SCHED_ENTERDATARATELIMIT "Gebe das Geschwindigkeitslimit an:"
-    IDS_SCHED_ENTERVAL      "Bitte den neuen Wert angeben:"
-    IDS_SCHED_ACTCONFIG     "Aktion konfigurieren"
-    IDS_SELECTCAT           "Zielkategorie auswählen"
-    IDS_ALLUNASSIGNED       "Alle unkatalogisierten"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_ACTSESSIONS         "Aktive Session(s)"
-    IDS_WEBSRV              "Web-Interface"
-    IDS_SW_REFETCHRES       "Resultate neu abfragen"
     IDS_FILEHASH            "Dateihash"
     IDS_PW_PROXY            "Proxy" //!
     IDS_PROXY_ENABLE        "Proxy aktivieren"
@@ -1107,7 +885,6 @@ BEGIN
     IDS_PROXY_AUTH          "Authentifizierung aktivieren"
     IDS_AUTH                "Authentifizierung"
     IDS_SHOWCATINFO         "Zeige Downloadinformation in den Kategorie-Reitern"
-    IDS_SW_SEARCHINGINFO    "Die Suche wurde gestartet. Fragen Sie die Resultate in einem Moment ab!"
     IDS_LOGENTRY            "Log"
     IDS_COPY                "Kopieren"
     IDS_SELECTALL           "Alles auswählen"
@@ -1116,30 +893,24 @@ END
 STRINGTABLE 
 BEGIN
     IDS_AUTOSCROLL          "Autoscrollen"
-    IDS_WIZ1_WELCOME_TITLE  "Willkommen zu eMule"
+    IDS_WIZ1_WELCOME_TITLE  "Willkommen zu kMule"
     IDS_WIZ1_WELCOME_ACTIONS 
-                            "Dieser Assistent leitet dich durch die ersten Schritte der Einrichtung von eMule."
+                            "Dieser Assistent leitet dich durch die ersten Schritte der Einrichtung von kMule."
     IDS_WIZ1_WELCOME_BTN_HINT "Klicke ''Weiter''  um fortzufahren"
     IDS_WIZ1_END_TITLE      "Den Assistenten fertigstellen"
-    IDS_WIZ1                "eMule - Erst-Start-Assistent"
+    IDS_WIZ1                "Erst-Start-Assistent"
     IDS_WIZ1_END_BTN_HINT   "Klicke Beenden, um den Assistenten zu schließen."
-    IDS_WIZ1_UPLOAD_SUBTITLE "Voller Chunk Transfer"
     IDS_DL_RESUMENEXT       "Nächste pausierte Datei fortsetzen"
     IDS_STARTPRIO           "Priorität dieser Kategorie"
     IDS_PREF_STARTNEXTFILECAT "Gleiche Kategorie bevorzugen"
-    IDS_SOFTFILES           "Dateilimit (weich)"
-    IDS_HARDFILES           "Dateilimit (hart)"
     IDS_FILTER              "Filter" //!
     IDS_LINKS               "Links" //!
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_HM_SCHED_ON         "Zeitplaner einschalten"
-    IDS_HM_SCHED_OFF        "Zeitplaner ausschalten"
-    IDS_HM_LINKHP           "eMule Homepage" //!
+    IDS_HM_LINKHP           "kMule Homepage" //!
     IDS_HM_LINKFAQ          "eMule FAQ" //!
-    IDS_HM_LINKVC           "eMule Versionsüberprüfung"
     IDS_DEBUG_SOURCE_EXCHANGE "Source Exchange Meldungen anzeigen"
     IDS_SHAREDREQ1          "Benutzer %s (%u) hat deine Liste freigegebener Verzeichnisse angefragt -> %s"
     IDS_SHAREDREQ2          "Benutzer %s (%u) hat deine Liste freigegebener Dateien für das Verzeichnis '%s' angefragt -> %s"
@@ -1163,10 +934,7 @@ BEGIN
     IDS_STATS_OVRHD         "Overhead" //!
     IDS_STATS_RECORDS       "Rekorde"
     IDS_STATS_COMPDL        "Beendete Downloads"
-    IDS_STATS_SVRECWORKING  "Max. funktionierende Server"
-    IDS_STATS_SVRECUSERS    "Max. Nutzer Online"
     IDS_SEARCH_TEXT         "Suche nach"
-    IDS_STATS_SVRECFILES    "Max. Dateien verfügbar"
     IDS_STATS_SHRECNUM      "Max. freigegebene Dateien"
     IDS_SEARCH_COLUMN       "Suche in Spalte"
     IDS_STATS_SHRECSIZE     "Max. Größe freigegebener Dateien"
@@ -1229,7 +997,6 @@ BEGIN
     IDS_STATS_MNUTREECPYSEL "Kopiere markierten Zweig"
     IDS_STATS_MNUTREECPYALL "Kopiere alle Statistiken"
     IDS_STATS_MNUTREEHTML   "HTML Funktionen"
-    IDS_STATS_EXPORT2HTML   "Exportiere alle Statistiken"
     IDS_CONDTCPACCEPT       "schnelle Verbindungszurückweisung"
 END
 
@@ -1260,8 +1027,6 @@ BEGIN
     IDS_ALWAYS              "Immer"
     IDS_ONSHUTDOWN          "Beim Beenden"
     IDS_UNCFOLDERS          "UNC Verzeichnisse: (Netzwerk)"
-    IDS_USESECIDENT         "Nutze sichere Identifikation"
-    IDS_ADVSPAMFILTER       "Erweiterter Spamfilter"
     IDS_CUT                 "Ausschneiden"
     IDS_STATS_SECUREIDENT   "Identifikation (pos : neg)"
     IDS_ONDISK              "Größe auf Disk: "
@@ -1287,8 +1052,6 @@ BEGIN
                             "UploadSpeedSense: Tracerouting zu oft fehlgeschlafen. UploadSpeedSense wird deaktiviert."
     IDS_USS_STARTING        "UploadSpeedSense: Vorbereitungen beendet. Regelung der Uploadgeschwindigkeit wird gestartet. (erste 60 Sekunden im schnellen Reaktionsmodus)"
     IDS_A4AF                "Quellen-Kontrolle"
-    IDS_MOBILEMULE          "MobileMule" //!
-    IDS_ENABLEMM            "MobileMule aktivieren"
     IDS_AUTOCAT_LABEL       "Autom. Kategorien-Zuweisung ( | trennt Muster)"
     IDS_SHOWEXTSETTINGS     "Zusätzliche Kontrollen anzeigen (für Fortgeschrittene)"
     IDS_TREEOPTIONS_TRUE    "Wahr"
@@ -1300,17 +1063,14 @@ BEGIN
     IDS_TREEOPTIONS_OK      "OK" //!
     IDS_HYPERTEXT_FONT_HINT "Schriftart für Server-, Nachrichten- und IRC-Fenster"
     IDS_SELECT_FONT         "Schriftart wählen"
-    IDS_SERVER_LIMITS       "Soft- / Hard- Dateilimits"
     IDS_KBITSSEC            "kBit/s" //!
     IDS_KBYTESSEC           "kByte/s" //!
     IDS_ERR_CREATE_DIR      "Verzeichnis %s konnte nicht erstellt werden ""%s"" - %s"
     IDS_WRN_INCFILE_RESERVED 
-                            "Das Eingangs-Verzeichnis darf kein eMule-Installations-Verzeichnis sein."
+                            "Das Eingangs-Verzeichnis darf kein kMule-Installations-Verzeichnis sein."
     IDS_WRN_TEMPFILES_RESERVED 
-                            "Das Temporär-Verzeichnis darf kein eMule-Installations-Verzeichnis sein."
+                            "Das Temporär-Verzeichnis darf kein kMule-Installations-Verzeichnis sein."
     IDS_WRN_INCTEMP_SAME    "Eingangs- und Temporärverzeichnis dürfen nicht identisch sein."
-    IDS_MMFAILED            "MobileMule Socket konnte nicht erstellt werden!"
-    IDS_MMSTARTED           "MobileMule Server gestartet auf Port %u. Protokollversion: %s"
     IDS_SHOWDWLPERCENTAGE   "Zeige Fortschrittsprozent von Downloads im Statusbalken"
     IDS_TBN_ONNEWDOWNLOAD   "Download hinzugefügt"
     IDS_ARTIST              "Künstler"
@@ -1319,22 +1079,16 @@ END
 STRINGTABLE 
 BEGIN
     IDS_ALBUM               "Album" //!
-    IDS_MMGUIDELINK         "MobileMule Einführung"
     IDS_CD_UPLOADREQ        "Angefordert zum Upload:"
     IDS_SETTINGCHANGED_RESTART 
-                            "Damit die geänderten Einstellungen greifen, muss eMule neu gestartet werden!"
+                            "Damit die geänderten Einstellungen greifen, muss kMule neu gestartet werden!"
     IDS_CREDITSEXPIRED      ", %u Clients wurden gelöscht (seit 5 Monaten nicht gesehen)"
     IDS_SOURCESINFO         "%u  (nützlich: %u, NNP: %u, A4AF: %u)"
     IDS_META_DATA           "Meta-Daten"
     IDS_TIMEBEFORE          "(vor %s)"
     IDS_FD_TIMEDATE         "Zeit"
-    IDS_FILEINFORMATION     "Datei Informationen"
     IDS_STATS_FREESPACE     "Freier Speicherplatz"
-    IDS_IRC_HELPCHANNEL     "Verbinde zu Hilfe-Räume."
-    IDS_IRC_HELPCHANNELPERFORM "/join #emule-german"
-    IDS_IRC_ACCEPTLINKSFRIENDS "...nur von Freunden."
     IDS_COMPLSOURCES        "Vollständige Quellen"
-    IDS_CHECKNOENDTIME      "Keine Endzeit"
 END
 
 STRINGTABLE 
@@ -1351,8 +1105,6 @@ BEGIN
     IDS_DWTOT_TSN           "Noch benötigter Speicherplatz: %s"
     IDS_DWTOT_FS            "Freier Platz auf Templaufwerk: %s"
     IDS_NEEDFREEDISKSPACE   "%s (freizumachen: %s !)"
-    IDS_SERVERKEEPALIVETIMEOUT "Serververbindung Auffrischintervall [Min.]"
-    IDS_MORE                "&Mehr"
     IDS_TOOLS               "Tools" //!
     IDS_SEARCHPARAMS        "Such-Parameter"
 END
@@ -1360,12 +1112,10 @@ END
 STRINGTABLE 
 BEGIN
     IDS_HASHINGFILESCOUNT   " (%u hashing)" //!
-    IDS_CHECKDISKSPACE      "Prüfe Festplattenplatz"
     IDS_YOURHOSTNAME        "Hostname für eigene eD2K-Links"
     IDS_INSUFFICIENT        "Zu wenig freier Festplattenplatz"
-    IDS_MINFREEDISKSPACE    "Min. freier Festplattenplatz [MB]"
     IDS_WARNING             "Warnung"
-    IDS_IMPORTSPLPF         "Importiere Downloads (eMule,eDonkey,Overnet)"
+    IDS_IMPORTSPLPF         "Importiere Downloads (*Mule,eDonkey,Overnet)"
     IDS_IMP_STEPREADPF      "Lese Parts-Verzeichnis"
     IDS_IMP_STEPBASICINF    "Lese Grundinformationen aus dem Partfile"
     IDS_IMP_STEPCRDESTFILE  "Erstelle Ziel-Partfile"
@@ -1406,16 +1156,13 @@ BEGIN
     IDS_ESTTIMELEFT         "Restzeit:"
     IDS_TRANSFER_RATE_LABEL "Transferrate:"
     IDS_SAVELOG             "Log abspeichern"
-    IDS_CMT_COPYCLIPBOARD   "Kommentar in Zwischenablage kopieren"
-    IDS_ASKDOWNLOADLANG     "Die ausgewählte Sprache ist nicht installiert. Soll eMule diese jetzt von emule-project.net herunterladen?"
+    IDS_ASKDOWNLOADLANG     "Die ausgewählte Sprache ist nicht installiert. Soll kMule diese jetzt von http://kMule.emulefuture.de herunterladen?"
     IDS_ASKDOWNLOADLANGCAP  "Downloade Sprachdateien"
     IDS_DELETESELECTED      "Löschen"
     IDS_ERR_FAILEDDOWNLOADLANG 
                             "Download und Installation der ausgewählten Sprache fehlgeschlagen (Download von:%s)!"
     IDS_ERR_BADFOLDER       "Ungültiges Verzeichnis.\nDas Verzeichnis kann nicht erstellt werden. Bitte prüfe den Namen!"
     IDS_AUTOREMOVEFD        "Beendete Downloads aus Liste entfernen"
-    IDS_MM_BLOCK            "3 fehlgeschlagene Loginversuche bei MobileMule aufgetreten - weitere Versuche werden für 10 Minuten blockiert!"
-    IDS_MM_NEWUSER          "Neuer Nutzer hat sich erfolgreich in den MobileMule-Server eingeloggt"
 END
 
 STRINGTABLE 
@@ -1424,14 +1171,10 @@ BEGIN
     IDS_ENABLETEXTLABELS    "Symboltitel anzeigen"
     IDS_CUSTOMIZETOOLBAR    "Toolbar anpassen..."
     IDS_MINBITRATE          "min. Bitrate [kBit/s]" //!
-    IDS_KAD_RECHECKFW       "Firewall neu prüfen"
-    IDS_SHAREDTITLE         "Freigegeben eD2K|Kad"
+    IDS_SHAREDTITLE         "Freigegeben"
     IDS_FIREWALLED          "Firewalled" //!
     IDS_KADEMLIA            "Kad" //!
     IDS_KADCONTACTLAB       "Kontakte"
-    IDS_KADDISTANCE         "Distanz"
-    IDS_KEY                 "Schlüssel"
-    IDS_NUMBER              "Nummer"
     IDS_KAD_SEARCHSRC       "Suche Quellen"
     IDS_KAD_SEARCHKW        "Suche Schlüsselwort"
     IDS_KAD_NODE            "Schlüsselsuche"
@@ -1442,10 +1185,7 @@ STRINGTABLE
 BEGIN
     IDS_KAD_STOREKW         "Schlüsselwort ablegen"
     IDS_KAD_UNKNOWN         "Unbekannt"
-    IDS_SRV_TCPCOMPR        "TCP-Kompression"
     IDS_KADSEARCHLAB        "Aktuelle Suchanfragen"
-    IDS_SRV_UDPSR           "Erweitertes UDP-Protokoll für Quellenaustausch"
-    IDS_SRV_UDPFR           "Erweitertes UDP-Protokoll für Dateianfragen"
     IDS_MINLENGTH           "Min. Länge [hh:mm:ss]"
     IDS_EM_HELP             "&Hilfe"
     IDS_WRN_FRIENDDUPLIPPORT 
@@ -1461,15 +1201,12 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_RADCLIENTS          "Von verbundenen eMules"
-    IDS_KADUDPPORTERR       "Kads UDP-Port steht im Konflikt mit entweder dem Ext UDP-Port oder dem Server-UDP-Port. Der Port wurde auf %u gewechselt."
     IDS_CONFIRM_FILEDELETE  "Sollen die gewählten Dateien vom Datenträger gelöscht werden?"
     IDS_OPENFOLDER          "Verzeichnis öffnen"
-    IDS_RUNASUSER           "eMule als unpriviligierten Benutzer starten"
+    IDS_RUNASUSER           "kMule als unpriviligierten Benutzer starten"
     IDS_DELETE              "Löschen"
     IDS_BOOTSTRAP           "Bootstrap" //!
     IDS_VIAED2KSQ           "via eD2K Server/Queue"
-    IDS_EM_KADEMLIA         "&Kad" //!
     IDS_VIAKAD              "via Kad" //!
     IDS_VIASE               "via Quellenaustausch"
     IDS_SELECTTOOLBARBITMAP "Wähle Bitmap für die Toolbar"
@@ -1485,7 +1222,7 @@ BEGIN
     IDS_DELETEIPFILTERS     "Sollen die markierten IP Filter gelöscht werden?"
     IDS_TOTAL_IPFILTER_LABEL "IP Filter gesamt:"
     IDS_TOTAL_IPS_LABEL     "IP Anzahl:"
-    IDS_RAU_WARNING         "Diese Einstellung gibt eMule mehr Sicherheit gegen Angriffe und Exploits. Wir empfehlen diese Option zu nutzen.\nWir empfehlen jedoch, vorher die eMule Dokumentation zu diesem Punkt zu lesen!\n\nDie Änderung wird nach dem Neustart von eMule aktiv."
+    IDS_RAU_WARNING         "Diese Einstellung gibt kMule mehr Sicherheit gegen Angriffe und Exploits. Wir empfehlen diese Option zu nutzen.\nWir empfehlen jedoch, vorher die kMule Dokumentation zu diesem Punkt zu lesen!\n\nDie Änderung wird nach dem Neustart von kMule aktiv."
     IDS_APPEND              "Verschmelzen..."
     IDS_SAVE                "Speichern"
     IDS_IP_START            "Start" //!
@@ -1495,16 +1232,14 @@ BEGIN
     IDS_IP_HITS             "Treffer"
     IDS_IP_RULES            "IP Filter Einträge:"
     IDS_ERR_NOTCONNECTEDKAD "Du bist derzeit nicht mit dem Kad-Netzwerk verbunden!"
-    IDS_IRC_NOSFS           "Keine freigegebenen Dateien ausgewählt"
     IDS_RESETLABEL          "Autovervollständigung (History-Funktion)"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_IRC_IGNOREMISCMESSAGE "Ignoriere verschiedene Info-Nachrichten"
     IDS_KNOWN               "Bekannt"
-    IDS_RAU_RUNNING         "eMule läuft als unpriviligierter Benutzer ""%s"""
-    IDS_RAU_FAILED          "eMule konnte nicht als unpriviligierter Benutzer ""eMule_Secure"" gestartet werden. Die Rechte des gegenwärtigen Benutzers (""%s"") werden beibehalten."
+    IDS_RAU_RUNNING         "kMule läuft als unpriviligierter Benutzer ""%s"""
+    IDS_RAU_FAILED          "kMule konnte nicht als unpriviligierter Benutzer ""kMule_Secure"" gestartet werden. Die Rechte des gegenwärtigen Benutzers (""%s"") werden beibehalten."
     IDS_KADCONTACTSREAD     "%u Kontakte aus Datei eingelesen."
     IDS_ERR_KADCONTACTS     "Keine Kad Kontakte gefunden. Bitte Bootstrappe oder downloade eine nodes.dat -Datei!"
     IDS_METATAGS            "Meta Tag Anzahl:"
@@ -1521,23 +1256,23 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_INSTALL_SKIN        "Installiere eMule Skin"
-    IDS_INSTALL_SKIN_NODIR  "Kein eMule Skin Verzeichnis ausgewählt oder Verzeichnis ist nicht zugreifbar!"
+    IDS_INSTALL_SKIN        "Installiere Skin"
+    IDS_INSTALL_SKIN_NODIR  "Kein Skin Verzeichnis ausgewählt oder Verzeichnis ist nicht zugreifbar!"
     IDS_INSTALL_SKIN_DIR_ERROR 
-                            "Das Verzeichnis ""%s"" konnte nicht für das eMule Skin - %s erzeugt werden."
+                            "Das Verzeichnis ""%s"" konnte nicht für das Skin - %s erzeugt werden."
     IDS_INSTALL_SKIN_FILE_ERROR 
-                            "Die Datei ""%s"" konnte nicht vom eMule Skin zur lokalent Datei ""%s"" entpackt werden - %s"
+                            "Die Datei ""%s"" konnte nicht vom Skin zur lokalent Datei ""%s"" entpackt werden - %s"
     IDS_INSTALL_SKIN_PKG_ERROR 
-                            "Dies ist keine gültiges eMule Skin - Paketdatei."
+                            "Dies ist keine gültiges Skin - Paketdatei."
     IDS_NEXT_REASK          "Nächste Anfrage"
     IDS_A4AF_FILES          "A4AF Datei"
-    IDS_FO_TEMPTCP_S        "Port %u (TCP) der WinXP-internen Firewall für diese eMulesitzung geöffnet"
-    IDS_FO_TEMPTCP_F        "Port %u (TCP) der WinXP-internen Firewall konnte nicht für diese eMulesitzung geöffnet werden"
-    IDS_FO_TEMPUDP_S        "Port %u (UDP) der WinXP-internen Firewall für diese eMulesitzung geöffnet"
-    IDS_FO_TEMPUDP_F        "Port %u (UDP) der WinXP-internen Firewall konnte für diese eMulesitzung nicht geöffnet werden"
+    IDS_FO_TEMPTCP_S        "Port %u (TCP) der WinXP-internen Firewall für diese Sitzung geöffnet"
+    IDS_FO_TEMPTCP_F        "Port %u (TCP) der WinXP-internen Firewall konnte nicht für diese Sitzung geöffnet werden"
+    IDS_FO_TEMPUDP_S        "Port %u (UDP) der WinXP-internen Firewall für diese Sitzung geöffnet"
+    IDS_FO_TEMPUDP_F        "Port %u (UDP) der WinXP-internen Firewall konnte für diese Sitzung nicht geöffnet werden"
     IDS_FO_PREFBUTTON       "Öffne diese Ports an WinXP-interner Firewall"
     IDS_FO_PREF_SUCCCEEDED  "Die gewählten Ports wurden erfolgreich an der WinXP-internen Firewall geöffnet.\nBeachte, dass Desktopfirewalls von Drittherstellern und Router von diesen Massnahmen nicht betroffen sind!"
-    IDS_FO_PREF_EXISTED     "eMule hat existierende Regeln für die gewählten Ports gefunden, welche nicht überschrieben oder ersetzt wurden. Fehlende Regeln wurden erfolgreich hinzugefügt.\nBeachte, dass Desktopfirewalls von Drittherstellern und Router von diesen Massnahmen nicht betroffen sind!"
+    IDS_FO_PREF_EXISTED     "kMule hat existierende Regeln für die gewählten Ports gefunden, welche nicht überschrieben oder ersetzt wurden. Fehlende Regeln wurden erfolgreich hinzugefügt.\nBeachte, dass Desktopfirewalls von Drittherstellern und Router von diesen Massnahmen nicht betroffen sind!"
     IDS_FO_PREF_FAILED      "Die interne Windows XP Firewall konnte nicht für die ausgewählten Ports konfiguriert werden!"
     IDS_FO_PREF_STARTUP     "Ports bei der WinXP Firewall beim Starten/Beenden automatisch öffnen/schliessen"
 END
@@ -1548,9 +1283,6 @@ BEGIN
     IDS_NEWMSG              "Neue Nachricht von '%s' (IP:%s)"
     IDS_PREF_STARTNEXTFILECATONLY "Nur aus gleicher Kategorie"
     IDS_LOG_ULDL_EVENTS     "Logge Upload/Download Ereignisse"
-    IDS_PEERCACHE_ENABLED   "Dein ISP unterstützt die PeerCache Technologie. Cache Downloads aktiviert."
-    IDS_IRC_EMULEPROTO_ALLOWADDFRIEND 
-                            "Erlaube dem Benutzer, dich als Freund aufzunehmen."
     IDS_SOURCESWAPBLOCKED   "Swap blockiert"
     IDS_TRICKLING           "Wartend"
     IDS_A4AF_CHECK_THIS_NOW "Jetzt diese Quelle prüfen (debug)"
@@ -1559,7 +1291,7 @@ BEGIN
     IDS_IMP_ERR_BADFORMAT   "Unbekanntes oder fehlerhaftes Tempdatei-Format"
     IDS_SEARCH_INVALIDCHAR  "Suchausdruck enthält ungültige Zeichen. Es wurde ein '?' oder ein Zeichen, welches im Netzwerk nicht verwendet werden kann, benutzt."
     IDS_PORTSCON            "Ports und Verbindung"
-    IDS_PORTINFO            "eMule nutzt zwei Ports für die Kommunikation mit Servern und anderen Clients. Diese Ports müssen frei und von anderen Clients erreichbar sein. Der TCP Port muss verfügbar sein, um die Hauptfunktionalitäten zu gewährleisten. Der UDP Port wird für Kad (serverloses Netzwerk) und Netzwerkentlastung (Overhead-Verringerung) genutzt.\n\nDu kannst die Ports hier ändern, solange keine Netzwerkaktivitäten gestartet wurden."
+    IDS_PORTINFO            "kMule nutzt zwei Ports für die Kommunikation mit Servern und anderen Clients. Diese Ports müssen frei und von anderen Clients erreichbar sein. Der TCP Port muss verfügbar sein, um die Hauptfunktionalitäten zu gewährleisten. Der UDP Port wird für Kad (serverloses Netzwerk) und Netzwerkentlastung (Overhead-Verringerung) genutzt.\n\nDu kannst die Ports hier ändern, solange keine Netzwerkaktivitäten gestartet wurden."
 END
 
 STRINGTABLE 
@@ -1568,7 +1300,7 @@ BEGIN
     IDS_TESTINFO            "Hier kann ein Test gestartet werden, um zu erkunden, ob der eingestellte TCP und UDP Port von aussen erreichbar sind. Der Erfolg dieses Tests sagt aus, ob Server und andere Clients sich verbinden können. Der TCP-Port Test sollte unbedingt erfolgreich sein!"
     IDS_CONNECTIONTEST      "Verbindungstest"
     IDS_NOPORTCHANGEPOSSIBLE 
-                            "Ein Portwechsel ist nicht mehr möglich, nachdem zu anderen Clients verbunden wurde und solange keine Server/Kad-Verbindung herrscht!\n\nBitte starte eMule neu, um die geänderten Porteinstellungen zu übernehmen."
+                            "Ein Portwechsel ist nicht mehr möglich, nachdem zu anderen Clients verbunden wurde und solange keine Kad-Verbindung besteht!\n\nBitte starte kMule neu, um die geänderten Porteinstellungen zu übernehmen."
     IDS_NETWORK_INFO        "Netzwerk Informationen"
     IDS_SP_TOTALUL          "Upload Gesamtanzahl"
     IDS_SP_ULFRIENDS        "Akt. Freundesuploads"
@@ -1588,12 +1320,9 @@ BEGIN
     IDS_CHAT_IDENT          "Identifikation:"
     IDS_MAXHALFOPENCONS     "Max. halboffene Verbindungen"
     IDS_WIZ_STARTWITHWINDOWS 
-                            "Aktiviere dies, wenn eMule beim Windowsstart automatisch starten soll."
+                            "Aktiviere dies, wenn kMule beim Start von Windows automatisch starten soll."
     IDS_KAD_WAITCBK         "Warte auf Kad Rückruf"
     IDS_KAD_TOOMANDYKADLKPS "Zu viele Kad Suchen"
-    IDS_PCDS_CLIENTWAIT     "ClientWarte"
-    IDS_PCDS_CACHEWAIT      "CacheWarte"
-    IDS_CACHE               "Cache" //!
     IDS_INDEXED             "Indexiert"
     IDS_KADINFO_SRC         "\tQuelle: %u\r\n"
     IDS_KADINFO_KEYW        "\tSchlüsselwort: %u\r\n"
@@ -1608,8 +1337,6 @@ STRINGTABLE
 BEGIN
     IDS_HALF                "Halb"
     IDS_CONCOMPL            "Komplett"
-    IDS_KADSTATUS_STOPPING  "Stoppe"
-    IDS_KADSTATUS_ACTIVE    "Aktiv"
     IDS_FORMAT              "Format" //!
     IDS_META_COLLECTION     "Kollektion"
     IDS_META_PARTPATH       "Tempdatei Pfad"
@@ -1630,9 +1357,7 @@ BEGIN
     IDS_META_SRCTCPPORT     "Quelle TCP Port"
     IDS_META_SRCIP          "Quelle IP"
     IDS_META_SRCTYPE        "Quellentyp"
-    IDS_SEARCH_UNICODE      "Suche mit Unicode"
     IDS_PF_ADVANCEDCALC     "Nutze fortgeschrittene Methode für Restzeitbestimmung"
-    IDS_LD_ED2KLINK         "eD2K Link" //!
     IDS_LD_COPYCLIPBOARD    "In Zwischenablage kopieren"
     IDS_LD_HOSTNAME         "Benutze Hostnamen (aus den Einstellungen) anstatt der IP, wenn eD2K-Links mit Quelle erstellt werden"
     IDS_SAVEACFAILED        "AICH Hashset konnte nicht gespeichert werden!"
@@ -1649,13 +1374,10 @@ BEGIN
     IDS_STATS_MINORCLIENTS  "Weitere"
     IDS_AICH_SYNCTOTAL      "%u Dateien ohne gültigen AICH Hashset gefunden - werden jetzt gehasht"
     IDS_AICH_CALCFILE       "Berechne AICH Hash für Datei %s"
-    IDS_AICH_WARNUSER       "Seit Version 0.44a nutzt eMule einen weiteren Dateihash, welcher den Datenverlust bei Datenkorruption drastisch senkt. Da du von einer früheren Version aktualisiert hast, muss eMule nun alle freigegebenen Dateien berechnen. Dies kann etwas dauern, ist aber ein einmaliger Vorgang."
+    IDS_AICH_WARNUSER       "Seit Version 0.44a nutzt eMule einen weiteren Dateihash, welcher den Datenverlust bei Datenkorruption drastisch senkt. Da du von einer früheren Version aktualisiert hast, muss kMule nun alle freigegebenen Dateien berechnen. Dies kann etwas dauern, ist aber ein einmaliger Vorgang."
     IDS_AICH_WORKED         "AICH hat erfolgreich %s von %s von Teil %u der Datei %s wiederhergestellt"
     IDS_SOURCECLIENT        "Quell-Client"
     IDS_USERSIP             "Nutzers IP"
-    IDS_FEATURES            "Features"	//!
-    IDS_IRC_NEWNICK         "Wähle einen IRC Nutzernamen"
-    IDS_IRC_NEWNICKDESC     "Der Nutzername sollte nur ein Wort mit weniger als 20 Zeichen sein, mit den Zeichen (A-Z, 0-9). Der Name kann auch in den Einstellungen (->IRC) geändert werden."
     IDS_SPARSEPARTFILES     "Erstelle neue Tempdateien als 'sparse' (nur NTFS)"
     IDS_ASPECTRATIO         "Bildratio"
     IDS_NEGATEFILTER        "Negiere Filter"
@@ -1669,15 +1391,12 @@ BEGIN
     IDS_DEADSOURCES         "Tote Quelle"
     IDS_LARGEICONS          "große Icons"
     IDS_SMALLICONS          "kleine Icons"
-    IDS_SHORTTAGS           "kurze Tags"
     IDS_THELOAD             "Auslastung"
-    IDS_PACKSENT            "gesendete Pakete"
-    IDS_RESPONSES           "Antworten"
     IDS_EXTRACT_META_DATA   "Metadaten extrahieren"
     IDS_META_DATA_MEDIADET  "DirectShow (für alle anderen Audio-/Videodateien)"
     IDS_META_DATA_ID3LIB    "ID3 Bibliothek (nur für MPEG Audiodateien)"
     IDS_COMCTRL32_DLL_TOOOLD 
-                            "Die ""Windows Common Controls"" Bibliothek (COMCTL32.DLL) ist zu alt!\r\n\r\neMule hat eine Version der ""Windows Common Controls Bibliothek (COMCTL32.DLL)"" gefunden, welche zu alt ist um von eMule korrekt verwendet zu werden. Um volle und korrekte Funktionalität von eMule zu sichern, raten wir dringend, diese Bibliothek mindestens auf die Version 5.8 zu aktualisieren.\r\n\r\nDer Download dieser Bibliothek (COMCTL32.DLL) kann vom Microsoft(R) Download Center erfolgen. Soll die entsprechende WWW-Seite im Browser geöffnet werden?"
+                            "Die ""Windows Common Controls"" Bibliothek (COMCTL32.DLL) ist zu alt!\r\n\r\nkMule hat eine Version der ""Windows Common Controls Bibliothek (COMCTL32.DLL)"" gefunden, welche zu alt ist um von kMule korrekt verwendet zu werden. Um volle und korrekte Funktionalität von kMule zu sichern, raten wir dringend, diese Bibliothek mindestens auf die Version 5.8 zu aktualisieren.\r\n\r\nDer Download dieser Bibliothek (COMCTL32.DLL) kann vom Microsoft(R) Download Center erfolgen. Soll die entsprechende WWW-Seite im Browser geöffnet werden?"
     IDS_ASREGEXPR           "als regulärer Ausdruck"
     IDS_STATIC_REGEXP       "Regulärer Ausdruck für die Ansichtsfilterung:"
     IDS_CARE4ALL            "alle Dateien betrachten"
@@ -1690,34 +1409,18 @@ BEGIN
     IDS_DWL_IPFILTERFILE    "Lade IP-Filterdatei"
     IDS_DWLIPFILTERFAILED   "Download des IP-Filters fehlgeschlagen"
     IDS_FINDBUDDY           "Suche Buddy"
-    IDS_ERR_IPFILTERZIPEXTR "Fehler beim Entpacken des IP-Filters auch der heruntergeladenen ZIP-Datei ""%s""."
-    IDS_ERR_IPFILTERCONTENTERR 
-                            "Heruntergeladene IP-Filterdatei ""%s"" ist eine ZIP-Datei mit unerwartetem Inhalt."
     IDS_STORENOTES          "Speichere Notizen"
     IDS_NOTES               "Notizen"
     IDS_KADSEARCHALREADY    "Eine andere Suche ist noch aktiv. Versuche eine neue Suche später erneut!"
-    IDS_WEB_SHUTDOWN        "eMule beenden"
-    IDS_WEB_REBOOT          "Computer neu starten"
-    IDS_WEB_SHUTDOWNSYSTEM  "Computer herunterfahren"
-    IDS_WEB_ADMINMENU       "Adminmenü"
-    IDS_WEB_MAIN_CLOSE      "Soll eMule wirklich beendet werden?"
-    IDS_WEB_MAIN_REBOOT     "Bist du dir sicher, dass der Rechner neu gestartet werden soll?"
-    IDS_WEB_MAIN_SHUTDOWN   "Bist du dir sicher, dass der Rechner heruntergefahren werden soll?"
-    IDS_WEB_SHOW_UPLOAD_QUEUE_BANNED 
-                            "Zeige gebannte Clients der Warteschlange"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_WEB_SHOW_UPLOAD_QUEUE_FRIEND "Zeige Freunde in der Warteschlange"
-    IDS_WEB_SESSIONTIMEOUT  "Session Timeout" //!
-    IDS_WEB_ALLOWHILEVFUNC  "Erlaube eMule beenden, System Neustart und Herunterfahren"
     IDS_SETPFSLIMIT         "Setze Quellenlimit..."
     IDS_SETPFSLIMITEXPLAINED 
                             "Bitte ein neues Quellenlimit für die ausgewählte(n) Datei(en) eingeben! \n(setze es auf 0 um die globale Einstellung zu nutzen)"
     IDS_UPDATECATINCOMINGDIRS 
                             "Sollen im Eingangsverzeichnis enthaltene Kategorienverzeichnisse der neuen Einstellung angepasst werden?"
-    IDS_USESPEECH           "Benachrichtigungen sprechen"
     IDS_ERR_FAILEDTOLOAD    "Fehler beim Laden von %s: %s "
     IDS_TCPIP_CONNS         "TCP/IP Verbindungen"
     IDS_MANUAL_FILENAMECLEANUP 
@@ -1732,14 +1435,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_PW_EMAILNOTIFICATIONS "Email Benachrichtigungen"
-    IDS_PW_SMTPSERVER       "SMTP-Server:"	//!
-    IDS_PW_SENDERADDRESS    "Senderaddresse:"
     IDS_AVAILABLEPARTS      "verfügbare Teile"
-    IDS_NOSOUND             "kein Klang"
-    IDS_PW_RECEIVERADDRESS  "Empfängeradresse:"
-    IDS_PW_ENABLEEMAIL      "Aktiviere Emailbenachrichtigung"
-    IDS_EMULENOTIFICATION   "eMule Benachrichtigung"
     IDS_PW_SHOWTRANSTOOLBAR "Zeige zusätzliche Toolbar im Transferfenster"
     IDS_SHARED_STATUS       "freigegebene Teile"
     IDS_SEARCH_EMULECOLLECTION "Kollektion"
@@ -1757,8 +1453,6 @@ BEGIN
     IDS_UNSHAREDIRSUB       "Freigabe samt Unterverzeichnisse aufheben "
     IDS_ALLSHAREDFILES      "Alle freigegebenen Dateien "
     IDS_ALLDIRECTORIES      "Alle Verzeichnisse"
-    IDS_SEARCHRELATED       "Suche zugehörige Dateien "
-    IDS_RELATED             "zugehörig"
     IDS_COLL_REPLACEEXISTING 
                             "Soll die existierende Datei überschrieben werden?"
     IDS_COLL_ERR_DELETING   "Ein unbekannter Fehler trat beim Löschen einer alten Datei auf. Soll ohne zu speichern beendet werden?"
@@ -1774,21 +1468,18 @@ END
 STRINGTABLE 
 BEGIN
     IDS_COLL_TEXTFORMAT     "Kollektion im einfachen Textformat speichern"
-    IDS_RUNNINGRESTRICTED   "eMule läuft mit eingeschränkten Rechten"
+    IDS_RUNNINGRESTRICTED   "kMule läuft mit eingeschränkten Rechten"
     IDS_USS_MANUALUPLOADLIMITDETECTED 
                             "UploadSpeedSense: Änderung des Uploadlimits in den Einstellungen festgestellt. Für 60 Sekunden wird der schnelle Reaktionsmodus aktiviert."
     IDS_USS_STATE_PREPARING "Vorbereitung..."
     IDS_USS_STATE_WAITING   "Warte..."
     IDS_USS_STATE_ERROR     "Fehler!"
     IDS_SHAREWARNING        "(Inhalt wird freigegeben!)"
-    IDS_REMOVEALLSERVERS    "Sind Sie sich sicher, alle Server zu entfernen?"
     IDS_SEARCH_UNKATTR      "Unbekanntes Suchattribut '%s'"
     IDS_SEARCH_ATTRERR      "Syntaxfehler im Suchattribut '%s'"
     IDS_SEARCH_MISSINGANDRIGHT "Fehlende rechte Seite des AND Operators"
     IDS_SEARCH_OPRERR       "Syntaxfehler im Vergleichsoperator '%s'"
     IDS_DOWNLOAD_LANGFILE   "Lade Sprachdatei"
-    IDS_DOWNLOADING_SERVERMET_FROM "Lade server.met von %s"
-    IDS_DOWNLOADING_SERVERMET "Lade server.met..."
     IDS_FULLALLOC           "Tempdateien mit voller Dateigröße anlegen (für non-sparse)"
 END
 
@@ -1804,14 +1495,9 @@ BEGIN
                             "...konnte known2.met nicht konvertieren. Alte Einträge werden ignoriert"
     IDS_CONVERTINGKNOWN2DONE "... erfolgreich konvertiert"
     IDS_ERR_MET_BAD         "Fehler: die Datei %s ist fehlerhaft - bekannte Dateien können nicht geladen werden"
-    IDS_SRV_LARGEFILES      "Unterstützung für große Dateien"
     IDS_ERR_FSCANTHANDLEFILE 
                             "Du kannst diese Datei nicht herunterladen, da dein Dateisystem keine Dateien größer als 4GB unterstützt! Überlege es nach NTFS zu konvertieren!"
     IDS_NEWVERSIONAVLBETA   "Diese Betaversion ist veraltet. Da Betaversionen oft noch Fehler enthalten, wird dringend angeraten, möglichst bald auf eine stabile Version zu wechseln!"
-    IDS_BOLD                "Schaltet Fettschrift an/aus"
-    IDS_UNDERLINE           "Schaltet Unterstreichung ein/aus"
-    IDS_COLOUR              "Wählt Vordergrundfarbe (optional Hintergrundfarbe)"
-    IDS_RESETFORMAT         "Löscht vorige Formatierungen (sendet Reset-Tag)"
 END
 
 STRINGTABLE 
@@ -1821,7 +1507,6 @@ BEGIN
     IDS_ARGUMENTS           "Argumente"
     IDS_ARCPREV_PLEASEWAIT  "Durchsuche Archiv..."
     IDS_AP_CREATEPREVCOPY   "Erstelle Vorschau-Datei"
-    IDS_ARCHIVEDETAILS      "Archiv-Details"
     IDS_ARCHTYPE            "Archiv-Typ"
     IDS_ATTRIBUTES          "Attribute"
     IDS_LASTMODIFIED        "zuletzt geändert"
@@ -1842,29 +1527,24 @@ BEGIN
     IDS_SUPPORTED           "unterstützt"
     IDS_ESTIMATED           "geschätzt"
     IDS_MEDIAINFO_DLLMISSING 
-                            "Es ist keine MediaInfo-Bibliothek installiert. Wenn du in diesem Dialog mehr Informationen über Audio- und Videodateien erhalten möchtest,\r\nlade die MediaInfo-Bibliothek von http://sourceforge.net/projects/mediainfo/ herunter und kopiere die Datei ""MediaInfo.dll"" in\r\ndas eMule-Installationsverzeichnis ""%s"".\r\n"
+                            "Es ist keine MediaInfo-Bibliothek installiert. Wenn du in diesem Dialog mehr Informationen über Audio- und Videodateien erhalten möchtest,\r\nlade die MediaInfo-Bibliothek von http://sourceforge.net/projects/mediainfo/ herunter und kopiere die Datei ""MediaInfo.dll"" in\r\ndas kMule-Installationsverzeichnis ""%s"".\r\n"
     IDS_WARNING_WRONGFILEEXTENTION 
                             "Warnung: Die Dateiendung von ""%s"" stimmt nicht mit der typischen Dateiendung für dieses Dateiformat überein.\r\nUm diese Datei korrekt zu nutzen oder anzusehen ist es empfehlenswert, die Datei umzubenennen\r\nund eine der folgenden Dateiendungen zu nutzen: ""%s"".\r\n"
     IDS_MEDIAINFO_DRMWARNING 
                             "Warnung: Die Datei ""%s"" scheint mit Digitalem Rechtemanagement geschützt zu sein.\r\nWahrscheinlich kann die Datei ohne eine Lizenz vom Inhaber nicht benutzt werden!\r\n"
     IDS_ARCHPREV_ATTRIBINFO "Erklärung möglicher Dateiattribute:\r\n\r\nP\tDatei ist passwortgeschützt\r\nD\tist ein Verzeichnis\r\nC\tbesitzt Kommentar\r\nLx\tKompressionsstufe x\r\nM\tkomprimierte Daten liegen noch nicht komplett vor\r\n<\tDatei wird aus vorigem Teilarchiv fortgeführt\r\n>\tDatei wird im nächsten Teilarchiv fortgesetzt\r\n"
-    IDS_LOADFILTER_EMTOOLBAR "eMule Werkzeugleiste Bildateien"
-    IDS_LOADFILTER_EMSKINFILES "eMule Skindateien"
+    IDS_LOADFILTER_EMTOOLBAR "Werkzeugleiste Bildateien"
+    IDS_LOADFILTER_EMSKINFILES "Skindateien"
     IDS_CONTENT_INFO        "Inhaltsinformation"
     IDS_MESSAGESCOMMENTS    "Nachrichten, Kommentare"
     IDS_PROTOCOLOBFUSCATION "Protokoll Obfuskation (Verschleierung)"
     IDS_ONLYOBFUSCATED      "Erlaube nur obfuskierte Verbindungen (nicht empfohlen)"
-    IDS_DISABLEOBFUSCATION  "Deaktiviere Unterstützung für obfuskierte Verbindungen"
 END
 
 STRINGTABLE 
 BEGIN
     IDS_ENABLEOBFUSCATION   "Aktiviere Protokoll-Obfuskation"
-    IDS_CONNECTINGTOOBFUSCATED 
-                            "Verbinde zu %s (%s:%u - nutze Protokoll-Obfuskation) ..."
-    IDS_CONNECTEDTOOBFUSCATED "Obfuskierte Verbindung zu: %s aufgebaut"
     IDS_VERIFIED            "bestätigt"
-    IDS_OBFUSCATED          "obfuskiert"
     IDS_UNVERIFIED          "unbestätigt"
     IDS_INVALIDFILEEXT      "ungültige Dateiendung"
     IDS_UNKNOWNFILEEXT      "unbekanne Dateiendung"
@@ -1873,7 +1553,6 @@ BEGIN
                             "deaktiviere automatische Archivvorschau in den Dateidetails"
     IDS_US_STALLEDW4BR      "Wartet auf Blockanfrage."
     IDS_US_STALLEDREADINGFDISK "Wartet. Lese von Disk."
-    IDS_SERVERFEATURE_INTTYPETAGS "Integer type Tags"
     IDS_FILLGRAPHS          "Graphen ausgefüllt zeichnen"
     IDS_PARAMETER           "Parameter" //!
     IDS_TEST                "Test" //!
@@ -1886,51 +1565,44 @@ BEGIN
     IDS_UPNPSETUP           "Versuche Port-Weiterleitungen via UPnP einzustellen..."
     IDS_UPNPFAILED          "UPnP konnte die Portweiterleitung nicht konfigurieren. Bitte führe die Portweiterleitung manuell durch!"
     IDS_UPNPSUCCESS         "UPnP hat erfolgreich Portweiterleitungen für die Ports %u (TCP) und %u (UDP) durchgeführt."
-    IDS_FO_PREFBUTTON_NEW   "Öffne Ports in der WinXP SP1 Firewall"
     IDS_UPNP_NOSERVICE      "UPnP Device Host Dienst läuft nicht - überspringe UPnP Setup"
-    IDS_DELAYEDBYUPNP       "Verbinden mit dem Netzwerk wird verzögert, da UPnP noch die Portweiterleitungen konfiguriert."
-    IDS_DELAYEDBYUPNP2      "Bitte warte einige Sekunden, eMule wird sich verbinden sobald UPnP fertig ist."
+    IDS_DELAYEDBYUPNP       "Die Verbindung mit dem Netzwerk wird verzögert, da UPnP noch die Portweiterleitungen konfiguriert."
+    IDS_DELAYEDBYUPNP2      "Bitte warte einige Sekunden, kMule wird sich verbinden sobald UPnP fertig ist."
     IDS_UPNP                "UPnP" //!
     IDS_UPNPCLOSEONEXIT     "Lösche UPnP Portweiterleitungen beim Programmende"
     IDS_UPNPSKIPWANIP       "Überspringe WAN IP Setup"
     IDS_UPNPSKIPWANPPP      "Überspringe WAN PPP Setup"
-    IDS_SHAREEMULELABEL     "eMule mit anderen Benutztern teilen"
+    IDS_SHAREEMULELABEL     "kMule mit anderen Benutztern teilen"
     IDS_SHAREEMULEMULTI     "Jeder Nutzer hat seine eigene Konfiguration und Downloads"
     IDS_SHAREEMULEPUBLIC    "Jeder hat dieselbe Konfiguration und Downloads"
-    IDS_SHAREEMULEOLD       "Speichert die Konfiguration und Downloads im eMule Programmverzeichnis"
+    IDS_SHAREEMULEOLD       "Speichert die Konfiguration und Downloads im Programmverzeichnis"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_SHAREEMULEWARNING   "Durch das Ändern dieser Option wird eMule eine andere Konfiguration benutzen. Deine aktuellen Einstellungen werden ignoriert werden und bereits gestartete Downloads werden nicht fortgesetzt. Du kannst später wieder zur aktuellen Version durch das Ändern dieser Option wechseln.\n\nUm diese Änderung zu übernehmen muss eMule neu gestartet werden."
+    IDS_SHAREEMULEWARNING   "Durch das Ändern dieser Option wird kMule eine andere Konfiguration benutzen. Deine aktuellen Einstellungen werden ignoriert werden und bereits gestartete Downloads werden nicht fortgesetzt. Du kannst später wieder zur aktuellen Version durch das Ändern dieser Option wechseln.\n\nUm diese Änderung zu übernehmen muss kMule neu gestartet werden."
     IDS_SPAM                "Spam"	//!
     IDS_MARKSPAM            "Als Spam markieren"
     IDS_MARKNOTSPAM         "Als Nicht-Spam markieren"
-    IDS_SEARCHSPAMFILTER    "Aktiviere Spam-Filter für Suchergebnisse"
-    IDS_SHOWSMILEYS         "Smileys anzeigen"
     IDS_CAPTCHAREQUEST      "Im Spam-Nachrichten zu vermeiden, setzt dieser Benutzer voraus, dass du ein Captcha löst, bevor du ihm Nachrichten senden kannst. Bitte gib als Antwort die Buchstaben dieses Bildes ein:"
     IDS_CAPTCHAFAILED       "Deine Antwort zur Captcha war fehlerhaft womit deine Nachricht ignoriert wurde. Du kannst eine neue Captcha durch das Senden einer neuen Nachricht anfordern."
     IDS_CAPTCHASOLVED       "Du hast den Captcha Test bestanden. Deine Nachricht hat den Empfänger erreicht."
-    IDS_USECAPTCHAS         "Captcha Authentifikation benötigt"
-    IDS_BOOTSRAPNODESDAT    "Nodes.dat von URL:"
     IDS_DOWNLOADING_NODESDAT_FROM "Lade nodes.dat von %s"
     IDS_DOWNLOADING_NODESDAT "Lade nodes.dat..."
     IDS_ERR_FAILEDDOWNLOADNODES "Fehler beim Herunterladen der nodes.dat von %s"
-    IDS_PREVENTSTANDBY      "Verhindere Standby-Modus während eMule läuft"
+    IDS_PREVENTSTANDBY      "Verhindere Standby-Modus während kMule läuft"
     IDS_KADID               "KadID" //!
     IDS_SEARCHINGFRIENDKAD  "Suche nach Freunden im Kad Netzwerk"
     IDS_FOUND               "gefunden"
     IDS_EXTERNUDPPORT       "externer UDP Port"
-    IDS_STORESEARCHES       "Suchlisten nach eMule-Neustarts wiederherstellen"
-    IDS_WRN_INCFILE_EXISTS  "Du hast ein neues, nichtleeres Verzeichnis für fertiggestellte Dateien ausgewählt. Alle enthaltenen Dateien werden automatisch durch eMule freigegeben."
+    IDS_STORESEARCHES       "Suchlisten nach Neustarts wiederherstellen"
+    IDS_WRN_INCFILE_EXISTS  "Du hast ein neues, nichtleeres Verzeichnis für fertiggestellte Dateien ausgewählt. Alle enthaltenen Dateien werden automatisch durch kMule freigegeben."
     IDS_EDITSPAMFILTER      "Ändere Spamfilter..."
     IDS_EDITSPAMFILTERCOMMENTS "Ändere Spam-Filter für Kommentare"
-    IDS_WIZZARDOBFUSCATION  "Aktiviere diese Einstellung, wenn du Protokoll-Obfuskation einschalten willst.\n\nFalls dein Provider versucht eMule zu blockieren oder einzuschränken, kann diese Funktion helfen, solche Einschränkungen zu umgehen."
-    IDS_BETANAG             "Dies ist eine Beta-Version von eMule. Bitte melde Probleme im Forum (http://forum.emule-project.net) und achte dort auch auf neue Versionen."
+    IDS_WIZZARDOBFUSCATION  "Aktiviere diese Einstellung, wenn du Protokoll-Obfuskation einschalten willst.\n\nFalls dein Provider versucht kMule zu blockieren oder einzuschränken, kann diese Funktion helfen, solche Einschränkungen zu umgehen."
+    IDS_BETANAG             "Dies ist eine Beta-Version von kMule. Bitte melde Probleme im Forum (http://www.emulefuture.de) und achte dort auch auf neue Versionen."
     IDS_CONFIRMNODESDOWNLOAD 
                             "Möchtest du Kad-Kontakte (nodes.dat) von der folgenden Adresse herunterladen und benutzen: %s ?"
-    IDS_AUTOMATIC           "Automatisch"
-    IDS_NOTCONNECTEDANY     "Du bist weder zu einem Server noch zum Kad-Netzwerk verbunden!"
     IDS_ERR_SHARED_DIR      "Das folgende freigegebene Verzeichnis konnte nicht gelesen werden: ""%s"" - %s"
     IDS_FILE_WARNING_DRM    "Die Datei ""%s"" scheint mittels Digitalem Rechtemanagement geschützt zu sein.\r\n\r\nWahrscheinlich wirst du nicht in der Lage sein, die Datei ohne eine Lizens vom Urheber zu nutzen. Das Öffnen dieser Datei wird wahrscheinlich dazu führen, dass dein Mediaplayer einen Browser mit der Seite des Urhebers öffnen wird, um eine Lizens zu erwerben.\r\n\r\nSoll diese Datei nun geöffnet werden?"
     IDS_CHECK_FILE_OPEN     "Warnung beim Öffnen unzuverlässiger Dateien"
@@ -1941,7 +1613,6 @@ END
 STRINGTABLE 
 BEGIN
     IDS_UNSHARE             "Freigabe aufheben"
-    IDS_WEBUPNPINCLUDE      "Port in UPnP Einrichtung aufnehmen"
     IDS_ADDEDON             "hinzugefügt am"
     IDS_RESOLVELINKS        "Shell-Links in freigegebenen Verzeichnissen auflösen"
 END
@@ -1954,25 +1625,31 @@ BEGIN
     IDS_SHOWTOOLBAR         "Zeige Toolbar"
     IDS_SEARCH_BADOPERATORCOMBINATION 
                             "Du darfst bei Suchanfragen an KAD nicht im ersten Schlüsselwort einen ODER-Operator (OR) nutzen!\n\nZum Beispiel ""Keyword1 OR Keyword2"" ist nicht möglich. Nutze stattdessen ""Keyword1 AND (Keyword2 OR Keyword3)"" oder führe mehrere Suchen durch."
-    IDS_DISCOVEREDBY        "Entdeckt von"
-    IDS_NODES               "Knoten"
-    IDS_ROUTINGTABLE        "Routingtabelle"
-    IDS_PROTOCOLVERSION     "Protokollversion"
-    IDS_FOUNDNODESUSEFUL    "gefundene Knoten (nützliche)"
-    IDS_NORESPONSE          "keine Antwort"
-    IDS_NOTASKED            "nicht angefragt"
-    IDS_LOOKUPGRAPH         "Suchdetails"
-    IDS_AUTOKADLOOKUPGRAPH  "automatisch aktive Suchen anzeigen"
     IDS_PAUSEONPREVIEW      "Pausiere wenn Vorschau möglich"
     IDS_PREVIEWWITH         "Vorschau mit"
-    IDS_CLOSEEMULE          "eMule beenden"
+    IDS_CLOSEEMULE          "kMule beenden"
     IDS_DONOTASKAGAIN       "nicht erneut nachfragen"
     IDS_POPULARITY          "Popularitätsrang"
-    IDS_SHOWWIN7TASKBARGOODIES "Aktiviere Windows7 Taskbareffekte"
     IDS_LANMODE             "LAN Modus"
     IDS_OPENPREFINI         "Öffne preferences.ini"
 END
 
+STRINGTABLE 
+BEGIN
+    IDS_KAD_SEARCH_KEYWORD_CLEANUP 
+                            "\n\nSoll kMule die ungültigen Zeichen entfernen und ""%s"" als Suchbegriff verwenden?\nWähle ""Nein"" falls der neue Begriff keinen Sinn ergibt oder falls Sie ihn selbst korrigieren wollen!"
+    IDS_ANTILEECH_LABEL     "AntiLeech-Info:"
+    IDS_POWERSHARE_PREFIX   "PS"
+    IDS_POWERSHARE          "PowerShare"
+    IDS_ON                  "an"
+    IDS_OFF                 "aus"
+    IDS_UPDATE_AVAIL_QUESTION 
+                            "Eine neue Version ist verfügbar!\nMöchten Sie %s jetzt herunterladen und installieren?\n\nHinweis: es ist ein Neustart nötig!"
+    IDS_IPFILTER_AUTOUPDATE "IPFilter beim Start aktualisieren?"
+    IDS_UDP_DISABLED        "UDP abgeschalten"
+    IDS_RATIO               "Ratio"
+	IDS_RESTART_NOW_QUESTION "Möchten Sie jetzt neu starten?\nBitte beachten Sie: die Aktualisierung ist erst bereit wenn Sie kMule neu gestartet haben!"
+END
 
 #endif    // German (Germany) resources
 /////////////////////////////////////////////////////////////////////////////

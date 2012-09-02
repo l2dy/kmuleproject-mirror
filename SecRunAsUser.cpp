@@ -67,7 +67,7 @@ eResult CSecRunAsUser::PrepareUser()
             if (m_strCurrentUser == EMULEACCOUNTW)
             {
                 m_bRunningAsEmule = true;
-                throw CString(_T("Already running as eMule_Secure Account (everything is fine)"));
+                throw CString(_T("Already running as kMule_Secure Account (everything is fine)"));
             }
             CComBSTR bstrCompName;
             pNTsys->get_ComputerName(&bstrCompName);

@@ -189,7 +189,7 @@ typedef _com_ptr_t<_com_IIID<IADsWinNTSystemInfo,&IID_IADsWinNTSystemInfo>	>  IA
 #define MHeapAlloc(x) (HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, x))
 #define MHeapFree(x)  (HeapFree(GetProcessHeap(), 0, x))
 
-#define EMULEACCOUNTW L"eMule_Secure"
+#define EMULEACCOUNTW L"kMule_Secure"
 
 class CSecRunAsUser
 {
