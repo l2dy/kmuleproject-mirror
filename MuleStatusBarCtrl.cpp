@@ -76,6 +76,12 @@ void CMuleStatusBarCtrl::OnLButtonDblClk(UINT /*nFlags*/, CPoint point)
     case SBarChatMsg:
         theApp.emuledlg->SetActiveDialog(theApp.emuledlg->chatwnd);
         break;
+
+//>>> WiZaRd::USS Status Pane [Eulero]
+	case SBarUSS:           
+		theApp.emuledlg->ShowPreferences(IDD_PPG_TWEAKS);               
+		break;
+//<<< WiZaRd::USS Status Pane [Eulero]
     }
 }
 

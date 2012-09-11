@@ -380,14 +380,18 @@ void UploadBandwidthThrottler::Pause(bool paused)
 
 UINT UploadBandwidthThrottler::GetSlotLimit(UINT currentUpSpeed)
 {
-    UINT upPerClient = theApp.uploadqueue ? theApp.uploadqueue->GetClientDataRateCheck() : UPLOAD_CHECK_CLIENT_DR_DFLT;
+	UINT origUpPerClient = theApp.uploadqueue ? theApp.uploadqueue->GetClientDataRate() : UPLOAD_CLIENT_DATARATE_DFLT;
+    UINT upPerClient = origUpPerClient;
 
     // if throttler doesn't require another slot, go with a slightly more restrictive method
     if( currentUpSpeed > 20*1024 )
         upPerClient += currentUpSpeed/43;
 
-    if( upPerClient > 7680 )
-        upPerClient = 7680;
+//>>> WiZaRd::Dynamic Datarate
+	const UINT checkUp = UINT(2.5 * origUpPerClient);
+    if(upPerClient >  checkUp)
+        upPerClient = checkUp;
+//<<< WiZaRd::Dynamic Datarate
 
     //now the final check
 

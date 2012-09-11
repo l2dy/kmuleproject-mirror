@@ -495,10 +495,10 @@ IMPLEMENT_DYNAMIC(CSharedFileDetailsModelessSheet, CListViewPropertySheet)
 
 BEGIN_MESSAGE_MAP(CSharedFileDetailsModelessSheet, CListViewPropertySheet)
     ON_MESSAGE(UM_DATA_CHANGED, OnDataChanged)
-    ON_WM_CREATE()
+    ON_WM_NCCREATE()
 END_MESSAGE_MAP()
 
-int CSharedFileDetailsModelessSheet::OnCreate(LPCREATESTRUCT lpCreateStruct)
+int CSharedFileDetailsModelessSheet::OnNcCreate(LPCREATESTRUCT lpCreateStruct)
 {
     // skip CResizableSheet::OnCreate because we don't the styles and stuff which are set there
     CreateSizeGrip(FALSE); // create grip but dont show it

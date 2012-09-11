@@ -125,11 +125,11 @@ void CTransferWnd::OnInitialUpdate()
     m_uWnd2 = (EWnd2)thePrefs.GetTransferWnd2();
     ShowWnd2(m_uWnd2);
 
-    AddAnchor(IDC_DOWNLOADLIST, TOP_LEFT, CSize(100, thePrefs.GetSplitterbarPosition()));
-    AddAnchor(IDC_UPLOADLIST, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
-    AddAnchor(IDC_QUEUELIST, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
-    AddAnchor(IDC_CLIENTLIST, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
-    AddAnchor(IDC_DOWNLOADCLIENTS, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+    AddAnchor(IDC_DOWNLOADLIST, TOP_LEFT, ANCHOR(100, thePrefs.GetSplitterbarPosition()));
+    AddAnchor(IDC_UPLOADLIST, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+    AddAnchor(IDC_QUEUELIST, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+    AddAnchor(IDC_CLIENTLIST, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+    AddAnchor(IDC_DOWNLOADCLIENTS, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
     AddAnchor(IDC_QUEUECOUNT, BOTTOM_LEFT);
     AddAnchor(IDC_QUEUECOUNT_LABEL, BOTTOM_LEFT);
     AddAnchor(IDC_QUEUE_REFRESH_BUTTON, BOTTOM_RIGHT);
@@ -460,8 +460,8 @@ void CTransferWnd::UpdateSplitterRange()
     RemoveAnchor(IDC_CLIENTLIST);
     RemoveAnchor(IDC_DOWNLOADCLIENTS);
 
-    AddAnchor(*m_btnWnd2, CSize(0, thePrefs.GetSplitterbarPosition()));
-    AddAnchor(IDC_DOWNLOADLIST, TOP_LEFT, CSize(100, thePrefs.GetSplitterbarPosition()));
+    AddAnchor(*m_btnWnd2, ANCHOR(0, thePrefs.GetSplitterbarPosition()));
+    AddAnchor(IDC_DOWNLOADLIST, TOP_LEFT, ANCHOR(100, thePrefs.GetSplitterbarPosition()));
 //>>> WiZaRd::Advanced Transfer Window Layout [Stulle]
 //     AddAnchor(IDC_UPLOADLIST, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
 //     AddAnchor(IDC_QUEUELIST, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
@@ -470,35 +470,35 @@ void CTransferWnd::UpdateSplitterRange()
 	switch (m_dwTopListIDC)
 	{
 		case IDC_UPLOADLIST:
-			AddAnchor(IDC_UPLOADLIST,TOP_LEFT,CSize(100,thePrefs.GetSplitterbarPosition()));
-			AddAnchor(IDC_QUEUELIST,CSize(0,thePrefs.GetSplitterbarPosition()),BOTTOM_RIGHT);
-			AddAnchor(IDC_CLIENTLIST,CSize(0,thePrefs.GetSplitterbarPosition()),BOTTOM_RIGHT);
-			AddAnchor(IDC_DOWNLOADCLIENTS, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+			AddAnchor(IDC_UPLOADLIST,TOP_LEFT,ANCHOR(100,thePrefs.GetSplitterbarPosition()));
+			AddAnchor(IDC_QUEUELIST,ANCHOR(0,thePrefs.GetSplitterbarPosition()),BOTTOM_RIGHT);
+			AddAnchor(IDC_CLIENTLIST,ANCHOR(0,thePrefs.GetSplitterbarPosition()),BOTTOM_RIGHT);
+			AddAnchor(IDC_DOWNLOADCLIENTS, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
 			break;
 		case IDC_QUEUELIST:
-			AddAnchor(IDC_UPLOADLIST,CSize(0,thePrefs.GetSplitterbarPosition()),BOTTOM_RIGHT);
-			AddAnchor(IDC_QUEUELIST,TOP_LEFT,CSize(100,thePrefs.GetSplitterbarPosition()));
-			AddAnchor(IDC_CLIENTLIST,CSize(0,thePrefs.GetSplitterbarPosition()),BOTTOM_RIGHT);
-			AddAnchor(IDC_DOWNLOADCLIENTS, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+			AddAnchor(IDC_UPLOADLIST,ANCHOR(0,thePrefs.GetSplitterbarPosition()),BOTTOM_RIGHT);
+			AddAnchor(IDC_QUEUELIST,TOP_LEFT,ANCHOR(100,thePrefs.GetSplitterbarPosition()));
+			AddAnchor(IDC_CLIENTLIST,ANCHOR(0,thePrefs.GetSplitterbarPosition()),BOTTOM_RIGHT);
+			AddAnchor(IDC_DOWNLOADCLIENTS, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
 			break;
 		case IDC_DOWNLOADCLIENTS:
-			AddAnchor(IDC_UPLOADLIST,CSize(0,thePrefs.GetSplitterbarPosition()),BOTTOM_RIGHT);
-			AddAnchor(IDC_QUEUELIST,CSize(0,thePrefs.GetSplitterbarPosition()),BOTTOM_RIGHT);
-			AddAnchor(IDC_CLIENTLIST,CSize(0,thePrefs.GetSplitterbarPosition()),BOTTOM_RIGHT);
-			AddAnchor(IDC_DOWNLOADCLIENTS,TOP_LEFT,CSize(100, thePrefs.GetSplitterbarPosition()));
+			AddAnchor(IDC_UPLOADLIST,ANCHOR(0,thePrefs.GetSplitterbarPosition()),BOTTOM_RIGHT);
+			AddAnchor(IDC_QUEUELIST,ANCHOR(0,thePrefs.GetSplitterbarPosition()),BOTTOM_RIGHT);
+			AddAnchor(IDC_CLIENTLIST,ANCHOR(0,thePrefs.GetSplitterbarPosition()),BOTTOM_RIGHT);
+			AddAnchor(IDC_DOWNLOADCLIENTS,TOP_LEFT,ANCHOR(100, thePrefs.GetSplitterbarPosition()));
 			break;
 		case IDC_CLIENTLIST:
-			AddAnchor(IDC_UPLOADLIST,CSize(0,thePrefs.GetSplitterbarPosition()),BOTTOM_RIGHT);
-			AddAnchor(IDC_QUEUELIST,CSize(0,thePrefs.GetSplitterbarPosition()),BOTTOM_RIGHT);
-			AddAnchor(IDC_CLIENTLIST,TOP_LEFT,CSize(100,thePrefs.GetSplitterbarPosition()));
-			AddAnchor(IDC_DOWNLOADCLIENTS, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+			AddAnchor(IDC_UPLOADLIST,ANCHOR(0,thePrefs.GetSplitterbarPosition()),BOTTOM_RIGHT);
+			AddAnchor(IDC_QUEUELIST,ANCHOR(0,thePrefs.GetSplitterbarPosition()),BOTTOM_RIGHT);
+			AddAnchor(IDC_CLIENTLIST,TOP_LEFT,ANCHOR(100,thePrefs.GetSplitterbarPosition()));
+			AddAnchor(IDC_DOWNLOADCLIENTS, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
 			break;
 		default:
 		case IDC_DOWNLOADLIST:
-			AddAnchor(IDC_UPLOADLIST, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
-			AddAnchor(IDC_QUEUELIST, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
-			AddAnchor(IDC_CLIENTLIST, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
-			AddAnchor(IDC_DOWNLOADCLIENTS, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+			AddAnchor(IDC_UPLOADLIST, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+			AddAnchor(IDC_QUEUELIST, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+			AddAnchor(IDC_CLIENTLIST, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+			AddAnchor(IDC_DOWNLOADCLIENTS, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
 			break;
 	}
 //<<< WiZaRd::Advanced Transfer Window Layout [Stulle]
@@ -2243,13 +2243,13 @@ void CTransferWnd::ShowSplitWindow(const bool bReDraw, const UINT dwListIDC, con
     RemoveAnchor(IDC_DOWNLOADCLIENTS);
     RemoveAnchor(IDC_CLIENTLIST);
 
-    AddAnchor(*m_btnWnd2, CSize(0, thePrefs.GetSplitterbarPosition()));
-    AddAnchor(IDC_DOWNLOADLIST, TOP_LEFT, CSize(100, thePrefs.GetSplitterbarPosition()));
+    AddAnchor(*m_btnWnd2, ANCHOR(0, thePrefs.GetSplitterbarPosition()));
+    AddAnchor(IDC_DOWNLOADLIST, TOP_LEFT, ANCHOR(100, thePrefs.GetSplitterbarPosition()));
 //>>> WiZaRd::Advanced Transfer Window Layout [Stulle]
-//     AddAnchor(IDC_UPLOADLIST, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
-//     AddAnchor(IDC_QUEUELIST, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
-//     AddAnchor(IDC_CLIENTLIST, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
-//     AddAnchor(IDC_DOWNLOADCLIENTS, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+//     AddAnchor(IDC_UPLOADLIST, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+//     AddAnchor(IDC_QUEUELIST, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+//     AddAnchor(IDC_CLIENTLIST, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+//     AddAnchor(IDC_DOWNLOADCLIENTS, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
 // 
 //     downloadlistctrl.ShowWindow(SW_SHOW);
 //     uploadlistctrl.ShowWindow((m_uWnd2 == wnd2Uploading) ? SW_SHOW : SW_HIDE);
@@ -2270,10 +2270,10 @@ void CTransferWnd::ShowSplitWindow(const bool bReDraw, const UINT dwListIDC, con
 	switch (m_dwTopListIDC)
 	{
 		case IDC_UPLOADLIST:
-			AddAnchor(IDC_UPLOADLIST, TOP_LEFT, CSize(100, thePrefs.GetSplitterbarPosition()));
-			AddAnchor(IDC_QUEUELIST, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
-			AddAnchor(IDC_CLIENTLIST, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
-			AddAnchor(IDC_DOWNLOADCLIENTS, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+			AddAnchor(IDC_UPLOADLIST, TOP_LEFT, ANCHOR(100, thePrefs.GetSplitterbarPosition()));
+			AddAnchor(IDC_QUEUELIST, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+			AddAnchor(IDC_CLIENTLIST, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+			AddAnchor(IDC_DOWNLOADCLIENTS, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
 			uploadlistctrl.ShowWindow(SW_SHOW);
 			UpdateListCountTop(wnd2Uploading);
 			SetWnd1Icon(w1iUploading);
@@ -2281,10 +2281,10 @@ void CTransferWnd::ShowSplitWindow(const bool bReDraw, const UINT dwListIDC, con
 			m_btnWnd2->EnableButton(MP_VIEW2_UPLOADING, FALSE);
 			break;
 		case IDC_QUEUELIST:
-			AddAnchor(IDC_UPLOADLIST, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
-			AddAnchor(IDC_QUEUELIST, TOP_LEFT, CSize(100, thePrefs.GetSplitterbarPosition()));
-			AddAnchor(IDC_CLIENTLIST, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
-			AddAnchor(IDC_DOWNLOADCLIENTS, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+			AddAnchor(IDC_UPLOADLIST, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+			AddAnchor(IDC_QUEUELIST, TOP_LEFT, ANCHOR(100, thePrefs.GetSplitterbarPosition()));
+			AddAnchor(IDC_CLIENTLIST, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+			AddAnchor(IDC_DOWNLOADCLIENTS, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
 			queuelistctrl.ShowWindow(SW_SHOW);
 			UpdateListCountTop(wnd2OnQueue);
 			SetWnd1Icon(w1iOnQueue);
@@ -2292,10 +2292,10 @@ void CTransferWnd::ShowSplitWindow(const bool bReDraw, const UINT dwListIDC, con
 			m_btnWnd2->EnableButton(MP_VIEW2_ONQUEUE, FALSE);
 			break;
 		case IDC_DOWNLOADCLIENTS:
-			AddAnchor(IDC_UPLOADLIST, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
-			AddAnchor(IDC_QUEUELIST, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
-			AddAnchor(IDC_CLIENTLIST, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
-			AddAnchor(IDC_DOWNLOADCLIENTS, TOP_LEFT, CSize(100, thePrefs.GetSplitterbarPosition()));
+			AddAnchor(IDC_UPLOADLIST, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+			AddAnchor(IDC_QUEUELIST, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+			AddAnchor(IDC_CLIENTLIST, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+			AddAnchor(IDC_DOWNLOADCLIENTS, TOP_LEFT, ANCHOR(100, thePrefs.GetSplitterbarPosition()));
 			downloadclientsctrl.ShowWindow(SW_SHOW);
 			UpdateListCountTop(wnd2Downloading);
 			SetWnd1Icon(w1iDownloading);
@@ -2303,10 +2303,10 @@ void CTransferWnd::ShowSplitWindow(const bool bReDraw, const UINT dwListIDC, con
 			m_btnWnd2->EnableButton(MP_VIEW2_DOWNLOADING, FALSE);
 			break;
 		case IDC_CLIENTLIST:
-			AddAnchor(IDC_UPLOADLIST, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
-			AddAnchor(IDC_QUEUELIST, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
-			AddAnchor(IDC_CLIENTLIST, TOP_LEFT, CSize(100, thePrefs.GetSplitterbarPosition()));
-			AddAnchor(IDC_DOWNLOADCLIENTS, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+			AddAnchor(IDC_UPLOADLIST, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+			AddAnchor(IDC_QUEUELIST, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+			AddAnchor(IDC_CLIENTLIST, TOP_LEFT, ANCHOR(100, thePrefs.GetSplitterbarPosition()));
+			AddAnchor(IDC_DOWNLOADCLIENTS, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
 			clientlistctrl.ShowWindow(SW_SHOW);
 			UpdateListCountTop(wnd2Clients);
 			SetWnd1Icon(w1iClientsKnown);
@@ -2315,10 +2315,10 @@ void CTransferWnd::ShowSplitWindow(const bool bReDraw, const UINT dwListIDC, con
 			break;
 		default:
 		case IDC_DOWNLOADLIST:
-			AddAnchor(IDC_UPLOADLIST, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
-			AddAnchor(IDC_QUEUELIST, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
-			AddAnchor(IDC_CLIENTLIST, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
-			AddAnchor(IDC_DOWNLOADCLIENTS, CSize(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+			AddAnchor(IDC_UPLOADLIST, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+			AddAnchor(IDC_QUEUELIST, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+			AddAnchor(IDC_CLIENTLIST, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
+			AddAnchor(IDC_DOWNLOADCLIENTS, ANCHOR(0, thePrefs.GetSplitterbarPosition()), BOTTOM_RIGHT);
 			downloadlistctrl.ShowWindow(SW_SHOW);
 			downloadlistctrl.ShowFilesCount();
 			SetWnd1Icon(w1iDownloadFiles);
@@ -2612,7 +2612,7 @@ void CTransferWnd::ResetTransToolbar(bool bShowToolbar, bool bResetLists)
     }
 
     AddAnchor(*m_btnWnd1, TOP_LEFT);
-    AddAnchor(*m_btnWnd2, CSize(0, thePrefs.GetSplitterbarPosition()));
+    AddAnchor(*m_btnWnd2, ANCHOR(0, thePrefs.GetSplitterbarPosition()));
 
     if (bResetLists)
     {

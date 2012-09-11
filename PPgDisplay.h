@@ -16,11 +16,6 @@ public:
     void Localize(void);
 
 protected:
-    enum ESelectFont
-    {
-        sfServer,
-        sfLog
-    } m_eSelectFont;
     void LoadSettings(void);
 
     void DrawPreview();		//Cax2 - aqua bar

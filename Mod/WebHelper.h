@@ -15,46 +15,29 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #pragma once
-class CWebHelper;
+#include <WinInet.h>
 
-typedef unsigned char		uint8;
-enum eUpdateMode
-{
-    AUTOUPDATE_NONE = 0,
-    AUTOUPDATE_AVAIL,
-    AUTOUPDATE_FORCE
-};
+#define DFLT_AGENT_NAME			L"Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; SLCC1)"
 
-enum eUpdateApplication
-{
-    UPDATE_NONE = 0,
-    UPDATE_EXECUTE,
-    UPDATE_REPLACE,
-	UPDATE_EXTRACT,	//>>> WiZaRd::kMule
-};
-
-class CAutoUpdate
+class CWebHelper
 {
 public:
-    CAutoUpdate();
-    virtual ~CAutoUpdate();
+	CWebHelper();
+	virtual ~CWebHelper();
 
-    void	SetUpdateParams(const CString& strUpdateCheckURL, const CString& strCurrentVersion, const CString& strTempPath);
-    void	CheckForUpdates();
-    bool	ApplyUpdate() const;
+    void	SetUserAgent(const CString& strUserAgent);
+
+	bool	LoadToStringFromURL(CString& str, const CString& sURL, const CString& sUser = L"", const CString& sPass = L"");
+	bool	LoadToFileFromURL(const CString& path, const CString& sURL, const CString& sUser = L"", const CString& sPass = L"");
+	static void	CrackURL(CString sURL, CString& mainpage, CString& subpage);
 
 private:
-    uint8	IsUpdateAvail();
+	CString m_strUserAgent;
 
-    CString m_strUpdateCheckURL;
-    CString m_strCurrentVersion;
-    CString m_strTempPath;
-    CString m_strTempFile;
-    CString m_strUpdateURL;
-    uint8	m_uiUpdateApplication;
-    bool	m_bDeleteAfterUpdate;	
+	HINTERNET m_hINet;
+	HINTERNET m_hConnection;
+	HINTERNET m_hData;
 
-protected:
-    CString GetUpdateFile() const;
-	CWebHelper* m_pWebHelper;
+	void	OpenAndCheckConnection();
+	void	EstablishConnection(const CString& sURL, const CString& sUser = L"", const CString& sPass = L"");
 };

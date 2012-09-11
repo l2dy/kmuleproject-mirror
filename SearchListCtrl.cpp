@@ -747,16 +747,19 @@ int CSearchListCtrl::Compare(const CSearchFile *item1, const CSearchFile *item2,
     }
 
 //>>> WiZaRd::AntiFake
-    //always apply fakesort
-    int rating1 = GetFakeAlyzerRating(item1);
-    int rating2 = GetFakeAlyzerRating(item2);
-    if(rating1 != rating2)
-    {
-        if(bSortAscending)
-            return CompareUnsigned(rating1, rating2);
-        else
-            return CompareUnsigned(rating2, rating1);
-    }
+	if(thePrefs.GetSpamFilterMode() >= eSFM_AutoSort)
+	{
+		//always apply fakesort
+		int rating1 = GetFakeAlyzerRating(item1);
+		int rating2 = GetFakeAlyzerRating(item2);
+		if(rating1 != rating2)
+		{
+			if(bSortAscending)
+				return CompareUnsigned(rating1, rating2);
+			else
+				return CompareUnsigned(rating2, rating1);
+		}
+	}
 //<<< WiZaRd::AntiFake
 
     switch (lParamSort)
@@ -1537,7 +1540,10 @@ void CSearchListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     CRect rcClient;
     GetClientRect(&rcClient);
     CSearchFile *content = (CSearchFile *)lpDrawItemStruct->itemData;
-    ColorSearchFile(content, dc); //>>> WiZaRd::AntiFake
+//>>> WiZaRd::AntiFake
+	if(thePrefs.GetSpamFilterMode() >= eSFM_Colored)
+		ColorSearchFile(content, dc);
+//<<< WiZaRd::AntiFake
     if ((lpDrawItemStruct->itemState & ODS_SELECTED) == 0)
         dc.SetTextColor(GetSearchItemColor(content));
 

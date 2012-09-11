@@ -97,7 +97,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>version.lib;winmm.lib;ADSIId.lib;crypt32.lib;wmvcore.lib;..\zlib\debug_vc10\zlib.lib;..\crypto51\debug_vc10\cryptlib.lib;..\id3lib\libprj\Debug_vc10\id3libD.lib;..\CxImage\debug_vc10\cximage.lib;..\png\projects\visualc10\Win32_LIB_Debug\libpngd.lib;..\ResizableLib\Debug_vc10\ResizableLib.lib;..\miniupnpc\Debug_vc10\miniupnpc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>version.lib;winmm.lib;ADSIId.lib;crypt32.lib;wmvcore.lib;..\zlib\debug_vc10\zlib.lib;..\crypto51\debug_vc10\cryptlib.lib;..\id3lib\libprj\Debug_vc10\id3libD.lib;..\CxImage\debug_vc10\cximage.lib;..\png\projects\visualc10\Win32_LIB_Debug\libpngd.lib;..\ResizableLib\Unicode_Debug_vc10\ResizableLib.lib;..\miniupnpc\Debug_vc10\miniupnpc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>nafxcwd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <DelayLoadDLLs>oleacc.dll;gdiplus.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -144,7 +144,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/safeseh %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>unicows.lib;kernel32.lib;advapi32.lib;user32.lib;gdi32.lib;shell32.lib;comdlg32.lib;version.lib;mpr.lib;rasapi32.lib;winmm.lib;winspool.lib;vfw32.lib;secur32.lib;oleacc.lib;oledlg.lib;sensapi.lib;gdiplus.lib;ADSIId.lib;crypt32.lib;wmvcore.lib;..\zlib\release_vc10\zlib.lib;..\crypto51\release_vc10\cryptlib.lib;..\id3lib\libprj\Release_vc10\id3lib.lib;..\CxImage\Release_vc10\cximage.lib;..\png\projects\visualc10\Win32_LIB_Release\libpng.lib;..\ResizableLib\Release_vc10\ResizableLib.lib;..\miniupnpc\Release_vc10\miniupnpc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>unicows.lib;kernel32.lib;advapi32.lib;user32.lib;gdi32.lib;shell32.lib;comdlg32.lib;version.lib;mpr.lib;rasapi32.lib;winmm.lib;winspool.lib;vfw32.lib;secur32.lib;oleacc.lib;oledlg.lib;sensapi.lib;gdiplus.lib;ADSIId.lib;crypt32.lib;wmvcore.lib;..\zlib\release_vc10\zlib.lib;..\crypto51\release_vc10\cryptlib.lib;..\id3lib\libprj\Release_vc10\id3lib.lib;..\CxImage\Release_vc10\cximage.lib;..\png\projects\visualc10\Win32_LIB_Release\libpng.lib;..\ResizableLib\Unicode_Release_vc10\ResizableLib.lib;..\miniupnpc\Release_vc10\miniupnpc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>kernel32.lib;advapi32.lib;user32.lib;gdi32.lib;shell32.lib;comdlg32.lib;version.lib;mpr.lib;rasapi32.lib;winmm.lib;winspool.lib;vfw32.lib;secur32.lib;oleacc.lib;oledlg.lib;sensapi.lib;nafxcwd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <DelayLoadDLLs>oleacc.dll;gdiplus.dll;ws2_32.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -214,6 +214,7 @@
     <ClCompile Include="Mod\extractfile.cpp" />
     <ClCompile Include="Mod\Modname.cpp" />
     <ClCompile Include="Mod\SnarlInterface.cpp" />
+    <ClCompile Include="Mod\WebHelper.cpp" />
     <ClCompile Include="OtherFunctions.cpp" />
     <ClCompile Include="Packets.cpp" />
     <ClCompile Include="Parser.cpp">
@@ -754,6 +755,7 @@
     <ClInclude Include="Mod\ModOpcodes.h" />
     <ClInclude Include="Mod\resourcemod.h" />
     <ClInclude Include="Mod\SnarlInterface.h" />
+    <ClInclude Include="Mod\WebHelper.h" />
     <ClInclude Include="Opcodes.h" />
     <ClInclude Include="OtherFunctions.h" />
     <ClInclude Include="Packets.h" />

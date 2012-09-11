@@ -517,8 +517,14 @@ void CDownloadListCtrl::GetFileItemDisplayText(CPartFile *lpPartFile, int iSubIt
                 strBuffer.AppendFormat(_T(" (%i)"), lpPartFile->GetTransferringSrcCount());
         }
 // <-- ZZ:DownloadManager
-        if (thePrefs.IsExtControlsEnabled() && lpPartFile->GetPrivateMaxSources() != 0)
+//>>> WiZaRd::AutoHL
+//		if (thePrefs.IsExtControlsEnabled() && lpPartFile->GetPrivateMaxSources() != 0)
+//<<< WiZaRd::AutoHL
             strBuffer.AppendFormat(_T(" [%i]"), lpPartFile->GetPrivateMaxSources());
+//>>> WiZaRd::AutoHL
+			if(thePrefs.IsUseAutoHL() == -1) //show indicator when there's no global setting
+				strBuffer.Append(lpPartFile->UseAutoHL() ? L"V" : L"F"); //variable/fixed
+//<<< WiZaRd::AutoHL
         _tcsncpy(pszText, strBuffer, cchTextMax);
         break;
     }
@@ -1312,6 +1318,7 @@ void CDownloadListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
             int iFilesCanPauseOnPreview = 0;
             int iFilesDoPauseOnPreview = 0;
             int iFilesInCats = 0;
+			int iFilesAHL = 0; //>>> WiZaRd::AutoHL
             UINT uPrioMenuItem = 0;
             const CPartFile* file1 = NULL;
             POSITION pos = GetFirstSelectedItemPosition();
@@ -1355,6 +1362,13 @@ void CDownloadListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
                     uPrioMenuItem = uCurPrioMenuItem;
                 else if (uPrioMenuItem != uCurPrioMenuItem)
                     uPrioMenuItem = 0;
+
+//>>> WiZaRd::AutoHL
+				if(bFirstItem)
+					iFilesAHL = pFile->UseAutoHL();
+				else if(iFilesAHL != (int)pFile->UseAutoHL())
+					iFilesAHL = -1;
+//<<< WiZaRd::AutoHL
 
                 bFirstItem = false;
             }
@@ -1409,11 +1423,21 @@ void CDownloadListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
             int total;
             m_FileMenu.EnableMenuItem(MP_CLEARCOMPLETED, GetCompleteDownloads(curTab, total) > 0 ? MF_ENABLED : MF_GRAYED);
 
-            if (m_SourcesMenu && thePrefs.IsExtControlsEnabled())
+//>>> WiZaRd::AutoHL
+            //if (m_SourcesMenu && thePrefs.IsExtControlsEnabled())
+			if (m_SourcesMenu)
+//<<< WiZaRd::AutoHL
             {
                 m_FileMenu.EnableMenuItem((UINT_PTR)m_SourcesMenu.m_hMenu, MF_ENABLED);
-                m_SourcesMenu.EnableMenuItem(MP_ADDSOURCE, (iSelectedItems == 1 && iFilesToStop == 1) ? MF_ENABLED : MF_GRAYED);
-                m_SourcesMenu.EnableMenuItem(MP_SETSOURCELIMIT, (iFilesNotDone == iSelectedItems) ? MF_ENABLED : MF_GRAYED);
+				if (thePrefs.IsExtControlsEnabled()) //>>> WiZaRd::AutoHL
+				{
+					m_SourcesMenu.EnableMenuItem(MP_ADDSOURCE, (iSelectedItems == 1 && iFilesToStop == 1) ? MF_ENABLED : MF_GRAYED);
+					m_SourcesMenu.EnableMenuItem(MP_SETSOURCELIMIT, (iFilesNotDone == iSelectedItems) ? MF_ENABLED : MF_GRAYED);
+				}
+//>>> WiZaRd::AutoHL
+				m_SourcesMenu.EnableMenuItem(MP_AUTOHL_ON, thePrefs.IsUseAutoHL() == -1 && iFilesAHL == 0 ? MF_ENABLED : MF_GRAYED);
+				m_SourcesMenu.EnableMenuItem(MP_AUTOHL_OFF, thePrefs.IsUseAutoHL() == -1 && iFilesAHL == 1 ? MF_ENABLED : MF_GRAYED);
+//<<< WiZaRd::AutoHL
             }
 
             m_FileMenu.EnableMenuItem(thePrefs.GetShowCopyEd2kLinkCmd() ? MP_GETED2KLINK : MP_SHOWED2KLINK, iSelectedItems > 0 ? MF_ENABLED : MF_GRAYED);
@@ -1996,6 +2020,15 @@ BOOL CDownloadListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                 as.DoModal();
                 break;
             }
+//>>> WiZaRd::AutoHL
+			case MP_AUTOHL_ON:
+			case MP_AUTOHL_OFF:
+				SetRedraw(FALSE);
+				while(!selectedList.IsEmpty())
+					selectedList.RemoveHead()->SetUseAutoHL(wParam == MP_AUTOHL_ON);
+				SetRedraw(TRUE);
+				break;
+//<<< WiZaRd::AutoHL
             default:
                 if (wParam>=MP_WEBURL && wParam<=MP_WEBURL+99)
                 {
@@ -2547,12 +2580,20 @@ void CDownloadListCtrl::CreateMenues()
 
     // Add (extended user mode) 'Source Handling' sub menu
     //
-    if (thePrefs.IsExtControlsEnabled())
+    //if (thePrefs.IsExtControlsEnabled()) //>>> WiZaRd::AutoHL
     {
         m_SourcesMenu.CreateMenu();
         m_SourcesMenu.AppendMenu(MF_STRING, MP_ADDSOURCE, GetResString(IDS_ADDSRCMANUALLY));
         m_SourcesMenu.AppendMenu(MF_STRING, MP_SETSOURCELIMIT, GetResString(IDS_SETPFSLIMIT));
-        m_FileMenu.AppendMenu(MF_STRING|MF_POPUP, (UINT_PTR)m_SourcesMenu.m_hMenu, GetResString(IDS_A4AF));
+//>>> WiZaRd::AutoHL
+//		m_FileMenu.AppendMenu(MF_STRING|MF_POPUP, (UINT_PTR)m_SourcesMenu.m_hMenu, GetResString(IDS_A4AF));
+		CString cmd;
+		cmd.Format(_T("%s (%s)"), GetResString(IDS_AUTOHL), GetResString(IDS_ON));
+		m_SourcesMenu.AppendMenu(MF_STRING, MP_AUTOHL_ON, cmd);
+		cmd.Format(_T("%s (%s)"), GetResString(IDS_AUTOHL), GetResString(IDS_OFF));
+		m_SourcesMenu.AppendMenu(MF_STRING, MP_AUTOHL_OFF, cmd);
+		m_FileMenu.AppendMenu(MF_STRING|MF_POPUP, (UINT_PTR)m_SourcesMenu.m_hMenu, GetResString(IDS_A4AF), _T("WIZARD"));
+//<<< WiZaRd::AutoHL
     }
     m_FileMenu.AppendMenu(MF_SEPARATOR);
 

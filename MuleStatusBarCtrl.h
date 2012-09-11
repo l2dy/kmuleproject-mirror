@@ -6,7 +6,8 @@ enum EStatusBarPane
     SBarUsers,
     SBarUpDown,
     SBarConnected,
-    SBarChatMsg
+    SBarChatMsg,
+	SBarUSS //>>> WiZaRd::USS Status Pane [Eulero]
 };
 
 class CMuleStatusBarCtrl : public CStatusBarCtrl

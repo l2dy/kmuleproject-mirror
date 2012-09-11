@@ -50,7 +50,7 @@ protected:
     virtual BOOL OnInitDialog();
 
     DECLARE_MESSAGE_MAP()
-    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+    afx_msg BOOL OnNcCreate(LPCREATESTRUCT lpCreateStruct);
     afx_msg LRESULT OnDataChanged(WPARAM, LPARAM);
 };
 

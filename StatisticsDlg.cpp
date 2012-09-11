@@ -324,24 +324,24 @@ void CStatisticsDlg::initCSize()
         z = 0;
 
     RemoveAnchor(IDC_BNMENU);
-    AddAnchor(IDC_BNMENU,CSize(0,0));
+    AddAnchor(IDC_BNMENU,ANCHOR(0,0));
 
     //StatTitle
     RemoveAnchor(IDC_STATIC_LASTRESET);
-    AddAnchor(IDC_STATIC_LASTRESET,CSize(0,0),CSize(x,0));
+    AddAnchor(IDC_STATIC_LASTRESET,ANCHOR(0,0),ANCHOR(x,0));
     //stattree
     RemoveAnchor(stattree);
-    AddAnchor(stattree,CSize(0,0),CSize(x,100));
+    AddAnchor(stattree,ANCHOR(0,0),ANCHOR(x,100));
 
     //graph
     RemoveAnchor(m_DownloadOMeter);
-    AddAnchor(m_DownloadOMeter,CSize(x,0),CSize(100,z));
+    AddAnchor(m_DownloadOMeter,ANCHOR(x,0),ANCHOR(100,z));
 
     RemoveAnchor(m_UploadOMeter);
-    AddAnchor(m_UploadOMeter,CSize(x,z),CSize(100,y));
+    AddAnchor(m_UploadOMeter,ANCHOR(x,z),ANCHOR(100,y));
 
     RemoveAnchor(m_Statistics);
-    AddAnchor(m_Statistics,CSize(x,y),CSize(100,100));
+    AddAnchor(m_Statistics,ANCHOR(x,y),ANCHOR(100,100));
 
     //set range
     CRect rcW;
@@ -1024,13 +1024,11 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                 // Calculate downline OH totals
                 DownOHTotal =	theStats.GetDownDataOverheadFileRequest() +
                                 theStats.GetDownDataOverheadSourceExchange() +
-                                theStats.GetDownDataOverheadServer() +
                                 theStats.GetDownDataOverheadKad() +
                                 theStats.GetDownDataOverheadOther();
                 DownOHTotalPackets =
                     theStats.GetDownDataOverheadFileRequestPackets() +
                     theStats.GetDownDataOverheadSourceExchangePackets() +
-                    theStats.GetDownDataOverheadServerPackets() +
                     theStats.GetDownDataOverheadKadPackets() +
                     theStats.GetDownDataOverheadOtherPackets();
 
@@ -1046,12 +1044,6 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                     i++;
                     // Set down session source exch OH
                     cbuffer.Format( GetResString( IDS_SSOVERHEAD ) , CastItoXBytes( theStats.GetDownDataOverheadSourceExchange(), false, false ), CastItoIShort( theStats.GetDownDataOverheadSourceExchangePackets() ) );
-                    stattree.SetItemText( down_soh[i] , cbuffer );
-                    i++;
-                    // Set down session server OH
-                    cbuffer.Format(GetResString(IDS_SOVERHEAD),
-                                   CastItoXBytes(theStats.GetDownDataOverheadServer(), false, false),
-                                   CastItoIShort(theStats.GetDownDataOverheadServerPackets()));
                     stattree.SetItemText( down_soh[i] , cbuffer );
                     i++;
                     // Set down session Kad OH
@@ -1228,13 +1220,11 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                 {
                     DownOHTotal =	theStats.GetDownDataOverheadFileRequest() +
                                     theStats.GetDownDataOverheadSourceExchange() +
-                                    theStats.GetDownDataOverheadServer() +
                                     theStats.GetDownDataOverheadKad() +
                                     theStats.GetDownDataOverheadOther();
                     DownOHTotalPackets =
                         theStats.GetDownDataOverheadFileRequestPackets() +
                         theStats.GetDownDataOverheadSourceExchangePackets() +
-                        theStats.GetDownDataOverheadServerPackets() +
                         theStats.GetDownDataOverheadKadPackets() +
                         theStats.GetDownDataOverheadOtherPackets();
                 }
@@ -1446,12 +1436,10 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                 // Calculate Upline OH Totals
                 UpOHTotal = theStats.GetUpDataOverheadFileRequest() +
                             theStats.GetUpDataOverheadSourceExchange() +
-                            theStats.GetUpDataOverheadServer() +
                             theStats.GetUpDataOverheadKad() +
                             theStats.GetUpDataOverheadOther();
                 UpOHTotalPackets = theStats.GetUpDataOverheadFileRequestPackets() +
                                    theStats.GetUpDataOverheadSourceExchangePackets() +
-                                   theStats.GetUpDataOverheadServerPackets() +
                                    theStats.GetUpDataOverheadKadPackets() +
                                    theStats.GetUpDataOverheadOtherPackets();
                 // Total Upline Overhead
@@ -1466,12 +1454,6 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                     i++;
                     // Source Exchanged Overhead
                     cbuffer.Format(GetResString(IDS_SSOVERHEAD), CastItoXBytes( theStats.GetUpDataOverheadSourceExchange(), false, false ), CastItoIShort(theStats.GetUpDataOverheadSourceExchangePackets()));
-                    stattree.SetItemText(up_soh[i], cbuffer);
-                    i++;
-                    // Server Overhead
-                    cbuffer.Format(GetResString(IDS_SOVERHEAD),
-                                   CastItoXBytes(theStats.GetUpDataOverheadServer(), false, false),
-                                   CastItoIShort(theStats.GetUpDataOverheadServerPackets()));
                     stattree.SetItemText(up_soh[i], cbuffer);
                     i++;
                     // Kad Overhead
@@ -1649,12 +1631,10 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                     // Calculate Upline OH Totals
                     UpOHTotal = theStats.GetUpDataOverheadFileRequest() +
                                 theStats.GetUpDataOverheadSourceExchange() +
-                                theStats.GetUpDataOverheadServer() +
                                 theStats.GetUpDataOverheadKad() +
                                 theStats.GetUpDataOverheadOther();
                     UpOHTotalPackets = theStats.GetUpDataOverheadFileRequestPackets() +
                                        theStats.GetUpDataOverheadSourceExchangePackets() +
-                                       theStats.GetUpDataOverheadServerPackets() +
                                        theStats.GetUpDataOverheadKadPackets() +
                                        theStats.GetUpDataOverheadOtherPackets();
                 }
@@ -1717,13 +1697,6 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
             if (forceUpdate || stattree.IsExpanded(hconn_sg))
             {
                 int i = 0;
-                // Server Reconnects
-                if (theStats.reconnects>0)
-                    cbuffer.Format(GetResString(IDS_STATS_RECONNECTS),theStats.reconnects-1);
-                else
-                    cbuffer.Format(GetResString(IDS_STATS_RECONNECTS),0);
-                stattree.SetItemText(conn_sg[i], cbuffer);
-                i++;
                 // Active Connections
                 cbuffer.Format(_T("%s: %i (%s:%u | %s:%u | %s:%u)"),GetResString(IDS_SF_ACTIVECON),theApp.listensocket->GetActiveConnections(), GetResString(IDS_HALF), theApp.listensocket->GetTotalHalfCon(), GetResString(IDS_CONCOMPL) ,theApp.listensocket->GetTotalComp(), GetResString(IDS_STATS_PRTOTHER) ,theApp.listensocket->GetActiveConnections() - theApp.listensocket->GetTotalHalfCon() - theApp.listensocket->GetTotalComp());
                 stattree.SetItemText(conn_sg[i], cbuffer);
@@ -1807,13 +1780,6 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
             if (forceUpdate || stattree.IsExpanded(hconn_tg))
             {
                 int i = 0;
-                // Server Reconnects
-                if(theStats.reconnects>0)
-                    cbuffer.Format(GetResString(IDS_STATS_RECONNECTS),theStats.reconnects - 1 + thePrefs.GetConnNumReconnects());
-                else
-                    cbuffer.Format(GetResString(IDS_STATS_RECONNECTS),thePrefs.GetConnNumReconnects());
-                stattree.SetItemText(conn_tg[i], cbuffer);
-                i++;
                 // Average Connections
                 cbuffer.Format(_T("%s: %i"), GetResString(IDS_SF_AVGCON), (int) (theApp.listensocket->GetActiveConnections() + thePrefs.GetConnAvgConnections()) / 2 );
                 stattree.SetItemText(conn_tg[i], cbuffer);
@@ -1912,14 +1878,6 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                 stattree.SetItemText(tvitime_st[x], cbuffer);
                 x++;
             }
-            i++;
-            // Current Server Duration
-            cbuffer.Format(_T("%s: %s (%1.1f%%)"), GetResString(IDS_STATS_CURRSRVDUR), CastSecondsToLngHM(theStats.time_thisServerDuration), (double) (100 * theStats.time_thisServerDuration) / sessionRunTime);
-            stattree.SetItemText(tvitime_s[i], cbuffer);
-            i++;
-            // Total Server Duration
-            cbuffer.Format(_T("%s: %s (%1.1f%%)"), GetResString(IDS_STATS_TOTALSRVDUR), CastSecondsToLngHM(theStats.GetServerDuration()), (double) (100 * theStats.GetServerDuration()) / sessionRunTime);
-            stattree.SetItemText(tvitime_s[i], cbuffer);
             i++;
         }
         // TIME STATISTICS -> CUMULATIVE SECTION
@@ -2115,13 +2073,11 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                         // Calculate Upline OH Totals
                         uint64 UpOHTotal = (uint64)((theStats.GetUpDataOverheadFileRequest() +
                                                      theStats.GetUpDataOverheadSourceExchange() +
-                                                     theStats.GetUpDataOverheadServer() +
                                                      theStats.GetUpDataOverheadKad() +
                                                      theStats.GetUpDataOverheadOther()
                                                     ) * avgModifier[mx]);
                         uint64 UpOHTotalPackets = (uint64)((theStats.GetUpDataOverheadFileRequestPackets() +
                                                             theStats.GetUpDataOverheadSourceExchangePackets() +
-                                                            theStats.GetUpDataOverheadServerPackets() +
                                                             theStats.GetUpDataOverheadKadPackets() +
                                                             theStats.GetUpDataOverheadOtherPackets()
                                                            ) * avgModifier[mx]);
@@ -2302,13 +2258,11 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
 
                         uint64 DownOHTotal =	theStats.GetDownDataOverheadFileRequest() +
                                                 theStats.GetDownDataOverheadSourceExchange() +
-                                                theStats.GetDownDataOverheadServer() +
                                                 theStats.GetDownDataOverheadKad() +
                                                 theStats.GetDownDataOverheadOther();
                         uint64 DownOHTotalPackets =
                             theStats.GetDownDataOverheadFileRequestPackets() +
                             theStats.GetDownDataOverheadSourceExchangePackets() +
-                            theStats.GetDownDataOverheadServerPackets() +
                             theStats.GetDownDataOverheadKadPackets() +
                             theStats.GetDownDataOverheadOtherPackets();
                         // Total Overhead

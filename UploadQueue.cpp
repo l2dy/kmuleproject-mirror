@@ -201,138 +201,147 @@ CUpDownClient* CUploadQueue::FindBestClientInQueue()
         CKnownFile* file = theApp.sharedfiles->GetFileByID(cur_client->GetUploadFileID());
         //While we are going through this list.. Lets check if a client appears to have left the network..
         ASSERT ( cur_client->GetLastUpRequest() );
-        if ((::GetTickCount() - cur_client->GetLastUpRequest() > MAX_PURGEQUEUETIME) /*|| !file*/ )
+//>>> WiZaRd::FiX unfair client treatment [http://forum.emule-project.net/index.php?showtopic=116699]
+		//if ((::GetTickCount() - cur_client->GetLastUpRequest() > MAX_PURGEQUEUETIME) || !file )
+		if ((::GetTickCount() - cur_client->GetLastUpRequest() > MAX_PURGEQUEUETIME))
+//<<< WiZaRd::FiX unfair client treatment [http://forum.emule-project.net/index.php?showtopic=116699]
+		{
+			//This client has either not been seen in a long time, or we no longer share the file he wanted anymore..
+			cur_client->ClearWaitStartTime();
+			RemoveFromWaitingQueue(pos2,true);
+			continue;
+		}
+
+//>>> WiZaRd::FiX unfair client treatment [http://forum.emule-project.net/index.php?showtopic=116699]
+		if(file == NULL)
+			continue;
+//<<< WiZaRd::FiX unfair client treatment [http://forum.emule-project.net/index.php?showtopic=116699]
+//>>> WiZaRd::Startup Flood Prevention
+		//Requested by James R. Bath
+		//http://forum.emule-project.net/index.php?showtopic=101181
+		if(::GetTickCount() - cur_client->GetWaitStartTime() < SEC2MS(30)) //30secs are enough
+			continue;
+//<<< WiZaRd::Startup Flood Prevention
+            
+		if(cur_client->GetFriendSlot()
+                && (!cur_client->HasLowID() || (cur_client->socket && cur_client->socket->IsConnected())))
+            friendpos = cur_client;
+        if(friendpos)
+            continue; //no need to go on...
+
+        // finished clearing
+        const uint32 cur_score = cur_client->GetScore(false);
+
+        if (file->IsPowerShared())
         {
-            //This client has either not been seen in a long time, or we no longer share the file he wanted anymore..
-            cur_client->ClearWaitStartTime();
-            RemoveFromWaitingQueue(pos2,true);
-            continue;
-        }
-
-        if(file == NULL)
-            continue;
-        //else
-        {
-            if(cur_client->GetFriendSlot()
-                    && (!cur_client->HasLowID() || (cur_client->socket && cur_client->socket->IsConnected())))
-                friendpos = cur_client;
-            if(friendpos)
-                continue; //no need to go on...
-
-            // finished clearing
-            const uint32 cur_score = cur_client->GetScore(false);
-
-            if (file->IsPowerShared())
-            {
-                uint8 curprio = file->GetUpPriority()+1;
-                if(curprio >= 5)
-                    curprio = 0;
-                if(curprio > highestPSPrio
+            uint8 curprio = file->GetUpPriority()+1;
+            if(curprio >= 5)
+                curprio = 0;
+            if(curprio > highestPSPrio
 //>>> WiZaRd::Payback First
 //					|| (curprio == highestPSPrio && cur_score > bestscorePS))
-                        || (curprio == highestPSPrio && SecondIsBetterClient(bPaybackCheck, toaddPS, cur_client, bestscorePS, cur_score)))
+                    || (curprio == highestPSPrio && SecondIsBetterClient(bPaybackCheck, toaddPS, cur_client, bestscorePS, cur_score)))
 //<<< WiZaRd::Payback First
+            {
+                //if our upload tries failed at least 3 times in a row we will only grant a slot while being connected already
+                //that way, we hopefully ensure a successful upload session
+                if(cur_client->GetAntiLeechData()
+                        && cur_client->GetAntiLeechData()->ShouldntUploadForBadSessions())
                 {
-                    //if our upload tries failed at least 3 times in a row we will only grant a slot while being connected already
-                    //that way, we hopefully ensure a successful upload session
-                    if(cur_client->GetAntiLeechData()
-                            && cur_client->GetAntiLeechData()->ShouldntUploadForBadSessions())
+                    if(cur_client->socket && cur_client->socket->IsConnected())
                     {
-                        if(cur_client->socket && cur_client->socket->IsConnected())
+                        highestPSPrio = curprio;
+                        if(curprio > highestPSPrio)
                         {
-                            highestPSPrio = curprio;
-                            if(curprio > highestPSPrio)
-                            {
-                                bestscorePS = 0;
-                                bestlowscorePS = 0;
-                            }
-
-                            bestscorePS = cur_score;
-                            toaddPS = cur_client;
+                            bestscorePS = 0;
+                            bestlowscorePS = 0;
                         }
-                        continue;
-                    }
 
-                    highestPSPrio = curprio;
-                    if(curprio > highestPSPrio)
-                    {
-                        bestscorePS = 0;
-                        bestlowscorePS = 0;
-                    }
-
-                    // cur_client is more worthy than current best client that is ready to go (connected).
-                    if(!cur_client->HasLowID() || (cur_client->socket && cur_client->socket->IsConnected()))
-                    {
-                        // this client is a HighID or a lowID client that is ready to go (connected)
-                        // and it is more worthy
                         bestscorePS = cur_score;
                         toaddPS = cur_client;
                     }
-                    else if(!cur_client->m_bAddNextConnect)
-                    {
-                        // this client is a lowID client that is not ready to go (not connected)
+                    continue;
+                }
 
-                        // now that we know this client is not ready to go, compare it to the best not ready client
-                        // the best not ready client may be better than the best ready client, so we need to check
-                        // against that client
+                highestPSPrio = curprio;
+                if(curprio > highestPSPrio)
+                {
+                    bestscorePS = 0;
+                    bestlowscorePS = 0;
+                }
+
+                // cur_client is more worthy than current best client that is ready to go (connected).
+                if(!cur_client->HasLowID() || (cur_client->socket && cur_client->socket->IsConnected()))
+                {
+                    // this client is a HighID or a lowID client that is ready to go (connected)
+                    // and it is more worthy
+                    bestscorePS = cur_score;
+                    toaddPS = cur_client;
+                }
+                else if(!cur_client->m_bAddNextConnect)
+                {
+                    // this client is a lowID client that is not ready to go (not connected)
+
+                    // now that we know this client is not ready to go, compare it to the best not ready client
+                    // the best not ready client may be better than the best ready client, so we need to check
+                    // against that client
 //>>> WiZaRd::Payback First
-                        if(SecondIsBetterClient(bPaybackCheck, toaddlowPS, cur_client, bestlowscorePS, cur_score))
+                    if(SecondIsBetterClient(bPaybackCheck, toaddlowPS, cur_client, bestlowscorePS, cur_score))
 //						if (cur_score > bestlowscorePS)
 //<<< WiZaRd::Payback First
-                        {
-                            // it is more worthy, keep it
-                            bestlowscorePS = cur_score;
-                            toaddlowPS = cur_client;
-                        }
+                    {
+                        // it is more worthy, keep it
+                        bestlowscorePS = cur_score;
+                        toaddlowPS = cur_client;
                     }
                 }
             }
-            else
-            {
+        }
+        else
+        {
 //>>> WiZaRd::Payback First
-                if(SecondIsBetterClient(bPaybackCheck, toadd, cur_client, bestscore, cur_score))
+            if(SecondIsBetterClient(bPaybackCheck, toadd, cur_client, bestscore, cur_score))
 //				if (cur_score > bestscore)
 //<<< WiZaRd::Payback First
+            {
+                //if our upload tries failed at least 3 times in a row we will only grant a slot while being connected already
+                //that way, we hopefully ensure a successful upload session
+                if(cur_client->GetAntiLeechData()
+                        && cur_client->GetAntiLeechData()->ShouldntUploadForBadSessions())
                 {
-                    //if our upload tries failed at least 3 times in a row we will only grant a slot while being connected already
-                    //that way, we hopefully ensure a successful upload session
-                    if(cur_client->GetAntiLeechData()
-                            && cur_client->GetAntiLeechData()->ShouldntUploadForBadSessions())
+                    if(cur_client->socket && cur_client->socket->IsConnected())
                     {
-                        if(cur_client->socket && cur_client->socket->IsConnected())
-                        {
-                            bestscore = cur_score;
-                            toadd = cur_client;
-                        }
-                        continue;
-                    }
-
-                    // cur_client is more worthy than current best client that is ready to go (connected).
-                    if(!cur_client->HasLowID() || (cur_client->socket && cur_client->socket->IsConnected()))
-                    {
-                        // this client is a HighID or a lowID client that is ready to go (connected)
-                        // and it is more worthy
                         bestscore = cur_score;
                         toadd = cur_client;
-                        //newclient = waitinglist.GetAt(toadd);
                     }
-                    else if(!cur_client->m_bAddNextConnect)
-                    {
-                        // this client is a lowID client that is not ready to go (not connected)
+                    continue;
+                }
 
-                        // now that we know this client is not ready to go, compare it to the best not ready client
-                        // the best not ready client may be better than the best ready client, so we need to check
-                        // against that client
+                // cur_client is more worthy than current best client that is ready to go (connected).
+                if(!cur_client->HasLowID() || (cur_client->socket && cur_client->socket->IsConnected()))
+                {
+                    // this client is a HighID or a lowID client that is ready to go (connected)
+                    // and it is more worthy
+                    bestscore = cur_score;
+                    toadd = cur_client;
+                    //newclient = waitinglist.GetAt(toadd);
+                }
+                else if(!cur_client->m_bAddNextConnect)
+                {
+                    // this client is a lowID client that is not ready to go (not connected)
+
+                    // now that we know this client is not ready to go, compare it to the best not ready client
+                    // the best not ready client may be better than the best ready client, so we need to check
+                    // against that client
 //>>> WiZaRd::Payback First
-                        if(SecondIsBetterClient(bPaybackCheck, toaddlow, cur_client, bestlowscore, cur_score))
+                    if(SecondIsBetterClient(bPaybackCheck, toaddlow, cur_client, bestlowscore, cur_score))
 //						if (cur_score > bestlowscore)
 //<<< WiZaRd::Payback First
-                        {
-                            // it is more worthy, keep it
-                            bestlowscore = cur_score;
-                            toaddlow = cur_client;
-                            //lowclient = waitinglist.GetAt(toaddlow);
-                        }
+                    {
+                        // it is more worthy, keep it
+                        bestlowscore = cur_score;
+                        toaddlow = cur_client;
+                        //lowclient = waitinglist.GetAt(toaddlow);
                     }
                 }
             }
@@ -746,9 +755,7 @@ bool CUploadQueue::ForceNewClient(bool allowEmptyWaitingQueue)
         return true;
 
     if(!AcceptNewClient(curUploadSlots) || !theApp.lastCommonRouteFinder->AcceptNewClient())   // UploadSpeedSense can veto a new slot if USS enabled
-    {
         return false;
-    }
 
     uint16 MaxSpeed;
     if (thePrefs.IsDynUpEnabled())
@@ -756,19 +763,20 @@ bool CUploadQueue::ForceNewClient(bool allowEmptyWaitingQueue)
     else
         MaxSpeed = thePrefs.GetMaxUpload();
 
-    uint32 upPerClient = GetClientDataRate();
+	UINT origUpPerClient = GetClientDataRate();
+	UINT upPerClient = origUpPerClient;
 
     // if throttler doesn't require another slot, go with a slightly more restrictive method
     if( MaxSpeed > 20 || MaxSpeed == UNLIMITED)
         upPerClient += datarate/43;
 
 //>>> WiZaRd::Dynamic Datarate
-//    if( upPerClient > 7680 )
-//        upPerClient = 7680;
+	const UINT checkUp = UINT(2.5 * origUpPerClient);
+    if(upPerClient >  checkUp)
+        upPerClient = checkUp;
 //<<< WiZaRd::Dynamic Datarate
 
     //now the final check
-
     if ( MaxSpeed == UNLIMITED )
     {
         if (curUploadSlots < (datarate/upPerClient))
@@ -1019,11 +1027,17 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
         client->SendPacket(packet, true);
         return;
     }
-    if (waitinglist.IsEmpty() && ForceNewClient(true))
-    {
-        AddUpNextClient(_T("Direct add with empty queue."), client);
-    }
-    else
+//>>> WiZaRd::Startup Flood Prevention
+	//Requested by James R. Bath
+	//http://forum.emule-project.net/index.php?showtopic=101181
+/*
+	if (waitinglist.IsEmpty() && ForceNewClient(true))
+	{
+		AddUpNextClient(_T("Direct add with empty queue."), client);
+	}
+	else
+*/
+//<<< WiZaRd::Startup Flood Prevention
     {
         m_bStatisticsWaitingListDirty = true;
         waitinglist.AddTail(client);
@@ -1219,8 +1233,7 @@ VOID CALLBACK CUploadQueue::UploadTimer(HWND /*hwnd*/, UINT /*uMsg*/, UINT_PTR /
 
         // Elandal:ThreadSafeLogging -->
         // other threads may have queued up log lines. This prints them.
-        theApp.HandleDebugLogQueue();
-        theApp.HandleLogQueue();
+        theApp.HandleLogQueues();
         // Elandal: ThreadSafeLogging <--
 
         // ZZ:UploadSpeedSense -->

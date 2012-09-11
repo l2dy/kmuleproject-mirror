@@ -53,15 +53,6 @@ public:
     {
         return timeDownloads + time_thisDownload;
     }
-    uint32	GetServerDuration()
-    {
-        return timeServerDuration + time_thisServerDuration;
-    }
-    void	Add2TotalServerDuration()
-    {
-        timeServerDuration += time_thisServerDuration;
-        time_thisServerDuration = 0;
-    }
     void	UpdateConnectionStats(float uploadrate, float downloadrate);
 
 
@@ -81,12 +72,6 @@ public:
         m_nDownDataRateMSOverhead += data;
         m_nDownDataOverheadFileRequest += data;
         m_nDownDataOverheadFileRequestPackets++;
-    }
-    void	AddDownDataOverheadServer(uint32 data)
-    {
-        m_nDownDataRateMSOverhead += data;
-        m_nDownDataOverheadServer += data;
-        m_nDownDataOverheadServerPackets++;
     }
     void	AddDownDataOverheadOther(uint32 data)
     {
@@ -116,10 +101,6 @@ public:
     {
         return m_nDownDataOverheadFileRequest;
     }
-    uint64	GetDownDataOverheadServer()
-    {
-        return m_nDownDataOverheadServer;
-    }
     uint64	GetDownDataOverheadKad()
     {
         return m_nDownDataOverheadKad;
@@ -135,10 +116,6 @@ public:
     uint64	GetDownDataOverheadFileRequestPackets()
     {
         return m_nDownDataOverheadFileRequestPackets;
-    }
-    uint64	GetDownDataOverheadServerPackets()
-    {
-        return m_nDownDataOverheadServerPackets;
     }
     uint64	GetDownDataOverheadKadPackets()
     {
@@ -166,12 +143,6 @@ public:
         m_nUpDataRateMSOverhead += data;
         m_nUpDataOverheadFileRequest += data;
         m_nUpDataOverheadFileRequestPackets++;
-    }
-    void	AddUpDataOverheadServer(uint32 data)
-    {
-        m_nUpDataRateMSOverhead += data;
-        m_nUpDataOverheadServer += data;
-        m_nUpDataOverheadServerPackets++;
     }
     void	AddUpDataOverheadKad(uint32 data)
     {
@@ -202,10 +173,6 @@ public:
     {
         return m_nUpDataOverheadFileRequest;
     }
-    uint64	GetUpDataOverheadServer()
-    {
-        return m_nUpDataOverheadServer;
-    }
     uint64	GetUpDataOverheadKad()
     {
         return m_nUpDataOverheadKad;
@@ -221,10 +188,6 @@ public:
     uint64	GetUpDataOverheadFileRequestPackets()
     {
         return m_nUpDataOverheadFileRequestPackets;
-    }
-    uint64	GetUpDataOverheadServerPackets()
-    {
-        return m_nUpDataOverheadServerPackets;
     }
     uint64	GetUpDataOverheadKadPackets()
     {
@@ -258,8 +221,6 @@ public:
     static uint32	time_thisTransfer;
     static uint32	time_thisDownload;
     static uint32	time_thisUpload;
-    static uint32	timeServerDuration;
-    static uint32	time_thisServerDuration;
     static DWORD	m_dwOverallStatus;
     static float	m_fGlobalDone;
     static float	m_fGlobalSize;
@@ -267,9 +228,7 @@ public:
     static uint64	sessionReceivedBytes;
     static uint64	sessionSentBytes;
     static uint64	sessionSentBytesToFriend;
-    static uint16	reconnects;
     static DWORD	transferStarttime;
-    static DWORD	serverConnectTime;
     static uint32	filteredclients;
     static DWORD	starttime;
 
@@ -288,8 +247,6 @@ private:
     static uint64	m_nDownDataOverheadSourceExchangePackets;
     static uint64	m_nDownDataOverheadFileRequest;
     static uint64	m_nDownDataOverheadFileRequestPackets;
-    static uint64	m_nDownDataOverheadServer;
-    static uint64	m_nDownDataOverheadServerPackets;
     static uint64	m_nDownDataOverheadKad;
     static uint64	m_nDownDataOverheadKadPackets;
     static uint64	m_nDownDataOverheadOther;
@@ -301,8 +258,6 @@ private:
     static uint64	m_nUpDataOverheadSourceExchangePackets;
     static uint64	m_nUpDataOverheadFileRequest;
     static uint64	m_nUpDataOverheadFileRequestPackets;
-    static uint64	m_nUpDataOverheadServer;
-    static uint64	m_nUpDataOverheadServerPackets;
     static uint64	m_nUpDataOverheadKad;
     static uint64	m_nUpDataOverheadKadPackets;
     static uint64	m_nUpDataOverheadOther;

@@ -1974,26 +1974,21 @@ void CemuleApp::QueueLogLineEx(UINT uFlags, LPCTSTR line, ...)
     m_queueLock.Unlock();
 }
 
-void CemuleApp::HandleDebugLogQueue()
+void CemuleApp::HandleLogQueues()
 {
     m_queueLock.Lock();
+	while (!m_QueueLog.IsEmpty())
+	{
+		const SLogItem* newItem = m_QueueLog.RemoveHead();
+		Log(newItem->uFlags, _T("%s"), newItem->line);
+		delete newItem;
+	}
+
     while (!m_QueueDebugLog.IsEmpty())
     {
         const SLogItem* newItem = m_QueueDebugLog.RemoveHead();
         if (thePrefs.GetVerbose())
             Log(newItem->uFlags, _T("%s"), newItem->line);
-        delete newItem;
-    }
-    m_queueLock.Unlock();
-}
-
-void CemuleApp::HandleLogQueue()
-{
-    m_queueLock.Lock();
-    while (!m_QueueLog.IsEmpty())
-    {
-        const SLogItem* newItem = m_QueueLog.RemoveHead();
-        Log(newItem->uFlags, _T("%s"), newItem->line);
         delete newItem;
     }
     m_queueLock.Unlock();
@@ -2101,16 +2096,6 @@ void CemuleApp::CreateAllFonts()
     LPLOGFONT plfHyperText = thePrefs.GetHyperTextLogFont();
     if (plfHyperText==NULL || plfHyperText->lfFaceName[0]==L'\0' || !m_fontHyperText.CreateFontIndirect(plfHyperText))
         CreatePointFont(m_fontHyperText, 10 * 10, lfDefault.lfFaceName);
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Verbose Log-font
-    //
-    // Why can't this font set via the font dialog??
-//	HFONT hFontMono = CreateFont(10, 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, _T("Lucida Console"));
-//	m_fontLog.Attach(hFontMono);
-    LPLOGFONT plfLog = thePrefs.GetLogFont();
-    if (plfLog!=NULL && plfLog->lfFaceName[0]!=L'\0')
-        m_fontLog.CreateFontIndirect(plfLog);
 
     ///////////////////////////////////////////////////////////////////////////
     // Font used for Message and IRC edit control, default font, just a little
@@ -2357,3 +2342,18 @@ CString  CemuleApp::GetClientVersionStringBase(const bool bDebug) const
     return _T("eMule v") + (bDebug ? m_strCurVersionLongDbg : m_strCurVersionLong);
 }
 //<<< WiZaRd::Easy ModVersion
+
+//>>> WiZaRd::Save CPU & WINE
+BOOL CemuleApp::OnIdle(LONG lCount)
+{
+	static DWORD dwLastCheck[2] = {0};
+	int index = (lCount <= 0) ? 0 : 1;
+	DWORD dwNow = GetTickCount();
+	if (dwNow - dwLastCheck[index] >= SEC2MS(5))
+	{
+		dwLastCheck[index] = dwNow;
+		return CWinApp::OnIdle(lCount);
+	}
+	return FALSE;
+}
+//<<< WiZaRd::Save CPU & WINE

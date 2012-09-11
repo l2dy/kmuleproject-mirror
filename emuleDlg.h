@@ -107,7 +107,6 @@ public:
     void StopTimer();
     void DoVersioncheck(bool manual);
     void ApplyHyperTextFont(LPLOGFONT pFont);
-    void ApplyLogFont(LPLOGFONT pFont);
     void ProcessED2KLink(LPCTSTR pszData);
     void SetStatusBarPartsSize();
     int ShowPreferences(UINT uStartPageID = (UINT)-1);

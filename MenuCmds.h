@@ -197,6 +197,12 @@
 //>>> WiZaRd::PowerShare
 #define MP_POWERSHARE_ON        15000
 #define MP_POWERSHARE_OFF       15001
+//<<< WiZaRd::PowerShare
+//>>> WiZaRd::AutoHL
+#define MP_AUTOHL_ON			15002
+#define MP_AUTOHL_OFF			15003
+//<<< WiZaRd::AutoHL
+//>>> WiZaRd::PowerShare
 #define MP_PRIOVERYLOW			15320
 #define MP_PRIOLOW				15321
 #define MP_PRIONORMAL			15322

@@ -247,17 +247,12 @@ public:
     static	float	cumConnMaxAvgUpRate;
     static	float	cumConnMaxUpRate;
     static	time_t	cumConnRunTime;
-    static	uint32	cumConnNumReconnects;
     static	uint32	cumConnAvgConnections;
     static	uint32	cumConnMaxConnLimitReached;
     static	uint32	cumConnPeakConnections;
     static	uint32	cumConnTransferTime;
     static	uint32	cumConnDownloadTime;
     static	uint32	cumConnUploadTime;
-
-    // Saved records for network...
-    static	uint32	cumSrvrsMostUsersOnline;
-    static	uint32	cumSrvrsMostFilesAvail;
 
     // Saved records for shared files...
     static	uint32	cumSharedMostFilesShared;
@@ -311,8 +306,6 @@ public:
     static	bool	m_bAutoStart;
     static	bool	m_bRestoreLastMainWndDlg;
     static	int		m_iLastMainWndDlgID;
-    static	bool	m_bRestoreLastLogPane;
-    static	int		m_iLastLogPaneID;
     static	UINT	MaxConperFive;
     static	bool	m_bSparsePartFiles;
     static	CString	m_strYourHostname;
@@ -1135,10 +1128,6 @@ public:
     {
         return cumConnRunTime;
     }
-    static	uint32	GetConnNumReconnects()
-    {
-        return cumConnNumReconnects;
-    }
     static	uint32	GetConnAvgConnections()
     {
         return cumConnAvgConnections;
@@ -1162,16 +1151,6 @@ public:
     static	uint32	GetConnUploadTime()
     {
         return cumConnUploadTime;
-    }
-
-    // Saved records for network
-    static	uint32	GetSrvrsMostUsersOnline()
-    {
-        return cumSrvrsMostUsersOnline;
-    }
-    static	uint32	GetSrvrsMostFilesAvail()
-    {
-        return cumSrvrsMostFilesAvail;
     }
 
     // Saved records for shared files
@@ -1462,19 +1441,6 @@ public:
     static	void	SetLastMainWndDlgID(int iID)
     {
         m_iLastMainWndDlgID = iID;
-    }
-
-    static	bool	GetRestoreLastLogPane()
-    {
-        return m_bRestoreLastLogPane;
-    }
-    static	int		GetLastLogPaneID()
-    {
-        return m_iLastLogPaneID;
-    }
-    static	void	SetLastLogPaneID(int iID)
-    {
-        m_iLastLogPaneID = iID;
     }
 
     static	bool	GetPreviewPrio()
@@ -2355,6 +2321,31 @@ private:
 public:
 	static	bool	GetUseSimpleProgress()					{return m_bUseSimpleProgress;}
 //<<< WiZaRd::SimpleProgress
+//>>> WiZaRd::AntiFake
+private:
+	static	uint8	m_uiSpamFilterMode;
+public:
+	static	uint8	GetSpamFilterMode()						{return m_uiSpamFilterMode;}
+//<<< WiZaRd::AntiFake
+//>>> WiZaRd::AutoHL
+private:
+	static  uint16	m_iMinAutoHL;
+	static	uint16	m_iMaxAutoHL;
+	static	uint16	m_iMaxSourcesHL;
+	static	sint8	m_iUseAutoHL;
+	static	uint16	m_iAutoHLUpdateTimer;
+public:
+	static	uint16	GetAutoHLUpdateTimer()			{return m_iAutoHLUpdateTimer;}
+	static	void	SetAutoHLUpdateTimer(const uint16 i)	{m_iAutoHLUpdateTimer = i;}
+	static  uint16	GetMinAutoHL()					{return m_iMinAutoHL;}
+	static  void	SetMinAutoHL(const uint16 i)	{m_iMinAutoHL = i;}
+	static	uint16	GetMaxAutoHL()					{return m_iMaxAutoHL;}
+	static	void	SetMaxAutoHL(const uint16 i)	{m_iMaxAutoHL = i;}
+	static  uint16  GetMaxSourcesHL()				{return m_iMaxSourcesHL;}
+	static	void	SetMaxSourcesHL(const uint16 i)	{m_iMaxSourcesHL = i;}
+	static	sint8	IsUseAutoHL()					{return m_iUseAutoHL;}
+	static	void	SetUseAutoHL(const sint8& i)	{m_iUseAutoHL = i;}
+//<<< WiZaRd::AutoHL
 };
 
 extern CPreferences thePrefs;

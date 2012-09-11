@@ -58,16 +58,12 @@ uint32	CStatistics::start_timeUploads;
 uint32	CStatistics::time_thisTransfer;
 uint32	CStatistics::time_thisDownload;
 uint32	CStatistics::time_thisUpload;
-uint32	CStatistics::timeServerDuration;
-uint32	CStatistics::time_thisServerDuration;
 uint32	CStatistics::m_nDownDatarateOverhead;
 uint32	CStatistics::m_nDownDataRateMSOverhead;
 uint64	CStatistics::m_nDownDataOverheadSourceExchange;
 uint64	CStatistics::m_nDownDataOverheadSourceExchangePackets;
 uint64	CStatistics::m_nDownDataOverheadFileRequest;
 uint64	CStatistics::m_nDownDataOverheadFileRequestPackets;
-uint64	CStatistics::m_nDownDataOverheadServer;
-uint64	CStatistics::m_nDownDataOverheadServerPackets;
 uint64	CStatistics::m_nDownDataOverheadKad;
 uint64	CStatistics::m_nDownDataOverheadKadPackets;
 uint64	CStatistics::m_nDownDataOverheadOther;
@@ -78,8 +74,6 @@ uint64	CStatistics::m_nUpDataOverheadSourceExchange;
 uint64	CStatistics::m_nUpDataOverheadSourceExchangePackets;
 uint64	CStatistics::m_nUpDataOverheadFileRequest;
 uint64	CStatistics::m_nUpDataOverheadFileRequestPackets;
-uint64	CStatistics::m_nUpDataOverheadServer;
-uint64	CStatistics::m_nUpDataOverheadServerPackets;
 uint64	CStatistics::m_nUpDataOverheadKad;
 uint64	CStatistics::m_nUpDataOverheadKadPackets;
 uint64	CStatistics::m_nUpDataOverheadOther;
@@ -94,9 +88,7 @@ DWORD	CStatistics::m_dwOverallStatus;
 uint64	CStatistics::sessionReceivedBytes;
 uint64	CStatistics::sessionSentBytes;
 uint64	CStatistics::sessionSentBytesToFriend;
-uint16	CStatistics::reconnects;
 DWORD	CStatistics::transferStarttime;
-DWORD	CStatistics::serverConnectTime;
 uint32	CStatistics::filteredclients;
 DWORD	CStatistics::starttime;
 
@@ -124,15 +116,11 @@ CStatistics::CStatistics()
     time_thisTransfer =		0;
     time_thisDownload =		0;
     time_thisUpload =		0;
-    timeServerDuration =	0;
-    time_thisServerDuration=0;
 
     sessionReceivedBytes=0;
     sessionSentBytes=0;
     sessionSentBytesToFriend=0;
-    reconnects=0;
     transferStarttime=0;
-    serverConnectTime=0;
     filteredclients=0;
     starttime=0;
 
@@ -145,8 +133,6 @@ CStatistics::CStatistics()
     m_nDownDataOverheadSourceExchangePackets =	0;
     m_nDownDataOverheadFileRequest =			0;
     m_nDownDataOverheadFileRequestPackets =		0;
-    m_nDownDataOverheadServer =					0;
-    m_nDownDataOverheadServerPackets =			0;
     m_nDownDataOverheadKad =					0;
     m_nDownDataOverheadKadPackets =				0;
     m_nDownDataOverheadOther =					0;
@@ -159,8 +145,6 @@ CStatistics::CStatistics()
     m_nUpDataOverheadSourceExchangePackets = 0;
     m_nUpDataOverheadFileRequest = 0;
     m_nUpDataOverheadFileRequestPackets = 0;
-    m_nUpDataOverheadServer = 0;
-    m_nUpDataOverheadServerPackets = 0;
     m_nUpDataOverheadKad = 0;
     m_nUpDataOverheadKadPackets = 0;
     m_nUpDataOverheadOther = 0;
@@ -261,12 +245,6 @@ void CStatistics::UpdateConnectionStats(float uploadrate, float downloadrate)
         time_thisDownload = 0;
         start_timeDownloads = 0;
     }
-
-    // Server Durations
-    if (theStats.serverConnectTime == 0)
-        time_thisServerDuration = 0;
-    else
-        time_thisServerDuration = (GetTickCount() - theStats.serverConnectTime) / 1000;
 }
 
 void CStatistics::RecordRate()

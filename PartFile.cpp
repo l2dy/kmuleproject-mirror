@@ -284,7 +284,13 @@ void CPartFile::Init()
     srcarevisible = false;
     memset(m_anStates,0,sizeof(m_anStates));
     datarate = 0;
-    m_uMaxSources = 0;
+//>>> WiZaRd::AutoHL
+//	m_uMaxSources = 0;
+	m_uMaxSources = thePrefs.GetMaxSourcePerFileDefault();	
+	m_iUpdateHL = ::GetTickCount();
+	m_bUseAutoHL = thePrefs.IsUseAutoHL() == 1;
+	m_uiSrcCount = 0;
+//<<< WiZaRd::AutoHL
     m_bMD4HashsetNeeded = true;
     m_bAICHPartHashsetNeeded = true;
     count = 0;
@@ -925,318 +931,333 @@ EPartFileLoadResult CPartFile::LoadPartFile(LPCTSTR in_directory,LPCTSTR in_file
             {
                 switch (newtag->GetNameID())
                 {
-                case FT_FILENAME:
-                {
-                    if (!newtag->IsStr())
-                    {
-                        LogError(LOG_STATUSBAR, GetResString(IDS_ERR_METCORRUPT), m_partmetfilename, GetFileName());
-                        delete newtag;
-                        return PLR_FAILED_METFILE_CORRUPT;
-                    }
-                    if (GetFileName().IsEmpty())
-                        SetFileName(newtag->GetStr());
-                    delete newtag;
-                    break;
-                }
-                case FT_LASTSEENCOMPLETE:
-                {
-                    ASSERT( newtag->IsInt() );
-                    if (newtag->IsInt())
-                        lastseencomplete = newtag->GetInt();
-                    delete newtag;
-                    break;
-                }
-                case FT_FILESIZE:
-                {
-                    ASSERT( newtag->IsInt64(true) );
-                    if (newtag->IsInt64(true))
-                        SetFileSize(newtag->GetInt64());
-                    delete newtag;
-                    break;
-                }
-                case FT_TRANSFERRED:
-                {
-                    ASSERT( newtag->IsInt64(true) );
-                    if (newtag->IsInt64(true))
-                        m_uTransferred = newtag->GetInt64();
-                    delete newtag;
-                    break;
-                }
-                case FT_COMPRESSION:
-                {
-                    ASSERT( newtag->IsInt64(true) );
-                    if (newtag->IsInt64(true))
-                        m_uCompressionGain = newtag->GetInt64();
-                    delete newtag;
-                    break;
-                }
-                case FT_CORRUPTED:
-                {
-                    ASSERT( newtag->IsInt64() );
-                    if (newtag->IsInt64())
-                        m_uCorruptionLoss = newtag->GetInt64();
-                    delete newtag;
-                    break;
-                }
-                case FT_FILETYPE:
-                {
-                    ASSERT( newtag->IsStr() );
-                    if (newtag->IsStr())
-                        SetFileType(newtag->GetStr());
-                    delete newtag;
-                    break;
-                }
-                case FT_CATEGORY:
-                {
-                    ASSERT( newtag->IsInt() );
-                    if (newtag->IsInt())
-                        m_category = newtag->GetInt();
-                    delete newtag;
-                    break;
-                }
-                case FT_MAXSOURCES:
-                {
-                    ASSERT( newtag->IsInt() );
-                    if (newtag->IsInt())
-                        m_uMaxSources = newtag->GetInt();
-                    delete newtag;
-                    break;
-                }
-                case FT_DLPRIORITY:
-                {
-                    ASSERT( newtag->IsInt() );
-                    if (newtag->IsInt())
-                    {
-                        if (!isnewstyle)
-                        {
-                            m_iDownPriority = (uint8)newtag->GetInt();
-                            if( m_iDownPriority == PR_AUTO )
-                            {
-                                m_iDownPriority = PR_HIGH;
-                                SetAutoDownPriority(true);
-                            }
-                            else
-                            {
-                                if (m_iDownPriority != PR_LOW && m_iDownPriority != PR_NORMAL && m_iDownPriority != PR_HIGH)
-                                    m_iDownPriority = PR_NORMAL;
-                                SetAutoDownPriority(false);
-                            }
-                        }
-                    }
-                    delete newtag;
-                    break;
-                }
-                case FT_STATUS:
-                {
-                    ASSERT( newtag->IsInt() );
-                    if (newtag->IsInt())
-                    {
-                        paused = newtag->GetInt()!=0;
-                        stopped = paused;
-                    }
-                    delete newtag;
-                    break;
-                }
-                case FT_ULPRIORITY:
-                {
-                    ASSERT( newtag->IsInt() );
-                    if (newtag->IsInt())
-                    {
-                        if (!isnewstyle)
-                        {
-                            int iUpPriority = newtag->GetInt();
-                            if( iUpPriority == PR_AUTO )
-                            {
-                                SetUpPriority(PR_HIGH, false);
-                                SetAutoUpPriority(true);
-                            }
-                            else
-                            {
-                                if (iUpPriority != PR_VERYLOW && iUpPriority != PR_LOW && iUpPriority != PR_NORMAL && iUpPriority != PR_HIGH && iUpPriority != PR_VERYHIGH)
-                                    iUpPriority = PR_NORMAL;
-                                SetUpPriority((uint8)iUpPriority, false);
-                                SetAutoUpPriority(false);
-                            }
-                        }
-                    }
-                    delete newtag;
-                    break;
-                }
-                case FT_KADLASTPUBLISHSRC:
-                {
-                    ASSERT( newtag->IsInt() );
-                    if (newtag->IsInt())
-                    {
-                        SetLastPublishTimeKadSrc(newtag->GetInt(), 0);
-                        if(GetLastPublishTimeKadSrc() > (uint32)time(NULL)+KADEMLIAREPUBLISHTIMES)
-                        {
-                            //There may be a posibility of an older client that saved a random number here.. This will check for that..
-                            SetLastPublishTimeKadSrc(0,0);
-                        }
-                    }
-                    delete newtag;
-                    break;
-                }
-                case FT_KADLASTPUBLISHNOTES:
-                {
-                    ASSERT( newtag->IsInt() );
-                    if (newtag->IsInt())
-                    {
-                        SetLastPublishTimeKadNotes(newtag->GetInt());
-                    }
-                    delete newtag;
-                    break;
-                }
-                case FT_DL_PREVIEW:
-                {
-                    ASSERT( newtag->IsInt() );
-                    SetPreviewPrio(((newtag->GetInt() >>  0) & 0x01) == 1);
-                    SetPauseOnPreview(((newtag->GetInt() >>  1) & 0x01) == 1);
-                    delete newtag;
-                    break;
-                }
+					case FT_FILENAME:
+					{
+						if (!newtag->IsStr())
+						{
+							LogError(LOG_STATUSBAR, GetResString(IDS_ERR_METCORRUPT), m_partmetfilename, GetFileName());
+							delete newtag;
+							return PLR_FAILED_METFILE_CORRUPT;
+						}
+						if (GetFileName().IsEmpty())
+							SetFileName(newtag->GetStr());
+						delete newtag;
+						break;
+					}
+					case FT_LASTSEENCOMPLETE:
+					{
+						ASSERT( newtag->IsInt() );
+						if (newtag->IsInt())
+							lastseencomplete = newtag->GetInt();
+						delete newtag;
+						break;
+					}
+					case FT_FILESIZE:
+					{
+						ASSERT( newtag->IsInt64(true) );
+						if (newtag->IsInt64(true))
+							SetFileSize(newtag->GetInt64());
+						delete newtag;
+						break;
+					}
+					case FT_TRANSFERRED:
+					{
+						ASSERT( newtag->IsInt64(true) );
+						if (newtag->IsInt64(true))
+							m_uTransferred = newtag->GetInt64();
+						delete newtag;
+						break;
+					}
+					case FT_COMPRESSION:
+					{
+						ASSERT( newtag->IsInt64(true) );
+						if (newtag->IsInt64(true))
+							m_uCompressionGain = newtag->GetInt64();
+						delete newtag;
+						break;
+					}
+					case FT_CORRUPTED:
+					{
+						ASSERT( newtag->IsInt64() );
+						if (newtag->IsInt64())
+							m_uCorruptionLoss = newtag->GetInt64();
+						delete newtag;
+						break;
+					}
+					case FT_FILETYPE:
+					{
+						ASSERT( newtag->IsStr() );
+						if (newtag->IsStr())
+							SetFileType(newtag->GetStr());
+						delete newtag;
+						break;
+					}
+					case FT_CATEGORY:
+					{
+						ASSERT( newtag->IsInt() );
+						if (newtag->IsInt())
+							m_category = newtag->GetInt();
+						delete newtag;
+						break;
+					}
+					case FT_MAXSOURCES:
+					{
+						ASSERT( newtag->IsInt() );
+						if (newtag->IsInt())
+							m_uMaxSources = newtag->GetInt();
+						delete newtag;
+						break;
+					}
+					case FT_DLPRIORITY:
+					{
+						ASSERT( newtag->IsInt() );
+						if (newtag->IsInt())
+						{
+							if (!isnewstyle)
+							{
+								m_iDownPriority = (uint8)newtag->GetInt();
+								if( m_iDownPriority == PR_AUTO )
+								{
+									m_iDownPriority = PR_HIGH;
+									SetAutoDownPriority(true);
+								}
+								else
+								{
+									if (m_iDownPriority != PR_LOW && m_iDownPriority != PR_NORMAL && m_iDownPriority != PR_HIGH)
+										m_iDownPriority = PR_NORMAL;
+									SetAutoDownPriority(false);
+								}
+							}
+						}
+						delete newtag;
+						break;
+					}
+					case FT_STATUS:
+					{
+						ASSERT( newtag->IsInt() );
+						if (newtag->IsInt())
+						{
+							paused = newtag->GetInt()!=0;
+							stopped = paused;
+						}
+						delete newtag;
+						break;
+					}
+					case FT_ULPRIORITY:
+					{
+						ASSERT( newtag->IsInt() );
+						if (newtag->IsInt())
+						{
+							if (!isnewstyle)
+							{
+								int iUpPriority = newtag->GetInt();
+								if( iUpPriority == PR_AUTO )
+								{
+									SetUpPriority(PR_HIGH, false);
+									SetAutoUpPriority(true);
+								}
+								else
+								{
+									if (iUpPriority != PR_VERYLOW && iUpPriority != PR_LOW && iUpPriority != PR_NORMAL && iUpPriority != PR_HIGH && iUpPriority != PR_VERYHIGH)
+										iUpPriority = PR_NORMAL;
+									SetUpPriority((uint8)iUpPriority, false);
+									SetAutoUpPriority(false);
+								}
+							}
+						}
+						delete newtag;
+						break;
+					}
+					case FT_KADLASTPUBLISHSRC:
+					{
+						ASSERT( newtag->IsInt() );
+						if (newtag->IsInt())
+						{
+							SetLastPublishTimeKadSrc(newtag->GetInt(), 0);
+							if(GetLastPublishTimeKadSrc() > (uint32)time(NULL)+KADEMLIAREPUBLISHTIMES)
+							{
+								//There may be a posibility of an older client that saved a random number here.. This will check for that..
+								SetLastPublishTimeKadSrc(0,0);
+							}
+						}
+						delete newtag;
+						break;
+					}
+					case FT_KADLASTPUBLISHNOTES:
+					{
+						ASSERT( newtag->IsInt() );
+						if (newtag->IsInt())
+						{
+							SetLastPublishTimeKadNotes(newtag->GetInt());
+						}
+						delete newtag;
+						break;
+					}
+					case FT_DL_PREVIEW:
+					{
+						ASSERT( newtag->IsInt() );
+						SetPreviewPrio(((newtag->GetInt() >>  0) & 0x01) == 1);
+						SetPauseOnPreview(((newtag->GetInt() >>  1) & 0x01) == 1);
+						delete newtag;
+						break;
+					}
 
-                // statistics
-                case FT_ATTRANSFERRED:
-                {
-                    ASSERT( newtag->IsInt() );
-                    if (newtag->IsInt())
-                        statistic.SetAllTimeTransferred(newtag->GetInt());
-                    delete newtag;
-                    break;
-                }
-                case FT_ATTRANSFERREDHI:
-                {
-                    ASSERT( newtag->IsInt() );
-                    if (newtag->IsInt())
-                    {
-                        uint32 hi,low;
-                        low = (UINT)statistic.GetAllTimeTransferred();
-                        hi = newtag->GetInt();
-                        uint64 hi2;
-                        hi2=hi;
-                        hi2=hi2<<32;
-                        statistic.SetAllTimeTransferred(low+hi2);
-                    }
-                    delete newtag;
-                    break;
-                }
-                case FT_ATREQUESTED:
-                {
-                    ASSERT( newtag->IsInt() );
-                    if (newtag->IsInt())
-                        statistic.SetAllTimeRequests(newtag->GetInt());
-                    delete newtag;
-                    break;
-                }
-                case FT_ATACCEPTED:
-                {
-                    ASSERT( newtag->IsInt() );
-                    if (newtag->IsInt())
-                        statistic.SetAllTimeAccepts(newtag->GetInt());
-                    delete newtag;
-                    break;
-                }
+					// statistics
+					case FT_ATTRANSFERRED:
+					{
+						ASSERT( newtag->IsInt() );
+						if (newtag->IsInt())
+							statistic.SetAllTimeTransferred(newtag->GetInt());
+						delete newtag;
+						break;
+					}
+					case FT_ATTRANSFERREDHI:
+					{
+						ASSERT( newtag->IsInt() );
+						if (newtag->IsInt())
+						{
+							uint32 hi,low;
+							low = (UINT)statistic.GetAllTimeTransferred();
+							hi = newtag->GetInt();
+							uint64 hi2;
+							hi2=hi;
+							hi2=hi2<<32;
+							statistic.SetAllTimeTransferred(low+hi2);
+						}
+						delete newtag;
+						break;
+					}
+					case FT_ATREQUESTED:
+					{
+						ASSERT( newtag->IsInt() );
+						if (newtag->IsInt())
+							statistic.SetAllTimeRequests(newtag->GetInt());
+						delete newtag;
+						break;
+					}
+					case FT_ATACCEPTED:
+					{
+						ASSERT( newtag->IsInt() );
+						if (newtag->IsInt())
+							statistic.SetAllTimeAccepts(newtag->GetInt());
+						delete newtag;
+						break;
+					}
 
-                // old tags: as long as they are not needed, take the chance to purge them
-                case FT_PERMISSIONS:
-                    ASSERT( newtag->IsInt() );
-                    delete newtag;
-                    break;
-                case FT_KADLASTPUBLISHKEY:
-                    ASSERT( newtag->IsInt() );
-                    delete newtag;
-                    break;
-                case FT_DL_ACTIVE_TIME:
-                    ASSERT( newtag->IsInt() );
-                    if (newtag->IsInt())
-                        m_nDlActiveTime = newtag->GetInt();
-                    delete newtag;
-                    break;
-                case FT_CORRUPTEDPARTS:
-                    ASSERT( newtag->IsStr() );
-                    if (newtag->IsStr())
-                    {
-                        ASSERT( corrupted_list.GetHeadPosition() == NULL );
-                        CString strCorruptedParts(newtag->GetStr());
-                        int iPos = 0;
-                        CString strPart = strCorruptedParts.Tokenize(_T(","), iPos);
-                        while (!strPart.IsEmpty())
-                        {
-                            UINT uPart;
-                            if (_stscanf(strPart, _T("%u"), &uPart) == 1)
-                            {
-                                if (uPart < GetPartCount() && !IsCorruptedPart(uPart))
-                                    corrupted_list.AddTail((uint16)uPart);
-                            }
-                            strPart = strCorruptedParts.Tokenize(_T(","), iPos);
-                        }
-                    }
-                    delete newtag;
-                    break;
-                case FT_AICH_HASH:
-                {
-                    ASSERT( newtag->IsStr() );
-                    CAICHHash hash;
-                    if (DecodeBase32(newtag->GetStr(), hash) == (UINT)CAICHHash::GetHashSize())
-                    {
-                        m_FileIdentifier.SetAICHHash(hash);
-                        m_pAICHRecoveryHashSet->SetMasterHash(hash, AICH_VERIFIED);
-                    }
-                    else
-                        ASSERT( false );
-                    delete newtag;
-                    break;
-                }
-                case FT_AICHHASHSET:
-                    if (newtag->IsBlob())
-                    {
-                        CSafeMemFile aichHashSetFile(newtag->GetBlob(), newtag->GetBlobSize());
-                        m_FileIdentifier.LoadAICHHashsetFromFile(&aichHashSetFile, false);
-                        aichHashSetFile.Detach();
-                        bHadAICHHashSetTag = true;
-                    }
-                    else
-                        ASSERT( false );
-                    delete newtag;
-                    break;
-                default:
-                {
-                    if (newtag->GetNameID()==0 && (newtag->GetName()[0]==FT_GAPSTART || newtag->GetName()[0]==FT_GAPEND))
-                    {
-                        ASSERT( newtag->IsInt64(true) );
-                        if (newtag->IsInt64(true))
-                        {
-                            Gap_Struct* gap;
-                            UINT gapkey = atoi(&newtag->GetName()[1]);
-                            if (!gap_map.Lookup(gapkey, gap))
-                            {
-                                gap = new Gap_Struct;
-                                gap_map.SetAt(gapkey, gap);
-                                gap->start = (uint64)-1;
-                                gap->end = (uint64)-1;
-                            }
-                            if (newtag->GetName()[0] == FT_GAPSTART)
-                                gap->start = newtag->GetInt64();
-                            if (newtag->GetName()[0] == FT_GAPEND)
-                                gap->end = newtag->GetInt64() - 1;
-                        }
-                        delete newtag;
-                    }
-                    else
-                    {
+					// old tags: as long as they are not needed, take the chance to purge them
+					case FT_PERMISSIONS:
+						ASSERT( newtag->IsInt() );
+						delete newtag;
+						break;
+					case FT_KADLASTPUBLISHKEY:
+						ASSERT( newtag->IsInt() );
+						delete newtag;
+						break;
+					case FT_DL_ACTIVE_TIME:
+						ASSERT( newtag->IsInt() );
+						if (newtag->IsInt())
+							m_nDlActiveTime = newtag->GetInt();
+						delete newtag;
+						break;
+					case FT_CORRUPTEDPARTS:
+						ASSERT( newtag->IsStr() );
+						if (newtag->IsStr())
+						{
+							ASSERT( corrupted_list.GetHeadPosition() == NULL );
+							CString strCorruptedParts(newtag->GetStr());
+							int iPos = 0;
+							CString strPart = strCorruptedParts.Tokenize(_T(","), iPos);
+							while (!strPart.IsEmpty())
+							{
+								UINT uPart;
+								if (_stscanf(strPart, _T("%u"), &uPart) == 1)
+								{
+									if (uPart < GetPartCount() && !IsCorruptedPart(uPart))
+										corrupted_list.AddTail((uint16)uPart);
+								}
+								strPart = strCorruptedParts.Tokenize(_T(","), iPos);
+							}
+						}
+						delete newtag;
+						break;
+					case FT_AICH_HASH:
+					{
+						ASSERT( newtag->IsStr() );
+						CAICHHash hash;
+						if (DecodeBase32(newtag->GetStr(), hash) == (UINT)CAICHHash::GetHashSize())
+						{
+							m_FileIdentifier.SetAICHHash(hash);
+							m_pAICHRecoveryHashSet->SetMasterHash(hash, AICH_VERIFIED);
+						}
+						else
+							ASSERT( false );
+						delete newtag;
+						break;
+					}
+					case FT_AICHHASHSET:
+						if (newtag->IsBlob())
+						{
+							CSafeMemFile aichHashSetFile(newtag->GetBlob(), newtag->GetBlobSize());
+							m_FileIdentifier.LoadAICHHashsetFromFile(&aichHashSetFile, false);
+							aichHashSetFile.Detach();
+							bHadAICHHashSetTag = true;
+						}
+						else
+							ASSERT( false );
+						delete newtag;
+						break;
+					default:
+					{
+						if(newtag->GetNameID() == 0)
+						{
+//>>> WiZaRd::AutoHL	
+							if(strcmp(newtag->GetName(), FT_AUTOHL) == 0)
+							{
+								ASSERT( newtag->IsInt() );
+								if(newtag->IsInt())
+									SetUseAutoHL(newtag->GetInt() == 1);
+								delete newtag;
+								break;
+							}
+//<<< WiZaRd::AutoHL
+//>>> WiZaRd::CollectionEnhancement
+							else if(strcmp(newtag->GetName(), FT_FOLDER) == 0)
+							{
+								ASSERT( newtag->IsStr() );
+								if(newtag->IsStr())
+									SetDownloadDirectory(newtag->GetStr());
+								delete newtag;
+								break;							
+							}
 //<<< WiZaRd::CollectionEnhancement
-                        if(newtag->GetNameID() == 0)
-                        {
-                            const LPCSTR tagname = newtag->GetName();
-                            if(newtag->IsStr() && strcmp(tagname, FT_FOLDER) == 0)
-                                SetDownloadDirectory(newtag->GetStr());
-                        }
-//<<< WiZaRd::CollectionEnhancement
-                        taglist.Add(newtag);
-                    }
-                }
-                }
+							else if(newtag->GetName()[0]==FT_GAPSTART || newtag->GetName()[0]==FT_GAPEND)
+							{
+								ASSERT( newtag->IsInt64(true) );
+								if (newtag->IsInt64(true))
+								{
+									Gap_Struct* gap;
+									UINT gapkey = atoi(&newtag->GetName()[1]);
+									if (!gap_map.Lookup(gapkey, gap))
+									{
+										gap = new Gap_Struct;
+										gap_map.SetAt(gapkey, gap);
+										gap->start = (uint64)-1;
+										gap->end = (uint64)-1;
+									}
+									if (newtag->GetName()[0] == FT_GAPSTART)
+										gap->start = newtag->GetInt64();
+									if (newtag->GetName()[0] == FT_GAPEND)
+										gap->end = newtag->GetInt64() - 1;
+								}
+								delete newtag;
+							}
+							else
+								taglist.Add(newtag);
+						}
+						else
+							taglist.Add(newtag);
+					}
+				}
             }
             else
                 delete newtag;
@@ -1673,12 +1694,24 @@ bool CPartFile::SavePartFile(bool bDontOverrideBak)
             uTagCount++;
         }
 
-        if (m_uMaxSources)
-        {
+//>>> WiZaRd::AutoHL
+		//save it anyways...
+//		if (m_uMaxSources)
+		{
+//<<< WiZaRd::AutoHL
             CTag attag3(FT_MAXSOURCES, m_uMaxSources);
             attag3.WriteTagToFile(&file);
             uTagCount++;
         }
+
+//>>> WiZaRd::AutoHL
+		if(m_bUseAutoHL)
+		{
+			CTag autohl(FT_AUTOHL, 1);
+			autohl.WriteTagToFile(&file);
+			++uTagCount;
+		}
+//<<< WiZaRd::AutoHL
 
         // currupt part infos
         POSITION posCorruptedPart = corrupted_list.GetHeadPosition();
@@ -2806,6 +2839,7 @@ uint32 CPartFile::Process(uint32 reducedownload, UINT icounter/*in percent*/)
         memset(net_stats,0,sizeof(net_stats));
         UINT nCountForState;
 
+		uint16 tmp_counter = 0;  //>>> WiZaRd::AutoHL
         for (POSITION pos = srclist.GetHeadPosition(); pos != NULL;)
         {
             CUpDownClient* cur_src = srclist.GetNext(pos);
@@ -2845,7 +2879,8 @@ uint32 CPartFile::Process(uint32 reducedownload, UINT icounter/*in percent*/)
             switch (cur_src->GetDownloadState())
             {
             case DS_DOWNLOADING:
-            {
+            {				
+				++tmp_counter; //>>> WiZaRd::AutoHL
                 ASSERT( cur_src->socket );
                 if (cur_src->socket)
                 {
@@ -2945,6 +2980,7 @@ uint32 CPartFile::Process(uint32 reducedownload, UINT icounter/*in percent*/)
             case DS_CONNECTING:
             case DS_TOOMANYCONNS:
             case DS_TOOMANYCONNSKAD:
+				++tmp_counter; //>>> WiZaRd::AutoHL
             case DS_NONE:
             case DS_WAITCALLBACK:
             case DS_WAITCALLBACKKAD:
@@ -2999,6 +3035,7 @@ uint32 CPartFile::Process(uint32 reducedownload, UINT icounter/*in percent*/)
             UpdateDisplayedInfo();
             UpdateCompletedInfos();
         }
+		m_uiSrcCount = tmp_counter; //>>> WiZaRd::AutoHL
     }
 
     if ( GetSrcStatisticsValue(DS_DOWNLOADING) != nOldTransSourceCount )
@@ -3010,6 +3047,16 @@ uint32 CPartFile::Process(uint32 reducedownload, UINT icounter/*in percent*/)
         if (thePrefs.ShowCatTabInfos() )
             theApp.emuledlg->transferwnd->UpdateCatTabTitles();
     }
+
+//>>> WiZaRd::AutoHL
+	if(GetStatus() == PS_READY || GetStatus() == PS_EMPTY)
+	{
+		if( m_iUpdateHL 
+			&& dwCurTick > m_iUpdateHL 
+			&& (dwCurTick - m_iUpdateHL) > uint32(SEC2MS(thePrefs.GetAutoHLUpdateTimer())) )
+			SetAutoHL();
+	}
+//<<< WiZaRd::AutoHL
 
     return datarate;
 }
@@ -4084,6 +4131,8 @@ bool CPartFile::CanStopFile() const
 
 void CPartFile::StopFile(bool bCancel, bool resort)
 {
+	m_iUpdateHL = NULL;  //>>> WiZaRd::AutoHL
+
     // Barry - Need to tell any connected clients to stop sending the file
     PauseFile(false, resort);
     m_LastSearchTimeKad = 0;
@@ -4165,6 +4214,8 @@ void CPartFile::PauseFile(bool bInsufficient, bool resort)
     }
     delete packet;
 
+	m_iUpdateHL = NULL;  //>>> WiZaRd::AutoHL
+
     if (bInsufficient)
     {
         LogError(LOG_STATUSBAR, _T("Insufficient diskspace - pausing download of \"%s\""), GetFileName());
@@ -4212,6 +4263,7 @@ void CPartFile::ResumeFile(bool resort)
     }
     paused = false;
     stopped = false;
+	m_iUpdateHL = NULL;  //>>> WiZaRd::AutoHL
     SetActive(theApp.IsConnected());
     m_LastSearchTime = 0;
     if(resort)
@@ -6382,29 +6434,6 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
     //AICH successfully recovered %s of %s from part %u for %s
 }
 
-UINT CPartFile::GetMaxSources() const
-{
-    // Ignore any specified 'max sources' value if not in 'extended mode' -> don't use a parameter which was once
-    // specified in GUI but can not be seen/modified any longer..
-    return (!thePrefs.IsExtControlsEnabled() || m_uMaxSources == 0) ? thePrefs.GetMaxSourcePerFileDefault() : m_uMaxSources;
-}
-
-UINT CPartFile::GetMaxSourcePerFileSoft() const
-{
-    UINT temp = ((UINT)GetMaxSources() * 9L) / 10;
-    if (temp > MAX_SOURCES_FILE_SOFT)
-        return MAX_SOURCES_FILE_SOFT;
-    return temp;
-}
-
-UINT CPartFile::GetMaxSourcePerFileUDP() const
-{
-    UINT temp = ((UINT)GetMaxSources() * 3L) / 4;
-    if (temp > MAX_SOURCES_FILE_UDP)
-        return MAX_SOURCES_FILE_UDP;
-    return temp;
-}
-
 CString CPartFile::GetTempPath() const
 {
     return m_fullname.Left(m_fullname.ReverseFind(_T('\\'))+1);
@@ -6802,3 +6831,71 @@ bool CPartFile::IsNextRequestPossible(const CUpDownClient* sender) const
     return false;
 }
 //<<< WiZaRd::Endgame Improvement
+//>>> WiZaRd::AutoHL
+void CPartFile::SetAutoHL()
+{
+	//Set to avail src + 15% or +15src
+	if(UseAutoHL())
+	{
+		const uint16 usrc = m_uiSrcCount;
+		const uint16 i = (uint16)(usrc*1.15f);
+		SetPrivateMaxSources(max(i, usrc+15));		
+	}
+	m_iUpdateHL = ::GetTickCount();
+}
+
+void CPartFile::SetPrivateMaxSources(UINT i)
+{
+	if(UseAutoHL())
+	{
+#define MINMAX(val, mini, maxi)		{val = (min(max(mini, val), maxi));}
+		//Keep minimum...
+		i = max(i, thePrefs.GetMinAutoHL());	
+		const uint16 m_uiHLCount = (uint16)(theApp.downloadqueue->GetHLCount()-m_uMaxSources); //Save CPU
+		const uint16 m_uiAllowedHL = thePrefs.GetMaxSourcesHL();
+		//the max HL is *either* the min HL if we are always above the limit *or* the remaining src 
+		const uint16 m_uiMaxHL = (m_uiHLCount > m_uiAllowedHL) ? thePrefs.GetMinAutoHL() : min(m_uiAllowedHL-m_uiHLCount, thePrefs.GetMaxAutoHL());
+		//Here, set HL to at least as many srcs as we have actually in queue...	
+		//which is only to keep graphs looking ok - but stay below maximum
+		MINMAX(i, (UINT)srclist.GetCount(), m_uiMaxHL);
+		m_uMaxSources = i;
+	}
+	else
+	{
+		//just to comply with the explanation string :P
+		//use 0 to set default HL from prefs
+		m_uMaxSources = i == 0 ? thePrefs.GetMaxSourcePerFileDefault() : i; 
+	}
+}
+
+UINT CPartFile::GetMaxSources() const
+{
+	return m_uMaxSources;
+}
+
+UINT CPartFile::GetMaxSourcePerFileSoft() const
+{
+	UINT temp = ((UINT)GetMaxSources() * 9L) / 10;
+	//if (temp > MAX_SOURCES_FILE_SOFT)
+	//	return MAX_SOURCES_FILE_SOFT;
+	return temp;
+}
+
+UINT CPartFile::GetMaxSourcePerFileUDP() const
+{	
+	UINT temp = ((UINT)GetMaxSources() * 3L) / 4;
+	//if (temp > MAX_SOURCES_FILE_UDP)
+	//	return MAX_SOURCES_FILE_UDP;
+	return temp;
+}
+
+bool	CPartFile::UseAutoHL()	const
+{
+	return (thePrefs.IsUseAutoHL()>=0 ? thePrefs.IsUseAutoHL() > 0 : m_bUseAutoHL);
+}
+
+void	CPartFile::SetUseAutoHL(const bool b)	
+{
+	m_bUseAutoHL = b;
+}
+//<<< WiZaRd::AutoHL

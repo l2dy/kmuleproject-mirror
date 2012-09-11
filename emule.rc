@@ -3454,6 +3454,7 @@ BEGIN
     IDS_UDP_DISABLED        "UDP disabled"
     IDS_RATIO               "Ratio"
 	IDS_RESTART_NOW_QUESTION "Do you want to restart now?\nPlease note: if you do not restart now, the update won't be ready until you restart kMule!"
+    IDS_AUTOHL              "AutoHL"
 END
 
 #endif    // Englisch (USA) resources
@@ -3480,7 +3481,8 @@ CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "res\\emule.manifest"
 
 #include "version.h"
 #include "res\emule.rc2"
-#include "afxres.rc"
+#include "afxres.rc"
+
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED

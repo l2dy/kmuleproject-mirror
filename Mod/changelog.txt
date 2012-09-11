@@ -113,3 +113,17 @@ Legend:    + added    ~ changed    - removed    ! fixed    > updated
  * UseSimpleProgress=0/1
 + diskspace checks now require min(1GB, max(10MB, 5% of HDD)) [WiZaRd]
 ~ reduced CPU usage for Kad parts [WiZaRd, original by netfinity]
+
+2012XXXX:
+> updated libpng to v1.5.12
+> updated miniupnplib support to v1.7 (30/08/2012)
+> update resizeablelib to v1.4 alpha
+~ removed more (now obsolete) server stat code
++ USS Status Pane [WiZaRd, by Eulero]
+ * http://forum.emule-project.net/index.php?showtopic=150006
+~ improved compatibility of kMule when run under WINE [WiZaRd]
+~ new connection state icons [WiZaRd]
++ the hidden pref entry "SpamFilterMode" can now be used to configure the spam filter feature [WiZaRd]
+ * 0 = disabled, 1 = colored, 2 = autosort, 3 = filtered (not implemented, yet)
++ Startup Flood Prevention [WiZaRd]
++ autoHL [WiZaRd]

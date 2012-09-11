@@ -189,15 +189,12 @@ float	CPreferences::cumConnAvgUpRate;
 float	CPreferences::cumConnMaxAvgUpRate;
 float	CPreferences::cumConnMaxUpRate;
 time_t	CPreferences::cumConnRunTime;
-uint32	CPreferences::cumConnNumReconnects;
 uint32	CPreferences::cumConnAvgConnections;
 uint32	CPreferences::cumConnMaxConnLimitReached;
 uint32	CPreferences::cumConnPeakConnections;
 uint32	CPreferences::cumConnTransferTime;
 uint32	CPreferences::cumConnDownloadTime;
 uint32	CPreferences::cumConnUploadTime;
-uint32	CPreferences::cumSrvrsMostUsersOnline;
-uint32	CPreferences::cumSrvrsMostFilesAvail;
 uint32	CPreferences::cumSharedMostFilesShared;
 uint64	CPreferences::cumSharedLargestShareSize;
 uint64	CPreferences::cumSharedLargestAvgFileSize;
@@ -231,8 +228,6 @@ bool	CPreferences::startMinimized;
 bool	CPreferences::m_bAutoStart;
 bool	CPreferences::m_bRestoreLastMainWndDlg;
 int		CPreferences::m_iLastMainWndDlgID;
-bool	CPreferences::m_bRestoreLastLogPane;
-int		CPreferences::m_iLastLogPaneID;
 UINT	CPreferences::MaxConperFive;
 bool	CPreferences::m_bSparsePartFiles;
 CString	CPreferences::m_strYourHostname;
@@ -402,6 +397,16 @@ bool	CPreferences::m_bSplitWindow;
 //>>> WiZaRd::SimpleProgress
 bool	CPreferences::m_bUseSimpleProgress;
 //<<< WiZaRd::SimpleProgress
+//>>> WiZaRd::AntiFake
+uint8	CPreferences::m_uiSpamFilterMode;
+//<<< WiZaRd::AntiFake
+//>>> WiZaRd::AutoHL
+uint16	CPreferences::m_iAutoHLUpdateTimer;
+uint16	CPreferences::m_iMinAutoHL;
+uint16	CPreferences::m_iMaxAutoHL;
+sint8	CPreferences::m_iUseAutoHL;
+uint16  CPreferences::m_iMaxSourcesHL;
+//<<< WiZaRd::AutoHL
 
 CPreferences::CPreferences()
 {
@@ -864,9 +869,6 @@ void CPreferences::SaveStats(int bBackUp)
     // Overall Run Time
     ini.WriteInt(L"ConnRunTime", (UINT)((GetTickCount() - theStats.starttime)/1000 + GetConnRunTime()));
 
-    // Number of Reconnects
-    ini.WriteInt(L"ConnNumReconnects", (theStats.reconnects>0) ? (theStats.reconnects - 1 + GetConnNumReconnects()) : GetConnNumReconnects());
-
     // Peak Connections
     if (theApp.listensocket->GetPeakConnections() > cumConnPeakConnections)
         cumConnPeakConnections = theApp.listensocket->GetPeakConnections();
@@ -1146,7 +1148,6 @@ void CPreferences::ResetCumulativeStatistics()
     cumConnMaxDownRate=0;
     cumConnAvgUpRate=0;
     cumConnRunTime=0;
-    cumConnNumReconnects=0;
     cumConnAvgConnections=0;
     cumConnMaxConnLimitReached=0;
     cumConnPeakConnections=0;
@@ -1155,8 +1156,6 @@ void CPreferences::ResetCumulativeStatistics()
     cumConnTransferTime=0;
     cumConnMaxAvgUpRate=0;
     cumConnMaxUpRate=0;
-    cumSrvrsMostUsersOnline=0;
-    cumSrvrsMostFilesAvail=0;
     cumSharedMostFilesShared=0;
     cumSharedLargestShareSize=0;
     cumSharedLargestAvgFileSize=0;
@@ -1285,7 +1284,6 @@ bool CPreferences::LoadStats(int loadBackUp)
     cumConnTransferTime				= ini.GetInt(L"ConnTransferTime");
     cumConnDownloadTime				= ini.GetInt(L"ConnDownloadTime");
     cumConnUploadTime				= ini.GetInt(L"ConnUploadTime");
-    cumConnNumReconnects			= ini.GetInt(L"ConnNumReconnects");
     cumConnAvgConnections			= ini.GetInt(L"ConnAvgConnections");
     cumConnMaxConnLimitReached		= ini.GetInt(L"ConnMaxConnLimitReached");
     cumConnPeakConnections			= ini.GetInt(L"ConnPeakConnections");
@@ -1329,10 +1327,6 @@ bool CPreferences::LoadStats(int loadBackUp)
     // Stupid Load -> Just load the values.
     else
     {
-        // Load records for network
-        cumSrvrsMostUsersOnline		= ini.GetInt(L"SrvrsMostUsersOnline");
-        cumSrvrsMostFilesAvail		= ini.GetInt(L"SrvrsMostFilesAvail");
-
         // Load records for shared files
         cumSharedMostFilesShared	= ini.GetInt(L"SharedMostFilesShared");
         cumSharedLargestShareSize	= ini.GetUInt64(L"SharedLargestShareSize");
@@ -1586,7 +1580,6 @@ void CPreferences::SavePreferences()
     ini.WriteBool(L"StartupMinimized",startMinimized);
     ini.WriteBool(L"AutoStart",m_bAutoStart);
     ini.WriteInt(L"LastMainWndDlgID",m_iLastMainWndDlgID);
-    ini.WriteInt(L"LastLogPaneID",m_iLastLogPaneID);
     ini.WriteBool(L"ShowRatesOnTitle",showRatesInTitle);
     ini.WriteBool(L"IndicateRatings",indicateratings);
     ini.WriteBool(L"WatchClipboard4ED2kFilelinks",watchclipboard);
@@ -1763,6 +1756,14 @@ void CPreferences::SavePreferences()
 	myIni.WriteBool(L"SplitWindow", m_bSplitWindow);
 //<<< WiZaRd::Advanced Transfer Window Layout [Stulle]
 	myIni.WriteBool(L"UseSimpleProgress", m_bUseSimpleProgress); //>>> WiZaRd::SimpleProgress
+	myIni.WriteInt(L"SpamFilterMode", m_uiSpamFilterMode); //>>> WiZaRd::AntiFake
+//>>> WiZaRd::AutoHL
+	myIni.WriteInt(L"AutoHLUpdate", m_iAutoHLUpdateTimer);
+	myIni.WriteInt(L"UseAutoHL", m_iUseAutoHL);
+	myIni.WriteInt(L"MinAutoHL", m_iMinAutoHL);
+	myIni.WriteInt(L"MaxAutoHL", m_iMaxAutoHL);
+	myIni.WriteInt(L"MaxSourcesHL", m_iMaxSourcesHL);
+//<<< WiZaRd::AutoHL
 //<<< WiZaRd::Own Prefs
 }
 
@@ -2049,8 +2050,6 @@ void CPreferences::LoadPreferences()
     m_bAutoStart=ini.GetBool(L"AutoStart",false);
     m_bRestoreLastMainWndDlg=ini.GetBool(L"RestoreLastMainWndDlg",false);
     m_iLastMainWndDlgID=ini.GetInt(L"LastMainWndDlgID",0);
-    m_bRestoreLastLogPane=ini.GetBool(L"RestoreLastLogPane",false);
-    m_iLastLogPaneID=ini.GetInt(L"LastLogPaneID",0);
 
     m_bTransflstRemain =ini.GetBool(L"TransflstRemainOrder",false);
     filterlevel=ini.GetInt(L"FilterLevel",127);
@@ -2071,16 +2070,16 @@ void CPreferences::LoadPreferences()
 
     m_bIRCAddTimeStamp = ini.GetBool(L"IRCAddTimestamp", true);
 
-    log2disk = ini.GetBool(L"SaveLogToDisk", true);
+    log2disk = ini.GetBool(L"SaveLogToDisk", false);
     uMaxLogFileSize = ini.GetInt(L"MaxLogFileSize", 1024*1024);
     iMaxLogBuff = ini.GetInt(L"MaxLogBuff",64) * 1024;
     m_iLogFileFormat = (ELogFileFormat)ini.GetInt(L"LogFileFormat", Unicode);
     m_bEnableVerboseOptions=ini.GetBool(L"VerboseOptions", true);
     if (m_bEnableVerboseOptions)
     {
-        m_bVerbose=ini.GetBool(L"Verbose",true);
+        m_bVerbose=ini.GetBool(L"Verbose",false);
         m_bFullVerbose=ini.GetBool(L"FullVerbose",false);
-        debug2disk=ini.GetBool(L"SaveDebugToDisk", true);
+        debug2disk=ini.GetBool(L"SaveDebugToDisk", false);
         m_bDebugSourceExchange=ini.GetBool(L"DebugSourceExchange",false);
         m_bLogBannedClients=ini.GetBool(L"LogBannedClients", true);
         m_bLogRatingDescReceived=ini.GetBool(L"LogRatingDescReceived",true);
@@ -2091,11 +2090,7 @@ void CPreferences::LoadPreferences()
         m_bLogA4AF=ini.GetBool(L"LogA4AF",false); // ZZ:DownloadManager
         m_bLogUlDlEvents=ini.GetBool(L"LogUlDlEvents",true);
     }
-    else
-    {
-        if (m_bRestoreLastLogPane && m_iLastLogPaneID>=2)
-            m_iLastLogPaneID = 1;
-    }
+
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
     // following options are for debugging or when using an external debug device viewer only.
     m_iDebugClientTCPLevel = ini.GetInt(L"DebugClientTCP", 0);
@@ -2269,7 +2264,7 @@ void CPreferences::LoadPreferences()
     m_bPartiallyPurgeOldKnownFiles = ini.GetBool(L"PartiallyPurgeOldKnownFiles", true);
 
     m_bWinaTransToolbar = ini.GetBool(L"WinaTransToolbar", true);
-    m_bShowDownloadToolbar = ini.GetBool(L"ShowDownloadToolbar", true);
+    m_bShowDownloadToolbar = ini.GetBool(L"ShowDownloadToolbar", false);
 
     m_bCryptLayerRequested = ini.GetBool(L"CryptLayerRequested", true);
     m_bCryptLayerRequired = ini.GetBool(L"CryptLayerRequired", false);
@@ -2343,9 +2338,19 @@ void CPreferences::LoadPreferences()
 //>>> WiZaRd::Advanced Transfer Window Layout [Stulle]
 	m_uTransferWnd1 = ini.GetInt(L"TransferWnd1", 1);
 	m_uTransferWnd2 = ini.GetInt(L"TransferWnd2", 1);
-	m_bSplitWindow = ini.GetBool(L"SplitWindow", true);
+	m_bSplitWindow = ini.GetBool(L"SplitWindow", false);
 //<<< WiZaRd::Advanced Transfer Window Layout [Stulle]
 	m_bUseSimpleProgress = myIni.GetBool(L"UseSimpleProgress", true); //>>> WiZaRd::SimpleProgress
+	m_uiSpamFilterMode = (uint8)myIni.GetInt(L"SpamFilterMode", 2); //>>> WiZaRd::AntiFake
+//>>> WiZaRd::AutoHL
+	m_iAutoHLUpdateTimer = (uint16)myIni.GetInt(L"AutoHLUpdate", 60);
+	MINMAX(m_iAutoHLUpdateTimer, 10, 600);
+	m_iUseAutoHL = (sint8)myIni.GetInt(L"UseAutoHL", 1);
+	m_iMinAutoHL = (uint16)myIni.GetInt(L"MinAutoHL", 25);
+	m_iMaxAutoHL = (uint16)myIni.GetInt(L"MaxAutoHL", _UI16_MAX);
+	m_iMaxAutoHL = max(m_iMinAutoHL, m_iMaxAutoHL);
+	m_iMaxSourcesHL = (uint16)myIni.GetInt(L"MaxSourcesHL", _UI16_MAX);
+//<<< WiZaRd::AutoHL
 //<<< WiZaRd::Own Prefs
 
     LoadCats();

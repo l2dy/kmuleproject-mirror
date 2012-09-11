@@ -210,15 +210,12 @@ CemuleDlg::CemuleDlg(CWnd* pParent /*=NULL*/)
     m_uDownDatarate = 0;
     status = 0;
     activewnd = NULL;
-    for (int i = 0; i < _countof(connicons); i++)
+    for (int i = 0; i < _countof(connicons); ++i)
         connicons[i] = NULL;
-    transicons[0] = NULL;
-    transicons[1] = NULL;
-    transicons[2] = NULL;
-    transicons[3] = NULL;
-    imicons[0] = NULL;
-    imicons[1] = NULL;
-    imicons[2] = NULL;
+	for (int i = 0; i < _countof(transicons); ++i)
+		transicons[i] = NULL;
+	for (int i = 0; i < _countof(imicons); ++i)
+		imicons[i] = NULL;
     m_iMsgIcon = 0;
     m_iMsgBlinkState = false;
     m_icoSysTrayConnected = NULL;
@@ -255,17 +252,21 @@ CemuleDlg::~CemuleDlg()
 
     if (m_icoSysTrayCurrent) VERIFY( DestroyIcon(m_icoSysTrayCurrent) );
     if (m_hIcon) VERIFY( ::DestroyIcon(m_hIcon) );
-    for (int i = 0; i < _countof(connicons); i++)
+    for (int i = 0; i < _countof(connicons); ++i)
     {
-        if (connicons[i]) VERIFY( ::DestroyIcon(connicons[i]) );
+        if (connicons[i]) 
+			VERIFY( ::DestroyIcon(connicons[i]) );
     }
-    if (transicons[0]) VERIFY( ::DestroyIcon(transicons[0]) );
-    if (transicons[1]) VERIFY( ::DestroyIcon(transicons[1]) );
-    if (transicons[2]) VERIFY( ::DestroyIcon(transicons[2]) );
-    if (transicons[3]) VERIFY( ::DestroyIcon(transicons[3]) );
-    if (imicons[0]) VERIFY( ::DestroyIcon(imicons[0]) );
-    if (imicons[1]) VERIFY( ::DestroyIcon(imicons[1]) );
-    if (imicons[2]) VERIFY( ::DestroyIcon(imicons[2]) );
+	for (int i = 0; i < _countof(transicons); ++i)
+	{
+		if (transicons[i]) 
+			VERIFY( ::DestroyIcon(transicons[i]) );
+	}
+	for (int i = 0; i < _countof(imicons); ++i)
+	{
+		if (imicons[i]) 
+			VERIFY( ::DestroyIcon(imicons[i]) );
+	}
     if (m_icoSysTrayConnected) VERIFY( ::DestroyIcon(m_icoSysTrayConnected) );
     if (m_icoSysTrayDisconnected) VERIFY( ::DestroyIcon(m_icoSysTrayDisconnected) );
     if (m_icoSysTrayLowID) VERIFY( ::DestroyIcon(m_icoSysTrayLowID) );
@@ -1108,7 +1109,7 @@ void CemuleDlg::ShowPing()
             else
                 buffer.SetString(lastPing.state);
         }
-        statusbar->SetText(buffer, SBarChatMsg, 0);
+        statusbar->SetText(buffer, SBarUSS, 0); //>>> WiZaRd::USS Status Pane [Eulero]
     }
 }
 
@@ -1175,14 +1176,16 @@ void CemuleDlg::SetStatusBarPartsSize()
             ussShift = 45;
         else
             ussShift = 90;
+		ussShift += 23; //>>> WiZaRd::USS Status Pane [Eulero]
     }
 
-    int aiWidths[5] =
+    int aiWidths[6] = //>>> WiZaRd::USS Status Pane [Eulero]
     {
         rect.right - 675 - ussShift,
         rect.right - 440 - ussShift,
         rect.right - 250 - ussShift,
         rect.right -  25 - ussShift,
+		rect.right - ussShift, //>>> WiZaRd::USS Status Pane [Eulero]
         -1
     };
     statusbar->SetParts(_countof(aiWidths), aiWidths);
@@ -2174,9 +2177,10 @@ void CemuleDlg::SetAllIcons()
     //SetIcon(m_hIcon, FALSE);
 
     // connection state
-    for (int i = 0; i < _countof(connicons); i++)
+    for (int i = 0; i < _countof(connicons); ++i)
     {
-        if (connicons[i]) VERIFY( ::DestroyIcon(connicons[i]) );
+        if (connicons[i]) 
+			VERIFY( ::DestroyIcon(connicons[i]) );
     }
     connicons[0] = theApp.LoadIcon(_T("ConnectedNotNot"), 16, 16);
     connicons[1] = theApp.LoadIcon(_T("ConnectedLowLow"), 16, 16);
@@ -2184,10 +2188,11 @@ void CemuleDlg::SetAllIcons()
     ShowConnectionStateIcon();
 
     // transfer state
-    if (transicons[0]) VERIFY( ::DestroyIcon(transicons[0]) );
-    if (transicons[1]) VERIFY( ::DestroyIcon(transicons[1]) );
-    if (transicons[2]) VERIFY( ::DestroyIcon(transicons[2]) );
-    if (transicons[3]) VERIFY( ::DestroyIcon(transicons[3]) );
+	for (int i = 0; i < _countof(transicons); ++i)
+	{
+		if (transicons[i]) 
+			VERIFY( ::DestroyIcon(transicons[i]) );
+	}
     transicons[0] = theApp.LoadIcon(_T("UP0DOWN0"), 16, 16);
     transicons[1] = theApp.LoadIcon(_T("UP0DOWN1"), 16, 16);
     transicons[2] = theApp.LoadIcon(_T("UP1DOWN0"), 16, 16);
@@ -2208,9 +2213,11 @@ void CemuleDlg::SetAllIcons()
     m_icoSysTrayLowID = theApp.LoadIcon(_T("TrayLowID"), 16, 16);
     ShowTransferRate(true);
 
-    if (imicons[0]) VERIFY( ::DestroyIcon(imicons[0]) );
-    if (imicons[1]) VERIFY( ::DestroyIcon(imicons[1]) );
-    if (imicons[2]) VERIFY( ::DestroyIcon(imicons[2]) );
+	for (int i = 0; i < _countof(imicons); ++i)
+	{
+		if (imicons[i]) 
+			VERIFY( ::DestroyIcon(imicons[i]) );
+	}
     imicons[0] = NULL;
     imicons[1] = theApp.LoadIcon(_T("Message"), 16, 16);
     imicons[2] = theApp.LoadIcon(_T("MessagePending"), 16, 16);
@@ -2567,15 +2574,6 @@ void CemuleDlg::ApplyHyperTextFont(LPLOGFONT plf)
     {
         thePrefs.SetHyperTextFont(plf);
         chatwnd->chatselector.UpdateFonts(&theApp.m_fontHyperText);
-    }
-}
-
-void CemuleDlg::ApplyLogFont(LPLOGFONT plf)
-{
-    theApp.m_fontLog.DeleteObject();
-    if (theApp.m_fontLog.CreateFontIndirect(plf))
-    {
-        thePrefs.SetLogFont(plf);
     }
 }
 

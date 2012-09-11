@@ -424,10 +424,6 @@ public:
         lastSwapForSourceExchangeTick = ::GetTickCount();    // ZZ:DownloadManager
     }
 
-    UINT	SetPrivateMaxSources(uint32 in)
-    {
-        return m_uMaxSources = in;
-    }
     UINT	GetPrivateMaxSources() const
     {
         return m_uMaxSources;
@@ -544,4 +540,15 @@ public:
     bool	DropSlowestSource(CUpDownClient* src);
     bool	IsNextRequestPossible(const CUpDownClient* sender) const;
 //<<< WiZaRd::Endgame Improvement
+//>>> WiZaRd::AutoHL
+private:
+	bool	m_bUseAutoHL;
+	UINT	m_iUpdateHL;
+	uint16	m_uiSrcCount;
+public:
+	void	SetPrivateMaxSources(UINT in);
+	bool	UseAutoHL()	const;
+	void	SetUseAutoHL(const bool b);
+	void    SetAutoHL();
+//<<< WiZaRd::AutoHL
 };

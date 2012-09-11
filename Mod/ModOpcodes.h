@@ -16,6 +16,18 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #pragma once
 
+#define MINMAX(val, mini, maxi)		{val = (min(max(mini, val), maxi));}
+
+//>>> WiZaRd::AntiFake
+enum eSpamFilterMode
+{
+	eSFM_Disabled = 0,	// off
+	eSFM_Colored,		// color only
+	eSFM_AutoSort,		// sort automatically (default)
+	eSFM_Filter			// filter suspect entries
+};
+//<<< WiZaRd::AntiFake
+
 //>>> WiZaRd::SharePermissions
 enum eSharePermissions
 {
@@ -26,7 +38,8 @@ enum eSharePermissions
 };
 //<<< WiZaRd::SharePermissions
 
-#define FDC_SENSITIVITY		83	//>>> FDC [BlueSonicBoy]
+#define FDC_SENSITIVITY		83		//>>> FDC [BlueSonicBoy]
+#define FT_AUTOHL		"AUTOHL"	//>>> WiZaRd::AutoHL
 
 //>>> WiZaRd::Check DiskSpace
 #define RESERVE_MAX			1024 //MB

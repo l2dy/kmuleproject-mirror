@@ -61,7 +61,6 @@ END_MESSAGE_MAP()
 CPPgDisplay::CPPgDisplay()
     : CPropertyPage(CPPgDisplay::IDD)
 {
-    m_eSelectFont = sfServer;
 }
 
 CPPgDisplay::~CPPgDisplay()
@@ -294,10 +293,7 @@ UINT CALLBACK CPPgDisplay::ChooseFontHook(HWND hdlg, UINT uiMsg, WPARAM wParam, 
             if (pDlg != NULL)
             {
                 pDlg->GetCurrentFont(&lf);
-                if (s_pThis->m_eSelectFont == sfLog)
-                    theApp.emuledlg->ApplyLogFont(&lf);
-                else
-                    theApp.emuledlg->ApplyHyperTextFont(&lf);
+                theApp.emuledlg->ApplyHyperTextFont(&lf);
             }
         }
         break;
@@ -309,17 +305,8 @@ UINT CALLBACK CPPgDisplay::ChooseFontHook(HWND hdlg, UINT uiMsg, WPARAM wParam, 
 
 void CPPgDisplay::OnBnClickedSelectHypertextFont()
 {
-    if (GetAsyncKeyState(VK_CONTROL) < 0)
-        m_eSelectFont = sfLog;
-    else
-        m_eSelectFont = sfServer;
-
     // get current font description
-    CFont* pFont;
-    if (m_eSelectFont == sfLog)
-        pFont = &theApp.m_fontLog;
-    else
-        pFont = &theApp.m_fontHyperText;
+    CFont* pFont = &theApp.m_fontHyperText;
     LOGFONT lf;
     if (pFont != NULL)
         pFont->GetObject(sizeof(LOGFONT), &lf);
@@ -336,12 +323,7 @@ void CPPgDisplay::OnBnClickedSelectHypertextFont()
     s_pThis = this;
 
     if (dlg.DoModal() == IDOK)
-    {
-        if (m_eSelectFont == sfLog)
-            theApp.emuledlg->ApplyLogFont(&lf);
-        else
-            theApp.emuledlg->ApplyHyperTextFont(&lf);
-    }
+		theApp.emuledlg->ApplyHyperTextFont(&lf);
 
     s_pfnChooseFontHook = NULL;
     s_pThis = NULL;

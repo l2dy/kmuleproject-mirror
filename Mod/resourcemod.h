@@ -34,5 +34,13 @@
 #define IDC_RATIOICON					4014
 //<<< WiZaRd::Ratio Indicator
 #define IDS_RESTART_NOW_QUESTION		4015
+//>>> WiZaRd::AutoHL
+#define	IDS_AUTOHL						4016
+//#define	IDS_USE_AUTOHL					4017
+//#define	IDS_MAX_SOURCES					4018
+//#define	IDS_MAX_PERFILESOURCES			4019
+//#define	IDS_MIN_PERFILESOURCES			4020
+//#define	IDS_AHL_UPDATETIME				4021
+//<<< WiZaRd::AutoHL
 
 // this line is needed or we get a "fatal error RC1004: unexpected end of file found" - thanks for those wonderful bugs, Microsoft!

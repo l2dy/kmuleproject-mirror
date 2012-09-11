@@ -88,7 +88,6 @@ public:
     CFont				m_fontHyperText;
     CFont				m_fontDefaultBold;
     CFont				m_fontSymbol;
-    CFont				m_fontLog;
     CFont				m_fontChatEdit;
     CBrush				m_brushBackwardDiagonal;
     static const UINT	m_nVersionMjr;
@@ -111,6 +110,7 @@ public:
     virtual BOOL InitInstance();
     virtual int ExitInstance();
     virtual BOOL IsIdleMessage(MSG *pMsg);
+	virtual BOOL OnIdle(LONG lCount); //>>> WiZaRd::Save CPU & WINE
 
     // ed2k link functions
     void		AddEd2kLinksToDownload(CString strLinks, int cat);
@@ -189,14 +189,14 @@ public:
 
     // Elandal:ThreadSafeLogging -->
     // thread safe log calls
+	void			HandleLogQueues();
+
     void			QueueDebugLogLine(bool bAddToStatusBar, LPCTSTR line,...);
     void			QueueDebugLogLineEx(UINT uFlags, LPCTSTR line,...);
-    void			HandleDebugLogQueue();
     void			ClearDebugLogQueue(bool bDebugPendingMsgs = false);
 
     void			QueueLogLine(bool bAddToStatusBar, LPCTSTR line,...);
     void			QueueLogLineEx(UINT uFlags, LPCTSTR line,...);
-    void			HandleLogQueue();
     void			ClearLogQueue(bool bDebugPendingMsgs = false);
     // Elandal:ThreadSafeLogging <--
 

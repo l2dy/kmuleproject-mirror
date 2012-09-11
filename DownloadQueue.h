@@ -188,4 +188,11 @@ private:
     CSourceHostnameResolveWnd m_srcwnd;
 
     DWORD       m_dwLastA4AFtime; // ZZ:DownloadManager
+
+//>>> WiZaRd::AutoHL
+public:
+	UINT	GetHLCount() const	{return m_uiHLCount;} 
+private:	
+	UINT	m_uiHLCount;
+//<<< WiZaRd::AutoLH
 };
