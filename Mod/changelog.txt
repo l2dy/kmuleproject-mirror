@@ -127,3 +127,4 @@ Legend:    + added    ~ changed    - removed    ! fixed    > updated
  * 0 = disabled, 1 = colored, 2 = autosort, 3 = filtered (not implemented, yet)
 + Startup Flood Prevention [WiZaRd]
 + autoHL [WiZaRd]
+! fixed loss of some pref settings between restarts [WiZaRd]

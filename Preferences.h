@@ -2248,8 +2248,12 @@ protected:
     static void	CreateUserHash();
     static void	SetStandartValues();
     static int	GetRecommendedMaxConnections();
-    static void LoadPreferences();
+    static void LoadPreferences();	
     static void SavePreferences();
+//>>> WiZaRd::Own Prefs
+	static void	LoadkMulePrefs();
+	static void	SavekMulePrefs();
+//<<< WiZaRd::Own Prefs
     static CString	GetDefaultDirectory(EDefaultDirectory eDirectory, bool bCreate = true);
 
 //>>> WiZaRd::IntelliFlush

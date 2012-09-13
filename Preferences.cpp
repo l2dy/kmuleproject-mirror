@@ -1734,38 +1734,43 @@ void CPreferences::SavePreferences()
     ini.WriteBool(L"CloseUPnPOnExit", m_bCloseUPnPOnExit);
     ini.WriteInt(L"LastWorkingImplementation", m_nLastWorkingImpl);
 
+	SavekMulePrefs();
+}
+
 //>>> WiZaRd::Own Prefs
-    CString newpath;
-    newpath.Format(L"%s%s.ini", GetMuleDirectory(EMULE_CONFIGDIR), MOD_INI_FILE);
-    CIni myIni(newpath, MOD_VERSION_PLAIN);
+void CPreferences::SavekMulePrefs()
+{
+    CString path = L"";
+    path.Format(L"%s%s.ini", GetMuleDirectory(EMULE_CONFIGDIR), MOD_INI_FILE);
+    CIni ini(path, MOD_VERSION_PLAIN);
 
 //>>> WiZaRd::IPFilter-Update
-    myIni.WriteInt(L"IPFilterVersion", m_uiIPfilterVersion);
-    myIni.WriteBool(L"AutoUpdateIPFilter", m_bAutoUpdateIPFilter);
-    myIni.WriteString(L"UpdateURLIPFilter", m_strUpdateURLIPFilter);
+    ini.WriteInt(L"IPFilterVersion", m_uiIPfilterVersion);
+    ini.WriteBool(L"AutoUpdateIPFilter", m_bAutoUpdateIPFilter);
+    ini.WriteString(L"UpdateURLIPFilter", m_strUpdateURLIPFilter);
 //<<< WiZaRd::IPFilter-Update
 //>>> WiZaRd::MediaInfoDLL Update
-	myIni.WriteBool(L"AutoUpdateMediaInfoDll", m_bMediaInfoDllAutoUpdate);
-	myIni.WriteString(L"UpdateURLMediaInfoDll", m_strMediaInfoDllUpdateURL);
-	myIni.WriteInt(L"MediaInfoDllVersion", m_uiMediaInfoDllVersion);
+	ini.WriteBool(L"AutoUpdateMediaInfoDll", m_bMediaInfoDllAutoUpdate);
+	ini.WriteString(L"UpdateURLMediaInfoDll", m_strMediaInfoDllUpdateURL);
+	ini.WriteInt(L"MediaInfoDllVersion", m_uiMediaInfoDllVersion);
 //<<< WiZaRd::MediaInfoDLL Update
-	myIni.WriteColRef(L"PreviewReadyColor", m_crPreviewReadyColor); //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
+	ini.WriteColRef(L"PreviewReadyColor", m_crPreviewReadyColor); //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
 //>>> WiZaRd::Advanced Transfer Window Layout [Stulle]
-	myIni.WriteInt(L"TransferWnd1", m_uTransferWnd1);
-	myIni.WriteInt(L"TransferWnd2", m_uTransferWnd2);
-	myIni.WriteBool(L"SplitWindow", m_bSplitWindow);
+	ini.WriteInt(L"TransferWnd1", m_uTransferWnd1);
+	ini.WriteInt(L"TransferWnd2", m_uTransferWnd2);
+	ini.WriteBool(L"SplitWindow", m_bSplitWindow);
 //<<< WiZaRd::Advanced Transfer Window Layout [Stulle]
-	myIni.WriteBool(L"UseSimpleProgress", m_bUseSimpleProgress); //>>> WiZaRd::SimpleProgress
-	myIni.WriteInt(L"SpamFilterMode", m_uiSpamFilterMode); //>>> WiZaRd::AntiFake
+	ini.WriteBool(L"UseSimpleProgress", m_bUseSimpleProgress); //>>> WiZaRd::SimpleProgress
+	ini.WriteInt(L"SpamFilterMode", m_uiSpamFilterMode); //>>> WiZaRd::AntiFake
 //>>> WiZaRd::AutoHL
-	myIni.WriteInt(L"AutoHLUpdate", m_iAutoHLUpdateTimer);
-	myIni.WriteInt(L"UseAutoHL", m_iUseAutoHL);
-	myIni.WriteInt(L"MinAutoHL", m_iMinAutoHL);
-	myIni.WriteInt(L"MaxAutoHL", m_iMaxAutoHL);
-	myIni.WriteInt(L"MaxSourcesHL", m_iMaxSourcesHL);
+	ini.WriteInt(L"AutoHLUpdate", m_iAutoHLUpdateTimer);
+	ini.WriteInt(L"UseAutoHL", m_iUseAutoHL);
+	ini.WriteInt(L"MinAutoHL", m_iMinAutoHL);
+	ini.WriteInt(L"MaxAutoHL", m_iMaxAutoHL);
+	ini.WriteInt(L"MaxSourcesHL", m_iMaxSourcesHL);
 //<<< WiZaRd::AutoHL
-//<<< WiZaRd::Own Prefs
 }
+//<<< WiZaRd::Own Prefs
 
 void CPreferences::ResetStatsColor(int index)
 {
@@ -2319,43 +2324,48 @@ void CPreferences::LoadPreferences()
     m_bIsMinilibImplDisabled = ini.GetBool(L"DisableMiniUPNPLibImpl", false);
     m_bIsWinServImplDisabled = ini.GetBool(L"DisableWinServImpl", false);
 
+	LoadkMulePrefs(); //>>> WiZaRd::Own Prefs
+
+    LoadCats();
+    SetLanguage();
+}
+
 //>>> WiZaRd::Own Prefs
-    CString newpath;
-    newpath.Format(L"%s%s.ini", GetMuleDirectory(EMULE_CONFIGDIR), MOD_INI_FILE);
-    CIni myIni(newpath, MOD_VERSION_PLAIN);
+void CPreferences::LoadkMulePrefs()
+{
+	CString path;
+	path.Format(L"%s%s.ini", GetMuleDirectory(EMULE_CONFIGDIR), MOD_INI_FILE);
+	CIni ini(path, MOD_VERSION_PLAIN);
 
 //>>> WiZaRd::IPFilter-Update
-    m_uiIPfilterVersion = myIni.GetInt(L"IPFilterVersion", 0);
-    m_bAutoUpdateIPFilter = myIni.GetBool(L"AutoUPdateIPFilter", true);
-    m_strUpdateURLIPFilter = myIni.GetString(L"UpdateURLIPFilter", MOD_IPPFILTER_URL);
+	m_uiIPfilterVersion = ini.GetInt(L"IPFilterVersion", 0);
+	m_bAutoUpdateIPFilter = ini.GetBool(L"AutoUPdateIPFilter", true);
+	m_strUpdateURLIPFilter = ini.GetString(L"UpdateURLIPFilter", MOD_IPPFILTER_URL);
 //<<< WiZaRd::IPFilter-Update
 //>>> WiZaRd::MediaInfoDLL Update
-	m_bMediaInfoDllAutoUpdate = myIni.GetBool(L"AutoUpdateMediaInfoDll", true);
-	m_strMediaInfoDllUpdateURL = myIni.GetString(L"UpdateURLMediaInfoDll", MOD_MEDIAINFO_URL);
-	m_uiMediaInfoDllVersion = (UINT)myIni.GetInt(L"MediaInfoDllVersion", 0);
+	m_bMediaInfoDllAutoUpdate = ini.GetBool(L"AutoUpdateMediaInfoDll", true);
+	m_strMediaInfoDllUpdateURL = ini.GetString(L"UpdateURLMediaInfoDll", MOD_MEDIAINFO_URL);
+	m_uiMediaInfoDllVersion = (UINT)ini.GetInt(L"MediaInfoDllVersion", 0);
 //<<< WiZaRd::MediaInfoDLL Update
-	m_crPreviewReadyColor = myIni.GetColRef(L"PreviewReadyColor", RGB(140, 225, 110)); //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
+	m_crPreviewReadyColor = ini.GetColRef(L"PreviewReadyColor", RGB(140, 225, 110)); //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
 //>>> WiZaRd::Advanced Transfer Window Layout [Stulle]
 	m_uTransferWnd1 = ini.GetInt(L"TransferWnd1", 1);
 	m_uTransferWnd2 = ini.GetInt(L"TransferWnd2", 1);
 	m_bSplitWindow = ini.GetBool(L"SplitWindow", false);
 //<<< WiZaRd::Advanced Transfer Window Layout [Stulle]
-	m_bUseSimpleProgress = myIni.GetBool(L"UseSimpleProgress", true); //>>> WiZaRd::SimpleProgress
-	m_uiSpamFilterMode = (uint8)myIni.GetInt(L"SpamFilterMode", 2); //>>> WiZaRd::AntiFake
+	m_bUseSimpleProgress = ini.GetBool(L"UseSimpleProgress", true); //>>> WiZaRd::SimpleProgress
+	m_uiSpamFilterMode = (uint8)ini.GetInt(L"SpamFilterMode", 2); //>>> WiZaRd::AntiFake
 //>>> WiZaRd::AutoHL
-	m_iAutoHLUpdateTimer = (uint16)myIni.GetInt(L"AutoHLUpdate", 60);
+	m_iAutoHLUpdateTimer = (uint16)ini.GetInt(L"AutoHLUpdate", 60);
 	MINMAX(m_iAutoHLUpdateTimer, 10, 600);
-	m_iUseAutoHL = (sint8)myIni.GetInt(L"UseAutoHL", 1);
-	m_iMinAutoHL = (uint16)myIni.GetInt(L"MinAutoHL", 25);
-	m_iMaxAutoHL = (uint16)myIni.GetInt(L"MaxAutoHL", _UI16_MAX);
+	m_iUseAutoHL = (sint8)ini.GetInt(L"UseAutoHL", 1);
+	m_iMinAutoHL = (uint16)ini.GetInt(L"MinAutoHL", 25);
+	m_iMaxAutoHL = (uint16)ini.GetInt(L"MaxAutoHL", _UI16_MAX);
 	m_iMaxAutoHL = max(m_iMinAutoHL, m_iMaxAutoHL);
-	m_iMaxSourcesHL = (uint16)myIni.GetInt(L"MaxSourcesHL", _UI16_MAX);
+	m_iMaxSourcesHL = (uint16)ini.GetInt(L"MaxSourcesHL", _UI16_MAX);
 //<<< WiZaRd::AutoHL
-//<<< WiZaRd::Own Prefs
-
-    LoadCats();
-    SetLanguage();
 }
+//<<< WiZaRd::Own Prefs
 
 WORD CPreferences::GetWindowsVersion()
 {

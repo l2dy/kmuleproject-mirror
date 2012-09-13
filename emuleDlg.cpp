@@ -963,11 +963,16 @@ void CemuleDlg::ShowMessageState(UINT iconnr)
 
 void CemuleDlg::ShowTransferStateIcon()
 {
-    if (m_uUpDatarate && m_uDownDatarate)
-        statusbar->SetIcon(SBarUpDown, transicons[3]);
-    else if (m_uUpDatarate)
-        statusbar->SetIcon(SBarUpDown, transicons[2]);
-    else if (m_uDownDatarate)
+	int iUp = m_uUpDatarate - theStats.GetUpDatarateOverhead();
+	int iDown = m_uDownDatarate - theStats.GetDownDatarateOverhead();
+	if (iUp > 0)
+	{
+		if(iDown > 0)
+			statusbar->SetIcon(SBarUpDown, transicons[3]);
+		else
+			statusbar->SetIcon(SBarUpDown, transicons[2]);
+	}
+    else if (iDown > 0)
         statusbar->SetIcon(SBarUpDown, transicons[1]);
     else
         statusbar->SetIcon(SBarUpDown, transicons[0]);
