@@ -128,3 +128,4 @@ Legend:    + added    ~ changed    - removed    ! fixed    > updated
 + Startup Flood Prevention [WiZaRd]
 + autoHL [WiZaRd]
 ! fixed loss of some pref settings between restarts [WiZaRd]
+! clear chat message field when closing the particular tab [Tuxman]

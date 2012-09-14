@@ -552,6 +552,12 @@ void CChatWnd::OnBnClickedSmiley()
 
 void CChatWnd::OnBnClickedClose()
 {
+//>>> Tux::Fix
+    CString strMessage;
+    m_wndMessage.GetWindowText(strMessage);
+    if (!strMessage.IsEmpty())
+        m_wndMessage.SetWindowText(_T(""));
+//<<< Tux::Fix
     chatselector.EndSession();
 }
 
