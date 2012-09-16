@@ -21,10 +21,10 @@
 //>>> WiZaRd::AntiFake
 enum eSpamFilterMode
 {
-	eSFM_Disabled = 0,	// off
-	eSFM_Colored,		// color only
-	eSFM_AutoSort,		// sort automatically (default)
-	eSFM_Filter			// filter suspect entries
+    eSFM_Disabled = 0,	// off
+    eSFM_Colored,		// color only
+    eSFM_AutoSort,		// sort automatically (default)
+    eSFM_Filter			// filter suspect entries
 };
 //<<< WiZaRd::AntiFake
 

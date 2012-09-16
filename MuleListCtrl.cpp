@@ -1302,7 +1302,7 @@ void CMuleListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     //set up our flicker free drawing
     CRect rcItem(lpDrawItemStruct->rcItem);
     CDC *oDC = CDC::FromHandle(lpDrawItemStruct->hDC);
-	CCustomMemDC pDC(oDC, &rcItem, m_crWindow);
+    CCustomMemDC pDC(oDC, &rcItem, m_crWindow);
     CFont *pOldFont = pDC->SelectObject(GetFont());
     CRect rcClient;
     GetClientRect(&rcClient);

@@ -36,7 +36,7 @@
 //#define MOD_VERSION_MIN		1
 #define MOD_VERSION_BUILD	L"20120907"
 // has to be changed on lang updates - also remember to recreate and upload the new lang files :)
-#define MOD_LANG_VERSION	1 
+#define MOD_LANG_VERSION	1
 CString GetModVersionNumber();
 CString GetModVersion();
 #define MOD_INI_FILE		(L"kMule") //this is the tag used as pref-entry

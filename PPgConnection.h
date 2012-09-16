@@ -17,9 +17,9 @@ public:
 
 protected:
 //>>> WiZaRd::Ratio Indicator
-	int		lastRatio;
-	HICON	ratioIcon; 
-	void	SetRatioIcon();
+    int		lastRatio;
+    HICON	ratioIcon;
+    void	SetRatioIcon();
 //<<< WiZaRd::Ratio Indicator
     bool guardian;
     CSliderCtrl m_ctlMaxDown;

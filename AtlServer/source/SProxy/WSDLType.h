@@ -12,40 +12,40 @@ class CWSDLType : public CXMLElement
 {
 private:
 
-	CStringW m_strDocumentation;
+    CStringW m_strDocumentation;
 
-	CAtlPtrList<CSchema *> m_schemas;
+    CAtlPtrList<CSchema *> m_schemas;
 
 public:
 
-	inline CSchema * AddSchema(CSchema * p = NULL)
-	{
-		CAutoPtr<CSchema> spOut;
-		if (p== NULL)
-		{
-			spOut.Attach( new CSchema );
-			p = spOut;
-		}
-		
-		if (p != NULL)
-		{
-			if (m_schemas.AddTail(p) != NULL)
-			{
-				spOut.Detach();
-				return p;
-			}
-		}
+    inline CSchema * AddSchema(CSchema * p = NULL)
+    {
+        CAutoPtr<CSchema> spOut;
+        if (p== NULL)
+        {
+            spOut.Attach( new CSchema );
+            p = spOut;
+        }
 
-		return NULL;
-	}
+        if (p != NULL)
+        {
+            if (m_schemas.AddTail(p) != NULL)
+            {
+                spOut.Detach();
+                return p;
+            }
+        }
 
-	inline POSITION GetFirstSchema()
-	{
-		return m_schemas.GetHeadPosition();
-	}
+        return NULL;
+    }
 
-	inline CSchema * GetNextSchema(POSITION& pos)
-	{
-		return m_schemas.GetNext(pos);
-	}
+    inline POSITION GetFirstSchema()
+    {
+        return m_schemas.GetHeadPosition();
+    }
+
+    inline CSchema * GetNextSchema(POSITION& pos)
+    {
+        return m_schemas.GetNext(pos);
+    }
 };

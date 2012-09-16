@@ -238,7 +238,7 @@ protected:
     int MoveItem(int iOldIndex, int iNewIndex);
     void SetColors();
     void DrawFocusRect(CDC *pDC, const CRect &rcItem, BOOL bItemFocused, BOOL bCtrlFocused, BOOL bItemSelected);
-	void InitItemMemDC(CCustomMemDC *dc, LPDRAWITEMSTRUCT lpDrawItemStruct, BOOL &bCtrlFocused);
+    void InitItemMemDC(CCustomMemDC *dc, LPDRAWITEMSTRUCT lpDrawItemStruct, BOOL &bCtrlFocused);
 
     static __inline bool HaveIntersection(const CRect &rc1, const CRect &rc2)
     {

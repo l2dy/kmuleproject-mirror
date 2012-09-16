@@ -270,8 +270,8 @@ HRESULT CCodeTypeBuilder::ProcessPortType(CWSDLPortType *pPortType, CWSDLBinding
                     {
                         // TODO (jasjitg): support all uses and styles
                         if ((pBody->GetUse() == SOAPUSE_LITERAL) ||
-                            ((pBody->GetUse() == SOAPUSE_ENCODED) &&
-                             (pBody->GetEncodingStyle() == SOAP_ENCODINGSTYLEW)))
+                                ((pBody->GetUse() == SOAPUSE_ENCODED) &&
+                                 (pBody->GetEncodingStyle() == SOAP_ENCODINGSTYLEW)))
                         {
                             strMethodNamespace = pBody->GetNamespace();
                             hr = S_OK;
@@ -295,11 +295,11 @@ HRESULT CCodeTypeBuilder::ProcessPortType(CWSDLPortType *pPortType, CWSDLBinding
                         {
                             // TODO (jasjitg): support all uses and styles
                             if ((pBody->GetUse() == SOAPUSE_LITERAL) ||
-                                ((pBody->GetUse() == SOAPUSE_ENCODED) &&
-                                (pBody->GetEncodingStyle() == SOAP_ENCODINGSTYLEW)))
+                                    ((pBody->GetUse() == SOAPUSE_ENCODED) &&
+                                     (pBody->GetEncodingStyle() == SOAP_ENCODINGSTYLEW)))
                             {
                                 if ((strMethodNamespace.GetLength() != 0) &&
-                                    (strMethodNamespace != pBody->GetNamespace()))
+                                        (strMethodNamespace != pBody->GetNamespace()))
                                 {
                                     // ATL Server does not support input/output operations with different namespaces
                                     EmitFileError(IDS_SDL_IO_DIFF_NAMESPACES, pBody, 0);
@@ -459,7 +459,7 @@ HRESULT CCodeTypeBuilder::ProcessMessage(
         bool bInternalError = false;
 
         if ((pCodeFunc->GetCallFlags() & CODEFLAG_CHAIN) &&
-            ((dwCallFlags & CODEFLAG_CHAIN)==0))
+                ((dwCallFlags & CODEFLAG_CHAIN)==0))
         {
             // REVIEW: sproxy.exe limitation -- may fix in future
             return E_FAIL;
@@ -783,7 +783,7 @@ HRESULT CCodeTypeBuilder::ProcessMessagePart_PAD(
         {
             // must be complexType, or else wire format will not be valid by SOAP section 4.3
             if ((pXSDElement != NULL) &&
-                (pXSDElement->GetElementType() == XSD_COMPLEXTYPE))
+                    (pXSDElement->GetElementType() == XSD_COMPLEXTYPE))
             {
                 hr = CheckDocLiteralNamespace(pCodeFunc, pXSDElement, dwFlags, dwCallFlags);
                 if (hr == S_OK)
@@ -794,7 +794,7 @@ HRESULT CCodeTypeBuilder::ProcessMessagePart_PAD(
                     {
                         // REVIEW (jasjitg): issues here about in/out parameters, etc.
                         hr = ProcessMessagePart_Type(pPart, pXSDElement, XSDTYPE_ERR, codeType,
-                            pPart->GetName(), pCodeFunc, dwFlags, dwCallFlags);
+                                                     pPart->GetName(), pCodeFunc, dwFlags, dwCallFlags);
                     }
                     else
                     {
@@ -866,7 +866,7 @@ HRESULT CCodeTypeBuilder::ProcessMessagePart_RPC_Encoded(
         if (SUCCEEDED(hr))
         {
             hr = ProcessMessagePart_Type(pPart, pXSDElement, xsdType, codeType,
-                pPart->GetName(), pCodeFunc, dwFlags, dwCallFlags);
+                                         pPart->GetName(), pCodeFunc, dwFlags, dwCallFlags);
         }
     }
     else
@@ -941,7 +941,7 @@ HRESULT CCodeTypeBuilder::ProcessMessagePart_RPC_Literal(
         if (SUCCEEDED(hr))
         {
             hr = ProcessMessagePart_Type(pPart, pXSDElement, xsdType, codeType,
-                pPart->GetName(), pCodeFunc, dwFlags, dwCallFlags);
+                                         pPart->GetName(), pCodeFunc, dwFlags, dwCallFlags);
         }
     }
     else
@@ -1053,7 +1053,7 @@ HRESULT CCodeTypeBuilder::ProcessElement(
     CODETYPE parentCodeType,
     BOOL fTopLevel,
     CWSDLMessagePart *pMsgPart
-    )
+)
 {
     HRESULT hr = E_FAIL;
 
@@ -1067,8 +1067,8 @@ HRESULT CCodeTypeBuilder::ProcessElement(
     }
 
     if ((fTopLevel != FALSE) &&
-        (parentCodeType == CODETYPE_FUNCTION) &&
-        (pElem->GetNumChildren() == 0))
+            (parentCodeType == CODETYPE_FUNCTION) &&
+            (pElem->GetNumChildren() == 0))
     {
         return S_OK;
     }
@@ -1160,60 +1160,60 @@ HRESULT CCodeTypeBuilder::ProcessElement(
 
             switch (p->GetElementType())
             {
-                case XSD_COMPLEXTYPE:
-                {
-                    hr = ProcessComplexType(static_cast<CComplexType *>(p), pContainer, dwFlags);
+            case XSD_COMPLEXTYPE:
+            {
+                hr = ProcessComplexType(static_cast<CComplexType *>(p), pContainer, dwFlags);
 
-                    if ((fTopLevel != TRUE) && (SUCCEEDED(hr)) && (spCodeElem != NULL))
+                if ((fTopLevel != TRUE) && (SUCCEEDED(hr)) && (spCodeElem != NULL))
+                {
+                    CODETYPEMAP::CPair *pPair = m_codeTypes.Lookup(static_cast<CComplexType *>(p));
+                    ATLASSERT( pPair != NULL );
+                    *spCodeElem = pPair->m_value;
+                }
+
+                break;
+            }
+            case XSD_SIMPLETYPE:
+            {
+                XSDTYPE xsdType = XSDTYPE_UNK;
+                DWORD dwTypeFlags = 0;
+                hr = ProcessSimpleType(static_cast<CSimpleType *>(p), &xsdType, &dwTypeFlags);
+
+                if ((fTopLevel != TRUE) && (SUCCEEDED(hr)) && (spCodeElem != NULL))
+                {
+                    if (xsdType != XSDTYPE_UNK)
                     {
-                        CODETYPEMAP::CPair *pPair = m_codeTypes.Lookup(static_cast<CComplexType *>(p));
+                        spCodeElem->SetXSDType(xsdType);
+                        spCodeElem->SetElement(pElem);
+                        if (spCodeElem->GetNamespace().GetLength() == 0)
+                        {
+                            spCodeElem->SetNamespace(p->GetParentSchema()->GetTargetNamespace());
+                        }
+                    }
+                    else
+                    {
+                        CODESIMPLETYPEMAP::CPair *pPair = m_codeEnums.Lookup(static_cast<CSimpleType *>(p));
                         ATLASSERT( pPair != NULL );
                         *spCodeElem = pPair->m_value;
                     }
-
-                    break;
                 }
-                case XSD_SIMPLETYPE:
+                break;
+            }
+            case XSD_UNSUPPORTED:
+            {
+                if ((fTopLevel != TRUE) && (spCodeElem != NULL))
                 {
-                    XSDTYPE xsdType = XSDTYPE_UNK;
-                    DWORD dwTypeFlags = 0;
-                    hr = ProcessSimpleType(static_cast<CSimpleType *>(p), &xsdType, &dwTypeFlags);
-
-                    if ((fTopLevel != TRUE) && (SUCCEEDED(hr)) && (spCodeElem != NULL))
-                    {
-                        if (xsdType != XSDTYPE_UNK)
-                        {
-                            spCodeElem->SetXSDType(xsdType);
-                            spCodeElem->SetElement(pElem);
-                            if (spCodeElem->GetNamespace().GetLength() == 0)
-                            {
-                                spCodeElem->SetNamespace(p->GetParentSchema()->GetTargetNamespace());
-                            }
-                        }
-                        else
-                        {
-                            CODESIMPLETYPEMAP::CPair *pPair = m_codeEnums.Lookup(static_cast<CSimpleType *>(p));
-                            ATLASSERT( pPair != NULL );
-                            *spCodeElem = pPair->m_value;
-                        }
-                    }
-                    break;
+                    spCodeElem->SetXSDType(XSDTYPE_STRING);
+                    spCodeElem->SetElement(pElem);
+                    hr = S_OK;
                 }
-                case XSD_UNSUPPORTED:
-                {
-                    if ((fTopLevel != TRUE) && (spCodeElem != NULL))
-                    {
-                        spCodeElem->SetXSDType(XSDTYPE_STRING);
-                        spCodeElem->SetElement(pElem);
-                        hr = S_OK;
-                    }
-                    break;
-                }
-                default:
-                {
-                    hr = E_FAIL;
-                    break;
-                }
+                break;
+            }
+            default:
+            {
+                hr = E_FAIL;
+                break;
+            }
             }
 
             if (FAILED(hr))
@@ -1355,26 +1355,26 @@ HRESULT CCodeTypeBuilder::ProcessComplexType(
     bool bArrayOfElem = false;
 //  if (spElem == NULL)
 //  {
-        POSITION pos = pType->GetFirstElement();
-        while (pos != NULL)
+    POSITION pos = pType->GetFirstElement();
+    while (pos != NULL)
+    {
+        hr = E_FAIL;
+        CElement *pElem = pType->GetNextElement(pos);
+
+        if (pElem != NULL)
         {
-            hr = E_FAIL;
-            CElement *pElem = pType->GetNextElement(pos);
-
-            if (pElem != NULL)
+            hr = ProcessElement(pElem, pContainer, dwFlags, codeType, FALSE, NULL);
+            if (pElem->GetArrayType() == cStrMinMaxOccursArray)
             {
-                hr = ProcessElement(pElem, pContainer, dwFlags, codeType, FALSE, NULL);
-                if (pElem->GetArrayType() == cStrMinMaxOccursArray)
-                {
-                    bArrayOfElem = true;
-                }
-            }
-
-            if (FAILED(hr))
-            {
-                break;
+                bArrayOfElem = true;
             }
         }
+
+        if (FAILED(hr))
+        {
+            break;
+        }
+    }
 //  }
 
     if (SUCCEEDED(hr) && spElem != NULL)
@@ -1391,7 +1391,7 @@ HRESULT CCodeTypeBuilder::ProcessComplexType(
                 typedElem.SetCodeType(codeType);
                 typedElem.SetElement(pType);
                 if ((SUCCEEDED(typedElem.SetCodeTypeName(pType->GetName()))) &&
-                    (SUCCEEDED(typedElem.SetSafeCodeTypeName(strSafeName))))
+                        (SUCCEEDED(typedElem.SetSafeCodeTypeName(strSafeName))))
                 {
                     typedElem.SetXSDType(XSDTYPE_UNK);
                     if (m_codeTypes.SetAt(pType, typedElem) != NULL)
@@ -1429,7 +1429,7 @@ HRESULT CCodeTypeBuilder::ProcessSimpleType(
     ATLASSERT( pType->GetParentSchema() != NULL );
 
     if ((pType->GetParentSchema()->GetTargetNamespace() == FX_TYPES_NAMESPACEW) ||
-        (pType->GetParentSchema()->GetTargetNamespace() == CLR_TYPES_NAMESPACEW))
+            (pType->GetParentSchema()->GetTargetNamespace() == CLR_TYPES_NAMESPACEW))
     {
         // treat their custom types as strings
         *pXSDType = XSDTYPE_STRING;
@@ -1498,7 +1498,7 @@ HRESULT CCodeTypeBuilder::ProcessSimpleType(
                 else
                 {
                     if ((FAILED(CreateSafeCppName(pNewElem->GetSafeCodeTypeName(), pNewElem->GetCodeTypeName()))) ||
-                        (FAILED(CheckNameMap(scopedMap, pNewElem->GetSafeCodeTypeName(), true))))
+                            (FAILED(CheckNameMap(scopedMap, pNewElem->GetSafeCodeTypeName(), true))))
                     {
                         hr = E_FAIL;
                     }
@@ -1528,7 +1528,7 @@ HRESULT CCodeTypeBuilder::ProcessSimpleType(
                     typedElem.SetCodeType(CODETYPE_ENUM);
                     typedElem.SetElement(pType);
                     if ((SUCCEEDED(typedElem.SetCodeTypeName(pType->GetName()))) &&
-                        (SUCCEEDED(typedElem.SetSafeCodeTypeName(strSafeName))))
+                            (SUCCEEDED(typedElem.SetSafeCodeTypeName(strSafeName))))
                     {
                         typedElem.SetXSDType(XSDTYPE_UNK);
                         if (m_codeEnums.SetAt(pType, typedElem) != NULL)
@@ -1663,18 +1663,18 @@ HRESULT CCodeTypeBuilder::GetTypeFromElement(
         if (FAILED(hr))
         {
             EmitFileError(IDS_SDL_UNRESOLVED_ELEM, pElem, 0,
-                pElem->GetParentSchema()->GetTargetNamespace(),
-                pElem->GetTypeName().GetName());
+                          pElem->GetParentSchema()->GetTargetNamespace(),
+                          pElem->GetTypeName().GetName());
         }
     }
     if (pElem->GetArrayType() == cStrMinMaxOccursArray)
     {
         pCodeElem->SetFlags((pCodeElem->GetFlags() & ~CODEFLAG_FIXEDARRAY) | CODEFLAG_DYNARRAY);
     }
-	if (pElem->GetNullable())
-	{
-		pCodeElem->AddFlags(CODEFLAG_NULLABLE);		
-	}
+    if (pElem->GetNullable())
+    {
+        pCodeElem->AddFlags(CODEFLAG_NULLABLE);
+    }
     return hr;
 }
 
@@ -1695,12 +1695,12 @@ HRESULT CCodeTypeBuilder::ProcessXSDElement(
     {
         // check CLR/FX-specific namespaces
         if ((strUri == FX_TYPES_NAMESPACEW) ||
-            (strUri == CLR_TYPES_NAMESPACEW))
+                (strUri == CLR_TYPES_NAMESPACEW))
         {
             // treat their custom types as strings
             pCodeElem->SetXSDType(XSDTYPE_STRING);
             EmitFileWarning(IDS_SDL_CUSTOM_TYPE, pElem, 0,
-                strUri, typeName.GetName());
+                            strUri, typeName.GetName());
             return S_OK;
         }
         XSDTYPE xsdType;
@@ -1728,99 +1728,99 @@ HRESULT CCodeTypeBuilder::ProcessSchemaElement(
     HRESULT hr = E_FAIL;
     switch (pElem->GetElementType())
     {
-        case XSD_COMPLEXTYPE:
+    case XSD_COMPLEXTYPE:
+    {
+        CComplexType *pCplx = static_cast<CComplexType *>(pElem);
+        DWORD dwTypeFlags = IsArrayDefinition(pCplx);
+        CElement *pVarArrElement = NULL;
+        if (dwTypeFlags & CODEFLAG_FIXEDARRAY)
         {
-            CComplexType *pCplx = static_cast<CComplexType *>(pElem);
-            DWORD dwTypeFlags = IsArrayDefinition(pCplx);
-            CElement *pVarArrElement = NULL;
-            if (dwTypeFlags & CODEFLAG_FIXEDARRAY)
+            hr = ProcessArray(pCplx, pContainer, pCodeElem, dwFlags);
+            if (pCodeElem->GetNamespace().GetLength() == 0)
             {
-                hr = ProcessArray(pCplx, pContainer, pCodeElem, dwFlags);
-                if (pCodeElem->GetNamespace().GetLength() == 0)
-                {
-                    pCodeElem->SetNamespace(pElem->GetParentSchema()->GetTargetNamespace());
-                }
+                pCodeElem->SetNamespace(pElem->GetParentSchema()->GetTargetNamespace());
             }
-            else if (dwTypeFlags & CODEFLAG_DYNARRAY)
-            {
-                EmitFileWarning(IDS_SDL_INVALID_ARRAY_DESC, pElem, 0);
-                pCodeElem->SetXSDType(XSDTYPE_STRING);
-                if (pCodeElem->GetNamespace().GetLength() == 0)
-                {
-                    pCodeElem->SetNamespace(pElem->GetParentSchema()->GetTargetNamespace());
-                }
-                hr = S_OK;
-            }
-            else if ((dwTypeFlags == CODEFLAG_ERR) && (IsVarArrayDefinition(pCplx,dwFlags, &pVarArrElement) != FALSE))
-            {
-                ATLASSERT( pVarArrElement != NULL );
-                hr = ProcessVarArray(pVarArrElement, pContainer, pCodeElem, dwFlags);
-                if (pCodeElem->GetNamespace().GetLength() == 0)
-                {
-                    pCodeElem->SetNamespace(pElem->GetParentSchema()->GetTargetNamespace());
-                }
-            }
-            else
-            {
-                hr = ProcessComplexType(pCplx, pContainer, dwFlags);
-                if (SUCCEEDED(hr) && (pContainer != NULL))
-                {
-                    CODETYPEMAP::CPair *pPair = m_codeTypes.Lookup(pCplx);
-                    ATLASSERT( pPair != NULL );
-                    *pCodeElem = pPair->m_value;
-                }
-            }
-
-            if (FAILED(hr))
-            {
-                break;
-            }
-
-            break;
         }
-        case XSD_SIMPLETYPE:
+        else if (dwTypeFlags & CODEFLAG_DYNARRAY)
         {
-            XSDTYPE xsdType = XSDTYPE_UNK;
-            DWORD dwTypeFlags = 0;
-            hr = ProcessSimpleType(static_cast<CSimpleType *>(pElem), &xsdType, &dwTypeFlags);
-
-            if (FAILED(hr))
+            EmitFileWarning(IDS_SDL_INVALID_ARRAY_DESC, pElem, 0);
+            pCodeElem->SetXSDType(XSDTYPE_STRING);
+            if (pCodeElem->GetNamespace().GetLength() == 0)
             {
-                break;
+                pCodeElem->SetNamespace(pElem->GetParentSchema()->GetTargetNamespace());
             }
-
-            if (xsdType != XSDTYPE_UNK)
+            hr = S_OK;
+        }
+        else if ((dwTypeFlags == CODEFLAG_ERR) && (IsVarArrayDefinition(pCplx,dwFlags, &pVarArrElement) != FALSE))
+        {
+            ATLASSERT( pVarArrElement != NULL );
+            hr = ProcessVarArray(pVarArrElement, pContainer, pCodeElem, dwFlags);
+            if (pCodeElem->GetNamespace().GetLength() == 0)
             {
-                pCodeElem->SetXSDType(xsdType);
-                pCodeElem->SetElement(pElem);
-                if (pCodeElem->GetNamespace().GetLength() == 0)
-                {
-                    pCodeElem->SetNamespace(pElem->GetParentSchema()->GetTargetNamespace());
-                }
+                pCodeElem->SetNamespace(pElem->GetParentSchema()->GetTargetNamespace());
             }
-            else if (pContainer != NULL)
+        }
+        else
+        {
+            hr = ProcessComplexType(pCplx, pContainer, dwFlags);
+            if (SUCCEEDED(hr) && (pContainer != NULL))
             {
-                CODESIMPLETYPEMAP::CPair *pPair = m_codeEnums.Lookup(static_cast<CSimpleType *>(pElem));
+                CODETYPEMAP::CPair *pPair = m_codeTypes.Lookup(pCplx);
                 ATLASSERT( pPair != NULL );
                 *pCodeElem = pPair->m_value;
             }
+        }
 
+        if (FAILED(hr))
+        {
             break;
         }
-        case XSD_UNSUPPORTED:
+
+        break;
+    }
+    case XSD_SIMPLETYPE:
+    {
+        XSDTYPE xsdType = XSDTYPE_UNK;
+        DWORD dwTypeFlags = 0;
+        hr = ProcessSimpleType(static_cast<CSimpleType *>(pElem), &xsdType, &dwTypeFlags);
+
+        if (FAILED(hr))
         {
-            if (pContainer != NULL)
+            break;
+        }
+
+        if (xsdType != XSDTYPE_UNK)
+        {
+            pCodeElem->SetXSDType(xsdType);
+            pCodeElem->SetElement(pElem);
+            if (pCodeElem->GetNamespace().GetLength() == 0)
             {
-                pCodeElem->SetXSDType(XSDTYPE_STRING);
-                pCodeElem->SetElement(pElem);
+                pCodeElem->SetNamespace(pElem->GetParentSchema()->GetTargetNamespace());
             }
-            break;
         }
-        default:
+        else if (pContainer != NULL)
         {
-            hr = E_FAIL;
-            break;
+            CODESIMPLETYPEMAP::CPair *pPair = m_codeEnums.Lookup(static_cast<CSimpleType *>(pElem));
+            ATLASSERT( pPair != NULL );
+            *pCodeElem = pPair->m_value;
         }
+
+        break;
+    }
+    case XSD_UNSUPPORTED:
+    {
+        if (pContainer != NULL)
+        {
+            pCodeElem->SetXSDType(XSDTYPE_STRING);
+            pCodeElem->SetElement(pElem);
+        }
+        break;
+    }
+    default:
+    {
+        hr = E_FAIL;
+        break;
+    }
     }
 
     if (SUCCEEDED(hr))
@@ -1844,12 +1844,12 @@ HRESULT CCodeTypeBuilder::ProcessSchemaElement(
 //        - it will need to handle the case where the QName::prefix is XSD
 
 HRESULT CCodeTypeBuilder::GetCallFlags(
-        LPCWSTR wszParts,
-        CWSDLMessage *pMessage,
-        CWSDLPortTypeIO *pIO,
-        CWSDLPortTypeOperation *pBindingOp,
-        CWSDLBinding *pBinding,
-        LPDWORD pdwFlags)
+    LPCWSTR wszParts,
+    CWSDLMessage *pMessage,
+    CWSDLPortTypeIO *pIO,
+    CWSDLPortTypeOperation *pBindingOp,
+    CWSDLBinding *pBinding,
+    LPDWORD pdwFlags)
 {
     // TODO (jasjitg): support the parts= attribute
 
@@ -1969,9 +1969,9 @@ HRESULT CCodeTypeBuilder::GetCallFlags(
     if (style == SOAPSTYLE_DOC)
     {
         if ((pPart != NULL) &&
-            (pMessage->GetNumParts() == 1) &&
-            (pPart->GetElementName().GetName().GetLength() != 0) &&
-            (pPart->GetName() == L"parameters"))
+                (pMessage->GetNumParts() == 1) &&
+                (pPart->GetElementName().GetName().GetLength() != 0) &&
+                (pPart->GetName() == L"parameters"))
         {
             // hack to determine ParametersAsDocument or ParametersInDocument
             // basically, the hack is to see if the message part is named "parameters"
@@ -1983,7 +1983,7 @@ HRESULT CCodeTypeBuilder::GetCallFlags(
             dwFlags |= CODEFLAG_PAD;
 
             if ((pPart != NULL) &&
-                (pPart->GetTypeName().GetName().GetLength() != 0))
+                    (pPart->GetTypeName().GetName().GetLength() != 0))
             {
                 // if referenced by type, see if the type is a simpleType or complexType
                 CXSDElement *pXSDElement = NULL;
@@ -2033,7 +2033,7 @@ CODEFLAGS CCodeTypeBuilder::IsArrayDefinition(CComplexType *pType)
             {
                 CStringW strUri;
                 if ((SUCCEEDED(pRestriction->GetNamespaceUri(base.GetPrefix(), strUri))) &&
-                    (strUri == SOAP_ENCODINGSTYLEW) && (base.GetName() == L"Array"))
+                        (strUri == SOAP_ENCODINGSTYLEW) && (base.GetName() == L"Array"))
                 {
                     if (pRestriction->GetNumAttributes() == 1)
                     {
@@ -2047,7 +2047,7 @@ CODEFLAGS CCodeTypeBuilder::IsArrayDefinition(CComplexType *pType)
                         if (ref.GetName().GetLength() != 0)
                         {
                             if ((SUCCEEDED(pAttribute->GetNamespaceUri(ref.GetPrefix(), strUri))) &&
-                                (strUri == SOAP_ENCODINGSTYLEW) && (ref.GetName() == L"arrayType"))
+                                    (strUri == SOAP_ENCODINGSTYLEW) && (ref.GetName() == L"arrayType"))
                             {
                                 if (pAttribute->GetArrayType().GetLength() != 0)
                                 {
@@ -2093,12 +2093,12 @@ BOOL CCodeTypeBuilder::IsVarArrayDefinition(CComplexType *pType,DWORD dwFlags, C
         //struct with member string[].
 
         if (((pElem->GetMinOccurs()==0) &&
-            (pElem->GetMaxOccurs() != 1) &&
-            ((pElem->GetMaxOccurs()==MAXOCCURS_UNBOUNDED) ||
-             (pElem->GetMinOccurs() <= pElem->GetMaxOccurs()))) ||
-            (pElem->GetMinOccurs() > 0 &&
-             (pElem->GetMaxOccurs()==MAXOCCURS_UNBOUNDED ||
-              pElem->GetMinOccurs() < pElem->GetMaxOccurs())))
+                (pElem->GetMaxOccurs() != 1) &&
+                ((pElem->GetMaxOccurs()==MAXOCCURS_UNBOUNDED) ||
+                 (pElem->GetMinOccurs() <= pElem->GetMaxOccurs()))) ||
+                (pElem->GetMinOccurs() > 0 &&
+                 (pElem->GetMaxOccurs()==MAXOCCURS_UNBOUNDED ||
+                  pElem->GetMinOccurs() < pElem->GetMaxOccurs())))
         {
             *ppElement = pElem;
             if (dwFlags & CODEFLAG_DOCUMENT && bFirstElement && pos == NULL)
@@ -2196,7 +2196,7 @@ HRESULT CCodeTypeBuilder::ProcessVarArray(
         {
             ATLASSERT( pCodeElem != NULL );
             if ((pArrDesc->GetMinOccurs() == pArrDesc->GetMaxOccurs()) &&
-                (pArrDesc->GetMinOccurs() != MAXOCCURS_UNBOUNDED)) // REVIEW: error?
+                    (pArrDesc->GetMinOccurs() != MAXOCCURS_UNBOUNDED)) // REVIEW: error?
             {
                 // treat as fixed-size one-dimensional
                 pCodeElem->AddDimension(1);
@@ -2313,8 +2313,8 @@ HRESULT CCodeTypeBuilder::GetTypeFromQName(
     if (FAILED(hr))
     {
         EmitFileError(IDS_SDL_UNRESOLVED_ELEM, pXSDElement, 0,
-            strUri,
-            type.GetName());
+                      strUri,
+                      type.GetName());
     }
     return hr;
 }
@@ -2386,7 +2386,7 @@ HRESULT CCodeTypeBuilder::ProcessSoapHeaders(
         ATLASSERT( pHeader != NULL );
 
         if ((pHeader->GetNamespace().GetLength() != 0) &&
-            (pElem->GetNamespace() != CW2A(pHeader->GetNamespace())))
+                (pElem->GetNamespace() != CW2A(pHeader->GetNamespace())))
         {
             // ATL Server does not support headers with a
             // namespace different from their associated function
@@ -2477,7 +2477,7 @@ HRESULT CCodeTypeBuilder::ProcessSoapHeaders(
                 if (SUCCEEDED(GetElementInfo(pHeader, pHeader->GetMessageName(), strUri)))
                 {
                     EmitFileError(IDS_SDL_UNRESOLVED_MSGPART, pHeader, 0,
-                        pHeader->GetParts(), strUri, pHeader->GetMessageName().GetName());
+                                  pHeader->GetParts(), strUri, pHeader->GetMessageName().GetName());
                 }
                 else
                 {
@@ -2516,7 +2516,7 @@ HRESULT CCodeTypeBuilder::CheckDuplicateHeaders(CCodeFunction *pCodeFunc, CCodeT
         {
             CStringW strUri;
             EmitFileError(IDS_SDL_SOAPHEADER_DUPNAME, pElem->GetElement(), 0,
-                pElem->GetElement()->GetParentSchema()->GetTargetNamespace(), pElem->GetName());
+                          pElem->GetElement()->GetParentSchema()->GetTargetNamespace(), pElem->GetName());
             return E_FAIL;
         }
     }
@@ -2563,7 +2563,7 @@ HRESULT CCodeTypeBuilder::AddHeaderToFunction(CCodeFunction *pCodeFunc, CAutoPtr
         valueName.Append(L"Value");
 
         if ((FAILED(CreateSafeCppName(spElem->GetSafeName(), valueName))) ||
-            (FAILED(CheckGlobalNameMap(spElem->GetSafeName(), true))))
+                (FAILED(CheckGlobalNameMap(spElem->GetSafeName(), true))))
         {
             EmitErrorHr(E_OUTOFMEMORY);
             return E_OUTOFMEMORY;
@@ -2704,8 +2704,8 @@ HRESULT CCodeTypeBuilder::CheckDocLiteralNamespace(
     if ((dwFlags & CODEFLAG_IN) || (dwFlags & CODEFLAG_HEADER) || (pCodeFunc->GetNamespace().GetLength() == 0))
     {
         if ((pCodeFunc->GetNamespace().GetLength() == 0) ||
-            (dwCallFlags & CODEFLAG_PID) ||
-            (dwFlags & CODEFLAG_HEADER))
+                (dwCallFlags & CODEFLAG_PID) ||
+                (dwFlags & CODEFLAG_HEADER))
         {
             pCodeFunc->SetNamespace(pXSDElement->GetParentSchema()->GetTargetNamespace());
         }

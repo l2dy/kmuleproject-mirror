@@ -120,7 +120,7 @@ private:
     CRoutingZone*		m_pSuperZone;
     static CString		m_sFilename;
 #ifdef _DEBUG
-	static CString		m_sFilenameBootstrap;
+    static CString		m_sFilenameBootstrap;
 #endif
     static CUInt128		uMe;
     /**

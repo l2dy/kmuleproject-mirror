@@ -1661,9 +1661,9 @@ void CSharedFileList::CheckAndAddSingleFile(const CFileFind& ff)
     {
         //not in knownfilelist - start adding thread to hash file if the hashing of this file isnt already waiting
         // SLUGFILLER: SafeHash - don't double hash, MY way
-        if (!IsHashing(strFoundDirectory, strFoundFileName) 
-			&& !thePrefs.IsTempFile(strFoundDirectory, strFoundFileName)
-			&& !thePrefs.IsForbiddenFile(strFoundFileName)) //>>> WiZaRd::Remove forbidden files
+        if (!IsHashing(strFoundDirectory, strFoundFileName)
+                && !thePrefs.IsTempFile(strFoundDirectory, strFoundFileName)
+                && !thePrefs.IsForbiddenFile(strFoundFileName)) //>>> WiZaRd::Remove forbidden files
         {
             UnknownFile_Struct* tohash = new UnknownFile_Struct;
             tohash->strDirectory = strFoundDirectory;

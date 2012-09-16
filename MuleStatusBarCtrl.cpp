@@ -78,9 +78,9 @@ void CMuleStatusBarCtrl::OnLButtonDblClk(UINT /*nFlags*/, CPoint point)
         break;
 
 //>>> WiZaRd::USS Status Pane [Eulero]
-	case SBarUSS:           
-		theApp.emuledlg->ShowPreferences(IDD_PPG_TWEAKS);               
-		break;
+    case SBarUSS:
+        theApp.emuledlg->ShowPreferences(IDD_PPG_TWEAKS);
+        break;
 //<<< WiZaRd::USS Status Pane [Eulero]
     }
 }

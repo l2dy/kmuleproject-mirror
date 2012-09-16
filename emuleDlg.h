@@ -147,7 +147,7 @@ public:
     void	UnhookSnarl();
 //<<< Snarl Support
 //>>> WiZaRd::MediaInfoDLL Update
-	void	UpdateMediaInfoDLL();
+    void	UpdateMediaInfoDLL();
 //<<< WiZaRd::MediaInfoDLL Update
 
 protected:

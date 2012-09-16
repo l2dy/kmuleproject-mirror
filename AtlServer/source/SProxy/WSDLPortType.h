@@ -14,74 +14,74 @@ class CWSDLPortType : public CXMLElement
 {
 private:
 
-	CStringW m_strDocumentation;
-	CStringW m_strName;
+    CStringW m_strDocumentation;
+    CStringW m_strName;
 
-	typedef CAtlPtrMap<CStringW, CWSDLPortTypeOperation *, CStringRefElementTraits<CStringW> > PORTYPEOPERATIONMAP;
+    typedef CAtlPtrMap<CStringW, CWSDLPortTypeOperation *, CStringRefElementTraits<CStringW> > PORTYPEOPERATIONMAP;
 
-	PORTYPEOPERATIONMAP m_operations;
+    PORTYPEOPERATIONMAP m_operations;
 
 public:
 
-	inline CWSDLPortTypeOperation * AddOperation(CWSDLPortTypeOperation *p)
-	{
-		if (p != NULL)
-		{
-			if (p->GetName().GetLength() != 0)
-			{
-				if (m_operations.SetAt(p->GetName(), p) != NULL)
-				{
-					return p;
-				}
-			}
-		}
+    inline CWSDLPortTypeOperation * AddOperation(CWSDLPortTypeOperation *p)
+    {
+        if (p != NULL)
+        {
+            if (p->GetName().GetLength() != 0)
+            {
+                if (m_operations.SetAt(p->GetName(), p) != NULL)
+                {
+                    return p;
+                }
+            }
+        }
 
-		EmitErrorHr(E_OUTOFMEMORY);
-		return NULL;
-	}
+        EmitErrorHr(E_OUTOFMEMORY);
+        return NULL;
+    }
 
-	inline CWSDLPortTypeOperation * GetOperation(const CStringW& strName)
-	{
-		const PORTYPEOPERATIONMAP::CPair *p = m_operations.Lookup(strName);
-		if (p != NULL)
-		{
-			return p->m_value;
-		}
+    inline CWSDLPortTypeOperation * GetOperation(const CStringW& strName)
+    {
+        const PORTYPEOPERATIONMAP::CPair *p = m_operations.Lookup(strName);
+        if (p != NULL)
+        {
+            return p->m_value;
+        }
 
-		return NULL;
-	}
+        return NULL;
+    }
 
-	inline POSITION GetFirstOperation()
-	{
-		return m_operations.GetStartPosition();
-	}
+    inline POSITION GetFirstOperation()
+    {
+        return m_operations.GetStartPosition();
+    }
 
-	inline CWSDLPortTypeOperation * GetNextOperation(POSITION &pos)
-	{
-		return m_operations.GetNextValue(pos);
-	}
+    inline CWSDLPortTypeOperation * GetNextOperation(POSITION &pos)
+    {
+        return m_operations.GetNextValue(pos);
+    }
 
-	inline HRESULT SetName(const CStringW& strName)
-	{
-		m_strName = strName;
-		return S_OK;
-	}
+    inline HRESULT SetName(const CStringW& strName)
+    {
+        m_strName = strName;
+        return S_OK;
+    }
 
-	inline HRESULT SetName(const wchar_t *wszName, int cchName)
-	{
-		if (!wszName)
-		{
-			return E_FAIL;
-		}
+    inline HRESULT SetName(const wchar_t *wszName, int cchName)
+    {
+        if (!wszName)
+        {
+            return E_FAIL;
+        }
 
-		m_strName.SetString(wszName, cchName);
+        m_strName.SetString(wszName, cchName);
 
-		return S_OK;
-	}
+        return S_OK;
+    }
 
-	inline const CStringW& GetName()
-	{
-		return m_strName;
-	}
+    inline const CStringW& GetName()
+    {
+        return m_strName;
+    }
 
 };

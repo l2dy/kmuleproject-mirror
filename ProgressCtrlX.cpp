@@ -113,7 +113,7 @@ void CProgressCtrlX::OnPaint()
 
 
     // Draw to memory DC
-	CCustomMemDC memDC(&dc);
+    CCustomMemDC memDC(&dc);
     info.pDC = &memDC;
 
     // fill background

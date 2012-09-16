@@ -11,59 +11,59 @@
 class CQName
 {
 private:
-	
-	CStringW m_strPrefix;
-	CStringW m_strName;
 
-	void CrackQName(const wchar_t *wszQName, int cchQName);
+    CStringW m_strPrefix;
+    CStringW m_strName;
+
+    void CrackQName(const wchar_t *wszQName, int cchQName);
 
 public:
-	
-	CQName()
-	{
-	}
 
-	CQName(const CStringW& strQName);
-	CQName(const CStringW& strPrefix, const CStringW& strName);
-	CQName(const wchar_t *wszQName, int cchQName);
+    CQName()
+    {
+    }
 
-	inline CQName(const CQName& that)
-	{
-		*this = that;
-	}
+    CQName(const CStringW& strQName);
+    CQName(const CStringW& strPrefix, const CStringW& strName);
+    CQName(const wchar_t *wszQName, int cchQName);
 
-	inline const CQName& operator=(const CQName& that)
-	{
-		if (this != &that)
-		{
-			m_strPrefix = that.m_strPrefix;
-			m_strName = that.m_strName;
-		}
+    inline CQName(const CQName& that)
+    {
+        *this = that;
+    }
 
-		return *this;
-	}
+    inline const CQName& operator=(const CQName& that)
+    {
+        if (this != &that)
+        {
+            m_strPrefix = that.m_strPrefix;
+            m_strName = that.m_strName;
+        }
 
-	void SetQName(const CStringW& strQName);
-	void SetQName(const CStringW& strPrefix, const CStringW& strName);
-	void SetQName(const wchar_t *wszQName, int cchQName);
+        return *this;
+    }
 
-	inline void SetPrefix(const CStringW& strPrefix)
-	{
-		m_strPrefix = strPrefix;
-	}
+    void SetQName(const CStringW& strQName);
+    void SetQName(const CStringW& strPrefix, const CStringW& strName);
+    void SetQName(const wchar_t *wszQName, int cchQName);
 
-	inline CStringW& GetPrefix()
-	{
-		return m_strPrefix;
-	}
+    inline void SetPrefix(const CStringW& strPrefix)
+    {
+        m_strPrefix = strPrefix;
+    }
 
-	inline CStringW& GetName()
-	{
-		return m_strName;
-	}
+    inline CStringW& GetPrefix()
+    {
+        return m_strPrefix;
+    }
 
-	inline void SetName(const CStringW& strName)
-	{
-		m_strName = strName;
-	}
+    inline CStringW& GetName()
+    {
+        return m_strName;
+    }
+
+    inline void SetName(const CStringW& strName)
+    {
+        m_strName = strName;
+    }
 };

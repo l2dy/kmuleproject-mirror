@@ -60,15 +60,15 @@ CPPgConnection::CPPgConnection()
     : CPropertyPage(CPPgConnection::IDD)
 {
     guardian = false;
-	ratioIcon = NULL; //>>> WiZaRd::Ratio Indicator
+    ratioIcon = NULL; //>>> WiZaRd::Ratio Indicator
 }
 
 CPPgConnection::~CPPgConnection()
 {
 //>>> WiZaRd::Ratio Indicator
-	if (ratioIcon)
-		VERIFY( DestroyIcon(ratioIcon) );
-//<<< WiZaRd::Ratio Indicator	
+    if (ratioIcon)
+        VERIFY( DestroyIcon(ratioIcon) );
+//<<< WiZaRd::Ratio Indicator
 }
 
 void CPPgConnection::DoDataExchange(CDataExchange* pDX)
@@ -110,13 +110,13 @@ BOOL CPPgConnection::OnInitDialog()
 {
     CPropertyPage::OnInitDialog();
     InitWindowStyles(this);
-		
-	lastRatio = -1; //>>> WiZaRd::Ratio Indicator
+
+    lastRatio = -1; //>>> WiZaRd::Ratio Indicator
 
     LoadSettings();
     Localize();
 
-    OnEnChangePorts(2);	
+    OnEnChangePorts(2);
 
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
@@ -414,7 +414,7 @@ void CPPgConnection::ShowLimitValues()
     else
         buffer.Format(_T("%u %s"), m_ctlMaxDown.GetPos(), GetResString(IDS_KBYTESPERSEC));
     GetDlgItem(IDC_KBS1)->SetWindowText(buffer);
-	SetRatioIcon(); //>>> WiZaRd::Ratio Indicator
+    SetRatioIcon(); //>>> WiZaRd::Ratio Indicator
 }
 
 void CPPgConnection::OnLimiterChange()
@@ -523,37 +523,38 @@ void CPPgConnection::SetRateSliderTicks(CSliderCtrl& rRate)
 //>>> WiZaRd::Ratio Indicator
 void CPPgConnection::SetRatioIcon()
 {
-	CString strBuffer = L"";
-	GetDlgItem(IDC_UPLOAD_CAP)->GetWindowText(strBuffer);
+    CString strBuffer = L"";
+    GetDlgItem(IDC_UPLOAD_CAP)->GetWindowText(strBuffer);
 
-	UINT maxUpload = (UINT)_tstoi(strBuffer);
-	if(maxUpload == 0)
-		maxUpload = thePrefs.GetMaxGraphUploadRate(true);
-	UINT upload = m_ctlMaxUp.GetPos();	
-	if(upload == 0)
-		upload = UNLIMITED;
+    UINT maxUpload = (UINT)_tstoi(strBuffer);
+    if(maxUpload == 0)
+        maxUpload = thePrefs.GetMaxGraphUploadRate(true);
+    UINT upload = m_ctlMaxUp.GetPos();
+    if(upload == 0)
+        upload = UNLIMITED;
 
-	int ratio = min(8, int(((double)upload / maxUpload)/0.125));
-	if(ratio == lastRatio)
-		return;
+    int ratio = min(8, int(((double)upload / maxUpload)/0.125));
+    if(ratio == lastRatio)
+        return;
 
-	lastRatio = ratio;
-	CString strSmilies[] = {
-		L"SMILEY_CRY",
-		L"SMILEY_SAD",
-		L"SMILEY_LOOKSIDE",
-		L"SMILEY_DISGUST",
-		L"SMILEY_SKEPTIC",
-		L"SMILEY_SMILE",
-		L"SMILEY_WINK",
-		L"SMILEY_HAPPY",
-		L"SMILEY_LAUGH",
-	};
+    lastRatio = ratio;
+    CString strSmilies[] =
+    {
+        L"SMILEY_CRY",
+        L"SMILEY_SAD",
+        L"SMILEY_LOOKSIDE",
+        L"SMILEY_DISGUST",
+        L"SMILEY_SKEPTIC",
+        L"SMILEY_SMILE",
+        L"SMILEY_WINK",
+        L"SMILEY_HAPPY",
+        L"SMILEY_LAUGH",
+    };
 
-	if (ratioIcon)
-		VERIFY( DestroyIcon(ratioIcon) );
+    if (ratioIcon)
+        VERIFY( DestroyIcon(ratioIcon) );
 
-	ratioIcon = theApp.LoadIcon(strSmilies[ratio], 16, 16);
-	((CStatic*)GetDlgItem(IDC_RATIOICON))->SetIcon(ratioIcon);
+    ratioIcon = theApp.LoadIcon(strSmilies[ratio], 16, 16);
+    ((CStatic*)GetDlgItem(IDC_RATIOICON))->SetIcon(ratioIcon);
 }
 //<<< WiZaRd::Ratio Indicator

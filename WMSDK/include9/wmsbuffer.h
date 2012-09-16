@@ -3,12 +3,12 @@
 /* this ALWAYS GENERATED file contains the definitions for the interfaces */
 
 
- /* File created by MIDL compiler version 6.00.0361 */
+/* File created by MIDL compiler version 6.00.0361 */
 /* Compiler settings for wmsbuffer.idl:
     Oicf, W1, Zp8, env=Win32 (32b run)
     protocol : dce , ms_ext, c_ext, robust
-    error checks: allocation ref bounds_check enum stub_data 
-    VC __declspec() decoration level: 
+    error checks: allocation ref bounds_check enum stub_data
+    VC __declspec() decoration level:
          __declspec(uuid()), __declspec(selectany), __declspec(novtable)
          DECLSPEC_UUID(), MIDL_INTERFACE()
 */
@@ -41,7 +41,7 @@
 #pragma once
 #endif
 
-/* Forward Declarations */ 
+/* Forward Declarations */
 
 #ifndef __INSSBuffer_FWD_DEFINED__
 #define __INSSBuffer_FWD_DEFINED__
@@ -77,14 +77,14 @@ typedef interface IWMSBufferAllocator IWMSBufferAllocator;
 #include "objidl.h"
 
 #ifdef __cplusplus
-extern "C"{
-#endif 
+extern "C" {
+#endif
 
-void * __RPC_USER MIDL_user_allocate(size_t);
-void __RPC_USER MIDL_user_free( void * ); 
+    void * __RPC_USER MIDL_user_allocate(size_t);
+    void __RPC_USER MIDL_user_free( void * );
 
-/* interface __MIDL_itf_wmsbuffer_0000 */
-/* [local] */ 
+    /* interface __MIDL_itf_wmsbuffer_0000 */
+    /* [local] */
 
 //=========================================================================
 //
@@ -95,90 +95,91 @@ void __RPC_USER MIDL_user_free( void * );
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
-EXTERN_GUID( IID_INSSBuffer, 0xE1CD3524,0x03D7,0x11d2,0x9E,0xED,0x00,0x60,0x97,0xD2,0xD7,0xCF );
-EXTERN_GUID( IID_IWMSBuffer, 0xE1CD3524,0x03D7,0x11d2,0x9E,0xED,0x00,0x60,0x97,0xD2,0xD7,0xCF );
-EXTERN_GUID( IID_INSSBuffer2,0x4f528693,0x1035,0x43fe,0xb4,0x28,0x75,0x75,0x61,0xad,0x3a,0x68 );
-EXTERN_GUID( IID_INSSBuffer3,0xc87ceaaf,0x75be,0x4bc4,0x84,0xeb,0xac,0x27,0x98,0x50,0x76,0x72 );
-EXTERN_GUID( IID_INSSBuffer4,0xb6b8fd5a,0x32e2,0x49d4,0xa9,0x10,0xc2,0x6c,0xc8,0x54,0x65,0xed );
-EXTERN_GUID( IID_IWMSBufferAllocator, 0x61103CA4,0x2033,0x11d2,0x9E,0xF1,0x00,0x60,0x97,0xD2,0xD7,0xCF );
+    EXTERN_GUID( IID_INSSBuffer, 0xE1CD3524,0x03D7,0x11d2,0x9E,0xED,0x00,0x60,0x97,0xD2,0xD7,0xCF );
+    EXTERN_GUID( IID_IWMSBuffer, 0xE1CD3524,0x03D7,0x11d2,0x9E,0xED,0x00,0x60,0x97,0xD2,0xD7,0xCF );
+    EXTERN_GUID( IID_INSSBuffer2,0x4f528693,0x1035,0x43fe,0xb4,0x28,0x75,0x75,0x61,0xad,0x3a,0x68 );
+    EXTERN_GUID( IID_INSSBuffer3,0xc87ceaaf,0x75be,0x4bc4,0x84,0xeb,0xac,0x27,0x98,0x50,0x76,0x72 );
+    EXTERN_GUID( IID_INSSBuffer4,0xb6b8fd5a,0x32e2,0x49d4,0xa9,0x10,0xc2,0x6c,0xc8,0x54,0x65,0xed );
+    EXTERN_GUID( IID_IWMSBufferAllocator, 0x61103CA4,0x2033,0x11d2,0x9E,0xF1,0x00,0x60,0x97,0xD2,0xD7,0xCF );
 #define IWMSBuffer INSSBuffer
 
 
 
-extern RPC_IF_HANDLE __MIDL_itf_wmsbuffer_0000_v0_0_c_ifspec;
-extern RPC_IF_HANDLE __MIDL_itf_wmsbuffer_0000_v0_0_s_ifspec;
+    extern RPC_IF_HANDLE __MIDL_itf_wmsbuffer_0000_v0_0_c_ifspec;
+    extern RPC_IF_HANDLE __MIDL_itf_wmsbuffer_0000_v0_0_s_ifspec;
 
 #ifndef __INSSBuffer_INTERFACE_DEFINED__
 #define __INSSBuffer_INTERFACE_DEFINED__
 
-/* interface INSSBuffer */
-/* [version][uuid][unique][object][local] */ 
+    /* interface INSSBuffer */
+    /* [version][uuid][unique][object][local] */
 
 
-EXTERN_C const IID IID_INSSBuffer;
+    EXTERN_C const IID IID_INSSBuffer;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
-    
+
     MIDL_INTERFACE("E1CD3524-03D7-11d2-9EED-006097D2D7CF")
-    INSSBuffer : public IUnknown
+INSSBuffer :
+    public IUnknown
     {
-    public:
-        virtual HRESULT STDMETHODCALLTYPE GetLength( 
+public:
+        virtual HRESULT STDMETHODCALLTYPE GetLength(
             /* [out] */ DWORD *pdwLength) = 0;
-        
-        virtual HRESULT STDMETHODCALLTYPE SetLength( 
+
+        virtual HRESULT STDMETHODCALLTYPE SetLength(
             /* [in] */ DWORD dwLength) = 0;
-        
-        virtual HRESULT STDMETHODCALLTYPE GetMaxLength( 
+
+        virtual HRESULT STDMETHODCALLTYPE GetMaxLength(
             /* [out] */ DWORD *pdwLength) = 0;
-        
-        virtual HRESULT STDMETHODCALLTYPE GetBuffer( 
+
+        virtual HRESULT STDMETHODCALLTYPE GetBuffer(
             /* [out] */ BYTE **ppdwBuffer) = 0;
-        
-        virtual HRESULT STDMETHODCALLTYPE GetBufferAndLength( 
+
+        virtual HRESULT STDMETHODCALLTYPE GetBufferAndLength(
             /* [out] */ BYTE **ppdwBuffer,
             /* [out] */ DWORD *pdwLength) = 0;
-        
+
     };
-    
+
 #else 	/* C style interface */
 
     typedef struct INSSBufferVtbl
     {
         BEGIN_INTERFACE
-        
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )( 
+
+        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
             INSSBuffer * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
-        
-        ULONG ( STDMETHODCALLTYPE *AddRef )( 
+
+        ULONG ( STDMETHODCALLTYPE *AddRef )(
             INSSBuffer * This);
-        
-        ULONG ( STDMETHODCALLTYPE *Release )( 
+
+        ULONG ( STDMETHODCALLTYPE *Release )(
             INSSBuffer * This);
-        
-        HRESULT ( STDMETHODCALLTYPE *GetLength )( 
+
+        HRESULT ( STDMETHODCALLTYPE *GetLength )(
             INSSBuffer * This,
             /* [out] */ DWORD *pdwLength);
-        
-        HRESULT ( STDMETHODCALLTYPE *SetLength )( 
+
+        HRESULT ( STDMETHODCALLTYPE *SetLength )(
             INSSBuffer * This,
             /* [in] */ DWORD dwLength);
-        
-        HRESULT ( STDMETHODCALLTYPE *GetMaxLength )( 
+
+        HRESULT ( STDMETHODCALLTYPE *GetMaxLength )(
             INSSBuffer * This,
             /* [out] */ DWORD *pdwLength);
-        
-        HRESULT ( STDMETHODCALLTYPE *GetBuffer )( 
+
+        HRESULT ( STDMETHODCALLTYPE *GetBuffer )(
             INSSBuffer * This,
             /* [out] */ BYTE **ppdwBuffer);
-        
-        HRESULT ( STDMETHODCALLTYPE *GetBufferAndLength )( 
+
+        HRESULT ( STDMETHODCALLTYPE *GetBufferAndLength )(
             INSSBuffer * This,
             /* [out] */ BYTE **ppdwBuffer,
             /* [out] */ DWORD *pdwLength);
-        
+
         END_INTERFACE
     } INSSBufferVtbl;
 
@@ -187,7 +188,7 @@ EXTERN_C const IID IID_INSSBuffer;
         CONST_VTBL struct INSSBufferVtbl *lpVtbl;
     };
 
-    
+
 
 #ifdef COBJMACROS
 
@@ -224,65 +225,65 @@ EXTERN_C const IID IID_INSSBuffer;
 
 
 
-HRESULT STDMETHODCALLTYPE INSSBuffer_GetLength_Proxy( 
-    INSSBuffer * This,
-    /* [out] */ DWORD *pdwLength);
+    HRESULT STDMETHODCALLTYPE INSSBuffer_GetLength_Proxy(
+        INSSBuffer * This,
+        /* [out] */ DWORD *pdwLength);
 
 
-void __RPC_STUB INSSBuffer_GetLength_Stub(
-    IRpcStubBuffer *This,
-    IRpcChannelBuffer *_pRpcChannelBuffer,
-    PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
+    void __RPC_STUB INSSBuffer_GetLength_Stub(
+        IRpcStubBuffer *This,
+        IRpcChannelBuffer *_pRpcChannelBuffer,
+        PRPC_MESSAGE _pRpcMessage,
+        DWORD *_pdwStubPhase);
 
 
-HRESULT STDMETHODCALLTYPE INSSBuffer_SetLength_Proxy( 
-    INSSBuffer * This,
-    /* [in] */ DWORD dwLength);
+    HRESULT STDMETHODCALLTYPE INSSBuffer_SetLength_Proxy(
+        INSSBuffer * This,
+        /* [in] */ DWORD dwLength);
 
 
-void __RPC_STUB INSSBuffer_SetLength_Stub(
-    IRpcStubBuffer *This,
-    IRpcChannelBuffer *_pRpcChannelBuffer,
-    PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
+    void __RPC_STUB INSSBuffer_SetLength_Stub(
+        IRpcStubBuffer *This,
+        IRpcChannelBuffer *_pRpcChannelBuffer,
+        PRPC_MESSAGE _pRpcMessage,
+        DWORD *_pdwStubPhase);
 
 
-HRESULT STDMETHODCALLTYPE INSSBuffer_GetMaxLength_Proxy( 
-    INSSBuffer * This,
-    /* [out] */ DWORD *pdwLength);
+    HRESULT STDMETHODCALLTYPE INSSBuffer_GetMaxLength_Proxy(
+        INSSBuffer * This,
+        /* [out] */ DWORD *pdwLength);
 
 
-void __RPC_STUB INSSBuffer_GetMaxLength_Stub(
-    IRpcStubBuffer *This,
-    IRpcChannelBuffer *_pRpcChannelBuffer,
-    PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
+    void __RPC_STUB INSSBuffer_GetMaxLength_Stub(
+        IRpcStubBuffer *This,
+        IRpcChannelBuffer *_pRpcChannelBuffer,
+        PRPC_MESSAGE _pRpcMessage,
+        DWORD *_pdwStubPhase);
 
 
-HRESULT STDMETHODCALLTYPE INSSBuffer_GetBuffer_Proxy( 
-    INSSBuffer * This,
-    /* [out] */ BYTE **ppdwBuffer);
+    HRESULT STDMETHODCALLTYPE INSSBuffer_GetBuffer_Proxy(
+        INSSBuffer * This,
+        /* [out] */ BYTE **ppdwBuffer);
 
 
-void __RPC_STUB INSSBuffer_GetBuffer_Stub(
-    IRpcStubBuffer *This,
-    IRpcChannelBuffer *_pRpcChannelBuffer,
-    PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
+    void __RPC_STUB INSSBuffer_GetBuffer_Stub(
+        IRpcStubBuffer *This,
+        IRpcChannelBuffer *_pRpcChannelBuffer,
+        PRPC_MESSAGE _pRpcMessage,
+        DWORD *_pdwStubPhase);
 
 
-HRESULT STDMETHODCALLTYPE INSSBuffer_GetBufferAndLength_Proxy( 
-    INSSBuffer * This,
-    /* [out] */ BYTE **ppdwBuffer,
-    /* [out] */ DWORD *pdwLength);
+    HRESULT STDMETHODCALLTYPE INSSBuffer_GetBufferAndLength_Proxy(
+        INSSBuffer * This,
+        /* [out] */ BYTE **ppdwBuffer,
+        /* [out] */ DWORD *pdwLength);
 
 
-void __RPC_STUB INSSBuffer_GetBufferAndLength_Stub(
-    IRpcStubBuffer *This,
-    IRpcChannelBuffer *_pRpcChannelBuffer,
-    PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
+    void __RPC_STUB INSSBuffer_GetBufferAndLength_Stub(
+        IRpcStubBuffer *This,
+        IRpcChannelBuffer *_pRpcChannelBuffer,
+        PRPC_MESSAGE _pRpcMessage,
+        DWORD *_pdwStubPhase);
 
 
 
@@ -292,76 +293,77 @@ void __RPC_STUB INSSBuffer_GetBufferAndLength_Stub(
 #ifndef __INSSBuffer2_INTERFACE_DEFINED__
 #define __INSSBuffer2_INTERFACE_DEFINED__
 
-/* interface INSSBuffer2 */
-/* [version][uuid][unique][object][local] */ 
+    /* interface INSSBuffer2 */
+    /* [version][uuid][unique][object][local] */
 
 
-EXTERN_C const IID IID_INSSBuffer2;
+    EXTERN_C const IID IID_INSSBuffer2;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
-    
+
     MIDL_INTERFACE("4F528693-1035-43fe-B428-757561AD3A68")
-    INSSBuffer2 : public INSSBuffer
+INSSBuffer2 :
+    public INSSBuffer
     {
-    public:
-        virtual HRESULT STDMETHODCALLTYPE GetSampleProperties( 
+public:
+        virtual HRESULT STDMETHODCALLTYPE GetSampleProperties(
             /* [in] */ DWORD cbProperties,
             /* [out] */ BYTE *pbProperties) = 0;
-        
-        virtual HRESULT STDMETHODCALLTYPE SetSampleProperties( 
+
+        virtual HRESULT STDMETHODCALLTYPE SetSampleProperties(
             /* [in] */ DWORD cbProperties,
             /* [in] */ BYTE *pbProperties) = 0;
-        
+
     };
-    
+
 #else 	/* C style interface */
 
     typedef struct INSSBuffer2Vtbl
     {
         BEGIN_INTERFACE
-        
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )( 
+
+        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
             INSSBuffer2 * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
-        
-        ULONG ( STDMETHODCALLTYPE *AddRef )( 
+
+        ULONG ( STDMETHODCALLTYPE *AddRef )(
             INSSBuffer2 * This);
-        
-        ULONG ( STDMETHODCALLTYPE *Release )( 
+
+        ULONG ( STDMETHODCALLTYPE *Release )(
             INSSBuffer2 * This);
-        
-        HRESULT ( STDMETHODCALLTYPE *GetLength )( 
+
+        HRESULT ( STDMETHODCALLTYPE *GetLength )(
             INSSBuffer2 * This,
             /* [out] */ DWORD *pdwLength);
-        
-        HRESULT ( STDMETHODCALLTYPE *SetLength )( 
+
+        HRESULT ( STDMETHODCALLTYPE *SetLength )(
             INSSBuffer2 * This,
             /* [in] */ DWORD dwLength);
-        
-        HRESULT ( STDMETHODCALLTYPE *GetMaxLength )( 
+
+        HRESULT ( STDMETHODCALLTYPE *GetMaxLength )(
             INSSBuffer2 * This,
             /* [out] */ DWORD *pdwLength);
-        
-        HRESULT ( STDMETHODCALLTYPE *GetBuffer )( 
+
+        HRESULT ( STDMETHODCALLTYPE *GetBuffer )(
             INSSBuffer2 * This,
             /* [out] */ BYTE **ppdwBuffer);
-        
-        HRESULT ( STDMETHODCALLTYPE *GetBufferAndLength )( 
+
+        HRESULT ( STDMETHODCALLTYPE *GetBufferAndLength )(
             INSSBuffer2 * This,
             /* [out] */ BYTE **ppdwBuffer,
             /* [out] */ DWORD *pdwLength);
-        
-        HRESULT ( STDMETHODCALLTYPE *GetSampleProperties )( 
+
+        HRESULT ( STDMETHODCALLTYPE *GetSampleProperties )(
             INSSBuffer2 * This,
             /* [in] */ DWORD cbProperties,
             /* [out] */ BYTE *pbProperties);
-        
-        HRESULT ( STDMETHODCALLTYPE *SetSampleProperties )( 
+
+        HRESULT ( STDMETHODCALLTYPE *SetSampleProperties )(
             INSSBuffer2 * This,
             /* [in] */ DWORD cbProperties,
             /* [in] */ BYTE *pbProperties);
-        
+
         END_INTERFACE
     } INSSBuffer2Vtbl;
 
@@ -370,7 +372,7 @@ EXTERN_C const IID IID_INSSBuffer2;
         CONST_VTBL struct INSSBuffer2Vtbl *lpVtbl;
     };
 
-    
+
 
 #ifdef COBJMACROS
 
@@ -414,30 +416,30 @@ EXTERN_C const IID IID_INSSBuffer2;
 
 
 
-HRESULT STDMETHODCALLTYPE INSSBuffer2_GetSampleProperties_Proxy( 
-    INSSBuffer2 * This,
-    /* [in] */ DWORD cbProperties,
-    /* [out] */ BYTE *pbProperties);
+    HRESULT STDMETHODCALLTYPE INSSBuffer2_GetSampleProperties_Proxy(
+        INSSBuffer2 * This,
+        /* [in] */ DWORD cbProperties,
+        /* [out] */ BYTE *pbProperties);
 
 
-void __RPC_STUB INSSBuffer2_GetSampleProperties_Stub(
-    IRpcStubBuffer *This,
-    IRpcChannelBuffer *_pRpcChannelBuffer,
-    PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
+    void __RPC_STUB INSSBuffer2_GetSampleProperties_Stub(
+        IRpcStubBuffer *This,
+        IRpcChannelBuffer *_pRpcChannelBuffer,
+        PRPC_MESSAGE _pRpcMessage,
+        DWORD *_pdwStubPhase);
 
 
-HRESULT STDMETHODCALLTYPE INSSBuffer2_SetSampleProperties_Proxy( 
-    INSSBuffer2 * This,
-    /* [in] */ DWORD cbProperties,
-    /* [in] */ BYTE *pbProperties);
+    HRESULT STDMETHODCALLTYPE INSSBuffer2_SetSampleProperties_Proxy(
+        INSSBuffer2 * This,
+        /* [in] */ DWORD cbProperties,
+        /* [in] */ BYTE *pbProperties);
 
 
-void __RPC_STUB INSSBuffer2_SetSampleProperties_Stub(
-    IRpcStubBuffer *This,
-    IRpcChannelBuffer *_pRpcChannelBuffer,
-    PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
+    void __RPC_STUB INSSBuffer2_SetSampleProperties_Stub(
+        IRpcStubBuffer *This,
+        IRpcChannelBuffer *_pRpcChannelBuffer,
+        PRPC_MESSAGE _pRpcMessage,
+        DWORD *_pdwStubPhase);
 
 
 
@@ -447,90 +449,91 @@ void __RPC_STUB INSSBuffer2_SetSampleProperties_Stub(
 #ifndef __INSSBuffer3_INTERFACE_DEFINED__
 #define __INSSBuffer3_INTERFACE_DEFINED__
 
-/* interface INSSBuffer3 */
-/* [version][uuid][unique][object][local] */ 
+    /* interface INSSBuffer3 */
+    /* [version][uuid][unique][object][local] */
 
 
-EXTERN_C const IID IID_INSSBuffer3;
+    EXTERN_C const IID IID_INSSBuffer3;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
-    
+
     MIDL_INTERFACE("C87CEAAF-75BE-4bc4-84EB-AC2798507672")
-    INSSBuffer3 : public INSSBuffer2
+INSSBuffer3 :
+    public INSSBuffer2
     {
-    public:
-        virtual HRESULT STDMETHODCALLTYPE SetProperty( 
+public:
+        virtual HRESULT STDMETHODCALLTYPE SetProperty(
             /* [in] */ GUID guidBufferProperty,
             /* [in] */ void *pvBufferProperty,
             /* [in] */ DWORD dwBufferPropertySize) = 0;
-        
-        virtual HRESULT STDMETHODCALLTYPE GetProperty( 
+
+        virtual HRESULT STDMETHODCALLTYPE GetProperty(
             /* [in] */ GUID guidBufferProperty,
             /* [out] */ void *pvBufferProperty,
             /* [out][in] */ DWORD *pdwBufferPropertySize) = 0;
-        
+
     };
-    
+
 #else 	/* C style interface */
 
     typedef struct INSSBuffer3Vtbl
     {
         BEGIN_INTERFACE
-        
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )( 
+
+        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
             INSSBuffer3 * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
-        
-        ULONG ( STDMETHODCALLTYPE *AddRef )( 
+
+        ULONG ( STDMETHODCALLTYPE *AddRef )(
             INSSBuffer3 * This);
-        
-        ULONG ( STDMETHODCALLTYPE *Release )( 
+
+        ULONG ( STDMETHODCALLTYPE *Release )(
             INSSBuffer3 * This);
-        
-        HRESULT ( STDMETHODCALLTYPE *GetLength )( 
+
+        HRESULT ( STDMETHODCALLTYPE *GetLength )(
             INSSBuffer3 * This,
             /* [out] */ DWORD *pdwLength);
-        
-        HRESULT ( STDMETHODCALLTYPE *SetLength )( 
+
+        HRESULT ( STDMETHODCALLTYPE *SetLength )(
             INSSBuffer3 * This,
             /* [in] */ DWORD dwLength);
-        
-        HRESULT ( STDMETHODCALLTYPE *GetMaxLength )( 
+
+        HRESULT ( STDMETHODCALLTYPE *GetMaxLength )(
             INSSBuffer3 * This,
             /* [out] */ DWORD *pdwLength);
-        
-        HRESULT ( STDMETHODCALLTYPE *GetBuffer )( 
+
+        HRESULT ( STDMETHODCALLTYPE *GetBuffer )(
             INSSBuffer3 * This,
             /* [out] */ BYTE **ppdwBuffer);
-        
-        HRESULT ( STDMETHODCALLTYPE *GetBufferAndLength )( 
+
+        HRESULT ( STDMETHODCALLTYPE *GetBufferAndLength )(
             INSSBuffer3 * This,
             /* [out] */ BYTE **ppdwBuffer,
             /* [out] */ DWORD *pdwLength);
-        
-        HRESULT ( STDMETHODCALLTYPE *GetSampleProperties )( 
+
+        HRESULT ( STDMETHODCALLTYPE *GetSampleProperties )(
             INSSBuffer3 * This,
             /* [in] */ DWORD cbProperties,
             /* [out] */ BYTE *pbProperties);
-        
-        HRESULT ( STDMETHODCALLTYPE *SetSampleProperties )( 
+
+        HRESULT ( STDMETHODCALLTYPE *SetSampleProperties )(
             INSSBuffer3 * This,
             /* [in] */ DWORD cbProperties,
             /* [in] */ BYTE *pbProperties);
-        
-        HRESULT ( STDMETHODCALLTYPE *SetProperty )( 
+
+        HRESULT ( STDMETHODCALLTYPE *SetProperty )(
             INSSBuffer3 * This,
             /* [in] */ GUID guidBufferProperty,
             /* [in] */ void *pvBufferProperty,
             /* [in] */ DWORD dwBufferPropertySize);
-        
-        HRESULT ( STDMETHODCALLTYPE *GetProperty )( 
+
+        HRESULT ( STDMETHODCALLTYPE *GetProperty )(
             INSSBuffer3 * This,
             /* [in] */ GUID guidBufferProperty,
             /* [out] */ void *pvBufferProperty,
             /* [out][in] */ DWORD *pdwBufferPropertySize);
-        
+
         END_INTERFACE
     } INSSBuffer3Vtbl;
 
@@ -539,7 +542,7 @@ EXTERN_C const IID IID_INSSBuffer3;
         CONST_VTBL struct INSSBuffer3Vtbl *lpVtbl;
     };
 
-    
+
 
 #ifdef COBJMACROS
 
@@ -590,32 +593,32 @@ EXTERN_C const IID IID_INSSBuffer3;
 
 
 
-HRESULT STDMETHODCALLTYPE INSSBuffer3_SetProperty_Proxy( 
-    INSSBuffer3 * This,
-    /* [in] */ GUID guidBufferProperty,
-    /* [in] */ void *pvBufferProperty,
-    /* [in] */ DWORD dwBufferPropertySize);
+    HRESULT STDMETHODCALLTYPE INSSBuffer3_SetProperty_Proxy(
+        INSSBuffer3 * This,
+        /* [in] */ GUID guidBufferProperty,
+        /* [in] */ void *pvBufferProperty,
+        /* [in] */ DWORD dwBufferPropertySize);
 
 
-void __RPC_STUB INSSBuffer3_SetProperty_Stub(
-    IRpcStubBuffer *This,
-    IRpcChannelBuffer *_pRpcChannelBuffer,
-    PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
+    void __RPC_STUB INSSBuffer3_SetProperty_Stub(
+        IRpcStubBuffer *This,
+        IRpcChannelBuffer *_pRpcChannelBuffer,
+        PRPC_MESSAGE _pRpcMessage,
+        DWORD *_pdwStubPhase);
 
 
-HRESULT STDMETHODCALLTYPE INSSBuffer3_GetProperty_Proxy( 
-    INSSBuffer3 * This,
-    /* [in] */ GUID guidBufferProperty,
-    /* [out] */ void *pvBufferProperty,
-    /* [out][in] */ DWORD *pdwBufferPropertySize);
+    HRESULT STDMETHODCALLTYPE INSSBuffer3_GetProperty_Proxy(
+        INSSBuffer3 * This,
+        /* [in] */ GUID guidBufferProperty,
+        /* [out] */ void *pvBufferProperty,
+        /* [out][in] */ DWORD *pdwBufferPropertySize);
 
 
-void __RPC_STUB INSSBuffer3_GetProperty_Stub(
-    IRpcStubBuffer *This,
-    IRpcChannelBuffer *_pRpcChannelBuffer,
-    PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
+    void __RPC_STUB INSSBuffer3_GetProperty_Stub(
+        IRpcStubBuffer *This,
+        IRpcChannelBuffer *_pRpcChannelBuffer,
+        PRPC_MESSAGE _pRpcMessage,
+        DWORD *_pdwStubPhase);
 
 
 
@@ -625,100 +628,101 @@ void __RPC_STUB INSSBuffer3_GetProperty_Stub(
 #ifndef __INSSBuffer4_INTERFACE_DEFINED__
 #define __INSSBuffer4_INTERFACE_DEFINED__
 
-/* interface INSSBuffer4 */
-/* [version][uuid][unique][object][local] */ 
+    /* interface INSSBuffer4 */
+    /* [version][uuid][unique][object][local] */
 
 
-EXTERN_C const IID IID_INSSBuffer4;
+    EXTERN_C const IID IID_INSSBuffer4;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
-    
+
     MIDL_INTERFACE("B6B8FD5A-32E2-49d4-A910-C26CC85465ED")
-    INSSBuffer4 : public INSSBuffer3
+INSSBuffer4 :
+    public INSSBuffer3
     {
-    public:
-        virtual HRESULT STDMETHODCALLTYPE GetPropertyCount( 
+public:
+        virtual HRESULT STDMETHODCALLTYPE GetPropertyCount(
             /* [out] */ DWORD *pcBufferProperties) = 0;
-        
-        virtual HRESULT STDMETHODCALLTYPE GetPropertyByIndex( 
+
+        virtual HRESULT STDMETHODCALLTYPE GetPropertyByIndex(
             /* [in] */ DWORD dwBufferPropertyIndex,
             /* [out] */ GUID *pguidBufferProperty,
             /* [out] */ void *pvBufferProperty,
             /* [out][in] */ DWORD *pdwBufferPropertySize) = 0;
-        
+
     };
-    
+
 #else 	/* C style interface */
 
     typedef struct INSSBuffer4Vtbl
     {
         BEGIN_INTERFACE
-        
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )( 
+
+        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
             INSSBuffer4 * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
-        
-        ULONG ( STDMETHODCALLTYPE *AddRef )( 
+
+        ULONG ( STDMETHODCALLTYPE *AddRef )(
             INSSBuffer4 * This);
-        
-        ULONG ( STDMETHODCALLTYPE *Release )( 
+
+        ULONG ( STDMETHODCALLTYPE *Release )(
             INSSBuffer4 * This);
-        
-        HRESULT ( STDMETHODCALLTYPE *GetLength )( 
+
+        HRESULT ( STDMETHODCALLTYPE *GetLength )(
             INSSBuffer4 * This,
             /* [out] */ DWORD *pdwLength);
-        
-        HRESULT ( STDMETHODCALLTYPE *SetLength )( 
+
+        HRESULT ( STDMETHODCALLTYPE *SetLength )(
             INSSBuffer4 * This,
             /* [in] */ DWORD dwLength);
-        
-        HRESULT ( STDMETHODCALLTYPE *GetMaxLength )( 
+
+        HRESULT ( STDMETHODCALLTYPE *GetMaxLength )(
             INSSBuffer4 * This,
             /* [out] */ DWORD *pdwLength);
-        
-        HRESULT ( STDMETHODCALLTYPE *GetBuffer )( 
+
+        HRESULT ( STDMETHODCALLTYPE *GetBuffer )(
             INSSBuffer4 * This,
             /* [out] */ BYTE **ppdwBuffer);
-        
-        HRESULT ( STDMETHODCALLTYPE *GetBufferAndLength )( 
+
+        HRESULT ( STDMETHODCALLTYPE *GetBufferAndLength )(
             INSSBuffer4 * This,
             /* [out] */ BYTE **ppdwBuffer,
             /* [out] */ DWORD *pdwLength);
-        
-        HRESULT ( STDMETHODCALLTYPE *GetSampleProperties )( 
+
+        HRESULT ( STDMETHODCALLTYPE *GetSampleProperties )(
             INSSBuffer4 * This,
             /* [in] */ DWORD cbProperties,
             /* [out] */ BYTE *pbProperties);
-        
-        HRESULT ( STDMETHODCALLTYPE *SetSampleProperties )( 
+
+        HRESULT ( STDMETHODCALLTYPE *SetSampleProperties )(
             INSSBuffer4 * This,
             /* [in] */ DWORD cbProperties,
             /* [in] */ BYTE *pbProperties);
-        
-        HRESULT ( STDMETHODCALLTYPE *SetProperty )( 
+
+        HRESULT ( STDMETHODCALLTYPE *SetProperty )(
             INSSBuffer4 * This,
             /* [in] */ GUID guidBufferProperty,
             /* [in] */ void *pvBufferProperty,
             /* [in] */ DWORD dwBufferPropertySize);
-        
-        HRESULT ( STDMETHODCALLTYPE *GetProperty )( 
+
+        HRESULT ( STDMETHODCALLTYPE *GetProperty )(
             INSSBuffer4 * This,
             /* [in] */ GUID guidBufferProperty,
             /* [out] */ void *pvBufferProperty,
             /* [out][in] */ DWORD *pdwBufferPropertySize);
-        
-        HRESULT ( STDMETHODCALLTYPE *GetPropertyCount )( 
+
+        HRESULT ( STDMETHODCALLTYPE *GetPropertyCount )(
             INSSBuffer4 * This,
             /* [out] */ DWORD *pcBufferProperties);
-        
-        HRESULT ( STDMETHODCALLTYPE *GetPropertyByIndex )( 
+
+        HRESULT ( STDMETHODCALLTYPE *GetPropertyByIndex )(
             INSSBuffer4 * This,
             /* [in] */ DWORD dwBufferPropertyIndex,
             /* [out] */ GUID *pguidBufferProperty,
             /* [out] */ void *pvBufferProperty,
             /* [out][in] */ DWORD *pdwBufferPropertySize);
-        
+
         END_INTERFACE
     } INSSBuffer4Vtbl;
 
@@ -727,7 +731,7 @@ EXTERN_C const IID IID_INSSBuffer4;
         CONST_VTBL struct INSSBuffer4Vtbl *lpVtbl;
     };
 
-    
+
 
 #ifdef COBJMACROS
 
@@ -785,31 +789,31 @@ EXTERN_C const IID IID_INSSBuffer4;
 
 
 
-HRESULT STDMETHODCALLTYPE INSSBuffer4_GetPropertyCount_Proxy( 
-    INSSBuffer4 * This,
-    /* [out] */ DWORD *pcBufferProperties);
+    HRESULT STDMETHODCALLTYPE INSSBuffer4_GetPropertyCount_Proxy(
+        INSSBuffer4 * This,
+        /* [out] */ DWORD *pcBufferProperties);
 
 
-void __RPC_STUB INSSBuffer4_GetPropertyCount_Stub(
-    IRpcStubBuffer *This,
-    IRpcChannelBuffer *_pRpcChannelBuffer,
-    PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
+    void __RPC_STUB INSSBuffer4_GetPropertyCount_Stub(
+        IRpcStubBuffer *This,
+        IRpcChannelBuffer *_pRpcChannelBuffer,
+        PRPC_MESSAGE _pRpcMessage,
+        DWORD *_pdwStubPhase);
 
 
-HRESULT STDMETHODCALLTYPE INSSBuffer4_GetPropertyByIndex_Proxy( 
-    INSSBuffer4 * This,
-    /* [in] */ DWORD dwBufferPropertyIndex,
-    /* [out] */ GUID *pguidBufferProperty,
-    /* [out] */ void *pvBufferProperty,
-    /* [out][in] */ DWORD *pdwBufferPropertySize);
+    HRESULT STDMETHODCALLTYPE INSSBuffer4_GetPropertyByIndex_Proxy(
+        INSSBuffer4 * This,
+        /* [in] */ DWORD dwBufferPropertyIndex,
+        /* [out] */ GUID *pguidBufferProperty,
+        /* [out] */ void *pvBufferProperty,
+        /* [out][in] */ DWORD *pdwBufferPropertySize);
 
 
-void __RPC_STUB INSSBuffer4_GetPropertyByIndex_Stub(
-    IRpcStubBuffer *This,
-    IRpcChannelBuffer *_pRpcChannelBuffer,
-    PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
+    void __RPC_STUB INSSBuffer4_GetPropertyByIndex_Stub(
+        IRpcStubBuffer *This,
+        IRpcChannelBuffer *_pRpcChannelBuffer,
+        PRPC_MESSAGE _pRpcMessage,
+        DWORD *_pdwStubPhase);
 
 
 
@@ -819,55 +823,56 @@ void __RPC_STUB INSSBuffer4_GetPropertyByIndex_Stub(
 #ifndef __IWMSBufferAllocator_INTERFACE_DEFINED__
 #define __IWMSBufferAllocator_INTERFACE_DEFINED__
 
-/* interface IWMSBufferAllocator */
-/* [version][uuid][unique][object][local] */ 
+    /* interface IWMSBufferAllocator */
+    /* [version][uuid][unique][object][local] */
 
 
-EXTERN_C const IID IID_IWMSBufferAllocator;
+    EXTERN_C const IID IID_IWMSBufferAllocator;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
-    
+
     MIDL_INTERFACE("61103CA4-2033-11d2-9EF1-006097D2D7CF")
-    IWMSBufferAllocator : public IUnknown
+IWMSBufferAllocator :
+    public IUnknown
     {
-    public:
-        virtual HRESULT STDMETHODCALLTYPE AllocateBuffer( 
+public:
+        virtual HRESULT STDMETHODCALLTYPE AllocateBuffer(
             /* [in] */ DWORD dwMaxBufferSize,
             /* [out] */ INSSBuffer **ppBuffer) = 0;
-        
-        virtual HRESULT STDMETHODCALLTYPE AllocatePageSizeBuffer( 
+
+        virtual HRESULT STDMETHODCALLTYPE AllocatePageSizeBuffer(
             /* [in] */ DWORD dwMaxBufferSize,
             /* [out] */ INSSBuffer **ppBuffer) = 0;
-        
+
     };
-    
+
 #else 	/* C style interface */
 
     typedef struct IWMSBufferAllocatorVtbl
     {
         BEGIN_INTERFACE
-        
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )( 
+
+        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
             IWMSBufferAllocator * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
-        
-        ULONG ( STDMETHODCALLTYPE *AddRef )( 
+
+        ULONG ( STDMETHODCALLTYPE *AddRef )(
             IWMSBufferAllocator * This);
-        
-        ULONG ( STDMETHODCALLTYPE *Release )( 
+
+        ULONG ( STDMETHODCALLTYPE *Release )(
             IWMSBufferAllocator * This);
-        
-        HRESULT ( STDMETHODCALLTYPE *AllocateBuffer )( 
+
+        HRESULT ( STDMETHODCALLTYPE *AllocateBuffer )(
             IWMSBufferAllocator * This,
             /* [in] */ DWORD dwMaxBufferSize,
             /* [out] */ INSSBuffer **ppBuffer);
-        
-        HRESULT ( STDMETHODCALLTYPE *AllocatePageSizeBuffer )( 
+
+        HRESULT ( STDMETHODCALLTYPE *AllocatePageSizeBuffer )(
             IWMSBufferAllocator * This,
             /* [in] */ DWORD dwMaxBufferSize,
             /* [out] */ INSSBuffer **ppBuffer);
-        
+
         END_INTERFACE
     } IWMSBufferAllocatorVtbl;
 
@@ -876,7 +881,7 @@ EXTERN_C const IID IID_IWMSBufferAllocator;
         CONST_VTBL struct IWMSBufferAllocatorVtbl *lpVtbl;
     };
 
-    
+
 
 #ifdef COBJMACROS
 
@@ -904,39 +909,39 @@ EXTERN_C const IID IID_IWMSBufferAllocator;
 
 
 
-HRESULT STDMETHODCALLTYPE IWMSBufferAllocator_AllocateBuffer_Proxy( 
-    IWMSBufferAllocator * This,
-    /* [in] */ DWORD dwMaxBufferSize,
-    /* [out] */ INSSBuffer **ppBuffer);
+    HRESULT STDMETHODCALLTYPE IWMSBufferAllocator_AllocateBuffer_Proxy(
+        IWMSBufferAllocator * This,
+        /* [in] */ DWORD dwMaxBufferSize,
+        /* [out] */ INSSBuffer **ppBuffer);
 
 
-void __RPC_STUB IWMSBufferAllocator_AllocateBuffer_Stub(
-    IRpcStubBuffer *This,
-    IRpcChannelBuffer *_pRpcChannelBuffer,
-    PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
+    void __RPC_STUB IWMSBufferAllocator_AllocateBuffer_Stub(
+        IRpcStubBuffer *This,
+        IRpcChannelBuffer *_pRpcChannelBuffer,
+        PRPC_MESSAGE _pRpcMessage,
+        DWORD *_pdwStubPhase);
 
 
-HRESULT STDMETHODCALLTYPE IWMSBufferAllocator_AllocatePageSizeBuffer_Proxy( 
-    IWMSBufferAllocator * This,
-    /* [in] */ DWORD dwMaxBufferSize,
-    /* [out] */ INSSBuffer **ppBuffer);
+    HRESULT STDMETHODCALLTYPE IWMSBufferAllocator_AllocatePageSizeBuffer_Proxy(
+        IWMSBufferAllocator * This,
+        /* [in] */ DWORD dwMaxBufferSize,
+        /* [out] */ INSSBuffer **ppBuffer);
 
 
-void __RPC_STUB IWMSBufferAllocator_AllocatePageSizeBuffer_Stub(
-    IRpcStubBuffer *This,
-    IRpcChannelBuffer *_pRpcChannelBuffer,
-    PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
+    void __RPC_STUB IWMSBufferAllocator_AllocatePageSizeBuffer_Stub(
+        IRpcStubBuffer *This,
+        IRpcChannelBuffer *_pRpcChannelBuffer,
+        PRPC_MESSAGE _pRpcMessage,
+        DWORD *_pdwStubPhase);
 
 
 
 #endif 	/* __IWMSBufferAllocator_INTERFACE_DEFINED__ */
 
 
-/* Additional Prototypes for ALL interfaces */
+    /* Additional Prototypes for ALL interfaces */
 
-/* end of Additional Prototypes */
+    /* end of Additional Prototypes */
 
 #ifdef __cplusplus
 }

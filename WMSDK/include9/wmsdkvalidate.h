@@ -42,7 +42,7 @@ HRESULT STDMETHODCALLTYPE WMCheckURLScheme( /* [in] */ LPCWSTR pwszURLScheme );
 HRESULT STDMETHODCALLTYPE WMValidateData(
     /* [in] */ BYTE *pbData,
     /* [in, out] */ DWORD *pdwDataSize
-    );
+);
 
 //
 // This routine validates that a URL can be played in Offline mode.
@@ -56,6 +56,6 @@ HRESULT STDMETHODCALLTYPE WMIsAvailableOffline(
     /* [in] */ LPCWSTR pwszURL,
     /* [in] */ LPCWSTR pwszLanguage,
     /* [out] */ BOOL *pfIsAvailableOffline
-    );
+);
 
 #endif /* _WMSDK_VALIDATE_H */

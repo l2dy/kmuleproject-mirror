@@ -191,8 +191,11 @@ private:
 
 //>>> WiZaRd::AutoHL
 public:
-	UINT	GetHLCount() const	{return m_uiHLCount;} 
-private:	
-	UINT	m_uiHLCount;
+    UINT	GetHLCount() const
+    {
+        return m_uiHLCount;
+    }
+private:
+    UINT	m_uiHLCount;
 //<<< WiZaRd::AutoLH
 };

@@ -13,12 +13,12 @@ class CSchemaDocument : public CXMLDocument
 {
 private:
 
-	CSchema m_schema;
+    CSchema m_schema;
 
 public:
 
-	inline CSchema * GetSchema()
-	{
-		return m_&schema;
-	}
+    inline CSchema * GetSchema()
+    {
+        return m_&schema;
+    }
 };

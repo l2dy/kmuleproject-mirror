@@ -158,7 +158,7 @@ void CClientListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     if (!lpDrawItemStruct->itemData)
         return;
 
-	CCustomMemDC dc(CDC::FromHandle(lpDrawItemStruct->hDC), &lpDrawItemStruct->rcItem);
+    CCustomMemDC dc(CDC::FromHandle(lpDrawItemStruct->hDC), &lpDrawItemStruct->rcItem);
     BOOL bCtrlFocused;
     InitItemMemDC(dc, lpDrawItemStruct, bCtrlFocused);
     CRect cur_rec(lpDrawItemStruct->rcItem);
@@ -466,8 +466,19 @@ void CClientListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
     ClientMenu.AddMenuTitle(GetResString(IDS_CLIENTS), true);
     ClientMenu.AppendMenu(MF_STRING | (client ? MF_ENABLED : MF_GRAYED), MP_DETAIL, GetResString(IDS_SHOWDETAILS), _T("CLIENTDETAILS"));
     ClientMenu.SetDefaultItem(MP_DETAIL);
-    ClientMenu.AppendMenu(MF_STRING | ((client && client->IsEd2kClient() && !client->IsFriend()) ? MF_ENABLED : MF_GRAYED), MP_ADDFRIEND, GetResString(IDS_ADDFRIEND), _T("ADDFRIEND"));
-    ClientMenu.AppendMenu(MF_STRING | ((client && client->IsEd2kClient()) ? MF_ENABLED : MF_GRAYED), MP_MESSAGE, GetResString(IDS_SEND_MSG), _T("SENDMESSAGE"));
+//>>> Tux::FriendHandling
+//  ClientMenu.AppendMenu(MF_STRING | ((client && client->IsEd2kClient() && !client->IsFriend()) ? MF_ENABLED : MF_GRAYED), MP_ADDFRIEND, GetResString(IDS_ADDFRIEND), _T("ADDFRIEND"));
+//  ClientMenu.AppendMenu(MF_STRING | ((client && client->IsEd2kClient()) ? MF_ENABLED : MF_GRAYED), MP_MESSAGE, GetResString(IDS_SEND_MSG), _T("SENDMESSAGE"));
+    if (client && client->IsEd2kClient())
+    {
+        if (!client->IsFriend())
+            ClientMenu.AppendMenu(MF_STRING, MP_ADDFRIEND, GetResString(IDS_ADDFRIEND), _T("ADDFRIEND"));
+        else
+            ClientMenu.AppendMenu(MF_STRING, MP_REMOVEFRIEND, GetResString(IDS_REMOVEFRIEND), _T("DELETEFRIEND"));
+    }
+    ClientMenu.AppendMenu(MF_STRING | (client && client->IsFriend() ? MF_ENABLED : MF_GRAYED), MP_FRIENDSLOT, GetResString(IDS_FRIENDSLOT), _T("FRIENDSLOT"));
+    ClientMenu.CheckMenuItem(MP_FRIENDSLOT, (client && client->GetFriendSlot()) ? MF_CHECKED : MF_UNCHECKED);
+//<<< Tux::FriendHandling
     ClientMenu.AppendMenu(MF_STRING | ((client && client->IsEd2kClient() && client->GetViewSharedFilesSupport()) ? MF_ENABLED : MF_GRAYED), MP_SHOWLIST, GetResString(IDS_VIEWFILES), _T("VIEWFILES"));
     if (Kademlia::CKademlia::IsRunning() && !Kademlia::CKademlia::IsConnected())
         ClientMenu.AppendMenu(MF_STRING | ((client && client->IsEd2kClient() && client->GetKadPort()!=0 && client->GetKadVersion() > 1) ? MF_ENABLED : MF_GRAYED), MP_BOOT, GetResString(IDS_BOOTSTRAP));
@@ -503,6 +514,26 @@ BOOL CClientListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
             if (theApp.friendlist->AddFriend(client))
                 Update(iSel);
             break;
+//>>> Tux::FriendHandling
+        case MP_REMOVEFRIEND:
+            if (client && client->IsFriend())
+            {
+                theApp.friendlist->RemoveFriend(client->m_Friend);
+                Update(iSel);
+            }
+            break;
+        case MP_FRIENDSLOT:
+            if (client)
+            {
+                bool IsAlready;
+                IsAlready = client->GetFriendSlot();
+                theApp.friendlist->RemoveAllFriendSlots();
+                if (!IsAlready)
+                    client->SetFriendSlot(true);
+                Update(iSel);
+            }
+            break;
+//<<< Tux::FriendHandling
         case MP_UNBAN:
             if (client->IsBanned())
             {

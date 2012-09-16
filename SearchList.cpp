@@ -983,14 +983,14 @@ void CSearchList::DoSpamRating(CSearchFile* pSearchFile, bool bIsClientFile, boo
     {
         const SSearchParams* params = theApp.emuledlg->searchwnd->GetSearchParamsBySearchID(pSearchFile->GetSearchID());
         CString strBadServer = L"";
-		if(thePrefs.GetSpamFilterMode() != eSFM_Disabled)
-		{
-			if(IsBadResult(pSearchFile, params, strBadServer))
-			{
-				theApp.QueueDebugLogLineEx(LOG_WARNING, L"Result '%s' marked as spam (IP: %s - %s)", pSearchFile->GetFileName(), ipstr(dwFromUDPServerIP), strBadServer);
-				nSpamScore += SPAM_FILEHASH_HIT; //100% hit!
-			}
-		}
+        if(thePrefs.GetSpamFilterMode() != eSFM_Disabled)
+        {
+            if(IsBadResult(pSearchFile, params, strBadServer))
+            {
+                theApp.QueueDebugLogLineEx(LOG_WARNING, L"Result '%s' marked as spam (IP: %s - %s)", pSearchFile->GetFileName(), ipstr(dwFromUDPServerIP), strBadServer);
+                nSpamScore += SPAM_FILEHASH_HIT; //100% hit!
+            }
+        }
     }
 //<<< WiZaRd::AntiFake
 

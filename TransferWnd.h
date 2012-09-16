@@ -125,7 +125,7 @@ protected:
     void	SetWnd2Icon(EWnd2Icon iIcon);
 //>>> WiZaRd::Advanced Transfer Window Layout [Stulle]
 //    void	ShowSplitWindow(bool bReDraw = false);
-	void	ShowSplitWindow(const bool bReDraw, const UINT dwListIDC, const bool bInitSplitted = false);
+    void	ShowSplitWindow(const bool bReDraw, const UINT dwListIDC, const bool bInitSplitted = false);
 //<<< WiZaRd::Advanced Transfer Window Layout [Stulle]
     void	LocalizeToolbars();
 
@@ -160,8 +160,8 @@ protected:
 
 //>>> WiZaRd::Advanced Transfer Window Layout [Stulle]
 public:
-	void	UpdateListCountTop(const EWnd2 listindex);
+    void	UpdateListCountTop(const EWnd2 listindex);
 protected:
-	UINT	m_dwTopListIDC;
+    UINT	m_dwTopListIDC;
 //<<< WiZaRd::Advanced Transfer Window Layout [Stulle]
 };

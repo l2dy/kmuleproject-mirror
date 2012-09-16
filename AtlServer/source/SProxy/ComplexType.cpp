@@ -12,59 +12,59 @@
 
 CElement * CComplexType::AddElement(CElement * p)
 {
-	CAutoPtr<CElement> spOut;
-	if (p == NULL)
-	{
-		spOut.Attach( new CElement );
-		p = spOut;
-	}
-	
-	if (p != NULL)
-	{
-		if (m_elements.AddTail(p) != NULL)
-		{
-			spOut.Detach();
-			return p;
-		}
-	}
+    CAutoPtr<CElement> spOut;
+    if (p == NULL)
+    {
+        spOut.Attach( new CElement );
+        p = spOut;
+    }
 
-	return NULL;
+    if (p != NULL)
+    {
+        if (m_elements.AddTail(p) != NULL)
+        {
+            spOut.Detach();
+            return p;
+        }
+    }
+
+    return NULL;
 }
 
 CAttribute * CComplexType::AddAttribute(CAttribute * p)
 {
-	CAutoPtr<CAttribute> spOut;
-	if (p == NULL)
-	{
-		spOut.Attach( new CAttribute );
-		p = spOut;
-	}
-	
-	if (p != NULL)
-	{
-		if (m_attributes.AddTail(p) != NULL)
-		{
-			spOut.Detach();
-			return p;
-		}
-	}
+    CAutoPtr<CAttribute> spOut;
+    if (p == NULL)
+    {
+        spOut.Attach( new CAttribute );
+        p = spOut;
+    }
 
-	return NULL;
+    if (p != NULL)
+    {
+        if (m_attributes.AddTail(p) != NULL)
+        {
+            spOut.Detach();
+            return p;
+        }
+    }
+
+    return NULL;
 }
 
 CContent * CComplexType::AddContent(CContent *pContent)
 {
-	if (pContent == NULL)
-	{
-		pContent = new CContent;
-	}
-	delete m_pContent;
-	m_pContent = pContent;
+    if (pContent == NULL)
+    {
+        pContent = new CContent;
+    }
+    delete m_pContent;
+    m_pContent = pContent;
 
-	return m_pContent;
+    return m_pContent;
 }
 
 CComplexType::~CComplexType()
 {
-	delete m_pContent;
+    delete m_pContent;
 }

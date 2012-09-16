@@ -30,7 +30,7 @@
 #define IDC_FDCRESET					4011 //>>> FDC [BlueSonicBoy]
 #define IDS_UDP_DISABLED				4012 //>>> WiZaRd::Detect UDP problem clients
 //>>> WiZaRd::Ratio Indicator
-#define IDS_RATIO						4013 
+#define IDS_RATIO						4013
 #define IDC_RATIOICON					4014
 //<<< WiZaRd::Ratio Indicator
 #define IDS_RESTART_NOW_QUESTION		4015

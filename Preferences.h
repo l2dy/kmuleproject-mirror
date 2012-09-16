@@ -2248,11 +2248,11 @@ protected:
     static void	CreateUserHash();
     static void	SetStandartValues();
     static int	GetRecommendedMaxConnections();
-    static void LoadPreferences();	
+    static void LoadPreferences();
     static void SavePreferences();
 //>>> WiZaRd::Own Prefs
-	static void	LoadkMulePrefs();
-	static void	SavekMulePrefs();
+    static void	LoadkMulePrefs();
+    static void	SavekMulePrefs();
 //<<< WiZaRd::Own Prefs
     static CString	GetDefaultDirectory(EDefaultDirectory eDirectory, bool bCreate = true);
 
@@ -2292,74 +2292,146 @@ public:
 //<<< WiZaRd::IPFilter-Update
 //>>> WiZaRd::MediaInfoDLL Update
 private:
-	static	bool	m_bMediaInfoDllAutoUpdate;
-	static	UINT	m_uiMediaInfoDllVersion;
+    static	bool	m_bMediaInfoDllAutoUpdate;
+    static	UINT	m_uiMediaInfoDllVersion;
 
 public:
-	static	CString	m_strMediaInfoDllUpdateURL;
+    static	CString	m_strMediaInfoDllUpdateURL;
 
-	static	bool	IsAutoUpdateMediaInfoDllEnabled()		{return m_bMediaInfoDllAutoUpdate;}
-	static	void	SetAutoUpdateMediaInfoDll(const bool b)	{m_bMediaInfoDllAutoUpdate = b;}
+    static	bool	IsAutoUpdateMediaInfoDllEnabled()
+    {
+        return m_bMediaInfoDllAutoUpdate;
+    }
+    static	void	SetAutoUpdateMediaInfoDll(const bool b)
+    {
+        m_bMediaInfoDllAutoUpdate = b;
+    }
 
-	static  CString GetMediaInfoDllUpdateURL()				{return m_strMediaInfoDllUpdateURL;}
+    static  CString GetMediaInfoDllUpdateURL()
+    {
+        return m_strMediaInfoDllUpdateURL;
+    }
 
-	static	UINT	GetMediaInfoDllVersion()				{return m_uiMediaInfoDllVersion;}
-	static	void	SetMediaInfoDllVersion(const UINT i)	{m_uiMediaInfoDllVersion = i;}
+    static	UINT	GetMediaInfoDllVersion()
+    {
+        return m_uiMediaInfoDllVersion;
+    }
+    static	void	SetMediaInfoDllVersion(const UINT i)
+    {
+        m_uiMediaInfoDllVersion = i;
+    }
 //<<< WiZaRd::MediaInfoDLL Update
 //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
 private:
-	static COLORREF m_crPreviewReadyColor;
+    static COLORREF m_crPreviewReadyColor;
 public:
-	static COLORREF GetPreviewReadyColor()					{return m_crPreviewReadyColor;}	
+    static COLORREF GetPreviewReadyColor()
+    {
+        return m_crPreviewReadyColor;
+    }
 //<<< jerrybg::ColorPreviewReadyFiles [WiZaRd]
 //>>> WiZaRd::Advanced Transfer Window Layout [Stulle]
 private:
-	static bool		m_bSplitWindow;
+    static bool		m_bSplitWindow;
 public:
-	static	bool	GetSplitWindow()						{return m_bSplitWindow;}
-	static	void	SetSplitWindow(const bool b)			{m_bSplitWindow = b;}
+    static	bool	GetSplitWindow()
+    {
+        return m_bSplitWindow;
+    }
+    static	void	SetSplitWindow(const bool b)
+    {
+        m_bSplitWindow = b;
+    }
 //<<< WiZaRd::Advanced Transfer Window Layout [Stulle]
 //>>> WiZaRd::SimpleProgress
 private:
-	static	bool	m_bUseSimpleProgress;
+    static	bool	m_bUseSimpleProgress;
 public:
-	static	bool	GetUseSimpleProgress()					{return m_bUseSimpleProgress;}
+    static	bool	GetUseSimpleProgress()
+    {
+        return m_bUseSimpleProgress;
+    }
 //<<< WiZaRd::SimpleProgress
 //>>> WiZaRd::AntiFake
 private:
-	static	uint8	m_uiSpamFilterMode;
+    static	uint8	m_uiSpamFilterMode;
 public:
-	static	uint8	GetSpamFilterMode()						{return m_uiSpamFilterMode;}
+    static	uint8	GetSpamFilterMode()
+    {
+        return m_uiSpamFilterMode;
+    }
 //<<< WiZaRd::AntiFake
 //>>> WiZaRd::AutoHL
 private:
-	static  uint16	m_iMinAutoHL;
-	static	uint16	m_iMaxAutoHL;
-	static	uint16	m_iMaxSourcesHL;
-	static	sint8	m_iUseAutoHL;
-	static	uint16	m_iAutoHLUpdateTimer;
+    static  uint16	m_iMinAutoHL;
+    static	uint16	m_iMaxAutoHL;
+    static	uint16	m_iMaxSourcesHL;
+    static	sint8	m_iUseAutoHL;
+    static	uint16	m_iAutoHLUpdateTimer;
 public:
-	static	uint16	GetAutoHLUpdateTimer()			{return m_iAutoHLUpdateTimer;}
-	static	void	SetAutoHLUpdateTimer(const uint16 i)	{m_iAutoHLUpdateTimer = i;}
-	static  uint16	GetMinAutoHL()					{return m_iMinAutoHL;}
-	static  void	SetMinAutoHL(const uint16 i)	{m_iMinAutoHL = i;}
-	static	uint16	GetMaxAutoHL()					{return m_iMaxAutoHL;}
-	static	void	SetMaxAutoHL(const uint16 i)	{m_iMaxAutoHL = i;}
-	static  uint16  GetMaxSourcesHL()				{return m_iMaxSourcesHL;}
-	static	void	SetMaxSourcesHL(const uint16 i)	{m_iMaxSourcesHL = i;}
-	static	sint8	IsUseAutoHL()					{return m_iUseAutoHL;}
-	static	void	SetUseAutoHL(const sint8 i)		{m_iUseAutoHL = i;}
+    static	uint16	GetAutoHLUpdateTimer()
+    {
+        return m_iAutoHLUpdateTimer;
+    }
+    static	void	SetAutoHLUpdateTimer(const uint16 i)
+    {
+        m_iAutoHLUpdateTimer = i;
+    }
+    static  uint16	GetMinAutoHL()
+    {
+        return m_iMinAutoHL;
+    }
+    static  void	SetMinAutoHL(const uint16 i)
+    {
+        m_iMinAutoHL = i;
+    }
+    static	uint16	GetMaxAutoHL()
+    {
+        return m_iMaxAutoHL;
+    }
+    static	void	SetMaxAutoHL(const uint16 i)
+    {
+        m_iMaxAutoHL = i;
+    }
+    static  uint16  GetMaxSourcesHL()
+    {
+        return m_iMaxSourcesHL;
+    }
+    static	void	SetMaxSourcesHL(const uint16 i)
+    {
+        m_iMaxSourcesHL = i;
+    }
+    static	sint8	IsUseAutoHL()
+    {
+        return m_iUseAutoHL;
+    }
+    static	void	SetUseAutoHL(const sint8 i)
+    {
+        m_iUseAutoHL = i;
+    }
 //<<< WiZaRd::AutoHL
 //>>> WiZaRd::Remove forbidden files
 private:
-	static	bool	m_bRemoveForbiddenFiles;
-	static	CString	m_strForbiddenFileFilters;
+    static	bool	m_bRemoveForbiddenFiles;
+    static	CString	m_strForbiddenFileFilters;
 public:
-	static	bool	IsForbiddenFile(const CString& rstrName);
-	static	bool	RemoveForbiddenFiles()					{return m_bRemoveForbiddenFiles;}
-	static	void	SetRemoveForbiddenFiles(const bool b)	{m_bRemoveForbiddenFiles = b;}
-	static	CString	GetForbiddenFileFilters()				{return m_strForbiddenFileFilters;}
-	static	void	SetForbiddenFileFilters(const CString& str)	{m_strForbiddenFileFilters = str;}
+    static	bool	IsForbiddenFile(const CString& rstrName);
+    static	bool	RemoveForbiddenFiles()
+    {
+        return m_bRemoveForbiddenFiles;
+    }
+    static	void	SetRemoveForbiddenFiles(const bool b)
+    {
+        m_bRemoveForbiddenFiles = b;
+    }
+    static	CString	GetForbiddenFileFilters()
+    {
+        return m_strForbiddenFileFilters;
+    }
+    static	void	SetForbiddenFileFilters(const CString& str)
+    {
+        m_strForbiddenFileFilters = str;
+    }
 //<<< WiZaRd::Remove forbidden files
 };
 

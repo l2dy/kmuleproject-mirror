@@ -39,10 +39,10 @@ public:
     bool				notify;
     CStringArray		history;
     int					history_pos;
-	
+
 //>>> WiZaRd::ChatLog [CB]
-	void				OpenLog(const CString& strNick);
-	void				LogMessage(const CString& strNick, const CString& strMessage);
+    void				OpenLog(const CString& strNick);
+    void				LogMessage(const CString& strNick, const CString& strMessage);
 private:
     CLogFile			m_ChatLog;
 //<<< WiZaRd::ChatLog [CB]

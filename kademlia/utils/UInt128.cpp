@@ -184,20 +184,20 @@ void CUInt128::ToHexString(CString *pstr) const
 {
     pstr->SetString(L"");
 //>>> WiZaRd::Reduced CPU usage [netfinity]
-	wchar_t element[10];
-	for (int i = 0; i < 4; ++i)
-	{
-		for (int j = 0; j < 8; ++j)
-		{
-			ULONG	digit = (m_uData[i] >> (j*4)) & 0xF;
-			if (digit < 10)
-				element[7-j] = TCHAR(L'0' + digit);
-			else
-				element[7-j] = TCHAR(L'A' + (digit - 10));
-		}
-		element[8] = L'\0';
-		pstr->Append(element);
-	}
+    wchar_t element[10];
+    for (int i = 0; i < 4; ++i)
+    {
+        for (int j = 0; j < 8; ++j)
+        {
+            ULONG	digit = (m_uData[i] >> (j*4)) & 0xF;
+            if (digit < 10)
+                element[7-j] = TCHAR(L'0' + digit);
+            else
+                element[7-j] = TCHAR(L'A' + (digit - 10));
+        }
+        element[8] = L'\0';
+        pstr->Append(element);
+    }
 //<<< WiZaRd::Reduced CPU usage [netfinity]
 }
 
@@ -205,41 +205,41 @@ CString CUInt128::ToHexString() const
 {
     CString pstr = L"";
 //>>> WiZaRd::Reduced CPU usage [netfinity]
-	wchar_t element[10];
-	for (int i = 0; i < 4; ++i)
-	{
-		for (int j = 0; j < 8; ++j)
-		{
-			ULONG	digit = (m_uData[i] >> (j*4)) & 0xF;
-			if (digit < 10)
-				element[7-j] = TCHAR(L'0' + digit);
-			else
-				element[7-j] = TCHAR(L'A' + (digit - 10));
-		}
-		element[8] = L'\0';
-		pstr.Append(element);
-	}
+    wchar_t element[10];
+    for (int i = 0; i < 4; ++i)
+    {
+        for (int j = 0; j < 8; ++j)
+        {
+            ULONG	digit = (m_uData[i] >> (j*4)) & 0xF;
+            if (digit < 10)
+                element[7-j] = TCHAR(L'0' + digit);
+            else
+                element[7-j] = TCHAR(L'A' + (digit - 10));
+        }
+        element[8] = L'\0';
+        pstr.Append(element);
+    }
 //<<< WiZaRd::Reduced CPU usage [netfinity]
-	return pstr;
+    return pstr;
 }
 
 void CUInt128::ToBinaryString(CString *pstr, bool bTrim) const
 {
     pstr->SetString(L"");
 //>>> WiZaRd::Reduced CPU usage [netfinity]
-	int iBit = 0;
-	for (int iIndex = 0; iIndex < 128; ++iIndex)
-	{
-		iBit = GetBitNumber(iIndex);
-		if (!bTrim || iBit != 0)
-		{
-			pstr->Append(iBit == 0 ? L"0" : L"1");
-			bTrim = false;
-		}
-	}
+    int iBit = 0;
+    for (int iIndex = 0; iIndex < 128; ++iIndex)
+    {
+        iBit = GetBitNumber(iIndex);
+        if (!bTrim || iBit != 0)
+        {
+            pstr->Append(iBit == 0 ? L"0" : L"1");
+            bTrim = false;
+        }
+    }
 //<<< WiZaRd::Reduced CPU usage [netfinity]
-	if (pstr->GetLength() == 0)
-		pstr->SetString(L"0");
+    if (pstr->GetLength() == 0)
+        pstr->SetString(L"0");
 }
 
 #if defined(_M_IX86) && (_MSC_FULL_VER > 13009037)

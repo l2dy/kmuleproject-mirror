@@ -4552,7 +4552,7 @@ bool IsTCPPortInUse(const uint16 port)
             if (pTCPTab->table[e].dwLocalPort == nPortBE)
             {
                 bPortIsFree = false;
-				theApp.QueueDebugLogLineEx(LOG_WARNING, L"* TCP Port %u (%u) already in use (state %u)", port, nPortBE, pTCPTab->table[e].dwState);
+                theApp.QueueDebugLogLineEx(LOG_WARNING, L"* TCP Port %u (%u) already in use (state %u)", port, nPortBE, pTCPTab->table[e].dwState);
             }
         }
     }
@@ -4577,7 +4577,7 @@ bool IsUDPPortInUse(const uint16 port)
             if (pUDPTab->table[e].dwLocalPort == nPortBE)
             {
                 bPortIsFree = false;
-				theApp.QueueDebugLogLineEx(LOG_WARNING, L"* UDP Port %u (%u) already in use (state %u)", port, nPortBE);
+                theApp.QueueDebugLogLineEx(LOG_WARNING, L"* UDP Port %u (%u) already in use (state %u)", port, nPortBE);
             }
         }
     }

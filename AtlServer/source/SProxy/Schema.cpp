@@ -15,71 +15,71 @@
 
 CComplexType * CSchema::AddComplexType(CComplexType * p)
 {
-	if (p != NULL)
-	{
-		if (p->GetName().GetLength() != 0)
-		{
-			if (m_complexTypes.SetAt(p->GetName(), p) != NULL)
-			{
-				return p;
-			}
-		}
-	}
+    if (p != NULL)
+    {
+        if (p->GetName().GetLength() != 0)
+        {
+            if (m_complexTypes.SetAt(p->GetName(), p) != NULL)
+            {
+                return p;
+            }
+        }
+    }
 
-	//
-	// TODO: error
-	//
-	return NULL;
+    //
+    // TODO: error
+    //
+    return NULL;
 }
 
 CSimpleType * CSchema::AddSimpleType(CSimpleType * p)
 {
-	if (p != NULL)
-	{
-		if (p->GetName().GetLength() != 0)
-		{
-			if (m_simpleTypes.SetAt(p->GetName(), p) != NULL)
-			{
-				return p;
-			}
-		}
-	}
+    if (p != NULL)
+    {
+        if (p->GetName().GetLength() != 0)
+        {
+            if (m_simpleTypes.SetAt(p->GetName(), p) != NULL)
+            {
+                return p;
+            }
+        }
+    }
 
-	return NULL;
+    return NULL;
 }
 
 CElement * CSchema::AddElement(CElement * p)
 {
-	if (p != NULL)
-	{
-		if (p->GetName().GetLength() != 0)
-		{
-			if (m_elements.SetAt(p->GetName(), p) != NULL)
-			{
-				return p;
-			}
-		}
-	}
+    if (p != NULL)
+    {
+        if (p->GetName().GetLength() != 0)
+        {
+            if (m_elements.SetAt(p->GetName(), p) != NULL)
+            {
+                return p;
+            }
+        }
+    }
 
-	return NULL;
+    return NULL;
 }
 
 CXSDElement * CSchema::GetNamedItemFromParent(const CStringW& strUri, const CStringW& strName)
 {
-	CXSDElement *pRet = NULL;
-	CXMLDocument *pParentDoc = GetParentDocument();
-	if ((pParentDoc != NULL) && (pParentDoc->GetDocumentType() == WSDLDOC))
-	{
-		CWSDLDocument *pWSDLDocument = static_cast<CWSDLDocument *>(pParentDoc);
-		pRet = pWSDLDocument->GetComplexType(strName, strUri);
-		if (pRet == NULL)
-		{
-			pRet = pWSDLDocument->GetSimpleType(strName, strUri);
-			if (pRet == NULL)
-			{
-				pRet = pWSDLDocument->GetElement(strName, strUri);
-			}
-		}
-	}
-	return pRet;
+    CXSDElement *pRet = NULL;
+    CXMLDocument *pParentDoc = GetParentDocument();
+    if ((pParentDoc != NULL) && (pParentDoc->GetDocumentType() == WSDLDOC))
+    {
+        CWSDLDocument *pWSDLDocument = static_cast<CWSDLDocument *>(pParentDoc);
+        pRet = pWSDLDocument->GetComplexType(strName, strUri);
+        if (pRet == NULL)
+        {
+            pRet = pWSDLDocument->GetSimpleType(strName, strUri);
+            if (pRet == NULL)
+            {
+                pRet = pWSDLDocument->GetElement(strName, strUri);
+            }
+        }
+    }
+    return pRet;
 }

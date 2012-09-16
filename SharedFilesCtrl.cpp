@@ -267,7 +267,7 @@ void CSharedFilesCtrl::Init()
     InsertColumn(1, GetResString(IDS_DL_SIZE),			LVCFMT_RIGHT, DFLT_SIZE_COL_WIDTH);
     InsertColumn(2, GetResString(IDS_TYPE),				LVCFMT_LEFT,  DFLT_FILETYPE_COL_WIDTH);
     InsertColumn(3, GetResString(IDS_PRIORITY),			LVCFMT_LEFT,  DFLT_PRIORITY_COL_WIDTH);
-	InsertColumn(4, GetResString(IDS_RATIO),			LVCFMT_LEFT,  20); //>>> WiZaRd::Ratio Indicator
+    InsertColumn(4, GetResString(IDS_RATIO),			LVCFMT_LEFT,  20); //>>> WiZaRd::Ratio Indicator
     InsertColumn(5, GetResString(IDS_FILEID),			LVCFMT_LEFT,  DFLT_HASH_COL_WIDTH,		-1, true);
     InsertColumn(6, GetResString(IDS_SF_REQUESTS),		LVCFMT_RIGHT, 100);
     InsertColumn(7, GetResString(IDS_SF_ACCEPTS),		LVCFMT_RIGHT, 100,						-1, true);
@@ -335,15 +335,15 @@ void CSharedFilesCtrl::SetAllIcons()
     m_ImageList.Add(CTempIconLoader(_T("Rating_Excellent")));
     m_ImageList.Add(CTempIconLoader(_T("Collection_Search"))); // rating for comments are searched on kad
 //>>> WiZaRd::Ratio Indicator
-	m_iRatio[0] = m_ImageList.Add(CTempIconLoader(L"SMILEY_CRY"));
-	m_iRatio[1] = m_ImageList.Add(CTempIconLoader(L"SMILEY_SAD"));
-	m_iRatio[2] = m_ImageList.Add(CTempIconLoader(L"SMILEY_LOOKSIDE"));
-	m_iRatio[3] = m_ImageList.Add(CTempIconLoader(L"SMILEY_DISGUST"));
-	m_iRatio[4] = m_ImageList.Add(CTempIconLoader(L"SMILEY_SKEPTIC"));
-	m_iRatio[5] = m_ImageList.Add(CTempIconLoader(L"SMILEY_SMILE"));
-	m_iRatio[6] = m_ImageList.Add(CTempIconLoader(L"SMILEY_WINK"));
-	m_iRatio[7] = m_ImageList.Add(CTempIconLoader(L"SMILEY_HAPPY"));
-	m_iRatio[8] = m_ImageList.Add(CTempIconLoader(L"SMILEY_LAUGH"));
+    m_iRatio[0] = m_ImageList.Add(CTempIconLoader(L"SMILEY_CRY"));
+    m_iRatio[1] = m_ImageList.Add(CTempIconLoader(L"SMILEY_SAD"));
+    m_iRatio[2] = m_ImageList.Add(CTempIconLoader(L"SMILEY_LOOKSIDE"));
+    m_iRatio[3] = m_ImageList.Add(CTempIconLoader(L"SMILEY_DISGUST"));
+    m_iRatio[4] = m_ImageList.Add(CTempIconLoader(L"SMILEY_SKEPTIC"));
+    m_iRatio[5] = m_ImageList.Add(CTempIconLoader(L"SMILEY_SMILE"));
+    m_iRatio[6] = m_ImageList.Add(CTempIconLoader(L"SMILEY_WINK"));
+    m_iRatio[7] = m_ImageList.Add(CTempIconLoader(L"SMILEY_HAPPY"));
+    m_iRatio[8] = m_ImageList.Add(CTempIconLoader(L"SMILEY_LAUGH"));
 //<<< WiZaRd::Ratio Indicator
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("FileCommentsOvl"))), 1);
     // Apply the image list also to the listview control, even if we use our own 'DrawItem'.
@@ -376,9 +376,9 @@ void CSharedFilesCtrl::Localize()
     pHeaderCtrl->SetItem(3, &hdi);
 
 //>>> WiZaRd::Ratio Indicator
-	strRes = GetResString(IDS_RATIO);
-	hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-	pHeaderCtrl->SetItem(4, &hdi);
+    strRes = GetResString(IDS_RATIO);
+    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
+    pHeaderCtrl->SetItem(4, &hdi);
 //<<< WiZaRd::Ratio Indicator
 
     strRes = GetResString(IDS_FILEID);
@@ -674,7 +674,7 @@ void CSharedFilesCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     if (!lpDrawItemStruct->itemData)
         return;
 
-	CCustomMemDC dc(CDC::FromHandle(lpDrawItemStruct->hDC), &lpDrawItemStruct->rcItem);
+    CCustomMemDC dc(CDC::FromHandle(lpDrawItemStruct->hDC), &lpDrawItemStruct->rcItem);
     BOOL bCtrlFocused;
     InitItemMemDC(dc, lpDrawItemStruct, bCtrlFocused);
     CRect cur_rec(lpDrawItemStruct->rcItem);
@@ -766,14 +766,14 @@ void CSharedFilesCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
                 }
 
 //>>> WiZaRd::Ratio Indicator
-				case 4:
-				{
-					if (pKnownFile == NULL)
-						break;
-					double ratio = pKnownFile->GetSharingRatio();
-					m_ImageList.Draw(dc, m_iRatio[min(8, int(ratio/0.1875))], cur_rec.TopLeft(), ILD_NORMAL);
-					break;
-				}
+                case 4:
+                {
+                    if (pKnownFile == NULL)
+                        break;
+                    double ratio = pKnownFile->GetSharingRatio();
+                    m_ImageList.Draw(dc, m_iRatio[min(8, int(ratio/0.1875))], cur_rec.TopLeft(), ILD_NORMAL);
+                    break;
+                }
 //<<< WiZaRd::Ratio Indicator
 
                 case 9:
@@ -1432,7 +1432,7 @@ void CSharedFilesCtrl::OnLvnColumnClick(NMHDR *pNMHDR, LRESULT *pResult)
         switch (pNMListView->iSubItem)
         {
         case 3:  // Priority
-		case 4: //>>> WiZaRd::Ratio Indicator
+        case 4: //>>> WiZaRd::Ratio Indicator
         case 11: // Complete Sources
         case 12: // Shared
             sortAscending = false;
@@ -1556,11 +1556,11 @@ int CSharedFilesCtrl::SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort
             }
 
 //>>> WiZaRd::Ratio Indicator
-			case 4:
-			{
-				iResult = CompareDouble(kitem1->GetSharingRatio(), kitem2->GetSharingRatio());
-				break;
-			}
+            case 4:
+            {
+                iResult = CompareDouble(kitem1->GetSharingRatio(), kitem2->GetSharingRatio());
+                break;
+            }
 //<<< WiZaRd::Ratio Indicator
 
             case 5: //fileID

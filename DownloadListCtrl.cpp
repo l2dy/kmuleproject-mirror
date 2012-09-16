@@ -208,7 +208,7 @@ void CDownloadListCtrl::SetAllIcons()
     m_ImageList.Add(CTempIconLoader(_T("Rating_Good")));
     m_ImageList.Add(CTempIconLoader(_T("Rating_Excellent")));
     m_ImageList.Add(CTempIconLoader(_T("Collection_Search"))); // rating for comments are searched on kad
-	m_iFDC = m_ImageList.Add(CTempIconLoader(L"Dissimilar_Name")); //>>> FDC [BlueSonicBoy]
+    m_iFDC = m_ImageList.Add(CTempIconLoader(L"Dissimilar_Name")); //>>> FDC [BlueSonicBoy]
     badguy = m_ImageList.Add(CTempIconLoader(L"BADGUY")); //>>> WiZaRd::ClientAnalyzer
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("ClientSecureOvl"))), 1);
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("OverlayObfu"))), 2);
@@ -520,10 +520,10 @@ void CDownloadListCtrl::GetFileItemDisplayText(CPartFile *lpPartFile, int iSubIt
 //>>> WiZaRd::AutoHL
 //		if (thePrefs.IsExtControlsEnabled() && lpPartFile->GetPrivateMaxSources() != 0)
 //<<< WiZaRd::AutoHL
-            strBuffer.AppendFormat(_T(" [%i]"), lpPartFile->GetPrivateMaxSources());
+        strBuffer.AppendFormat(_T(" [%i]"), lpPartFile->GetPrivateMaxSources());
 //>>> WiZaRd::AutoHL
-			if(thePrefs.IsUseAutoHL() == -1) //show indicator when there's no global setting
-				strBuffer.Append(lpPartFile->UseAutoHL() ? L"V" : L"F"); //variable/fixed
+        if(thePrefs.IsUseAutoHL() == -1) //show indicator when there's no global setting
+            strBuffer.Append(lpPartFile->UseAutoHL() ? L"V" : L"F"); //variable/fixed
 //<<< WiZaRd::AutoHL
         _tcsncpy(pszText, strBuffer, cchTextMax);
         break;
@@ -625,11 +625,11 @@ void CDownloadListCtrl::DrawFileItem(CDC *dc, int nColumn, LPCRECT lpRect, UINT 
         rcDraw.left += theApp.GetSmallSytemIconSize().cx;
 
 //>>> FDC [BlueSonicBoy]
-		if(pPartFile->DissimilarName() && m_iFDC != -1)
-		{
-			m_ImageList.Draw(dc, m_iFDC, rcDraw.TopLeft(), ILD_NORMAL);
-			rcDraw.left += 16;
-		}
+        if(pPartFile->DissimilarName() && m_iFDC != -1)
+        {
+            m_ImageList.Draw(dc, m_iFDC, rcDraw.TopLeft(), ILD_NORMAL);
+            rcDraw.left += 16;
+        }
 //<<< FDC [BlueSonicBoy]
 
         if (thePrefs.ShowRatingIndicator() && (pPartFile->HasComment() || pPartFile->HasRating() || pPartFile->IsKadCommentSearchRunning()))
@@ -989,7 +989,7 @@ void CDownloadListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     if (!lpDrawItemStruct->itemData)
         return;
 
-	CCustomMemDC dc(CDC::FromHandle(lpDrawItemStruct->hDC), &lpDrawItemStruct->rcItem);
+    CCustomMemDC dc(CDC::FromHandle(lpDrawItemStruct->hDC), &lpDrawItemStruct->rcItem);
     BOOL bCtrlFocused;
     InitItemMemDC(dc, lpDrawItemStruct, bCtrlFocused);
     CRect cur_rec(lpDrawItemStruct->rcItem);
@@ -1015,14 +1015,14 @@ void CDownloadListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     cur_rec.right = cur_rec.left - sm_iLabelOffset;
     cur_rec.left += sm_iIconOffset;
 
-	COLORREF crOldBk = dc->GetBkColor(); //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
+    COLORREF crOldBk = dc->GetBkColor(); //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
     if (content->type == FILE_TYPE)
     {
         if ((lpDrawItemStruct->itemState & ODS_SELECTED) == 0)
         {
 //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
-			if(((/*const*/ CPartFile*)content->value)->IsReadyForPreview())
-				crOldBk = dc->SetBkColor(thePrefs.GetPreviewReadyColor());
+            if(((/*const*/ CPartFile*)content->value)->IsReadyForPreview())
+                crOldBk = dc->SetBkColor(thePrefs.GetPreviewReadyColor());
 //<<< jerrybg::ColorPreviewReadyFiles [WiZaRd]
             DWORD dwCatColor = thePrefs.GetCatColor(((/*const*/ CPartFile*)content->value)->GetCategory(), COLOR_WINDOWTEXT);
             if (dwCatColor > 0)
@@ -1063,8 +1063,8 @@ void CDownloadListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
                         cur_rec.left += sm_iLabelOffset;
                         cur_rec.right -= sm_iSubItemInset;
 //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
-						if(dc->GetBkColor() != crOldBk)
-							dc->SetBkColor(crOldBk);
+                        if(dc->GetBkColor() != crOldBk)
+                            dc->SetBkColor(crOldBk);
 //<<< jerrybg::ColorPreviewReadyFiles [WiZaRd]
                     }
                     cur_rec.left += iColumnWidth;
@@ -1318,7 +1318,7 @@ void CDownloadListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
             int iFilesCanPauseOnPreview = 0;
             int iFilesDoPauseOnPreview = 0;
             int iFilesInCats = 0;
-			int iFilesAHL = 0; //>>> WiZaRd::AutoHL
+            int iFilesAHL = 0; //>>> WiZaRd::AutoHL
             UINT uPrioMenuItem = 0;
             const CPartFile* file1 = NULL;
             POSITION pos = GetFirstSelectedItemPosition();
@@ -1364,10 +1364,10 @@ void CDownloadListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
                     uPrioMenuItem = 0;
 
 //>>> WiZaRd::AutoHL
-				if(bFirstItem)
-					iFilesAHL = pFile->UseAutoHL();
-				else if(iFilesAHL != (int)pFile->UseAutoHL())
-					iFilesAHL = -1;
+                if(bFirstItem)
+                    iFilesAHL = pFile->UseAutoHL();
+                else if(iFilesAHL != (int)pFile->UseAutoHL())
+                    iFilesAHL = -1;
 //<<< WiZaRd::AutoHL
 
                 bFirstItem = false;
@@ -1425,18 +1425,18 @@ void CDownloadListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 
 //>>> WiZaRd::AutoHL
             //if (m_SourcesMenu && thePrefs.IsExtControlsEnabled())
-			if (m_SourcesMenu)
+            if (m_SourcesMenu)
 //<<< WiZaRd::AutoHL
             {
                 m_FileMenu.EnableMenuItem((UINT_PTR)m_SourcesMenu.m_hMenu, MF_ENABLED);
-				if (thePrefs.IsExtControlsEnabled()) //>>> WiZaRd::AutoHL
-				{
-					m_SourcesMenu.EnableMenuItem(MP_ADDSOURCE, (iSelectedItems == 1 && iFilesToStop == 1) ? MF_ENABLED : MF_GRAYED);
-					m_SourcesMenu.EnableMenuItem(MP_SETSOURCELIMIT, (iFilesNotDone == iSelectedItems) ? MF_ENABLED : MF_GRAYED);
-				}
+                if (thePrefs.IsExtControlsEnabled()) //>>> WiZaRd::AutoHL
+                {
+                    m_SourcesMenu.EnableMenuItem(MP_ADDSOURCE, (iSelectedItems == 1 && iFilesToStop == 1) ? MF_ENABLED : MF_GRAYED);
+                    m_SourcesMenu.EnableMenuItem(MP_SETSOURCELIMIT, (iFilesNotDone == iSelectedItems) ? MF_ENABLED : MF_GRAYED);
+                }
 //>>> WiZaRd::AutoHL
-				m_SourcesMenu.EnableMenuItem(MP_AUTOHL_ON, thePrefs.IsUseAutoHL() == -1 && iFilesAHL == 0 ? MF_ENABLED : MF_GRAYED);
-				m_SourcesMenu.EnableMenuItem(MP_AUTOHL_OFF, thePrefs.IsUseAutoHL() == -1 && iFilesAHL == 1 ? MF_ENABLED : MF_GRAYED);
+                m_SourcesMenu.EnableMenuItem(MP_AUTOHL_ON, thePrefs.IsUseAutoHL() == -1 && iFilesAHL == 0 ? MF_ENABLED : MF_GRAYED);
+                m_SourcesMenu.EnableMenuItem(MP_AUTOHL_OFF, thePrefs.IsUseAutoHL() == -1 && iFilesAHL == 1 ? MF_ENABLED : MF_GRAYED);
 //<<< WiZaRd::AutoHL
             }
 
@@ -1489,7 +1489,18 @@ void CDownloadListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
             ClientMenu.AddMenuTitle(GetResString(IDS_CLIENTS), true);
             ClientMenu.AppendMenu(MF_STRING, MP_DETAIL, GetResString(IDS_SHOWDETAILS), _T("CLIENTDETAILS"));
             ClientMenu.SetDefaultItem(MP_DETAIL);
-            ClientMenu.AppendMenu(MF_STRING | ((client && client->IsEd2kClient() && !client->IsFriend()) ? MF_ENABLED : MF_GRAYED), MP_ADDFRIEND, GetResString(IDS_ADDFRIEND), _T("ADDFRIEND"));
+//>>> Tux::FriendHandling
+//          ClientMenu.AppendMenu(MF_STRING | ((client && client->IsEd2kClient() && !client->IsFriend()) ? MF_ENABLED : MF_GRAYED), MP_ADDFRIEND, GetResString(IDS_ADDFRIEND), _T("ADDFRIEND"));
+            if (client && client->IsEd2kClient())
+            {
+                if (!client->IsFriend())
+                    ClientMenu.AppendMenu(MF_STRING, MP_ADDFRIEND, GetResString(IDS_ADDFRIEND), _T("ADDFRIEND"));
+                else
+                    ClientMenu.AppendMenu(MF_STRING, MP_REMOVEFRIEND, GetResString(IDS_REMOVEFRIEND), _T("DELETEFRIEND"));
+            }
+            ClientMenu.AppendMenu(MF_STRING | (client && client->IsFriend() ? MF_ENABLED : MF_GRAYED), MP_FRIENDSLOT, GetResString(IDS_FRIENDSLOT), _T("FRIENDSLOT"));
+            ClientMenu.CheckMenuItem(MP_FRIENDSLOT, (client && client->GetFriendSlot()) ? MF_CHECKED : MF_UNCHECKED);
+//<<< Tux::FriendHandling
             ClientMenu.AppendMenu(MF_STRING | ((client && client->IsEd2kClient()) ? MF_ENABLED : MF_GRAYED), MP_MESSAGE, GetResString(IDS_SEND_MSG), _T("SENDMESSAGE"));
             ClientMenu.AppendMenu(MF_STRING | ((client && client->IsEd2kClient() && client->GetViewSharedFilesSupport()) ? MF_ENABLED : MF_GRAYED), MP_SHOWLIST, GetResString(IDS_VIEWFILES), _T("VIEWFILES"));
             if (Kademlia::CKademlia::IsRunning() && !Kademlia::CKademlia::IsConnected())
@@ -1879,8 +1890,8 @@ BOOL CDownloadListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                     {
                         HideSources(partfile);
 //>>> FDC [BlueSonicBoy]
-						// TODO: why should we reset here?
-						partfile->ResetFDC(); 
+                        // TODO: why should we reset here?
+                        partfile->ResetFDC();
 //<<< FDC [BlueSonicBoy]
                         partfile->StopFile();
                     }
@@ -1982,9 +1993,9 @@ BOOL CDownloadListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                 ShowFileDialog(IDD_COMMENTLST);
                 break;
 //>>> FDC [BlueSonicBoy]
-			case MP_FILENAME:
-				ShowFileDialog(IDD_FILEDETAILS_NAME);
-				break;
+            case MP_FILENAME:
+                ShowFileDialog(IDD_FILEDETAILS_NAME);
+                break;
 //<<< FDC [BlueSonicBoy]
             case MP_SHOWED2KLINK:
                 ShowFileDialog(IDD_ED2KLINK);
@@ -2021,13 +2032,13 @@ BOOL CDownloadListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                 break;
             }
 //>>> WiZaRd::AutoHL
-			case MP_AUTOHL_ON:
-			case MP_AUTOHL_OFF:
-				SetRedraw(FALSE);
-				while(!selectedList.IsEmpty())
-					selectedList.RemoveHead()->SetUseAutoHL(wParam == MP_AUTOHL_ON);
-				SetRedraw(TRUE);
-				break;
+            case MP_AUTOHL_ON:
+            case MP_AUTOHL_OFF:
+                SetRedraw(FALSE);
+                while(!selectedList.IsEmpty())
+                    selectedList.RemoveHead()->SetUseAutoHL(wParam == MP_AUTOHL_ON);
+                SetRedraw(TRUE);
+                break;
 //<<< WiZaRd::AutoHL
             default:
                 if (wParam>=MP_WEBURL && wParam<=MP_WEBURL+99)
@@ -2081,6 +2092,26 @@ BOOL CDownloadListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                 if (theApp.friendlist->AddFriend(client))
                     UpdateItem(client);
                 break;
+//>>> Tux::FriendHandling
+            case MP_REMOVEFRIEND:
+                if (client && client->IsFriend())
+                {
+                    theApp.friendlist->RemoveFriend(client->m_Friend);
+                    UpdateItem(client);
+                }
+                break;
+            case MP_FRIENDSLOT:
+                if (client)
+                {
+                    bool IsAlready;
+                    IsAlready = client->GetFriendSlot();
+                    theApp.friendlist->RemoveAllFriendSlots();
+                    if( !IsAlready )
+                        client->SetFriendSlot(true);
+                    UpdateItem(client);
+                }
+                break;
+//<<< Tux::FriendHandling
             case MP_DETAIL:
             case MPG_ALTENTER:
                 ShowClientDialog(client);
@@ -2587,12 +2618,12 @@ void CDownloadListCtrl::CreateMenues()
         m_SourcesMenu.AppendMenu(MF_STRING, MP_SETSOURCELIMIT, GetResString(IDS_SETPFSLIMIT));
 //>>> WiZaRd::AutoHL
 //		m_FileMenu.AppendMenu(MF_STRING|MF_POPUP, (UINT_PTR)m_SourcesMenu.m_hMenu, GetResString(IDS_A4AF));
-		CString cmd;
-		cmd.Format(_T("%s (%s)"), GetResString(IDS_AUTOHL), GetResString(IDS_ON));
-		m_SourcesMenu.AppendMenu(MF_STRING, MP_AUTOHL_ON, cmd);
-		cmd.Format(_T("%s (%s)"), GetResString(IDS_AUTOHL), GetResString(IDS_OFF));
-		m_SourcesMenu.AppendMenu(MF_STRING, MP_AUTOHL_OFF, cmd);
-		m_FileMenu.AppendMenu(MF_STRING|MF_POPUP, (UINT_PTR)m_SourcesMenu.m_hMenu, GetResString(IDS_A4AF), _T("WIZARD"));
+        CString cmd;
+        cmd.Format(_T("%s (%s)"), GetResString(IDS_AUTOHL), GetResString(IDS_ON));
+        m_SourcesMenu.AppendMenu(MF_STRING, MP_AUTOHL_ON, cmd);
+        cmd.Format(_T("%s (%s)"), GetResString(IDS_AUTOHL), GetResString(IDS_OFF));
+        m_SourcesMenu.AppendMenu(MF_STRING, MP_AUTOHL_OFF, cmd);
+        m_FileMenu.AppendMenu(MF_STRING|MF_POPUP, (UINT_PTR)m_SourcesMenu.m_hMenu, GetResString(IDS_A4AF), _T("WIZARD"));
 //<<< WiZaRd::AutoHL
     }
     m_FileMenu.AppendMenu(MF_SEPARATOR);

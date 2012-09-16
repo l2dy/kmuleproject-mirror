@@ -364,8 +364,8 @@ CemuleApp::CemuleApp(LPCTSTR lpszAppName)
     // This does not seem to work well with multithreading, although there is no reason why it should not.
     //_set_sbh_threshold(768);
 
-	m_pSplashWnd = NULL;
-	m_dwSplashTime = (DWORD)-1;
+    m_pSplashWnd = NULL;
+    m_dwSplashTime = (DWORD)-1;
 
     srand(time(NULL));
     m_dwPublicIP = 0;
@@ -584,9 +584,9 @@ BOOL CemuleApp::InitInstance()
 
     // create & initalize all the important stuff
     thePrefs.Init();
-	// show splashscreen as early as possible to "entertain" user while starting kMule
-	if(!thePrefs.IsFirstStart() && thePrefs.UseSplashScreen())
-		ShowSplash();
+    // show splashscreen as early as possible to "entertain" user while starting kMule
+    if(!thePrefs.IsFirstStart() && thePrefs.UseSplashScreen())
+        ShowSplash();
     theStats.Init();
 
     // check if we have to restart eMule as Secure user
@@ -1977,12 +1977,12 @@ void CemuleApp::QueueLogLineEx(UINT uFlags, LPCTSTR line, ...)
 void CemuleApp::HandleLogQueues()
 {
     m_queueLock.Lock();
-	while (!m_QueueLog.IsEmpty())
-	{
-		const SLogItem* newItem = m_QueueLog.RemoveHead();
-		Log(newItem->uFlags, _T("%s"), newItem->line);
-		delete newItem;
-	}
+    while (!m_QueueLog.IsEmpty())
+    {
+        const SLogItem* newItem = m_QueueLog.RemoveHead();
+        Log(newItem->uFlags, _T("%s"), newItem->line);
+        delete newItem;
+    }
 
     while (!m_QueueDebugLog.IsEmpty())
     {
@@ -2295,39 +2295,39 @@ bool CemuleApp::IsVistaThemeActive() const
 
 void CemuleApp::ShowSplash()
 {
-	ASSERT( m_pSplashWnd == NULL );
-	if (m_pSplashWnd == NULL)
-	{
-		m_pSplashWnd = new CSplashScreen;
-		if (m_pSplashWnd != NULL)
-		{
-			//ASSERT(m_hWnd);
-			if (m_pSplashWnd->Create(CSplashScreen::IDD, NULL))
-			{
-				m_pSplashWnd->ShowWindow(SW_SHOW);
-				m_pSplashWnd->UpdateWindow();
-				m_dwSplashTime = ::GetCurrentTime();
-			}
-			else
-			{
-				delete m_pSplashWnd;
-				m_pSplashWnd = NULL;
-			}
-		}
-	}
+    ASSERT( m_pSplashWnd == NULL );
+    if (m_pSplashWnd == NULL)
+    {
+        m_pSplashWnd = new CSplashScreen;
+        if (m_pSplashWnd != NULL)
+        {
+            //ASSERT(m_hWnd);
+            if (m_pSplashWnd->Create(CSplashScreen::IDD, NULL))
+            {
+                m_pSplashWnd->ShowWindow(SW_SHOW);
+                m_pSplashWnd->UpdateWindow();
+                m_dwSplashTime = ::GetCurrentTime();
+            }
+            else
+            {
+                delete m_pSplashWnd;
+                m_pSplashWnd = NULL;
+            }
+        }
+    }
 }
 
 void CemuleApp::DestroySplash()
 {
-	if (m_pSplashWnd != NULL)
-	{
-		m_pSplashWnd->DestroyWindow();
-		delete m_pSplashWnd;
-		m_pSplashWnd = NULL;
-	}
+    if (m_pSplashWnd != NULL)
+    {
+        m_pSplashWnd->DestroyWindow();
+        delete m_pSplashWnd;
+        m_pSplashWnd = NULL;
+    }
 #ifdef _BETA
-	if (!thePrefs.IsFirstStart())
-		AfxMessageBox(GetResString(IDS_BETANAG), MB_ICONINFORMATION | MB_OK, 0);
+    if (!thePrefs.IsFirstStart())
+        AfxMessageBox(GetResString(IDS_BETANAG), MB_ICONINFORMATION | MB_OK, 0);
 #endif
 }
 
@@ -2346,14 +2346,14 @@ CString  CemuleApp::GetClientVersionStringBase(const bool bDebug) const
 //>>> WiZaRd::Save CPU & WINE
 BOOL CemuleApp::OnIdle(LONG lCount)
 {
-	static DWORD dwLastCheck[2] = {0};
-	int index = (lCount <= 0) ? 0 : 1;
-	DWORD dwNow = GetTickCount();
-	if (dwNow - dwLastCheck[index] >= SEC2MS(5))
-	{
-		dwLastCheck[index] = dwNow;
-		return CWinApp::OnIdle(lCount);
-	}
-	return FALSE;
+    static DWORD dwLastCheck[2] = {0};
+    int index = (lCount <= 0) ? 0 : 1;
+    DWORD dwNow = GetTickCount();
+    if (dwNow - dwLastCheck[index] >= SEC2MS(5))
+    {
+        dwLastCheck[index] = dwNow;
+        return CWinApp::OnIdle(lCount);
+    }
+    return FALSE;
 }
 //<<< WiZaRd::Save CPU & WINE

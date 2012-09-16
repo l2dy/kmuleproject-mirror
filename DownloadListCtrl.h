@@ -124,7 +124,7 @@ public:
     bool	ReportAvailableCommands(CList<int>& liAvailableCommands);
 
 protected:
-	int			m_iFDC; //>>> FDC [BlueSonicBoy]
+    int			m_iFDC; //>>> FDC [BlueSonicBoy]
     CImageList  m_ImageList;
     CTitleMenu	m_PrioMenu;
     CTitleMenu	m_FileMenu;

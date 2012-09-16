@@ -323,7 +323,7 @@ void CPPgDisplay::OnBnClickedSelectHypertextFont()
     s_pThis = this;
 
     if (dlg.DoModal() == IDOK)
-		theApp.emuledlg->ApplyHyperTextFont(&lf);
+        theApp.emuledlg->ApplyHyperTextFont(&lf);
 
     s_pfnChooseFontHook = NULL;
     s_pThis = NULL;

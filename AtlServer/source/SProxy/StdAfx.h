@@ -45,17 +45,17 @@ CDiscoMapDocument * GetDiscoMapDocument();
 
 inline const TCHAR * GetTabs(DWORD dwLevel)
 {
-	static TCHAR s_szTabs[2048];
+    static TCHAR s_szTabs[2048];
 
-	dwLevel = min(dwLevel, 2047);
-	for (DWORD i=0; i<dwLevel; i++)
-	{
-		s_szTabs[i] = _T('\t');
-	}
+    dwLevel = min(dwLevel, 2047);
+    for (DWORD i=0; i<dwLevel; i++)
+    {
+        s_szTabs[i] = _T('\t');
+    }
 
-	s_szTabs[dwLevel] = _T('\0');
+    s_szTabs[dwLevel] = _T('\0');
 
-	return s_szTabs;
+    return s_szTabs;
 }
 #else // _DEBUG
 

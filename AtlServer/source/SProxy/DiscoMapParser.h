@@ -7,39 +7,39 @@
 class CDiscoMapDocument;
 
 class CDiscoMapParser :
-	public CParserBase
+    public CParserBase
 {
 public:
-	CDiscoMapParser(void);
-	~CDiscoMapParser(void);
-	
-	BEGIN_XMLTAG_MAP()
-		XMLTAG_ENTRY( "DiscoveryClientResultsFile", OnDiscoveryClientResultsFile )
-		XMLTAG_ENTRY( "Results", OnResults)
-		XMLTAG_ENTRY( "DiscoveryClientResult", OnDiscoveryClientResult )
-	END_XMLTAG_MAP()
-	
-	TAG_METHOD_DECL( OnDiscoveryClientResultsFile );
-	TAG_METHOD_DECL( OnResults);
-	TAG_METHOD_DECL( OnDiscoveryClientResult );
+    CDiscoMapParser(void);
+    ~CDiscoMapParser(void);
+
+    BEGIN_XMLTAG_MAP()
+    XMLTAG_ENTRY( "DiscoveryClientResultsFile", OnDiscoveryClientResultsFile )
+    XMLTAG_ENTRY( "Results", OnResults)
+    XMLTAG_ENTRY( "DiscoveryClientResult", OnDiscoveryClientResult )
+    END_XMLTAG_MAP()
+
+    TAG_METHOD_DECL( OnDiscoveryClientResultsFile );
+    TAG_METHOD_DECL( OnResults);
+    TAG_METHOD_DECL( OnDiscoveryClientResult );
 
 private:
-	CAutoPtr<CDiscoMapDocument> m_pDocument;
+    CAutoPtr<CDiscoMapDocument> m_pDocument;
 public:
-	CDiscoMapParser(ISAXXMLReader * pReader, CParserBase * pParent, DWORD dwLevel);
+    CDiscoMapParser(ISAXXMLReader * pReader, CParserBase * pParent, DWORD dwLevel);
 
-	CDiscoMapDocument * GetDiscoMapDocument(bool bReleaseOwnership = FALSE)
-	{
-		if (m_pDocument == NULL)
-		{
-			CreateDiscoMapDocument();
-		}
+    CDiscoMapDocument * GetDiscoMapDocument(bool bReleaseOwnership = FALSE)
+    {
+        if (m_pDocument == NULL)
+        {
+            CreateDiscoMapDocument();
+        }
 
-		if (bReleaseOwnership != FALSE)
-		{
-			return m_pDocument.Detach();
-		}
-		return m_pDocument;
-	}
-	CDiscoMapDocument * CreateDiscoMapDocument(void);
+        if (bReleaseOwnership != FALSE)
+        {
+            return m_pDocument.Detach();
+        }
+        return m_pDocument;
+    }
+    CDiscoMapDocument * CreateDiscoMapDocument(void);
 };

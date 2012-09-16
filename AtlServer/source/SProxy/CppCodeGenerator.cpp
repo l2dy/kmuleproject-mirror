@@ -216,10 +216,10 @@ HTTP_CODE CCppCodeGenerator::OnGetStructFieldSuffix()
 HTTP_CODE CCppCodeGenerator::OnIsFieldNullable()
 {
     if ((GetCurrentStructField()->GetFlags() & CODEFLAG_NULLABLE) ||
-        (GetCurrentStructField()->GetXSDType() == XSDTYPE_STRING) ||
-        (GetCurrentStructField()->GetXSDType() == XSDTYPE_BASE64BINARY) ||
-        (GetCurrentStructField()->GetXSDType() == XSDTYPE_HEXBINARY) ||
-        (OnIsFieldDynamicArray() == HTTP_SUCCESS))
+            (GetCurrentStructField()->GetXSDType() == XSDTYPE_STRING) ||
+            (GetCurrentStructField()->GetXSDType() == XSDTYPE_BASE64BINARY) ||
+            (GetCurrentStructField()->GetXSDType() == XSDTYPE_HEXBINARY) ||
+            (OnIsFieldDynamicArray() == HTTP_SUCCESS))
     {
         return HTTP_SUCCESS;
     }
@@ -434,7 +434,7 @@ HTTP_CODE CCppCodeGenerator::OnGetParameterName()
     if (p->GetName() == "return")
     {
         return (m_pStream->WriteStream("__retval", sizeof("__retval")-1, NULL) == S_OK) ?
-            HTTP_SUCCESS : HTTP_FAIL;
+               HTTP_SUCCESS : HTTP_FAIL;
     }
 
     return WriteCString(GetCurrentParameter()->GetName());
@@ -504,10 +504,10 @@ HTTP_CODE CCppCodeGenerator::OnGetParameterAtlSoapType()
 HTTP_CODE CCppCodeGenerator::OnIsParameterNullable()
 {
     if ((GetCurrentParameter()->GetFlags() & CODEFLAG_NULLABLE) ||
-        (GetCurrentParameter()->GetXSDType() == XSDTYPE_STRING) ||
-        (GetCurrentParameter()->GetXSDType() == XSDTYPE_BASE64BINARY) ||
-        (GetCurrentParameter()->GetXSDType() == XSDTYPE_HEXBINARY) ||
-        (GetCurrentParameter()->GetFlags() & CODEFLAG_DYNARRAY))
+            (GetCurrentParameter()->GetXSDType() == XSDTYPE_STRING) ||
+            (GetCurrentParameter()->GetXSDType() == XSDTYPE_BASE64BINARY) ||
+            (GetCurrentParameter()->GetXSDType() == XSDTYPE_HEXBINARY) ||
+            (GetCurrentParameter()->GetFlags() & CODEFLAG_DYNARRAY))
     {
         return HTTP_SUCCESS;
     }
@@ -743,8 +743,8 @@ HTTP_CODE CCppCodeGenerator::OnGetDateTime()
 
     char szDate[256];
     int n = sprintf(szDate, "%.02d/%.02d/%d@%.02d:%.02d:%d",
-        loctime.wMonth, loctime.wDay, loctime.wYear, loctime.wHour,
-        loctime.wMinute, loctime.wSecond);
+                    loctime.wMonth, loctime.wDay, loctime.wYear, loctime.wHour,
+                    loctime.wMinute, loctime.wSecond);
 
     return (m_pStream->WriteStream(szDate, n, NULL) == S_OK) ? HTTP_SUCCESS : HTTP_FAIL;
 }
@@ -1084,7 +1084,7 @@ HTTP_CODE CCppCodeGenerator::OnGetParameterCppName()
     if (p->GetName() == "return")
     {
         return (m_pStream->WriteStream("__retval", sizeof("__retval")-1, NULL) == S_OK) ?
-            HTTP_SUCCESS : HTTP_FAIL;
+               HTTP_SUCCESS : HTTP_FAIL;
     }
 
     return WriteCString(GetCurrentParameter()->GetSafeName());

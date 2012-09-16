@@ -58,7 +58,7 @@
 #define IDS_SDL_PROCESS_DM_FAILURE      154
 #define IDS_SDL_DEFAULT_TYPE            155
 // Next default values for new objects
-// 
+//
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        156

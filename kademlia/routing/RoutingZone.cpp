@@ -88,7 +88,7 @@ CRoutingZone::CRoutingZone()
     // Set the preference file name.
     m_sFilename = thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + _T("nodes.dat");
 #ifdef _DEBUG
-	m_sFilenameBootstrap = thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + L"bootstrapNodes.dat";
+    m_sFilenameBootstrap = thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + L"bootstrapNodes.dat";
 #endif
     // Init our root node.
     Init(NULL, 0, CUInt128((ULONG)0));
@@ -129,8 +129,8 @@ void CRoutingZone::Init(CRoutingZone *pSuper_zone, int iLevel, const CUInt128 &u
 CRoutingZone::~CRoutingZone()
 {
 #ifdef _DEBUG
-	if (m_pSuperZone == NULL && !m_sFilenameBootstrap.IsEmpty())
-		DbgWriteBootstrapFile();
+    if (m_pSuperZone == NULL && !m_sFilenameBootstrap.IsEmpty())
+        DbgWriteBootstrapFile();
 #endif
     // Root node is processed first so that we can write our contact list and delete all branches.
     if ((m_pSuperZone == NULL) && (m_sFilename.GetLength() > 0))
@@ -404,7 +404,7 @@ void CRoutingZone::DbgWriteBootstrapFile()
         CUInt128 uID;
         CSafeBufferedFile file;
         CFileException fexp;
-		if (file.Open(m_sFilenameBootstrap, CFile::modeWrite | CFile::modeCreate | CFile::typeBinary|CFile::shareDenyWrite, &fexp))
+        if (file.Open(m_sFilenameBootstrap, CFile::modeWrite | CFile::modeCreate | CFile::typeBinary|CFile::shareDenyWrite, &fexp))
         {
             setvbuf(file.m_pStream, NULL, _IOFBF, 32768);
 

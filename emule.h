@@ -110,7 +110,7 @@ public:
     virtual BOOL InitInstance();
     virtual int ExitInstance();
     virtual BOOL IsIdleMessage(MSG *pMsg);
-	virtual BOOL OnIdle(LONG lCount); //>>> WiZaRd::Save CPU & WINE
+    virtual BOOL OnIdle(LONG lCount); //>>> WiZaRd::Save CPU & WINE
 
     // ed2k link functions
     void		AddEd2kLinksToDownload(CString strLinks, int cat);
@@ -189,7 +189,7 @@ public:
 
     // Elandal:ThreadSafeLogging -->
     // thread safe log calls
-	void			HandleLogQueues();
+    void			HandleLogQueues();
 
     void			QueueDebugLogLine(bool bAddToStatusBar, LPCTSTR line,...);
     void			QueueDebugLogLineEx(UINT uFlags, LPCTSTR line,...);
@@ -234,13 +234,13 @@ protected:
 
     uint32 m_dwPublicIP;
     bool m_bAutoStart;
-	
-	// Splash screen	
+
+    // Splash screen
 public:
-	CSplashScreen *m_pSplashWnd;
-	DWORD m_dwSplashTime;
-	void ShowSplash();
-	void DestroySplash();
+    CSplashScreen *m_pSplashWnd;
+    DWORD m_dwSplashTime;
+    void ShowSplash();
+    void DestroySplash();
 
 private:
     UINT     m_wTimerRes;

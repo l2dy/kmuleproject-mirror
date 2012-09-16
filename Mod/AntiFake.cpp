@@ -204,25 +204,25 @@ bool	ColorSearchFile(const CSearchFile* content, CCustomMemDC* dc)
     const COLORREF cr = dc->GetBkColor();
     switch(GetFakeAlyzerRating(content, NULL))
     {
-		case FA_FAKE:
-			dc->FillBackground(RGB(GetRValue(cr), GetGValue(cr)*0.85, GetBValue(cr)*0.85));
-			return true;
+    case FA_FAKE:
+        dc->FillBackground(RGB(GetRValue(cr), GetGValue(cr)*0.85, GetBValue(cr)*0.85));
+        return true;
 
-		case FA_SUSPECT:
-			dc->FillBackground(RGB(GetRValue(cr), GetGValue(cr), GetBValue(cr)*0.85));
-			return true;
+    case FA_SUSPECT:
+        dc->FillBackground(RGB(GetRValue(cr), GetGValue(cr), GetBValue(cr)*0.85));
+        return true;
 
-		case FA_GOOD:
-			dc->FillBackground(RGB(GetRValue(cr)*0.85, GetGValue(cr), GetBValue(cr)*0.85));
-			return true;
+    case FA_GOOD:
+        dc->FillBackground(RGB(GetRValue(cr)*0.85, GetGValue(cr), GetBValue(cr)*0.85));
+        return true;
 
-		case FA_OK:
-			dc->FillBackground(RGB(GetRValue(cr)*0.85, GetGValue(cr)*0.85, GetBValue(cr)));
-			return true;
+    case FA_OK:
+        dc->FillBackground(RGB(GetRValue(cr)*0.85, GetGValue(cr)*0.85, GetBValue(cr)));
+        return true;
 
-		case FA_UNKNOWN:
-		default:
-			return false;
+    case FA_UNKNOWN:
+    default:
+        return false;
     }
 }
 

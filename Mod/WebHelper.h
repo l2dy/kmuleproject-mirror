@@ -22,22 +22,22 @@
 class CWebHelper
 {
 public:
-	CWebHelper();
-	virtual ~CWebHelper();
+    CWebHelper();
+    virtual ~CWebHelper();
 
     void	SetUserAgent(const CString& strUserAgent);
 
-	bool	LoadToStringFromURL(CString& str, const CString& sURL, const CString& sUser = L"", const CString& sPass = L"");
-	bool	LoadToFileFromURL(const CString& path, const CString& sURL, const CString& sUser = L"", const CString& sPass = L"");
-	static void	CrackURL(CString sURL, CString& mainpage, CString& subpage);
+    bool	LoadToStringFromURL(CString& str, const CString& sURL, const CString& sUser = L"", const CString& sPass = L"");
+    bool	LoadToFileFromURL(const CString& path, const CString& sURL, const CString& sUser = L"", const CString& sPass = L"");
+    static void	CrackURL(CString sURL, CString& mainpage, CString& subpage);
 
 private:
-	CString m_strUserAgent;
+    CString m_strUserAgent;
 
-	HINTERNET m_hINet;
-	HINTERNET m_hConnection;
-	HINTERNET m_hData;
+    HINTERNET m_hINet;
+    HINTERNET m_hConnection;
+    HINTERNET m_hData;
 
-	void	OpenAndCheckConnection();
-	void	EstablishConnection(const CString& sURL, const CString& sUser = L"", const CString& sPass = L"");
+    void	OpenAndCheckConnection();
+    void	EstablishConnection(const CString& sURL, const CString& sUser = L"", const CString& sPass = L"");
 };

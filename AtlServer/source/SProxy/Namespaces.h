@@ -24,7 +24,7 @@
 #define XSD_NAMESPACEA  "http://www.w3.org/2001/XMLSchema"
 #define XSD_NAMESPACEW  MAKEWIDESTR( XSD_NAMESPACEA )
 
-#define SOAP_ENCODINGSTYLEA "http://schemas.xmlsoap.org/soap/encoding/" 
+#define SOAP_ENCODINGSTYLEA "http://schemas.xmlsoap.org/soap/encoding/"
 #define SOAP_ENCODINGSTYLEW MAKEWIDESTR( SOAP_ENCODINGSTYLEA )
 
 #define ATLS_NAMESPACEA "http://tempuri.org/vc/atl/server/"

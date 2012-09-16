@@ -202,28 +202,28 @@ CUpDownClient* CUploadQueue::FindBestClientInQueue()
         //While we are going through this list.. Lets check if a client appears to have left the network..
         ASSERT ( cur_client->GetLastUpRequest() );
 //>>> WiZaRd::FiX unfair client treatment [http://forum.emule-project.net/index.php?showtopic=116699]
-		//if ((::GetTickCount() - cur_client->GetLastUpRequest() > MAX_PURGEQUEUETIME) || !file )
-		if ((::GetTickCount() - cur_client->GetLastUpRequest() > MAX_PURGEQUEUETIME))
+        //if ((::GetTickCount() - cur_client->GetLastUpRequest() > MAX_PURGEQUEUETIME) || !file )
+        if ((::GetTickCount() - cur_client->GetLastUpRequest() > MAX_PURGEQUEUETIME))
 //<<< WiZaRd::FiX unfair client treatment [http://forum.emule-project.net/index.php?showtopic=116699]
-		{
-			//This client has either not been seen in a long time, or we no longer share the file he wanted anymore..
-			cur_client->ClearWaitStartTime();
-			RemoveFromWaitingQueue(pos2,true);
-			continue;
-		}
+        {
+            //This client has either not been seen in a long time, or we no longer share the file he wanted anymore..
+            cur_client->ClearWaitStartTime();
+            RemoveFromWaitingQueue(pos2,true);
+            continue;
+        }
 
 //>>> WiZaRd::FiX unfair client treatment [http://forum.emule-project.net/index.php?showtopic=116699]
-		if(file == NULL)
-			continue;
+        if(file == NULL)
+            continue;
 //<<< WiZaRd::FiX unfair client treatment [http://forum.emule-project.net/index.php?showtopic=116699]
 //>>> WiZaRd::Startup Flood Prevention
-		//Requested by James R. Bath
-		//http://forum.emule-project.net/index.php?showtopic=101181
-		if(::GetTickCount() - cur_client->GetWaitStartTime() < SEC2MS(30)) //30secs are enough
-			continue;
+        //Requested by James R. Bath
+        //http://forum.emule-project.net/index.php?showtopic=101181
+        if(::GetTickCount() - cur_client->GetWaitStartTime() < SEC2MS(30)) //30secs are enough
+            continue;
 //<<< WiZaRd::Startup Flood Prevention
-            
-		if(cur_client->GetFriendSlot()
+
+        if(cur_client->GetFriendSlot()
                 && (!cur_client->HasLowID() || (cur_client->socket && cur_client->socket->IsConnected())))
             friendpos = cur_client;
         if(friendpos)
@@ -763,15 +763,15 @@ bool CUploadQueue::ForceNewClient(bool allowEmptyWaitingQueue)
     else
         MaxSpeed = thePrefs.GetMaxUpload();
 
-	UINT origUpPerClient = GetClientDataRate();
-	UINT upPerClient = origUpPerClient;
+    UINT origUpPerClient = GetClientDataRate();
+    UINT upPerClient = origUpPerClient;
 
     // if throttler doesn't require another slot, go with a slightly more restrictive method
     if( MaxSpeed > 20 || MaxSpeed == UNLIMITED)
         upPerClient += datarate/43;
 
 //>>> WiZaRd::Dynamic Datarate
-	const UINT checkUp = UINT(2.5 * origUpPerClient);
+    const UINT checkUp = UINT(2.5 * origUpPerClient);
     if(upPerClient >  checkUp)
         upPerClient = checkUp;
 //<<< WiZaRd::Dynamic Datarate
@@ -1028,15 +1028,15 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
         return;
     }
 //>>> WiZaRd::Startup Flood Prevention
-	//Requested by James R. Bath
-	//http://forum.emule-project.net/index.php?showtopic=101181
-/*
-	if (waitinglist.IsEmpty() && ForceNewClient(true))
-	{
-		AddUpNextClient(_T("Direct add with empty queue."), client);
-	}
-	else
-*/
+    //Requested by James R. Bath
+    //http://forum.emule-project.net/index.php?showtopic=101181
+    /*
+    	if (waitinglist.IsEmpty() && ForceNewClient(true))
+    	{
+    		AddUpNextClient(_T("Direct add with empty queue."), client);
+    	}
+    	else
+    */
 //<<< WiZaRd::Startup Flood Prevention
     {
         m_bStatisticsWaitingListDirty = true;

@@ -53,14 +53,14 @@ CChatItem::CChatItem()
     client = NULL;
     log = NULL;
     notify = false;
-    history_pos = 0;	
+    history_pos = 0;
 }
 
 CChatItem::~CChatItem()
 {
 //>>> WiZaRd::ChatLog [CB]
-	if(m_ChatLog.IsOpen())
-		m_ChatLog.Close();
+    if(m_ChatLog.IsOpen())
+        m_ChatLog.Close();
 //<<< WiZaRd::ChatLog [CB]
     delete log;
 }
@@ -149,7 +149,7 @@ CChatItem* CChatSelector::StartSession(CUpDownClient* client, bool show)
     CChatItem* chatitem = new CChatItem();
     chatitem->client = client;
     chatitem->log = new CHTRichEditCtrl;
-	chatitem->OpenLog(client->GetUserName()); //>>> WiZaRd::ChatLog [CB]
+    chatitem->OpenLog(client->GetUserName()); //>>> WiZaRd::ChatLog [CB]
 
     CRect rcChat;
     GetChatSize(rcChat);
@@ -254,7 +254,7 @@ void CChatSelector::ProcessMessage(CUpDownClient* sender, const CString& message
     ci->log->AppendText(_T(": "));
     ci->log->AppendText(message + _T("\n"));
 
-	ci->LogMessage(sender->GetUserName(), message); //>>> WiZaRd::ChatLog [CB]
+    ci->LogMessage(sender->GetUserName(), message); //>>> WiZaRd::ChatLog [CB]
 
     int iTabItem = GetTabByClient(sender);
     if (GetCurSel() == iTabItem && GetParent()->IsWindowVisible())
@@ -337,8 +337,8 @@ bool CChatSelector::SendMessage(const CString& rstrMessage)
         ci->log->AppendKeyWord(thePrefs.GetUserNick(), SENT_TARGET_MSG_COLOR);
         ci->log->AppendText(_T(": "));
         ci->log->AppendText(rstrMessage + _T("\n"));
-		
-		ci->LogMessage(thePrefs.GetUserNick(), rstrMessage); //>>> WiZaRd::ChatLog [CB]
+
+        ci->LogMessage(thePrefs.GetUserNick(), rstrMessage); //>>> WiZaRd::ChatLog [CB]
     }
     else if (ci->client->GetFriend() != NULL)
     {
@@ -394,8 +394,8 @@ void CChatSelector::ConnectingResult(CUpDownClient* sender, bool success)
         ci->log->AppendText(_T(": "));
         ci->log->AppendText(ci->strMessagePending + _T("\n"));
 
-		ci->LogMessage(thePrefs.GetUserNick(), ci->strMessagePending); //>>> WiZaRd::ChatLog [CB]
-		
+        ci->LogMessage(thePrefs.GetUserNick(), ci->strMessagePending); //>>> WiZaRd::ChatLog [CB]
+
         ci->strMessagePending.Empty();
     }
     else
@@ -721,30 +721,30 @@ void CChatSelector::ClientObjectChanged(CUpDownClient* pOldClient, CUpDownClient
 //>>> WiZaRd::ChatLog [CB]
 void CChatItem::OpenLog(const CString& strNick)
 {
-	CString cleanname = strNick;
-	// make sure the nickname contains valid chars for the file name
-	cleanname = cleanname.SpanIncluding(L"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz .-!$&()[]{}ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝàáâãäåæçèéêëìíîïðñòóõöøùúûüýÿ");
+    CString cleanname = strNick;
+    // make sure the nickname contains valid chars for the file name
+    cleanname = cleanname.SpanIncluding(L"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz .-!$&()[]{}ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝàáâãäåæçèéêëìíîïðñòóõöøùúûüýÿ");
 
-	CString path = L"";
-	CString strHash = md4str(client->GetUserHash());
-	path.Format(L"%s%s_%s.log", thePrefs.GetMuleDirectory(EMULE_LOGDIR), strHash, cleanname);
-	VERIFY( m_ChatLog.SetFilePath(path) );
+    CString path = L"";
+    CString strHash = md4str(client->GetUserHash());
+    path.Format(L"%s%s_%s.log", thePrefs.GetMuleDirectory(EMULE_LOGDIR), strHash, cleanname);
+    VERIFY( m_ChatLog.SetFilePath(path) );
 
-	m_ChatLog.Open();
-	m_ChatLog.Log(L"\r\n");
-	
-	CString msg = L"";
-	msg.Format(L"[%s] Chat session with %s (%s) commencing...\r\n", CTime::GetCurrentTime().Format(thePrefs.GetDateTimeFormat4Log()), strNick, strHash);
-	m_ChatLog.Log(msg);
+    m_ChatLog.Open();
+    m_ChatLog.Log(L"\r\n");
+
+    CString msg = L"";
+    msg.Format(L"[%s] Chat session with %s (%s) commencing...\r\n", CTime::GetCurrentTime().Format(thePrefs.GetDateTimeFormat4Log()), strNick, strHash);
+    m_ChatLog.Log(msg);
 }
 
 void CChatItem::LogMessage(const CString& strNick, const CString& strMessage)
 {
-	if(!m_ChatLog.IsOpen())
-		return;
+    if(!m_ChatLog.IsOpen())
+        return;
 
-	TCHAR temp[2048];
-	int iLen = _sntprintf(temp, _countof(temp), L"[%s] %s --> %s\n", CTime::GetCurrentTime().Format(thePrefs.GetDateTimeFormat4Log()), strNick, strMessage);
-	m_ChatLog.Log(temp, iLen);
+    TCHAR temp[2048];
+    int iLen = _sntprintf(temp, _countof(temp), L"[%s] %s --> %s\n", CTime::GetCurrentTime().Format(thePrefs.GetDateTimeFormat4Log()), strNick, strMessage);
+    m_ChatLog.Log(temp, iLen);
 }
 //<<< WiZaRd::ChatLog [CB]

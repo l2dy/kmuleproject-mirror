@@ -408,7 +408,7 @@ sint8	CPreferences::m_iUseAutoHL;
 uint16  CPreferences::m_iMaxSourcesHL;
 //<<< WiZaRd::AutoHL
 //>>> WiZaRd::Remove forbidden files
-bool	CPreferences::m_bRemoveForbiddenFiles; 
+bool	CPreferences::m_bRemoveForbiddenFiles;
 CString	CPreferences::m_strForbiddenFileFilters;
 //<<< WiZaRd::Remove forbidden files
 
@@ -695,7 +695,7 @@ bool CPreferences::IsTempFile(const CString& rstrDirectory, const CString& rstrN
 
     if(!bFound) //found nowhere - not a tempfile...
         return false;
-	
+
     // do not share a file from the temp directory, if it matches one of the following patterns
     CString strNameLower(rstrName);
     strNameLower.MakeLower();
@@ -1738,7 +1738,7 @@ void CPreferences::SavePreferences()
     ini.WriteBool(L"CloseUPnPOnExit", m_bCloseUPnPOnExit);
     ini.WriteInt(L"LastWorkingImplementation", m_nLastWorkingImpl);
 
-	SavekMulePrefs();
+    SavekMulePrefs();
 }
 
 //>>> WiZaRd::Own Prefs
@@ -1754,28 +1754,28 @@ void CPreferences::SavekMulePrefs()
     ini.WriteString(L"UpdateURLIPFilter", m_strUpdateURLIPFilter);
 //<<< WiZaRd::IPFilter-Update
 //>>> WiZaRd::MediaInfoDLL Update
-	ini.WriteBool(L"AutoUpdateMediaInfoDll", m_bMediaInfoDllAutoUpdate);
-	ini.WriteString(L"UpdateURLMediaInfoDll", m_strMediaInfoDllUpdateURL);
-	ini.WriteInt(L"MediaInfoDllVersion", m_uiMediaInfoDllVersion);
+    ini.WriteBool(L"AutoUpdateMediaInfoDll", m_bMediaInfoDllAutoUpdate);
+    ini.WriteString(L"UpdateURLMediaInfoDll", m_strMediaInfoDllUpdateURL);
+    ini.WriteInt(L"MediaInfoDllVersion", m_uiMediaInfoDllVersion);
 //<<< WiZaRd::MediaInfoDLL Update
-	ini.WriteColRef(L"PreviewReadyColor", m_crPreviewReadyColor); //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
+    ini.WriteColRef(L"PreviewReadyColor", m_crPreviewReadyColor); //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
 //>>> WiZaRd::Advanced Transfer Window Layout [Stulle]
-	ini.WriteInt(L"TransferWnd1", m_uTransferWnd1);
-	ini.WriteInt(L"TransferWnd2", m_uTransferWnd2);
-	ini.WriteBool(L"SplitWindow", m_bSplitWindow);
+    ini.WriteInt(L"TransferWnd1", m_uTransferWnd1);
+    ini.WriteInt(L"TransferWnd2", m_uTransferWnd2);
+    ini.WriteBool(L"SplitWindow", m_bSplitWindow);
 //<<< WiZaRd::Advanced Transfer Window Layout [Stulle]
-	ini.WriteBool(L"UseSimpleProgress", m_bUseSimpleProgress); //>>> WiZaRd::SimpleProgress
-	ini.WriteInt(L"SpamFilterMode", m_uiSpamFilterMode); //>>> WiZaRd::AntiFake
+    ini.WriteBool(L"UseSimpleProgress", m_bUseSimpleProgress); //>>> WiZaRd::SimpleProgress
+    ini.WriteInt(L"SpamFilterMode", m_uiSpamFilterMode); //>>> WiZaRd::AntiFake
 //>>> WiZaRd::AutoHL
-	ini.WriteInt(L"AutoHLUpdate", m_iAutoHLUpdateTimer);
-	ini.WriteInt(L"UseAutoHL", m_iUseAutoHL);
-	ini.WriteInt(L"MinAutoHL", m_iMinAutoHL);
-	ini.WriteInt(L"MaxAutoHL", m_iMaxAutoHL);
-	ini.WriteInt(L"MaxSourcesHL", m_iMaxSourcesHL);
+    ini.WriteInt(L"AutoHLUpdate", m_iAutoHLUpdateTimer);
+    ini.WriteInt(L"UseAutoHL", m_iUseAutoHL);
+    ini.WriteInt(L"MinAutoHL", m_iMinAutoHL);
+    ini.WriteInt(L"MaxAutoHL", m_iMaxAutoHL);
+    ini.WriteInt(L"MaxSourcesHL", m_iMaxSourcesHL);
 //<<< WiZaRd::AutoHL
 //>>> WiZaRd::Remove forbidden files
-	ini.WriteBool(L"RemoveForbiddenFiles", m_bRemoveForbiddenFiles); 
-	ini.WriteString(L"ForbiddenFileFilters", m_strForbiddenFileFilters);
+    ini.WriteBool(L"RemoveForbiddenFiles", m_bRemoveForbiddenFiles);
+    ini.WriteString(L"ForbiddenFileFilters", m_strForbiddenFileFilters);
 //<<< WiZaRd::Remove forbidden files
 }
 //<<< WiZaRd::Own Prefs
@@ -2332,7 +2332,7 @@ void CPreferences::LoadPreferences()
     m_bIsMinilibImplDisabled = ini.GetBool(L"DisableMiniUPNPLibImpl", false);
     m_bIsWinServImplDisabled = ini.GetBool(L"DisableWinServImpl", false);
 
-	LoadkMulePrefs(); //>>> WiZaRd::Own Prefs
+    LoadkMulePrefs(); //>>> WiZaRd::Own Prefs
 
     LoadCats();
     SetLanguage();
@@ -2341,40 +2341,40 @@ void CPreferences::LoadPreferences()
 //>>> WiZaRd::Own Prefs
 void CPreferences::LoadkMulePrefs()
 {
-	CString path;
-	path.Format(L"%s%s.ini", GetMuleDirectory(EMULE_CONFIGDIR), MOD_INI_FILE);
-	CIni ini(path, MOD_VERSION_PLAIN);
+    CString path;
+    path.Format(L"%s%s.ini", GetMuleDirectory(EMULE_CONFIGDIR), MOD_INI_FILE);
+    CIni ini(path, MOD_VERSION_PLAIN);
 
 //>>> WiZaRd::IPFilter-Update
-	m_uiIPfilterVersion = ini.GetInt(L"IPFilterVersion", 0);
-	m_bAutoUpdateIPFilter = ini.GetBool(L"AutoUPdateIPFilter", true);
-	m_strUpdateURLIPFilter = ini.GetString(L"UpdateURLIPFilter", MOD_IPPFILTER_URL);
+    m_uiIPfilterVersion = ini.GetInt(L"IPFilterVersion", 0);
+    m_bAutoUpdateIPFilter = ini.GetBool(L"AutoUPdateIPFilter", true);
+    m_strUpdateURLIPFilter = ini.GetString(L"UpdateURLIPFilter", MOD_IPPFILTER_URL);
 //<<< WiZaRd::IPFilter-Update
 //>>> WiZaRd::MediaInfoDLL Update
-	m_bMediaInfoDllAutoUpdate = ini.GetBool(L"AutoUpdateMediaInfoDll", true);
-	m_strMediaInfoDllUpdateURL = ini.GetString(L"UpdateURLMediaInfoDll", MOD_MEDIAINFO_URL);
-	m_uiMediaInfoDllVersion = (UINT)ini.GetInt(L"MediaInfoDllVersion", 0);
+    m_bMediaInfoDllAutoUpdate = ini.GetBool(L"AutoUpdateMediaInfoDll", true);
+    m_strMediaInfoDllUpdateURL = ini.GetString(L"UpdateURLMediaInfoDll", MOD_MEDIAINFO_URL);
+    m_uiMediaInfoDllVersion = (UINT)ini.GetInt(L"MediaInfoDllVersion", 0);
 //<<< WiZaRd::MediaInfoDLL Update
-	m_crPreviewReadyColor = ini.GetColRef(L"PreviewReadyColor", RGB(140, 225, 110)); //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
+    m_crPreviewReadyColor = ini.GetColRef(L"PreviewReadyColor", RGB(140, 225, 110)); //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
 //>>> WiZaRd::Advanced Transfer Window Layout [Stulle]
-	m_uTransferWnd1 = ini.GetInt(L"TransferWnd1", 1);
-	m_uTransferWnd2 = ini.GetInt(L"TransferWnd2", 1);
-	m_bSplitWindow = ini.GetBool(L"SplitWindow", false);
+    m_uTransferWnd1 = ini.GetInt(L"TransferWnd1", 1);
+    m_uTransferWnd2 = ini.GetInt(L"TransferWnd2", 1);
+    m_bSplitWindow = ini.GetBool(L"SplitWindow", false);
 //<<< WiZaRd::Advanced Transfer Window Layout [Stulle]
-	m_bUseSimpleProgress = ini.GetBool(L"UseSimpleProgress", true); //>>> WiZaRd::SimpleProgress
-	m_uiSpamFilterMode = (uint8)ini.GetInt(L"SpamFilterMode", 2); //>>> WiZaRd::AntiFake
+    m_bUseSimpleProgress = ini.GetBool(L"UseSimpleProgress", true); //>>> WiZaRd::SimpleProgress
+    m_uiSpamFilterMode = (uint8)ini.GetInt(L"SpamFilterMode", 2); //>>> WiZaRd::AntiFake
 //>>> WiZaRd::AutoHL
-	m_iAutoHLUpdateTimer = (uint16)ini.GetInt(L"AutoHLUpdate", 60);
-	MINMAX(m_iAutoHLUpdateTimer, 10, 600);
-	m_iUseAutoHL = (sint8)ini.GetInt(L"UseAutoHL", 1);
-	m_iMinAutoHL = (uint16)ini.GetInt(L"MinAutoHL", 25);
-	m_iMaxAutoHL = (uint16)ini.GetInt(L"MaxAutoHL", _UI16_MAX);
-	m_iMaxAutoHL = max(m_iMinAutoHL, m_iMaxAutoHL);
-	m_iMaxSourcesHL = (uint16)ini.GetInt(L"MaxSourcesHL", _UI16_MAX);
+    m_iAutoHLUpdateTimer = (uint16)ini.GetInt(L"AutoHLUpdate", 60);
+    MINMAX(m_iAutoHLUpdateTimer, 10, 600);
+    m_iUseAutoHL = (sint8)ini.GetInt(L"UseAutoHL", 1);
+    m_iMinAutoHL = (uint16)ini.GetInt(L"MinAutoHL", 25);
+    m_iMaxAutoHL = (uint16)ini.GetInt(L"MaxAutoHL", _UI16_MAX);
+    m_iMaxAutoHL = max(m_iMinAutoHL, m_iMaxAutoHL);
+    m_iMaxSourcesHL = (uint16)ini.GetInt(L"MaxSourcesHL", _UI16_MAX);
 //<<< WiZaRd::AutoHL
 //>>> WiZaRd::Remove forbidden files
-	m_bRemoveForbiddenFiles = ini.GetBool(L"RemoveForbiddenFiles", true); 
-	m_strForbiddenFileFilters = ini.GetStringLong(L"ForbiddenFileFilters", L".fb!|.jc!|.antifrag|.dctmp|.bc!|.!ut|.getright|.partial|.partial.sd|.part|.part.met|.part.met.bak|.part.met.backup");
+    m_bRemoveForbiddenFiles = ini.GetBool(L"RemoveForbiddenFiles", true);
+    m_strForbiddenFileFilters = ini.GetStringLong(L"ForbiddenFileFilters", L".fb!|.jc!|.antifrag|.dctmp|.bc!|.!ut|.getright|.partial|.partial.sd|.part|.part.met|.part.met.bak|.part.met.backup");
 //<<< WiZaRd::Remove forbidden files
 }
 //<<< WiZaRd::Own Prefs
@@ -3022,23 +3022,23 @@ bool CPreferences::IsRunningAeroGlassTheme()
 //>>> Remove forbidden files
 bool CPreferences::IsForbiddenFile(const CString& rstrName)
 {
-	// do not share a file with one of these patterns because they are practically worthless
-	if(thePrefs.RemoveForbiddenFiles())
-	{
-		int curPos = 0;
-		CString strFilter = m_strForbiddenFileFilters.Tokenize(L"|", curPos);
-		while (!strFilter.IsEmpty())
-		{
-			strFilter.Trim();
+    // do not share a file with one of these patterns because they are practically worthless
+    if(thePrefs.RemoveForbiddenFiles())
+    {
+        int curPos = 0;
+        CString strFilter = m_strForbiddenFileFilters.Tokenize(L"|", curPos);
+        while (!strFilter.IsEmpty())
+        {
+            strFilter.Trim();
 
-			int iLen = strFilter.GetLength();
-			if (rstrName.GetLength() >= iLen && rstrName.Right(iLen).CompareNoCase(strFilter) == 0)
-				return true;
+            int iLen = strFilter.GetLength();
+            if (rstrName.GetLength() >= iLen && rstrName.Right(iLen).CompareNoCase(strFilter) == 0)
+                return true;
 
-			strFilter = m_strForbiddenFileFilters.Tokenize(L"|", curPos);
-		}
-	}
+            strFilter = m_strForbiddenFileFilters.Tokenize(L"|", curPos);
+        }
+    }
 
-	return false;
+    return false;
 }
 //<<< Remove forbidden files

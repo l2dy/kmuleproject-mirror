@@ -79,7 +79,7 @@ protected:
     CTitleMenu		m_PrioMenu;
 //	CMenu			m_PrioMenu;
 //<<< WiZaRd::PowerShare
-	int				m_iRatio[9]; //>>> WiZaRd::Ratio Indicator
+    int				m_iRatio[9]; //>>> WiZaRd::Ratio Indicator
     bool			m_aSortBySecondValue[4];
     CImageList		m_ImageList;
     CDirectoryItem*	m_pDirectoryFilter;

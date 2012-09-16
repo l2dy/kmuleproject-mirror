@@ -261,6 +261,6 @@ public:
 //<<< FDC [BlueSonicBoy]
 //>>> WiZaRd::Ratio Indicator
 public:
-	double	GetSharingRatio() const;
+    double	GetSharingRatio() const;
 //<<< WiZaRd::Ratio Indicator
 };

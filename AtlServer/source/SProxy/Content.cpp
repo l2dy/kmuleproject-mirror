@@ -14,22 +14,22 @@
 
 CComplexType * CContent::AddType(CComplexType *pType)
 {
-	if (pType == NULL)
-	{
-		pType = new CComplexType;
-	}
-	delete m_pType;
-	m_pType = pType;
+    if (pType == NULL)
+    {
+        pType = new CComplexType;
+    }
+    delete m_pType;
+    m_pType = pType;
 
-	return m_pType;
+    return m_pType;
 }
 
 CComplexType * CContent::GetType()
 {
-	return m_pType;
+    return m_pType;
 }
 
 CContent::~CContent()
 {
-	delete m_pType;
+    delete m_pType;
 }

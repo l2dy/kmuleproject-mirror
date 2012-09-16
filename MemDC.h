@@ -37,7 +37,7 @@ private:
     bool		m_bFlushed;
 
 public:
-	CCustomMemDC(CDC *pDC, LPCRECT pRect = NULL, COLORREF crBackground = CLR_DEFAULT)
+    CCustomMemDC(CDC *pDC, LPCRECT pRect = NULL, COLORREF crBackground = CLR_DEFAULT)
         : CDC()
     {
         ASSERT( pDC != NULL );
@@ -81,7 +81,7 @@ public:
         FillBackground(crBackground);
     }
 
-	~CCustomMemDC()
+    ~CCustomMemDC()
     {
         Flush();
         if (m_oldFont)
@@ -122,13 +122,13 @@ public:
     }
 
     // Allow usage as a pointer
-	CCustomMemDC* operator->()
+    CCustomMemDC* operator->()
     {
         return this;
     }
 
     // Allow usage as a pointer
-	operator CCustomMemDC*()
+    operator CCustomMemDC*()
     {
         return this;
     }

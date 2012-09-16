@@ -212,10 +212,10 @@ CemuleDlg::CemuleDlg(CWnd* pParent /*=NULL*/)
     activewnd = NULL;
     for (int i = 0; i < _countof(connicons); ++i)
         connicons[i] = NULL;
-	for (int i = 0; i < _countof(transicons); ++i)
-		transicons[i] = NULL;
-	for (int i = 0; i < _countof(imicons); ++i)
-		imicons[i] = NULL;
+    for (int i = 0; i < _countof(transicons); ++i)
+        transicons[i] = NULL;
+    for (int i = 0; i < _countof(imicons); ++i)
+        imicons[i] = NULL;
     m_iMsgIcon = 0;
     m_iMsgBlinkState = false;
     m_icoSysTrayConnected = NULL;
@@ -254,19 +254,19 @@ CemuleDlg::~CemuleDlg()
     if (m_hIcon) VERIFY( ::DestroyIcon(m_hIcon) );
     for (int i = 0; i < _countof(connicons); ++i)
     {
-        if (connicons[i]) 
-			VERIFY( ::DestroyIcon(connicons[i]) );
+        if (connicons[i])
+            VERIFY( ::DestroyIcon(connicons[i]) );
     }
-	for (int i = 0; i < _countof(transicons); ++i)
-	{
-		if (transicons[i]) 
-			VERIFY( ::DestroyIcon(transicons[i]) );
-	}
-	for (int i = 0; i < _countof(imicons); ++i)
-	{
-		if (imicons[i]) 
-			VERIFY( ::DestroyIcon(imicons[i]) );
-	}
+    for (int i = 0; i < _countof(transicons); ++i)
+    {
+        if (transicons[i])
+            VERIFY( ::DestroyIcon(transicons[i]) );
+    }
+    for (int i = 0; i < _countof(imicons); ++i)
+    {
+        if (imicons[i])
+            VERIFY( ::DestroyIcon(imicons[i]) );
+    }
     if (m_icoSysTrayConnected) VERIFY( ::DestroyIcon(m_icoSysTrayConnected) );
     if (m_icoSysTrayDisconnected) VERIFY( ::DestroyIcon(m_icoSysTrayDisconnected) );
     if (m_icoSysTrayLowID) VERIFY( ::DestroyIcon(m_icoSysTrayLowID) );
@@ -356,7 +356,7 @@ BOOL CemuleDlg::OnInitDialog()
 
     // temporary disable the 'startup minimized' option, otherwise no window will be shown at all
     if (thePrefs.IsFirstStart())
-        m_bStartMinimized = false;    
+        m_bStartMinimized = false;
 
     // Create global GUI objects
     theApp.CreateAllFonts();
@@ -707,8 +707,8 @@ void CemuleDlg::StopTimer()
         theApp.ipfilter->UpdateIPFilterURL();
 //<<< WiZaRd::IPFilter-Update
 //>>> WiZaRd::MediaInfoDLL Update
-	if (thePrefs.IsAutoUpdateMediaInfoDllEnabled())
-		UpdateMediaInfoDLL();
+    if (thePrefs.IsAutoUpdateMediaInfoDllEnabled())
+        UpdateMediaInfoDLL();
 //<<< WiZaRd::MediaInfoDLL Update
 
     if (thePrefs.UpdateNotify())
@@ -963,15 +963,15 @@ void CemuleDlg::ShowMessageState(UINT iconnr)
 
 void CemuleDlg::ShowTransferStateIcon()
 {
-	int iUp = m_uUpDatarate - theStats.GetUpDatarateOverhead();
-	int iDown = m_uDownDatarate - theStats.GetDownDatarateOverhead();
-	if (iUp > 0)
-	{
-		if(iDown > 0)
-			statusbar->SetIcon(SBarUpDown, transicons[3]);
-		else
-			statusbar->SetIcon(SBarUpDown, transicons[2]);
-	}
+    int iUp = m_uUpDatarate - theStats.GetUpDatarateOverhead();
+    int iDown = m_uDownDatarate - theStats.GetDownDatarateOverhead();
+    if (iUp > 0)
+    {
+        if(iDown > 0)
+            statusbar->SetIcon(SBarUpDown, transicons[3]);
+        else
+            statusbar->SetIcon(SBarUpDown, transicons[2]);
+    }
     else if (iDown > 0)
         statusbar->SetIcon(SBarUpDown, transicons[1]);
     else
@@ -1181,7 +1181,7 @@ void CemuleDlg::SetStatusBarPartsSize()
             ussShift = 45;
         else
             ussShift = 90;
-		ussShift += 23; //>>> WiZaRd::USS Status Pane [Eulero]
+        ussShift += 23; //>>> WiZaRd::USS Status Pane [Eulero]
     }
 
     int aiWidths[6] = //>>> WiZaRd::USS Status Pane [Eulero]
@@ -1190,7 +1190,7 @@ void CemuleDlg::SetStatusBarPartsSize()
         rect.right - 440 - ussShift,
         rect.right - 250 - ussShift,
         rect.right -  25 - ussShift,
-		rect.right - ussShift, //>>> WiZaRd::USS Status Pane [Eulero]
+        rect.right - ussShift, //>>> WiZaRd::USS Status Pane [Eulero]
         -1
     };
     statusbar->SetParts(_countof(aiWidths), aiWidths);
@@ -1629,9 +1629,9 @@ void CemuleDlg::OnClose()
     thePrefs.SetWindowLayout(wp);
 
 //>>> WiZaRd::Hide on shutdown
-	// Shutdown may take some time (i.e. because of ipfilters unloading, etc.), so hide the dialog ASAP to prevent confusion,
-	// i.e. ppl thinking that the app "hangs"
-	ShowWindow(SW_HIDE); 
+    // Shutdown may take some time (i.e. because of ipfilters unloading, etc.), so hide the dialog ASAP to prevent confusion,
+    // i.e. ppl thinking that the app "hangs"
+    ShowWindow(SW_HIDE);
 //<<< WiZaRd::Hide on shutdown
 
     // get active main window dialog
@@ -2190,8 +2190,8 @@ void CemuleDlg::SetAllIcons()
     // connection state
     for (int i = 0; i < _countof(connicons); ++i)
     {
-        if (connicons[i]) 
-			VERIFY( ::DestroyIcon(connicons[i]) );
+        if (connicons[i])
+            VERIFY( ::DestroyIcon(connicons[i]) );
     }
     connicons[0] = theApp.LoadIcon(_T("ConnectedNotNot"), 16, 16);
     connicons[1] = theApp.LoadIcon(_T("ConnectedLowLow"), 16, 16);
@@ -2199,11 +2199,11 @@ void CemuleDlg::SetAllIcons()
     ShowConnectionStateIcon();
 
     // transfer state
-	for (int i = 0; i < _countof(transicons); ++i)
-	{
-		if (transicons[i]) 
-			VERIFY( ::DestroyIcon(transicons[i]) );
-	}
+    for (int i = 0; i < _countof(transicons); ++i)
+    {
+        if (transicons[i])
+            VERIFY( ::DestroyIcon(transicons[i]) );
+    }
     transicons[0] = theApp.LoadIcon(_T("UP0DOWN0"), 16, 16);
     transicons[1] = theApp.LoadIcon(_T("UP0DOWN1"), 16, 16);
     transicons[2] = theApp.LoadIcon(_T("UP1DOWN0"), 16, 16);
@@ -2224,11 +2224,11 @@ void CemuleDlg::SetAllIcons()
     m_icoSysTrayLowID = theApp.LoadIcon(_T("TrayLowID"), 16, 16);
     ShowTransferRate(true);
 
-	for (int i = 0; i < _countof(imicons); ++i)
-	{
-		if (imicons[i]) 
-			VERIFY( ::DestroyIcon(imicons[i]) );
-	}
+    for (int i = 0; i < _countof(imicons); ++i)
+    {
+        if (imicons[i])
+            VERIFY( ::DestroyIcon(imicons[i]) );
+    }
     imicons[0] = NULL;
     imicons[1] = theApp.LoadIcon(_T("Message"), 16, 16);
     imicons[2] = theApp.LoadIcon(_T("MessagePending"), 16, 16);
@@ -3682,43 +3682,43 @@ void	CemuleDlg::CreateMiniMule()
 //>>> WiZaRd::MediaInfoDLL Update
 void	CemuleDlg::UpdateMediaInfoDLL()
 {
-	CString strTxt = thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + L"MediaInfoDLL.txt";
-	CString strURL = thePrefs.GetMediaInfoDllUpdateURL();
-	strURL.TrimRight(L".txt");
-	strURL.TrimRight(L".dat");
-	strURL.TrimRight(L".zip");
-	strURL.Append(L".txt");
-	
-	if(DownloadFromURLToFile(strURL, strTxt))
-	{			
-		CStdioFile versionFile;
-		if(versionFile.Open(strTxt, CFile::modeRead | CFile::shareDenyWrite))
-		{
-			CString strVersion = L"";	
-			versionFile.ReadString(strVersion);					
-			strVersion.Trim();
-			versionFile.Close();
+    CString strTxt = thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + L"MediaInfoDLL.txt";
+    CString strURL = thePrefs.GetMediaInfoDllUpdateURL();
+    strURL.TrimRight(L".txt");
+    strURL.TrimRight(L".dat");
+    strURL.TrimRight(L".zip");
+    strURL.Append(L".txt");
 
-			UINT newVer = (UINT)_tstoi(strVersion);
-			CString strPath = theApp.GetProfileString(L"eMule", L"MediaInfo_MediaInfoDllPath", L"MEDIAINFO.DLL");
-			int pos = strPath.ReverseFind(L'\\');
-			if(strPath.IsEmpty() || strPath == L"<noload>" || pos == -1) //no absolute path given - use default path
-				strPath = thePrefs.GetMuleDirectory(EMULE_CONFIGDIR);
-			else
-				strPath = strPath.Mid(0, pos+1);
-			strPath.Append(L"MediaInfo.dll");
-			if(newVer > thePrefs.GetMediaInfoDllVersion() || !::PathFileExists(strPath))
-			{
-				strURL = thePrefs.GetMediaInfoDllUpdateURL();
-				CString strFile = strPath + L".new";
-				if(DownloadFromURLToFile(strURL, strFile))
-				{
-					if(Extract(strFile, strPath, L"MediaInfo.dll", true, 1, L"MediaInfo.dll"))
-						thePrefs.SetMediaInfoDllVersion(newVer);
-				}
-			}
-		}
-		_tremove(strTxt);
-	}
+    if(DownloadFromURLToFile(strURL, strTxt))
+    {
+        CStdioFile versionFile;
+        if(versionFile.Open(strTxt, CFile::modeRead | CFile::shareDenyWrite))
+        {
+            CString strVersion = L"";
+            versionFile.ReadString(strVersion);
+            strVersion.Trim();
+            versionFile.Close();
+
+            UINT newVer = (UINT)_tstoi(strVersion);
+            CString strPath = theApp.GetProfileString(L"eMule", L"MediaInfo_MediaInfoDllPath", L"MEDIAINFO.DLL");
+            int pos = strPath.ReverseFind(L'\\');
+            if(strPath.IsEmpty() || strPath == L"<noload>" || pos == -1) //no absolute path given - use default path
+                strPath = thePrefs.GetMuleDirectory(EMULE_CONFIGDIR);
+            else
+                strPath = strPath.Mid(0, pos+1);
+            strPath.Append(L"MediaInfo.dll");
+            if(newVer > thePrefs.GetMediaInfoDllVersion() || !::PathFileExists(strPath))
+            {
+                strURL = thePrefs.GetMediaInfoDllUpdateURL();
+                CString strFile = strPath + L".new";
+                if(DownloadFromURLToFile(strURL, strFile))
+                {
+                    if(Extract(strFile, strPath, L"MediaInfo.dll", true, 1, L"MediaInfo.dll"))
+                        thePrefs.SetMediaInfoDllVersion(newVer);
+                }
+            }
+        }
+        _tremove(strTxt);
+    }
 }
 //<<< WiZaRd::MediaInfoDLL Update

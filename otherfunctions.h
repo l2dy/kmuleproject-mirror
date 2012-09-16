@@ -343,11 +343,11 @@ __inline int CompareFloat(float uSize1, float uSize2)
 
 __inline int CompareDouble(double uSize1, double uSize2)
 {
-	if (uSize1 < uSize2)
-		return -1;
-	if (uSize1 > uSize2)
-		return 1;
-	return 0;
+    if (uSize1 < uSize2)
+        return -1;
+    if (uSize1 > uSize2)
+        return 1;
+    return 0;
 }
 
 __inline int CompareOptLocaleStringNoCase(LPCTSTR psz1, LPCTSTR psz2)

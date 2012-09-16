@@ -55,7 +55,7 @@ CDownloadQueue::CDownloadQueue()
     m_nUDPFileReasks = 0;
     m_nFailedUDPFileReasks = 0;
     m_dwLastA4AFtime = 0; // ZZ:DownloadManager
-	m_uiHLCount = 0; //>>> WiZaRd::AutoHL
+    m_uiHLCount = 0; //>>> WiZaRd::AutoHL
 }
 
 void CDownloadQueue::AddPartFilesToShare()
@@ -425,7 +425,7 @@ void CDownloadQueue::Process()
     uint32 datarateX=0;
     udcounter++;
 
-	UINT tmp_counter = 0;  //>>> WiZaRd::AutoHL
+    UINT tmp_counter = 0;  //>>> WiZaRd::AutoHL
 
     theStats.m_fGlobalDone = 0;
     theStats.m_fGlobalSize = 0;
@@ -447,7 +447,7 @@ void CDownloadQueue::Process()
 
         if (cur_file->GetStatus() == PS_READY || cur_file->GetStatus() == PS_EMPTY)
         {
-			tmp_counter += cur_file->GetMaxSources(); //>>> WiZaRd::AutoHL
+            tmp_counter += cur_file->GetMaxSources(); //>>> WiZaRd::AutoHL
             datarateX += cur_file->Process(downspeed, udcounter);
         }
         else
@@ -456,7 +456,7 @@ void CDownloadQueue::Process()
             cur_file->StopPausedFile();
         }
     }
-	m_uiHLCount = tmp_counter; //>>> WiZaRd::AutoHL
+    m_uiHLCount = tmp_counter; //>>> WiZaRd::AutoHL
 
     TransferredData newitem = {datarateX, ::GetTickCount()};
     avarage_dr_list.AddTail(newitem);
@@ -731,7 +731,7 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool bDoStatsUpdate)
                 cur_file->UpdatePartsInfo();
                 cur_file->UpdateAvailablePartsCount();
                 cur_file->UpdateFileRatingCommentAvail();
-				cur_file->SetAutoHL(); //>>> WiZaRd::AutoHL
+                cur_file->SetAutoHL(); //>>> WiZaRd::AutoHL
             }
         }
     }

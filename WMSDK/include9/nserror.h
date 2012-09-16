@@ -809,7 +809,7 @@ Notes:
 // MessageText:
 //
 //  Cannot exceed the maximum client limit.%0
-//  
+//
 //
 #define NS_E_MAX_CLIENTS                 _HRESULT_TYPEDEF_(0xC00D0049L)
 
@@ -819,7 +819,7 @@ Notes:
 // MessageText:
 //
 //  The maximum log file size has been reached.%0
-//  
+//
 //
 #define NS_E_LOG_FILE_SIZE               _HRESULT_TYPEDEF_(0xC00D004AL)
 
@@ -870,9 +870,9 @@ Notes:
 /////////////////////////////////////////////////////////////////////////
 
 
- // Tiger Events
+// Tiger Events
 
- // %1 is the tiger name
+// %1 is the tiger name
 
 //
 // MessageId: NS_I_TIGER_START
@@ -893,10 +893,10 @@ Notes:
 #define NS_E_TIGER_FAIL                  _HRESULT_TYPEDEF_(0xC00D0050L)
 
 
- // Cub Events
+// Cub Events
 
- // %1 is the cub ID
- // %2 is the cub name
+// %1 is the cub ID
+// %2 is the cub name
 
 //
 // MessageId: NS_I_CUB_START
@@ -926,11 +926,11 @@ Notes:
 #define NS_E_CUB_FAIL                    _HRESULT_TYPEDEF_(0xC00D0053L)
 
 
- // Disk Events
+// Disk Events
 
- // %1 is the tiger disk ID
- // %2 is the device name
- // %3 is the cub ID
+// %1 is the tiger disk ID
+// %2 is the device name
+// %3 is the cub ID
 //
 // MessageId: NS_I_DISK_START
 //
@@ -977,7 +977,7 @@ Notes:
 #define NS_I_DISK_REBUILD_ABORTED        _HRESULT_TYPEDEF_(0x400D0058L)
 
 
- // Admin Events
+// Admin Events
 
 //
 // MessageId: NS_I_LIMIT_FUNNELS
@@ -1052,7 +1052,7 @@ Notes:
 #define NS_W_UNKNOWN_EVENT               _HRESULT_TYPEDEF_(0x800D0060L)
 
 
- // Alerts
+// Alerts
 
 //
 // MessageId: NS_E_MAX_FUNNELS_ALERT
@@ -1136,7 +1136,7 @@ Notes:
 #define NS_E_ENACTPLAN_GIVEUP            _HRESULT_TYPEDEF_(0xC00D0068L)
 
 
- // MCMADM warnings/errors
+// MCMADM warnings/errors
 
 //
 // MessageId: MCMADM_I_NO_EVENTS
@@ -2345,7 +2345,7 @@ Notes:
 //
 //  Metadata is stale. The operation failed.%0
 //
-#define NS_E_WMP_MLS_STALE_DATA          _HRESULT_TYPEDEF_(0xC00D0FDDL)    
+#define NS_E_WMP_MLS_STALE_DATA          _HRESULT_TYPEDEF_(0xC00D0FDDL)
 
 //
 // Generic Media PlayerUI error codes
@@ -5608,7 +5608,7 @@ Notes:
 #define NS_E_STALE_PRESENTATION          _HRESULT_TYPEDEF_(0xC00D1389L)
 
 
- // Namespace Errors
+// Namespace Errors
 
 //
 // MessageId: NS_E_NAMESPACE_WRONG_PERSIST
@@ -5737,7 +5737,7 @@ Notes:
 #define NS_E_NAMESPACE_WRONG_SECURITY    _HRESULT_TYPEDEF_(0xC00D1397L)
 
 
- // Cache Errors 5100-5199
+// Cache Errors 5100-5199
 
 //
 // MessageId: NS_E_CACHE_ARCHIVE_CONFLICT

@@ -542,13 +542,13 @@ public:
 //<<< WiZaRd::Endgame Improvement
 //>>> WiZaRd::AutoHL
 private:
-	bool	m_bUseAutoHL;
-	UINT	m_iUpdateHL;
-	uint16	m_uiSrcCount;
+    bool	m_bUseAutoHL;
+    UINT	m_iUpdateHL;
+    uint16	m_uiSrcCount;
 public:
-	void	SetPrivateMaxSources(UINT in);
-	bool	UseAutoHL()	const;
-	void	SetUseAutoHL(const bool b);
-	void    SetAutoHL();
+    void	SetPrivateMaxSources(UINT in);
+    bool	UseAutoHL()	const;
+    void	SetUseAutoHL(const bool b);
+    void    SetAutoHL();
 //<<< WiZaRd::AutoHL
 };
