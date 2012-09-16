@@ -129,3 +129,7 @@ Legend:    + added    ~ changed    - removed    ! fixed    > updated
 + autoHL [WiZaRd]
 ! fixed loss of some pref settings between restarts [WiZaRd]
 ! clear chat message field when closing the particular tab [Tuxman]
+~ main dialog is hidden after shutdown is initiated to avoid confusion [WiZaRd]
+! fixed problem with ratio smilies not showing up in some cases [WiZaRd]
++ prevent sharing of known partial files [WiZaRd]
+ * right now this filters "ForbiddenFileFilters" in our .ini file if "RemoveForbiddenFiles" is enabled

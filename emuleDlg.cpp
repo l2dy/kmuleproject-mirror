@@ -1628,6 +1628,12 @@ void CemuleDlg::OnClose()
     wp.flags = 0;
     thePrefs.SetWindowLayout(wp);
 
+//>>> WiZaRd::Hide on shutdown
+	// Shutdown may take some time (i.e. because of ipfilters unloading, etc.), so hide the dialog ASAP to prevent confusion,
+	// i.e. ppl thinking that the app "hangs"
+	ShowWindow(SW_HIDE); 
+//<<< WiZaRd::Hide on shutdown
+
     // get active main window dialog
     if (activewnd)
     {

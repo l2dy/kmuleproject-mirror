@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Languages", "Languages", "{
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "languages - German (Germany)", "lang\de_DE_vc10.vcxproj", "{8104E8D8-7343-4BE7-8955-80A1F2D26EC1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "languages - Italian (Italy)", "lang\it_IT.vcxproj", "{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug Static|Win32 = Debug Static|Win32
@@ -348,11 +350,46 @@ Global
 		{8104E8D8-7343-4BE7-8955-80A1F2D26EC1}.Unicode_Debug|Win32.Build.0 = Dynamic|Win32
 		{8104E8D8-7343-4BE7-8955-80A1F2D26EC1}.Unicode_Release|Win32.ActiveCfg = Dynamic|Win32
 		{8104E8D8-7343-4BE7-8955-80A1F2D26EC1}.Unicode_Release|Win32.Build.0 = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.Debug Static|Win32.ActiveCfg = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.Debug Static|Win32.Build.0 = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.Debug|Win32.ActiveCfg = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.Debug|Win32.Build.0 = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.DLL Debug|Win32.ActiveCfg = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.DLL Debug|Win32.Build.0 = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.DLL Release|Win32.ActiveCfg = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.DLL Release|Win32.Build.0 = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.DLL VB|Win32.ActiveCfg = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.DLL VB|Win32.Build.0 = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.DLL-Import Debug|Win32.ActiveCfg = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.DLL-Import Debug|Win32.Build.0 = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.DLL-Import Release|Win32.ActiveCfg = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.DLL-Import Release|Win32.Build.0 = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.Dynamic|Win32.ActiveCfg = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.Dynamic|Win32.Build.0 = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.LIB Debug|Win32.ActiveCfg = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.LIB Debug|Win32.Build.0 = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.LIB Release|Win32.ActiveCfg = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.LIB Release|Win32.Build.0 = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.Release Static|Win32.ActiveCfg = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.Release Static|Win32.Build.0 = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.Release|Win32.ActiveCfg = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.Release|Win32.Build.0 = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.ReleaseUnicode|Win32.ActiveCfg = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.ReleaseUnicode|Win32.Build.0 = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.Template|Win32.ActiveCfg = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.Template|Win32.Build.0 = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.testversion|Win32.ActiveCfg = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.testversion|Win32.Build.0 = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.Unicode_Debug|Win32.ActiveCfg = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.Unicode_Debug|Win32.Build.0 = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.Unicode_Release|Win32.ActiveCfg = Dynamic|Win32
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557}.Unicode_Release|Win32.Build.0 = Dynamic|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8104E8D8-7343-4BE7-8955-80A1F2D26EC1} = {2F50C65A-AB15-4AB4-B6A7-DA0956DBD090}
+		{FEF2FD72-388B-42F6-B5DA-B9A663ACF557} = {2F50C65A-AB15-4AB4-B6A7-DA0956DBD090}
 	EndGlobalSection
 EndGlobal

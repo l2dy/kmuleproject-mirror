@@ -407,6 +407,10 @@ uint16	CPreferences::m_iMaxAutoHL;
 sint8	CPreferences::m_iUseAutoHL;
 uint16  CPreferences::m_iMaxSourcesHL;
 //<<< WiZaRd::AutoHL
+//>>> WiZaRd::Remove forbidden files
+bool	CPreferences::m_bRemoveForbiddenFiles; 
+CString	CPreferences::m_strForbiddenFileFilters;
+//<<< WiZaRd::Remove forbidden files
 
 CPreferences::CPreferences()
 {
@@ -691,7 +695,7 @@ bool CPreferences::IsTempFile(const CString& rstrDirectory, const CString& rstrN
 
     if(!bFound) //found nowhere - not a tempfile...
         return false;
-
+	
     // do not share a file from the temp directory, if it matches one of the following patterns
     CString strNameLower(rstrName);
     strNameLower.MakeLower();
@@ -1769,6 +1773,10 @@ void CPreferences::SavekMulePrefs()
 	ini.WriteInt(L"MaxAutoHL", m_iMaxAutoHL);
 	ini.WriteInt(L"MaxSourcesHL", m_iMaxSourcesHL);
 //<<< WiZaRd::AutoHL
+//>>> WiZaRd::Remove forbidden files
+	ini.WriteBool(L"RemoveForbiddenFiles", m_bRemoveForbiddenFiles); 
+	ini.WriteString(L"ForbiddenFileFilters", m_strForbiddenFileFilters);
+//<<< WiZaRd::Remove forbidden files
 }
 //<<< WiZaRd::Own Prefs
 
@@ -2364,6 +2372,10 @@ void CPreferences::LoadkMulePrefs()
 	m_iMaxAutoHL = max(m_iMinAutoHL, m_iMaxAutoHL);
 	m_iMaxSourcesHL = (uint16)ini.GetInt(L"MaxSourcesHL", _UI16_MAX);
 //<<< WiZaRd::AutoHL
+//>>> WiZaRd::Remove forbidden files
+	m_bRemoveForbiddenFiles = ini.GetBool(L"RemoveForbiddenFiles", true); 
+	m_strForbiddenFileFilters = ini.GetStringLong(L"ForbiddenFileFilters", L".fb!|.jc!|.antifrag|.dctmp|.bc!|.!ut|.getright|.partial|.partial.sd|.part|.part.met|.part.met.bak|.part.met.backup");
+//<<< WiZaRd::Remove forbidden files
 }
 //<<< WiZaRd::Own Prefs
 
@@ -3006,3 +3018,27 @@ bool CPreferences::IsRunningAeroGlassTheme()
     }
     return m_bIsRunningAeroGlass == TRUE ? true : false;
 }
+
+//>>> Remove forbidden files
+bool CPreferences::IsForbiddenFile(const CString& rstrName)
+{
+	// do not share a file with one of these patterns because they are practically worthless
+	if(thePrefs.RemoveForbiddenFiles())
+	{
+		int curPos = 0;
+		CString strFilter = m_strForbiddenFileFilters.Tokenize(L"|", curPos);
+		while (!strFilter.IsEmpty())
+		{
+			strFilter.Trim();
+
+			int iLen = strFilter.GetLength();
+			if (rstrName.GetLength() >= iLen && rstrName.Right(iLen).CompareNoCase(strFilter) == 0)
+				return true;
+
+			strFilter = m_strForbiddenFileFilters.Tokenize(L"|", curPos);
+		}
+	}
+
+	return false;
+}
+//<<< Remove forbidden files

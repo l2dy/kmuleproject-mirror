@@ -60,10 +60,7 @@ CPPgConnection::CPPgConnection()
     : CPropertyPage(CPPgConnection::IDD)
 {
     guardian = false;
-//>>> WiZaRd::Ratio Indicator
-	ratioIcon = NULL; 
-	lastRatio = -1;
-//<<< WiZaRd::Ratio Indicator
+	ratioIcon = NULL; //>>> WiZaRd::Ratio Indicator
 }
 
 CPPgConnection::~CPPgConnection()
@@ -113,6 +110,8 @@ BOOL CPPgConnection::OnInitDialog()
 {
     CPropertyPage::OnInitDialog();
     InitWindowStyles(this);
+		
+	lastRatio = -1; //>>> WiZaRd::Ratio Indicator
 
     LoadSettings();
     Localize();

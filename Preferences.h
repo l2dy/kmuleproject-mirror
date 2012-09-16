@@ -2348,8 +2348,19 @@ public:
 	static  uint16  GetMaxSourcesHL()				{return m_iMaxSourcesHL;}
 	static	void	SetMaxSourcesHL(const uint16 i)	{m_iMaxSourcesHL = i;}
 	static	sint8	IsUseAutoHL()					{return m_iUseAutoHL;}
-	static	void	SetUseAutoHL(const sint8& i)	{m_iUseAutoHL = i;}
+	static	void	SetUseAutoHL(const sint8 i)		{m_iUseAutoHL = i;}
 //<<< WiZaRd::AutoHL
+//>>> WiZaRd::Remove forbidden files
+private:
+	static	bool	m_bRemoveForbiddenFiles;
+	static	CString	m_strForbiddenFileFilters;
+public:
+	static	bool	IsForbiddenFile(const CString& rstrName);
+	static	bool	RemoveForbiddenFiles()					{return m_bRemoveForbiddenFiles;}
+	static	void	SetRemoveForbiddenFiles(const bool b)	{m_bRemoveForbiddenFiles = b;}
+	static	CString	GetForbiddenFileFilters()				{return m_strForbiddenFileFilters;}
+	static	void	SetForbiddenFileFilters(const CString& str)	{m_strForbiddenFileFilters = str;}
+//<<< WiZaRd::Remove forbidden files
 };
 
 extern CPreferences thePrefs;
