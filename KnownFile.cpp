@@ -2620,12 +2620,13 @@ void CKnownFile::ResetFDC()
 //>>> WiZaRd::Ratio Indicator
 double CKnownFile::GetSharingRatio() const
 {
-    uint64 downloaded = 0;
-    if(IsPartFile())
-        downloaded = ((const CPartFile*)this)->GetCompletedSize();
-    else
-        downloaded = GetFileSize();
-    uint64 uploaded = statistic.GetAllTimeTransferred();
-    return downloaded ? ((double)uploaded / downloaded) : 0;
+	uint64 downloaded = 0;
+	if(IsPartFile())
+		downloaded = ((const CPartFile*)this)->GetCompletedSize();
+	else
+		downloaded = GetFileSize();
+	uint64 uploaded = statistic.GetAllTimeTransferred();
+
+	return GetRatioDouble(uploaded, downloaded);
 }
 //<<< WiZaRd::Ratio Indicator

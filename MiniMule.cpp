@@ -29,6 +29,10 @@
 #include "UserMsgs.h"
 #include "UploadQueue.h"
 #include "DownloadQueue.h"
+//>>> WiZaRd::SessionRatio //>>> WiZaRd::Ratio Indicator
+#include "Statistics.h" 
+#include "./Mod/ModOpcodes.h"
+//<<< WiZaRd::SessionRatio //<<< WiZaRd::Ratio Indicator
 
 #if (WINVER < 0x0500)
 /* AnimateWindow() Commands */
@@ -69,6 +73,7 @@ public:
     int& m_ri;
 };
 
+CString CMiniMule::ratioIcons[9]; //>>> WiZaRd::Ratio Indicator
 
 // CMiniMule dialog
 
@@ -225,6 +230,7 @@ CString CreateFilePathUrl(LPCTSTR pszFilePath, int nProtocol)
 
 BOOL CMiniMule::OnInitDialog()
 {
+	lastRatio = -1; //>>> WiZaRd::Ratio Indicator
     ASSERT( GetCurrentThreadId() == g_uMainThreadId );
     ASSERT( m_iInCallback == 0 );
     CString strHtmlFile = theApp.GetSkinFileItem(_T("MiniMule"), _T("HTML"));
@@ -333,6 +339,7 @@ void CMiniMule::Localize()
     SetElementHtml(_T("connectedLabel"), CComBSTR(GetResString(IDS_CONNECTED)));
     SetElementHtml(_T("upRateLabel"), CComBSTR(GetResString(IDS_PW_CON_UPLBL)));
     SetElementHtml(_T("downRateLabel"), CComBSTR(GetResString(IDS_PW_CON_DOWNLBL)));
+	SetElementHtml(L"SessionRatioLabel", CComBSTR(GetResString(IDS_RATIO))); //>>> WiZaRd::SessionRatio
     SetElementHtml(_T("completedLabel"), CComBSTR(GetResString(IDS_DL_TRANSFCOMPL)));
     SetElementHtml(_T("freeSpaceLabel"), CComBSTR(GetResString(IDS_STATS_FREESPACE)));
 
@@ -415,6 +422,20 @@ void CMiniMule::UpdateContent(UINT uUpDatarate, UINT uDownDatarate)
     SetElementHtml(_T("connected"), CComBSTR(theApp.IsConnected() ? GetResString(IDS_YES) : GetResString(IDS_NO)));
     SetElementHtml(_T("upRate"), CComBSTR(theApp.emuledlg->GetUpDatarateString(uUpDatarate)));
     SetElementHtml(_T("downRate"), CComBSTR(theApp.emuledlg->GetDownDatarateString(uDownDatarate)));
+//>>> WiZaRd::SessionRatio
+	CString strRatio = L"";
+	if (theStats.sessionReceivedBytes > 0 && theStats.sessionSentBytes > 0)
+	{
+		if (theStats.sessionReceivedBytes<theStats.sessionSentBytes) 
+			strRatio.Format(L"%.2f : 1", (float)theStats.sessionSentBytes/theStats.sessionReceivedBytes);
+		else
+			strRatio.Format(L"1 : %.2f", (float)theStats.sessionReceivedBytes/theStats.sessionSentBytes);
+	}
+	else //non avail
+		strRatio.Format(L" %s", GetResString(IDS_FSTAT_WAITING));
+	SetElementHtml(L"SessionRatio", CComBSTR(strRatio));
+	SetRatioIcon();
+//<<< WiZaRd::SessionRatio
     UINT uCompleted = 0;
     if (thePrefs.GetRemoveFinishedDownloads())
         uCompleted = thePrefs.GetDownSessionCompletedFiles();
@@ -886,3 +907,35 @@ uint8 CMiniMule::GetTransparency() const
 {
     return (uint8)min(theApp.GetProfileInt(MOD_VERSION_PLAIN, L"MiniMuleTransparency", 0), 255);
 }
+
+//>>> WiZaRd::Ratio Indicator
+void CMiniMule::SetRatioIcon()
+{	
+	int ratio = min(8, int(GetRatioDouble(theStats.sessionSentBytes, theStats.sessionReceivedBytes)/0.125));
+	if(ratio == lastRatio)
+		return;
+
+	lastRatio = ratio;
+
+	if(ratioIcons[0].IsEmpty())
+	{
+		TCHAR szModulePath[MAX_PATH];
+		DWORD dwModPathLen = GetModuleFileName(AfxGetResourceHandle(), szModulePath, _countof(szModulePath));
+		if(dwModPathLen != 0 && dwModPathLen < _countof(szModulePath))
+		{
+			CString strFilePathUrl = CreateFilePathUrl(szModulePath, INTERNET_SCHEME_RES);
+			
+			for (int i = 0; i < ARRSIZE(strRatioSmilies); ++i)
+				ratioIcons[i].Format(L"%s/%s.GIF", strFilePathUrl, strRatioSmilies[i]);
+		}
+	}
+
+	if(!ratioIcons[ratio].IsEmpty())
+	{
+		CComPtr<IHTMLImgElement> elm;
+		GetElementInterface(L"ratioImg", &elm);
+		if(elm)
+			elm->put_src(CComBSTR(ratioIcons[ratio]));
+	}
+}
+//<<< WiZaRd::Ratio Indicator

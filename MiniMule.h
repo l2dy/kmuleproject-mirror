@@ -46,6 +46,11 @@ protected:
     bool m_bResolveImages;
     bool m_bRestoreMainWnd;
     uint8 m_uiLastTransparency; //>>> WiZaRd::Static MM
+//>>> WiZaRd::Ratio Indicator
+	int		lastRatio;
+	static CString	ratioIcons[9]; 
+	void	SetRatioIcon();
+//<<< WiZaRd::Ratio Indicator
 
     // Auto-close
     UINT m_uAutoCloseTimer;

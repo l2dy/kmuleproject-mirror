@@ -1692,6 +1692,16 @@ OPENINCOMING.GIF        HTML                    "res\\Incoming.gif"
 RESTOREWINDOW.GIF       HTML                    "res\\RestoreWindow.gif"
 TABLEBACKGND.GIF        HTML                    "res\\MiniMuleBack.gif"
 PREFERENCES.GIF         HTML                    "res\\Preferences.gif"
+SMILEY_CRY.GIF			HTML					"res\\Smiley_Cry.gif"
+SMILEY_DISGUST.GIF		HTML					"res\\Smiley_Disgust.gif"
+SMILEY_HAPPY.GIF        HTML                    "res\\Smiley_Happy.gif"
+SMILEY_LOOKSIDE.GIF     HTML                    "res\\Smiley_lookside.gif"
+SMILEY_LOVE.GIF         HTML                    "res\\Smiley_Love.gif"
+SMILEY_SAD.GIF          HTML                    "res\\Smiley_Sad.gif"
+SMILEY_SKEPTIC.GIF      HTML                    "res\\Smiley_Skeptic.gif"
+SMILEY_SMILE.GIF        HTML                    "res\\Smiley_Smile.gif"
+SMILEY_WINK.GIF         HTML                    "res\\Smiley_Wink.gif"
+SMILEY_LAUGH.GIF        HTML                    "res\\Smiley_Laugh.gif"
 
 /////////////////////////////////////////////////////////////////////////////
 //

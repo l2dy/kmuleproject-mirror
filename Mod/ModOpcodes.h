@@ -18,6 +18,21 @@
 
 #define MINMAX(val, mini, maxi)		{val = (min(max(mini, val), maxi));}
 
+//>>> WiZaRd::Ratio Indicator
+static const CString strRatioSmilies[] = 
+{
+	L"SMILEY_CRY",
+	L"SMILEY_SAD",
+	L"SMILEY_LOOKSIDE",
+	L"SMILEY_DISGUST",
+	L"SMILEY_SKEPTIC",
+	L"SMILEY_SMILE",
+	L"SMILEY_WINK",
+	L"SMILEY_HAPPY",
+	L"SMILEY_LAUGH",
+};
+//<<< WiZaRd::Ratio Indicator
+
 //>>> WiZaRd::AntiFake
 enum eSpamFilterMode
 {

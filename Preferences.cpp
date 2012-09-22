@@ -721,11 +721,35 @@ bool CPreferences::IsTempFile(const CString& rstrDirectory, const CString& rstrN
 
 uint16 CPreferences::GetMaxDownload()
 {
-    return (uint16)(GetMaxDownloadInBytesPerSec()/1024);
+//>>> WiZaRd::SessionRatio
+	//no need to limit that here, it will be limited dynamically!
+	return maxdownload;
+//  return (uint16)(GetMaxDownloadInBytesPerSec()/1024);
+//<<< WiZaRd::SessionRatio
 }
 
 uint64 CPreferences::GetMaxDownloadInBytesPerSec(bool dynamic)
 {
+//>>> WiZaRd::SessionRatio
+	uint64 uimaxDownload = maxdownload*1024;
+	//WiZaRd: if you CAN not upload, why should you be punished!?
+	if(theApp.uploadqueue && theApp.uploadqueue->GetWaitingUserCount() && theApp.uploadqueue->GetUploadQueueLength())
+	{
+		//Session limit, are we leeching?
+		//Don't download more than 3 times our upload (multiFU, partial PS)
+		const double uploaded = max(SESSIONMAXTRANS, (double)theStats.sessionSentBytes /*- (double)theStats.sessionSentBytesToFriend - (double)theStats.sessionSentBytesViaPartPS*/); //>>> WiZaRd::MultiFU //>>> WiZaRd::PowerShare
+		const double sessionUlDlRatio = (uploaded + 1.0) / (theStats.sessionReceivedBytes - sesDownData_URL + 1.0); //>>> WiZaRd::Exclude HTTP Traffic [Quezl]
+		if(sessionUlDlRatio < 0.4) //Activate throttling if close to limit
+		{		
+			//if we cannot upload, yet, then it's not our fault!
+			const UINT currUpload = (theApp.uploadqueue && theApp.uploadqueue->GetWaitingUserCount() && theApp.uploadqueue->GetUploadQueueLength() && theApp.uploadqueue->GetDatarate())
+				? theApp.uploadqueue->GetDatarate() : 10240;
+			const UINT minDownload = max(currUpload, 10240); //we will let them at least 10k DL
+			uimaxDownload = (uint64)min(max(minDownload, (9*currUpload*sessionUlDlRatio)), uimaxDownload);
+		}
+	}
+//<<< WiZaRd::SessionRatio
+
     //dont be a Lam3r :)
     UINT maxup;
     if (dynamic && thePrefs.IsDynUpEnabled() && theApp.uploadqueue->GetWaitingUserCount() != 0 && theApp.uploadqueue->GetDatarate() != 0)
@@ -737,9 +761,35 @@ uint64 CPreferences::GetMaxDownloadInBytesPerSec(bool dynamic)
         maxup = GetMaxUpload()*1024;
     }
 
-    if (maxup < 4*1024)
-        return (((maxup < 10*1024) && ((uint64)maxup*3 < maxdownload*1024)) ? (uint64)maxup*3 : maxdownload*1024);
-    return (((maxup < 10*1024) && ((uint64)maxup*4 < maxdownload*1024)) ? (uint64)maxup*4 : maxdownload*1024);
+//>>> WiZaRd::SessionRatio
+	uint64 uioffimaxDownload = 0;
+	if( maxup < 4*1024 )
+		uioffimaxDownload = (( (maxup < 10*1024) && ((uint64)maxup*3 < maxdownload*1024) )? (uint64)maxup*3 : maxdownload*1024);
+	else
+		uioffimaxDownload = (( (maxup < 10*1024) && ((uint64)maxup*4 < maxdownload*1024) )? (uint64)maxup*4 : maxdownload*1024);
+	
+	//we use the lower one to respect the (IMHO dumb) rules of official client
+	//Why is it dumb? 
+	//Because someone may download at 10000kB and upload 10kB (1:1000) but
+	//one may not download with more than 9kB if he can only upload 3kB (1:3) 
+	//Pretty unfair... and that's why eMule IS already favouring leechers 
+	//by allowing incredible leeching! *narf*!
+	//But we use a sessionratio to limit it at least a *bit*
+	return min(uimaxDownload, uioffimaxDownload);
+/*
+	//dont be a Lam3r :)
+	UINT maxup;
+	if (dynamic && thePrefs.IsDynUpEnabled() && theApp.uploadqueue->GetWaitingUserCount() != 0 && theApp.uploadqueue->GetDatarate() != 0) {
+		maxup = theApp.uploadqueue->GetDatarate();
+	} else {
+		maxup = GetMaxUpload()*1024;
+	}
+
+	if (maxup < 4*1024)
+		return (((maxup < 10*1024) && ((uint64)maxup*3 < maxdownload*1024)) ? (uint64)maxup*3 : maxdownload*1024);
+	return (((maxup < 10*1024) && ((uint64)maxup*4 < maxdownload*1024)) ? (uint64)maxup*4 : maxdownload*1024);
+*/
+//<<< WiZaRd::SessionRatio
 }
 
 // -khaos--+++> A whole bunch of methods!  Keep going until you reach the end tag.

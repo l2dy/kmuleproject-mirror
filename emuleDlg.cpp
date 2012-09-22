@@ -1085,9 +1085,14 @@ void CemuleDlg::ShowTransferRate(bool bForceAll)
     }
     if (IsWindowVisible() && thePrefs.ShowRatesOnTitle())
     {
-        TCHAR szBuff[128];
-        _sntprintf(szBuff, _countof(szBuff), _T("(U:%.1f D:%.1f) %s"), (float)m_uUpDatarate/1024, (float)m_uDownDatarate/1024, MOD_VERSION);
-        szBuff[_countof(szBuff) - 1] = L'\0';
+		//well, as read somewhere else the stupid printf commands shouldn't be used at all
+		//so I use the opportunity to clean it up
+		CString szBuff = L"";
+		szBuff.Format(L"(U:%.1f D:%.1f) %s", m_uUpDatarate/1024.0f, m_uDownDatarate/1024.0f, MOD_VERSION);
+//>>> WiZaRd::SessionRatio
+		if(thePrefs.GetMaxDownload() * 1024 != thePrefs.GetMaxDownloadInBytesPerSec(true))
+			szBuff.AppendFormat(L" *%s*", CastItoXBytes(thePrefs.GetMaxDownloadInBytesPerSec(true), false, true));
+//<<< WiZaRd::SessionRatio
         SetWindowText(szBuff);
     }
     if (m_pMiniMule && m_pMiniMule->m_hWnd && m_pMiniMule->IsWindowVisible())

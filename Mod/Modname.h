@@ -27,6 +27,7 @@
 #define MOD_BASE_HOMEPAGE	L"http://www.emule-project.net"
 #define MOD_WIKI			L"http://kMule.emulefuture.de/wiki/"
 #define MOD_LANG_URL		L"http://kMule.emulefuture.de/lang/%u/"
+#define MOD_DOWNLOAD_PAGE	L"http://sourceforge.net/projects/kmuleproject/"
 
 #define SNARL_APP_TAG		L"kMule" //>>> TuXaRd::SnarlSupport
 //>>> WiZaRd::Easy ModVersion

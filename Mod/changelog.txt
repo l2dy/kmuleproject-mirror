@@ -133,3 +133,6 @@ Legend:    + added    ~ changed    - removed    ! fixed    > updated
 ! fixed problem with ratio smilies not showing up in some cases [WiZaRd]
 + prevent sharing of known partial files [WiZaRd]
  * right now this filters "ForbiddenFileFilters" in our .ini file if "RemoveForbiddenFiles" is enabled
++ session ratio (1:3) [WiZaRd]
+ * please upload as much as you can to help the network!
++ ratio info & indicator added to MiniMule [WiZaRd]

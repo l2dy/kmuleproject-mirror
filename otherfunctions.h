@@ -486,4 +486,8 @@ uint16	GetRandomTCPPort();
 uint16	GetRandomUDPPort();
 bool	GetDiskSpaceInfo(LPCTSTR pDirectory, uint64& freespace, uint64& totalspace);
 bool	CheckURL(CString& strURL);
+template <class T> __inline double	GetRatioDouble(const T& ul, const T& dl)
+{
+	return dl ? ((double)ul / dl) : 0;
+}
 //<<< WiZaRd::Additional Functions
