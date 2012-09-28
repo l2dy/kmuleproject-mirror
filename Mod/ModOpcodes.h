@@ -33,6 +33,15 @@ static const CString strRatioSmilies[] =
 };
 //<<< WiZaRd::Ratio Indicator
 
+//>>> PreviewIndicator [WiZaRd]
+enum ePreviewIndicatorMode
+{
+	ePIM_Disabled = 0,
+	ePIM_Icon,
+	ePIM_Color
+};
+//<<< PreviewIndicator [WiZaRd]
+
 //>>> WiZaRd::AntiFake
 enum eSpamFilterMode
 {

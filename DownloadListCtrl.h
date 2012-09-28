@@ -125,6 +125,7 @@ public:
 
 protected:
     int			m_iFDC; //>>> FDC [BlueSonicBoy]
+	int			m_iPreview; //>>> PreviewIndicator [WiZaRd]
     CImageList  m_ImageList;
     CTitleMenu	m_PrioMenu;
     CTitleMenu	m_FileMenu;

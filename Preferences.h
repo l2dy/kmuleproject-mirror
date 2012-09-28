@@ -2321,15 +2321,22 @@ public:
         m_uiMediaInfoDllVersion = i;
     }
 //<<< WiZaRd::MediaInfoDLL Update
-//>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
+//>>> PreviewIndicator [WiZaRd]
 private:
-    static COLORREF m_crPreviewReadyColor;
+	static	uint8		m_uiPreviewIndicatorMode;
+    static	COLORREF m_crPreviewReadyColor; //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
 public:
-    static COLORREF GetPreviewReadyColor()
+	static	uint8		GetPreviewIndicatorMode()
+	{
+		return m_uiPreviewIndicatorMode;
+	}
+//>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
+    static	COLORREF GetPreviewReadyColor()
     {
         return m_crPreviewReadyColor;
     }
 //<<< jerrybg::ColorPreviewReadyFiles [WiZaRd]
+//<<< PreviewIndicator [WiZaRd]
 //>>> WiZaRd::Advanced Transfer Window Layout [Stulle]
 private:
     static bool		m_bSplitWindow;

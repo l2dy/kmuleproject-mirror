@@ -390,7 +390,10 @@ bool	CPreferences::m_bMediaInfoDllAutoUpdate;
 CString	CPreferences::m_strMediaInfoDllUpdateURL;
 UINT	CPreferences::m_uiMediaInfoDllVersion;
 //<<< WiZaRd::MediaInfoDLL Update
+//>>> PreviewIndicator [WiZaRd]
+uint8	CPreferences::m_uiPreviewIndicatorMode; 
 COLORREF CPreferences::m_crPreviewReadyColor; //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
+//<<< PreviewIndicator [WiZaRd]
 //>>> WiZaRd::Advanced Transfer Window Layout [Stulle]
 bool	CPreferences::m_bSplitWindow;
 //<<< WiZaRd::Advanced Transfer Window Layout [Stulle]
@@ -409,7 +412,7 @@ uint16  CPreferences::m_iMaxSourcesHL;
 //<<< WiZaRd::AutoHL
 //>>> WiZaRd::Remove forbidden files
 bool	CPreferences::m_bRemoveForbiddenFiles;
-CString	CPreferences::m_strForbiddenFileFilters;
+CString	CPreferences::m_strForbiddenFileFilters = L".fb!|.jc!|.antifrag|.dctmp|.bc!|.!ut|.getright|.partial|.partial.sd|.part|.part.met|.part.met.bak|.part.met.backup";
 //<<< WiZaRd::Remove forbidden files
 
 CPreferences::CPreferences()
@@ -1808,7 +1811,10 @@ void CPreferences::SavekMulePrefs()
     ini.WriteString(L"UpdateURLMediaInfoDll", m_strMediaInfoDllUpdateURL);
     ini.WriteInt(L"MediaInfoDllVersion", m_uiMediaInfoDllVersion);
 //<<< WiZaRd::MediaInfoDLL Update
+//>>> PreviewIndicator [WiZaRd]
+	ini.WriteInt(L"PreviewIndicatorMode", m_uiPreviewIndicatorMode);
     ini.WriteColRef(L"PreviewReadyColor", m_crPreviewReadyColor); //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
+//<<< PreviewIndicator [WiZaRd]
 //>>> WiZaRd::Advanced Transfer Window Layout [Stulle]
     ini.WriteInt(L"TransferWnd1", m_uTransferWnd1);
     ini.WriteInt(L"TransferWnd2", m_uTransferWnd2);
@@ -1825,7 +1831,6 @@ void CPreferences::SavekMulePrefs()
 //<<< WiZaRd::AutoHL
 //>>> WiZaRd::Remove forbidden files
     ini.WriteBool(L"RemoveForbiddenFiles", m_bRemoveForbiddenFiles);
-    ini.WriteString(L"ForbiddenFileFilters", m_strForbiddenFileFilters);
 //<<< WiZaRd::Remove forbidden files
 }
 //<<< WiZaRd::Own Prefs
@@ -2405,14 +2410,17 @@ void CPreferences::LoadkMulePrefs()
     m_strMediaInfoDllUpdateURL = ini.GetString(L"UpdateURLMediaInfoDll", MOD_MEDIAINFO_URL);
     m_uiMediaInfoDllVersion = (UINT)ini.GetInt(L"MediaInfoDllVersion", 0);
 //<<< WiZaRd::MediaInfoDLL Update
+//>>> PreviewIndicator [WiZaRd]
+	m_uiPreviewIndicatorMode = ini.GetInt(L"PreviewIndicatorMode", ePIM_Icon);
     m_crPreviewReadyColor = ini.GetColRef(L"PreviewReadyColor", RGB(140, 225, 110)); //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
+//<<< PreviewIndicator [WiZaRd]
 //>>> WiZaRd::Advanced Transfer Window Layout [Stulle]
     m_uTransferWnd1 = ini.GetInt(L"TransferWnd1", 1);
     m_uTransferWnd2 = ini.GetInt(L"TransferWnd2", 1);
     m_bSplitWindow = ini.GetBool(L"SplitWindow", false);
 //<<< WiZaRd::Advanced Transfer Window Layout [Stulle]
     m_bUseSimpleProgress = ini.GetBool(L"UseSimpleProgress", true); //>>> WiZaRd::SimpleProgress
-    m_uiSpamFilterMode = (uint8)ini.GetInt(L"SpamFilterMode", 2); //>>> WiZaRd::AntiFake
+    m_uiSpamFilterMode = (uint8)ini.GetInt(L"SpamFilterMode", eSFM_AutoSort); //>>> WiZaRd::AntiFake
 //>>> WiZaRd::AutoHL
     m_iAutoHLUpdateTimer = (uint16)ini.GetInt(L"AutoHLUpdate", 60);
     MINMAX(m_iAutoHLUpdateTimer, 10, 600);
@@ -2423,8 +2431,7 @@ void CPreferences::LoadkMulePrefs()
     m_iMaxSourcesHL = (uint16)ini.GetInt(L"MaxSourcesHL", _UI16_MAX);
 //<<< WiZaRd::AutoHL
 //>>> WiZaRd::Remove forbidden files
-    m_bRemoveForbiddenFiles = ini.GetBool(L"RemoveForbiddenFiles", true);
-    m_strForbiddenFileFilters = ini.GetStringLong(L"ForbiddenFileFilters", L".fb!|.jc!|.antifrag|.dctmp|.bc!|.!ut|.getright|.partial|.partial.sd|.part|.part.met|.part.met.bak|.part.met.backup");
+    m_bRemoveForbiddenFiles = ini.GetBool(L"RemoveForbiddenFiles", true);	
 //<<< WiZaRd::Remove forbidden files
 }
 //<<< WiZaRd::Own Prefs

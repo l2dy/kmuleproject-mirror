@@ -114,7 +114,7 @@ Legend:    + added    ~ changed    - removed    ! fixed    > updated
 + diskspace checks now require min(1GB, max(10MB, 5% of HDD)) [WiZaRd]
 ~ reduced CPU usage for Kad parts [WiZaRd, original by netfinity]
 
-2012XXXX:
+20120923:
 > updated libpng to v1.5.12
 > updated miniupnplib support to v1.7 (30/08/2012)
 > update resizeablelib to v1.4 alpha
@@ -136,3 +136,9 @@ Legend:    + added    ~ changed    - removed    ! fixed    > updated
 + session ratio (1:3) [WiZaRd]
  * please upload as much as you can to help the network!
 + ratio info & indicator added to MiniMule [WiZaRd]
+
+XXXXYYZZ:
+> reverted resizablelib to v1.3 to prevent GUI glitches
+> adjusted miniupnplib so kMule can be run under WindowsXP again
++ preview indication is now done by showing the preview icon
+ * use "PreviewIndicatorMode" in the .ini to disable (0) the feature or use the old color mode (2) instead

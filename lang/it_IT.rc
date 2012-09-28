@@ -136,12 +136,13 @@ BEGIN
     IDS_POWERSHARE          "PowerShare"
     IDS_ON                  "on"
     IDS_OFF                 "off"
-    IDS_UPDATE_AVAIL_QUESTION 
-                            "È disponibile un aggiornamento!\nVuoi scaricarlo ed installarlo %s, adesso?\n\nNOTA: sarà necessario riavviare!"
+    IDS_UPDATE_AVAIL_QUESTION
+							"È disponibile un aggiornamento!\nVuoi scaricare ed installare %s adesso?\n\nNOTA: sarà necessario riavviare!"
     IDS_IPFILTER_AUTOUPDATE "Vuoi aggiornare i filtri IP all’avvio?"
     IDS_UDP_DISABLED        "UDP disabilitato"
     IDS_RATIO               "Ratio"
 	IDS_RESTART_NOW_QUESTION "Vuoi riavviare adesso?\nSi prega di notare: se non riavvii adesso, l’aggiornamento non sarà pronto sinchè kMule non verrà riavviato!"
+	IDS_AUTOHL              "AutoHL"
 END
 
 STRINGTABLE 

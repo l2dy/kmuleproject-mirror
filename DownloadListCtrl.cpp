@@ -209,6 +209,7 @@ void CDownloadListCtrl::SetAllIcons()
     m_ImageList.Add(CTempIconLoader(_T("Rating_Excellent")));
     m_ImageList.Add(CTempIconLoader(_T("Collection_Search"))); // rating for comments are searched on kad
     m_iFDC = m_ImageList.Add(CTempIconLoader(L"Dissimilar_Name")); //>>> FDC [BlueSonicBoy]
+	m_iPreview = m_ImageList.Add(CTempIconLoader(L"PREVIEW")); //>>> PreviewIndicator [WiZaRd]
     badguy = m_ImageList.Add(CTempIconLoader(L"BADGUY")); //>>> WiZaRd::ClientAnalyzer
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("ClientSecureOvl"))), 1);
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("OverlayObfu"))), 2);
@@ -631,6 +632,13 @@ void CDownloadListCtrl::DrawFileItem(CDC *dc, int nColumn, LPCRECT lpRect, UINT 
             rcDraw.left += 16;
         }
 //<<< FDC [BlueSonicBoy]
+//>>> PreviewIndicator [WiZaRd]
+		if(thePrefs.GetPreviewIndicatorMode() == ePIM_Icon && pPartFile->IsReadyForPreview())
+		{
+			m_ImageList.Draw(dc, m_iPreview, rcDraw.TopLeft(), ILD_NORMAL);
+			rcDraw.left += 16;
+		}			
+//<<< PreviewIndicator [WiZaRd]
 
         if (thePrefs.ShowRatingIndicator() && (pPartFile->HasComment() || pPartFile->HasRating() || pPartFile->IsKadCommentSearchRunning()))
         {
@@ -1021,7 +1029,7 @@ void CDownloadListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
         if ((lpDrawItemStruct->itemState & ODS_SELECTED) == 0)
         {
 //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
-            if(((/*const*/ CPartFile*)content->value)->IsReadyForPreview())
+            if(thePrefs.GetPreviewIndicatorMode() == ePIM_Color && ((/*const*/ CPartFile*)content->value)->IsReadyForPreview())
                 crOldBk = dc->SetBkColor(thePrefs.GetPreviewReadyColor());
 //<<< jerrybg::ColorPreviewReadyFiles [WiZaRd]
             DWORD dwCatColor = thePrefs.GetCatColor(((/*const*/ CPartFile*)content->value)->GetCategory(), COLOR_WINDOWTEXT);

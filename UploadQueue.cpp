@@ -55,8 +55,8 @@ static uint32 igraph, istats, i2Secs;
 #define HIGHSPEED_UPLOADRATE_START 500*1024
 #define HIGHSPEED_UPLOADRATE_END   300*1024
 //>>> Add2Up Timer
-#define UPLOAD_RETALIATIONTIME		SEC2MS(10)		//was: 10
-#define MIN_NEXTSLOT_WAITTIME		SEC2MS(5)		//was:  3 
+#define UPLOAD_RETALIATIONTIME		SEC2MS(5)		//was: 10
+#define MIN_NEXTSLOT_WAITTIME		SEC2MS(1)		//was:  3 
 //<<< Add2Up Timer
 
 CUploadQueue::CUploadQueue()

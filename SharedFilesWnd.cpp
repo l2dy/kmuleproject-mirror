@@ -495,15 +495,22 @@ IMPLEMENT_DYNAMIC(CSharedFileDetailsModelessSheet, CListViewPropertySheet)
 
 BEGIN_MESSAGE_MAP(CSharedFileDetailsModelessSheet, CListViewPropertySheet)
     ON_MESSAGE(UM_DATA_CHANGED, OnDataChanged)
-    ON_WM_NCCREATE()
+//>>> ResizeableLib v1.3 -> v1.4
+	ON_WM_CREATE()
+//    ON_WM_NCCREATE()
+//<<< ResizeableLib v1.3 -> v1.4
 END_MESSAGE_MAP()
 
-int CSharedFileDetailsModelessSheet::OnNcCreate(LPCREATESTRUCT lpCreateStruct)
+//>>> ResizeableLib v1.3 -> v1.4
+int CSharedFileDetailsModelessSheet::OnCreate(LPCREATESTRUCT lpCreateStruct)
+//int CSharedFileDetailsModelessSheet::OnNcCreate(LPCREATESTRUCT lpCreateStruct)
 {
     // skip CResizableSheet::OnCreate because we don't the styles and stuff which are set there
-    CreateSizeGrip(FALSE); // create grip but dont show it
-    return CPropertySheet::OnCreate(lpCreateStruct);
+    CreateSizeGrip(FALSE); // create grip but don't show it
+	return CPropertySheet::OnCreate(lpCreateStruct);
+    //return CPropertySheet::OnNcCreate(lpCreateStruct);	
 }
+//<<< ResizeableLib v1.3 -> v1.4
 
 bool NeedArchiveInfoPage(const CSimpleArray<CObject*>* paItems);
 void UpdateFileDetailsPages(CListViewPropertySheet *pSheet,

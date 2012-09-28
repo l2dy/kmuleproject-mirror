@@ -50,7 +50,10 @@ protected:
     virtual BOOL OnInitDialog();
 
     DECLARE_MESSAGE_MAP()
-    afx_msg BOOL OnNcCreate(LPCREATESTRUCT lpCreateStruct);
+//>>> ResizeableLib v1.3 -> v1.4
+	afx_msg BOOL OnCreate(LPCREATESTRUCT lpCreateStruct); 
+    //afx_msg BOOL OnNcCreate(LPCREATESTRUCT lpCreateStruct);
+//<<< ResizeableLib v1.3 -> v1.4
     afx_msg LRESULT OnDataChanged(WPARAM, LPARAM);
 };
 

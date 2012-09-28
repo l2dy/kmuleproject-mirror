@@ -1649,6 +1649,7 @@ BEGIN
     IDS_UDP_DISABLED        "UDP abgeschalten"
     IDS_RATIO               "Ratio"
 	IDS_RESTART_NOW_QUESTION "Möchten Sie jetzt neu starten?\nBitte beachten Sie: die Aktualisierung ist erst bereit wenn Sie kMule neu gestartet haben!"
+	IDS_AUTOHL              "AutoHL"
 END
 
 #endif    // German (Germany) resources
