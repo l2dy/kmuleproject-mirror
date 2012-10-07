@@ -1981,7 +1981,7 @@ UnknownFile_Struct* CSharedFileList::getNextFileToHash()
 		const UnknownFile_Struct* pFile = waitingforhash_list.GetAt(pos);
 		if(pFile->uiFileSize < fileSize)
 		{
-			fileSize = fileSize;
+			fileSize = pFile->uiFileSize;
 			smallestFilePos = pos;
 		}
 	}
