@@ -3465,6 +3465,8 @@ BEGIN
     IDS_RATIO               "Ratio"
 	IDS_RESTART_NOW_QUESTION "Do you want to restart now?\nPlease note: if you do not restart now, the update won't be ready until you restart kMule!"
     IDS_AUTOHL              "AutoHL"
+	IDS_HASH_FILE_FINISHED  "Hashing finished:"
+	IDS_DROP_BLOCKING_DISABLED "!! DROPPING OF BLOCKING SOCKETS DISABLED !!\n\tYour upload seems to be pretty unstable, sockets are blocking too much - maybe you set a too high upload limit or you are limiting the slots too much?"
 END
 
 #endif    // Englisch (USA) resources

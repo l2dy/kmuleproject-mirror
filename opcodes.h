@@ -108,6 +108,7 @@
 #define MAXCON5WIN9X			10
 #define	UPLOAD_CHECK_CLIENT_DR_DFLT	11520
 #define	UPLOAD_CLIENT_DATARATE_DFLT	15360		// uploadspeed per client in bytes - you may want to adjust this if you have a slow connection or T1-T3 ;)
+#define UPLOAD_LOWEST_VALUE		5120		// original uses 3072
 #define	MAX_UP_CLIENTS_ALLOWED	100			// max. clients allowed regardless UPLOAD_CLIENT_DATARATE or any other factors. Don't set this too low, use DATARATE to adjust uploadspeed per client
 #define	MIN_UP_CLIENTS_ALLOWED	2			// min. clients allowed to download regardless UPLOAD_CLIENT_DATARATE or any other factors. Don't set this too high
 #define DOWNLOADTIMEOUT			SEC2MS(100)

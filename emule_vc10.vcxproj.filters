@@ -720,6 +720,9 @@
     <ClCompile Include="Mod\WebHelper.cpp">
       <Filter>Mod\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Mod\ProgressIndicator.cpp">
+      <Filter>Mod\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <MASM Include="MD4_asm.asm">
@@ -2263,6 +2266,9 @@
       <Filter>Mod\Header</Filter>
     </ClInclude>
     <ClInclude Include="Mod\WebHelper.h">
+      <Filter>Mod\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Mod\ProgressIndicator.h">
       <Filter>Mod\Header</Filter>
     </ClInclude>
   </ItemGroup>

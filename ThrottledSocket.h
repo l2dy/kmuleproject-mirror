@@ -27,6 +27,11 @@ public:
     {
         return false;
     }
+//>>> WiZaRd::Count block/success send [Xman?]
+	virtual float GetBlockingRatio() const		{AfxDebugBreak(); return 0;}	//= 0;
+	virtual float GetOverallBlockingRatio() const {AfxDebugBreak(); return 0;}	//= 0;
+	virtual float GetAndStepBlockRatio()	{AfxDebugBreak(); return 0;}	//= 0;
+//<<< WiZaRd::Count block/success send [Xman?]
 };
 
 // <-- ZZ:UploadBandWithThrottler (UDP)

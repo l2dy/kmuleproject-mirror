@@ -413,9 +413,7 @@ int CAddFileThread::Run()
         // SLUGFILLER: SafeHash - inform main program of hash failure
         if (m_pOwner && theApp.emuledlg && theApp.emuledlg->IsRunning())
         {
-            UnknownFile_Struct* hashed = new UnknownFile_Struct;
-            hashed->strDirectory = m_strDirectory;
-            hashed->strName = m_strFilename;
+            UnknownFile_Struct* hashed = new UnknownFile_Struct(m_strFilename, m_strDirectory); //>>> WiZaRd::HashingQueue Optimisation
             if (!PostMessage(theApp.emuledlg->m_hWnd, TM_HASHFAILED, 0, (LPARAM)hashed))
                 delete hashed;
         }
@@ -1144,7 +1142,7 @@ void CSharedFileList::HashNextFile()
     // SLUGFILLER: SafeHash
     if (waitingforhash_list.IsEmpty())
         return;
-    UnknownFile_Struct* nextfile = waitingforhash_list.RemoveHead();
+    UnknownFile_Struct* nextfile = getNextFileToHash(); //>>> WiZaRd::HashingQueue Optimisation
     currentlyhashing_list.AddTail(nextfile);	// SLUGFILLER: SafeHash - keep track
     CAddFileThread* addfilethread = (CAddFileThread*) AfxBeginThread(RUNTIME_CLASS(CAddFileThread), THREAD_PRIORITY_BELOW_NORMAL,0, CREATE_SUSPENDED);
     addfilethread->SetValues(this, nextfile->strDirectory, nextfile->strName, nextfile->strSharedDirectory);
@@ -1665,10 +1663,7 @@ void CSharedFileList::CheckAndAddSingleFile(const CFileFind& ff)
                 && !thePrefs.IsTempFile(strFoundDirectory, strFoundFileName)
                 && !thePrefs.IsForbiddenFile(strFoundFileName)) //>>> WiZaRd::Remove forbidden files
         {
-            UnknownFile_Struct* tohash = new UnknownFile_Struct;
-            tohash->strDirectory = strFoundDirectory;
-            tohash->strName = strFoundFileName;
-            tohash->strSharedDirectory = strShellLinkDir;
+			UnknownFile_Struct* tohash = new UnknownFile_Struct(strFoundFileName, strFoundDirectory, strShellLinkDir); //>>> WiZaRd::HashingQueue Optimisation
             waitingforhash_list.AddTail(tohash);
         }
         else
@@ -1950,3 +1945,51 @@ void CSharedFileList::GetUsefulDirectories(CStringList& dirList, const bool bFor
     }
 }
 //<<< WiZaRd::Don't send empty dirs
+//>>> WiZaRd::HashingQueue Optimisation
+UnknownFile_Struct::UnknownFile_Struct(const CString& sName, const CString& sDirectory, const CString& sSharedDirectory)
+{
+	strName = sName;
+	strDirectory = sDirectory;
+	strSharedDirectory = sSharedDirectory;
+
+	uiFileSize = (uint64)0;
+	CString strFilePath = L"";
+	if(_tmakepathlimit(strFilePath.GetBuffer(MAX_PATH), NULL, strDirectory, strName, NULL))
+	{
+		FILE* file = _tfsopen(strFilePath, L"rb", _SH_DENYNO); // can not use _SH_DENYWR because we may access a completing part file
+		if(file)
+		{
+			// set filesize
+			__int64 llFileSize = _filelengthi64(_fileno(file));
+			if(llFileSize != -1)
+				uiFileSize = (uint64)llFileSize;
+
+		}
+	}
+	strFilePath.ReleaseBuffer();
+}
+
+// Hash smallest file first to speed up file sharing
+UnknownFile_Struct* CSharedFileList::getNextFileToHash() 
+{
+	UnknownFile_Struct* ret = NULL;
+
+	uint64 fileSize = _UI64_MAX;
+	POSITION smallestFilePos = NULL;
+	for (POSITION pos = waitingforhash_list.GetHeadPosition(); pos; waitingforhash_list.GetNext(pos))
+	{
+		const UnknownFile_Struct* pFile = waitingforhash_list.GetAt(pos);
+		if(pFile->uiFileSize < fileSize)
+		{
+			fileSize = fileSize;
+			smallestFilePos = pos;
+		}
+	}
+
+	ASSERT(smallestFilePos != NULL);	
+	ret = waitingforhash_list.GetAt(smallestFilePos);
+	waitingforhash_list.RemoveAt(smallestFilePos);
+	
+	return ret;
+}
+//<<< WiZaRd::HashingQueue Optimisation

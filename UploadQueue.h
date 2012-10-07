@@ -183,10 +183,10 @@ private:
     CList<CUpDownClient*>	m_lPaybackList;
     uint8					m_uiPaybackCount;
 //<<< WiZaRd::Payback First
-//>>> Add2Up Timer
-public:
-    UINT	m_uiFellBelowSlotsNeeded;
-//<<< Add2Up Timer
 public:
     void	StartTimer();
+//>>> WiZaRd::Drop Blocking Sockets [Xman?]
+private:
+	CList<DWORD>	m_BlockStopList;
+//<<< WiZaRd::Drop Blocking Sockets [Xman?]
 };

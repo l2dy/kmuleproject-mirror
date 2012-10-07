@@ -2440,6 +2440,20 @@ public:
         m_strForbiddenFileFilters = str;
     }
 //<<< WiZaRd::Remove forbidden files
+//>>> WiZaRd::Drop Blocking Sockets [Xman?]
+private:
+	static	bool	m_bDropBlockingSession;
+	static	bool	m_bDropBlockingSockets;
+	static	float	m_fMaxBlockRate;
+	static	float	m_fMaxBlockRate20;
+public:
+	static	bool	DropBlockingSockets()				{return m_bDropBlockingSession && m_bDropBlockingSockets;}
+	static	void	SetDropBlockingSockets(const bool b){m_bDropBlockingSockets = b;}
+	static	float	GetMaxBlockRate()					{return m_fMaxBlockRate;}
+	static	void	SetMaxBlockRate(const float f)		{m_fMaxBlockRate = f;}
+	static	float	GetMaxBlockRate20()					{return m_fMaxBlockRate20;}
+	static	void	SetMaxBlockRate20(const float f)	{m_fMaxBlockRate20 = f;}
+//<<< WiZaRd::Drop Blocking Sockets [Xman?]
 };
 
 extern CPreferences thePrefs;

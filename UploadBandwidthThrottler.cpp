@@ -475,6 +475,8 @@ UINT UploadBandwidthThrottler::RunInternal()
     UINT changesCount = 0;
     UINT loopsCount = 0;
 
+	UINT last_block_process = timeGetTime() >> 10; //>>> WiZaRd::Count block/success send [Xman?]
+
     bool estimateChangedLog = false;
     bool lotsOfLog = false;
 
@@ -881,6 +883,25 @@ UINT UploadBandwidthThrottler::RunInternal()
             m_SentBytesSinceLastCall += spentBytes;
             m_SentBytesSinceLastCallOverhead += spentOverhead;
 
+//>>> WiZaRd::Count block/success send [Xman?]
+			if((thisLoopTick >> 10) > last_block_process)
+			{
+				last_block_process = thisLoopTick >> 10;
+//				float tmpavgblockratio = 0;
+				for(UINT slotCounter = 0; slotCounter < (UINT)m_StandardOrder_list.GetSize(); ++slotCounter)
+				{
+					ThrottledFileSocket* socket = m_StandardOrder_list[slotCounter];
+					if(socket != NULL) 
+					{
+//						if(socket->IsFull())
+//							tmpavgblockratio += socket->GetAndStepBlockRatio();
+//						else
+							socket->GetAndStepBlockRatio();
+					}
+				}
+//				avgBlockRatio = m_StandardOrder_list_full.IsEmpty() ? 0 : tmpavgblockratio/m_StandardOrder_list_full.GetCount();
+			}
+//<<< WiZaRd::Count block/success send [Xman?]
             sendLocker.Unlock();
         }
     }

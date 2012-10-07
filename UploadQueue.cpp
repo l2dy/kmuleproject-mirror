@@ -54,10 +54,6 @@ static uint32 igraph, istats, i2Secs;
 
 #define HIGHSPEED_UPLOADRATE_START 500*1024
 #define HIGHSPEED_UPLOADRATE_END   300*1024
-//>>> Add2Up Timer
-#define UPLOAD_RETALIATIONTIME		SEC2MS(5)		//was: 10
-#define MIN_NEXTSLOT_WAITTIME		SEC2MS(1)		//was:  3 
-//<<< Add2Up Timer
 
 CUploadQueue::CUploadQueue()
 {
@@ -83,7 +79,6 @@ CUploadQueue::CUploadQueue()
     m_hHighSpeedUploadTimer = NULL;
     m_bStatisticsWaitingListDirty = true;
     m_uiPaybackCount = 0; //>>> WiZaRd::Payback First
-    m_uiFellBelowSlotsNeeded = 0; //>>> Add2Up Timer
 }
 
 void	CUploadQueue::StartTimer()
@@ -401,31 +396,28 @@ void CUploadQueue::InsertInUploadingList(CUpDownClient* newclient)
 
         if(thisClassID == classID)
         {
-            const UINT thisScore = uploadingClient->GetScore(false, true);
-            if(thisScore > score) //higher is better
-                break; //quit it
-        }
+//>>> WiZaRd::Drop Blocking Sockets [Xman?]
+			//try to put "good" clients to the top... "good" means that they do not block too much :)
+			//put scheduled clients at the end of the uploadlist
+			//if(newclient->IsScheduled() && !uploadingClient->IsScheduled())
+			//	break; //quit it
+			//OR if he is blocking too much because that may indicate that the client (currently) cannot take enough
+			if(uploadingClient->socket
+				&& newclient->socket
+				//remove the 1min limit because slots will jump too much if we keep this
+				//				&& uploadingClient->GetUpStartTimeDelay() > MIN2MS(1)
+				//				&& newclient->GetUpStartTimeDelay() > MIN2MS(1)
+				&& uploadingClient->GetUpStartTimeDelay() > SEC2MS(15)
+				&& newclient->GetUpStartTimeDelay() > SEC2MS(15)
+				&& uploadingClient->socket->GetOverallBlockingRatio() <= newclient->socket->GetOverallBlockingRatio())
+				break; //quit it
+//<<< WiZaRd::Drop Blocking Sockets [Xman?]
 
-//WiZaRd: if we implemented "Count block/success send", we could use this code, too...
-        /*
-        		//try to put "good" clients to the top... "good" means that they do not block too much :)
-        		if(thisClassID == classID) //equal classID - more checks
-        		{
-        			//put scheduled clients at the end of the uploadlist
-        			if(newclient->IsScheduled() && !uploadingClient->IsScheduled())
-        				break; //quit it
-        			//OR if he is blocking too much because that may indicate that the client (currently) cannot take enough
-        			if(uploadingClient->socket
-        				&& newclient->socket
-        				//remove the 1min limit because slots will jump too much if we keep this
-        				//				&& uploadingClient->GetUpStartTimeDelay() > MIN2MS(1)
-        				//				&& newclient->GetUpStartTimeDelay() > MIN2MS(1)
-        				&& uploadingClient->GetUpStartTimeDelay() > SEC2MS(15)
-        				&& newclient->GetUpStartTimeDelay() > SEC2MS(15)
-        				&& uploadingClient->socket->GetBlockRatio_overall() <= newclient->socket->GetBlockRatio_overall())
-        				break; //quit it
-        		}
-        */
+			const UINT thisScore = uploadingClient->GetScore(false, true);
+			if(thisScore > score) //higher is better
+			    break; //quit it
+        }
+        		
         uploadingClient->SetSlotNumber(posCounter+1);
         insertPosition = pos; //the new client is "better" than the current client - save the position of the last "worse" client
         uploadinglist.GetPrev(pos);
@@ -617,6 +609,17 @@ void CUploadQueue::Process()
 
     ReSortUploadSlots(); //>>> WiZaRd::PowerShare //>>> WiZaRd::SlotFocus
 
+//>>> WiZaRd::Drop Blocking Sockets [Xman?]
+	//count the blocked send to remove such clients if needed
+	//there are many clients out there, which can't take a high slot speed (often less than 1kbs)
+	//in worst case out upload is full of them and because no new slots are opened
+	//our overall upload decreases
+	//why should we keep such bad clients? we keep it only if we have enough slots left
+	//if our slot-max is reached, we drop the most blocking client
+	float maxblock = 0.0f;
+	CUpDownClient* blockclient = NULL;
+//<<< WiZaRd::Drop Blocking Sockets [Xman?]
+
     // The loop that feeds the upload slots with data.
     POSITION pos = uploadinglist.GetHeadPosition();
     while(pos != NULL)
@@ -636,9 +639,70 @@ void CUploadQueue::Process()
         }
         else
         {
+//>>> WiZaRd::Drop Blocking Sockets [Xman?]
+			//wait until we have some data...
+			if(cur_client->GetUpStartTimeDelay() > MIN2MS(1))
+			{
+				// WiZaRd - ToDo: why should we check for the speed? The blocking values are more interesting for us
+				if(cur_client->GetSessionUp()/cur_client->GetUpStartTimeDelay()*1000.0f < UPLOAD_LOWEST_VALUE) //at least xkbps
+				{
+					const float cur_block = cur_client->socket->GetOverallBlockingRatio();
+					if(cur_block > maxblock)
+					{
+						maxblock = cur_block;
+						blockclient = cur_client;
+					}
+				}
+			}
+//<<< WiZaRd::Drop Blocking Sockets [Xman?]
             cur_client->SendBlockData();
         }
     }
+
+//>>> WiZaRd::Drop Blocking Sockets [Xman?]
+	if(thePrefs.DropBlockingSockets())
+	{
+		const UINT MaxSpeed = theApp.lastCommonRouteFinder->GetUpload();
+		if(blockclient 
+			/*uploadinglist.GetCount()+2 >= MAX_UP_CLIENTS_ALLOWED*/
+			&& (uploadinglist.GetCount() >= MAX_UP_CLIENTS_ALLOWED
+			|| (UINT)uploadinglist.GetCount() * UPLOAD_LOWEST_VALUE >= MaxSpeed) //hard coded final limit
+			)
+		{
+			//search a socket we should remove
+			if(blockclient->socket->GetOverallBlockingRatio() > thePrefs.GetMaxBlockRate()	//95% of all send were blocked
+				&& blockclient->socket->GetBlockingRatio() > thePrefs.GetMaxBlockRate20())	//96% the last 20 seconds
+			{
+				if(RemoveFromUploadQueue(blockclient, L"Blocking", true, true))
+				{
+					theApp.QueueDebugLogLineEx(LOG_WARNING, L"Client %s is blocking too often and max slots are reached: avg20: %1.2f%%, all: %1.2f%%, avg. ul: %s", 
+						blockclient->DbgGetClientInfo(), blockclient->socket->GetBlockingRatio(), blockclient->socket->GetOverallBlockingRatio(), CastItoXBytes(blockclient->GetSessionUp()/blockclient->GetUpStartTimeDelay()*1000.0f, false, true));
+					blockclient->SendOutOfPartReqsAndAddToWaitingQueue(); //we SHOULD send this, no?
+
+					m_BlockStopList.AddHead(curTick); //remember when this happened
+					//because there are some users out there which set a too high uploadlimit, this code isn't usable
+					//we deactivate it and warn the user
+					if(m_BlockStopList.GetCount() >= 6) //5 old + one new element
+					{
+						const UINT oldestblocktime = m_BlockStopList.GetAt(m_BlockStopList.FindIndex(5)); // the 6th element
+						if(curTick - oldestblocktime < HR2MS(1))
+						{
+							//5 block-drops during 1 hour is too much->warn the user and disable the feature
+							thePrefs.SetDropBlockingSockets(false);
+							CString msg = GetResString(IDS_DROP_BLOCKING_DISABLED);
+							theApp.QueueLogLineEx(LOG_WARNING, msg);
+							theApp.emuledlg->ShowNotifier(msg, TBN_IMPORTANTEVENT);
+							m_BlockStopList.RemoveAll(); //clear list
+						}
+						else //added due to RemoveAll() above
+							m_BlockStopList.RemoveTail();
+					}
+//					theApp.uploadBandwidthThrottler->SetNoNeedSlot(); //this can occur after increasing slotspeed
+				}
+			}
+		}
+	}
+//<<< WiZaRd::Drop Blocking Sockets [Xman?]
 
     // Save used bandwidth for speed calculations
     uint64 sentBytes = theApp.uploadBandwidthThrottler->GetNumberOfSentBytesSinceLastCallAndReset();
@@ -681,64 +745,34 @@ bool CUploadQueue::AcceptNewClient(bool addOnNextConnect)
 
 bool CUploadQueue::AcceptNewClient(uint32 curUploadSlots)
 {
-    if (curUploadSlots < MIN_UP_CLIENTS_ALLOWED)
-    {
-        m_uiFellBelowSlotsNeeded = 0; //>>> Add2Up Timer - reset
-        return true;
-    }
+	// check if we can allow a new client to start downloading from us
+	if (curUploadSlots < MIN_UP_CLIENTS_ALLOWED)
+		return true;
 
-    const DWORD dwCurTick = ::GetTickCount();
-    const UINT MaxSpeed = (UINT)(thePrefs.IsDynUpEnabled()?theApp.lastCommonRouteFinder->GetUpload():thePrefs.GetMaxUpload()*1024);
-    if(dwCurTick - m_nLastStartUpload < MIN_NEXTSLOT_WAITTIME
-            || curUploadSlots >= MAX_UP_CLIENTS_ALLOWED
-            || curUploadSlots * 3072 >= MaxSpeed) //hard coded final limit
-    {
-        m_uiFellBelowSlotsNeeded = 0; //>>> Add2Up Timer - reset
-        return false;
-    }
+	uint16 MaxSpeed;
+    if (thePrefs.IsDynUpEnabled())
+        MaxSpeed = (uint16)(theApp.lastCommonRouteFinder->GetUpload()/1024);
+    else
+		MaxSpeed = thePrefs.GetMaxUpload();
+	
+	UINT clientDataRate = GetClientDataRate();
+    if(curUploadSlots >= 4)
+	{
+		// max number of clients to allow for all circumstances
+        if(curUploadSlots >= MAX_UP_CLIENTS_ALLOWED
+			|| curUploadSlots >= (datarate/GetClientDataRateCheck())
+			|| curUploadSlots >= ((uint32)MaxSpeed)*1024/clientDataRate
+			|| (
+				  thePrefs.GetMaxUpload() == UNLIMITED
+				  && !thePrefs.IsDynUpEnabled()
+				  && thePrefs.GetMaxGraphUploadRate(true) > 0
+				  && curUploadSlots >= ((uint32)thePrefs.GetMaxGraphUploadRate(false))*1024/clientDataRate
+				)
+			)    
+	    return false;
+	}
 
-//>>> TRICKLE ORIENTATION
-    //length minus active equals the trickle slot count
-    UINT curTrickles = 0;
-    if((UINT)GetUploadQueueLength() > GetActiveUploadsCount()) //could there be something wrong?
-        curTrickles = GetUploadQueueLength() - GetActiveUploadsCount();
-
-    //if we have no trickle slots then we know that not all BW is used up...
-    //so I try to estimate the needed trickles and check for them instead to use "fixed" values
-    UINT WantedTrickles = datarate/UPLOAD_CLIENT_DATARATE_DFLT + 1;
-    /*const UINT datarate = GetDatarate();
-    if(datarate < 25600) //less then 25k UL? use 1 trickle...
-    	WantedTrickles = 1;
-    else if(datarate < 102400) //less then 100k UL? use 1 per 25kB
-    	WantedTrickles = datarate/25600;
-    else //really high UL! use 1 per 35kB
-    	WantedTrickles = datarate/35840;*/
-
-    //check for slot focus... as speed is concentrated we need more trickles...
-//	if(thePrefs.GetClientDataRate() == 0)
-//		++WantedTrickles;
-
-    if(curTrickles < WantedTrickles)
-    {
-        //we do not return true but instead set our timer here
-        if(!m_uiFellBelowSlotsNeeded)
-        {
-            m_uiFellBelowSlotsNeeded = dwCurTick+UPLOAD_RETALIATIONTIME; //give up to UPLOAD_RETALIATIONTIME to regain speed
-            return false;
-        }
-        //only add to up if X seconds passed and still a new slot is requested
-        else if(dwCurTick > m_uiFellBelowSlotsNeeded)
-        {
-            m_uiFellBelowSlotsNeeded = 0; //>>> Add2Up Timer - reset
-            return true;
-        }
-        //otherwise... nope, not yet ;)
-        return false;
-    }
-    //otherwise... nope, not yet ;)
-    m_uiFellBelowSlotsNeeded = 0;
-    return false;
-//<<< TRICKLE ORIENTATION
+	return true;
 }
 
 bool CUploadQueue::ForceNewClient(bool allowEmptyWaitingQueue)
@@ -796,9 +830,7 @@ bool CUploadQueue::ForceNewClient(bool allowEmptyWaitingQueue)
 //		AddLogLine(true,"maxslots=%u, upPerClient=%u, datarateslot=%u|%u|%u",nMaxSlots,upPerClient,datarate/UPLOAD_CHECK_CLIENT_DR, datarate, UPLOAD_CHECK_CLIENT_DR);
 
         if ( curUploadSlots < nMaxSlots )
-        {
             return true;
-        }
     }
 
     if(m_iHighestNumberOfFullyActivatedSlotsSinceLastCall > (uint32)uploadinglist.GetSize())
@@ -1553,38 +1585,6 @@ UINT CUploadQueue::GetClientDataRateCheck() const
 
 UINT CUploadQueue::GetClientDataRate() const
 {
-    /*
-        // Get current speed from UploadSpeedSense
-        // m_currentUploadLimit is either set to a fix value via prefs or calculated via lastcommonroutefinder/uploadbandwidththrottler
-        if(m_currentUploadLimit != 0 && m_currentUploadLimit != _UI32_MAX)
-        {
-            UINT usedSlots = uploadinglist.GetCount();
-            // for low upload speeds use the default slot speed
-    		// Let's say our limit is 70kB/s and we are upload to 2 ppl @ 20kB/s
-    		// that would be 70-40 / 2 = 15 - desired rate would be 20+15kB/s
-    		// >> Datarate check would be ~37kB/s
-    //         if(usedSlots != 0 && datarate / usedSlots > 10240)
-    //         {
-    //             // TODO: let's design a sensible slot control system
-    //             UINT perSlot = datarate / usedSlots;
-    //             UINT addSpeed = 0;
-    //             if(datarate < m_currentUploadLimit)
-    //                 addSpeed = (m_currentUploadLimit - datarate) / usedSlots;
-    //             return perSlot + addSpeed;
-    //         }
-    		if(usedSlots != 0 && datarate != 0)
-    		{
-    			// Let's say our limit is 70kB/s and we are upload to 2 ppl @ 20kB/s
-    			UINT perSlot = datarate / usedSlots; // = 20kB/s
-    			UINT ret = perSlot;
-    			if(datarate+perSlot < m_currentUploadLimit) // 60kB/s < 70kB/s
-    			{
-    				UINT diff = (m_currentUploadLimit - datarate); // 70kB/s - 40kB/s = 30kB/s
-    				if(diff > perSlot) // 30kB/s > 20kB/s?
-    			}
-    		}
-        }
-    */
     UINT maxSpeed = 0;
     if (thePrefs.IsDynUpEnabled())
         maxSpeed = theApp.lastCommonRouteFinder->GetUpload();
@@ -1596,10 +1596,24 @@ UINT CUploadQueue::GetClientDataRate() const
             maxSpeed = thePrefs.GetMaxUpload()*1024;
     }
 
-    // desired slots: we should use as few slots as possible, let's aim for a low value like
+	UINT clientDR = UPLOAD_CLIENT_DATARATE_DFLT;
+	if(maxSpeed > 307200)
+	{
+		clientDR += ((maxSpeed - 307200) / (5 * UPLOAD_CLIENT_DATARATE_DFLT)) * 1024;
+	}
+/*	const UINT uploadCount = (UINT)uploadinglist.GetCount();
+	// desired slots: we should use as few slots as possible, let's aim for a low value like
+	// if we upload @300kB/s this would be 100% used with the changed DFLT datarate
 #define DESIRED_SLOTS 25
-    // if we upload @300kB/s this would be 100% used with the changed DFLT datarate
+	if(uploadCount > DESIRED_SLOTS)
+	{
+		clientDR += (((uploadCount - DESIRED_SLOTS) / 5) * 1024);
+	}
+*/
+/*
     return max(UPLOAD_CLIENT_DATARATE_DFLT, maxSpeed / DESIRED_SLOTS);
 //	return UPLOAD_CLIENT_DATARATE_DFLT; // fall back to default datarate
+*/
+	return clientDR;
 }
 //<<< WiZaRd::Dynamic Datarate

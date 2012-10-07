@@ -139,6 +139,9 @@ Legend:    + added    ~ changed    - removed    ! fixed    > updated
 
 XXXXYYZZ:
 > reverted resizablelib to v1.3 to prevent GUI glitches
-> adjusted miniupnplib so kMule can be run under WindowsXP again
-+ preview indication is now done by showing the preview icon
+> adjusted miniupnplib so kMule can be run under WindowsXP again [WiZaRd]
++ preview indication is now done by showing the preview icon [WiZaRd]
  * use "PreviewIndicatorMode" in the .ini to disable (0) the feature or use the old color mode (2) instead
++ added hashing progress indication to status bar [WiZaRd]
+~ kMule now hashes the smallest file first to speed up file sharing [WiZaRd]
++ count block/success send && drop blocking sockets [WiZaRd - original by Xman?]

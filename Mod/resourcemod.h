@@ -42,5 +42,7 @@
 //#define	IDS_MIN_PERFILESOURCES			4020
 //#define	IDS_AHL_UPDATETIME				4021
 //<<< WiZaRd::AutoHL
+#define IDS_HASH_FILE_FINISHED			4017 //>>> WiZaRd::HashProgress Indication
+#define IDS_DROP_BLOCKING_DISABLED		4018 //>>> WiZaRd::Count block/success send [Xman?]
 
 // this line is needed or we get a "fatal error RC1004: unexpected end of file found" - thanks for those wonderful bugs, Microsoft!

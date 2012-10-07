@@ -937,10 +937,6 @@ uint32 CUpDownClient::SendBlockData()
 
         if (theApp.uploadqueue->CheckForTimeOver(this))
         {
-//>>> Add2Up Timer
-            //we kicked someone... maybe we need a new slot...
-            theApp.uploadqueue->m_uiFellBelowSlotsNeeded = ::GetTickCount() + SEC2MS(3);
-//<<< Add2Up Timer
             theApp.uploadqueue->RemoveFromUploadQueue(this, _T("Completed transfer"), true);
             SendOutOfPartReqsAndAddToWaitingQueue();
         }

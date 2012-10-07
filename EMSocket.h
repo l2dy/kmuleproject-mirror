@@ -173,4 +173,19 @@ private:
     bool m_bBusy;
     bool m_hasSent;
     bool m_bUsesBigSendBuffers;
+//>>> WiZaRd::Count block/success send [Xman?]
+private:
+	CList<float> m_blockhistory;
+
+	float	avg_block_ratio;		//the average block of last 20 seconds
+	float	sum_blockhistory;		//the sum of all stored ratio samples
+	UINT	blockedsendcount;
+	UINT	sendcount;
+	UINT	blockedsendcount_overall;
+	UINT	sendcount_overall;
+public:
+	virtual	float	GetOverallBlockingRatio() const;
+	virtual	float	GetBlockingRatio() const;
+	virtual	float	GetAndStepBlockRatio();
+//<<< WiZaRd::Count block/success send [Xman?]
 };

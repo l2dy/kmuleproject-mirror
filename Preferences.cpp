@@ -414,6 +414,12 @@ uint16  CPreferences::m_iMaxSourcesHL;
 bool	CPreferences::m_bRemoveForbiddenFiles;
 CString	CPreferences::m_strForbiddenFileFilters = L".fb!|.jc!|.antifrag|.dctmp|.bc!|.!ut|.getright|.partial|.partial.sd|.part|.part.met|.part.met.bak|.part.met.backup";
 //<<< WiZaRd::Remove forbidden files
+//>>> WiZaRd::Drop Blocking Sockets [Xman?]
+bool	CPreferences::m_bDropBlockingSession = true;
+bool	CPreferences::m_bDropBlockingSockets;
+float	CPreferences::m_fMaxBlockRate;
+float	CPreferences::m_fMaxBlockRate20;
+//<<< WiZaRd::Drop Blocking Sockets [Xman?]
 
 CPreferences::CPreferences()
 {
@@ -1832,6 +1838,11 @@ void CPreferences::SavekMulePrefs()
 //>>> WiZaRd::Remove forbidden files
     ini.WriteBool(L"RemoveForbiddenFiles", m_bRemoveForbiddenFiles);
 //<<< WiZaRd::Remove forbidden files
+//>>> WiZaRd::Drop Blocking Sockets [Xman?]
+	ini.WriteBool(L"DropBlockingSockets", m_bDropBlockingSockets);
+	ini.WriteFloat(L"SocketBlockRate", m_fMaxBlockRate);
+	ini.WriteFloat(L"SocketBlockRate20", m_fMaxBlockRate20);
+//<<< WiZaRd::Drop Blocking Sockets [Xman?]
 }
 //<<< WiZaRd::Own Prefs
 
@@ -2371,7 +2382,7 @@ void CPreferences::LoadPreferences()
     m_bShowVerticalHourMarkers = ini.GetBool(L"ShowVerticalHourMarkers", true, L"Statistics");
 
     // -khaos--+++> Load Stats
-    // I changed this to a seperate function because it is now also used
+    // I changed this to a separate function because it is now also used
     // to load the stats backup and to load stats from preferences.ini.old.
     LoadStats();
     // <-----khaos-
@@ -2411,7 +2422,7 @@ void CPreferences::LoadkMulePrefs()
     m_uiMediaInfoDllVersion = (UINT)ini.GetInt(L"MediaInfoDllVersion", 0);
 //<<< WiZaRd::MediaInfoDLL Update
 //>>> PreviewIndicator [WiZaRd]
-	m_uiPreviewIndicatorMode = ini.GetInt(L"PreviewIndicatorMode", ePIM_Icon);
+	m_uiPreviewIndicatorMode = (uint8)ini.GetInt(L"PreviewIndicatorMode", ePIM_Icon);
     m_crPreviewReadyColor = ini.GetColRef(L"PreviewReadyColor", RGB(140, 225, 110)); //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
 //<<< PreviewIndicator [WiZaRd]
 //>>> WiZaRd::Advanced Transfer Window Layout [Stulle]
@@ -2433,6 +2444,11 @@ void CPreferences::LoadkMulePrefs()
 //>>> WiZaRd::Remove forbidden files
     m_bRemoveForbiddenFiles = ini.GetBool(L"RemoveForbiddenFiles", true);	
 //<<< WiZaRd::Remove forbidden files
+//>>> WiZaRd::Drop Blocking Sockets [Xman?]
+	m_bDropBlockingSockets = ini.GetBool(L"DropBlockingSockets", true);
+	m_fMaxBlockRate = ini.GetFloat(L"SocketBlockRate", 96.0f);
+	m_fMaxBlockRate20 = ini.GetFloat(L"SocketBlockRate20", 98.0f);
+//<<< WiZaRd::Drop Blocking Sockets [Xman?]
 }
 //<<< WiZaRd::Own Prefs
 

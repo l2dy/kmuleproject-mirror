@@ -88,6 +88,14 @@ IMPLEMENT_DYNAMIC(CEMSocket, CEncryptedStreamSocket)
 
 CEMSocket::CEMSocket(void)
 {
+//>>> WiZaRd::Count block/success send [Xman?]
+	blockedsendcount = 0;
+	sendcount = 0;
+	blockedsendcount_overall = 0;
+	sendcount_overall = 0;
+	avg_block_ratio = 0;
+	sum_blockhistory = 0;
+//<<< WiZaRd::Count block/success send [Xman?]
     byConnected = ES_NOTCONNECTED;
     m_uTimeOut = CONNECTION_TIMEOUT; // default timeout for ed2k sockets
 
@@ -812,6 +820,13 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
                 lastSent = ::GetTickCount();
 
                 uint32 result = CEncryptedStreamSocket::Send(sendbuffer+sent,tosend); // deadlake PROXYSUPPORT - changed to AsyncSocketEx
+//>>> WiZaRd::Count block/success send [Xman?]
+				if(!onlyAllowedToSendControlPacket)
+				{
+					++sendcount;
+					++sendcount_overall;
+				}
+//<<< WiZaRd::Count block/success send [Xman?]
                 if (result == (uint32)SOCKET_ERROR)
                 {
                     uint32 error = GetLastError();
@@ -820,6 +835,13 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
                         m_bBusy = true;
 
                         //m_wasBlocked = true;
+//>>> WiZaRd::Count block/success send [Xman?]
+						if(!onlyAllowedToSendControlPacket)
+						{
+							++blockedsendcount;
+							++blockedsendcount_overall;
+						}
+//<<< WiZaRd::Count block/success send [Xman?]
                         sendLocker.Unlock();
 
                         SocketSentBytes returnVal = { true, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall };
@@ -1236,3 +1258,34 @@ bool CEMSocket::UseBigSendBuffer()
 #endif
     return val == BIGSIZE;
 }
+
+//>>> WiZaRd::Count block/success send [Xman?]
+#define HISTORY_SIZE 20
+float CEMSocket::GetOverallBlockingRatio() const 
+{	
+	return (float)((double)sendcount_overall != 0.0 ? (double)blockedsendcount_overall/(double)sendcount_overall*100.0 : 0.0);
+}
+
+float CEMSocket::GetBlockingRatio() const 
+{
+	return avg_block_ratio;
+}
+
+float CEMSocket::GetAndStepBlockRatio() 
+{
+	float newsample = (float)((double)sendcount != 0.0 ? (double)blockedsendcount/(double)sendcount*100.0 : 0.0);
+	m_blockhistory.AddHead(newsample);
+	sum_blockhistory += newsample;
+	if(m_blockhistory.GetSize() > HISTORY_SIZE) // ~ 20 seconds
+	{
+		const float& substract = m_blockhistory.RemoveTail(); //subtract the old element
+		sum_blockhistory -= substract;
+		if(sum_blockhistory < 0)
+			sum_blockhistory = 0; //fix possible rounding error
+	}
+	blockedsendcount = 0;
+	sendcount = 0;
+	avg_block_ratio = sum_blockhistory / m_blockhistory.GetSize();
+	return avg_block_ratio;
+}
+//<<< WiZaRd::Count block/success send [Xman?]

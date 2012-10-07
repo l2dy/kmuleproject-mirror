@@ -55,6 +55,7 @@ extern wchar_t *ID3_GetStringW(const ID3_Frame *frame, ID3_FieldID fldName);
 #include "kademlia/kademlia/kademlia.h"
 #include "kademlia/kademlia/UDPFirewallTester.h"
 #include "UploadQueue.h" //>>> WiZaRd::PowerShare
+#include "./Mod/ProgressIndicator.h" //>>> WiZaRd::HashProgress Indication
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -499,6 +500,11 @@ bool CKnownFile::CreateFromFile(LPCTSTR in_directory, LPCTSTR in_filename, LPVOI
     CAICHRecoveryHashSet cAICHHashSet(this, m_nFileSize);
     uint64 togo = m_nFileSize;
     UINT hashcount;
+//>>> WiZaRd::HashProgress Indication
+	CProgressIndicator progressIndicator;
+	progressIndicator.Initialise(strFilePath, GetResString(IDS_HASHINGFILE) + L" %.2f%%", GetResString(IDS_HASH_FILE_FINISHED));
+	double dProgress = 0;
+//<<< WiZaRd::HashProgress Indication
     for (hashcount = 0; togo >= PARTSIZE; )
     {
         CAICHHashTree* pBlockAICHHashTree = cAICHHashSet.m_pHashTree.FindHash((uint64)hashcount*PARTSIZE, PARTSIZE);
@@ -524,11 +530,18 @@ bool CKnownFile::CreateFromFile(LPCTSTR in_directory, LPCTSTR in_filename, LPVOI
         togo -= PARTSIZE;
         hashcount++;
 
+//>>> WiZaRd::HashProgress Indication
+		dProgress = (double)GetFileSize() != 0.0 ? (double)(GetFileSize() - togo)/(double)GetFileSize()*100.0 : 0.0;		
+		progressIndicator.UpdateProgress(dProgress);
+//<<< WiZaRd::HashProgress Indication
         if (pvProgressParam && theApp.emuledlg && theApp.emuledlg->IsRunning())
         {
             ASSERT( ((CKnownFile*)pvProgressParam)->IsKindOf(RUNTIME_CLASS(CKnownFile)) );
             ASSERT( ((CKnownFile*)pvProgressParam)->GetFileSize() == GetFileSize() );
-            UINT uProgress = (UINT)(uint64)(((uint64)(GetFileSize() - togo) * 100) / GetFileSize());
+//>>> WiZaRd::HashProgress Indication
+            //UINT uProgress = (UINT)(uint64)(((uint64)(GetFileSize() - togo) * 100) / GetFileSize());
+			const UINT uProgress = (UINT)dProgress;
+//<<< WiZaRd::HashProgress Indication
             ASSERT( uProgress <= 100 );
             VERIFY( PostMessage(theApp.emuledlg->GetSafeHwnd(), TM_FILEOPPROGRESS, uProgress, (LPARAM)pvProgressParam) );
         }
@@ -585,6 +598,10 @@ bool CKnownFile::CreateFromFile(LPCTSTR in_directory, LPCTSTR in_filename, LPVOI
         m_FileIdentifier.CalculateMD4HashByHashSet(false);
     }
 
+//>>> WiZaRd::HashProgress Indication
+	dProgress = 100;
+	progressIndicator.UpdateProgress(dProgress);
+//<<< WiZaRd::HashProgress Indication
     if (pvProgressParam && theApp.emuledlg && theApp.emuledlg->IsRunning())
     {
         ASSERT( ((CKnownFile*)pvProgressParam)->IsKindOf(RUNTIME_CLASS(CKnownFile)) );
@@ -630,6 +647,11 @@ bool CKnownFile::CreateAICHHashSetOnly()
     CAICHRecoveryHashSet cAICHHashSet(this, m_nFileSize);
     uint64 togo = m_nFileSize;
     UINT hashcount;
+//>>> WiZaRd::HashProgress Indication
+	CProgressIndicator progressIndicator;
+	progressIndicator.Initialise(GetFilePath(), GetResString(IDS_HASHINGFILE) + L" %.2f%% (" + GetResString(IDS_AICHHASH) + L")", GetResString(IDS_HASH_FILE_FINISHED) + L" (" + GetResString(IDS_AICHHASH) + L")");
+	double dProgress = 0;
+//<<< WiZaRd::HashProgress Indication
     for (hashcount = 0; togo >= PARTSIZE; )
     {
         CAICHHashTree* pBlockAICHHashTree = cAICHHashSet.m_pHashTree.FindHash((uint64)hashcount*PARTSIZE, PARTSIZE);
@@ -649,6 +671,11 @@ bool CKnownFile::CreateAICHHashSetOnly()
 
         togo -= PARTSIZE;
         hashcount++;
+
+//>>> WiZaRd::HashProgress Indication
+		dProgress = (double)GetFileSize() != 0.0 ? (double)(GetFileSize() - togo)/(double)GetFileSize()*100.0 : 0.0;		
+		progressIndicator.UpdateProgress(dProgress);
+//<<< WiZaRd::HashProgress Indication
     }
 
     if (togo != 0)
@@ -680,7 +707,13 @@ bool CKnownFile::CreateAICHHashSetOnly()
         if (!cAICHHashSet.SaveHashSet())
             LogError(LOG_STATUSBAR, GetResString(IDS_SAVEACFAILED));
         else
+		{
+//>>> WiZaRd::HashProgress Indication
+			dProgress = 100;
+			progressIndicator.UpdateProgress(dProgress);
+//<<< WiZaRd::HashProgress Indication
             SetAICHRecoverHashSetAvailable(true);
+		}
     }
     else
     {
