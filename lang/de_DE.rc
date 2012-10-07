@@ -316,7 +316,7 @@ BEGIN
     IDS_ERR_SERVERMET_UNKNOWN 
                             "Unerwarteter Dateifehler beim Lesen von known.met: %s, bekannte Dateien konnten nicht geladen werden"
     IDS_SHAREDFOUND         "%u bekannte freigegebene Dateien gefunden"
-    IDS_SHAREDFOUNDHASHING  "%u bekannte freigegebene Dateien gefunden, %u neue Dateien warten aufs Hashing"
+    IDS_SHAREDFOUNDHASHING  "%u bekannte freigegebene Dateien gefunden, %u neue Dateien warten auf Überprüfung"
     IDS_ERR_INCOMPLETEBLOCK "Unvollständiger Block wurde angefordert"
 END
 
@@ -669,7 +669,7 @@ BEGIN
     IDS_PW_MINREC           "Empfohlenes Minimum\t%u "
     IDS_PW_UA               "Limits deaktivieren"
     IDS_PW_PA               "Up/Down-Limits auf 1kB/s"
-    IDS_HASHINGFILE         "Hashe Datei:"
+    IDS_HASHINGFILE         "Überprüfe Datei:"
     IDS_WIZ_TRUEUPLOAD_TEXT "Upload-Bandbreite"
     IDS_WIZ_TRUEDOWNLOAD_TEXT "Download-Bandbreite"
     IDS_FRIENDLIST          "Freunde"
@@ -1111,7 +1111,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_HASHINGFILESCOUNT   " (%u hashing)" //!
+    IDS_HASHINGFILESCOUNT   " (%u werden überprüft)" //!
     IDS_YOURHOSTNAME        "Hostname für eigene eD2K-Links"
     IDS_INSUFFICIENT        "Zu wenig freier Festplattenplatz"
     IDS_WARNING             "Warnung"
@@ -1650,6 +1650,8 @@ BEGIN
     IDS_RATIO               "Ratio"
 	IDS_RESTART_NOW_QUESTION "Möchten Sie jetzt neu starten?\nBitte beachten Sie: die Aktualisierung ist erst bereit wenn Sie kMule neu gestartet haben!"
 	IDS_AUTOHL              "AutoHL"
+	IDS_HASH_FILE_FINISHED  "Überprüfung abgeschlossen:"
+	IDS_DROP_BLOCKING_DISABLED "!! DROPPEN BLOCKENDER SOCKETS ABGESCHALTET !!\n\tDein Upload scheint sehr instabil zu sein, Sockets blocken zu stark - evtl. hast du ein zu hohes Uploadlimit eingetragen oder beschränkst die Slots zu sehr?"
 END
 
 #endif    // German (Germany) resources
