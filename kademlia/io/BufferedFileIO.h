@@ -37,8 +37,8 @@ namespace Kademlia
 class CBufferedFileIO : public CStdioFile, public CDataIO
 {
 public:
-    virtual void ReadArray(LPVOID lpResult, uint32 uByteCount);
-    virtual void WriteArray(LPCVOID lpVal, uint32 uByteCount);
+    virtual void ReadArray(LPVOID lpResult, UINT uByteCount);
+    virtual void WriteArray(LPCVOID lpVal, UINT uByteCount);
     virtual UINT GetAvailable() const;
 };
 }

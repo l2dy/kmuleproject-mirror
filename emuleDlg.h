@@ -167,8 +167,8 @@ protected:
     HICON			m_icoSysTrayLowID;	// do not use those icons for anything else than the traybar!!!
     int				m_iMsgIcon;
     UINT			m_uLastSysTrayIconCookie;
-    uint32			m_uUpDatarate;
-    uint32			m_uDownDatarate;
+    UINT			m_uUpDatarate;
+    UINT			m_uDownDatarate;
     CImageList		imagelist;
     CTitleMenu		trayPopup;
     CMuleSystrayDlg* m_pSystrayDlg;
@@ -280,8 +280,12 @@ protected:
     afx_msg LRESULT OnTaskbarBtnCreated (WPARAM, LPARAM);
 #endif
 
+//>>> WiZaRd::Static MM
+/*
     // Mini Mule
     afx_msg LRESULT OnCloseMiniMule(WPARAM wParam, LPARAM lParam);
+*/
+//<<< WiZaRd::Static MM
 
     // Terminal Services
     afx_msg LRESULT OnConsoleThreadEvent(WPARAM wParam, LPARAM lParam);

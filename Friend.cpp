@@ -51,8 +51,8 @@ CFriend::CFriend(void)
 }
 
 //Added this to work with the IRC.. Probably a better way to do it.. But wanted this in the release..
-CFriend::CFriend(const uchar* abyUserhash, uint32 dwLastSeen, uint32 dwLastUsedIP, uint16 nLastUsedPort,
-                 uint32 dwLastChatted, LPCTSTR pszName, uint32 dwHasHash)
+CFriend::CFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort,
+                 UINT dwLastChatted, LPCTSTR pszName, UINT dwHasHash)
 {
     m_dwLastSeen = dwLastSeen;
     m_dwLastUsedIP = dwLastUsedIP;
@@ -145,7 +145,7 @@ void CFriend::WriteToFile(CFileDataIO* file)
     file->WriteUInt32(m_dwLastSeen);
     file->WriteUInt32(m_dwLastChatted);
 
-    uint32 uTagCount = 0;
+    UINT uTagCount = 0;
     ULONG uTagCountFilePos = (ULONG)file->GetPosition();
     file->WriteUInt32(uTagCount);
 
@@ -461,7 +461,7 @@ void CFriend::KadSearchNodeIDByIPResult(Kademlia::EKadClientSearchRes eStatus, c
         DebugLog(_T("Failed to fetch KadID for friend %s (%s)"), m_strName.IsEmpty() ? _T("(Unknown)") : m_strName, ipstr(m_dwLastUsedIP));
 }
 
-void CFriend::KadSearchIPByNodeIDResult(Kademlia::EKadClientSearchRes eStatus, uint32 dwIP, uint16 nPort)
+void CFriend::KadSearchIPByNodeIDResult(Kademlia::EKadClientSearchRes eStatus, UINT dwIP, uint16 nPort)
 {
     if (!theApp.friendlist->IsValid(this))
     {

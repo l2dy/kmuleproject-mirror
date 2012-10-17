@@ -42,9 +42,9 @@ class CKadClientSearcher;
 
 struct FetchNodeID_Struct
 {
-    uint32 dwIP;
-    uint32 dwTCPPort;
-    uint32 dwExpire;
+    UINT dwIP;
+    UINT dwTCPPort;
+    UINT dwExpire;
     CKadClientSearcher* pRequester;
 };
 
@@ -54,54 +54,54 @@ class CKademliaUDPListener : public CPacketTracking
 public:
     ~CKademliaUDPListener();
     void Bootstrap(LPCTSTR uIP, uint16 uUDPPort);
-    void Bootstrap(uint32 uIP, uint16 uUDPPort, uint8 byKadVersion = 0, const CUInt128* uCryptTargetID = NULL);
-    void FirewalledCheck(uint32 uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey, uint8 byKadVersion);
-    void SendMyDetails(byte byOpcode, uint32 uIP, uint16 uUDPPort, uint8 byKadVersion, CKadUDPKey targetUDPKey, const CUInt128* uCryptTargetID, bool bRequestAckPackage);
+    void Bootstrap(UINT uIP, uint16 uUDPPort, uint8 byKadVersion = 0, const CUInt128* uCryptTargetID = NULL);
+    void FirewalledCheck(UINT uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey, uint8 byKadVersion);
+    void SendMyDetails(byte byOpcode, UINT uIP, uint16 uUDPPort, uint8 byKadVersion, CKadUDPKey targetUDPKey, const CUInt128* uCryptTargetID, bool bRequestAckPackage);
     void SendPublishSourcePacket(CContact* pContact, const CUInt128& uTargetID, const CUInt128& uContactID, const TagList& tags);
-    void SendNullPacket(byte byOpcode, uint32 uIP, uint16 uUDPPort, CKadUDPKey targetUDPKey, const CUInt128* uCryptTargetID);
-    virtual void ProcessPacket(const byte* pbyData, uint32 uLenData, uint32 uIP, uint16 uUDPPort, bool bValidReceiverKey, CKadUDPKey senderUDPKey);
-    void SendPacket(const byte* pbyData, uint32 uLenData, uint32 uDestinationHost, uint16 uDestinationPort, CKadUDPKey targetUDPKey, const CUInt128* uCryptTargetID);
-    void SendPacket(const byte *pbyData, uint32 uLenData, byte byOpcode, uint32 uDestinationHost, uint16 uDestinationPort, CKadUDPKey targetUDPKey, const CUInt128* uCryptTargetID);
-    void SendPacket(CSafeMemFile* pfileData, byte byOpcode, uint32 uDestinationHost, uint16 uDestinationPort, CKadUDPKey targetUDPKey, const CUInt128* uCryptTargetID);
+    void SendNullPacket(byte byOpcode, UINT uIP, uint16 uUDPPort, CKadUDPKey targetUDPKey, const CUInt128* uCryptTargetID);
+    virtual void ProcessPacket(const byte* pbyData, UINT uLenData, UINT uIP, uint16 uUDPPort, bool bValidReceiverKey, CKadUDPKey senderUDPKey);
+    void SendPacket(const byte* pbyData, UINT uLenData, UINT uDestinationHost, uint16 uDestinationPort, CKadUDPKey targetUDPKey, const CUInt128* uCryptTargetID);
+    void SendPacket(const byte *pbyData, UINT uLenData, byte byOpcode, UINT uDestinationHost, uint16 uDestinationPort, CKadUDPKey targetUDPKey, const CUInt128* uCryptTargetID);
+    void SendPacket(CSafeMemFile* pfileData, byte byOpcode, UINT uDestinationHost, uint16 uDestinationPort, CKadUDPKey targetUDPKey, const CUInt128* uCryptTargetID);
 
-    bool FindNodeIDByIP(CKadClientSearcher* pRequester, uint32 dwIP, uint16 nTCPPort, uint16 nUDPPort, uint8 byKadVersion);
+    bool FindNodeIDByIP(CKadClientSearcher* pRequester, UINT dwIP, uint16 nTCPPort, uint16 nUDPPort, uint8 byKadVersion);
     void ExpireClientSearch(CKadClientSearcher* pExpireImmediately = NULL);
 private:
-    bool AddContact_KADEMLIA2 (const byte* pbyData, uint32 uLenData, uint32 uIP, uint16& uUDPPort, uint8* pnOutVersion, CKadUDPKey cUDPKey, bool& rbIPVerified, bool bUpdate, bool bFromHelloReq, bool* pbOutRequestsACK, CUInt128* puOutContactID);
-    void SendLegacyChallenge(uint32 uIP, uint16 uUDPPort, const CUInt128& uContactID);
+    bool AddContact_KADEMLIA2 (const byte* pbyData, UINT uLenData, UINT uIP, uint16& uUDPPort, uint8* pnOutVersion, CKadUDPKey cUDPKey, bool& rbIPVerified, bool bUpdate, bool bFromHelloReq, bool* pbOutRequestsACK, CUInt128* puOutContactID);
+    void SendLegacyChallenge(UINT uIP, uint16 uUDPPort, const CUInt128& uContactID);
     static SSearchTerm* CreateSearchExpressionTree(CSafeMemFile& fileIO, int iLevel);
     static void Free(SSearchTerm* pSearchTerms);
-    void Process_KADEMLIA2_BOOTSTRAP_REQ (uint32 uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
-    void Process_KADEMLIA2_BOOTSTRAP_RES (const byte* pbyPacketData, uint32 uLenPacket, uint32 uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey, bool bValidReceiverKey);
-    void Process_KADEMLIA2_HELLO_REQ (const byte* pbyPacketData, uint32 uLenPacket, uint32 uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey, bool bValidReceiverKey);
-    void Process_KADEMLIA2_HELLO_RES (const byte* pbyPacketData, uint32 uLenPacket, uint32 uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey, bool bValidReceiverKey);
-    void Process_KADEMLIA2_HELLO_RES_ACK (const byte* pbyPacketData, uint32 uLenPacket, uint32 uIP, bool bValidReceiverKey);
-    void Process_KADEMLIA2_REQ (const byte* pbyPacketData, uint32 uLenPacket, uint32 uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
-    void Process_KADEMLIA2_RES (const byte* pbyPacketData, uint32 uLenPacket, uint32 uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
-    void Process_KADEMLIA2_SEARCH_KEY_REQ (const byte* pbyPacketData, uint32 uLenPacket, uint32 uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
-    void Process_KADEMLIA2_SEARCH_SOURCE_REQ (const byte* pbyPacketData, uint32 uLenPacket, uint32 uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
-    void Process_KADEMLIA_SEARCH_RES (const byte* pbyPacketData, uint32 uLenPacket, uint32 uIP, uint16 uUDPPort);
-    void Process_KADEMLIA2_SEARCH_RES (const byte* pbyPacketData, uint32 uLenPacket, CKadUDPKey senderUDPKey, uint32 uIP, uint16 uUDPPort);
-    void Process_KADEMLIA2_PUBLISH_KEY_REQ (const byte* pbyPacketData, uint32 uLenPacket, uint32 uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
-    void Process_KADEMLIA2_PUBLISH_SOURCE_REQ (const byte* pbyPacketData, uint32 uLenPacket, uint32 uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
-    void Process_KADEMLIA_PUBLISH_RES (const byte* pbyPacketData, uint32 uLenPacket, uint32 uIP);
-    void Process_KADEMLIA2_PUBLISH_RES (const byte* pbyPacketData, uint32 uLenPacket, uint32 uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
-    void Process_KADEMLIA2_SEARCH_NOTES_REQ (const byte* pbyPacketData, uint32 uLenPacket, uint32 uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
-    void Process_KADEMLIA_SEARCH_NOTES_RES (const byte* pbyPacketData, uint32 uLenPacket, uint32 uIP, uint16 uUDPPort);
-    void Process_KADEMLIA2_PUBLISH_NOTES_REQ (const byte* pbyPacketData, uint32 uLenPacket, uint32 uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
-    void Process_KADEMLIA_FIREWALLED_REQ (const byte* pbyPacketData, uint32 uLenPacket, uint32 uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
-    void Process_KADEMLIA_FIREWALLED2_REQ (const byte* pbyPacketData, uint32 uLenPacket, uint32 uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
-    void Process_KADEMLIA_FIREWALLED_RES (const byte* pbyPacketData, uint32 uLenPacket, uint32 uIP, CKadUDPKey senderUDPKey);
-    void Process_KADEMLIA_FIREWALLED_ACK_RES (uint32 uLenPacket);
-    void Process_KADEMLIA_FINDBUDDY_REQ (const byte* pbyPacketData, uint32 uLenPacket, uint32 uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
-    void Process_KADEMLIA_FINDBUDDY_RES (const byte* pbyPacketData, uint32 uLenPacket, uint32 uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
-    void Process_KADEMLIA_CALLBACK_REQ (const byte* pbyPacketData, uint32 uLenPacket, uint32 uIP, CKadUDPKey senderUDPKey);
-    void Process_KADEMLIA2_PING (uint32 uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
-    void Process_KADEMLIA2_PONG (const byte* pbyPacketData, uint32 uLenPacket, uint32 uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
-    void Process_KADEMLIA2_FIREWALLUDP(const byte *pbyPacketData, uint32 uLenPacket,uint32 uIP, CKadUDPKey senderUDPKey);
+    void Process_KADEMLIA2_BOOTSTRAP_REQ (UINT uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
+    void Process_KADEMLIA2_BOOTSTRAP_RES (const byte* pbyPacketData, UINT uLenPacket, UINT uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey, bool bValidReceiverKey);
+    void Process_KADEMLIA2_HELLO_REQ (const byte* pbyPacketData, UINT uLenPacket, UINT uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey, bool bValidReceiverKey);
+    void Process_KADEMLIA2_HELLO_RES (const byte* pbyPacketData, UINT uLenPacket, UINT uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey, bool bValidReceiverKey);
+    void Process_KADEMLIA2_HELLO_RES_ACK (const byte* pbyPacketData, UINT uLenPacket, UINT uIP, bool bValidReceiverKey);
+    void Process_KADEMLIA2_REQ (const byte* pbyPacketData, UINT uLenPacket, UINT uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
+    void Process_KADEMLIA2_RES (const byte* pbyPacketData, UINT uLenPacket, UINT uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
+    void Process_KADEMLIA2_SEARCH_KEY_REQ (const byte* pbyPacketData, UINT uLenPacket, UINT uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
+    void Process_KADEMLIA2_SEARCH_SOURCE_REQ (const byte* pbyPacketData, UINT uLenPacket, UINT uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
+    void Process_KADEMLIA_SEARCH_RES (const byte* pbyPacketData, UINT uLenPacket, UINT uIP, uint16 uUDPPort);
+    void Process_KADEMLIA2_SEARCH_RES (const byte* pbyPacketData, UINT uLenPacket, CKadUDPKey senderUDPKey, UINT uIP, uint16 uUDPPort);
+    void Process_KADEMLIA2_PUBLISH_KEY_REQ (const byte* pbyPacketData, UINT uLenPacket, UINT uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
+    void Process_KADEMLIA2_PUBLISH_SOURCE_REQ (const byte* pbyPacketData, UINT uLenPacket, UINT uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
+    void Process_KADEMLIA_PUBLISH_RES (const byte* pbyPacketData, UINT uLenPacket, UINT uIP);
+    void Process_KADEMLIA2_PUBLISH_RES (const byte* pbyPacketData, UINT uLenPacket, UINT uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
+    void Process_KADEMLIA2_SEARCH_NOTES_REQ (const byte* pbyPacketData, UINT uLenPacket, UINT uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
+    void Process_KADEMLIA_SEARCH_NOTES_RES (const byte* pbyPacketData, UINT uLenPacket, UINT uIP, uint16 uUDPPort);
+    void Process_KADEMLIA2_PUBLISH_NOTES_REQ (const byte* pbyPacketData, UINT uLenPacket, UINT uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
+    void Process_KADEMLIA_FIREWALLED_REQ (const byte* pbyPacketData, UINT uLenPacket, UINT uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
+    void Process_KADEMLIA_FIREWALLED2_REQ (const byte* pbyPacketData, UINT uLenPacket, UINT uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
+    void Process_KADEMLIA_FIREWALLED_RES (const byte* pbyPacketData, UINT uLenPacket, UINT uIP, CKadUDPKey senderUDPKey);
+    void Process_KADEMLIA_FIREWALLED_ACK_RES (UINT uLenPacket);
+    void Process_KADEMLIA_FINDBUDDY_REQ (const byte* pbyPacketData, UINT uLenPacket, UINT uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
+    void Process_KADEMLIA_FINDBUDDY_RES (const byte* pbyPacketData, UINT uLenPacket, UINT uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
+    void Process_KADEMLIA_CALLBACK_REQ (const byte* pbyPacketData, UINT uLenPacket, UINT uIP, CKadUDPKey senderUDPKey);
+    void Process_KADEMLIA2_PING (UINT uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
+    void Process_KADEMLIA2_PONG (const byte* pbyPacketData, UINT uLenPacket, UINT uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey);
+    void Process_KADEMLIA2_FIREWALLUDP(const byte *pbyPacketData, UINT uLenPacket,UINT uIP, CKadUDPKey senderUDPKey);
 
     CList<FetchNodeID_Struct> listFetchNodeIDRequests;
-    uint32	m_nOpenHellos;
-    uint32	m_nFirewalledHellos;
+    UINT	m_nOpenHellos;
+    UINT	m_nFirewalledHellos;
 };
 }

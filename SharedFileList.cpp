@@ -895,7 +895,7 @@ void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file, CSafeMemFile
     //    shared files to some other client. In each case we send our IP+Port only, if
     //    we have a HighID.
     // *) Newer eservers also support 2 special IP+port values which are used to hold basic file status info.
-    uint32 nClientID = 0;
+    UINT nClientID = 0;
     uint16 nClientPort = 0;
     // removed servers
     {
@@ -915,7 +915,7 @@ void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file, CSafeMemFile
 
     if (!cur_file->IsLargeFile())
     {
-        tags.Add(new CTag(FT_FILESIZE, (uint32)(uint64)cur_file->GetFileSize()));
+        tags.Add(new CTag(FT_FILESIZE, (UINT)(uint64)cur_file->GetFileSize()));
     }
     else
     {
@@ -937,7 +937,7 @@ void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file, CSafeMemFile
     // whether the server is really supporting it -- this is by intention (lug). That's why we always send it.
     if (cur_file->GetFileRating())
     {
-        uint32 uRatingVal = cur_file->GetFileRating();
+        UINT uRatingVal = cur_file->GetFileRating();
         if (pClient)
         {
             // eserver is sending the rating which it received in a different format (see
@@ -1258,7 +1258,7 @@ void CSharedFileList::Publish()
 
                             //Add all file IDs which relate to the current keyword to be published
                             const CSimpleKnownFileArray& aFiles = pPubKw->GetReferences();
-                            uint32 count = 0;
+                            UINT count = 0;
                             for (int f = 0; f < aFiles.GetSize(); f++)
                             {
                                 //Debug check to make sure things are working well.
@@ -1617,7 +1617,7 @@ void CSharedFileList::CheckAndAddSingleFile(const CFileFind& ff)
         }
     }
 
-    uint32 fdate = (UINT)tFoundFileTime.GetTime();
+    UINT fdate = (UINT)tFoundFileTime.GetTime();
     if (fdate == 0)
         fdate = (UINT)-1;
     if (fdate == -1)
@@ -1878,7 +1878,7 @@ CString CSharedFileList::GetDirNameByPseudo(const CString& strPseudoName) const
     return strResult;
 }
 
-bool CSharedFileList::GetPopularityRank(const CKnownFile* pFile, uint32& rnOutSession, uint32& rnOutTotal) const
+bool CSharedFileList::GetPopularityRank(const CKnownFile* pFile, UINT& rnOutSession, UINT& rnOutTotal) const
 {
     rnOutSession = 0;
     rnOutTotal = 0;
@@ -1953,20 +1953,13 @@ UnknownFile_Struct::UnknownFile_Struct(const CString& sName, const CString& sDir
 	strSharedDirectory = sSharedDirectory;
 
 	uiFileSize = (uint64)0;
+	
 	CString strFilePath = L"";
 	if(_tmakepathlimit(strFilePath.GetBuffer(MAX_PATH), NULL, strDirectory, strName, NULL))
 	{
-		FILE* file = _tfsopen(strFilePath, L"rb", _SH_DENYNO); // can not use _SH_DENYWR because we may access a completing part file
-		if(file)
-		{
-			// set filesize
-			__int64 llFileSize = _filelengthi64(_fileno(file));
-			if(llFileSize != -1)
-				uiFileSize = (uint64)llFileSize;
-
-		}
-	}
-	strFilePath.ReleaseBuffer();
+		strFilePath.ReleaseBuffer();
+		uiFileSize = GetFileSizeOnDisk(strFilePath);
+	}	
 }
 
 // Hash smallest file first to speed up file sharing

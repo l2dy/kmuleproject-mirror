@@ -21,11 +21,11 @@ typedef CTypedPtrList<CPtrList, CUpDownClient*> CUpDownClientPtrList;
 
 struct CurrentPingStruct
 {
-    //uint32	datalen;
+    //UINT	datalen;
     CString state;
-    uint32	latency;
-    uint32	lowest;
-    uint32  currentLimit;
+    UINT	latency;
+    UINT	lowest;
+    UINT  currentLimit;
 };
 
 class LastCommonRouteFinder :
@@ -37,26 +37,29 @@ public:
 
     void EndThread();
 
-    bool AddHostToCheck(uint32 ip);
+    bool AddHostToCheck(UINT ip);
     bool AddHostsToCheck(CUpDownClientPtrList &list);
 
-    //uint32 GetPingedHost();
+    //UINT GetPingedHost();
     CurrentPingStruct GetCurrentPing();
     bool AcceptNewClient();
 
-    void SetPrefs(bool pEnabled, uint32 pCurUpload, uint32 pMinUpload, uint32 pMaxUpload, bool pUseMillisecondPingTolerance, double pPingTolerance, uint32 pPingToleranceMilliseconds, uint32 pGoingUpDivider, uint32 pGoingDownDivider, uint32 pNumberOfPingsForAverage, uint64 pLowestInitialPingAllowed);
+//>>> WiZaRd::ZZUL Upload [ZZ]
+	void SetPrefs(bool pEnabled, UINT pCurUpload, UINT pMinUpload, UINT pMaxUpload, bool pUseMillisecondPingTolerance, double pPingTolerance, UINT pPingToleranceMilliseconds, UINT pGoingUpDivider, UINT pGoingDownDivider, UINT pNumberOfPingsForAverage, UINT pLowestInitialPingAllowed, bool needMoreSlots);
+    //void SetPrefs(bool pEnabled, UINT pCurUpload, UINT pMinUpload, UINT pMaxUpload, bool pUseMillisecondPingTolerance, double pPingTolerance, UINT pPingToleranceMilliseconds, UINT pGoingUpDivider, UINT pGoingDownDivider, UINT pNumberOfPingsForAverage, uint64 pLowestInitialPingAllowed);
+//<<< WiZaRd::ZZUL Upload [ZZ]
     void InitiateFastReactionPeriod();
 
-    uint32 GetUpload();
+    UINT GetUpload();
 private:
     static UINT RunProc(LPVOID pParam);
     UINT RunInternal();
 
-    void SetUpload(uint32 newValue);
-    bool AddHostToCheckNoLock(uint32 ip);
+    void SetUpload(UINT newValue);
+    bool AddHostToCheckNoLock(UINT ip);
 
-    typedef CList<uint32,uint32> UInt32Clist;
-    uint32 Median(UInt32Clist& list);
+    typedef CList<UINT,UINT> UInt32Clist;
+    UINT Median(UInt32Clist& list);
 
     bool doRun;
     bool acceptNewClient;
@@ -72,27 +75,36 @@ private:
     CEvent* newTraceRouteHostEvent;
     CEvent* prefsEvent;
 
-    CMap<uint32,uint32,uint32,uint32> hostsToTraceRoute;
+    CMap<UINT,UINT,UINT,UINT> hostsToTraceRoute;
 
+//>>> WiZaRd::ZZUL Upload [ZZ]
+/*
     UInt32Clist pingDelays;
 
     uint64 pingDelaysTotal;
+*/
+//<<< WiZaRd::ZZUL Upload [ZZ]
 
-    uint32 minUpload;
-    uint32 maxUpload;
-    uint32 m_CurUpload;
-    uint32 m_upload;
+    UINT minUpload;
+    UINT maxUpload;
+    UINT m_CurUpload;
+    UINT m_upload;
 
     double m_pingTolerance;
-    uint32 m_iPingToleranceMilliseconds;
+    UINT m_iPingToleranceMilliseconds;
     bool m_bUseMillisecondPingTolerance;
-    uint32 m_goingUpDivider;
-    uint32 m_goingDownDivider;
-    uint32 m_iNumberOfPingsForAverage;
+    UINT m_goingUpDivider;
+    UINT m_goingDownDivider;
+    UINT m_iNumberOfPingsForAverage;
 
-    uint32 m_pingAverage;
-    uint32 m_lowestPing;
-    uint64 m_LowestInitialPingAllowed;
+    UINT m_pingAverage;
+    UINT m_lowestPing;
+//>>> WiZaRd::ZZUL Upload [ZZ]
+    //uint64 m_LowestInitialPingAllowed;
+
+	UINT m_LowestInitialPingAllowed;
+	bool m_NeedMoreSlots;
+//<<< WiZaRd::ZZUL Upload [ZZ]
 
     bool m_initiateFastReactionPeriod;
 

@@ -120,7 +120,7 @@ void CPrefs::ReadFile()
     }
     catch (...)
     {
-        TRACE("Exception in CPrefs::readFile\n");
+        TRACE(L"Exception in CPrefs::readFile\n");
     }
 }
 
@@ -147,11 +147,11 @@ void CPrefs::WriteFile()
     }
     catch (...)
     {
-        TRACE("Exception in CPrefs::writeFile\n");
+        TRACE(L"Exception in CPrefs::writeFile\n");
     }
 }
 
-void CPrefs::SetIPAddress(uint32 uVal)
+void CPrefs::SetIPAddress(UINT uVal)
 {
     //This is our first check on connect, init our IP..
     if( !uVal || !m_uIPLast )
@@ -231,7 +231,7 @@ void CPrefs::SetKademliaFiles()
     //There is no real way to know how many files are in the Kad network..
     //So we first try to see how many files per user are in the ED2K network..
     //If that fails, we use a set value based on previous tests..
-    uint32 nKadAverage = Kademlia::CKademlia::GetIndexed()->GetFileKeyCount();
+    UINT nKadAverage = Kademlia::CKademlia::GetIndexed()->GetFileKeyCount();
 
 #ifdef _DEBUG
     CString method;
@@ -295,7 +295,7 @@ CUInt128 CPrefs::GetClientHash() const
     return m_uClientHash;
 }
 
-uint32 CPrefs::GetIPAddress() const
+UINT CPrefs::GetIPAddress() const
 {
     return m_uIP;
 }
@@ -328,7 +328,7 @@ void CPrefs::SetLastContact()
     }
 }
 
-uint32 CPrefs::GetLastContact() const
+UINT CPrefs::GetLastContact() const
 {
     return m_tLastContact;
 }
@@ -393,17 +393,17 @@ void CPrefs::SetTotalStoreNotes(uint8 uVal)
     m_uTotalStoreNotes = uVal;
 }
 
-uint32 CPrefs::GetKademliaUsers() const
+UINT CPrefs::GetKademliaUsers() const
 {
     return m_uKademliaUsers;
 }
 
-void CPrefs::SetKademliaUsers(uint32 uVal)
+void CPrefs::SetKademliaUsers(UINT uVal)
 {
     m_uKademliaUsers = uVal;
 }
 
-uint32 CPrefs::GetKademliaFiles() const
+UINT CPrefs::GetKademliaFiles() const
 {
     return m_uKademliaFiles;
 }
@@ -423,13 +423,13 @@ void CPrefs::SetFindBuddy(bool bVal)
     m_bFindBuddy = bVal;
 }
 
-uint32 CPrefs::GetUDPVerifyKey(uint32 dwTargetIP)
+UINT CPrefs::GetUDPVerifyKey(UINT dwTargetIP)
 {
     uint64 ui64Buffer = thePrefs.GetKadUDPKey();
     ui64Buffer <<= 32;
     ui64Buffer |= dwTargetIP;
     MD5Sum md5((uchar*)&ui64Buffer, 8);
-    return ((uint32)(PeekUInt32(md5.GetRawHash() + 0) ^ PeekUInt32(md5.GetRawHash() + 4) ^ PeekUInt32(md5.GetRawHash() + 8) ^ PeekUInt32(md5.GetRawHash() + 12)) % 0xFFFFFFFE) + 1;
+    return ((UINT)(PeekUInt32(md5.GetRawHash() + 0) ^ PeekUInt32(md5.GetRawHash() + 4) ^ PeekUInt32(md5.GetRawHash() + 8) ^ PeekUInt32(md5.GetRawHash() + 12)) % 0xFFFFFFFE) + 1;
 }
 
 bool CPrefs::GetUseExternKadPort() const
@@ -448,7 +448,7 @@ uint16 CPrefs::GetExternalKadPort() const
 }
 
 #define EXTERNAL_PORT_ASKIPS	3
-void CPrefs::SetExternKadPort(uint16 uVal, uint32 uFromIP)
+void CPrefs::SetExternKadPort(uint16 uVal, UINT uFromIP)
 {
     if (FindExternKadPort(false))
     {
@@ -545,8 +545,8 @@ float CPrefs::StatsGetKadV8Ratio()
     if (m_nStatsKadV8LastChecked + 60 < time(NULL))
     {
         m_nStatsKadV8LastChecked = time(NULL);
-        uint32 nV8Contacts = 0;
-        uint32 nNonV8Contacts = 0;
+        UINT nV8Contacts = 0;
+        UINT nNonV8Contacts = 0;
         CKademlia::GetRoutingZone()->GetNumContacts(nV8Contacts, nNonV8Contacts, KADEMLIA_VERSION8_49b);
         //DEBUG_ONLY( AddDebugLogLine(DLP_LOW, false, _T("Counted Kad V8 Contacts: %u out of %u in routing table. FirewalledRatios: UDP - %.02f%% | TCP - %.02f%%")
         //	, nV8Contacts, nNonV8Contacts + nV8Contacts, StatsGetFirewalledRatio(true) * 100, StatsGetFirewalledRatio(false) * 100) );

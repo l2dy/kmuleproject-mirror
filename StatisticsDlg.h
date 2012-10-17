@@ -56,9 +56,9 @@ private:
     TOOLINFO tt;
 
     double m_dPlotDataMore[4];
-    uint32 m_ilastMaxConnReached;
+    UINT m_ilastMaxConnReached;
 
-    uint32		cli_lastCount[MAX_CLIENTS_WITH_SUB_VERSION];
+    UINT		cli_lastCount[MAX_CLIENTS_WITH_SUB_VERSION];
     CImageList	imagelistStatTree;
     HTREEITEM	h_transfer, trans[3]; // Transfer Header and Items
     HTREEITEM	h_upload, h_up_session, up_S[6], h_up_total, up_T[2]; // Uploads Session and Total Items and Headers

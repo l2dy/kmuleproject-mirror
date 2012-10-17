@@ -162,7 +162,7 @@ void CFileDetailDialogInfo::RefreshData()
         SetDlgItemText(IDC_FILECREATED, str);
 
         // active download time
-        uint32 nDlActiveTime = file->GetDlActiveTime();
+        UINT nDlActiveTime = file->GetDlActiveTime();
         if (nDlActiveTime)
             str = CastSecondsToLngHM(nDlActiveTime);
         else
@@ -188,16 +188,16 @@ void CFileDetailDialogInfo::RefreshData()
             // 'Last Modified' sometimes is up to 2 seconds greater than the current time ???
             // If it's related to the FAT32 seconds time resolution the max. failure should still be only 1 sec.
             // Happens at least on FAT32 with very high download speed.
-            uint32 tLastModified = file->GetFileDate();
-            uint32 tNow = time(NULL);
-            uint32 tAgo;
+            UINT tLastModified = file->GetFileDate();
+            UINT tNow = time(NULL);
+            UINT tAgo;
             if (tNow >= tLastModified)
                 tAgo = tNow - tLastModified;
             else
             {
-                TRACE("tNow = %s\n", CTime(tNow).Format("%X"));
-                TRACE("tLMd = %s, +%u\n", CTime(tLastModified).Format("%X"), tLastModified - tNow);
-                TRACE("\n");
+                TRACE(L"tNow = %s\n", CTime(tNow).Format("%X"));
+                TRACE(L"tLMd = %s, +%u\n", CTime(tLastModified).Format("%X"), tLastModified - tNow);
+                TRACE(L"\n");
                 tAgo = 0;
             }
             str.Format(_T("%s   ") + GetResString(IDS_TIMEBEFORE),
@@ -291,12 +291,12 @@ void CFileDetailDialogInfo::RefreshData()
     uint64 uRealFileSize = 0;
     uint64 uTransferred = 0;
     uint64 uCorrupted = 0;
-    uint32 uRecoveredParts = 0;
+    UINT uRecoveredParts = 0;
     uint64 uCompression = 0;
     uint64 uCompleted = 0;
     int iMD4HashsetAvailable = 0;
     int iAICHHashsetAvailable = 0;
-    uint32 uDataRate = 0;
+    UINT uDataRate = 0;
     UINT uSources = 0;
     UINT uValidSources = 0;
     UINT uNNPSources = 0;

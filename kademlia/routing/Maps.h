@@ -73,7 +73,7 @@ struct SrcHash
 struct Load
 {
     CUInt128 uKeyID;
-    uint32 uTime;
+    UINT uTime;
 };
 typedef CMap<CCKey,const CCKey&,KeyHash*,KeyHash*> CKeyHashMap;
 typedef CMap<CCKey,const CCKey&,SrcHash*,SrcHash*> CSrcHashMap;

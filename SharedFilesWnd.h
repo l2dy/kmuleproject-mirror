@@ -69,7 +69,7 @@ public:
     void UpdateMetaDataPage();
     void SetToolTipsDelay(DWORD dwDelay);
     void Reload(bool bForceTreeReload = false);
-    uint32	GetFilterColumn() const
+    UINT	GetFilterColumn() const
     {
         return m_nFilterColumn;
     }
@@ -97,7 +97,7 @@ private:
     CSplitterControl m_wndSplitter;
     CEditDelayed	m_ctlFilter;
     CHeaderCtrl		m_ctlSharedListHeader;
-    uint32			m_nFilterColumn;
+    UINT			m_nFilterColumn;
     bool			m_bDetailsVisible;
     CSharedFileDetailsModelessSheet	m_dlgDetails;
 

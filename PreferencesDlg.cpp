@@ -157,7 +157,7 @@ BOOL CPreferencesDlg::OnInitDialog()
 
 void CPreferencesDlg::Localize()
 {
-    SetTitle(RemoveAmbersand(GetResString(IDS_EM_PREFS)));
+    SetTitle(RemoveAmpersand(GetResString(IDS_EM_PREFS)));
 
     m_wndGeneral.Localize();
     m_wndDisplay.Localize();
@@ -175,17 +175,17 @@ void CPreferencesDlg::Localize()
     CTreeCtrl* pTree = GetPageTreeControl();
     if (pTree)
     {
-        pTree->SetItemText(GetPageTreeItem(c++), RemoveAmbersand(GetResString(IDS_PW_GENERAL)));
-        pTree->SetItemText(GetPageTreeItem(c++), RemoveAmbersand(GetResString(IDS_PW_DISPLAY)));
-        pTree->SetItemText(GetPageTreeItem(c++), RemoveAmbersand(GetResString(IDS_PW_CONNECTION)));
+        pTree->SetItemText(GetPageTreeItem(c++), RemoveAmpersand(GetResString(IDS_PW_GENERAL)));
+        pTree->SetItemText(GetPageTreeItem(c++), RemoveAmpersand(GetResString(IDS_PW_DISPLAY)));
+        pTree->SetItemText(GetPageTreeItem(c++), RemoveAmpersand(GetResString(IDS_PW_CONNECTION)));
 //        if(thePrefs.IsExtControlsEnabled())
-        pTree->SetItemText(GetPageTreeItem(c++), RemoveAmbersand(GetResString(IDS_PW_PROXY)));
-        pTree->SetItemText(GetPageTreeItem(c++), RemoveAmbersand(GetResString(IDS_PW_DIR)));
-        pTree->SetItemText(GetPageTreeItem(c++), RemoveAmbersand(GetResString(IDS_PW_FILES)));
-        pTree->SetItemText(GetPageTreeItem(c++), RemoveAmbersand(GetResString(IDS_STATSSETUPINFO)));
-        pTree->SetItemText(GetPageTreeItem(c++), RemoveAmbersand(GetResString(IDS_MESSAGESCOMMENTS)));
-        pTree->SetItemText(GetPageTreeItem(c++), RemoveAmbersand(GetResString(IDS_SECURITY)));
-        pTree->SetItemText(GetPageTreeItem(c++), RemoveAmbersand(GetResString(IDS_PW_TWEAK)));
+        pTree->SetItemText(GetPageTreeItem(c++), RemoveAmpersand(GetResString(IDS_PW_PROXY)));
+        pTree->SetItemText(GetPageTreeItem(c++), RemoveAmpersand(GetResString(IDS_PW_DIR)));
+        pTree->SetItemText(GetPageTreeItem(c++), RemoveAmpersand(GetResString(IDS_PW_FILES)));
+        pTree->SetItemText(GetPageTreeItem(c++), RemoveAmpersand(GetResString(IDS_STATSSETUPINFO)));
+        pTree->SetItemText(GetPageTreeItem(c++), RemoveAmpersand(GetResString(IDS_MESSAGESCOMMENTS)));
+        pTree->SetItemText(GetPageTreeItem(c++), RemoveAmpersand(GetResString(IDS_SECURITY)));
+        pTree->SetItemText(GetPageTreeItem(c++), RemoveAmpersand(GetResString(IDS_PW_TWEAK)));
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
         pTree->SetItemText(GetPageTreeItem(c++), _T("Debug"));
 #endif

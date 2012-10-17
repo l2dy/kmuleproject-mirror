@@ -451,7 +451,7 @@ public:
         {
             // TODO: This exception handler should definitively *not* be here. Though we seem to need it to
             // catch some very strange crashs which deal with socket deletion problems in the client's TCP socket.
-            TRACE("*** Unknown exception in CAsyncSocketExHelperWindow::WindowProc\n");
+            TRACE(L"*** Unknown exception in CAsyncSocketExHelperWindow::WindowProc\n");
             ASSERT(0);
         }
         return 0;
@@ -714,7 +714,7 @@ BOOL CAsyncSocketEx::InitAsyncSocketExInstance()
     }
     catch(...)
     {
-        TRACE("Unknown exception in CAsyncSocketEx::InitAsyncSocketExInstance()\n");
+        TRACE(L"Unknown exception in CAsyncSocketEx::InitAsyncSocketExInstance()\n");
         ASSERT(0);
         bResult = FALSE;
     }
@@ -772,7 +772,7 @@ void CAsyncSocketEx::FreeAsyncSocketExInstance()
     }
     catch(...)
     {
-        TRACE("Unknown exception in CAsyncSocketEx::FreeAsyncSocketExInstance()\n");
+        TRACE(L"Unknown exception in CAsyncSocketEx::FreeAsyncSocketExInstance()\n");
         ASSERT(0);
     }
 

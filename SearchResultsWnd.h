@@ -76,9 +76,9 @@ public:
     void	DownloadSelected();
     void	DownloadSelected(bool bPaused);
 
-    bool	CanDeleteSearch(uint32 nSearchID) const;
+    bool	CanDeleteSearch(UINT nSearchID) const;
     bool	CanDeleteAllSearches() const;
-    void	DeleteSearch(uint32 nSearchID);
+    void	DeleteSearch(UINT nSearchID);
     void	DeleteAllSearches();
     void	DeleteSelectedSearch();
 
@@ -89,7 +89,7 @@ public:
 
     SSearchParams* GetSearchResultsParams(UINT uSearchID) const;
 
-    uint32	GetFilterColumn() const
+    UINT	GetFilterColumn() const
     {
         return m_nFilterColumn;
     }
@@ -103,12 +103,12 @@ protected:
     CButtonsTabCtrl	*m_cattabs;
     CDropDownButton* m_btnSearchListMenu;
     int			m_iSentMoreReq;
-    uint32		m_nFilterColumn;
+    UINT		m_nFilterColumn;
 
     bool StartNewSearch(SSearchParams* pParams);
     void SearchStarted();
     void SearchCanceled(UINT uSearchID);
-    CString	CreateWebQuery(SSearchParams* pParams);
+    //CString	CreateWebQuery(SSearchParams* pParams); //>>> WiZaRd::CustomSearches
     void ShowResults(const SSearchParams* pParams);
     void SetAllIcons();
     void SetSearchResultsIcon(UINT uSearchID, int iImage);

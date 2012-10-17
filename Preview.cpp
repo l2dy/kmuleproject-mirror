@@ -82,14 +82,14 @@ BOOL CPreviewThread::Run()
             destFile.SetLength(nSize);
         destFile.SeekToBegin();
         BYTE abyBuffer[4096];
-        uint32 nRead;
+        UINT nRead;
         while (destFile.GetPosition()+4096 < PARTSIZE*2)
         {
             nRead = srcFile.Read(abyBuffer,4096);
             destFile.Write(abyBuffer,nRead);
         }
         srcFile.Seek(-(LONGLONG)(PARTSIZE*2), CFile::end);
-        uint32 nToGo = PARTSIZE*2;
+        UINT nToGo = PARTSIZE*2;
         if (bFullSized)
             destFile.Seek(-(LONGLONG)(PARTSIZE*2), CFile::end);
         do

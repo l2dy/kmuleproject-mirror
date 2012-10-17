@@ -49,17 +49,17 @@ float	CStatistics::maxUp;
 float	CStatistics::maxUpavg;
 float	CStatistics::rateDown;
 float	CStatistics::rateUp;
-uint32	CStatistics::timeTransfers;
-uint32	CStatistics::timeDownloads;
-uint32	CStatistics::timeUploads;
-uint32	CStatistics::start_timeTransfers;
-uint32	CStatistics::start_timeDownloads;
-uint32	CStatistics::start_timeUploads;
-uint32	CStatistics::time_thisTransfer;
-uint32	CStatistics::time_thisDownload;
-uint32	CStatistics::time_thisUpload;
-uint32	CStatistics::m_nDownDatarateOverhead;
-uint32	CStatistics::m_nDownDataRateMSOverhead;
+UINT	CStatistics::timeTransfers;
+UINT	CStatistics::timeDownloads;
+UINT	CStatistics::timeUploads;
+UINT	CStatistics::start_timeTransfers;
+UINT	CStatistics::start_timeDownloads;
+UINT	CStatistics::start_timeUploads;
+UINT	CStatistics::time_thisTransfer;
+UINT	CStatistics::time_thisDownload;
+UINT	CStatistics::time_thisUpload;
+UINT	CStatistics::m_nDownDatarateOverhead;
+UINT	CStatistics::m_nDownDataRateMSOverhead;
 uint64	CStatistics::m_nDownDataOverheadSourceExchange;
 uint64	CStatistics::m_nDownDataOverheadSourceExchangePackets;
 uint64	CStatistics::m_nDownDataOverheadFileRequest;
@@ -68,8 +68,8 @@ uint64	CStatistics::m_nDownDataOverheadKad;
 uint64	CStatistics::m_nDownDataOverheadKadPackets;
 uint64	CStatistics::m_nDownDataOverheadOther;
 uint64	CStatistics::m_nDownDataOverheadOtherPackets;
-uint32	CStatistics::m_nUpDatarateOverhead;
-uint32	CStatistics::m_nUpDataRateMSOverhead;
+UINT	CStatistics::m_nUpDatarateOverhead;
+UINT	CStatistics::m_nUpDataRateMSOverhead;
 uint64	CStatistics::m_nUpDataOverheadSourceExchange;
 uint64	CStatistics::m_nUpDataOverheadSourceExchangePackets;
 uint64	CStatistics::m_nUpDataOverheadFileRequest;
@@ -78,8 +78,8 @@ uint64	CStatistics::m_nUpDataOverheadKad;
 uint64	CStatistics::m_nUpDataOverheadKadPackets;
 uint64	CStatistics::m_nUpDataOverheadOther;
 uint64	CStatistics::m_nUpDataOverheadOtherPackets;
-uint32	CStatistics::m_sumavgDDRO;
-uint32	CStatistics::m_sumavgUDRO;
+UINT	CStatistics::m_sumavgDDRO;
+UINT	CStatistics::m_sumavgUDRO;
 
 float	CStatistics::m_fGlobalDone;
 float	CStatistics::m_fGlobalSize;
@@ -89,7 +89,7 @@ uint64	CStatistics::sessionReceivedBytes;
 uint64	CStatistics::sessionSentBytes;
 uint64	CStatistics::sessionSentBytesToFriend;
 DWORD	CStatistics::transferStarttime;
-uint32	CStatistics::filteredclients;
+UINT	CStatistics::filteredclients;
 DWORD	CStatistics::starttime;
 
 
@@ -150,6 +150,8 @@ CStatistics::CStatistics()
     m_nUpDataOverheadOther = 0;
     m_nUpDataOverheadOtherPackets = 0;
     m_sumavgUDRO = 0;
+
+	m_nTotalCompletedBytes = 0; //>>> WiZaRd::ZZUL Upload [ZZ]
 }
 
 void CStatistics::Init()
@@ -163,7 +165,7 @@ void CStatistics::Init()
 }
 
 // This function is going to basically calculate and save a bunch of averages.
-//				I made a seperate funtion so that it would always run instead of having
+//				I made a separate function so that it would always run instead of having
 //				the averages not be calculated if the graphs are disabled (Which is bad!).
 void CStatistics::UpdateConnectionStats(float uploadrate, float downloadrate)
 {
@@ -253,7 +255,7 @@ void CStatistics::RecordRate()
         return;
 
     // Accurate datarate Calculation
-    uint32 stick = GetTickCount();
+    UINT stick = GetTickCount();
     TransferredData newitemUP = {(UINT)theStats.sessionSentBytes, stick};
     TransferredData newitemDN = {(UINT)theStats.sessionReceivedBytes, stick};
 
@@ -485,3 +487,23 @@ void __cdecl operator delete[](void* p)
 }
 
 #endif
+
+//>>> WiZaRd::ZZUL Upload [ZZ]
+uint64  CStatistics::GetTotalCompletedBytes() const
+{ 
+	return m_nTotalCompletedBytes; 
+}
+
+void    CStatistics::IncTotalCompletedBytes(const uint64 toAdd) 
+{ 
+	m_nTotalCompletedBytes += toAdd; 
+}
+
+void    CStatistics::DecTotalCompletedBytes(const uint64 toDec) 
+{
+	if(m_nTotalCompletedBytes > toDec)
+		m_nTotalCompletedBytes -= toDec;
+	else
+		m_nTotalCompletedBytes = 0;
+}
+//<<< WiZaRd::ZZUL Upload [ZZ]

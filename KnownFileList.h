@@ -37,7 +37,7 @@ public:
     void	Clear();
     void	Process();
 
-    CKnownFile* FindKnownFile(LPCTSTR filename, uint32 date, uint64 size) const;
+    CKnownFile* FindKnownFile(LPCTSTR filename, UINT date, uint64 size) const;
     CKnownFile* FindKnownFileByID(const uchar* hash) const;
     CKnownFile* FindKnownFileByPath(const CString& sFilePath) const;
     bool	IsKnownFile(const CKnownFile* file) const;
@@ -55,8 +55,8 @@ public:
     bool	ShouldPurgeAICHHashset(const CAICHHash& rAICHHash) const;
     void	AICHHashChanged(const CAICHHash* pOldAICHHash, const CAICHHash& rNewAICHHash, CKnownFile* pFile);
 
-    uint32 	m_nRequestedTotal;
-    uint32 	m_nAcceptedTotal;
+    UINT 	m_nRequestedTotal;
+    UINT 	m_nAcceptedTotal;
     uint64 	m_nTransferredTotal;
 
 private:
@@ -66,11 +66,11 @@ private:
     uint16 	requested;
     uint16 	accepted;
     uint64 	transferred;
-    uint32 	m_nLastSaved;
+    UINT 	m_nLastSaved;
     CKnownFilesMap		m_Files_map;
     CancelledFilesMap	m_mapCancelledFiles;
     // for faster access, map of files indexed by AICH-hash, not garantueed to be complete at this point (!)
     // (files which got AICH hashed later will not be added yet, because we don't need them, make sure to change this if needed)
     KnonwFilesByAICHMap m_mapKnownFilesByAICH;
-    uint32	m_dwCancelledFilesSeed;
+    UINT	m_dwCancelledFilesSeed;
 };

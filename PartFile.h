@@ -165,7 +165,7 @@ public:
     {
         return CTime(m_tLastModified);
     }
-    uint32	GetFileDate() const
+    UINT	GetFileDate() const
     {
         return m_tLastModified;
     }
@@ -175,13 +175,13 @@ public:
     {
         return CTime(m_tCreated);
     }
-    uint32	GetCrFileDate() const
+    UINT	GetCrFileDate() const
     {
         return m_tCreated;
     }
 
     void	InitializeFromLink(CED2KFileLink* fileLink, UINT cat = 0);
-    uint32	Process(uint32 reducedownload, UINT icounter);
+    UINT	Process(UINT reducedownload, UINT icounter);
     EPartFileLoadResult	LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, EPartFileFormat* pOutCheckFileFormat = NULL); //filename = *.part.met
     EPartFileLoadResult	ImportShareazaTempfile(LPCTSTR in_directory,LPCTSTR in_filename, EPartFileFormat* pOutCheckFileFormat = NULL);
 
@@ -208,9 +208,9 @@ public:
     bool	GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Struct** newblocks, uint16* count) /*const*/;
     void	WritePartStatus(CSafeMemFile* file) const;
     void	WriteCompleteSourcesCount(CSafeMemFile* file) const;
-    void	AddSources(CSafeMemFile* sources,uint32 serverip, uint16 serverport, bool bWithObfuscationAndHash);
-    void	AddSource(LPCTSTR pszURL, uint32 nIP);
-    static bool CanAddSource(uint32 userid, uint16 port, UINT* pdebug_lowiddropped = NULL, bool Ed2kID = true);
+    void	AddSources(CSafeMemFile* sources,UINT serverip, uint16 serverport, bool bWithObfuscationAndHash);
+    void	AddSource(LPCTSTR pszURL, UINT nIP);
+    static bool CanAddSource(UINT userid, uint16 port, UINT* pdebug_lowiddropped = NULL, bool Ed2kID = true);
 
     EPartFileStatus	GetStatus(bool ignorepause = false) const;
     void	SetStatus(EPartFileStatus eStatus);		// set status and update GUI
@@ -261,7 +261,7 @@ public:
     {
         return m_uTransferred;
     }
-    uint32	GetDatarate() const
+    UINT	GetDatarate() const
     {
         return datarate;
     }
@@ -275,10 +275,10 @@ public:
     bool    IsPreviewableFileType() const;
     time_t	getTimeRemaining() const;
     time_t	getTimeRemainingSimple() const;
-    uint32	GetDlActiveTime() const;
+    UINT	GetDlActiveTime() const;
 
     // Barry - Added as replacement for BlockReceived to buffer data before writing to disk
-    uint32	WriteToBuffer(uint64 transize, const BYTE *data, uint64 start, uint64 end, Requested_Block_Struct *block, const CUpDownClient* client);
+    UINT	WriteToBuffer(uint64 transize, const BYTE *data, uint64 start, uint64 end, Requested_Block_Struct *block, const CUpDownClient* client);
     void	FlushBuffer(bool forcewait=false, bool bNoAICH = false);
     // Barry - This will invert the gap list, up to caller to delete gaps when done
     // 'Gaps' returned are really the filled areas, and guaranteed to be in order
@@ -322,7 +322,7 @@ public:
     }
     void	UpdateAvailablePartsCount();
 
-    uint32	GetLastAnsweredTime() const
+    UINT	GetLastAnsweredTime() const
     {
         return m_ClientSrcAnswered;
     }
@@ -340,7 +340,7 @@ public:
     {
         return m_uCompressionGain;
     }
-    uint32	GetRecoveredPartsByICH() const
+    UINT	GetRecoveredPartsByICH() const
     {
         return m_uPartsSavedDueICH;
     }
@@ -399,8 +399,8 @@ public:
         m_bAICHPartHashsetNeeded = bVal;
     }
 
-    uint32	m_LastSearchTime;
-    uint32	m_LastSearchTimeKad;
+    UINT	m_LastSearchTime;
+    UINT	m_LastSearchTimeKad;
     uint64	m_iAllocinfo;
     CUpDownClientPtrList srclist;
     CUpDownClientPtrList A4AFsrclist; //<<-- enkeyDEV(Ottavio84) -A4AF-
@@ -461,19 +461,19 @@ private:
     BOOL 		PerformFileComplete(); // Lord KiRon
     static UINT CompleteThreadProc(LPVOID pvParams); // Lord KiRon - Used as separate thread to complete file
     static UINT AFX_CDECL AllocateSpaceThread(LPVOID lpParam);
-    void		CharFillRange(CString* buffer,uint32 start, uint32 end, char color) const;
+    void		CharFillRange(CString* buffer,UINT start, UINT end, char color) const;
 
     CCorruptionBlackBox	m_CorruptionBlackBox;
     static CBarShader s_LoadBar;
     static CBarShader s_ChunkBar;
-    uint32	m_iLastPausePurge;
+    UINT	m_iLastPausePurge;
     uint16	count;
     UINT	m_anStates[STATES_COUNT];
     EMFileSize	completedsize;
     uint64	m_uCorruptionLoss;
     uint64	m_uCompressionGain;
-    uint32	m_uPartsSavedDueICH;
-    uint32	datarate;
+    UINT	m_uPartsSavedDueICH;
+    UINT	datarate;
     CString m_fullname;
     CString m_partmetfilename;
     uint64	m_uTransferred;
@@ -488,14 +488,14 @@ private:
     bool	m_bAutoDownPriority;
     EPartFileStatus	status;
     bool	newdate;	// indicates if there was a writeaccess to the .part file
-    uint32	lastpurgetime;
-    uint32	m_LastNoNeededCheck;
+    UINT	lastpurgetime;
+    UINT	m_LastNoNeededCheck;
     CTypedPtrList<CPtrList, Gap_Struct*> gaplist;
     CTypedPtrList<CPtrList, Requested_Block_Struct*> requestedblocks_list;
     CArray<uint16,uint16> m_SrcpartFrequency;
     float	percentcompleted;
     CList<uint16, uint16> corrupted_list;
-    uint32	m_ClientSrcAnswered;
+    UINT	m_ClientSrcAnswered;
     UINT	availablePartsCount;
     CWinThread* m_AllocateThread;
     DWORD	m_lastRefreshedDLDisplay;
@@ -505,14 +505,14 @@ private:
     // Barry - Buffered data to be written
     CTypedPtrList<CPtrList, PartFileBufferedData*> m_BufferedData_list;
     uint64	m_nTotalBufferData;
-    uint32	m_nLastBufferFlushTime;
+    UINT	m_nLastBufferFlushTime;
     UINT	m_category;
     DWORD	m_dwFileAttributes;
     time_t	m_tActivated;
-    uint32	m_nDlActiveTime;
-    uint32	m_tLastModified;	// last file modification time (NT's version of UTC), to be used for stats only!
-    uint32	m_tCreated;			// file creation time (NT's version of UTC), to be used for stats only!
-    uint32	m_random_update_wait;
+    UINT	m_nDlActiveTime;
+    UINT	m_tLastModified;	// last file modification time (NT's version of UTC), to be used for stats only!
+    UINT	m_tCreated;			// file creation time (NT's version of UTC), to be used for stats only!
+    UINT	m_random_update_wait;
     volatile EPartFileOp m_eFileOp;
     volatile UINT m_uFileOpProgress;
     CAICHRecoveryHashSet*	m_pAICHRecoveryHashSet;

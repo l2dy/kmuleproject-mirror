@@ -32,7 +32,7 @@ static char THIS_FILE[] = __FILE__;
 struct Header_Struct
 {
     uint8	eDonkeyID;
-    uint32	packetlength;
+    UINT	packetlength;
     uint8	command;
 };
 #pragma pack()
@@ -75,7 +75,7 @@ Packet::Packet(char* header)
     prot = head->eDonkeyID;
 }
 
-Packet::Packet(char* pPacketPart, uint32 nSize, bool bLast, bool bFromPartFile) // only used for splitted packets!
+Packet::Packet(char* pPacketPart, UINT nSize, bool bLast, bool bFromPartFile) // only used for splitted packets!
 {
     m_bFromPF = bFromPartFile;
     m_bSplitted = true;
@@ -89,7 +89,7 @@ Packet::Packet(char* pPacketPart, uint32 nSize, bool bLast, bool bFromPartFile) 
     prot = 0x00;
 }
 
-Packet::Packet(uint8 in_opcode, uint32 in_size, uint8 protocol, bool bFromPartFile)
+Packet::Packet(uint8 in_opcode, UINT in_size, uint8 protocol, bool bFromPartFile)
 {
     m_bFromPF = bFromPartFile;
     m_bSplitted = false;
@@ -239,7 +239,7 @@ void Packet::PackPacket()
 bool Packet::UnPackPacket(UINT uMaxDecompressedSize)
 {
     ASSERT ( prot == OP_PACKEDPROT || prot == OP_KADEMLIAPACKEDPROT);
-    uint32 nNewSize = size*10+300;
+    UINT nNewSize = size*10+300;
     if (nNewSize > uMaxDecompressedSize)
     {
         //ASSERT(0);
@@ -435,7 +435,7 @@ CTag::CTag(uint8 uName, const BYTE* pucHash)
     ASSERT_VALID(this);
 }
 
-CTag::CTag(uint8 uName, uint32 nSize, const BYTE* pucData)
+CTag::CTag(uint8 uName, UINT nSize, const BYTE* pucData)
 {
     m_uType = TAGTYPE_BLOB;
     m_uName = uName;
@@ -446,7 +446,7 @@ CTag::CTag(uint8 uName, uint32 nSize, const BYTE* pucData)
     ASSERT_VALID(this);
 }
 
-CTag::CTag(uint8 uName, BYTE* pucAttachData, uint32 nSize)
+CTag::CTag(uint8 uName, BYTE* pucAttachData, UINT nSize)
 {
     m_uType = TAGTYPE_BLOB;
     m_uName = uName;
@@ -575,12 +575,12 @@ CTag::CTag(CFileDataIO* data, bool bOptUTF8)
     }
     else if (m_uType == TAGTYPE_BOOL)
     {
-        TRACE("***NOTE: %s; Reading BOOL tag\n", __FUNCTION__);
+        TRACE(L"***NOTE: %s; Reading BOOL tag\n", __FUNCTION__);
         data->Seek(1, CFile::current);
     }
     else if (m_uType == TAGTYPE_BOOLARRAY)
     {
-        TRACE("***NOTE: %s; Reading BOOL Array tag\n", __FUNCTION__);
+        TRACE(L"***NOTE: %s; Reading BOOL Array tag\n", __FUNCTION__);
         uint16 len;
         data->Read(&len, 2);
         // 07-Apr-2004: eMule versions prior to 0.42e.29 used the formula "(len+7)/8"!
@@ -605,9 +605,9 @@ CTag::CTag(CFileDataIO* data, bool bOptUTF8)
     else
     {
         if (m_uName != 0)
-            TRACE("%s; Unknown tag: type=0x%02X  specialtag=%u\n", __FUNCTION__, m_uType, m_uName);
+            TRACE(L"%s; Unknown tag: type=0x%02X  specialtag=%u\n", __FUNCTION__, m_uType, m_uName);
         else
-            TRACE("%s; Unknown tag: type=0x%02X  name=\"%s\"\n", __FUNCTION__, m_uType, m_pszName);
+            TRACE(L"%s; Unknown tag: type=0x%02X  name=\"%s\"\n", __FUNCTION__, m_uType, m_pszName);
         m_uVal = 0;
     }
     ASSERT_VALID(this);
@@ -719,7 +719,7 @@ bool CTag::WriteNewEd2kTag(CFileDataIO* data, EUtf8Str eStrEncode) const
     }
     else if (uType == TAGTYPE_UINT32)
     {
-        data->WriteUInt32((uint32)m_uVal);
+        data->WriteUInt32((UINT)m_uVal);
     }
     else if (uType == TAGTYPE_UINT16)
     {
@@ -744,7 +744,7 @@ bool CTag::WriteNewEd2kTag(CFileDataIO* data, EUtf8Str eStrEncode) const
     }
     else
     {
-        TRACE("%s; Unknown tag: type=0x%02X\n", __FUNCTION__, uType);
+        TRACE(L"%s; Unknown tag: type=0x%02X\n", __FUNCTION__, uType);
         ASSERT(0);
         return false;
     }
@@ -781,7 +781,7 @@ bool CTag::WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode) const
         }
         else if (IsInt())
         {
-            file->WriteUInt32((uint32)m_uVal);
+            file->WriteUInt32((UINT)m_uVal);
         }
         else if (IsInt64(false))
         {
@@ -800,7 +800,7 @@ bool CTag::WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode) const
         //TODO: Support more tag types
         else
         {
-            TRACE("%s; Unknown tag: type=0x%02X\n", __FUNCTION__, m_uType);
+            TRACE(L"%s; Unknown tag: type=0x%02X\n", __FUNCTION__, m_uType);
             ASSERT(0);
             return false;
         }
@@ -808,13 +808,13 @@ bool CTag::WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode) const
     }
     else
     {
-        TRACE("%s; Ignored tag with unknown type=0x%02X\n", __FUNCTION__, m_uType);
+        TRACE(L"%s; Ignored tag with unknown type=0x%02X\n", __FUNCTION__, m_uType);
         ASSERT(0);
         return false;
     }
 }
 
-void CTag::SetInt(uint32 uVal)
+void CTag::SetInt(UINT uVal)
 {
     ASSERT( IsInt() );
     if (IsInt())
@@ -871,7 +871,7 @@ CString CTag::GetFullInfo(CString (*pfnDbgGetFileMetaTagName)(UINT uMetaTagID)) 
     }
     else if (m_uType == TAGTYPE_UINT32)
     {
-        strTag.AppendFormat(_T("(Int32)%u"), (uint32)m_uVal);
+        strTag.AppendFormat(_T("(Int32)%u"), (UINT)m_uVal);
     }
     else if (m_uType == TAGTYPE_UINT64)
     {

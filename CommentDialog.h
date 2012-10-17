@@ -36,7 +36,7 @@ protected:
     CCommentListCtrl m_lstComments;
     bool m_bMergedComment;
     bool m_bSelf;
-    uint32 m_timer;
+    UINT m_timer;
     bool m_bEnabled;
 
     virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support

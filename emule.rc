@@ -1570,6 +1570,8 @@ SMILEY_LOOKSIDE         ICON                    "res\\Smiley_lookside.ico"
 BROWSEFOLDERSMALL       ICON                    "res\\Browse8.ico"
 BADGUY                  ICON                    "res\\Badguy.ico"
 DISSIMILAR_NAME         ICON                    "res\\FDC.ico"
+SEARCH_MULTI			ICON					"res\\Search_Multi.ico"
+SEARCH_EN				ICON					"res\\Search_En.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1680,7 +1682,6 @@ END
 //
 
 IDR_HTML_MINIMULE       HTML                    "res\\MiniMule.htm"
-CONNECTED.GIF           HTML                    "res\\Connected.gif"
 CONNECTEDNOTNOT.GIF     HTML                    "res\\ConnectedNotNot.gif"
 CONNECTEDLOWLOW.GIF     HTML                    "res\\ConnectedLowLow.gif"
 CONNECTEDHIGHHIGH.GIF   HTML                    "res\\ConnectedHighHigh.gif"
@@ -1982,8 +1983,7 @@ BEGIN
     IDS_USERS               "User: %u"
     IDS_UPDOWN              "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
     IDS_CONNECTED           "Connected"
-    IDS_LINKNOTADDED        "Could not add link"
-    IDS_MAIN_EXIT           "Do you really want to exit?"
+    IDS_LINKNOTADDED        "Could not add link"    
     IDS_MAIN_POPUP_RESTORE  "Restore"
     IDS_EXIT                "E&xit"
     IDS_CONNECTING          "Connecting"
@@ -2104,8 +2104,7 @@ BEGIN
     IDS_STATS_AVGDL         "Average Downloadrate: %s"
     IDS_STATS_AVGUL         "Average Uploadrate: %s"
     IDS_STATS_FOUNDSRC      "Found Sources: %u"
-    IDS_STATS_ACTDL         "Active Downloads (chunks): %u"
-    IDS_STATS_ACTUL         "Active Uploads: %u"
+    IDS_STATS_ACTDL         "Active Downloads (chunks): %u"    
     IDS_STATS_WAITINGUSERS  "Waiting Uploads: %u"
     IDS_STATS_RECONNECTS    "Reconnects: %u"
     IDS_STATS_UNKNOWNCLIENT "Unknown: %u"
@@ -2265,8 +2264,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_ST_ACTIVED          "Active downloads"
-    IDS_ST_ACTIVEU          "Active uploads"
+    IDS_ST_ACTIVED          "Active downloads"    
     IDS_CW_MESSAGES         "Messages"
     IDS_CW_FRIENDS          "Friends"
     IDS_CW_SEND             "Send"
@@ -2614,8 +2612,7 @@ BEGIN
     IDS_SP_UL2              "Upload average"
     IDS_SP_UL3              "Upload session average"
     IDS_SP_ACTCON           "Active connections"
-    IDS_SP_ACTDL            "Active downloads"
-    IDS_SP_ACTUL            "Active uploads"
+    IDS_SP_ACTDL            "Active downloads"    
 END
 
 STRINGTABLE 
@@ -3153,8 +3150,7 @@ BEGIN
     IDS_ST_ACTIVEU_ZZ       "Active uploads"
     IDS_ST_ULCURRENT        "Current"
     IDS_ST_ULSLOTSNOOVERHEAD "Current (excl. overhead)"
-    IDS_ST_ULFRIEND         "Friend upload"
-    IDS_STATS_ACTUL_ZZ      "Active Uploads/Needed to fill Bandwidth: %u"
+    IDS_ST_ULFRIEND         "Friend upload"    
     IDS_STATS_TOTALUL       "Total Uploads: %u"
     IDS_CHAT_DOWNLOADED     "Downloaded:"
     IDS_CHAT_UPLOADED       "Uploaded:"
@@ -3467,6 +3463,20 @@ BEGIN
     IDS_AUTOHL              "AutoHL"
 	IDS_HASH_FILE_FINISHED  "Hashing finished:"
 	IDS_DROP_BLOCKING_DISABLED "!! DROPPING OF BLOCKING SOCKETS DISABLED !!\n\tYour upload seems to be pretty unstable, sockets are blocking too much - maybe you set a too high upload limit or you are limiting the slots too much?"
+	IDS_MAIN_EXIT           "If you leave eMule uploading you will earn credits that can speed up future downloads.\nDo you really want to exit?"
+	IDS_STATS_ACTUL         "Focused Uploads/Needed To Fill Bandwidth: %u"
+	IDS_ST_ACTIVEU          "Focused uploads"
+	IDS_SP_ACTUL            "Focused Uploads/Needed To Fill Bandwidth"
+	IDS_STATS_ACTUL_ZZ      "Focused uploads/Needed to fill Bandwidth: %u"
+	IDS_UPSLOTNUMBER        "Slot #"
+	IDS_UPLOAD_COMPLETED    "Completing"
+    IDS_UPLOAD_PREEMPTED    "Pre-empted by higher prio upload"
+    IDS_UPLOAD_TOO_MANY_SLOTS "Too many slots"
+	IDS_UPLOAD_FEEDBACK		"Create Upload Feedback"
+	IDS_FEEDBACKBY          "Feedback by"
+	IDS_FEEDBACKTIME        "Feedback created on"
+	IDS_CURRENT_TRANSFER_DL	"currently downloading from %u client(s) @ %s"
+	IDS_CURRENT_TRANSFER_UL "currently uploading to %u client(s) @ %s"
 END
 
 #endif    // Englisch (USA) resources

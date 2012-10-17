@@ -40,7 +40,7 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace Kademlia;
 
-CByteIO::CByteIO(byte* pbyBuffer, uint32 uAvailable)
+CByteIO::CByteIO(byte* pbyBuffer, UINT uAvailable)
 {
     m_bReadOnly = false;
     m_pbyBuffer = pbyBuffer;
@@ -48,7 +48,7 @@ CByteIO::CByteIO(byte* pbyBuffer, uint32 uAvailable)
     m_uUsed = 0;
 }
 
-CByteIO::CByteIO(const byte* pbyBuffer, uint32 uAvailable)
+CByteIO::CByteIO(const byte* pbyBuffer, UINT uAvailable)
 {
     m_bReadOnly = true;
     m_pbyBuffer = const_cast<byte*>(pbyBuffer);
@@ -61,7 +61,7 @@ UINT CByteIO::GetAvailable() const
     return m_uAvailable;
 }
 
-void CByteIO::ReadArray(LPVOID lpResult, uint32 uByteCount)
+void CByteIO::ReadArray(LPVOID lpResult, UINT uByteCount)
 {
     if (m_uAvailable < uByteCount)
         throw new CIOException(ERR_BUFFER_TOO_SMALL);
@@ -72,7 +72,7 @@ void CByteIO::ReadArray(LPVOID lpResult, uint32 uByteCount)
     m_uAvailable -= uByteCount;
 }
 
-void CByteIO::WriteArray(LPCVOID lpVal, uint32 uByteCount)
+void CByteIO::WriteArray(LPCVOID lpVal, UINT uByteCount)
 {
     if (m_bReadOnly)
         throw new CIOException(ERR_READ_ONLY);
@@ -93,7 +93,7 @@ void CByteIO::Reset()
     m_uUsed = 0;
 }
 
-void CByteIO::Seek(uint32 newpos)
+void CByteIO::Seek(UINT newpos)
 {
     if (newpos > (m_uUsed + m_uAvailable))
         throw new CIOException(ERR_BUFFER_TOO_SMALL);

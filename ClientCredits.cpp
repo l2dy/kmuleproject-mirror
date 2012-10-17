@@ -82,7 +82,7 @@ CClientCredits::~CClientCredits()
     delete m_pCredits;
 }
 
-void CClientCredits::AddDownloaded(uint32 bytes, uint32 dwForIP)
+void CClientCredits::AddDownloaded(UINT bytes, UINT dwForIP)
 {
     if ((GetCurrentIdentState(dwForIP) == IS_IDFAILED || GetCurrentIdentState(dwForIP) == IS_IDBADGUY || GetCurrentIdentState(dwForIP) == IS_IDNEEDED) && theApp.clientcredits->CryptoAvailable())
     {
@@ -93,11 +93,11 @@ void CClientCredits::AddDownloaded(uint32 bytes, uint32 dwForIP)
     uint64 current = (((uint64)m_pCredits->nDownloadedHi << 32) | m_pCredits->nDownloadedLo) + bytes;
 
     //recode
-    m_pCredits->nDownloadedLo = (uint32)current;
-    m_pCredits->nDownloadedHi = (uint32)(current >> 32);
+    m_pCredits->nDownloadedLo = (UINT)current;
+    m_pCredits->nDownloadedHi = (UINT)(current >> 32);
 }
 
-void CClientCredits::AddUploaded(uint32 bytes, uint32 dwForIP)
+void CClientCredits::AddUploaded(UINT bytes, UINT dwForIP)
 {
     if ((GetCurrentIdentState(dwForIP) == IS_IDFAILED || GetCurrentIdentState(dwForIP) == IS_IDBADGUY || GetCurrentIdentState(dwForIP) == IS_IDNEEDED) && theApp.clientcredits->CryptoAvailable())
     {
@@ -108,8 +108,8 @@ void CClientCredits::AddUploaded(uint32 bytes, uint32 dwForIP)
     uint64 current = (((uint64)m_pCredits->nUploadedHi << 32) | m_pCredits->nUploadedLo) + bytes;
 
     //recode
-    m_pCredits->nUploadedLo = (uint32)current;
-    m_pCredits->nUploadedHi = (uint32)(current >> 32);
+    m_pCredits->nUploadedLo = (UINT)current;
+    m_pCredits->nUploadedHi = (UINT)(current >> 32);
 
     m_bForceCheckScoreRatio = true; //>>> WiZaRd::CPU calm down
 }
@@ -124,7 +124,7 @@ uint64 CClientCredits::GetDownloadedTotal() const
     return ((uint64)m_pCredits->nDownloadedHi << 32) | m_pCredits->nDownloadedLo;
 }
 
-float CClientCredits::GetScoreRatio(uint32 dwForIP) /*const*/ //>>> WiZaRd::CPU calm down
+float CClientCredits::GetScoreRatio(UINT dwForIP) /*const*/ //>>> WiZaRd::CPU calm down
 {
     // check the client ident status
     if ( ( GetCurrentIdentState(dwForIP) == IS_IDFAILED || GetCurrentIdentState(dwForIP) == IS_IDBADGUY || GetCurrentIdentState(dwForIP) == IS_IDNEEDED) && theApp.clientcredits->CryptoAvailable() )
@@ -259,8 +259,8 @@ void CClientCreditsList::LoadList()
         UINT count = file.ReadUInt32();
         m_mapClients.InitHashTable(count+5000); // TODO: should be prime number... and 20% larger
 
-        const uint32 dwExpired = time(NULL) - 12960000; // today - 150 day
-        uint32 cDeleted = 0;
+        const UINT dwExpired = time(NULL) - 12960000; // today - 150 day
+        UINT cDeleted = 0;
         for (UINT i = 0; i < count; i++)
         {
             CreditStruct* newcstruct = new CreditStruct;
@@ -323,7 +323,7 @@ void CClientCreditsList::SaveList()
         return;
     }
 
-    uint32 count = m_mapClients.GetCount();
+    UINT count = m_mapClients.GetCount();
     BYTE* pBuffer = new BYTE[count*sizeof(CreditStruct)];
     CClientCredits* cur_credit;
     CCKey tempkey(0);
@@ -403,7 +403,7 @@ void CClientCredits::InitalizeIdent()
     m_dwIdentIP = 0;
 }
 
-void CClientCredits::Verified(uint32 dwForIP)
+void CClientCredits::Verified(UINT dwForIP)
 {
     m_dwIdentIP = dwForIP;
     // client was verified, copy the keyto store him if not done already
@@ -435,7 +435,7 @@ bool CClientCredits::SetSecureIdent(const uchar* pachIdent, uint8 nIdentLen)  //
     return true;
 }
 
-EIdentState	CClientCredits::GetCurrentIdentState(uint32 dwForIP) const
+EIdentState	CClientCredits::GetCurrentIdentState(UINT dwForIP) const
 {
     if (IdentState != IS_IDENTIFIED)
         return IdentState;
@@ -522,7 +522,7 @@ bool CClientCreditsList::CreateKeyPair()
 }
 
 uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, uchar* pachOutput, uint8 nMaxSize,
-        uint32 ChallengeIP, uint8 byChaIPKind,
+        UINT ChallengeIP, uint8 byChaIPKind,
         CryptoPP::RSASSA_PKCS1v15_SHA_Signer* sigkey)
 {
     // sigkey param is used for debug only
@@ -541,10 +541,10 @@ uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, uchar* pachOu
         SecByteBlock sbbSignature(sigkey->SignatureLength());
         AutoSeededRandomPool rng;
         byte abyBuffer[MAXPUBKEYSIZE+9];
-        uint32 keylen = pTarget->GetSecIDKeyLen();
+        UINT keylen = pTarget->GetSecIDKeyLen();
         memcpy(abyBuffer,pTarget->GetSecureIdent(),keylen);
         // 4 additional bytes random data send from this client
-        uint32 challenge = pTarget->m_dwCryptRndChallengeFrom;
+        UINT challenge = pTarget->m_dwCryptRndChallengeFrom;
         ASSERT ( challenge != 0 );
         PokeUInt32(abyBuffer+keylen, challenge);
         uint16 ChIpLen = 0;
@@ -568,7 +568,7 @@ uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, uchar* pachOu
 }
 
 bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uchar* pachSignature, uint8 nInputSize,
-                                     uint32 dwForIP, uint8 byChaIPKind)
+                                     UINT dwForIP, uint8 byChaIPKind)
 {
     ASSERT( pTarget );
     ASSERT( pachSignature );
@@ -585,7 +585,7 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uchar* pachS
         // 4 additional bytes random data send from this client +5 bytes v2
         byte abyBuffer[MAXPUBKEYSIZE+9];
         memcpy(abyBuffer,m_abyMyPublicKey,m_nMyPublicKeyLen);
-        uint32 challenge = pTarget->m_dwCryptRndChallengeFor;
+        UINT challenge = pTarget->m_dwCryptRndChallengeFor;
         ASSERT ( challenge != 0 );
         PokeUInt32(abyBuffer+m_nMyPublicKeyLen, challenge);
 
@@ -594,7 +594,7 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uchar* pachS
         if (byChaIPKind != 0)
         {
             nChIpSize = 5;
-            uint32 ChallengeIP = 0;
+            UINT ChallengeIP = 0;
             switch (byChaIPKind)
             {
             case CRYPT_CIP_LOCALCLIENT:
@@ -658,7 +658,7 @@ bool CClientCreditsList::Debug_CheckCrypting()
     pub.DEREncode(asink);
     uint8 PublicKeyLen = (uint8)asink.TotalPutLength();
     asink.MessageEnd();
-    uint32 challenge = rand();
+    UINT challenge = rand();
     // create fake client which pretends to be this emule
     CreditStruct* newcstruct = new CreditStruct;
     memset(newcstruct, 0, sizeof(CreditStruct));
@@ -693,7 +693,7 @@ bool CClientCreditsList::Debug_CheckCrypting()
     return bResult;
 }
 #endif
-uint32 CClientCredits::GetSecureWaitStartTime(uint32 dwForIP)
+UINT CClientCredits::GetSecureWaitStartTime(UINT dwForIP)
 {
     if (m_dwUnSecureWaitTime == 0 || m_dwSecureWaitTime == 0)
         SetSecWaitStartTime(dwForIP);
@@ -733,7 +733,7 @@ uint32 CClientCredits::GetSecureWaitStartTime(uint32 dwForIP)
     }
 }
 
-void CClientCredits::SetSecWaitStartTime(uint32 dwForIP)
+void CClientCredits::SetSecWaitStartTime(UINT dwForIP)
 {
     m_dwUnSecureWaitTime = ::GetTickCount()-1;
     m_dwSecureWaitTime = ::GetTickCount()-1;

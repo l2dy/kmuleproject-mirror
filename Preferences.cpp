@@ -97,7 +97,7 @@ uchar	CPreferences::userhash[16];
 WINDOWPLACEMENT CPreferences::EmuleWindowPlacement;
 int		CPreferences::maxGraphDownloadRate;
 int		CPreferences::maxGraphUploadRate;
-uint32	CPreferences::maxGraphUploadRateEstimated = 0;
+UINT	CPreferences::maxGraphUploadRateEstimated = 0;
 bool	CPreferences::beepOnError;
 bool	CPreferences::m_bIconflashOnNewMessage;
 bool	CPreferences::confirmExit;
@@ -123,9 +123,9 @@ uint64	CPreferences::cumUpOverheadTotalPackets;
 uint64	CPreferences::cumUpOverheadFileReqPackets;
 uint64	CPreferences::cumUpOverheadSrcExPackets;
 uint64	CPreferences::cumUpOverheadKadPackets;
-uint32	CPreferences::cumUpSuccessfulSessions;
-uint32	CPreferences::cumUpFailedSessions;
-uint32	CPreferences::cumUpAvgTime;
+UINT	CPreferences::cumUpSuccessfulSessions;
+UINT	CPreferences::cumUpFailedSessions;
+UINT	CPreferences::cumUpAvgTime;
 uint64	CPreferences::cumUpData_EDONKEY;
 uint64	CPreferences::cumUpData_EDONKEYHYBRID;
 uint64	CPreferences::cumUpData_EMULE;
@@ -148,20 +148,20 @@ uint64	CPreferences::cumUpData_File;
 uint64	CPreferences::cumUpData_Partfile;
 uint64	CPreferences::sesUpData_File;
 uint64	CPreferences::sesUpData_Partfile;
-uint32	CPreferences::cumDownCompletedFiles;
-uint32	CPreferences::cumDownSuccessfulSessions;
-uint32	CPreferences::cumDownFailedSessions;
-uint32	CPreferences::cumDownAvgTime;
+UINT	CPreferences::cumDownCompletedFiles;
+UINT	CPreferences::cumDownSuccessfulSessions;
+UINT	CPreferences::cumDownFailedSessions;
+UINT	CPreferences::cumDownAvgTime;
 uint64	CPreferences::cumLostFromCorruption;
 uint64	CPreferences::cumSavedFromCompression;
-uint32	CPreferences::cumPartsSavedByICH;
-uint32	CPreferences::sesDownSuccessfulSessions;
-uint32	CPreferences::sesDownFailedSessions;
-uint32	CPreferences::sesDownAvgTime;
-uint32	CPreferences::sesDownCompletedFiles;
+UINT	CPreferences::cumPartsSavedByICH;
+UINT	CPreferences::sesDownSuccessfulSessions;
+UINT	CPreferences::sesDownFailedSessions;
+UINT	CPreferences::sesDownAvgTime;
+UINT	CPreferences::sesDownCompletedFiles;
 uint64	CPreferences::sesLostFromCorruption;
 uint64	CPreferences::sesSavedFromCompression;
-uint32	CPreferences::sesPartsSavedByICH;
+UINT	CPreferences::sesPartsSavedByICH;
 uint64	CPreferences::cumDownData_EDONKEY;
 uint64	CPreferences::cumDownData_EDONKEYHYBRID;
 uint64	CPreferences::cumDownData_EMULE;
@@ -189,13 +189,13 @@ float	CPreferences::cumConnAvgUpRate;
 float	CPreferences::cumConnMaxAvgUpRate;
 float	CPreferences::cumConnMaxUpRate;
 time_t	CPreferences::cumConnRunTime;
-uint32	CPreferences::cumConnAvgConnections;
-uint32	CPreferences::cumConnMaxConnLimitReached;
-uint32	CPreferences::cumConnPeakConnections;
-uint32	CPreferences::cumConnTransferTime;
-uint32	CPreferences::cumConnDownloadTime;
-uint32	CPreferences::cumConnUploadTime;
-uint32	CPreferences::cumSharedMostFilesShared;
+UINT	CPreferences::cumConnAvgConnections;
+UINT	CPreferences::cumConnMaxConnLimitReached;
+UINT	CPreferences::cumConnPeakConnections;
+UINT	CPreferences::cumConnTransferTime;
+UINT	CPreferences::cumConnDownloadTime;
+UINT	CPreferences::cumConnUploadTime;
+UINT	CPreferences::cumSharedMostFilesShared;
 uint64	CPreferences::cumSharedLargestShareSize;
 uint64	CPreferences::cumSharedLargestAvgFileSize;
 uint64	CPreferences::cumSharedLargestFileSize;
@@ -289,7 +289,7 @@ UINT	CPreferences::m_uFileBufferTimeLimit;
 UINT	CPreferences::m_iQueueSize;
 int		CPreferences::m_iCommitFiles;
 UINT	CPreferences::maxmsgsessions;
-uint32	CPreferences::versioncheckLastAutomatic;
+UINT	CPreferences::versioncheckLastAutomatic;
 CString	CPreferences::messageFilter;
 CString	CPreferences::commentFilter;
 CString	CPreferences::filenameCleanups;
@@ -366,7 +366,7 @@ bool	CPreferences::m_bShowDownloadToolbar;
 
 bool	CPreferences::m_bCryptLayerRequested;
 bool	CPreferences::m_bCryptLayerRequired;
-uint32	CPreferences::m_dwKadUDPKey;
+UINT	CPreferences::m_dwKadUDPKey;
 uint8	CPreferences::m_byCryptTCPPaddingLength;
 
 bool	CPreferences::m_bSkipWANIPSetup;
@@ -440,7 +440,7 @@ LPCTSTR CPreferences::GetConfigFile()
 
 void CPreferences::Init()
 {
-    srand((uint32)time(0)); // we need random numbers sometimes
+    srand((UINT)time(0)); // we need random numbers sometimes
 
     prefsExt = new Preferences_Ext_Struct;
     memset(prefsExt, 0, sizeof *prefsExt);
@@ -746,13 +746,12 @@ uint64 CPreferences::GetMaxDownloadInBytesPerSec(bool dynamic)
 	{
 		//Session limit, are we leeching?
 		//Don't download more than 3 times our upload (multiFU, partial PS)
-		const double uploaded = max(SESSIONMAXTRANS, (double)theStats.sessionSentBytes /*- (double)theStats.sessionSentBytesToFriend - (double)theStats.sessionSentBytesViaPartPS*/); //>>> WiZaRd::MultiFU //>>> WiZaRd::PowerShare
+		const double uploaded = max(SESSIONMAXTRANS, (double)theStats.sessionSentBytes - (double)theStats.sessionSentBytesToFriend /*- (double)theStats.sessionSentBytesViaPartPS*/); //>>> WiZaRd::MultiFU //>>> WiZaRd::PowerShare
 		const double sessionUlDlRatio = (uploaded + 1.0) / (theStats.sessionReceivedBytes - sesDownData_URL + 1.0); //>>> WiZaRd::Exclude HTTP Traffic [Quezl]
 		if(sessionUlDlRatio < 0.4) //Activate throttling if close to limit
 		{		
 			//if we cannot upload, yet, then it's not our fault!
-			const UINT currUpload = (theApp.uploadqueue && theApp.uploadqueue->GetWaitingUserCount() && theApp.uploadqueue->GetUploadQueueLength() && theApp.uploadqueue->GetDatarate())
-				? theApp.uploadqueue->GetDatarate() : 10240;
+			const UINT currUpload = theApp.uploadqueue->GetDatarate();
 			const UINT minDownload = max(currUpload, 10240); //we will let them at least 10k DL
 			uimaxDownload = (uint64)min(max(minDownload, (9*currUpload*sessionUlDlRatio)), uimaxDownload);
 		}
@@ -762,13 +761,9 @@ uint64 CPreferences::GetMaxDownloadInBytesPerSec(bool dynamic)
     //dont be a Lam3r :)
     UINT maxup;
     if (dynamic && thePrefs.IsDynUpEnabled() && theApp.uploadqueue->GetWaitingUserCount() != 0 && theApp.uploadqueue->GetDatarate() != 0)
-    {
         maxup = theApp.uploadqueue->GetDatarate();
-    }
     else
-    {
         maxup = GetMaxUpload()*1024;
-    }
 
 //>>> WiZaRd::SessionRatio
 	uint64 uioffimaxDownload = 0;
@@ -781,23 +776,10 @@ uint64 CPreferences::GetMaxDownloadInBytesPerSec(bool dynamic)
 	//Why is it dumb? 
 	//Because someone may download at 10000kB and upload 10kB (1:1000) but
 	//one may not download with more than 9kB if he can only upload 3kB (1:3) 
-	//Pretty unfair... and that's why eMule IS already favouring leechers 
+	//Pretty unfair... and that's why eMule IS already favoring leechers 
 	//by allowing incredible leeching! *narf*!
 	//But we use a sessionratio to limit it at least a *bit*
 	return min(uimaxDownload, uioffimaxDownload);
-/*
-	//dont be a Lam3r :)
-	UINT maxup;
-	if (dynamic && thePrefs.IsDynUpEnabled() && theApp.uploadqueue->GetWaitingUserCount() != 0 && theApp.uploadqueue->GetDatarate() != 0) {
-		maxup = theApp.uploadqueue->GetDatarate();
-	} else {
-		maxup = GetMaxUpload()*1024;
-	}
-
-	if (maxup < 4*1024)
-		return (((maxup < 10*1024) && ((uint64)maxup*3 < maxdownload*1024)) ? (uint64)maxup*3 : maxdownload*1024);
-	return (((maxup < 10*1024) && ((uint64)maxup*4 < maxdownload*1024)) ? (uint64)maxup*4 : maxdownload*1024);
-*/
 //<<< WiZaRd::SessionRatio
 }
 
@@ -1017,7 +999,7 @@ void CPreferences::SaveCompletedDownloadsStat()
 } // SaveCompletedDownloadsStat()
 
 void CPreferences::Add2SessionTransferData(UINT uClientID, UINT uClientPort, BOOL bFromPF,
-        BOOL bUpDown, uint32 bytes, bool sentToFriend)
+        BOOL bUpDown, UINT bytes, bool sentToFriend)
 {
     //	This function adds the transferred bytes to the appropriate variables,
     //	as well as to the totals for all clients. - Khaos
@@ -2349,7 +2331,7 @@ void CPreferences::LoadPreferences()
     m_bCryptLayerRequired = ini.GetBool(L"CryptLayerRequired", false);
     m_dwKadUDPKey = ini.GetInt(L"KadUDPKey", GetRandomUInt32());
 
-    uint32 nTmp = ini.GetInt(L"CryptTCPPaddingLength", 128);
+    UINT nTmp = ini.GetInt(L"CryptTCPPaddingLength", 128);
     m_byCryptTCPPaddingLength = (uint8)min(nTmp, 254);
 
     ///////////////////////////////////////////////////////////////////////////
@@ -2722,7 +2704,7 @@ int	CPreferences::GetMaxGraphUploadRate(bool bEstimateIfUnlimited)
     }
 }
 
-void CPreferences::EstimateMaxUploadCap(uint32 nCurrentUpload)
+void CPreferences::EstimateMaxUploadCap(UINT nCurrentUpload)
 {
     if (maxGraphUploadRateEstimated+1 < nCurrentUpload)
     {
@@ -2962,10 +2944,12 @@ CString CPreferences::GetDefaultDirectory(EDefaultDirectory eDirectory, bool bCr
         m_astrDefaultDirs[EMULE_TOOLBARDIR] = strSelectedExpansionBaseDirectory + _T("skins");
         m_astrDefaultDirs[EMULE_EXPANSIONDIR] = strSelectedExpansionBaseDirectory; // has ending backslashes
 
-        /*CString strDebug;
-        for (int i = 0; i < 12; i++)
-        	strDebug += m_astrDefaultDirs[i] + _T("\n");
-        AfxMessageBox(strDebug, MB_ICONINFORMATION);*/
+#ifdef _DEBUG
+		theApp.QueueDebugLogLineEx(LOG_INFO, L"Directory mode: %u", m_nCurrentUserDirMode);
+        CString strDebug = L"";;
+        for(UINT i = 0; i < EMULE_DIRCOUNT; ++i)
+        	theApp.QueueDebugLogLineEx(LOG_INFO, L"Dir %u: %s", i, m_astrDefaultDirs[i]);
+#endif
     }
     if (bCreate && !m_abDefaultDirsCreated[eDirectory])
     {

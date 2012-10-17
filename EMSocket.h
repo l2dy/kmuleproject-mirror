@@ -30,7 +30,7 @@ class Packet;
 
 struct StandardPacketQueueEntry
 {
-    uint32 actualPayloadSize;
+    UINT actualPayloadSize;
     Packet* packet;
 };
 
@@ -41,7 +41,7 @@ public:
     CEMSocket();
     virtual ~CEMSocket();
 
-    virtual void 	SendPacket(Packet* packet, bool delpacket = true, bool controlpacket = true, uint32 actualPayloadSize = 0, bool bForceImmediateSend = false);
+    virtual void 	SendPacket(Packet* packet, bool delpacket = true, bool controlpacket = true, UINT actualPayloadSize = 0, bool bForceImmediateSend = false);
     bool	IsConnected() const
     {
         return byConnected == ES_CONNECTED;
@@ -54,7 +54,7 @@ public:
     {
         return false;
     }
-    void	SetDownloadLimit(uint32 limit);
+    void	SetDownloadLimit(UINT limit);
     void	DisableDownloadLimit();
     BOOL	AsyncSelect(long lEvent);
     virtual bool IsBusy() const
@@ -86,26 +86,32 @@ public:
 
     CString GetFullErrorMessage(DWORD dwError);
 
-    DWORD GetLastCalledSend()
+//>>> WiZaRd::ZZUL Upload [ZZ]
+/*
+    DWORD GetLastCalledSend() const
     {
         return lastCalledSend;
     }
+*/
+//<<< WiZaRd::ZZUL Upload [ZZ]
     uint64 GetSentBytesCompleteFileSinceLastCallAndReset();
     uint64 GetSentBytesPartFileSinceLastCallAndReset();
     uint64 GetSentBytesControlPacketSinceLastCallAndReset();
     uint64 GetSentPayloadSinceLastCallAndReset();
     void TruncateQueues();
 
-    virtual SocketSentBytes SendControlData(uint32 maxNumberOfBytesToSend, uint32 minFragSize)
+    virtual SocketSentBytes SendControlData(UINT maxNumberOfBytesToSend, UINT minFragSize)
     {
         return Send(maxNumberOfBytesToSend, minFragSize, true);
     };
-    virtual SocketSentBytes SendFileAndControlData(uint32 maxNumberOfBytesToSend, uint32 minFragSize)
+    virtual SocketSentBytes SendFileAndControlData(UINT maxNumberOfBytesToSend, UINT minFragSize)
     {
         return Send(maxNumberOfBytesToSend, minFragSize, false);
     };
 
-    uint32	GetNeededBytes();
+//>>> WiZaRd::ZZUL Upload [ZZ]
+    //UINT	GetNeededBytes();
+//<<< WiZaRd::ZZUL Upload [ZZ]
 #ifdef _DEBUG
     // Diagnostic Support
     virtual void AssertValid() const;
@@ -128,33 +134,33 @@ protected:
     CString m_strLastProxyError;
 
 private:
-    virtual SocketSentBytes Send(uint32 maxNumberOfBytesToSend, uint32 minFragSize, bool onlyAllowedToSendControlPacket);
+    virtual SocketSentBytes Send(UINT maxNumberOfBytesToSend, UINT minFragSize, bool onlyAllowedToSendControlPacket);
     void	ClearQueues();
     virtual int Receive(void* lpBuf, int nBufLen, int nFlags = 0);
 
-    uint32 GetNextFragSize(uint32 current, uint32 minFragSize);
+    UINT GetNextFragSize(UINT current, UINT minFragSize);
     bool    HasSent()
     {
         return m_hasSent;
     }
 
     // Download (pseudo) rate control
-    uint32	downloadLimit;
+    UINT	downloadLimit;
     bool	downloadLimitEnable;
     bool	pendingOnReceive;
 
     // Download partial header
     char	pendingHeader[PACKET_HEADER_SIZE];	// actually, this holds only 'PACKET_HEADER_SIZE-1' bytes.
-    uint32	pendingHeaderSize;
+    UINT	pendingHeaderSize;
 
     // Download partial packet
     Packet* pendingPacket;
-    uint32	pendingPacketSize;
+    UINT	pendingPacketSize;
 
     // Upload control
     char*	sendbuffer;
-    uint32	sendblen;
-    uint32	sent;
+    UINT	sendblen;
+    UINT	sent;
 
     CTypedPtrList<CPtrList, Packet*> controlpacket_queue;
     CList<StandardPacketQueueEntry> standartpacket_queue;
@@ -167,9 +173,9 @@ private:
     bool m_bAccelerateUpload;
     DWORD lastCalledSend;
     DWORD lastSent;
-    uint32 lastFinishedStandard;
-    uint32 m_actualPayloadSize;
-    uint32 m_actualPayloadSizeSent;
+    UINT lastFinishedStandard;
+    UINT m_actualPayloadSize;
+    UINT m_actualPayloadSizeSent;
     bool m_bBusy;
     bool m_hasSent;
     bool m_bUsesBigSendBuffers;
@@ -188,4 +194,13 @@ public:
 	virtual	float	GetBlockingRatio() const;
 	virtual	float	GetAndStepBlockRatio();
 //<<< WiZaRd::Count block/success send [Xman?]
+//>>> WiZaRd::ZZUL Upload [ZZ]
+private:
+	UINT	GetNeededBytes(const char* sendbuffer, const UINT sendblen, const UINT sent, const bool currentPacket_is_controlpacket, const DWORD lastCalledSend);
+	UINT	m_actualPayloadSizeSentForThisPacket;
+	bool	m_bConnectionIsReadyForSend;
+	bool	useLargeBuffer;
+	bool	bufferExpanded;
+	CCriticalSection statsLocker;	
+//<<< WiZaRd::ZZUL Upload [ZZ]
 };

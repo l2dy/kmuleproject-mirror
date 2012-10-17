@@ -27,8 +27,40 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
 #define	NOTIFYICONDATA_V1_TIP_SIZE	64
+#define NOTIFYICONDATA_V2_TIP_SIZE 128
+
+DWORD GetDllVersion(LPCTSTR lpszDllName) 
+{
+	DWORD dwVersion = 0;
+
+	HINSTANCE hinstDll = LoadLibrary(lpszDllName);
+	if(hinstDll) 
+	{
+		DLLGETVERSIONPROC pDllGetVersion = (DLLGETVERSIONPROC)GetProcAddress(hinstDll, "DllGetVersion");
+		if(pDllGetVersion)
+		{
+			DLLVERSIONINFO dvi;
+			ZeroMemory(&dvi, sizeof(dvi));
+			dvi.cbSize = sizeof(dvi);
+
+			HRESULT hr = (*pDllGetVersion)(&dvi);
+			if(SUCCEEDED(hr))
+				dwVersion = MAKELONG(dvi.dwMajorVersion, dvi.dwMinorVersion);
+		}
+		FreeLibrary(hinstDll);
+	}
+
+	return dwVersion;
+}
+
+bool SupportExtendedToolTips()
+{
+	//see ms-help://MS.VSCC.2003/MS.MSDNQTR.2005JUL.1033/shellcc/platform/shell/reference/structures/notifyicondata.htm
+//	static const bool bSupportsExtendedToolTips = GetDllVersion(TEXT("comctl32.dll")) >= MAKELONG(5,0);
+	static const bool bSupportsExtendedToolTips = GetDllVersion(TEXT("shell32.dll")) >= MAKELONG(5,0);
+	return bSupportsExtendedToolTips;
+}
 
 /////////////////////////////////////////////////////////////////////////////
 // CTrayDialog dialog
@@ -47,14 +79,16 @@ END_MESSAGE_MAP()
 CTrayDialog::CTrayDialog(UINT uIDD,CWnd* pParent /*=NULL*/)
     : CTrayDialogBase(uIDD, pParent)
 {
-    m_nidIconData.cbSize = NOTIFYICONDATA_V1_SIZE;
+//	ZeroMemory(&m_nidIconData, sizeof(NOTIFYICONDATA));
+	m_nidIconData.cbSize = SupportExtendedToolTips() ? sizeof(NOTIFYICONDATA) : sizeof(NOTIFYICONDATA_V1_SIZE);
+//	m_nidIconData.cbSize = NOTIFYICONDATA_V1_SIZE;
     m_nidIconData.hWnd = 0;
     m_nidIconData.uID = 1;
     m_nidIconData.uCallbackMessage = UM_TRAY_ICON_NOTIFY_MESSAGE;
     m_nidIconData.hIcon = 0;
     m_nidIconData.szTip[0] = L'\0';
     m_nidIconData.uFlags = NIF_MESSAGE;
-    m_bTrayIconVisible = FALSE;
+	m_bTrayIconVisible = false;
     m_pbMinimizeToTray = NULL;
     m_nDefaultMenuItem = 0;
     m_hPrevIconDelete = NULL;
@@ -66,7 +100,7 @@ CTrayDialog::CTrayDialog(UINT uIDD,CWnd* pParent /*=NULL*/)
 
 int CTrayDialog::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
-    if (CTrayDialogBase::OnCreate(lpCreateStruct) == -1)
+	if (__super::OnCreate(lpCreateStruct) == -1)
         return -1;
 
     ASSERT( WM_TASKBARCREATED );
@@ -78,21 +112,19 @@ int CTrayDialog::OnCreate(LPCREATESTRUCT lpCreateStruct)
 void CTrayDialog::OnDestroy()
 {
     KillSingleClickTimer();
-    CTrayDialogBase::OnDestroy();
+	__super::OnDestroy();
 
     // shouldn't that be done before passing the message to DefWinProc?
     if (m_nidIconData.hWnd && m_nidIconData.uID > 0 && TrayIsVisible())
-    {
         VERIFY( Shell_NotifyIcon(NIM_DELETE, &m_nidIconData) );
-    }
 }
 
-BOOL CTrayDialog::TrayIsVisible()
+bool CTrayDialog::TrayIsVisible() const
 {
     return m_bTrayIconVisible;
 }
 
-void CTrayDialog::TraySetIcon(HICON hIcon, bool bDelete)
+void CTrayDialog::TraySetIcon(HICON hIcon, const bool bDelete)
 {
     ASSERT( hIcon );
     if (hIcon)
@@ -109,22 +141,26 @@ void CTrayDialog::TraySetIcon(HICON hIcon, bool bDelete)
     }
 }
 
-void CTrayDialog::TraySetIcon(UINT nResourceID)
-{
-    TraySetIcon(AfxGetApp()->LoadIcon(nResourceID));
-}
+//void CTrayDialog::TraySetIcon(const UINT nResourceID, const bool bDelete)
+//{
+//	TraySetIcon(AfxGetApp()->LoadIcon(nResourceID), bDelete);
+//}
 
-void CTrayDialog::TraySetIcon(LPCTSTR lpszResourceName)
-{
-    TraySetIcon(AfxGetApp()->LoadIcon(lpszResourceName));
-}
+//void CTrayDialog::TraySetIcon(LPCTSTR lpszResourceName, const bool bDelete)
+//{
+//	TraySetIcon(AfxGetApp()->LoadIcon(lpszResourceName), bDelete);
+//}
 
 void CTrayDialog::TraySetToolTip(LPCTSTR lpszToolTip)
 {
-    ASSERT( _tcslen(lpszToolTip) > 0 && _tcslen(lpszToolTip) < NOTIFYICONDATA_V1_TIP_SIZE );
-    _tcsncpy(m_nidIconData.szTip, lpszToolTip, NOTIFYICONDATA_V1_TIP_SIZE);
-    m_nidIconData.szTip[NOTIFYICONDATA_V1_TIP_SIZE - 1] = L'\0';
-    m_nidIconData.uFlags |= NIF_TIP;
+	const size_t usedSize = SupportExtendedToolTips() ? NOTIFYICONDATA_V2_TIP_SIZE : NOTIFYICONDATA_V1_TIP_SIZE;
+	ASSERT(_tcslen(lpszToolTip) > 0 && _tcslen(lpszToolTip) < usedSize);
+	_tcsncpy(m_nidIconData.szTip, lpszToolTip, usedSize);
+	m_nidIconData.szTip[usedSize - 1] = L'\0';
+//	ASSERT(_tcslen(lpszToolTip) > 0 && _tcslen(lpszToolTip) < NOTIFYICONDATA_V1_TIP_SIZE);
+//	_tcsncpy(m_nidIconData.szTip, lpszToolTip, NOTIFYICONDATA_V1_TIP_SIZE);
+//	m_nidIconData.szTip[NOTIFYICONDATA_V1_TIP_SIZE - 1] = L'\0';
+	m_nidIconData.uFlags |= NIF_TIP;
 
     Shell_NotifyIcon(NIM_MODIFY, &m_nidIconData);
 }
@@ -136,7 +172,7 @@ BOOL CTrayDialog::TrayShow()
     {
         bSuccess = Shell_NotifyIcon(NIM_ADD, &m_nidIconData);
         if (bSuccess)
-            m_bTrayIconVisible = TRUE;
+			m_bTrayIconVisible = true;
     }
     return bSuccess;
 }
@@ -148,7 +184,7 @@ BOOL CTrayDialog::TrayHide()
     {
         bSuccess = Shell_NotifyIcon(NIM_DELETE, &m_nidIconData);
         if (bSuccess)
-            m_bTrayIconVisible = FALSE;
+			m_bTrayIconVisible = false;
     }
     return bSuccess;
 }
@@ -162,7 +198,7 @@ BOOL CTrayDialog::TrayUpdate()
         if (!bSuccess)
         {
             //ASSERT(0);
-            return FALSE; // don't delete 'm_hPrevIconDelete' because it's still attached to the tray
+			return false; // don't delete 'm_hPrevIconDelete' because it's still attached to the tray
         }
     }
 
@@ -175,7 +211,7 @@ BOOL CTrayDialog::TrayUpdate()
     return bSuccess;
 }
 
-BOOL CTrayDialog::TraySetMenu(UINT nResourceID)
+BOOL CTrayDialog::TraySetMenu(const UINT nResourceID)
 {
     BOOL bSuccess = m_mnuTrayMenu.LoadMenu(nResourceID);
     ASSERT( bSuccess );
@@ -302,7 +338,7 @@ void CTrayDialog::OnSysCommand(UINT nID, LPARAM lParam)
             ShowWindow(SW_HIDE);
     }
     else
-        CTrayDialogBase::OnSysCommand(nID, lParam);
+		__super::OnSysCommand(nID, lParam);
 }
 
 void CTrayDialog::TraySetMinimizeToTray(bool* pbMinimizeToTray)

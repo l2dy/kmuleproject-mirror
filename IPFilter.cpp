@@ -145,12 +145,12 @@ int CIPFilter::AddFromFile(LPCTSTR pszFilePath, bool bShowResponse)
                     }
                     szName[iLen] = '\0';
 
-                    uint32 uStart;
+                    UINT uStart;
                     if (fread(&uStart, sizeof uStart, 1, readFile) != 1)
                         break;
                     uStart = ntohl(uStart);
 
-                    uint32 uEnd;
+                    UINT uEnd;
                     if (fread(&uEnd, sizeof uEnd, 1, readFile) != 1)
                         break;
                     uEnd = ntohl(uEnd);
@@ -175,7 +175,7 @@ int CIPFilter::AddFromFile(LPCTSTR pszFilePath, bool bShowResponse)
                 if (sbuffer.GetAt(0) == '#' || sbuffer.GetAt(0) == '/' || sbuffer.GetLength() < 5)
                 {
                     sbuffer.Trim(" \t\r\n");
-                    DEBUG_ONLY( (!sbuffer.IsEmpty()) ? TRACE("IP filter: ignored line %u\n", iLine) : 0 );
+                    DEBUG_ONLY( (!sbuffer.IsEmpty()) ? TRACE(L"IP filter: ignored line %u\n", iLine) : 0 );
                     continue;
                 }
 
@@ -208,8 +208,8 @@ int CIPFilter::AddFromFile(LPCTSTR pszFilePath, bool bShowResponse)
                 }
 
                 bool bValid = false;
-                uint32 start = 0;
-                uint32 end = 0;
+                UINT start = 0;
+                UINT end = 0;
                 UINT level = 0;
                 CStringA desc;
                 if (eFileType == FilterDat)
@@ -226,7 +226,7 @@ int CIPFilter::AddFromFile(LPCTSTR pszFilePath, bool bShowResponse)
                 else
                 {
                     sbuffer.Trim(" \t\r\n");
-                    DEBUG_ONLY( (!sbuffer.IsEmpty()) ? TRACE("IP filter: ignored line %u\n", iLine) : 0 );
+                    DEBUG_ONLY( (!sbuffer.IsEmpty()) ? TRACE(L"IP filter: ignored line %u\n", iLine) : 0 );
                 }
             }
         }
@@ -354,7 +354,7 @@ void CIPFilter::SaveToDefaultFile()
     }
 }
 
-bool CIPFilter::ParseFilterLine1(const CStringA& sbuffer, uint32& ip1, uint32& ip2, UINT& level, CStringA& desc) const
+bool CIPFilter::ParseFilterLine1(const CStringA& sbuffer, UINT& ip1, UINT& ip2, UINT& level, CStringA& desc) const
 {
     UINT u1, u2, u3, u4, u5, u6, u7, u8, uLevel = DFLT_FILTER_LEVEL;
     int iDescStart = 0;
@@ -396,7 +396,7 @@ bool CIPFilter::ParseFilterLine1(const CStringA& sbuffer, uint32& ip1, uint32& i
     return true;
 }
 
-bool CIPFilter::ParseFilterLine2(const CStringA& sbuffer, uint32& ip1, uint32& ip2, UINT& level, CStringA& desc) const
+bool CIPFilter::ParseFilterLine2(const CStringA& sbuffer, UINT& ip1, UINT& ip2, UINT& level, CStringA& desc) const
 {
     int iPos = sbuffer.ReverseFind(':');
     if (iPos < 0)
@@ -434,14 +434,14 @@ void CIPFilter::RemoveAllIPFilters()
     m_pLastHit = NULL;
 }
 
-bool CIPFilter::IsFiltered(uint32 ip) /*const*/
+bool CIPFilter::IsFiltered(UINT ip) /*const*/
 {
     return IsFiltered(ip, thePrefs.GetIPFilterLevel());
 }
 
 static int __cdecl CmpSIPFilterByAddr(const void* pvKey, const void* pvElement)
 {
-    uint32 ip = *(uint32*)pvKey;
+    UINT ip = *(UINT*)pvKey;
     const SIPFilter* pIPFilter = *(SIPFilter**)pvElement;
 
     if (ip < pIPFilter->start)
@@ -451,7 +451,7 @@ static int __cdecl CmpSIPFilterByAddr(const void* pvKey, const void* pvElement)
     return 0;
 }
 
-bool CIPFilter::IsFiltered(uint32 ip, UINT level) /*const*/
+bool CIPFilter::IsFiltered(UINT ip, UINT level) /*const*/
 {
     if (m_iplist.GetCount() == 0 || ip == 0)
         return false;

@@ -16,7 +16,7 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #pragma once
 
-#define DEFAULT_NICK		L"kMule User"
+#define DEFAULT_NICK		L"kMule User @ http://www.emulefuture.de"
 #define MODDER_MAIL			L"thewizardofdos@gmail.com"
 
 #define MOD_AUTOUPDATE_URL	L"http://kMule.emulefuture.de/update/"

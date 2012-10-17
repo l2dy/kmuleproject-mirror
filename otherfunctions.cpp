@@ -97,34 +97,34 @@ static byte base16Lookup[BASE16_LOOKUP_MAX][2] =
     { 'F', 0xF }
 };
 
-CString CastItoXBytes(uint16 count, bool isK, bool isPerSec, uint32 decimal)
+CString CastItoXBytes(uint16 count, bool isK, bool isPerSec, UINT decimal)
 {
     return CastItoXBytes((double)count, isK, isPerSec, decimal);
 }
 
-CString CastItoXBytes(uint32 count, bool isK, bool isPerSec, uint32 decimal)
+CString CastItoXBytes(UINT count, bool isK, bool isPerSec, UINT decimal)
 {
     return CastItoXBytes((double)count, isK, isPerSec, decimal);
 }
 
-CString CastItoXBytes(uint64 count, bool isK, bool isPerSec, uint32 decimal)
+CString CastItoXBytes(uint64 count, bool isK, bool isPerSec, UINT decimal)
 {
     return CastItoXBytes((double)count, isK, isPerSec, decimal);
 }
 
 #if defined(_DEBUG) && defined(USE_DEBUG_EMFILESIZE)
-CString CastItoXBytes(EMFileSize count, bool isK, bool isPerSec, uint32 decimal)
+CString CastItoXBytes(EMFileSize count, bool isK, bool isPerSec, UINT decimal)
 {
     return CastItoXBytes((double)count, isK, isPerSec, decimal);
 }
 #endif
 
-CString CastItoXBytes(float count, bool isK, bool isPerSec, uint32 decimal)
+CString CastItoXBytes(float count, bool isK, bool isPerSec, UINT decimal)
 {
     return CastItoXBytes((double)count, isK, isPerSec, decimal);
 }
 
-CString CastItoXBytes(double count, bool isK, bool isPerSec, uint32 decimal)
+CString CastItoXBytes(double count, bool isK, bool isPerSec, UINT decimal)
 {
     if( count <= 0.0 )
     {
@@ -177,27 +177,27 @@ CString CastItoXBytes(double count, bool isK, bool isPerSec, uint32 decimal)
     return buffer;
 }
 
-CString CastItoIShort(uint16 count, bool isK, uint32 decimal)
+CString CastItoIShort(uint16 count, bool isK, UINT decimal)
 {
     return CastItoIShort((double)count, isK, decimal);
 }
 
-CString CastItoIShort(uint32 count, bool isK, uint32 decimal)
+CString CastItoIShort(UINT count, bool isK, UINT decimal)
 {
     return CastItoIShort((double)count, isK, decimal);
 }
 
-CString CastItoIShort(uint64 count, bool isK, uint32 decimal)
+CString CastItoIShort(uint64 count, bool isK, UINT decimal)
 {
     return CastItoIShort((double)count, isK, decimal);
 }
 
-CString CastItoIShort(float count, bool isK, uint32 decimal)
+CString CastItoIShort(float count, bool isK, UINT decimal)
 {
     return CastItoIShort((double)count, isK, decimal);
 }
 
-CString CastItoIShort(double count, bool isK, uint32 decimal)
+CString CastItoIShort(double count, bool isK, UINT decimal)
 {
     if( count <= 0.0 )
     {
@@ -528,7 +528,7 @@ CString MakeStringEscaped(CString in)
     return in;
 }
 
-CString RemoveAmbersand(const CString& rstr)
+CString RemoveAmpersand(const CString& rstr)
 {
     CString str(rstr);
     str.Remove(_T('&'));
@@ -1010,14 +1010,14 @@ unsigned int DecodeLengthBase16(unsigned int base16Length)
     return base16Length / 2U;
 }
 
-uint32 DecodeBase32(LPCTSTR pszInput, uchar* paucOutput, uint32 nBufferLen)
+UINT DecodeBase32(LPCTSTR pszInput, uchar* paucOutput, UINT nBufferLen)
 {
     if (pszInput == NULL)
         return false;
-    uint32 nDecodeLen = (_tcslen(pszInput)*5)/8;
+    UINT nDecodeLen = (_tcslen(pszInput)*5)/8;
     if ((_tcslen(pszInput)*5) % 8 > 0)
         nDecodeLen++;
-    uint32 nInputLen = _tcslen( pszInput );
+    UINT nInputLen = _tcslen( pszInput );
     if (paucOutput == NULL || nBufferLen == 0)
         return nDecodeLen;
     if (nDecodeLen > nBufferLen || paucOutput == NULL)
@@ -1051,7 +1051,7 @@ uint32 DecodeBase32(LPCTSTR pszInput, uchar* paucOutput, uint32 nBufferLen)
     return nDecodeLen;
 }
 
-uint32 DecodeBase32(LPCTSTR pszInput, CAICHHash& Hash)
+UINT DecodeBase32(LPCTSTR pszInput, CAICHHash& Hash)
 {
     return DecodeBase32(pszInput, Hash.GetRawHash(), Hash.GetHashSize());
 }
@@ -2324,7 +2324,7 @@ int CompareDirectories(const CString& rstrDir1, const CString& rstrDir2)
     return strDir1.CompareNoCase(strDir2);		// compare again
 }
 
-bool IsGoodIP(uint32 nIP, bool forceCheck)
+bool IsGoodIP(UINT nIP, bool forceCheck)
 {
     // always filter following IP's
     // -------------------------------------------
@@ -2349,7 +2349,7 @@ bool IsGoodIP(uint32 nIP, bool forceCheck)
         return !IsLANIP(nIP);
 }
 
-bool IsLANIP(uint32 nIP)
+bool IsLANIP(UINT nIP)
 {
     // LAN IP's
     // -------------------------------------------
@@ -2373,7 +2373,7 @@ bool IsLANIP(uint32 nIP)
     return false;
 }
 
-bool IsGoodIPPort(uint32 nIP, uint16 nPort)
+bool IsGoodIPPort(UINT nIP, uint16 nPort)
 {
     return IsGoodIP(nIP) && nPort!=0;
 }
@@ -2494,12 +2494,12 @@ void DebugHexDump(CFile& file)
         }
         catch(CFileException* e)
         {
-            TRACE("*** DebugHexDump(CFile&); CFileException\n");
+            TRACE(L"*** DebugHexDump(CFile&); CFileException\n");
             e->Delete();
         }
         catch(CMemoryException* e)
         {
-            TRACE("*** DebugHexDump(CFile&); CMemoryException\n");
+            TRACE(L"*** DebugHexDump(CFile&); CMemoryException\n");
             e->Delete();
         }
         delete[] data;
@@ -2634,7 +2634,7 @@ LPCTSTR DbgGetHashTypeString(const uchar* hash)
     return _T("Unknown");
 }
 
-CString DbgGetClientID(uint32 nClientID)
+CString DbgGetClientID(UINT nClientID)
 {
     CString strClientID;
     if (IsLowID(nClientID))
@@ -2781,7 +2781,7 @@ CString DbgGetClientTCPOpcode(UINT protocol, UINT opcode)
     return str;
 }
 
-void DebugRecv(LPCSTR pszMsg, const CUpDownClient* client, const uchar* packet, uint32 nIP)
+void DebugRecv(LPCSTR pszMsg, const CUpDownClient* client, const uchar* packet, UINT nIP)
 {
     // 111.222.333.444 = 15 chars
     if (client)
@@ -2820,14 +2820,14 @@ void DebugSend(LPCSTR pszMsg, const CUpDownClient* client, const uchar* packet)
         Debug(_T(">>> %-20hs\n"), pszMsg);
 }
 
-void DebugSend(LPCSTR pszOpcode, uint32 ip, uint16 port)
+void DebugSend(LPCSTR pszOpcode, UINT ip, uint16 port)
 {
     TCHAR szIPPort[22];
     _stprintf(szIPPort, _T("%s:%u"), ipstr(ntohl(ip)), port);
     Debug(_T(">>> %-20hs to   %-21s\n"), pszOpcode, szIPPort);
 }
 
-void DebugSendF(LPCSTR pszOpcode, uint32 ip, uint16 port, LPCTSTR pszMsg, ...)
+void DebugSendF(LPCSTR pszOpcode, UINT ip, uint16 port, LPCTSTR pszMsg, ...)
 {
     va_list args;
     va_start(args, pszMsg);
@@ -2840,7 +2840,7 @@ void DebugSendF(LPCSTR pszOpcode, uint32 ip, uint16 port, LPCTSTR pszMsg, ...)
     Debug(_T("%s\n"), str);
 }
 
-void DebugRecv(LPCSTR pszOpcode, uint32 ip, uint16 port)
+void DebugRecv(LPCSTR pszOpcode, UINT ip, uint16 port)
 {
     TCHAR szIPPort[22];
     _stprintf(szIPPort, _T("%s:%u"), ipstr(ntohl(ip)), port);
@@ -3007,7 +3007,7 @@ bool operator==(const CSKey& k1,const CSKey& k2)
     return !md4cmp(k1.m_key, k2.m_key);
 }
 
-CString ipstr(uint32 nIP)
+CString ipstr(UINT nIP)
 {
     // following gives the same string as 'inet_ntoa(*(in_addr*)&nIP)' but is not restricted to ASCII strings
     const BYTE* pucIP = (BYTE*)&nIP;
@@ -3016,7 +3016,7 @@ CString ipstr(uint32 nIP)
     return strIP;
 }
 
-CString ipstr(uint32 nIP, uint16 nPort)
+CString ipstr(UINT nIP, uint16 nPort)
 {
     // following gives the same string as 'inet_ntoa(*(in_addr*)&nIP)' but is not restricted to ASCII strings
     const BYTE* pucIP = (BYTE*)&nIP;
@@ -3032,7 +3032,7 @@ CString ipstr(LPCTSTR pszAddress, uint16 nPort)
     return strIPPort;
 }
 
-CStringA ipstrA(uint32 nIP)
+CStringA ipstrA(UINT nIP)
 {
     const BYTE* pucIP = (BYTE*)&nIP;
     CStringA strIP;
@@ -3040,7 +3040,7 @@ CStringA ipstrA(uint32 nIP)
     return strIP;
 }
 
-void ipstrA(CHAR* pszAddress, int iMaxAddress, uint32 nIP)
+void ipstrA(CHAR* pszAddress, int iMaxAddress, UINT nIP)
 {
     const BYTE* pucIP = (BYTE*)&nIP;
     _snprintf(pszAddress, iMaxAddress, "%u.%u.%u.%u", pucIP[0], pucIP[1], pucIP[2], pucIP[3]);
@@ -3180,7 +3180,7 @@ bool IsAutoDaylightTimeSetActive()
     return true; // default to 'Automatically adjust clock for daylight saving changes'
 }
 
-bool AdjustNTFSDaylightFileTime(uint32& ruFileDate, LPCTSTR pszFilePath)
+bool AdjustNTFSDaylightFileTime(UINT& ruFileDate, LPCTSTR pszFilePath)
 {
     if (!thePrefs.GetAdjustNTFSDaylightFileTime())
         return false;
@@ -3259,19 +3259,19 @@ uint16 GetRandomUInt16()
 #endif
 }
 
-uint32 GetRandomUInt32()
+UINT GetRandomUInt32()
 {
 #if RAND_MAX == 0x7fff
-    //return ((uint32)GetRandomUInt16() << 16) | (uint32)GetRandomUInt16();
+    //return ((UINT)GetRandomUInt16() << 16) | (UINT)GetRandomUInt16();
     // this would give the receiver the following information:
     //	random number N
     //	random number N+1 is below or greater/equal than 0x8000
     //	random number N+2
     //	random number N+3 is below or greater/equal than 0x8000
 
-    uint32 uRand0 = GetRandomUInt16();
+    UINT uRand0 = GetRandomUInt16();
     srand(GetTickCount() | uRand0);
-    uint32 uRand1 = GetRandomUInt16();
+    UINT uRand1 = GetRandomUInt16();
     return (uRand0 << 16) | uRand1;
 #else
 #error "Implement it!"
@@ -3831,7 +3831,7 @@ static void swap_byte (uint8* a, uint8* b)
     *b = bySwap;
 }
 
-RC4_Key_Struct* RC4CreateKey(const uchar* pachKeyData, uint32 nLen, RC4_Key_Struct* key, bool bSkipDiscard)
+RC4_Key_Struct* RC4CreateKey(const uchar* pachKeyData, UINT nLen, RC4_Key_Struct* key, bool bSkipDiscard)
 {
     uint8 index1;
     uint8 index2;
@@ -3859,7 +3859,7 @@ RC4_Key_Struct* RC4CreateKey(const uchar* pachKeyData, uint32 nLen, RC4_Key_Stru
     return key;
 }
 
-void RC4Crypt(const uchar* pachIn, uchar* pachOut, uint32 nLen, RC4_Key_Struct* key)
+void RC4Crypt(const uchar* pachIn, uchar* pachOut, UINT nLen, RC4_Key_Struct* key)
 {
     ASSERT( key != NULL && nLen > 0 );
     if (key == NULL)
@@ -3870,7 +3870,7 @@ void RC4Crypt(const uchar* pachIn, uchar* pachOut, uint32 nLen, RC4_Key_Struct* 
     uint8* pabyState = &key->abyState[0];;
     uint8 byXorIndex;
 
-    for (uint32 i = 0; i < nLen; i++)
+    for (UINT i = 0; i < nLen; i++)
     {
         byX = (byX + 1);
         byY = (pabyState[byX] + byY);
@@ -4102,27 +4102,27 @@ int IsExtensionTypeOf(EFileType ftype, CString fext)
     return 0;
 }
 
-uint32 LevenshteinDistance(const CString& str1, const CString& str2)
+UINT LevenshteinDistance(const CString& str1, const CString& str2)
 {
-    uint32 n1 = str1.GetLength();
-    uint32 n2 = str2.GetLength();
+    UINT n1 = str1.GetLength();
+    UINT n2 = str2.GetLength();
 
-    uint32* p = new uint32[n2+1];
-    uint32* q = new uint32[n2+1];
-    uint32* r;
+    UINT* p = new UINT[n2+1];
+    UINT* q = new UINT[n2+1];
+    UINT* r;
 
     p[0] = 0;
-    for(uint32 j = 1; j <= n2; ++j)
+    for(UINT j = 1; j <= n2; ++j)
         p[j] = p[j-1] + 1;
 
-    for(uint32 i = 1; i <= n1; ++i)
+    for(UINT i = 1; i <= n1; ++i)
     {
         q[0] = p[0] + 1;
-        for(uint32 j = 1; j <= n2; ++j )
+        for(UINT j = 1; j <= n2; ++j )
         {
-            uint32 d_del = p[j] + 1;
-            uint32 d_ins = q[j-1] + 1;
-            uint32 d_sub = p[j-1] + (str1.GetAt(i-1) == str2.GetAt(j-1) ? 0 : 1);
+            UINT d_del = p[j] + 1;
+            UINT d_ins = q[j-1] + 1;
+            UINT d_sub = p[j-1] + (str1.GetAt(i-1) == str2.GetAt(j-1) ? 0 : 1);
             q[j] = min(min(d_del, d_ins), d_sub);
         }
         r = p;
@@ -4130,7 +4130,7 @@ uint32 LevenshteinDistance(const CString& str1, const CString& str2)
         q = r;
     }
 
-    uint32 tmp = p[n2];
+    UINT tmp = p[n2];
     delete[] p;
     delete[] q;
 
@@ -4148,7 +4148,7 @@ bool _tmakepathlimit(TCHAR *path, const TCHAR *drive, const TCHAR *dir, const TC
         return false;
     }
 
-    uint32 nSize = 64; // the function should actually only add 4 (+1 nullbyte) bytes max extra
+    UINT nSize = 64; // the function should actually only add 4 (+1 nullbyte) bytes max extra
     if (drive != NULL)
         nSize += _tcsclen(drive);
     if (dir != NULL)
@@ -4735,5 +4735,42 @@ bool CheckURL(CString& strURL)
     if (strURL.IsEmpty() || (strURL.Find(L"://") == -1))
         return false;
     return true;
+}
+
+CString	GetFileNameFromURL(const CString& strURL)
+{
+	CString strRet = L"";
+
+	const int iSlash = strURL.ReverseFind(L'/');
+	const int iRedir = strURL.ReverseFind(L'='); //e.g. for http://ip-filter.emulefuture.de/download.php?file=ipfilter.dat
+	const int iUse = max(iSlash, iRedir);
+	if (iUse == -1)
+		strRet = strURL;
+	else
+	{
+		const int iDot = strURL.Find(L'.', iUse+1);
+		if(iDot != -1)
+			strRet = strURL.Mid(iUse+1);		
+	}	
+	if(strRet.IsEmpty())
+		return L"tmp.txt";
+	return strRet;
+}
+
+uint64	GetFileSizeOnDisk(const CString& strFilePath)
+{
+	uint64 ret = (uint64)0;
+
+	FILE* file = _tfsopen(strFilePath, L"rb", _SH_DENYNO); // can not use _SH_DENYWR because we may access a completing part file
+	if(file)
+	{
+		// get filesize
+		__int64 llFileSize = _filelengthi64(_fileno(file));
+		if (llFileSize != -1i64)
+			ret = (uint64)llFileSize;
+		fclose(file);
+	}	
+
+	return ret;
 }
 //<<< WiZaRd::Additional Functions

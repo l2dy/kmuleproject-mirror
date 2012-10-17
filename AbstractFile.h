@@ -87,7 +87,7 @@ public:
         m_FileIdentifier.SetMD4Hash(pucFileHash);
     }
     bool HasNullHash() const;
-    CString GetED2kLink(bool bHashset = false, bool bHTML = false, bool bHostname = false, bool bSource = false, uint32 dwSourceIP = 0) const;
+    CString GetED2kLink(bool bHashset = false, bool bHTML = false, bool bHostname = false, bool bSource = false, UINT dwSourceIP = 0) const;
 
 
     EMFileSize		GetFileSize() const
@@ -103,13 +103,13 @@ public:
         return m_nFileSize > (uint64)OLD_MAX_EMULE_FILE_SIZE;
     }
 
-    uint32 GetIntTagValue(uint8 tagname) const;
-    uint32 GetIntTagValue(LPCSTR tagname) const;
-    bool GetIntTagValue(uint8 tagname, uint32& ruValue) const;
+    UINT GetIntTagValue(uint8 tagname) const;
+    UINT GetIntTagValue(LPCSTR tagname) const;
+    bool GetIntTagValue(uint8 tagname, UINT& ruValue) const;
     uint64 GetInt64TagValue(uint8 tagname) const;
     uint64 GetInt64TagValue(LPCSTR tagname) const;
     bool GetInt64TagValue(uint8 tagname, uint64& ruValue) const;
-    void SetIntTagValue(uint8 tagname, uint32 uValue);
+    void SetIntTagValue(uint8 tagname, UINT uValue);
     void SetInt64TagValue(uint8 tagname, uint64 uValue);
     const CString& GetStrTagValue(uint8 tagname) const;
     const CString& GetStrTagValue(LPCSTR tagname) const;

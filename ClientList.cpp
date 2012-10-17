@@ -63,11 +63,11 @@ CClientList::~CClientList()
     RemoveAllTrackedClients();
 }
 
-void CClientList::GetStatistics(uint32 &ruTotalClients, int stats[NUM_CLIENTLIST_STATS],
-                                CMap<uint32, uint32, uint32, uint32>& clientVersionEDonkey,
-                                CMap<uint32, uint32, uint32, uint32>& clientVersionEDonkeyHybrid,
-                                CMap<uint32, uint32, uint32, uint32>& clientVersionEMule,
-                                CMap<uint32, uint32, uint32, uint32>& clientVersionAMule)
+void CClientList::GetStatistics(UINT &ruTotalClients, int stats[NUM_CLIENTLIST_STATS],
+                                CMap<UINT, UINT, UINT, UINT>& clientVersionEDonkey,
+                                CMap<UINT, UINT, UINT, UINT>& clientVersionEDonkeyHybrid,
+                                CMap<UINT, UINT, UINT, UINT>& clientVersionEMule,
+                                CMap<UINT, UINT, UINT, UINT>& clientVersionAMule)
 {
     ruTotalClients = list.GetCount();
     memset(stats, 0, sizeof(stats[0]) * NUM_CLIENTLIST_STATS);
@@ -288,7 +288,7 @@ bool CClientList::AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket*
     return false;
 }
 
-CUpDownClient* CClientList::FindClientByIP(uint32 clientip, UINT port) const
+CUpDownClient* CClientList::FindClientByIP(UINT clientip, UINT port) const
 {
     for (POSITION pos = list.GetHeadPosition(); pos != NULL;)
     {
@@ -299,7 +299,7 @@ CUpDownClient* CClientList::FindClientByIP(uint32 clientip, UINT port) const
     return 0;
 }
 
-CUpDownClient* CClientList::FindClientByUserHash(const uchar* clienthash, uint32 dwIP, uint16 nTCPPort) const
+CUpDownClient* CClientList::FindClientByUserHash(const uchar* clienthash, UINT dwIP, uint16 nTCPPort) const
 {
     CUpDownClient* pFound = NULL;
     for (POSITION pos = list.GetHeadPosition(); pos != NULL;)
@@ -316,7 +316,7 @@ CUpDownClient* CClientList::FindClientByUserHash(const uchar* clienthash, uint32
     return pFound;
 }
 
-CUpDownClient* CClientList::FindClientByIP(uint32 clientip) const
+CUpDownClient* CClientList::FindClientByIP(UINT clientip) const
 {
     for (POSITION pos = list.GetHeadPosition(); pos != NULL;)
     {
@@ -327,7 +327,7 @@ CUpDownClient* CClientList::FindClientByIP(uint32 clientip) const
     return 0;
 }
 
-CUpDownClient* CClientList::FindClientByIP_UDP(uint32 clientip, UINT nUDPport) const
+CUpDownClient* CClientList::FindClientByIP_UDP(UINT clientip, UINT nUDPport) const
 {
     for (POSITION pos = list.GetHeadPosition(); pos != NULL;)
     {
@@ -338,7 +338,7 @@ CUpDownClient* CClientList::FindClientByIP_UDP(uint32 clientip, UINT nUDPport) c
     return 0;
 }
 
-CUpDownClient* CClientList::FindClientByUserID_KadPort(uint32 clientID, uint16 kadPort) const
+CUpDownClient* CClientList::FindClientByUserID_KadPort(UINT clientID, uint16 kadPort) const
 {
     for (POSITION pos = list.GetHeadPosition(); pos != NULL;)
     {
@@ -349,7 +349,7 @@ CUpDownClient* CClientList::FindClientByUserID_KadPort(uint32 clientID, uint16 k
     return 0;
 }
 
-CUpDownClient* CClientList::FindClientByIP_KadPort(uint32 ip, uint16 port) const
+CUpDownClient* CClientList::FindClientByIP_KadPort(UINT ip, uint16 port) const
 {
     for (POSITION pos = list.GetHeadPosition(); pos != NULL;)
     {
@@ -360,9 +360,9 @@ CUpDownClient* CClientList::FindClientByIP_KadPort(uint32 ip, uint16 port) const
     return 0;
 }
 
-CUpDownClient* CClientList::FindClientByServerID(uint32 uServerIP, uint32 uED2KUserID) const
+CUpDownClient* CClientList::FindClientByServerID(UINT uServerIP, UINT uED2KUserID) const
 {
-    uint32 uHybridUserID = ntohl(uED2KUserID);
+    UINT uHybridUserID = ntohl(uED2KUserID);
     for (POSITION pos = list.GetHeadPosition(); pos != NULL;)
     {
         CUpDownClient* cur_client =	list.GetNext(pos);
@@ -376,14 +376,14 @@ CUpDownClient* CClientList::FindClientByServerID(uint32 uServerIP, uint32 uED2KU
 ///////////////////////////////////////////////////////////////////////////////
 // Banned clients
 
-void CClientList::AddBannedClient(uint32 dwIP)
+void CClientList::AddBannedClient(UINT dwIP)
 {
     m_bannedList.SetAt(dwIP, ::GetTickCount());
 }
 
-bool CClientList::IsBannedClient(uint32 dwIP) const
+bool CClientList::IsBannedClient(UINT dwIP) const
 {
-    uint32 dwBantime;
+    UINT dwBantime;
     if (m_bannedList.Lookup(dwIP, dwBantime))
     {
         if (dwBantime + CLIENTBANTIME > ::GetTickCount())
@@ -392,7 +392,7 @@ bool CClientList::IsBannedClient(uint32 dwIP) const
     return false;
 }
 
-void CClientList::RemoveBannedClient(uint32 dwIP)
+void CClientList::RemoveBannedClient(UINT dwIP)
 {
     m_bannedList.RemoveKey(dwIP);
 }
@@ -432,7 +432,7 @@ void CClientList::AddTrackClient(CUpDownClient* toadd)
 
 // true = everything ok, hash didn't changed
 // false = hash changed
-bool CClientList::ComparePriorUserhash(uint32 dwIP, uint16 nPort, void* pNewHash)
+bool CClientList::ComparePriorUserhash(UINT dwIP, uint16 nPort, void* pNewHash)
 {
     CDeletedClient* pResult = 0;
     if (m_trackedClientsList.Lookup(dwIP, pResult))
@@ -451,7 +451,7 @@ bool CClientList::ComparePriorUserhash(uint32 dwIP, uint16 nPort, void* pNewHash
     return true;
 }
 
-UINT CClientList::GetClientsFromIP(uint32 dwIP) const
+UINT CClientList::GetClientsFromIP(UINT dwIP) const
 {
     CDeletedClient* pResult;
     if (m_trackedClientsList.Lookup(dwIP, pResult))
@@ -480,7 +480,7 @@ void CClientList::TrackBadRequest(const CUpDownClient* upcClient, int nIncreaseC
     }
 }
 
-uint32 CClientList::GetBadRequests(const CUpDownClient* upcClient) const
+UINT CClientList::GetBadRequests(const CUpDownClient* upcClient) const
 {
     CDeletedClient* pResult = NULL;
     if (upcClient->GetIP() == 0)
@@ -499,7 +499,7 @@ uint32 CClientList::GetBadRequests(const CUpDownClient* upcClient) const
 void CClientList::RemoveAllTrackedClients()
 {
     POSITION pos = m_trackedClientsList.GetStartPosition();
-    uint32 nKey;
+    UINT nKey;
     CDeletedClient* pResult;
     while (pos != NULL)
     {
@@ -514,14 +514,14 @@ void CClientList::Process()
     ///////////////////////////////////////////////////////////////////////////
     // Cleanup banned client list
     //
-    const uint32 cur_tick = ::GetTickCount();
+    const UINT cur_tick = ::GetTickCount();
     if (m_dwLastBannCleanUp + BAN_CLEANUP_TIME < cur_tick)
     {
         m_dwLastBannCleanUp = cur_tick;
 
         POSITION pos = m_bannedList.GetStartPosition();
-        uint32 nKey;
-        uint32 dwBantime;
+        UINT nKey;
+        UINT dwBantime;
         while (pos != NULL)
         {
             m_bannedList.GetNextAssoc( pos, nKey, dwBantime );
@@ -539,7 +539,7 @@ void CClientList::Process()
         if (thePrefs.GetLogBannedClients())
             AddDebugLogLine(false, _T("Cleaning up TrackedClientList, %i clients on List..."), m_trackedClientsList.GetCount());
         POSITION pos = m_trackedClientsList.GetStartPosition();
-        uint32 nKey;
+        UINT nKey;
         CDeletedClient* pResult;
         while (pos != NULL)
         {
@@ -792,7 +792,7 @@ bool CClientList::IsValidClient(CUpDownClient* tocheck) const
 
 bool CClientList::RequestTCP(Kademlia::CContact* contact, uint8 byConnectOptions)
 {
-    uint32 nContactIP = ntohl(contact->GetIPAddress());
+    UINT nContactIP = ntohl(contact->GetIPAddress());
     // don't connect ourself
     if (GetLocalIP() == nContactIP && thePrefs.GetPort() == contact->GetTCPPort())
         return false;
@@ -822,7 +822,7 @@ bool CClientList::RequestTCP(Kademlia::CContact* contact, uint8 byConnectOptions
 
 void CClientList::RequestBuddy(Kademlia::CContact* contact, uint8 byConnectOptions)
 {
-    uint32 nContactIP = ntohl(contact->GetIPAddress());
+    UINT nContactIP = ntohl(contact->GetIPAddress());
     // don't connect ourself
     if (GetLocalIP() == nContactIP && thePrefs.GetPort() == contact->GetTCPPort())
         return;
@@ -851,7 +851,7 @@ void CClientList::RequestBuddy(Kademlia::CContact* contact, uint8 byConnectOptio
 
 bool CClientList::IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128* buddyID )
 {
-    uint32 nContactIP = ntohl(contact->GetIPAddress());
+    UINT nContactIP = ntohl(contact->GetIPAddress());
     //If eMule already knows this client, abort this.. It could cause conflicts.
     //Although the odds of this happening is very small, it could still happen.
     if (FindClientByIP(nContactIP, contact->GetTCPPort()))
@@ -922,7 +922,7 @@ bool CClientList::DoRequestFirewallCheckUDP(const Kademlia::CContact& contact)
     return true;
 }
 
-/*bool CClientList::DebugDoRequestFirewallCheckUDP(uint32 ip, uint16 port){
+/*bool CClientList::DebugDoRequestFirewallCheckUDP(UINT ip, uint16 port){
 	// first make sure we don't know this IP already from somewhere
 	// fine, justcreate the client object, set the state and wait
 	// TODO: We don't know the clients usershash, this means we cannot build an obfuscated connection, which
@@ -950,12 +950,12 @@ void CClientList::CleanUpClientList()
     // no state for some code lines and the code is also not prepared that a client object gets
     // invalid while working with it (aka setting a new state)
     // so this way is just the easy and safe one to go (as long as emule is basically single threaded)
-    const uint32 cur_tick = ::GetTickCount();
+    const UINT cur_tick = ::GetTickCount();
     if (m_dwLastClientCleanUp + CLIENTLIST_CLEANUP_TIME < cur_tick )
     {
         m_dwLastClientCleanUp = cur_tick;
         POSITION pos1, pos2;
-        uint32 cDeleted = 0;
+        UINT cDeleted = 0;
         for (pos1 = list.GetHeadPosition(); ( pos2 = pos1 ) != NULL;)
         {
             list.GetNext(pos1);
@@ -1005,7 +1005,7 @@ void CClientList::ProcessA4AFClients() const
 }
 // <-- ZZ:DownloadManager
 
-void CClientList::AddKadFirewallRequest(uint32 dwIP)
+void CClientList::AddKadFirewallRequest(UINT dwIP)
 {
     IPANDTICS add = {dwIP, ::GetTickCount()};
     listFirewallCheckRequests.AddHead(add);
@@ -1018,7 +1018,7 @@ void CClientList::AddKadFirewallRequest(uint32 dwIP)
     }
 }
 
-bool CClientList::IsKadFirewallCheckIP(uint32 dwIP) const
+bool CClientList::IsKadFirewallCheckIP(UINT dwIP) const
 {
     for (POSITION pos = listFirewallCheckRequests.GetHeadPosition(); pos != NULL; listFirewallCheckRequests.GetNext(pos))
     {
@@ -1046,7 +1046,7 @@ void CClientList::AddConnectingClient(CUpDownClient* pToAdd)
 void CClientList::ProcessConnectingClientsList()
 {
     // we do check if any connects have timed out by now
-    const uint32 cur_tick = ::GetTickCount();
+    const UINT cur_tick = ::GetTickCount();
     POSITION pos1, pos2;
     for (pos1 = m_liConnectingClients.GetHeadPosition(); ( pos2 = pos1 ) != NULL;)
     {
@@ -1075,7 +1075,7 @@ void CClientList::RemoveConnectingClient(CUpDownClient* pToRemove)
     }
 }
 
-void CClientList::AddTrackCallbackRequests(uint32 dwIP)
+void CClientList::AddTrackCallbackRequests(UINT dwIP)
 {
     IPANDTICS add = {dwIP, ::GetTickCount()};
     listDirectCallbackRequests.AddHead(add);
@@ -1088,7 +1088,7 @@ void CClientList::AddTrackCallbackRequests(uint32 dwIP)
     }
 }
 
-bool CClientList::AllowCalbackRequest(uint32 dwIP) const
+bool CClientList::AllowCalbackRequest(UINT dwIP) const
 {
     for (POSITION pos = listDirectCallbackRequests.GetHeadPosition(); pos != NULL; listDirectCallbackRequests.GetNext(pos))
     {

@@ -61,7 +61,7 @@ public:
         wnd2Clients = 3
     };
 
-    void ShowQueueCount(uint32 number);
+    void ShowQueueCount(UINT number);
     void UpdateListCount(EWnd2 listindex, int iCount = -1);
     void UpdateFilesCount(int iCount);
     void Localize();
@@ -97,7 +97,7 @@ protected:
     bool		m_bIsDragging;
     CImageList* m_pDragImage;
     POINT		m_pLastMousePoint;
-    uint32		m_dwShowListIDC;
+    UINT		m_dwShowListIDC;
     CToolTipCtrlX* m_tooltipCats;
     bool		m_bLayoutInited;
 
@@ -120,7 +120,7 @@ protected:
     CString	GetCatTitle(int catid);
     void	EditCatTabLabel(int index,CString newlabel);
     void	EditCatTabLabel(int index);
-    void	ShowList(uint32 dwListIDC);
+    void	ShowList(UINT dwListIDC);
     void	SetWnd1Icon(EWnd1Icon iIcon);
     void	SetWnd2Icon(EWnd2Icon iIcon);
 //>>> WiZaRd::Advanced Transfer Window Layout [Stulle]

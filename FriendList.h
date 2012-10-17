@@ -31,15 +31,15 @@ public:
     void		SaveList();
     bool		LoadList();
     void		RefreshFriend(CFriend* torefresh) const;
-    CFriend*	SearchFriend(const uchar* achUserHash, uint32 dwIP, uint16 nPort) const;
+    CFriend*	SearchFriend(const uchar* achUserHash, UINT dwIP, uint16 nPort) const;
     void		SetWindow(CFriendListCtrl* NewWnd)
     {
         m_wndOutput = NewWnd;
     }
     void		ShowFriends() const;
     bool		AddFriend(CUpDownClient* toadd);
-    bool		AddFriend(const uchar* abyUserhash, uint32 dwLastSeen, uint32 dwLastUsedIP, uint16 nLastUsedPort,
-                          uint32 dwLastChatted, LPCTSTR pszName, uint32 dwHasHash);
+    bool		AddFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort,
+                          UINT dwLastChatted, LPCTSTR pszName, UINT dwHasHash);
     void		RemoveFriend(CFriend* todel);
     void		RemoveAllFriendSlots();
     void		Process();
@@ -51,5 +51,5 @@ public:
 private:
     CTypedPtrList<CPtrList, CFriend*>	m_listFriends;
     CFriendListCtrl*					m_wndOutput;
-    uint32								m_nLastSaved;
+    UINT								m_nLastSaved;
 };

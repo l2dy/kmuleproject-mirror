@@ -57,7 +57,7 @@ void CUrlClient::SetRequestFile(CPartFile* pReqFile)
     }
 }
 
-bool CUrlClient::SetUrl(LPCTSTR pszUrl, uint32 nIP)
+bool CUrlClient::SetUrl(LPCTSTR pszUrl, UINT nIP)
 {
     TCHAR szCanonUrl[INTERNET_MAX_URL_LENGTH];
     DWORD dwCanonUrlSize = ARRSIZE(szCanonUrl);
@@ -286,7 +286,7 @@ bool CUrlClient::ProcessHttpDownResponse(const CStringAArray& astrHeaders)
                     strError.Format(_T("Unexpected HTTP header field \"%hs\""), rstrHdr);
                     throw strError;
                 }
-                TRACE("+++ Unexpected HTTP header field \"%s\"\n", rstrHdr);
+                TRACE(L"+++ Unexpected HTTP header field \"%s\"\n", rstrHdr);
             }
         }
         else if (bExpectData && _strnicmp(rstrHdr, "Content-Range:", 14) == 0)
@@ -416,7 +416,7 @@ void CUpDownClient::ProcessHttpBlockPacket(const BYTE* pucData, UINT uSize)
             }
 
             m_nLastBlockOffset = nStartPos;
-            uint32 lenWritten = reqfile->WriteToBuffer(uSize, pucData, nStartPos, nEndPos, cur_block->block, this);
+            UINT lenWritten = reqfile->WriteToBuffer(uSize, pucData, nStartPos, nEndPos, cur_block->block, this);
             if (lenWritten > 0)
             {
                 m_nTransferredDown += uSize;
@@ -439,14 +439,14 @@ void CUpDownClient::ProcessHttpBlockPacket(const BYTE* pucData, UINT uSize)
                     }
                 }
 //				else
-//					TRACE("%hs - %d bytes missing\n", __FUNCTION__, cur_block->block->EndOffset - nEndPos);
+//					TRACE(L"%hs - %d bytes missing\n", __FUNCTION__, cur_block->block->EndOffset - nEndPos);
             }
 
             return;
         }
     }
 
-    TRACE("%s - Dropping packet\n", __FUNCTION__);
+    TRACE(L"%s - Dropping packet\n", __FUNCTION__);
 }
 
 void CUrlClient::SendCancelTransfer(Packet* /*packet*/)

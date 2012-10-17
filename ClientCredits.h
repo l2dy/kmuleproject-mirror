@@ -44,21 +44,21 @@
 struct CreditStruct_29a
 {
     uchar		abyKey[16];
-    uint32		nUploadedLo;	// uploaded TO him
-    uint32		nDownloadedLo;	// downloaded from him
-    uint32		nLastSeen;
-    uint32		nUploadedHi;	// upload high 32
-    uint32		nDownloadedHi;	// download high 32
+    UINT		nUploadedLo;	// uploaded TO him
+    UINT		nDownloadedLo;	// downloaded from him
+    UINT		nLastSeen;
+    UINT		nUploadedHi;	// upload high 32
+    UINT		nDownloadedHi;	// download high 32
     uint16		nReserved3;
 };
 struct CreditStruct
 {
     uchar		abyKey[16];
-    uint32		nUploadedLo;	// uploaded TO him
-    uint32		nDownloadedLo;	// downloaded from him
-    uint32		nLastSeen;
-    uint32		nUploadedHi;	// upload high 32
-    uint32		nDownloadedHi;	// download high 32
+    UINT		nUploadedLo;	// uploaded TO him
+    UINT		nDownloadedLo;	// downloaded from him
+    UINT		nLastSeen;
+    UINT		nUploadedHi;	// upload high 32
+    UINT		nDownloadedHi;	// download high 32
     uint16		nReserved3;
     uint8		nKeySize;
     uchar		abySecureIdent[MAXPUBKEYSIZE];
@@ -99,33 +99,33 @@ public:
         return m_pCredits;
     }
     void	ClearWaitStartTime();
-    void	AddDownloaded(uint32 bytes, uint32 dwForIP);
-    void	AddUploaded(uint32 bytes, uint32 dwForIP);
+    void	AddDownloaded(UINT bytes, UINT dwForIP);
+    void	AddUploaded(UINT bytes, UINT dwForIP);
     uint64	GetUploadedTotal() const;
     uint64	GetDownloadedTotal() const;
-    float	GetScoreRatio(uint32 dwForIP) /*const*/; //>>> WiZaRd::CPU calm down
+    float	GetScoreRatio(UINT dwForIP) /*const*/; //>>> WiZaRd::CPU calm down
     void	SetLastSeen()
     {
         m_pCredits->nLastSeen = time(NULL);
     }
     bool	SetSecureIdent(const uchar* pachIdent, uint8 nIdentLen); // Public key cannot change, use only if there is not public key yet
-    uint32	m_dwCryptRndChallengeFor;
-    uint32	m_dwCryptRndChallengeFrom;
-    EIdentState	GetCurrentIdentState(uint32 dwForIP) const; // can be != IdentState
-    uint32	GetSecureWaitStartTime(uint32 dwForIP);
-    void	SetSecWaitStartTime(uint32 dwForIP);
+    UINT	m_dwCryptRndChallengeFor;
+    UINT	m_dwCryptRndChallengeFrom;
+    EIdentState	GetCurrentIdentState(UINT dwForIP) const; // can be != IdentState
+    UINT	GetSecureWaitStartTime(UINT dwForIP);
+    void	SetSecWaitStartTime(UINT dwForIP);
 protected:
-    void	Verified(uint32 dwForIP);
+    void	Verified(UINT dwForIP);
     EIdentState IdentState;
 private:
     void			InitalizeIdent();
     CreditStruct*	m_pCredits;
     byte			m_abyPublicKey[80];			// even keys which are not verified will be stored here, and - if verified - copied into the struct
     uint8			m_nPublicKeyLen;
-    uint32			m_dwIdentIP;
-    uint32			m_dwSecureWaitTime;
-    uint32			m_dwUnSecureWaitTime;
-    uint32			m_dwWaitTimeIP;			   // client IP assigned to the waittime
+    UINT			m_dwIdentIP;
+    UINT			m_dwSecureWaitTime;
+    UINT			m_dwUnSecureWaitTime;
+    UINT			m_dwWaitTimeIP;			   // client IP assigned to the waittime
 
 //>>> WiZaRd::CPU calm down
 private:
@@ -141,8 +141,8 @@ public:
     ~CClientCreditsList();
 
     // return signature size, 0 = Failed | use sigkey param for debug only
-    uint8	CreateSignature(CClientCredits* pTarget, uchar* pachOutput, uint8 nMaxSize, uint32 ChallengeIP, uint8 byChaIPKind, CryptoPP::RSASSA_PKCS1v15_SHA_Signer* sigkey = NULL);
-    bool	VerifyIdent(CClientCredits* pTarget, const uchar* pachSignature, uint8 nInputSize, uint32 dwForIP, uint8 byChaIPKind);
+    uint8	CreateSignature(CClientCredits* pTarget, uchar* pachOutput, uint8 nMaxSize, UINT ChallengeIP, uint8 byChaIPKind, CryptoPP::RSASSA_PKCS1v15_SHA_Signer* sigkey = NULL);
+    bool	VerifyIdent(CClientCredits* pTarget, const uchar* pachSignature, uint8 nInputSize, UINT dwForIP, uint8 byChaIPKind);
 
     CClientCredits* GetCredit(const uchar* key) ;
     void	Process();
@@ -165,7 +165,7 @@ protected:
 #endif
 private:
     CMap<CCKey, const CCKey&, CClientCredits*, CClientCredits*> m_mapClients;
-    uint32			m_nLastSaved;
+    UINT			m_nLastSaved;
     CryptoPP::RSASSA_PKCS1v15_SHA_Signer*		m_pSignkey;
     byte			m_abyMyPublicKey[80];
     uint8			m_nMyPublicKeyLen;

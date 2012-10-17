@@ -60,16 +60,16 @@ class CFriend : public Kademlia::CKadClientSearcher
 public:
     CFriend();
     CFriend(CUpDownClient* client);
-    CFriend(const uchar* abyUserhash, uint32 dwLastSeen, uint32 dwLastUsedIP, uint16 nLastUsedPort,
-            uint32 dwLastChatted, LPCTSTR pszName, uint32 dwHasHash);
+    CFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort,
+            UINT dwLastChatted, LPCTSTR pszName, UINT dwHasHash);
     ~CFriend();
 
     uchar	m_abyUserhash[16];
 
-    uint32	m_dwLastSeen;
-    uint32	m_dwLastUsedIP;
+    UINT	m_dwLastSeen;
+    UINT	m_dwLastUsedIP;
     uint16	m_nLastUsedPort;
-    uint32	m_dwLastChatted;
+    UINT	m_dwLastChatted;
     CString m_strName;
 
     CUpDownClient*	GetLinkedClient(bool bValidCheck = false) const;
@@ -88,7 +88,7 @@ public:
     bool	CancelTryToConnect(CFriendConnectionListener* pConnectionReport);
     void	FindKadID();
     void	KadSearchNodeIDByIPResult(Kademlia::EKadClientSearchRes eStatus, const uchar* pachNodeID);
-    void	KadSearchIPByNodeIDResult(Kademlia::EKadClientSearchRes eStatus, uint32 dwIP, uint16 nPort);
+    void	KadSearchIPByNodeIDResult(Kademlia::EKadClientSearchRes eStatus, UINT dwIP, uint16 nPort);
 
     void	SendMessage(CString strMessage);
 
@@ -101,7 +101,7 @@ public:
 private:
     uchar	m_abyKadID[16];
     bool	m_friendSlot;
-    uint32	m_dwLastKadSearch;
+    UINT	m_dwLastKadSearch;
 
     EFriendConnectState			m_FriendConnectState;
     CTypedPtrList<CPtrList, CFriendConnectionListener*> m_liConnectionReport;

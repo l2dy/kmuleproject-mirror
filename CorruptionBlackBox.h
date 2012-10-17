@@ -31,19 +31,19 @@ enum EBBRStatus
 class CCBBRecord
 {
 public:
-    CCBBRecord(uint64 nStartPos = 0, uint64 nEndPos = 0, uint32 dwIP = 0, EBBRStatus BBRStatus = BBR_NONE);
+    CCBBRecord(uint64 nStartPos = 0, uint64 nEndPos = 0, UINT dwIP = 0, EBBRStatus BBRStatus = BBR_NONE);
     CCBBRecord(const CCBBRecord& cv)
     {
         *this = cv;
     }
     CCBBRecord& operator=(const CCBBRecord& cv);
 
-    bool	Merge(uint64 nStartPos, uint64 nEndPos, uint32 dwIP, EBBRStatus BBRStatus = BBR_NONE);
-    bool	CanMerge(uint64 nStartPos, uint64 nEndPos, uint32 dwIP, EBBRStatus BBRStatus = BBR_NONE);
+    bool	Merge(uint64 nStartPos, uint64 nEndPos, UINT dwIP, EBBRStatus BBRStatus = BBR_NONE);
+    bool	CanMerge(uint64 nStartPos, uint64 nEndPos, UINT dwIP, EBBRStatus BBRStatus = BBR_NONE);
 
     uint64	m_nStartPos;
     uint64	m_nEndPos;
-    uint32	m_dwIP;
+    UINT	m_dwIP;
     EBBRStatus 	m_BBRStatus;
 };
 

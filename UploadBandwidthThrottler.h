@@ -27,14 +27,14 @@ public:
 
     uint64 GetNumberOfSentBytesSinceLastCallAndReset();
     uint64 GetNumberOfSentBytesOverheadSinceLastCallAndReset();
-    uint32 GetHighestNumberOfFullyActivatedSlotsSinceLastCallAndReset();
+    UINT GetHighestNumberOfFullyActivatedSlotsSinceLastCallAndReset();
 
-    uint32 GetStandardListSize()
+    UINT GetStandardListSize()
     {
         return m_StandardOrder_list.GetSize();
     };
 
-    void AddToStandardList(uint32 index, ThrottledFileSocket* socket);
+    void AddToStandardList(UINT index, ThrottledFileSocket* socket);
     bool RemoveFromStandardList(ThrottledFileSocket* socket);
 
     void QueueForSendingControlPacket(ThrottledControlSocket* socket, bool hasSent = false); // ZZ:UploadBandWithThrottler (UDP)
@@ -47,7 +47,7 @@ public:
     void EndThread();
 
     void Pause(bool paused);
-    static uint32 UploadBandwidthThrottler::GetSlotLimit(uint32 currentUpSpeed);
+    static UINT UploadBandwidthThrottler::GetSlotLimit(UINT currentUpSpeed);
 private:
     static UINT RunProc(LPVOID pParam);
     UINT RunInternal();
@@ -55,7 +55,7 @@ private:
     void RemoveFromAllQueues(ThrottledControlSocket* socket, bool lock); // ZZ:UploadBandWithThrottler (UDP)
     bool RemoveFromStandardListNoLock(ThrottledFileSocket* socket);
 
-    uint32 CalculateChangeDelta(uint32 numberOfConsecutiveChanges) const;
+    UINT CalculateChangeDelta(UINT numberOfConsecutiveChanges) const;
 
     CTypedPtrList<CPtrList, ThrottledControlSocket*> m_ControlQueue_list; // a queue for all the sockets that want to have Send() called on them. // ZZ:UploadBandWithThrottler (UDP)
     CTypedPtrList<CPtrList, ThrottledControlSocket*> m_ControlQueueFirst_list; // a queue for all the sockets that want to have Send() called on them. // ZZ:UploadBandWithThrottler (UDP)
@@ -72,7 +72,15 @@ private:
 
     uint64 m_SentBytesSinceLastCall;
     uint64 m_SentBytesSinceLastCallOverhead;
-    uint32 m_highestNumberOfFullyActivatedSlots;
+    UINT m_highestNumberOfFullyActivatedSlots;
 
     bool doRun;
+
+//>>> WiZaRd::ZZUL Upload [ZZ]
+public:
+	void SignalNoLongerBusy();
+private:
+	CCriticalSection sendBytesLocker;
+	CEvent busyEvent;
+//<<< WiZaRd::ZZUL Upload [ZZ]
 };

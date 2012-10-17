@@ -9,7 +9,10 @@ enum ESearchType
 {
     //NOTE: The numbers are *equal* to the entries in the comboxbox -> TODO: use item data
     SearchTypeKademlia = 0,
-    SearchTypeFileDonkey
+//>>> WiZaRd::CustomSearches
+	//SearchTypeFileDonkey
+	SearchTypeWeb
+//<<< WiZaRd::CustomSearches
 };
 
 

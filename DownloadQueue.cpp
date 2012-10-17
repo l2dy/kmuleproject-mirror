@@ -399,7 +399,7 @@ bool CDownloadQueue::IsFileExisting(const uchar* fileid, bool bLogWarnings) cons
 void CDownloadQueue::Process()
 {
 
-    uint32 downspeed = 0;
+    UINT downspeed = 0;
     uint64 maxDownload = thePrefs.GetMaxDownloadInBytesPerSec(true);
     if (maxDownload != UNLIMITED*1024 && datarate > 1500)
     {
@@ -422,7 +422,7 @@ void CDownloadQueue::Process()
         datarate = 0;
     }
 
-    uint32 datarateX=0;
+    UINT datarateX=0;
     udcounter++;
 
     UINT tmp_counter = 0;  //>>> WiZaRd::AutoHL
@@ -492,7 +492,7 @@ CPartFile* CDownloadQueue::GetFileByID(const uchar* filehash) const
     return NULL;
 }
 
-CPartFile* CDownloadQueue::GetFileByKadFileSearchID(uint32 id) const
+CPartFile* CDownloadQueue::GetFileByKadFileSearchID(UINT id) const
 {
     for (POSITION pos = filelist.GetHeadPosition(); pos != 0; )
     {
@@ -658,7 +658,7 @@ bool CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
     // "IPfilter" is not needed here, because that "known" client was already IPfiltered when receiving OP_HELLO.
     if (!source->HasLowID())
     {
-        uint32 nClientIP = ntohl(source->GetUserIDHybrid());
+        UINT nClientIP = ntohl(source->GetUserIDHybrid());
         if (!IsGoodIP(nClientIP))  // check for 0-IP, localhost and LAN addresses
         {
             //if (thePrefs.GetLogFilteredIPs())
@@ -950,7 +950,7 @@ void CDownloadQueue::GetDownloadSourcesStats(SDownloadStats& results)
     }
 }
 
-CUpDownClient* CDownloadQueue::GetDownloadClientByIP(uint32 dwIP)
+CUpDownClient* CDownloadQueue::GetDownloadClientByIP(UINT dwIP)
 {
     for (POSITION pos = filelist.GetHeadPosition(); pos != 0;)
     {
@@ -967,10 +967,10 @@ CUpDownClient* CDownloadQueue::GetDownloadClientByIP(uint32 dwIP)
     return NULL;
 }
 
-CUpDownClient* CDownloadQueue::GetDownloadClientByIP_UDP(uint32 dwIP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs)
+CUpDownClient* CDownloadQueue::GetDownloadClientByIP_UDP(UINT dwIP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs)
 {
     CUpDownClient* pMatchingIPClient = NULL;
-    uint32 cMatches = 0;
+    UINT cMatches = 0;
 
     for (POSITION pos = filelist.GetHeadPosition(); pos != 0;)
     {
@@ -1318,7 +1318,7 @@ LRESULT CSourceHostnameResolveWnd::OnHostnameResolved(WPARAM /*wParam*/, LPARAM 
             LPHOSTENT pHost = (LPHOSTENT)m_aucHostnameBuffer;
             if (pHost->h_length == 4 && pHost->h_addr_list && pHost->h_addr_list[0])
             {
-                uint32 nIP = ((LPIN_ADDR)(pHost->h_addr_list[0]))->s_addr;
+                UINT nIP = ((LPIN_ADDR)(pHost->h_addr_list[0]))->s_addr;
 
                 CPartFile* file = theApp.downloadqueue->GetFileByID(resolved->fileid);
                 if (file)
@@ -1359,7 +1359,7 @@ bool CDownloadQueue::DoKademliaFileRequest()
     return ((::GetTickCount() - lastkademliafilerequest) > KADEMLIAASKTIME);
 }
 
-void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pbuddyID, uint8 type, uint32 ip, uint16 tcp, uint16 udp, uint32 dwBuddyIP, uint16 dwBuddyPort, uint8 byCryptOptions)
+void CDownloadQueue::KademliaSearchFile(UINT searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pbuddyID, uint8 type, UINT ip, uint16 tcp, uint16 udp, UINT dwBuddyIP, uint16 dwBuddyPort, uint8 byCryptOptions)
 {
     //Safty measure to make sure we are looking for these sources
     CPartFile* temp = GetFileByKadFileSearchID(searchID);
@@ -1369,7 +1369,7 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
     if(!(!temp->IsStopped() && temp->GetMaxSources() > temp->GetSourceCount()))
         return;
 
-    uint32 ED2Kip = ntohl(ip);
+    UINT ED2Kip = ntohl(ip);
     if (theApp.ipfilter->IsFiltered(ED2Kip))
     {
         if (thePrefs.GetLogFilteredIPs())

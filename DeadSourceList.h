@@ -28,14 +28,14 @@ public:
     {
         *this = ds;
     }
-    CDeadSource(uint32 dwID = 0, uint16 nPort = 0, uint32 dwServerIP = 0, uint16 nKadPort = 0);
+    CDeadSource(UINT dwID = 0, uint16 nPort = 0, UINT dwServerIP = 0, uint16 nKadPort = 0);
     CDeadSource(const uchar* paucHash);
 
     CDeadSource& operator=(const CDeadSource& ds);
     friend bool operator==(const CDeadSource& ds1,const CDeadSource& ds2);
 
-    uint32			m_dwID;
-    uint32			m_dwServerIP;
+    UINT			m_dwID;
+    UINT			m_dwServerIP;
     uint16			m_nPort;
     uint16			m_nKadPort;
     uchar			m_aucHash[16];
@@ -43,7 +43,7 @@ public:
 
 template<> inline UINT AFXAPI HashKey(const CDeadSource& ds)
 {
-    uint32 hash = 0;
+    UINT hash = 0;
     if (ds.m_dwID != 0)
     {
         hash = ds.m_dwID;
@@ -71,7 +71,7 @@ public:
     void		AddDeadSource(const CUpDownClient* pToAdd);
     void		RemoveDeadSource(const CUpDownClient* client);
     bool		IsDeadSource(const CUpDownClient* pToCheck) const;
-    uint32		GetDeadSourcesCount() const
+    UINT		GetDeadSourcesCount() const
     {
         return m_mapDeadSources.GetCount();
     }
@@ -81,7 +81,7 @@ protected:
     void		CleanUp();
 
 private:
-    CMap<CDeadSource, const CDeadSource&, uint32, uint32> m_mapDeadSources;
-    uint32	m_dwLastCleanUp;
+    CMap<CDeadSource, const CDeadSource&, UINT, UINT> m_mapDeadSources;
+    UINT	m_dwLastCleanUp;
     bool	m_bGlobalList;
 };

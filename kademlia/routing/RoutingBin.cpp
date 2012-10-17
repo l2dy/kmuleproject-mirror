@@ -54,8 +54,8 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace Kademlia;
 
-CMap<uint32, uint32, uint32, uint32> CRoutingBin::s_mapGlobalContactIPs;
-CMap<uint32, uint32, uint32, uint32> CRoutingBin::s_mapGlobalContactSubnets;
+CMap<UINT, UINT, UINT, UINT> CRoutingBin::s_mapGlobalContactIPs;
+CMap<UINT, UINT, UINT, UINT> CRoutingBin::s_mapGlobalContactSubnets;
 
 #define MAX_CONTACTS_SUBNET			10
 #define MAX_CONTACTS_IP				1
@@ -92,7 +92,7 @@ CRoutingBin::~CRoutingBin()
 bool CRoutingBin::AddContact(CContact *pContact)
 {
     ASSERT(pContact != NULL);
-    uint32 cSameSubnets = 0;
+    UINT cSameSubnets = 0;
     // Check if we already have a contact with this ID in the list.
     for (ContactList::const_iterator itContactList = m_listEntries.begin(); itContactList != m_listEntries.end(); ++itContactList)
     {
@@ -143,7 +143,7 @@ void CRoutingBin::SetAlive(CContact *pContact)
     }
 }
 
-void CRoutingBin::SetTCPPort(uint32 uIP, uint16 uUDPPort, uint16 uTCPPort)
+void CRoutingBin::SetTCPPort(UINT uIP, uint16 uUDPPort, uint16 uTCPPort)
 {
     // Find contact with IP/Port
     for (ContactList::iterator itContactList = m_listEntries.begin(); itContactList != m_listEntries.end(); ++itContactList)
@@ -161,7 +161,7 @@ void CRoutingBin::SetTCPPort(uint32 uIP, uint16 uUDPPort, uint16 uTCPPort)
     }
 }
 
-CContact* CRoutingBin::GetContact(uint32 uIP, uint16 nPort, bool bTCPPort)
+CContact* CRoutingBin::GetContact(UINT uIP, uint16 nPort, bool bTCPPort)
 {
     // Find contact with IP/Port
     for (ContactList::iterator itContactList = m_listEntries.begin(); itContactList != m_listEntries.end(); ++itContactList)
@@ -199,7 +199,7 @@ UINT CRoutingBin::GetSize() const
     return (UINT)m_listEntries.size();
 }
 
-void CRoutingBin::GetNumContacts(uint32& nInOutContacts, uint32& nInOutFilteredContacts, uint8 byMinVersion) const
+void CRoutingBin::GetNumContacts(UINT& nInOutContacts, UINT& nInOutFilteredContacts, uint8 byMinVersion) const
 {
     // Count all Nodes which meet the search criteria and also report those who don't
     for (ContactList::const_iterator itContactList = m_listEntries.begin(); itContactList != m_listEntries.end(); ++itContactList)
@@ -234,7 +234,7 @@ CContact *CRoutingBin::GetOldest()
     return NULL;
 }
 
-void CRoutingBin::GetClosestTo(uint32 uMaxType, const CUInt128 &uTarget, uint32 uMaxRequired, ContactMap *pmapResult, bool bEmptyFirst, bool bInUse)
+void CRoutingBin::GetClosestTo(UINT uMaxType, const CUInt128 &uTarget, UINT uMaxRequired, ContactMap *pmapResult, bool bEmptyFirst, bool bInUse)
 {
     // Empty list if requested.
     if (bEmptyFirst)
@@ -272,10 +272,10 @@ void CRoutingBin::GetClosestTo(uint32 uMaxType, const CUInt128 &uTarget, uint32 
     return;
 }
 
-void CRoutingBin::AdjustGlobalTracking(uint32 uIP, bool bIncrease)
+void CRoutingBin::AdjustGlobalTracking(UINT uIP, bool bIncrease)
 {
     // IP
-    uint32 nSameIPCount = 0;
+    UINT nSameIPCount = 0;
     s_mapGlobalContactIPs.Lookup(uIP, nSameIPCount);
     if (bIncrease)
     {
@@ -302,7 +302,7 @@ void CRoutingBin::AdjustGlobalTracking(uint32 uIP, bool bIncrease)
         s_mapGlobalContactIPs.RemoveKey(uIP);
 
     // Subnet
-    uint32 nSameSubnetCount = 0;
+    UINT nSameSubnetCount = 0;
     s_mapGlobalContactSubnets.Lookup(uIP & 0xFFFFFF00, nSameSubnetCount);
     if (bIncrease)
     {
@@ -329,7 +329,7 @@ void CRoutingBin::AdjustGlobalTracking(uint32 uIP, bool bIncrease)
         s_mapGlobalContactSubnets.RemoveKey(uIP & 0xFFFFFF00);
 }
 
-bool CRoutingBin::ChangeContactIPAddress(CContact* pContact, uint32 uNewIP)
+bool CRoutingBin::ChangeContactIPAddress(CContact* pContact, UINT uNewIP)
 {
     // Called if we want to update a indexed contact with a new IP. We have to check if we actually allow such a change
     // and if adjust our tracking. Rejecting a change will in the worst case lead a node contact to become invalid and purged later,
@@ -341,7 +341,7 @@ bool CRoutingBin::ChangeContactIPAddress(CContact* pContact, uint32 uNewIP)
     ASSERT( GetContact(pContact->GetClientID()) == pContact );
 
     // no more than 1 KadID per IP
-    uint32 nSameIPCount = 0;
+    UINT nSameIPCount = 0;
     s_mapGlobalContactIPs.Lookup(uNewIP, nSameIPCount);
     if (nSameIPCount >= MAX_CONTACTS_IP)
     {
@@ -353,7 +353,7 @@ bool CRoutingBin::ChangeContactIPAddress(CContact* pContact, uint32 uNewIP)
     if ((pContact->GetIPAddress() & 0xFFFFFF00) != (uNewIP & 0xFFFFFF00))
     {
         //  no more than 10 IPs from the same /24 netmask global, except if its a LANIP (if we don't accept LANIPs they already have been filtered before)
-        uint32 nSameSubnetGlobalCount = 0;
+        UINT nSameSubnetGlobalCount = 0;
         s_mapGlobalContactSubnets.Lookup(uNewIP & 0xFFFFFF00, nSameSubnetGlobalCount);
         if (nSameSubnetGlobalCount >= MAX_CONTACTS_SUBNET && !::IsLANIP(ntohl(uNewIP)))
         {
@@ -363,7 +363,7 @@ bool CRoutingBin::ChangeContactIPAddress(CContact* pContact, uint32 uNewIP)
         }
 
         // no more than 2 IPs from the same /24 netmask in one bin, except if its a LANIP (if we don't accept LANIPs they already have been filtered before)
-        uint32 cSameSubnets = 0;
+        UINT cSameSubnets = 0;
         // Check if we already have a contact with this ID in the list.
         for (ContactList::const_iterator itContactList = m_listEntries.begin(); itContactList != m_listEntries.end(); ++itContactList)
         {
@@ -394,14 +394,14 @@ void CRoutingBin::PushToBottom(CContact* pContact) // puts an existing contact f
     m_listEntries.push_back(pContact);
 }
 
-CContact* CRoutingBin::GetRandomContact(uint32 nMaxType, uint32 nMinKadVersion)
+CContact* CRoutingBin::GetRandomContact(UINT nMaxType, UINT nMinKadVersion)
 {
     if (m_listEntries.empty())
         return NULL;
     // Find contact with IP/Port
     CContact* pLastFit = NULL;
-    uint32 nRandomStartPos = GetRandomUInt16() % m_listEntries.size();
-    uint32 nIndex = 0;
+    UINT nRandomStartPos = GetRandomUInt16() % m_listEntries.size();
+    UINT nIndex = 0;
     for (ContactList::iterator itContactList = m_listEntries.begin(); itContactList != m_listEntries.end(); ++itContactList)
     {
         CContact* pContact = *itContactList;
@@ -426,10 +426,10 @@ void CRoutingBin::SetAllContactsVerified()
     }
 }
 
-bool CRoutingBin::CheckGlobalIPLimits(uint32 uIP, uint16 uPort, bool bLog)
+bool CRoutingBin::CheckGlobalIPLimits(UINT uIP, uint16 uPort, bool bLog)
 {
     // no more than 1 KadID per IP
-    uint32 nSameIPCount = 0;
+    UINT nSameIPCount = 0;
     s_mapGlobalContactIPs.Lookup(uIP, nSameIPCount);
     if (nSameIPCount >= MAX_CONTACTS_IP)
     {
@@ -438,7 +438,7 @@ bool CRoutingBin::CheckGlobalIPLimits(uint32 uIP, uint16 uPort, bool bLog)
         return false;
     }
     //  no more than 10 IPs from the same /24 netmask global, except if its a LANIP (if we don't accept LANIPs they already have been filtered before)
-    uint32 nSameSubnetGlobalCount = 0;
+    UINT nSameSubnetGlobalCount = 0;
     s_mapGlobalContactSubnets.Lookup(uIP & 0xFFFFFF00, nSameSubnetGlobalCount);
     if (nSameSubnetGlobalCount >= MAX_CONTACTS_SUBNET && !::IsLANIP(ntohl(uIP)))
     {

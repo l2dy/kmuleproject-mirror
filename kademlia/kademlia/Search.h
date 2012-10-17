@@ -46,20 +46,20 @@ class CSearch
 {
     friend class CSearchManager;
 public:
-    uint32		GetSearchID() const;
-    uint32		GetSearchTypes() const;
-    void		SetSearchTypes( uint32 uVal );
+    UINT		GetSearchID() const;
+    UINT		GetSearchTypes() const;
+    void		SetSearchTypes( UINT uVal );
     void		SetTargetID( CUInt128 uVal );
     CUInt128	GetTarget() const;
-    uint32		GetAnswers() const;
-    uint32		GetKadPacketSent() const;
-    uint32		GetRequestAnswer() const;
-    uint32		GetNodeLoad() const;
-    uint32		GetNodeLoadResonse() const;
-    uint32		GetNodeLoadTotal() const;
+    UINT		GetAnswers() const;
+    UINT		GetKadPacketSent() const;
+    UINT		GetRequestAnswer() const;
+    UINT		GetNodeLoad() const;
+    UINT		GetNodeLoadResonse() const;
+    UINT		GetNodeLoadTotal() const;
     const		CKadTagValueString& GetGUIName() const;
     void		SetGUIName(const CKadTagValueString& sGUIName);
-    void		SetSearchTermData( uint32 uSearchTermDataSize, LPBYTE pucSearchTermsData );
+    void		SetSearchTermData( UINT uSearchTermDataSize, LPBYTE pucSearchTermsData );
 
     void		AddFileID(const CUInt128& uID);
     void		PreparePacketForTags( CByteIO* pbyPacket, CKnownFile* pFile, uint8 byTargetKadVersion );
@@ -100,10 +100,10 @@ public:
 
 private:
     void Go();
-    void ProcessResponse(uint32 uFromIP, uint16 uFromPort, ContactList *plistResults);
-    void ProcessResult(const CUInt128 &uAnswer, TagList *listInfo, uint32 uFromIP, uint16 uFromPort);
+    void ProcessResponse(UINT uFromIP, uint16 uFromPort, ContactList *plistResults);
+    void ProcessResult(const CUInt128 &uAnswer, TagList *listInfo, UINT uFromIP, uint16 uFromPort);
     void ProcessResultFile(const CUInt128 &uAnswer, TagList *listInfo);
-    void ProcessResultKeyword(const CUInt128 &uAnswer, TagList *listInfo, uint32 uFromIP, uint16 uFromPort);
+    void ProcessResultKeyword(const CUInt128 &uAnswer, TagList *listInfo, UINT uFromIP, uint16 uFromPort);
     void ProcessResultNotes(const CUInt128 &uAnswer, TagList *listInfo);
     void JumpStart();
     void SendFindValue(CContact* pContact, bool bReAskMore = false);
@@ -113,15 +113,15 @@ private:
 
     bool m_bStoping;
     time_t m_tCreated;
-    uint32 m_uType;
-    uint32 m_uAnswers;
-    uint32 m_uTotalRequestAnswers;
-    uint32 m_uKadPacketSent; //Used for gui reasons.. May not be needed later..
-    uint32 m_uTotalLoad;
-    uint32 m_uTotalLoadResponses;
-    uint32 m_uLastResponse;
-    uint32 m_uSearchID;
-    uint32 m_uSearchTermsDataSize;
+    UINT m_uType;
+    UINT m_uAnswers;
+    UINT m_uTotalRequestAnswers;
+    UINT m_uKadPacketSent; //Used for gui reasons.. May not be needed later..
+    UINT m_uTotalLoad;
+    UINT m_uTotalLoadResponses;
+    UINT m_uLastResponse;
+    UINT m_uSearchID;
+    UINT m_uSearchTermsDataSize;
     LPBYTE m_pucSearchTermsData;
     SSearchTerm* m_pSearchTerm; // cached from m_pucSearchTermsData, used for verifying results lateron
     CKadClientSearcher* pNodeSpecialSearchRequester; // used to callback on result for NODESPECIAL searches

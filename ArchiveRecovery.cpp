@@ -73,12 +73,12 @@ void CArchiveRecovery::recover(CPartFile *partFile, bool preview, bool bCreatePa
 #ifdef _DEBUG
     {
         int i = 0;
-        TRACE("%s: filled\n", __FUNCTION__);
+        TRACE(L"%s: filled\n", __FUNCTION__);
         POSITION pos = filled->GetHeadPosition();
         while (pos)
         {
             Gap_Struct* gap = filled->GetNext(pos);
-            TRACE("%3u: %10u  %10u  (%u)\n", i++, gap->start, gap->end, gap->end - gap->start + 1);
+            TRACE(L"%3u: %10u  %10u  (%u)\n", i++, gap->start, gap->end, gap->end - gap->start + 1);
         }
     }
 #endif
@@ -269,7 +269,7 @@ bool CArchiveRecovery::recoverZip(CFile *zipInput, CFile *zipOutput, archiveScan
             {
                 deleteCD = false;
                 cdEntry = centralDirectoryEntries->GetAt(pos);
-                uint32 lenEntry = sizeof(ZIP_Entry) + cdEntry->lenFilename + cdEntry->lenExtraField + cdEntry->lenCompressed;
+                UINT lenEntry = sizeof(ZIP_Entry) + cdEntry->lenFilename + cdEntry->lenExtraField + cdEntry->lenCompressed;
                 if (IsFilled(cdEntry->relativeOffsetOfLocalHeader, cdEntry->relativeOffsetOfLocalHeader + lenEntry, filled))
                 {
                     zipInput->Seek(cdEntry->relativeOffsetOfLocalHeader, CFile::begin);
@@ -304,7 +304,7 @@ bool CArchiveRecovery::recoverZip(CFile *zipInput, CFile *zipOutput, archiveScan
             while (pos != NULL)
             {
                 fill = filled->GetNext(pos);
-                uint32 filePos = (UINT)zipInput->GetPosition();
+                UINT filePos = (UINT)zipInput->GetPosition();
                 // The file may have been positioned to the next entry in ScanForMarker() or processZipEntry()
                 if (filePos > fill->end)
                     continue;
@@ -317,7 +317,7 @@ bool CArchiveRecovery::recoverZip(CFile *zipInput, CFile *zipOutput, archiveScan
                     if (aitp && !aitp->m_bIsValid)
                         return 0;
                     // Scan for entry marker within this filled area
-                    if (!scanForZipMarker(zipInput, aitp, (uint32)ZIP_LOCAL_HEADER_MAGIC, (UINT)(fill->end - zipInput->GetPosition() + 1)))
+                    if (!scanForZipMarker(zipInput, aitp, (UINT)ZIP_LOCAL_HEADER_MAGIC, (UINT)(fill->end - zipInput->GetPosition() + 1)))
                         break;
                     if (zipInput->GetPosition() > fill->end)
                         break;
@@ -335,7 +335,7 @@ bool CArchiveRecovery::recoverZip(CFile *zipInput, CFile *zipOutput, archiveScan
         }
 
         // Remember offset before CD entries
-        uint32 startOffset = (UINT)zipOutput->GetPosition();
+        UINT startOffset = (UINT)zipOutput->GetPosition();
 
         // Write all central directory entries
         fileCount = centralDirectoryEntries->GetCount();
@@ -379,7 +379,7 @@ bool CArchiveRecovery::recoverZip(CFile *zipInput, CFile *zipOutput, archiveScan
             }
 
             // Remember offset before CD entries
-            uint32 endOffset = (UINT)zipOutput->GetPosition();
+            UINT endOffset = (UINT)zipOutput->GetPosition();
 
             // Write end of central directory
             writeUInt32(zipOutput, ZIP_END_CD_MAGIC);
@@ -429,7 +429,7 @@ bool CArchiveRecovery::readZipCentralDirectory(CFile *zipInput, CTypedPtrList<CP
         {
             // Have to look for it, comment could be up to 65535 chars but only try with less than 1k
             zipInput->Seek(-1046, CFile::end);
-            if (!scanForZipMarker(zipInput, NULL, (uint32)ZIP_END_CD_MAGIC, 1046))
+            if (!scanForZipMarker(zipInput, NULL, (UINT)ZIP_END_CD_MAGIC, 1046))
                 return false;
             // Skip it again
             readUInt32(zipInput);
@@ -438,7 +438,7 @@ bool CArchiveRecovery::readZipCentralDirectory(CFile *zipInput, CTypedPtrList<CP
         // Found End-CD
         // Only interested in offset of first CD
         zipInput->Seek(12, CFile::current);
-        uint32 startOffset = readUInt32(zipInput);
+        UINT startOffset = readUInt32(zipInput);
         if (!IsFilled(startOffset, (UINT)zipInput->GetLength(), filled))
             return false;
 
@@ -497,7 +497,7 @@ bool CArchiveRecovery::readZipCentralDirectory(CFile *zipInput, CTypedPtrList<CP
     return retVal;
 }
 
-bool CArchiveRecovery::processZipEntry(CFile *zipInput, CFile *zipOutput, uint32 available, CTypedPtrList<CPtrList, ZIP_CentralDirectory*> *centralDirectoryEntries)
+bool CArchiveRecovery::processZipEntry(CFile *zipInput, CFile *zipOutput, UINT available, CTypedPtrList<CPtrList, ZIP_CentralDirectory*> *centralDirectoryEntries)
 {
     if (available < 26)
         return false;
@@ -597,9 +597,9 @@ bool CArchiveRecovery::processZipEntry(CFile *zipInput, CFile *zipOutput, uint32
                 zipOutput->Write(entry.extraField, entry.lenExtraField);
 
             // Read and write compressed data to avoid reading all into memory
-            uint32 written = 0;
+            UINT written = 0;
             BYTE buf[4096];
-            uint32 lenChunk = 4096;
+            UINT lenChunk = 4096;
             while (written < entry.lenCompressed)
             {
                 lenChunk  = (entry.lenCompressed - written);
@@ -705,8 +705,8 @@ bool CArchiveRecovery::CopyFile(CPartFile *partFile, CTypedPtrList<CPtrList, Gap
         destFile.SetLength(fill->end);
 
         BYTE buffer[4096];
-        uint32 read;
-        uint32 copied;
+        UINT read;
+        UINT copied;
 
         // Loop through filled areas and copy data
         partFile->m_bPreviewing = true;
@@ -907,7 +907,7 @@ bool CArchiveRecovery::recoverRar(CFile *rarInput, CFile *rarOutput, archiveScan
     return retVal;
 }
 
-bool CArchiveRecovery::IsFilled(uint32 start, uint32 end, CTypedPtrList<CPtrList, Gap_Struct*> *filled)
+bool CArchiveRecovery::IsFilled(UINT start, UINT end, CTypedPtrList<CPtrList, Gap_Struct*> *filled)
 {
     POSITION pos = filled->GetHeadPosition();
     Gap_Struct *fill;
@@ -923,11 +923,11 @@ bool CArchiveRecovery::IsFilled(uint32 start, uint32 end, CTypedPtrList<CPtrList
 }
 
 // This will find the marker in the file and leave it positioned at the position to read the marker again
-bool CArchiveRecovery::scanForZipMarker(CFile *input, archiveScannerThreadParams_s* aitp, uint32 marker, uint32 available)
+bool CArchiveRecovery::scanForZipMarker(CFile *input, archiveScannerThreadParams_s* aitp, UINT marker, UINT available)
 {
     try
     {
-        //uint32 originalOffset = input->GetPosition();
+        //UINT originalOffset = input->GetPosition();
         int lenChunk = 51200; // 50k buffer
         BYTE chunk[51200];
         BYTE *foundPos = NULL;
@@ -1010,7 +1010,7 @@ RAR_BlockFile *CArchiveRecovery::scanForRarFileHeader(CFile *input, archiveScann
         unsigned checkCRCsize = 0;
         uint16 lenFileName;
         BYTE *fileName;
-        uint32 crc;
+        UINT crc;
 
         while (available > 0)
         {
@@ -1170,7 +1170,7 @@ RAR_BlockFile *CArchiveRecovery::scanForRarFileHeader(CFile *input, archiveScann
                     {
                         // Set some useful markers in the block
                         retVal->offsetData = input->GetPosition();
-                        uint32 dataLength = retVal->PACK_SIZE;
+                        UINT dataLength = retVal->PACK_SIZE;
                         // If comment present find length
                         if ((retVal->HEAD_FLAGS & 0x08) == 0x08)
                         {
@@ -1281,13 +1281,13 @@ void CArchiveRecovery::writeRarBlock(CFile *input, CFile *output, RAR_BlockFile 
         output->Write(block->EXT_DATE, block->EXT_DATE_SIZE);
 
         // Now copy compressed data from input file
-        uint32 lenToCopy = block->dataLength;
+        UINT lenToCopy = block->dataLength;
         if (lenToCopy > 0)
         {
             input->Seek(block->offsetData, CFile::begin);
-            uint32 written = 0;
+            UINT written = 0;
             BYTE chunk[4096];
-            uint32 lenChunk = 4096;
+            UINT lenChunk = 4096;
             while (written < lenToCopy)
             {
                 lenChunk  = (lenToCopy - written);
@@ -1516,7 +1516,7 @@ ACE_BlockFile *CArchiveRecovery::scanForAceFileHeader(CFile *input, archiveScann
     ULONGLONG chunkOffset;
     UINT64 chunkstart;
     uint16 headCRC,headSize;
-    uint32 crc;
+    UINT crc;
 
 
     try
@@ -1706,13 +1706,13 @@ void CArchiveRecovery::writeAceBlock(CFile *input, CFile *output, ACE_BlockFile 
         // skip unknown data between header and compressed data - if ever existed...
 
         // Now copy compressed data from input file
-        uint32 lenToCopy = block->PACK_SIZE;
+        UINT lenToCopy = block->PACK_SIZE;
         if (lenToCopy > 0)
         {
             input->Seek(block->data_offset, CFile::begin);
-            uint32 written = 0;
+            UINT written = 0;
             BYTE chunk[4096];
-            uint32 lenChunk = 4096;
+            UINT lenChunk = 4096;
             while (written < lenToCopy)
             {
                 lenChunk  = (lenToCopy - written);
@@ -1982,9 +1982,9 @@ uint16 CArchiveRecovery::readUInt16(CFile *input)
     return retVal;
 }
 
-uint32 CArchiveRecovery::readUInt32(CFile *input)
+UINT CArchiveRecovery::readUInt32(CFile *input)
 {
-    uint32 retVal = 0;
+    UINT retVal = 0;
     BYTE b[4];
     if (input->Read(b, 4) > 0)
         retVal = (b[3] << 24) + (b[2] << 16) + (b[1] << 8) + b[0];
@@ -1996,9 +1996,9 @@ uint16 CArchiveRecovery::calcUInt16(BYTE *input)
     return (((uint16)input[1]) << 8) + ((uint16)input[0]);
 }
 
-uint32 CArchiveRecovery::calcUInt32(BYTE *input)
+UINT CArchiveRecovery::calcUInt32(BYTE *input)
 {
-    return (((uint32)input[3]) << 24) + (((uint32)input[2]) << 16) + (((uint32)input[1]) << 8) + ((uint32)input[0]);
+    return (((UINT)input[3]) << 24) + (((UINT)input[2]) << 16) + (((UINT)input[1]) << 8) + ((UINT)input[0]);
 }
 
 void CArchiveRecovery::writeUInt16(CFile *output, uint16 val)
@@ -2009,7 +2009,7 @@ void CArchiveRecovery::writeUInt16(CFile *output, uint16 val)
     output->Write(b, 2);
 }
 
-void CArchiveRecovery::writeUInt32(CFile *output, uint32 val)
+void CArchiveRecovery::writeUInt32(CFile *output, UINT val)
 {
     BYTE b[4];
     b[0] = (BYTE)(val & 0x000000ff);

@@ -29,7 +29,7 @@ public:
     CUrlClient();
     virtual ~CUrlClient();
 
-    bool SetUrl(LPCTSTR pszUrl, uint32 nIP = 0);
+    bool SetUrl(LPCTSTR pszUrl, UINT nIP = 0);
 
     virtual void SetRequestFile(CPartFile* pReqFile);
     virtual bool IsEd2kClient() const

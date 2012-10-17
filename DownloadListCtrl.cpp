@@ -2923,14 +2923,14 @@ void CDownloadListCtrl::OnLvnGetDispInfo(NMHDR *pNMHDR, LRESULT *pResult)
         // Vista: That callback is used to get the strings for the label tips for the sub(!) items.
         //
         NMLVDISPINFO *pDispInfo = (NMLVDISPINFO *)pNMHDR;
-        /*TRACE("CDownloadListCtrl::OnLvnGetDispInfo iItem=%d iSubItem=%d", pDispInfo->item.iItem, pDispInfo->item.iSubItem);
+        /*TRACE(L"CDownloadListCtrl::OnLvnGetDispInfo iItem=%d iSubItem=%d", pDispInfo->item.iItem, pDispInfo->item.iSubItem);
         if (pDispInfo->item.mask & LVIF_TEXT)
-        	TRACE(" LVIF_TEXT");
+        	TRACE(L" LVIF_TEXT");
         if (pDispInfo->item.mask & LVIF_IMAGE)
-        	TRACE(" LVIF_IMAGE");
+        	TRACE(L" LVIF_IMAGE");
         if (pDispInfo->item.mask & LVIF_STATE)
-        	TRACE(" LVIF_STATE");
-        TRACE("\n");*/
+        	TRACE(L" LVIF_STATE");
+        TRACE(L"\n");*/
         if (pDispInfo->item.mask & LVIF_TEXT)
         {
             const CtrlItem_Struct *pCtrlItem = reinterpret_cast<CtrlItem_Struct *>(pDispInfo->item.lParam);

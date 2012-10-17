@@ -138,7 +138,7 @@ protected:
     CFont		m_fontBold; // may contain a locally created bold font
     CFont*		m_pFontBold;// points to the bold font which is to be used (may be the locally created or the default bold font)
     CToolTipCtrlX* m_tooltip;
-    uint32		m_dwLastAvailableCommandsCheck;
+    UINT		m_dwLastAvailableCommandsCheck;
     bool		m_availableCommandsDirty;
 
     void ShowFileDialog(UINT uInvokePage);

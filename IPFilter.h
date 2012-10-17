@@ -18,15 +18,15 @@
 
 struct SIPFilter
 {
-    SIPFilter(uint32 newStart, uint32 newEnd, UINT newLevel, const CStringA& newDesc)
+    SIPFilter(UINT newStart, UINT newEnd, UINT newLevel, const CStringA& newDesc)
         : start(newStart),
           end(newEnd),
           level(newLevel),
           desc(newDesc),
           hits(0)
     { }
-    uint32		start;
-    uint32		end;
+    UINT		start;
+    UINT		end;
     UINT		level;
     CStringA	desc;
     UINT		hits;
@@ -47,7 +47,7 @@ public:
 
     CString GetDefaultFilePath() const;
 
-    void AddIPRange(uint32 start, uint32 end, UINT level, const CStringA& rstrDesc)
+    void AddIPRange(UINT start, UINT end, UINT level, const CStringA& rstrDesc)
     {
         m_iplist.Add(new SIPFilter(start, end, level, rstrDesc));
     }
@@ -62,8 +62,8 @@ public:
     int LoadFromDefaultFile(bool bShowResponse = true);
     void SaveToDefaultFile();
 
-    bool IsFiltered(uint32 IP) /*const*/;
-    bool IsFiltered(uint32 IP, UINT level) /*const*/;
+    bool IsFiltered(UINT IP) /*const*/;
+    bool IsFiltered(UINT IP, UINT level) /*const*/;
     CString GetLastHit() const;
     const CIPFilterArray& GetIPFilter() const;
     void    UpdateIPFilterURL(const CString& m_sURL = L""); //>>> WiZaRd::IPFilter-Update
@@ -73,6 +73,6 @@ private:
     CIPFilterArray m_iplist;
     bool m_bModified;
 
-    bool ParseFilterLine1(const CStringA& rstrBuffer, uint32& ip1, uint32& ip2, UINT& level, CStringA& rstrDesc) const;
-    bool ParseFilterLine2(const CStringA& rstrBuffer, uint32& ip1, uint32& ip2, UINT& level, CStringA& rstrDesc) const;
+    bool ParseFilterLine1(const CStringA& rstrBuffer, UINT& ip1, UINT& ip2, UINT& level, CStringA& rstrDesc) const;
+    bool ParseFilterLine2(const CStringA& rstrBuffer, UINT& ip1, UINT& ip2, UINT& level, CStringA& rstrDesc) const;
 };

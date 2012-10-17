@@ -72,7 +72,7 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace Kademlia;
 
-void DebugSend(LPCTSTR pszMsg, uint32 uIP, uint16 uUDPPort);
+void DebugSend(LPCTSTR pszMsg, UINT uIP, uint16 uUDPPort);
 
 CString CRoutingZone::m_sFilename;
 #ifdef _DEBUG
@@ -168,8 +168,8 @@ void CRoutingZone::ReadFile(CString strSpecialNodesdate)
             // Get how many contacts in the saved list.
             // NOTE: Older clients put the number of contacts here..
             //       Newer clients always have 0 here to prevent older clients from reading it.
-            uint32 uNumContacts = file.ReadUInt32();
-            uint32 uVersion = 0;
+            UINT uNumContacts = file.ReadUInt32();
+            UINT uVersion = 0;
             if (uNumContacts == 0)
             {
                 if (file.GetLength() >= 8)
@@ -177,7 +177,7 @@ void CRoutingZone::ReadFile(CString strSpecialNodesdate)
                     uVersion = file.ReadUInt32();
                     if (uVersion == 3)
                     {
-                        uint32 nBoostrapEdition = file.ReadUInt32();
+                        UINT nBoostrapEdition = file.ReadUInt32();
                         if (nBoostrapEdition == 1)
                         {
                             // this is a special bootstrap-only nodes.dat, handle it in a seperate reading function
@@ -194,12 +194,12 @@ void CRoutingZone::ReadFile(CString strSpecialNodesdate)
             }
             if (uNumContacts != 0 && uNumContacts * 25 <= (file.GetLength() - file.GetPosition()))
             {
-                uint32 uValidContacts = 0;
+                UINT uValidContacts = 0;
                 CUInt128 uID;
                 while ( uNumContacts )
                 {
                     file.ReadUInt128(&uID);
-                    uint32 uIP = file.ReadUInt32();
+                    UINT uIP = file.ReadUInt32();
                     uint16 uUDPPort = file.ReadUInt16();
                     uint16 uTCPPort = file.ReadUInt16();
                     byte byType = 0;
@@ -222,7 +222,7 @@ void CRoutingZone::ReadFile(CString strSpecialNodesdate)
                     // IP Appears valid
                     if( byType < 4)
                     {
-                        uint32 uhostIP = ntohl(uIP);
+                        UINT uhostIP = ntohl(uIP);
                         if (::IsGoodIPPort(uhostIP, uUDPPort))
                         {
                             if (::theApp.ipfilter->IsFiltered(uhostIP))
@@ -278,20 +278,20 @@ void CRoutingZone::ReadBootstrapNodesDat(CFileDataIO& file)
         ASSERT( false );
         return;
     }
-    uint32 uNumContacts = file.ReadUInt32();
+    UINT uNumContacts = file.ReadUInt32();
     if (uNumContacts != 0 && uNumContacts * 25 == (file.GetLength() - file.GetPosition()))
     {
-        uint32 uValidContacts = 0;
+        UINT uValidContacts = 0;
         CUInt128 uID;
         while ( uNumContacts )
         {
             file.ReadUInt128(&uID);
-            uint32 uIP = file.ReadUInt32();
+            UINT uIP = file.ReadUInt32();
             uint16 uUDPPort = file.ReadUInt16();
             uint16 uTCPPort = file.ReadUInt16();
             uint8 uContactVersion = file.ReadUInt8();
 
-            uint32 uhostIP = ntohl(uIP);
+            UINT uhostIP = ntohl(uIP);
             if (::IsGoodIPPort(uhostIP, uUDPPort))
             {
                 if (::theApp.ipfilter->IsFiltered(uhostIP))
@@ -368,7 +368,7 @@ void CRoutingZone::WriteFile()
             // Now tag it with a version which happens to be 2 (1 till 0.48a).
             file.WriteUInt32(2);
             // file.WriteUInt32(0) // if we would use version >=3, this would mean that this is a normal nodes.dat
-            file.WriteUInt32((uint32)listContacts.size());
+            file.WriteUInt32((UINT)listContacts.size());
             for (ContactList::const_iterator itContactList = listContacts.begin(); itContactList != listContacts.end(); ++itContactList)
             {
                 CContact* pContact = *itContactList;
@@ -428,7 +428,7 @@ void CRoutingZone::DbgWriteBootstrapFile()
             // Now tag it with a version which happens to be 2 (1 till 0.48a).
             file.WriteUInt32(3);
             file.WriteUInt32(1); // if we would use version >=3, this would mean that this is not a normal nodes.dat
-            file.WriteUInt32((uint32)mapContacts.size());
+            file.WriteUInt32((UINT)mapContacts.size());
             for (ContactMap::const_iterator itContactMap = mapContacts.begin(); itContactMap != mapContacts.end(); ++itContactMap)
             {
                 CContact* pContact = itContactMap->second;
@@ -468,9 +468,9 @@ bool CRoutingZone::CanSplit() const
 }
 
 // Returns true if a contact was added or updated, false if the routing table was not touched
-bool CRoutingZone::Add(const CUInt128 &uID, uint32 uIP, uint16 uUDPPort, uint16 uTCPPort, uint8 uVersion, CKadUDPKey cUDPKey, bool& bIPVerified, bool bUpdate, bool bFromNodesDat, bool bFromHello)
+bool CRoutingZone::Add(const CUInt128 &uID, UINT uIP, uint16 uUDPPort, uint16 uTCPPort, uint8 uVersion, CKadUDPKey cUDPKey, bool& bIPVerified, bool bUpdate, bool bFromNodesDat, bool bFromHello)
 {
-    uint32 uhostIP = ntohl(uIP);
+    UINT uhostIP = ntohl(uIP);
     if (::IsGoodIPPort(uhostIP, uUDPPort))
     {
         if (!::theApp.ipfilter->IsFiltered(uhostIP) && !(uUDPPort == 53 && uVersion <= KADEMLIA_VERSION5_48a)  /*No DNS Port without encryption*/)
@@ -489,7 +489,7 @@ bool CRoutingZone::Add(const CUInt128 &uID, uint32 uIP, uint16 uUDPPort, uint16 
 }
 
 // Returns true if a contact was added or updated, false if the routing table was not touched
-bool CRoutingZone::AddUnfiltered(const CUInt128 &uID, uint32 uIP, uint16 uUDPPort, uint16 uTCPPort, uint8 uVersion, CKadUDPKey cUDPKey, bool& bIPVerified, bool bUpdate, bool /*bFromNodesDat*/, bool bFromHello)
+bool CRoutingZone::AddUnfiltered(const CUInt128 &uID, UINT uIP, uint16 uUDPPort, uint16 uTCPPort, uint8 uVersion, CKadUDPKey cUDPKey, bool& bIPVerified, bool bUpdate, bool /*bFromNodesDat*/, bool bFromHello)
 {
     if (uID != uMe && uVersion > 1)
     {
@@ -640,7 +640,7 @@ CContact *CRoutingZone::GetContact(const CUInt128 &uID) const
     }
 }
 
-CContact* CRoutingZone::GetContact(uint32 uIP, uint16 nPort, bool bTCPPort) const
+CContact* CRoutingZone::GetContact(UINT uIP, uint16 nPort, bool bTCPPort) const
 {
     if (IsLeaf())
         return m_pBin->GetContact(uIP, nPort, bTCPPort);
@@ -651,19 +651,19 @@ CContact* CRoutingZone::GetContact(uint32 uIP, uint16 nPort, bool bTCPPort) cons
     }
 }
 
-CContact* CRoutingZone::GetRandomContact(uint32 nMaxType, uint32 nMinKadVersion) const
+CContact* CRoutingZone::GetRandomContact(UINT nMaxType, UINT nMinKadVersion) const
 {
     if (IsLeaf())
         return m_pBin->GetRandomContact(nMaxType, nMinKadVersion);
     else
     {
-        uint32 nZone = GetRandomUInt16() % 2;
+        UINT nZone = GetRandomUInt16() % 2;
         CContact* pContact = m_pSubZones[nZone]->GetRandomContact(nMaxType, nMinKadVersion);
         return (pContact != NULL) ? pContact : m_pSubZones[nZone == 1 ? 0 : 1]->GetRandomContact(nMaxType, nMinKadVersion);
     }
 }
 
-void CRoutingZone::GetClosestTo(uint32 uMaxType, const CUInt128 &uTarget, const CUInt128 &uDistance, uint32 uMaxRequired, ContactMap *pmapResult, bool bEmptyFirst, bool bInUse) const
+void CRoutingZone::GetClosestTo(UINT uMaxType, const CUInt128 &uTarget, const CUInt128 &uDistance, UINT uMaxRequired, ContactMap *pmapResult, bool bEmptyFirst, bool bInUse) const
 {
     // If leaf zone, do it here
     if (IsLeaf())
@@ -713,7 +713,7 @@ void CRoutingZone::RandomBin(ContactList *pmapResult, bool bEmptyFirst)
         m_pSubZones[rand()&1]->RandomBin(pmapResult, bEmptyFirst);
 }
 
-uint32 CRoutingZone::GetMaxDepth() const
+UINT CRoutingZone::GetMaxDepth() const
 {
     if (IsLeaf())
         return 0;
@@ -741,9 +741,9 @@ void CRoutingZone::Split()
     }
 }
 
-uint32 CRoutingZone::Consolidate()
+UINT CRoutingZone::Consolidate()
 {
-    uint32 uMergeCount = 0;
+    UINT uMergeCount = 0;
     if( IsLeaf() )
         return uMergeCount;
     ASSERT(m_pBin==NULL);
@@ -828,7 +828,7 @@ bool CRoutingZone::OnBigTimer()
 //This is used when we find a leaf and want to know what this sample looks like.
 //We fall back two levels and take a sample to try to minimize any areas of the
 //tree that will give very bad results.
-uint32 CRoutingZone::EstimateCount()
+UINT CRoutingZone::EstimateCount()
 {
     if( !IsLeaf() )
         return 0;
@@ -946,7 +946,7 @@ void CRoutingZone::RandomLookup()
     CSearchManager::FindNode(uRandom, false);
 }
 
-uint32 CRoutingZone::GetNumContacts() const
+UINT CRoutingZone::GetNumContacts() const
 {
     if (IsLeaf())
         return m_pBin->GetSize();
@@ -954,7 +954,7 @@ uint32 CRoutingZone::GetNumContacts() const
         return m_pSubZones[0]->GetNumContacts() + m_pSubZones[1]->GetNumContacts();
 }
 
-void CRoutingZone::GetNumContacts(uint32& nInOutContacts, uint32& nInOutFilteredContacts, uint8 byMinVersion) const
+void CRoutingZone::GetNumContacts(UINT& nInOutContacts, UINT& nInOutFilteredContacts, uint8 byMinVersion) const
 {
     if (IsLeaf())
         m_pBin->GetNumContacts(nInOutContacts, nInOutFilteredContacts, byMinVersion);
@@ -965,11 +965,11 @@ void CRoutingZone::GetNumContacts(uint32& nInOutContacts, uint32& nInOutFiltered
     }
 }
 
-uint32 CRoutingZone::GetBootstrapContacts(ContactList *plistResult, uint32 uMaxRequired)
+UINT CRoutingZone::GetBootstrapContacts(ContactList *plistResult, UINT uMaxRequired)
 {
     ASSERT(m_pSuperZone == NULL);
     plistResult->clear();
-    uint32 uRetVal = 0;
+    UINT uRetVal = 0;
     try
     {
         ContactList top;
@@ -992,7 +992,7 @@ uint32 CRoutingZone::GetBootstrapContacts(ContactList *plistResult, uint32 uMaxR
     return uRetVal;
 }
 
-bool CRoutingZone::VerifyContact(const CUInt128 &uID, uint32 uIP)
+bool CRoutingZone::VerifyContact(const CUInt128 &uID, UINT uIP)
 {
     CContact* pContact = GetContact(uID);
     if (pContact == NULL)

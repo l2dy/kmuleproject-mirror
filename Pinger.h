@@ -147,8 +147,8 @@ struct PingStatus
     bool success;
     DWORD status;
     float delay;
-    uint32 destinationAddress;
-    uint32 ttl;
+    UINT destinationAddress;
+    UINT ttl;
 
     DWORD error;
 };
@@ -222,7 +222,7 @@ public:
     Pinger();
     ~Pinger();
 
-    PingStatus Ping(uint32 lAddr, uint32 ttl = DEFAULT_TTL, bool doLog = false, bool useUdp = false);
+    PingStatus Ping(UINT lAddr, UINT ttl = DEFAULT_TTL, bool doLog = false, bool useUdp = false);
 
     void PIcmpErr(int nICMPErr);
 
@@ -234,8 +234,8 @@ private:
     IcmpCreateFile* lpfnIcmpCreateFile;
     IcmpCloseHandle* lpfnIcmpCloseHandle;
     IcmpSendEcho* lpfnIcmpSendEcho;
-    PingStatus Pinger::PingUDP(uint32 lAddr, uint32 ttl, bool doLog);
-    PingStatus Pinger::PingICMP(uint32 lAddr, uint32 ttl, bool doLog);
+    PingStatus Pinger::PingUDP(UINT lAddr, UINT ttl, bool doLog);
+    PingStatus Pinger::PingICMP(UINT lAddr, UINT ttl, bool doLog);
 
     HANDLE hICMP;
     HMODULE hICMP_DLL; // PENDING: was HANDLE

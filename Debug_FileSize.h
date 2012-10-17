@@ -35,7 +35,7 @@ public:
         m_nSize = nSize;
         Check();
     }
-    __declspec(deprecated) CEMFileSize(uint32 nSize)
+    __declspec(deprecated) CEMFileSize(UINT nSize)
     {
         m_nSize = nSize;
         Check();
@@ -59,7 +59,7 @@ public:
         Check();
         return *this;
     }
-    __declspec(deprecated) CEMFileSize& operator=(uint32 k1)
+    __declspec(deprecated) CEMFileSize& operator=(UINT k1)
     {
         m_nSize = k1;
         Check();
@@ -93,7 +93,7 @@ public:
         Check();
         return *this;
     }
-    __declspec(deprecated) CEMFileSize& operator-=(uint32 k1)
+    __declspec(deprecated) CEMFileSize& operator-=(UINT k1)
     {
         Check();
         m_nSize -= k1;
@@ -129,7 +129,7 @@ public:
         Check();
         return *this;
     }
-    __declspec(deprecated) CEMFileSize& operator+=(uint32 k1)
+    __declspec(deprecated) CEMFileSize& operator+=(UINT k1)
     {
         Check();
         m_nSize += k1;
@@ -161,10 +161,10 @@ public:
     {
         return (sint64)m_nSize;
     }
-    __declspec(deprecated) operator uint32() const
+    __declspec(deprecated) operator UINT() const
     {
         ASSERT( m_nSize < 0xFFFFFFFF );
-        return (uint32)m_nSize;
+        return (UINT)m_nSize;
     }
     __declspec(deprecated) operator sint32() const
     {
@@ -184,11 +184,11 @@ public:
     {
         return k1 == k2.m_nSize;
     }
-    __declspec(deprecated) friend bool operator==(uint32 k1,const CEMFileSize& k2)
+    __declspec(deprecated) friend bool operator==(UINT k1,const CEMFileSize& k2)
     {
         return k1 == k2.m_nSize;
     }
-    __declspec(deprecated) friend bool operator==(const CEMFileSize& k1,uint32 k2)
+    __declspec(deprecated) friend bool operator==(const CEMFileSize& k1,UINT k2)
     {
         return k1.m_nSize == k2;
     }
@@ -205,11 +205,11 @@ public:
     {
         return k1 != k2.m_nSize;
     }
-    __declspec(deprecated) friend bool operator!=(uint32 k1,const CEMFileSize& k2)
+    __declspec(deprecated) friend bool operator!=(UINT k1,const CEMFileSize& k2)
     {
         return k1 != k2.m_nSize;
     }
-    __declspec(deprecated) friend bool operator!=(const CEMFileSize& k1,uint32 k2)
+    __declspec(deprecated) friend bool operator!=(const CEMFileSize& k1,UINT k2)
     {
         return k1.m_nSize != k2;
     }
@@ -226,11 +226,11 @@ public:
     {
         return k1 > k2.m_nSize;
     }
-    __declspec(deprecated) friend bool operator>(uint32 k1,const CEMFileSize& k2)
+    __declspec(deprecated) friend bool operator>(UINT k1,const CEMFileSize& k2)
     {
         return k1 > k2.m_nSize;
     }
-    __declspec(deprecated) friend bool operator>(const CEMFileSize& k1,uint32 k2)
+    __declspec(deprecated) friend bool operator>(const CEMFileSize& k1,UINT k2)
     {
         return k1.m_nSize > k2;
     }
@@ -247,11 +247,11 @@ public:
     {
         return k1 < k2.m_nSize;
     }
-    __declspec(deprecated) friend bool operator<(uint32 k1,const CEMFileSize& k2)
+    __declspec(deprecated) friend bool operator<(UINT k1,const CEMFileSize& k2)
     {
         return k1 < k2.m_nSize;
     }
-    __declspec(deprecated) friend bool operator<(const CEMFileSize& k1,uint32 k2)
+    __declspec(deprecated) friend bool operator<(const CEMFileSize& k1,UINT k2)
     {
         return k1.m_nSize < k2;
     }
@@ -268,11 +268,11 @@ public:
     {
         return k1 >= k2.m_nSize;
     }
-    __declspec(deprecated) friend bool operator>=(uint32 k1,const CEMFileSize& k2)
+    __declspec(deprecated) friend bool operator>=(UINT k1,const CEMFileSize& k2)
     {
         return k1 >= k2.m_nSize;
     }
-    __declspec(deprecated) friend bool operator>=(const CEMFileSize& k1,uint32 k2)
+    __declspec(deprecated) friend bool operator>=(const CEMFileSize& k1,UINT k2)
     {
         return k1.m_nSize >= k2;
     }
@@ -289,11 +289,11 @@ public:
     {
         return k1 <= k2.m_nSize;
     }
-    __declspec(deprecated) friend bool operator<=(uint32 k1,const CEMFileSize& k2)
+    __declspec(deprecated) friend bool operator<=(UINT k1,const CEMFileSize& k2)
     {
         return k1 <= k2.m_nSize;
     }
-    __declspec(deprecated) friend bool operator<=(const CEMFileSize& k1,uint32 k2)
+    __declspec(deprecated) friend bool operator<=(const CEMFileSize& k1,UINT k2)
     {
         return k1.m_nSize <= k2;
     }
@@ -323,7 +323,7 @@ public:
     {
         return CEMFileSize(k1, k2.m_nSize, DFSA_SUB);
     }
-    __declspec(deprecated) friend CEMFileSize operator-(uint32 k1,const CEMFileSize& k2)
+    __declspec(deprecated) friend CEMFileSize operator-(UINT k1,const CEMFileSize& k2)
     {
         return CEMFileSize(k1, k2.m_nSize, DFSA_SUB);
     }

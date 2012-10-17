@@ -63,7 +63,7 @@ void CHttpClientReqSocket::ClearHttpHeaders()
     m_iHttpHeadersSize = 0;
 }
 
-void CHttpClientReqSocket::SendPacket(Packet* packet, bool delpacket, bool controlpacket, uint32 actualPayloadSize, bool bForceImmediateSend)
+void CHttpClientReqSocket::SendPacket(Packet* packet, bool delpacket, bool controlpacket, UINT actualPayloadSize, bool bForceImmediateSend)
 {
     // just for safety -- never send an ed2k/emule packet via HTTP.
     if (packet->opcode != 0x00 || packet->prot != 0x00)
@@ -197,7 +197,7 @@ bool CHttpClientReqSocket::ProcessHttpPacket(const BYTE* pucData, UINT uSize)
         }
         else
         {
-            TRACE("+++ Received partial HTTP header packet\n");
+            TRACE(L"+++ Received partial HTTP header packet\n");
         }
     }
     else if (GetHttpState() == HttpStateRecvBody)

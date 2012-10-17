@@ -126,7 +126,7 @@ void CCollection::RemoveFileFromCollection(CAbstractFile* pAbstractFile)
         ASSERT(0);
 }
 
-void CCollection::SetCollectionAuthorKey(const byte* abyCollectionAuthorKey, uint32 nSize)
+void CCollection::SetCollectionAuthorKey(const byte* abyCollectionAuthorKey, UINT nSize)
 {
     delete[] m_pabyCollectionAuthorKey;
     m_pabyCollectionAuthorKey = NULL;
@@ -150,10 +150,10 @@ bool CCollection::InitCollectionFromFile(const CString& sFilePath, CString sFile
     {
         try
         {
-            uint32 nVersion = data.ReadUInt32();
+            UINT nVersion = data.ReadUInt32();
             if(nVersion == COLLECTION_FILE_VERSION1_INITIAL || nVersion == COLLECTION_FILE_VERSION2_LARGEFILES)
             {
-                uint32 headerTagCount = data.ReadUInt32();
+                UINT headerTagCount = data.ReadUInt32();
                 while(headerTagCount)
                 {
                     CTag tag(&data, true);
@@ -182,7 +182,7 @@ bool CCollection::InitCollectionFromFile(const CString& sFilePath, CString sFile
                     }
                     headerTagCount--;
                 }
-                uint32 fileCount = data.ReadUInt32();
+                UINT fileCount = data.ReadUInt32();
                 while(fileCount)
                 {
                     CCollectionFile* pCollectionFile = new CCollectionFile(&data);
@@ -199,7 +199,7 @@ bool CCollection::InitCollectionFromFile(const CString& sFilePath, CString sFile
                 {
                     using namespace CryptoPP;
 
-                    uint32 nPos = (uint32)data.GetPosition();
+                    UINT nPos = (UINT)data.GetPosition();
                     data.SeekToBegin();
                     BYTE* pMessage = new BYTE[nPos];
                     VERIFY( data.Read(pMessage, nPos) == nPos);
@@ -349,7 +349,7 @@ void CCollection::WriteToFileAddShared(CryptoPP::RSASSA_PKCS1v15_SHA_Signer* pSi
             {
                 //Version
                 // check first if we have any large files in the map - write use lowest version possible
-                uint32 dwVersion = COLLECTION_FILE_VERSION1_INITIAL;
+                UINT dwVersion = COLLECTION_FILE_VERSION1_INITIAL;
                 POSITION pos = m_CollectionFilesMap.GetStartPosition();
                 CCollectionFile* pCollectionFile;
                 CSKey key;
@@ -364,7 +364,7 @@ void CCollection::WriteToFileAddShared(CryptoPP::RSASSA_PKCS1v15_SHA_Signer* pSi
                 }
                 data.WriteUInt32(dwVersion);
 
-                uint32 uTagCount = 1;
+                UINT uTagCount = 1;
 
                 //NumberHeaderTags
                 if(m_pabyCollectionAuthorKey != NULL)
@@ -397,7 +397,7 @@ void CCollection::WriteToFileAddShared(CryptoPP::RSASSA_PKCS1v15_SHA_Signer* pSi
 
                 if (pSignKey != NULL)
                 {
-                    uint32 nPos = (uint32)data.GetPosition();
+                    UINT nPos = (UINT)data.GetPosition();
                     data.SeekToBegin();
                     BYTE* pBuffer = new BYTE[nPos];
                     VERIFY( data.Read(pBuffer, nPos) == nPos);

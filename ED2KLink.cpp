@@ -341,9 +341,9 @@ CED2KFileLink::CED2KFileLink(const TCHAR* pszName, const TCHAR* pszSize, const T
         int nYear,nMonth,nDay;
 
         uint16 nCount = 0;
-        uint32 dwID;
+        UINT dwID;
         uint16 nPort;
-        uint32 dwServerIP = 0;
+        UINT dwServerIP = 0;
         uint16 nServerPort = 0;
         unsigned long ul;
 

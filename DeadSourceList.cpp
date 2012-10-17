@@ -37,7 +37,7 @@ static char THIS_FILE[] = __FILE__;
 ///////////////////////////////////////////////////////////////////////////////////////
 //// CDeadSource
 
-CDeadSource::CDeadSource(uint32 dwID, uint16 nPort, uint32 dwServerIP, uint16 nKadPort)
+CDeadSource::CDeadSource(UINT dwID, uint16 nPort, UINT dwServerIP, uint16 nKadPort)
 {
     m_dwID = dwID;
     m_dwServerIP = dwServerIP;
@@ -105,7 +105,7 @@ void CDeadSourceList::Init(bool bGlobalList)
 
 bool CDeadSourceList::IsDeadSource(const CUpDownClient* pToCheck) const
 {
-    uint32 dwExpTime;
+    UINT dwExpTime;
     bool bDbgCheck = false;
     if(!pToCheck->HasLowID() || pToCheck->GetServerIP() != 0)
     {
@@ -176,8 +176,8 @@ void CDeadSourceList::CleanUp()
     //	AddDebugLogLine(DLP_VERYLOW, false, _T("Cleaning up DeadSourceList (%s), %i clients on List..."),  m_bGlobalList ? _T("Global") : _T("Local"), m_mapDeadSources.GetCount());
     POSITION pos = m_mapDeadSources.GetStartPosition();
     CDeadSource dsKey;
-    uint32 dwExpTime;
-    uint32 dwTick = ::GetTickCount();
+    UINT dwExpTime;
+    UINT dwTick = ::GetTickCount();
     while (pos != NULL)
     {
         m_mapDeadSources.GetNextAssoc( pos, dsKey, dwExpTime );

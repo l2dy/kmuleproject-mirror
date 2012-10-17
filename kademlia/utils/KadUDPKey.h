@@ -22,13 +22,13 @@ namespace Kademlia
 class CKadUDPKey
 {
 public:
-    CKadUDPKey(uint32 uZero = 0)
+    CKadUDPKey(UINT uZero = 0)
     {
         ASSERT(uZero == 0);
         m_dwKey = uZero;
         m_dwIP = 0;
     }
-    CKadUDPKey(uint32 dwKey, uint32 dwIP)
+    CKadUDPKey(UINT dwKey, UINT dwIP)
     {
         m_dwKey = dwKey;
         m_dwIP = dwIP;
@@ -43,7 +43,7 @@ public:
         m_dwIP = k1.m_dwIP;
         return *this;
     }
-    CKadUDPKey& operator=(const uint32 uZero)
+    CKadUDPKey& operator=(const UINT uZero)
     {
         ASSERT(uZero == 0);
         m_dwKey = uZero;
@@ -55,7 +55,7 @@ public:
         return k1.GetKeyValue(k1.m_dwIP) == k2.GetKeyValue(k2.m_dwIP);
     }
 
-    uint32	GetKeyValue(uint32 dwMyIP)	const
+    UINT	GetKeyValue(UINT dwMyIP)	const
     {
         return (dwMyIP == m_dwIP) ? m_dwKey : 0;
     }
@@ -74,7 +74,7 @@ public:
         m_dwIP = file.ReadUInt32();
     }
 private:
-    uint32		m_dwKey;
-    uint32		m_dwIP;
+    UINT		m_dwKey;
+    UINT		m_dwIP;
 };
 }

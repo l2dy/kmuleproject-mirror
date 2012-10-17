@@ -22,15 +22,15 @@ namespace Kademlia
 {
 struct TrackPackets_Struct
 {
-    uint32 dwIP;
-    uint32 dwInserted;
+    UINT dwIP;
+    UINT dwInserted;
     uint8  byOpcode;
 };
 
 struct TrackChallenge_Struct
 {
-    uint32 uIP;
-    uint32 dwInserted;
+    UINT uIP;
+    UINT dwInserted;
     uint8  byOpcode;
     CUInt128 uContactID;
     CUInt128 uChallenge;
@@ -40,8 +40,8 @@ struct TrackPacketsIn_Struct
 {
     struct TrackedRequestIn_Struct
     {
-        uint32	m_nCount;
-        uint32	m_dwFirstAdded;
+        UINT	m_nCount;
+        UINT	m_dwFirstAdded;
         uint8	m_byOpcode;
         bool	m_bDbgLogged;
     };
@@ -52,8 +52,8 @@ struct TrackPacketsIn_Struct
         m_uIP = 0;
     }
 
-    uint32	m_uIP;
-    uint32	m_dwLastExpire;
+    UINT	m_uIP;
+    UINT	m_dwLastExpire;
     CArray<TrackedRequestIn_Struct> m_aTrackedRequests;
 };
 
@@ -64,13 +64,13 @@ public:
     virtual ~CPacketTracking();
 
 protected:
-    void AddTrackedOutPacket(uint32 dwIP, uint8 byOpcode);
-    bool IsOnOutTrackList(uint32 dwIP, uint8 byOpcode, bool bDontRemove = false);
-    bool InTrackListIsAllowedPacket(uint32 uIP, uint8 byOpcode, bool bValidReceiverkey);
+    void AddTrackedOutPacket(UINT dwIP, uint8 byOpcode);
+    bool IsOnOutTrackList(UINT dwIP, uint8 byOpcode, bool bDontRemove = false);
+    bool InTrackListIsAllowedPacket(UINT uIP, uint8 byOpcode, bool bValidReceiverkey);
     void InTrackListCleanup();
-    void AddLegacyChallenge(CUInt128 uContactID, CUInt128 uChallengeID, uint32 uIP, uint8 byOpcode);
-    bool IsLegacyChallenge(CUInt128 uChallengeID, uint32 uIP, uint8 byOpcode, CUInt128& ruContactID);
-    bool HasActiveLegacyChallenge(uint32 uIP) const;
+    void AddLegacyChallenge(CUInt128 uContactID, CUInt128 uChallengeID, UINT uIP, uint8 byOpcode);
+    bool IsLegacyChallenge(CUInt128 uChallengeID, UINT uIP, uint8 byOpcode, CUInt128& ruContactID);
+    bool HasActiveLegacyChallenge(UINT uIP) const;
 
 private:
     bool IsTrackedOutListRequestPacket(uint8 byOpcode) const;
@@ -78,6 +78,6 @@ private:
     CList<TrackChallenge_Struct> listChallengeRequests;
     CTypedPtrList<CPtrList, TrackPacketsIn_Struct*>					m_liTrackPacketsIn;
     CMap<int, int, TrackPacketsIn_Struct*, TrackPacketsIn_Struct*>	m_mapTrackPacketsIn;
-    uint32 dwLastTrackInCleanup;
+    UINT dwLastTrackInCleanup;
 };
 }

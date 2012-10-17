@@ -67,6 +67,7 @@
 #include "Splashscreen.h"
 #include "./Mod/ClientAnalyzer.h" //>>> WiZaRd::ClientAnalyzer
 #include "./Mod/autoUpdate.h" //>>> WiZaRd::AutoUpdate
+#include "./Mod/CustomSearches.h" //>>> WiZaRd::CustomSearches
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -456,22 +457,27 @@ BOOL CemuleApp::InitInstance()
 #ifdef _DEBUG
     // set Floating Point Processor to throw several exceptions, in particular the 'Floating point devide by zero'
     UINT uEmCtrlWord = _control87(0, 0) & _MCW_EM;
-    _control87(uEmCtrlWord & ~(/*_EM_INEXACT |*/ _EM_UNDERFLOW | _EM_OVERFLOW | _EM_ZERODIVIDE | _EM_INVALID), _MCW_EM);
+	//WiZaRd: removed that codepart because it caused weird crashes in debug builds!?
+	//http://blogs.msdn.com/b/dougste/archive/2008/11/12/random-and-unexpected-exception-flt-divide-by-zero-and-exception-flt-invalid-operation.aspx
+	TRACE(L"FPCW: %u (0x%.4x)\n", (UINT)_control87(0, 0), _control87(0, 0));
+	TRACE(L"FPCW: %u (0x%.4x)\n", uEmCtrlWord, uEmCtrlWord);
+    //_control87(uEmCtrlWord & ~(/*_EM_INEXACT |*/ _EM_UNDERFLOW | _EM_OVERFLOW | _EM_ZERODIVIDE | _EM_INVALID), _MCW_EM);
+
+	//WiZaRd: Perform automatic leak checking at program exit through a call to _CrtDumpMemoryLeaks 
+	//and generate an error report if the application failed to free all the memory it allocated.
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
     // output all ASSERT messages to debug device
     _CrtSetReportMode(_CRT_ASSERT, _CrtSetReportMode(_CRT_ASSERT, _CRTDBG_REPORT_MODE) | _CRTDBG_MODE_DEBUG);
+	oldMemState.Checkpoint();
+	// Installing that memory debug code works fine in Debug builds when running within VS Debugger,
+	// but some other test applications don't like that all....
+	//g_pfnPrevCrtAllocHook = _CrtSetAllocHook(&eMuleAllocHook);
 #endif
+	//afxMemDF = allocMemDF | delayFreeMemDF;
+
     free((void*)m_pszProfileName);
     m_pszProfileName = _tcsdup(thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + _T("preferences.ini"));
-
-
-#ifdef _DEBUG
-    oldMemState.Checkpoint();
-    // Installing that memory debug code works fine in Debug builds when running within VS Debugger,
-    // but some other test applications don't like that all....
-    //g_pfnPrevCrtAllocHook = _CrtSetAllocHook(&eMuleAllocHook);
-#endif
-    //afxMemDF = allocMemDF | delayFreeMemDF;
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -484,7 +490,7 @@ BOOL CemuleApp::InitInstance()
     #endif
     */
 //<<< Tux::Why do we do this?
-    theCrashDumper.Enable(GetClientVersionStringBase(true), true, thePrefs.GetMuleDirectory(EMULE_CONFIGDIR));
+    theCrashDumper.Enable(MOD_VERSION, true, thePrefs.GetMuleDirectory(EMULE_CONFIGDIR));
 
     ///////////////////////////////////////////////////////////////////////////
     // Locale initialization -- BE VERY CAREFUL HERE!!!
@@ -494,6 +500,16 @@ BOOL CemuleApp::InitInstance()
     //_tsetlocale(LC_CTYPE, _T("C"));		// set character types category to 'C' (VERY IMPORTANT, we need binary string compares!)
 
     AfxOleInit();
+
+	// WiZaRd: prevent switch to ... busy popup during windows startup. see http://support.microsoft.com/kb/248019
+	if (AfxOleGetMessageFilter()) 
+	{
+		AfxOleGetMessageFilter()->EnableBusyDialog(FALSE);
+		AfxOleGetMessageFilter()->EnableNotRespondingDialog(FALSE);
+		AfxOleGetMessageFilter()->SetMessagePendingDelay(60000); // 60s instead of default 5s
+	}
+	else 
+		ASSERT(0);  // dll not loaded? 
 
     pstrPendingLink = NULL;
     if (ProcessCommandline())
@@ -719,6 +735,7 @@ BOOL CemuleApp::InitInstance()
     clientcredits = new CClientCreditsList();
     antileechlist   = new CAntiLeechDataList(); //>>> WiZaRd::ClientAnalyzer
     autoUpdater = new CAutoUpdate(); //>>> WiZaRd::AutoUpdate
+	customSearches	= new CCustomSearches(); //>>> WiZaRd::CustomSearches
     downloadqueue = new CDownloadQueue();	// bugfix - do this before creating the uploadqueue
     uploadqueue = new CUploadQueue();
     ipfilter 	= new CIPFilter();
@@ -739,7 +756,7 @@ BOOL CemuleApp::InitInstance()
     newMemState.Checkpoint();
     if (diffMemState.Difference(oldMemState, newMemState))
     {
-        TRACE("Memory usage:\n");
+        TRACE(L"Memory usage:\n");
         diffMemState.DumpStatistics();
     }
     //_CrtDumpMemoryLeaks();
@@ -930,13 +947,13 @@ BOOL CALLBACK CemuleApp::SearchEmuleWindow(HWND hWnd, LPARAM lParam)
 }
 
 
-void CemuleApp::UpdateReceivedBytes(uint32 bytesToAdd)
+void CemuleApp::UpdateReceivedBytes(UINT bytesToAdd)
 {
     SetTimeOnTransfer();
     theStats.sessionReceivedBytes+=bytesToAdd;
 }
 
-void CemuleApp::UpdateSentBytes(uint32 bytesToAdd, bool sentToFriend)
+void CemuleApp::UpdateSentBytes(UINT bytesToAdd, bool sentToFriend)
 {
     SetTimeOnTransfer();
     theStats.sessionSentBytes+=bytesToAdd;
@@ -1373,9 +1390,9 @@ bool CemuleApp::IsPortchangeAllowed()
     return ( theApp.clientlist->GetClientCount()==0 && !IsConnected() );
 }
 
-uint32 CemuleApp::GetID()
+UINT CemuleApp::GetID()
 {
-    uint32 ID;
+    UINT ID;
     if( Kademlia::CKademlia::IsConnected() && !Kademlia::CKademlia::IsFirewalled() )
         ID = ntohl(Kademlia::CKademlia::GetIPAddress());
     else if ( Kademlia::CKademlia::IsConnected() && Kademlia::CKademlia::IsFirewalled() )
@@ -1385,14 +1402,14 @@ uint32 CemuleApp::GetID()
     return ID;
 }
 
-uint32 CemuleApp::GetPublicIP(bool bIgnoreKadIP) const
+UINT CemuleApp::GetPublicIP(bool bIgnoreKadIP) const
 {
     if (m_dwPublicIP == 0 && Kademlia::CKademlia::IsConnected() && Kademlia::CKademlia::GetIPAddress() && !bIgnoreKadIP)
         return ntohl(Kademlia::CKademlia::GetIPAddress());
     return m_dwPublicIP;
 }
 
-void CemuleApp::SetPublicIP(const uint32 dwIP)
+void CemuleApp::SetPublicIP(const UINT dwIP)
 {
     if(m_dwPublicIP == dwIP)
         return;

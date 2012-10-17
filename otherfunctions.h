@@ -63,19 +63,19 @@ CString GetNextString(const CString& rstr, TCHAR chToken, int& riStart);
 ///////////////////////////////////////////////////////////////////////////////
 // String conversion
 //
-CString CastItoXBytes(uint16 count, bool isK = false, bool isPerSec = false, uint32 decimal = 2);
-CString CastItoXBytes(uint32 count, bool isK = false, bool isPerSec = false, uint32 decimal = 2);
-CString CastItoXBytes(uint64 count, bool isK = false, bool isPerSec = false, uint32 decimal = 2);
-CString CastItoXBytes(float count, bool isK = false, bool isPerSec = false, uint32 decimal = 2);
-CString CastItoXBytes(double count, bool isK = false, bool isPerSec = false, uint32 decimal = 2);
+CString CastItoXBytes(uint16 count, bool isK = false, bool isPerSec = false, UINT decimal = 2);
+CString CastItoXBytes(UINT count, bool isK = false, bool isPerSec = false, UINT decimal = 2);
+CString CastItoXBytes(uint64 count, bool isK = false, bool isPerSec = false, UINT decimal = 2);
+CString CastItoXBytes(float count, bool isK = false, bool isPerSec = false, UINT decimal = 2);
+CString CastItoXBytes(double count, bool isK = false, bool isPerSec = false, UINT decimal = 2);
 #if defined(_DEBUG) && defined(USE_DEBUG_EMFILESIZE)
-CString CastItoXBytes(EMFileSize count, bool isK = false, bool isPerSec = false, uint32 decimal = 2);
+CString CastItoXBytes(EMFileSize count, bool isK = false, bool isPerSec = false, UINT decimal = 2);
 #endif
-CString CastItoIShort(uint16 count, bool isK = false, uint32 decimal = 2);
-CString CastItoIShort(uint32 count, bool isK = false, uint32 decimal = 2);
-CString CastItoIShort(uint64 count, bool isK = false, uint32 decimal = 2);
-CString CastItoIShort(float count, bool isK = false, uint32 decimal = 2);
-CString CastItoIShort(double count, bool isK = false, uint32 decimal = 2);
+CString CastItoIShort(uint16 count, bool isK = false, UINT decimal = 2);
+CString CastItoIShort(UINT count, bool isK = false, UINT decimal = 2);
+CString CastItoIShort(uint64 count, bool isK = false, UINT decimal = 2);
+CString CastItoIShort(float count, bool isK = false, UINT decimal = 2);
+CString CastItoIShort(double count, bool isK = false, UINT decimal = 2);
 CString CastSecondsToHM(time_t seconds);
 CString	CastSecondsToLngHM(time_t seconds);
 CString GetFormatedUInt(ULONG ulVal);
@@ -91,7 +91,7 @@ CString URLDecode(const CString& sIn, bool bKeepNewLine = false);
 CString URLEncode(const CString& sIn);
 CString EncodeURLQueryParam(const CString& rstrQuery);
 CString MakeStringEscaped(CString in);
-CString RemoveAmbersand(const CString& rstr);
+CString RemoveAmpersand(const CString& rstr);
 CString	StripInvalidFilenameChars(const CString& strText);
 
 
@@ -102,8 +102,8 @@ CString EncodeBase32(const unsigned char* buffer, unsigned int bufLen);
 CString EncodeBase16(const unsigned char* buffer, unsigned int bufLen);
 unsigned int DecodeLengthBase16(unsigned int base16Length);
 bool DecodeBase16(const TCHAR *base16Buffer, unsigned int base16BufLen, byte *buffer, unsigned int bufflen);
-uint32 DecodeBase32(LPCTSTR pszInput, uchar* paucOutput, uint32 nBufferLen);
-uint32 DecodeBase32(LPCTSTR pszInput, CAICHHash& Hash);
+UINT DecodeBase32(LPCTSTR pszInput, uchar* paucOutput, UINT nBufferLen);
+UINT DecodeBase32(LPCTSTR pszInput, CAICHHash& Hash);
 
 ///////////////////////////////////////////////////////////////////////////////
 // File/Path string helpers
@@ -130,7 +130,7 @@ int			GetPathDriveNumber(CString path);
 EFileType	GetFileTypeEx(CShareableFile* kfile, bool checkextention=true, bool checkfileheader=true, bool nocached=false);
 CString		GetFileTypeName(EFileType ftype);
 int			IsExtensionTypeOf(EFileType type, CString ext);
-uint32		LevenshteinDistance(const CString& str1, const CString& str2);
+UINT		LevenshteinDistance(const CString& str1, const CString& str2);
 bool		_tmakepathlimit(TCHAR *path, const TCHAR *drive, const TCHAR *dir, const TCHAR *fname, const TCHAR *ext);
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -190,7 +190,7 @@ void DebugHexDump(CFile& file);
 CString DbgGetFileInfo(const uchar* hash);
 CString DbgGetFileStatus(UINT nPartCount, CSafeMemFile* data);
 LPCTSTR DbgGetHashTypeString(const uchar* hash);
-CString DbgGetClientID(uint32 nClientID);
+CString DbgGetClientID(UINT nClientID);
 int GetHashType(const uchar* hash);
 CString DbgGetDonkeyClientTCPOpcode(UINT opcode);
 CString DbgGetMuleClientTCPOpcode(UINT opcode);
@@ -202,11 +202,11 @@ CString DbgGetBlockFileInfo(const Requested_Block_Struct* block, const CPartFile
 CString DbgGetFileMetaTagName(UINT uMetaTagID);
 CString DbgGetFileMetaTagName(LPCSTR pszMetaTagID);
 CString DbgGetSearchOperatorName(UINT uOperator);
-void DebugRecv(LPCSTR pszMsg, const CUpDownClient* client, const uchar* packet = NULL, uint32 nIP = 0);
-void DebugRecv(LPCSTR pszOpcode, uint32 ip, uint16 port);
+void DebugRecv(LPCSTR pszMsg, const CUpDownClient* client, const uchar* packet = NULL, UINT nIP = 0);
+void DebugRecv(LPCSTR pszOpcode, UINT ip, uint16 port);
 void DebugSend(LPCSTR pszMsg, const CUpDownClient* client, const uchar* packet = NULL);
-void DebugSend(LPCSTR pszOpcode, uint32 ip, uint16 port);
-void DebugSendF(LPCSTR pszOpcode, uint32 ip, uint16 port, LPCTSTR pszMsg, ...);
+void DebugSend(LPCSTR pszOpcode, UINT ip, uint16 port);
+void DebugSendF(LPCSTR pszOpcode, UINT ip, uint16 port, LPCTSTR pszMsg, ...);
 void DebugHttpHeaders(const CStringAArray& astrHeaders);
 
 
@@ -262,33 +262,33 @@ __inline BYTE toHex(const BYTE &x)
 // NOTE: Do *NOT* use that function for determining if hash1<hash2 or hash1>hash2.
 __inline int md4cmp(const void* hash1, const void* hash2)
 {
-    return !(((uint32*)hash1)[0] == ((uint32*)hash2)[0] &&
-             ((uint32*)hash1)[1] == ((uint32*)hash2)[1] &&
-             ((uint32*)hash1)[2] == ((uint32*)hash2)[2] &&
-             ((uint32*)hash1)[3] == ((uint32*)hash2)[3]);
+    return !(((UINT*)hash1)[0] == ((UINT*)hash2)[0] &&
+             ((UINT*)hash1)[1] == ((UINT*)hash2)[1] &&
+             ((UINT*)hash1)[2] == ((UINT*)hash2)[2] &&
+             ((UINT*)hash1)[3] == ((UINT*)hash2)[3]);
 }
 
 __inline bool isnulmd4(const void* hash)
 {
-    return  (((uint32*)hash)[0] == 0 &&
-             ((uint32*)hash)[1] == 0 &&
-             ((uint32*)hash)[2] == 0 &&
-             ((uint32*)hash)[3] == 0);
+    return  (((UINT*)hash)[0] == 0 &&
+             ((UINT*)hash)[1] == 0 &&
+             ((UINT*)hash)[2] == 0 &&
+             ((UINT*)hash)[3] == 0);
 }
 
 // md4clr -- replacement for memset(hash,0,16)
 __inline void md4clr(const void* hash)
 {
-    ((uint32*)hash)[0] = ((uint32*)hash)[1] = ((uint32*)hash)[2] = ((uint32*)hash)[3] = 0;
+    ((UINT*)hash)[0] = ((UINT*)hash)[1] = ((UINT*)hash)[2] = ((UINT*)hash)[3] = 0;
 }
 
 // md4cpy -- replacement for memcpy(dst,src,16)
 __inline void md4cpy(void* dst, const void* src)
 {
-    ((uint32*)dst)[0] = ((uint32*)src)[0];
-    ((uint32*)dst)[1] = ((uint32*)src)[1];
-    ((uint32*)dst)[2] = ((uint32*)src)[2];
-    ((uint32*)dst)[3] = ((uint32*)src)[3];
+    ((UINT*)dst)[0] = ((UINT*)src)[0];
+    ((UINT*)dst)[1] = ((UINT*)src)[1];
+    ((UINT*)dst)[2] = ((UINT*)src)[2];
+    ((UINT*)dst)[3] = ((UINT*)src)[3];
 }
 
 #define	MAX_HASHSTR_SIZE (16*2+1)
@@ -303,7 +303,7 @@ bool strmd4(const CString& rstr, uchar* hash);
 ///////////////////////////////////////////////////////////////////////////////
 // Compare helpers
 //
-__inline int CompareUnsigned(uint32 uSize1, uint32 uSize2)
+__inline int CompareUnsigned(UINT uSize1, UINT uSize2)
 {
     if (uSize1 < uSize2)
         return -1;
@@ -312,7 +312,7 @@ __inline int CompareUnsigned(uint32 uSize1, uint32 uSize2)
     return 0;
 }
 
-__inline int CompareUnsignedUndefinedAtBottom(uint32 uSize1, uint32 uSize2, bool bSortAscending)
+__inline int CompareUnsignedUndefinedAtBottom(UINT uSize1, UINT uSize2, bool bSortAscending)
 {
     if (uSize1 == 0 && uSize2 == 0)
         return 0;
@@ -400,27 +400,27 @@ bool gotostring(CFile &file, const uchar *find, LONGLONG plen);
 // IP/UserID
 //
 void TriggerPortTest(uint16 tcp, uint16 udp);
-bool IsGoodIP(uint32 nIP, bool forceCheck = false);
-bool IsGoodIPPort(uint32 nIP, uint16 nPort);
-bool IsLANIP(uint32 nIP);
+bool IsGoodIP(UINT nIP, bool forceCheck = false);
+bool IsGoodIPPort(UINT nIP, uint16 nPort);
+bool IsLANIP(UINT nIP);
 uint8 GetMyConnectOptions(bool bEncryption = true, bool bCallback = true);
 //No longer need seperate lowID checks as we now know the servers just give *.*.*.0 users a lowID
-__inline bool IsLowID(uint32 id)
+__inline bool IsLowID(UINT id)
 {
     return (id < 16777216);
 }
-CString ipstr(uint32 nIP);
-CString ipstr(uint32 nIP, uint16 nPort);
+CString ipstr(UINT nIP);
+CString ipstr(UINT nIP, uint16 nPort);
 CString ipstr(LPCTSTR pszAddress, uint16 nPort);
-CStringA ipstrA(uint32 nIP);
-void ipstrA(CHAR* pszAddress, int iMaxAddress, uint32 nIP);
+CStringA ipstrA(UINT nIP);
+void ipstrA(CHAR* pszAddress, int iMaxAddress, UINT nIP);
 __inline CString ipstr(in_addr nIP)
 {
-    return ipstr(*(uint32*)&nIP);
+    return ipstr(*(UINT*)&nIP);
 }
 __inline CStringA ipstrA(in_addr nIP)
 {
-    return ipstrA(*(uint32*)&nIP);
+    return ipstrA(*(UINT*)&nIP);
 }
 
 
@@ -428,14 +428,14 @@ __inline CStringA ipstrA(in_addr nIP)
 // Date/Time
 //
 time_t safe_mktime(struct tm* ptm);
-bool AdjustNTFSDaylightFileTime(uint32& ruFileDate, LPCTSTR pszFilePath);
+bool AdjustNTFSDaylightFileTime(UINT& ruFileDate, LPCTSTR pszFilePath);
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Random Numbers
 //
 uint16 GetRandomUInt16();
-uint32 GetRandomUInt32();
+UINT GetRandomUInt32();
 
 ///////////////////////////////////////////////////////////////////////////////
 // RC4 Encryption
@@ -447,8 +447,8 @@ struct RC4_Key_Struct
     uint8 byY;
 };
 
-RC4_Key_Struct* RC4CreateKey(const uchar* pachKeyData, uint32 nLen, RC4_Key_Struct* key = NULL, bool bSkipDiscard = false);
-void RC4Crypt(const uchar* pachIn, uchar* pachOut, uint32 nLen, RC4_Key_Struct* key);
+RC4_Key_Struct* RC4CreateKey(const uchar* pachKeyData, UINT nLen, RC4_Key_Struct* key = NULL, bool bSkipDiscard = false);
+void RC4Crypt(const uchar* pachIn, uchar* pachOut, UINT nLen, RC4_Key_Struct* key);
 
 //>>> WiZaRd::Functions from removed files
 void	InitLocalIP();
@@ -490,4 +490,6 @@ template <class T> __inline double	GetRatioDouble(const T& ul, const T& dl)
 {
 	return dl ? ((double)ul / dl) : 0;
 }
+CString	GetFileNameFromURL(const CString& strURL);
+uint64	GetFileSizeOnDisk(const CString& strFilePath);
 //<<< WiZaRd::Additional Functions

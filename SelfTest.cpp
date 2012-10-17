@@ -117,17 +117,17 @@ bool CheckResources()
     g_uTotalSize = 0;
     g_uResNumber = 0;
     EnumResourceNames(AfxGetInstanceHandle(), RT_GROUP_ICON, EnumResNameProc, 0);
-    TRACE("RT_GROUP_ICON resources: %u (%u bytes)\n", g_uResNumber, g_uTotalSize);
+    TRACE(L"RT_GROUP_ICON resources: %u (%u bytes)\n", g_uResNumber, g_uTotalSize);
 
     g_uTotalSize = 0;
     g_uResNumber = 0;
     EnumResourceNames(AfxGetInstanceHandle(), RT_ICON, EnumResNameProc, 0);
-    TRACE("RT_ICON resources: %u (%u bytes)\n", g_uResNumber, g_uTotalSize);
+    TRACE(L"RT_ICON resources: %u (%u bytes)\n", g_uResNumber, g_uTotalSize);
 
     g_uTotalSize = 0;
     g_uResNumber = 0;
     EnumResourceNames(AfxGetInstanceHandle(), RT_BITMAP, EnumResNameProc, 0);
-    TRACE("RT_BITMAP resources: %u (%u bytes)\n", g_uResNumber, g_uTotalSize);
+    TRACE(L"RT_BITMAP resources: %u (%u bytes)\n", g_uResNumber, g_uTotalSize);
 
     return true;
 }

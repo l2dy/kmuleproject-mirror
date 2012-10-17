@@ -44,7 +44,7 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace Kademlia;
 
-CMap<uint32, uint32, uint32, uint32> CKeyEntry::s_mapGlobalPublishIPs;
+CMap<UINT, UINT, UINT, UINT> CKeyEntry::s_mapGlobalPublishIPs;
 
 CEntry::CEntry()
 {
@@ -146,7 +146,7 @@ CKadTagValueString CEntry::GetCommonFileName() const
     // a few bad publishers used and base or search matching and answering on this, instead of the most popular name
     // Note: The Index values are not the acutal numbers of publishers, but just a relativ number to compare to other entries
     POSITION posResult = NULL;
-    uint32 nHighestPopularityIndex = 0;
+    UINT nHighestPopularityIndex = 0;
     for (POSITION pos = m_listFileNames.GetHeadPosition(); pos != NULL;)
     {
         POSITION posPrev = pos;
@@ -171,12 +171,12 @@ CKadTagValueString CEntry::GetCommonFileNameLowerCase() const
     return strResult;
 }
 
-uint32 CEntry::GetTagCount() const // Adds filename and size to the count if not empty, even if they are not stored as tags
+UINT CEntry::GetTagCount() const // Adds filename and size to the count if not empty, even if they are not stored as tags
 {
     return m_listTag.size() + ((m_uSize != 0) ? 1 : 0) + (GetCommonFileName().IsEmpty() ? 0 : 1);
 }
 
-void CEntry::WriteTagListInc(CDataIO* pData, uint32 nIncreaseTagNumber)
+void CEntry::WriteTagListInc(CDataIO* pData, UINT nIncreaseTagNumber)
 {
     // write taglist and add name + size tag
     if (pData == NULL)
@@ -185,7 +185,7 @@ void CEntry::WriteTagListInc(CDataIO* pData, uint32 nIncreaseTagNumber)
         return;
     }
 
-    uint32 uCount = GetTagCount() + nIncreaseTagNumber; // will include name and size tag in the count if needed
+    UINT uCount = GetTagCount() + nIncreaseTagNumber; // will include name and size tag in the count if needed
     ASSERT( uCount <= 0xFF );
     pData->WriteByte((uint8)uCount);
 
@@ -207,7 +207,7 @@ void CEntry::WriteTagListInc(CDataIO* pData, uint32 nIncreaseTagNumber)
         pData->WriteTag(*itTagList);
 }
 
-void CEntry::AddTag(CKadTag* pTag, uint32 uDbgSourceIP)
+void CEntry::AddTag(CKadTag* pTag, UINT uDbgSourceIP)
 {
     // Filter tags which are for sending query results only and should never be stored (or even worse sent within the taglist)
     if (!pTag->m_name.Compare(TAG_KADAICHHASHRESULT))
@@ -436,9 +436,9 @@ bool CKeyEntry::SearchTermsMatch(const SSearchTerm* pSearchTerm) const
     return false;
 }
 
-void CKeyEntry::AdjustGlobalPublishTracking(uint32 uIP, bool bIncrease, CString strDbgReason)
+void CKeyEntry::AdjustGlobalPublishTracking(UINT uIP, bool bIncrease, CString strDbgReason)
 {
-    uint32 nCount = 0;
+    UINT nCount = 0;
     BOOL bFound = s_mapGlobalPublishIPs.Lookup(uIP & 0xFFFFFF00 /* /24 netmask, take care of endian if needed*/, nCount);
     if (bIncrease)
         nCount++;
@@ -635,7 +635,7 @@ void CKeyEntry::RecalcualteTrustValue()
     for (POSITION pos = m_pliPublishingIPs->GetHeadPosition(); pos != NULL; m_pliPublishingIPs->GetNext(pos))
     {
         structPublishingIP curEntry = m_pliPublishingIPs->GetAt(pos);
-        uint32 nCount = 0;
+        UINT nCount = 0;
         s_mapGlobalPublishIPs.Lookup(curEntry.m_uIP & 0xFFFFFF00 /* /24 netmask, take care of endian if needed*/, nCount);
         if (nCount > 0)
         {
@@ -707,7 +707,7 @@ void CKeyEntry::WritePublishTrackingDataToFile(CDataIO* pData)
             pData->WriteArray(m_aAICHHashs[i].GetRawHashC(), CAICHHash::GetHashSize());
     }
 
-    pData->WriteUInt32((uint32)m_listFileNames.GetCount());
+    pData->WriteUInt32((UINT)m_listFileNames.GetCount());
     for (POSITION pos = m_listFileNames.GetHeadPosition(); pos != NULL;)
     {
         const structFileNameEntry& rCur = m_listFileNames.GetNext(pos);
@@ -716,13 +716,13 @@ void CKeyEntry::WritePublishTrackingDataToFile(CDataIO* pData)
     }
     if (m_pliPublishingIPs != NULL)
     {
-        pData->WriteUInt32((uint32)m_pliPublishingIPs->GetCount());
+        pData->WriteUInt32((UINT)m_pliPublishingIPs->GetCount());
         for (POSITION pos = m_pliPublishingIPs->GetHeadPosition(); pos != NULL;)
         {
             const structPublishingIP& rCur = m_pliPublishingIPs->GetNext(pos);
             ASSERT( rCur.m_uIP != 0 );
             pData->WriteUInt32(rCur.m_uIP);
-            pData->WriteUInt32((uint32)rCur.m_tLastPublish);
+            pData->WriteUInt32((UINT)rCur.m_tLastPublish);
             uint16 nIdx = _UI16_MAX;
             if (rCur.m_byAICHHashIdx != _UI16_MAX)
             {
@@ -759,8 +759,8 @@ void CKeyEntry::ReadPublishTrackingDataFromFile(CDataIO* pData, bool bIncludesAI
 
 
     ASSERT( m_listFileNames.IsEmpty() );
-    uint32 nNameCount = pData->ReadUInt32();
-    for (uint32 i = 0; i < nNameCount; i++)
+    UINT nNameCount = pData->ReadUInt32();
+    for (UINT i = 0; i < nNameCount; i++)
     {
         structFileNameEntry sToAdd;
         sToAdd.m_fileName = pData->ReadStringUTF8();
@@ -770,15 +770,15 @@ void CKeyEntry::ReadPublishTrackingDataFromFile(CDataIO* pData, bool bIncludesAI
 
     ASSERT( m_pliPublishingIPs == NULL );
     m_pliPublishingIPs = new CList<structPublishingIP>();
-    uint32 nIPCount = pData->ReadUInt32();
-    uint32 nDbgLastTime = 0;
-    for (uint32 i = 0; i < nIPCount; i++)
+    UINT nIPCount = pData->ReadUInt32();
+    UINT nDbgLastTime = 0;
+    for (UINT i = 0; i < nIPCount; i++)
     {
         structPublishingIP sToAdd;
         sToAdd.m_uIP = pData->ReadUInt32();
         ASSERT( sToAdd.m_uIP != 0 );
         sToAdd.m_tLastPublish = pData->ReadUInt32();
-        ASSERT( nDbgLastTime <= (uint32)sToAdd.m_tLastPublish ); // shoudl always be sorted oldest first
+        ASSERT( nDbgLastTime <= (UINT)sToAdd.m_tLastPublish ); // shoudl always be sorted oldest first
         nDbgLastTime = sToAdd.m_tLastPublish;
         // read hash index and update popularity index
         if (bIncludesAICH)
@@ -839,7 +839,7 @@ void CKeyEntry::WriteTagListWithPublishInfo(CDataIO* pData)
     }
 
 
-    uint32 nAdditionalTags = 1;
+    UINT nAdditionalTags = 1;
     if (!m_aAICHHashs.IsEmpty())
         nAdditionalTags++;
     WriteTagListInc(pData, nAdditionalTags); // write the standard taglist but increase the tagcount by the count we wan to add
@@ -847,11 +847,11 @@ void CKeyEntry::WriteTagListWithPublishInfo(CDataIO* pData)
     // here we add a tag including how many publishers this entry has, the trustvalue and how many different names are known
     // this is supposed to get used in later versions as an indicator for the user how valid this result is (of course this tag
     // alone cannt be trusted 100%, because we could be a bad node, but its a part of the puzzle)
-    uint32 uTrust = (uint16)(GetTrustValue() * 100);
-    uint32 uPublishers = m_pliPublishingIPs->GetCount() % 256;
-    uint32 uNames = m_listFileNames.GetCount() % 256;
+    UINT uTrust = (uint16)(GetTrustValue() * 100);
+    UINT uPublishers = m_pliPublishingIPs->GetCount() % 256;
+    UINT uNames = m_listFileNames.GetCount() % 256;
     // 32 bit tag: <namecount uint8><publishers uint8><trustvalue*100 uint16>
-    uint32 uTagValue = (uNames << 24) | (uPublishers << 16) | (uTrust << 0);
+    UINT uTagValue = (uNames << 24) | (uPublishers << 16) | (uTrust << 0);
     CKadTagUInt tag(TAG_PUBLISHINFO, uTagValue);
     pData->WriteTag(&tag);
 

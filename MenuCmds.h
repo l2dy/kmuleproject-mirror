@@ -216,3 +216,4 @@
 #define MP_PSPRIOVERYHIGH		15330
 #define MP_PSPRIOAUTO			15331
 //<<< WiZaRd::PowerShare
+#define MP_FEEDBACK				15332	//>>> WiZaRd::Upload Feedback

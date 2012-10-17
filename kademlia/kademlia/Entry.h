@@ -38,7 +38,7 @@ protected:
     struct structFileNameEntry
     {
         CKadTagValueString	m_fileName;
-        uint32				m_uPopularityIndex;
+        UINT				m_uPopularityIndex;
     };
 public:
     CEntry();
@@ -53,8 +53,8 @@ public:
     uint64		GetIntTagValue(CKadTagNameString strTagName, bool bIncludeVirtualTags = true) const;
     bool		GetIntTagValue(CKadTagNameString strTagName, uint64& rValue, bool bIncludeVirtualTags = true) const;
     CKadTagValueString GetStrTagValue(CKadTagNameString strTagName) const;
-    void		AddTag(CKadTag* pTag, uint32 uDbgSourceIP = 0);
-    uint32		GetTagCount() const; // Adds filename and size to the count if not empty, even if they are not stored as tags
+    void		AddTag(CKadTag* pTag, UINT uDbgSourceIP = 0);
+    UINT		GetTagCount() const; // Adds filename and size to the count if not empty, even if they are not stored as tags
     void		WriteTagList(CDataIO* pData)
     {
         WriteTagListInc(pData, 0);
@@ -64,7 +64,7 @@ public:
     CKadTagValueString	GetCommonFileName() const;
     void		SetFileName(CKadTagValueString strName);
 
-    uint32 m_uIP;
+    UINT m_uIP;
     uint16 m_uTCPPort;
     uint16 m_uUDPPort;
     CUInt128 m_uKeyID;
@@ -74,7 +74,7 @@ public:
     bool	m_bSource;
 
 protected:
-    void		WriteTagListInc(CDataIO* pData, uint32 nIncreaseTagNumber = 0);
+    void		WriteTagListInc(CDataIO* pData, UINT nIncreaseTagNumber = 0);
     CList<structFileNameEntry>	m_listFileNames;
     TagList m_listTag;
 };
@@ -84,7 +84,7 @@ class CKeyEntry : public CEntry
 protected:
     struct structPublishingIP
     {
-        uint32				m_uIP;
+        UINT				m_uIP;
         time_t				m_tLastPublish;
         uint16				m_byAICHHashIdx;
     };
@@ -118,12 +118,12 @@ public:
 
 protected:
     void				RecalcualteTrustValue();
-    static void			AdjustGlobalPublishTracking(uint32 uIP, bool bIncrease, CString strDbgReason);
+    static void			AdjustGlobalPublishTracking(UINT uIP, bool bIncrease, CString strDbgReason);
 
-    uint32	dwLastTrustValueCalc;
+    UINT	dwLastTrustValueCalc;
     float	m_fTrustValue;
     CList<structPublishingIP> *m_pliPublishingIPs;
-    static CMap<uint32, uint32, uint32, uint32> s_mapGlobalPublishIPs; // tracks count of publishings for each 255.255.255.0/28 subnet
+    static CMap<UINT, UINT, UINT, UINT> s_mapGlobalPublishIPs; // tracks count of publishings for each 255.255.255.0/28 subnet
 
     CArray<uint8>		m_anAICHHashPopularity;
     CArray<CAICHHash>	m_aAICHHashs;

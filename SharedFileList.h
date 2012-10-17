@@ -102,7 +102,7 @@ public:
     void	HashFailed(UnknownFile_Struct* hashed);		// SLUGFILLER: SafeHash
     void	FileHashingFinished(CKnownFile* file);
 
-    bool	GetPopularityRank(const CKnownFile* pFile, uint32& rnOutSession, uint32& rnOutTotal) const;
+    bool	GetPopularityRank(const CKnownFile* pFile, UINT& rnOutSession, UINT& rnOutTotal) const;
 
     CMutex	m_mutWriteList;
 
@@ -133,8 +133,8 @@ private:
     int m_currFileSrc;
     int m_currFileNotes;
     int m_currFileKey;
-    uint32 m_lastPublishKadSrc;
-    uint32 m_lastPublishKadNotes;
+    UINT m_lastPublishKadSrc;
+    UINT m_lastPublishKadNotes;
     bool bHaveSingleSharedFiles;
 
 //>>> WiZaRd::Don't send empty dirs

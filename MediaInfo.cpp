@@ -1272,7 +1272,7 @@ BOOL GetRMHeaders(LPCTSTR pszFileName, SMediaInfo* mi, bool& rbIsRM, bool bFullI
             file.Read(&rmChunkHdr, sizeof(rmChunkHdr));
             dwID = _byteswap_ulong(rmChunkHdr.id);
             dwSize = _byteswap_ulong(rmChunkHdr.size);
-            TRACE("%08x: id=%.4s  size=%u\n", (DWORD)ullCurFilePos, &rmChunkHdr.id, dwSize);
+            TRACE(L"%08x: id=%.4s  size=%u\n", (DWORD)ullCurFilePos, &rmChunkHdr.id, dwSize);
             if (dwSize < sizeof(rmChunkHdr))
                 break; // expect broken DATA-chunk headers created by 'mplayer'
             ullChunkEndFilePos = ullChunkStartFilePos + dwSize;
@@ -1507,7 +1507,7 @@ BOOL GetRMHeaders(LPCTSTR pszFileName, SMediaInfo* mi, bool& rbIsRM, bool bFullI
                                         }
 
                                         aFileProps.Add(SRmFileProp(strPropNameA, strPropValueA));
-                                        TRACE("Prop: %s, typ=%u, size=%u, value=%s\n", strPropNameA, dwPropType, wPropValueLen, (LPCSTR)strPropValueA);
+                                        TRACE(L"Prop: %s, typ=%u, size=%u, value=%s\n", strPropNameA, dwPropType, wPropValueLen, (LPCSTR)strPropValueA);
                                     }
                                     else
                                         file.Seek(dwPropSize - sizeof(DWORD) - sizeof(WORD), CFile::current);

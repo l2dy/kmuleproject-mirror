@@ -80,7 +80,7 @@ CUpDownClient::CUpDownClient(CClientReqSocket* sender)
     Init();
 }
 
-CUpDownClient::CUpDownClient(CPartFile* in_reqfile, uint16 in_port, uint32 in_userid,uint32 in_serverip, uint16 in_serverport, bool ed2kID)
+CUpDownClient::CUpDownClient(CPartFile* in_reqfile, uint16 in_port, UINT in_userid,UINT in_serverip, uint16 in_serverport, bool ed2kID)
 {
     //Converting to the HybridID system.. The ED2K system didn't take into account of IP address ending in 0..
     //All IP addresses ending in 0 were assumed to be a lowID because of the calculations.
@@ -107,6 +107,13 @@ CUpDownClient::CUpDownClient(CPartFile* in_reqfile, uint16 in_port, uint32 in_us
 
 void CUpDownClient::Init()
 {
+//>>> WiZaRd::ZZUL Upload [ZZ]
+	m_nCurQueueSessionUp = 0;
+	m_nCurSessionPayloadUp = 0;
+	m_addedPayloadQueueSession = 0;
+	m_bScheduledForRemoval = false;
+	m_bScheduledForRemovalWillKeepWaitingTimeIntact = false;
+//<<< WiZaRd::ZZUL Upload [ZZ]
     m_uiFailedUDPPacketsInARow = 0; //>>> WiZaRd::Detect UDP problem clients
     m_abyUpPartStatusHidden = NULL; //>>> WiZaRd::Intelligent SOTN
 //>>> WiZaRd::ClientAnalyzer
@@ -235,7 +242,7 @@ void CUpDownClient::Init()
     m_nFailedUDPPackets = 0;
     m_nUrlStartPos = (uint64)-1;
     m_fNeedOurPublicIP = 0;
-    m_random_update_wait = (uint32)(rand()/(RAND_MAX/1000));
+    m_random_update_wait = (UINT)(rand()/(RAND_MAX/1000));
     m_bSourceExchangeSwapped = false; // ZZ:DownloadManager
     m_dwLastTriedToConnect = ::GetTickCount()-20*60*1000; // ZZ:DownloadManager
     m_fQueueRankPending = 0;
@@ -382,7 +389,7 @@ void CUpDownClient::ClearHelloProperties()
     m_incompletepartVer = 0; //>>> WiZaRd::ICS [enkeyDEV]
 }
 
-bool CUpDownClient::ProcessHelloPacket(const uchar* pachPacket, uint32 nSize)
+bool CUpDownClient::ProcessHelloPacket(const uchar* pachPacket, UINT nSize)
 {
     CSafeMemFile data(pachPacket, nSize);
     data.ReadUInt8(); // read size of userhash
@@ -391,7 +398,7 @@ bool CUpDownClient::ProcessHelloPacket(const uchar* pachPacket, uint32 nSize)
     return ProcessHelloTypePacket(&data);
 }
 
-bool CUpDownClient::ProcessHelloAnswer(const uchar* pachPacket, uint32 nSize)
+bool CUpDownClient::ProcessHelloAnswer(const uchar* pachPacket, UINT nSize)
 {
     CSafeMemFile data(pachPacket, nSize);
     bool bIsMule = ProcessHelloTypePacket(&data);
@@ -421,7 +428,7 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 
     DWORD dwEmuleTags = 0;
     bool bPrTag = false;
-    uint32 tagcount = data->ReadUInt32();
+    UINT tagcount = data->ReadUInt32();
     if (bDbgInfo)
         m_strHelloInfo.AppendFormat(_T("  Tags=%u"), tagcount);
 
@@ -433,7 +440,7 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
     bool bIsBadShareaza = false;
 //<<< zz_fly::Bad Shareaza detection
 //<<< WiZaRd::ClientAnalyzer
-    for (uint32 i = 0; i < tagcount; i++)
+    for (UINT i = 0; i < tagcount; i++)
     {
         CTag temptag(data, true);
         switch (temptag.GetNameID())
@@ -681,9 +688,9 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
     // *) eDonkeyHybrid 0.40 - 1.2 sends an additional Int32. (Since 1.3 they don't send it any longer.)
     // *) MLdonkey sends an additional Int32
     //
-    if (data->GetLength() - data->GetPosition() == sizeof(uint32))
+    if (data->GetLength() - data->GetPosition() == sizeof(UINT))
     {
-        uint32 test = data->ReadUInt32();
+        UINT test = data->ReadUInt32();
         if (test == 'KDLM')
         {
             m_bIsML = true;
@@ -694,22 +701,22 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
         {
             m_bIsHybrid = true;
             if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(_T("\n  ***AddData: uint32=%u (0x%08x)"), test, test);
+                m_strHelloInfo.AppendFormat(_T("\n  ***AddData: UINT=%u (0x%08x)"), test, test);
         }
     }
     else if (bDbgInfo && data->GetPosition() < data->GetLength())
     {
         UINT uAddHelloDataSize = (UINT)(data->GetLength() - data->GetPosition());
-        if (uAddHelloDataSize == sizeof(uint32))
+        if (uAddHelloDataSize == sizeof(UINT))
         {
             DWORD dwAddHelloInt32 = data->ReadUInt32();
-            m_strHelloInfo.AppendFormat(_T("\n  ***AddData: uint32=%u (0x%08x)"), dwAddHelloInt32, dwAddHelloInt32);
+            m_strHelloInfo.AppendFormat(_T("\n  ***AddData: UINT=%u (0x%08x)"), dwAddHelloInt32, dwAddHelloInt32);
         }
-        else if (uAddHelloDataSize == sizeof(uint32)+sizeof(uint16))
+        else if (uAddHelloDataSize == sizeof(UINT)+sizeof(uint16))
         {
             DWORD dwAddHelloInt32 = data->ReadUInt32();
             WORD w = data->ReadUInt16();
-            m_strHelloInfo.AppendFormat(_T("\n  ***AddData: uint32=%u (0x%08x),  uint16=%u (0x%04x)"), dwAddHelloInt32, dwAddHelloInt32, w, w);
+            m_strHelloInfo.AppendFormat(_T("\n  ***AddData: UINT=%u (0x%08x),  uint16=%u (0x%04x)"), dwAddHelloInt32, dwAddHelloInt32, w, w);
         }
         else
             m_strHelloInfo.AppendFormat(_T("\n  ***AddData: %u bytes"), uAddHelloDataSize);
@@ -887,7 +894,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer)
     CTag tag6(ET_EXTENDEDREQUEST,2);
     tag6.WriteTagToFile(&data);
 
-    uint32 dwTagValue = (theApp.clientcredits->CryptoAvailable() ? 3 : 0);
+    UINT dwTagValue = (theApp.clientcredits->CryptoAvailable() ? 3 : 0);
     if (thePrefs.CanSeeShares() != vsfaNobody) // set 'Preview supported' only if 'View Shared Files' allowed
         dwTagValue |= 128;
     CTag tag7(ET_FEATURES, dwTagValue);
@@ -921,7 +928,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer)
     SendPacket(packet, true);
 }
 
-void CUpDownClient::ProcessMuleInfoPacket(const uchar* pachPacket, uint32 nSize)
+void CUpDownClient::ProcessMuleInfoPacket(const uchar* pachPacket, UINT nSize)
 {
     bool bDbgInfo = thePrefs.GetUseDebugDevice();
     m_strMuleInfo.Empty();
@@ -964,12 +971,12 @@ void CUpDownClient::ProcessMuleInfoPacket(const uchar* pachPacket, uint32 nSize)
         return;
     }
 
-    uint32 tagcount = data.ReadUInt32();
+    UINT tagcount = data.ReadUInt32();
     if (bDbgInfo)
         m_strMuleInfo.AppendFormat(_T("  Tags=%u"), (UINT)tagcount);
 
     bool bMod = false; //>>> WiZaRd::ClientAnalyzer
-    for (uint32 i = 0; i < tagcount; i++)
+    for (UINT i = 0; i < tagcount; i++)
     {
         CTag temptag(&data, false);
         switch (temptag.GetNameID())
@@ -1184,13 +1191,13 @@ void CUpDownClient::SendHelloAnswer()
 void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 {
     data->WriteHash16(thePrefs.GetUserHash());
-    uint32 clientid;
+    UINT clientid;
     clientid = theApp.GetID();
 
     data->WriteUInt32(clientid);
     data->WriteUInt16(thePrefs.GetPort());
 
-    uint32 tagcount = 6;
+    UINT tagcount = 6;
 
     if( theApp.clientlist->GetBuddy() && theApp.IsFirewalled() )
         tagcount += 2;
@@ -1244,7 +1251,7 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
     tagVersion.WriteTagToFile(data);
 
     // eMule UDP Ports
-    uint32 kadUDPPort = 0;
+    UINT kadUDPPort = 0;
     if(Kademlia::CKademlia::IsConnected())
     {
         if (Kademlia::CKademlia::GetPrefs()->GetExternalKadPort() != 0
@@ -1257,8 +1264,8 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
             kadUDPPort = Kademlia::CKademlia::GetPrefs()->GetInternKadPort();
     }
     CTag tagUdpPorts(CT_EMULE_UDPPORTS,
-                     ((uint32)kadUDPPort			   << 16) |
-                     ((uint32)thePrefs.GetUDPPort() <<  0)
+                     ((UINT)kadUDPPort			   << 16) |
+                     ((UINT)thePrefs.GetUDPPort() <<  0)
                     );
     tagUdpPorts.WriteTagToFile(data);
 
@@ -1269,7 +1276,7 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 
         CTag tagBuddyPort(CT_EMULE_BUDDYUDP,
 //					( RESERVED												)
-                          ((uint32)theApp.clientlist->GetBuddy()->GetUDPPort()  )
+                          ((UINT)theApp.clientlist->GetBuddy()->GetUDPPort()  )
                          );
         tagBuddyPort.WriteTagToFile(data);
     }
@@ -1371,7 +1378,7 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 //	data->WriteUInt32(dwIP); //The Hybrid added some bits here, what ARE THEY FOR?
 }
 
-void CUpDownClient::ProcessMuleCommentPacket(const uchar* pachPacket, uint32 nSize)
+void CUpDownClient::ProcessMuleCommentPacket(const uchar* pachPacket, UINT nSize)
 {
     if (reqfile && reqfile->IsPartFile())
     {
@@ -1680,7 +1687,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
             return true;
     }
 
-    uint32 uClientIP = (GetIP() != 0) ? GetIP() : GetConnectIP();
+    UINT uClientIP = (GetIP() != 0) ? GetIP() : GetConnectIP();
     if (uClientIP == 0 && !HasLowID())
         uClientIP = ntohl(m_nUserIDHybrid);
     if (uClientIP)
@@ -2321,7 +2328,7 @@ void CUpDownClient::RequestSharedFileList()
     }
 }
 
-void CUpDownClient::ProcessSharedFileList(const uchar* pachPacket, uint32 nSize, LPCTSTR pszDirectory)
+void CUpDownClient::ProcessSharedFileList(const uchar* pachPacket, UINT nSize, LPCTSTR pszDirectory)
 {
     if (m_iFileListRequested > 0)
     {
@@ -2402,7 +2409,7 @@ void CUpDownClient::SendSignaturePacket()
         bUseV2 = true;
 
     uint8 byChaIPKind = 0;
-    uint32 ChallengeIP = 0;
+    UINT ChallengeIP = 0;
     if (bUseV2)
     {
         // we cannot do not know for sure our public ip, so use the remote clients one
@@ -2430,7 +2437,7 @@ void CUpDownClient::SendSignaturePacket()
     m_SecureIdentState = IS_ALLREQUESTSSEND;
 }
 
-void CUpDownClient::ProcessPublicKeyPacket(const uchar* pachPacket, uint32 nSize)
+void CUpDownClient::ProcessPublicKeyPacket(const uchar* pachPacket, UINT nSize)
 {
     theApp.clientlist->AddTrackClient(this);
 
@@ -2464,7 +2471,7 @@ void CUpDownClient::ProcessPublicKeyPacket(const uchar* pachPacket, uint32 nSize
     }
 }
 
-void CUpDownClient::ProcessSignaturePacket(const uchar* pachPacket, uint32 nSize)
+void CUpDownClient::ProcessSignaturePacket(const uchar* pachPacket, UINT nSize)
 {
     // here we spread the good guys from the bad ones ;)
 
@@ -2559,7 +2566,7 @@ void CUpDownClient::SendSecIdentStatePacket()
             return;
         }
         // crypt: send random data to sign
-        uint32 dwRandom = rand()+1;
+        UINT dwRandom = rand()+1;
         credits->m_dwCryptRndChallengeFor = dwRandom;
         Packet* packet = new Packet(OP_SECIDENTSTATE,5,OP_EMULEPROT);
         theStats.AddUpDataOverheadOther(packet->size);
@@ -2573,7 +2580,7 @@ void CUpDownClient::SendSecIdentStatePacket()
         ASSERT ( false );
 }
 
-void CUpDownClient::ProcessSecIdentStatePacket(const uchar* pachPacket, uint32 nSize)
+void CUpDownClient::ProcessSecIdentStatePacket(const uchar* pachPacket, UINT nSize)
 {
     if (nSize != 5)
         return;
@@ -2701,7 +2708,7 @@ void CUpDownClient::SendPreviewAnswer(const CKnownFile* pForFile, CxImage** imgF
     SafeConnectAndSendPacket(packet);
 }
 
-void CUpDownClient::ProcessPreviewReq(const uchar* pachPacket, uint32 nSize)
+void CUpDownClient::ProcessPreviewReq(const uchar* pachPacket, UINT nSize)
 {
     if (nSize < 16)
         throw GetResString(IDS_ERR_WRONGPACKAGESIZE);
@@ -2721,7 +2728,7 @@ void CUpDownClient::ProcessPreviewReq(const uchar* pachPacket, uint32 nSize)
     }
 }
 
-void CUpDownClient::ProcessPreviewAnswer(const uchar* pachPacket, uint32 nSize)
+void CUpDownClient::ProcessPreviewAnswer(const uchar* pachPacket, UINT nSize)
 {
     if (m_fPreviewReqPending == 0)
         return;
@@ -2747,7 +2754,7 @@ void CUpDownClient::ProcessPreviewAnswer(const uchar* pachPacket, uint32 nSize)
     {
         for (int i = 0; i != nCount; i++)
         {
-            uint32 nImgSize = data.ReadUInt32();
+            UINT nImgSize = data.ReadUInt32();
             if (nImgSize > nSize)
                 throw CString(_T("CUpDownClient::ProcessPreviewAnswer - Provided image size exceeds limit"));
             pBuffer = new BYTE[nImgSize];
@@ -2871,6 +2878,7 @@ void CUpDownClient::AssertValid() const
     (void)m_cAsked;
     (void)m_dwLastUpRequest;
     (void)m_nCurSessionUp;
+	(void)m_nCurSessionPayloadUp; //>>> WiZaRd::ZZUL Upload [ZZ]
     (void)m_nCurQueueSessionPayloadUp;
     (void)m_addedPayloadQueueSession;
     (void)m_nUpPartCount;
@@ -3121,22 +3129,19 @@ CString CUpDownClient::GetUploadStateDisplayString() const
         strState = GetResString(IDS_CONNECTING);
         break;
     case US_UPLOADING:
-        if(GetPayloadInBuffer() == 0 && GetNumberOfRequestedBlocksInQueue() == 0 && thePrefs.IsExtControlsEnabled())
-        {
-            strState = GetResString(IDS_US_STALLEDW4BR);
-        }
-        else if(GetPayloadInBuffer() == 0 && thePrefs.IsExtControlsEnabled())
-        {
-            strState = GetResString(IDS_US_STALLEDREADINGFDISK);
-        }
-        else if(GetSlotNumber() <= theApp.uploadqueue->GetActiveUploadsCount())
-        {
-            strState = GetResString(IDS_TRANSFERRING);
-        }
+//>>> WiZaRd::ZZUL Upload [ZZ]
+		if(IsScheduledForRemoval()) 
+			strState = GetScheduledRemovalDisplayReason();
         else
-        {
+//<<< WiZaRd::ZZUL Upload [ZZ]
+			if(GetPayloadInBuffer() == 0 && GetNumberOfRequestedBlocksInQueue() == 0 && thePrefs.IsExtControlsEnabled())
+            strState = GetResString(IDS_US_STALLEDW4BR);        
+        else if(GetPayloadInBuffer() == 0 && thePrefs.IsExtControlsEnabled())
+            strState = GetResString(IDS_US_STALLEDREADINGFDISK);
+        else if(GetSlotNumber() <= theApp.uploadqueue->GetActiveUploadsCount())
+            strState = GetResString(IDS_TRANSFERRING);
+        else
             strState = GetResString(IDS_TRICKLING);
-        }
         break;
     }
 
@@ -3160,7 +3165,7 @@ void CUpDownClient::ProcessPublicIPAnswer(const BYTE* pbyData, UINT uSize)
 {
     if (uSize != 4)
         throw GetResString(IDS_ERR_WRONGPACKAGESIZE);
-    uint32 dwIP = PeekUInt32(pbyData);
+    UINT dwIP = PeekUInt32(pbyData);
     if (m_fNeedOurPublicIP == 1)  // did we?
     {
         m_fNeedOurPublicIP = 0;
@@ -3231,7 +3236,7 @@ bool CUpDownClient::ShouldReceiveCryptUDPPackets() const
             && HasValidHash() && (thePrefs.IsClientCryptLayerRequested() || RequestsCryptLayer()) );
 }
 
-void CUpDownClient::ProcessChatMessage(CSafeMemFile* data, uint32 nLength)
+void CUpDownClient::ProcessChatMessage(CSafeMemFile* data, UINT nLength)
 {
     //filter me?
     if ( (thePrefs.MsgOnlyFriends() && !IsFriend()) || (thePrefs.MsgOnlySecure() && GetUserName()==NULL) )
@@ -3441,10 +3446,10 @@ void CUpDownClient::ProcessCaptchaRequest(CSafeMemFile* data)
     {
         // read tags (for future use)
         uint8 nTagCount = data->ReadUInt8();
-        for (uint32 i = 0; i < nTagCount; i++)
+        for (UINT i = 0; i < nTagCount; i++)
             CTag tag(data, true);
         // sanitize checks - we want a small captcha not a wallpaper
-        uint32 nSize = (uint32)(data->GetLength() - data->GetPosition());
+        UINT nSize = (UINT)(data->GetLength() - data->GetPosition());
         if ( nSize > 128 && nSize < 4096)
         {
             ULONGLONG pos = data->GetPosition();
@@ -3561,7 +3566,7 @@ void CUpDownClient::ProcessFirewallCheckUDPRequest(CSafeMemFile* data)
 
     uint16 nRemoteInternPort = data->ReadUInt16();
     uint16 nRemoteExternPort = data->ReadUInt16();
-    uint32 dwSenderKey = data->ReadUInt32();
+    UINT dwSenderKey = data->ReadUInt32();
     if (nRemoteInternPort == 0)
     {
         DebugLogError(_T("UDP Firewallcheck requested with Intern Port == 0 (%s)"), DbgGetClientInfo());
@@ -3923,3 +3928,60 @@ bool CUpDownClient::DownloadingAndUploadingFilesAreEqual(CKnownFile* reqfile)
     return IsCompleteSource() && GetRequestFile() == reqfile;
 }
 //<<< WiZaRd::ClientAnalyzer
+
+void	CUpDownClient::SetFriendSlot(const bool bNV)
+{
+	const bool oldValue = m_bFriendSlot;
+	m_bFriendSlot = bNV;
+//>>> WiZaRd::ZZUL Upload [ZZ]
+	if(theApp.uploadqueue && oldValue != m_bFriendSlot)
+		theApp.uploadqueue->ReSortUploadSlots(true);
+//<<< WiZaRd::ZZUL Upload [ZZ]
+}
+
+//>>> WiZaRd::ZZUL Upload [ZZ]
+void	CUpDownClient::ScheduleRemovalFromUploadQueue(LPCTSTR pszDebugReason, CString strDisplayReason, bool keepWaitingTimeIntact) 
+{
+	if(!m_bScheduledForRemoval) 
+	{
+		m_bScheduledForRemoval = true;
+		m_pszScheduledForRemovalDebugReason = pszDebugReason;
+		m_strScheduledForRemovalDisplayReason = strDisplayReason;
+		m_bScheduledForRemovalWillKeepWaitingTimeIntact = keepWaitingTimeIntact;
+		m_bScheduledForRemovalAtTick = ::GetTickCount();
+	}
+}
+
+void	CUpDownClient::UnscheduleForRemoval() 
+{
+	m_bScheduledForRemoval = false;
+
+	if(GetQueueSessionPayloadUp() > GetCurrentSessionLimit())
+		++m_curSessionAmountNumber;
+}
+
+bool	CUpDownClient::IsScheduledForRemoval() const
+{ 
+	return m_bScheduledForRemoval; 
+}
+
+bool	CUpDownClient::GetScheduledUploadShouldKeepWaitingTime() const
+{ 
+	return m_bScheduledForRemovalWillKeepWaitingTimeIntact; 
+}
+
+LPCTSTR	CUpDownClient::GetScheduledRemovalDebugReason() const 
+{ 
+	return m_pszScheduledForRemovalDebugReason; 
+}
+
+CString CUpDownClient::GetScheduledRemovalDisplayReason() const
+{ 
+	return m_strScheduledForRemovalDisplayReason; 
+}
+
+bool	CUpDownClient::GetScheduledRemovalLimboComplete() const
+{ 
+	return m_bScheduledForRemoval && ::GetTickCount()-m_bScheduledForRemovalAtTick > SEC2MS(10); 
+}
+//<<< WiZaRd::ZZUL Upload [ZZ]

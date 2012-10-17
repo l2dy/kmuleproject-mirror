@@ -224,7 +224,7 @@ void CTransferWnd::OnInitialUpdate()
     Localize();
 }
 
-void CTransferWnd::ShowQueueCount(uint32 number)
+void CTransferWnd::ShowQueueCount(UINT number)
 {
     CString strBuffer = L"";
 
@@ -656,12 +656,15 @@ void CTransferWnd::UpdateListCount(EWnd2 listindex, int iCount /*=-1*/)
         case IDC_UPLOADLIST:
             if (listindex == wnd2Uploading)
             {
-                uint32 itemCount = iCount == -1 ? uploadlistctrl.GetItemCount() : iCount;
-                uint32 activeCount = theApp.uploadqueue->GetActiveUploadsCount();
+                UINT itemCount = iCount == -1 ? uploadlistctrl.GetItemCount() : iCount;
+                UINT activeCount = theApp.uploadqueue->GetActiveUploadsCount();
                 if (activeCount >= itemCount)
                     strBuffer.Format(_T(" (%i)"), itemCount);
                 else
                     strBuffer.Format(_T(" (%i/%i)"), activeCount, itemCount);
+//>>> WiZaRd::ZZUL Upload [ZZ]
+				strBuffer.AppendFormat(_T(" %i/%i"), theApp.uploadqueue->GetActiveUploadsCountLongPerspective(), theApp.uploadqueue->GetEffectiveUploadListCount());
+//<<< WiZaRd::ZZUL Upload [ZZ]
                 m_btnWnd2->SetWindowText(GetResString(IDS_UPLOADING) + strBuffer);
             }
             break;
@@ -696,12 +699,15 @@ void CTransferWnd::UpdateListCount(EWnd2 listindex, int iCount /*=-1*/)
         {
         case wnd2Uploading:
         {
-            uint32 itemCount = iCount == -1 ? uploadlistctrl.GetItemCount() : iCount;
-            uint32 activeCount = theApp.uploadqueue->GetActiveUploadsCount();
+            UINT itemCount = iCount == -1 ? uploadlistctrl.GetItemCount() : iCount;
+            UINT activeCount = theApp.uploadqueue->GetActiveUploadsCount();
             if (activeCount >= itemCount)
                 strBuffer.Format(_T(" (%i)"), itemCount);
             else
                 strBuffer.Format(_T(" (%i/%i)"), activeCount, itemCount);
+//>>> WiZaRd::ZZUL Upload [ZZ]
+			strBuffer.AppendFormat(_T(" %i/%i"), theApp.uploadqueue->GetActiveUploadsCountLongPerspective(), theApp.uploadqueue->GetEffectiveUploadListCount());
+//<<< WiZaRd::ZZUL Upload [ZZ]
             m_btnWnd2->SetWindowText(GetResString(IDS_UPLOADING) + strBuffer);
             break;
         }
@@ -730,12 +736,15 @@ void CTransferWnd::UpdateListCount(EWnd2 listindex, int iCount /*=-1*/)
         if (listindex == wnd2Uploading)
         {
             CString strBuffer;
-            uint32 itemCount = iCount == -1 ? uploadlistctrl.GetItemCount() : iCount;
-            uint32 activeCount = theApp.uploadqueue->GetActiveUploadsCount();
+            UINT itemCount = iCount == -1 ? uploadlistctrl.GetItemCount() : iCount;
+            UINT activeCount = theApp.uploadqueue->GetActiveUploadsCount();
             if (activeCount >= itemCount)
                 strBuffer.Format(_T(" (%i)"), itemCount);
             else
                 strBuffer.Format(_T(" (%i/%i)"), activeCount, itemCount);
+//>>> WiZaRd::ZZUL Upload [ZZ]
+			strBuffer.AppendFormat(_T(" %i/%i"), theApp.uploadqueue->GetActiveUploadsCountLongPerspective(), theApp.uploadqueue->GetEffectiveUploadListCount());
+//<<< WiZaRd::ZZUL Upload [ZZ]
             m_btnWnd1->SetWindowText(GetResString(IDS_UPLOADING) + strBuffer);
         }
         break;
@@ -1996,7 +2005,7 @@ void CTransferWnd::SetWnd2Icon(EWnd2Icon iIcon)
     m_btnWnd2->SetButtonInfo(GetWindowLong(*m_btnWnd2, GWL_ID), &tbbi);
 }
 
-void CTransferWnd::ShowList(uint32 dwListIDC)
+void CTransferWnd::ShowList(UINT dwListIDC)
 {
     CRect rcWnd;
     GetWindowRect(rcWnd);
@@ -2738,12 +2747,15 @@ void CTransferWnd::UpdateListCountTop(const EWnd2 listindex)
     {
     case wnd2Uploading:
     {
-        uint32 itemCount = /*iCount == -1 ? */uploadlistctrl.GetItemCount()/* : iCount*/;
-        uint32 activeCount = theApp.uploadqueue->GetActiveUploadsCount();
+        UINT itemCount = /*iCount == -1 ? */uploadlistctrl.GetItemCount()/* : iCount*/;
+        UINT activeCount = theApp.uploadqueue->GetActiveUploadsCount();
         if (activeCount >= itemCount)
             strBuffer.Format(_T(" (%i)"), itemCount);
         else
             strBuffer.Format(_T(" (%i/%i)"), activeCount, itemCount);
+//>>> WiZaRd::ZZUL Upload [ZZ]
+		strBuffer.AppendFormat(_T(" %i/%i"), theApp.uploadqueue->GetActiveUploadsCountLongPerspective(), theApp.uploadqueue->GetEffectiveUploadListCount());
+//<<< WiZaRd::ZZUL Upload [ZZ]
         m_btnWnd2->SetWindowText(GetResString(IDS_UPLOADING) + strBuffer);
         break;
     }

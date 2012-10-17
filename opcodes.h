@@ -109,8 +109,12 @@
 #define	UPLOAD_CHECK_CLIENT_DR_DFLT	11520
 #define	UPLOAD_CLIENT_DATARATE_DFLT	15360		// uploadspeed per client in bytes - you may want to adjust this if you have a slow connection or T1-T3 ;)
 #define UPLOAD_LOWEST_VALUE		5120		// original uses 3072
-#define	MAX_UP_CLIENTS_ALLOWED	100			// max. clients allowed regardless UPLOAD_CLIENT_DATARATE or any other factors. Don't set this too low, use DATARATE to adjust uploadspeed per client
-#define	MIN_UP_CLIENTS_ALLOWED	2			// min. clients allowed to download regardless UPLOAD_CLIENT_DATARATE or any other factors. Don't set this too high
+//>>> WiZaRd::ZZUL Upload [ZZ]
+//#define	MAX_UP_CLIENTS_ALLOWED	100			// max. clients allowed regardless UPLOAD_CLIENT_DATARATE or any other factors. Don't set this too low, use DATARATE to adjust uploadspeed per client
+//#define	MIN_UP_CLIENTS_ALLOWED	2			// min. clients allowed to download regardless UPLOAD_CLIENT_DATARATE or any other factors. Don't set this too high
+#define MINNUMBEROFTRICKLEUPLOADS 0
+#define	MIN_UP_CLIENTS_ALLOWED	1			// min. clients allowed to download regardless 
+//<<< WiZaRd::ZZUL Upload [ZZ]
 #define DOWNLOADTIMEOUT			SEC2MS(100)
 #define CONSERVTIMEOUT			SEC2MS(25)	// agelimit for pending connection attempts
 #define RARE_FILE				50
@@ -299,47 +303,47 @@
 // server.met
 #define ST_SERVERNAME			0x01	// <string>
 #define ST_DESCRIPTION			0x0B	// <string>
-#define ST_PING					0x0C	// <uint32>
-#define ST_FAIL					0x0D	// <uint32>
-#define ST_PREFERENCE			0x0E	// <uint32>
-#define	ST_PORT					0x0F	// <uint32>
-#define	ST_IP					0x10	// <uint32>
+#define ST_PING					0x0C	// <UINT>
+#define ST_FAIL					0x0D	// <UINT>
+#define ST_PREFERENCE			0x0E	// <UINT>
+#define	ST_PORT					0x0F	// <UINT>
+#define	ST_IP					0x10	// <UINT>
 #define	ST_DYNIP				0x85	// <string>
 //#define ST_LASTPING			0x86	// <int> No longer used.
-#define ST_MAXUSERS				0x87	// <uint32>
-#define ST_SOFTFILES			0x88	// <uint32>
-#define ST_HARDFILES			0x89	// <uint32>
-#define ST_LASTPING				0x90	// <uint32>
-#define	ST_VERSION				0x91	// <string>|<uint32>
-#define	ST_UDPFLAGS				0x92	// <uint32>
+#define ST_MAXUSERS				0x87	// <UINT>
+#define ST_SOFTFILES			0x88	// <UINT>
+#define ST_HARDFILES			0x89	// <UINT>
+#define ST_LASTPING				0x90	// <UINT>
+#define	ST_VERSION				0x91	// <string>|<UINT>
+#define	ST_UDPFLAGS				0x92	// <UINT>
 #define	ST_AUXPORTSLIST			0x93	// <string>
-#define	ST_LOWIDUSERS			0x94	// <uint32>
-#define	ST_UDPKEY				0x95	// <uint32>
-#define	ST_UDPKEYIP				0x96	// <uint32>
+#define	ST_LOWIDUSERS			0x94	// <UINT>
+#define	ST_UDPKEY				0x95	// <UINT>
+#define	ST_UDPKEYIP				0x96	// <UINT>
 #define	ST_TCPPORTOBFUSCATION	0x97	// <uint16>
 #define	ST_UDPPORTOBFUSCATION	0x98	// <uint16>
 
 //file tags
 #define  FT_FILENAME			 0x01	// <string>
 #define TAG_FILENAME			"\x01"	// <string>
-#define  FT_FILESIZE			 0x02	// <uint32> (or <uint64> when supported)
-#define TAG_FILESIZE			"\x02"	// <uint32>
-#define  FT_FILESIZE_HI			 0x3A	// <uint32>
-#define TAG_FILESIZE_HI			"\x3A"	// <uint32>
+#define  FT_FILESIZE			 0x02	// <UINT> (or <uint64> when supported)
+#define TAG_FILESIZE			"\x02"	// <UINT>
+#define  FT_FILESIZE_HI			 0x3A	// <UINT>
+#define TAG_FILESIZE_HI			"\x3A"	// <UINT>
 #define  FT_FILETYPE			 0x03	// <string>
 #define TAG_FILETYPE			"\x03"	// <string>
 #define  FT_FILEFORMAT			 0x04	// <string>
 #define TAG_FILEFORMAT			"\x04"	// <string>
-#define  FT_LASTSEENCOMPLETE	 0x05	// <uint32>
+#define  FT_LASTSEENCOMPLETE	 0x05	// <UINT>
 #define TAG_COLLECTION			"\x05"
 #define	TAG_PART_PATH			"\x06"	// <string>
 #define	TAG_PART_HASH			"\x07"
-#define  FT_TRANSFERRED			 0x08	// <uint32>
-#define	TAG_TRANSFERRED			"\x08"	// <uint32>
-#define  FT_GAPSTART			 0x09	// <uint32>
-#define	TAG_GAPSTART			"\x09"	// <uint32>
-#define  FT_GAPEND				 0x0A	// <uint32>
-#define	TAG_GAPEND				"\x0A"	// <uint32>
+#define  FT_TRANSFERRED			 0x08	// <UINT>
+#define	TAG_TRANSFERRED			"\x08"	// <UINT>
+#define  FT_GAPSTART			 0x09	// <UINT>
+#define	TAG_GAPSTART			"\x09"	// <UINT>
+#define  FT_GAPEND				 0x0A	// <UINT>
+#define	TAG_GAPEND				"\x0A"	// <UINT>
 #define  FT_DESCRIPTION			 0x0B	// <string>
 #define	TAG_DESCRIPTION			"\x0B"	// <string>
 #define	TAG_PING				"\x0C"
@@ -351,12 +355,12 @@
 #define  FT_PARTFILENAME		 0x12	// <string>
 #define TAG_PARTFILENAME		"\x12"	// <string>
 //#define FT_PRIORITY			 0x13	// Not used anymore
-#define TAG_PRIORITY			"\x13"	// <uint32>
-#define  FT_STATUS				 0x14	// <uint32>
-#define TAG_STATUS				"\x14"	// <uint32>
-#define  FT_SOURCES				 0x15	// <uint32>
-#define TAG_SOURCES				"\x15"	// <uint32>
-#define  FT_PERMISSIONS			 0x16	// <uint32>
+#define TAG_PRIORITY			"\x13"	// <UINT>
+#define  FT_STATUS				 0x14	// <UINT>
+#define TAG_STATUS				"\x14"	// <UINT>
+#define  FT_SOURCES				 0x15	// <UINT>
+#define TAG_SOURCES				"\x15"	// <UINT>
+#define  FT_PERMISSIONS			 0x16	// <UINT>
 #define TAG_PERMISSIONS			"\x16"
 //#define FT_ULPRIORITY			 0x17	// Not used anymore
 #define TAG_PARTS				"\x17"
@@ -364,59 +368,59 @@
 #define  FT_ULPRIORITY			 0x19	// Was 17
 #define	 FT_COMPRESSION			 0x1A
 #define	 FT_CORRUPTED			 0x1B
-#define  FT_KADLASTPUBLISHKEY	 0x20	// <uint32>
-#define  FT_KADLASTPUBLISHSRC	 0x21	// <uint32>
-#define	 FT_FLAGS				 0x22	// <uint32>
-#define	 FT_DL_ACTIVE_TIME		 0x23	// <uint32>
+#define  FT_KADLASTPUBLISHKEY	 0x20	// <UINT>
+#define  FT_KADLASTPUBLISHSRC	 0x21	// <UINT>
+#define	 FT_FLAGS				 0x22	// <UINT>
+#define	 FT_DL_ACTIVE_TIME		 0x23	// <UINT>
 #define	 FT_CORRUPTEDPARTS		 0x24	// <string>
 #define  FT_DL_PREVIEW			 0x25
-#define  FT_KADLASTPUBLISHNOTES	 0x26	// <uint32> 
+#define  FT_KADLASTPUBLISHNOTES	 0x26	// <UINT> 
 #define  FT_AICH_HASH			 0x27
 #define  FT_FILEHASH			 0x28
 #define	 FT_COMPLETE_SOURCES	 0x30	// nr. of sources which share a complete version of the associated file (supported by eserver 16.46+)
 #define TAG_COMPLETE_SOURCES	"\x30"
 #define  FT_COLLECTIONAUTHOR	 0x31
 #define  FT_COLLECTIONAUTHORKEY  0x32
-#define  FT_PUBLISHINFO			 0x33	// <uint32>
-#define TAG_PUBLISHINFO			"\x33"	// <uint32>
-#define  FT_LASTSHARED			 0x34	// <uint32>
-#define  FT_AICHHASHSET			 0x35	// <uint32>
+#define  FT_PUBLISHINFO			 0x33	// <UINT>
+#define TAG_PUBLISHINFO			"\x33"	// <UINT>
+#define  FT_LASTSHARED			 0x34	// <UINT>
+#define  FT_AICHHASHSET			 0x35	// <UINT>
 #define	TAG_KADAICHHASHPUB		"\x36"	// <AICH Hash>
 #define TAG_KADAICHHASHRESULT	"\x37"	// <Count 1>{<Publishers 1><AICH Hash> Count}
 // statistic
-#define  FT_ATTRANSFERRED		 0x50	// <uint32>
-#define  FT_ATREQUESTED			 0x51	// <uint32>
-#define  FT_ATACCEPTED			 0x52	// <uint32>
-#define  FT_CATEGORY			 0x53	// <uint32>
-#define	 FT_ATTRANSFERREDHI		 0x54	// <uint32>
-#define	 FT_MAXSOURCES			 0x55	// <uint32>
+#define  FT_ATTRANSFERRED		 0x50	// <UINT>
+#define  FT_ATREQUESTED			 0x51	// <UINT>
+#define  FT_ATACCEPTED			 0x52	// <UINT>
+#define  FT_CATEGORY			 0x53	// <UINT>
+#define	 FT_ATTRANSFERREDHI		 0x54	// <UINT>
+#define	 FT_MAXSOURCES			 0x55	// <UINT>
 #define	 FT_MEDIA_ARTIST		 0xD0	// <string>
 #define	TAG_MEDIA_ARTIST		"\xD0"	// <string>
 #define	 FT_MEDIA_ALBUM			 0xD1	// <string>
 #define	TAG_MEDIA_ALBUM			"\xD1"	// <string>
 #define	 FT_MEDIA_TITLE			 0xD2	// <string>
 #define	TAG_MEDIA_TITLE			"\xD2"	// <string>
-#define	 FT_MEDIA_LENGTH		 0xD3	// <uint32> !!!
-#define	TAG_MEDIA_LENGTH		"\xD3"	// <uint32> !!!
-#define	 FT_MEDIA_BITRATE		 0xD4	// <uint32>
-#define	TAG_MEDIA_BITRATE		"\xD4"	// <uint32>
+#define	 FT_MEDIA_LENGTH		 0xD3	// <UINT> !!!
+#define	TAG_MEDIA_LENGTH		"\xD3"	// <UINT> !!!
+#define	 FT_MEDIA_BITRATE		 0xD4	// <UINT>
+#define	TAG_MEDIA_BITRATE		"\xD4"	// <UINT>
 #define	 FT_MEDIA_CODEC			 0xD5	// <string>
 #define	TAG_MEDIA_CODEC			"\xD5"	// <string>
 #define TAG_KADMISCOPTIONS		"\xF2"	// <uint8>
 #define TAG_ENCRYPTION			"\xF3"	// <uint8>
-#define TAG_USER_COUNT			"\xF4"	// <uint32>
-#define TAG_FILE_COUNT			"\xF5"	// <uint32>
+#define TAG_USER_COUNT			"\xF4"	// <UINT>
+#define TAG_FILE_COUNT			"\xF5"	// <UINT>
 #define  FT_FILECOMMENT			 0xF6	// <string>
 #define TAG_FILECOMMENT			"\xF6"	// <string>
 #define  FT_FILERATING			 0xF7	// <uint8>
 #define TAG_FILERATING			"\xF7"	// <uint8>
 #define TAG_BUDDYHASH			"\xF8"	// <string>
-#define TAG_CLIENTLOWID			"\xF9"	// <uint32>
+#define TAG_CLIENTLOWID			"\xF9"	// <UINT>
 #define TAG_SERVERPORT			"\xFA"	// <uint16>
-#define TAG_SERVERIP			"\xFB"	// <uint32>
+#define TAG_SERVERIP			"\xFB"	// <UINT>
 #define TAG_SOURCEUPORT			"\xFC"	// <uint16>
 #define TAG_SOURCEPORT			"\xFD"	// <uint16>
-#define TAG_SOURCEIP			"\xFE"	// <uint32>
+#define TAG_SOURCEIP			"\xFE"	// <UINT>
 #define TAG_SOURCETYPE			"\xFF"	// <uint8>
 
 #define	TAGTYPE_HASH			0x01
@@ -470,7 +474,7 @@
 #define	FT_ED2K_MEDIA_ALBUM		"Album"		// <string>
 #define	FT_ED2K_MEDIA_TITLE		"Title"		// <string>
 #define	FT_ED2K_MEDIA_LENGTH	"length"	// <string> !!!
-#define	FT_ED2K_MEDIA_BITRATE	"bitrate"	// <uint32>
+#define	FT_ED2K_MEDIA_BITRATE	"bitrate"	// <UINT>
 #define	FT_ED2K_MEDIA_CODEC		"codec"		// <string>
 #define TAG_NSENT				"# Sent"
 #define TAG_ONIP				"ip"

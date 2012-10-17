@@ -371,8 +371,8 @@ void CPPgConnection::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 //>>> WiZaRd::SessionRatio
 		//no need to limit that here, it will be limited dynamically!
 /*
-        uint32 maxup = m_ctlMaxUp.GetPos();
-        uint32 maxdown = m_ctlMaxDown.GetPos();
+        UINT maxup = m_ctlMaxUp.GetPos();
+        UINT maxdown = m_ctlMaxDown.GetPos();
         if (maxup < 4 && maxup*3 < maxdown)
         {
             m_ctlMaxDown.SetPos(maxup*3);
@@ -389,8 +389,8 @@ void CPPgConnection::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 //>>> WiZaRd::SessionRatio
 		//could be removed, too... but I like the idea of animating the users to upload :)
 //<<< WiZaRd::SessionRatio
-        uint32 maxup = m_ctlMaxUp.GetPos();
-        uint32 maxdown = m_ctlMaxDown.GetPos();
+        UINT maxup = m_ctlMaxUp.GetPos();
+        UINT maxdown = m_ctlMaxDown.GetPos();
         if (maxdown < 13 && maxup*3 < maxdown)
         {
             m_ctlMaxUp.SetPos((int)ceil((double)maxdown/3));

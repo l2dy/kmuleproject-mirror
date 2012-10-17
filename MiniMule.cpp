@@ -63,11 +63,11 @@ public:
         : m_ri(ri)
     {
         ASSERT( ri == 0 );
-        m_ri++;
+        ++m_ri;
     }
     ~CCounter()
     {
-        m_ri--;
+        --m_ri;
         ASSERT( m_ri == 0 );
     }
     int& m_ri;
@@ -78,7 +78,6 @@ CString CMiniMule::ratioIcons[9]; //>>> WiZaRd::Ratio Indicator
 // CMiniMule dialog
 
 IMPLEMENT_DYNCREATE(CMiniMule, CDHtmlDialog)
-
 BEGIN_MESSAGE_MAP(CMiniMule, CDHtmlDialog)
     ON_WM_CLOSE()
     ON_WM_DESTROY()
@@ -91,20 +90,20 @@ ON_EVENT(CDHtmlDialog, AFX_IDC_BROWSER, 250 /* BeforeNavigate2 */, _OnBeforeNavi
 END_EVENTSINK_MAP()
 
 BEGIN_DHTML_EVENT_MAP(CMiniMule)
-DHTML_EVENT_ONCLICK(_T("restoreWndLink"), OnRestoreMainWindow)
-DHTML_EVENT_ONKEYPRESS(_T("restoreWndLink"), OnRestoreMainWindow)
-DHTML_EVENT_ONCLICK(_T("restoreWndImg"), OnRestoreMainWindow)
-DHTML_EVENT_ONKEYPRESS(_T("restoreWndImg"), OnRestoreMainWindow)
+	DHTML_EVENT_ONCLICK(L"restoreWndLink", OnRestoreMainWindow)
+	DHTML_EVENT_ONKEYPRESS(L"restoreWndLink", OnRestoreMainWindow)
+	DHTML_EVENT_ONCLICK(L"restoreWndImg", OnRestoreMainWindow)
+	DHTML_EVENT_ONKEYPRESS(L"restoreWndImg", OnRestoreMainWindow)
 
-DHTML_EVENT_ONCLICK(_T("openIncomingLink"), OnOpenIncomingFolder)
-DHTML_EVENT_ONKEYPRESS(_T("openIncomingLink"), OnOpenIncomingFolder)
-DHTML_EVENT_ONCLICK(_T("openIncomingImg"), OnOpenIncomingFolder)
-DHTML_EVENT_ONKEYPRESS(_T("openIncomingImg"), OnOpenIncomingFolder)
+	DHTML_EVENT_ONCLICK(L"openIncomingLink", OnOpenIncomingFolder)
+	DHTML_EVENT_ONKEYPRESS(L"openIncomingLink", OnOpenIncomingFolder)
+	DHTML_EVENT_ONCLICK(L"openIncomingImg", OnOpenIncomingFolder)
+	DHTML_EVENT_ONKEYPRESS(L"openIncomingImg", OnOpenIncomingFolder)
 
-DHTML_EVENT_ONCLICK(_T("optionsLink"), OnOptions)
-DHTML_EVENT_ONKEYPRESS(_T("optionsLink"), OnOptions)
-DHTML_EVENT_ONCLICK(_T("optionsImg"), OnOptions)
-DHTML_EVENT_ONKEYPRESS(_T("optionsImg"), OnOptions)
+	DHTML_EVENT_ONCLICK(L"optionsLink", OnOptions)
+	DHTML_EVENT_ONKEYPRESS(L"optionsLink", OnOptions)
+	DHTML_EVENT_ONCLICK(L"optionsImg", OnOptions)
+	DHTML_EVENT_ONKEYPRESS(L"optionsImg", OnOptions)
 END_DHTML_EVENT_MAP()
 
 CMiniMule::CMiniMule(CWnd* pParent /*=NULL*/)
@@ -113,8 +112,12 @@ CMiniMule::CMiniMule(CWnd* pParent /*=NULL*/)
     ASSERT( GetCurrentThreadId() == g_uMainThreadId );
     m_iInCallback = 0;
     m_bResolveImages = true;
-    m_bRestoreMainWnd = false;
+//>>> WiZaRd::Static MM
+    //m_bRestoreMainWnd = false; 
+	m_bVisible = false; 
+//<<< WiZaRd::Static MM
     m_uAutoCloseTimer = 0;
+
     SetHostFlags(m_dwHostFlags
                  | DOCHOSTUIFLAG_DIALOG					// MSHTML does not enable selection of the text in the form
                  | DOCHOSTUIFLAG_DISABLE_HELP_MENU		// MSHTML does not add the Help menu item to the container's menu.
@@ -128,7 +131,7 @@ CMiniMule::~CMiniMule()
 STDMETHODIMP CMiniMule::GetOptionKeyPath(LPOLESTR* /*pchKey*/, DWORD /*dw*/)
 {
     ASSERT( GetCurrentThreadId() == g_uMainThreadId );
-    TRACE(_T("%hs\n"), __FUNCTION__);
+	TRACE(L"%hs\n", __FUNCTION__);
 
 //OpenKey		HKCU\Software\eMule\IE
 //QueryValue	HKCU\Software\eMule\IE\Show_FullURL
@@ -215,14 +218,14 @@ CString CreateFilePathUrl(LPCTSTR pszFilePath, int nProtocol)
     if (nProtocol == INTERNET_SCHEME_RES)
     {
         // "res://" protocol has to be specified with 2 slashes ("res:///" does not work)
-        strEncodedFilePath = _T("res://");
+		strEncodedFilePath = L"res://";
         strEncodedFilePath += pszFilePath;
     }
     else
     {
         ASSERT( nProtocol == INTERNET_SCHEME_FILE );
         // "file://" protocol has to be specified with 3 slashes
-        strEncodedFilePath = _T("file:///");
+		strEncodedFilePath = L"file:///";
         strEncodedFilePath += pszFilePath;
     }
     return strEncodedFilePath;
@@ -233,7 +236,7 @@ BOOL CMiniMule::OnInitDialog()
 	lastRatio = -1; //>>> WiZaRd::Ratio Indicator
     ASSERT( GetCurrentThreadId() == g_uMainThreadId );
     ASSERT( m_iInCallback == 0 );
-    CString strHtmlFile = theApp.GetSkinFileItem(_T("MiniMule"), _T("HTML"));
+	CString strHtmlFile = theApp.GetSkinFileItem(L"MiniMule", L"HTML");
     if (!strHtmlFile.IsEmpty())
     {
         if (_taccess(strHtmlFile, 0) == 0)
@@ -252,7 +255,7 @@ BOOL CMiniMule::OnInitDialog()
         if (dwModPathLen != 0 && dwModPathLen < _countof(szModulePath))
         {
             m_strCurrentUrl = CreateFilePathUrl(szModulePath, INTERNET_SCHEME_RES);
-            m_strCurrentUrl.AppendFormat(_T("/%d"), m_nHtmlResID);
+			m_strCurrentUrl.AppendFormat(L"/%d", m_nHtmlResID);
             m_nHtmlResID = 0;
             m_szHtmlResID = NULL;
             m_bResolveImages = true;
@@ -286,16 +289,17 @@ BOOL CMiniMule::OnInitDialog()
 
 void CMiniMule::OnClose()
 {
-    TRACE("%s\n", __FUNCTION__);
+	TRACE(L"%s\n", __FUNCTION__);
     ASSERT( GetCurrentThreadId() == g_uMainThreadId );
     ASSERT( m_iInCallback == 0 );
     KillAutoCloseTimer();
 
     //don't really "close" - just hide it... :P
     ShowHide(true);
-
-    CDHtmlDialog::OnClose();
-
+		
+	CDHtmlDialog::OnClose();
+//>>> WiZaRd::Static MM
+/*
     ///////////////////////////////////////////////////////////////////////////
     // Destroy the MiniMule window
 
@@ -314,11 +318,13 @@ void CMiniMule::OnClose()
     //NOTE: 'this' IS NO LONGER VALID!
     if (bRestoreMainWnd)
         theApp.emuledlg->RestoreWindow();
+*/
+//<<< WiZaRd::Static MM
 }
 
 void CMiniMule::OnDestroy()
 {
-    TRACE("%s\n", __FUNCTION__);
+	TRACE(L"%s\n", __FUNCTION__);
     ASSERT( GetCurrentThreadId() == g_uMainThreadId );
     ASSERT( m_iInCallback == 0 );
     KillAutoCloseTimer();
@@ -327,7 +333,7 @@ void CMiniMule::OnDestroy()
 
 void CMiniMule::PostNcDestroy()
 {
-    TRACE("%s\n", __FUNCTION__);
+	TRACE(L"%s\n", __FUNCTION__);
     CDHtmlDialog::PostNcDestroy();
     if (theApp.emuledlg)
         theApp.emuledlg->m_pMiniMule = NULL;
@@ -336,50 +342,50 @@ void CMiniMule::PostNcDestroy()
 
 void CMiniMule::Localize()
 {
-    SetElementHtml(_T("connectedLabel"), CComBSTR(GetResString(IDS_CONNECTED)));
-    SetElementHtml(_T("upRateLabel"), CComBSTR(GetResString(IDS_PW_CON_UPLBL)));
-    SetElementHtml(_T("downRateLabel"), CComBSTR(GetResString(IDS_PW_CON_DOWNLBL)));
+	SetElementHtml(L"connectedLabel", CComBSTR(GetResString(IDS_CONNECTED)));
+	SetElementHtml(L"upRateLabel", CComBSTR(GetResString(IDS_PW_CON_UPLBL)));
+	SetElementHtml(L"downRateLabel", CComBSTR(GetResString(IDS_PW_CON_DOWNLBL)));
 	SetElementHtml(L"SessionRatioLabel", CComBSTR(GetResString(IDS_RATIO))); //>>> WiZaRd::SessionRatio
-    SetElementHtml(_T("completedLabel"), CComBSTR(GetResString(IDS_DL_TRANSFCOMPL)));
-    SetElementHtml(_T("freeSpaceLabel"), CComBSTR(GetResString(IDS_STATS_FREESPACE)));
+	SetElementHtml(L"completedLabel", CComBSTR(GetResString(IDS_DL_TRANSFCOMPL)));
+	SetElementHtml(L"freeSpaceLabel", CComBSTR(GetResString(IDS_STATS_FREESPACE)));
 
     CComPtr<IHTMLElement> a;
-    GetElementInterface(_T("openIncomingLink"), &a);
+	GetElementInterface(L"openIncomingLink", &a);
     if (a)
     {
-        a->put_title(CComBSTR(RemoveAmbersand(GetResString(IDS_OPENINC))));
+		a->put_title(CComBSTR(RemoveAmpersand(GetResString(IDS_OPENINC))));
         a.Release();
     }
-    GetElementInterface(_T("optionsLink"), &a);
+	GetElementInterface(L"optionsLink", &a);
     if (a)
     {
-        a->put_title(CComBSTR(RemoveAmbersand(GetResString(IDS_EM_PREFS))));
+		a->put_title(CComBSTR(RemoveAmpersand(GetResString(IDS_EM_PREFS))));
         a.Release();
     }
-    GetElementInterface(_T("restoreWndLink"), &a);
+	GetElementInterface(L"restoreWndLink", &a);
     if (a)
     {
-        a->put_title(CComBSTR(RemoveAmbersand(GetResString(IDS_MAIN_POPUP_RESTORE))));
+		a->put_title(CComBSTR(RemoveAmpersand(GetResString(IDS_MAIN_POPUP_RESTORE))));
         a.Release();
     }
 
     CComPtr<IHTMLImgElement> img;
-    GetElementInterface(_T("openIncomingImg"), &img);
+	GetElementInterface(L"openIncomingImg", &img);
     if (img)
     {
-        img->put_alt(CComBSTR(RemoveAmbersand(GetResString(IDS_OPENINC))));
+		img->put_alt(CComBSTR(RemoveAmpersand(GetResString(IDS_OPENINC))));
         img.Release();
     }
-    GetElementInterface(_T("optionsImg"), &img);
+	GetElementInterface(L"optionsImg", &img);
     if (img)
     {
-        img->put_alt(CComBSTR(RemoveAmbersand(GetResString(IDS_EM_PREFS))));
+		img->put_alt(CComBSTR(RemoveAmpersand(GetResString(IDS_EM_PREFS))));
         img.Release();
     }
-    GetElementInterface(_T("restoreWndImg"), &img);
+	GetElementInterface(L"restoreWndImg", &img);
     if (img)
     {
-        img->put_alt(CComBSTR(RemoveAmbersand(GetResString(IDS_MAIN_POPUP_RESTORE))));
+		img->put_alt(CComBSTR(RemoveAmpersand(GetResString(IDS_MAIN_POPUP_RESTORE))));
         img.Release();
     }
 }
@@ -391,13 +397,13 @@ void CMiniMule::UpdateContent(UINT uUpDatarate, UINT uDownDatarate)
     {
         static const LPCTSTR _apszConnectedImgs[] =
         {
-            _T("CONNECTEDNOTNOT.GIF"),
-            _T("CONNECTEDLOWLOW.GIF"),
-            _T("CONNECTEDHIGHHIGH.GIF")
+            L"CONNECTEDNOTNOT.GIF",
+            L"CONNECTEDLOWLOW.GIF",
+            L"CONNECTEDHIGHHIGH.GIF"
         };
 
         UINT uIconIdx = theApp.emuledlg->GetConnectionStateIconIndex();
-        if (uIconIdx >= ARRSIZE(_apszConnectedImgs))
+        if (uIconIdx >= _countof(_apszConnectedImgs))
         {
             ASSERT(0);
             uIconIdx = 0;
@@ -409,19 +415,19 @@ void CMiniMule::UpdateContent(UINT uUpDatarate, UINT uDownDatarate)
         {
             CString strFilePathUrl(CreateFilePathUrl(szModulePath, INTERNET_SCHEME_RES));
             CComPtr<IHTMLImgElement> elm;
-            GetElementInterface(_T("connectedImg"), &elm);
+            GetElementInterface(L"connectedImg", &elm);
             if (elm)
             {
                 CString strResourceURL;
-                strResourceURL.Format(_T("%s/%s"), strFilePathUrl, _apszConnectedImgs[uIconIdx]);
+				strResourceURL.Format(L"%s/%s", strFilePathUrl, _apszConnectedImgs[uIconIdx]);
                 elm->put_src(CComBSTR(strResourceURL));
             }
         }
     }
 
-    SetElementHtml(_T("connected"), CComBSTR(theApp.IsConnected() ? GetResString(IDS_YES) : GetResString(IDS_NO)));
-    SetElementHtml(_T("upRate"), CComBSTR(theApp.emuledlg->GetUpDatarateString(uUpDatarate)));
-    SetElementHtml(_T("downRate"), CComBSTR(theApp.emuledlg->GetDownDatarateString(uDownDatarate)));
+    SetElementHtml(L"connected", CComBSTR(theApp.IsConnected() ? GetResString(IDS_YES) : GetResString(IDS_NO)));
+    SetElementHtml(L"upRate", CComBSTR(theApp.emuledlg->GetUpDatarateString(uUpDatarate)));
+    SetElementHtml(L"downRate", CComBSTR(theApp.emuledlg->GetDownDatarateString(uDownDatarate)));
 //>>> WiZaRd::SessionRatio
 	CString strRatio = L"";
 	if (theStats.sessionReceivedBytes > 0 && theStats.sessionSentBytes > 0)
@@ -444,8 +450,8 @@ void CMiniMule::UpdateContent(UINT uUpDatarate, UINT uDownDatarate)
         int iTotal;
         uCompleted = theApp.emuledlg->transferwnd->GetDownloadList()->GetCompleteDownloads(-1, iTotal);	 // [Ded]: -1 to get the count of all completed files in all categories
     }
-    SetElementHtml(_T("completed"), CComBSTR(CastItoIShort(uCompleted, false, 0)));
-    SetElementHtml(_T("freeSpace"), CComBSTR(CastItoXBytes(GetFreeTempSpace(-1), false, false)));
+    SetElementHtml(L"completed", CComBSTR(CastItoIShort(uCompleted, false, 0)));
+    SetElementHtml(L"freeSpace", CComBSTR(CastItoXBytes(GetFreeTempSpace(-1), false, false)));
 
 //>>> WiZaRd::Static MM
     const uint8 uWndTransparency = GetTransparency();
@@ -474,7 +480,7 @@ STDMETHODIMP CMiniMule::TranslateUrl(DWORD /*dwTranslate*/, OLECHAR* pchURLIn, O
 {
     ASSERT( GetCurrentThreadId() == g_uMainThreadId );
     UNREFERENCED_PARAMETER(pchURLIn);
-    TRACE(_T("%hs: %ls\n"), __FUNCTION__, pchURLIn);
+	TRACE(L"%hs: %ls\n", __FUNCTION__, pchURLIn);
     *ppchURLOut = NULL;
     return S_FALSE;
 }
@@ -483,14 +489,14 @@ void CMiniMule::_OnBeforeNavigate2(LPDISPATCH pDisp, VARIANT* URL, VARIANT* /*Fl
 {
     ASSERT( GetCurrentThreadId() == g_uMainThreadId );
     CString strURL(V_BSTR(URL));
-    TRACE(_T("%hs: %s\n"), __FUNCTION__, strURL);
+	TRACE(L"%hs: %s\n", __FUNCTION__, strURL);
 
     // No external links allowed!
     TCHAR szScheme[INTERNET_MAX_SCHEME_LENGTH];
     URL_COMPONENTS Url = {0};
     Url.dwStructSize = sizeof(Url);
     Url.lpszScheme = szScheme;
-    Url.dwSchemeLength = ARRSIZE(szScheme);
+	Url.dwSchemeLength = _countof(szScheme);
     if (InternetCrackUrl(strURL, 0, 0, &Url) && Url.dwSchemeLength)
     {
         if (Url.nScheme != INTERNET_SCHEME_UNKNOWN  // <absolute local file path>
@@ -508,14 +514,14 @@ void CMiniMule::_OnBeforeNavigate2(LPDISPATCH pDisp, VARIANT* URL, VARIANT* /*Fl
 void CMiniMule::OnBeforeNavigate(LPDISPATCH pDisp, LPCTSTR pszUrl)
 {
     ASSERT( GetCurrentThreadId() == g_uMainThreadId );
-    TRACE(_T("%hs: %s\n"), __FUNCTION__, pszUrl);
+	TRACE(L"%hs: %s\n", __FUNCTION__, pszUrl);
     CDHtmlDialog::OnBeforeNavigate(pDisp, pszUrl);
 }
 
 void CMiniMule::OnNavigateComplete(LPDISPATCH pDisp, LPCTSTR pszUrl)
 {
     ASSERT( GetCurrentThreadId() == g_uMainThreadId );
-    TRACE(_T("%hs: %s\n"), __FUNCTION__, pszUrl);
+	TRACE(L"%hs: %s\n", __FUNCTION__, pszUrl);
     // If the HTML file contains 'OnLoad' scripts, the HTML DOM is fully accessible
     // only after 'DocumentComplete', but not after 'OnNavigateComplete'
     CDHtmlDialog::OnNavigateComplete(pDisp, pszUrl);
@@ -534,7 +540,7 @@ void CMiniMule::OnDocumentComplete(LPDISPATCH pDisp, LPCTSTR pszUrl)
 
     CCounter cc(m_iInCallback);
 
-    TRACE(_T("%hs: %s\n"), __FUNCTION__, pszUrl);
+	TRACE(L"%hs: %s\n", __FUNCTION__, pszUrl);
     // If the HTML file contains 'OnLoad' scripts, the HTML DOM is fully accessible
     // only after 'DocumentComplete', but not after 'OnNavigateComplete'
     CDHtmlDialog::OnDocumentComplete(pDisp, pszUrl);
@@ -551,36 +557,36 @@ void CMiniMule::OnDocumentComplete(LPDISPATCH pDisp, LPCTSTR pszUrl)
             {
                 LPCTSTR pszImgId;
                 LPCTSTR pszResourceId;
-            } _aImg[] =
-            {
-                { _T("connectedImg"),	_T("CONNECTED.GIF") },
-                { _T("uploadImg"),		_T("UPLOAD.GIF") },
-                { _T("downloadImg"),	_T("DOWNLOAD.GIF") },
-                { _T("completedImg"),	_T("COMPLETED.GIF") },
-                { _T("freeSpaceImg"),	_T("FREESPACE.GIF") },
-                { _T("restoreWndImg"),	_T("RESTOREWINDOW.GIF") },
-                { _T("openIncomingImg"),_T("OPENINCOMING.GIF") },
-                { _T("optionsImg"),		_T("PREFERENCES.GIF") }
+			} _aImg[] =
+			{
+				{ L"connectedImg",		L"CONNECTEDNOTNOT.GIF" },
+				{ L"uploadImg",			L"UPLOAD.GIF" },
+				{ L"downloadImg",		L"DOWNLOAD.GIF" },
+				{ L"completedImg",		L"COMPLETED.GIF" },
+				{ L"freeSpaceImg",		L"FREESPACE.GIF" },
+				{ L"restoreWndImg",		L"RESTOREWINDOW.GIF" },
+				{ L"openIncomingImg",	L"OPENINCOMING.GIF" },
+				{ L"optionsImg",		L"PREFERENCES.GIF" }
             };
 
-            for (int i = 0; i < ARRSIZE(_aImg); i++)
+			for (int i = 0; i < _countof(_aImg); ++i)
             {
                 CComPtr<IHTMLImgElement> elm;
                 GetElementInterface(_aImg[i].pszImgId, &elm);
                 if (elm)
                 {
                     CString strResourceURL;
-                    strResourceURL.Format(_T("%s/%s"), strFilePathUrl, _aImg[i].pszResourceId);
+					strResourceURL.Format(L"%s/%s", strFilePathUrl, _aImg[i].pszResourceId);
                     elm->put_src(CComBSTR(strResourceURL));
                 }
             }
 
             CComPtr<IHTMLTable> elm;
-            GetElementInterface(_T("table"), &elm);
+			GetElementInterface(L"table", &elm);
             if (elm)
             {
                 CString strResourceURL;
-                strResourceURL.Format(_T("%s/%s"), strFilePathUrl, _T("TABLEBACKGND.GIF"));
+				strResourceURL.Format(L"%s/%s", strFilePathUrl, L"TABLEBACKGND.GIF");
                 elm->put_background(CComBSTR(strResourceURL));
                 elm.Release();
             }
@@ -654,7 +660,7 @@ void CMiniMule::AutoSizeAndPosition(CSize sizClient)
     }
 
     CRect rcTaskbar(0, sizDesktop.cy - 34, sizDesktop.cx, sizDesktop.cy);
-    HWND hWndTaskbar = ::FindWindow(_T("Shell_TrayWnd"), NULL);
+	HWND hWndTaskbar = ::FindWindow(L"Shell_TrayWnd", NULL);
     if (hWndTaskbar)
         ::GetWindowRect(hWndTaskbar, &rcTaskbar);
     CPoint ptWnd;
@@ -680,8 +686,11 @@ void CMiniMule::AutoSizeAndPosition(CSize sizClient)
         break;
     }
 
+//>>> WiZaRd::Static MM
     //ensure that the dialog isn't visible right after startup...
+//	SetWindowPos(NULL, ptWnd.x, ptWnd.y, rcWnd.Width(), rcWnd.Height(), SWP_NOZORDER | SWP_SHOWWINDOW);
     SetWindowPos(NULL, ptWnd.x, ptWnd.y, rcWnd.Width(), rcWnd.Height(), SWP_NOZORDER);
+//<<< WiZaRd::Static MM
 }
 
 void CMiniMule::CreateAutoCloseTimer()
@@ -711,7 +720,10 @@ void CMiniMule::OnTimer(UINT nIDEvent)
         CRect rcWnd;
         GetWindowRect(&rcWnd);
         if (!rcWnd.PtInRect(pt))
-            PostMessage(WM_CLOSE);
+//>>> WiZaRd::Static MM
+            //PostMessage(WM_CLOSE);
+			ShowHide(true);
+//<<< WiZaRd::Static MM
         else
             CreateAutoCloseTimer();
     }
@@ -725,8 +737,12 @@ void CMiniMule::RestoreMainWindow()
         if (!theApp.emuledlg->IsPreferencesDlgOpen())
         {
             KillAutoCloseTimer();
-            m_bRestoreMainWnd = true;
-            PostMessage(WM_CLOSE);
+//>>> WiZaRd::Static MM
+            //m_bRestoreMainWnd = true;
+            //PostMessage(WM_CLOSE);
+			ShowHide(true);
+			theApp.emuledlg->RestoreWindow();
+//<<< WiZaRd::Static MM
         }
         else if (thePrefs.IsErrorBeepEnabled())
             MessageBeep(MB_OK);
@@ -756,7 +772,10 @@ HRESULT CMiniMule::OnOpenIncomingFolder(IHTMLElement* /*pElement*/)
     {
         theApp.emuledlg->SendMessage(WM_COMMAND, MP_HM_OPENINC);
         if (GetAutoClose())
-            PostMessage(WM_CLOSE);
+//>>> WiZaRd::Static MM
+            //PostMessage(WM_CLOSE);
+			ShowHide(true);
+//<<< WiZaRd::Static MM
     }
     return S_OK;
 }
@@ -830,6 +849,10 @@ STDMETHODIMP CMiniMule::TranslateAccelerator(LPMSG lpMsg, const GUID* /*pguidCmd
 //>>> WiZaRd::Static MM
 void CMiniMule::ShowHide(const bool bHide)
 {
+	if(m_bVisible == !bHide)
+		return;
+	m_bVisible = !bHide;
+
     //we should update before showing it because that way the transparency should be correct
     if(!bHide)
     {
@@ -865,8 +888,8 @@ void CMiniMule::ShowHide(const bool bHide)
             ::GetWindowRect(hWndTaskbar, &rcTaskbar);
         //was AW_BLEND | AW_CENTER
         //for a roll-effect remove the AW_SLIDE | part
-        UINT rollFlag = /*AW_SLIDE |*/ (bHide ? AW_HIDE : NULL);
-        const UINT taskPos = GetTaskbarPos(hWndTaskbar);
+        UINT rollFlag = (AW_BLEND | AW_CENTER) | (bHide ? AW_HIDE : NULL);
+        /*const UINT taskPos = GetTaskbarPos(hWndTaskbar);
         if(taskPos == ABE_TOP || taskPos == ABE_BOTTOM)
         {
             // Taskbar is on top or on bottom
@@ -886,7 +909,7 @@ void CMiniMule::ShowHide(const bool bHide)
             //if we SHOW it then we must roll/slide from the taskbar...
             //if we HIDE it then we must roll/slide to the taskbar...
             rollFlag |= bLeft ? AW_HOR_POSITIVE : AW_HOR_NEGATIVE;
-        }
+        }*/
         //I think it looks nicer with a bit more time :)
         //(*pfnAnimateWindow)(m_hWnd, 200, rollFlag);
         (*pfnAnimateWindow)(m_hWnd, 500, rollFlag);

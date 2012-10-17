@@ -41,15 +41,15 @@ public:
     float	GetAvgUploadRate(int averageType);
 
     // -khaos--+++> (2-11-03)
-    uint32	GetTransferTime()
+    UINT	GetTransferTime()
     {
         return timeTransfers + time_thisTransfer;
     }
-    uint32	GetUploadTime()
+    UINT	GetUploadTime()
     {
         return timeUploads + time_thisUpload;
     }
-    uint32	GetDownloadTime()
+    UINT	GetDownloadTime()
     {
         return timeDownloads + time_thisDownload;
     }
@@ -61,35 +61,35 @@ public:
     //
     void	CompDownDatarateOverhead();
     void	ResetDownDatarateOverhead();
-    void	AddDownDataOverheadSourceExchange(uint32 data)
+    void	AddDownDataOverheadSourceExchange(UINT data)
     {
         m_nDownDataRateMSOverhead += data;
         m_nDownDataOverheadSourceExchange += data;
         m_nDownDataOverheadSourceExchangePackets++;
     }
-    void	AddDownDataOverheadFileRequest(uint32 data)
+    void	AddDownDataOverheadFileRequest(UINT data)
     {
         m_nDownDataRateMSOverhead += data;
         m_nDownDataOverheadFileRequest += data;
         m_nDownDataOverheadFileRequestPackets++;
     }
-    void	AddDownDataOverheadOther(uint32 data)
+    void	AddDownDataOverheadOther(UINT data)
     {
         m_nDownDataRateMSOverhead += data;
         m_nDownDataOverheadOther += data;
         m_nDownDataOverheadOtherPackets++;
     }
-    void	AddDownDataOverheadKad(uint32 data)
+    void	AddDownDataOverheadKad(UINT data)
     {
         m_nDownDataRateMSOverhead += data;
         m_nDownDataOverheadKad += data;
         m_nDownDataOverheadKadPackets++;
     }
-    void	AddDownDataOverheadCrypt(uint32 /*data*/)
+    void	AddDownDataOverheadCrypt(UINT /*data*/)
     {
         ;
     }
-    uint32	GetDownDatarateOverhead()
+    UINT	GetDownDatarateOverhead()
     {
         return m_nDownDatarateOverhead;
     }
@@ -132,36 +132,36 @@ public:
     //
     void	CompUpDatarateOverhead();
     void	ResetUpDatarateOverhead();
-    void	AddUpDataOverheadSourceExchange(uint32 data)
+    void	AddUpDataOverheadSourceExchange(UINT data)
     {
         m_nUpDataRateMSOverhead += data;
         m_nUpDataOverheadSourceExchange += data;
         m_nUpDataOverheadSourceExchangePackets++;
     }
-    void	AddUpDataOverheadFileRequest(uint32 data)
+    void	AddUpDataOverheadFileRequest(UINT data)
     {
         m_nUpDataRateMSOverhead += data;
         m_nUpDataOverheadFileRequest += data;
         m_nUpDataOverheadFileRequestPackets++;
     }
-    void	AddUpDataOverheadKad(uint32 data)
+    void	AddUpDataOverheadKad(UINT data)
     {
         m_nUpDataRateMSOverhead += data;
         m_nUpDataOverheadKad += data;
         m_nUpDataOverheadKadPackets++;
     }
-    void	AddUpDataOverheadOther(uint32 data)
+    void	AddUpDataOverheadOther(UINT data)
     {
         m_nUpDataRateMSOverhead += data;
         m_nUpDataOverheadOther += data;
         m_nUpDataOverheadOtherPackets++;
     }
-    void	AddUpDataOverheadCrypt(uint32 /*data*/)
+    void	AddUpDataOverheadCrypt(UINT /*data*/)
     {
         ;
     }
 
-    uint32	GetUpDatarateOverhead()
+    UINT	GetUpDatarateOverhead()
     {
         return m_nUpDatarateOverhead;
     }
@@ -212,15 +212,15 @@ public:
     static float	maxUpavg;
     static float	rateDown;
     static float	rateUp;
-    static uint32	timeTransfers;
-    static uint32	timeDownloads;
-    static uint32	timeUploads;
-    static uint32	start_timeTransfers;
-    static uint32	start_timeDownloads;
-    static uint32	start_timeUploads;
-    static uint32	time_thisTransfer;
-    static uint32	time_thisDownload;
-    static uint32	time_thisUpload;
+    static UINT	timeTransfers;
+    static UINT	timeDownloads;
+    static UINT	timeUploads;
+    static UINT	start_timeTransfers;
+    static UINT	start_timeDownloads;
+    static UINT	start_timeUploads;
+    static UINT	time_thisTransfer;
+    static UINT	time_thisDownload;
+    static UINT	time_thisUpload;
     static DWORD	m_dwOverallStatus;
     static float	m_fGlobalDone;
     static float	m_fGlobalSize;
@@ -229,20 +229,20 @@ public:
     static uint64	sessionSentBytes;
     static uint64	sessionSentBytesToFriend;
     static DWORD	transferStarttime;
-    static uint32	filteredclients;
+    static UINT	filteredclients;
     static DWORD	starttime;
 
 private:
     typedef struct TransferredData
     {
-        uint32	datalen;
+        UINT	datalen;
         DWORD	timestamp;
     };
     std::list<TransferredData> uprateHistory;
     std::list<TransferredData> downrateHistory;
 
-    static uint32	m_nDownDatarateOverhead;
-    static uint32	m_nDownDataRateMSOverhead;
+    static UINT	m_nDownDatarateOverhead;
+    static UINT	m_nDownDataRateMSOverhead;
     static uint64	m_nDownDataOverheadSourceExchange;
     static uint64	m_nDownDataOverheadSourceExchangePackets;
     static uint64	m_nDownDataOverheadFileRequest;
@@ -252,8 +252,8 @@ private:
     static uint64	m_nDownDataOverheadOther;
     static uint64	m_nDownDataOverheadOtherPackets;
 
-    static uint32	m_nUpDatarateOverhead;
-    static uint32	m_nUpDataRateMSOverhead;
+    static UINT	m_nUpDatarateOverhead;
+    static UINT	m_nUpDataRateMSOverhead;
     static uint64	m_nUpDataOverheadSourceExchange;
     static uint64	m_nUpDataOverheadSourceExchangePackets;
     static uint64	m_nUpDataOverheadFileRequest;
@@ -263,10 +263,19 @@ private:
     static uint64	m_nUpDataOverheadOther;
     static uint64	m_nUpDataOverheadOtherPackets;
 
-    static uint32	m_sumavgDDRO;
-    static uint32	m_sumavgUDRO;
+    static UINT	m_sumavgDDRO;
+    static UINT	m_sumavgUDRO;
     CList<TransferredData> m_AvarageDDRO_list;
     CList<TransferredData> m_AvarageUDRO_list;
+
+//>>> WiZaRd::ZZUL Upload [ZZ]
+public:
+	uint64  GetTotalCompletedBytes() const;
+	void    IncTotalCompletedBytes(const uint64 toAdd);
+	void    DecTotalCompletedBytes(const uint64 toDec);
+private:
+	uint64  m_nTotalCompletedBytes;
+//<<< WiZaRd::ZZUL Upload [ZZ]
 };
 
 extern CStatistics theStats;

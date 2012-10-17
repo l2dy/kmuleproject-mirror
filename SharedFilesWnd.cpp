@@ -353,8 +353,8 @@ LRESULT CSharedFilesWnd::OnChangeFilter(WPARAM wParam, LPARAM lParam)
 {
     CWaitCursor curWait; // this may take a while
 
-    bool bColumnDiff = (m_nFilterColumn != (uint32)wParam);
-    m_nFilterColumn = (uint32)wParam;
+    bool bColumnDiff = (m_nFilterColumn != (UINT)wParam);
+    m_nFilterColumn = (UINT)wParam;
 
     CStringArray astrFilter;
     CString strFullFilterExpr = (LPCTSTR)lParam;

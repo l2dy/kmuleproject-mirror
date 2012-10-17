@@ -151,7 +151,7 @@ private:
 
 template<> inline UINT AFXAPI HashKey(const CAICHHash& key)
 {
-    uint32 hash = 1;
+    UINT hash = 1;
     for (int i = 0; i != HASHSIZE; i++)
         hash += (key.GetRawHashC()[i]+1)*((i*i)+1);
     return hash;
@@ -196,11 +196,11 @@ public:
 protected:
     CAICHHashTree*	FindHash(uint64 nStartPos, uint64 nSize, uint8* nLevel);
     const CAICHHashTree* FindExistingHash(uint64 nStartPos, uint64 nSize, uint8* nLevel) const;
-    bool			CreatePartRecoveryData(uint64 nStartPos, uint64 nSize, CFileDataIO* fileDataOut, uint32 wHashIdent, bool b32BitIdent);
-    void			WriteHash(CFileDataIO* fileDataOut, uint32 wHashIdent, bool b32BitIdent) const;
-    bool			WriteLowestLevelHashs(CFileDataIO* fileDataOut, uint32 wHashIdent, bool bNoIdent, bool b32BitIdent) const;
+    bool			CreatePartRecoveryData(uint64 nStartPos, uint64 nSize, CFileDataIO* fileDataOut, UINT wHashIdent, bool b32BitIdent);
+    void			WriteHash(CFileDataIO* fileDataOut, UINT wHashIdent, bool b32BitIdent) const;
+    bool			WriteLowestLevelHashs(CFileDataIO* fileDataOut, UINT wHashIdent, bool bNoIdent, bool b32BitIdent) const;
     bool			LoadLowestLevelHashs(CFileDataIO* fileInput);
-    bool			SetHash(CFileDataIO* fileInput, uint32 wHashIdent, sint8 nLevel = (-1), bool bAllowOverwrite = true);
+    bool			SetHash(CFileDataIO* fileInput, UINT wHashIdent, sint8 nLevel = (-1), bool bAllowOverwrite = true);
     bool			ReduceToBaseSize(uint64 nBaseSize);
 
     CAICHHashTree*	m_pLeftTree;
@@ -229,10 +229,10 @@ public:
         m_Hash = k1.m_Hash ;
         return *this;
     }
-    bool	AddSigningIP(uint32 dwIP, bool bTestOnly);
+    bool	AddSigningIP(UINT dwIP, bool bTestOnly);
 
     CAICHHash				m_Hash;
-    CArray<uint32, uint32>	m_adwIpsSigning;
+    CArray<UINT, UINT>	m_adwIpsSigning;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -269,7 +269,7 @@ public:
     bool			ReadRecoveryData(uint64 nPartStartPos, CSafeMemFile* fileDataIn);
     bool			ReCalculateHash(bool bDontReplace = false);
     bool			VerifyHashTree(bool bDeleteBadTrees);
-    void			UntrustedHashReceived(const CAICHHash& Hash, uint32 dwFromIP);
+    void			UntrustedHashReceived(const CAICHHash& Hash, UINT dwFromIP);
     bool			IsPartDataAvailable(uint64 nPartStartPos);
     void			SetStatus(EAICHStatus bNewValue)
     {

@@ -27,10 +27,10 @@ class MD5Sum
 public:
     MD5Sum();
     MD5Sum(const CString& sSource);
-    MD5Sum(const unsigned char* pachSource, uint32 nLen);
+    MD5Sum(const unsigned char* pachSource, UINT nLen);
 
     CString Calculate(const CString& sSource);
-    CString Calculate(const unsigned char* pachSource, uint32 nLen);
+    CString Calculate(const unsigned char* pachSource, UINT nLen);
 
     CString GetHash() const;
     const unsigned char* GetRawHash() const

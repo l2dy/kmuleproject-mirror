@@ -23,6 +23,6 @@ public:
     virtual ~CEncryptedDatagramSocket();
 
 protected:
-    int DecryptReceivedClient(BYTE* pbyBufIn, int nBufLen, BYTE** ppbyBufOut, uint32 dwIP, uint32* nReceiverVerifyKey, uint32* nSenderVerifyKey) const;
-    int EncryptSendClient(uchar** ppbyBuf, int nBufLen, const uchar* pachClientHashOrKadID, bool bKad, uint32 nReceiverVerifyKey, uint32 nSenderVerifyKey) const;
+    int DecryptReceivedClient(BYTE* pbyBufIn, int nBufLen, BYTE** ppbyBufOut, UINT dwIP, UINT* nReceiverVerifyKey, UINT* nSenderVerifyKey) const;
+    int EncryptSendClient(uchar** ppbyBuf, int nBufLen, const uchar* pachClientHashOrKadID, bool bKad, UINT nReceiverVerifyKey, UINT nSenderVerifyKey) const;
 };

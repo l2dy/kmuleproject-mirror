@@ -124,7 +124,7 @@ Version history
 static char THIS_FILE[] = __FILE__;
 #endif
 
-extern CStringA ipstrA(uint32 nIP);
+extern CStringA ipstrA(UINT nIP);
 
 //////////////////////////////////////////////////////////////////////
 // Konstruktion/Destruktion
@@ -339,7 +339,7 @@ void CAsyncProxySocketLayer::OnReceive(int nErrorCode)
 
             if (m_nRecvBufferPos == 8)
             {
-                TRACE("SOCKS4 response: VN=%u  CD=%u  DSTPORT=%u  DSTIP=%s\n", (BYTE)m_pRecvBuffer[0], (BYTE)m_pRecvBuffer[1], ntohs(*(u_short*)&m_pRecvBuffer[2]), ipstrA(*(u_long*)&m_pRecvBuffer[4]));
+                TRACE(L"SOCKS4 response: VN=%u  CD=%u  DSTPORT=%u  DSTIP=%s\n", (BYTE)m_pRecvBuffer[0], (BYTE)m_pRecvBuffer[1], ntohs(*(u_short*)&m_pRecvBuffer[2]), ipstrA(*(u_long*)&m_pRecvBuffer[4]));
                 if (m_pRecvBuffer[0] != 0 || m_pRecvBuffer[1] != 90)
                 {
                     DoLayerCallback(LAYERCALLBACK_LAYERSPECIFIC, PROXYERROR_REQUESTFAILED, 0, (LPARAM)(LPCSTR)GetSocks4Error(m_pRecvBuffer[0], m_pRecvBuffer[1]));
@@ -428,7 +428,7 @@ void CAsyncProxySocketLayer::OnReceive(int nErrorCode)
 
             if (m_nRecvBufferPos == 2)
             {
-                TRACE("SOCKS5 response: VER=%u  METHOD=%u\n", (BYTE)m_pRecvBuffer[0], (BYTE)m_pRecvBuffer[1]);
+                TRACE(L"SOCKS5 response: VER=%u  METHOD=%u\n", (BYTE)m_pRecvBuffer[0], (BYTE)m_pRecvBuffer[1]);
                 bool bIniReqFailed = m_nProxyOpState == 1 && m_pRecvBuffer[0] != 5;  // Response to initialization request
                 bool bAuthReqFailed = m_nProxyOpState == 2 && m_pRecvBuffer[1] != 0; // Response to authentication request
                 if (bIniReqFailed || bAuthReqFailed)
@@ -588,7 +588,7 @@ void CAsyncProxySocketLayer::OnReceive(int nErrorCode)
 
             if (m_nRecvBufferPos == 10)
             {
-                TRACE("SOCKS5 response: VER=%u  REP=%u  RSV=%u  ATYP=%u  BND.ADDR=%s  BND.PORT=%u\n", (BYTE)m_pRecvBuffer[0], (BYTE)m_pRecvBuffer[1], (BYTE)m_pRecvBuffer[2], (BYTE)m_pRecvBuffer[3], ipstrA(*(u_long*)&m_pRecvBuffer[4]), ntohs(*(u_short*)&m_pRecvBuffer[8]));
+                TRACE(L"SOCKS5 response: VER=%u  REP=%u  RSV=%u  ATYP=%u  BND.ADDR=%s  BND.PORT=%u\n", (BYTE)m_pRecvBuffer[0], (BYTE)m_pRecvBuffer[1], (BYTE)m_pRecvBuffer[2], (BYTE)m_pRecvBuffer[3], ipstrA(*(u_long*)&m_pRecvBuffer[4]), ntohs(*(u_short*)&m_pRecvBuffer[8]));
                 if (m_pRecvBuffer[0] != 5 || m_pRecvBuffer[1] != 0)
                 {
                     DoLayerCallback(LAYERCALLBACK_LAYERSPECIFIC, PROXYERROR_REQUESTFAILED, 0, (LPARAM)(LPCSTR)GetSocks5Error(m_pRecvBuffer[1]));
@@ -705,7 +705,7 @@ void CAsyncProxySocketLayer::OnReceive(int nErrorCode)
         {
             if (*(DWORD*)m_pStrBuffer == 'PTTH')
             {
-                TRACE("%hs\n", CStringA(m_pStrBuffer, m_iStrBuffSize).TrimRight("\r\n"));
+                TRACE(L"%hs\n", CStringA(m_pStrBuffer, m_iStrBuffSize).TrimRight("\r\n"));
                 char* pcNl = (char*)memchr(m_pStrBuffer, '\n', m_iStrBuffSize);
                 if (pcNl)
                 {
@@ -728,7 +728,7 @@ void CAsyncProxySocketLayer::OnReceive(int nErrorCode)
             return;
         }
 
-        TRACE("%hs\n", CStringA(m_pStrBuffer, m_iStrBuffSize).TrimRight("\r\n"));
+        TRACE(L"%hs\n", CStringA(m_pStrBuffer, m_iStrBuffSize).TrimRight("\r\n"));
         Reset();
         ClearBuffer();
         TriggerEvent(FD_CONNECT, 0, TRUE);

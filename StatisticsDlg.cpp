@@ -717,8 +717,8 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
     // If a section is not expanded, don't waste CPU cycles updating it.
     if (forceUpdate || stattree.IsExpanded(h_transfer))
     {
-        uint32	statGoodSessions =				0;
-        uint32	statBadSessions =				0;
+        UINT	statGoodSessions =				0;
+        UINT	statBadSessions =				0;
         double	percentSessions =				0;
         // Transfer Ratios
         if ( theStats.sessionReceivedBytes>0 && theStats.sessionSentBytes>0 )
@@ -994,7 +994,7 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                         cbuffer.Format( _T("%s: %s") , GetResString(IDS_STATS_AVGDATADLSES) , CastItoXBytes( theStats.sessionReceivedBytes / statGoodSessions, false, false ) );
                     }
                     else
-                        cbuffer.Format( _T("%s: %s") , GetResString(IDS_STATS_AVGDATADLSES) , CastItoXBytes((uint32)0, false, false) );
+                        cbuffer.Format( _T("%s: %s") , GetResString(IDS_STATS_AVGDATADLSES) , CastItoXBytes((UINT)0, false, false) );
                     stattree.SetItemText( down_ssessions[2] , cbuffer ); // Set Avg DL/Session
                     cbuffer.Format( _T("%s: %u (%1.1f%%)") , GetResString(IDS_STATS_SDLSES) , statGoodSessions , percentSessions );
                     stattree.SetItemText( down_ssessions[0] , cbuffer ); // Set Succ Sessions
@@ -1182,7 +1182,7 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                     else
                     {
                         percentSessions = 0;
-                        cbuffer.Format( _T("%s: %s") , GetResString(IDS_STATS_AVGDATADLSES) , CastItoXBytes((uint32)0, false, false) );
+                        cbuffer.Format( _T("%s: %s") , GetResString(IDS_STATS_AVGDATADLSES) , CastItoXBytes((UINT)0, false, false) );
                     }
                     stattree.SetItemText( down_tsessions[2] , cbuffer ); // Set Avg DL/Session
                     cbuffer.Format( _T("%s: %u (%1.1f%%)"), GetResString(IDS_STATS_SDLSES) , statGoodSessions , percentSessions );
@@ -1197,10 +1197,10 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                     cbuffer.Format( _T("%s: %u (%1.1f%%)") , GetResString(IDS_STATS_FDLSES) , statBadSessions , percentSessions);
                     stattree.SetItemText( down_tsessions[1] , cbuffer );
                     // Set Cumulative Average Download Time
-                    uint32 avgDownTime = thePrefs.GetDownS_AvgTime();
+                    UINT avgDownTime = thePrefs.GetDownS_AvgTime();
                     if (thePrefs.GetDownC_AvgTime()<=0)
                         thePrefs.SetDownCAvgTime(avgDownTime);
-                    avgDownTime = (uint32) (avgDownTime+thePrefs.GetDownC_AvgTime())/2;
+                    avgDownTime = (UINT) (avgDownTime+thePrefs.GetDownC_AvgTime())/2;
                     cbuffer.Format(_T("%s: %s"), GetResString(IDS_STATS_AVGDLTIME), CastSecondsToLngHM(avgDownTime));
                     stattree.SetItemText(down_tsessions[3], cbuffer);
                 }
@@ -1398,7 +1398,10 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                 stattree.SetItemText(up_S[4], cbuffer);
 
                 // Set Upload Sessions
-                statGoodSessions = theApp.uploadqueue->GetSuccessfullUpCount() + theApp.uploadqueue->GetUploadQueueLength();
+//>>> WiZaRd::ZZUL Upload [ZZ]
+				statGoodSessions = theApp.uploadqueue->GetSuccessfullUpCount(); // + theApp.uploadqueue->GetUploadQueueLength();
+                //statGoodSessions = theApp.uploadqueue->GetSuccessfullUpCount() + theApp.uploadqueue->GetUploadQueueLength();
+//<<< WiZaRd::ZZUL Upload [ZZ]
                 statBadSessions = theApp.uploadqueue->GetFailedUpCount();
                 cbuffer.Format(_T("%s: %u"), GetResString(IDS_STATS_ULSES), statGoodSessions + statBadSessions);
                 stattree.SetItemText(up_S[5], cbuffer);
@@ -1409,7 +1412,10 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                     {
                         // Blackholes are when God divided by 0
                         percentSessions = (double) 100*statGoodSessions/(statGoodSessions+statBadSessions);
-                        cbuffer.Format(_T("%s: %s"), GetResString(IDS_STATS_AVGDATAULSES), CastItoXBytes( theStats.sessionSentBytes / statGoodSessions, false, false) );
+//>>> WiZaRd::ZZUL Upload [ZZ]
+						cbuffer.Format(_T("%s: %s"), GetResString(IDS_STATS_AVGDATAULSES), CastItoXBytes( (uint64)theStats.GetTotalCompletedBytes() / statGoodSessions, false, false) );
+                        //cbuffer.Format(_T("%s: %s"), GetResString(IDS_STATS_AVGDATAULSES), CastItoXBytes( theStats.sessionSentBytes / statGoodSessions, false, false) );
+//<<< WiZaRd::ZZUL Upload [ZZ]
                     }
                     else
                     {
@@ -1618,10 +1624,10 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                     cbuffer.Format(GetResString(IDS_STATS_FAILUPCOUNT),statBadSessions,percentSessions);
                     stattree.SetItemText(up_tsessions[1], cbuffer);
                     // Set Avg Upload time
-                    uint32 avguptime = theApp.uploadqueue->GetAverageUpTime();
+                    UINT avguptime = theApp.uploadqueue->GetAverageUpTime();
                     if (thePrefs.GetUpAvgTime()<=0)
                         thePrefs.SetUpAvgTime(avguptime);
-                    avguptime = (uint32) (avguptime+thePrefs.GetUpAvgTime())/2;
+                    avguptime = (UINT) (avguptime+thePrefs.GetUpAvgTime())/2;
                     cbuffer.Format(GetResString(IDS_STATS_AVEUPTIME),CastSecondsToLngHM(avguptime));
                     stattree.SetItemText(up_tsessions[3], cbuffer);
                 }
@@ -1710,7 +1716,7 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                 stattree.SetItemText(conn_sg[i], cbuffer);
                 i++;
                 // Connect Limit Reached
-                uint32 m_itemp = theApp.listensocket->GetMaxConnectionReached();
+                UINT m_itemp = theApp.listensocket->GetMaxConnectionReached();
                 if( m_itemp != m_ilastMaxConnReached )
                 {
                     cbuffer.Format(_T("%s: %i : %s"), GetResString(IDS_SF_MAXCONLIMITREACHED), m_itemp, CTime::GetCurrentTime().Format(_T("%c")));
@@ -2045,8 +2051,8 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                             }
                         }
                         // Upload Sessions
-                        uint32 statGoodSessions = (uint32)((theApp.uploadqueue->GetSuccessfullUpCount() + thePrefs.GetUpSuccessfulSessions() + theApp.uploadqueue->GetUploadQueueLength()) * avgModifier[mx]);
-                        uint32 statBadSessions = (uint32)((theApp.uploadqueue->GetFailedUpCount() + thePrefs.GetUpFailedSessions()) * avgModifier[mx]);
+                        UINT statGoodSessions = (UINT)((theApp.uploadqueue->GetSuccessfullUpCount() + thePrefs.GetUpSuccessfulSessions() + theApp.uploadqueue->GetUploadQueueLength()) * avgModifier[mx]);
+                        UINT statBadSessions = (UINT)((theApp.uploadqueue->GetFailedUpCount() + thePrefs.GetUpFailedSessions()) * avgModifier[mx]);
                         double percentSessions;
                         cbuffer.Format(_T("%s: %u"), GetResString(IDS_STATS_ULSES), statGoodSessions + statBadSessions);
                         stattree.SetItemText(time_aap_up[mx][1], cbuffer);
@@ -2222,8 +2228,8 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                         cbuffer.Format(_T("%s: %I64u"), GetResString(IDS_STATS_COMPDL), (uint64) (thePrefs.GetDownCompletedFiles() * avgModifier[mx]) );
                         stattree.SetItemText(time_aap_down[mx][1], cbuffer);
                         // Set Cum Download Sessions
-                        uint32	statGoodSessions = (uint32)((thePrefs.GetDownC_SuccessfulSessions() + myStats.a[1]) * avgModifier[mx]);
-                        uint32	statBadSessions = (uint32)(thePrefs.GetDownC_FailedSessions() * avgModifier[mx]);
+                        UINT	statGoodSessions = (UINT)((thePrefs.GetDownC_SuccessfulSessions() + myStats.a[1]) * avgModifier[mx]);
+                        UINT	statBadSessions = (UINT)(thePrefs.GetDownC_FailedSessions() * avgModifier[mx]);
                         double	percentSessions;
                         cbuffer.Format(_T("%s: %u"), GetResString(IDS_STATS_DLSES), statGoodSessions+statBadSessions );
                         stattree.SetItemText(time_aap_down[mx][2], cbuffer);
@@ -2253,7 +2259,7 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                         cbuffer.Format( GetResString( IDS_STATS_LOSTCORRUPT ) , CastItoXBytes( (uint64)(thePrefs.GetSesLostFromCorruption() + thePrefs.GetCumLostFromCorruption()) * avgModifier[mx], false, false ) );
                         stattree.SetItemText( time_aap_down[mx][4] , cbuffer );
                         // Set Cumulative Saved Due To ICH
-                        cbuffer.Format(GetResString(IDS_STATS_ICHSAVED), (uint32)((thePrefs.GetSesPartsSavedByICH() + thePrefs.GetCumPartsSavedByICH()) * avgModifier[mx]));
+                        cbuffer.Format(GetResString(IDS_STATS_ICHSAVED), (UINT)((thePrefs.GetSesPartsSavedByICH() + thePrefs.GetCumPartsSavedByICH()) * avgModifier[mx]));
                         stattree.SetItemText( time_aap_down[mx][5] , cbuffer );
 
                         uint64 DownOHTotal =	theStats.GetDownDataOverheadFileRequest() +
@@ -2305,11 +2311,11 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
     //								Who wants to stare at totally blank tree items?  ;)
     if (forceUpdate || stattree.IsExpanded(h_clients))
     {
-        CMap<uint32, uint32, uint32, uint32>	clientVersionEDonkey;
-        CMap<uint32, uint32, uint32, uint32>	clientVersionEDonkeyHybrid;
-        CMap<uint32, uint32, uint32, uint32>	clientVersionEMule;
-        CMap<uint32, uint32, uint32, uint32>	clientVersionAMule;
-        uint32									totalclient;
+        CMap<UINT, UINT, UINT, UINT>	clientVersionEDonkey;
+        CMap<UINT, UINT, UINT, UINT>	clientVersionEDonkeyHybrid;
+        CMap<UINT, UINT, UINT, UINT>	clientVersionEMule;
+        CMap<UINT, UINT, UINT, UINT>	clientVersionAMule;
+        UINT									totalclient;
         int										myStats[NUM_CLIENTLIST_STATS];
 
         theApp.clientlist->GetStatistics(totalclient, myStats,
@@ -2354,22 +2360,22 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
             // CLIENTS -> CLIENT SOFTWARE -> EMULE SECTION
             if (forceUpdate || stattree.IsExpanded(clisoft[0]) || cli_lastCount[0] == 0)
             {
-                uint32 verCount = 0;
+                UINT verCount = 0;
 
                 //--- find top 4 eMule client versions ---
-                uint32 currtopcnt = 0;
-                uint32 currtopver = 0;
-                uint32 totalOther = 0;
-                for (uint32 i = 0; i < MAX_SUB_CLIENT_VERSIONS; i++)
+                UINT currtopcnt = 0;
+                UINT currtopver = 0;
+                UINT totalOther = 0;
+                for (UINT i = 0; i < MAX_SUB_CLIENT_VERSIONS; i++)
                 {
                     POSITION pos = clientVersionEMule.GetStartPosition();
-                    uint32 topver = 0;
-                    uint32 topcnt = 0;
+                    UINT topver = 0;
+                    UINT topcnt = 0;
                     double topper = 0.0;
                     while (pos)
                     {
-                        uint32 ver;
-                        uint32 cnt;
+                        UINT ver;
+                        UINT cnt;
                         clientVersionEMule.GetNextAssoc(pos, ver, cnt);
                         if (currtopcnt < cnt)
                         {
@@ -2431,7 +2437,7 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                 }
                 if (verCount < cli_lastCount[0])
                 {
-                    for (uint32 i = 0; i < cli_lastCount[0] - verCount; i++)
+                    for (UINT i = 0; i < cli_lastCount[0] - verCount; i++)
                     {
                         stattree.DeleteItem(cli_versions[cli_lastCount[0] + (MAX_SUB_CLIENT_VERSIONS*0-1) - i]);
                         if (cli_lastCount[0] + (MAX_SUB_CLIENT_VERSIONS*0-1) - i == MAX_SUB_CLIENT_VERSIONS/2)
@@ -2445,22 +2451,22 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
             // CLIENTS -> CLIENT SOFTWARE -> eD HYBRID SECTION
             if (forceUpdate || stattree.IsExpanded(clisoft[1]) || cli_lastCount[1] == 0)
             {
-                uint32 verCount = 0;
+                UINT verCount = 0;
 
                 //--- find top 4 eD Hybrid client versions ---
-                uint32 currtopcnt = 0;
-                uint32 currtopver = 0;
-                uint32 totalOther = 0;
-                for (uint32 i = 0; i < MAX_SUB_CLIENT_VERSIONS; i++)
+                UINT currtopcnt = 0;
+                UINT currtopver = 0;
+                UINT totalOther = 0;
+                for (UINT i = 0; i < MAX_SUB_CLIENT_VERSIONS; i++)
                 {
                     POSITION pos = clientVersionEDonkeyHybrid.GetStartPosition();
-                    uint32 topver = 0;
-                    uint32 topcnt = 0;
+                    UINT topver = 0;
+                    UINT topcnt = 0;
                     double topper = 0.0;
                     while (pos)
                     {
-                        uint32 ver;
-                        uint32 cnt;
+                        UINT ver;
+                        UINT cnt;
                         clientVersionEDonkeyHybrid.GetNextAssoc(pos, ver, cnt);
                         if (currtopcnt < cnt)
                         {
@@ -2514,7 +2520,7 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                 }
                 if (verCount < cli_lastCount[1])
                 {
-                    for (uint32 i = 0; i < cli_lastCount[1] - verCount; i++)
+                    for (UINT i = 0; i < cli_lastCount[1] - verCount; i++)
                     {
                         stattree.DeleteItem(cli_versions[cli_lastCount[1] + (MAX_SUB_CLIENT_VERSIONS*1-1) - i]);
                         if (cli_lastCount[1] + (MAX_SUB_CLIENT_VERSIONS*1-1) - i == MAX_SUB_CLIENT_VERSIONS/2)
@@ -2528,22 +2534,22 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
             // CLIENTS -> CLIENT SOFTWARE -> EDONKEY SECTION
             if (forceUpdate || stattree.IsExpanded(clisoft[2]) || cli_lastCount[2] == 0)
             {
-                uint32 verCount = 0;
+                UINT verCount = 0;
 
                 //--- find top 4 eDonkey client versions ---
-                uint32 currtopcnt = 0;
-                uint32 currtopver = 0;
-                uint32 totalOther = 0;
-                for (uint32 i = 0; i < MAX_SUB_CLIENT_VERSIONS; i++)
+                UINT currtopcnt = 0;
+                UINT currtopver = 0;
+                UINT totalOther = 0;
+                for (UINT i = 0; i < MAX_SUB_CLIENT_VERSIONS; i++)
                 {
                     POSITION pos = clientVersionEDonkey.GetStartPosition();
-                    uint32 topver = 0;
-                    uint32 topcnt = 0;
+                    UINT topver = 0;
+                    UINT topcnt = 0;
                     double topper = 0.0;
                     while (pos)
                     {
-                        uint32 ver;
-                        uint32 cnt;
+                        UINT ver;
+                        UINT cnt;
                         clientVersionEDonkey.GetNextAssoc(pos, ver, cnt);
                         if (currtopcnt < cnt)
                         {
@@ -2597,7 +2603,7 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                 }
                 if (verCount < cli_lastCount[2])
                 {
-                    for (uint32 i = 0; i < cli_lastCount[2] - verCount; i++)
+                    for (UINT i = 0; i < cli_lastCount[2] - verCount; i++)
                     {
                         stattree.DeleteItem(cli_versions[cli_lastCount[2] + (MAX_SUB_CLIENT_VERSIONS*2-1) - i]);
                         if (cli_lastCount[2] + (MAX_SUB_CLIENT_VERSIONS*2-1) - i == MAX_SUB_CLIENT_VERSIONS/2)
@@ -2611,22 +2617,22 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
             // CLIENTS -> CLIENT SOFTWARE -> AMULE SECTION
             if (forceUpdate || stattree.IsExpanded(clisoft[3]) || cli_lastCount[3] == 0)
             {
-                uint32 verCount = 0;
+                UINT verCount = 0;
 
                 //--- find top 4 client versions ---
-                uint32 currtopcnt = 0;
-                uint32 currtopver = 0;
-                uint32 totalOther = 0;
-                for (uint32 i = 0; i < MAX_SUB_CLIENT_VERSIONS; i++)
+                UINT currtopcnt = 0;
+                UINT currtopver = 0;
+                UINT totalOther = 0;
+                for (UINT i = 0; i < MAX_SUB_CLIENT_VERSIONS; i++)
                 {
                     POSITION pos = clientVersionAMule.GetStartPosition();
-                    uint32 topver = 0;
-                    uint32 topcnt = 0;
+                    UINT topver = 0;
+                    UINT topcnt = 0;
                     double topper = 0.0;
                     while (pos)
                     {
-                        uint32 ver;
-                        uint32 cnt;
+                        UINT ver;
+                        UINT cnt;
                         clientVersionAMule.GetNextAssoc(pos, ver, cnt);
                         if (currtopcnt < cnt)
                         {
@@ -2683,7 +2689,7 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                 }
                 if (verCount < cli_lastCount[3])
                 {
-                    for (uint32 i = 0; i < cli_lastCount[3] - verCount; i++)
+                    for (UINT i = 0; i < cli_lastCount[3] - verCount; i++)
                     {
                         stattree.DeleteItem(cli_versions[cli_lastCount[3] + (MAX_SUB_CLIENT_VERSIONS*3-1) - i]);
                         if (cli_lastCount[3] + (MAX_SUB_CLIENT_VERSIONS*3-1) - i == MAX_SUB_CLIENT_VERSIONS/2)
@@ -2783,7 +2789,7 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
         if(theApp.sharedfiles->GetCount() != 0)
             cbuffer2.Format( _T("%s"), CastItoXBytes(allsize/(uint64)theApp.sharedfiles->GetCount(), false, false));
         else
-            cbuffer2.Format( _T("%s"), CastItoXBytes((uint32)0, false, false) );
+            cbuffer2.Format( _T("%s"), CastItoXBytes((UINT)0, false, false) );
         cbuffer.Format(GetResString(IDS_SF_AVERAGESIZE),cbuffer2);
         stattree.SetItemText(shar[1], cbuffer);
         // Set Largest File Size

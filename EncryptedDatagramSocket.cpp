@@ -149,7 +149,7 @@ CEncryptedDatagramSocket::~CEncryptedDatagramSocket()
 
 }
 
-int CEncryptedDatagramSocket::DecryptReceivedClient(BYTE* pbyBufIn, int nBufLen, BYTE** ppbyBufOut, uint32 dwIP, uint32* nReceiverVerifyKey, uint32* nSenderVerifyKey) const
+int CEncryptedDatagramSocket::DecryptReceivedClient(BYTE* pbyBufIn, int nBufLen, BYTE** ppbyBufOut, UINT dwIP, UINT* nReceiverVerifyKey, UINT* nSenderVerifyKey) const
 {
     int nResult = nBufLen;
     *ppbyBufOut = pbyBufIn;
@@ -179,7 +179,7 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(BYTE* pbyBufIn, int nBufLen,
 
     // might be an encrypted packet, try to decrypt
     RC4_Key_Struct keyReceiveKey;
-    uint32 dwValue = 0;
+    UINT dwValue = 0;
     // check the marker bit which type this packet could be and which key to test first, this is only an indicator since old clients have it set random
     // see the header for marker bits explanation
     byte byCurrentTry = ((pbyBufIn[0] & 0x03) == 3) ? 1 : (pbyBufIn[0] & 0x03);
@@ -299,16 +299,16 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(BYTE* pbyBufIn, int nBufLen,
 // pachClientHashOrKadID != NULL									-> pachClientHashOrKadID
 // pachClientHashOrKadID == NULL && bKad && nReceiverVerifyKey != 0 -> nReceiverVerifyKey
 // else																-> ASSERT
-int CEncryptedDatagramSocket::EncryptSendClient(uchar** ppbyBuf, int nBufLen, const uchar* pachClientHashOrKadID, bool bKad, uint32 nReceiverVerifyKey, uint32 nSenderVerifyKey) const
+int CEncryptedDatagramSocket::EncryptSendClient(uchar** ppbyBuf, int nBufLen, const uchar* pachClientHashOrKadID, bool bKad, UINT nReceiverVerifyKey, UINT nSenderVerifyKey) const
 {
     ASSERT( theApp.GetPublicIP() != 0 || bKad );
     ASSERT( pachClientHashOrKadID != NULL || nReceiverVerifyKey != 0 );
     ASSERT( (nReceiverVerifyKey == 0 && nSenderVerifyKey == 0) || bKad );
 
     uint8 byPadLen = 0;			// padding disabled for UDP currently
-    const uint32 nCryptHeaderLen = byPadLen + CRYPT_HEADER_WITHOUTPADDING + (bKad ? 8 : 0);
+    const UINT nCryptHeaderLen = byPadLen + CRYPT_HEADER_WITHOUTPADDING + (bKad ? 8 : 0);
 
-    uint32 nCryptedLen = nBufLen + nCryptHeaderLen;
+    UINT nCryptedLen = nBufLen + nCryptHeaderLen;
     uchar* pachCryptedBuffer = new uchar[nCryptedLen];
     bool bKadRecKeyUsed = false;
 
@@ -344,7 +344,7 @@ int CEncryptedDatagramSocket::EncryptSendClient(uchar** ppbyBuf, int nBufLen, co
     {
         uchar achKeyData[23];
         md4cpy(achKeyData, pachClientHashOrKadID);
-        uint32 dwIP = theApp.GetPublicIP();
+        UINT dwIP = theApp.GetPublicIP();
         memcpy(achKeyData+16, &dwIP, 4);
         memcpy(achKeyData+21, &nRandomKeyPart, 2);
         achKeyData[20] = MAGICVALUE_UDP;
@@ -388,7 +388,7 @@ int CEncryptedDatagramSocket::EncryptSendClient(uchar** ppbyBuf, int nBufLen, co
         bySemiRandomNotProtocolMarker = 0x01;
     }
 
-    uint32 dwMagicValue = MAGICVALUE_UDP_SYNC_CLIENT;
+    UINT dwMagicValue = MAGICVALUE_UDP_SYNC_CLIENT;
     pachCryptedBuffer[0] = bySemiRandomNotProtocolMarker;
     memcpy(pachCryptedBuffer + 1, &nRandomKeyPart, 2);
     RC4Crypt((uchar*)&dwMagicValue, pachCryptedBuffer + 3, 4, &keySendKey);

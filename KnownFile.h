@@ -51,7 +51,7 @@ public:
     {
         return CTime(m_tUtcLastModified);
     }
-    uint32	GetUtcFileDate() const
+    UINT	GetUtcFileDate() const
     {
         return m_tUtcLastModified;
     }
@@ -96,7 +96,7 @@ public:
     // This has lost it's meaning here.. This is the total clients we know that want this file..
     // Right now this number is used for auto priorities..
     // This may be replaced with total complete source known in the network..
-    uint32	GetQueuedCount()
+    UINT	GetQueuedCount() const
     {
         return m_ClientUploadList.GetCount();
     }
@@ -111,11 +111,11 @@ public:
 
     void	SetFileRating(UINT uRating);
 
-    uint32	GetKadFileSearchID() const
+    UINT	GetKadFileSearchID() const
     {
         return kadFileSearchID;
     }
-    void	SetKadFileSearchID(uint32 id)
+    void	SetKadFileSearchID(UINT id)
     {
         kadFileSearchID = id;    //Don't use this unless you know what your are DOING!! (Hopefully I do.. :)
     }
@@ -125,24 +125,24 @@ public:
         return wordlist;
     }
 
-    uint32	GetLastPublishTimeKadSrc() const
+    UINT	GetLastPublishTimeKadSrc() const
     {
         return m_lastPublishTimeKadSrc;
     }
-    void	SetLastPublishTimeKadSrc(uint32 time, uint32 buddyip)
+    void	SetLastPublishTimeKadSrc(UINT time, UINT buddyip)
     {
         m_lastPublishTimeKadSrc = time;
         m_lastBuddyIP = buddyip;
     }
-    uint32	GetLastPublishBuddy() const
+    UINT	GetLastPublishBuddy() const
     {
         return m_lastBuddyIP;
     }
-    void	SetLastPublishTimeKadNotes(uint32 time)
+    void	SetLastPublishTimeKadNotes(UINT time)
     {
         m_lastPublishTimeKadNotes = time;
     }
-    uint32	GetLastPublishTimeKadNotes() const
+    UINT	GetLastPublishTimeKadNotes() const
     {
         return m_lastPublishTimeKadNotes;
     }
@@ -179,13 +179,13 @@ public:
         return m_bAICHRecoverHashSetAvailable;
     }
 
-    static bool	CreateHash(const uchar* pucData, uint32 uSize, uchar* pucHash, CAICHHashTree* pShaHashOut = NULL);
+    static bool	CreateHash(const uchar* pucData, UINT uSize, uchar* pucHash, CAICHHashTree* pShaHashOut = NULL);
 
 
 
     // last file modification time in (DST corrected, if NTFS) real UTC format
     // NOTE: this value can *not* be compared with NT's version of the UTC time
-    uint32	m_tUtcLastModified;
+    UINT	m_tUtcLastModified;
 
     CStatisticFile statistic;
     time_t m_nCompleteSourcesTime;
@@ -218,10 +218,10 @@ private:
     uint8	m_iUpPriority;
     bool	m_bAutoUpPriority;
 
-    uint32	kadFileSearchID;
-    uint32	m_lastPublishTimeKadSrc;
-    uint32	m_lastPublishTimeKadNotes;
-    uint32	m_lastBuddyIP;
+    UINT	kadFileSearchID;
+    UINT	m_lastPublishTimeKadSrc;
+    UINT	m_lastPublishTimeKadNotes;
+    UINT	m_lastBuddyIP;
     Kademlia::WordList wordlist;
     UINT	m_uMetaDataVer;
     time_t	m_timeLastSeen; // we only "see" files when they are in a shared directory
@@ -250,7 +250,7 @@ public:
     uint8*	GetPartStatus(CUpDownClient* client = NULL) const;
 //<<< WiZaRd::Intelligent SOTN
 public:
-    bool IsSharedInKad() const;
+    bool	IsSharedInKad() const;
 //>>> FDC [BlueSonicBoy]
 private:
     int 	m_iNameContinuityBad;
@@ -263,4 +263,8 @@ public:
 public:
     double	GetSharingRatio() const;
 //<<< WiZaRd::Ratio Indicator
+//>>> WiZaRd::Upload Feedback
+public:
+	CString GetFeedBackString() const;
+//<<< WiZaRd::Upload Feedback
 };

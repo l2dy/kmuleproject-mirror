@@ -883,7 +883,7 @@ void CSharedFilesCtrl::GetItemDisplayText(const CShareableFile* file, int iSubIt
 
         case 16:
         {
-            uint32 nMediaLength = pKnownFile->GetIntTagValue(FT_MEDIA_LENGTH);
+            UINT nMediaLength = pKnownFile->GetIntTagValue(FT_MEDIA_LENGTH);
             if (nMediaLength)
             {
                 CString buffer;
@@ -895,7 +895,7 @@ void CSharedFilesCtrl::GetItemDisplayText(const CShareableFile* file, int iSubIt
 
         case 17:
         {
-            uint32 nBitrate = pKnownFile->GetIntTagValue(FT_MEDIA_BITRATE);
+            UINT nBitrate = pKnownFile->GetIntTagValue(FT_MEDIA_BITRATE);
             if (nBitrate)
                 _sntprintf(pszText, cchTextMax, _T("%u %s"), nBitrate, GetResString(IDS_KBITSSEC));
             break;
@@ -1023,12 +1023,13 @@ void CSharedFilesCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
     m_SharedFilesMenu.EnableMenuItem(MP_CMT, (!bContainsShareableFiles && iSelectedItems > 0) ? MF_ENABLED : MF_GRAYED);
     m_SharedFilesMenu.EnableMenuItem(MP_DETAIL, iSelectedItems > 0 ? MF_ENABLED : MF_GRAYED);
     m_SharedFilesMenu.EnableMenuItem(thePrefs.GetShowCopyEd2kLinkCmd() ? MP_GETED2KLINK : MP_SHOWED2KLINK, (!bContainsOnlyShareableFile && iSelectedItems > 0) ? MF_ENABLED : MF_GRAYED);
+	m_SharedFilesMenu.EnableMenuItem(MP_FEEDBACK, (!bContainsShareableFiles && iSelectedItems > 0) ? MF_ENABLED : MF_GRAYED); //>>> WiZaRd::Upload Feedback
     m_SharedFilesMenu.EnableMenuItem(MP_FIND, GetItemCount() > 0 ? MF_ENABLED : MF_GRAYED);
 
 //>>> WiZaRd::PowerShare
     m_SharedFilesMenu.EnableMenuItem((UINT_PTR)m_PowerSharedMenu.m_hMenu, psFlag);
     UINT nFlag = 0;
-    if(bContainsShareableFiles /*|| (iSelectedItems == 1 && pSingleSelFile->IsPartFile())*/)
+    if(iSelectedItems > 0 && (bContainsShareableFiles /*|| (iSelectedItems == 1 && pSingleSelFile->IsPartFile())*/))
         nFlag = MF_GRAYED;
     else
         nFlag = MF_ENABLED;
@@ -1037,7 +1038,7 @@ void CSharedFilesCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 
     m_PowerSharedMenu.CheckMenuItem(MP_POWERSHARE_ON, (iPowerShare == 1) ? MF_CHECKED : MF_UNCHECKED);
     m_PowerSharedMenu.CheckMenuItem(MP_POWERSHARE_OFF, (iPowerShare == 0) ? MF_CHECKED : MF_UNCHECKED);
-//<<< WiZaRd::PowerShare
+//<<< WiZaRd::PowerShare	
 
     m_CollectionsMenu.EnableMenuItem(MP_MODIFYCOLLECTION, (!bContainsShareableFiles && pSingleSelFile != NULL && ((CKnownFile*)pSingleSelFile)->m_pCollection != NULL ) ? MF_ENABLED : MF_GRAYED);
     m_CollectionsMenu.EnableMenuItem(MP_VIEWCOLLECTION, (!bContainsShareableFiles && pSingleSelFile != NULL && ((CKnownFile*)pSingleSelFile)->m_pCollection != NULL ) ? MF_ENABLED : MF_GRAYED);
@@ -1404,6 +1405,22 @@ BOOL CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
             break;
         }
 //<<< WiZaRd::PowerShare
+//>>> WiZaRd::Upload Feedback
+		case MP_FEEDBACK: 
+		{ 
+			CString str = L"";
+			POSITION pos = selectedKnown.GetHeadPosition();
+			while (pos != NULL)
+			{
+				CKnownFile* file = selectedKnown.GetNext(pos);
+				if (!str.IsEmpty())
+					str.Append(L"\r\n\r\n");
+				str.Append(file->GetFeedBackString());
+			}
+			theApp.CopyTextToClipboard(str);
+			break; 
+		} 
+//<<< WiZaRd::Upload Feedback
         default:
             if (file && wParam>=MP_WEBURL && wParam<=MP_WEBURL+256)
             {
@@ -1618,7 +1635,7 @@ int CSharedFilesCtrl::SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort
 
             case 112:  //kad shared
             {
-                uint32 tNow = time(NULL);
+                UINT tNow = time(NULL);
                 int i1 = (tNow < kitem1->GetLastPublishTimeKadSrc()) ? 1 : 0;
                 int i2 = (tNow < kitem2->GetLastPublishTimeKadSrc()) ? 1 : 0;
                 iResult = i1 - i2;
@@ -1734,6 +1751,7 @@ void CSharedFilesCtrl::CreateMenues()
         m_SharedFilesMenu.AppendMenu(MF_STRING,MP_GETED2KLINK, GetResString(IDS_DL_LINK1), _T("ED2KLINK") );
     else
         m_SharedFilesMenu.AppendMenu(MF_STRING,MP_SHOWED2KLINK, GetResString(IDS_DL_SHOWED2KLINK), _T("ED2KLINK") );
+	m_SharedFilesMenu.AppendMenu(MF_STRING, MP_FEEDBACK, GetResString(IDS_UPLOAD_FEEDBACK), L"MESSAGE"); //>>> WiZaRd::Upload Feedback
     m_SharedFilesMenu.AppendMenu(MF_STRING,MP_FIND, GetResString(IDS_FIND), _T("Search"));
     m_SharedFilesMenu.AppendMenu(MF_STRING|MF_SEPARATOR);
 
@@ -1976,7 +1994,7 @@ void CSharedFilesCtrl::AddShareableFiles(CString strFromDir)
             }
         }
 
-        uint32 fdate = (UINT)tFoundFileTime.GetTime();
+        UINT fdate = (UINT)tFoundFileTime.GetTime();
         if (fdate == 0)
             fdate = (UINT)-1;
         if (fdate == -1)

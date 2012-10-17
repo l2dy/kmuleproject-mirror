@@ -184,10 +184,14 @@ void CSearchResultsWnd::StartSearch(SSearchParams* pParams)
         StartNewSearch(pParams);
         break;
 
-    case SearchTypeFileDonkey:
-        ShellOpenFile(CreateWebQuery(pParams));
-        delete pParams;
-        return;
+//>>> WiZaRd::CustomSearches
+/*
+		case SearchTypeFileDonkey:
+			ShellOpenFile(CreateWebQuery(pParams));
+			delete pParams;
+		return;
+*/
+//<<< WiZaRd::CustomSearches
 
     default:
         ASSERT(0);
@@ -321,6 +325,8 @@ void CSearchResultsWnd::OnDblClkSearchList(NMHDR* /*pNMHDR*/, LRESULT* pResult)
     *pResult = 0;
 }
 
+//>>> WiZaRd::CustomSearches
+/*
 CString	CSearchResultsWnd::CreateWebQuery(SSearchParams* pParams)
 {
     CString query;
@@ -349,6 +355,8 @@ CString	CSearchResultsWnd::CreateWebQuery(SSearchParams* pParams)
     }
     return query;
 }
+*/
+//<<< WiZaRd::CustomSearches
 
 void CSearchResultsWnd::DownloadSelected()
 {
@@ -773,7 +781,7 @@ public:
             if (b64BitValue)
                 ullValue = 0xFFFFFFFFU;
             m_data->WriteUInt8(3);					// numeric parameter type (int32)
-            m_data->WriteUInt32((uint32)ullValue);	// numeric value
+            m_data->WriteUInt32((UINT)ullValue);	// numeric value
         }
         m_data->WriteUInt8((uint8)uOperator);	// comparison operator
         m_data->WriteUInt16(sizeof uint8);		// meta tag ID length
@@ -796,7 +804,7 @@ public:
             if (b64BitValue)
                 ullValue = 0xFFFFFFFFU;
             m_data->WriteUInt8(3);					// numeric parameter type (int32)
-            m_data->WriteUInt32((uint32)ullValue);	// numeric value
+            m_data->WriteUInt32((UINT)ullValue);	// numeric value
         }
         m_data->WriteUInt8((uint8)uOperator);	// comparison operator
         m_data->WriteString(pszMetaTagID);		// meta tag ID
@@ -1179,12 +1187,12 @@ void CSearchResultsWnd::DeleteSelectedSearch()
     }
 }
 
-bool CSearchResultsWnd::CanDeleteSearch(uint32 /*nSearchID*/) const
+bool CSearchResultsWnd::CanDeleteSearch(UINT /*nSearchID*/) const
 {
     return (searchselect.GetItemCount() > 0);
 }
 
-void CSearchResultsWnd::DeleteSearch(uint32 nSearchID)
+void CSearchResultsWnd::DeleteSearch(UINT nSearchID)
 {
     Kademlia::CSearchManager::StopSearch(nSearchID, false);
 
@@ -1511,8 +1519,8 @@ LRESULT CSearchResultsWnd::OnChangeFilter(WPARAM wParam, LPARAM lParam)
 {
     CWaitCursor curWait; // this may take a while
 
-    bool bColumnDiff = (m_nFilterColumn != (uint32)wParam);
-    m_nFilterColumn = (uint32)wParam;
+    bool bColumnDiff = (m_nFilterColumn != (UINT)wParam);
+    m_nFilterColumn = (UINT)wParam;
 
     CStringArray astrFilter;
     CString strFullFilterExpr = (LPCTSTR)lParam;

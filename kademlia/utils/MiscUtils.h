@@ -35,8 +35,8 @@ namespace Kademlia
 class CMiscUtils
 {
 public:
-    static void IPAddressToString(uint32 uIP, CString *pString);
-    static void DebugHexDump(const byte *pbyData, uint32 uLenData);
+    static void IPAddressToString(UINT uIP, CString *pString);
+    static void DebugHexDump(const byte *pbyData, UINT uLenData);
 private:
     static CString m_sAppDirectory;
 };

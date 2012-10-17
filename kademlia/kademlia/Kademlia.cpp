@@ -72,7 +72,7 @@ time_t		CKademlia::m_tExternPortLookup;
 time_t		CKademlia::m_tLANModeCheck = 0;
 bool		CKademlia::m_bRunning = false;
 bool		CKademlia::m_bLANMode = false;
-CList<uint32, uint32> CKademlia::m_liStatsEstUsersProbes;
+CList<UINT, UINT> CKademlia::m_liStatsEstUsersProbes;
 _ContactList CKademlia::s_liBootstapList;
 
 CKademlia::CKademlia()
@@ -194,9 +194,9 @@ void CKademlia::Process()
     if( m_pInstance == NULL || !m_bRunning)
         return;
     bool bUpdateUserFile = false;
-    uint32 uMaxUsers = 0;
-    uint32 uTempUsers = 0;
-    uint32 uLastContact = 0;
+    UINT uMaxUsers = 0;
+    UINT uTempUsers = 0;
+    UINT uLastContact = 0;
     time_t tNow = time(NULL);
     ASSERT(m_pInstance->m_pPrefs != NULL);
     uLastContact = m_pInstance->m_pPrefs->GetLastContact();
@@ -290,7 +290,7 @@ void CKademlia::Process()
     // Try to consolidate any zones that are close to empty.
     if (m_tConsolidate <= tNow)
     {
-        uint32 uMergedCount = m_pInstance->m_pRoutingZone->Consolidate();
+        UINT uMergedCount = m_pInstance->m_pRoutingZone->Consolidate();
         if(uMergedCount)
             AddDebugLogLine(false, _T("Kad merged %u Zones"), uMergedCount);
         m_tConsolidate = MIN2S(45) + tNow;
@@ -358,7 +358,7 @@ bool CKademlia::IsFirewalled()
     return true;
 }
 
-uint32 CKademlia::GetKademliaUsers(bool bNewMethod)
+UINT CKademlia::GetKademliaUsers(bool bNewMethod)
 {
     if( m_pInstance && m_pInstance->m_pPrefs )
     {
@@ -370,49 +370,49 @@ uint32 CKademlia::GetKademliaUsers(bool bNewMethod)
     return 0;
 }
 
-uint32 CKademlia::GetKademliaFiles()
+UINT CKademlia::GetKademliaFiles()
 {
     if( m_pInstance && m_pInstance->m_pPrefs )
         return m_pInstance->m_pPrefs->GetKademliaFiles();
     return 0;
 }
 
-uint32 CKademlia::GetTotalStoreKey()
+UINT CKademlia::GetTotalStoreKey()
 {
     if( m_pInstance && m_pInstance->m_pPrefs )
         return m_pInstance->m_pPrefs->GetTotalStoreKey();
     return 0;
 }
 
-uint32 CKademlia::GetTotalStoreSrc()
+UINT CKademlia::GetTotalStoreSrc()
 {
     if( m_pInstance && m_pInstance->m_pPrefs )
         return m_pInstance->m_pPrefs->GetTotalStoreSrc();
     return 0;
 }
 
-uint32 CKademlia::GetTotalStoreNotes()
+UINT CKademlia::GetTotalStoreNotes()
 {
     if( m_pInstance && m_pInstance->m_pPrefs )
         return m_pInstance->m_pPrefs->GetTotalStoreNotes();
     return 0;
 }
 
-uint32 CKademlia::GetTotalFile()
+UINT CKademlia::GetTotalFile()
 {
     if( m_pInstance && m_pInstance->m_pPrefs )
         return m_pInstance->m_pPrefs->GetTotalFile();
     return 0;
 }
 
-uint32 CKademlia::GetIPAddress()
+UINT CKademlia::GetIPAddress()
 {
     if( m_pInstance && m_pInstance->m_pPrefs )
         return m_pInstance->m_pPrefs->GetIPAddress();
     return 0;
 }
 
-void CKademlia::ProcessPacket(const byte *pbyData, uint32 uLenData, uint32 uIP, uint16 uPort, bool bValidReceiverKey, CKadUDPKey senderUDPKey)
+void CKademlia::ProcessPacket(const byte *pbyData, UINT uLenData, UINT uIP, uint16 uPort, bool bValidReceiverKey, CKadUDPKey senderUDPKey)
 {
     if( m_pInstance && m_pInstance->m_pUDPListener )
         m_pInstance->m_pUDPListener->ProcessPacket( pbyData, uLenData, uIP, uPort, bValidReceiverKey, senderUDPKey);
@@ -434,7 +434,7 @@ void CKademlia::Bootstrap(LPCTSTR szHost, uint16 uPort)
     }
 }
 
-void CKademlia::Bootstrap(uint32 uIP, uint16 uPort)
+void CKademlia::Bootstrap(UINT uIP, uint16 uPort)
 {
     if( m_pInstance && m_pInstance->m_pUDPListener && !IsConnected() && time(NULL) - m_tBootstrap > 10 )
     {
@@ -509,7 +509,7 @@ bool CKademlia::IsRunning()
     return m_bRunning;
 }
 
-bool CKademlia::FindNodeIDByIP(CKadClientSearcher& rRequester, uint32 dwIP, uint16 nTCPPort, uint16 nUDPPort, uint8 byKadVersion)
+bool CKademlia::FindNodeIDByIP(CKadClientSearcher& rRequester, UINT dwIP, uint16 nTCPPort, uint16 nUDPPort, uint8 byKadVersion)
 {
     if (!IsRunning() || m_pInstance == NULL || GetUDPListener() == NULL || GetRoutingZone() == NULL)
     {
@@ -583,7 +583,7 @@ void CKademlia::StatsAddClosestDistance(CUInt128 uDist)
 {
     if (uDist.Get32BitChunk(0) > 0)
     {
-        uint32 nToAdd = (0xFFFFFFFF / uDist.Get32BitChunk(0)) / 2;
+        UINT nToAdd = (0xFFFFFFFF / uDist.Get32BitChunk(0)) / 2;
         if (m_liStatsEstUsersProbes.Find(nToAdd) == NULL)
             m_liStatsEstUsersProbes.AddHead(nToAdd);
     }
@@ -591,7 +591,7 @@ void CKademlia::StatsAddClosestDistance(CUInt128 uDist)
         m_liStatsEstUsersProbes.RemoveTail();
 }
 
-uint32 CKademlia::CalculateKadUsersNew()
+UINT CKademlia::CalculateKadUsersNew()
 {
     // the idea of calculating the user count with this method is simple:
     // whenever we do search for any NodeID (except in certain cases were the result is not usable),
@@ -606,12 +606,12 @@ uint32 CKademlia::CalculateKadUsersNew()
 
     if (m_liStatsEstUsersProbes.GetCount() < 10)
         return 0;
-    uint32 nMedian = 0;
+    UINT nMedian = 0;
 
-    CList<uint32, uint32> liMedian;
+    CList<UINT, UINT> liMedian;
     for (POSITION pos1 = m_liStatsEstUsersProbes.GetHeadPosition(); pos1 != NULL; )
     {
-        uint32 nProbe = m_liStatsEstUsersProbes.GetNext(pos1);
+        UINT nProbe = m_liStatsEstUsersProbes.GetNext(pos1);
         bool bInserted = false;
         for (POSITION pos2 = liMedian.GetHeadPosition(); pos2 != NULL; liMedian.GetNext(pos2))
         {
@@ -635,7 +635,7 @@ uint32 CKademlia::CalculateKadUsersNew()
     uint64 nAverage = 0;
     for (POSITION pos1 = liMedian.GetHeadPosition(); pos1 != NULL; )
         nAverage += liMedian.GetNext(pos1);
-    nMedian = (uint32)(nAverage / liMedian.GetCount());
+    nMedian = (UINT)(nAverage / liMedian.GetCount());
 
     // LowIDModififier
     // Modify count by assuming 20% of the users are firewalled and can't be a contact for < 0.49b nodes
@@ -658,7 +658,7 @@ uint32 CKademlia::CalculateKadUsersNew()
         fFirewalledModifyTotal = fFirewalledModifyOld;
     ASSERT( fFirewalledModifyTotal > 1.0F && fFirewalledModifyTotal < 1.90F );
 
-    return (uint32)((float)nMedian*fFirewalledModifyTotal);
+    return (UINT)((float)nMedian*fFirewalledModifyTotal);
 }
 
 bool CKademlia::IsRunningInLANMode()
@@ -668,7 +668,7 @@ bool CKademlia::IsRunningInLANMode()
     if (m_tLANModeCheck + 10 <= time(NULL))
     {
         m_tLANModeCheck = time(NULL);
-        uint32 nCount = GetRoutingZone()->GetNumContacts();
+        UINT nCount = GetRoutingZone()->GetNumContacts();
         // Limit to 256 nodes, if we have more we don't want to use the LAN mode which is assuming we use a small home LAN
         // (otherwise we might need to do firewallcheck, external port requests etc after all)
         if (nCount == 0 || nCount > 256)

@@ -36,7 +36,7 @@ static const char schCaptchaContent[34] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H
         , 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9'
                                           };
 
-CCaptchaGenerator::CCaptchaGenerator(uint32 nLetterCount)
+CCaptchaGenerator::CCaptchaGenerator(UINT nLetterCount)
 {
     m_pimgCaptcha = NULL;
     ReGenerateCaptcha(nLetterCount);
@@ -47,7 +47,7 @@ CCaptchaGenerator::~CCaptchaGenerator(void)
     Clear();
 }
 
-void CCaptchaGenerator::ReGenerateCaptcha(uint32 nLetterCount)
+void CCaptchaGenerator::ReGenerateCaptcha(UINT nLetterCount)
 {
     Clear();
     CxImage* pimgResult = new CxImage(nLetterCount > 1 ? (LETTERSIZE + (nLetterCount-1)*CROWDEDSIZE) : LETTERSIZE, 32, 1, CXIMAGE_FORMAT_BMP);
@@ -58,7 +58,7 @@ void CCaptchaGenerator::ReGenerateCaptcha(uint32 nLetterCount)
     imgBlank.SetPaletteColor(0, 255, 255, 255);
     imgBlank.SetPaletteColor(1, 0, 0, 0, 0);
     imgBlank.Clear();
-    for (uint32 i = 0; i < nLetterCount; i++)
+    for (UINT i = 0; i < nLetterCount; i++)
     {
         CxImage imgLetter(imgBlank);
 
@@ -71,10 +71,10 @@ void CCaptchaGenerator::ReGenerateCaptcha(uint32 nLetterCount)
         //imgLetter.DrawTextA(NULL, nRandomOffset, 32, strLetter, imgLetter.RGBtoRGBQUAD(RGB(0, 0, 0)), "Arial", 40 - nRandomSize, 1000);
         float fRotate = (float)(35 - (GetRandomUInt16() % 70));
         imgLetter.Rotate2(fRotate, NULL, CxImage::IM_BILINEAR,  CxImage::OM_BACKGROUND, 0, false, true);
-        uint32 nOffset = i * CROWDEDSIZE;
+        UINT nOffset = i * CROWDEDSIZE;
         ASSERT( imgLetter.GetHeight() == pimgResult->GetHeight() && pimgResult->GetWidth() >= nOffset + imgLetter.GetWidth() );
-        for (uint32 j = 0; j < imgLetter.GetHeight(); j++)
-            for (uint32 k = 0; k < imgLetter.GetWidth(); k++)
+        for (UINT j = 0; j < imgLetter.GetHeight(); j++)
+            for (UINT k = 0; k < imgLetter.GetWidth(); k++)
                 if (pimgResult->GetPixelIndex(nOffset + k, j) != 1)
                     pimgResult->SetPixelIndex(nOffset + k, j, imgLetter.GetPixelIndex(k, j));
     }

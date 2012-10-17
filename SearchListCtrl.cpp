@@ -457,7 +457,7 @@ void CSearchListCtrl::UpdateSources(const CSearchFile* toupdate)
     if (index != -1)
     {
         CString strBuffer;
-        uint32 nSources = toupdate->GetSourceCount();
+        UINT nSources = toupdate->GetSourceCount();
         int iClients = toupdate->GetClientsCount();
         if (thePrefs.IsExtControlsEnabled() && iClients > 0)
             strBuffer.Format(_T("%u (%u)"), nSources, iClients);
@@ -576,7 +576,7 @@ void CSearchListCtrl::RemoveResult(const CSearchFile* toremove)
         DeleteItem(iItem);
 }
 
-void CSearchListCtrl::ShowResults(uint32 nResultsID)
+void CSearchListCtrl::ShowResults(UINT nResultsID)
 {
     if (m_nResultsID != 0 && nResultsID != m_nResultsID)
     {
@@ -1317,8 +1317,8 @@ void CSearchListCtrl::OnLvnGetInfoTip(NMHDR *pNMHDR, LRESULT *pResult)
                     bool bFirst = true;
                     if (file->GetClientID() && file->GetClientPort())
                     {
-                        uint32 uClientIP = file->GetClientID();
-                        uint32 uServerIP = file->GetClientServerIP();
+                        UINT uClientIP = file->GetClientID();
+                        UINT uServerIP = file->GetClientServerIP();
                         CString strSource;
                         if (bFirst)
                         {
@@ -1336,8 +1336,8 @@ void CSearchListCtrl::OnLvnGetInfoTip(NMHDR *pNMHDR, LRESULT *pResult)
                     const CSimpleArray<CSearchFile::SClient>& aClients = file->GetClients();
                     for (int i = 0; i < aClients.GetSize(); i++)
                     {
-                        uint32 uClientIP = aClients[i].m_nIP;
-                        uint32 uServerIP = aClients[i].m_nServerIP;
+                        UINT uClientIP = aClients[i].m_nIP;
+                        UINT uServerIP = aClients[i].m_nServerIP;
                         CString strSource;
                         if (bFirst)
                         {
@@ -1360,7 +1360,7 @@ void CSearchListCtrl::OnLvnGetInfoTip(NMHDR *pNMHDR, LRESULT *pResult)
                     const CSimpleArray<CSearchFile::SServer>& aServers = file->GetServers();
                     for (int i = 0; i < aServers.GetSize(); i++)
                     {
-                        uint32 uServerIP = aServers[i].m_nIP;
+                        UINT uServerIP = aServers[i].m_nIP;
                         CString strServer;
                         if (i == 0)
                             strServer.Format(_T("Servers"));
@@ -1780,7 +1780,7 @@ COLORREF CSearchListCtrl::GetSearchItemColor(/*const*/ CSearchFile* src)
         return ::GetSysColor(COLOR_GRAYTEXT);
 
     // unknown file -> show shades of a color
-    uint32 srccnt = src->GetSourceCount();
+    UINT srccnt = src->GetSourceCount();
     if (srccnt > 0)
         --srccnt;
     return m_crShades[(srccnt >= AVBLYSHADECOUNT) ? AVBLYSHADECOUNT-1 : srccnt];
@@ -1920,7 +1920,7 @@ void CSearchListCtrl::OnLvnKeyDown(NMHDR *pNMHDR, LRESULT *pResult)
     *pResult = 0;
 }
 
-void CSearchListCtrl::ClearResultViewState(uint32 nResultsID)
+void CSearchListCtrl::ClearResultViewState(UINT nResultsID)
 {
     // just clean up our stored states for this search
     CSortSelectionState* pState = NULL;
@@ -1962,7 +1962,7 @@ void CSearchListCtrl::GetItemDisplayText(const CSearchFile *src, int iSubItem, L
             {
                 if (src->IsKademlia())
                 {
-                    uint32 nKnownPublisher = (src->GetKadPublishInfo() & 0x00FF0000) >> 16;
+                    UINT nKnownPublisher = (src->GetKadPublishInfo() & 0x00FF0000) >> 16;
                     if (nKnownPublisher > 0)
                         strBuffer.AppendFormat(_T(" (%u)"), nKnownPublisher);
                 }
@@ -2022,7 +2022,7 @@ void CSearchListCtrl::GetItemDisplayText(const CSearchFile *src, int iSubItem, L
 
     case 9:
     {
-        uint32 nMediaLength = src->GetIntTagValue(FT_MEDIA_LENGTH);
+        UINT nMediaLength = src->GetIntTagValue(FT_MEDIA_LENGTH);
         if (nMediaLength)
         {
             CString buffer;
@@ -2034,7 +2034,7 @@ void CSearchListCtrl::GetItemDisplayText(const CSearchFile *src, int iSubItem, L
 
     case 10:
     {
-        uint32 nBitrate = src->GetIntTagValue(FT_MEDIA_BITRATE);
+        UINT nBitrate = src->GetIntTagValue(FT_MEDIA_BITRATE);
         if (nBitrate)
             _sntprintf(pszText, cchTextMax, _T("%u %s"), nBitrate, GetResString(IDS_KBITSSEC));
         break;

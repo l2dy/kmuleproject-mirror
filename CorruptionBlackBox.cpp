@@ -33,7 +33,7 @@ static char THIS_FILE[] = __FILE__;
 
 #define	 CBB_BANTHRESHOLD	32 //% max corrupted data	
 
-CCBBRecord::CCBBRecord(uint64 nStartPos, uint64 nEndPos, uint32 dwIP, EBBRStatus BBRStatus)
+CCBBRecord::CCBBRecord(uint64 nStartPos, uint64 nEndPos, UINT dwIP, EBBRStatus BBRStatus)
 {
     if (nStartPos > nEndPos)
     {
@@ -55,7 +55,7 @@ CCBBRecord& CCBBRecord::operator=(const CCBBRecord& cv)
     return *this;
 }
 
-bool CCBBRecord::Merge(uint64 nStartPos, uint64 nEndPos, uint32 dwIP, EBBRStatus BBRStatus)
+bool CCBBRecord::Merge(uint64 nStartPos, uint64 nEndPos, UINT dwIP, EBBRStatus BBRStatus)
 {
 
     if (m_dwIP == dwIP && m_BBRStatus == BBRStatus && (nStartPos == m_nEndPos + 1 || nEndPos + 1 == m_nStartPos))
@@ -73,7 +73,7 @@ bool CCBBRecord::Merge(uint64 nStartPos, uint64 nEndPos, uint32 dwIP, EBBRStatus
         return false;
 }
 
-bool CCBBRecord::CanMerge(uint64 nStartPos, uint64 nEndPos, uint32 dwIP, EBBRStatus BBRStatus)
+bool CCBBRecord::CanMerge(uint64 nStartPos, uint64 nEndPos, UINT dwIP, EBBRStatus BBRStatus)
 {
 
     if (m_dwIP == dwIP && m_BBRStatus == BBRStatus && (nStartPos == m_nEndPos + 1 || nEndPos + 1 == m_nStartPos))
@@ -107,7 +107,7 @@ void CCorruptionBlackBox::TransferredData(uint64 nStartPos, uint64 nEndPos, cons
         ASSERT( false );
         return;
     }
-    uint32 dwSenderIP = pSender->GetIP();
+    UINT dwSenderIP = pSender->GetIP();
     // we store records seperated for each part, so we don't have to search all entries everytime
 
     // convert pos to relative block pos
@@ -158,7 +158,7 @@ void CCorruptionBlackBox::TransferredData(uint64 nStartPos, uint64 nEndPos, cons
                     uint64 nTmpEndPos2 = nRelStartPos - 1;
                     m_aaRecords[nPart][i].m_nEndPos = nRelEndPos;
                     m_aaRecords[nPart][i].m_nStartPos = nRelStartPos;
-                    uint32 dwOldIP = m_aaRecords[nPart][i].m_dwIP;
+                    UINT dwOldIP = m_aaRecords[nPart][i].m_dwIP;
                     m_aaRecords[nPart][i].m_dwIP = dwSenderIP;
                     m_aaRecords[nPart].Add(CCBBRecord(nTmpStartPos1,nTmpEndPos1, dwOldIP));
                     m_aaRecords[nPart].Add(CCBBRecord(nTmpStartPos2,nTmpEndPos2, dwOldIP));
@@ -218,7 +218,7 @@ void CCorruptionBlackBox::VerifiedData(uint64 nStartPos, uint64 nEndPos)
         m_aaRecords.SetSize(nPart+1);
     }
     uint64 nDbgVerifiedBytes = 0;
-    //uint32 nDbgOldEntries = m_aaRecords[nPart].GetCount();
+    //UINT nDbgOldEntries = m_aaRecords[nPart].GetCount();
 #ifdef _DEBUG
     CMap<int, int, int, int> mapDebug;
 #endif
@@ -272,9 +272,9 @@ void CCorruptionBlackBox::VerifiedData(uint64 nStartPos, uint64 nEndPos)
         }
     }
     /*#ifdef _DEBUG
-    	uint32 nClients = mapDebug.GetCount();
+    	UINT nClients = mapDebug.GetCount();
     #else
-    	uint32 nClients = 0;
+    	UINT nClients = 0;
     #endif
     	AddDebugLogLine(DLP_DEFAULT, false, _T("Found and marked %u recorded bytes of %u as verified in the CorruptionBlackBox records, %u(%u) records found, %u different clients"), nDbgVerifiedBytes, (nEndPos-nStartPos)+1, m_aaRecords[nPart].GetCount(), nDbgOldEntries, nClients);*/
 }
@@ -353,7 +353,7 @@ void CCorruptionBlackBox::CorruptedData(uint64 nStartPos, uint64 nEndPos)
 
 void CCorruptionBlackBox::EvaluateData(uint16 nPart)
 {
-    CArray<uint32, uint32> aGuiltyClients;
+    CArray<UINT, UINT> aGuiltyClients;
     for (int i= 0; i < m_aaRecords[nPart].GetCount(); i++)
         if (m_aaRecords[nPart][i].m_BBRStatus == BBR_CORRUPTED)
             aGuiltyClients.Add(m_aaRecords[nPart][i].m_dwIP);

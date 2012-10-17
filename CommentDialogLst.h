@@ -30,7 +30,7 @@ protected:
     CCommentListCtrl m_lstComments;
     const CSimpleArray<CObject*>* m_paFiles;
     bool m_bDataChanged;
-    uint32 m_timer;
+    UINT m_timer;
 
     void Localize();
     void RefreshData(bool deleteOld = true);

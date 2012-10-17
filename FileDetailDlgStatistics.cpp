@@ -225,7 +225,7 @@ void CFileDetailDlgStatistics::RefreshData()
         SetDlgItemInt(IDC_SREQUESTED2, uAllTimeRequests, FALSE);
         SetDlgItemInt(IDC_SACCEPTED2, uAllTimeAccepted, FALSE);
 
-        uint32 nQueueCount = theApp.uploadqueue->GetWaitingUserForFileCount(*m_paFiles, !m_bDataChanged);
+        UINT nQueueCount = theApp.uploadqueue->GetWaitingUserForFileCount(*m_paFiles, !m_bDataChanged);
         if (nQueueCount != (-1))
         {
             SetDlgItemInt(IDC_FS_ONQUEUE_VAL, nQueueCount, FALSE);
@@ -238,7 +238,7 @@ void CFileDetailDlgStatistics::RefreshData()
             if (m_bDataChanged || nLastRequestCount != theApp.knownfiles->m_nRequestedTotal)
             {
                 nLastRequestCount = theApp.knownfiles->m_nRequestedTotal;
-                uint32 nSession = 0, nTotal = 0;
+                UINT nSession = 0, nTotal = 0;
                 if (theApp.sharedfiles->GetPopularityRank(pTheFile, nSession, nTotal))
                 {
                     SetDlgItemInt(IDC_FS_POPULARITY_VAL, nSession, FALSE);

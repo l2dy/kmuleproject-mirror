@@ -156,7 +156,7 @@ void CFriendList::SaveList()
     }
 }
 
-CFriend* CFriendList::SearchFriend(const uchar* abyUserHash, uint32 dwIP, uint16 nPort) const
+CFriend* CFriendList::SearchFriend(const uchar* abyUserHash, UINT dwIP, uint16 nPort) const
 {
     POSITION pos = m_listFriends.GetHeadPosition();
     while (pos)
@@ -199,8 +199,8 @@ void CFriendList::ShowFriends() const
 }
 
 //You can add a friend without a IP to allow the IRC to trade links with lowID users.
-bool CFriendList::AddFriend(const uchar* abyUserhash, uint32 dwLastSeen, uint32 dwLastUsedIP, uint16 nLastUsedPort,
-                            uint32 dwLastChatted, LPCTSTR pszName, uint32 dwHasHash)
+bool CFriendList::AddFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort,
+                            UINT dwLastChatted, LPCTSTR pszName, UINT dwHasHash)
 {
     // client must have an IP (HighID) or a hash
     // TODO: check if this can be switched to a hybridID so clients with *.*.*.0 can be added..

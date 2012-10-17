@@ -47,7 +47,7 @@ public:
 
     virtual uint8 ReadUInt8();
     virtual uint16 ReadUInt16();
-    virtual uint32 ReadUInt32();
+    virtual UINT ReadUInt32();
     virtual uint64 ReadUInt64();
     virtual void ReadUInt128(Kademlia::CUInt128 *pVal);
     virtual void ReadHash16(uchar* pVal);
@@ -57,7 +57,7 @@ public:
 
     virtual void WriteUInt8(uint8 nVal);
     virtual void WriteUInt16(uint16 nVal);
-    virtual void WriteUInt32(uint32 nVal);
+    virtual void WriteUInt32(UINT nVal);
     virtual void WriteUInt64(uint64 nVal);
     virtual void WriteUInt128(const Kademlia::CUInt128 *pVal);
     virtual void WriteHash16(const uchar* pVal);
@@ -112,14 +112,14 @@ public:
 
     virtual uint8 ReadUInt8();
     virtual uint16 ReadUInt16();
-    virtual uint32 ReadUInt32();
+    virtual UINT ReadUInt32();
     virtual uint64 ReadUInt64();
     virtual void ReadUInt128(Kademlia::CUInt128 *pVal);
     virtual void ReadHash16(uchar* pVal);
 
     virtual void WriteUInt8(uint8 nVal);
     virtual void WriteUInt16(uint16 nVal);
-    virtual void WriteUInt32(uint32 nVal);
+    virtual void WriteUInt32(UINT nVal);
     virtual void WriteUInt64(uint64 nVal);
     virtual void WriteUInt128(const Kademlia::CUInt128 *pVal);
     virtual void WriteHash16(const uchar* pVal);
@@ -159,9 +159,9 @@ __inline uint16 PeekUInt16(const void* p)
     return *((uint16*)p);
 }
 
-__inline uint32 PeekUInt32(const void* p)
+__inline UINT PeekUInt32(const void* p)
 {
-    return *((uint32*)p);
+    return *((UINT*)p);
 }
 
 __inline uint64 PeekUInt64(const void* p)
@@ -184,9 +184,9 @@ __inline void PokeUInt16(void* p, uint16 nVal)
     *((uint16*)p) = nVal;
 }
 
-__inline void PokeUInt32(void* p, uint32 nVal)
+__inline void PokeUInt32(void* p, UINT nVal)
 {
-    *((uint32*)p) = nVal;
+    *((UINT*)p) = nVal;
 }
 
 __inline void PokeUInt64(void* p, uint64 nVal)

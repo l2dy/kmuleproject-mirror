@@ -61,6 +61,6 @@ protected:
     afx_msg void OnSysColorChange();
     afx_msg void OnTimer(UINT nIDEvent);
 
-    uint32 nLastRequestCount;
+    UINT nLastRequestCount;
     UINT_PTR m_hRefreshTimer;
 };

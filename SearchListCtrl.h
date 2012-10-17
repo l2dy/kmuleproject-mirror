@@ -43,9 +43,9 @@ struct SearchCtrlItem_Struct
 class CSortSelectionState
 {
 public:
-    uint32	m_nSortItem;
+    UINT	m_nSortItem;
     bool	m_bSortAscending;
-    uint32	m_nScrollPosition;
+    UINT	m_nScrollPosition;
     CArray<int, int>	m_aSelectedItems;
 };
 
@@ -64,8 +64,8 @@ public:
     void	AddResult(const CSearchFile* toshow);
     void	RemoveResult(const CSearchFile* toremove);
     void	Localize();
-    void	ShowResults(uint32 nResultsID);
-    void	ClearResultViewState(uint32 nResultsID);
+    void	ShowResults(UINT nResultsID);
+    void	ClearResultViewState(UINT nResultsID);
     void	NoTabs()
     {
         m_nResultsID = 0;
@@ -78,7 +78,7 @@ public:
     void	SetFileSizeFormat(EFileSizeFormat eFormat);
 
 protected:
-    uint32		m_nResultsID;
+    UINT		m_nResultsID;
     CTitleMenu	m_SearchFileMenu;
     CSearchList* searchlist;
     CToolTipCtrlX* m_tooltip;

@@ -255,7 +255,7 @@ Pinger::~Pinger()
     FreeLibrary(hICMP_DLL);
 }
 
-PingStatus Pinger::Ping(uint32 lAddr, uint32 ttl, bool doLog, bool useUdp)
+PingStatus Pinger::Ping(UINT lAddr, UINT ttl, bool doLog, bool useUdp)
 {
     if(useUdp && udpStarted)
     {
@@ -267,7 +267,7 @@ PingStatus Pinger::Ping(uint32 lAddr, uint32 ttl, bool doLog, bool useUdp)
     }
 }
 
-PingStatus Pinger::PingUDP(uint32 lAddr, uint32 ttl, bool doLog)
+PingStatus Pinger::PingUDP(UINT lAddr, UINT ttl, bool doLog)
 {
     // UDPing reworked ping sequence -->
     int nTTL = ttl;
@@ -392,9 +392,23 @@ PingStatus Pinger::PingUDP(uint32 lAddr, uint32 ttl, bool doLog)
         {
             DWORD lastError = WSAGetLastError();
             PingStatus returnValue;
-            returnValue.success = false;
-            returnValue.delay = TIMEOUT;
-            returnValue.error = lastError;
+//>>> WiZaRd::ZZUL Upload [ZZ]
+            //returnValue.success = false;
+            //returnValue.delay = TIMEOUT;
+            //returnValue.error = lastError;
+			if(lastError == WSAETIMEDOUT) 
+			{
+				returnValue.success = false;
+				returnValue.delay = TIMEOUT;
+				returnValue.error = IP_REQ_TIMED_OUT;
+			}
+			else 
+			{
+				returnValue.error = lastError;
+				returnValue.success = false;
+				returnValue.delay = TIMEOUT;
+			}
+//<<< WiZaRd::ZZUL Upload [ZZ]
             //if (toNowTimeOut < 3) toNowTimeOut++;
             //	lastTimeOut = 3;
             return returnValue;
@@ -471,7 +485,7 @@ PingStatus Pinger::PingUDP(uint32 lAddr, uint32 ttl, bool doLog)
     return returnValue;
 }
 
-PingStatus Pinger::PingICMP(uint32 lAddr, uint32 ttl, bool doLog)
+PingStatus Pinger::PingICMP(UINT lAddr, UINT ttl, bool doLog)
 {
     PingStatus returnValue;
 

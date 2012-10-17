@@ -1499,7 +1499,7 @@ bool CGetMediaInfoThread::GetMediaInfo(HWND hWndOwner, const CShareableFile* pFi
                     	while (!mr.atEnd())
                     	{
                     		strFidInfo << io::readString(mr).c_str();
-                    		strFidInfo << " [" << io::readBENumber(mr, sizeof(uint32)) << " "
+                    		strFidInfo << " [" << io::readBENumber(mr, sizeof(UINT)) << " "
                     			<< format << "] ";
                     	}
                     }*/

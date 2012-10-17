@@ -469,7 +469,7 @@ bool CKnownFileList::SafeAddKFile(CKnownFile* toadd)
     return true;
 }
 
-CKnownFile* CKnownFileList::FindKnownFile(LPCTSTR filename, uint32 date, uint64 size) const
+CKnownFile* CKnownFileList::FindKnownFile(LPCTSTR filename, UINT date, uint64 size) const
 {
     POSITION pos = m_Files_map.GetStartPosition();
     while (pos != NULL)

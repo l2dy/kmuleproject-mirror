@@ -120,7 +120,7 @@ void CAddFriend::OnAddBtn()
     if (!m_pShowFriend)
     {
         CString strBuff;
-        uint32 ip;
+        UINT ip;
         GetDlgItemText(IDC_IP, strBuff);
         UINT u1, u2, u3, u4, uPort = 0;
         if (_stscanf(strBuff, _T("%u.%u.%u.%u:%u"), &u1, &u2, &u3, &u4, &uPort) != 5 || u1 > 255 || u2 > 255 || u3 > 255 || u4 > 255 || uPort > 65535)

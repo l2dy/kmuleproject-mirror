@@ -46,8 +46,8 @@ class CContact
 public:
     ~CContact();
     CContact();
-    CContact(const CUInt128 &uClientID, uint32 uIp, uint16 uUdpPort, uint16 uTcpPort, uint8 uVersion, CKadUDPKey cUDPKey, bool bIPVerified);
-    CContact(const CUInt128 &uClientID, uint32 uIp, uint16 uUdpPort, uint16 uTcpPort, const CUInt128 &uTarget, uint8 uVersion, CKadUDPKey cUDPKey, bool bIPVerified);
+    CContact(const CUInt128 &uClientID, UINT uIp, uint16 uUdpPort, uint16 uTcpPort, uint8 uVersion, CKadUDPKey cUDPKey, bool bIPVerified);
+    CContact(const CUInt128 &uClientID, UINT uIp, uint16 uUdpPort, uint16 uTcpPort, const CUInt128 &uTarget, uint8 uVersion, CKadUDPKey cUDPKey, bool bIPVerified);
     CContact& operator=(const CContact& k1)
     {
         Copy(k1);
@@ -61,9 +61,9 @@ public:
     void GetDistance(CUInt128 *puDistance) const;
     void GetDistance(CString *psDistance) const;
     CUInt128 GetDistance() const;
-    uint32 GetIPAddress() const;
+    UINT GetIPAddress() const;
     void GetIPAddress(CString *psIp) const;
-    void SetIPAddress(uint32 uIp);
+    void SetIPAddress(UINT uIp);
     uint16 GetTCPPort() const;
     void GetTCPPort(CString *psPort) const;
     void SetTCPPort(uint16 uPort);
@@ -105,10 +105,10 @@ private:
 
     CUInt128 m_uClientID;
     CUInt128 m_uDistance;
-    uint32 m_uIp;
+    UINT m_uIp;
     uint16 m_uTcpPort;
     uint16 m_uUdpPort;
-    uint32 m_uInUse;
+    UINT m_uInUse;
     time_t m_tLastTypeSet;
     time_t m_tExpires;
     time_t m_tCreated;

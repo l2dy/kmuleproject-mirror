@@ -46,7 +46,7 @@ enum EDefaultDirectory
 enum EToolbarLabelType;
 enum ELogFileFormat;
 
-// DO NOT EDIT VALUES like making a uint16 to uint32, or insert any value. ONLY append new vars
+// DO NOT EDIT VALUES like making a uint16 to UINT, or insert any value. ONLY append new vars
 #pragma pack(1)
 struct Preferences_Ext_Struct
 {
@@ -124,7 +124,7 @@ public:
     static	WINDOWPLACEMENT EmuleWindowPlacement;
     static	int		maxGraphDownloadRate;
     static	int		maxGraphUploadRate;
-    static	uint32	maxGraphUploadRateEstimated;
+    static	UINT	maxGraphUploadRateEstimated;
     static	bool	beepOnError;
     static	bool	confirmExit;
     static	DWORD	m_adwStatsColors[15];
@@ -159,9 +159,9 @@ public:
     static	uint64	cumUpOverheadKadPackets;
 
     // Saved stats for cumulative upline data...
-    static	uint32	cumUpSuccessfulSessions;
-    static	uint32	cumUpFailedSessions;
-    static	uint32	cumUpAvgTime;
+    static	UINT	cumUpSuccessfulSessions;
+    static	UINT	cumUpFailedSessions;
+    static	UINT	cumUpAvgTime;
     // Cumulative client breakdown stats for sent bytes...
     static	uint64	cumUpData_EDONKEY;
     static	uint64	cumUpData_EDONKEYHYBRID;
@@ -194,24 +194,24 @@ public:
     static	uint64	sesUpData_Partfile;
 
     // Saved stats for cumulative downline data...
-    static	uint32	cumDownCompletedFiles;
-    static	uint32	cumDownSuccessfulSessions;
-    static	uint32	cumDownFailedSessions;
-    static	uint32	cumDownAvgTime;
+    static	UINT	cumDownCompletedFiles;
+    static	UINT	cumDownSuccessfulSessions;
+    static	UINT	cumDownFailedSessions;
+    static	UINT	cumDownAvgTime;
 
     // Cumulative statistics for saved due to compression/lost due to corruption
     static	uint64	cumLostFromCorruption;
     static	uint64	cumSavedFromCompression;
-    static	uint32	cumPartsSavedByICH;
+    static	UINT	cumPartsSavedByICH;
 
     // Session statistics for download sessions
-    static	uint32	sesDownSuccessfulSessions;
-    static	uint32	sesDownFailedSessions;
-    static	uint32	sesDownAvgTime;
-    static	uint32	sesDownCompletedFiles;
+    static	UINT	sesDownSuccessfulSessions;
+    static	UINT	sesDownFailedSessions;
+    static	UINT	sesDownAvgTime;
+    static	UINT	sesDownCompletedFiles;
     static	uint64	sesLostFromCorruption;
     static	uint64	sesSavedFromCompression;
-    static	uint32	sesPartsSavedByICH;
+    static	UINT	sesPartsSavedByICH;
 
     // Cumulative client breakdown stats for received bytes...
     static	uint64	cumDownData_EDONKEY;
@@ -247,15 +247,15 @@ public:
     static	float	cumConnMaxAvgUpRate;
     static	float	cumConnMaxUpRate;
     static	time_t	cumConnRunTime;
-    static	uint32	cumConnAvgConnections;
-    static	uint32	cumConnMaxConnLimitReached;
-    static	uint32	cumConnPeakConnections;
-    static	uint32	cumConnTransferTime;
-    static	uint32	cumConnDownloadTime;
-    static	uint32	cumConnUploadTime;
+    static	UINT	cumConnAvgConnections;
+    static	UINT	cumConnMaxConnLimitReached;
+    static	UINT	cumConnPeakConnections;
+    static	UINT	cumConnTransferTime;
+    static	UINT	cumConnDownloadTime;
+    static	UINT	cumConnUploadTime;
 
     // Saved records for shared files...
-    static	uint32	cumSharedMostFilesShared;
+    static	UINT	cumSharedMostFilesShared;
     static	uint64	cumSharedLargestShareSize;
     static	uint64	cumSharedLargestAvgFileSize;
     static	uint64	cumSharedLargestFileSize;
@@ -369,7 +369,7 @@ public:
     static	UINT	m_uFileBufferTimeLimit;
 
     static	UINT	maxmsgsessions;
-    static	uint32	versioncheckLastAutomatic;
+    static	UINT	versioncheckLastAutomatic;
     static	CString	messageFilter;
     static	CString	commentFilter;
     static	CString	filenameCleanups;
@@ -463,7 +463,7 @@ public:
     static bool		m_bCryptLayerRequested;
     static bool		m_bCryptLayerRequired;
     static uint8	m_byCryptTCPPaddingLength;
-    static uint32   m_dwKadUDPKey;
+    static UINT   m_dwKadUDPKey;
 
     // UPnP
     static bool		m_bSkipWANIPSetup;
@@ -674,7 +674,7 @@ public:
     {
         sesDownCompletedFiles++;
     }
-    static	void	Add2SessionTransferData(UINT uClientID, UINT uClientPort, BOOL bFromPF, BOOL bUpDown, uint32 bytes, bool sentToFriend = false);
+    static	void	Add2SessionTransferData(UINT uClientID, UINT uClientPort, BOOL bFromPF, BOOL bUpDown, UINT bytes, bool sentToFriend = false);
     static	void	Add2DownSuccessfulSessions()
     {
         sesDownSuccessfulSessions++;
@@ -767,51 +767,51 @@ public:
     }
 
     // Saved stats for cumulative upline data
-    static	uint32	GetUpSuccessfulSessions()
+    static	UINT	GetUpSuccessfulSessions()
     {
         return cumUpSuccessfulSessions;
     }
-    static	uint32	GetUpFailedSessions()
+    static	UINT	GetUpFailedSessions()
     {
         return cumUpFailedSessions;
     }
-    static	uint32	GetUpAvgTime()
+    static	UINT	GetUpAvgTime()
     {
         return cumUpAvgTime;
     }
 
     // Saved stats for cumulative downline data
-    static	uint32	GetDownCompletedFiles()
+    static	UINT	GetDownCompletedFiles()
     {
         return cumDownCompletedFiles;
     }
-    static	uint32	GetDownC_SuccessfulSessions()
+    static	UINT	GetDownC_SuccessfulSessions()
     {
         return cumDownSuccessfulSessions;
     }
-    static	uint32	GetDownC_FailedSessions()
+    static	UINT	GetDownC_FailedSessions()
     {
         return cumDownFailedSessions;
     }
-    static	uint32	GetDownC_AvgTime()
+    static	UINT	GetDownC_AvgTime()
     {
         return cumDownAvgTime;
     }
 
     // Session download stats
-    static	uint32	GetDownSessionCompletedFiles()
+    static	UINT	GetDownSessionCompletedFiles()
     {
         return sesDownCompletedFiles;
     }
-    static	uint32	GetDownS_SuccessfulSessions()
+    static	UINT	GetDownS_SuccessfulSessions()
     {
         return sesDownSuccessfulSessions;
     }
-    static	uint32	GetDownS_FailedSessions()
+    static	UINT	GetDownS_FailedSessions()
     {
         return sesDownFailedSessions;
     }
-    static	uint32	GetDownS_AvgTime()
+    static	UINT	GetDownS_AvgTime()
     {
         return GetDownS_SuccessfulSessions() ? sesDownAvgTime / GetDownS_SuccessfulSessions() : 0;
     }
@@ -833,11 +833,11 @@ public:
     {
         return sesSavedFromCompression;
     }
-    static	uint32	GetCumPartsSavedByICH()
+    static	UINT	GetCumPartsSavedByICH()
     {
         return cumPartsSavedByICH;
     }
-    static	uint32	GetSesPartsSavedByICH()
+    static	UINT	GetSesPartsSavedByICH()
     {
         return sesPartsSavedByICH;
     }
@@ -1128,33 +1128,33 @@ public:
     {
         return cumConnRunTime;
     }
-    static	uint32	GetConnAvgConnections()
+    static	UINT	GetConnAvgConnections()
     {
         return cumConnAvgConnections;
     }
-    static	uint32	GetConnMaxConnLimitReached()
+    static	UINT	GetConnMaxConnLimitReached()
     {
         return cumConnMaxConnLimitReached;
     }
-    static	uint32	GetConnPeakConnections()
+    static	UINT	GetConnPeakConnections()
     {
         return cumConnPeakConnections;
     }
-    static	uint32	GetConnTransferTime()
+    static	UINT	GetConnTransferTime()
     {
         return cumConnTransferTime;
     }
-    static	uint32	GetConnDownloadTime()
+    static	UINT	GetConnDownloadTime()
     {
         return cumConnDownloadTime;
     }
-    static	uint32	GetConnUploadTime()
+    static	UINT	GetConnUploadTime()
     {
         return cumConnUploadTime;
     }
 
     // Saved records for shared files
-    static	uint32	GetSharedMostFilesShared()
+    static	UINT	GetSharedMostFilesShared()
     {
         return cumSharedMostFilesShared;
     }
@@ -1675,7 +1675,7 @@ public:
     {
         return versioncheckdays;
     }
-    static	uint32	GetLastVC()
+    static	UINT	GetLastVC()
     {
         return versioncheckLastAutomatic;
     }
@@ -2153,7 +2153,7 @@ public:
     }
     static  void	IniCopy(CString si, CString di);
 
-    static	void	EstimateMaxUploadCap(uint32 nCurrentUpload);
+    static	void	EstimateMaxUploadCap(UINT nCurrentUpload);
     static  bool	GetAllocCompleteMode()
     {
         return m_bAllocFull;
@@ -2176,7 +2176,7 @@ public:
     {
         return false;   // not even incoming test connections will be answered
     }
-    static uint32	GetKadUDPKey()
+    static UINT	GetKadUDPKey()
     {
         return m_dwKadUDPKey;
     }

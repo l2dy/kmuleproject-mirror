@@ -33,13 +33,13 @@ public:
     void DownloadSelected();
     void DownloadSelected(bool paused);
 
-    bool CanDeleteSearch(uint32 nSearchID) const;
+    bool CanDeleteSearch(UINT nSearchID) const;
     bool CanDeleteAllSearches() const;
-    void DeleteSearch(uint32 nSearchID);
+    void DeleteSearch(UINT nSearchID);
     void DeleteAllSearches();
 
     bool CreateNewTab(SSearchParams* pParams, bool bActiveIcon = true);
-    SSearchParams* GetSearchParamsBySearchID(uint32 nSearchID);
+    SSearchParams* GetSearchParamsBySearchID(UINT nSearchID);
     void ShowSearchSelector(bool visible);
     CClosableTabCtrl& GetSearchSelector();
 
@@ -70,4 +70,9 @@ protected:
     afx_msg void OnClose();
     afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
     afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
+
+//>>> WiZaRd:CustomSearches
+public:
+	void UpdateSearchList(); 
+//<<< WiZaRd:CustomSearches
 };

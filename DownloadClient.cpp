@@ -932,7 +932,7 @@ void CUpDownClient::SetDownloadState(EDownloadState nNewState, LPCTSTR pszReason
     }
 }
 
-void CUpDownClient::ProcessHashSet(const uchar* packet, uint32 size, bool bFileIdentifiers)
+void CUpDownClient::ProcessHashSet(const uchar* packet, UINT size, bool bFileIdentifiers)
 {
     CSafeMemFile data(packet, size);
     if (bFileIdentifiers)
@@ -1076,7 +1076,7 @@ void CUpDownClient::SendBlockRequests()
 
     bool bI64Offsets = false;
     POSITION pos = m_PendingBlocks_list.GetHeadPosition();
-    for (uint32 i = 0; i != 3; i++)
+    for (UINT i = 0; i != 3; i++)
     {
         if (pos)
         {
@@ -1105,7 +1105,7 @@ void CUpDownClient::SendBlockRequests()
         CSafeMemFile data((const BYTE*)packet->pBuffer, iPacketSize);
         data.WriteHash16(reqfile->GetFileHash());
         pos = m_PendingBlocks_list.GetHeadPosition();
-        for (uint32 i = 0; i != 3; i++)
+        for (UINT i = 0; i != 3; i++)
         {
             if (pos)
             {
@@ -1121,7 +1121,7 @@ void CUpDownClient::SendBlockRequests()
                 data.WriteUInt64(0);
         }
         pos = m_PendingBlocks_list.GetHeadPosition();
-        for (uint32 i = 0; i != 3; i++)
+        for (UINT i = 0; i != 3; i++)
         {
             if (pos)
             {
@@ -1155,7 +1155,7 @@ void CUpDownClient::SendBlockRequests()
         CSafeMemFile data((const BYTE*)packet->pBuffer, iPacketSize);
         data.WriteHash16(reqfile->GetFileHash());
         pos = m_PendingBlocks_list.GetHeadPosition();
-        for (uint32 i = 0; i != 3; i++)
+        for (UINT i = 0; i != 3; i++)
         {
             if (pos)
             {
@@ -1165,19 +1165,19 @@ void CUpDownClient::SendBlockRequests()
                 //ASSERT( pending->totalUnzipped == 0 );
                 pending->fZStreamError = 0;
                 pending->fRecovered = 0;
-                data.WriteUInt32((uint32)pending->block->StartOffset);
+                data.WriteUInt32((UINT)pending->block->StartOffset);
             }
             else
                 data.WriteUInt32(0);
         }
         pos = m_PendingBlocks_list.GetHeadPosition();
-        for (uint32 i = 0; i != 3; i++)
+        for (UINT i = 0; i != 3; i++)
         {
             if (pos)
             {
                 Requested_Block_Struct* block = m_PendingBlocks_list.GetNext(pos)->block;
                 uint64 endpos = block->EndOffset+1;
-                data.WriteUInt32((uint32)endpos);
+                data.WriteUInt32((UINT)endpos);
                 if (thePrefs.GetDebugClientTCPLevel() > 0)
                 {
                     CString strInfo;
@@ -1218,24 +1218,24 @@ void CUpDownClient::SendBlockRequests()
 		   The requests will still not exceed 180k, but may be smaller to
 		   fill a gap.
 */
-void CUpDownClient::ProcessBlockPacket(const uchar *packet, uint32 size, bool packed, bool bI64Offsets)
+void CUpDownClient::ProcessBlockPacket(const uchar *packet, UINT size, bool packed, bool bI64Offsets)
 {
     if (!bI64Offsets)
     {
-        uint32 nDbgStartPos = *((uint32*)(packet+16));
+        UINT nDbgStartPos = *((UINT*)(packet+16));
         if (thePrefs.GetDebugClientTCPLevel() > 1)
         {
             if (packed)
-                Debug(_T("  Start=%u  BlockSize=%u  Size=%u  %s\n"), nDbgStartPos, *((uint32*)(packet + 16+4)), size-24, DbgGetFileInfo(packet));
+                Debug(_T("  Start=%u  BlockSize=%u  Size=%u  %s\n"), nDbgStartPos, *((UINT*)(packet + 16+4)), size-24, DbgGetFileInfo(packet));
             else
-                Debug(_T("  Start=%u  End=%u  Size=%u  %s\n"), nDbgStartPos, *((uint32*)(packet + 16+4)), *((uint32*)(packet + 16+4)) - nDbgStartPos, DbgGetFileInfo(packet));
+                Debug(_T("  Start=%u  End=%u  Size=%u  %s\n"), nDbgStartPos, *((UINT*)(packet + 16+4)), *((UINT*)(packet + 16+4)) - nDbgStartPos, DbgGetFileInfo(packet));
         }
     }
 
     // Ignore if no data required
     if (!(GetDownloadState() == DS_DOWNLOADING || GetDownloadState() == DS_NONEEDEDPARTS))
     {
-        TRACE("%s - Invalid download state\n", __FUNCTION__);
+        TRACE(L"%s - Invalid download state\n", __FUNCTION__);
         return;
     }
 
@@ -1259,7 +1259,7 @@ void CUpDownClient::ProcessBlockPacket(const uchar *packet, uint32 size, bool pa
     // Find the start & end positions, and size of this chunk of data
     uint64 nStartPos;
     uint64 nEndPos;
-    uint32 nBlockSize = 0;
+    UINT nBlockSize = 0;
 
     if (bI64Offsets)
     {
@@ -1290,7 +1290,7 @@ void CUpDownClient::ProcessBlockPacket(const uchar *packet, uint32 size, bool pa
             nHeaderSize += 4;
         }
     }
-    uint32 uTransferredFileDataSize = size - nHeaderSize;
+    UINT uTransferredFileDataSize = size - nHeaderSize;
 
     // Check that packet size matches the declared data size + header size (24)
     if (nEndPos == nStartPos || size != ((nEndPos - nStartPos) + nHeaderSize))
@@ -1341,7 +1341,7 @@ void CUpDownClient::ProcessBlockPacket(const uchar *packet, uint32 size, bool pa
 
             // Occasionally packets are duplicated, no point writing it twice
             // This will be 0 in these cases, or the length written otherwise
-            uint32 lenWritten = 0;
+            UINT lenWritten = 0;
 
             // Handle differently depending on whether packed or not
             if (!packed)
@@ -1350,7 +1350,7 @@ void CUpDownClient::ProcessBlockPacket(const uchar *packet, uint32 size, bool pa
                 if (nEndPos > cur_block->block->EndOffset)
                 {
                     DebugLogError(_T("Received Blockpacket exceeds requested boundaries (requested end: %I64u, Part %u, received end  %I64u, Part %u), file %s, client %s"), cur_block->block->EndOffset
-                                  , (uint32)(cur_block->block->EndOffset / PARTSIZE), nEndPos, (uint32)(nEndPos / PARTSIZE), reqfile->GetFileName(), DbgGetClientInfo());
+                                  , (UINT)(cur_block->block->EndOffset / PARTSIZE), nEndPos, (UINT)(nEndPos / PARTSIZE), reqfile->GetFileName(), DbgGetClientInfo());
                     reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
                     return;
                 }
@@ -1366,7 +1366,7 @@ void CUpDownClient::ProcessBlockPacket(const uchar *packet, uint32 size, bool pa
             {
                 ASSERT( (int)size > 0 );
                 // Create space to store unzipped data, the size is only an initial guess, will be resized in unzip() if not big enough
-                uint32 lenUnzipped = (size * 2);
+                UINT lenUnzipped = (size * 2);
                 // Don't get too big
                 if (lenUnzipped > (EMBLOCKSIZE + 300))
                     lenUnzipped = (EMBLOCKSIZE + 300);
@@ -1470,10 +1470,10 @@ void CUpDownClient::ProcessBlockPacket(const uchar *packet, uint32 size, bool pa
         }
     }
 
-    TRACE("%s - Dropping packet\n", __FUNCTION__);
+    TRACE(L"%s - Dropping packet\n", __FUNCTION__);
 }
 
-int CUpDownClient::unzip(Pending_Block_Struct* block, const BYTE* zipped, uint32 lenZipped, BYTE** unzipped, uint32* lenUnzipped, int iRecursion)
+int CUpDownClient::unzip(Pending_Block_Struct* block, const BYTE* zipped, UINT lenZipped, BYTE** unzipped, UINT* lenUnzipped, int iRecursion)
 {
 //#define TRACE_UNZIP	TRACE
 #define TRACE_UNZIP	__noop
@@ -1548,7 +1548,7 @@ int CUpDownClient::unzip(Pending_Block_Struct* block, const BYTE* zipped, uint32
             TRACE_UNZIP("; output array not big enough (ain=%u)\n", zS->avail_in);
 
             // What size should we try next
-            uint32 newLength = (*lenUnzipped) *= 2;
+            UINT newLength = (*lenUnzipped) *= 2;
             if (newLength == 0)
                 newLength = lenZipped * 2;
 
@@ -1604,7 +1604,7 @@ int CUpDownClient::unzip(Pending_Block_Struct* block, const BYTE* zipped, uint32
     return err;
 }
 
-uint32 CUpDownClient::CalculateDownloadRate()
+UINT CUpDownClient::CalculateDownloadRate()
 {
     // Patch By BadWolf - Accurate datarate Calculation
     TransferredData newitem = {m_nDownDataRateMS,::GetTickCount()};
@@ -1895,7 +1895,7 @@ const bool CUpDownClient::SwapToRightFile(CPartFile* SwapTo, CPartFile* cur_file
 
             DWORD tempTick = ::GetTickCount();
             bool rightFileHasHigherPrio = CPartFile::RightFileHasHigherPrio(SwapTo, cur_file);
-            uint32 allNnpReaskTime = FILEREASKTIME*2*(m_OtherNoNeeded_list.GetSize() + ((GetDownloadState() == DS_NONEEDEDPARTS)?1:0)); // wait two reask interval for each nnp file before reasking an nnp file
+            UINT allNnpReaskTime = FILEREASKTIME*2*(m_OtherNoNeeded_list.GetSize() + ((GetDownloadState() == DS_NONEEDEDPARTS)?1:0)); // wait two reask interval for each nnp file before reasking an nnp file
 
             if(!SwapToIsNNPFile && (!curFileisNNPFile || GetLastAskedTime(cur_file) == 0 || tempTick-GetLastAskedTime(cur_file) > allNnpReaskTime) && rightFileHasHigherPrio ||
                     SwapToIsNNPFile && curFileisNNPFile &&
@@ -2380,7 +2380,7 @@ bool CUpDownClient::IsSwapSuspended(const CPartFile* file, const bool allowShort
     return false;
 }
 
-uint32 CUpDownClient::GetTimeUntilReask(const CPartFile* file, const bool allowShortReaskTime, const bool useGivenNNP, const bool givenNNP) const
+UINT CUpDownClient::GetTimeUntilReask(const CPartFile* file, const bool allowShortReaskTime, const bool useGivenNNP, const bool givenNNP) const
 {
     DWORD lastAskedTimeTick = GetLastAskedTime(file);
     if(lastAskedTimeTick != 0)
@@ -2443,12 +2443,12 @@ uint32 CUpDownClient::GetTimeUntilReask(const CPartFile* file, const bool allowS
     }
 }
 
-uint32 CUpDownClient::GetTimeUntilReask(const CPartFile* file) const
+UINT CUpDownClient::GetTimeUntilReask(const CPartFile* file) const
 {
     return GetTimeUntilReask(file, false);
 }
 
-uint32 CUpDownClient::GetTimeUntilReask() const
+UINT CUpDownClient::GetTimeUntilReask() const
 {
     return GetTimeUntilReask(reqfile);
 }
@@ -2472,6 +2472,7 @@ bool CUpDownClient::IsValidSource() const
 void CUpDownClient::StartDownload()
 {
     SetDownloadState(DS_DOWNLOADING);
+	socket->ExpandReceiveBuffer(); //>>> WiZaRd::ZZUL Upload [ZZ]
     InitTransferredDownMini();
     SetDownStartTime();
     m_lastPartAsked = (uint16)-1;
@@ -2537,7 +2538,7 @@ void CUpDownClient::ProcessAcceptUpload()
 void CUpDownClient::ProcessEdonkeyQueueRank(const uchar* packet, UINT size)
 {
     CSafeMemFile data(packet, size);
-    uint32 rank = data.ReadUInt32();
+    UINT rank = data.ReadUInt32();
     if (thePrefs.GetDebugClientTCPLevel() > 0)
         Debug(_T("  QR=%u (prev. %d)\n"), rank, IsRemoteQueueFull() ? (UINT)-1 : (UINT)GetRemoteQueueRank());
     SetRemoteQueueRank(rank, GetDownloadState() == DS_ONQUEUE);
@@ -2584,7 +2585,7 @@ void CUpDownClient::CheckQueueRankFlood()
     }
 }
 
-uint32 CUpDownClient::GetLastAskedTime(const CPartFile* partFile) const
+UINT CUpDownClient::GetLastAskedTime(const CPartFile* partFile) const
 {
     CPartFile* file = (CPartFile*)partFile;
     if (file == NULL)

@@ -57,10 +57,10 @@ LPCWSTR g_awszInvKadKeywordChars = L" ()[]{}<>,._-!?:;\\/\"";
 
 using namespace Kademlia;
 
-uint32 CSearchManager::m_uNextID = 0;
+UINT CSearchManager::m_uNextID = 0;
 SearchMap CSearchManager::m_mapSearches;
 
-bool CSearchManager::IsSearching(uint32 uSearchID)
+bool CSearchManager::IsSearching(UINT uSearchID)
 {
     // Check if this searchID is within the searches.
     for (SearchMap::const_iterator itSearchMap = m_mapSearches.begin(); itSearchMap != m_mapSearches.end(); ++itSearchMap)
@@ -71,7 +71,7 @@ bool CSearchManager::IsSearching(uint32 uSearchID)
     return false;
 }
 
-void CSearchManager::StopSearch(uint32 uSearchID, bool bDelayDelete)
+void CSearchManager::StopSearch(UINT uSearchID, bool bDelayDelete)
 {
     // Stop a specific searchID
     for (SearchMap::iterator itSearchMap = m_mapSearches.begin(); itSearchMap != m_mapSearches.end(); ++itSearchMap)
@@ -190,7 +190,7 @@ CSearch* CSearchManager::PrepareFindKeywords(LPCTSTR szKeyword, UINT uSearchTerm
     return pSearch;
 }
 
-CSearch* CSearchManager::PrepareLookup(uint32 uType, bool bStart, const CUInt128 &uID)
+CSearch* CSearchManager::PrepareLookup(UINT uType, bool bStart, const CUInt128 &uID)
 {
     // Prepare a kad lookup.
     // Make sure this target is not already in progress.
@@ -569,7 +569,7 @@ void CSearchManager::ProcessPublishResult(const CUInt128 &uTarget, const uint8 u
 }
 
 
-void CSearchManager::ProcessResponse(const CUInt128 &uTarget, uint32 uFromIP, uint16 uFromPort, ContactList *plistResults)
+void CSearchManager::ProcessResponse(const CUInt128 &uTarget, UINT uFromIP, uint16 uFromPort, ContactList *plistResults)
 {
     // We got a response to a kad lookup.
     CSearch *pSearch = NULL;
@@ -589,7 +589,7 @@ void CSearchManager::ProcessResponse(const CUInt128 &uTarget, uint32 uFromIP, ui
         pSearch->ProcessResponse(uFromIP, uFromPort, plistResults);
 }
 
-void CSearchManager::ProcessResult(const CUInt128 &uTarget, const CUInt128 &uAnswer, TagList *plistInfo, uint32 uFromIP, uint16 uFromPort)
+void CSearchManager::ProcessResult(const CUInt128 &uTarget, const CUInt128 &uAnswer, TagList *plistInfo, UINT uFromIP, uint16 uFromPort)
 {
     // We have results for a request for info.
     CSearch *pSearch = NULL;

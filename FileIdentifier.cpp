@@ -183,21 +183,21 @@ bool CFileIdentifier::LoadMD4HashsetFromFile(CFileDataIO* file, bool bVerifyExis
 {
     uchar checkid[16];
     file->ReadHash16(checkid);
-    //TRACE("File size: %u (%u full parts + %u bytes)\n", GetFileSize(), GetFileSize()/PARTSIZE, GetFileSize()%PARTSIZE);
-    //TRACE("File hash: %s\n", md4str(checkid));
+    //TRACE(L"File size: %u (%u full parts + %u bytes)\n", GetFileSize(), GetFileSize()/PARTSIZE, GetFileSize()%PARTSIZE);
+    //TRACE(L"File hash: %s\n", md4str(checkid));
     ASSERT( m_aMD4HashSet.IsEmpty() );
     ASSERT( !isnulmd4(m_abyMD4Hash) || !bVerifyExistingHash);
     DeleteMD4Hashset();
 
     UINT parts = file->ReadUInt16();
-    //TRACE("Nr. hashs: %u\n", (UINT)parts);
+    //TRACE(L"Nr. hashs: %u\n", (UINT)parts);
     if (bVerifyExistingHash && (md4cmp(m_abyMD4Hash, checkid) != 0 || parts != GetTheoreticalMD4PartHashCount()))
         return false;
     for (UINT i = 0; i < parts; i++)
     {
         uchar* cur_hash = new uchar[16];
         file->ReadHash16(cur_hash);
-        //TRACE("Hash[%3u]: %s\n", i, md4str(cur_hash));
+        //TRACE(L"Hash[%3u]: %s\n", i, md4str(cur_hash));
         m_aMD4HashSet.Add(cur_hash);
     }
 
@@ -455,13 +455,13 @@ bool CFileIdentifier::VerifyAICHHashSet()
     CAICHRecoveryHashSet tmpAICHHashSet(NULL, m_rFileSize);
     tmpAICHHashSet.SetMasterHash(m_AICHFileHash, AICH_HASHSETCOMPLETE);
 
-    uint32 uPartCount = (uint16)(((uint64)m_rFileSize + (PARTSIZE - 1)) / PARTSIZE);
+    UINT uPartCount = (uint16)(((uint64)m_rFileSize + (PARTSIZE - 1)) / PARTSIZE);
     if (uPartCount <= 1)
         return true; // No AICH Part Hashs
-    for (uint32 nPart = 0; nPart < uPartCount; nPart++)
+    for (UINT nPart = 0; nPart < uPartCount; nPart++)
     {
         uint64 nPartStartPos = (uint64)nPart*PARTSIZE;
-        uint32 nPartSize = (uint32)min(PARTSIZE, (uint64)GetFileSize()-nPartStartPos);
+        UINT nPartSize = (UINT)min(PARTSIZE, (uint64)GetFileSize()-nPartStartPos);
         CAICHHashTree* pPartHashTree = tmpAICHHashSet.m_pHashTree.FindHash(nPartStartPos, nPartSize);
         if (pPartHashTree != NULL)
         {

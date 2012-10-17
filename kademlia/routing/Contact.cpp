@@ -69,7 +69,7 @@ CContact::CContact()
     InitContact();
 }
 
-CContact::CContact(const CUInt128 &uClientID, uint32 uIp, uint16 uUdpPort, uint16 uTcpPort, uint8 uVersion, CKadUDPKey cUDPKey, bool bIPVerified)
+CContact::CContact(const CUInt128 &uClientID, UINT uIp, uint16 uUdpPort, uint16 uTcpPort, uint8 uVersion, CKadUDPKey cUDPKey, bool bIPVerified)
 {
     m_uClientID = uClientID;
     CKademlia::GetPrefs()->GetKadID(&m_uDistance);
@@ -83,7 +83,7 @@ CContact::CContact(const CUInt128 &uClientID, uint32 uIp, uint16 uUdpPort, uint1
     InitContact();
 }
 
-CContact::CContact(const CUInt128 &uClientID, uint32 uIp, uint16 uUdpPort, uint16 uTcpPort, const CUInt128 &uTarget, uint8 uVersion, CKadUDPKey cUDPKey, bool bIPVerified)
+CContact::CContact(const CUInt128 &uClientID, UINT uIp, uint16 uUdpPort, uint16 uTcpPort, const CUInt128 &uTarget, uint8 uVersion, CKadUDPKey cUDPKey, bool bIPVerified)
 {
     m_uClientID = uClientID;
     m_uDistance.SetValue(uTarget);
@@ -160,7 +160,7 @@ CUInt128 CContact::GetDistance() const
     return m_uDistance;
 }
 
-uint32 CContact::GetIPAddress() const
+UINT CContact::GetIPAddress() const
 {
     return m_uIp;
 }
@@ -170,7 +170,7 @@ void CContact::GetIPAddress(CString *psIp) const
     CMiscUtils::IPAddressToString(m_uIp, psIp);
 }
 
-void CContact::SetIPAddress(uint32 uIp)
+void CContact::SetIPAddress(UINT uIp)
 {
     if (m_uIp != uIp)
     {
@@ -227,7 +227,7 @@ void CContact::CheckingType()
 
 void CContact::UpdateType()
 {
-    uint32 uHours = (time(NULL)-m_tCreated)/HR2S(1);
+    UINT uHours = (time(NULL)-m_tCreated)/HR2S(1);
     switch(uHours)
     {
     case 0:

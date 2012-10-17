@@ -47,6 +47,7 @@ class CUPnPImplWrapper;
 class CSplashScreen;
 class CAntiLeechDataList; //>>> WiZaRd::ClientAnalyzer
 class CAutoUpdate; //>>> WiZaRd::AutoUpdate
+class CCustomSearches; //>>> WiZaRd::CustomSearches
 
 struct SLogItem;
 
@@ -82,6 +83,7 @@ public:
     CUPnPImplWrapper*	m_pUPnPFinder;
     CAntiLeechDataList* antileechlist; //>>> WiZaRd::ClientAnalyzer
     CAutoUpdate*		autoUpdater; //>>> WiZaRd::AutoUpdate
+	CCustomSearches*	customSearches; //>>> WiZaRd::CustomSearches
 
     HANDLE				m_hMutexOneInstance;
     int					m_iDfltImageListColorFlags;
@@ -134,8 +136,8 @@ public:
     CString		CopyTextFromClipboard();
 
     void		OnlineSig();
-    void		UpdateReceivedBytes(uint32 bytesToAdd);
-    void		UpdateSentBytes(uint32 bytesToAdd, bool sentToFriend = false);
+    void		UpdateReceivedBytes(UINT bytesToAdd);
+    void		UpdateSentBytes(UINT bytesToAdd, bool sentToFriend = false);
     int			GetFileTypeSystemImageIdx(LPCTSTR pszFilePath, int iLength = -1, bool bNormalsSize = false);
     HIMAGELIST	GetSystemImageList()
     {
@@ -161,9 +163,9 @@ public:
     bool		IsConnecting();
     bool		IsFirewalled();
     bool		CanDoCallback();
-    uint32		GetID();
-    uint32		GetPublicIP(bool bIgnoreKadIP = false) const;	// return current (valid) public IP or 0 if unknown
-    void		SetPublicIP(const uint32 dwIP);
+    UINT		GetID();
+    UINT		GetPublicIP(bool bIgnoreKadIP = false) const;	// return current (valid) public IP or 0 if unknown
+    void		SetPublicIP(const UINT dwIP);
     void		ResetStandByIdleTimer();
 
     // because nearly all icons we are loading are 16x16, the default size is specified as 16 and not as 32 nor LR_DEFAULTSIZE
@@ -232,7 +234,7 @@ protected:
     CTypedPtrList<CPtrList, SLogItem*> m_QueueLog;
     // Elandal:ThreadSafeLogging <--
 
-    uint32 m_dwPublicIP;
+    UINT m_dwPublicIP;
     bool m_bAutoStart;
 
     // Splash screen

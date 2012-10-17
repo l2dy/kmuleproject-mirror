@@ -337,7 +337,7 @@ protected:
 class CKadTagUInt32 : public CKadTag
 {
 public:
-    CKadTagUInt32(LPCSTR name, uint32 value)
+    CKadTagUInt32(LPCSTR name, UINT value)
         : CKadTag(TAGTYPE_UINT32, name)
         , m_value(value)
     { }
@@ -353,7 +353,7 @@ public:
     }
 
 protected:
-    uint32 m_value;
+    UINT m_value;
 };
 
 

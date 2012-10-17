@@ -177,7 +177,7 @@ UINT CFrameGrabThread::GrabFrames()
 
 
         long size;
-        uint32 nFramesGrabbed;
+        UINT nFramesGrabbed;
         for (nFramesGrabbed = 0; nFramesGrabbed != nFramesToGrab; nFramesGrabbed++)
         {
             hr = pDet->GetBitmapBits(dStartTime + (nFramesGrabbed*TIMEBETWEENFRAMES), &size, NULL, width, height);

@@ -150,7 +150,7 @@ CEncryptedStreamSocket::~CEncryptedStreamSocket()
     delete m_pfiSendBuffer;
 };
 
-void CEncryptedStreamSocket::CryptPrepareSendData(uchar* pBuffer, uint32 nLen)
+void CEncryptedStreamSocket::CryptPrepareSendData(uchar* pBuffer, UINT nLen)
 {
     if (!IsEncryptionLayerReady())
     {
@@ -210,7 +210,7 @@ bool CEncryptedStreamSocket::IsEncryptionLayerReady()
 int CEncryptedStreamSocket::Receive(void* lpBuf, int nBufLen, int nFlags)
 {
     m_nObfuscationBytesReceived = CAsyncSocketEx::Receive(lpBuf, nBufLen, nFlags);
-    m_bFullReceive = m_nObfuscationBytesReceived == (uint32)nBufLen;
+    m_bFullReceive = m_nObfuscationBytesReceived == (UINT)nBufLen;
 
     if(m_nObfuscationBytesReceived == SOCKET_ERROR || m_nObfuscationBytesReceived <= 0)
     {
@@ -228,7 +228,7 @@ int CEncryptedStreamSocket::Receive(void* lpBuf, int nBufLen, int nFlags)
         return m_nObfuscationBytesReceived;
     case ECS_UNKNOWN:
     {
-        uint32 nRead = 1;
+        UINT nRead = 1;
         bool bNormalHeader = false;
         switch (((uchar*)lpBuf)[0])
         {
@@ -241,11 +241,11 @@ int CEncryptedStreamSocket::Receive(void* lpBuf, int nBufLen, int nFlags)
         if (!bNormalHeader)
         {
             StartNegotiation(false);
-            const uint32 nNegRes = Negotiate((uchar*)lpBuf + nRead, m_nObfuscationBytesReceived - nRead);
+            const UINT nNegRes = Negotiate((uchar*)lpBuf + nRead, m_nObfuscationBytesReceived - nRead);
             if (nNegRes == (-1))
                 return 0;
             nRead += nNegRes;
-            if (nRead != (uint32)m_nObfuscationBytesReceived)
+            if (nRead != (UINT)m_nObfuscationBytesReceived)
             {
                 // this means we have more data then the current negotiation step required (or there is a bug) and this should never happen
                 // (note: even if it just finished the handshake here, there still can be no data left, since the other client didnt received our response yet)
@@ -296,17 +296,17 @@ int CEncryptedStreamSocket::Receive(void* lpBuf, int nBufLen, int nFlags)
         return m_nObfuscationBytesReceived;
     case ECS_NEGOTIATING:
     {
-        const uint32 nRead = Negotiate((uchar*)lpBuf, m_nObfuscationBytesReceived);
+        const UINT nRead = Negotiate((uchar*)lpBuf, m_nObfuscationBytesReceived);
         if (nRead == (-1))
             return 0;
-        else if (nRead != (uint32)m_nObfuscationBytesReceived && m_StreamCryptState != ECS_ENCRYPTING)
+        else if (nRead != (UINT)m_nObfuscationBytesReceived && m_StreamCryptState != ECS_ENCRYPTING)
         {
             // this means we have more data then the current negotiation step required (or there is a bug) and this should never happen
             DebugLogError(_T("CEncryptedStreamSocket: Client %s sent more data then expected while negotiating, disconnecting (2)"), DbgGetIPString());
             OnError(ERR_ENCRYPTION);
             return 0;
         }
-        else if (nRead != (uint32)m_nObfuscationBytesReceived && m_StreamCryptState == ECS_ENCRYPTING)
+        else if (nRead != (UINT)m_nObfuscationBytesReceived && m_StreamCryptState == ECS_ENCRYPTING)
         {
             // we finished the handshake and if we this was an outgoing connection it is allowed (but strange and unlikely) that the client sent payload
             DebugLogWarning(_T("CEncryptedStreamSocket: Client %s has finished the handshake but also sent payload on a outgoing connection"), DbgGetIPString());
@@ -410,7 +410,7 @@ void CEncryptedStreamSocket::StartNegotiation(bool bOutgoing)
         m_StreamCryptState = ECS_NEGOTIATING;
         m_nReceiveBytesWanted = 4;
 
-        SendNegotiatingData(fileRequest.GetBuffer(), (uint32)fileRequest.GetLength(), 5);
+        SendNegotiatingData(fileRequest.GetBuffer(), (UINT)fileRequest.GetLength(), 5);
     }
     else if (m_StreamCryptState == ECS_PENDING_SERVER)
     {
@@ -438,7 +438,7 @@ void CEncryptedStreamSocket::StartNegotiation(bool bOutgoing)
         m_StreamCryptState = ECS_NEGOTIATING;
         m_nReceiveBytesWanted = 96;
 
-        SendNegotiatingData(fileRequest.GetBuffer(), (uint32)fileRequest.GetLength(), (uint32)fileRequest.GetLength());
+        SendNegotiatingData(fileRequest.GetBuffer(), (UINT)fileRequest.GetLength(), (UINT)fileRequest.GetLength());
     }
     else
     {
@@ -448,9 +448,9 @@ void CEncryptedStreamSocket::StartNegotiation(bool bOutgoing)
     }
 }
 
-int CEncryptedStreamSocket::Negotiate(const uchar* pBuffer, uint32 nLen)
+int CEncryptedStreamSocket::Negotiate(const uchar* pBuffer, UINT nLen)
 {
-    uint32 nRead = 0;
+    UINT nRead = 0;
     ASSERT( m_nReceiveBytesWanted > 0 );
     try
     {
@@ -469,13 +469,13 @@ int CEncryptedStreamSocket::Negotiate(const uchar* pBuffer, uint32 nLen)
                     AfxThrowMemoryException();
                 m_pfiReceiveBuffer = new CSafeMemFile(pReceiveBuffer, 512);
             }
-            const uint32 nToRead =  min(nLen - nRead, m_nReceiveBytesWanted);
+            const UINT nToRead =  min(nLen - nRead, m_nReceiveBytesWanted);
             m_pfiReceiveBuffer->Write(pBuffer + nRead, nToRead);
             nRead += nToRead;
             m_nReceiveBytesWanted -= nToRead;
             if (m_nReceiveBytesWanted > 0)
                 return nRead;
-            const uint32 nCurrentBytesLen = (uint32)m_pfiReceiveBuffer->GetPosition();
+            const UINT nCurrentBytesLen = (UINT)m_pfiReceiveBuffer->GetPosition();
 
             if (m_NegotiatingState != ONS_BASIC_CLIENTA_RANDOMPART && m_NegotiatingState != ONS_BASIC_SERVER_DHANSWER)  // don't have the keys yet
             {
@@ -511,7 +511,7 @@ int CEncryptedStreamSocket::Negotiate(const uchar* pBuffer, uint32 nLen)
             }
             case ONS_BASIC_CLIENTA_MAGICVALUE:
             {
-                uint32 dwValue = m_pfiReceiveBuffer->ReadUInt32();
+                UINT dwValue = m_pfiReceiveBuffer->ReadUInt32();
                 if (dwValue == MAGICVALUE_SYNC)
                 {
                     // yup, the one or the other way it worked, this is an encrypted stream
@@ -556,7 +556,7 @@ int CEncryptedStreamSocket::Negotiate(const uchar* pBuffer, uint32 nLen)
                 fileResponse.WriteUInt8(byPadding);
                 for (int i = 0; i < byPadding; i++)
                     fileResponse.WriteUInt8((uint8)rand());
-                SendNegotiatingData(fileResponse.GetBuffer(), (uint32)fileResponse.GetLength());
+                SendNegotiatingData(fileResponse.GetBuffer(), (UINT)fileResponse.GetLength());
                 m_NegotiatingState = ONS_COMPLETE;
                 m_StreamCryptState = ECS_ENCRYPTING;
                 //DEBUG_ONLY( DebugLog(_T("CEncryptedStreamSocket: Finished Obufscation handshake with client %s (incoming)"), DbgGetIPString()) );
@@ -622,7 +622,7 @@ int CEncryptedStreamSocket::Negotiate(const uchar* pBuffer, uint32 nLen)
             }
             case ONS_BASIC_SERVER_MAGICVALUE:
             {
-                uint32 dwValue = m_pfiReceiveBuffer->ReadUInt32();
+                UINT dwValue = m_pfiReceiveBuffer->ReadUInt32();
                 if (dwValue == MAGICVALUE_SYNC)
                 {
                     // yup, the one or the other way it worked, this is an encrypted stream
@@ -663,7 +663,7 @@ int CEncryptedStreamSocket::Negotiate(const uchar* pBuffer, uint32 nLen)
                     fileResponse.WriteUInt8((uint8)rand());
 
                 m_NegotiatingState = ONS_BASIC_SERVER_DELAYEDSENDING;
-                SendNegotiatingData(fileResponse.GetBuffer(), (uint32)fileResponse.GetLength(), 0, true); // don't actually send it right now, store it in our sendbuffer
+                SendNegotiatingData(fileResponse.GetBuffer(), (UINT)fileResponse.GetLength(), 0, true); // don't actually send it right now, store it in our sendbuffer
                 m_StreamCryptState = ECS_ENCRYPTING;
                 DEBUG_ONLY( DebugLog(_T("CEncryptedStreamSocket: Finished DH Obufscation handshake with Server %s"), DbgGetIPString()) );
                 break;
@@ -694,7 +694,7 @@ int CEncryptedStreamSocket::Negotiate(const uchar* pBuffer, uint32 nLen)
 
 }
 
-int CEncryptedStreamSocket::SendNegotiatingData(const void* lpBuf, uint32 nBufLen, uint32 nStartCryptFromByte, bool bDelaySend)
+int CEncryptedStreamSocket::SendNegotiatingData(const void* lpBuf, UINT nBufLen, UINT nStartCryptFromByte, bool bDelaySend)
 {
     ASSERT( m_StreamCryptState == ECS_NEGOTIATING || m_StreamCryptState == ECS_ENCRYPTING );
     ASSERT( nStartCryptFromByte <= nBufLen );
@@ -734,16 +734,16 @@ int CEncryptedStreamSocket::SendNegotiatingData(const void* lpBuf, uint32 nBufLe
             ASSERT( false );
             return 0;							// or not
         }
-        nBufLen = (uint32)m_pfiSendBuffer->GetLength();
+        nBufLen = (UINT)m_pfiSendBuffer->GetLength();
         pBuffer = m_pfiSendBuffer->Detach();
         delete m_pfiSendBuffer;
         m_pfiSendBuffer = NULL;
     }
     ASSERT( m_pfiSendBuffer == NULL );
-    uint32 result = 0;
+    UINT result = 0;
     if (!bDelaySend)
         result = CAsyncSocketEx::Send(pBuffer, nBufLen);
-    if (result == (uint32)SOCKET_ERROR || bDelaySend)
+    if (result == (UINT)SOCKET_ERROR || bDelaySend)
     {
         m_pfiSendBuffer = new CSafeMemFile(128);
         m_pfiSendBuffer->Write(pBuffer, nBufLen);

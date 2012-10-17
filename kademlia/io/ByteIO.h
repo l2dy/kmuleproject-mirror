@@ -36,14 +36,14 @@ namespace Kademlia
 class CByteIO : public CDataIO
 {
 public:
-    CByteIO(byte* pbyBuffer, uint32 uAvailable);
-    CByteIO(const byte* pbyBuffer, uint32 uAvailable);
+    CByteIO(byte* pbyBuffer, UINT uAvailable);
+    CByteIO(const byte* pbyBuffer, UINT uAvailable);
 
-    void ReadArray(LPVOID lpResult, uint32 uByteCount);
-    void WriteArray(LPCVOID lpVal, uint32 uByteCount);
+    void ReadArray(LPVOID lpResult, UINT uByteCount);
+    void WriteArray(LPCVOID lpVal, UINT uByteCount);
     UINT GetAvailable() const;
-    void Seek(uint32 newpos);
-    uint32 GetUsed() const
+    void Seek(UINT newpos);
+    UINT GetUsed() const
     {
         return m_uUsed;
     }
@@ -51,7 +51,7 @@ public:
 private:
     bool m_bReadOnly;
     byte* m_pbyBuffer;
-    uint32 m_uAvailable;
-    uint32 m_uUsed;
+    UINT m_uAvailable;
+    UINT m_uUsed;
 };
 }

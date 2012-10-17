@@ -86,7 +86,7 @@ public:
 
     CPartFile* GetFileByID(const uchar* filehash) const;
     CPartFile* GetFileByIndex(int index) const;
-    CPartFile* GetFileByKadFileSearchID(uint32 ID) const;
+    CPartFile* GetFileByKadFileSearchID(UINT ID) const;
 
     void    StartNextFileIfPrefs(int cat);
     void	StartNextFile(int cat=-1,bool force=false);
@@ -94,8 +94,8 @@ public:
     void	RefilterAllComments();
 
     // sources
-    CUpDownClient* GetDownloadClientByIP(uint32 dwIP);
-    CUpDownClient* GetDownloadClientByIP_UDP(uint32 dwIP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs = NULL);
+    CUpDownClient* GetDownloadClientByIP(UINT dwIP);
+    CUpDownClient* GetDownloadClientByIP_UDP(UINT dwIP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs = NULL);
     bool	IsInList(const CUpDownClient* client) const;
 
     bool    CheckAndAddSource(CPartFile* sender,CUpDownClient* source);
@@ -109,7 +109,7 @@ public:
     } SDownloadStats;
     void	GetDownloadSourcesStats(SDownloadStats& results);
     int		GetDownloadFilesStats(uint64 &ui64TotalFileSize, uint64 &ui64TotalLeftToTransfer, uint64 &ui64TotalAdditionalNeededSpace);
-    uint32	GetDatarate()
+    UINT	GetDatarate()
     {
         return datarate;
     }
@@ -118,7 +118,7 @@ public:
     {
         m_nUDPFileReasks++;
     }
-    uint32	GetUDPFileReasks() const
+    UINT	GetUDPFileReasks() const
     {
         return m_nUDPFileReasks;
     }
@@ -126,7 +126,7 @@ public:
     {
         m_nFailedUDPFileReasks++;
     }
-    uint32	GetFailedUDPFileReasks() const
+    UINT	GetFailedUDPFileReasks() const
     {
         return m_nFailedUDPFileReasks;
     }
@@ -145,7 +145,7 @@ public:
         lastkademliafilerequest = ::GetTickCount();
     }
     bool	DoKademliaFileRequest();
-    void	KademliaSearchFile(uint32 searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pkadID, uint8 type, uint32 ip, uint16 tcp, uint16 udp, uint32 dwBuddyIP, uint16 dwBuddyPort, uint8 byCryptOptions);
+    void	KademliaSearchFile(UINT searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pkadID, uint8 type, UINT ip, uint16 tcp, uint16 udp, UINT dwBuddyIP, uint16 dwBuddyPort, uint8 byCryptOptions);
 
     // check diskspace
     void	SortByPriority();
@@ -165,21 +165,21 @@ private:
     void	HeapSort(UINT first, UINT last);
     CTypedPtrList<CPtrList, CPartFile*> filelist;
     uint16	filesrdy;
-    uint32	datarate;
+    UINT	datarate;
 
     CPartFile*	lastfile;
-    uint32		lastcheckdiskspacetime;
+    UINT		lastcheckdiskspacetime;
     UINT		udcounter;
-    uint32		lastkademliafilerequest;
+    UINT		lastkademliafilerequest;
 
     uint64		m_datarateMS;
-    uint32		m_nUDPFileReasks;
-    uint32		m_nFailedUDPFileReasks;
+    UINT		m_nUDPFileReasks;
+    UINT		m_nFailedUDPFileReasks;
 
     // By BadWolf - Accurate Speed Measurement
     typedef struct TransferredData
     {
-        uint32	datalen;
+        UINT	datalen;
         DWORD	timestamp;
     };
     CList<TransferredData> avarage_dr_list;

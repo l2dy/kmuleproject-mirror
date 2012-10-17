@@ -45,9 +45,9 @@ uint16 CFileDataIO::ReadUInt16()
     return nVal;
 }
 
-uint32 CFileDataIO::ReadUInt32()
+UINT CFileDataIO::ReadUInt32()
 {
-    uint32 nVal;
+    UINT nVal;
     Read(&nVal, sizeof nVal);
     return nVal;
 }
@@ -158,7 +158,7 @@ void CFileDataIO::WriteUInt16(uint16 nVal)
     Write(&nVal, sizeof nVal);
 }
 
-void CFileDataIO::WriteUInt32(uint32 nVal)
+void CFileDataIO::WriteUInt32(UINT nVal)
 {
     Write(&nVal, sizeof nVal);
 }
@@ -325,12 +325,12 @@ uint16 CSafeMemFile::ReadUInt16()
     return nResult;
 }
 
-uint32 CSafeMemFile::ReadUInt32()
+UINT CSafeMemFile::ReadUInt32()
 {
-    if (m_nPosition + sizeof(uint32) > m_nFileSize)
+    if (m_nPosition + sizeof(UINT) > m_nFileSize)
         AfxThrowFileException(CFileException::endOfFile, 0, GetFileName());
-    uint32 nResult = *((uint32*)(m_lpBuffer + m_nPosition));
-    m_nPosition += sizeof(uint32);
+    UINT nResult = *((UINT*)(m_lpBuffer + m_nPosition));
+    m_nPosition += sizeof(UINT);
     return nResult;
 }
 
@@ -345,27 +345,27 @@ uint64 CSafeMemFile::ReadUInt64()
 
 void CSafeMemFile::ReadUInt128(Kademlia::CUInt128* pVal)
 {
-    if (m_nPosition + sizeof(uint32)*4 > m_nFileSize)
+    if (m_nPosition + sizeof(UINT)*4 > m_nFileSize)
         AfxThrowFileException(CFileException::endOfFile, 0, GetFileName());
-    uint32* pUInt32Val = (uint32*)pVal->GetDataPtr();
-    const uint32* pUInt32 = (uint32*)(m_lpBuffer + m_nPosition);
+    UINT* pUInt32Val = (UINT*)pVal->GetDataPtr();
+    const UINT* pUInt32 = (UINT*)(m_lpBuffer + m_nPosition);
     pUInt32Val[0] = pUInt32[0];
     pUInt32Val[1] = pUInt32[1];
     pUInt32Val[2] = pUInt32[2];
     pUInt32Val[3] = pUInt32[3];
-    m_nPosition += sizeof(uint32)*4;
+    m_nPosition += sizeof(UINT)*4;
 }
 
 void CSafeMemFile::ReadHash16(uchar* pVal)
 {
-    if (m_nPosition + sizeof(uint32)*4 > m_nFileSize)
+    if (m_nPosition + sizeof(UINT)*4 > m_nFileSize)
         AfxThrowFileException(CFileException::endOfFile, 0, GetFileName());
-    const uint32* pUInt32 = (uint32*)(m_lpBuffer + m_nPosition);
-    ((uint32*)pVal)[0] = pUInt32[0];
-    ((uint32*)pVal)[1] = pUInt32[1];
-    ((uint32*)pVal)[2] = pUInt32[2];
-    ((uint32*)pVal)[3] = pUInt32[3];
-    m_nPosition += sizeof(uint32)*4;
+    const UINT* pUInt32 = (UINT*)(m_lpBuffer + m_nPosition);
+    ((UINT*)pVal)[0] = pUInt32[0];
+    ((UINT*)pVal)[1] = pUInt32[1];
+    ((UINT*)pVal)[2] = pUInt32[2];
+    ((UINT*)pVal)[3] = pUInt32[3];
+    m_nPosition += sizeof(UINT)*4;
 }
 
 void CSafeMemFile::WriteUInt8(uint8 nVal)
@@ -387,12 +387,12 @@ void CSafeMemFile::WriteUInt16(uint16 nVal)
         m_nFileSize = m_nPosition;
 }
 
-void CSafeMemFile::WriteUInt32(uint32 nVal)
+void CSafeMemFile::WriteUInt32(UINT nVal)
 {
-    if (m_nPosition + sizeof(uint32) > m_nBufferSize)
-        GrowFile(m_nPosition + sizeof(uint32));
-    *((uint32*)(m_lpBuffer + m_nPosition)) = nVal;
-    m_nPosition += sizeof(uint32);
+    if (m_nPosition + sizeof(UINT) > m_nBufferSize)
+        GrowFile(m_nPosition + sizeof(UINT));
+    *((UINT*)(m_lpBuffer + m_nPosition)) = nVal;
+    m_nPosition += sizeof(UINT);
     if (m_nPosition > m_nFileSize)
         m_nFileSize = m_nPosition;
 }
@@ -409,29 +409,29 @@ void CSafeMemFile::WriteUInt64(uint64 nVal)
 
 void CSafeMemFile::WriteUInt128(const Kademlia::CUInt128* pVal)
 {
-    if (m_nPosition + sizeof(uint32)*4 > m_nBufferSize)
-        GrowFile(m_nPosition + sizeof(uint32)*4);
-    uint32* pUInt32 = (uint32*)(m_lpBuffer + m_nPosition);
-    const uint32* pUInt32Val = (uint32*)pVal->GetData();
+    if (m_nPosition + sizeof(UINT)*4 > m_nBufferSize)
+        GrowFile(m_nPosition + sizeof(UINT)*4);
+    UINT* pUInt32 = (UINT*)(m_lpBuffer + m_nPosition);
+    const UINT* pUInt32Val = (UINT*)pVal->GetData();
     pUInt32[0] = pUInt32Val[0];
     pUInt32[1] = pUInt32Val[1];
     pUInt32[2] = pUInt32Val[2];
     pUInt32[3] = pUInt32Val[3];
-    m_nPosition += sizeof(uint32)*4;
+    m_nPosition += sizeof(UINT)*4;
     if (m_nPosition > m_nFileSize)
         m_nFileSize = m_nPosition;
 }
 
 void CSafeMemFile::WriteHash16(const uchar* pVal)
 {
-    if (m_nPosition + sizeof(uint32)*4 > m_nBufferSize)
-        GrowFile(m_nPosition + sizeof(uint32)*4);
-    uint32* pUInt32 = (uint32*)(m_lpBuffer + m_nPosition);
-    pUInt32[0] = ((uint32*)pVal)[0];
-    pUInt32[1] = ((uint32*)pVal)[1];
-    pUInt32[2] = ((uint32*)pVal)[2];
-    pUInt32[3] = ((uint32*)pVal)[3];
-    m_nPosition += sizeof(uint32)*4;
+    if (m_nPosition + sizeof(UINT)*4 > m_nBufferSize)
+        GrowFile(m_nPosition + sizeof(UINT)*4);
+    UINT* pUInt32 = (UINT*)(m_lpBuffer + m_nPosition);
+    pUInt32[0] = ((UINT*)pVal)[0];
+    pUInt32[1] = ((UINT*)pVal)[1];
+    pUInt32[2] = ((UINT*)pVal)[2];
+    pUInt32[3] = ((UINT*)pVal)[3];
+    m_nPosition += sizeof(UINT)*4;
     if (m_nPosition > m_nFileSize)
         m_nFileSize = m_nPosition;
 }

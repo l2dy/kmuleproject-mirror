@@ -44,8 +44,8 @@ bool CUDPFirewallTester::m_bNodeSearchStarted = false;
 bool CUDPFirewallTester::m_bTimedOut = false;
 uint8 CUDPFirewallTester::m_byFWChecksRunningUDP = 0;
 uint8 CUDPFirewallTester::m_byFWChecksFinishedUDP = 0;
-uint32 CUDPFirewallTester::m_dwTestStart = 0;
-uint32 CUDPFirewallTester::m_dwLastSucceededTime = 0;
+UINT CUDPFirewallTester::m_dwTestStart = 0;
+UINT CUDPFirewallTester::m_dwLastSucceededTime = 0;
 CList<CContact> CUDPFirewallTester::m_liPossibleTestClients;
 CList<UsedClient_Struct> CUDPFirewallTester::m_liUsedTestClients;
 
@@ -81,7 +81,7 @@ bool CUDPFirewallTester::GetUDPCheckClientsNeeded()
     return (m_byFWChecksRunningUDP + m_byFWChecksFinishedUDP) < UDP_FIREWALLTEST_CLIENTSTOASK;
 }
 
-void CUDPFirewallTester::SetUDPFWCheckResult(bool bSucceeded, bool bTestCancelled, uint32 uFromIP, uint16 nIncomingPort)
+void CUDPFirewallTester::SetUDPFWCheckResult(bool bSucceeded, bool bTestCancelled, UINT uFromIP, uint16 nIncomingPort)
 {
     // check if we actually requested a firewallcheck from this cleint
     bool bRequested = false;
@@ -226,7 +226,7 @@ void CUDPFirewallTester::Reset()
     // keep the list of used clients
 }
 
-void CUDPFirewallTester::AddPossibleTestContact(const CUInt128 &uClientID, uint32 uIp, uint16 uUdpPort, uint16 uTcpPort, const CUInt128 &uTarget, uint8 uVersion, CKadUDPKey cUDPKey, bool bIPVerified)
+void CUDPFirewallTester::AddPossibleTestContact(const CUInt128 &uClientID, UINT uIp, uint16 uUdpPort, uint16 uTcpPort, const CUInt128 &uTarget, uint8 uVersion, CKadUDPKey cUDPKey, bool bIPVerified)
 {
     if (!IsFWCheckUDPRunning())
         return;

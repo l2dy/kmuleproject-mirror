@@ -48,7 +48,7 @@ protected:
     CMuleListCtrl m_listFileNames;
     bool m_bSelf;
 
-    uint32	m_timer;
+    UINT	m_timer;
     int		m_aiColWidths[2];
     bool    m_bResetFDC; //>>> FDC [BlueSonicBoy]
 

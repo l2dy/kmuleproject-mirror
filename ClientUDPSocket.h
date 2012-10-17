@@ -24,12 +24,12 @@ class Packet;
 struct UDPPack
 {
     Packet* packet;
-    uint32	dwIP;
+    UINT	dwIP;
     uint16	nPort;
-    uint32	dwTime;
+    UINT	dwTime;
     bool	bEncrypt;
     bool	bKad;
-    uint32  nReceiverVerifyKey;
+    UINT  nReceiverVerifyKey;
     uchar	pachTargetClientHashORKadID[16];
     //uint16 nPriority; We could add a priority system here to force some packets.
 };
@@ -47,17 +47,17 @@ public:
     {
         return m_port;
     }
-    bool	SendPacket(Packet* packet, uint32 dwIP, uint16 nPort, bool bEncrypt, const uchar* pachTargetClientHashORKadID, bool bKad, uint32 nReceiverVerifyKey);
-    SocketSentBytes  SendControlData(uint32 maxNumberOfBytesToSend, uint32 minFragSize); // ZZ:UploadBandWithThrottler (UDP)
+    bool	SendPacket(Packet* packet, UINT dwIP, uint16 nPort, bool bEncrypt, const uchar* pachTargetClientHashORKadID, bool bKad, UINT nReceiverVerifyKey);
+    SocketSentBytes  SendControlData(UINT maxNumberOfBytesToSend, UINT minFragSize); // ZZ:UploadBandWithThrottler (UDP)
 
 protected:
-    bool	ProcessPacket(const BYTE* packet, UINT size, uint8 opcode, uint32 ip, uint16 port);
+    bool	ProcessPacket(const BYTE* packet, UINT size, uint8 opcode, UINT ip, uint16 port);
 
     virtual void	OnSend(int nErrorCode);
     virtual void	OnReceive(int nErrorCode);
 
 private:
-    int		SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort);
+    int		SendTo(char* lpBuf,int nBufLen,UINT dwIP, uint16 nPort);
     bool	IsBusy() const
     {
         return m_bWouldBlock;

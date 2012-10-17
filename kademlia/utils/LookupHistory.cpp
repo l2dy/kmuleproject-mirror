@@ -155,7 +155,7 @@ void CLookupHistory::ContactAskedKeyword(CContact* pContact)
     ASSERT( false );
 }
 
-void CLookupHistory::ContactRespondedKeyword(uint32 uContactIP, uint16 uContactUDPPort, uint32 uResultCount)
+void CLookupHistory::ContactRespondedKeyword(UINT uContactIP, uint16 uContactUDPPort, UINT uResultCount)
 {
     for (int i = 0; i < m_aIntrestingHistoryEntries.GetCount(); i++)
     {

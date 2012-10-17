@@ -232,7 +232,7 @@ void CClientReqSocket::Safe_Delete()
     deletethis = true;
 }
 
-bool CClientReqSocket::ProcessPacket(const BYTE* packet, uint32 size, UINT opcode)
+bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
 {
     try
     {
@@ -617,12 +617,12 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, uint32 size, UINT opcod
                 uchar reqfilehash[16];
                 data.ReadHash16(reqfilehash);
 
-                uint32 auStartOffsets[3];
+                UINT auStartOffsets[3];
                 auStartOffsets[0] = data.ReadUInt32();
                 auStartOffsets[1] = data.ReadUInt32();
                 auStartOffsets[2] = data.ReadUInt32();
 
-                uint32 auEndOffsets[3];
+                UINT auEndOffsets[3];
                 auEndOffsets[0] = data.ReadUInt32();
                 auEndOffsets[1] = data.ReadUInt32();
                 auEndOffsets[2] = data.ReadUInt32();
@@ -773,8 +773,8 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, uint32 size, UINT opcod
                 theStats.AddDownDataOverheadOther(size);
 
                 CSafeMemFile data(packet, size);
-                uint32 nNewUserID = data.ReadUInt32();
-                uint32 nNewServerIP = data.ReadUInt32();
+                UINT nNewUserID = data.ReadUInt32();
+                UINT nNewServerIP = data.ReadUInt32();
                 if (thePrefs.GetDebugClientTCPLevel() > 0)
                     Debug(_T("  NewUserID=%u (%08x, %s)  NewServerIP=%u (%08x, %s)\n"), nNewUserID, nNewUserID, ipstr(nNewUserID), nNewServerIP, nNewServerIP, ipstr(nNewServerIP));
                 if (IsLowID(nNewUserID))
@@ -857,7 +857,7 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, uint32 size, UINT opcod
                 }
 
                 // now create the memfile for the packet
-                uint32 iTotalCount = list.GetCount();
+                UINT iTotalCount = list.GetCount();
                 CSafeMemFile tempfile(80);
                 tempfile.WriteUInt32(iTotalCount);
                 while (list.GetCount())
@@ -1098,7 +1098,7 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, uint32 size, UINT opcod
     return true;
 }
 
-bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, uint32 size, UINT opcode, UINT uRawSize)
+bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opcode, UINT uRawSize)
 {
     try
     {
@@ -1602,7 +1602,7 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, uint32 size, UINT op
                         }
                     }
 
-                    uint32 ip = data.ReadUInt32();
+                    UINT ip = data.ReadUInt32();
                     uint16 tcp = data.ReadUInt16();
                     CUpDownClient* callback;
                     callback = theApp.clientlist->FindClientByIP(ntohl(ip), tcp);
@@ -1659,7 +1659,7 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, uint32 size, UINT op
                     break;
                 }
                 CSafeMemFile data_in(packet, size);
-                uint32 destip = data_in.ReadUInt32();
+                UINT destip = data_in.ReadUInt32();
                 uint16 destport = data_in.ReadUInt16();
                 uchar reqfilehash[16];
                 data_in.ReadHash16(reqfilehash);
@@ -1732,7 +1732,7 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, uint32 size, UINT op
                 {
                     if (!bSenderMultipleIpUnknown)
                     {
-                        if (((uint32)theApp.uploadqueue->GetWaitingUserCount() + 50) > thePrefs.GetQueueSize())
+                        if (((UINT)theApp.uploadqueue->GetWaitingUserCount() + 50) > thePrefs.GetQueueSize())
                         {
                             if (thePrefs.GetDebugClientUDPLevel() > 0)
                                 DebugSend("OP__QueueFull", NULL);
@@ -2002,7 +2002,7 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, uint32 size, UINT op
     return true;
 }
 
-void CClientReqSocket::PacketToDebugLogLine(LPCTSTR protocol, const uchar* packet, uint32 size, UINT opcode)
+void CClientReqSocket::PacketToDebugLogLine(LPCTSTR protocol, const uchar* packet, UINT size, UINT opcode)
 {
     if (thePrefs.GetVerbose())
     {
@@ -2057,10 +2057,9 @@ void CClientReqSocket::OnConnect(int nErrorCode)
     CEMSocket::OnConnect(nErrorCode);
     if (nErrorCode)
     {
-        CString strTCPError;
+        CString strTCPError = GetFullErrorMessage(nErrorCode);
         if (thePrefs.GetVerbose())
-        {
-            strTCPError = GetFullErrorMessage(nErrorCode);
+        {            
             if ((nErrorCode != WSAECONNREFUSED && nErrorCode != WSAETIMEDOUT) || !GetLastProxyError().IsEmpty())
                 DebugLogError(_T("Client TCP socket (OnConnect): %s; %s"), strTCPError, DbgGetClientInfo());
         }
@@ -2228,23 +2227,51 @@ bool CClientReqSocket::Create()
     return (CAsyncSocketEx::Create(0, SOCK_STREAM, FD_WRITE | FD_READ | FD_CLOSE | FD_CONNECT, thePrefs.GetBindAddrA()) != FALSE);
 }
 
-SocketSentBytes CClientReqSocket::SendControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend)
+SocketSentBytes CClientReqSocket::SendControlData(UINT maxNumberOfBytesToSend, UINT overchargeMaxBytesToSend)
 {
     SocketSentBytes returnStatus = CEMSocket::SendControlData(maxNumberOfBytesToSend, overchargeMaxBytesToSend);
-    if (returnStatus.success && (returnStatus.sentBytesControlPackets > 0 || returnStatus.sentBytesStandardPackets > 0))
-        ResetTimeOutTimer();
+//>>> WiZaRd::ZZUL Upload [ZZ]
+//     if (returnStatus.success && (returnStatus.sentBytesControlPackets > 0 || returnStatus.sentBytesStandardPackets > 0))
+//         ResetTimeOutTimer();
+	if (returnStatus.success) 
+	{
+		if(returnStatus.sentBytesControlPackets > 0 || returnStatus.sentBytesStandardPackets > 0)
+			ResetTimeOutTimer();
+	}
+	else if (returnStatus.errorThatOccured != 0 && thePrefs.GetVerbose())
+	{
+		CString pstrReason = GetErrorMessage(returnStatus.errorThatOccured, 1);
+		theApp.QueueDebugLogLine(false, L"CClientReqSocket::SendControlData: An error has occured: %s Client: %s", pstrReason, DbgGetClientInfo());
+	}
+//<<< WiZaRd::ZZUL Upload [ZZ]
     return returnStatus;
 }
 
-SocketSentBytes CClientReqSocket::SendFileAndControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend)
+SocketSentBytes CClientReqSocket::SendFileAndControlData(UINT maxNumberOfBytesToSend, UINT overchargeMaxBytesToSend)
 {
     SocketSentBytes returnStatus = CEMSocket::SendFileAndControlData(maxNumberOfBytesToSend, overchargeMaxBytesToSend);
-    if (returnStatus.success && (returnStatus.sentBytesControlPackets > 0 || returnStatus.sentBytesStandardPackets > 0))
-        ResetTimeOutTimer();
+//>>> WiZaRd::ZZUL Upload [ZZ]
+//     if (returnStatus.success && (returnStatus.sentBytesControlPackets > 0 || returnStatus.sentBytesStandardPackets > 0))
+//         ResetTimeOutTimer();
+	if (returnStatus.success) 
+	{
+		if(returnStatus.sentBytesControlPackets > 0 || returnStatus.sentBytesStandardPackets > 0)
+			ResetTimeOutTimer();
+	}
+	else if (returnStatus.errorThatOccured != 0 && thePrefs.GetVerbose())
+	{
+		//CString pstrReason = GetErrorMessage(returnStatus.errorThatOccured, 1);
+		//theApp.QueueDebugLogLine(false, L"CClientReqSocket::SendFileAndControlData: An error has occured: %s Client: %s", pstrReason, DbgGetClientInfo());
+
+		//CString message;
+		//message.Format(L"CClientReqSocket::SendFileAndControlData: An error has occured: %s Client: %s", pstrReason, DbgGetClientInfo());
+		//Disconnect(message);
+	}
+//<<< WiZaRd::ZZUL Upload [ZZ]
     return returnStatus;
 }
 
-void CClientReqSocket::SendPacket(Packet* packet, bool delpacket, bool controlpacket, uint32 actualPayloadSize, bool bForceImmediateSend)
+void CClientReqSocket::SendPacket(Packet* packet, bool delpacket, bool controlpacket, UINT actualPayloadSize, bool bForceImmediateSend)
 {
     ResetTimeOutTimer();
     CEMSocket::SendPacket(packet, delpacket, controlpacket, actualPayloadSize, bForceImmediateSend);
@@ -2451,7 +2478,7 @@ void CListenSocket::OnAccept(int nErrorCode)
         else if (!bListening)
             ReStartListening(); //If the client is still at maxconnections, this will allow it to go above it.. But if you don't, you will get a lowID on all servers.
 
-        uint32 nFataErrors = 0;
+        UINT nFataErrors = 0;
         while (m_nPendingConnections > 0)
         {
             m_nPendingConnections--;
@@ -2732,3 +2759,34 @@ float CListenSocket::GetMaxConperFiveModifier()
     float Modifier = 1.0F - SpikeSize / SpikeTolerance;
     return Modifier;
 }
+
+//>>> WiZaRd::ZZUL Upload [ZZ]
+bool CClientReqSocket::ExpandReceiveBuffer()
+{
+	int val;
+	int len = sizeof(val);
+
+	GetSockOpt(SO_RCVBUF, &val, &len);
+	theApp.QueueDebugLogLine(false, L"CEMSocket::ExpandReceiveBuffer(): Setting SO_RCVBUF. Was (%i bytes = %s)", val, CastItoXBytes((UINT)val, false, false));
+
+	val = 1024*1024;
+	HRESULT rcvBufResult = SetSockOpt(SO_RCVBUF, &val, sizeof(int));
+	if(rcvBufResult == SOCKET_ERROR)
+	{
+		CString pstrReason = GetErrorMessage(WSAGetLastError(), 1);
+		theApp.QueueDebugLogLine(false, L"CClientReqSocket::ExpandReceiveBuffer(): Couldn't set SO_RCVBUF: %s", pstrReason);
+
+		return false;
+	}
+	else 
+	{
+		GetSockOpt(SO_RCVBUF, &val, &len);
+		theApp.QueueDebugLogLine(false, L"CEMSocket::ExpandReceiveBuffer(): Changed SO_RCVBUF. Now %i bytes = %s", val, CastItoXBytes((UINT)val, false, false));
+
+		BOOL noDelayBool = true;
+		SetSockOpt(TCP_NODELAY, &noDelayBool, sizeof(noDelayBool));
+
+		return true;
+	}
+}
+//<<< WiZaRd::ZZUL Upload [ZZ]

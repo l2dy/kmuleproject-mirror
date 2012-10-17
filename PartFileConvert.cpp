@@ -296,11 +296,11 @@ int CPartFileConvert::performConvertToeMule(CString folder)
                 fileindex=_tstoi(filename.Mid(pos1+1,pos2-pos1) );
                 if (fileindex==0) continue;
 
-                uint32 chunkstart=(uint32)(fileindex-1) * PARTSIZE ;
+                UINT chunkstart=(UINT)(fileindex-1) * PARTSIZE ;
 
                 // open, read data of the part-part-file into buffer, close file
                 inputfile.Open(finder.GetFilePath(),CFile::modeRead|CFile::shareDenyWrite);
-                uint32 readed=inputfile.Read( ba.GetData() ,PARTSIZE);
+                UINT readed=inputfile.Read( ba.GetData() ,PARTSIZE);
                 inputfile.Close();
 
                 buffer.Format(GetResString(IDS_IMP_SAVEDATA),curindex,partfilecount);

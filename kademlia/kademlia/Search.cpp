@@ -65,17 +65,17 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace Kademlia;
 
-void DebugSend(LPCTSTR pszMsg, uint32 uIP, uint16 uUDPPort);
+void DebugSend(LPCTSTR pszMsg, UINT uIP, uint16 uUDPPort);
 
 CSearch::CSearch()
 {
     m_pLookupHistory = new CLookupHistory();
     m_tCreated = time(NULL);
-    m_uType = (uint32)-1;
+    m_uType = (UINT)-1;
     m_uAnswers = 0;
     m_uTotalRequestAnswers = 0;
     m_uKadPacketSent = 0;
-    m_uSearchID = (uint32)-1;
+    m_uSearchID = (UINT)-1;
     m_bStoping = false;
     m_uTotalLoad = 0;
     m_uTotalLoadResponses = 0;
@@ -163,7 +163,7 @@ CSearch::~CSearch()
         switch(GetSearchTypes())
         {
         case CSearch::STOREKEYWORD:
-            Kademlia::CKademlia::GetIndexed()->AddLoad(GetTarget(), ((uint32)(DAY2S(7)*((double)GetNodeLoad()/100.0))+(uint32)time(NULL)));
+            Kademlia::CKademlia::GetIndexed()->AddLoad(GetTarget(), ((UINT)(DAY2S(7)*((double)GetNodeLoad()/100.0))+(UINT)time(NULL)));
             break;
         }
     }
@@ -225,7 +225,7 @@ void CSearch::PrepareToStop()
         return;
 
     // Set basetime by search type.
-    uint32 uBaseTime;
+    UINT uBaseTime;
     switch(m_uType)
     {
     case NODE:
@@ -274,7 +274,7 @@ void CSearch::PrepareToStop()
 void CSearch::JumpStart()
 {
     // If we had a response within the last 3 seconds, no need to jumpstart the search.
-    if (m_uLastResponse + SEC(3) > (uint32)time(NULL))
+    if (m_uLastResponse + SEC(3) > (UINT)time(NULL))
         return;
 
     // If we ran out of contacts, stop search.
@@ -293,7 +293,7 @@ void CSearch::JumpStart()
     {
         ContactMap::const_iterator itContactMap = m_mapTried.begin();
         bLookupCloserNodes = true;
-        for (uint32 i = 0; i < KADEMLIA_FIND_VALUE; i++)
+        for (UINT i = 0; i < KADEMLIA_FIND_VALUE; i++)
         {
             if (m_mapResponded.count(itContactMap->first) > 0)
             {
@@ -346,7 +346,7 @@ void CSearch::JumpStart()
     }
 }
 
-void CSearch::ProcessResponse(uint32 uFromIP, uint16 uFromPort, ContactList *plistResults)
+void CSearch::ProcessResponse(UINT uFromIP, uint16 uFromPort, ContactList *plistResults)
 {
     // Remember the contacts to be deleted when finished
     for (ContactList::iterator itContactList = plistResults->begin(); itContactList != plistResults->end(); ++itContactList)
@@ -410,8 +410,8 @@ void CSearch::ProcessResponse(uint32 uFromIP, uint16 uFromPort, ContactList *pli
         if (pFromContact != NULL)
         {
             bool bProvidedCloserContacts = false;
-            std::map<uint32, uint32> mapReceivedIPs;
-            std::map<uint32, uint32> mapReceivedSubnets;
+            std::map<UINT, UINT> mapReceivedIPs;
+            std::map<UINT, UINT> mapReceivedSubnets;
             mapReceivedIPs[uFromIP] = 1; // A node is not allowd to answer with contacts to itself
             mapReceivedSubnets[uFromIP & 0xFFFFFF00] = 1;
             // Loop through their responses
@@ -846,7 +846,7 @@ void CSearch::StorePacket()
             }
 
             // Correct file count.
-            uint32 current_pos = byIO.GetUsed();
+            UINT current_pos = byIO.GetUsed();
             byIO.Seek(16);
             byIO.WriteUInt16(iPacketCount);
             byIO.Seek(current_pos);
@@ -1016,10 +1016,10 @@ void CSearch::StorePacket()
     }
 }
 
-void CSearch::ProcessResult(const CUInt128 &uAnswer, TagList *plistInfo, uint32 uFromIP, uint16 uFromPort)
+void CSearch::ProcessResult(const CUInt128 &uAnswer, TagList *plistInfo, UINT uFromIP, uint16 uFromPort)
 {
     // We received a result, process it based on type.
-    uint32 iAnswerBefore = m_uAnswers;
+    UINT iAnswerBefore = m_uAnswers;
     switch(m_uType)
     {
     case FILE:
@@ -1043,12 +1043,12 @@ void CSearch::ProcessResultFile(const CUInt128 &uAnswer, TagList *plistInfo)
     // Process a possible source to a file.
     // Set of data we could receive from the result.
     uint8 uType = 0;
-    uint32 uIP = 0;
+    UINT uIP = 0;
     uint16 uTCPPort = 0;
     uint16 uUDPPort = 0;
-    uint32 uBuddyIP = 0;
+    UINT uBuddyIP = 0;
     uint16 uBuddyPort = 0;
-    //uint32 uClientID = 0;
+    //UINT uClientID = 0;
     CUInt128 uBuddy;
     uint8 byCryptOptions = 0; // 0 = not supported
 
@@ -1058,13 +1058,13 @@ void CSearch::ProcessResultFile(const CUInt128 &uAnswer, TagList *plistInfo)
         if (!pTag->m_name.Compare(TAG_SOURCETYPE))
             uType = (uint8)pTag->GetInt();
         else if (!pTag->m_name.Compare(TAG_SOURCEIP))
-            uIP = (uint32)pTag->GetInt();
+            uIP = (UINT)pTag->GetInt();
         else if (!pTag->m_name.Compare(TAG_SOURCEPORT))
             uTCPPort = (uint16)pTag->GetInt();
         else if (!pTag->m_name.Compare(TAG_SOURCEUPORT))
             uUDPPort = (uint16)pTag->GetInt();
         else if (!pTag->m_name.Compare(TAG_SERVERIP))
-            uBuddyIP = (uint32)pTag->GetInt();
+            uBuddyIP = (UINT)pTag->GetInt();
         else if (!pTag->m_name.Compare(TAG_SERVERPORT))
             uBuddyPort = (uint16)pTag->GetInt();
         //else if (!pTag->m_name.Compare(TAG_CLIENTLOWID))
@@ -1075,7 +1075,7 @@ void CSearch::ProcessResultFile(const CUInt128 &uAnswer, TagList *plistInfo)
             if (pTag->IsStr() && strmd4(pTag->GetStr(), ucharBuddyHash))
                 md4cpy(uBuddy.GetDataPtr(), ucharBuddyHash);
             else
-                TRACE("+++ Invalid TAG_BUDDYHASH tag\n");
+                TRACE(L"+++ Invalid TAG_BUDDYHASH tag\n");
         }
         else if (!pTag->m_name.Compare(TAG_ENCRYPTION))
             byCryptOptions = (uint8)pTag->GetInt();
@@ -1114,7 +1114,7 @@ void CSearch::ProcessResultNotes(const CUInt128 &uAnswer, TagList *plistInfo)
         CKadTag* pTag = *itTagList;
         if (!pTag->m_name.Compare(TAG_SOURCEIP))
         {
-            pEntry->m_uIP = (uint32)pTag->GetInt();
+            pEntry->m_uIP = (UINT)pTag->GetInt();
             delete pTag;
         }
         else if (!pTag->m_name.Compare(TAG_SOURCEPORT))
@@ -1211,7 +1211,7 @@ void CSearch::ProcessResultNotes(const CUInt128 &uAnswer, TagList *plistInfo)
     delete pEntry;
 }
 
-void CSearch::ProcessResultKeyword(const CUInt128 &uAnswer, TagList *plistInfo, uint32 uFromIP, uint16 uFromPort)
+void CSearch::ProcessResultKeyword(const CUInt128 &uAnswer, TagList *plistInfo, UINT uFromIP, uint16 uFromPort)
 {
     // Find the contact who sent the answer - we need to know its protocol version
     // Special publish answer tags need to be filtered based on its remote protocol version, because if an old node is not aware
@@ -1238,11 +1238,11 @@ void CSearch::ProcessResultKeyword(const CUInt128 &uAnswer, TagList *plistInfo, 
     CKadTagValueString sArtist;
     CKadTagValueString sAlbum;
     CKadTagValueString sTitle;
-    uint32 uLength = 0;
+    UINT uLength = 0;
     CKadTagValueString sCodec;
-    uint32 uBitrate = 0;
-    uint32 uAvailability = 0;
-    uint32 uPublishInfo = 0;
+    UINT uBitrate = 0;
+    UINT uAvailability = 0;
+    UINT uPublishInfo = 0;
     CArray<CAICHHash> aAICHHashs;
     CArray<uint8> aAICHHashPopularity;
     // Flag that is set if we want this keyword.
@@ -1286,15 +1286,15 @@ void CSearch::ProcessResultKeyword(const CUInt128 &uAnswer, TagList *plistInfo, 
         else if (!pTag->m_name.Compare(TAG_MEDIA_TITLE))
             sTitle = pTag->GetStr();
         else if (!pTag->m_name.Compare(TAG_MEDIA_LENGTH))
-            uLength = (uint32)pTag->GetInt();
+            uLength = (UINT)pTag->GetInt();
         else if (!pTag->m_name.Compare(TAG_MEDIA_BITRATE))
-            uBitrate = (uint32)pTag->GetInt();
+            uBitrate = (UINT)pTag->GetInt();
         else if (!pTag->m_name.Compare(TAG_MEDIA_CODEC))
             sCodec = pTag->GetStr();
         else if (!pTag->m_name.Compare(TAG_SOURCES))
         {
             // Some rouge client was setting a invalid availability, just set it to 0
-            uAvailability = (uint32)pTag->GetInt();
+            uAvailability = (UINT)pTag->GetInt();
             if( uAvailability > 65500 )
                 uAvailability = 0;
         }
@@ -1304,11 +1304,11 @@ void CSearch::ProcessResultKeyword(const CUInt128 &uAnswer, TagList *plistInfo, 
             {
                 // we don't keep this as tag, but as a member property of the searchfile, as we only need its informations
                 // in the search list and don't want to carry the tag over when downloading the file (and maybe even wrongly publishing it)
-                uPublishInfo = (uint32)pTag->GetInt();
+                uPublishInfo = (UINT)pTag->GetInt();
                 /*#ifdef _DEBUG
-                				uint32 byDifferentNames = (uPublishInfo & 0xFF000000) >> 24;
-                				uint32 byPublishersKnown = (uPublishInfo & 0x00FF0000) >> 16;
-                				uint32 wTrustValue = uPublishInfo & 0x0000FFFF;
+                				UINT byDifferentNames = (uPublishInfo & 0xFF000000) >> 24;
+                				UINT byPublishersKnown = (uPublishInfo & 0x00FF0000) >> 16;
+                				UINT wTrustValue = uPublishInfo & 0x0000FFFF;
                 				DebugLog(_T("Received PublishInfoTag: %u different names, %u Publishers, %.2f Trustvalue"), byDifferentNames, byPublishersKnown, (float)wTrustValue / 100.0f);
                 #endif*/
             }
@@ -1674,7 +1674,7 @@ void CSearch::PreparePacketForTags(CByteIO *byIO, CKnownFile *pFile, uint8 byTar
         delete *itTagList;
 }
 
-uint32 CSearch::GetNodeLoad() const
+UINT CSearch::GetNodeLoad() const
 {
     // Node load is the average of all node load responses.
     if( m_uTotalLoadResponses == 0 )
@@ -1684,15 +1684,15 @@ uint32 CSearch::GetNodeLoad() const
     return m_uTotalLoad/m_uTotalLoadResponses;
 }
 
-uint32 CSearch::GetSearchID() const
+UINT CSearch::GetSearchID() const
 {
     return m_uSearchID;
 }
-uint32 CSearch::GetSearchTypes() const
+UINT CSearch::GetSearchTypes() const
 {
     return m_uType;
 }
-void CSearch::SetSearchTypes( uint32 uVal )
+void CSearch::SetSearchTypes( UINT uVal )
 {
     m_uType = uVal;
     m_pLookupHistory->SetSearchType(uVal);
@@ -1701,18 +1701,18 @@ void CSearch::SetTargetID( CUInt128 uVal )
 {
     m_uTarget = uVal;
 }
-uint32 CSearch::GetAnswers() const
+UINT CSearch::GetAnswers() const
 {
     if(m_listFileIDs.size() == 0)
         return m_uAnswers;
     // If we sent more then one packet per node, we have to average the answers for the real count.
     return m_uAnswers/((m_listFileIDs.size()+49)/50);
 }
-uint32 CSearch::GetKadPacketSent() const
+UINT CSearch::GetKadPacketSent() const
 {
     return m_uKadPacketSent;
 }
-uint32 CSearch::GetRequestAnswer() const
+UINT CSearch::GetRequestAnswer() const
 {
     return m_uTotalRequestAnswers;
 }
@@ -1733,11 +1733,11 @@ bool CSearch::Stoping() const
 {
     return m_bStoping;
 }
-uint32 CSearch::GetNodeLoadResonse() const
+UINT CSearch::GetNodeLoadResonse() const
 {
     return m_uTotalLoadResponses;
 }
-uint32 CSearch::GetNodeLoadTotal() const
+UINT CSearch::GetNodeLoadTotal() const
 {
     return m_uTotalLoad;
 }
@@ -1748,7 +1748,7 @@ void CSearch::UpdateNodeLoad( uint8 uLoad )
     m_uTotalLoadResponses++;
 }
 
-void CSearch::SetSearchTermData( uint32 uSearchTermDataSize, LPBYTE pucSearchTermsData )
+void CSearch::SetSearchTermData( UINT uSearchTermDataSize, LPBYTE pucSearchTermsData )
 {
     m_uSearchTermsDataSize = uSearchTermDataSize;
     m_pucSearchTermsData = new BYTE[uSearchTermDataSize];

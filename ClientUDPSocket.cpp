@@ -85,8 +85,8 @@ void CClientUDPSocket::OnReceive(int nErrorCode)
     if (!(theApp.ipfilter->IsFiltered(sockAddr.sin_addr.S_un.S_addr) || theApp.clientlist->IsBannedClient(sockAddr.sin_addr.S_un.S_addr)))
     {
         BYTE* pBuffer;
-        uint32 nReceiverVerifyKey;
-        uint32 nSenderVerifyKey;
+        UINT nReceiverVerifyKey;
+        UINT nSenderVerifyKey;
         int nPacketLen = DecryptReceivedClient(buffer, nRealLen, &pBuffer, sockAddr.sin_addr.S_un.S_addr, &nReceiverVerifyKey, &nSenderVerifyKey);
         if (nPacketLen >= 1)
         {
@@ -108,7 +108,7 @@ void CClientUDPSocket::OnReceive(int nErrorCode)
                     theStats.AddDownDataOverheadKad(nPacketLen);
                     if (nPacketLen >= 2)
                     {
-                        uint32 nNewSize = nPacketLen*10+300;
+                        UINT nNewSize = nPacketLen*10+300;
                         BYTE* unpack = NULL;
                         uLongf unpackedsize = 0;
                         int iZLibResult = 0;
@@ -260,7 +260,7 @@ void CClientUDPSocket::OnReceive(int nErrorCode)
     }
 }
 
-bool CClientUDPSocket::ProcessPacket(const BYTE* packet, UINT size, uint8 opcode, uint32 ip, uint16 port)
+bool CClientUDPSocket::ProcessPacket(const BYTE* packet, UINT size, uint8 opcode, UINT ip, uint16 port)
 {
     switch(opcode)
     {
@@ -382,7 +382,7 @@ bool CClientUDPSocket::ProcessPacket(const BYTE* packet, UINT size, uint8 opcode
             // Don't answer him. We probably have him on our queue already, but can't locate him. Force him to establish a TCP connection
             if (!bSenderMultipleIpUnknown)
             {
-                if (((uint32)theApp.uploadqueue->GetWaitingUserCount() + 50) > thePrefs.GetQueueSize())
+                if (((UINT)theApp.uploadqueue->GetWaitingUserCount() + 50) > thePrefs.GetQueueSize())
                 {
                     if (thePrefs.GetDebugClientUDPLevel() > 0)
                         DebugSend("OP__QueueFull", NULL);
@@ -537,13 +537,13 @@ void CClientUDPSocket::OnSend(int nErrorCode)
 // <-- ZZ:UploadBandWithThrottler (UDP)
 }
 
-SocketSentBytes CClientUDPSocket::SendControlData(uint32 maxNumberOfBytesToSend, uint32 /*minFragSize*/)  // ZZ:UploadBandWithThrottler (UDP)
+SocketSentBytes CClientUDPSocket::SendControlData(UINT maxNumberOfBytesToSend, UINT /*minFragSize*/)  // ZZ:UploadBandWithThrottler (UDP)
 {
 // ZZ:UploadBandWithThrottler (UDP) -->
     // NOTE: *** This function is invoked from a *different* thread!
     sendLocker.Lock();
 
-    uint32 sentBytes = 0;
+    UINT sentBytes = 0;
 // <-- ZZ:UploadBandWithThrottler (UDP)
 
     while (!controlpacket_queue.IsEmpty() && !IsBusy() && sentBytes < maxNumberOfBytesToSend)  // ZZ:UploadBandWithThrottler (UDP)
@@ -551,7 +551,7 @@ SocketSentBytes CClientUDPSocket::SendControlData(uint32 maxNumberOfBytesToSend,
         UDPPack* cur_packet = controlpacket_queue.GetHead();
         if( GetTickCount() - cur_packet->dwTime < UDPMAXQUEUETIME )
         {
-            uint32 nLen = cur_packet->packet->size+2;
+            UINT nLen = cur_packet->packet->size+2;
             uchar* sendbuffer = new uchar[nLen];
             memcpy(sendbuffer,cur_packet->packet->GetUDPHeader(),2);
             memcpy(sendbuffer+2,cur_packet->packet->pBuffer,cur_packet->packet->size);
@@ -592,13 +592,13 @@ SocketSentBytes CClientUDPSocket::SendControlData(uint32 maxNumberOfBytesToSend,
 // <-- ZZ:UploadBandWithThrottler (UDP)
 }
 
-int CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort)
+int CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,UINT dwIP, uint16 nPort)
 {
     // NOTE: *** This function is invoked from a *different* thread!
-    uint32 result = CAsyncSocket::SendTo(lpBuf,nBufLen,nPort,ipstr(dwIP));
-    if (result == (uint32)SOCKET_ERROR)
+    UINT result = CAsyncSocket::SendTo(lpBuf,nBufLen,nPort,ipstr(dwIP));
+    if (result == (UINT)SOCKET_ERROR)
     {
-        uint32 error = GetLastError();
+        UINT error = GetLastError();
         if (error == WSAEWOULDBLOCK)
         {
             m_bWouldBlock = true;
@@ -610,7 +610,7 @@ int CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort)
     return 0;
 }
 
-bool CClientUDPSocket::SendPacket(Packet* packet, uint32 dwIP, uint16 nPort, bool bEncrypt, const uchar* pachTargetClientHashORKadID, bool bKad, uint32 nReceiverVerifyKey)
+bool CClientUDPSocket::SendPacket(Packet* packet, UINT dwIP, uint16 nPort, bool bEncrypt, const uchar* pachTargetClientHashORKadID, bool bKad, UINT nReceiverVerifyKey)
 {
     UDPPack* newpending = new UDPPack;
     newpending->dwIP = dwIP;

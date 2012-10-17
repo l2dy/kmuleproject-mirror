@@ -39,13 +39,16 @@ public:
     }
     void UpdateContent(UINT uUpDatarate = (UINT)-1, UINT uDownDatarate = (UINT)-1);
     void Localize();
-    void ShowHide(const bool bHide = false);
+	void ShowHide(const bool bHide = false); //>>> WiZaRd::Static MM
 
 protected:
     int m_iInCallback;
     bool m_bResolveImages;
-    bool m_bRestoreMainWnd;
-    uint8 m_uiLastTransparency; //>>> WiZaRd::Static MM
+//>>> WiZaRd::Static MM
+    //bool m_bRestoreMainWnd;
+	bool m_bVisible;
+    uint8 m_uiLastTransparency; 
+//<<< WiZaRd::Static MM
 //>>> WiZaRd::Ratio Indicator
 	int		lastRatio;
 	static CString	ratioIcons[9]; 

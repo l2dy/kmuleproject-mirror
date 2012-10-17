@@ -205,14 +205,14 @@ void CClosableTabCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 // Vista: This gets never called for an owner drawn tab control
 void CClosableTabCtrl::OnMeasureItem(int iCtlId, LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 {
-    TRACE("CClosableTabCtrl::OnMeasureItem\n");
+    TRACE(L"CClosableTabCtrl::OnMeasureItem\n");
     __super::OnMeasureItem(iCtlId, lpMeasureItemStruct);
 }
 
 // Vista: This gets never called for an owner drawn tab control
 void CClosableTabCtrl::MeasureItem(LPMEASUREITEMSTRUCT)
 {
-    TRACE("CClosableTabCtrl::MeasureItem\n");
+    TRACE(L"CClosableTabCtrl::MeasureItem\n");
 }
 
 void CClosableTabCtrl::DrawItem(LPDRAWITEMSTRUCT lpDIS)
@@ -231,7 +231,7 @@ void CClosableTabCtrl::DrawItem(LPDRAWITEMSTRUCT lpDIS)
     if (!GetItem(nTabIndex, &tci))
         return;
     szLabel[_countof(szLabel) - 1] = L'\0';
-    //TRACE("CClosableTabCtrl::DrawItem: item=%u, state=%08x, color=%08x, rc=%3d,%3d,%3dx%3d\n", nTabIndex, tci.dwState, GetTextColor(lpDIS->hDC), lpDIS->rcItem.left, lpDIS->rcItem.top, lpDIS->rcItem.right - lpDIS->rcItem.left, lpDIS->rcItem.bottom - lpDIS->rcItem.top);
+    //TRACE(L"CClosableTabCtrl::DrawItem: item=%u, state=%08x, color=%08x, rc=%3d,%3d,%3dx%3d\n", nTabIndex, tci.dwState, GetTextColor(lpDIS->hDC), lpDIS->rcItem.left, lpDIS->rcItem.top, lpDIS->rcItem.right - lpDIS->rcItem.left, lpDIS->rcItem.bottom - lpDIS->rcItem.top);
 
     CDC* pDC = CDC::FromHandle(lpDIS->hDC);
     if (!pDC)

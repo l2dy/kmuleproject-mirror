@@ -29,6 +29,7 @@
 #pragma warning(disable:4702) // unreachable code
 #include <list>
 #pragma warning(default:4702) // unreachable code
+#include "./Mod/CustomSearches.h" //>>> WiZaRd::CustomSearches
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -489,6 +490,9 @@ void CSearchParamsWnd::UpdateControls()
         }
     }
 
+//>>> WiZaRd::CustomSearches
+	m_ctlOpts.SetItemData(orCompleteSources, iMethod==SearchTypeKademlia ? 1 : 0);
+/*
     m_ctlOpts.SetItemData(orAvailability, (iMethod==SearchTypeFileDonkey) ? 1 : 0);
     m_ctlOpts.SetItemData(orExtension, (iMethod==SearchTypeFileDonkey) ? 1 : 0);
     m_ctlOpts.SetItemData(orCompleteSources, (iMethod==SearchTypeKademlia || iMethod==SearchTypeFileDonkey) ? 1 : 0);
@@ -498,6 +502,8 @@ void CSearchParamsWnd::UpdateControls()
     m_ctlOpts.SetItemData(orTitle, (iMethod==SearchTypeFileDonkey) ? 1 : 0);
     m_ctlOpts.SetItemData(orAlbum, (iMethod==SearchTypeFileDonkey) ? 1 : 0);
     m_ctlOpts.SetItemData(orArtist, (iMethod==SearchTypeFileDonkey) ? 1 : 0);
+*/
+//<<< WiZaRd::CustomSearches
 }
 
 void CSearchParamsWnd::SetAllIcons()
@@ -505,7 +511,12 @@ void CSearchParamsWnd::SetAllIcons()
     CImageList iml;
     iml.Create(16, 16, theApp.m_iDfltImageListColorFlags | ILC_MASK, 0, 1);
     iml.Add(CTempIconLoader(_T("SearchMethod_KADEMLIA")));
-    iml.Add(CTempIconLoader(_T("SearchMethod_FILEDONKEY")));
+//>>> WiZaRd::CustomSearches
+//    iml.Add(CTempIconLoader(_T("SearchMethod_FILEDONKEY")));
+	iml.Add(CTempIconLoader(L"EMPTY"));
+	iml.Add(CTempIconLoader(L"SEARCH_MULTI"));
+	iml.Add(CTempIconLoader(L"SEARCH_EN"));
+//<<< WiZaRd::CustomSearches
     m_ctlMethod.SetImageList(&iml);
     m_imlSearchMethods.DeleteImageList();
     m_imlSearchMethods.Attach(iml.Detach());
@@ -543,7 +554,9 @@ void CSearchParamsWnd::InitMethodsCtrl()
     int iMethod = m_ctlMethod.GetCurSel();
     m_ctlMethod.ResetContent();
     VERIFY( m_ctlMethod.AddItem(GetResString(IDS_KADEMLIA) + _T(" ") + GetResString(IDS_NETWORK), 0) == SearchTypeKademlia );
-    VERIFY( m_ctlMethod.AddItem(_T("FileDonkey (Web)"), 1) == SearchTypeFileDonkey );
+//>>> WiZaRd::CustomSearches
+//    VERIFY( m_ctlMethod.AddItem(_T("FileDonkey (Web)"), 1) == SearchTypeFileDonkey );
+//<<< WiZaRd::CustomSearches
     UpdateHorzExtent(m_ctlMethod, 16); // adjust dropped width to ensure all strings are fully visible
     m_ctlMethod.SetCurSel(iMethod != CB_ERR ? iMethod : SearchTypeKademlia);
 }
@@ -640,6 +653,7 @@ void CSearchParamsWnd::Localize()
 
     InitMethodsCtrl();
     InitFileTypesCtrl();
+	UpdateSearchList(); //>>> WiZaRd::CustomSearches
 
     m_ctlOpts.SetItemText(orMinSize, 0, GetResString(IDS_SEARCHMINSIZE));
     m_ctlOpts.SetItemText(orMaxSize, 0, GetResString(IDS_SEARCHMAXSIZE));
@@ -709,14 +723,31 @@ void CSearchParamsWnd::OnBnClickedStart()
     SSearchParams* pParams = GetParameters();
     if (pParams)
     {
-        if (!pParams->strExpression.IsEmpty())
-        {
-            if (m_pacSearchString && m_pacSearchString->IsBound())
-                m_pacSearchString->AddItem(pParams->strExpression, 0);
-            m_searchdlg->StartSearch(pParams);
-        }
-        else
-            delete pParams;
+//>>> WiZaRd::CustomSearches
+/*
+		if (!pParams->strExpression.IsEmpty())
+		{
+			if (m_pacSearchString && m_pacSearchString->IsBound())
+				m_pacSearchString->AddItem(pParams->strExpression, 0);
+			m_searchdlg->StartSearch(pParams);
+		}
+		else
+			delete pParams;
+*/
+		const bool bHasExp = !pParams->strExpression.IsEmpty();
+		if (bHasExp && m_pacSearchString && m_pacSearchString->IsBound())
+			m_pacSearchString->AddItem(pParams->strExpression, 0);
+		const UINT cur_sel = pParams->eType;
+		if (bHasExp && cur_sel < SearchTypeWeb)
+			m_searchdlg->StartSearch(pParams);
+		else if (cur_sel > SearchTypeWeb && cur_sel <= theApp.customSearches->GetCount()+SearchTypeWeb+1)
+		{
+			CString tmp = theApp.customSearches->CreateQuery(cur_sel-SearchTypeWeb-1, pParams);
+			if (!tmp.IsEmpty())
+				ShellOpenFile(tmp);
+			delete pParams;
+		}
+//<<< WiZaRd::CustomSearches
     }
 }
 
@@ -771,7 +802,7 @@ void CSearchParamsWnd::SaveSettings()
 
 void CSearchParamsWnd::OnEnChangeName()
 {
-    m_ctlStart.EnableWindow(m_ctlName.GetWindowTextLength() > 0);
+    m_ctlStart.EnableWindow(m_ctlName.GetWindowTextLength() > 0 || m_ctlMethod.GetCurSel() >= SearchTypeWeb); //>>> WiZaRd::CustomSearches
 }
 
 void CSearchParamsWnd::OnBnClickedSearchReset()
@@ -1133,3 +1164,10 @@ void CSearchParamsWnd::ProcessEd2kSearchLinkRequest(CString strSearchTerm)
         OnBnClickedStart();
     }
 }
+
+//>>> WiZaRd::CustomSearches
+void CSearchParamsWnd::UpdateSearchList()
+{
+	theApp.customSearches->InitSearchList(&m_ctlMethod, &m_imlSearchMethods);
+}
+//<<< WiZaRd::CustomSearches

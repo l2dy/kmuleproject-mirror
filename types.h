@@ -7,7 +7,7 @@ typedef	  signed char		sint8;
 typedef unsigned short		uint16;
 typedef	  signed short		sint16;
 
-typedef unsigned int		uint32;
+typedef unsigned int		UINT;
 typedef	  signed int		sint32;
 
 typedef unsigned __int64	uint64;

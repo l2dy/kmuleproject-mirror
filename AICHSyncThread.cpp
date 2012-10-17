@@ -68,7 +68,7 @@ int CAICHSyncThread::Run()
     fullpath.Append(KNOWN2_MET_FILENAME);
 
     CFileException fexp;
-    uint32 nLastVerifiedPos = 0;
+    UINT nLastVerifiedPos = 0;
 
     if (!bJustCreated && !file.Open(fullpath,CFile::modeCreate|CFile::modeReadWrite|CFile::modeNoTruncate|CFile::osSequentialScan|CFile::typeBinary|CFile::shareDenyNone, &fexp))
     {
@@ -95,8 +95,8 @@ int CAICHSyncThread::Run()
                 AfxThrowFileException(CFileException::endOfFile, 0, file.GetFileName());
             }
             //setvbuf(file.m_pStream, NULL, _IOFBF, 16384);
-            uint32 nExistingSize = (UINT)file.GetLength();
-            uint32 nHashCount;
+            UINT nExistingSize = (UINT)file.GetLength();
+            UINT nHashCount;
             while (file.GetPosition() < nExistingSize)
             {
                 liKnown2Hashs.AddTail(CAICHHash(&file));
@@ -227,12 +227,12 @@ int CAICHSyncThread::Run()
                 AfxThrowFileException(CFileException::endOfFile, 0, file.GetFileName());
             }
 
-            uint32 nExistingSize = (UINT)file.GetLength();
-            uint32 nHashCount;
+            UINT nExistingSize = (UINT)file.GetLength();
+            UINT nHashCount;
             ULONGLONG posWritePos = file.GetPosition();
             ULONGLONG posReadPos = file.GetPosition();
-            uint32 nPurgeCount = 0;
-            uint32 nPurgeBecauseOld = 0;
+            UINT nPurgeCount = 0;
+            UINT nPurgeBecauseOld = 0;
             while (file.GetPosition() < nExistingSize)
             {
                 CAICHHash aichHash(&file);
@@ -330,7 +330,7 @@ int CAICHSyncThread::Run()
                 return 0;
         }
         sLock1.Lock();
-        uint32 cDone = 0;
+        UINT cDone = 0;
         for (POSITION pos = m_liToHash.GetHeadPosition(); pos != 0; cDone++)
         {
             if (!CemuleDlg::IsRunning())  // in case of shutdown while still hashing
@@ -362,7 +362,7 @@ int CAICHSyncThread::Run()
 bool CAICHSyncThread::ConvertToKnown2ToKnown264(CSafeFile* pTargetFile)
 {
     // converting known2.met to known2_64.met to support large files
-    // changing hashcount from uint16 to uint32
+    // changing hashcount from uint16 to UINT
 
     // there still exists a lock on known2_64.met and it should be not opened at this point
     CString oldfullpath = thePrefs.GetMuleDirectory(EMULE_CONFIGDIR);
@@ -418,7 +418,7 @@ bool CAICHSyncThread::ConvertToKnown2ToKnown264(CSafeFile* pTargetFile)
     try
     {
         pTargetFile->WriteUInt8(KNOWN2_MET_VERSION);
-        uint32 nHashCount;
+        UINT nHashCount;
         while (oldfile.GetPosition() < oldfile.GetLength())
         {
             CAICHHash aichHash(&oldfile);

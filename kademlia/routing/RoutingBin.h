@@ -46,33 +46,33 @@ public:
     CRoutingBin();
     bool AddContact(CContact* pContact);
     void SetAlive(CContact* pContact);
-    void SetTCPPort(uint32 uIP, uint16 uUDPPort, uint16 uTCPPort);
+    void SetTCPPort(UINT uIP, uint16 uUDPPort, uint16 uTCPPort);
     void RemoveContact(CContact *pContact, bool bNoTrackingAdjust = false);
     CContact *GetContact(const CUInt128 &uID);
-    CContact* GetContact(uint32 uIP, uint16 nPort, bool bTCPPort);
+    CContact* GetContact(UINT uIP, uint16 nPort, bool bTCPPort);
     CContact *GetOldest();
     UINT GetSize() const;
-    void GetNumContacts(uint32& nInOutContacts, uint32& nInOutFilteredContacts, uint8 byMinVersion) const;
+    void GetNumContacts(UINT& nInOutContacts, UINT& nInOutFilteredContacts, uint8 byMinVersion) const;
     UINT GetRemaining() const;
     void GetEntries(ContactList *plistResult, bool bEmptyFirst = true);
-    void GetClosestTo(uint32 uMaxType, const CUInt128 &uTarget, uint32 uMaxRequired, ContactMap *pmapResult, bool bEmptyFirst = true, bool bSetInUse = false);
-    bool ChangeContactIPAddress(CContact* pContact, uint32 uNewIP);
+    void GetClosestTo(UINT uMaxType, const CUInt128 &uTarget, UINT uMaxRequired, ContactMap *pmapResult, bool bEmptyFirst = true, bool bSetInUse = false);
+    bool ChangeContactIPAddress(CContact* pContact, UINT uNewIP);
     void PushToBottom(CContact* pContact); // puts an existing contact from X to the end of the list
-    CContact* GetRandomContact(uint32 nMaxType, uint32 nMinKadVersion);
+    CContact* GetRandomContact(UINT nMaxType, UINT nMinKadVersion);
     void SetAllContactsVerified();
-    static bool CheckGlobalIPLimits(uint32 uIP, uint16 uPort, bool bLog);
+    static bool CheckGlobalIPLimits(UINT uIP, uint16 uPort, bool bLog);
     bool HasOnlyLANNodes() const;
 
     bool m_bDontDeleteContacts;
 
 protected:
-    static void			AdjustGlobalTracking(uint32 uIP, bool bIncrease);
+    static void			AdjustGlobalTracking(UINT uIP, bool bIncrease);
 
 private:
     ContactList m_listEntries;
 
-    static CMap<uint32, uint32, uint32, uint32> s_mapGlobalContactIPs;
-    static CMap<uint32, uint32, uint32, uint32> s_mapGlobalContactSubnets;
+    static CMap<UINT, UINT, UINT, UINT> s_mapGlobalContactIPs;
+    static CMap<UINT, UINT, UINT, UINT> s_mapGlobalContactSubnets;
 
 //>>> WiZaRd::IPFiltering
 public:

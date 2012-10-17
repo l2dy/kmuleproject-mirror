@@ -65,7 +65,7 @@ public:
     void	Localize();
     void	ShowFilesCount();
     void	ShowComments(CShareableFile* file);
-    void	SetAICHHashing(uint32 nVal)
+    void	SetAICHHashing(UINT nVal)
     {
         nAICHHashing = nVal;
     }
@@ -83,7 +83,7 @@ protected:
     bool			m_aSortBySecondValue[4];
     CImageList		m_ImageList;
     CDirectoryItem*	m_pDirectoryFilter;
-    volatile uint32 nAICHHashing;
+    volatile UINT nAICHHashing;
     CToolTipCtrlX*	m_pToolTip;
     CTypedPtrList<CPtrList, CShareableFile*>	liTempShareableFilesInDir;
     CShareableFile*	m_pHighlightedItem;

@@ -59,17 +59,17 @@ public:
     {
         return alltimetransferred;
     }
-    void	SetAllTimeRequests(uint32 nVal);
-    void	SetAllTimeAccepts(uint32 nVal);
+    void	SetAllTimeRequests(UINT nVal);
+    void	SetAllTimeAccepts(UINT nVal);
     void	SetAllTimeTransferred(uint64 nVal);
 
     CKnownFile* fileParent;
 
 private:
-    uint32 requested;
-    uint32 accepted;
+    UINT requested;
+    UINT accepted;
     uint64 transferred;
-    uint32 alltimerequested;
+    UINT alltimerequested;
     uint64 alltimetransferred;
-    uint32 alltimeaccepted;
+    UINT alltimeaccepted;
 };

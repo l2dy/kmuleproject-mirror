@@ -41,13 +41,13 @@ struct PORTANDHASH
 
 struct IPANDTICS
 {
-    uint32 dwIP;
-    uint32 dwInserted;
+    UINT dwIP;
+    UINT dwInserted;
 };
 struct CONNECTINGCLIENT
 {
     CUpDownClient* pClient;
-    uint32 dwInserted;
+    UINT dwInserted;
 };
 
 
@@ -56,8 +56,8 @@ class CDeletedClient
 public:
     CDeletedClient(const CUpDownClient* pClient);
     CArray<PORTANDHASH> m_ItemsList;
-    uint32				m_dwInserted;
-    uint32				m_cBadRequest;
+    UINT				m_dwInserted;
+    UINT				m_cBadRequest;
 };
 
 enum buddyState
@@ -79,29 +79,29 @@ public:
     // Clients
     void	AddClient(CUpDownClient* toadd,bool bSkipDupTest = false);
     void	RemoveClient(CUpDownClient* toremove, LPCTSTR pszReason = NULL);
-    void	GetStatistics(uint32& totalclient, int stats[NUM_CLIENTLIST_STATS],
-                          CMap<uint32, uint32, uint32, uint32>& clientVersionEDonkey,
-                          CMap<uint32, uint32, uint32, uint32>& clientVersionEDonkeyHybrid,
-                          CMap<uint32, uint32, uint32, uint32>& clientVersionEMule,
-                          CMap<uint32, uint32, uint32, uint32>& clientVersionAMule);
-    uint32	GetClientCount()
+    void	GetStatistics(UINT& totalclient, int stats[NUM_CLIENTLIST_STATS],
+                          CMap<UINT, UINT, UINT, UINT>& clientVersionEDonkey,
+                          CMap<UINT, UINT, UINT, UINT>& clientVersionEDonkeyHybrid,
+                          CMap<UINT, UINT, UINT, UINT>& clientVersionEMule,
+                          CMap<UINT, UINT, UINT, UINT>& clientVersionAMule);
+    UINT	GetClientCount()
     {
         return list.GetCount();
     }
     void	DeleteAll();
     bool	AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket* sender);
-    CUpDownClient* FindClientByIP(uint32 clientip, UINT port) const;
-    CUpDownClient* FindClientByUserHash(const uchar* clienthash, uint32 dwIP = 0, uint16 nTCPPort = 0) const;
-    CUpDownClient* FindClientByIP(uint32 clientip) const;
-    CUpDownClient* FindClientByIP_UDP(uint32 clientip, UINT nUDPport) const;
-    CUpDownClient* FindClientByServerID(uint32 uServerIP, uint32 uUserID) const;
-    CUpDownClient* FindClientByUserID_KadPort(uint32 clientID,uint16 kadPort) const;
-    CUpDownClient* FindClientByIP_KadPort(uint32 ip, uint16 port) const;
+    CUpDownClient* FindClientByIP(UINT clientip, UINT port) const;
+    CUpDownClient* FindClientByUserHash(const uchar* clienthash, UINT dwIP = 0, uint16 nTCPPort = 0) const;
+    CUpDownClient* FindClientByIP(UINT clientip) const;
+    CUpDownClient* FindClientByIP_UDP(UINT clientip, UINT nUDPport) const;
+    CUpDownClient* FindClientByServerID(UINT uServerIP, UINT uUserID) const;
+    CUpDownClient* FindClientByUserID_KadPort(UINT clientID,uint16 kadPort) const;
+    CUpDownClient* FindClientByIP_KadPort(UINT ip, uint16 port) const;
 
     // Banned clients
-    void	AddBannedClient(uint32 dwIP);
-    bool	IsBannedClient(uint32 dwIP) const;
-    void	RemoveBannedClient(uint32 dwIP);
+    void	AddBannedClient(UINT dwIP);
+    bool	IsBannedClient(UINT dwIP) const;
+    void	RemoveBannedClient(UINT dwIP);
     UINT	GetBannedCount() const
     {
         return m_bannedList.GetCount();
@@ -110,10 +110,10 @@ public:
 
     // Tracked clients
     void	AddTrackClient(CUpDownClient* toadd);
-    bool	ComparePriorUserhash(uint32 dwIP, uint16 nPort, void* pNewHash);
-    UINT	GetClientsFromIP(uint32 dwIP) const;
+    bool	ComparePriorUserhash(UINT dwIP, uint16 nPort, void* pNewHash);
+    UINT	GetClientsFromIP(UINT dwIP) const;
     void	TrackBadRequest(const CUpDownClient* upcClient, int nIncreaseCounter);
-    uint32	GetBadRequests(const CUpDownClient* upcClient) const;
+    UINT	GetBadRequests(const CUpDownClient* upcClient) const;
     UINT	GetTrackedCount() const
     {
         return m_trackedClientsList.GetCount();
@@ -127,7 +127,7 @@ public:
     void	RemoveFromKadList(CUpDownClient* torem);
     void	AddToKadList(CUpDownClient* toadd);
     bool	DoRequestFirewallCheckUDP(const Kademlia::CContact& contact);
-    //bool	DebugDoRequestFirewallCheckUDP(uint32 ip, uint16 port);
+    //bool	DebugDoRequestFirewallCheckUDP(UINT ip, uint16 port);
     uint8	GetBuddyStatus()
     {
         return m_nBuddyStatus;
@@ -137,12 +137,12 @@ public:
         return m_pBuddy;
     }
 
-    void	AddKadFirewallRequest(uint32 dwIP);
-    bool	IsKadFirewallCheckIP(uint32 dwIP) const;
+    void	AddKadFirewallRequest(UINT dwIP);
+    bool	IsKadFirewallCheckIP(UINT dwIP) const;
 
     // Direct Callback List
-    void	AddTrackCallbackRequests(uint32 dwIP);
-    bool	AllowCalbackRequest(uint32 dwIP) const;
+    void	AddTrackCallbackRequests(UINT dwIP);
+    bool	AllowCalbackRequest(UINT dwIP) const;
 
     // Connecting Clients
     void	AddConnectingClient(CUpDownClient* pToAdd);
@@ -166,11 +166,11 @@ protected:
 private:
     CUpDownClientPtrList list;
     CUpDownClientPtrList m_KadList;
-    CMap<uint32, uint32, uint32, uint32> m_bannedList;
-    CMap<uint32, uint32, CDeletedClient*, CDeletedClient*> m_trackedClientsList;
-    uint32	m_dwLastBannCleanUp;
-    uint32	m_dwLastTrackedCleanUp;
-    uint32 m_dwLastClientCleanUp;
+    CMap<UINT, UINT, UINT, UINT> m_bannedList;
+    CMap<UINT, UINT, CDeletedClient*, CDeletedClient*> m_trackedClientsList;
+    UINT	m_dwLastBannCleanUp;
+    UINT	m_dwLastTrackedCleanUp;
+    UINT m_dwLastClientCleanUp;
     CUpDownClient* m_pBuddy;
     uint8 m_nBuddyStatus;
     CList<IPANDTICS> listFirewallCheckRequests;

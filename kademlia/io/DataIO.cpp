@@ -70,10 +70,10 @@ uint16 CDataIO::ReadUInt16()
     return uRetVal;
 }
 
-uint32 CDataIO::ReadUInt32()
+UINT CDataIO::ReadUInt32()
 {
-    uint32 uRetVal;
-    ReadArray(&uRetVal, sizeof(uint32));
+    UINT uRetVal;
+    ReadArray(&uRetVal, sizeof(UINT));
     return uRetVal;
 }
 
@@ -86,7 +86,7 @@ uint64 CDataIO::ReadUInt64()
 
 void CDataIO::ReadUInt128(CUInt128* puValue)
 {
-    ReadArray(puValue->GetDataPtr(), sizeof(uint32)*4);
+    ReadArray(puValue->GetDataPtr(), sizeof(UINT)*4);
 }
 
 float CDataIO::ReadFloat()
@@ -255,8 +255,8 @@ CKadTag *CDataIO::ReadTag(bool bOptACP)
 
 void CDataIO::ReadTagList(TagList* pTaglist, bool bOptACP)
 {
-    uint32 uCount = ReadByte();
-    for (uint32 i=0; i<uCount; i++)
+    UINT uCount = ReadByte();
+    for (UINT i=0; i<uCount; i++)
     {
         CKadTag* pTag = ReadTag(bOptACP);
         pTaglist->push_back(pTag);
@@ -278,9 +278,9 @@ void CDataIO::WriteUInt16(uint16 uVal)
     WriteArray(&uVal, sizeof(uint16));
 }
 
-void CDataIO::WriteUInt32(uint32 uVal)
+void CDataIO::WriteUInt32(UINT uVal)
 {
-    WriteArray(&uVal, sizeof(uint32));
+    WriteArray(&uVal, sizeof(UINT));
 }
 
 void CDataIO::WriteUInt64(uint64 uVal)
@@ -290,7 +290,7 @@ void CDataIO::WriteUInt64(uint64 uVal)
 
 void CDataIO::WriteUInt128(const CUInt128& uVal)
 {
-    WriteArray(uVal.GetData(), sizeof(uint32)*4);
+    WriteArray(uVal.GetData(), sizeof(UINT)*4);
 }
 
 void CDataIO::WriteFloat(float fVal)
@@ -352,7 +352,7 @@ void CDataIO::WriteTag(const CKadTag* pTag)
             WriteUInt64(pTag->GetInt());
             break;
         case TAGTYPE_UINT32:
-            WriteUInt32((uint32)pTag->GetInt());
+            WriteUInt32((UINT)pTag->GetInt());
             break;
         case TAGTYPE_UINT16:
             WriteUInt16((uint16)pTag->GetInt());
@@ -386,7 +386,7 @@ void CDataIO::WriteTag(LPCSTR szName, uint64 uValue)
     WriteTag(&tag);
 }
 
-void CDataIO::WriteTag(LPCSTR szName, uint32 uValue)
+void CDataIO::WriteTag(LPCSTR szName, UINT uValue)
 {
     CKadTagUInt32 tag(szName, uValue);
     WriteTag(&tag);
@@ -412,7 +412,7 @@ void CDataIO::WriteTag(LPCSTR szName, float uValue)
 
 void CDataIO::WriteTagList(const TagList& tagList)
 {
-    uint32 uCount = (uint32)tagList.size();
+    UINT uCount = (UINT)tagList.size();
     ASSERT( uCount <= 0xFF );
     WriteByte((uint8)uCount);
     for (TagList::const_iterator itTagList = tagList.begin(); itTagList != tagList.end(); ++itTagList)

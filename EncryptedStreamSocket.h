@@ -94,7 +94,7 @@ public:
     virtual ~CEncryptedStreamSocket();
 
     void	SetConnectionEncryption(bool bEnabled, const uchar* pTargetClientHash, bool bServerConnection);
-    uint32	GetRealReceivedBytes() const
+    UINT	GetRealReceivedBytes() const
     {
         return m_nObfuscationBytesReceived;    // indicates how many bytes were received including obfusication so that the parent knows if the receive limit was reached
     }
@@ -118,28 +118,28 @@ protected:
     virtual void	OnError(int nErrorCode) = 0;
     virtual void	OnSend(int nErrorCode);
     CString			DbgGetIPString();
-    void			CryptPrepareSendData(uchar* pBuffer, uint32 nLen);
+    void			CryptPrepareSendData(uchar* pBuffer, UINT nLen);
     bool			IsEncryptionLayerReady();
     uint8			GetSemiRandomNotProtocolMarker() const;
 
-    uint32	m_nObfuscationBytesReceived;
+    UINT	m_nObfuscationBytesReceived;
     EStreamCryptState	m_StreamCryptState;
     EEncryptionMethods  m_EncryptionMethod;
     bool	m_bFullReceive;
     bool	m_bServerCrypt;
 
 private:
-    int		Negotiate(const uchar* pBuffer, uint32 nLen);
+    int		Negotiate(const uchar* pBuffer, UINT nLen);
     void	StartNegotiation(bool bOutgoing);
-    int		SendNegotiatingData(const void* lpBuf, uint32 nBufLen, uint32 nStartCryptFromByte = 0, bool bDelaySend = false);
+    int		SendNegotiatingData(const void* lpBuf, UINT nBufLen, UINT nStartCryptFromByte = 0, bool bDelaySend = false);
 
     RC4_Key_Struct*		m_pRC4SendKey;
     RC4_Key_Struct*		m_pRC4ReceiveKey;
     ENegotiatingState	m_NegotiatingState;
     CSafeMemFile*		m_pfiReceiveBuffer;
-    uint32				m_nReceiveBytesWanted;
+    UINT				m_nReceiveBytesWanted;
     CSafeMemFile*		m_pfiSendBuffer;
-    uint32				m_nRandomKeyPart;
+    UINT				m_nRandomKeyPart;
     CryptoPP::Integer	m_cryptDHA;
 
 };

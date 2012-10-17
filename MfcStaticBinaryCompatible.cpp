@@ -205,10 +205,10 @@ void Mfc_IdleFreeTempMaps()
 #define DUMP_MAP_STATE(map, member) \
 		TRACE(chSTR(map) "->" chSTR(member) ": %d", ((_CHandleMap*)(pState->map))->member.GetCount()); \
 		if (((_CHandleMap*)(pState->map))->member.GetCount() != s_iOld_##map##member) { \
-			TRACE("  (%d)", ((_CHandleMap*)(pState->map))->member.GetCount() - s_iOld_##map##member); \
+			TRACE(L"  (%d)", ((_CHandleMap*)(pState->map))->member.GetCount() - s_iOld_##map##member); \
 			s_iOld_##map##member = ((_CHandleMap*)(pState->map))->member.GetCount(); \
 		} \
-		TRACE("\n");
+		TRACE(L"\n");
 
         bool bDumpMaps = false;
         CHECK_MAP_STATE(m_pmapHWND, m_permanentMap);
@@ -228,7 +228,7 @@ void Mfc_IdleFreeTempMaps()
 
         if (bDumpMaps)
         {
-            TRACE("---Dump start\n");
+            TRACE(L"---Dump start\n");
             DUMP_MAP_STATE(m_pmapHWND, m_permanentMap);
             DUMP_MAP_STATE(m_pmapHWND, m_temporaryMap);
 

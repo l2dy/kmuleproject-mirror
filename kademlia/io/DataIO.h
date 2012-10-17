@@ -39,7 +39,7 @@ public:
     byte ReadByte();
     uint8 ReadUInt8();
     uint16 ReadUInt16();
-    uint32 ReadUInt32();
+    UINT ReadUInt32();
     uint64 ReadUInt64();
     void ReadUInt128(CUInt128* puValue);
     void ReadHash(BYTE* pbyValue);
@@ -52,7 +52,7 @@ public:
     void WriteByte(byte byVal);
     void WriteUInt8(uint8 uVal);
     void WriteUInt16(uint16 uVal);
-    void WriteUInt32(uint32 uVal);
+    void WriteUInt32(UINT uVal);
     void WriteUInt64(uint64 uVal);
     void WriteUInt128(const CUInt128& uVal);
     void WriteHash( const BYTE* pbyVal);
@@ -61,12 +61,12 @@ public:
     void WriteTag(const CKadTag* pTag);
     void WriteTag(LPCSTR szName, uint8 uValue);
     void WriteTag(LPCSTR szName, uint16 uValue);
-    void WriteTag(LPCSTR szName, uint32 uValue);
+    void WriteTag(LPCSTR szName, UINT uValue);
     void WriteTag(LPCSTR szName, uint64 uValue);
     void WriteTag(LPCSTR szName, float fValue);
     void WriteTagList(const TagList& tagList);
-    virtual void ReadArray(LPVOID lpResult, uint32 uByteCount) = 0;
-    virtual void WriteArray(LPCVOID lpVal, uint32 uByteCount) = 0;
+    virtual void ReadArray(LPVOID lpResult, UINT uByteCount) = 0;
+    virtual void WriteArray(LPCVOID lpVal, UINT uByteCount) = 0;
     virtual UINT GetAvailable() const = 0;
 };
 }

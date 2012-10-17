@@ -33,15 +33,15 @@ struct Gap_Struct;
 #pragma pack(1)
 struct ZIP_Entry
 {
-    uint32	header;
+    UINT	header;
     uint16	versionToExtract;
     uint16	generalPurposeFlag;
     uint16	compressionMethod;
     uint16	lastModFileTime;
     uint16	lastModFileDate;
-    uint32	crc32;
-    uint32	lenCompressed;
-    uint32	lenUncompressed;
+    UINT	crc32;
+    UINT	lenCompressed;
+    UINT	lenUncompressed;
     uint16	lenFilename;
     uint16	lenExtraField;
     BYTE	*filename;
@@ -62,23 +62,23 @@ struct ZIP_CentralDirectory
         lenComment = 0;
         comment = NULL;
     }
-    uint32	header;
+    UINT	header;
     uint16	versionMadeBy;
     uint16	versionToExtract;
     uint16	generalPurposeFlag;
     uint16	compressionMethod;
     uint16	lastModFileTime;
     uint16	lastModFileDate;
-    uint32	crc32;
-    uint32	lenCompressed;
-    uint32	lenUncompressed;
+    UINT	crc32;
+    UINT	lenCompressed;
+    UINT	lenUncompressed;
     uint16	lenFilename;
     uint16	lenExtraField;
     uint16	lenComment;
     uint16	diskNumberStart;
     uint16	internalFileAttributes;
-    uint32	externalFileAttributes;
-    uint32	relativeOffsetOfLocalHeader;
+    UINT	externalFileAttributes;
+    UINT	relativeOffsetOfLocalHeader;
     BYTE	*filename;
     BYTE	*extraField;
     BYTE	*comment;
@@ -101,26 +101,26 @@ struct RAR_BlockFile
     // This indicates the position in the input file just after the filename
     ULONGLONG offsetData;
     // This indicates how much of the block is after this offset
-    uint32 dataLength;
+    UINT dataLength;
 
     uint16	HEAD_CRC;
     BYTE	HEAD_TYPE;
     uint16	HEAD_FLAGS;
     uint16	HEAD_SIZE;
-    uint32	PACK_SIZE;
-    uint32	UNP_SIZE;
+    UINT	PACK_SIZE;
+    UINT	UNP_SIZE;
     BYTE	HOST_OS;
-    uint32	FILE_CRC;
-    uint32	FTIME;
+    UINT	FILE_CRC;
+    UINT	FTIME;
     BYTE	UNP_VER;
     BYTE	METHOD;
     uint16	NAME_SIZE;
-    uint32	ATTR;
-    uint32	HIGH_PACK_SIZE;
-    uint32	HIGH_UNP_SIZE;
+    UINT	ATTR;
+    UINT	HIGH_PACK_SIZE;
+    UINT	HIGH_UNP_SIZE;
     BYTE	*FILE_NAME;
     BYTE	*EXT_DATE;
-    uint32	EXT_DATE_SIZE;
+    UINT	EXT_DATE_SIZE;
     BYTE	SALT[8];
 };
 #pragma pack()
@@ -136,7 +136,7 @@ struct ACE_ARCHIVEHEADER
     BYTE	VER_CREATED;
     BYTE	HOST_CREATED;
     BYTE	VOLUME_NUM;
-    uint32	FTIME;
+    UINT	FTIME;
     BYTE	RESERVED[8];
     BYTE	AVSIZE;
     //**AV
@@ -180,12 +180,12 @@ struct ACE_BlockFile
     uint16	HEAD_SIZE;
     BYTE	HEAD_TYPE;
     uint16	HEAD_FLAGS;
-    uint32  PACK_SIZE;
-    uint32  ORIG_SIZE;
-    uint32  FTIME;
-    uint32  FILE_ATTRIBS;
-    uint32  CRC32;
-    uint32  TECHINFO;
+    UINT  PACK_SIZE;
+    UINT  ORIG_SIZE;
+    UINT  FTIME;
+    UINT  FILE_ATTRIBS;
+    UINT  CRC32;
+    UINT  TECHINFO;
     uint16  RESERVED;
     uint16  FNAME_SIZE;
     // fname
@@ -431,8 +431,8 @@ private:
     static UINT AFX_CDECL run(LPVOID lpParam);
     static bool performRecovery(CPartFile *partFile, CTypedPtrList<CPtrList, Gap_Struct*> *filled, bool preview, bool bCreatePartFileCopy = true);
 
-    static bool scanForZipMarker(CFile *input, archiveScannerThreadParams_s* aitp, uint32 marker, uint32 available);
-    static bool processZipEntry(CFile *zipInput, CFile *zipOutput, uint32 available, CTypedPtrList<CPtrList, ZIP_CentralDirectory*> *centralDirectoryEntries);
+    static bool scanForZipMarker(CFile *input, archiveScannerThreadParams_s* aitp, UINT marker, UINT available);
+    static bool processZipEntry(CFile *zipInput, CFile *zipOutput, UINT available, CTypedPtrList<CPtrList, ZIP_CentralDirectory*> *centralDirectoryEntries);
     static bool readZipCentralDirectory(CFile *zipInput, CTypedPtrList<CPtrList, ZIP_CentralDirectory*> *centralDirectoryEntries, CTypedPtrList<CPtrList, Gap_Struct*> *filled);
 
     static RAR_BlockFile *scanForRarFileHeader(CFile *input, archiveScannerThreadParams_s* aitp, UINT64 available);
@@ -445,17 +445,17 @@ private:
 
     static bool CopyFile(CPartFile *partFile, CTypedPtrList<CPtrList, Gap_Struct*> *filled, CString tempFileName);
     static void DeleteMemory(ThreadParam *tp);
-    static bool IsFilled(uint32 start, uint32 end, CTypedPtrList<CPtrList, Gap_Struct*> *filled);
+    static bool IsFilled(UINT start, UINT end, CTypedPtrList<CPtrList, Gap_Struct*> *filled);
 
     static void ISOReadDirectory(archiveScannerThreadParams_s* aitp, UINT32 startSec, CFile* isoInput, CString currentDirName);
 
     static void ProcessProgress(archiveScannerThreadParams_s* aitp, UINT64 pos);
 
     static uint16 readUInt16(CFile *input);
-    static uint32 readUInt32(CFile *input);
+    static UINT readUInt32(CFile *input);
     static uint16 calcUInt16(BYTE *input);
-    static uint32 calcUInt32(BYTE *input);
+    static UINT calcUInt32(BYTE *input);
     static void writeUInt16(CFile *output, uint16 val);
-    static void writeUInt32(CFile *output, uint32 val);
+    static void writeUInt32(CFile *output, UINT val);
 
 };	 // class

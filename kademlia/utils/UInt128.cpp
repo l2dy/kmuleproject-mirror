@@ -248,10 +248,10 @@ void CUInt128::ToBinaryString(CString *pstr, bool bTrim) const
 void CUInt128::ToByteArray(byte *pby) const
 {
 #if defined(_M_IX86) && (_MSC_FULL_VER > 13009037)
-    ((uint32*)pby)[0] = _byteswap_ulong(m_uData[0]);
-    ((uint32*)pby)[1] = _byteswap_ulong(m_uData[1]);
-    ((uint32*)pby)[2] = _byteswap_ulong(m_uData[2]);
-    ((uint32*)pby)[3] = _byteswap_ulong(m_uData[3]);
+    ((UINT*)pby)[0] = _byteswap_ulong(m_uData[0]);
+    ((UINT*)pby)[1] = _byteswap_ulong(m_uData[1]);
+    ((UINT*)pby)[2] = _byteswap_ulong(m_uData[2]);
+    ((UINT*)pby)[3] = _byteswap_ulong(m_uData[3]);
 #else
 
     for (int iIndex=0; iIndex<16; iIndex++)

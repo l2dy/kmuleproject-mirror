@@ -33,7 +33,7 @@ MD5Sum::MD5Sum(const CString& sSource)
     Calculate(sSource);
 }
 
-MD5Sum::MD5Sum(const unsigned char* pachSource, uint32 nLen)
+MD5Sum::MD5Sum(const unsigned char* pachSource, UINT nLen)
 {
     Calculate(pachSource, nLen);
 }
@@ -43,7 +43,7 @@ CString MD5Sum::Calculate(const CString& sSource)
     return Calculate((const unsigned char*)(LPCTSTR)sSource, sSource.GetLength()*sizeof(TCHAR));
 }
 
-CString MD5Sum::Calculate(const unsigned char* pachSource, uint32 nLen)
+CString MD5Sum::Calculate(const unsigned char* pachSource, UINT nLen)
 {
     MD5_CTX context;
 

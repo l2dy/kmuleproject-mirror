@@ -110,7 +110,7 @@ void CUpDownClient::DrawUpStatusBar(CDC* dc, RECT* rect, bool onlygreyrect, bool
             block = m_BlockRequests_queue.GetHead();
             if(block)
             {
-                uint32 start = (uint32)(block->StartOffset/PARTSIZE);
+                UINT start = (UINT)(block->StartOffset/PARTSIZE);
                 s_UpStatusBar.FillRange((uint64)start*PARTSIZE, (uint64)(start+1)*PARTSIZE, crNextSending);
             }
         }
@@ -119,7 +119,7 @@ void CUpDownClient::DrawUpStatusBar(CDC* dc, RECT* rect, bool onlygreyrect, bool
             block = m_DoneBlocks_list.GetHead();
             if(block)
             {
-                uint32 start = (uint32)(block->StartOffset/PARTSIZE);
+                UINT start = (UINT)(block->StartOffset/PARTSIZE);
                 s_UpStatusBar.FillRange((uint64)start*PARTSIZE, (uint64)(start+1)*PARTSIZE, crNextSending);
             }
         }
@@ -224,7 +224,7 @@ int GetFilePrio(const CKnownFile* currequpfile)
  * Gets the current waiting score for this client, taking into consideration waiting
  * time, priority of requested file, and the client's credits.
  */
-uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasevalue) const
+UINT CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasevalue) const
 {
     if (!m_pszUsername)
         return 0;
@@ -285,7 +285,7 @@ uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasev
 
     if( (IsEmuleClient() || this->GetClientSoft() < 10) && m_byEmuleVersion <= 0x19 )
         fBaseValue *= 0.5f;
-    return (uint32)fBaseValue;
+    return (UINT)fBaseValue;
 }
 
 class CSyncHelper
@@ -306,7 +306,7 @@ public:
 void CUpDownClient::CreateNextBlockPackage(bool bBigBuffer)
 {
     // See if we can do an early return. There may be no new blocks to load from disk and add to buffer, or buffer may be large enough allready.
-    const uint32 nBufferLimit = bBigBuffer ? (800 * 1024) : (50 * 1024);
+    const UINT nBufferLimit = bBigBuffer ? (800 * 1024) : (50 * 1024);
     if(m_BlockRequests_queue.IsEmpty() || // There are no new blocks requested
             (m_addedPayloadQueueSession > GetQueueSessionPayloadUp() && GetPayloadInBuffer() > nBufferLimit))
     {
@@ -387,7 +387,7 @@ void CUpDownClient::CreateNextBlockPackage(bool bBigBuffer)
 
             if( i64uTogo > EMBLOCKSIZE*3 )
                 throw GetResString(IDS_ERR_LARGEREQBLOCK);
-            uint32 togo = (uint32)i64uTogo;
+            UINT togo = (UINT)i64uTogo;
 
             if (!srcfile->IsPartFile())
             {
@@ -397,7 +397,7 @@ void CUpDownClient::CreateNextBlockPackage(bool bBigBuffer)
                 file.Seek(currentblock->StartOffset,0);
 
                 filedata = new byte[togo+500];
-                if (uint32 done = file.Read(filedata,togo) != togo)
+                if (UINT done = file.Read(filedata,togo) != togo)
                 {
                     file.SeekToBegin();
                     file.Read(filedata + done,togo-done);
@@ -411,7 +411,7 @@ void CUpDownClient::CreateNextBlockPackage(bool bBigBuffer)
                 partfile->m_hpartfile.Seek(currentblock->StartOffset,0);
 
                 filedata = new byte[togo+500];
-                if (uint32 done = partfile->m_hpartfile.Read(filedata,togo) != togo)
+                if (UINT done = partfile->m_hpartfile.Read(filedata,togo) != togo)
                 {
                     partfile->m_hpartfile.SeekToBegin();
                     partfile->m_hpartfile.Read(filedata + done,togo-done);
@@ -649,12 +649,12 @@ bool CUpDownClient::ProcessExtendedInfo(CSafeMemFile* data, CKnownFile* tempreqf
     return true;
 }
 
-void CUpDownClient::CreateStandartPackets(byte* data,uint32 togo, Requested_Block_Struct* currentblock, bool bFromPF)
+void CUpDownClient::CreateStandartPackets(byte* data,UINT togo, Requested_Block_Struct* currentblock, bool bFromPF)
 {
-    uint32 nPacketSize;
+    UINT nPacketSize;
     CMemFile memfile((BYTE*)data,togo);
     if (togo > 10240)
-        nPacketSize = togo/(uint32)(togo/10240);
+        nPacketSize = togo/(UINT)(togo/10240);
     else
         nPacketSize = togo;
     while (togo)
@@ -681,8 +681,8 @@ void CUpDownClient::CreateStandartPackets(byte* data,uint32 togo, Requested_Bloc
         {
             packet = new Packet(OP_SENDINGPART,nPacketSize+24, OP_EDONKEYPROT, bFromPF);
             md4cpy(&packet->pBuffer[0],GetUploadFileID());
-            PokeUInt32(&packet->pBuffer[16], (uint32)statpos);
-            PokeUInt32(&packet->pBuffer[20], (uint32)endpos);
+            PokeUInt32(&packet->pBuffer[16], (UINT)statpos);
+            PokeUInt32(&packet->pBuffer[20], (UINT)endpos);
             memfile.Read(&packet->pBuffer[24],nPacketSize);
             theStats.AddUpDataOverheadFileRequest(24);
         }
@@ -698,7 +698,7 @@ void CUpDownClient::CreateStandartPackets(byte* data,uint32 togo, Requested_Bloc
     }
 }
 
-void CUpDownClient::CreatePackedPackets(byte* data, uint32 togo, Requested_Block_Struct* currentblock, bool bFromPF)
+void CUpDownClient::CreatePackedPackets(byte* data, UINT togo, Requested_Block_Struct* currentblock, bool bFromPF)
 {
     BYTE* output = new BYTE[togo+300];
     uLongf newsize = togo+300;
@@ -710,15 +710,15 @@ void CUpDownClient::CreatePackedPackets(byte* data, uint32 togo, Requested_Block
         return;
     }
     CMemFile memfile(output,newsize);
-    uint32 oldSize = togo;
+    UINT oldSize = togo;
     togo = newsize;
-    uint32 nPacketSize;
+    UINT nPacketSize;
     if (togo > 10240)
-        nPacketSize = togo/(uint32)(togo/10240);
+        nPacketSize = togo/(UINT)(togo/10240);
     else
         nPacketSize = togo;
 
-    uint32 totalPayloadSize = 0;
+    UINT totalPayloadSize = 0;
 
     while (togo)
     {
@@ -740,7 +740,7 @@ void CUpDownClient::CreatePackedPackets(byte* data, uint32 togo, Requested_Block
         {
             packet = new Packet(OP_COMPRESSEDPART,nPacketSize+24,OP_EMULEPROT,bFromPF);
             md4cpy(&packet->pBuffer[0],GetUploadFileID());
-            PokeUInt32(&packet->pBuffer[16], (uint32)statpos);
+            PokeUInt32(&packet->pBuffer[16], (UINT)statpos);
             PokeUInt32(&packet->pBuffer[20], newsize);
             memfile.Read(&packet->pBuffer[24],nPacketSize);
         }
@@ -751,7 +751,7 @@ void CUpDownClient::CreatePackedPackets(byte* data, uint32 togo, Requested_Block
             Debug(_T("  Start=%I64u  BlockSize=%u  Size=%u\n"), statpos, newsize, nPacketSize);
         }
         // approximate payload size
-        uint32 payloadSize = nPacketSize*oldSize/newsize;
+        UINT payloadSize = nPacketSize*oldSize/newsize;
 
         if(togo == 0 && totalPayloadSize+payloadSize < oldSize)
         {
@@ -891,7 +891,7 @@ bool CUpDownClient::AddReqBlock(Requested_Block_Struct* reqblock, const bool bCh
     return true; // alrighty :)
 }
 
-uint32 CUpDownClient::SendBlockData()
+UINT CUpDownClient::SendBlockData()
 {
     DWORD curTick = ::GetTickCount();
 
@@ -935,16 +935,63 @@ uint32 CUpDownClient::SendBlockData()
         sentBytesPayload = s->GetSentPayloadSinceLastCallAndReset();
         m_nCurQueueSessionPayloadUp = (UINT)(m_nCurQueueSessionPayloadUp + sentBytesPayload);
 
+//>>> WiZaRd::ZZUL Upload [ZZ]
+		if(GetUploadState() == US_UPLOADING) 
+		{
+			bool wasRemoved = false;
+			//if(!IsScheduledForRemoval() && GetQueueSessionPayloadUp() > SESSIONMAXTRANS+1*1024 && curTick-m_dwLastCheckedForEvictTick >= 5*1000) {
+			//    m_dwLastCheckedForEvictTick = curTick;
+			//    wasRemoved = theApp.uploadqueue->RemoveOrMoveDown(this, true);
+			//}
+
+			if(!IsScheduledForRemoval() && /*wasRemoved == false &&*/ GetQueueSessionPayloadUp() > GetCurrentSessionLimit()) 
+			{
+				// Should we end this upload?
+
+				// first clear the average speed, to show ?? as speed in upload slot display
+				m_AvarageUDR_list.RemoveAll();
+				m_nSumForAvgUpDataRate = 0;
+
+				// Give clients in queue a chance to kick this client out.
+				// It will be kicked out only if queue contains a client
+				// of same/higher class as this client, and that new
+				// client must either be a high ID client, or a low ID
+				// client that is currently connected.
+				wasRemoved = theApp.uploadqueue->RemoveOrMoveDown(this);
+
+				// It wasn't removed, so it is allowed to pass into the next amount.
+				if(!wasRemoved) 					
+					++m_curSessionAmountNumber;				
+			}
+
+			if(wasRemoved) 
+			{
+				//if (thePrefs.GetDebugClientTCPLevel() > 0)
+				// DebugSend("OP__OutOfPartReqs", this);
+				//Packet* pCancelTransferPacket = new Packet(OP_OUTOFPARTREQS, 0);
+				//theStats.AddUpDataOverheadFileRequest(pCancelTransferPacket->size);
+				//socket->SendPacket(pCancelTransferPacket,true,true);
+				// WiZaRd:: todo?
+			}
+			else 
+			{
+				// read blocks from file and put on socket
+				CreateNextBlockPackage();
+			}
+		}
+/*
         if (theApp.uploadqueue->CheckForTimeOver(this))
-        {
-            theApp.uploadqueue->RemoveFromUploadQueue(this, _T("Completed transfer"), true);
-            SendOutOfPartReqsAndAddToWaitingQueue();
-        }
-        else
-        {
-            // read blocks from file and put on socket
-            CreateNextBlockPackage();
-        }
+		{
+			theApp.uploadqueue->RemoveFromUploadQueue(this, _T("Completed transfer"), true);
+			SendOutOfPartReqsAndAddToWaitingQueue();
+		}		
+		else
+		{
+			// read blocks from file and put on socket
+			CreateNextBlockPackage();
+		}
+*/
+//<<< WiZaRd::ZZUL Upload [ZZ]
     }
 
     if(sentBytesCompleteFile + sentBytesPartFile > 0 ||
@@ -977,7 +1024,7 @@ uint32 CUpDownClient::SendBlockData()
     }
 
     // Check if it's time to update the display.
-    if (curTick-m_lastRefreshedULDisplay > MINWAIT_BEFORE_ULDISPLAY_WINDOWUPDATE+(uint32)(rand()*800/RAND_MAX))
+    if (curTick-m_lastRefreshedULDisplay > MINWAIT_BEFORE_ULDISPLAY_WINDOWUPDATE+(UINT)(rand()*800/RAND_MAX))
     {
         // Update display
         theApp.emuledlg->transferwnd->GetUploadList()->RefreshClient(this);
@@ -1014,7 +1061,7 @@ void CUpDownClient::FlushSendBlocks()  // call this when you stop upload, or the
         socket->TruncateQueues();
 }
 
-void CUpDownClient::SendHashsetPacket(const uchar* pData, uint32 nSize, bool bFileIdentifiers)
+void CUpDownClient::SendHashsetPacket(const uchar* pData, UINT nSize, bool bFileIdentifiers)
 {
     Packet* packet;
     CSafeMemFile fileResponse(1024);
@@ -1194,14 +1241,14 @@ void CUpDownClient::Ban(LPCTSTR pszReason)
         socket->ShutDown(SD_RECEIVE); // let the socket timeout, since we dont want to risk to delete the client right now. This isnt acutally perfect, could be changed later
 }
 
-uint32 CUpDownClient::GetWaitStartTime() const
+UINT CUpDownClient::GetWaitStartTime() const
 {
     if (credits == NULL)
     {
         ASSERT ( false );
         return 0;
     }
-    uint32 dwResult = credits->GetSecureWaitStartTime(GetIP());
+    UINT dwResult = credits->GetSecureWaitStartTime(GetIP());
     if (dwResult > m_dwUploadTime && IsDownloading())
     {
         //this happens only if two clients with invalid securehash are in the queue - if at all
@@ -1316,3 +1363,51 @@ void CUpDownClient::GetUploadingAndUploadedPart(CArray<uint16>& arr, CArray<uint
     }
 }
 //<<< WiZaRd::Intelligent SOTN
+void CUpDownClient::ResetSessionUp() 
+{
+	m_nCurSessionUp = m_nTransferredUp;
+//>>> WiZaRd::ZZUL Upload [ZZ]
+	//m_addedPayloadQueueSession = 0;
+	//m_nCurQueueSessionPayloadUp = 0;
+	m_addedPayloadQueueSession = GetQueueSessionPayloadUp();
+	m_nCurSessionPayloadUp = m_addedPayloadQueueSession;
+//<<< WiZaRd::ZZUL Upload [ZZ]
+} 
+
+UINT CUpDownClient::GetPayloadInBuffer() const
+{
+//>>> WiZaRd::ZZUL Upload [ZZ]
+	//return m_addedPayloadQueueSession - GetQueueSessionPayloadUp();
+	UINT addedPayloadQueueSession = m_addedPayloadQueueSession;
+	UINT queueSessionPayloadUp = GetQueueSessionPayloadUp();
+	return (addedPayloadQueueSession > queueSessionPayloadUp ? addedPayloadQueueSession - queueSessionPayloadUp : 0);
+//<<< WiZaRd::ZZUL Upload [ZZ]
+}
+
+//>>> WiZaRd::ZZUL Upload [ZZ]
+UINT CUpDownClient::GetSessionPayloadUp() const
+{ 
+	return GetQueueSessionPayloadUp() - m_nCurSessionPayloadUp; 
+}
+
+UINT CUpDownClient::GetQueueSessionUp() const
+{
+	return m_nTransferredUp - m_nCurQueueSessionUp;
+}
+
+void CUpDownClient::ResetQueueSessionUp()
+{
+	m_nCurQueueSessionUp = m_nTransferredUp;
+	m_nCurQueueSessionPayloadUp = 0;
+	m_curSessionAmountNumber = 0;
+} 
+void CUpDownClient::AddToAddedPayloadQueueSession(const UINT toAdd) 
+{ 
+	m_addedPayloadQueueSession += toAdd; 
+}
+
+uint64 CUpDownClient::GetCurrentSessionLimit() const
+{
+	return (uint64)SESSIONMAXTRANS*(m_curSessionAmountNumber+1)+1*1024;
+}
+//<<< WiZaRd::ZZUL Upload [ZZ]

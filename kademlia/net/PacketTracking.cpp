@@ -44,7 +44,7 @@ CPacketTracking::~CPacketTracking()
         delete m_liTrackPacketsIn.RemoveHead();
 }
 
-void CPacketTracking::AddTrackedOutPacket(uint32 dwIP, uint8 byOpcode)
+void CPacketTracking::AddTrackedOutPacket(UINT dwIP, uint8 byOpcode)
 {
     // this tracklist tacks _outgoing_ request packets, to make sure incoming answer packets were requested
     // only track packets which we actually check for later
@@ -86,7 +86,7 @@ bool CPacketTracking::IsTrackedOutListRequestPacket(uint8 byOpcode) const
 
 }
 
-bool CPacketTracking::IsOnOutTrackList(uint32 dwIP, uint8 byOpcode, bool bDontRemove)
+bool CPacketTracking::IsOnOutTrackList(UINT dwIP, uint8 byOpcode, bool bDontRemove)
 {
 #ifdef _DEBUG
     if (!IsTrackedOutListRequestPacket(byOpcode))
@@ -104,7 +104,7 @@ bool CPacketTracking::IsOnOutTrackList(uint32 dwIP, uint8 byOpcode, bool bDontRe
     return false;
 }
 
-bool CPacketTracking::InTrackListIsAllowedPacket(uint32 uIP, uint8 byOpcode, bool /*bValidSenderkey*/)
+bool CPacketTracking::InTrackListIsAllowedPacket(UINT uIP, uint8 byOpcode, bool /*bValidSenderkey*/)
 {
     // this tracklist tacks _incoming_ request packets and acts as a general flood protection by dropping
     // too frequent requests from a single IP, avoiding response floods, processing time DOS attacks and slowing down
@@ -113,7 +113,7 @@ bool CPacketTracking::InTrackListIsAllowedPacket(uint32 uIP, uint8 byOpcode, boo
     // first figure out if this is a request packet to be tracked and its timelimits
     // timelimits are choosed by estimating the max. frequency of such packets on normal operation (+ buffer)
     // (those limits are not meant be fine to be used by normal usage, but only supposed to be a flood detection)
-    uint32 iAllowedPacketsPerMinute;
+    UINT iAllowedPacketsPerMinute;
     const byte byDbgOrgOpcode = byOpcode;
     switch (byOpcode)
     {
@@ -162,8 +162,8 @@ bool CPacketTracking::InTrackListIsAllowedPacket(uint32 uIP, uint8 byOpcode, boo
         // not any request packets, so its a response packet - no further checks on this point
         return true;
     }
-    const uint32 iSecondsPerPacket = 60 / iAllowedPacketsPerMinute;
-    const uint32 dwCurrentTick = ::GetTickCount();
+    const UINT iSecondsPerPacket = 60 / iAllowedPacketsPerMinute;
+    const UINT dwCurrentTick = ::GetTickCount();
     // time for cleaning up?
     if (dwCurrentTick - dwLastTrackInCleanup > MIN2MS(12))
         InTrackListCleanup();
@@ -188,7 +188,7 @@ bool CPacketTracking::InTrackListIsAllowedPacket(uint32 uIP, uint8 byOpcode, boo
             if (rCurTrackedRequest.m_nCount > 0
                     && dwCurrentTick - rCurTrackedRequest.m_dwFirstAdded > SEC2MS(iSecondsPerPacket))
             {
-                uint32 nRemoveCount = (dwCurrentTick - rCurTrackedRequest.m_dwFirstAdded) / SEC2MS(iSecondsPerPacket);
+                UINT nRemoveCount = (dwCurrentTick - rCurTrackedRequest.m_dwFirstAdded) / SEC2MS(iSecondsPerPacket);
                 if (nRemoveCount > rCurTrackedRequest.m_nCount)
                 {
                     rCurTrackedRequest.m_nCount = 0;
@@ -247,8 +247,8 @@ bool CPacketTracking::InTrackListIsAllowedPacket(uint32 uIP, uint8 byOpcode, boo
 
 void CPacketTracking::InTrackListCleanup()
 {
-    const uint32 dwCurrentTick = ::GetTickCount();
-    const uint32 dbgOldSize = m_liTrackPacketsIn.GetCount();
+    const UINT dwCurrentTick = ::GetTickCount();
+    const UINT dbgOldSize = m_liTrackPacketsIn.GetCount();
     dwLastTrackInCleanup = dwCurrentTick;
     POSITION pos1, pos2;
     for (pos1 = m_liTrackPacketsIn.GetHeadPosition(); ( pos2 = pos1 ) != NULL;)
@@ -265,7 +265,7 @@ void CPacketTracking::InTrackListCleanup()
     DebugLog(_T("Cleaned up Kad Incoming Requests Tracklist, entries before: %u, after %u"), dbgOldSize, m_liTrackPacketsIn.GetCount());
 }
 
-void CPacketTracking::AddLegacyChallenge(CUInt128 uContactID, CUInt128 uChallengeID, uint32 uIP, uint8 byOpcode)
+void CPacketTracking::AddLegacyChallenge(CUInt128 uContactID, CUInt128 uChallengeID, UINT uIP, uint8 byOpcode)
 {
     TrackChallenge_Struct sTrack = {uIP, ::GetTickCount(), byOpcode, uContactID, uChallengeID};
     listChallengeRequests.AddHead(sTrack);
@@ -281,7 +281,7 @@ void CPacketTracking::AddLegacyChallenge(CUInt128 uContactID, CUInt128 uChalleng
     }
 }
 
-bool CPacketTracking::IsLegacyChallenge(CUInt128 uChallengeID, uint32 uIP, uint8 byOpcode, CUInt128& ruContactID)
+bool CPacketTracking::IsLegacyChallenge(CUInt128 uChallengeID, UINT uIP, uint8 byOpcode, CUInt128& ruContactID)
 {
     bool bDbgWarning = false;
     for (POSITION pos = listChallengeRequests.GetHeadPosition(); pos != NULL; listChallengeRequests.GetNext(pos))
@@ -305,7 +305,7 @@ bool CPacketTracking::IsLegacyChallenge(CUInt128 uChallengeID, uint32 uIP, uint8
     return false;
 }
 
-bool CPacketTracking::HasActiveLegacyChallenge(uint32 uIP) const
+bool CPacketTracking::HasActiveLegacyChallenge(UINT uIP) const
 {
     for (POSITION pos = listChallengeRequests.GetHeadPosition(); pos != NULL; listChallengeRequests.GetNext(pos))
     {

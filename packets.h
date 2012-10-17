@@ -28,15 +28,15 @@ public:
     Packet(char* header); // only used for receiving packets
     Packet(CMemFile* datafile, uint8 protocol = OP_EDONKEYPROT, uint8 ucOpcode = 0x00);
     Packet(const CStringA& str, uint8 ucProtocol, uint8 ucOpcode);
-    Packet(uint8 in_opcode, uint32 in_size, uint8 protocol = OP_EDONKEYPROT, bool bFromPartFile = true);
-    Packet(char* pPacketPart,uint32 nSize,bool bLast,bool bFromPartFile = true); // only used for splitted packets!
+    Packet(uint8 in_opcode, UINT in_size, uint8 protocol = OP_EDONKEYPROT, bool bFromPartFile = true);
+    Packet(char* pPacketPart,UINT nSize,bool bLast,bool bFromPartFile = true); // only used for splitted packets!
     virtual ~Packet();
 
     virtual char* GetHeader();
     virtual char* GetUDPHeader();
     virtual char* GetPacket();
     virtual char* DetachPacket();
-    virtual uint32 GetRealPacketSize() const
+    virtual UINT GetRealPacketSize() const
     {
         return size+6;
     }
@@ -50,7 +50,7 @@ public:
     bool	UnPackPacket(UINT uMaxDecompressedSize = 50000);
 
     char*	pBuffer;
-    uint32	size;
+    UINT	size;
     uint8	opcode;
     uint8	prot;
 
@@ -83,7 +83,7 @@ public:
     }
     virtual void	AttachPacket(char* pcData, UINT uSize, bool bFromPartFile = false);
     virtual char*	DetachPacket();
-    virtual uint32	GetRealPacketSize() const
+    virtual UINT	GetRealPacketSize() const
     {
         return size;
     }
@@ -106,8 +106,8 @@ public:
     CTag(LPCSTR pszName, const CString& rstrVal);
     CTag(uint8 uName, const CString& rstrVal);
     CTag(uint8 uName, const BYTE* pucHash);
-    CTag(uint8 uName, uint32 nSize, const BYTE* pucData); // data gets copied
-    CTag(uint8 uName, BYTE* pucAttachData, uint32 nSize); // data gets attached (and deleted lateron)
+    CTag(uint8 uName, UINT nSize, const BYTE* pucData); // data gets copied
+    CTag(uint8 uName, BYTE* pucAttachData, UINT nSize); // data gets attached (and deleted lateron)
     CTag(const CTag& rTag);
     CTag(CFileDataIO* data, bool bOptUTF8);
     ~CTag();
@@ -175,7 +175,7 @@ public:
         ASSERT(IsHash());
         return m_pData;
     }
-    uint32	GetBlobSize() const
+    UINT	GetBlobSize() const
     {
         ASSERT(IsBlob());
         return m_nBlobSize;
@@ -210,7 +210,7 @@ protected:
     uint8	m_uType;
     uint8	m_uName;
     LPSTR	m_pszName;
-    uint32	m_nBlobSize;
+    UINT	m_nBlobSize;
     union
     {
         CString*	m_pstrVal;

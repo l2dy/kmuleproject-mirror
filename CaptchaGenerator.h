@@ -23,10 +23,10 @@ class CxImage;
 class CCaptchaGenerator
 {
 public:
-    CCaptchaGenerator(uint32 nLetterCount = 4);
+    CCaptchaGenerator(UINT nLetterCount = 4);
     ~CCaptchaGenerator(void);
 
-    void	ReGenerateCaptcha(uint32 nLetterCount = 4);
+    void	ReGenerateCaptcha(UINT nLetterCount = 4);
     void	Clear();
     CString	GetCaptchaText() const
     {

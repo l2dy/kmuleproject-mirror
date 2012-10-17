@@ -42,7 +42,7 @@ using namespace Kademlia;
 
 CString CMiscUtils::m_sAppDirectory;
 
-void CMiscUtils::IPAddressToString(uint32 uIP, CString *pString)
+void CMiscUtils::IPAddressToString(UINT uIP, CString *pString)
 {
     pString->Format(_T("%ld.%ld.%ld.%ld"),
                     ((uIP >> 24) & 0xFF),
@@ -52,7 +52,7 @@ void CMiscUtils::IPAddressToString(uint32 uIP, CString *pString)
 }
 
 
-void CMiscUtils::DebugHexDump(const byte *pbyData, uint32 uLenData)
+void CMiscUtils::DebugHexDump(const byte *pbyData, UINT uLenData)
 {
 #ifdef DEBUG
     try

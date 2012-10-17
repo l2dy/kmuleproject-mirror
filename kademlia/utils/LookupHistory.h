@@ -29,13 +29,13 @@ public:
         CUInt128		m_uContactID;
         CUInt128		m_uDistance;
         CArray<int>		m_liReceivedFromIdx;
-        uint32			m_dwAskedContactsTime;
-        uint32			m_uRespondedContact;
+        UINT			m_dwAskedContactsTime;
+        UINT			m_uRespondedContact;
         bool			m_bProvidedCloser;
         uint8			m_byContactVersion;
-        uint32			m_dwAskedSearchItemTime;
-        uint32			m_uRespondedSearchItem;
-        uint32			m_uIP;
+        UINT			m_dwAskedSearchItemTime;
+        UINT			m_uRespondedSearchItem;
+        UINT			m_uIP;
         uint16			m_uPort;
         bool			m_bForcedInteresting;
         bool			IsInteresting() const
@@ -50,7 +50,7 @@ public:
     void			ContactReceived(CContact* pRecContact, CContact* pFromContact, CUInt128 uDistance, bool bCloser, bool bForceInteresting = false);
     void			ContactAskedKad(CContact* pContact);
     void			ContactAskedKeyword(CContact* pContact);
-    void			ContactRespondedKeyword(uint32 uContactIP, uint16 uContactUDPPort, uint32 uResultCount);
+    void			ContactRespondedKeyword(UINT uContactIP, uint16 uContactUDPPort, UINT uResultCount);
 
     void			SetSearchStopped()
     {
@@ -66,7 +66,7 @@ public:
     {
         m_sGUIName = sName;
     }
-    void			SetSearchType(uint32 uVal)
+    void			SetSearchType(UINT uVal)
     {
         m_uType = uVal;
     }
@@ -89,7 +89,7 @@ public:
         return m_sGUIName;
     }
     CString						GetTypeName() const;
-    uint32						GetType() const
+    UINT						GetType() const
     {
         return m_uType;
     }
@@ -102,8 +102,8 @@ private:
     CArray<SLookupHistoryEntry*> m_aIntrestingHistoryEntries;
     bool				m_bSearchStopped;
     bool				m_bSearchDeleted;
-    uint32				m_uRefCount;
+    UINT				m_uRefCount;
     CKadTagValueString	m_sGUIName;
-    uint32				m_uType;
+    UINT				m_uType;
 };
 }

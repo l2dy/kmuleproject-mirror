@@ -37,7 +37,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 
-bool IsValidSearchResultClientIPPort(uint32 nIP, uint16 nPort)
+bool IsValidSearchResultClientIPPort(UINT nIP, uint16 nPort)
 {
     return	   nIP != 0
                && nPort != 0
@@ -156,7 +156,7 @@ CSearchFile::CSearchFile(const CSearchFile* copyfrom)
 }
 
 CSearchFile::CSearchFile(CFileDataIO* in_data, bool bOptUTF8,
-                         uint32 nSearchID, uint32 nServerIP, uint16 nServerPort, LPCTSTR pszDirectory, bool bKademlia, bool bServerUDPAnswer)
+                         UINT nSearchID, UINT nServerIP, uint16 nServerPort, LPCTSTR pszDirectory, bool bKademlia, bool bServerUDPAnswer)
 {
     m_bMultipleAICHFound = false;
     m_bKademlia = bKademlia;
@@ -310,7 +310,7 @@ void CSearchFile::StoreToFile(CFileDataIO& rFile) const
     rFile.WriteHash16(m_FileIdentifier.GetMD4Hash());
     rFile.WriteUInt32(m_nClientID);
     rFile.WriteUInt16(m_nClientPort);
-    uint32 nTagCount = taglist.GetCount();
+    UINT nTagCount = taglist.GetCount();
     if (m_FileIdentifier.HasAICHHash())
         nTagCount++;
     rFile.WriteUInt32(nTagCount);
@@ -358,13 +358,13 @@ void CSearchFile::UpdateFileRatingCommentAvail(bool bForceUpdate)
     // searchfile specific
     // the file might have had a serverrating, don't change the rating if no kad ratings were found
     if (uRatings)
-        m_uUserRating = (uint32)ROUND((float)uUserRatings / uRatings);
+        m_uUserRating = (UINT)ROUND((float)uUserRatings / uRatings);
 
     if (bOldHasComment != m_bHasComment || uOldUserRatings != m_uUserRating || bForceUpdate)
         theApp.emuledlg->searchwnd->UpdateSearch(this);
 }
 
-uint32 CSearchFile::AddSources(uint32 count)
+UINT CSearchFile::AddSources(UINT count)
 {
     for (int i = 0; i < taglist.GetSize(); i++)
     {
@@ -388,12 +388,12 @@ uint32 CSearchFile::AddSources(uint32 count)
     return count;
 }
 
-uint32 CSearchFile::GetSourceCount() const
+UINT CSearchFile::GetSourceCount() const
 {
     return GetIntTagValue(FT_SOURCES);
 }
 
-uint32 CSearchFile::AddCompleteSources(uint32 count)
+UINT CSearchFile::AddCompleteSources(UINT count)
 {
     for (int i = 0; i < taglist.GetSize(); i++)
     {
@@ -417,7 +417,7 @@ uint32 CSearchFile::AddCompleteSources(uint32 count)
     return count;
 }
 
-uint32 CSearchFile::GetCompleteSourceCount() const
+UINT CSearchFile::GetCompleteSourceCount() const
 {
     return GetIntTagValue(FT_COMPLETE_SOURCES);
 }

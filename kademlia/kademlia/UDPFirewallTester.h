@@ -32,11 +32,11 @@ class CUDPFirewallTester
 
 public:
     static bool		IsFirewalledUDP(bool bLastStateIfTesting); // Are we UDP firewalled - if unknown open is assumed unless bOnlyVerified == true
-    static void		SetUDPFWCheckResult(bool bSucceeded, bool bTestCancelled, uint32 uFromIP, uint16 nIncomingPort);
+    static void		SetUDPFWCheckResult(bool bSucceeded, bool bTestCancelled, UINT uFromIP, uint16 nIncomingPort);
     static void		ReCheckFirewallUDP(bool bSetUnverified);
     static bool		IsFWCheckUDPRunning();
     static bool		IsVerified();
-    static void		AddPossibleTestContact(const CUInt128 &uClientID, uint32 uIp, uint16 uUdpPort, uint16 uTcpPort, const CUInt128 &uTarget, uint8 uVersion, CKadUDPKey cUDPKey, bool bIPVerified);
+    static void		AddPossibleTestContact(const CUInt128 &uClientID, UINT uIp, uint16 uUdpPort, uint16 uTcpPort, const CUInt128 &uTarget, uint8 uVersion, CKadUDPKey cUDPKey, bool bIPVerified);
     static void		Reset(); // when stopping Kad
     static void		Connected();
     static void		QueryNextClient(); // try the next available client for the firewallcheck
@@ -49,8 +49,8 @@ private:
     static bool		m_bTimedOut;
     static uint8	m_byFWChecksRunningUDP;
     static uint8	m_byFWChecksFinishedUDP;
-    static uint32	m_dwTestStart;
-    static uint32	m_dwLastSucceededTime;
+    static UINT	m_dwTestStart;
+    static UINT	m_dwLastSucceededTime;
     static CList<CContact> m_liPossibleTestClients;
     static CList<UsedClient_Struct> m_liUsedTestClients;
 };

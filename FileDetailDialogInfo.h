@@ -37,7 +37,7 @@ protected:
     CString m_strCaption;
     const CSimpleArray<CObject*>* m_paFiles;
     bool m_bDataChanged;
-    uint32 m_timer;
+    UINT m_timer;
     static LPCTSTR sm_pszNotAvail;
     bool m_bShowFileTypeWarning;
 

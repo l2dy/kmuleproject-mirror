@@ -41,7 +41,7 @@ public:
 
 template<> inline UINT AFXAPI HashKey(const CCKey& key)
 {
-    uint32 hash = 1;
+    UINT hash = 1;
     for (int i = 0; i != 16; i++)
         hash += (key.m_key[i]+1)*((i*i)+1);
     return hash;
@@ -73,7 +73,7 @@ public:
 
 template<> inline UINT AFXAPI HashKey(const CSKey& key)
 {
-    uint32 hash = 1;
+    UINT hash = 1;
     for (int i = 0; i != 16; i++)
         hash += (key.m_key[i]+1)*((i*i)+1);
     return hash;

@@ -47,15 +47,15 @@ public:
     void		GetClientHash(CString *psID) const;
     void		SetClientHash(const CUInt128 &puID);
     CUInt128	GetClientHash() const;
-    uint32		GetIPAddress() const;
-    void		SetIPAddress(uint32 uVal);
+    UINT		GetIPAddress() const;
+    void		SetIPAddress(UINT uVal);
     bool		GetRecheckIP() const;
     void		SetRecheckIP();
     void		IncRecheckIP();
     bool		HasHadContact() const;
     void		SetLastContact();
     bool		HasLostConnection() const;
-    uint32		GetLastContact() const;
+    UINT		GetLastContact() const;
     bool		GetFirewalled() const;
     void		SetFirewalled();
     void		IncFirewalled();
@@ -72,9 +72,9 @@ public:
     void		SetTotalNotes(uint8 uVal);
     uint8		GetTotalStoreNotes() const;
     void		SetTotalStoreNotes(uint8 uVal);
-    uint32		GetKademliaUsers() const;
-    void		SetKademliaUsers(uint32 uVal);
-    uint32		GetKademliaFiles() const;
+    UINT		GetKademliaUsers() const;
+    void		SetKademliaUsers(UINT uVal);
+    UINT		GetKademliaFiles() const;
     void		SetKademliaFiles();
     bool		GetPublish() const;
     void		SetPublish(bool bVal);
@@ -83,7 +83,7 @@ public:
     bool		GetUseExternKadPort() const;
     void		SetUseExternKadPort(bool bVal);
     uint16		GetExternalKadPort() const;
-    void		SetExternKadPort(uint16 uVal, uint32 nFromIP);
+    void		SetExternKadPort(uint16 uVal, UINT nFromIP);
     bool		FindExternKadPort(bool bReset = false);
     uint16		GetInternKadPort() const;
     uint8		GetMyConnectOptions(bool bEncryption = true, bool bCallback = true);
@@ -92,7 +92,7 @@ public:
     float		StatsGetFirewalledRatio(bool bUDP) const;
     float		StatsGetKadV8Ratio();
 
-    static uint32 GetUDPVerifyKey(uint32 dwTargetIP);
+    static UINT GetUDPVerifyKey(UINT dwTargetIP);
 private:
     void Init(LPCTSTR szFilename);
     void Reset();
@@ -103,12 +103,12 @@ private:
     time_t m_tLastContact;
     CUInt128 m_uClientID;
     CUInt128 m_uClientHash;
-    uint32 m_uIP;
-    uint32 m_uIPLast;
-    uint32 m_uRecheckip;
-    uint32 m_uFirewalled;
-    uint32 m_uKademliaUsers;
-    uint32 m_uKademliaFiles;
+    UINT m_uIP;
+    UINT m_uIPLast;
+    UINT m_uRecheckip;
+    UINT m_uFirewalled;
+    UINT m_uKademliaUsers;
+    UINT m_uKademliaFiles;
     uint8 m_uTotalFile;
     uint8 m_uTotalStoreSrc;
     uint8 m_uTotalStoreKey;
@@ -120,12 +120,12 @@ private:
     bool m_bLastFirewallState;
     bool m_bUseExternKadPort;
     uint16 m_nExternKadPort;
-    CArray<uint32> m_anExternPortIPs;
+    CArray<UINT> m_anExternPortIPs;
     CArray<uint16> m_anExternPorts;
-    uint32 m_nStatsUDPOpenNodes;
-    uint32 m_nStatsUDPFirewalledNodes;
-    uint32 m_nStatsTCPOpenNodes;
-    uint32 m_nStatsTCPFirewalledNodes;
+    UINT m_nStatsUDPOpenNodes;
+    UINT m_nStatsUDPFirewalledNodes;
+    UINT m_nStatsTCPOpenNodes;
+    UINT m_nStatsTCPFirewalledNodes;
     time_t m_nStatsKadV8LastChecked;
     float  m_fKadV8Ratio;
 };

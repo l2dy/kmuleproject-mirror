@@ -22,6 +22,7 @@
 #include "SearchResultsWnd.h"
 #include "OtherFunctions.h"
 #include "HelpIDs.h"
+#include "./Mod/CustomSearches.h" //>>> WiZaRd::CustomSearches
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -189,7 +190,7 @@ bool CSearchDlg::CreateNewTab(SSearchParams* pParams, bool bActiveIcon)
     return m_pwndResults->CreateNewTab(pParams, bActiveIcon);
 }
 
-SSearchParams* CSearchDlg::GetSearchParamsBySearchID(uint32 nSearchID)
+SSearchParams* CSearchDlg::GetSearchParamsBySearchID(UINT nSearchID)
 {
     return m_pwndResults->GetSearchResultsParams(nSearchID);
 }
@@ -225,7 +226,7 @@ void CSearchDlg::DeleteAllSearches()
     m_pwndResults->DeleteAllSearches();
 }
 
-bool CSearchDlg::CanDeleteSearch(uint32 nSearchID) const
+bool CSearchDlg::CanDeleteSearch(UINT nSearchID) const
 {
     return m_pwndResults->CanDeleteSearch(nSearchID);
 }
@@ -235,7 +236,7 @@ bool CSearchDlg::CanDeleteAllSearches() const
     return m_pwndResults->CanDeleteAllSearches();
 }
 
-void CSearchDlg::DeleteSearch(uint32 nSearchID)
+void CSearchDlg::DeleteSearch(UINT nSearchID)
 {
     m_pwndResults->DeleteSearch(nSearchID);
 }
@@ -301,3 +302,11 @@ BOOL CSearchDlg::OnHelpInfo(HELPINFO* /*pHelpInfo*/)
     theApp.ShowHelp(eMule_FAQ_GUI_Search);
     return TRUE;
 }
+
+//>>> WiZaRd::CustomSearches
+void CSearchDlg::UpdateSearchList()
+{
+	if (m_pwndParams)
+		m_pwndParams->UpdateSearchList();
+}
+//<<< WiZaRd::CustomSearches

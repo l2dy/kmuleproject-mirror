@@ -46,7 +46,7 @@ public:
 
     //Wrappers
     void Localize();
-    void ShowQueueCount(uint32 number);
+    void ShowQueueCount(UINT number);
     void UpdateFilesCount(int iCount);
     void UpdateCatTabTitles(bool force = true);
     void VerifyCatTabSize();

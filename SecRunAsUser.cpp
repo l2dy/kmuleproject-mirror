@@ -289,8 +289,8 @@ bool CSecRunAsUser::SetObjectPermission(CString strDirFile, DWORD lGrantedAccess
 
 
         // copy the entries form the old acl into the new one and enter a new ace in the right order
-        uint32 newAceIndex = 0;
-        uint32 CurrentAceIndex = 0;
+        UINT newAceIndex = 0;
+        UINT CurrentAceIndex = 0;
         if (AclInfo.AceCount)
         {
             for (CurrentAceIndex = 0; CurrentAceIndex < AclInfo.AceCount; CurrentAceIndex++)

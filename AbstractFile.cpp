@@ -218,7 +218,7 @@ bool CAbstractFile::HasNullHash() const
     return isnulmd4(m_FileIdentifier.GetMD4Hash());
 }
 
-uint32 CAbstractFile::GetIntTagValue(uint8 tagname) const
+UINT CAbstractFile::GetIntTagValue(uint8 tagname) const
 {
     for (int i = 0; i < taglist.GetSize(); i++)
     {
@@ -229,7 +229,7 @@ uint32 CAbstractFile::GetIntTagValue(uint8 tagname) const
     return 0;
 }
 
-bool CAbstractFile::GetIntTagValue(uint8 tagname, uint32& ruValue) const
+bool CAbstractFile::GetIntTagValue(uint8 tagname, UINT& ruValue) const
 {
     for (int i = 0; i < taglist.GetSize(); i++)
     {
@@ -279,7 +279,7 @@ bool CAbstractFile::GetInt64TagValue(uint8 tagname, uint64& ruValue) const
     return false;
 }
 
-uint32 CAbstractFile::GetIntTagValue(LPCSTR tagname) const
+UINT CAbstractFile::GetIntTagValue(LPCSTR tagname) const
 {
     for (int i = 0; i < taglist.GetSize(); i++)
     {
@@ -290,7 +290,7 @@ uint32 CAbstractFile::GetIntTagValue(LPCSTR tagname) const
     return 0;
 }
 
-void CAbstractFile::SetIntTagValue(uint8 tagname, uint32 uValue)
+void CAbstractFile::SetIntTagValue(uint8 tagname, UINT uValue)
 {
     for (int i = 0; i < taglist.GetSize(); i++)
     {
@@ -474,7 +474,7 @@ void CAbstractFile::RefilterKadNotes(bool bUpdate)
         UpdateFileRatingCommentAvail();
 }
 
-CString CAbstractFile::GetED2kLink(bool bHashset, bool bHTML, bool bHostname, bool bSource, uint32 dwSourceIP) const
+CString CAbstractFile::GetED2kLink(bool bHashset, bool bHTML, bool bHostname, bool bSource, UINT dwSourceIP) const
 {
     if (this == NULL)
     {

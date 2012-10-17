@@ -42,32 +42,32 @@ namespace Kademlia
 //NOTE: avoid those function whenever possible -> terribly slow
 uint16 le(uint16 uVal)
 {
-    uint32 uB0 = (uVal      ) & 0xFF;
-    uint32 uB1 = (uVal >>  8) & 0xFF;
+    UINT uB0 = (uVal      ) & 0xFF;
+    UINT uB1 = (uVal >>  8) & 0xFF;
     return (uint16) ((uB0 << 8) | uB1);
 }
 
 //NOTE: avoid those function whenever possible -> terribly slow
-uint32 le(uint32 uVal)
+UINT le(UINT uVal)
 {
-    uint32 uB0 = (uVal      ) & 0xFF;
-    uint32 uB1 = (uVal >>  8) & 0xFF;
-    uint32 uB2 = (uVal >> 16) & 0xFF;
-    uint32 uB3 = (uVal >> 24) & 0xFF;
+    UINT uB0 = (uVal      ) & 0xFF;
+    UINT uB1 = (uVal >>  8) & 0xFF;
+    UINT uB2 = (uVal >> 16) & 0xFF;
+    UINT uB3 = (uVal >> 24) & 0xFF;
     return (uB0 << 24) | (uB1 << 16) | (uB2 << 8) | uB3;
 }
 
 //NOTE: avoid those function whenever possible -> terribly slow
 uint64 le(uint64 uVal)
 {
-    uint32 uB0 = (uint32)((uVal      ) & 0xFF);
-    uint32 uB1 = (uint32)((uVal >>  8) & 0xFF);
-    uint32 uB2 = (uint32)((uVal >> 16) & 0xFF);
-    uint32 uB3 = (uint32)((uVal >> 24) & 0xFF);
-    uint32 uB4 = (uint32)((uVal >> 32) & 0xFF);
-    uint32 uB5 = (uint32)((uVal >> 40) & 0xFF);
-    uint32 uB6 = (uint32)((uVal >> 48) & 0xFF);
-    uint32 uB7 = (uint32)((uVal >> 56) & 0xFF);
+    UINT uB0 = (UINT)((uVal      ) & 0xFF);
+    UINT uB1 = (UINT)((uVal >>  8) & 0xFF);
+    UINT uB2 = (UINT)((uVal >> 16) & 0xFF);
+    UINT uB3 = (UINT)((uVal >> 24) & 0xFF);
+    UINT uB4 = (UINT)((uVal >> 32) & 0xFF);
+    UINT uB5 = (UINT)((uVal >> 40) & 0xFF);
+    UINT uB6 = (UINT)((uVal >> 48) & 0xFF);
+    UINT uB7 = (UINT)((uVal >> 56) & 0xFF);
     return ((uint64)uB0 << 56) | ((uint64)uB1 << 48) | ((uint64)uB2 << 40) | ((uint64)uB3 << 32) |
            ((uint64)uB4 << 24) | ((uint64)uB5 << 16) | ((uint64)uB6 << 8) | (uint64)uB7;
 }

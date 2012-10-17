@@ -89,7 +89,7 @@ public:
             m_nVerBuild = _tstoi(strNumber);
     }
 
-    CClientVersionInfo(uint32 dwTagVersionInfo, UINT nClientMajor)
+    CClientVersionInfo(UINT dwTagVersionInfo, UINT nClientMajor)
     {
         UINT nClientMajVersion = (dwTagVersionInfo >> 17) & 0x7f;
         UINT nClientMinVersion = (dwTagVersionInfo>> 10) & 0x7f;
@@ -97,7 +97,7 @@ public:
         CClientVersionInfo(nClientMajVersion, nClientMinVersion, nClientUpVersion, (UINT)CVI_IGNORED, nClientMajor, SO_UNKNOWN);
     }
 
-    CClientVersionInfo(uint32 nVerMajor, uint32 nVerMinor, uint32 nVerUpdate, uint32 nVerBuild, uint32 ClientTypeMajor, uint32 ClientTypeMinor = SO_UNKNOWN)
+    CClientVersionInfo(UINT nVerMajor, UINT nVerMinor, UINT nVerUpdate, UINT nVerBuild, UINT ClientTypeMajor, UINT ClientTypeMinor = SO_UNKNOWN)
     {
         m_nVerMajor = nVerMajor;
         m_nVerMinor = nVerMinor;

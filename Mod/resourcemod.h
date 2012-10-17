@@ -44,5 +44,18 @@
 //<<< WiZaRd::AutoHL
 #define IDS_HASH_FILE_FINISHED			4017 //>>> WiZaRd::HashProgress Indication
 #define IDS_DROP_BLOCKING_DISABLED		4018 //>>> WiZaRd::Count block/success send [Xman?]
+#define IDS_UPSLOTNUMBER				4019
+//>>> WiZaRd::ZZUL Upload [ZZ]
+#define IDS_UPLOAD_COMPLETED			4020
+#define IDS_UPLOAD_PREEMPTED			4021
+#define IDS_UPLOAD_TOO_MANY_SLOTS		4022
+//<<< WiZaRd::ZZUL Upload [ZZ]
+//>>> WiZaRd::Upload Feedback
+#define IDS_UPLOAD_FEEDBACK				4023 
+#define IDS_FEEDBACKBY					4024
+#define IDS_FEEDBACKTIME				4025
+#define IDS_CURRENT_TRANSFER_DL			4026
+#define IDS_CURRENT_TRANSFER_UL			4027
+//<<< WiZaRd::Upload Feedback
 
 // this line is needed or we get a "fatal error RC1004: unexpected end of file found" - thanks for those wonderful bugs, Microsoft!

@@ -46,9 +46,9 @@ public:
     virtual void Safe_Delete();
 
     bool	Create();
-    virtual void SendPacket(Packet* packet, bool delpacket = true, bool controlpacket = true, uint32 actualPayloadSize = 0, bool bForceImmediateSend = false);
-    virtual SocketSentBytes SendControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend);
-    virtual SocketSentBytes SendFileAndControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend);
+    virtual void SendPacket(Packet* packet, bool delpacket = true, bool controlpacket = true, UINT actualPayloadSize = 0, bool bForceImmediateSend = false);
+    virtual SocketSentBytes SendControlData(UINT maxNumberOfBytesToSend, UINT overchargeMaxBytesToSend);
+    virtual SocketSentBytes SendFileAndControlData(UINT maxNumberOfBytesToSend, UINT overchargeMaxBytesToSend);
 
     void	DbgAppendClientInfo(CString& str);
     CString DbgGetClientInfo();
@@ -73,16 +73,21 @@ protected:
     int			 PacketReceivedSEH(Packet* packet);
     bool		 PacketReceivedCppEH(Packet* packet);
 
-    bool	ProcessPacket(const BYTE* packet, uint32 size,UINT opcode);
-    bool	ProcessExtPacket(const BYTE* packet, uint32 size, UINT opcode, UINT uRawSize);
-    void	PacketToDebugLogLine(LPCTSTR protocol, const uchar* packet, uint32 size, UINT opcode);
+    bool	ProcessPacket(const BYTE* packet, UINT size,UINT opcode);
+    bool	ProcessExtPacket(const BYTE* packet, UINT size, UINT opcode, UINT uRawSize);
+    void	PacketToDebugLogLine(LPCTSTR protocol, const uchar* packet, UINT size, UINT opcode);
     void	SetConState(SocketState val);
 
-    uint32	timeout_timer;
+    UINT	timeout_timer;
     bool	deletethis;
-    uint32	deltimer;
+    UINT	deltimer;
     bool	m_bPortTestCon;
-    uint32	m_nOnConnect;
+    UINT	m_nOnConnect;
+
+//>>> WiZaRd::ZZUL Upload [ZZ]
+public:
+	bool    ExpandReceiveBuffer();
+//<<< WiZaRd::ZZUL Upload [ZZ]
 };
 
 
@@ -106,7 +111,7 @@ public:
     }
     void	KillAllSockets();
     bool	TooManySockets(bool bIgnoreInterval = false);
-    uint32	GetMaxConnectionReached()
+    UINT	GetMaxConnectionReached()
     {
         return maxconnectionreached;
     }
@@ -120,31 +125,31 @@ public:
 
     void	UpdateConnectionsStatus();
     float	GetMaxConperFiveModifier();
-    uint32	GetPeakConnections()
+    UINT	GetPeakConnections() const
     {
         return peakconnections;
     }
-    uint32	GetTotalConnectionChecks()
+    UINT	GetTotalConnectionChecks() const
     {
         return totalconnectionchecks;
     }
-    float	GetAverageConnections()
+    float	GetAverageConnections() const
     {
         return averageconnections;
     }
-    uint32	GetActiveConnections()
+    UINT	GetActiveConnections() const
     {
         return activeconnections;
     }
-    uint16	GetConnectedPort()
+    uint16	GetConnectedPort() const
     {
         return m_port;
     }
-    uint32	GetTotalHalfCon()
+    UINT	GetTotalHalfCon() const
     {
         return m_nHalfOpen;
     }
-    uint32	GetTotalComp()
+    UINT	GetTotalComp() const
     {
         return m_nComp;
     }
@@ -153,14 +158,14 @@ private:
     bool bListening;
     CTypedPtrList<CPtrList, CClientReqSocket*> socket_list;
     uint16	m_OpenSocketsInterval;
-    uint32	maxconnectionreached;
+    UINT	maxconnectionreached;
     uint16	m_ConnectionStates[3];
     int		m_nPendingConnections;
-    uint32	peakconnections;
-    uint32	totalconnectionchecks;
+    UINT	peakconnections;
+    UINT	totalconnectionchecks;
     float	averageconnections;
-    uint32	activeconnections;
+    UINT	activeconnections;
     uint16  m_port;
-    uint32	m_nHalfOpen;
-    uint32	m_nComp;
+    UINT	m_nHalfOpen;
+    UINT	m_nComp;
 };

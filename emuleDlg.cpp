@@ -96,6 +96,7 @@
 //>>> WiZaRd::MediaInfoDLL Update
 #include "./Mod/extractfile.h"
 //<<< WiZaRd::MediaInfoDLL Update
+#include "./Mod/CustomSearches.h" //>>> WiZaRd::CustomSearches
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -165,7 +166,7 @@ BEGIN_MESSAGE_MAP(CemuleDlg, CTrayDialog)
     ///////////////////////////////////////////////////////////////////////////
     // WM_USER messages
     //
-    ON_MESSAGE(UM_CLOSE_MINIMULE, OnCloseMiniMule)
+    //ON_MESSAGE(UM_CLOSE_MINIMULE, OnCloseMiniMule) //>>> WiZaRd::Static MM
 
     // UPnP
     ON_MESSAGE(UM_UPNP_RESULT, OnUPnPResult)
@@ -606,13 +607,10 @@ void CemuleDlg::DoVersioncheck(bool manual)
         time_t tNow = safe_mktime(CTime::GetCurrentTime().GetLocalTm(&tmTemp));
 #ifndef _BETA
         if ( (difftime(tNow,tLast) / 86400) < thePrefs.GetUpdateDays() )
-        {
 #else
         if ( (difftime(tNow,tLast) / 86400) < 3 )
-        {
 #endif
             return;
-        }
     }
 
 //>>> WiZaRd::AutoUpdate
@@ -1166,13 +1164,17 @@ void CemuleDlg::SetActiveDialog(CWnd* dlg)
             transferwnd->UpdateCatTabTitles();
     }
     else if (dlg == chatwnd)
-    {
         chatwnd->chatselector.ShowChat();
-    }
     else if (dlg == statisticswnd)
-    {
         statisticswnd->ShowStatistics();
-    }
+//>>> WiZaRd::CustomSearches
+	// read in our customSearch db
+	else if (dlg == searchwnd)
+	{
+		theApp.customSearches->Load();
+		searchwnd->UpdateSearchList();
+	}
+//<<< WiZaRd::CustomSearches
 }
 
 void CemuleDlg::SetStatusBarPartsSize()
@@ -1747,6 +1749,10 @@ void CemuleDlg::OnClose()
     theApp.lastCommonRouteFinder = NULL;
     delete theApp.m_pUPnPFinder;
     theApp.m_pUPnPFinder = NULL;
+//>>> WiZaRd::CustomSearches
+	delete theApp.customSearches;
+	theApp.customSearches = NULL;
+//<<< WiZaRd::CustomSearches
 //>>> WiZaRd::ClientAnalyzer
     //moved down so all other cleanups can perform first...
     delete theApp.antileechlist;
@@ -1765,7 +1771,7 @@ void CemuleDlg::DestroyMiniMule()
     {
         if (!m_pMiniMule->IsInCallback()) // for safety
         {
-            TRACE("%s - m_pMiniMule->DestroyWindow();\n", __FUNCTION__);
+            TRACE(L"%s - m_pMiniMule->DestroyWindow();\n", __FUNCTION__);
             m_pMiniMule->DestroyWindow();
             m_pMiniMule = NULL;
         }
@@ -1774,14 +1780,16 @@ void CemuleDlg::DestroyMiniMule()
     }
 }
 
-LRESULT CemuleDlg::OnCloseMiniMule(WPARAM wParam, LPARAM /*lParam*/)
-{
-    TRACE("%s -> DestroyMiniMule();\n", __FUNCTION__);
-    DestroyMiniMule();
-    if (wParam)
-        RestoreWindow();
-    return 0;
-}
+//>>> WiZaRd::Static MM
+// LRESULT CemuleDlg::OnCloseMiniMule(WPARAM wParam, LPARAM /*lParam*/)
+// {
+//     TRACE(L"%s -> DestroyMiniMule();\n", __FUNCTION__);
+//     DestroyMiniMule();
+//     if (wParam)
+//         RestoreWindow();
+//     return 0;
+// }
+//<<< WiZaRd::Static MM
 
 void CemuleDlg::OnTrayLButtonUp(CPoint /*pt*/)
 {
@@ -1801,7 +1809,7 @@ void CemuleDlg::OnTrayLButtonUp(CPoint /*pt*/)
     {
         if(thePrefs.GetEnableMiniMule())
         {
-            TRACE("%s - m_pMiniMule->ShowWindow(SW_SHOW);\n", __FUNCTION__);
+            TRACE(L"%s - m_pMiniMule->ShowWindow(SW_SHOW);\n", __FUNCTION__);
             m_pMiniMule->ShowHide();
             m_pMiniMule->SetForegroundWindow();
             m_pMiniMule->BringWindowToTop();
@@ -1828,7 +1836,7 @@ void CemuleDlg::OnTrayRButtonUp(CPoint pt)
     {
         if (m_pMiniMule->GetAutoClose())
         {
-            TRACE("%s - m_pMiniMule->GetAutoClose() -> DestroyMiniMule();\n", __FUNCTION__);
+            TRACE(L"%s - m_pMiniMule->GetAutoClose() -> DestroyMiniMule();\n", __FUNCTION__);
             m_pMiniMule->ShowHide(true);
         }
         else
@@ -3672,7 +3680,7 @@ void	CemuleDlg::CreateMiniMule()
 {
     try
     {
-        TRACE("%s - m_pMiniMule = new CMiniMule(this);\n", __FUNCTION__);
+        TRACE(L"%s - m_pMiniMule = new CMiniMule(this);\n", __FUNCTION__);
         ASSERT( m_pMiniMule == NULL );
         m_pMiniMule = new CMiniMule(this);
         m_pMiniMule->Create(CMiniMule::IDD, this);

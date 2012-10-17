@@ -1041,57 +1041,57 @@ void CMuleToolbarCtrl::ForceRecalcLayout()
 
 void CMuleToolbarCtrl::Dump()
 {
-    TRACE("---\n");
+    TRACE(L"---\n");
     CRect rcWnd;
     GetWindowRect(&rcWnd);
-    TRACE("Wnd =%4d,%4d-%4d,%4d (%4d x %4d)\n", rcWnd.left, rcWnd.top, rcWnd.right, rcWnd.bottom, rcWnd.Width(), rcWnd.Height());
+    TRACE(L"Wnd =%4d,%4d-%4d,%4d (%4d x %4d)\n", rcWnd.left, rcWnd.top, rcWnd.right, rcWnd.bottom, rcWnd.Width(), rcWnd.Height());
 
     CRect rcClnt;
     GetClientRect(&rcClnt);
-    TRACE("Clnt=%4d,%4d-%4d,%4d (%4d x %4d)\n", rcClnt.left, rcClnt.top, rcClnt.right, rcClnt.bottom, rcClnt.Width(), rcClnt.Height());
+    TRACE(L"Clnt=%4d,%4d-%4d,%4d (%4d x %4d)\n", rcClnt.left, rcClnt.top, rcClnt.right, rcClnt.bottom, rcClnt.Width(), rcClnt.Height());
 
     // Total size of all of the visible buttons and separators in the toolbar.
     CSize siz;
     GetMaxSize(&siz);
-    TRACE("MaxSize=                  %4d x %4d\n", siz.cx, siz.cy);
+    TRACE(L"MaxSize=                  %4d x %4d\n", siz.cx, siz.cy);
 
     int iButtons = GetButtonCount();	// Count of the buttons currently in the toolbar.
     int iRows = GetRows();				// Number of rows of buttons in a toolbar with the TBSTYLE_WRAPABLE style
     int iMaxTextRows = GetMaxTextRows();// Maximum number of text rows that can be displayed on a toolbar button.
-    TRACE("ButtonCount=%d  Rows=%d  MaxTextRows=%d\n", iButtons, iRows, iMaxTextRows);
+    TRACE(L"ButtonCount=%d  Rows=%d  MaxTextRows=%d\n", iButtons, iRows, iMaxTextRows);
 
     // Current width and height of toolbar buttons, in pixels.
     DWORD dwButtonSize = GetButtonSize();
-    TRACE("ButtonSize=%dx%d\n", LOWORD(dwButtonSize), HIWORD(dwButtonSize));
+    TRACE(L"ButtonSize=%dx%d\n", LOWORD(dwButtonSize), HIWORD(dwButtonSize));
 
     // Padding for a toolbar control.
     DWORD dwPadding = SendMessage(TB_GETPADDING);
-    TRACE("Padding=%dx%d\n", LOWORD(dwPadding), HIWORD(dwPadding));
+    TRACE(L"Padding=%dx%d\n", LOWORD(dwPadding), HIWORD(dwPadding));
 
     DWORD dwBitmapFlags = GetBitmapFlags(); // TBBF_LARGE=0x0001
-    TRACE("BitmapFlags=%u\n", dwBitmapFlags);
+    TRACE(L"BitmapFlags=%u\n", dwBitmapFlags);
 
     // Bounding rectangle of a button in a toolbar.
-    TRACE("ItemRects:");
+    TRACE(L"ItemRects:");
     for (int i = 0; i < iButtons; i++)
     {
         CRect rcButton(0,0,0,0);
         GetItemRect(i, &rcButton);
-        TRACE(" %2dx%2d", rcButton.Width(), rcButton.Height());
+        TRACE(L" %2dx%2d", rcButton.Width(), rcButton.Height());
     }
-    TRACE("\n");
+    TRACE(L"\n");
 
     // Bounding rectangle for a specified toolbar button.
-    TRACE("Rects    :");
+    TRACE(L"Rects    :");
     for (int i = 0; i < iButtons; i++)
     {
         CRect rcButton(0,0,0,0);
         GetRect(IDC_TOOLBARBUTTON + i, &rcButton);
-        TRACE(" %2dx%2d", rcButton.Width(), rcButton.Height());
+        TRACE(L" %2dx%2d", rcButton.Width(), rcButton.Height());
     }
-    TRACE("\n");
+    TRACE(L"\n");
 
-    TRACE("Info     :");
+    TRACE(L"Info     :");
     for (int i = 0; i < iButtons; i++)
     {
         TCHAR szLabel[256];
@@ -1102,9 +1102,9 @@ void CMuleToolbarCtrl::Dump()
         tbi.pszText = szLabel;
         GetButtonInfo(i, &tbi);
         szLabel[_countof(szLabel) - 1] = L'\0';
-        TRACE(" %2d ", tbi.cx);
+        TRACE(L" %2d ", tbi.cx);
     }
-    TRACE("\n");
+    TRACE(L"\n");
 }
 #endif
 

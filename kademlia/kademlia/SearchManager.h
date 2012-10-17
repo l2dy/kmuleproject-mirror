@@ -47,17 +47,17 @@ class CSearchManager
     friend class CRoutingZone;
     friend class CKademlia;
 public:
-    static bool IsSearching(uint32 uSearchID);
-    static void StopSearch(uint32 uSearchID, bool bDelayDelete);
+    static bool IsSearching(UINT uSearchID);
+    static void StopSearch(UINT uSearchID, bool bDelayDelete);
     static void StopAllSearches();
     // Search for a particular file
     // Will return unique search id, returns zero if already searching for this file.
-    static CSearch* PrepareLookup(uint32 uType, bool bStart, const CUInt128 &uID);
+    static CSearch* PrepareLookup(UINT uType, bool bStart, const CUInt128 &uID);
     // Will return unique search id, returns zero if already searching for this keyword.
     static CSearch* PrepareFindKeywords(LPCTSTR szKeyword, UINT uSearchTermsSize, LPBYTE pucSearchTermsData);
     static bool StartSearch(CSearch* pSearch);
-    static void ProcessResponse(const CUInt128 &uTarget, uint32 uFromIP, uint16 uFromPort, ContactList *plistResults);
-    static void ProcessResult(const CUInt128 &uTarget, const CUInt128 &uAnswer, TagList *plistInfo, uint32 uFromIP, uint16 uFromPort);
+    static void ProcessResponse(const CUInt128 &uTarget, UINT uFromIP, uint16 uFromPort, ContactList *plistResults);
+    static void ProcessResult(const CUInt128 &uTarget, const CUInt128 &uAnswer, TagList *plistInfo, UINT uFromIP, uint16 uFromPort);
     static void ProcessPublishResult(const CUInt128 &uTarget, const uint8 uLoad, const bool bLoadResponse);
     static void GetWords(LPCTSTR sz, WordList *plistWords);
     static void UpdateStats();
@@ -66,7 +66,7 @@ public:
     static void CancelNodeFWCheckUDPSearch();
     static bool FindNodeFWCheckUDP();
     static bool IsFWCheckUDPSearch(const CUInt128 &uTarget);
-    static void SetNextSearchID(uint32 uNextID)
+    static void SetNextSearchID(UINT uNextID)
     {
         m_uNextID = uNextID;
     }
@@ -75,7 +75,7 @@ private:
     static bool FindNodeSpecial(const CUInt128 &uID, CKadClientSearcher* pRequester);
     static void CancelNodeSpecial(CKadClientSearcher* pRequester);
     static void JumpStart();
-    static uint32 m_uNextID;
+    static UINT m_uNextID;
     static SearchMap m_mapSearches;
 };
 }

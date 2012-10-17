@@ -61,12 +61,12 @@ void CStatisticFile::AddTransferred(uint64 bytes)
     theApp.sharedfiles->UpdateFile(fileParent);
 }
 
-void CStatisticFile::SetAllTimeRequests(uint32 nVal)
+void CStatisticFile::SetAllTimeRequests(UINT nVal)
 {
     alltimerequested = nVal;
 }
 
-void CStatisticFile::SetAllTimeAccepts(uint32 nVal)
+void CStatisticFile::SetAllTimeAccepts(UINT nVal)
 {
     alltimeaccepted = nVal;
 }

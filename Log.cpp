@@ -180,7 +180,7 @@ void AddDebugLogLine(EDebugLogPriority Priority, bool bAddToStatusBar, LPCTSTR p
 
     va_list argptr;
     va_start(argptr, pszLine);
-    uint32 nFlag = 0;
+    UINT nFlag = 0;
     if (Priority == DLP_VERYHIGH)
         nFlag = LOG_ERROR;
     else if (Priority == DLP_HIGH)
