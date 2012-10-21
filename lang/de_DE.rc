@@ -166,7 +166,6 @@ BEGIN
     IDS_UPDOWN              "Up: %.1f(%.1f) | Down: %.1f(%.1f)" //!
     IDS_CONNECTED           "Verbunden"
     IDS_LINKNOTADDED        "Konnte Link nicht hinzufügen"
-    IDS_MAIN_EXIT           "Wollen Sie kMule wirklich beenden?"
     IDS_MAIN_POPUP_RESTORE  "Wiederherstellen"
     IDS_EXIT                "&Beenden"
     IDS_CONNECTING          "Verbindung wird hergestellt"
@@ -287,7 +286,6 @@ BEGIN
     IDS_STATS_AVGUL         "Durchschnittliche Uploadrate: %s"
     IDS_STATS_FOUNDSRC      "Gefundene Quellen: %u"
     IDS_STATS_ACTDL         "Aktive Downloads: %u"
-    IDS_STATS_ACTUL         "Aktive Uploads: %u"
     IDS_STATS_WAITINGUSERS  "Wartende Uploads: %u"
     IDS_STATS_RECONNECTS    "Erneute Serververbindungen: %u"
     IDS_STATS_UNKNOWNCLIENT "Unbekannt: %u"
@@ -390,7 +388,6 @@ END
 STRINGTABLE 
 BEGIN
     IDS_ST_ACTIVED          "Aktive Downloads"
-    IDS_ST_ACTIVEU          "Aktive Uploads"
     IDS_CW_MESSAGES         "Nachrichten"
     IDS_CW_FRIENDS          "Freunde"
     IDS_CW_SEND             "Senden"
@@ -661,7 +658,6 @@ BEGIN
     IDS_SP_UL3              "Upload Durchschnitt (Session)"
     IDS_SP_ACTCON           "Aktive Verbindungen"
     IDS_SP_ACTDL            "Aktive Downloads"
-    IDS_SP_ACTUL            "Aktive Uploads"
 END
 
 STRINGTABLE 
@@ -1309,7 +1305,6 @@ BEGIN
     IDS_ST_ULCURRENT        "Upload"
     IDS_ST_ULSLOTSNOOVERHEAD "Upload (ohne Overhead)"
     IDS_ST_ULFRIEND         "Freundesupload"
-    IDS_STATS_ACTUL_ZZ      "Aktive uploads/nötig um Bandbreite auszunutzen: %u"
     IDS_STATS_TOTALUL       "Gesamtanzahl der Uploads: %u"
     IDS_CHAT_DOWNLOADED     "Heruntergeladen:"
     IDS_CHAT_UPLOADED       "Hochgeladen:"
@@ -1652,6 +1647,20 @@ BEGIN
 	IDS_AUTOHL              "AutoHL"
 	IDS_HASH_FILE_FINISHED  "Überprüfung abgeschlossen:"
 	IDS_DROP_BLOCKING_DISABLED "!! DROPPEN BLOCKENDER SOCKETS ABGESCHALTET !!\n\tDein Upload scheint sehr instabil zu sein, Sockets blocken zu stark - evtl. hast du ein zu hohes Uploadlimit eingetragen oder beschränkst die Slots zu sehr?"
+	IDS_MAIN_EXIT           "If you leave kMule uploading you will earn credits that can speed up future downloads.\nDo you really want to exit?"
+	IDS_STATS_ACTUL         "Focused Uploads/Needed To Fill Bandwidth: %u"
+	IDS_ST_ACTIVEU          "Focused uploads"
+	IDS_SP_ACTUL            "Focused Uploads/Needed To Fill Bandwidth"
+	IDS_STATS_ACTUL_ZZ      "Focused uploads/Needed to fill Bandwidth: %u"
+	IDS_UPSLOTNUMBER        "Slot #"
+	IDS_UPLOAD_COMPLETED    "Completing"
+    IDS_UPLOAD_PREEMPTED    "Pre-empted by higher prio upload"
+    IDS_UPLOAD_TOO_MANY_SLOTS "Too many slots"
+	IDS_UPLOAD_FEEDBACK		"Create Upload Feedback"
+	IDS_FEEDBACKBY          "Feedback by"
+	IDS_FEEDBACKTIME        "Feedback created on"
+	IDS_CURRENT_TRANSFER_DL	"currently downloading from %u client(s) @ %s"
+	IDS_CURRENT_TRANSFER_UL "currently uploading to %u client(s) @ %s"
 END
 
 #endif    // German (Germany) resources

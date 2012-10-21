@@ -386,7 +386,12 @@ void CUploadListCtrl::GetItemDisplayText(const CUpDownClient *client, int iSubIt
 
     case 4:
         if (client->HasLowID())
-            _sntprintf(pszText, cchTextMax, _T("%s (%s)"), CastSecondsToHM(client->GetWaitTime() / 1000), GetResString(IDS_IDLOW));
+//>>> WiZaRd::Fix for LowID slots only on connection [VQB]
+			if(client->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick)
+				_sntprintf(pszText, cchTextMax, L"%s (%s %s)", CastSecondsToHM((client->GetWaitTime())/1000), GetResString(IDS_IDLOW), CastSecondsToHM((::GetTickCount()-client->GetUpStartTimeDelay()-client->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick)/1000));
+			else
+//<<< WiZaRd::Fix for LowID slots only on connection [VQB]
+				_sntprintf(pszText, cchTextMax, _T("%s (%s)"), CastSecondsToHM(client->GetWaitTime() / 1000), GetResString(IDS_IDLOW));
         else
             _tcsncpy(pszText, CastSecondsToHM(client->GetWaitTime() / 1000), cchTextMax);
         break;

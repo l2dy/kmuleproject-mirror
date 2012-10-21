@@ -864,7 +864,10 @@ public:
     CTypedPtrList<CPtrList, CPartFile*> m_OtherRequests_list;
     CTypedPtrList<CPtrList, CPartFile*> m_OtherNoNeeded_list;
     uint16			m_lastPartAsked;
-    bool			m_bAddNextConnect;
+//>>> WiZaRd::Fix for LowID slots only on connection [VQB]
+//    bool			m_bAddNextConnect;
+	DWORD			m_dwWouldHaveGottenUploadSlotIfNotLowIdTick;
+//<<< WiZaRd::Fix for LowID slots only on connection [VQB]
 
     void			SetSlotNumber(UINT newValue)
     {

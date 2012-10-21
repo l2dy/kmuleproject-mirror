@@ -146,12 +146,14 @@ Legend:    + added    ~ changed    - removed    ! fixed    > updated
 ~ kMule now hashes the smallest file first to speed up file sharing [WiZaRd]
 + count block/success send && drop blocking sockets [WiZaRd - original by Xman?]
 
-XXXXYYZZ:
+20121021:
 ! fixed handle leak in "share small files first" thx to RejZoR [WiZaRd]
 ! fixed MM issue that could sometimes crash kMule [WiZaRd]
 ~ changed MM animation to "blend" [WiZaRd]
+- removed obsolete filedonkey search method [WiZaRd]
 + "customSearches" [WiZaRd]
  * you can now customize additional web search methods via editing the customSearches.dat in your config dir
  * see the abovementioned file for details and examples
 + ZZ (focused!) upload system [WiZaRd - original by ZZ]
++ improved lowID fairness [WiZaRd - by VQB]
 + Upload feedback [WiZaRd]

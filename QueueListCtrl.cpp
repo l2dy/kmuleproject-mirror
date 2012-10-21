@@ -361,8 +361,12 @@ void CQueueListCtrl::GetItemDisplayText(const CUpDownClient *client, int iSubIte
     case 4:
         if (client->HasLowID())
         {
-            if (client->m_bAddNextConnect)
-                _sntprintf(pszText, cchTextMax, _T("%i ****"),client->GetScore(false));
+//>>> WiZaRd::Fix for LowID slots only on connection [VQB]
+            //if (client->m_bAddNextConnect)
+            //    _sntprintf(pszText, cchTextMax, _T("%i ****"),client->GetScore(false));
+			if (client->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick)
+				_sntprintf(pszText, cchTextMax, L"%i **** Awaited reconnect %s", client->GetScore(false), CastSecondsToHM((::GetTickCount()-client->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick)/1000));
+//<<< WiZaRd::Fix for LowID slots only on connection [VQB]
             else
                 _sntprintf(pszText, cchTextMax, _T("%i (%s)"),client->GetScore(false), GetResString(IDS_IDLOW));
         }

@@ -137,7 +137,10 @@ void CUpDownClient::Init()
 
     credits = NULL;
     m_nSumForAvgUpDataRate = 0;
-    m_bAddNextConnect = false;
+//>>> WiZaRd::Fix for LowID slots only on connection [VQB]
+    //m_bAddNextConnect = false;
+	m_dwWouldHaveGottenUploadSlotIfNotLowIdTick = 0;
+//<<< WiZaRd::Fix for LowID slots only on connection [VQB]
     m_cShowDR = 0;
     m_nUDPPort = 0;
     m_nKadPort = 0;

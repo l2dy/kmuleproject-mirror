@@ -283,7 +283,7 @@ CUpDownClient* CUploadQueue::FindBestClientInQueue(bool allowLowIdAddNextConnect
                 }
 //>>> WiZaRd::ZZUL Upload [ZZ]
                 //else if(!cur_client->m_bAddNextConnect)
-				else if(allowLowIdAddNextConnectToBeSet && !cur_client->m_bAddNextConnect)
+				else if(allowLowIdAddNextConnectToBeSet && !cur_client->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick)
 //<<< WiZaRd::ZZUL Upload [ZZ]
                 {
                     // this client is a lowID client that is not ready to go (not connected)
@@ -334,7 +334,7 @@ CUpDownClient* CUploadQueue::FindBestClientInQueue(bool allowLowIdAddNextConnect
                 }
 //>>> WiZaRd::ZZUL Upload [ZZ]
                 //else if(!cur_client->m_bAddNextConnect)
-				else if(allowLowIdAddNextConnectToBeSet && !cur_client->m_bAddNextConnect)
+				else if(allowLowIdAddNextConnectToBeSet && !cur_client->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick)
 //<<< WiZaRd::ZZUL Upload [ZZ]	
                 {
                     // this client is a lowID client that is not ready to go (not connected)
@@ -356,24 +356,49 @@ CUpDownClient* CUploadQueue::FindBestClientInQueue(bool allowLowIdAddNextConnect
             }
         }
     }
-//>>> WiZaRd::ZZUL Upload [ZZ]	
-	// TODO: apply ZZUL restrictions
+//>>> WiZaRd::ZZUL Upload [ZZ]
 	if(allowLowIdAddNextConnectToBeSet)
-//<<< WiZaRd::ZZUL Upload [ZZ]	
 	{
 //>>> WiZaRd::Payback First
 //		if (bestlowscorePS > bestscorePS && toaddlowPS)
 		if (toaddlowPS && SecondIsBetterClient(bPaybackCheck, toaddPS, toaddlowPS, bestscorePS, bestlowscorePS))
-//<<< WiZaRd::ZZUL Upload [ZZ]
 //<<< WiZaRd::Payback First
-			toaddlowPS->m_bAddNextConnect = true;
+		{
+			if(lowIdClientMustBeInSameOrBetterClassAsThisClient == NULL ||
+				(lowIdClientMustBeInSameOrBetterClassAsThisClient->IsFriend() && lowIdClientMustBeInSameOrBetterClassAsThisClient->GetFriendSlot()) == false &&
+				(toaddlowPS->IsFriend() && toaddlowPS->GetFriendSlot())  || // toaddlowPS has friend slot, but lowIdClientMustBeInSameOrBetterClassAsThisClient not. toaddlowPS is better
+				(lowIdClientMustBeInSameOrBetterClassAsThisClient->IsFriend() && lowIdClientMustBeInSameOrBetterClassAsThisClient->GetFriendSlot()) == (toaddlowPS->IsFriend() && toaddlowPS->GetFriendSlot()) && // both, or neither has friend slots, let powershared and file prio decide
+				(
+					!lowIdClientMustBeInSameOrBetterClassAsThisClient->IsPowerShared() && toaddlowPS->IsPowerShared() ||
+					lowIdClientMustBeInSameOrBetterClassAsThisClient->IsPowerShared() && toaddlowPS->IsPowerShared() && // Both want powershared
+					lowIdClientMustBeInSameOrBetterClassAsThisClient->GetFilePrioAsNumber() <= toaddlowPS->GetFilePrioAsNumber() || // and lowIdClientMustBeInSameOrBetterClassAsThisClient wants same or lower prio, it's ok
+					!lowIdClientMustBeInSameOrBetterClassAsThisClient->IsPowerShared() && !toaddlowPS->IsPowerShared() // neither wants powershared file, it's ok
+				)
+				)
+					toaddlowPS->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick = ::GetTickCount();
+		}
 //>>> WiZaRd::Payback First
 //		else if (bestlowscore > bestscore && toaddlow)
 		else if (toaddlow && SecondIsBetterClient(bPaybackCheck, toadd, toaddlow, bestscore, bestlowscore))
+		{
+			if(lowIdClientMustBeInSameOrBetterClassAsThisClient == NULL ||
+				(lowIdClientMustBeInSameOrBetterClassAsThisClient->IsFriend() && lowIdClientMustBeInSameOrBetterClassAsThisClient->GetFriendSlot()) == false &&
+				(toaddlow->IsFriend() && toaddlow->GetFriendSlot())  || // toaddlow has friend slot, but lowIdClientMustBeInSameOrBetterClassAsThisClient not. toaddlow is better
+				(lowIdClientMustBeInSameOrBetterClassAsThisClient->IsFriend() && lowIdClientMustBeInSameOrBetterClassAsThisClient->GetFriendSlot()) == (toaddlow->IsFriend() && toaddlow->GetFriendSlot()) && // both, or neither has friend slots, let powershared and file prio decide
+				(
+					!lowIdClientMustBeInSameOrBetterClassAsThisClient->IsPowerShared() && toaddlow->IsPowerShared() ||
+					lowIdClientMustBeInSameOrBetterClassAsThisClient->IsPowerShared() && toaddlow->IsPowerShared() && // Both want powershared
+					lowIdClientMustBeInSameOrBetterClassAsThisClient->GetFilePrioAsNumber() <= toaddlow->GetFilePrioAsNumber() || // and lowIdClientMustBeInSameOrBetterClassAsThisClient wants same or lower prio, it's ok
+					!lowIdClientMustBeInSameOrBetterClassAsThisClient->IsPowerShared() && !toaddlow->IsPowerShared() // neither wants powershared file, it's ok
+				)
+				)
+				toaddlow->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick = ::GetTickCount();
+		}
 //<<< WiZaRd::Payback First
-			toaddlow->m_bAddNextConnect = true;
 	}
-    if(friendpos)
+//<<< WiZaRd::ZZUL Upload [ZZ]
+
+	if(friendpos)
         return friendpos;
     if(toaddPS)
         return toaddPS;
@@ -1111,19 +1136,20 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
     for (pos1 = waitinglist.GetHeadPosition(); ( pos2 = pos1 ) != NULL;)
     {
         waitinglist.GetNext(pos1);
-        CUpDownClient* cur_client= waitinglist.GetAt(pos2);
+        CUpDownClient* cur_client = waitinglist.GetAt(pos2);
         if (cur_client == client)
         {
-//>>> WiZaRd::ZZUL Upload [ZZ]
-			if (!addInFirstPlace && client->m_bAddNextConnect && AcceptNewClient(client->m_bAddNextConnect))
+//>>> WiZaRd::Fix for LowID slots only on connection [VQB]
+			// VQB LowID Slot Patch, enhanced in ZZUL
+			if (!addInFirstPlace && client->HasLowID() && client->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick && AcceptNewClient())
             //if (client->m_bAddNextConnect && AcceptNewClient(client->m_bAddNextConnect))
-//<<< WiZaRd::ZZUL Upload [ZZ]
+//<<< WiZaRd::Fix for LowID slots only on connection [VQB]
             {
                 //Special care is given to lowID clients that missed their upload slot
                 //due to the saving bandwidth on callbacks.
                 if(thePrefs.GetLogUlDlEvents())
                     AddDebugLogLine(true, _T("Adding ****lowid when reconnecting. Client: %s"), client->DbgGetClientInfo());
-                client->m_bAddNextConnect = false;
+                //client->m_bAddNextConnect = false; //>>> WiZaRd::Fix for LowID slots only on connection [VQB]
                 RemoveFromWaitingQueue(client, true);
                 // statistic values // TODO: Maybe we should change this to count each request for a file only once and ignore reasks
                 reqfile->statistic.AddRequest();
@@ -1324,7 +1350,10 @@ bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client, LPCTSTR pszReaso
 				AddDebugLogLine(DLP_DEFAULT, true,_T("Removing client from upload list: %s Client: %s Transferred: %s SessionUp: %s QueueSessionUp: %s QueueSessionPayload: %s In buffer: %s Req blocks: %i File: %s"), pszReason==NULL ? _T("") : pszReason, client->DbgGetClientInfo(), CastSecondsToHM( client->GetUpStartTimeDelay()/1000), CastItoXBytes(client->GetSessionUp(), false, false), CastItoXBytes(client->GetQueueSessionUp(), false, false), CastItoXBytes(client->GetQueueSessionPayloadUp(), false, false), CastItoXBytes(client->GetPayloadInBuffer()), client->GetNumberOfRequestedBlocksInQueue(), (theApp.sharedfiles->GetFileByID(client->GetUploadFileID())?theApp.sharedfiles->GetFileByID(client->GetUploadFileID())->GetFileName():_T("")));
                 //AddDebugLogLine(DLP_DEFAULT, true,_T("Removing client from upload list: %s Client: %s Transferred: %s SessionUp: %s QueueSessionPayload: %s In buffer: %s Req blocks: %i File: %s"), pszReason==NULL ? _T("") : pszReason, client->DbgGetClientInfo(), CastSecondsToHM( client->GetUpStartTimeDelay()/1000), CastItoXBytes(client->GetSessionUp(), false, false), CastItoXBytes(client->GetQueueSessionPayloadUp(), false, false), CastItoXBytes(client->GetPayloadInBuffer()), client->GetNumberOfRequestedBlocksInQueue(), (theApp.sharedfiles->GetFileByID(client->GetUploadFileID())?theApp.sharedfiles->GetFileByID(client->GetUploadFileID())->GetFileName():_T("")));
 //<<< WiZaRd::ZZUL Upload [ZZ]
-            client->m_bAddNextConnect = false;
+//>>> WiZaRd::Fix for LowID slots only on connection [VQB]
+            //client->m_bAddNextConnect = false;
+			client->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick = 0;
+//<<< WiZaRd::Fix for LowID slots only on connection [VQB]
 //>>> WiZaRd::ZZUL Upload [ZZ]
 			client->UnscheduleForRemoval();
 			if(!earlyabort)
@@ -1416,7 +1445,9 @@ void CUploadQueue::RemoveFromWaitingQueue(POSITION pos, bool updatewindow)
         theApp.emuledlg->transferwnd->GetQueueList()->RemoveClient(todelete);
         theApp.emuledlg->transferwnd->ShowQueueCount(waitinglist.GetCount());
     }
-    todelete->m_bAddNextConnect = false;
+//>>> WiZaRd::Fix for LowID slots only on connection [VQB]
+    //todelete->m_bAddNextConnect = false;
+//<<< WiZaRd::Fix for LowID slots only on connection [VQB]
     todelete->SetUploadState(US_NONE);
 }
 
@@ -1984,8 +2015,8 @@ bool CUploadQueue::RightClientIsBetter(CUpDownClient* leftClient, UINT leftScore
     
     if(leftClient) 
 	{
-        leftLowIdMissed = leftClient->HasLowID() && leftClient->socket && leftClient->socket->IsConnected() && leftClient->m_bAddNextConnect && leftClient->GetQueueSessionPayloadUp() < SESSIONMAXTRANS;
-        rightLowIdMissed = rightClient->HasLowID() && rightClient->socket && rightClient->socket->IsConnected() && rightClient->m_bAddNextConnect && rightClient->GetQueueSessionPayloadUp() < SESSIONMAXTRANS;
+        leftLowIdMissed = leftClient->HasLowID() && leftClient->socket && leftClient->socket->IsConnected() && leftClient->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick && leftClient->GetQueueSessionPayloadUp() < SESSIONMAXTRANS;
+        rightLowIdMissed = rightClient->HasLowID() && rightClient->socket && rightClient->socket->IsConnected() && rightClient->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick && rightClient->GetQueueSessionPayloadUp() < SESSIONMAXTRANS;
     }
 
     if(
@@ -1995,9 +2026,9 @@ bool CUploadQueue::RightClientIsBetter(CUpDownClient* leftClient, UINT leftScore
 
          (leftClient->IsFriend() && leftClient->GetFriendSlot()) == (rightClient->IsFriend() && rightClient->GetFriendSlot()) && // both or none have friend slot, let file prio and score decide
          (
-          leftClient->IsPowerShared() == false && rightClient->IsPowerShared() == true || // rightClient wants powershare file, but leftClient not, so rightClient is better
+          !leftClient->IsPowerShared() && rightClient->IsPowerShared() || // rightClient wants powershare file, but leftClient not, so rightClient is better
 
-          leftClient->IsPowerShared() == true && rightClient->IsPowerShared() == true && // they both want powershare file
+          leftClient->IsPowerShared() && rightClient->IsPowerShared() && // they both want powershare file
           leftClient->GetFilePrioAsNumber() < rightClient->GetFilePrioAsNumber() || // and rightClient wants higher prio file, so rightClient is better
 
           (
@@ -2008,13 +2039,13 @@ bool CUploadQueue::RightClientIsBetter(CUpDownClient* leftClient, UINT leftScore
            !leftLowIdMissed && rightLowIdMissed || // rightClient is lowId and has missed a slot and is currently connected
 
            leftLowIdMissed && rightLowIdMissed && // both have missed a slot and both are currently connected
-           leftClient->m_bAddNextConnect > rightClient->m_bAddNextConnect || // but right client missed earlier
+           leftClient->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick > rightClient->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick || // but right client missed earlier
 
            (
             !leftLowIdMissed && !rightLowIdMissed || // neither have both missed and is currently connected
 
             leftLowIdMissed && rightLowIdMissed && // both have missed a slot
-            leftClient->m_bAddNextConnect == rightClient->m_bAddNextConnect // and at same time (should hardly ever happen)
+            leftClient->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick == rightClient->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick // and at same time (should hardly ever happen)
            ) &&
            rightScore > leftScore // but rightClient has better score, so rightClient is better
           )
@@ -2023,7 +2054,7 @@ bool CUploadQueue::RightClientIsBetter(CUpDownClient* leftClient, UINT leftScore
         leftClient == NULL // there's no old client to compare with, so rightClient is better (than null)
        ) &&
        (!rightClient->IsBanned()) && // don't allow banned client to be best
-       IsDownloading(rightClient) == false // don't allow downloading clients to be best
+       !IsDownloading(rightClient) // don't allow downloading clients to be best
       ) 
 		return true;
 	
@@ -2098,10 +2129,10 @@ void CUploadQueue::InsertInUploadingList(CUpDownClient* newclient)
 			!newclient->IsScheduledForRemoval() &&
 			(
 				!newclient->HasLowID() ||
-				!newclient->m_bAddNextConnect ||
+				!newclient->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick ||
 				newclient->GetQueueSessionPayloadUp() >= SESSIONMAXTRANS ||
-				newclient->HasLowID() && newclient->m_bAddNextConnect &&
-				newclient->GetUpStartTimeDelay() + (::GetTickCount()-newclient->m_bAddNextConnect) <= uploadingClient->GetUpStartTimeDelay() + ((uploadingClient->HasLowID() && uploadingClient->m_bAddNextConnect && uploadingClient->GetQueueSessionPayloadUp() < SESSIONMAXTRANS) ? (::GetTickCount()-uploadingClient->m_bAddNextConnect) : 0)
+				newclient->HasLowID() && newclient->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick &&
+				newclient->GetUpStartTimeDelay() + (::GetTickCount()-newclient->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick) <= uploadingClient->GetUpStartTimeDelay() + ((uploadingClient->HasLowID() && uploadingClient->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick && uploadingClient->GetQueueSessionPayloadUp() < SESSIONMAXTRANS) ? (::GetTickCount()-uploadingClient->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick) : 0)
 			) ||
 			newclient->IsScheduledForRemoval() &&
 			uploadingClient->IsScheduledForRemoval() &&

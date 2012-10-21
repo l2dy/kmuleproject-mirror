@@ -60,7 +60,6 @@ BEGIN
     IDS_ABOUTBOX            "&À propos de kMule..."
 	IDS_MAIN_READY          "%s Version%s prête"
 	IDS_ASSIGNED2K          "kMule n'est pas associée aux liens eD2K. Voulez-vous associer les liens eD2K avec kMule maintenant (recommandé) ?"
-	IDS_MAIN_EXIT           "Voulez-vous vraiment quitter ?"
 	IDS_ERR_COMPLETIONFAILED 
                             "Erreur inattendue pendant l'achèvement du fichier ""%s"". Fichier en pause, redémarrer kMule pour commencer un autre essai de finalisation"
 	IDS_TRAYDLG_SPEED       "Vitesse"
@@ -82,7 +81,7 @@ BEGIN
     IDS_FO_TEMPUDP_F        "Échec d'ouverture du port %u (UDP) dans le firewall interne WinXP pour cette session"
     IDS_FO_PREF_EXISTED     "kMule a détecté une règle existante pour le port sélectioné, qui ne sera pas réécrite ou remplacée. Règles manquantes ont été ajoutés avec succès.\nS'il vous plaît noter que les autres pare-feu et les routeurs ne sont pas affectés par cela !"
     IDS_FO_PREF_STARTUP     "Ouverture/fermeture des ports dans le firewall WinXP lors de l'ouverture/fermeture"
-    IDS_PORTINFO            "kMule utilise deux ports pour la communication avec les serveurs et les clients. Ces ports doivent être libres et disponibles pour les clients distants. Le port TCP doit être disponible pour assurer la fonction principale de kMule. Le port UDP est uitlisé pour Kad (réseau décentralisé) et pour économiser le réseau (Overhead).\n\nVous pouvez modifier les ports ici si aucune activité sur le réseau a commencé."
+    IDS_PORTINFO            "kMule utilise deux ports pour communiquer avec les serveurs et les clients. Ces ports doivent être libres et disponibles. Le port TCP doit être disponible pour assurer les fonctionnalités principales de kMule. Le port UDP est utilisé pour Kad (réseau sans serveur) et pour économiser le réseau (surplus de bande passante).\n\nVous pouvez modifier les ports ici si aucune activité sur le réseau n'a commencé."
     IDS_TWEAKS_WARNING      "Avertissement: Ne modifiez pas ces paramètres sauf si vous savez ce que vous faites. Sinon vous pouvez facilement faire empirer les choses pour vous-même. kMule fonctionnera normalement sans changer ces paramètres."
     IDS_CMT_AIDE            "Pour un film, vous pouvez dire sa durée, son histoire, sa langue... Et si c'est un fake, vous pouvez informer les autres utilisateurs de kMule..."	
     IDS_NEWVERSIONAVL       "Une nouvelle version de kMule est disponible ! Vérifiez la page d'accueil du projet pour plus d'informations."
@@ -90,7 +89,7 @@ BEGIN
     IDS_NONEWERVERSION      "Pas de nouvelle version de kMule détectée."
     IDS_FIRSTAUTODOWN       "Activez cette option si vous voulez que les priorités de téléchargement soit gérées par kMule.\n\nEn activant cette option vous autorisez kMule à assurer les téléchargements avec de nombreuses sources, de ne pas interférer avec les téléchargements qui ont peu de sources. Cette option s'appliquera que sur les futurs téléchargements."
     IDS_FIRSTAUTOUP         "Activez cette option si vous voulez que les priorités de partage soit gérées par kMule.\n\nEn activant cette option vous autorisez kMule à augmenter la priorité sur les fichiers rares ce qui rendra les fichiers populaires plus difficile à avoir. En désactivant cette option vous autorisez kMule à partager les fichiers populaires plus souvent, ce qui rendra les fichiers rares plus difficile à avoir. Cette option s'appliquera que sur les futurs partages."
-    IDS_FIRSTCOMPLETE       "Vous avez maintenant terminé la première configuration.\n\nToutes ces options et plus encore peuvent être changées en cliquant sur l'icône Préférences. Pour obtenir des explications et de l'aide appuyez sur F1 dans kMule !"
+    IDS_FIRSTCOMPLETE       "Vous avez terminé cet assistant.\n\nToutes ces options et d'autres peuvent être changées en cliquant sur l'icône Préférences. Pour obtenir des explications et de l'aide appuyez sur F1 dans kMule !"
     IDS_WIZ1_WELCOME_TITLE  "Bienvenue dans kMule"
     IDS_WIZ1_WELCOME_ACTIONS 
                             "Cet assistant va vous guider à travers les premières étapes pour la configuration de kMule."
@@ -121,7 +120,7 @@ BEGIN
     IDS_DELAYEDBYUPNP2      "Veuillez patienter quelques secondes, kMule se connectera dès que l'UPnP sera fini."
     IDS_SHAREEMULELABEL     "Partager kMule avec les autres comptes utilisateurs de cet ordinateur"
     IDS_SHAREEMULEWARNING   "Changer cette option permet à kMule d'utiliser une autre configuration. Vos paramètres actuels seront ignorés et les téléchargements en cours ne seront peut-être plus visibles. Vous pouvez revenir en arrière dans la configuration actuelle en changeant cette option quand vous le souhaitez.\n\nVous devez redémarrer kMule pour le changement prenne effet."
-    IDS_PREVENTSTANDBY      "Empêcher la mise en veille de l'ordinateur pendant le fonctionnement de kMule"
+    IDS_PREVENTSTANDBY      "Empêcher la mise en veille du PC pendant le fonctionnement de kMule"
     IDS_WRN_INCFILE_EXISTS  "Vous avez sélectionné un nouveau répertoire qui n'est pas vide pour vos fichiers terminés. Tous les fichiers existants dans ce répertoire seraont automatiquement partagés par kMule."
     IDS_WIZZARDOBFUSCATION  "Activer cette option si vous voulez utiliser le brouillage de protocole\n\nSi votre fournisseur d'accès essaye de brider ou bloquer kMule, activer le brouillage aidera à contourner ces restrictions."
     IDS_BETANAG             "Ceci est une version bêta de kMule. S'il vous plaît signaler les problèmes et vérifier régulièrement les mises à jour sur notre forum (http://www.emulefuture.de)."
@@ -146,6 +145,20 @@ BEGIN
     IDS_AUTOHL              "AutoHL"
 	IDS_HASH_FILE_FINISHED  "Finalisation terminée:"
 	IDS_DROP_BLOCKING_DISABLED "!! LA SUPPRESSION DES SLOTS BLOQUANTS EST DESACTIVEE !!\n\tVotre émission semble être instable, les slots sont trops souvent bloqués - peut-être avez-vous réglé la limite haute d'émission de manière trop élevée ou vous avez trops limité le nombre de slots ?"
+	IDS_MAIN_EXIT           "If you leave eMule uploading you will earn credits that can speed up future downloads.\nDo you really want to exit?"
+	IDS_STATS_ACTUL         "Focused Uploads/Needed To Fill Bandwidth: %u"
+	IDS_ST_ACTIVEU          "Focused uploads"
+	IDS_SP_ACTUL            "Focused Uploads/Needed To Fill Bandwidth"
+	IDS_STATS_ACTUL_ZZ      "Focused uploads/Needed to fill Bandwidth: %u"
+	IDS_UPSLOTNUMBER        "Slot #"
+	IDS_UPLOAD_COMPLETED    "Completing"
+    IDS_UPLOAD_PREEMPTED    "Pre-empted by higher prio upload"
+    IDS_UPLOAD_TOO_MANY_SLOTS "Too many slots"
+	IDS_UPLOAD_FEEDBACK		"Create Upload Feedback"
+	IDS_FEEDBACKBY          "Feedback by"
+	IDS_FEEDBACKTIME        "Feedback created on"
+	IDS_CURRENT_TRANSFER_DL	"currently downloading from %u client(s) @ %s"
+	IDS_CURRENT_TRANSFER_UL "currently uploading to %u client(s) @ %s"
 END
 
 STRINGTABLE 
@@ -348,7 +361,6 @@ BEGIN
     IDS_STATS_AVGUL         "Vitesse moyenne d'émission: %s"
     IDS_STATS_FOUNDSRC      "Sources trouvées: %u"
     IDS_STATS_ACTDL         "Réceptions en cours (parties): %u"
-    IDS_STATS_ACTUL         "Emissions en cours: %u"
     IDS_STATS_WAITINGUSERS  "Clients en file d'attente: %u"
     IDS_STATS_RECONNECTS    "Nombre de reconnexions: %u"
 END
@@ -473,7 +485,6 @@ BEGIN
     IDS_ST_CURRENT          "Réception"
     IDS_ST_SESSION          "Moyenne session"
     IDS_ST_ACTIVED          "Réceptions actives"
-    IDS_ST_ACTIVEU          "Envois actifs"
     IDS_CW_MESSAGES         "Messages" //!
     IDS_CW_FRIENDS          "Amis"
     IDS_CW_SEND             "Envoyer"
@@ -730,7 +741,6 @@ BEGIN
     IDS_SP_UL3              "Session : moyenne d'émission"
     IDS_SP_ACTCON           "Connexions actives"
     IDS_SP_ACTDL            "Réceptions actives"
-    IDS_SP_ACTUL            "Emissions actives"
 END
 
 STRINGTABLE 
@@ -1366,8 +1376,7 @@ BEGIN
 END
 
 STRINGTABLE 
-BEGIN
-    IDS_STATS_ACTUL_ZZ      "Nombre de slots nécessaires pour remplir la bande passante: %u"
+BEGIN    
     IDS_STATS_TOTALUL       "Nombre de slots d'envois: %u"
     IDS_CHAT_DOWNLOADED     "Reçu :"
     IDS_CHAT_UPLOADED       "Emis :"

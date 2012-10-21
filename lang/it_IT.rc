@@ -59,7 +59,6 @@ BEGIN
     IDS_ABOUTBOX            "&Informazioni su kMule..."
 	IDS_MAIN_READY          "%s Build%s è pronto"
 	IDS_ASSIGNED2K          "kMule non è il gestore predefinito dei Link eD2K. Vuoi che lo sia (raccomandato)?"
-	IDS_MAIN_EXIT           "Vuoi veramente uscire?"
 	IDS_ERR_COMPLETIONFAILED 
                             "Errore inaspettato nel file durante il completamento di ""%s"". File in pausa, riavvia kMule per riprovare"
 	IDS_TRAYDLG_SPEED       "Velocità"
@@ -143,6 +142,22 @@ BEGIN
     IDS_RATIO               "Ratio"
 	IDS_RESTART_NOW_QUESTION "Vuoi riavviare adesso?\nSi prega di notare: se non riavvii adesso, l’aggiornamento non sarà pronto sinchè kMule non verrà riavviato!"
 	IDS_AUTOHL              "AutoHL"
+	IDS_HASH_FILE_FINISHED  "Hash terminato:"
+	IDS_DROP_BLOCKING_DISABLED "!! ELIMINAZIONE DEI SOCKETS BLOCCATI DISABILITATA !!\n\tIl tuo upload sembra essere piuttosto instabile, i sockets si stanno bloccando troppo - probabilmente hai impostato un limite di upload troppo alto o stai limitando troppo gli slot?"
+	IDS_MAIN_EXIT           "If you leave eMule uploading you will earn credits that can speed up future downloads.\nDo you really want to exit?"
+	IDS_STATS_ACTUL         "Focused Uploads/Needed To Fill Bandwidth: %u"
+	IDS_ST_ACTIVEU          "Focused uploads"
+	IDS_SP_ACTUL            "Focused Uploads/Needed To Fill Bandwidth"
+	IDS_STATS_ACTUL_ZZ      "Focused uploads/Needed to fill Bandwidth: %u"
+	IDS_UPSLOTNUMBER        "Slot #"
+	IDS_UPLOAD_COMPLETED    "Completing"
+    IDS_UPLOAD_PREEMPTED    "Pre-empted by higher prio upload"
+    IDS_UPLOAD_TOO_MANY_SLOTS "Too many slots"
+	IDS_UPLOAD_FEEDBACK		"Create Upload Feedback"
+	IDS_FEEDBACKBY          "Feedback by"
+	IDS_FEEDBACKTIME        "Feedback created on"
+	IDS_CURRENT_TRANSFER_DL	"currently downloading from %u client(s) @ %s"
+	IDS_CURRENT_TRANSFER_UL "currently uploading to %u client(s) @ %s"
 END
 
 STRINGTABLE 
@@ -371,7 +386,6 @@ BEGIN
     IDS_STATS_AVGUL         "Velocità di Upload Media: %s"
     IDS_STATS_FOUNDSRC      "Fonti Trovate: %u"
     IDS_STATS_ACTDL         "Download Attivi (parti): %u"
-    IDS_STATS_ACTUL         "Upload Attivi: %u"
     IDS_STATS_WAITINGUSERS  "Upload in Attesa: %u"
     IDS_STATS_RECONNECTS    "Riconnessioni: %u"
     IDS_STATS_UNKNOWNCLIENT "Sconosciuti: %u"
@@ -533,7 +547,6 @@ END
 STRINGTABLE 
 BEGIN
     IDS_ST_ACTIVED          "Download Attivi"
-    IDS_ST_ACTIVEU          "Upload Attivi"
     IDS_CW_MESSAGES         "Messaggi"
     IDS_CW_FRIENDS          "Amici"
     IDS_CW_SEND             "Invia"
@@ -865,7 +878,6 @@ BEGIN
     IDS_SP_UL3              "Media di Upload (Sessione)"
     IDS_SP_ACTCON           "Connessioni Attive"
     IDS_SP_ACTDL            "Download Attivi"
-    IDS_SP_ACTUL            "Upload Attivi"
 END
 
 STRINGTABLE 
@@ -1387,7 +1399,6 @@ BEGIN
     IDS_ST_ULCURRENT        "Corrente"
     IDS_ST_ULSLOTSNOOVERHEAD "Corrente (escl. OverHead)"
     IDS_ST_ULFRIEND         "Amico"
-    IDS_STATS_ACTUL_ZZ      "Upload attivi necessari per riempire la banda: %u"
     IDS_STATS_TOTALUL       "Upload Totali: %u"
     IDS_CHAT_DOWNLOADED     "Scaricati:"
     IDS_CHAT_UPLOADED       "Inviati:"

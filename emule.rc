@@ -1873,10 +1873,115 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // String Table
 //
 
+STRINGTABLE
+BEGIN
+	IDS_ABOUTBOX            "&About kMule..."
+    IDS_MAIN_READY          "%s Build%s ready"
+    IDS_ASSIGNED2K          "kMule is not assigned to eD2K links. Do you want to assign kMule to eD2K links now (recommended) ?"
+    IDS_ERR_COMPLETIONFAILED 
+                            "Unexpected file error while completing ""%s"". File paused, restart kMule to start another completing-try"
+	IDS_TRAYDLG_SPEED       "Speed"
+    IDS_ERR_LOSTC           "Lost connection to %s"
+    IDS_PW_FILTER           "Filter client LAN IPs"
+	IDS_RAU_WARNING         "This setting will give kMule additional security against attacks and exploits and we encourage the usage of this option.\nHowever it is strongly recommended to read the manual before activating it!\n\nChanges will take effect after restarting kMule."
+    IDS_RAU_RUNNING         "kMule running as unprivileged user ""%s"""
+    IDS_RAU_FAILED          "Failed to start kMule as unprivileged user ""kMule_Secure"". Keeping the privileges of the current user (""%s"")."
+    IDS_INSTALL_SKIN        "Install Skin"
+    IDS_INSTALL_SKIN_NODIR  "No Skin profile directory selected or directory is not accessible!"
+    IDS_INSTALL_SKIN_DIR_ERROR 
+                            "Failed to create directory ""%s"" for Skin - %s"
+    IDS_INSTALL_SKIN_FILE_ERROR 
+                            "Failed to extract file ""%s"" from Skin to local file ""%s"" - %s"
+    IDS_INSTALL_SKIN_PKG_ERROR "This is not a valid Skin package file."
+    IDS_FO_TEMPTCP_S        "Opened port %u (TCP) on internal WinXP firewall for this session"
+    IDS_FO_TEMPTCP_F        "Failed to open port %u (TCP) on internal WinXP firewall for this session"
+    IDS_FO_TEMPUDP_S        "Opened port %u (UDP) on internal WinXP firewall for this session"
+    IDS_FO_TEMPUDP_F        "Failed to open port %u (UDP) on internal WinXP firewall for this session"
+    IDS_FO_PREF_EXISTED     "kMule detected existing rules for the selected ports, which were not overwritten or replaced. Missing rules have been added successfully.\nPlease note that third-party desktop firewalls and routers are not affected by this!"
+    IDS_FO_PREF_STARTUP     "Open/close ports on WinXP firewall when starting/exiting"
+    IDS_PORTINFO            "kMule uses two ports for communication with servers and clients. These ports must be free and available for remote clients. The TCP port must be available to ensure the main functionality of kMule. The UDP port is used for Kad (serverless network) and to reduce network usage (Overhead).\n\nYou can change the ports here while no network activities have started."
+    IDS_TWEAKS_WARNING      "Warning: Do not change these settings unless you know what you are doing. Otherwise you can easily make things worse for yourself. kMule will run fine without adjusting any of these settings."
+    IDS_CMT_AIDE            "For a film, you can say its length, its story, the language... And if it is a fake, you can inform other kMule users..."
+    IDS_NEWVERSIONAVL       "A new version of kMule is available! Check the projects' homepage for more information."
+    IDS_CB_TBN_ONNEWVERSION "New kMule version detected"
+    IDS_NONEWERVERSION      "No new kMule version detected."
+    IDS_FIRSTAUTODOWN       "Enable this option if you want kMule to manage your download priorities.\n\nTurning this on will allow kMule to make sure downloads with a lot of sources do not interfere with downloads that have few sources. This option will only affect future downloads."
+    IDS_FIRSTAUTOUP         "Enable this option if you want kMule to manage your upload priorities.\n\nTurning this on will allow kMule to boost rare files meaning popular files will be harder for other people to get. Turning this off will allow kMule to upload popular files more often meaning rare files will be harder for other people to get. This option will only affect future shared files."
+    IDS_FIRSTCOMPLETE       "You have now completed the first runtime wizard.\n\nAll these settings and more can be changed by clicking the Options icon. For explanations and support check out the help by pressing F1 in kMule!"
+    IDS_WIZ1_WELCOME_TITLE  "Welcome to kMule"
+    IDS_WIZ1_WELCOME_ACTIONS 
+                            "This wizard will guide you through the first steps in configuring kMule."
+    IDS_WIZ1                "First Runtime Wizard"
+    IDS_HM_LINKHP           "kMule Homepage"
+    IDS_WRN_INCFILE_RESERVED 
+                            "The incoming directory must not be set to an kMule installation directory."
+    IDS_WRN_TEMPFILES_RESERVED 
+                            "The temporary directory must not be set to an kMule installation directory."
+    IDS_SETTINGCHANGED_RESTART 
+                            "For the changed settings to take effect, please restart kMule!"
+    IDS_IMPORTSPLPF         "Import Downloads (*Mule,eDonkey,Overnet)"
+    IDS_ASKDOWNLOADLANG     "The language you selected is not installed on your system. Do you want kMule to download it from http://kMule.emulefuture.de?"
+    IDS_SHAREDTITLE         "Shared"
+    IDS_RUNASUSER           "Run kMule as unprivileged user"
+    IDS_NOPORTCHANGEPOSSIBLE 
+                            "The change of ports is not possible after you connected with clients or while connected to Kad!\n\nPlease restart kMule with the changed port settings."
+    IDS_WIZ_STARTWITHWINDOWS 
+                            "Enable this so that kMule will run when you start windows."
+    IDS_AICH_WARNUSER       "Since version 0.44a eMule uses an additional file hash which helps to greatly reduce the data loss when a corruption is detected. Because your are updating from an earlier version, kMule needs to rehash all your shared files to calculate the new hash. This may take a while but is an one-time action.  "
+    IDS_COMCTRL32_DLL_TOOOLD 
+                            "Windows Common Controls library (COMCTL32.DLL) is too old!\r\n\r\nkMule detected a version of the ""Windows Common Controls library (COMCTL32.DLL)"" which is too old to be properly used by kMule. To ensure full and flawless functionality of kMule we strongly recommend to update the ""Windows Common Controls library (COMCTL32.DLL)"" to at least version 5.8.\r\n\r\nDownload and install an update of the ""Windows Common Controls library (COMCTL32.DLL)"" at Microsoft (R) Download Center. Do you want to visit the corresponding URL?"
+    IDS_RUNNINGRESTRICTED   "kMule is running with reduced privileges"
+    IDS_MEDIAINFO_DLLMISSING 
+                            "There is no MediaInfo library installed. If you want to get more information about audio/video files in this dialog,\r\ndownload the MediaInfo library from http://sourceforge.net/projects/mediainfo/ and copy the MediaInfo.dll file into\r\nkMule's installation folder ""%s"".\r\n"
+    IDS_LOADFILTER_EMTOOLBAR "Toolbar Bitmap Files"
+    IDS_LOADFILTER_EMSKINFILES "Skin Files"
+    IDS_DELAYEDBYUPNP2      "Please wait some seconds, kMule will connect as soon as UPnP finished."
+    IDS_SHAREEMULELABEL     "Sharing kMule with other computer users"
+    IDS_SHAREEMULEWARNING   "Changing this option will let kMule use another configuration. Your current settings will be ignored and already started downloads might not be visible anymore. You can switch back to your current configuration by changing this option again anytime.\n\nYou need to restart kMule for this change to take effect."
+    IDS_PREVENTSTANDBY      "Prevent Standby mode while kMule is running"
+    IDS_WRN_INCFILE_EXISTS  "You have selected a new directory for your incoming files which is not empty. All existing files in this directory will be automatically shared by kMule."
+    IDS_WIZZARDOBFUSCATION  "Enable this option if you want to use protocol obfuscation\n\nIf your ISP tries throttle or block kMule, enabling obfuscation will help to circumvent such restrictions."
+    IDS_BETANAG             "This is a beta version of kMule. Please report problems and check regulary for updates in our forum (http://www.emulefuture.de)."
+	IDS_CLOSEEMULE          "Close kMule"
+END
+
 STRINGTABLE 
 BEGIN
-    IDS_SOCKETS_INIT_FAILED "Error initiating Windows sockets."
-    IDS_ABOUTBOX            "&About kMule..."
+    IDS_KAD_SEARCH_KEYWORD_CLEANUP 
+                            "\n\nDo you want kMule to strip off the invalid characters and use ""%s"" as search expression?\nClick ""No"" if the new term doesn't make sense or if you want to manually edit it!"
+    IDS_ANTILEECH_LABEL     "AntiLeech-Info:"
+    IDS_POWERSHARE_PREFIX   "PS"
+    IDS_POWERSHARE          "PowerShare"
+    IDS_ON                  "on"
+    IDS_OFF                 "off"
+    IDS_UPDATE_AVAIL_QUESTION 
+                            "An update is available!\nDo you want to download and install %s, now?\n\nNOTE: a restart is required!"
+    IDS_IPFILTER_AUTOUPDATE "Update ipfilters on startup?"
+    IDS_UDP_DISABLED        "UDP disabled"
+    IDS_RATIO               "Ratio"
+	IDS_RESTART_NOW_QUESTION "Do you want to restart now?\nPlease note: if you do not restart now, the update won't be ready until you restart kMule!"
+    IDS_AUTOHL              "AutoHL"
+	IDS_HASH_FILE_FINISHED  "Hashing finished:"
+	IDS_DROP_BLOCKING_DISABLED "!! DROPPING OF BLOCKING SOCKETS DISABLED !!\n\tYour upload seems to be pretty unstable, sockets are blocking too much - maybe you set a too high upload limit or you are limiting the slots too much?"
+	IDS_MAIN_EXIT           "If you leave kMule uploading you will earn credits that can speed up future downloads.\nDo you really want to exit?"
+	IDS_STATS_ACTUL         "Focused Uploads/Needed To Fill Bandwidth: %u"
+	IDS_ST_ACTIVEU          "Focused uploads"
+	IDS_SP_ACTUL            "Focused Uploads/Needed To Fill Bandwidth"
+	IDS_STATS_ACTUL_ZZ      "Focused uploads/Needed to fill Bandwidth: %u"
+	IDS_UPSLOTNUMBER        "Slot #"
+	IDS_UPLOAD_COMPLETED    "Completing"
+    IDS_UPLOAD_PREEMPTED    "Pre-empted by higher prio upload"
+    IDS_UPLOAD_TOO_MANY_SLOTS "Too many slots"
+	IDS_UPLOAD_FEEDBACK		"Create Upload Feedback"
+	IDS_FEEDBACKBY          "Feedback by"
+	IDS_FEEDBACKTIME        "Feedback created on"
+	IDS_CURRENT_TRANSFER_DL	"currently downloading from %u client(s) @ %s"
+	IDS_CURRENT_TRANSFER_UL "currently uploading to %u client(s) @ %s"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_SOCKETS_INIT_FAILED "Error initiating Windows sockets."    
     IDS_HTTPDOWNLOAD_FILESTATUS "%s from %s"
     IDS_HTTPDOWNLOAD_CONNECTED "Connected to %s"
     IDS_HTTPDOWNLOAD_RESOLVING_NAME "Resolving name: %s"
@@ -1922,7 +2027,6 @@ BEGIN
                             "An error occurred while opening the file to be downloaded, Error: %s"
     IDS_HTTPDOWNLOAD_ABORTING_TRANSFER "Aborting transfer"
     IDS_FD_COMPR            "Compression"
-    IDS_MAIN_READY          "%s Build%s ready"
     IDS_SEL_SKIN            "Select Skin..."
     IDS_MAIN_SOCKETERROR    "Fatal Error: Unable to create socket on port %u"
 END
@@ -1958,7 +2062,6 @@ BEGIN
     IDS_COMPLETE            "Complete"
     IDS_PAUSED              "Paused"
     IDS_ERRORLIKE           "Erroneous"
-    IDS_ASSIGNED2K          "kMule is not assigned to eD2K links. Do you want to assign kMule to eD2K links now (recommended) ?"
 END
 
 STRINGTABLE 
@@ -2004,8 +2107,6 @@ BEGIN
     IDS_ERR_OUTOFSPACE      "You have insufficient diskspace to download ""%s""!"
     IDS_SE                  "Source Exchange"
     IDS_ERR_WRITEERROR      "Unexpected file error while writing %s : %s"
-    IDS_ERR_COMPLETIONFAILED 
-                            "Unexpected file error while completing ""%s"". File paused, restart kMule to start another completing-try"
     IDS_ERR_DELETEFAILED    "Failed to delete %s, you will need to do this by hand"
     IDS_DOWNLOADDONE        "Finished downloading %s :-)"
     IDS_ERR_DELETE          "Failed to delete %s"
@@ -2086,7 +2187,6 @@ BEGIN
     IDS_SHAREDFILES         "Shared Files"
     IDS_PRIOVERYLOW         "Very Low"
     IDS_PRIORELEASE         "Release"
-    IDS_TRAYDLG_SPEED       "Speed"
     IDS_FSTATUS_FRIENDSONLY "Friends only"
     IDS_VIAPASSIVE          "via Passive"
     IDS_ERR_RENAMESF        "Failed to rename\r\n    ""%s""\r\nto\r\n    ""%s""\r\n\r\n%s"
@@ -2203,7 +2303,6 @@ BEGIN
     IDS_ERR_REQ_FNF         "Requested file not found"
     IDS_DESC                "Description: %s"
     IDS_PORT                "Port"
-    IDS_ERR_LOSTC           "Lost connection to %s"
     IDS_CONNECTEDTO         "Connection established on: %s"
     IDS_DL_PREVIEW          "Pre&view"
     IDS_TW_UPLOADS          "Uploads"
@@ -2284,7 +2383,6 @@ STRINGTABLE
 BEGIN
     IDS_PW_MAXC             "Max. connections"
     IDS_PW_CLIENTPORT       "Client Port"
-    IDS_PW_FILTER           "Filter client LAN IPs"
     IDS_PW_MISC             "Miscellaneous"
     IDS_PW_TRAY             "Minimize to system tray"
     IDS_LANMODE             "LAN Mode"
@@ -2467,7 +2565,6 @@ BEGIN
     IDS_DELETEIPFILTERS     "Do you really want to delete the selected IP filters?"
     IDS_TOTAL_IPFILTER_LABEL "Total IP filters:"
     IDS_TOTAL_IPS_LABEL     "Total IPs:"
-    IDS_RAU_WARNING         "This setting will give kMule additional security against attacks and exploits and we encourage the usage of this option.\nHowever it is strongly recommended to read the manual before activating it!\n\nChanges will take effect after restarting kMule."
     IDS_APPEND              "Append..."
     IDS_SAVE                "Save"
     IDS_IP_START            "Start"
@@ -2483,8 +2580,6 @@ END
 STRINGTABLE 
 BEGIN
     IDS_KNOWN               "Known"
-    IDS_RAU_RUNNING         "kMule running as unprivileged user ""%s"""
-    IDS_RAU_FAILED          "Failed to start kMule as unprivileged user ""kMule_Secure"". Keeping the privileges of the current user (""%s"")."
     IDS_KADCONTACTSREAD     "Read %u contacts from file."
     IDS_ERR_KADCONTACTS     "No contacts found, please bootstrap, or download a nodes.dat file."
     IDS_METATAGS            "Meta tag count:"
@@ -2550,24 +2645,11 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_INSTALL_SKIN        "Install Skin"
-    IDS_INSTALL_SKIN_NODIR  "No Skin profile directory selected or directory is not accessible!"
-    IDS_INSTALL_SKIN_DIR_ERROR 
-                            "Failed to create directory ""%s"" for Skin - %s"
-    IDS_INSTALL_SKIN_FILE_ERROR 
-                            "Failed to extract file ""%s"" from Skin to local file ""%s"" - %s"
-    IDS_INSTALL_SKIN_PKG_ERROR "This is not a valid Skin package file."
     IDS_NEXT_REASK          "Next reask"
     IDS_A4AF_FILES          "A4AF files"
-    IDS_FO_TEMPTCP_S        "Opened port %u (TCP) on internal WinXP firewall for this session"
-    IDS_FO_TEMPTCP_F        "Failed to open port %u (TCP) on internal WinXP firewall for this session"
-    IDS_FO_TEMPUDP_S        "Opened port %u (UDP) on internal WinXP firewall for this session"
-    IDS_FO_TEMPUDP_F        "Failed to open port %u (UDP) on internal WinXP firewall for this session"
     IDS_FO_PREFBUTTON       "Open these ports on internal WinXP firewall"
     IDS_FO_PREF_SUCCCEEDED  "Succeeded to open selected ports on the internal WinXP firewall.\nPlease note that third-party desktop firewalls and routers are not affected by this!"
-    IDS_FO_PREF_EXISTED     "kMule detected existing rules for the selected ports, which were not overwritten or replaced. Missing rules have been added successfully.\nPlease note that third-party desktop firewalls and routers are not affected by this!"
     IDS_FO_PREF_FAILED      "Failed to configure the internal WinXP firewall for the selected ports!"
-    IDS_FO_PREF_STARTUP     "Open/close ports on WinXP firewall when starting/exiting"
 END
 
 STRINGTABLE 
@@ -2584,7 +2666,6 @@ BEGIN
     IDS_IMP_ERR_BADFORMAT   "Unknown or bad format of temporary file."
     IDS_SEARCH_INVALIDCHAR  "Search expression contains invalid characters. You either entered a '?' character or entered characters which can not be used in this network."
     IDS_PORTSCON            "Ports and Connection"
-    IDS_PORTINFO            "kMule uses two ports for communication with servers and clients. These ports must be free and available for remote clients. The TCP port must be available to ensure the main functionality of kMule. The UDP port is used for Kad (serverless network) and to reduce network usage (Overhead).\n\nYou can change the ports here while no network activities have started."
 END
 
 STRINGTABLE 
@@ -2676,8 +2757,7 @@ BEGIN
     IDS_PW_CONLIMITS        "Connection Limits"
     IDS_MAXCON5SECLABEL     "Max. new connections / 5 secs."
     IDS_PW_UAP              "Add new shared files with auto priority"
-    IDS_PW_TWEAK            "Extended"
-    IDS_TWEAKS_WARNING      "Warning: Do not change these settings unless you know what you are doing. Otherwise you can easily make things worse for yourself. kMule will run fine without adjusting any of these settings."
+    IDS_PW_TWEAK            "Extended"    
 END
 
 STRINGTABLE 
@@ -2688,8 +2768,7 @@ BEGIN
     IDS_ERR_NOVALIDFRIENDINFO "You have to enter a valid IP and port!"
     IDS_ADD                 "Add"
     IDS_RECOVERED_PARTMET   "Recovered part.met file for: %s"
-    IDS_CMT_QUEST           "Comment This File! (This text will be shown to all users.)"
-    IDS_CMT_AIDE            "For a film, you can say its length, its story, the language... And if it is a fake, you can inform other kMule users..."
+    IDS_CMT_QUEST           "Comment This File! (This text will be shown to all users.)"    
     IDS_CMT_ADD             "Comm&ents..."
     IDS_CMT_READ            "File comment:"
     IDS_CMT_SHOWALL         "Comme&nts..."
@@ -2709,11 +2788,8 @@ BEGIN
     IDS_WEBSERVICES         "&Web Services"
     IDS_WEBSVEDIT           "Edit Web Services..."
     IDS_CHECK4UPDATE        "Check for new version"
-    IDS_STARTUP             "Startup"
-    IDS_NEWVERSIONAVL       "A new version of kMule is available! Check the projects' homepage for more information."
+    IDS_STARTUP             "Startup"    
     IDS_NEWVERSIONFAILED    "Unable to check for new version."
-    IDS_CB_TBN_ONNEWVERSION "New kMule version detected"
-    IDS_NONEWERVERSION      "No new kMule version detected."
 END
 
 STRINGTABLE 
@@ -2736,9 +2812,6 @@ END
 STRINGTABLE 
 BEGIN
     IDS_DISABLEQUEUELIST    "Disable Queue list"
-    IDS_FIRSTAUTODOWN       "Enable this option if you want kMule to manage your download priorities.\n\nTurning this on will allow kMule to make sure downloads with a lot of sources do not interfere with downloads that have few sources. This option will only affect future downloads."
-    IDS_FIRSTAUTOUP         "Enable this option if you want kMule to manage your upload priorities.\n\nTurning this on will allow kMule to boost rare files meaning popular files will be harder for other people to get. Turning this off will allow kMule to upload popular files more often meaning rare files will be harder for other people to get. This option will only affect future shared files."
-    IDS_FIRSTCOMPLETE       "You have now completed the first runtime wizard.\n\nAll these settings and more can be changed by clicking the Options icon. For explanations and support check out the help by pressing F1 in kMule!"
     IDS_ENTERUSERNAME       "Please enter your user name:"
     IDS_STATIC_CPUMEM       "Save CPU && Memory Usage"
     IDS_KAD_SEARCH_KEYWORD_TOO_SHORT 
@@ -2783,12 +2856,8 @@ END
 STRINGTABLE 
 BEGIN
     IDS_AUTOSCROLL          "Autoscroll"
-    IDS_WIZ1_WELCOME_TITLE  "Welcome to kMule"
-    IDS_WIZ1_WELCOME_ACTIONS 
-                            "This wizard will guide you through the first steps in configuring kMule."
     IDS_WIZ1_WELCOME_BTN_HINT "To continue, click Next."
-    IDS_WIZ1_END_TITLE      "Completing the Wizard"
-    IDS_WIZ1                "First Runtime Wizard"
+    IDS_WIZ1_END_TITLE      "Completing the Wizard"    
     IDS_WIZ1_END_BTN_HINT   "To close this wizard, click Finish."
     IDS_DL_RESUMENEXT       "Resume Next Paused"
     IDS_STARTPRIO           "Priority for this category"
@@ -2798,8 +2867,7 @@ BEGIN
 END
 
 STRINGTABLE 
-BEGIN
-    IDS_HM_LINKHP           "kMule Homepage"
+BEGIN    
     IDS_HM_LINKFAQ          "eMule FAQ"
     IDS_DEBUG_SOURCE_EXCHANGE 
                             "Log client source exchange and server source queries/answers"
@@ -2986,10 +3054,6 @@ BEGIN
     IDS_KBITSSEC            "kBit/s"
     IDS_KBYTESSEC           "kByte/s"
     IDS_ERR_CREATE_DIR      "Failed to create %s directory ""%s"" - %s"
-    IDS_WRN_INCFILE_RESERVED 
-                            "The incoming directory must not be set to an kMule installation directory."
-    IDS_WRN_TEMPFILES_RESERVED 
-                            "The temporary directory must not be set to an kMule installation directory."
     IDS_WRN_INCTEMP_SAME    "Incoming directory and temporary directory must not be the same."
     IDS_SHOWDWLPERCENTAGE   "Show percentage of download completion in progressbar"
     IDS_TBN_ONNEWDOWNLOAD   "Download added"
@@ -3000,8 +3064,6 @@ STRINGTABLE
 BEGIN
     IDS_ALBUM               "Album"
     IDS_CD_UPLOADREQ        "Requested to upload:"
-    IDS_SETTINGCHANGED_RESTART 
-                            "For the changed settings to take effect, please restart kMule!"
     IDS_CREDITSEXPIRED      ", %u clients deleted (not seen within 5 month)"
     IDS_SOURCESINFO         "%u  (Useful: %u, NNP: %u);  A4AF: %u"
     IDS_META_DATA           "Meta Data"
@@ -3035,7 +3097,6 @@ BEGIN
     IDS_YOURHOSTNAME        "Host name for own eD2K links"
     IDS_INSUFFICIENT        "Insufficient Diskspace"
     IDS_WARNING             "Warning"
-    IDS_IMPORTSPLPF         "Import Downloads (*Mule,eDonkey,Overnet)"
     IDS_IMP_STEPREADPF      "Reading temp folder"
     IDS_IMP_STEPBASICINF    "Retrieving basic information from download info file"
     IDS_IMP_STEPCRDESTFILE  "Creating destination file"
@@ -3075,8 +3136,7 @@ BEGIN
     IDS_DYNUP_MINUPLOAD     "Lowest allowed upload speed"
     IDS_ESTTIMELEFT         "Estimated time left:"
     IDS_TRANSFER_RATE_LABEL "Transfer rate:"
-    IDS_SAVELOG             "Save Log"
-    IDS_ASKDOWNLOADLANG     "The language you selected is not installed on your system. Do you want kMule to download it from http://kMule.emulefuture.de?"
+    IDS_SAVELOG             "Save Log"    
     IDS_ASKDOWNLOADLANGCAP  "Download language files"
     IDS_DELETESELECTED      "Delete"
     IDS_ERR_FAILEDDOWNLOADLANG 
@@ -3090,8 +3150,7 @@ BEGIN
     IDS_TEXTLABELS          "Text Label Options"
     IDS_ENABLETEXTLABELS    "Show Text Labels"
     IDS_CUSTOMIZETOOLBAR    "Customize Toolbar..."
-    IDS_MINBITRATE          "Min. Bitrate [kBit/s]"
-    IDS_SHAREDTITLE         "Shared"
+    IDS_MINBITRATE          "Min. Bitrate [kBit/s]"    
     IDS_FIREWALLED          "Firewalled"
     IDS_KADEMLIA            "Kad"
     IDS_KADCONTACTLAB       "Contacts"
@@ -3122,8 +3181,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_CONFIRM_FILEDELETE  "Do you really want to delete all selected files?"
-    IDS_OPENFOLDER          "Open Folder"
-    IDS_RUNASUSER           "Run kMule as unprivileged user"
+    IDS_OPENFOLDER          "Open Folder"    
     IDS_DELETE              "Delete From Disk"
     IDS_BOOTSTRAP           "Bootstrap"
     IDS_VIAED2KSQ           "via eD2K Server"
@@ -3141,8 +3199,6 @@ BEGIN
     IDS_STARTTEST           "Test Ports"
     IDS_TESTINFO            "Here you can test, if your TCP and UDP port can be connected to from remote. This success of this test is required for servers and clients to connect you. The TCP port have to succeed!"
     IDS_CONNECTIONTEST      "Connection Test"
-    IDS_NOPORTCHANGEPOSSIBLE 
-                            "The change of ports is not possible after you connected with clients or while connected to Kad!\n\nPlease restart kMule with the changed port settings."
     IDS_NETWORK_INFO        "Network Information"
     IDS_SP_TOTALUL          "Total uploads"
     IDS_SP_ULFRIENDS        "Upload friend slots"
@@ -3160,8 +3216,6 @@ STRINGTABLE
 BEGIN
     IDS_CHAT_IDENT          "Identification:"
     IDS_MAXHALFOPENCONS     "Max. half open connections"
-    IDS_WIZ_STARTWITHWINDOWS 
-                            "Enable this so that kMule will run when you start windows."
     IDS_KAD_WAITCBK         "Wait Callback Kad"
     IDS_KAD_TOOMANDYKADLKPS "Too Many Kad Lookups"
     IDS_INDEXED             "Indexed"
@@ -3215,7 +3269,6 @@ BEGIN
     IDS_STATS_MINORCLIENTS  "Minor"
     IDS_AICH_SYNCTOTAL      "Found %u files without valid AICH Hashset, going to rehash those files now"
     IDS_AICH_CALCFILE       "Calculating AICH Hash for file %s"
-    IDS_AICH_WARNUSER       "Since version 0.44a eMule uses an additional file hash which helps to greatly reduce the data loss when a corruption is detected. Because your are updating from an earlier version, kMule needs to rehash all your shared files to calculate the new hash. This may take a while but is an one-time action.  "
     IDS_AICH_WORKED         "AICH successfully recovered %s of %s from part %u for %s"
     IDS_SOURCECLIENT        "Source Client"
     IDS_USERSIP             "Users IP"
@@ -3236,8 +3289,6 @@ BEGIN
     IDS_EXTRACT_META_DATA   "Extract meta data"
     IDS_META_DATA_MEDIADET  "DirectShow (for all other audio/video files)"
     IDS_META_DATA_ID3LIB    "ID3 Library (only for MPEG audio files)"
-    IDS_COMCTRL32_DLL_TOOOLD 
-                            "Windows Common Controls library (COMCTL32.DLL) is too old!\r\n\r\nkMule detected a version of the ""Windows Common Controls library (COMCTL32.DLL)"" which is too old to be properly used by kMule. To ensure full and flawless functionality of kMule we strongly recommend to update the ""Windows Common Controls library (COMCTL32.DLL)"" to at least version 5.8.\r\n\r\nDownload and install an update of the ""Windows Common Controls library (COMCTL32.DLL)"" at Microsoft (R) Download Center. Do you want to visit the corresponding URL?"
     IDS_ASREGEXPR           "As Regular Expression"
     IDS_STATIC_REGEXP       "Regular expression for view filter:"
     IDS_CARE4ALL            "Evaluate All Files"
@@ -3279,7 +3330,6 @@ END
 STRINGTABLE 
 BEGIN
     IDS_COLL_TEXTFORMAT     "Save collection in a simple text format"
-    IDS_RUNNINGRESTRICTED   "kMule is running with reduced privileges"
     IDS_USS_MANUALUPLOADLIMITDETECTED 
                             "UploadSpeedSense: Raised upload limit in Options detected. Going into fast reaction mode for 60 seconds."
     IDS_USS_STATE_PREPARING "Preparing..."
@@ -3337,15 +3387,11 @@ BEGIN
     IDS_OBFUSCATION         "Obfuscation"
     IDS_SUPPORTED           "Supported"
     IDS_ESTIMATED           "estimated"
-    IDS_MEDIAINFO_DLLMISSING 
-                            "There is no MediaInfo library installed. If you want to get more information about audio/video files in this dialog,\r\ndownload the MediaInfo library from http://sourceforge.net/projects/mediainfo/ and copy the MediaInfo.dll file into\r\nkMule's installation folder ""%s"".\r\n"
     IDS_WARNING_WRONGFILEEXTENTION 
                             "Warning: The file extension of ""%s"" does not match the file extension\r\ntypically used for that file format. You may want to rename the file to\r\nuse one of those file extensions ""%s""\r\nfor properly using or viewing that file format.\r\n"
     IDS_MEDIAINFO_DRMWARNING 
                             "Warning: The file ""%s"" seems to be protected with Digital Rights Management.\r\nYou will most likely not be able to use that file without a license from the originator of that file.\r\n"
     IDS_ARCHPREV_ATTRIBINFO "File attributes can contain:\r\n\r\nP\tfile is password protected\r\nD\tis a directory\r\nC\tComment\r\nLx\tCompression level x\r\nM\tcompressed data not completely downloaded yet\r\n<\tfile continued from previous volume\r\n>\tfile continues in next volume\r\n"
-    IDS_LOADFILTER_EMTOOLBAR "Toolbar Bitmap Files"
-    IDS_LOADFILTER_EMSKINFILES "Skin Files"
     IDS_CONTENT_INFO        "Content"
     IDS_MESSAGESCOMMENTS    "Messages and Comments"
     IDS_PROTOCOLOBFUSCATION "Protocol Obfuscation"
@@ -3377,12 +3423,10 @@ BEGIN
     IDS_UPNPSUCCESS         "UPnP successfully set up forwardings for ports %u (TCP) and %u (UDP)"
     IDS_UPNP_NOSERVICE      "UPnP Device Host service is not running, skipping UPnP setup"
     IDS_DELAYEDBYUPNP       "Connecting to the network is delayed, because UPnP is still busy configuring the port forwardings."
-    IDS_DELAYEDBYUPNP2      "Please wait some seconds, kMule will connect as soon as UPnP finished."
     IDS_UPNP                "UPnP"
     IDS_UPNPCLOSEONEXIT     "Remove UPnP port forwardings on exit"
     IDS_UPNPSKIPWANIP       "Skip WAN IP setup"
     IDS_UPNPSKIPWANPPP      "Skip WAN PPP setup"
-    IDS_SHAREEMULELABEL     "Sharing kMule with other computer users"
     IDS_SHAREEMULEMULTI     "Each user has its own configuration and downloads"
     IDS_SHAREEMULEPUBLIC    "Everyone has the same configuration and downloads"
     IDS_SHAREEMULEOLD       "Store config and downloads in the program directory"
@@ -3390,7 +3434,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_SHAREEMULEWARNING   "Changing this option will let kMule use another configuration. Your current settings will be ignored and already started downloads might not be visible anymore. You can switch back to your current configuration by changing this option again anytime.\n\nYou need to restart kMule for this change to take effect."
     IDS_SPAM                "Spam"
     IDS_MARKSPAM            "Mark as Spam"
     IDS_MARKNOTSPAM         "Mark as not Spam"
@@ -3400,7 +3443,6 @@ BEGIN
     IDS_DOWNLOADING_NODESDAT_FROM "Downloading nodes.dat from %s"
     IDS_DOWNLOADING_NODESDAT "Downloading nodes.dat..."
     IDS_ERR_FAILEDDOWNLOADNODES "Failed to download nodes.dat from %s"
-    IDS_PREVENTSTANDBY      "Prevent Standby mode while kMule is running"
     IDS_KADID               "KadID"
 END
 
@@ -3410,11 +3452,8 @@ BEGIN
     IDS_FOUND               "found"
     IDS_EXTERNUDPPORT       "Extern UDP Port"
     IDS_STORESEARCHES       "Remember open searches between restarts"
-    IDS_WRN_INCFILE_EXISTS  "You have selected a new directory for your incoming files which is not empty. All existing files in this directory will be automatically shared by kMule."
     IDS_EDITSPAMFILTER      "Edit spam filter..."
-    IDS_EDITSPAMFILTERCOMMENTS "Edit spam filter for comments"
-    IDS_WIZZARDOBFUSCATION  "Enable this option if you want to use protocol obfuscation\n\nIf your ISP tries throttle or block kMule, enabling obfuscation will help to circumvent such restrictions."
-    IDS_BETANAG             "This is a beta version of kMule. Please report problems and check regulary for updates in our forum (http://www.emulefuture.de)."
+    IDS_EDITSPAMFILTERCOMMENTS "Edit spam filter for comments"    
     IDS_CONFIRMNODESDOWNLOAD 
                             "Do you want to download and use Kad contacts (nodes.dat) from this address:\n%s ?"
     IDS_ERR_SHARED_DIR      "Failed to read shared directory ""%s"" - %s"
@@ -3439,44 +3478,9 @@ BEGIN
 END
 
 STRINGTABLE 
-BEGIN
-    IDS_CLOSEEMULE          "Close kMule"
+BEGIN    
     IDS_DONOTASKAGAIN       "Don't ask me again"
     IDS_POPULARITY          "Popularity Rank"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_KAD_SEARCH_KEYWORD_CLEANUP 
-                            "\n\nDo you want kMule to strip off the invalid characters and use ""%s"" as search expression?\nClick ""No"" if the new term doesn't make sense or if you want to manually edit it!"
-    IDS_ANTILEECH_LABEL     "AntiLeech-Info:"
-    IDS_POWERSHARE_PREFIX   "PS"
-    IDS_POWERSHARE          "PowerShare"
-    IDS_ON                  "on"
-    IDS_OFF                 "off"
-    IDS_UPDATE_AVAIL_QUESTION 
-                            "An update is available!\nDo you want to download and install %s, now?\n\nNOTE: a restart is required!"
-    IDS_IPFILTER_AUTOUPDATE "Update ipfilters on startup?"
-    IDS_UDP_DISABLED        "UDP disabled"
-    IDS_RATIO               "Ratio"
-	IDS_RESTART_NOW_QUESTION "Do you want to restart now?\nPlease note: if you do not restart now, the update won't be ready until you restart kMule!"
-    IDS_AUTOHL              "AutoHL"
-	IDS_HASH_FILE_FINISHED  "Hashing finished:"
-	IDS_DROP_BLOCKING_DISABLED "!! DROPPING OF BLOCKING SOCKETS DISABLED !!\n\tYour upload seems to be pretty unstable, sockets are blocking too much - maybe you set a too high upload limit or you are limiting the slots too much?"
-	IDS_MAIN_EXIT           "If you leave eMule uploading you will earn credits that can speed up future downloads.\nDo you really want to exit?"
-	IDS_STATS_ACTUL         "Focused Uploads/Needed To Fill Bandwidth: %u"
-	IDS_ST_ACTIVEU          "Focused uploads"
-	IDS_SP_ACTUL            "Focused Uploads/Needed To Fill Bandwidth"
-	IDS_STATS_ACTUL_ZZ      "Focused uploads/Needed to fill Bandwidth: %u"
-	IDS_UPSLOTNUMBER        "Slot #"
-	IDS_UPLOAD_COMPLETED    "Completing"
-    IDS_UPLOAD_PREEMPTED    "Pre-empted by higher prio upload"
-    IDS_UPLOAD_TOO_MANY_SLOTS "Too many slots"
-	IDS_UPLOAD_FEEDBACK		"Create Upload Feedback"
-	IDS_FEEDBACKBY          "Feedback by"
-	IDS_FEEDBACKTIME        "Feedback created on"
-	IDS_CURRENT_TRANSFER_DL	"currently downloading from %u client(s) @ %s"
-	IDS_CURRENT_TRANSFER_UL "currently uploading to %u client(s) @ %s"
 END
 
 #endif    // Englisch (USA) resources
