@@ -189,7 +189,6 @@ void CSharedFilesWnd::DoResize(int iDelta)
     UpdateWindow();
 }
 
-
 void CSharedFilesWnd::Reload(bool bForceTreeReload)
 {
     sharedfilesctrl.SetDirectoryFilter(NULL, false);
@@ -502,7 +501,7 @@ BEGIN_MESSAGE_MAP(CSharedFileDetailsModelessSheet, CListViewPropertySheet)
 END_MESSAGE_MAP()
 
 //>>> ResizeableLib v1.3 -> v1.4
-int CSharedFileDetailsModelessSheet::OnCreate(LPCREATESTRUCT lpCreateStruct)
+BOOL CSharedFileDetailsModelessSheet::OnCreate(LPCREATESTRUCT lpCreateStruct)
 //int CSharedFileDetailsModelessSheet::OnNcCreate(LPCREATESTRUCT lpCreateStruct)
 {
     // skip CResizableSheet::OnCreate because we don't the styles and stuff which are set there

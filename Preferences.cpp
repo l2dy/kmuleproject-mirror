@@ -275,6 +275,7 @@ bool	CPreferences::m_bCheckFileOpen;
 bool	CPreferences::indicateratings;
 bool	CPreferences::watchclipboard;
 bool	CPreferences::m_bFirstStart;
+bool	CPreferences::m_bUpdate;
 bool	CPreferences::log2disk;
 bool	CPreferences::debug2disk;
 int		CPreferences::iMaxLogBuff;
@@ -412,6 +413,7 @@ uint16  CPreferences::m_iMaxSourcesHL;
 //<<< WiZaRd::AutoHL
 //>>> WiZaRd::Remove forbidden files
 bool	CPreferences::m_bRemoveForbiddenFiles;
+// do not share a file with one of these patterns because they are practically worthless
 CString	CPreferences::m_strForbiddenFileFilters = L".fb!|.jc!|.antifrag|.dctmp|.bc!|.!ut|.getright|.partial|.partial.sd|.part|.part.met|.part.met.bak|.part.met.backup";
 //<<< WiZaRd::Remove forbidden files
 //>>> WiZaRd::Drop Blocking Sockets [Xman?]
@@ -1928,11 +1930,13 @@ void CPreferences::LoadPreferences()
     strPrefsVersion = ini.GetString(L"AppVersion");
 
     m_bFirstStart = false;
+	m_bUpdate = false;
 
     if (strPrefsVersion.IsEmpty())
-    {
         m_bFirstStart = true;
-    }
+	// Update/Downgrade?
+	else if(strPrefsVersion != theApp.m_strCurVersionLong)
+		m_bUpdate = true;
 
 #ifdef _DEBUG
     m_iDbgHeap = ini.GetInt(L"DebugHeap", 1);
@@ -2042,14 +2046,17 @@ void CPreferences::LoadPreferences()
     m_strBindAddrA = m_strBindAddrW;
     m_pszBindAddrA = m_strBindAddrA.IsEmpty() ? NULL : (LPCSTR)m_strBindAddrA;
 
-    int iPort = ini.GetInt(L"Port", 0);
-    if (iPort == INT_MAX || iPort == 0 || IsTCPPortInUse((uint16)iPort))
+	// WiZaRd:
+	// It seems the "port in use" check is a bit buggy once in a while... that's why we will not check and set a different port
+	// if either the user did an update installation (i.e. it worked in the past) or has disabled UPnP (i.e. it knows what its doing)
+	int iPort = ini.GetInt(L"Port", 0);
+    if (iPort == INT_MAX || iPort == 0 || (!m_bUpdate && !m_bEnableUPnP && IsTCPPortInUse((uint16)iPort)))
         port = GetRandomTCPPort();
     else
         port = (uint16)iPort;
 
     iPort = ini.GetInt(L"UDPPort", INT_MAX/*invalid port value*/);
-    if (iPort == INT_MAX || iPort == 0 || IsUDPPortInUse((uint16)iPort)) // don't allow to disable UDP!
+    if (iPort == INT_MAX || iPort == 0 || (!m_bUpdate && !m_bEnableUPnP && IsUDPPortInUse((uint16)iPort))) // don't allow to disable UDP!
         udpport = GetRandomUDPPort();
     else
         udpport = (uint16)iPort;
@@ -3079,7 +3086,6 @@ bool CPreferences::IsRunningAeroGlassTheme()
 //>>> Remove forbidden files
 bool CPreferences::IsForbiddenFile(const CString& rstrName)
 {
-    // do not share a file with one of these patterns because they are practically worthless
     if(thePrefs.RemoveForbiddenFiles())
     {
         int curPos = 0;

@@ -147,7 +147,7 @@ Legend:    + added    ~ changed    - removed    ! fixed    > updated
 + count block/success send && drop blocking sockets [WiZaRd - original by Xman?]
 
 20121021:
-! fixed handle leak in "share small files first" thx to RejZoR [WiZaRd]
+! fixed handle leak in "share small files first" - thx to RejZoR [WiZaRd]
 ! fixed MM issue that could sometimes crash kMule [WiZaRd]
 ~ changed MM animation to "blend" [WiZaRd]
 - removed obsolete filedonkey search method [WiZaRd]
@@ -157,3 +157,8 @@ Legend:    + added    ~ changed    - removed    ! fixed    > updated
 + ZZ (focused!) upload system [WiZaRd - original by ZZ]
 + improved lowID fairness [WiZaRd - by VQB]
 + Upload feedback [WiZaRd]
+
+20130112:
+! fixed possible crash when loading a new ipfilter while kMule was already running - thx to SS1900 [WiZaRd]
+! fixed a minimule crash under Wine - thx to ]Axl[ [WiZaRd]
+~ don't check for "already in use" ports when updating or UPnP has been disabled [WiZaRd]

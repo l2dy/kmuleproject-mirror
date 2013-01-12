@@ -352,6 +352,7 @@ public:
     static	bool	indicateratings;
     static	bool	watchclipboard;
     static	bool	m_bFirstStart;
+	static	bool	m_bUpdate;
 
     static	bool	log2disk;
     static	bool	debug2disk;
@@ -1491,6 +1492,11 @@ public:
     {
         return m_bFirstStart;
     }
+
+	static bool		IsUpdate()
+	{
+		return m_bUpdate;
+	}
 
     static	const CString& GetTxtEditor()
     {

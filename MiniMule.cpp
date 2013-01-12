@@ -856,23 +856,26 @@ void CMiniMule::ShowHide(const bool bHide)
     //we should update before showing it because that way the transparency should be correct
     if(!bHide)
     {
-        //we should ensure that the MM is shown on the taskbar
-        //if we don't set the pos here then it will show up on the same
-        //position where we hid (closed) it
-        CComQIPtr<IHTMLElement> body;
-        if (m_spHtmlDoc->get_body(&body) == S_OK && body)
-        {
-            // NOTE: The IE control will always use the size of the associated dialog resource (IDD_MINIMULE)
-            // as the minimum window size. 'scrollWidth' and 'scrollHeight' will therefore never return values
-            // smaller than the size of that window. To have the auto-size working correctly even for
-            // very small window sizes, the size of the dialog resource should therefore be kept very small!
-            // TODO: Only in debug build: Check the size of the dialog resource right before 'OnInitDialog'.
-            CComQIPtr<IHTMLElement2> body2 = body;
-            long lScrollWidth = 0;
-            long lScrollHeight = 0;
-            if (body2->get_scrollWidth(&lScrollWidth) == S_OK && lScrollWidth > 0 && body2->get_scrollHeight(&lScrollHeight) == S_OK && lScrollHeight > 0)
-                AutoSizeAndPosition(CSize(lScrollWidth, lScrollHeight));
-        }
+		if (m_spHtmlDoc)
+		{
+			//we should ensure that the MM is shown on the taskbar
+			//if we don't set the pos here then it will show up on the same
+			//position where we hid (closed) it
+			CComQIPtr<IHTMLElement> body;
+			if (m_spHtmlDoc->get_body(&body) == S_OK && body)
+			{
+				// NOTE: The IE control will always use the size of the associated dialog resource (IDD_MINIMULE)
+				// as the minimum window size. 'scrollWidth' and 'scrollHeight' will therefore never return values
+				// smaller than the size of that window. To have the auto-size working correctly even for
+				// very small window sizes, the size of the dialog resource should therefore be kept very small!
+				// TODO: Only in debug build: Check the size of the dialog resource right before 'OnInitDialog'.
+				CComQIPtr<IHTMLElement2> body2 = body;
+				long lScrollWidth = 0;
+				long lScrollHeight = 0;
+				if (body2->get_scrollWidth(&lScrollWidth) == S_OK && lScrollWidth > 0 && body2->get_scrollHeight(&lScrollHeight) == S_OK && lScrollHeight > 0)
+					AutoSizeAndPosition(CSize(lScrollWidth, lScrollHeight));
+			}
+		}
 
         UINT eMuleInOverall = theApp.downloadqueue->GetDatarate();
         UINT eMuleOutOverall = theApp.uploadqueue->GetDatarate();

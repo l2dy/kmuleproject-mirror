@@ -606,9 +606,7 @@ bool CKnownFile::CreateFromFile(LPCTSTR in_directory, LPCTSTR in_filename, LPVOI
     {
         ASSERT( ((CKnownFile*)pvProgressParam)->IsKindOf(RUNTIME_CLASS(CKnownFile)) );
         ASSERT( ((CKnownFile*)pvProgressParam)->GetFileSize() == GetFileSize() );
-        UINT uProgress = 100;
-        ASSERT( uProgress <= 100 );
-        VERIFY( PostMessage(theApp.emuledlg->GetSafeHwnd(), TM_FILEOPPROGRESS, uProgress, (LPARAM)pvProgressParam) );
+        VERIFY( PostMessage(theApp.emuledlg->GetSafeHwnd(), TM_FILEOPPROGRESS, 100, (LPARAM)pvProgressParam) );
     }
 
     // set lastwrite date
@@ -1005,7 +1003,7 @@ bool CKnownFile::LoadTagsFromFile(CFileDataIO* file)
         //	DebugLog(_T("Succeeded to load AICH Part HashSet for file %s"), GetFileName());
     }
 
-    // 05-Jän-2004 [bc]: ed2k and Kad are already full of totally wrong and/or not properly attached meta data. Take
+    // 05-Jï¿½n-2004 [bc]: ed2k and Kad are already full of totally wrong and/or not properly attached meta data. Take
     // the chance to clean any available meta data tags and provide only tags which were determined by us.
     // It's a brute force method, but that wrong meta data is driving me crazy because wrong meta data is even worse than
     // missing meta data.
@@ -1643,7 +1641,7 @@ void CKnownFile::RemoveMetaDataTags(UINT uTagType)
         { FT_MEDIA_CODEC,   TAGTYPE_STRING }
     };
 
-    // 05-Jän-2004 [bc]: ed2k and Kad are already full of totally wrong and/or not properly attached meta data. Take
+    // 05-Jï¿½n-2004 [bc]: ed2k and Kad are already full of totally wrong and/or not properly attached meta data. Take
     // the chance to clean any available meta data tags and provide only tags which were determined by us.
     // Remove all meta tags. Never ever trust the meta tags received from other clients or servers.
     for (int j = 0; j < _countof(_aEmuleMetaTags); j++)
@@ -1809,7 +1807,7 @@ void TruncateED2KMetaData(CString& rstrData)
 
 void CKnownFile::UpdateMetaDataTags()
 {
-    // 05-Jän-2004 [bc]: ed2k and Kad are already full of totally wrong and/or not properly attached meta data. Take
+    // 05-Jï¿½n-2004 [bc]: ed2k and Kad are already full of totally wrong and/or not properly attached meta data. Take
     // the chance to clean any available meta data tags and provide only tags which were determined by us.
     RemoveMetaDataTags();
 

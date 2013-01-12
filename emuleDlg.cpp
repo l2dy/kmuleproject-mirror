@@ -920,13 +920,13 @@ void CemuleDlg::ShowConnectionStateIcon()
 
 CString CemuleDlg::GetConnectionStateString()
 {
-    CString status = L"Kad:";
+    CString status = L"";
     if (Kademlia::CKademlia::IsConnected())
-        status += GetResString(IDS_CONNECTED);
+        status = GetResString(IDS_CONNECTED);
     else if (Kademlia::CKademlia::IsRunning())
-        status += GetResString(IDS_CONNECTING);
+        status = GetResString(IDS_CONNECTING);
     else
-        status += GetResString(IDS_NOTCONNECTED);
+        status = GetResString(IDS_NOTCONNECTED);
     return status;
 }
 

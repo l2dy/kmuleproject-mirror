@@ -1953,7 +1953,6 @@ UnknownFile_Struct::UnknownFile_Struct(const CString& sName, const CString& sDir
 	strSharedDirectory = sSharedDirectory;
 
 	uiFileSize = (uint64)0;
-	
 	CString strFilePath = L"";
 	if(_tmakepathlimit(strFilePath.GetBuffer(MAX_PATH), NULL, strDirectory, strName, NULL))
 	{

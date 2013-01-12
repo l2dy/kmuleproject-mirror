@@ -462,8 +462,12 @@ bool CRoutingBin::HasOnlyLANNodes() const
 //>>> WiZaRd::IPFiltering
 void CRoutingBin::RemoveFilteredContacts()
 {
+	// don't use the current list - it is possibly accessed from other threads
+	ContactList listEntries;
+	GetEntries(&listEntries);
+
     CContact* pContact = NULL;
-    for (ContactList::const_iterator itContactList = m_listEntries.begin(); itContactList != m_listEntries.end(); ++itContactList)
+	for (ContactList::const_iterator itContactList = listEntries.begin(); itContactList != listEntries.end(); ++itContactList)
     {
         pContact = *itContactList;
         if(theApp.ipfilter->IsFiltered(ntohl(pContact->GetIPAddress())))
