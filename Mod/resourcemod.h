@@ -59,5 +59,6 @@
 //<<< WiZaRd::Upload Feedback
 #define IDC_PROXY_OPERATING_SYSTEM		4028
 #define IDS_PROXY_OPERATING_SYSTEM		4029
+#define IDC_OPENMODPREFINI				4030
 
 // this line is needed or we get a "fatal error RC1004: unexpected end of file found" - thanks for those wonderful bugs, Microsoft!

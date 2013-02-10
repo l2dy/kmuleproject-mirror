@@ -1534,6 +1534,72 @@
     <None Include="res\Web.ico">
       <Filter>Resource Files\Icons</Filter>
     </None>
+    <None Include="res\up.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\down.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\PriorityNormal.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\PriorityAuto.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\PriorityHigh.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\PriorityLow.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\FileTypeEmuleCollection.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Badguy.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\FDC.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Search_Multi.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Search_En.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\splash.jpg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Smiley_Cry.gif">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Smiley_Disgust.gif">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Smiley_Happy.gif">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Smiley_lookside.gif">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Smiley_Love.gif">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Smiley_Sad.gif">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Smiley_Skeptic.gif">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Smiley_Smile.gif">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Smiley_Wink.gif">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Smiley_Laugh.gif">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractFile.h">

@@ -497,7 +497,7 @@ BEGIN
     GROUPBOX        "General",IDC_GENERAL,4,2,394,41
 END
 
-IDD_PPG_TWEAKS DIALOGEX 0, 0, 231, 241
+IDD_PPG_TWEAKS DIALOGEX 0, 0, 231, 258
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Tweaks"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
@@ -510,9 +510,9 @@ BEGIN
                     202,211,11
     LTEXT           "Queue size",IDC_QUEUESIZE_STATIC,4,215,103,8
     CONTROL         "",IDC_QUEUESIZE,"msctls_trackbar32",TBS_AUTOTICKS | 
-                    WS_TABSTOP,9,225,107,11
-    PUSHBUTTON      "Open preferences.ini",IDC_OPENPREFINI,125,225,102,14
-    LTEXT           "Extended:",IDC_PREFINI_STATIC,118,215,109,8
+                    WS_TABSTOP,9,225,211,11
+    PUSHBUTTON      "Open preferences.ini",IDC_OPENPREFINI,11,243,102,14
+    PUSHBUTTON      "Open kMule.ini",IDC_OPENMODPREFINI,116,243,102,14
 END
 
 IDD_ADDFRIEND DIALOGEX 0, 0, 271, 190
@@ -1981,6 +1981,7 @@ BEGIN
 	IDS_IDLOW               "Firewalled"
 	IDS_IDHIGH              "Open"
 	IDS_PROXY_OPERATING_SYSTEM "Get proxy settings from operating system"
+	IDS_OPENPREFINI         "Open %s"
 END
 
 STRINGTABLE 
@@ -2614,8 +2615,7 @@ BEGIN
 END
 
 STRINGTABLE 
-BEGIN
-    IDS_OPENPREFINI         "Open preferences.ini"
+BEGIN    
     IDS_RECOVER_SINGLE      "Archive recovery: 1 file recovered."
     IDS_RECOVER_MULTIPLE    "Archive recovery: %u files recovered."
     IDS_ATTEMPTING_RECOVERY "Archive recovery: Started"

@@ -48,7 +48,8 @@ BEGIN_MESSAGE_MAP(CPPgTweaks, CPropertyPage)
     ON_WM_DESTROY()
     ON_MESSAGE(UM_TREEOPTSCTRL_NOTIFY, OnTreeOptsCtrlNotify)
     ON_WM_HELPINFO()
-    ON_BN_CLICKED(IDC_OPENPREFINI, OnBnClickedOpenprefini)
+    ON_BN_CLICKED(IDC_OPENPREFINI, OnBnClickedOpenPrefIni)
+	ON_BN_CLICKED(IDC_OPENMODPREFINI, OnBnClickedOpenModPrefIni)
 END_MESSAGE_MAP()
 
 CPPgTweaks::CPPgTweaks()
@@ -592,8 +593,11 @@ void CPPgTweaks::Localize(void)
     {
         SetWindowText(GetResString(IDS_PW_TWEAK));
         GetDlgItem(IDC_WARNING)->SetWindowText(GetResString(IDS_TWEAKS_WARNING));
-        GetDlgItem(IDC_PREFINI_STATIC)->SetWindowText(GetResString(IDS_PW_TWEAK));
-        GetDlgItem(IDC_OPENPREFINI)->SetWindowText(GetResString(IDS_OPENPREFINI));
+		CString buffer = L"";
+		buffer.Format(GetResString(IDS_OPENPREFINI), L"preferences.ini");
+		GetDlgItem(IDC_OPENPREFINI)->SetWindowText(buffer);
+		buffer.Format(GetResString(IDS_OPENPREFINI), CString(MOD_INI_FILE) + L".ini");
+        GetDlgItem(IDC_OPENMODPREFINI)->SetWindowText(buffer);
 
         if (m_htiTCPGroup) m_ctrlTreeOptions.SetItemText(m_htiTCPGroup, GetResString(IDS_TCPIP_CONNS));
         if (m_htiMaxCon5Sec) m_ctrlTreeOptions.SetEditLabel(m_htiMaxCon5Sec, GetResString(IDS_MAXCON5SECLABEL));
@@ -781,7 +785,12 @@ BOOL CPPgTweaks::OnHelpInfo(HELPINFO* /*pHelpInfo*/)
     return TRUE;
 }
 
-void CPPgTweaks::OnBnClickedOpenprefini()
+void CPPgTweaks::OnBnClickedOpenPrefIni()
 {
-    ShellOpenFile(thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + _T("preferences.ini"));
+    ShellOpenFile(thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + L"preferences.ini");
+}
+
+void CPPgTweaks::OnBnClickedOpenModPrefIni()
+{
+	ShellOpenFile(thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + MOD_INI_FILE + L".ini");
 }

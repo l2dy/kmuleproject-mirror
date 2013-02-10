@@ -1549,7 +1549,7 @@
 #define IDC_QUEUESIZE_STATIC            2611
 #define IDC_QUEUESIZE                   2612
 #define IDC_CHECKDAYS                   2613
-#define IDC_PREFINI_STATIC              2613
+//#define IDC_PREFINI_STATIC              2613
 #define IDC_MSG                         2614
 #define IDC_FILTERLABEL                 2615
 #define IDC_DAP                         2616
