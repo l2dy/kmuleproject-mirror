@@ -90,7 +90,7 @@ bool CPacketTracking::IsOnOutTrackList(UINT dwIP, uint8 byOpcode, bool bDontRemo
 {
 #ifdef _DEBUG
     if (!IsTrackedOutListRequestPacket(byOpcode))
-        ASSERT( false ); // code error / bug
+        ASSERT(0); // code error / bug
 #endif
     for (POSITION pos = listTrackedRequests.GetHeadPosition(); pos != NULL; listTrackedRequests.GetNext(pos))
     {

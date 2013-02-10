@@ -266,6 +266,7 @@ BEGIN
     EDITTEXT        IDC_USERNAME_A,73,104,147,13,ES_AUTOHSCROLL
     LTEXT           "Password",IDC_PASSWORD_LBL,11,121,58,8,0,WS_EX_RIGHT
     EDITTEXT        IDC_PASSWORD,73,120,147,13,ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON      "Get proxy settings from operating system",IDC_PROXY_OPERATING_SYSTEM,5,140,220,14
 END
 
 IDD_PPG_GENERAL DIALOGEX 0, 0, 231, 205
@@ -1977,6 +1978,9 @@ BEGIN
 	IDS_FEEDBACKTIME        "Feedback created on"
 	IDS_CURRENT_TRANSFER_DL	"currently downloading from %u client(s) @ %s"
 	IDS_CURRENT_TRANSFER_UL "currently uploading to %u client(s) @ %s"
+	IDS_IDLOW               "Firewalled"
+	IDS_IDHIGH              "Open"
+	IDS_PROXY_OPERATING_SYSTEM "Get proxy settings from operating system"
 END
 
 STRINGTABLE 
@@ -2245,8 +2249,6 @@ BEGIN
     IDS_PW_VIDEOPLAYER      "Video Player"
     IDS_VIDEOBACKUP         "Create backup to preview"
     IDS_ID                  "ID"
-    IDS_IDLOW               "Low ID"
-    IDS_IDHIGH              "High ID"
     IDS_UPSTATUS            "Obtained Parts"
     IDS_TOVERHEAD           "Total Overhead (Packets): %s (%s)"
     IDS_FROVERHEAD          "File Request Overhead (Packets): %s (%s)"
@@ -3512,4 +3514,3 @@ CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "res\\emule.manifest"
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
-

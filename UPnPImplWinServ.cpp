@@ -98,7 +98,7 @@ void CUPnPImplWinServ::Init()
         if (m_pfGetBestInterface == NULL || m_pfGetIpAddrTable == NULL || m_pfGetIfEntry == NULL)
         {
             DebugLogError(_T("Failed to load functions from iphlpapi.dll for UPnP"));
-            ASSERT( false );
+            ASSERT(0);
         }
         HRESULT hr = CoInitialize( NULL );
         m_bCOM = (hr == S_OK || hr == S_FALSE);
@@ -157,6 +157,7 @@ bool CUPnPImplWinServ::IsReady()
     case _WINVER_2003_:
     case _WINVER_VISTA_:
     case _WINVER_7_:
+	case _WINVER_8_:
         break;
     default:
         return false;
@@ -348,7 +349,7 @@ void CUPnPImplWinServ::AddDevice(DevicePointer device, bool bAddChilds, int nLev
 {
     if (nLevel > 10)
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
     //We are going to add a device
@@ -387,7 +388,7 @@ void CUPnPImplWinServ::AddDevice(DevicePointer device, bool bAddChilds, int nLev
         piChildDevices->Release();
         if (FAILED(hr))
         {
-            ASSERT( false );
+            ASSERT(0);
             return;
         }
 
@@ -396,7 +397,7 @@ void CUPnPImplWinServ::AddDevice(DevicePointer device, bool bAddChilds, int nLev
         pUnk->Release();
         if (FAILED(hr))
         {
-            ASSERT( false );
+            ASSERT(0);
             return;
         }
 
@@ -704,7 +705,7 @@ CString CUPnPImplWinServ::GetLocalRoutableIP(ServicePointer pService)
         }
         catch(...)
         {
-            ASSERT( false );
+            ASSERT(0);
         }
     }
     if ( ip == INADDR_NONE || hrRes != NO_ERROR )
@@ -722,7 +723,7 @@ CString CUPnPImplWinServ::GetLocalRoutableIP(ServicePointer pService)
         }
         catch(...)
         {
-            ASSERT( false );
+            ASSERT(0);
         }
     }
     if ( hrRes != NO_ERROR )
@@ -742,7 +743,7 @@ CString CUPnPImplWinServ::GetLocalRoutableIP(ServicePointer pService)
         }
         catch(...)
         {
-            ASSERT( false );
+            ASSERT(0);
         }
     }
     if ( hrRes != NO_ERROR )

@@ -253,8 +253,8 @@ void CDirectoryTreeCtrl::Init(void)
 HTREEITEM CDirectoryTreeCtrl::AddChildItem(HTREEITEM hRoot, CString strText)
 {
     CString strPath = GetFullPath(hRoot);
-    if (hRoot != NULL && strPath.Right(1) != _T("\\"))
-        strPath += _T("\\");
+    if (hRoot != NULL && strPath.Right(1) != L"\\")
+        strPath += L"\\";
     CString strDir = strPath + strText;
     TVINSERTSTRUCT itInsert = {0};
 
@@ -290,8 +290,8 @@ HTREEITEM CDirectoryTreeCtrl::AddChildItem(HTREEITEM hRoot, CString strText)
     if (wWinVer != _WINVER_95_ && wWinVer != _WINVER_NT4_)
     {
         CString strTemp = strDir;
-        if(strTemp.Right(1) != _T("\\"))
-            strTemp += _T("\\");
+        if(strTemp.Right(1) != L"\\")
+            strTemp += L"\\";
 
         UINT nType = GetDriveType(strTemp);
         if(DRIVE_REMOVABLE <= nType && nType <= DRIVE_RAMDISK)
@@ -353,7 +353,7 @@ CString CDirectoryTreeCtrl::GetFullPath(HTREEITEM hItem)
             strSearchItemDir = pti->strPath;
         else
             strSearchItemDir = GetItemText(hSearchItem);
-        strDir = strSearchItemDir + _T("\\") + strDir;
+        strDir = strSearchItemDir + L"\\" + strDir;
         hSearchItem = GetParentItem(hSearchItem);
     }
     return strDir;
@@ -361,8 +361,8 @@ CString CDirectoryTreeCtrl::GetFullPath(HTREEITEM hItem)
 
 void CDirectoryTreeCtrl::AddSubdirectories(HTREEITEM hRoot, CString strDir)
 {
-    if (strDir.Right(1) != _T("\\"))
-        strDir += _T("\\");
+    if (strDir.Right(1) != L"\\")
+        strDir += L"\\";
     CFileFind finder;
     BOOL bWorking = finder.FindFile(strDir+_T("*.*"));
     while (bWorking)

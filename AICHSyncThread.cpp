@@ -180,7 +180,7 @@ int CAICHSyncThread::Run()
                             tempHashSet.SetMasterHash(pCurFile->GetFileIdentifier().GetAICHHash(), AICH_HASHSETCOMPLETE);
                             if (!tempHashSet.LoadHashSet())
                             {
-                                ASSERT( false );
+                                ASSERT(0);
                                 DebugLogError(_T("Failed to load full AICH Recovery Hashset - known2.met might be corrupt. Unable to create AICH Part Hashset - %s"), pCurFile->GetFileName());
                             }
                             else
@@ -188,7 +188,7 @@ int CAICHSyncThread::Run()
                                 if (!pCurFile->GetFileIdentifier().SetAICHHashSet(tempHashSet))
                                 {
                                     DebugLogError(_T("Failed to create AICH Part Hashset out of full AICH Recovery Hashset - %s"), pCurFile->GetFileName());
-                                    ASSERT( false );
+                                    ASSERT(0);
                                 }
                                 ASSERT(pCurFile->GetFileIdentifier().HasExpectedAICHHashCount());
                             }
@@ -291,7 +291,7 @@ int CAICHSyncThread::Run()
             if (error->m_cause == CFileException::endOfFile)
             {
                 // we just parsed this files some ms ago, should never happen here
-                ASSERT( false );
+                ASSERT(0);
             }
             else
             {
@@ -442,7 +442,7 @@ bool CAICHSyncThread::ConvertToKnown2ToKnown264(CSafeFile* pTargetFile)
         if (error->m_cause == CFileException::endOfFile)
         {
             LogError(LOG_STATUSBAR,GetResString(IDS_ERR_MET_BAD), OLD_KNOWN2_MET_FILENAME);
-            ASSERT( false );
+            ASSERT(0);
         }
         else
         {

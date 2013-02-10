@@ -22,6 +22,7 @@
 #include <io.h>
 #include <fcntl.h>
 #ifdef HAVE_WMSDK_H
+#include "Preferences.h" //>>> WiZaRd::Wine Compatibility
 #include <wmsdk.h>
 #if !defined(HAVE_VISTA_SDK)
 static const WCHAR g_wszWMPeakBitrate[] = L"WM/PeakBitrate";
@@ -2109,12 +2110,18 @@ public:
             // If WMP64 is installed, WMVCORE.DLL is not available.
             // If WMP9+ is installed, WMVCORE.DLL is available.
             //
-            m_hLib = LoadLibrary(_T("wmvcore.dll"));
-            if (m_hLib != NULL)
-            {
-                (FARPROC &)m_pfnWMCreateEditor = GetProcAddress(m_hLib, "WMCreateEditor");
-                (FARPROC &)m_pfnWMCreateSyncReader = GetProcAddress(m_hLib, "WMCreateSyncReader");
-            }
+//>>> WiZaRd::Wine Compatibility
+			// WINE ships a 1kB sized wmvcore.dll by default which causes the GetProcAddress calls below to crash kMule under WINE
+			if(!thePrefs.WeNeedWineCompatibility())
+//<<< WiZaRd::Wine Compatibility
+			{
+				m_hLib = LoadLibrary(_T("wmvcore.dll"));
+				if (m_hLib != NULL)
+				{
+					(FARPROC &)m_pfnWMCreateEditor = GetProcAddress(m_hLib, "WMCreateEditor");
+					(FARPROC &)m_pfnWMCreateSyncReader = GetProcAddress(m_hLib, "WMCreateSyncReader");
+				}
+			}
         }
         return m_pfnWMCreateEditor != NULL;
     }

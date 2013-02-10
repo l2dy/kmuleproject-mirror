@@ -513,7 +513,7 @@ bool CKademlia::FindNodeIDByIP(CKadClientSearcher& rRequester, UINT dwIP, uint16
 {
     if (!IsRunning() || m_pInstance == NULL || GetUDPListener() == NULL || GetRoutingZone() == NULL)
     {
-        ASSERT( false );
+        ASSERT(0);
         return false;
     }
     // first search our known contacts if we can deliver a result without asking, otherwise forward the request
@@ -533,7 +533,7 @@ bool CKademlia::FindIPByNodeID(CKadClientSearcher& rRequester, const uchar* pach
 {
     if (!IsRunning() || m_pInstance == NULL || GetUDPListener() == NULL)
     {
-        ASSERT( false );
+        ASSERT(0);
         return false;
     }
     // first search our known contacts if we can deliver a result without asking, otherwise forward the request
@@ -554,7 +554,7 @@ void CKademlia::CancelClientSearch(CKadClientSearcher& rFromRequester)
 {
     if (m_pInstance == NULL || GetUDPListener() == NULL)
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
     GetUDPListener()->ExpireClientSearch(&rFromRequester);

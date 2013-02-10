@@ -413,7 +413,7 @@ void CTransferWnd::UpdateSplitterRange()
     GetWindowRect(rcWnd);
     if (rcWnd.Height() == 0)
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
 

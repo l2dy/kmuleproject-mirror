@@ -224,7 +224,7 @@ static bool CheckLangDLLVersion(const CString& rstrLangDLL)
             {
                 VS_FIXEDFILEINFO* pFileInf = NULL;
                 UINT uLen = 0;
-                if (VerQueryValue(pucVerInf, _T("\\"), (LPVOID*)&pFileInf, &uLen) && pFileInf && uLen)
+                if (VerQueryValue(pucVerInf, L"\\", (LPVOID*)&pFileInf, &uLen) && pFileInf && uLen)
                 {
                     bResult = (pFileInf->dwProductVersionMS == theApp.m_dwProductVersionMS &&
                                pFileInf->dwProductVersionLS == theApp.m_dwProductVersionLS);

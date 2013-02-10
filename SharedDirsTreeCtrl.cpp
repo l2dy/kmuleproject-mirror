@@ -58,7 +58,7 @@ HTREEITEM CDirectoryItem::FindItem(CDirectoryItem* pContentToFind) const
 {
     if (pContentToFind == NULL)
     {
-        ASSERT( false );
+        ASSERT(0);
         return NULL;
     }
 
@@ -150,8 +150,8 @@ void CSharedDirsTreeCtrl::SetAllIcons()
         pCurImageList->Replace(3, CTempIconLoader(_T("Category")));			// 3: Cats
         pCurImageList->Replace(4, CTempIconLoader(_T("HardDisk")));			// 4: All Dirs
         CString strTempDir(thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR));
-        if (strTempDir.Right(1) != _T("\\"))
-            strTempDir += _T("\\");
+        if (strTempDir.Right(1) != L"\\")
+            strTempDir += L"\\";
         int nImage = theApp.GetFileTypeSystemImageIdx(strTempDir);			// 5: System Folder Icon
         if (nImage > 0 && theApp.GetSystemImageList() != NULL)
         {
@@ -187,8 +187,8 @@ void CSharedDirsTreeCtrl::SetAllIcons()
         iml.Add(CTempIconLoader(_T("Category")));							// 3: Cats
         iml.Add(CTempIconLoader(_T("HardDisk")));							// 4: All Dirs
         CString strTempDir(thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR));
-        if (strTempDir.Right(1) != _T("\\"))
-            strTempDir += _T("\\");
+        if (strTempDir.Right(1) != L"\\")
+            strTempDir += L"\\";
         int nImage = theApp.GetFileTypeSystemImageIdx(strTempDir);			// 5: System Folder Icon
         if (nImage > 0 && theApp.GetSystemImageList() != NULL)
         {
@@ -271,21 +271,21 @@ bool CSharedDirsTreeCtrl::FilterTreeIsSubDirectory(CString strDir, CString strRo
     POSITION pos = liDirs.GetHeadPosition();
     strRoot.MakeLower();
     strDir.MakeLower();
-    if (strDir.Right(1) != _T("\\"))
+    if (strDir.Right(1) != L"\\")
     {
-        strDir += _T("\\");
+        strDir += L"\\";
     }
-    if (strRoot.Right(1) != _T("\\"))
+    if (strRoot.Right(1) != L"\\")
     {
-        strRoot += _T("\\");
+        strRoot += L"\\";
     }
     while (pos)
     {
         CString strCurrent = liDirs.GetNext(pos);
         strCurrent.MakeLower();
-        if (strCurrent.Right(1) != _T("\\"))
+        if (strCurrent.Right(1) != L"\\")
         {
-            strCurrent += _T("\\");
+            strCurrent += L"\\";
         }
         if (strRoot.Find(strCurrent, 0) != 0 && strDir.Find(strCurrent, 0) == 0 && strCurrent != strRoot && strCurrent != strDir)
             return true;
@@ -329,7 +329,7 @@ void CSharedDirsTreeCtrl::FilterTreeAddSubDirectories(CDirectoryItem* pDirectory
     // shouldnt be needed, but never trust the filesystem or a recursive function ;)
     if (nLevel > 14)
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
     POSITION pos = liDirs.GetHeadPosition();
@@ -340,7 +340,7 @@ void CSharedDirsTreeCtrl::FilterTreeAddSubDirectories(CDirectoryItem* pDirectory
         CString strCurrent = liDirs.GetNext(pos);
         CString strCurrentLow = strCurrent;
         strCurrentLow.MakeLower();
-        if ( (strDirectoryPath.IsEmpty() || strCurrentLow.Find(strDirectoryPath + _T("\\"), 0) == 0) && strCurrentLow != strDirectoryPath)
+        if ( (strDirectoryPath.IsEmpty() || strCurrentLow.Find(strDirectoryPath + L"\\", 0) == 0) && strCurrentLow != strDirectoryPath)
         {
             if (!FilterTreeIsSubDirectory(strCurrentLow, strDirectoryPath, liDirs))
             {
@@ -414,7 +414,7 @@ void CSharedDirsTreeCtrl::FilterTreeReloadTree()
         case SDI_INCOMING:
         {
             CString strMainIncDir = thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR);
-            if (strMainIncDir.Right(1) == _T("\\"))
+            if (strMainIncDir.Right(1) == L"\\")
             {
                 strMainIncDir = strMainIncDir.Left(strMainIncDir.GetLength()-1);
             }
@@ -428,7 +428,7 @@ void CSharedDirsTreeCtrl::FilterTreeReloadTree()
                     if (pCatStruct != NULL)
                     {
                         CString strCatIncomingPath = pCatStruct->strIncomingPath;
-                        if (strCatIncomingPath.Right(1) == _T("\\"))
+                        if (strCatIncomingPath.Right(1) == L"\\")
                         {
                             strCatIncomingPath = strCatIncomingPath.Left(strCatIncomingPath.GetLength()-1);
                         }
@@ -503,7 +503,7 @@ void CSharedDirsTreeCtrl::FilterTreeReloadTree()
             break;
         }
         default:
-            ASSERT( false );
+            ASSERT(0);
         }
     }
 
@@ -978,8 +978,8 @@ void CSharedDirsTreeCtrl::FileSystemTreeCreateTree()
 void CSharedDirsTreeCtrl::FileSystemTreeAddChildItem(CDirectoryItem* pRoot, CString strText, bool bTopLevel)
 {
     CString strPath = pRoot->m_strFullPath;
-    if (strPath.Right(1) != _T("\\") && !strPath.IsEmpty())
-        strPath += _T("\\");
+    if (strPath.Right(1) != L"\\" && !strPath.IsEmpty())
+        strPath += L"\\";
     CString strDir = strPath + strText;
     TVINSERTSTRUCT itInsert;
     memset(&itInsert, 0, sizeof(itInsert));
@@ -1006,7 +1006,7 @@ void CSharedDirsTreeCtrl::FileSystemTreeAddChildItem(CDirectoryItem* pRoot, CStr
     else
         itInsert.item.cChildren = 0;
 
-    if (strDir.Right(1) == _T("\\"))
+    if (strDir.Right(1) == L"\\")
     {
         strDir = strDir.Left(strPath.GetLength()-1);
     }
@@ -1027,8 +1027,8 @@ void CSharedDirsTreeCtrl::FileSystemTreeAddChildItem(CDirectoryItem* pRoot, CStr
         }
 
         CString strTemp = strDir;
-        if(strTemp.Right(1) != _T("\\"))
-            strTemp += _T("\\");
+        if(strTemp.Right(1) != L"\\")
+            strTemp += L"\\";
 
         UINT nType = GetDriveType(strTemp);
         if(DRIVE_REMOVABLE <= nType && nType <= DRIVE_RAMDISK)
@@ -1119,8 +1119,8 @@ bool CSharedDirsTreeCtrl::FileSystemTreeHasSharedSubdirectory(CString strDir, bo
 void CSharedDirsTreeCtrl::FileSystemTreeAddSubdirectories(CDirectoryItem* pRoot)
 {
     CString strDir = pRoot->m_strFullPath;
-    if (strDir.Right(1) != _T("\\"))
-        strDir += _T("\\");
+    if (strDir.Right(1) != L"\\")
+        strDir += L"\\";
     CFileFind finder;
     BOOL bWorking = finder.FindFile(strDir+_T("*.*"));
     while (bWorking)
@@ -1171,7 +1171,7 @@ void CSharedDirsTreeCtrl::OnTvnItemexpanding(NMHDR *pNMHDR, LRESULT *pResult)
         }
     }
     else
-        ASSERT( false );
+        ASSERT(0);
 
     SetRedraw(TRUE);
     Invalidate();
@@ -1214,8 +1214,8 @@ void CSharedDirsTreeCtrl::AddSharedDirectory(CString strDir, bool bSubDirectorie
     }
     if (bSubDirectories)
     {
-        if (strDir.Right(1) != _T("\\"))
-            strDir += _T("\\");
+        if (strDir.Right(1) != L"\\")
+            strDir += L"\\";
         CFileFind finder;
         BOOL bWorking = finder.FindFile(strDir+_T("*.*"));
         while (bWorking)
@@ -1231,7 +1231,7 @@ void CSharedDirsTreeCtrl::AddSharedDirectory(CString strDir, bool bSubDirectorie
 
 void CSharedDirsTreeCtrl::RemoveSharedDirectory(CString strDir, bool bSubDirectories)
 {
-    if (strDir.Right(1) == _T("\\"))
+    if (strDir.Right(1) == L"\\")
     {
         strDir = strDir.Left(strDir.GetLength()-1);
     }
@@ -1392,11 +1392,11 @@ void CSharedDirsTreeCtrl::Reload(bool bForce)
             {
                 CString str1 = m_strliSharedDirs.GetNext(pos);
                 CString str2 = thePrefs.shareddir_list.GetNext(pos2);
-                if (str1.Right(1) == _T("\\"))
+                if (str1.Right(1) == L"\\")
                 {
                     str1 = str1.Left(str1.GetLength()-1);
                 }
-                if (str2.Right(1) == _T("\\"))
+                if (str2.Right(1) == L"\\")
                 {
                     str2 = str2.Left(str2.GetLength()-1);
                 }
@@ -1412,7 +1412,7 @@ void CSharedDirsTreeCtrl::Reload(bool bForce)
 
         // check for changes in categories incoming dirs
         CString strMainIncDir = thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR);
-        if (strMainIncDir.Right(1) == _T("\\"))
+        if (strMainIncDir.Right(1) == L"\\")
             strMainIncDir = strMainIncDir.Left(strMainIncDir.GetLength()-1);
         CStringList strliFound;
         for (int i = 0; i < thePrefs.GetCatCount(); i++)
@@ -1421,7 +1421,7 @@ void CSharedDirsTreeCtrl::Reload(bool bForce)
             if (pCatStruct != NULL)
             {
                 CString strCatIncomingPath = pCatStruct->strIncomingPath;
-                if (strCatIncomingPath.Right(1) == _T("\\"))
+                if (strCatIncomingPath.Right(1) == L"\\")
                     strCatIncomingPath = strCatIncomingPath.Left(strCatIncomingPath.GetLength()-1);
 
                 if (!strCatIncomingPath.IsEmpty() && strCatIncomingPath.CompareNoCase(strMainIncDir) != 0
@@ -1464,7 +1464,7 @@ void CSharedDirsTreeCtrl::FetchSharedDirsList()
     while (pos)
     {
         CString strPath = thePrefs.shareddir_list.GetNext(pos);
-        if (strPath.Right(1) == _T("\\"))
+        if (strPath.Right(1) == L"\\")
         {
             strPath = strPath.Left(strPath.GetLength()-1);
         }

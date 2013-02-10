@@ -347,7 +347,7 @@ BOOL CemuleDlg::OnInitDialog()
             }
         }
         else
-            ASSERT( false );
+            ASSERT(0);
     }
 #endif
 
@@ -3263,7 +3263,7 @@ void CemuleDlg::StartUPnP(bool bReset, uint16 nForceTCPPort, uint16 nForceUDPPor
         }
     }
     else
-        ASSERT( false );
+        ASSERT(0);
 }
 
 void CemuleDlg::RefreshUPnP(bool bRequestAnswer)
@@ -3295,7 +3295,7 @@ void CemuleDlg::RefreshUPnP(bool bRequestAnswer)
         }
     }
     else
-        ASSERT( false );
+        ASSERT(0);
 }
 
 BOOL CemuleDlg::OnDeviceChange(UINT nEventType, DWORD_PTR dwData)
@@ -3460,7 +3460,7 @@ LRESULT CemuleDlg::OnTaskbarBtnCreated ( WPARAM , LPARAM  )
             UpdateStatusBarProgress();
         }
         else
-            ASSERT( false );
+            ASSERT(0);
     }
     return 0;
 }
@@ -3600,11 +3600,11 @@ void CemuleDlg::SetTaskbarIconColor()
             {
 
                 if (!g_xpStyle.GetThemeColor(hTheme, TNP_BACKGROUND, 0, TMT_FILLCOLORHINT, &cr) == S_OK)
-                    ASSERT( false );
+                    ASSERT(0);
                 g_xpStyle.CloseThemeData(hTheme);
             }
             else
-                ASSERT( false );
+                ASSERT(0);
             ptmpWnd->DestroyWindow();
             delete ptmpWnd;
         }

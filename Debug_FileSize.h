@@ -372,7 +372,7 @@ private:
             if ( nSize2 != 0 )
                 m_nSize = nSize1 / nSize2;
             else
-                ASSERT( false );
+                ASSERT(0);
         }
         else if (edfsAction == DFSA_MUL)
         {

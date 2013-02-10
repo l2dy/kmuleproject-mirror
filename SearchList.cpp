@@ -1554,7 +1554,7 @@ void CSearchList::LoadSpamFilter()
                 }
                 break;
             default:
-                ASSERT( false );
+                ASSERT(0);
             }
         }
         file.Close();
@@ -1849,7 +1849,7 @@ void CSearchList::LoadSearches()
             else
             {
                 bDeleteParams = true;
-                ASSERT( false );
+                ASSERT(0);
             }
 
             // fill the list with stored results

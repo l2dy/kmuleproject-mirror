@@ -152,7 +152,7 @@ void CRoutingZone::ReadFile(CString strSpecialNodesdate)
 {
     if (m_pSuperZone != NULL || (m_sFilename.IsEmpty() && strSpecialNodesdate.IsEmpty()))
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
     bool bDoHaveVerifiedContacts = false;
@@ -275,7 +275,7 @@ void CRoutingZone::ReadBootstrapNodesDat(CFileDataIO& file)
     // ask only one of those 1000 contacts one time (well or more untill we find an alive one).
     if (!CKademlia::s_liBootstapList.IsEmpty())
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
     UINT uNumContacts = file.ReadUInt32();
@@ -932,7 +932,7 @@ void CRoutingZone::OnSmallTimer()
             ASSERT( CKadUDPKey(0) == pContact->GetUDPKey() );
         }
         else
-            ASSERT( false );
+            ASSERT(0);
     }
 }
 

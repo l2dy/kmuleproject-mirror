@@ -1681,7 +1681,7 @@ CString CDownloadQueue::GetOptimalTempDir(UINT nCat, EMFileSize nFileSize)
     }
     else  // so was condtion 2 and 3, take 4.. wait there is no 3 - this must be a bug
     {
-        ASSERT( false );
+        ASSERT(0);
         return thePrefs.GetTempDir();
     }
 }

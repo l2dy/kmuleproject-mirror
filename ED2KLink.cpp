@@ -304,10 +304,10 @@ CED2KFileLink::CED2KFileLink(const TCHAR* pszName, const TCHAR* pszSize, const T
                     ASSERT( m_AICHHash.GetString().CompareNoCase(strHash) == 0 );
                 }
                 else
-                    ASSERT( false );
+                    ASSERT(0);
             }
             else
-                ASSERT( false );
+                ASSERT(0);
         }
 //>>> WiZaRd::CollectionEnhancement
         else if(strTok == L"f") // "f" for folder ;)

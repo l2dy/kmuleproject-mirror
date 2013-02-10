@@ -392,7 +392,7 @@ void CMuleToolbarCtrl::OnNmRClick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
         for (int f = 0; f < _countof(s_apszTBFiles); f++)
         {
             WIN32_FIND_DATA FileData;
-            HANDLE hSearch = FindFirstFile(thePrefs.GetMuleDirectory(EMULE_TOOLBARDIR) + CString(_T("\\")) + s_apszTBFiles[f], &FileData);
+            HANDLE hSearch = FindFirstFile(thePrefs.GetMuleDirectory(EMULE_TOOLBARDIR) + CString(L"\\") + s_apszTBFiles[f], &FileData);
             if (hSearch != INVALID_HANDLE_VALUE)
             {
                 do
@@ -417,7 +417,7 @@ void CMuleToolbarCtrl::OnNmRClick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
                 else
                     bitmapBaseName = bitmapFileName;
                 menuBitmaps.AppendMenu(MF_STRING, MP_TOOLBARBITMAP + i, bitmapBaseName);
-                m_astrToolbarPaths.Add(thePrefs.GetMuleDirectory(EMULE_TOOLBARDIR) + CString(_T("\\")) + bitmapFileName);
+                m_astrToolbarPaths.Add(thePrefs.GetMuleDirectory(EMULE_TOOLBARDIR) + CString(L"\\") + bitmapFileName);
                 if (!checked && currentBitmapSettings.CompareNoCase(m_astrToolbarPaths[i]) == 0)
                 {
                     menuBitmaps.CheckMenuItem(MP_TOOLBARBITMAP + i, MF_CHECKED);
@@ -465,7 +465,7 @@ void CMuleToolbarCtrl::OnNmRClick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
         for (int f = 0; f < _countof(s_apszSkinFiles); f++)
         {
             WIN32_FIND_DATA FileData;
-            HANDLE hSearch = FindFirstFile(thePrefs.GetMuleDirectory(EMULE_SKINDIR, false) + CString(_T("\\")) + s_apszSkinFiles[f], &FileData);
+            HANDLE hSearch = FindFirstFile(thePrefs.GetMuleDirectory(EMULE_SKINDIR, false) + CString(L"\\") + s_apszSkinFiles[f], &FileData);
             if (hSearch != INVALID_HANDLE_VALUE)
             {
                 do
@@ -490,7 +490,7 @@ void CMuleToolbarCtrl::OnNmRClick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
                 else
                     skinBaseName = skinFileName;
                 menuSkins.AppendMenu(MF_STRING, MP_SKIN_PROFILE + i, skinBaseName);
-                m_astrSkinPaths.Add(thePrefs.GetMuleDirectory(EMULE_SKINDIR, false) + CString(_T("\\")) + skinFileName);
+                m_astrSkinPaths.Add(thePrefs.GetMuleDirectory(EMULE_SKINDIR, false) + CString(L"\\") + skinFileName);
                 if (!checked && currentSkin.CompareNoCase(m_astrSkinPaths[i]) == 0)
                 {
                     menuSkins.CheckMenuItem(MP_SKIN_PROFILE + i, MF_CHECKED);

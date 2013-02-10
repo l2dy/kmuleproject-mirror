@@ -124,7 +124,7 @@ void CLookupHistory::ContactAskedKad(CContact* pContact)
             return;
         }
     }
-    ASSERT( false );
+    ASSERT(0);
 }
 
 int	CLookupHistory::GetInterestingContactIdxByID(CUInt128 uContact) const
@@ -134,7 +134,7 @@ int	CLookupHistory::GetInterestingContactIdxByID(CUInt128 uContact) const
         if (uContact == m_aIntrestingHistoryEntries[i]->m_uContactID)
             return i;
     }
-    ASSERT( false );
+    ASSERT(0);
     return (-1);
 }
 
@@ -152,7 +152,7 @@ void CLookupHistory::ContactAskedKeyword(CContact* pContact)
             return;
         }
     }
-    ASSERT( false );
+    ASSERT(0);
 }
 
 void CLookupHistory::ContactRespondedKeyword(UINT uContactIP, uint16 uContactUDPPort, UINT uResultCount)
@@ -166,7 +166,7 @@ void CLookupHistory::ContactRespondedKeyword(UINT uContactIP, uint16 uContactUDP
             return;
         }
     }
-    //ASSERT( false );
+    //ASSERT(0);
 }
 
 CString	CLookupHistory::GetTypeName() const

@@ -1190,7 +1190,7 @@ EPartFileLoadResult CPartFile::LoadPartFile(LPCTSTR in_directory,LPCTSTR in_file
                         m_pAICHRecoveryHashSet->SetMasterHash(hash, AICH_VERIFIED);
                     }
                     else
-                        ASSERT( false );
+                        ASSERT(0);
                     delete newtag;
                     break;
                 }
@@ -1203,7 +1203,7 @@ EPartFileLoadResult CPartFile::LoadPartFile(LPCTSTR in_directory,LPCTSTR in_file
                         bHadAICHHashSetTag = true;
                     }
                     else
-                        ASSERT( false );
+                        ASSERT(0);
                     delete newtag;
                     break;
                 default:
@@ -1753,7 +1753,7 @@ bool CPartFile::SavePartFile(bool bDontOverrideBak)
                 }
                 catch (CFileException* pError)
                 {
-                    ASSERT( false );
+                    ASSERT(0);
                     DebugLogError(_T("Memfile Error while storing AICH Part HashSet"));
                     bWriteHashSet = false;
                     delete[] hashSetFile.Detach();
@@ -1932,7 +1932,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
                 if (result->GetFileIdentifier().GetMD4PartHash(nPart) && GetFileIdentifier().GetMD4PartHash(nPart))
                     bMD4Error = md4cmp(result->GetFileIdentifier().GetMD4PartHash(nPart), m_FileIdentifier.GetMD4PartHash(nPart)) != 0;
                 else
-                    ASSERT( false );
+                    ASSERT(0);
             }
             // AICH
             if (GetFileIdentifier().HasAICHHash())
@@ -1948,7 +1948,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
                     if (result->GetFileIdentifier().GetAvailableAICHPartHashCount() > nPart && GetFileIdentifier().GetAvailableAICHPartHashCount() > nPart)
                         bAICHError = result->GetFileIdentifier().GetRawAICHHashSet()[nPart] != GetFileIdentifier().GetRawAICHHashSet()[nPart];
                     else
-                        ASSERT( false );
+                        ASSERT(0);
                 }
             }
             if (bMD4Error || bAICHError)
@@ -2775,7 +2775,7 @@ UINT CPartFile::Process(UINT reducedownload, UINT icounter/*in percent*/)
     DWORD dwCurTick = ::GetTickCount();
     if (dwCurTick < m_nLastBufferFlushTime)
     {
-        ASSERT( false );
+        ASSERT(0);
         m_nLastBufferFlushTime = dwCurTick;
     }
 
@@ -3987,7 +3987,7 @@ bool CPartFile::HashSinglePart(UINT partnumber, bool* pbAICHReportedOK)
                 phtAICHPartHash = new CAICHHashTree(pPartTree->m_nDataSize,pPartTree->m_bIsLeftBranch, pPartTree->GetBaseSize());
             }
             else
-                ASSERT( false );
+                ASSERT(0);
         }
         CreateHash(&m_hpartfile, length, hashresult, phtAICHPartHash);
 
@@ -4005,7 +4005,7 @@ bool CPartFile::HashSinglePart(UINT partnumber, bool* pbAICHReportedOK)
                     bMD4Error = md4cmp(hashresult, m_FileIdentifier.GetMD4PartHash(partnumber)) != 0;
                 else
                 {
-                    ASSERT( false );
+                    ASSERT(0);
                     m_bMD4HashsetNeeded = true;
                 }
             }
@@ -4027,7 +4027,7 @@ bool CPartFile::HashSinglePart(UINT partnumber, bool* pbAICHReportedOK)
                 if (m_FileIdentifier.GetAvailableAICHPartHashCount() > partnumber)
                     bAICHError = m_FileIdentifier.GetRawAICHHashSet()[partnumber] != phtAICHPartHash->m_Hash;
                 else
-                    ASSERT( false );
+                    ASSERT(0);
             }
             else
                 bAICHError = m_FileIdentifier.GetAICHHash() != phtAICHPartHash->m_Hash;
@@ -4419,7 +4419,7 @@ void CPartFile::PreviewFile()
 
     if (!IsReadyForPreview())
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
 
@@ -4868,12 +4868,12 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
             bError = nCount*(4+2+4+2+16+1) != uDataSize;
             break;
         default:
-            ASSERT( false );
+            ASSERT(0);
         }
 
         if (bError)
         {
-            ASSERT( false );
+            ASSERT(0);
             if (thePrefs.GetVerbose())
             {
                 CString strDbgClientInfo;
@@ -5957,7 +5957,7 @@ bool CPartFile::GrabImage(uint8 nFramesToGrab, double dStartTime, bool bReduceCo
 {
     if (!IsPartFile())
     {
-        return CKnownFile::GrabImage(GetPath() + CString(_T("\\")) + GetFileName(),nFramesToGrab, dStartTime, bReduceColor, nMaxWidth, pSender);
+        return CKnownFile::GrabImage(GetPath() + CString(L"\\") + GetFileName(),nFramesToGrab, dStartTime, bReduceColor, nMaxWidth, pSender);
     }
     else
     {
@@ -6295,10 +6295,10 @@ void CPartFile::RequestAICHRecovery(UINT nPart)
     }
     if (pClient == NULL)
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
-    AddDebugLogLine(DLP_DEFAULT, false, _T("Requesting AICH Hash (%s) from client %s"),cAICHClients? _T("HighId"):_T("LowID"), pClient->DbgGetClientInfo());
+    AddDebugLogLine(DLP_DEFAULT, false, L"Requesting AICH Hash (%s) from client %s", cAICHClients? L"Open" : L"Firewalled", pClient->DbgGetClientInfo());
     pClient->SendAICHRequest(this, (uint16)nPart);
 }
 
@@ -6306,7 +6306,7 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
 {
     if (GetPartCount() < nPart)
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
     FlushBuffer(true, true);
@@ -6329,7 +6329,7 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
     if (pVerifiedHash == NULL || !pVerifiedHash->m_bHashValid)
     {
         AddDebugLogLine(DLP_DEFAULT, false, _T("Processing AICH Recovery data: Unable to get verified hash from hashset (should never happen)"));
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
     CAICHHashTree htOurHash(pVerifiedHash->m_nDataSize, pVerifiedHash->m_bIsLeftBranch, pVerifiedHash->GetBaseSize());
@@ -6340,14 +6340,14 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
     }
     catch(...)
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
 
     if (!htOurHash.m_bHashValid)
     {
         AddDebugLogLine(DLP_DEFAULT, false, _T("Processing AICH Recovery data: Failed to retrieve AICH Hashset of corrupt part"));
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
 
@@ -6360,7 +6360,7 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
         CAICHHashTree* pOurBlock = htOurHash.FindHash(pos, nBlockSize);
         if ( pVerifiedBlock == NULL || pOurBlock == NULL || !pVerifiedBlock->m_bHashValid || !pOurBlock->m_bHashValid)
         {
-            ASSERT( false );
+            ASSERT(0);
             continue;
         }
         if (pOurBlock->m_Hash == pVerifiedBlock->m_Hash)
@@ -6397,7 +6397,7 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
             if (!m_FileIdentifier.HasAICHHash())
                 m_pAICHRecoveryHashSet->SetStatus(AICH_ERROR); // set it to error on unverified hashs
             AddGap(PARTSIZE*(uint64)nPart, (((uint64)nPart*PARTSIZE)+length)-1);
-            ASSERT( false );
+            ASSERT(0);
             return;
         }
         else

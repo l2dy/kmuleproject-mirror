@@ -593,7 +593,7 @@ bool CKnownFileList::ShouldPurgeAICHHashset(const CAICHHash& rAICHHash) const
             return false;
     }
     else
-        ASSERT( false );
+        ASSERT(0);
     return true;
 }
 

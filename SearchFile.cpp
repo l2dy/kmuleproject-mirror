@@ -220,7 +220,7 @@ CSearchFile::CSearchFile(CFileDataIO* in_data, bool bOptUTF8,
                 if (DecodeBase32(tag->GetStr(),hash) == (UINT)CAICHHash::GetHashSize())
                     m_FileIdentifier.SetAICHHash(hash);
                 else
-                    ASSERT( false );
+                    ASSERT(0);
                 delete tag;
                 tag = NULL;
                 continue;

@@ -729,7 +729,7 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
                         }
                     }
                     else
-                        ASSERT( false );
+                        ASSERT(0);
                 }
                 else
                 {
@@ -1886,7 +1886,7 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
                         }
                     }
                     else
-                        ASSERT( false );
+                        ASSERT(0);
                 }
                 else
                 {

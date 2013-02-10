@@ -562,7 +562,7 @@ bool Ask4RegFix(bool checkOnly, bool dontAsk, bool bAutoTakeCollections)
         regkey.QueryStringValue(NULL, rbuffer, &maxsize);
         rbuffer[_countof(rbuffer) - 1] = L'\0';
         if (maxsize != 0 && _tcsicmp(rbuffer, regbuffer) == 0)
-            bGlobalSet = true; // yup, globally we have an entrie for this mule
+            bGlobalSet = true; // yup, globally we have an entry for this mule
         regkey.Close();
     }
 
@@ -757,6 +757,8 @@ WORD DetectWinVersion()
             return _WINVER_VISTA_;
         if (osvi.dwMajorVersion == 6 && osvi.dwMinorVersion == 1)
             return _WINVER_7_;
+		if (osvi.dwMajorVersion == 6 && osvi.dwMinorVersion == 2)
+			return _WINVER_8_;
         return _WINVER_7_; // never return Win95 if we get the info about a NT system
 
     case VER_PLATFORM_WIN32_WINDOWS:
@@ -822,13 +824,9 @@ uint64 GetFreeDiskSpaceX(LPCTSTR pDirectory)
     {
         _bInitialized = TRUE;
         if (g_bUnicoWS)
-        {
             (FARPROC&)_pfnGetDiskFreeSpaceExA = GetProcAddress(GetModuleHandle(_T("kernel32")), "GetDiskFreeSpaceExA");
-        }
         else
-        {
             (FARPROC&)_pfnGetDiskFreeSpaceEx = GetProcAddress(GetModuleHandle(_T("kernel32")), _TWINAPI("GetDiskFreeSpaceEx"));
-        }
     }
 
     if (_pfnGetDiskFreeSpaceEx)
@@ -3676,7 +3674,7 @@ ULONGLONG GetModuleVersion(LPCTSTR pszFilePath)
             {
                 VS_FIXEDFILEINFO* pFileInf = NULL;
                 UINT uLen = 0;
-                if (VerQueryValue(pucVerInf, _T("\\"), (LPVOID*)&pFileInf, &uLen) && pFileInf && uLen)
+                if (VerQueryValue(pucVerInf, L"\\", (LPVOID*)&pFileInf, &uLen) && pFileInf && uLen)
                 {
                     ullVersion = MAKEDLLVERULL(HIWORD(pFileInf->dwFileVersionMS), LOWORD(pFileInf->dwFileVersionMS),
                                                HIWORD(pFileInf->dwFileVersionLS), LOWORD(pFileInf->dwFileVersionLS));
@@ -4144,7 +4142,7 @@ bool _tmakepathlimit(TCHAR *path, const TCHAR *drive, const TCHAR *dir, const TC
 {
     if (path == NULL)
     {
-        ASSERT( false );
+        ASSERT(0);
         return false;
     }
 
@@ -4164,7 +4162,7 @@ bool _tmakepathlimit(TCHAR *path, const TCHAR *drive, const TCHAR *dir, const TC
     if (_tcslen(tchBuffer) >= MAX_PATH)
     {
         path[0] = L'\0';
-        ASSERT( false );
+        ASSERT(0);
         delete[] tchBuffer;
         return false;
     }
@@ -4773,4 +4771,33 @@ uint64	GetFileSizeOnDisk(const CString& strFilePath)
 
 	return ret;
 }
+
+//>>> WiZaRd::Wine Compatibility
+bool RunningWine()
+{	
+	bool runningWine = false;
+
+	if(GetProcAddress(GetModuleHandle(L"kernel32"), _TWINAPI("wine_get_unix_file_name")) != NULL)
+	{
+		runningWine = true;
+		theApp.QueueLogLineEx(LOG_WARNING, L"Detected WINE via kernel32.dll");
+	}
+	else if(GetProcAddress(GetModuleHandle(L"ntdll"), _TWINAPI("wine_get_unix_file_name")) != NULL)
+	{
+		runningWine = true;
+		theApp.QueueLogLineEx(LOG_WARNING, L"Detected WINE via ntdll.dll");
+	}
+	else
+	{
+		CRegKey key;
+		if(key.Open(HKEY_CURRENT_USER, L"Software\\Wine", KEY_READ) == ERROR_SUCCESS)
+		{
+			runningWine = true;
+			theApp.QueueLogLineEx(LOG_WARNING, L"Detected WINE via registry");
+		}
+	}
+
+	return runningWine;	
+}
+//<<< WiZaRd::Wine Compatibility
 //<<< WiZaRd::Additional Functions

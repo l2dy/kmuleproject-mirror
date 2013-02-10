@@ -37,7 +37,7 @@ CCBBRecord::CCBBRecord(uint64 nStartPos, uint64 nEndPos, UINT dwIP, EBBRStatus B
 {
     if (nStartPos > nEndPos)
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
     m_nStartPos = nStartPos;
@@ -65,7 +65,7 @@ bool CCBBRecord::Merge(uint64 nStartPos, uint64 nEndPos, UINT dwIP, EBBRStatus B
         else if (nEndPos + 1 == m_nStartPos)
             m_nStartPos = nStartPos;
         else
-            ASSERT( false );
+            ASSERT(0);
 
         return true;
     }
@@ -99,12 +99,12 @@ void CCorruptionBlackBox::TransferredData(uint64 nStartPos, uint64 nEndPos, cons
 {
     if (nEndPos - nStartPos >= PARTSIZE)
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
     if (nStartPos > nEndPos)
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
     UINT dwSenderIP = pSender->GetIP();
@@ -124,7 +124,7 @@ void CCorruptionBlackBox::TransferredData(uint64 nStartPos, uint64 nEndPos, cons
     }
     if (nPart >= (UINT)m_aaRecords.GetCount())
     {
-        //ASSERT( false );
+        //ASSERT(0);
         m_aaRecords.SetSize(nPart+1);
     }
     int posMerge = -1;
@@ -200,7 +200,7 @@ void CCorruptionBlackBox::VerifiedData(uint64 nStartPos, uint64 nEndPos)
 {
     if (nEndPos - nStartPos >= PARTSIZE)
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
     // convert pos to relative block pos
@@ -209,12 +209,12 @@ void CCorruptionBlackBox::VerifiedData(uint64 nStartPos, uint64 nEndPos)
     uint64 nRelEndPos = nEndPos - (uint64)nPart*PARTSIZE;
     if (nRelEndPos >= PARTSIZE)
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
     if (nPart >= (UINT)m_aaRecords.GetCount())
     {
-        //ASSERT( false );
+        //ASSERT(0);
         m_aaRecords.SetSize(nPart+1);
     }
     uint64 nDbgVerifiedBytes = 0;
@@ -285,7 +285,7 @@ void CCorruptionBlackBox::CorruptedData(uint64 nStartPos, uint64 nEndPos)
 {
     if (nEndPos - nStartPos >= EMBLOCKSIZE)
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
     // convert pos to relative block pos
@@ -294,12 +294,12 @@ void CCorruptionBlackBox::CorruptedData(uint64 nStartPos, uint64 nEndPos)
     uint64 nRelEndPos = nEndPos - (uint64)nPart*PARTSIZE;
     if (nRelEndPos >= PARTSIZE)
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
     if (nPart >= (UINT)m_aaRecords.GetCount())
     {
-        //ASSERT( false );
+        //ASSERT(0);
         m_aaRecords.SetSize(nPart+1);
     }
     uint64 nDbgVerifiedBytes = 0;
@@ -421,7 +421,7 @@ void CCorruptionBlackBox::EvaluateData(uint16 nPart)
             else
             {
                 AddDebugLogLine(DLP_HIGH, false, _T("CorruptionBlackBox: Programm Error: No records for guilty client found!"));
-                ASSERT( false );
+                ASSERT(0);
                 nCorruptPercentage = 0;
             }
             if ( nCorruptPercentage > CBB_BANTHRESHOLD)

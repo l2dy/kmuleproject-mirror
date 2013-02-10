@@ -57,11 +57,19 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+enum eDirectoryMode
+{
+	eDM_Auto = -1,
+	eDM_MultiUser = 0,
+	eDM_PublicUser = 1,
+	eDM_Executable = 2
+};
+
 CPreferences thePrefs;
 
 CString CPreferences::m_astrDefaultDirs[EMULE_DIRCOUNT];
 bool	CPreferences::m_abDefaultDirsCreated[EMULE_DIRCOUNT] = { false, false, false, false, false, false, false, false, false, false, false, false};
-int		CPreferences::m_nCurrentUserDirMode = -1;
+int		CPreferences::m_nCurrentUserDirMode = eDM_Auto;
 int		CPreferences::m_iDbgHeap;
 CString	CPreferences::strNick;
 uint16	CPreferences::minupload;
@@ -422,6 +430,7 @@ bool	CPreferences::m_bDropBlockingSockets;
 float	CPreferences::m_fMaxBlockRate;
 float	CPreferences::m_fMaxBlockRate20;
 //<<< WiZaRd::Drop Blocking Sockets [Xman?]
+bool	CPreferences::m_bNeedsWineCompatibility; //>>> WiZaRd::Wine Compatibility
 
 CPreferences::CPreferences()
 {
@@ -628,43 +637,38 @@ void CPreferences::Init()
     // Explicitly inform the user about errors with incoming/temp folders!
     if (!PathFileExists(GetMuleDirectory(EMULE_INCOMINGDIR)) && !::CreateDirectory(GetMuleDirectory(EMULE_INCOMINGDIR),0))
     {
-        CString strError;
+        /*CString strError;
         strError.Format(GetResString(IDS_ERR_CREATE_DIR), GetResString(IDS_PW_INCOMING), GetMuleDirectory(EMULE_INCOMINGDIR), GetErrorMessage(GetLastError()));
-        AfxMessageBox(strError, MB_ICONERROR);
+        AfxMessageBox(strError, MB_ICONERROR);*/
 
         m_strIncomingDir = GetDefaultDirectory(EMULE_INCOMINGDIR, true); // will also try to create it if needed
-        if (!PathFileExists(GetMuleDirectory(EMULE_INCOMINGDIR)))
+        /*if (!PathFileExists(GetMuleDirectory(EMULE_INCOMINGDIR)))
         {
             strError.Format(GetResString(IDS_ERR_CREATE_DIR), GetResString(IDS_PW_INCOMING), GetMuleDirectory(EMULE_INCOMINGDIR), GetErrorMessage(GetLastError()));
             AfxMessageBox(strError, MB_ICONERROR);
-        }
+        }*/
     }
     if (!PathFileExists(GetTempDir()) && !::CreateDirectory(GetTempDir(),0))
     {
-        CString strError;
+        /*CString strError;
         strError.Format(GetResString(IDS_ERR_CREATE_DIR), GetResString(IDS_PW_TEMP), GetTempDir(), GetErrorMessage(GetLastError()));
-        AfxMessageBox(strError, MB_ICONERROR);
+        AfxMessageBox(strError, MB_ICONERROR);*/
 
         tempdir.SetAt(0, GetDefaultDirectory(EMULE_TEMPDIR, true)); // will also try to create it if needed);
-        if (!PathFileExists(GetTempDir()))
+        /*if (!PathFileExists(GetTempDir()))
         {
             strError.Format(GetResString(IDS_ERR_CREATE_DIR), GetResString(IDS_PW_TEMP), GetTempDir(), GetErrorMessage(GetLastError()));
             AfxMessageBox(strError, MB_ICONERROR);
-        }
+        }*/
     }
 
     // Create 'skins' directory
     if (!PathFileExists(GetMuleDirectory(EMULE_SKINDIR)) && !CreateDirectory(GetMuleDirectory(EMULE_SKINDIR), 0))
-    {
         m_strSkinProfileDir = GetDefaultDirectory(EMULE_SKINDIR, true); // will also try to create it if needed
-    }
 
     // Create 'toolbars' directory
     if (!PathFileExists(GetMuleDirectory(EMULE_TOOLBARDIR)) && !CreateDirectory(GetMuleDirectory(EMULE_TOOLBARDIR), 0))
-    {
         m_sToolbarBitmapFolder = GetDefaultDirectory(EMULE_TOOLBARDIR, true); // will also try to create it if needed;
-    }
-
 
     if (isnulmd4(userhash))
         CreateUserHash();
@@ -2438,6 +2442,9 @@ void CPreferences::LoadkMulePrefs()
 	m_fMaxBlockRate = ini.GetFloat(L"SocketBlockRate", 96.0f);
 	m_fMaxBlockRate20 = ini.GetFloat(L"SocketBlockRate20", 98.0f);
 //<<< WiZaRd::Drop Blocking Sockets [Xman?]
+//>>> WiZaRd::Wine Compatibility
+	m_bNeedsWineCompatibility = ini.GetBool(L"WineCompatibility", RunningWine());
+//<<< WiZaRd::Wine Compatibility
 }
 //<<< WiZaRd::Own Prefs
 
@@ -2686,7 +2693,7 @@ bool CPreferences::IsRunAsUserEnabled()
 {
     return (GetWindowsVersion() == _WINVER_XP_ || GetWindowsVersion() == _WINVER_2K_ || GetWindowsVersion() == _WINVER_2003_)
            && m_bRunAsUser
-           && m_nCurrentUserDirMode == 2;
+           && m_nCurrentUserDirMode == eDM_Executable;
 }
 
 bool CPreferences::GetUseReBarToolbar()
@@ -2758,10 +2765,8 @@ bool CPreferences::CanFSHandleLargeFiles(int nForCat)
 // Fallback: ApplicationDir
 CString CPreferences::GetDefaultDirectory(EDefaultDirectory eDirectory, bool bCreate)
 {
-
     if (m_astrDefaultDirs[0].IsEmpty())  // already have all directories fetched and stored?
     {
-
         // Get out exectuable starting directory which was our default till Vista
         TCHAR tchBuffer[MAX_PATH];
         ::GetModuleFileName(NULL, tchBuffer, _countof(tchBuffer));
@@ -2775,7 +2780,7 @@ CString CPreferences::GetDefaultDirectory(EDefaultDirectory eDirectory, bool bCr
         CString strSelectedDataBaseDirectory = m_astrDefaultDirs[EMULE_EXECUTEABLEDIR];
         CString strSelectedConfigBaseDirectory = m_astrDefaultDirs[EMULE_EXECUTEABLEDIR];
         CString strSelectedExpansionBaseDirectory = m_astrDefaultDirs[EMULE_EXECUTEABLEDIR];
-        m_nCurrentUserDirMode = 2; // To let us know which "mode" we are using in case we want to switch per options
+        m_nCurrentUserDirMode = eDM_Executable; // To let us know which "mode" we are using in case we want to switch per options
 
         // check if preferences.ini exists already in our default / fallback dir
         CFileFind ff;
@@ -2785,27 +2790,26 @@ CString CPreferences::GetDefaultDirectory(EDefaultDirectory eDirectory, bool bCr
         // check if our registry setting is present which forces the single or multiuser directories
         // and lets us ignore other defaults
         // 0 = Multiuser, 1 = Publicuser, 2 = ExecuteableDir. (on Winver < Vista 1 has the same effect as 2)
-        DWORD nRegistrySetting = (DWORD)-1;
+        DWORD nRegistrySetting = (DWORD)eDM_Auto;
         CRegKey rkEMuleRegKey;
         if (rkEMuleRegKey.Open(HKEY_CURRENT_USER, _T("Software\\eMule"), KEY_READ) == ERROR_SUCCESS)
         {
             rkEMuleRegKey.QueryDWORDValue(_T("UsePublicUserDirectories"), nRegistrySetting);
             rkEMuleRegKey.Close();
         }
-        if (nRegistrySetting != -1 && nRegistrySetting != 0 && nRegistrySetting != 1 && nRegistrySetting != 2)
-            nRegistrySetting = (DWORD)-1;
+        if (nRegistrySetting != eDM_Auto && nRegistrySetting != eDM_MultiUser && nRegistrySetting != eDM_PublicUser && nRegistrySetting != eDM_Executable)
+            nRegistrySetting = (DWORD)eDM_Auto;
 
         // Do we need to get SystemFolders or do we use our old Default anyway? (Executable Dir)
-        if (   nRegistrySetting == 0
-                || (nRegistrySetting == 1 && GetWindowsVersion() >= _WINVER_VISTA_)
-                || (nRegistrySetting == -1 && (!bConfigAvailableExecuteable || GetWindowsVersion() >= _WINVER_VISTA_)))
+        if (   nRegistrySetting == eDM_MultiUser
+                || (nRegistrySetting == eDM_Auto && GetWindowsVersion() >= _WINVER_VISTA_)
+                || (nRegistrySetting == eDM_Auto && (!bConfigAvailableExecuteable || GetWindowsVersion() >= _WINVER_VISTA_)))
         {
             HMODULE hShell32 = LoadLibrary(_T("shell32.dll"));
             if (hShell32)
             {
                 if (GetWindowsVersion() >= _WINVER_VISTA_)
                 {
-
                     PWSTR pszLocalAppData = NULL;
                     PWSTR pszPersonalDownloads = NULL;
                     PWSTR pszPublicDownloads = NULL;
@@ -2828,60 +2832,60 @@ CString CPreferences::GetDefaultDirectory(EDefaultDirectory eDirectory, bool bCr
                             CString strPersonalDownloads = pszPersonalDownloads;
                             CString strPublicDownloads = pszPublicDownloads;
                             CString strProgrammData = pszProgrammData;
-                            if (strLocalAppData.Right(1) != _T("\\"))
-                                strLocalAppData += _T("\\");
-                            if (strPersonalDownloads.Right(1) != _T("\\"))
-                                strPersonalDownloads += _T("\\");
-                            if (strPublicDownloads.Right(1) != _T("\\"))
-                                strPublicDownloads += _T("\\");
-                            if (strProgrammData.Right(1) != _T("\\"))
-                                strProgrammData += _T("\\");
+                            if (strLocalAppData.Right(1) != L"\\")
+                                strLocalAppData += L"\\";
+                            if (strPersonalDownloads.Right(1) != L"\\")
+                                strPersonalDownloads += L"\\";
+                            if (strPublicDownloads.Right(1) != L"\\")
+                                strPublicDownloads += L"\\";
+                            if (strProgrammData.Right(1) != L"\\")
+                                strProgrammData += L"\\";
 
-                            if (nRegistrySetting == -1)
+                            if (nRegistrySetting == eDM_Auto)
                             {
                                 // no registry default, check if we find a preferences.ini to use
                                 bool bRes =  ff.FindFile(strLocalAppData + _T("eMule\\") + CONFIGFOLDER + _T("preferences.ini"), 0) != 0;
                                 ff.Close();
                                 if (bRes)
-                                    m_nCurrentUserDirMode = 0;
+                                    m_nCurrentUserDirMode = eDM_MultiUser;
                                 else
                                 {
                                     bRes =  ff.FindFile(strProgrammData + _T("eMule\\") + CONFIGFOLDER + _T("preferences.ini"), 0) != 0;
                                     ff.Close();
                                     if (bRes)
-                                        m_nCurrentUserDirMode = 1;
+                                        m_nCurrentUserDirMode = eDM_PublicUser;
                                     else if (bConfigAvailableExecuteable)
-                                        m_nCurrentUserDirMode = 2;
+                                        m_nCurrentUserDirMode = eDM_Executable;
                                     else
-                                        m_nCurrentUserDirMode = 0; // no preferences.ini found, use the default
+                                        m_nCurrentUserDirMode = eDM_MultiUser; // no preferences.ini found, use the default
                                 }
                             }
                             else
                                 m_nCurrentUserDirMode = nRegistrySetting;
 
-                            if (m_nCurrentUserDirMode == 0)
+                            if (m_nCurrentUserDirMode == eDM_MultiUser)
                             {
                                 // multiuser
                                 strSelectedDataBaseDirectory = strPersonalDownloads + _T("eMule\\");
                                 strSelectedConfigBaseDirectory = strLocalAppData + _T("eMule\\");
                                 strSelectedExpansionBaseDirectory = strProgrammData + _T("eMule\\");
                             }
-                            else if (m_nCurrentUserDirMode == 1)
+                            else if (m_nCurrentUserDirMode == eDM_PublicUser)
                             {
                                 // public user
                                 strSelectedDataBaseDirectory = strPublicDownloads + _T("eMule\\");
                                 strSelectedConfigBaseDirectory = strProgrammData + _T("eMule\\");
                                 strSelectedExpansionBaseDirectory = strProgrammData + _T("eMule\\");
                             }
-                            else if (m_nCurrentUserDirMode == 2)
+                            else if (m_nCurrentUserDirMode == eDM_Executable)
                             {
-                                // programm directory
+                                // program directory
                             }
                             else
-                                ASSERT( false );
+                                ASSERT(0);
                         }
                         else
-                            ASSERT( false );
+                            ASSERT(0);
                     }
 
                     CoTaskMemFree(pszLocalAppData);
@@ -2891,41 +2895,40 @@ CString CPreferences::GetDefaultDirectory(EDefaultDirectory eDirectory, bool bCr
                 }
                 else   // GetWindowsVersion() >= _WINVER_VISTA_
                 {
-
                     CString strAppData = ShellGetFolderPath(CSIDL_APPDATA);
                     CString strPersonal = ShellGetFolderPath(CSIDL_PERSONAL);
                     if (!strAppData.IsEmpty() && !strPersonal.IsEmpty())
                     {
                         if (strAppData.GetLength() < MAX_PATH - 30 && strPersonal.GetLength() < MAX_PATH - 40)
                         {
-                            if (strPersonal.Right(1) != _T("\\"))
-                                strPersonal += _T("\\");
-                            if (strAppData.Right(1) != _T("\\"))
-                                strAppData += _T("\\");
-                            if (nRegistrySetting == 0)
+                            if (strPersonal.Right(1) != L"\\")
+                                strPersonal += L"\\";
+                            if (strAppData.Right(1) != L"\\")
+                                strAppData += L"\\";
+                            if (nRegistrySetting == eDM_MultiUser)
                             {
                                 // registry setting overwrites, use these folders
                                 strSelectedDataBaseDirectory = strPersonal + _T("eMule Downloads\\");
                                 strSelectedConfigBaseDirectory = strAppData + _T("eMule\\");
-                                m_nCurrentUserDirMode = 0;
+                                m_nCurrentUserDirMode = eDM_MultiUser;
                                 // strSelectedExpansionBaseDirectory stays default
                             }
-                            else if (nRegistrySetting == -1 && !bConfigAvailableExecuteable)
+                            else if (nRegistrySetting == eDM_Auto && !bConfigAvailableExecuteable)
                             {
                                 if (ff.FindFile(strAppData + _T("eMule\\") + CONFIGFOLDER + _T("preferences.ini"), 0))
                                 {
                                     // preferences.ini found, so we use this as default
                                     strSelectedDataBaseDirectory = strPersonal + _T("eMule Downloads\\");
                                     strSelectedConfigBaseDirectory = strAppData + _T("eMule\\");
-                                    m_nCurrentUserDirMode = 0;
+                                    m_nCurrentUserDirMode = eDM_MultiUser;
                                 }
                                 ff.Close();
                             }
                             else
-                                ASSERT( false );
+                                ASSERT(0);
                         }
                         else
-                            ASSERT( false );
+                            ASSERT(0);
                     }
                 }
                 FreeLibrary(hShell32);
@@ -2933,11 +2936,11 @@ CString CPreferences::GetDefaultDirectory(EDefaultDirectory eDirectory, bool bCr
             else
             {
                 DebugLogError(_T("Unable to load shell32.dll to retrieve the systemfolder locations, using fallbacks"));
-                ASSERT( false );
+                ASSERT(0);
             }
         }
 
-        // the use of ending backslashes is inconsitent, would need a rework throughout the code to fix this
+        // the use of ending backslashes is inconsistent, would need a rework throughout the code to fix this
         m_astrDefaultDirs[EMULE_CONFIGDIR] = strSelectedConfigBaseDirectory + CONFIGFOLDER;
         m_astrDefaultDirs[EMULE_TEMPDIR] = strSelectedDataBaseDirectory + _T("Temp");
         m_astrDefaultDirs[EMULE_INCOMINGDIR] = strSelectedDataBaseDirectory + _T("Incoming");
@@ -2962,19 +2965,19 @@ CString CPreferences::GetDefaultDirectory(EDefaultDirectory eDirectory, bool bCr
     {
         switch (eDirectory)  // create the underlying directory first - be sure to adjust this if changing default directories
         {
-        case EMULE_CONFIGDIR:
-        case EMULE_LOGDIR:
-            ::CreateDirectory(m_astrDefaultDirs[EMULE_CONFIGBASEDIR], NULL);
-            break;
-        case EMULE_TEMPDIR:
-        case EMULE_INCOMINGDIR:
-            ::CreateDirectory(m_astrDefaultDirs[EMULE_DATABASEDIR], NULL);
-            break;
-        case EMULE_ADDLANGDIR:
-        case EMULE_SKINDIR:
-        case EMULE_TOOLBARDIR:
-            ::CreateDirectory(m_astrDefaultDirs[EMULE_EXPANSIONDIR], NULL);
-            break;
+			case EMULE_CONFIGDIR:
+			case EMULE_LOGDIR:
+				::CreateDirectory(m_astrDefaultDirs[EMULE_CONFIGBASEDIR], NULL);
+				break;
+			case EMULE_TEMPDIR:
+			case EMULE_INCOMINGDIR:
+				::CreateDirectory(m_astrDefaultDirs[EMULE_DATABASEDIR], NULL);
+				break;
+			case EMULE_ADDLANGDIR:
+			case EMULE_SKINDIR:
+			case EMULE_TOOLBARDIR:
+				::CreateDirectory(m_astrDefaultDirs[EMULE_EXPANSIONDIR], NULL);
+				break;
         }
         ::CreateDirectory(m_astrDefaultDirs[eDirectory], NULL);
         m_abDefaultDirsCreated[eDirectory] = true;
@@ -2986,17 +2989,17 @@ CString	CPreferences::GetMuleDirectory(EDefaultDirectory eDirectory, bool bCreat
 {
     switch (eDirectory)
     {
-    case EMULE_INCOMINGDIR:
-        return m_strIncomingDir;
-    case EMULE_TEMPDIR:
-        ASSERT( false ); // use GetTempDir() instead! This function can only return the first tempdirectory
-        return GetTempDir(0);
-    case EMULE_SKINDIR:
-        return m_strSkinProfileDir;
-    case EMULE_TOOLBARDIR:
-        return m_sToolbarBitmapFolder;
-    default:
-        return GetDefaultDirectory(eDirectory, bCreate);
+		case EMULE_INCOMINGDIR:
+			return m_strIncomingDir;
+		case EMULE_TEMPDIR:
+			ASSERT(0); // use GetTempDir() instead! This function can only return the first tempdirectory
+			return GetTempDir(0);
+		case EMULE_SKINDIR:
+			return m_strSkinProfileDir;
+		case EMULE_TOOLBARDIR:
+			return m_sToolbarBitmapFolder;
+		default:
+			return GetDefaultDirectory(eDirectory, bCreate);
     }
 }
 
@@ -3004,17 +3007,17 @@ void CPreferences::SetMuleDirectory(EDefaultDirectory eDirectory, CString strNew
 {
     switch (eDirectory)
     {
-    case EMULE_INCOMINGDIR:
-        m_strIncomingDir = strNewDir;
-        break;
-    case EMULE_SKINDIR:
-        m_strSkinProfileDir = strNewDir;
-        break;
-    case EMULE_TOOLBARDIR:
-        m_sToolbarBitmapFolder = strNewDir;
-        break;
-    default:
-        ASSERT( false );
+		case EMULE_INCOMINGDIR:
+			m_strIncomingDir = strNewDir;
+			break;
+		case EMULE_SKINDIR:
+			m_strSkinProfileDir = strNewDir;
+			break;
+		case EMULE_TOOLBARDIR:
+			m_sToolbarBitmapFolder = strNewDir;
+			break;
+		default:
+			ASSERT(0);
     }
 }
 
@@ -3022,9 +3025,9 @@ void CPreferences::ChangeUserDirMode(int nNewMode)
 {
     if (m_nCurrentUserDirMode == nNewMode)
         return;
-    if (nNewMode == 1 && GetWindowsVersion() < _WINVER_VISTA_)
+    if (nNewMode == eDM_PublicUser && GetWindowsVersion() < _WINVER_VISTA_)
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
     // check if our registry setting is present which forces the single or multiuser directories

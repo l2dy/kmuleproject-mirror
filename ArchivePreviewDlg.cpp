@@ -389,7 +389,7 @@ int CArchivePreviewDlg::ShowAceResults(int succ, archiveScannerThreadParams_s* t
 
             // file/folder name
             temp = CString(block->FNAME);
-            int iSystemImage = bIsDirectory ? theApp.GetFileTypeSystemImageIdx(_T("\\"), 1) : theApp.GetFileTypeSystemImageIdx(temp, temp.GetLength());
+            int iSystemImage = bIsDirectory ? theApp.GetFileTypeSystemImageIdx(L"\\", 1) : theApp.GetFileTypeSystemImageIdx(temp, temp.GetLength());
             iItem = m_ContentList.InsertItem(LVIF_TEXT | LVIF_PARAM | (iSystemImage > 0 ? LVIF_IMAGE : 0),
                                              INT_MAX, temp, 0, 0, iSystemImage,
                                              !bCompleteEntry ? 0x00000001 : 0x00000000);
@@ -726,7 +726,7 @@ int CArchivePreviewDlg::ShowRarResults(int succ, archiveScannerThreadParams_s* t
             else
                 temp = buf;
 
-            int iSystemImage = bIsDirectory ? theApp.GetFileTypeSystemImageIdx(_T("\\"), 1) : theApp.GetFileTypeSystemImageIdx(temp, temp.GetLength());
+            int iSystemImage = bIsDirectory ? theApp.GetFileTypeSystemImageIdx(L"\\", 1) : theApp.GetFileTypeSystemImageIdx(temp, temp.GetLength());
             iItem = m_ContentList.InsertItem(LVIF_TEXT | LVIF_PARAM | (iSystemImage > 0 ? LVIF_IMAGE : 0),
                                              INT_MAX, temp, 0, 0, iSystemImage,
                                              !bCompleteEntry ? 0x00000001 : 0x00000000);
@@ -912,7 +912,7 @@ int CArchivePreviewDlg::ShowZipResults(int succ, archiveScannerThreadParams_s* t
             // file/folder name
             strBuffA.SetString((char *)cdEntry->filename, cdEntry->lenFilename);
             temp = CString(strBuffA);
-            int iSystemImage = bIsDirectory ? theApp.GetFileTypeSystemImageIdx(_T("\\"), 1) : theApp.GetFileTypeSystemImageIdx(temp, temp.GetLength());
+            int iSystemImage = bIsDirectory ? theApp.GetFileTypeSystemImageIdx(L"\\", 1) : theApp.GetFileTypeSystemImageIdx(temp, temp.GetLength());
             iItem = m_ContentList.InsertItem(LVIF_TEXT | LVIF_PARAM | (iSystemImage > 0 ? LVIF_IMAGE : 0),
                                              INT_MAX, temp, 0, 0, iSystemImage,
                                              !bCompleteEntry ? 0x00000001 : 0x00000000);

@@ -235,6 +235,7 @@ int GetMaxWindowsTCPConnections();
 #define _WINVER_VISTA_	0x0600	// 6.0
 #define _WINVER_7_		0x0601	// 6.1
 #define	_WINVER_S2008_	0x0601	// 6.1
+#define _WINVER_8_		0x0602	// 6.2
 
 WORD		DetectWinVersion();
 int			IsRunningXPSP2();
@@ -492,4 +493,5 @@ template <class T> __inline double	GetRatioDouble(const T& ul, const T& dl)
 }
 CString	GetFileNameFromURL(const CString& strURL);
 uint64	GetFileSizeOnDisk(const CString& strFilePath);
+bool	RunningWine(); //>>> WiZaRd::Wine Compatibility
 //<<< WiZaRd::Additional Functions

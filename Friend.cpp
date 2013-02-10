@@ -247,7 +247,7 @@ CUpDownClient* CFriend::GetLinkedClient(bool bValidCheck) const
 {
     if (bValidCheck && m_LinkedClient != NULL && !theApp.clientlist->IsValidClient(m_LinkedClient))
     {
-        ASSERT( false );
+        ASSERT(0);
         return NULL;
     }
     return m_LinkedClient;
@@ -294,7 +294,7 @@ bool CFriend::TryToConnect(CFriendConnectionListener* pConnectionReport)
     if (GetLinkedClient(true) == NULL)
     {
         //ASSERT( pConnectionReport != &theApp.emuledlg->chatwnd->chatselector ); // shouldn't happen, if the chat connector calls, we he always should have a client for the session already
-        ASSERT( false );
+        ASSERT(0);
         GetClientForChatSession();
     }
     ASSERT( GetLinkedClient(true) != NULL );
@@ -321,7 +321,7 @@ void CFriend::UpdateFriendConnectionState(EFriendConnectReport eEvent)
     if (m_FriendConnectState == FCS_NONE || GetLinkedClient(true) == NULL)
     {
         // we aren't currently trying to build up a friendconnection, we shouldn't be called
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
     switch (eEvent)
@@ -352,7 +352,7 @@ void CFriend::UpdateFriendConnectionState(EFriendConnectReport eEvent)
                 m_FriendConnectState = FCS_AUTH;
             else  // client must have connected to use while we tried something else (like search for him an kad)
             {
-                ASSERT( false );
+                ASSERT(0);
                 m_FriendConnectState = FCS_AUTH;
             }
         }
@@ -382,7 +382,7 @@ void CFriend::UpdateFriendConnectionState(EFriendConnectReport eEvent)
             m_liConnectionReport.RemoveAll();
         }
         else // FCS_KADSEARCHING, shouldn't happen
-            ASSERT( false );
+            ASSERT(0);
         break;
     case FCR_USERHASHFAILED:
     {
@@ -408,7 +408,7 @@ void CFriend::UpdateFriendConnectionState(EFriendConnectReport eEvent)
             m_liConnectionReport.RemoveAll();
         }
         else // FCS_KADSEARCHING, shouldn't happen
-            ASSERT( false );
+            ASSERT(0);
         break;
     }
     case FCR_SECUREIDENTFAILED:
@@ -430,7 +430,7 @@ void CFriend::UpdateFriendConnectionState(EFriendConnectReport eEvent)
         m_liConnectionReport.RemoveAll();
         break;
     default:
-        ASSERT( false );
+        ASSERT(0);
     }
 }
 
@@ -448,7 +448,7 @@ void CFriend::KadSearchNodeIDByIPResult(Kademlia::EKadClientSearchRes eStatus, c
 {
     if (!theApp.friendlist->IsValid(this))
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
     if (eStatus == Kademlia::KCSR_SUCCEEDED)
@@ -465,7 +465,7 @@ void CFriend::KadSearchIPByNodeIDResult(Kademlia::EKadClientSearchRes eStatus, U
 {
     if (!theApp.friendlist->IsValid(this))
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
     if (m_FriendConnectState == FCS_KADSEARCHING )
@@ -486,7 +486,7 @@ void CFriend::KadSearchIPByNodeIDResult(Kademlia::EKadClientSearchRes eStatus, U
                 if (m_LinkedClient->socket != NULL && m_LinkedClient->socket->IsConnected())
                 {
                     // we shouldnt get he since we checked for FCS_KADSEARCHING
-                    ASSERT( false );
+                    ASSERT(0);
                     UpdateFriendConnectionState(FCR_ESTABLISHED);
                 }
                 m_dwLastUsedIP = dwIP;
@@ -507,5 +507,5 @@ void CFriend::KadSearchIPByNodeIDResult(Kademlia::EKadClientSearchRes eStatus, U
         m_liConnectionReport.RemoveAll();
     }
     else
-        ASSERT( false );
+        ASSERT(0);
 }

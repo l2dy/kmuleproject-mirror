@@ -90,7 +90,7 @@ class CUPnPImplNone: public CUPnPImpl
 public:
     virtual void	StartDiscovery(uint16, uint16, uint16)
     {
-        ASSERT( false );
+        ASSERT(0);
     }
     virtual bool	CheckAndRefresh()
     {

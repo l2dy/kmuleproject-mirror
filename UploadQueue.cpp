@@ -527,7 +527,7 @@ bool CUploadQueue::AddUpNextClient(LPCTSTR pszReason, CUpDownClient* directadd)
         AddDebugLogLine(false, _T("Adding client to upload list: %s Client: %s"), pszReason, newclient->DbgGetClientInfo());
 
     if(directadd == NULL && reqfile->GetFileSize() < theApp.uploadqueue->GetSmallFileSize()) //>>> WiZaRd::Small File Slot
-        ASSERT( false );
+        ASSERT(0);
 
     // tell the client that we are now ready to upload
     if (!newclient->socket || !newclient->socket->IsConnected())

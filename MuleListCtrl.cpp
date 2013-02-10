@@ -1796,7 +1796,7 @@ int	CMuleListCtrl::GetNextSortOrder(int dwCurrentSortOrder) const
         }
     }
     // current one not found, shouldn't happen
-//	ASSERT( false );
+//	ASSERT(0);
     return -1;
 }
 

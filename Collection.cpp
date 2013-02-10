@@ -239,7 +239,7 @@ bool CCollection::InitCollectionFromFile(const CString& sFilePath, CString sFile
         }
         catch(...)
         {
-            ASSERT( false );
+            ASSERT(0);
             data.Close();
             return false;
         }
@@ -271,7 +271,7 @@ bool CCollection::InitCollectionFromFile(const CString& sFilePath, CString sFile
                         }
                         catch(...)
                         {
-                            ASSERT( false );
+                            ASSERT(0);
                             data.Close();
                             return false;
                         }
@@ -289,7 +289,7 @@ bool CCollection::InitCollectionFromFile(const CString& sFilePath, CString sFile
             }
             catch(...)
             {
-                ASSERT( false );
+                ASSERT(0);
                 data.Close();
                 return false;
             }
@@ -334,7 +334,7 @@ void CCollection::WriteToFileAddShared(CryptoPP::RSASSA_PKCS1v15_SHA_Signer* pSi
             }
             catch(...)
             {
-                ASSERT( false );
+                ASSERT(0);
                 data.Close();
                 return;
             }
@@ -422,7 +422,7 @@ void CCollection::WriteToFileAddShared(CryptoPP::RSASSA_PKCS1v15_SHA_Signer* pSi
             }
             catch(...)
             {
-                ASSERT( false );
+                ASSERT(0);
                 data.Close();
                 return;
             }

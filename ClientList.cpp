@@ -464,7 +464,7 @@ void CClientList::TrackBadRequest(const CUpDownClient* upcClient, int nIncreaseC
     CDeletedClient* pResult = NULL;
     if (upcClient->GetIP() == 0)
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
     if (m_trackedClientsList.Lookup(upcClient->GetIP(), pResult))
@@ -485,7 +485,7 @@ UINT CClientList::GetBadRequests(const CUpDownClient* upcClient) const
     CDeletedClient* pResult = NULL;
     if (upcClient->GetIP() == 0)
     {
-        ASSERT( false );
+        ASSERT(0);
         return 0;
     }
     if (m_trackedClientsList.Lookup(upcClient->GetIP(), pResult))
@@ -1034,7 +1034,7 @@ void CClientList::AddConnectingClient(CUpDownClient* pToAdd)
     {
         if (m_liConnectingClients.GetAt(pos).pClient == pToAdd)
         {
-            ASSERT( false );
+            ASSERT(0);
             return;
         }
     }

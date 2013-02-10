@@ -281,7 +281,7 @@ void CRoutingBin::AdjustGlobalTracking(UINT uIP, bool bIncrease)
     {
         if (nSameIPCount >= MAX_CONTACTS_IP)
         {
-            ASSERT( false );
+            ASSERT(0);
             DebugLogError(_T("RoutingBin Global IP Tracking inconsitency on increase (%s)"), ipstr(ntohl(uIP)));
         }
         nSameIPCount++;
@@ -290,7 +290,7 @@ void CRoutingBin::AdjustGlobalTracking(UINT uIP, bool bIncrease)
     {
         if (nSameIPCount == 0)
         {
-            ASSERT( false );
+            ASSERT(0);
             DebugLogError(_T("RoutingBin Global IP Tracking inconsitency on decrease (%s)"), ipstr(ntohl(uIP)));
         }
         else
@@ -308,7 +308,7 @@ void CRoutingBin::AdjustGlobalTracking(UINT uIP, bool bIncrease)
     {
         if (nSameSubnetCount >= MAX_CONTACTS_SUBNET && !::IsLANIP(ntohl(uIP)))
         {
-            ASSERT( false );
+            ASSERT(0);
             DebugLogError(_T("RoutingBin Global Subnet Tracking inconsitency on increase (%s)"), ipstr(ntohl(uIP)));
         }
         nSameSubnetCount++;
@@ -317,7 +317,7 @@ void CRoutingBin::AdjustGlobalTracking(UINT uIP, bool bIncrease)
     {
         if (nSameSubnetCount == 0)
         {
-            ASSERT( false );
+            ASSERT(0);
             DebugLogError(_T("RoutingBin Global IP Subnet inconsitency on decrease (%s)"), ipstr(ntohl(uIP)));
         }
         else

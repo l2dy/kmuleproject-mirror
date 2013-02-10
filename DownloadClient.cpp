@@ -1087,7 +1087,7 @@ void CUpDownClient::SendBlockRequests()
                 bI64Offsets = true;
                 if (!SupportsLargeFiles())
                 {
-                    ASSERT( false );
+                    ASSERT(0);
                     SendCancelTransfer();
                     SetDownloadState(DS_ERROR);
                     return;
@@ -2782,7 +2782,7 @@ void CUpDownClient::ProcessAICHFileHash(CSafeMemFile* data, CPartFile* file, con
                 }
                 if (m_fHashsetRequestingAICH)
                 {
-                    ASSERT( false );
+                    ASSERT(0);
                     pPartFile->SetAICHHashSetNeeded(true);
                 }
                 m_fHashsetRequestingMD4 = false;
@@ -2833,7 +2833,7 @@ void CUpDownClient::SendHashSetRequest()
             }
             if (byOptions == 0)
             {
-                ASSERT( false );
+                ASSERT(0);
                 return;
             }
             DEBUG_ONLY( DebugLog(_T("Sending HashSet Request: MD4 %s, AICH %s to client %s"), m_fHashsetRequestingMD4 ? _T("Yes") : _T("No")

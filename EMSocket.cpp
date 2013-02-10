@@ -1209,14 +1209,14 @@ int CEMSocket::Receive(void* lpBuf, int nBufLen, int nFlags)
         if ( 0 == AsyncSelect(FD_CLOSE|FD_WRITE) )   // no more READ notifications ...
         {
             //int waserr = GetLastError(); // oups, AsyncSelect failed !!!
-            ASSERT(false);
+            ASSERT(0);
         }
         return 0;
     case SOCKET_ERROR:
         switch(GetLastError())
         {
         case WSANOTINITIALISED:
-            ASSERT(false);
+            ASSERT(0);
             EMTrace("CEMSocket::OnReceive:A successful AfxSocketInit must occur before using this API.");
             break;
         case WSAENETDOWN:

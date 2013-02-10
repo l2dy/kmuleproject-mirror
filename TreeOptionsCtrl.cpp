@@ -910,7 +910,7 @@ BOOL CTreeOptionsCtrl::SetGroupEnable(HTREEITEM hItem, BOOL bEnable)
         else if (IsCheckBox(hChild))
             VERIFY(SetCheckBoxEnable(hChild, bEnable));
         else
-            ASSERT(FALSE);
+            ASSERT(0);
 
         //Move onto the next child
         hChild = GetNextItem(hChild, TVGN_NEXT);
@@ -1262,7 +1262,7 @@ void CTreeOptionsCtrl::CreateNewChildControl(HTREEITEM hItem)
         }
     }
     else
-        ASSERT(FALSE); //Your class must be derived from one of the classes in the previous statements
+        ASSERT(0); //Your class must be derived from one of the classes in the previous statements
 
     //allocate the secondary control
     if (pItemData->m_pRuntimeClass2)
@@ -1379,7 +1379,7 @@ void CTreeOptionsCtrl::CreateNewChildControl(HTREEITEM hItem)
         CreateBrowseButton(pItemData->m_pRuntimeClass1, rLine, rText);
     }
     else
-        ASSERT(FALSE); //Your class must be derived from one of the classes in the statements above
+        ASSERT(0); //Your class must be derived from one of the classes in the statements above
 
     //Actually create the secondary control
     if (pItemData->m_pRuntimeClass2)
@@ -1636,7 +1636,7 @@ void CTreeOptionsCtrl::CreateSpinCtrl(CRuntimeClass* pRuntimeClassSpinCtrl, CRec
         m_pSpin->SetFont(&m_Font);
     }
     else
-        ASSERT(FALSE); //Your class must be derived from CTreeOptionsSpinCtrl
+        ASSERT(0); //Your class must be derived from CTreeOptionsSpinCtrl
 }
 
 void CTreeOptionsCtrl::CreateBrowseButton(CRuntimeClass* pRuntimeClassBrowseButton, CRect rItem, CRect rText)
@@ -1698,7 +1698,7 @@ void CTreeOptionsCtrl::CreateBrowseButton(CRuntimeClass* pRuntimeClassBrowseButt
         m_pButton->SetFont(&m_Font);
     }
     else
-        ASSERT(FALSE); //Your class must be derived from CTreeOptionsBrowseButton
+        ASSERT(0); //Your class must be derived from CTreeOptionsBrowseButton
 }
 
 CString CTreeOptionsCtrl::GetEditText(HTREEITEM hItem) const
@@ -2786,7 +2786,7 @@ void CTreeOptionsBrowseButton::OnClicked()
         else if (pItemData->m_Type == CTreeOptionsItemData::OpaqueBrowser)
             BrowseForOpaque();
         else
-            ASSERT(FALSE);
+            ASSERT(0);
     }
     else if (pItemData->m_pRuntimeClass1->IsDerivedFrom(RUNTIME_CLASS(CTreeOptionsCombo)))
     {
@@ -2806,7 +2806,7 @@ void CTreeOptionsBrowseButton::OnClicked()
         else if (pItemData->m_Type == CTreeOptionsItemData::OpaqueBrowser)
             BrowseForOpaque();
         else
-            ASSERT(FALSE);
+            ASSERT(0);
     }
 }
 
@@ -2845,7 +2845,7 @@ void CTreeOptionsBrowseButton::BrowseForFont()
 
 void CTreeOptionsBrowseButton::BrowseForOpaque()
 {
-    ASSERT(FALSE); //Derived classes must implement this function if we are editing
+    ASSERT(0); //Derived classes must implement this function if we are editing
     //an opaque item. The code which "normally" display some CDialog
     //derived class to allow the item to be edited and then hive the
     //data away somehow so that it can show the new value when the
@@ -2906,7 +2906,7 @@ void CTreeOptionsFileDialog::OnInitDone()
 {
     CString sText;
     if (!sText.LoadString(IDS_TREEOPTIONS_OK))
-        ASSERT(FALSE);
+        ASSERT(0);
     LPTSTR pszBuffer = sText.GetBuffer(sText.GetLength());
 
     //modify the text on the IDOK button to ok

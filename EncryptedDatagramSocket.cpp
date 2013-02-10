@@ -156,7 +156,7 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(BYTE* pbyBufIn, int nBufLen,
 
     if (nReceiverVerifyKey == NULL || nSenderVerifyKey == NULL)
     {
-        ASSERT( false );
+        ASSERT(0);
         return nResult;
     }
 
@@ -237,7 +237,7 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(BYTE* pbyBufIn, int nBufLen,
             }
         }
         else
-            ASSERT( false );
+            ASSERT(0);
 
         RC4CreateKey(md5.GetRawHash(), 16, &keyReceiveKey, true);
         RC4Crypt(pbyBufIn + 3, (uchar*)&dwValue, sizeof(dwValue), &keyReceiveKey);
@@ -335,7 +335,7 @@ int CEncryptedDatagramSocket::EncryptSendClient(uchar** ppbyBuf, int nBufLen, co
         }
         else
         {
-            ASSERT( false );
+            ASSERT(0);
             delete[] pachCryptedBuffer;
             return nBufLen;
         }
@@ -384,7 +384,7 @@ int CEncryptedDatagramSocket::EncryptSendClient(uchar** ppbyBuf, int nBufLen, co
     if (i >= 128)
     {
         // either we have _really_ bad luck or the randomgenerator is a bit messed up
-        ASSERT( false );
+        ASSERT(0);
         bySemiRandomNotProtocolMarker = 0x01;
     }
 

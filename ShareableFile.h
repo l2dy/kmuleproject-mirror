@@ -31,7 +31,7 @@ public:
     virtual ~CShareableFile()						{};
     virtual void UpdateFileRatingCommentAvail(bool /*bForceUpdate = false*/)
     {
-        ASSERT( false );
+        ASSERT(0);
     }
 
     EFileType GetVerifiedFileType()

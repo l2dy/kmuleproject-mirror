@@ -87,7 +87,7 @@ void CAICHHashTree::SetBaseSize(uint64 uValue)
     // keep the original number based calculations and checks in the code through, so it can easily be adjusted in case we want to use a hashset with different basesizes
     if (uValue != PARTSIZE && uValue != EMBLOCKSIZE)
     {
-        ASSERT( false );
+        ASSERT(0);
         theApp.QueueDebugLogLine(true, _T("CAICHHashTree::SetBaseSize() Bug!"));
     }
     m_bBaseSize = (uValue >= PARTSIZE) ? true : false;
@@ -104,7 +104,7 @@ CAICHHashTree* CAICHHashTree::FindHash(uint64 nStartPos, uint64 nSize, uint8* nL
     (*nLevel)++;
     if (*nLevel > 22)  // sanity
     {
-        ASSERT( false );
+        ASSERT(0);
         return false;
     }
     if (nStartPos + nSize > m_nDataSize)  // sanity
@@ -126,7 +126,7 @@ CAICHHashTree* CAICHHashTree::FindHash(uint64 nStartPos, uint64 nSize, uint8* nL
     else if (m_nDataSize <= GetBaseSize())  // sanity
     {
         // this is already the last level, cant go deeper
-        ASSERT( false );
+        ASSERT(0);
         return NULL;
     }
     else
@@ -174,7 +174,7 @@ const CAICHHashTree* CAICHHashTree::FindExistingHash(uint64 nStartPos, uint64 nS
     (*nLevel)++;
     if (*nLevel > 22)  // sanity
     {
-        ASSERT( false );
+        ASSERT(0);
         return false;
     }
     if (nStartPos + nSize > m_nDataSize)  // sanity
@@ -196,7 +196,7 @@ const CAICHHashTree* CAICHHashTree::FindExistingHash(uint64 nStartPos, uint64 nS
     else if (m_nDataSize <= GetBaseSize())  // sanity
     {
         // this is already the last level, cant go deeper
-        ASSERT( false );
+        ASSERT(0);
         return NULL;
     }
     else
@@ -378,7 +378,7 @@ bool CAICHHashTree::CreatePartRecoveryData(uint64 nStartPos, uint64 nSize, CFile
     else if (m_nDataSize <= GetBaseSize())  // sanity
     {
         // this is already the last level, cant go deeper
-        ASSERT( false );
+        ASSERT(0);
         return false;
     }
     else
@@ -391,7 +391,7 @@ bool CAICHHashTree::CreatePartRecoveryData(uint64 nStartPos, uint64 nSize, CFile
         uint64 nRight = m_nDataSize - nLeft;
         if (m_pLeftTree == NULL || m_pRightTree == NULL)
         {
-            ASSERT( false );
+            ASSERT(0);
             return false;
         }
         if (nStartPos < nLeft)
@@ -456,13 +456,13 @@ bool CAICHHashTree::WriteLowestLevelHashs(CFileDataIO* fileDataOut, UINT wHashId
         }
         else
         {
-            ASSERT( false );
+            ASSERT(0);
             return false;
         }
     }
     else if (m_pLeftTree == NULL || m_pRightTree == NULL)
     {
-        ASSERT( false );
+        ASSERT(0);
         return false;
     }
     else
@@ -543,7 +543,7 @@ bool CAICHHashTree::SetHash(CFileDataIO* fileInput, UINT wHashIdent, sint8 nLeve
     else if (m_nDataSize <= GetBaseSize())  // sanity
     {
         // this is already the last level, cant go deeper
-        ASSERT( false );
+        ASSERT(0);
         return false;
     }
     else
@@ -647,7 +647,7 @@ bool CAICHRecoveryHashSet::GetPartHashs(CArray<CAICHHash>& rResult) const
     rResult.RemoveAll();
     if (m_pOwner->IsPartFile() || m_eStatus != AICH_HASHSETCOMPLETE)
     {
-        ASSERT( false );
+        ASSERT(0);
         return false;
     }
 
@@ -664,7 +664,7 @@ bool CAICHRecoveryHashSet::GetPartHashs(CArray<CAICHHash>& rResult) const
         else
         {
             rResult.RemoveAll();
-            ASSERT( false );
+            ASSERT(0);
             return false;
         }
     }
@@ -689,12 +689,12 @@ bool CAICHRecoveryHashSet::CreatePartRecoveryData(uint64 nPartStartPos, CFileDat
     ASSERT( m_pOwner );
     if (m_pOwner->IsPartFile() || m_eStatus != AICH_HASHSETCOMPLETE)
     {
-        ASSERT( false );
+        ASSERT(0);
         return false;
     }
     if (m_pHashTree.m_nDataSize <= EMBLOCKSIZE)
     {
-        ASSERT( false );
+        ASSERT(0);
         return false;
     }
     if (!bDbgDontLoad)
@@ -721,7 +721,7 @@ bool CAICHRecoveryHashSet::CreatePartRecoveryData(uint64 nPartStartPos, CFileDat
     {
         if (nHashsToWrite*(HASHSIZE+(bUse32BitIdentifier? 4:2)) != fileDataOut->GetPosition() - nCheckFilePos)
         {
-            ASSERT( false );
+            ASSERT(0);
             theApp.QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("Created RecoveryData has wrong length (file: %s)"), m_pOwner->GetFileName() );
             bResult = false;
             SetStatus(AICH_ERROR);
@@ -749,7 +749,7 @@ bool CAICHRecoveryHashSet::ReadRecoveryData(uint64 nPartStartPos, CSafeMemFile* 
 {
     if (/*TODO !m_pOwner->IsPartFile() ||*/ !(m_eStatus == AICH_VERIFIED || m_eStatus == AICH_TRUSTED) )
     {
-        ASSERT( false );
+        ASSERT(0);
         return false;
     }
     /* V2 AICH Hash Packet:
@@ -848,12 +848,12 @@ bool CAICHRecoveryHashSet::SaveHashSet()
 {
     if (m_eStatus != AICH_HASHSETCOMPLETE)
     {
-        ASSERT( false );
+        ASSERT(0);
         return false;
     }
     if ( !m_pHashTree.m_bHashValid || m_pHashTree.m_nDataSize != m_pOwner->GetFileSize())
     {
-        ASSERT( false );
+        ASSERT(0);
         return false;
     }
     CSingleLock lockKnown2Met(&m_mutKnown2File, false);
@@ -961,12 +961,12 @@ bool CAICHRecoveryHashSet::LoadHashSet()
 {
     if (m_eStatus != AICH_HASHSETCOMPLETE)
     {
-        ASSERT( false );
+        ASSERT(0);
         return false;
     }
     if ( !m_pHashTree.m_bHashValid || m_pHashTree.m_nDataSize != m_pOwner->GetFileSize() || m_pHashTree.m_nDataSize == 0)
     {
-        ASSERT( false );
+        ASSERT(0);
         return false;
     }
     CString fullpath = thePrefs.GetMuleDirectory(EMULE_CONFIGDIR);
@@ -1155,7 +1155,7 @@ void CAICHRecoveryHashSet::UntrustedHashReceived(const CAICHHash& Hash, UINT dwF
     }
     if (nMostTrustedPos == (-1) || nSigningIPsTotal == 0)
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
     // the check if we trust any hash
@@ -1214,7 +1214,7 @@ void CAICHRecoveryHashSet::RemoveClientAICHRequest(const CUpDownClient* pClient)
             return;
         }
     }
-    ASSERT( false );
+    ASSERT(0);
 }
 
 bool CAICHRecoveryHashSet::IsClientRequestPending(const CPartFile* pForFile, uint16 nPart)
@@ -1238,7 +1238,7 @@ CAICHRequestedData CAICHRecoveryHashSet::GetAICHReqDetails(const  CUpDownClient*
             return m_liRequestedData.GetAt(pos);
         }
     }
-    ASSERT( false );
+    ASSERT(0);
     CAICHRequestedData empty;
     return empty;
 }
@@ -1249,7 +1249,7 @@ void CAICHRecoveryHashSet::AddStoredAICHHash(CAICHHash Hash)
     if (m_liAICHHashsStored.Find(Hash) != NULL)
     {
         theApp.QueueDebugLogLine(false, _T("AICH hash storing is not unique - %s"), Hash.GetString());
-        ASSERT( false );
+        ASSERT(0);
     }
 #endif
     m_liAICHHashsStored.AddTail(Hash);
@@ -1259,7 +1259,7 @@ bool CAICHRecoveryHashSet::IsPartDataAvailable(uint64 nPartStartPos)
 {
     if (!(m_eStatus == AICH_VERIFIED || m_eStatus == AICH_TRUSTED || m_eStatus == AICH_HASHSETCOMPLETE) )
     {
-        ASSERT( false );
+        ASSERT(0);
         return false;
     }
     UINT nPartSize = (UINT)(min(PARTSIZE, (uint64)m_pOwner->GetFileSize()-nPartStartPos));

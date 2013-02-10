@@ -491,7 +491,7 @@ void CToolbarWnd::OnBtnDropDown(NMHDR *pNMHDR, LRESULT *pResult)
         menu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, rc.left, rc.bottom, this);
     }
     else
-        ASSERT( false );
+        ASSERT(0);
     *pResult = TBDDRET_DEFAULT;
 }
 

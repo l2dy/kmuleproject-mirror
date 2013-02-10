@@ -2460,6 +2460,12 @@ public:
 	static	float	GetMaxBlockRate20()					{return m_fMaxBlockRate20;}
 	static	void	SetMaxBlockRate20(const float f)	{m_fMaxBlockRate20 = f;}
 //<<< WiZaRd::Drop Blocking Sockets [Xman?]
+//>>> WiZaRd::Wine Compatibility
+private:
+	static bool		m_bNeedsWineCompatibility;
+public:
+	static bool		WeNeedWineCompatibility()			{return m_bNeedsWineCompatibility;}
+//<<< WiZaRd::Wine Compatibility
 };
 
 extern CPreferences thePrefs;

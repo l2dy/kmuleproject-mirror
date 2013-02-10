@@ -62,7 +62,7 @@ CCollectionFile::CCollectionFile(CFileDataIO* in_data)
         if (DecodeBase32(pTagHash->GetStr(), hash) == (UINT)CAICHHash::GetHashSize())
             m_FileIdentifier.SetAICHHash(hash);
         else
-            ASSERT( false );
+            ASSERT(0);
     }
 
     // here we have two choices

@@ -598,8 +598,15 @@ BOOL CemuleApp::InitInstance()
     if (!SelfTest())
         return FALSE; // DO *NOT* START !!!
 
-    // create & initalize all the important stuff
+    // create & initialize all the important stuff
     thePrefs.Init();
+	if(!PathFileExists(thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR)) || !PathFileExists(thePrefs.GetTempDir()))
+	{
+		// here we have problems with the shared usage setting and should inform the user about it
+		// OR we could automatically choose a different setup...
+		return FALSE;
+	}
+
     // show splashscreen as early as possible to "entertain" user while starting kMule
     if(!thePrefs.IsFirstStart() && thePrefs.UseSplashScreen())
         ShowSplash();
@@ -1310,7 +1317,7 @@ int CemuleApp::GetFileTypeSystemImageIdx(LPCTSTR pszFilePath, int iLength /* = -
     if (iLength > 0 && (pszFilePath[iLength - 1] == _T('\\') || pszFilePath[iLength - 1] == _T('/')))
     {
         // it's a directory
-        pszCacheExt = _T("\\");
+        pszCacheExt = L"\\";
         dwFileAttributes = FILE_ATTRIBUTE_DIRECTORY;
     }
     else
@@ -2294,7 +2301,7 @@ void CemuleApp::ResetStandByIdleTimer()
         if (pfnSetThreadExecutionState)
             VERIFY( pfnSetThreadExecutionState(ES_SYSTEM_REQUIRED) );
         else
-            ASSERT( false );
+            ASSERT(0);
     }
 }
 
@@ -2359,8 +2366,8 @@ CString  CemuleApp::GetClientVersionStringBase(const bool bDebug) const
     return _T("eMule v") + (bDebug ? m_strCurVersionLongDbg : m_strCurVersionLong);
 }
 //<<< WiZaRd::Easy ModVersion
-
-//>>> WiZaRd::Save CPU & WINE
+ 
+//>>> WiZaRd::Save CPU & Wine Compatibility
 BOOL CemuleApp::OnIdle(LONG lCount)
 {
     static DWORD dwLastCheck[2] = {0};
@@ -2373,4 +2380,4 @@ BOOL CemuleApp::OnIdle(LONG lCount)
     }
     return FALSE;
 }
-//<<< WiZaRd::Save CPU & WINE
+//<<< WiZaRd::Save CPU & Wine Compatibility

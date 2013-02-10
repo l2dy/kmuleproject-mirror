@@ -154,7 +154,7 @@ void CEncryptedStreamSocket::CryptPrepareSendData(uchar* pBuffer, UINT nLen)
 {
     if (!IsEncryptionLayerReady())
     {
-        ASSERT( false ); // must be a bug
+        ASSERT(0); // must be a bug
         return;
     }
     if (m_StreamCryptState == ECS_UNKNOWN)
@@ -174,7 +174,7 @@ int CEncryptedStreamSocket::Send(const void* lpBuf, int nBufLen, int nFlags)
 {
     if (!IsEncryptionLayerReady())
     {
-        ASSERT( false ); // must be a bug
+        ASSERT(0); // must be a bug
         return 0;
     }
     else if (m_bServerCrypt && m_StreamCryptState == ECS_ENCRYPTING && m_pfiSendBuffer != NULL)
@@ -188,7 +188,7 @@ int CEncryptedStreamSocket::Send(const void* lpBuf, int nBufLen, int nFlags)
         return nBufLen;	// report a full send, even if we didn't for some reason - the data is know in our buffer and will be handled later
     }
     else if (m_NegotiatingState == ONS_BASIC_SERVER_DELAYEDSENDING)
-        ASSERT( false );
+        ASSERT(0);
 
     if (m_StreamCryptState == ECS_UNKNOWN)
     {
@@ -222,7 +222,7 @@ int CEncryptedStreamSocket::Receive(void* lpBuf, int nBufLen, int nFlags)
         return m_nObfuscationBytesReceived;
     case ECS_PENDING:
     case ECS_PENDING_SERVER:
-        ASSERT( false );
+        ASSERT(0);
         DebugLogError(_T("CEncryptedStreamSocket Received data before sending on outgoing connection"));
         m_StreamCryptState = ECS_NONE;
         return m_nObfuscationBytesReceived;
@@ -317,7 +317,7 @@ int CEncryptedStreamSocket::Receive(void* lpBuf, int nBufLen, int nFlags)
             return 0;
     }
     default:
-        ASSERT( false );
+        ASSERT(0);
         return m_nObfuscationBytesReceived;
     }
 }
@@ -327,7 +327,7 @@ void CEncryptedStreamSocket::SetConnectionEncryption(bool bEnabled, const uchar*
     if (m_StreamCryptState != ECS_UNKNOWN && m_StreamCryptState != ECS_NONE)
     {
         if (!m_StreamCryptState == ECS_NONE || bEnabled)
-            ASSERT( false );
+            ASSERT(0);
         return;
     }
     ASSERT( m_pRC4SendKey == NULL );
@@ -442,7 +442,7 @@ void CEncryptedStreamSocket::StartNegotiation(bool bOutgoing)
     }
     else
     {
-        ASSERT( false );
+        ASSERT(0);
         m_StreamCryptState = ECS_NONE;
         return;
     }
@@ -458,7 +458,7 @@ int CEncryptedStreamSocket::Negotiate(const uchar* pBuffer, UINT nLen)
         {
             if (m_nReceiveBytesWanted > 512)
             {
-                ASSERT( false );
+                ASSERT(0);
                 return 0;
             }
 
@@ -488,7 +488,7 @@ int CEncryptedStreamSocket::Negotiate(const uchar* pBuffer, UINT nLen)
             switch (m_NegotiatingState)
             {
             case ONS_NONE: // would be a bug
-                ASSERT( false );
+                ASSERT(0);
                 return 0;
             case ONS_BASIC_CLIENTA_RANDOMPART:
             {
@@ -669,7 +669,7 @@ int CEncryptedStreamSocket::Negotiate(const uchar* pBuffer, UINT nLen)
                 break;
             }
             default:
-                ASSERT( false );
+                ASSERT(0);
             }
             m_pfiReceiveBuffer->SeekToBegin();
         }
@@ -683,7 +683,7 @@ int CEncryptedStreamSocket::Negotiate(const uchar* pBuffer, UINT nLen)
     {
         // can only be caused by a bug in negationhandling, not by the datastream
         error->Delete();
-        ASSERT( false );
+        ASSERT(0);
         OnError(ERR_ENCRYPTION);
         if (m_pfiReceiveBuffer != NULL)
             free(m_pfiReceiveBuffer->Detach());
@@ -717,7 +717,7 @@ int CEncryptedStreamSocket::SendNegotiatingData(const void* lpBuf, UINT nBufLen,
             if (m_NegotiatingState == ONS_BASIC_SERVER_DELAYEDSENDING)
                 m_NegotiatingState = ONS_COMPLETE;
             else
-                ASSERT( false );
+                ASSERT(0);
             m_pfiSendBuffer->SeekToEnd();
             m_pfiSendBuffer->Write(pBuffer, nBufLen);
             free(pBuffer);
@@ -731,7 +731,7 @@ int CEncryptedStreamSocket::SendNegotiatingData(const void* lpBuf, UINT nBufLen,
         // this call is for processing pending data
         if (m_pfiSendBuffer == NULL || nStartCryptFromByte != 0)
         {
-            ASSERT( false );
+            ASSERT(0);
             return 0;							// or not
         }
         nBufLen = (UINT)m_pfiSendBuffer->GetLength();
@@ -793,7 +793,7 @@ uint8 CEncryptedStreamSocket::GetSemiRandomNotProtocolMarker() const
     if (i >= 128)
     {
         // either we have _real_ bad luck or the randomgenerator is a bit messed up
-        ASSERT( false );
+        ASSERT(0);
         bySemiRandomNotProtocolMarker = 0x01;
     }
     return bySemiRandomNotProtocolMarker;

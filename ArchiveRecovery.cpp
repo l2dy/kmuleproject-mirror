@@ -1840,7 +1840,7 @@ void CArchiveRecovery::ISOReadDirectory(archiveScannerThreadParams_s* aitp, UINT
         {
             // store dir entry
             CString pathNew;
-            pathNew = currentDirName + filename + _T("\\");
+            pathNew = currentDirName + filename + L"\\";
             free(file->name);
             file->name = _tcsdup(pathNew);
             aitp->ai->ISOdir->AddTail(file);

@@ -39,14 +39,14 @@ namespace HighColorTab
       if( NULL == apILNew.get() )
       {
         // ASSERT: The CImageList object creation failed.
-        ASSERT( FALSE );
+        ASSERT(0);
         return std::auto_ptr<CImageList>();
       }
 
       if( 0 == apILNew->Create( 16, 16, theApp.m_iDfltImageListColorFlags | ILC_MASK, 0, 1 ) )
       {
         // ASSERT: The image list (Win32) creation failed.
-        ASSERT( FALSE );
+        ASSERT(0);
         return std::auto_ptr<CImageList>();
       }
 
@@ -73,7 +73,7 @@ namespace HighColorTab
 	  if (!IsWindow(pTab->GetSafeHwnd()))
 	  {
       // ASSERT: Tab control could not be retrieved or it is not a valid window.
-      ASSERT( FALSE );
+      ASSERT(0);
 		  return false;
 	  }
 
@@ -109,7 +109,7 @@ namespace HighColorTab
     if( !bSuccess )
     {
       // This ASSERT because either the image list could not be created or icon insertion failed.
-      ASSERT( FALSE );
+      ASSERT(0);
       // Cleanup what we have in the new image list.
       if( apILNew.get() )
       {

@@ -478,7 +478,7 @@ CString CAbstractFile::GetED2kLink(bool bHashset, bool bHTML, bool bHostname, bo
 {
     if (this == NULL)
     {
-        ASSERT( false );
+        ASSERT(0);
         return _T("");
     }
     CString strLink, strBuffer;

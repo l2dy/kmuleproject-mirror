@@ -33,7 +33,7 @@ void CIni::AddModulPath(CString &rstrFileName, bool bModulPath)
             // fix by "cpp@world-online.no"
             strModule.TrimRight(_T('\\'));
             strModule.TrimRight(_T('/'));
-            strModule += _T("\\");
+            strModule += L"\\";
         }
         _tsplitpath(strModule, drive, dir, fname, ext);
         strModule = drive;
@@ -73,7 +73,7 @@ CString CIni::GetDefaultIniFile(bool bModulPath)
         strApplName.ReleaseBuffer((dwCurDirLen == 0 || dwCurDirLen >= MAX_PATH) ? 0 : -1);
         strApplName.TrimRight(_T('\\'));
         strApplName.TrimRight(_T('/'));
-        strApplName += _T("\\");
+        strApplName += L"\\";
         strApplName += strTemp;
     }
     return strApplName;

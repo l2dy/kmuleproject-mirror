@@ -1817,7 +1817,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
 
     if (GetUploadState() == US_CONNECTING)
     {
-        ASSERT( false ); // we should never try to connect in this case, but wait for the LowID to connect to us
+        ASSERT(0); // we should never try to connect in this case, but wait for the LowID to connect to us
         DebugLogError( _T("LowID and US_CONNECTING (%s)"), DbgGetClientInfo());
     }
 
@@ -1871,7 +1871,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
     }
     else
     {
-        ASSERT( false );
+        ASSERT(0);
         DebugLogError(_T("TryToConnect: Bug: No Callback available despite prechecks"));
         return true;
     }
@@ -3332,7 +3332,7 @@ void CUpDownClient::ProcessChatMessage(CSafeMemFile* data, UINT nLength)
                         }
                         else
                         {
-                            ASSERT( false );
+                            ASSERT(0);
                             DebugLogError(_T("Failed to create Captcha for client %s"), DbgGetClientInfo());
                         }
                     }
@@ -3372,7 +3372,7 @@ void CUpDownClient::ProcessChatMessage(CSafeMemFile* data, UINT nLength)
                     theStats.AddUpDataOverheadOther(packet->size);
                     if (!SafeConnectAndSendPacket(packet))
                     {
-                        ASSERT( false ); // deleted client while connecting
+                        ASSERT(0); // deleted client while connecting
                         return;
                     }
                 }
@@ -3503,7 +3503,7 @@ CFriend* CUpDownClient::GetFriend() const
     if (m_Friend != NULL && theApp.friendlist->IsValid(m_Friend))
         return m_Friend;
     else if (m_Friend != NULL)
-        ASSERT( FALSE );
+        ASSERT(0);
     return NULL;
 }
 

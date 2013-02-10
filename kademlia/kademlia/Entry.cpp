@@ -132,7 +132,7 @@ void CEntry::SetFileName(CKadTagValueString strName)
 {
     if (!m_listFileNames.IsEmpty())
     {
-        ASSERT( false );
+        ASSERT(0);
         m_listFileNames.RemoveAll();
     }
     structFileNameEntry structFN = {strName, 1};
@@ -181,7 +181,7 @@ void CEntry::WriteTagListInc(CDataIO* pData, UINT nIncreaseTagNumber)
     // write taglist and add name + size tag
     if (pData == NULL)
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
 
@@ -447,7 +447,7 @@ void CKeyEntry::AdjustGlobalPublishTracking(UINT uIP, bool bIncrease, CString st
     if (bFound || bIncrease)
         s_mapGlobalPublishIPs.SetAt(uIP & 0xFFFFFF00, nCount);
     else
-        ASSERT( false );
+        ASSERT(0);
     //LOGTODO
     //if (!strDbgReason.IsEmpty())
     //	DebugLog(_T("KadEntryTack: %s %s (%s) - (%s), new count %u"), (bIncrease ? _T("Adding") : _T("Removing")), ipstr(ntohl(uIP & 0xFFFFFF00)), ipstr(ntohl(uIP)), strDbgReason, nCount);
@@ -626,7 +626,7 @@ void CKeyEntry::RecalcualteTrustValue()
     // a search request rating > 1
     if (m_pliPublishingIPs == NULL)
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
     dwLastTrustValueCalc = ::GetTickCount();
@@ -644,7 +644,7 @@ void CKeyEntry::RecalcualteTrustValue()
         else
         {
             DebugLogError(_T("Kad: EntryTrack: Inconsistency RecalcualteTrustValue()"));
-            ASSERT( false );
+            ASSERT(0);
         }
     }
 }
@@ -734,7 +734,7 @@ void CKeyEntry::WritePublishTrackingDataToFile(CDataIO* pData)
     }
     else
     {
-        ASSERT( false );
+        ASSERT(0);
         pData->WriteUInt32(0);
     }
 }
@@ -789,7 +789,7 @@ void CKeyEntry::ReadPublishTrackingDataFromFile(CDataIO* pData, bool bIncludesAI
                 if (sToAdd.m_byAICHHashIdx >= m_aAICHHashs.GetCount())
                 {
                     // should never happen
-                    ASSERT( false );
+                    ASSERT(0);
                     DebugLogError(_T("CKeyEntry::ReadPublishTrackingDataFromFile - Out of Index AICH Hash index value while loading keywords"));
                     sToAdd.m_byAICHHashIdx = _UI16_MAX;
                 }
@@ -833,7 +833,7 @@ void CKeyEntry::WriteTagListWithPublishInfo(CDataIO* pData)
 
     if (m_pliPublishingIPs == NULL || m_pliPublishingIPs->GetCount() == 0)
     {
-        ASSERT( false );
+        ASSERT(0);
         WriteTagList(pData);
         return;
     }
@@ -916,7 +916,7 @@ uint16 CKeyEntry::AddRemoveAICHHash(const CAICHHash& hash, bool bAdd)
                 if (m_anAICHHashPopularity[i] >= 1)
                     m_anAICHHashPopularity[i] -= 1;
                 else
-                    ASSERT( false );
+                    ASSERT(0);
                 return (uint16)i;
             }
         }
@@ -929,7 +929,7 @@ uint16 CKeyEntry::AddRemoveAICHHash(const CAICHHash& hash, bool bAdd)
     }
     else
     {
-        ASSERT( false );
+        ASSERT(0);
         return _UI16_MAX;
     }
 }

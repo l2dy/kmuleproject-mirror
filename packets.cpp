@@ -597,7 +597,7 @@ CTag::CTag(CFileDataIO* data, bool bOptUTF8)
         }
         else
         {
-            ASSERT( false );
+            ASSERT(0);
             m_nBlobSize = 0;
             m_pData = NULL;
         }

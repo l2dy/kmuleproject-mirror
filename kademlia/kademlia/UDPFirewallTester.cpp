@@ -68,7 +68,7 @@ bool CUDPFirewallTester::IsFirewalledUDP(bool bLastStateIfTesting)
         return true; // firewallstate by timeout
     }
     else if (m_bTimedOut)
-        ASSERT( false );
+        ASSERT(0);
 
     if (bLastStateIfTesting && IsFWCheckUDPRunning())
         return m_bFirewalledLastStateUDP;
@@ -125,7 +125,7 @@ void CUDPFirewallTester::SetUDPFWCheckResult(bool bSucceeded, bool bTestCancelle
         return;
 
     if (m_byFWChecksRunningUDP == 0)
-        ASSERT( false );
+        ASSERT(0);
     else
         m_byFWChecksRunningUDP--;
 
@@ -243,7 +243,7 @@ void CUDPFirewallTester::QueryNextClient()  // try the next available client for
 
     if (!CKademlia::IsRunning() || CKademlia::GetRoutingZone() == NULL)
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
 

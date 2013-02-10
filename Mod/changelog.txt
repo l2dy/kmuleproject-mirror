@@ -162,3 +162,11 @@ Legend:    + added    ~ changed    - removed    ! fixed    > updated
 ! fixed possible crash when loading a new ipfilter while kMule was already running - thx to SS1900 [WiZaRd]
 ! fixed a minimule crash under Wine - thx to ]Axl[ [WiZaRd]
 ~ don't check for "already in use" ports when updating or UPnP has been disabled [WiZaRd]
+
+XXXXYYZZ:
+~ for bettter understanding, we changed "low id" to "firewalled" and "high id" to "open" [WiZaRd]
++ added button to proxy dialog to retrieve the OS proxy settings [WiZaRd]
+! WINE compatibility [WiZaRd] - see bewlow!
+ * using kMule under WINE would work because newer WINE releases include a "fake" wmvcore.dll file which crashes kMule
+ * kMule will now try to detect WINE and skip the guilty code parts automatically
+ * if the detection fails OR if you installed a proper wmvcore.dll file and want to use it, you can add a "WineCompatibility=0/1" entry in the kMule.ini file

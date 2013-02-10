@@ -465,8 +465,8 @@ CSharedFileList::~CSharedFileList()
 #ifdef _BETA
     // On Beta builds we created a testfile, delete it when closing eMule
     CString tempDir = thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR);
-    if (tempDir.Right(1)!=_T("\\"))
-        tempDir+=_T("\\");
+    if (tempDir.Right(1)!=L"\\")
+        tempDir+=L"\\";
     CString strBetaFileName;
     strBetaFileName.Format(_T("eMule%u.%u%c.%u Beta Testfile "), CemuleApp::m_nVersionMjr,
                            CemuleApp::m_nVersionMin, _T('a') + CemuleApp::m_nVersionUpd, CemuleApp::m_nVersionBld);
@@ -526,8 +526,8 @@ void CSharedFileList::FindSharedFiles()
     CString tempDir;
     CString ltempDir;
     tempDir = thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR);
-    if (tempDir.Right(1)!=_T("\\"))
-        tempDir+=_T("\\");
+    if (tempDir.Right(1)!=L"\\")
+        tempDir+=L"\\";
 
 #ifdef _BETA
     // In Betaversion we create a testfile which is published in order to make testing easier
@@ -539,7 +539,7 @@ void CSharedFileList::FindSharedFiles()
     MD5Sum md5(strBetaFileName);
     strBetaFileName += md5.GetHash().Left(6) + _T(".txt");
     if (!f.Open(tempDir + strBetaFileName, CFile::modeCreate | CFile::modeWrite | CFile::shareDenyWrite))
-        ASSERT( false );
+        ASSERT(0);
     else
     {
         try
@@ -565,8 +565,8 @@ void CSharedFileList::FindSharedFiles()
     for (int ix=1; ix<thePrefs.GetCatCount(); ix++)
     {
         tempDir=CString( thePrefs.GetCatPath(ix) );
-        if (tempDir.Right(1)!=_T("\\"))
-            tempDir+=_T("\\");
+        if (tempDir.Right(1)!=L"\\")
+            tempDir+=L"\\";
         ltempDir=tempDir;
         ltempDir.MakeLower();
 
@@ -580,8 +580,8 @@ void CSharedFileList::FindSharedFiles()
     for (POSITION pos = thePrefs.shareddir_list.GetHeadPosition(); pos != 0;)
     {
         tempDir = thePrefs.shareddir_list.GetNext(pos);
-        if (tempDir.Right(1)!=_T("\\"))
-            tempDir+=_T("\\");
+        if (tempDir.Right(1)!=L"\\")
+            tempDir+=L"\\";
         ltempDir= tempDir;
         ltempDir.MakeLower();
 
@@ -923,7 +923,7 @@ void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file, CSafeMemFile
         {
             if (!pClient->SupportsLargeFiles())
             {
-                ASSERT( false );
+                ASSERT(0);
                 tags.Add(new CTag(FT_FILESIZE, 0, false));
             }
             else
@@ -1483,7 +1483,7 @@ bool CSharedFileList::ExcludeFile(CString strFilePath)
     else if (ShouldBeShared(strFilePath.Left(strFilePath.ReverseFind('\\') + 1), strFilePath, true))
     {
         // we cannot unshare this file (incoming directories)
-        ASSERT( false ); // checks should be done earlier already
+        ASSERT(0); // checks should be done earlier already
         return false;
     }
 
@@ -1586,7 +1586,7 @@ void CSharedFileList::CheckAndAddSingleFile(const CFileFind& ff)
                                 ex->Delete();
                                 return;
                             }
-                            if (strFoundDirectory.Right(1) != _T("\\"))
+                            if (strFoundDirectory.Right(1) != L"\\")
                                 strFoundDirectory += _T('\\');
                         }
                     }
@@ -1800,7 +1800,7 @@ CString CSharedFileList::GetPseudoDirName(const CString& strDirectoryName)
     // this way we never reveal the name of any not directly shared directory. We then make sure its unique.
     if (!ShouldBeShared(strDirectoryName, _T(""), false))
     {
-        ASSERT( false );
+        ASSERT(0);
         return _T("");
     }
     // does the name already exists?
@@ -1858,7 +1858,7 @@ CString CSharedFileList::GetPseudoDirName(const CString& strDirectoryName)
             else if (iPos > 200)
             {
                 // wth?
-                ASSERT( false );
+                ASSERT(0);
                 return _T("");
             }
         }
@@ -1884,7 +1884,7 @@ bool CSharedFileList::GetPopularityRank(const CKnownFile* pFile, UINT& rnOutSess
     rnOutTotal = 0;
     if (GetFileByIdentifier(pFile->GetFileIdentifierC()) == NULL)
     {
-        ASSERT( false );
+        ASSERT(0);
         return false;
     }
     // cycle all files, each file which has more request than the given files lowers the rank

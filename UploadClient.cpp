@@ -783,7 +783,7 @@ void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
         CKnownFile* pCheck = theApp.sharedfiles->GetFileByID(requpfileid);
         if (pCheck != NULL && pCheck != oldreqfile)
         {
-            ASSERT( false );
+            ASSERT(0);
             pCheck->RemoveUploadingClient(this);
         }
     }
@@ -1097,7 +1097,7 @@ void CUpDownClient::SendHashsetPacket(const uchar* pData, UINT nSize, bool bFile
     {
         if (nSize != 16)
         {
-            ASSERT( false );
+            ASSERT(0);
             return;
         }
         CKnownFile* file = theApp.sharedfiles->GetFileByID(pData);

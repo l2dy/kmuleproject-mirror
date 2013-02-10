@@ -2072,7 +2072,7 @@ void CSharedFilesCtrl::CheckBoxClicked(int iItem)
 {
     if (iItem == (-1))
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
     // check which state the checkbox (should) currently have
@@ -2259,7 +2259,7 @@ BOOL CSharedFilesCtrl::CShareDropTarget::OnDrop(CWnd* /*pWnd*/, COleDataObject* 
                 }
                 else
                 {
-                    ASSERT( false );
+                    ASSERT(0);
                     strFilePath.ReleaseBuffer();
                 }
             }

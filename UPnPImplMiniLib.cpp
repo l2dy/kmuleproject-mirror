@@ -83,7 +83,7 @@ void CUPnPImplMiniLib::StopAsyncFind()
                 DebugLogError(_T("...Failed"));
         }
         else
-            ASSERT( false );
+            ASSERT(0);
         m_hThreadHandle = 0;
     }
     else
@@ -117,7 +117,7 @@ void CUPnPImplMiniLib::DeletePorts(bool bSkipLock)
         {
             if (m_pURLs == NULL || m_pURLs->controlURL == NULL || m_pIGDData == NULL)
             {
-                ASSERT( false );
+                ASSERT(0);
                 return;
             }
             const char achTCP[] = "TCP";

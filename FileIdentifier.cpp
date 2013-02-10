@@ -52,7 +52,7 @@ CFileIdentifierBase::~CFileIdentifierBase(void)
 // TODO: Remove me
 EMFileSize CFileIdentifierBase::GetFileSize() const
 {
-    ASSERT( false );
+    ASSERT(0);
     return (uint64)0;
 }
 
@@ -152,7 +152,7 @@ bool CFileIdentifier::CalculateMD4HashByHashSet(bool bVerifyOnly, bool bDeleteOn
 {
     if (m_aMD4HashSet.GetCount() <= 1)
     {
-        ASSERT( false );
+        ASSERT(0);
         return false;
     }
     uchar* buffer = new uchar[m_aMD4HashSet.GetCount() * 16];
@@ -246,7 +246,7 @@ uint16 CFileIdentifier::GetTheoreticalMD4PartHashCount() const
 {
     if (m_rFileSize == (uint64)0)
     {
-        ASSERT( false );
+        ASSERT(0);
         return 0;
     }
     uint16 uResult = (uint16)((uint64)m_rFileSize / PARTSIZE);
@@ -391,7 +391,7 @@ bool CFileIdentifier::SetAICHHashSet(const CAICHRecoveryHashSet& sourceHashSet)
     ASSERT( m_bHasValidAICHHash );
     if (sourceHashSet.GetStatus() != AICH_HASHSETCOMPLETE || sourceHashSet.GetMasterHash() != m_AICHFileHash)
     {
-        ASSERT( false );
+        ASSERT(0);
         DebugLogError(_T("Unexpected error SetAICHHashSet(), AICHPartHashSet not loaded"));
         return false;
     }
@@ -402,7 +402,7 @@ bool CFileIdentifier::SetAICHHashSet(const CFileIdentifier& rSourceHashSet)
 {
     if (!rSourceHashSet.HasAICHHash() || !rSourceHashSet.HasExpectedAICHHashCount())
     {
-        ASSERT( false );
+        ASSERT(0);
         return false;
     }
     m_aAICHPartHashSet.RemoveAll();
@@ -419,7 +419,7 @@ bool CFileIdentifier::LoadAICHHashsetFromFile(CFileDataIO* pFile, bool bVerify)
     CAICHHash masterHash(pFile);
     if (HasAICHHash() && masterHash != m_AICHFileHash)
     {
-        ASSERT( false );
+        ASSERT(0);
         DebugLogError(_T("Loading AICH Part Hashset error: HashSet Masterhash doesn't matches with existing masterhash - hashset not loaded"));
         return false;
     }
@@ -447,7 +447,7 @@ bool CFileIdentifier::VerifyAICHHashSet()
 {
     if (m_rFileSize == (uint64)0 || !m_bHasValidAICHHash)
     {
-        ASSERT( false );
+        ASSERT(0);
         return false;
     }
     if (!HasExpectedAICHHashCount())
@@ -470,7 +470,7 @@ bool CFileIdentifier::VerifyAICHHashSet()
         }
         else
         {
-            ASSERT( false );
+            ASSERT(0);
             return false;
         }
     }

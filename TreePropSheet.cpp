@@ -104,7 +104,7 @@ BOOL CTreePropSheet::SetTreeViewMode(BOOL bTreeViewMode /* = TRUE */, BOOL bPage
     if (IsWindow(m_hWnd))
     {
         // needs to becalled, before the window has been created
-        ASSERT(FALSE);
+        ASSERT(0);
         return FALSE;
     }
 
@@ -124,7 +124,7 @@ BOOL CTreePropSheet::SetTreeWidth(int nWidth)
     if (IsWindow(m_hWnd))
     {
         // needs to be called, before the window is created.
-        ASSERT(FALSE);
+        ASSERT(0);
         return FALSE;
     }
 
@@ -152,7 +152,7 @@ BOOL CTreePropSheet::SetTreeDefaultImages(CImageList *pImages)
 {
     if (pImages->GetImageCount() != 2)
     {
-        ASSERT(FALSE);
+        ASSERT(0);
         return FALSE;
     }
 
@@ -293,7 +293,7 @@ void CTreePropSheet::RefillPageTree()
     CTabCtrl	*pTabCtrl = GetTabControl();
     if (!IsWindow(pTabCtrl->GetSafeHwnd()))
     {
-        ASSERT(FALSE);
+        ASSERT(0);
         return;
     }
 
@@ -406,7 +406,7 @@ HTREEITEM CTreePropSheet::CreatePageTreeItem(LPCTSTR lpszPath, HTREEITEM hParent
     }
     if (!hItem)
     {
-        ASSERT(FALSE);
+        ASSERT(0);
         return NULL;
     }
 
@@ -444,7 +444,7 @@ CString CTreePropSheet::SplitPageTreePath(CString &strRest)
 
     CString	strItem(strRest.Left(nSeperatorPos));
     strItem.Replace(_T("\\::"), _T("::"));
-    strItem.Replace(_T("\\\\"), _T("\\"));
+    strItem.Replace(_T("\\\\"), L"\\");
     strRest = strRest.Mid(nSeperatorPos+2);
     return strItem;
 }
@@ -455,7 +455,7 @@ BOOL CTreePropSheet::KillActiveCurrentPage()
     HWND	hCurrentPage = PropSheet_GetCurrentPageHwnd(m_hWnd);
     if (!IsWindow(hCurrentPage))
     {
-        ASSERT(FALSE);
+        ASSERT(0);
         return TRUE;
     }
 
@@ -490,13 +490,13 @@ HTREEITEM CTreePropSheet::GetPageTreeItem(int nPage, HTREEITEM hRoot /* = TVI_RO
     // Check parameters
     if (nPage < 0 || nPage >= GetPageCount())
     {
-//        ASSERT(FALSE);
+//        ASSERT(0);
         return NULL;
     }
 
     if (hRoot == NULL)
     {
-        ASSERT(FALSE);
+        ASSERT(0);
         return NULL;
     }
 
@@ -563,7 +563,7 @@ void CTreePropSheet::UpdateCaption()
     CTabCtrl	*pTabCtrl = GetTabControl();
     if (!IsWindow(pTabCtrl->GetSafeHwnd()))
     {
-        ASSERT(FALSE);
+        ASSERT(0);
         return;
     }
 
@@ -753,7 +753,7 @@ BOOL CTreePropSheet::OnInitDialog()
     CTabCtrl* pTab = GetTabControl();
     if (!IsWindow(pTab->GetSafeHwnd()))
     {
-        ASSERT(FALSE);
+        ASSERT(0);
         return bResult;
     }
 
@@ -771,7 +771,7 @@ BOOL CTreePropSheet::OnInitDialog()
     m_pFrame = CreatePageFrame();
     if (!m_pFrame)
     {
-        ASSERT(FALSE);
+        ASSERT(0);
         AfxThrowMemoryException();
     }
     m_pFrame->Create(WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS, rectFrame, this, 0xFFFF);
@@ -837,7 +837,7 @@ BOOL CTreePropSheet::OnInitDialog()
     m_pwndPageTree = CreatePageTreeObject();
     if (!m_pwndPageTree)
     {
-        ASSERT(FALSE);
+        ASSERT(0);
         AfxThrowMemoryException();
     }
 

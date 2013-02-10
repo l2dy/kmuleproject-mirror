@@ -391,7 +391,7 @@ void CPPgDirectories::OnBnClickedAddUNC()
         return;
     }
 
-    if (unc.Right(1) == _T("\\"))
+    if (unc.Right(1) == L"\\")
         unc.Delete(unc.GetLength()-1, 1);
 
     for (POSITION pos = thePrefs.shareddir_list.GetHeadPosition(); pos != 0;)

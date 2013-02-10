@@ -272,7 +272,7 @@ bool CFirewallOpener::FindRule(const EFOCAction eAction, const CICSRuleInfo& riP
                 }
                 break;
             default:
-                ASSERT( false );
+                ASSERT(0);
             }
         }
         var.Clear();

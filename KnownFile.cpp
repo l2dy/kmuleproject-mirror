@@ -573,7 +573,7 @@ bool CKnownFile::CreateFromFile(LPCTSTR in_directory, LPCTSTR in_filename, LPVOI
         m_FileIdentifier.SetAICHHash(cAICHHashSet.GetMasterHash());
         if (!m_FileIdentifier.SetAICHHashSet(cAICHHashSet))
         {
-            ASSERT( false );
+            ASSERT(0);
             DebugLogError(_T("CreateFromFile() - failed to create AICH PartHashSet out of RecoveryHashSet - %s"), GetFileName());
         }
         if (!cAICHHashSet.SaveHashSet())
@@ -699,7 +699,7 @@ bool CKnownFile::CreateAICHHashSetOnly()
         m_FileIdentifier.SetAICHHash(cAICHHashSet.GetMasterHash());
         if (!m_FileIdentifier.SetAICHHashSet(cAICHHashSet))
         {
-            ASSERT( false );
+            ASSERT(0);
             DebugLogError(_T("CreateAICHHashSetOnly() - failed to create AICH PartHashSet out of RecoveryHashSet - %s"), GetFileName());
         }
         if (!cAICHHashSet.SaveHashSet())
@@ -939,14 +939,14 @@ bool CKnownFile::LoadTagsFromFile(CFileDataIO* file)
         {
             if(!newtag->IsStr())
             {
-                //ASSERT( false ); uncomment later
+                //ASSERT(0); uncomment later
                 break;
             }
             CAICHHash hash;
             if (DecodeBase32(newtag->GetStr(),hash) == (UINT)CAICHHash::GetHashSize())
                 m_FileIdentifier.SetAICHHash(hash);
             else
-                ASSERT( false );
+                ASSERT(0);
             delete newtag;
             break;
         }
@@ -954,7 +954,7 @@ bool CKnownFile::LoadTagsFromFile(CFileDataIO* file)
             if (newtag->IsInt())
                 m_timeLastSeen = newtag->GetInt();
             else
-                ASSERT( false );
+                ASSERT(0);
             delete newtag;
             break;
         case FT_AICHHASHSET:
@@ -966,7 +966,7 @@ bool CKnownFile::LoadTagsFromFile(CFileDataIO* file)
                 bHadAICHHashSetTag = true;
             }
             else
-                ASSERT( false );
+                ASSERT(0);
             delete newtag;
             break;
         default:
@@ -1097,7 +1097,7 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
             }
             catch (CFileException* pError)
             {
-                ASSERT( false );
+                ASSERT(0);
                 DebugLogError(_T("Memfile Error while storing AICH Part HashSet"));
                 bWriteHashSet = false;
                 delete[] hashSetFile.Detach();
@@ -1399,7 +1399,7 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
 #ifdef _BETA
             throw new CUserException();
 #endif
-            ASSERT( false );
+            ASSERT(0);
             DebugLogError(_T("Invalid client in uploading list for file %s"), GetFileName());
             return NULL;
         }
@@ -2070,7 +2070,7 @@ bool CKnownFile::IsMovie() const
 // function assumes that this file is shared and that any needed permission to preview exists. checks have to be done before calling!
 bool CKnownFile::GrabImage(uint8 nFramesToGrab, double dStartTime, bool bReduceColor, uint16 nMaxWidth, void* pSender)
 {
-    return GrabImage(GetPath() + CString(_T("\\")) + GetFileName(), nFramesToGrab,  dStartTime, bReduceColor, nMaxWidth, pSender);
+    return GrabImage(GetPath() + CString(L"\\") + GetFileName(), nFramesToGrab,  dStartTime, bReduceColor, nMaxWidth, pSender);
 }
 
 bool CKnownFile::GrabImage(CString strFileName,uint8 nFramesToGrab, double dStartTime, bool bReduceColor, uint16 nMaxWidth, void* pSender)

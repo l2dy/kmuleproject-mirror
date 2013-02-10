@@ -39,6 +39,7 @@ BEGIN_MESSAGE_MAP(CPPgProxy, CPropertyPage)
     ON_EN_CHANGE(IDC_PROXYPORT, OnEnChangeProxyPort)
     ON_EN_CHANGE(IDC_USERNAME_A, OnEnChangeUserName)
     ON_EN_CHANGE(IDC_PASSWORD, OnEnChangePassword)
+	ON_BN_CLICKED(IDC_PROXY_OPERATING_SYSTEM, OnBnClickedGetProxySettingsFromOS)
     ON_WM_HELPINFO()
 END_MESSAGE_MAP()
 
@@ -198,6 +199,7 @@ void CPPgProxy::Localize()
         GetDlgItem(IDC_PASSWORD_LBL)->SetWindowText(GetResString(IDS_WS_PASS) + _T(":"));
         GetDlgItem(IDC_AUTH_LBL)->SetWindowText(GetResString(IDS_AUTH));
         GetDlgItem(IDC_AUTH_LBL2)->SetWindowText(GetResString(IDS_PW_GENERAL));
+		GetDlgItem(IDC_PROXY_OPERATING_SYSTEM)->SetWindowText(GetResString(IDS_PROXY_OPERATING_SYSTEM));
     }
 }
 
@@ -220,4 +222,57 @@ BOOL CPPgProxy::OnHelpInfo(HELPINFO* /*pHelpInfo*/)
 {
     OnHelp();
     return TRUE;
+}
+
+// retrieves the proxy settings from registry
+ProxySettings getWinProxy()
+{
+	ProxySettings proxy;
+
+	CRegKey key;
+	CString buffer = L"Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings";
+	if(key.Open(HKEY_CURRENT_USER, buffer, KEY_READ) == ERROR_SUCCESS)
+	{
+		DWORD dwProxyEnabled = 0;
+		key.QueryDWORDValue(L"ProxyEnable", dwProxyEnabled);
+		proxy.UseProxy = dwProxyEnabled != 0;
+
+		DWORD dwProxyHTTP11 = 0;
+		key.QueryDWORDValue(L"ProxyHttp1.1", dwProxyHTTP11);
+		proxy.type = dwProxyHTTP11 != 0 ? PROXYTYPE_HTTP11 : PROXYTYPE_HTTP10;
+
+		TCHAR pszProxyServer[MAX_PATH];
+		ULONG maxsize = _countof(pszProxyServer);
+		key.QueryStringValue(L"ProxyServer", pszProxyServer, &maxsize);
+		pszProxyServer[_countof(pszProxyServer) - 1] = L'\0';
+
+		//user:password@127.0.0.1:8080
+		CString strProxyUser = L"";
+		CString strProxyPass = L"";
+		CString strProxyServer = L"";
+		uint16 uProxyPort = 0;
+		// try to detect the set proxy server, username, pass & port if possible
+		if(_stscanf(pszProxyServer, L"%s:%s@%s:%u", &strProxyUser, &strProxyPass, &strProxyServer, &uProxyPort) != 4
+			&& _stscanf(pszProxyServer, L"%s@%s:%u", &strProxyUser, &strProxyServer, &uProxyPort) != 3
+			&& _stscanf(pszProxyServer, L"%s@%s", &strProxyUser, &strProxyServer) != 2
+			&& _stscanf(pszProxyServer, L"%s:%u", &strProxyServer, &uProxyPort) != 2
+			&& _stscanf(pszProxyServer, L"%s", &strProxyServer) != 1)
+			ASSERT(0);
+
+		proxy.user = strProxyUser;
+		proxy.password = strProxyPass;
+		proxy.EnablePassword = !strProxyPass.IsEmpty();
+		proxy.port = uProxyPort;
+		proxy.name = strProxyServer;
+		key.Close(); //close old keyhandle
+	}
+
+	return proxy;
+}
+
+void CPPgProxy::OnBnClickedGetProxySettingsFromOS()
+{
+	proxy = getWinProxy();
+	LoadSettings();
+	SetModified();
 }

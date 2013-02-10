@@ -212,7 +212,7 @@ int CPartFileConvert::performConvertToeMule(CString folder)
         return CONV_BADFORMAT;
     }
 
-    CString oldfile=folder+_T("\\")+partfile.Left(partfile.GetLength()- ((pfconverting->partmettype==PMT_SHAREAZA)?3:4) );
+    CString oldfile=folder+L"\\"+partfile.Left(partfile.GetLength()- ((pfconverting->partmettype==PMT_SHAREAZA)?3:4) );
 
     pfconverting->size=file->GetFileSize();
     pfconverting->filename=file->GetFileName();
@@ -239,7 +239,7 @@ int CPartFileConvert::performConvertToeMule(CString folder)
             // just count
             UINT maxindex=0;
             UINT partfilecount=0;
-            bWorking = finder.FindFile(folder+_T("\\")+filepartindex+_T(".*.part"));
+            bWorking = finder.FindFile(folder+L"\\"+filepartindex+_T(".*.part"));
             while (bWorking)
             {
                 bWorking = finder.FindNextFile();
@@ -280,7 +280,7 @@ int CPartFileConvert::performConvertToeMule(CString folder)
             file->m_hpartfile.SetLength( pfconverting->spaceneeded );
 
             uint16 curindex=0;
-            bWorking = finder.FindFile(folder+_T("\\")+filepartindex+_T(".*.part"));
+            bWorking = finder.FindFile(folder+L"\\"+filepartindex+_T(".*.part"));
             while (bWorking)
             {
                 bWorking = finder.FindNextFile();
@@ -385,8 +385,8 @@ int CPartFileConvert::performConvertToeMule(CString folder)
 
     DeleteFile(newfilename);
     if (pfconverting->removeSource)
-        MoveFile(folder+_T("\\")+partfile,newfilename);
-    else CopyFile(folder+_T("\\")+partfile,newfilename,false);
+        MoveFile(folder+L"\\"+partfile,newfilename);
+    else CopyFile(folder+L"\\"+partfile,newfilename,false);
 
     file->GetFileIdentifier().DeleteMD4Hashset();
     while (file->gaplist.GetCount()>0 )
@@ -421,7 +421,7 @@ int CPartFileConvert::performConvertToeMule(CString folder)
     if (pfconverting->removeSource)
     {
 
-        bWorking = finder.FindFile(folder+_T("\\")+filepartindex+_T(".*"));
+        bWorking = finder.FindFile(folder+L"\\"+filepartindex+_T(".*"));
         while (bWorking)
         {
             bWorking = finder.FindNextFile();
@@ -429,7 +429,7 @@ int CPartFileConvert::performConvertToeMule(CString folder)
         }
 
         if (pfconverting->partmettype==PMT_SPLITTED)
-            RemoveDirectory(folder+_T("\\"));
+            RemoveDirectory(folder+L"\\");
     }
 
     return CONV_OK;

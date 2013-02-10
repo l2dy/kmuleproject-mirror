@@ -355,7 +355,7 @@ void CIndexed::Clean(void)
                             delete pCurrName;
                         }
                         else if (pCurrName->m_bSource)
-                            ASSERT( false );
+                            ASSERT(0);
                         else
                             pCurrName->CleanUpTrackedPublishers(); // intern cleanup
                     }
@@ -440,7 +440,7 @@ bool CIndexed::AddKeyword(const CUInt128& uKeyID, const CUInt128& uSourceID, Kad
 
     if (!pEntry->IsKeyEntry())
     {
-        ASSERT( false );
+        ASSERT(0);
         return false;
     }
 
@@ -842,7 +842,7 @@ void CIndexed::SendValidKeywordResult(const CUInt128& uKeyID, const SSearchTerm*
             DEBUG_ONLY(DebugLog(_T("Sent %u keyword search results in last packet to avoid fragmentation"), iUnsentCount));
         }
         else if (iCount > 0)
-            ASSERT( false );
+            ASSERT(0);
     }
     Clean();
 }
@@ -932,7 +932,7 @@ void CIndexed::SendValidSourceResult(const CUInt128& uKeyID, UINT uIP, uint16 uP
             //DEBUG_ONLY(DebugLog(_T("Sent %u source search results in last packet to avoid fragmentation"), iUnsentCount));
         }
         else if (iCount > 0)
-            ASSERT( false );
+            ASSERT(0);
     }
     Clean();
 }
@@ -1020,7 +1020,7 @@ void CIndexed::SendValidNoteResult(const CUInt128& uKeyID, UINT uIP, uint16 uPor
                 DEBUG_ONLY(DebugLog(_T("Sent %u note search results in last packet to avoid fragmentation"), iUnsentCount));
             }
             else if (uCount > 0)
-                ASSERT( false );
+                ASSERT(0);
         }
     }
     catch(...)
@@ -1319,7 +1319,7 @@ int CIndexed::CLoadDataThread::Run()
     catch (...)
     {
         AddDebugLogLine(false, _T("Exception in CIndexed::CLoadDataThread::Run"));
-        ASSERT( false );
+        ASSERT(0);
     }
     if (m_pOwner->m_bAbortLoading)
         AddDebugLogLine(false, _T("Terminating CIndexed::CLoadDataThread - early abort requested"));

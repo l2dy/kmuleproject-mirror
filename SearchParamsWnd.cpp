@@ -1150,7 +1150,7 @@ void CSearchParamsWnd::ProcessEd2kSearchLinkRequest(CString strSearchTerm)
     // And if we are connected, start the search otherwise not.
     if (strSearchTerm.IsEmpty())
     {
-        ASSERT( false );
+        ASSERT(0);
         return;
     }
     OnBnClickedSearchReset();

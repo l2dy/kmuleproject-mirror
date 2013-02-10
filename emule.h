@@ -112,7 +112,7 @@ public:
     virtual BOOL InitInstance();
     virtual int ExitInstance();
     virtual BOOL IsIdleMessage(MSG *pMsg);
-    virtual BOOL OnIdle(LONG lCount); //>>> WiZaRd::Save CPU & WINE
+    virtual BOOL OnIdle(LONG lCount); //>>> WiZaRd::Save CPU & Wine Compatibility
 
     // ed2k link functions
     void		AddEd2kLinksToDownload(CString strLinks, int cat);

@@ -163,7 +163,7 @@ void CKademliaUDPListener::SendMyDetails(byte byOpcode, UINT uIP, uint16 uUDPPor
     }
     else
     {
-        ASSERT( false );
+        ASSERT(0);
     }
 }
 
@@ -456,7 +456,7 @@ bool CKademliaUDPListener::AddContact_KADEMLIA2(const byte* pbyData, UINT uLenDa
             if (pTag->IsInt() && (uint16)pTag->GetInt() > 0)
                 uUDPPort = (uint16)pTag->GetInt();
             else
-                ASSERT( false );
+                ASSERT(0);
         }
 
         if (!pTag->m_name.Compare(TAG_KADMISCOPTIONS))
@@ -470,11 +470,11 @@ bool CKademliaUDPListener::AddContact_KADEMLIA2(const byte* pbyData, UINT uLenDa
                     if (pbOutRequestsACK != NULL && uVersion >= KADEMLIA_VERSION8_49b)
                         *pbOutRequestsACK = true;
                     else
-                        ASSERT( false );
+                        ASSERT(0);
                 }
             }
             else
-                ASSERT( false );
+                ASSERT(0);
         }
 
         delete pTag;
@@ -622,7 +622,7 @@ void CKademliaUDPListener::Process_KADEMLIA2_HELLO_REQ (const byte *pbyPacketDat
                 DebugLogWarning(_T("Process_KADEMLIA2_HELLO_REQ: Sending (ping) challenge to a long known contact (should be verified already) - %s"), ipstr(ntohl(uIP)));
         }
         else
-            ASSERT( false );
+            ASSERT(0);
 #endif
     }
     else if (CKademlia::GetPrefs()->FindExternKadPort(false) && byContactVersion > KADEMLIA_VERSION5_48a) // do we need to find out our extern port?
@@ -2180,7 +2180,7 @@ void CKademliaUDPListener::SendLegacyChallenge(UINT uIP, uint16 uUDPPort, const 
             DebugLogWarning(_T("Process_KADEMLIA_HELLO_RES: Sending challenge to a long known contact (should be verified already) - %s"), ipstr(ntohl(uIP)));
     }
     else
-        ASSERT( false );
+        ASSERT(0);
 #endif
     if (HasActiveLegacyChallenge(uIP)) // don't sent more than one challange at a time
         return;
@@ -2191,7 +2191,7 @@ void CKademliaUDPListener::SendLegacyChallenge(UINT uIP, uint16 uUDPPort, const 
     if (uChallenge == 0)
     {
         // hey there is a 2^128 chance that this happens ;)
-        ASSERT( false );
+        ASSERT(0);
         uChallenge = 1;
     }
     // Put the target we want into the packet. This is our challenge

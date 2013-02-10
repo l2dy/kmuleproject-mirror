@@ -868,7 +868,7 @@ void CSearch::StorePacket()
                 ASSERT( CKadUDPKey(0) == pFromContact->GetUDPKey() );
             }
             else
-                ASSERT( false );
+                ASSERT(0);
         }
         // Inc total request answers
         m_uTotalRequestAnswers++;
@@ -918,7 +918,7 @@ void CSearch::StorePacket()
                 ASSERT( CKadUDPKey(0) == pFromContact->GetUDPKey() );
             }
             else
-                ASSERT( false );
+                ASSERT(0);
             // Inc total request answers
             m_uTotalRequestAnswers++;
             // Delete all tags.
@@ -1418,7 +1418,7 @@ void CSearch::SendFindValue(CContact* pContact, bool bReAskMore)
                 byContactCount = KADEMLIA_FIND_VALUE_MORE;
             }
             else
-                ASSERT( false );
+                ASSERT(0);
         }
         if (byContactCount > 0)
             fileIO.WriteUInt8(byContactCount);
@@ -1484,7 +1484,7 @@ void CSearch::SendFindValue(CContact* pContact, bool bReAskMore)
             }
         }
         else
-            ASSERT( false );
+            ASSERT(0);
     }
     catch ( CIOException *ioe )
     {
@@ -1780,7 +1780,7 @@ uint8 CSearch::GetRequestContactCount() const
         break;
     default:
         DebugLogError(false, _T("Invalid search type. (CSearch::GetRequestContactCount())"));
-        ASSERT( false );
+        ASSERT(0);
         return 0;
     }
 }

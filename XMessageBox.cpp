@@ -2735,7 +2735,7 @@ static DWORD ReadRegistry(LPCTSTR lpszCompanyName, LPCTSTR lpszKey)
     if (lpszCompanyName && lpszCompanyName[0] != L'\0')
     {
         _tcscat(szKey, lpszCompanyName);
-        _tcscat(szKey, _T("\\"));
+        _tcscat(szKey, L"\\");
     }
 
     TCHAR szPathName[_MAX_PATH*2] = { 0 };
@@ -2749,7 +2749,7 @@ static DWORD ReadRegistry(LPCTSTR lpszCompanyName, LPCTSTR lpszKey)
 
     _tcscat(szKey, cp);
 
-    _tcscat(szKey, _T("\\"));
+    _tcscat(szKey, L"\\");
     _tcscat(szKey, XMESSAGEBOX_REGISTRY_KEY);
 
     TRACE(_T("szKey=<%s>\n"), szKey);
@@ -2797,7 +2797,7 @@ static void WriteRegistry(LPCTSTR lpszCompanyName, LPCTSTR lpszKey, DWORD dwData
     if (lpszCompanyName && lpszCompanyName[0] != L'\0')
     {
         _tcscat(szKey, lpszCompanyName);
-        _tcscat(szKey, _T("\\"));
+        _tcscat(szKey, L"\\");
     }
 
     TCHAR szPathName[_MAX_PATH*2] = { 0 };
@@ -2810,7 +2810,7 @@ static void WriteRegistry(LPCTSTR lpszCompanyName, LPCTSTR lpszKey, DWORD dwData
         cp++;
 
     _tcscat(szKey, cp);
-    _tcscat(szKey, _T("\\"));
+    _tcscat(szKey, L"\\");
     _tcscat(szKey, XMESSAGEBOX_REGISTRY_KEY);
 
     TRACE(_T("szKey=<%s>\n"), szKey);
