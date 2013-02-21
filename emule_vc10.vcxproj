@@ -65,8 +65,8 @@
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" />
     <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ExecutablePath)</ExecutablePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\AtlServer\include;.\DirectX\Extras\DirectShow\Include;.\DirectX\Include;$(IncludePath)</IncludePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\AtlServer\include;.\DirectX\Extras\DirectShow\Include;.\DirectX\Include;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\AtlServer\include;.\DirectX\Extras\DirectShow\Include;.\DirectX\Include;..\SevenZip++;$(IncludePath);$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\AtlServer\include;.\DirectX\Extras\DirectShow\Include;.\DirectX\Include;..\SevenZip++;$(IncludePath);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <CustomBuildStep>
@@ -97,8 +97,8 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>version.lib;winmm.lib;ADSIId.lib;crypt32.lib;wmvcore.lib;..\zlib\debug_vc10\zlib.lib;..\crypto51\debug_vc10\cryptlib.lib;..\id3lib\libprj\Debug_vc10\id3libD.lib;..\CxImage\debug_vc10\cximage.lib;..\png\projects\visualc10\Win32_LIB_Debug\libpngd.lib;..\ResizableLib\Unicode_Debug_vc10\ResizableLib.lib;..\miniupnpc\Debug_vc10\miniupnpc.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>nafxcwd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <AdditionalDependencies>version.lib;winmm.lib;ADSIId.lib;crypt32.lib;wmvcore.lib;..\zlib\debug_vc10\zlib.lib;..\crypto51\debug_vc10\cryptlib.lib;..\id3lib\libprj\Debug_vc10\id3libD.lib;..\CxImage\debug_vc10\cximage.lib;..\png\projects\visualc10\Win32_LIB_Debug\libpngd.lib;..\ResizableLib\Unicode_Debug_vc10\ResizableLib.lib;..\miniupnpc\Debug_vc10\miniupnpc.lib;..\SevenZip++\Lib\7zpp_ud.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>nafxcwd.lib;msvcprtd.lib;MSVCRTD.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <DelayLoadDLLs>oleacc.dll;gdiplus.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -144,7 +144,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/safeseh %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>unicows.lib;kernel32.lib;advapi32.lib;user32.lib;gdi32.lib;shell32.lib;comdlg32.lib;version.lib;mpr.lib;rasapi32.lib;winmm.lib;winspool.lib;vfw32.lib;secur32.lib;oleacc.lib;oledlg.lib;sensapi.lib;gdiplus.lib;ADSIId.lib;crypt32.lib;wmvcore.lib;..\zlib\release_vc10\zlib.lib;..\crypto51\release_vc10\cryptlib.lib;..\id3lib\libprj\Release_vc10\id3lib.lib;..\CxImage\Release_vc10\cximage.lib;..\png\projects\visualc10\Win32_LIB_Release\libpng.lib;..\ResizableLib\Unicode_Release_vc10\ResizableLib.lib;..\miniupnpc\Release_vc10\miniupnpc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>unicows.lib;kernel32.lib;advapi32.lib;user32.lib;gdi32.lib;shell32.lib;comdlg32.lib;version.lib;mpr.lib;rasapi32.lib;winmm.lib;winspool.lib;vfw32.lib;secur32.lib;oleacc.lib;oledlg.lib;sensapi.lib;gdiplus.lib;ADSIId.lib;crypt32.lib;wmvcore.lib;..\zlib\release_vc10\zlib.lib;..\crypto51\release_vc10\cryptlib.lib;..\id3lib\libprj\Release_vc10\id3lib.lib;..\CxImage\Release_vc10\cximage.lib;..\png\projects\visualc10\Win32_LIB_Release\libpng.lib;..\ResizableLib\Unicode_Release_vc10\ResizableLib.lib;..\miniupnpc\Release_vc10\miniupnpc.lib;..\SevenZip++\Lib\7zpp_u.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>kernel32.lib;advapi32.lib;user32.lib;gdi32.lib;shell32.lib;comdlg32.lib;version.lib;mpr.lib;rasapi32.lib;winmm.lib;winspool.lib;vfw32.lib;secur32.lib;oleacc.lib;oledlg.lib;sensapi.lib;nafxcwd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <DelayLoadDLLs>oleacc.dll;gdiplus.dll;ws2_32.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -208,6 +208,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Mod\7zExtract.cpp" />
     <ClCompile Include="Mod\AntiFake.cpp" />
     <ClCompile Include="Mod\autoUpdate.cpp" />
     <ClCompile Include="Mod\ClientAnalyzer.cpp" />
@@ -771,6 +772,7 @@
     <ClInclude Include="MD5Sum.h" />
     <ClInclude Include="Mdump.h" />
     <ClInclude Include="MediaInfo.h" />
+    <ClInclude Include="Mod\7zExtract.h" />
     <ClInclude Include="Mod\AntiFake.h" />
     <ClInclude Include="Mod\autoUpdate.h" />
     <ClInclude Include="Mod\ClientAnalyzer.h" />
