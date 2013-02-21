@@ -52,6 +52,8 @@ BEGIN_MESSAGE_MAP(CPPgFiles, CPropertyPage)
     ON_BN_CLICKED(IDC_REMEMBERDOWNLOADED, OnSettingsChange)
     ON_BN_CLICKED(IDC_REMEMBERCANCELLED, OnSettingsChange)
     ON_BN_CLICKED(IDC_BROWSEV, BrowseVideoplayer)
+	ON_BN_CLICKED(IDC_BROWSEX2, BrowseExtractfolder)
+	ON_EN_CHANGE(IDC_EXTRACTFOLDER, OnSettingsChange)
     ON_WM_HELPINFO()
     ON_WM_DESTROY()
 END_MESSAGE_MAP()
@@ -133,6 +135,17 @@ void CPPgFiles::LoadSettings(void)
     else
         CheckDlgButton(IDC_VIDEOBACKUP,0);
 
+	GetDlgItem(IDC_EXTRACTFOLDER)->SetWindowText(thePrefs.m_strExtractFolder);
+	if (thePrefs.m_bExtractArchives)
+		CheckDlgButton(IDC_CHECKEXTRACT,1);
+	else
+		CheckDlgButton(IDC_CHECKEXTRACT,0);
+
+	if (thePrefs.m_bExtractToIncomingDir)
+		CheckDlgButton(IDC_RADIOEXTRACTINCOMING,1);
+	else
+		CheckDlgButton(IDC_RADIOEXTRACTOTHER,1);
+
     CheckDlgButton(IDC_FNCLEANUP, (uint8)thePrefs.AutoFilenameCleanup());
 
     if (thePrefs.watchclipboard)
@@ -212,6 +225,11 @@ BOOL CPPgFiles::OnApply()
     thePrefs.m_strVideoPlayerArgs.Trim();
     thePrefs.moviePreviewBackup = IsDlgButtonChecked(IDC_VIDEOBACKUP)!=0;
 
+	GetDlgItem(IDC_EXTRACTFOLDER)->GetWindowText(thePrefs.m_strExtractFolder);
+	thePrefs.m_strExtractFolder.Trim();
+	thePrefs.m_bExtractArchives = IsDlgButtonChecked(IDC_CHECKEXTRACT)!=0;
+	thePrefs.m_bExtractToIncomingDir = IsDlgButtonChecked(IDC_RADIOEXTRACTINCOMING)!=0;
+
     LoadSettings();
     SetModified(FALSE);
     return CPropertyPage::OnApply();
@@ -239,6 +257,10 @@ void CPPgFiles::Localize(void)
         GetDlgItem(IDC_VIDEOPLAYER_CMD_LBL)->SetWindowText(GetResString(IDS_COMMAND));
         GetDlgItem(IDC_VIDEOPLAYER_ARGS_LBL)->SetWindowText(GetResString(IDS_ARGUMENTS));
         GetDlgItem(IDC_VIDEOBACKUP)->SetWindowText(GetResString(IDS_VIDEOBACKUP));
+		GetDlgItem(IDC_STATICEXTRACT)->SetWindowText(GetResString(IDS_STATICEXTRACT));
+		GetDlgItem(IDC_CHECKEXTRACT)->SetWindowText(GetResString(IDS_CHECKEXTRACT));
+		GetDlgItem(IDC_RADIOEXTRACTINCOMING)->SetWindowText(GetResString(IDS_RADIOEXTRACTINCOMING));
+		GetDlgItem(IDC_RADIOEXTRACTOTHER)->SetWindowText(GetResString(IDS_RADIOEXTRACTOTHER));
         GetDlgItem(IDC_REMEMBERDOWNLOADED)->SetWindowText(GetResString(IDS_PW_REMEMBERDOWNLOADED));
         GetDlgItem(IDC_REMEMBERCANCELLED)->SetWindowText(GetResString(IDS_PW_REMEMBERCANCELLED));
     }
@@ -264,6 +286,18 @@ void CPPgFiles::BrowseVideoplayer()
         GetDlgItem(IDC_VIDEOPLAYER)->SetWindowText(dlgFile.GetPathName());
         SetModified();
     }
+}
+
+void CPPgFiles::BrowseExtractfolder()
+{
+	CString strExtractPath;
+	GetDlgItemText(IDC_EXTRACTFOLDER, strExtractPath);
+	CFolderPickerDialog dlgFolder;
+	if (dlgFolder.DoModal() == IDOK)
+	{
+		GetDlgItem(IDC_EXTRACTFOLDER)->SetWindowText(dlgFolder.GetFolderPath());
+		SetModified();
+	}
 }
 
 void CPPgFiles::OnHelp()

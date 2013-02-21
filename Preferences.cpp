@@ -277,6 +277,9 @@ CString CPreferences::m_strVideoPlayerArgs;
 bool	CPreferences::moviePreviewBackup;
 int		CPreferences::m_iPreviewSmallBlocks;
 bool	CPreferences::m_bPreviewCopiedArchives;
+CString CPreferences::m_strExtractFolder;
+bool	CPreferences::m_bExtractToIncomingDir;
+bool	CPreferences::m_bExtractArchives;
 int		CPreferences::m_iInspectAllFileTypes;
 bool	CPreferences::m_bPreviewOnIconDblClk;
 bool	CPreferences::m_bCheckFileOpen;
@@ -1649,6 +1652,9 @@ void CPreferences::SavePreferences()
     ini.WriteString(L"TxtEditor",m_strTxtEditor);
     ini.WriteString(L"VideoPlayer",m_strVideoPlayer);
     ini.WriteString(L"VideoPlayerArgs",m_strVideoPlayerArgs);
+	ini.WriteString(L"ExtractFolder",m_strExtractFolder);
+	ini.WriteBool(L"ExtractToIncomingDir",m_bExtractToIncomingDir);
+	ini.WriteBool(L"ExtractArchives",m_bExtractArchives);
     ini.WriteString(L"MessageFilter",messageFilter);
     ini.WriteString(L"CommentFilter",commentFilter);
     ini.WriteString(L"DateTimeFormat",GetDateTimeFormat());
@@ -2248,6 +2254,10 @@ void CPreferences::LoadPreferences()
     m_strTxtEditor = ini.GetString(L"TxtEditor", L"notepad.exe");
     m_strVideoPlayer = ini.GetString(L"VideoPlayer", L"");
     m_strVideoPlayerArgs = ini.GetString(L"VideoPlayerArgs",L"");
+
+	m_strExtractFolder = ini.GetString(L"ExtractFolder",L"");
+	m_bExtractToIncomingDir = ini.GetBool(L"ExtractToIncomingDir",true);
+	m_bExtractArchives = ini.GetBool(L"ExtractArchives",true);
 
 //>>> WiZaRd::Promote VLC
     if(m_strVideoPlayer.IsEmpty() || !::PathFileExists(m_strVideoPlayer))
@@ -3107,4 +3117,4 @@ bool CPreferences::IsForbiddenFile(const CString& rstrName)
 
     return false;
 }
-//<<< Remove forbidden files
+//<<< Remove forbidden files CString CPreferences::m_strExtractFolder;

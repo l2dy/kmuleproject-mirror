@@ -346,6 +346,11 @@ public:
     static	bool	moviePreviewBackup;
     static	int		m_iPreviewSmallBlocks;
     static	bool	m_bPreviewCopiedArchives;
+
+	static  CString m_strExtractFolder;
+	static  bool    m_bExtractToIncomingDir;
+	static	bool	m_bExtractArchives;
+
     static	int		m_iInspectAllFileTypes;
     static	bool	m_bPreviewOnIconDblClk;
     static	bool	m_bCheckFileOpen;

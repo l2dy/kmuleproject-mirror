@@ -28,6 +28,7 @@ protected:
     DECLARE_MESSAGE_MAP()
     afx_msg void OnSetCleanupFilter();
     afx_msg void BrowseVideoplayer();
+	afx_msg void BrowseExtractfolder();
     afx_msg void OnSettingsChange();
     afx_msg void OnSettingsChangeCat1()
     {
