@@ -56,6 +56,7 @@
 #include "Log.h"
 #include "CollectionViewDialog.h"
 #include "Collection.h"
+#include "Mod/7zExtract.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -3831,7 +3832,7 @@ void CPartFile::PerformFileCompleteEnd(DWORD dwResult)
         thePrefs.Add2DownSessionCompletedFiles();
         thePrefs.SaveCompletedDownloadsStat();
 
-        // 05-J�n-2004 [bc]: ed2k and Kad are already full of totally wrong and/or not properly attached meta data. Take
+        // 05-Jän-2004 [bc]: ed2k and Kad are already full of totally wrong and/or not properly attached meta data. Take
         // the chance to clean any available meta data tags and provide only tags which were determined by us.
         UpdateMetaDataTags();
 
@@ -3845,15 +3846,29 @@ void CPartFile::PerformFileCompleteEnd(DWORD dwResult)
             strFilePath.ReleaseBuffer();
             Log(LOG_STATUSBAR, GetResString(IDS_DOWNLOADRENAMED), strFilePath);
         }
-        if(!m_pCollection && CCollection::HasCollectionExtention(GetFileName()))
+        if (!m_pCollection && CCollection::HasCollectionExtention(GetFileName()))
         {
             m_pCollection = new CCollection();
-            if(!m_pCollection->InitCollectionFromFile(GetFilePath(), GetFileName()))
+            if (!m_pCollection->InitCollectionFromFile(GetFilePath(), GetFileName()))
             {
                 delete m_pCollection;
                 m_pCollection = NULL;
             }
         }
+
+		//>>> Tux::AutoExtract
+		if (thePrefs.m_bExtractArchives && GetFileTypeByName(GetFileName()) == "Arc") {
+			Log(LOG_STATUSBAR,L"The newly downloaded file can be extracted auto-magically. Let's do that!");
+
+			CString targetDir = L"";
+			if (thePrefs.m_bExtractToIncomingDir || (!thePrefs.m_bExtractToIncomingDir && thePrefs.m_strExtractFolder == ""))
+				targetDir = thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR);
+			else
+				targetDir = thePrefs.m_strExtractFolder;
+
+			ExtractSevenZipArchive(GetFullName(),targetDir);
+		}
+		//<<< Tux::AutoExtract
     }
 
     theApp.downloadqueue->StartNextFileIfPrefs(GetCategory());
