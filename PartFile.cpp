@@ -3857,16 +3857,17 @@ void CPartFile::PerformFileCompleteEnd(DWORD dwResult)
         }
 
 		//>>> Tux::AutoExtract
-		if (thePrefs.m_bExtractArchives && GetFileTypeByName(GetFileName()) == "Arc") {
+		if (thePrefs.m_bExtractArchives && GetFileTypeByName(GetFileName()) == _T(ED2KFTSTR_ARCHIVE)) {
 			Log(LOG_STATUSBAR,L"The newly downloaded file can be extracted auto-magically. Let's do that!");
 
 			CString targetDir = L"";
-			if (thePrefs.m_bExtractToIncomingDir || (!thePrefs.m_bExtractToIncomingDir && thePrefs.m_strExtractFolder == ""))
+			if (thePrefs.m_bExtractToIncomingDir || thePrefs.m_strExtractFolder.IsEmpty())
 				targetDir = thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR);
 			else
 				targetDir = thePrefs.m_strExtractFolder;
 
-			ExtractSevenZipArchive(GetFullName(),targetDir);
+			if (ExtractSevenZipArchive(GetFullName(),targetDir))
+				Log(LOG_STATUSBAR,L"Auto-magic extraction succeeded. Yay!");
 		}
 		//<<< Tux::AutoExtract
     }
