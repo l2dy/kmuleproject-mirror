@@ -41,7 +41,7 @@ public:
     CAddSourceDlg(CWnd* pParent = NULL);   // standard constructor
     virtual ~CAddSourceDlg();
 
-    void SetFile( CPartFile* pFile );
+    void SetFile(CPartFile* pFile);
 
 // Dialog Data
     enum { IDD = IDD_ADDSOURCE };

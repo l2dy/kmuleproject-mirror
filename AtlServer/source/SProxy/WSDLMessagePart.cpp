@@ -18,7 +18,7 @@
 //
 HRESULT CWSDLMessagePart::GetElement(CElement **ppElement)
 {
-    ATLASSERT( ppElement != NULL );
+    ATLASSERT(ppElement != NULL);
     *ppElement = NULL;
     if (m_pElement != NULL)
     {
@@ -63,8 +63,8 @@ HRESULT CWSDLMessagePart::GetElement(CElement **ppElement)
 //
 HRESULT CWSDLMessagePart::GetType(CXSDElement **ppElement, XSDTYPE *pXSD)
 {
-    ATLASSERT( pXSD != NULL );
-    ATLASSERT( ppElement != NULL );
+    ATLASSERT(pXSD != NULL);
+    ATLASSERT(ppElement != NULL);
 
     *pXSD = XSDTYPE_ERR;
     *ppElement = NULL;

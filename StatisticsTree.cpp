@@ -55,8 +55,8 @@ CStatisticsTree::CStatisticsTree()
 
 CStatisticsTree::~CStatisticsTree()
 {
-    if (mnuHTML) VERIFY( mnuHTML.DestroyMenu() );
-    if (mnuContext) VERIFY( mnuContext.DestroyMenu() );
+    if (mnuHTML) VERIFY(mnuHTML.DestroyMenu());
+    if (mnuContext) VERIFY(mnuContext.DestroyMenu());
 }
 
 // This function is called from CStatisticsDlg::OnInitDialog in StatisticsDlg.cpp
@@ -97,7 +97,7 @@ void CStatisticsTree::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
     DoMenu(point, TPM_LEFTALIGN | TPM_RIGHTBUTTON);
 }
 
-void CStatisticsTree::OnLButtonUp( UINT nFlags, CPoint point )
+void CStatisticsTree::OnLButtonUp(UINT nFlags, CPoint point)
 {
     theApp.emuledlg->statisticswnd->ShowStatistics();
     CTreeCtrl::OnLButtonUp(nFlags, point);
@@ -128,7 +128,7 @@ void CStatisticsTree::DoMenu()
 
 void CStatisticsTree::DoMenu(CPoint doWhere)
 {
-    DoMenu( doWhere, TPM_RIGHTALIGN | TPM_RIGHTBUTTON );
+    DoMenu(doWhere, TPM_RIGHTALIGN | TPM_RIGHTBUTTON);
 }
 
 void CStatisticsTree::DoMenu(CPoint doWhere, UINT nFlags)
@@ -165,8 +165,8 @@ void CStatisticsTree::DoMenu(CPoint doWhere, UINT nFlags)
     GetPopupMenuPos(*this, doWhere);
     mnuContext.TrackPopupMenu(nFlags, doWhere.x, doWhere.y, this);
 
-    VERIFY( mnuHTML.DestroyMenu() );
-    VERIFY( mnuContext.DestroyMenu() );
+    VERIFY(mnuHTML.DestroyMenu());
+    VERIFY(mnuContext.DestroyMenu());
 }
 
 // Process context menu items...
@@ -176,7 +176,7 @@ BOOL CStatisticsTree::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
     {
     case MP_STATTREE_RESET:
     {
-        if(AfxMessageBox(GetResString(IDS_STATS_MBRESET_TXT), MB_YESNO | MB_ICONEXCLAMATION) == IDNO)
+        if (AfxMessageBox(GetResString(IDS_STATS_MBRESET_TXT), MB_YESNO | MB_ICONEXCLAMATION) == IDNO)
             break;
 
         thePrefs.ResetCumulativeStatistics();
@@ -194,7 +194,7 @@ BOOL CStatisticsTree::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
         if (AfxMessageBox(GetResString(IDS_STATS_MBRESTORE_TXT), MB_YESNO | MB_ICONQUESTION) == IDNO)
             break;
 
-        if(!thePrefs.LoadStats(1))
+        if (!thePrefs.LoadStats(1))
             LogError(LOG_STATUSBAR, GetResString(IDS_ERR_NOSTATBKUP));
         else
         {

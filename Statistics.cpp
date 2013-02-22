@@ -151,7 +151,7 @@ CStatistics::CStatistics()
     m_nUpDataOverheadOtherPackets = 0;
     m_sumavgUDRO = 0;
 
-	m_nTotalCompletedBytes = 0; //>>> WiZaRd::ZZUL Upload [ZZ]
+    m_nTotalCompletedBytes = 0; //>>> WiZaRd::ZZUL Upload [ZZ]
 }
 
 void CStatistics::Init()
@@ -490,20 +490,20 @@ void __cdecl operator delete[](void* p)
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
 uint64  CStatistics::GetTotalCompletedBytes() const
-{ 
-	return m_nTotalCompletedBytes; 
-}
-
-void    CStatistics::IncTotalCompletedBytes(const uint64 toAdd) 
-{ 
-	m_nTotalCompletedBytes += toAdd; 
-}
-
-void    CStatistics::DecTotalCompletedBytes(const uint64 toDec) 
 {
-	if(m_nTotalCompletedBytes > toDec)
-		m_nTotalCompletedBytes -= toDec;
-	else
-		m_nTotalCompletedBytes = 0;
+    return m_nTotalCompletedBytes;
+}
+
+void    CStatistics::IncTotalCompletedBytes(const uint64 toAdd)
+{
+    m_nTotalCompletedBytes += toAdd;
+}
+
+void    CStatistics::DecTotalCompletedBytes(const uint64 toDec)
+{
+    if (m_nTotalCompletedBytes > toDec)
+        m_nTotalCompletedBytes -= toDec;
+    else
+        m_nTotalCompletedBytes = 0;
 }
 //<<< WiZaRd::ZZUL Upload [ZZ]

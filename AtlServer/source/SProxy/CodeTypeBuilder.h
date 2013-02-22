@@ -18,9 +18,9 @@ public:
     typedef T* INARGTYPE;
     typedef T*& OUTARGTYPE;
 
-    static ULONG Hash( INARGTYPE element )
+    static ULONG Hash(INARGTYPE element)
     {
-        ATLASSERT( element != NULL );
+        ATLASSERT(element != NULL);
 
         ULONG nHash = 0;
         CXMLDocument *pDoc = element->GetParentDocument();
@@ -40,10 +40,10 @@ public:
         return nHash;
     }
 
-    static bool CompareElements( INARGTYPE element1, INARGTYPE element2 )
+    static bool CompareElements(INARGTYPE element1, INARGTYPE element2)
     {
-        ATLASSERT( element1 != NULL );
-        ATLASSERT( element2 != NULL );
+        ATLASSERT(element1 != NULL);
+        ATLASSERT(element2 != NULL);
 
         CXMLDocument *pDoc1 = element1->GetParentDocument();
         CXMLDocument *pDoc2 = element2->GetParentDocument();
@@ -55,19 +55,19 @@ public:
 
             if (pSchema1 != NULL && pSchema2 != NULL)
             {
-                return ( pDoc1->GetDocumentUri()==pDoc2->GetDocumentUri() &&
-                         pSchema1->GetTargetNamespace()==pSchema2->GetTargetNamespace() &&
-                         element1->GetName()==element2->GetName());
+                return (pDoc1->GetDocumentUri()==pDoc2->GetDocumentUri() &&
+                        pSchema1->GetTargetNamespace()==pSchema2->GetTargetNamespace() &&
+                        element1->GetName()==element2->GetName());
             }
         }
 
         return false;
     }
 
-    static int CompareElementsOrdered( INARGTYPE element1, INARGTYPE element2 )
+    static int CompareElementsOrdered(INARGTYPE element1, INARGTYPE element2)
     {
-        ATLASSERT( element1 != NULL );
-        ATLASSERT( element2 != NULL );
+        ATLASSERT(element1 != NULL);
+        ATLASSERT(element2 != NULL);
 
         CXMLDocument *pDoc1 = element1->GetParentDocument();
         CXMLDocument *pDoc2 = element2->GetParentDocument();
@@ -76,7 +76,7 @@ public:
 
         if (pDoc1 != NULL && pDoc2 != NULL)
         {
-            nRet = pDoc1->GetDocumentUri().Compare( pDoc2->GetDocumentUri() );
+            nRet = pDoc1->GetDocumentUri().Compare(pDoc2->GetDocumentUri());
             if (nRet == 0)
             {
                 CSchema *pSchema1 = element1->GetParentSchema();
@@ -84,10 +84,10 @@ public:
 
                 if (pSchema1 != NULL && pSchema2 != NULL)
                 {
-                    nRet = pSchema1->GetTargetNamespace().Compare( pSchema2->GetTargetNamespace() );
+                    nRet = pSchema1->GetTargetNamespace().Compare(pSchema2->GetTargetNamespace());
                     if (nRet == 0)
                     {
-                        nRet = element1->GetName().Compare( element2->GetName() );
+                        nRet = element1->GetName().Compare(element2->GetName());
                     }
                 }
             }

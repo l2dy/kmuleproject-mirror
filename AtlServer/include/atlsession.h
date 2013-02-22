@@ -123,11 +123,11 @@ public:
             hr = GenerateRandomName(key, dwDataSize);
             if (SUCCEEDED(hr))
             {
-                if( Base64Encode(key,
+                if (Base64Encode(key,
                                  dwDataSize,
                                  szNewID,
                                  &dwKeySize,
-                                 ATL_BASE64_FLAG_NOCRLF) )
+                                 ATL_BASE64_FLAG_NOCRLF))
                 {
                     //null terminate
                     szNewID[dwKeySize]=0;
@@ -192,7 +192,7 @@ public:
         // fill buffer with random bytes
         for (int i=0; i < (int)dwBuffSize; i++)
         {
-            *pCurr = (BYTE) (rand() & 0x000000ff);
+            *pCurr = (BYTE)(rand() & 0x000000ff);
             pCurr++;
         }
         return S_OK;
@@ -344,7 +344,7 @@ public:
     {
         HRESULT hr = S_OK;
         CVariantStream stream;
-        if ( szSessionID )
+        if (szSessionID)
         {
             if (Checked::tcsnlen(szSessionID, MAX_SESSION_KEY_LEN)< MAX_SESSION_KEY_LEN)
                 Checked::tcscpy_s(m_szSessionID, _countof(m_szSessionID), szSessionID);
@@ -451,7 +451,7 @@ public:
 
         if (szVarName)
         {
-            if(Checked::tcsnlen(szVarName, MAX_VARIABLE_NAME_LENGTH) < MAX_VARIABLE_NAME_LENGTH)
+            if (Checked::tcsnlen(szVarName, MAX_VARIABLE_NAME_LENGTH) < MAX_VARIABLE_NAME_LENGTH)
                 Checked::tcscpy_s(m_VariableName, _countof(m_VariableName), szVarName);
             else
                 return E_OUTOFMEMORY;
@@ -815,7 +815,7 @@ public:
             hr = command.Open(dataconn, m_QueryObj.GetSessionVarSelectVar());
             if (SUCCEEDED(hr))
             {
-                if ( S_OK == (hr = command.MoveFirst()))
+                if (S_OK == (hr = command.MoveFirst()))
                 {
                     CStreamOnByteArray stream(command.m_VariableValue);
                     CComVariant vOut;
@@ -1192,12 +1192,12 @@ public:
         hr = updator.Assign(m_szSessionName);
         if (hr == S_OK)
         {
-            hr = updator.Open(	dataconn,
-                                m_QueryObj.GetSessionRefRemoveRef(),
-                                NULL,
-                                &nRows,
-                                DBGUID_DEFAULT,
-                                false);
+            hr = updator.Open(dataconn,
+                              m_QueryObj.GetSessionRefRemoveRef(),
+                              NULL,
+                              &nRows,
+                              DBGUID_DEFAULT,
+                              false);
         }
         if (hr != S_OK)
             return hr;
@@ -1235,12 +1235,12 @@ public:
         hr = updator.Assign(m_szSessionName);
         if (hr == S_OK)
         {
-            hr = updator.Open(	dataconn,
-                                m_QueryObj.GetSessionRefAccess(),
-                                NULL,
-                                &nRows,
-                                DBGUID_DEFAULT,
-                                false);
+            hr = updator.Open(dataconn,
+                              m_QueryObj.GetSessionRefAccess(),
+                              NULL,
+                              &nRows,
+                              DBGUID_DEFAULT,
+                              false);
         }
 
         ATLASSERT(nRows > 0);
@@ -1281,10 +1281,10 @@ public:
     }
 
     // Initialize is called each time a new session is created.
-    HRESULT Initialize( LPCSTR szSessionName,
-                        IServiceProvider *pServiceProvider,
-                        DWORD_PTR dwCookie,
-                        PFN_GETPROVIDERINFO pfnInfo) throw()
+    HRESULT Initialize(LPCSTR szSessionName,
+                       IServiceProvider *pServiceProvider,
+                       DWORD_PTR dwCookie,
+                       PFN_GETPROVIDERINFO pfnInfo) throw()
     {
         if (!szSessionName)
             return E_INVALIDARG;
@@ -1379,7 +1379,7 @@ public:
         if (!pProv)
             return E_INVALIDARG;
 
-        if(!m_szConnectionString[0])
+        if (!m_szConnectionString[0])
             return E_UNEXPECTED;
 
         return GetDataSource(pProv,
@@ -1723,17 +1723,17 @@ class CElementTraits<SESSIONPTRTYPE> :
     public CElementTraitsBase<SESSIONPTRTYPE>
 {
 public:
-    static ULONG Hash( INARGTYPE obj ) throw()
+    static ULONG Hash(INARGTYPE obj) throw()
     {
-        return( (ULONG)(ULONG_PTR)obj.p);
+        return((ULONG)(ULONG_PTR)obj.p);
     }
 
-    static BOOL CompareElements( OUTARGTYPE element1, OUTARGTYPE element2 ) throw()
+    static BOOL CompareElements(OUTARGTYPE element1, OUTARGTYPE element2) throw()
     {
         return element1.IsEqualObject(element2.p) ? TRUE : FALSE;
     }
 
-    static int CompareElementsOrdered( INARGTYPE , INARGTYPE ) throw()
+    static int CompareElementsOrdered(INARGTYPE , INARGTYPE) throw()
     {
         ATLASSERT(0); // NOT IMPLEMENTED
         return 0;
@@ -1903,7 +1903,7 @@ public:
     STDMETHOD(GetNextVariable)(POSITION *pPOS, VARIANT *pVal,
                                HSESSIONENUM hEnum=NULL,
                                LPSTR szName=NULL,
-                               DWORD dwLen=0 ) throw()
+                               DWORD dwLen=0) throw()
     {
         (hEnum); // Unused!
         if (pVal)
@@ -2459,7 +2459,7 @@ public:
     {
         if (m_hTimer)
         {
-            if(FAILED(m_Monitor.RemoveHandle(m_hTimer)))
+            if (FAILED(m_Monitor.RemoveHandle(m_hTimer)))
             {
                 /* can't report from here */
                 ATLASSERT(FALSE);

@@ -25,7 +25,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CUPnPImpl::CUPnPImpl()
-    :	m_bUPnPPortsForwarded( TRIS_FALSE ),
+    :	m_bUPnPPortsForwarded(TRIS_FALSE),
         m_hResultMessageWindow(0),
         m_nResultMessageID(0)
 {

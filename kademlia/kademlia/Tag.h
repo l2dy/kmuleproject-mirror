@@ -62,14 +62,14 @@ public:
     // string compare is performed.
     int Compare(LPCSTR psz) const throw()
     {
-        ATLASSERT( AfxIsValidString(psz) );
+        ATLASSERT(AfxIsValidString(psz));
         // Do a binary string compare. (independant from any codepage and/or LC_CTYPE setting.)
         return strcmp(GetString(), psz);
     }
 
     int CompareNoCase(LPCSTR psz) const throw()
     {
-        ATLASSERT( AfxIsValidString(psz) );
+        ATLASSERT(AfxIsValidString(psz));
 
         // Version #1
         // Do a case-insensitive ASCII string compare.
@@ -91,7 +91,7 @@ public:
         return CStringA::operator PCXSTR();
     }
 
-    XCHAR operator[]( int iChar ) const throw()
+    XCHAR operator[](int iChar) const throw()
     {
         return CStringA::operator [](iChar);
     }

@@ -171,7 +171,7 @@ inline BOOL AtlSmtpSendOverlapped(HANDLE hFile, LPCSTR lpData, int nDataLength, 
 
             //If we are writing to a file, we need to update the offsets
             pOverlapped->Offset += dwWritten;
-            if(dwBufPos>dwPrevLength)
+            if (dwBufPos>dwPrevLength)
             {
                 /* shouldn't happen */
                 ATLASSERT(false);

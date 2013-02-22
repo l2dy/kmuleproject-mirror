@@ -58,7 +58,7 @@ CListCtrlX::~CListCtrlX()
 
 void CListCtrlX::ReadColumnStats(int iColumns, LCX_COLUMN_INIT* pColumns)
 {
-    ASSERT( !m_strRegKey.IsEmpty() );
+    ASSERT(!m_strRegKey.IsEmpty());
     ReadColumnStats(iColumns, pColumns, m_strRegKey);
 }
 
@@ -97,7 +97,7 @@ void ReadColumnStats(int iColumns, LCX_COLUMN_INIT* pColumns, LPCTSTR pszSection
 
 void CListCtrlX::WriteColumnStats(int iColumns, const LCX_COLUMN_INIT* pColumns)
 {
-    ASSERT( !m_strRegKey.IsEmpty() );
+    ASSERT(!m_strRegKey.IsEmpty());
     WriteColumnStats(iColumns, pColumns, m_strRegKey);
 }
 
@@ -237,7 +237,7 @@ void CListCtrlX::SetHdrImgList(UINT uResID, int cx, int cy, int iImages)
 void CListCtrlX::SetSortColumn(int iColumns, LCX_COLUMN_INIT* pColumns, int iSortColumn)
 {
     UNREFERENCED_PARAMETER(iColumns);
-    ASSERT( iSortColumn < iColumns );
+    ASSERT(iSortColumn < iColumns);
 
     m_iSortColumn = iSortColumn;
     pColumns[m_iSortColumn].eSortOrder = pColumns[m_iSortColumn].eDfltSortOrder;
@@ -248,15 +248,15 @@ void CListCtrlX::SetSortColumn(int iColumns, LCX_COLUMN_INIT* pColumns, int iSor
 void CListCtrlX::UpdateSortColumn(int iColumns, LCX_COLUMN_INIT* pColumns)
 {
     UNREFERENCED_PARAMETER(iColumns);
-    ASSERT( m_iSortColumn < iColumns );
+    ASSERT(m_iSortColumn < iColumns);
 
     UpdateHdrCtrlSortBitmap(m_iSortColumn, pColumns[m_iSortColumn].eSortOrder);
 }
 
 void CListCtrlX::UpdateSortOrder(LPNMLISTVIEW pnmlv, int iColumns, LCX_COLUMN_INIT* pColumns)
 {
-    ASSERT( pnmlv->iItem == -1 );
-    ASSERT( pnmlv->iSubItem >= 0 && pnmlv->iSubItem < iColumns );
+    ASSERT(pnmlv->iItem == -1);
+    ASSERT(pnmlv->iSubItem >= 0 && pnmlv->iSubItem < iColumns);
     (void)iColumns;
 
     // Get sorting order for column
@@ -326,7 +326,7 @@ void CListCtrlX::UpdateHdrCtrlSortBitmap(int iSortedColumn, LCX_SORT_ORDER eSort
 
 void CListCtrlX::UpdateHdrImageList()
 {
-    if (   m_uIDHdrImgList != (UINT)-1
+    if (m_uIDHdrImgList != (UINT)-1
             && m_sizeHdrImgListIcon.cx > 0 && m_sizeHdrImgListIcon.cy > 0
             && m_iHdrImgListImages > 0)
     {
@@ -355,7 +355,7 @@ void UpdateHdrImageList(CListCtrl& lv, CImageList& imlHdr, UINT uIDHdrImgList,
                 if (imlHdr.Create(sizeHdrImgListIcon.cx, sizeHdrImgListIcon.cy, ILC_COLOR | ILC_MASK, iHdrImgListImages, 0))
                 {
                     // Fill images and masks into image list
-                    VERIFY( imlHdr.Add(&bmSortStates, RGB(255, 0, 255)) != -1 );
+                    VERIFY(imlHdr.Add(&bmSortStates, RGB(255, 0, 255)) != -1);
 
                     // To avoid drawing problems (which occure only with an image list *with* a mask) while
                     // resizing list view columns which have the header control bitmap right aligned, set
@@ -593,7 +593,7 @@ void CListCtrlX::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 void CListCtrlX::CheckSelectedItems(int nCurrItem)
 {
-    ASSERT( GetExtendedStyle() & LVS_EX_CHECKBOXES );
+    ASSERT(GetExtendedStyle() & LVS_EX_CHECKBOXES);
 
     // first check if this item is selected
     LVITEM lvi;
@@ -744,7 +744,7 @@ LRESULT CListCtrlX::OnCopy(WPARAM /*wParam*/, LPARAM /*lParam*/)
 
 void InitColumnOrders(CListCtrl& lv, int iColumns, const LCX_COLUMN_INIT* pColumns)
 {
-    ASSERT( lv.GetHeaderCtrl()->GetItemCount() == iColumns );
+    ASSERT(lv.GetHeaderCtrl()->GetItemCount() == iColumns);
     LPINT piOrders = new INT[iColumns];
     if (piOrders != NULL)
     {
@@ -765,7 +765,7 @@ void InitColumnOrders(CListCtrl& lv, int iColumns, const LCX_COLUMN_INIT* pColum
                 piOrders[iCol] = iCol;
             }
         }
-        VERIFY( lv.SetColumnOrderArray(iColumns, piOrders) );
+        VERIFY(lv.SetColumnOrderArray(iColumns, piOrders));
         delete[] piOrders;
     }
 }
@@ -791,9 +791,9 @@ bool CListCtrlX::FindItem(const CListCtrlX& lv, int iItem, DWORD_PTR /*lParam*/)
     CString strItemText(lv.GetItemText(iItem, lv.GetFindColumn()));
     if (!strItemText.IsEmpty())
     {
-        if ( lv.GetFindMatchCase()
+        if (lv.GetFindMatchCase()
                 ? _tcsstr(strItemText, lv.GetFindText()) != NULL
-                : stristr(strItemText, lv.GetFindText()) != NULL )
+                : stristr(strItemText, lv.GetFindText()) != NULL)
             return true;
     }
     return false;
@@ -811,7 +811,7 @@ void CListCtrlX::DoFind(int iStartItem, int iDirection /*1=down, 0 = up*/, BOOL 
 
     int iNumItems = iDirection ? GetItemCount() : 0;
     int iItem = iStartItem;
-    while ( iDirection ? iItem < iNumItems : iItem >= 0 )
+    while (iDirection ? iItem < iNumItems : iItem >= 0)
     {
         if ((*m_pfnFindItem)(*this, iItem, m_lFindItemParam))
         {

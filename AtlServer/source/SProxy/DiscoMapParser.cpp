@@ -21,7 +21,7 @@ CDiscoMapParser::CDiscoMapParser(ISAXXMLReader * pReader, CParserBase * pParent,
 
 CDiscoMapDocument * CDiscoMapParser::CreateDiscoMapDocument(void)
 {
-    m_pDocument.Attach( new CDiscoMapDocument );
+    m_pDocument.Attach(new CDiscoMapDocument);
     return m_pDocument;
 }
 
@@ -45,21 +45,21 @@ TAG_METHOD_IMPL(CDiscoMapParser, OnDiscoveryClientResult)
     CStringW strRT;
     HRESULT hr = GetAttribute(pAttributes, L"referenceType", sizeof("referenceType")-1, strRT);
 
-    if(FAILED(hr))
+    if (FAILED(hr))
         return hr;
 
     CDiscoMapDocument * pDoc = GetDiscoMapDocument();
 
-    if(strRT == "System.Web.Services.Discovery.SchemaReference")
+    if (strRT == "System.Web.Services.Discovery.SchemaReference")
     {
         CStringW strURL;
         hr = GetAttribute(pAttributes, L"url", sizeof("url")-1, strURL);
-        if(FAILED(hr))
+        if (FAILED(hr))
             return hr;
 
         CStringW strFileName;
         hr = GetAttribute(pAttributes, L"filename", sizeof("filename")-1, strFileName);
-        if(FAILED(hr))
+        if (FAILED(hr))
             return hr;
 
         pDoc->AddSchema(strURL,strFileName);
@@ -67,11 +67,11 @@ TAG_METHOD_IMPL(CDiscoMapParser, OnDiscoveryClientResult)
         return S_OK;
     }
 
-    if(strRT == "System.Web.Services.Discovery.ContractReference")
+    if (strRT == "System.Web.Services.Discovery.ContractReference")
     {
         CStringW strWSDLFile;
         hr = GetAttribute(pAttributes, L"filename", sizeof("filename")-1, strWSDLFile);
-        if(FAILED(hr))
+        if (FAILED(hr))
             return hr;
 
         pDoc->SetWSDLFile(strWSDLFile);

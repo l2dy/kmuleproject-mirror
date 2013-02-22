@@ -141,13 +141,13 @@ UINT	GetPrimeNumber(const UINT min)
 {
     UINT foundPrime = min > 0 ? min-1 : 0;
     bool prime = false;
-    while(!prime)
+    while (!prime)
     {
         ++foundPrime;
         prime = true;
-        for(int cur_i = 2, end = (int)sqrt((double)foundPrime); cur_i <= end; ++cur_i)
+        for (int cur_i = 2, end = (int)sqrt((double)foundPrime); cur_i <= end; ++cur_i)
         {
-            if(foundPrime % cur_i == 0)
+            if (foundPrime % cur_i == 0)
             {
                 prime = false;
                 break;
@@ -166,15 +166,15 @@ CString GetReasonString(const UINT i)
 {
     CString reason = L"";
 
-    if(i & AT_NICKTHIEF)
+    if (i & AT_NICKTHIEF)
         AppendWithBlank(reason, L"NickThief");
-    if(i & AT_MODTHIEF)
+    if (i & AT_MODTHIEF)
         AppendWithBlank(reason, L"ModThief");
-    if(i & AT_FILEFAKER)
+    if (i & AT_FILEFAKER)
         AppendWithBlank(reason, L"FileFaker");
-    if(i & AT_UDPFNFFAKER)
+    if (i & AT_UDPFNFFAKER)
         AppendWithBlank(reason, L"UDPFNFFaker");
-    if(i & AT_MODFAKER)
+    if (i & AT_MODFAKER)
         AppendWithBlank(reason, L"ModFaker");
 
     return reason;
@@ -190,7 +190,7 @@ CAntiLeechData::CAntiLeechData(CFileDataIO* file)
     {
         CTag* newtag = new CTag(file, false);
         bool bDel = true;
-        switch(newtag->GetNameID())
+        switch (newtag->GetNameID())
         {
 //>>> RARE files
         case AT_UPLOAD_RARE:
@@ -297,13 +297,13 @@ CAntiLeechData::CAntiLeechData(CFileDataIO* file)
 //keep bad status for some time
         case AT_BADTIMER:
         {
-            if(newtag->IsInt())
+            if (newtag->IsInt())
                 m_pData->dwBadTimer = newtag->GetInt();
             break;
         }
         case AT_BADSTATUS:
         {
-            if(newtag->IsInt())
+            if (newtag->IsInt())
                 m_uiBadForThisSession = newtag->GetInt();
             break;
         }
@@ -311,50 +311,50 @@ CAntiLeechData::CAntiLeechData(CFileDataIO* file)
 
         case AT_REASKS:
         {
-            if(newtag->IsInt())
+            if (newtag->IsInt())
                 m_pData->uReasks = newtag->GetInt();
             break;
         }
         case AT_AVGREASK:
         {
-            if(newtag->IsInt())
+            if (newtag->IsInt())
                 m_pData->uAvgReaskTime = newtag->GetInt();
             break;
         }
         case AT_SPAMS:
         {
-            if(newtag->IsInt())
+            if (newtag->IsInt())
                 m_pData->iBlockedMessages = newtag->GetInt();
             break;
         }
         case AT_XS_ASKS:
         {
-            if(newtag->IsInt())
+            if (newtag->IsInt())
                 m_pData->uXSAsks = newtag->GetInt();
             break;
         }
         case AT_XS_ANSW:
         {
-            if(newtag->IsInt())
+            if (newtag->IsInt())
                 m_pData->uXSAnsw = newtag->GetInt();
             break;
         }
         case AT_FASTXS_ASKS:
         {
-            if(newtag->IsInt())
+            if (newtag->IsInt())
                 m_pData->iFastXSAsks = newtag->GetInt();
             break;
         }
 
         case AT_BADULSESSIONS:
         {
-            if(newtag->IsInt())
+            if (newtag->IsInt())
                 m_pData->uBadULSessions = (uint8)newtag->GetInt();
             break;
         }
         case AT_BADDLSESSIONS:
         {
-            if(newtag->IsInt())
+            if (newtag->IsInt())
                 m_pData->uBadDLSessions = (uint8)newtag->GetInt();
             break;
         }
@@ -365,14 +365,14 @@ CAntiLeechData::CAntiLeechData(CFileDataIO* file)
             break;
         }
         }
-        if(bDel)
+        if (bDel)
             delete newtag;
         else
             taglist.Add(newtag); //hmmm - strange tags? might be new versions
     }
 
     //Failsafe:
-    if(m_pData->uAvgReaskTime == 0)
+    if (m_pData->uAvgReaskTime == 0)
         m_pData->uReasks = 0;
 
     ReCheckScore(); //perform the first check
@@ -396,7 +396,7 @@ CAntiLeechData::CAntiLeechData(const CAntiLeechData* toCopy)
     m_uiBadForThisSession = toCopy->m_uiBadForThisSession;
     m_pData = new CAntiLeechStruct;
     memcpy(m_pData, toCopy->m_pData, sizeof(CAntiLeechStruct));
-    for(int i = 0; i < toCopy->taglist.GetCount(); ++i)
+    for (int i = 0; i < toCopy->taglist.GetCount(); ++i)
         taglist.Add(toCopy->taglist[i]);
 }
 
@@ -413,17 +413,17 @@ void CAntiLeechData::Merge(const CAntiLeechData* toMerge)
     m_uiBadForThisSession = toMerge->m_uiBadForThisSession;
     memcpy(m_pData, toMerge->m_pData, sizeof(CAntiLeechStruct));
 
-    for(int i = 0; i < taglist.GetCount(); ++i)
+    for (int i = 0; i < taglist.GetCount(); ++i)
         delete taglist[i];
     taglist.RemoveAll();
-    for(int i = 0; i < toMerge->taglist.GetCount(); ++i)
+    for (int i = 0; i < toMerge->taglist.GetCount(); ++i)
         taglist.Add(toMerge->taglist[i]);
 }
 //<<< CTempCAList
 
 CAntiLeechData::~CAntiLeechData()
 {
-    for(int i = 0; i < taglist.GetCount(); ++i)
+    for (int i = 0; i < taglist.GetCount(); ++i)
         delete taglist[i];
     taglist.RemoveAll();
 
@@ -487,94 +487,94 @@ void CAntiLeechData::WriteToFile(CFileDataIO* file)
     // standard tags
     if (m_pData->uSentBytesRare)
     {
-        if(CTag(AT_UPLOAD_RARE, m_pData->uSentBytesRare, true).WriteTagToFile(file))
+        if (CTag(AT_UPLOAD_RARE, m_pData->uSentBytesRare, true).WriteTagToFile(file))
             ++uTagCount;
     }
     if (m_pData->uSentBytesPartial)
     {
-        if(CTag(AT_UPLOAD_PART, m_pData->uSentBytesPartial, true).WriteTagToFile(file))
+        if (CTag(AT_UPLOAD_PART, m_pData->uSentBytesPartial, true).WriteTagToFile(file))
             ++uTagCount;
     }
-    if(m_pData->uSentBytes)
+    if (m_pData->uSentBytes)
     {
-        if(CTag(AT_UPLOAD, m_pData->uSentBytes, true).WriteTagToFile(file))
+        if (CTag(AT_UPLOAD, m_pData->uSentBytes, true).WriteTagToFile(file))
             ++uTagCount;
     }
 
     if (m_pData->uGotBytesRare)
     {
-        if(CTag(AT_DOWNLOAD_RARE, m_pData->uGotBytesRare, true).WriteTagToFile(file))
+        if (CTag(AT_DOWNLOAD_RARE, m_pData->uGotBytesRare, true).WriteTagToFile(file))
             ++uTagCount;
     }
     if (m_pData->uGotBytesPartial)
     {
-        if(CTag(AT_DOWNLOAD_PART, m_pData->uGotBytesPartial, true).WriteTagToFile(file))
+        if (CTag(AT_DOWNLOAD_PART, m_pData->uGotBytesPartial, true).WriteTagToFile(file))
             ++uTagCount;
     }
     if (m_pData->uGotBytes)
     {
-        if(CTag(AT_DOWNLOAD, m_pData->uGotBytes, true).WriteTagToFile(file))
+        if (CTag(AT_DOWNLOAD, m_pData->uGotBytes, true).WriteTagToFile(file))
             ++uTagCount;
     }
 
 
-    if(CTag(AT_LASTSEEN, m_pData->dwLastSeen).WriteTagToFile(file))
+    if (CTag(AT_LASTSEEN, m_pData->dwLastSeen).WriteTagToFile(file))
         ++uTagCount;
-    if(CTag(AT_FIRSTMET, m_pData->dwFirstMet).WriteTagToFile(file))
-        ++uTagCount;
-//keep bad status for some time
-    if(m_pData->dwBadTimer != 0)
-    {
-        if(CTag(AT_BADTIMER, m_pData->dwBadTimer).WriteTagToFile(file))
-            ++uTagCount;
-    }
-    if(CTag(AT_BADSTATUS, m_uiBadForThisSession).WriteTagToFile(file))
+    if (CTag(AT_FIRSTMET, m_pData->dwFirstMet).WriteTagToFile(file))
         ++uTagCount;
 //keep bad status for some time
-
-    if(m_pData->uReasks) //don't save "unneeded" tags
+    if (m_pData->dwBadTimer != 0)
     {
-        if(CTag(AT_REASKS, m_pData->uReasks).WriteTagToFile(file))
-            ++uTagCount;
-
-        if(CTag(AT_AVGREASK, m_pData->uAvgReaskTime).WriteTagToFile(file))
+        if (CTag(AT_BADTIMER, m_pData->dwBadTimer).WriteTagToFile(file))
             ++uTagCount;
     }
-    if(m_pData->iBlockedMessages > 0) //don't save "unneeded" tags
+    if (CTag(AT_BADSTATUS, m_uiBadForThisSession).WriteTagToFile(file))
+        ++uTagCount;
+//keep bad status for some time
+
+    if (m_pData->uReasks) //don't save "unneeded" tags
     {
-        if(CTag(AT_SPAMS, m_pData->iBlockedMessages).WriteTagToFile(file))
-            ++uTagCount;
-    }
-    if(m_pData->uXSAsks > m_pData->uXSAnsw) //don't save "unneeded" tags
-    {
-        if(CTag(AT_XS_ASKS, m_pData->uXSAsks).WriteTagToFile(file))
+        if (CTag(AT_REASKS, m_pData->uReasks).WriteTagToFile(file))
             ++uTagCount;
 
-        if(CTag(AT_XS_ANSW, m_pData->uXSAnsw).WriteTagToFile(file))
+        if (CTag(AT_AVGREASK, m_pData->uAvgReaskTime).WriteTagToFile(file))
             ++uTagCount;
     }
-    if(m_pData->iFastXSAsks > 0) //don't save "unneeded" tags
+    if (m_pData->iBlockedMessages > 0) //don't save "unneeded" tags
     {
-        if(CTag(AT_FASTXS_ASKS, m_pData->iFastXSAsks).WriteTagToFile(file))
+        if (CTag(AT_SPAMS, m_pData->iBlockedMessages).WriteTagToFile(file))
+            ++uTagCount;
+    }
+    if (m_pData->uXSAsks > m_pData->uXSAnsw) //don't save "unneeded" tags
+    {
+        if (CTag(AT_XS_ASKS, m_pData->uXSAsks).WriteTagToFile(file))
+            ++uTagCount;
+
+        if (CTag(AT_XS_ANSW, m_pData->uXSAnsw).WriteTagToFile(file))
+            ++uTagCount;
+    }
+    if (m_pData->iFastXSAsks > 0) //don't save "unneeded" tags
+    {
+        if (CTag(AT_FASTXS_ASKS, m_pData->iFastXSAsks).WriteTagToFile(file))
             ++uTagCount;
     }
 
-    if(m_pData->uBadULSessions) //don't save "unneeded" tags
+    if (m_pData->uBadULSessions) //don't save "unneeded" tags
     {
-        if(CTag(AT_BADULSESSIONS, m_pData->uBadULSessions).WriteTagToFile(file))
+        if (CTag(AT_BADULSESSIONS, m_pData->uBadULSessions).WriteTagToFile(file))
             ++uTagCount;
     }
 
-    if(m_pData->uBadDLSessions) //don't save "unneeded" tags
+    if (m_pData->uBadDLSessions) //don't save "unneeded" tags
     {
-        if(CTag(AT_BADDLSESSIONS, m_pData->uBadDLSessions).WriteTagToFile(file))
+        if (CTag(AT_BADDLSESSIONS, m_pData->uBadDLSessions).WriteTagToFile(file))
             ++uTagCount;
     }
 
     // unidentified tags (for future versions)
     for (int j = 0; j < taglist.GetCount(); ++j)
     {
-        if(taglist[j]->WriteTagToFile(file))
+        if (taglist[j]->WriteTagToFile(file))
             ++uTagCount;
     }
 
@@ -588,9 +588,9 @@ void CAntiLeechData::WriteToFile(CFileDataIO* file)
 // TRANSFER STATS - UPLOAD
 void CAntiLeechData::AddUploaded(const uint64& bytes, const bool bPartial, const UINT srccount)
 {
-    if(bPartial)
+    if (bPartial)
         m_pData->uSentBytesPartial += bytes;
-    if(srccount < AT_RAREFILE)
+    if (srccount < AT_RAREFILE)
         m_pData->uSentBytesRare += bytes;
     m_pData->uSentBytes += bytes;
     ReCheckScore();
@@ -627,9 +627,9 @@ uint64	CAntiLeechData::GetUploadedTotal() const
 // TRANSFER STATS - DOWNLOAD
 void CAntiLeechData::AddDownloaded(const uint64& bytes, const bool bPartial, const UINT srccount)
 {
-    if(bPartial)
+    if (bPartial)
         m_pData->uGotBytesPartial += bytes;
-    if(srccount < AT_RAREFILE)
+    if (srccount < AT_RAREFILE)
         m_pData->uGotBytesRare += bytes;
     m_pData->uGotBytes += bytes;
     ReCheckScore();
@@ -665,9 +665,9 @@ uint64	CAntiLeechData::GetDownloadedTotal() const
 //tracks the SUCCESSIVE failed UL/DL attempts
 void	CAntiLeechData::AddULSession(const bool bBad)
 {
-    if(bBad)
+    if (bBad)
     {
-        if(m_pData->uBadULSessions < 255)
+        if (m_pData->uBadULSessions < 255)
             ++m_pData->uBadULSessions;
     }
     else
@@ -676,9 +676,9 @@ void	CAntiLeechData::AddULSession(const bool bBad)
 
 void	CAntiLeechData::AddDLSession(const bool bBad)
 {
-    if(bBad)
+    if (bBad)
     {
-        if(m_pData->uBadDLSessions < 255)
+        if (m_pData->uBadDLSessions < 255)
             ++m_pData->uBadDLSessions;
     }
     else
@@ -700,7 +700,7 @@ bool	CAntiLeechData::ShouldBanForBadDownloads() const
 void	CAntiLeechData::AddSpam()
 {
     ++m_pData->iBlockedMessages;
-    if(m_pParent && thePrefs.GetLogAnalyzerEvents())
+    if (m_pParent && thePrefs.GetLogAnalyzerEvents())
         theApp.QueueDebugLogLineEx(LOG_CA | LOG_WARNING, L"Analyzer: Spamcounter for (%s) increased: %i", m_pParent->DbgGetClientInfo(), m_pData->iBlockedMessages);
     theApp.antileechlist->IncBadActionCounter(BAD_ACTION_SPAMS);
     ReCheckScore();
@@ -715,7 +715,7 @@ void	CAntiLeechData::DecSpam()
     --m_pData->iBlockedMessages;
     //if(m_pParent && thePrefs.GetLogAnalyzerEvents())
     //	theApp.QueueDebugLogLineEx(LOG_CA | LOG_INFO, L"Analyzer: Spamcounter for (%s) decreased: %i", m_pParent->DbgGetClientInfo(), m_pData->iBlockedMessages);
-    if(bCheckNeeded)
+    if (bCheckNeeded)
         ReCheckScore();
 }
 
@@ -738,9 +738,9 @@ void	CAntiLeechData::AddReask(const UINT time)
     const bool bBadTimeDiff1 = (GetAvgReaskTime() + AT_REASKBUFFER) < m_uiReaskTime;
     m_pData->uAvgReaskTime = ((m_pData->uAvgReaskTime*m_pData->uReasks)+time)/(++m_pData->uReasks);
     const bool bBadTimeDiff2 = (GetAvgReaskTime() + AT_REASKBUFFER) < m_uiReaskTime;
-    if(m_pParent && thePrefs.GetLogAnalyzerEvents() && bBadTimeDiff1 != bBadTimeDiff2) //log only if needed
+    if (m_pParent && thePrefs.GetLogAnalyzerEvents() && bBadTimeDiff1 != bBadTimeDiff2) //log only if needed
         theApp.QueueDebugLogLineEx(LOG_CA | LOG_WARNING, L"Analyzer: Reask for (%s) updated: %i reasks @ %s avg", m_pParent->DbgGetClientInfo(), m_pData->uReasks, CastSecondsToHM(m_pData->uAvgReaskTime/1000));
-    if(time + AT_REASKBUFFER < m_uiReaskTime) //FiX too many "fast reask" entries in stat, only count the really bad ones :)
+    if (time + AT_REASKBUFFER < m_uiReaskTime) //FiX too many "fast reask" entries in stat, only count the really bad ones :)
         theApp.antileechlist->IncBadActionCounter(BAD_ACTION_FASTREASK);
     ReCheckScore();
 }
@@ -765,7 +765,7 @@ bool	CAntiLeechData::IsXSSpammer() const
 void	CAntiLeechData::IncFastXSCounter()
 {
     ++m_pData->iFastXSAsks;
-    if(m_pParent && thePrefs.GetLogAnalyzerEvents())
+    if (m_pParent && thePrefs.GetLogAnalyzerEvents())
         theApp.QueueDebugLogLineEx(LOG_CA | LOG_WARNING, L"Analyzer: FastXS for (%s) increased: %i", m_pParent->DbgGetClientInfo(), m_pData->iFastXSAsks);
     theApp.antileechlist->IncBadActionCounter(BAD_ACTION_FASTXS);
     ReCheckScore();
@@ -778,7 +778,7 @@ void	CAntiLeechData::DecFastXSCounter()
     //counter-1 = 0 -> no fast XS anymore :)
     //counter-1 > 0 -> fast XS :(- check needed
     //[CICCIOBASTARDO] - Don't stack up credits for slow XS asks
-    if(m_pData->iFastXSAsks > 0)
+    if (m_pData->iFastXSAsks > 0)
     {
         --m_pData->iFastXSAsks;
         //if(m_pParent && thePrefs.GetLogAnalyzerEvents())
@@ -790,11 +790,11 @@ void	CAntiLeechData::DecFastXSCounter()
 
 void CAntiLeechData::EvalXS()
 {
-    if(m_pParent == NULL)
+    if (m_pParent == NULL)
         return;
 
     const DWORD dwNow = ::GetTickCount();
-    if(m_uiLastXS)
+    if (m_uiLastXS)
         theApp.QueueDebugLogLineEx(LOG_CA | LOG_INFO, L"Analyzer: Received XS request after %s from %s - fastXS count: %u", CastSecondsToHM((dwNow - m_uiLastXS)/1000), m_pParent->DbgGetClientInfo(), m_pData->iFastXSAsks);
     else
         theApp.QueueDebugLogLineEx(LOG_CA | LOG_INFO, L"Analyzer: Received first XS in this session from %s", m_pParent->DbgGetClientInfo());
@@ -807,9 +807,9 @@ void	CAntiLeechData::IncXSAsks()
     ++m_pData->uXSAsks;
     //if(m_pParent && thePrefs.GetLogAnalyzerEvents())
     //	theApp.QueueDebugLogLineEx(LOG_CA | LOG_INFO, L"XS Asks for (%s) increased: %i", m_pParent->DbgGetClientInfo(), m_pData->uXSAsks);
-    if(b != IsXSExploiter())
+    if (b != IsXSExploiter())
     {
-        if(m_pParent && thePrefs.GetLogAnalyzerEvents())
+        if (m_pParent && thePrefs.GetLogAnalyzerEvents())
             theApp.QueueDebugLogLineEx(LOG_CA | LOG_ERROR, L"Analyzer: (%s) reached XS exploiter level: %u : %u", m_pParent->DbgGetClientInfo(), m_pData->uXSAsks, m_pData->uXSAnsw);
         ReCheckScore();
     }
@@ -821,9 +821,9 @@ void	CAntiLeechData::IncXSAnsw()
     ++m_pData->uXSAnsw;
     //if(m_pParent && thePrefs.GetLogAnalyzerEvents())
     //	theApp.QueueDebugLogLineEx(LOG_CA | LOG_INFO, L"Analyzer: XS Answs for (%s) increased: %i", m_pParent->DbgGetClientInfo(), m_pData->uXSAnsw);
-    if(b != IsXSExploiter())
+    if (b != IsXSExploiter())
     {
-        if(m_pParent && thePrefs.GetLogAnalyzerEvents())
+        if (m_pParent && thePrefs.GetLogAnalyzerEvents())
             theApp.QueueDebugLogLineEx(LOG_CA | LOG_SUCCESS, L"Analyzer: (%s) left XS exploiter level: %u : %u", m_pParent->DbgGetClientInfo(), m_pData->uXSAsks, m_pData->uXSAnsw);
         ReCheckScore();
     }
@@ -838,7 +838,7 @@ bool	CAntiLeechData::IsXSExploiter()	const
 // SCORE CALCULATION
 bool	CAntiLeechData::IsBadGuy() const
 {
-    if(/*thePrefs.IsExcludeULDLBadGuys() &&*/ !m_bBadWithoutULDL)
+    if (/*thePrefs.IsExcludeULDLBadGuys() &&*/ !m_bBadWithoutULDL)
         return false;
     return m_fLastScore < 1.0f;
 //	return m_fLastScore < 1.0f
@@ -847,29 +847,29 @@ bool	CAntiLeechData::IsBadGuy() const
 
 float CAntiLeechData::GetScore()
 {
-    if(!m_bCheckScore)
+    if (!m_bCheckScore)
         return m_fLastScore;
     m_bCheckScore = false;
 
-    if(m_pParent == NULL)
+    if (m_pParent == NULL)
         return 0; //???
 
     float cur_score = AT_BASESCORE;
 
-    if(GetSpams() > 0)
+    if (GetSpams() > 0)
         cur_score -= GetSpams() * AT_LOWPUNISH;
-    if(IsXSSpammer())
+    if (IsXSSpammer())
         cur_score -= m_pData->iFastXSAsks * AT_LOWPUNISH;
-    if(IsXSExploiter())
+    if (IsXSExploiter())
         cur_score -= AT_HIPUNISH;
 
-    if(GetReaskCount() > 2 && GetAvgReaskTime())
+    if (GetReaskCount() > 2 && GetAvgReaskTime())
     {
         //BuGFiX: e.g. 22min avg. + 5 = 27 - 29 = -2 --> -2*2.5f punishment
 //		const float fTimeDiff = (GetAvgReaskTime() + AT_REASKBUFFER - m_uiReaskTime)/60000.0f; //BuGFiX: how could I miss that!? :confused:
         const UINT fTimeDiff = GetAvgReaskTime() + AT_REASKBUFFER;
         //[CICCIOBASTARDO] - Don't reward a higher reask
-        if(fTimeDiff < m_uiReaskTime)
+        if (fTimeDiff < m_uiReaskTime)
             //idea, just written down... punish clients who asked in such short times OFTEN harder than others!
             //	cur_score += fTimeDiff * AT_LOWPUNISH;
             //ok let's try that idea :)
@@ -877,25 +877,25 @@ float CAntiLeechData::GetScore()
     }
 
     //really bad!
-    if(m_uiBadForThisSession != 0)
+    if (m_uiBadForThisSession != 0)
     {
         //NickThieves and ModThieves are commonly used... and useless
         //but pretty often used both in one mod, so don't punish them too hard
-        if(CheckBadFlag(AT_NICKTHIEF | AT_MODTHIEF | AT_MODFAKER))
+        if (CheckBadFlag(AT_NICKTHIEF | AT_MODTHIEF | AT_MODFAKER))
             cur_score -= 3*AT_MIDPUNISH; //= 3 chunks needed to balance
         //this is also a pretty common combination... but it is much worse so punish them harder
-        if(CheckBadFlag(AT_FILEFAKER | AT_UDPFNFFAKER))
+        if (CheckBadFlag(AT_FILEFAKER | AT_UDPFNFFAKER))
             cur_score -= AT_HIPUNISH; //= 5 chunks needed to balance
     }
 
     //Spike2: decrease score after 3 failed DL attempts
     //this is for clients (e.g. AJ) that grant us an upload slot but do not send any data
-    if(m_pData->uBadDLSessions > 2)
+    if (m_pData->uBadDLSessions > 2)
         cur_score -= m_pData->uBadDLSessions*AT_MIDPUNISH; //= 3..5 chunks needed to balance
 
     //[SEPPL] - Don't let the score fall too low because of UL/DL
     m_bBadWithoutULDL = cur_score < AT_BASESCORE;
-    if(!m_pParent->GetRequestFile() || m_pParent->GetDownloadState() > DS_ONQUEUE)
+    if (!m_pParent->GetRequestFile() || m_pParent->GetDownloadState() > DS_ONQUEUE)
     {
         //Keep an even score with clients who do not have something for us
         // 		if(cur_score < AT_BASESCORE)
@@ -919,9 +919,9 @@ float CAntiLeechData::GetScore()
     }
 
     //Cap the score
-    if(cur_score < AT_MINSCORE)
+    if (cur_score < AT_MINSCORE)
         cur_score = AT_MINSCORE;
-    else if(cur_score > AT_MAXSCORE)
+    else if (cur_score > AT_MAXSCORE)
         cur_score = AT_MAXSCORE;
 
     m_fLastScore = cur_score;
@@ -931,10 +931,10 @@ float CAntiLeechData::GetScore()
 void CAntiLeechData::SetBadForThisSession(const UINT i, const CString& strDetail)
 {
     SetBadTimer(); //keep bad status for some time
-    if((m_uiBadForThisSession&i) != 0)
+    if ((m_uiBadForThisSession&i) != 0)
         return; //we already logged that event so there is no need to proceed
 
-    switch(i)
+    switch (i)
     {
     case AT_NICKTHIEF:
         theApp.antileechlist->IncBadActionCounter(BAD_ACTION_NICKTHIEF);
@@ -962,21 +962,21 @@ void CAntiLeechData::SetBadForThisSession(const UINT i, const CString& strDetail
     }
 
     m_uiBadForThisSession |= i;
-    if(m_pParent)
+    if (m_pParent)
     {
 #ifdef _DEBUG
         ; //no condition here
 #else
-        if(thePrefs.GetLogAnalyzerEvents())
+        if (thePrefs.GetLogAnalyzerEvents())
 #endif
         {
             CString reason = GetReasonString(i);
-            if(!strDetail.IsEmpty())
+            if (!strDetail.IsEmpty())
                 reason.AppendFormat(L" - %s", strDetail);
             theApp.QueueDebugLogLineEx(LOG_CA | LOG_ERROR, L"Analyzer: Marked as %s: (%s)", reason, m_pParent->DbgGetClientInfo());
         }
 
-        if(AdditionalModThiefCheck(i))
+        if (AdditionalModThiefCheck(i))
             return; //detected and updated the flag&timer - no need to recheck the score twice
     }
 
@@ -985,25 +985,25 @@ void CAntiLeechData::SetBadForThisSession(const UINT i, const CString& strDetail
 
 void CAntiLeechData::ClearBadForThisSession(const UINT i)
 {
-    if((m_uiBadForThisSession & i) == 0)
+    if ((m_uiBadForThisSession & i) == 0)
         return; //flag not  set, quick return
 
     CString reason = GetReasonString(i);
 
     //keep bad status for some time
-    if(IsBlockedByBadTimer())
+    if (IsBlockedByBadTimer())
     {
-        if(thePrefs.GetLogAnalyzerEvents())
+        if (thePrefs.GetLogAnalyzerEvents())
             theApp.QueueDebugLogLineEx(LOG_CA | LOG_ERROR, L"Analyzer: client %s was NOT cleared from %s state (blocked by timer)", m_pParent ? m_pParent->DbgGetClientInfo() : L"NULL", reason);
         return;
     }
 
-    if(m_pParent)
+    if (m_pParent)
     {
 #ifdef _DEBUG
-        if(m_pParent)
+        if (m_pParent)
 #else
-        if(m_pParent && thePrefs.GetLogAnalyzerEvents())
+        if (m_pParent && thePrefs.GetLogAnalyzerEvents())
 #endif
             theApp.QueueDebugLogLineEx(LOG_CA | LOG_SUCCESS, L"Analyzer: Cleared from %s state: (%s)", reason, m_pParent->DbgGetClientInfo());
     }
@@ -1037,22 +1037,22 @@ void CAntiLeechData::CreateAntiNickThiefTag()
     uint8 maxchar = uint8(MIN_LENGTH+rand()%MAX_ADD);
 
     m_sAntiNickThiefTag = L"";
-    for(uint8 i = 0; i < maxchar; ++i)
-        m_sAntiNickThiefTag.AppendChar( (rand()%2 ? L'A' : L'a') + (_TINT)rand()%25 );
+    for (uint8 i = 0; i < maxchar; ++i)
+        m_sAntiNickThiefTag.AppendChar((rand()%2 ? L'A' : L'a') + (_TINT)rand()%25);
 
     maxchar = uint8(MIN_LENGTH+rand()%MAX_ADD);
     m_sAntiNickThiefTag2 = L"";
-    for(uint8 i = 0; i < maxchar; ++i)
-        m_sAntiNickThiefTag2.AppendChar( (rand()%2 ? L'A' : L'a') + (_TINT)rand()%25 );
+    for (uint8 i = 0; i < maxchar; ++i)
+        m_sAntiNickThiefTag2.AppendChar((rand()%2 ? L'A' : L'a') + (_TINT)rand()%25);
 }
 
 CString	CAntiLeechData::GetAntiNickThiefNick()
 {
     CString tag1 = L"";
     CString tag2 = L"";
-    if(rand()%2 == 0)
+    if (rand()%2 == 0)
     {
-        if(rand()%2 == 0)
+        if (rand()%2 == 0)
             tag1.Format(L"(%s)", m_sAntiNickThiefTag);
         else
             tag1.Format(L"{%s}", m_sAntiNickThiefTag);
@@ -1060,7 +1060,7 @@ CString	CAntiLeechData::GetAntiNickThiefNick()
     }
     else
     {
-        if(rand()%2 == 0)
+        if (rand()%2 == 0)
             tag1.Format(L"(%s)", m_sAntiNickThiefTag2);
         else
             tag1.Format(L"{%s}", m_sAntiNickThiefTag2);
@@ -1073,7 +1073,7 @@ CString	CAntiLeechData::GetAntiNickThiefNick()
 
 void CAntiLeechData::Check4NickThief()
 {
-    if(m_pParent == NULL || m_pParent->GetUserName() == NULL)
+    if (m_pParent == NULL || m_pParent->GetUserName() == NULL)
     {
         ASSERT(0);
         return;
@@ -1081,7 +1081,7 @@ void CAntiLeechData::Check4NickThief()
 
     //you can add a switch here...
     CString strNick = m_pParent->GetUserName();
-    if(strNick.IsEmpty())
+    if (strNick.IsEmpty())
     {
         ClearBadForThisSession(AT_NICKTHIEF);
         return; //just a sanity check
@@ -1090,9 +1090,9 @@ void CAntiLeechData::Check4NickThief()
     const bool bHit1 = strNick.Find(m_sAntiNickThiefTag) != -1;
     const bool bHit2 = strNick.Find(m_sAntiNickThiefTag2) != -1;
     //only changed the logs for now... we *could* give it different weight, though...
-    if(bHit1 && bHit2)
+    if (bHit1 && bHit2)
         SetBadForThisSession(AT_NICKTHIEF, L"double tag");
-    else if(bHit1 || bHit2)
+    else if (bHit1 || bHit2)
         SetBadForThisSession(AT_NICKTHIEF, L"simple tag");
     else
     {
@@ -1107,9 +1107,9 @@ void CAntiLeechData::Check4NickThief()
         //no punish them - but only if both cases are true (very unlikely...)
         const bool bHit1 = strNick.Find(tofind) != -1;
         const bool bHit2 = strNick.Find(tofind2) != -1;
-        if(bHit1 && bHit2)
+        if (bHit1 && bHit2)
             SetBadForThisSession(AT_NICKTHIEF, L"wrong case double tag");
-        else if(bHit1 || bHit2)
+        else if (bHit1 || bHit2)
             SetBadForThisSession(AT_NICKTHIEF, L"wrong case single tag");
         else
             ClearBadForThisSession(AT_NICKTHIEF);
@@ -1121,7 +1121,7 @@ void CAntiLeechData::Check4NickThief()
 CString	CAntiLeechData::m_sMyVersion;
 void CAntiLeechData::Check4ModThief()
 {
-    if(m_pParent == NULL)
+    if (m_pParent == NULL)
     {
         ASSERT(0);
         return;
@@ -1130,20 +1130,20 @@ void CAntiLeechData::Check4ModThief()
     //you can add a switch here...
     const CString strMod = m_pParent->GetClientModVer();
     const CString OurMod = MOD_VERSION; //cache it
-    if(/*!strMod.IsEmpty() && */StrStrI(strMod, OurMod)) //uses our string
+    if (/*!strMod.IsEmpty() && */StrStrI(strMod, OurMod)) //uses our string
     {
         CString strDetail = L"";
         //but not the correct length
-        if(strMod.GetLength() != OurMod.GetLength())
+        if (strMod.GetLength() != OurMod.GetLength())
             strDetail.Format(L"invalid length (%i != %i)", strMod.GetLength(), OurMod.GetLength());
         //but uses a wrong eMule version
-        else if(_tcscmp(m_pParent->GetClientSoftVer(), m_sMyVersion) != 0)
+        else if (_tcscmp(m_pParent->GetClientSoftVer(), m_sMyVersion) != 0)
             strDetail.Format(L"invalid version (%s != %s)", m_pParent->GetClientSoftVer(), m_sMyVersion);
         //but not in correct case
-        else if(_tcscmp(strMod, OurMod) != 0)
+        else if (_tcscmp(strMod, OurMod) != 0)
             strDetail.Format(L"invalid case (%s != %s)", strMod, OurMod);
         //but uses a wrong eMule version (detailed)
-        else if(m_pParent->GetRealVersion() != ((CemuleApp::m_nVersionMjr<<17)|(CemuleApp::m_nVersionMin<<10)|(CemuleApp::m_nVersionUpd<<7)|(UINT(DBG_VERSION_BUILD))))
+        else if (m_pParent->GetRealVersion() != ((CemuleApp::m_nVersionMjr<<17)|(CemuleApp::m_nVersionMin<<10)|(CemuleApp::m_nVersionUpd<<7)|(UINT(DBG_VERSION_BUILD))))
         {
             const UINT Maj = (m_pParent->GetRealVersion() >> 17) & 0x7F;
             const UINT Min = (m_pParent->GetRealVersion() >> 10) & 0x7F;
@@ -1152,7 +1152,7 @@ void CAntiLeechData::Check4ModThief()
             strDetail.Format(L"invalid version+ (%u.%u.%u.%u != %u.%u.%u.%u)", Maj, Min, Up, Dbg, VERSION_MJR, VERSION_MIN, VERSION_UPDATE, DBG_VERSION_BUILD);
         }
 
-        if(!strDetail.IsEmpty())
+        if (!strDetail.IsEmpty())
         {
             SetBadForThisSession(AT_MODTHIEF, strDetail);
             return;
@@ -1165,7 +1165,7 @@ void CAntiLeechData::Check4ModThief()
 // ANTIMODFAKE
 void CAntiLeechData::Check4ModFaker(const bool bIsBadShareaza)
 {
-    if(m_pParent == NULL)
+    if (m_pParent == NULL)
     {
         ASSERT(0);
         return;
@@ -1186,7 +1186,7 @@ void CAntiLeechData::Check4ModFaker(const bool bIsBadShareaza)
         //(mods which use the anti-modthief code from Xman) by checking if they actually use the necessary pattern
         const CString strMod = m_pParent->GetClientModVer();
         const CString strNick = m_pParent->GetUserName();
-        if(!strMod.IsEmpty() && !strNick.IsEmpty())
+        if (!strMod.IsEmpty() && !strNick.IsEmpty())
         {
             struct sDaS //DoubleAndString :)
             {
@@ -1215,25 +1215,25 @@ void CAntiLeechData::Check4ModFaker(const bool bIsBadShareaza)
                 sDaS(L"AcKroNiC", 6.0)
             };
 
-            for(int i = 0; i < ARRSIZE(testModString); ++i)
+            for (int i = 0; i < ARRSIZE(testModString); ++i)
             {
                 const int tag1 = strNick.Find(L'«' + testModString[i].strMod);
-                if(strMod.Find(testModString[i].strMod) != -1)
+                if (strMod.Find(testModString[i].strMod) != -1)
                 {
                     const int iPos = strMod.ReverseFind(L' ');
-                    if(iPos != -1)
+                    if (iPos != -1)
                     {
                         const float version = (float)_tstof(strMod.Mid(iPos+1));
                         const bool bSupportVer = testModString[i].dVer == 0.0f || version == 9.7f || version >= testModString[i].dVer;
-                        if(bSupportVer)
+                        if (bSupportVer)
                         {
-                            if(tag1 == -1) //not found in nick?
+                            if (tag1 == -1) //not found in nick?
                                 strModFaker = L"Xtreme Fake1";
 //>>> WiZaRd - Enhancement
                             else
                             {
                                 const int tag2 = strNick.Find(L'»', tag1+1);
-                                if(tag2 == -1) //found in nick... but no enclosing brackets!?
+                                if (tag2 == -1) //found in nick... but no enclosing brackets!?
                                     strModFaker = L"Xtreme Fake4";
                             }
 //<<< WiZaRd - Enhancement
@@ -1243,14 +1243,14 @@ void CAntiLeechData::Check4ModFaker(const bool bIsBadShareaza)
                         strModFaker = L"Xtreme Fake2";
                 }
                 //Xtreme based clients MIGHT send the addon in the nick but not a modstring! check out the code @SendHelloPacket in Xtreme
-                else if(!strMod.IsEmpty() && tag1 != -1) //found in nick but not in modstring!?
+                else if (!strMod.IsEmpty() && tag1 != -1) //found in nick but not in modstring!?
                     strModFaker = L"Xtreme Fake3";
             }
         }
     }
 //zz_fly :: end
 
-    if(strModFaker.IsEmpty())
+    if (strModFaker.IsEmpty())
         ClearBadForThisSession(AT_MODFAKER);
     else
         SetBadForThisSession(AT_MODFAKER, strModFaker);
@@ -1263,10 +1263,10 @@ void CAntiLeechData::Check4ModFaker(const bool bIsBadShareaza)
 //we can be pretty sure that he's also a modfaker because WE are the "good guys" :)
 bool CAntiLeechData::AdditionalModThiefCheck(const UINT i)
 {
-    if(m_pParent /*&& i != AT_MODTHIEF*/)
+    if (m_pParent /*&& i != AT_MODTHIEF*/)
     {
         const CString strMod = m_pParent->GetClientModVer();
-        if(strMod.IsEmpty())
+        if (strMod.IsEmpty())
             return false;
 
         struct sDaS //DoubleAndString :)
@@ -1300,28 +1300,28 @@ bool CAntiLeechData::AdditionalModThiefCheck(const UINT i)
 
         CString strBad = L"";
         CString strModThis = L"";
-        for(int j = 0; j < _countof(strModArr); ++j)
+        for (int j = 0; j < _countof(strModArr); ++j)
         {
             int iPos = strMod.ReverseFind(L'v');
-            if(iPos == -1)
+            if (iPos == -1)
                 iPos = strMod.ReverseFind(L' ');
             strModThis = strModArr[j].strMod;
-            if(StrStrI(strMod, strModThis)) //modstring found
+            if (StrStrI(strMod, strModThis)) //modstring found
             {
                 const int iPos = strMod.Find(strModThis);
-                if(iPos != -1)
+                if (iPos != -1)
                 {
                     const double version = _tstof(strMod.Mid(iPos+strModThis.GetLength()));
-                    if(version >= strModArr[j].dVer)
+                    if (version >= strModArr[j].dVer)
                         strBad = L"bad CA mod";
                 }
                 else //modstring found but not case-sensitive... probably a faker
                     strBad = L"CA mod faker";
             }
             //if the modstring is equal up to the separator ONLY... probably a faker
-            else if(iPos != -1 && _tcsnicmp(strMod, strModThis, iPos) == 0)
+            else if (iPos != -1 && _tcsnicmp(strMod, strModThis, iPos) == 0)
                 strBad = L"CA mod faker2";
-            if(!strBad.IsEmpty())
+            if (!strBad.IsEmpty())
             {
                 CString msg = L"";
                 msg.Format(L"%s version of a CA mod (%s)!", GetReasonString(i), strBad);
@@ -1338,10 +1338,10 @@ bool CAntiLeechData::AdditionalModThiefCheck(const UINT i)
 
 void CAntiLeechData::Check4FileFaker()
 {
-    if(m_pParent == NULL)
+    if (m_pParent == NULL)
         return;
 
-    if(m_pParent->GetUploadFileID() != NULL && m_pParent->GetRequestFile() && m_pParent->IsCompleteSource())
+    if (m_pParent->GetUploadFileID() != NULL && m_pParent->GetRequestFile() && m_pParent->IsCompleteSource())
     {
 //		CKnownFile* upreqfile = m_pParent->GetUploadReqFile();
 //		if(upreqfile && reqfile == upreqfile)
@@ -1358,25 +1358,25 @@ void CAntiLeechData::Check4FileFaker()
 CString	CAntiLeechData::GetAntiLeechDataString() const
 {
     CString reason = L"";
-    if(m_uiBadForThisSession != 0)
+    if (m_uiBadForThisSession != 0)
         reason.Format(L"Very bad: %s\n", GetReasonString(m_uiBadForThisSession));
 
     //[SEPPL] - Don't let the score fall too low because of UL/DL
-    if(m_pParent
+    if (m_pParent
             && (!m_pParent->GetRequestFile() || m_pParent->GetDownloadState() > DS_ONQUEUE))
         ; //idle :P
-    else if(chunksDL < chunksUL)
+    else if (chunksDL < chunksUL)
         reason.AppendFormat(L"Bad UL/DL ratio (%I64u/%I64u)\n", chunksUL, chunksDL);
 
-    if(IsFastAskClient())
+    if (IsFastAskClient())
         reason.AppendFormat(L"Reask: %u @ %s avg\n", GetReaskCount(), CastSecondsToHM(GetAvgReaskTime()/1000));
-    if(GetSpams() > 0)
+    if (GetSpams() > 0)
         reason.AppendFormat(L"Spams: %i\n", GetSpams());
-    if(IsXSExploiter())
+    if (IsXSExploiter())
         reason.AppendFormat(L"XS: %u | %u\n", m_pData->uXSAsks, m_pData->uXSAnsw);
-    if(IsXSSpammer())
+    if (IsXSSpammer())
         reason.AppendFormat(L"FastXS: %i\n", m_pData->iFastXSAsks);
-    if(m_pData->uBadULSessions || m_pData->uBadDLSessions)
+    if (m_pData->uBadULSessions || m_pData->uBadDLSessions)
         reason.AppendFormat(L"Failed UL/DL: %u/%u\n", m_pData->uBadULSessions, m_pData->uBadDLSessions);
 
     //NOTE: we *could* create a multiline entry for the display, too
@@ -1427,7 +1427,7 @@ bool CAntiLeechDataList::LoadList(const CString& path)
     bool bTriedWithBackup = false;
     CString strFileName = thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + ANTILEECH_MET_FILENAME;
     const bool bCustomLoad = !path.IsEmpty();
-    if(bCustomLoad)
+    if (bCustomLoad)
         strFileName = path;
     const UINT iOpenFlags = CFile::modeRead|CFile::osSequentialScan|CFile::typeBinary|CFile::shareDenyWrite;
     CSafeBufferedFile file;
@@ -1438,7 +1438,7 @@ loadstart:
     {
         if (fexp.m_cause != CFileException::fileNotFound)
         {
-            if(bTriedWithBackup)
+            if (bTriedWithBackup)
             {
                 CString strError(L"Failed to load AntiLeechFile, a new file will be created");
                 TCHAR szError[MAX_CFEXP_ERRORMSG];
@@ -1464,7 +1464,7 @@ loadstart:
         if (version != AT_MET_HEADER
                 && version != AT_MET_HEADER_ACCEPTED)
         {
-            if(bTriedWithBackup)
+            if (bTriedWithBackup)
             {
                 LogWarning(GetResString(IDS_ERR_CREDITFILEOLD));
                 file.Close();
@@ -1542,14 +1542,14 @@ loadstart:
             }
 
 //>>> .met-Merger
-            if(bCustomLoad)
+            if (bCustomLoad)
             {
                 CAntiLeechData* tmpcredits = NULL;
-                if(m_mapClients.Lookup(CCKey(newcredits->GetKey()), tmpcredits))
+                if (m_mapClients.Lookup(CCKey(newcredits->GetKey()), tmpcredits))
                 {
                     theApp.QueueDebugLogLineEx(LOG_CA | LOG_WARNING, L"DBG: WARNING - Found duplicate credits for %s", md4str(newcredits->GetKey()));
                     //choose the "better one" - we default to the older one :)
-                    if(newcredits->GetLastSeen() > tmpcredits->GetLastSeen())
+                    if (newcredits->GetLastSeen() > tmpcredits->GetLastSeen())
                     {
                         ++cDeleted;
                         delete newcredits;
@@ -1564,7 +1564,7 @@ loadstart:
 
 //>>> Store corrupt part senders
         UINT countBad = 0;
-        if(file.GetPosition() != file.GetLength()) //avoid "corrupt antileech.met" message
+        if (file.GetPosition() != file.GetLength()) //avoid "corrupt antileech.met" message
             countBad = file.ReadUInt32();
         UINT cDeletedBad = 0;
         const DWORD dwExpiredBad = time(NULL) - 5184000; // today - 60 days
@@ -1577,12 +1577,12 @@ loadstart:
             dwAdded = file.ReadUInt32();
             CCKey key(hash);
             corruptPartSenderInfo* info = NULL;
-            if(!m_mapBadClients.Lookup(key, info))
+            if (!m_mapBadClients.Lookup(key, info))
                 info = new corruptPartSenderInfo(hash, dwAdded);
             else
                 ASSERT(0);
 
-            if(info->dwAdded >= dwExpiredBad)
+            if (info->dwAdded >= dwExpiredBad)
                 m_mapBadClients.SetAt(CCKey(hash), info);
             else
             {
@@ -1595,23 +1595,23 @@ loadstart:
         file.Close();
 
         CString logLine = L"AntiLeechFile loaded";
-        if(count)
+        if (count)
             logLine.AppendFormat(L", %u clients are known", count-cDeleted);
-        if(cDeleted > 0)
+        if (cDeleted > 0)
             logLine.AppendFormat(L", %u clients deleted (not seen within 150 days or empty)", cDeleted);
-        if(countBad)
+        if (countBad)
             logLine.AppendFormat(L", %u corrupt part senders loaded", countBad-cDeletedBad);
-        if(cDeletedBad > 0)
+        if (cDeletedBad > 0)
             logLine.AppendFormat(L", %u entries deleted (not seen within 60 days)", countBad-cDeletedBad);
         AddLogLine(false, logLine);
         AddDebugLogLine(false, L"Using %s of data for CA clients!",
-                        CastItoXBytes((count-cDeleted)*sizeof(CAntiLeechStruct) + (countBad-cDeletedBad)*sizeof(corruptPartSenderInfo)) );
+                        CastItoXBytes((count-cDeleted)*sizeof(CAntiLeechStruct) + (countBad-cDeletedBad)*sizeof(corruptPartSenderInfo)));
 
         return true;
     }
-    catch(CFileException* error)
+    catch (CFileException* error)
     {
-        if(bTriedWithBackup)
+        if (bTriedWithBackup)
         {
             if (error->m_cause == CFileException::endOfFile)
                 LogError(LOG_STATUSBAR, L"Error: AntiLeechFile is corrupted and will be replaced!");
@@ -1688,7 +1688,7 @@ void CAntiLeechDataList::SaveList()
         while (pos)
         {
             m_mapBadClients.GetNextAssoc(pos, tempkey, info);
-            if(info->dwAdded < (DWORD)(time(NULL) - 5184000)) // today - 60 days
+            if (info->dwAdded < (DWORD)(time(NULL) - 5184000)) // today - 60 days
                 m_mapBadClients.RemoveKey(tempkey);
             else
                 ++count;
@@ -1708,7 +1708,7 @@ void CAntiLeechDataList::SaveList()
                 || (thePrefs.GetCommitFiles() >= 1 && !theApp.emuledlg->IsRunning()))
             file.Flush();
     }
-    catch(CFileException* error)
+    catch (CFileException* error)
     {
         CString strError(L"Failed to save AntiLeechFile");
         TCHAR szError[MAX_CFEXP_ERRORMSG];
@@ -1736,10 +1736,10 @@ CAntiLeechData* CAntiLeechDataList::GetData(const uchar* key)
 //>>> Store corrupt part senders
 void	CAntiLeechDataList::AddCorruptPartSender(const uchar* pSender)
 {
-    if(isnulmd4(pSender))
+    if (isnulmd4(pSender))
         return;
 
-    if(IsCorruptPartSender(pSender)) //no dupcheck needed - simply update it!
+    if (IsCorruptPartSender(pSender)) //no dupcheck needed - simply update it!
         return;
 
     m_mapBadClients.SetAt(CCKey(pSender), new corruptPartSenderInfo(pSender, (DWORD)time(NULL)));
@@ -1751,7 +1751,7 @@ bool	CAntiLeechDataList::IsCorruptPartSender(const uchar* pClient)
     CCKey key(pClient);
     if (m_mapBadClients.Lookup(key, info))
     {
-        if(info->dwAdded >= (DWORD)(time(NULL) - 5184000)) // today - 60 days
+        if (info->dwAdded >= (DWORD)(time(NULL) - 5184000)) // today - 60 days
             return true;
 
         delete info;
@@ -1769,13 +1769,13 @@ void CAntiLeechDataList::Process()
 
 void CAntiLeechData::SetParent(CUpDownClient* client, const bool bSetOnly)
 {
-    if(bSetOnly)
+    if (bSetOnly)
     {
         m_pParent = client;
         return;
     }
 
-    if(m_pParent == NULL || m_pParent != client)
+    if (m_pParent == NULL || m_pParent != client)
         m_pParent = client;
     else
     {
@@ -1787,10 +1787,10 @@ void CAntiLeechData::SetParent(CUpDownClient* client, const bool bSetOnly)
         m_pParent = client;
     }
 
-    if(m_pParent == NULL)
+    if (m_pParent == NULL)
         return;
 
-    switch(m_pParent->GetClientSoft())
+    switch (m_pParent->GetClientSoft())
     {
     case SO_MLDONKEY:
         m_uiReaskTime = MIN_REQUESTTIME;
@@ -1826,7 +1826,7 @@ void CAntiLeechData::SetParent(CUpDownClient* client, const bool bSetOnly)
     }
 
     //if the client has credits...
-    if(m_pParent->Credits() != NULL
+    if (m_pParent->Credits() != NULL
             //... but we have no stats about him...
             && GetUploadedTotal() == 0
             && GetDownloadedTotal() == 0)
@@ -1877,7 +1877,7 @@ CTempCAList::~CTempCAList()
 void CTempCAList::SetParent(CUpDownClient* client)
 {
     //if a client already HAS valid data attached, there is no need to proceed
-    if(client->GetAntiLeechData() != NULL)
+    if (client->GetAntiLeechData() != NULL)
     {
         ASSERT(client->GetAntiLeechData()->GetParent() == client); //check the cross-pointers
         return;
@@ -1891,10 +1891,10 @@ void CTempCAList::SetParent(CUpDownClient* client)
     CAntiLeechData* data = theApp.antileechlist->GetData(client->GetUserHash());;
     CCKey key(data->GetKey());
     CList<CAntiLeechData*>* pList = NULL;
-    if(!m_DataList.Lookup(key, pList))
+    if (!m_DataList.Lookup(key, pList))
     {
         //if we already assigned a client then this one must be a bad guy
-        if(data->GetParent() != NULL)
+        if (data->GetParent() != NULL)
         {
             //TODO: should we ban all other clients with the same hash?
 //			client->Ban(NULL, BA_BANHASHTHIEF);
@@ -1914,7 +1914,7 @@ void CTempCAList::SetParent(CUpDownClient* client)
     client->SetAntiLeechData(data);
 
     //added this so "IS_UNAVAILABLE" clients get verified ASAP... but might be buggy?
-    if(client->HasPassedSecureIdent(true))
+    if (client->HasPassedSecureIdent(true))
         Verify(client);
 }
 
@@ -1926,7 +1926,7 @@ void CTempCAList::ResetParent(CUpDownClient* client)
     //this is called on client deletion... we have to cleanup in that case :)
     CCKey key(data->GetKey());
     CList<CAntiLeechData*>* pList = NULL;
-    if(!m_DataList.Lookup(key, pList))
+    if (!m_DataList.Lookup(key, pList))
     {
         ASSERT(0); //can that happen!?
         delete data;
@@ -1935,9 +1935,9 @@ void CTempCAList::ResetParent(CUpDownClient* client)
 
     //if we FIND the clients' data, we remove it, otherwise...?
     POSITION pos = pList->Find(data);
-    if(pos)
+    if (pos)
     {
-        if(pos != pList->GetHeadPosition())
+        if (pos != pList->GetHeadPosition())
         {
             //i.e. not only the original entry - we NEVER delete the original entry as we want to save it, later
             delete data;
@@ -1956,13 +1956,13 @@ bool LeftIsBetter(const CUpDownClient* pLeft, const CUpDownClient* pRight)
     bool bLeft = pLeft->HasPassedSecureIdent(true);
     bool bRight = pRight->HasPassedSecureIdent(true);
 
-    if(bLeft && bRight)
+    if (bLeft && bRight)
     {
         //both passed the first check... but one might be "IS_UNAVAILABLE"...
         bLeft = pLeft->HasPassedSecureIdent(false);
         bRight = pRight->HasPassedSecureIdent(false);
 
-        if(bLeft != bRight)
+        if (bLeft != bRight)
             return bLeft;
 //		return true; //default to "true" (i.e. "keep the old client")
         return false; //default to "false" because I think this will happen often after ip-changes
@@ -1975,7 +1975,7 @@ void CTempCAList::Verify(CUpDownClient* client)
 {
     //if a client does not have valid data attached, there is no need to proceed
     CAntiLeechData* data = client->GetAntiLeechData();
-    if(data == NULL)
+    if (data == NULL)
     {
         ASSERT(0); //can that happen!?
         return;
@@ -1983,7 +1983,7 @@ void CTempCAList::Verify(CUpDownClient* client)
 
     CCKey key(data->GetKey());
     CList<CAntiLeechData*>* pList = NULL;
-    if(!m_DataList.Lookup(key, pList))
+    if (!m_DataList.Lookup(key, pList))
     {
         ASSERT(0); //can that happen!?
         return;
@@ -1991,11 +1991,11 @@ void CTempCAList::Verify(CUpDownClient* client)
 
     CAntiLeechData* head = pList->GetHead();
     //already linked to the proper entry? exit!
-    if(data == head)
+    if (data == head)
         return;
 
     CUpDownClient* pLeft = head->GetParent();
-    if(pLeft == client
+    if (pLeft == client
             //same client connected multiple times... might happen on startup
             //this is solved in "AttachToAlreadyKnown"
             || (pLeft && pLeft->GetConnectIP() == client->GetConnectIP()))
@@ -2003,13 +2003,13 @@ void CTempCAList::Verify(CUpDownClient* client)
 
     //Merge the original entry with the one of the correctly identified client
     //if we already assigned a client then this one must be a bad guy - or not?
-    if(pLeft!= NULL)
+    if (pLeft!= NULL)
     {
         //Hmm... well... I think this can only happen in ONE case:
         //we connected to a client without SecIdent and meet the proper (SUI-enabled) client later on
         //No, actually it can also happen if someone reconnects with a different IP... but in that case we shouldn't have 2 instances
         //of the client as "AttachToAlreadyKnown"?
-        if(LeftIsBetter(pLeft, client))
+        if (LeftIsBetter(pLeft, client))
         {
             theApp.QueueLogLineEx(LOG_WARNING, L"%s: verification of CA data for %s canceled (%s is \"better\")", md4str(client->GetUserHash()), client->DbgGetClientInfo(), pLeft->DbgGetClientInfo());
             return; //nothing to do if the old one is the better one
@@ -2018,7 +2018,7 @@ void CTempCAList::Verify(CUpDownClient* client)
         //If the new one is better... well, in this case, we simply "swap" the corresponding data
         //1) change the data so we have the "original" at the top again
         POSITION pos = pList->Find(data);
-        if(pos)
+        if (pos)
         {
             //remove it ASAP - dunno whether the Add commands might change the list
             pList->RemoveAt(pos);
@@ -2058,7 +2058,7 @@ void CTempCAList::Verify(CUpDownClient* client)
     //delete the old (temporary) entry from our list
     POSITION pos = pList->Find(data);
     delete data;
-    if(pos)
+    if (pos)
         pList->RemoveAt(pos);
     else
         ASSERT(0);

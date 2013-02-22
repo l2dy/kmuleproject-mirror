@@ -36,7 +36,7 @@ TAG_METHOD_IMPL(CWSDLServiceParser, OnPort)
         {
             SetXMLElementInfo(pElem, pCurr, GetLocator());
 
-            CAutoPtr<CWSDLServicePortParser> p( new CWSDLServicePortParser(GetReader(), this, GetLevel(), pElem) );
+            CAutoPtr<CWSDLServicePortParser> p(new CWSDLServicePortParser(GetReader(), this, GetLevel(), pElem));
             if (p != NULL)
             {
                 if (g_ParserList.AddHead(p) != NULL)

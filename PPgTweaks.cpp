@@ -49,7 +49,7 @@ BEGIN_MESSAGE_MAP(CPPgTweaks, CPropertyPage)
     ON_MESSAGE(UM_TREEOPTSCTRL_NOTIFY, OnTreeOptsCtrlNotify)
     ON_WM_HELPINFO()
     ON_BN_CLICKED(IDC_OPENPREFINI, OnBnClickedOpenPrefIni)
-	ON_BN_CLICKED(IDC_OPENMODPREFINI, OnBnClickedOpenModPrefIni)
+    ON_BN_CLICKED(IDC_OPENMODPREFINI, OnBnClickedOpenModPrefIni)
 END_MESSAGE_MAP()
 
 CPPgTweaks::CPPgTweaks()
@@ -448,7 +448,7 @@ BOOL CPPgTweaks::OnInitDialog()
     m_ctlFileBuffSize.GetRange(iMin, iMax);
 //>>> WiZaRd::IntelliFlush
     m_ctlFileBuffSize.SetPos(m_iFileBufferSize/1024);
-    for(int i = iMin; i < iMax; i += 512)
+    for (int i = iMin; i < iMax; i += 512)
         m_ctlFileBuffSize.SetTic(i);
     m_ctlFileBuffSize.SetPageSize(256);
 //<<< WiZaRd::IntelliFlush
@@ -589,14 +589,14 @@ void CPPgTweaks::OnHScroll(UINT /*nSBCode*/, UINT /*nPos*/, CScrollBar* pScrollB
 
 void CPPgTweaks::Localize(void)
 {
-    if(m_hWnd)
+    if (m_hWnd)
     {
         SetWindowText(GetResString(IDS_PW_TWEAK));
         GetDlgItem(IDC_WARNING)->SetWindowText(GetResString(IDS_TWEAKS_WARNING));
-		CString buffer = L"";
-		buffer.Format(GetResString(IDS_OPENPREFINI), L"preferences.ini");
-		GetDlgItem(IDC_OPENPREFINI)->SetWindowText(buffer);
-		buffer.Format(GetResString(IDS_OPENPREFINI), CString(MOD_INI_FILE) + L".ini");
+        CString buffer = L"";
+        buffer.Format(GetResString(IDS_OPENPREFINI), L"preferences.ini");
+        GetDlgItem(IDC_OPENPREFINI)->SetWindowText(buffer);
+        buffer.Format(GetResString(IDS_OPENPREFINI), CString(MOD_INI_FILE) + L".ini");
         GetDlgItem(IDC_OPENMODPREFINI)->SetWindowText(buffer);
 
         if (m_htiTCPGroup) m_ctrlTreeOptions.SetItemText(m_htiTCPGroup, GetResString(IDS_TCPIP_CONNS));
@@ -742,9 +742,9 @@ LRESULT CPPgTweaks::OnTreeOptsCtrlNotify(WPARAM wParam, LPARAM lParam)
                 if (m_htiLogUlDlEvents)			m_ctrlTreeOptions.SetCheckBoxEnable(m_htiLogUlDlEvents, bCheck);
             }
         }
-        else if (   (m_htiShareeMuleMultiUser  && pton->hItem == m_htiShareeMuleMultiUser)
-                    || (m_htiShareeMulePublicUser && pton->hItem == m_htiShareeMulePublicUser)
-                    || (m_htiShareeMuleOldStyle   && pton->hItem == m_htiShareeMuleOldStyle))
+        else if ((m_htiShareeMuleMultiUser  && pton->hItem == m_htiShareeMuleMultiUser)
+                 || (m_htiShareeMulePublicUser && pton->hItem == m_htiShareeMulePublicUser)
+                 || (m_htiShareeMuleOldStyle   && pton->hItem == m_htiShareeMuleOldStyle))
         {
             if (m_htiShareeMule && !bShowedWarning)
             {
@@ -792,5 +792,5 @@ void CPPgTweaks::OnBnClickedOpenPrefIni()
 
 void CPPgTweaks::OnBnClickedOpenModPrefIni()
 {
-	ShellOpenFile(thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + MOD_INI_FILE + L".ini");
+    ShellOpenFile(thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + MOD_INI_FILE + L".ini");
 }

@@ -702,7 +702,7 @@ public:
 
     void Restore()
     {
-        if(m_OldBkColor == CLR_INVALID) return;
+        if (m_OldBkColor == CLR_INVALID) return;
         VERIFY(m_pDC->SetBkColor(m_OldBkColor) != CLR_INVALID);
         m_OldBkColor = CLR_INVALID;
     }
@@ -747,7 +747,7 @@ public:
 
     void Restore()
     {
-        if(m_OldTextColor == CLR_INVALID) return;
+        if (m_OldTextColor == CLR_INVALID) return;
         VERIFY(m_pDC->SetTextColor(m_OldTextColor) != CLR_INVALID);
         m_OldTextColor = CLR_INVALID;
     }
@@ -792,7 +792,7 @@ public:
 
     void Restore()
     {
-        if(m_OldTextAlign == GDI_ERROR) return;
+        if (m_OldTextAlign == GDI_ERROR) return;
         VERIFY(m_pDC->SetTextAlign(m_OldTextAlign) != GDI_ERROR);
         m_OldTextAlign = GDI_ERROR;
     }

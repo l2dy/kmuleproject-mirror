@@ -57,10 +57,10 @@ public:
 
 inline bool operator==(const MD4& md4a, const MD4& md4b)
 {
-    return memcmp( &md4a, &md4b, 16 ) == 0;
+    return memcmp(&md4a, &md4b, 16) == 0;
 }
 
 inline bool operator!=(const MD4& md4a, const MD4& md4b)
 {
-    return memcmp( &md4a, &md4b, 16 ) != 0;
+    return memcmp(&md4a, &md4b, 16) != 0;
 }

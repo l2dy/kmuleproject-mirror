@@ -129,7 +129,7 @@ unsigned int CDepSettings::Load(LPCSTR szSettingsPath)
     {
         CStringW strPath;
         hr=GetWWWRootPath(strWebHostNameW,strPath);
-        if (FAILED(hr) || strPath.IsEmpty() )
+        if (FAILED(hr) || strPath.IsEmpty())
         {
             return IDS_ERR_BADVIRTDIRSFPATHNODE;
         }
@@ -220,7 +220,7 @@ unsigned int CDepSettings::Load(LPCSTR szSettingsPath)
             }
             else
             {
-                switch(nIso)
+                switch (nIso)
                 {
                 case 0:
                     m_nAppIsolation = nIso;

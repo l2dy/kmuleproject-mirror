@@ -78,15 +78,15 @@ eResult CSecRunAsUser::PrepareUser()
             m_strDomain = bstrDomainName;
 
             ADSPath.Format(L"WinNT://%s,computer",cscompName);
-            if ( !SUCCEEDED(ADsGetObject(ADSPath.AllocSysString(),IID_IADsContainer,(void **)&pUsers)) )
+            if (!SUCCEEDED(ADsGetObject(ADSPath.AllocSysString(),IID_IADsContainer,(void **)&pUsers)))
                 throw CString(_T("Failed ADsGetObject()"));
 
             IEnumVARIANTPtr pEnum;
-            ADsBuildEnumerator (pUsers,&pEnum);
+            ADsBuildEnumerator(pUsers,&pEnum);
 
             IADsUserPtr pChild;
             _variant_t vChild;
-            while( ADsEnumerateNext (pEnum,1,&vChild,NULL) == S_OK )
+            while (ADsEnumerateNext(pEnum,1,&vChild,NULL) == S_OK)
             {
                 if (vChild.pdispVal->QueryInterface(IID_IADsUser,(void **)&pChild) != S_OK)
                     continue;
@@ -96,11 +96,11 @@ eResult CSecRunAsUser::PrepareUser()
                 CStringW csName= bstrName;
 
                 // find the emule user account if possible
-                if ( csName == EMULEACCOUNTW )
+                if (csName == EMULEACCOUNTW)
                 {
                     // account found, set new random password and save it
                     m_strPassword = CreateRandomPW();
-                    if ( !SUCCEEDED(pChild->SetPassword(m_strPassword.AllocSysString())) )
+                    if (!SUCCEEDED(pChild->SetPassword(m_strPassword.AllocSysString())))
                         throw CString(_T("Failed to set password"));
 
                     bResult = true;
@@ -109,7 +109,7 @@ eResult CSecRunAsUser::PrepareUser()
             }
 
         }
-        catch(CString error)
+        catch (CString error)
         {
             // clean up and abort
             theApp.QueueDebugLogLine(false, _T("Run as unpriveleged user: Exception while preparing user account: %s!"), error);
@@ -119,12 +119,12 @@ eResult CSecRunAsUser::PrepareUser()
             else
                 return RES_FAILED;
         }
-        if (bResult || CreateEmuleUser(pUsers) )
+        if (bResult || CreateEmuleUser(pUsers))
         {
             bResult = SetDirectoryPermissions();
         }
     }
-    catch(...)
+    catch (...)
     {
         // clean up and abort
         theApp.QueueDebugLogLine(false, _T("Run as unpriveleged user: Unexpected fatal error while preparing user account!"));
@@ -146,11 +146,11 @@ bool CSecRunAsUser::CreateEmuleUser(IADsContainerPtr pUsers)
 {
 
     IDispatchPtr pDisp=NULL;
-    if ( !SUCCEEDED(pUsers->Create(CComBSTR(L"user"),CString(EMULEACCOUNTW).AllocSysString() ,&pDisp )) )
+    if (!SUCCEEDED(pUsers->Create(CComBSTR(L"user"),CString(EMULEACCOUNTW).AllocSysString() ,&pDisp)))
         return false;
 
     IADsUserPtr pUser;
-    if (!SUCCEEDED(pDisp->QueryInterface(&pUser)) )
+    if (!SUCCEEDED(pDisp->QueryInterface(&pUser)))
         return false;
 
     VARIANT_BOOL bAccountDisabled=FALSE;
@@ -159,10 +159,10 @@ bool CSecRunAsUser::CreateEmuleUser(IADsContainerPtr pUsers)
     pUser->put_AccountDisabled(bAccountDisabled);
     pUser->put_IsAccountLocked(bIsLocked);
     pUser->put_PasswordRequired(bPwRequired);
-    pUser->put_Description(CString(_T("Account used to run eMule with additional security")).AllocSysString() );
+    pUser->put_Description(CString(_T("Account used to run eMule with additional security")).AllocSysString());
     pUser->SetInfo();
     m_strPassword = CreateRandomPW();
-    if ( !SUCCEEDED(pUser->SetPassword(m_strPassword.AllocSysString())) )
+    if (!SUCCEEDED(pUser->SetPassword(m_strPassword.AllocSysString())))
         return false;
     return true;
 }
@@ -173,8 +173,8 @@ CStringW CSecRunAsUser::CreateRandomPW()
     while (strResult.GetLength() < 10)
     {
         char chRnd = (char)(48 + (rand() % 74));
-        if( (chRnd > 97 && chRnd < 122) || (chRnd > 65 && chRnd < 90)
-                || (chRnd >48 && chRnd < 57) ||(chRnd==95) )
+        if ((chRnd > 97 && chRnd < 122) || (chRnd > 65 && chRnd < 90)
+                || (chRnd >48 && chRnd < 57) ||(chRnd==95))
         {
             strResult.AppendChar(chRnd);
         }
@@ -190,7 +190,7 @@ bool CSecRunAsUser::SetDirectoryPermissions()
     // if there is a dir which is also an incoming dir, rights will be overwritten below
     for (POSITION pos = thePrefs.shareddir_list.GetHeadPosition(); pos != 0;)
     {
-        VERIFY( SetObjectPermission(thePrefs.shareddir_list.GetNext(pos), (DWORD)ADS_RIGHT_GENERIC_READ) );
+        VERIFY(SetObjectPermission(thePrefs.shareddir_list.GetNext(pos), (DWORD)ADS_RIGHT_GENERIC_READ));
     }
 
     // set special permission for emule account on needed folders
@@ -221,10 +221,10 @@ bool CSecRunAsUser::SetObjectPermission(CString strDirFile, DWORD lGrantedAccess
 {
     if (!m_hADVAPI32_DLL)
     {
-        ASSERT ( false );
+        ASSERT(false);
         return false;
     }
-    if ( strDirFile.IsEmpty() )
+    if (strDirFile.IsEmpty())
         return true;
 
     SID_NAME_USE   snuType;
@@ -240,7 +240,7 @@ bool CSecRunAsUser::SetObjectPermission(CString strDirFile, DWORD lGrantedAccess
         DWORD cbDomain = 0;
         DWORD cbUserSID = 0;
         fAPISuccess = LookupAccountName(NULL, EMULEACCOUNTW, pUserSID, &cbUserSID, szDomain, &cbDomain, &snuType);
-        if ( (!fAPISuccess) && GetLastError() != ERROR_INSUFFICIENT_BUFFER)
+        if ((!fAPISuccess) && GetLastError() != ERROR_INSUFFICIENT_BUFFER)
             throw CString(_T("Run as unpriveleged user: Error: LookupAccountName() failed,"));
 
         pUserSID = MHeapAlloc(cbUserSID);
@@ -337,7 +337,7 @@ bool CSecRunAsUser::SetObjectPermission(CString strDirFile, DWORD lGrantedAccess
             throw CString(_T("Run as unpriveleged user: Error: SetNamedSecurityInfo() failed,"));
         fAPISuccess = TRUE;
     }
-    catch(CString error)
+    catch (CString error)
     {
         fAPISuccess = FALSE;
         theApp.QueueDebugLogLine(false, error);
@@ -369,7 +369,7 @@ eResult CSecRunAsUser::RestartAsUser()
     if (dwModPathLen == 0 || dwModPathLen == _countof(szAppPath))
         return RES_FAILED;
 
-    ASSERT ( !m_strPassword.IsEmpty() );
+    ASSERT(!m_strPassword.IsEmpty());
     BOOL bResult;
     try
     {
@@ -392,7 +392,7 @@ eResult CSecRunAsUser::RestartAsUser()
         CloseHandle(ProcessInfo.hThread);
 
     }
-    catch(...)
+    catch (...)
     {
         theApp.QueueDebugLogLine(false, _T("Run as unpriveleged user: Error: Unexpected exception while loading advapi32.dll"));
         FreeAPI();
@@ -410,7 +410,7 @@ eResult CSecRunAsUser::RestartAsUser()
 
 CStringW CSecRunAsUser::GetCurrentUserW()
 {
-    if ( m_strCurrentUser.IsEmpty() )
+    if (m_strCurrentUser.IsEmpty())
         return L"Unknown";
     else
         return m_strCurrentUser;
@@ -497,7 +497,7 @@ eResult CSecRunAsUser::RestartAsRestricted()
     try
     {
         // get our access token from the process
-        if(!OpenProcessToken(GetCurrentProcess(), TOKEN_DUPLICATE | TOKEN_ASSIGN_PRIMARY | TOKEN_READ, &hProcessToken))
+        if (!OpenProcessToken(GetCurrentProcess(), TOKEN_DUPLICATE | TOKEN_ASSIGN_PRIMARY | TOKEN_READ, &hProcessToken))
         {
             throw(CString(_T("Failed to retrieve access token from process")));
         }
@@ -536,7 +536,7 @@ eResult CSecRunAsUser::RestartAsRestricted()
         // so it stays enabled for now and we only reduce privileges
 
         // create the new token
-        if(!CreateRestrictedToken(hProcessToken, DISABLE_MAX_PRIVILEGE | SANDBOX_INERT, 0 /*disabled*/, &pstructUserToken->User, 0, NULL, 0, NULL, &hRestrictedToken ) )
+        if (!CreateRestrictedToken(hProcessToken, DISABLE_MAX_PRIVILEGE | SANDBOX_INERT, 0 /*disabled*/, &pstructUserToken->User, 0, NULL, 0, NULL, &hRestrictedToken))
         {
             throw(CString(_T("Failed to create Restricted Token")));
         }
@@ -559,7 +559,7 @@ eResult CSecRunAsUser::RestartAsRestricted()
         // in the rare case CreateProcessWithLogonW fails, this will allow mult. instances, but if that function fails we have other problems anyway
         ::CloseHandle(theApp.m_hMutexOneInstance);
 
-        if(!CreateProcessAsUser(hRestrictedToken, NULL, strAppName.GetBuffer(), NULL, NULL, FALSE, NORMAL_PRIORITY_CLASS, NULL, NULL, &StartInf, &ProcessInfo) )
+        if (!CreateProcessAsUser(hRestrictedToken, NULL, strAppName.GetBuffer(), NULL, NULL, FALSE, NORMAL_PRIORITY_CLASS, NULL, NULL, &StartInf, &ProcessInfo))
         {
             CString e;
             GetErrorMessage(GetLastError(), e, 0);
@@ -575,7 +575,7 @@ eResult CSecRunAsUser::RestartAsRestricted()
         CloseHandle(hRestrictedToken);
         CloseHandle(hProcessToken);
     }
-    catch(CString strError)
+    catch (CString strError)
     {
         if (hProcessToken != NULL)
             CloseHandle(hProcessToken);

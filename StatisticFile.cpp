@@ -27,7 +27,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-void CStatisticFile::MergeFileStats( CStatisticFile *toMerge )
+void CStatisticFile::MergeFileStats(CStatisticFile *toMerge)
 {
     requested += toMerge->GetRequests();
     accepted += toMerge->GetAccepts();

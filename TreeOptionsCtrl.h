@@ -75,7 +75,7 @@ protected:
 
     //{{AFX_MSG(CTreeOptionsCombo)
     afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
-    afx_msg UINT OnGetDlgCode ();
+    afx_msg UINT OnGetDlgCode();
     afx_msg void OnKillFocus(CWnd* pNewWnd);
     //}}AFX_MSG
 
@@ -180,7 +180,7 @@ protected:
 
     //{{AFX_MSG(CTreeOptionsEdit)
     afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
-    afx_msg UINT OnGetDlgCode ();
+    afx_msg UINT OnGetDlgCode();
     afx_msg void OnKillFocus(CWnd* pNewWnd);
     //}}AFX_MSG
 
@@ -351,7 +351,7 @@ protected:
 
     //{{AFX_MSG(CTreeOptionsDateCtrl)
     afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
-    afx_msg UINT OnGetDlgCode ();
+    afx_msg UINT OnGetDlgCode();
     afx_msg void OnKillFocus(CWnd* pNewWnd);
     //}}AFX_MSG
 
@@ -432,7 +432,7 @@ protected:
 
     //{{AFX_MSG(CTreeOptionsIPAddressCtrl)
     afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
-    afx_msg UINT OnGetDlgCode ();
+    afx_msg UINT OnGetDlgCode();
     afx_msg void OnKillFocus(CWnd* pNewWnd);
     //}}AFX_MSG
 
@@ -672,7 +672,7 @@ protected:
     afx_msg void OnDestroy();
     afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
     afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-    afx_msg void OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags );
+    afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
     afx_msg void OnKillFocus(CWnd* pNewWnd);
     //}}AFX_MSG
     afx_msg BOOL OnNmClick(NMHDR* pNMHDR, LRESULT* pResult);

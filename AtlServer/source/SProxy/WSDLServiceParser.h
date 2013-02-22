@@ -45,7 +45,7 @@ public:
 
     inline void SetService(CWSDLService *pService)
     {
-        ATLASSERT( pService != NULL );
+        ATLASSERT(pService != NULL);
 
         m_pService = pService;
     }

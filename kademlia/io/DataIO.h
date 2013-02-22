@@ -55,8 +55,8 @@ public:
     void WriteUInt32(UINT uVal);
     void WriteUInt64(uint64 uVal);
     void WriteUInt128(const CUInt128& uVal);
-    void WriteHash( const BYTE* pbyVal);
-    void WriteBsob( const BYTE* pbyVal, uint8 uSize);
+    void WriteHash(const BYTE* pbyVal);
+    void WriteBsob(const BYTE* pbyVal, uint8 uSize);
     void WriteFloat(float fVal);
     void WriteTag(const CKadTag* pTag);
     void WriteTag(LPCSTR szName, uint8 uValue);

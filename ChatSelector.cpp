@@ -59,7 +59,7 @@ CChatItem::CChatItem()
 CChatItem::~CChatItem()
 {
 //>>> WiZaRd::ChatLog [CB]
-    if(m_ChatLog.IsOpen())
+    if (m_ChatLog.IsOpen())
         m_ChatLog.Close();
 //<<< WiZaRd::ChatLog [CB]
     delete log;
@@ -98,7 +98,7 @@ void CChatSelector::Init(CChatWnd *pParent)
     ModifyStyle(0, WS_CLIPCHILDREN);
     SetAllIcons();
 
-    VERIFY( (m_Timer = SetTimer(20, 1500, 0)) != NULL );
+    VERIFY((m_Timer = SetTimer(20, 1500, 0)) != NULL);
 }
 
 void CChatSelector::OnSysColorChange()
@@ -413,7 +413,7 @@ void CChatSelector::DeleteAllItems()
         TCITEM cur_item;
         cur_item.mask = TCIF_PARAM;
         if (GetItem(i, &cur_item))
-            delete (CChatItem*)cur_item.lParam;
+            delete(CChatItem*)cur_item.lParam;
     }
 }
 
@@ -728,7 +728,7 @@ void CChatItem::OpenLog(const CString& strNick)
     CString path = L"";
     CString strHash = md4str(client->GetUserHash());
     path.Format(L"%s%s_%s.log", thePrefs.GetMuleDirectory(EMULE_LOGDIR), strHash, cleanname);
-    VERIFY( m_ChatLog.SetFilePath(path) );
+    VERIFY(m_ChatLog.SetFilePath(path));
 
     m_ChatLog.Open();
     m_ChatLog.Log(L"\r\n");
@@ -740,7 +740,7 @@ void CChatItem::OpenLog(const CString& strNick)
 
 void CChatItem::LogMessage(const CString& strNick, const CString& strMessage)
 {
-    if(!m_ChatLog.IsOpen())
+    if (!m_ChatLog.IsOpen())
         return;
 
     TCHAR temp[2048];

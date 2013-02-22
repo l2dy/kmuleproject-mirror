@@ -188,7 +188,7 @@ extern "C" {
 #endif
 
     void * __RPC_USER MIDL_user_allocate(size_t);
-    void __RPC_USER MIDL_user_free( void * );
+    void __RPC_USER MIDL_user_free(void *);
 
 
 #ifndef __IISExt_LIBRARY_DEFINED__
@@ -216,14 +216,14 @@ IISApplicationPool :
     public IADs
     {
 public:
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE Recycle( void) = 0;
+        virtual /* [id] */ HRESULT STDMETHODCALLTYPE Recycle(void) = 0;
 
         virtual /* [id] */ HRESULT STDMETHODCALLTYPE EnumAppsInPool(
             /* [retval][out] */ VARIANT *bstrBuffer) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE Start( void) = 0;
+        virtual /* [id] */ HRESULT STDMETHODCALLTYPE Start(void) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE Stop( void) = 0;
+        virtual /* [id] */ HRESULT STDMETHODCALLTYPE Stop(void) = 0;
 
     };
 
@@ -233,30 +233,30 @@ public:
     {
         BEGIN_INTERFACE
 
-        /* [id][restricted][funcdescattr] */ HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IISApplicationPool * This,
             /* [in][idldescattr] */ struct GUID *riid,
             /* [out][idldescattr] */ void **ppvObj,
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *AddRef )(
+        HRESULT(STDMETHODCALLTYPE *AddRef)(
             IISApplicationPool * This,
             /* [retval][out] */ unsigned long *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Release )(
+        HRESULT(STDMETHODCALLTYPE *Release)(
             IISApplicationPool * This,
             /* [retval][out] */ unsigned long *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetTypeInfoCount )(
+        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
             IISApplicationPool * This,
             /* [out][idldescattr] */ unsigned UINT *pctinfo,
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetTypeInfo )(
+        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
             IISApplicationPool * This,
             /* [in][idldescattr] */ unsigned UINT itinfo,
             /* [in][idldescattr] */ unsigned long lcid,
@@ -264,7 +264,7 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetIDsOfNames )(
+        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
             IISApplicationPool * This,
             /* [in][idldescattr] */ struct GUID *riid,
             /* [in][idldescattr] */ signed char **rgszNames,
@@ -274,7 +274,7 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Invoke )(
+        HRESULT(STDMETHODCALLTYPE *Invoke)(
             IISApplicationPool * This,
             /* [in][idldescattr] */ signed long dispidMember,
             /* [in][idldescattr] */ struct GUID *riid,
@@ -287,66 +287,66 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Name )(
+        HRESULT(STDMETHODCALLTYPE *get_Name)(
             IISApplicationPool * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Class )(
+        HRESULT(STDMETHODCALLTYPE *get_Class)(
             IISApplicationPool * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_GUID )(
+        HRESULT(STDMETHODCALLTYPE *get_GUID)(
             IISApplicationPool * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_ADsPath )(
+        HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
             IISApplicationPool * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Parent )(
+        HRESULT(STDMETHODCALLTYPE *get_Parent)(
             IISApplicationPool * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Schema )(
+        HRESULT(STDMETHODCALLTYPE *get_Schema)(
             IISApplicationPool * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetInfo )(
+        HRESULT(STDMETHODCALLTYPE *GetInfo)(
             IISApplicationPool * This,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *SetInfo )(
+        HRESULT(STDMETHODCALLTYPE *SetInfo)(
             IISApplicationPool * This,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Get )(
+        HRESULT(STDMETHODCALLTYPE *Get)(
             IISApplicationPool * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [retval][out] */ VARIANT *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Put )(
+        HRESULT(STDMETHODCALLTYPE *Put)(
             IISApplicationPool * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [in][idldescattr] */ VARIANT vProp,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetEx )(
+        HRESULT(STDMETHODCALLTYPE *GetEx)(
             IISApplicationPool * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [retval][out] */ VARIANT *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *PutEx )(
+        HRESULT(STDMETHODCALLTYPE *PutEx)(
             IISApplicationPool * This,
             /* [in][idldescattr] */ signed long lnControlCode,
             /* [in][idldescattr] */ BSTR bstrName,
@@ -354,27 +354,27 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetInfoEx )(
+        HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
             IISApplicationPool * This,
             /* [in][idldescattr] */ VARIANT vProperties,
             /* [in][idldescattr] */ signed long lnReserved,
             /* [retval][out] */ void *retval);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *Recycle )(
+        HRESULT(STDMETHODCALLTYPE *Recycle)(
             IISApplicationPool * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *EnumAppsInPool )(
+        HRESULT(STDMETHODCALLTYPE *EnumAppsInPool)(
             IISApplicationPool * This,
             /* [retval][out] */ VARIANT *bstrBuffer);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *Start )(
+        HRESULT(STDMETHODCALLTYPE *Start)(
             IISApplicationPool * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *Stop )(
+        HRESULT(STDMETHODCALLTYPE *Stop)(
             IISApplicationPool * This);
 
         END_INTERFACE
@@ -546,30 +546,30 @@ public:
     {
         BEGIN_INTERFACE
 
-        /* [id][restricted][funcdescattr] */ HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IISApplicationPools * This,
             /* [in][idldescattr] */ struct GUID *riid,
             /* [out][idldescattr] */ void **ppvObj,
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *AddRef )(
+        HRESULT(STDMETHODCALLTYPE *AddRef)(
             IISApplicationPools * This,
             /* [retval][out] */ unsigned long *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Release )(
+        HRESULT(STDMETHODCALLTYPE *Release)(
             IISApplicationPools * This,
             /* [retval][out] */ unsigned long *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetTypeInfoCount )(
+        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
             IISApplicationPools * This,
             /* [out][idldescattr] */ unsigned UINT *pctinfo,
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetTypeInfo )(
+        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
             IISApplicationPools * This,
             /* [in][idldescattr] */ unsigned UINT itinfo,
             /* [in][idldescattr] */ unsigned long lcid,
@@ -577,7 +577,7 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetIDsOfNames )(
+        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
             IISApplicationPools * This,
             /* [in][idldescattr] */ struct GUID *riid,
             /* [in][idldescattr] */ signed char **rgszNames,
@@ -587,7 +587,7 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Invoke )(
+        HRESULT(STDMETHODCALLTYPE *Invoke)(
             IISApplicationPools * This,
             /* [in][idldescattr] */ signed long dispidMember,
             /* [in][idldescattr] */ struct GUID *riid,
@@ -600,66 +600,66 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Name )(
+        HRESULT(STDMETHODCALLTYPE *get_Name)(
             IISApplicationPools * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Class )(
+        HRESULT(STDMETHODCALLTYPE *get_Class)(
             IISApplicationPools * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_GUID )(
+        HRESULT(STDMETHODCALLTYPE *get_GUID)(
             IISApplicationPools * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_ADsPath )(
+        HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
             IISApplicationPools * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Parent )(
+        HRESULT(STDMETHODCALLTYPE *get_Parent)(
             IISApplicationPools * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Schema )(
+        HRESULT(STDMETHODCALLTYPE *get_Schema)(
             IISApplicationPools * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetInfo )(
+        HRESULT(STDMETHODCALLTYPE *GetInfo)(
             IISApplicationPools * This,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *SetInfo )(
+        HRESULT(STDMETHODCALLTYPE *SetInfo)(
             IISApplicationPools * This,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Get )(
+        HRESULT(STDMETHODCALLTYPE *Get)(
             IISApplicationPools * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [retval][out] */ VARIANT *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Put )(
+        HRESULT(STDMETHODCALLTYPE *Put)(
             IISApplicationPools * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [in][idldescattr] */ VARIANT vProp,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetEx )(
+        HRESULT(STDMETHODCALLTYPE *GetEx)(
             IISApplicationPools * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [retval][out] */ VARIANT *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *PutEx )(
+        HRESULT(STDMETHODCALLTYPE *PutEx)(
             IISApplicationPools * This,
             /* [in][idldescattr] */ signed long lnControlCode,
             /* [in][idldescattr] */ BSTR bstrName,
@@ -667,7 +667,7 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetInfoEx )(
+        HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
             IISApplicationPools * This,
             /* [in][idldescattr] */ VARIANT vProperties,
             /* [in][idldescattr] */ signed long lnReserved,
@@ -841,30 +841,30 @@ public:
     {
         BEGIN_INTERFACE
 
-        /* [id][restricted][funcdescattr] */ HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IISWebService * This,
             /* [in][idldescattr] */ struct GUID *riid,
             /* [out][idldescattr] */ void **ppvObj,
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *AddRef )(
+        HRESULT(STDMETHODCALLTYPE *AddRef)(
             IISWebService * This,
             /* [retval][out] */ unsigned long *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Release )(
+        HRESULT(STDMETHODCALLTYPE *Release)(
             IISWebService * This,
             /* [retval][out] */ unsigned long *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetTypeInfoCount )(
+        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
             IISWebService * This,
             /* [out][idldescattr] */ unsigned UINT *pctinfo,
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetTypeInfo )(
+        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
             IISWebService * This,
             /* [in][idldescattr] */ unsigned UINT itinfo,
             /* [in][idldescattr] */ unsigned long lcid,
@@ -872,7 +872,7 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetIDsOfNames )(
+        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
             IISWebService * This,
             /* [in][idldescattr] */ struct GUID *riid,
             /* [in][idldescattr] */ signed char **rgszNames,
@@ -882,7 +882,7 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Invoke )(
+        HRESULT(STDMETHODCALLTYPE *Invoke)(
             IISWebService * This,
             /* [in][idldescattr] */ signed long dispidMember,
             /* [in][idldescattr] */ struct GUID *riid,
@@ -895,66 +895,66 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Name )(
+        HRESULT(STDMETHODCALLTYPE *get_Name)(
             IISWebService * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Class )(
+        HRESULT(STDMETHODCALLTYPE *get_Class)(
             IISWebService * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_GUID )(
+        HRESULT(STDMETHODCALLTYPE *get_GUID)(
             IISWebService * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_ADsPath )(
+        HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
             IISWebService * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Parent )(
+        HRESULT(STDMETHODCALLTYPE *get_Parent)(
             IISWebService * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Schema )(
+        HRESULT(STDMETHODCALLTYPE *get_Schema)(
             IISWebService * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetInfo )(
+        HRESULT(STDMETHODCALLTYPE *GetInfo)(
             IISWebService * This,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *SetInfo )(
+        HRESULT(STDMETHODCALLTYPE *SetInfo)(
             IISWebService * This,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Get )(
+        HRESULT(STDMETHODCALLTYPE *Get)(
             IISWebService * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [retval][out] */ VARIANT *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Put )(
+        HRESULT(STDMETHODCALLTYPE *Put)(
             IISWebService * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [in][idldescattr] */ VARIANT vProp,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetEx )(
+        HRESULT(STDMETHODCALLTYPE *GetEx)(
             IISWebService * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [retval][out] */ VARIANT *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *PutEx )(
+        HRESULT(STDMETHODCALLTYPE *PutEx)(
             IISWebService * This,
             /* [in][idldescattr] */ signed long lnControlCode,
             /* [in][idldescattr] */ BSTR bstrName,
@@ -962,19 +962,19 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetInfoEx )(
+        HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
             IISWebService * This,
             /* [in][idldescattr] */ VARIANT vProperties,
             /* [in][idldescattr] */ signed long lnReserved,
             /* [retval][out] */ void *retval);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *GetCurrentMode )(
+        HRESULT(STDMETHODCALLTYPE *GetCurrentMode)(
             IISWebService * This,
             /* [retval][out] */ VARIANT *pvServerMode);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *CreateNewSite )(
+        HRESULT(STDMETHODCALLTYPE *CreateNewSite)(
             IISWebService * This,
             /* [in] */ BSTR bstrServerComment,
             /* [in] */ VARIANT *pvServerBindings,
@@ -983,59 +983,59 @@ public:
             /* [retval][out] */ VARIANT *pvActualID);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *EnableApplication )(
+        HRESULT(STDMETHODCALLTYPE *EnableApplication)(
             IISWebService * This,
             /* [in] */ BSTR bstrAppName);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *RemoveApplication )(
+        HRESULT(STDMETHODCALLTYPE *RemoveApplication)(
             IISWebService * This,
             /* [in] */ BSTR bstrAppName);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *ListApplications )(
+        HRESULT(STDMETHODCALLTYPE *ListApplications)(
             IISWebService * This,
             /* [retval][out] */ VARIANT *bstrBuffer);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AddDependency )(
+        HRESULT(STDMETHODCALLTYPE *AddDependency)(
             IISWebService * This,
             /* [in] */ BSTR bstrApplication,
             /* [in] */ BSTR bstrGroupID);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *RemoveDependency )(
+        HRESULT(STDMETHODCALLTYPE *RemoveDependency)(
             IISWebService * This,
             /* [in] */ BSTR bstrApplication,
             /* [in] */ BSTR bstrGroupID);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *EnableWebServiceExtension )(
+        HRESULT(STDMETHODCALLTYPE *EnableWebServiceExtension)(
             IISWebService * This,
             /* [in] */ BSTR bstrExtension);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *DisableWebServiceExtension )(
+        HRESULT(STDMETHODCALLTYPE *DisableWebServiceExtension)(
             IISWebService * This,
             /* [in] */ BSTR bstrExtension);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *ListWebServiceExtensions )(
+        HRESULT(STDMETHODCALLTYPE *ListWebServiceExtensions)(
             IISWebService * This,
             /* [retval][out] */ VARIANT *bstrBuffer);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *EnableExtensionFile )(
+        HRESULT(STDMETHODCALLTYPE *EnableExtensionFile)(
             IISWebService * This,
             /* [in] */ BSTR bstrExtensionFile);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *DisableExtensionFile )(
+        HRESULT(STDMETHODCALLTYPE *DisableExtensionFile)(
             IISWebService * This,
             /* [in] */ BSTR bstrExtensionFile);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AddExtensionFile )(
+        HRESULT(STDMETHODCALLTYPE *AddExtensionFile)(
             IISWebService * This,
             /* [in] */ BSTR bstrExtensionFile,
             /* [in] */ VARIANT bAccess,
@@ -1044,17 +1044,17 @@ public:
             /* [in] */ BSTR bstrDescription);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *DeleteExtensionFileRecord )(
+        HRESULT(STDMETHODCALLTYPE *DeleteExtensionFileRecord)(
             IISWebService * This,
             /* [in] */ BSTR bstrExtensionFile);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *ListExtensionFiles )(
+        HRESULT(STDMETHODCALLTYPE *ListExtensionFiles)(
             IISWebService * This,
             /* [retval][out] */ VARIANT *bstrBuffer);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *QueryGroupIDStatus )(
+        HRESULT(STDMETHODCALLTYPE *QueryGroupIDStatus)(
             IISWebService * This,
             /* [in] */ BSTR bstrGroupID,
             /* [retval][out] */ VARIANT *bstrBuffer);
@@ -1474,30 +1474,30 @@ public:
     {
         BEGIN_INTERFACE
 
-        /* [id][restricted][funcdescattr] */ HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IISDsCrMap * This,
             /* [in][idldescattr] */ struct GUID *riid,
             /* [out][idldescattr] */ void **ppvObj,
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *AddRef )(
+        HRESULT(STDMETHODCALLTYPE *AddRef)(
             IISDsCrMap * This,
             /* [retval][out] */ unsigned long *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Release )(
+        HRESULT(STDMETHODCALLTYPE *Release)(
             IISDsCrMap * This,
             /* [retval][out] */ unsigned long *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetTypeInfoCount )(
+        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
             IISDsCrMap * This,
             /* [out][idldescattr] */ unsigned UINT *pctinfo,
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetTypeInfo )(
+        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
             IISDsCrMap * This,
             /* [in][idldescattr] */ unsigned UINT itinfo,
             /* [in][idldescattr] */ unsigned long lcid,
@@ -1505,7 +1505,7 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetIDsOfNames )(
+        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
             IISDsCrMap * This,
             /* [in][idldescattr] */ struct GUID *riid,
             /* [in][idldescattr] */ signed char **rgszNames,
@@ -1515,7 +1515,7 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Invoke )(
+        HRESULT(STDMETHODCALLTYPE *Invoke)(
             IISDsCrMap * This,
             /* [in][idldescattr] */ signed long dispidMember,
             /* [in][idldescattr] */ struct GUID *riid,
@@ -1528,66 +1528,66 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Name )(
+        HRESULT(STDMETHODCALLTYPE *get_Name)(
             IISDsCrMap * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Class )(
+        HRESULT(STDMETHODCALLTYPE *get_Class)(
             IISDsCrMap * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_GUID )(
+        HRESULT(STDMETHODCALLTYPE *get_GUID)(
             IISDsCrMap * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_ADsPath )(
+        HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
             IISDsCrMap * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Parent )(
+        HRESULT(STDMETHODCALLTYPE *get_Parent)(
             IISDsCrMap * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Schema )(
+        HRESULT(STDMETHODCALLTYPE *get_Schema)(
             IISDsCrMap * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetInfo )(
+        HRESULT(STDMETHODCALLTYPE *GetInfo)(
             IISDsCrMap * This,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *SetInfo )(
+        HRESULT(STDMETHODCALLTYPE *SetInfo)(
             IISDsCrMap * This,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Get )(
+        HRESULT(STDMETHODCALLTYPE *Get)(
             IISDsCrMap * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [retval][out] */ VARIANT *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Put )(
+        HRESULT(STDMETHODCALLTYPE *Put)(
             IISDsCrMap * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [in][idldescattr] */ VARIANT vProp,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetEx )(
+        HRESULT(STDMETHODCALLTYPE *GetEx)(
             IISDsCrMap * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [retval][out] */ VARIANT *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *PutEx )(
+        HRESULT(STDMETHODCALLTYPE *PutEx)(
             IISDsCrMap * This,
             /* [in][idldescattr] */ signed long lnControlCode,
             /* [in][idldescattr] */ BSTR bstrName,
@@ -1595,14 +1595,14 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetInfoEx )(
+        HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
             IISDsCrMap * This,
             /* [in][idldescattr] */ VARIANT vProperties,
             /* [in][idldescattr] */ signed long lnReserved,
             /* [retval][out] */ void *retval);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *CreateMapping )(
+        HRESULT(STDMETHODCALLTYPE *CreateMapping)(
             IISDsCrMap * This,
             /* [in] */ VARIANT vCert,
             /* [in] */ BSTR bstrNtAcct,
@@ -1611,7 +1611,7 @@ public:
             /* [in] */ LONG lEnabled);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *GetMapping )(
+        HRESULT(STDMETHODCALLTYPE *GetMapping)(
             IISDsCrMap * This,
             /* [in] */ LONG lMethod,
             /* [in] */ VARIANT vKey,
@@ -1622,34 +1622,34 @@ public:
             /* [out] */ VARIANT *plEnabled);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *DeleteMapping )(
+        HRESULT(STDMETHODCALLTYPE *DeleteMapping)(
             IISDsCrMap * This,
             /* [in] */ LONG lMethod,
             /* [in] */ VARIANT vKey);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *SetEnabled )(
+        HRESULT(STDMETHODCALLTYPE *SetEnabled)(
             IISDsCrMap * This,
             /* [in] */ LONG lMethod,
             /* [in] */ VARIANT vKey,
             /* [in] */ LONG lEnabled);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *SetName )(
+        HRESULT(STDMETHODCALLTYPE *SetName)(
             IISDsCrMap * This,
             /* [in] */ LONG lMethod,
             /* [in] */ VARIANT vKey,
             /* [in] */ BSTR bstrName);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *SetPwd )(
+        HRESULT(STDMETHODCALLTYPE *SetPwd)(
             IISDsCrMap * This,
             /* [in] */ LONG lMethod,
             /* [in] */ VARIANT vKey,
             /* [in] */ BSTR bstrPwd);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *SetAcct )(
+        HRESULT(STDMETHODCALLTYPE *SetAcct)(
             IISDsCrMap * This,
             /* [in] */ LONG lMethod,
             /* [in] */ VARIANT vKey,
@@ -1889,26 +1889,26 @@ public:
         virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppCreate(
             /* [in] */ VARIANT_BOOL bSetInProcFlag) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppDelete( void) = 0;
+        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppDelete(void) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppDeleteRecursive( void) = 0;
+        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppDeleteRecursive(void) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppUnLoad( void) = 0;
+        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppUnLoad(void) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppUnLoadRecursive( void) = 0;
+        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppUnLoadRecursive(void) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppDisable( void) = 0;
+        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppDisable(void) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppDisableRecursive( void) = 0;
+        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppDisableRecursive(void) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppEnable( void) = 0;
+        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppEnable(void) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppEnableRecursive( void) = 0;
+        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppEnableRecursive(void) = 0;
 
         virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppGetStatus(
             /* [out] */ DWORD *pdwStatus) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AspAppRestart( void) = 0;
+        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AspAppRestart(void) = 0;
 
     };
 
@@ -1918,30 +1918,30 @@ public:
     {
         BEGIN_INTERFACE
 
-        /* [id][restricted][funcdescattr] */ HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IISApp * This,
             /* [in][idldescattr] */ struct GUID *riid,
             /* [out][idldescattr] */ void **ppvObj,
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *AddRef )(
+        HRESULT(STDMETHODCALLTYPE *AddRef)(
             IISApp * This,
             /* [retval][out] */ unsigned long *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Release )(
+        HRESULT(STDMETHODCALLTYPE *Release)(
             IISApp * This,
             /* [retval][out] */ unsigned long *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetTypeInfoCount )(
+        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
             IISApp * This,
             /* [out][idldescattr] */ unsigned UINT *pctinfo,
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetTypeInfo )(
+        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
             IISApp * This,
             /* [in][idldescattr] */ unsigned UINT itinfo,
             /* [in][idldescattr] */ unsigned long lcid,
@@ -1949,7 +1949,7 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetIDsOfNames )(
+        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
             IISApp * This,
             /* [in][idldescattr] */ struct GUID *riid,
             /* [in][idldescattr] */ signed char **rgszNames,
@@ -1959,7 +1959,7 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Invoke )(
+        HRESULT(STDMETHODCALLTYPE *Invoke)(
             IISApp * This,
             /* [in][idldescattr] */ signed long dispidMember,
             /* [in][idldescattr] */ struct GUID *riid,
@@ -1972,66 +1972,66 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Name )(
+        HRESULT(STDMETHODCALLTYPE *get_Name)(
             IISApp * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Class )(
+        HRESULT(STDMETHODCALLTYPE *get_Class)(
             IISApp * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_GUID )(
+        HRESULT(STDMETHODCALLTYPE *get_GUID)(
             IISApp * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_ADsPath )(
+        HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
             IISApp * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Parent )(
+        HRESULT(STDMETHODCALLTYPE *get_Parent)(
             IISApp * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Schema )(
+        HRESULT(STDMETHODCALLTYPE *get_Schema)(
             IISApp * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetInfo )(
+        HRESULT(STDMETHODCALLTYPE *GetInfo)(
             IISApp * This,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *SetInfo )(
+        HRESULT(STDMETHODCALLTYPE *SetInfo)(
             IISApp * This,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Get )(
+        HRESULT(STDMETHODCALLTYPE *Get)(
             IISApp * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [retval][out] */ VARIANT *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Put )(
+        HRESULT(STDMETHODCALLTYPE *Put)(
             IISApp * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [in][idldescattr] */ VARIANT vProp,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetEx )(
+        HRESULT(STDMETHODCALLTYPE *GetEx)(
             IISApp * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [retval][out] */ VARIANT *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *PutEx )(
+        HRESULT(STDMETHODCALLTYPE *PutEx)(
             IISApp * This,
             /* [in][idldescattr] */ signed long lnControlCode,
             /* [in][idldescattr] */ BSTR bstrName,
@@ -2039,56 +2039,56 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetInfoEx )(
+        HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
             IISApp * This,
             /* [in][idldescattr] */ VARIANT vProperties,
             /* [in][idldescattr] */ signed long lnReserved,
             /* [retval][out] */ void *retval);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppCreate )(
+        HRESULT(STDMETHODCALLTYPE *AppCreate)(
             IISApp * This,
             /* [in] */ VARIANT_BOOL bSetInProcFlag);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppDelete )(
+        HRESULT(STDMETHODCALLTYPE *AppDelete)(
             IISApp * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppDeleteRecursive )(
+        HRESULT(STDMETHODCALLTYPE *AppDeleteRecursive)(
             IISApp * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppUnLoad )(
+        HRESULT(STDMETHODCALLTYPE *AppUnLoad)(
             IISApp * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppUnLoadRecursive )(
+        HRESULT(STDMETHODCALLTYPE *AppUnLoadRecursive)(
             IISApp * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppDisable )(
+        HRESULT(STDMETHODCALLTYPE *AppDisable)(
             IISApp * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppDisableRecursive )(
+        HRESULT(STDMETHODCALLTYPE *AppDisableRecursive)(
             IISApp * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppEnable )(
+        HRESULT(STDMETHODCALLTYPE *AppEnable)(
             IISApp * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppEnableRecursive )(
+        HRESULT(STDMETHODCALLTYPE *AppEnableRecursive)(
             IISApp * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppGetStatus )(
+        HRESULT(STDMETHODCALLTYPE *AppGetStatus)(
             IISApp * This,
             /* [out] */ DWORD *pdwStatus);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AspAppRestart )(
+        HRESULT(STDMETHODCALLTYPE *AspAppRestart)(
             IISApp * This);
 
         END_INTERFACE
@@ -2372,30 +2372,30 @@ public:
     {
         BEGIN_INTERFACE
 
-        /* [id][restricted][funcdescattr] */ HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IISApp2 * This,
             /* [in][idldescattr] */ struct GUID *riid,
             /* [out][idldescattr] */ void **ppvObj,
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *AddRef )(
+        HRESULT(STDMETHODCALLTYPE *AddRef)(
             IISApp2 * This,
             /* [retval][out] */ unsigned long *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Release )(
+        HRESULT(STDMETHODCALLTYPE *Release)(
             IISApp2 * This,
             /* [retval][out] */ unsigned long *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetTypeInfoCount )(
+        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
             IISApp2 * This,
             /* [out][idldescattr] */ unsigned UINT *pctinfo,
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetTypeInfo )(
+        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
             IISApp2 * This,
             /* [in][idldescattr] */ unsigned UINT itinfo,
             /* [in][idldescattr] */ unsigned long lcid,
@@ -2403,7 +2403,7 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetIDsOfNames )(
+        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
             IISApp2 * This,
             /* [in][idldescattr] */ struct GUID *riid,
             /* [in][idldescattr] */ signed char **rgszNames,
@@ -2413,7 +2413,7 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Invoke )(
+        HRESULT(STDMETHODCALLTYPE *Invoke)(
             IISApp2 * This,
             /* [in][idldescattr] */ signed long dispidMember,
             /* [in][idldescattr] */ struct GUID *riid,
@@ -2426,66 +2426,66 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Name )(
+        HRESULT(STDMETHODCALLTYPE *get_Name)(
             IISApp2 * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Class )(
+        HRESULT(STDMETHODCALLTYPE *get_Class)(
             IISApp2 * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_GUID )(
+        HRESULT(STDMETHODCALLTYPE *get_GUID)(
             IISApp2 * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_ADsPath )(
+        HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
             IISApp2 * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Parent )(
+        HRESULT(STDMETHODCALLTYPE *get_Parent)(
             IISApp2 * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Schema )(
+        HRESULT(STDMETHODCALLTYPE *get_Schema)(
             IISApp2 * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetInfo )(
+        HRESULT(STDMETHODCALLTYPE *GetInfo)(
             IISApp2 * This,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *SetInfo )(
+        HRESULT(STDMETHODCALLTYPE *SetInfo)(
             IISApp2 * This,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Get )(
+        HRESULT(STDMETHODCALLTYPE *Get)(
             IISApp2 * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [retval][out] */ VARIANT *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Put )(
+        HRESULT(STDMETHODCALLTYPE *Put)(
             IISApp2 * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [in][idldescattr] */ VARIANT vProp,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetEx )(
+        HRESULT(STDMETHODCALLTYPE *GetEx)(
             IISApp2 * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [retval][out] */ VARIANT *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *PutEx )(
+        HRESULT(STDMETHODCALLTYPE *PutEx)(
             IISApp2 * This,
             /* [in][idldescattr] */ signed long lnControlCode,
             /* [in][idldescattr] */ BSTR bstrName,
@@ -2493,65 +2493,65 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetInfoEx )(
+        HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
             IISApp2 * This,
             /* [in][idldescattr] */ VARIANT vProperties,
             /* [in][idldescattr] */ signed long lnReserved,
             /* [retval][out] */ void *retval);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppCreate )(
+        HRESULT(STDMETHODCALLTYPE *AppCreate)(
             IISApp2 * This,
             /* [in] */ VARIANT_BOOL bSetInProcFlag);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppDelete )(
+        HRESULT(STDMETHODCALLTYPE *AppDelete)(
             IISApp2 * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppDeleteRecursive )(
+        HRESULT(STDMETHODCALLTYPE *AppDeleteRecursive)(
             IISApp2 * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppUnLoad )(
+        HRESULT(STDMETHODCALLTYPE *AppUnLoad)(
             IISApp2 * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppUnLoadRecursive )(
+        HRESULT(STDMETHODCALLTYPE *AppUnLoadRecursive)(
             IISApp2 * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppDisable )(
+        HRESULT(STDMETHODCALLTYPE *AppDisable)(
             IISApp2 * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppDisableRecursive )(
+        HRESULT(STDMETHODCALLTYPE *AppDisableRecursive)(
             IISApp2 * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppEnable )(
+        HRESULT(STDMETHODCALLTYPE *AppEnable)(
             IISApp2 * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppEnableRecursive )(
+        HRESULT(STDMETHODCALLTYPE *AppEnableRecursive)(
             IISApp2 * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppGetStatus )(
+        HRESULT(STDMETHODCALLTYPE *AppGetStatus)(
             IISApp2 * This,
             /* [out] */ DWORD *pdwStatus);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AspAppRestart )(
+        HRESULT(STDMETHODCALLTYPE *AspAppRestart)(
             IISApp2 * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppCreate2 )(
+        HRESULT(STDMETHODCALLTYPE *AppCreate2)(
             IISApp2 * This,
             /* [in] */ LONG lAppMode);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppGetStatus2 )(
+        HRESULT(STDMETHODCALLTYPE *AppGetStatus2)(
             IISApp2 * This,
             /* [retval][out] */ LONG *lpStatus);
 
@@ -2734,30 +2734,30 @@ public:
     {
         BEGIN_INTERFACE
 
-        /* [id][restricted][funcdescattr] */ HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IISApp3 * This,
             /* [in][idldescattr] */ struct GUID *riid,
             /* [out][idldescattr] */ void **ppvObj,
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *AddRef )(
+        HRESULT(STDMETHODCALLTYPE *AddRef)(
             IISApp3 * This,
             /* [retval][out] */ unsigned long *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Release )(
+        HRESULT(STDMETHODCALLTYPE *Release)(
             IISApp3 * This,
             /* [retval][out] */ unsigned long *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetTypeInfoCount )(
+        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
             IISApp3 * This,
             /* [out][idldescattr] */ unsigned UINT *pctinfo,
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetTypeInfo )(
+        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
             IISApp3 * This,
             /* [in][idldescattr] */ unsigned UINT itinfo,
             /* [in][idldescattr] */ unsigned long lcid,
@@ -2765,7 +2765,7 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetIDsOfNames )(
+        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
             IISApp3 * This,
             /* [in][idldescattr] */ struct GUID *riid,
             /* [in][idldescattr] */ signed char **rgszNames,
@@ -2775,7 +2775,7 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Invoke )(
+        HRESULT(STDMETHODCALLTYPE *Invoke)(
             IISApp3 * This,
             /* [in][idldescattr] */ signed long dispidMember,
             /* [in][idldescattr] */ struct GUID *riid,
@@ -2788,66 +2788,66 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Name )(
+        HRESULT(STDMETHODCALLTYPE *get_Name)(
             IISApp3 * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Class )(
+        HRESULT(STDMETHODCALLTYPE *get_Class)(
             IISApp3 * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_GUID )(
+        HRESULT(STDMETHODCALLTYPE *get_GUID)(
             IISApp3 * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_ADsPath )(
+        HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
             IISApp3 * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Parent )(
+        HRESULT(STDMETHODCALLTYPE *get_Parent)(
             IISApp3 * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Schema )(
+        HRESULT(STDMETHODCALLTYPE *get_Schema)(
             IISApp3 * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetInfo )(
+        HRESULT(STDMETHODCALLTYPE *GetInfo)(
             IISApp3 * This,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *SetInfo )(
+        HRESULT(STDMETHODCALLTYPE *SetInfo)(
             IISApp3 * This,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Get )(
+        HRESULT(STDMETHODCALLTYPE *Get)(
             IISApp3 * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [retval][out] */ VARIANT *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Put )(
+        HRESULT(STDMETHODCALLTYPE *Put)(
             IISApp3 * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [in][idldescattr] */ VARIANT vProp,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetEx )(
+        HRESULT(STDMETHODCALLTYPE *GetEx)(
             IISApp3 * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [retval][out] */ VARIANT *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *PutEx )(
+        HRESULT(STDMETHODCALLTYPE *PutEx)(
             IISApp3 * This,
             /* [in][idldescattr] */ signed long lnControlCode,
             /* [in][idldescattr] */ BSTR bstrName,
@@ -2855,70 +2855,70 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetInfoEx )(
+        HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
             IISApp3 * This,
             /* [in][idldescattr] */ VARIANT vProperties,
             /* [in][idldescattr] */ signed long lnReserved,
             /* [retval][out] */ void *retval);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppCreate )(
+        HRESULT(STDMETHODCALLTYPE *AppCreate)(
             IISApp3 * This,
             /* [in] */ VARIANT_BOOL bSetInProcFlag);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppDelete )(
+        HRESULT(STDMETHODCALLTYPE *AppDelete)(
             IISApp3 * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppDeleteRecursive )(
+        HRESULT(STDMETHODCALLTYPE *AppDeleteRecursive)(
             IISApp3 * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppUnLoad )(
+        HRESULT(STDMETHODCALLTYPE *AppUnLoad)(
             IISApp3 * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppUnLoadRecursive )(
+        HRESULT(STDMETHODCALLTYPE *AppUnLoadRecursive)(
             IISApp3 * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppDisable )(
+        HRESULT(STDMETHODCALLTYPE *AppDisable)(
             IISApp3 * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppDisableRecursive )(
+        HRESULT(STDMETHODCALLTYPE *AppDisableRecursive)(
             IISApp3 * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppEnable )(
+        HRESULT(STDMETHODCALLTYPE *AppEnable)(
             IISApp3 * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppEnableRecursive )(
+        HRESULT(STDMETHODCALLTYPE *AppEnableRecursive)(
             IISApp3 * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppGetStatus )(
+        HRESULT(STDMETHODCALLTYPE *AppGetStatus)(
             IISApp3 * This,
             /* [out] */ DWORD *pdwStatus);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AspAppRestart )(
+        HRESULT(STDMETHODCALLTYPE *AspAppRestart)(
             IISApp3 * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppCreate2 )(
+        HRESULT(STDMETHODCALLTYPE *AppCreate2)(
             IISApp3 * This,
             /* [in] */ LONG lAppMode);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppGetStatus2 )(
+        HRESULT(STDMETHODCALLTYPE *AppGetStatus2)(
             IISApp3 * This,
             /* [retval][out] */ LONG *lpStatus);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *AppCreate3 )(
+        HRESULT(STDMETHODCALLTYPE *AppCreate3)(
             IISApp3 * This,
             /* [in] */ LONG lAppMode,
             /* [in] */ VARIANT bstrAppPooI,
@@ -3112,30 +3112,30 @@ public:
     {
         BEGIN_INTERFACE
 
-        /* [id][restricted][funcdescattr] */ HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IISComputer * This,
             /* [in][idldescattr] */ struct GUID *riid,
             /* [out][idldescattr] */ void **ppvObj,
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *AddRef )(
+        HRESULT(STDMETHODCALLTYPE *AddRef)(
             IISComputer * This,
             /* [retval][out] */ unsigned long *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Release )(
+        HRESULT(STDMETHODCALLTYPE *Release)(
             IISComputer * This,
             /* [retval][out] */ unsigned long *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetTypeInfoCount )(
+        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
             IISComputer * This,
             /* [out][idldescattr] */ unsigned UINT *pctinfo,
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetTypeInfo )(
+        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
             IISComputer * This,
             /* [in][idldescattr] */ unsigned UINT itinfo,
             /* [in][idldescattr] */ unsigned long lcid,
@@ -3143,7 +3143,7 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetIDsOfNames )(
+        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
             IISComputer * This,
             /* [in][idldescattr] */ struct GUID *riid,
             /* [in][idldescattr] */ signed char **rgszNames,
@@ -3153,7 +3153,7 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Invoke )(
+        HRESULT(STDMETHODCALLTYPE *Invoke)(
             IISComputer * This,
             /* [in][idldescattr] */ signed long dispidMember,
             /* [in][idldescattr] */ struct GUID *riid,
@@ -3166,66 +3166,66 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Name )(
+        HRESULT(STDMETHODCALLTYPE *get_Name)(
             IISComputer * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Class )(
+        HRESULT(STDMETHODCALLTYPE *get_Class)(
             IISComputer * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_GUID )(
+        HRESULT(STDMETHODCALLTYPE *get_GUID)(
             IISComputer * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_ADsPath )(
+        HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
             IISComputer * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Parent )(
+        HRESULT(STDMETHODCALLTYPE *get_Parent)(
             IISComputer * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Schema )(
+        HRESULT(STDMETHODCALLTYPE *get_Schema)(
             IISComputer * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetInfo )(
+        HRESULT(STDMETHODCALLTYPE *GetInfo)(
             IISComputer * This,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *SetInfo )(
+        HRESULT(STDMETHODCALLTYPE *SetInfo)(
             IISComputer * This,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Get )(
+        HRESULT(STDMETHODCALLTYPE *Get)(
             IISComputer * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [retval][out] */ VARIANT *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Put )(
+        HRESULT(STDMETHODCALLTYPE *Put)(
             IISComputer * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [in][idldescattr] */ VARIANT vProp,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetEx )(
+        HRESULT(STDMETHODCALLTYPE *GetEx)(
             IISComputer * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [retval][out] */ VARIANT *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *PutEx )(
+        HRESULT(STDMETHODCALLTYPE *PutEx)(
             IISComputer * This,
             /* [in][idldescattr] */ signed long lnControlCode,
             /* [in][idldescattr] */ BSTR bstrName,
@@ -3233,28 +3233,28 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetInfoEx )(
+        HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
             IISComputer * This,
             /* [in][idldescattr] */ VARIANT vProperties,
             /* [in][idldescattr] */ signed long lnReserved,
             /* [retval][out] */ void *retval);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *Backup )(
+        HRESULT(STDMETHODCALLTYPE *Backup)(
             IISComputer * This,
             /* [in] */ BSTR bstrLocation,
             /* [in] */ LONG lVersion,
             /* [in] */ LONG lFlags);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *Restore )(
+        HRESULT(STDMETHODCALLTYPE *Restore)(
             IISComputer * This,
             /* [in] */ BSTR bstrLocation,
             /* [in] */ LONG lVersion,
             /* [in] */ LONG lFlags);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *EnumBackups )(
+        HRESULT(STDMETHODCALLTYPE *EnumBackups)(
             IISComputer * This,
             /* [in] */ BSTR bstrLocation,
             /* [in] */ LONG lIndex,
@@ -3263,7 +3263,7 @@ public:
             /* [out] */ VARIANT *pvDate);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *DeleteBackup )(
+        HRESULT(STDMETHODCALLTYPE *DeleteBackup)(
             IISComputer * This,
             /* [in] */ BSTR bstrLocation,
             /* [in] */ LONG lVersion);
@@ -3466,7 +3466,7 @@ public:
             /* [in] */ BSTR bstrDestPath,
             /* [in] */ LONG lFlags) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE SaveData( void) = 0;
+        virtual /* [id] */ HRESULT STDMETHODCALLTYPE SaveData(void) = 0;
 
     };
 
@@ -3476,30 +3476,30 @@ public:
     {
         BEGIN_INTERFACE
 
-        /* [id][restricted][funcdescattr] */ HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IISComputer2 * This,
             /* [in][idldescattr] */ struct GUID *riid,
             /* [out][idldescattr] */ void **ppvObj,
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *AddRef )(
+        HRESULT(STDMETHODCALLTYPE *AddRef)(
             IISComputer2 * This,
             /* [retval][out] */ unsigned long *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Release )(
+        HRESULT(STDMETHODCALLTYPE *Release)(
             IISComputer2 * This,
             /* [retval][out] */ unsigned long *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetTypeInfoCount )(
+        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
             IISComputer2 * This,
             /* [out][idldescattr] */ unsigned UINT *pctinfo,
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetTypeInfo )(
+        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
             IISComputer2 * This,
             /* [in][idldescattr] */ unsigned UINT itinfo,
             /* [in][idldescattr] */ unsigned long lcid,
@@ -3507,7 +3507,7 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetIDsOfNames )(
+        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
             IISComputer2 * This,
             /* [in][idldescattr] */ struct GUID *riid,
             /* [in][idldescattr] */ signed char **rgszNames,
@@ -3517,7 +3517,7 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][restricted][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Invoke )(
+        HRESULT(STDMETHODCALLTYPE *Invoke)(
             IISComputer2 * This,
             /* [in][idldescattr] */ signed long dispidMember,
             /* [in][idldescattr] */ struct GUID *riid,
@@ -3530,66 +3530,66 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Name )(
+        HRESULT(STDMETHODCALLTYPE *get_Name)(
             IISComputer2 * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Class )(
+        HRESULT(STDMETHODCALLTYPE *get_Class)(
             IISComputer2 * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_GUID )(
+        HRESULT(STDMETHODCALLTYPE *get_GUID)(
             IISComputer2 * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_ADsPath )(
+        HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
             IISComputer2 * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Parent )(
+        HRESULT(STDMETHODCALLTYPE *get_Parent)(
             IISComputer2 * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][propget][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *get_Schema )(
+        HRESULT(STDMETHODCALLTYPE *get_Schema)(
             IISComputer2 * This,
             /* [retval][out] */ BSTR *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetInfo )(
+        HRESULT(STDMETHODCALLTYPE *GetInfo)(
             IISComputer2 * This,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *SetInfo )(
+        HRESULT(STDMETHODCALLTYPE *SetInfo)(
             IISComputer2 * This,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Get )(
+        HRESULT(STDMETHODCALLTYPE *Get)(
             IISComputer2 * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [retval][out] */ VARIANT *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *Put )(
+        HRESULT(STDMETHODCALLTYPE *Put)(
             IISComputer2 * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [in][idldescattr] */ VARIANT vProp,
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetEx )(
+        HRESULT(STDMETHODCALLTYPE *GetEx)(
             IISComputer2 * This,
             /* [in][idldescattr] */ BSTR bstrName,
             /* [retval][out] */ VARIANT *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *PutEx )(
+        HRESULT(STDMETHODCALLTYPE *PutEx)(
             IISComputer2 * This,
             /* [in][idldescattr] */ signed long lnControlCode,
             /* [in][idldescattr] */ BSTR bstrName,
@@ -3597,28 +3597,28 @@ public:
             /* [retval][out] */ void *retval);
 
         /* [id][funcdescattr] */
-        HRESULT ( STDMETHODCALLTYPE *GetInfoEx )(
+        HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
             IISComputer2 * This,
             /* [in][idldescattr] */ VARIANT vProperties,
             /* [in][idldescattr] */ signed long lnReserved,
             /* [retval][out] */ void *retval);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *Backup )(
+        HRESULT(STDMETHODCALLTYPE *Backup)(
             IISComputer2 * This,
             /* [in] */ BSTR bstrLocation,
             /* [in] */ LONG lVersion,
             /* [in] */ LONG lFlags);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *Restore )(
+        HRESULT(STDMETHODCALLTYPE *Restore)(
             IISComputer2 * This,
             /* [in] */ BSTR bstrLocation,
             /* [in] */ LONG lVersion,
             /* [in] */ LONG lFlags);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *EnumBackups )(
+        HRESULT(STDMETHODCALLTYPE *EnumBackups)(
             IISComputer2 * This,
             /* [in] */ BSTR bstrLocation,
             /* [in] */ LONG lIndex,
@@ -3627,13 +3627,13 @@ public:
             /* [out] */ VARIANT *pvDate);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *DeleteBackup )(
+        HRESULT(STDMETHODCALLTYPE *DeleteBackup)(
             IISComputer2 * This,
             /* [in] */ BSTR bstrLocation,
             /* [in] */ LONG lVersion);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *BackupWithPassword )(
+        HRESULT(STDMETHODCALLTYPE *BackupWithPassword)(
             IISComputer2 * This,
             /* [in] */ BSTR bstrLocation,
             /* [in] */ LONG lVersion,
@@ -3641,7 +3641,7 @@ public:
             /* [in] */ BSTR bstrPassword);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *RestoreWithPassword )(
+        HRESULT(STDMETHODCALLTYPE *RestoreWithPassword)(
             IISComputer2 * This,
             /* [in] */ BSTR bstrLocation,
             /* [in] */ LONG lVersion,
@@ -3649,7 +3649,7 @@ public:
             /* [in] */ BSTR bstrPassword);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *Export )(
+        HRESULT(STDMETHODCALLTYPE *Export)(
             IISComputer2 * This,
             /* [in] */ BSTR bstrPassword,
             /* [in] */ BSTR bstrFilename,
@@ -3657,7 +3657,7 @@ public:
             /* [in] */ LONG lFlags);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *Import )(
+        HRESULT(STDMETHODCALLTYPE *Import)(
             IISComputer2 * This,
             /* [in] */ BSTR bstrPassword,
             /* [in] */ BSTR bstrFilename,
@@ -3666,7 +3666,7 @@ public:
             /* [in] */ LONG lFlags);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *SaveData )(
+        HRESULT(STDMETHODCALLTYPE *SaveData)(
             IISComputer2 * This);
 
         END_INTERFACE

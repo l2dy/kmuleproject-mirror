@@ -171,12 +171,12 @@ public:
 
     HTTP_CODE GetHashW(LPCSTR szStr)
     {
-        return WriteHash(AtlSoapHashStr( CA2W(szStr) ));
+        return WriteHash(AtlSoapHashStr(CA2W(szStr)));
     }
 
     HTTP_CODE GetHashW(LPCWSTR szStr)
     {
-        return WriteHash(AtlSoapHashStr( szStr ));
+        return WriteHash(AtlSoapHashStr(szStr));
     }
 
     CCodeEnum * GetCurrentEnum()
@@ -184,7 +184,7 @@ public:
         POSITION pos = m_currEnumPos;
         CCodeEnum *p = m_pProxy->GetNextEnum(pos);
 
-        ATLASSERT( p != NULL );
+        ATLASSERT(p != NULL);
 
         return p;
     }
@@ -196,7 +196,7 @@ public:
         POSITION pos = m_currEnumFieldPos;
         CCodeTypedElement *pElem = p->GetNextElement(pos);
 
-        ATLASSERT( pElem != NULL );
+        ATLASSERT(pElem != NULL);
 
         return pElem;
     }
@@ -206,7 +206,7 @@ public:
         POSITION pos = m_currStructPos;
         CCodeStruct *p = m_pProxy->GetNextStruct(pos);
 
-        ATLASSERT( p != NULL );
+        ATLASSERT(p != NULL);
 
         return p;
     }
@@ -218,7 +218,7 @@ public:
         POSITION pos = m_currStructFieldPos;
         CCodeTypedElement *pElem = p->GetNextElement(pos);
 
-        ATLASSERT( pElem != NULL );
+        ATLASSERT(pElem != NULL);
 
         return pElem;
     }
@@ -228,7 +228,7 @@ public:
         POSITION pos = m_currMemberPos;
         CCodeTypedElement *p = m_pProxy->GetNextHeader(pos);
 
-        ATLASSERT( p != NULL );
+        ATLASSERT(p != NULL);
 
         return p;
     }
@@ -265,7 +265,7 @@ public:
     {
         XSDTYPE xsdType = p->GetXSDType();
 
-        ATLASSERT( xsdType != XSDTYPE_ERR );
+        ATLASSERT(xsdType != XSDTYPE_ERR);
 
         if (xsdType != XSDTYPE_UNK)
         {
@@ -289,8 +289,8 @@ public:
 
     HTTP_CODE IsUDT(CCodeTypedElement *p)
     {
-        ATLASSERT( p != NULL );
-        ATLASSERT( p->GetXSDType() != XSDTYPE_ERR );
+        ATLASSERT(p != NULL);
+        ATLASSERT(p->GetXSDType() != XSDTYPE_ERR);
 
         if (p->GetXSDType() != XSDTYPE_UNK)
         {
@@ -304,7 +304,7 @@ public:
         POSITION pos = m_currFunctionPos;
         CCodeFunction *p = m_pProxy->GetNextFunction(pos);
 
-        ATLASSERT( p != NULL );
+        ATLASSERT(p != NULL);
 
         return p;
     }
@@ -316,7 +316,7 @@ public:
         POSITION pos = m_currParameterPos;
         CCodeTypedElement *pElem = p->GetNextElement(pos);
 
-        ATLASSERT( pElem != NULL );
+        ATLASSERT(pElem != NULL);
 
         return pElem;
     }
@@ -328,7 +328,7 @@ public:
         POSITION pos = m_currHeaderPos;
         CCodeTypedElement *pElem = p->GetNextHeader(pos);
 
-        ATLASSERT( pElem != NULL );
+        ATLASSERT(pElem != NULL);
 
         return pElem;
     }
@@ -337,7 +337,7 @@ public:
     {
         XSDTYPE xsdType = p->GetXSDType();
 
-        ATLASSERT( xsdType != XSDTYPE_ERR );
+        ATLASSERT(xsdType != XSDTYPE_ERR);
 
         if (xsdType != XSDTYPE_UNK)
         {
@@ -372,7 +372,7 @@ public:
     {
         XSDTYPE xsdType = p->GetXSDType();
 
-        ATLASSERT( xsdType != XSDTYPE_ERR );
+        ATLASSERT(xsdType != XSDTYPE_ERR);
 
         if (xsdType != XSDTYPE_UNK)
         {
@@ -789,8 +789,8 @@ public:
 
     HRESULT WriteStream(LPCSTR szOut, int nLen, LPDWORD pdwWritten)
     {
-        ATLASSERT( szOut != NULL );
-        ATLASSERT( m_hFile != INVALID_HANDLE_VALUE );
+        ATLASSERT(szOut != NULL);
+        ATLASSERT(m_hFile != INVALID_HANDLE_VALUE);
 
         if (nLen < 0)
         {
@@ -813,7 +813,7 @@ public:
 
     HRESULT FlushStream()
     {
-        ATLASSERT( m_hFile != INVALID_HANDLE_VALUE );
+        ATLASSERT(m_hFile != INVALID_HANDLE_VALUE);
 
         if (FlushFileBuffers(m_hFile) != FALSE)
         {
@@ -832,7 +832,7 @@ public:
 
     HRESULT WriteStream(LPCSTR szOut, int nLen, LPDWORD pdwWritten)
     {
-        ATLASSERT( szOut != NULL );
+        ATLASSERT(szOut != NULL);
 
         if (nLen < 0)
         {

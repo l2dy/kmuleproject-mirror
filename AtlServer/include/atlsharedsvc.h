@@ -46,7 +46,7 @@ class CSharedCache:
 public:
 
     // IMemoryCacheClient method, frees data in the memory cache.
-    STDMETHOD( Free )(const void *pvData)
+    STDMETHOD(Free)(const void *pvData)
     {
         if (pvData)
         {
@@ -65,7 +65,7 @@ public:
         // The BSTR will be freed in our IMemoryCacheClient::Free
         // implementation above.
         BSTR szEntry = SysAllocString(szData);
-        if(szEntry)
+        if (szEntry)
         {
             USES_CONVERSION_EX;
             // create a time span and for the entry
@@ -122,7 +122,7 @@ public:
             *ppv = static_cast<void*>(static_cast<IMemoryCacheClient*>(this));
             hr = S_OK;
         }
-        else if( InlineIsEqualGUID(__uuidof(ISharedBlobCache), riid))
+        else if (InlineIsEqualGUID(__uuidof(ISharedBlobCache), riid))
         {
             *ppv = static_cast<void*>(static_cast<ISharedBlobCache*>(this));
             hr = S_OK;

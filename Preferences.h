@@ -347,9 +347,9 @@ public:
     static	int		m_iPreviewSmallBlocks;
     static	bool	m_bPreviewCopiedArchives;
 
-	static  CString m_strExtractFolder;
-	static  bool    m_bExtractToIncomingDir;
-	static	bool	m_bExtractArchives;
+    static  CString m_strExtractFolder;
+    static  bool    m_bExtractToIncomingDir;
+    static	bool	m_bExtractArchives;
 
     static	int		m_iInspectAllFileTypes;
     static	bool	m_bPreviewOnIconDblClk;
@@ -357,7 +357,7 @@ public:
     static	bool	indicateratings;
     static	bool	watchclipboard;
     static	bool	m_bFirstStart;
-	static	bool	m_bUpdate;
+    static	bool	m_bUpdate;
 
     static	bool	log2disk;
     static	bool	debug2disk;
@@ -861,31 +861,31 @@ public:
     }
     static	uint64	GetCumUpData_EDONKEY()
     {
-        return (cumUpData_EDONKEY +		sesUpData_EDONKEY );
+        return (cumUpData_EDONKEY +		sesUpData_EDONKEY);
     }
     static	uint64	GetCumUpData_EDONKEYHYBRID()
     {
-        return (cumUpData_EDONKEYHYBRID +	sesUpData_EDONKEYHYBRID );
+        return (cumUpData_EDONKEYHYBRID +	sesUpData_EDONKEYHYBRID);
     }
     static	uint64	GetCumUpData_EMULE()
     {
-        return (cumUpData_EMULE +			sesUpData_EMULE );
+        return (cumUpData_EMULE +			sesUpData_EMULE);
     }
     static	uint64	GetCumUpData_MLDONKEY()
     {
-        return (cumUpData_MLDONKEY +		sesUpData_MLDONKEY );
+        return (cumUpData_MLDONKEY +		sesUpData_MLDONKEY);
     }
     static	uint64	GetCumUpData_AMULE()
     {
-        return (cumUpData_AMULE +			sesUpData_AMULE );
+        return (cumUpData_AMULE +			sesUpData_AMULE);
     }
     static	uint64	GetCumUpData_EMULECOMPAT()
     {
-        return (cumUpData_EMULECOMPAT +	sesUpData_EMULECOMPAT );
+        return (cumUpData_EMULECOMPAT +	sesUpData_EMULECOMPAT);
     }
     static	uint64	GetCumUpData_SHAREAZA()
     {
-        return (cumUpData_SHAREAZA +		sesUpData_SHAREAZA );
+        return (cumUpData_SHAREAZA +		sesUpData_SHAREAZA);
     }
 
     // Session client breakdown stats for sent bytes
@@ -936,11 +936,11 @@ public:
     }
     static	uint64	GetCumUpDataPort_4662()
     {
-        return (cumUpDataPort_4662 +		sesUpDataPort_4662 );
+        return (cumUpDataPort_4662 +		sesUpDataPort_4662);
     }
     static	uint64	GetCumUpDataPort_OTHER()
     {
-        return (cumUpDataPort_OTHER +		sesUpDataPort_OTHER );
+        return (cumUpDataPort_OTHER +		sesUpDataPort_OTHER);
     }
 
     // Session port breakdown stats for sent bytes...
@@ -961,20 +961,20 @@ public:
     // Cumulative DS breakdown stats for sent bytes...
     static	uint64	GetUpTotalDataFile()
     {
-        return (GetCumUpData_File() +		GetCumUpData_Partfile() );
+        return (GetCumUpData_File() +		GetCumUpData_Partfile());
     }
     static	uint64	GetCumUpData_File()
     {
-        return (cumUpData_File +			sesUpData_File );
+        return (cumUpData_File +			sesUpData_File);
     }
     static	uint64	GetCumUpData_Partfile()
     {
-        return (cumUpData_Partfile +		sesUpData_Partfile );
+        return (cumUpData_Partfile +		sesUpData_Partfile);
     }
     // Session DS breakdown stats for sent bytes...
     static	uint64	GetUpSessionDataFile()
     {
-        return (sesUpData_File +			sesUpData_Partfile );
+        return (sesUpData_File +			sesUpData_Partfile);
     }
     static	uint64	GetUpData_File()
     {
@@ -1423,7 +1423,7 @@ public:
     {
         return startMinimized;
     }
-    static	void	SetStartMinimized( bool instartMinimized)
+    static	void	SetStartMinimized(bool instartMinimized)
     {
         startMinimized = instartMinimized;
     }
@@ -1431,7 +1431,7 @@ public:
     {
         return m_bAutoStart;
     }
-    static	void	SetAutoStart( bool val)
+    static	void	SetAutoStart(bool val)
     {
         m_bAutoStart = val;
     }
@@ -1498,10 +1498,10 @@ public:
         return m_bFirstStart;
     }
 
-	static bool		IsUpdate()
-	{
-		return m_bUpdate;
-	}
+    static bool		IsUpdate()
+    {
+        return m_bUpdate;
+    }
 
     static	const CString& GetTxtEditor()
     {
@@ -2334,13 +2334,13 @@ public:
 //<<< WiZaRd::MediaInfoDLL Update
 //>>> PreviewIndicator [WiZaRd]
 private:
-	static	uint8		m_uiPreviewIndicatorMode;
+    static	uint8		m_uiPreviewIndicatorMode;
     static	COLORREF m_crPreviewReadyColor; //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
 public:
-	static	uint8		GetPreviewIndicatorMode()
-	{
-		return m_uiPreviewIndicatorMode;
-	}
+    static	uint8		GetPreviewIndicatorMode()
+    {
+        return m_uiPreviewIndicatorMode;
+    }
 //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
     static	COLORREF GetPreviewReadyColor()
     {
@@ -2453,23 +2453,44 @@ public:
 //<<< WiZaRd::Remove forbidden files
 //>>> WiZaRd::Drop Blocking Sockets [Xman?]
 private:
-	static	bool	m_bDropBlockingSession;
-	static	bool	m_bDropBlockingSockets;
-	static	float	m_fMaxBlockRate;
-	static	float	m_fMaxBlockRate20;
+    static	bool	m_bDropBlockingSession;
+    static	bool	m_bDropBlockingSockets;
+    static	float	m_fMaxBlockRate;
+    static	float	m_fMaxBlockRate20;
 public:
-	static	bool	DropBlockingSockets()				{return m_bDropBlockingSession && m_bDropBlockingSockets;}
-	static	void	SetDropBlockingSockets(const bool b){m_bDropBlockingSockets = b;}
-	static	float	GetMaxBlockRate()					{return m_fMaxBlockRate;}
-	static	void	SetMaxBlockRate(const float f)		{m_fMaxBlockRate = f;}
-	static	float	GetMaxBlockRate20()					{return m_fMaxBlockRate20;}
-	static	void	SetMaxBlockRate20(const float f)	{m_fMaxBlockRate20 = f;}
+    static	bool	DropBlockingSockets()
+    {
+        return m_bDropBlockingSession && m_bDropBlockingSockets;
+    }
+    static	void	SetDropBlockingSockets(const bool b)
+    {
+        m_bDropBlockingSockets = b;
+    }
+    static	float	GetMaxBlockRate()
+    {
+        return m_fMaxBlockRate;
+    }
+    static	void	SetMaxBlockRate(const float f)
+    {
+        m_fMaxBlockRate = f;
+    }
+    static	float	GetMaxBlockRate20()
+    {
+        return m_fMaxBlockRate20;
+    }
+    static	void	SetMaxBlockRate20(const float f)
+    {
+        m_fMaxBlockRate20 = f;
+    }
 //<<< WiZaRd::Drop Blocking Sockets [Xman?]
 //>>> WiZaRd::Wine Compatibility
 private:
-	static bool		m_bNeedsWineCompatibility;
+    static bool		m_bNeedsWineCompatibility;
 public:
-	static bool		WeNeedWineCompatibility()			{return m_bNeedsWineCompatibility;}
+    static bool		WeNeedWineCompatibility()
+    {
+        return m_bNeedsWineCompatibility;
+    }
 //<<< WiZaRd::Wine Compatibility
 };
 

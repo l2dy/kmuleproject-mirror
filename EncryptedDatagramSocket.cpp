@@ -301,9 +301,9 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(BYTE* pbyBufIn, int nBufLen,
 // else																-> ASSERT
 int CEncryptedDatagramSocket::EncryptSendClient(uchar** ppbyBuf, int nBufLen, const uchar* pachClientHashOrKadID, bool bKad, UINT nReceiverVerifyKey, UINT nSenderVerifyKey) const
 {
-    ASSERT( theApp.GetPublicIP() != 0 || bKad );
-    ASSERT( pachClientHashOrKadID != NULL || nReceiverVerifyKey != 0 );
-    ASSERT( (nReceiverVerifyKey == 0 && nSenderVerifyKey == 0) || bKad );
+    ASSERT(theApp.GetPublicIP() != 0 || bKad);
+    ASSERT(pachClientHashOrKadID != NULL || nReceiverVerifyKey != 0);
+    ASSERT((nReceiverVerifyKey == 0 && nSenderVerifyKey == 0) || bKad);
 
     uint8 byPadLen = 0;			// padding disabled for UDP currently
     const UINT nCryptHeaderLen = byPadLen + CRYPT_HEADER_WITHOUTPADDING + (bKad ? 8 : 0);

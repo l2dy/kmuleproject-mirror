@@ -57,7 +57,7 @@ CCommentListCtrl::~CCommentListCtrl()
 void CCommentListCtrl::Init(void)
 {
     SetPrefsKey(_T("CommentListCtrl"));
-    ASSERT( (GetStyle() & LVS_SINGLESEL) == 0 );
+    ASSERT((GetStyle() & LVS_SINGLESEL) == 0);
     SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_INFOTIP);
 
     InsertColumn(colRating,		GetResString(IDS_QL_RATING),	LVCFMT_LEFT,  80);
@@ -165,7 +165,7 @@ void CCommentListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 
     GetPopupMenuPos(*this, point);
     popupMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this);
-    VERIFY( popupMenu.DestroyMenu() );
+    VERIFY(popupMenu.DestroyMenu());
 }
 
 BOOL CCommentListCtrl::OnCommand(WPARAM wParam, LPARAM lParam)
@@ -245,6 +245,6 @@ void CCommentListCtrl::AddItem(const Kademlia::CEntry* entry)
 void CCommentListCtrl::OnLvnDeleteItem(NMHDR *pNMHDR, LRESULT *pResult)
 {
     LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-    delete (SComment*)pNMLV->lParam;
+    delete(SComment*)pNMLV->lParam;
     *pResult = 0;
 }

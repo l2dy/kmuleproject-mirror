@@ -20,7 +20,7 @@
 #define RETURN_ON_FAIL2_P(p, msgid) if (p == NULL){PrintError(msgid); return ATLSDPLY_FAIL;}
 
 
-typedef HRESULT (__stdcall *PFNRegisterServer)(void);
+typedef HRESULT(__stdcall *PFNRegisterServer)(void);
 
 class CDepSettings;
 class CADSIHelper;
@@ -49,8 +49,8 @@ int ConfigureRestrictionList(CADSIHelper *pAdsHelper,
                              CDepSettings *pSettings,
                              const wchar_t *wszHost);
 
-int SetRootAppMappings(	CADSIHelper *pAdsHelper,
-                        CDepSettings *pSettings);
+int SetRootAppMappings(CADSIHelper *pAdsHelper,
+                       CDepSettings *pSettings);
 int LocalW3svcReset();
 
 int CheckVRootExistance(const CComBSTR& bstrHostName,
@@ -58,9 +58,9 @@ int CheckVRootExistance(const CComBSTR& bstrHostName,
                         CDepSettings *pSettings);
 
 int UpdateFileSystem(CDepSettings *pSettings);
-int ConfigureVRoot(	CADSIHelper *pAdsHelper,
-                    CDepSettings *pSettings,
-                    const wchar_t *wszHost);
+int ConfigureVRoot(CADSIHelper *pAdsHelper,
+                   CDepSettings *pSettings,
+                   const wchar_t *wszHost);
 int RegisterExtension(CADSIHelper *pAdsHelper,
                       CDepSettings *pSettings);
 int CheckMinVRootConfigSettings(CDepSettings *pSettings);

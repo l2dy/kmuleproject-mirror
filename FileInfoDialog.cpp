@@ -331,20 +331,20 @@ protected:
 
     // MediaInfoLib - v0.4.0.1
     void* (__stdcall *m_pfnMediaInfo4_Open)(char* File) throw(...);
-    void  (__stdcall *m_pfnMediaInfo4_Close)(void* Handle) throw(...);
+    void (__stdcall *m_pfnMediaInfo4_Close)(void* Handle) throw(...);
     char* (__stdcall *m_pfnMediaInfo4_Get)(void* Handle, stream_t_C StreamKind, int StreamNumber, char* Parameter, info_t_C KindOfInfo, info_t_C KindOfSearch) throw(...);
-    int   (__stdcall *m_pfnMediaInfo4_Count_Get)(void* Handle, stream_t_C StreamKind, int StreamNumber) throw(...);
+    int (__stdcall *m_pfnMediaInfo4_Count_Get)(void* Handle, stream_t_C StreamKind, int StreamNumber) throw(...);
 
     // MediaInfoLib - v0.5+
     void*			(__stdcall *m_pfnMediaInfo5_Open)(const wchar_t* File) throw(...);
-    void			(__stdcall *m_pfnMediaInfo_Close)(void* Handle) throw(...);
+    void	(__stdcall *m_pfnMediaInfo_Close)(void* Handle) throw(...);
     const wchar_t*	(__stdcall *m_pfnMediaInfo_Get)(void* Handle, stream_t_C StreamKind, int StreamNumber, const wchar_t* Parameter, info_t_C KindOfInfo, info_t_C KindOfSearch) throw(...);
-    int				(__stdcall *m_pfnMediaInfo_Count_Get)(void* Handle, stream_t_C StreamKind, int StreamNumber) throw(...);
+    int	(__stdcall *m_pfnMediaInfo_Count_Get)(void* Handle, stream_t_C StreamKind, int StreamNumber) throw(...);
 
     // MediaInfoLib - v0.7+
-    int				(__stdcall *m_pfnMediaInfo_Open)(void* Handle, const wchar_t* File) throw(...);
+    int	(__stdcall *m_pfnMediaInfo_Open)(void* Handle, const wchar_t* File) throw(...);
     void*			(__stdcall *m_pfnMediaInfo_New)() throw(...);
-    void			(__stdcall *m_pfnMediaInfo_Delete)(void* Handle) throw(...);
+    void	(__stdcall *m_pfnMediaInfo_Delete)(void* Handle) throw(...);
 };
 
 CMediaInfoDLL theMediaInfoDLL;
@@ -529,7 +529,7 @@ int CGetMediaInfoThread::Run()
     CoInitialize(NULL);
 
     HWND hwndRE = CreateWindow(RICHEDIT_CLASS, _T(""), ES_MULTILINE | ES_READONLY | WS_DISABLED, 0, 0, 200, 200, NULL, NULL, NULL, NULL);
-    ASSERT( hwndRE );
+    ASSERT(hwndRE);
     if (hwndRE && m_hFont)
         ::SendMessage(hwndRE, WM_SETFONT, (WPARAM)m_hFont, 0);
 
@@ -571,7 +571,7 @@ int CGetMediaInfoThread::Run()
             }
         }
     }
-    catch(...)
+    catch (...)
     {
         ASSERT(0);
     }
@@ -582,7 +582,7 @@ int CGetMediaInfoThread::Run()
     re.Attach(hwndRE);
     re.GetRTFText(pThreadRes->strInfo);
     re.Detach();
-    VERIFY( DestroyWindow(hwndRE) );
+    VERIFY(DestroyWindow(hwndRE));
 
     // Usage of 'PostMessage': The idea is to post a message to the window in that other
     // thread and never deadlock (because of the post). This is safe, but leads to the problem
@@ -952,7 +952,7 @@ bool CGetMediaInfoThread::GetMediaInfo(HWND hWndOwner, const CShareableFile* pFi
 {
     if (!pFile)
         return false;
-    ASSERT( !pFile->GetFilePath().IsEmpty() );
+    ASSERT(!pFile->GetFilePath().IsEmpty());
 
     bool bHasDRM = false;
     if (!pFile->IsPartFile() || ((CPartFile*)pFile)->IsComplete(0, 1024, true))
@@ -1004,7 +1004,7 @@ bool CGetMediaInfoThread::GetMediaInfo(HWND hWndOwner, const CShareableFile* pFi
                 return true;
             }
         }
-        catch(...)
+        catch (...)
         {
             ASSERT(0);
         }
@@ -1028,7 +1028,7 @@ bool CGetMediaInfoThread::GetMediaInfo(HWND hWndOwner, const CShareableFile* pFi
                 return true;
             }
         }
-        catch(...)
+        catch (...)
         {
             ASSERT(0);
         }
@@ -1048,16 +1048,16 @@ bool CGetMediaInfoThread::GetMediaInfo(HWND hWndOwner, const CShareableFile* pFi
         {
             if (GetWMHeaders(pFile->GetFilePath(), mi, bIsWM, true))
             {
-                if (bIsWM && (   _tcscmp(szExt, _T(".asf")) != 0
-                                 && _tcscmp(szExt, _T(".wm")) != 0
-                                 && _tcscmp(szExt, _T(".wma")) != 0
-                                 && _tcscmp(szExt, _T(".wmv")) != 0
-                                 && _tcscmp(szExt, _T(".dvr-ms")) != 0))
+                if (bIsWM && (_tcscmp(szExt, _T(".asf")) != 0
+                              && _tcscmp(szExt, _T(".wm")) != 0
+                              && _tcscmp(szExt, _T(".wma")) != 0
+                              && _tcscmp(szExt, _T(".wmv")) != 0
+                              && _tcscmp(szExt, _T(".dvr-ms")) != 0))
                     WarnAboutWrongFileExtension(mi, pFile->GetFileName(), _T("asf wm wma wmv dvr-ms"));
                 return true;
             }
         }
-        catch(...)
+        catch (...)
         {
             ASSERT(0);
         }
@@ -1541,7 +1541,7 @@ bool CGetMediaInfoThread::GetMediaInfo(HWND hWndOwner, const CShareableFile* pFi
             }
             delete iter;
         }
-        catch(...)
+        catch (...)
         {
             ASSERT(0);
         }
@@ -1991,7 +1991,7 @@ bool CGetMediaInfoThread::GetMediaInfo(HWND hWndOwner, const CShareableFile* pFi
                         //"MPEG-1 PS"	v0.7.2.1
                         if (mi->strFileFormat.Find(_T("MPEG")) == 0) /* MPEG container? */
                         {
-                            if (   uAllBitrates != 0					/* do we have any bitrates? */
+                            if (uAllBitrates != 0					/* do we have any bitrates? */
                                     && uAllBitrates != (UINT)-1				/* do we have CBR only? */
                                )
                             {
@@ -2043,7 +2043,7 @@ bool CGetMediaInfoThread::GetMediaInfo(HWND hWndOwner, const CShareableFile* pFi
                         bGiveMediaInfoLibHint = true;
                 }
             }
-            catch(...)
+            catch (...)
             {
                 ASSERT(0);
             }
@@ -2058,8 +2058,8 @@ bool CGetMediaInfoThread::GetMediaInfo(HWND hWndOwner, const CShareableFile* pFi
         // Avoid processing of some file types which are known to crash due to bugged DirectShow filters.
 #ifdef HAVE_QEDIT_H
         if (theApp.GetProfileInt(MOD_VERSION_PLAIN, _T("MediaInfo_MediaDet"), 1)
-                && (   thePrefs.GetInspectAllFileTypes()
-                       || (_tcscmp(szExt, _T(".ogm"))!=0 && _tcscmp(szExt, _T(".ogg"))!=0 && _tcscmp(szExt, _T(".mkv"))!=0)))
+                && (thePrefs.GetInspectAllFileTypes()
+                    || (_tcscmp(szExt, _T(".ogm"))!=0 && _tcscmp(szExt, _T(".ogg"))!=0 && _tcscmp(szExt, _T(".mkv"))!=0)))
         {
             try
             {
@@ -2288,7 +2288,7 @@ bool CGetMediaInfoThread::GetMediaInfo(HWND hWndOwner, const CShareableFile* pFi
                     }
                 }
             }
-            catch(...)
+            catch (...)
             {
                 ASSERT(0);
             }

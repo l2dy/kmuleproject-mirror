@@ -81,7 +81,7 @@ void CHTRichEditCtrl::Init(LPCTSTR pszTitle, LPCTSTR pszSkinKey)
     SetProfileSkinKey(pszSkinKey);
     SetTitle(pszTitle);
 
-    VERIFY( SendMessage(EM_SETUNDOLIMIT, 0, 0) == 0 );
+    VERIFY(SendMessage(EM_SETUNDOLIMIT, 0, 0) == 0);
     int iMaxLogBuff = thePrefs.GetMaxLogBuff();
     if (afxIsWin95())
         LimitText(iMaxLogBuff > 0xFFFF ? 0xFFFF : iMaxLogBuff);
@@ -89,7 +89,7 @@ void CHTRichEditCtrl::Init(LPCTSTR pszTitle, LPCTSTR pszSkinKey)
         LimitText(iMaxLogBuff ? iMaxLogBuff : 128*1024);
     m_iLimitText = GetLimitText();
 
-    VERIFY( GetSelectionCharFormat(m_cfDefault) );
+    VERIFY(GetSelectionCharFormat(m_cfDefault));
 
     // prevent the RE control to change the font height within single log lines (may happen with some Unicode chars)
     DWORD dwLangOpts = SendMessage(EM_GETLANGOPTIONS);
@@ -131,9 +131,9 @@ void CHTRichEditCtrl::PurgeSmileyCaches()
         void *pValue;
         sm_aSmileyBitmaps.GetNextAssoc(pos, strKey, pValue);
 #ifdef USE_METAFILE
-        VERIFY( DeleteEnhMetaFile((HENHMETAFILE)pValue) );
+        VERIFY(DeleteEnhMetaFile((HENHMETAFILE)pValue));
 #else
-        VERIFY( DeleteObject((HBITMAP)pValue) );
+        VERIFY(DeleteObject((HBITMAP)pValue));
 #endif
     }
     sm_aSmileyBitmaps.RemoveAll();
@@ -199,7 +199,7 @@ COLORREF GetLogLineColor(UINT eMsgType)
         return thePrefs.m_crLogWarning;
     if (eMsgType == LOG_SUCCESS)
         return thePrefs.m_crLogSuccess;
-    ASSERT( eMsgType == LOG_INFO );
+    ASSERT(eMsgType == LOG_INFO);
     return CLR_DEFAULT;
 }
 
@@ -396,7 +396,7 @@ void CHTRichEditCtrl::AddString(int nPos, LPCTSTR pszString, bool bLink, COLORRE
                 cf.dwEffects |= CFE_AUTOCOLOR;
             else
             {
-                ASSERT( m_crForeground != CLR_DEFAULT );
+                ASSERT(m_crForeground != CLR_DEFAULT);
                 cf.dwEffects &= ~CFE_AUTOCOLOR;
                 cf.crTextColor = m_crForeground;
             }
@@ -586,7 +586,7 @@ void CHTRichEditCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
     // ugly, simulate a left click to get around the text cursor problem when right clicking.
     if (point.x != -1 && point.y != -1 && lSelStart == lSelEnd)
     {
-        ASSERT( GetStyle() & ES_NOHIDESEL ); // this works only if ES_NOHIDESEL is set
+        ASSERT(GetStyle() & ES_NOHIDESEL);   // this works only if ES_NOHIDESEL is set
         CPoint ptMouse(point);
         ScreenToClient(&ptMouse);
         SendMessage(WM_LBUTTONDOWN, MK_LBUTTON, MAKELONG(ptMouse.x, ptMouse.y));
@@ -620,7 +620,7 @@ void CHTRichEditCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
     menu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this);
     m_bForceArrowCursor = false;
 
-    VERIFY( menu.DestroyMenu() );
+    VERIFY(menu.DestroyMenu());
 }
 
 BOOL CHTRichEditCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
@@ -797,9 +797,9 @@ void CHTRichEditCtrl::AppendHyperLink(const CString& sText, const CString& sTitl
     UNREFERENCED_PARAMETER(sText);
     UNREFERENCED_PARAMETER(sTitle);
     UNREFERENCED_PARAMETER(sDirectory);
-    ASSERT( sText.IsEmpty() );
-    ASSERT( sTitle.IsEmpty() );
-    ASSERT( sDirectory.IsEmpty() );
+    ASSERT(sText.IsEmpty());
+    ASSERT(sTitle.IsEmpty());
+    ASSERT(sDirectory.IsEmpty());
     AddLine(sCommand, sCommand.GetLength(), true);
 }
 
@@ -894,7 +894,7 @@ void CHTRichEditCtrl::SetFont(CFont* pFont, BOOL bRedraw)
     //	cf.bCharSet = lf.lfCharSet;
 
     cf.yOffset = 0;
-    VERIFY( SetDefaultCharFormat(cf) );
+    VERIFY(SetDefaultCharFormat(cf));
 
     // copy everything except the color
     m_cfDefault.dwMask = (cf.dwMask & ~CFM_COLOR) | (m_cfDefault.dwMask & CFM_COLOR);
@@ -974,8 +974,8 @@ void CHTRichEditCtrl::ApplySkin()
         {
             cf.dwMask |= CFM_COLOR;
             cf.crTextColor = m_crForeground;
-            VERIFY( SetDefaultCharFormat(cf) );
-            VERIFY( GetSelectionCharFormat(m_cfDefault) );
+            VERIFY(SetDefaultCharFormat(cf));
+            VERIFY(GetSelectionCharFormat(m_cfDefault));
         }
 
         if (theApp.LoadSkinColor(m_strSkinKey + _T("Bk"), cr))
@@ -1002,7 +1002,7 @@ void CHTRichEditCtrl::ApplySkin()
         m_bDfltBackground = m_crDfltBackground == CLR_DEFAULT;
         m_crBackground = m_bDfltBackground ? GetSysColor(COLOR_WINDOW) : m_crDfltBackground;
 
-        VERIFY( GetSelectionCharFormat(m_cfDefault) );
+        VERIFY(GetSelectionCharFormat(m_cfDefault));
     }
     PurgeSmileyCaches();
 }
@@ -1249,10 +1249,10 @@ void CHTRichEditCtrl::AddSmileys(LPCTSTR pszLine)
             for (int i = 0; i < _countof(s_apszSmileys); i++)
             {
                 if (_tcsncmp(psz, s_apszSmileys[i].pszSmiley, s_apszSmileys[i].iLen) == 0
-                        && (   psz[s_apszSmileys[i].iLen] == L'\0'
-                               || psz[s_apszSmileys[i].iLen] == _T('\r')
-                               || psz[s_apszSmileys[i].iLen] == _T('\n')
-                               || psz[s_apszSmileys[i].iLen] == _T(' ')))
+                        && (psz[s_apszSmileys[i].iLen] == L'\0'
+                            || psz[s_apszSmileys[i].iLen] == _T('\r')
+                            || psz[s_apszSmileys[i].iLen] == _T('\n')
+                            || psz[s_apszSmileys[i].iLen] == _T(' ')))
                 {
                     if (psz - pszStart > 0)
                         ReplaceSel(CString(pszStart, psz - pszStart));
@@ -1343,7 +1343,7 @@ HBITMAP IconToBitmap(HICON hIcon, COLORREF crBackground, int cx = 16, int cy = 1
         }
 #endif
     }
-    catch(CException *ex)
+    catch (CException *ex)
     {
         ASSERT(0);
         ex->Delete();

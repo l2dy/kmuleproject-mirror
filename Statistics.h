@@ -270,11 +270,11 @@ private:
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
 public:
-	uint64  GetTotalCompletedBytes() const;
-	void    IncTotalCompletedBytes(const uint64 toAdd);
-	void    DecTotalCompletedBytes(const uint64 toDec);
+    uint64  GetTotalCompletedBytes() const;
+    void    IncTotalCompletedBytes(const uint64 toAdd);
+    void    DecTotalCompletedBytes(const uint64 toDec);
 private:
-	uint64  m_nTotalCompletedBytes;
+    uint64  m_nTotalCompletedBytes;
 //<<< WiZaRd::ZZUL Upload [ZZ]
 };
 

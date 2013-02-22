@@ -89,14 +89,14 @@ void CHttpClientReqSocket::DataReceived(const BYTE* pucData, UINT uSize)
     {
         bResult = ProcessHttpPacket(pucData, uSize);
     }
-    catch(CMemoryException* ex)
+    catch (CMemoryException* ex)
     {
         strError.Format(_T("Error: HTTP socket: Memory exception; %s"), DbgGetClientInfo());
         if (thePrefs.GetVerbose())
             AddDebugLogLine(false, _T("%s"), strError);
         ex->Delete();
     }
-    catch(CFileException* ex)
+    catch (CFileException* ex)
     {
         TCHAR szError[MAX_CFEXP_ERRORMSG];
         ex->GetErrorMessage(szError, ARRSIZE(szError));
@@ -105,7 +105,7 @@ void CHttpClientReqSocket::DataReceived(const BYTE* pucData, UINT uSize)
             AddDebugLogLine(false, _T("%s"), strError);
         ex->Delete();
     }
-    catch(CString ex)
+    catch (CString ex)
     {
         strError.Format(_T("Error: HTTP socket: %s; %s"), ex, DbgGetClientInfo());
         if (thePrefs.GetVerbose())
@@ -240,7 +240,7 @@ void SplitHeaders(LPCSTR pszHeaders, CStringArray& astrHeaders)
         int iLineLen = pCrLf - p;
         const char* pLine = p;
         p = pCrLf + 2;
-        ASSERT( iLineLen >= 0 );
+        ASSERT(iLineLen >= 0);
         if (iLineLen == 0)
             break;
 
@@ -263,7 +263,7 @@ void CHttpClientReqSocket::ProcessHttpHeaderPacket(const char* packet, UINT size
         {
             // append current (partial) line to any already received partial line
             int iLineLen = pszNl - p;
-            ASSERT( iLineLen >= 0 );
+            ASSERT(iLineLen >= 0);
             if (iLineLen > 0)
                 m_strHttpCurHdrLine += CStringA(p, iLineLen - 1); // do not copy the '\r' character
 
@@ -274,13 +274,13 @@ void CHttpClientReqSocket::ProcessHttpHeaderPacket(const char* packet, UINT size
 
             p += iLineLen + 1;
             iLeft -= iLineLen + 1;
-            ASSERT( iLeft >= 0 );
+            ASSERT(iLeft >= 0);
 
             if (m_strHttpCurHdrLine.IsEmpty()) // if current line is empty, we have found 2(!) CRLFs -> start of body
             {
                 pBody = (LPBYTE)p;
                 iSizeBody = iLeft;
-                ASSERT( iSizeBody >= 0 );
+                ASSERT(iSizeBody >= 0);
             }
             else
             {

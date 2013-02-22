@@ -233,7 +233,7 @@ HRESULT CParserBase::OnUnrecognizedTag(
     cchQName;
     pAttributes;
 
-    ATLTRACE( _T("%sUnrecoginzed Tag: %.*ws\n"), GetTabs(m_dwLevel), cchQName, wszQName );
+    ATLTRACE(_T("%sUnrecoginzed Tag: %.*ws\n"), GetTabs(m_dwLevel), cchQName, wszQName);
 
     int nLine;
     int nCol;
@@ -251,8 +251,8 @@ HRESULT CParserBase::OnMissingAttribute(BOOL bRequired,
 {
     if (bRequired != FALSE)
     {
-        ATLTRACE( _T("%sMissing Required Attribute: name %.*ws, uri %.*ws\n"),
-                  GetTabs(m_dwLevel), cchName, wszName, cchNamespace, wszNamespace );
+        ATLTRACE(_T("%sMissing Required Attribute: name %.*ws, uri %.*ws\n"),
+                 GetTabs(m_dwLevel), cchName, wszName, cchNamespace, wszNamespace);
 
         int nLine;
         int nCol;
@@ -296,7 +296,7 @@ void CParserBase::EmitString(const wchar_t *wszUri, const wchar_t *wszName)
 
 HRESULT CParserBase::SkipElement()
 {
-    CAutoPtr<CSkipParser> p( new CSkipParser(m_spReader, this, GetLevel()) );
+    CAutoPtr<CSkipParser> p(new CSkipParser(m_spReader, this, GetLevel()));
     if (p != NULL)
     {
         if (g_ParserList.AddHead(p) != NULL)
@@ -469,7 +469,7 @@ HRESULT __stdcall CParserBase::processingInstruction(
     wszData;
     cchData;
 
-    ATLTRACE( _T("CParserBase::processingInstruction: target: %.*ws, data: %.*ws\n"), cchTarget, wszTarget, cchData, wszData );
+    ATLTRACE(_T("CParserBase::processingInstruction: target: %.*ws, data: %.*ws\n"), cchTarget, wszTarget, cchData, wszData);
     return S_OK;
 }
 
@@ -480,6 +480,6 @@ HRESULT __stdcall CParserBase::skippedEntity(
     wszName;
     cchName;
 
-    ATLTRACE( _T("CParserBase::skippedEntity: %.*ws\n"), wszName, cchName );
+    ATLTRACE(_T("CParserBase::skippedEntity: %.*ws\n"), wszName, cchName);
     return S_OK;
 }

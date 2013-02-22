@@ -74,7 +74,7 @@ void CRichEditCtrlX::SetSyntaxColoring(const LPCTSTR* ppszKeywords, LPCTSTR pszS
         m_cfKeyword.dwEffects &= ~CFE_AUTOCOLOR;
         m_cfKeyword.crTextColor = RGB(0,0,255);
 
-        ASSERT( GetTextMode() & TM_MULTILEVELUNDO );
+        ASSERT(GetTextMode() & TM_MULTILEVELUNDO);
     }
 }
 

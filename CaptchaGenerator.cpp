@@ -72,7 +72,7 @@ void CCaptchaGenerator::ReGenerateCaptcha(UINT nLetterCount)
         float fRotate = (float)(35 - (GetRandomUInt16() % 70));
         imgLetter.Rotate2(fRotate, NULL, CxImage::IM_BILINEAR,  CxImage::OM_BACKGROUND, 0, false, true);
         UINT nOffset = i * CROWDEDSIZE;
-        ASSERT( imgLetter.GetHeight() == pimgResult->GetHeight() && pimgResult->GetWidth() >= nOffset + imgLetter.GetWidth() );
+        ASSERT(imgLetter.GetHeight() == pimgResult->GetHeight() && pimgResult->GetWidth() >= nOffset + imgLetter.GetWidth());
         for (UINT j = 0; j < imgLetter.GetHeight(); j++)
             for (UINT k = 0; k < imgLetter.GetWidth(); k++)
                 if (pimgResult->GetPixelIndex(nOffset + k, j) != 1)
@@ -99,7 +99,7 @@ bool CCaptchaGenerator::WriteCaptchaImage(CFileDataIO& file)
     if (m_pimgCaptcha->Encode(pbyBuffer, ulSize, CXIMAGE_FORMAT_BMP))
     {
         file.Write(pbyBuffer, ulSize);
-        ASSERT( ulSize > 100 && ulSize < 1000 );
+        ASSERT(ulSize > 100 && ulSize < 1000);
         free(pbyBuffer);
         return true;
     }

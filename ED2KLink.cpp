@@ -214,7 +214,7 @@ CED2KFileLink::CED2KFileLink(const TCHAR* pszName, const TCHAR* pszSize, const T
     for (int i = 0; !bError && i < astrParams.GetCount(); i++)
     {
         const CString& strParam = astrParams.GetAt(i);
-        ASSERT( !strParam.IsEmpty() );
+        ASSERT(!strParam.IsEmpty());
 
         CString strTok;
         int iPos = strParam.Find(_T('='));
@@ -301,7 +301,7 @@ CED2KFileLink::CED2KFileLink(const TCHAR* pszName, const TCHAR* pszSize, const T
                 if (DecodeBase32(strHash, m_AICHHash.GetRawHash(), CAICHHash::GetHashSize()) == (UINT)CAICHHash::GetHashSize())
                 {
                     m_bAICHHashValid = true;
-                    ASSERT( m_AICHHash.GetString().CompareNoCase(strHash) == 0 );
+                    ASSERT(m_AICHHash.GetString().CompareNoCase(strHash) == 0);
                 }
                 else
                     ASSERT(0);
@@ -310,7 +310,7 @@ CED2KFileLink::CED2KFileLink(const TCHAR* pszName, const TCHAR* pszSize, const T
                 ASSERT(0);
         }
 //>>> WiZaRd::CollectionEnhancement
-        else if(strTok == L"f") // "f" for folder ;)
+        else if (strTok == L"f") // "f" for folder ;)
         {
             m_strDownloadDirectory = strParam.Mid(iPos + 1);
             m_strDownloadDirectory.Trim();
@@ -349,43 +349,43 @@ CED2KFileLink::CED2KFileLink(const TCHAR* pszName, const TCHAR* pszSize, const T
 
         int nInvalid = 0;
 
-        pCh = _tcsstr( pCh, _T("sources") );
-        if( pCh != NULL )
+        pCh = _tcsstr(pCh, _T("sources"));
+        if (pCh != NULL)
         {
             pCh = pCh + 7; // point to char after "sources"
             pEnd = pCh;
-            while( *pEnd ) pEnd++; // make pEnd point to the terminating NULL
+            while (*pEnd) pEnd++;  // make pEnd point to the terminating NULL
             bAllowSources=true;
             // if there's an expiration date...
-            if( *pCh == _T('@') && (pEnd-pCh) > 7 )
+            if (*pCh == _T('@') && (pEnd-pCh) > 7)
             {
                 pCh++; // after '@'
                 date[2] = 0; // terminate the two character string
                 date[0] = *(pCh++);
                 date[1] = *(pCh++);
-                nYear = _tcstol( date, 0, 10 ) + 2000;
+                nYear = _tcstol(date, 0, 10) + 2000;
                 date[0] = *(pCh++);
                 date[1] = *(pCh++);
-                nMonth = _tcstol( date, 0, 10 );
+                nMonth = _tcstol(date, 0, 10);
                 date[0] = *(pCh++);
                 date[1] = *(pCh++);
-                nDay = _tcstol( date, 0, 10 );
-                bAllowSources = ( expirationDate.SetDate(nYear,nMonth,nDay) == 0 );
+                nDay = _tcstol(date, 0, 10);
+                bAllowSources = (expirationDate.SetDate(nYear,nMonth,nDay) == 0);
                 if (bAllowSources) bAllowSources=(COleDateTime::GetCurrentTime() < expirationDate);
             }
 
             // increment pCh to point to the first "ip:port" and check for sources
-            if ( bAllowSources && ++pCh < pEnd )
+            if (bAllowSources && ++pCh < pEnd)
             {
                 SourcesList = new CSafeMemFile(256);
                 SourcesList->WriteUInt16(nCount); // init to 0, we'll fix this at the end.
                 // for each "ip:port" source string until the end
                 // limit to prevent overflow (uint16 due to CPartFile::AddClientSources)
-                while( *pCh != 0 && nCount < MAXSHORT )
+                while (*pCh != 0 && nCount < MAXSHORT)
                 {
                     pIP = pCh;
                     // find the end of this ip:port string & start of next ip:port string.
-                    if( (pCh = _tcschr(pCh, _T(','))) != NULL )
+                    if ((pCh = _tcschr(pCh, _T(','))) != NULL)
                     {
                         *pCh = 0; // terminate current "ip:port"
                         pCh++; // point to next "ip:port"
@@ -394,7 +394,7 @@ CED2KFileLink::CED2KFileLink(const TCHAR* pszName, const TCHAR* pszSize, const T
                         pCh = pEnd;
 
                     // if port is not present for this ip, go to the next ip.
-                    if( (pPort = _tcschr(pIP, _T(':'))) == NULL )
+                    if ((pPort = _tcschr(pIP, _T(':'))) == NULL)
                     {
                         nInvalid++;
                         continue;
@@ -404,16 +404,16 @@ CED2KFileLink::CED2KFileLink(const TCHAR* pszName, const TCHAR* pszSize, const T
                     pPort++;	// point pPort to port string.
 
                     dwID = inet_addr(CStringA(pIP));
-                    ul = _tcstoul( pPort, 0, 10 );
+                    ul = _tcstoul(pPort, 0, 10);
                     nPort = static_cast<uint16>(ul);
 
                     // skip bad ips / ports
-                    if (ul > 0xFFFF || ul == 0 )	// port
+                    if (ul > 0xFFFF || ul == 0)	// port
                     {
                         nInvalid++;
                         continue;
                     }
-                    if( dwID == INADDR_NONE)  	// hostname?
+                    if (dwID == INADDR_NONE)  	// hostname?
                     {
                         if (_tcslen(pIP) > 512)
                         {
@@ -427,7 +427,7 @@ CED2KFileLink::CED2KFileLink(const TCHAR* pszName, const TCHAR* pszSize, const T
                         continue;
                     }
                     //TODO: This will filter out *.*.*.0 clients. Is there a nice way to fix?
-                    if( IsLowID(dwID) )	// ip
+                    if (IsLowID(dwID))	// ip
                     {
                         nInvalid++;
                         continue;
@@ -467,12 +467,12 @@ void CED2KFileLink::GetLink(CString& lnk) const
     lnk += _T("|");
     lnk += m_size;
     lnk += _T("|");
-    for (int idx=0; idx != 16 ; ++idx )
+    for (int idx=0; idx != 16 ; ++idx)
     {
         unsigned int ui1 = m_hash[idx] / 16;
         unsigned int ui2 = m_hash[idx] % 16;
-        lnk+= static_cast<TCHAR>( ui1 > 9 ? (_T('0')+ui1) : (_T('A')+(ui1-10)) );
-        lnk+= static_cast<TCHAR>( ui2 > 9 ? (_T('0')+ui2) : (_T('A')+(ui2-10)) );
+        lnk+= static_cast<TCHAR>(ui1 > 9 ? (_T('0')+ui1) : (_T('A')+(ui1-10)));
+        lnk+= static_cast<TCHAR>(ui2 > 9 ? (_T('0')+ui2) : (_T('A')+(ui2-10)));
     }
     lnk += _T("|/");
 }

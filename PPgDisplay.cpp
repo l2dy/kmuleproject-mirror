@@ -75,38 +75,38 @@ void CPPgDisplay::DoDataExchange(CDataExchange* pDX)
 
 void CPPgDisplay::LoadSettings(void)
 {
-    if(thePrefs.mintotray)
+    if (thePrefs.mintotray)
         CheckDlgButton(IDC_MINTRAY,1);
     else
         CheckDlgButton(IDC_MINTRAY,0);
 
-    if(thePrefs.transferDoubleclick)
+    if (thePrefs.transferDoubleclick)
         CheckDlgButton(IDC_DBLCLICK,1);
     else
         CheckDlgButton(IDC_DBLCLICK,0);
 
-    if(thePrefs.showRatesInTitle)
+    if (thePrefs.showRatesInTitle)
         CheckDlgButton(IDC_SHOWRATEONTITLE,1);
     else
         CheckDlgButton(IDC_SHOWRATEONTITLE,0);
 
-    if(thePrefs.m_bDisableKnownClientList)
+    if (thePrefs.m_bDisableKnownClientList)
         CheckDlgButton(IDC_DISABLEKNOWNLIST,1);
     else
         CheckDlgButton(IDC_DISABLEKNOWNLIST,0);
 
-    if(thePrefs.m_bDisableQueueList)
+    if (thePrefs.m_bDisableQueueList)
         CheckDlgButton(IDC_DISABLEQUEUELIST,1);
     else
         CheckDlgButton(IDC_DISABLEQUEUELIST,0);
 
-    if(thePrefs.IsStoringSearchesEnabled())
+    if (thePrefs.IsStoringSearchesEnabled())
         CheckDlgButton(IDC_STORESEARCHES,1);
     else
         CheckDlgButton(IDC_STORESEARCHES,0);
 
     CheckDlgButton(IDC_SHOWCATINFO,(UINT)thePrefs.ShowCatTabInfos());
-    CheckDlgButton(IDC_SHOWDWLPERCENT,(UINT)thePrefs.GetUseDwlPercentage() );
+    CheckDlgButton(IDC_SHOWDWLPERCENT,(UINT)thePrefs.GetUseDwlPercentage());
     CheckDlgButton(IDC_CLEARCOMPL, (uint8)thePrefs.GetRemoveFinishedDownloads());
     CheckDlgButton(IDC_SHOWTRANSTOOLBAR, (uint8)thePrefs.IsTransToolbarEnabled());
     CheckDlgButton(IDC_DISABLEHIST, (uint8)thePrefs.GetUseAutocompletion());
@@ -227,7 +227,7 @@ BOOL CPPgDisplay::OnApply()
 
 void CPPgDisplay::Localize(void)
 {
-    if(m_hWnd)
+    if (m_hWnd)
     {
         SetWindowText(GetResString(IDS_PW_DISPLAY));
         GetDlgItem(IDC_MINTRAY)->SetWindowText(GetResString(IDS_PW_TRAY));
@@ -289,7 +289,7 @@ UINT CALLBACK CPPgDisplay::ChooseFontHook(HWND hdlg, UINT uiMsg, WPARAM wParam, 
         {
             LOGFONT lf;
             CFontDialog *pDlg = (CFontDialog *)CWnd::FromHandle(hdlg);
-            ASSERT( pDlg != NULL );
+            ASSERT(pDlg != NULL);
             if (pDlg != NULL)
             {
                 pDlg->GetCurrentFont(&lf);
@@ -358,5 +358,5 @@ BOOL CPPgDisplay::OnHelpInfo(HELPINFO* /*pHelpInfo*/)
 void CPPgDisplay::DrawPreview()
 {
     int dep=((CSliderCtrl*)GetDlgItem(IDC_3DDEPTH))->GetPos();
-    m_3DPreview.SetSliderPos( dep);
+    m_3DPreview.SetSliderPos(dep);
 }

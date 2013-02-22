@@ -156,11 +156,11 @@ void CToolBarCtrlX::AdjustFont(int iMaxPointSize, CSize sizButton)
             if (iPointSize > iMaxPointSize)
             {
                 CWnd* pwndParent = GetParent();
-                ASSERT( pwndParent != NULL );
+                ASSERT(pwndParent != NULL);
                 if (pwndParent)
                 {
                     CFont* pFontDlg = pwndParent->GetFont();
-                    ASSERT( pFontDlg != NULL );
+                    ASSERT(pFontDlg != NULL);
                     if (pFontDlg)
                     {
                         SetFont(pFontDlg);

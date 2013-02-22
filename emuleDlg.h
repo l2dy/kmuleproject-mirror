@@ -254,7 +254,7 @@ protected:
     afx_msg void OnEndSession(BOOL bEnding);
     afx_msg LRESULT OnUserChanged(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnKickIdle(UINT nWhy, long lIdleCount);
-    afx_msg void OnShowWindow( BOOL bShow, UINT nStatus );
+    afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
     afx_msg BOOL OnChevronPushed(UINT id, NMHDR *pnm, LRESULT *pResult);
     afx_msg LRESULT OnPowerBroadcast(WPARAM wParam, LPARAM lParam);
 
@@ -277,14 +277,14 @@ protected:
     afx_msg LRESULT OnAreYouEmule(WPARAM, LPARAM);
 
 #ifdef HAVE_WIN7_SDK_H
-    afx_msg LRESULT OnTaskbarBtnCreated (WPARAM, LPARAM);
+    afx_msg LRESULT OnTaskbarBtnCreated(WPARAM, LPARAM);
 #endif
 
 //>>> WiZaRd::Static MM
-/*
-    // Mini Mule
-    afx_msg LRESULT OnCloseMiniMule(WPARAM wParam, LPARAM lParam);
-*/
+    /*
+        // Mini Mule
+        afx_msg LRESULT OnCloseMiniMule(WPARAM wParam, LPARAM lParam);
+    */
 //<<< WiZaRd::Static MM
 
     // Terminal Services

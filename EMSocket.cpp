@@ -48,8 +48,8 @@ inline void EMTrace(char* fmt, ...)
     //(Ornis+)
     char osDate[30],osTime[30];
     char temp[1024];
-    _strtime( osTime );
-    _strdate( osDate );
+    _strtime(osTime);
+    _strdate(osDate);
     int len = _snprintf(temp,1021,"%s %s: %s",osDate,osTime,bufferline);
     temp[len++] = 0x0d;
     temp[len++] = 0x0a;
@@ -89,12 +89,12 @@ IMPLEMENT_DYNAMIC(CEMSocket, CEncryptedStreamSocket)
 CEMSocket::CEMSocket(void)
 {
 //>>> WiZaRd::Count block/success send [Xman?]
-	blockedsendcount = 0;
-	sendcount = 0;
-	blockedsendcount_overall = 0;
-	sendcount_overall = 0;
-	avg_block_ratio = 0;
-	sum_blockhistory = 0;
+    blockedsendcount = 0;
+    sendcount = 0;
+    blockedsendcount_overall = 0;
+    sendcount_overall = 0;
+    avg_block_ratio = 0;
+    sum_blockhistory = 0;
 //<<< WiZaRd::Count block/success send [Xman?]
     byConnected = ES_NOTCONNECTED;
     m_uTimeOut = CONNECTION_TIMEOUT; // default timeout for ed2k sockets
@@ -135,11 +135,11 @@ CEMSocket::CEMSocket(void)
 
     lastCalledSend = ::GetTickCount();
 //>>> WiZaRd::ZZUL Upload [ZZ]
-    //lastSent = ::GetTickCount()-1000; 
-	m_bConnectionIsReadyForSend = false;
-	m_actualPayloadSizeSentForThisPacket = 0;
-	useLargeBuffer = false;
-	bufferExpanded = false;
+    //lastSent = ::GetTickCount()-1000;
+    m_bConnectionIsReadyForSend = false;
+    m_actualPayloadSizeSentForThisPacket = 0;
+    useLargeBuffer = false;
+    bufferExpanded = false;
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
     m_bAccelerateUpload = false;
@@ -231,11 +231,11 @@ void CEMSocket::ClearQueues()
     EMTrace("CEMSocket::ClearQueues on %d",(SOCKET)this);
 
     sendLocker.Lock();
-    for(POSITION pos = controlpacket_queue.GetHeadPosition(); pos != NULL; )
+    for (POSITION pos = controlpacket_queue.GetHeadPosition(); pos != NULL;)
         delete controlpacket_queue.GetNext(pos);
     controlpacket_queue.RemoveAll();
 
-    for(POSITION pos = standartpacket_queue.GetHeadPosition(); pos != NULL; )
+    for (POSITION pos = standartpacket_queue.GetHeadPosition(); pos != NULL;)
         delete standartpacket_queue.GetNext(pos).packet;
     standartpacket_queue.RemoveAll();
     sendLocker.Unlock();
@@ -299,11 +299,11 @@ void CEMSocket::OnReceive(int nErrorCode)
     // the 2 meg size was taken from another place
 //>>> WiZaRd::ZZUL Upload [ZZ]
     //static char GlobalReadBuffer[2000000];
-	static char GlobalReadBuffer[PARTSIZE+10*1024];
+    static char GlobalReadBuffer[PARTSIZE+10*1024];
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
     // Check for an error code
-    if(nErrorCode != 0)
+    if (nErrorCode != 0)
     {
         OnError(nErrorCode);
         return;
@@ -311,24 +311,24 @@ void CEMSocket::OnReceive(int nErrorCode)
 
     // Check current connection state
 //>>> WiZaRd::ZZUL Upload [ZZ]
-/*
-    if(byConnected == ES_DISCONNECTED)
+    /*
+        if(byConnected == ES_DISCONNECTED)
+            return;
+    	byConnected = ES_CONNECTED; // ES_DISCONNECTED, ES_NOTCONNECTED, ES_CONNECTED
+    */
+    sendLocker.Lock();
+    if (byConnected == ES_DISCONNECTED)
+    {
+        sendLocker.Unlock();
         return;
-	byConnected = ES_CONNECTED; // ES_DISCONNECTED, ES_NOTCONNECTED, ES_CONNECTED
-*/
-	sendLocker.Lock();
-	if(byConnected == ES_DISCONNECTED)
-	{
-		sendLocker.Unlock();
-		return;
-	}
-	if(byConnected == ES_NOTCONNECTED)	
-		byConnected = ES_CONNECTED; // ES_DISCONNECTED, ES_NOTCONNECTED, ES_CONNECTED
-	sendLocker.Unlock();
+    }
+    if (byConnected == ES_NOTCONNECTED)
+        byConnected = ES_CONNECTED; // ES_DISCONNECTED, ES_NOTCONNECTED, ES_CONNECTED
+    sendLocker.Unlock();
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
     // CPU load improvement
-    if(downloadLimitEnable == true && downloadLimit == 0)
+    if (downloadLimitEnable == true && downloadLimit == 0)
     {
         EMTrace("CEMSocket::OnReceive blocked by limit");
         pendingOnReceive = true;
@@ -339,18 +339,18 @@ void CEMSocket::OnReceive(int nErrorCode)
 
     // Remark: an overflow can not occur here
     UINT readMax = sizeof(GlobalReadBuffer) - pendingHeaderSize;
-    if(downloadLimitEnable && readMax > downloadLimit)
+    if (downloadLimitEnable && readMax > downloadLimit)
         readMax = downloadLimit;
 
     // We attempt to read up to 2 megs at a time (minus whatever is in our internal read buffer)
     UINT ret = Receive(GlobalReadBuffer + pendingHeaderSize, readMax);
-    if(ret == SOCKET_ERROR || byConnected == ES_DISCONNECTED)
+    if (ret == SOCKET_ERROR || byConnected == ES_DISCONNECTED)
     {
         return;
     }
 
     // Bandwidth control
-    if(downloadLimitEnable)
+    if (downloadLimitEnable)
     {
         // Update limit
         downloadLimit -= GetRealReceivedBytes();
@@ -364,7 +364,7 @@ void CEMSocket::OnReceive(int nErrorCode)
         return;
 
     // Copy back the partial header into the global read buffer for processing
-    if(pendingHeaderSize > 0)
+    if (pendingHeaderSize > 0)
     {
         memcpy(GlobalReadBuffer, pendingHeader, pendingHeaderSize);
         ret += pendingHeaderSize;
@@ -403,7 +403,7 @@ void CEMSocket::OnReceive(int nErrorCode)
         //
         // The purpose of this algorithm is to limit the amount of data exchanged between buffers
 
-        if(pendingPacket == NULL)
+        if (pendingPacket == NULL)
         {
             pendingPacket = new Packet(rptr); // Create new packet container.
             rptr += 6;                        // Only the header is initialized so far
@@ -425,7 +425,7 @@ void CEMSocket::OnReceive(int nErrorCode)
             }
 
             // Security: Check for buffer overflow (2MB)
-            if(pendingPacket->size > sizeof(GlobalReadBuffer))
+            if (pendingPacket->size > sizeof(GlobalReadBuffer))
             {
                 delete pendingPacket;
                 pendingPacket = NULL;
@@ -441,7 +441,7 @@ void CEMSocket::OnReceive(int nErrorCode)
         // Bytes ready to be copied into packet's internal buffer
         ASSERT(rptr <= rend);
         UINT toCopy = ((pendingPacket->size - pendingPacketSize) < (UINT)(rend - rptr)) ?
-                        (pendingPacket->size - pendingPacketSize) : (UINT)(rend - rptr);
+                      (pendingPacket->size - pendingPacketSize) : (UINT)(rend - rptr);
 
         // Copy Bytes from Global buffer to packet's internal buffer
         memcpy(&pendingPacket->pBuffer[pendingPacketSize], rptr, toCopy);
@@ -450,7 +450,7 @@ void CEMSocket::OnReceive(int nErrorCode)
 
         // Check if packet is complet
         ASSERT(pendingPacket->size >= pendingPacketSize);
-        if(pendingPacket->size == pendingPacketSize)
+        if (pendingPacket->size == pendingPacketSize)
         {
 #ifdef EMSOCKET_DEBUG
             EMTrace("CEMSocket::PacketReceived on %d, opcode=%X, realSize=%d",
@@ -471,7 +471,7 @@ void CEMSocket::OnReceive(int nErrorCode)
     // Finally, if there is any data left over, save it for next time
     ASSERT(rptr <= rend);
     ASSERT(rend - rptr < PACKET_HEADER_SIZE);
-    if(rptr != rend)
+    if (rptr != rend)
     {
         // Keep the partial head
         pendingHeaderSize = rend - rptr;
@@ -485,7 +485,7 @@ void CEMSocket::SetDownloadLimit(UINT limit)
     downloadLimitEnable = true;
 
     // CPU load improvement
-    if(limit > 0 && pendingOnReceive == true)
+    if (limit > 0 && pendingOnReceive == true)
     {
         OnReceive(0);
     }
@@ -496,7 +496,7 @@ void CEMSocket::DisableDownloadLimit()
     downloadLimitEnable = false;
 
     // CPU load improvement
-    if(pendingOnReceive == true)
+    if (pendingOnReceive == true)
     {
         OnReceive(0);
     }
@@ -532,13 +532,13 @@ void CEMSocket::SendPacket(Packet* packet, bool delpacket, bool controlpacket, U
     if (byConnected == ES_DISCONNECTED)
     {
         sendLocker.Unlock();
-        if(delpacket)
+        if (delpacket)
             delete packet;
         return;
     }
 
-	BOOL sendSignalNoLongerBusy = false; //>>> WiZaRd::ZZUL Upload [ZZ]
-	if (!delpacket)
+    BOOL sendSignalNoLongerBusy = false; //>>> WiZaRd::ZZUL Upload [ZZ]
+    if (!delpacket)
     {
         //ASSERT ( !packet->IsSplitted() );
         Packet* copy = new Packet(packet->opcode,packet->size);
@@ -555,44 +555,44 @@ void CEMSocket::SendPacket(Packet* packet, bool delpacket, bool controlpacket, U
         controlpacket_queue.AddTail(packet);
 
         // queue up for controlpacket
-		if(m_bConnectionIsReadyForSend) //>>> WiZaRd::ZZUL Upload [ZZ]
-			theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this, HasSent());
+        if (m_bConnectionIsReadyForSend) //>>> WiZaRd::ZZUL Upload [ZZ]
+            theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this, HasSent());
     }
     else
     {
 //>>> WiZaRd::ZZUL Upload [ZZ]
-		sendSignalNoLongerBusy = standartpacket_queue.IsEmpty(); 
+        sendSignalNoLongerBusy = standartpacket_queue.IsEmpty();
         //bool first = !((sendbuffer && !m_currentPacket_is_controlpacket) || !standartpacket_queue.IsEmpty());
 //<<< WiZaRd::ZZUL Upload [ZZ]
         StandardPacketQueueEntry queueEntry = { actualPayloadSize, packet };
         standartpacket_queue.AddTail(queueEntry);
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
-/*
-        // reset timeout for the first time
-        if (first)
-        {
-            lastFinishedStandard = ::GetTickCount();
-            m_bAccelerateUpload = true;	// Always accelerate first packet in a block
-        }
-*/
+        /*
+                // reset timeout for the first time
+                if (first)
+                {
+                    lastFinishedStandard = ::GetTickCount();
+                    m_bAccelerateUpload = true;	// Always accelerate first packet in a block
+                }
+        */
 //<<< WiZaRd::ZZUL Upload [ZZ]
     }
 
     sendLocker.Unlock();
     if (bForceImmediateSend)
     {
-        ASSERT( controlpacket_queue.GetSize() == 1 );
+        ASSERT(controlpacket_queue.GetSize() == 1);
 //>>> WiZaRd::ZZUL Upload [ZZ]
         //Send(1024, 0, true);
-		theApp.QueueDebugLogLine(false,_T("CEMSocket::SendPacket(): bForceImmediateSend used"));
-		m_bConnectionIsReadyForSend = true;
-		Send(1300, 0, true);
+        theApp.QueueDebugLogLine(false,_T("CEMSocket::SendPacket(): bForceImmediateSend used"));
+        m_bConnectionIsReadyForSend = true;
+        Send(1300, 0, true);
 //<<< WiZaRd::ZZUL Upload [ZZ]
     }
 //>>> WiZaRd::ZZUL Upload [ZZ]
-	if(sendSignalNoLongerBusy)
-		theApp.uploadBandwidthThrottler->SignalNoLongerBusy();
+    if (sendSignalNoLongerBusy)
+        theApp.uploadBandwidthThrottler->SignalNoLongerBusy();
 //<<< WiZaRd::ZZUL Upload [ZZ]
 }
 
@@ -600,7 +600,7 @@ uint64 CEMSocket::GetSentBytesCompleteFileSinceLastCallAndReset()
 {
 //>>> WiZaRd::ZZUL Upload [ZZ]
     //sendLocker.Lock();
-	statsLocker.Lock();
+    statsLocker.Lock();
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
     uint64 sentBytes = m_numberOfSentBytesCompleteFile;
@@ -608,7 +608,7 @@ uint64 CEMSocket::GetSentBytesCompleteFileSinceLastCallAndReset()
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
     //sendLocker.Unlock();
-	statsLocker.Unlock();
+    statsLocker.Unlock();
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
     return sentBytes;
@@ -618,7 +618,7 @@ uint64 CEMSocket::GetSentBytesPartFileSinceLastCallAndReset()
 {
 //>>> WiZaRd::ZZUL Upload [ZZ]
     //sendLocker.Lock();
-	statsLocker.Lock();
+    statsLocker.Lock();
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
     uint64 sentBytes = m_numberOfSentBytesPartFile;
@@ -626,7 +626,7 @@ uint64 CEMSocket::GetSentBytesPartFileSinceLastCallAndReset()
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
     //sendLocker.Unlock();
-	statsLocker.Unlock();
+    statsLocker.Unlock();
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
     return sentBytes;
@@ -636,7 +636,7 @@ uint64 CEMSocket::GetSentBytesControlPacketSinceLastCallAndReset()
 {
 //>>> WiZaRd::ZZUL Upload [ZZ]
     //sendLocker.Lock();
-	statsLocker.Lock();
+    statsLocker.Lock();
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
     uint64 sentBytes = m_numberOfSentBytesControlPacket;
@@ -644,7 +644,7 @@ uint64 CEMSocket::GetSentBytesControlPacketSinceLastCallAndReset()
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
     //sendLocker.Unlock();
-	statsLocker.Unlock();
+    statsLocker.Unlock();
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
     return sentBytes;
@@ -654,7 +654,7 @@ uint64 CEMSocket::GetSentPayloadSinceLastCallAndReset()
 {
 //>>> WiZaRd::ZZUL Upload [ZZ]
     //sendLocker.Lock();
-	statsLocker.Lock();
+    statsLocker.Lock();
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
     uint64 sentBytes = m_actualPayloadSizeSent;
@@ -662,7 +662,7 @@ uint64 CEMSocket::GetSentPayloadSinceLastCallAndReset()
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
     //sendLocker.Unlock();
-	statsLocker.Unlock();
+    statsLocker.Unlock();
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
     return sentBytes;
@@ -684,8 +684,8 @@ void CEMSocket::OnSend(int nErrorCode)
     sendLocker.Lock();
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
-	if(m_bBusy && m_hasSent)
-		useLargeBuffer = true;
+    if (m_bBusy && m_hasSent)
+        useLargeBuffer = true;
 //<<< WiZaRd::ZZUL Upload [ZZ]
     m_bBusy = false;
 
@@ -698,29 +698,29 @@ void CEMSocket::OnSend(int nErrorCode)
         return;
     }
 //>>> WiZaRd::ZZUL Upload [ZZ]
-	if(byConnected == ES_NOTCONNECTED)
+    if (byConnected == ES_NOTCONNECTED)
 //<<< WiZaRd::ZZUL Upload [ZZ]
         byConnected = ES_CONNECTED;
 
-//>>> WiZaRd::ZZUL Upload [ZZ]    
-	//if(!m_bConnectionIsReadyForSend) {
-		m_bConnectionIsReadyForSend = true;
-
-		// queue up for control packet
-		if(sendbuffer != NULL && m_currentPacket_is_controlpacket || !controlpacket_queue.IsEmpty()) 
-		//if(m_currentPacket_is_controlpacket)
-//<<< WiZaRd::ZZUL Upload [ZZ]
-			theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this, HasSent());
 //>>> WiZaRd::ZZUL Upload [ZZ]
-	//} 
-	bool signalNotBusy = (standartpacket_queue.GetCount() > 0 || sendbuffer != NULL && m_currentPacket_is_controlpacket);
+    //if(!m_bConnectionIsReadyForSend) {
+    m_bConnectionIsReadyForSend = true;
+
+    // queue up for control packet
+    if (sendbuffer != NULL && m_currentPacket_is_controlpacket || !controlpacket_queue.IsEmpty())
+        //if(m_currentPacket_is_controlpacket)
+//<<< WiZaRd::ZZUL Upload [ZZ]
+        theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this, HasSent());
+//>>> WiZaRd::ZZUL Upload [ZZ]
+    //}
+    bool signalNotBusy = (standartpacket_queue.GetCount() > 0 || sendbuffer != NULL && m_currentPacket_is_controlpacket);
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
     sendLocker.Unlock();
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
-	if(signalNotBusy)
-		theApp.uploadBandwidthThrottler->SignalNoLongerBusy();
+    if (signalNotBusy)
+        theApp.uploadBandwidthThrottler->SignalNoLongerBusy();
 //<<< WiZaRd::ZZUL Upload [ZZ]
 }
 
@@ -775,11 +775,11 @@ SocketSentBytes CEMSocket::Send(UINT maxNumberOfBytesToSend, UINT minFragSize, b
     //EMTrace("CEMSocket::Send linked: %i, controlcount %i, standartcount %i, isbusy: %i",m_bLinkedPackets, controlpacket_queue.GetCount(), standartpacket_queue.GetCount(), IsBusy());
 //>>> WiZaRd::ZZUL Upload [ZZ]
     //sendLocker.Lock();
-	if (maxNumberOfBytesToSend == 0 && ::GetTickCount() - lastCalledSend < SEC2MS(1)) 
-	{
-		SocketSentBytes returnVal = { true, 0, 0 };
-		return returnVal;
-	}
+    if (maxNumberOfBytesToSend == 0 && ::GetTickCount() - lastCalledSend < SEC2MS(1))
+    {
+        SocketSentBytes returnVal = { true, 0, 0 };
+        return returnVal;
+    }
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
     if (byConnected == ES_DISCONNECTED)
@@ -790,69 +790,69 @@ SocketSentBytes CEMSocket::Send(UINT maxNumberOfBytesToSend, UINT minFragSize, b
     }
 
     bool anErrorHasOccured = false;
-	UINT errorThatOccured = 0; //>>> WiZaRd::ZZUL Upload [ZZ]
+    UINT errorThatOccured = 0; //>>> WiZaRd::ZZUL Upload [ZZ]
     UINT sentStandardPacketBytesThisCall = 0;
     UINT sentControlPacketBytesThisCall = 0;
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
     //if(byConnected == ES_CONNECTED && IsEncryptionLayerReady() && !(m_bBusy && onlyAllowedToSendControlPacket))
-	//{
-	if(m_bConnectionIsReadyForSend && IsEncryptionLayerReady() && !(m_bBusy && onlyAllowedToSendControlPacket)) 
-	{
-		if(!bufferExpanded && useLargeBuffer && !onlyAllowedToSendControlPacket) 
-		{
-			int val;
-			//int len = sizeof(val);
+    //{
+    if (m_bConnectionIsReadyForSend && IsEncryptionLayerReady() && !(m_bBusy && onlyAllowedToSendControlPacket))
+    {
+        if (!bufferExpanded && useLargeBuffer && !onlyAllowedToSendControlPacket)
+        {
+            int val;
+            //int len = sizeof(val);
 
-			//GetSockOpt(SO_SNDBUF, &val, &len);
-			//theApp.QueueDebugLogLine(false,_T("CEMSocket::Send(): Setting SO_SNDBUF. Was (%i bytes = %s)"), val, CastItoXBytes((UINT)val, false, false));
+            //GetSockOpt(SO_SNDBUF, &val, &len);
+            //theApp.QueueDebugLogLine(false,_T("CEMSocket::Send(): Setting SO_SNDBUF. Was (%i bytes = %s)"), val, CastItoXBytes((UINT)val, false, false));
 
-			val = 180*1024;
+            val = 180*1024;
 
-			HRESULT sndBufResult = SetSockOpt(SO_SNDBUF, &val, sizeof(int));
-			if(sndBufResult == SOCKET_ERROR) 
-			{
-				CString pstrReason = GetErrorMessage(WSAGetLastError(), 1);
-				theApp.QueueDebugLogLine(false,_T("CEMSocket::Send(): Couldn't set SO_SNDBUF: %s"), pstrReason);
-			}
+            HRESULT sndBufResult = SetSockOpt(SO_SNDBUF, &val, sizeof(int));
+            if (sndBufResult == SOCKET_ERROR)
+            {
+                CString pstrReason = GetErrorMessage(WSAGetLastError(), 1);
+                theApp.QueueDebugLogLine(false,_T("CEMSocket::Send(): Couldn't set SO_SNDBUF: %s"), pstrReason);
+            }
 
-			//GetSockOpt(SO_SNDBUF, &val, &len);
-			//theApp.QueueDebugLogLine(false,_T("CEMSocket::Send(): Changed SO_SNDBUF. Now %i bytes = %s"), val, CastItoXBytes((UINT)val, false, false));
+            //GetSockOpt(SO_SNDBUF, &val, &len);
+            //theApp.QueueDebugLogLine(false,_T("CEMSocket::Send(): Changed SO_SNDBUF. Now %i bytes = %s"), val, CastItoXBytes((UINT)val, false, false));
 
-			// only try once, even if failed
-			bufferExpanded = true;
-		}
+            // only try once, even if failed
+            bufferExpanded = true;
+        }
 
-		UINT bufferSize = 8192;
-		{
-			int val;
-			int len = sizeof(val);
+        UINT bufferSize = 8192;
+        {
+            int val;
+            int len = sizeof(val);
 
-			GetSockOpt(SO_SNDBUF, &val, &len);
-			//theApp.QueueDebugLogLine(false,_T("CEMSocket::Send(): SO_SNDBUF is (%i bytes = %s)"), val, CastItoXBytes((UINT)val, false, false));
+            GetSockOpt(SO_SNDBUF, &val, &len);
+            //theApp.QueueDebugLogLine(false,_T("CEMSocket::Send(): SO_SNDBUF is (%i bytes = %s)"), val, CastItoXBytes((UINT)val, false, false));
 
-			bufferSize = val;
-		}
+            bufferSize = val;
+        }
 //<<< WiZaRd::ZZUL Upload [ZZ]
-    
-        if(minFragSize < 1)
+
+        if (minFragSize < 1)
             minFragSize = 1;
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
-		if(maxNumberOfBytesToSend == 0) 
-			maxNumberOfBytesToSend = GetNeededBytes(sendbuffer, sendblen, sent, m_currentPacket_is_controlpacket, lastCalledSend);
+        if (maxNumberOfBytesToSend == 0)
+            maxNumberOfBytesToSend = GetNeededBytes(sendbuffer, sendblen, sent, m_currentPacket_is_controlpacket, lastCalledSend);
 //<<< WiZaRd::ZZUL Upload [ZZ]
         maxNumberOfBytesToSend = GetNextFragSize(maxNumberOfBytesToSend, minFragSize);
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
-		bool bWasLongTimeSinceSend = (::GetTickCount() - lastCalledSend) > 1000;
-		sendLocker.Lock();
+        bool bWasLongTimeSinceSend = (::GetTickCount() - lastCalledSend) > 1000;
+        sendLocker.Lock();
         //bool bWasLongTimeSinceSend = (::GetTickCount() - lastSent) > 1000;
 
-		//lastCalledSend = ::GetTickCount();		
+        //lastCalledSend = ::GetTickCount();
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
-        while(sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall < maxNumberOfBytesToSend && anErrorHasOccured == false && // don't send more than allowed. Also, there should have been no error in earlier loop
+        while (sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall < maxNumberOfBytesToSend && anErrorHasOccured == false && // don't send more than allowed. Also, there should have been no error in earlier loop
                 (sendbuffer != NULL || !controlpacket_queue.IsEmpty() || !standartpacket_queue.IsEmpty()) && // there must exist something to send
                 (onlyAllowedToSendControlPacket == false || // this means we are allowed to send both types of packets, so proceed
                  sendbuffer != NULL && m_currentPacket_is_controlpacket == true || // We are in the progress of sending a control packet. We are always allowed to send those
@@ -860,27 +860,27 @@ SocketSentBytes CEMSocket::Send(UINT maxNumberOfBytesToSend, UINT minFragSize, b
                  sendbuffer == NULL && !controlpacket_queue.IsEmpty() || // There's a control packet in queue, and we are not currently sending anything, so we will handle the control packet next
                  sendbuffer != NULL && m_currentPacket_is_controlpacket == false && bWasLongTimeSinceSend && !controlpacket_queue.IsEmpty() && (sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall) < minFragSize // We have waited to long to clean the current packet (which may be a standard packet that is in the way). Proceed no matter what the value of onlyAllowedToSendControlPacket.
                 )
-             )
+              )
         {
 
             // If we are currently not in the progress of sending a packet, we will need to find the next one to send
-            if(sendbuffer == NULL)
+            if (sendbuffer == NULL)
             {
                 Packet* curPacket = NULL;
-                if(!controlpacket_queue.IsEmpty())
+                if (!controlpacket_queue.IsEmpty())
                 {
                     // There's a control packet to send
                     m_currentPacket_is_controlpacket = true;
                     curPacket = controlpacket_queue.RemoveHead();
                 }
-                else if(!standartpacket_queue.IsEmpty())
+                else if (!standartpacket_queue.IsEmpty())
                 {
                     // There's a standard packet to send
                     m_currentPacket_is_controlpacket = false;
                     StandardPacketQueueEntry queueEntry = standartpacket_queue.RemoveHead();
                     curPacket = queueEntry.packet;
                     m_actualPayloadSize = queueEntry.actualPayloadSize;
-					m_actualPayloadSizeSentForThisPacket = 0; //>>> WiZaRd::ZZUL Upload [ZZ]
+                    m_actualPayloadSizeSentForThisPacket = 0; //>>> WiZaRd::ZZUL Upload [ZZ]
 
                     // remember this for statistics purposes.
                     m_currentPackageIsFromPartFile = curPacket->IsFromPF();
@@ -909,7 +909,7 @@ SocketSentBytes CEMSocket::Send(UINT maxNumberOfBytesToSend, UINT minFragSize, b
                 CryptPrepareSendData((uchar*)sendbuffer, sendblen);
             }
 
-			sendLocker.Unlock(); //>>> WiZaRd::ZZUL Upload [ZZ]
+            sendLocker.Unlock(); //>>> WiZaRd::ZZUL Upload [ZZ]
 
             // At this point we've got a packet to send in sendbuffer. Try to send it. Loop until entire packet
             // is sent, or until we reach maximum bytes to send for this call, or until we get an error.
@@ -925,12 +925,12 @@ SocketSentBytes CEMSocket::Send(UINT maxNumberOfBytesToSend, UINT minFragSize, b
                     anErrorHasOccured == false)
             {
                 UINT tosend = sendblen-sent;
-                if(!onlyAllowedToSendControlPacket || m_currentPacket_is_controlpacket)
+                if (!onlyAllowedToSendControlPacket || m_currentPacket_is_controlpacket)
                 {
                     if (maxNumberOfBytesToSend >= sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall && tosend > maxNumberOfBytesToSend-(sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall))
                         tosend = maxNumberOfBytesToSend-(sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall);
                 }
-                else if(bWasLongTimeSinceSend && (sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall) < minFragSize)
+                else if (bWasLongTimeSinceSend && (sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall) < minFragSize)
                 {
                     if (minFragSize >= sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall && tosend > minFragSize-(sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall))
                         tosend = minFragSize-(sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall);
@@ -941,22 +941,22 @@ SocketSentBytes CEMSocket::Send(UINT maxNumberOfBytesToSend, UINT minFragSize, b
                     if (nextFragMaxBytesToSent >= sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall && tosend > nextFragMaxBytesToSent-(sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall))
                         tosend = nextFragMaxBytesToSent-(sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall);
                 }
-                ASSERT (tosend != 0 && tosend <= sendblen-sent);
+                ASSERT(tosend != 0 && tosend <= sendblen-sent);
 
                 //DWORD tempStartSendTick = ::GetTickCount();
 
                 //lastSent = ::GetTickCount(); //>>> WiZaRd::ZZUL Upload [ZZ]
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
-				UINT result = CEncryptedStreamSocket::Send(sendbuffer+sent,min(tosend, bufferSize-1)); // deadlake PROXYSUPPORT - changed to AsyncSocketEx
-                //UINT result = CEncryptedStreamSocket::Send(sendbuffer+sent,tosend); // deadlake PROXYSUPPORT - changed to AsyncSocketEx				
+                UINT result = CEncryptedStreamSocket::Send(sendbuffer+sent,min(tosend, bufferSize-1)); // deadlake PROXYSUPPORT - changed to AsyncSocketEx
+                //UINT result = CEncryptedStreamSocket::Send(sendbuffer+sent,tosend); // deadlake PROXYSUPPORT - changed to AsyncSocketEx
 //<<< WiZaRd::ZZUL Upload [ZZ]
 //>>> WiZaRd::Count block/success send [Xman?]
-				if(!onlyAllowedToSendControlPacket)
-				{
-					++sendcount;
-					++sendcount_overall;
-				}
+                if (!onlyAllowedToSendControlPacket)
+                {
+                    ++sendcount;
+                    ++sendcount_overall;
+                }
 //<<< WiZaRd::Count block/success send [Xman?]
                 if (result == (UINT)SOCKET_ERROR)
                 {
@@ -967,11 +967,11 @@ SocketSentBytes CEMSocket::Send(UINT maxNumberOfBytesToSend, UINT minFragSize, b
 
                         //m_wasBlocked = true;
 //>>> WiZaRd::Count block/success send [Xman?]
-						if(!onlyAllowedToSendControlPacket)
-						{
-							++blockedsendcount;
-							++blockedsendcount_overall;
-						}
+                        if (!onlyAllowedToSendControlPacket)
+                        {
+                            ++blockedsendcount;
+                            ++blockedsendcount_overall;
+                        }
 //<<< WiZaRd::Count block/success send [Xman?]
                         //sendLocker.Unlock(); //>>> WiZaRd::ZZUL Upload [ZZ]
 
@@ -982,7 +982,7 @@ SocketSentBytes CEMSocket::Send(UINT maxNumberOfBytesToSend, UINT minFragSize, b
                     {
                         // Send() gave an error
                         anErrorHasOccured = true;
-						errorThatOccured = error; //>>> WiZaRd::ZZUL Upload [ZZ]
+                        errorThatOccured = error; //>>> WiZaRd::ZZUL Upload [ZZ]
                         //DEBUG_ONLY( AddDebugLogLine(true,"EMSocket: An error has occured: %i", error) );
                     }
                 }
@@ -991,51 +991,51 @@ SocketSentBytes CEMSocket::Send(UINT maxNumberOfBytesToSend, UINT minFragSize, b
                     // we managed to send some bytes. Perform bookkeeping.
                     m_bBusy = false;
                     m_hasSent = true;
-					lastCalledSend = ::GetTickCount(); //>>> WiZaRd::ZZUL Upload [ZZ]
+                    lastCalledSend = ::GetTickCount(); //>>> WiZaRd::ZZUL Upload [ZZ]
 
                     sent += result;
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
-					if(!m_currentPacket_is_controlpacket && sendblen > 0) 
-					{
-						UINT payloadSentWithThisCall = (UINT)(((double)result/(double)sendblen)*m_actualPayloadSize);
-						if(m_actualPayloadSizeSentForThisPacket + payloadSentWithThisCall <= m_actualPayloadSize) 
-						{
-							m_actualPayloadSizeSentForThisPacket += payloadSentWithThisCall;
+                    if (!m_currentPacket_is_controlpacket && sendblen > 0)
+                    {
+                        UINT payloadSentWithThisCall = (UINT)(((double)result/(double)sendblen)*m_actualPayloadSize);
+                        if (m_actualPayloadSizeSentForThisPacket + payloadSentWithThisCall <= m_actualPayloadSize)
+                        {
+                            m_actualPayloadSizeSentForThisPacket += payloadSentWithThisCall;
 
-							statsLocker.Lock();
-							m_actualPayloadSizeSent += payloadSentWithThisCall;
-							statsLocker.Unlock();
-						}
+                            statsLocker.Lock();
+                            m_actualPayloadSizeSent += payloadSentWithThisCall;
+                            statsLocker.Unlock();
+                        }
 
-						ASSERT(m_actualPayloadSizeSentForThisPacket <= m_actualPayloadSize);
-					}
+                        ASSERT(m_actualPayloadSizeSentForThisPacket <= m_actualPayloadSize);
+                    }
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
                     // Log send bytes in correct class
-                    if(m_currentPacket_is_controlpacket == false)
+                    if (m_currentPacket_is_controlpacket == false)
                     {
                         sentStandardPacketBytesThisCall += result;
 
-                        if(m_currentPackageIsFromPartFile == true)
+                        if (m_currentPackageIsFromPartFile == true)
                         {
-							statsLocker.Lock(); //>>> WiZaRd::ZZUL Upload [ZZ]
+                            statsLocker.Lock(); //>>> WiZaRd::ZZUL Upload [ZZ]
                             m_numberOfSentBytesPartFile += result;
-							statsLocker.Unlock(); //>>> WiZaRd::ZZUL Upload [ZZ]
+                            statsLocker.Unlock(); //>>> WiZaRd::ZZUL Upload [ZZ]
                         }
                         else
                         {
-							statsLocker.Lock(); //>>> WiZaRd::ZZUL Upload [ZZ]
+                            statsLocker.Lock(); //>>> WiZaRd::ZZUL Upload [ZZ]
                             m_numberOfSentBytesCompleteFile += result;
-							statsLocker.Unlock(); //>>> WiZaRd::ZZUL Upload [ZZ]
+                            statsLocker.Unlock(); //>>> WiZaRd::ZZUL Upload [ZZ]
                         }
                     }
                     else
                     {
                         sentControlPacketBytesThisCall += result;
-						statsLocker.Lock(); //>>> WiZaRd::ZZUL Upload [ZZ]
+                        statsLocker.Lock(); //>>> WiZaRd::ZZUL Upload [ZZ]
                         m_numberOfSentBytesControlPacket += result;
-						statsLocker.Unlock(); //>>> WiZaRd::ZZUL Upload [ZZ]
+                        statsLocker.Unlock(); //>>> WiZaRd::ZZUL Upload [ZZ]
                     }
                 }
             }
@@ -1048,23 +1048,23 @@ SocketSentBytes CEMSocket::Send(UINT maxNumberOfBytesToSend, UINT minFragSize, b
                 sendbuffer = NULL;
                 sendblen = 0;
 
-                if(!m_currentPacket_is_controlpacket)
+                if (!m_currentPacket_is_controlpacket)
                 {
 //>>> WiZaRd::ZZUL Upload [ZZ]
-					//m_actualPayloadSizeSent += m_actualPayloadSize;
-					if(m_actualPayloadSizeSentForThisPacket < m_actualPayloadSize) 
-					{
-						UINT rest = (m_actualPayloadSize-m_actualPayloadSizeSentForThisPacket);
-						statsLocker.Lock();
-						m_actualPayloadSizeSent += rest;
-						statsLocker.Unlock();
+                    //m_actualPayloadSizeSent += m_actualPayloadSize;
+                    if (m_actualPayloadSizeSentForThisPacket < m_actualPayloadSize)
+                    {
+                        UINT rest = (m_actualPayloadSize-m_actualPayloadSizeSentForThisPacket);
+                        statsLocker.Lock();
+                        m_actualPayloadSizeSent += rest;
+                        statsLocker.Unlock();
 
-						m_actualPayloadSizeSentForThisPacket += rest;
-					}
+                        m_actualPayloadSizeSentForThisPacket += rest;
+                    }
 
-					ASSERT(m_actualPayloadSizeSentForThisPacket == m_actualPayloadSize);
-					m_actualPayloadSizeSentForThisPacket = 0;
-//<<< WiZaRd::ZZUL Upload [ZZ]                    
+                    ASSERT(m_actualPayloadSizeSentForThisPacket == m_actualPayloadSize);
+                    m_actualPayloadSizeSentForThisPacket = 0;
+//<<< WiZaRd::ZZUL Upload [ZZ]
                     m_actualPayloadSize = 0;
 
                     lastFinishedStandard = ::GetTickCount(); // reset timeout
@@ -1075,50 +1075,50 @@ SocketSentBytes CEMSocket::Send(UINT maxNumberOfBytesToSend, UINT minFragSize, b
             }
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
-			// lock before checking the loop condition
-			sendLocker.Lock();
+            // lock before checking the loop condition
+            sendLocker.Lock();
 //<<< WiZaRd::ZZUL Upload [ZZ]
         }
 
-		sendLocker.Unlock(); //>>> WiZaRd::ZZUL Upload [ZZ]
+        sendLocker.Unlock(); //>>> WiZaRd::ZZUL Upload [ZZ]
     }
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
-	// do we need to enter control packet send queue?
-	if(onlyAllowedToSendControlPacket) 
-	{
-		sendLocker.Lock();
-		if(/*!m_bBusy &&*/ m_bConnectionIsReadyForSend && byConnected != ES_DISCONNECTED && (sendbuffer != NULL && m_currentPacket_is_controlpacket || !controlpacket_queue.IsEmpty())) 
-			theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this, HasSent());
-		sendLocker.Unlock();
-	}
-
-	SocketSentBytes returnVal = { !anErrorHasOccured, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall, errorThatOccured };
-/*
-    if(onlyAllowedToSendControlPacket && (!controlpacket_queue.IsEmpty() || sendbuffer != NULL && m_currentPacket_is_controlpacket))
+    // do we need to enter control packet send queue?
+    if (onlyAllowedToSendControlPacket)
     {
-        // enter control packet send queue
-        // we might enter control packet queue several times for the same package,
-        // but that costs very little overhead. Less overhead than trying to make sure
-        // that we only enter the queue once.
-        theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this, HasSent());
+        sendLocker.Lock();
+        if (/*!m_bBusy &&*/ m_bConnectionIsReadyForSend && byConnected != ES_DISCONNECTED && (sendbuffer != NULL && m_currentPacket_is_controlpacket || !controlpacket_queue.IsEmpty()))
+            theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this, HasSent());
+        sendLocker.Unlock();
     }
 
-    //CleanSendLatencyList();
+    SocketSentBytes returnVal = { !anErrorHasOccured, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall, errorThatOccured };
+    /*
+        if(onlyAllowedToSendControlPacket && (!controlpacket_queue.IsEmpty() || sendbuffer != NULL && m_currentPacket_is_controlpacket))
+        {
+            // enter control packet send queue
+            // we might enter control packet queue several times for the same package,
+            // but that costs very little overhead. Less overhead than trying to make sure
+            // that we only enter the queue once.
+            theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this, HasSent());
+        }
 
-    sendLocker.Unlock();
+        //CleanSendLatencyList();
 
-    SocketSentBytes returnVal = { !anErrorHasOccured, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall };
-*/
+        sendLocker.Unlock();
+
+        SocketSentBytes returnVal = { !anErrorHasOccured, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall };
+    */
 //<<< WiZaRd::ZZUL Upload [ZZ]
     return returnVal;
 }
 
 UINT CEMSocket::GetNextFragSize(UINT current, UINT minFragSize)
 {
-    if(current % minFragSize == 0)
+    if (current % minFragSize == 0)
         return current;
-	return minFragSize*(current/minFragSize+1);    
+    return minFragSize*(current/minFragSize+1);
 }
 
 /**
@@ -1140,7 +1140,7 @@ UINT CEMSocket::GetNeededBytes(const char* sendbuffer, const UINT sendblen, cons
 //     }
 
 //	if (!((sendbuffer && !m_currentPacket_is_controlpacket) || !standartpacket_queue.IsEmpty()))
-	if (!((sendbuffer && !currentPacket_is_controlpacket) || !standartpacket_queue.IsEmpty()))
+    if (!((sendbuffer && !currentPacket_is_controlpacket) || !standartpacket_queue.IsEmpty()))
 //<<< WiZaRd::ZZUL Upload [ZZ]
     {
         // No standard packet to send. Even if data needs to be sent to prevent timeout, there's nothing to send.
@@ -1150,7 +1150,7 @@ UINT CEMSocket::GetNeededBytes(const char* sendbuffer, const UINT sendblen, cons
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
     //if (((sendbuffer && !m_currentPacket_is_controlpacket)) && !controlpacket_queue.IsEmpty())
-	if (((sendbuffer && !currentPacket_is_controlpacket)) && !controlpacket_queue.IsEmpty())
+    if (((sendbuffer && !currentPacket_is_controlpacket)) && !controlpacket_queue.IsEmpty())
 //<<< WiZaRd::ZZUL Upload [ZZ]
         m_bAccelerateUpload = true;	// We might be trying to send a block request, accelerate packet
 
@@ -1161,7 +1161,7 @@ UINT CEMSocket::GetNeededBytes(const char* sendbuffer, const UINT sendblen, cons
     uint64 sizeleft, sizetotal;
 //>>> WiZaRd::ZZUL Upload [ZZ]
     //if (sendbuffer && !m_currentPacket_is_controlpacket)
-	if (sendbuffer && !currentPacket_is_controlpacket)
+    if (sendbuffer && !currentPacket_is_controlpacket)
 //<<< WiZaRd::ZZUL Upload [ZZ]
     {
         sizeleft = sendblen-sent;
@@ -1206,14 +1206,14 @@ int CEMSocket::Receive(void* lpBuf, int nBufLen, int nFlags)
         //EMTrace("CEMSocket::##Received FIN on %d, maxSize=%d",(SOCKET)this,nBufLen);
         // FIN received on socket // Connection is being closed by peer
         //ASSERT (false);
-        if ( 0 == AsyncSelect(FD_CLOSE|FD_WRITE) )   // no more READ notifications ...
+        if (0 == AsyncSelect(FD_CLOSE|FD_WRITE))     // no more READ notifications ...
         {
             //int waserr = GetLastError(); // oups, AsyncSelect failed !!!
             ASSERT(0);
         }
         return 0;
     case SOCKET_ERROR:
-        switch(GetLastError())
+        switch (GetLastError())
         {
         case WSANOTINITIALISED:
             ASSERT(0);
@@ -1274,7 +1274,7 @@ void CEMSocket::RemoveAllLayers()
 int CEMSocket::OnLayerCallback(const CAsyncSocketExLayer *pLayer, int nType, int nCode, WPARAM wParam, LPARAM lParam)
 {
     UNREFERENCED_PARAMETER(wParam);
-    ASSERT( pLayer );
+    ASSERT(pLayer);
     if (nType == LAYERCALLBACK_STATECHANGE)
     {
         /*CString logline;
@@ -1341,7 +1341,7 @@ void CEMSocket::TruncateQueues()
 
     // Clear the standard queue totally
     // Please note! There may still be a standardpacket in the sendbuffer variable!
-    for(POSITION pos = standartpacket_queue.GetHeadPosition(); pos != NULL; )
+    for (POSITION pos = standartpacket_queue.GetHeadPosition(); pos != NULL;)
         delete standartpacket_queue.GetNext(pos).packet;
     standartpacket_queue.RemoveAll();
 
@@ -1355,7 +1355,7 @@ void CEMSocket::AssertValid() const
 
     const_cast<CEMSocket*>(this)->sendLocker.Lock();
 
-    ASSERT( byConnected==ES_DISCONNECTED || byConnected==ES_NOTCONNECTED || byConnected==ES_CONNECTED );
+    ASSERT(byConnected==ES_DISCONNECTED || byConnected==ES_NOTCONNECTED || byConnected==ES_CONNECTED);
     CHECK_BOOL(m_bProxyConnectFailed);
     CHECK_PTR(m_pProxyLayer);
     (void)downloadLimit;
@@ -1377,7 +1377,7 @@ void CEMSocket::AssertValid() const
     CHECK_BOOL(m_currentPackageIsFromPartFile);
     (void)lastCalledSend;
     (void)m_actualPayloadSize;
-	(void)m_actualPayloadSizeSentForThisPacket; //>>> WiZaRd::ZZUL Upload [ZZ]
+    (void)m_actualPayloadSizeSentForThisPacket; //>>> WiZaRd::ZZUL Upload [ZZ]
     (void)m_actualPayloadSizeSent;
 
     const_cast<CEMSocket*>(this)->sendLocker.Unlock();
@@ -1458,31 +1458,31 @@ bool CEMSocket::UseBigSendBuffer()
 
 //>>> WiZaRd::Count block/success send [Xman?]
 #define HISTORY_SIZE 20
-float CEMSocket::GetOverallBlockingRatio() const 
-{	
-	return (float)((double)sendcount_overall != 0.0 ? (double)blockedsendcount_overall/(double)sendcount_overall*100.0 : 0.0);
+float CEMSocket::GetOverallBlockingRatio() const
+{
+    return (float)((double)sendcount_overall != 0.0 ? (double)blockedsendcount_overall/(double)sendcount_overall*100.0 : 0.0);
 }
 
-float CEMSocket::GetBlockingRatio() const 
+float CEMSocket::GetBlockingRatio() const
 {
-	return avg_block_ratio;
+    return avg_block_ratio;
 }
 
-float CEMSocket::GetAndStepBlockRatio() 
+float CEMSocket::GetAndStepBlockRatio()
 {
-	float newsample = (float)((double)sendcount != 0.0 ? (double)blockedsendcount/(double)sendcount*100.0 : 0.0);
-	m_blockhistory.AddHead(newsample);
-	sum_blockhistory += newsample;
-	if(m_blockhistory.GetSize() > HISTORY_SIZE) // ~ 20 seconds
-	{
-		const float& substract = m_blockhistory.RemoveTail(); //subtract the old element
-		sum_blockhistory -= substract;
-		if(sum_blockhistory < 0)
-			sum_blockhistory = 0; //fix possible rounding error
-	}
-	blockedsendcount = 0;
-	sendcount = 0;
-	avg_block_ratio = sum_blockhistory / m_blockhistory.GetSize();
-	return avg_block_ratio;
+    float newsample = (float)((double)sendcount != 0.0 ? (double)blockedsendcount/(double)sendcount*100.0 : 0.0);
+    m_blockhistory.AddHead(newsample);
+    sum_blockhistory += newsample;
+    if (m_blockhistory.GetSize() > HISTORY_SIZE) // ~ 20 seconds
+    {
+        const float& substract = m_blockhistory.RemoveTail(); //subtract the old element
+        sum_blockhistory -= substract;
+        if (sum_blockhistory < 0)
+            sum_blockhistory = 0; //fix possible rounding error
+    }
+    blockedsendcount = 0;
+    sendcount = 0;
+    avg_block_ratio = sum_blockhistory / m_blockhistory.GetSize();
+    return avg_block_ratio;
 }
 //<<< WiZaRd::Count block/success send [Xman?]

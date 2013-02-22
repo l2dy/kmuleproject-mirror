@@ -36,16 +36,16 @@ BOOL CColorFrameCtrl::Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, 
     BOOL result;
     static CString className = AfxRegisterWndClass(CS_HREDRAW | CS_VREDRAW, AfxGetApp()->LoadStandardCursor(IDC_ARROW));
 
-    result = CWnd::CreateEx( WS_EX_STATICEDGE,
-                             className, NULL, dwStyle,
-                             rect.left, rect.top, rect.right-rect.left, rect.bottom-rect.top,
-                             pParentWnd->GetSafeHwnd(), (HMENU)nID);
+    result = CWnd::CreateEx(WS_EX_STATICEDGE,
+                            className, NULL, dwStyle,
+                            rect.left, rect.top, rect.right-rect.left, rect.bottom-rect.top,
+                            pParentWnd->GetSafeHwnd(), (HMENU)nID);
     if (result != 0)
         Invalidate();
     return result;
 }
 
-void CColorFrameCtrl::SetFrameColor( COLORREF color )
+void CColorFrameCtrl::SetFrameColor(COLORREF color)
 {
     m_crFrameColor = color;
     m_brushFrame.DeleteObject();

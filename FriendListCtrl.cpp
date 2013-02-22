@@ -84,7 +84,7 @@ void CFriendListCtrl::SetAllIcons()
     iml.Add(CTempIconLoader(_T("FriendNoClient")));
     iml.Add(CTempIconLoader(_T("FriendWithClient")));
     iml.Add(CTempIconLoader(_T("FriendConnected")));
-    ASSERT( (GetStyle() & LVS_SHAREIMAGELISTS) == 0 );
+    ASSERT((GetStyle() & LVS_SHAREIMAGELISTS) == 0);
     HIMAGELIST himlOld = ApplyImageList(iml.Detach());
     if (himlOld)
         ImageList_Destroy(himlOld);

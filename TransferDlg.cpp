@@ -85,8 +85,8 @@ int CTransferDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
     m_pwndToolbar->Create(this, IDD_DOWNLOAD_TOOLBARS,
                           WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_SIZE_FIXED | CBRS_SIZE_DYNAMIC | CBRS_GRIPPER,
                           IDBAR_DOWNLOAD_TOOLBAR);
-    ASSERT( m_pwndToolbar->GetStyle() & WS_CLIPSIBLINGS );
-    ASSERT( m_pwndToolbar->GetStyle() & WS_CLIPCHILDREN );
+    ASSERT(m_pwndToolbar->GetStyle() & WS_CLIPSIBLINGS);
+    ASSERT(m_pwndToolbar->GetStyle() & WS_CLIPCHILDREN);
     m_pwndToolbar->SetWindowText(GetResString(IDS_DOWNLOADCOMMANDS));
     m_pwndToolbar->EnableDocking(CBRS_ALIGN_ANY);
 

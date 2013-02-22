@@ -76,7 +76,7 @@ CSharedFilesWnd::~CSharedFilesWnd()
 {
     m_ctlSharedListHeader.Detach();
     if (icon_files)
-        VERIFY( DestroyIcon(icon_files) );
+        VERIFY(DestroyIcon(icon_files));
 }
 
 void CSharedFilesWnd::DoDataExchange(CDataExchange* pDX)
@@ -110,7 +110,7 @@ BOOL CSharedFilesWnd::OnInitDialog()
     CRect rcFiles;
     sharedfilesctrl.GetWindowRect(rcFiles);
     ScreenToClient(rcFiles);
-    VERIFY( m_dlgDetails.Create(this, DS_CONTROL | DS_SETFONT | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS, WS_EX_CONTROLPARENT) );
+    VERIFY(m_dlgDetails.Create(this, DS_CONTROL | DS_SETFONT | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS, WS_EX_CONTROLPARENT));
     m_dlgDetails.SetWindowPos(NULL, rcFiles.left - 6, rcFiles.bottom - 2, rcFiles.Width() + 12, rcSpl.bottom + 7 - (rcFiles.bottom - 2), 0);
     AddAnchor(m_dlgDetails, BOTTOM_LEFT, BOTTOM_RIGHT);
 
@@ -274,7 +274,7 @@ void CSharedFilesWnd::OnSysColorChange()
 void CSharedFilesWnd::SetAllIcons()
 {
     if (icon_files)
-        VERIFY( DestroyIcon(icon_files) );
+        VERIFY(DestroyIcon(icon_files));
     icon_files = theApp.LoadIcon(_T("SharedFilesList"), 16, 16);
     ((CStatic*)GetDlgItem(IDC_FILES_ICO))->SetIcon(icon_files);
 }
@@ -495,7 +495,7 @@ IMPLEMENT_DYNAMIC(CSharedFileDetailsModelessSheet, CListViewPropertySheet)
 BEGIN_MESSAGE_MAP(CSharedFileDetailsModelessSheet, CListViewPropertySheet)
     ON_MESSAGE(UM_DATA_CHANGED, OnDataChanged)
 //>>> ResizeableLib v1.3 -> v1.4
-	ON_WM_CREATE()
+    ON_WM_CREATE()
 //    ON_WM_NCCREATE()
 //<<< ResizeableLib v1.3 -> v1.4
 END_MESSAGE_MAP()
@@ -506,8 +506,8 @@ BOOL CSharedFileDetailsModelessSheet::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
     // skip CResizableSheet::OnCreate because we don't the styles and stuff which are set there
     CreateSizeGrip(FALSE); // create grip but don't show it
-	return CPropertySheet::OnCreate(lpCreateStruct);
-    //return CPropertySheet::OnNcCreate(lpCreateStruct);	
+    return CPropertySheet::OnCreate(lpCreateStruct);
+    //return CPropertySheet::OnNcCreate(lpCreateStruct);
 }
 //<<< ResizeableLib v1.3 -> v1.4
 
@@ -574,7 +574,7 @@ void CSharedFileDetailsModelessSheet::UpdateMetaDataPage()
 {
     if (thePrefs.IsExtControlsEnabled())
     {
-        if(m_wndMetaData)
+        if (m_wndMetaData)
             return;
 
         m_wndMetaData = new CMetaDataDlg();
@@ -586,7 +586,7 @@ void CSharedFileDetailsModelessSheet::UpdateMetaDataPage()
     }
     else
     {
-        if(m_wndMetaData == NULL)
+        if (m_wndMetaData == NULL)
             return;
 
         RemovePage(m_wndMetaData);
@@ -597,15 +597,15 @@ void CSharedFileDetailsModelessSheet::UpdateMetaDataPage()
 
 void CSharedFileDetailsModelessSheet::Localize()
 {
-    if(m_wndStatistics && m_wndStatistics->GetSafeHwnd())
+    if (m_wndStatistics && m_wndStatistics->GetSafeHwnd())
         m_wndStatistics->Localize();
-    if(m_wndFileLink && m_wndFileLink->GetSafeHwnd())
+    if (m_wndFileLink && m_wndFileLink->GetSafeHwnd())
         m_wndFileLink->Localize();
-    if(m_wndArchiveInfo && m_wndArchiveInfo->GetSafeHwnd())
+    if (m_wndArchiveInfo && m_wndArchiveInfo->GetSafeHwnd())
         m_wndArchiveInfo->Localize();
-    if(m_wndMediaInfo && m_wndMediaInfo->GetSafeHwnd())
+    if (m_wndMediaInfo && m_wndMediaInfo->GetSafeHwnd())
         m_wndMediaInfo->Localize();
-    if(m_wndMetaData && m_wndMetaData->GetSafeHwnd())
+    if (m_wndMetaData && m_wndMetaData->GetSafeHwnd())
         m_wndMetaData->Localize();
 }
 

@@ -60,15 +60,15 @@ CPPgConnection::CPPgConnection()
     : CPropertyPage(CPPgConnection::IDD)
 {
     guardian = false;
-	ratioIcon = NULL; //>>> WiZaRd::Ratio Indicator
+    ratioIcon = NULL; //>>> WiZaRd::Ratio Indicator
 }
 
 CPPgConnection::~CPPgConnection()
 {
 //>>> WiZaRd::Ratio Indicator
-	if (ratioIcon)
-		VERIFY( DestroyIcon(ratioIcon) );
-//<<< WiZaRd::Ratio Indicator	
+    if (ratioIcon)
+        VERIFY(DestroyIcon(ratioIcon));
+//<<< WiZaRd::Ratio Indicator
 }
 
 void CPPgConnection::DoDataExchange(CDataExchange* pDX)
@@ -110,13 +110,13 @@ BOOL CPPgConnection::OnInitDialog()
 {
     CPropertyPage::OnInitDialog();
     InitWindowStyles(this);
-		
-	lastRatio = -1; //>>> WiZaRd::Ratio Indicator
+
+    lastRatio = -1; //>>> WiZaRd::Ratio Indicator
 
     LoadSettings();
     Localize();
 
-    OnEnChangePorts(2);	
+    OnEnChangePorts(2);
 
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
@@ -149,8 +149,8 @@ void CPPgConnection::LoadSettings(void)
         m_ctlMaxUp.SetRange(1, thePrefs.GetMaxGraphUploadRate(true));
         SetRateSliderTicks(m_ctlMaxUp);
 
-        CheckDlgButton( IDC_DLIMIT_LBL, (thePrefs.maxdownload != UNLIMITED));
-        CheckDlgButton( IDC_ULIMIT_LBL, (thePrefs.maxupload != UNLIMITED));
+        CheckDlgButton(IDC_DLIMIT_LBL, (thePrefs.maxdownload != UNLIMITED));
+        CheckDlgButton(IDC_ULIMIT_LBL, (thePrefs.maxupload != UNLIMITED));
 
         m_ctlMaxDown.SetPos((thePrefs.maxdownload != UNLIMITED) ? thePrefs.maxdownload : thePrefs.maxGraphDownloadRate);
         m_ctlMaxUp.SetPos((thePrefs.maxupload != UNLIMITED) ? thePrefs.maxupload : thePrefs.GetMaxGraphUploadRate(true));
@@ -227,7 +227,7 @@ BOOL CPPgConnection::OnApply()
         if (thePrefs.GetMaxGraphUploadRate(true) < ulSpeed && ulSpeed != UNLIMITED)
             ulSpeed = (uint16)(thePrefs.GetMaxGraphUploadRate(true) * 0.8);
 
-        if(ulSpeed > thePrefs.GetMaxUpload())
+        if (ulSpeed > thePrefs.GetMaxUpload())
         {
             // make USS go up to higher ul limit faster
             theApp.lastCommonRouteFinder->InitiateFastReactionPeriod();
@@ -357,7 +357,7 @@ void CPPgConnection::Localize(void)
         GetDlgItem(IDC_MAXSRC_FRM)->SetWindowText(GetResString(IDS_PW_MAXSOURCES));
         GetDlgItem(IDC_MAXSRCHARD_LBL)->SetWindowText(GetResString(IDS_HARDLIMIT));
         GetDlgItem(IDC_OPENPORTS)->SetWindowText(GetResString(IDS_FO_PREFBUTTON));
-        SetDlgItemText(IDC_STARTTEST, GetResString(IDS_STARTTEST) );
+        SetDlgItemText(IDC_STARTTEST, GetResString(IDS_STARTTEST));
         GetDlgItem(IDC_PREF_UPNPONSTART)->SetWindowText(GetResString(IDS_UPNPSTART));
     }
 }
@@ -369,25 +369,25 @@ void CPPgConnection::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
     if (pScrollBar->GetSafeHwnd() == m_ctlMaxUp.m_hWnd)
     {
 //>>> WiZaRd::SessionRatio
-		//no need to limit that here, it will be limited dynamically!
-/*
-        UINT maxup = m_ctlMaxUp.GetPos();
-        UINT maxdown = m_ctlMaxDown.GetPos();
-        if (maxup < 4 && maxup*3 < maxdown)
-        {
-            m_ctlMaxDown.SetPos(maxup*3);
-        }
-        if (maxup < 10 && maxup*4 < maxdown)
-        {
-            m_ctlMaxDown.SetPos(maxup*4);
-        }
-*/
+        //no need to limit that here, it will be limited dynamically!
+        /*
+                UINT maxup = m_ctlMaxUp.GetPos();
+                UINT maxdown = m_ctlMaxDown.GetPos();
+                if (maxup < 4 && maxup*3 < maxdown)
+                {
+                    m_ctlMaxDown.SetPos(maxup*3);
+                }
+                if (maxup < 10 && maxup*4 < maxdown)
+                {
+                    m_ctlMaxDown.SetPos(maxup*4);
+                }
+        */
 //<<< WiZaRd::SessionRatio
     }
     else if (pScrollBar->GetSafeHwnd() == m_ctlMaxDown.m_hWnd)
     {
 //>>> WiZaRd::SessionRatio
-		//could be removed, too... but I like the idea of animating the users to upload :)
+        //could be removed, too... but I like the idea of animating the users to upload :)
 //<<< WiZaRd::SessionRatio
         UINT maxup = m_ctlMaxUp.GetPos();
         UINT maxdown = m_ctlMaxDown.GetPos();
@@ -422,7 +422,7 @@ void CPPgConnection::ShowLimitValues()
     else
         buffer.Format(_T("%u %s"), m_ctlMaxDown.GetPos(), GetResString(IDS_KBYTESPERSEC));
     GetDlgItem(IDC_KBS1)->SetWindowText(buffer);
-	SetRatioIcon(); //>>> WiZaRd::Ratio Indicator
+    SetRatioIcon(); //>>> WiZaRd::Ratio Indicator
 }
 
 void CPPgConnection::OnLimiterChange()
@@ -531,26 +531,26 @@ void CPPgConnection::SetRateSliderTicks(CSliderCtrl& rRate)
 //>>> WiZaRd::Ratio Indicator
 void CPPgConnection::SetRatioIcon()
 {
-	CString strBuffer = L"";
-	GetDlgItem(IDC_UPLOAD_CAP)->GetWindowText(strBuffer);
+    CString strBuffer = L"";
+    GetDlgItem(IDC_UPLOAD_CAP)->GetWindowText(strBuffer);
 
-	UINT maxUpload = (UINT)_tstoi(strBuffer);
-	if(maxUpload == 0)
-		maxUpload = thePrefs.GetMaxGraphUploadRate(true);
-	UINT upload = m_ctlMaxUp.GetPos();	
-	if(upload == 0)
-		upload = UNLIMITED;
+    UINT maxUpload = (UINT)_tstoi(strBuffer);
+    if (maxUpload == 0)
+        maxUpload = thePrefs.GetMaxGraphUploadRate(true);
+    UINT upload = m_ctlMaxUp.GetPos();
+    if (upload == 0)
+        upload = UNLIMITED;
 
-	int ratio = min(8, int(GetRatioDouble(upload, maxUpload)/0.125));
-	if(ratio == lastRatio)
-		return;
+    int ratio = min(8, int(GetRatioDouble(upload, maxUpload)/0.125));
+    if (ratio == lastRatio)
+        return;
 
-	lastRatio = ratio;
+    lastRatio = ratio;
 
-	if (ratioIcon)
-		VERIFY( DestroyIcon(ratioIcon) );
+    if (ratioIcon)
+        VERIFY(DestroyIcon(ratioIcon));
 
-	ratioIcon = theApp.LoadIcon(strRatioSmilies[ratio], 16, 16);
-	((CStatic*)GetDlgItem(IDC_RATIOICON))->SetIcon(ratioIcon);
+    ratioIcon = theApp.LoadIcon(strRatioSmilies[ratio], 16, 16);
+    ((CStatic*)GetDlgItem(IDC_RATIOICON))->SetIcon(ratioIcon);
 }
 //<<< WiZaRd::Ratio Indicator

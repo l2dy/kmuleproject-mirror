@@ -147,7 +147,7 @@ public:
         RegisterClassEx(&wndclass);
 
         m_hWnd = CreateWindow(_T("CAsyncSocketEx Helper Window"), _T("CAsyncSocketEx Helper Window"), 0, 0, 0, 0, 0, 0, 0, 0, GetModuleHandle(0));
-        ASSERT( m_hWnd );
+        ASSERT(m_hWnd);
         SetWindowLong(m_hWnd, GWL_USERDATA, (LONG)this);
     };
 
@@ -170,10 +170,10 @@ public:
     //Adds a socket to the list of attached sockets
     BOOL AddSocket(CAsyncSocketEx *pSocket, int &nSocketIndex)
     {
-        ASSERT( pSocket );
+        ASSERT(pSocket);
         if (!m_nWindowDataSize)
         {
-            ASSERT( !m_nSocketCount );
+            ASSERT(!m_nSocketCount);
             m_nWindowDataSize = 512;
             m_pAsyncSocketExWindowData = new t_AsyncSocketExWindowData[512]; //Reserve space for 512 active sockets
             memset(m_pAsyncSocketExWindowData, 0, 512 * sizeof(t_AsyncSocketExWindowData));
@@ -181,10 +181,10 @@ public:
 
         if (nSocketIndex != -1)
         {
-            ASSERT( m_pAsyncSocketExWindowData );
-            ASSERT( m_nWindowDataSize>nSocketIndex );
-            ASSERT( m_pAsyncSocketExWindowData[nSocketIndex].m_pSocket == pSocket );
-            ASSERT( m_nSocketCount );
+            ASSERT(m_pAsyncSocketExWindowData);
+            ASSERT(m_nWindowDataSize>nSocketIndex);
+            ASSERT(m_pAsyncSocketExWindowData[nSocketIndex].m_pSocket == pSocket);
+            ASSERT(m_nSocketCount);
             return TRUE;
         }
 
@@ -192,7 +192,7 @@ public:
         if (m_nSocketCount >= m_nWindowDataSize - 10)
         {
             int nOldWindowDataSize = m_nWindowDataSize;
-            ASSERT( m_nWindowDataSize < MAX_SOCKETS );
+            ASSERT(m_nWindowDataSize < MAX_SOCKETS);
             m_nWindowDataSize += 512;
             if (m_nWindowDataSize > MAX_SOCKETS)
                 m_nWindowDataSize = MAX_SOCKETS;
@@ -225,15 +225,15 @@ public:
     BOOL RemoveSocket(CAsyncSocketEx *pSocket, int &nSocketIndex)
     {
         UNREFERENCED_PARAMETER(pSocket);
-        ASSERT( pSocket );
+        ASSERT(pSocket);
 
         if (nSocketIndex == -1)
             return TRUE;
 
-        ASSERT( m_pAsyncSocketExWindowData );
-        ASSERT( m_nWindowDataSize > 0 );
-        ASSERT( m_nSocketCount > 0 );
-        ASSERT( m_pAsyncSocketExWindowData[nSocketIndex].m_pSocket == pSocket );
+        ASSERT(m_pAsyncSocketExWindowData);
+        ASSERT(m_nWindowDataSize > 0);
+        ASSERT(m_nSocketCount > 0);
+        ASSERT(m_pAsyncSocketExWindowData[nSocketIndex].m_pSocket == pSocket);
         m_pAsyncSocketExWindowData[nSocketIndex].m_pSocket = 0;
         nSocketIndex = -1;
         m_nSocketCount--;
@@ -251,9 +251,9 @@ public:
             if (message >= WM_SOCKETEX_NOTIFY)
             {
                 //Verify parameters
-                ASSERT( hWnd );
+                ASSERT(hWnd);
                 CAsyncSocketExHelperWindow *pWnd = (CAsyncSocketExHelperWindow *)GetWindowLong(hWnd, GWL_USERDATA);
-                ASSERT( pWnd );
+                ASSERT(pWnd);
 
                 if (message < (UINT)(WM_SOCKETEX_NOTIFY + pWnd->m_nWindowDataSize)) //Index is within socket storage
                 {
@@ -382,9 +382,9 @@ public:
                 //WSAAsyncGetHostByName reply
 
                 //Verify parameters
-                ASSERT( hWnd );
+                ASSERT(hWnd);
                 CAsyncSocketExHelperWindow *pWnd = (CAsyncSocketExHelperWindow *)GetWindowLong(hWnd, GWL_USERDATA);
-                ASSERT( pWnd );
+                ASSERT(pWnd);
 
                 CAsyncSocketEx *pSocket = NULL;
                 int i;
@@ -436,7 +436,7 @@ public:
             return DefWindowProc(hWnd, message, wParam, lParam);
 #if !NO_USE_CLIENT_TCP_CATCH_ALL_HANDLER
         }
-        catch(CException* e)
+        catch (CException* e)
         {
             TCHAR szError[1024];
             e->GetErrorMessage(szError, ARRSIZE(szError));
@@ -501,7 +501,7 @@ CAsyncSocketEx::~CAsyncSocketEx()
 
 BOOL CAsyncSocketEx::Create(UINT nSocketPort /*=0*/, int nSocketType /*=SOCK_STREAM*/,
                             long lEvent /*=FD_READ | FD_WRITE | FD_OOB | FD_ACCEPT | FD_CONNECT | FD_CLOSE*/,
-                            LPCSTR lpszSocketAddress /*=NULL*/, BOOL bReuseAddr /*=FALSE*/ )
+                            LPCSTR lpszSocketAddress /*=NULL*/, BOOL bReuseAddr /*=FALSE*/)
 {
     //Close the socket, although this should not happen
     if (GetSocketHandle() != INVALID_SOCKET)
@@ -550,7 +550,7 @@ BOOL CAsyncSocketEx::Create(UINT nSocketPort /*=0*/, int nSocketType /*=SOCK_STR
         {
             // Has to be done right before binding the socket!
             int iOptVal = 1;
-            VERIFY( SetSockOpt(SO_REUSEADDR, &iOptVal, sizeof iOptVal) );
+            VERIFY(SetSockOpt(SO_REUSEADDR, &iOptVal, sizeof iOptVal));
         }
 
         if (!Bind(nSocketPort, lpszSocketAddress))
@@ -616,21 +616,21 @@ BOOL CAsyncSocketEx::Bind(const SOCKADDR* lpSockAddr, int nSockAddrLen)
 
 void CAsyncSocketEx::AttachHandle(SOCKET /*hSocket*/)
 {
-    ASSERT( m_pLocalAsyncSocketExThreadData );
-    VERIFY( m_pLocalAsyncSocketExThreadData->m_pHelperWindow->AddSocket(this, m_SocketData.nSocketIndex) );
+    ASSERT(m_pLocalAsyncSocketExThreadData);
+    VERIFY(m_pLocalAsyncSocketExThreadData->m_pHelperWindow->AddSocket(this, m_SocketData.nSocketIndex));
 }
 
 void CAsyncSocketEx::DetachHandle(SOCKET /*hSocket*/)
 {
-    ASSERT( m_pLocalAsyncSocketExThreadData );
+    ASSERT(m_pLocalAsyncSocketExThreadData);
     if (!m_pLocalAsyncSocketExThreadData)
         return;
 
-    ASSERT( m_pLocalAsyncSocketExThreadData->m_pHelperWindow );
+    ASSERT(m_pLocalAsyncSocketExThreadData->m_pHelperWindow);
     if (!m_pLocalAsyncSocketExThreadData->m_pHelperWindow)
         return;
 
-    VERIFY( m_pLocalAsyncSocketExThreadData->m_pHelperWindow->RemoveSocket(this, m_SocketData.nSocketIndex) );
+    VERIFY(m_pLocalAsyncSocketExThreadData->m_pHelperWindow->RemoveSocket(this, m_SocketData.nSocketIndex));
 }
 
 void CAsyncSocketEx::Close()
@@ -641,7 +641,7 @@ void CAsyncSocketEx::Close()
 #endif //NOLAYERS
     if (m_SocketData.hSocket != INVALID_SOCKET)
     {
-        VERIFY( closesocket(m_SocketData.hSocket) != SOCKET_ERROR );
+        VERIFY(closesocket(m_SocketData.hSocket) != SOCKET_ERROR);
         DetachHandle(m_SocketData.hSocket);
         m_SocketData.hSocket = INVALID_SOCKET;
     }
@@ -675,8 +675,8 @@ BOOL CAsyncSocketEx::InitAsyncSocketExInstance()
             t_AsyncSocketExThreadDataList *pList = m_spAsyncSocketExThreadDataList;
             while (pList)
             {
-                ASSERT( pList->pThreadData );
-                ASSERT( pList->pThreadData->nInstanceCount > 0 );
+                ASSERT(pList->pThreadData);
+                ASSERT(pList->pThreadData->nInstanceCount > 0);
 
                 if (pList->pThreadData->nThreadId == id)
                 {
@@ -712,7 +712,7 @@ BOOL CAsyncSocketEx::InitAsyncSocketExInstance()
             m_spAsyncSocketExThreadDataList->pThreadData = m_pLocalAsyncSocketExThreadData;
         }
     }
-    catch(...)
+    catch (...)
     {
         TRACE(L"Unknown exception in CAsyncSocketEx::InitAsyncSocketExInstance()\n");
         ASSERT(0);
@@ -735,19 +735,19 @@ void CAsyncSocketEx::FreeAsyncSocketExInstance()
 
     try
     {
-        ASSERT( m_spAsyncSocketExThreadDataList );
+        ASSERT(m_spAsyncSocketExThreadDataList);
         t_AsyncSocketExThreadDataList *pList = m_spAsyncSocketExThreadDataList;
         t_AsyncSocketExThreadDataList *pPrev = 0;
 
         //Search for data for current thread and decrease instance count
         while (pList)
         {
-            ASSERT( pList->pThreadData );
-            ASSERT( pList->pThreadData->nInstanceCount > 0 );
+            ASSERT(pList->pThreadData);
+            ASSERT(pList->pThreadData->nInstanceCount > 0);
 
             if (pList->pThreadData->nThreadId == id)
             {
-                ASSERT( m_pLocalAsyncSocketExThreadData == pList->pThreadData );
+                ASSERT(m_pLocalAsyncSocketExThreadData == pList->pThreadData);
                 m_pLocalAsyncSocketExThreadData->nInstanceCount--;
 
                 //Freeing last instance?
@@ -767,10 +767,10 @@ void CAsyncSocketEx::FreeAsyncSocketExInstance()
             }
             pPrev = pList;
             pList = pList->pNext;
-            ASSERT( pList );
+            ASSERT(pList);
         }
     }
-    catch(...)
+    catch (...)
     {
         TRACE(L"Unknown exception in CAsyncSocketEx::FreeAsyncSocketExInstance()\n");
         ASSERT(0);
@@ -801,7 +801,7 @@ int CAsyncSocketEx::Send(const void* lpBuf, int nBufLen, int nFlags /*=0*/)
 
 BOOL CAsyncSocketEx::Connect(LPCSTR lpszHostAddress, UINT nHostPort)
 {
-    ASSERT( lpszHostAddress != NULL );
+    ASSERT(lpszHostAddress != NULL);
 
 #ifndef NOLAYERS
     if (m_pFirstLayer)
@@ -922,7 +922,7 @@ BOOL CAsyncSocketEx::Attach(SOCKET hSocket, long lEvent /*= FD_READ | FD_WRITE |
 {
     if (hSocket == INVALID_SOCKET || !hSocket)
         return FALSE;
-    VERIFY( InitAsyncSocketExInstance() );
+    VERIFY(InitAsyncSocketExInstance());
     m_SocketData.hSocket = hSocket;
     AttachHandle(hSocket);
     return AsyncSelect(lEvent);
@@ -930,7 +930,7 @@ BOOL CAsyncSocketEx::Attach(SOCKET hSocket, long lEvent /*= FD_READ | FD_WRITE |
 
 BOOL CAsyncSocketEx::AsyncSelect(long lEvent /*= FD_READ | FD_WRITE | FD_OOB | FD_ACCEPT | FD_CONNECT | FD_CLOSE*/)
 {
-    ASSERT( m_pLocalAsyncSocketExThreadData );
+    ASSERT(m_pLocalAsyncSocketExThreadData);
     m_lEvent = lEvent;
 #ifndef NOLAYERS
     if (!m_pFirstLayer)
@@ -959,7 +959,7 @@ BOOL CAsyncSocketEx::Listen(int nConnectionBacklog /*=5*/)
 
 BOOL CAsyncSocketEx::Accept(CAsyncSocketEx& rConnectedSocket, SOCKADDR* lpSockAddr /*=NULL*/, int* lpSockAddrLen /*=NULL*/)
 {
-    ASSERT( rConnectedSocket.m_SocketData.hSocket == INVALID_SOCKET );
+    ASSERT(rConnectedSocket.m_SocketData.hSocket == INVALID_SOCKET);
 #ifndef NOLAYERS
     if (m_pFirstLayer)
     {
@@ -993,9 +993,9 @@ BOOL CAsyncSocketEx::TriggerEvent(long lEvent)
     if (m_SocketData.hSocket == INVALID_SOCKET)
         return FALSE;
 
-    ASSERT( m_pLocalAsyncSocketExThreadData );
-    ASSERT( m_pLocalAsyncSocketExThreadData->m_pHelperWindow );
-    ASSERT( m_SocketData.nSocketIndex != -1 );
+    ASSERT(m_pLocalAsyncSocketExThreadData);
+    ASSERT(m_pLocalAsyncSocketExThreadData->m_pHelperWindow);
+    ASSERT(m_SocketData.nSocketIndex != -1);
 
 #ifndef NOLAYERS
     if (m_pFirstLayer)
@@ -1030,18 +1030,18 @@ HWND CAsyncSocketEx::GetHelperWindowHandle()
 #ifndef NOLAYERS
 BOOL CAsyncSocketEx::AddLayer(CAsyncSocketExLayer *pLayer)
 {
-    ASSERT( pLayer );
+    ASSERT(pLayer);
     if (m_SocketData.hSocket != INVALID_SOCKET)
         return FALSE;
     if (m_pFirstLayer)
     {
-        ASSERT( m_pLastLayer );
+        ASSERT(m_pLastLayer);
         m_pLastLayer = m_pLastLayer->AddLayer(pLayer, this);
         return m_pLastLayer ? TRUE : FALSE;
     }
     else
     {
-        ASSERT( !m_pLastLayer );
+        ASSERT(!m_pLastLayer);
         pLayer->Init(0, this);
         m_pFirstLayer = pLayer;
         m_pLastLayer = m_pFirstLayer;

@@ -44,7 +44,7 @@ InputBox::InputBox(CWnd* pParent /*=NULL*/)
 InputBox::~InputBox()
 {
     if (m_icMain)
-        VERIFY( DestroyIcon(m_icMain) );
+        VERIFY(DestroyIcon(m_icMain));
 }
 
 void InputBox::DoDataExchange(CDataExchange* pDX)
@@ -71,13 +71,13 @@ BOOL InputBox::OnInitDialog()
 {
     CDialog::OnInitDialog();
     InitWindowStyles(this);
-    SetIcon( m_icMain = theApp.LoadIcon(_T("RENAME")),FALSE);
+    SetIcon(m_icMain = theApp.LoadIcon(_T("RENAME")),FALSE);
 
     GetDlgItem(IDC_IBLABEL)->SetWindowText(m_label);
     GetDlgItem(IDC_TEXT)->SetWindowText(m_default);
     SetWindowText(m_title);
 
-    SetDlgItemText(IDOK, GetResString(IDS_TREEOPTIONS_OK) );
+    SetDlgItemText(IDOK, GetResString(IDS_TREEOPTIONS_OK));
     GetDlgItem(IDCANCEL)->SetWindowText(GetResString(IDS_CANCEL));
     SetDlgItemText(IDC_CLEANFILENAME,GetResString(IDS_CLEANUP));
     GetDlgItem(IDC_CLEANFILENAME)->ShowWindow(m_bFilenameMode ? SW_NORMAL : SW_HIDE);

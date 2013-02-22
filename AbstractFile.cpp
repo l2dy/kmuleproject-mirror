@@ -62,7 +62,7 @@ CAbstractFile::CAbstractFile(const CAbstractFile* pAbstractFile)
     m_bKadCommentSearchRunning = pAbstractFile->m_bKadCommentSearchRunning;
 
     const CTypedPtrList<CPtrList, Kademlia::CEntry*>& list = pAbstractFile->getNotes();
-    for(POSITION pos = list.GetHeadPosition(); pos != NULL; )
+    for (POSITION pos = list.GetHeadPosition(); pos != NULL;)
     {
         Kademlia::CEntry* entry = list.GetNext(pos);
         m_kadNotes.AddTail(entry->Copy());
@@ -74,7 +74,7 @@ CAbstractFile::CAbstractFile(const CAbstractFile* pAbstractFile)
 CAbstractFile::~CAbstractFile()
 {
     ClearTags();
-    for(POSITION pos = m_kadNotes.GetHeadPosition(); pos != NULL; )
+    for (POSITION pos = m_kadNotes.GetHeadPosition(); pos != NULL;)
     {
         Kademlia::CEntry* entry = m_kadNotes.GetNext(pos);
         delete entry;
@@ -105,10 +105,10 @@ void CAbstractFile::Dump(CDumpContext& dc) const
 
 bool CAbstractFile::AddNote(Kademlia::CEntry* pEntry)
 {
-    for(POSITION pos = m_kadNotes.GetHeadPosition(); pos != NULL; )
+    for (POSITION pos = m_kadNotes.GetHeadPosition(); pos != NULL;)
     {
         Kademlia::CEntry* entry = m_kadNotes.GetNext(pos);
-        if(entry->m_uSourceID == pEntry->m_uSourceID)
+        if (entry->m_uSourceID == pEntry->m_uSourceID)
         {
             ASSERT(entry != pEntry);
             return false;
@@ -159,9 +159,9 @@ void CAbstractFile::AddTagUnique(CTag* pTag)
     for (int i = 0; i < taglist.GetSize(); i++)
     {
         const CTag* pCurTag = taglist[i];
-        if ( (   (pCurTag->GetNameID()!=0 && pCurTag->GetNameID()==pTag->GetNameID())
-                 || (pCurTag->GetName()!=NULL && pTag->GetName()!=NULL && CmpED2KTagName(pCurTag->GetName(), pTag->GetName())==0)
-             )
+        if (((pCurTag->GetNameID()!=0 && pCurTag->GetNameID()==pTag->GetNameID())
+                || (pCurTag->GetName()!=NULL && pTag->GetName()!=NULL && CmpED2KTagName(pCurTag->GetName(), pTag->GetName())==0)
+            )
                 && pCurTag->GetType() == pTag->GetType())
         {
             delete pCurTag;
@@ -192,7 +192,7 @@ void CAbstractFile::SetFileName(LPCTSTR pszFileName, bool bReplaceInvalidFileSys
 
     if (bRemoveControlChars)
     {
-        for (int i = 0; i < m_strFileName.GetLength(); )
+        for (int i = 0; i < m_strFileName.GetLength();)
             if (m_strFileName.GetAt(i) <= '\x1F')
                 m_strFileName.Delete(i);
             else
@@ -445,7 +445,7 @@ void CAbstractFile::RefilterKadNotes(bool bUpdate)
     if (thePrefs.GetCommentFilter().IsEmpty())
         return;
     POSITION pos1, pos2;
-    for (pos1 = m_kadNotes.GetHeadPosition(); ( pos2 = pos1 ) != NULL;)
+    for (pos1 = m_kadNotes.GetHeadPosition(); (pos2 = pos1) != NULL;)
     {
         m_kadNotes.GetNext(pos1);
         Kademlia::CEntry* entry = m_kadNotes.GetAt(pos2);
@@ -503,25 +503,25 @@ CString CAbstractFile::GetED2kLink(bool bHashset, bool bHTML, bool bHostname, bo
 
     if (GetFileIdentifierC().HasAICHHash())
     {
-        strBuffer.Format(_T("h=%s|"), GetFileIdentifierC().GetAICHHash().GetString() );
+        strBuffer.Format(_T("h=%s|"), GetFileIdentifierC().GetAICHHash().GetString());
         strLink += strBuffer;
     }
 
 //>>> WiZaRd::CollectionEnhancement
     CString strDirectory = GetDownloadDirectory();
-    if(!strDirectory.IsEmpty())
+    if (!strDirectory.IsEmpty())
         strLink.AppendFormat(L"f=%s|", strDirectory);
 //<<< WiZaRd::CollectionEnhancement
 
     strLink += _T('/');
     if (bHostname && !thePrefs.GetYourHostname().IsEmpty() && thePrefs.GetYourHostname().Find(_T('.')) != -1)
     {
-        strBuffer.Format(_T("|sources,%s:%i|/"), thePrefs.GetYourHostname(), thePrefs.GetPort() );
+        strBuffer.Format(_T("|sources,%s:%i|/"), thePrefs.GetYourHostname(), thePrefs.GetPort());
         strLink += strBuffer;
     }
-    else if(bSource && dwSourceIP != 0)
+    else if (bSource && dwSourceIP != 0)
     {
-        strBuffer.Format(_T("|sources,%i.%i.%i.%i:%i|/"),(uint8)dwSourceIP,(uint8)(dwSourceIP>>8),(uint8)(dwSourceIP>>16),(uint8)(dwSourceIP>>24), thePrefs.GetPort() );
+        strBuffer.Format(_T("|sources,%i.%i.%i.%i:%i|/"),(uint8)dwSourceIP,(uint8)(dwSourceIP>>8),(uint8)(dwSourceIP>>16),(uint8)(dwSourceIP>>24), thePrefs.GetPort());
         strLink += strBuffer;
     }
     if (bHTML)
@@ -534,28 +534,28 @@ CString CAbstractFile::GetED2kLink(bool bHashset, bool bHTML, bool bHostname, bo
 void	CAbstractFile::SetDownloadDirectory()
 {
     const CShareableFile* pFile = (const CShareableFile*)this;
-    if(pFile != NULL)
+    if (pFile != NULL)
     {
         CString strPath = pFile->GetFilePath();
         int pos = strPath.ReverseFind(L'\\');
-        if(pos != -1)
+        if (pos != -1)
         {
             strPath = strPath.Mid(0, pos);
 
             // don't save default paths
-            if(!thePrefs.IsShareableDirectory(strPath))
+            if (!thePrefs.IsShareableDirectory(strPath))
                 return;
-            if(thePrefs.m_strIncomingDir.CompareNoCase(strPath) == 0)
+            if (thePrefs.m_strIncomingDir.CompareNoCase(strPath) == 0)
                 return;
-            for(POSITION pos2 = thePrefs.shareddir_list.GetHeadPosition(); pos2;)
+            for (POSITION pos2 = thePrefs.shareddir_list.GetHeadPosition(); pos2;)
             {
                 const CString& rstrDir = thePrefs.shareddir_list.GetNext(pos2);
-                if(rstrDir.CompareNoCase(strPath) == 0)
+                if (rstrDir.CompareNoCase(strPath) == 0)
                     return;
             }
 
             pos = strPath.ReverseFind(L'\\');
-            if(pos != -1)
+            if (pos != -1)
                 SetDownloadDirectory(strPath.Mid(pos+1));
         }
     }
@@ -565,13 +565,13 @@ void	CAbstractFile::SetDownloadDirectory(const CString& strFolder)
 {
     m_strDownloadDirectory = strFolder;
     m_strDownloadDirectory.Trim();
-    if(!m_strDownloadDirectory.IsEmpty())
+    if (!m_strDownloadDirectory.IsEmpty())
     {
         m_strDownloadDirectory.Replace(L'/', L'\\'); // just to be sure!
         // just to be sure, clean up the string
-        if(m_strDownloadDirectory.Left(1) != L'\\')
+        if (m_strDownloadDirectory.Left(1) != L'\\')
             m_strDownloadDirectory = L'\\' + m_strDownloadDirectory;
-        if(m_strDownloadDirectory.Right(1) != L'\\')
+        if (m_strDownloadDirectory.Right(1) != L'\\')
             m_strDownloadDirectory = m_strDownloadDirectory + L'\\';
     }
 }
@@ -579,7 +579,7 @@ void	CAbstractFile::SetDownloadDirectory(const CString& strFolder)
 CString	CAbstractFile::GetDownloadDirectory(const bool bForDisplay) const
 {
     CString ret = m_strDownloadDirectory;
-    if(bForDisplay)
+    if (bForDisplay)
         ret.Replace(L'\\', L'/'); // get *nix like folders
     return ret;
 }

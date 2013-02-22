@@ -66,28 +66,28 @@ BOOL CCreditsThread::InitInstance()
 
     // NOTE: Because this is a separate thread, we have to delete our GDI objects here (while
     // the handle maps are still available.)
-    if(m_dcBk.m_hDC != NULL && m_pbmpOldBk != NULL)
+    if (m_dcBk.m_hDC != NULL && m_pbmpOldBk != NULL)
     {
         m_dcBk.SelectObject(m_pbmpOldBk);
         m_pbmpOldBk = NULL;
         m_bmpBk.DeleteObject();
     }
 
-    if(m_dcScreen.m_hDC != NULL && m_pbmpOldScreen != NULL)
+    if (m_dcScreen.m_hDC != NULL && m_pbmpOldScreen != NULL)
     {
         m_dcScreen.SelectObject(m_pbmpOldScreen);
         m_pbmpOldScreen = NULL;
         m_bmpScreen.DeleteObject();
     }
 
-    if(m_dcCredits.m_hDC != NULL && m_pbmpOldCredits != NULL)
+    if (m_dcCredits.m_hDC != NULL && m_pbmpOldCredits != NULL)
     {
         m_dcCredits.SelectObject(m_pbmpOldCredits);
         m_pbmpOldCredits = NULL;
         m_bmpCredits.DeleteObject();
     }
 
-    if(m_dcMask.m_hDC != NULL && m_pbmpOldMask != NULL)
+    if (m_dcMask.m_hDC != NULL && m_pbmpOldMask != NULL)
     {
         m_dcMask.SelectObject(m_pbmpOldMask);
         m_pbmpOldMask = NULL;
@@ -95,7 +95,7 @@ BOOL CCreditsThread::InitInstance()
     }
 
     // clean up the fonts we created
-    for(int n = 0; n < m_arFonts.GetSize(); n++)
+    for (int n = 0; n < m_arFonts.GetSize(); n++)
     {
         m_arFonts.GetAt(n)->DeleteObject();
         delete m_arFonts.GetAt(n);
@@ -127,7 +127,7 @@ void waitvrt(void)
 void CCreditsThread::SingleStep()
 {
     // if this is our first time, initialize the credits
-    if(m_dcCredits.m_hDC == NULL)
+    if (m_dcCredits.m_hDC == NULL)
     {
         CreateCredits();
     }
@@ -144,7 +144,7 @@ void CCreditsThread::SingleStep()
 
     nStart.QuadPart = 0;
 
-    if(!QueryPerformanceFrequency(&nFrequency))
+    if (!QueryPerformanceFrequency(&nFrequency))
     {
         bTimerValid = FALSE;
     }
@@ -165,7 +165,7 @@ void CCreditsThread::SingleStep()
         m_dcScreen.BitBlt(0, 0, m_nCreditsBmpWidth, m_nCreditsBmpHeight, &m_dcCredits, 0, nScrollY, SRCINVERT);
 
         // wait for vertical retrace
-        if(m_bWaitVRT) waitvrt();
+        if (m_bWaitVRT) waitvrt();
 
         m_dc.BitBlt(m_rectScreen.left, m_rectScreen.top, m_rectScreen.Width(), m_rectScreen.Height(), &m_dcScreen, 0, 0, SRCCOPY);
 
@@ -175,16 +175,16 @@ void CCreditsThread::SingleStep()
 
     // continue scrolling
     nScrollY += m_nScrollInc;
-    if(nScrollY >= m_nCreditsBmpHeight) nScrollY = 0;	// scrolling up
-    if(nScrollY < 0) nScrollY = m_nCreditsBmpHeight;	// scrolling down
+    if (nScrollY >= m_nCreditsBmpHeight) nScrollY = 0;	// scrolling up
+    if (nScrollY < 0) nScrollY = m_nCreditsBmpHeight;	// scrolling down
 
     // delay scrolling by the specified time
-    if(bTimerValid)
+    if (bTimerValid)
     {
         QueryPerformanceCounter(&nEnd);
         nTimeInMilliseconds = (int)((nEnd.QuadPart - nStart.QuadPart) * 1000 / nFrequency.QuadPart);
 
-        if(nTimeInMilliseconds < m_nDelay)
+        if (nTimeInMilliseconds < m_nDelay)
         {
             Sleep(m_nDelay - nTimeInMilliseconds);
         }
@@ -246,16 +246,16 @@ void CCreditsThread::CreateCredits()
 
     int nTextHeight = m_dcCredits.GetTextExtent(_T("Wy")).cy;
 
-    for(int n = 0; n < m_arCredits.GetSize(); n++)
+    for (int n = 0; n < m_arCredits.GetSize(); n++)
     {
         CString sType = m_arCredits.GetAt(n).Left(1);
 
-        if(sType == 'B')
+        if (sType == 'B')
         {
             // it's a bitmap
 
             CBitmap bmp;
-            if(! bmp.LoadBitmap(m_arCredits.GetAt(n).Mid(2)))
+            if (! bmp.LoadBitmap(m_arCredits.GetAt(n).Mid(2)))
             {
                 CString str;
                 str.Format(_T("Could not find bitmap resource \"%s\". Be sure to assign the bitmap a QUOTED resource name"), m_arCredits.GetAt(n).Mid(2));
@@ -278,7 +278,7 @@ void CCreditsThread::CreateCredits()
 
             y += bmInfo.bmHeight;
         }
-        else if(sType == 'S')
+        else if (sType == 'S')
         {
             // it's a vertical space
 
@@ -291,13 +291,13 @@ void CCreditsThread::CreateCredits()
             nFont = _ttoi(m_arCredits.GetAt(n).Left(2));
             nColor = _ttoi(m_arCredits.GetAt(n).Mid(3,2));
 
-            if(nFont != nLastFont)
+            if (nFont != nLastFont)
             {
                 m_dcCredits.SelectObject(m_arFonts.GetAt(nFont));
                 nTextHeight = m_arFontHeights.GetAt(nFont);
             }
 
-            if(nColor != nLastColor)
+            if (nColor != nLastColor)
             {
                 m_dcCredits.SetTextColor(m_arColors.GetAt(nColor));
             }
@@ -439,10 +439,10 @@ void CCreditsThread::InitText()
     sTmp.Format(L"02:04:Build%s", GetModVersionNumber());
     m_arCredits.Add(sTmp);
     m_arCredits.Add(L"S:10");
-	m_arCredits.Add(L"01:06:For " + CString(MOD_HOMEPAGE));
-	m_arCredits.Add(L"S:10");
-	m_arCredits.Add(L"01:06:Copyright (C) 2012-2013 tuxman/WiZaRd");
-	m_arCredits.Add(L"S:10");
+    m_arCredits.Add(L"01:06:For " + CString(MOD_HOMEPAGE));
+    m_arCredits.Add(L"S:10");
+    m_arCredits.Add(L"01:06:Copyright (C) 2012-2013 tuxman/WiZaRd");
+    m_arCredits.Add(L"S:10");
     m_arCredits.Add(L"02:04:Modders");
     m_arCredits.Add(L"S:5");
     m_arCredits.Add(L"01:06:tuxman");
@@ -646,11 +646,11 @@ int CCreditsThread::CalcCreditsHeight()
 {
     int nHeight = 0;
 
-    for(int n = 0; n < m_arCredits.GetSize(); n++)
+    for (int n = 0; n < m_arCredits.GetSize(); n++)
     {
         CString sType = m_arCredits.GetAt(n).Left(1);
 
-        if(sType == 'B')
+        if (sType == 'B')
         {
             // it's a bitmap
 
@@ -668,7 +668,7 @@ int CCreditsThread::CalcCreditsHeight()
 
             nHeight += bmInfo.bmHeight;
         }
-        else if(sType == 'S')
+        else if (sType == 'S')
         {
             // it's a vertical space
 

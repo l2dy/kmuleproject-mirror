@@ -180,7 +180,7 @@ void CUDPFirewallTester::SetUDPFWCheckResult(bool bSucceeded, bool bTestCancelle
 }
 void CUDPFirewallTester::ReCheckFirewallUDP(bool bSetUnverified)
 {
-    ASSERT( m_byFWChecksRunningUDP == 0 );
+    ASSERT(m_byFWChecksRunningUDP == 0);
     m_byFWChecksRunningUDP = 0;
     m_byFWChecksFinishedUDP = 0;
     m_dwLastSucceededTime = 0;

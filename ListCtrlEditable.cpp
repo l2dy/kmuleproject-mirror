@@ -136,7 +136,7 @@ BOOL CEditableListCtrl::PreTranslateMessage(MSG* pMsg)
 
                     // cycle to prev sibling control
                     CWnd* pWnd = GetWindow(GW_HWNDPREV);
-                    ASSERT( pWnd );
+                    ASSERT(pWnd);
                     if (pWnd)
                     {
                         pWnd->SetFocus();
@@ -163,7 +163,7 @@ BOOL CEditableListCtrl::PreTranslateMessage(MSG* pMsg)
 
                     // cycle to next sibling control
                     CWnd* pWnd = GetNextWindow();
-                    ASSERT( pWnd );
+                    ASSERT(pWnd);
                     if (pWnd)
                     {
                         pWnd->SetFocus();

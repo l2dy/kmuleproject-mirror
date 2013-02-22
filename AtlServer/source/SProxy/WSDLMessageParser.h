@@ -45,7 +45,7 @@ public:
 
     inline void SetMessage(CWSDLMessage *pMessage)
     {
-        ATLASSERT( m_pMessage == NULL );
+        ATLASSERT(m_pMessage == NULL);
 
         m_pMessage = pMessage;
     }

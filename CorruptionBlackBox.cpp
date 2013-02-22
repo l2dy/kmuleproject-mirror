@@ -119,7 +119,7 @@ void CCorruptionBlackBox::TransferredData(uint64 nStartPos, uint64 nEndPos, cons
         // data crosses the partborder, split it
         nRelEndPos = PARTSIZE-1;
         uint64 nTmpStartPos = (uint64)nPart*PARTSIZE + nRelEndPos + 1;
-        ASSERT( nTmpStartPos % PARTSIZE == 0); // remove later
+        ASSERT(nTmpStartPos % PARTSIZE == 0);  // remove later
         TransferredData(nTmpStartPos, nEndPos, pSender);
     }
     if (nPart >= (UINT)m_aaRecords.GetCount())
@@ -164,35 +164,35 @@ void CCorruptionBlackBox::TransferredData(uint64 nStartPos, uint64 nEndPos, cons
                     m_aaRecords[nPart].Add(CCBBRecord(nTmpStartPos2,nTmpEndPos2, dwOldIP));
                     // and are done then
                 }
-                DEBUG_ONLY( AddDebugLogLine(DLP_DEFAULT, false, _T("CorruptionBlackBox: Debug: %i bytes were rewritten and records replaced with new stats (1)"), (nRelEndPos - nRelStartPos)+1) );
+                DEBUG_ONLY(AddDebugLogLine(DLP_DEFAULT, false, _T("CorruptionBlackBox: Debug: %i bytes were rewritten and records replaced with new stats (1)"), (nRelEndPos - nRelStartPos)+1));
                 return;
             }
             else if (m_aaRecords[nPart][i].m_nStartPos >= nRelStartPos && m_aaRecords[nPart][i].m_nStartPos <= nRelEndPos)
             {
                 // old one laps over new one on the right site
-                ASSERT( nRelEndPos - m_aaRecords[nPart][i].m_nStartPos > 0 );
+                ASSERT(nRelEndPos - m_aaRecords[nPart][i].m_nStartPos > 0);
                 ndbgRewritten += nRelEndPos - m_aaRecords[nPart][i].m_nStartPos;
                 m_aaRecords[nPart][i].m_nStartPos = nRelEndPos + 1;
             }
             else if (m_aaRecords[nPart][i].m_nEndPos >= nRelStartPos && m_aaRecords[nPart][i].m_nEndPos <= nRelEndPos)
             {
                 // old one laps over new one on the left site
-                ASSERT( m_aaRecords[nPart][i].m_nEndPos - nRelStartPos > 0 );
+                ASSERT(m_aaRecords[nPart][i].m_nEndPos - nRelStartPos > 0);
                 ndbgRewritten += m_aaRecords[nPart][i].m_nEndPos - nRelStartPos;
                 m_aaRecords[nPart][i].m_nEndPos = nRelStartPos - 1;
             }
         }
     }
-    if (posMerge != (-1) )
+    if (posMerge != (-1))
     {
-        VERIFY( m_aaRecords[nPart][posMerge].Merge(nRelStartPos, nRelEndPos, dwSenderIP, BBR_NONE) );
+        VERIFY(m_aaRecords[nPart][posMerge].Merge(nRelStartPos, nRelEndPos, dwSenderIP, BBR_NONE));
     }
     else
         m_aaRecords[nPart].Add(CCBBRecord(nRelStartPos, nRelEndPos, dwSenderIP, BBR_NONE));
 
     if (ndbgRewritten > 0)
     {
-        DEBUG_ONLY( AddDebugLogLine(DLP_DEFAULT, false, _T("CorruptionBlackBox: Debug: %i bytes were rewritten and records replaced with new stats (2)"), ndbgRewritten) );
+        DEBUG_ONLY(AddDebugLogLine(DLP_DEFAULT, false, _T("CorruptionBlackBox: Debug: %i bytes were rewritten and records replaced with new stats (2)"), ndbgRewritten));
     }
 }
 
@@ -228,7 +228,7 @@ void CCorruptionBlackBox::VerifiedData(uint64 nStartPos, uint64 nEndPos)
         {
             if (m_aaRecords[nPart][i].m_nStartPos >= nRelStartPos && m_aaRecords[nPart][i].m_nEndPos <= nRelEndPos)
             {
-                nDbgVerifiedBytes +=  (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
+                nDbgVerifiedBytes += (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
                 m_aaRecords[nPart][i].m_BBRStatus = BBR_VERIFIED;
                 DEBUG_ONLY(mapDebug.SetAt(m_aaRecords[nPart][i].m_dwIP, 1));
             }
@@ -243,7 +243,7 @@ void CCorruptionBlackBox::VerifiedData(uint64 nStartPos, uint64 nEndPos)
                 m_aaRecords[nPart][i].m_nStartPos = nRelStartPos;
                 m_aaRecords[nPart].Add(CCBBRecord(nTmpStartPos1, nTmpEndPos1, m_aaRecords[nPart][i].m_dwIP, m_aaRecords[nPart][i].m_BBRStatus));
                 m_aaRecords[nPart].Add(CCBBRecord(nTmpStartPos2, nTmpEndPos2, m_aaRecords[nPart][i].m_dwIP, m_aaRecords[nPart][i].m_BBRStatus));
-                nDbgVerifiedBytes +=  (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
+                nDbgVerifiedBytes += (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
                 m_aaRecords[nPart][i].m_BBRStatus = BBR_VERIFIED;
                 DEBUG_ONLY(mapDebug.SetAt(m_aaRecords[nPart][i].m_dwIP, 1));
             }
@@ -254,7 +254,7 @@ void CCorruptionBlackBox::VerifiedData(uint64 nStartPos, uint64 nEndPos)
                 uint64 nTmpStartPos = nRelEndPos + 1;
                 m_aaRecords[nPart][i].m_nEndPos = nRelEndPos;
                 m_aaRecords[nPart].Add(CCBBRecord(nTmpStartPos, nTmpEndPos, m_aaRecords[nPart][i].m_dwIP, m_aaRecords[nPart][i].m_BBRStatus));
-                nDbgVerifiedBytes +=  (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
+                nDbgVerifiedBytes += (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
                 m_aaRecords[nPart][i].m_BBRStatus = BBR_VERIFIED;
                 DEBUG_ONLY(mapDebug.SetAt(m_aaRecords[nPart][i].m_dwIP, 1));
             }
@@ -265,7 +265,7 @@ void CCorruptionBlackBox::VerifiedData(uint64 nStartPos, uint64 nEndPos)
                 uint64 nTmpEndPos = nRelStartPos - 1;
                 m_aaRecords[nPart][i].m_nStartPos = nRelStartPos;
                 m_aaRecords[nPart].Add(CCBBRecord(nTmpStartPos, nTmpEndPos, m_aaRecords[nPart][i].m_dwIP, m_aaRecords[nPart][i].m_BBRStatus));
-                nDbgVerifiedBytes +=  (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
+                nDbgVerifiedBytes += (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
                 m_aaRecords[nPart][i].m_BBRStatus = BBR_VERIFIED;
                 DEBUG_ONLY(mapDebug.SetAt(m_aaRecords[nPart][i].m_dwIP, 1));
             }
@@ -309,7 +309,7 @@ void CCorruptionBlackBox::CorruptedData(uint64 nStartPos, uint64 nEndPos)
         {
             if (m_aaRecords[nPart][i].m_nStartPos >= nRelStartPos && m_aaRecords[nPart][i].m_nEndPos <= nRelEndPos)
             {
-                nDbgVerifiedBytes +=  (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
+                nDbgVerifiedBytes += (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
                 m_aaRecords[nPart][i].m_BBRStatus = BBR_CORRUPTED;
             }
             else if (m_aaRecords[nPart][i].m_nStartPos < nRelStartPos && m_aaRecords[nPart][i].m_nEndPos > nRelEndPos)
@@ -323,7 +323,7 @@ void CCorruptionBlackBox::CorruptedData(uint64 nStartPos, uint64 nEndPos)
                 m_aaRecords[nPart][i].m_nStartPos = nRelStartPos;
                 m_aaRecords[nPart].Add(CCBBRecord(nTmpStartPos1, nTmpEndPos1, m_aaRecords[nPart][i].m_dwIP, m_aaRecords[nPart][i].m_BBRStatus));
                 m_aaRecords[nPart].Add(CCBBRecord(nTmpStartPos2, nTmpEndPos2, m_aaRecords[nPart][i].m_dwIP, m_aaRecords[nPart][i].m_BBRStatus));
-                nDbgVerifiedBytes +=  (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
+                nDbgVerifiedBytes += (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
                 m_aaRecords[nPart][i].m_BBRStatus = BBR_CORRUPTED;
             }
             else if (m_aaRecords[nPart][i].m_nStartPos >= nRelStartPos && m_aaRecords[nPart][i].m_nStartPos <= nRelEndPos)
@@ -333,7 +333,7 @@ void CCorruptionBlackBox::CorruptedData(uint64 nStartPos, uint64 nEndPos)
                 uint64 nTmpStartPos = nRelEndPos + 1;
                 m_aaRecords[nPart][i].m_nEndPos = nRelEndPos;
                 m_aaRecords[nPart].Add(CCBBRecord(nTmpStartPos, nTmpEndPos, m_aaRecords[nPart][i].m_dwIP, m_aaRecords[nPart][i].m_BBRStatus));
-                nDbgVerifiedBytes +=  (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
+                nDbgVerifiedBytes += (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
                 m_aaRecords[nPart][i].m_BBRStatus = BBR_CORRUPTED;
             }
             else if (m_aaRecords[nPart][i].m_nEndPos >= nRelStartPos && m_aaRecords[nPart][i].m_nEndPos <= nRelEndPos)
@@ -343,7 +343,7 @@ void CCorruptionBlackBox::CorruptedData(uint64 nStartPos, uint64 nEndPos)
                 uint64 nTmpEndPos = nRelStartPos - 1;
                 m_aaRecords[nPart][i].m_nStartPos = nRelStartPos;
                 m_aaRecords[nPart].Add(CCBBRecord(nTmpStartPos, nTmpEndPos, m_aaRecords[nPart][i].m_dwIP, m_aaRecords[nPart][i].m_BBRStatus));
-                nDbgVerifiedBytes +=  (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
+                nDbgVerifiedBytes += (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
                 m_aaRecords[nPart][i].m_BBRStatus = BBR_CORRUPTED;
             }
         }
@@ -359,10 +359,10 @@ void CCorruptionBlackBox::EvaluateData(uint16 nPart)
             aGuiltyClients.Add(m_aaRecords[nPart][i].m_dwIP);
 
     // check if any IPs are already banned, so we can skip the test for those
-    for(int k = 0; k < aGuiltyClients.GetCount();)
+    for (int k = 0; k < aGuiltyClients.GetCount();)
     {
         // remove doubles
-        for(int y = k+1; y < aGuiltyClients.GetCount();)
+        for (int y = k+1; y < aGuiltyClients.GetCount();)
         {
             if (aGuiltyClients[k] == aGuiltyClients[y])
                 aGuiltyClients.RemoveAt(y);
@@ -394,7 +394,7 @@ void CCorruptionBlackBox::EvaluateData(uint16 nPart)
         {
             for (int i = 0; i < m_aaRecords[nPart].GetCount(); i++)
             {
-                for(int k = 0; k < aGuiltyClients.GetCount(); k++)
+                for (int k = 0; k < aGuiltyClients.GetCount(); k++)
                 {
                     if (m_aaRecords[nPart][i].m_dwIP == aGuiltyClients[k])
                     {
@@ -403,7 +403,7 @@ void CCorruptionBlackBox::EvaluateData(uint16 nPart)
                             // corrupted data records are always counted as at least blocksize or bigger
                             aDataCorrupt[k] += max((m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1, EMBLOCKSIZE);
                         }
-                        else if(m_aaRecords[nPart][i].m_BBRStatus == BBR_VERIFIED)
+                        else if (m_aaRecords[nPart][i].m_BBRStatus == BBR_VERIFIED)
                         {
                             aDataVerified[k] += (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
                         }
@@ -411,7 +411,7 @@ void CCorruptionBlackBox::EvaluateData(uint16 nPart)
                 }
             }
         }
-        for(int k = 0; k < aGuiltyClients.GetCount(); k++)
+        for (int k = 0; k < aGuiltyClients.GetCount(); k++)
         {
             // calculate the percentage of corrupted data for each client and ban
             // him if the limit is reached
@@ -424,7 +424,7 @@ void CCorruptionBlackBox::EvaluateData(uint16 nPart)
                 ASSERT(0);
                 nCorruptPercentage = 0;
             }
-            if ( nCorruptPercentage > CBB_BANTHRESHOLD)
+            if (nCorruptPercentage > CBB_BANTHRESHOLD)
             {
 
                 CUpDownClient* pEvilClient = theApp.clientlist->FindClientByIP(aGuiltyClients[k]);

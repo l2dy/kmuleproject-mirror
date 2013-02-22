@@ -238,7 +238,7 @@ CLogFile::CLogFile()
     m_tStarted = 0;
     m_fp = NULL;
     m_bInOpenCall = false;
-    ASSERT( Unicode == 0 );
+    ASSERT(Unicode == 0);
     m_eFileFormat = Unicode;
 }
 
@@ -315,7 +315,7 @@ bool CLogFile::Open()
             }
             else
             {
-                ASSERT( m_eFileFormat == Utf8 );
+                ASSERT(m_eFileFormat == Utf8);
                 ; // could write UTF-8 header..
             }
         }
@@ -338,9 +338,9 @@ bool CLogFile::Open()
                 else
                 {
                     // log file does not have the required format, create a new one (with the req. format)
-                    ASSERT( (m_eFileFormat==Unicode && wBOM!=0xFEFF) || (m_eFileFormat==Utf8 && wBOM==0xFEFF) );
+                    ASSERT((m_eFileFormat==Unicode && wBOM!=0xFEFF) || (m_eFileFormat==Utf8 && wBOM==0xFEFF));
 
-                    ASSERT( !m_bInOpenCall );
+                    ASSERT(!m_bInOpenCall);
                     if (!m_bInOpenCall) // just for safety
                     {
                         m_bInOpenCall = true;
@@ -436,7 +436,7 @@ void CLogFile::StartNewLogFile()
     _tmakepathlimit(szLogBakFilePath, szDrv, szDir, strLogBakNam, szExt);
 
     if (_trename(m_strFilePath, szLogBakFilePath) != 0)
-        VERIFY( _tremove(m_strFilePath) == 0 );
+        VERIFY(_tremove(m_strFilePath) == 0);
 
     Open();
 }

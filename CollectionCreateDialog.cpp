@@ -92,15 +92,15 @@ CCollectionCreateDialog::CCollectionCreateDialog(CWnd* pParent /*=NULL*/)
 CCollectionCreateDialog::~CCollectionCreateDialog()
 {
     if (m_icoWnd)
-        VERIFY( DestroyIcon(m_icoWnd) );
+        VERIFY(DestroyIcon(m_icoWnd));
     if (m_icoForward)
-        VERIFY( DestroyIcon(m_icoForward) );
+        VERIFY(DestroyIcon(m_icoForward));
     if (m_icoBack)
-        VERIFY( DestroyIcon(m_icoBack) );
+        VERIFY(DestroyIcon(m_icoBack));
     if (m_icoColl)
-        VERIFY( DestroyIcon(m_icoColl) );
+        VERIFY(DestroyIcon(m_icoColl));
     if (m_icoFiles)
-        VERIFY( DestroyIcon(m_icoFiles) );
+        VERIFY(DestroyIcon(m_icoFiles));
 }
 
 void CCollectionCreateDialog::DoDataExchange(CDataExchange* pDX)
@@ -312,7 +312,7 @@ void CCollectionCreateDialog::OnBnClickedOk()
                     privkey.DEREncode(privkeysink);
                     privkeysink.MessageEnd();
                 }
-                catch(...)
+                catch (...)
                 {
                     ASSERT(0);
                 }
@@ -330,7 +330,7 @@ void CCollectionCreateDialog::OnBnClickedOk()
                 asink.MessageEnd();
                 m_pCollection->SetCollectionAuthorKey(abyMyPublicKey, nLen);
             }
-            catch(...)
+            catch (...)
             {
                 ASSERT(0);
             }

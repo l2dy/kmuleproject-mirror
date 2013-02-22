@@ -257,7 +257,7 @@ Pinger::~Pinger()
 
 PingStatus Pinger::Ping(UINT lAddr, UINT ttl, bool doLog, bool useUdp)
 {
-    if(useUdp && udpStarted)
+    if (useUdp && udpStarted)
     {
         return PingUDP(lAddr, ttl, doLog);
     }
@@ -287,12 +287,12 @@ PingStatus Pinger::PingUDP(UINT lAddr, UINT ttl, bool doLog)
             sa.sin_addr.s_addr = INADDR_ANY;
             sa.sin_port = 0;
 
-            nRet = recvfrom (is,    /* socket */
-                             (LPSTR)bufICMP,     /* buffer */
-                             1500,               /* length */
-                             0,                  /* flags  */
-                             (sockaddr*)&sa,     /* source */
-                             &nAddrLen);         /* addrlen*/
+            nRet = recvfrom(is,     /* socket */
+                            (LPSTR)bufICMP,     /* buffer */
+                            1500,               /* length */
+                            0,                  /* flags  */
+                            (sockaddr*)&sa,     /* source */
+                            &nAddrLen);         /* addrlen*/
 
             //if (lastTimeOut) lastTimeOut--;
             //if (!lastTimeOut && toNowTimeOut) {
@@ -351,7 +351,7 @@ PingStatus Pinger::PingUDP(UINT lAddr, UINT ttl, bool doLog)
         noRcvTimeOut = true;
 
     float usResTime = 0.0f;
-    while((usResTime += m_time.Tick()) < TIMEOUT)
+    while ((usResTime += m_time.Tick()) < TIMEOUT)
     {
         if (noRcvTimeOut)
         {
@@ -380,12 +380,12 @@ PingStatus Pinger::PingUDP(UINT lAddr, UINT ttl, bool doLog)
         sa.sin_family = AF_INET;
         sa.sin_addr.s_addr = INADDR_ANY;
         sa.sin_port = 0;
-        nRet = recvfrom (is,    /* socket */
-                         (LPSTR)bufICMP,     /* buffer */
-                         1500,               /* length */
-                         0,                  /* flags  */
-                         (sockaddr*)&sa,     /* source */
-                         &nAddrLen);         /* addrlen*/
+        nRet = recvfrom(is,     /* socket */
+                        (LPSTR)bufICMP,     /* buffer */
+                        1500,               /* length */
+                        0,                  /* flags  */
+                        (sockaddr*)&sa,     /* source */
+                        &nAddrLen);         /* addrlen*/
 
         usResTime += m_time.Tick();
         if (nRet==SOCKET_ERROR)
@@ -396,18 +396,18 @@ PingStatus Pinger::PingUDP(UINT lAddr, UINT ttl, bool doLog)
             //returnValue.success = false;
             //returnValue.delay = TIMEOUT;
             //returnValue.error = lastError;
-			if(lastError == WSAETIMEDOUT) 
-			{
-				returnValue.success = false;
-				returnValue.delay = TIMEOUT;
-				returnValue.error = IP_REQ_TIMED_OUT;
-			}
-			else 
-			{
-				returnValue.error = lastError;
-				returnValue.success = false;
-				returnValue.delay = TIMEOUT;
-			}
+            if (lastError == WSAETIMEDOUT)
+            {
+                returnValue.success = false;
+                returnValue.delay = TIMEOUT;
+                returnValue.error = IP_REQ_TIMED_OUT;
+            }
+            else
+            {
+                returnValue.error = lastError;
+                returnValue.success = false;
+                returnValue.delay = TIMEOUT;
+            }
 //<<< WiZaRd::ZZUL Upload [ZZ]
             //if (toNowTimeOut < 3) toNowTimeOut++;
             //	lastTimeOut = 3;
@@ -426,7 +426,7 @@ PingStatus Pinger::PingUDP(UINT lAddr, UINT ttl, bool doLog)
 
             PingStatus returnValue;
 
-            if(icmphdr->type == ICMP_TTL_EXPIRE)
+            if (icmphdr->type == ICMP_TTL_EXPIRE)
             {
                 returnValue.success = true;
                 returnValue.status = IP_TTL_EXPIRED_TRANSIT;
@@ -443,7 +443,7 @@ PingStatus Pinger::PingUDP(UINT lAddr, UINT ttl, bool doLog)
                 returnValue.ttl = 64 - (reply->ttl & 63);
             }
 
-            if(doLog)
+            if (doLog)
             {
                 theApp.QueueDebugLogLine(false,_T("Reply (UDP-pinger) from %s: bytes=%d time=%3.2fms TTL=%i"),
                                          ipstr(stDestAddr),
@@ -460,7 +460,7 @@ PingStatus Pinger::PingUDP(UINT lAddr, UINT ttl, bool doLog)
             //		toNowTimeOut--;
             //		if (toNowTimeOut) lastTimeOut = 3;
             //}
-            if(doLog)
+            if (doLog)
             {
                 theApp.QueueDebugLogLine(false,_T("Filtered reply (UDP-pinger) from %s: bytes=%d time=%3.2fms TTL=%i type=%i"),
                                          ipstr(stDestAddr),
@@ -519,11 +519,11 @@ PingStatus Pinger::PingICMP(UINT lAddr, UINT ttl, bool doLog)
 
         returnValue.success = true;
         returnValue.status = *(DWORD *) &(achRepData[4]);
-        returnValue.delay = (m_time.isPerformanceCounter() && (pingTime <= 20 || pingTime%10 == 0) && (pingTime+10 > usResTime && usResTime+10 > pingTime )? usResTime : pingTime);
+        returnValue.delay = (m_time.isPerformanceCounter() && (pingTime <= 20 || pingTime%10 == 0) && (pingTime+10 > usResTime && usResTime+10 > pingTime)? usResTime : pingTime);
         returnValue.destinationAddress = stDestAddr.s_addr;
         returnValue.ttl = (returnValue.status != IP_SUCCESS)?ttl:(*(char *)&(achRepData[20]))&0x00FF;
 
-        if(doLog)
+        if (doLog)
         {
             theApp.QueueDebugLogLine(false,_T("Reply (ICMP-pinger) from %s: bytes=%d time=%3.2fms (%3.2fms %ldms) TTL=%i"),
                                      ipstr(stDestAddr),
@@ -539,7 +539,7 @@ PingStatus Pinger::PingICMP(UINT lAddr, UINT ttl, bool doLog)
         DWORD lastError = GetLastError();
         returnValue.success = false;
         returnValue.error = lastError;
-        if(doLog)
+        if (doLog)
         {
             theApp.QueueDebugLogLine(false,_T("Error from %s: Error=%i"),
                                      ipstr(stDestAddr),

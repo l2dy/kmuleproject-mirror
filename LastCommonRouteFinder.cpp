@@ -47,8 +47,8 @@ LastCommonRouteFinder::LastCommonRouteFinder()
 //>>> WiZaRd::ZZUL Upload [ZZ]
     //m_LowestInitialPingAllowed = 20;
     //pingDelaysTotal = 0;
-	m_LowestInitialPingAllowed = 10; // this is overridden by the SetPrefs(...) call
-	m_NeedMoreSlots = true;
+    m_LowestInitialPingAllowed = 10; // this is overridden by the SetPrefs(...) call
+    m_NeedMoreSlots = true;
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
     m_state = _T("");
@@ -77,11 +77,11 @@ bool LastCommonRouteFinder::AddHostToCheck(UINT ip)
 {
     bool gotEnoughHosts = true;
 
-    if(needMoreHosts && IsGoodIP(ip, true))
+    if (needMoreHosts && IsGoodIP(ip, true))
     {
         addHostLocker.Lock();
 
-        if(needMoreHosts)
+        if (needMoreHosts)
         {
             gotEnoughHosts = AddHostToCheckNoLock(ip);
         }
@@ -94,12 +94,12 @@ bool LastCommonRouteFinder::AddHostToCheck(UINT ip)
 
 bool LastCommonRouteFinder::AddHostToCheckNoLock(UINT ip)
 {
-    if(needMoreHosts && IsGoodIP(ip, true))
+    if (needMoreHosts && IsGoodIP(ip, true))
     {
         //hostsToTraceRoute.AddTail(ip);
         hostsToTraceRoute.SetAt(ip, 0);
 
-        if(hostsToTraceRoute.GetCount() >= 10)
+        if (hostsToTraceRoute.GetCount() >= 10)
         {
             needMoreHosts = false;
 
@@ -115,34 +115,34 @@ bool LastCommonRouteFinder::AddHostsToCheck(CUpDownClientPtrList &list)
 {
     bool gotEnoughHosts = true;
 
-    if(needMoreHosts)
+    if (needMoreHosts)
     {
         addHostLocker.Lock();
 
-        if(needMoreHosts)
+        if (needMoreHosts)
         {
             POSITION pos = list.GetHeadPosition();
 
-            if(pos)
+            if (pos)
             {
                 UINT startPos = rand()/(RAND_MAX/(min(list.GetCount(), 100)));
 
-                for(UINT skipCounter = 0; skipCounter < startPos && pos != NULL; skipCounter++)
+                for (UINT skipCounter = 0; skipCounter < startPos && pos != NULL; skipCounter++)
                 {
                     list.GetNext(pos);
                 }
 
-                if(!pos)
+                if (!pos)
                 {
                     pos = list.GetHeadPosition();
                 }
 
                 UINT tryCount = 0;
-                while(needMoreHosts && tryCount < (UINT)list.GetCount())
+                while (needMoreHosts && tryCount < (UINT)list.GetCount())
                 {
                     tryCount++;
                     CUpDownClient* client = list.GetNext(pos);
-                    if(!pos)
+                    if (!pos)
                     {
                         pos = list.GetHeadPosition();
                     }
@@ -166,7 +166,7 @@ CurrentPingStruct LastCommonRouteFinder::GetCurrentPing()
 {
     CurrentPingStruct returnVal;
 
-    if(m_enabled)
+    if (m_enabled)
     {
         pingLocker.Lock();
         returnVal.state = m_state;
@@ -200,7 +200,7 @@ void LastCommonRouteFinder::SetPrefs(bool pEnabled, UINT pCurUpload, UINT pMinUp
 
     prefsLocker.Lock();
 
-    if(pMinUpload <= 1024)
+    if (pMinUpload <= 1024)
     {
         minUpload = 1024;
     }
@@ -209,10 +209,10 @@ void LastCommonRouteFinder::SetPrefs(bool pEnabled, UINT pCurUpload, UINT pMinUp
         minUpload = pMinUpload;
     }
 
-    if(pMaxUpload != 0)
+    if (pMaxUpload != 0)
     {
         maxUpload = pMaxUpload;
-        if(maxUpload < minUpload)
+        if (maxUpload < minUpload)
         {
             minUpload = maxUpload;
         }
@@ -223,16 +223,16 @@ void LastCommonRouteFinder::SetPrefs(bool pEnabled, UINT pCurUpload, UINT pMinUp
     }
 
     bool bStatBarResetted = false;
-    if(pEnabled && m_enabled == false)
+    if (pEnabled && m_enabled == false)
     {
         sendEvent = true;
         // this will show the area for ping info in status bar.
         theApp.emuledlg->SetStatusBarPartsSize();
         bStatBarResetted = true;
     }
-    else if(pEnabled == false)
+    else if (pEnabled == false)
     {
-        if(m_enabled)
+        if (m_enabled)
         {
             // this will remove the area for ping info in status bar.
             theApp.emuledlg->SetStatusBarPartsSize();
@@ -243,9 +243,9 @@ void LastCommonRouteFinder::SetPrefs(bool pEnabled, UINT pCurUpload, UINT pMinUp
     }
 
     // this will resize the area for ping info in status bar.
-    if(m_bUseMillisecondPingTolerance != pUseMillisecondPingTolerance)
+    if (m_bUseMillisecondPingTolerance != pUseMillisecondPingTolerance)
     {
-        if(!bStatBarResetted)
+        if (!bStatBarResetted)
             theApp.emuledlg->SetStatusBarPartsSize();
     }
 
@@ -258,7 +258,7 @@ void LastCommonRouteFinder::SetPrefs(bool pEnabled, UINT pCurUpload, UINT pMinUp
     m_CurUpload = pCurUpload;
     m_iNumberOfPingsForAverage = pNumberOfPingsForAverage;
     m_LowestInitialPingAllowed = pLowestInitialPingAllowed;
-	m_NeedMoreSlots = needMoreSlots; //>>> WiZaRd::ZZUL Upload [ZZ]
+    m_NeedMoreSlots = needMoreSlots; //>>> WiZaRd::ZZUL Upload [ZZ]
 
     uploadLocker.Lock();
 
@@ -270,7 +270,7 @@ void LastCommonRouteFinder::SetPrefs(bool pEnabled, UINT pCurUpload, UINT pMinUp
     uploadLocker.Unlock();
     prefsLocker.Unlock();
 
-    if(sendEvent)
+    if (sendEvent)
     {
         prefsEvent->SetEvent();
     }
@@ -347,7 +347,7 @@ UINT LastCommonRouteFinder::RunInternal()
     Pinger pinger;
     bool hasSucceededAtLeastOnce = false;
 
-    while(doRun)
+    while (doRun)
     {
         // wait for updated prefs
         prefsEvent->Lock();
@@ -355,7 +355,7 @@ UINT LastCommonRouteFinder::RunInternal()
         bool enabled = m_enabled;
 
         // retry loop. enabled will be set to false in end of this loop, if to many failures (tries too large)
-        while(doRun && enabled)
+        while (doRun && enabled)
         {
             bool foundLastCommonHost = false;
             UINT lastCommonHost = 0;
@@ -368,8 +368,8 @@ UINT LastCommonRouteFinder::RunInternal()
 //>>> WiZaRd::ZZUL Upload [ZZ]
             //pingDelays.RemoveAll();
             //pingDelaysTotal = 0;
-			UInt32Clist pingDelays;
-			uint64 pingDelaysTotal = 0;
+            UInt32Clist pingDelays;
+            uint64 pingDelaysTotal = 0;
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
             pingLocker.Lock();
@@ -382,10 +382,10 @@ UINT LastCommonRouteFinder::RunInternal()
             int startUpload = (maxUpload != _UI32_MAX)?maxUpload:10*1024;
 
             bool atLeastOnePingSucceded = false;
-            while(doRun && enabled && foundLastCommonHost == false)
+            while (doRun && enabled && foundLastCommonHost == false)
             {
                 UINT traceRouteTries = 0;
-                while(doRun && enabled && foundLastCommonHost == false && (traceRouteTries < 5 || hasSucceededAtLeastOnce && traceRouteTries < _UI32_MAX) && (hostsToTraceRoute.GetCount() < 10 || hasSucceededAtLeastOnce))
+                while (doRun && enabled && foundLastCommonHost == false && (traceRouteTries < 5 || hasSucceededAtLeastOnce && traceRouteTries < _UI32_MAX) && (hostsToTraceRoute.GetCount() < 10 || hasSucceededAtLeastOnce))
                 {
                     traceRouteTries++;
 
@@ -404,7 +404,7 @@ UINT LastCommonRouteFinder::RunInternal()
 
                     POSITION pos = hostsToTraceRoute.GetStartPosition();
                     int counter = 0;
-                    while(pos != NULL)
+                    while (pos != NULL)
                     {
                         counter++;
                         UINT hostToTraceRoute, dummy;
@@ -422,7 +422,7 @@ UINT LastCommonRouteFinder::RunInternal()
                     SetUpload(2*1024);
                     Sleep(SEC2MS(1));
 
-                    if(m_enabled == false)
+                    if (m_enabled == false)
                     {
                         enabled = false;
                     }
@@ -431,8 +431,8 @@ UINT LastCommonRouteFinder::RunInternal()
 
                     UINT curHost = 0;
 //>>> WiZaRd::ZZUL Upload [ZZ]
-					for(UINT ttl = 1; doRun && enabled && (curHost != 0 && ttl <= 64 || curHost == 0 && ttl < 10) && foundLastCommonHost == false && failed == false; ttl++)
-                    //for(UINT ttl = 1; doRun && enabled && (curHost != 0 && ttl <= 64 || curHost == 0 && ttl < 5) && foundLastCommonHost == false && failed == false; ttl++)
+                    for (UINT ttl = 1; doRun && enabled && (curHost != 0 && ttl <= 64 || curHost == 0 && ttl < 10) && foundLastCommonHost == false && failed == false; ttl++)
+                        //for(UINT ttl = 1; doRun && enabled && (curHost != 0 && ttl <= 64 || curHost == 0 && ttl < 5) && foundLastCommonHost == false && failed == false; ttl++)
 //<<< WiZaRd::ZZUL Upload [ZZ]
                     {
                         theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: Pinging for TTL %i..."), ttl);
@@ -440,7 +440,7 @@ UINT LastCommonRouteFinder::RunInternal()
                         useUdp = false; // PENDING: Get default value from prefs?
 
                         curHost = 0;
-                        if(m_enabled == false)
+                        if (m_enabled == false)
                         {
                             enabled = false;
                         }
@@ -448,14 +448,14 @@ UINT LastCommonRouteFinder::RunInternal()
                         UINT lastSuccedingPingAddress = 0;
                         UINT lastDestinationAddress = 0;
                         UINT hostsToTraceRouteCounter = 0;
-                        bool failedThisTtl = false;						
+                        bool failedThisTtl = false;
                         POSITION pos = hostsToTraceRoute.GetStartPosition();
 //>>> WiZaRd::ZZUL Upload [ZZ]
 //						while(doRun && enabled && failed == false && failedThisTtl == false && pos != NULL &&
 //							( lastDestinationAddress == 0 || lastDestinationAddress == curHost)) // || pingStatus.success == false && pingStatus.error == IP_REQ_TIMED_OUT ))
-						bool unexpectedTimeout = false; 
-                        while(doRun && enabled && failed == false && failedThisTtl == false && pos != NULL && !unexpectedTimeout &&
-                                ( lastDestinationAddress == 0 || lastDestinationAddress == curHost)) // || pingStatus.success == false && pingStatus.error == IP_REQ_TIMED_OUT ))
+                        bool unexpectedTimeout = false;
+                        while (doRun && enabled && failed == false && failedThisTtl == false && pos != NULL && !unexpectedTimeout &&
+                                (lastDestinationAddress == 0 || lastDestinationAddress == curHost))  // || pingStatus.success == false && pingStatus.error == IP_REQ_TIMED_OUT ))
 //<<< WiZaRd::ZZUL Upload [ZZ]
                         {
                             PingStatus pingStatus = {0};
@@ -470,10 +470,10 @@ UINT LastCommonRouteFinder::RunInternal()
                             hostsToTraceRoute.GetNextAssoc(pos, curAddress, dummy);
 
                             pingStatus.success = false;
-                            for(int counter = 0; doRun && enabled && counter < 2 && (pingStatus.success == false || pingStatus.success == true && pingStatus.status != IP_SUCCESS && pingStatus.status != IP_TTL_EXPIRED_TRANSIT); counter++)
+                            for (int counter = 0; doRun && enabled && counter < 2 && (pingStatus.success == false || pingStatus.success == true && pingStatus.status != IP_SUCCESS && pingStatus.status != IP_TTL_EXPIRED_TRANSIT); counter++)
                             {
                                 pingStatus = pinger.Ping(curAddress, ttl, true, useUdp);
-                                if(doRun && enabled &&
+                                if (doRun && enabled &&
                                         (
                                             pingStatus.success == false ||
                                             pingStatus.success == true &&
@@ -489,7 +489,7 @@ UINT LastCommonRouteFinder::RunInternal()
 
                                     Sleep(1000);
 
-                                    if(m_enabled == false)
+                                    if (m_enabled == false)
                                         enabled = false;
 
                                     // trying other ping method
@@ -497,19 +497,19 @@ UINT LastCommonRouteFinder::RunInternal()
                                 }
                             }
 
-                            if(pingStatus.success == true && pingStatus.status == IP_TTL_EXPIRED_TRANSIT)
+                            if (pingStatus.success == true && pingStatus.status == IP_TTL_EXPIRED_TRANSIT)
                             {
-                                if(curHost == 0)
-								{
+                                if (curHost == 0)
+                                {
 //>>> WiZaRd::ZZUL Upload [ZZ]
                                     curHost = pingStatus.destinationAddress;
-									if(hostsToTraceRouteCounter > 1) 
-									{
-										unexpectedTimeout = true;
-										theApp.QueueDebugLogLine(false, L"UploadSpeedSense: First successful ping at this ttl, which is unexpected. Assuming differing responder.");
-									}
+                                    if (hostsToTraceRouteCounter > 1)
+                                    {
+                                        unexpectedTimeout = true;
+                                        theApp.QueueDebugLogLine(false, L"UploadSpeedSense: First successful ping at this ttl, which is unexpected. Assuming differing responder.");
+                                    }
 //<<< WiZaRd::ZZUL Upload [ZZ]
-								}
+                                }
                                 atLeastOnePingSucceded = true;
                                 lastSuccedingPingAddress = curAddress;
                                 lastDestinationAddress = pingStatus.destinationAddress;
@@ -521,20 +521,20 @@ UINT LastCommonRouteFinder::RunInternal()
                                 // Remove it.
                                 IN_ADDR stDestAddr;
                                 stDestAddr.s_addr = curAddress;
-                                if(pingStatus.success == true && pingStatus.status == IP_SUCCESS)
+                                if (pingStatus.success == true && pingStatus.status == IP_SUCCESS)
                                 {
                                     theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: Host was too close! Removing this host. (TTL: %i IP: %s status: %i). Removing this host and restarting host collection."), ttl, ipstr(stDestAddr), pingStatus.status);
 
                                     hostsToTraceRoute.RemoveKey(curAddress);
                                 }
-                                else if(pingStatus.success == true && pingStatus.status == IP_DEST_HOST_UNREACHABLE)
+                                else if (pingStatus.success == true && pingStatus.status == IP_DEST_HOST_UNREACHABLE)
                                 {
                                     theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: Host unreacheable! (TTL: %i IP: %s status: %i). Removing this host. Status info follows."), ttl, ipstr(stDestAddr), pingStatus.status);
                                     pinger.PIcmpErr(pingStatus.status);
 
                                     hostsToTraceRoute.RemoveKey(curAddress);
                                 }
-                                else if(pingStatus.success == true)
+                                else if (pingStatus.success == true)
                                 {
                                     theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: Unknown ping status! (TTL: %i IP: %s status: %i). Reason follows. Changing ping method to see if it helps."), ttl, ipstr(stDestAddr), pingStatus.status);
                                     pinger.PIcmpErr(pingStatus.status);
@@ -542,22 +542,22 @@ UINT LastCommonRouteFinder::RunInternal()
                                 }
                                 else
                                 {
-                                    if(pingStatus.error == IP_REQ_TIMED_OUT)
+                                    if (pingStatus.error == IP_REQ_TIMED_OUT)
                                     {
                                         theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: Timeout when pinging a host! (TTL: %i IP: %s Error: %i). Keeping host. Error info follows."), ttl, ipstr(stDestAddr), pingStatus.error);
                                         pinger.PIcmpErr(pingStatus.error);
 
-                                        if(hostsToTraceRouteCounter > 2 && lastSuccedingPingAddress == 0)
+                                        if (hostsToTraceRouteCounter > 2 && lastSuccedingPingAddress == 0)
                                         {
                                             // several pings have timed out on this ttl. Probably we can't ping on this ttl at all
                                             failedThisTtl = true;
                                         }
 //>>> WiZaRd::ZZUL Upload [ZZ]
-										else if(lastSuccedingPingAddress != 0) 
-										{
-											unexpectedTimeout = true;
-											theApp.QueueDebugLogLine(false, L"UploadSpeedSense: Unexpected timeout.");
-										}
+                                        else if (lastSuccedingPingAddress != 0)
+                                        {
+                                            unexpectedTimeout = true;
+                                            theApp.QueueDebugLogLine(false, L"UploadSpeedSense: Unexpected timeout.");
+                                        }
 //<<< WiZaRd::ZZUL Upload [ZZ]
                                     }
                                     else
@@ -568,7 +568,7 @@ UINT LastCommonRouteFinder::RunInternal()
                                     }
                                 }
 
-                                if(hostsToTraceRoute.GetSize() <= 8)
+                                if (hostsToTraceRoute.GetSize() <= 8)
                                 {
                                     theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: To few hosts to traceroute left. Restarting host colletion."));
                                     failed = true;
@@ -576,13 +576,13 @@ UINT LastCommonRouteFinder::RunInternal()
                             }
                         }
 
-                        if(failed == false)
+                        if (failed == false)
                         {
-                            if(curHost != 0 && lastDestinationAddress != 0)
+                            if (curHost != 0 && lastDestinationAddress != 0)
                             {
 //>>> WiZaRd::ZZUL Upload [ZZ]
                                 //if(lastDestinationAddress == curHost)
-								if(lastDestinationAddress == curHost && !unexpectedTimeout)
+                                if (lastDestinationAddress == curHost && !unexpectedTimeout)
 //<<< WiZaRd::ZZUL Upload [ZZ]
                                 {
                                     IN_ADDR stDestAddr;
@@ -600,10 +600,10 @@ UINT LastCommonRouteFinder::RunInternal()
                                     CString hostToPingString = ipstr(hostToPing);
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
-									if(unexpectedTimeout) 
-										theApp.QueueDebugLogLine(false, L"UploadSpeedSense: Unexpected timeout at TTL %i: Assuming it means responder differs. This will be the host to ping: %s", ttl, hostToPingString);
+                                    if (unexpectedTimeout)
+                                        theApp.QueueDebugLogLine(false, L"UploadSpeedSense: Unexpected timeout at TTL %i: Assuming it means responder differs. This will be the host to ping: %s", ttl, hostToPingString);
 //<<< WiZaRd::ZZUL Upload [ZZ]
-                                    if(lastCommonHost != 0)
+                                    if (lastCommonHost != 0)
                                     {
                                         theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: Found differing host at TTL %i: %s. This will be the host to ping."), ttl, hostToPingString);
                                     }
@@ -619,7 +619,7 @@ UINT LastCommonRouteFinder::RunInternal()
                             }
                             else
                             {
-                                if(ttl < 4)
+                                if (ttl < 4)
                                 {
                                     theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: Could perform no ping at all at TTL %i. Trying next ttl."), ttl);
                                 }
@@ -632,7 +632,7 @@ UINT LastCommonRouteFinder::RunInternal()
                         }
                     }
 
-                    if(foundLastCommonHost == false && traceRouteTries >= 3)
+                    if (foundLastCommonHost == false && traceRouteTries >= 3)
                     {
                         theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: Tracerouting failed several times. Waiting a few minutes before trying again."));
 
@@ -649,17 +649,17 @@ UINT LastCommonRouteFinder::RunInternal()
                         pingLocker.Unlock();
                     }
 
-                    if(m_enabled == false)
+                    if (m_enabled == false)
                     {
                         enabled = false;
                     }
                 }
 
-                if(enabled)
+                if (enabled)
                 {
                     theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: Done tracerouting. Evaluating results."));
 
-                    if(foundLastCommonHost == true)
+                    if (foundLastCommonHost == true)
                     {
                         IN_ADDR stLastCommonHostAddr;
                         stLastCommonHostAddr.s_addr = lastCommonHost;
@@ -687,12 +687,12 @@ UINT LastCommonRouteFinder::RunInternal()
                 }
             }
 
-            if(m_enabled == false)
+            if (m_enabled == false)
             {
                 enabled = false;
             }
 
-            if(doRun && enabled)
+            if (doRun && enabled)
             {
                 theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: Finding a start value for lowest ping..."));
             }
@@ -701,18 +701,18 @@ UINT LastCommonRouteFinder::RunInternal()
             prefsLocker.Lock();
 //>>> WiZaRd::ZZUL Upload [ZZ]
             //uint64 lowestInitialPingAllowed = m_LowestInitialPingAllowed;
-			UINT lowestInitialPingAllowed = m_LowestInitialPingAllowed;
+            UINT lowestInitialPingAllowed = m_LowestInitialPingAllowed;
 //<<< WiZaRd::ZZUL Upload [ZZ]
             prefsLocker.Unlock();
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
             //UINT initial_ping = _I32_MAX;
-			UINT initial_ping = _UI32_MAX;
+            UINT initial_ping = _UI32_MAX;
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
             bool foundWorkingPingMethod = false;
             // finding lowest ping
-            for(int initialPingCounter = 0; doRun && enabled && initialPingCounter < 10; initialPingCounter++)
+            for (int initialPingCounter = 0; doRun && enabled && initialPingCounter < 10; initialPingCounter++)
             {
                 Sleep(200);
 
@@ -722,10 +722,10 @@ UINT LastCommonRouteFinder::RunInternal()
                 {
                     foundWorkingPingMethod = true;
 
-                    if(pingStatus.delay > 0 && pingStatus.delay < initial_ping)
+                    if (pingStatus.delay > 0 && pingStatus.delay < initial_ping)
 //>>> WiZaRd::ZZUL Upload [ZZ]
                         //initial_ping = (UINT)max(pingStatus.delay, lowestInitialPingAllowed);
-						initial_ping = (UINT)pingStatus.delay;
+                        initial_ping = (UINT)pingStatus.delay;
 //<<< WiZaRd::ZZUL Upload [ZZ]
                 }
                 else
@@ -734,13 +734,13 @@ UINT LastCommonRouteFinder::RunInternal()
                     pinger.PIcmpErr(pingStatus.error);
 
                     // trying other ping method
-                    if(!pingStatus.success && !foundWorkingPingMethod)
+                    if (!pingStatus.success && !foundWorkingPingMethod)
                     {
                         useUdp = !useUdp;
                     }
                 }
 
-                if(m_enabled == false)
+                if (m_enabled == false)
                     enabled = false;
             }
 
@@ -754,51 +754,51 @@ UINT LastCommonRouteFinder::RunInternal()
 //>>> WiZaRd::ZZUL Upload [ZZ]
             //if(initial_ping == _I32_MAX)
             //    initial_ping = (UINT)lowestInitialPingAllowed;
-			if(initial_ping == _UI32_MAX)
-				initial_ping = lowestInitialPingAllowed;
-			else if(initial_ping < lowestInitialPingAllowed)
-				initial_ping = lowestInitialPingAllowed;
-			else if(initial_ping % 10 == 0 && initial_ping < 30) 
-			{
-				// workaround for some OS:es where realtime measurement doesn't work, and ping times are always multiples of 10
-				initial_ping += 5;
-				lowestInitialPingAllowed = initial_ping;
-			}
+            if (initial_ping == _UI32_MAX)
+                initial_ping = lowestInitialPingAllowed;
+            else if (initial_ping < lowestInitialPingAllowed)
+                initial_ping = lowestInitialPingAllowed;
+            else if (initial_ping % 10 == 0 && initial_ping < 30)
+            {
+                // workaround for some OS:es where realtime measurement doesn't work, and ping times are always multiples of 10
+                initial_ping += 5;
+                lowestInitialPingAllowed = initial_ping;
+            }
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
             UINT upload = 0;
 
             hasSucceededAtLeastOnce = true;
 
-            if(doRun && enabled)
+            if (doRun && enabled)
             {
 //>>> WiZaRd::ZZUL Upload [ZZ]
                 //if(initial_ping > lowestInitialPingAllowed)
-				if(initial_ping != lowestInitialPingAllowed)
+                if (initial_ping != lowestInitialPingAllowed)
 //<<< WiZaRd::ZZUL Upload [ZZ]
                     theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: Lowest ping: %i ms"), initial_ping);
                 else
 //>>> WiZaRd::ZZUL Upload [ZZ]
                     //theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: Lowest ping: %i ms. (Filtered lower values. Lowest ping is never allowed to go under %i ms)"), initial_ping, lowestInitialPingAllowed);
-					theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: Lowest ping: %i ms. (Filtered lower values. Lowest ping is not allowed to go under %i ms)"), initial_ping, lowestInitialPingAllowed);
+                    theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: Lowest ping: %i ms. (Filtered lower values. Lowest ping is not allowed to go under %i ms)"), initial_ping, lowestInitialPingAllowed);
 //<<< WiZaRd::ZZUL Upload [ZZ]
                 prefsLocker.Lock();
                 upload = m_CurUpload;
 
-                if(upload < minUpload)
+                if (upload < minUpload)
                     upload = minUpload;
-                if(upload > maxUpload)
+                if (upload > maxUpload)
                     upload = maxUpload;
                 prefsLocker.Unlock();
             }
 
-            if(m_enabled == false)
+            if (m_enabled == false)
                 enabled = false;
 
-            if(doRun && enabled)
+            if (doRun && enabled)
             {
                 theApp.QueueDebugLogLine(false, GetResString(IDS_USS_STARTING));
-                theApp.QueueLogLine(true, GetResString(IDS_USS_STARTING)  );
+                theApp.QueueLogLine(true, GetResString(IDS_USS_STARTING));
             }
 
             pingLocker.Lock();
@@ -814,36 +814,36 @@ UINT LastCommonRouteFinder::RunInternal()
             DWORD lastUploadReset = 0;
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
-			sint64 integral = 0;
-			CList<sint64, sint64> oldErrors;
-			sint32 damper = 0;
-			UINT damperCounter = 0;
+            sint64 integral = 0;
+            CList<sint64, sint64> oldErrors;
+            sint32 damper = 0;
+            UINT damperCounter = 0;
 //<<< WiZaRd::ZZUL Upload [ZZ]
-            while(doRun && enabled && restart == false)
+            while (doRun && enabled && restart == false)
             {
                 DWORD ticksBetweenPings = 1000;
 //>>> WiZaRd::ZZUL Upload [ZZ]
                 //if(upload > 0)
-				if(maxUpload > 0) 
+                if (maxUpload > 0)
 //<<< WiZaRd::ZZUL Upload [ZZ]
                 {
                     // ping packages being 64 bytes, this should use 1% of bandwidth (one hundredth of bw).
 //>>> WiZaRd::ZZUL Upload [ZZ]
                     //ticksBetweenPings = (64*100*1000)/upload;
-					ticksBetweenPings = (64*100*1000)/maxUpload;
+                    ticksBetweenPings = (64*100*1000)/maxUpload;
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
-                    if(ticksBetweenPings < 125)
+                    if (ticksBetweenPings < 125)
                         // never ping more than 8 packages a second
                         ticksBetweenPings = 125;
-                    else if(ticksBetweenPings > 1000)
+                    else if (ticksBetweenPings > 1000)
                         ticksBetweenPings = 1000;
                 }
 
                 DWORD curTick = ::GetTickCount();
 
                 DWORD timeSinceLastLoop = curTick-lastLoopTick;
-                if(timeSinceLastLoop < ticksBetweenPings)
+                if (timeSinceLastLoop < ticksBetweenPings)
                 {
                     //theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: Sleeping %i ms, timeSinceLastLoop %i ms ticksBetweenPings %i ms"), ticksBetweenPings-timeSinceLastLoop, timeSinceLastLoop, ticksBetweenPings);
                     Sleep(ticksBetweenPings-timeSinceLastLoop);
@@ -865,10 +865,10 @@ UINT LastCommonRouteFinder::RunInternal()
                 m_initiateFastReactionPeriod = false;
                 prefsLocker.Unlock();
 
-                if(initiateFastReactionPeriod)
+                if (initiateFastReactionPeriod)
                 {
                     theApp.QueueDebugLogLine(false, GetResString(IDS_USS_MANUALUPLOADLIMITDETECTED));
-                    theApp.QueueLogLine(true, GetResString(IDS_USS_MANUALUPLOADLIMITDETECTED) );
+                    theApp.QueueLogLine(true, GetResString(IDS_USS_MANUALUPLOADLIMITDETECTED));
 
                     // the first 60 seconds will use hardcoded up/down slowness that is faster
                     initTime = ::GetTickCount();
@@ -877,54 +877,54 @@ UINT LastCommonRouteFinder::RunInternal()
                 DWORD tempTick = ::GetTickCount();
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
-/*
-                if(tempTick - initTime < SEC2MS(20))
+                /*
+                                if(tempTick - initTime < SEC2MS(20))
+                                {
+                                    goingUpDivider = 1;
+                                    goingDownDivider = 1;
+                                }
+                                else if(tempTick - initTime < SEC2MS(30))
+                                {
+                                    goingUpDivider = (UINT)(goingUpDivider * 0.25);
+                                    goingDownDivider = (UINT)(goingDownDivider * 0.25);
+                                }
+                                else if(tempTick - initTime < SEC2MS(40))
+                                {
+                                    goingUpDivider = (UINT)(goingUpDivider * 0.5);
+                                    goingDownDivider = (UINT)(goingDownDivider * 0.5);
+                                }
+                                else if(tempTick - initTime < SEC2MS(60))
+                                {
+                                    goingUpDivider = (UINT)(goingUpDivider * 0.75);
+                                    goingDownDivider = (UINT)(goingDownDivider * 0.75);
+                                }
+                                else if(tempTick - initTime < SEC2MS(61))
+                                {
+                                    lastUploadReset = tempTick;
+                                    prefsLocker.Lock();
+                                    upload = m_CurUpload;
+                                    prefsLocker.Unlock();
+                                }
+                */
+                if (tempTick - initTime < SEC2MS(1))
                 {
                     goingUpDivider = 1;
                     goingDownDivider = 1;
                 }
-                else if(tempTick - initTime < SEC2MS(30))
+                else if (tempTick - initTime < SEC2MS(60))
                 {
-                    goingUpDivider = (UINT)(goingUpDivider * 0.25);
-                    goingDownDivider = (UINT)(goingDownDivider * 0.25);
+                    // slide from 1 to the target divider value over 60 seconds. (dividerNow = (maxDivider-1)/(60secs-1sec)*(currentTime-starTime)+1)
+                    goingUpDivider = (UINT)(((double)max(goingUpDivider, 1)-1)/(SEC2MS(60)-SEC2MS(1))*((tempTick-initTime)-SEC2MS(1)) + 1);
+                    goingDownDivider = (UINT)(((double)max(goingDownDivider, 1)-1)/(SEC2MS(60)-SEC2MS(1))*((tempTick-initTime)-SEC2MS(1)) + 1);
+                    //theApp.QueueDebugLogLine(false, _T("tempTick-initTime: %i, goingUpDivider: %i, goingDownDivider: %i"), tempTick-initTime, goingUpDivider, goingDownDivider);
                 }
-                else if(tempTick - initTime < SEC2MS(40))
-                {
-                    goingUpDivider = (UINT)(goingUpDivider * 0.5);
-                    goingDownDivider = (UINT)(goingDownDivider * 0.5);
-                }
-                else if(tempTick - initTime < SEC2MS(60))
-                {
-                    goingUpDivider = (UINT)(goingUpDivider * 0.75);
-                    goingDownDivider = (UINT)(goingDownDivider * 0.75);
-                }
-                else if(tempTick - initTime < SEC2MS(61))
+                else if (tempTick - initTime < SEC2MS(61))
                 {
                     lastUploadReset = tempTick;
                     prefsLocker.Lock();
                     upload = m_CurUpload;
                     prefsLocker.Unlock();
                 }
-*/
-				if(tempTick - initTime < SEC2MS(1)) 
-				{
-					goingUpDivider = 1;
-					goingDownDivider = 1;
-				}
-				else if(tempTick - initTime < SEC2MS(60)) 
-				{
-					// slide from 1 to the target divider value over 60 seconds. (dividerNow = (maxDivider-1)/(60secs-1sec)*(currentTime-starTime)+1)
-					goingUpDivider = (UINT)(((double)max(goingUpDivider, 1)-1)/(SEC2MS(60)-SEC2MS(1))*((tempTick-initTime)-SEC2MS(1)) + 1);
-					goingDownDivider = (UINT)(((double)max(goingDownDivider, 1)-1)/(SEC2MS(60)-SEC2MS(1))*((tempTick-initTime)-SEC2MS(1)) + 1);
-					//theApp.QueueDebugLogLine(false, _T("tempTick-initTime: %i, goingUpDivider: %i, goingDownDivider: %i"), tempTick-initTime, goingUpDivider, goingDownDivider);
-				}
-				else if(tempTick - initTime < SEC2MS(61)) 
-				{
-					lastUploadReset = tempTick;
-					prefsLocker.Lock();
-					upload = m_CurUpload;
-					prefsLocker.Unlock();
-				}
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
                 goingDownDivider = max(goingDownDivider, 1);
@@ -939,9 +939,9 @@ UINT LastCommonRouteFinder::RunInternal()
                 UINT raw_ping = target_ping; // this value will cause the upload speed not to change at all.
 
                 bool pingFailure = false;
-                for(uint64 pingTries = 0; doRun && enabled && (pingTries == 0 || pingFailure) && pingTries < 60; pingTries++)
+                for (uint64 pingTries = 0; doRun && enabled && (pingTries == 0 || pingFailure) && pingTries < 60; pingTries++)
                 {
-                    if(m_enabled == false)
+                    if (m_enabled == false)
                     {
                         enabled = false;
                     }
@@ -949,9 +949,9 @@ UINT LastCommonRouteFinder::RunInternal()
                     // ping the host to ping
                     PingStatus pingStatus = pinger.Ping(hostToPing, lastCommonTTL, false, useUdp);
 
-                    if(pingStatus.success && pingStatus.status == IP_TTL_EXPIRED_TRANSIT)
+                    if (pingStatus.success && pingStatus.status == IP_TTL_EXPIRED_TRANSIT)
                     {
-                        if(pingStatus.destinationAddress != lastCommonHost)
+                        if (pingStatus.destinationAddress != lastCommonHost)
                         {
                             // something has changed about the topology! We got another ip back from this ttl than expected.
                             // Do the tracerouting again to figure out new topology
@@ -964,7 +964,7 @@ UINT LastCommonRouteFinder::RunInternal()
 
                         raw_ping = (UINT)pingStatus.delay;
 
-                        if(pingFailure)
+                        if (pingFailure)
                         {
                             // only several pings in row should fails, the total doesn't count, so reset for each successful ping
                             pingFailure = false;
@@ -978,29 +978,29 @@ UINT LastCommonRouteFinder::RunInternal()
 
                         pingFailure = true;
 
-                        if(m_enabled == false)
+                        if (m_enabled == false)
                             enabled = false;
-                        else if(pingTries > 3)
+                        else if (pingTries > 3)
                             prefsEvent->Lock(1000);
 
                         //theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: %s-Ping #%i failed. Reason follows"), useUdp?_T("UDP"):_T("ICMP"), pingTries);
                         //pinger.PIcmpErr(pingStatus.error);
                     }
 
-                    if(m_enabled == false)
+                    if (m_enabled == false)
                         enabled = false;
                 }
 
-                if(pingFailure)
+                if (pingFailure)
                 {
-                    if(enabled)
+                    if (enabled)
                         theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: No response to pings for a long time. Restarting..."));
                     restart = true;
                 }
 
-                if(restart == false)
+                if (restart == false)
                 {
-                    if(raw_ping > 0 && raw_ping < initial_ping && initial_ping > lowestInitialPingAllowed)
+                    if (raw_ping > 0 && raw_ping < initial_ping && initial_ping > lowestInitialPingAllowed)
                     {
                         theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: New lowest ping: %i ms. Old: %i ms"), max(raw_ping,lowestInitialPingAllowed), initial_ping);
                         initial_ping = (UINT)max(raw_ping, lowestInitialPingAllowed);
@@ -1008,7 +1008,7 @@ UINT LastCommonRouteFinder::RunInternal()
 
                     pingDelaysTotal += raw_ping;
                     pingDelays.AddTail(raw_ping);
-                    while(!pingDelays.IsEmpty() && (UINT)pingDelays.GetCount() > numberOfPingsForAverage)
+                    while (!pingDelays.IsEmpty() && (UINT)pingDelays.GetCount() > numberOfPingsForAverage)
                     {
                         UINT pingDelay = pingDelays.RemoveHead();
                         pingDelaysTotal -= pingDelay;
@@ -1032,45 +1032,45 @@ UINT LastCommonRouteFinder::RunInternal()
 
                     // Calculate Waiting Time
 //>>> WiZaRd::ZZUL Upload [ZZ]
-/*
-                    sint64 hping = ((int)target_ping) - normalized_ping;
+                    /*
+                                        sint64 hping = ((int)target_ping) - normalized_ping;
 
-                    // Calculate change of upload speed
-                    if(hping < 0)
-                    {
-                        //Ping too high
-                        acceptNewClient = false;
+                                        // Calculate change of upload speed
+                                        if(hping < 0)
+                                        {
+                                            //Ping too high
+                                            acceptNewClient = false;
 
-                        // lower the speed
-                        sint64 ulDiff = hping*1024*10 / (sint64)(goingDownDivider*initial_ping);
+                                            // lower the speed
+                                            sint64 ulDiff = hping*1024*10 / (sint64)(goingDownDivider*initial_ping);
 
-                        //theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: Down! Ping cur %i ms. Ave %I64i ms %i values. New Upload %i + %I64i = %I64i"), raw_ping, pingDelaysTotal/pingDelays.GetCount(), pingDelays.GetCount(), upload, ulDiff, upload+ulDiff);
-                        // prevent underflow
-                        if(upload > -ulDiff)
-                            upload = (UINT)(upload + ulDiff);
-                        else
-                            upload = 0;
-                    }
-                    else if(hping > 0)
-                    {
-                        //Ping lower than max allowed
-                        acceptNewClient = true;
+                                            //theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: Down! Ping cur %i ms. Ave %I64i ms %i values. New Upload %i + %I64i = %I64i"), raw_ping, pingDelaysTotal/pingDelays.GetCount(), pingDelays.GetCount(), upload, ulDiff, upload+ulDiff);
+                                            // prevent underflow
+                                            if(upload > -ulDiff)
+                                                upload = (UINT)(upload + ulDiff);
+                                            else
+                                                upload = 0;
+                                        }
+                                        else if(hping > 0)
+                                        {
+                                            //Ping lower than max allowed
+                                            acceptNewClient = true;
 
-                        if(curUpload+30*1024 > upload)
-                        {
-                            // raise the speed
-                            uint64 ulDiff = hping*1024*10 / (uint64)(goingUpDivider*initial_ping);
+                                            if(curUpload+30*1024 > upload)
+                                            {
+                                                // raise the speed
+                                                uint64 ulDiff = hping*1024*10 / (uint64)(goingUpDivider*initial_ping);
 
-                            //theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: Up! Ping cur %i ms. Ave %I64i ms %i values. New Upload %i + %I64i = %I64i"), raw_ping, pingDelaysTotal/pingDelays.GetCount(), pingDelays.GetCount(), upload, ulDiff, upload+ulDiff);
-                            // prevent overflow
-                            if(_I32_MAX-upload > ulDiff)
-                                upload = (UINT)(upload + ulDiff);
-                            else
-                                upload = _I32_MAX;
-                        }
-                    }
-*/
-					sint64 error = ((int)target_ping) - (int)pingAverage;
+                                                //theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: Up! Ping cur %i ms. Ave %I64i ms %i values. New Upload %i + %I64i = %I64i"), raw_ping, pingDelaysTotal/pingDelays.GetCount(), pingDelays.GetCount(), upload, ulDiff, upload+ulDiff);
+                                                // prevent overflow
+                                                if(_I32_MAX-upload > ulDiff)
+                                                    upload = (UINT)(upload + ulDiff);
+                                                else
+                                                    upload = _I32_MAX;
+                                            }
+                                        }
+                    */
+                    sint64 error = ((int)target_ping) - (int)pingAverage;
 
                     //theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: ----- Ping cur %3i ms. Median: %3i ms %2i values. Error: %3I64i Integral: %5I64i"), raw_ping, pingAverage, pingDelays.GetCount(), error, integral);
                     //theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: ----- Ping cur %3i %u"), raw_ping, timeGetTime());
@@ -1087,67 +1087,67 @@ UINT LastCommonRouteFinder::RunInternal()
                     //    error = -(sint32)target_ping;
 
                     sint64 lastError = error;
-                    if(!oldErrors.IsEmpty()) 
+                    if (!oldErrors.IsEmpty())
                         lastError = oldErrors.GetTail();
 
                     sint64 derivate = error-lastError;
 
                     integral += error;
                     oldErrors.AddTail(error);
-					while(oldErrors.GetCount() > 1 && (m_NeedMoreSlots || (UINT)oldErrors.GetCount() > numberOfOldErrors)) 
-					{
-						sint64 oldError = oldErrors.RemoveHead();
-						integral -= oldError;
-					}
+                    while (oldErrors.GetCount() > 1 && (m_NeedMoreSlots || (UINT)oldErrors.GetCount() > numberOfOldErrors))
+                    {
+                        sint64 oldError = oldErrors.RemoveHead();
+                        integral -= oldError;
+                    }
 
-					// calculate the change of speed
-					sint64 ulDeltaTemp = (sint64)(pconst*error + iconst*(integral/oldErrors.GetCount()) + dconst*derivate); //*1024*10 / (sint64)(goingDownDivider*initial_ping);
+                    // calculate the change of speed
+                    sint64 ulDeltaTemp = (sint64)(pconst*error + iconst*(integral/oldErrors.GetCount()) + dconst*derivate); //*1024*10 / (sint64)(goingDownDivider*initial_ping);
 
                     damperCounter++;
 
                     // Calculate change of upload speed
-					if(ulDeltaTemp < 0) 
-					{
-						//Ping too high
-						acceptNewClient = false;
+                    if (ulDeltaTemp < 0)
+                    {
+                        //Ping too high
+                        acceptNewClient = false;
 
                         damper++;
 
-                        if(damper > 10) 
-						{
+                        if (damper > 10)
+                        {
                             damper = -10;
-						    // lower the speed
+                            // lower the speed
                             sint64 ulDelta = min(ulDeltaTemp*1024*10*20*20 / (sint64)(goingDownDivider*initial_ping*max(damperCounter,20)), -1);
 
                             damperCounter = 0;
 
                             UINT newUpload;
 
-						    // prevent underflow
-						    if(upload > -ulDelta) 
-							    newUpload = (UINT)(upload + ulDelta);
-						    else 
-							    newUpload = 0;						    
+                            // prevent underflow
+                            if (upload > -ulDelta)
+                                newUpload = (UINT)(upload + ulDelta);
+                            else
+                                newUpload = 0;
 
                             //theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: Down! Ping cur %3i ms. Median: %3i ms %2i values. Error: %3I64i Integral: %5I64i New Upload %6i + %4I64i = %6i"), raw_ping, pingAverage, pingDelays.GetCount(), error, integral, upload, ulDelta, newUpload);
 
                             upload = newUpload;
                         }
-					}
-					else if(ulDeltaTemp > 0) 
-					{
-						//Ping lower than max allowed
-						acceptNewClient = true;
+                    }
+                    else if (ulDeltaTemp > 0)
+                    {
+                        //Ping lower than max allowed
+                        acceptNewClient = true;
 
-						if(curUpload+10*1024 > upload && !m_NeedMoreSlots) 
-						{
+                        if (curUpload+10*1024 > upload && !m_NeedMoreSlots)
+                        {
                             damper--;
 
-                            if(damper < -10)
-							{
+                            if (damper < -10)
+                            {
                                 damper = 10;
 
-						        // raise the speed
+                                // raise the speed
                                 uint64 ulDelta = max(ulDeltaTemp*1024*10*20*20 / (uint64)(goingUpDivider*initial_ping*max(damperCounter,20)), 1);
 
                                 damperCounter = 0;
@@ -1155,17 +1155,17 @@ UINT LastCommonRouteFinder::RunInternal()
                                 UINT newUpload;
 
                                 // prevent overflow
-						        if(_I32_MAX-upload > ulDelta)
-							        newUpload = (UINT)(upload + ulDelta);
-						        else
-							        newUpload = _I32_MAX;
-                                
+                                if (_I32_MAX-upload > ulDelta)
+                                    newUpload = (UINT)(upload + ulDelta);
+                                else
+                                    newUpload = _I32_MAX;
+
                                 //theApp.QueueDebugLogLine(false,_T("UploadSpeedSense: Up!   Ping cur %3i ms. Median: %3i ms %2i values. Error: %3I64i Integral: %5I64i New Upload %6i + %4I64i = %6i"), raw_ping, pingAverage, pingDelays.GetCount(), error, integral, upload, ulDelta, newUpload);
 
                                 upload = newUpload;
                             }
-						}
-					}
+                        }
+                    }
 //<<< WiZaRd::ZZUL Upload [ZZ]
                     prefsLocker.Lock();
                     if (upload < minUpload)
@@ -1179,7 +1179,7 @@ UINT LastCommonRouteFinder::RunInternal()
                         upload = maxUpload;
                     prefsLocker.Unlock();
                     SetUpload(upload);
-                    if(m_enabled == false)
+                    if (m_enabled == false)
                         enabled = false;
                 }
             }
@@ -1195,54 +1195,54 @@ UINT LastCommonRouteFinder::Median(UInt32Clist& list)
 {
     UINT size = list.GetCount();
 
-    if(size == 1)    
+    if (size == 1)
         return list.GetHead();
-    
+
 //>>> WiZaRd::ZZUL Upload [ZZ]
-/*
-    if(size == 2)
-        return (list.GetHead()+list.GetTail())/2;
-    
-    if(size > 2)
-    {
-        // if more than 2 elements, we need to sort them to find the middle.
-        UINT* arr = new UINT[size];
+    /*
+        if(size == 2)
+            return (list.GetHead()+list.GetTail())/2;
 
-        UINT counter = 0;
-        for(POSITION pos = list.GetHeadPosition(); pos; list.GetNext(pos))
+        if(size > 2)
         {
-            arr[counter] = list.GetAt(pos);
-            counter++;
+            // if more than 2 elements, we need to sort them to find the middle.
+            UINT* arr = new UINT[size];
+
+            UINT counter = 0;
+            for(POSITION pos = list.GetHeadPosition(); pos; list.GetNext(pos))
+            {
+                arr[counter] = list.GetAt(pos);
+                counter++;
+            }
+
+            std::sort(arr, arr+size);
+
+            double returnVal;
+
+            if(size%2)
+                returnVal = arr[size/2];
+            else
+                returnVal = (arr[size/2-1] + arr[size/2])/2;
+
+            delete[] arr;
+
+            return (UINT)returnVal;
         }
+    */
+    if (size == 2)
+        return max(list.GetHead(), list.GetTail());
 
-        std::sort(arr, arr+size);
+    if (size > 2)
+    {
+        UINT maxVal = 0;
 
-        double returnVal;
+        for (POSITION pos = list.GetHeadPosition(); pos; list.GetNext(pos))
+            maxVal = max(maxVal, list.GetAt(pos));
 
-        if(size%2)
-            returnVal = arr[size/2];
-        else
-            returnVal = (arr[size/2-1] + arr[size/2])/2;
-
-        delete[] arr;
-
-        return (UINT)returnVal;
+        return maxVal;
     }
-*/
-	if(size == 2)
-		return max(list.GetHead(), list.GetTail());
-	
-	if(size > 2) 
-	{
-		UINT maxVal = 0;
-
-		for(POSITION pos = list.GetHeadPosition(); pos; list.GetNext(pos))
-			maxVal = max(maxVal, list.GetAt(pos));
-
-		return maxVal;
-	} 
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
-	// Undefined! Shouldn't be called with no elements in list.
+    // Undefined! Shouldn't be called with no elements in list.
     return 0;
 }

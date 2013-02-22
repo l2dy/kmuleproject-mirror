@@ -302,10 +302,10 @@ BOOL TabControl::ReorderTab(unsigned int nSrcTab, unsigned int nDstTab)
     item.cchTextMax = _countof(sBuffer);
     BOOL bOK = GetItem(nSrcTab, &item);
     sBuffer[_countof(sBuffer) - 1] = L'\0';
-    ASSERT( bOK );
+    ASSERT(bOK);
 
     bOK = DeleteItem(nSrcTab);
-    ASSERT( bOK );
+    ASSERT(bOK);
 
     // Insert it at new location
     bOK = InsertItem(nDstTab - (m_nDstTab > m_nSrcTab ? 1 : 0), &item);

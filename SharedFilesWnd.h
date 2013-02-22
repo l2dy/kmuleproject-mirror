@@ -51,7 +51,7 @@ protected:
 
     DECLARE_MESSAGE_MAP()
 //>>> ResizeableLib v1.3 -> v1.4
-	afx_msg BOOL OnCreate(LPCREATESTRUCT lpCreateStruct); 
+    afx_msg BOOL OnCreate(LPCREATESTRUCT lpCreateStruct);
     //afx_msg BOOL OnNcCreate(LPCREATESTRUCT lpCreateStruct);
 //<<< ResizeableLib v1.3 -> v1.4
     afx_msg LRESULT OnDataChanged(WPARAM, LPARAM);

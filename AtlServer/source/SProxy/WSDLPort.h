@@ -94,7 +94,7 @@ public:
     {
 
         wchar_t wszTmp[ATL_URL_MAX_URL_LENGTH];
-        if(AtlEscapeUrl(strSoapAddress,wszTmp,0,ATL_URL_MAX_URL_LENGTH-1,ATL_URL_BROWSER_MODE) == FALSE)
+        if (AtlEscapeUrl(strSoapAddress,wszTmp,0,ATL_URL_MAX_URL_LENGTH-1,ATL_URL_BROWSER_MODE) == FALSE)
             return E_FAIL;
         m_strSoapAddress = wszTmp;
         return S_OK;

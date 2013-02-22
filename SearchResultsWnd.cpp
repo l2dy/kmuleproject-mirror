@@ -185,12 +185,12 @@ void CSearchResultsWnd::StartSearch(SSearchParams* pParams)
         break;
 
 //>>> WiZaRd::CustomSearches
-/*
-		case SearchTypeFileDonkey:
-			ShellOpenFile(CreateWebQuery(pParams));
-			delete pParams;
-		return;
-*/
+        /*
+        		case SearchTypeFileDonkey:
+        			ShellOpenFile(CreateWebQuery(pParams));
+        			delete pParams;
+        		return;
+        */
 //<<< WiZaRd::CustomSearches
 
     default:
@@ -671,7 +671,7 @@ void ParsedSearchExpression(const CSearchExpr* pexpr)
         {
             if (pexpr->m_aExpr[i].m_str != SEARCHOPTOK_AND)
             {
-                ASSERT( pexpr->m_aExpr[i].m_iTag == FT_FILENAME );
+                ASSERT(pexpr->m_aExpr[i].m_iTag == FT_FILENAME);
                 // Minor optimization: Because we added the Kad keyword to the boolean search expression,
                 // we remove it here (and only here) again because we know that the entire search expression
                 // does only contain (implicit) ANDed strings.
@@ -683,7 +683,7 @@ void ParsedSearchExpression(const CSearchExpr* pexpr)
                 }
             }
         }
-        ASSERT( s_SearchExpr.m_aExpr.GetCount() == 0);
+        ASSERT(s_SearchExpr.m_aExpr.GetCount() == 0);
         s_SearchExpr.m_aExpr.Add(CSearchAttr(strAndTerms));
     }
     else
@@ -857,10 +857,10 @@ bool GetSearchPacket(CSafeMemFile* pData, SSearchParams* pParams, bool bTargetSu
     }
 
     s_strCurKadKeywordA.Empty();
-    ASSERT( !pParams->strExpression.IsEmpty() );
+    ASSERT(!pParams->strExpression.IsEmpty());
     if (pParams->eType == SearchTypeKademlia)
     {
-        ASSERT( !pParams->strKeyword.IsEmpty() );
+        ASSERT(!pParams->strKeyword.IsEmpty());
         s_strCurKadKeywordA = StrToUtf8(pParams->strKeyword);
     }
     if (pParams->strBooleanExpr.IsEmpty())
@@ -999,13 +999,13 @@ bool GetSearchPacket(CSafeMemFile* pData, SSearchParams* pParams, bool bTargetSu
                  rSearchAttr.m_iTag == FT_MEDIA_ALBUM		||
                  rSearchAttr.m_iTag == FT_MEDIA_ARTIST)
         {
-            ASSERT( rSearchAttr.m_uIntegerOperator == ED2K_SEARCH_OP_EQUAL );
+            ASSERT(rSearchAttr.m_uIntegerOperator == ED2K_SEARCH_OP_EQUAL);
             target.WriteMetaDataSearchParam(rSearchAttr.m_iTag, OptUtf8ToStr(rSearchAttr.m_str));
         }
         else
         {
-            ASSERT( rSearchAttr.m_iTag == FT_FILENAME );
-            ASSERT( rSearchAttr.m_uIntegerOperator == ED2K_SEARCH_OP_EQUAL );
+            ASSERT(rSearchAttr.m_iTag == FT_FILENAME);
+            ASSERT(rSearchAttr.m_uIntegerOperator == ED2K_SEARCH_OP_EQUAL);
             target.WriteMetaDataSearchParam(OptUtf8ToStr(rstrA));
         }
     }
@@ -1085,7 +1085,7 @@ bool CSearchResultsWnd::DoNewKadSearch(SSearchParams* pParams)
         strError.Format(GetResString(IDS_KAD_SEARCH_KEYWORD_INVALID), g_aszInvKadKeywordChars);
 
         CString strStripped = pParams->strKeyword;
-        for(size_t i = 0; i != _tcslen(g_aszInvKadKeywordChars); ++i)
+        for (size_t i = 0; i != _tcslen(g_aszInvKadKeywordChars); ++i)
             strStripped.Remove(g_aszInvKadKeywordChars[i]);
         CString strMessage = strError;
         strMessage.AppendFormat(GetResString(IDS_KAD_SEARCH_KEYWORD_CLEANUP), strStripped);
@@ -1093,7 +1093,7 @@ bool CSearchResultsWnd::DoNewKadSearch(SSearchParams* pParams)
         XMSGBOXPARAMS params;
         params.nIdHelp = eMule_FAQ_Search - HID_BASE_PROMPT;
         int nResult = XMessageBox(NULL, strMessage, GetResString(IDS_ERROR), MB_YESNO | MB_DEFBUTTON1 | MB_HELP | MB_ICONWARNING, &params);
-        if(nResult == IDYES)
+        if (nResult == IDYES)
             pParams->strKeyword = strStripped;
         else
             return false;
@@ -1217,7 +1217,7 @@ void CSearchResultsWnd::DeleteSearch(UINT nSearchID)
     // delete search tab
     int iCurSel = searchselect.GetCurSel();
     searchselect.DeleteItem(i);
-    delete (SSearchParams*)item.lParam;
+    delete(SSearchParams*)item.lParam;
 
     int iTabItems = searchselect.GetItemCount();
     if (iTabItems > 0)
@@ -1282,7 +1282,7 @@ void CSearchResultsWnd::DeleteAllSearches()
         if (searchselect.GetItem(i, &item) && item.lParam != -1 && item.lParam != NULL)
         {
             Kademlia::CSearchManager::StopSearch(((const SSearchParams*)item.lParam)->dwSearchID, false);
-            delete (SSearchParams*)item.lParam;
+            delete(SSearchParams*)item.lParam;
         }
     }
     theApp.searchlist->Clear();
@@ -1413,7 +1413,7 @@ void CSearchResultsWnd::OnDestroy()
         tci.mask = TCIF_PARAM;
         if (searchselect.GetItem(i, &tci) && tci.lParam != NULL)
         {
-            delete (SSearchParams*)tci.lParam;
+            delete(SSearchParams*)tci.lParam;
         }
     }
 

@@ -198,7 +198,7 @@ char* Packet::DetachPacket()
 
 char* Packet::GetHeader()
 {
-    ASSERT ( !m_bSplitted );
+    ASSERT(!m_bSplitted);
     Header_Struct* header = (Header_Struct*) head;
     header->command = opcode;
     header->eDonkeyID =  prot;
@@ -208,7 +208,7 @@ char* Packet::GetHeader()
 
 char* Packet::GetUDPHeader()
 {
-    ASSERT ( !m_bSplitted );
+    ASSERT(!m_bSplitted);
     UDP_Header_Struct* header = (UDP_Header_Struct*) head;
     header->command = opcode;
     header->eDonkeyID =  prot;
@@ -217,7 +217,7 @@ char* Packet::GetUDPHeader()
 
 void Packet::PackPacket()
 {
-    ASSERT (!m_bSplitted);
+    ASSERT(!m_bSplitted);
     uLongf newsize = size+300;
     BYTE* output = new BYTE[newsize];
     UINT result = compress2(output,&newsize,(BYTE*)pBuffer,size,Z_BEST_COMPRESSION);
@@ -226,7 +226,7 @@ void Packet::PackPacket()
         delete[] output;
         return;
     }
-    if( prot == OP_KADEMLIAHEADER )
+    if (prot == OP_KADEMLIAHEADER)
         prot = OP_KADEMLIAPACKEDPROT;
     else
         prot = OP_PACKEDPROT;
@@ -238,7 +238,7 @@ void Packet::PackPacket()
 
 bool Packet::UnPackPacket(UINT uMaxDecompressedSize)
 {
-    ASSERT ( prot == OP_PACKEDPROT || prot == OP_KADEMLIAPACKEDPROT);
+    ASSERT(prot == OP_PACKEDPROT || prot == OP_KADEMLIAPACKEDPROT);
     UINT nNewSize = size*10+300;
     if (nNewSize > uMaxDecompressedSize)
     {
@@ -260,12 +260,12 @@ bool Packet::UnPackPacket(UINT uMaxDecompressedSize)
 
     if (result == Z_OK)
     {
-        ASSERT ( completebuffer == NULL );
-        ASSERT ( pBuffer != NULL );
+        ASSERT(completebuffer == NULL);
+        ASSERT(pBuffer != NULL);
         size = unpackedsize;
         delete[] pBuffer;
         pBuffer = (char*)unpack;
-        if( prot == OP_KADEMLIAPACKEDPROT )
+        if (prot == OP_KADEMLIAPACKEDPROT)
             prot = OP_KADEMLIAHEADER;
         else
             prot =  OP_EMULEPROT;
@@ -281,13 +281,13 @@ bool Packet::UnPackPacket(UINT uMaxDecompressedSize)
 
 CRawPacket::CRawPacket(const CStringA& rstr)
 {
-    ASSERT( opcode == 0 );
-    ASSERT( !m_bSplitted );
-    ASSERT( !m_bLastSplitted );
-    ASSERT( !m_bPacked );
-    ASSERT( !m_bFromPF );
-    ASSERT( completebuffer == NULL );
-    ASSERT( tempbuffer == NULL );
+    ASSERT(opcode == 0);
+    ASSERT(!m_bSplitted);
+    ASSERT(!m_bLastSplitted);
+    ASSERT(!m_bPacked);
+    ASSERT(!m_bFromPF);
+    ASSERT(completebuffer == NULL);
+    ASSERT(tempbuffer == NULL);
 
     prot = 0x00;
     size = rstr.GetLength();
@@ -297,13 +297,13 @@ CRawPacket::CRawPacket(const CStringA& rstr)
 
 CRawPacket::CRawPacket(const char* pcData, UINT uSize, bool bFromPartFile)
 {
-    ASSERT( opcode == 0 );
-    ASSERT( !m_bSplitted );
-    ASSERT( !m_bLastSplitted );
-    ASSERT( !m_bPacked );
-    ASSERT( !m_bFromPF );
-    ASSERT( completebuffer == NULL );
-    ASSERT( tempbuffer == NULL );
+    ASSERT(opcode == 0);
+    ASSERT(!m_bSplitted);
+    ASSERT(!m_bLastSplitted);
+    ASSERT(!m_bPacked);
+    ASSERT(!m_bFromPF);
+    ASSERT(completebuffer == NULL);
+    ASSERT(tempbuffer == NULL);
 
     prot = 0x00;
     size = uSize;
@@ -314,7 +314,7 @@ CRawPacket::CRawPacket(const char* pcData, UINT uSize, bool bFromPartFile)
 
 CRawPacket::~CRawPacket()
 {
-    ASSERT( completebuffer == NULL );
+    ASSERT(completebuffer == NULL);
 }
 
 char* CRawPacket::GetHeader()
@@ -331,7 +331,7 @@ char* CRawPacket::GetUDPHeader()
 
 void CRawPacket::AttachPacket(char* pPacketData, UINT uPacketSize, bool bFromPartFile)
 {
-    ASSERT( pBuffer == NULL );
+    ASSERT(pBuffer == NULL);
     pBuffer = pPacketData;
     size = uPacketSize;
     m_bFromPF = bFromPartFile;
@@ -350,7 +350,7 @@ char* CRawPacket::DetachPacket()
 
 CTag::CTag(LPCSTR pszName, uint64 uVal, bool bInt64)
 {
-    ASSERT( uVal <= 0xFFFFFFFF || bInt64 );
+    ASSERT(uVal <= 0xFFFFFFFF || bInt64);
     if (bInt64)
     {
         m_uType = TAGTYPE_UINT64;
@@ -368,7 +368,7 @@ CTag::CTag(LPCSTR pszName, uint64 uVal, bool bInt64)
 
 CTag::CTag(uint8 uName, uint64 uVal, bool bInt64)
 {
-    ASSERT( uVal <= 0xFFFFFFFF || bInt64 );
+    ASSERT(uVal <= 0xFFFFFFFF || bInt64);
     if (bInt64)
     {
         m_uType = TAGTYPE_UINT64;
@@ -514,7 +514,7 @@ CTag::CTag(CFileDataIO* data, bool bOptUTF8)
             {
                 data->Read(m_pszName, length);
             }
-            catch(CFileException* ex)
+            catch (CFileException* ex)
             {
                 delete[] m_pszName;
                 throw ex;
@@ -567,7 +567,7 @@ CTag::CTag(CFileDataIO* data, bool bOptUTF8)
         {
             data->Read(m_pData, 16);
         }
-        catch(CFileException* ex)
+        catch (CFileException* ex)
         {
             delete[] m_pData;
             throw ex;
@@ -698,7 +698,7 @@ bool CTag::WriteNewEd2kTag(CFileDataIO* data, EUtf8Str eStrEncode) const
     }
     else
     {
-        ASSERT( m_uName != 0 );
+        ASSERT(m_uName != 0);
         data->WriteUInt8(uType | 0x80);
         data->WriteUInt8(m_uName);
     }
@@ -816,14 +816,14 @@ bool CTag::WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode) const
 
 void CTag::SetInt(UINT uVal)
 {
-    ASSERT( IsInt() );
+    ASSERT(IsInt());
     if (IsInt())
         m_uVal = uVal;
 }
 
 void CTag::SetInt64(uint64 uVal)
 {
-    ASSERT( IsInt64(true) );
+    ASSERT(IsInt64(true));
     if (IsInt64(true))
     {
         m_uVal = uVal;
@@ -833,7 +833,7 @@ void CTag::SetInt64(uint64 uVal)
 
 void CTag::SetStr(LPCTSTR pszVal)
 {
-    ASSERT( IsStr() );
+    ASSERT(IsStr());
     if (IsStr())
     {
         delete m_pstrVal;
@@ -842,7 +842,7 @@ void CTag::SetStr(LPCTSTR pszVal)
     }
 }
 
-CString CTag::GetFullInfo(CString (*pfnDbgGetFileMetaTagName)(UINT uMetaTagID)) const
+CString CTag::GetFullInfo(CString(*pfnDbgGetFileMetaTagName)(UINT uMetaTagID)) const
 {
     CString strTag;
     if (m_pszName)
@@ -905,15 +905,15 @@ void CTag::AssertValid() const
 {
     CObject::AssertValid();
 
-    ASSERT( m_uType != 0 );
-    ASSERT( m_uName != 0 && m_pszName == NULL || m_uName == 0 && m_pszName != NULL );
-    ASSERT( m_pszName == NULL || AfxIsValidString(m_pszName) );
+    ASSERT(m_uType != 0);
+    ASSERT(m_uName != 0 && m_pszName == NULL || m_uName == 0 && m_pszName != NULL);
+    ASSERT(m_pszName == NULL || AfxIsValidString(m_pszName));
     if (IsStr())
-        ASSERT( m_pstrVal != NULL && AfxIsValidString(*m_pstrVal) );
+        ASSERT(m_pstrVal != NULL && AfxIsValidString(*m_pstrVal));
     else if (IsHash())
-        ASSERT( m_pData != NULL && AfxIsValidAddress(m_pData, 16) );
+        ASSERT(m_pData != NULL && AfxIsValidAddress(m_pData, 16));
     else if (IsBlob())
-        ASSERT( m_pData != NULL && AfxIsValidAddress(m_pData, m_nBlobSize) );
+        ASSERT(m_pData != NULL && AfxIsValidAddress(m_pData, m_nBlobSize));
 }
 
 void CTag::Dump(CDumpContext& dc) const

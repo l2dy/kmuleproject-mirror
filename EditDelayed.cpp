@@ -63,7 +63,7 @@ CEditDelayed::CEditDelayed()
 void CEditDelayed::OnDestroy()
 {
     if (m_uTimerResult != 0)
-        VERIFY( KillTimer(DELAYED_EVALUATE_TIMER_ID) );
+        VERIFY(KillTimer(DELAYED_EVALUATE_TIMER_ID));
 
     // WM_DESTROY sends another WM_SETFOCUS/WM_KILLFOCUS to the window!?
     m_bShuttingDown = true;
@@ -93,9 +93,9 @@ void CEditDelayed::OnSetFocus(CWnd* pOldWnd)
     if (!m_bShuttingDown)
     {
         // Create timer
-        ASSERT( m_uTimerResult == 0 );
+        ASSERT(m_uTimerResult == 0);
         m_uTimerResult = SetTimer(DELAYED_EVALUATE_TIMER_ID, 100, NULL);
-        ASSERT( m_uTimerResult != 0 );
+        ASSERT(m_uTimerResult != 0);
 
         ShowColumnText(false);
     }
@@ -106,8 +106,8 @@ void CEditDelayed::OnKillFocus(CWnd* pNewWnd)
     if (!m_bShuttingDown)
     {
         // Kill timer
-        ASSERT( m_uTimerResult != 0 );
-        VERIFY( KillTimer(DELAYED_EVALUATE_TIMER_ID) );
+        ASSERT(m_uTimerResult != 0);
+        VERIFY(KillTimer(DELAYED_EVALUATE_TIMER_ID));
         m_uTimerResult = 0;
 
         // If there was something modified since the last evaluation..
@@ -125,14 +125,14 @@ void CEditDelayed::OnEnChange()
     if (m_uTimerResult != 0)
     {
         // Edit control contents were changed while the control was active (had focus)
-        ASSERT( GetFocus() == this );
+        ASSERT(GetFocus() == this);
         m_dwLastModified = GetTickCount();
     }
     else
     {
         // Edit control contents were changed while the control was not active (e.g.
         // someone called 'SetWindowText' from within an other window).
-        ASSERT( GetFocus() != this );
+        ASSERT(GetFocus() != this);
         DoDelayedEvalute();
     }
     if (GetWindowTextLength() == 0 && m_bShowResetButton)
@@ -200,7 +200,7 @@ void CEditDelayed::OnInit(CHeaderCtrl* pColumnHeader, CArray<int, int>* paIgnore
 
 void CEditDelayed::SetEditRect(bool bUpdateResetButtonPos, bool bUpdateColumnButton)
 {
-    ASSERT( GetStyle() & ES_MULTILINE );
+    ASSERT(GetStyle() & ES_MULTILINE);
 
     CRect editRect;
     GetClientRect(&editRect);

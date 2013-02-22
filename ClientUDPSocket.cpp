@@ -130,9 +130,9 @@ void CClientUDPSocket::OnReceive(int nErrorCode)
                             {
                                 Kademlia::CKademlia::ProcessPacket(unpack, unpackedsize+2, ntohl(sockAddr.sin_addr.S_un.S_addr), ntohs(sockAddr.sin_port)
                                                                    , (Kademlia::CPrefs::GetUDPVerifyKey(sockAddr.sin_addr.S_un.S_addr) == nReceiverVerifyKey)
-                                                                   , Kademlia::CKadUDPKey(nSenderVerifyKey, theApp.GetPublicIP(false)) );
+                                                                   , Kademlia::CKadUDPKey(nSenderVerifyKey, theApp.GetPublicIP(false)));
                             }
-                            catch(...)
+                            catch (...)
                             {
                                 delete[] unpack;
                                 throw;
@@ -160,12 +160,12 @@ void CClientUDPSocket::OnReceive(int nErrorCode)
 //>>> zz_fly::Bad Shareaza detection
 //note: a 'real' eMule v0.48a cannot send a packet with KADEMLIA_FIREWALLED2_REQ tag
                         byte byOpcode = pBuffer[1];
-                        if(byOpcode == KADEMLIA_FIREWALLED2_REQ)
+                        if (byOpcode == KADEMLIA_FIREWALLED2_REQ)
                         {
                             CUpDownClient* client = theApp.clientlist->FindClientByIP_KadPort(sockAddr.sin_addr.S_un.S_addr, ntohs(sockAddr.sin_port));
-                            if(client != NULL && client->GetClientSoft() == SO_EMULE && client->GetVersion() != 0 && client->GetVersion() < MAKE_CLIENT_VERSION(0, 49, 0))
+                            if (client != NULL && client->GetClientSoft() == SO_EMULE && client->GetVersion() != 0 && client->GetVersion() < MAKE_CLIENT_VERSION(0, 49, 0))
                             {
-                                if(client->GetAntiLeechData())
+                                if (client->GetAntiLeechData())
                                     client->GetAntiLeechData()->SetBadForThisSession(AT_MODTHIEF, L"Vagaa mod (fake KAD version)");
                                 break;
                             }
@@ -174,7 +174,7 @@ void CClientUDPSocket::OnReceive(int nErrorCode)
 //<<< WiZaRd::ClientAnalyzer
                         Kademlia::CKademlia::ProcessPacket(pBuffer, nPacketLen, ntohl(sockAddr.sin_addr.S_un.S_addr), ntohs(sockAddr.sin_port)
                                                            , (Kademlia::CPrefs::GetUDPVerifyKey(sockAddr.sin_addr.S_un.S_addr) == nReceiverVerifyKey)
-                                                           , Kademlia::CKadUDPKey(nSenderVerifyKey, theApp.GetPublicIP(false)) );
+                                                           , Kademlia::CKadUDPKey(nSenderVerifyKey, theApp.GetPublicIP(false)));
                     }
                     else
                         throw CString(_T("Kad packet too short"));
@@ -188,32 +188,32 @@ void CClientUDPSocket::OnReceive(int nErrorCode)
                 }
                 }
             }
-            catch(CFileException* error)
+            catch (CFileException* error)
             {
                 error->Delete();
                 strError = _T("Invalid packet received");
             }
-            catch(CMemoryException* error)
+            catch (CMemoryException* error)
             {
                 error->Delete();
                 strError = _T("Memory exception");
             }
-            catch(CString error)
+            catch (CString error)
             {
                 strError = error;
             }
-            catch(Kademlia::CIOException* error)
+            catch (Kademlia::CIOException* error)
             {
                 error->Delete();
                 strError = _T("Invalid packet received");
             }
-            catch(CException* error)
+            catch (CException* error)
             {
                 error->Delete();
                 strError = _T("General packet error");
             }
 #ifndef _DEBUG
-            catch(...)
+            catch (...)
             {
                 strError = _T("Unknown exception");
                 ASSERT(0);
@@ -262,7 +262,7 @@ void CClientUDPSocket::OnReceive(int nErrorCode)
 
 bool CClientUDPSocket::ProcessPacket(const BYTE* packet, UINT size, uint8 opcode, UINT ip, uint16 port)
 {
-    switch(opcode)
+    switch (opcode)
     {
     case OP_REASKCALLBACKUDP:
     {
@@ -270,9 +270,9 @@ bool CClientUDPSocket::ProcessPacket(const BYTE* packet, UINT size, uint8 opcode
             DebugRecv("OP_ReaskCallbackUDP", NULL, NULL, ip);
         theStats.AddDownDataOverheadOther(size);
         CUpDownClient* buddy = theApp.clientlist->GetBuddy();
-        if( buddy )
+        if (buddy)
         {
-            if( size < 17 || buddy->socket == NULL )
+            if (size < 17 || buddy->socket == NULL)
                 break;
             if (!md4cmp(packet, buddy->GetBuddyID()))
             {
@@ -323,9 +323,9 @@ bool CClientUDPSocket::ProcessPacket(const BYTE* packet, UINT size, uint8 opcode
                 DebugRecv("OP_ReaskFilePing", sender, reqfilehash);
 
 //>>> WiZaRd::ClientAnalyzer
-            if(sender->DownloadingAndUploadingFilesAreEqual(reqfile))
+            if (sender->DownloadingAndUploadingFilesAreEqual(reqfile))
             {
-                if(sender->GetAntiLeechData())
+                if (sender->GetAntiLeechData())
                     sender->GetAntiLeechData()->SetBadForThisSession(AT_FILEFAKER);
                 break; //don't answer them...
             }
@@ -358,7 +358,7 @@ bool CClientUDPSocket::ProcessPacket(const BYTE* packet, UINT size, uint8 opcode
                     }
                 }
                 CSafeMemFile data_out(128);
-                if(sender->GetUDPVersion() > 3)
+                if (sender->GetUDPVersion() > 3)
                     reqfile->WriteSafePartStatus(&data_out, sender, true); //>>> WiZaRd::Intelligent SOTN
                 data_out.WriteUInt16((uint16)(theApp.uploadqueue->GetWaitingPosition(sender)));
                 if (thePrefs.GetDebugClientUDPLevel() > 0)
@@ -422,7 +422,7 @@ bool CClientUDPSocket::ProcessPacket(const BYTE* packet, UINT size, uint8 opcode
         if (sender && sender->UDPPacketPending())
         {
             CSafeMemFile data_in(packet, size);
-            if ( sender->GetUDPVersion() > 3 )
+            if (sender->GetUDPVersion() > 3)
             {
                 sender->ProcessFileStatus(true, &data_in, sender->GetRequestFile());
             }
@@ -496,7 +496,7 @@ bool CClientUDPSocket::ProcessPacket(const BYTE* packet, UINT size, uint8 opcode
             pRequester->SetDirectUDPCallbackSupport(false);
             pRequester->SetIP(ip);
             pRequester->SetUserPort(nRemoteTCPPort);
-            DEBUG_ONLY( DebugLog(_T("Accepting incoming DirectCallbackRequest from %s"), pRequester->DbgGetClientInfo()) );
+            DEBUG_ONLY(DebugLog(_T("Accepting incoming DirectCallbackRequest from %s"), pRequester->DbgGetClientInfo()));
             pRequester->TryToConnect();
         }
         else
@@ -529,7 +529,7 @@ void CClientUDPSocket::OnSend(int nErrorCode)
     sendLocker.Lock();
     m_bWouldBlock = false;
 
-    if(!controlpacket_queue.IsEmpty())
+    if (!controlpacket_queue.IsEmpty())
     {
         theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this);
     }
@@ -549,7 +549,7 @@ SocketSentBytes CClientUDPSocket::SendControlData(UINT maxNumberOfBytesToSend, U
     while (!controlpacket_queue.IsEmpty() && !IsBusy() && sentBytes < maxNumberOfBytesToSend)  // ZZ:UploadBandWithThrottler (UDP)
     {
         UDPPack* cur_packet = controlpacket_queue.GetHead();
-        if( GetTickCount() - cur_packet->dwTime < UDPMAXQUEUETIME )
+        if (GetTickCount() - cur_packet->dwTime < UDPMAXQUEUETIME)
         {
             UINT nLen = cur_packet->packet->size+2;
             uchar* sendbuffer = new uchar[nLen];
@@ -581,7 +581,7 @@ SocketSentBytes CClientUDPSocket::SendControlData(UINT maxNumberOfBytesToSend, U
     }
 
 // ZZ:UploadBandWithThrottler (UDP) -->
-    if(!IsBusy() && !controlpacket_queue.IsEmpty())
+    if (!IsBusy() && !controlpacket_queue.IsEmpty())
     {
         theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this);
     }

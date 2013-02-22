@@ -37,7 +37,7 @@ public:
 
     inline CSoapHeader * AddSoapHeader()
     {
-        CAutoPtr<CSoapHeader> p ( new CSoapHeader );
+        CAutoPtr<CSoapHeader> p(new CSoapHeader);
         if (p != NULL)
         {
             if (m_headers.AddTail(p) != NULL)
@@ -78,7 +78,7 @@ public:
 
     inline CSoapFault * AddSoapFault()
     {
-        CAutoPtr<CSoapFault> p ( new CSoapFault );
+        CAutoPtr<CSoapFault> p(new CSoapFault);
         if (p != NULL)
         {
             if (m_faults.AddTail(p) != NULL)
@@ -115,14 +115,14 @@ public:
     inline CSoapBody * AddSoapBody()
     {
         m_pSoapBody.Free();
-        m_pSoapBody.Attach( new CSoapBody );
+        m_pSoapBody.Attach(new CSoapBody);
         return m_pSoapBody;
     }
 
     inline CSoapBody * AddSoapBody(CSoapBody *pBody)
     {
         m_pSoapBody.Free();
-        m_pSoapBody.Attach( pBody );
+        m_pSoapBody.Attach(pBody);
         return m_pSoapBody;
     }
 

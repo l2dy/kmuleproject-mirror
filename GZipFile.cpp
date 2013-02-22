@@ -35,7 +35,7 @@ CGZIPFile::CGZIPFile()
 
 bool CGZIPFile::Open(LPCTSTR pszFilePath)
 {
-    ASSERT( m_gzFile == 0 );
+    ASSERT(m_gzFile == 0);
     Close();
 
     m_gzFile = gzopen(CT2CA(pszFilePath), "rb");
@@ -55,7 +55,7 @@ void CGZIPFile::Close()
 {
     if (m_gzFile)
     {
-        VERIFY( gzclose(m_gzFile) == Z_OK );
+        VERIFY(gzclose(m_gzFile) == Z_OK);
         m_gzFile = 0;
     }
     m_strGzFilePath.Empty();
@@ -117,6 +117,6 @@ bool CGZIPFile::Extract(LPCTSTR pszFilePath)
     delete[] pucBuff;
     _close(fdOut);
     if (!bResult)
-        VERIFY( _tremove(pszFilePath) == 0 );
+        VERIFY(_tremove(pszFilePath) == 0);
     return bResult;
 }

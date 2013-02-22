@@ -100,7 +100,7 @@ bool CRoutingBin::AddContact(CContact *pContact)
         {
             return false;
         }
-        if ((pContact->GetIPAddress() & 0xFFFFFF00) ==  ((*itContactList)->GetIPAddress() & 0xFFFFFF00))
+        if ((pContact->GetIPAddress() & 0xFFFFFF00) == ((*itContactList)->GetIPAddress() & 0xFFFFFF00))
             cSameSubnets++;
     }
 
@@ -119,7 +119,7 @@ bool CRoutingBin::AddContact(CContact *pContact)
     }
 
     // If not full, add to end of list
-    if ( m_listEntries.size() < K)
+    if (m_listEntries.size() < K)
     {
         m_listEntries.push_back(pContact);
         AdjustGlobalTracking(pContact->GetIPAddress(), true);
@@ -248,22 +248,22 @@ void CRoutingBin::GetClosestTo(UINT uMaxType, const CUInt128 &uTarget, UINT uMax
     // We don't care about max results at this time.
     for (ContactList::const_iterator itContactList = m_listEntries.begin(); itContactList != m_listEntries.end(); ++itContactList)
     {
-        if((*itContactList)->GetType() <= uMaxType && (*itContactList)->IsIpVerified())
+        if ((*itContactList)->GetType() <= uMaxType && (*itContactList)->IsIpVerified())
         {
             CUInt128 uTargetDistance((*itContactList)->m_uClientID);
             uTargetDistance.Xor(uTarget);
             (*pmapResult)[uTargetDistance] = *itContactList;
             // This list will be used for an unknown time, Inc in use so it's not deleted.
-            if( bInUse )
+            if (bInUse)
                 (*itContactList)->IncUse();
         }
     }
 
     // Remove any extra results by least wanted first.
-    while(pmapResult->size() > uMaxRequired)
+    while (pmapResult->size() > uMaxRequired)
     {
         // Dec in use count.
-        if( bInUse )
+        if (bInUse)
             (--pmapResult->end())->second->DecUse();
         // remove from results
         pmapResult->erase(--pmapResult->end());
@@ -338,7 +338,7 @@ bool CRoutingBin::ChangeContactIPAddress(CContact* pContact, UINT uNewIP)
     if (pContact->GetIPAddress() == uNewIP)
         return true;
 
-    ASSERT( GetContact(pContact->GetClientID()) == pContact );
+    ASSERT(GetContact(pContact->GetClientID()) == pContact);
 
     // no more than 1 KadID per IP
     UINT nSameIPCount = 0;
@@ -367,7 +367,7 @@ bool CRoutingBin::ChangeContactIPAddress(CContact* pContact, UINT uNewIP)
         // Check if we already have a contact with this ID in the list.
         for (ContactList::const_iterator itContactList = m_listEntries.begin(); itContactList != m_listEntries.end(); ++itContactList)
         {
-            if ((uNewIP & 0xFFFFFF00) ==  ((*itContactList)->GetIPAddress() & 0xFFFFFF00))
+            if ((uNewIP & 0xFFFFFF00) == ((*itContactList)->GetIPAddress() & 0xFFFFFF00))
                 cSameSubnets++;
         }
         if (cSameSubnets >= 2 && !::IsLANIP(ntohl(uNewIP)))
@@ -380,7 +380,7 @@ bool CRoutingBin::ChangeContactIPAddress(CContact* pContact, UINT uNewIP)
 
     // everything fine
     // LOGTODO REMOVE
-    DEBUG_ONLY( DebugLog(_T("Index contact IP change allowed %s -> %s"), ipstr(ntohl(pContact->GetIPAddress())), ipstr(ntohl(uNewIP))) );
+    DEBUG_ONLY(DebugLog(_T("Index contact IP change allowed %s -> %s"), ipstr(ntohl(pContact->GetIPAddress())), ipstr(ntohl(uNewIP))));
     AdjustGlobalTracking(pContact->GetIPAddress(), false);
     pContact->SetIPAddress(uNewIP);
     AdjustGlobalTracking(pContact->GetIPAddress(), true);
@@ -389,7 +389,7 @@ bool CRoutingBin::ChangeContactIPAddress(CContact* pContact, UINT uNewIP)
 
 void CRoutingBin::PushToBottom(CContact* pContact) // puts an existing contact from X to the end of the list
 {
-    ASSERT( GetContact(pContact->GetClientID()) == pContact );
+    ASSERT(GetContact(pContact->GetClientID()) == pContact);
     RemoveContact(pContact, true);
     m_listEntries.push_back(pContact);
 }
@@ -462,15 +462,15 @@ bool CRoutingBin::HasOnlyLANNodes() const
 //>>> WiZaRd::IPFiltering
 void CRoutingBin::RemoveFilteredContacts()
 {
-	// don't use the current list - it is possibly accessed from other threads
-	ContactList listEntries;
-	GetEntries(&listEntries);
+    // don't use the current list - it is possibly accessed from other threads
+    ContactList listEntries;
+    GetEntries(&listEntries);
 
     CContact* pContact = NULL;
-	for (ContactList::const_iterator itContactList = listEntries.begin(); itContactList != listEntries.end(); ++itContactList)
+    for (ContactList::const_iterator itContactList = listEntries.begin(); itContactList != listEntries.end(); ++itContactList)
     {
         pContact = *itContactList;
-        if(theApp.ipfilter->IsFiltered(ntohl(pContact->GetIPAddress())))
+        if (theApp.ipfilter->IsFiltered(ntohl(pContact->GetIPAddress())))
         {
             if (thePrefs.GetLogFilteredIPs())
                 AddDebugLogLine(false, L"Removed contact (IP=%s) from the list of Kad contacts - IP filter (%s)", ipstr(ntohl(pContact->GetIPAddress())), theApp.ipfilter->GetLastHit());

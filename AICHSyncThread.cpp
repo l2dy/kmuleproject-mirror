@@ -53,7 +53,7 @@ BOOL CAICHSyncThread::InitInstance()
 
 int CAICHSyncThread::Run()
 {
-    if ( !theApp.emuledlg->IsRunning() )
+    if (!theApp.emuledlg->IsRunning())
         return 0;
     // we need to keep a lock on this file while the thread is running
     CSingleLock lockKnown2Met(&CAICHRecoveryHashSet::m_mutKnown2File);
@@ -113,7 +113,7 @@ int CAICHSyncThread::Run()
         else
             file.WriteUInt8(KNOWN2_MET_VERSION);
     }
-    catch(CFileException* error)
+    catch (CFileException* error)
     {
         if (error->m_cause == CFileException::endOfFile)
         {
@@ -128,7 +128,7 @@ int CAICHSyncThread::Run()
                     file.WriteUInt8(KNOWN2_MET_VERSION);
                 }
             }
-            catch(CFileException* error2)
+            catch (CFileException* error2)
             {
                 error2->Delete();
             }
@@ -153,7 +153,7 @@ int CAICHSyncThread::Run()
     for (int i = 0; i < theApp.sharedfiles->GetCount(); i++)
     {
         CKnownFile* pCurFile = theApp.sharedfiles->GetFileByIndex(i);
-        if (pCurFile != NULL && !pCurFile->IsPartFile() )
+        if (pCurFile != NULL && !pCurFile->IsPartFile())
         {
             if (theApp.emuledlg==NULL || !theApp.emuledlg->IsRunning()) // in case of shutdown while still hashing
                 return 0;
@@ -249,13 +249,13 @@ int CAICHSyncThread::Run()
                 }
                 else if (thePrefs.IsRememberingDownloadedFiles() && theApp.knownfiles->ShouldPurgeAICHHashset(aichHash))
                 {
-                    ASSERT( thePrefs.DoPartiallyPurgeOldKnownFiles() );
+                    ASSERT(thePrefs.DoPartiallyPurgeOldKnownFiles());
                     // also unused (purged) hashset skip the rest of this hashset
                     file.Seek(nHashCount*CAICHHash::GetHashSize(), CFile::current);
                     nPurgeCount++;
                     nPurgeBecauseOld++;
                 }
-                else if(nPurgeCount == 0)
+                else if (nPurgeCount == 0)
                 {
                     // used Hashset, but it does not need to be moved as nothing changed yet
                     file.Seek(nHashCount*CAICHHash::GetHashSize(), CFile::current);
@@ -286,7 +286,7 @@ int CAICHSyncThread::Run()
             file.Flush();
             file.Close();
         }
-        catch(CFileException* error)
+        catch (CFileException* error)
         {
             if (error->m_cause == CFileException::endOfFile)
             {
@@ -319,7 +319,7 @@ int CAICHSyncThread::Run()
     }
     if (!m_liToHash.IsEmpty())
     {
-        theApp.QueueLogLine(true, GetResString(IDS_AICH_SYNCTOTAL), m_liToHash.GetCount() );
+        theApp.QueueLogLine(true, GetResString(IDS_AICH_SYNCTOTAL), m_liToHash.GetCount());
         theApp.emuledlg->sharedfileswnd->sharedfilesctrl.SetAICHHashing(m_liToHash.GetCount());
         // let first all normal hashing be done before starting out synchashing
         CSingleLock sLock1(&theApp.hashing_mut); // only one filehash at a time
@@ -342,10 +342,10 @@ int CAICHSyncThread::Run()
                 theApp.emuledlg->sharedfileswnd->sharedfilesctrl.ShowFilesCount();
             CKnownFile* pCurFile = m_liToHash.GetNext(pos);
             // just to be sure that the file hasnt been deleted lately
-            if (!(theApp.knownfiles->IsKnownFile(pCurFile) && theApp.sharedfiles->GetFileByID(pCurFile->GetFileHash())) )
+            if (!(theApp.knownfiles->IsKnownFile(pCurFile) && theApp.sharedfiles->GetFileByID(pCurFile->GetFileHash())))
                 continue;
             theApp.QueueLogLine(false, GetResString(IDS_AICH_CALCFILE), pCurFile->GetFileName());
-            if(!pCurFile->CreateAICHHashSetOnly())
+            if (!pCurFile->CreateAICHHashSetOnly())
                 theApp.QueueDebugLogLine(false, _T("Failed to create AICH Hashset while sync. for file %s"), pCurFile->GetFileName());
         }
 
@@ -437,7 +437,7 @@ bool CAICHSyncThread::ConvertToKnown2ToKnown264(CSafeFile* pTargetFile)
         pTargetFile->Flush();
         oldfile.Close();
     }
-    catch(CFileException* error)
+    catch (CFileException* error)
     {
         if (error->m_cause == CFileException::endOfFile)
         {

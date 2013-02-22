@@ -52,7 +52,7 @@ public:
 
     inline CWSDLMessagePart * AddPart()
     {
-        CAutoPtr<CWSDLMessagePart> p ( new CWSDLMessagePart );
+        CAutoPtr<CWSDLMessagePart> p(new CWSDLMessagePart);
         if (p != NULL)
         {
             if (m_parts.AddTail(p) != NULL)

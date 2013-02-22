@@ -39,7 +39,7 @@ TAG_METHOD_IMPL(CWSDLTypesParser, OnSchema)
         {
             SetXMLElementInfo(pElem, pCurr, GetLocator());
 
-            CAutoPtr<CSchemaParser> p( new CSchemaParser(GetReader(), this, GetLevel(), pElem) );
+            CAutoPtr<CSchemaParser> p(new CSchemaParser(GetReader(), this, GetLevel(), pElem));
             if (p != NULL)
             {
                 if (g_ParserList.AddHead(p) != NULL)

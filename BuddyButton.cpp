@@ -37,17 +37,17 @@ struct SBuddyData
 static LRESULT CALLBACK BuddyButtonSubClassedProc(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
 {
     WNDPROC	pfnOldWndProc = (WNDPROC)GetProp(hWnd, s_szPropOldWndProc);
-    ASSERT( pfnOldWndProc != NULL );
+    ASSERT(pfnOldWndProc != NULL);
 
     SBuddyData *pBuddyData = (SBuddyData *)GetProp(hWnd, s_szPropBuddyData);
-    ASSERT( pBuddyData != NULL );
+    ASSERT(pBuddyData != NULL);
 
     switch (uMessage)
     {
     case WM_NCDESTROY:
         SetWindowLong(hWnd, GWL_WNDPROC, (LONG)pfnOldWndProc);
-        VERIFY( RemoveProp(hWnd, s_szPropOldWndProc) != NULL );
-        VERIFY( RemoveProp(hWnd, s_szPropBuddyData) != NULL );
+        VERIFY(RemoveProp(hWnd, s_szPropOldWndProc) != NULL);
+        VERIFY(RemoveProp(hWnd, s_szPropBuddyData) != NULL);
         delete pBuddyData;
         break;
 
@@ -84,8 +84,8 @@ static LRESULT CALLBACK BuddyButtonSubClassedProc(HWND hWnd, UINT uMessage, WPAR
 void AddBuddyButton(HWND hwndEdit, HWND hwndButton)
 {
     FARPROC lpfnOldWndProc = (FARPROC)SetWindowLong(hwndEdit, GWL_WNDPROC, (LONG)BuddyButtonSubClassedProc);
-    ASSERT( lpfnOldWndProc != NULL );
-    VERIFY( SetProp(hwndEdit, s_szPropOldWndProc, (HANDLE)lpfnOldWndProc) );
+    ASSERT(lpfnOldWndProc != NULL);
+    VERIFY(SetProp(hwndEdit, s_szPropOldWndProc, (HANDLE)lpfnOldWndProc));
 
     // Remove the 'flat' style which my have been set by 'InitWindowStyles'
     DWORD dwButtonStyle = (DWORD)GetWindowLong(hwndButton, GWL_STYLE);
@@ -98,7 +98,7 @@ void AddBuddyButton(HWND hwndEdit, HWND hwndButton)
     SBuddyData *pBuddyData = new SBuddyData;
     pBuddyData->m_uButtonWidth = rcButton.Width();
     pBuddyData->m_hwndButton = hwndButton;
-    VERIFY( SetProp(hwndEdit, s_szPropBuddyData, (HANDLE)pBuddyData) );
+    VERIFY(SetProp(hwndEdit, s_szPropBuddyData, (HANDLE)pBuddyData));
 
     SetWindowPos(hwndEdit, NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
 }

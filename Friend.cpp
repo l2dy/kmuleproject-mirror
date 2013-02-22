@@ -58,7 +58,7 @@ CFriend::CFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, u
     m_dwLastUsedIP = dwLastUsedIP;
     m_nLastUsedPort = nLastUsedPort;
     m_dwLastChatted = dwLastChatted;
-    if(dwHasHash && abyUserhash)
+    if (dwHasHash && abyUserhash)
     {
         md4cpy(m_abyUserhash,abyUserhash);
     }
@@ -74,7 +74,7 @@ CFriend::CFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, u
 
 CFriend::CFriend(CUpDownClient* client)
 {
-    ASSERT ( client );
+    ASSERT(client);
     m_dwLastSeen = time(NULL);
     m_dwLastUsedIP = client->GetConnectIP();
     m_nLastUsedPort = client->GetUserPort();
@@ -90,7 +90,7 @@ CFriend::CFriend(CUpDownClient* client)
 
 CFriend::~CFriend(void)
 {
-    if(GetLinkedClient(true) != NULL)
+    if (GetLinkedClient(true) != NULL)
     {
         m_LinkedClient->SetFriendSlot(false);
         m_LinkedClient->m_Friend = NULL;
@@ -117,7 +117,7 @@ void CFriend::LoadFromFile(CFileDataIO* file)
         {
         case FF_NAME:
         {
-            ASSERT( newtag->IsStr() );
+            ASSERT(newtag->IsStr());
             if (newtag->IsStr())
             {
                 if (m_strName.IsEmpty())
@@ -127,7 +127,7 @@ void CFriend::LoadFromFile(CFileDataIO* file)
         }
         case FF_KADID:
         {
-            ASSERT( newtag->IsHash() );
+            ASSERT(newtag->IsHash());
             if (newtag->IsHash())
                 md4cpy(m_abyKadID, newtag->GetHash());
             break;
@@ -179,7 +179,7 @@ bool CFriend::HasKadID() const
 
 void CFriend::SetFriendSlot(bool newValue)
 {
-    if(GetLinkedClient() != NULL)
+    if (GetLinkedClient() != NULL)
     {
         m_LinkedClient->SetFriendSlot(newValue);
     }
@@ -189,7 +189,7 @@ void CFriend::SetFriendSlot(bool newValue)
 
 bool CFriend::GetFriendSlot() const
 {
-    if(GetLinkedClient() != NULL)
+    if (GetLinkedClient() != NULL)
     {
         return m_LinkedClient->GetFriendSlot();
     }
@@ -201,11 +201,11 @@ bool CFriend::GetFriendSlot() const
 
 void CFriend::SetLinkedClient(CUpDownClient* linkedClient)
 {
-    if(linkedClient != m_LinkedClient)
+    if (linkedClient != m_LinkedClient)
     {
-        if(linkedClient != NULL)
+        if (linkedClient != NULL)
         {
-            if(m_LinkedClient == NULL)
+            if (m_LinkedClient == NULL)
             {
                 linkedClient->SetFriendSlot(m_friendSlot);
             }
@@ -226,12 +226,12 @@ void CFriend::SetLinkedClient(CUpDownClient* linkedClient)
 
             linkedClient->m_Friend = this;
         }
-        else if(m_LinkedClient != NULL)
+        else if (m_LinkedClient != NULL)
         {
             m_friendSlot = m_LinkedClient->GetFriendSlot();
         }
 
-        if(m_LinkedClient != NULL)
+        if (m_LinkedClient != NULL)
         {
             // the old client is no longer friend, since it is no longer the linked client
             m_LinkedClient->SetFriendSlot(false);
@@ -297,7 +297,7 @@ bool CFriend::TryToConnect(CFriendConnectionListener* pConnectionReport)
         ASSERT(0);
         GetClientForChatSession();
     }
-    ASSERT( GetLinkedClient(true) != NULL );
+    ASSERT(GetLinkedClient(true) != NULL);
     m_FriendConnectState = FCS_CONNECTING;
     m_LinkedClient->SetChatState(MS_CONNECTING);
     if (m_LinkedClient->socket != NULL && m_LinkedClient->socket->IsConnected())
@@ -340,7 +340,7 @@ void CFriend::UpdateFriendConnectionState(EFriendConnectReport eEvent)
         }
         else
         {
-            ASSERT( eEvent != FCR_USERHASHVERIFIED );
+            ASSERT(eEvent != FCR_USERHASHVERIFIED);
             // we connected, the userhash matches, now we wait for the authentification
             // nothing todo, just report about it
             for (POSITION pos = m_liConnectionReport.GetHeadPosition(); pos != 0; m_liConnectionReport.GetNext(pos))
@@ -400,7 +400,7 @@ void CFriend::UpdateFriendConnectionState(EFriendConnectReport eEvent)
 
         if (m_FriendConnectState == FCS_CONNECTING || m_FriendConnectState == FCS_AUTH)
         {
-            ASSERT( m_FriendConnectState == FCS_AUTH );
+            ASSERT(m_FriendConnectState == FCS_AUTH);
             // todo: kad here
             m_FriendConnectState = FCS_NONE;
             for (POSITION pos = m_liConnectionReport.GetHeadPosition(); pos != 0;)
@@ -415,7 +415,7 @@ void CFriend::UpdateFriendConnectionState(EFriendConnectReport eEvent)
         // the client has the fitting userhash, but failed secureident - so we don't want to talk to him
         // we stop our search here in any case, multiple clientobjects with the same userhash would mess with other things
         // and its unlikely that we would find him on kad in this case too
-        ASSERT( m_FriendConnectState == FCS_AUTH );
+        ASSERT(m_FriendConnectState == FCS_AUTH);
         m_FriendConnectState = FCS_NONE;
         for (POSITION pos = m_liConnectionReport.GetHeadPosition(); pos != 0;)
             m_liConnectionReport.GetNext(pos)->ConnectingResult(GetLinkedClient(), false);
@@ -453,7 +453,7 @@ void CFriend::KadSearchNodeIDByIPResult(Kademlia::EKadClientSearchRes eStatus, c
     }
     if (eStatus == Kademlia::KCSR_SUCCEEDED)
     {
-        ASSERT( pachNodeID != NULL );
+        ASSERT(pachNodeID != NULL);
         DebugLog(_T("Successfully fetched KadID (%s) for friend %s"), md4str(pachNodeID), m_strName.IsEmpty() ? _T("(Unknown)") : m_strName);
         md4cpy(m_abyKadID, pachNodeID);
     }
@@ -468,7 +468,7 @@ void CFriend::KadSearchIPByNodeIDResult(Kademlia::EKadClientSearchRes eStatus, U
         ASSERT(0);
         return;
     }
-    if (m_FriendConnectState == FCS_KADSEARCHING )
+    if (m_FriendConnectState == FCS_KADSEARCHING)
     {
         if (eStatus == Kademlia::KCSR_SUCCEEDED && GetLinkedClient(true) != NULL)
         {

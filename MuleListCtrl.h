@@ -82,7 +82,7 @@ public:
             uDrawTextAlignment = DT_LEFT;
             return 0;
         }
-        ASSERT( !m_aColumns[iColumn].bHidden );
+        ASSERT(!m_aColumns[iColumn].bHidden);
         LVCOLUMN lvcol;
         lvcol.mask = LVCF_FMT | LVCF_WIDTH;
         if (!CListCtrl::GetColumn(iColumn, &lvcol))
@@ -301,8 +301,8 @@ private:
     int GetHiddenColumnCount() const
     {
         int iHidden = 0;
-        for(int i = 0; i < m_iColumnsTracked; i++)
-            if(m_aColumns[i].bHidden)
+        for (int i = 0; i < m_iColumnsTracked; i++)
+            if (m_aColumns[i].bHidden)
                 iHidden++;
         return iHidden;
     }
@@ -316,7 +316,7 @@ private:
     DWORD_PTR GetParamAt(POSITION pos, int iPos)
     {
         LPARAM lParam = m_Params.GetAt(pos);
-        if(lParam == 0xFEEBDEEF) //same as MLC_MAGIC!
+        if (lParam == 0xFEEBDEEF) //same as MLC_MAGIC!
             m_Params.SetAt(pos, lParam = CListCtrl::GetItemData(iPos));
         return lParam;
     }

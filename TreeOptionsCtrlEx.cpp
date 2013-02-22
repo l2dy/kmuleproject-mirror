@@ -217,7 +217,7 @@ BOOL CTreeOptionsCtrlEx::SetRadioButton(HTREEITEM hItem)
             //Turn this item on
             BOOL bOldState;
             GetRadioButton(hChild, bOldState);
-            VERIFY( SetItemImage(hChild, 3, 3) );
+            VERIFY(SetItemImage(hChild, 3, 3));
             if (!bOldState)
                 NotifyParent(BN_CLICKED, hChild);
         }
@@ -390,7 +390,7 @@ void CTreeOptionsCtrlEx::OnCreateImageList()
                     else
                         dcMem.DrawFrameControl(&rcCtrl, DFC_BUTTON, DFCS_BUTTON3STATE | DFCS_CHECKED | DFCS_INACTIVE | DFCS_FLAT);
 
-                    ASSERT( TREEOPTSCTRLIMG_EDIT == 11 );
+                    ASSERT(TREEOPTSCTRLIMG_EDIT == 11);
                     rcBmp.MoveToX(iBmpWidth*11);
                     rcCtrl.MoveToX(iCtrlLeft+iBmpWidth*11);
                     CFont font;
@@ -463,7 +463,7 @@ void EditTextFloatFormat(CDataExchange* pDX, int nIDC, HTREEITEM hItem, void* pD
     ASSERT(pData != NULL);
 
     HWND hWndCtrl = pDX->PrepareEditCtrl(nIDC);
-    ASSERT( hWndCtrl != NULL );
+    ASSERT(hWndCtrl != NULL);
     CTreeOptionsCtrl* pCtrlTreeOptions = (CTreeOptionsCtrl*) CWnd::FromHandlePermanent(hWndCtrl);
     ASSERT(pCtrlTreeOptions);
     ASSERT(pCtrlTreeOptions->IsKindOf(RUNTIME_CLASS(CTreeOptionsCtrl)));
@@ -498,7 +498,7 @@ void EditTextWithFormat(CDataExchange* pDX, int nIDC, HTREEITEM hItem, LPCTSTR l
     va_start(pData, nIDPrompt);
 
     HWND hWndCtrl = pDX->PrepareEditCtrl(nIDC);
-    ASSERT( hWndCtrl != NULL );
+    ASSERT(hWndCtrl != NULL);
     CTreeOptionsCtrl* pCtrlTreeOptions = (CTreeOptionsCtrl*) CWnd::FromHandlePermanent(hWndCtrl);
     ASSERT(pCtrlTreeOptions);
     ASSERT(pCtrlTreeOptions->IsKindOf(RUNTIME_CLASS(CTreeOptionsCtrl)));
@@ -507,7 +507,7 @@ void EditTextWithFormat(CDataExchange* pDX, int nIDC, HTREEITEM hItem, LPCTSTR l
     {
         void* pResult;
 
-        pResult = va_arg( pData, void* );
+        pResult = va_arg(pData, void*);
         // the following works for %d, %u, %ld, %lu
         CString sText(pCtrlTreeOptions->GetEditText(hItem));
         if (_stscanf(sText, lpszFormat, pResult) != 1)

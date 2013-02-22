@@ -109,10 +109,10 @@ CColourPopup::CColourPopup(CPoint p, COLORREF crColour, CWnd* pParentWnd,
                            LPCTSTR szDefaultText /* = NULL */,
                            LPCTSTR szCustomText  /* = NULL */,
                            COLORREF* colourArray /* = NULL*/,
-                           int NumberOfColours /* = 0*/ )
+                           int NumberOfColours /* = 0*/)
 {
     colourArrayPassed = colourArray;//copy the pointer to the array of colours we will be using
-    if(colourArray && NumberOfColours)
+    if (colourArray && NumberOfColours)
         m_nNumColours = NumberOfColours;
     else
         colourArrayPassed = NULL; //if an array is passed without a size parameter ignore it and use the defaults
@@ -130,7 +130,7 @@ CColourPopup::CColourPopup(CPoint p, COLORREF crColour, CWnd* pParentWnd,
 void CColourPopup::Initialise()
 {
     //set size if it has not been set already
-    if(colourArrayPassed==NULL)
+    if (colourArrayPassed==NULL)
         m_nNumColours = sizeof(m_crColours)/sizeof(ColourTableEntry);
 
     ASSERT(m_nNumColours <= MAX_COLOURS);
@@ -170,7 +170,7 @@ void CColourPopup::Initialise()
     pLogPalette->palVersion    = 0x300;
     pLogPalette->palNumEntries = (WORD) m_nNumColours;
 
-    if(colourArrayPassed==NULL)
+    if (colourArrayPassed==NULL)
     {
         //use default array
         for (int i = 0; i < m_nNumColours; i++)
@@ -184,7 +184,7 @@ void CColourPopup::Initialise()
     else
     {
         //if an array has been passed use it
-        for(int i=0; i<m_nNumColours; i++)
+        for (int i=0; i<m_nNumColours; i++)
         {
             pLogPalette->palPalEntry[i].peRed   = GetRValue(colourArrayPassed[i]);
             pLogPalette->palPalEntry[i].peGreen = GetGValue(colourArrayPassed[i]);
@@ -214,7 +214,7 @@ BOOL CColourPopup::Create(CPoint p, COLORREF crColour, CWnd* pParentWnd,
     // Get the class name and create the window
     CString szClassName = AfxRegisterWndClass(CS_CLASSDC|CS_SAVEBITS|CS_HREDRAW|CS_VREDRAW,
                           AfxGetApp()->LoadStandardCursor(IDC_ARROW),
-                          (HBRUSH) (COLOR_BTNFACE+1),
+                          (HBRUSH)(COLOR_BTNFACE+1),
                           0);
 
     if (!CWnd::CreateEx(0, szClassName, _T(""), WS_VISIBLE|WS_POPUP,
@@ -698,7 +698,7 @@ void CColourPopup::SetWindowSize()
 
     // Too far left?
     if (m_WindowRect.left < 0)
-        m_WindowRect.OffsetRect( -m_WindowRect.left, 0);
+        m_WindowRect.OffsetRect(-m_WindowRect.left, 0);
 
     // Bottom falling out of screen?
     if (m_WindowRect.bottom > ScreenSize.cy)
@@ -900,7 +900,7 @@ void CColourPopup::DrawCell(CDC* pDC, int nIndex)
 
     CBrush brush(PALETTERGB(GetRValue(GetColour(nIndex)),
                             GetGValue(GetColour(nIndex)),
-                            GetBValue(GetColour(nIndex)) ));
+                            GetBValue(GetColour(nIndex))));
     CPen   pen;
     pen.CreatePen(PS_SOLID, 1, ::GetSysColor(COLOR_3DSHADOW));
 

@@ -55,7 +55,7 @@ CMuleBrowserControlSite::CMuleBrowserControlSite(COleControlContainer* pCtrlCont
         char c;
         __int64 ll;
     };
-    ASSERT( offsetof(S1, ll) == 8 );
+    ASSERT(offsetof(S1, ll) == 8);
 
     m_eUrlZone = URLZONE_UNTRUSTED;
     InitInternetSecurityZone();
@@ -74,7 +74,7 @@ void CMuleBrowserControlSite::InitInternetSecurityZone()
         m_eUrlZone = URLZONE_INTERNET;
     else
     {
-        ASSERT( strZone.CompareNoCase(_T("Untrusted"))==0 );
+        ASSERT(strZone.CompareNoCase(_T("Untrusted"))==0);
         m_eUrlZone = URLZONE_UNTRUSTED;
     }
 }

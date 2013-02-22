@@ -69,7 +69,7 @@ IMemoryCacheClient :
 public IUnknown
 {
     // IMemoryCacheClient methods
-    STDMETHOD( Free )(const void *pvData);
+    STDMETHOD(Free)(const void *pvData);
 };
 
 __interface ATL_NO_VTABLE __declspec(uuid("9c6cfb46-fbde-4f8b-b944-2aa05d96eb5c"))
@@ -1724,11 +1724,11 @@ public:
         }
         HRESULT hrShut=m_Monitor.Shutdown();
         HRESULT hrCache=cacheBase::Uninitialize();
-        if(FAILED(hrMonitor))
+        if (FAILED(hrMonitor))
         {
             return hrMonitor;
         }
-        if(FAILED(hrShut))
+        if (FAILED(hrShut))
         {
             return hrShut;
         }
@@ -1745,19 +1745,19 @@ public:
             if (InlineIsEqualGUID(riid, __uuidof(IUnknown)) ||
                     InlineIsEqualGUID(riid, __uuidof(IMemoryCache)))
             {
-                *ppv = (IUnknown *) (IMemoryCache *) this;
+                *ppv = (IUnknown *)(IMemoryCache *) this;
                 AddRef();
                 hr = S_OK;
             }
             if (InlineIsEqualGUID(riid, __uuidof(IMemoryCacheStats)))
             {
-                *ppv = (IUnknown *) (IMemoryCacheStats*)this;
+                *ppv = (IUnknown *)(IMemoryCacheStats*)this;
                 AddRef();
                 hr = S_OK;
             }
             if (InlineIsEqualGUID(riid, __uuidof(IMemoryCacheControl)))
             {
-                *ppv = (IUnknown *) (IMemoryCacheControl*)this;
+                *ppv = (IUnknown *)(IMemoryCacheControl*)this;
                 AddRef();
                 hr = S_OK;
             }
@@ -2022,7 +2022,7 @@ public:
         if (m_hTimer)
         {
             hrLatest=m_Monitor.RemoveHandle(m_hTimer);
-            if(FAILED(hrLatest) && SUCCEEDED(hr))
+            if (FAILED(hrLatest) && SUCCEEDED(hr))
             {
                 hr=hrLatest;
             }
@@ -2041,7 +2041,7 @@ public:
             if (!bRet)
             {
                 hrLatest = AtlHresultFromLastError();
-                if(FAILED(hrLatest) && SUCCEEDED(hr))
+                if (FAILED(hrLatest) && SUCCEEDED(hr))
                 {
                     hr=hrLatest;
                 }
@@ -2470,7 +2470,7 @@ public:
 
         _ATLTRY
         {
-            hr = cacheBase::AddEntry(szName, pStencil, dwSize,  (HCACHEITEM *)&pEntry);
+            hr = cacheBase::AddEntry(szName, pStencil, dwSize, (HCACHEITEM *)&pEntry);
         }
         _ATLCATCHALL()
         {
@@ -2575,7 +2575,7 @@ public:
         }
         m_Monitor.Shutdown();
         HRESULT hrCache=cacheBase::Uninitialize();
-        if(FAILED(hrMonitor))
+        if (FAILED(hrMonitor))
         {
             return hrMonitor;
         }
@@ -2793,7 +2793,7 @@ public:
         }
         m_Monitor.Shutdown();
         HRESULT hrCache=cacheBase::Uninitialize();
-        if(FAILED(hrMonitor))
+        if (FAILED(hrMonitor))
         {
             return hrMonitor;
         }
@@ -2812,7 +2812,7 @@ public:
             if (InlineIsEqualGUID(riid, __uuidof(IUnknown)) ||
                     InlineIsEqualGUID(riid, __uuidof(IFileCache)))
             {
-                *ppv = (IUnknown *) (IFileCache *) this;
+                *ppv = (IUnknown *)(IFileCache *) this;
                 AddRef();
                 hr = S_OK;
             }
@@ -2862,7 +2862,7 @@ public:
 
         __int64 ddwFileSize = (static_cast<__int64>(fadData.nFileSizeHigh) << 32) + fadData.nFileSizeLow;
 
-        DWORD dwRecordedFileSize = (DWORD) (ddwFileSize >> 10);
+        DWORD dwRecordedFileSize = (DWORD)(ddwFileSize >> 10);
         // Round the file size up to 1K if it is < 1K
         if (dwRecordedFileSize == 0)
             dwRecordedFileSize = 1;
@@ -3129,17 +3129,17 @@ class CElementTraits< CDataConnection > :
     public CElementTraitsBase< CDataConnection >
 {
 public:
-    static ULONG Hash( INARGTYPE t )
+    static ULONG Hash(INARGTYPE t)
     {
-        return( ULONG( ULONG_PTR( &t ) ) );
+        return(ULONG(ULONG_PTR(&t)));
     }
 
-    static bool CompareElements( INARGTYPE element1, INARGTYPE element2 )
+    static bool CompareElements(INARGTYPE element1, INARGTYPE element2)
     {
-        return( element1.m_session.m_spOpenRowset == element2.m_session.m_spOpenRowset);
+        return(element1.m_session.m_spOpenRowset == element2.m_session.m_spOpenRowset);
     }
 
-    static int CompareElementsOrdered( INARGTYPE /*element1*/, INARGTYPE /*element2*/ )
+    static int CompareElementsOrdered(INARGTYPE /*element1*/, INARGTYPE /*element2*/)
     {
         ATLASSERT(FALSE);
         return -1;
@@ -3166,7 +3166,7 @@ public:
         m_cs.Init();
     }
 
-    virtual ~CDataSourceCache ()
+    virtual ~CDataSourceCache()
     {
         Uninitialize();
     }

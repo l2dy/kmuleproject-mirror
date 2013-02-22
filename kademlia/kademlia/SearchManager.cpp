@@ -79,7 +79,7 @@ void CSearchManager::StopSearch(UINT uSearchID, bool bDelayDelete)
         if (itSearchMap->second->m_uSearchID == uSearchID)
         {
             // Do not delete as we want to get a chance for late packets to be processed.
-            if(bDelayDelete)
+            if (bDelayDelete)
                 itSearchMap->second->PrepareToStop();
             else
             {
@@ -148,7 +148,7 @@ CSearch* CSearchManager::PrepareFindKeywords(LPCTSTR szKeyword, UINT uSearchTerm
             throw strError;
         }
 
-        pSearch->SetSearchTermData( uSearchTermsSize, pucSearchTermsData );
+        pSearch->SetSearchTermData(uSearchTermsSize, pucSearchTermsData);
         pSearch->SetGUIName(szKeyword);
         // Inc our searchID
         pSearch->m_uSearchID = ++m_uNextID;
@@ -194,7 +194,7 @@ CSearch* CSearchManager::PrepareLookup(UINT uType, bool bStart, const CUInt128 &
 {
     // Prepare a kad lookup.
     // Make sure this target is not already in progress.
-    if(AlreadySearchingFor(uID))
+    if (AlreadySearchingFor(uID))
         return NULL;
 
     // Create a new search.
@@ -206,10 +206,10 @@ CSearch* CSearchManager::PrepareLookup(UINT uType, bool bStart, const CUInt128 &
 
     try
     {
-        switch(pSearch->m_uType)
+        switch (pSearch->m_uType)
         {
         case CSearch::STOREKEYWORD:
-            if(!Kademlia::CKademlia::GetIndexed()->SendStoreRequest(uID))
+            if (!Kademlia::CKademlia::GetIndexed()->SendStoreRequest(uID))
             {
                 // Keyword Store was determined to be a overloaded node, abort store.
                 delete pSearch;
@@ -220,16 +220,16 @@ CSearch* CSearchManager::PrepareLookup(UINT uType, bool bStart, const CUInt128 &
 
         // Inc search ID.
         pSearch->m_uSearchID = ++m_uNextID;
-        if( bStart )
+        if (bStart)
         {
             // Auto start this search.
             m_mapSearches[pSearch->m_uTarget] = pSearch;
             pSearch->Go();
         }
     }
-    catch ( CIOException *ioe )
+    catch (CIOException *ioe)
     {
-        AddDebugLogLine( false, _T("Exception in CSearchManager::PrepareLookup (IO error(%i))"), ioe->m_iCause);
+        AddDebugLogLine(false, _T("Exception in CSearchManager::PrepareLookup (IO error(%i))"), ioe->m_iCause);
         ioe->Delete();
         delete pSearch;
         return NULL;
@@ -247,7 +247,7 @@ void CSearchManager::FindNode(const CUInt128 &uID, bool bComplete)
 {
     // Do a node lookup.
     CSearch *pSearch = new CSearch;
-    if(bComplete)
+    if (bComplete)
         pSearch->SetSearchTypes(CSearch::NODECOMPLETE);
     else
         pSearch->SetSearchTypes(CSearch::NODE);
@@ -311,10 +311,10 @@ void CSearchManager::JumpStart()
     // This will also prune all searches.
     time_t tNow = time(NULL);
     SearchMap::iterator itSearchMap = m_mapSearches.begin();
-    while(itSearchMap != m_mapSearches.end())
+    while (itSearchMap != m_mapSearches.end())
     {
         // Each type has it's own criteria for being deleted or jumpstarted.
-        switch(itSearchMap->second->GetSearchTypes())
+        switch (itSearchMap->second->GetSearchTypes())
         {
         case CSearch::FILE:
         {
@@ -507,7 +507,7 @@ void CSearchManager::UpdateStats()
     uint8 uTotalStoreNotes = 0;
     for (SearchMap::const_iterator itSearchMap = m_mapSearches.begin(); itSearchMap != m_mapSearches.end(); ++itSearchMap)
     {
-        switch(itSearchMap->second->GetSearchTypes())
+        switch (itSearchMap->second->GetSearchTypes())
         {
         case CSearch::FILE:
             uTotalFile++;
@@ -530,7 +530,7 @@ void CSearchManager::UpdateStats()
         }
     }
     CPrefs *pPrefs = CKademlia::GetPrefs();
-    if(pPrefs)
+    if (pPrefs)
     {
         pPrefs->SetTotalFile(uTotalFile);
         pPrefs->SetTotalStoreSrc(uTotalStoreSrc);
@@ -553,11 +553,11 @@ void CSearchManager::ProcessPublishResult(const CUInt128 &uTarget, const uint8 u
     if (pSearch == NULL)
         return;
 
-    switch(pSearch->GetSearchTypes())
+    switch (pSearch->GetSearchTypes())
     {
     case CSearch::STOREKEYWORD:
-        if( bLoadResponse )
-            pSearch->UpdateNodeLoad( uLoad );
+        if (bLoadResponse)
+            pSearch->UpdateNodeLoad(uLoad);
         break;
     case CSearch::STOREFILE:
     case CSearch::STORENOTES:
@@ -581,7 +581,7 @@ void CSearchManager::ProcessResponse(const CUInt128 &uTarget, UINT uFromIP, uint
     if (pSearch == NULL)
     {
         for (ContactList::const_iterator itContactList = plistResults->begin(); itContactList != plistResults->end(); ++itContactList)
-            delete (*itContactList);
+            delete(*itContactList);
         delete plistResults;
         return;
     }

@@ -18,20 +18,20 @@ CXMLDocParser::CXMLDocParser(ISAXXMLReader *pReader, CParserBase *pParent, DWORD
 {
 }
 
-TAG_METHOD_IMPL( CXMLDocParser, OnSchema )
+TAG_METHOD_IMPL(CXMLDocParser, OnSchema)
 {
     if (m_docType != UNKDOC && m_docType != SCHEMADOC)
     {
-        ATLTRACE( _T("Not a schema document.  Unknown root document tag: %.*ws\n"), cchLocalName, wszLocalName );
+        ATLTRACE(_T("Not a schema document.  Unknown root document tag: %.*ws\n"), cchLocalName, wszLocalName);
     }
     return S_OK;
 }
 
-TAG_METHOD_IMPL( CXMLDocParser, OnDefinitions )
+TAG_METHOD_IMPL(CXMLDocParser, OnDefinitions)
 {
     if (m_docType != UNKDOC && m_docType != WSDLDOC)
     {
-        ATLTRACE( _T("Not a WSDL document.  Unknown root document tag: %.*ws\n"), cchLocalName, wszLocalName );
+        ATLTRACE(_T("Not a WSDL document.  Unknown root document tag: %.*ws\n"), cchLocalName, wszLocalName);
     }
     return S_OK;
 }

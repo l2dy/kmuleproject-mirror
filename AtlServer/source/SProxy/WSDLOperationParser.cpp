@@ -36,7 +36,7 @@ TAG_METHOD_IMPL(CWSDLOperationParser, OnInput)
         {
             SetXMLElementInfo(pElem, pCurr, GetLocator());
 
-            CAutoPtr<CWSDLOperationIOParser> p( new CWSDLOperationIOParser(GetReader(), this, GetLevel(), pElem) );
+            CAutoPtr<CWSDLOperationIOParser> p(new CWSDLOperationIOParser(GetReader(), this, GetLevel(), pElem));
             if (p != NULL)
             {
                 if (g_ParserList.AddHead(p) != NULL)
@@ -63,7 +63,7 @@ TAG_METHOD_IMPL(CWSDLOperationParser, OnOutput)
         if (pElem != NULL)
         {
             SetXMLElementInfo(pElem, pCurr, GetLocator());
-            CAutoPtr<CWSDLOperationIOParser> p( new CWSDLOperationIOParser(GetReader(), this, GetLevel(), pElem) );
+            CAutoPtr<CWSDLOperationIOParser> p(new CWSDLOperationIOParser(GetReader(), this, GetLevel(), pElem));
             if (p != NULL)
             {
                 if (g_ParserList.AddHead(p) != NULL)
@@ -90,7 +90,7 @@ TAG_METHOD_IMPL(CWSDLOperationParser, OnFault)
         if (pElem != NULL)
         {
             SetXMLElementInfo(pElem, pCurr, GetLocator());
-            CAutoPtr<CWSDLOperationIOParser> p( new CWSDLOperationIOParser(GetReader(), this, GetLevel(), pElem) );
+            CAutoPtr<CWSDLOperationIOParser> p(new CWSDLOperationIOParser(GetReader(), this, GetLevel(), pElem));
             if (p != NULL)
             {
                 if (g_ParserList.AddHead(p) != NULL)

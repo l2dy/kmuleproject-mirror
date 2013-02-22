@@ -74,7 +74,7 @@ protected:
 
     COLORREF GetColour(int nIndex)
     {
-        if(colourArrayPassed==NULL)
+        if (colourArrayPassed==NULL)
             return m_crColours[nIndex].crColour;
         else
             return colourArrayPassed[nIndex];

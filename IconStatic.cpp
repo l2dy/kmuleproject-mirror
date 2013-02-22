@@ -69,14 +69,14 @@ void CIconStatic::SetIcon(LPCTSTR pszIconID)
     CDC MemDC;
     CBitmap *pOldBMP;
 
-    VERIFY( MemDC.CreateCompatibleDC(pDC) );
+    VERIFY(MemDC.CreateCompatibleDC(pDC));
 
     CFont *pOldFont = MemDC.SelectObject(GetFont());
 
     CRect rCaption(0,0,0,0);
     MemDC.DrawText(m_strText, rCaption, DT_CALCRECT);
-    ASSERT( rCaption.Width() >= 0 );
-    ASSERT( rCaption.Height() >= 0 );
+    ASSERT(rCaption.Width() >= 0);
+    ASSERT(rCaption.Height() >= 0);
     if (rCaption.Height() < 16)
         rCaption.bottom = rCaption.top + 16;
     rCaption.right += 25;
@@ -84,8 +84,8 @@ void CIconStatic::SetIcon(LPCTSTR pszIconID)
         rCaption.right = rCaption.left + rRect.Width() - 16;
 
     if (m_MemBMP.m_hObject)
-        VERIFY( m_MemBMP.DeleteObject() );
-    VERIFY( m_MemBMP.CreateCompatibleBitmap(pDC, rCaption.Width(), rCaption.Height()) );
+        VERIFY(m_MemBMP.DeleteObject());
+    VERIFY(m_MemBMP.CreateCompatibleBitmap(pDC, rCaption.Width(), rCaption.Height()));
     pOldBMP = MemDC.SelectObject(&m_MemBMP);
 
     // Get the background color from the parent window. This way the controls which are
@@ -95,7 +95,7 @@ void CIconStatic::SetIcon(LPCTSTR pszIconID)
     FillRect(MemDC, &rCaption, hbr);
 
     if (!m_strIconID.IsEmpty())
-        VERIFY( DrawState( MemDC.m_hDC, NULL, NULL, (LPARAM)(HICON)CTempIconLoader(m_strIconID, 16, 16), NULL, 3, 0, 16, 16, DST_ICON | DSS_NORMAL) );
+        VERIFY(DrawState(MemDC.m_hDC, NULL, NULL, (LPARAM)(HICON)CTempIconLoader(m_strIconID, 16, 16), NULL, 3, 0, 16, 16, DST_ICON | DSS_NORMAL));
 
     // clear all alpha channel data
     BITMAP bmMem;
@@ -127,7 +127,7 @@ void CIconStatic::SetIcon(LPCTSTR pszIconID)
 
     rCaption.left += 22;
 
-    if(g_xpStyle.IsThemeActive() && g_xpStyle.IsAppThemed())
+    if (g_xpStyle.IsThemeActive() && g_xpStyle.IsAppThemed())
     {
         HTHEME hTheme = g_xpStyle.OpenThemeData(NULL, L"BUTTON");
         g_xpStyle.DrawThemeText(hTheme, MemDC.m_hDC, BP_GROUPBOX, GBS_NORMAL, m_strText, m_strText.GetLength(),

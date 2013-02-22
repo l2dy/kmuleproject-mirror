@@ -138,7 +138,7 @@ void CPreferencesDlg::UpdateShownPages()
 
 BOOL CPreferencesDlg::OnInitDialog()
 {
-    ASSERT( !m_bSaveIniFile );
+    ASSERT(!m_bSaveIniFile);
     BOOL bResult = CTreePropSheet::OnInitDialog();
     InitWindowStyles(this);
 

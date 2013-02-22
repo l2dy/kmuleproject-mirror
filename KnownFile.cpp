@@ -81,7 +81,7 @@ CKnownFile::CKnownFile()
     m_iPartCount = 0;
     m_iED2KPartCount = 0;
     m_tUtcLastModified = (UINT)-1;
-    if(thePrefs.GetNewAutoUp())
+    if (thePrefs.GetNewAutoUp())
     {
         m_iUpPriority = PR_HIGH;
         m_bAutoUpPriority = true;
@@ -131,7 +131,7 @@ void CKnownFile::AssertValid() const
     (void)m_strFilePath;
     (void)m_iPartCount;
     (void)m_iED2KPartCount;
-    ASSERT( m_iUpPriority == PR_VERYLOW || m_iUpPriority == PR_LOW || m_iUpPriority == PR_NORMAL || m_iUpPriority == PR_HIGH || m_iUpPriority == PR_VERYHIGH );
+    ASSERT(m_iUpPriority == PR_VERYLOW || m_iUpPriority == PR_LOW || m_iUpPriority == PR_NORMAL || m_iUpPriority == PR_HIGH || m_iUpPriority == PR_VERYHIGH);
     CHECK_BOOL(m_bAutoUpPriority);
     (void)s_ShareStatusBar;
     (void)kadFileSearchID;
@@ -155,7 +155,7 @@ void CKnownFile::DrawShareStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bo
     s_ShareStatusBar.SetHeight(rect->bottom - rect->top);
     s_ShareStatusBar.SetWidth(rect->right - rect->left);
 
-    if(m_ClientUploadList.GetSize() > 0 || m_nCompleteSourcesCountLo > 1)
+    if (m_ClientUploadList.GetSize() > 0 || m_nCompleteSourcesCountLo > 1)
     {
         // We have info about chunk frequency in the net, so we will color the chunks we have after perceived availability.
         const COLORREF crMissing = RGB(255, 0, 0);
@@ -166,7 +166,7 @@ void CKnownFile::DrawShareStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bo
             COLORREF crProgress;
             COLORREF crHave;
             COLORREF crPending;
-            if(bFlat)
+            if (bFlat)
             {
                 crProgress = RGB(0, 150, 0);
                 crHave = RGB(0, 0, 0);
@@ -180,7 +180,7 @@ void CKnownFile::DrawShareStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bo
             }
 
             UINT tempCompleteSources = m_nCompleteSourcesCountLo;
-            if(tempCompleteSources > 0)
+            if (tempCompleteSources > 0)
             {
                 tempCompleteSources--;
             }
@@ -188,12 +188,12 @@ void CKnownFile::DrawShareStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bo
             for (UINT i = 0; i < GetPartCount(); i++)
             {
                 UINT frequency = tempCompleteSources;
-                if(!m_AvailPartFrequency.IsEmpty())
+                if (!m_AvailPartFrequency.IsEmpty())
                 {
                     frequency = max(m_AvailPartFrequency[i], tempCompleteSources);
                 }
 
-                if(frequency > 0 )
+                if (frequency > 0)
                 {
                     COLORREF color = RGB(0, (22*(frequency-1) >= 210)? 0:210-(22*(frequency-1)), 255);
                     s_ShareStatusBar.FillRange(PARTSIZE*(uint64)(i),PARTSIZE*(uint64)(i+1),color);
@@ -205,7 +205,7 @@ void CKnownFile::DrawShareStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bo
     {
         // We have no info about chunk frequency in the net, so just color the chunk we have as black.
         COLORREF crNooneAsked;
-        if(bFlat)
+        if (bFlat)
         {
             crNooneAsked = RGB(0, 0, 0);
         }
@@ -223,7 +223,7 @@ void CKnownFile::DrawShareStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bo
 static void HeapSort(CArray<uint16,uint16> &count, UINT first, UINT last)
 {
     UINT r;
-    for ( r = first; !(r & (UINT)INT_MIN) && (r<<1) < last; )
+    for (r = first; !(r & (UINT)INT_MIN) && (r<<1) < last;)
     {
         UINT r2 = (r<<1)+1;
         if (r2 != last)
@@ -251,7 +251,7 @@ void CKnownFile::UpdateFileRatingCommentAvail(bool bForceUpdate)
     UINT uRatings = 0;
     UINT uUserRatings = 0;
 
-    for(POSITION pos = m_kadNotes.GetHeadPosition(); pos != NULL; )
+    for (POSITION pos = m_kadNotes.GetHeadPosition(); pos != NULL;)
     {
         Kademlia::CEntry* entry = m_kadNotes.GetNext(pos);
         if (!m_bHasComment && !entry->GetStrTagValue(TAG_DESCRIPTION).IsEmpty())
@@ -295,7 +295,7 @@ void CKnownFile::UpdatePartsInfo()
     CArray<uint16, uint16> count;
     if (flag)
         count.SetSize(0, m_ClientUploadList.GetSize());
-    for (POSITION pos = m_ClientUploadList.GetHeadPosition(); pos != 0; )
+    for (POSITION pos = m_ClientUploadList.GetHeadPosition(); pos != 0;)
     {
         CUpDownClient* cur_src = m_ClientUploadList.GetNext(pos);
         //This could be a partfile that just completed.. Many of these clients will not have this information.
@@ -331,9 +331,9 @@ void CKnownFile::UpdatePartsInfo()
         {
             // SLUGFILLER: heapsortCompletesrc
             int r;
-            for (r = n/2; r--; )
+            for (r = n/2; r--;)
                 HeapSort(count, r, n-1);
-            for (r = n; --r; )
+            for (r = n; --r;)
             {
                 uint16 t = count[r];
                 count[r] = count[0];
@@ -356,13 +356,13 @@ void CKnownFile::UpdatePartsInfo()
             //  Adjust 100% network and 0% what we see.
             if (n < 20)
             {
-                if ( count.GetAt(i) < m_nCompleteSourcesCount )
+                if (count.GetAt(i) < m_nCompleteSourcesCount)
                     m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
                 else
                     m_nCompleteSourcesCountLo = count.GetAt(i);
                 m_nCompleteSourcesCount= m_nCompleteSourcesCountLo;
                 m_nCompleteSourcesCountHi= count.GetAt(j);
-                if( m_nCompleteSourcesCountHi < m_nCompleteSourcesCount )
+                if (m_nCompleteSourcesCountHi < m_nCompleteSourcesCount)
                     m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
             }
             else
@@ -376,23 +376,23 @@ void CKnownFile::UpdatePartsInfo()
             {
                 m_nCompleteSourcesCountLo= m_nCompleteSourcesCount;
                 m_nCompleteSourcesCount= count.GetAt(j);
-                if( m_nCompleteSourcesCount < m_nCompleteSourcesCountLo )
+                if (m_nCompleteSourcesCount < m_nCompleteSourcesCountLo)
                     m_nCompleteSourcesCount = m_nCompleteSourcesCountLo;
                 m_nCompleteSourcesCountHi= count.GetAt(k);
-                if( m_nCompleteSourcesCountHi < m_nCompleteSourcesCount )
+                if (m_nCompleteSourcesCountHi < m_nCompleteSourcesCount)
                     m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
             }
         }
         m_nCompleteSourcesTime = time(NULL) + (60);
     }
-    if(theApp.sharedfiles)
+    if (theApp.sharedfiles)
         theApp.sharedfiles->UpdateFile(this);
 }
 
 void CKnownFile::AddUploadingClient(CUpDownClient* client)
 {
     POSITION pos = m_ClientUploadList.Find(client); // to be sure
-    if(pos == NULL)
+    if (pos == NULL)
     {
         m_ClientUploadList.AddTail(client);
         UpdateAutoUpPriority();
@@ -402,7 +402,7 @@ void CKnownFile::AddUploadingClient(CUpDownClient* client)
 void CKnownFile::RemoveUploadingClient(CUpDownClient* client)
 {
     POSITION pos = m_ClientUploadList.Find(client); // to be sure
-    if(pos != NULL)
+    if (pos != NULL)
     {
         m_ClientUploadList.RemoveAt(pos);
         UpdateAutoUpPriority();
@@ -428,7 +428,7 @@ void CKnownFile::SetFileName(LPCTSTR pszFileName, bool bReplaceInvalidFileSystem
     // If this is called within the sharedfiles object during startup,
     // we cannot reference it yet..
 
-    if(theApp.sharedfiles)
+    if (theApp.sharedfiles)
         pFile = theApp.sharedfiles->GetFileByID(GetFileHash());
 
     if (pFile && pFile == this)
@@ -438,7 +438,7 @@ void CKnownFile::SetFileName(LPCTSTR pszFileName, bool bReplaceInvalidFileSystem
     m_verifiedFileType = FILETYPE_UNKNOWN;
 
     wordlist.clear();
-    if(m_pCollection)
+    if (m_pCollection)
     {
         CString sKeyWords;
         sKeyWords.Format(_T("%s %s"), m_pCollection->GetCollectionAuthorKeyString(), GetFileName());
@@ -501,14 +501,14 @@ bool CKnownFile::CreateFromFile(LPCTSTR in_directory, LPCTSTR in_filename, LPVOI
     uint64 togo = m_nFileSize;
     UINT hashcount;
 //>>> WiZaRd::HashProgress Indication
-	CProgressIndicator progressIndicator;
-	progressIndicator.Initialise(strFilePath, GetResString(IDS_HASHINGFILE) + L" %.2f%%", GetResString(IDS_HASH_FILE_FINISHED));
-	double dProgress = 0;
+    CProgressIndicator progressIndicator;
+    progressIndicator.Initialise(strFilePath, GetResString(IDS_HASHINGFILE) + L" %.2f%%", GetResString(IDS_HASH_FILE_FINISHED));
+    double dProgress = 0;
 //<<< WiZaRd::HashProgress Indication
-    for (hashcount = 0; togo >= PARTSIZE; )
+    for (hashcount = 0; togo >= PARTSIZE;)
     {
         CAICHHashTree* pBlockAICHHashTree = cAICHHashSet.m_pHashTree.FindHash((uint64)hashcount*PARTSIZE, PARTSIZE);
-        ASSERT( pBlockAICHHashTree != NULL );
+        ASSERT(pBlockAICHHashTree != NULL);
 
         uchar* newhash = new uchar[16];
         if (!CreateHash(file, PARTSIZE, newhash, pBlockAICHHashTree))
@@ -531,19 +531,19 @@ bool CKnownFile::CreateFromFile(LPCTSTR in_directory, LPCTSTR in_filename, LPVOI
         hashcount++;
 
 //>>> WiZaRd::HashProgress Indication
-		dProgress = (double)GetFileSize() != 0.0 ? (double)(GetFileSize() - togo)/(double)GetFileSize()*100.0 : 0.0;		
-		progressIndicator.UpdateProgress(dProgress);
+        dProgress = (double)GetFileSize() != 0.0 ? (double)(GetFileSize() - togo)/(double)GetFileSize()*100.0 : 0.0;
+        progressIndicator.UpdateProgress(dProgress);
 //<<< WiZaRd::HashProgress Indication
         if (pvProgressParam && theApp.emuledlg && theApp.emuledlg->IsRunning())
         {
-            ASSERT( ((CKnownFile*)pvProgressParam)->IsKindOf(RUNTIME_CLASS(CKnownFile)) );
-            ASSERT( ((CKnownFile*)pvProgressParam)->GetFileSize() == GetFileSize() );
+            ASSERT(((CKnownFile*)pvProgressParam)->IsKindOf(RUNTIME_CLASS(CKnownFile)));
+            ASSERT(((CKnownFile*)pvProgressParam)->GetFileSize() == GetFileSize());
 //>>> WiZaRd::HashProgress Indication
             //UINT uProgress = (UINT)(uint64)(((uint64)(GetFileSize() - togo) * 100) / GetFileSize());
-			const UINT uProgress = (UINT)dProgress;
+            const UINT uProgress = (UINT)dProgress;
 //<<< WiZaRd::HashProgress Indication
-            ASSERT( uProgress <= 100 );
-            VERIFY( PostMessage(theApp.emuledlg->GetSafeHwnd(), TM_FILEOPPROGRESS, uProgress, (LPARAM)pvProgressParam) );
+            ASSERT(uProgress <= 100);
+            VERIFY(PostMessage(theApp.emuledlg->GetSafeHwnd(), TM_FILEOPPROGRESS, uProgress, (LPARAM)pvProgressParam));
         }
     }
 
@@ -553,7 +553,7 @@ bool CKnownFile::CreateFromFile(LPCTSTR in_directory, LPCTSTR in_filename, LPVOI
     else
     {
         pBlockAICHHashTree = cAICHHashSet.m_pHashTree.FindHash((uint64)hashcount*PARTSIZE, togo);
-        ASSERT( pBlockAICHHashTree != NULL );
+        ASSERT(pBlockAICHHashTree != NULL);
     }
 
     uchar* lasthash = new uchar[16];
@@ -599,14 +599,14 @@ bool CKnownFile::CreateFromFile(LPCTSTR in_directory, LPCTSTR in_filename, LPVOI
     }
 
 //>>> WiZaRd::HashProgress Indication
-	dProgress = 100;
-	progressIndicator.UpdateProgress(dProgress);
+    dProgress = 100;
+    progressIndicator.UpdateProgress(dProgress);
 //<<< WiZaRd::HashProgress Indication
     if (pvProgressParam && theApp.emuledlg && theApp.emuledlg->IsRunning())
     {
-        ASSERT( ((CKnownFile*)pvProgressParam)->IsKindOf(RUNTIME_CLASS(CKnownFile)) );
-        ASSERT( ((CKnownFile*)pvProgressParam)->GetFileSize() == GetFileSize() );
-        VERIFY( PostMessage(theApp.emuledlg->GetSafeHwnd(), TM_FILEOPPROGRESS, 100, (LPARAM)pvProgressParam) );
+        ASSERT(((CKnownFile*)pvProgressParam)->IsKindOf(RUNTIME_CLASS(CKnownFile)));
+        ASSERT(((CKnownFile*)pvProgressParam)->GetFileSize() == GetFileSize());
+        VERIFY(PostMessage(theApp.emuledlg->GetSafeHwnd(), TM_FILEOPPROGRESS, 100, (LPARAM)pvProgressParam));
     }
 
     // set lastwrite date
@@ -630,7 +630,7 @@ bool CKnownFile::CreateFromFile(LPCTSTR in_directory, LPCTSTR in_filename, LPVOI
 
 bool CKnownFile::CreateAICHHashSetOnly()
 {
-    ASSERT( !IsPartFile() );
+    ASSERT(!IsPartFile());
 
     FILE* file = _tfsopen(GetFilePath(), _T("rbS"), _SH_DENYNO); // can not use _SH_DENYWR because we may access a completing part file
     if (!file)
@@ -646,14 +646,14 @@ bool CKnownFile::CreateAICHHashSetOnly()
     uint64 togo = m_nFileSize;
     UINT hashcount;
 //>>> WiZaRd::HashProgress Indication
-	CProgressIndicator progressIndicator;
-	progressIndicator.Initialise(GetFilePath(), GetResString(IDS_HASHINGFILE) + L" %.2f%% (" + GetResString(IDS_AICHHASH) + L")", GetResString(IDS_HASH_FILE_FINISHED) + L" (" + GetResString(IDS_AICHHASH) + L")");
-	double dProgress = 0;
+    CProgressIndicator progressIndicator;
+    progressIndicator.Initialise(GetFilePath(), GetResString(IDS_HASHINGFILE) + L" %.2f%% (" + GetResString(IDS_AICHHASH) + L")", GetResString(IDS_HASH_FILE_FINISHED) + L" (" + GetResString(IDS_AICHHASH) + L")");
+    double dProgress = 0;
 //<<< WiZaRd::HashProgress Indication
-    for (hashcount = 0; togo >= PARTSIZE; )
+    for (hashcount = 0; togo >= PARTSIZE;)
     {
         CAICHHashTree* pBlockAICHHashTree = cAICHHashSet.m_pHashTree.FindHash((uint64)hashcount*PARTSIZE, PARTSIZE);
-        ASSERT( pBlockAICHHashTree != NULL );
+        ASSERT(pBlockAICHHashTree != NULL);
         if (!CreateHash(file, PARTSIZE, NULL, pBlockAICHHashTree))
         {
             LogError(_T("Failed to hash file \"%s\" - %s"), GetFilePath(), _tcserror(errno));
@@ -671,15 +671,15 @@ bool CKnownFile::CreateAICHHashSetOnly()
         hashcount++;
 
 //>>> WiZaRd::HashProgress Indication
-		dProgress = (double)GetFileSize() != 0.0 ? (double)(GetFileSize() - togo)/(double)GetFileSize()*100.0 : 0.0;		
-		progressIndicator.UpdateProgress(dProgress);
+        dProgress = (double)GetFileSize() != 0.0 ? (double)(GetFileSize() - togo)/(double)GetFileSize()*100.0 : 0.0;
+        progressIndicator.UpdateProgress(dProgress);
 //<<< WiZaRd::HashProgress Indication
     }
 
     if (togo != 0)
     {
         CAICHHashTree* pBlockAICHHashTree = cAICHHashSet.m_pHashTree.FindHash((uint64)hashcount*PARTSIZE, togo);
-        ASSERT( pBlockAICHHashTree != NULL );
+        ASSERT(pBlockAICHHashTree != NULL);
         if (!CreateHash(file, togo, NULL, pBlockAICHHashTree))
         {
             LogError(_T("Failed to hash file \"%s\" - %s"), GetFilePath(), _tcserror(errno));
@@ -705,13 +705,13 @@ bool CKnownFile::CreateAICHHashSetOnly()
         if (!cAICHHashSet.SaveHashSet())
             LogError(LOG_STATUSBAR, GetResString(IDS_SAVEACFAILED));
         else
-		{
+        {
 //>>> WiZaRd::HashProgress Indication
-			dProgress = 100;
-			progressIndicator.UpdateProgress(dProgress);
+            dProgress = 100;
+            progressIndicator.UpdateProgress(dProgress);
 //<<< WiZaRd::HashProgress Indication
             SetAICHRecoverHashSetAvailable(true);
-		}
+        }
     }
     else
     {
@@ -795,7 +795,7 @@ void CKnownFile::SetFileSize(EMFileSize nFileSize)
     }
 
     // nr. of data parts
-    ASSERT( (uint64)(((uint64)nFileSize + (PARTSIZE - 1)) / PARTSIZE) <= (UINT)USHRT_MAX );
+    ASSERT((uint64)(((uint64)nFileSize + (PARTSIZE - 1)) / PARTSIZE) <= (UINT)USHRT_MAX);
     m_iPartCount = (uint16)(((uint64)nFileSize + (PARTSIZE - 1)) / PARTSIZE);
 
     // nr. of parts to be used with OP_FILESTATUS
@@ -813,7 +813,7 @@ bool CKnownFile::LoadTagsFromFile(CFileDataIO* file)
         {
         case FT_FILENAME:
         {
-            ASSERT( newtag->IsStr() );
+            ASSERT(newtag->IsStr());
             if (newtag->IsStr())
             {
                 if (GetFileName().IsEmpty())
@@ -824,7 +824,7 @@ bool CKnownFile::LoadTagsFromFile(CFileDataIO* file)
         }
         case FT_FILESIZE:
         {
-            ASSERT( newtag->IsInt64(true) );
+            ASSERT(newtag->IsInt64(true));
             if (newtag->IsInt64(true))
             {
                 SetFileSize(newtag->GetInt64());
@@ -841,7 +841,7 @@ bool CKnownFile::LoadTagsFromFile(CFileDataIO* file)
         }
         case FT_ATTRANSFERRED:
         {
-            ASSERT( newtag->IsInt() );
+            ASSERT(newtag->IsInt());
             if (newtag->IsInt())
                 statistic.SetAllTimeTransferred(newtag->GetInt());
             delete newtag;
@@ -849,7 +849,7 @@ bool CKnownFile::LoadTagsFromFile(CFileDataIO* file)
         }
         case FT_ATTRANSFERREDHI:
         {
-            ASSERT( newtag->IsInt() );
+            ASSERT(newtag->IsInt());
             if (newtag->IsInt())
                 statistic.SetAllTimeTransferred(((uint64)newtag->GetInt() << 32) | (UINT)statistic.GetAllTimeTransferred());
             delete newtag;
@@ -857,7 +857,7 @@ bool CKnownFile::LoadTagsFromFile(CFileDataIO* file)
         }
         case FT_ATREQUESTED:
         {
-            ASSERT( newtag->IsInt() );
+            ASSERT(newtag->IsInt());
             if (newtag->IsInt())
                 statistic.SetAllTimeRequests(newtag->GetInt());
             delete newtag;
@@ -865,7 +865,7 @@ bool CKnownFile::LoadTagsFromFile(CFileDataIO* file)
         }
         case FT_ATACCEPTED:
         {
-            ASSERT( newtag->IsInt() );
+            ASSERT(newtag->IsInt());
             if (newtag->IsInt())
                 statistic.SetAllTimeAccepts(newtag->GetInt());
             delete newtag;
@@ -873,11 +873,11 @@ bool CKnownFile::LoadTagsFromFile(CFileDataIO* file)
         }
         case FT_ULPRIORITY:
         {
-            ASSERT( newtag->IsInt() );
+            ASSERT(newtag->IsInt());
             if (newtag->IsInt())
             {
                 m_iUpPriority = (uint8)newtag->GetInt();
-                if( m_iUpPriority == PR_AUTO )
+                if (m_iUpPriority == PR_AUTO)
                 {
                     m_iUpPriority = PR_HIGH;
                     m_bAutoUpPriority = true;
@@ -894,10 +894,10 @@ bool CKnownFile::LoadTagsFromFile(CFileDataIO* file)
         }
         case FT_KADLASTPUBLISHSRC:
         {
-            ASSERT( newtag->IsInt() );
+            ASSERT(newtag->IsInt());
             if (newtag->IsInt())
-                SetLastPublishTimeKadSrc( newtag->GetInt(), 0 );
-            if(GetLastPublishTimeKadSrc() > (UINT)time(NULL)+KADEMLIAREPUBLISHTIMES)
+                SetLastPublishTimeKadSrc(newtag->GetInt(), 0);
+            if (GetLastPublishTimeKadSrc() > (UINT)time(NULL)+KADEMLIAREPUBLISHTIMES)
             {
                 //There may be a posibility of an older client that saved a random number here.. This will check for that..
                 SetLastPublishTimeKadSrc(0,0);
@@ -907,9 +907,9 @@ bool CKnownFile::LoadTagsFromFile(CFileDataIO* file)
         }
         case FT_KADLASTPUBLISHNOTES:
         {
-            ASSERT( newtag->IsInt() );
+            ASSERT(newtag->IsInt());
             if (newtag->IsInt())
-                SetLastPublishTimeKadNotes( newtag->GetInt() );
+                SetLastPublishTimeKadNotes(newtag->GetInt());
             delete newtag;
             break;
         }
@@ -921,23 +921,23 @@ bool CKnownFile::LoadTagsFromFile(CFileDataIO* file)
             //				1	trusted meta data, Unicode (strings where not stored correctly)
             //				2	0.49c: trusted meta data, Unicode
             // Bits 31-4: Reserved
-            ASSERT( newtag->IsInt() );
+            ASSERT(newtag->IsInt());
             if (newtag->IsInt())
                 m_uMetaDataVer = newtag->GetInt() & 0x0F;
             delete newtag;
             break;
             // old tags: as long as they are not needed, take the chance to purge them
         case FT_PERMISSIONS:
-            ASSERT( newtag->IsInt() );
+            ASSERT(newtag->IsInt());
             delete newtag;
             break;
         case FT_KADLASTPUBLISHKEY:
-            ASSERT( newtag->IsInt() );
+            ASSERT(newtag->IsInt());
             delete newtag;
             break;
         case FT_AICH_HASH:
         {
-            if(!newtag->IsStr())
+            if (!newtag->IsStr())
             {
                 //ASSERT(0); uncomment later
                 break;
@@ -971,17 +971,17 @@ bool CKnownFile::LoadTagsFromFile(CFileDataIO* file)
             break;
         default:
 //>>> WiZaRd::PowerShare
-            if(!newtag->GetNameID() && newtag->IsInt() && newtag->GetName())
+            if (!newtag->GetNameID() && newtag->IsInt() && newtag->GetName())
             {
                 LPCSTR tagname = newtag->GetName();
-                if(strcmp(tagname, FT_POWERSHARE) == 0)
+                if (strcmp(tagname, FT_POWERSHARE) == 0)
                 {
                     SetPowerShared(newtag->GetInt() == 1);
                     delete newtag;
                     break;
                 }
 //>>> WiZaRd::Intelligent SOTN
-                if(strcmp(tagname, FT_SOTN) == 0)
+                if (strcmp(tagname, FT_SOTN) == 0)
                 {
                     SetShareOnlyTheNeed(newtag->GetInt() == 1);
                     delete newtag;
@@ -1072,7 +1072,7 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
         DebugLog(_T("Unknown last seen date on stored file(s), upgrading from old version?"));
         sDbgWarnedOnZero = true;
     }
-    ASSERT( m_timeLastSeen <= time(NULL) );
+    ASSERT(m_timeLastSeen <= time(NULL));
     time_t timeLastShared = (m_timeLastSeen > 0 && m_timeLastSeen <= time(NULL)) ? m_timeLastSeen : time(NULL);
     CTag lastSharedTag(FT_LASTSHARED, (UINT)timeLastShared);
     lastSharedTag.WriteTagToFile(file);
@@ -1166,7 +1166,7 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
             //				1	trusted meta data, Unicode (strings where not stored correctly)
             //				2	0.49c: trusted meta data, Unicode
             // Bits 31-4: Reserved
-            ASSERT( m_uMetaDataVer <= 0x0F );
+            ASSERT(m_uMetaDataVer <= 0x0F);
             UINT uFlags = m_uMetaDataVer & 0x0F;
             CTag tagFlags(FT_FLAGS, uFlags);
             tagFlags.WriteTagToFile(file);
@@ -1192,7 +1192,7 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
         }
 //<<< WiZaRd::PowerShare
 //>>> WiZaRd::Intelligent SOTN
-        if(m_bShareOnlyTheNeed)
+        if (m_bShareOnlyTheNeed)
         {
             CTag sotn(FT_SOTN, 1);
             sotn.WriteTagToFile(file);
@@ -1210,8 +1210,8 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 
 void CKnownFile::CreateHash(CFile* pFile, uint64 Length, uchar* pMd4HashOut, CAICHHashTree* pShaHashOut)
 {
-    ASSERT( pFile != NULL );
-    ASSERT( pMd4HashOut != NULL || pShaHashOut != NULL );
+    ASSERT(pFile != NULL);
+    ASSERT(pMd4HashOut != NULL || pShaHashOut != NULL);
 
     uint64  Required = Length;
     uchar   X[64*128];
@@ -1238,7 +1238,7 @@ void CKnownFile::CreateHash(CFile* pFile, uint64 Length, uchar* pMd4HashOut, CAI
             {
                 UINT nToComplete = (UINT)(EMBLOCKSIZE - nIACHPos);
                 pHashAlg->Add(X, nToComplete);
-                ASSERT( nIACHPos + nToComplete == EMBLOCKSIZE );
+                ASSERT(nIACHPos + nToComplete == EMBLOCKSIZE);
                 pShaHashOut->SetBlockHash(EMBLOCKSIZE, posCurrentEMBlock, pHashAlg);
                 posCurrentEMBlock += EMBLOCKSIZE;
                 pHashAlg->Reset();
@@ -1270,7 +1270,7 @@ void CKnownFile::CreateHash(CFile* pFile, uint64 Length, uchar* pMd4HashOut, CAI
             {
                 UINT nToComplete = (UINT)(EMBLOCKSIZE - nIACHPos);
                 pHashAlg->Add(X, nToComplete);
-                ASSERT( nIACHPos + nToComplete == EMBLOCKSIZE );
+                ASSERT(nIACHPos + nToComplete == EMBLOCKSIZE);
                 pShaHashOut->SetBlockHash(EMBLOCKSIZE, posCurrentEMBlock, pHashAlg);
                 posCurrentEMBlock += EMBLOCKSIZE;
                 pHashAlg->Reset();
@@ -1286,13 +1286,13 @@ void CKnownFile::CreateHash(CFile* pFile, uint64 Length, uchar* pMd4HashOut, CAI
     }
     if (pShaHashOut != NULL)
     {
-        if(nIACHPos > 0)
+        if (nIACHPos > 0)
         {
             pShaHashOut->SetBlockHash(nIACHPos, posCurrentEMBlock, pHashAlg);
             posCurrentEMBlock += nIACHPos;
         }
-        ASSERT( posCurrentEMBlock == Length );
-        VERIFY( pShaHashOut->ReCalculateHash(pHashAlg, false) );
+        ASSERT(posCurrentEMBlock == Length);
+        VERIFY(pShaHashOut->ReCalculateHash(pHashAlg, false));
     }
 
     if (pMd4HashOut != NULL)
@@ -1314,7 +1314,7 @@ bool CKnownFile::CreateHash(FILE* fp, uint64 uSize, uchar* pucHash, CAICHHashTre
         CreateHash(&file, uSize, pucHash, pShaHashOut);
         bResult = true;
     }
-    catch(CFileException* ex)
+    catch (CFileException* ex)
     {
         ex->Delete();
     }
@@ -1330,7 +1330,7 @@ bool CKnownFile::CreateHash(const uchar* pucData, UINT uSize, uchar* pucHash, CA
         CreateHash(&file, uSize, pucHash, pShaHashOut);
         bResult = true;
     }
-    catch(CFileException* ex)
+    catch (CFileException* ex)
     {
         ex->Delete();
     }
@@ -1345,17 +1345,17 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
     if (md4cmp(forClient->GetUploadFileID(), GetFileHash())!=0)
     {
         // should never happen
-        DEBUG_ONLY( DebugLogError(_T("*** %hs - client (%s) upload file \"%s\" does not match file \"%s\""), __FUNCTION__, forClient->DbgGetClientInfo(), DbgGetFileInfo(forClient->GetUploadFileID()), GetFileName()) );
+        DEBUG_ONLY(DebugLogError(_T("*** %hs - client (%s) upload file \"%s\" does not match file \"%s\""), __FUNCTION__, forClient->DbgGetClientInfo(), DbgGetFileInfo(forClient->GetUploadFileID()), GetFileName()));
         ASSERT(0);
         return NULL;
     }
 
     // check whether client has either no download status at all or a download status which is valid for this file
-    if (   !(forClient->GetUpPartCount()==0 && forClient->GetUpPartStatus()==NULL)
+    if (!(forClient->GetUpPartCount()==0 && forClient->GetUpPartStatus()==NULL)
             && !(forClient->GetUpPartCount()==GetPartCount() && forClient->GetUpPartStatus()!=NULL))
     {
         // should never happen
-        DEBUG_ONLY( DebugLogError(_T("*** %hs - part count (%u) of client (%s) does not match part count (%u) of file \"%s\""), __FUNCTION__, forClient->GetUpPartCount(), forClient->DbgGetClientInfo(), GetPartCount(), GetFileName()) );
+        DEBUG_ONLY(DebugLogError(_T("*** %hs - part count (%u) of client (%s) does not match part count (%u) of file \"%s\""), __FUNCTION__, forClient->GetUpPartCount(), forClient->DbgGetClientInfo(), GetPartCount(), GetFileName()));
         ASSERT(0);
         return NULL;
     }
@@ -1388,7 +1388,7 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
     data.WriteHash16(forClient->GetUploadFileID());
     data.WriteUInt16(nCount);
     UINT cDbgNoSrc = 0;
-    for (POSITION pos = m_ClientUploadList.GetHeadPosition(); pos != 0; )
+    for (POSITION pos = m_ClientUploadList.GetHeadPosition(); pos != 0;)
     {
         /*const*/ CUpDownClient* cur_src = m_ClientUploadList.GetNext(pos);
 
@@ -1413,11 +1413,11 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
         const uint8* rcvstatus = forClient->GetUpPartStatus();
         if (rcvstatus)
         {
-            ASSERT( forClient->GetUpPartCount() == GetPartCount() );
+            ASSERT(forClient->GetUpPartCount() == GetPartCount());
             const uint8* srcstatus = cur_src->GetUpPartStatus();
             if (srcstatus)
             {
-                ASSERT( cur_src->GetUpPartCount() == GetPartCount() );
+                ASSERT(cur_src->GetUpPartCount() == GetPartCount());
                 if (cur_src->GetUpPartCount() == forClient->GetUpPartCount())
                 {
                     for (UINT x = 0; x < GetPartCount(); x++)
@@ -1434,7 +1434,7 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
                 {
                     // should never happen
                     //if (thePrefs.GetVerbose())
-                    DEBUG_ONLY( DebugLogError(_T("*** %hs - found source (%s) with wrong part count (%u) attached to file \"%s\" (partcount=%u)"), __FUNCTION__, cur_src->DbgGetClientInfo(), cur_src->GetUpPartCount(), GetFileName(), GetPartCount()));
+                    DEBUG_ONLY(DebugLogError(_T("*** %hs - found source (%s) with wrong part count (%u) attached to file \"%s\" (partcount=%u)"), __FUNCTION__, cur_src->DbgGetClientInfo(), cur_src->GetUpPartCount(), GetFileName(), GetPartCount()));
                 }
             }
             else
@@ -1446,7 +1446,7 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
         }
         else
         {
-            ASSERT( forClient->GetUpPartCount() == 0 );
+            ASSERT(forClient->GetUpPartCount() == 0);
             TRACE(_T("%hs, requesting client has no chunk status - %s"), __FUNCTION__, forClient->DbgGetClientInfo());
             // remote client does not support upload chunk status, search sources which have at least one complete part
             // we could even sort the list of sources by available chunks to return as much sources as possible which
@@ -1454,8 +1454,8 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
             const uint8* srcstatus = cur_src->GetUpPartStatus();
             if (srcstatus)
             {
-                ASSERT( cur_src->GetUpPartCount() == GetPartCount() );
-                for (UINT x = 0; x < GetPartCount(); x++ )
+                ASSERT(cur_src->GetUpPartCount() == GetPartCount());
+                for (UINT x = 0; x < GetPartCount(); x++)
                 {
                     if (srcstatus[x])
                     {
@@ -1551,29 +1551,29 @@ void CKnownFile::SetFileRating(UINT uRating)
 
 void CKnownFile::UpdateAutoUpPriority()
 {
-    if( !IsAutoUpPriority() )
+    if (!IsAutoUpPriority())
         return;
-    if ( GetQueuedCount() > 20 )
+    if (GetQueuedCount() > 20)
     {
-        if( GetUpPriority() != PR_LOW )
+        if (GetUpPriority() != PR_LOW)
         {
-            SetUpPriority( PR_LOW );
+            SetUpPriority(PR_LOW);
             theApp.sharedfiles->UpdateFile(this);
         }
         return;
     }
-    if ( GetQueuedCount() > 1 )
+    if (GetQueuedCount() > 1)
     {
-        if( GetUpPriority() != PR_NORMAL )
+        if (GetUpPriority() != PR_NORMAL)
         {
-            SetUpPriority( PR_NORMAL );
+            SetUpPriority(PR_NORMAL);
             theApp.sharedfiles->UpdateFile(this);
         }
         return;
     }
-    if( GetUpPriority() != PR_HIGH)
+    if (GetUpPriority() != PR_HIGH)
     {
-        SetUpPriority( PR_HIGH );
+        SetUpPriority(PR_HIGH);
         theApp.sharedfiles->UpdateFile(this);
     }
 }
@@ -1581,9 +1581,9 @@ void CKnownFile::UpdateAutoUpPriority()
 void CKnownFile::SetUpPriority(uint8 iNewUpPriority, bool bSave)
 {
     m_iUpPriority = iNewUpPriority;
-    ASSERT( m_iUpPriority == PR_VERYLOW || m_iUpPriority == PR_LOW || m_iUpPriority == PR_NORMAL || m_iUpPriority == PR_HIGH || m_iUpPriority == PR_VERYHIGH );
+    ASSERT(m_iUpPriority == PR_VERYLOW || m_iUpPriority == PR_LOW || m_iUpPriority == PR_NORMAL || m_iUpPriority == PR_HIGH || m_iUpPriority == PR_VERYHIGH);
 
-    if( IsPartFile() && bSave )
+    if (IsPartFile() && bSave)
         ((CPartFile*)this)->SavePartFile();
 }
 
@@ -1696,7 +1696,7 @@ void CKnownFile::RemoveBrokenUnicodeMetaDataTags()
             // due to the conversion from Unicode->MBCS. But at least it prevents us from deleting
             // all the existing meta data strings.
             const CTag* pTag = taglist[i];
-            if (   pTag->GetNameID() == _aEmuleMetaTags[j].nID
+            if (pTag->GetNameID() == _aEmuleMetaTags[j].nID
                     && pTag->IsStr()
                     && _tcschr(pTag->GetStr(), _T('?')) != NULL)
             {
@@ -1735,7 +1735,7 @@ CStringA GetED2KVideoCodec(DWORD biCompression)
     LPCSTR pszCompression = (LPCSTR)&biCompression;
     for (int i = 0; i < 4; i++)
     {
-        if (   !__iscsym((unsigned char)pszCompression[i])
+        if (!__iscsym((unsigned char)pszCompression[i])
                 && pszCompression[i] != '.'
                 && pszCompression[i] != ' ')
             return "";
@@ -1916,7 +1916,7 @@ void CKnownFile::UpdateMetaDataTags()
                 }
                 delete iter;
             }
-            catch(...)
+            catch (...)
             {
                 if (thePrefs.GetVerbose())
                     AddDebugLogLine(false, _T("Unhandled exception while extracting file meta (MP3) data from \"%s\""), szFullPath);
@@ -2004,7 +2004,7 @@ void CKnownFile::UpdateMetaDataTags()
                     return;
                 }
             }
-            catch(...)
+            catch (...)
             {
                 if (thePrefs.GetVerbose())
                     AddDebugLogLine(false, _T("Unhandled exception while extracting file meta (AVI) data from \"%s\""), szFullPath);
@@ -2017,16 +2017,16 @@ void CKnownFile::UpdateMetaDataTags()
 
 bool CKnownFile::PublishNotes()
 {
-    if(m_lastPublishTimeKadNotes > (UINT)time(NULL))
+    if (m_lastPublishTimeKadNotes > (UINT)time(NULL))
     {
         return false;
     }
-    if(GetFileComment() != _T(""))
+    if (GetFileComment() != _T(""))
     {
         m_lastPublishTimeKadNotes = (UINT)time(NULL)+KADEMLIAREPUBLISHTIMEN;
         return true;
     }
-    if(GetFileRating() != 0)
+    if (GetFileRating() != 0)
     {
         m_lastPublishTimeKadNotes = (UINT)time(NULL)+KADEMLIAREPUBLISHTIMEN;
         return true;
@@ -2038,16 +2038,16 @@ bool CKnownFile::PublishNotes()
 bool CKnownFile::PublishSrc()
 {
     UINT lastBuddyIP = 0;
-    if( theApp.IsFirewalled() &&
+    if (theApp.IsFirewalled() &&
             (Kademlia::CUDPFirewallTester::IsFirewalledUDP(true) || !Kademlia::CUDPFirewallTester::IsVerified()))
     {
         CUpDownClient* buddy = theApp.clientlist->GetBuddy();
-        if( buddy )
+        if (buddy)
         {
             lastBuddyIP = theApp.clientlist->GetBuddy()->GetIP();
-            if( lastBuddyIP != m_lastBuddyIP )
+            if (lastBuddyIP != m_lastBuddyIP)
             {
-                SetLastPublishTimeKadSrc( (UINT)time(NULL)+KADEMLIAREPUBLISHTIMES, lastBuddyIP );
+                SetLastPublishTimeKadSrc((UINT)time(NULL)+KADEMLIAREPUBLISHTIMES, lastBuddyIP);
                 return true;
             }
         }
@@ -2055,7 +2055,7 @@ bool CKnownFile::PublishSrc()
             return false;
     }
 
-    if(m_lastPublishTimeKadSrc > (UINT)time(NULL))
+    if (m_lastPublishTimeKadSrc > (UINT)time(NULL))
         return false;
 
     SetLastPublishTimeKadSrc((UINT)time(NULL)+KADEMLIAREPUBLISHTIMES,lastBuddyIP);
@@ -2064,7 +2064,7 @@ bool CKnownFile::PublishSrc()
 
 bool CKnownFile::IsMovie() const
 {
-    return (ED2KFT_VIDEO == GetED2KFileTypeID(GetFileName()) );
+    return (ED2KFT_VIDEO == GetED2KFileTypeID(GetFileName()));
 }
 
 // function assumes that this file is shared and that any needed permission to preview exists. checks have to be done before calling!
@@ -2154,36 +2154,36 @@ CString CKnownFile::GetUpPriorityDisplayString() const
     CString buffer = L"";
     switch (GetUpPriority())
     {
-		case PR_VERYLOW:
-			buffer = GetResString(IDS_PRIOVERYLOW);
-			break;
-		case PR_LOW:
-			if(IsAutoUpPriority())
-				buffer = GetResString(IDS_PRIOAUTOLOW);
-			else
-				buffer =  GetResString(IDS_PRIOLOW);
-			break;
-		case PR_NORMAL:
-			if(IsAutoUpPriority())
-				buffer = GetResString(IDS_PRIOAUTONORMAL);
-			else
-				buffer = GetResString(IDS_PRIONORMAL);
-			break;
-		case PR_HIGH:
-			if(IsAutoUpPriority())
-				buffer = GetResString(IDS_PRIOAUTOHIGH);
-			else
-				buffer = GetResString(IDS_PRIOHIGH);
-			break;
-		case PR_VERYHIGH:
-			buffer = GetResString(IDS_PRIORELEASE);
-			break;
-		default:
-			buffer = L"";
-			break;
+    case PR_VERYLOW:
+        buffer = GetResString(IDS_PRIOVERYLOW);
+        break;
+    case PR_LOW:
+        if (IsAutoUpPriority())
+            buffer = GetResString(IDS_PRIOAUTOLOW);
+        else
+            buffer =  GetResString(IDS_PRIOLOW);
+        break;
+    case PR_NORMAL:
+        if (IsAutoUpPriority())
+            buffer = GetResString(IDS_PRIOAUTONORMAL);
+        else
+            buffer = GetResString(IDS_PRIONORMAL);
+        break;
+    case PR_HIGH:
+        if (IsAutoUpPriority())
+            buffer = GetResString(IDS_PRIOAUTOHIGH);
+        else
+            buffer = GetResString(IDS_PRIOHIGH);
+        break;
+    case PR_VERYHIGH:
+        buffer = GetResString(IDS_PRIORELEASE);
+        break;
+    default:
+        buffer = L"";
+        break;
     }
 
-    if(IsPowerShared())
+    if (IsPowerShared())
     {
         CString temp = buffer;
         buffer.Format(L"%s %s", GetResString(IDS_POWERSHARE_PREFIX), temp);
@@ -2201,18 +2201,18 @@ bool CKnownFile::ShouldPartiallyPurgeFile() const
 //>>> WiZaRd::PowerShare
 bool CKnownFile::IsPowerShared() const
 {
-    if(IsPartFile())
+    if (IsPartFile())
         return false;
     return m_bPowerShared;
 }
 
 void CKnownFile::SetPowerShared(const bool b)
 {
-    if(m_bPowerShared == b)
+    if (m_bPowerShared == b)
         return;
 
     m_bPowerShared = b;
-    if(theApp.uploadqueue)
+    if (theApp.uploadqueue)
         theApp.uploadqueue->ReSortUploadSlots(true);
 }
 //<<< WiZaRd::PowerShare
@@ -2233,7 +2233,7 @@ bool CKnownFile::WritePartStatus(CSafeMemFile* file, CUpDownClient* client, cons
     uint8* m_abyTmpPartStatus = GetPartStatus(client);
     //if we do not hide something and the file is complete, return here
     const bool bPartfile = IsPartFile();
-    if(!m_abyTmpPartStatus && !bPartfile)
+    if (!m_abyTmpPartStatus && !bPartfile)
         return false;
 
     //and now write it down...
@@ -2257,24 +2257,24 @@ bool CKnownFile::WritePartStatus(CSafeMemFile* file, CUpDownClient* client, cons
         uint8 towrite = 0;
         for (uint8 i = 0; i < 8; ++i)
         {
-            if(done < partcount	//valid part
+            if (done < partcount	//valid part
                     //of course it's complete if it's a complete file
                     //or the part is complete
                     && (!bPartfile || ((CPartFile*)this)->IsComplete(done*PARTSIZE, (done + 1)*PARTSIZE - 1, true)))
             {
                 //and it's not hidden
-                if(!m_abyTmpPartStatus || m_abyTmpPartStatus[done] == 0)
+                if (!m_abyTmpPartStatus || m_abyTmpPartStatus[done] == 0)
                 {
                     towrite |= (1<<i);
 //>>> WiZaRd::FiX
 //					if(client && client->m_abyUpPartStatusHidden)
-                    if(bWriteStatus)
+                    if (bWriteStatus)
 //<<< WiZaRd::FiX
                         client->m_abyUpPartStatusHidden[done] = 0;  //not hidden anymore
                 }
 //>>> WiZaRd::FiX
 //				else if(client && client->m_abyUpPartStatusHidden)
-                else if(bWriteStatus)
+                else if (bWriteStatus)
 //<<< WiZaRd::FiX
                     client->m_abyUpPartStatusHidden[done] = toSet;
             }
@@ -2313,19 +2313,19 @@ uint8* CKnownFile::GetPartStatus(CUpDownClient* client) const
     const uint16 partcount = GetPartCount();
     tmparray.SetSize(partcount);
     const bool bUsePart = IsPartFile();
-    for(uint16 i = 0; i < partcount; i++)
+    for (uint16 i = 0; i < partcount; i++)
     {
-        if(bUsePart)
+        if (bUsePart)
             tmparray[i] = ((CPartFile*)this)->GetSrcPartFrequency(i) + ((CPartFile*)this)->IsComplete(PARTSIZE*i, PARTSIZE*(i+1)-1, true);
-        else if(!m_AvailPartFrequency.IsEmpty())
+        else if (!m_AvailPartFrequency.IsEmpty())
             tmparray[i] = m_AvailPartFrequency[i];
-        if(!m_SOTNAvailPartFrequency.IsEmpty())
+        if (!m_SOTNAvailPartFrequency.IsEmpty())
             tmparray[i] = tmparray[i] + m_SOTNAvailPartFrequency[i];
     }
 //<<< Create tmp array
     uint16 iMinAvailablePartFrenquency = _UI16_MAX;
     uint16 iMinAvailablePartFrenquencyPrev = _UI16_MAX;
-    if(bSOTN)
+    if (bSOTN)
     {
         //for (uint16 i = 0; i < parts; ++)i
         for (uint16 i = 0; i < partcount; ++i)
@@ -2365,7 +2365,7 @@ uint8* CKnownFile::GetPartStatus(CUpDownClient* client) const
                                  || (client && client->IsPartAvailable(i) && (!bUsePart || ((CPartFile*)this)->IsComplete(PARTSIZE*i, PARTSIZE*(i+1)-1, true))); // show parts that the other client has
 
             //ok now the selection
-            if(!bSOTNOK)
+            if (!bSOTNOK)
             {
                 m_abyTmpPartStatus[done] = 1;
                 bNeedThisFunction = true;
@@ -2377,7 +2377,7 @@ uint8* CKnownFile::GetPartStatus(CUpDownClient* client) const
         }
     }
 
-    if(!bNeedThisFunction)
+    if (!bNeedThisFunction)
     {
         delete[] m_abyTmpPartStatus;
         m_abyTmpPartStatus = NULL;
@@ -2389,9 +2389,9 @@ uint8* CKnownFile::GetPartStatus(CUpDownClient* client) const
 
 bool CKnownFile::GetShareOnlyTheNeed(bool m_bOnlyFile) const
 {
-    if(IsPartFile())
+    if (IsPartFile())
         return false;
-    if(m_bOnlyFile)
+    if (m_bOnlyFile)
         return m_bShareOnlyTheNeed;
     /*switch(thePrefs.IsShareOnlyTheNeed())
     {
@@ -2426,26 +2426,26 @@ bool CKnownFile::IsSharedInKad() const
 wchar_t GetCleanChar(wchar_t tc)
 {
 //Start - convert accents
-    if(tc > 0xdf && tc < 0xe6)
+    if (tc > 0xdf && tc < 0xe6)
         tc = L'a';
-    else if(tc == 0x0e )
+    else if (tc == 0x0e)
         tc = L'c';
-    else if(tc > 0xe7 && tc < 0xec)
+    else if (tc > 0xe7 && tc < 0xec)
         tc = L'e';
-    else if(tc > 0xeb && tc < 0xf0)
+    else if (tc > 0xeb && tc < 0xf0)
         tc = L'i';
-    else if(tc == 0xf1)
+    else if (tc == 0xf1)
         tc = L'n';
-    else if(tc > 0xf1 && tc < 0xf7)
+    else if (tc > 0xf1 && tc < 0xf7)
         tc = L'o';
-    else if(tc > 0xf8 && tc < 0xfd)
+    else if (tc > 0xf8 && tc < 0xfd)
         tc = L'u';
-    else if(tc > 0xfc && tc < 0x100)
+    else if (tc > 0xfc && tc < 0x100)
         tc = L'y';
     else
 //End - convert accents
     {
-        if((tc < L'a' || tc > L'z') //not English
+        if ((tc < L'a' || tc > L'z') //not English
                 && (tc < 0x5d0 || tc > 0x5ea) //not Hebrew
                 && (tc < 0x900 || tc > 0xAff) //not Indic (Devanagari(hindi),Bengali,Gujarati,Gurmukhi)
                 && (tc < 0x3105 || tc > 0x312c) //not Chinese
@@ -2490,14 +2490,14 @@ void CKnownFile::CheckFilename(CString FileName)
     int foundAt = -1;
     int fLen = 0;
     int iLen = 0;
-    for(int i = 0; i != _countof(strHTTPPatterns); ++i)
+    for (int i = 0; i != _countof(strHTTPPatterns); ++i)
     {
         foundAt = FileName.Find(strHTTPPatterns[i]);
-        while(foundAt != -1)
+        while (foundAt != -1)
         {
             fLen = FileName.GetLength();
             iLen = FileName.Right(fLen-foundAt).FindOneOf(URL_END);
-            if(iLen != -1) //if we have found an end of link the remove the link!
+            if (iLen != -1) //if we have found an end of link the remove the link!
                 FileName = FileName.Left(foundAt) + FileName.Right(fLen - (foundAt + iLen));
             else
                 break;
@@ -2507,16 +2507,16 @@ void CKnownFile::CheckFilename(CString FileName)
 
     //remove web links!
     foundAt = FileName.Find(L"www.");
-    while(foundAt != -1)
+    while (foundAt != -1)
     {
         fLen = FileName.GetLength();
         iLen = FileName.Right(fLen-foundAt).FindOneOf(URL_END);
-        if(iLen != -1) //if we have found an end of link then remove the link!
+        if (iLen != -1) //if we have found an end of link then remove the link!
             FileName = FileName.Left(foundAt) + FileName.Right(fLen - (foundAt + iLen));
         else
         {
             iLen = FileName.Right(fLen-foundAt).Find(L".co");//gets .com and .co.xx
-            if(iLen != -1)
+            if (iLen != -1)
             {
                 iLen += 3;
                 FileName = FileName.Left(foundAt) + FileName.Right(fLen - (foundAt + iLen));
@@ -2524,9 +2524,9 @@ void CKnownFile::CheckFilename(CString FileName)
             else
             {
                 iLen = FileName.Right(fLen-foundAt).Find(L".net");
-                if(iLen == -1)
+                if (iLen == -1)
                     iLen = FileName.Right(fLen-foundAt).Find(L".org");
-                if(iLen != -1)
+                if (iLen != -1)
                 {
                     iLen += 4;
                     FileName = FileName.Left(foundAt) + FileName.Right(fLen - (foundAt + iLen));
@@ -2535,7 +2535,7 @@ void CKnownFile::CheckFilename(CString FileName)
                 {
                     foundAt += 4;//skip the '.' in www. and find the next
                     int iLen = FileName.Right(fLen-(foundAt)).Find(L".");
-                    if(iLen != -1)
+                    if (iLen != -1)
                     {
                         iLen++;
                         FileName = FileName.Left(foundAt - 4) + FileName.Right(fLen - (foundAt + iLen));
@@ -2550,10 +2550,10 @@ void CKnownFile::CheckFilename(CString FileName)
     CString CleanName = L"";
     int len = OurFilename.GetLength();
     wchar_t lastadded = L' ';
-    for(int i = 0; i < len; i++)
+    for (int i = 0; i < len; i++)
     {
         wchar_t tc = GetCleanChar(OurFilename.GetAt(i));
-        if(tc != L' ' || lastadded != L' ')
+        if (tc != L' ' || lastadded != L' ')
         {
             CleanName.AppendChar(tc);
             lastadded = tc;
@@ -2563,29 +2563,29 @@ void CKnownFile::CheckFilename(CString FileName)
     //the source's filename's length
     len = FileName.GetLength();
     //nothing to compare?
-    if(CleanName.GetLength() < 4 || len < 4)
+    if (CleanName.GetLength() < 4 || len < 4)
         return;
 
     //Tweaks to reduce the chance of false positives.
     //if our filename is say x.htm and the source's filename is x.html,(the long four letter version) don't count the different extention
     bool isnotlongext = true;
-    if( (OurFilename.Right(4) == L".htm" && FileName.Right(5) == L".html") ||
+    if ((OurFilename.Right(4) == L".htm" && FileName.Right(5) == L".html") ||
             (OurFilename.Right(4) == L".mpg" && FileName.Right(5) == L".mpeg") ||
-            (OurFilename.Right(4) == L".jpg" && FileName.Right(5) == L".jpeg") )
+            (OurFilename.Right(4) == L".jpg" && FileName.Right(5) == L".jpeg"))
         isnotlongext = false;
 
     //if *both* of our files are same type of video files don't count codec info 'divx' as a discriptive word
     bool bothnotvideo = true;
     uint16 nontrivialword = 0;
-    if(FileName.Right(4) == OurFilename.Right(4))
+    if (FileName.Right(4) == OurFilename.Right(4))
     {
-        if(OurFilename.Right(4) == L".avi" || OurFilename.Right(4) == L".wmv")
+        if (OurFilename.Right(4) == L".avi" || OurFilename.Right(4) == L".wmv")
             bothnotvideo = false;
     }
     else
     {
         //assess extensions if they are not the same and are both three character extensions set a one word mismatch
-        if(OurFilename.GetAt(OurFilename.GetLength() - 4)== L'.' && FileName.GetAt(FileName.GetLength() - 4) == L'.')
+        if (OurFilename.GetAt(OurFilename.GetLength() - 4)== L'.' && FileName.GetAt(FileName.GetLength() - 4) == L'.')
             nontrivialword = 1;
     }
 
@@ -2594,27 +2594,27 @@ void CKnownFile::CheckFilename(CString FileName)
     uint16 matched = 0;
     CString newword = L"";
     //clean source's filename and search it for matches with ours
-    for(int i = 0; i< len ; i++)
+    for (int i = 0; i< len ; i++)
     {
         wchar_t tc = GetCleanChar(FileName.GetAt(i));
         //allow only one dividing character between words, a space.
-        if(tc != L' ' || lastadded != L' ')
+        if (tc != L' ' || lastadded != L' ')
         {
             lastadded = tc; //to prevent multiple separating characters
-            if(tc == L' ' || (count>0 && newword[0]>0x3040))//evaluate oriental ideograms one character at a time
+            if (tc == L' ' || (count>0 && newword[0]>0x3040)) //evaluate oriental ideograms one character at a time
             {
                 //end of word. do comparison
                 spaces++; //we are using spaces to count word separation so individual ideograms have intrinsic separation...
-                if(newword[0]>0x3040 || (count > 3 && (isnotlongext || (newword != L"html" || newword != L"mpeg" || newword != L"jpeg"))
-                                         && (bothnotvideo || (newword != L"divx" || newword != L"xvid"))))
+                if (newword[0]>0x3040 || (count > 3 && (isnotlongext || (newword != L"html" || newword != L"mpeg" || newword != L"jpeg"))
+                                          && (bothnotvideo || (newword != L"divx" || newword != L"xvid"))))
                 {
                     //word is less likely to be a conjunction and is not various common additions OR work could be chinese or japanese
                     nontrivialword++;
                     //check for matches
-                    if(CleanName.Find(newword) != -1)
+                    if (CleanName.Find(newword) != -1)
                         matched++;
                 }
-                if(tc != L' ')
+                if (tc != L' ')
                     i--; //Chinese Japanese Korean compare each character
                 count = 0;
                 newword.Empty();
@@ -2627,11 +2627,11 @@ void CKnownFile::CheckFilename(CString FileName)
         }
     }
     //new for version 1.5a a bad name could slip through but on balance it will reduce false positives
-    if(spaces < 2 && nontrivialword == 1 && FileName.GetLength() < OurFilename.GetLength())
+    if (spaces < 2 && nontrivialword == 1 && FileName.GetLength() < OurFilename.GetLength())
         return; //protect against a name like "mozillafirefox zip" compared to "mozilla firefox version zip"
 
     //compare non-matched words to 70% to 94% words, default %83 eg: a minimum 17% match.
-    if((uint16)(nontrivialword - matched) > (uint16)((float)nontrivialword/(float)(100.0F/((float)FDC_SENSITIVITY))))
+    if ((uint16)(nontrivialword - matched) > (uint16)((float)nontrivialword/(float)(100.0F/((float)FDC_SENSITIVITY))))
         ++m_iNameContinuityBad; //set warning flag for this file
     else
         --m_iNameContinuityBad; //proper name for this file, increase trust
@@ -2651,120 +2651,120 @@ void CKnownFile::ResetFDC()
 //>>> WiZaRd::Ratio Indicator
 double CKnownFile::GetSharingRatio() const
 {
-	uint64 downloaded = 0;
-	if(IsPartFile())
-		downloaded = ((const CPartFile*)this)->GetCompletedSize();
-	else
-		downloaded = GetFileSize();
-	uint64 uploaded = statistic.GetAllTimeTransferred();
+    uint64 downloaded = 0;
+    if (IsPartFile())
+        downloaded = ((const CPartFile*)this)->GetCompletedSize();
+    else
+        downloaded = GetFileSize();
+    uint64 uploaded = statistic.GetAllTimeTransferred();
 
-	return GetRatioDouble(uploaded, downloaded);
+    return GetRatioDouble(uploaded, downloaded);
 }
 //<<< WiZaRd::Ratio Indicator
 //>>> WiZaRd::Upload Feedback
 CString CKnownFile::GetFeedBackString() const
 {
-	CString feed = L"";
-	CString tmp = L"";
+    CString feed = L"";
+    CString tmp = L"";
 
-	//Mod-Info
-	feed.AppendFormat(L"%s: %s@%s\r\n", 
-		GetResString(IDS_FEEDBACKBY), thePrefs.GetUserNick(), MOD_VERSION); 
+    //Mod-Info
+    feed.AppendFormat(L"%s: %s@%s\r\n",
+                      GetResString(IDS_FEEDBACKBY), thePrefs.GetUserNick(), MOD_VERSION);
 
-	//Time
-	CTime time = CTime::GetCurrentTime();
-	feed.AppendFormat(L"%s: %s\r\n", 
-		GetResString(IDS_FEEDBACKTIME), time.Format(thePrefs.GetDateTimeFormat()));
+    //Time
+    CTime time = CTime::GetCurrentTime();
+    feed.AppendFormat(L"%s: %s\r\n",
+                      GetResString(IDS_FEEDBACKTIME), time.Format(thePrefs.GetDateTimeFormat()));
 
-	//Filename
-	feed.AppendFormat(L"%s: %s\r\n",
-		GetResString(IDS_DL_FILENAME), GetFileName()); 
+    //Filename
+    feed.AppendFormat(L"%s: %s\r\n",
+                      GetResString(IDS_DL_FILENAME), GetFileName());
 
-	//Filetype
-	feed.AppendFormat(L"%s: %s\r\n", 
-		GetResString(IDS_TYPE), GetFileTypeDisplayStr()); 
+    //Filetype
+    feed.AppendFormat(L"%s: %s\r\n",
+                      GetResString(IDS_TYPE), GetFileTypeDisplayStr());
 
-	//Filesize
-	feed.AppendFormat(L"%s: %s\r\n", 
-		GetResString(IDS_DL_SIZE), CastItoXBytes(GetFileSize())); 
+    //Filesize
+    feed.AppendFormat(L"%s: %s\r\n",
+                      GetResString(IDS_DL_SIZE), CastItoXBytes(GetFileSize()));
 
-	//DL progress/speed
-	CPartFile* pfile = NULL;
-	if(IsPartFile())
-		pfile = (CPartFile*)this;
-	if(pfile)
-	{
-		feed.AppendFormat(L"%s: %.2f%% (=%s)\r\n", 
-			GetResString(IDS_DL_TRANSFCOMPL), pfile->GetPercentCompleted(), CastItoXBytes(pfile->GetCompletedSize())); 		
-		tmp.Format(L"%s: %s\r\n",
-			GetResString(IDS_DL_SPEED), GetResString(IDS_CURRENT_TRANSFER_DL));
-		feed.AppendFormat(tmp, pfile->GetTransferringSrcCount(), CastItoXBytes(pfile->GetDatarate(), false, true));
-	}
-	else
-		feed.AppendFormat(L"%s: 100%%\r\n", 
-			GetResString(IDS_DL_TRANSFCOMPL)); 
+    //DL progress/speed
+    CPartFile* pfile = NULL;
+    if (IsPartFile())
+        pfile = (CPartFile*)this;
+    if (pfile)
+    {
+        feed.AppendFormat(L"%s: %.2f%% (=%s)\r\n",
+                          GetResString(IDS_DL_TRANSFCOMPL), pfile->GetPercentCompleted(), CastItoXBytes(pfile->GetCompletedSize()));
+        tmp.Format(L"%s: %s\r\n",
+                   GetResString(IDS_DL_SPEED), GetResString(IDS_CURRENT_TRANSFER_DL));
+        feed.AppendFormat(tmp, pfile->GetTransferringSrcCount(), CastItoXBytes(pfile->GetDatarate(), false, true));
+    }
+    else
+        feed.AppendFormat(L"%s: 100%%\r\n",
+                          GetResString(IDS_DL_TRANSFCOMPL));
 
-	//UL progress/speed
-	UINT speed = 0;
-	UINT counter = 0;
-	for(POSITION pos = theApp.uploadqueue->uploadinglist.GetHeadPosition(); pos;)
-	{
-		CUpDownClient* client = theApp.uploadqueue->uploadinglist.GetNext(pos);
-		if(md4cmp(client->GetUploadFileID(), GetFileHash()) == 0)
-		{
-			++counter;
-			speed += client->GetDatarate();
-		}
-	}
-	if(counter > 0)
-	{
-		CString tmp;
-		tmp.Format(L"%s: %s\r\n",
-			GetResString(IDS_ST_UPLOAD), GetResString(IDS_CURRENT_TRANSFER_UL));
-		feed.AppendFormat(tmp, counter, CastItoXBytes(speed, false, true));
-	}
+    //UL progress/speed
+    UINT speed = 0;
+    UINT counter = 0;
+    for (POSITION pos = theApp.uploadqueue->uploadinglist.GetHeadPosition(); pos;)
+    {
+        CUpDownClient* client = theApp.uploadqueue->uploadinglist.GetNext(pos);
+        if (md4cmp(client->GetUploadFileID(), GetFileHash()) == 0)
+        {
+            ++counter;
+            speed += client->GetDatarate();
+        }
+    }
+    if (counter > 0)
+    {
+        CString tmp;
+        tmp.Format(L"%s: %s\r\n",
+                   GetResString(IDS_ST_UPLOAD), GetResString(IDS_CURRENT_TRANSFER_UL));
+        feed.AppendFormat(tmp, counter, CastItoXBytes(speed, false, true));
+    }
 
-	//Filepriority
-	feed.AppendFormat(L"%s: %s\r\n", 
-		GetResString(IDS_PRIORITY), GetUpPriorityDisplayString()); 
+    //Filepriority
+    feed.AppendFormat(L"%s: %s\r\n",
+                      GetResString(IDS_PRIORITY), GetUpPriorityDisplayString());
 
-	//Uploaded data
-	feed.AppendFormat(L"%s: %s/%s\r\n", 
-		GetResString(IDS_SF_TRANSFERRED), CastItoXBytes(statistic.GetTransferred()), CastItoXBytes(statistic.GetAllTimeTransferred())); 
+    //Uploaded data
+    feed.AppendFormat(L"%s: %s/%s\r\n",
+                      GetResString(IDS_SF_TRANSFERRED), CastItoXBytes(statistic.GetTransferred()), CastItoXBytes(statistic.GetAllTimeTransferred()));
 
-	//Srccount
-	uint16 uiCompleteSourcesCountLo = m_nCompleteSourcesCountLo;
-	uint16 uiCompleteSourcesCountHi = m_nCompleteSourcesCountHi;
-	if(pfile)
-	{
-		uiCompleteSourcesCountLo = pfile->m_nCompleteSourcesCountLo;
-		uiCompleteSourcesCountHi = pfile->m_nCompleteSourcesCountHi;
-	}
+    //Srccount
+    uint16 uiCompleteSourcesCountLo = m_nCompleteSourcesCountLo;
+    uint16 uiCompleteSourcesCountHi = m_nCompleteSourcesCountHi;
+    if (pfile)
+    {
+        uiCompleteSourcesCountLo = pfile->m_nCompleteSourcesCountLo;
+        uiCompleteSourcesCountHi = pfile->m_nCompleteSourcesCountHi;
+    }
 
-	if (uiCompleteSourcesCountLo == uiCompleteSourcesCountHi)
-		feed.AppendFormat(L"%s: %u\r\n", 
-		GetResString(IDS_COMPLSOURCES), uiCompleteSourcesCountLo);
-	else if (uiCompleteSourcesCountLo == 0)
-		feed.AppendFormat(L"%s: < %u\r\n", 
-		GetResString(IDS_COMPLSOURCES), uiCompleteSourcesCountHi+1);
-	else
-		feed.AppendFormat(L"%s: %u-%u\r\n", 
-		GetResString(IDS_COMPLSOURCES), uiCompleteSourcesCountLo, uiCompleteSourcesCountHi);
+    if (uiCompleteSourcesCountLo == uiCompleteSourcesCountHi)
+        feed.AppendFormat(L"%s: %u\r\n",
+                          GetResString(IDS_COMPLSOURCES), uiCompleteSourcesCountLo);
+    else if (uiCompleteSourcesCountLo == 0)
+        feed.AppendFormat(L"%s: < %u\r\n",
+                          GetResString(IDS_COMPLSOURCES), uiCompleteSourcesCountHi+1);
+    else
+        feed.AppendFormat(L"%s: %u-%u\r\n",
+                          GetResString(IDS_COMPLSOURCES), uiCompleteSourcesCountLo, uiCompleteSourcesCountHi);
 
-	//Waiting
-	const UINT queued = GetQueuedCount();
-	if(queued)
-		feed.AppendFormat(L"%s: %u\r\n", 
-		GetResString(IDS_ONQUEUE), queued);
+    //Waiting
+    const UINT queued = GetQueuedCount();
+    if (queued)
+        feed.AppendFormat(L"%s: %u\r\n",
+                          GetResString(IDS_ONQUEUE), queued);
 
-	//Requests
-	feed.AppendFormat(L"%s: %u/%u\r\n", 
-		GetResString(IDS_SF_REQUESTS), statistic.GetRequests(), statistic.GetAllTimeRequests()); 
+    //Requests
+    feed.AppendFormat(L"%s: %u/%u\r\n",
+                      GetResString(IDS_SF_REQUESTS), statistic.GetRequests(), statistic.GetAllTimeRequests());
 
-	//Accepts
-	feed.AppendFormat(L"%s: %u/%u\r\n", 
-		GetResString(IDS_SF_ACCEPTS), statistic.GetAccepts(), statistic.GetAllTimeAccepts()); 
+    //Accepts
+    feed.AppendFormat(L"%s: %u/%u\r\n",
+                      GetResString(IDS_SF_ACCEPTS), statistic.GetAccepts(), statistic.GetAllTimeAccepts());
 
-	return feed;
+    return feed;
 }
 //<<< WiZaRd::Upload Feedback

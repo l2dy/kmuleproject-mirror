@@ -43,18 +43,18 @@ typedef	_com_ptr_t<_com_IIID<IUPnPServiceCallback,&IID_IUPnPServiceCallback> >		
 typedef _com_ptr_t<_com_IIID<IEnumUnknown,&IID_IEnumUnknown> >				EnumUnknownPtr;
 typedef _com_ptr_t<_com_IIID<IUnknown,&IID_IUnknown> >						UnknownPtr;
 
-typedef DWORD (WINAPI* TGetBestInterface) (
+typedef DWORD (WINAPI* TGetBestInterface)(
     IPAddr dwDestAddr,
     PDWORD pdwBestIfIndex
 );
 
-typedef DWORD (WINAPI* TGetIpAddrTable) (
+typedef DWORD (WINAPI* TGetIpAddrTable)(
     PMIB_IPADDRTABLE pIpAddrTable,
     PULONG pdwSize,
     BOOL bOrder
 );
 
-typedef DWORD (WINAPI* TGetIfEntry) (
+typedef DWORD (WINAPI* TGetIfEntry)(
     PMIB_IFROW pIfRow
 );
 
@@ -98,16 +98,16 @@ protected:
 
     inline bool IsAsyncFindRunning()
     {
-        if ( m_pDeviceFinder != NULL && m_bAsyncFindRunning && GetTickCount() - m_tLastEvent > 10000 )
+        if (m_pDeviceFinder != NULL && m_bAsyncFindRunning && GetTickCount() - m_tLastEvent > 10000)
         {
-            m_pDeviceFinder->CancelAsyncFind( m_nAsyncFindHandle );
+            m_pDeviceFinder->CancelAsyncFind(m_nAsyncFindHandle);
             m_bAsyncFindRunning = false;
         }
         MSG msg;
-        while ( PeekMessage( &msg, NULL, 0, 0, PM_REMOVE ) )
+        while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
         {
-            TranslateMessage( &msg );
-            DispatchMessage( &msg );
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
         }
         return m_bAsyncFindRunning;
     }
@@ -116,8 +116,8 @@ protected:
 
 // Implementation
     // API functions
-    SC_HANDLE (WINAPI *m_pfnOpenSCManager)(LPCTSTR, LPCTSTR, DWORD);
-    SC_HANDLE (WINAPI *m_pfnOpenService)(SC_HANDLE, LPCTSTR, DWORD);
+    SC_HANDLE(WINAPI *m_pfnOpenSCManager)(LPCTSTR, LPCTSTR, DWORD);
+    SC_HANDLE(WINAPI *m_pfnOpenService)(SC_HANDLE, LPCTSTR, DWORD);
     BOOL (WINAPI *m_pfnQueryServiceStatusEx)(SC_HANDLE, SC_STATUS_TYPE, LPBYTE, DWORD, LPDWORD);
     BOOL (WINAPI *m_pfnCloseServiceHandle)(SC_HANDLE);
     BOOL (WINAPI *m_pfnStartService)(SC_HANDLE, DWORD, LPCTSTR*);
@@ -130,16 +130,16 @@ protected:
     static FinderPointer CreateFinderInstance();
     struct FindDevice : std::unary_function< DevicePointer, bool >
     {
-        FindDevice(const CComBSTR& udn) : m_udn( udn ) {}
+        FindDevice(const CComBSTR& udn) : m_udn(udn) {}
         result_type operator()(argument_type device) const
         {
             CComBSTR deviceName;
-            HRESULT hr = device->get_UniqueDeviceName( &deviceName );
+            HRESULT hr = device->get_UniqueDeviceName(&deviceName);
 
-            if ( FAILED( hr ) )
-                return UPnPMessage( hr ), false;
+            if (FAILED(hr))
+                return UPnPMessage(hr), false;
 
-            return wcscmp( deviceName.m_str, m_udn ) == 0;
+            return wcscmp(deviceName.m_str, m_udn) == 0;
         }
         CComBSTR m_udn;
     };
@@ -197,7 +197,7 @@ class CDeviceFinderCallback
 {
 public:
     CDeviceFinderCallback(CUPnPImplWinServ& instance)
-        : m_instance( instance )
+        : m_instance(instance)
     {
         m_lRefCount = 0;
     }
@@ -223,7 +223,7 @@ class CServiceCallback
 {
 public:
     CServiceCallback(CUPnPImplWinServ& instance)
-        : m_instance( instance )
+        : m_instance(instance)
     {
         m_lRefCount = 0;
     }

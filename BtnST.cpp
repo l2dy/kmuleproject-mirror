@@ -121,9 +121,9 @@ CButtonST::~CButtonST()
 
     // Destroy the menu (if any)
 #ifdef	BTNST_USE_BCMENU
-    if (m_menuPopup.m_hMenu)	VERIFY( m_menuPopup.DestroyMenu() );
+    if (m_menuPopup.m_hMenu)	VERIFY(m_menuPopup.DestroyMenu());
 #else
-    if (m_hMenu)	VERIFY( ::DestroyMenu(m_hMenu) );
+    if (m_hMenu)	VERIFY(::DestroyMenu(m_hMenu));
 #endif
 } // End of ~CButtonST
 
@@ -159,21 +159,21 @@ void CButtonST::FreeResources(BOOL bCheckForNULL)
         // Note: the following two lines MUST be here! even if
         // BoundChecker says they are unnecessary!
         if (m_csIcons[0].hIcon)
-            VERIFY( ::DestroyIcon(m_csIcons[0].hIcon) );
+            VERIFY(::DestroyIcon(m_csIcons[0].hIcon));
         if (m_csIcons[1].hIcon)
-            VERIFY( ::DestroyIcon(m_csIcons[1].hIcon) );
+            VERIFY(::DestroyIcon(m_csIcons[1].hIcon));
 
         // Destroy bitmaps
         if (m_csBitmaps[0].hBitmap)
-            VERIFY( ::DeleteObject(m_csBitmaps[0].hBitmap) );
+            VERIFY(::DeleteObject(m_csBitmaps[0].hBitmap));
         if (m_csBitmaps[1].hBitmap)
-            VERIFY( ::DeleteObject(m_csBitmaps[1].hBitmap) );
+            VERIFY(::DeleteObject(m_csBitmaps[1].hBitmap));
 
         // Destroy mask bitmaps
         if (m_csBitmaps[0].hMask)
-            VERIFY( ::DeleteObject(m_csBitmaps[0].hMask) );
+            VERIFY(::DeleteObject(m_csBitmaps[0].hMask));
         if (m_csBitmaps[1].hMask)
-            VERIFY( ::DeleteObject(m_csBitmaps[1].hMask) );
+            VERIFY(::DeleteObject(m_csBitmaps[1].hMask));
     } // if
 
     ::ZeroMemory(&m_csIcons, sizeof(m_csIcons));
@@ -506,7 +506,7 @@ void CButtonST::DrawItem(LPDRAWITEMSTRUCT lpDIS)
     // Checkbox?
     if (m_bIsCheckBox)
     {
-        m_bIsPressed  =  ((lpDIS->itemState & ODS_SELECTED) || (m_nCheck != 0) || marked );
+        m_bIsPressed  = ((lpDIS->itemState & ODS_SELECTED) || (m_nCheck != 0) || marked);
     } // if
     else	// Normal button OR other button style ...
     {
@@ -799,11 +799,11 @@ void CButtonST::DrawTheIcon(CDC* pDC, BOOL bHasTitle, RECT* rpItem, CRect* rpCap
     PrepareImageRect(bHasTitle, rpItem, rpCaption, bIsPressed, m_csIcons[byIndex].dwWidth, m_csIcons[byIndex].dwHeight, &rImage);
 
     // Ole'!
-    pDC->DrawState(	rImage.TopLeft(),
-                    rImage.Size(),
-                    m_csIcons[byIndex].hIcon,
-                    (bIsDisabled ? DSS_DISABLED : DSS_NORMAL),
-                    (CBrush*)NULL);
+    pDC->DrawState(rImage.TopLeft(),
+                   rImage.Size(),
+                   m_csIcons[byIndex].hIcon,
+                   (bIsDisabled ? DSS_DISABLED : DSS_NORMAL),
+                   (CBrush*)NULL);
 } // End of DrawTheIcon
 
 void CButtonST::DrawTheBitmap(CDC* pDC, BOOL bHasTitle, RECT* rpItem, CRect* rpCaption, BOOL bIsPressed, BOOL bIsDisabled)
@@ -857,11 +857,11 @@ void CButtonST::DrawTheBitmap(CDC* pDC, BOOL bHasTitle, RECT* rpItem, CRect* rpC
         ::SelectObject(hDC, hOldBmp2);
         ::DeleteDC(hDC);
 
-        pDC->DrawState(	CPoint(rImage.left/*+1*/, rImage.top),
-                        CSize(m_csBitmaps[byIndex].dwWidth, m_csBitmaps[byIndex].dwHeight),
-                        hBitmap, DST_BITMAP | DSS_DISABLED);
+        pDC->DrawState(CPoint(rImage.left/*+1*/, rImage.top),
+                       CSize(m_csBitmaps[byIndex].dwWidth, m_csBitmaps[byIndex].dwHeight),
+                       hBitmap, DST_BITMAP | DSS_DISABLED);
 
-        VERIFY( ::DeleteObject(hBitmap) );
+        VERIFY(::DeleteObject(hBitmap));
     } // if
     else
     {
@@ -893,7 +893,7 @@ void CButtonST::DrawTheText(CDC* pDC, LPCTSTR lpszText, RECT* /*rpItem*/, CRect*
     pDC->DrawText(lpszText, -1, rpCaption, DT_WORDBREAK | DT_CENTER | DT_CALCRECT);
 
     if (!leftAligned) rpCaption->OffsetRect((centerRect.Width() - rpCaption->Width())/2, (centerRect.Height() - rpCaption->Height())/2);
-    else rpCaption->OffsetRect( 8, (centerRect.Height() - rpCaption->Height())/2);
+    else rpCaption->OffsetRect(8, (centerRect.Height() - rpCaption->Height())/2);
 
     /* RFU
     rpCaption->OffsetRect(0, (centerRect.Height() - rpCaption->Height())/2);
@@ -1000,14 +1000,14 @@ HICON CButtonST::CreateGrayscaleIcon(HICON hIcon)
             hGrayIcon = ::CreateIconIndirect(&csGrayII);
         } // if
 
-        VERIFY( ::DeleteObject(csGrayII.hbmColor) );
+        VERIFY(::DeleteObject(csGrayII.hbmColor));
         //::DeleteObject(csGrayII.hbmMask);
     } // if
 
-    VERIFY( ::DeleteObject(csII.hbmColor) );
-    VERIFY( ::DeleteObject(csII.hbmMask) );
-    VERIFY( ::DeleteDC(hMemDC1) );
-    VERIFY( ::DeleteDC(hMemDC2) );
+    VERIFY(::DeleteObject(csII.hbmColor));
+    VERIFY(::DeleteObject(csII.hbmMask));
+    VERIFY(::DeleteDC(hMemDC1));
+    VERIFY(::DeleteDC(hMemDC2));
     ::ReleaseDC(NULL, hMainDC);
 
     return hGrayIcon;
@@ -1090,8 +1090,8 @@ DWORD CButtonST::SetIcon(HICON hIconIn, HICON hIconOut)
 
         m_csIcons[0].dwWidth	= (DWORD)(ii.xHotspot * 2);
         m_csIcons[0].dwHeight	= (DWORD)(ii.yHotspot * 2);
-        VERIFY( ::DeleteObject(ii.hbmMask) );
-        VERIFY( ::DeleteObject(ii.hbmColor) );
+        VERIFY(::DeleteObject(ii.hbmMask));
+        VERIFY(::DeleteObject(ii.hbmColor));
 
         // Icon when mouse outside button?
         if (hIconOut)
@@ -1113,8 +1113,8 @@ DWORD CButtonST::SetIcon(HICON hIconIn, HICON hIconOut)
 
             m_csIcons[1].dwWidth	= (DWORD)(ii.xHotspot * 2);
             m_csIcons[1].dwHeight	= (DWORD)(ii.yHotspot * 2);
-            VERIFY( ::DeleteObject(ii.hbmMask) );
-            VERIFY( ::DeleteObject(ii.hbmColor) );
+            VERIFY(::DeleteObject(ii.hbmMask));
+            VERIFY(::DeleteObject(ii.hbmColor));
         } // if
     } // if
 
@@ -1834,7 +1834,7 @@ DWORD CButtonST::SetMenu(UINT nMenu, HWND hParentWnd, BOOL bRepaint)
     // Destroy any previous menu
     if (m_hMenu)
     {
-        VERIFY( ::DestroyMenu(m_hMenu) );
+        VERIFY(::DestroyMenu(m_hMenu));
         m_hMenu = NULL;
         m_hParentWndMenu = NULL;
         m_bMenuDisplayed = FALSE;
@@ -1898,7 +1898,7 @@ DWORD CButtonST::SetMenu(UINT nMenu, HWND hParentWnd, BOOL bWinXPStyle, UINT nTo
     // Destroy any previous menu
     if (m_menuPopup.m_hMenu)
     {
-        VERIFY( m_menuPopup.DestroyMenu() );
+        VERIFY(m_menuPopup.DestroyMenu());
         m_hParentWndMenu = NULL;
         m_bMenuDisplayed = FALSE;
     } // if
@@ -1922,7 +1922,7 @@ DWORD CButtonST::SetMenu(UINT nMenu, HWND hParentWnd, BOOL bWinXPStyle, UINT nTo
             // If something wrong
             if (bRetValue == FALSE)
             {
-                VERIFY( m_menuPopup.DestroyMenu() );
+                VERIFY(m_menuPopup.DestroyMenu());
                 return BTNST_INVALIDRESOURCE;
             } // if
         } // if
@@ -1981,15 +1981,15 @@ void CButtonST::SizeToContent()
     {
         m_ptImageOrg.x = 0;
         m_ptImageOrg.y = 0;
-        SetWindowPos(	NULL, -1, -1, m_csIcons[0].dwWidth, m_csIcons[0].dwHeight,
-                        SWP_NOMOVE | SWP_NOZORDER | SWP_NOREDRAW | SWP_NOACTIVATE);
+        SetWindowPos(NULL, -1, -1, m_csIcons[0].dwWidth, m_csIcons[0].dwHeight,
+                     SWP_NOMOVE | SWP_NOZORDER | SWP_NOREDRAW | SWP_NOACTIVATE);
     } // if
     else if (m_csBitmaps[0].hBitmap)
     {
         m_ptImageOrg.x = 0;
         m_ptImageOrg.y = 0;
-        SetWindowPos(	NULL, -1, -1, m_csBitmaps[0].dwWidth, m_csBitmaps[0].dwHeight,
-                        SWP_NOMOVE | SWP_NOZORDER | SWP_NOREDRAW | SWP_NOACTIVATE);
+        SetWindowPos(NULL, -1, -1, m_csBitmaps[0].dwWidth, m_csBitmaps[0].dwHeight,
+                     SWP_NOMOVE | SWP_NOZORDER | SWP_NOREDRAW | SWP_NOACTIVATE);
     } // if
 } // End of SizeToContent
 

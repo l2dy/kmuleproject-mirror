@@ -70,7 +70,7 @@ extern "C" {
 #endif
 
     void * __RPC_USER MIDL_user_allocate(size_t);
-    void __RPC_USER MIDL_user_free( void * );
+    void __RPC_USER MIDL_user_free(void *);
 
     /* interface __MIDL_itf_wmdxva_0000 */
     /* [local] */
@@ -81,9 +81,9 @@ extern "C" {
 // Copyright (C) Microsoft Corporation.  All Rights Reserved.
 //
 //=========================================================================
-    EXTERN_GUID( IID_IWMPlayerTimestampHook,   0x28580dda, 0xd98e, 0x48d0, 0xb7, 0xae, 0x69, 0xe4, 0x73, 0xa0, 0x28, 0x25);
-    EXTERN_GUID( IID_IWMCodecVideoAccelerator, 0x990641b0, 0x739f, 0x4e94, 0xa8, 0x08, 0x98, 0x88, 0xda, 0x8f, 0x75, 0xaf);
-    EXTERN_GUID( IID_IWMCodecAMVideoAccelerator, 0xd98ee251, 0x34e0, 0x4a2d, 0x93, 0x12, 0x9b, 0x4c, 0x78, 0x8d, 0x9f, 0xa1);
+    EXTERN_GUID(IID_IWMPlayerTimestampHook,   0x28580dda, 0xd98e, 0x48d0, 0xb7, 0xae, 0x69, 0xe4, 0x73, 0xa0, 0x28, 0x25);
+    EXTERN_GUID(IID_IWMCodecVideoAccelerator, 0x990641b0, 0x739f, 0x4e94, 0xa8, 0x08, 0x98, 0x88, 0xda, 0x8f, 0x75, 0xaf);
+    EXTERN_GUID(IID_IWMCodecAMVideoAccelerator, 0xd98ee251, 0x34e0, 0x4a2d, 0x93, 0x12, 0x9b, 0x4c, 0x78, 0x8d, 0x9f, 0xa1);
 
 
     extern RPC_IF_HANDLE __MIDL_itf_wmdxva_0000_v0_0_c_ifspec;
@@ -117,18 +117,18 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IWMPlayerTimestampHook * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IWMPlayerTimestampHook * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IWMPlayerTimestampHook * This);
 
-        HRESULT ( STDMETHODCALLTYPE *MapTimestamp )(
+        HRESULT(STDMETHODCALLTYPE *MapTimestamp)(
             IWMPlayerTimestampHook * This,
             /* [in] */ REFERENCE_TIME rtIn,
             /* [out] */ REFERENCE_TIME *prtOut);
@@ -216,26 +216,26 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IWMCodecAMVideoAccelerator * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IWMCodecAMVideoAccelerator * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IWMCodecAMVideoAccelerator * This);
 
-        HRESULT ( STDMETHODCALLTYPE *SetAcceleratorInterface )(
+        HRESULT(STDMETHODCALLTYPE *SetAcceleratorInterface)(
             IWMCodecAMVideoAccelerator * This,
             /* [in] */ IAMVideoAccelerator *pIAMVA);
 
-        HRESULT ( STDMETHODCALLTYPE *NegotiateConnection )(
+        HRESULT(STDMETHODCALLTYPE *NegotiateConnection)(
             IWMCodecAMVideoAccelerator * This,
             /* [in] */ DMO_MEDIA_TYPE *pMediaType);
 
-        HRESULT ( STDMETHODCALLTYPE *SetPlayerNotify )(
+        HRESULT(STDMETHODCALLTYPE *SetPlayerNotify)(
             IWMCodecAMVideoAccelerator * This,
             /* [in] */ IWMPlayerTimestampHook *pHook);
 
@@ -349,23 +349,23 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IWMCodecVideoAccelerator * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IWMCodecVideoAccelerator * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IWMCodecVideoAccelerator * This);
 
-        HRESULT ( STDMETHODCALLTYPE *NegotiateConnection )(
+        HRESULT(STDMETHODCALLTYPE *NegotiateConnection)(
             IWMCodecVideoAccelerator * This,
             /* [in] */ IAMVideoAccelerator *pIAMVA,
             /* [in] */ DMO_MEDIA_TYPE *pMediaType);
 
-        HRESULT ( STDMETHODCALLTYPE *SetPlayerNotify )(
+        HRESULT(STDMETHODCALLTYPE *SetPlayerNotify)(
             IWMCodecVideoAccelerator * This,
             /* [in] */ IWMPlayerTimestampHook *pHook);
 

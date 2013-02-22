@@ -147,8 +147,8 @@ void CClientListCtrl::SetAllIcons()
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("OverlaySecureObfu"))), 3);
     // Apply the image list also to the listview control, even if we use our own 'DrawItem'.
     // This is needed to give the listview control a chance to initialize the row height.
-    ASSERT( (GetStyle() & LVS_SHAREIMAGELISTS) != 0 );
-    VERIFY( ApplyImageList(m_ImageList) == NULL );
+    ASSERT((GetStyle() & LVS_SHAREIMAGELISTS) != 0);
+    VERIFY(ApplyImageList(m_ImageList) == NULL);
 }
 
 void CClientListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
@@ -188,7 +188,7 @@ void CClientListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
                 {
 //>>> WiZaRd::ClientAnalyzer
                     int plusminus = 0;
-                    if(badguy != -1 && client->IsBadGuy())
+                    if (badguy != -1 && client->IsBadGuy())
                     {
                         int iIconPosY = (cur_rec.Height() > 16) ? ((cur_rec.Height() - 16) / 2) : 1;
                         POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
@@ -412,7 +412,7 @@ int CClientListCtrl::SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
     case 5:
         //Proper sorting ;)
         iResult = item1->GetClientSoft() - item2->GetClientSoft();
-        if(iResult == 0)
+        if (iResult == 0)
             iResult = CompareLocaleStringNoCase(item1->DbgGetFullClientSoftVer(), item2->DbgGetFullClientSoftVer());
         break;
 
@@ -628,7 +628,7 @@ void CClientListCtrl::ShowKnownClients()
 {
     DeleteAllItems();
     int iItemCount = 0;
-    for (POSITION pos = theApp.clientlist->list.GetHeadPosition(); pos != NULL; )
+    for (POSITION pos = theApp.clientlist->list.GetHeadPosition(); pos != NULL;)
     {
         const CUpDownClient *cur_client = theApp.clientlist->list.GetNext(pos);
         int iItem = InsertItem(LVIF_TEXT | LVIF_PARAM, iItemCount, LPSTR_TEXTCALLBACK, 0, 0, 0, (LPARAM)cur_client);

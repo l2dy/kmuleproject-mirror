@@ -124,8 +124,8 @@ inline size_t SetRfc822Time(__out_ecount_part_z_opt(dwLen, return) LPSTR szDate,
               st.wMinute,                              // "mm"
               st.wSecond,                              // "ss"
               cDiff,                                   // "+" / "-"
-              abs (ltzHour),                           // "hh"
-              abs (ltzMinute));                        // "mm"
+              abs(ltzHour),                            // "hh"
+              abs(ltzMinute));                         // "mm"
     return s_dwMaxBufferLen;
 }
 
@@ -287,7 +287,7 @@ public:
         return "iso-8859-1";
     }
 
-    virtual ATL_NOINLINE CMimeBodyPart* Copy() throw( ... )
+    virtual ATL_NOINLINE CMimeBodyPart* Copy() throw(...)
     {
         CAutoPtr<CMimeHeader> pNewHeader;
         ATLTRY(pNewHeader.Attach(new CMimeHeader));
@@ -297,7 +297,7 @@ public:
         return pNewHeader.Detach();
     }
 
-    const CMimeHeader& operator=(const CMimeHeader& that) throw( ... )
+    const CMimeHeader& operator=(const CMimeHeader& that) throw(...)
     {
         if (this != &that)
         {
@@ -522,12 +522,12 @@ public:
     // returns the recipients string to be (addresses only, in comma separated format)
     ATL_NOINLINE BOOL GetRecipientsString(__out_ecount_part_z(*pdwLen, *pdwLen) LPSTR szRecip, __inout LPDWORD pdwLen) throw()
     {
-        if ( (szRecip == NULL) || (pdwLen == NULL) )
+        if ((szRecip == NULL) || (pdwLen == NULL))
         {
             return FALSE;
         }
 
-        if ( *pdwLen < GetRequiredRecipientsStringLength())
+        if (*pdwLen < GetRequiredRecipientsStringLength())
         {
             *pdwLen = GetRequiredRecipientsStringLength();
             return FALSE;
@@ -676,7 +676,7 @@ public:
 
         DWORD dwLength = (DWORD) strlen(szDate);
 
-        if(dwLength > ATLSMTP_MAX_LINE_LENGTH -2 -dwOffset )
+        if (dwLength > ATLSMTP_MAX_LINE_LENGTH -2 -dwOffset)
             return FALSE;
 
         Checked::memcpy_s(pSendBuffer+dwOffset, nMaxSendLen-dwOffset, szDate, dwLength);
@@ -702,13 +702,13 @@ public:
 
             if (dwHeaderPartLength != 0)
             {
-                if(dwHeaderPartLength + 1 > nBufLen)
+                if (dwHeaderPartLength + 1 > nBufLen)
                     return FALSE;
 
                 *(spBuf+dwHeaderPartLength++) = ' ';
             }
 
-            if(dwHeaderPartLength + m_strFrom.GetLength() + 2 > nBufLen)
+            if (dwHeaderPartLength + m_strFrom.GetLength() + 2 > nBufLen)
                 return FALSE;
 
             *(spBuf+dwHeaderPartLength++) = '<';
@@ -725,7 +725,7 @@ public:
         if (bRet && dwHeaderPartLength != 0)
         {
             const char szFrom[] = "From: ";
-            if(sizeof(szFrom)/sizeof(szFrom[0])-1 > ATLSMTP_MAX_LINE_LENGTH -2 -dwOffset )
+            if (sizeof(szFrom)/sizeof(szFrom[0])-1 > ATLSMTP_MAX_LINE_LENGTH -2 -dwOffset)
                 return FALSE;
             if (dwOffset > static_cast<DWORD>(nMaxSendLen))
             {
@@ -748,7 +748,7 @@ public:
             if (bRet && dwLength != 0)
             {
                 const char szSubject[] = "Subject: ";
-                if(sizeof(szSubject)/sizeof(szSubject[0])-1 > ATLSMTP_MAX_LINE_LENGTH -2 -dwOffset )
+                if (sizeof(szSubject)/sizeof(szSubject[0])-1 > ATLSMTP_MAX_LINE_LENGTH -2 -dwOffset)
                     return FALSE;
                 if (dwOffset > static_cast<DWORD>(nMaxSendLen))
                 {
@@ -768,7 +768,7 @@ public:
         if (bRet && m_strTo.GetLength() > 0)
         {
             const char szTo[] = "To: ";
-            if(sizeof(szTo)/sizeof(szTo[0])-1 > ATLSMTP_MAX_LINE_LENGTH -2 -dwOffset )
+            if (sizeof(szTo)/sizeof(szTo[0])-1 > ATLSMTP_MAX_LINE_LENGTH -2 -dwOffset)
                 return FALSE;
             if (dwOffset > static_cast<DWORD>(nMaxSendLen))
             {
@@ -787,7 +787,7 @@ public:
         if (bRet && m_strCc.GetLength() > 0)
         {
             const char szCC[] = "CC: ";
-            if(sizeof(szCC)/sizeof(szCC[0])-1 > ATLSMTP_MAX_LINE_LENGTH -2 -dwOffset )
+            if (sizeof(szCC)/sizeof(szCC[0])-1 > ATLSMTP_MAX_LINE_LENGTH -2 -dwOffset)
                 return FALSE;
             if (dwOffset > static_cast<DWORD>(nMaxSendLen))
             {
@@ -861,7 +861,7 @@ protected:
         {
             // there was no encoding
             dwLength = (DWORD) headerString.GetLength();
-            if(dwLength > DWORD(nBufLen))
+            if (dwLength > DWORD(nBufLen))
                 return FALSE;
             Checked::memcpy_s(szBuf, nBufLen, headerString, dwLength);
         }
@@ -979,7 +979,7 @@ protected:
     inline BOOL FormatField(LPBYTE pbSrcData, int nSrcLen, LPBYTE pbDest,
                             DWORD* pnBufLen, DWORD dwFlags = 0) throw()
     {
-        if(pnBufLen == NULL)
+        if (pnBufLen == NULL)
             return FALSE;
 
         int nRead = 0;
@@ -997,7 +997,7 @@ protected:
             //if we're at the end of the line, break it
             if (nLineLen == nMaxLineLength)
             {
-                if( nWritten + 2  > *pnBufLen)
+                if (nWritten + 2  > *pnBufLen)
                     return FALSE;
 
                 *pbDest++ = '\r';
@@ -1007,7 +1007,7 @@ protected:
 
                 if ((dwFlags & ATLSMTP_FORMAT_SMTP))
                 {
-                    if(nWritten + 1 > *pnBufLen)
+                    if (nWritten + 1 > *pnBufLen)
                         return FALSE;
 
                     *pbDest++ = '\t';
@@ -1022,7 +1022,7 @@ protected:
                 nLineLen = -1;
             }
 
-            if(nWritten + 1 > *pnBufLen)
+            if (nWritten + 1 > *pnBufLen)
                 return FALSE;
 
             *pbDest++ = *pbSrcData++;
@@ -1042,7 +1042,7 @@ protected:
                                  DWORD* pnBufLen) throw()
     {
 
-        if(pnBufLen == NULL)
+        if (pnBufLen == NULL)
             return FALSE;
 
         int nRead    = 0;
@@ -1052,7 +1052,7 @@ protected:
         {
             if (*pbSrcData == ',')
             {
-                if(nWritten + 4 > *pnBufLen)
+                if (nWritten + 4 > *pnBufLen)
                     return FALSE;
 
                 *pbDest++ = *pbSrcData++;
@@ -1070,7 +1070,7 @@ protected:
                 continue;
             }
 
-            if(nWritten + 1 > *pnBufLen)
+            if (nWritten + 1 > *pnBufLen)
                 return FALSE;
 
             *pbDest++ = *pbSrcData++;
@@ -1201,7 +1201,7 @@ public:
 
     virtual ATL_NOINLINE CMimeBodyPart* Copy() = 0;
 
-    const CMimeAttachment& operator=(const CMimeAttachment& that) throw( ... )
+    const CMimeAttachment& operator=(const CMimeAttachment& that) throw(...)
     {
         if (this != &that)
         {
@@ -1278,7 +1278,7 @@ protected:
         ATLENSURE(pnRequiredLength != NULL);
         ATLENSURE(pnLineLength != NULL);
 
-        switch(m_nEncodingScheme)
+        switch (m_nEncodingScheme)
         {
         case ATLSMTP_BASE64_ENCODE:
             m_pszEncodeString = "base64";
@@ -1318,7 +1318,7 @@ public:
         m_szFileName[0] = 0;
     }
 
-    virtual ATL_NOINLINE CMimeBodyPart* Copy() throw( ... )
+    virtual ATL_NOINLINE CMimeBodyPart* Copy() throw(...)
     {
         CAutoPtr<CMimeFileAttachment> pNewAttachment;
         ATLTRY(pNewAttachment.Attach(new CMimeFileAttachment));
@@ -1328,7 +1328,7 @@ public:
         return pNewAttachment.Detach();
     }
 
-    const CMimeFileAttachment& operator=(const CMimeFileAttachment& that) throw( ... )
+    const CMimeFileAttachment& operator=(const CMimeFileAttachment& that) throw(...)
     {
         if (this != &that)
         {
@@ -1350,7 +1350,7 @@ public:
         if (!AtlMimeCharsetFromCodePage(m_szCharset, uiCodePage, pMultiLanguage, ATL_MAX_ENC_CHARSET_LENGTH))
             return FALSE;
 
-        if( _tcslen(szFileName) > MAX_PATH )
+        if (_tcslen(szFileName) > MAX_PATH)
         {
             return FALSE;
         }
@@ -1591,7 +1591,7 @@ public:
             free(m_pvRaw);
     }
 
-    virtual ATL_NOINLINE CMimeBodyPart* Copy() throw( ... )
+    virtual ATL_NOINLINE CMimeBodyPart* Copy() throw(...)
     {
         CAutoPtr<CMimeRawAttachment> pNewAttachment;
         ATLTRY(pNewAttachment.Attach(new CMimeRawAttachment));
@@ -1601,7 +1601,7 @@ public:
         return pNewAttachment.Detach();
     }
 
-    const CMimeRawAttachment& operator=(const CMimeRawAttachment& that) throw( ... )
+    const CMimeRawAttachment& operator=(const CMimeRawAttachment& that) throw(...)
     {
         if (this != &that)
         {
@@ -1737,7 +1737,7 @@ public:
                 dwCurrChunk = m_dwLength-dwRead;
             else
                 dwCurrChunk = dwToGet;
-            switch(m_nEncodingScheme)
+            switch (m_nEncodingScheme)
             {
             case ATLSMTP_BASE64_ENCODE:
                 bRet = Base64Encode(((LPBYTE)(m_pvRaw))+dwRead, dwCurrChunk, currBuffer, &nDestLen,
@@ -1831,7 +1831,7 @@ public:
         return m_szCharset;
     }
 
-    virtual ATL_NOINLINE CMimeBodyPart* Copy() throw( ... )
+    virtual ATL_NOINLINE CMimeBodyPart* Copy() throw(...)
     {
         CAutoPtr<CMimeText> pNewText;
         ATLTRY(pNewText.Attach(new CMimeText));
@@ -1841,7 +1841,7 @@ public:
         return pNewText.Detach();
     }
 
-    const CMimeText& operator=(const CMimeText& that) throw( ... )
+    const CMimeText& operator=(const CMimeText& that) throw(...)
     {
         if (this != &that)
         {
@@ -1924,7 +1924,7 @@ public:
 
         //copy the header into the sendbuffer
         int nWritten = strHeader.GetLength();
-        if(nWritten > ATLSMTP_READBUFFER_SIZE)
+        if (nWritten > ATLSMTP_READBUFFER_SIZE)
             return FALSE;
 
         Checked::memcpy_s(pSendBuffer, ATLSMTP_READBUFFER_SIZE, (LPCSTR)strHeader, nWritten);
@@ -1955,7 +1955,7 @@ public:
             //if we're at the end of the line, break it
             if (nLineLen == nMaxLineLength)
             {
-                if(nWritten + 2 > ATLSMTP_READBUFFER_SIZE)
+                if (nWritten + 2 > ATLSMTP_READBUFFER_SIZE)
                     return FALSE;
                 *pSendBuffer++ = '\r';
                 *pSendBuffer++ = '\n';
@@ -1967,7 +1967,7 @@ public:
             //stuff dots at the start of the line
             if (nLineLen == 0 && (dwFlags & ATLSMTP_FORMAT_SMTP) && *szText == '.')
             {
-                if(nWritten + 1 > ATLSMTP_READBUFFER_SIZE)
+                if (nWritten + 1 > ATLSMTP_READBUFFER_SIZE)
                     return FALSE;
                 *pSendBuffer++ = '.';
                 nWritten++;
@@ -1979,7 +1979,7 @@ public:
             if (*szText == '\n' && nRead > 0 && *(szText-1) == '\r')
                 nLineLen = -1;
 
-            if(nWritten + 1 > ATLSMTP_READBUFFER_SIZE)
+            if (nWritten + 1 > ATLSMTP_READBUFFER_SIZE)
                 return FALSE;
             *pSendBuffer++ = (*szText++);
             nRead++;
@@ -2052,7 +2052,7 @@ public:
     }
 
 
-    virtual ATL_NOINLINE CMimeBodyPart* Copy() throw( ... )
+    virtual ATL_NOINLINE CMimeBodyPart* Copy() throw(...)
     {
         CAutoPtr<CMimeMessage> pNewMessage;
         ATLTRY(pNewMessage.Attach(new CMimeMessage));
@@ -2063,7 +2063,7 @@ public:
     }
 
 
-    const CMimeMessage& operator=(const CMimeMessage& that) throw( ... )
+    const CMimeMessage& operator=(const CMimeMessage& that) throw(...)
     {
         if (this != &that)
         {
@@ -2166,7 +2166,7 @@ public:
 
         // Make the MIME boundary for this message
         char szBoundaryBuf[ATL_MIME_BOUNDARYLEN+1];
-        if(MakeBoundary(szBoundaryBuf,ATL_MIME_BOUNDARYLEN+1) == FALSE)
+        if (MakeBoundary(szBoundaryBuf,ATL_MIME_BOUNDARYLEN+1) == FALSE)
             return FALSE;
 
         // if the passed boundary is valid, this is an attached message
@@ -2323,7 +2323,7 @@ public:
         _ATLTRY
         {
             if (bRet)
-                if(!m_BodyParts.AddTail(spRawAttach))
+                if (!m_BodyParts.AddTail(spRawAttach))
                     bRet = FALSE;
         }
         _ATLCATCHALL()
@@ -2336,7 +2336,7 @@ public:
 
     // Attach a CMimeMessage
     // pMsg - pointer to the Msg object
-    inline BOOL AttachMessage(CMimeMessage* pMsg) throw( ... )
+    inline BOOL AttachMessage(CMimeMessage* pMsg) throw(...)
     {
         if (!pMsg)
             return FALSE;
@@ -2383,7 +2383,7 @@ protected:
     {
         ATLENSURE(szBoundary != NULL);
 
-        if(nBufLen < 1)
+        if (nBufLen < 1)
         {
             return FALSE;
         }

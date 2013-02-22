@@ -48,7 +48,7 @@ void CMiscUtils::IPAddressToString(UINT uIP, CString *pString)
                     ((uIP >> 24) & 0xFF),
                     ((uIP >> 16) & 0xFF),
                     ((uIP >>  8) & 0xFF),
-                    ((uIP      ) & 0xFF) );
+                    ((uIP) & 0xFF));
 }
 
 

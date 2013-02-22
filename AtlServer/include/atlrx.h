@@ -127,7 +127,7 @@ public:
     }
     static RECHARTYPE *Next(const RECHARTYPE *sz) throw()
     {
-        return (RECHARTYPE *) (sz+1);
+        return (RECHARTYPE *)(sz+1);
     }
 
     static int Strncmp(const RECHARTYPE *szLeft, const RECHARTYPE *szRight, size_t nCount) throw()
@@ -209,7 +209,7 @@ public:
     }
     static RECHARTYPE *Next(const RECHARTYPE *sz) throw()
     {
-        return (RECHARTYPE *) (sz+1);
+        return (RECHARTYPE *)(sz+1);
     }
 
     static int Strncmp(const RECHARTYPE *szLeft, const RECHARTYPE *szRight, size_t nCount) throw()
@@ -671,7 +671,7 @@ public:
                 break;
 
             case RE_PUSH_MEMORY:
-                pContext->Push((void *) (pContext->m_Mem[GetInstruction(ip).memory.nIndex]));
+                pContext->Push((void *)(pContext->m_Mem[GetInstruction(ip).memory.nIndex]));
                 ip++;
                 break;
 
@@ -1255,7 +1255,7 @@ protected:
             if (AddInstructions(InstructionsPerRangeBitField()) < 0)
                 return -1;
 
-            pBits = (unsigned char *) (&m_Instructions[p+1]);
+            pBits = (unsigned char *)(&m_Instructions[p+1]);
             memset(pBits, 0x00, 256/8);
         }
         else
@@ -1518,20 +1518,20 @@ protected:
         REInstructionType type = RE_MATCH;
 
         if (MatchToken(ppszRE, '*'))
-            if(MatchToken(ppszRE, '?'))
+            if (MatchToken(ppszRE, '?'))
                 type = RE_NG_STAR_BEGIN;
             else
                 type = RE_STAR_BEGIN;
 
 
         else if (MatchToken(ppszRE, '+'))
-            if(MatchToken(ppszRE, '?'))
+            if (MatchToken(ppszRE, '?'))
                 type = RE_NG_PLUS;
             else
                 type = RE_PLUS;
 
         else if (MatchToken(ppszRE, '?'))
-            if(MatchToken(ppszRE, '?'))
+            if (MatchToken(ppszRE, '?'))
                 type = RE_NG_QUESTION;
             else
                 type = RE_QUESTION;
@@ -1941,7 +1941,7 @@ public:
 #endif
 
 #ifdef ATLRX_DEBUG
-    void cls( HANDLE hConsole )
+    void cls(HANDLE hConsole)
     {
         COORD coordScreen = { 0, 0 };    /* here's where we'll home the
 											cursor */
@@ -1953,26 +1953,26 @@ public:
 
         /* get the number of character cells in the current buffer */
 
-        bSuccess = GetConsoleScreenBufferInfo( hConsole, &csbi );
+        bSuccess = GetConsoleScreenBufferInfo(hConsole, &csbi);
         dwConSize = csbi.dwSize.X * csbi.dwSize.Y;
 
         /* fill the entire screen with blanks */
 
-        bSuccess = FillConsoleOutputCharacter( hConsole, (TCHAR) ' ',
-                                               dwConSize, coordScreen, &cCharsWritten );
+        bSuccess = FillConsoleOutputCharacter(hConsole, (TCHAR) ' ',
+                                              dwConSize, coordScreen, &cCharsWritten);
 
         /* get the current text attribute */
 
-        bSuccess = GetConsoleScreenBufferInfo( hConsole, &csbi );
+        bSuccess = GetConsoleScreenBufferInfo(hConsole, &csbi);
 
         /* now set the buffer's attributes accordingly */
 
-        bSuccess = FillConsoleOutputAttribute( hConsole, csbi.wAttributes,
-                                               dwConSize, coordScreen, &cCharsWritten );
+        bSuccess = FillConsoleOutputAttribute(hConsole, csbi.wAttributes,
+                                              dwConSize, coordScreen, &cCharsWritten);
 
         /* put the cursor at (0, 0) */
 
-        bSuccess = SetConsoleCursorPosition( hConsole, coordScreen );
+        bSuccess = SetConsoleCursorPosition(hConsole, coordScreen);
         return;
     }
 

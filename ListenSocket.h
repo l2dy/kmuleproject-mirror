@@ -86,7 +86,7 @@ protected:
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
 public:
-	bool    ExpandReceiveBuffer();
+    bool    ExpandReceiveBuffer();
 //<<< WiZaRd::ZZUL Upload [ZZ]
 };
 

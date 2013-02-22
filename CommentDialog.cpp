@@ -101,7 +101,7 @@ BOOL CCommentDialog::OnInitDialog()
     Localize();
 
     // start time for calling 'RefreshData'
-    VERIFY( (m_timer = SetTimer(301, 5000, 0)) != NULL );
+    VERIFY((m_timer = SetTimer(301, 5000, 0)) != NULL);
 
     return TRUE;
 }
@@ -274,7 +274,7 @@ void CCommentDialog::RefreshData(bool deleteOld)
         CAbstractFile* file = STATIC_DOWNCAST(CAbstractFile, (*m_paFiles)[i]);
         if (file->IsPartFile())
         {
-            for (POSITION pos = ((CPartFile*)file)->srclist.GetHeadPosition(); pos != NULL; )
+            for (POSITION pos = ((CPartFile*)file)->srclist.GetHeadPosition(); pos != NULL;)
             {
                 CUpDownClient* cur_src = ((CPartFile*)file)->srclist.GetNext(pos);
                 if (cur_src->HasFileRating() || !cur_src->GetFileComment().IsEmpty())
@@ -287,7 +287,7 @@ void CCommentDialog::RefreshData(bool deleteOld)
             continue;
 
         const CTypedPtrList<CPtrList, Kademlia::CEntry*>& list = file->getNotes();
-        for (POSITION pos = list.GetHeadPosition(); pos != NULL; )
+        for (POSITION pos = list.GetHeadPosition(); pos != NULL;)
         {
             Kademlia::CEntry* entry = list.GetNext(pos);
             m_lstComments.AddItem(entry);

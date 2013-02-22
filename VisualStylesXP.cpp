@@ -45,7 +45,7 @@ CVisualStylesXP::CVisualStylesXP(void)
 CVisualStylesXP::~CVisualStylesXP(void)
 {
     if (m_hThemeDll != NULL)
-        VERIFY( FreeLibrary(m_hThemeDll) );
+        VERIFY(FreeLibrary(m_hThemeDll));
     m_hThemeDll = NULL;
 }
 

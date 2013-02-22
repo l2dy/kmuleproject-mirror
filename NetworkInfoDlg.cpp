@@ -114,9 +114,9 @@ void CreateNetworkInfo(CRichEditCtrlX& rCtrl, CHARFORMAT& rcfDef, CHARFORMAT& rc
     rCtrl.SetSelectionCharFormat(rcfDef);
 
     rCtrl << GetResString(IDS_STATUS) << _T(":\t");
-    if(Kademlia::CKademlia::IsConnected())
+    if (Kademlia::CKademlia::IsConnected())
     {
-        if(Kademlia::CKademlia::IsFirewalled())
+        if (Kademlia::CKademlia::IsFirewalled())
             rCtrl << GetResString(IDS_FIREWALLED);
         else
             rCtrl << GetResString(IDS_KADOPEN);
@@ -124,7 +124,7 @@ void CreateNetworkInfo(CRichEditCtrlX& rCtrl, CHARFORMAT& rcfDef, CHARFORMAT& rc
             rCtrl << _T(" (") << GetResString(IDS_LANMODE) << _T(")");
         rCtrl << _T("\r\n");
         rCtrl << _T("UDP ") + GetResString(IDS_STATUS) << _T(":\t");
-        if(Kademlia::CUDPFirewallTester::IsFirewalledUDP(true))
+        if (Kademlia::CUDPFirewallTester::IsFirewalledUDP(true))
             rCtrl << GetResString(IDS_FIREWALLED);
         else if (Kademlia::CUDPFirewallTester::IsVerified())
             rCtrl << GetResString(IDS_KADOPEN);
@@ -153,7 +153,7 @@ void CreateNetworkInfo(CRichEditCtrlX& rCtrl, CHARFORMAT& rcfDef, CHARFORMAT& rc
         if (Kademlia::CUDPFirewallTester::IsFirewalledUDP(true))
         {
             rCtrl << GetResString(IDS_BUDDY) << _T(":\t");
-            switch ( theApp.clientlist->GetBuddyStatus() )
+            switch (theApp.clientlist->GetBuddyStatus())
             {
             case Disconnected:
                 rCtrl << GetResString(IDS_BUDDYNONE);

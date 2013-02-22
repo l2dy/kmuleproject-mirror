@@ -52,27 +52,27 @@ class CStatisticsTree : public CTreeCtrl
 public:
     CStatisticsTree();
     ~CStatisticsTree();
-    virtual		BOOL	OnCommand( WPARAM wParam, LPARAM lParam );
+    virtual		BOOL	OnCommand(WPARAM wParam, LPARAM lParam);
 
 protected:
     DECLARE_MESSAGE_MAP()
-    afx_msg		void	OnLButtonUp( UINT nFlags, CPoint point );
-    afx_msg		void	OnRButtonDown( UINT nFlags, CPoint point );
-    afx_msg		void	OnContextMenu( CWnd* pWnd, CPoint point );
-    afx_msg		void	OnItemExpanded( NMHDR* pNMHDR, LRESULT* pResult );
+    afx_msg		void	OnLButtonUp(UINT nFlags, CPoint point);
+    afx_msg		void	OnRButtonDown(UINT nFlags, CPoint point);
+    afx_msg		void	OnContextMenu(CWnd* pWnd, CPoint point);
+    afx_msg		void	OnItemExpanded(NMHDR* pNMHDR, LRESULT* pResult);
 
 public:
     void				Init();
-    bool				CopyHTML( int copyMode = MP_STATTREE_HTMLCOPYSEL );
-    CString				GetHTML( bool onlyVisible = true, HTREEITEM theItem = NULL, int theItemLevel = 0, bool firstItem = true );
+    bool				CopyHTML(int copyMode = MP_STATTREE_HTMLCOPYSEL);
+    CString				GetHTML(bool onlyVisible = true, HTREEITEM theItem = NULL, int theItemLevel = 0, bool firstItem = true);
     CString				GetHTMLForExport(HTREEITEM theItem = NULL, int theItemLevel = 0, bool firstItem = true);
-    bool				CopyText( int copyMode = MP_STATTREE_COPYSEL );
-    CString				GetText( bool onlyVisible = true, HTREEITEM theItem = NULL, int theItemLevel = 0, bool firstItem = true );
-    CString				GetItemText( HTREEITEM theItem );
-    CString				GetItemText( HTREEITEM theItem, int getPart );
-    BOOL				IsBold( HTREEITEM theItem );
-    BOOL				IsExpanded( HTREEITEM theItem );
-    BOOL				CheckState( HTREEITEM hItem, UINT state );
+    bool				CopyText(int copyMode = MP_STATTREE_COPYSEL);
+    CString				GetText(bool onlyVisible = true, HTREEITEM theItem = NULL, int theItemLevel = 0, bool firstItem = true);
+    CString				GetItemText(HTREEITEM theItem);
+    CString				GetItemText(HTREEITEM theItem, int getPart);
+    BOOL				IsBold(HTREEITEM theItem);
+    BOOL				IsExpanded(HTREEITEM theItem);
+    BOOL				CheckState(HTREEITEM hItem, UINT state);
     void				DoMenu();
     void				DoMenu(CPoint doWhere);
     void				DoMenu(CPoint doWhere, UINT nFlags);

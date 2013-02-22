@@ -27,7 +27,7 @@ static char THIS_FILE[] = __FILE__;
 CString GetModVersionNumber()
 {
     static CString strVersion = L"";
-    if(strVersion.IsEmpty())
+    if (strVersion.IsEmpty())
     {
         //strVersion.Format(L"%u.%02u", MOD_VERSION_MJR, MOD_VERSION_MIN);
         strVersion = MOD_VERSION_BUILD;
@@ -37,7 +37,7 @@ CString GetModVersionNumber()
 CString GetModVersion()
 {
     static CString strMod = L"";
-    if(strMod.IsEmpty())
+    if (strMod.IsEmpty())
         strMod.Format(L"%s Build%s", MOD_VERSION_PLAIN, GetModVersionNumber());
     return strMod;
 }

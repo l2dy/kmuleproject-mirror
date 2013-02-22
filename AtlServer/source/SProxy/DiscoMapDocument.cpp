@@ -41,7 +41,7 @@ CStringW & CDiscoMapDocument::GetValue(const CStringW & value)
 
 CStringW & CDiscoMapDocument::GetPath(void)
 {
-    if(m_strPath.IsEmpty())
+    if (m_strPath.IsEmpty())
     {
         CStringW strDoc(GetDocumentUri());
 

@@ -110,10 +110,10 @@ public:
     CUpDownClientPtrList uploadinglist;
 
 protected:
-    void		RemoveFromWaitingQueue(POSITION pos, bool updatewindow);    
+    void		RemoveFromWaitingQueue(POSITION pos, bool updatewindow);
     bool		AcceptNewClient(UINT curUploadSlots) const;
 //>>> WiZaRd::ZZUL Upload [ZZ]
-	//bool		AcceptNewClient(bool addOnNextConnect = false) const;
+    //bool		AcceptNewClient(bool addOnNextConnect = false) const;
     //bool		ForceNewClient(bool allowEmptyWaitingQueue = false);
     //bool		AddUpNextClient(LPCTSTR pszReason, CUpDownClient* directadd = 0);
 //<<< WiZaRd::ZZUL Upload [ZZ]
@@ -175,13 +175,13 @@ public:
     uint64 GetSmallFileSize() const;
 //<<< WiZaRd::Small File Slot
 //>>> WiZaRd::ZZUL Upload [ZZ]
-/*
-//>>> WiZaRd::Dynamic Datarate
-public:
-    UINT GetClientDataRateCheck() const;
-    UINT GetClientDataRate() const;
-//<<< WiZaRd::Dynamic Datarate
-*/
+    /*
+    //>>> WiZaRd::Dynamic Datarate
+    public:
+        UINT GetClientDataRateCheck() const;
+        UINT GetClientDataRate() const;
+    //<<< WiZaRd::Dynamic Datarate
+    */
 //<<< WiZaRd::ZZUL Upload [ZZ]
 //>>> WiZaRd::Payback First
 private:
@@ -192,28 +192,28 @@ public:
     void	StartTimer();
 //>>> WiZaRd::Drop Blocking Sockets [Xman?]
 private:
-	CList<DWORD>	m_BlockStopList;
+    CList<DWORD>	m_BlockStopList;
 //<<< WiZaRd::Drop Blocking Sockets [Xman?]
 //>>> WiZaRd::ZZUL Upload [ZZ]
 public:
-	void	AddClientToQueue(CUpDownClient* client,bool bIgnoreTimelimit = false, bool addInFirstPlace = false);
-	void	ScheduleRemovalFromUploadQueue(CUpDownClient* client, LPCTSTR pszDebugReason, CString strDisplayReason, bool earlyabort = false);
-	UINT	GetActiveUploadsCountLongPerspective() const;
-	UINT	GetEffectiveUploadListCount() const;
-	bool    RemoveOrMoveDown(CUpDownClient* client, bool onlyCheckForRemove = false);
-	void	MoveDownInUploadQueue(CUpDownClient* client);
-	CUpDownClient* FindBestClientInQueue(bool allowLowIdAddNextConnectToBeSet = false, CUpDownClient* lowIdClientMustBeInSameOrBetterClassAsThisClient = NULL);
-	bool	RightClientIsBetter(CUpDownClient* leftClient, UINT leftScore, CUpDownClient* rightClient, UINT rightScore);
-	bool	AcceptNewClient() const;
-	bool	ForceNewClient(bool simulateScheduledClosingOfSlot = false);
-	bool    CanForceClient(UINT curUploadSlots) const;
-	bool	AddUpNextClient(LPCTSTR pszReason, CUpDownClient* directadd = 0, bool highPrioCheck = false);
+    void	AddClientToQueue(CUpDownClient* client,bool bIgnoreTimelimit = false, bool addInFirstPlace = false);
+    void	ScheduleRemovalFromUploadQueue(CUpDownClient* client, LPCTSTR pszDebugReason, CString strDisplayReason, bool earlyabort = false);
+    UINT	GetActiveUploadsCountLongPerspective() const;
+    UINT	GetEffectiveUploadListCount() const;
+    bool    RemoveOrMoveDown(CUpDownClient* client, bool onlyCheckForRemove = false);
+    void	MoveDownInUploadQueue(CUpDownClient* client);
+    CUpDownClient* FindBestClientInQueue(bool allowLowIdAddNextConnectToBeSet = false, CUpDownClient* lowIdClientMustBeInSameOrBetterClassAsThisClient = NULL);
+    bool	RightClientIsBetter(CUpDownClient* leftClient, UINT leftScore, CUpDownClient* rightClient, UINT rightScore);
+    bool	AcceptNewClient() const;
+    bool	ForceNewClient(bool simulateScheduledClosingOfSlot = false);
+    bool    CanForceClient(UINT curUploadSlots) const;
+    bool	AddUpNextClient(LPCTSTR pszReason, CUpDownClient* directadd = 0, bool highPrioCheck = false);
 private:
-	UINT	GetWantedNumberOfTrickleUploads() const;
-	void	CheckForHighPrioClient();
+    UINT	GetWantedNumberOfTrickleUploads() const;
+    void	CheckForHighPrioClient();
 
-	CUpDownClient* FindLastUnScheduledForRemovalClientInUploadList() const;
-	CUpDownClient* FindBestScheduledForRemovalClientInUploadListThatCanBeReinstated() const;
-	DWORD   m_dwLastCheckedForHighPrioClient;
+    CUpDownClient* FindLastUnScheduledForRemovalClientInUploadList() const;
+    CUpDownClient* FindBestScheduledForRemovalClientInUploadListThatCanBeReinstated() const;
+    DWORD   m_dwLastCheckedForHighPrioClient;
 //<<< WiZaRd::ZZUL Upload [ZZ]
 };

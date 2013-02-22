@@ -114,9 +114,9 @@ void CPPgSecurity::LoadSettings(void)
     CheckDlgButton(IDC_ONLYOBFUSCATED, thePrefs.IsClientCryptLayerRequired());
     CheckDlgButton(IDC_CHECK_FILE_OPEN, thePrefs.GetCheckFileOpen());
 
-    ASSERT( vsfaEverybody == 0 );
-    ASSERT( vsfaFriends == 1 );
-    ASSERT( vsfaNobody == 2 );
+    ASSERT(vsfaEverybody == 0);
+    ASSERT(vsfaFriends == 1);
+    ASSERT(vsfaNobody == 2);
     CheckRadioButton(IDC_SEESHARE1, IDC_SEESHARE3, IDC_SEESHARE1 + thePrefs.m_iSeeShares);
 }
 
@@ -134,7 +134,7 @@ BOOL CPPgSecurity::OnInitDialog()
         {
             m_pacIPFilterURL = new CCustomAutoComplete();
             m_pacIPFilterURL->AddRef();
-            if (m_pacIPFilterURL->Bind(::GetDlgItem(m_hWnd, IDC_UPDATEURL), ACO_UPDOWNKEYDROPSLIST | ACO_AUTOSUGGEST | ACO_FILTERPREFIXES ))
+            if (m_pacIPFilterURL->Bind(::GetDlgItem(m_hWnd, IDC_UPDATEURL), ACO_UPDOWNKEYDROPSLIST | ACO_AUTOSUGGEST | ACO_FILTERPREFIXES))
                 m_pacIPFilterURL->LoadList(thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + IPFILTERUPDATEURL_STRINGS_PROFILE);
         }
         SetDlgItemText(IDC_UPDATEURL, m_pacIPFilterURL->GetItem(0).IsEmpty() ? MOD_IPPFILTER_URL : m_pacIPFilterURL->GetItem(0));
@@ -232,7 +232,7 @@ void CPPgSecurity::OnLoadIPFFromURL()
 {
     CString url;
     GetDlgItemText(IDC_UPDATEURL,url);
-    if(!CheckURL(url))
+    if (!CheckURL(url))
         url = MOD_IPPFILTER_URL;
 
     // add entered URL to LRU list even if it's not yet known whether we can download from this URL (it's just more convenient this way)
@@ -257,14 +257,14 @@ void CPPgSecurity::OnLoadIPFFromURL()
         return;
     }
 
-    if(!Extract(strTempFilePath, thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + DFLT_IPFILTER_FILENAME, DFLT_IPFILTER_FILENAME, true, 2, DFLT_IPFILTER_FILENAME, L"guarding.p2p"))
+    if (!Extract(strTempFilePath, thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + DFLT_IPFILTER_FILENAME, DFLT_IPFILTER_FILENAME, true, 2, DFLT_IPFILTER_FILENAME, L"guarding.p2p"))
         return;
     theApp.ipfilter->LoadFromDefaultFile();
     OnReloadIPFilter();
 
     // In case we received an invalid IP-filter file (e.g. an 404 HTML page with HTTP status "OK"),
     // warn the user that there are no IP-filters available any longer.
-    if(theApp.ipfilter->GetIPFilter().GetCount() == 0)
+    if (theApp.ipfilter->GetIPFilter().GetCount() == 0)
     {
         CString strLoaded;
         strLoaded.Format(GetResString(IDS_IPFILTERLOADED), theApp.ipfilter->GetIPFilter().GetCount());
@@ -311,7 +311,7 @@ BOOL CPPgSecurity::PreTranslateMessage(MSG* pMsg)
         {
             if (pMsg->hwnd == GetDlgItem(IDC_UPDATEURL)->m_hWnd)
             {
-                if (m_pacIPFilterURL && m_pacIPFilterURL->IsBound() )
+                if (m_pacIPFilterURL && m_pacIPFilterURL->IsBound())
                 {
                     CString strText;
                     GetDlgItem(IDC_UPDATEURL)->GetWindowText(strText);
@@ -368,7 +368,7 @@ BOOL CPPgSecurity::OnHelpInfo(HELPINFO* /*pHelpInfo*/)
 
 void CPPgSecurity::OnBnClickedRunAsUser()
 {
-    if ( ((CButton*)GetDlgItem(IDC_RUNASUSER))->GetCheck() == BST_CHECKED)
+    if (((CButton*)GetDlgItem(IDC_RUNASUSER))->GetCheck() == BST_CHECKED)
     {
         if (AfxMessageBox(GetResString(IDS_RAU_WARNING),MB_OKCANCEL | MB_ICONINFORMATION,0) == IDCANCEL)
             ((CButton*)GetDlgItem(IDC_RUNASUSER))->SetCheck(BST_UNCHECKED);

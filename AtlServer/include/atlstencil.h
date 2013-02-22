@@ -93,11 +93,11 @@ extern __declspec(selectany) const DWORD STENCIL_USER_TOKEN_BASE     = 0x0000100
 template <class TBase, typename T>
 struct CTagReplacerMethodsEx
 {
-    typedef HTTP_CODE (TBase::*REPLACE_FUNC)();
-    typedef HTTP_CODE (TBase::*REPLACE_FUNC_EX)(T*);
-    typedef HTTP_CODE (TBase::*PARSE_FUNC)(IAtlMemMgr *, LPCSTR, T**);
-    typedef HTTP_CODE (TBase::*REPLACE_FUNC_EX_V)(void *);
-    typedef HTTP_CODE (TBase::*PARSE_FUNC_V)(IAtlMemMgr *, LPCSTR, void**);
+    typedef HTTP_CODE(TBase::*REPLACE_FUNC)();
+    typedef HTTP_CODE(TBase::*REPLACE_FUNC_EX)(T*);
+    typedef HTTP_CODE(TBase::*PARSE_FUNC)(IAtlMemMgr *, LPCSTR, T**);
+    typedef HTTP_CODE(TBase::*REPLACE_FUNC_EX_V)(void *);
+    typedef HTTP_CODE(TBase::*PARSE_FUNC_V)(IAtlMemMgr *, LPCSTR, void**);
 
     static REPLACE_FUNC_EX_V CheckRepl(REPLACE_FUNC p) throw()
     {
@@ -120,10 +120,10 @@ struct CTagReplacerMethods
 {
     union
     {
-        HTTP_CODE (TBase::*pfnMethodEx)(void *);
-        HTTP_CODE (TBase::*pfnMethod)();
+        HTTP_CODE(TBase::*pfnMethodEx)(void *);
+        HTTP_CODE(TBase::*pfnMethod)();
     };
-    HTTP_CODE (TBase::*pfnParse)(IAtlMemMgr *pMemMgr, LPCSTR, void **);
+    HTTP_CODE(TBase::*pfnParse)(IAtlMemMgr *pMemMgr, LPCSTR, void **);
 };
 
 #define REPLACEMENT_ENTRY_DEFAULT   0
@@ -178,8 +178,8 @@ protected:
     IWriteStream *m_pStream;
 
 public:
-    typedef HTTP_CODE (T::*REPLACEMENT_METHOD)();
-    typedef HTTP_CODE (T::*REPLACEMENT_METHOD_EX)(void *pvParam);
+    typedef HTTP_CODE(T::*REPLACEMENT_METHOD)();
+    typedef HTTP_CODE(T::*REPLACEMENT_METHOD_EX)(void *pvParam);
 
     ITagReplacerImpl() throw()
         :m_pStream(NULL)
@@ -285,7 +285,7 @@ public:
         }
 
         // This assert will be triggered if arguments are passed to a replacement method that doesn't handle them
-        ATLASSERT( szLeftPar == NULL || (szLeftPar != NULL && (pEntry != NULL && pEntry[*pdwMethodOffset].Methods.pfnParse != NULL)) );
+        ATLASSERT(szLeftPar == NULL || (szLeftPar != NULL && (pEntry != NULL && pEntry[*pdwMethodOffset].Methods.pfnParse != NULL)));
 
         if (hcErr == HTTP_SUCCESS && pEntry && pEntry[*pdwMethodOffset].Methods.pfnParse)
             hcErr = (pT->*pEntry[*pdwMethodOffset].Methods.pfnParse)(pMemMgr, szLeftPar, ppvParam);
@@ -425,9 +425,9 @@ public:
 
     HTTP_CODE DefaultParseString(IAtlMemMgr *pMemMgr, LPCSTR szParams, char **ppParam) throw(...)
     {
-        ATLENSURE( pMemMgr != NULL );
-        ATLENSURE( szParams != NULL );
-        ATLENSURE( ppParam != NULL );
+        ATLENSURE(pMemMgr != NULL);
+        ATLENSURE(szParams != NULL);
+        ATLENSURE(ppParam != NULL);
 
         size_t nLen = strlen(szParams);
         if (nLen)
@@ -445,9 +445,9 @@ public:
 
     HTTP_CODE DefaultParseUChar(IAtlMemMgr *pMemMgr, LPCSTR szParams, unsigned char **ppParam) throw(...)
     {
-        ATLENSURE( pMemMgr != NULL );
-        ATLENSURE( szParams != NULL );
-        ATLENSURE( ppParam != NULL );
+        ATLENSURE(pMemMgr != NULL);
+        ATLENSURE(szParams != NULL);
+        ATLENSURE(ppParam != NULL);
 
         *ppParam = (unsigned char *) pMemMgr->Allocate(sizeof(unsigned char));
         if (*ppParam)
@@ -464,9 +464,9 @@ public:
 
     HTTP_CODE DefaultParseShort(IAtlMemMgr *pMemMgr, LPCSTR szParams, short **ppParam) throw(...)
     {
-        ATLENSURE( pMemMgr != NULL );
-        ATLENSURE( szParams != NULL );
-        ATLENSURE( ppParam != NULL );
+        ATLENSURE(pMemMgr != NULL);
+        ATLENSURE(szParams != NULL);
+        ATLENSURE(ppParam != NULL);
 
         *ppParam = (short *) pMemMgr->Allocate(sizeof(short));
         if (*ppParam)
@@ -482,9 +482,9 @@ public:
 
     HTTP_CODE DefaultParseUShort(IAtlMemMgr *pMemMgr, LPCSTR szParams, unsigned short **ppParam) throw(...)
     {
-        ATLENSURE( pMemMgr != NULL );
-        ATLENSURE( szParams != NULL );
-        ATLENSURE( ppParam != NULL );
+        ATLENSURE(pMemMgr != NULL);
+        ATLENSURE(szParams != NULL);
+        ATLENSURE(ppParam != NULL);
 
         *ppParam = (unsigned short *) pMemMgr->Allocate(sizeof(short));
         if (*ppParam)
@@ -501,9 +501,9 @@ public:
 
     HTTP_CODE DefaultParseInt(IAtlMemMgr *pMemMgr, LPCSTR szParams, int **ppParam) throw(...)
     {
-        ATLENSURE( pMemMgr != NULL );
-        ATLENSURE( szParams != NULL );
-        ATLENSURE( ppParam != NULL );
+        ATLENSURE(pMemMgr != NULL);
+        ATLENSURE(szParams != NULL);
+        ATLENSURE(ppParam != NULL);
 
         *ppParam = (int *) pMemMgr->Allocate(sizeof(int));
         if (*ppParam)
@@ -519,9 +519,9 @@ public:
 
     HTTP_CODE DefaultParseUInt(IAtlMemMgr *pMemMgr, LPCSTR szParams, unsigned int **ppParam) throw(...)
     {
-        ATLENSURE( pMemMgr != NULL );
-        ATLENSURE( szParams != NULL );
-        ATLENSURE( ppParam != NULL );
+        ATLENSURE(pMemMgr != NULL);
+        ATLENSURE(szParams != NULL);
+        ATLENSURE(ppParam != NULL);
 
         *ppParam = (unsigned int *) pMemMgr->Allocate(sizeof(unsigned int));
         if (*ppParam)
@@ -538,9 +538,9 @@ public:
 
     HTTP_CODE DefaultParseInt64(IAtlMemMgr *pMemMgr, LPCSTR szParams, __int64 **ppParam) throw(...)
     {
-        ATLENSURE( pMemMgr != NULL );
-        ATLENSURE( szParams != NULL );
-        ATLENSURE( ppParam != NULL );
+        ATLENSURE(pMemMgr != NULL);
+        ATLENSURE(szParams != NULL);
+        ATLENSURE(ppParam != NULL);
 
         *ppParam = (__int64 *) pMemMgr->Allocate(sizeof(__int64));
         if (*ppParam)
@@ -556,9 +556,9 @@ public:
 
     HTTP_CODE DefaultParseUInt64(IAtlMemMgr *pMemMgr, LPCSTR szParams, unsigned __int64 **ppParam) throw(...)
     {
-        ATLENSURE( pMemMgr != NULL );
-        ATLENSURE( szParams != NULL );
-        ATLENSURE( ppParam != NULL );
+        ATLENSURE(pMemMgr != NULL);
+        ATLENSURE(szParams != NULL);
+        ATLENSURE(ppParam != NULL);
 
         *ppParam = (unsigned __int64 *) pMemMgr->Allocate(sizeof(unsigned __int64));
         if (*ppParam)
@@ -575,9 +575,9 @@ public:
 
     HTTP_CODE DefaultParseBool(IAtlMemMgr *pMemMgr, LPCSTR szParams, bool **ppParam) throw(...)
     {
-        ATLENSURE( pMemMgr != NULL );
-        ATLENSURE( szParams != NULL );
-        ATLENSURE( ppParam != NULL );
+        ATLENSURE(pMemMgr != NULL);
+        ATLENSURE(szParams != NULL);
+        ATLENSURE(ppParam != NULL);
 
         *ppParam = (bool *) pMemMgr->Allocate(sizeof(bool));
         if (*ppParam)
@@ -597,9 +597,9 @@ public:
 
     HTTP_CODE DefaultParseDouble(IAtlMemMgr *pMemMgr, LPCSTR szParams, double **ppParam) throw(...)
     {
-        ATLENSURE( pMemMgr != NULL );
-        ATLENSURE( szParams != NULL );
-        ATLENSURE( ppParam != NULL );
+        ATLENSURE(pMemMgr != NULL);
+        ATLENSURE(szParams != NULL);
+        ATLENSURE(ppParam != NULL);
 
         *ppParam = (double *) pMemMgr->Allocate(sizeof(double));
         if (*ppParam)
@@ -615,9 +615,9 @@ public:
 
     HTTP_CODE DefaultParseFloat(IAtlMemMgr *pMemMgr, LPCSTR szParams, float **ppParam) throw(...)
     {
-        ATLENSURE( pMemMgr != NULL );
-        ATLENSURE( szParams != NULL );
-        ATLENSURE( ppParam != NULL );
+        ATLENSURE(pMemMgr != NULL);
+        ATLENSURE(szParams != NULL);
+        ATLENSURE(ppParam != NULL);
 
 #ifndef _WIN32_WCE
         errno_t errnoValue = 0;
@@ -764,7 +764,7 @@ private:
         {
             m_nCurrentError++;
             if (m_nCurrentError >= m_pErrors->GetSize() ||
-                    m_nCurrentError < 0 )
+                    m_nCurrentError < 0)
             {
                 m_nCurrentError = -1;
                 return HTTP_S_FALSE;
@@ -848,7 +848,7 @@ private:
 
     HTTP_CODE LoadFromResourceInternal(HINSTANCE hInstRes, HRSRC hRsrc) throw()
     {
-        ATLASSERT( hRsrc != NULL );
+        ATLASSERT(hRsrc != NULL);
 
         HGLOBAL hgResource = NULL;
         hgResource = LoadResource(hInstRes, hRsrc);
@@ -1198,22 +1198,22 @@ public:
 
     bool GetHandlerName(__out_ecount_z(nPathLen) LPSTR szDllPath, __in size_t nPathLen, __out_ecount_z(nHandlerNameLen) LPSTR szHandlerName, __in size_t nHandlerNameLen) throw()
     {
-        if(strlen(m_szDllPath) >= nPathLen)
+        if (strlen(m_szDllPath) >= nPathLen)
         {
             return false;
         }
 
-        if(strlen(m_szHandlerName) >= nHandlerNameLen)
+        if (strlen(m_szHandlerName) >= nHandlerNameLen)
         {
             return false;
         }
 
-        if(0 != strcpy_s(szDllPath, nPathLen, m_szDllPath))
+        if (0 != strcpy_s(szDllPath, nPathLen, m_szDllPath))
         {
             return false;
         }
 
-        if(0 != strcpy_s(szHandlerName, nHandlerNameLen, m_szHandlerName))
+        if (0 != strcpy_s(szHandlerName, nHandlerNameLen, m_szHandlerName))
         {
             return false;
         }
@@ -1252,11 +1252,11 @@ public:
         // this should never assert unless the user has overriden something incorrectly
         if ((szHandlerName != NULL) && (*szHandlerName))
         {
-            ATLVERIFY( SafeStringCopy(t.szHandlerName, szHandlerName) );
+            ATLVERIFY(SafeStringCopy(t.szHandlerName, szHandlerName));
         }
         if ((szMethodName != NULL) && (*szMethodName))
         {
-            ATLVERIFY( SafeStringCopy(t.szMethodName, szMethodName) );
+            ATLVERIFY(SafeStringCopy(t.szMethodName, szMethodName));
         }
 
         _ATLTRY
@@ -1424,7 +1424,7 @@ public:
         return ParseSuccessful();
     }
 
-    virtual bool Parse(ITagReplacer *pReplacer) throw( ... )
+    virtual bool Parse(ITagReplacer *pReplacer) throw(...)
     {
         if (ParseReplacements(pReplacer))
         {
@@ -1434,10 +1434,10 @@ public:
     }
 
 
-    DWORD ParseReplacement( LPCSTR szTokenStart,
-                            LPCSTR szTokenEnd,
-                            DWORD dwTokenType = STENCIL_REPLACEMENT,
-                            DWORD dwKeywordLen = 0) throw()
+    DWORD ParseReplacement(LPCSTR szTokenStart,
+                           LPCSTR szTokenEnd,
+                           DWORD dwTokenType = STENCIL_REPLACEMENT,
+                           DWORD dwKeywordLen = 0) throw()
     {
         // hold on to the start and end pointers (before removing curlies and whitespace)
         // this is needed so that we can convert the token to a text token if the method
@@ -1780,7 +1780,7 @@ public:
             return true;
         }
 
-        while(szCurr < szEnd)
+        while (szCurr < szEnd)
         {
             //mark the start of this block, then find the end of the block
             //the end is denoted by an opening curly
@@ -2029,7 +2029,7 @@ public:
 
         if (IsAsyncStatus(hcErrorCode))
         {
-            ATLASSERT( pState != NULL ); // state is required for async
+            ATLASSERT(pState != NULL);   // state is required for async
             if (pState)
                 pState->dwIndex = dwIndex;
         }
@@ -2512,7 +2512,7 @@ public:
         ATLASSERT(pRequest != NULL);
         m_pResponse = pResponse;
         m_pRequest = pRequest;
-        if(!m_pRequest)
+        if (!m_pRequest)
         {
             return FALSE;
         }
@@ -2669,34 +2669,34 @@ class CStringPairElementTraits :
 {
 private:
 
-    static ULONG HashStr( ULONG nHash, CStringElementTraits<CStringA>::INARGTYPE str )
+    static ULONG HashStr(ULONG nHash, CStringElementTraits<CStringA>::INARGTYPE str)
     {
-        ATLENSURE( str != NULL );
+        ATLENSURE(str != NULL);
         const CStringA::XCHAR* pch = str;
-        while( *pch != 0 )
+        while (*pch != 0)
         {
             nHash = (nHash<<5)+nHash+(*pch);
             pch++;
         }
 
-        return( nHash );
+        return(nHash);
     }
 
 public:
-    static ULONG Hash( INARGTYPE pair ) throw()
+    static ULONG Hash(INARGTYPE pair) throw()
     {
         ULONG nHash = HashStr(0, pair.strDllPath);
         return HashStr(nHash, pair.strHandlerName);
     }
 
-    static bool CompareElements( INARGTYPE pair1, INARGTYPE pair2 ) throw()
+    static bool CompareElements(INARGTYPE pair1, INARGTYPE pair2) throw()
     {
-        return( (pair1.strDllPath == pair2.strDllPath) && (pair1.strHandlerName == pair2.strHandlerName) );
+        return((pair1.strDllPath == pair2.strDllPath) && (pair1.strHandlerName == pair2.strHandlerName));
     }
 
-    static int CompareElementsOrdered( INARGTYPE pair1, INARGTYPE pair2 ) throw()
+    static int CompareElementsOrdered(INARGTYPE pair1, INARGTYPE pair2) throw()
     {
-        return( pair1.strDllPath.Compare( pair2.strDllPath ) );
+        return(pair1.strDllPath.Compare(pair2.strDllPath));
     }
 };
 
@@ -3414,7 +3414,7 @@ public:
         LPCSTR szResourceType = NULL, LPCSTR szStencilName=NULL) throw(...)
     {
         if (!szResourceType)
-            szResourceType = (LPCSTR) (RT_HTML);
+            szResourceType = (LPCSTR)(RT_HTML);
         // look up stencil in cache
         HTTP_CODE hcErr = HTTP_SUCCESS;
 
@@ -3673,7 +3673,7 @@ public:
             }
         }
 
-        return  (hr == S_OK) ? HTTP_SUCCESS : HTTP_FAIL;
+        return (hr == S_OK) ? HTTP_SUCCESS : HTTP_FAIL;
     }
 
     StencilType *FindCacheStencil(LPCSTR szName) throw()
@@ -3695,16 +3695,16 @@ public:
 
     void FreeCacheStencil(StencilType* pStencilData)
     {
-        ATLASSERT( pStencilData != NULL );
+        ATLASSERT(pStencilData != NULL);
 
-        if(!pStencilData)
+        if (!pStencilData)
         {
             return;
         }
 
         IMemoryCacheClient *pMemCacheClient = static_cast<IMemoryCacheClient *>(pStencilData);
 
-        if(!pMemCacheClient)
+        if (!pMemCacheClient)
         {
             return;
         }
@@ -3787,7 +3787,7 @@ public:
             CStringPair path;
             IRequestHandler *pHandler;
             HINSTANCE hInstHandler;
-            while(pos)
+            while (pos)
             {
                 pExtraHandlersMap->GetNextAssoc(pos, name, path);
                 pHandler = NULL;
@@ -3954,7 +3954,7 @@ public:
         if (pRequestLookup)
         {
             // initialize with the pRequestLookup
-            if(!m_HttpResponse.Initialize(pRequestLookup))
+            if (!m_HttpResponse.Initialize(pRequestLookup))
             {
                 return HTTP_FAIL;
             }
@@ -3965,7 +3965,7 @@ public:
             // in pRequestInfo than the one extracted from pRequestLookup.
             if (m_spServerContext)
             {
-                if(!m_HttpResponse.Initialize(m_spServerContext))
+                if (!m_HttpResponse.Initialize(m_spServerContext))
                 {
                     return HTTP_FAIL;
                 }

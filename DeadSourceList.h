@@ -52,7 +52,7 @@ template<> inline UINT AFXAPI HashKey(const CDeadSource& ds)
     }
     else
     {
-        ASSERT( isnulmd4(ds.m_aucHash) == 0 );
+        ASSERT(isnulmd4(ds.m_aucHash) == 0);
         hash++;
         for (int i = 0; i != 16; i++)
             hash += (ds.m_aucHash[i]+1)*((i*i)+1);

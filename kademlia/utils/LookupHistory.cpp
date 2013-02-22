@@ -46,7 +46,7 @@ CLookupHistory::~CLookupHistory()
 
 void CLookupHistory::SetSearchDeleted()
 {
-    ASSERT( m_uRefCount );
+    ASSERT(m_uRefCount);
     m_bSearchDeleted = true;
     m_uRefCount--;
     if (m_uRefCount == 0)
@@ -55,7 +55,7 @@ void CLookupHistory::SetSearchDeleted()
 
 void CLookupHistory::SetGUIDeleted()
 {
-    ASSERT( m_uRefCount );
+    ASSERT(m_uRefCount);
     m_uRefCount--;
     if (m_uRefCount == 0)
         delete this;
@@ -148,7 +148,7 @@ void CLookupHistory::ContactAskedKeyword(CContact* pContact)
             if (!m_aHistoryEntries[i]->IsInteresting())
                 m_aIntrestingHistoryEntries.Add(m_aHistoryEntries[i]);
             m_aHistoryEntries[i]->m_dwAskedSearchItemTime = ::GetTickCount();
-            ASSERT( m_aHistoryEntries[i]->m_uRespondedSearchItem == 0 );
+            ASSERT(m_aHistoryEntries[i]->m_uRespondedSearchItem == 0);
             return;
         }
     }
@@ -161,7 +161,7 @@ void CLookupHistory::ContactRespondedKeyword(UINT uContactIP, uint16 uContactUDP
     {
         if ((m_aIntrestingHistoryEntries[i]->m_uIP == uContactIP) && (m_aIntrestingHistoryEntries[i]->m_uPort == uContactUDPPort))
         {
-            ASSERT( m_aIntrestingHistoryEntries[i]->m_dwAskedSearchItemTime > 0 || m_uType == CSearch::NODE || m_uType == CSearch::NODEFWCHECKUDP);
+            ASSERT(m_aIntrestingHistoryEntries[i]->m_dwAskedSearchItemTime > 0 || m_uType == CSearch::NODE || m_uType == CSearch::NODEFWCHECKUDP);
             m_aIntrestingHistoryEntries[i]->m_uRespondedSearchItem += uResultCount;
             return;
         }

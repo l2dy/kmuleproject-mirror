@@ -38,7 +38,7 @@ TCHAR CMiniDumper::m_szDumpDir[MAX_PATH] = {0};
 void CMiniDumper::Enable(LPCTSTR pszAppName, bool bShowErrors, LPCTSTR pszDumpDir)
 {
     // if this assert fires then you have two instances of CMiniDumper which is not allowed
-    ASSERT( m_szAppName[0] == L'\0' );
+    ASSERT(m_szAppName[0] == L'\0');
     _tcsncpy(m_szAppName, pszAppName, _countof(m_szAppName) - 1);
     m_szAppName[_countof(m_szAppName) - 1] = L'\0';
 

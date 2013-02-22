@@ -389,7 +389,7 @@ void CSearchParamsWnd::OnSize(UINT nType, int cx, int cy)
             hdwp = DeferWindowPos(hdwp, m_ctlStart, NULL, rcClient.left + m_rcStart.left, rcClient.top + m_rcStart.top, m_rcStart.Width(), m_rcStart.Height(), uFlags);
             hdwp = DeferWindowPos(hdwp, m_ctlCancel, NULL, rcClient.left + m_rcCancel.left, rcClient.top + m_rcCancel.top, m_rcCancel.Width(), m_rcCancel.Height(), uFlags);
             hdwp = DeferWindowPos(hdwp, m_ctlOpts, NULL, rcClient.left + m_rcOpts.left, rcClient.top + m_rcOpts.top, iWidthOpts, m_rcOpts.Height(), uFlags);
-            VERIFY( EndDeferWindowPos(hdwp) );
+            VERIFY(EndDeferWindowPos(hdwp));
         }
 
         m_ctlOpts.ModifyStyle(0, LVS_NOCOLUMNHEADER);
@@ -491,18 +491,18 @@ void CSearchParamsWnd::UpdateControls()
     }
 
 //>>> WiZaRd::CustomSearches
-	m_ctlOpts.SetItemData(orCompleteSources, iMethod==SearchTypeKademlia ? 1 : 0);
-/*
-    m_ctlOpts.SetItemData(orAvailability, (iMethod==SearchTypeFileDonkey) ? 1 : 0);
-    m_ctlOpts.SetItemData(orExtension, (iMethod==SearchTypeFileDonkey) ? 1 : 0);
-    m_ctlOpts.SetItemData(orCompleteSources, (iMethod==SearchTypeKademlia || iMethod==SearchTypeFileDonkey) ? 1 : 0);
-    m_ctlOpts.SetItemData(orCodec, (iMethod==SearchTypeFileDonkey) ? 1 : 0);
-    m_ctlOpts.SetItemData(orBitrate, (iMethod==SearchTypeFileDonkey) ? 1 : 0);
-    m_ctlOpts.SetItemData(orLength, (iMethod==SearchTypeFileDonkey) ? 1 : 0);
-    m_ctlOpts.SetItemData(orTitle, (iMethod==SearchTypeFileDonkey) ? 1 : 0);
-    m_ctlOpts.SetItemData(orAlbum, (iMethod==SearchTypeFileDonkey) ? 1 : 0);
-    m_ctlOpts.SetItemData(orArtist, (iMethod==SearchTypeFileDonkey) ? 1 : 0);
-*/
+    m_ctlOpts.SetItemData(orCompleteSources, iMethod==SearchTypeKademlia ? 1 : 0);
+    /*
+        m_ctlOpts.SetItemData(orAvailability, (iMethod==SearchTypeFileDonkey) ? 1 : 0);
+        m_ctlOpts.SetItemData(orExtension, (iMethod==SearchTypeFileDonkey) ? 1 : 0);
+        m_ctlOpts.SetItemData(orCompleteSources, (iMethod==SearchTypeKademlia || iMethod==SearchTypeFileDonkey) ? 1 : 0);
+        m_ctlOpts.SetItemData(orCodec, (iMethod==SearchTypeFileDonkey) ? 1 : 0);
+        m_ctlOpts.SetItemData(orBitrate, (iMethod==SearchTypeFileDonkey) ? 1 : 0);
+        m_ctlOpts.SetItemData(orLength, (iMethod==SearchTypeFileDonkey) ? 1 : 0);
+        m_ctlOpts.SetItemData(orTitle, (iMethod==SearchTypeFileDonkey) ? 1 : 0);
+        m_ctlOpts.SetItemData(orAlbum, (iMethod==SearchTypeFileDonkey) ? 1 : 0);
+        m_ctlOpts.SetItemData(orArtist, (iMethod==SearchTypeFileDonkey) ? 1 : 0);
+    */
 //<<< WiZaRd::CustomSearches
 }
 
@@ -513,9 +513,9 @@ void CSearchParamsWnd::SetAllIcons()
     iml.Add(CTempIconLoader(_T("SearchMethod_KADEMLIA")));
 //>>> WiZaRd::CustomSearches
 //    iml.Add(CTempIconLoader(_T("SearchMethod_FILEDONKEY")));
-	iml.Add(CTempIconLoader(L"EMPTY"));
-	iml.Add(CTempIconLoader(L"SEARCH_MULTI"));
-	iml.Add(CTempIconLoader(L"SEARCH_EN"));
+    iml.Add(CTempIconLoader(L"EMPTY"));
+    iml.Add(CTempIconLoader(L"SEARCH_MULTI"));
+    iml.Add(CTempIconLoader(L"SEARCH_EN"));
 //<<< WiZaRd::CustomSearches
     m_ctlMethod.SetImageList(&iml);
     m_imlSearchMethods.DeleteImageList();
@@ -553,7 +553,7 @@ void CSearchParamsWnd::InitMethodsCtrl()
 {
     int iMethod = m_ctlMethod.GetCurSel();
     m_ctlMethod.ResetContent();
-    VERIFY( m_ctlMethod.AddItem(GetResString(IDS_KADEMLIA) + _T(" ") + GetResString(IDS_NETWORK), 0) == SearchTypeKademlia );
+    VERIFY(m_ctlMethod.AddItem(GetResString(IDS_KADEMLIA) + _T(" ") + GetResString(IDS_NETWORK), 0) == SearchTypeKademlia);
 //>>> WiZaRd::CustomSearches
 //    VERIFY( m_ctlMethod.AddItem(_T("FileDonkey (Web)"), 1) == SearchTypeFileDonkey );
 //<<< WiZaRd::CustomSearches
@@ -594,7 +594,7 @@ void CSearchParamsWnd::InitFileTypesCtrl()
     if (iItem != CB_ERR)
     {
         LPCSTR pszED2KFileType = (LPCSTR)m_ctlFileType.GetItemDataPtr(iItem);
-        ASSERT( pszED2KFileType != NULL );
+        ASSERT(pszED2KFileType != NULL);
         strCurSelFileType = pszED2KFileType;
     }
 
@@ -653,7 +653,7 @@ void CSearchParamsWnd::Localize()
 
     InitMethodsCtrl();
     InitFileTypesCtrl();
-	UpdateSearchList(); //>>> WiZaRd::CustomSearches
+    UpdateSearchList(); //>>> WiZaRd::CustomSearches
 
     m_ctlOpts.SetItemText(orMinSize, 0, GetResString(IDS_SEARCHMINSIZE));
     m_ctlOpts.SetItemText(orMaxSize, 0, GetResString(IDS_SEARCHMAXSIZE));
@@ -724,29 +724,29 @@ void CSearchParamsWnd::OnBnClickedStart()
     if (pParams)
     {
 //>>> WiZaRd::CustomSearches
-/*
-		if (!pParams->strExpression.IsEmpty())
-		{
-			if (m_pacSearchString && m_pacSearchString->IsBound())
-				m_pacSearchString->AddItem(pParams->strExpression, 0);
-			m_searchdlg->StartSearch(pParams);
-		}
-		else
-			delete pParams;
-*/
-		const bool bHasExp = !pParams->strExpression.IsEmpty();
-		if (bHasExp && m_pacSearchString && m_pacSearchString->IsBound())
-			m_pacSearchString->AddItem(pParams->strExpression, 0);
-		const UINT cur_sel = pParams->eType;
-		if (bHasExp && cur_sel < SearchTypeWeb)
-			m_searchdlg->StartSearch(pParams);
-		else if (cur_sel > SearchTypeWeb && cur_sel <= theApp.customSearches->GetCount()+SearchTypeWeb+1)
-		{
-			CString tmp = theApp.customSearches->CreateQuery(cur_sel-SearchTypeWeb-1, pParams);
-			if (!tmp.IsEmpty())
-				ShellOpenFile(tmp);
-			delete pParams;
-		}
+        /*
+        		if (!pParams->strExpression.IsEmpty())
+        		{
+        			if (m_pacSearchString && m_pacSearchString->IsBound())
+        				m_pacSearchString->AddItem(pParams->strExpression, 0);
+        			m_searchdlg->StartSearch(pParams);
+        		}
+        		else
+        			delete pParams;
+        */
+        const bool bHasExp = !pParams->strExpression.IsEmpty();
+        if (bHasExp && m_pacSearchString && m_pacSearchString->IsBound())
+            m_pacSearchString->AddItem(pParams->strExpression, 0);
+        const UINT cur_sel = pParams->eType;
+        if (bHasExp && cur_sel < SearchTypeWeb)
+            m_searchdlg->StartSearch(pParams);
+        else if (cur_sel > SearchTypeWeb && cur_sel <= theApp.customSearches->GetCount()+SearchTypeWeb+1)
+        {
+            CString tmp = theApp.customSearches->CreateQuery(cur_sel-SearchTypeWeb-1, pParams);
+            if (!tmp.IsEmpty())
+                ShellOpenFile(tmp);
+            delete pParams;
+        }
 //<<< WiZaRd::CustomSearches
     }
 }
@@ -975,7 +975,7 @@ SSearchParams* CSearchParamsWnd::GetParameters()
     if (iItem != CB_ERR)
     {
         LPCSTR pszED2KFileType = (LPCSTR)m_ctlFileType.GetItemDataPtr(iItem);
-        ASSERT( pszED2KFileType != NULL );
+        ASSERT(pszED2KFileType != NULL);
         strFileType = pszED2KFileType;
     }
 
@@ -1168,6 +1168,6 @@ void CSearchParamsWnd::ProcessEd2kSearchLinkRequest(CString strSearchTerm)
 //>>> WiZaRd::CustomSearches
 void CSearchParamsWnd::UpdateSearchList()
 {
-	theApp.customSearches->InitSearchList(&m_ctlMethod, &m_imlSearchMethods);
+    theApp.customSearches->InitSearchList(&m_ctlMethod, &m_imlSearchMethods);
 }
 //<<< WiZaRd::CustomSearches

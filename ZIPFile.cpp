@@ -40,7 +40,7 @@ CZIPFile::CZIPFile(HANDLE hAttach)
     m_pFile		= NULL;
     m_nFile		= 0;
 
-    if ( hAttach != INVALID_HANDLE_VALUE ) Attach( hAttach );
+    if (hAttach != INVALID_HANDLE_VALUE) Attach(hAttach);
 }
 
 CZIPFile::~CZIPFile()
@@ -53,16 +53,16 @@ CZIPFile::~CZIPFile()
 
 BOOL CZIPFile::Open(LPCTSTR pszFile)
 {
-    ASSERT( pszFile != NULL );
+    ASSERT(pszFile != NULL);
 
     Close();
 
     m_bAttach = FALSE;
-    m_hFile = CreateFile( pszFile, GENERIC_READ, FILE_SHARE_READ, NULL,
-                          OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL );
-    if ( m_hFile == INVALID_HANDLE_VALUE ) return FALSE;
+    m_hFile = CreateFile(pszFile, GENERIC_READ, FILE_SHARE_READ, NULL,
+                         OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    if (m_hFile == INVALID_HANDLE_VALUE) return FALSE;
 
-    if ( LocateCentralDirectory() )
+    if (LocateCentralDirectory())
     {
         return TRUE;
     }
@@ -78,14 +78,14 @@ BOOL CZIPFile::Open(LPCTSTR pszFile)
 
 BOOL CZIPFile::Attach(HANDLE hFile)
 {
-    ASSERT( hFile != INVALID_HANDLE_VALUE );
+    ASSERT(hFile != INVALID_HANDLE_VALUE);
 
     Close();
 
     m_bAttach	= TRUE;
     m_hFile		= hFile;
 
-    if ( LocateCentralDirectory() )
+    if (LocateCentralDirectory())
     {
         return TRUE;
     }
@@ -109,9 +109,9 @@ BOOL CZIPFile::IsOpen() const
 
 void CZIPFile::Close()
 {
-    if ( m_hFile != INVALID_HANDLE_VALUE )
+    if (m_hFile != INVALID_HANDLE_VALUE)
     {
-        if ( ! m_bAttach ) CloseHandle( m_hFile );
+        if (! m_bAttach) CloseHandle(m_hFile);
         m_hFile = INVALID_HANDLE_VALUE;
     }
 
@@ -133,7 +133,7 @@ int CZIPFile::GetCount() const
 
 CZIPFile::File* CZIPFile::GetFile(int nFile) const
 {
-    return ( nFile < 0 || nFile >= m_nFile ) ? NULL : m_pFile + nFile;
+    return (nFile < 0 || nFile >= m_nFile) ? NULL : m_pFile + nFile;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -143,17 +143,17 @@ CZIPFile::File* CZIPFile::GetFile(LPCTSTR pszFile, BOOL bPartial) const
 {
     File* pFile = m_pFile;
 
-    for ( int nFile = m_nFile ; nFile ; nFile--, pFile++ )
+    for (int nFile = m_nFile ; nFile ; nFile--, pFile++)
     {
-        if ( bPartial )
+        if (bPartial)
         {
-            LPCTSTR pszName = _tcsrchr( pFile->m_sName, '/' );
+            LPCTSTR pszName = _tcsrchr(pFile->m_sName, '/');
             pszName = pszName ? pszName + 1 : (LPCTSTR)pFile->m_sName;
-            if ( _tcsicoll( pszName, pszFile ) == 0 ) return pFile;
+            if (_tcsicoll(pszName, pszFile) == 0) return pFile;
         }
         else
         {
-            if ( _tcsicoll( pFile->m_sName, pszFile ) == 0 ) return pFile;
+            if (_tcsicoll(pFile->m_sName, pszFile) == 0) return pFile;
         }
     }
 
@@ -182,40 +182,40 @@ BOOL CZIPFile::LocateCentralDirectory()
     BYTE pBuffer[4096];
     DWORD nBuffer = 0;
 
-    SetFilePointer( m_hFile, -4096, NULL, FILE_END );
-    if ( ! ReadFile( m_hFile, pBuffer, 4096, &nBuffer, NULL ) ) return FALSE;
-    if ( nBuffer < sizeof(ZIP_DIRECTORY_LOC) ) return FALSE;
+    SetFilePointer(m_hFile, -4096, NULL, FILE_END);
+    if (! ReadFile(m_hFile, pBuffer, 4096, &nBuffer, NULL)) return FALSE;
+    if (nBuffer < sizeof(ZIP_DIRECTORY_LOC)) return FALSE;
 
     ZIP_DIRECTORY_LOC* pLoc = NULL;
 
-    for ( DWORD nScan = 4 ; nScan < nBuffer ; nScan++ )
+    for (DWORD nScan = 4 ; nScan < nBuffer ; nScan++)
     {
-        DWORD* pnSignature = (DWORD*)( pBuffer + nBuffer - nScan  );
+        DWORD* pnSignature = (DWORD*)(pBuffer + nBuffer - nScan);
 
-        if ( *pnSignature == 0x06054b50 )
+        if (*pnSignature == 0x06054b50)
         {
             pLoc = (ZIP_DIRECTORY_LOC*)pnSignature;
             break;
         }
     }
 
-    if ( pLoc == NULL ) return FALSE;
-    ASSERT( pLoc->nSignature == 0x06054b50 );
+    if (pLoc == NULL) return FALSE;
+    ASSERT(pLoc->nSignature == 0x06054b50);
 
-    if ( GetFileSize( m_hFile, NULL ) < pLoc->nDirectorySize ) return FALSE;
+    if (GetFileSize(m_hFile, NULL) < pLoc->nDirectorySize) return FALSE;
 
-    if ( SetFilePointer( m_hFile, pLoc->nDirectoryOffset, NULL, FILE_BEGIN )
-            != pLoc->nDirectoryOffset ) return FALSE;
+    if (SetFilePointer(m_hFile, pLoc->nDirectoryOffset, NULL, FILE_BEGIN)
+            != pLoc->nDirectoryOffset) return FALSE;
 
     BYTE* pDirectory = new BYTE[ pLoc->nDirectorySize ];
-    VERIFY( ReadFile(m_hFile, pDirectory, pLoc->nDirectorySize, &nBuffer, NULL) );
+    VERIFY(ReadFile(m_hFile, pDirectory, pLoc->nDirectorySize, &nBuffer, NULL));
 
-    if ( nBuffer == pLoc->nDirectorySize )
+    if (nBuffer == pLoc->nDirectorySize)
     {
         m_nFile = (int)pLoc->nTotalFiles;
         m_pFile = new File[ m_nFile ];
 
-        if ( ! ParseCentralDirectory( pDirectory, pLoc->nDirectorySize ) )
+        if (! ParseCentralDirectory(pDirectory, pLoc->nDirectorySize))
         {
             delete [] m_pFile;
             m_pFile = NULL;
@@ -225,7 +225,7 @@ BOOL CZIPFile::LocateCentralDirectory()
 
     delete [] pDirectory;
 
-    return ( m_nFile > 0 );
+    return (m_nFile > 0);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -256,18 +256,18 @@ typedef struct
 
 BOOL CZIPFile::ParseCentralDirectory(BYTE* pDirectory, DWORD nDirectory)
 {
-    for ( int nFile = 0 ; nFile < m_nFile ; nFile++ )
+    for (int nFile = 0 ; nFile < m_nFile ; nFile++)
     {
         ZIP_CENTRAL_FILE* pRecord = (ZIP_CENTRAL_FILE*)pDirectory;
 
-        if ( nDirectory < sizeof(*pRecord) ) return FALSE;
-        if ( pRecord->nSignature != 0x02014b50 ) return FALSE;
+        if (nDirectory < sizeof(*pRecord)) return FALSE;
+        if (pRecord->nSignature != 0x02014b50) return FALSE;
 
         pDirectory += sizeof(*pRecord);
         nDirectory -= sizeof(*pRecord);
 
         int nTailLen = (int)pRecord->nNameLen + (int)pRecord->nExtraLen + (int)pRecord->nCommentLen;
-        if ( nDirectory < (DWORD)nTailLen ) return FALSE;
+        if (nDirectory < (DWORD)nTailLen) return FALSE;
 
         m_pFile[ nFile ].m_pZIP				= this;
         m_pFile[ nFile ].m_nSize			= pRecord->nActualSize;
@@ -275,15 +275,15 @@ BOOL CZIPFile::ParseCentralDirectory(BYTE* pDirectory, DWORD nDirectory)
         m_pFile[ nFile ].m_nCompressedSize	= pRecord->nCompressedSize;
         m_pFile[ nFile ].m_nCompression		= pRecord->nCompression;
 
-        LPTSTR pszName = m_pFile[ nFile ].m_sName.GetBuffer( pRecord->nNameLen );
+        LPTSTR pszName = m_pFile[ nFile ].m_sName.GetBuffer(pRecord->nNameLen);
 
-        for ( WORD nChar = 0 ; nChar < pRecord->nNameLen ; nChar++ )
+        for (WORD nChar = 0 ; nChar < pRecord->nNameLen ; nChar++)
         {
             pszName[ nChar ] = (TCHAR)pDirectory[ nChar ];
-            if ( pszName[ nChar ] == '\\' ) pszName[ nChar ] = '/';
+            if (pszName[ nChar ] == '\\') pszName[ nChar ] = '/';
         }
 
-        m_pFile[ nFile ].m_sName.ReleaseBuffer( pRecord->nNameLen );
+        m_pFile[ nFile ].m_sName.ReleaseBuffer(pRecord->nNameLen);
 
         pDirectory += (DWORD)nTailLen;
         nDirectory -= (DWORD)nTailLen;
@@ -314,25 +314,25 @@ typedef struct
 
 BOOL CZIPFile::SeekToFile(File* pFile)
 {
-    ASSERT( this != NULL );
-    ASSERT( pFile != NULL );
-    ASSERT( pFile->m_pZIP == this );
+    ASSERT(this != NULL);
+    ASSERT(pFile != NULL);
+    ASSERT(pFile->m_pZIP == this);
 
-    if ( m_hFile == INVALID_HANDLE_VALUE ) return FALSE;
+    if (m_hFile == INVALID_HANDLE_VALUE) return FALSE;
 
-    if ( SetFilePointer( m_hFile, (DWORD)pFile->m_nLocalOffset, NULL, FILE_BEGIN )
-            != pFile->m_nLocalOffset ) return FALSE;
+    if (SetFilePointer(m_hFile, (DWORD)pFile->m_nLocalOffset, NULL, FILE_BEGIN)
+            != pFile->m_nLocalOffset) return FALSE;
 
     ZIP_LOCAL_FILE pLocal;
     DWORD nRead = 0;
 
-    VERIFY( ReadFile(m_hFile, &pLocal, sizeof(pLocal), &nRead, NULL) );
-    if ( nRead != sizeof(pLocal) ) return FALSE;
+    VERIFY(ReadFile(m_hFile, &pLocal, sizeof(pLocal), &nRead, NULL));
+    if (nRead != sizeof(pLocal)) return FALSE;
 
-    if ( pLocal.nSignature != 0x04034b50 ) return FALSE;
-    if ( pLocal.nCompression != Z_DEFLATED && pLocal.nCompression != 0 ) return FALSE;
+    if (pLocal.nSignature != 0x04034b50) return FALSE;
+    if (pLocal.nCompression != Z_DEFLATED && pLocal.nCompression != 0) return FALSE;
 
-    SetFilePointer( m_hFile, pLocal.nNameLen + pLocal.nExtraLen, NULL, FILE_CURRENT );
+    SetFilePointer(m_hFile, pLocal.nNameLen + pLocal.nExtraLen, NULL, FILE_CURRENT);
 
     return TRUE;
 }
@@ -342,17 +342,17 @@ BOOL CZIPFile::SeekToFile(File* pFile)
 
 BOOL CZIPFile::File::PrepareToDecompress(LPVOID pStream)
 {
-    ZeroMemory( pStream, sizeof(z_stream) );
+    ZeroMemory(pStream, sizeof(z_stream));
 
-    if ( ! m_pZIP->SeekToFile( this ) ) return FALSE;
+    if (! m_pZIP->SeekToFile(this)) return FALSE;
 
-    if ( m_nCompression == 0 )
+    if (m_nCompression == 0)
     {
-        return ( m_nSize == m_nCompressedSize );
+        return (m_nSize == m_nCompressedSize);
     }
     else if (m_nCompression == Z_DEFLATED)
     {
-        return Z_OK == inflateInit2( (z_stream*)pStream, -MAX_WBITS );
+        return Z_OK == inflateInit2((z_stream*)pStream, -MAX_WBITS);
     }
     return FALSE;
 }
@@ -423,11 +423,11 @@ BOOL CZIPFile::File::Extract(LPCTSTR pszFile)
     z_stream pStream;
     HANDLE hFile;
 
-    hFile = CreateFile( pszFile, GENERIC_WRITE, 0, NULL, CREATE_NEW,
-                        FILE_ATTRIBUTE_NORMAL, NULL );
-    if ( hFile == INVALID_HANDLE_VALUE ) return FALSE;
+    hFile = CreateFile(pszFile, GENERIC_WRITE, 0, NULL, CREATE_NEW,
+                       FILE_ATTRIBUTE_NORMAL, NULL);
+    if (hFile == INVALID_HANDLE_VALUE) return FALSE;
 
-    if ( ! PrepareToDecompress( &pStream ) )
+    if (! PrepareToDecompress(&pStream))
     {
         CloseHandle(hFile);
         DeleteFile(pszFile);
@@ -436,34 +436,34 @@ BOOL CZIPFile::File::Extract(LPCTSTR pszFile)
 
     uint64 nCompressed = 0, nUncompressed = 0;
 
-    if ( m_nCompression == Z_DEFLATED )
+    if (m_nCompression == Z_DEFLATED)
     {
         BYTE* pBufferIn		= new BYTE[BUFFER_IN_SIZE];
         BYTE* pBufferOut	= new BYTE[BUFFER_OUT_SIZE];
 
-        while ( nCompressed < m_nCompressedSize || nUncompressed < m_nSize )
+        while (nCompressed < m_nCompressedSize || nUncompressed < m_nSize)
         {
-            if ( pStream.avail_in == 0 )
+            if (pStream.avail_in == 0)
             {
-                pStream.avail_in	= (DWORD)min( m_nCompressedSize - nCompressed, BUFFER_IN_SIZE );
+                pStream.avail_in	= (DWORD)min(m_nCompressedSize - nCompressed, BUFFER_IN_SIZE);
                 pStream.next_in		= pBufferIn;
 
                 DWORD nRead = 0;
-                VERIFY( ReadFile(m_pZIP->m_hFile, pBufferIn, pStream.avail_in, &nRead, NULL) );
-                if ( nRead != pStream.avail_in ) break;
+                VERIFY(ReadFile(m_pZIP->m_hFile, pBufferIn, pStream.avail_in, &nRead, NULL));
+                if (nRead != pStream.avail_in) break;
                 nCompressed += nRead;
             }
 
             pStream.avail_out	= BUFFER_OUT_SIZE;
             pStream.next_out	= pBufferOut;
 
-            inflate( &pStream, Z_SYNC_FLUSH );
+            inflate(&pStream, Z_SYNC_FLUSH);
 
-            if ( pStream.avail_out < BUFFER_OUT_SIZE )
+            if (pStream.avail_out < BUFFER_OUT_SIZE)
             {
                 DWORD nWrite = BUFFER_OUT_SIZE - pStream.avail_out;
-                WriteFile( hFile, pBufferOut, nWrite, &nWrite, NULL );
-                if ( nWrite != BUFFER_OUT_SIZE - pStream.avail_out ) break;
+                WriteFile(hFile, pBufferOut, nWrite, &nWrite, NULL);
+                if (nWrite != BUFFER_OUT_SIZE - pStream.avail_out) break;
                 nUncompressed += nWrite;
             }
         }
@@ -471,21 +471,21 @@ BOOL CZIPFile::File::Extract(LPCTSTR pszFile)
         delete [] pBufferOut;
         delete [] pBufferIn;
 
-        inflateEnd( &pStream );
+        inflateEnd(&pStream);
     }
     else
     {
         BYTE* pBufferOut = new BYTE[BUFFER_OUT_SIZE];
 
-        while ( nUncompressed < m_nSize )
+        while (nUncompressed < m_nSize)
         {
-            DWORD nChunk = (DWORD)min( m_nSize - nUncompressed, BUFFER_OUT_SIZE );
+            DWORD nChunk = (DWORD)min(m_nSize - nUncompressed, BUFFER_OUT_SIZE);
             DWORD nProcess = 0;
 
-            VERIFY( ReadFile(m_pZIP->m_hFile, pBufferOut, nChunk, &nProcess, NULL) );
-            if ( nChunk != nProcess ) break;
-            WriteFile( hFile, pBufferOut, nChunk, &nProcess, NULL );
-            if ( nChunk != nProcess ) break;
+            VERIFY(ReadFile(m_pZIP->m_hFile, pBufferOut, nChunk, &nProcess, NULL));
+            if (nChunk != nProcess) break;
+            WriteFile(hFile, pBufferOut, nChunk, &nProcess, NULL);
+            if (nChunk != nProcess) break;
 
             nCompressed += nChunk;
             nUncompressed += nChunk;
@@ -494,11 +494,11 @@ BOOL CZIPFile::File::Extract(LPCTSTR pszFile)
         delete [] pBufferOut;
     }
 
-    CloseHandle( hFile );
+    CloseHandle(hFile);
 
-    if ( nUncompressed >= m_nSize ) return TRUE;
+    if (nUncompressed >= m_nSize) return TRUE;
 
-    DeleteFile( pszFile );
+    DeleteFile(pszFile);
     return FALSE;
 }
 

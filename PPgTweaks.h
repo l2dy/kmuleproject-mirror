@@ -131,5 +131,5 @@ protected:
     afx_msg void OnHelp();
     afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
     afx_msg void OnBnClickedOpenPrefIni();
-	afx_msg void OnBnClickedOpenModPrefIni();
+    afx_msg void OnBnClickedOpenModPrefIni();
 };

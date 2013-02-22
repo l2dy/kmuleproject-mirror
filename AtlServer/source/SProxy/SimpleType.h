@@ -56,7 +56,7 @@ class CEnumerationElementTraits :
 {
 public:
 
-    static ULONG Hash( INARGTYPE e )
+    static ULONG Hash(INARGTYPE e)
     {
         LPCWSTR wsz = (LPCWSTR) e.GetValue();
         ULONG nHash = 0;

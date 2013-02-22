@@ -45,7 +45,7 @@ CListViewSearchDlg::CListViewSearchDlg(CWnd* pParent /*=NULL*/)
 CListViewSearchDlg::~CListViewSearchDlg()
 {
     if (m_icnWnd)
-        VERIFY( DestroyIcon(m_icnWnd) );
+        VERIFY(DestroyIcon(m_icnWnd));
 }
 
 void CListViewSearchDlg::DoDataExchange(CDataExchange* pDX)

@@ -31,8 +31,8 @@ enum eUpdateApplication
     UPDATE_EXECUTE,
     UPDATE_REPLACE,
 //>>> WiZaRd::kMule
-	UPDATE_EXTRACT,
-	UPDATE_DOWNLOADPAGE,
+    UPDATE_EXTRACT,
+    UPDATE_DOWNLOADPAGE,
 //<<< WiZaRd::kMule
 };
 
@@ -55,9 +55,9 @@ private:
     CString m_strTempFile;
     CString m_strUpdateURL;
     uint8	m_uiUpdateApplication;
-    bool	m_bDeleteAfterUpdate;	
+    bool	m_bDeleteAfterUpdate;
 
 protected:
     CString GetUpdateFile() const;
-	CWebHelper* m_pWebHelper;
+    CWebHelper* m_pWebHelper;
 };

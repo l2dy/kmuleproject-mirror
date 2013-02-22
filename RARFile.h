@@ -101,7 +101,7 @@ protected:
     HANDLE m_hArchive;
 
     bool InitUnRarLib();
-    HANDLE (WINAPI *m_pfnRAROpenArchiveEx)(struct RAROpenArchiveDataEx* ArchiveData) throw(...);
+    HANDLE(WINAPI *m_pfnRAROpenArchiveEx)(struct RAROpenArchiveDataEx* ArchiveData) throw(...);
     int (WINAPI *m_pfnRARCloseArchive)(HANDLE hArcData) throw(...);
     int (WINAPI *m_pfnRARReadHeaderEx)(HANDLE hArcData, struct RARHeaderDataEx* HeaderData) throw(...);
     int (WINAPI *m_pfnRARProcessFileW)(HANDLE hArcData, int iOperation, const WCHAR* pszDestFolder, const WCHAR* pszDestName) throw(...);

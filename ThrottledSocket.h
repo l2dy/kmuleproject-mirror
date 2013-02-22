@@ -7,7 +7,7 @@ struct SocketSentBytes
     bool    success;
     UINT	sentBytesStandardPackets;
     UINT	sentBytesControlPackets;
-	UINT  errorThatOccured; //>>> WiZaRd::ZZUL Upload [ZZ]
+    UINT  errorThatOccured; //>>> WiZaRd::ZZUL Upload [ZZ]
 };
 
 class ThrottledControlSocket
@@ -31,9 +31,21 @@ public:
         return false;
     }
 //>>> WiZaRd::Count block/success send [Xman?]
-	virtual float GetBlockingRatio() const		{AfxDebugBreak(); return 0;}	//= 0;
-	virtual float GetOverallBlockingRatio() const {AfxDebugBreak(); return 0;}	//= 0;
-	virtual float GetAndStepBlockRatio()	{AfxDebugBreak(); return 0;}	//= 0;
+    virtual float GetBlockingRatio() const
+    {
+        AfxDebugBreak();    //= 0;
+        return 0;
+    }
+    virtual float GetOverallBlockingRatio() const
+    {
+        AfxDebugBreak();    //= 0;
+        return 0;
+    }
+    virtual float GetAndStepBlockRatio()
+    {
+        AfxDebugBreak();    //= 0;
+        return 0;
+    }
 //<<< WiZaRd::Count block/success send [Xman?]
 };
 

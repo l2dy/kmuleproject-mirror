@@ -245,7 +245,7 @@ BOOL CUPnPImplMiniLib::CStartDiscoveryThread::InitInstance()
 int CUPnPImplMiniLib::CStartDiscoveryThread::Run()
 {
     DbgSetThreadName("CUPnPImplMiniLib::CStartDiscoveryThread");
-    if ( !m_pOwner )
+    if (!m_pOwner)
         return 0;
 
     CSingleLock sLock(&m_pOwner->m_mutBusy);
@@ -282,7 +282,7 @@ int CUPnPImplMiniLib::CStartDiscoveryThread::Run()
             }
 
             DebugLog(_T("List of UPNP devices found on the network:"));
-            for(UPNPDev* pDevice = structDeviceList; pDevice != NULL; pDevice = pDevice->pNext)
+            for (UPNPDev* pDevice = structDeviceList; pDevice != NULL; pDevice = pDevice->pNext)
             {
                 DebugLog(_T("Desc: %S, st: %S"), pDevice->descURL, pDevice->st);
             }
@@ -332,7 +332,7 @@ int CUPnPImplMiniLib::CStartDiscoveryThread::Run()
             OpenPort(m_pOwner->m_nTCPWebPort, true, m_pOwner->m_achLanIP, m_pOwner->m_bCheckAndRefresh); // don't fail if only the webinterface port fails for some reason
     }
 #if !(defined(_DEBUG) || defined(_BETA))
-    catch(...)
+    catch (...)
     {
         DebugLogError(_T("Unknown Exception in CUPnPImplMiniLib::CStartDiscoveryThread::Run()"));
     }

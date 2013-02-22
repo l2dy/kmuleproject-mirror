@@ -73,9 +73,9 @@ void _CreateSafeCppName(
     const wchar_t *wszName,
     size_t nMaxLen)
 {
-    ATLASSERT( szSafeName != NULL );
-    ATLASSERT( szName != NULL );
-    ATLASSERT( wszName != NULL );
+    ATLASSERT(szSafeName != NULL);
+    ATLASSERT(szName != NULL);
+    ATLASSERT(wszName != NULL);
 
     static CCppKeywordLookup cppkwLookup;
     const CCppKeywordLookup::HashNode *p = cppkwLookup.Lookup(wszName);
@@ -123,8 +123,8 @@ void _CreateSafeCppName(
 
 size_t AllocateNameString(char **ppszName, const char *szName)
 {
-    ATLASSERT( ppszName != NULL );
-    ATLASSERT( szName != NULL );
+    ATLASSERT(ppszName != NULL);
+    ATLASSERT(szName != NULL);
 
     size_t nMaxLen = 3*strlen(szName);
     *ppszName = (char *)malloc(nMaxLen+1);
@@ -138,8 +138,8 @@ size_t AllocateNameString(char **ppszName, const char *szName)
 
 size_t AllocateNameString(char **ppszName, const wchar_t *wszName)
 {
-    ATLASSERT( ppszName != NULL );
-    ATLASSERT( wszName != NULL );
+    ATLASSERT(ppszName != NULL);
+    ATLASSERT(wszName != NULL);
 
     size_t nMaxLen = 3*wcslen(wszName);
     *ppszName = (char *)malloc(nMaxLen+1);
@@ -153,8 +153,8 @@ size_t AllocateNameString(char **ppszName, const wchar_t *wszName)
 
 HRESULT CreateSafeCppName(char **ppszName, const char *szName)
 {
-    ATLASSERT( ppszName != NULL );
-    ATLASSERT( szName != NULL );
+    ATLASSERT(ppszName != NULL);
+    ATLASSERT(szName != NULL);
 
     size_t nMaxLen = AllocateNameString(ppszName, szName);
     if (!nMaxLen)
@@ -162,14 +162,14 @@ HRESULT CreateSafeCppName(char **ppszName, const char *szName)
         return E_OUTOFMEMORY;
     }
 
-    _CreateSafeCppName(*ppszName, szName, CA2W( szName ), nMaxLen);
+    _CreateSafeCppName(*ppszName, szName, CA2W(szName), nMaxLen);
     return S_OK;
 }
 
 HRESULT CreateSafeCppName(char **ppszName, const wchar_t *wszName)
 {
-    ATLASSERT( ppszName != NULL );
-    ATLASSERT( wszName != NULL );
+    ATLASSERT(ppszName != NULL);
+    ATLASSERT(wszName != NULL);
 
     size_t nMaxLen = AllocateNameString(ppszName, wszName);
     if (!nMaxLen)
@@ -177,19 +177,19 @@ HRESULT CreateSafeCppName(char **ppszName, const wchar_t *wszName)
         return E_OUTOFMEMORY;
     }
 
-    _CreateSafeCppName(*ppszName, CW2A( wszName ), wszName, nMaxLen);
+    _CreateSafeCppName(*ppszName, CW2A(wszName), wszName, nMaxLen);
     return S_OK;
 }
 
 HRESULT CreateSafeCppName(CStringA& strSafeName, const wchar_t *wszName)
 {
-    ATLASSERT( wszName != NULL );
+    ATLASSERT(wszName != NULL);
 
     size_t nMaxLen = 3*wcslen(wszName);
 
     char *szSafeName = strSafeName.GetBuffer((int) nMaxLen);
 
-    _CreateSafeCppName(szSafeName, CW2A( wszName ), wszName, nMaxLen);
+    _CreateSafeCppName(szSafeName, CW2A(wszName), wszName, nMaxLen);
 
     strSafeName.ReleaseBuffer();
 
@@ -198,13 +198,13 @@ HRESULT CreateSafeCppName(CStringA& strSafeName, const wchar_t *wszName)
 
 HRESULT CreateSafeCppName(CStringA& strSafeName, const char *szName)
 {
-    ATLASSERT( szName != NULL );
+    ATLASSERT(szName != NULL);
 
     size_t nMaxLen = 3*strlen(szName);
 
     char *szSafeName = strSafeName.GetBuffer((int) nMaxLen);
 
-    _CreateSafeCppName(szSafeName, szName, CA2W( szName ), nMaxLen);
+    _CreateSafeCppName(szSafeName, szName, CA2W(szName), nMaxLen);
 
     strSafeName.ReleaseBuffer();
 

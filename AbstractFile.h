@@ -150,7 +150,7 @@ public:
     }
     bool	HasBadRating()	const
     {
-        return ( HasRating() && (m_uUserRating < 2));
+        return (HasRating() && (m_uUserRating < 2));
     }
     void	SetUserRating(UINT in)
     {

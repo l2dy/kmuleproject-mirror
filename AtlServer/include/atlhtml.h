@@ -732,7 +732,7 @@ public:
         }
 
         const TCHAR *szQuestion = NULL;
-        if(szHref)
+        if (szHref)
             szQuestion = _tcschr(szHref, '?');
 
         CString strHref = szHref;

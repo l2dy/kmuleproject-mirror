@@ -81,10 +81,10 @@ public:
 
 inline bool operator==(const SHA1& sha1a, const SHA1& sha1b)
 {
-    return memcmp( &sha1a, &sha1b, 20 ) == 0;
+    return memcmp(&sha1a, &sha1b, 20) == 0;
 }
 
 inline bool operator!=(const SHA1& sha1a, const SHA1& sha1b)
 {
-    return memcmp( &sha1a, &sha1b, 20 ) != 0;
+    return memcmp(&sha1a, &sha1b, 20) != 0;
 }

@@ -78,9 +78,9 @@ CChatWnd::~CChatWnd()
         delete m_pwndSmileySel;
     }
     if (icon_friend)
-        VERIFY( DestroyIcon(icon_friend) );
+        VERIFY(DestroyIcon(icon_friend));
     if (icon_msg)
-        VERIFY( DestroyIcon(icon_msg) );
+        VERIFY(DestroyIcon(icon_msg));
 }
 
 void CChatWnd::DoDataExchange(CDataExchange* pDX)
@@ -432,9 +432,9 @@ void CChatWnd::OnNmClickFriendList(NMHDR *pNMHDR, LRESULT *pResult)
 void CChatWnd::SetAllIcons()
 {
     if (icon_friend)
-        VERIFY( DestroyIcon(icon_friend) );
+        VERIFY(DestroyIcon(icon_friend));
     if (icon_msg)
-        VERIFY( DestroyIcon(icon_msg) );
+        VERIFY(DestroyIcon(icon_msg));
     icon_friend = theApp.LoadIcon(_T("Friend"), 16, 16);
     icon_msg = theApp.LoadIcon(_T("Message"), 16, 16);
     ((CStatic*)GetDlgItem(IDC_MESSAGEICON))->SetIcon(icon_msg);

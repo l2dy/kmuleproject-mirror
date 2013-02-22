@@ -76,7 +76,7 @@ void CPPgDebug::DoDataExchange(CDataExchange* pDX)
             if (hIcon)
             {
                 iImgClient = piml->Add(hIcon);
-                VERIFY( ::DestroyIcon(hIcon) );
+                VERIFY(::DestroyIcon(hIcon));
             }
         }
 

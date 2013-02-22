@@ -59,10 +59,10 @@ static char THIS_FILE[] = __FILE__;
 
 enum eDirectoryMode
 {
-	eDM_Auto = -1,
-	eDM_MultiUser = 0,
-	eDM_PublicUser = 1,
-	eDM_Executable = 2
+    eDM_Auto = -1,
+    eDM_MultiUser = 0,
+    eDM_PublicUser = 1,
+    eDM_Executable = 2
 };
 
 CPreferences thePrefs;
@@ -403,7 +403,7 @@ CString	CPreferences::m_strMediaInfoDllUpdateURL;
 UINT	CPreferences::m_uiMediaInfoDllVersion;
 //<<< WiZaRd::MediaInfoDLL Update
 //>>> PreviewIndicator [WiZaRd]
-uint8	CPreferences::m_uiPreviewIndicatorMode; 
+uint8	CPreferences::m_uiPreviewIndicatorMode;
 COLORREF CPreferences::m_crPreviewReadyColor; //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
 //<<< PreviewIndicator [WiZaRd]
 //>>> WiZaRd::Advanced Transfer Window Layout [Stulle]
@@ -711,7 +711,7 @@ bool CPreferences::IsTempFile(const CString& rstrDirectory, const CString& rstrN
         if (CompareDirectories(rstrDirectory, GetTempDir(i))==0)
             bFound = true; //ok, found a directory
 
-    if(!bFound) //found nowhere - not a tempfile...
+    if (!bFound) //found nowhere - not a tempfile...
         return false;
 
     // do not share a file from the temp directory, if it matches one of the following patterns
@@ -740,8 +740,8 @@ bool CPreferences::IsTempFile(const CString& rstrDirectory, const CString& rstrN
 uint16 CPreferences::GetMaxDownload()
 {
 //>>> WiZaRd::SessionRatio
-	//no need to limit that here, it will be limited dynamically!
-	return maxdownload;
+    //no need to limit that here, it will be limited dynamically!
+    return maxdownload;
 //  return (uint16)(GetMaxDownloadInBytesPerSec()/1024);
 //<<< WiZaRd::SessionRatio
 }
@@ -749,22 +749,22 @@ uint16 CPreferences::GetMaxDownload()
 uint64 CPreferences::GetMaxDownloadInBytesPerSec(bool dynamic)
 {
 //>>> WiZaRd::SessionRatio
-	uint64 uimaxDownload = maxdownload*1024;
-	//WiZaRd: if you CAN not upload, why should you be punished!?
-	if(theApp.uploadqueue && theApp.uploadqueue->GetWaitingUserCount() && theApp.uploadqueue->GetUploadQueueLength())
-	{
-		//Session limit, are we leeching?
-		//Don't download more than 3 times our upload (multiFU, partial PS)
-		const double uploaded = max(SESSIONMAXTRANS, (double)theStats.sessionSentBytes - (double)theStats.sessionSentBytesToFriend /*- (double)theStats.sessionSentBytesViaPartPS*/); //>>> WiZaRd::MultiFU //>>> WiZaRd::PowerShare
-		const double sessionUlDlRatio = (uploaded + 1.0) / (theStats.sessionReceivedBytes - sesDownData_URL + 1.0); //>>> WiZaRd::Exclude HTTP Traffic [Quezl]
-		if(sessionUlDlRatio < 0.4) //Activate throttling if close to limit
-		{		
-			//if we cannot upload, yet, then it's not our fault!
-			const UINT currUpload = theApp.uploadqueue->GetDatarate();
-			const UINT minDownload = max(currUpload, 10240); //we will let them at least 10k DL
-			uimaxDownload = (uint64)min(max(minDownload, (9*currUpload*sessionUlDlRatio)), uimaxDownload);
-		}
-	}
+    uint64 uimaxDownload = maxdownload*1024;
+    //WiZaRd: if you CAN not upload, why should you be punished!?
+    if (theApp.uploadqueue && theApp.uploadqueue->GetWaitingUserCount() && theApp.uploadqueue->GetUploadQueueLength())
+    {
+        //Session limit, are we leeching?
+        //Don't download more than 3 times our upload (multiFU, partial PS)
+        const double uploaded = max(SESSIONMAXTRANS, (double)theStats.sessionSentBytes - (double)theStats.sessionSentBytesToFriend /*- (double)theStats.sessionSentBytesViaPartPS*/); //>>> WiZaRd::MultiFU //>>> WiZaRd::PowerShare
+        const double sessionUlDlRatio = (uploaded + 1.0) / (theStats.sessionReceivedBytes - sesDownData_URL + 1.0); //>>> WiZaRd::Exclude HTTP Traffic [Quezl]
+        if (sessionUlDlRatio < 0.4) //Activate throttling if close to limit
+        {
+            //if we cannot upload, yet, then it's not our fault!
+            const UINT currUpload = theApp.uploadqueue->GetDatarate();
+            const UINT minDownload = max(currUpload, 10240); //we will let them at least 10k DL
+            uimaxDownload = (uint64)min(max(minDownload, (9*currUpload*sessionUlDlRatio)), uimaxDownload);
+        }
+    }
 //<<< WiZaRd::SessionRatio
 
     //dont be a Lam3r :)
@@ -775,20 +775,20 @@ uint64 CPreferences::GetMaxDownloadInBytesPerSec(bool dynamic)
         maxup = GetMaxUpload()*1024;
 
 //>>> WiZaRd::SessionRatio
-	uint64 uioffimaxDownload = 0;
-	if( maxup < 4*1024 )
-		uioffimaxDownload = (( (maxup < 10*1024) && ((uint64)maxup*3 < maxdownload*1024) )? (uint64)maxup*3 : maxdownload*1024);
-	else
-		uioffimaxDownload = (( (maxup < 10*1024) && ((uint64)maxup*4 < maxdownload*1024) )? (uint64)maxup*4 : maxdownload*1024);
-	
-	//we use the lower one to respect the (IMHO dumb) rules of official client
-	//Why is it dumb? 
-	//Because someone may download at 10000kB and upload 10kB (1:1000) but
-	//one may not download with more than 9kB if he can only upload 3kB (1:3) 
-	//Pretty unfair... and that's why eMule IS already favoring leechers 
-	//by allowing incredible leeching! *narf*!
-	//But we use a sessionratio to limit it at least a *bit*
-	return min(uimaxDownload, uioffimaxDownload);
+    uint64 uioffimaxDownload = 0;
+    if (maxup < 4*1024)
+        uioffimaxDownload = (((maxup < 10*1024) && ((uint64)maxup*3 < maxdownload*1024))? (uint64)maxup*3 : maxdownload*1024);
+    else
+        uioffimaxDownload = (((maxup < 10*1024) && ((uint64)maxup*4 < maxdownload*1024))? (uint64)maxup*4 : maxdownload*1024);
+
+    //we use the lower one to respect the (IMHO dumb) rules of official client
+    //Why is it dumb?
+    //Because someone may download at 10000kB and upload 10kB (1:1000) but
+    //one may not download with more than 9kB if he can only upload 3kB (1:3)
+    //Pretty unfair... and that's why eMule IS already favoring leechers
+    //by allowing incredible leeching! *narf*!
+    //But we use a sessionratio to limit it at least a *bit*
+    return min(uimaxDownload, uioffimaxDownload);
 //<<< WiZaRd::SessionRatio
 }
 
@@ -1001,7 +1001,7 @@ void CPreferences::SaveCompletedDownloadsStat()
     // download members to INI.  It is called from
     // CPartfile::PerformFileComplete ...   - Khaos
 
-    CIni ini(GetMuleDirectory(EMULE_CONFIGDIR) + L"statistics.ini", L"Statistics" );
+    CIni ini(GetMuleDirectory(EMULE_CONFIGDIR) + L"statistics.ini", L"Statistics");
 
     ini.WriteInt(L"DownCompletedFiles",			GetDownCompletedFiles());
     ini.WriteInt(L"DownSessionCompletedFiles",	GetDownSessionCompletedFiles());
@@ -1503,7 +1503,7 @@ bool CPreferences::Save()
                 sdirfile.Write(L"\r\n", sizeof(TCHAR)*2);
 //>>> WiZaRd::SharePermissions
                 CString tmp = L"";
-                if(pos2 != NULL)
+                if (pos2 != NULL)
                     tmp.Format(L"%u", shareddir_list_permissions.GetNext(pos2));
                 else
                     tmp = L"0";
@@ -1519,7 +1519,7 @@ bool CPreferences::Save()
             }
             sdirfile.Close();
         }
-        catch(CFileException* error)
+        catch (CFileException* error)
         {
             TCHAR buffer[MAX_CFEXP_ERRORMSG];
             error->GetErrorMessage(buffer,_countof(buffer));
@@ -1548,13 +1548,13 @@ void CPreferences::CreateUserHash()
 int CPreferences::GetRecommendedMaxConnections()
 {
     int iRealMax = ::GetMaxWindowsTCPConnections();
-    if(iRealMax == -1 || iRealMax > 520)
+    if (iRealMax == -1 || iRealMax > 520)
         return 500;
 
-    if(iRealMax < 20)
+    if (iRealMax < 20)
         return iRealMax;
 
-    if(iRealMax <= 256)
+    if (iRealMax <= 256)
         return iRealMax - 10;
 
     return iRealMax - 20;
@@ -1581,7 +1581,7 @@ void CPreferences::SavePreferences()
     CString tempdirs;
     for (int i=1; i<tempdir.GetCount(); i++)
     {
-        tempdirs.Append(tempdir.GetAt(i) );
+        tempdirs.Append(tempdir.GetAt(i));
         if (i+1<tempdir.GetCount())
             tempdirs.Append(L"|");
     }
@@ -1595,7 +1595,7 @@ void CPreferences::SavePreferences()
     ini.WriteBool(L"ConditionalTCPAccept", m_bConditionalTCPAccept);
     ini.WriteInt(L"Port",port);
     ini.WriteInt(L"UDPPort",udpport);
-    ini.WriteInt(L"MaxSourcesPerFile",maxsourceperfile );
+    ini.WriteInt(L"MaxSourcesPerFile",maxsourceperfile);
     ini.WriteWORD(L"Language",m_wLanguageID);
     ini.WriteInt(L"SeeShare",m_iSeeShares);
     ini.WriteInt(L"StatGraphsInterval",trafficOMeterInterval);
@@ -1646,15 +1646,15 @@ void CPreferences::SavePreferences()
     // Barry - New properties...
     ini.WriteBool(L"AutoTakeED2KLinks", autotakeed2klinks);
     ini.WriteBool(L"AddNewFilesPaused", addnewfilespaused);
-    ini.WriteInt (L"3DDepth", depth3D);
+    ini.WriteInt(L"3DDepth", depth3D);
     ini.WriteBool(L"MiniMule", m_bEnableMiniMule);
 
     ini.WriteString(L"TxtEditor",m_strTxtEditor);
     ini.WriteString(L"VideoPlayer",m_strVideoPlayer);
     ini.WriteString(L"VideoPlayerArgs",m_strVideoPlayerArgs);
-	ini.WriteString(L"ExtractFolder",m_strExtractFolder);
-	ini.WriteBool(L"ExtractToIncomingDir",m_bExtractToIncomingDir);
-	ini.WriteBool(L"ExtractArchives",m_bExtractArchives);
+    ini.WriteString(L"ExtractFolder",m_strExtractFolder);
+    ini.WriteBool(L"ExtractToIncomingDir",m_bExtractToIncomingDir);
+    ini.WriteBool(L"ExtractArchives",m_bExtractArchives);
     ini.WriteString(L"MessageFilter",messageFilter);
     ini.WriteString(L"CommentFilter",commentFilter);
     ini.WriteString(L"DateTimeFormat",GetDateTimeFormat());
@@ -1720,7 +1720,7 @@ void CPreferences::SavePreferences()
 
     // Toolbar
     ini.WriteString(L"ToolbarSetting", m_sToolbarSettings);
-    ini.WriteString(L"ToolbarBitmap", m_sToolbarBitmap );
+    ini.WriteString(L"ToolbarBitmap", m_sToolbarBitmap);
     ini.WriteString(L"ToolbarBitmapFolder", m_sToolbarBitmapFolder);
     ini.WriteInt(L"ToolbarLabels", m_nToolbarLabels);
     ini.WriteInt(L"ToolbarIconSize", m_sizToolbarIconSize.cx);
@@ -1778,7 +1778,7 @@ void CPreferences::SavePreferences()
     {
         buffer.Format(L"0x%06x",GetStatsColor(i));
         buffer2.Format(L"StatColor%i",i);
-        ini.WriteString(buffer2,buffer,L"Statistics" );
+        ini.WriteString(buffer2,buffer,L"Statistics");
     }
     ini.WriteBool(L"HasCustomTaskIconColor", bHasCustomTaskIconColor, L"Statistics");
 
@@ -1812,7 +1812,7 @@ void CPreferences::SavekMulePrefs()
     ini.WriteInt(L"MediaInfoDllVersion", m_uiMediaInfoDllVersion);
 //<<< WiZaRd::MediaInfoDLL Update
 //>>> PreviewIndicator [WiZaRd]
-	ini.WriteInt(L"PreviewIndicatorMode", m_uiPreviewIndicatorMode);
+    ini.WriteInt(L"PreviewIndicatorMode", m_uiPreviewIndicatorMode);
     ini.WriteColRef(L"PreviewReadyColor", m_crPreviewReadyColor); //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
 //<<< PreviewIndicator [WiZaRd]
 //>>> WiZaRd::Advanced Transfer Window Layout [Stulle]
@@ -1833,19 +1833,19 @@ void CPreferences::SavekMulePrefs()
     ini.WriteBool(L"RemoveForbiddenFiles", m_bRemoveForbiddenFiles);
 //<<< WiZaRd::Remove forbidden files
 //>>> WiZaRd::Drop Blocking Sockets [Xman?]
-	ini.WriteBool(L"DropBlockingSockets", m_bDropBlockingSockets);
-	ini.WriteFloat(L"SocketBlockRate", m_fMaxBlockRate);
-	ini.WriteFloat(L"SocketBlockRate20", m_fMaxBlockRate20);
+    ini.WriteBool(L"DropBlockingSockets", m_bDropBlockingSockets);
+    ini.WriteFloat(L"SocketBlockRate", m_fMaxBlockRate);
+    ini.WriteFloat(L"SocketBlockRate20", m_fMaxBlockRate20);
 //<<< WiZaRd::Drop Blocking Sockets [Xman?]
 }
 //<<< WiZaRd::Own Prefs
 
 void CPreferences::ResetStatsColor(int index)
 {
-    switch(index)
+    switch (index)
     {
     case  0:
-        m_adwStatsColors[ 0]=RGB(  0,  0, 0);
+        m_adwStatsColors[ 0]=RGB(0,  0, 0);
         break;
     case  1:
         m_adwStatsColors[ 1]=RGB(255,255,255);
@@ -1854,10 +1854,10 @@ void CPreferences::ResetStatsColor(int index)
         m_adwStatsColors[ 2]=RGB(128,255,128);
         break;
     case  3:
-        m_adwStatsColors[ 3]=RGB(  0,210,  0);
+        m_adwStatsColors[ 3]=RGB(0,210,  0);
         break;
     case  4:
-        m_adwStatsColors[ 4]=RGB(  0,128,  0);
+        m_adwStatsColors[ 4]=RGB(0,128,  0);
         break;
     case  5:
         m_adwStatsColors[ 5]=RGB(255,128,128);
@@ -1878,7 +1878,7 @@ void CPreferences::ResetStatsColor(int index)
         m_adwStatsColors[10]=RGB(255,255,128);
         break;
     case 11:
-        m_adwStatsColors[11]=RGB(  0,  0,  0);
+        m_adwStatsColors[11]=RGB(0,  0,  0);
         bHasCustomTaskIconColor = false;
         break;
     case 12:
@@ -1940,13 +1940,13 @@ void CPreferences::LoadPreferences()
     strPrefsVersion = ini.GetString(L"AppVersion");
 
     m_bFirstStart = false;
-	m_bUpdate = false;
+    m_bUpdate = false;
 
     if (strPrefsVersion.IsEmpty())
         m_bFirstStart = true;
-	// Update/Downgrade?
-	else if(strPrefsVersion != theApp.m_strCurVersionLong)
-		m_bUpdate = true;
+    // Update/Downgrade?
+    else if (strPrefsVersion != theApp.m_strCurVersionLong)
+        m_bUpdate = true;
 
 #ifdef _DEBUG
     m_iDbgHeap = ini.GetInt(L"DebugHeap", 1);
@@ -2026,7 +2026,7 @@ void CPreferences::LoadPreferences()
     }
 
     minupload=(uint16)ini.GetInt(L"MinUpload", 1);
-    if( minupload < 1 )
+    if (minupload < 1)
         minupload = 1;
     maxupload=(uint16)ini.GetInt(L"MaxUpload",UNLIMITED);
     if (maxupload > maxGraphUploadRate && maxupload != UNLIMITED)
@@ -2056,10 +2056,10 @@ void CPreferences::LoadPreferences()
     m_strBindAddrA = m_strBindAddrW;
     m_pszBindAddrA = m_strBindAddrA.IsEmpty() ? NULL : (LPCSTR)m_strBindAddrA;
 
-	// WiZaRd:
-	// It seems the "port in use" check is a bit buggy once in a while... that's why we will not check and set a different port
-	// if either the user did an update installation (i.e. it worked in the past) or has disabled UPnP (i.e. it knows what its doing)
-	int iPort = ini.GetInt(L"Port", 0);
+    // WiZaRd:
+    // It seems the "port in use" check is a bit buggy once in a while... that's why we will not check and set a different port
+    // if either the user did an update installation (i.e. it worked in the past) or has disabled UPnP (i.e. it knows what its doing)
+    int iPort = ini.GetInt(L"Port", 0);
     if (iPort == INT_MAX || iPort == 0 || (!m_bUpdate && !m_bEnableUPnP && IsTCPPortInUse((uint16)iPort)))
         port = GetRandomTCPPort();
     else
@@ -2071,7 +2071,7 @@ void CPreferences::LoadPreferences()
     else
         udpport = (uint16)iPort;
 
-    maxsourceperfile=ini.GetInt(L"MaxSourcesPerFile",400 );
+    maxsourceperfile=ini.GetInt(L"MaxSourcesPerFile",400);
     m_wLanguageID=ini.GetWORD(L"Language",0);
     m_iSeeShares=(EViewSharedFilesAccess)ini.GetInt(L"SeeShare",vsfaNobody);
     trafficOMeterInterval=ini.GetInt(L"StatGraphsInterval",3);
@@ -2255,15 +2255,15 @@ void CPreferences::LoadPreferences()
     m_strVideoPlayer = ini.GetString(L"VideoPlayer", L"");
     m_strVideoPlayerArgs = ini.GetString(L"VideoPlayerArgs",L"");
 
-	m_strExtractFolder = ini.GetString(L"ExtractFolder",L"");
-	m_bExtractToIncomingDir = ini.GetBool(L"ExtractToIncomingDir",true);
-	m_bExtractArchives = ini.GetBool(L"ExtractArchives",true);
+    m_strExtractFolder = ini.GetString(L"ExtractFolder",L"");
+    m_bExtractToIncomingDir = ini.GetBool(L"ExtractToIncomingDir",true);
+    m_bExtractArchives = ini.GetBool(L"ExtractArchives",true);
 
 //>>> WiZaRd::Promote VLC
-    if(m_strVideoPlayer.IsEmpty() || !::PathFileExists(m_strVideoPlayer))
+    if (m_strVideoPlayer.IsEmpty() || !::PathFileExists(m_strVideoPlayer))
     {
         m_strVideoPlayer = GetRegVLCDir();
-        if(m_strVideoPlayer.IsEmpty())
+        if (m_strVideoPlayer.IsEmpty())
             m_strVideoPlayer = L"http://www.videolan.org";
         else
             moviePreviewBackup = false; // using VLC - no backup necessary
@@ -2425,7 +2425,7 @@ void CPreferences::LoadkMulePrefs()
     m_uiMediaInfoDllVersion = (UINT)ini.GetInt(L"MediaInfoDllVersion", 0);
 //<<< WiZaRd::MediaInfoDLL Update
 //>>> PreviewIndicator [WiZaRd]
-	m_uiPreviewIndicatorMode = (uint8)ini.GetInt(L"PreviewIndicatorMode", ePIM_Icon);
+    m_uiPreviewIndicatorMode = (uint8)ini.GetInt(L"PreviewIndicatorMode", ePIM_Icon);
     m_crPreviewReadyColor = ini.GetColRef(L"PreviewReadyColor", RGB(140, 225, 110)); //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
 //<<< PreviewIndicator [WiZaRd]
 //>>> WiZaRd::Advanced Transfer Window Layout [Stulle]
@@ -2445,15 +2445,15 @@ void CPreferences::LoadkMulePrefs()
     m_iMaxSourcesHL = (uint16)ini.GetInt(L"MaxSourcesHL", _UI16_MAX);
 //<<< WiZaRd::AutoHL
 //>>> WiZaRd::Remove forbidden files
-    m_bRemoveForbiddenFiles = ini.GetBool(L"RemoveForbiddenFiles", true);	
+    m_bRemoveForbiddenFiles = ini.GetBool(L"RemoveForbiddenFiles", true);
 //<<< WiZaRd::Remove forbidden files
 //>>> WiZaRd::Drop Blocking Sockets [Xman?]
-	m_bDropBlockingSockets = ini.GetBool(L"DropBlockingSockets", true);
-	m_fMaxBlockRate = ini.GetFloat(L"SocketBlockRate", 96.0f);
-	m_fMaxBlockRate20 = ini.GetFloat(L"SocketBlockRate20", 98.0f);
+    m_bDropBlockingSockets = ini.GetBool(L"DropBlockingSockets", true);
+    m_fMaxBlockRate = ini.GetFloat(L"SocketBlockRate", 96.0f);
+    m_fMaxBlockRate20 = ini.GetFloat(L"SocketBlockRate20", 98.0f);
 //<<< WiZaRd::Drop Blocking Sockets [Xman?]
 //>>> WiZaRd::Wine Compatibility
-	m_bNeedsWineCompatibility = ini.GetBool(L"WineCompatibility", RunningWine());
+    m_bNeedsWineCompatibility = ini.GetBool(L"WineCompatibility", RunningWine());
 //<<< WiZaRd::Wine Compatibility
 }
 //<<< WiZaRd::Own Prefs
@@ -2461,7 +2461,7 @@ void CPreferences::LoadkMulePrefs()
 WORD CPreferences::GetWindowsVersion()
 {
     static bool bWinVerAlreadyDetected = false;
-    if(!bWinVerAlreadyDetected)
+    if (!bWinVerAlreadyDetected)
     {
         bWinVerAlreadyDetected = true;
         m_wWinVer = DetectWinVersion();
@@ -2555,7 +2555,7 @@ void CPreferences::LoadCats()
         newcat->regexp = ini.GetStringUTF8(L"RegularExpression");
         newcat->autocat = ini.GetStringUTF8(L"Autocat");
         newcat->downloadInAlphabeticalOrder = ini.GetBool(L"downloadInAlphabeticalOrder", FALSE); // ZZ:DownloadManager
-        newcat->color = ini.GetInt(L"Color", (DWORD)-1 );
+        newcat->color = ini.GetInt(L"Color", (DWORD)-1);
         AddCat(newcat);
     }
 }
@@ -2811,7 +2811,7 @@ CString CPreferences::GetDefaultDirectory(EDefaultDirectory eDirectory, bool bCr
             nRegistrySetting = (DWORD)eDM_Auto;
 
         // Do we need to get SystemFolders or do we use our old Default anyway? (Executable Dir)
-        if (   nRegistrySetting == eDM_MultiUser
+        if (nRegistrySetting == eDM_MultiUser
                 || (nRegistrySetting == eDM_Auto && GetWindowsVersion() >= _WINVER_VISTA_)
                 || (nRegistrySetting == eDM_Auto && (!bConfigAvailableExecuteable || GetWindowsVersion() >= _WINVER_VISTA_)))
         {
@@ -2826,7 +2826,7 @@ CString CPreferences::GetDefaultDirectory(EDefaultDirectory eDirectory, bool bCr
                     PWSTR pszProgrammData = NULL;
 
                     // function not available on < WinVista
-                    HRESULT (WINAPI *pfnSHGetKnownFolderPath)(REFKNOWNFOLDERID, DWORD, HANDLE, PWSTR*);
+                    HRESULT(WINAPI *pfnSHGetKnownFolderPath)(REFKNOWNFOLDERID, DWORD, HANDLE, PWSTR*);
                     (FARPROC&)pfnSHGetKnownFolderPath = GetProcAddress(hShell32, "SHGetKnownFolderPath");
 
                     if (pfnSHGetKnownFolderPath != NULL
@@ -2965,29 +2965,29 @@ CString CPreferences::GetDefaultDirectory(EDefaultDirectory eDirectory, bool bCr
         m_astrDefaultDirs[EMULE_EXPANSIONDIR] = strSelectedExpansionBaseDirectory; // has ending backslashes
 
 #ifdef _DEBUG
-		theApp.QueueDebugLogLineEx(LOG_INFO, L"Directory mode: %u", m_nCurrentUserDirMode);
+        theApp.QueueDebugLogLineEx(LOG_INFO, L"Directory mode: %u", m_nCurrentUserDirMode);
         CString strDebug = L"";;
-        for(UINT i = 0; i < EMULE_DIRCOUNT; ++i)
-        	theApp.QueueDebugLogLineEx(LOG_INFO, L"Dir %u: %s", i, m_astrDefaultDirs[i]);
+        for (UINT i = 0; i < EMULE_DIRCOUNT; ++i)
+            theApp.QueueDebugLogLineEx(LOG_INFO, L"Dir %u: %s", i, m_astrDefaultDirs[i]);
 #endif
     }
     if (bCreate && !m_abDefaultDirsCreated[eDirectory])
     {
         switch (eDirectory)  // create the underlying directory first - be sure to adjust this if changing default directories
         {
-			case EMULE_CONFIGDIR:
-			case EMULE_LOGDIR:
-				::CreateDirectory(m_astrDefaultDirs[EMULE_CONFIGBASEDIR], NULL);
-				break;
-			case EMULE_TEMPDIR:
-			case EMULE_INCOMINGDIR:
-				::CreateDirectory(m_astrDefaultDirs[EMULE_DATABASEDIR], NULL);
-				break;
-			case EMULE_ADDLANGDIR:
-			case EMULE_SKINDIR:
-			case EMULE_TOOLBARDIR:
-				::CreateDirectory(m_astrDefaultDirs[EMULE_EXPANSIONDIR], NULL);
-				break;
+        case EMULE_CONFIGDIR:
+        case EMULE_LOGDIR:
+            ::CreateDirectory(m_astrDefaultDirs[EMULE_CONFIGBASEDIR], NULL);
+            break;
+        case EMULE_TEMPDIR:
+        case EMULE_INCOMINGDIR:
+            ::CreateDirectory(m_astrDefaultDirs[EMULE_DATABASEDIR], NULL);
+            break;
+        case EMULE_ADDLANGDIR:
+        case EMULE_SKINDIR:
+        case EMULE_TOOLBARDIR:
+            ::CreateDirectory(m_astrDefaultDirs[EMULE_EXPANSIONDIR], NULL);
+            break;
         }
         ::CreateDirectory(m_astrDefaultDirs[eDirectory], NULL);
         m_abDefaultDirsCreated[eDirectory] = true;
@@ -2999,17 +2999,17 @@ CString	CPreferences::GetMuleDirectory(EDefaultDirectory eDirectory, bool bCreat
 {
     switch (eDirectory)
     {
-		case EMULE_INCOMINGDIR:
-			return m_strIncomingDir;
-		case EMULE_TEMPDIR:
-			ASSERT(0); // use GetTempDir() instead! This function can only return the first tempdirectory
-			return GetTempDir(0);
-		case EMULE_SKINDIR:
-			return m_strSkinProfileDir;
-		case EMULE_TOOLBARDIR:
-			return m_sToolbarBitmapFolder;
-		default:
-			return GetDefaultDirectory(eDirectory, bCreate);
+    case EMULE_INCOMINGDIR:
+        return m_strIncomingDir;
+    case EMULE_TEMPDIR:
+        ASSERT(0); // use GetTempDir() instead! This function can only return the first tempdirectory
+        return GetTempDir(0);
+    case EMULE_SKINDIR:
+        return m_strSkinProfileDir;
+    case EMULE_TOOLBARDIR:
+        return m_sToolbarBitmapFolder;
+    default:
+        return GetDefaultDirectory(eDirectory, bCreate);
     }
 }
 
@@ -3017,17 +3017,17 @@ void CPreferences::SetMuleDirectory(EDefaultDirectory eDirectory, CString strNew
 {
     switch (eDirectory)
     {
-		case EMULE_INCOMINGDIR:
-			m_strIncomingDir = strNewDir;
-			break;
-		case EMULE_SKINDIR:
-			m_strSkinProfileDir = strNewDir;
-			break;
-		case EMULE_TOOLBARDIR:
-			m_sToolbarBitmapFolder = strNewDir;
-			break;
-		default:
-			ASSERT(0);
+    case EMULE_INCOMINGDIR:
+        m_strIncomingDir = strNewDir;
+        break;
+    case EMULE_SKINDIR:
+        m_strSkinProfileDir = strNewDir;
+        break;
+    case EMULE_TOOLBARDIR:
+        m_sToolbarBitmapFolder = strNewDir;
+        break;
+    default:
+        ASSERT(0);
     }
 }
 
@@ -3085,7 +3085,7 @@ bool CPreferences::IsRunningAeroGlassTheme()
             HMODULE hDWMAPI = LoadLibrary(_T("dwmapi.dll"));
             if (hDWMAPI)
             {
-                HRESULT (WINAPI *pfnDwmIsCompositionEnabled)(BOOL*);
+                HRESULT(WINAPI *pfnDwmIsCompositionEnabled)(BOOL*);
                 (FARPROC&)pfnDwmIsCompositionEnabled = GetProcAddress(hDWMAPI, "DwmIsCompositionEnabled");
                 if (pfnDwmIsCompositionEnabled != NULL)
                     pfnDwmIsCompositionEnabled(&m_bIsRunningAeroGlass);
@@ -3099,7 +3099,7 @@ bool CPreferences::IsRunningAeroGlassTheme()
 //>>> Remove forbidden files
 bool CPreferences::IsForbiddenFile(const CString& rstrName)
 {
-    if(thePrefs.RemoveForbiddenFiles())
+    if (thePrefs.RemoveForbiddenFiles())
     {
         int curPos = 0;
         CString strFilter = m_strForbiddenFileFilters.Tokenize(L"|", curPos);

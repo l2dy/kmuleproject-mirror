@@ -61,7 +61,7 @@ extern "C" DWORD SHA_asm_m_nBuffer;
 bool CSHA::VerifyImplementation()
 {
     if (SHA_asm_m_nCount0 != offsetof(CSHA, m_nCount[0]) ||
-            SHA_asm_m_nCount1 != offsetof(CSHA, m_nCount[1]) )
+            SHA_asm_m_nCount1 != offsetof(CSHA, m_nCount[1]))
     {
         ASSERT(0);
         return false;
@@ -71,7 +71,7 @@ bool CSHA::VerifyImplementation()
             SHA_asm_m_nHash1 != offsetof(CSHA, m_nHash[1]) ||
             SHA_asm_m_nHash2 != offsetof(CSHA, m_nHash[2]) ||
             SHA_asm_m_nHash3 != offsetof(CSHA, m_nHash[3]) ||
-            SHA_asm_m_nHash4 != offsetof(CSHA, m_nHash[4]) )
+            SHA_asm_m_nHash4 != offsetof(CSHA, m_nHash[4]))
     {
         ASSERT(0);
         return false;
@@ -131,7 +131,7 @@ void CSHA::GetHash(SHA1* pHash)
 {
     /* extract the hash value as bytes in case the hash buffer is   */
     /* misaligned for 32-bit words                                  */
-    for(int i = 0; i < SHA1_DIGEST_SIZE; ++i)
+    for (int i = 0; i < SHA1_DIGEST_SIZE; ++i)
         pHash->b[i] = (unsigned char)(m_nHash[i >> 2] >> 8 * (~i & 3));
 }
 
@@ -158,14 +158,14 @@ void CSHA::Finish()
     }
     // Pad out to 56 mod 64.
     index = (unsigned int)(m_nCount[0] & 0x3f);
-    SHA_Add_p5(this, SHA_PADDING, (index < 56) ? (56 - index) : (120 - index) );
+    SHA_Add_p5(this, SHA_PADDING, (index < 56) ? (56 - index) : (120 - index));
     // Append length (before padding)
-    SHA_Add_p5(this, bits, 8 );
+    SHA_Add_p5(this, bits, 8);
 }
 
 void CSHA::GetHash(CAICHHash& rHash)
 {
-    ASSERT( rHash.GetHashSize() == sizeof(SHA1) );
+    ASSERT(rHash.GetHashSize() == sizeof(SHA1));
     GetHash((SHA1*)rHash.GetRawHash());
 }
 
@@ -181,8 +181,8 @@ void CSHA::Finish(CAICHHash& rHash)
 CString CSHA::GetHashString(BOOL bURN)
 {
     SHA1 pHash;
-    GetHash( &pHash );
-    return HashToString( &pHash, bURN );
+    GetHash(&pHash);
+    return HashToString(&pHash, bURN);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -193,9 +193,9 @@ CString CSHA::HashToString(const SHA1* pHashIn, BOOL bURN)
     static LPCTSTR pszBase64 = _T("ABCDEFGHIJKLMNOPQRSTUVWXYZ234567");
 
     CString strHash;
-    LPTSTR pszHash = strHash.GetBuffer( bURN ? 9 + 32 : 32 );
+    LPTSTR pszHash = strHash.GetBuffer(bURN ? 9 + 32 : 32);
 
-    if ( bURN )
+    if (bURN)
     {
         *pszHash++ = 'u';
         *pszHash++ = 'r';
@@ -211,16 +211,16 @@ CString CSHA::HashToString(const SHA1* pHashIn, BOOL bURN)
     LPBYTE pHash = (LPBYTE)pHashIn;
     int nShift = 7;
 
-    for ( int nChar = 32 ; nChar ; nChar-- )
+    for (int nChar = 32 ; nChar ; nChar--)
     {
         BYTE nBits = 0;
 
-        for ( int nBit = 0 ; nBit < 5 ; nBit++ )
+        for (int nBit = 0 ; nBit < 5 ; nBit++)
         {
-            if ( nBit ) nBits <<= 1;
-            nBits |= ( *pHash >> nShift ) & 1;
+            if (nBit) nBits <<= 1;
+            nBits |= (*pHash >> nShift) & 1;
 
-            if ( ! nShift-- )
+            if (! nShift--)
             {
                 nShift = 7;
                 pHash++;
@@ -230,7 +230,7 @@ CString CSHA::HashToString(const SHA1* pHashIn, BOOL bURN)
         *pszHash++ = pszBase64[ nBits ];
     }
 
-    strHash.ReleaseBuffer( bURN ? 9 + 32 : 32 );
+    strHash.ReleaseBuffer(bURN ? 9 + 32 : 32);
 
     return strHash;
 }
@@ -244,17 +244,17 @@ CString CSHA::HashToHexString(const SHA1* pHashIn, BOOL bURN)
 
     LPBYTE pHash = (LPBYTE)pHashIn;
     CString strHash;
-    LPTSTR pszHash = strHash.GetBuffer( 40 );
+    LPTSTR pszHash = strHash.GetBuffer(40);
 
-    for ( int nByte = 0 ; nByte < 20 ; nByte++, pHash++ )
+    for (int nByte = 0 ; nByte < 20 ; nByte++, pHash++)
     {
         *pszHash++ = pszHex[ *pHash >> 4 ];
         *pszHash++ = pszHex[ *pHash & 15 ];
     }
 
-    strHash.ReleaseBuffer( 40 );
+    strHash.ReleaseBuffer(40);
 
-    if ( bURN ) strHash = _T("urn:sha1:") + strHash;
+    if (bURN) strHash = _T("urn:sha1:") + strHash;
 
     return strHash;
 }
@@ -264,31 +264,31 @@ CString CSHA::HashToHexString(const SHA1* pHashIn, BOOL bURN)
 
 BOOL CSHA::HashFromString(LPCTSTR pszHash, SHA1* pHashIn)
 {
-    if ( ! pszHash || _tcslen( pszHash ) < 32 ) return FALSE;  //Invalid hash
+    if (! pszHash || _tcslen(pszHash) < 32) return FALSE;      //Invalid hash
 
-    if ( _tcsnicmp(pszHash, _T("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"), 32 ) == 0 ) return FALSE; //Bad hash
+    if (_tcsnicmp(pszHash, _T("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"), 32) == 0) return FALSE;    //Bad hash
 
     SHA1 Hash;
     LPBYTE pHash = (LPBYTE)&Hash;
     DWORD nBits	= 0;
     int nCount	= 0;
 
-    for ( int nChars = 32 ; nChars-- ; pszHash++ )
+    for (int nChars = 32 ; nChars-- ; pszHash++)
     {
-        if ( *pszHash >= 'A' && *pszHash <= 'Z' )
-            nBits |= ( *pszHash - 'A' );
-        else if ( *pszHash >= 'a' && *pszHash <= 'z' )
-            nBits |= ( *pszHash - 'a' );
-        else if ( *pszHash >= '2' && *pszHash <= '7' )
-            nBits |= ( *pszHash - '2' + 26 );
+        if (*pszHash >= 'A' && *pszHash <= 'Z')
+            nBits |= (*pszHash - 'A');
+        else if (*pszHash >= 'a' && *pszHash <= 'z')
+            nBits |= (*pszHash - 'a');
+        else if (*pszHash >= '2' && *pszHash <= '7')
+            nBits |= (*pszHash - '2' + 26);
         else
             return FALSE;
 
         nCount += 5;
 
-        if ( nCount >= 8 )
+        if (nCount >= 8)
         {
-            *pHash++ = (BYTE)( nBits >> ( nCount - 8 ) );
+            *pHash++ = (BYTE)(nBits >> (nCount - 8));
             nCount -= 8;
         }
 
@@ -305,25 +305,25 @@ BOOL CSHA::HashFromString(LPCTSTR pszHash, SHA1* pHashIn)
 
 BOOL CSHA::HashFromURN(LPCTSTR pszHash, SHA1* pHashIn)
 {
-    if ( pszHash == NULL ) return FALSE;
-    int nLen = _tcslen( pszHash );
+    if (pszHash == NULL) return FALSE;
+    int nLen = _tcslen(pszHash);
 
-    if ( nLen >= 41 && _tcsnicmp( pszHash, _T("urn:sha1:"), 9 ) == 0 )
+    if (nLen >= 41 && _tcsnicmp(pszHash, _T("urn:sha1:"), 9) == 0)
     {
-        return HashFromString( pszHash + 9, pHashIn );
+        return HashFromString(pszHash + 9, pHashIn);
     }
-    else if ( nLen >= 37 && _tcsnicmp( pszHash, _T("sha1:"), 5 ) == 0 )
+    else if (nLen >= 37 && _tcsnicmp(pszHash, _T("sha1:"), 5) == 0)
     {
-        return HashFromString( pszHash + 5, pHashIn );
+        return HashFromString(pszHash + 5, pHashIn);
     }
-    else if ( nLen >= 85 && _tcsnicmp( pszHash, _T("urn:bitprint:"), 13 ) == 0 )
+    else if (nLen >= 85 && _tcsnicmp(pszHash, _T("urn:bitprint:"), 13) == 0)
     {
         // 13 + 32 + 1 + 39
-        return HashFromString( pszHash + 13, pHashIn );
+        return HashFromString(pszHash + 13, pHashIn);
     }
-    else if ( nLen >= 81 && _tcsnicmp( pszHash, _T("bitprint:"), 9 ) == 0 )
+    else if (nLen >= 81 && _tcsnicmp(pszHash, _T("bitprint:"), 9) == 0)
     {
-        return HashFromString( pszHash + 9, pHashIn );
+        return HashFromString(pszHash + 9, pHashIn);
     }
 
     return FALSE;
@@ -333,9 +333,9 @@ BOOL CSHA::IsNull(SHA1* pHash)
 {
     SHA1 Blank;
 
-    ZeroMemory( &Blank, sizeof(SHA1) );
+    ZeroMemory(&Blank, sizeof(SHA1));
 
-    if ( *pHash == Blank ) return TRUE;
+    if (*pHash == Blank) return TRUE;
 
     return FALSE;
 }

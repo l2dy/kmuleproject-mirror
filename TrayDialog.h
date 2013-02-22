@@ -13,17 +13,17 @@ public:
     CTrayDialog(UINT uIDD, CWnd* pParent = NULL);   // standard constructor
 
     void TraySetMinimizeToTray(bool* pbMinimizeToTray);
-	BOOL TraySetMenu(const UINT nResourceID);
+    BOOL TraySetMenu(const UINT nResourceID);
     BOOL TraySetMenu(HMENU hMenu);
     BOOL TraySetMenu(LPCTSTR lpszMenuName);
     BOOL TrayUpdate();
     BOOL TrayShow();
     BOOL TrayHide();
     void TraySetToolTip(LPCTSTR lpszToolTip);
-	void TraySetIcon(HICON hIcon, const bool bDelete = false);
+    void TraySetIcon(HICON hIcon, const bool bDelete = false);
 //	void TraySetIcon(const UINT nResourceID, const bool bDelete= false);
 //	void TraySetIcon(LPCTSTR lpszResourceName, const bool bDelete = false);
-	bool TrayIsVisible() const;
+    bool TrayIsVisible() const;
 
     virtual void TrayMinimizeToTrayChange();
     virtual void RestoreWindow();
@@ -40,7 +40,7 @@ protected:
     HICON m_hPrevIconDelete;
     bool m_bLButtonDblClk;
     bool m_bLButtonDown;
-	bool			m_bTrayIconVisible;
+    bool			m_bTrayIconVisible;
     NOTIFYICONDATA m_nidIconData;
     CMenu m_mnuTrayMenu;
     UINT m_nDefaultMenuItem;

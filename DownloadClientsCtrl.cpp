@@ -148,8 +148,8 @@ void CDownloadClientsCtrl::SetAllIcons()
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("OverlaySecureObfu"))), 3);
     // Apply the image list also to the listview control, even if we use our own 'DrawItem'.
     // This is needed to give the listview control a chance to initialize the row height.
-    ASSERT( (GetStyle() & LVS_SHAREIMAGELISTS) != 0 );
-    VERIFY( ApplyImageList(m_ImageList) == NULL );
+    ASSERT((GetStyle() & LVS_SHAREIMAGELISTS) != 0);
+    VERIFY(ApplyImageList(m_ImageList) == NULL);
 }
 
 void CDownloadClientsCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
@@ -189,7 +189,7 @@ void CDownloadClientsCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
                 {
 //>>> WiZaRd::ClientAnalyzer
                     int plusminus = 0;
-                    if(badguy != -1 && client->IsBadGuy())
+                    if (badguy != -1 && client->IsBadGuy())
                     {
                         int iIconPosY = (cur_rec.Height() > 16) ? ((cur_rec.Height() - 16) / 2) : 1;
                         POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
@@ -449,7 +449,7 @@ int CDownloadClientsCtrl::SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParam
     case 1:
         //Proper sorting ;)
         iResult = item1->GetClientSoft() - item2->GetClientSoft();
-        if(iResult == 0)
+        if (iResult == 0)
             iResult = CompareLocaleStringNoCase(item1->DbgGetFullClientSoftVer(), item2->DbgGetFullClientSoftVer());
         break;
 
@@ -457,7 +457,7 @@ int CDownloadClientsCtrl::SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParam
     {
         const CKnownFile *file1 = item1->GetRequestFile();
         const CKnownFile *file2 = item2->GetRequestFile();
-        if( (file1 != NULL) && (file2 != NULL))
+        if ((file1 != NULL) && (file2 != NULL))
             iResult = CompareLocaleStringNoCase(file1->GetFileName(), file2->GetFileName());
         else if (file1 == NULL)
             iResult = 1;
@@ -585,7 +585,7 @@ BOOL CDownloadClientsCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                 bool IsAlready;
                 IsAlready = client->GetFriendSlot();
                 theApp.friendlist->RemoveAllFriendSlots();
-                if( !IsAlready )
+                if (!IsAlready)
                     client->SetFriendSlot(true);
                 Update(iSel);
             }

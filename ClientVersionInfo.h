@@ -41,7 +41,7 @@ public:
         int posSeperator = strPCEncodedVersion.Find('/',1);
         if (posSeperator == (-1) || strPCEncodedVersion.GetLength() - posSeperator < 2)
         {
-            theApp.QueueDebugLogLine( false, _T("PeerCache Error: Bad Version info in PeerCache Descriptor found: %s"), strPCEncodedVersion);
+            theApp.QueueDebugLogLine(false, _T("PeerCache Error: Bad Version info in PeerCache Descriptor found: %s"), strPCEncodedVersion);
             return;
         }
         CString strClientType = strPCEncodedVersion.Left(posSeperator).Trim();
@@ -130,12 +130,12 @@ public:
 
     friend bool operator==(const CClientVersionInfo& c1, const CClientVersionInfo& c2)
     {
-        return ( (c1.m_nVerMajor == (-1) || c2.m_nVerMajor == (-1) || c1.m_nVerMajor == c2.m_nVerMajor)
-                 && (c1.m_nVerMinor == (-1) || c2.m_nVerMinor == (-1) || c1.m_nVerMinor == c2.m_nVerMinor)
-                 && (c1.m_nVerUpdate == (-1) || c2.m_nVerUpdate == (-1) || c1.m_nVerUpdate == c2.m_nVerUpdate)
-                 && (c1.m_nVerBuild == (-1) || c2.m_nVerBuild == (-1) || c1.m_nVerBuild == c2.m_nVerBuild)
-                 && (c1.m_ClientTypeMajor == (-1) || c2.m_ClientTypeMajor == (-1) || c1.m_ClientTypeMajor == c2.m_ClientTypeMajor)
-                 && (c1.m_ClientTypeMinor == (-1) || c2.m_ClientTypeMinor == (-1) || c1.m_ClientTypeMinor == c2.m_ClientTypeMinor)
+        return ((c1.m_nVerMajor == (-1) || c2.m_nVerMajor == (-1) || c1.m_nVerMajor == c2.m_nVerMajor)
+                && (c1.m_nVerMinor == (-1) || c2.m_nVerMinor == (-1) || c1.m_nVerMinor == c2.m_nVerMinor)
+                && (c1.m_nVerUpdate == (-1) || c2.m_nVerUpdate == (-1) || c1.m_nVerUpdate == c2.m_nVerUpdate)
+                && (c1.m_nVerBuild == (-1) || c2.m_nVerBuild == (-1) || c1.m_nVerBuild == c2.m_nVerBuild)
+                && (c1.m_ClientTypeMajor == (-1) || c2.m_ClientTypeMajor == (-1) || c1.m_ClientTypeMajor == c2.m_ClientTypeMajor)
+                && (c1.m_ClientTypeMinor == (-1) || c2.m_ClientTypeMinor == (-1) || c1.m_ClientTypeMinor == c2.m_ClientTypeMinor)
                );
     }
 
@@ -146,7 +146,7 @@ public:
 
     friend bool operator >(const CClientVersionInfo& c1, const CClientVersionInfo& c2)
     {
-        if ( (c1.m_ClientTypeMajor == (-1) || c2.m_ClientTypeMajor == (-1) || c1.m_ClientTypeMajor != c2.m_ClientTypeMajor)
+        if ((c1.m_ClientTypeMajor == (-1) || c2.m_ClientTypeMajor == (-1) || c1.m_ClientTypeMajor != c2.m_ClientTypeMajor)
                 || (c1.m_ClientTypeMinor != c2.m_ClientTypeMinor))
             return false;
         if (c1.m_nVerMajor != (-1) && c2.m_nVerMajor != (-1) && c1.m_nVerMajor > c2.m_nVerMajor)

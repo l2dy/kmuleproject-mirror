@@ -63,7 +63,7 @@ void CPacketTracking::AddTrackedOutPacket(UINT dwIP, uint8 byOpcode)
 
 bool CPacketTracking::IsTrackedOutListRequestPacket(uint8 byOpcode) const
 {
-    switch(byOpcode)
+    switch (byOpcode)
     {
     case KADEMLIA2_BOOTSTRAP_REQ:
     case KADEMLIA2_HELLO_REQ:
@@ -251,7 +251,7 @@ void CPacketTracking::InTrackListCleanup()
     const UINT dbgOldSize = m_liTrackPacketsIn.GetCount();
     dwLastTrackInCleanup = dwCurrentTick;
     POSITION pos1, pos2;
-    for (pos1 = m_liTrackPacketsIn.GetHeadPosition(); ( pos2 = pos1 ) != NULL;)
+    for (pos1 = m_liTrackPacketsIn.GetHeadPosition(); (pos2 = pos1) != NULL;)
     {
         m_liTrackPacketsIn.GetNext(pos1);
         TrackPacketsIn_Struct* curEntry = m_liTrackPacketsIn.GetAt(pos2);
@@ -273,7 +273,7 @@ void CPacketTracking::AddLegacyChallenge(CUInt128 uContactID, CUInt128 uChalleng
     {
         if (::GetTickCount() - listChallengeRequests.GetTail().dwInserted > SEC2MS(180))
         {
-            DEBUG_ONLY( DebugLog(_T("Challenge timed out, client not verified - %s"), ipstr(ntohl(listChallengeRequests.GetTail().uIP))) );
+            DEBUG_ONLY(DebugLog(_T("Challenge timed out, client not verified - %s"), ipstr(ntohl(listChallengeRequests.GetTail().uIP))));
             listChallengeRequests.RemoveTail();
         }
         else
@@ -289,7 +289,7 @@ bool CPacketTracking::IsLegacyChallenge(CUInt128 uChallengeID, UINT uIP, uint8 b
         if (listChallengeRequests.GetAt(pos).uIP == uIP && listChallengeRequests.GetAt(pos).byOpcode == byOpcode
                 && ::GetTickCount() - listChallengeRequests.GetAt(pos).dwInserted < SEC2MS(180))
         {
-            ASSERT( listChallengeRequests.GetAt(pos).uChallenge != 0 || byOpcode == KADEMLIA2_PING );
+            ASSERT(listChallengeRequests.GetAt(pos).uChallenge != 0 || byOpcode == KADEMLIA2_PING);
             if (listChallengeRequests.GetAt(pos).uChallenge == 0 || listChallengeRequests.GetAt(pos).uChallenge == uChallengeID)
             {
                 ruContactID = listChallengeRequests.GetAt(pos).uContactID;

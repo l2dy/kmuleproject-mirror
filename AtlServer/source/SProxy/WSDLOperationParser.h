@@ -55,7 +55,7 @@ public:
 
     inline void SetOperation(CWSDLPortTypeOperation *pOperation)
     {
-        ATLASSERT( pOperation != NULL );
+        ATLASSERT(pOperation != NULL);
 
         m_pOperation = pOperation;
     }

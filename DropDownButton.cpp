@@ -84,7 +84,7 @@ BOOL CDropDownButton::Init(bool bSingleDropDownBtn, bool bWholeDropDown)
         atb[0].fsState = TBSTATE_ENABLED;
         atb[0].fsStyle = m_bSingleDropDownBtn ? (bWholeDropDown ? BTNS_WHOLEDROPDOWN : BTNS_DROPDOWN) : BTNS_BUTTON;
         atb[0].iString = -1;
-        VERIFY( AddButtons(1, atb) );
+        VERIFY(AddButtons(1, atb));
 
         ResizeToMaxWidth();
         SetExtendedStyle(TBSTYLE_EX_DRAWDDARROWS);

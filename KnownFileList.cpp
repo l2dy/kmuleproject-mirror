@@ -126,7 +126,7 @@ bool CKnownFileList::LoadKnownFiles()
         }
         file.Close();
     }
-    catch(CFileException* error)
+    catch (CFileException* error)
     {
         if (error->m_cause == CFileException::endOfFile)
             LogError(LOG_STATUSBAR, GetResString(IDS_ERR_SERVERMET_BAD));
@@ -201,7 +201,7 @@ bool CKnownFileList::LoadCancelledFiles()
         }
         if (m_dwCancelledFilesSeed == 0)
         {
-            ASSERT( bOldVersion || file.GetLength() <= 10 );
+            ASSERT(bOldVersion || file.GetLength() <= 10);
             m_dwCancelledFilesSeed = (GetRandomUInt32() % 0xFFFFFFFE) + 1;
         }
 
@@ -228,7 +228,7 @@ bool CKnownFileList::LoadCancelledFiles()
         }
         file.Close();
     }
-    catch(CFileException* error)
+    catch (CFileException* error)
     {
         if (error->m_cause == CFileException::endOfFile)
             LogError(LOG_STATUSBAR, GetResString(IDS_ERR_CONFIGCORRUPT), CANCELLED_MET_FILENAME);
@@ -275,11 +275,11 @@ void CKnownFileList::Save()
             bool bContainsAnyLargeFiles = false;
             file.WriteUInt32(nRecordsNumber);
             POSITION pos = m_Files_map.GetStartPosition();
-            while( pos != NULL )
+            while (pos != NULL)
             {
                 CKnownFile* pFile;
                 CCKey key;
-                m_Files_map.GetNextAssoc( pos, key, pFile );
+                m_Files_map.GetNextAssoc(pos, key, pFile);
                 if (!thePrefs.IsRememberingDownloadedFiles() && !theApp.sharedfiles->IsFilePtrInList(pFile))
                 {
                     continue;
@@ -304,7 +304,7 @@ void CKnownFileList::Save()
             }
             file.Close();
         }
-        catch(CFileException* error)
+        catch (CFileException* error)
         {
             CString strError(_T("Failed to save ") KNOWN_MET_FILENAME _T(" file"));
             TCHAR szError[MAX_CFEXP_ERRORMSG];
@@ -352,11 +352,11 @@ void CKnownFileList::Save()
                 UINT nRecordsNumber = m_mapCancelledFiles.GetCount();
                 file.WriteUInt32(nRecordsNumber);
                 POSITION pos = m_mapCancelledFiles.GetStartPosition();
-                while( pos != NULL )
+                while (pos != NULL)
                 {
                     int dwDummy;
                     CSKey key;
-                    m_mapCancelledFiles.GetNextAssoc( pos, key, dwDummy );
+                    m_mapCancelledFiles.GetNextAssoc(pos, key, dwDummy);
                     file.WriteHash16(key.m_key);
                     file.WriteUInt8(0);
                 }
@@ -370,7 +370,7 @@ void CKnownFileList::Save()
             }
             file.Close();
         }
-        catch(CFileException* error)
+        catch (CFileException* error)
         {
             CString strError(_T("Failed to save ") CANCELLED_MET_FILENAME _T(" file"));
             TCHAR szError[MAX_CFEXP_ERRORMSG];
@@ -389,11 +389,11 @@ void CKnownFileList::Clear()
 {
     m_mapKnownFilesByAICH.RemoveAll();
     POSITION pos = m_Files_map.GetStartPosition();
-    while( pos != NULL )
+    while (pos != NULL)
     {
         CKnownFile* pFile;
         CCKey key;
-        m_Files_map.GetNextAssoc( pos, key, pFile );
+        m_Files_map.GetNextAssoc(pos, key, pFile);
         delete pFile;
     }
     m_Files_map.RemoveAll();
@@ -438,17 +438,17 @@ bool CKnownFileList::SafeAddKFile(CKnownFile* toadd)
             // available file was not in shared file list).
             if (theApp.sharedfiles->IsFilePtrInList(pFileInMap))
                 bRemovedDuplicateSharedFile = theApp.sharedfiles->RemoveFile(pFileInMap);
-            ASSERT( !theApp.sharedfiles->IsFilePtrInList(pFileInMap) );
+            ASSERT(!theApp.sharedfiles->IsFilePtrInList(pFileInMap));
         }
         //Double check to make sure this is the same file as it's possible that a two files have the same hash.
         //Maybe in the furture we can change the client to not just use Hash as a key throughout the entire client..
-        ASSERT( toadd->GetFileSize() == pFileInMap->GetFileSize() );
-        ASSERT( toadd != pFileInMap );
+        ASSERT(toadd->GetFileSize() == pFileInMap->GetFileSize());
+        ASSERT(toadd != pFileInMap);
         if (toadd->GetFileSize() == pFileInMap->GetFileSize())
             toadd->statistic.MergeFileStats(&pFileInMap->statistic);
 
-        ASSERT( theApp.sharedfiles==NULL || !theApp.sharedfiles->IsFilePtrInList(pFileInMap) );
-        ASSERT( theApp.downloadqueue==NULL || !theApp.downloadqueue->IsPartFile(pFileInMap) );
+        ASSERT(theApp.sharedfiles==NULL || !theApp.sharedfiles->IsFilePtrInList(pFileInMap));
+        ASSERT(theApp.downloadqueue==NULL || !theApp.downloadqueue->IsPartFile(pFileInMap));
 
         // Quick fix: If we downloaded already downloaded files again and if those files all had the same file names
         // and were renamed during file completion, we have a pending ptr in transfer window.

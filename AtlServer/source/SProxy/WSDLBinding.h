@@ -162,7 +162,7 @@ public:
             pBinding = new CSoapBinding;
         }
 
-        m_pSoapBinding.Attach( pBinding );
+        m_pSoapBinding.Attach(pBinding);
         return m_pSoapBinding;
     }
 
@@ -178,7 +178,7 @@ public:
             pBinding = new CHttpBinding;
         }
 
-        m_pHttpBinding.Attach( pBinding );
+        m_pHttpBinding.Attach(pBinding);
         return m_pHttpBinding;
     }
 

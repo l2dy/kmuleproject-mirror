@@ -60,7 +60,7 @@ BOOL CPreviewThread::InitInstance()
 
 BOOL CPreviewThread::Run()
 {
-    ASSERT (m_pPartfile) ;
+    ASSERT(m_pPartfile) ;
     CFile destFile;
     CFile srcFile;
     if (!srcFile.Open(m_pPartfile->GetFilePath(), CFile::modeRead | CFile::shareDenyNone))
@@ -155,7 +155,7 @@ BOOL CPreviewThread::Run()
         }
         CFile::Remove(strPreviewName);
     }
-    catch(CFileException* error)
+    catch (CFileException* error)
     {
         m_pPartfile->m_bPreviewing = false;
         error->Delete();

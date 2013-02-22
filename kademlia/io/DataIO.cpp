@@ -111,7 +111,7 @@ BYTE* CDataIO::ReadBsob(uint8* puSize)
     {
         ReadArray(pbyBsob, *puSize);
     }
-    catch(CException*)
+    catch (CException*)
     {
         delete[] pbyBsob;
         throw;
@@ -228,7 +228,7 @@ CKadTag *CDataIO::ReadTag(bool bOptACP)
             {
                 pRetVal = new CKadTagBsob(pcName, pValue, uSize);
             }
-            catch(CException*)
+            catch (CException*)
             {
                 delete[] pValue;
                 throw;
@@ -370,7 +370,7 @@ void CDataIO::WriteTag(const CKadTag* pTag)
     }
     catch (CIOException *ioe)
     {
-        AddDebugLogLine( false, _T("Exception in CDataIO:writeTag (IO Error(%i))"), ioe->m_iCause);
+        AddDebugLogLine(false, _T("Exception in CDataIO:writeTag (IO Error(%i))"), ioe->m_iCause);
         throw ioe;
     }
     catch (...)
@@ -413,7 +413,7 @@ void CDataIO::WriteTag(LPCSTR szName, float uValue)
 void CDataIO::WriteTagList(const TagList& tagList)
 {
     UINT uCount = (UINT)tagList.size();
-    ASSERT( uCount <= 0xFF );
+    ASSERT(uCount <= 0xFF);
     WriteByte((uint8)uCount);
     for (TagList::const_iterator itTagList = tagList.begin(); itTagList != tagList.end(); ++itTagList)
         WriteTag(*itTagList);
@@ -547,7 +547,7 @@ void KadTagStrMakeLower(CKadTagValueString& rwstr)
     LPWSTR pwsz = rwstr.GetBuffer(iLen);
     int iSize = LCMapStringW(MAKELCID(MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US), SORT_DEFAULT),
                              LCMAP_LOWERCASE, pwsz, -1, pwsz, iLen + 1);
-    ASSERT( iSize - 1 == iLen );
+    ASSERT(iSize - 1 == iLen);
     rwstr.ReleaseBuffer(iLen);
 #else
     // NOTE: It's very important that the Unicode->LowerCase map already was initialized!

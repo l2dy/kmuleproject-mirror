@@ -32,13 +32,13 @@ TAG_METHOD_IMPL(CWSDLBindingParser, OnOperation)
     if (pCurr != NULL)
     {
         CAutoPtr<CWSDLPortTypeOperation> spElem;
-        spElem.Attach( new CWSDLPortTypeOperation );
+        spElem.Attach(new CWSDLPortTypeOperation);
 
         if (spElem != NULL)
         {
             SetXMLElementInfo(spElem, pCurr, GetLocator());
 
-            CAutoPtr<CWSDLOperationParser> p( new CWSDLOperationParser(GetReader(), this, GetLevel(), spElem) );
+            CAutoPtr<CWSDLOperationParser> p(new CWSDLOperationParser(GetReader(), this, GetLevel(), spElem));
             if (p)
             {
                 if (g_ParserList.AddHead(p) != NULL)

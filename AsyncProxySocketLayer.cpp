@@ -166,15 +166,15 @@ void CAsyncProxySocketLayer::SetProxy(int nProxyType)
 void CAsyncProxySocketLayer::SetProxy(int nProxyType, const CStringA& strProxyHost, int ProxyPort)
 {
     //Validate the parameters
-    ASSERT( nProxyType == PROXYTYPE_SOCKS4  ||
-            nProxyType == PROXYTYPE_SOCKS4A ||
-            nProxyType == PROXYTYPE_SOCKS5  ||
-            nProxyType == PROXYTYPE_HTTP10	||
-            nProxyType == PROXYTYPE_HTTP11 );
-    ASSERT( !m_nProxyOpID );
-    ASSERT( !strProxyHost.IsEmpty() );
-    ASSERT( ProxyPort > 0);
-    ASSERT( ProxyPort <= 65535 );
+    ASSERT(nProxyType == PROXYTYPE_SOCKS4  ||
+           nProxyType == PROXYTYPE_SOCKS4A ||
+           nProxyType == PROXYTYPE_SOCKS5  ||
+           nProxyType == PROXYTYPE_HTTP10	||
+           nProxyType == PROXYTYPE_HTTP11);
+    ASSERT(!m_nProxyOpID);
+    ASSERT(!strProxyHost.IsEmpty());
+    ASSERT(ProxyPort > 0);
+    ASSERT(ProxyPort <= 65535);
 
     m_ProxyData.nProxyType = nProxyType;
     m_ProxyData.strProxyHost = strProxyHost;
@@ -186,11 +186,11 @@ void CAsyncProxySocketLayer::SetProxy(int nProxyType, const CStringA& strProxyHo
                                       const CStringA& strProxyUser, const CStringA& strProxyPass)
 {
     //Validate the parameters
-    ASSERT( nProxyType == PROXYTYPE_SOCKS5 || nProxyType == PROXYTYPE_HTTP10 || nProxyType == PROXYTYPE_HTTP11 );
-    ASSERT( !m_nProxyOpID );
-    ASSERT( !strProxyHost.IsEmpty() );
-    ASSERT( ProxyPort > 0 );
-    ASSERT( ProxyPort <= 65535 );
+    ASSERT(nProxyType == PROXYTYPE_SOCKS5 || nProxyType == PROXYTYPE_HTTP10 || nProxyType == PROXYTYPE_HTTP11);
+    ASSERT(!m_nProxyOpID);
+    ASSERT(!strProxyHost.IsEmpty());
+    ASSERT(ProxyPort > 0);
+    ASSERT(ProxyPort <= 65535);
 
     m_ProxyData.nProxyType = nProxyType;
     m_ProxyData.strProxyHost = strProxyHost;
@@ -299,7 +299,7 @@ void CAsyncProxySocketLayer::OnReceive(int nErrorCode)
 
     if (m_ProxyData.nProxyType == PROXYTYPE_SOCKS4 || m_ProxyData.nProxyType == PROXYTYPE_SOCKS4A)
     {
-        if (   m_nProxyOpState == 1 // Response to initial connect or bind request
+        if (m_nProxyOpState == 1    // Response to initial connect or bind request
                 || m_nProxyOpState == 2)// Response (2nd) to bind request
         {
             if (!m_pRecvBuffer)
@@ -355,8 +355,8 @@ void CAsyncProxySocketLayer::OnReceive(int nErrorCode)
                 //ASSERT( m_nProxyPeerPort == *(u_short*)&m_pRecvBuffer[2] );
                 //ASSERT( m_nProxyPeerIP == 0 || m_nProxyPeerIP == *(u_long*)&m_pRecvBuffer[4] );
 
-                if ( (m_nProxyOpID == PROXYOP_CONNECT && m_nProxyOpState == 1) ||
-                        (m_nProxyOpID == PROXYOP_BIND  && m_nProxyOpState == 2) )
+                if ((m_nProxyOpID == PROXYOP_CONNECT && m_nProxyOpState == 1) ||
+                        (m_nProxyOpID == PROXYOP_BIND  && m_nProxyOpState == 2))
                 {
                     int nOpIDEvent = m_nProxyOpID == PROXYOP_CONNECT ? FD_CONNECT : FD_ACCEPT;
                     ClearBuffer();
@@ -404,7 +404,7 @@ void CAsyncProxySocketLayer::OnReceive(int nErrorCode)
     }
     else if (m_ProxyData.nProxyType == PROXYTYPE_SOCKS5)
     {
-        if (   m_nProxyOpState == 1 // Response to initialization request
+        if (m_nProxyOpState == 1    // Response to initialization request
                 || m_nProxyOpState == 2)// Response to authentication request
         {
             if (!m_pRecvBuffer)
@@ -564,8 +564,8 @@ void CAsyncProxySocketLayer::OnReceive(int nErrorCode)
                 ClearBuffer();
             }
         }
-        else if (  m_nProxyOpState == 3  // Response to connection or bind request
-                   || m_nProxyOpState == 4) // Response (2nd) to bind request
+        else if (m_nProxyOpState == 3    // Response to connection or bind request
+                 || m_nProxyOpState == 4) // Response (2nd) to bind request
         {
             if (!m_pRecvBuffer)
                 m_pRecvBuffer = new char[10];
@@ -601,8 +601,8 @@ void CAsyncProxySocketLayer::OnReceive(int nErrorCode)
                     return;
                 }
 
-                if ( (m_nProxyOpID == PROXYOP_CONNECT && m_nProxyOpState == 3) ||
-                        (m_nProxyOpID == PROXYOP_BIND  && m_nProxyOpState == 4) )
+                if ((m_nProxyOpID == PROXYOP_CONNECT && m_nProxyOpState == 3) ||
+                        (m_nProxyOpID == PROXYOP_BIND  && m_nProxyOpState == 4))
                 {
                     int nOpIDEvent = m_nProxyOpID == PROXYOP_CONNECT ? FD_CONNECT : FD_ACCEPT;
                     Reset();
@@ -640,7 +640,7 @@ void CAsyncProxySocketLayer::OnReceive(int nErrorCode)
     }
     else if (m_ProxyData.nProxyType == PROXYTYPE_HTTP10 || m_ProxyData.nProxyType == PROXYTYPE_HTTP11)
     {
-        ASSERT( m_nProxyOpID == PROXYOP_CONNECT );
+        ASSERT(m_nProxyOpID == PROXYOP_CONNECT);
 
         // Read everything which is currently available at the socket
         //
@@ -666,7 +666,7 @@ void CAsyncProxySocketLayer::OnReceive(int nErrorCode)
 
             // Safety check: Don't allow buffer to grow too large
             char *pNewStrBuffer;
-            if (    m_iStrBuffSize + iRead > 4096
+            if (m_iStrBuffSize + iRead > 4096
                     || (pNewStrBuffer = (char*)realloc(m_pStrBuffer, m_iStrBuffSize + iRead)) == NULL)
             {
                 DoLayerCallback(LAYERCALLBACK_LAYERSPECIFIC, PROXYERROR_REQUESTFAILED, 0, (LPARAM)"Invalid HTTP response - Header size exceeds limit");
@@ -693,7 +693,7 @@ void CAsyncProxySocketLayer::OnReceive(int nErrorCode)
                 }
             }
         }
-        ASSERT( bFoundEOH );
+        ASSERT(bFoundEOH);
 
         // Evaluate HTTP status
         //
@@ -739,7 +739,7 @@ void CAsyncProxySocketLayer::OnReceive(int nErrorCode)
 
 BOOL CAsyncProxySocketLayer::Connect(LPCSTR lpszHostAddress, UINT nHostPort)
 {
-    ASSERT( lpszHostAddress != NULL );
+    ASSERT(lpszHostAddress != NULL);
 
     if (!m_ProxyData.nProxyType)
         //Connect normally because there is no proxy
@@ -893,9 +893,9 @@ void CAsyncProxySocketLayer::OnConnect(int nErrorCode)
             int iReqLen = 4 + 4 + 1;
             if (m_nProxyPeerIP == 0)
             {
-                ASSERT( m_ProxyData.nProxyType == PROXYTYPE_SOCKS4A );
-                ASSERT( strcmp(pszAsciiProxyPeerHost, "") != 0 );
-                ASSERT( iSizeAsciiProxyPeerHost > 0 );
+                ASSERT(m_ProxyData.nProxyType == PROXYTYPE_SOCKS4A);
+                ASSERT(strcmp(pszAsciiProxyPeerHost, "") != 0);
+                ASSERT(iSizeAsciiProxyPeerHost > 0);
 
                 // For version 4A, if the client cannot resolve the destination host's
                 // domain name to find its IP address, it should set the first three bytes
@@ -1168,7 +1168,7 @@ BOOL CAsyncProxySocketLayer::GetPeerName(CString &rPeerAddress, UINT &rPeerPort)
         return FALSE;
     }
 
-    ASSERT( m_ProxyData.nProxyType );
+    ASSERT(m_ProxyData.nProxyType);
     BOOL res = GetPeerNameNext(rPeerAddress, rPeerPort);
     if (res)
     {
@@ -1197,7 +1197,7 @@ BOOL CAsyncProxySocketLayer::GetPeerName(SOCKADDR* lpSockAddr, int* lpSockAddrLe
         return FALSE;
     }
 
-    ASSERT( m_ProxyData.nProxyType );
+    ASSERT(m_ProxyData.nProxyType);
     BOOL res = GetPeerNameNext(lpSockAddr, lpSockAddrLen);
     if (res)
     {
@@ -1261,7 +1261,7 @@ BOOL CAsyncProxySocketLayer::PrepareListen(unsigned long ip)
     return TRUE;
 }
 
-BOOL CAsyncProxySocketLayer::Accept( CAsyncSocketEx& rConnectedSocket, SOCKADDR* lpSockAddr /*=NULL*/, int* lpSockAddrLen /*=NULL*/ )
+BOOL CAsyncProxySocketLayer::Accept(CAsyncSocketEx& rConnectedSocket, SOCKADDR* lpSockAddr /*=NULL*/, int* lpSockAddrLen /*=NULL*/)
 {
     if (!m_ProxyData.nProxyType)
         return AcceptNext(rConnectedSocket, lpSockAddr, lpSockAddrLen);

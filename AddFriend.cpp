@@ -47,7 +47,7 @@ CAddFriend::CAddFriend()
 CAddFriend::~CAddFriend()
 {
     if (m_icnWnd)
-        VERIFY( DestroyIcon(m_icnWnd) );
+        VERIFY(DestroyIcon(m_icnWnd));
 }
 
 void CAddFriend::DoDataExchange(CDataExchange* pDX)

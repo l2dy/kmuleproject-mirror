@@ -179,7 +179,7 @@ extern __declspec(selectany) const TCHAR * const c_tAtlDLLExtension = _T(ATL_DEF
 // szBuf        The string to be URL-encoded.
 ATL_NOINLINE inline bool EscapeToCString(__inout CStringA& string, __in LPCSTR szBuf)
 {
-    ATLENSURE( szBuf != NULL );
+    ATLENSURE(szBuf != NULL);
 
     _ATLTRY
     {
@@ -400,7 +400,7 @@ struct CDefaultErrorProvider
 template<class HttpUserErrorTextProvider>
 void GetStatusHeader(__inout CStringA &strStatus, __in DWORD dwStatus, __in DWORD dwSubStatus, __in HttpUserErrorTextProvider* pErrorProvider, __out_opt UINT *puResId = NULL) throw(...)
 {
-    ATLENSURE( pErrorProvider != NULL );
+    ATLENSURE(pErrorProvider != NULL);
 
     LPCSTR szHeadErr = NULL;
     // First, we check for the error text in the extension's user error text provider
@@ -425,8 +425,8 @@ void GetStatusHeader(__inout CStringA &strStatus, __in DWORD dwStatus, __in DWOR
 template<class HttpUserErrorTextProvider>
 void RenderError(__in IHttpServerContext *pServerContext, __in DWORD dwStatus, __in DWORD dwSubStatus, __in HttpUserErrorTextProvider* pErrorProvider)
 {
-    ATLENSURE( pServerContext != NULL );
-    ATLENSURE( pErrorProvider != NULL );
+    ATLENSURE(pServerContext != NULL);
+    ATLENSURE(pErrorProvider != NULL);
     _ATLTRY
     {
         UINT uResId = 0;
@@ -460,7 +460,7 @@ void RenderError(__in IHttpServerContext *pServerContext, __in DWORD dwStatus, _
             bRes = CDefaultErrorProvider::GetErrorText(dwStatus, SUBERR_NONE, &szError, 0);
         if (!bRes)
             bRes = CDefaultErrorProvider::GetErrorText(500, SUBERR_NONE, &szError, 0);
-        if(!szError)
+        if (!szError)
         {
             szError="Unknown Error"; // last resort, can't localize
         }
@@ -487,9 +487,9 @@ inline BOOL GetScriptFullFileName(
     __in_ecount(MAX_PATH) LPSTR szFullFileName,
     __in IHttpServerContext* pServerContext) throw(...)
 {
-    ATLENSURE( szFile != NULL );
-    ATLASSERT( szFullFileName != NULL );
-    ATLENSURE( pServerContext != NULL );
+    ATLENSURE(szFile != NULL);
+    ATLASSERT(szFullFileName != NULL);
+    ATLENSURE(pServerContext != NULL);
 
     char szTmpScriptPath[MAX_PATH];
     LPCSTR szTmp = pServerContext->GetScriptPathTranslated();
@@ -512,7 +512,7 @@ inline BOOL GetScriptFullFileName(
     {
         szBackslash = strrchr(szScriptPath, '\\');
 
-        ATLASSERT( *(szScriptPath+strlen(szScriptPath)) != '\\');
+        ATLASSERT(*(szScriptPath+strlen(szScriptPath)) != '\\');
 
         if (szBackslash)
             szBackslash++;
@@ -565,7 +565,7 @@ enum ATLSRV_REQUESTTYPE
 #define  ATLSRV_INIT_USEASYNC    2
 #define  ATLSRV_INIT_USEASYNC_EX 4 // required for use of NOFLUSH status
 
-typedef HTTP_CODE (IRequestHandler::*PFnHandleRequest)(AtlServerRequest *pRequestInfo, IServiceProvider *pProvider);
+typedef HTTP_CODE(IRequestHandler::*PFnHandleRequest)(AtlServerRequest *pRequestInfo, IServiceProvider *pProvider);
 typedef void (*PFnAsyncComplete)(AtlServerRequest *pRequestInfo, DWORD cbIO, DWORD dwError);
 
 struct AtlServerRequest
@@ -653,10 +653,10 @@ public:
         if (!m_hHeap)
             return FALSE;
 #ifndef ATL_NO_SOAP
-        if (FAILED(m_spReader.CoCreateInstance(ATLS_SAXXMLREADER_CLSID, NULL, CLSCTX_INPROC_SERVER )))
+        if (FAILED(m_spReader.CoCreateInstance(ATLS_SAXXMLREADER_CLSID, NULL, CLSCTX_INPROC_SERVER)))
         {
-            ATLASSERT( FALSE );
-            ATLTRACE( atlTraceISAPI, 0, _T("MSXML3 is not installed -- web services will not work.") );
+            ATLASSERT(FALSE);
+            ATLTRACE(atlTraceISAPI, 0, _T("MSXML3 is not installed -- web services will not work."));
         }
 #endif
         return pExtension->SetThreadWorker(this);
@@ -1270,7 +1270,7 @@ public:
         DWORD dwLen = 0;
         if (!pdwLen)
         {
-            if(!szMessage)
+            if (!szMessage)
             {
                 return FALSE;
             }
@@ -1385,7 +1385,7 @@ public:
 
         LPCSTR szPathInfo = pParent->GetPathInfo();
         LPCSTR szQueryString = pParent->GetQueryString();
-        if ( szPathInfo == NULL || szQueryString == NULL)
+        if (szPathInfo == NULL || szQueryString == NULL)
             return FALSE;
 
         LPSTR szTo = m_szFullUrl;
@@ -1660,7 +1660,7 @@ public:
     // type     On success, the type of the result with index i.
     __checkReturn bool GetResultAt(__in int i, __out CStringA& strName, __out DWORD& type) throw()
     {
-        if ( i >= 0 && i < m_results.GetSize())
+        if (i >= 0 && i < m_results.GetSize())
         {
             _ATLTRY
             {
@@ -1701,10 +1701,10 @@ public:
         return dwRet;
     }
 
-    static DWORD Validate( __in LPCSTR pszValue, __in int nMinChars, __in int nMaxChars) throw()
+    static DWORD Validate(__in LPCSTR pszValue, __in int nMinChars, __in int nMaxChars) throw()
     {
         DWORD dwRet = VALIDATION_S_OK;
-        if(!pszValue)
+        if (!pszValue)
         {
             return VALIDATION_E_FAIL;
         }
@@ -1715,12 +1715,12 @@ public:
             dwRet = VALIDATION_E_LENGTHMAX;
         return dwRet;
     }
-    static DWORD Validate( __in double dblValue, __in double dblMinValue, __in double dblMaxValue) throw()
+    static DWORD Validate(__in double dblValue, __in double dblMinValue, __in double dblMaxValue) throw()
     {
         DWORD dwRet = VALIDATION_S_OK;
-        if ( dblValue < (dblMinValue - ATL_EPSILON) )
+        if (dblValue < (dblMinValue - ATL_EPSILON))
             dwRet = VALIDATION_E_LENGTHMIN;
-        else if ( dblValue > (dblMaxValue + ATL_EPSILON) )
+        else if (dblValue > (dblMaxValue + ATL_EPSILON))
             dwRet = VALIDATION_E_LENGTHMAX;
         return dwRet;
     }
@@ -2055,7 +2055,7 @@ public:
         if (dwRet == VALIDATION_S_OK)
         {
             // clamp to the size of a short
-            if(nVal <= SHRT_MAX &&
+            if (nVal <= SHRT_MAX &&
                     nVal >= SHRT_MIN)
             {
                 *pnVal = (short)nVal;
@@ -2081,7 +2081,7 @@ public:
         if (dwRet == VALIDATION_S_OK)
         {
             // clamp to the size of a short
-            if(nVal <= USHRT_MAX &&
+            if (nVal <= USHRT_MAX &&
                     nVal >= 0)
             {
                 *pnVal = (unsigned short)nVal;
@@ -2128,7 +2128,7 @@ public:
     {
         T value;
         DWORD dwRet = Exchange(Param, &value, pContext);
-        if ( dwRet == VALIDATION_S_OK )
+        if (dwRet == VALIDATION_S_OK)
         {
             if (pValue)
                 *pValue = value;
@@ -2160,7 +2160,7 @@ public:
     {
         LPCSTR pszValue = NULL;
         DWORD dwRet = Exchange(Param, &pszValue, pContext);
-        if (dwRet == VALIDATION_S_OK )
+        if (dwRet == VALIDATION_S_OK)
         {
             if (ppszValue)
                 *ppszValue = pszValue;
@@ -2195,7 +2195,7 @@ public:
         {
             LPCSTR szValue;
             DWORD dwRet = Validate(Param, &szValue, nMinChars, nMaxChars, pContext);
-            if (pstrValue && dwRet == VALIDATION_S_OK )
+            if (pstrValue && dwRet == VALIDATION_S_OK)
                 *pstrValue = szValue;
             return dwRet;
         }
@@ -2294,7 +2294,7 @@ public:
 
     CCookie& operator=(__in const CCookie& thatCookie) throw(...)
     {
-        if(this!=&thatCookie)
+        if (this!=&thatCookie)
         {
             return Copy(thatCookie);
         }
@@ -2789,7 +2789,7 @@ public:
                 }
                 return true; // we're done;
             }
-            else if (*pEnd == '=' )
+            else if (*pEnd == '=')
             {
                 // we have name=value
                 if (pEnd > pStart)
@@ -3018,10 +3018,10 @@ private:
     }
 
     // Call this function to copy a substring to a CString reference and ensure nul-termination.
-    void CopyToCString(__out CStringA& string, __in_ecount(pEnd-pStart) LPCSTR pStart, __in LPCSTR pEnd) throw( ... )
+    void CopyToCString(__out CStringA& string, __in_ecount(pEnd-pStart) LPCSTR pStart, __in LPCSTR pEnd) throw(...)
     {
-        ATLENSURE( pStart != NULL );
-        ATLENSURE( pEnd != NULL );
+        ATLENSURE(pStart != NULL);
+        ATLENSURE(pEnd != NULL);
 
         string.SetString(pStart, (int)(pEnd-pStart));
         string.Trim();
@@ -3058,7 +3058,7 @@ public:
     {
         if (!SetName(SESSION_COOKIE_NAME) ||
                 !SetPath("/") ||
-                !SetSessionID(szSessionID) )
+                !SetSessionID(szSessionID))
             AtlThrow(E_OUTOFMEMORY);
     }
 
@@ -3077,19 +3077,19 @@ public:
     typedef const CCookie& INARGTYPE;
     typedef CCookie& OUTARGTYPE;
 
-    static ULONG Hash( __in INARGTYPE cookie )
+    static ULONG Hash(__in INARGTYPE cookie)
     {
-        return CStringElementTraits<CStringA>::Hash( cookie.m_strName );
+        return CStringElementTraits<CStringA>::Hash(cookie.m_strName);
     }
 
-    static bool CompareElements( __in INARGTYPE cookie1, __in INARGTYPE cookie2 )
+    static bool CompareElements(__in INARGTYPE cookie1, __in INARGTYPE cookie2)
     {
-        return( cookie1.m_strName == cookie2.m_strName );
+        return(cookie1.m_strName == cookie2.m_strName);
     }
 
-    static int CompareElementsOrdered( __in INARGTYPE cookie1, __in INARGTYPE cookie2 )
+    static int CompareElementsOrdered(__in INARGTYPE cookie1, __in INARGTYPE cookie2)
     {
-        return( cookie1.m_strName.Compare( cookie2.m_strName ) );
+        return(cookie1.m_strName.Compare(cookie2.m_strName));
     }
 };
 
@@ -3171,7 +3171,7 @@ public:
     }
 
     // Lookup wrappers
-    bool Lookup( __in KINARGTYPE key, __out VOUTARGTYPE value ) const throw()
+    bool Lookup(__in KINARGTYPE key, __out VOUTARGTYPE value) const throw()
     {
         _ATLTRY
         {
@@ -3193,7 +3193,7 @@ public:
         }
     }
 
-    const CPair* Lookup( __in KINARGTYPE key ) const throw()
+    const CPair* Lookup(__in KINARGTYPE key) const throw()
     {
 #ifdef ATL_HTTP_PARAM_MULTIMAP
         POSITION pos = m_map.FindFirstWithKey(key);
@@ -3207,7 +3207,7 @@ public:
 #endif // ATL_HTTP_PARAM_MULTIMAP
     }
 
-    CPair* Lookup( __in KINARGTYPE key ) throw()
+    CPair* Lookup(__in KINARGTYPE key) throw()
     {
 #ifdef ATL_HTTP_PARAM_MULTIMAP
         POSITION pos = m_map.FindFirstWithKey(key);
@@ -3222,68 +3222,68 @@ public:
     }
 
     // iteration wrappers
-    void GetNextAssoc( __inout POSITION& pos, __out KOUTARGTYPE key, __out VOUTARGTYPE value ) const throw(...)
+    void GetNextAssoc(__inout POSITION& pos, __out KOUTARGTYPE key, __out VOUTARGTYPE value) const throw(...)
     {
         m_map.GetNextAssoc(pos, key, value);
     }
 
-    const CPair* GetNext( __inout POSITION& pos ) const throw()
+    const CPair* GetNext(__inout POSITION& pos) const throw()
     {
         return m_map.GetNext(pos);
     }
 
-    CPair* GetNext( __inout POSITION& pos ) throw()
+    CPair* GetNext(__inout POSITION& pos) throw()
     {
         return m_map.GetNext(pos);
     }
 
-    const K& GetNextKey( __inout POSITION& pos ) const throw()
+    const K& GetNextKey(__inout POSITION& pos) const throw()
     {
         return m_map.GetNextKey(pos);
     }
 
-    const V& GetNextValue( __inout POSITION& pos ) const throw()
+    const V& GetNextValue(__inout POSITION& pos) const throw()
     {
         return m_map.GetNextValue(pos);
     }
 
-    V& GetNextValue( __inout POSITION& pos ) throw()
+    V& GetNextValue(__inout POSITION& pos) throw()
     {
         return m_map.GetNextValue(pos);
     }
 
-    void GetAt( __in POSITION pos, __out KOUTARGTYPE key, __out VOUTARGTYPE value ) const throw(...)
+    void GetAt(__in POSITION pos, __out KOUTARGTYPE key, __out VOUTARGTYPE value) const throw(...)
     {
         return m_map.GetAt(pos, key, value);
     }
 
-    CPair* GetAt( __in POSITION pos ) throw()
+    CPair* GetAt(__in POSITION pos) throw()
     {
         return m_map.GetAt(pos);
     }
 
-    const CPair* GetAt( __in POSITION pos ) const throw()
+    const CPair* GetAt(__in POSITION pos) const throw()
     {
         return m_map.GetAt(pos);
     }
 
-    const K& GetKeyAt( __in POSITION pos ) const throw()
+    const K& GetKeyAt(__in POSITION pos) const throw()
     {
         return m_map.GetKeyAt(pos);
     }
 
-    const V& GetValueAt( __in POSITION pos ) const throw()
+    const V& GetValueAt(__in POSITION pos) const throw()
     {
         return m_map.GetValueAt(pos);
     }
 
-    V& GetValueAt( __in POSITION pos ) throw()
+    V& GetValueAt(__in POSITION pos) throw()
     {
         return m_map.GetValueAt(pos);
     }
 
     // modification wrappers
-    POSITION SetAt( __in KINARGTYPE key, __in_opt VINARGTYPE value ) throw(...)
+    POSITION SetAt(__in KINARGTYPE key, __in_opt VINARGTYPE value) throw(...)
     {
 #ifdef ATL_HTTP_PARAM_MULTIMAP
         return m_map.Insert(key, value);
@@ -3292,7 +3292,7 @@ public:
 #endif // ATL_HTTP_PARAM_MULTIMAP
     }
 
-    bool RemoveKey( __in KINARGTYPE key ) throw()
+    bool RemoveKey(__in KINARGTYPE key) throw()
     {
 #ifdef ATL_HTTP_PARAM_MULTIMAP
         return (m_map.RemoveKey(key) != 0);
@@ -3419,7 +3419,7 @@ public:
                         short nFirstDigit = AtlHexValue(szQueryString[1]);
                         short nSecondDigit = AtlHexValue(szQueryString[2]);
 
-                        if( nFirstDigit < 0 || nSecondDigit < 0 )
+                        if (nFirstDigit < 0 || nSecondDigit < 0)
                         {
                             break;
                         }
@@ -3467,7 +3467,7 @@ public:
                             short nFirstDigit = AtlHexValue(szQueryString[1]);
                             short nSecondDigit = AtlHexValue(szQueryString[2]);
 
-                            if( nFirstDigit < 0 || nSecondDigit < 0 )
+                            if (nFirstDigit < 0 || nSecondDigit < 0)
                             {
                                 break;
                             }
@@ -3614,7 +3614,7 @@ public:
         __in_opt LPCSTR pContentType,
         __in const ULONGLONG &nFileSize)
     {
-        ATLENSURE( pFileName != NULL );
+        ATLENSURE(pFileName != NULL);
 
         if (!SafeStringCopy(m_szFullFileName, pFileName))
         {
@@ -3931,7 +3931,7 @@ public:
 
                     if (!strFileName.GetLength())
                     {
-                        if(!ReadUntilBoundary())
+                        if (!ReadUntilBoundary())
                         {
                             return FALSE;
                         }
@@ -4060,14 +4060,14 @@ private:
         return ch;
     }
 
-    inline __checkReturn char * _stristr (__in const char * str1, __in const char * str2)
+    inline __checkReturn char * _stristr(__in const char * str1, __in const char * str2)
     {
         ATLENSURE(str1!=NULL);
         ATLENSURE(str2!=NULL);
         char *cp = (char *) str1;
         char *s1, *s2;
 
-        if ( !*str2 )
+        if (!*str2)
             return((char *)str1);
 
         while (*cp)
@@ -4075,7 +4075,7 @@ private:
             s1 = cp;
             s2 = (char *) str2;
 
-            while ( *s1 && *s2 && !(AtlCharLower(*s1)-AtlCharLower(*s2)) )
+            while (*s1 && *s2 && !(AtlCharLower(*s1)-AtlCharLower(*s2)))
             {
                 s1++, s2++;
             }
@@ -4092,14 +4092,14 @@ private:
     }
 
 
-    inline __checkReturn char * _stristrex (__in const char * str1, __in const char * str2, __in const char * str1End)
+    inline __checkReturn char * _stristrex(__in const char * str1, __in const char * str2, __in const char * str1End)
     {
         ATLENSURE(str1!=NULL);
         ATLENSURE(str2!=NULL);
         char *cp = (char *) str1;
         char *s1, *s2;
 
-        if ( !*str2 )
+        if (!*str2)
             return((char *)str1);
 
         while (cp != str1End)
@@ -4107,7 +4107,7 @@ private:
             s1 = cp;
             s2 = (char *) str2;
 
-            while ( s1 != str1End && *s2 && !(AtlCharLower(*s1)-AtlCharLower(*s2)) )
+            while (s1 != str1End && *s2 && !(AtlCharLower(*s1)-AtlCharLower(*s2)))
             {
                 s1++, s2++;
             }
@@ -4128,14 +4128,14 @@ private:
         return(NULL);
     }
 
-    inline __checkReturn char * _strstrex (__in const char * str1, __in const char * str2, __in const char * str1End)
+    inline __checkReturn char * _strstrex(__in const char * str1, __in const char * str2, __in const char * str1End)
     {
         ATLENSURE(str1!=NULL);
         ATLENSURE(str2!=NULL);
         char *cp = (char *) str1;
         char *s1, *s2;
 
-        if ( !*str2 )
+        if (!*str2)
             return((char *)str1);
 
         while (cp != str1End)
@@ -4143,7 +4143,7 @@ private:
             s1 = cp;
             s2 = (char *) str2;
 
-            while ( s1 != str1End && *s2 && !((*s1)-(*s2)) )
+            while (s1 != str1End && *s2 && !((*s1)-(*s2)))
             {
                 s1++, s2++;
             }
@@ -4166,7 +4166,7 @@ private:
 
     ATL_NOINLINE __checkReturn BOOL InitializeParser() throw()
     {
-        ATLASSUME( m_spServerContext != NULL );
+        ATLASSUME(m_spServerContext != NULL);
 
         _ATLTRY
         {
@@ -4275,8 +4275,8 @@ private:
     {
         _ATLTRY
         {
-            ATLASSERT( szField != NULL );
-            ATLENSURE( pbFound != NULL );
+            ATLASSERT(szField != NULL);
+            ATLENSURE(pbFound != NULL);
 
             *pbFound = FALSE;
 
@@ -4431,7 +4431,7 @@ private:
 
     static inline __checkReturn BOOL IsStandardBoundaryChar(__in CHAR ch) throw()
     {
-        if ( (ch >= 'A' && ch <= 'Z') ||
+        if ((ch >= 'A' && ch <= 'Z') ||
                 (ch >= 'a' && ch <= 'z') ||
                 (ch >= '0' && ch <= '9') ||
                 (ch == '\'') ||
@@ -4439,7 +4439,7 @@ private:
                 (ch == '_')  ||
                 (ch == '-')  ||
                 (ch == '=')  ||
-                (ch == '?') )
+                (ch == '?'))
         {
             return TRUE;
         }
@@ -4449,7 +4449,7 @@ private:
 
     inline __checkReturn BOOL IsValidTokenChar(__in CHAR ch) throw()
     {
-        return ( (ch != 0) && (ch != 0xd) && (ch != 0xa) && (ch != ' ') && (ch != '\"') );
+        return ((ch != 0) && (ch != 0xd) && (ch != 0xa) && (ch != ' ') && (ch != '\"'));
     }
 
 private:
@@ -5561,7 +5561,7 @@ public:
                 break;
 
             szEnd = szStart;
-            while (*szEnd && *szEnd != '=' && *szEnd != ';' )
+            while (*szEnd && *szEnd != '=' && *szEnd != ';')
                 szEnd++;
 
             if (szEnd <= szStart)
@@ -5577,13 +5577,13 @@ public:
             }
 
             CopyToCString(name, szStart, szEnd);
-            if (*szEnd == '\0' || *szEnd == ';' )
+            if (*szEnd == '\0' || *szEnd == ';')
             {
                 // no value expected;
                 pair_list.AddTail(Pair(name, value));
                 szStart = szEnd;
             }
-            else if ( *szEnd == '=')
+            else if (*szEnd == '=')
             {
                 szEnd++; // skip '='
                 szStart = szEnd;
@@ -5642,7 +5642,7 @@ public:
                 else
                 {
                     //add attribute to current cookie
-                    if(!cookie.AddAttribute(p.name.Right(p.name.GetLength()-1),p.value))
+                    if (!cookie.AddAttribute(p.name.Right(p.name.GetLength()-1),p.value))
                     {
                         return FALSE;
                     }
@@ -5662,7 +5662,7 @@ public:
                 {
                     // add previous cookie
                     CStringA strPrevName;
-                    if(!cookie.GetName(strPrevName))
+                    if (!cookie.GetName(strPrevName))
                     {
                         return FALSE;
                     }
@@ -5682,7 +5682,7 @@ public:
         if (!cookie.IsEmpty())
         {
             CStringA strName;
-            if(!cookie.GetName(strName))
+            if (!cookie.GetName(strName))
             {
                 return FALSE;
             }
@@ -5694,11 +5694,11 @@ public:
 
 private:
     // Call this function to copy a substring to a CString reference and ensure nul-termination.
-    inline void CopyToCString(__out CStringA& string, __in_ecount(pEnd-pStart) LPCSTR pStart, __in LPCSTR pEnd) throw( ... )
+    inline void CopyToCString(__out CStringA& string, __in_ecount(pEnd-pStart) LPCSTR pStart, __in LPCSTR pEnd) throw(...)
     {
-        ATLENSURE( pStart != NULL );
-        ATLENSURE( pEnd != NULL );
-        ATLENSURE( pEnd>=pStart );
+        ATLENSURE(pStart != NULL);
+        ATLENSURE(pEnd != NULL);
+        ATLENSURE(pEnd>=pStart);
 
         string.SetString(pStart, (int)(pEnd-pStart));
         string.Trim();
@@ -6171,7 +6171,7 @@ public:
             return bRet;
         }
 
-        LPSTR pvNew = (LPSTR )HeapReAlloc(m_hProcHeap, 0, m_pBuffer, dwNewSize);
+        LPSTR pvNew = (LPSTR)HeapReAlloc(m_hProcHeap, 0, m_pBuffer, dwNewSize);
         if (pvNew)
         {
             m_pBuffer = pvNew;
@@ -6854,7 +6854,7 @@ public:
         {
             CCookie cookie(szName, "");
             bRet=cookie.SetMaxAge(0);
-            if(bRet)
+            if (bRet)
             {
                 bRet = AppendCookie(cookie);
             }
@@ -7008,7 +7008,7 @@ public:
                 if (dwLen)
                 {
                     if (m_bSendOutput &&
-                            m_spServerContext->WriteClient((void *) (LPCSTR) m_strContent, &dwLen) != TRUE)
+                            m_spServerContext->WriteClient((void *)(LPCSTR) m_strContent, &dwLen) != TRUE)
                     {
                         m_strContent.Empty();
                         return FALSE;
@@ -7054,7 +7054,7 @@ public:
             {
                 _ATLTRY
                 {
-                    if (m_spServerContext->AsyncWriteClient((void *) (LPCSTR) m_strContent, &dwLen) != TRUE)
+                    if (m_spServerContext->AsyncWriteClient((void *)(LPCSTR) m_strContent, &dwLen) != TRUE)
                     {
                         bRet = FALSE;
                     }
@@ -7135,7 +7135,7 @@ public:
             ATLASSERT(pWorker);
 
             delete this;
-            if(pWorker)
+            if (pWorker)
             {
                 HeapFree(pWorker->m_hHeap, HEAP_NO_SERIALIZE, this);
             }
@@ -7356,12 +7356,12 @@ struct CRequestStats
         long lTicks;
 
 #ifndef ATL_NO_MMSYS
-        lTicks = (long) (timeGetTime() - pRequestInfo->dwStartTicks);
+        lTicks = (long)(timeGetTime() - pRequestInfo->dwStartTicks);
 #else
-        lTicks = (long) (GetTickCount() - pRequestInfo->dwStartTicks);
+        lTicks = (long)(GetTickCount() - pRequestInfo->dwStartTicks);
 #endif
         __int64 liTotalResponseTime = Add64(&m_liTotalResponseTime, lTicks);
-        long lAv = (long) (liTotalResponseTime / m_lTotalRequests);
+        long lAv = (long)(liTotalResponseTime / m_lTotalRequests);
         InterlockedExchange(&m_lAvgResponseTime, lAv);
 
         InterlockedDecrement(&m_lActiveThreads);
@@ -7752,11 +7752,11 @@ public:
 
 inline bool operator==(__in const CDllCachePeer::DllInfo& left, __in const CDllCachePeer::DllInfo& right) throw()
 {
-    return ( (left.pfnGetHandler == right.pfnGetHandler) &&
-             (left.pfnUninitHandlers == right.pfnUninitHandlers) &&
-             (left.pfnInitHandlers == right.pfnInitHandlers) &&
-             (left.pExtension == right.pExtension) &&
-             (left.pContext == right.pContext)
+    return ((left.pfnGetHandler == right.pfnGetHandler) &&
+            (left.pfnUninitHandlers == right.pfnUninitHandlers) &&
+            (left.pfnInitHandlers == right.pfnInitHandlers) &&
+            (left.pExtension == right.pExtension) &&
+            (left.pContext == right.pContext)
            );
 }
 
@@ -7803,9 +7803,9 @@ public:
 
     ~CSetThreadToken() throw()
     {
-        if( m_bShouldRevert && !RevertToSelf() )
+        if (m_bShouldRevert && !RevertToSelf())
         {
-            _AtlRaiseException( (DWORD)EXCEPTION_ACCESS_VIOLATION );
+            _AtlRaiseException((DWORD)EXCEPTION_ACCESS_VIOLATION);
         }
     }
 protected:
@@ -8148,11 +8148,11 @@ inline BOOL _AtlCrackHandler(
     __out_ecount_part(*pdwHandlerNameLen,*pdwHandlerNameLen) LPSTR szHandlerName,
     __inout LPDWORD pdwHandlerNameLen)
 {
-    ATLENSURE( szHandlerDllName != NULL );
-    ATLASSERT( szDllPath != NULL );
-    ATLENSURE( pdwDllPathLen != NULL );
-    ATLASSERT( szHandlerName != NULL );
-    ATLASSERT( pdwHandlerNameLen != NULL );
+    ATLENSURE(szHandlerDllName != NULL);
+    ATLASSERT(szDllPath != NULL);
+    ATLENSURE(pdwDllPathLen != NULL);
+    ATLASSERT(szHandlerName != NULL);
+    ATLASSERT(pdwHandlerNameLen != NULL);
 
     BOOL bRet = TRUE;
 
@@ -8266,7 +8266,7 @@ inline __checkReturn __success(return==HTTP_SUCCESS) HTTP_CODE _AtlLoadRequestHa
     }
     if (!*phInstance)
     {
-        ATLTRACE( "LoadLibrary failed: '%s' with error: %d\r\n", szDllPath, GetLastError() );
+        ATLTRACE("LoadLibrary failed: '%s' with error: %d\r\n", szDllPath, GetLastError());
         return AtlsHttpError(500, ISE_SUBERR_LOADLIB);
     }
 
@@ -8640,7 +8640,7 @@ ATL_NOINLINE inline HTTP_CODE _AtlRenderInclude(
             }
             else
             {
-                ATLASSERT( ATL_MAX_HANDLER_NAME_LEN >= sizeof(ATL_HANDLER_NAME_DEFAULT) );
+                ATLASSERT(ATL_MAX_HANDLER_NAME_LEN >= sizeof(ATL_HANDLER_NAME_DEFAULT));
                 Checked::memcpy_s(szHandlerName, ATL_MAX_HANDLER_NAME_LEN+1, ATL_HANDLER_NAME_DEFAULT, sizeof(ATL_HANDLER_NAME_DEFAULT));
             }
 
@@ -8826,12 +8826,12 @@ void __cdecl AtlsSecErrHandlerFunc(int /* nCode */, void * /* pv */)
     //
     // a buffer overflow has occurred in your code
     //
-    ATLASSERT( FALSE );
+    ATLASSERT(FALSE);
 
     //
     // terminate process (safest thing to do)
     //
-    TerminateProcess( GetCurrentProcess(), 1 );
+    TerminateProcess(GetCurrentProcess(), 1);
 }
 
 //
@@ -9050,7 +9050,7 @@ public:
 
             DWORD dwBodyLen = strBody.GetLength();
             pECB->WriteClient(pECB->ConnID,
-            (void *) (LPCSTR) strBody,
+            (void *)(LPCSTR) strBody,
             &dwBodyLen,
             NULL);
         }
@@ -9257,7 +9257,7 @@ public:
     BOOL GetExtensionVersion(__out HSE_VERSION_INFO* pVer) throw()
     {
         ATLASSERT(pVer!=NULL);
-        if(pVer==NULL)
+        if (pVer==NULL)
         {
             return FALSE;
         }
@@ -9300,7 +9300,7 @@ public:
             ATLTRACE(atlTraceISAPI,
                      0,
                      _T("Initialization failed for request statistics perfmon support.\n")
-                     _T("Check request statistics perfmon dll registration\n") );
+                     _T("Check request statistics perfmon dll registration\n"));
         }
 
         if (S_OK != m_WorkerThread.Initialize())
@@ -9369,7 +9369,7 @@ public:
         for (int i=0; i < m_serviceMap.GetSize(); i++)
         {
             ATLASSUME(m_serviceMap[i].punk != NULL);
-            if(m_serviceMap[i].punk != NULL)
+            if (m_serviceMap[i].punk != NULL)
             {
                 m_serviceMap[i].punk->Release();
             }
@@ -9801,7 +9801,7 @@ public:
                 DWORD dwAuthTypeSize = 64;
                 char szAuthType[64] = { 0 };
 
-                if ( !pRequestInfo->pServerContext->GetServerVariable("AUTH_TYPE", szAuthType, &dwAuthTypeSize) )
+                if (!pRequestInfo->pServerContext->GetServerVariable("AUTH_TYPE", szAuthType, &dwAuthTypeSize))
                 {
                     // error retrieving authentication type
                     RequestComplete(pRequestInfo, 501, 0);
@@ -9809,10 +9809,10 @@ public:
                 }
 
                 // if it's empty or not NTLM or negotiate we fail.
-                if ( !( *szAuthType != '\0 ' &&
-                        ( !_stricmp(szAuthType, "NTLM") ||
-                          !_stricmp(szAuthType, "Negotiate"))
-                      ) )
+                if (!(*szAuthType != '\0 ' &&
+                        (!_stricmp(szAuthType, "NTLM") ||
+                         !_stricmp(szAuthType, "Negotiate"))
+                     ))
                 {
                     // wrong authorization type or not authorized
                     RequestComplete(pRequestInfo, 401, 0);
@@ -9831,7 +9831,7 @@ public:
                 strHeaders.ReleaseBuffer(dwHeadersLen - 1);
                 LPCSTR szCur = strHeaders;
 
-                while(*szCur)
+                while (*szCur)
                 {
                     if (!strncmp(szCur, "HTTP_COMMAND:", 13))
                     {
@@ -9919,7 +9919,7 @@ public:
                            nArrSize = sizeof(clsidDebugger)/sizeof(GUID);
                     for (i=0; i<nArrSize; i++)
                     {
-                        if( InlineIsEqualGUID(clsidDebugAutoAttach, clsidDebugger[i]) )
+                        if (InlineIsEqualGUID(clsidDebugAutoAttach, clsidDebugger[i]))
                             break;
                     }
                     if (i >= nArrSize)
@@ -10290,7 +10290,7 @@ public:
         else if (InlineIsEqualGUID(guidService, __uuidof(ISAXXMLReader)))
         {
             CIsapiWorker *p = GetThreadWorker();
-            ATLENSURE( p != NULL );
+            ATLENSURE(p != NULL);
             return p->m_spReader->QueryInterface(riid, ppvObject);
         }
 #endif
@@ -10643,7 +10643,7 @@ public:
     HTTP_CODE HandleError(__in AtlServerRequest *pRequestInfo) throw()
     {
         ATLASSERT(pRequestInfo); // should always be valid
-        if(!pRequestInfo)
+        if (!pRequestInfo)
         {
             return HTTP_FAIL;
         }

@@ -45,7 +45,7 @@ public:
     bool AcceptNewClient();
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
-	void SetPrefs(bool pEnabled, UINT pCurUpload, UINT pMinUpload, UINT pMaxUpload, bool pUseMillisecondPingTolerance, double pPingTolerance, UINT pPingToleranceMilliseconds, UINT pGoingUpDivider, UINT pGoingDownDivider, UINT pNumberOfPingsForAverage, UINT pLowestInitialPingAllowed, bool needMoreSlots);
+    void SetPrefs(bool pEnabled, UINT pCurUpload, UINT pMinUpload, UINT pMaxUpload, bool pUseMillisecondPingTolerance, double pPingTolerance, UINT pPingToleranceMilliseconds, UINT pGoingUpDivider, UINT pGoingDownDivider, UINT pNumberOfPingsForAverage, UINT pLowestInitialPingAllowed, bool needMoreSlots);
     //void SetPrefs(bool pEnabled, UINT pCurUpload, UINT pMinUpload, UINT pMaxUpload, bool pUseMillisecondPingTolerance, double pPingTolerance, UINT pPingToleranceMilliseconds, UINT pGoingUpDivider, UINT pGoingDownDivider, UINT pNumberOfPingsForAverage, uint64 pLowestInitialPingAllowed);
 //<<< WiZaRd::ZZUL Upload [ZZ]
     void InitiateFastReactionPeriod();
@@ -78,11 +78,11 @@ private:
     CMap<UINT,UINT,UINT,UINT> hostsToTraceRoute;
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
-/*
-    UInt32Clist pingDelays;
+    /*
+        UInt32Clist pingDelays;
 
-    uint64 pingDelaysTotal;
-*/
+        uint64 pingDelaysTotal;
+    */
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
     UINT minUpload;
@@ -102,8 +102,8 @@ private:
 //>>> WiZaRd::ZZUL Upload [ZZ]
     //uint64 m_LowestInitialPingAllowed;
 
-	UINT m_LowestInitialPingAllowed;
-	bool m_NeedMoreSlots;
+    UINT m_LowestInitialPingAllowed;
+    bool m_NeedMoreSlots;
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
     bool m_initiateFastReactionPeriod;

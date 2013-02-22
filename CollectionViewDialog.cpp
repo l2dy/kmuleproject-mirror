@@ -62,9 +62,9 @@ CCollectionViewDialog::CCollectionViewDialog(CWnd* pParent /*=NULL*/)
 CCollectionViewDialog::~CCollectionViewDialog()
 {
     if (m_icoWnd)
-        VERIFY( DestroyIcon(m_icoWnd) );
+        VERIFY(DestroyIcon(m_icoWnd));
     if (m_icoColl)
-        VERIFY( DestroyIcon(m_icoColl) );
+        VERIFY(DestroyIcon(m_icoColl));
 }
 
 void CCollectionViewDialog::DoDataExchange(CDataExchange* pDX)

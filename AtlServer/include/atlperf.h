@@ -264,7 +264,7 @@ protected:
             m_nHelpId(0), m_dwCounterType(0), m_nDefaultScale(0),
             m_nMaxCounterSize(0), m_nDataOffset(0)
         {
-            ZeroMemory (&m_cache, sizeof(m_cache));
+            ZeroMemory(&m_cache, sizeof(m_cache));
         }
         // implementation
 
@@ -502,16 +502,16 @@ template<>
 class CAssertValidField< PERF_SIZE_DWORD >
 {
 public:
-    template< class C > static void AssertValidFieldType( ULONG C::* ) throw() { }
-    template< class C > static void AssertValidFieldType( LONG C::* ) throw() { }
+    template< class C > static void AssertValidFieldType(ULONG C::*) throw() { }
+    template< class C > static void AssertValidFieldType(LONG C::*) throw() { }
 };
 
 template<>
 class CAssertValidField< PERF_SIZE_LARGE >
 {
 public:
-    template< class C > static void AssertValidFieldType( ULONGLONG C::* ) throw() { }
-    template< class C > static void AssertValidFieldType( LONGLONG C::* ) throw() { }
+    template< class C > static void AssertValidFieldType(ULONGLONG C::*) throw() { }
+    template< class C > static void AssertValidFieldType(LONGLONG C::*) throw() { }
 };
 
 #define DEFINE_COUNTER_EX(member, dwCounterId, namestring, helpstring, detail, countertype, maxcountersize, defscale) \

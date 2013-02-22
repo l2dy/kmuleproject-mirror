@@ -106,7 +106,7 @@ public:
     void SetTextColor(COLORREF clrTextOnBar, COLORREF clrTextOnBk = -1)
     {
         m_clrTextOnBar = m_clrTextOnBk = clrTextOnBar;
-        if(clrTextOnBk != -1) m_clrTextOnBk = clrTextOnBk;
+        if (clrTextOnBk != -1) m_clrTextOnBk = clrTextOnBk;
     }
     COLORREF GetTextColor()
     {

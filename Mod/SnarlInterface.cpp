@@ -713,25 +713,25 @@ void SnarlInterface::ClearPassword()
 //>>> WiZaRd
 void SnarlInterface::DestroyIconArray()
 {
-    for(int i = 0; i < TBN_DOWNLOADADDED; ++i)
+    for (int i = 0; i < TBN_DOWNLOADADDED; ++i)
         szIcons[i] = L"";
 }
 
 void SnarlInterface::CreateIconArray()
 {
     static bool bCreated = false;
-    if(bCreated)
+    if (bCreated)
         return;
 
     bCreated = true;
     DestroyIconArray();
 
     LPCTSTR szIconPath = SnarlInterface::GetIconsPath();
-    if(szIconPath == NULL)
+    if (szIconPath == NULL)
         return;
 
     LPTSTR szIcon = NULL;
-    for(int i = 0; i < TBN_DOWNLOADADDED; ++i)
+    for (int i = 0; i < TBN_DOWNLOADADDED; ++i)
     {
         switch (i)
         {
@@ -818,7 +818,7 @@ void SnarlInterface::CreateIconArray()
 
 LPCTSTR SnarlInterface::GetIcon(const int iIconIndex)
 {
-    if(iIconIndex > TBN_DOWNLOADADDED)
+    if (iIconIndex > TBN_DOWNLOADADDED)
         return NULL;
 
     CreateIconArray();

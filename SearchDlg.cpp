@@ -85,8 +85,8 @@ int CSearchDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
     m_pwndParams->Create(this, IDD_SEARCH_PARAMS,
                          WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_SIZE_FIXED | CBRS_SIZE_DYNAMIC | CBRS_GRIPPER,
                          IDBAR_SEARCH_PARAMS);
-    ASSERT( m_pwndParams->GetStyle() & WS_CLIPSIBLINGS );
-    ASSERT( m_pwndParams->GetStyle() & WS_CLIPCHILDREN );
+    ASSERT(m_pwndParams->GetStyle() & WS_CLIPSIBLINGS);
+    ASSERT(m_pwndParams->GetStyle() & WS_CLIPCHILDREN);
     m_pwndParams->SetWindowText(GetResString(IDS_SEARCHPARAMS));
     m_pwndParams->EnableDocking(CBRS_ALIGN_ANY);
 
@@ -306,7 +306,7 @@ BOOL CSearchDlg::OnHelpInfo(HELPINFO* /*pHelpInfo*/)
 //>>> WiZaRd::CustomSearches
 void CSearchDlg::UpdateSearchList()
 {
-	if (m_pwndParams)
-		m_pwndParams->UpdateSearchList();
+    if (m_pwndParams)
+        m_pwndParams->UpdateSearchList();
 }
 //<<< WiZaRd::CustomSearches

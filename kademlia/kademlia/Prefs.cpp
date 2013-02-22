@@ -154,7 +154,7 @@ void CPrefs::WriteFile()
 void CPrefs::SetIPAddress(UINT uVal)
 {
     //This is our first check on connect, init our IP..
-    if( !uVal || !m_uIPLast )
+    if (!uVal || !m_uIPLast)
     {
         m_uIP = uVal;
         m_uIPLast = uVal;
@@ -162,7 +162,7 @@ void CPrefs::SetIPAddress(UINT uVal)
     //If the last check matches this one, reset our current IP.
     //If the last check does not match, wait for our next incoming IP.
     //This happens for two reasons.. We just changed our IP, or a client responsed with a bad IP.
-    if( uVal == m_uIPLast )
+    if (uVal == m_uIPLast)
         m_uIP = uVal;
     else
         m_uIPLast = uVal;
@@ -171,26 +171,26 @@ void CPrefs::SetIPAddress(UINT uVal)
 
 bool CPrefs::HasLostConnection() const
 {
-    if( m_tLastContact )
+    if (m_tLastContact)
         return !((time(NULL) - m_tLastContact) < KADEMLIADISCONNECTDELAY);
     return false;
 }
 
 bool CPrefs::HasHadContact() const
 {
-    if( m_tLastContact )
+    if (m_tLastContact)
         return ((time(NULL) - m_tLastContact) < KADEMLIADISCONNECTDELAY);
     return false;
 }
 
 bool CPrefs::GetFirewalled() const
 {
-    if(m_uFirewalled < 2)
+    if (m_uFirewalled < 2)
     {
         //Not enough people have told us we are open but we may be doing a recheck
         //at the moment which will give a false lowID.. Therefore we check to see
         //if we are still rechecking and will report our last known state..
-        if(GetRecheckIP())
+        if (GetRecheckIP())
             return m_bLastFirewallState;
         return true;
     }
@@ -204,7 +204,7 @@ void CPrefs::SetFirewalled()
     //current state to prevent false reports during the recheck..
     m_bLastFirewallState = (m_uFirewalled < 2);
     m_uFirewalled = 0;
-    if(bFirewalled != GetFirewalled())
+    if (bFirewalled != GetFirewalled())
         theApp.emuledlg->ShowConnectionState();
 }
 
@@ -212,13 +212,13 @@ void CPrefs::IncFirewalled()
 {
     const bool bFirewalled = GetFirewalled();
     ++m_uFirewalled;
-    if(bFirewalled != GetFirewalled())
+    if (bFirewalled != GetFirewalled())
         theApp.emuledlg->ShowConnectionState();
 }
 
 bool CPrefs::GetFindBuddy()
 {
-    if( m_bFindBuddy )
+    if (m_bFindBuddy)
     {
         m_bFindBuddy = false;
         return true;
@@ -240,7 +240,7 @@ void CPrefs::SetKademliaFiles()
 #ifdef _DEBUG
     method.Format(_T("Kad file estimate used Kad avg(%u)"), nKadAverage);
 #endif
-    if( nKadAverage < 108 )
+    if (nKadAverage < 108)
     {
 #ifdef _DEBUG
         method.Format(_T("Kad file estimate used default avg(108)"));
@@ -321,7 +321,7 @@ void CPrefs::SetLastContact()
     //Update connection state only when it changes.
     const bool bCurCon = CKademlia::GetPrefs()->HasHadContact();
     m_tLastContact = time(NULL);
-    if(bCurCon != CKademlia::GetPrefs()->HasHadContact())
+    if (bCurCon != CKademlia::GetPrefs()->HasHadContact())
     {
         Log(LOG_SUCCESS | LOG_STATUSBAR, GetResString(IDS_CONNECTEDTO), GetResString(IDS_KADEMLIA));
         theApp.emuledlg->ShowConnectionState();

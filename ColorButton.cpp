@@ -24,7 +24,7 @@ static char THIS_FILE[] = __FILE__;
 void AFXAPI DDX_ColorButton(CDataExchange *pDX, int nIDC, COLORREF& crColour)
 {
     HWND hWndCtrl = pDX->PrepareCtrl(nIDC);
-    ASSERT (hWndCtrl != NULL);
+    ASSERT(hWndCtrl != NULL);
 
     CColorButton* pColourButton = (CColorButton*) CWnd::FromHandle(hWndCtrl);
     if (pDX->m_bSaveAndValidate)

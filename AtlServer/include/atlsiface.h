@@ -416,7 +416,7 @@ private:
             {
                 return true;
             }
-            while(*szInput)
+            while (*szInput)
             {
                 if (IsEqualAgentString(szPattern, szInput))
                 {
@@ -470,7 +470,7 @@ private:
                 {
                     bRetrieved = true;
                 }
-                else if(SIZE_MAX/2<nCurrent)
+                else if (SIZE_MAX/2<nCurrent)
                 {
                     return E_OUTOFMEMORY;
                 }
@@ -522,7 +522,7 @@ private:
                     {
                         bRetrieved = true;
                     }
-                    else if(SIZE_MAX/2<nCurrent)
+                    else if (SIZE_MAX/2<nCurrent)
                     {
                         return E_OUTOFMEMORY;
                     }

@@ -88,7 +88,7 @@ bool CFriendList::LoadList()
         }
         file.Close();
     }
-    catch(CFileException* error)
+    catch (CFileException* error)
     {
         if (error->m_cause == CFileException::endOfFile)
             LogError(LOG_STATUSBAR,GetResString(IDS_ERR_EMFRIENDSINVALID));
@@ -142,7 +142,7 @@ void CFriendList::SaveList()
         }
         file.Close();
     }
-    catch(CFileException* error)
+    catch (CFileException* error)
     {
         CString strError(_T("Failed to save ") EMFRIENDS_MET_FILENAME _T(" file"));
         TCHAR szError[MAX_CFEXP_ERRORMSG];
@@ -189,7 +189,7 @@ void CFriendList::ShowFriends() const
 {
     if (!m_wndOutput)
     {
-        ASSERT ( false );
+        ASSERT(false);
         return;
     }
     m_wndOutput->DeleteAllItems();
@@ -208,7 +208,7 @@ bool CFriendList::AddFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLa
         return false;
     if (SearchFriend(abyUserhash, dwLastUsedIP, nLastUsedPort) != NULL)
         return false;
-    CFriend* Record = new CFriend( abyUserhash, dwLastSeen, dwLastUsedIP, nLastUsedPort, dwLastChatted, pszName, dwHasHash );
+    CFriend* Record = new CFriend(abyUserhash, dwLastSeen, dwLastUsedIP, nLastUsedPort, dwLastChatted, pszName, dwHasHash);
     m_listFriends.AddTail(Record);
     ShowFriends();
     SaveList();
@@ -255,7 +255,7 @@ void CFriendList::RemoveFriend(CFriend* todel)
     POSITION pos = m_listFriends.Find(todel);
     if (!pos)
     {
-        ASSERT ( false );
+        ASSERT(false);
         return;
     }
 

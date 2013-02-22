@@ -100,17 +100,17 @@ void CTitleMenu::DeleteIcons()
         CString strKey;
         void *pvBmp;
         m_mapIconNameToBitmap.GetNextAssoc(pos, strKey, pvBmp);
-        VERIFY( DeleteObject((HBITMAP)pvBmp) );
+        VERIFY(DeleteObject((HBITMAP)pvBmp));
     }
     m_mapIconNameToBitmap.RemoveAll();
 }
 
 BOOL CTitleMenu::CreateMenu()
 {
-    ASSERT( m_mapIconNameToIconIdx.GetCount() == 0 );
-    ASSERT( m_mapMenuIdToIconIdx.GetCount() == 0 );
-    ASSERT( m_ImageList.m_hImageList == NULL || m_ImageList.GetImageCount() == 0 );
-    ASSERT( m_mapIconNameToBitmap.GetCount() == 0 );
+    ASSERT(m_mapIconNameToIconIdx.GetCount() == 0);
+    ASSERT(m_mapMenuIdToIconIdx.GetCount() == 0);
+    ASSERT(m_ImageList.m_hImageList == NULL || m_ImageList.GetImageCount() == 0);
+    ASSERT(m_mapIconNameToBitmap.GetCount() == 0);
     return __super::CreateMenu();
 }
 
@@ -330,7 +330,7 @@ static HBITMAP IconToBitmap32(HICON hIcon, int cx, int cy)
 
 void CTitleMenu::SetMenuBitmap(UINT nFlags, UINT_PTR nIDNewItem, LPCTSTR /*lpszNewItem*/, LPCTSTR lpszIconName)
 {
-    if (!m_bIconMenu || (nFlags & MF_SEPARATOR) != 0 || !(thePrefs.GetWindowsVersion() >= _WINVER_2K_ ))
+    if (!m_bIconMenu || (nFlags & MF_SEPARATOR) != 0 || !(thePrefs.GetWindowsVersion() >= _WINVER_2K_))
     {
         if (m_bIconMenu && lpszIconName != NULL)
             ASSERT(0);
@@ -368,7 +368,7 @@ void CTitleMenu::SetMenuBitmap(UINT nFlags, UINT_PTR nIDNewItem, LPCTSTR /*lpszN
                 if (hIcon)
                 {
                     hBmp = IconToBitmap32(hIcon, ICONSIZE, ICONSIZE);
-                    VERIFY( DestroyIcon(hIcon) );
+                    VERIFY(DestroyIcon(hIcon));
                 }
             }
 
@@ -378,7 +378,7 @@ void CTitleMenu::SetMenuBitmap(UINT nFlags, UINT_PTR nIDNewItem, LPCTSTR /*lpszN
                 info.fMask = MIIM_BITMAP;
                 info.hbmpItem = hBmp;
                 info.cbSize = sizeof(info);
-                VERIFY( SetMenuItemInfo(nIDNewItem, (MENUITEMINFO *)&info, FALSE) );
+                VERIFY(SetMenuItemInfo(nIDNewItem, (MENUITEMINFO *)&info, FALSE));
                 m_mapIconNameToBitmap.SetAt(strIconLower, hBmp);
             }
         }
@@ -435,7 +435,7 @@ void CTitleMenu::SetMenuBitmap(UINT nFlags, UINT_PTR nIDNewItem, LPCTSTR /*lpszN
                         	}
                         }*/
                     }
-                    VERIFY( DestroyIcon(hIcon) );
+                    VERIFY(DestroyIcon(hIcon));
                 }
             }
         }
@@ -447,7 +447,7 @@ void CTitleMenu::SetMenuBitmap(UINT nFlags, UINT_PTR nIDNewItem, LPCTSTR /*lpszN
             info.fMask = MIIM_BITMAP;
             info.hbmpItem = HBMMENU_CALLBACK;
             info.cbSize = sizeof(info);
-            VERIFY( SetMenuItemInfo(nIDNewItem, (MENUITEMINFO*)&info, FALSE) );
+            VERIFY(SetMenuItemInfo(nIDNewItem, (MENUITEMINFO*)&info, FALSE));
         }
     }
 }
@@ -493,7 +493,7 @@ void CTitleMenu::DrawMonoIcon(int nIconPos, CPoint nDrawPos, CDC *dc)
         if (hIcon)
         {
             Gdiplus::Bitmap bmp(hIcon);
-            VERIFY( DestroyIcon(hIcon) );
+            VERIFY(DestroyIcon(hIcon));
 
             static const Gdiplus::ColorMatrix colorMatrix =
             {
@@ -523,7 +523,7 @@ void CTitleMenu::DrawMonoIcon(int nIconPos, CPoint nDrawPos, CDC *dc)
             if (bmp2.GetHICON(&ico2) == Gdiplus::Ok)
             {
                 ::DrawIconEx(*dc, nDrawPos.x, nDrawPos.y, ico2, 0, 0, 0, 0, DI_NORMAL);
-                VERIFY( DestroyIcon(ico2) );
+                VERIFY(DestroyIcon(ico2));
             }
 #endif
         }

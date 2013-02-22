@@ -51,7 +51,7 @@
 #define IDS_UPLOAD_TOO_MANY_SLOTS		4022
 //<<< WiZaRd::ZZUL Upload [ZZ]
 //>>> WiZaRd::Upload Feedback
-#define IDS_UPLOAD_FEEDBACK				4023 
+#define IDS_UPLOAD_FEEDBACK				4023
 #define IDS_FEEDBACKBY					4024
 #define IDS_FEEDBACKTIME				4025
 #define IDS_CURRENT_TRANSFER_DL			4026

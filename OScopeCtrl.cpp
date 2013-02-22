@@ -256,7 +256,7 @@ void COScopeCtrl::SetRange(double dLower, double dUpper, int iTrend)
 
 void COScopeCtrl::SetRanges(double dLower, double dUpper)
 {
-    ASSERT( dUpper > dLower );
+    ASSERT(dUpper > dLower);
 
     int iTrend;
     for (iTrend = 0; iTrend < m_NTrends; iTrend ++)
@@ -424,7 +424,7 @@ void COScopeCtrl::InvalidateCtrl(bool deleteGraph)
             }
 
             GridPos = 0;
-            for(j = 1; j <= m_nXGrids; j++)
+            for (j = 1; j <= m_nXGrids; j++)
             {
                 extra = 0;
                 if (surplus)
@@ -435,12 +435,12 @@ void COScopeCtrl::InvalidateCtrl(bool deleteGraph)
                 GridPos += (hourSize+extra);
                 if ((m_nXGrids - j + 1) % 10 == 0)
                 {
-                    for(i = m_rectPlot.top; i < m_rectPlot.bottom; i += 2)
+                    for (i = m_rectPlot.top; i < m_rectPlot.bottom; i += 2)
                         m_dcGrid.SetPixel(m_rectPlot.left + GridPos - hourSize + partialSize, i, m_crGridColor);
                 }
                 else
                 {
-                    for(i = m_rectPlot.top; i < m_rectPlot.bottom; i += 4)
+                    for (i = m_rectPlot.top; i < m_rectPlot.bottom; i += 4)
                         m_dcGrid.SetPixel(m_rectPlot.left + GridPos - hourSize + partialSize, i, m_crGridColor);
                 }
             }
@@ -510,7 +510,7 @@ void COScopeCtrl::InvalidateCtrl(bool deleteGraph)
     m_dcGrid.DrawText(m_str.YUnits, rText, DT_CALCRECT);
     m_dcGrid.TextOut((m_rectClient.left + m_rectPlot.left - 8) / 2 - rText.Height() / 2,
                      (m_rectPlot.bottom + m_rectPlot.top) / 2 - rText.Height() / 2,
-                     m_str.YUnits );
+                     m_str.YUnits);
     m_dcGrid.SelectObject(oldFont);
 
     oldFont = m_dcGrid.SelectObject(&sm_fontAxis);
@@ -588,7 +588,7 @@ void COScopeCtrl::InvalidateCtrl(bool deleteGraph)
             m_bDoUpdate = false;
             if (m_nRedrawTimer)
                 KillTimer(m_nRedrawTimer);
-            VERIFY( (m_nRedrawTimer = SetTimer(1612, 200, NULL)) != NULL ); // reduce flickering
+            VERIFY((m_nRedrawTimer = SetTimer(1612, 200, NULL)) != NULL);   // reduce flickering
         }
     }
 
@@ -912,7 +912,7 @@ int COScopeCtrl::ReCreateGraph(void)
     int startIndex = m_PlotData[0].lstPoints.GetCount() - pointToDraw;
 
     // Prepare to go through the elements on n lists in parallel
-    for(int iTrend = 0; iTrend < m_NTrends; iTrend++)
+    for (int iTrend = 0; iTrend < m_NTrends; iTrend++)
         pPosArray[iTrend] = m_PlotData[iTrend].lstPoints.FindIndex(startIndex);
 
     // We will assume that each trends have the same among of points, so we test only the first iterator
@@ -1014,11 +1014,11 @@ void COScopeCtrl::OnSysColorChange()
 {
     if (m_bitmapOldGrid.m_hObject)
         m_dcGrid.SelectObject(m_bitmapOldGrid.Detach());
-    VERIFY( m_dcGrid.DeleteDC() );
+    VERIFY(m_dcGrid.DeleteDC());
 
     if (m_bitmapOldPlot.m_hObject)
         m_dcPlot.SelectObject(m_bitmapOldPlot.Detach());
-    VERIFY( m_dcPlot.DeleteDC() );
+    VERIFY(m_dcPlot.DeleteDC());
 
     CWnd::OnSysColorChange();
     InvalidateCtrl(false);

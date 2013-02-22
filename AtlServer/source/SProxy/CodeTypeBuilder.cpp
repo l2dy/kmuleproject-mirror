@@ -197,7 +197,7 @@ HRESULT CCodeTypeBuilder::ProcessService(CWSDLService *pSvc)
 
 HRESULT CCodeTypeBuilder::ProcessPort(CWSDLPort *pPort)
 {
-    ATLASSERT( pPort != NULL );
+    ATLASSERT(pPort != NULL);
 
     // TODO: handle other kinds of transport (SMTP)
     if (pPort->GetSoapAddress().GetLength() != 0)
@@ -335,8 +335,8 @@ HRESULT CCodeTypeBuilder::ProcessPortType(CWSDLPortType *pPortType, CWSDLBinding
             CAutoPtr<CCodeFunction> spElem;
             if (SUCCEEDED(hr))
             {
-                ATLASSERT( pBindingOp != NULL );
-                spElem.Attach( new CCodeFunction );
+                ATLASSERT(pBindingOp != NULL);
+                spElem.Attach(new CCodeFunction);
                 if (spElem != NULL)
                 {
                     if (FAILED(spElem->SetNamespace(strMethodNamespace)))
@@ -446,11 +446,11 @@ HRESULT CCodeTypeBuilder::ProcessMessage(
     CCodeFunction *pCodeFunc,
     DWORD dwFlags)
 {
-    ATLASSERT( pIO != NULL );
-    ATLASSERT( pBindingOp != NULL );
-    ATLASSERT( pBinding != NULL );
-    ATLASSERT( pMessage != NULL );
-    ATLASSERT( pCodeFunc != NULL );
+    ATLASSERT(pIO != NULL);
+    ATLASSERT(pBindingOp != NULL);
+    ATLASSERT(pBinding != NULL);
+    ATLASSERT(pMessage != NULL);
+    ATLASSERT(pCodeFunc != NULL);
 
     DWORD dwCallFlags = 0;
     HRESULT hr = GetCallFlags(NULL, pMessage, pIO, pBindingOp, pBinding, &dwCallFlags);
@@ -513,7 +513,7 @@ HRESULT CCodeTypeBuilder::ProcessMessage(
 
         if (bInternalError != false)
         {
-            ATLASSERT( FALSE );
+            ATLASSERT(FALSE);
             EmitError(IDS_SDL_INTERNAL);
             hr = E_FAIL;
         }
@@ -559,12 +559,12 @@ HRESULT CCodeTypeBuilder::ProcessMessage_PID(
     DWORD dwFlags,
     DWORD dwCallFlags)
 {
-    ATLASSERT( pMsg != NULL );
-    ATLASSERT( pCodeFunc != NULL );
-    ATLASSERT( dwCallFlags & CODEFLAG_PID );
+    ATLASSERT(pMsg != NULL);
+    ATLASSERT(pCodeFunc != NULL);
+    ATLASSERT(dwCallFlags & CODEFLAG_PID);
 
     // REVIEW (jasjitg): maybe ATLASSERT is too lenient here
-    ATLASSERT( pMsg->GetNumParts() == 1 );
+    ATLASSERT(pMsg->GetNumParts() == 1);
 
     dwCallFlags;
 
@@ -588,8 +588,8 @@ HRESULT CCodeTypeBuilder::ProcessMessagePart_PID(
     DWORD dwFlags,
     DWORD dwCallFlags)
 {
-    ATLASSERT( pPart != NULL );
-    ATLASSERT( pCodeFunc != NULL );
+    ATLASSERT(pPart != NULL);
+    ATLASSERT(pCodeFunc != NULL);
 
     HRESULT hr = E_FAIL;
     CODETYPE codeType = (dwFlags & CODEFLAG_HEADER) ? CODETYPE_HEADER : CODETYPE_UNK;
@@ -599,7 +599,7 @@ HRESULT CCodeTypeBuilder::ProcessMessagePart_PID(
         hr = pPart->GetElement(&pElem);
         if (SUCCEEDED(hr))
         {
-            ATLASSERT( pElem != NULL );
+            ATLASSERT(pElem != NULL);
 
             hr = CheckDocLiteralNamespace(pCodeFunc, pElem, dwFlags, dwCallFlags);
             if (hr == S_OK)
@@ -677,9 +677,9 @@ HRESULT CCodeTypeBuilder::ProcessMessage_PAD(
     DWORD dwFlags,
     DWORD dwCallFlags)
 {
-    ATLASSERT( pMsg != NULL );
-    ATLASSERT( pCodeFunc != NULL );
-    ATLASSERT( dwCallFlags & CODEFLAG_PAD );
+    ATLASSERT(pMsg != NULL);
+    ATLASSERT(pCodeFunc != NULL);
+    ATLASSERT(dwCallFlags & CODEFLAG_PAD);
 
     bool bType = false;
     POSITION pos = pMsg->GetFirstPart();
@@ -692,7 +692,7 @@ HRESULT CCodeTypeBuilder::ProcessMessage_PAD(
         }
 
         CWSDLMessagePart *pCheck = pMsg->GetNextPart(pos);
-        ATLASSERT( pCheck != NULL );
+        ATLASSERT(pCheck != NULL);
         if (pCheck->GetTypeName().GetName().GetLength() != 0)
         {
             bType = true;
@@ -712,12 +712,12 @@ HRESULT CCodeTypeBuilder::ProcessMessage_PAD(
 
         // REVIEW (jasjitg): comment/assert below...
         // must have CODEFLAG_CHAIN
-        ATLASSERT( dwCallFlags & CODEFLAG_CHAIN );
+        ATLASSERT(dwCallFlags & CODEFLAG_CHAIN);
 
         // referenced by type= ==> only one message part
         pos = pMsg->GetFirstPart();
         CWSDLMessagePart *pPart = pMsg->GetNextPart(pos);
-        ATLASSERT( pPart != NULL );
+        ATLASSERT(pPart != NULL);
 
         hr = ProcessMessagePart_PAD(pPart, pCodeFunc, dwFlags, dwCallFlags);
     }
@@ -727,7 +727,7 @@ HRESULT CCodeTypeBuilder::ProcessMessage_PAD(
         while (pos != NULL)
         {
             CWSDLMessagePart *pPart = pMsg->GetNextPart(pos);
-            ATLASSERT( pPart != NULL );
+            ATLASSERT(pPart != NULL);
 
             hr = ProcessMessagePart_PAD(pPart, pCodeFunc, dwFlags, dwCallFlags);
 
@@ -752,8 +752,8 @@ HRESULT CCodeTypeBuilder::ProcessMessagePart_PAD(
     DWORD dwFlags,
     DWORD dwCallFlags)
 {
-    ATLASSERT( pPart != NULL );
-    ATLASSERT( pCodeFunc != NULL );
+    ATLASSERT(pPart != NULL);
+    ATLASSERT(pCodeFunc != NULL);
 
     HRESULT hr = E_FAIL;
     bool isHeader = (dwFlags & CODEFLAG_HEADER) != 0;
@@ -764,7 +764,7 @@ HRESULT CCodeTypeBuilder::ProcessMessagePart_PAD(
         hr = pPart->GetElement(&pElement);
         if (SUCCEEDED(hr))
         {
-            ATLASSERT( pElement != NULL );
+            ATLASSERT(pElement != NULL);
 
             // set/verify namespace
             hr = CheckDocLiteralNamespace(pCodeFunc, pElement, dwFlags, dwCallFlags);
@@ -822,10 +822,10 @@ HRESULT CCodeTypeBuilder::ProcessMessage_RPC_Encoded(
     DWORD dwFlags,
     DWORD dwCallFlags)
 {
-    ATLASSERT( pMsg != NULL );
-    ATLASSERT( pCodeFunc != NULL );
-    ATLASSERT( dwCallFlags & CODEFLAG_RPC );
-    ATLASSERT( dwCallFlags & CODEFLAG_ENCODED );
+    ATLASSERT(pMsg != NULL);
+    ATLASSERT(pCodeFunc != NULL);
+    ATLASSERT(dwCallFlags & CODEFLAG_RPC);
+    ATLASSERT(dwCallFlags & CODEFLAG_ENCODED);
 
     pMsg;
     pCodeFunc;
@@ -837,7 +837,7 @@ HRESULT CCodeTypeBuilder::ProcessMessage_RPC_Encoded(
     while (pos != NULL)
     {
         CWSDLMessagePart *pPart = pMsg->GetNextPart(pos);
-        ATLASSERT( pPart != NULL );
+        ATLASSERT(pPart != NULL);
 
         hr = ProcessMessagePart_RPC_Encoded(pPart, pCodeFunc, dwFlags, dwCallFlags);
         if (FAILED(hr))
@@ -886,10 +886,10 @@ HRESULT CCodeTypeBuilder::ProcessMessage_RPC_Literal(
     DWORD dwFlags,
     DWORD dwCallFlags)
 {
-    ATLASSERT( pMsg != NULL );
-    ATLASSERT( pCodeFunc != NULL );
-    ATLASSERT( dwCallFlags & CODEFLAG_RPC );
-    ATLASSERT( dwCallFlags & CODEFLAG_LITERAL );
+    ATLASSERT(pMsg != NULL);
+    ATLASSERT(pCodeFunc != NULL);
+    ATLASSERT(dwCallFlags & CODEFLAG_RPC);
+    ATLASSERT(dwCallFlags & CODEFLAG_LITERAL);
 
     pMsg;
     pCodeFunc;
@@ -901,7 +901,7 @@ HRESULT CCodeTypeBuilder::ProcessMessage_RPC_Literal(
     while (pos != NULL)
     {
         CWSDLMessagePart *pPart = pMsg->GetNextPart(pos);
-        ATLASSERT( pPart != NULL );
+        ATLASSERT(pPart != NULL);
 
         hr = ProcessMessagePart_RPC_Literal(pPart, pCodeFunc, dwFlags, dwCallFlags);
 
@@ -928,7 +928,7 @@ HRESULT CCodeTypeBuilder::ProcessMessagePart_RPC_Literal(
         hr = pPart->GetElement(&pElement);
         if (SUCCEEDED(hr))
         {
-            ATLASSERT( pElement != NULL );
+            ATLASSERT(pElement != NULL);
             hr = ProcessElement(pElement, pCodeFunc, dwFlags | dwCallFlags | CODEFLAG_ELEMENT, codeType, TRUE, pPart);
         }
     }
@@ -947,7 +947,7 @@ HRESULT CCodeTypeBuilder::ProcessMessagePart_RPC_Literal(
     else
     {
         // we should check this in CWSDLMessageParser::OnPart
-        ATLASSERT( FALSE );
+        ATLASSERT(FALSE);
         EmitErrorHr(E_FAIL);
         hr = E_FAIL;
     }
@@ -987,7 +987,7 @@ HRESULT CCodeTypeBuilder::ProcessMessagePart_Type(
         pCodeElem = GetHeaderByName(pCodeFunc, strName);
         if (pCodeElem == NULL)
         {
-            spCodeElem.Attach( new CCodeTypedElement );
+            spCodeElem.Attach(new CCodeTypedElement);
             if (spCodeElem == NULL)
             {
                 EmitErrorHr(E_OUTOFMEMORY);
@@ -1033,7 +1033,7 @@ HRESULT CCodeTypeBuilder::ProcessMessagePart_Type(
             }
             if (SUCCEEDED(hr) && spCodeElem != NULL)
             {
-                ATLASSERT( codeType == CODETYPE_HEADER );
+                ATLASSERT(codeType == CODETYPE_HEADER);
                 hr = CheckAndAddHeader(pCodeFunc, spCodeElem, dwFlags, pPart);
             }
         }
@@ -1078,7 +1078,7 @@ HRESULT CCodeTypeBuilder::ProcessElement(
 
     if (pContainer != NULL)
     {
-        spCodeElem.Attach( new CCodeTypedElement );
+        spCodeElem.Attach(new CCodeTypedElement);
         if (spCodeElem == NULL)
         {
             EmitErrorHr(E_OUTOFMEMORY);
@@ -1134,7 +1134,7 @@ HRESULT CCodeTypeBuilder::ProcessElement(
 
     if (bCheckArray != false)
     {
-        ATLASSERT( spCodeElem != NULL );
+        ATLASSERT(spCodeElem != NULL);
 
         hr = ProcessArrayDefintion(pElem, pContainer, spCodeElem, dwFlags);
         if (hr == S_FALSE)
@@ -1167,7 +1167,7 @@ HRESULT CCodeTypeBuilder::ProcessElement(
                 if ((fTopLevel != TRUE) && (SUCCEEDED(hr)) && (spCodeElem != NULL))
                 {
                     CODETYPEMAP::CPair *pPair = m_codeTypes.Lookup(static_cast<CComplexType *>(p));
-                    ATLASSERT( pPair != NULL );
+                    ATLASSERT(pPair != NULL);
                     *spCodeElem = pPair->m_value;
                 }
 
@@ -1193,7 +1193,7 @@ HRESULT CCodeTypeBuilder::ProcessElement(
                     else
                     {
                         CODESIMPLETYPEMAP::CPair *pPair = m_codeEnums.Lookup(static_cast<CSimpleType *>(p));
-                        ATLASSERT( pPair != NULL );
+                        ATLASSERT(pPair != NULL);
                         *spCodeElem = pPair->m_value;
                     }
                 }
@@ -1228,7 +1228,7 @@ HRESULT CCodeTypeBuilder::ProcessElement(
         CStringW strChkName;
         if ((dwFlags & CODEFLAG_RPC) && (pMsgPart != NULL))
         {
-            ATLASSERT( dwFlags & CODEFLAG_LITERAL );
+            ATLASSERT(dwFlags & CODEFLAG_LITERAL);
             strChkName = pMsgPart->GetName();
         }
         else
@@ -1325,14 +1325,14 @@ HRESULT CCodeTypeBuilder::ProcessComplexType(
             return E_FAIL;
         }
 
-        spElem.Attach( new CCodeElementContainer );
+        spElem.Attach(new CCodeElementContainer);
         if (spElem == NULL)
         {
             EmitErrorHr(E_OUTOFMEMORY);
             return E_OUTOFMEMORY;
         }
 
-        ATLASSERT( pType->GetParentSchema() != NULL );
+        ATLASSERT(pType->GetParentSchema() != NULL);
 
         // set the type name
         hr = spElem->SetName(pType->GetName());
@@ -1403,10 +1403,10 @@ HRESULT CCodeTypeBuilder::ProcessComplexType(
         }
     }
 
-    if( true == bArrayOfElem )
+    if (true == bArrayOfElem)
     {
         CODETYPEMAP::CPair *pPair = m_codeTypes.Lookup(pType);
-        ATLASSERT( pPair != NULL );
+        ATLASSERT(pPair != NULL);
         CCodeTypedElement& codeElem = pPair->m_value;
         codeElem.SetFlags(codeElem.GetFlags() | CODEFLAG_DYNARRAYWRAPPER);
     }
@@ -1421,12 +1421,12 @@ HRESULT CCodeTypeBuilder::ProcessSimpleType(
     XSDTYPE *pXSDType,
     LPDWORD pdwFlags)
 {
-    ATLASSERT( pType != NULL );
-    ATLASSERT( pXSDType != NULL );
-    ATLASSERT( pdwFlags != NULL );
+    ATLASSERT(pType != NULL);
+    ATLASSERT(pXSDType != NULL);
+    ATLASSERT(pdwFlags != NULL);
 
     // check CLR/FX-specific namespaces
-    ATLASSERT( pType->GetParentSchema() != NULL );
+    ATLASSERT(pType->GetParentSchema() != NULL);
 
     if ((pType->GetParentSchema()->GetTargetNamespace() == FX_TYPES_NAMESPACEW) ||
             (pType->GetParentSchema()->GetTargetNamespace() == CLR_TYPES_NAMESPACEW))
@@ -1457,7 +1457,7 @@ HRESULT CCodeTypeBuilder::ProcessSimpleType(
             return S_OK;
         }
 
-        spElem.Attach( new CCodeElementContainer );
+        spElem.Attach(new CCodeElementContainer);
         if (spElem == NULL)
         {
             EmitErrorHr(E_OUTOFMEMORY);
@@ -1474,7 +1474,7 @@ HRESULT CCodeTypeBuilder::ProcessSimpleType(
     POSITION pos = pType->GetFirstEnumeration();
     if (pos != NULL)
     {
-        ATLASSERT( pType->GetParentSchema() != NULL );
+        ATLASSERT(pType->GetParentSchema() != NULL);
         if (FAILED(spElem->SetNamespace(pType->GetParentSchema()->GetTargetNamespace())))
         {
             EmitErrorHr(E_OUTOFMEMORY);
@@ -1486,7 +1486,7 @@ HRESULT CCodeTypeBuilder::ProcessSimpleType(
         while (pos != NULL)
         {
             CEnumeration * p = pType->GetNextEnumeration(pos);
-            ATLASSERT( p != NULL );
+            ATLASSERT(p != NULL);
 
             CCodeTypedElement *pNewElem = spElem->AddElement();
             if (pNewElem != NULL)
@@ -1583,7 +1583,7 @@ HRESULT CCodeTypeBuilder::SortStructs()
 
 HRESULT CCodeTypeBuilder::SortStructHelper(POSITION currPos)
 {
-    ATLASSERT( currPos != NULL );
+    ATLASSERT(currPos != NULL);
 
     CCodeStruct *pStruct = m_structs.GetValueAt(currPos);
     if (pStruct == NULL)
@@ -1598,7 +1598,7 @@ HRESULT CCodeTypeBuilder::SortStructHelper(POSITION currPos)
     {
         CCodeTypedElement *pElem = pStruct->GetNextElement(pos);
 
-        ATLASSERT( pElem != NULL );
+        ATLASSERT(pElem != NULL);
 
         CXSDElement *pXSD = pElem->GetElement();
         if (pXSD != NULL && pXSD->GetElementType() == XSD_COMPLEXTYPE)
@@ -1684,7 +1684,7 @@ HRESULT CCodeTypeBuilder::ProcessXSDElement(
     CCodeTypedElement *pCodeElem)
 {
     CStringW strUri;
-    if(typeName.GetPrefix().IsEmpty() && typeName.GetName().IsEmpty())
+    if (typeName.GetPrefix().IsEmpty() && typeName.GetName().IsEmpty())
     {
         pCodeElem->SetXSDType(XSDTYPE_STRING);
         EmitFileWarning(IDS_SDL_DEFAULT_TYPE, pElem, 0);
@@ -1723,7 +1723,7 @@ HRESULT CCodeTypeBuilder::ProcessSchemaElement(
     CCodeElementContainer *pContainer,
     DWORD dwFlags)
 {
-    ATLASSERT( pCodeElem != NULL );
+    ATLASSERT(pCodeElem != NULL);
 
     HRESULT hr = E_FAIL;
     switch (pElem->GetElementType())
@@ -1753,7 +1753,7 @@ HRESULT CCodeTypeBuilder::ProcessSchemaElement(
         }
         else if ((dwTypeFlags == CODEFLAG_ERR) && (IsVarArrayDefinition(pCplx,dwFlags, &pVarArrElement) != FALSE))
         {
-            ATLASSERT( pVarArrElement != NULL );
+            ATLASSERT(pVarArrElement != NULL);
             hr = ProcessVarArray(pVarArrElement, pContainer, pCodeElem, dwFlags);
             if (pCodeElem->GetNamespace().GetLength() == 0)
             {
@@ -1766,7 +1766,7 @@ HRESULT CCodeTypeBuilder::ProcessSchemaElement(
             if (SUCCEEDED(hr) && (pContainer != NULL))
             {
                 CODETYPEMAP::CPair *pPair = m_codeTypes.Lookup(pCplx);
-                ATLASSERT( pPair != NULL );
+                ATLASSERT(pPair != NULL);
                 *pCodeElem = pPair->m_value;
             }
         }
@@ -1801,7 +1801,7 @@ HRESULT CCodeTypeBuilder::ProcessSchemaElement(
         else if (pContainer != NULL)
         {
             CODESIMPLETYPEMAP::CPair *pPair = m_codeEnums.Lookup(static_cast<CSimpleType *>(pElem));
-            ATLASSERT( pPair != NULL );
+            ATLASSERT(pPair != NULL);
             *pCodeElem = pPair->m_value;
         }
 
@@ -1854,18 +1854,18 @@ HRESULT CCodeTypeBuilder::GetCallFlags(
     // TODO (jasjitg): support the parts= attribute
 
 //  ATLASSERT( wszParts != NULL );
-    ATLASSERT( pMessage != NULL );
-    ATLASSERT( pIO != NULL );
-    ATLASSERT( pBindingOp != NULL );
-    ATLASSERT( pBinding != NULL );
-    ATLASSERT( pdwFlags != NULL );
+    ATLASSERT(pMessage != NULL);
+    ATLASSERT(pIO != NULL);
+    ATLASSERT(pBindingOp != NULL);
+    ATLASSERT(pBinding != NULL);
+    ATLASSERT(pdwFlags != NULL);
 
     POSITION pos = pMessage->GetFirstPart();
     CWSDLMessagePart *pPart = NULL;
     if (pos != NULL)
     {
         pPart = pMessage->GetNextPart(pos);
-        ATLASSERT( pPart != NULL );
+        ATLASSERT(pPart != NULL);
     }
 
     // REVIEW: ... semantics of message with no parts?
@@ -1880,12 +1880,12 @@ HRESULT CCodeTypeBuilder::GetCallFlags(
     CWSDLBinding *pBinding,
     LPDWORD pdwFlags)
 {
-    ATLASSERT( pMessage != NULL );
+    ATLASSERT(pMessage != NULL);
 //  ATLASSERT( pPart != NULL );
-    ATLASSERT( pIO != NULL );
-    ATLASSERT( pBindingOp != NULL );
-    ATLASSERT( pBinding != NULL );
-    ATLASSERT( pdwFlags != NULL );
+    ATLASSERT(pIO != NULL);
+    ATLASSERT(pBindingOp != NULL);
+    ATLASSERT(pBinding != NULL);
+    ATLASSERT(pdwFlags != NULL);
 
     SOAPUSE use = SOAPUSE_UNK;
     SOAPSTYLE style = SOAPSTYLE_UNK;
@@ -1952,7 +1952,7 @@ HRESULT CCodeTypeBuilder::GetCallFlags(
     }
     else
     {
-        ATLASSERT( use == SOAPUSE_LITERAL );
+        ATLASSERT(use == SOAPUSE_LITERAL);
         dwFlags |= CODEFLAG_LITERAL;
     }
 
@@ -1962,7 +1962,7 @@ HRESULT CCodeTypeBuilder::GetCallFlags(
     }
     else
     {
-        ATLASSERT( style == SOAPSTYLE_DOC );
+        ATLASSERT(style == SOAPSTYLE_DOC);
         dwFlags |= CODEFLAG_DOCUMENT;
     }
 
@@ -2020,7 +2020,7 @@ HRESULT CCodeTypeBuilder::GetCallFlags(
 //
 CODEFLAGS CCodeTypeBuilder::IsArrayDefinition(CComplexType *pType)
 {
-    ATLASSERT( pType != NULL );
+    ATLASSERT(pType != NULL);
 
     CContent *pContent = pType->GetContent();
     if (pContent != NULL)
@@ -2038,10 +2038,10 @@ CODEFLAGS CCodeTypeBuilder::IsArrayDefinition(CComplexType *pType)
                     if (pRestriction->GetNumAttributes() == 1)
                     {
                         POSITION pos = pRestriction->GetFirstAttribute();
-                        ATLASSERT( pos != NULL );
+                        ATLASSERT(pos != NULL);
 
                         CAttribute *pAttribute = pRestriction->GetNextAttribute(pos);
-                        ATLASSERT( pAttribute != NULL );
+                        ATLASSERT(pAttribute != NULL);
 
                         CQName& ref = pAttribute->GetRefName();
                         if (ref.GetName().GetLength() != 0)
@@ -2070,14 +2070,14 @@ CODEFLAGS CCodeTypeBuilder::IsArrayDefinition(CComplexType *pType)
 
 BOOL CCodeTypeBuilder::IsVarArrayDefinition(CComplexType *pType,DWORD dwFlags, CElement **ppElement)
 {
-    ATLASSERT( pType != NULL );
-    ATLASSERT( ppElement != NULL );
+    ATLASSERT(pType != NULL);
+    ATLASSERT(ppElement != NULL);
     POSITION pos = pType->GetFirstElement();
     BOOL bFirstElement=TRUE;
     while (pos != NULL)
     {
         CElement *pElem = pType->GetNextElement(pos);
-        ATLASSERT( pElem != NULL );
+        ATLASSERT(pElem != NULL);
 
         //If doc\lit sees an unbounded single elem within complexType -
         //complexType is var array. All other unbounded elems (in both doc/lit and rpc/enc) are var arrays themselves (childs of complexType struct).
@@ -2121,10 +2121,10 @@ HRESULT CCodeTypeBuilder::ProcessArrayDefintion(
     CCodeTypedElement *pCodeElem,
     DWORD dwFlags)
 {
-    ATLASSERT( pElem != NULL );
+    ATLASSERT(pElem != NULL);
 
     POSITION pos = pElem->GetFirstElement();
-    ATLASSERT( pos != NULL ); // pre-condition
+    ATLASSERT(pos != NULL);   // pre-condition
     CXSDElement *p  = pElem->GetNextElement(pos);
 
     if (pCodeElem->GetNamespace().GetLength()==0)
@@ -2145,7 +2145,7 @@ HRESULT CCodeTypeBuilder::ProcessArrayDefintion(
     if (arrPos != NULL)
     {
         pArrDesc = pArrElem->GetNextElement(arrPos);
-        ATLASSERT( pArrDesc != NULL );
+        ATLASSERT(pArrDesc != NULL);
 
         hr = ProcessVarArray(pArrDesc, pContainer, pCodeElem, dwFlags);
         if (arrPos != NULL)
@@ -2184,9 +2184,9 @@ HRESULT CCodeTypeBuilder::ProcessVarArray(
     CCodeTypedElement *pCodeElem,
     DWORD dwFlags)
 {
-    ATLASSERT( pArrDesc != NULL );
-    ATLASSERT( pContainer != NULL );
-    ATLASSERT( pCodeElem != NULL );
+    ATLASSERT(pArrDesc != NULL);
+    ATLASSERT(pContainer != NULL);
+    ATLASSERT(pCodeElem != NULL);
 
     HRESULT hr = S_OK;
     if (pArrDesc->HasMinOccurs() && pArrDesc->HasMaxOccurs())
@@ -2194,7 +2194,7 @@ HRESULT CCodeTypeBuilder::ProcessVarArray(
         hr = GetTypeFromElement(pArrDesc, pCodeElem, pContainer, 0);
         if (SUCCEEDED(hr))
         {
-            ATLASSERT( pCodeElem != NULL );
+            ATLASSERT(pCodeElem != NULL);
             if ((pArrDesc->GetMinOccurs() == pArrDesc->GetMaxOccurs()) &&
                     (pArrDesc->GetMinOccurs() != MAXOCCURS_UNBOUNDED)) // REVIEW: error?
             {
@@ -2221,24 +2221,24 @@ HRESULT CCodeTypeBuilder::ProcessArray(
     CCodeTypedElement *pCodeElem,
     DWORD dwFlags)
 {
-    ATLASSERT( pType != NULL );
-    ATLASSERT( pContainer != NULL );
-    ATLASSERT( pCodeElem != NULL );
-    ATLASSERT( IsArrayDefinition(pType) != FALSE );
+    ATLASSERT(pType != NULL);
+    ATLASSERT(pContainer != NULL);
+    ATLASSERT(pCodeElem != NULL);
+    ATLASSERT(IsArrayDefinition(pType) != FALSE);
 
     CContent *pContent = pType->GetContent();
-    ATLASSERT( pContent != NULL );
+    ATLASSERT(pContent != NULL);
 
     CComplexType *pRestriction = pContent->GetType();
-    ATLASSERT( pRestriction != NULL );
-    ATLASSERT( pRestriction->GetElementType() == XSD_RESTRICTION );
-    ATLASSERT( pRestriction->GetNumAttributes() == 1 );
+    ATLASSERT(pRestriction != NULL);
+    ATLASSERT(pRestriction->GetElementType() == XSD_RESTRICTION);
+    ATLASSERT(pRestriction->GetNumAttributes() == 1);
 
     POSITION pos = pRestriction->GetFirstAttribute();
-    ATLASSERT( pos != NULL );
+    ATLASSERT(pos != NULL);
 
     CAttribute *pAttribute = pRestriction->GetNextAttribute(pos);
-    ATLASSERT( pAttribute != NULL );
+    ATLASSERT(pAttribute != NULL);
 
     CStringW strArrayType = pAttribute->GetArrayType();
 
@@ -2262,7 +2262,7 @@ HRESULT CCodeTypeBuilder::ProcessArray(
             }
             else
             {
-                ATLASSERT( xsdType != XSDTYPE_ERR );
+                ATLASSERT(xsdType != XSDTYPE_ERR);
                 pCodeElem->SetXSDType(xsdType);
             }
 
@@ -2286,9 +2286,9 @@ HRESULT CCodeTypeBuilder::GetTypeFromQName(
     CXSDElement **ppXSDElement,
     XSDTYPE *pXSD)
 {
-    ATLASSERT( pXSDElement != NULL );
-    ATLASSERT( ppXSDElement != NULL );
-    ATLASSERT( pXSD != NULL );
+    ATLASSERT(pXSDElement != NULL);
+    ATLASSERT(ppXSDElement != NULL);
+    ATLASSERT(pXSD != NULL);
 
     *ppXSDElement = NULL;
     *pXSD = XSDTYPE_ERR;
@@ -2323,9 +2323,9 @@ HRESULT CCodeTypeBuilder::GetArrayDimensions(
     CAttribute *pAttribute,
     CCodeTypedElement *pCodeElem)
 {
-    ATLASSERT( pAttribute != NULL );
-    ATLASSERT( pCodeElem != NULL );
-    ATLASSERT( pAttribute->GetArrayType().GetLength() != 0 );
+    ATLASSERT(pAttribute != NULL);
+    ATLASSERT(pCodeElem != NULL);
+    ATLASSERT(pAttribute->GetArrayType().GetLength() != 0);
 
     LPCWSTR wszArrayType = pAttribute->GetArrayType();
     LPCWSTR wszChr = wcschr(wszArrayType, L'[');
@@ -2375,15 +2375,15 @@ HRESULT CCodeTypeBuilder::ProcessSoapHeaders(
     CWSDLBinding *pBinding,
     DWORD dwFlags)
 {
-    ATLASSERT( pElem != NULL );
-    ATLASSERT( pIO != NULL );
+    ATLASSERT(pElem != NULL);
+    ATLASSERT(pIO != NULL);
 
     HRESULT hr = S_OK;
     POSITION pos = pIO->GetFirstSoapHeader();
     while ((pos != NULL) && (hr == S_OK))
     {
         CSoapHeader *pHeader = pIO->GetNextSoapHeader(pos);
-        ATLASSERT( pHeader != NULL );
+        ATLASSERT(pHeader != NULL);
 
         if ((pHeader->GetNamespace().GetLength() != 0) &&
                 (pElem->GetNamespace() != CW2A(pHeader->GetNamespace())))
@@ -2439,7 +2439,7 @@ HRESULT CCodeTypeBuilder::ProcessSoapHeaders(
 //                      }
                         else
                         {
-                            ATLASSERT( FALSE );
+                            ATLASSERT(FALSE);
                             EmitError(IDS_SDL_INTERNAL);
                             hr = E_FAIL;
                         }
@@ -2450,7 +2450,7 @@ HRESULT CCodeTypeBuilder::ProcessSoapHeaders(
                         if (SUCCEEDED(hr))
                         {
                             // REVIEW (jasjitg): can maybe make this better (inefficient)
-                            CAutoPtr<CCodeTypedElement> spElem( new CCodeTypedElement );
+                            CAutoPtr<CCodeTypedElement> spElem(new CCodeTypedElement);
                             if (spElem != NULL)
                             {
                                 *spElem = *(p->m_value);
@@ -2498,14 +2498,14 @@ HRESULT CCodeTypeBuilder::ProcessSoapHeaders(
 
 HRESULT CCodeTypeBuilder::GetElementInfo(CXMLElement *pElem, CQName& name, CStringW& strUri)
 {
-    ATLASSERT( pElem != NULL );
+    ATLASSERT(pElem != NULL);
     return pElem->GetNamespaceUri(name.GetPrefix(), strUri);
 }
 
 HRESULT CCodeTypeBuilder::CheckDuplicateHeaders(CCodeFunction *pCodeFunc, CCodeTypedElement *pElem, DWORD dwFlags)
 {
-    ATLASSERT( pCodeFunc != NULL );
-    ATLASSERT( pElem != NULL );
+    ATLASSERT(pCodeFunc != NULL);
+    ATLASSERT(pElem != NULL);
 
     CCodeTypedElement *p = GetHeaderByName(pCodeFunc, pElem->GetName());
     if (p != NULL)
@@ -2526,7 +2526,7 @@ HRESULT CCodeTypeBuilder::CheckDuplicateHeaders(CCodeFunction *pCodeFunc, CCodeT
 
 CCodeTypedElement * CCodeTypeBuilder::GetHeaderByName(CCodeFunction *pCodeFunc, const CStringW& strName)
 {
-    ATLASSERT( pCodeFunc != NULL );
+    ATLASSERT(pCodeFunc != NULL);
     POSITION pos = pCodeFunc->GetFirstHeader();
     while (pos != NULL)
     {
@@ -2542,9 +2542,9 @@ CCodeTypedElement * CCodeTypeBuilder::GetHeaderByName(CCodeFunction *pCodeFunc, 
 
 HRESULT CCodeTypeBuilder::AddHeaderToFunction(CCodeFunction *pCodeFunc, CAutoPtr<CCodeTypedElement> &spElem, CWSDLMessagePart *pPart)
 {
-    ATLASSERT( pCodeFunc != NULL );
-    ATLASSERT( spElem != NULL );
-    ATLASSERT( pPart != NULL );
+    ATLASSERT(pCodeFunc != NULL);
+    ATLASSERT(spElem != NULL);
+    ATLASSERT(pPart != NULL);
 
     // look for header element in type->header map
     CXSDElement *pElemType = spElem->GetElement();
@@ -2570,7 +2570,7 @@ HRESULT CCodeTypeBuilder::AddHeaderToFunction(CCodeFunction *pCodeFunc, CAutoPtr
         }
 
         // add to m_headersByType
-        CAutoPtr<CCodeTypedElement> spNewElem( new CCodeTypedElement );
+        CAutoPtr<CCodeTypedElement> spNewElem(new CCodeTypedElement);
         if (spNewElem != NULL)
         {
             *spNewElem = *spElem;
@@ -2596,7 +2596,7 @@ HRESULT CCodeTypeBuilder::AddHeaderToFunction(CCodeFunction *pCodeFunc, CAutoPtr
     if (pPartPair == NULL)
     {
         // add to m_headersByPart
-        CAutoPtr<CCodeTypedElement> spNewElem( new CCodeTypedElement );
+        CAutoPtr<CCodeTypedElement> spNewElem(new CCodeTypedElement);
         if (spNewElem != NULL)
         {
             *spNewElem = *spElem;
@@ -2637,13 +2637,13 @@ HRESULT CCodeTypeBuilder::AddHeaderToFunction(CCodeFunction *pCodeFunc, CAutoPtr
 
 CCodeTypedElement * CCodeTypeBuilder::GetParameterByName(CCodeFunction *pCodeFunc, const CStringW& strName)
 {
-    ATLASSERT( pCodeFunc != NULL );
+    ATLASSERT(pCodeFunc != NULL);
 
     POSITION pos = pCodeFunc->GetFirstElement();
     while (pos != NULL)
     {
         CCodeTypedElement *p = pCodeFunc->GetNextElement(pos);
-        ATLASSERT( p != NULL );
+        ATLASSERT(p != NULL);
 
         if (p->GetName() == strName)
         {
@@ -2656,7 +2656,7 @@ CCodeTypedElement * CCodeTypeBuilder::GetParameterByName(CCodeFunction *pCodeFun
 
 HRESULT CCodeTypeBuilder::GetNameFromSchemaElement(CXSDElement *pXSDElement, CStringW& strName)
 {
-    ATLASSERT( pXSDElement != NULL );
+    ATLASSERT(pXSDElement != NULL);
 
     HRESULT hr = S_OK;
     XSDELEMENT_TYPE elementType = pXSDElement->GetElementType();
@@ -2670,7 +2670,7 @@ HRESULT CCodeTypeBuilder::GetNameFromSchemaElement(CXSDElement *pXSDElement, CSt
     }
     else
     {
-        ATLASSERT( FALSE );
+        ATLASSERT(FALSE);
         hr = E_FAIL;
     }
 
@@ -2698,8 +2698,8 @@ HRESULT CCodeTypeBuilder::CheckDocLiteralNamespace(
     DWORD dwFlags,
     DWORD dwCallFlags)
 {
-    ATLASSERT( pCodeFunc != NULL );
-    ATLASSERT( pXSDElement != NULL );
+    ATLASSERT(pCodeFunc != NULL);
+    ATLASSERT(pXSDElement != NULL);
 
     if ((dwFlags & CODEFLAG_IN) || (dwFlags & CODEFLAG_HEADER) || (pCodeFunc->GetNamespace().GetLength() == 0))
     {
@@ -2717,7 +2717,7 @@ HRESULT CCodeTypeBuilder::CheckDocLiteralNamespace(
     }
     else
     {
-        ATLASSERT( (dwFlags & CODEFLAG_OUT) || (dwCallFlags & CODEFLAG_PAD) );
+        ATLASSERT((dwFlags & CODEFLAG_OUT) || (dwCallFlags & CODEFLAG_PAD));
 
         if (wcscmp(CA2W(pCodeFunc->GetNamespace()), pXSDElement->GetParentSchema()->GetTargetNamespace()))
         {
@@ -2730,7 +2730,7 @@ HRESULT CCodeTypeBuilder::CheckDocLiteralNamespace(
 
 HRESULT CCodeTypeBuilder::CreateSafeNames(CCodeElementContainer *pElem)
 {
-    ATLASSERT( pElem != NULL );
+    ATLASSERT(pElem != NULL);
 
     // map for names in current scope
     NAMEMAP scopedMap;
@@ -2755,7 +2755,7 @@ HRESULT CCodeTypeBuilder::CreateSafeNames(CCodeElementContainer *pElem)
     while (pos != NULL)
     {
         CCodeTypedElement *p = pElem->GetNextElement(pos);
-        ATLASSERT( p != NULL );
+        ATLASSERT(p != NULL);
 
         hr = CreateSafeCppName(p->GetSafeName(), p->GetName());
         if (SUCCEEDED(hr))

@@ -64,7 +64,7 @@ CUInt128::CUInt128()
 
 CUInt128::CUInt128(bool bFill)
 {
-    if( bFill )
+    if (bFill)
     {
         m_uData[0] = (ULONG)-1;
         m_uData[1] = (ULONG)-1;
@@ -132,7 +132,7 @@ CUInt128& CUInt128::SetValueRandom()
     AutoSeededRandomPool rng;
     byte byRandomBytes[16];
     rng.GenerateBlock(byRandomBytes, 16);
-    SetValueBE( byRandomBytes );
+    SetValueBE(byRandomBytes);
     return *this;
 }
 
@@ -386,23 +386,23 @@ ULONG CUInt128::Get32BitChunk(int iVal) const
     return m_uData[iVal];
 }
 
-void CUInt128::operator+  (const CUInt128 &uValue)
+void CUInt128::operator+ (const CUInt128 &uValue)
 {
     Add(uValue);
 }
-void CUInt128::operator-  (const CUInt128 &uValue)
+void CUInt128::operator- (const CUInt128 &uValue)
 {
     Subtract(uValue);
 }
-void CUInt128::operator=  (const CUInt128 &uValue)
+void CUInt128::operator= (const CUInt128 &uValue)
 {
     SetValue(uValue);
 }
-bool CUInt128::operator<  (const CUInt128 &uValue) const
+bool CUInt128::operator< (const CUInt128 &uValue) const
 {
     return (CompareTo(uValue) <  0);
 }
-bool CUInt128::operator>  (const CUInt128 &uValue) const
+bool CUInt128::operator> (const CUInt128 &uValue) const
 {
     return (CompareTo(uValue) >  0);
 }
@@ -423,23 +423,23 @@ bool CUInt128::operator!= (const CUInt128 &uValue) const
     return (CompareTo(uValue) != 0);
 }
 
-void CUInt128::operator+  (ULONG uValue)
+void CUInt128::operator+ (ULONG uValue)
 {
     Add(uValue);
 }
-void CUInt128::operator-  (ULONG uValue)
+void CUInt128::operator- (ULONG uValue)
 {
     Subtract(uValue);
 }
-void CUInt128::operator=  (ULONG uValue)
+void CUInt128::operator= (ULONG uValue)
 {
     SetValue(uValue);
 }
-bool CUInt128::operator<  (ULONG uValue) const
+bool CUInt128::operator< (ULONG uValue) const
 {
     return (CompareTo(uValue) <  0);
 }
-bool CUInt128::operator>  (ULONG uValue) const
+bool CUInt128::operator> (ULONG uValue) const
 {
     return (CompareTo(uValue) >  0);
 }

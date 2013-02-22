@@ -88,7 +88,7 @@ protected:
     virtual BOOL Connect(const SOCKADDR* lpSockAddr, int nSockAddrLen);
     virtual BOOL Create(UINT nSocketPort = 0, int nSocketType = SOCK_STREAM,
                         long lEvent = FD_READ | FD_WRITE | FD_OOB | FD_ACCEPT | FD_CONNECT | FD_CLOSE,
-                        LPCSTR lpszSocketAddress = NULL );
+                        LPCSTR lpszSocketAddress = NULL);
     virtual BOOL GetPeerName(SOCKADDR* lpSockAddr, int* lpSockAddrLen);
 #ifdef _AFX
     virtual BOOL GetPeerName(CString& rPeerAddress, UINT& rPeerPort);
@@ -110,7 +110,7 @@ protected:
     BOOL GetPeerNameNext(CString& rPeerAddress, UINT& rPeerPort);
 #endif
     BOOL GetPeerNameNext(SOCKADDR* lpSockAddr, int* lpSockAddrLen);
-    BOOL ListenNext( int nConnectionBacklog);
+    BOOL ListenNext(int nConnectionBacklog);
     int ReceiveNext(void *lpBuf, int nBufLen, int nFlags = 0);
     int SendNext(const void *lpBuf, int nBufLen, int nFlags = 0);
 

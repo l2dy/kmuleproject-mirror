@@ -32,7 +32,7 @@ TAG_METHOD_IMPL(CComplexTypeParser, OnElement)
         {
             SetXSDElementInfo(pElem, pCurr, GetLocator());
 
-            CAutoPtr<CElementParser> p( new CElementParser(GetReader(), this, GetLevel(), pElem) );
+            CAutoPtr<CElementParser> p(new CElementParser(GetReader(), this, GetLevel(), pElem));
             if (p != NULL)
             {
                 if (g_ParserList.AddHead(p) != NULL)
@@ -258,7 +258,7 @@ TAG_METHOD_IMPL(CComplexTypeParser, OnAttribute)
         {
             SetXSDElementInfo(pElem, pCurr, GetLocator());
 
-            CAutoPtr<CAttributeParser> p( new CAttributeParser(GetReader(), this, GetLevel(), pElem) );
+            CAutoPtr<CAttributeParser> p(new CAttributeParser(GetReader(), this, GetLevel(), pElem));
             if (p != NULL)
             {
                 if (g_ParserList.AddHead(p) != NULL)
@@ -375,7 +375,7 @@ TAG_METHOD_IMPL(CComplexTypeParser, OnComplexContent)
                 SetXSDElementInfo(pElem, pCurr, GetLocator());
                 pElem->SetElementType(XSD_COMPLEXCONTENT);
 
-                CAutoPtr<CContentParser> p( new CContentParser(GetReader(), this, GetLevel(), pElem) );
+                CAutoPtr<CContentParser> p(new CContentParser(GetReader(), this, GetLevel(), pElem));
                 if (p != NULL)
                 {
                     if (g_ParserList.AddHead(p) != NULL)

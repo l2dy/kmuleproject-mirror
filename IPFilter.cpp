@@ -56,7 +56,7 @@ CIPFilter::~CIPFilter()
         {
             SaveToDefaultFile();
         }
-        catch(CString)
+        catch (CString)
         {
         }
     }
@@ -86,19 +86,19 @@ int CIPFilter::AddFromFile(LPCTSTR pszFilePath, bool bShowResponse)
     DWORD dwStart = GetTickCount();
 
 //>>> WiZaRd::LoadStatus [X-Ray]
-	UINT	uLineCount = 0;
-	UINT	uLastPercent = 0;
-	UINT	uPercent =  0;
-	double	dPercent = 0;
-	CStdioFile countFile;
-	CString strPercent = L"";
-	if(countFile.Open(pszFilePath, CFile::modeRead))
-	{
-		CString strBuffer = L"";
-		while(countFile.ReadString(strBuffer))
-			++uLineCount;
-		countFile.Close();
-	}
+    UINT	uLineCount = 0;
+    UINT	uLastPercent = 0;
+    UINT	uPercent =  0;
+    double	dPercent = 0;
+    CStdioFile countFile;
+    CString strPercent = L"";
+    if (countFile.Open(pszFilePath, CFile::modeRead))
+    {
+        CString strBuffer = L"";
+        while (countFile.ReadString(strBuffer))
+            ++uLineCount;
+        countFile.Close();
+    }
 //<<< WiZaRd::LoadStatus [X-Ray]
 
     FILE* readFile = _tfsopen(pszFilePath, _T("r"), _SH_DENYWR);
@@ -123,7 +123,7 @@ int CIPFilter::AddFromFile(LPCTSTR pszFilePath, bool bShowResponse)
             eFileType = FilterDat;
         else
         {
-            VERIFY( _setmode(_fileno(readFile), _O_BINARY) != -1 );
+            VERIFY(_setmode(_fileno(readFile), _O_BINARY) != -1);
             static const BYTE _aucP2Bheader[] = "\xFF\xFF\xFF\xFFP2B";
             BYTE aucHeader[sizeof _aucP2Bheader - 1];
             if (fread(aucHeader, sizeof aucHeader, 1, readFile) == 1)
@@ -133,7 +133,7 @@ int CIPFilter::AddFromFile(LPCTSTR pszFilePath, bool bShowResponse)
                 else
                 {
                     (void)fseek(readFile, 0, SEEK_SET);
-                    VERIFY( _setmode(_fileno(readFile), _O_TEXT) != -1 ); // ugly!
+                    VERIFY(_setmode(_fileno(readFile), _O_TEXT) != -1);   // ugly!
                 }
             }
         }
@@ -179,19 +179,19 @@ int CIPFilter::AddFromFile(LPCTSTR pszFilePath, bool bShowResponse)
                     iFoundRanges++;
 
 //>>> WiZaRd::LoadStatus [X-Ray]
-					if(uLineCount)
-					{
-						dPercent = (double)uLineCount != 0.0 ? (double)(iLine)/(double)uLineCount*100.0 : 0.0;
-						uPercent = (UINT)dPercent;
-						if(uPercent != uLastPercent)
-						{						
-							strPercent.Format(L"Loading IPfilter - %.2f%%...", dPercent);
-							theApp.SetSplashText(strPercent);
-							if (theApp.emuledlg && theApp.emuledlg->statusbar->m_hWnd)
-								theApp.emuledlg->statusbar->SetText(strPercent, SBarLog, 0);
-							uLastPercent = uPercent;
-						}
-					}
+                    if (uLineCount)
+                    {
+                        dPercent = (double)uLineCount != 0.0 ? (double)(iLine)/(double)uLineCount*100.0 : 0.0;
+                        uPercent = (UINT)dPercent;
+                        if (uPercent != uLastPercent)
+                        {
+                            strPercent.Format(L"Loading IPfilter - %.2f%%...", dPercent);
+                            theApp.SetSplashText(strPercent);
+                            if (theApp.emuledlg && theApp.emuledlg->statusbar->m_hWnd)
+                                theApp.emuledlg->statusbar->SetText(strPercent, SBarLog, 0);
+                            uLastPercent = uPercent;
+                        }
+                    }
 //<<< WiZaRd::LoadStatus [X-Ray]
                 }
             }
@@ -205,19 +205,19 @@ int CIPFilter::AddFromFile(LPCTSTR pszFilePath, bool bShowResponse)
                 iLine++;
 
 //>>> WiZaRd::LoadStatus [X-Ray]
-				if(uLineCount)
-				{
-					dPercent = (double)uLineCount != 0.0 ? (double)(iLine)/(double)uLineCount*100.0 : 0.0;
-					uPercent = (UINT)dPercent;
-					if(uPercent != uLastPercent)
-					{
-						strPercent.Format(L"Loading IPfilter - %.2f%%...", dPercent);
-						theApp.SetSplashText(strPercent);
-						if (theApp.emuledlg && theApp.emuledlg->statusbar->m_hWnd)
-							theApp.emuledlg->statusbar->SetText(strPercent, SBarLog, 0);
-						uLastPercent = uPercent;
-					}
-				}
+                if (uLineCount)
+                {
+                    dPercent = (double)uLineCount != 0.0 ? (double)(iLine)/(double)uLineCount*100.0 : 0.0;
+                    uPercent = (UINT)dPercent;
+                    if (uPercent != uLastPercent)
+                    {
+                        strPercent.Format(L"Loading IPfilter - %.2f%%...", dPercent);
+                        theApp.SetSplashText(strPercent);
+                        if (theApp.emuledlg && theApp.emuledlg->statusbar->m_hWnd)
+                            theApp.emuledlg->statusbar->SetText(strPercent, SBarLog, 0);
+                        uLastPercent = uPercent;
+                    }
+                }
 //<<< WiZaRd::LoadStatus [X-Ray]
 
                 sbuffer = szBuffer;
@@ -226,7 +226,7 @@ int CIPFilter::AddFromFile(LPCTSTR pszFilePath, bool bShowResponse)
                 if (sbuffer.GetAt(0) == '#' || sbuffer.GetAt(0) == '/' || sbuffer.GetLength() < 5)
                 {
                     sbuffer.Trim(" \t\r\n");
-                    DEBUG_ONLY( (!sbuffer.IsEmpty()) ? TRACE(L"IP filter: ignored line %u\n", iLine) : 0 );
+                    DEBUG_ONLY((!sbuffer.IsEmpty()) ? TRACE(L"IP filter: ignored line %u\n", iLine) : 0);
                     continue;
                 }
 
@@ -277,7 +277,7 @@ int CIPFilter::AddFromFile(LPCTSTR pszFilePath, bool bShowResponse)
                 else
                 {
                     sbuffer.Trim(" \t\r\n");
-                    DEBUG_ONLY( (!sbuffer.IsEmpty()) ? TRACE(L"IP filter: ignored line %u\n", iLine) : 0 );
+                    DEBUG_ONLY((!sbuffer.IsEmpty()) ? TRACE(L"IP filter: ignored line %u\n", iLine) : 0);
                 }
             }
         }
@@ -307,7 +307,7 @@ int CIPFilter::AddFromFile(LPCTSTR pszFilePath, bool bShowResponse)
             while (i < m_iplist.GetCount())
             {
                 SIPFilter* pCur = m_iplist[i];
-                if (   pCur->start >= pPrv->start && pCur->start <= pPrv->end	 // overlapping
+                if (pCur->start >= pPrv->start && pCur->start <= pPrv->end	    // overlapping
                         || pCur->start == pPrv->end+1 && pCur->level == pPrv->level) // adjacent
                 {
                     if (pCur->start != pPrv->start || pCur->end != pPrv->end) // don't merge identical entries
@@ -348,7 +348,7 @@ int CIPFilter::AddFromFile(LPCTSTR pszFilePath, bool bShowResponse)
                     if (!pcToDelete[i])
                         newList[iNewListIndex++] = m_iplist[i];
                 }
-                ASSERT( iNewListIndex == newList.GetSize() );
+                ASSERT(iNewListIndex == newList.GetSize());
 
                 // Replace current list with new list. Dump, but still fast enough (only 1 memcpy)
                 m_iplist.RemoveAll();
@@ -480,42 +480,42 @@ bool CIPFilter::ParseFilterLine2(const CStringA& sbuffer, UINT& ip1, UINT& ip2, 
 void CIPFilter::RemoveAllIPFilters()
 {
 //>>> WiZaRd::LoadStatus [X-Ray]
-	UINT	uLineCount = m_iplist.GetCount();
-	UINT	uLastPercent = 0;
-	UINT	uPercent =  0;
-	double	dPercent = 0.0;
-	CString strPercent = L"";
+    UINT	uLineCount = m_iplist.GetCount();
+    UINT	uLastPercent = 0;
+    UINT	uPercent =  0;
+    double	dPercent = 0.0;
+    CString strPercent = L"";
 //<<< WiZaRd::LoadStatus [X-Ray]
     for (int i = 0; i < m_iplist.GetCount(); i++)
     {
         delete m_iplist[i];
 
 //>>> WiZaRd::LoadStatus [X-Ray]
-		if(uLineCount)
-		{
-			dPercent = (double)uLineCount != 0.0 ? (double)(i)/(double)uLineCount*100.0 : 0.0;
-			uPercent = (UINT)dPercent;
-			if(uPercent != uLastPercent)
-			{				
-				strPercent.Format(L"Unloading IPfilter - %.2f%%...", dPercent);
-				if(theApp.emuledlg)
-				{
-					if (theApp.emuledlg->statusbar->m_hWnd)
-						theApp.emuledlg->statusbar->SetText(strPercent, SBarLog, 0);
-				}
-				uLastPercent = uPercent;
-			}
-		}
+        if (uLineCount)
+        {
+            dPercent = (double)uLineCount != 0.0 ? (double)(i)/(double)uLineCount*100.0 : 0.0;
+            uPercent = (UINT)dPercent;
+            if (uPercent != uLastPercent)
+            {
+                strPercent.Format(L"Unloading IPfilter - %.2f%%...", dPercent);
+                if (theApp.emuledlg)
+                {
+                    if (theApp.emuledlg->statusbar->m_hWnd)
+                        theApp.emuledlg->statusbar->SetText(strPercent, SBarLog, 0);
+                }
+                uLastPercent = uPercent;
+            }
+        }
 //<<< WiZaRd::LoadStatus [X-Ray]
     }
 //>>> WiZaRd::LoadStatus [X-Ray]
-	if(uLineCount)
-	{
-		strPercent.Format(L"Unloading IPfilter - 100%%!");
-		theApp.SetSplashText(strPercent);
-		if (theApp.emuledlg && theApp.emuledlg->statusbar->m_hWnd)
-			theApp.emuledlg->statusbar->SetText(strPercent, SBarLog, 0);
-	}
+    if (uLineCount)
+    {
+        strPercent.Format(L"Unloading IPfilter - 100%%!");
+        theApp.SetSplashText(strPercent);
+        if (theApp.emuledlg && theApp.emuledlg->statusbar->m_hWnd)
+            theApp.emuledlg->statusbar->SetText(strPercent, SBarLog, 0);
+    }
 //<<< WiZaRd::LoadStatus [X-Ray]
 
     m_iplist.RemoveAll();
@@ -597,7 +597,7 @@ bool CIPFilter::RemoveIPFilter(const SIPFilter* pFilter)
 void CIPFilter::UpdateIPFilterURL(const CString& m_sURL)
 {
     CString strURL = L"";
-    if(m_sURL.IsEmpty())
+    if (m_sURL.IsEmpty())
         strURL = thePrefs.GetUpdateURLIPFilter();
     else
         strURL = m_sURL;
@@ -620,7 +620,7 @@ void CIPFilter::UpdateIPFilterURL(const CString& m_sURL)
     if (dlgDownload.DoModal() == IDOK)
     {
         CStdioFile IPFilterDotTxtFile;
-        if(IPFilterDotTxtFile.Open(szTempFilePath, CFile::modeRead | CFile::shareDenyWrite))
+        if (IPFilterDotTxtFile.Open(szTempFilePath, CFile::modeRead | CFile::shareDenyWrite))
         {
             CString strVersion;
             IPFilterDotTxtFile.ReadString(strVersion);
@@ -647,7 +647,7 @@ void CIPFilter::UpdateIPFilterURL(const CString& m_sURL)
     }
 
     CString IPFilterURL = L"";
-    if(m_sURL.IsEmpty())
+    if (m_sURL.IsEmpty())
         IPFilterURL = thePrefs.GetUpdateURLIPFilter();
     else
         IPFilterURL = m_sURL;
@@ -667,7 +667,7 @@ void CIPFilter::UpdateIPFilterURL(const CString& m_sURL)
         return;
     }
 
-    if(!Extract(szTempFilePath, thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + DFLT_IPFILTER_FILENAME, DFLT_IPFILTER_FILENAME, true, 2, DFLT_IPFILTER_FILENAME, L"guarding.p2p"))
+    if (!Extract(szTempFilePath, thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + DFLT_IPFILTER_FILENAME, DFLT_IPFILTER_FILENAME, true, 2, DFLT_IPFILTER_FILENAME, L"guarding.p2p"))
         return;
 
     LoadFromDefaultFile();

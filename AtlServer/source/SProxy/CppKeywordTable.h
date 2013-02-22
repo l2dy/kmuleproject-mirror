@@ -27,11 +27,11 @@ protected:
 
 public:
 
-    static unsigned long Hash( const wchar_t * sz )
+    static unsigned long Hash(const wchar_t * sz)
     {
         unsigned long hash;
         hash = 0;
-        while ( *sz != 0 )
+        while (*sz != 0)
         {
             hash = (hash<<3)+hash+(*sz);
             sz++;
@@ -39,7 +39,7 @@ public:
         return hash;
     }
 
-    static const HashNode * Lookup( const wchar_t * key )
+    static const HashNode * Lookup(const wchar_t * key)
     {
         unsigned long hash;
         const HashNode * p;

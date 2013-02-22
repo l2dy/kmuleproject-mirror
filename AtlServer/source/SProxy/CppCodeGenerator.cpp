@@ -12,7 +12,7 @@
 
 HRESULT CCppCodeGenerator::Generate(LPCWSTR wszFile, CCodeProxy *pProxy, bool bPragma, bool bNoClobber, bool bEmitNamespace, bool bGenProxy, const char *szNamespace)
 {
-    ATLASSERT( (wszFile != NULL) && (*wszFile != L'\0') );
+    ATLASSERT((wszFile != NULL) && (*wszFile != L'\0'));
 
     CWriteStreamOnFileA fileStream;
     HRESULT hr = fileStream.Init(wszFile, (bNoClobber != false) ? CREATE_NEW : CREATE_ALWAYS);
@@ -268,7 +268,7 @@ HTTP_CODE CCppCodeGenerator::OnGetFieldSizeIsIndex()
     {
         nCntr++;
         CCodeTypedElement *pElem = p->GetNextElement(pos);
-        ATLASSERT( pElem != NULL );
+        ATLASSERT(pElem != NULL);
         if (pElem->GetName() == ((LPCSTR)GetCurrentStructField()->GetSizeIs()))
         {
             m_writeHelper << nCntr;
@@ -287,7 +287,7 @@ HTTP_CODE CCppCodeGenerator::OnIsFieldSizeIs()
     while (pos != NULL)
     {
         CCodeTypedElement *pElem = p->GetNextElement(pos);
-        ATLASSERT( pElem != NULL );
+        ATLASSERT(pElem != NULL);
         if (GetCurrentStructField()->GetName() == ((LPCSTR)pElem->GetSizeIs()))
         {
             return HTTP_SUCCESS;
@@ -487,7 +487,7 @@ HTTP_CODE CCppCodeGenerator::OnHasRetval()
 HTTP_CODE CCppCodeGenerator::OnGetRetval()
 {
     // should never get called
-    ATLASSERT( FALSE );
+    ATLASSERT(FALSE);
     return HTTP_FAIL;
 }
 
@@ -585,7 +585,7 @@ HTTP_CODE CCppCodeGenerator::OnGetParameterTypeQName()
 HTTP_CODE CCppCodeGenerator::OnGetSizeIsIndex()
 {
     // should never get called
-    ATLASSERT( FALSE );
+    ATLASSERT(FALSE);
     return HTTP_FAIL;
 }
 
@@ -777,7 +777,7 @@ HTTP_CODE CCppCodeGenerator::OnEmitNamespace()
 
 HTTP_CODE CCppCodeGenerator::OnGetCppNamespace()
 {
-    ATLASSERT( m_bEmitNamespace != false );
+    ATLASSERT(m_bEmitNamespace != false);
 
     if ((m_szNamespace != NULL) && (*m_szNamespace))
     {

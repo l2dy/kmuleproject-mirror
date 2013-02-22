@@ -554,7 +554,7 @@ inline HRESULT CCodeElementContainer::SetName(const CStringA& str)
 
 inline HRESULT CCodeElementContainer::SetName(const CStringW& str)
 {
-    m_strName = CW2A( const_cast<LPWSTR>((LPCWSTR) str) );
+    m_strName = CW2A(const_cast<LPWSTR>((LPCWSTR) str));
     return S_OK;
 }
 
@@ -571,7 +571,7 @@ inline HRESULT CCodeElementContainer::SetResponseName(const CStringA& str)
 
 inline HRESULT CCodeElementContainer::SetResponseName(const CStringW& str)
 {
-    m_strResponseName = CW2A( const_cast<LPWSTR>((LPCWSTR) str) );
+    m_strResponseName = CW2A(const_cast<LPWSTR>((LPCWSTR) str));
     return S_OK;
 }
 
@@ -588,7 +588,7 @@ inline HRESULT CCodeElementContainer::SetSendName(const CStringA& str)
 
 inline HRESULT CCodeElementContainer::SetSendName(const CStringW& str)
 {
-    m_strSendName = CW2A( const_cast<LPWSTR>((LPCWSTR) str) );
+    m_strSendName = CW2A(const_cast<LPWSTR>((LPCWSTR) str));
     return S_OK;
 }
 
@@ -605,7 +605,7 @@ inline HRESULT CCodeElementContainer::SetNamespace(const CStringA& str)
 
 inline HRESULT CCodeElementContainer::SetNamespace(const CStringW& str)
 {
-    m_strNamespace = CW2A( const_cast<LPWSTR>((LPCWSTR) str) );
+    m_strNamespace = CW2A(const_cast<LPWSTR>((LPCWSTR) str));
     return S_OK;
 }
 
@@ -622,7 +622,7 @@ inline HRESULT CCodeElementContainer::SetSoapAction(const CStringA& str)
 
 inline HRESULT CCodeElementContainer::SetSoapAction(const CStringW& str)
 {
-    m_strSoapAction = CW2A( const_cast<LPWSTR>((LPCWSTR) str) );
+    m_strSoapAction = CW2A(const_cast<LPWSTR>((LPCWSTR) str));
     return S_OK;
 }
 
@@ -641,7 +641,7 @@ inline CCodeTypedElement * CCodeElementContainer::AddElement(CCodeTypedElement *
     CAutoPtr<CCodeTypedElement> spOut;
     if (p == NULL)
     {
-        spOut.Attach( new CCodeTypedElement );
+        spOut.Attach(new CCodeTypedElement);
         p = spOut;
     }
 
@@ -677,7 +677,7 @@ inline CCodeTypedElement * CCodeElementContainer::AddHeader(CCodeTypedElement * 
     CAutoPtr<CCodeTypedElement> spOut;
     if (p == NULL)
     {
-        spOut.Attach( new CCodeTypedElement );
+        spOut.Attach(new CCodeTypedElement);
         p = spOut;
     }
 
@@ -719,7 +719,7 @@ inline CCodeStruct * CCodeProxy::AddStruct(CCodeStruct * p)
     CAutoPtr<CCodeStruct> spOut;
     if (p == NULL)
     {
-        spOut.Attach( new CCodeStruct);
+        spOut.Attach(new CCodeStruct);
         p = spOut;
     }
 
@@ -750,7 +750,7 @@ inline CCodeEnum * CCodeProxy::AddEnum(CCodeEnum * p)
     CAutoPtr<CCodeEnum> spOut;
     if (p == NULL)
     {
-        spOut.Attach( new CCodeEnum);
+        spOut.Attach(new CCodeEnum);
         p = spOut;
     }
 
@@ -781,7 +781,7 @@ inline CCodeFunction * CCodeProxy::AddFunction(CCodeFunction * p)
     CAutoPtr<CCodeFunction> spOut;
     if (p == NULL)
     {
-        spOut.Attach( new CCodeFunction );
+        spOut.Attach(new CCodeFunction);
         p = spOut;
     }
 
@@ -812,7 +812,7 @@ inline CCodeTypedElement * CCodeProxy::AddHeader(CCodeTypedElement * p)
     CAutoPtr<CCodeTypedElement> spOut;
     if (p == NULL)
     {
-        spOut.Attach( new CCodeTypedElement );
+        spOut.Attach(new CCodeTypedElement);
         p = spOut;
     }
 

@@ -265,6 +265,6 @@ public:
 //<<< WiZaRd::Ratio Indicator
 //>>> WiZaRd::Upload Feedback
 public:
-	CString GetFeedBackString() const;
+    CString GetFeedBackString() const;
 //<<< WiZaRd::Upload Feedback
 };

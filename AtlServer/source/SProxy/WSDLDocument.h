@@ -78,7 +78,7 @@ public:
         CAutoPtr<CWSDLType> spOut;
         if (p == NULL)
         {
-            spOut.Attach( new CWSDLType );
+            spOut.Attach(new CWSDLType);
             p = spOut;
         }
 

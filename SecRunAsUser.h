@@ -56,7 +56,7 @@ typedef DWORD (WINAPI* TGetNamedSecurityInfo)(
     PSECURITY_DESCRIPTOR *ppSecurityDescriptor // SD
 );
 
-typedef DWORD (WINAPI* TSetNamedSecurityInfo) (
+typedef DWORD (WINAPI* TSetNamedSecurityInfo)(
     LPTSTR pObjectName,                // object name
     SE_OBJECT_TYPE ObjectType,         // object type
     SECURITY_INFORMATION SecurityInfo, // type
@@ -66,7 +66,7 @@ typedef DWORD (WINAPI* TSetNamedSecurityInfo) (
     PACL pSacl                         // new SACL
 );
 
-typedef BOOL (WINAPI* TAddAccessAllowedAceEx) (
+typedef BOOL (WINAPI* TAddAccessAllowedAceEx)(
     PACL pAcl,            // access control list
     DWORD dwAceRevision,  // ACL revision level
     DWORD AceFlags,       // ACE inheritance flags
@@ -74,7 +74,7 @@ typedef BOOL (WINAPI* TAddAccessAllowedAceEx) (
     PSID pSid             // trustee SID for new ACE
 );
 
-typedef BOOL (WINAPI* TLookupAccountName) (
+typedef BOOL (WINAPI* TLookupAccountName)(
     LPCTSTR lpSystemName,   // system name
     LPCTSTR lpAccountName,  // account name
     PSID Sid,               // security identifier
@@ -84,7 +84,7 @@ typedef BOOL (WINAPI* TLookupAccountName) (
     PSID_NAME_USE peUse     // SID-type indicator
 );
 
-typedef BOOL (WINAPI* TGetAclInformation) (
+typedef BOOL (WINAPI* TGetAclInformation)(
     PACL pAcl,                                   // access-control list
     LPVOID pAclInformation,                      // ACL information
     DWORD nAclInformationLength,                 // size of ACL information
@@ -120,18 +120,18 @@ typedef DWORD (WINAPI* TGetLengthSid)(
     PSID pSid   // SID to query
 );
 
-typedef HRESULT (WINAPI* TADsGetObject) (
+typedef HRESULT(WINAPI* TADsGetObject)(
     LPWSTR lpszPathName,
     REFIID riid,
     VOID** ppObject
 );
 
-typedef HRESULT (WINAPI* TADsBuildEnumerator) (
+typedef HRESULT(WINAPI* TADsBuildEnumerator)(
     IADsContainer* pADsContainer,
     IEnumVARIANT** ppEnumVariant
 );
 
-typedef HRESULT (WINAPI* TADsEnumerateNext) (
+typedef HRESULT(WINAPI* TADsEnumerateNext)(
     IEnumVARIANT* pEnumVariant,
     ULONG cElements,
     VARIANT* pvar,

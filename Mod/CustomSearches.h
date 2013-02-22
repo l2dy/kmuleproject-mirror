@@ -20,52 +20,52 @@ class CComboBoxEx2;
 
 class CCustomSearch
 {
- public:
-	CCustomSearch(const CString& name = L"WEB", const CString& url = L"http://", const CString& types = L"", const CString& lang = L"multi");
-	virtual ~CCustomSearch();
-	bool operator==(const CCustomSearch& ws);
+public:
+    CCustomSearch(const CString& name = L"WEB", const CString& url = L"http://", const CString& types = L"", const CString& lang = L"multi");
+    virtual ~CCustomSearch();
+    bool operator==(const CCustomSearch& ws);
 
-	void	Remove();
-	bool	IsEmpty() const;
-	bool	IsSeparator() const;
-	CString GetName() const;
-	CString GetURL() const;
-	UINT	GetLangIndex() const;	
-	CString GetSearchType(const CString& search) const;	
-	CString	GetSaveString() const;
+    void	Remove();
+    bool	IsEmpty() const;
+    bool	IsSeparator() const;
+    CString GetName() const;
+    CString GetURL() const;
+    UINT	GetLangIndex() const;
+    CString GetSearchType(const CString& search) const;
+    CString	GetSaveString() const;
 
 private:
-	CString strName;
-	CString strURL;
-	CString strTypes;
-	CString strLang;
+    CString strName;
+    CString strURL;
+    CString strTypes;
+    CString strLang;
 
- protected:
-	CString GetMainURL() const;
+protected:
+    CString GetMainURL() const;
 };
 
 class CCustomSearches
 {
- public:
-	CCustomSearches();
-	virtual ~CCustomSearches();
+public:
+    CCustomSearches();
+    virtual ~CCustomSearches();
 
-	bool	Load(const CString& filename = L"", const bool bUpdate = false);
-	bool	Save();
-	void	InitSearchList(CComboBoxEx2* list, CImageList* imglist);
-	CString CreateQuery(const UINT index, SSearchParams* pPrms = NULL);
-	bool	SearchExists(const CString& sName, const CString& sUrl);
+    bool	Load(const CString& filename = L"", const bool bUpdate = false);
+    bool	Save();
+    void	InitSearchList(CComboBoxEx2* list, CImageList* imglist);
+    CString CreateQuery(const UINT index, SSearchParams* pPrms = NULL);
+    bool	SearchExists(const CString& sName, const CString& sUrl);
 
-	CCustomSearch* GetAt(const UINT index) const;
-	void	Add(CCustomSearch* pWeb);
-	void	Remove(CCustomSearch* pWeb);
-	void	RemoveAll();
-	UINT	GetCount() const;
-	CString	GetDefaultFile() const;
+    CCustomSearch* GetAt(const UINT index) const;
+    void	Add(CCustomSearch* pWeb);
+    void	Remove(CCustomSearch* pWeb);
+    void	RemoveAll();
+    UINT	GetCount() const;
+    CString	GetDefaultFile() const;
 
 //	bool    Download(const CString& strURL = L"");
 
- private:
-	bool	m_bDefaultSearch;
-	CArray<CCustomSearch*> m_aWebs;
+private:
+    bool	m_bDefaultSearch;
+    CArray<CCustomSearch*> m_aWebs;
 };

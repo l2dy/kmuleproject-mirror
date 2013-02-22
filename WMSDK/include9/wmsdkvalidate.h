@@ -19,7 +19,7 @@
 // handle a particular URL, as this cannot be known until the URL is opened.
 //
 
-HRESULT STDMETHODCALLTYPE WMCheckURLExtension( /* [in] */ LPCWSTR pwszURL );
+HRESULT STDMETHODCALLTYPE WMCheckURLExtension(/* [in] */ LPCWSTR pwszURL);
 
 //
 // This routine examines the URL scheme that is passed in as an argument.  The routine
@@ -31,7 +31,7 @@ HRESULT STDMETHODCALLTYPE WMCheckURLExtension( /* [in] */ LPCWSTR pwszURL );
 // handle a particular URL, as this cannot be known until the URL is opened.
 //
 
-HRESULT STDMETHODCALLTYPE WMCheckURLScheme( /* [in] */ LPCWSTR pwszURLScheme );
+HRESULT STDMETHODCALLTYPE WMCheckURLScheme(/* [in] */ LPCWSTR pwszURLScheme);
 
 //
 // This routine returns S_OK if the data buffer looks like a file type that is supported

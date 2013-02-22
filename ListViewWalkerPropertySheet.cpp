@@ -51,10 +51,10 @@ CListViewPropertySheet::~CListViewPropertySheet()
 
 void CListViewPropertySheet::InsertPage(int iIndex, CPropertyPage* pPage)
 {
-    ASSERT_VALID( this );
-    ASSERT( pPage != NULL );
-    ASSERT_KINDOF( CPropertyPage, pPage );
-    ASSERT_VALID( pPage );
+    ASSERT_VALID(this);
+    ASSERT(pPage != NULL);
+    ASSERT_KINDOF(CPropertyPage, pPage);
+    ASSERT_VALID(pPage);
 
     m_pages.InsertAt(iIndex, pPage);
     BuildPropPageArray();
@@ -178,7 +178,7 @@ BOOL CListViewWalkerPropertySheet::OnInitDialog()
             rc.top = rcOk.top;
             rc.right = rc.left + iNaviBtnWidth;
             rc.bottom = rc.top + rcOk.Height();
-            VERIFY( aCtrls[i].pCtlBtn->Create(aCtrls[i].pszLabel, dwCtrlStyle | aCtrls[i].dwStyle, rc, this, aCtrls[i].uCtlId) );
+            VERIFY(aCtrls[i].pCtlBtn->Create(aCtrls[i].pszLabel, dwCtrlStyle | aCtrls[i].dwStyle, rc, this, aCtrls[i].uCtlId));
 
             if (theApp.m_fontSymbol.m_hObject)
             {
@@ -196,7 +196,7 @@ BOOL CListViewWalkerPropertySheet::OnInitDialog()
 
 void CListViewWalkerPropertySheet::OnPrev()
 {
-    ASSERT( m_pListCtrl != NULL );
+    ASSERT(m_pListCtrl != NULL);
     if (m_pListCtrl == NULL)
         return;
 
@@ -213,7 +213,7 @@ void CListViewWalkerPropertySheet::OnPrev()
 
 void CListViewWalkerPropertySheet::OnNext()
 {
-    ASSERT( m_pListCtrl != NULL );
+    ASSERT(m_pListCtrl != NULL);
     if (m_pListCtrl == NULL)
         return;
 
@@ -230,7 +230,7 @@ void CListViewWalkerPropertySheet::OnNext()
 
 CObject* CListCtrlItemWalk::GetPrevSelectableItem()
 {
-    ASSERT( m_pListCtrl != NULL );
+    ASSERT(m_pListCtrl != NULL);
     if (m_pListCtrl == NULL)
         return NULL;
 
@@ -258,7 +258,7 @@ CObject* CListCtrlItemWalk::GetPrevSelectableItem()
 
 CObject* CListCtrlItemWalk::GetNextSelectableItem()
 {
-    ASSERT( m_pListCtrl != NULL );
+    ASSERT(m_pListCtrl != NULL);
     if (m_pListCtrl == NULL)
         return NULL;
 

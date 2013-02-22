@@ -159,7 +159,7 @@ CKadTagValueString CEntry::GetCommonFileName() const
     }
     CKadTagValueString strResult(posResult != NULL
                                  ? m_listFileNames.GetAt(posResult).m_fileName : L"");
-    ASSERT( !strResult.IsEmpty() || m_listFileNames.IsEmpty() );
+    ASSERT(!strResult.IsEmpty() || m_listFileNames.IsEmpty());
     return strResult;
 }
 
@@ -186,19 +186,19 @@ void CEntry::WriteTagListInc(CDataIO* pData, UINT nIncreaseTagNumber)
     }
 
     UINT uCount = GetTagCount() + nIncreaseTagNumber; // will include name and size tag in the count if needed
-    ASSERT( uCount <= 0xFF );
+    ASSERT(uCount <= 0xFF);
     pData->WriteByte((uint8)uCount);
 
     CKadTagValueString strCommonFileName(GetCommonFileName());
     if (!strCommonFileName.IsEmpty())
     {
-        ASSERT( uCount > m_listTag.size() );
+        ASSERT(uCount > m_listTag.size());
         CKadTagStr tag(TAG_FILENAME, strCommonFileName);
         pData->WriteTag(&tag);
     }
     if (m_uSize != 0)
     {
-        ASSERT( uCount > m_listTag.size() );
+        ASSERT(uCount > m_listTag.size());
         CKadTagUInt tag(TAG_FILESIZE, m_uSize);
         pData->WriteTag(&tag);
     }
@@ -238,7 +238,7 @@ CKeyEntry::~CKeyEntry()
 {
     if (m_pliPublishingIPs != NULL)
     {
-        while(m_pliPublishingIPs->GetHeadPosition() != NULL)
+        while (m_pliPublishingIPs->GetHeadPosition() != NULL)
         {
             structPublishingIP curEntry = m_pliPublishingIPs->RemoveHead();
             AdjustGlobalPublishTracking(curEntry.m_uIP, false, _T("instance delete"));
@@ -461,15 +461,15 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* pFromEntry)
     // to store hundrets of taglists to figure out the best one like we do for the filenames now
     if (m_pliPublishingIPs != NULL)  // This instance needs to be a new entry, otherwise we don't want/need to merge
     {
-        ASSERT( pFromEntry == NULL );
-        ASSERT( !m_pliPublishingIPs->IsEmpty() );
-        ASSERT( !m_listFileNames.IsEmpty() );
+        ASSERT(pFromEntry == NULL);
+        ASSERT(!m_pliPublishingIPs->IsEmpty());
+        ASSERT(!m_listFileNames.IsEmpty());
         return;
     }
-    ASSERT( m_aAICHHashs.GetCount() <= 1 );
+    ASSERT(m_aAICHHashs.GetCount() <= 1);
     //fetch the "new" AICH hash if any
     CAICHHash* pNewAICHHash = NULL;
-    if ( !m_aAICHHashs.IsEmpty() )
+    if (!m_aAICHHashs.IsEmpty())
     {
         pNewAICHHash = new CAICHHash(m_aAICHHashs[0]);
         m_aAICHHashs.RemoveAll();
@@ -478,7 +478,7 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* pFromEntry)
     bool bRefresh = false;
     if (pFromEntry == NULL || pFromEntry->m_pliPublishingIPs == NULL)
     {
-        ASSERT( pFromEntry == NULL );
+        ASSERT(pFromEntry == NULL);
         // if called with NULL, this is a complete new entry and we need to initalize our lists
         if (m_pliPublishingIPs == NULL)
             m_pliPublishingIPs = new CList<structPublishingIP>();
@@ -504,7 +504,7 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* pFromEntry)
                 bRefresh = true;
                 if ((time(NULL) - Cur.m_tLastPublish) < (KADEMLIAREPUBLISHTIMES - HR2S(1)))
                 {
-                    DEBUG_ONLY( DebugLog(_T("KadEntryTracking: FastRefresh publish, ip: %s"), ipstr(ntohl(m_uIP))) );
+                    DEBUG_ONLY(DebugLog(_T("KadEntryTracking: FastRefresh publish, ip: %s"), ipstr(ntohl(m_uIP))));
                     bFastRefresh = true; // refreshed faster than expected, will not count into filenamepopularity index
                 }
                 Cur.m_tLastPublish = time(NULL);
@@ -521,7 +521,7 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* pFromEntry)
                     }
                     else if (Cur.m_byAICHHashIdx == _UI16_MAX)
                     {
-                        DEBUG_ONLY( DebugLog(_T("KadEntryTracking: New AICH Hash during publishing (publisher reported none before), publisher ip: %s"), ipstr(ntohl(m_uIP))) );
+                        DEBUG_ONLY(DebugLog(_T("KadEntryTracking: New AICH Hash during publishing (publisher reported none before), publisher ip: %s"), ipstr(ntohl(m_uIP))));
                         Cur.m_byAICHHashIdx = AddRemoveAICHHash(*pNewAICHHash, true);
                     }
                 }
@@ -539,7 +539,7 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* pFromEntry)
         dwLastTrustValueCalc = pFromEntry->dwLastTrustValueCalc;
 
         // copy over the different names, if they are different the one we have right now
-        ASSERT( m_listFileNames.GetCount() == 1 ); // we should have only one name here, since its the entry from one sinlge source
+        ASSERT(m_listFileNames.GetCount() == 1);   // we should have only one name here, since its the entry from one sinlge source
         structFileNameEntry structCurrentName = {_T(""), 0};;
         if (m_listFileNames.GetHeadPosition() != NULL)
             structCurrentName = m_listFileNames.RemoveHead();
@@ -563,7 +563,7 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* pFromEntry)
     // if this was a refresh done, otherwise update the global track map
     if (!bRefresh)
     {
-        ASSERT( m_uIP != 0 );
+        ASSERT(m_uIP != 0);
         uint16 nAICHHashIdx;
         if (pNewAICHHash != NULL)
             nAICHHashIdx = AddRemoveAICHHash(*pNewAICHHash, true);
@@ -580,7 +580,7 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* pFromEntry)
         {
             structPublishingIP curEntry = m_pliPublishingIPs->RemoveHead();
             if (curEntry.m_byAICHHashIdx != _UI16_MAX)
-                VERIFY( AddRemoveAICHHash(m_aAICHHashs[curEntry.m_byAICHHashIdx], false) == curEntry.m_byAICHHashIdx );
+                VERIFY(AddRemoveAICHHash(m_aAICHHashs[curEntry.m_byAICHHashIdx], false) == curEntry.m_byAICHHashIdx);
             AdjustGlobalPublishTracking(curEntry.m_uIP, false, _T("more than 100 publishers purge"));
         }
         // since we added a new publisher, we want to (re)calcualte the trust value for this entry
@@ -631,7 +631,7 @@ void CKeyEntry::RecalcualteTrustValue()
     }
     dwLastTrustValueCalc = ::GetTickCount();
     m_fTrustValue = 0;
-    ASSERT( !m_pliPublishingIPs->IsEmpty() );
+    ASSERT(!m_pliPublishingIPs->IsEmpty());
     for (POSITION pos = m_pliPublishingIPs->GetHeadPosition(); pos != NULL; m_pliPublishingIPs->GetNext(pos))
     {
         structPublishingIP curEntry = m_pliPublishingIPs->GetAt(pos);
@@ -720,14 +720,14 @@ void CKeyEntry::WritePublishTrackingDataToFile(CDataIO* pData)
         for (POSITION pos = m_pliPublishingIPs->GetHeadPosition(); pos != NULL;)
         {
             const structPublishingIP& rCur = m_pliPublishingIPs->GetNext(pos);
-            ASSERT( rCur.m_uIP != 0 );
+            ASSERT(rCur.m_uIP != 0);
             pData->WriteUInt32(rCur.m_uIP);
             pData->WriteUInt32((UINT)rCur.m_tLastPublish);
             uint16 nIdx = _UI16_MAX;
             if (rCur.m_byAICHHashIdx != _UI16_MAX)
             {
                 nIdx = aNewIndexes[rCur.m_byAICHHashIdx];
-                ASSERT( nIdx != _UI16_MAX );
+                ASSERT(nIdx != _UI16_MAX);
             }
             pData->WriteUInt16(nIdx);
         }
@@ -743,8 +743,8 @@ void CKeyEntry::ReadPublishTrackingDataFromFile(CDataIO* pData, bool bIncludesAI
 {
     // format: <AICH HashCount 2><{AICH Hash Indexed} HashCount> <Names_Count 4><{<Name string><PopularityIndex 4>} Names_Count>
     //		   <PublisherCount 4><{<IP 4><Time 4><AICH Idx 2>} PublisherCount>
-    ASSERT( m_aAICHHashs.IsEmpty() );
-    ASSERT( m_anAICHHashPopularity.IsEmpty() );
+    ASSERT(m_aAICHHashs.IsEmpty());
+    ASSERT(m_anAICHHashPopularity.IsEmpty());
     if (bIncludesAICH)
     {
         uint16 nAICHHashCount = pData->ReadUInt16();
@@ -758,7 +758,7 @@ void CKeyEntry::ReadPublishTrackingDataFromFile(CDataIO* pData, bool bIncludesAI
     }
 
 
-    ASSERT( m_listFileNames.IsEmpty() );
+    ASSERT(m_listFileNames.IsEmpty());
     UINT nNameCount = pData->ReadUInt32();
     for (UINT i = 0; i < nNameCount; i++)
     {
@@ -768,7 +768,7 @@ void CKeyEntry::ReadPublishTrackingDataFromFile(CDataIO* pData, bool bIncludesAI
         m_listFileNames.AddTail(sToAdd);
     }
 
-    ASSERT( m_pliPublishingIPs == NULL );
+    ASSERT(m_pliPublishingIPs == NULL);
     m_pliPublishingIPs = new CList<structPublishingIP>();
     UINT nIPCount = pData->ReadUInt32();
     UINT nDbgLastTime = 0;
@@ -776,9 +776,9 @@ void CKeyEntry::ReadPublishTrackingDataFromFile(CDataIO* pData, bool bIncludesAI
     {
         structPublishingIP sToAdd;
         sToAdd.m_uIP = pData->ReadUInt32();
-        ASSERT( sToAdd.m_uIP != 0 );
+        ASSERT(sToAdd.m_uIP != 0);
         sToAdd.m_tLastPublish = pData->ReadUInt32();
-        ASSERT( nDbgLastTime <= (UINT)sToAdd.m_tLastPublish ); // shoudl always be sorted oldest first
+        ASSERT(nDbgLastTime <= (UINT)sToAdd.m_tLastPublish);   // shoudl always be sorted oldest first
         nDbgLastTime = sToAdd.m_tLastPublish;
         // read hash index and update popularity index
         if (bIncludesAICH)
@@ -889,8 +889,8 @@ void CKeyEntry::WriteTagListWithPublishInfo(CDataIO* pData)
                 nWritten++;
             }
         }
-        ASSERT( nWritten == byCount && nWritten <= j );
-        ASSERT(fileAICHTag.GetLength() <= 255 );
+        ASSERT(nWritten == byCount && nWritten <= j);
+        ASSERT(fileAICHTag.GetLength() <= 255);
         uint8 nSize = (uint8)fileAICHTag.GetLength();
         BYTE* byBuffer = fileAICHTag.Detach();
         CKadTagBsob tag(TAG_KADAICHHASHRESULT, byBuffer, nSize);
@@ -901,7 +901,7 @@ void CKeyEntry::WriteTagListWithPublishInfo(CDataIO* pData)
 
 uint16 CKeyEntry::AddRemoveAICHHash(const CAICHHash& hash, bool bAdd)
 {
-    ASSERT( m_aAICHHashs.GetCount() == m_anAICHHashPopularity.GetCount() );
+    ASSERT(m_aAICHHashs.GetCount() == m_anAICHHashPopularity.GetCount());
     for (int i = 0; i < m_aAICHHashs.GetCount(); i++)
     {
         if (m_aAICHHashs[i] == hash)

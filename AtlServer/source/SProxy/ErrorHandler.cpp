@@ -46,7 +46,7 @@ HRESULT __stdcall CErrorHandler::error(
 
     pLocator->getLineNumber(&nLine);
     pLocator->getColumnNumber(&nCol);
-    ATLTRACE( _T("error@(%d, %d): %ws\n"), nLine, nCol, wszErrorMessage );
+    ATLTRACE(_T("error@(%d, %d): %ws\n"), nLine, nCol, wszErrorMessage);
 
     EmitFileError(IDS_SDL_PARSE_ERROR, m_wszLocation, nLine, nCol, IDS_SDL_PARSE, wszErrorMessage);
     g_ParserList.RemoveAll();
@@ -64,7 +64,7 @@ HRESULT __stdcall CErrorHandler::fatalError(
 
     pLocator->getLineNumber(&nLine);
     pLocator->getColumnNumber(&nCol);
-    ATLTRACE( _T("fatalError@(%d, %d): %ws\n"), nLine, nCol, wszErrorMessage );
+    ATLTRACE(_T("fatalError@(%d, %d): %ws\n"), nLine, nCol, wszErrorMessage);
 
     EmitFileError(IDS_SDL_PARSE_ERROR, m_wszLocation, nLine, nCol, IDS_SDL_PARSE, wszErrorMessage);
     g_ParserList.RemoveAll();
@@ -84,7 +84,7 @@ HRESULT __stdcall CErrorHandler::ignorableWarning(
     pLocator->getLineNumber(&nLine);
     pLocator->getColumnNumber(&nCol);
 
-    ATLTRACE( _T("ignorableWarning@(%d, %d): %ws\n"), nLine, nCol, wszErrorMessage );
+    ATLTRACE(_T("ignorableWarning@(%d, %d): %ws\n"), nLine, nCol, wszErrorMessage);
 
     EmitFileWarning(IDS_SDL_PARSE_WARNING, m_wszLocation, nLine, nCol, IDS_SDL_PARSE, wszErrorMessage);
 

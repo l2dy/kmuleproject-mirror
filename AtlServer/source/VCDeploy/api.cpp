@@ -323,9 +323,9 @@ bool FormatMsg(CString& strDest, UINT uId, ...)
     if (!strFmt.LoadString(uId))
         return false;
     va_list argList;
-    va_start( argList, uId );
+    va_start(argList, uId);
     strDest.FormatV(strFmt, argList);
-    va_end( argList );
+    va_end(argList);
     return true;
 }
 
@@ -476,7 +476,7 @@ int ConfigureRestrictionList(CADSIHelper * /*pAdsHelper*/,
         strSvc += wszHost;
         strSvc += L"/W3SVC";
 
-        if( pSettings->GetIISMajorVer() < 6 )
+        if (pSettings->GetIISMajorVer() < 6)
             return ATLSDPLY_SUCCESS;
 
 
@@ -486,7 +486,7 @@ int ConfigureRestrictionList(CADSIHelper * /*pAdsHelper*/,
         CStringW strExtFileName(szextfilename);
         strIsapiPath.Combine(strVirtDirPath, strExtFileName);
 
-        CStringW strDescription( pSettings->GetVirtDirName() );
+        CStringW strDescription(pSettings->GetVirtDirName());
 
         LPWSTR pwszSvc = const_cast<WCHAR*>((LPCWSTR)strSvc);
         LPWSTR pwszIsapiPath = const_cast<WCHAR*>((LPCWSTR)strIsapiPath);
@@ -494,17 +494,17 @@ int ConfigureRestrictionList(CADSIHelper * /*pAdsHelper*/,
 
         // Add strIsapiPath to the restrictionlist, make sure it's enabled,
         // and that the user is able to remove the entry thru the UI if they wanted to
-        hr = AddWebSvcExtention( pwszSvc, pwszIsapiPath, VARIANT_TRUE, pwszDescription, VARIANT_TRUE, pwszDescription );
+        hr = AddWebSvcExtention(pwszSvc, pwszIsapiPath, VARIANT_TRUE, pwszDescription, VARIANT_TRUE, pwszDescription);
 
-        if( hr == S_OK )
+        if (hr == S_OK)
         {
-            hr = AddApplicationDependencyUponGroup( pwszSvc, pwszDescription, pwszDescription );
+            hr = AddApplicationDependencyUponGroup(pwszSvc, pwszDescription, pwszDescription);
         }
 
-        if( hr == S_FALSE ) // the strIsapiPath has already been on the restriction list.
+        if (hr == S_FALSE)  // the strIsapiPath has already been on the restriction list.
             hr = S_OK;
     }
-    catch(...)
+    catch (...)
     {
         RETURN_ON_UNEXPECTED(ATLSDPLY_FAIL);
     }
@@ -673,7 +673,7 @@ int CheckVRootExistance(const CComBSTR& bstrHostName,
         hr = pAdsHelper->Connect(strAdsPathFull);
         RETURN_ON_UNEXPECTED(hr);
     }
-    catch(...)
+    catch (...)
     {
         // catches CString allocation problems
         RETURN_ON_FAIL2(hr, IDS_ERR_OUTOFMEM);
@@ -720,7 +720,7 @@ int CreateVRoot(const CComBSTR& bstrHostName,
         RETURN_ON_FAIL2(hr, IDS_ERR_CONNECTADSFAILED);
 
         short nIso = (short)pSettings->GetAppIsolation();
-        if( pSettings->SkipVirtDirCreation() )
+        if (pSettings->SkipVirtDirCreation())
         {
             hr = pAdsHelper->CreateAppOnly(strVirtDirName, nIso, NULL);
             RETURN_ON_FAIL2(hr, IDS_ERR_CREATEVROOTFAILED);
@@ -739,7 +739,7 @@ int CreateVRoot(const CComBSTR& bstrHostName,
             RETURN_ON_FAIL2(hr, IDS_ERR_SETADSPROPERTY);
         }
     }
-    catch(...)
+    catch (...)
     {
         // catches CString allocation problems
         RETURN_ON_FAIL2(hr, IDS_ERR_OUTOFMEM);
@@ -747,9 +747,9 @@ int CreateVRoot(const CComBSTR& bstrHostName,
     return ATLSDPLY_SUCCESS;
 }
 
-int ConfigureVRoot(	CADSIHelper *pAdsHelper,
-                    CDepSettings *pSettings,
-                    const wchar_t* wszHost)
+int ConfigureVRoot(CADSIHelper *pAdsHelper,
+                   CDepSettings *pSettings,
+                   const wchar_t* wszHost)
 {
     ATLASSERT(pAdsHelper);
     ATLASSERT(pSettings);
@@ -806,8 +806,8 @@ LONG FindMapping(CComSafeArray<VARIANT> *pArray, BSTR bstrExt)
     return -1;
 }
 
-int SetRootAppMappings(	CADSIHelper *pAdsHelper,
-                        CDepSettings *pSettings)
+int SetRootAppMappings(CADSIHelper *pAdsHelper,
+                       CDepSettings *pSettings)
 {
     ATLASSERT(pAdsHelper);
     ATLASSERT(pSettings);
@@ -816,8 +816,8 @@ int SetRootAppMappings(	CADSIHelper *pAdsHelper,
 
     LPCTSTR szvdfspath = pSettings->GetVirtDirFSPath();
     LPCTSTR szextfilename = pSettings->GetExtensionFileName();
-    if ((!szvdfspath || *szvdfspath == _T('\0') ) ||
-            (!szextfilename || *szextfilename == _T('\0') )
+    if ((!szvdfspath || *szvdfspath == _T('\0')) ||
+            (!szextfilename || *szextfilename == _T('\0'))
        )
         return ATLSDPLY_SUCCESS; // not enough info!
 
@@ -955,7 +955,7 @@ int SetRootAppMappings(	CADSIHelper *pAdsHelper,
     }
 
     CComSafeArray<VARIANT> rgsaMappings;
-    for ( long y = 0; y<nMappingCount; y++)
+    for (long y = 0; y<nMappingCount; y++)
     {
         if (rgMappings[y].GetLength() != 0)
         {
@@ -1308,7 +1308,7 @@ int RegisterExtension(CADSIHelper* /*pAdsHelper*/,
         CStringW strExtFileName(szExtFileName);
         strIsapiPath.Combine(strVirtDirPath, strExtFileName);
     }
-    catch(...)
+    catch (...)
     {
         // probably an allocation problem with the CStrings
         return nRet;
@@ -1459,7 +1459,7 @@ HRESULT ProcessAccessCheck()
         if (!ImpersonateSelf(SecurityImpersonation))
             return 0;
 
-        if(!OpenThreadToken(GetCurrentThread(), TOKEN_QUERY, FALSE, &hToken))
+        if (!OpenThreadToken(GetCurrentThread(), TOKEN_QUERY, FALSE, &hToken))
         {
             // per Q118626, we check the process token
             // if there is no thread token
@@ -1480,7 +1480,7 @@ HRESULT ProcessAccessCheck()
             return bIsMember ? S_OK : S_FALSE;
 
     }
-    catch(...) {	}
+    catch (...) {	}
     return E_UNEXPECTED; // should have returned something before here.
 }
 
@@ -1510,7 +1510,7 @@ HRESULT GetWWWRootPath(const CStringW strWebHostName,CStringW& strPath)
                 // Enumerate children of IIS service, searching for absolute path to "Default Web Site"
                 // or if not found, the first web site.
                 hr = spEnum->Next(1, &var, &lFetch);
-                while(SUCCEEDED(hr) && lFetch > 0)
+                while (SUCCEEDED(hr) && lFetch > 0)
                 {
                     spDisp = V_DISPATCH(&var);
                     CComPtr<IADs> spADs;
@@ -1530,7 +1530,7 @@ HRESULT GetWWWRootPath(const CStringW strWebHostName,CStringW& strPath)
                             hr=spADs->Get(L"ServerComment",&varSiteName);
                             if (SUCCEEDED(hr))
                             {
-                                CComBSTR bstrSiteName (V_BSTR(&varSiteName));
+                                CComBSTR bstrSiteName(V_BSTR(&varSiteName));
                                 if (bstrSiteName == "Default Web Site")
                                 {
                                     spDeploySite = spADs;

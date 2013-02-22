@@ -23,7 +23,7 @@ public:
         CAutoPtr<CSchema> spOut;
         if (p== NULL)
         {
-            spOut.Attach( new CSchema );
+            spOut.Attach(new CSchema);
             p = spOut;
         }
 

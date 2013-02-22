@@ -43,9 +43,9 @@ int		GetFakeAlyzerRating(const CSearchFile* content, CString* ret)
     // this filters ".avi.exe" files and similar that show up as "video" files
     const CString strGivenType = content->GetFileType();
     const CString strType = GetFileTypeByName(strFileName);
-    if(strType != strGivenType)
+    if (strType != strGivenType)
     {
-        if(ret)
+        if (ret)
             ret->Format(L"%s-Type mismatch!", ret->IsEmpty() ? L"" : L"\n\t");
         ++nNegatives;
     }
@@ -63,20 +63,20 @@ int		GetFakeAlyzerRating(const CSearchFile* content, CString* ret)
                 isNameMismatch = true;
             if (!isNameMismatch)
             {
-                if(ret)
+                if (ret)
                     ret->Format(L"%s+No name mismatch detected!", ret->IsEmpty() ? L"" : L"\n\t");
 //				++nPositives; //don't count that as "positive"
             }
             else
             {
-                if(ret)
+                if (ret)
                     ret->Format(L"%s-Name mismatch!", ret->IsEmpty() ? L"" : L"\n\t");
                 ++nNegatives;
             }
         }
-        else if(!content->GetFileType().IsEmpty())
+        else if (!content->GetFileType().IsEmpty())
         {
-            if(ret)
+            if (ret)
                 ret->Format(L"%s-No audio/video file with audio/video tags!", ret->IsEmpty() ? L"" : L"\n\t");
             ++nNegatives;
         }
@@ -85,7 +85,7 @@ int		GetFakeAlyzerRating(const CSearchFile* content, CString* ret)
     const UINT nBitrate = content->GetIntTagValue(FT_MEDIA_BITRATE);
     UINT nAvgBitrate = nBitrate;
     if (content->GetIntTagValue(FT_MEDIA_LENGTH) > 0)
-        nAvgBitrate = (UINT)(uint64) (content->GetFileSize() / 128ULL) / content->GetIntTagValue(FT_MEDIA_LENGTH);
+        nAvgBitrate = (UINT)(uint64)(content->GetFileSize() / 128ULL) / content->GetIntTagValue(FT_MEDIA_LENGTH);
     const CString strCodec = content->GetStrTagValue(FT_MEDIA_CODEC);
     if (nBitrate || nAvgBitrate || !strCodec.IsEmpty())
     {
@@ -97,14 +97,14 @@ int		GetFakeAlyzerRating(const CSearchFile* content, CString* ret)
                 // No serious files have lower rate than this
                 if (isMP3 && nBitrate >= 128 && nBitrate % 8 == 0 && nBitrate < 1500 && nBitrate <= 2 * nAvgBitrate)
                 {
-                    if(ret)
+                    if (ret)
                         ret->AppendFormat(L"%s+Good bitrate for .mp3 file!", ret->IsEmpty() ? L"" : L"\n\t");
                     ++nPositives;
                 }
                 // Illegal!?
                 else if ((isMP3 && nBitrate < 56) || (nBitrate > 4 * nAvgBitrate) || (nBitrate % 2 != 0))
                 {
-                    if(ret)
+                    if (ret)
                         ret->AppendFormat(L"%s-Illegal/bad bitrate for .mp3 file!", ret->IsEmpty() ? L"" : L"\n\t");
                     ++nNegatives;
                 }
@@ -114,23 +114,23 @@ int		GetFakeAlyzerRating(const CSearchFile* content, CString* ret)
                 // The good ones are usually within these bounds
                 if (nAvgBitrate >= 900 && nAvgBitrate < 30000 && nBitrate <= 2 * nAvgBitrate)
                 {
-                    if(ret)
+                    if (ret)
                         ret->AppendFormat(L"%s+Good bitrate for video file!", ret->IsEmpty() ? L"" : L"\n\t");
                     ++nPositives;
                 }
                 // Should not be possible!
                 else if (nBitrate > 4 * nAvgBitrate)
                 {
-                    if(ret)
+                    if (ret)
                         ret->AppendFormat(L"%s-Illegal/bad bitrate for video file!", ret->IsEmpty() ? L"" : L"\n\t");
                     ++nNegatives;
                 }
             }
         }
         // Only audio and video files have bitrate, so it must be fake!
-        else if(!content->GetFileType().IsEmpty())
+        else if (!content->GetFileType().IsEmpty())
         {
-            if(ret)
+            if (ret)
                 ret->AppendFormat(L"%s-No audio/video file with bitrate!", ret->IsEmpty() ? L"" : L"\n\t");
             ++nNegatives;
         }
@@ -148,15 +148,15 @@ int		GetFakeAlyzerRating(const CSearchFile* content, CString* ret)
     // added a quick check for common bad codecs
     CString strExtension = GetExtension(strFileName);
     strExtension.MakeLower();
-    if(strExtension == L".wma" || strExtension == L".wmv")
+    if (strExtension == L".wma" || strExtension == L".wmv")
     {
-        if(ret)
+        if (ret)
             ret->AppendFormat(L"%s-Known bad (DRM protected) filetype (%s)", ret->IsEmpty() ? L"" : L"\n\t", strExtension);
         ++nNegatives;
     }
-    if(StrStrI(strCodec, L"wmaudio2") || StrStrI(strCodec, L"wmv3"))
+    if (StrStrI(strCodec, L"wmaudio2") || StrStrI(strCodec, L"wmv3"))
     {
-        if(ret)
+        if (ret)
             ret->AppendFormat(L"%s-Known bad (DRM protected) codec (%s)", ret->IsEmpty() ? L"" : L"\n\t", strCodec);
         ++nNegatives;
     }
@@ -168,13 +168,13 @@ int		GetFakeAlyzerRating(const CSearchFile* content, CString* ret)
         const UINT nKnownPublisher = (content->GetKadPublishInfo() & 0x00FF0000) >> 16;
         if (nKnownPublisher > 0 && nKnownPublisher < 100 && (10 * nKnownPublisher) < nAvailability)
         {
-            if(ret)
+            if (ret)
                 ret->AppendFormat(L"%s-Way too many publishers!", ret->IsEmpty() ? L"" : L"\n\t");
             ++nNegatives;
         }
         else if (2 * nKnownPublisher > nAvailability || nKnownPublisher >= 100)
         {
-            if(ret)
+            if (ret)
                 ret->AppendFormat(L"%s+Good publisher quota!", ret->IsEmpty() ? L"" : L"\n\t");
             ++nPositives;
         }
@@ -182,7 +182,7 @@ int		GetFakeAlyzerRating(const CSearchFile* content, CString* ret)
 
     // merge positives and negatives into a score
     int nScore = nPositives;
-    if(nNegatives)
+    if (nNegatives)
         nScore -= nNegatives;
 
     if (nScore < -1)
@@ -198,11 +198,11 @@ int		GetFakeAlyzerRating(const CSearchFile* content, CString* ret)
 
 bool	ColorSearchFile(const CSearchFile* content, CCustomMemDC* dc)
 {
-    if(content == NULL)
+    if (content == NULL)
         return false;
 
     const COLORREF cr = dc->GetBkColor();
-    switch(GetFakeAlyzerRating(content, NULL))
+    switch (GetFakeAlyzerRating(content, NULL))
     {
     case FA_FAKE:
         dc->FillBackground(RGB(GetRValue(cr), GetGValue(cr)*0.85, GetBValue(cr)*0.85));
@@ -230,11 +230,11 @@ CString	GetFakeComment(const CSearchFile* content, const bool bSimple, int* i)
 {
     CString ret = L"";
     int r = GetFakeAlyzerRating(content, &ret);
-    if(i != NULL)
+    if (i != NULL)
         *i = r;
-    if(bSimple)
+    if (bSimple)
     {
-        switch(r)
+        switch (r)
         {
         default:
         case FA_UNKNOWN:
@@ -249,7 +249,7 @@ CString	GetFakeComment(const CSearchFile* content, const bool bSimple, int* i)
             return L"FAKE";
         }
     }
-    if(ret.IsEmpty())
+    if (ret.IsEmpty())
         ret = L"<UNKNOWN>";
     return L"FakeAlyzer: " + ret;
 }
@@ -283,14 +283,14 @@ bool	IsKnownSpamResult(const CString& strFilename)
     strName.Replace(L".", L" ");
     strName.Replace(L"_", L" ");
 
-    for(int i = 0; i < ARRSIZE(combo1); ++i)
+    for (int i = 0; i < ARRSIZE(combo1); ++i)
     {
-        if(_tcsnicmp(strName, combo1[i], combo1[i].GetLength()) == 0)
+        if (_tcsnicmp(strName, combo1[i], combo1[i].GetLength()) == 0)
             return true;
     }
-    for(int i = 0; i < ARRSIZE(combo2); ++i)
+    for (int i = 0; i < ARRSIZE(combo2); ++i)
     {
-        if(StrStrI(strName, combo2[i]))
+        if (StrStrI(strName, combo2[i]))
             return true;
     }
 
@@ -313,13 +313,13 @@ bool	IsKnownSpamResult(const CString& strFilename)
 
 bool	IsBadResult(const CSearchFile* file, const SSearchParams* params, CString& reason)
 {
-    if(IsKnownSpamResult(file->GetFileName()))
+    if (IsKnownSpamResult(file->GetFileName()))
     {
         reason.Format(L"detected via spam list");
         return true;
     }
 
-    if(params == NULL)
+    if (params == NULL)
         return false;
 
 //Note: the single checks are intentional!
@@ -327,12 +327,12 @@ bool	IsBadResult(const CSearchFile* file, const SSearchParams* params, CString& 
 //		I can add logs or some tracing later...
 
     //size checks
-    if(params->ullMinSize != 0 && file->GetFileSize() < params->ullMinSize)
+    if (params->ullMinSize != 0 && file->GetFileSize() < params->ullMinSize)
     {
         reason.Format(L"Result too small: %s < %s", CastItoXBytes(file->GetFileSize()), CastItoXBytes(params->ullMinSize));
         return true;
     }
-    if(params->ullMaxSize != 0 && file->GetFileSize() > params->ullMaxSize)
+    if (params->ullMaxSize != 0 && file->GetFileSize() > params->ullMaxSize)
     {
         reason.Format(L"Result too big: %s > %s", CastItoXBytes(file->GetFileSize()), CastItoXBytes(params->ullMaxSize));
         return true;
@@ -340,9 +340,9 @@ bool	IsBadResult(const CSearchFile* file, const SSearchParams* params, CString& 
 
     //filetype check
     const CString strFileType = file->GetFileType();
-    if(!params->strFileType.IsEmpty())
+    if (!params->strFileType.IsEmpty())
     {
-        if(_tcsicmp(strFileType, (CString)params->strFileType) != 0)
+        if (_tcsicmp(strFileType, (CString)params->strFileType) != 0)
         {
             reason.Format(L"Wrong filetype: %s != %s", strFileType, params->strFileType);
             return true;
@@ -366,16 +366,16 @@ bool	IsBadResult(const CSearchFile* file, const SSearchParams* params, CString& 
 // #define ED2KFTSTR_TORRENT		"BTMeta"
 // #endif
     bool bAudioVideo = false;
-    if(strFileType == ED2KFTSTR_AUDIO)
+    if (strFileType == ED2KFTSTR_AUDIO)
     {
         bAudioVideo = true;
-        if(bitrate == 0)
+        if (bitrate == 0)
         {
             reason.Format(L"Audio file without bitrate!?");
             return true;
         }
     }
-    if(strFileType == ED2KFTSTR_VIDEO)
+    if (strFileType == ED2KFTSTR_VIDEO)
     {
         bAudioVideo = true;
         //this *CAN* happen (.mpg files for example)
@@ -386,7 +386,7 @@ bool	IsBadResult(const CSearchFile* file, const SSearchParams* params, CString& 
 //		}
     }
     //no audio/video!?
-    if(!bAudioVideo && bitrate != 0)
+    if (!bAudioVideo && bitrate != 0)
     {
         reason.Format(L"Non audio/video file with bitrate!?");
         return true;
@@ -399,63 +399,63 @@ bool	IsBadResult(const CSearchFile* file, const SSearchParams* params, CString& 
 //		return true;
     CString ext = GetExtension(file->GetFileName());
     ext = ext.Mid(1); // skip the starting '.'
-    if(!params->strExtension.IsEmpty() && _tcsicmp(ext, params->strExtension) != 0)
+    if (!params->strExtension.IsEmpty() && _tcsicmp(ext, params->strExtension) != 0)
     {
         reason.Format(L"Wrong extension: %s != %s", ext, params->strExtension);
         return true;
     }
 
     //availability
-    if(params->uAvailability != 0 && file->GetSourceCount() < params->uAvailability)
+    if (params->uAvailability != 0 && file->GetSourceCount() < params->uAvailability)
     {
         reason.Format(L"Availability too low: %u < %u", file->GetSourceCount(), params->uAvailability);
         return true;
     }
 
     //complete sources
-    if(params->uComplete != 0 && file->GetIntTagValue(FT_COMPLETE_SOURCES) < params->uComplete)
+    if (params->uComplete != 0 && file->GetIntTagValue(FT_COMPLETE_SOURCES) < params->uComplete)
     {
         reason.Format(L"Complete source count too low: %u < %u", file->GetIntTagValue(FT_COMPLETE_SOURCES), params->uComplete);
         return true;
     }
 
     //bitrate
-    if(params->ulMinBitrate != 0 && bitrate < params->ulMinBitrate)
+    if (params->ulMinBitrate != 0 && bitrate < params->ulMinBitrate)
     {
         reason.Format(L"Bitrate too low: %u < %u", bitrate, params->ulMinBitrate);
         return true;
     }
 
     //min length
-    if(params->ulMinLength != 0 && file->GetIntTagValue(FT_MEDIA_LENGTH) < params->ulMinLength)
+    if (params->ulMinLength != 0 && file->GetIntTagValue(FT_MEDIA_LENGTH) < params->ulMinLength)
     {
         reason.Format(L"Length too low: %u < %u", file->GetIntTagValue(FT_MEDIA_LENGTH), params->ulMinLength);
         return true;
     }
 
     //codec
-    if(!params->strCodec.IsEmpty() && _tcsicmp(file->GetStrTagValue(FT_MEDIA_CODEC), params->strCodec) != 0)
+    if (!params->strCodec.IsEmpty() && _tcsicmp(file->GetStrTagValue(FT_MEDIA_CODEC), params->strCodec) != 0)
     {
         reason.Format(L"Codec mismatch: %s != %s", file->GetStrTagValue(FT_MEDIA_CODEC), params->strCodec);
         return true;
     }
 
     //title
-    if(!params->strTitle.IsEmpty() && _tcsicmp(file->GetStrTagValue(FT_MEDIA_TITLE), params->strTitle) != 0)
+    if (!params->strTitle.IsEmpty() && _tcsicmp(file->GetStrTagValue(FT_MEDIA_TITLE), params->strTitle) != 0)
     {
         reason.Format(L"Title mismatch: %s != %s", file->GetStrTagValue(FT_MEDIA_TITLE), params->strTitle);
         return true;
     }
 
     //artist
-    if(!params->strArtist.IsEmpty() && _tcsicmp(file->GetStrTagValue(FT_MEDIA_ARTIST), params->strArtist) != 0)
+    if (!params->strArtist.IsEmpty() && _tcsicmp(file->GetStrTagValue(FT_MEDIA_ARTIST), params->strArtist) != 0)
     {
         reason.Format(L"Artist mismatch: %s != %s", file->GetStrTagValue(FT_MEDIA_ARTIST), params->strArtist);
         return true;
     }
 
     //album
-    if(!params->strAlbum.IsEmpty() && _tcsicmp(file->GetStrTagValue(FT_MEDIA_ALBUM), params->strAlbum) != 0)
+    if (!params->strAlbum.IsEmpty() && _tcsicmp(file->GetStrTagValue(FT_MEDIA_ALBUM), params->strAlbum) != 0)
     {
         reason.Format(L"Album mismatch: %s != %s", file->GetStrTagValue(FT_MEDIA_ALBUM), params->strAlbum);
         return true;

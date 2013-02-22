@@ -50,7 +50,7 @@ CCollectionFile::CCollectionFile(CFileDataIO* in_data)
     }
 
     CTag* pTagHash = GetTag(FT_FILEHASH);
-    if(pTagHash)
+    if (pTagHash)
         SetFileHash(pTagHash->GetHash());
     else
         ASSERT(0);
@@ -91,12 +91,12 @@ CCollectionFile::CCollectionFile(CFileDataIO* in_data)
             SetFileType(rstrFileType);
     }
 
-    if(GetFileSize() == (uint64)0 || !GetFileName().Compare(_T("")))
+    if (GetFileSize() == (uint64)0 || !GetFileName().Compare(_T("")))
         ASSERT(0);
 
 //>>> WiZaRd::CollectionEnhancement
     CTag* pTagFolder = GetTag(FT_FOLDER);
-    if(pTagFolder)
+    if (pTagFolder)
         SetDownloadDirectory(pTagFolder->GetStr());
 //<<< WiZaRd::CollectionEnhancement
 }
@@ -112,17 +112,17 @@ CCollectionFile::CCollectionFile(CAbstractFile* pAbstractFile) : CAbstractFile(p
     if (m_FileIdentifier.HasAICHHash())
         taglist.Add(new CTag(FT_AICH_HASH, m_FileIdentifier.GetAICHHash().GetString()));
 
-    if(!pAbstractFile->GetFileComment().IsEmpty())
+    if (!pAbstractFile->GetFileComment().IsEmpty())
         taglist.Add(new CTag(FT_FILECOMMENT, pAbstractFile->GetFileComment()));
 
-    if(pAbstractFile->GetFileRating())
+    if (pAbstractFile->GetFileRating())
         taglist.Add(new CTag(FT_FILERATING, pAbstractFile->GetFileRating()));
 
     UpdateFileRatingCommentAvail();
 
 //>>> WiZaRd::CollectionEnhancement
     CString strDirectory = pAbstractFile->GetDownloadDirectory();
-    if(!strDirectory.IsEmpty())
+    if (!strDirectory.IsEmpty())
     {
         taglist.Add(new CTag(FT_FOLDER, strDirectory));
         SetDownloadDirectory(strDirectory);
@@ -137,7 +137,7 @@ bool CCollectionFile::InitFromLink(CString sLink)
     try
     {
         pLink = CED2KLink::CreateLinkFromUrl(sLink);
-        if(!pLink)
+        if (!pLink)
             throw GetResString(IDS_ERR_NOTAFILELINK);
         pFileLink = pLink->GetFileLink();
         if (!pFileLink)
@@ -168,7 +168,7 @@ bool CCollectionFile::InitFromLink(CString sLink)
 
 //>>> WiZaRd::CollectionEnhancement
     CString strDirectory = pFileLink->GetDownloadDirectory();
-    if(!strDirectory.IsEmpty())
+    if (!strDirectory.IsEmpty())
     {
         taglist.Add(new CTag(FT_FOLDER, strDirectory));
         SetDownloadDirectory(strDirectory);
@@ -200,7 +200,7 @@ void CCollectionFile::UpdateFileRatingCommentAvail(bool /*bForceUpdate*/)
     UINT uRatings = 0;
     UINT uUserRatings = 0;
 
-    for(POSITION pos = m_kadNotes.GetHeadPosition(); pos != NULL; )
+    for (POSITION pos = m_kadNotes.GetHeadPosition(); pos != NULL;)
     {
         Kademlia::CEntry* entry = m_kadNotes.GetNext(pos);
         if (!m_bHasComment && !entry->GetStrTagValue(TAG_DESCRIPTION).IsEmpty())

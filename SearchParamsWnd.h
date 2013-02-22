@@ -99,6 +99,6 @@ protected:
 
 //>>> WiZaRd::CustomSearches
 public:
-	void UpdateSearchList();
+    void UpdateSearchList();
 //<<< WiZaRd::CustomSearches
 };

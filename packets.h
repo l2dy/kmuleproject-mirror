@@ -198,7 +198,7 @@ public:
     bool WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode = utf8strNone) const;	// old eD2K tags
     bool WriteNewEd2kTag(CFileDataIO* file, EUtf8Str eStrEncode = utf8strNone) const;	// new eD2K tags
 
-    CString GetFullInfo(CString (*pfnDbgGetFileMetaTagName)(UINT uMetaTagID) = NULL) const;
+    CString GetFullInfo(CString(*pfnDbgGetFileMetaTagName)(UINT uMetaTagID) = NULL) const;
 
 #ifdef _DEBUG
     // Diagnostic Support

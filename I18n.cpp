@@ -183,7 +183,7 @@ static void FreeLangDLL()
 {
     if (s_hLangDLL != NULL && s_hLangDLL != GetModuleHandle(NULL))
     {
-        VERIFY( FreeLibrary(s_hLangDLL) );
+        VERIFY(FreeLibrary(s_hLangDLL));
         s_hLangDLL = NULL;
     }
 }
@@ -349,7 +349,7 @@ CString CPreferences::GetLangDLLNameByID(LANGID lidSelected)
         if (pLang->lid == lidSelected)
             return CString(pLang->pszISOLocale) + _T(".dll");
     }
-    ASSERT ( false );
+    ASSERT(false);
     return CString(_T(""));
 }
 
@@ -374,7 +374,7 @@ void CPreferences::SetRtlLocale(LCID lcid)
 
 void CPreferences::InitThreadLocale()
 {
-    ASSERT( m_wLanguageID != 0 );
+    ASSERT(m_wLanguageID != 0);
 
     // NOTE: This function is for testing multi language support only.
     // NOTE: This function is *NOT* to be enabled in release builds nor to be offered by any Mod!
@@ -433,7 +433,7 @@ CString GetCodePageNameForLocale(LCID lcid)
 
 CString CPreferences::GetHtmlCharset()
 {
-    ASSERT( m_wLanguageID != 0 );
+    ASSERT(m_wLanguageID != 0);
 
     LPCTSTR pszHtmlCharset = NULL;
     const SLanguage* pLangs = s_aLanguages;
@@ -503,7 +503,7 @@ void CemuleApp::DisableRTLWindowsLayout()
 {
     if (s_hRTLWindowsLayoutOldCbtFilterHook)
     {
-        VERIFY( UnhookWindowsHookEx(s_hRTLWindowsLayoutOldCbtFilterHook) );
+        VERIFY(UnhookWindowsHookEx(s_hRTLWindowsLayoutOldCbtFilterHook));
         s_hRTLWindowsLayoutOldCbtFilterHook = NULL;
 
         BOOL (WINAPI *pfnSetProcessDefaultLayout)(DWORD dwFlags);

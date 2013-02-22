@@ -73,17 +73,17 @@ protected:
 
     void CloseFiles()
     {
-        if(m_bStdInput)
+        if (m_bStdInput)
             m_InFile.Detach();
         else
             m_InFile.Close();
 
-        if(m_bStdOutput)
+        if (m_bStdOutput)
             m_OutFile.Detach() ;
         else
             m_OutFile.Close();
 
-        if(m_bStdError)
+        if (m_bStdError)
             m_ErrFile.Detach() ;
         else
             m_ErrFile.Close();
@@ -223,8 +223,8 @@ public:
             return hr;
         }
 
-        if ( szQueryString != NULL)
-            if( strlen(szQueryString) < ( sizeof(m_szQueryString)-1 ) )
+        if (szQueryString != NULL)
+            if (strlen(szQueryString) < (sizeof(m_szQueryString)-1))
                 strcpy_s(m_szQueryString, sizeof(m_szQueryString), szQueryString);
             else
             {
@@ -233,8 +233,8 @@ public:
                 return E_INVALIDARG;
             }
 
-        if ( szContentType != NULL)
-            if(strlen(szContentType) < ( sizeof(m_szContentType)-1 ) )
+        if (szContentType != NULL)
+            if (strlen(szContentType) < (sizeof(m_szContentType)-1))
                 strcpy_s(m_szContentType, sizeof(m_szContentType), szContentType);
             else
             {
@@ -247,7 +247,7 @@ public:
             strcpy_s(m_szVerb, sizeof(m_szVerb), "GET");
         else
         {
-            if ( strlen(szVerb) < ( sizeof(m_szVerb)-1 ) )
+            if (strlen(szVerb) < (sizeof(m_szVerb)-1))
                 strcpy_s(m_szVerb, sizeof(m_szVerb), szVerb);
             else
             {
@@ -322,7 +322,7 @@ public:
         ATLENSURE(szPath != NULL);
         m_szPathTranslated[0] = '\0';
 
-        if ( strlen(szPath) < sizeof(m_szPathTranslated)-1 )
+        if (strlen(szPath) < sizeof(m_szPathTranslated)-1)
             strcpy_s(m_szPathTranslated, sizeof(m_szPathTranslated), szPath);
         else
         {
@@ -352,7 +352,7 @@ public:
 
         ptrdiff_t nResult = szEnd - m_szPathTranslated;
 
-        if (nResult >= 0 && nResult <= ( sizeof(m_szScriptPathTranslated)-1 ) )
+        if (nResult >= 0 && nResult <= (sizeof(m_szScriptPathTranslated)-1))
             memcpy_s(m_szScriptPathTranslated, sizeof(m_szScriptPathTranslated), m_szPathTranslated, nResult);
         else if (nResult < 0)
         {
@@ -417,7 +417,7 @@ public:
         LPSTR	pvBuffer,
         DWORD * pdwSize) throw()
     {
-        if( !pdwSize )
+        if (!pdwSize)
             return FALSE;
 
         BOOL	bRet	=	TRUE;
@@ -437,18 +437,18 @@ public:
             getenv_s(&retVal, buf, bufSize, szVariableName);
             szVar = buf;
 
-            if( pvBuffer && *pdwSize  > strlen(szVar) )
-                strcpy_s( pvBuffer, bufSize, szVar );
+            if (pvBuffer && *pdwSize  > strlen(szVar))
+                strcpy_s(pvBuffer, bufSize, szVar);
             else
             {
-                ::SetLastError( ERROR_INSUFFICIENT_BUFFER );
-                *pdwSize	=	1 + (DWORD)strlen( szVar );
+                ::SetLastError(ERROR_INSUFFICIENT_BUFFER);
+                *pdwSize	=	1 + (DWORD)strlen(szVar);
                 bRet	=	FALSE;
             }
         }
         else
         {
-            if( m_ErrFile.m_h != NULL )
+            if (m_ErrFile.m_h != NULL)
             {
                 CStringA	strErrMsg;
                 Emit(strErrMsg, IDS_SERVER_VARIABLE_NOT_FOUND, szVariableName ? szVariableName : "<NULL>");
@@ -456,7 +456,7 @@ public:
             }
 
             *pdwSize	=	0;
-            ::SetLastError( ERROR_NO_DATA);
+            ::SetLastError(ERROR_NO_DATA);
             bRet	=	FALSE;
         }
 

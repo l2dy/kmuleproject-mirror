@@ -68,7 +68,7 @@ extern "C" {
 #endif
 
     void * __RPC_USER MIDL_user_allocate(size_t);
-    void __RPC_USER MIDL_user_free( void * );
+    void __RPC_USER MIDL_user_free(void *);
 
     /* interface __MIDL_itf_mmstream_0000 */
     /* [local] */
@@ -95,7 +95,7 @@ extern "C" {
     DEFINE_GUID(MSPID_PrimaryAudio,
                 0xa35ff56b, 0x9fda, 0x11d0, 0x8f, 0xdf, 0x0, 0xc0, 0x4f, 0xd9, 0x18, 0x9d);
 #if(_WIN32_WINNT < 0x0400)
-    typedef void ( __stdcall *PAPCFUNC )(
+    typedef void (__stdcall *PAPCFUNC)(
         DWORD_PTR dwParam);
 
 #endif
@@ -203,53 +203,53 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IMultiMediaStream * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IMultiMediaStream * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IMultiMediaStream * This);
 
-        HRESULT ( STDMETHODCALLTYPE *GetInformation )(
+        HRESULT(STDMETHODCALLTYPE *GetInformation)(
             IMultiMediaStream * This,
             /* [out] */ DWORD *pdwFlags,
             /* [out] */ STREAM_TYPE *pStreamType);
 
-        HRESULT ( STDMETHODCALLTYPE *GetMediaStream )(
+        HRESULT(STDMETHODCALLTYPE *GetMediaStream)(
             IMultiMediaStream * This,
             /* [in] */ REFMSPID idPurpose,
             /* [out] */ IMediaStream **ppMediaStream);
 
-        HRESULT ( STDMETHODCALLTYPE *EnumMediaStreams )(
+        HRESULT(STDMETHODCALLTYPE *EnumMediaStreams)(
             IMultiMediaStream * This,
             /* [in] */ long Index,
             /* [out] */ IMediaStream **ppMediaStream);
 
-        HRESULT ( STDMETHODCALLTYPE *GetState )(
+        HRESULT(STDMETHODCALLTYPE *GetState)(
             IMultiMediaStream * This,
             /* [out] */ STREAM_STATE *pCurrentState);
 
-        HRESULT ( STDMETHODCALLTYPE *SetState )(
+        HRESULT(STDMETHODCALLTYPE *SetState)(
             IMultiMediaStream * This,
             /* [in] */ STREAM_STATE NewState);
 
-        HRESULT ( STDMETHODCALLTYPE *GetTime )(
+        HRESULT(STDMETHODCALLTYPE *GetTime)(
             IMultiMediaStream * This,
             /* [out] */ STREAM_TIME *pCurrentTime);
 
-        HRESULT ( STDMETHODCALLTYPE *GetDuration )(
+        HRESULT(STDMETHODCALLTYPE *GetDuration)(
             IMultiMediaStream * This,
             /* [out] */ STREAM_TIME *pDuration);
 
-        HRESULT ( STDMETHODCALLTYPE *Seek )(
+        HRESULT(STDMETHODCALLTYPE *Seek)(
             IMultiMediaStream * This,
             /* [in] */ STREAM_TIME SeekTime);
 
-        HRESULT ( STDMETHODCALLTYPE *GetEndOfStreamEventHandle )(
+        HRESULT(STDMETHODCALLTYPE *GetEndOfStreamEventHandle)(
             IMultiMediaStream * This,
             /* [out] */ HANDLE *phEOS);
 
@@ -472,43 +472,43 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IMediaStream * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IMediaStream * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IMediaStream * This);
 
-        HRESULT ( STDMETHODCALLTYPE *GetMultiMediaStream )(
+        HRESULT(STDMETHODCALLTYPE *GetMultiMediaStream)(
             IMediaStream * This,
             /* [out] */ IMultiMediaStream **ppMultiMediaStream);
 
-        HRESULT ( STDMETHODCALLTYPE *GetInformation )(
+        HRESULT(STDMETHODCALLTYPE *GetInformation)(
             IMediaStream * This,
             /* [out] */ MSPID *pPurposeId,
             /* [out] */ STREAM_TYPE *pType);
 
-        HRESULT ( STDMETHODCALLTYPE *SetSameFormat )(
+        HRESULT(STDMETHODCALLTYPE *SetSameFormat)(
             IMediaStream * This,
             /* [in] */ IMediaStream *pStreamThatHasDesiredFormat,
             /* [in] */ DWORD dwFlags);
 
-        HRESULT ( STDMETHODCALLTYPE *AllocateSample )(
+        HRESULT(STDMETHODCALLTYPE *AllocateSample)(
             IMediaStream * This,
             /* [in] */ DWORD dwFlags,
             /* [out] */ IStreamSample **ppSample);
 
-        HRESULT ( STDMETHODCALLTYPE *CreateSharedSample )(
+        HRESULT(STDMETHODCALLTYPE *CreateSharedSample)(
             IMediaStream * This,
             /* [in] */ IStreamSample *pExistingSample,
             /* [in] */ DWORD dwFlags,
             /* [out] */ IStreamSample **ppNewSample);
 
-        HRESULT ( STDMETHODCALLTYPE *SendEndOfStream )(
+        HRESULT(STDMETHODCALLTYPE *SendEndOfStream)(
             IMediaStream * This,
             DWORD dwFlags);
 
@@ -687,40 +687,40 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IStreamSample * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IStreamSample * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IStreamSample * This);
 
-        HRESULT ( STDMETHODCALLTYPE *GetMediaStream )(
+        HRESULT(STDMETHODCALLTYPE *GetMediaStream)(
             IStreamSample * This,
             /* [in] */ IMediaStream **ppMediaStream);
 
-        HRESULT ( STDMETHODCALLTYPE *GetSampleTimes )(
+        HRESULT(STDMETHODCALLTYPE *GetSampleTimes)(
             IStreamSample * This,
             /* [out] */ STREAM_TIME *pStartTime,
             /* [out] */ STREAM_TIME *pEndTime,
             /* [out] */ STREAM_TIME *pCurrentTime);
 
-        HRESULT ( STDMETHODCALLTYPE *SetSampleTimes )(
+        HRESULT(STDMETHODCALLTYPE *SetSampleTimes)(
             IStreamSample * This,
             /* [in] */ const STREAM_TIME *pStartTime,
             /* [in] */ const STREAM_TIME *pEndTime);
 
-        HRESULT ( STDMETHODCALLTYPE *Update )(
+        HRESULT(STDMETHODCALLTYPE *Update)(
             IStreamSample * This,
             /* [in] */ DWORD dwFlags,
             /* [in] */ HANDLE hEvent,
             /* [in] */ PAPCFUNC pfnAPC,
             /* [in] */ DWORD_PTR dwAPCData);
 
-        HRESULT ( STDMETHODCALLTYPE *CompletionStatus )(
+        HRESULT(STDMETHODCALLTYPE *CompletionStatus)(
             IStreamSample * This,
             /* [in] */ DWORD dwFlags,
             /* [in] */ DWORD dwMilliseconds);

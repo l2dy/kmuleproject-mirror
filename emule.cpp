@@ -159,7 +159,7 @@ extern "C" HMODULE __stdcall ExplicitPreLoadUnicows()
 }
 
 // NOTE: Do *NOT* change the name of this function. It *HAS* to be named "_PfnLoadUnicows" !
-extern "C" HMODULE (__stdcall *_PfnLoadUnicows)(void) = &ExplicitPreLoadUnicows;
+extern "C" HMODULE(__stdcall *_PfnLoadUnicows)(void) = &ExplicitPreLoadUnicows;
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -272,7 +272,7 @@ void InitDEP()
             // So, if the DEP policy for the current process is already enabled but not permanent,
             // it has to be explicitly enabled by calling 'SetProcessDEPPolicy' to make it permanent.
             //
-            if (  ((dwFlags & PROCESS_DEP_ENABLE) == 0 || !bPermanent)
+            if (((dwFlags & PROCESS_DEP_ENABLE) == 0 || !bPermanent)
 #if _ATL_VER>0x0710
                     || (dwFlags & PROCESS_DEP_DISABLE_ATL_THUNK_EMULATION) == 0
 #endif
@@ -328,19 +328,19 @@ void CALLBACK myErrHandler(Kademlia::CKademliaError *error)
 {
     CString msg;
     msg.Format(_T("\r\nError 0x%08X : %hs\r\n"), error->m_iErrorCode, error->m_szErrorDescription);
-    if(theApp.emuledlg && theApp.emuledlg->IsRunning())
+    if (theApp.emuledlg && theApp.emuledlg->IsRunning())
         theApp.QueueDebugLogLine(false, _T("%s"), msg);
 }
 
 void CALLBACK myDebugAndLogHandler(LPCSTR lpMsg)
 {
-    if(theApp.emuledlg && theApp.emuledlg->IsRunning())
+    if (theApp.emuledlg && theApp.emuledlg->IsRunning())
         theApp.QueueDebugLogLine(false, _T("%hs"), lpMsg);
 }
 
 void CALLBACK myLogHandler(LPCSTR lpMsg)
 {
-    if(theApp.emuledlg && theApp.emuledlg->IsRunning())
+    if (theApp.emuledlg && theApp.emuledlg->IsRunning())
         theApp.QueueLogLine(false, _T("%hs"), lpMsg);
 }
 
@@ -398,7 +398,7 @@ CemuleApp::CemuleApp(LPCTSTR lpszAppName)
     m_dwProductVersionLS = MAKELONG(CemuleApp::m_nVersionBld, CemuleApp::m_nVersionUpd);
 
     // create a string version (e.g. "0.30a")
-    ASSERT( CemuleApp::m_nVersionUpd + 'a' <= 'f' );
+    ASSERT(CemuleApp::m_nVersionUpd + 'a' <= 'f');
     m_strCurVersionLongDbg.Format(_T("%u.%u%c.%u"), CemuleApp::m_nVersionMjr, CemuleApp::m_nVersionMin, _T('a') + CemuleApp::m_nVersionUpd, CemuleApp::m_nVersionBld);
 #ifdef _DEBUG
     m_strCurVersionLong = m_strCurVersionLongDbg;
@@ -416,13 +416,13 @@ CemuleApp::CemuleApp(LPCTSTR lpszAppName)
     // create the protocol version number
     CString strTmp;
     strTmp.Format(_T("0x%u"), m_dwProductVersionMS);
-    VERIFY( _stscanf(strTmp, _T("0x%x"), &m_uCurVersionShort) == 1 );
-    ASSERT( m_uCurVersionShort < 0x99 );
+    VERIFY(_stscanf(strTmp, _T("0x%x"), &m_uCurVersionShort) == 1);
+    ASSERT(m_uCurVersionShort < 0x99);
 
     // create the version check number
     strTmp.Format(_T("0x%u%c"), m_dwProductVersionMS, _T('A') + CemuleApp::m_nVersionUpd);
-    VERIFY( _stscanf(strTmp, _T("0x%x"), &m_uCurVersionCheck) == 1 );
-    ASSERT( m_uCurVersionCheck < 0x999 );
+    VERIFY(_stscanf(strTmp, _T("0x%x"), &m_uCurVersionCheck) == 1);
+    ASSERT(m_uCurVersionCheck < 0x999);
 // MOD Note: end
 
     m_bGuardClipboardPrompt = false;
@@ -439,12 +439,12 @@ CemuleApp theApp(MOD_VERSION_PLAIN);
 void __cdecl __AfxSocketTerm()
 {
 #if defined(_AFXDLL) && (_MFC_VER==0x0700 || _MFC_VER==0x0710)
-    VERIFY( WSACleanup() == 0 );
+    VERIFY(WSACleanup() == 0);
 #else
     _AFX_SOCK_STATE* pState = _afxSockState.GetData();
     if (pState->m_pfnSockTerm != NULL)
     {
-        VERIFY( WSACleanup() == 0 );
+        VERIFY(WSACleanup() == 0);
         pState->m_pfnSockTerm = NULL;
     }
 #endif
@@ -460,24 +460,24 @@ BOOL CemuleApp::InitInstance()
 #ifdef _DEBUG
     // set Floating Point Processor to throw several exceptions, in particular the 'Floating point devide by zero'
     UINT uEmCtrlWord = _control87(0, 0) & _MCW_EM;
-	//WiZaRd: removed that codepart because it caused weird crashes in debug builds!?
-	//http://blogs.msdn.com/b/dougste/archive/2008/11/12/random-and-unexpected-exception-flt-divide-by-zero-and-exception-flt-invalid-operation.aspx
-	TRACE(L"FPCW: %u (0x%.4x)\n", (UINT)_control87(0, 0), _control87(0, 0));
-	TRACE(L"FPCW: %u (0x%.4x)\n", uEmCtrlWord, uEmCtrlWord);
+    //WiZaRd: removed that codepart because it caused weird crashes in debug builds!?
+    //http://blogs.msdn.com/b/dougste/archive/2008/11/12/random-and-unexpected-exception-flt-divide-by-zero-and-exception-flt-invalid-operation.aspx
+    TRACE(L"FPCW: %u (0x%.4x)\n", (UINT)_control87(0, 0), _control87(0, 0));
+    TRACE(L"FPCW: %u (0x%.4x)\n", uEmCtrlWord, uEmCtrlWord);
     //_control87(uEmCtrlWord & ~(/*_EM_INEXACT |*/ _EM_UNDERFLOW | _EM_OVERFLOW | _EM_ZERODIVIDE | _EM_INVALID), _MCW_EM);
 
-	//WiZaRd: Perform automatic leak checking at program exit through a call to _CrtDumpMemoryLeaks 
-	//and generate an error report if the application failed to free all the memory it allocated.
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+    //WiZaRd: Perform automatic leak checking at program exit through a call to _CrtDumpMemoryLeaks
+    //and generate an error report if the application failed to free all the memory it allocated.
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
     // output all ASSERT messages to debug device
     _CrtSetReportMode(_CRT_ASSERT, _CrtSetReportMode(_CRT_ASSERT, _CRTDBG_REPORT_MODE) | _CRTDBG_MODE_DEBUG);
-	oldMemState.Checkpoint();
-	// Installing that memory debug code works fine in Debug builds when running within VS Debugger,
-	// but some other test applications don't like that all....
-	//g_pfnPrevCrtAllocHook = _CrtSetAllocHook(&eMuleAllocHook);
+    oldMemState.Checkpoint();
+    // Installing that memory debug code works fine in Debug builds when running within VS Debugger,
+    // but some other test applications don't like that all....
+    //g_pfnPrevCrtAllocHook = _CrtSetAllocHook(&eMuleAllocHook);
 #endif
-	//afxMemDF = allocMemDF | delayFreeMemDF;
+    //afxMemDF = allocMemDF | delayFreeMemDF;
 
     free((void*)m_pszProfileName);
     m_pszProfileName = _tcsdup(thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + _T("preferences.ini"));
@@ -504,15 +504,15 @@ BOOL CemuleApp::InitInstance()
 
     AfxOleInit();
 
-	// WiZaRd: prevent switch to ... busy popup during windows startup. see http://support.microsoft.com/kb/248019
-	if (AfxOleGetMessageFilter()) 
-	{
-		AfxOleGetMessageFilter()->EnableBusyDialog(FALSE);
-		AfxOleGetMessageFilter()->EnableNotRespondingDialog(FALSE);
-		AfxOleGetMessageFilter()->SetMessagePendingDelay(60000); // 60s instead of default 5s
-	}
-	else 
-		ASSERT(0);  // dll not loaded? 
+    // WiZaRd: prevent switch to ... busy popup during windows startup. see http://support.microsoft.com/kb/248019
+    if (AfxOleGetMessageFilter())
+    {
+        AfxOleGetMessageFilter()->EnableBusyDialog(FALSE);
+        AfxOleGetMessageFilter()->EnableNotRespondingDialog(FALSE);
+        AfxOleGetMessageFilter()->SetMessagePendingDelay(60000); // 60s instead of default 5s
+    }
+    else
+        ASSERT(0);  // dll not loaded?
 
     pstrPendingLink = NULL;
     if (ProcessCommandline())
@@ -603,32 +603,32 @@ BOOL CemuleApp::InitInstance()
 
     // create & initialize all the important stuff
     thePrefs.Init();
-	if(!PathFileExists(thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR)) || !PathFileExists(thePrefs.GetTempDir()))
-	{
-		// here we have problems with the shared usage setting and should inform the user about it
-		// OR we could automatically choose a different setup...
-		return FALSE;
-	}
+    if (!PathFileExists(thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR)) || !PathFileExists(thePrefs.GetTempDir()))
+    {
+        // here we have problems with the shared usage setting and should inform the user about it
+        // OR we could automatically choose a different setup...
+        return FALSE;
+    }
 
     // show splashscreen as early as possible to "entertain" user while starting kMule
-    if(!thePrefs.IsFirstStart() && thePrefs.UseSplashScreen())
-	{
+    if (!thePrefs.IsFirstStart() && thePrefs.UseSplashScreen())
+    {
 //>>> WiZaRd::New Splash [TBH]
-		//don't show splash on old windows versions
-		switch (thePrefs.GetWindowsVersion())
-		{				
-			case _WINVER_98_:
-			case _WINVER_95_:	
-			case _WINVER_ME_:
-			case _WINVER_NT4_:
-				break;
-			default:
-				ShowSplash();
-				break;
-		}
-		//ShowSplash();
-//<<< WiZaRd::New Splash [TBH]        
-	}
+        //don't show splash on old windows versions
+        switch (thePrefs.GetWindowsVersion())
+        {
+        case _WINVER_98_:
+        case _WINVER_95_:
+        case _WINVER_ME_:
+        case _WINVER_NT4_:
+            break;
+        default:
+            ShowSplash();
+            break;
+        }
+        //ShowSplash();
+//<<< WiZaRd::New Splash [TBH]
+    }
     theStats.Init();
 
     // check if we have to restart eMule as Secure user
@@ -651,8 +651,8 @@ BOOL CemuleApp::InitInstance()
 #ifdef _DEBUG
     _sntprintf(s_szCrtDebugReportFilePath, _countof(s_szCrtDebugReportFilePath) - 1, _T("%s%s"), thePrefs.GetMuleDirectory(EMULE_LOGDIR, false), APP_CRT_DEBUG_LOG_FILE);
 #endif
-    VERIFY( theLog.SetFilePath(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + _T("eMule.log")) );
-    VERIFY( theVerboseLog.SetFilePath(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + _T("eMule_Verbose.log")) );
+    VERIFY(theLog.SetFilePath(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + _T("eMule.log")));
+    VERIFY(theVerboseLog.SetFilePath(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + _T("eMule_Verbose.log")));
     theLog.SetMaxFileSize(thePrefs.GetMaxLogFileSize());
     theLog.SetFileFormat(thePrefs.GetLogFileFormat());
     theVerboseLog.SetMaxFileSize(thePrefs.GetMaxLogFileSize());
@@ -717,18 +717,18 @@ BOOL CemuleApp::InitInstance()
 
     // Highres scheduling gives better resolution for Sleep(...) calls, and timeGetTime() calls
     m_wTimerRes = 0;
-    if(thePrefs.GetHighresTimer())
+    if (thePrefs.GetHighresTimer())
     {
         TIMECAPS tc;
         if (timeGetDevCaps(&tc, sizeof(TIMECAPS)) == TIMERR_NOERROR)
         {
             m_wTimerRes = min(max(tc.wPeriodMin, 1), tc.wPeriodMax);
-            if(m_wTimerRes > 0)
+            if (m_wTimerRes > 0)
             {
                 MMRESULT mmResult = timeBeginPeriod(m_wTimerRes);
-                if(thePrefs.GetVerbose())
+                if (thePrefs.GetVerbose())
                 {
-                    if(mmResult == TIMERR_NOERROR)
+                    if (mmResult == TIMERR_NOERROR)
                     {
                         theApp.QueueDebugLogLine(false,_T("Succeeded to set timer resolution to %i ms."), m_wTimerRes);
                     }
@@ -761,7 +761,7 @@ BOOL CemuleApp::InitInstance()
     clientcredits = new CClientCreditsList();
     antileechlist   = new CAntiLeechDataList(); //>>> WiZaRd::ClientAnalyzer
     autoUpdater = new CAutoUpdate(); //>>> WiZaRd::AutoUpdate
-	customSearches	= new CCustomSearches(); //>>> WiZaRd::CustomSearches
+    customSearches	= new CCustomSearches(); //>>> WiZaRd::CustomSearches
     downloadqueue = new CDownloadQueue();	// bugfix - do this before creating the uploadqueue
     uploadqueue = new CUploadQueue();
     ipfilter 	= new CIPFilter();
@@ -890,11 +890,11 @@ bool CemuleApp::ProcessCommandline()
 
     //this codepart is to determine special cases when we do add a link to our eMule
     //because in this case it would be nonsense to start another instance!
-    if(bIgnoreRunningInstances)
+    if (bIgnoreRunningInstances)
     {
         if (cmdInfo.m_nShellCommand == CCommandLineInfo::FileOpen
                 && (cmdInfo.m_strFileName.Find(_T("://")) > 0
-                    || CCollection::HasCollectionExtention(cmdInfo.m_strFileName)) )
+                    || CCollection::HasCollectionExtention(cmdInfo.m_strFileName)))
             bIgnoreRunningInstances = false;
     }
     if (!bIgnoreRunningInstances)
@@ -961,9 +961,9 @@ BOOL CALLBACK CemuleApp::SearchEmuleWindow(HWND hWnd, LPARAM lParam)
 {
     DWORD dwMsgResult;
     LRESULT res = ::SendMessageTimeout(hWnd,UWM_ARE_YOU_EMULE,0, 0,SMTO_BLOCK |SMTO_ABORTIFHUNG,10000,&dwMsgResult);
-    if(res == 0)
+    if (res == 0)
         return TRUE;
-    if(dwMsgResult == UWM_ARE_YOU_EMULE)
+    if (dwMsgResult == UWM_ARE_YOU_EMULE)
     {
         HWND * target = (HWND *)lParam;
         *target = hWnd;
@@ -984,7 +984,7 @@ void CemuleApp::UpdateSentBytes(UINT bytesToAdd, bool sentToFriend)
     SetTimeOnTransfer();
     theStats.sessionSentBytes+=bytesToAdd;
 
-    if(sentToFriend == true)
+    if (sentToFriend == true)
     {
         theStats.sessionSentBytesToFriend += bytesToAdd;
     }
@@ -1000,7 +1000,7 @@ void CemuleApp::SetTimeOnTransfer()
 CString CemuleApp::CreateKadSourceLink(const CAbstractFile* f)
 {
     CString strLink;
-    if( Kademlia::CKademlia::IsConnected() && theApp.clientlist->GetBuddy() && theApp.IsFirewalled() )
+    if (Kademlia::CKademlia::IsConnected() && theApp.clientlist->GetBuddy() && theApp.IsFirewalled())
     {
         CString KadID;
         Kademlia::CKademlia::GetPrefs()->GetKadID().Xor(Kademlia::CUInt128(true)).ToHexString(&KadID);
@@ -1317,7 +1317,7 @@ void CemuleApp::ShowHelp(UINT uTopic, UINT uCmd)
 bool CemuleApp::ShowWebHelp(UINT uTopic)
 {
     CString strHelpURL = MOD_WIKI;
-    switch(uTopic)
+    switch (uTopic)
     {
     default:
         strHelpURL.Format(_T("http://onlinehelp.emule-project.net/help.php?language=%u&topic=%u"), thePrefs.GetLanguageID(), uTopic);
@@ -1370,7 +1370,7 @@ int CemuleApp::GetFileTypeSystemImageIdx(LPCTSTR pszFilePath, int iLength /* = -
                                            SHGFI_USEFILEATTRIBUTES | SHGFI_SYSICONINDEX);
             if (dwResult == 0)
                 return 0;
-            ASSERT( m_hBigSystemImageList == NULL || m_hBigSystemImageList == (HIMAGELIST)dwResult );
+            ASSERT(m_hBigSystemImageList == NULL || m_hBigSystemImageList == (HIMAGELIST)dwResult);
             m_hBigSystemImageList = (HIMAGELIST)dwResult;
 
             // Store icon index in local cache
@@ -1388,7 +1388,7 @@ int CemuleApp::GetFileTypeSystemImageIdx(LPCTSTR pszFilePath, int iLength /* = -
                                            SHGFI_USEFILEATTRIBUTES | SHGFI_SYSICONINDEX | SHGFI_SMALLICON);
             if (dwResult == 0)
                 return 0;
-            ASSERT( m_hSystemImageList == NULL || m_hSystemImageList == (HIMAGELIST)dwResult );
+            ASSERT(m_hSystemImageList == NULL || m_hSystemImageList == (HIMAGELIST)dwResult);
             m_hSystemImageList = (HIMAGELIST)dwResult;
 
             // Store icon index in local cache
@@ -1413,15 +1413,15 @@ bool CemuleApp::IsConnecting()
 
 bool CemuleApp::IsPortchangeAllowed()
 {
-    return ( theApp.clientlist->GetClientCount()==0 && !IsConnected() );
+    return (theApp.clientlist->GetClientCount()==0 && !IsConnected());
 }
 
 UINT CemuleApp::GetID()
 {
     UINT ID;
-    if( Kademlia::CKademlia::IsConnected() && !Kademlia::CKademlia::IsFirewalled() )
+    if (Kademlia::CKademlia::IsConnected() && !Kademlia::CKademlia::IsFirewalled())
         ID = ntohl(Kademlia::CKademlia::GetIPAddress());
-    else if ( Kademlia::CKademlia::IsConnected() && Kademlia::CKademlia::IsFirewalled() )
+    else if (Kademlia::CKademlia::IsConnected() && Kademlia::CKademlia::IsFirewalled())
         ID = 1;
     else
         ID = 0;
@@ -1437,18 +1437,18 @@ UINT CemuleApp::GetPublicIP(bool bIgnoreKadIP) const
 
 void CemuleApp::SetPublicIP(const UINT dwIP)
 {
-    if(m_dwPublicIP == dwIP)
+    if (m_dwPublicIP == dwIP)
         return;
 
     if (dwIP != 0)
     {
-        ASSERT ( !IsLowID(dwIP));
+        ASSERT(!IsLowID(dwIP));
 
-        if ( GetPublicIP() == 0)
+        if (GetPublicIP() == 0)
             AddDebugLogLine(DLP_VERYLOW, false, _T("My public IP Address is: %s"),ipstr(dwIP));
         else if (Kademlia::CKademlia::IsConnected() && Kademlia::CKademlia::GetPrefs()->GetIPAddress())
         {
-            if(ntohl(Kademlia::CKademlia::GetIPAddress()) != dwIP)
+            if (ntohl(Kademlia::CKademlia::GetIPAddress()) != dwIP)
             {
                 AddDebugLogLine(DLP_DEFAULT, false,  _T("Public IP Address reported from Kademlia (%s) differs from new found (%s)"),ipstr(ntohl(Kademlia::CKademlia::GetIPAddress())),ipstr(dwIP));
 //>>> WiZaRd::Reconnect KAD
@@ -1456,7 +1456,7 @@ void CemuleApp::SetPublicIP(const UINT dwIP)
                 /*Kademlia::CKademlia::Stop();
                 Kademlia::CKademlia::Start();*/
                 //Kad loaded the old IP, we must reset
-                if(Kademlia::CKademlia::IsRunning()) //one more check
+                if (Kademlia::CKademlia::IsRunning()) //one more check
                     Kademlia::CKademlia::GetPrefs()->SetIPAddress(htonl(dwIP));
 //<<< WiZaRd::Reconnect KAD
             }
@@ -1465,21 +1465,21 @@ void CemuleApp::SetPublicIP(const UINT dwIP)
 //>>> WiZaRd::Recode
         static UINT dwLastRealIP = 0;
         const bool bChange = (dwIP != 0 && dwLastRealIP != 0 && dwLastRealIP != dwIP);
-        if(bChange)
+        if (bChange)
             AddDebugLogLine(false, L"Change from %u (%s) to %u (%s) detected",
                             dwLastRealIP, ::IsLowID(dwLastRealIP) ? GetResString(IDS_IDLOW) : GetResString(IDS_IDHIGH),
                             dwIP, ::IsLowID(dwIP) ? GetResString(IDS_IDLOW) : GetResString(IDS_IDHIGH));
 
-        if(dwIP != 0)
+        if (dwIP != 0)
             dwLastRealIP = dwIP;
         m_dwPublicIP = dwIP;
-        if(bChange)
+        if (bChange)
         {
             ResetLocalIP();
 
             // Public IP has been changed
             CString s = ipstr(m_dwPublicIP);
-            if(s.Right(2) == L".0")
+            if (s.Right(2) == L".0")
                 theApp.QueueDebugLogLineEx(LOG_WARNING, L"WARNING: your IP contains a \"0\" at last position - you will receive a LOWID!");
 
             if (thePrefs.IsUPnPEnabled() && theApp.emuledlg && theApp.m_pUPnPFinder)
@@ -1508,9 +1508,9 @@ bool CemuleApp::IsFirewalled()
 
 bool CemuleApp::CanDoCallback()
 {
-    if(Kademlia::CKademlia::IsConnected())
+    if (Kademlia::CKademlia::IsConnected())
     {
-        if(Kademlia::CKademlia::IsFirewalled())
+        if (Kademlia::CKademlia::IsFirewalled())
         {
             //Only Kad Connected - Kad Firewalled
             return false;
@@ -1588,8 +1588,8 @@ HICON CemuleApp::LoadIcon(LPCTSTR lpszResourceName, int cx, int cy, UINT uFlags)
             {
                 if (uFlags != 0 || !(cx == cy && (cx == 16 || cx == 32)))
                 {
-                    static UINT (WINAPI *_pfnPrivateExtractIcons)(LPCTSTR, int, int, int, HICON*, UINT*, UINT, UINT)
-                        = (UINT (WINAPI *)(LPCTSTR, int, int, int, HICON*, UINT*, UINT, UINT))GetProcAddress(GetModuleHandle(_T("user32")), _TWINAPI("PrivateExtractIcons"));
+                    static UINT(WINAPI *_pfnPrivateExtractIcons)(LPCTSTR, int, int, int, HICON*, UINT*, UINT, UINT)
+                        = (UINT(WINAPI *)(LPCTSTR, int, int, int, HICON*, UINT*, UINT, UINT))GetProcAddress(GetModuleHandle(_T("user32")), _TWINAPI("PrivateExtractIcons"));
                     if (_pfnPrivateExtractIcons)
                     {
                         UINT uIconId;
@@ -1632,9 +1632,9 @@ HICON CemuleApp::LoadIcon(LPCTSTR lpszResourceName, int cx, int cy, UINT uFlags)
                         for (int i = 0; i < _countof(aIconsLarge); i++)
                         {
                             if (aIconsLarge[i] != NULL)
-                                VERIFY( DestroyIcon(aIconsLarge[i]) );
+                                VERIFY(DestroyIcon(aIconsLarge[i]));
                             if (aIconsSmall[i] != NULL)
-                                VERIFY( DestroyIcon(aIconsSmall[i]) );
+                                VERIFY(DestroyIcon(aIconsSmall[i]));
                         }
                     }
                 }
@@ -1807,14 +1807,14 @@ CTempIconLoader::CTempIconLoader(LPCTSTR pszResourceID, int cx, int cy, UINT uFl
 CTempIconLoader::CTempIconLoader(UINT uResourceID, int /*cx*/, int /*cy*/, UINT uFlags)
 {
     UNREFERENCED_PARAMETER(uFlags);
-    ASSERT( uFlags == 0 );
+    ASSERT(uFlags == 0);
     m_hIcon = theApp.LoadIcon(uResourceID);
 }
 
 CTempIconLoader::~CTempIconLoader()
 {
     if (m_hIcon)
-        VERIFY( DestroyIcon(m_hIcon) );
+        VERIFY(DestroyIcon(m_hIcon));
 }
 
 void CemuleApp::AddEd2kLinksToDownload(CString strLinks, int cat)
@@ -1842,7 +1842,7 @@ void CemuleApp::AddEd2kLinksToDownload(CString strLinks, int cat)
                 delete pLink;
             }
         }
-        catch(CString error)
+        catch (CString error)
         {
             TCHAR szBuffer[200];
             _sntprintf(szBuffer, _countof(szBuffer), GetResString(IDS_ERR_INVALIDLINK), error);
@@ -2040,7 +2040,7 @@ void CemuleApp::HandleLogQueues()
 void CemuleApp::ClearDebugLogQueue(bool bDebugPendingMsgs)
 {
     m_queueLock.Lock();
-    while(!m_QueueDebugLog.IsEmpty())
+    while (!m_QueueDebugLog.IsEmpty())
     {
         if (bDebugPendingMsgs)
             TRACE(_T("Queued dbg log msg: %s\n"), m_QueueDebugLog.GetHead()->line);
@@ -2052,7 +2052,7 @@ void CemuleApp::ClearDebugLogQueue(bool bDebugPendingMsgs)
 void CemuleApp::ClearLogQueue(bool bDebugPendingMsgs)
 {
     m_queueLock.Lock();
-    while(!m_QueueLog.IsEmpty())
+    while (!m_QueueLog.IsEmpty())
     {
         if (bDebugPendingMsgs)
             TRACE(_T("Queued log msg: %s\n"), m_QueueLog.GetHead()->line);
@@ -2113,7 +2113,7 @@ void CemuleApp::CreateAllFonts()
     //
     // It would not be an error if that font name does not match our pre-determined
     // font name, I just want to know if that ever happens.
-    ASSERT( m_strDefaultFontFaceName == lfDefault.lfFaceName );
+    ASSERT(m_strDefaultFontFaceName == lfDefault.lfFaceName);
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -2121,7 +2121,7 @@ void CemuleApp::CreateAllFonts()
     //
     LOGFONT lfDefaultBold = lfDefault;
     lfDefaultBold.lfWeight = FW_BOLD;
-    VERIFY( m_fontDefaultBold.CreateFontIndirect(&lfDefaultBold) );
+    VERIFY(m_fontDefaultBold.CreateFontIndirect(&lfDefaultBold));
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -2182,7 +2182,7 @@ void CemuleApp::CreateBackwardDiagonalBrush()
         logBrush.lbStyle = BS_PATTERN;
         logBrush.lbHatch = (int)bm.GetSafeHandle();
         logBrush.lbColor = RGB(0, 0, 0);
-        VERIFY( m_brushBackwardDiagonal.CreateBrushIndirect(&logBrush) );
+        VERIFY(m_brushBackwardDiagonal.CreateBrushIndirect(&logBrush));
     }
 }
 
@@ -2315,10 +2315,10 @@ void CemuleApp::ResetStandByIdleTimer()
     if (IsConnected() || (uploadqueue != NULL && uploadqueue->GetUploadQueueLength() > 0)
             || (downloadqueue != NULL && downloadqueue->GetDatarate() > 0))
     {
-        EXECUTION_STATE (WINAPI *pfnSetThreadExecutionState)(EXECUTION_STATE);
+        EXECUTION_STATE(WINAPI *pfnSetThreadExecutionState)(EXECUTION_STATE);
         (FARPROC&)pfnSetThreadExecutionState = GetProcAddress(GetModuleHandle(_T("kernel32")), "SetThreadExecutionState");
         if (pfnSetThreadExecutionState)
-            VERIFY( pfnSetThreadExecutionState(ES_SYSTEM_REQUIRED) );
+            VERIFY(pfnSetThreadExecutionState(ES_SYSTEM_REQUIRED));
         else
             ASSERT(0);
     }
@@ -2338,54 +2338,54 @@ bool CemuleApp::IsVistaThemeActive() const
 
 void CemuleApp::ShowSplash()
 {
-    ASSERT( m_pSplashWnd == NULL );
+    ASSERT(m_pSplashWnd == NULL);
     if (m_pSplashWnd == NULL)
     {
 //>>> WiZaRd::New Splash [TBH]
-/*
-        m_pSplashWnd = new CSplashScreen;
+        /*
+                m_pSplashWnd = new CSplashScreen;
+                if (m_pSplashWnd != NULL)
+                {
+                    //ASSERT(m_hWnd);
+                    if (m_pSplashWnd->Create(CSplashScreen::IDD, NULL))
+                    {
+                        m_pSplashWnd->ShowWindow(SW_SHOW);
+                        m_pSplashWnd->UpdateWindow();
+                        m_dwSplashTime = ::GetCurrentTime();
+                    }
+                    else
+                    {
+                        delete m_pSplashWnd;
+                        m_pSplashWnd = NULL;
+                    }
+                }
+        */
+        m_pSplashWnd = new CSplashScreenEx();
         if (m_pSplashWnd != NULL)
         {
             //ASSERT(m_hWnd);
-            if (m_pSplashWnd->Create(CSplashScreen::IDD, NULL))
+            if (m_pSplashWnd->Create(NULL, NULL, 0, CSS_FADE | CSS_CENTERSCREEN | CSS_SHADOW))
             {
-                m_pSplashWnd->ShowWindow(SW_SHOW);
-                m_pSplashWnd->UpdateWindow();
-                m_dwSplashTime = ::GetCurrentTime();
+                m_pSplashWnd->SetTextFont(L"Impact", 14, /*CSS_TEXT_BOLD*/NULL);
+                m_pSplashWnd->SetBitmap(L"About", RGB(0, 255, 0));
+                m_pSplashWnd->SetTextColor(RGB(0, 0, 0));
+
+                // 350*300 (BxH)
+                CRect rect = CRect(5, 195, 345, 275);
+                m_pSplashWnd->SetTextRect(rect);
+                m_pSplashWnd->SetTextFormat(/*DT_SINGLELINE |*/ DT_CENTER | DT_VCENTER | DT_WORDBREAK);
+                m_pSplashWnd->Show();
+
+                SetSplashText(L"Starting " + GetClientVersionString() + L"\r\n" + L"Based upon " + GetClientVersionStringBase());
+                if (RunningWine())
+                {
+                    Sleep(500);
+                    SetSplashText(L"WINE detected!");
+                }
             }
             else
-            {
-                delete m_pSplashWnd;
-                m_pSplashWnd = NULL;
-            }
+                DestroySplash();
         }
-*/
-		m_pSplashWnd = new CSplashScreenEx();
-		if (m_pSplashWnd != NULL)
-		{
-			//ASSERT(m_hWnd);
-			if(m_pSplashWnd->Create(NULL, NULL, 0, CSS_FADE | CSS_CENTERSCREEN | CSS_SHADOW))
-			{
-				m_pSplashWnd->SetTextFont(L"Impact", 14, /*CSS_TEXT_BOLD*/NULL);
-				m_pSplashWnd->SetBitmap(L"About", RGB(0, 255, 0));
-				m_pSplashWnd->SetTextColor(RGB(0, 0, 0));
-				
-				// 350*300 (BxH)
-				CRect rect = CRect(5, 195, 345, 275);
-				m_pSplashWnd->SetTextRect(rect);
-				m_pSplashWnd->SetTextFormat(/*DT_SINGLELINE |*/ DT_CENTER | DT_VCENTER | DT_WORDBREAK);				
-				m_pSplashWnd->Show();
-
-				SetSplashText(L"Starting " + GetClientVersionString() + L"\r\n" + L"Based upon " + GetClientVersionStringBase());
-				if(RunningWine())
-				{
-					Sleep(500);
-					SetSplashText(L"WINE detected!");
-				}
-			}
-			else
-				DestroySplash();
-		}
 //<<< WiZaRd::New Splash [TBH]
     }
 }
@@ -2397,7 +2397,7 @@ void CemuleApp::DestroySplash()
 //>>> WiZaRd::New Splash [TBH]
         //m_pSplashWnd->DestroyWindow();
         //delete m_pSplashWnd;
-		m_pSplashWnd->Hide();
+        m_pSplashWnd->Hide();
 //<<< WiZaRd::New Splash [TBH]
         m_pSplashWnd = NULL;
     }
@@ -2410,8 +2410,8 @@ void CemuleApp::DestroySplash()
 //>>> WiZaRd::New Splash [TBH]
 void CemuleApp::SetSplashText(const CString& s)
 {
-	if(m_pSplashWnd)	
-		m_pSplashWnd->SetText(s);
+    if (m_pSplashWnd)
+        m_pSplashWnd->SetText(s);
 }
 //<<< WiZaRd::New Splash [TBH]
 
@@ -2426,7 +2426,7 @@ CString  CemuleApp::GetClientVersionStringBase(const bool bDebug) const
     return _T("eMule v") + (bDebug ? m_strCurVersionLongDbg : m_strCurVersionLong);
 }
 //<<< WiZaRd::Easy ModVersion
- 
+
 //>>> WiZaRd::Save CPU & Wine Compatibility
 BOOL CemuleApp::OnIdle(LONG lCount)
 {

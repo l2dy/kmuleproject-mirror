@@ -58,15 +58,15 @@ errno_t __cdecl DuplicateEnvString(TCHAR **_PBuffer, size_t *_PBufferSizeInBytes
 #define _TCSNLEN(sz,c) (min(_tcslen(sz), c))
 #define PATHLEFT(sz) (_MAX_PATH - _TCSNLEN(sz, (_MAX_PATH-1)) - 1)
 
-typedef LANGID (WINAPI* PFNGETUSERDEFAULTUILANGUAGE)();
+typedef LANGID(WINAPI* PFNGETUSERDEFAULTUILANGUAGE)();
 
 static BOOL CALLBACK _EnumResLangProc(HMODULE /*hModule*/, LPCTSTR /*pszType*/,
                                       LPCTSTR /*pszName*/, WORD langid, LONG_PTR lParam)
 {
-    if(lParam == NULL)
+    if (lParam == NULL)
         return FALSE;
 
-    LANGID* plangid = reinterpret_cast< LANGID* >( lParam );
+    LANGID* plangid = reinterpret_cast< LANGID* >(lParam);
     *plangid = langid;
 
     return TRUE;
@@ -88,7 +88,7 @@ HRESULT GetUserDefaultUILanguageLegacyCompat(LANGID* pLangid)
     PFNGETUSERDEFAULTUILANGUAGE pfnGetUserDefaultUILanguage;
     HINSTANCE hKernel32 = ::GetModuleHandle(_T("kernel32.dll"));
     pfnGetUserDefaultUILanguage = (PFNGETUSERDEFAULTUILANGUAGE)::GetProcAddress(hKernel32, "GetUserDefaultUILanguage");
-    if(pfnGetUserDefaultUILanguage != NULL)
+    if (pfnGetUserDefaultUILanguage != NULL)
     {
         *pLangid = pfnGetUserDefaultUILanguage();
         hr = S_OK;
@@ -262,7 +262,7 @@ Done:
             *phinstOut = LoadLibraryEx(szPathTemp, NULL, dwExFlags);
             hr = (*phinstOut) ? S_OK : E_FAIL;
         }
-        if ( szFullPathOut )
+        if (szFullPathOut)
         {
             _tcsncpy_s(szFullPathOut,sizeInCharacters, szPathTemp, _MAX_PATH-1);
         }
@@ -328,7 +328,7 @@ HMODULE LoadSearchPath(LPCTSTR szDllName,TCHAR *szPathOut, size_t sizeInCharacte
 
             LoadUILibrary(szPath, szDllName, LOAD_LIBRARY_AS_DATAFILE,
                           &hmod, szPathOut,sizeInCharacters, NULL);
-            if ( hmod )
+            if (hmod)
             {
                 break;
             }
@@ -356,7 +356,7 @@ HMODULE LoadSearchPath(LPCTSTR szDllName,TCHAR *szPathOut, size_t sizeInCharacte
 //			Note: The primary lang (without the sublang) is tested after the user ui lang.
 // Main Input: szDllName - the name of the resource dll <ToolName>ui.dll. Ex: vcdeployUI.dll
 // Main Output: HMODULE of resource dll or NULL - if not found (see bExeDefaultModule).
-HMODULE LoadLocResDll(LPCTSTR szDllName,BOOL bExeDefaultModule=TRUE,DWORD dwExFlags=LOAD_LIBRARY_AS_DATAFILE,LPTSTR pszPathOut = NULL,size_t sizeInCharacters = 0  )
+HMODULE LoadLocResDll(LPCTSTR szDllName,BOOL bExeDefaultModule=TRUE,DWORD dwExFlags=LOAD_LIBRARY_AS_DATAFILE,LPTSTR pszPathOut = NULL,size_t sizeInCharacters = 0)
 {
     HMODULE hmod;
     TCHAR driverpath[_MAX_PATH + 1], exepath[_MAX_PATH + 1];
@@ -365,7 +365,7 @@ HMODULE LoadLocResDll(LPCTSTR szDllName,BOOL bExeDefaultModule=TRUE,DWORD dwExFl
     GetModuleFileName(GetModuleHandle(NULL), driverpath, _MAX_PATH);
     // find path of tool
     p = driverpath + _TCSNLEN(driverpath, _MAX_PATH-1)-1;
-    while ( *p != L'\\' && p != driverpath)
+    while (*p != L'\\' && p != driverpath)
     {
         p--;
     }
@@ -374,13 +374,13 @@ HMODULE LoadLocResDll(LPCTSTR szDllName,BOOL bExeDefaultModule=TRUE,DWORD dwExFl
     LoadUILibrary(driverpath, szDllName, dwExFlags,
                   &hmod, exepath,_countof(exepath), NULL);
 
-    if ( hmod == NULL )
+    if (hmod == NULL)
     {
         // search PATH\<lcid> for <ToolName>ui.dll
         hmod = LoadSearchPath(szDllName,exepath,_countof(exepath));
     }
 
-    if ( hmod && pszPathOut )
+    if (hmod && pszPathOut)
     {
         _tcsncpy_s(pszPathOut,sizeInCharacters, exepath, _MAX_PATH-1);
     }
@@ -471,7 +471,7 @@ int main(int argc, char* argv[])
         }
         return 0;
     }
-    catch(...)
+    catch (...)
     {
         PrintError(IDS_UNEXPECTED);
         return 1;

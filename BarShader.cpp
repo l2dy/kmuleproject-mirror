@@ -81,7 +81,7 @@ void CBarShader::BuildModifiers()
 
 void CBarShader::SetWidth(int width)
 {
-    if(m_iWidth != width)
+    if (m_iWidth != width)
     {
         m_iWidth = width;
         if (m_uFileSize > (uint64)0)
@@ -97,7 +97,7 @@ void CBarShader::SetWidth(int width)
 
 void CBarShader::SetFileSize(EMFileSize fileSize)
 {
-    if(m_uFileSize != fileSize)
+    if (m_uFileSize != fileSize)
     {
         m_uFileSize = fileSize;
 
@@ -115,7 +115,7 @@ void CBarShader::SetFileSize(EMFileSize fileSize)
 
 void CBarShader::SetHeight(int height)
 {
-    if(m_iHeight != height)
+    if (m_iHeight != height)
     {
         m_iHeight = height;
 
@@ -125,10 +125,10 @@ void CBarShader::SetHeight(int height)
 
 void CBarShader::FillRange(uint64 start, uint64 end, COLORREF color)
 {
-    if(end > m_uFileSize)
+    if (end > m_uFileSize)
         end = m_uFileSize;
 
-    if(start >= end)
+    if (start >= end)
         return;
 
     // SLUGFILLER: speedBarShader
@@ -144,7 +144,7 @@ void CBarShader::FillRange(uint64 start, uint64 end, COLORREF color)
     COLORREF endcolor = m_Spans.GetValueAt(endpos);
     endpos = m_Spans.SetAt(end, endcolor);
 
-    for (POSITION pos = m_Spans.FindFirstKeyAfter(start+1); pos != NULL && pos != endpos; )
+    for (POSITION pos = m_Spans.FindFirstKeyAfter(start+1); pos != NULL && pos != endpos;)
     {
         POSITION pos1 = pos;
         m_Spans.GetNext(pos);
@@ -181,7 +181,7 @@ void CBarShader::Draw(CDC* dc, int iLeft, int iTop, bool bFlat)
     COLORREF color = m_Spans.GetValueAt(pos);
     m_Spans.GetNext(pos);
     // SLUGFILLER: speedBarShader
-    while(pos != NULL && rectSpan.right < (iLeft + m_iWidth))  	// SLUGFILLER: speedBarShader
+    while (pos != NULL && rectSpan.right < (iLeft + m_iWidth))  	// SLUGFILLER: speedBarShader
     {
         uint64 uSpan = m_Spans.GetKeyAt(pos) - start;	// SLUGFILLER: speedBarShader
         uint64 uPixels = (uint64)(uSpan * m_dPixelsPerByte + 0.5f);
@@ -206,13 +206,13 @@ void CBarShader::Draw(CDC* dc, int iLeft, int iTop, bool bFlat)
                 fRed   += GetRValue(color) * fWeight;
                 fGreen += GetGValue(color) * fWeight;
                 fBlue  += GetBValue(color) * fWeight;
-                if(m_Spans.GetKeyAt(pos) > iEnd)
+                if (m_Spans.GetKeyAt(pos) > iEnd)
                     break;
                 iLast = m_Spans.GetKeyAt(pos);
                 color = m_Spans.GetValueAt(pos);
                 m_Spans.GetNext(pos);
             }
-            while(pos != NULL);
+            while (pos != NULL);
             // SLUGFILLER: speedBarShader
             rectSpan.left = rectSpan.right;
             rectSpan.right++;
@@ -220,7 +220,7 @@ void CBarShader::Draw(CDC* dc, int iLeft, int iTop, bool bFlat)
             start += uBytesInOnePixel;
         }
         // SLUGFILLER: speedBarShader
-        while(pos != NULL && m_Spans.GetKeyAt(pos) < start)
+        while (pos != NULL && m_Spans.GetKeyAt(pos) < start)
         {
             color = m_Spans.GetValueAt(pos);
             m_Spans.GetNext(pos);
@@ -231,7 +231,7 @@ void CBarShader::Draw(CDC* dc, int iLeft, int iTop, bool bFlat)
 
 void CBarShader::FillRect(CDC *dc, LPRECT rectSpan, COLORREF color, bool bFlat)
 {
-    if(!color || bFlat)
+    if (!color || bFlat)
         dc->FillRect(rectSpan, &CBrush(color));
     else
         FillRect(dc, rectSpan, GetRValue(color), GetGValue(color), GetBValue(color), false);
@@ -240,20 +240,20 @@ void CBarShader::FillRect(CDC *dc, LPRECT rectSpan, COLORREF color, bool bFlat)
 void CBarShader::FillRect(CDC *dc, LPRECT rectSpan, float fRed, float fGreen,
                           float fBlue, bool bFlat)
 {
-    if(bFlat)
+    if (bFlat)
     {
         COLORREF color = RGB((int)(fRed + .5f), (int)(fGreen + .5f), (int)(fBlue + .5f));
         dc->FillRect(rectSpan, &CBrush(color));
     }
     else
     {
-        if (m_Modifiers == NULL || (m_used3dlevel!=thePrefs.Get3DDepth() && !m_bIsPreview) )
+        if (m_Modifiers == NULL || (m_used3dlevel!=thePrefs.Get3DDepth() && !m_bIsPreview))
             BuildModifiers();
         RECT rect = *rectSpan;
         int iTop = rect.top;
         int iBot = rect.bottom;
         int iMax = HALF(m_iHeight);
-        for(int i = 0; i < iMax; i++)
+        for (int i = 0; i < iMax; i++)
         {
             CBrush cbNew(RGB((int)(fRed * m_Modifiers[i] + .5f), (int)(fGreen * m_Modifiers[i] + .5f), (int)(fBlue * m_Modifiers[i] + .5f)));
 
@@ -273,6 +273,6 @@ void CBarShader::DrawPreview(CDC* dc, int iLeft, int iTop, UINT previewLevel)		/
     m_bIsPreview=true;
     m_used3dlevel = previewLevel;
     BuildModifiers();
-    Draw( dc, iLeft, iTop, (previewLevel==0));
+    Draw(dc, iLeft, iTop, (previewLevel==0));
     m_bIsPreview=false;
 }

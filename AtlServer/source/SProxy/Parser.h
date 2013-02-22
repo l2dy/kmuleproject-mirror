@@ -92,13 +92,13 @@
 
 class CParserBase;
 
-typedef HRESULT (CParserBase::*TAG_DISPATCH_FUNC)(
+typedef HRESULT(CParserBase::*TAG_DISPATCH_FUNC)(
     const wchar_t *wszNamespaceUri, int cchNamespaceUri,
     const wchar_t *wszLocalName, int cchLocalName,
     const wchar_t *wszQName, int cchQName,
     ISAXAttributes *pAttributes);
 
-typedef HRESULT (CParserBase::*ATTR_DISPATCH_FUNC)(
+typedef HRESULT(CParserBase::*ATTR_DISPATCH_FUNC)(
     const wchar_t *wszNamespaceUri, int cchNamespaceUri,
     const wchar_t *wszLocalName, int cchLocalName,
     const wchar_t *wszQName, int cchQName,
@@ -215,7 +215,7 @@ private:
         const wchar_t *wszNamespaceUri, int cchNamespaceUri,
         const wchar_t *wszLocalName, int cchLocalName,
         const wchar_t *wszQName, int cchQName,
-        ISAXAttributes *pAttributes) throw ();
+        ISAXAttributes *pAttributes) throw();
 
     HRESULT GetAttributes(const XMLATTR *pMap, ISAXAttributes *pAttributes);
 
@@ -280,7 +280,7 @@ public:
         const wchar_t *wszNamespaceUri, int cchNamespaceUri,
         const wchar_t *wszLocalName, int cchLocalName,
         const wchar_t *wszQName, int cchQName,
-        ISAXAttributes *pAttributes) throw ();
+        ISAXAttributes *pAttributes) throw();
 
     HRESULT GetAttributes(ISAXAttributes *pAttributes);
 
@@ -318,7 +318,7 @@ public:
         const wchar_t *wszNamespaceUri, int cchNamespaceUri,
         const wchar_t *wszLocalName, int cchLocalName,
         const wchar_t *wszQName, int cchQName,
-        ISAXAttributes *pAttributes) throw ();
+        ISAXAttributes *pAttributes) throw();
 
     virtual HRESULT OnMissingAttribute(BOOL bRequired,
                                        const wchar_t *wszName, int cchName,
@@ -479,8 +479,8 @@ CAtlPtrList<CParserBase *> g_ParserList;
 
 inline void SetLocatorInfo(CXMLElement *pElem, ISAXLocator *pLocator)
 {
-    ATLASSERT( pLocator != NULL );
-    ATLASSERT( pElem != NULL );
+    ATLASSERT(pLocator != NULL);
+    ATLASSERT(pElem != NULL);
 
     int nLine = 0;
     int nCol = 0;
@@ -495,9 +495,9 @@ inline void SetLocatorInfo(CXMLElement *pElem, ISAXLocator *pLocator)
 
 ATL_NOINLINE inline void SetXMLElementInfo(CXMLElement *pElem, CXMLElement *pParent, ISAXLocator *pLocator)
 {
-    ATLASSERT( pElem != NULL );
-    ATLASSERT( pParent != NULL );
-    ATLASSERT( pLocator != NULL );
+    ATLASSERT(pElem != NULL);
+    ATLASSERT(pParent != NULL);
+    ATLASSERT(pLocator != NULL);
 
     pElem->SetParentElement(pParent);
     pElem->SetParentDocument(pParent->GetParentDocument());
@@ -506,9 +506,9 @@ ATL_NOINLINE inline void SetXMLElementInfo(CXMLElement *pElem, CXMLElement *pPar
 
 ATL_NOINLINE inline void SetXSDElementInfo(CXSDElement *pElem, CXSDElement *pParent, ISAXLocator *pLocator)
 {
-    ATLASSERT( pElem != NULL );
-    ATLASSERT( pParent != NULL );
-    ATLASSERT( pLocator != NULL );
+    ATLASSERT(pElem != NULL);
+    ATLASSERT(pParent != NULL);
+    ATLASSERT(pLocator != NULL);
 
     pElem->SetParentSchema(pParent->GetParentSchema());
     pElem->SetParentElement(pParent);

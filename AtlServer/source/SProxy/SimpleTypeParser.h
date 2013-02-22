@@ -42,9 +42,9 @@ public:
         int nCol;
         GetLocator()->getLineNumber(&nLine);
         GetLocator()->getColumnNumber(&nCol);
-        ATLTRACE( _T("%sUnsupported tag@(%d, %d) : %.*ws -- skipping element\n"), GetTabs(GetLevel()),
-                  nLine, nCol,
-                  cchQName, wszQName );
+        ATLTRACE(_T("%sUnsupported tag@(%d, %d) : %.*ws -- skipping element\n"), GetTabs(GetLevel()),
+                 nLine, nCol,
+                 cchQName, wszQName);
 #endif
     }
 

@@ -19,26 +19,26 @@
 #define MINMAX(val, mini, maxi)		{val = (min(max(mini, val), maxi));}
 
 //>>> WiZaRd::Ratio Indicator
-static const CString strRatioSmilies[] = 
+static const CString strRatioSmilies[] =
 {
-	L"SMILEY_CRY",
-	L"SMILEY_SAD",
-	L"SMILEY_LOOKSIDE",
-	L"SMILEY_DISGUST",
-	L"SMILEY_SKEPTIC",
-	L"SMILEY_SMILE",
-	L"SMILEY_WINK",
-	L"SMILEY_HAPPY",
-	L"SMILEY_LAUGH",
+    L"SMILEY_CRY",
+    L"SMILEY_SAD",
+    L"SMILEY_LOOKSIDE",
+    L"SMILEY_DISGUST",
+    L"SMILEY_SKEPTIC",
+    L"SMILEY_SMILE",
+    L"SMILEY_WINK",
+    L"SMILEY_HAPPY",
+    L"SMILEY_LAUGH",
 };
 //<<< WiZaRd::Ratio Indicator
 
 //>>> PreviewIndicator [WiZaRd]
 enum ePreviewIndicatorMode
 {
-	ePIM_Disabled = 0,
-	ePIM_Icon,
-	ePIM_Color
+    ePIM_Disabled = 0,
+    ePIM_Icon,
+    ePIM_Color
 };
 //<<< PreviewIndicator [WiZaRd]
 

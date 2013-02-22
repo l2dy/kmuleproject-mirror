@@ -127,14 +127,14 @@ uint64 CClientCredits::GetDownloadedTotal() const
 float CClientCredits::GetScoreRatio(UINT dwForIP) /*const*/ //>>> WiZaRd::CPU calm down
 {
     // check the client ident status
-    if ( ( GetCurrentIdentState(dwForIP) == IS_IDFAILED || GetCurrentIdentState(dwForIP) == IS_IDBADGUY || GetCurrentIdentState(dwForIP) == IS_IDNEEDED) && theApp.clientcredits->CryptoAvailable() )
+    if ((GetCurrentIdentState(dwForIP) == IS_IDFAILED || GetCurrentIdentState(dwForIP) == IS_IDBADGUY || GetCurrentIdentState(dwForIP) == IS_IDNEEDED) && theApp.clientcredits->CryptoAvailable())
     {
         // bad guy - no credits for you
         return 1.0F;
     }
 
 //>>> WiZaRd::CPU calm down
-    if(!m_bForceCheckScoreRatio)
+    if (!m_bForceCheckScoreRatio)
         return m_fSavedScoreRatio;
     m_bForceCheckScoreRatio = false;
 //<<< WiZaRd::CPU calm down
@@ -287,7 +287,7 @@ void CClientCreditsList::LoadList()
         else
             AddLogLine(false, GetResString(IDS_CREDITFILELOADED), count);
     }
-    catch(CFileException* error)
+    catch (CFileException* error)
     {
         if (error->m_cause == CFileException::endOfFile)
             LogError(LOG_STATUSBAR, GetResString(IDS_CREDITFILECORRUPT));
@@ -349,7 +349,7 @@ void CClientCreditsList::SaveList()
             file.Flush();
         file.Close();
     }
-    catch(CFileException* error)
+    catch (CFileException* error)
     {
         CString strError(GetResString(IDS_ERR_FAILED_CREDITSAVE));
         TCHAR szError[MAX_CFEXP_ERRORMSG];
@@ -386,7 +386,7 @@ void CClientCreditsList::Process()
 
 void CClientCredits::InitalizeIdent()
 {
-    if (m_pCredits->nKeySize == 0 )
+    if (m_pCredits->nKeySize == 0)
     {
         memset(m_abyPublicKey,0,80); // for debugging
         m_nPublicKeyLen = 0;
@@ -427,7 +427,7 @@ void CClientCredits::Verified(UINT dwForIP)
 
 bool CClientCredits::SetSecureIdent(const uchar* pachIdent, uint8 nIdentLen)  // verified Public key cannot change, use only if there is not public key yet
 {
-    if (MAXPUBKEYSIZE < nIdentLen || m_pCredits->nKeySize != 0 )
+    if (MAXPUBKEYSIZE < nIdentLen || m_pCredits->nKeySize != 0)
         return false;
     memcpy(m_abyPublicKey,pachIdent, nIdentLen);
     m_nPublicKeyLen = nIdentLen;
@@ -486,14 +486,14 @@ void CClientCreditsList::InitalizeCrypting()
         m_nMyPublicKeyLen = (uint8)asink.TotalPutLength();
         asink.MessageEnd();
     }
-    catch(...)
+    catch (...)
     {
         delete m_pSignkey;
         m_pSignkey = NULL;
         LogError(LOG_STATUSBAR, GetResString(IDS_CRYPT_INITFAILED));
         ASSERT(0);
     }
-    ASSERT( Debug_CheckCrypting() );
+    ASSERT(Debug_CheckCrypting());
 }
 
 bool CClientCreditsList::CreateKeyPair()
@@ -511,11 +511,11 @@ bool CClientCreditsList::CreateKeyPair()
         if (thePrefs.GetLogSecureIdent())
             AddDebugLogLine(false, _T("Created new RSA keypair"));
     }
-    catch(...)
+    catch (...)
     {
         if (thePrefs.GetVerbose())
             AddDebugLogLine(false, _T("Failed to create new RSA keypair"));
-        ASSERT ( false );
+        ASSERT(false);
         return false;
     }
     return true;
@@ -530,10 +530,10 @@ uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, uchar* pachOu
         sigkey = m_pSignkey;
 
     // create a signature of the public key from pTarget
-    ASSERT( pTarget );
-    ASSERT( pachOutput );
+    ASSERT(pTarget);
+    ASSERT(pachOutput);
     uint8 nResult;
-    if ( !CryptoAvailable() )
+    if (!CryptoAvailable())
         return 0;
     try
     {
@@ -545,10 +545,10 @@ uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, uchar* pachOu
         memcpy(abyBuffer,pTarget->GetSecureIdent(),keylen);
         // 4 additional bytes random data send from this client
         UINT challenge = pTarget->m_dwCryptRndChallengeFrom;
-        ASSERT ( challenge != 0 );
+        ASSERT(challenge != 0);
         PokeUInt32(abyBuffer+keylen, challenge);
         uint16 ChIpLen = 0;
-        if ( byChaIPKind != 0)
+        if (byChaIPKind != 0)
         {
             ChIpLen = 5;
             PokeUInt32(abyBuffer+keylen+4, ChallengeIP);
@@ -559,9 +559,9 @@ uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, uchar* pachOu
         asink.Put(sbbSignature.begin(), sbbSignature.size());
         nResult = (uint8)asink.TotalPutLength();
     }
-    catch(...)
+    catch (...)
     {
-        ASSERT ( false );
+        ASSERT(false);
         nResult = 0;
     }
     return nResult;
@@ -570,9 +570,9 @@ uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, uchar* pachOu
 bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uchar* pachSignature, uint8 nInputSize,
                                      UINT dwForIP, uint8 byChaIPKind)
 {
-    ASSERT( pTarget );
-    ASSERT( pachSignature );
-    if ( !CryptoAvailable() )
+    ASSERT(pTarget);
+    ASSERT(pachSignature);
+    if (!CryptoAvailable())
     {
         pTarget->IdentState = IS_NOTAVAILABLE;
         return false;
@@ -586,7 +586,7 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uchar* pachS
         byte abyBuffer[MAXPUBKEYSIZE+9];
         memcpy(abyBuffer,m_abyMyPublicKey,m_nMyPublicKeyLen);
         UINT challenge = pTarget->m_dwCryptRndChallengeFor;
-        ASSERT ( challenge != 0 );
+        ASSERT(challenge != 0);
         PokeUInt32(abyBuffer+m_nMyPublicKeyLen, challenge);
 
         // v2 security improvments (not supported by 29b, not used as default by 29c)
@@ -619,7 +619,7 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uchar* pachS
 
         bResult = pubkey.VerifyMessage(abyBuffer, m_nMyPublicKeyLen+4+nChIpSize, pachSignature, nInputSize);
     }
-    catch(...)
+    catch (...)
     {
         if (thePrefs.GetVerbose())
             AddDebugLogLine(false, _T("Error: Unknown exception in %hs"), __FUNCTION__);
@@ -640,7 +640,7 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uchar* pachS
 
 bool CClientCreditsList::CryptoAvailable()
 {
-    return (m_nMyPublicKeyLen > 0 && m_pSignkey != 0 );
+    return (m_nMyPublicKeyLen > 0 && m_pSignkey != 0);
 }
 
 

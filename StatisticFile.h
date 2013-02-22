@@ -30,7 +30,7 @@ public:
         alltimeaccepted = 0;
     }
 
-    void	MergeFileStats( CStatisticFile* toMerge );
+    void	MergeFileStats(CStatisticFile* toMerge);
     void	AddRequest();
     void	AddAccepted();
     void	AddTransferred(uint64 bytes);

@@ -97,7 +97,7 @@ BOOL CFileDetailDialogName::OnInitDialog()
     m_listFileNames.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_INFOTIP);
     m_listFileNames.InsertColumn(0, GetResString(IDS_DL_FILENAME), LVCFMT_LEFT, /*DFLT_FILENAME_COL_WIDTH*/450);
     m_listFileNames.InsertColumn(1, GetResString(IDS_DL_SOURCES),  LVCFMT_LEFT,  60);
-    ASSERT( (m_listFileNames.GetStyle() & LVS_SHAREIMAGELISTS) != 0 );
+    ASSERT((m_listFileNames.GetStyle() & LVS_SHAREIMAGELISTS) != 0);
     m_listFileNames.LoadSettings();
 
     m_listFileNames.SetSortArrow();
@@ -106,7 +106,7 @@ BOOL CFileDetailDialogName::OnInitDialog()
     Localize();
 
     // start time for calling 'RefreshData'
-    VERIFY( (m_timer = SetTimer(301, 5000, 0)) != NULL );
+    VERIFY((m_timer = SetTimer(301, 5000, 0)) != NULL);
 
     return TRUE;
 }
@@ -184,7 +184,7 @@ void CFileDetailDialogName::FillSourcenameList()
 
     // update
     const CPartFile* file = STATIC_DOWNCAST(CPartFile, (*m_paFiles)[0]);
-    for (POSITION pos = file->srclist.GetHeadPosition(); pos != NULL; )
+    for (POSITION pos = file->srclist.GetHeadPosition(); pos != NULL;)
     {
         CUpDownClient* cur_src = file->srclist.GetNext(pos);
         if (cur_src->GetRequestFile() != file || cur_src->GetClientFilename().GetLength()==0)
@@ -201,7 +201,7 @@ void CFileDetailDialogName::FillSourcenameList()
             if (theApp.GetSystemImageList() && !m_bAppliedSystemImageList)
             {
                 m_listFileNames.ApplyImageList(theApp.GetSystemImageList());
-                ASSERT( (m_listFileNames.GetStyle() & LVS_SHAREIMAGELISTS) != 0 );
+                ASSERT((m_listFileNames.GetStyle() & LVS_SHAREIMAGELISTS) != 0);
                 m_bAppliedSystemImageList = true;
             }
 
@@ -213,7 +213,7 @@ void CFileDetailDialogName::FillSourcenameList()
             FCtrlItem_Struct* item= (FCtrlItem_Struct*)m_listFileNames.GetItemData(itempos);
             item->count+=1;
             strText.Format(_T("%i"),item->count);
-            m_listFileNames.SetItemText(itempos, 1,strText );
+            m_listFileNames.SetItemText(itempos, 1,strText);
         }
     }
 
@@ -324,12 +324,12 @@ void CFileDetailDialogName::OnNmRClickList(NMHDR* /*pNMHDR*/, LRESULT* pResult)
     popupMenu.AppendMenu(MF_STRING,MP_RESTORE, GetResString(IDS_SV_UPDATE));
     popupMenu.SetDefaultItem(MP_MESSAGE);
     popupMenu.TrackPopupMenu(TPM_LEFTALIGN |TPM_RIGHTBUTTON, point.x, point.y, this);
-    VERIFY( popupMenu.DestroyMenu() );
+    VERIFY(popupMenu.DestroyMenu());
 
     *pResult = 0;
 }
 
-BOOL CFileDetailDialogName::OnCommand(WPARAM wParam,LPARAM lParam )
+BOOL CFileDetailDialogName::OnCommand(WPARAM wParam,LPARAM lParam)
 {
     int iSel = m_listFileNames.GetNextItem(-1, LVIS_SELECTED | LVIS_FOCUSED);
     if (iSel != -1)

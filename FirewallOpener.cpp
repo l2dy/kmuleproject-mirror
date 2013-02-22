@@ -46,11 +46,11 @@ bool CFirewallOpener::Init(bool bPreInit)
 {
     if (!m_bInited)
     {
-        ASSERT ( m_liAddedRules.IsEmpty() );
+        ASSERT(m_liAddedRules.IsEmpty());
         if (thePrefs.GetWindowsVersion() != _WINVER_XP_ || !SUCCEEDED(CoInitialize(NULL)))
             return false;
-        HRESULT hr = CoInitializeSecurity (NULL, -1, NULL, NULL, RPC_C_AUTHN_LEVEL_PKT, RPC_C_IMP_LEVEL_IMPERSONATE, NULL, EOAC_NONE, NULL);
-        if (!SUCCEEDED(hr) || !SUCCEEDED(::CoCreateInstance (__uuidof(NetSharingManager), NULL, CLSCTX_ALL, __uuidof(INetSharingManager), (void**)&m_pINetSM)) )
+        HRESULT hr = CoInitializeSecurity(NULL, -1, NULL, NULL, RPC_C_AUTHN_LEVEL_PKT, RPC_C_IMP_LEVEL_IMPERSONATE, NULL, EOAC_NONE, NULL);
+        if (!SUCCEEDED(hr) || !SUCCEEDED(::CoCreateInstance(__uuidof(NetSharingManager), NULL, CLSCTX_ALL, __uuidof(INetSharingManager), (void**)&m_pINetSM)))
         {
             CoUninitialize();
             return false;
@@ -67,7 +67,7 @@ bool CFirewallOpener::Init(bool bPreInit)
 
     if (m_pINetSM == NULL)
     {
-        if (!SUCCEEDED(::CoCreateInstance (__uuidof(NetSharingManager), NULL, CLSCTX_ALL, __uuidof(INetSharingManager), (void**)&m_pINetSM)) )
+        if (!SUCCEEDED(::CoCreateInstance(__uuidof(NetSharingManager), NULL, CLSCTX_ALL, __uuidof(INetSharingManager), (void**)&m_pINetSM)))
         {
             UnInit();
             return false;
@@ -95,13 +95,13 @@ void CFirewallOpener::UnInit()
         m_pINetSM = NULL;
     }
     else
-        ASSERT ( false );
+        ASSERT(false);
     CoUninitialize();
 }
 
 bool CFirewallOpener::DoAction(const EFOCAction eAction, const CICSRuleInfo& riPortRule)
 {
-    if ( !Init() )
+    if (!Init())
         return false;
     //TODO lets see if we can find a reliable method to find out the internet standard connection set by the user
 
@@ -124,25 +124,25 @@ bool CFirewallOpener::DoAction(const EFOCAction eAction, const CICSRuleInfo& riP
                 && SUCCEEDED(V_UNKNOWN(&var)->QueryInterface(__uuidof(INetConnection),(void**)&NCP)))
         {
             INetConnectionPropsPtr pNCP;
-            if ( !SUCCEEDED(m_pINetSM->get_NetConnectionProps (NCP, &pNCP)) )
+            if (!SUCCEEDED(m_pINetSM->get_NetConnectionProps(NCP, &pNCP)))
                 continue;
             DWORD dwCharacteristics = 0;
             pNCP->get_Characteristics(&dwCharacteristics);
             if (dwCharacteristics & (NCCF_FIREWALLED))
             {
                 NETCON_MEDIATYPE MediaType = NCM_NONE;
-                pNCP->get_MediaType (&MediaType);
-                if ((MediaType != NCM_SHAREDACCESSHOST_LAN) && (MediaType != NCM_SHAREDACCESSHOST_RAS) )
+                pNCP->get_MediaType(&MediaType);
+                if ((MediaType != NCM_SHAREDACCESSHOST_LAN) && (MediaType != NCM_SHAREDACCESSHOST_RAS))
                 {
                     INetSharingConfigurationPtr pNSC;
-                    if ( !SUCCEEDED(m_pINetSM->get_INetSharingConfigurationForINetConnection (NCP, &pNSC)) )
+                    if (!SUCCEEDED(m_pINetSM->get_INetSharingConfigurationForINetConnection(NCP, &pNSC)))
                         continue;
                     VARIANT_BOOL varbool = VARIANT_FALSE;
                     pNSC->get_InternetFirewallEnabled(&varbool);
                     if (varbool == VARIANT_FALSE)
                         continue;
                     bFoundAtLeastOneConn = true;
-                    switch(eAction)
+                    switch (eAction)
                     {
                     case FOC_ADDRULE:
                     {
@@ -179,7 +179,7 @@ bool CFirewallOpener::DoAction(const EFOCAction eAction, const CICSRuleInfo& riP
                             bSuccess = false;
                         break;
                     default:
-                        ASSERT ( false );
+                        ASSERT(false);
                     }
                 }
             }
@@ -202,7 +202,7 @@ bool CFirewallOpener::AddRule(const CICSRuleInfo& riPortRule, const INetSharingC
                                       &pNSPM);
     CComBSTR bstrName;
     pNCP->get_Name(&bstrName);
-    if ( SUCCEEDED(hr) && SUCCEEDED(pNSPM->Enable()))
+    if (SUCCEEDED(hr) && SUCCEEDED(pNSPM->Enable()))
     {
         theApp.QueueDebugLogLine(false, _T("Succeeded to add Rule '%s' for Port '%u' on Connection '%s'"),riPortRule.m_strRuleName, riPortRule.m_nPortNumber, CString(bstrName));
         return true;
@@ -217,7 +217,7 @@ bool CFirewallOpener::AddRule(const CICSRuleInfo& riPortRule, const INetSharingC
 bool CFirewallOpener::FindRule(const EFOCAction eAction, const CICSRuleInfo& riPortRule, const INetSharingConfigurationPtr pNSC, INetSharingPortMappingPropsPtr* outNSPMP)
 {
     INetSharingPortMappingCollectionPtr pNSPMC;
-    RETURN_ON_FAIL(pNSC->get_EnumPortMappings (ICSSC_DEFAULT, &pNSPMC));
+    RETURN_ON_FAIL(pNSC->get_EnumPortMappings(ICSSC_DEFAULT, &pNSPMC));
 
     INetSharingPortMappingPtr pNSPM;
     IEnumVARIANTPtr varEnum;
@@ -230,15 +230,15 @@ bool CFirewallOpener::FindRule(const EFOCAction eAction, const CICSRuleInfo& riP
         INetSharingPortMappingPropsPtr pNSPMP;
         if (V_VT(&var) == VT_DISPATCH
                 && SUCCEEDED(V_DISPATCH(&var)->QueryInterface(__uuidof(INetSharingPortMapping),(void**)&pNSPM))
-                && SUCCEEDED(pNSPM->get_Properties (&pNSPMP)))
+                && SUCCEEDED(pNSPM->get_Properties(&pNSPMP)))
         {
             UCHAR ucProt = 0;
             long uExternal = 0;
             CComBSTR bstrName;
-            pNSPMP->get_IPProtocol (&ucProt);
-            pNSPMP->get_ExternalPort (&uExternal);
+            pNSPMP->get_IPProtocol(&ucProt);
+            pNSPMP->get_ExternalPort(&uExternal);
             pNSPMP->get_Name(&bstrName);
-            switch(eAction)
+            switch (eAction)
             {
             case FOC_FINDRULEBYPORT:
                 if (riPortRule.m_nPortNumber == uExternal && riPortRule.m_byProtocol == ucProt)
@@ -278,7 +278,7 @@ bool CFirewallOpener::FindRule(const EFOCAction eAction, const CICSRuleInfo& riP
         var.Clear();
     }
 
-    switch(eAction)
+    switch (eAction)
     {
     case FOC_DELETERULEBYNAME:
     case FOC_DELETERULEEXCACT:
@@ -292,7 +292,7 @@ bool CFirewallOpener::FindRule(const EFOCAction eAction, const CICSRuleInfo& riP
 
 bool CFirewallOpener::RemoveRule(const CString strName)
 {
-    return DoAction(FOC_DELETERULEBYNAME, CICSRuleInfo(0, 0, strName) );
+    return DoAction(FOC_DELETERULEBYNAME, CICSRuleInfo(0, 0, strName));
 }
 
 bool CFirewallOpener::RemoveRule(const CICSRuleInfo& riPortRule)
@@ -302,12 +302,12 @@ bool CFirewallOpener::RemoveRule(const CICSRuleInfo& riPortRule)
 
 bool CFirewallOpener::DoesRuleExist(const CString strName)
 {
-    return DoAction(FOC_FINDRULEBYNAME, CICSRuleInfo(0, 0, strName) );
+    return DoAction(FOC_FINDRULEBYNAME, CICSRuleInfo(0, 0, strName));
 }
 
 bool CFirewallOpener::DoesRuleExist(const uint16 nPortNumber,const uint8 byProtocol)
 {
-    return DoAction(FOC_FINDRULEBYPORT, CICSRuleInfo(nPortNumber, byProtocol, _T("")) );
+    return DoAction(FOC_FINDRULEBYPORT, CICSRuleInfo(nPortNumber, byProtocol, _T("")));
 }
 
 bool CFirewallOpener::OpenPort(const uint16 nPortNumber,const uint8 byProtocol,const CString strRuleName, const bool bRemoveOnExit)

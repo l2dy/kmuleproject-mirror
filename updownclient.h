@@ -117,7 +117,7 @@ public:
     {
         return m_dwUserIP;
     }
-    void			SetIP( UINT val ) //Only use this when you know the real IP or when your clearing it.
+    void			SetIP(UINT val)   //Only use this when you know the real IP or when your clearing it.
     {
         m_dwUserIP = val;
         m_nConnectIP = val;
@@ -178,7 +178,7 @@ public:
     {
         return m_bBuddyIDValid;
     }
-    void			SetBuddyIP( UINT val )
+    void			SetBuddyIP(UINT val)
     {
         m_nBuddyIP = val;
     }
@@ -186,7 +186,7 @@ public:
     {
         return m_nBuddyIP;
     }
-    void			SetBuddyPort( uint16 val )
+    void			SetBuddyPort(uint16 val)
     {
         m_nBuddyPort = val;
     }
@@ -661,7 +661,7 @@ public:
     UINT			GetDownTimeDifference(boolean clear = true)
     {
         UINT myTime = m_dwDownStartTime;
-        if(clear) m_dwDownStartTime = 0;
+        if (clear) m_dwDownStartTime = 0;
         return ::GetTickCount() - myTime;
     }
     bool			GetTransferredDownMini() const
@@ -866,7 +866,7 @@ public:
     uint16			m_lastPartAsked;
 //>>> WiZaRd::Fix for LowID slots only on connection [VQB]
 //    bool			m_bAddNextConnect;
-	DWORD			m_dwWouldHaveGottenUploadSlotIfNotLowIdTick;
+    DWORD			m_dwWouldHaveGottenUploadSlotIfNotLowIdTick;
 //<<< WiZaRd::Fix for LowID slots only on connection [VQB]
 
     void			SetSlotNumber(UINT newValue)
@@ -1195,27 +1195,27 @@ private:
 //<<< WiZaRd::Detect UDP problem clients
 //>>> WiZaRd::ZZUL Upload [ZZ]
 public:
-	UINT		GetSessionPayloadUp() const;
-	UINT		GetQueueSessionUp() const;
-	void		ResetQueueSessionUp();
-	void        AddToAddedPayloadQueueSession(const UINT toAdd);
-	uint64      GetCurrentSessionLimit() const;
-	void		ScheduleRemovalFromUploadQueue(LPCTSTR pszDebugReason, CString strDisplayReason, bool keepWaitingTimeIntact = false);
-	void		UnscheduleForRemoval();
-	bool		IsScheduledForRemoval() const;
-	bool		GetScheduledUploadShouldKeepWaitingTime() const;
-	LPCTSTR		GetScheduledRemovalDebugReason() const;
-	CString     GetScheduledRemovalDisplayReason() const;
-	bool		GetScheduledRemovalLimboComplete() const;
+    UINT		GetSessionPayloadUp() const;
+    UINT		GetQueueSessionUp() const;
+    void		ResetQueueSessionUp();
+    void        AddToAddedPayloadQueueSession(const UINT toAdd);
+    uint64      GetCurrentSessionLimit() const;
+    void		ScheduleRemovalFromUploadQueue(LPCTSTR pszDebugReason, CString strDisplayReason, bool keepWaitingTimeIntact = false);
+    void		UnscheduleForRemoval();
+    bool		IsScheduledForRemoval() const;
+    bool		GetScheduledUploadShouldKeepWaitingTime() const;
+    LPCTSTR		GetScheduledRemovalDebugReason() const;
+    CString     GetScheduledRemovalDisplayReason() const;
+    bool		GetScheduledRemovalLimboComplete() const;
 private:
-	UINT		m_nCurSessionPayloadUp;
-	UINT        m_nCurQueueSessionUp;
-	UINT        m_curSessionAmountNumber;
-	LPCTSTR		m_pszScheduledForRemovalDebugReason;
-	CString		m_strScheduledForRemovalDisplayReason;
-	bool		m_bScheduledForRemoval;
-	bool		m_bScheduledForRemovalWillKeepWaitingTimeIntact;
-	DWORD		m_bScheduledForRemovalAtTick;
+    UINT		m_nCurSessionPayloadUp;
+    UINT        m_nCurQueueSessionUp;
+    UINT        m_curSessionAmountNumber;
+    LPCTSTR		m_pszScheduledForRemovalDebugReason;
+    CString		m_strScheduledForRemovalDisplayReason;
+    bool		m_bScheduledForRemoval;
+    bool		m_bScheduledForRemovalWillKeepWaitingTimeIntact;
+    DWORD		m_bScheduledForRemovalAtTick;
 //<<< WiZaRd::ZZUL Upload [ZZ]
 };
 //#pragma pack()

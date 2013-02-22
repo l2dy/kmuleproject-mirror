@@ -22,32 +22,32 @@
 #include "Log.h"
 
 bool ExtractSevenZipArchive(const CString& strArchiveName, const CString& strDestination)
-{	
-	CString msg = L"";
-	try
-	{
-		SevenZip::SevenZipLibrary lib;
-		lib.Load();
+{
+    CString msg = L"";
+    try
+    {
+        SevenZip::SevenZipLibrary lib;
+        lib.Load();
 
-		const TCHAR* archiveName = strArchiveName;
-		const TCHAR* destination = strDestination;
-		SevenZip::SevenZipExtractor extractor(lib, archiveName);
-		extractor.ExtractArchive(destination);
-		return true;
-	}
-	catch(SevenZip::SevenZipException& ex)
-	{		
-		msg.Format(L"Failed to extract archive \"%s\" to \"%s\" - %s", strArchiveName, strDestination, ex.GetMessage());
-	}
-	catch(...)
-	{
-		msg.Format(L"Failed to extract archive \"%s\" to \"%s\" - unknown error", strArchiveName, strDestination);
-	}
+        const TCHAR* archiveName = strArchiveName;
+        const TCHAR* destination = strDestination;
+        SevenZip::SevenZipExtractor extractor(lib, archiveName);
+        extractor.ExtractArchive(destination);
+        return true;
+    }
+    catch (SevenZip::SevenZipException& ex)
+    {
+        msg.Format(L"Failed to extract archive \"%s\" to \"%s\" - %s", strArchiveName, strDestination, ex.GetMessage());
+    }
+    catch (...)
+    {
+        msg.Format(L"Failed to extract archive \"%s\" to \"%s\" - unknown error", strArchiveName, strDestination);
+    }
 
-	theApp.QueueLogLineEx(LOG_ERROR, msg);
-	if(theApp.emuledlg)
-		theApp.emuledlg->ShowNotifier(msg, TBN_IMPORTANTEVENT);
+    theApp.QueueLogLineEx(LOG_ERROR, msg);
+    if (theApp.emuledlg)
+        theApp.emuledlg->ShowNotifier(msg, TBN_IMPORTANTEVENT);
 
-	return false;
+    return false;
 
 }

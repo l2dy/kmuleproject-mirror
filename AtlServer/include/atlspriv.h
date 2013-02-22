@@ -149,14 +149,14 @@ inline BOOL AtlMimeMakeRecipientsString(_In_ LPCSTR szNames, _Out_z_cap_post_cou
             // Extract the address from within the <>
             while (*szNames && *szNames != '>')
             {
-                if( dwLen >= *pdwLen )
+                if (dwLen >= *pdwLen)
                 {
                     return FALSE;
                 }
                 *szRecipients++ = *szNames++;
                 dwLen++;
             }
-            if( dwLen >= *pdwLen )
+            if (dwLen >= *pdwLen)
             {
                 return FALSE;
             }
@@ -267,10 +267,10 @@ inline BOOL AtlMimeConvertStringW(
     _Out_z_cap_post_count_(*pnLen, *pnLen) LPSTR *ppszOut,
     _Inout_ UINT *pnLen) throw()
 {
-    ATLENSURE_RETURN_VAL( pMultiLanguage != NULL, FALSE );
-    ATLENSURE_RETURN_VAL( wszIn != NULL, FALSE );
-    ATLENSURE_RETURN_VAL( ppszOut != NULL, FALSE );
-    ATLENSURE_RETURN_VAL( pnLen != NULL, FALSE );
+    ATLENSURE_RETURN_VAL(pMultiLanguage != NULL, FALSE);
+    ATLENSURE_RETURN_VAL(wszIn != NULL, FALSE);
+    ATLENSURE_RETURN_VAL(ppszOut != NULL, FALSE);
+    ATLENSURE_RETURN_VAL(pnLen != NULL, FALSE);
 
     *ppszOut = NULL;
     *pnLen = 0;
@@ -360,7 +360,7 @@ public:
         return E_NOTIMPL;
     }
 
-    STDMETHOD(SetSize)(ULARGE_INTEGER ) throw()
+    STDMETHOD(SetSize)(ULARGE_INTEGER) throw()
     {
         return E_NOTIMPL;
     }
@@ -371,28 +371,28 @@ public:
         return E_NOTIMPL;
     }
 
-    STDMETHOD(Commit)(DWORD ) throw()
+    STDMETHOD(Commit)(DWORD) throw()
     {
         return E_NOTIMPL;
     }
 
-    STDMETHOD(Revert)( void) throw()
+    STDMETHOD(Revert)(void) throw()
     {
         return E_NOTIMPL;
     }
 
-    STDMETHOD(LockRegion)(ULARGE_INTEGER , ULARGE_INTEGER , DWORD ) throw()
+    STDMETHOD(LockRegion)(ULARGE_INTEGER , ULARGE_INTEGER , DWORD) throw()
     {
         return E_NOTIMPL;
     }
 
     STDMETHOD(UnlockRegion)(ULARGE_INTEGER , ULARGE_INTEGER ,
-                            DWORD ) throw()
+                            DWORD) throw()
     {
         return E_NOTIMPL;
     }
 
-    STDMETHOD(Stat)(STATSTG *, DWORD ) throw()
+    STDMETHOD(Stat)(STATSTG *, DWORD) throw()
     {
         return E_NOTIMPL;
     }
@@ -416,12 +416,12 @@ public:
         return E_NOINTERFACE;
     }
 
-    ULONG STDMETHODCALLTYPE AddRef( void) throw()
+    ULONG STDMETHODCALLTYPE AddRef(void) throw()
     {
         return (ULONG)1;
     }
 
-    ULONG STDMETHODCALLTYPE Release( void) throw()
+    ULONG STDMETHODCALLTYPE Release(void) throw()
     {
         return (ULONG)1;
     }
@@ -461,7 +461,7 @@ public:
         return S_OK;
     }
 
-    STDMETHOD(Write)(const void* , ULONG , ULONG* ) throw()
+    STDMETHOD(Write)(const void* , ULONG , ULONG*) throw()
     {
         return E_UNEXPECTED;
     }
@@ -471,7 +471,7 @@ public:
         return E_NOTIMPL;
     }
 
-    STDMETHOD(SetSize)(ULARGE_INTEGER ) throw()
+    STDMETHOD(SetSize)(ULARGE_INTEGER) throw()
     {
         return E_NOTIMPL;
     }
@@ -482,28 +482,28 @@ public:
         return E_NOTIMPL;
     }
 
-    STDMETHOD(Commit)(DWORD ) throw()
+    STDMETHOD(Commit)(DWORD) throw()
     {
         return E_NOTIMPL;
     }
 
-    STDMETHOD(Revert)( void) throw()
+    STDMETHOD(Revert)(void) throw()
     {
         return E_NOTIMPL;
     }
 
-    STDMETHOD(LockRegion)(ULARGE_INTEGER , ULARGE_INTEGER , DWORD ) throw()
+    STDMETHOD(LockRegion)(ULARGE_INTEGER , ULARGE_INTEGER , DWORD) throw()
     {
         return E_NOTIMPL;
     }
 
     STDMETHOD(UnlockRegion)(ULARGE_INTEGER , ULARGE_INTEGER ,
-                            DWORD ) throw()
+                            DWORD) throw()
     {
         return E_NOTIMPL;
     }
 
-    STDMETHOD(Stat)(STATSTG *, DWORD ) throw()
+    STDMETHOD(Stat)(STATSTG *, DWORD) throw()
     {
         return E_NOTIMPL;
     }
@@ -527,12 +527,12 @@ public:
         return E_NOINTERFACE;
     }
 
-    ULONG STDMETHODCALLTYPE AddRef( void)  throw()
+    ULONG STDMETHODCALLTYPE AddRef(void)  throw()
     {
         return (ULONG)1;
     }
 
-    ULONG STDMETHODCALLTYPE Release( void)  throw()
+    ULONG STDMETHODCALLTYPE Release(void)  throw()
     {
         return (ULONG)1;
     }
@@ -609,7 +609,7 @@ public:
         if (!pv)
             return E_INVALIDARG;
 
-        if  (cb == 0)
+        if (cb == 0)
             return S_OK;
 
         if (pcbRead)
@@ -669,7 +669,7 @@ public:
         return E_NOTIMPL;
     }
 
-    STDMETHOD(SetSize)(ULARGE_INTEGER ) throw()
+    STDMETHOD(SetSize)(ULARGE_INTEGER) throw()
     {
         return E_NOTIMPL;
     }
@@ -680,28 +680,28 @@ public:
         return E_NOTIMPL;
     }
 
-    STDMETHOD(Commit)(DWORD ) throw()
+    STDMETHOD(Commit)(DWORD) throw()
     {
         return E_NOTIMPL;
     }
 
-    STDMETHOD(Revert)( void) throw()
+    STDMETHOD(Revert)(void) throw()
     {
         return E_NOTIMPL;
     }
 
-    STDMETHOD(LockRegion)(ULARGE_INTEGER , ULARGE_INTEGER , DWORD ) throw()
+    STDMETHOD(LockRegion)(ULARGE_INTEGER , ULARGE_INTEGER , DWORD) throw()
     {
         return E_NOTIMPL;
     }
 
     STDMETHOD(UnlockRegion)(ULARGE_INTEGER , ULARGE_INTEGER ,
-                            DWORD ) throw()
+                            DWORD) throw()
     {
         return E_NOTIMPL;
     }
 
-    STDMETHOD(Stat)(STATSTG *, DWORD ) throw()
+    STDMETHOD(Stat)(STATSTG *, DWORD) throw()
     {
         return E_NOTIMPL;
     }
@@ -735,12 +735,12 @@ public:
         return E_NOINTERFACE;
     }
 
-    ULONG STDMETHODCALLTYPE AddRef( void) throw()
+    ULONG STDMETHODCALLTYPE AddRef(void) throw()
     {
         return (ULONG)1;
     }
 
-    ULONG STDMETHODCALLTYPE Release( void) throw()
+    ULONG STDMETHODCALLTYPE Release(void) throw()
     {
         return (ULONG)1;
     }

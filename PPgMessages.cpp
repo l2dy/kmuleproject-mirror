@@ -67,7 +67,7 @@ void CPPgMessages::LoadSettings(void)
     else
         CheckDlgButton(IDC_MSGONLYFRIENDS,0);
 
-    if(thePrefs.indicateratings)
+    if (thePrefs.indicateratings)
         CheckDlgButton(IDC_INDICATERATINGS,1);
     else
         CheckDlgButton(IDC_INDICATERATINGS,0);

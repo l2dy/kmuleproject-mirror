@@ -97,7 +97,7 @@ CIPFilterDlg::~CIPFilterDlg()
     delete m_pMenuIPFilter;
     sm_iSortColumn = m_ipfilter.GetSortColumn();
     if (m_icoDlg)
-        VERIFY( ::DestroyIcon(m_icoDlg) );
+        VERIFY(::DestroyIcon(m_icoDlg));
 }
 
 void CIPFilterDlg::DoDataExchange(CDataExchange* pDX)
@@ -189,7 +189,7 @@ BOOL CIPFilterDlg::OnInitDialog()
     AddAnchor(IDOK, BOTTOM_RIGHT);
     EnableSaveRestore(PREF_INI_SECTION);
 
-    ASSERT( m_ipfilter.GetStyle() & LVS_OWNERDATA );
+    ASSERT(m_ipfilter.GetStyle() & LVS_OWNERDATA);
     // Win98: Explicitly set to Unicode to receive Unicode notifications.
     m_ipfilter.SendMessage(CCM_SETUNICODEFORMAT, TRUE);
     m_ipfilter.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_INFOTIP | LVS_EX_GRIDLINES);
@@ -405,9 +405,9 @@ void CIPFilterDlg::OnBnClickedAppend()
             {
                 CString strFile;
                 if (rar.GetNextFile(strFile)
-                        && (   strFile.CompareNoCase(_T("ipfilter.dat")) == 0
-                               || strFile.CompareNoCase(_T("guarding.p2p")) == 0
-                               || strFile.CompareNoCase(_T("guardian.p2p")) == 0))
+                        && (strFile.CompareNoCase(_T("ipfilter.dat")) == 0
+                            || strFile.CompareNoCase(_T("guarding.p2p")) == 0
+                            || strFile.CompareNoCase(_T("guardian.p2p")) == 0))
                 {
                     _tmakepathlimit(strTempUnzipFilePath.GetBuffer(MAX_PATH), NULL, thePrefs.GetMuleDirectory(EMULE_CONFIGDIR), DFLT_IPFILTER_FILENAME, _T(".unzip.tmp"));
                     strTempUnzipFilePath.ReleaseBuffer();
@@ -477,21 +477,21 @@ void CIPFilterDlg::OnBnClickedAppend()
         }
 
         if (!strTempUnzipFilePath.IsEmpty())
-            VERIFY( _tremove(strTempUnzipFilePath) == 0);
+            VERIFY(_tremove(strTempUnzipFilePath) == 0);
     }
 
     if (szCurDir[0] != L'\0')
-        VERIFY( SetCurrentDirectory(szCurDir) );
+        VERIFY(SetCurrentDirectory(szCurDir));
 }
 
 void CIPFilterDlg::OnLvnDeleteItemIPFilter(NMHDR *pNMHDR, LRESULT *pResult)
 {
     LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 
-    ASSERT( m_uIPFilterItems > 0 );
+    ASSERT(m_uIPFilterItems > 0);
     if (m_uIPFilterItems > 0)
     {
-        ASSERT( (UINT)pNMLV->iItem < m_uIPFilterItems );
+        ASSERT((UINT)pNMLV->iItem < m_uIPFilterItems);
         if ((UINT)pNMLV->iItem < m_uIPFilterItems - 1)
             memmove(m_ppIPFilterItems + pNMLV->iItem, m_ppIPFilterItems + pNMLV->iItem + 1, (m_uIPFilterItems - (pNMLV->iItem + 1)) * sizeof(*m_ppIPFilterItems));
         m_uIPFilterItems--;
@@ -560,7 +560,7 @@ void CIPFilterDlg::OnBnClickedDelete()
         }
         m_ipfilter.SetRedraw();
     }
-    ASSERT( m_uIPFilterItems == (UINT)m_ipfilter.GetItemCount() );
+    ASSERT(m_uIPFilterItems == (UINT)m_ipfilter.GetItemCount());
     SetDlgItemText(IDC_TOTAL_IPFILTER, GetFormatedUInt(m_ipfilter.GetItemCount()));
     SetDlgItemText(IDC_TOTAL_IPS, GetFormatedUInt(m_ulFilteredIPs));
 }
@@ -594,7 +594,7 @@ void CIPFilterDlg::OnBnClickedSave()
     {
         theApp.ipfilter->SaveToDefaultFile();
     }
-    catch(CString err)
+    catch (CString err)
     {
         AfxMessageBox(err, MB_ICONERROR);
     }

@@ -34,7 +34,7 @@ public:
             POSITION pos = GetHeadPosition();
             while (pos != NULL)
             {
-                delete (GetAt(pos));
+                delete(GetAt(pos));
                 GetAt(pos) = NULL;
                 GetNext(pos);
             }
@@ -76,7 +76,7 @@ public:
             POSITION pos = GetStartPosition();
             while (pos != NULL)
             {
-                delete (GetValueAt(pos));
+                delete(GetValueAt(pos));
                 GetValueAt(pos) = NULL;
                 GetNext(pos);
             }

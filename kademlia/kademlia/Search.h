@@ -48,8 +48,8 @@ class CSearch
 public:
     UINT		GetSearchID() const;
     UINT		GetSearchTypes() const;
-    void		SetSearchTypes( UINT uVal );
-    void		SetTargetID( CUInt128 uVal );
+    void		SetSearchTypes(UINT uVal);
+    void		SetTargetID(CUInt128 uVal);
     CUInt128	GetTarget() const;
     UINT		GetAnswers() const;
     UINT		GetKadPacketSent() const;
@@ -59,12 +59,12 @@ public:
     UINT		GetNodeLoadTotal() const;
     const		CKadTagValueString& GetGUIName() const;
     void		SetGUIName(const CKadTagValueString& sGUIName);
-    void		SetSearchTermData( UINT uSearchTermDataSize, LPBYTE pucSearchTermsData );
+    void		SetSearchTermData(UINT uSearchTermDataSize, LPBYTE pucSearchTermsData);
 
     void		AddFileID(const CUInt128& uID);
-    void		PreparePacketForTags( CByteIO* pbyPacket, CKnownFile* pFile, uint8 byTargetKadVersion );
+    void		PreparePacketForTags(CByteIO* pbyPacket, CKnownFile* pFile, uint8 byTargetKadVersion);
     bool		Stoping() const;
-    void		UpdateNodeLoad( uint8 uLoad );
+    void		UpdateNodeLoad(uint8 uLoad);
 
     CKadClientSearcher*	GetNodeSpecialSearchRequester() const
     {

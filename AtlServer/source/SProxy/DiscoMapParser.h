@@ -14,14 +14,14 @@ public:
     ~CDiscoMapParser(void);
 
     BEGIN_XMLTAG_MAP()
-    XMLTAG_ENTRY( "DiscoveryClientResultsFile", OnDiscoveryClientResultsFile )
-    XMLTAG_ENTRY( "Results", OnResults)
-    XMLTAG_ENTRY( "DiscoveryClientResult", OnDiscoveryClientResult )
+    XMLTAG_ENTRY("DiscoveryClientResultsFile", OnDiscoveryClientResultsFile)
+    XMLTAG_ENTRY("Results", OnResults)
+    XMLTAG_ENTRY("DiscoveryClientResult", OnDiscoveryClientResult)
     END_XMLTAG_MAP()
 
-    TAG_METHOD_DECL( OnDiscoveryClientResultsFile );
-    TAG_METHOD_DECL( OnResults);
-    TAG_METHOD_DECL( OnDiscoveryClientResult );
+    TAG_METHOD_DECL(OnDiscoveryClientResultsFile);
+    TAG_METHOD_DECL(OnResults);
+    TAG_METHOD_DECL(OnDiscoveryClientResult);
 
 private:
     CAutoPtr<CDiscoMapDocument> m_pDocument;

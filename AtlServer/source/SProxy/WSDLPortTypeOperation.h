@@ -140,7 +140,7 @@ public:
         }
 
         m_pSoapOperation.Free();
-        m_pSoapOperation.Attach( pBinding );
+        m_pSoapOperation.Attach(pBinding);
         return m_pSoapOperation;
     }
 
@@ -157,7 +157,7 @@ public:
         }
 
         m_pHttpOperation.Free();
-        m_pHttpOperation.Attach( pBinding );
+        m_pHttpOperation.Attach(pBinding);
         return m_pHttpOperation;
     }
 
@@ -171,7 +171,7 @@ public:
         if (!m_pInput)
         {
             m_pInput.Free();
-            m_pInput.Attach( new CWSDLPortTypeInput );
+            m_pInput.Attach(new CWSDLPortTypeInput);
         }
 
         return m_pInput;
@@ -182,7 +182,7 @@ public:
         if (!m_pOutput)
         {
             m_pOutput.Free();
-            m_pOutput.Attach( new CWSDLPortTypeOutput );
+            m_pOutput.Attach(new CWSDLPortTypeOutput);
         }
 
         return m_pOutput;
@@ -246,7 +246,7 @@ public:
 
     inline CWSDLPortTypeFault * AddFault()
     {
-        CAutoPtr<CWSDLPortTypeFault> p ( new CWSDLPortTypeFault );
+        CAutoPtr<CWSDLPortTypeFault> p(new CWSDLPortTypeFault);
         if (p != NULL)
         {
             if (m_faults.AddTail(p) != NULL)

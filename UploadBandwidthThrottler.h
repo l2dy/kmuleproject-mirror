@@ -78,9 +78,9 @@ private:
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
 public:
-	void SignalNoLongerBusy();
+    void SignalNoLongerBusy();
 private:
-	CCriticalSection sendBytesLocker;
-	CEvent busyEvent;
+    CCriticalSection sendBytesLocker;
+    CEvent busyEvent;
 //<<< WiZaRd::ZZUL Upload [ZZ]
 };

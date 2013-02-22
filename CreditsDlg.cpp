@@ -69,9 +69,9 @@ void CCreditsDlg::OnLButtonDown(UINT nFlags, CPoint point)
     CDialog::OnLButtonDown(nFlags, point);
 
     // see if they clicked on our button to dismiss the dialog
-    if((point.x >= BUTTON_LEFT_X) && (point.x <= BUTTON_RIGHT_X))
+    if ((point.x >= BUTTON_LEFT_X) && (point.x <= BUTTON_RIGHT_X))
     {
-        if((point.y >= BUTTON_TOP_Y) && (point.y <= BUTTON_BOTTOM_Y))
+        if ((point.y >= BUTTON_TOP_Y) && (point.y <= BUTTON_BOTTOM_Y))
         {
             CDialog::OnOK();
             return;
@@ -84,7 +84,7 @@ void CCreditsDlg::OnLButtonDown(UINT nFlags, CPoint point)
 BOOL CCreditsDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
-    VERIFY( m_imgSplash.Attach(theApp.LoadImage(_T("ABOUT"), _T("JPG"))) );
+    VERIFY(m_imgSplash.Attach(theApp.LoadImage(_T("ABOUT"), _T("JPG"))));
     m_rectScreen.SetRect(SCREEN_LEFT, SCREEN_TOP, SCREEN_RIGHT, SCREEN_BOTTOM);
     StartThread();
 

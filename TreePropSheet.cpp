@@ -906,14 +906,14 @@ void CTreePropSheet::OnDestroy()
 
     if (m_pwndPageTree)
     {
-        VERIFY( m_pwndPageTree->DestroyWindow() );
+        VERIFY(m_pwndPageTree->DestroyWindow());
         delete m_pwndPageTree;
         m_pwndPageTree = NULL;
     }
 
     if (m_pFrame)
     {
-        VERIFY( m_pFrame->GetWnd()->DestroyWindow() );
+        VERIFY(m_pFrame->GetWnd()->DestroyWindow());
         delete m_pFrame;
         m_pFrame = NULL;
     }

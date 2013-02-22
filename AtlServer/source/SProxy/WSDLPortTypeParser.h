@@ -45,7 +45,7 @@ public:
 
     inline void SetPortType(CWSDLPortType * pPortType)
     {
-        ATLASSERT( pPortType != NULL );
+        ATLASSERT(pPortType != NULL);
 
         m_pPortType = pPortType;
     }

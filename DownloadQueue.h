@@ -155,7 +155,7 @@ public:
     void	ExportPartMetFilesOverview() const;
     void	OnConnectionState(bool bConnected);
 
-    void	AddToResolved( CPartFile* pFile, SUnresolvedHostname* pUH );
+    void	AddToResolved(CPartFile* pFile, SUnresolvedHostname* pUH);
 
     CString GetOptimalTempDir(UINT nCat, EMFileSize nFileSize);
 

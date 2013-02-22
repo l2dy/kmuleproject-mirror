@@ -78,16 +78,16 @@ void CPPgGeneral::LoadSettings(void)
 {
     GetDlgItem(IDC_NICK)->SetWindowText(thePrefs.GetUserNick());
 
-    for(int i = 0; i < m_language.GetCount(); i++)
-        if(m_language.GetItemData(i) == thePrefs.GetLanguageID())
+    for (int i = 0; i < m_language.GetCount(); i++)
+        if (m_language.GetItemData(i) == thePrefs.GetLanguageID())
             m_language.SetCurSel(i);
 
-    if(thePrefs.m_bAutoStart)
+    if (thePrefs.m_bAutoStart)
         CheckDlgButton(IDC_STARTWIN,1);
     else
         CheckDlgButton(IDC_STARTWIN,0);
 
-    if(thePrefs.startMinimized)
+    if (thePrefs.startMinimized)
         CheckDlgButton(IDC_STARTMIN,1);
     else
         CheckDlgButton(IDC_STARTMIN,0);
@@ -97,34 +97,34 @@ void CPPgGeneral::LoadSettings(void)
     else
         CheckDlgButton(IDC_ONLINESIG,0);
 
-    if(thePrefs.confirmExit)
+    if (thePrefs.confirmExit)
         CheckDlgButton(IDC_EXIT,1);
     else
         CheckDlgButton(IDC_EXIT,0);
 
-    if(thePrefs.splashscreen)
+    if (thePrefs.splashscreen)
         CheckDlgButton(IDC_SPLASHON,1);
     else
         CheckDlgButton(IDC_SPLASHON,0);
 
-    if(thePrefs.bringtoforeground)
+    if (thePrefs.bringtoforeground)
         CheckDlgButton(IDC_BRINGTOFOREGROUND,1);
     else
         CheckDlgButton(IDC_BRINGTOFOREGROUND,0);
 
-    if(thePrefs.updatenotify)
+    if (thePrefs.updatenotify)
         CheckDlgButton(IDC_CHECK4UPDATE,1);
     else
         CheckDlgButton(IDC_CHECK4UPDATE,0);
 
-    if(thePrefs.m_bEnableMiniMule)
+    if (thePrefs.m_bEnableMiniMule)
         CheckDlgButton(IDC_MINIMULE,1);
     else
         CheckDlgButton(IDC_MINIMULE,0);
 
     if (thePrefs.GetWindowsVersion() != _WINVER_95_)
     {
-        if(thePrefs.GetPreventStandby())
+        if (thePrefs.GetPreventStandby())
             CheckDlgButton(IDC_PREVENTSTANDBY,1);
         else
             CheckDlgButton(IDC_PREVENTSTANDBY,0);
@@ -155,32 +155,32 @@ BOOL CPPgGeneral::OnInitDialog()
         int ret=GetLocaleInfo(aLanguageIDs[i], LOCALE_SLANGUAGE, szLang, ARRSIZE(szLang));
 
         if (ret==0)
-            switch(aLanguageIDs[i])
+            switch (aLanguageIDs[i])
             {
             case LANGID_UG_CN:
-                _tcscpy(szLang,_T("Uyghur") );
+                _tcscpy(szLang,_T("Uyghur"));
                 break;
             case LANGID_GL_ES:
-                _tcscpy(szLang,_T("Galician") );
+                _tcscpy(szLang,_T("Galician"));
                 break;
             case LANGID_FR_BR:
-                _tcscpy(szLang,_T("Breton (Brezhoneg)") );
+                _tcscpy(szLang,_T("Breton (Brezhoneg)"));
                 break;
             case LANGID_MT_MT:
-                _tcscpy(szLang,_T("Maltese") );
+                _tcscpy(szLang,_T("Maltese"));
                 break;
             case LANGID_ES_AS:
-                _tcscpy(szLang,_T("Asturian") );
+                _tcscpy(szLang,_T("Asturian"));
                 break;
             case LANGID_VA_ES:
-                _tcscpy(szLang,_T("Valencian") );
+                _tcscpy(szLang,_T("Valencian"));
                 break;
             case LANGID_VA_ES_RACV:
                 _tcscpy(szLang, _T("Valencian (RACV)"));
                 break;
             default:
                 ASSERT(0);
-                _tcscpy(szLang,_T("?(unknown language)?") );
+                _tcscpy(szLang,_T("?(unknown language)?"));
             }
 
         m_language.SetItemData(m_language.AddString(szLang), aLanguageIDs[i]);
@@ -194,8 +194,8 @@ BOOL CPPgGeneral::OnInitDialog()
 
     LoadSettings();
     Localize();
-    GetDlgItem(IDC_CHECKDAYS)->ShowWindow( IsDlgButtonChecked(IDC_CHECK4UPDATE) ? SW_SHOW : SW_HIDE );
-    GetDlgItem(IDC_DAYS)->ShowWindow( IsDlgButtonChecked(IDC_CHECK4UPDATE) ? SW_SHOW : SW_HIDE );
+    GetDlgItem(IDC_CHECKDAYS)->ShowWindow(IsDlgButtonChecked(IDC_CHECK4UPDATE) ? SW_SHOW : SW_HIDE);
+    GetDlgItem(IDC_DAYS)->ShowWindow(IsDlgButtonChecked(IDC_CHECK4UPDATE) ? SW_SHOW : SW_HIDE);
 
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
@@ -264,7 +264,7 @@ BOOL CPPgGeneral::OnApply()
 
     thePrefs.startMinimized = IsDlgButtonChecked(IDC_STARTMIN)!=0;
     thePrefs.m_bAutoStart = IsDlgButtonChecked(IDC_STARTWIN)!=0;
-    if( thePrefs.m_bAutoStart )
+    if (thePrefs.m_bAutoStart)
         AddAutoStart();
     else
         RemAutoStart();
@@ -302,7 +302,7 @@ void CPPgGeneral::OnBnClickedEd2kfix()
 
 void CPPgGeneral::Localize(void)
 {
-    if(m_hWnd)
+    if (m_hWnd)
     {
         SetWindowText(GetResString(IDS_PW_GENERAL));
         GetDlgItem(IDC_NICK_FRM)->SetWindowText(GetResString(IDS_QL_USERNAME));
@@ -378,8 +378,8 @@ void CPPgGeneral::OnLangChange()
                 AfxMessageBox(strErr, MB_ICONERROR | MB_OK);
             }
             // undo change selection
-            for(int i = 0; i < m_language.GetCount(); i++)
-                if(m_language.GetItemData(i) == thePrefs.GetLanguageID())
+            for (int i = 0; i < m_language.GetCount(); i++)
+                if (m_language.GetItemData(i) == thePrefs.GetLanguageID())
                     m_language.SetCurSel(i);
         }
         else
@@ -390,8 +390,8 @@ void CPPgGeneral::OnLangChange()
 void CPPgGeneral::OnBnClickedCheck4Update()
 {
     SetModified();
-    GetDlgItem(IDC_CHECKDAYS)->ShowWindow( IsDlgButtonChecked(IDC_CHECK4UPDATE)?SW_SHOW:SW_HIDE );
-    GetDlgItem(IDC_DAYS)->ShowWindow( IsDlgButtonChecked(IDC_CHECK4UPDATE)?SW_SHOW:SW_HIDE );
+    GetDlgItem(IDC_CHECKDAYS)->ShowWindow(IsDlgButtonChecked(IDC_CHECK4UPDATE)?SW_SHOW:SW_HIDE);
+    GetDlgItem(IDC_DAYS)->ShowWindow(IsDlgButtonChecked(IDC_CHECK4UPDATE)?SW_SHOW:SW_HIDE);
 }
 
 void CPPgGeneral::OnHelp()

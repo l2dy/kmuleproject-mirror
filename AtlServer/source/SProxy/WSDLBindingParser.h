@@ -58,7 +58,7 @@ public:
 
     inline void SetBinding(CWSDLBinding * pBinding)
     {
-        ATLASSERT( pBinding != NULL );
+        ATLASSERT(pBinding != NULL);
 
         m_pBinding = pBinding;
     }

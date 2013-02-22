@@ -42,15 +42,15 @@ namespace Kademlia
 //NOTE: avoid those function whenever possible -> terribly slow
 uint16 le(uint16 uVal)
 {
-    UINT uB0 = (uVal      ) & 0xFF;
+    UINT uB0 = (uVal) & 0xFF;
     UINT uB1 = (uVal >>  8) & 0xFF;
-    return (uint16) ((uB0 << 8) | uB1);
+    return (uint16)((uB0 << 8) | uB1);
 }
 
 //NOTE: avoid those function whenever possible -> terribly slow
 UINT le(UINT uVal)
 {
-    UINT uB0 = (uVal      ) & 0xFF;
+    UINT uB0 = (uVal) & 0xFF;
     UINT uB1 = (uVal >>  8) & 0xFF;
     UINT uB2 = (uVal >> 16) & 0xFF;
     UINT uB3 = (uVal >> 24) & 0xFF;
@@ -60,7 +60,7 @@ UINT le(UINT uVal)
 //NOTE: avoid those function whenever possible -> terribly slow
 uint64 le(uint64 uVal)
 {
-    UINT uB0 = (UINT)((uVal      ) & 0xFF);
+    UINT uB0 = (UINT)((uVal) & 0xFF);
     UINT uB1 = (UINT)((uVal >>  8) & 0xFF);
     UINT uB2 = (UINT)((uVal >> 16) & 0xFF);
     UINT uB3 = (UINT)((uVal >> 24) & 0xFF);

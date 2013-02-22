@@ -66,5 +66,5 @@ __int64 CTimeTick::GetPerformanceFrequency()
 
 float CTimeTick::GetTimeInMilliSeconds(__int64 nTime)
 {
-    return ((float) (nTime*1000i64)) / ((float) m_nPerformanceFrequency);
+    return ((float)(nTime*1000i64)) / ((float) m_nPerformanceFrequency);
 }

@@ -64,17 +64,17 @@ errno_t __cdecl DuplicateEnvString(TCHAR **ppszBuffer, size_t *pnBufferSizeInTCh
 #define _TCSNLEN(sz,c) (min(_tcslen(sz), c))
 #define PATHLEFT(sz) (_MAX_PATH - _TCSNLEN(sz, (_MAX_PATH-1)) - 1)
 
-typedef LANGID (WINAPI* PFNGETUSERDEFAULTUILANGUAGE)();
+typedef LANGID(WINAPI* PFNGETUSERDEFAULTUILANGUAGE)();
 
 static BOOL CALLBACK _EnumResLangProc(HMODULE /*hModule*/, LPCTSTR /*pszType*/,
                                       LPCTSTR /*pszName*/, WORD langid, LONG_PTR lParam)
 {
-    if(lParam == NULL)
+    if (lParam == NULL)
     {
         return FALSE;
     }
 
-    LANGID* plangid = reinterpret_cast< LANGID* >( lParam );
+    LANGID* plangid = reinterpret_cast< LANGID* >(lParam);
     *plangid = langid;
 
     return TRUE;
@@ -96,7 +96,7 @@ HRESULT GetUserDefaultUILanguageLegacyCompat(LANGID* pLangid)
     PFNGETUSERDEFAULTUILANGUAGE pfnGetUserDefaultUILanguage;
     HINSTANCE hKernel32 = ::GetModuleHandle(_T("kernel32.dll"));
     pfnGetUserDefaultUILanguage = (PFNGETUSERDEFAULTUILANGUAGE)::GetProcAddress(hKernel32, "GetUserDefaultUILanguage");
-    if(pfnGetUserDefaultUILanguage != NULL)
+    if (pfnGetUserDefaultUILanguage != NULL)
     {
         *pLangid = pfnGetUserDefaultUILanguage();
         hr = S_OK;
@@ -108,26 +108,26 @@ HRESULT GetUserDefaultUILanguageLegacyCompat(LANGID* pLangid)
         memset(&version, 0, sizeof(version));
         version.dwOSVersionInfoSize = sizeof(version);
         ::GetVersionEx(&version);
-        if( version.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS)
+        if (version.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS)
         {
             // We're on Windows 9x, so look in the registry for the UI language
             HKEY hKey = NULL;
             LONG nResult = ::RegOpenKeyEx(HKEY_CURRENT_USER,
-                                          _T( "Control Panel\\Desktop\\ResourceLocale" ), 0, KEY_READ, &hKey);
+                                          _T("Control Panel\\Desktop\\ResourceLocale"), 0, KEY_READ, &hKey);
             if (nResult == ERROR_SUCCESS)
             {
                 DWORD dwType;
                 TCHAR szValue[16];
-                ULONG nBytes = sizeof( szValue );
-                nResult = ::RegQueryValueEx(hKey, NULL, NULL, &dwType, LPBYTE( szValue ),
-                                            &nBytes );
+                ULONG nBytes = sizeof(szValue);
+                nResult = ::RegQueryValueEx(hKey, NULL, NULL, &dwType, LPBYTE(szValue),
+                                            &nBytes);
                 if ((nResult == ERROR_SUCCESS) && (dwType == REG_SZ))
                 {
                     DWORD dwLangID;
-                    int nFields = _stscanf_s( szValue, _T( "%x" ), &dwLangID );
-                    if( nFields == 1 )
+                    int nFields = _stscanf_s(szValue, _T("%x"), &dwLangID);
+                    if (nFields == 1)
                     {
-                        *pLangid = LANGID( dwLangID );
+                        *pLangid = LANGID(dwLangID);
                         hr = S_OK;
                     }
                 }
@@ -139,12 +139,12 @@ HRESULT GetUserDefaultUILanguageLegacyCompat(LANGID* pLangid)
         {
             // We're on NT 4.  The UI language is the same as the language of the version
             // resource in ntdll.dll
-            HMODULE hNTDLL = ::GetModuleHandle( _T( "ntdll.dll" ) );
+            HMODULE hNTDLL = ::GetModuleHandle(_T("ntdll.dll"));
             if (hNTDLL != NULL)
             {
                 *pLangid = 0;
-                ::EnumResourceLanguages( hNTDLL, RT_VERSION, MAKEINTRESOURCE( 1 ),
-                                         _EnumResLangProc, reinterpret_cast< LONG_PTR >( pLangid ) );
+                ::EnumResourceLanguages(hNTDLL, RT_VERSION, MAKEINTRESOURCE(1),
+                                        _EnumResLangProc, reinterpret_cast< LONG_PTR >(pLangid));
                 if (*pLangid != 0)
                 {
                     hr = S_OK;
@@ -321,7 +321,7 @@ Done:
             *phinstOut = LoadLibraryEx(szPathTemp, NULL, dwExFlags);
             hr = (*phinstOut) ? S_OK : E_FAIL;
         }
-        if ( szFullPathOut )
+        if (szFullPathOut)
         {
             _tcsncpy_s(szFullPathOut,sizeInCharacters, szPathTemp, _MAX_PATH-1);
         }
@@ -387,7 +387,7 @@ HMODULE LoadSearchPath(LPCTSTR szDllName,TCHAR *szPathOut, size_t sizeInCharacte
 
             LoadUILibrary(szPath, szDllName, LOAD_LIBRARY_AS_DATAFILE,
                           &hmod, szPathOut,sizeInCharacters, NULL);
-            if ( hmod )
+            if (hmod)
             {
                 break;
             }
@@ -415,7 +415,7 @@ HMODULE LoadSearchPath(LPCTSTR szDllName,TCHAR *szPathOut, size_t sizeInCharacte
 //			Note: The primary lang (without the sublang) is tested after the user ui lang.
 // Main Input: szDllName - the name of the resource dll <ToolName>ui.dll. Ex: vcdeployUI.dll
 // Main Output: HMODULE of resource dll or NULL - if not found (see bExeDefaultModule).
-HMODULE LoadLocResDll(LPCTSTR szDllName,BOOL bExeDefaultModule=TRUE,DWORD dwExFlags=LOAD_LIBRARY_AS_DATAFILE,LPTSTR pszPathOut = NULL,size_t sizeInCharacters = 0  )
+HMODULE LoadLocResDll(LPCTSTR szDllName,BOOL bExeDefaultModule=TRUE,DWORD dwExFlags=LOAD_LIBRARY_AS_DATAFILE,LPTSTR pszPathOut = NULL,size_t sizeInCharacters = 0)
 {
     HMODULE hmod = NULL;
     TCHAR driverpath[_MAX_PATH + 1], exepath[_MAX_PATH + 1];
@@ -424,7 +424,7 @@ HMODULE LoadLocResDll(LPCTSTR szDllName,BOOL bExeDefaultModule=TRUE,DWORD dwExFl
     GetModuleFileName(GetModuleHandle(NULL), driverpath, _MAX_PATH);
     // find path of tool
     p = driverpath + _TCSNLEN(driverpath, _MAX_PATH-1)-1;
-    while ( *p != L'\\' && p != driverpath)
+    while (*p != L'\\' && p != driverpath)
     {
         p--;
     }
@@ -433,13 +433,13 @@ HMODULE LoadLocResDll(LPCTSTR szDllName,BOOL bExeDefaultModule=TRUE,DWORD dwExFl
     LoadUILibrary(driverpath, szDllName, dwExFlags,
                   &hmod, exepath,_countof(exepath), NULL);
 
-    if ( hmod == NULL )
+    if (hmod == NULL)
     {
         // search PATH\<lcid> for <ToolName>ui.dll
         hmod = LoadSearchPath(szDllName,exepath,_countof(exepath));
     }
 
-    if ( hmod && pszPathOut )
+    if (hmod && pszPathOut)
     {
         _tcsncpy_s(pszPathOut,sizeInCharacters, exepath, _MAX_PATH-1);
     }
@@ -503,7 +503,7 @@ int main()
     {
         nRet = sproxy();
     }
-    __except( EXCEPTION_EXECUTE_HANDLER )
+    __except (EXCEPTION_EXECUTE_HANDLER)
     {
         printf("\r\nsproxy : ISE error SDL0000 : Internal Sproxy Error (most likely out of memory). Please contact technical support.\r\n");
         return 1;
@@ -525,7 +525,7 @@ int sproxy()
     int argc = 0 ;
 
     argvW = CommandLineToArgvW(GetCommandLineW(),&argc);
-    if(argvW == NULL)
+    if (argvW == NULL)
     {
         EmitError(IDS_SDL_CMDLINE_FAILURE, GetLastError());
         return 1;
@@ -584,7 +584,7 @@ int sproxy()
     HRESULT hr = S_OK;
     {
         CAutoPtr<CDiscoMapParser> dmParser;
-        if(!(nFlags & SPROXYFLAG_WSDLINPUT))
+        if (!(nFlags & SPROXYFLAG_WSDLINPUT))
         {
             CComPtr<ISAXXMLReader> spDMReader;
             hr = CoCreateInstance(__uuidof(SAXXMLReader30), NULL, CLSCTX_ALL,
@@ -592,56 +592,56 @@ int sproxy()
 
             if (FAILED(hr))
             {
-                ATLTRACE( _T("CoCreateInstance failed!\n") );
+                ATLTRACE(_T("CoCreateInstance failed!\n"));
                 return 1;
             }
 
             dmParser.Attach(new CDiscoMapParser(spDMReader, NULL, 0));
-            if(dmParser == NULL)
+            if (dmParser == NULL)
             {
                 ATLTRACE(_T("Failed to create Discomap Parser : out of memory!\n"));
                 return 1;
             }
             dmParser->SetDynamicAlloc(FALSE);
-            hr = spDMReader->putContentHandler( dmParser );
+            hr = spDMReader->putContentHandler(dmParser);
             if (FAILED(hr))
             {
-                ATLTRACE( _T("putContentHandler failed!\n") );
+                ATLTRACE(_T("putContentHandler failed!\n"));
                 return 1;
             }
 
             CErrorHandler errDM;
             errDM.SetLocation(wszUrl);
 
-            hr = spDMReader->putErrorHandler( &errDM);
+            hr = spDMReader->putErrorHandler(&errDM);
             if (FAILED(hr))
             {
-                ATLTRACE( _T("putErrorHandler failed!\n") );
+                ATLTRACE(_T("putErrorHandler failed!\n"));
                 return 1;
             }
 
             g_pDMDoc = dmParser->GetDiscoMapDocument();
             if (g_pDMDoc == NULL)
             {
-                ATLTRACE( _T("failed to create document: out of memory!\n") );
+                ATLTRACE(_T("failed to create document: out of memory!\n"));
                 return 1;
             }
 
 
-            hr = g_pDMDoc->SetDocumentUri( wszUrl, wszUrl.GetLength());
+            hr = g_pDMDoc->SetDocumentUri(wszUrl, wszUrl.GetLength());
 
             if (FAILED(hr))
             {
-                ATLTRACE( _T("failed to set document uri: out of memory!\n") );
+                ATLTRACE(_T("failed to set document uri: out of memory!\n"));
                 return 1;
             }
 
             g_wszFile = wszUrl;
 
-            hr = spDMReader->parseURL( wszUrl );
+            hr = spDMReader->parseURL(wszUrl);
             if (FAILED(hr))
             {
-                ATLTRACE( _T("parseURL failed!\n") );
+                ATLTRACE(_T("parseURL failed!\n"));
                 if ((hr == E_SAX_LOADFAILED) ||
                         (hr == E_SAX_FILENOTFOUND) ||
                         (hr == E_SAX_PATHNOTFOUND) ||
@@ -654,7 +654,7 @@ int sproxy()
             }
         }
 
-        if(nFlags & SPROXYFLAG_WSDLINPUT)
+        if (nFlags & SPROXYFLAG_WSDLINPUT)
             g_wszFile = wszUrl;
         else
             g_wszFile = g_pDMDoc->GetWSDLFile();
@@ -665,63 +665,63 @@ int sproxy()
 
         if (FAILED(hr))
         {
-            ATLTRACE( _T("CoCreateInstance failed!\n") );
+            ATLTRACE(_T("CoCreateInstance failed!\n"));
             return 1;
         }
 
         CWSDLParser parser(spReader, NULL, 0);
         parser.SetDynamicAlloc(FALSE);
-        hr = spReader->putContentHandler( &parser );
+        hr = spReader->putContentHandler(&parser);
         if (FAILED(hr))
         {
-            ATLTRACE( _T("putContentHandler failed!\n") );
+            ATLTRACE(_T("putContentHandler failed!\n"));
             return 1;
         }
 
         CErrorHandler err;
         err.SetLocation(g_wszFile);
 
-        hr = spReader->putErrorHandler( &err );
+        hr = spReader->putErrorHandler(&err);
         if (FAILED(hr))
         {
-            ATLTRACE( _T("putErrorHandler failed!\n") );
+            ATLTRACE(_T("putErrorHandler failed!\n"));
             return 1;
         }
 
         CWSDLDocument * pDoc = parser.GetWSDLDocument();
         if (pDoc == NULL)
         {
-            ATLTRACE( _T("failed to create document: out of memory!\n") );
+            ATLTRACE(_T("failed to create document: out of memory!\n"));
             return 1;
         }
 
-        hr = pDoc->SetDocumentUri( g_wszFile, g_wszFile.GetLength());
+        hr = pDoc->SetDocumentUri(g_wszFile, g_wszFile.GetLength());
         if (FAILED(hr))
         {
-            ATLTRACE( _T("failed to set document uri: out of memory!\n") );
+            ATLTRACE(_T("failed to set document uri: out of memory!\n"));
             return 1;
         }
 
         wchar_t wszTmp[ATL_URL_MAX_URL_LENGTH];
-        if(g_wszFile.Find(L"://") != -1 && ((g_wszFile.Left(5)).MakeLower() != L"file:") )
+        if (g_wszFile.Find(L"://") != -1 && ((g_wszFile.Left(5)).MakeLower() != L"file:"))
         {
             // The URL needs to be escaped only if it's not a local file
-            if(AtlEscapeUrl(g_wszFile,wszTmp,0,ATL_URL_MAX_URL_LENGTH-1,ATL_URL_BROWSER_MODE) == FALSE)
+            if (AtlEscapeUrl(g_wszFile,wszTmp,0,ATL_URL_MAX_URL_LENGTH-1,ATL_URL_BROWSER_MODE) == FALSE)
             {
-                ATLTRACE( _T("failed to escape uri!\n") );
+                ATLTRACE(_T("failed to escape uri!\n"));
                 return 1;
             }
 
-            hr = spReader->parseURL( wszTmp );
+            hr = spReader->parseURL(wszTmp);
         }
         else
         {
-            hr = spReader->parseURL( g_wszFile );
+            hr = spReader->parseURL(g_wszFile);
         }
 
         if (FAILED(hr))
         {
-            ATLTRACE( _T("parseURL failed!\n") );
+            ATLTRACE(_T("parseURL failed!\n"));
             if ((hr == E_SAX_LOADFAILED) ||
                     (hr == E_SAX_FILENOTFOUND) ||
                     (hr == E_SAX_PATHNOTFOUND) ||
@@ -739,14 +739,14 @@ int sproxy()
 
         if (FAILED(hr))
         {
-            ATLTRACE( _T("builder.Initialize failed!\n") );
+            ATLTRACE(_T("builder.Initialize failed!\n"));
             return PrintGenerateFailure(wszOut);
         }
 
         hr = builder.Build();
         if (FAILED(hr))
         {
-            ATLTRACE( _T("builder.Build failed!\n") );
+            ATLTRACE(_T("builder.Build failed!\n"));
             return PrintGenerateFailure(wszOut);
         }
 
@@ -767,7 +767,7 @@ int sproxy()
                           spSzNamespace ? spSzNamespace : (szNamespace.IsEmpty() ? 0 : LPCSTR(szNamespace)));
         if (FAILED(hr))
         {
-            ATLTRACE( _T("gen.Generate failed!\n") );
+            ATLTRACE(_T("gen.Generate failed!\n"));
             return PrintGenerateFailure(wszOut);
         }
     }

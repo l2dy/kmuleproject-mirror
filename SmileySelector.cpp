@@ -243,7 +243,7 @@ BOOL CSmileySelector::OnCommand(WPARAM wParam, LPARAM lParam)
         int iEditLen =  strEdit.GetLength();
 
         CString strInsert;
-        if (   (iStart > 0 && iStart < iEditLen - 1 && strEdit[iStart] != _T(' '))
+        if ((iStart > 0 && iStart < iEditLen - 1 && strEdit[iStart] != _T(' '))
                 || (iStart == iEnd && iEnd >= iEditLen && iEditLen > 0 && strEdit[iEditLen - 1] != _T(' ')))
             strInsert = _T(' ');
 

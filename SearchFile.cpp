@@ -73,9 +73,9 @@ void ConvertED2KTag(CTag*& pTag)
 
         for (int j = 0; j < ARRSIZE(_aEmuleToED2KMetaTagsMap); j++)
         {
-            if (    CmpED2KTagName(pTag->GetName(), _aEmuleToED2KMetaTagsMap[j].pszED2KName) == 0
-                    && (   (pTag->IsStr() && _aEmuleToED2KMetaTagsMap[j].nED2KType == TAGTYPE_STRING)
-                           || (pTag->IsInt() && _aEmuleToED2KMetaTagsMap[j].nED2KType == TAGTYPE_UINT32)))
+            if (CmpED2KTagName(pTag->GetName(), _aEmuleToED2KMetaTagsMap[j].pszED2KName) == 0
+                    && ((pTag->IsStr() && _aEmuleToED2KMetaTagsMap[j].nED2KType == TAGTYPE_STRING)
+                        || (pTag->IsInt() && _aEmuleToED2KMetaTagsMap[j].nED2KType == TAGTYPE_UINT32)))
             {
                 if (pTag->IsStr())
                 {
@@ -342,7 +342,7 @@ void CSearchFile::UpdateFileRatingCommentAvail(bool bForceUpdate)
     UINT uRatings = 0;
     UINT uUserRatings = 0;
 
-    for(POSITION pos = m_kadNotes.GetHeadPosition(); pos != NULL; )
+    for (POSITION pos = m_kadNotes.GetHeadPosition(); pos != NULL;)
     {
         Kademlia::CEntry* entry = m_kadNotes.GetNext(pos);
         if (!m_bHasComment && !entry->GetStrTagValue(TAG_DESCRIPTION).IsEmpty())

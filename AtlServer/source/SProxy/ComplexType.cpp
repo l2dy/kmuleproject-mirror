@@ -15,7 +15,7 @@ CElement * CComplexType::AddElement(CElement * p)
     CAutoPtr<CElement> spOut;
     if (p == NULL)
     {
-        spOut.Attach( new CElement );
+        spOut.Attach(new CElement);
         p = spOut;
     }
 
@@ -36,7 +36,7 @@ CAttribute * CComplexType::AddAttribute(CAttribute * p)
     CAutoPtr<CAttribute> spOut;
     if (p == NULL)
     {
-        spOut.Attach( new CAttribute );
+        spOut.Attach(new CAttribute);
         p = spOut;
     }
 

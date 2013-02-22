@@ -48,7 +48,7 @@ public:
     protected:
         IDropTargetHelper*	m_piDropHelper;
         bool				m_bUseDnDHelper;
-        BOOL ReadHdropData (COleDataObject* pDataObject);
+        BOOL ReadHdropData(COleDataObject* pDataObject);
         CSharedFilesCtrl*   m_pParent;
     };
 

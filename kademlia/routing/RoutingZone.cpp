@@ -186,17 +186,17 @@ void CRoutingZone::ReadFile(CString strSpecialNodesdate)
                             return;
                         }
                     }
-                    if(uVersion >= 1 && uVersion <= 3) // those version we know, others we ignore
+                    if (uVersion >= 1 && uVersion <= 3) // those version we know, others we ignore
                         uNumContacts = file.ReadUInt32();
                 }
                 else
-                    AddDebugLogLine( false, GetResString(IDS_ERR_KADCONTACTS));
+                    AddDebugLogLine(false, GetResString(IDS_ERR_KADCONTACTS));
             }
             if (uNumContacts != 0 && uNumContacts * 25 <= (file.GetLength() - file.GetPosition()))
             {
                 UINT uValidContacts = 0;
                 CUInt128 uID;
-                while ( uNumContacts )
+                while (uNumContacts)
                 {
                     file.ReadUInt128(&uID);
                     UINT uIP = file.ReadUInt32();
@@ -205,14 +205,14 @@ void CRoutingZone::ReadFile(CString strSpecialNodesdate)
                     byte byType = 0;
 
                     uint8 uContactVersion = 0;
-                    if(uVersion >= 1)
+                    if (uVersion >= 1)
                         uContactVersion = file.ReadUInt8();
                     else
                         byType = file.ReadUInt8();
 
                     CKadUDPKey kadUDPKey;
                     bool bVerified = false;
-                    if(uVersion >= 2)
+                    if (uVersion >= 2)
                     {
                         kadUDPKey.ReadFromFile(file);
                         bVerified = file.ReadUInt8() != 0;
@@ -220,7 +220,7 @@ void CRoutingZone::ReadFile(CString strSpecialNodesdate)
                             bDoHaveVerifiedContacts = true;
                     }
                     // IP Appears valid
-                    if( byType < 4)
+                    if (byType < 4)
                     {
                         UINT uhostIP = ntohl(uIP);
                         if (::IsGoodIPPort(uhostIP, uUDPPort))
@@ -245,7 +245,7 @@ void CRoutingZone::ReadFile(CString strSpecialNodesdate)
                     }
                     uNumContacts--;
                 }
-                AddLogLine( false, GetResString(IDS_KADCONTACTSREAD), uValidContacts);
+                AddLogLine(false, GetResString(IDS_KADCONTACTSREAD), uValidContacts);
                 if (!bDoHaveVerifiedContacts)
                 {
                     DebugLogWarning(_T("No verified contacts found in nodes.dat - might be an old file version. Setting all contacts verified for this time to speed up Kad bootstrapping"));
@@ -283,7 +283,7 @@ void CRoutingZone::ReadBootstrapNodesDat(CFileDataIO& file)
     {
         UINT uValidContacts = 0;
         CUInt128 uID;
-        while ( uNumContacts )
+        while (uNumContacts)
         {
             file.ReadUInt128(&uID);
             UINT uIP = file.ReadUInt32();
@@ -327,7 +327,7 @@ void CRoutingZone::ReadBootstrapNodesDat(CFileDataIO& file)
                         }
                         if (!bInserted)
                         {
-                            ASSERT( CKademlia::s_liBootstapList.GetCount() < 50 );
+                            ASSERT(CKademlia::s_liBootstapList.GetCount() < 50);
                             CKademlia::s_liBootstapList.AddTail(pContact);
                         }
                         else if (CKademlia::s_liBootstapList.GetCount() > 50)
@@ -337,7 +337,7 @@ void CRoutingZone::ReadBootstrapNodesDat(CFileDataIO& file)
             }
             uNumContacts--;
         }
-        AddLogLine( false, GetResString(IDS_KADCONTACTSREAD), CKademlia::s_liBootstapList.GetCount());
+        AddLogLine(false, GetResString(IDS_KADCONTACTSREAD), CKademlia::s_liBootstapList.GetCount());
         DebugLog(_T("Loaded Bootstrap nodes.dat, selected %u out of %u valid contacts"), CKademlia::s_liBootstapList.GetCount(), uValidContacts);
     }
 }
@@ -382,7 +382,7 @@ void CRoutingZone::WriteFile()
                 file.WriteUInt8(pContact->IsIpVerified() ? 1 : 0);
             }
             file.Close();
-            AddDebugLogLine( false, _T("Wrote %ld contact%s to file."), listContacts.size(), ((listContacts.size() == 1) ? _T("") : _T("s")));
+            AddDebugLogLine(false, _T("Wrote %ld contact%s to file."), listContacts.size(), ((listContacts.size() == 1) ? _T("") : _T("s")));
         }
         else
             DebugLogError(_T("Unable to store Kad file: %s"), m_sFilename);
@@ -415,7 +415,7 @@ void CRoutingZone::DbgWriteBootstrapFile()
             uDistance.Xor(uMe);
             GetClosestTo(2, uRandom, uDistance, 1200, &mapContacts, false, false);
             // filter out Kad1 nodes
-            for (ContactMap::iterator itContactMap = mapContacts.begin(); itContactMap != mapContacts.end(); )
+            for (ContactMap::iterator itContactMap = mapContacts.begin(); itContactMap != mapContacts.end();)
             {
                 ContactMap::iterator itCurContactMap = itContactMap;
                 ++itContactMap;
@@ -440,7 +440,7 @@ void CRoutingZone::DbgWriteBootstrapFile()
                 file.WriteUInt8(pContact->GetVersion());
             }
             file.Close();
-            AddDebugLogLine( false, _T("Wrote %ld contact to bootstrap file."), mapContacts.size());
+            AddDebugLogLine(false, _T("Wrote %ld contact to bootstrap file."), mapContacts.size());
         }
         else
             DebugLogError(_T("Unable to store Kad file: %s"), m_sFilenameBootstrap);
@@ -462,7 +462,7 @@ bool CRoutingZone::CanSplit() const
         return false;
 
     // Check if this zone is allowed to split.
-    if ( (m_uZoneIndex < KK || m_uLevel < KBASE) && m_pBin->GetSize() == K)
+    if ((m_uZoneIndex < KK || m_uLevel < KBASE) && m_pBin->GetSize() == K)
         return true;
     return false;
 }
@@ -499,7 +499,7 @@ bool CRoutingZone::AddUnfiltered(const CUInt128 &uID, UINT uIP, uint16 uUDPPort,
 
         if (Add(pContact, bUpdate, bIPVerified))
         {
-            ASSERT( !bUpdate );
+            ASSERT(!bUpdate);
             return true;
         }
         else
@@ -522,7 +522,7 @@ bool CRoutingZone::Add(CContact* pContact, bool& bUpdate, bool& bOutIPVerified)
         CContact* pContactUpdate = m_pBin->GetContact(pContact->GetClientID());
         if (pContactUpdate)
         {
-            if(bUpdate)
+            if (bUpdate)
             {
                 if (pContactUpdate->GetUDPKey().GetKeyValue(theApp.GetPublicIP(false)) != 0
                         && pContactUpdate->GetUDPKey().GetKeyValue(theApp.GetPublicIP(false)) != pContact->GetUDPKey().GetKeyValue(theApp.GetPublicIP(false)))
@@ -545,11 +545,11 @@ bool CRoutingZone::Add(CContact* pContact, bool& bUpdate, bool& bOutIPVerified)
                     if (pContactUpdate->GetIPAddress() == pContact->GetIPAddress() && pContactUpdate->GetTCPPort() == pContact->GetTCPPort()
                             && pContactUpdate->GetVersion() == pContact->GetVersion() && pContactUpdate->GetUDPPort() == pContact->GetUDPPort())
                     {
-                        ASSERT( !pContact->IsIpVerified() ); // legacy kad2 nodes should be unable to verify their IP on a HELLO
+                        ASSERT(!pContact->IsIpVerified());   // legacy kad2 nodes should be unable to verify their IP on a HELLO
                         bOutIPVerified = pContactUpdate->IsIpVerified();
                         m_pBin->SetAlive(pContactUpdate);
-                        DEBUG_ONLY( AddDebugLogLine(DLP_VERYLOW, false, _T("Updated kad contact refreshtimer only for legacy kad2 contact (%s, %u)")
-                                                    , ipstr(ntohl(pContactUpdate->GetIPAddress())), pContactUpdate->GetVersion()) );
+                        DEBUG_ONLY(AddDebugLogLine(DLP_VERYLOW, false, _T("Updated kad contact refreshtimer only for legacy kad2 contact (%s, %u)")
+                                                   , ipstr(ntohl(pContactUpdate->GetIPAddress())), pContactUpdate->GetVersion()));
                     }
                     else
                     {
@@ -574,7 +574,7 @@ bool CRoutingZone::Add(CContact* pContact, bool& bUpdate, bool& bOutIPVerified)
 
                     if (pContactUpdate->GetVersion() >= KADEMLIA_VERSION1_46c && pContactUpdate->GetVersion() < KADEMLIA_VERSION6_49aBETA)
                     {
-                        ASSERT( !pContactUpdate->GetReceivedHelloPacket() );
+                        ASSERT(!pContactUpdate->GetReceivedHelloPacket());
                         AddDebugLogLine(DLP_VERYLOW, false, _T("Accepted update for legacy kad2 contact, because of first HELLO (%s -> %s, %u -> %u)")
                                         , ipstr(ntohl(pContactUpdate->GetIPAddress())), ipstr(ntohl(pContact->GetIPAddress())), pContactUpdate->GetVersion(), pContact->GetVersion());
                     }
@@ -604,7 +604,7 @@ bool CRoutingZone::Add(CContact* pContact, bool& bUpdate, bool& bOutIPVerified)
         {
             bUpdate = false;
             // This bin is not full, so add the new contact.
-            if(m_pBin->AddContact(pContact))
+            if (m_pBin->AddContact(pContact))
             {
                 // Add was successful, add to the GUI and let contact know it's listed in the gui.
                 if (ContactAdd(pContact))
@@ -744,14 +744,14 @@ void CRoutingZone::Split()
 UINT CRoutingZone::Consolidate()
 {
     UINT uMergeCount = 0;
-    if( IsLeaf() )
+    if (IsLeaf())
         return uMergeCount;
     ASSERT(m_pBin==NULL);
-    if( !m_pSubZones[0]->IsLeaf() )
+    if (!m_pSubZones[0]->IsLeaf())
         uMergeCount += m_pSubZones[0]->Consolidate();
-    if( !m_pSubZones[1]->IsLeaf() )
+    if (!m_pSubZones[1]->IsLeaf())
         uMergeCount += m_pSubZones[1]->Consolidate();
-    if( m_pSubZones[0]->IsLeaf() && m_pSubZones[1]->IsLeaf() && GetNumContacts() < K/2 )
+    if (m_pSubZones[0]->IsLeaf() && m_pSubZones[1]->IsLeaf() && GetNumContacts() < K/2)
     {
         m_pBin = new CRoutingBin();
         m_pSubZones[0]->StopTimer();
@@ -816,7 +816,7 @@ void CRoutingZone::StopTimer()
 
 bool CRoutingZone::OnBigTimer()
 {
-    if ( IsLeaf() && (m_uZoneIndex < KK || m_uLevel < KBASE || m_pBin->GetRemaining() >= (K*.8)))
+    if (IsLeaf() && (m_uZoneIndex < KK || m_uLevel < KBASE || m_pBin->GetRemaining() >= (K*.8)))
     {
         RandomLookup();
         return true;
@@ -830,9 +830,9 @@ bool CRoutingZone::OnBigTimer()
 //tree that will give very bad results.
 UINT CRoutingZone::EstimateCount()
 {
-    if( !IsLeaf() )
+    if (!IsLeaf())
         return 0;
-    if( m_uLevel < KBASE )
+    if (m_uLevel < KBASE)
         return (UINT)(pow(2.0F, (int)m_uLevel)*K);
     CRoutingZone* pCurZone = m_pSuperZone->m_pSuperZone->m_pSuperZone;
     // Find out how full this part of the tree is.
@@ -852,7 +852,7 @@ UINT CRoutingZone::EstimateCount()
     else if (CKademlia::GetPrefs()->StatsGetFirewalledRatio(true) > 0)
     {
         fFirewalledModifyNew = 1.0F + (CKademlia::GetPrefs()->StatsGetFirewalledRatio(true)); // apply the firewalled ratio to the modify
-        ASSERT( fFirewalledModifyNew > 1.0F && fFirewalledModifyNew < 1.90F );
+        ASSERT(fFirewalledModifyNew > 1.0F && fFirewalledModifyNew < 1.90F);
     }
     float fNewRatio = CKademlia::GetPrefs()->StatsGetKadV8Ratio();
     float fFirewalledModifyTotal = 0;
@@ -860,7 +860,7 @@ UINT CRoutingZone::EstimateCount()
         fFirewalledModifyTotal = (fNewRatio * fFirewalledModifyNew) + ((1 - fNewRatio) * fFirewalledModifyOld);
     else
         fFirewalledModifyTotal = fFirewalledModifyOld;
-    ASSERT( fFirewalledModifyTotal > 1.0F && fFirewalledModifyTotal < 1.90F );
+    ASSERT(fFirewalledModifyTotal > 1.0F && fFirewalledModifyTotal < 1.90F);
 
 
     return (UINT)((pow(2.0F, (int)m_uLevel-2))*(float)K*fModify*fFirewalledModifyTotal);
@@ -879,11 +879,11 @@ void CRoutingZone::OnSmallTimer()
     for (ContactList::iterator itContactList = listEntries.begin(); itContactList != listEntries.end(); ++itContactList)
     {
         pContact = *itContactList;
-        if ( pContact->GetType() == 4)
+        if (pContact->GetType() == 4)
         {
             if (((pContact->m_tExpires > 0) && (pContact->m_tExpires <= tNow)))
             {
-                if(!pContact->InUse())
+                if (!pContact->InUse())
                 {
                     m_pBin->RemoveContact(pContact);
                     delete pContact;
@@ -891,19 +891,19 @@ void CRoutingZone::OnSmallTimer()
                 continue;
             }
         }
-        if(pContact->m_tExpires == 0)
+        if (pContact->m_tExpires == 0)
             pContact->m_tExpires = tNow;
     }
     pContact = m_pBin->GetOldest();
-    if( pContact != NULL )
+    if (pContact != NULL)
     {
-        if ( pContact->m_tExpires >= tNow || pContact->GetType() == 4)
+        if (pContact->m_tExpires >= tNow || pContact->GetType() == 4)
         {
             m_pBin->PushToBottom(pContact);
             pContact = NULL;
         }
     }
-    if(pContact != NULL)
+    if (pContact != NULL)
     {
         pContact->CheckingType();
         if (pContact->GetVersion() >= 6)  /*48b*/
@@ -929,7 +929,7 @@ void CRoutingZone::OnSmallTimer()
             if (thePrefs.GetDebugClientKadUDPLevel() > 0)
                 DebugSend("KADEMLIA2_HELLO_REQ", pContact->GetIPAddress(), pContact->GetUDPPort());
             CKademlia::GetUDPListener()->SendMyDetails(KADEMLIA2_HELLO_REQ, pContact->GetIPAddress(), pContact->GetUDPPort(), pContact->GetVersion(), 0, NULL, false);
-            ASSERT( CKadUDPKey(0) == pContact->GetUDPKey() );
+            ASSERT(CKadUDPKey(0) == pContact->GetUDPKey());
         }
         else
             ASSERT(0);

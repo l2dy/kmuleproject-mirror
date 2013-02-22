@@ -24,8 +24,8 @@ public:
     XMLTAG_ENTRY_EX("definitions", WSDL_NAMESPACEA, OnDefinitions)
     END_XMLTAG_MAP()
 
-    TAG_METHOD_DECL( OnSchema );
-    TAG_METHOD_DECL( OnDefinitions );
+    TAG_METHOD_DECL(OnSchema);
+    TAG_METHOD_DECL(OnDefinitions);
 
     inline void SetExpectingDocType(XMLDOCTYPE docType)
     {

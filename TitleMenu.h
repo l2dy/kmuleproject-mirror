@@ -96,7 +96,7 @@ protected:
     CMapStringToPtr m_mapIconNameToIconIdx;
     CMapStringToPtr m_mapIconNameToBitmap;
 
-    typedef UINT (WINAPI* LPFNGRADIENTFILL)(HDC, CONST PTRIVERTEX, DWORD, CONST PVOID, DWORD, DWORD);
+    typedef UINT(WINAPI* LPFNGRADIENTFILL)(HDC, CONST PTRIVERTEX, DWORD, CONST PVOID, DWORD, DWORD);
     LPFNGRADIENTFILL m_pfnGradientFill;
     HINSTANCE m_hLibMsimg32;
 

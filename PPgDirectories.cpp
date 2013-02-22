@@ -100,7 +100,7 @@ void CPPgDirectories::LoadSettings(void)
     {
         tempfolders.Append(thePrefs.GetTempDir(i));
         if (i+1<thePrefs.tempdir.GetCount())
-            tempfolders.Append(_T("|") );
+            tempfolders.Append(_T("|"));
     }
     GetDlgItem(IDC_TEMPFILES)->SetWindowText(tempfolders);
 
@@ -112,7 +112,7 @@ void CPPgDirectories::OnBnClickedSelincdir()
 {
     TCHAR buffer[MAX_PATH] = {0};
     GetDlgItemText(IDC_INCFILES, buffer, _countof(buffer));
-    if(SelectDir(GetSafeHwnd(),buffer,GetResString(IDS_SELECT_INCOMINGDIR)))
+    if (SelectDir(GetSafeHwnd(),buffer,GetResString(IDS_SELECT_INCOMINGDIR)))
         GetDlgItem(IDC_INCFILES)->SetWindowText(buffer);
 }
 
@@ -120,7 +120,7 @@ void CPPgDirectories::OnBnClickedSeltempdir()
 {
     TCHAR buffer[MAX_PATH] = {0};
     GetDlgItemText(IDC_TEMPFILES, buffer, _countof(buffer));
-    if(SelectDir(GetSafeHwnd(),buffer,GetResString(IDS_SELECT_TEMPDIR)))
+    if (SelectDir(GetSafeHwnd(),buffer,GetResString(IDS_SELECT_TEMPDIR)))
         GetDlgItem(IDC_TEMPFILES)->SetWindowText(buffer);
 }
 
@@ -223,7 +223,7 @@ BOOL CPPgDirectories::OnApply()
                 temptempfolders.Add(atmp);
                 if (thePrefs.tempdir.GetCount()>=temptempfolders.GetCount())
                 {
-                    if( atmp.CompareNoCase(thePrefs.GetTempDir(temptempfolders.GetCount()-1))!=0	)
+                    if (atmp.CompareNoCase(thePrefs.GetTempDir(temptempfolders.GetCount()-1))!=0)
                         testtempdirchanged=true;
                 }
                 else testtempdirchanged=true;
@@ -275,7 +275,7 @@ BOOL CPPgDirectories::OnApply()
             tmpDirs.RemoveAt(posLast);
     }
 
-    for(POSITION pos = thePrefs.shareddir_list.GetHeadPosition(), pos2 = thePrefs.shareddir_list_permissions.GetHeadPosition(); pos != NULL;)
+    for (POSITION pos = thePrefs.shareddir_list.GetHeadPosition(), pos2 = thePrefs.shareddir_list_permissions.GetHeadPosition(); pos != NULL;)
     {
         POSITION posLast = pos;
         CString strCurrentDir = thePrefs.shareddir_list.GetNext(pos);
@@ -283,22 +283,22 @@ BOOL CPPgDirectories::OnApply()
         thePrefs.shareddir_list_permissions.GetNext(pos2);
 
         bool bFound = false;
-        for(POSITION pos3 = tmpDirs.GetHeadPosition(); pos3 != NULL && !bFound;)
+        for (POSITION pos3 = tmpDirs.GetHeadPosition(); pos3 != NULL && !bFound;)
         {
             POSITION posLast3 = pos3;
-            if(tmpDirs.GetNext(pos3).CompareNoCase(strCurrentDir) == 0)
+            if (tmpDirs.GetNext(pos3).CompareNoCase(strCurrentDir) == 0)
             {
                 bFound = true;
                 tmpDirs.RemoveAt(posLast3);
             }
         }
-        if(!bFound)
+        if (!bFound)
         {
             thePrefs.shareddir_list.RemoveAt(posLast);
             thePrefs.shareddir_list_permissions.RemoveAt(posLast2);
         }
     }
-    while(!tmpDirs.IsEmpty())
+    while (!tmpDirs.IsEmpty())
     {
         thePrefs.shareddir_list.AddTail(tmpDirs.RemoveHead());
         thePrefs.shareddir_list_permissions.AddTail(eSP_Options);
@@ -354,7 +354,7 @@ BOOL CPPgDirectories::OnCommand(WPARAM wParam, LPARAM lParam)
 
 void CPPgDirectories::Localize(void)
 {
-    if(m_hWnd)
+    if (m_hWnd)
     {
         SetWindowText(GetResString(IDS_PW_DIR));
 
@@ -368,7 +368,7 @@ void CPPgDirectories::FillUncList(void)
 {
     m_ctlUncPaths.DeleteAllItems();
 
-    for (POSITION pos = thePrefs.shareddir_list.GetHeadPosition(); pos != 0; )
+    for (POSITION pos = thePrefs.shareddir_list.GetHeadPosition(); pos != 0;)
     {
         CString folder = thePrefs.shareddir_list.GetNext(pos);
         if (PathIsUNC(folder))
@@ -437,7 +437,7 @@ void CPPgDirectories::OnBnClickedSeltempdiradd()
     TCHAR buffer[MAX_PATH] = {0};
     //GetDlgItemText(IDC_TEMPFILES, buffer, _countof(buffer));
 
-    if(SelectDir(GetSafeHwnd(),buffer,GetResString(IDS_SELECT_TEMPDIR)))
+    if (SelectDir(GetSafeHwnd(),buffer,GetResString(IDS_SELECT_TEMPDIR)))
     {
         paths.Append(_T("|"));
         paths.Append(buffer);
@@ -450,7 +450,7 @@ void CPPgDirectories::OnDestroy()
     CPropertyPage::OnDestroy();
     if (m_icoBrowse)
     {
-        VERIFY( DestroyIcon(m_icoBrowse) );
+        VERIFY(DestroyIcon(m_icoBrowse));
         m_icoBrowse = NULL;
     }
 }

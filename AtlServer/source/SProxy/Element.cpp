@@ -17,7 +17,7 @@ CComplexType * CElement::AddComplexType(CComplexType * p)
     CAutoPtr<CComplexType> spOut;
     if (p== NULL)
     {
-        spOut.Attach( new CComplexType );
+        spOut.Attach(new CComplexType);
         p = spOut;
     }
 
@@ -38,7 +38,7 @@ CSimpleType * CElement::AddSimpleType(CSimpleType * p)
     CAutoPtr<CSimpleType> spOut;
     if (p== NULL)
     {
-        spOut.Attach( new CSimpleType );
+        spOut.Attach(new CSimpleType);
         p = spOut;
     }
 

@@ -236,15 +236,15 @@ public:
 
     void SetServerContext(IHttpServerContext *pServerContext)
     {
-        ATLASSUME( m_pServerContext == NULL );
+        ATLASSUME(m_pServerContext == NULL);
 
         m_pServerContext = pServerContext;
     }
 
     HRESULT __stdcall Read(void *pDest, ULONG nMaxLen, ULONG *pnRead)
     {
-        ATLENSURE( pDest != NULL );
-        ATLASSUME( m_pServerContext != NULL );
+        ATLENSURE(pDest != NULL);
+        ATLASSUME(m_pServerContext != NULL);
 
         DWORD dwToRead = __min(m_pServerContext->GetTotalBytes()-m_dwBytesRead, nMaxLen);
         if (ReadClientData(m_pServerContext, (LPSTR) pDest, &dwToRead, m_dwBytesRead) != FALSE)
@@ -259,7 +259,7 @@ public:
             return S_OK;
         }
 
-        ATLTRACE( _T("ATLSOAP: CStreamOnServerContext::Read -- ReadClientData failed.\r\n") );
+        ATLTRACE(_T("ATLSOAP: CStreamOnServerContext::Read -- ReadClientData failed.\r\n"));
 
         return E_FAIL;
     }
@@ -322,12 +322,12 @@ public:
 
     BOOL Init(CAtlHttpClientT<TSocketClass> *pSocket)
     {
-        ATLENSURE( pSocket != NULL );
+        ATLENSURE(pSocket != NULL);
 
         m_pSocket = pSocket;
         m_szBuffer = (LPCSTR) pSocket->GetBody();
 
-        ATLSOAP_TRACE( (LPBYTE) pSocket->GetBody(), pSocket->GetBodyLength() );
+        ATLSOAP_TRACE((LPBYTE) pSocket->GetBody(), pSocket->GetBodyLength());
 
         if (m_szBuffer != NULL)
         {
@@ -339,23 +339,23 @@ public:
             }
         }
 
-        ATLTRACE( _T("ATLSOAP: CReadStreamOnSocket::Init failed.\r\n") );
+        ATLTRACE(_T("ATLSOAP: CReadStreamOnSocket::Init failed.\r\n"));
 
         return FALSE;
     }
 
     HRESULT __stdcall Read(void *pDest, ULONG nMaxLen, ULONG *pnRead)
     {
-        ATLASSERT( pDest != NULL );
-        ATLASSUME( m_pSocket != NULL );
-        ATLASSUME( m_szBuffer != NULL );
+        ATLASSERT(pDest != NULL);
+        ATLASSUME(m_pSocket != NULL);
+        ATLASSUME(m_szBuffer != NULL);
 
         if (pnRead != NULL)
         {
             *pnRead = 0;
         }
 
-        long nRead = (int) (m_szCurr-m_szBuffer);
+        long nRead = (int)(m_szCurr-m_szBuffer);
         if (nRead < m_nBodyLen)
         {
             long nLength = __min((int)(m_nBodyLen-nRead), (LONG) nMaxLen);
@@ -390,7 +390,7 @@ public:
 
     HRESULT WriteStream(LPCSTR szOut, int nLen, LPDWORD pdwWritten)
     {
-        ATLENSURE_RETURN( szOut != NULL );
+        ATLENSURE_RETURN(szOut != NULL);
 
         if (nLen < 0)
         {
@@ -507,7 +507,7 @@ inline HRESULT GetAttribute(
         }
         _ATLCATCHALL()
         {
-            ATLTRACE( _T("ATLSOAP: GetAttribute -- out of memory.\r\n") );
+            ATLTRACE(_T("ATLSOAP: GetAttribute -- out of memory.\r\n"));
 
             hr = E_OUTOFMEMORY;
         }
@@ -563,14 +563,14 @@ typedef struct _tagATLSOAP_BLOB
 #undef max
 #undef min
 template <typename T>
-inline HRESULT AtlGetSAXValue(T * pVal , const wchar_t * wsz , int cch )
+inline HRESULT AtlGetSAXValue(T * pVal , const wchar_t * wsz , int cch)
 {
     __int64 nVal = *pVal;
     if (FAILED(AtlGetSAXValue(&nVal, wsz, cch)))
         return E_FAIL;
 
 #ifndef _ATL_SOAP_NO_PARAMETER_VALIDATIONS
-    if(nVal < std::numeric_limits<T>::min() || nVal > std::numeric_limits<T>::max())
+    if (nVal < std::numeric_limits<T>::min() || nVal > std::numeric_limits<T>::max())
         return E_FAIL;
 #endif
 
@@ -640,7 +640,7 @@ inline HRESULT AtlGetXMLValue<BSTR>(IXMLDOMNode *pParam, BSTR *pbstrVal)
 template <>
 inline HRESULT AtlGetSAXValue<bool>(bool *pVal, __in_z const wchar_t *wsz, int cch)
 {
-    ATLENSURE( wsz != NULL );
+    ATLENSURE(wsz != NULL);
 
     if (!pVal)
     {
@@ -696,7 +696,7 @@ inline HRESULT AtlGetSAXValue<bool>(bool *pVal, __in_z const wchar_t *wsz, int c
 template <>
 inline HRESULT AtlGetSAXValue<__int64>(__int64 *pVal, __in_z const wchar_t *wsz, int cch)
 {
-    ATLENSURE_RETURN( wsz != NULL );
+    ATLENSURE_RETURN(wsz != NULL);
 
     if (!pVal)
     {
@@ -730,7 +730,7 @@ inline HRESULT AtlGetSAXValue<__int64>(__int64 *pVal, __in_z const wchar_t *wsz,
 template <>
 inline HRESULT AtlGetSAXValue<unsigned __int64>(unsigned __int64 *pVal, __in_z const wchar_t *wsz, int cch)
 {
-    ATLENSURE_RETURN( wsz != NULL );
+    ATLENSURE_RETURN(wsz != NULL);
 
     if (!pVal)
     {
@@ -763,7 +763,7 @@ inline HRESULT AtlGetSAXValue<unsigned __int64>(unsigned __int64 *pVal, __in_z c
 template <>
 inline HRESULT AtlGetSAXValue<double>(double *pVal, __in_z const wchar_t *wsz, int cch)
 {
-    ATLENSURE_RETURN( wsz != NULL );
+    ATLENSURE_RETURN(wsz != NULL);
 
     if (!pVal)
     {
@@ -817,7 +817,7 @@ inline HRESULT AtlGetSAXValue<double>(double *pVal, __in_z const wchar_t *wsz, i
 template <>
 inline HRESULT AtlGetSAXValue<float>(float *pVal, __in_z const wchar_t *wsz, int cch)
 {
-    ATLASSERT( wsz != NULL );
+    ATLASSERT(wsz != NULL);
 
     if (!pVal)
     {
@@ -828,7 +828,7 @@ inline HRESULT AtlGetSAXValue<float>(float *pVal, __in_z const wchar_t *wsz, int
     if (SUCCEEDED(AtlGetSAXValue(&d, wsz, cch)))
     {
 #ifdef _ATL_SOAP_PARAMETER_VALIDATIONS
-        if(d > FLT_MAX || d < -FLT_MAX)
+        if (d > FLT_MAX || d < -FLT_MAX)
             return E_FAIL;
 #endif
         *pVal = (float) d;
@@ -841,7 +841,7 @@ inline HRESULT AtlGetSAXValue<float>(float *pVal, __in_z const wchar_t *wsz, int
 template <>
 inline HRESULT AtlGetSAXValue<BSTR>(BSTR *pVal, __in_z const wchar_t *wsz, int cch)
 {
-    ATLASSERT( wsz != NULL );
+    ATLASSERT(wsz != NULL);
 
     if (pVal == NULL)
     {
@@ -860,8 +860,8 @@ inline HRESULT AtlGetSAXBlobValue(
     IAtlMemMgr *pMemMgr,
     bool bHex = false)
 {
-    ATLENSURE_RETURN( wsz != NULL );
-    ATLENSURE_RETURN( pMemMgr != NULL );
+    ATLENSURE_RETURN(wsz != NULL);
+    ATLENSURE_RETURN(pMemMgr != NULL);
 
     if (pVal == NULL)
     {
@@ -1005,7 +1005,7 @@ inline HRESULT AtlGenXMLValue<wchar_t *>(__in IWriteStream *pStream, __deref_ino
         }
         else
         {
-            ATLTRACE( _T("ATLSOAP: AtlGenXMLValue<wchar_t *> -- out of memory.\r\n") );
+            ATLTRACE(_T("ATLSOAP: AtlGenXMLValue<wchar_t *> -- out of memory.\r\n"));
 
             hr = E_OUTOFMEMORY;
         }
@@ -1178,7 +1178,7 @@ inline HRESULT AtlCleanupBlobValue(ATLSOAP_BLOB *pVal, IAtlMemMgr *pMemMgr)
 template <>
 inline HRESULT AtlCleanupValue<ATLSOAP_BLOB>(ATLSOAP_BLOB *pVal)
 {
-    ATLTRACE( _T("Warning: AtlCleanupValue<ATLSOAP_BLOB> was called -- assuming CRT allocator.\r\n") );
+    ATLTRACE(_T("Warning: AtlCleanupValue<ATLSOAP_BLOB> was called -- assuming CRT allocator.\r\n"));
 
     if (pVal == NULL)
     {
@@ -1201,7 +1201,7 @@ inline HRESULT AtlCleanupValue<BSTR>(BSTR *pVal)
     if (pVal == NULL)
     {
         // should never happen
-        ATLASSERT( FALSE );
+        ATLASSERT(FALSE);
         return E_INVALIDARG;
     }
 
@@ -1363,7 +1363,7 @@ public:
         (wszErrorMessage);
         (hrErrorCode);
 
-        ATLTRACE( _T("ATLSOAP: parse error: %ws\r\n"), wszErrorMessage );
+        ATLTRACE(_T("ATLSOAP: parse error: %ws\r\n"), wszErrorMessage);
 
         _ATLTRY
         {
@@ -1386,7 +1386,7 @@ public:
         (wszErrorMessage);
         (hrErrorCode);
 
-        ATLTRACE( _T("ATLSOAP: fatal parse error: %ws\r\n"), wszErrorMessage );
+        ATLTRACE(_T("ATLSOAP: fatal parse error: %ws\r\n"), wszErrorMessage);
 
         _ATLTRY
         {
@@ -1409,7 +1409,7 @@ public:
         (wszErrorMessage);
         (hrErrorCode);
 
-        ATLTRACE( _T("ATLSOAP: ignorable warning: %ws\r\n"), wszErrorMessage );
+        ATLTRACE(_T("ATLSOAP: ignorable warning: %ws\r\n"), wszErrorMessage);
 
         return hrErrorCode;
     }
@@ -1771,7 +1771,7 @@ public:
 
                     if (FAILED(hr))
                     {
-                        ATLTRACE( _T("ATLSOAP: CSAXStringBuilder::startElement -- MSXML error.\r\n") );
+                        ATLTRACE(_T("ATLSOAP: CSAXStringBuilder::startElement -- MSXML error.\r\n"));
 
                         break;
                     }
@@ -1783,7 +1783,7 @@ public:
 
                     if (FAILED(hr))
                     {
-                        ATLTRACE( _T("ATLSOAP: CSAXStringBuilder::startElement -- MSXML error.\r\n") );
+                        ATLTRACE(_T("ATLSOAP: CSAXStringBuilder::startElement -- MSXML error.\r\n"));
 
                         break;
                     }
@@ -1804,7 +1804,7 @@ public:
         }
         _ATLCATCHALL()
         {
-            ATLTRACE( _T("ATLSOAP: CSAXStringBuilder::startElement -- out of memory.\r\n") );
+            ATLTRACE(_T("ATLSOAP: CSAXStringBuilder::startElement -- out of memory.\r\n"));
 
             hr = E_OUTOFMEMORY;
         }
@@ -1844,7 +1844,7 @@ public:
         }
         _ATLCATCHALL()
         {
-            ATLTRACE( _T("ATLSOAP: CSAXStringBuilder::endElement -- out of memory.\r\n") );
+            ATLTRACE(_T("ATLSOAP: CSAXStringBuilder::endElement -- out of memory.\r\n"));
 
             hr = E_OUTOFMEMORY;
         }
@@ -1862,7 +1862,7 @@ public:
         }
         _ATLCATCHALL()
         {
-            ATLTRACE( _T("ATLSOAP: CSAXStringBuilder::characters -- out of memory.\r\n") );
+            ATLTRACE(_T("ATLSOAP: CSAXStringBuilder::characters -- out of memory.\r\n"));
 
             return E_OUTOFMEMORY;
         }
@@ -1880,7 +1880,7 @@ public:
         }
         _ATLCATCHALL()
         {
-            ATLTRACE( _T("ATLSOAP: CSAXStringBuilder::ignorableWhitespace -- out of memory.\r\n") );
+            ATLTRACE(_T("ATLSOAP: CSAXStringBuilder::ignorableWhitespace -- out of memory.\r\n"));
 
             return E_OUTOFMEMORY;
         }
@@ -2274,9 +2274,9 @@ inline size_t AtlSoapGetElementSize(SOAPTYPES type)
         }
         else
         {
-            ATLTRACE( _T("ATLSOAP: AtlSoapGetElementSize -- internal error.\r\n") );
+            ATLTRACE(_T("ATLSOAP: AtlSoapGetElementSize -- internal error.\r\n"));
             // should never get here
-            ATLASSERT( FALSE );
+            ATLASSERT(FALSE);
             nRet = 0;
         }
         break;
@@ -2346,10 +2346,10 @@ inline HRESULT AtlSoapGetElementValue(const wchar_t *wsz, int cch,
 #ifdef _DEBUG
         else
         {
-            ATLTRACE( _T("ATLSOAP: AtlSoapGetElementValue -- internal error.\r\n") );
+            ATLTRACE(_T("ATLSOAP: AtlSoapGetElementValue -- internal error.\r\n"));
 
             // should never get here
-            ATLASSERT( FALSE );
+            ATLASSERT(FALSE);
         }
 #endif
         break;
@@ -2418,10 +2418,10 @@ inline HRESULT AtlSoapGenElementValue(void *pVal, IWriteStream *pStream, SOAPTYP
 #ifdef _DEBUG
         else
         {
-            ATLTRACE( _T("ATLSOAP: AtlSoapGenElementValue -- internal error.\r\n" ) );
+            ATLTRACE(_T("ATLSOAP: AtlSoapGenElementValue -- internal error.\r\n"));
 
             // should never get here
-            ATLASSERT( FALSE );
+            ATLASSERT(FALSE);
         }
 #endif
         break;
@@ -2468,10 +2468,10 @@ inline HRESULT AtlSoapCleanupElement(void *pVal, SOAPTYPES type, IAtlMemMgr *pMe
 #ifdef _DEBUG
         else
         {
-            ATLTRACE( _T("ATLSOAP: AtlSoapCleanupElement -- internal error.\r\n" ) );
+            ATLTRACE(_T("ATLSOAP: AtlSoapCleanupElement -- internal error.\r\n"));
 
             // should never get here
-            ATLASSERT( FALSE );
+            ATLASSERT(FALSE);
         }
 #endif
         break;
@@ -2584,8 +2584,8 @@ public:
     CSoapFaultParser(CSoapFault *pFault, ISAXXMLReader *pReader)
         :m_pFault(pFault), m_dwState(STATE_ERROR), m_spReader(pReader)
     {
-        ATLASSERT( pFault != NULL );
-        ATLASSERT( pReader != NULL );
+        ATLASSERT(pFault != NULL);
+        ATLASSERT(pReader != NULL);
     }
 
     // ISAXContentHandler interface
@@ -2619,7 +2619,7 @@ public:
 
         if (m_spReader.p == NULL)
         {
-            ATLTRACE( _T("ATLSOAP: CSoapFaultParser::startElement -- ISAXXMLReader is NULL.\r\n" ) );
+            ATLTRACE(_T("ATLSOAP: CSoapFaultParser::startElement -- ISAXXMLReader is NULL.\r\n"));
 
             return E_INVALIDARG;
         }
@@ -2637,7 +2637,7 @@ public:
                     m_stringBuilder.SetParent(this);
 
                     m_stringBuilder.Clear();
-                    m_spReader->putContentHandler( &m_stringBuilder );
+                    m_spReader->putContentHandler(&m_stringBuilder);
                 }
                 else
                 {
@@ -2645,7 +2645,7 @@ public:
                             (cchNamespaceUri != sizeof(SOAPENV_NAMESPACEA)-1) ||
                             (wcsncmp(wszNamespaceUri, SOAPENV_NAMESPACEW, cchNamespaceUri)))
                     {
-                        ATLTRACE( _T("ATLSOAP: CSoapFaultParser::startElement -- malformed SOAP fault.\r\n" ) );
+                        ATLTRACE(_T("ATLSOAP: CSoapFaultParser::startElement -- malformed SOAP fault.\r\n"));
 
                         return E_FAIL;
                     }
@@ -2661,11 +2661,11 @@ public:
             m_skipHandler.SetReader(m_spReader);
             m_skipHandler.SetParent(this);
 
-            m_spReader->putContentHandler( &m_skipHandler );
+            m_spReader->putContentHandler(&m_skipHandler);
             return S_OK;
         }
 
-        ATLTRACE( _T("ATLSOAP: CSoapFaultParser::startElement -- malformed SOAP fault.\r\n" ) );
+        ATLTRACE(_T("ATLSOAP: CSoapFaultParser::startElement -- malformed SOAP fault.\r\n"));
 
         return E_FAIL;
     }
@@ -2755,7 +2755,7 @@ public:
         {
             // faultCode must be QName
 
-            ATLTRACE( _T("ATLSOAP: CSoapFault::SetErrorCode -- faultCode is not a QName.\r\n" ) );
+            ATLTRACE(_T("ATLSOAP: CSoapFault::SetErrorCode -- faultCode is not a QName.\r\n"));
 
             return E_FAIL;
         }
@@ -2765,13 +2765,13 @@ public:
         if ((cchSoapPrefix != (int)(wszLocalName-wsz)) ||
                 (wcsncmp(wsz, wszSoapPrefix, cchSoapPrefix)))
         {
-            ATLTRACE( _T("ATLSOAP: CSoapFault::SetErrorCode -- fault namespace is incorrect.\r\n" ) );
+            ATLTRACE(_T("ATLSOAP: CSoapFault::SetErrorCode -- fault namespace is incorrect.\r\n"));
 
             return E_FAIL;
         }
 
         wszLocalName++;
-        cch -= (int) (wszLocalName-wsz);
+        cch -= (int)(wszLocalName-wsz);
 
         _ATLTRY
         {
@@ -2795,7 +2795,7 @@ public:
         }
         _ATLCATCHALL()
         {
-            ATLTRACE( _T("ATLSOAP: CSoapFault::SetErrorCode -- out of memory.\r\n" ) );
+            ATLTRACE(_T("ATLSOAP: CSoapFault::SetErrorCode -- out of memory.\r\n"));
 
             return E_OUTOFMEMORY;
         }
@@ -2807,7 +2807,7 @@ public:
     {
         if (pStream == NULL)
         {
-            ATLTRACE( _T("ATLSOAP: CSoapFault::ParseFault -- NULL IStream was passed.\r\n" ) );
+            ATLTRACE(_T("ATLSOAP: CSoapFault::ParseFault -- NULL IStream was passed.\r\n"));
 
             return E_INVALIDARG;
         }
@@ -2821,7 +2821,7 @@ public:
         {
             if (FAILED(spReader.CoCreateInstance(ATLS_SAXXMLREADER_CLSID, NULL, CLSCTX_INPROC_SERVER)))
             {
-                ATLTRACE( _T("ATLSOAP: CSoapFault::ParseFault -- CoCreateInstance of SAXXMLReader failed.\r\n" ) );
+                ATLTRACE(_T("ATLSOAP: CSoapFault::ParseFault -- CoCreateInstance of SAXXMLReader failed.\r\n"));
 
                 return E_FAIL;
             }
@@ -2846,11 +2846,11 @@ public:
             return E_INVALIDARG;
         }
 
-        ATLASSERT( (m_soapErrCode == SOAP_E_UNK) ||
-                   (m_soapErrCode == SOAP_E_VERSION_MISMATCH) ||
-                   (m_soapErrCode == SOAP_E_MUST_UNDERSTAND) ||
-                   (m_soapErrCode == SOAP_E_CLIENT) ||
-                   (m_soapErrCode == SOAP_E_SERVER) );
+        ATLASSERT((m_soapErrCode == SOAP_E_UNK) ||
+                  (m_soapErrCode == SOAP_E_VERSION_MISMATCH) ||
+                  (m_soapErrCode == SOAP_E_MUST_UNDERSTAND) ||
+                  (m_soapErrCode == SOAP_E_CLIENT) ||
+                  (m_soapErrCode == SOAP_E_SERVER));
 
         HRESULT hr = S_OK;
         _ATLTRY
@@ -2882,7 +2882,7 @@ public:
                 }
                 else
                 {
-                    ATLTRACE( _T("CSoapFault::GenerateFault -- missing/invalid fault code.\r\n") );
+                    ATLTRACE(_T("CSoapFault::GenerateFault -- missing/invalid fault code.\r\n"));
                     return E_FAIL;
                 }
             }
@@ -2909,7 +2909,7 @@ public:
         }
         _ATLCATCHALL()
         {
-            ATLTRACE( _T("ATLSOAP: CSoapFault::GenerateFault -- out of memory.\r\n" ) );
+            ATLTRACE(_T("ATLSOAP: CSoapFault::GenerateFault -- out of memory.\r\n"));
             hr = E_OUTOFMEMORY;
         }
 
@@ -2992,13 +2992,13 @@ ATL_NOINLINE inline HRESULT __stdcall CSoapFaultParser::characters(
             break;
         default:
             // should never get here
-            ATLASSERT( FALSE );
+            ATLASSERT(FALSE);
             break;
         }
     }
     _ATLCATCHALL()
     {
-        ATLTRACE( _T("ATLSOAP: CSoapFaultParser::characters -- out of memory.\r\n" ) );
+        ATLTRACE(_T("ATLSOAP: CSoapFaultParser::characters -- out of memory.\r\n"));
 
         hr = E_OUTOFMEMORY;
     }
@@ -3092,8 +3092,8 @@ private:
             if (m_pBits != &m_nBits)
             {
                 unsigned __int64 * pNewBits=NULL;
-                pNewBits = (unsigned __int64 *) realloc(m_pBits, nAllocSizeBytes );
-                if(!pNewBits)
+                pNewBits = (unsigned __int64 *) realloc(m_pBits, nAllocSizeBytes);
+                if (!pNewBits)
                 {
                     return false;
                 }
@@ -3101,7 +3101,7 @@ private:
             }
             else
             {
-                m_pBits = (unsigned __int64 *) malloc(nAllocSizeBytes );
+                m_pBits = (unsigned __int64 *) malloc(nAllocSizeBytes);
                 if (m_pBits != NULL)
                 {
                     Checked::memcpy_s(m_pBits, nAllocSizeBytes, &m_nBits, sizeof(m_nBits));
@@ -3116,7 +3116,7 @@ private:
                 return true;
             }
 
-            ATLTRACE( _T("ATLSOAP: CBitVector::Grow -- out of memory.\r\n" ) );
+            ATLTRACE(_T("ATLSOAP: CBitVector::Grow -- out of memory.\r\n"));
 
             return false;
         }
@@ -3270,7 +3270,7 @@ private:
     {
     public:
         // CBitVector relocate fixup
-        static void RelocateElements( ParseState* pDest, ParseState* pSrc, size_t nElements )
+        static void RelocateElements(ParseState* pDest, ParseState* pSrc, size_t nElements)
         {
             CDefaultElementTraits<ParseState>::RelocateElements(pDest, pSrc, nElements);
 
@@ -3287,7 +3287,7 @@ private:
     public:
         HRESULT StartEnvelope(IWriteStream *pStream)
         {
-            ATLENSURE_RETURN( pStream != NULL );
+            ATLENSURE_RETURN(pStream != NULL);
 
             return pStream->WriteStream("<soap:Envelope "
                                         "xmlns:soap=\"" SOAPENV_NAMESPACEA "\" "
@@ -3306,8 +3306,8 @@ private:
 
         HRESULT StartHeaders(IWriteStream *pStream, const _soapmap *pMap)
         {
-            ATLENSURE_RETURN( pStream != NULL );
-            ATLENSURE_RETURN( pMap != NULL );
+            ATLENSURE_RETURN(pStream != NULL);
+            ATLENSURE_RETURN(pMap != NULL);
 
             HRESULT hr = pStream->WriteStream("<soap:Header", sizeof("<soap:Header")-1, NULL);
             if (SUCCEEDED(hr))
@@ -3340,14 +3340,14 @@ private:
 
         HRESULT EndHeaders(IWriteStream *pStream)
         {
-            ATLENSURE_RETURN( pStream != NULL );
+            ATLENSURE_RETURN(pStream != NULL);
 
             return pStream->WriteStream("</soap:Header>", sizeof("</soap:Header>")-1, NULL);
         }
 
         virtual HRESULT StartBody(IWriteStream *pStream)
         {
-            ATLENSURE_RETURN( pStream != NULL );
+            ATLENSURE_RETURN(pStream != NULL);
 
             return pStream->WriteStream(
                        "<soap:Body>", sizeof("<soap:Body>")-1, NULL);
@@ -3355,14 +3355,14 @@ private:
 
         HRESULT EndBody(IWriteStream *pStream)
         {
-            ATLENSURE_RETURN( pStream != NULL );
+            ATLENSURE_RETURN(pStream != NULL);
 
             return pStream->WriteStream("</soap:Body>", sizeof("</soap:Body>")-1, NULL);
         }
 
         HRESULT EndEnvelope(IWriteStream *pStream)
         {
-            ATLENSURE_RETURN( pStream != NULL );
+            ATLENSURE_RETURN(pStream != NULL);
 
             return pStream->WriteStream("</soap:Envelope>", sizeof("</soap:Envelope>")-1, NULL);
         }
@@ -3372,8 +3372,8 @@ private:
 
         virtual HRESULT StartEntry(IWriteStream *pStream, const _soapmap *pMap, const _soapmapentry *pEntry)
         {
-            ATLENSURE_RETURN( pStream != NULL );
-            ATLENSURE_RETURN( pEntry != NULL );
+            ATLENSURE_RETURN(pStream != NULL);
+            ATLENSURE_RETURN(pEntry != NULL);
 
             // output name
             HRESULT hr = pStream->WriteStream("<", 1, NULL);
@@ -3412,7 +3412,7 @@ private:
                     {
                         if (szHeaderNamespace != NULL)
                         {
-                            ATLASSERT( cchHeaderNamespace != 0 );
+                            ATLASSERT(cchHeaderNamespace != 0);
 
                             hr = pStream->WriteStream(" xmlns:snp=\"", sizeof(" xmlns:snp=\"")-1, NULL);
                             if (SUCCEEDED(hr))
@@ -3440,8 +3440,8 @@ private:
 
         HRESULT EndEntry(IWriteStream *pStream, const _soapmap *pMap, const _soapmapentry *pEntry)
         {
-            ATLENSURE_RETURN( pStream != NULL );
-            ATLENSURE_RETURN( pEntry != NULL );
+            ATLENSURE_RETURN(pStream != NULL);
+            ATLENSURE_RETURN(pEntry != NULL);
 
             HRESULT hr = pStream->WriteStream("</", 2, NULL);
             if (SUCCEEDED(hr))
@@ -3477,8 +3477,8 @@ private:
 
         HRESULT StartMap(IWriteStream *pStream, const _soapmap *pMap, bool bClient)
         {
-            ATLENSURE_RETURN( pStream != NULL );
-            ATLENSURE_RETURN( pMap != NULL );
+            ATLENSURE_RETURN(pStream != NULL);
+            ATLENSURE_RETURN(pMap != NULL);
 
             HRESULT hr = S_OK;
             // output type name
@@ -3522,8 +3522,8 @@ private:
 
         HRESULT EndMap(IWriteStream *pStream, const _soapmap *pMap, bool bClient)
         {
-            ATLENSURE_RETURN( pStream != NULL );
-            ATLENSURE_RETURN( pMap != NULL );
+            ATLENSURE_RETURN(pStream != NULL);
+            ATLENSURE_RETURN(pMap != NULL);
 
             HRESULT hr = pStream->WriteStream("</", sizeof("</")-1, NULL);
             if (SUCCEEDED(hr))
@@ -3560,8 +3560,8 @@ private:
 
         virtual HRESULT StartEntry(IWriteStream *pStream, const _soapmap *pMap, const _soapmapentry *pEntry)
         {
-            ATLENSURE_RETURN( pStream != NULL );
-            ATLENSURE_RETURN( pEntry != NULL );
+            ATLENSURE_RETURN(pStream != NULL);
+            ATLENSURE_RETURN(pEntry != NULL);
 
             HRESULT hr = __super::StartEntry(pStream, pMap, pEntry);
             if (SUCCEEDED(hr) && (pMap->dwCallFlags & SOAPFLAG_PAD))
@@ -3587,7 +3587,7 @@ private:
 
         HRESULT StartBody(IWriteStream *pStream)
         {
-            ATLENSURE_RETURN( pStream != NULL );
+            ATLENSURE_RETURN(pStream != NULL);
 
             return pStream->WriteStream(
                        "<soap:Body soap:encodingStyle=\"" SOAPENC_NAMESPACEA "\">",
@@ -3596,8 +3596,8 @@ private:
 
         HRESULT StartMap(IWriteStream *pStream, const _soapmap *pMap, bool bClient)
         {
-            ATLENSURE_RETURN( pStream != NULL );
-            ATLENSURE_RETURN( pMap != NULL );
+            ATLENSURE_RETURN(pStream != NULL);
+            ATLENSURE_RETURN(pMap != NULL);
 
             (bClient); // unused for rpc/encoded
 
@@ -3612,7 +3612,7 @@ private:
                         hr = pStream->WriteStream(" xmlns:snp=\"", sizeof(" xmlns:snp=\"")-1, NULL);
                         if (SUCCEEDED(hr))
                         {
-                            ATLASSERT( pMap->szNamespace != NULL );
+                            ATLASSERT(pMap->szNamespace != NULL);
                             hr = pStream->WriteStream(pMap->szNamespace, pMap->cchNamespace, NULL);
                             if (SUCCEEDED(hr))
                             {
@@ -3631,8 +3631,8 @@ private:
 
         HRESULT EndMap(IWriteStream *pStream, const _soapmap *pMap, bool bClient)
         {
-            ATLENSURE_RETURN( pStream != NULL );
-            ATLENSURE_RETURN( pMap != NULL );
+            ATLENSURE_RETURN(pStream != NULL);
+            ATLENSURE_RETURN(pMap != NULL);
 
             (bClient); // unused for rpc/encoded
 
@@ -3695,7 +3695,7 @@ private:
             // 16 will be plenty for the 99% case
             if (!m_stateStack.SetCount(0, 16))
             {
-                ATLTRACE( _T("ATLSOAP: CSoapRootHandler::PushState -- out of memory.\r\n" ) );
+                ATLTRACE(_T("ATLSOAP: CSoapRootHandler::PushState -- out of memory.\r\n"));
 
                 return E_OUTOFMEMORY;
             }
@@ -3705,7 +3705,7 @@ private:
         m_nState = m_stateStack.Add();
         if (m_stateStack.GetCount() <= nCnt)
         {
-            ATLTRACE( _T("ATLSOAP: CSoapRootHandler::PushState -- out of memory.\r\n" ) );
+            ATLTRACE(_T("ATLSOAP: CSoapRootHandler::PushState -- out of memory.\r\n"));
 
             return E_OUTOFMEMORY;
         }
@@ -3761,10 +3761,10 @@ private:
 
     ATL_FORCEINLINE BOOL IsEqualString(const wchar_t *wszStr1, int cchStr1, const wchar_t *wszStr2, int cchStr2)
     {
-        ATLENSURE( wszStr1 != NULL );
-        ATLENSURE( wszStr2 != NULL );
-        ATLENSURE( cchStr1 >= 0 );
-        ATLENSURE( cchStr2 >= 0 );
+        ATLENSURE(wszStr1 != NULL);
+        ATLENSURE(wszStr2 != NULL);
+        ATLENSURE(cchStr1 >= 0);
+        ATLENSURE(cchStr2 >= 0);
 
         if (cchStr1 == cchStr2)
         {
@@ -3776,10 +3776,10 @@ private:
     ATL_FORCEINLINE BOOL IsEqualStringHash(const wchar_t *wszStr1, int cchStr1, ULONG nHash1,
                                            const wchar_t *wszStr2, int cchStr2, ULONG nHash2)
     {
-        ATLENSURE( wszStr1 != NULL );
-        ATLENSURE( wszStr2 != NULL );
-        ATLENSURE( cchStr1 >= 0 );
-        ATLENSURE( cchStr2 >= 0 );
+        ATLENSURE(wszStr1 != NULL);
+        ATLENSURE(wszStr2 != NULL);
+        ATLENSURE(cchStr1 >= 0);
+        ATLENSURE(cchStr2 >= 0);
 
         if (nHash1 == nHash2)
         {
@@ -3826,7 +3826,7 @@ private:
         (cchLocalName);
         (wszLocalName);
 
-        ATLASSERT( state.pEntry != NULL );
+        ATLASSERT(state.pEntry != NULL);
 
         // SOAP Section 5.4.2
 
@@ -3836,11 +3836,11 @@ private:
             // too many elements
             if ((state.dwFlags & SOAPFLAG_UNKSIZE)==0)
             {
-                ATLTRACE( _T("ATLSOAP: CSoapRootHandler::ValidateArrayEntry -- too many elements.\r\n" ) );
+                ATLTRACE(_T("ATLSOAP: CSoapRootHandler::ValidateArrayEntry -- too many elements.\r\n"));
                 return E_FAIL;
             }
 
-            ATLASSERT( IsRpcEncoded() == false );
+            ATLASSERT(IsRpcEncoded() == false);
 
             // see if we need to allocate more
             if (state.nElement == state.nAllocSize)
@@ -3848,7 +3848,7 @@ private:
                 unsigned char **ppArr = (unsigned char **)state.pvElement;
                 size_t nNewElement=0;
                 HRESULT hr=E_FAIL;
-                if(FAILED(hr=::ATL::AtlMultiply(&nNewElement, state.nElement, static_cast<size_t>(2))))
+                if (FAILED(hr=::ATL::AtlMultiply(&nNewElement, state.nElement, static_cast<size_t>(2))))
                 {
                     return hr;
                 }
@@ -3875,7 +3875,7 @@ private:
         (cchLocalName);
         (wszLocalName);
         (wszNamespaceUri);
-        ATLASSERT( pAttributes != NULL );
+        ATLASSERT(pAttributes != NULL);
 
         const wchar_t *wsz = NULL;
         int cch = 0;
@@ -3895,12 +3895,12 @@ private:
             }
             _ATLCATCHALL()
             {
-                ATLTRACE( _T("ATLSOAP: CSoapRootHandler::CheckID -- out of memory.\r\n" ) );
+                ATLTRACE(_T("ATLSOAP: CSoapRootHandler::CheckID -- out of memory.\r\n"));
 
                 return E_OUTOFMEMORY;
             }
 
-            ATLASSERT( IsRpcEncoded() == true );
+            ATLASSERT(IsRpcEncoded() == true);
 
             const ParseState& state = p->m_value;
 
@@ -3921,8 +3921,8 @@ private:
             else
             {
                 // only structs and arrays are allowed for hrefs
-                ATLASSERT( state.pEntry->pChain != NULL );
-                ATLASSERT( state.pEntry->pChain->mapType == SOAPMAP_STRUCT );
+                ATLASSERT(state.pEntry->pChain != NULL);
+                ATLASSERT(state.pEntry->pChain->mapType == SOAPMAP_STRUCT);
 
                 // structs must have child entries
                 m_bChildCheck = state.pEntry->pChain->nElements != 0;
@@ -3930,7 +3930,7 @@ private:
                 if (S_OK != PushState(state.pvElement, state.pEntry->pChain, state.pEntry,
                                       state.dwFlags, 0, state.pEntry->pChain->nElements))
                 {
-                    ATLTRACE( _T("ATLSOAP: CSoapRootHandler::CheckID -- out of memory.\n" ) );
+                    ATLTRACE(_T("ATLSOAP: CSoapRootHandler::CheckID -- out of memory.\n"));
                     hr = E_OUTOFMEMORY;
                 }
             }
@@ -3953,8 +3953,8 @@ private:
         ISAXAttributes *pAttributes,
         const _soapmapentry **ppEntry)
     {
-        ATLENSURE_RETURN( state.pMap != NULL );
-        ATLENSURE_RETURN( ppEntry != NULL );
+        ATLENSURE_RETURN(state.pMap != NULL);
+        ATLENSURE_RETURN(ppEntry != NULL);
 
         *ppEntry = NULL;
         const _soapmapentry *pEntries = state.pMap->pEntries;
@@ -4005,7 +4005,7 @@ private:
                 else
                 {
                     // already received this element
-                    ATLTRACE( _T("ATLSOAP: CSoapRootHandler::GetElementEntry -- duplicate element was sent.\r\n" ) );
+                    ATLTRACE(_T("ATLSOAP: CSoapRootHandler::GetElementEntry -- duplicate element was sent.\r\n"));
 
                     return E_FAIL;
                 }
@@ -4017,14 +4017,14 @@ private:
             }
         }
 
-        ATLTRACE( _T("ATLSOAP: CSoapRootHandler::GetElementEntry -- element not found: %.*ws.\r\n" ), cchLocalName, wszLocalName );
+        ATLTRACE(_T("ATLSOAP: CSoapRootHandler::GetElementEntry -- element not found: %.*ws.\r\n"), cchLocalName, wszLocalName);
 
         return E_FAIL;
     }
 
     HRESULT CheckMustUnderstandHeader(ISAXAttributes *pAttributes)
     {
-        ATLASSERT( pAttributes != NULL );
+        ATLASSERT(pAttributes != NULL);
 
         const wchar_t* wszMustUnderstand;
         int cchMustUnderstand;
@@ -4043,19 +4043,19 @@ private:
 
         if (bMustUnderstand == false)
         {
-            ATLASSERT( GetReader() != NULL );
+            ATLASSERT(GetReader() != NULL);
 
             m_skipHandler.SetReader(GetReader());
             m_skipHandler.SetParent(this);
 
-            return GetReader()->putContentHandler( &m_skipHandler );
+            return GetReader()->putContentHandler(&m_skipHandler);
         }
         else
         {
             SoapFault(SOAP_E_MUST_UNDERSTAND, NULL, 0);
         }
 
-        ATLTRACE( _T("ATLSOAP: CSoapRootHandler::CheckMustUnderstandHeader -- unknown \"mustUnderstand\" SOAP Header was received.\r\n" ) );
+        ATLTRACE(_T("ATLSOAP: CSoapRootHandler::CheckMustUnderstandHeader -- unknown \"mustUnderstand\" SOAP Header was received.\r\n"));
 
         return E_FAIL;
     }
@@ -4065,8 +4065,8 @@ private:
         void **ppArr, size_t nElements,
         size_t nCurrElements = 0)
     {
-        ATLENSURE_RETURN( ppArr != NULL );
-        ATLENSURE_RETURN( pEntry != NULL );
+        ATLENSURE_RETURN(ppArr != NULL);
+        ATLENSURE_RETURN(pEntry != NULL);
 
         size_t nElementSize;
         if (pEntry->nVal != SOAPTYPE_UNK)
@@ -4075,17 +4075,17 @@ private:
         }
         else // UDT
         {
-            ATLENSURE_RETURN( pEntry->pChain != NULL );
+            ATLENSURE_RETURN(pEntry->pChain != NULL);
             nElementSize = pEntry->pChain->nElementSize;
         }
         if (nElementSize != 0)
         {
             if (*ppArr == NULL)
             {
-                ATLASSERT( nCurrElements == 0 );
+                ATLASSERT(nCurrElements == 0);
                 size_t nBytes=0;
                 HRESULT hr=S_OK;
-                if( FAILED(hr=::ATL::AtlMultiply(&nBytes, nElementSize, nElements)))
+                if (FAILED(hr=::ATL::AtlMultiply(&nBytes, nElementSize, nElements)))
                 {
                     return hr;
                 }
@@ -4093,10 +4093,10 @@ private:
             }
             else // *ppArr != NULL
             {
-                ATLASSERT( nCurrElements != 0 );
+                ATLASSERT(nCurrElements != 0);
                 size_t nBytes=0;
                 HRESULT hr=S_OK;
-                if(	FAILED(hr=::ATL::AtlAdd(&nBytes, nElements, nCurrElements)) ||
+                if (FAILED(hr=::ATL::AtlAdd(&nBytes, nElements, nCurrElements)) ||
                         FAILED(hr=::ATL::AtlMultiply(&nBytes, nElementSize, nBytes)))
                 {
                     return hr;
@@ -4107,7 +4107,7 @@ private:
         else
         {
             // internal error
-            ATLASSERT( FALSE );
+            ATLASSERT(FALSE);
             return E_FAIL;
         }
 
@@ -4126,8 +4126,8 @@ private:
         const _soapmapentry *pEntry,
         ISAXAttributes *pAttributes)
     {
-        ATLENSURE_RETURN( pEntry != NULL );
-        ATLENSURE_RETURN( pAttributes != NULL );
+        ATLENSURE_RETURN(pEntry != NULL);
+        ATLENSURE_RETURN(pAttributes != NULL);
 
         HRESULT hr;
         if (IsRpcEncoded() != false)
@@ -4158,7 +4158,7 @@ private:
         if (pEntry->dwFlags & SOAPFLAG_DYNARR)
         {
             // set size_is value
-            ATLENSURE_RETURN( state.pMap != NULL );
+            ATLENSURE_RETURN(state.pMap != NULL);
             int *pnSizeIs = (int *)(((unsigned char *)state.pvElement)+
                                     (state.pMap->pEntries[pEntry->nSizeIs].nOffset));
 
@@ -4203,7 +4203,7 @@ private:
         else
         {
             // for fixed-size arrays, we know the number of elements
-            ATLASSERT( pEntry->dwFlags & SOAPFLAG_FIXEDARR );
+            ATLASSERT(pEntry->dwFlags & SOAPFLAG_FIXEDARR);
             if (hr == S_OK)
             {
                 if (nElements != AtlSoapGetArrayDims(pEntry->pDims))
@@ -4247,7 +4247,7 @@ private:
         }
         else
         {
-            ATLENSURE( pEntry->pChain != NULL );
+            ATLENSURE(pEntry->pChain != NULL);
 
             nSize = pEntry->pChain->nElementSize;
         }
@@ -4259,16 +4259,16 @@ private:
         }
         else
         {
-            ATLASSERT( state.dwFlags & SOAPFLAG_DYNARR );
+            ATLASSERT(state.dwFlags & SOAPFLAG_DYNARR);
 
             unsigned char **ppArr = (unsigned char **)state.pvElement;
             pVal = (*ppArr)+(state.nElement*nSize);
             if (state.dwFlags & SOAPFLAG_UNKSIZE)
             {
-                ATLASSERT( IsRpcEncoded() == false );
+                ATLASSERT(IsRpcEncoded() == false);
 
                 // need to use the previous state's pvElement to update the size_is value
-                ATLASSUME( m_nState > 0 );
+                ATLASSUME(m_nState > 0);
                 int *pnSizeIs = (int *)(((unsigned char *)m_stateStack[m_nState-1].pvElement)+
                                         (state.pMap->pEntries[pEntry->nSizeIs].nOffset));
 
@@ -4284,17 +4284,17 @@ private:
 
     HRESULT ProcessString(const _soapmapentry *pEntry, void *pVal)
     {
-        ATLENSURE_RETURN( pEntry != NULL );
+        ATLENSURE_RETURN(pEntry != NULL);
 
         //  set to the string builder class
 
-        ATLASSERT( GetReader() != NULL );
+        ATLASSERT(GetReader() != NULL);
 
         m_stringBuilder.SetReader(GetReader());
         m_stringBuilder.SetParent(this);
 
         m_stringBuilder.Clear();
-        GetReader()->putContentHandler( &m_stringBuilder );
+        GetReader()->putContentHandler(&m_stringBuilder);
 
         if (S_OK != PushState(pVal, NULL, pEntry, SOAPFLAG_READYSTATE | pEntry->dwFlags))
         {
@@ -4312,9 +4312,9 @@ private:
         DWORD dwIncludeFlags = 0,
         DWORD dwExcludeFlags = 0)
     {
-        ATLASSERT( pEntry != NULL );
-        ATLASSERT( pVal != NULL );
-        ATLASSERT( pAttributes != NULL );
+        ATLASSERT(pEntry != NULL);
+        ATLASSERT(pVal != NULL);
+        ATLASSERT(pAttributes != NULL);
 
         const wchar_t *wsz = NULL;
         int cch = 0;
@@ -4326,12 +4326,12 @@ private:
             if (((pEntry->dwFlags & (SOAPFLAG_FIXEDARR | SOAPFLAG_DYNARR))==0) &&
                     (pEntry->pChain == NULL || pEntry->pChain->mapType != SOAPMAP_STRUCT))
             {
-                ATLTRACE( _T("ATL Server only allows href's on arrays and structs.\r\n") );
+                ATLTRACE(_T("ATL Server only allows href's on arrays and structs.\r\n"));
 
                 return E_FAIL;
             }
 
-            ATLASSERT( IsRpcEncoded() == true );
+            ATLASSERT(IsRpcEncoded() == true);
 
             _ATLTRY
             {
@@ -4345,7 +4345,7 @@ private:
                 if (m_refMap.Lookup(strRef) != NULL)
                 {
                     // ATL Server does not support multi-reference objects
-                    ATLASSERT( FALSE );
+                    ATLASSERT(FALSE);
                     return E_FAIL;
                 }
 
@@ -4353,7 +4353,7 @@ private:
                 if ((currState.pEntry != NULL) && (currState.pEntry->dwFlags & (SOAPFLAG_FIXEDARR | SOAPFLAG_DYNARR)))
                 {
                     // it is an array item
-                    ATLASSERT( currState.nElement != 0 );
+                    ATLASSERT(currState.nElement != 0);
 
                     // exclude array flags for href'd array elements
                     dwExcludeFlags |= SOAPFLAG_FIXEDARR | SOAPFLAG_DYNARR;
@@ -4370,7 +4370,7 @@ private:
 
                 if (!m_refMap.SetAt(strRef, state))
                 {
-                    ATLTRACE( _T("ATLSOAP: CSoapRootHandler::CheckHref -- out of memory.\r\n" ) );
+                    ATLTRACE(_T("ATLSOAP: CSoapRootHandler::CheckHref -- out of memory.\r\n"));
 
                     return E_OUTOFMEMORY;
                 }
@@ -4383,7 +4383,7 @@ private:
             }
             _ATLCATCHALL()
             {
-                ATLTRACE( _T("ATLSOAP: CSoapRootHandler::CheckHref -- out of memory.\r\n" ) );
+                ATLTRACE(_T("ATLSOAP: CSoapRootHandler::CheckHref -- out of memory.\r\n"));
 
                 return E_OUTOFMEMORY;
             }
@@ -4396,10 +4396,10 @@ private:
         const _soapmapentry *pEntry,
         void *pVal)
     {
-        ATLENSURE_RETURN( pEntry != NULL );
-        ATLENSURE_RETURN( pVal != NULL );
-        ATLENSURE_RETURN( pEntry->nVal != SOAPTYPE_ERR );
-        ATLENSURE_RETURN( pEntry->nVal != SOAPTYPE_USERBASE );
+        ATLENSURE_RETURN(pEntry != NULL);
+        ATLENSURE_RETURN(pVal != NULL);
+        ATLENSURE_RETURN(pEntry->nVal != SOAPTYPE_ERR);
+        ATLENSURE_RETURN(pEntry->nVal != SOAPTYPE_USERBASE);
 
         // if it is a complex type, get the chain entry
         // and push the new state on the stack
@@ -4439,7 +4439,7 @@ private:
         int cchLocalName,
         ISAXAttributes  *pAttributes)
     {
-        ATLENSURE_RETURN( state.pMap != NULL );
+        ATLENSURE_RETURN(state.pMap != NULL);
 
         // PAD is only supported on the client
         const _soapmap *pMap = state.pMap;
@@ -4448,11 +4448,11 @@ private:
             return S_FALSE;
         }
 
-        ATLENSURE_RETURN( pMap->dwCallFlags & SOAPFLAG_PAD );
-        ATLASSUME( m_bClient == true );
-        ATLENSURE_RETURN( pMap->nElements == 1 );
+        ATLENSURE_RETURN(pMap->dwCallFlags & SOAPFLAG_PAD);
+        ATLASSUME(m_bClient == true);
+        ATLENSURE_RETURN(pMap->nElements == 1);
         const _soapmapentry *pEntries = pMap->pEntries;
-        ATLENSURE_RETURN( pEntries != NULL );
+        ATLENSURE_RETURN(pEntries != NULL);
 
         int nIndex;
         if (pEntries[0].dwFlags & SOAPFLAG_OUT)
@@ -4465,8 +4465,8 @@ private:
         }
 
         const _soapmapentry *pEntry = &pEntries[nIndex];
-        ATLENSURE_RETURN( pEntry->nHash != 0 );
-        ATLENSURE_RETURN( pEntry->pChain != NULL );
+        ATLENSURE_RETURN(pEntry->nHash != 0);
+        ATLENSURE_RETURN(pEntry->pChain != NULL);
 
         if (S_OK != PushState(state.pvElement, pEntry->pChain, pEntry, pEntry->dwFlags, 0, pEntry->pChain->nElements))
         {
@@ -4478,8 +4478,8 @@ private:
 
     HRESULT IsNullEntry(const _soapmapentry *pEntry, ISAXAttributes *pAttributes)
     {
-        ATLASSERT( pEntry != NULL );
-        ATLASSERT( pAttributes != NULL );
+        ATLASSERT(pEntry != NULL);
+        ATLASSERT(pAttributes != NULL);
 
         HRESULT hr = E_FAIL;
         bool bNull = false;
@@ -4533,7 +4533,7 @@ private:
 
         ParseState &state = GetState();
 
-        ATLASSERT( state.pvElement != NULL );
+        ATLASSERT(state.pvElement != NULL);
         HRESULT hr = E_FAIL;
         const _soapmapentry *pEntry = NULL;
 
@@ -4573,7 +4573,7 @@ private:
                     return hr;
                 }
 
-                ATLASSERT( pEntry != NULL );
+                ATLASSERT(pEntry != NULL);
             }
             else
             {
@@ -4602,7 +4602,7 @@ private:
             if (state.dwFlags & (SOAPFLAG_FIXEDARR | SOAPFLAG_DYNARR))
             {
                 pVal = UpdateArray(state, pEntry);
-                ATLASSERT( pVal != NULL );
+                ATLASSERT(pVal != NULL);
             }
             else
             {
@@ -4654,8 +4654,8 @@ private:
                     // We know it is the first entry because the dynamic array wrapper is created
                     // by sproxy and it guarantees this layouts.
                     ++m_nDepth;
-                    ProcessParams (wszNamespaceUri, cchNamespaceUri, pEntry->pChain->pEntries[0].wszField,
-                                   pEntry->pChain->pEntries[0].cchField, pAttributes);
+                    ProcessParams(wszNamespaceUri, cchNamespaceUri, pEntry->pChain->pEntries[0].wszField,
+                                  pEntry->pChain->pEntries[0].cchField, pAttributes);
                 }
             }
         }
@@ -4665,16 +4665,16 @@ private:
 
     size_t GetSizeIsValue(void *pvParam, const _soapmap *pMap, const _soapmapentry *pEntry)
     {
-        ATLENSURE( pvParam != NULL );
-        ATLENSURE( pMap != NULL );
-        ATLENSURE( pEntry != NULL );
+        ATLENSURE(pvParam != NULL);
+        ATLENSURE(pMap != NULL);
+        ATLENSURE(pEntry != NULL);
 
         int nSizeIs = pEntry->nSizeIs;
         size_t nOffset = pMap->pEntries[nSizeIs].nOffset;
         void *pVal = ((unsigned char *)pvParam)+nOffset;
 
         __int64 nVal = 0;
-        switch(pMap->pEntries[nSizeIs].nVal)
+        switch (pMap->pEntries[nSizeIs].nVal)
         {
         case SOAPTYPE_INTEGER:
         case SOAPTYPE_NONPOSITIVEINTEGER:
@@ -4729,8 +4729,8 @@ private:
 
     HRESULT GenerateArrayInfo(const _soapmapentry *pEntry, const int *pDims, IWriteStream *pStream)
     {
-        ATLENSURE_RETURN( pEntry != NULL );
-        ATLENSURE_RETURN( pStream != NULL );
+        ATLENSURE_RETURN(pEntry != NULL);
+        ATLENSURE_RETURN(pStream != NULL);
 
         HRESULT hr = S_OK;
         if (pEntry->nVal != SOAPTYPE_UNK)
@@ -4741,7 +4741,7 @@ private:
         }
         else
         {
-            ATLENSURE_RETURN( pEntry->pChain != NULL );
+            ATLENSURE_RETURN(pEntry->pChain != NULL);
 
             hr = pStream->WriteStream(" xmlns:q1=\"", sizeof(" xmlns:q1=\"")-1, NULL);
             if (SUCCEEDED(hr))
@@ -4778,7 +4778,7 @@ private:
         }
         else
         {
-            ATLASSERT( pEntry->pChain != NULL );
+            ATLASSERT(pEntry->pChain != NULL);
 
             hr = pStream->WriteStream(pEntry->pChain->szName, pEntry->pChain->cchName, NULL);
         }
@@ -4794,7 +4794,7 @@ private:
             return hr;
         }
 
-        CWriteStreamHelper s( pStream );
+        CWriteStreamHelper s(pStream);
         for (int i=1; i<=pDims[0]; i++)
         {
             if (!s.Write(pDims[i]) ||
@@ -4815,7 +4815,7 @@ private:
 
     HRESULT GenerateXSDWrapper(bool bStart, int nVal, bool bNull, IWriteStream *pStream)
     {
-        ATLENSURE_RETURN( pStream != NULL );
+        ATLENSURE_RETURN(pStream != NULL);
 
         HRESULT hr = pStream->WriteStream((bStart != false) ? "<" : "</",
                                           (bStart != false) ? 1 : 2, NULL);
@@ -4838,8 +4838,8 @@ private:
 
     HRESULT GenerateGenericWrapper(bool bStart, const _soapmap *pMap, IWriteStream *pStream)
     {
-        ATLENSURE_RETURN( pStream != NULL );
-        ATLENSURE_RETURN( pMap != NULL );
+        ATLENSURE_RETURN(pStream != NULL);
+        ATLENSURE_RETURN(pMap != NULL);
 
         HRESULT hr = pStream->WriteStream((bStart != false) ? "<" : "</",
                                           (bStart != false) ? 1 : 2, NULL);
@@ -4863,10 +4863,10 @@ private:
         size_t &nCnt,
         size_t &nElementSize)
     {
-        ATLENSURE_RETURN( pStream != NULL );
-        ATLENSURE_RETURN( pMap != NULL );
-        ATLENSURE_RETURN( pEntry != NULL );
-        ATLENSURE_RETURN( pvParam != NULL );
+        ATLENSURE_RETURN(pStream != NULL);
+        ATLENSURE_RETURN(pMap != NULL);
+        ATLENSURE_RETURN(pEntry != NULL);
+        ATLENSURE_RETURN(pvParam != NULL);
 
         const int *pDims = NULL;
         int arrDims[2] = { 0 };
@@ -4877,14 +4877,14 @@ private:
         }
         else
         {
-            ATLASSERT( pEntry->dwFlags & SOAPFLAG_DYNARR );
+            ATLASSERT(pEntry->dwFlags & SOAPFLAG_DYNARR);
             nCnt = GetSizeIsValue(pvParam, pMap, pEntry);
 
             if (nCnt == 0)
             {
                 // array size should only be zero if array is NULL
                 // did you forget to set the array size?
-                ATLASSERT( FALSE );
+                ATLASSERT(FALSE);
                 return E_FAIL;
             }
 
@@ -4905,7 +4905,7 @@ private:
             nCnt = AtlSoapGetArrayDims(pDims);
 
             // did you forget to set the size_is value?
-            ATLASSERT( nCnt != 0 );
+            ATLASSERT(nCnt != 0);
 
             if (pEntry->nVal != SOAPTYPE_UNK)
             {
@@ -4913,7 +4913,7 @@ private:
             }
             else
             {
-                ATLENSURE_RETURN( pEntry->pChain != NULL );
+                ATLENSURE_RETURN(pEntry->pChain != NULL);
 
                 nElementSize = pEntry->pChain->nElementSize;
             }
@@ -4924,14 +4924,14 @@ private:
 
     HRESULT GenerateEnum(IWriteStream *pStream, void *pVal, const _soapmapentry *pEntry, bool bArray)
     {
-        ATLENSURE_RETURN( pStream != NULL );
-        ATLENSURE_RETURN( pVal != NULL );
-        ATLENSURE_RETURN( pEntry != NULL );
+        ATLENSURE_RETURN(pStream != NULL);
+        ATLENSURE_RETURN(pVal != NULL);
+        ATLENSURE_RETURN(pEntry != NULL);
 
         int nVal = *((int *)pVal);
         const _soapmapentry *pEnumEntries = pEntry->pChain->pEntries;
 
-        ATLENSURE_RETURN( pEnumEntries != NULL );
+        ATLENSURE_RETURN(pEnumEntries != NULL);
         size_t j;
         HRESULT hr = E_FAIL;
         for (j=0; pEnumEntries[j].nHash != 0; j++)
@@ -4952,10 +4952,10 @@ private:
 
     HRESULT GenerateHeaders(CResponseGenerator *pGenerator, const _soapmap *pMap, IWriteStream *pStream)
     {
-        ATLENSURE_RETURN( pStream != NULL );
-        ATLENSURE_RETURN( pMap != NULL );
+        ATLENSURE_RETURN(pStream != NULL);
+        ATLENSURE_RETURN(pMap != NULL);
 
-        ATLENSURE_RETURN( pGenerator != NULL );
+        ATLENSURE_RETURN(pGenerator != NULL);
 
         DWORD dwIncludeFlags = SOAPFLAG_OUT;
         if (m_bClient != false)
@@ -4993,8 +4993,8 @@ private:
 
     bool IsNullElement(const _soapmapentry *pEntry, void *pVal, DWORD dwExcludeFlags=0)
     {
-        ATLENSURE( pEntry != NULL );
-        ATLENSURE( pVal != NULL );
+        ATLENSURE(pEntry != NULL);
+        ATLENSURE(pVal != NULL);
 
         bool bNull = false;
 
@@ -5029,16 +5029,16 @@ private:
 
     HRESULT GenerateNull(IWriteStream *pStream)
     {
-        ATLENSURE_RETURN( pStream != NULL );
+        ATLENSURE_RETURN(pStream != NULL);
         return pStream->WriteStream(" xsi:nil=\"1\"/>", sizeof(" xsi:nil=\"1\"/>")-1, NULL);
     }
 
     HRESULT GenerateResponseHelper(CResponseGenerator *pGenerator, const _soapmap *pMap, void *pvParam, IWriteStream *pStream,
                                    bool bArrayElement = false)
     {
-        ATLENSURE_RETURN( pGenerator != NULL );
-        ATLENSURE_RETURN( pMap != NULL );
-        ATLENSURE_RETURN( pStream != NULL );
+        ATLENSURE_RETURN(pGenerator != NULL);
+        ATLENSURE_RETURN(pMap != NULL);
+        ATLENSURE_RETURN(pStream != NULL);
 
         HRESULT hr = S_OK;
 
@@ -5052,7 +5052,7 @@ private:
             }
         }
 
-        ATLENSURE_RETURN( pMap->pEntries != NULL );
+        ATLENSURE_RETURN(pMap->pEntries != NULL);
 
         const _soapmapentry *pEntries = pMap->pEntries;
         size_t i;
@@ -5085,7 +5085,7 @@ private:
                 size_t nElementSize = 0;
                 size_t nCnt = 1;
 
-                ATLASSERT( pvParam != NULL );
+                ATLASSERT(pvParam != NULL);
 
                 void *pvCurrent = ((unsigned char *)pvParam)+pEntries[i].nOffset;
 
@@ -5125,7 +5125,7 @@ private:
                         }
                         else
                         {
-                            ATLASSERT( pEntries[i].dwFlags & SOAPFLAG_DYNARR );
+                            ATLASSERT(pEntries[i].dwFlags & SOAPFLAG_DYNARR);
 
                             unsigned char **ppArr = (unsigned char **)pvCurrent;
                             pVal = (*ppArr)+(nElement*nElementSize);
@@ -5164,7 +5164,7 @@ private:
                     }
                     else
                     {
-                        ATLASSERT( pEntries[i].pChain != NULL );
+                        ATLASSERT(pEntries[i].pChain != NULL);
 
                         if (pEntries[i].pChain->mapType != SOAPMAP_ENUM)
                         {
@@ -5212,8 +5212,8 @@ private:
 
     void CleanupHelper(const _soapmap *pMap, void *pvParam)
     {
-        ATLENSURE( pMap != NULL );
-        ATLENSURE( pMap->pEntries != NULL );
+        ATLENSURE(pMap != NULL);
+        ATLENSURE(pMap->pEntries != NULL);
 
         if (pvParam == NULL)
         {
@@ -5253,7 +5253,7 @@ private:
                 }
                 else
                 {
-                    ATLASSERT( pEntries[i].dwFlags & SOAPFLAG_DYNARR );
+                    ATLASSERT(pEntries[i].dwFlags & SOAPFLAG_DYNARR);
                     nCnt = GetSizeIsValue(pvParam, pMap, &pEntries[i]);
 
                     arrDims[0] = 1;
@@ -5270,7 +5270,7 @@ private:
                 }
                 else
                 {
-                    ATLENSURE( pEntries[i].pChain != NULL );
+                    ATLENSURE(pEntries[i].pChain != NULL);
 
                     nElementSize = pEntries[i].pChain->nElementSize;
                 }
@@ -5292,7 +5292,7 @@ private:
                     }
                     else
                     {
-                        ATLASSERT( pEntries[i].dwFlags & SOAPFLAG_DYNARR );
+                        ATLASSERT(pEntries[i].dwFlags & SOAPFLAG_DYNARR);
 
                         unsigned char **ppArr = (unsigned char **)pvCurrent;
                         if (*ppArr == NULL)
@@ -5313,7 +5313,7 @@ private:
                 }
                 else
                 {
-                    ATLENSURE( pEntries[i].pChain != NULL );
+                    ATLENSURE(pEntries[i].pChain != NULL);
 
                     if (pEntries[i].pChain->mapType != SOAPMAP_ENUM)
                     {
@@ -5327,7 +5327,7 @@ private:
                 // free it
                 unsigned char **ppArr = (unsigned char **)pvCurrent;
 
-                ATLENSURE( ppArr != NULL );
+                ATLENSURE(ppArr != NULL);
 
                 if (*ppArr != NULL)
                 {
@@ -5448,7 +5448,7 @@ private:
                     {
                         if (((pEntries[i].dwFlags & (SOAPFLAG_NULLABLE | SOAPFLAG_NOMARSHAL))==0) && (pEntries[i].nVal != SOAPTYPE_UNK))
                         {
-                            ATLTRACE( _T("ATLSOAP: CSoapRootHandler::CheckEndElement -- invalid number of elements for parameter/field\r\n") );
+                            ATLTRACE(_T("ATLSOAP: CSoapRootHandler::CheckEndElement -- invalid number of elements for parameter/field\r\n"));
                             return E_FAIL;
                         }
                     }
@@ -5477,7 +5477,7 @@ private:
 
         if (state.pMap != NULL)
         {
-            ATLASSERT( state.pMap->mapType == SOAPMAP_HEADER );
+            ATLASSERT(state.pMap->mapType == SOAPMAP_HEADER);
 
             // ensure all omitted elements were nullable elements, nomarshal elements, or non-required elements
             const _soapmapentry *pEntries = state.pMap->pEntries;
@@ -5493,7 +5493,7 @@ private:
                         if ((bNoOmit != false) ||
                                 ((bNoOmit != false) && (pEntries[i].dwFlags & SOAPFLAG_MUSTUNDERSTAND)))
                         {
-                            ATLTRACE( _T("ATLSOAP: CSoapRootHandler::CheckSoapHeaders -- missing header\r\n") );
+                            ATLTRACE(_T("ATLSOAP: CSoapRootHandler::CheckSoapHeaders -- missing header\r\n"));
                             return E_FAIL;
                         }
                     }
@@ -5520,7 +5520,7 @@ private:
         }
 
         // some sort of error
-        ATLTRACE( _T("ATLSOAP: CSoapRootHandler::endElement -- invalid SOAP message format while processing headers.\r\n" ) );
+        ATLTRACE(_T("ATLSOAP: CSoapRootHandler::endElement -- invalid SOAP message format while processing headers.\r\n"));
 
         return E_FAIL;
     }
@@ -5547,15 +5547,15 @@ protected:
         int cchNamespaceUri = -1,
         bool bHeader = false)
     {
-        ATLENSURE_RETURN( wszName != NULL );
+        ATLENSURE_RETURN(wszName != NULL);
 
         int nVal;
         const _soapmap *pMap = NULL;
         if (m_stateStack.GetCount() != 0)
         {
-            ATLASSUME( m_stateStack[0].pMap != NULL );
+            ATLASSUME(m_stateStack[0].pMap != NULL);
             nVal = (int) m_stateStack[0].nAllocSize;
-            ATLASSERT( GetFunctionMap() != NULL );
+            ATLASSERT(GetFunctionMap() != NULL);
             pMap = GetFunctionMap()[nVal];
         }
         else
@@ -5566,8 +5566,8 @@ protected:
 
         if (pMap == NULL)
         {
-            ATLTRACE( _T("ATLSOAP: CSoapRootHandler::SetSoapMapFromName -- _soapmap not found for: %.*ws, with namespace %.*ws\r\n"),
-                      (int)wcslen(wszName), wszName, wszNamespaceUri ? (int)wcslen(wszNamespaceUri) : 0, wszNamespaceUri ? wszNamespaceUri : L"");
+            ATLTRACE(_T("ATLSOAP: CSoapRootHandler::SetSoapMapFromName -- _soapmap not found for: %.*ws, with namespace %.*ws\r\n"),
+                     (int)wcslen(wszName), wszName, wszNamespaceUri ? (int)wcslen(wszNamespaceUri) : 0, wszNamespaceUri ? wszNamespaceUri : L"");
 
             return E_FAIL;
         }
@@ -5618,7 +5618,7 @@ protected:
 #ifdef _DEBUG
         if (hr == E_OUTOFMEMORY)
         {
-            ATLTRACE( _T("ATLSOAP: CSoapRootHandler::SetSoapMapFromName -- out of memory.\r\n" ) );
+            ATLTRACE(_T("ATLSOAP: CSoapRootHandler::SetSoapMapFromName -- out of memory.\r\n"));
         }
 #endif // _DEBUG
 
@@ -5675,7 +5675,7 @@ public:
         }
 
         // SOAP servers must implement this function
-        ATLASSERT( FALSE );
+        ATLASSERT(FALSE);
         return E_FAIL;
     }
 
@@ -5735,7 +5735,7 @@ public:
                                                   cchNamespaceUri);
             if (nNamespaceHash != SOAP_ENV)
             {
-                ATLTRACE( _T("ATLSOAP: CSoapRootHandler::startElement -- incorrect SOAP-ENV namespace.\r\n" ) );
+                ATLTRACE(_T("ATLSOAP: CSoapRootHandler::startElement -- incorrect SOAP-ENV namespace.\r\n"));
 
                 return E_FAIL;
             }
@@ -5753,7 +5753,7 @@ public:
 
                 if (m_dwState != SOAP_START)
                 {
-                    ATLTRACE( _T("ATLSOAP: CSoapRootHandler::startElement -- invalid SOAP message format: \"Envelope\" in unexpected location.\r\n" ) );
+                    ATLTRACE(_T("ATLSOAP: CSoapRootHandler::startElement -- invalid SOAP message format: \"Envelope\" in unexpected location.\r\n"));
 
                     hr = E_FAIL;
                 }
@@ -5767,7 +5767,7 @@ public:
             {
                 if (m_dwState != SOAP_ENVELOPE)
                 {
-                    ATLTRACE( _T("ATLSOAP: CSoapRootHandler::startElement -- invalid SOAP message format: \"Headers\" in unexpected location.\r\n" ) );
+                    ATLTRACE(_T("ATLSOAP: CSoapRootHandler::startElement -- invalid SOAP message format: \"Headers\" in unexpected location.\r\n"));
 
                     hr = E_FAIL;
                 }
@@ -5782,7 +5782,7 @@ public:
             {
                 if (m_dwState == SOAP_START)
                 {
-                    ATLTRACE( _T("ATLSOAP: CSoapRootHandler::startElement -- invalid SOAP message format: \"Body\" in unexpected location.\r\n" ) );
+                    ATLTRACE(_T("ATLSOAP: CSoapRootHandler::startElement -- invalid SOAP message format: \"Body\" in unexpected location.\r\n"));
 
                     hr = E_FAIL;
                 }
@@ -5816,7 +5816,7 @@ public:
         default:
         {
             // should never get here -- internal error
-            ATLASSERT( FALSE );
+            ATLASSERT(FALSE);
         }
 
 #endif // _DEBUG
@@ -5847,8 +5847,8 @@ public:
                 {
                     // enum
 
-                    ATLASSERT( state.pMap != NULL );
-                    ATLASSERT( state.pMap->pEntries != NULL );
+                    ATLASSERT(state.pMap != NULL);
+                    ATLASSERT(state.pMap->pEntries != NULL);
 
                     ULONG nHash = AtlSoapHashStr(wszChars, cchChars);
                     const _soapmapentry *pEntries = state.pMap->pEntries;
@@ -5872,7 +5872,7 @@ public:
                     }
 
                     // no matching enum entry found
-                    ATLTRACE( _T("ATLSOAP: CSoapRootHandler::characters -- no matching enum entry found for: %.*ws.\r\n" ), cchChars, wszChars );
+                    ATLTRACE(_T("ATLSOAP: CSoapRootHandler::characters -- no matching enum entry found for: %.*ws.\r\n"), cchChars, wszChars);
 
                     return E_FAIL;
                 }
@@ -5912,8 +5912,8 @@ public:
             if (prevState.dwFlags & SOAPFLAG_DYNARRWRAPPER)
             {
                 bDynArrWrapper = true;
-                endElement (wszNamespaceUri, cchNamespaceUri, curState.pEntry->wszField,
-                            curState.pEntry->cchField, NULL, 0);
+                endElement(wszNamespaceUri, cchNamespaceUri, curState.pEntry->wszField,
+                           curState.pEntry->cchField, NULL, 0);
             }
         }
         else
@@ -5938,15 +5938,15 @@ public:
             }
 
             const ParseState& currstate = GetState();
-            ATLENSURE_RETURN( currstate.pEntry != NULL );
+            ATLENSURE_RETURN(currstate.pEntry != NULL);
 
             if (m_nDepth == (currstate.nDepth-1))
             {
                 if (S_OK != CheckEndElement(currstate))
                 {
                     // invalid number of elements
-                    ATLTRACE( _T("ATLSOAP: CSoapRootHandler::endElement -- invalid number of array elements for array parameter %.*ws.\r\n"),
-                              currstate.pEntry->cchField, currstate.pEntry->wszField );
+                    ATLTRACE(_T("ATLSOAP: CSoapRootHandler::endElement -- invalid number of array elements for array parameter %.*ws.\r\n"),
+                             currstate.pEntry->cchField, currstate.pEntry->wszField);
 
                     return E_FAIL;
                 }
@@ -5969,15 +5969,15 @@ public:
 
     HRESULT SetClientStruct(void *pvParam, int nMapIndex)
     {
-        ATLENSURE_RETURN( pvParam != NULL );
-        ATLENSURE_RETURN( nMapIndex >= 0 );
+        ATLENSURE_RETURN(pvParam != NULL);
+        ATLENSURE_RETURN(nMapIndex >= 0);
 
         // this is the params struct
         // store for later use
         m_pvParam = pvParam;
 
         const _soapmap ** pEntries = GetHeaderMap();
-        ATLENSURE_RETURN( pEntries != NULL );
+        ATLENSURE_RETURN(pEntries != NULL);
 
         // push header value
         return PushState(GetHeaderValue(), pEntries[nMapIndex], NULL, 0, nMapIndex, pEntries[nMapIndex]->nElements);
@@ -6034,7 +6034,7 @@ public:
 #ifdef _DEBUG
         else
         {
-            ATLTRACE( _T("ATLSOAP: CSoapRootHandler::InitializeSOAP -- failed to get SAXXMLReader.\r\n" ) );
+            ATLTRACE(_T("ATLSOAP: CSoapRootHandler::InitializeSOAP -- failed to get SAXXMLReader.\r\n"));
         }
 #endif // _DEBUG
 
@@ -6058,7 +6058,7 @@ public:
 
         if (m_stateStack.IsEmpty() == false)
         {
-            ATLASSUME( m_stateStack[0].pMap != NULL );
+            ATLASSUME(m_stateStack[0].pMap != NULL);
 
             // check to see if all required and non-nullable SOAP headers were sent
             if (m_stateStack[0].pMap->mapType == SOAPMAP_HEADER)
@@ -6080,15 +6080,15 @@ public:
             if (SUCCEEDED(hr))
             {
                 // set the SOAP Header map for the function
-                ATLASSUME( m_stateStack.IsEmpty() == false );
+                ATLASSUME(m_stateStack.IsEmpty() == false);
 
                 const _soapmap **ppHeaderMap = GetHeaderMap();
-                ATLENSURE_RETURN( ppHeaderMap != NULL );
+                ATLENSURE_RETURN(ppHeaderMap != NULL);
 
                 // create a temporary parse state for checking headers
                 ParseState state;
                 state.pMap = ppHeaderMap[m_stateStack[0].nAllocSize];
-                ATLENSURE_RETURN( state.pMap != NULL );
+                ATLENSURE_RETURN(state.pMap != NULL);
 
                 // check to see if all required and non-nullable SOAP headers were sent
                 hr = CheckSoapHeaders(state);
@@ -6100,7 +6100,7 @@ public:
 
     virtual HRESULT BeginParse(IStream *pStream)
     {
-        ATLASSERT( pStream != NULL );
+        ATLASSERT(pStream != NULL);
 
         CComVariant varStream;
         varStream = static_cast<IUnknown*>(pStream);
@@ -6131,9 +6131,9 @@ public:
 
     virtual HRESULT GenerateResponse(IWriteStream *pStream)
     {
-        ATLASSUME( m_stateStack.IsEmpty() == false );
-        ATLASSUME( m_stateStack[0].pMap != NULL );
-        ATLASSUME( m_stateStack[0].pvElement != NULL );
+        ATLASSUME(m_stateStack.IsEmpty() == false);
+        ATLASSUME(m_stateStack[0].pMap != NULL);
+        ATLASSUME(m_stateStack[0].pvElement != NULL);
 
         const ParseState& state = m_stateStack[0];
 
@@ -6159,11 +6159,11 @@ public:
         else
         {
             const _soapmap **ppFuncMap = GetFunctionMap();
-            ATLENSURE_RETURN( ppFuncMap != NULL );
+            ATLENSURE_RETURN(ppFuncMap != NULL);
             pFuncMap = ppFuncMap[state.nAllocSize];
         }
 
-        ATLENSURE_RETURN( pFuncMap != NULL );
+        ATLENSURE_RETURN(pFuncMap != NULL);
 
         CRpcEncodedGenerator rpcGen;
         CPADGenerator padGen;
@@ -6177,13 +6177,13 @@ public:
         }
         else if (pFuncMap->dwCallFlags & SOAPFLAG_PID)
         {
-            ATLASSERT( (pFuncMap->dwCallFlags & (SOAPFLAG_DOCUMENT | SOAPFLAG_LITERAL)) == (SOAPFLAG_DOCUMENT | SOAPFLAG_LITERAL) );
+            ATLASSERT((pFuncMap->dwCallFlags & (SOAPFLAG_DOCUMENT | SOAPFLAG_LITERAL)) == (SOAPFLAG_DOCUMENT | SOAPFLAG_LITERAL));
             pGenerator = &pidGen;
         }
         else
         {
-            ATLASSERT( (pFuncMap->dwCallFlags & (SOAPFLAG_DOCUMENT | SOAPFLAG_LITERAL)) == (SOAPFLAG_DOCUMENT | SOAPFLAG_LITERAL) );
-            ATLASSERT( pFuncMap->dwCallFlags & SOAPFLAG_PAD );
+            ATLASSERT((pFuncMap->dwCallFlags & (SOAPFLAG_DOCUMENT | SOAPFLAG_LITERAL)) == (SOAPFLAG_DOCUMENT | SOAPFLAG_LITERAL));
+            ATLASSERT(pFuncMap->dwCallFlags & SOAPFLAG_PAD);
             pGenerator = &padGen;
         }
 
@@ -6221,10 +6221,10 @@ public:
         if ((m_stateStack.IsEmpty() == false) && (m_pvParam != NULL))
         {
             const _soapmap **ppFuncMap = GetFunctionMap();
-            ATLENSURE( ppFuncMap != NULL );
+            ATLENSURE(ppFuncMap != NULL);
 
             const _soapmap *pFuncMap = ppFuncMap[m_stateStack[0].nAllocSize];
-            ATLENSURE( pFuncMap != NULL );
+            ATLENSURE(pFuncMap != NULL);
 
             CleanupHelper(pFuncMap, m_pvParam);
             if (m_bClient == false)
@@ -6240,10 +6240,10 @@ public:
         if (m_stateStack.IsEmpty() == false)
         {
             const _soapmap **ppHeaderMap = GetHeaderMap();
-            ATLENSURE( ppHeaderMap != NULL );
+            ATLENSURE(ppHeaderMap != NULL);
 
             const _soapmap *pHeaderMap = ppHeaderMap[m_stateStack[0].nAllocSize];
-            ATLENSURE( pHeaderMap != NULL );
+            ATLENSURE(pHeaderMap != NULL);
 
             CleanupHelper(pHeaderMap, GetHeaderValue());
         }
@@ -6349,7 +6349,7 @@ public:
         const wchar_t *wszDetail,
         int cchDetail)
     {
-        ATLASSUME( m_pHttpResponse != NULL );
+        ATLASSUME(m_pHttpResponse != NULL);
 
         SetHttpError(AtlsHttpError(500, SUBERR_NO_PROCESS));
 
@@ -6372,7 +6372,7 @@ public:
             }
             _ATLCATCHALL()
             {
-                ATLTRACE( _T("CSoapHandler::SoapFault -- out of memory.\r\n" ) );
+                ATLTRACE(_T("CSoapHandler::SoapFault -- out of memory.\r\n"));
 
                 return E_OUTOFMEMORY;
             }
@@ -6421,9 +6421,9 @@ public:
         char szBuf[ATL_URL_MAX_URL_LENGTH+1];
         szBuf[0] = '\0';
         DWORD dwLen = ATL_URL_MAX_URL_LENGTH;
-        if ( m_spServerContext->GetServerVariable("HTTP_SOAPACTION", szBuf, &dwLen) != FALSE )
+        if (m_spServerContext->GetServerVariable("HTTP_SOAPACTION", szBuf, &dwLen) != FALSE)
         {
-            if ( dwLen >= 2 )
+            if (dwLen >= 2)
             {
                 // drop the last "
                 szBuf[dwLen-2] = '\0';
@@ -6433,7 +6433,7 @@ public:
                     _ATLTRY
                     {
                         // ignore return code here
-                        SetSoapMapFromName(CA2W( szMethod+1 ), -1, GetNamespaceUri(), -1, true);
+                        SetSoapMapFromName(CA2W(szMethod+1), -1, GetNamespaceUri(), -1, true);
                     }
                     _ATLCATCHALL()
                     {
@@ -6610,15 +6610,15 @@ public:
         : m_dwTimeout(0), m_errorState(SOAPCLIENT_SUCCESS)
     {
         TCHAR szTmp[ATL_URL_MAX_URL_LENGTH];
-        if(AtlEscapeUrl(szUrl,szTmp,0,ATL_URL_MAX_URL_LENGTH-1,ATL_URL_BROWSER_MODE))
+        if (AtlEscapeUrl(szUrl,szTmp,0,ATL_URL_MAX_URL_LENGTH-1,ATL_URL_BROWSER_MODE))
             m_url.CrackUrl(szTmp);
     }
 
     CSoapSocketClientT(LPCTSTR szServer, LPCTSTR szUri, ATL_URL_PORT nPort=80)
         : m_dwTimeout(0), m_errorState(SOAPCLIENT_SUCCESS)
     {
-        ATLASSERT( szServer != NULL );
-        ATLASSERT( szUri != NULL );
+        ATLASSERT(szServer != NULL);
+        ATLASSERT(szUri != NULL);
 
         m_url.SetUrlPath(szUri);
         m_url.SetHostName(szServer);
@@ -6677,7 +6677,7 @@ public:
             navData.SetExtraHeaders(strExtraHeaders);
             navData.SetPostData((LPBYTE)(LPCSTR) m_writeStream.m_str, m_writeStream.m_str.GetLength(), _T("text/xml; charset=utf-8"));
 
-            ATLSOAP_TRACE( (LPBYTE)(LPCSTR)m_writeStream.m_str, m_writeStream.m_str.GetLength() );
+            ATLSOAP_TRACE((LPBYTE)(LPCSTR)m_writeStream.m_str, m_writeStream.m_str.GetLength());
 
             if (m_dwTimeout != 0)
             {
@@ -6741,7 +6741,7 @@ public:
     HRESULT SetUrl(LPCTSTR szUrl)
     {
         TCHAR szTmp[ATL_URL_MAX_URL_LENGTH];
-        if(!AtlEscapeUrl(szUrl,szTmp,0,ATL_URL_MAX_URL_LENGTH-1,ATL_URL_BROWSER_MODE))
+        if (!AtlEscapeUrl(szUrl,szTmp,0,ATL_URL_MAX_URL_LENGTH-1,ATL_URL_BROWSER_MODE))
         {
             return E_FAIL;
         }
@@ -6937,7 +6937,7 @@ public:
         :m_hInternet(NULL), m_hConnection(NULL), m_hRequest(NULL), m_dwTimeout(0), m_errorState(SOAPCLIENT_SUCCESS)
     {
         TCHAR szTmp[ATL_URL_MAX_URL_LENGTH];
-        if(AtlEscapeUrl(szUrl,szTmp,0,ATL_URL_MAX_URL_LENGTH-1,ATL_URL_BROWSER_MODE))
+        if (AtlEscapeUrl(szUrl,szTmp,0,ATL_URL_MAX_URL_LENGTH-1,ATL_URL_BROWSER_MODE))
         {
             if (m_url.CrackUrl(szTmp) != FALSE)
             {
@@ -7087,7 +7087,7 @@ public:
     {
         CloseAll();
         TCHAR szTmp[ATL_URL_MAX_URL_LENGTH];
-        if(!AtlEscapeUrl(szUrl,szTmp,0,ATL_URL_MAX_URL_LENGTH-1,ATL_URL_BROWSER_MODE))
+        if (!AtlEscapeUrl(szUrl,szTmp,0,ATL_URL_MAX_URL_LENGTH-1,ATL_URL_BROWSER_MODE))
         {
             return E_FAIL;
         }
@@ -7186,11 +7186,11 @@ private:
             return hr;
 
         CComVariant vEmpty;
-        hr = m_spHttpRequest->open( CComBSTR(L"POST"),
-                                    CComBSTR(szURL),
-                                    CComVariant(VARIANT_BOOL(VARIANT_FALSE)),
-                                    vEmpty,
-                                    vEmpty );
+        hr = m_spHttpRequest->open(CComBSTR(L"POST"),
+                                   CComBSTR(szURL),
+                                   CComVariant(VARIANT_BOOL(VARIANT_FALSE)),
+                                   vEmpty,
+                                   vEmpty);
         if (hr != S_OK)
         {
             m_spHttpRequest.Release();
@@ -7320,14 +7320,14 @@ public:
             while (_istspace(static_cast<unsigned char>(*szColon)));
 
             if (FAILED(m_spHttpRequest->setRequestHeader(
-                           CComBSTR( L"SOAPAction" ), CComBSTR( szColon ))))
+                           CComBSTR(L"SOAPAction"), CComBSTR(szColon))))
             {
                 SetClientError(SOAPCLIENT_SEND_ERROR);
                 return E_FAIL;
             }
         } // if SOAPAction header not properly formed, attempt to send anyway
 
-        if (FAILED(m_spHttpRequest->setRequestHeader(CComBSTR( L"Content-Type" ), CComBSTR(L"text/xml; charset=utf-8"))))
+        if (FAILED(m_spHttpRequest->setRequestHeader(CComBSTR(L"Content-Type"), CComBSTR(L"text/xml; charset=utf-8"))))
         {
             SetClientError(SOAPCLIENT_SEND_ERROR);
             return E_FAIL;
@@ -7406,7 +7406,7 @@ public:
         (szProxy);
         (nProxyPort);
 
-        ATLTRACE( _T("CSoapMSXMLInetClient does not support SetProxy") );
+        ATLTRACE(_T("CSoapMSXMLInetClient does not support SetProxy"));
 
         return S_OK;
     }
@@ -7423,10 +7423,10 @@ private:
 
     HRESULT GenerateWSDLHelper(const _soapmap *pMap, WSDLMAP& structMap, WSDLMAP& enumMap)
     {
-        ATLENSURE_RETURN( pMap != NULL );
+        ATLENSURE_RETURN(pMap != NULL);
 
         const _soapmapentry *pEntries = pMap->pEntries;
-        ATLENSURE_RETURN( pEntries != NULL );
+        ATLENSURE_RETURN(pEntries != NULL);
 
         HRESULT hr = S_OK;
 
@@ -7434,7 +7434,7 @@ private:
         {
             if (pEntries[i].nVal == SOAPTYPE_UNK)
             {
-                ATLENSURE_RETURN( pEntries[i].pChain != NULL );
+                ATLENSURE_RETURN(pEntries[i].pChain != NULL);
 
                 _ATLTRY
                 {
@@ -7473,13 +7473,13 @@ private:
 
     HTTP_CODE IsUDT(const _soapmapentry *pEntry)
     {
-        ATLENSURE( pEntry != NULL );
+        ATLENSURE(pEntry != NULL);
         return (pEntry->nVal != SOAPTYPE_UNK) ? HTTP_S_FALSE : HTTP_SUCCESS;
     }
 
     HTTP_CODE GetSoapDims(const _soapmapentry *pEntry)
     {
-        ATLENSURE( pEntry != NULL );
+        ATLENSURE(pEntry != NULL);
         if (pEntry->pDims[0] != 0)
         {
             if (SUCCEEDED(m_pWriteStream->WriteStream("[", 1, NULL)))
@@ -7559,7 +7559,7 @@ protected:
             return E_FAIL;
         }
 
-        ATLASSUME( m_pFuncs[0] != NULL );
+        ATLASSUME(m_pFuncs[0] != NULL);
 
         m_dwCallFlags = m_pFuncs[0]->dwCallFlags;
 
@@ -7758,7 +7758,7 @@ public:
         {
             return GetSoapType(m_pFuncs[m_nFunc]->pEntries[m_nParam].nVal, m_pWriteStream);
         }
-        ATLASSUME( m_pFuncs[m_nFunc]->pEntries[m_nParam].pChain != NULL );
+        ATLASSUME(m_pFuncs[m_nFunc]->pEntries[m_nParam].pChain != NULL);
         return (m_pWriteStream->WriteStream(m_pFuncs[m_nFunc]->pEntries[m_nParam].pChain->szName,
                                             m_pFuncs[m_nFunc]->pEntries[m_nParam].pChain->cchName, NULL) == S_OK) ? HTTP_SUCCESS : HTTP_S_FALSE;
     }
@@ -7891,7 +7891,7 @@ public:
         {
             return GetSoapType(pMap->pEntries[m_nCurrUDTField].nVal, m_pWriteStream);
         }
-        ATLASSERT( pMap->pEntries[m_nCurrUDTField].pChain != NULL );
+        ATLASSERT(pMap->pEntries[m_nCurrUDTField].pChain != NULL);
         return (m_pWriteStream->WriteStream(pMap->pEntries[m_nCurrUDTField].pChain->szName,
                                             pMap->pEntries[m_nCurrUDTField].pChain->cchName, NULL) == S_OK) ? HTTP_SUCCESS : HTTP_S_FALSE;
     }
@@ -7911,7 +7911,7 @@ public:
     {
         const _soapmap *pMap = m_structMap.GetValueAt(m_currUDTPos);
         int nIndex = pMap->pEntries[m_nCurrUDTField].nSizeIs;
-        ATLASSERT( nIndex >= 0 );
+        ATLASSERT(nIndex >= 0);
         return (m_pStream->WriteStream(pMap->pEntries[nIndex].szField,
                                        pMap->pEntries[nIndex].cchField, NULL) == S_OK) ? HTTP_SUCCESS : HTTP_S_FALSE;
     }
@@ -7998,7 +7998,7 @@ public:
         {
             return GetSoapType(pEntry->nVal, m_pWriteStream);
         }
-        ATLENSURE( pEntry->pChain != NULL );
+        ATLENSURE(pEntry->pChain != NULL);
         return (m_pWriteStream->WriteStream(pEntry->pChain->szName,
                                             pEntry->pChain->cchName, NULL) == S_OK) ? HTTP_SUCCESS : HTTP_S_FALSE;
     }
@@ -8176,7 +8176,7 @@ public:
                 SetWriteStream(&HttpResponse);
                 SetHttpServerContext(m_spServerContext);
 
-                ATLASSERT( s.ParseSuccessful() != false );
+                ATLASSERT(s.ParseSuccessful() != false);
 
                 hcErr = s.Render(this, &HttpResponse);
             }

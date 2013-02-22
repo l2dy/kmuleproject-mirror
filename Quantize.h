@@ -39,21 +39,21 @@ protected:
     UINT m_nColorBits;
 
 public:
-    CQuantizer (UINT nMaxColors, UINT nColorBits);
-    virtual ~CQuantizer ();
-    BOOL ProcessImage (HANDLE hImage);
-    UINT GetColorCount ();
-    void SetColorTable (RGBQUAD* prgb);
+    CQuantizer(UINT nMaxColors, UINT nColorBits);
+    virtual ~CQuantizer();
+    BOOL ProcessImage(HANDLE hImage);
+    UINT GetColorCount();
+    void SetColorTable(RGBQUAD* prgb);
 
 protected:
-    void AddColor (NODE** ppNode, BYTE r, BYTE g, BYTE b, UINT nColorBits,
-                   UINT nLevel, UINT* pLeafCount, NODE** pReducibleNodes);
-    void* CreateNode (UINT nLevel, UINT nColorBits, UINT* pLeafCount,
-                      NODE** pReducibleNodes);
-    void ReduceTree (UINT nColorBits, UINT* pLeafCount,
+    void AddColor(NODE** ppNode, BYTE r, BYTE g, BYTE b, UINT nColorBits,
+                  UINT nLevel, UINT* pLeafCount, NODE** pReducibleNodes);
+    void* CreateNode(UINT nLevel, UINT nColorBits, UINT* pLeafCount,
                      NODE** pReducibleNodes);
-    void DeleteTree (NODE** ppNode);
-    void GetPaletteColors (NODE* pTree, RGBQUAD* prgb, UINT* pIndex);
+    void ReduceTree(UINT nColorBits, UINT* pLeafCount,
+                    NODE** pReducibleNodes);
+    void DeleteTree(NODE** ppNode);
+    void GetPaletteColors(NODE* pTree, RGBQUAD* prgb, UINT* pIndex);
     BYTE GetPixelIndex(long x,long y, int nbit, long effwdt, BYTE *pimage);
 };
 

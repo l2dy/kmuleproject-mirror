@@ -30,14 +30,14 @@ CWSDLParser::CWSDLParser(ISAXXMLReader *pReader, CParserBase *pParent, DWORD dwL
 {
 }
 
-TAG_METHOD_IMPL( CWSDLParser, OnDefinitions )
+TAG_METHOD_IMPL(CWSDLParser, OnDefinitions)
 {
     TRACE_PARSE_ENTRY();
 
     return S_OK;
 }
 
-TAG_METHOD_IMPL( CWSDLParser, OnImport )
+TAG_METHOD_IMPL(CWSDLParser, OnImport)
 {
     //
     // TODO: parse import (?)
@@ -53,7 +53,7 @@ TAG_METHOD_IMPL( CWSDLParser, OnImport )
         if (SUCCEEDED(hr))
         {
             CStringW localStrLoc = GetDiscoMapDocument()->GetValue(strLoc);
-            if(!localStrLoc.IsEmpty())
+            if (!localStrLoc.IsEmpty())
                 strLoc = localStrLoc;
 
             if (m_importMap.SetAt(strNs, strLoc) != NULL)
@@ -74,14 +74,14 @@ TAG_METHOD_IMPL( CWSDLParser, OnImport )
     return E_FAIL;
 }
 
-TAG_METHOD_IMPL( CWSDLParser, OnDocumentation )
+TAG_METHOD_IMPL(CWSDLParser, OnDocumentation)
 {
     TRACE_PARSE_ENTRY();
 
     return SkipElement();
 }
 
-TAG_METHOD_IMPL( CWSDLParser, OnTypes )
+TAG_METHOD_IMPL(CWSDLParser, OnTypes)
 {
     TRACE_PARSE_ENTRY();
 
@@ -94,7 +94,7 @@ TAG_METHOD_IMPL( CWSDLParser, OnTypes )
             SetXMLElementInfo(pElem, pCurr, GetLocator());
             pElem->SetParentDocument(pCurr);
 
-            CAutoPtr<CWSDLTypesParser> p( new CWSDLTypesParser(GetReader(), this, GetLevel(), pElem));
+            CAutoPtr<CWSDLTypesParser> p(new CWSDLTypesParser(GetReader(), this, GetLevel(), pElem));
             if (p != NULL)
             {
                 if (g_ParserList.AddHead(p) != NULL)
@@ -110,7 +110,7 @@ TAG_METHOD_IMPL( CWSDLParser, OnTypes )
     return E_FAIL;
 }
 
-TAG_METHOD_IMPL( CWSDLParser, OnMessage )
+TAG_METHOD_IMPL(CWSDLParser, OnMessage)
 {
     TRACE_PARSE_ENTRY();
 
@@ -118,13 +118,13 @@ TAG_METHOD_IMPL( CWSDLParser, OnMessage )
     if (pCurr != NULL)
     {
         CAutoPtr<CWSDLMessage> spElem;
-        spElem.Attach( new CWSDLMessage );
+        spElem.Attach(new CWSDLMessage);
         if (spElem != NULL)
         {
             SetXMLElementInfo(spElem, pCurr, GetLocator());
             spElem->SetParentDocument(pCurr);
 
-            CAutoPtr<CWSDLMessageParser> p( new CWSDLMessageParser(GetReader(), this, GetLevel(), spElem) );
+            CAutoPtr<CWSDLMessageParser> p(new CWSDLMessageParser(GetReader(), this, GetLevel(), spElem));
             if (p != NULL)
             {
                 if (g_ParserList.AddHead(p) != NULL)
@@ -147,7 +147,7 @@ TAG_METHOD_IMPL( CWSDLParser, OnMessage )
     return E_FAIL;
 }
 
-TAG_METHOD_IMPL( CWSDLParser, OnPortType )
+TAG_METHOD_IMPL(CWSDLParser, OnPortType)
 {
     TRACE_PARSE_ENTRY();
 
@@ -155,13 +155,13 @@ TAG_METHOD_IMPL( CWSDLParser, OnPortType )
     if (pCurr != NULL)
     {
         CAutoPtr<CWSDLPortType> spElem;
-        spElem.Attach( new CWSDLPortType );
+        spElem.Attach(new CWSDLPortType);
         if (spElem != NULL)
         {
             SetXMLElementInfo(spElem, pCurr, GetLocator());
             spElem->SetParentDocument(pCurr);
 
-            CAutoPtr<CWSDLPortTypeParser> p( new CWSDLPortTypeParser(GetReader(), this, GetLevel(), spElem) );
+            CAutoPtr<CWSDLPortTypeParser> p(new CWSDLPortTypeParser(GetReader(), this, GetLevel(), spElem));
             if (p != NULL)
             {
                 if (g_ParserList.AddHead(p) != NULL)
@@ -184,7 +184,7 @@ TAG_METHOD_IMPL( CWSDLParser, OnPortType )
     return E_FAIL;
 }
 
-TAG_METHOD_IMPL( CWSDLParser, OnBinding )
+TAG_METHOD_IMPL(CWSDLParser, OnBinding)
 {
     TRACE_PARSE_ENTRY();
 
@@ -192,7 +192,7 @@ TAG_METHOD_IMPL( CWSDLParser, OnBinding )
     if (pCurr != NULL)
     {
         CAutoPtr<CWSDLBinding> spElem;
-        spElem.Attach( new CWSDLBinding );
+        spElem.Attach(new CWSDLBinding);
         if (spElem != NULL)
         {
             SetXMLElementInfo(spElem, pCurr, GetLocator());
@@ -218,7 +218,7 @@ TAG_METHOD_IMPL( CWSDLParser, OnBinding )
     return E_FAIL;
 }
 
-TAG_METHOD_IMPL( CWSDLParser, OnService )
+TAG_METHOD_IMPL(CWSDLParser, OnService)
 {
     TRACE_PARSE_ENTRY();
 
@@ -226,13 +226,13 @@ TAG_METHOD_IMPL( CWSDLParser, OnService )
     if (pCurr != NULL)
     {
         CAutoPtr<CWSDLService> spElem;
-        spElem.Attach( new CWSDLService );
+        spElem.Attach(new CWSDLService);
         if (spElem != NULL)
         {
             SetXMLElementInfo(spElem, pCurr, GetLocator());
             spElem->SetParentDocument(pCurr);
 
-            CAutoPtr<CWSDLServiceParser> p( new CWSDLServiceParser(GetReader(), this, GetLevel(), spElem) );
+            CAutoPtr<CWSDLServiceParser> p(new CWSDLServiceParser(GetReader(), this, GetLevel(), spElem));
             if (p != NULL)
             {
                 if (g_ParserList.AddHead(p) != NULL)
@@ -255,7 +255,7 @@ TAG_METHOD_IMPL( CWSDLParser, OnService )
     return E_FAIL;
 }
 
-ATTR_METHOD_IMPL( CWSDLParser, OnName )
+ATTR_METHOD_IMPL(CWSDLParser, OnName)
 {
     TRACE_PARSE_ENTRY();
 
@@ -270,7 +270,7 @@ ATTR_METHOD_IMPL( CWSDLParser, OnName )
     return E_FAIL;
 }
 
-ATTR_METHOD_IMPL( CWSDLParser, OnTargetNamespace )
+ATTR_METHOD_IMPL(CWSDLParser, OnTargetNamespace)
 {
     TRACE_PARSE_ENTRY();
 
@@ -287,7 +287,7 @@ ATTR_METHOD_IMPL( CWSDLParser, OnTargetNamespace )
 
 CWSDLDocument * CWSDLParser::CreateWSDLDocument()
 {
-    m_pDocument.Attach( new CWSDLDocument );
+    m_pDocument.Attach(new CWSDLDocument);
     return m_pDocument;
 }
 

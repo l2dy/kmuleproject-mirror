@@ -87,7 +87,7 @@ bool Extract(const CString& strTempFilePath, const CString& strOrigFile, const C
 
     va_list args;
     va_start(args, numFiles);
-    while(numFiles-- > 0)
+    while (numFiles-- > 0)
     {
         LPCTSTR pszFileToExtract = va_arg(args, LPCTSTR);
         strFilesToExtract.AddTail(pszFileToExtract);
@@ -109,7 +109,7 @@ bool Extract(const CString& strTempFilePath, const CString& strOrigFile, const C
     {
         bIsArchiveFile = true;
 
-        for(POSITION pos = strFilesToExtract.GetHeadPosition(); pos && !bHaveNewFile;)
+        for (POSITION pos = strFilesToExtract.GetHeadPosition(); pos && !bHaveNewFile;)
         {
             CString strFileToExtract = strFilesToExtract.GetNext(pos);
 
@@ -131,7 +131,7 @@ bool Extract(const CString& strTempFilePath, const CString& strOrigFile, const C
                     strError.Format(L"Failed to extract %s file from ZIP file \"%s\".", strBasicFileName, strTempFilePath);
             }
         }
-        if(!bHaveNewFile)
+        if (!bHaveNewFile)
         {
             //do we need localization?
             strError.Format(L"Downloaded %s file \"%s\" is a ZIP file with unexpected content.", strBasicFileName, strTempFilePath);
@@ -151,12 +151,12 @@ bool Extract(const CString& strTempFilePath, const CString& strOrigFile, const C
                 bIsArchiveFile = true;
 
                 CString strFile;
-                while(rar.GetNextFile(strFile))
+                while (rar.GetNextFile(strFile))
                 {
-                    for(POSITION pos = strFilesToExtract.GetHeadPosition(); pos && !bHaveNewFile;)
+                    for (POSITION pos = strFilesToExtract.GetHeadPosition(); pos && !bHaveNewFile;)
                     {
                         CString strFileToExtract = strFilesToExtract.GetNext(pos);
-                        if(strFile.CompareNoCase(strFileToExtract) == 0)
+                        if (strFile.CompareNoCase(strFileToExtract) == 0)
                         {
                             CString strTempUnzipFilePath = GetUnpackPath(strFileToExtract);
 
@@ -173,7 +173,7 @@ bool Extract(const CString& strTempFilePath, const CString& strOrigFile, const C
                         }
                     }
                 }
-                if(!bHaveNewFile)
+                if (!bHaveNewFile)
                     strError.Format(L"Downloaded %s file \"%s\" is a RAR file with unexpected content.", strBasicFileName, strTempFilePath);
                 rar.Close();
             }
@@ -217,7 +217,7 @@ bool Extract(const CString& strTempFilePath, const CString& strOrigFile, const C
             gz.Close();
         }
     }
-    if(!strError.IsEmpty())
+    if (!strError.IsEmpty())
         //AfxMessageBox(strError, MB_ICONERROR);
         theApp.QueueLogLineEx(LOG_ERROR, strError);
 

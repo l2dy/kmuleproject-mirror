@@ -318,7 +318,7 @@ HRESULT CMainFrameDropTarget::PasteHTML(PASTEURLDATA* pPaste)
                 {
                     pva->vt = VT_BSTR;
                     pva->bstrVal = pPaste->m_bstrURLs;
-                    VERIFY( SafeArrayUnaccessData(psfHtmlLines) == S_OK );
+                    VERIFY(SafeArrayUnaccessData(psfHtmlLines) == S_OK);
 
                     // Build the HTML document
                     //
@@ -342,9 +342,9 @@ HRESULT CMainFrameDropTarget::PasteHTML(PASTEURLDATA* pPaste)
                     // 'Remove' the BSTR which was specified before, to *NOT* have it deleted by 'SafeArrayDestroy'
                     pva->vt = VT_NULL;
                     pva->bstrVal = NULL;
-                    VERIFY( SafeArrayUnaccessData(psfHtmlLines) == S_OK );
+                    VERIFY(SafeArrayUnaccessData(psfHtmlLines) == S_OK);
                 }
-                VERIFY( SafeArrayDestroy(psfHtmlLines) == S_OK );
+                VERIFY(SafeArrayDestroy(psfHtmlLines) == S_OK);
             }
             else
                 hrPasteResult = E_OUTOFMEMORY;

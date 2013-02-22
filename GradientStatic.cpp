@@ -30,11 +30,11 @@ CGradientStatic::CGradientStatic()
 
 CGradientStatic::~CGradientStatic()
 {
-    if(m_Mem.dc.GetSafeHdc() && m_Mem.pold)
+    if (m_Mem.dc.GetSafeHdc() && m_Mem.pold)
         m_Mem.dc.SelectObject(m_Mem.pold);
-    if(m_Mem.bmp.GetSafeHandle())
+    if (m_Mem.bmp.GetSafeHandle())
         m_Mem.bmp.DeleteObject();
-    if(m_Mem.dc.GetSafeHdc())
+    if (m_Mem.dc.GetSafeHdc())
         m_Mem.dc.DeleteDC();
 }
 
@@ -55,7 +55,7 @@ void CGradientStatic::OnPaint()
     CRect rClient;
     GetClientRect(rClient);
 
-    if(m_bInit)
+    if (m_bInit)
     {
         CreateGradient(&dc, &rClient);
         m_bInit = false;
@@ -69,15 +69,15 @@ void CGradientStatic::CreateGradient(CDC *pDC, CRect *pRect)
     m_Mem.cx = pRect->Width();
     m_Mem.cy = pRect->Height();
 
-    if(m_Mem.dc.GetSafeHdc())
+    if (m_Mem.dc.GetSafeHdc())
     {
-        if(m_Mem.bmp.GetSafeHandle() && m_Mem.pold)
+        if (m_Mem.bmp.GetSafeHandle() && m_Mem.pold)
             m_Mem.dc.SelectObject(m_Mem.pold);
         m_Mem.dc.DeleteDC();
     }
     m_Mem.dc.CreateCompatibleDC(pDC);
 
-    if(m_Mem.bmp.GetSafeHandle())
+    if (m_Mem.bmp.GetSafeHandle())
         m_Mem.bmp.DeleteObject();
     m_Mem.bmp.CreateCompatibleBitmap(pDC, m_Mem.cx, m_Mem.cy);
 
@@ -85,7 +85,7 @@ void CGradientStatic::CreateGradient(CDC *pDC, CRect *pRect)
 
 //-----------------------------------------------------------------
 
-    if(m_bHorizontal)
+    if (m_bHorizontal)
     {
         DrawHorizontalGradient();
         DrawHorizontalText(pRect);
@@ -106,7 +106,7 @@ void CGradientStatic::DrawHorizontalGradient()
     double g = GetGValue(m_crColorLB);
     double b = GetBValue(m_crColorLB);
 
-    for(int x = 0; x < m_Mem.cx; x++)
+    for (int x = 0; x < m_Mem.cx; x++)
     {
         CPen Pen(PS_SOLID, 1, RGB(r,g,b));
         CPen* pOld = m_Mem.dc.SelectObject(&Pen);
@@ -129,7 +129,7 @@ void CGradientStatic::DrawVerticalGradient()
     double g = GetGValue(m_crColorRT);
     double b = GetBValue(m_crColorRT);
 
-    for(int y = 0; y < m_Mem.cy; y++)
+    for (int y = 0; y < m_Mem.cy; y++)
     {
         CPen Pen(PS_SOLID, 1, RGB(r,g,b)), *pOld;
         pOld = m_Mem.dc.SelectObject(&Pen);
@@ -190,7 +190,7 @@ void CGradientStatic::DrawVerticalText(CRect *pRect)
     CFont *pOldFont = NULL;;
 
     LOGFONT lfFont;
-    if(m_cfFont.GetSafeHandle())
+    if (m_cfFont.GetSafeHandle())
     {
         m_cfFont.GetLogFont(&lfFont);
     }
@@ -223,7 +223,7 @@ void CGradientStatic::SetFont(CFont *pFont)
     LOGFONT lfFont;
     pFont->GetLogFont(&lfFont);
 
-    if(m_cfFont.GetSafeHandle())
+    if (m_cfFont.GetSafeHandle())
         m_cfFont.DeleteObject();
     m_cfFont.CreateFontIndirect(&lfFont);
 }

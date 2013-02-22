@@ -47,7 +47,7 @@ PreviewDlg::~PreviewDlg()
     for (int i = 0; i < ARRSIZE(m_icons); i++)
     {
         if (m_icons[i])
-            VERIFY( DestroyIcon(m_icons[i]) );
+            VERIFY(DestroyIcon(m_icons[i]));
     }
 }
 
@@ -62,13 +62,13 @@ BOOL PreviewDlg::OnInitDialog()
     CDialog::OnInitDialog();
     if (m_pFile == NULL)
     {
-        ASSERT ( false );
+        ASSERT(false);
         return FALSE;
     }
     InitWindowStyles(this);
     CString title =GetResString(IDS_DL_PREVIEW);
     title.Remove(_T('&'));
-    SetWindowText( title + CString(_T(": ")) + m_pFile->GetFileName());
+    SetWindowText(title + CString(_T(": ")) + m_pFile->GetFileName());
 
     m_nCurrentImage = 0;
     ShowImage(0);

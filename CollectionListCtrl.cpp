@@ -172,10 +172,10 @@ void CCollectionListCtrl::Init(CString strNameAdd)
 {
     SetPrefsKey(_T("CollectionListCtrl") + strNameAdd);
 
-    ASSERT( GetStyle() & LVS_SHAREIMAGELISTS );
+    ASSERT(GetStyle() & LVS_SHAREIMAGELISTS);
     SendMessage(LVM_SETIMAGELIST, LVSIL_SMALL, (LPARAM)theApp.GetSystemImageList());
 
-    ASSERT( (GetStyle() & LVS_SINGLESEL) == 0 );
+    ASSERT((GetStyle() & LVS_SINGLESEL) == 0);
     SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_INFOTIP);
 
     InsertColumn(colName, GetResString(IDS_DL_FILENAME),	LVCFMT_LEFT,  DFLT_FILENAME_COL_WIDTH);
@@ -261,7 +261,7 @@ void CCollectionListCtrl::OnNmRClick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
     popupMenu.SetDefaultItem(MP_META_DATA);
 
     popupMenu.TrackPopupMenu(TPM_LEFTALIGN |TPM_RIGHTBUTTON, point.x, point.y, this);
-    VERIFY( popupMenu.DestroyMenu() );
+    VERIFY(popupMenu.DestroyMenu());
 
     *pResult = 0;
 //<<< WiZaRd::CollectionEnhancement
@@ -303,7 +303,7 @@ void CCollectionListCtrl::RemoveFileFromList(CAbstractFile* pAbstractFile)
 }
 
 //>>> WiZaRd::CollectionEnhancement
-BOOL CCollectionListCtrl::OnCommand(WPARAM wParam,LPARAM lParam )
+BOOL CCollectionListCtrl::OnCommand(WPARAM wParam,LPARAM lParam)
 {
     int iSel = GetNextItem(-1, LVIS_SELECTED | LVIS_FOCUSED);
     if (iSel != -1)
@@ -320,7 +320,7 @@ BOOL CCollectionListCtrl::OnCommand(WPARAM wParam,LPARAM lParam )
         {
         case MP_META_DATA:
         {
-            if(!abstractFileList.IsEmpty())
+            if (!abstractFileList.IsEmpty())
             {
                 CCollectionFileDetailsSheet dialog(abstractFileList, 0, this);
                 dialog.DoModal();
@@ -330,7 +330,7 @@ BOOL CCollectionListCtrl::OnCommand(WPARAM wParam,LPARAM lParam )
         case MP_RENAME:
         {
             CString strDirectory = L"";
-            if(!abstractFileList.IsEmpty())
+            if (!abstractFileList.IsEmpty())
                 strDirectory = abstractFileList.GetHead()->GetDownloadDirectory();
             InputBox inputbox;
             CString title = GetResString(IDS_FOLDER);
@@ -343,7 +343,7 @@ BOOL CCollectionListCtrl::OnCommand(WPARAM wParam,LPARAM lParam )
                 LVFINDINFO find;
                 find.flags = LVFI_PARAM;
                 int iItem = -1;
-                for(POSITION pos = abstractFileList.GetHeadPosition(); pos;)
+                for (POSITION pos = abstractFileList.GetHeadPosition(); pos;)
                 {
                     CAbstractFile* pAbstractFile = abstractFileList.GetNext(pos);
                     pAbstractFile->SetDownloadDirectory(strDirectory);

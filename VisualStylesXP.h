@@ -100,7 +100,7 @@ private:
     static HMODULE m_hThemeDll;
     static void* GetProc(LPCSTR szProc, void* pfnFail);
 
-    typedef HTHEME (__stdcall *PFNOPENTHEMEDATA)(HWND hwnd, LPCWSTR pszClassList);
+    typedef HTHEME(__stdcall *PFNOPENTHEMEDATA)(HWND hwnd, LPCWSTR pszClassList);
     static HTHEME OpenThemeDataFail(HWND, LPCWSTR)
     {
         return NULL;
@@ -118,19 +118,19 @@ private:
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNDRAWTHEMETEXT)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, LPCWSTR pszText, int iCharCount, DWORD dwTextFlags, DWORD dwTextFlags2, const RECT *pRect);
+    typedef HRESULT(__stdcall *PFNDRAWTHEMETEXT)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, LPCWSTR pszText, int iCharCount, DWORD dwTextFlags, DWORD dwTextFlags2, const RECT *pRect);
     static HRESULT DrawThemeTextFail(HTHEME, HDC, int, int, LPCWSTR, int, DWORD, DWORD, const RECT*)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNGETTHEMEBACKGROUNDCONTENTRECT)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, const RECT *pBoundingRect, RECT *pContentRect);
+    typedef HRESULT(__stdcall *PFNGETTHEMEBACKGROUNDCONTENTRECT)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, const RECT *pBoundingRect, RECT *pContentRect);
     static HRESULT GetThemeBackgroundContentRectFail(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, const RECT *pBoundingRect, RECT *pContentRect)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNGETTHEMEBACKGROUNDEXTENT)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, const RECT *pContentRect, RECT *pExtentRect);
+    typedef HRESULT(__stdcall *PFNGETTHEMEBACKGROUNDEXTENT)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, const RECT *pContentRect, RECT *pExtentRect);
     static HRESULT GetThemeBackgroundExtentFail(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, const RECT *pContentRect, RECT *pExtentRect)
     {
         return E_FAIL;
@@ -142,37 +142,37 @@ private:
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNGETTHEMETEXTEXTENT)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, LPCWSTR pszText, int iCharCount, DWORD dwTextFlags, const RECT *pBoundingRect, RECT *pExtentRect);
+    typedef HRESULT(__stdcall *PFNGETTHEMETEXTEXTENT)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, LPCWSTR pszText, int iCharCount, DWORD dwTextFlags, const RECT *pBoundingRect, RECT *pExtentRect);
     static HRESULT GetThemeTextExtentFail(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, LPCWSTR pszText, int iCharCount, DWORD dwTextFlags, const RECT *pBoundingRect, RECT *pExtentRect)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNGETTHEMETEXTMETRICS)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, TEXTMETRIC* ptm);
+    typedef HRESULT(__stdcall *PFNGETTHEMETEXTMETRICS)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, TEXTMETRIC* ptm);
     static HRESULT GetThemeTextMetricsFail(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, TEXTMETRIC* ptm)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNGETTHEMEBACKGROUNDREGION)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, const RECT *pRect, HRGN *pRegion);
+    typedef HRESULT(__stdcall *PFNGETTHEMEBACKGROUNDREGION)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, const RECT *pRect, HRGN *pRegion);
     static HRESULT GetThemeBackgroundRegionFail(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, const RECT *pRect, HRGN *pRegion)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNHITTESTTHEMEBACKGROUND)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, DWORD dwOptions, const RECT *pRect, HRGN hrgn, POINT ptTest, WORD *pwHitTestCode);
+    typedef HRESULT(__stdcall *PFNHITTESTTHEMEBACKGROUND)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, DWORD dwOptions, const RECT *pRect, HRGN hrgn, POINT ptTest, WORD *pwHitTestCode);
     static HRESULT HitTestThemeBackgroundFail(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, DWORD dwOptions, const RECT *pRect, HRGN hrgn, POINT ptTest, WORD *pwHitTestCode)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNDRAWTHEMEEDGE)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, const RECT *pDestRect, UINT uEdge, UINT uFlags, RECT *pContentRect);
+    typedef HRESULT(__stdcall *PFNDRAWTHEMEEDGE)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, const RECT *pDestRect, UINT uEdge, UINT uFlags, RECT *pContentRect);
     static HRESULT DrawThemeEdgeFail(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, const RECT *pDestRect, UINT uEdge, UINT uFlags, RECT *pContentRect)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNDRAWTHEMEICON)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, const RECT *pRect, HIMAGELIST himl, int iImageIndex);
+    typedef HRESULT(__stdcall *PFNDRAWTHEMEICON)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, const RECT *pRect, HIMAGELIST himl, int iImageIndex);
     static HRESULT DrawThemeIconFail(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, const RECT *pRect, HIMAGELIST himl, int iImageIndex)
     {
         return E_FAIL;
@@ -190,97 +190,97 @@ private:
         return FALSE;
     }
 
-    typedef HRESULT (__stdcall *PFNGETTHEMECOLOR)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, COLORREF *pColor);
+    typedef HRESULT(__stdcall *PFNGETTHEMECOLOR)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, COLORREF *pColor);
     static HRESULT GetThemeColorFail(HTHEME hTheme, int iPartId, int iStateId, int iPropId, COLORREF *pColor)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNGETTHEMEMETRIC)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, int iPropId, int *piVal);
+    typedef HRESULT(__stdcall *PFNGETTHEMEMETRIC)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, int iPropId, int *piVal);
     static HRESULT GetThemeMetricFail(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, int iPropId, int *piVal)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNGETTHEMESTRING)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, LPWSTR pszBuff, int cchMaxBuffChars);
+    typedef HRESULT(__stdcall *PFNGETTHEMESTRING)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, LPWSTR pszBuff, int cchMaxBuffChars);
     static HRESULT GetThemeStringFail(HTHEME hTheme, int iPartId, int iStateId, int iPropId, LPWSTR pszBuff, int cchMaxBuffChars)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNGETTHEMEBOOL)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, BOOL *pfVal);
+    typedef HRESULT(__stdcall *PFNGETTHEMEBOOL)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, BOOL *pfVal);
     static HRESULT GetThemeBoolFail(HTHEME hTheme, int iPartId, int iStateId, int iPropId, BOOL *pfVal)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNGETTHEMEINT)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, int *piVal);
+    typedef HRESULT(__stdcall *PFNGETTHEMEINT)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, int *piVal);
     static HRESULT GetThemeIntFail(HTHEME hTheme, int iPartId, int iStateId, int iPropId, int *piVal)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNGETTHEMEENUMVALUE)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, int *piVal);
+    typedef HRESULT(__stdcall *PFNGETTHEMEENUMVALUE)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, int *piVal);
     static HRESULT GetThemeEnumValueFail(HTHEME hTheme, int iPartId, int iStateId, int iPropId, int *piVal)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNGETTHEMEPOSITION)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, POINT *pPoint);
+    typedef HRESULT(__stdcall *PFNGETTHEMEPOSITION)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, POINT *pPoint);
     static HRESULT GetThemePositionFail(HTHEME hTheme, int iPartId, int iStateId, int iPropId, POINT *pPoint)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNGETTHEMEFONT)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, int iPropId, LOGFONT *pFont);
+    typedef HRESULT(__stdcall *PFNGETTHEMEFONT)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, int iPropId, LOGFONT *pFont);
     static HRESULT GetThemeFontFail(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, int iPropId, LOGFONT *pFont)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNGETTHEMERECT)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, RECT *pRect);
+    typedef HRESULT(__stdcall *PFNGETTHEMERECT)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, RECT *pRect);
     static HRESULT GetThemeRectFail(HTHEME hTheme, int iPartId, int iStateId, int iPropId, RECT *pRect)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNGETTHEMEMARGINS)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, int iPropId, RECT *prc, MARGINS *pMargins);
+    typedef HRESULT(__stdcall *PFNGETTHEMEMARGINS)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, int iPropId, RECT *prc, MARGINS *pMargins);
     static HRESULT GetThemeMarginsFail(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, int iPropId, RECT *prc, MARGINS *pMargins)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNGETTHEMEINTLIST)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, INTLIST *pIntList);
+    typedef HRESULT(__stdcall *PFNGETTHEMEINTLIST)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, INTLIST *pIntList);
     static HRESULT GetThemeIntListFail(HTHEME hTheme, int iPartId, int iStateId, int iPropId, INTLIST *pIntList)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNGETTHEMEPROPERTYORIGIN)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, enum PROPERTYORIGIN *pOrigin);
+    typedef HRESULT(__stdcall *PFNGETTHEMEPROPERTYORIGIN)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, enum PROPERTYORIGIN *pOrigin);
     static HRESULT GetThemePropertyOriginFail(HTHEME hTheme, int iPartId, int iStateId, int iPropId, enum PROPERTYORIGIN *pOrigin)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNSETWINDOWTHEME)(HWND hwnd, LPCWSTR pszSubAppName, LPCWSTR pszSubIdList);
+    typedef HRESULT(__stdcall *PFNSETWINDOWTHEME)(HWND hwnd, LPCWSTR pszSubAppName, LPCWSTR pszSubIdList);
     static HRESULT SetWindowThemeFail(HWND hwnd, LPCWSTR pszSubAppName, LPCWSTR pszSubIdList)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNGETTHEMEFILENAME)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, LPWSTR pszThemeFileName, int cchMaxBuffChars);
+    typedef HRESULT(__stdcall *PFNGETTHEMEFILENAME)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, LPWSTR pszThemeFileName, int cchMaxBuffChars);
     static HRESULT GetThemeFilenameFail(HTHEME hTheme, int iPartId, int iStateId, int iPropId, LPWSTR pszThemeFileName, int cchMaxBuffChars)
     {
         return E_FAIL;
     }
 
-    typedef COLORREF (__stdcall *PFNGETTHEMESYSCOLOR)(HTHEME hTheme, int iColorId);
+    typedef COLORREF(__stdcall *PFNGETTHEMESYSCOLOR)(HTHEME hTheme, int iColorId);
     static COLORREF GetThemeSysColorFail(HTHEME hTheme, int iColorId)
     {
         return RGB(255,255,255);
     }
 
-    typedef HBRUSH (__stdcall *PFNGETTHEMESYSCOLORBRUSH)(HTHEME hTheme, int iColorId);
+    typedef HBRUSH(__stdcall *PFNGETTHEMESYSCOLORBRUSH)(HTHEME hTheme, int iColorId);
     static HBRUSH GetThemeSysColorBrushFail(HTHEME hTheme, int iColorId)
     {
         return NULL;
@@ -298,19 +298,19 @@ private:
         return 0;
     }
 
-    typedef HRESULT (__stdcall *PFNGETTHEMESYSFONT)(HTHEME hTheme, int iFontId, LOGFONT *plf);
+    typedef HRESULT(__stdcall *PFNGETTHEMESYSFONT)(HTHEME hTheme, int iFontId, LOGFONT *plf);
     static HRESULT GetThemeSysFontFail(HTHEME hTheme, int iFontId, LOGFONT *plf)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNGETTHEMESYSSTRING)(HTHEME hTheme, int iStringId, LPWSTR pszStringBuff, int cchMaxStringChars);
+    typedef HRESULT(__stdcall *PFNGETTHEMESYSSTRING)(HTHEME hTheme, int iStringId, LPWSTR pszStringBuff, int cchMaxStringChars);
     static HRESULT GetThemeSysStringFail(HTHEME hTheme, int iStringId, LPWSTR pszStringBuff, int cchMaxStringChars)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNGETTHEMESYSINT)(HTHEME hTheme, int iIntId, int *piValue);
+    typedef HRESULT(__stdcall *PFNGETTHEMESYSINT)(HTHEME hTheme, int iIntId, int *piValue);
     static HRESULT GetThemeSysIntFail(HTHEME hTheme, int iIntId, int *piValue)
     {
         return E_FAIL;
@@ -328,13 +328,13 @@ private:
         return FALSE;
     }
 
-    typedef HTHEME (__stdcall *PFNGETWINDOWTHEME)(HWND hwnd);
+    typedef HTHEME(__stdcall *PFNGETWINDOWTHEME)(HWND hwnd);
     static HTHEME GetWindowThemeFail(HWND hwnd)
     {
         return NULL;
     }
 
-    typedef HRESULT (__stdcall *PFNENABLETHEMEDIALOGTEXTURE)(HWND hwnd, DWORD dwFlags);
+    typedef HRESULT(__stdcall *PFNENABLETHEMEDIALOGTEXTURE)(HWND hwnd, DWORD dwFlags);
     static HRESULT EnableThemeDialogTextureFail(HWND hwnd, DWORD dwFlags)
     {
         return E_FAIL;
@@ -358,25 +358,25 @@ private:
         return;
     }
 
-    typedef HRESULT (__stdcall *PFNGETCURRENTTHEMENAME)(LPWSTR pszThemeFileName, int cchMaxNameChars, LPWSTR pszColorBuff, int cchMaxColorChars, LPWSTR pszSizeBuff, int cchMaxSizeChars);
+    typedef HRESULT(__stdcall *PFNGETCURRENTTHEMENAME)(LPWSTR pszThemeFileName, int cchMaxNameChars, LPWSTR pszColorBuff, int cchMaxColorChars, LPWSTR pszSizeBuff, int cchMaxSizeChars);
     static HRESULT GetCurrentThemeNameFail(LPWSTR pszThemeFileName, int cchMaxNameChars, LPWSTR pszColorBuff, int cchMaxColorChars, LPWSTR pszSizeBuff, int cchMaxSizeChars)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNGETTHEMEDOCUMENTATIONPROPERTY)(LPCWSTR pszThemeName, LPCWSTR pszPropertyName, LPWSTR pszValueBuff, int cchMaxValChars);
+    typedef HRESULT(__stdcall *PFNGETTHEMEDOCUMENTATIONPROPERTY)(LPCWSTR pszThemeName, LPCWSTR pszPropertyName, LPWSTR pszValueBuff, int cchMaxValChars);
     static HRESULT GetThemeDocumentationPropertyFail(LPCWSTR pszThemeName, LPCWSTR pszPropertyName, LPWSTR pszValueBuff, int cchMaxValChars)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNDRAWTHEMEPARENTBACKGROUND)(HWND hwnd, HDC hdc, RECT* prc);
+    typedef HRESULT(__stdcall *PFNDRAWTHEMEPARENTBACKGROUND)(HWND hwnd, HDC hdc, RECT* prc);
     static HRESULT DrawThemeParentBackgroundFail(HWND hwnd, HDC hdc, RECT* prc)
     {
         return E_FAIL;
     }
 
-    typedef HRESULT (__stdcall *PFNENABLETHEMING)(BOOL fEnable);
+    typedef HRESULT(__stdcall *PFNENABLETHEMING)(BOOL fEnable);
     static HRESULT EnableThemingFail(BOOL fEnable)
     {
         return E_FAIL;

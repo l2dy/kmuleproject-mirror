@@ -61,7 +61,7 @@ public:
 
     inline void SetIO(CWSDLPortTypeIO * pIO)
     {
-        ATLASSERT( pIO != NULL );
+        ATLASSERT(pIO != NULL);
 
         m_pIO = pIO;
     }

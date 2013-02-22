@@ -116,13 +116,13 @@ TAG_METHOD_IMPL(CSchemaParser, OnElement)
     if (pCurr != NULL)
     {
         CAutoPtr<CElement> spElem;
-        spElem.Attach( new CElement );
+        spElem.Attach(new CElement);
         if (spElem != NULL)
         {
             SetXSDElementInfo(spElem, pCurr, GetLocator());
             spElem->SetParentSchema(pCurr);
 
-            CAutoPtr<CElementParser> p( new CElementParser(GetReader(), this, GetLevel(), spElem) );
+            CAutoPtr<CElementParser> p(new CElementParser(GetReader(), this, GetLevel(), spElem));
             if (p != NULL)
             {
                 if (g_ParserList.AddHead(p) != NULL)
@@ -177,13 +177,13 @@ TAG_METHOD_IMPL(CSchemaParser, OnSimpleType)
     if (pCurr != NULL)
     {
         CAutoPtr<CSimpleType> spElem;
-        spElem.Attach( new CSimpleType );
+        spElem.Attach(new CSimpleType);
         if (spElem != NULL)
         {
             SetXSDElementInfo(spElem, pCurr, GetLocator());
             spElem->SetParentSchema(pCurr);
 
-            CAutoPtr<CSimpleTypeParser> p( new CSimpleTypeParser(GetReader(), this, GetLevel(), spElem) );
+            CAutoPtr<CSimpleTypeParser> p(new CSimpleTypeParser(GetReader(), this, GetLevel(), spElem));
             if (p != NULL)
             {
                 if (g_ParserList.AddHead(p) != NULL)
@@ -217,13 +217,13 @@ TAG_METHOD_IMPL(CSchemaParser, OnComplexType)
     if (pCurr != NULL)
     {
         CAutoPtr<CComplexType> spElem;
-        spElem.Attach( new CComplexType );
+        spElem.Attach(new CComplexType);
         if (spElem != NULL)
         {
             SetXSDElementInfo(spElem, pCurr, GetLocator());
             spElem->SetParentSchema(pCurr);
 
-            CAutoPtr<CComplexTypeParser> p( new CComplexTypeParser(GetReader(), this, GetLevel(), spElem) );
+            CAutoPtr<CComplexTypeParser> p(new CComplexTypeParser(GetReader(), this, GetLevel(), spElem));
             if (p != NULL)
             {
                 if (g_ParserList.AddHead(p) != NULL)

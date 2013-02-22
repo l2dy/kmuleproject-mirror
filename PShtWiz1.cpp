@@ -349,7 +349,7 @@ void CPPgWiz1Ports::OnPortChange()
                 (
                     (theApp.listensocket->GetConnectedPort()!=GetTCPPort()  || theApp.listensocket->GetConnectedPort()==0)
                     ||
-                    (theApp.clientudp->GetConnectedPort()!=GetUDPPort() || theApp.clientudp->GetConnectedPort()==0 )
+                    (theApp.clientudp->GetConnectedPort()!=GetUDPPort() || theApp.clientudp->GetConnectedPort()==0)
                 )
                );
 
@@ -384,7 +384,7 @@ void CPPgWiz1Ports::OnStartUPnP()
     GetDlgItem(IDC_UPNPSTART)->EnableWindow(FALSE);
     m_nUPnPTicks = 0;
     ((CProgressCtrl*)GetDlgItem(IDC_UPNPPROGRESS))->SetPos(0);
-    VERIFY( SetTimer(1, 1000, NULL) );
+    VERIFY(SetTimer(1, 1000, NULL));
 }
 
 void CPPgWiz1Ports::OnTimer(UINT /*nIDEvent*/)
@@ -413,7 +413,7 @@ void CPPgWiz1Ports::OnTimer(UINT /*nIDEvent*/)
         GetDlgItem(IDC_UPNPSTATUS)->SetWindowText(GetResString(IDS_UPNPFAILED));
     }
     GetDlgItem(IDC_UPNPSTART)->EnableWindow(TRUE);
-    VERIFY( KillTimer(1));
+    VERIFY(KillTimer(1));
 }
 
 void CPPgWiz1Ports::ResetUPnPProgress()
@@ -434,7 +434,7 @@ void CPPgWiz1Ports::OnStartConTest()
     if (tcp==0)
         return;
 
-    if ( (tcp!=theApp.listensocket->GetConnectedPort() || udp!=theApp.clientudp->GetConnectedPort() ) )
+    if ((tcp!=theApp.listensocket->GetConnectedPort() || udp!=theApp.clientudp->GetConnectedPort()))
     {
 
         if (!theApp.IsPortchangeAllowed())
@@ -463,10 +463,10 @@ BOOL CPPgWiz1Ports::OnInitDialog()
     lastudp = m_sUDP;
 
     // disable changing ports to prevent harm
-    SetDlgItemText(IDC_PORTINFO , GetResString(IDS_PORTINFO) );
-    SetDlgItemText(IDC_TESTFRAME , GetResString(IDS_CONNECTIONTEST) );
-    SetDlgItemText(IDC_TESTINFO , GetResString(IDS_TESTINFO) );
-    SetDlgItemText(IDC_STARTTEST, GetResString(IDS_STARTTEST) );
+    SetDlgItemText(IDC_PORTINFO , GetResString(IDS_PORTINFO));
+    SetDlgItemText(IDC_TESTFRAME , GetResString(IDS_CONNECTIONTEST));
+    SetDlgItemText(IDC_TESTINFO , GetResString(IDS_TESTINFO));
+    SetDlgItemText(IDC_STARTTEST, GetResString(IDS_STARTTEST));
     SetDlgItemText(IDC_UPNPSTART, GetResString(IDS_UPNPSTART));
     SetDlgItemText(IDC_UPNPSTATUS, _T(""));
 
@@ -714,12 +714,12 @@ BOOL CPPgWiz1Upload::OnInitDialog()
 
     ASSERT(_countof(providerEntries) == _countof(ulspeeds));
     ASSERT(_countof(providerEntries) == _countof(dlspeeds));
-    for(int i = 0; i != _countof(providerEntries); ++i)
+    for (int i = 0; i != _countof(providerEntries); ++i)
     {
         m_provider.InsertItem(i, providerEntries[i]);
-        if(i < 2)
+        if (i < 2)
         {
-            if(i == 1)
+            if (i == 1)
             {
                 m_provider.SetItemText(i, 1, GetResString(IDS_WIZARD_ENTERBELOW));
                 m_provider.SetItemText(i, 2, GetResString(IDS_WIZARD_ENTERBELOW));
@@ -791,7 +791,7 @@ void CPPgWiz1Upload::OnNmClickProviders(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 
     UINT up, down;
     m_iSelectedItem = m_provider.GetSelectionMark();
-    switch(m_iSelectedItem)
+    switch (m_iSelectedItem)
     {
     case  0:
         down = 0;
@@ -802,7 +802,7 @@ void CPPgWiz1Upload::OnNmClickProviders(NMHDR* /*pNMHDR*/, LRESULT* pResult)
         up = ((thePrefs.GetMaxGraphUploadRate(true) * 1024) + 500) / 1000 * 8;
         break;
     default:
-        if(m_iSelectedItem < _countof(dlspeeds))
+        if (m_iSelectedItem < _countof(dlspeeds))
         {
             down = dlspeeds[m_iSelectedItem];
             up = ulspeeds[m_iSelectedItem];
@@ -935,9 +935,9 @@ CPShtWiz1::~CPShtWiz1()
 BOOL FirstTimeWizard()
 {
     CEnBitmap bmWatermark;
-    VERIFY( bmWatermark.LoadImage(IDR_WIZ1_WATERMARK, _T("GIF"), NULL, GetSysColor(COLOR_WINDOW)) );
+    VERIFY(bmWatermark.LoadImage(IDR_WIZ1_WATERMARK, _T("GIF"), NULL, GetSysColor(COLOR_WINDOW)));
     CEnBitmap bmHeader;
-    VERIFY( bmHeader.LoadImage(IDR_WIZ1_HEADER, _T("GIF"), NULL, GetSysColor(COLOR_WINDOW)) );
+    VERIFY(bmHeader.LoadImage(IDR_WIZ1_HEADER, _T("GIF"), NULL, GetSysColor(COLOR_WINDOW)));
     CPropertySheetEx sheet(GetResString(IDS_WIZ1), NULL, 0, bmWatermark, NULL, bmHeader);
     sheet.m_psh.dwFlags |= PSH_WIZARD;
 #ifdef _DEBUG
@@ -995,7 +995,7 @@ BOOL FirstTimeWizard()
 
     thePrefs.SetUserNick(page2.m_strNick);
     thePrefs.SetAutoStart(page2.m_iAutoStart!=0);
-    if( thePrefs.GetAutoStart() )
+    if (thePrefs.GetAutoStart())
         AddAutoStart();
     else
         RemAutoStart();
@@ -1142,13 +1142,13 @@ BOOL FirstTimeWizard()
     // set ports
     thePrefs.port=(uint16)_tstoi(page3.m_sTCP);
     thePrefs.udpport=(uint16)_tstoi(page3.m_sUDP);
-    ASSERT( thePrefs.port!=0 && thePrefs.udpport!=0+10 );
+    ASSERT(thePrefs.port!=0 && thePrefs.udpport!=0+10);
     if (thePrefs.port == 0 || thePrefs.port == INT_MAX)
         thePrefs.port = GetRandomTCPPort();
     if (thePrefs.udpport == 0+10 || thePrefs.udpport == INT_MAX || thePrefs.udpport == 0) // don't allow to disable UDP!
         thePrefs.udpport = GetRandomUDPPort();
 
-    if ( (thePrefs.port!=theApp.listensocket->GetConnectedPort()) || (thePrefs.udpport!=theApp.clientudp->GetConnectedPort()) )
+    if ((thePrefs.port!=theApp.listensocket->GetConnectedPort()) || (thePrefs.udpport!=theApp.clientudp->GetConnectedPort()))
         if (!theApp.IsPortchangeAllowed())
             AfxMessageBox(GetResString(IDS_NOPORTCHANGEPOSSIBLE));
         else

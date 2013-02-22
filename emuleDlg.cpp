@@ -250,33 +250,33 @@ CemuleDlg::~CemuleDlg()
     snarlInterface = NULL;
 //<<< TuXaRd::SnarlSupport
 
-    if (m_icoSysTrayCurrent) VERIFY( DestroyIcon(m_icoSysTrayCurrent) );
-    if (m_hIcon) VERIFY( ::DestroyIcon(m_hIcon) );
+    if (m_icoSysTrayCurrent) VERIFY(DestroyIcon(m_icoSysTrayCurrent));
+    if (m_hIcon) VERIFY(::DestroyIcon(m_hIcon));
     for (int i = 0; i < _countof(connicons); ++i)
     {
         if (connicons[i])
-            VERIFY( ::DestroyIcon(connicons[i]) );
+            VERIFY(::DestroyIcon(connicons[i]));
     }
     for (int i = 0; i < _countof(transicons); ++i)
     {
         if (transicons[i])
-            VERIFY( ::DestroyIcon(transicons[i]) );
+            VERIFY(::DestroyIcon(transicons[i]));
     }
     for (int i = 0; i < _countof(imicons); ++i)
     {
         if (imicons[i])
-            VERIFY( ::DestroyIcon(imicons[i]) );
+            VERIFY(::DestroyIcon(imicons[i]));
     }
-    if (m_icoSysTrayConnected) VERIFY( ::DestroyIcon(m_icoSysTrayConnected) );
-    if (m_icoSysTrayDisconnected) VERIFY( ::DestroyIcon(m_icoSysTrayDisconnected) );
-    if (m_icoSysTrayLowID) VERIFY( ::DestroyIcon(m_icoSysTrayLowID) );
-    if (usericon) VERIFY( ::DestroyIcon(usericon) );
+    if (m_icoSysTrayConnected) VERIFY(::DestroyIcon(m_icoSysTrayConnected));
+    if (m_icoSysTrayDisconnected) VERIFY(::DestroyIcon(m_icoSysTrayDisconnected));
+    if (m_icoSysTrayLowID) VERIFY(::DestroyIcon(m_icoSysTrayLowID));
+    if (usericon) VERIFY(::DestroyIcon(usericon));
 
 #ifdef HAVE_WIN7_SDK_H
     if (m_pTaskbarList != NULL)
     {
         m_pTaskbarList.Release();
-        ASSERT( m_bInitedCOM );
+        ASSERT(m_bInitedCOM);
     }
     if (m_bInitedCOM)
         CoUninitialize();
@@ -337,8 +337,8 @@ BOOL CemuleDlg::OnInitDialog()
             m_bInitedCOM = true;
             typedef BOOL (WINAPI* PChangeWindowMessageFilter)(UINT message, DWORD dwFlag);
             PChangeWindowMessageFilter ChangeWindowMessageFilter =
-                (PChangeWindowMessageFilter )(GetProcAddress(
-                                                  GetModuleHandle(TEXT("user32.dll")), "ChangeWindowMessageFilter"));
+                (PChangeWindowMessageFilter)(GetProcAddress(
+                                                 GetModuleHandle(TEXT("user32.dll")), "ChangeWindowMessageFilter"));
             if (ChangeWindowMessageFilter)
             {
                 ChangeWindowMessageFilter(UWM_TASK_BUTTON_CREATED,1);
@@ -370,10 +370,10 @@ BOOL CemuleDlg::OnInitDialog()
     {
         pSysMenu->AppendMenu(MF_SEPARATOR);
 
-        ASSERT( (MP_ABOUTBOX & 0xFFF0) == MP_ABOUTBOX && MP_ABOUTBOX < 0xF000);
+        ASSERT((MP_ABOUTBOX & 0xFFF0) == MP_ABOUTBOX && MP_ABOUTBOX < 0xF000);
         pSysMenu->AppendMenu(MF_STRING, MP_ABOUTBOX, GetResString(IDS_ABOUTBOX));
 
-        ASSERT( (MP_VERSIONCHECK & 0xFFF0) == MP_VERSIONCHECK && MP_VERSIONCHECK < 0xF000);
+        ASSERT((MP_VERSIONCHECK & 0xFFF0) == MP_VERSIONCHECK && MP_VERSIONCHECK < 0xF000);
         pSysMenu->AppendMenu(MF_STRING, MP_VERSIONCHECK, GetResString(IDS_VERSIONCHECK));
 
         // remaining system menu entries are created later...
@@ -390,7 +390,7 @@ BOOL CemuleDlg::OnInitDialog()
                                          CRect(0, 0, 0, 0), this, AFX_IDW_REBAR))
             {
                 CSize sizeBar;
-                VERIFY( toolbar->GetMaxSize(&sizeBar) );
+                VERIFY(toolbar->GetMaxSize(&sizeBar));
                 REBARBANDINFO rbbi = {0};
                 rbbi.cbSize = sizeof(rbbi);
                 rbbi.fMask = RBBIM_STYLE | RBBIM_SIZE | RBBIM_CHILD | RBBIM_CHILDSIZE | RBBIM_IDEALSIZE | RBBIM_ID;
@@ -401,7 +401,7 @@ BOOL CemuleDlg::OnInitDialog()
                 rbbi.cxIdeal = sizeBar.cx;
                 rbbi.cx = rbbi.cxIdeal;
                 rbbi.wID = 0;
-                VERIFY( m_ctlMainTopReBar.InsertBand((UINT)-1, &rbbi) );
+                VERIFY(m_ctlMainTopReBar.InsertBand((UINT)-1, &rbbi));
                 toolbar->SaveCurHeight();
                 toolbar->UpdateBackground();
 
@@ -571,7 +571,7 @@ BOOL CemuleDlg::OnInitDialog()
     if (thePrefs.IsFirstStart())
         FirstTimeWizard();
 
-    VERIFY( (m_hTimer = ::SetTimer(NULL, NULL, 300, StartupTimer)) != NULL );
+    VERIFY((m_hTimer = ::SetTimer(NULL, NULL, 300, StartupTimer)) != NULL);
     if (thePrefs.GetVerbose() && !m_hTimer)
         AddDebugLogLine(true,_T("Failed to create 'startup' timer - %s"),GetErrorMessage(GetLastError()));
 
@@ -581,7 +581,7 @@ BOOL CemuleDlg::OnInitDialog()
     if (thePrefs.IsUPnPEnabled())
         StartUPnP();
 
-    VERIFY( m_pDropTarget->Register(this) );
+    VERIFY(m_pDropTarget->Register(this));
 
     // start aichsyncthread
     AfxBeginThread(RUNTIME_CLASS(CAICHSyncThread), THREAD_PRIORITY_BELOW_NORMAL,0);
@@ -605,9 +605,9 @@ void CemuleDlg::DoVersioncheck(bool manual)
         time_t tLast = safe_mktime(last.GetLocalTm(&tmTemp));
         time_t tNow = safe_mktime(CTime::GetCurrentTime().GetLocalTm(&tmTemp));
 #ifndef _BETA
-        if ( (difftime(tNow,tLast) / 86400) < thePrefs.GetUpdateDays() )
+        if ((difftime(tNow,tLast) / 86400) < thePrefs.GetUpdateDays())
 #else
-        if ( (difftime(tNow,tLast) / 86400) < 3 )
+        if ((difftime(tNow,tLast) / 86400) < 3)
 #endif
             return;
     }
@@ -623,7 +623,7 @@ void CALLBACK CemuleDlg::StartupTimer(HWND /*hwnd*/, UINT /*uiMsg*/, UINT /*idEv
     // NOTE: Always handle all type of MFC exceptions in TimerProcs - otherwise we'll get mem leaks
     try
     {
-        switch(theApp.emuledlg->status)
+        switch (theApp.emuledlg->status)
         {
         case 0:
             theApp.emuledlg->status++;
@@ -650,7 +650,7 @@ void CALLBACK CemuleDlg::StartupTimer(HWND /*hwnd*/, UINT /*uiMsg*/, UINT /*idEv
             {
                 theApp.downloadqueue->Init();
             }
-            catch(...)
+            catch (...)
             {
                 ASSERT(0);
                 LogError(LOG_STATUSBAR,_T("Failed to initialize download queue - Unknown exception"));
@@ -678,8 +678,8 @@ void CALLBACK CemuleDlg::StartupTimer(HWND /*hwnd*/, UINT /*uiMsg*/, UINT /*idEv
             break;
         default:
             theApp.emuledlg->CreateMiniMule();
-			theApp.DestroySplash(); //>>> WiZaRd::New Splash [TBH]
-            theApp.emuledlg->StopTimer();			
+            theApp.DestroySplash(); //>>> WiZaRd::New Splash [TBH]
+            theApp.emuledlg->StopTimer();
             break;
         }
     }
@@ -690,7 +690,7 @@ void CemuleDlg::StopTimer()
 {
     if (m_hTimer)
     {
-        VERIFY( ::KillTimer(NULL, m_hTimer) );
+        VERIFY(::KillTimer(NULL, m_hTimer));
         m_hTimer = 0;
     }
 
@@ -715,7 +715,7 @@ void CemuleDlg::StopTimer()
     //WiZaRd: updates that are performed on startup might take a while...
     //if the timer is already running, then we'll run in a lot of ASSERTs
     //so we wait until all is done and explicitly start the timer AFTERWARDS
-    if(theApp.uploadqueue)
+    if (theApp.uploadqueue)
         theApp.uploadqueue->StartTimer();
 }
 
@@ -965,7 +965,7 @@ void CemuleDlg::ShowTransferStateIcon()
     int iDown = m_uDownDatarate - theStats.GetDownDatarateOverhead();
     if (iUp > 0)
     {
-        if(iDown > 0)
+        if (iDown > 0)
             statusbar->SetIcon(SBarUpDown, transicons[3]);
         else
             statusbar->SetIcon(SBarUpDown, transicons[2]);
@@ -1054,7 +1054,7 @@ void CemuleDlg::ShowTransferRate(bool bForceAll)
 //>>> WiZaRd::Easy ModVersion
         if (theApp.IsConnected())
             _sntprintf(buffer2, _countof(buffer2), L"%s - %s", GetResString(IDS_CONNECTED), strTransferRate);
-        else if(theApp.IsConnecting())
+        else if (theApp.IsConnecting())
             _sntprintf(buffer2, _countof(buffer2), L"%s - %s", GetResString(IDS_CONNECTING), strTransferRate);
         else
             _sntprintf(buffer2, _countof(buffer2), L"%s - %s", GetResString(IDS_DISCONNECTED), strTransferRate);
@@ -1083,13 +1083,13 @@ void CemuleDlg::ShowTransferRate(bool bForceAll)
     }
     if (IsWindowVisible() && thePrefs.ShowRatesOnTitle())
     {
-		//well, as read somewhere else the stupid printf commands shouldn't be used at all
-		//so I use the opportunity to clean it up
-		CString szBuff = L"";
-		szBuff.Format(L"(U:%.1f D:%.1f) %s", m_uUpDatarate/1024.0f, m_uDownDatarate/1024.0f, MOD_VERSION);
+        //well, as read somewhere else the stupid printf commands shouldn't be used at all
+        //so I use the opportunity to clean it up
+        CString szBuff = L"";
+        szBuff.Format(L"(U:%.1f D:%.1f) %s", m_uUpDatarate/1024.0f, m_uDownDatarate/1024.0f, MOD_VERSION);
 //>>> WiZaRd::SessionRatio
-		if(thePrefs.GetMaxDownload() * 1024 != thePrefs.GetMaxDownloadInBytesPerSec(true))
-			szBuff.AppendFormat(L" *%s*", CastItoXBytes(thePrefs.GetMaxDownloadInBytesPerSec(true), false, true));
+        if (thePrefs.GetMaxDownload() * 1024 != thePrefs.GetMaxDownloadInBytesPerSec(true))
+            szBuff.AppendFormat(L" *%s*", CastItoXBytes(thePrefs.GetMaxDownloadInBytesPerSec(true), false, true));
 //<<< WiZaRd::SessionRatio
         SetWindowText(szBuff);
     }
@@ -1168,12 +1168,12 @@ void CemuleDlg::SetActiveDialog(CWnd* dlg)
     else if (dlg == statisticswnd)
         statisticswnd->ShowStatistics();
 //>>> WiZaRd::CustomSearches
-	// read in our customSearch db
-	else if (dlg == searchwnd)
-	{
-		theApp.customSearches->Load();
-		searchwnd->UpdateSearchList();
-	}
+    // read in our customSearch db
+    else if (dlg == searchwnd)
+    {
+        theApp.customSearches->Load();
+        searchwnd->UpdateSearchList();
+    }
 //<<< WiZaRd::CustomSearches
 }
 
@@ -1182,7 +1182,7 @@ void CemuleDlg::SetStatusBarPartsSize()
     CRect rect;
     statusbar->GetClientRect(&rect);
     int ussShift = 0;
-    if(thePrefs.IsDynUpEnabled())
+    if (thePrefs.IsDynUpEnabled())
     {
         if (thePrefs.IsDynUpUseMillisecondPingTolerance())
             ussShift = 45;
@@ -1223,7 +1223,7 @@ void CemuleDlg::ProcessED2KLink(LPCTSTR pszData)
         link2.Replace(_T("%7C"),_T("|"));
         link = OptUtf8ToStr(URLDecode(link2));
         CED2KLink* pLink = CED2KLink::CreateLinkFromUrl(link);
-        _ASSERT( pLink !=0 );
+        _ASSERT(pLink !=0);
         switch (pLink->GetKind())
         {
         case CED2KLink::kFile:
@@ -1236,21 +1236,21 @@ void CemuleDlg::ProcessED2KLink(LPCTSTR pszData)
         case CED2KLink::kNodesList:
         {
             CED2KNodesListLink* pListLink = pLink->GetNodesListLink();
-            _ASSERT( pListLink !=0 );
+            _ASSERT(pListLink !=0);
             CString strAddress = pListLink->GetAddress();
             // Becasue the nodes.dat is vital for kad and its routing and doesn't needs to be updated in general
             // we request a confirm to avoid accidental / malicious updating of this file. This is a bit inconsitent
             // as the same kinda applies to the server.met, but those require more updates and are easier to understand
             CString strConfirm;
             strConfirm.Format(GetResString(IDS_CONFIRMNODESDOWNLOAD), strAddress);
-            if(strAddress.GetLength() != 0 && AfxMessageBox(strConfirm, MB_YESNO | MB_ICONQUESTION, 0) == IDYES)
+            if (strAddress.GetLength() != 0 && AfxMessageBox(strConfirm, MB_YESNO | MB_ICONQUESTION, 0) == IDYES)
                 UpdateNodesDatFromURL(strAddress);
         }
         break;
         case CED2KLink::kSearch:
         {
             CED2KSearchLink* pListLink = pLink->GetSearchLink();
-            _ASSERT( pListLink !=0 );
+            _ASSERT(pListLink !=0);
             SetActiveDialog(searchwnd);
             searchwnd->ProcessEd2kSearchLinkRequest(pListLink->GetSearchTerm());
         }
@@ -1260,11 +1260,11 @@ void CemuleDlg::ProcessED2KLink(LPCTSTR pszData)
         }
         delete pLink;
     }
-    catch(CString strError)
+    catch (CString strError)
     {
         LogWarning(LOG_STATUSBAR, GetResString(IDS_LINKNOTADDED) + _T(" - ") + strError);
     }
-    catch(...)
+    catch (...)
     {
         LogWarning(LOG_STATUSBAR, GetResString(IDS_LINKNOTADDED));
     }
@@ -1287,7 +1287,7 @@ LRESULT CemuleDlg::OnWMData(WPARAM /*wParam*/, LPARAM lParam)
         }
         ProcessED2KLink((LPCTSTR)data->lpData);
     }
-    else if(data->dwData == OP_COLLECTION)
+    else if (data->dwData == OP_COLLECTION)
     {
         FlashWindow(TRUE);
         if (IsIconic())
@@ -1401,7 +1401,7 @@ LRESULT CemuleDlg::OnFileHashed(WPARAM wParam, LPARAM lParam)
         return FALSE;
 
     CKnownFile* result = (CKnownFile*)lParam;
-    ASSERT( result->IsKindOf(RUNTIME_CLASS(CKnownFile)) );
+    ASSERT(result->IsKindOf(RUNTIME_CLASS(CKnownFile)));
 
     if (wParam)
     {
@@ -1410,7 +1410,7 @@ LRESULT CemuleDlg::OnFileHashed(WPARAM wParam, LPARAM lParam)
         // - part file was rehashed at startup because the file date of part.met did not match the part file date
 
         CPartFile* requester = (CPartFile*)wParam;
-        ASSERT( requester->IsKindOf(RUNTIME_CLASS(CPartFile)) );
+        ASSERT(requester->IsKindOf(RUNTIME_CLASS(CPartFile)));
 
         // SLUGFILLER: SafeHash - could have been canceled
         if (theApp.downloadqueue->IsPartFile(requester))
@@ -1421,7 +1421,7 @@ LRESULT CemuleDlg::OnFileHashed(WPARAM wParam, LPARAM lParam)
     }
     else
     {
-        ASSERT( !result->IsKindOf(RUNTIME_CLASS(CPartFile)) );
+        ASSERT(!result->IsKindOf(RUNTIME_CLASS(CPartFile)));
 
         // File hashing finished for a shared file (none partfile)
         //	- reading shared directories at startup and hashing files which were not found in known.met
@@ -1437,7 +1437,7 @@ LRESULT CemuleDlg::OnFileOpProgress(WPARAM wParam, LPARAM lParam)
         return FALSE;
 
     CKnownFile* pKnownFile = (CKnownFile*)lParam;
-    ASSERT( pKnownFile->IsKindOf(RUNTIME_CLASS(CKnownFile)) );
+    ASSERT(pKnownFile->IsKindOf(RUNTIME_CLASS(CKnownFile)));
 
     if (pKnownFile->IsKindOf(RUNTIME_CLASS(CPartFile)))
     {
@@ -1469,7 +1469,7 @@ LRESULT CemuleDlg::OnFileAllocExc(WPARAM wParam,LPARAM lParam)
 LRESULT CemuleDlg::OnFileCompleted(WPARAM wParam, LPARAM lParam)
 {
     CPartFile* partfile = (CPartFile*)lParam;
-    ASSERT( partfile != NULL );
+    ASSERT(partfile != NULL);
     if (partfile)
         partfile->PerformFileCompleteEnd(wParam);
     return 0;
@@ -1629,7 +1629,7 @@ void CemuleDlg::OnClose()
     WINDOWPLACEMENT wp;
     wp.length = sizeof(wp);
     GetWindowPlacement(&wp);
-    ASSERT( wp.showCmd == SW_SHOWMAXIMIZED || wp.showCmd == SW_SHOWMINIMIZED || wp.showCmd == SW_SHOWNORMAL );
+    ASSERT(wp.showCmd == SW_SHOWMAXIMIZED || wp.showCmd == SW_SHOWMINIMIZED || wp.showCmd == SW_SHOWNORMAL);
     if (wp.showCmd == SW_SHOWMINIMIZED && (wp.flags & WPF_RESTORETOMAXIMIZED))
         wp.showCmd = SW_SHOWMAXIMIZED;
     wp.flags = 0;
@@ -1750,8 +1750,8 @@ void CemuleDlg::OnClose()
     delete theApp.m_pUPnPFinder;
     theApp.m_pUPnPFinder = NULL;
 //>>> WiZaRd::CustomSearches
-	delete theApp.customSearches;
-	theApp.customSearches = NULL;
+    delete theApp.customSearches;
+    theApp.customSearches = NULL;
 //<<< WiZaRd::CustomSearches
 //>>> WiZaRd::ClientAnalyzer
     //moved down so all other cleanups can perform first...
@@ -1793,7 +1793,7 @@ void CemuleDlg::DestroyMiniMule()
 
 void CemuleDlg::OnTrayLButtonUp(CPoint /*pt*/)
 {
-    if(!IsRunning())
+    if (!IsRunning())
         return;
 
     // Avoid reentrancy problems with main window, options dialog and mini mule window
@@ -1807,7 +1807,7 @@ void CemuleDlg::OnTrayLButtonUp(CPoint /*pt*/)
 
     if (m_pMiniMule)
     {
-        if(thePrefs.GetEnableMiniMule())
+        if (thePrefs.GetEnableMiniMule())
         {
             TRACE(L"%s - m_pMiniMule->ShowWindow(SW_SHOW);\n", __FUNCTION__);
             m_pMiniMule->ShowHide();
@@ -1890,16 +1890,16 @@ void CemuleDlg::AddSpeedSelectorMenus(CMenu* addToMenu)
     CString text;
 
     // Create UploadPopup Menu
-    ASSERT( m_menuUploadCtrl.m_hMenu == NULL );
+    ASSERT(m_menuUploadCtrl.m_hMenu == NULL);
     if (m_menuUploadCtrl.CreateMenu())
     {
-        text.Format(_T("20%%\t%i %s"),  (uint16)(thePrefs.GetMaxGraphUploadRate(true)*0.2),GetResString(IDS_KBYTESPERSEC));
+        text.Format(_T("20%%\t%i %s"), (uint16)(thePrefs.GetMaxGraphUploadRate(true)*0.2),GetResString(IDS_KBYTESPERSEC));
         m_menuUploadCtrl.AppendMenu(MF_STRING, MP_QS_U20,  text);
-        text.Format(_T("40%%\t%i %s"),  (uint16)(thePrefs.GetMaxGraphUploadRate(true)*0.4),GetResString(IDS_KBYTESPERSEC));
+        text.Format(_T("40%%\t%i %s"), (uint16)(thePrefs.GetMaxGraphUploadRate(true)*0.4),GetResString(IDS_KBYTESPERSEC));
         m_menuUploadCtrl.AppendMenu(MF_STRING, MP_QS_U40,  text);
-        text.Format(_T("60%%\t%i %s"),  (uint16)(thePrefs.GetMaxGraphUploadRate(true)*0.6),GetResString(IDS_KBYTESPERSEC));
+        text.Format(_T("60%%\t%i %s"), (uint16)(thePrefs.GetMaxGraphUploadRate(true)*0.6),GetResString(IDS_KBYTESPERSEC));
         m_menuUploadCtrl.AppendMenu(MF_STRING, MP_QS_U60,  text);
-        text.Format(_T("80%%\t%i %s"),  (uint16)(thePrefs.GetMaxGraphUploadRate(true)*0.8),GetResString(IDS_KBYTESPERSEC));
+        text.Format(_T("80%%\t%i %s"), (uint16)(thePrefs.GetMaxGraphUploadRate(true)*0.8),GetResString(IDS_KBYTESPERSEC));
         m_menuUploadCtrl.AppendMenu(MF_STRING, MP_QS_U80,  text);
         text.Format(_T("100%%\t%i %s"), (uint16)(thePrefs.GetMaxGraphUploadRate(true)),GetResString(IDS_KBYTESPERSEC));
         m_menuUploadCtrl.AppendMenu(MF_STRING, MP_QS_U100, text);
@@ -1916,16 +1916,16 @@ void CemuleDlg::AddSpeedSelectorMenus(CMenu* addToMenu)
     }
 
     // Create DownloadPopup Menu
-    ASSERT( m_menuDownloadCtrl.m_hMenu == NULL );
+    ASSERT(m_menuDownloadCtrl.m_hMenu == NULL);
     if (m_menuDownloadCtrl.CreateMenu())
     {
-        text.Format(_T("20%%\t%i %s"),  (uint16)(thePrefs.GetMaxGraphDownloadRate()*0.2),GetResString(IDS_KBYTESPERSEC));
+        text.Format(_T("20%%\t%i %s"), (uint16)(thePrefs.GetMaxGraphDownloadRate()*0.2),GetResString(IDS_KBYTESPERSEC));
         m_menuDownloadCtrl.AppendMenu(MF_STRING|MF_POPUP, MP_QS_D20,  text);
-        text.Format(_T("40%%\t%i %s"),  (uint16)(thePrefs.GetMaxGraphDownloadRate()*0.4),GetResString(IDS_KBYTESPERSEC));
+        text.Format(_T("40%%\t%i %s"), (uint16)(thePrefs.GetMaxGraphDownloadRate()*0.4),GetResString(IDS_KBYTESPERSEC));
         m_menuDownloadCtrl.AppendMenu(MF_STRING|MF_POPUP, MP_QS_D40,  text);
-        text.Format(_T("60%%\t%i %s"),  (uint16)(thePrefs.GetMaxGraphDownloadRate()*0.6),GetResString(IDS_KBYTESPERSEC));
+        text.Format(_T("60%%\t%i %s"), (uint16)(thePrefs.GetMaxGraphDownloadRate()*0.6),GetResString(IDS_KBYTESPERSEC));
         m_menuDownloadCtrl.AppendMenu(MF_STRING|MF_POPUP, MP_QS_D60,  text);
-        text.Format(_T("80%%\t%i %s"),  (uint16)(thePrefs.GetMaxGraphDownloadRate()*0.8),GetResString(IDS_KBYTESPERSEC));
+        text.Format(_T("80%%\t%i %s"), (uint16)(thePrefs.GetMaxGraphDownloadRate()*0.8),GetResString(IDS_KBYTESPERSEC));
         m_menuDownloadCtrl.AppendMenu(MF_STRING|MF_POPUP, MP_QS_D80,  text);
         text.Format(_T("100%%\t%i %s"), (uint16)(thePrefs.GetMaxGraphDownloadRate()),GetResString(IDS_KBYTESPERSEC));
         m_menuDownloadCtrl.AppendMenu(MF_STRING|MF_POPUP, MP_QS_D100, text);
@@ -1954,7 +1954,7 @@ void CemuleDlg::StartConnection()
             m_bConnectRequestDelayedForUPnP = false;
             if (m_hUPnPTimeOutTimer != 0)
             {
-                VERIFY( ::KillTimer(NULL, m_hUPnPTimeOutTimer) );
+                VERIFY(::KillTimer(NULL, m_hUPnPTimeOutTimer));
                 m_hUPnPTimeOutTimer = 0;
             }
             AddLogLine(true, GetResString(IDS_CONNECTING));
@@ -1990,7 +1990,7 @@ void CemuleDlg::RestoreWindow()
     if (TrayIsVisible())
         TrayHide();
 
-    if(m_pMiniMule)
+    if (m_pMiniMule)
         m_pMiniMule->ShowHide(true);
 
     if (m_wpFirstRestore.length)
@@ -2022,7 +2022,7 @@ void CemuleDlg::UpdateTrayIcon(int iPercent)
     m_uLastSysTrayIconCookie = uSysTrayIconCookie;
 
     // prepare it up
-    if (m_iMsgIcon!=0 && thePrefs.DoFlashOnNewMessage()==true )
+    if (m_iMsgIcon!=0 && thePrefs.DoFlashOnNewMessage()==true)
     {
         m_iMsgBlinkState=!m_iMsgBlinkState;
 
@@ -2052,7 +2052,7 @@ void CemuleDlg::UpdateTrayIcon(int iPercent)
     // generate the icon (do *not* destroy that icon using DestroyIcon(), that's done in 'TrayUpdate')
     int aiVals[1] = { iPercent };
     m_icoSysTrayCurrent = m_TrayIcon.Create(aiVals);
-    ASSERT( m_icoSysTrayCurrent != NULL );
+    ASSERT(m_icoSysTrayCurrent != NULL);
     if (m_icoSysTrayCurrent)
         TraySetIcon(m_icoSysTrayCurrent, true);
     TrayUpdate();
@@ -2082,7 +2082,7 @@ void CemuleDlg::ShowNotifier(LPCTSTR pszText, int iMsgType)
     //try to hook into or out of Snarl
     HookSnarl();
 
-    if(!m_bSnarlRegistered || snarlInterface == NULL)
+    if (!m_bSnarlRegistered || snarlInterface == NULL)
         return;
 
     CString snarlClass = L"";
@@ -2192,7 +2192,7 @@ void CemuleDlg::SetAllIcons()
 {
     // application icon (although it's not customizable, we may need to load a different color resolution)
     if (m_hIcon)
-        VERIFY( ::DestroyIcon(m_hIcon) );
+        VERIFY(::DestroyIcon(m_hIcon));
     // NOTE: the application icon name is prefixed with "AAA" to make sure it's alphabetically sorted by the
     // resource compiler as the 1st icon in the resource table!
     m_hIcon = AfxGetApp()->LoadIcon(_T("AAAEMULEAPP"));
@@ -2204,7 +2204,7 @@ void CemuleDlg::SetAllIcons()
     for (int i = 0; i < _countof(connicons); ++i)
     {
         if (connicons[i])
-            VERIFY( ::DestroyIcon(connicons[i]) );
+            VERIFY(::DestroyIcon(connicons[i]));
     }
     connicons[0] = theApp.LoadIcon(_T("ConnectedNotNot"), 16, 16);
     connicons[1] = theApp.LoadIcon(_T("ConnectedLowLow"), 16, 16);
@@ -2215,7 +2215,7 @@ void CemuleDlg::SetAllIcons()
     for (int i = 0; i < _countof(transicons); ++i)
     {
         if (transicons[i])
-            VERIFY( ::DestroyIcon(transicons[i]) );
+            VERIFY(::DestroyIcon(transicons[i]));
     }
     transicons[0] = theApp.LoadIcon(_T("UP0DOWN0"), 16, 16);
     transicons[1] = theApp.LoadIcon(_T("UP0DOWN1"), 16, 16);
@@ -2224,14 +2224,14 @@ void CemuleDlg::SetAllIcons()
     ShowTransferStateIcon();
 
     // users state
-    if (usericon) VERIFY( ::DestroyIcon(usericon) );
+    if (usericon) VERIFY(::DestroyIcon(usericon));
     usericon = theApp.LoadIcon(_T("StatsClients"), 16, 16);
     ShowUserStateIcon();
 
     // traybar icons
-    if (m_icoSysTrayConnected) VERIFY( ::DestroyIcon(m_icoSysTrayConnected) );
-    if (m_icoSysTrayDisconnected) VERIFY( ::DestroyIcon(m_icoSysTrayDisconnected) );
-    if (m_icoSysTrayLowID) VERIFY( ::DestroyIcon(m_icoSysTrayLowID) );
+    if (m_icoSysTrayConnected) VERIFY(::DestroyIcon(m_icoSysTrayConnected));
+    if (m_icoSysTrayDisconnected) VERIFY(::DestroyIcon(m_icoSysTrayDisconnected));
+    if (m_icoSysTrayLowID) VERIFY(::DestroyIcon(m_icoSysTrayLowID));
     m_icoSysTrayConnected = theApp.LoadIcon(_T("TrayConnected"), 16, 16);
     m_icoSysTrayDisconnected = theApp.LoadIcon(_T("TrayNotConnected"), 16, 16);
     m_icoSysTrayLowID = theApp.LoadIcon(_T("TrayLowID"), 16, 16);
@@ -2240,7 +2240,7 @@ void CemuleDlg::SetAllIcons()
     for (int i = 0; i < _countof(imicons); ++i)
     {
         if (imicons[i])
-            VERIFY( ::DestroyIcon(imicons[i]) );
+            VERIFY(::DestroyIcon(imicons[i]));
     }
     imicons[0] = NULL;
     imicons[1] = theApp.LoadIcon(_T("Message"), 16, 16);
@@ -2253,8 +2253,8 @@ void CemuleDlg::Localize()
     CMenu* pSysMenu = GetSystemMenu(FALSE);
     if (pSysMenu)
     {
-        VERIFY( pSysMenu->ModifyMenu(MP_ABOUTBOX, MF_BYCOMMAND | MF_STRING, MP_ABOUTBOX, GetResString(IDS_ABOUTBOX)) );
-        VERIFY( pSysMenu->ModifyMenu(MP_VERSIONCHECK, MF_BYCOMMAND | MF_STRING, MP_VERSIONCHECK, GetResString(IDS_VERSIONCHECK)) );
+        VERIFY(pSysMenu->ModifyMenu(MP_ABOUTBOX, MF_BYCOMMAND | MF_STRING, MP_ABOUTBOX, GetResString(IDS_ABOUTBOX)));
+        VERIFY(pSysMenu->ModifyMenu(MP_VERSIONCHECK, MF_BYCOMMAND | MF_STRING, MP_VERSIONCHECK, GetResString(IDS_VERSIONCHECK)));
 
         switch (thePrefs.GetWindowsVersion())
         {
@@ -2274,18 +2274,18 @@ void CemuleDlg::Localize()
             CMenu* pAccelMenu = pSysMenu->GetSubMenu(uOptMenuPos);
             if (pAccelMenu)
             {
-                ASSERT( pAccelMenu->m_hMenu == m_SysMenuOptions.m_hMenu );
-                VERIFY( pSysMenu->RemoveMenu(uOptMenuPos, MF_BYPOSITION) );
+                ASSERT(pAccelMenu->m_hMenu == m_SysMenuOptions.m_hMenu);
+                VERIFY(pSysMenu->RemoveMenu(uOptMenuPos, MF_BYPOSITION));
                 pAccelMenu = NULL;
             }
 
             // destroy all 'speed control' menus
             if (m_menuUploadCtrl)
-                VERIFY( m_menuUploadCtrl.DestroyMenu() );
+                VERIFY(m_menuUploadCtrl.DestroyMenu());
             if (m_menuDownloadCtrl)
-                VERIFY( m_menuDownloadCtrl.DestroyMenu() );
+                VERIFY(m_menuDownloadCtrl.DestroyMenu());
             if (m_SysMenuOptions)
-                VERIFY( m_SysMenuOptions.DestroyMenu() );
+                VERIFY(m_SysMenuOptions.DestroyMenu());
 
             // create new 'speed control' menus
             if (m_SysMenuOptions.CreateMenu())
@@ -2419,7 +2419,7 @@ int CemuleDlg::GetRecMaxUpload()
 
 BOOL CemuleDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 {
-    switch(wParam)
+    switch (wParam)
     {
     case TBBTN_TRANSFERS:
     case MP_HM_TRANSFER:
@@ -2560,7 +2560,7 @@ void CemuleDlg::ShowToolPopup(bool toolsonly)
 
     if (!toolsonly)
     {
-        menu.AppendMenu(MF_STRING,MP_HM_TRANSFER, GetResString(IDS_EM_TRANS),_T("TRANSFER") );
+        menu.AppendMenu(MF_STRING,MP_HM_TRANSFER, GetResString(IDS_EM_TRANS),_T("TRANSFER"));
         menu.AppendMenu(MF_STRING,MP_HM_SEARCH, GetResString(IDS_EM_SEARCH), _T("SEARCH"));
         menu.AppendMenu(MF_STRING,MP_HM_FILES, GetResString(IDS_EM_FILES), _T("SharedFiles"));
         menu.AppendMenu(MF_STRING,MP_HM_MSGS, GetResString(IDS_EM_MESSAGES), _T("MESSAGES"));
@@ -2578,7 +2578,7 @@ void CemuleDlg::ShowToolPopup(bool toolsonly)
     menu.AppendMenu(MF_STRING, MP_VERSIONCHECK, GetResString(IDS_VERSIONCHECK), L"WEB");
 
     menu.AppendMenu(MF_SEPARATOR);
-    menu.AppendMenu(MF_STRING|MF_POPUP,(UINT_PTR)Links.m_hMenu, GetResString(IDS_LINKS), _T("WEB") );
+    menu.AppendMenu(MF_STRING|MF_POPUP,(UINT_PTR)Links.m_hMenu, GetResString(IDS_LINKS), _T("WEB"));
 
     if (!toolsonly)
     {
@@ -2586,8 +2586,8 @@ void CemuleDlg::ShowToolPopup(bool toolsonly)
         menu.AppendMenu(MF_STRING,MP_HM_EXIT, GetResString(IDS_EXIT), _T("EXIT"));
     }
     menu.TrackPopupMenu(TPM_LEFTALIGN |TPM_RIGHTBUTTON, point.x, point.y, this);
-    VERIFY( Links.DestroyMenu() );
-    VERIFY( menu.DestroyMenu() );
+    VERIFY(Links.DestroyMenu());
+    VERIFY(menu.DestroyMenu());
 }
 
 
@@ -2606,13 +2606,13 @@ LRESULT CemuleDlg::OnFrameGrabFinished(WPARAM wParam,LPARAM lParam)
     CKnownFile* pOwner = (CKnownFile*)wParam;
     FrameGrabResult_Struct* result = (FrameGrabResult_Struct*)lParam;
 
-    if (theApp.knownfiles->IsKnownFile(pOwner) || theApp.downloadqueue->IsPartFile(pOwner) )
+    if (theApp.knownfiles->IsKnownFile(pOwner) || theApp.downloadqueue->IsPartFile(pOwner))
     {
         pOwner->GrabbingFinished(result->imgResults,result->nImagesGrabbed, result->pSender);
     }
     else
     {
-        ASSERT ( false );
+        ASSERT(false);
     }
 
     delete result;
@@ -2633,9 +2633,9 @@ void StraightWindowStyles(CWnd* pWnd)
     {
         if (__ascii_stricmp(szClassName, "Button") == 0)
             pWnd->ModifyStyle(BS_FLAT, 0);
-        else if (   (__ascii_stricmp(szClassName, "EDIT") == 0 && (pWnd->GetExStyle() & WS_EX_STATICEDGE))
-                    || __ascii_stricmp(szClassName, "SysListView32") == 0
-                    || __ascii_stricmp(szClassName, "msctls_trackbar32") == 0
+        else if ((__ascii_stricmp(szClassName, "EDIT") == 0 && (pWnd->GetExStyle() & WS_EX_STATICEDGE))
+                 || __ascii_stricmp(szClassName, "SysListView32") == 0
+                 || __ascii_stricmp(szClassName, "msctls_trackbar32") == 0
                 )
         {
             pWnd->ModifyStyleEx(WS_EX_STATICEDGE, WS_EX_CLIENTEDGE);
@@ -2659,7 +2659,7 @@ void ApplySystemFont(CWnd* pWnd)
     CHAR szClassName[MAX_PATH];
     if (::GetClassNameA(*pWnd, szClassName, _countof(szClassName)))
     {
-        if (   __ascii_stricmp(szClassName, "SysListView32") == 0
+        if (__ascii_stricmp(szClassName, "SysListView32") == 0
                 || __ascii_stricmp(szClassName, "SysTreeView32") == 0)
         {
             pWnd->SendMessage(WM_SETFONT, NULL, FALSE);
@@ -2759,22 +2759,22 @@ LRESULT CemuleDlg::OnKickIdle(UINT /*nWhy*/, long lIdleCount)
     LRESULT lResult = 0;
 
 //>>> WiZaRd::New Splash [TBH]
-/*
-    if (theApp.m_pSplashWnd)
-    {
-        if (::GetCurrentTime() - theApp.m_dwSplashTime > 2500)
+    /*
+        if (theApp.m_pSplashWnd)
         {
-            // timeout expired, destroy the splash window
-            theApp.DestroySplash();
-            UpdateWindow();
+            if (::GetCurrentTime() - theApp.m_dwSplashTime > 2500)
+            {
+                // timeout expired, destroy the splash window
+                theApp.DestroySplash();
+                UpdateWindow();
+            }
+            else
+            {
+                // check again later...
+                lResult = 1;
+            }
         }
-        else
-        {
-            // check again later...
-            lResult = 1;
-        }
-    }
-*/
+    */
 //<<< WiZaRd::New Splash [TBH]
 
     if (m_bStartMinimized)
@@ -2867,7 +2867,7 @@ bool CemuleDlg::IsWindowToolbarButton(int iButtonID) const
 
 int CemuleDlg::GetNextWindowToolbarButton(int iButtonID, int iDirection) const
 {
-    ASSERT( iDirection == 1 || iDirection == -1 );
+    ASSERT(iDirection == 1 || iDirection == -1);
     int iButtonCount = toolbar->GetButtonCount();
     if (iButtonCount > 0)
     {
@@ -2901,22 +2901,22 @@ BOOL CemuleDlg::PreTranslateMessage(MSG* pMsg)
     BOOL bResult = CTrayDialog::PreTranslateMessage(pMsg);
 
 //>>> WiZaRd::New Splash [TBH]
-/*
-    if (theApp.m_pSplashWnd && theApp.m_pSplashWnd->m_hWnd != NULL &&
-            (pMsg->message == WM_KEYDOWN	   ||
-             pMsg->message == WM_SYSKEYDOWN	   ||
-             pMsg->message == WM_LBUTTONDOWN   ||
-             pMsg->message == WM_RBUTTONDOWN   ||
-             pMsg->message == WM_MBUTTONDOWN   ||
-             pMsg->message == WM_NCLBUTTONDOWN ||
-             pMsg->message == WM_NCRBUTTONDOWN ||
-             pMsg->message == WM_NCMBUTTONDOWN))
-    {
-        theApp.DestroySplash();
-        UpdateWindow();
-    }
-    else
-*/
+    /*
+        if (theApp.m_pSplashWnd && theApp.m_pSplashWnd->m_hWnd != NULL &&
+                (pMsg->message == WM_KEYDOWN	   ||
+                 pMsg->message == WM_SYSKEYDOWN	   ||
+                 pMsg->message == WM_LBUTTONDOWN   ||
+                 pMsg->message == WM_RBUTTONDOWN   ||
+                 pMsg->message == WM_MBUTTONDOWN   ||
+                 pMsg->message == WM_NCLBUTTONDOWN ||
+                 pMsg->message == WM_NCRBUTTONDOWN ||
+                 pMsg->message == WM_NCMBUTTONDOWN))
+        {
+            theApp.DestroySplash();
+            UpdateWindow();
+        }
+        else
+    */
 //<<< WiZaRd::New Splash [TBH]
     {
         if (pMsg->message == WM_KEYDOWN)
@@ -2988,7 +2988,7 @@ void CemuleDlg::HtmlHelp(DWORD_PTR dwData, UINT nCmd)
                         strHelpError = hhLastError.description;
                         ::SysFreeString(hhLastError.description);
                     }
-                    if (   hhLastError.hr == 0x8004020A  /*no topics IDs available in Help file*/
+                    if (hhLastError.hr == 0x8004020A     /*no topics IDs available in Help file*/
                             || hhLastError.hr == 0x8004020B) /*requested Help topic ID not found*/
                     {
                         // try opening once again without help topic ID
@@ -3049,10 +3049,10 @@ BOOL CemuleDlg::OnChevronPushed(UINT id, NMHDR* pNMHDR, LRESULT* plResult)
 
     NMREBARCHEVRON* pnmrc = (NMREBARCHEVRON*)pNMHDR;
 
-    ASSERT( id == AFX_IDW_REBAR );
-    ASSERT( pnmrc->uBand == 0 );
-    ASSERT( pnmrc->wID == 0 );
-    ASSERT( m_mapTbarCmdToIcon.GetSize() != 0 );
+    ASSERT(id == AFX_IDW_REBAR);
+    ASSERT(pnmrc->uBand == 0);
+    ASSERT(pnmrc->wID == 0);
+    ASSERT(m_mapTbarCmdToIcon.GetSize() != 0);
 
     // get visible area of rebar/toolbar
     CRect rcVisibleButtons;
@@ -3148,8 +3148,8 @@ void CemuleDlg::TrayMinimizeToTrayChange()
             // just for safety, ensure that we are not adding duplicate menu entries..
             if (pSysMenu->EnableMenuItem(MP_MINIMIZETOTRAY, MF_BYCOMMAND | MF_ENABLED) == -1)
             {
-                ASSERT( (MP_MINIMIZETOTRAY & 0xFFF0) == MP_MINIMIZETOTRAY && MP_MINIMIZETOTRAY < 0xF000);
-                VERIFY( pSysMenu->InsertMenu(SC_MINIMIZE, MF_BYCOMMAND, MP_MINIMIZETOTRAY, GetResString(IDS_PW_TRAY)) );
+                ASSERT((MP_MINIMIZETOTRAY & 0xFFF0) == MP_MINIMIZETOTRAY && MP_MINIMIZETOTRAY < 0xF000);
+                VERIFY(pSysMenu->InsertMenu(SC_MINIMIZE, MF_BYCOMMAND, MP_MINIMIZETOTRAY, GetResString(IDS_PW_TRAY)));
             }
             else
                 ASSERT(0);
@@ -3191,10 +3191,10 @@ LRESULT CemuleDlg::OnUPnPResult(WPARAM wParam, LPARAM lParam)
     }
     if (m_hUPnPTimeOutTimer != 0)
     {
-        VERIFY( ::KillTimer(NULL, m_hUPnPTimeOutTimer) );
+        VERIFY(::KillTimer(NULL, m_hUPnPTimeOutTimer));
         m_hUPnPTimeOutTimer = 0;
     }
-    if(IsRunning() && m_bConnectRequestDelayedForUPnP)
+    if (IsRunning() && m_bConnectRequestDelayedForUPnP)
     {
         StartConnection();
     }
@@ -3256,7 +3256,7 @@ void CemuleDlg::StartUPnP(bool bReset, uint16 nForceTCPPort, uint16 nForceUDPPor
             {
                 theApp.m_pUPnPFinder->GetImplementation()->SetMessageOnResult(GetSafeHwnd(), UM_UPNP_RESULT);
                 if (bReset)
-                    VERIFY( (m_hUPnPTimeOutTimer = ::SetTimer(NULL, NULL, SEC2MS(40), UPnPTimeOutTimer)) != NULL );
+                    VERIFY((m_hUPnPTimeOutTimer = ::SetTimer(NULL, NULL, SEC2MS(40), UPnPTimeOutTimer)) != NULL);
                 theApp.m_pUPnPFinder->GetImplementation()->StartDiscovery(((nForceTCPPort != 0) ? nForceTCPPort : thePrefs.GetPort())
                         , ((nForceUDPPort != 0) ? nForceUDPPort : thePrefs.GetUDPPort())
                         , 0); // was WI port, may be useful, later
@@ -3264,8 +3264,8 @@ void CemuleDlg::StartUPnP(bool bReset, uint16 nForceTCPPort, uint16 nForceUDPPor
             else
                 ::PostMessage(theApp.emuledlg->GetSafeHwnd(), UM_UPNP_RESULT, (WPARAM)CUPnPImpl::UPNP_FAILED, 0);
         }
-        catch ( CUPnPImpl::UPnPError& ) {}
-        catch ( CException* e )
+        catch (CUPnPImpl::UPnPError&) {}
+        catch (CException* e)
         {
             e->Delete();
         }
@@ -3288,7 +3288,7 @@ void CemuleDlg::RefreshUPnP(bool bRequestAnswer)
                     theApp.m_pUPnPFinder->GetImplementation()->SetMessageOnResult(GetSafeHwnd(), UM_UPNP_RESULT);
                 if (theApp.m_pUPnPFinder->GetImplementation()->CheckAndRefresh() && bRequestAnswer)
                 {
-                    VERIFY( (m_hUPnPTimeOutTimer = ::SetTimer(NULL, NULL, SEC2MS(10), UPnPTimeOutTimer)) != NULL );
+                    VERIFY((m_hUPnPTimeOutTimer = ::SetTimer(NULL, NULL, SEC2MS(10), UPnPTimeOutTimer)) != NULL);
                 }
                 else
                     theApp.m_pUPnPFinder->GetImplementation()->SetMessageOnResult(0, 0);
@@ -3296,8 +3296,8 @@ void CemuleDlg::RefreshUPnP(bool bRequestAnswer)
             else
                 DebugLogWarning(_T("RefreshUPnP, implementation not ready"));
         }
-        catch ( CUPnPImpl::UPnPError& ) {}
-        catch ( CException* e )
+        catch (CUPnPImpl::UPnPError&) {}
+        catch (CException* e)
         {
             e->Delete();
         }
@@ -3347,7 +3347,7 @@ BOOL CemuleDlg::OnDeviceChange(UINT nEventType, DWORD_PTR dwData)
                 UINT uMask = 1 << uDrive;
                 if (pVol->dbcv_unitmask & uMask)
                 {
-                    DEBUG_ONLY( strMsg.AppendFormat(_T(" %c:"), _T('A') + uDrive) );
+                    DEBUG_ONLY(strMsg.AppendFormat(_T(" %c:"), _T('A') + uDrive));
                     if (pVol->dbcv_flags & (DBTF_MEDIA | DBTF_NET))
                         ClearVolumeInfoCache(uDrive);
                     bVolumesChanged = true;
@@ -3358,7 +3358,7 @@ BOOL CemuleDlg::OnDeviceChange(UINT nEventType, DWORD_PTR dwData)
         }
         else
         {
-            DEBUG_ONLY( strMsg.AppendFormat(_T(" devicetype=0x%08x"), pHdr->dbch_devicetype) );
+            DEBUG_ONLY(strMsg.AppendFormat(_T(" devicetype=0x%08x"), pHdr->dbch_devicetype));
         }
 #ifdef _DEBUG
         TRACE(_T("CemuleDlg::OnDeviceChange: %s\n"), strMsg);
@@ -3390,7 +3390,7 @@ void CemuleDlg::UpdateThumbBarButtons(bool initialAddToDlg)
         m_thbButtons[i].dwFlags = THBF_DISMISSONCLICK;
         CString tooltip;
 
-        switch(i)
+        switch (i)
         {
         case TBB_THROTTLE:
         {
@@ -3448,7 +3448,7 @@ void CemuleDlg::OnTBBPressed(UINT id)
 }
 
 // When Windows tells us, the taskbarbutton was created, it is safe to initialize our taskbar stuff
-LRESULT CemuleDlg::OnTaskbarBtnCreated ( WPARAM , LPARAM  )
+LRESULT CemuleDlg::OnTaskbarBtnCreated(WPARAM , LPARAM)
 {
     // Sanity check that the OS is Win 7 or later
     if (thePrefs.GetWindowsVersion() >= _WINVER_7_ && IsRunning())
@@ -3456,9 +3456,9 @@ LRESULT CemuleDlg::OnTaskbarBtnCreated ( WPARAM , LPARAM  )
         if (m_pTaskbarList)
             m_pTaskbarList.Release();
 
-        if (m_pTaskbarList.CoCreateInstance ( CLSID_TaskbarList ) == S_OK)
+        if (m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList) == S_OK)
         {
-            m_pTaskbarList->SetProgressState ( m_hWnd, TBPF_NOPROGRESS );
+            m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 
             m_currentTBP_state = TBPF_NOPROGRESS;
             m_prevProgress=0;
@@ -3479,10 +3479,10 @@ void CemuleDlg::EnableTaskbarGoodies(bool enable)
 {
     if (m_pTaskbarList)
     {
-        m_pTaskbarList->SetOverlayIcon ( m_hWnd, NULL, _T("") );
+        m_pTaskbarList->SetOverlayIcon(m_hWnd, NULL, _T(""));
         if (!enable)
         {
-            m_pTaskbarList->SetProgressState ( m_hWnd, TBPF_NOPROGRESS );
+            m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
             m_currentTBP_state=TBPF_NOPROGRESS;
             m_prevProgress=0;
             m_ovlIcon = NULL;
@@ -3511,7 +3511,7 @@ void CemuleDlg::UpdateStatusBarProgress()
             if (m_currentTBP_state!=TBPF_NOPROGRESS)
             {
                 m_currentTBP_state=TBPF_NOPROGRESS;
-                m_pTaskbarList->SetProgressState ( m_hWnd, TBPF_NOPROGRESS );
+                m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
             }
         }
         else
@@ -3527,7 +3527,7 @@ void CemuleDlg::UpdateStatusBarProgress()
 
             if (new_state!=m_currentTBP_state)
             {
-                m_pTaskbarList->SetProgressState ( m_hWnd, new_state );
+                m_pTaskbarList->SetProgressState(m_hWnd, new_state);
                 m_currentTBP_state=new_state;
             }
 
@@ -3557,7 +3557,7 @@ void CemuleDlg::UpdateStatusBarProgress()
             if (m_ovlIcon!=newicon)
             {
                 m_ovlIcon=newicon;
-                m_pTaskbarList->SetOverlayIcon ( m_hWnd, m_ovlIcon, _T("eMule Up/Down Indicator") );
+                m_pTaskbarList->SetOverlayIcon(m_hWnd, m_ovlIcon, _T("eMule Up/Down Indicator"));
             }
         }
     }
@@ -3574,7 +3574,7 @@ void CemuleDlg::SetTaskbarIconColor()
         HMODULE hDWMAPI = LoadLibrary(_T("dwmapi.dll"));
         if (hDWMAPI)
         {
-            HRESULT (WINAPI *pfnDwmGetColorizationColor)(DWORD*, BOOL*);
+            HRESULT(WINAPI *pfnDwmGetColorizationColor)(DWORD*, BOOL*);
             (FARPROC&)pfnDwmGetColorizationColor = GetProcAddress(hDWMAPI, "DwmGetColorizationColor");
             DWORD dwGlassColor = 0;
             BOOL bOpaque;
@@ -3601,8 +3601,8 @@ void CemuleDlg::SetTaskbarIconColor()
         if (g_xpStyle.IsThemeActive() && g_xpStyle.IsAppThemed())
         {
             CWnd* ptmpWnd = new CWnd();
-            VERIFY( ptmpWnd->Create(_T("STATIC"), _T("Tmp"), 0, CRect(0, 0, 10, 10), this, 1235) );
-            VERIFY( g_xpStyle.SetWindowTheme(ptmpWnd->GetSafeHwnd(), L"TrayNotifyHoriz", NULL) == S_OK );
+            VERIFY(ptmpWnd->Create(_T("STATIC"), _T("Tmp"), 0, CRect(0, 0, 10, 10), this, 1235));
+            VERIFY(g_xpStyle.SetWindowTheme(ptmpWnd->GetSafeHwnd(), L"TrayNotifyHoriz", NULL) == S_OK);
             HTHEME hTheme = g_xpStyle.OpenThemeData(ptmpWnd->GetSafeHwnd(), L"TrayNotify");
             if (hTheme != NULL)
             {
@@ -3626,7 +3626,7 @@ void CemuleDlg::SetTaskbarIconColor()
     uint8 iBlue = GetBValue(cr);
     uint8 iGreen = GetGValue(cr);
     uint16 iBrightness = (uint16)sqrt(((iRed * iRed * 0.241f) + (iGreen * iGreen * 0.691f) + (iBlue * iBlue * 0.068f)));
-    ASSERT( iBrightness <= 255 );
+    ASSERT(iBrightness <= 255);
     bBrightTaskbarIconSpeed = iBrightness < 132;
     DebugLog(_T("Taskbar Notifier Color: R:%u G:%u B:%u, Brightness: %u, Transparent: %s"), iRed, iGreen, iBlue, iBrightness, bTransparent ? _T("Yes") : _T("No"));
     if (bBrightTaskbarIconSpeed || bTransparent)
@@ -3638,17 +3638,17 @@ void CemuleDlg::SetTaskbarIconColor()
 //>>> TuXaRd::SnarlSupport
 void	CemuleDlg::HookSnarl()
 {
-    if(m_bSnarlRegistered)
+    if (m_bSnarlRegistered)
         return;
 
-    if(!snarlInterface->IsSnarlRunning())
+    if (!snarlInterface->IsSnarlRunning())
     {
         UnhookSnarl();
         return;
     }
 
     // register with Snarl
-    if(snarlInterface->Register(SNARL_APP_TAG, SNARL_APP_TAG) < 0)
+    if (snarlInterface->Register(SNARL_APP_TAG, SNARL_APP_TAG) < 0)
     {
         // registering failed. is a previous session still registered?
         // note: can only happen when pulling the power switch or something,
@@ -3661,7 +3661,7 @@ void	CemuleDlg::HookSnarl()
     }
     else
         m_bSnarlRegistered = true;
-    if(m_bSnarlRegistered)
+    if (m_bSnarlRegistered)
     {
         snarlInterface->AddClass(L"Error", GetResString(IDS_ERROR));
         snarlInterface->AddClass(L"Log", GetResString(IDS_SV_LOG)); // TODO: rauswerfen
@@ -3675,7 +3675,7 @@ void	CemuleDlg::HookSnarl()
 
 void	CemuleDlg::UnhookSnarl()
 {
-    if(!m_bSnarlRegistered)
+    if (!m_bSnarlRegistered)
         return;
 
     snarlInterface->ClearClasses();
@@ -3689,11 +3689,11 @@ void	CemuleDlg::CreateMiniMule()
     try
     {
         TRACE(L"%s - m_pMiniMule = new CMiniMule(this);\n", __FUNCTION__);
-        ASSERT( m_pMiniMule == NULL );
+        ASSERT(m_pMiniMule == NULL);
         m_pMiniMule = new CMiniMule(this);
         m_pMiniMule->Create(CMiniMule::IDD, this);
     }
-    catch(...)
+    catch (...)
     {
         ASSERT(0);
         m_pMiniMule = NULL;
@@ -3710,10 +3710,10 @@ void	CemuleDlg::UpdateMediaInfoDLL()
     strURL.TrimRight(L".zip");
     strURL.Append(L".txt");
 
-    if(DownloadFromURLToFile(strURL, strTxt))
+    if (DownloadFromURLToFile(strURL, strTxt))
     {
         CStdioFile versionFile;
-        if(versionFile.Open(strTxt, CFile::modeRead | CFile::shareDenyWrite))
+        if (versionFile.Open(strTxt, CFile::modeRead | CFile::shareDenyWrite))
         {
             CString strVersion = L"";
             versionFile.ReadString(strVersion);
@@ -3723,18 +3723,18 @@ void	CemuleDlg::UpdateMediaInfoDLL()
             UINT newVer = (UINT)_tstoi(strVersion);
             CString strPath = theApp.GetProfileString(L"eMule", L"MediaInfo_MediaInfoDllPath", L"MEDIAINFO.DLL");
             int pos = strPath.ReverseFind(L'\\');
-            if(strPath.IsEmpty() || strPath == L"<noload>" || pos == -1) //no absolute path given - use default path
+            if (strPath.IsEmpty() || strPath == L"<noload>" || pos == -1) //no absolute path given - use default path
                 strPath = thePrefs.GetMuleDirectory(EMULE_CONFIGDIR);
             else
                 strPath = strPath.Mid(0, pos+1);
             strPath.Append(L"MediaInfo.dll");
-            if(newVer > thePrefs.GetMediaInfoDllVersion() || !::PathFileExists(strPath))
+            if (newVer > thePrefs.GetMediaInfoDllVersion() || !::PathFileExists(strPath))
             {
                 strURL = thePrefs.GetMediaInfoDllUpdateURL();
                 CString strFile = strPath + L".new";
-                if(DownloadFromURLToFile(strURL, strFile))
+                if (DownloadFromURLToFile(strURL, strFile))
                 {
-                    if(Extract(strFile, strPath, L"MediaInfo.dll", true, 1, L"MediaInfo.dll"))
+                    if (Extract(strFile, strPath, L"MediaInfo.dll", true, 1, L"MediaInfo.dll"))
                         thePrefs.SetMediaInfoDllVersion(newVer);
                 }
             }

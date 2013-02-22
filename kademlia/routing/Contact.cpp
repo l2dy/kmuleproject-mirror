@@ -99,7 +99,7 @@ CContact::CContact(const CUInt128 &uClientID, UINT uIp, uint16 uUdpPort, uint16 
 
 void CContact::Copy(const CContact& fromContact)
 {
-    ASSERT( fromContact.m_bGuiRefs == false ); // don't do this, if this is needed at some point, the code has to be adjusted before
+    ASSERT(fromContact.m_bGuiRefs == false);   // don't do this, if this is needed at some point, the code has to be adjusted before
     m_uClientID = fromContact.m_uClientID;
     m_uDistance = fromContact.m_uDistance;
     m_uIp = fromContact.m_uIp;
@@ -216,7 +216,7 @@ byte CContact::GetType() const
 
 void CContact::CheckingType()
 {
-    if(time(NULL) - m_tLastTypeSet < 10 || m_byType == 4)
+    if (time(NULL) - m_tLastTypeSet < 10 || m_byType == 4)
         return;
 
     m_tLastTypeSet = time(NULL);
@@ -228,7 +228,7 @@ void CContact::CheckingType()
 void CContact::UpdateType()
 {
     UINT uHours = (time(NULL)-m_tCreated)/HR2S(1);
-    switch(uHours)
+    switch (uHours)
     {
     case 0:
         m_byType = 2;
@@ -250,7 +250,7 @@ time_t CContact::GetLastSeen() const
     // might result in wrong values if doing CheckingType() for example, so don't use for important timing stuff
     if (m_tExpires != 0)
     {
-        switch(m_byType)
+        switch (m_byType)
         {
         case 2:
             return m_tExpires - HR2S(1);
@@ -290,7 +290,7 @@ void CContact::IncUse()
 
 void CContact::DecUse()
 {
-    if(m_uInUse)
+    if (m_uInUse)
         m_uInUse--;
     else
         ASSERT(0);

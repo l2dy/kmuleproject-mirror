@@ -26,7 +26,7 @@ public:
         CAutoPtr<CWSDLPort> spOut;
         if (p == NULL)
         {
-            spOut.Attach( new CWSDLPort );
+            spOut.Attach(new CWSDLPort);
             p = spOut;
         }
         if (p != NULL)

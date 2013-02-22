@@ -193,13 +193,13 @@ void CToolTipCtrlX::CustomPaint(LPNMTTCUSTOMDRAW pNMCD)
             LOGFONT lf = {0};
             if (g_xpStyle.GetThemeFont(hTheme, pdc->m_hDC, TTP_STANDARD, TTSS_NORMAL, TMT_FONT, &lf) == S_OK)
             {
-                VERIFY( m_fontNormal.CreateFontIndirect(&lf) );
+                VERIFY(m_fontNormal.CreateFontIndirect(&lf));
 
                 if (m_bCol1Bold && m_fontBold.m_hObject == NULL)
                 {
                     memset(&lf, 0, sizeof(lf));
                     if (g_xpStyle.GetThemeFont(hTheme, pdc->m_hDC, TTP_STANDARDTITLE, TTSS_NORMAL, TMT_FONT, &lf) == S_OK)
-                        VERIFY( m_fontBold.CreateFontIndirect(&lf) );
+                        VERIFY(m_fontBold.CreateFontIndirect(&lf));
                 }
 
                 // Get the tooltip font color
@@ -211,7 +211,7 @@ void CToolTipCtrlX::CustomPaint(LPNMTTCUSTOMDRAW pNMCD)
 
         // If needed, create the standard tooltip font which was queried from the system metrics
         if (m_fontNormal.m_hObject == NULL && m_lfNormal.lfHeight != 0)
-            VERIFY( m_fontNormal.CreateFontIndirect(&m_lfNormal) );
+            VERIFY(m_fontNormal.CreateFontIndirect(&m_lfNormal));
 
         // Select the tooltip font
         if (m_fontNormal.m_hObject != NULL)
@@ -224,7 +224,7 @@ void CToolTipCtrlX::CustomPaint(LPNMTTCUSTOMDRAW pNMCD)
                 LOGFONT lf;
                 m_fontNormal.GetLogFont(&lf);
                 lf.lfWeight = FW_BOLD;
-                VERIFY( m_fontBold.CreateFontIndirect(&lf) );
+                VERIFY(m_fontBold.CreateFontIndirect(&lf));
             }
         }
 

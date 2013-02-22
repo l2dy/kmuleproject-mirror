@@ -279,7 +279,7 @@ CString GetName(const CTag* pTag)
     {
         strName = pTag->GetName();
 //>>> WiZaRd::CollectionEnhancement
-        if(strName == FT_FOLDER)
+        if (strName == FT_FOLDER)
             strName = GetResString(IDS_FOLDER);
 //<<< WiZaRd::CollectionEnhancement
     }

@@ -50,7 +50,7 @@ CUPnPImplWrapper::~CUPnPImplWrapper()
 
 void CUPnPImplWrapper::Init()
 {
-    ASSERT( !m_liAvailable.IsEmpty() );
+    ASSERT(!m_liAvailable.IsEmpty());
     m_pActiveImpl = NULL;
     for (POSITION pos = m_liAvailable.GetHeadPosition(); pos != 0; m_liAvailable.GetNext(pos))
     {

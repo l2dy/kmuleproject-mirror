@@ -579,7 +579,7 @@ static BOOL ParseStreamHeader(int hAviFile, DWORD dwLengthLeft, STREAMHEADER* pS
 
 BOOL GetRIFFHeaders(LPCTSTR pszFileName, SMediaInfo* mi, bool& rbIsAVI, bool bFullInfo)
 {
-    ASSERT( !bFullInfo || mi->strInfo.m_hWnd != NULL );
+    ASSERT(!bFullInfo || mi->strInfo.m_hWnd != NULL);
 
     BOOL bResult = FALSE;
 
@@ -917,7 +917,7 @@ BOOL GetRIFFHeaders(LPCTSTR pszFileName, SMediaInfo* mi, bool& rbIsAVI, bool bFu
                                     ck.Seek(1, CFile::current);
                             }
                         }
-                        catch(CException* ex)
+                        catch (CException* ex)
                         {
                             ex->Delete();
                             bError = true;
@@ -1211,7 +1211,7 @@ CString GetRealMediaCodecInfo(LPCSTR pszCodecID)
 
 BOOL GetRMHeaders(LPCTSTR pszFileName, SMediaInfo* mi, bool& rbIsRM, bool bFullInfo)
 {
-    ASSERT( !bFullInfo || mi->strInfo.m_hWnd != NULL );
+    ASSERT(!bFullInfo || mi->strInfo.m_hWnd != NULL);
 
     bool bResult = false;
     CSafeBufferedFile file;
@@ -1575,7 +1575,7 @@ BOOL GetRMHeaders(LPCTSTR pszFileName, SMediaInfo* mi, bool& rbIsRM, bool bFullI
             }
         }
     }
-    catch(CException *ex)
+    catch (CException *ex)
     {
         ex->Delete();
     }
@@ -1587,14 +1587,14 @@ BOOL GetRMHeaders(LPCTSTR pszFileName, SMediaInfo* mi, bool& rbIsRM, bool bFullI
     if (bResult)
     {
         mi->InitFileLength();
-        if (   bFullInfo
+        if (bFullInfo
                 && mi->strInfo.m_hWnd
-                && (   nFileBitrate
-                       || !mi->strTitle.IsEmpty()
-                       || !mi->strAuthor.IsEmpty()
-                       || !strCopyright.IsEmpty()
-                       || !strComment.IsEmpty()
-                       || aFileProps.GetSize()))
+                && (nFileBitrate
+                    || !mi->strTitle.IsEmpty()
+                    || !mi->strAuthor.IsEmpty()
+                    || !strCopyright.IsEmpty()
+                    || !strComment.IsEmpty()
+                    || aFileProps.GetSize()))
         {
             if (!mi->strInfo.IsEmpty())
                 mi->strInfo << _T("\n");
@@ -1691,7 +1691,7 @@ bool GetAttribute(IWMHeaderInfo *pIWMHeaderInfo, WORD wStream, LPCWSTR pwszName,
         return false;
 
     // SDK states that MP3 files could contain a BOM - never seen
-    if ( *(const WORD *)(LPCWSTR)strValue == (WORD)0xFFFE || *(const WORD *)(LPCWSTR)strValue == (WORD)0xFEFF)
+    if (*(const WORD *)(LPCWSTR)strValue == (WORD)0xFFFE || *(const WORD *)(LPCWSTR)strValue == (WORD)0xFEFF)
     {
         ASSERT(0);
         strValue = strValue.Mid(1);
@@ -1860,7 +1860,7 @@ bool GetAttributeEx(IWMHeaderInfo3 *pIWMHeaderInfo, WORD wStream, LPCWSTR pwszNa
         return false;
 
     // SDK states that MP3 files could contain a BOM - never seen
-    if ( *(const WORD *)(LPCWSTR)strValue == (WORD)0xFFFE || *(const WORD *)(LPCWSTR)strValue == (WORD)0xFEFF)
+    if (*(const WORD *)(LPCWSTR)strValue == (WORD)0xFFFE || *(const WORD *)(LPCWSTR)strValue == (WORD)0xFEFF)
     {
         ASSERT(0);
         strValue = strValue.Mid(1);
@@ -1973,9 +1973,9 @@ public:
     STDMETHODIMP Seek(LARGE_INTEGER dlibMove, DWORD dwOrigin, ULARGE_INTEGER *plibNewPosition)
     {
         // 'dwOrigin' can get mapped to 'dwMoveMethod'
-        ASSERT( STREAM_SEEK_SET == FILE_BEGIN );
-        ASSERT( STREAM_SEEK_CUR == FILE_CURRENT );
-        ASSERT( STREAM_SEEK_END == FILE_END );
+        ASSERT(STREAM_SEEK_SET == FILE_BEGIN);
+        ASSERT(STREAM_SEEK_CUR == FILE_CURRENT);
+        ASSERT(STREAM_SEEK_END == FILE_END);
 
         LONG lNewFilePointerHi = dlibMove.HighPart;
         DWORD dwNewFilePointerLo = SetFilePointer(m_hFile, dlibMove.LowPart, &lNewFilePointerHi, dwOrigin);
@@ -2042,7 +2042,7 @@ public:
     STDMETHODIMP Stat(STATSTG *pstatstg, DWORD grfStatFlag)
     {
         UNREFERENCED_PARAMETER(grfStatFlag);
-        ASSERT( grfStatFlag == STATFLAG_NONAME );
+        ASSERT(grfStatFlag == STATFLAG_NONAME);
         memset(pstatstg, 0, sizeof(*pstatstg));
         BY_HANDLE_FILE_INFORMATION fileInfo;
         if (!GetFileInformationByHandle(m_hFile, &fileInfo))
@@ -2111,32 +2111,32 @@ public:
             // If WMP9+ is installed, WMVCORE.DLL is available.
             //
 //>>> WiZaRd::Wine Compatibility
-			// WINE ships a 1kB sized wmvcore.dll by default which causes the GetProcAddress calls below to crash kMule under WINE
-			if(!thePrefs.WeNeedWineCompatibility())
+            // WINE ships a 1kB sized wmvcore.dll by default which causes the GetProcAddress calls below to crash kMule under WINE
+            if (!thePrefs.WeNeedWineCompatibility())
 //<<< WiZaRd::Wine Compatibility
-			{
-				m_hLib = LoadLibrary(_T("wmvcore.dll"));
-				if (m_hLib != NULL)
-				{
-					(FARPROC &)m_pfnWMCreateEditor = GetProcAddress(m_hLib, "WMCreateEditor");
-					(FARPROC &)m_pfnWMCreateSyncReader = GetProcAddress(m_hLib, "WMCreateSyncReader");
-				}
-			}
+            {
+                m_hLib = LoadLibrary(_T("wmvcore.dll"));
+                if (m_hLib != NULL)
+                {
+                    (FARPROC &)m_pfnWMCreateEditor = GetProcAddress(m_hLib, "WMCreateEditor");
+                    (FARPROC &)m_pfnWMCreateSyncReader = GetProcAddress(m_hLib, "WMCreateSyncReader");
+                }
+            }
         }
         return m_pfnWMCreateEditor != NULL;
     }
 
     bool m_bInitialized;
     HMODULE m_hLib;
-    HRESULT (STDMETHODCALLTYPE *m_pfnWMCreateEditor)(IWMMetadataEditor **ppEditor);
-    HRESULT (STDMETHODCALLTYPE *m_pfnWMCreateSyncReader)(IUnknown *pUnkCert, DWORD dwRights, IWMSyncReader **ppSyncReader);
+    HRESULT(STDMETHODCALLTYPE *m_pfnWMCreateEditor)(IWMMetadataEditor **ppEditor);
+    HRESULT(STDMETHODCALLTYPE *m_pfnWMCreateSyncReader)(IUnknown *pUnkCert, DWORD dwRights, IWMSyncReader **ppSyncReader);
 };
 static CWmvCoreDLL theWmvCoreDLL;
 
 
 BOOL GetWMHeaders(LPCTSTR pszFileName, SMediaInfo* mi, bool& rbIsWM, bool bFullInfo)
 {
-    ASSERT( !bFullInfo || mi->strInfo.m_hWnd != NULL );
+    ASSERT(!bFullInfo || mi->strInfo.m_hWnd != NULL);
 
     if (!theWmvCoreDLL.Initialize())
         return FALSE;
@@ -2186,12 +2186,12 @@ BOOL GetWMHeaders(LPCTSTR pszFileName, SMediaInfo* mi, bool& rbIsWM, bool bFullI
                 }
             }
         }
-        else ASSERT(   hr == S_OK
-                           || hr == NS_E_UNRECOGNIZED_STREAM_TYPE	// general: unknown file type
-                           || hr == NS_E_INVALID_INPUT_FORMAT		// general: unknown file type
-                           || hr == NS_E_INVALID_DATA				// general: unknown file type
-                           || hr == NS_E_FILE_INIT_FAILED			// got for an SWF file ?
-                           || hr == NS_E_FILE_READ					// obviously if the file is too short
+        else ASSERT(hr == S_OK
+                        || hr == NS_E_UNRECOGNIZED_STREAM_TYPE	// general: unknown file type
+                        || hr == NS_E_INVALID_INPUT_FORMAT		// general: unknown file type
+                        || hr == NS_E_INVALID_DATA				// general: unknown file type
+                        || hr == NS_E_FILE_INIT_FAILED			// got for an SWF file ?
+                        || hr == NS_E_FILE_READ					// obviously if the file is too short
                        );
 
         if (pIUnkReader)
@@ -2405,11 +2405,11 @@ BOOL GetWMHeaders(LPCTSTR pszFileName, SMediaInfo* mi, bool& rbIsWM, bool bFullI
                             {
                                 bHaveStreamInfo = true;
                                 mi->iVideoStreams++;
-                                if (   dwStreamInfoSize >= sizeof(WM_STREAM_TYPE_INFO) + sizeof(WMVIDEOINFOHEADER)
+                                if (dwStreamInfoSize >= sizeof(WM_STREAM_TYPE_INFO) + sizeof(WMVIDEOINFOHEADER)
                                         && pStreamTypeInfo->cbFormat >= sizeof(WMVIDEOINFOHEADER))
                                 {
                                     const WMVIDEOINFOHEADER *pVideoInfo = (WMVIDEOINFOHEADER *)(pStreamTypeInfo + 1);
-                                    ASSERT( sizeof(VIDEOINFOHEADER) == sizeof(WMVIDEOINFOHEADER) );
+                                    ASSERT(sizeof(VIDEOINFOHEADER) == sizeof(WMVIDEOINFOHEADER));
                                     if (pVideoInfo->bmiHeader.biSize >= sizeof(pVideoInfo->bmiHeader))
                                     {
                                         if (mi->iVideoStreams == 1)
@@ -2419,13 +2419,13 @@ BOOL GetWMHeaders(LPCTSTR pszFileName, SMediaInfo* mi, bool& rbIsWM, bool bFullI
                                                 mi->fVideoAspectRatio = (float)abs(mi->video.bmiHeader.biWidth) / (float)abs(mi->video.bmiHeader.biHeight);
                                             mi->strVideoFormat = GetVideoFormatName(pVideoInfo->bmiHeader.biCompression);
 
-                                            if (   pVideoInfo->bmiHeader.biCompression == MAKEFOURCC('D','V','R',' ')
+                                            if (pVideoInfo->bmiHeader.biCompression == MAKEFOURCC('D','V','R',' ')
                                                     && pVideoInfo->bmiHeader.biSize >= sizeof(pVideoInfo->bmiHeader) + sizeof(WMMPEG2VIDEOINFO)
                                                     && dwStreamInfoSize >= sizeof(WM_STREAM_TYPE_INFO) + sizeof(WMVIDEOINFOHEADER) + sizeof(WMMPEG2VIDEOINFO)
                                                     && pStreamTypeInfo->cbFormat >= sizeof(WMVIDEOINFOHEADER) + sizeof(WMMPEG2VIDEOINFO))
                                             {
                                                 const WMMPEG2VIDEOINFO *pMPEG2VideoInfo = (WMMPEG2VIDEOINFO *)(pVideoInfo + 1);
-                                                if (   pMPEG2VideoInfo->hdr.bmiHeader.biSize >= sizeof(pMPEG2VideoInfo->hdr.bmiHeader)
+                                                if (pMPEG2VideoInfo->hdr.bmiHeader.biSize >= sizeof(pMPEG2VideoInfo->hdr.bmiHeader)
                                                         && pMPEG2VideoInfo->hdr.bmiHeader.biCompression != 0
                                                         && pMPEG2VideoInfo->hdr.bmiHeader.biWidth == pVideoInfo->bmiHeader.biWidth
                                                         && pMPEG2VideoInfo->hdr.bmiHeader.biHeight == pVideoInfo->bmiHeader.biHeight)
@@ -2488,11 +2488,11 @@ BOOL GetWMHeaders(LPCTSTR pszFileName, SMediaInfo* mi, bool& rbIsWM, bool bFullI
                             {
                                 bHaveStreamInfo = true;
                                 mi->iAudioStreams++;
-                                if (   dwStreamInfoSize >= sizeof(WM_STREAM_TYPE_INFO) + sizeof(WAVEFORMATEX)
+                                if (dwStreamInfoSize >= sizeof(WM_STREAM_TYPE_INFO) + sizeof(WAVEFORMATEX)
                                         && pStreamTypeInfo->cbFormat >= sizeof(WAVEFORMATEX))
                                 {
                                     const WAVEFORMATEX *pWaveFormatEx = (WAVEFORMATEX *)(pStreamTypeInfo + 1);
-                                    ASSERT( sizeof(WAVEFORMAT) == sizeof(WAVEFORMATEX) - sizeof(WORD)*2 );
+                                    ASSERT(sizeof(WAVEFORMAT) == sizeof(WAVEFORMATEX) - sizeof(WORD)*2);
                                     if (mi->iAudioStreams == 1)
                                     {
                                         mi->audio = *(const WAVEFORMAT *)pWaveFormatEx;
@@ -3040,9 +3040,9 @@ BOOL GetWMHeaders(LPCTSTR pszFileName, SMediaInfo* mi, bool& rbIsWM, bool bFullI
             }
         }
     }
-    catch(CException *ex)
+    catch (CException *ex)
     {
-        ASSERT( ex->IsKindOf(RUNTIME_CLASS(CNotSupportedException)) );
+        ASSERT(ex->IsKindOf(RUNTIME_CLASS(CNotSupportedException)));
         ex->Delete();
     }
 
@@ -3050,13 +3050,13 @@ BOOL GetWMHeaders(LPCTSTR pszFileName, SMediaInfo* mi, bool& rbIsWM, bool bFullI
     {
         CComQIPtr<IWMMetadataEditor> pIWMMetadataEditor(pIUnkReader);
         if (pIWMMetadataEditor)
-            VERIFY( pIWMMetadataEditor->Close() == S_OK );
+            VERIFY(pIWMMetadataEditor->Close() == S_OK);
     }
     if (pIUnkReader)
     {
         CComQIPtr<IWMSyncReader> pIWMSyncReader(pIUnkReader);
         if (pIWMSyncReader)
-            VERIFY( pIWMSyncReader->Close() == S_OK );
+            VERIFY(pIWMSyncReader->Close() == S_OK);
     }
 
     return    mi->iAudioStreams > 0
@@ -3135,7 +3135,7 @@ bool GetMimeType(LPCTSTR pszFilePath, CString& rstrMimeType)
             // RAR file type
             if (iRead >= 7 && aucBuff[0] == 0x52)
             {
-                if (   (aucBuff[1] == 0x45 && aucBuff[2] == 0x7e && aucBuff[3] == 0x5e)
+                if ((aucBuff[1] == 0x45 && aucBuff[2] == 0x7e && aucBuff[3] == 0x5e)
                         || (aucBuff[1] == 0x61 && aucBuff[2] == 0x72 && aucBuff[3] == 0x21 && aucBuff[4] == 0x1a && aucBuff[5] == 0x07 && aucBuff[6] == 0x00))
                 {
                     rstrMimeType = _T("application/x-rar-compressed");

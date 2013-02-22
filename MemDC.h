@@ -40,7 +40,7 @@ public:
     CCustomMemDC(CDC *pDC, LPCRECT pRect = NULL, COLORREF crBackground = CLR_DEFAULT)
         : CDC()
     {
-        ASSERT( pDC != NULL );
+        ASSERT(pDC != NULL);
 
         m_pDC = pDC;
         m_oldBitmap = NULL;
@@ -59,7 +59,7 @@ public:
             // Create a Memory DC
             CreateCompatibleDC(pDC);
 
-            VERIFY( m_bitmap.CreateCompatibleBitmap(pDC, m_rect.Width(), m_rect.Height()) );
+            VERIFY(m_bitmap.CreateCompatibleBitmap(pDC, m_rect.Width(), m_rect.Height()));
             m_oldBitmap = SelectObject(&m_bitmap);
 
             SetMapMode(pDC->GetMapMode());
@@ -97,7 +97,7 @@ public:
 
     void SetFont(CFont *pFont)
     {
-        ASSERT( m_oldFont == NULL );
+        ASSERT(m_oldFont == NULL);
         m_oldFont = SelectObject(pFont);
     }
 

@@ -46,7 +46,7 @@ class CFirewallOpener;
 class CUPnPImplWrapper;
 //>>> WiZaRd::New Splash [TBH]
 //class CSplashScreen;
-class CSplashScreenEx;	
+class CSplashScreenEx;
 //<<< WiZaRd::New Splash [TBH]
 class CAntiLeechDataList; //>>> WiZaRd::ClientAnalyzer
 class CAutoUpdate; //>>> WiZaRd::AutoUpdate
@@ -86,7 +86,7 @@ public:
     CUPnPImplWrapper*	m_pUPnPFinder;
     CAntiLeechDataList* antileechlist; //>>> WiZaRd::ClientAnalyzer
     CAutoUpdate*		autoUpdater; //>>> WiZaRd::AutoUpdate
-	CCustomSearches*	customSearches; //>>> WiZaRd::CustomSearches
+    CCustomSearches*	customSearches; //>>> WiZaRd::CustomSearches
 
     HANDLE				m_hMutexOneInstance;
     int					m_iDfltImageListColorFlags;
@@ -243,14 +243,17 @@ protected:
     // Splash screen
 //>>> WiZaRd::New Splash [TBH]
 private:
-	//CSplashScreen*	m_pSplashWnd;
-	CSplashScreenEx*	m_pSplashWnd;
-	DWORD			m_dwSplashTime;
+    //CSplashScreen*	m_pSplashWnd;
+    CSplashScreenEx*	m_pSplashWnd;
+    DWORD			m_dwSplashTime;
 public:
-	void			ShowSplash();
-	void			DestroySplash();
-	bool			IsSplashActive() const	{return m_pSplashWnd != NULL;}
-	void			SetSplashText(const CString& s);
+    void			ShowSplash();
+    void			DestroySplash();
+    bool			IsSplashActive() const
+    {
+        return m_pSplashWnd != NULL;
+    }
+    void			SetSplashText(const CString& s);
 //<<< WiZaRd::New Splash [TBH]
 
 private:

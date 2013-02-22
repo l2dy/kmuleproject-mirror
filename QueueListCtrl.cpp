@@ -60,7 +60,7 @@ CQueueListCtrl::CQueueListCtrl()
     SetSkinKey(L"QueuedLv");
 
     // Barry - Refresh the queue every 10 secs
-    VERIFY( (m_hTimer = ::SetTimer(NULL, NULL, 10000, QueueUpdateTimer)) != NULL );
+    VERIFY((m_hTimer = ::SetTimer(NULL, NULL, 10000, QueueUpdateTimer)) != NULL);
     if (thePrefs.GetVerbose() && !m_hTimer)
         AddDebugLogLine(true,_T("Failed to create 'queue list control' timer - %s"),GetErrorMessage(GetLastError()));
 }
@@ -68,7 +68,7 @@ CQueueListCtrl::CQueueListCtrl()
 CQueueListCtrl::~CQueueListCtrl()
 {
     if (m_hTimer)
-        VERIFY( ::KillTimer(NULL, m_hTimer) );
+        VERIFY(::KillTimer(NULL, m_hTimer));
 }
 
 void CQueueListCtrl::Init()
@@ -179,8 +179,8 @@ void CQueueListCtrl::SetAllIcons()
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("OverlaySecureObfu"))), 3);
     // Apply the image list also to the listview control, even if we use our own 'DrawItem'.
     // This is needed to give the listview control a chance to initialize the row height.
-    ASSERT( (GetStyle() & LVS_SHAREIMAGELISTS) != 0 );
-    VERIFY( ApplyImageList(m_ImageList) == NULL );
+    ASSERT((GetStyle() & LVS_SHAREIMAGELISTS) != 0);
+    VERIFY(ApplyImageList(m_ImageList) == NULL);
 }
 
 void CQueueListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
@@ -220,7 +220,7 @@ void CQueueListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
                 {
 //>>> WiZaRd::ClientAnalyzer
                     int plusminus = 0;
-                    if(badguy != -1 && client->IsBadGuy())
+                    if (badguy != -1 && client->IsBadGuy())
                     {
                         int iIconPosY = (cur_rec.Height() > 16) ? ((cur_rec.Height() - 16) / 2) : 1;
                         POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
@@ -364,8 +364,8 @@ void CQueueListCtrl::GetItemDisplayText(const CUpDownClient *client, int iSubIte
 //>>> WiZaRd::Fix for LowID slots only on connection [VQB]
             //if (client->m_bAddNextConnect)
             //    _sntprintf(pszText, cchTextMax, _T("%i ****"),client->GetScore(false));
-			if (client->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick)
-				_sntprintf(pszText, cchTextMax, L"%i **** Awaited reconnect %s", client->GetScore(false), CastSecondsToHM((::GetTickCount()-client->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick)/1000));
+            if (client->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick)
+                _sntprintf(pszText, cchTextMax, L"%i **** Awaited reconnect %s", client->GetScore(false), CastSecondsToHM((::GetTickCount()-client->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick)/1000));
 //<<< WiZaRd::Fix for LowID slots only on connection [VQB]
             else
                 _sntprintf(pszText, cchTextMax, _T("%i (%s)"),client->GetScore(false), GetResString(IDS_IDLOW));
@@ -484,7 +484,7 @@ int CQueueListCtrl::SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
         {
 //>>> WiZaRd::PowerShare
             iResult = file1->IsPowerShared()-file2->IsPowerShared();
-            if(iResult == 0)
+            if (iResult == 0)
 //<<< WiZaRd::PowerShare
                 iResult = CompareLocaleStringNoCase(file1->GetFileName(), file2->GetFileName());
         }
@@ -503,7 +503,7 @@ int CQueueListCtrl::SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
         {
 //>>> WiZaRd::PowerShare
             iResult = file1->IsPowerShared()-file2->IsPowerShared();
-            if(iResult == 0)
+            if (iResult == 0)
 //<<< WiZaRd::PowerShare
                 iResult = (file1->GetUpPriority() == PR_VERYLOW ? -1 : file1->GetUpPriority()) - (file2->GetUpPriority() == PR_VERYLOW ? -1 : file2->GetUpPriority());
         }
@@ -517,18 +517,18 @@ int CQueueListCtrl::SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
     case 3:
 //>>> WiZaRd::PowerShare
         iResult = item1->GetFriendSlot() - item2->GetFriendSlot();
-        if(iResult == 0)
+        if (iResult == 0)
         {
             CKnownFile* file1 = theApp.sharedfiles->GetFileByID(item1->GetUploadFileID());
             CKnownFile* file2 = theApp.sharedfiles->GetFileByID(item2->GetUploadFileID());
             bool bIsPS1 = file1 && file1->IsPowerShared();
             bool bIsPS2 = file2 && file2->IsPowerShared();
-            if(bIsPS1 && bIsPS2)
+            if (bIsPS1 && bIsPS2)
                 iResult = (file1->GetUpPriority() == PR_VERYLOW ? -1 : file1->GetUpPriority()) - (file2->GetUpPriority() == PR_VERYLOW ? -1 : file2->GetUpPriority());
             else
                 iResult = bIsPS1 - bIsPS2;
         }
-        if(iResult == 0)
+        if (iResult == 0)
 //<<< WiZaRd::PowerShare
             iResult = CompareUnsigned(item1->GetScore(false, false, true), item2->GetScore(false, false, true));
         break;
@@ -560,7 +560,7 @@ int CQueueListCtrl::SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
     case 10:
         //Proper sorting ;)
         iResult = item1->GetClientSoft() - item2->GetClientSoft();
-        if(iResult == 0)
+        if (iResult == 0)
             iResult = CompareLocaleStringNoCase(item1->DbgGetFullClientSoftVer(), item2->DbgGetFullClientSoftVer());
         break;
     }
@@ -772,7 +772,7 @@ void CQueueListCtrl::ShowQueueClients()
 {
     DeleteAllItems();
     CUpDownClient *update = theApp.uploadqueue->GetNextClient(NULL);
-    while( update )
+    while (update)
     {
         AddClient(update, false);
         update = theApp.uploadqueue->GetNextClient(update);
@@ -785,14 +785,14 @@ void CALLBACK CQueueListCtrl::QueueUpdateTimer(HWND /*hwnd*/, UINT /*uiMsg*/, UI
     // NOTE: Always handle all type of MFC exceptions in TimerProcs - otherwise we'll get mem leaks
     try
     {
-        if (   !theApp.emuledlg->IsRunning() // Don't do anything if the app is shutting down - can cause unhandled exceptions
+        if (!theApp.emuledlg->IsRunning()    // Don't do anything if the app is shutting down - can cause unhandled exceptions
                 || !thePrefs.GetUpdateQueueList()
                 || theApp.emuledlg->activewnd != theApp.emuledlg->transferwnd
-                || !theApp.emuledlg->transferwnd->GetQueueList()->IsWindowVisible() )
+                || !theApp.emuledlg->transferwnd->GetQueueList()->IsWindowVisible())
             return;
 
         CQueueListCtrl* _this = theApp.emuledlg->transferwnd->GetQueueList();
-        for(int i = 0; i < _this->GetItemCount(); ++i)
+        for (int i = 0; i < _this->GetItemCount(); ++i)
             _this->Update(i);
     }
     CATCH_DFLT_EXCEPTIONS(_T("CQueueListCtrl::QueueUpdateTimer"))

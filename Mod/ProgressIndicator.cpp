@@ -24,24 +24,24 @@
 
 CProgressIndicator::CProgressIndicator()
 {
-	m_strFilePath = L"";
-	m_uLastProgress = 0;
-	m_uProgress = 0;
-	m_dProgress = 0;
+    m_strFilePath = L"";
+    m_uLastProgress = 0;
+    m_uProgress = 0;
+    m_dProgress = 0;
 }
 
 void CProgressIndicator::Initialise(const CString& strFilePath, const CString& strProgressString, const CString& strFinishString)
 {
-	m_strFilePath = strFilePath;
-	m_strProgressString = strProgressString;
-	m_strFinishString = strFinishString;
+    m_strFilePath = strFilePath;
+    m_strProgressString = strProgressString;
+    m_strFinishString = strFinishString;
 
-	if (theApp.emuledlg && theApp.emuledlg->IsRunning())
-	{
-		CString strBuffer = L"";
-		strBuffer.Format(m_strProgressString, m_dProgress, m_strFilePath);
-		theApp.emuledlg->statusbar->SetText(strBuffer, SBarLog, 0);
-	}
+    if (theApp.emuledlg && theApp.emuledlg->IsRunning())
+    {
+        CString strBuffer = L"";
+        strBuffer.Format(m_strProgressString, m_dProgress, m_strFilePath);
+        theApp.emuledlg->statusbar->SetText(strBuffer, SBarLog, 0);
+    }
 }
 
 CProgressIndicator::~CProgressIndicator()
@@ -50,26 +50,26 @@ CProgressIndicator::~CProgressIndicator()
 
 void CProgressIndicator::UpdateProgress(const double& progress)
 {
-	m_dProgress = progress;
-	m_uProgress = (UINT)m_dProgress;
+    m_dProgress = progress;
+    m_uProgress = (UINT)m_dProgress;
 
-	if(m_uProgress != m_uLastProgress)
-	{
-		m_uLastProgress = m_uProgress;		
-		if(theApp.emuledlg && theApp.emuledlg->IsRunning())
-		{
-			CString strBuffer = L"";
-			if(m_uProgress < 100)
-			{
-				strBuffer.Format(m_strProgressString, m_dProgress, m_strFilePath);
-				theApp.emuledlg->statusbar->SetText(strBuffer, SBarLog, 0);
-			}
-			else
-			{
-				strBuffer = m_strFinishString + L" " + m_strFilePath;
-				theApp.emuledlg->statusbar->SetText(strBuffer, SBarLog, 0);
-				AddLogLine(false, strBuffer);
-			}
-		}
-	}
+    if (m_uProgress != m_uLastProgress)
+    {
+        m_uLastProgress = m_uProgress;
+        if (theApp.emuledlg && theApp.emuledlg->IsRunning())
+        {
+            CString strBuffer = L"";
+            if (m_uProgress < 100)
+            {
+                strBuffer.Format(m_strProgressString, m_dProgress, m_strFilePath);
+                theApp.emuledlg->statusbar->SetText(strBuffer, SBarLog, 0);
+            }
+            else
+            {
+                strBuffer = m_strFinishString + L" " + m_strFilePath;
+                theApp.emuledlg->statusbar->SetText(strBuffer, SBarLog, 0);
+                AddLogLine(false, strBuffer);
+            }
+        }
+    }
 }

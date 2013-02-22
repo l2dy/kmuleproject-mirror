@@ -163,12 +163,12 @@ public:
     }
     __declspec(deprecated) operator UINT() const
     {
-        ASSERT( m_nSize < 0xFFFFFFFF );
+        ASSERT(m_nSize < 0xFFFFFFFF);
         return (UINT)m_nSize;
     }
     __declspec(deprecated) operator sint32() const
     {
-        ASSERT( m_nSize < 0x7FFFFFFF );
+        ASSERT(m_nSize < 0x7FFFFFFF);
         return (sint32)m_nSize;
     }
 
@@ -360,16 +360,16 @@ private:
         if (edfsAction == DFSA_ADD)
         {
             m_nSize = nSize1 + nSize2;
-            ASSERT( m_nSize >= nSize1 && m_nSize >= nSize2 && m_nSize <= 0x4000000000 );
+            ASSERT(m_nSize >= nSize1 && m_nSize >= nSize2 && m_nSize <= 0x4000000000);
         }
         else if (edfsAction == DFSA_SUB)
         {
             m_nSize = nSize1 - nSize2;
-            ASSERT( m_nSize <= nSize1 && m_nSize <= 0x4000000000 );
+            ASSERT(m_nSize <= nSize1 && m_nSize <= 0x4000000000);
         }
         else if (edfsAction == DFSA_DIV)
         {
-            if ( nSize2 != 0 )
+            if (nSize2 != 0)
                 m_nSize = nSize1 / nSize2;
             else
                 ASSERT(0);
@@ -377,12 +377,12 @@ private:
         else if (edfsAction == DFSA_MUL)
         {
             m_nSize = nSize1 * nSize2;
-            ASSERT( m_nSize >= nSize1 && m_nSize >= nSize2 && m_nSize <= 0x4000000000 );
+            ASSERT(m_nSize >= nSize1 && m_nSize >= nSize2 && m_nSize <= 0x4000000000);
         }
     }
     void	Check()
     {
-        ASSERT( m_nSize != (uint64)(-1) && m_nSize <= 0x4000000000 );
+        ASSERT(m_nSize != (uint64)(-1) && m_nSize <= 0x4000000000);
     }
     uint64	m_nSize;
 };

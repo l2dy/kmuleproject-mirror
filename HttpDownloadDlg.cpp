@@ -58,7 +58,7 @@ static int get_byte(HINTERNET m_hHttpFile)
     unsigned char c;
     DWORD dwBytesRead;
     BOOL b = ::InternetReadFile(m_hHttpFile, &c, 1, &dwBytesRead);
-    if(!b)
+    if (!b)
         return EOF;
     else
         return c;
@@ -72,13 +72,13 @@ static int check_header(z_stream *stream, HINTERNET m_hHttpFile)
     int c;
 
     /* Check the gzip magic header */
-    for(len = 0; len < 2; len++)
+    for (len = 0; len < 2; len++)
     {
         c = get_byte(m_hHttpFile);
-        if(c != gz_magic[len])
+        if (c != gz_magic[len])
         {
-            if(len != 0) stream->avail_in++, stream->next_in--;
-            if(c != EOF)
+            if (len != 0) stream->avail_in++, stream->next_in--;
+            if (c != EOF)
             {
                 stream->avail_in++, stream->next_in--;
                 //do not support transparent streams
@@ -89,30 +89,30 @@ static int check_header(z_stream *stream, HINTERNET m_hHttpFile)
     }
     method = get_byte(m_hHttpFile);
     flags = get_byte(m_hHttpFile);
-    if(method != Z_DEFLATED || (flags & RESERVED) != 0)
+    if (method != Z_DEFLATED || (flags & RESERVED) != 0)
         return Z_DATA_ERROR;
 
     /* Discard time, xflags and OS code: */
-    for(len = 0; len < 6; len++) (void)get_byte(m_hHttpFile);
+    for (len = 0; len < 6; len++)(void)get_byte(m_hHttpFile);
 
-    if((flags & EXTRA_FIELD) != 0)   /* skip the extra field */
+    if ((flags & EXTRA_FIELD) != 0)  /* skip the extra field */
     {
-        len  =  (uInt)get_byte(m_hHttpFile);
+        len  = (uInt)get_byte(m_hHttpFile);
         len += ((uInt)get_byte(m_hHttpFile))<<8;
         /* len is garbage if EOF but the loop below will quit anyway */
-        while(len-- != 0 && get_byte(m_hHttpFile) != EOF) ;
+        while (len-- != 0 && get_byte(m_hHttpFile) != EOF) ;
     }
-    if((flags & ORIG_NAME) != 0)   /* skip the original file name */
+    if ((flags & ORIG_NAME) != 0)  /* skip the original file name */
     {
-        while((c = get_byte(m_hHttpFile)) != 0 && c != EOF) ;
+        while ((c = get_byte(m_hHttpFile)) != 0 && c != EOF) ;
     }
-    if((flags & COMMENT) != 0)     /* skip the .gz file comment */
+    if ((flags & COMMENT) != 0)    /* skip the .gz file comment */
     {
-        while((c = get_byte(m_hHttpFile)) != 0 && c != EOF) ;
+        while ((c = get_byte(m_hHttpFile)) != 0 && c != EOF) ;
     }
-    if((flags & HEAD_CRC) != 0)    /* skip the header crc */
+    if ((flags & HEAD_CRC) != 0)   /* skip the header crc */
     {
-        for(len = 0; len < 2; len++) (void)get_byte(m_hHttpFile);
+        for (len = 0; len < 2; len++)(void)get_byte(m_hHttpFile);
     }
     //return Z_DATA_ERROR if we hit EOF?
     return Z_OK;
@@ -595,9 +595,9 @@ resend:
     //  ENCODING_QUERY;
     TCHAR szContentEncoding[32];
     DWORD dwEncodeStringSize = _countof(szContentEncoding);
-    if(::HttpQueryInfo(m_hHttpFile, HTTP_QUERY_CONTENT_ENCODING, szContentEncoding, &dwEncodeStringSize, NULL))
+    if (::HttpQueryInfo(m_hHttpFile, HTTP_QUERY_CONTENT_ENCODING, szContentEncoding, &dwEncodeStringSize, NULL))
     {
-        if(!_tcsicmp(szContentEncoding, _T("gzip")) || !_tcsicmp(szContentEncoding, _T("x-gzip")))
+        if (!_tcsicmp(szContentEncoding, _T("gzip")) || !_tcsicmp(szContentEncoding, _T("x-gzip")))
             bEncodedWithGZIP = TRUE;
     }
 
@@ -647,7 +647,7 @@ resend:
             {
                 DECODE_DATA(m_FileToWrite, szReadBuf, dwBytesRead);
             }
-            catch(CFileException *e)
+            catch (CFileException *e)
             {
                 TRACE(_T("An exception occured while writing to the download file\n"));
                 HandleThreadErrorWithLastError(GetResString(IDS_HTTPDOWNLOAD_ERROR_READFILE), e->m_lOsError);
@@ -693,7 +693,7 @@ void CHttpDownloadDlg::UpdateControlsDuringTransfer(DWORD dwStartTicks, DWORD& d
     if (bGotFileSize)
     {
         //Update the percentage downloaded in the caption
-        DWORD dwPercentage = (DWORD) (dwTotalBytesRead * 100.0 / dwFileSize);
+        DWORD dwPercentage = (DWORD)(dwTotalBytesRead * 100.0 / dwFileSize);
         if (dwPercentage != dwLastPercentage)
         {
             SetPercentage(dwPercentage);
@@ -721,8 +721,8 @@ void CHttpDownloadDlg::UpdateControlsDuringTransfer(DWORD dwStartTicks, DWORD& d
             //Update the estimated time left
             if (dwTotalBytesRead)
             {
-                DWORD dwSecondsLeft = (DWORD) (((double)dwNowTicks - dwStartTicks) / dwTotalBytesRead *
-                                               (dwFileSize - dwTotalBytesRead) / 1000);
+                DWORD dwSecondsLeft = (DWORD)(((double)dwNowTicks - dwStartTicks) / dwTotalBytesRead *
+                                              (dwFileSize - dwTotalBytesRead) / 1000);
                 SetTimeLeft(dwSecondsLeft, dwTotalBytesRead, dwFileSize);
             }
         }

@@ -249,8 +249,8 @@ CSharedFilesCtrl::CSharedFilesCtrl()
 CSharedFilesCtrl::~CSharedFilesCtrl()
 {
 //>>> WiZaRd::PowerShare
-    if (m_PrioMenu) VERIFY( m_PrioMenu.DestroyMenu() );
-    if (m_PowerSharedMenu) VERIFY( m_PowerSharedMenu.DestroyMenu() );
+    if (m_PrioMenu) VERIFY(m_PrioMenu.DestroyMenu());
+    if (m_PowerSharedMenu) VERIFY(m_PowerSharedMenu.DestroyMenu());
 //<<< WiZaRd::PowerShare
     while (!liTempShareableFilesInDir.IsEmpty())	// delete shareble files
         delete liTempShareableFilesInDir.RemoveHead();
@@ -261,13 +261,13 @@ void CSharedFilesCtrl::Init()
 {
     SetPrefsKey(_T("SharedFilesCtrl"));
     SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_INFOTIP);
-    ASSERT( (GetStyle() & LVS_SINGLESEL) == 0 );
+    ASSERT((GetStyle() & LVS_SINGLESEL) == 0);
 
     InsertColumn(0, GetResString(IDS_DL_FILENAME),		LVCFMT_LEFT,  DFLT_FILENAME_COL_WIDTH);
     InsertColumn(1, GetResString(IDS_DL_SIZE),			LVCFMT_RIGHT, DFLT_SIZE_COL_WIDTH);
     InsertColumn(2, GetResString(IDS_TYPE),				LVCFMT_LEFT,  DFLT_FILETYPE_COL_WIDTH);
     InsertColumn(3, GetResString(IDS_PRIORITY),			LVCFMT_LEFT,  DFLT_PRIORITY_COL_WIDTH);
-	InsertColumn(4, GetResString(IDS_RATIO),			LVCFMT_LEFT,  20); //>>> WiZaRd::Ratio Indicator
+    InsertColumn(4, GetResString(IDS_RATIO),			LVCFMT_LEFT,  20); //>>> WiZaRd::Ratio Indicator
     InsertColumn(5, GetResString(IDS_FILEID),			LVCFMT_LEFT,  DFLT_HASH_COL_WIDTH,		-1, true);
     InsertColumn(6, GetResString(IDS_SF_REQUESTS),		LVCFMT_RIGHT, 100);
     InsertColumn(7, GetResString(IDS_SF_ACCEPTS),		LVCFMT_RIGHT, 100,						-1, true);
@@ -309,7 +309,7 @@ void CSharedFilesCtrl::Init()
     }
 
     m_ShareDropTarget.SetParent(this);
-    VERIFY( m_ShareDropTarget.Register(this) );
+    VERIFY(m_ShareDropTarget.Register(this));
 }
 
 void CSharedFilesCtrl::OnSysColorChange()
@@ -335,14 +335,14 @@ void CSharedFilesCtrl::SetAllIcons()
     m_ImageList.Add(CTempIconLoader(_T("Rating_Excellent")));
     m_ImageList.Add(CTempIconLoader(_T("Collection_Search"))); // rating for comments are searched on kad
 //>>> WiZaRd::Ratio Indicator
-	for(int i = 0; i < _countof(strRatioSmilies); ++i)
-		m_iRatio[i] = m_ImageList.Add(CTempIconLoader(strRatioSmilies[i]));
+    for (int i = 0; i < _countof(strRatioSmilies); ++i)
+        m_iRatio[i] = m_ImageList.Add(CTempIconLoader(strRatioSmilies[i]));
 //<<< WiZaRd::Ratio Indicator
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("FileCommentsOvl"))), 1);
     // Apply the image list also to the listview control, even if we use our own 'DrawItem'.
     // This is needed to give the listview control a chance to initialize the row height.
-    ASSERT( (GetStyle() & LVS_SHAREIMAGELISTS) != 0 );
-    VERIFY( ApplyImageList(m_ImageList) == NULL );
+    ASSERT((GetStyle() & LVS_SHAREIMAGELISTS) != 0);
+    VERIFY(ApplyImageList(m_ImageList) == NULL);
 }
 
 void CSharedFilesCtrl::Localize()
@@ -369,9 +369,9 @@ void CSharedFilesCtrl::Localize()
     pHeaderCtrl->SetItem(3, &hdi);
 
 //>>> WiZaRd::Ratio Indicator
-	strRes = GetResString(IDS_RATIO);
-	hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-	pHeaderCtrl->SetItem(4, &hdi);
+    strRes = GetResString(IDS_RATIO);
+    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
+    pHeaderCtrl->SetItem(4, &hdi);
 //<<< WiZaRd::Ratio Indicator
 
     strRes = GetResString(IDS_FILEID);
@@ -446,13 +446,13 @@ void CSharedFilesCtrl::AddFile(const CShareableFile* file)
     // check filter conditions if we should show this file right now
     if (m_pDirectoryFilter != NULL)
     {
-        ASSERT( file->IsKindOf(RUNTIME_CLASS(CKnownFile)) || m_pDirectoryFilter->m_eItemType == SDI_UNSHAREDDIRECTORY );
+        ASSERT(file->IsKindOf(RUNTIME_CLASS(CKnownFile)) || m_pDirectoryFilter->m_eItemType == SDI_UNSHAREDDIRECTORY);
 //>>> WiZaRd::SharedView Ed2kType [WiZaRd]
         CString strFilePath = file->GetPath();
         if (strFilePath.Right(1) == "\\")
             strFilePath = strFilePath.Left(strFilePath.GetLength()-1);
 //<<< WiZaRd::SharedView Ed2kType [WiZaRd]
-        switch(m_pDirectoryFilter->m_eItemType)
+        switch (m_pDirectoryFilter->m_eItemType)
         {
         case SDI_ALL:
             // No filter
@@ -554,7 +554,7 @@ void CSharedFilesCtrl::AddFile(const CShareableFile* file)
     // (in case we start sharing this file), so make sure to replace the old one instead of adding a new
     if (m_pDirectoryFilter != NULL && m_pDirectoryFilter->m_eItemType == SDI_UNSHAREDDIRECTORY && file->IsKindOf(RUNTIME_CLASS(CKnownFile)))
     {
-        for (POSITION pos = liTempShareableFilesInDir.GetHeadPosition(); pos != NULL; )
+        for (POSITION pos = liTempShareableFilesInDir.GetHeadPosition(); pos != NULL;)
         {
             CShareableFile* pFile = liTempShareableFilesInDir.GetNext(pos);
             if (pFile->GetFilePath().CompareNoCase(file->GetFilePath()) == 0)
@@ -605,11 +605,11 @@ void CSharedFilesCtrl::UpdateFile(const CShareableFile* file, bool bUpdateFileSu
     if (iItem != -1)
     {
         Update(iItem);
-        if(bUpdateFileSummary || bSelected != NULL)
+        if (bUpdateFileSummary || bSelected != NULL)
         {
             if (GetItemState(iItem, LVIS_SELECTED) != 0)
             {
-                if(bSelected != NULL)
+                if (bSelected != NULL)
                     *bSelected = true;
                 if (bUpdateFileSummary)
                     theApp.emuledlg->sharedfileswnd->ShowSelectedFilesDetails();
@@ -633,7 +633,7 @@ void CSharedFilesCtrl::ReloadFileList()
 
     CCKey bufKey;
     CKnownFile* cur_file;
-    for (POSITION pos = theApp.sharedfiles->m_Files_map.GetStartPosition(); pos != 0; )
+    for (POSITION pos = theApp.sharedfiles->m_Files_map.GetStartPosition(); pos != 0;)
     {
         theApp.sharedfiles->m_Files_map.GetNextAssoc(pos, bufKey, cur_file);
         AddFile(cur_file);
@@ -667,7 +667,7 @@ void CSharedFilesCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     if (!lpDrawItemStruct->itemData)
         return;
 
-	CCustomMemDC dc(CDC::FromHandle(lpDrawItemStruct->hDC), &lpDrawItemStruct->rcItem);
+    CCustomMemDC dc(CDC::FromHandle(lpDrawItemStruct->hDC), &lpDrawItemStruct->rcItem);
     BOOL bCtrlFocused;
     InitItemMemDC(dc, lpDrawItemStruct, bCtrlFocused);
     CRect cur_rec(lpDrawItemStruct->rcItem);
@@ -759,13 +759,13 @@ void CSharedFilesCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
                 }
 
 //>>> WiZaRd::Ratio Indicator
-				case 4:
-				{
-					if (pKnownFile == NULL)
-						break;
-					m_ImageList.Draw(dc, m_iRatio[min(8, int(pKnownFile->GetSharingRatio()/0.1875))], cur_rec.TopLeft(), ILD_NORMAL);
-					break;
-				}
+                case 4:
+                {
+                    if (pKnownFile == NULL)
+                        break;
+                    m_ImageList.Draw(dc, m_iRatio[min(8, int(pKnownFile->GetSharingRatio()/0.1875))], cur_rec.TopLeft(), ILD_NORMAL);
+                    break;
+                }
 //<<< WiZaRd::Ratio Indicator
 
                 case 9:
@@ -961,12 +961,12 @@ void CSharedFilesCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
                 ASSERT(0);
 
 //>>> WiZaRd::PowerShare
-            if(((CKnownFile*)pFile)->IsPowerShared())
+            if (((CKnownFile*)pFile)->IsPowerShared())
                 uCurPrioMenuItem += (MP_PSPRIOAUTO-MP_PRIOAUTO);
 
             if (bFirstItem)
                 iPowerShare = ((CKnownFile*)pFile)->IsPowerShared();
-            else if(iPowerShare != (int)((CKnownFile*)pFile)->IsPowerShared())
+            else if (iPowerShare != (int)((CKnownFile*)pFile)->IsPowerShared())
                 iPowerShare = -1;
 //<<< WiZaRd::PowerShare
 
@@ -1001,8 +1001,8 @@ void CSharedFilesCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
     static const TCHAR _szSkinPkgSuffix2[] = _T(".") EMULSKIN_BASEEXT _T(".rar");
     if (bSingleCompleteFileSelected
             && pSingleSelFile
-            && (   pSingleSelFile->GetFilePath().Right(ARRSIZE(_szSkinPkgSuffix1)-1).CompareNoCase(_szSkinPkgSuffix1) == 0
-                   || pSingleSelFile->GetFilePath().Right(ARRSIZE(_szSkinPkgSuffix2)-1).CompareNoCase(_szSkinPkgSuffix2) == 0))
+            && (pSingleSelFile->GetFilePath().Right(ARRSIZE(_szSkinPkgSuffix1)-1).CompareNoCase(_szSkinPkgSuffix1) == 0
+                || pSingleSelFile->GetFilePath().Right(ARRSIZE(_szSkinPkgSuffix2)-1).CompareNoCase(_szSkinPkgSuffix2) == 0))
     {
         MENUITEMINFO mii = {0};
         mii.cbSize = sizeof mii;
@@ -1023,13 +1023,13 @@ void CSharedFilesCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
     m_SharedFilesMenu.EnableMenuItem(MP_CMT, (!bContainsShareableFiles && iSelectedItems > 0) ? MF_ENABLED : MF_GRAYED);
     m_SharedFilesMenu.EnableMenuItem(MP_DETAIL, iSelectedItems > 0 ? MF_ENABLED : MF_GRAYED);
     m_SharedFilesMenu.EnableMenuItem(thePrefs.GetShowCopyEd2kLinkCmd() ? MP_GETED2KLINK : MP_SHOWED2KLINK, (!bContainsOnlyShareableFile && iSelectedItems > 0) ? MF_ENABLED : MF_GRAYED);
-	m_SharedFilesMenu.EnableMenuItem(MP_FEEDBACK, (!bContainsShareableFiles && iSelectedItems > 0) ? MF_ENABLED : MF_GRAYED); //>>> WiZaRd::Upload Feedback
+    m_SharedFilesMenu.EnableMenuItem(MP_FEEDBACK, (!bContainsShareableFiles && iSelectedItems > 0) ? MF_ENABLED : MF_GRAYED); //>>> WiZaRd::Upload Feedback
     m_SharedFilesMenu.EnableMenuItem(MP_FIND, GetItemCount() > 0 ? MF_ENABLED : MF_GRAYED);
 
 //>>> WiZaRd::PowerShare
     m_SharedFilesMenu.EnableMenuItem((UINT_PTR)m_PowerSharedMenu.m_hMenu, psFlag);
     UINT nFlag = 0;
-    if(iSelectedItems > 0 && (bContainsShareableFiles /*|| (iSelectedItems == 1 && pSingleSelFile->IsPartFile())*/))
+    if (iSelectedItems > 0 && (bContainsShareableFiles /*|| (iSelectedItems == 1 && pSingleSelFile->IsPartFile())*/))
         nFlag = MF_GRAYED;
     else
         nFlag = MF_ENABLED;
@@ -1038,10 +1038,10 @@ void CSharedFilesCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 
     m_PowerSharedMenu.CheckMenuItem(MP_POWERSHARE_ON, (iPowerShare == 1) ? MF_CHECKED : MF_UNCHECKED);
     m_PowerSharedMenu.CheckMenuItem(MP_POWERSHARE_OFF, (iPowerShare == 0) ? MF_CHECKED : MF_UNCHECKED);
-//<<< WiZaRd::PowerShare	
+//<<< WiZaRd::PowerShare
 
-    m_CollectionsMenu.EnableMenuItem(MP_MODIFYCOLLECTION, (!bContainsShareableFiles && pSingleSelFile != NULL && ((CKnownFile*)pSingleSelFile)->m_pCollection != NULL ) ? MF_ENABLED : MF_GRAYED);
-    m_CollectionsMenu.EnableMenuItem(MP_VIEWCOLLECTION, (!bContainsShareableFiles && pSingleSelFile != NULL && ((CKnownFile*)pSingleSelFile)->m_pCollection != NULL ) ? MF_ENABLED : MF_GRAYED);
+    m_CollectionsMenu.EnableMenuItem(MP_MODIFYCOLLECTION, (!bContainsShareableFiles && pSingleSelFile != NULL && ((CKnownFile*)pSingleSelFile)->m_pCollection != NULL) ? MF_ENABLED : MF_GRAYED);
+    m_CollectionsMenu.EnableMenuItem(MP_VIEWCOLLECTION, (!bContainsShareableFiles && pSingleSelFile != NULL && ((CKnownFile*)pSingleSelFile)->m_pCollection != NULL) ? MF_ENABLED : MF_GRAYED);
     m_CollectionsMenu.EnableMenuItem(MP_SEARCHAUTHOR, (!bContainsShareableFiles && pSingleSelFile != NULL && ((CKnownFile*)pSingleSelFile)->m_pCollection != NULL
                                      && !((CKnownFile*)pSingleSelFile)->m_pCollection->GetAuthorKeyHashString().IsEmpty()) ? MF_ENABLED : MF_GRAYED);
 #if defined(_DEBUG)
@@ -1066,9 +1066,9 @@ void CSharedFilesCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
     m_SharedFilesMenu.TrackPopupMenu(TPM_LEFTALIGN |TPM_RIGHTBUTTON,point.x,point.y,this);
 
     m_SharedFilesMenu.RemoveMenu(m_SharedFilesMenu.GetMenuItemCount()-1,MF_BYPOSITION);
-    VERIFY( WebMenu.DestroyMenu() );
+    VERIFY(WebMenu.DestroyMenu());
     if (uInsertedMenuItem)
-        VERIFY( m_SharedFilesMenu.RemoveMenu(uInsertedMenuItem, MF_BYCOMMAND) );
+        VERIFY(m_SharedFilesMenu.RemoveMenu(uInsertedMenuItem, MF_BYCOMMAND));
 }
 
 BOOL CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
@@ -1090,7 +1090,7 @@ BOOL CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 //<<< WiZaRd::PowerShare
     }
 
-    if (   wParam == MP_CREATECOLLECTION
+    if (wParam == MP_CREATECOLLECTION
             || wParam == MP_FIND
             || selectedList.GetCount() > 0)
     {
@@ -1233,7 +1233,7 @@ BOOL CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                 else
                 {
                     CString strError;
-                    strError.Format( GetResString(IDS_ERR_DELFILE) + _T("\r\n\r\n%s"), myfile->GetFilePath(), GetErrorMessage(GetLastError()));
+                    strError.Format(GetResString(IDS_ERR_DELFILE) + _T("\r\n\r\n%s"), myfile->GetFilePath(), GetErrorMessage(GetLastError()));
                     AfxMessageBox(strError);
                 }
             }
@@ -1263,7 +1263,7 @@ BOOL CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                 }
 
                 bUnsharedItems |= theApp.sharedfiles->ExcludeFile(myfile->GetFilePath());
-                ASSERT( bUnsharedItems );
+                ASSERT(bUnsharedItems);
             }
             SetRedraw(TRUE);
             if (bUnsharedItems)
@@ -1357,7 +1357,7 @@ BOOL CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
         {
 //>>> WiZaRd::PowerShare
             const bool bPS = wParam > MP_PRIOAUTO;
-            if(bPS)
+            if (bPS)
                 wParam -= (MP_PSPRIOAUTO-MP_PRIOAUTO);
 //<<< WiZaRd::PowerShare
             bool bSelected = false;
@@ -1392,7 +1392,7 @@ BOOL CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                 file->SetPowerShared(bPS); //>>> WiZaRd::PowerShare
                 UpdateFile(file, false, &bSelected);
             }
-            if(bSelected)
+            if (bSelected)
                 theApp.emuledlg->sharedfileswnd->ShowSelectedFilesDetails();
             break;
         }
@@ -1406,20 +1406,20 @@ BOOL CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
         }
 //<<< WiZaRd::PowerShare
 //>>> WiZaRd::Upload Feedback
-		case MP_FEEDBACK: 
-		{ 
-			CString str = L"";
-			POSITION pos = selectedKnown.GetHeadPosition();
-			while (pos != NULL)
-			{
-				CKnownFile* file = selectedKnown.GetNext(pos);
-				if (!str.IsEmpty())
-					str.Append(L"\r\n\r\n");
-				str.Append(file->GetFeedBackString());
-			}
-			theApp.CopyTextToClipboard(str);
-			break; 
-		} 
+        case MP_FEEDBACK:
+        {
+            CString str = L"";
+            POSITION pos = selectedKnown.GetHeadPosition();
+            while (pos != NULL)
+            {
+                CKnownFile* file = selectedKnown.GetNext(pos);
+                if (!str.IsEmpty())
+                    str.Append(L"\r\n\r\n");
+                str.Append(file->GetFeedBackString());
+            }
+            theApp.CopyTextToClipboard(str);
+            break;
+        }
 //<<< WiZaRd::Upload Feedback
         default:
             if (file && wParam>=MP_WEBURL && wParam<=MP_WEBURL+256)
@@ -1441,7 +1441,7 @@ void CSharedFilesCtrl::OnLvnColumnClick(NMHDR *pNMHDR, LRESULT *pResult)
         switch (pNMListView->iSubItem)
         {
         case 3:  // Priority
-		case 4: //>>> WiZaRd::Ratio Indicator
+        case 4: //>>> WiZaRd::Ratio Indicator
         case 11: // Complete Sources
         case 12: // Shared
             sortAscending = false;
@@ -1464,14 +1464,14 @@ void CSharedFilesCtrl::OnLvnColumnClick(NMHDR *pNMHDR, LRESULT *pResult)
     int adder = 0;
     if (pNMListView->iSubItem >= 6 && pNMListView->iSubItem <= 8) // 6=IDS_SF_REQUESTS, 7=IDS_SF_ACCEPTS, 8=IDS_SF_TRANSFERRED
     {
-        ASSERT( pNMListView->iSubItem - 6 < _countof(m_aSortBySecondValue) );
+        ASSERT(pNMListView->iSubItem - 6 < _countof(m_aSortBySecondValue));
         if (GetSortItem() == pNMListView->iSubItem && !sortAscending) // check for 'descending' because the initial sort order is also 'descending'
             m_aSortBySecondValue[pNMListView->iSubItem - 6] = !m_aSortBySecondValue[pNMListView->iSubItem - 6];
         adder = m_aSortBySecondValue[pNMListView->iSubItem - 6] ? 100 : 0;
     }
     else if (pNMListView->iSubItem == 12) // 12=IDS_SHAREDTITLE
     {
-        ASSERT( 3 < _countof(m_aSortBySecondValue) );
+        ASSERT(3 < _countof(m_aSortBySecondValue));
         if (GetSortItem() == pNMListView->iSubItem && !sortAscending) // check for 'descending' because the initial sort order is also 'descending'
             m_aSortBySecondValue[3] = !m_aSortBySecondValue[3];
         adder = m_aSortBySecondValue[3] ? 100 : 0;
@@ -1565,11 +1565,11 @@ int CSharedFilesCtrl::SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort
             }
 
 //>>> WiZaRd::Ratio Indicator
-			case 4:
-			{
-				iResult = CompareDouble(kitem1->GetSharingRatio(), kitem2->GetSharingRatio());
-				break;
-			}
+            case 4:
+            {
+                iResult = CompareDouble(kitem1->GetSharingRatio(), kitem2->GetSharingRatio());
+                break;
+            }
 //<<< WiZaRd::Ratio Indicator
 
             case 5: //fileID
@@ -1658,7 +1658,7 @@ int CSharedFilesCtrl::SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort
 
 void CSharedFilesCtrl::OpenFile(const CShareableFile* file)
 {
-    if(file->IsKindOf(RUNTIME_CLASS(CKnownFile)) && ((CKnownFile*)file)->m_pCollection)
+    if (file->IsKindOf(RUNTIME_CLASS(CKnownFile)) && ((CKnownFile*)file)->m_pCollection)
     {
         CCollectionViewDialog dialog;
         dialog.SetCollection(((CKnownFile*)file)->m_pCollection);
@@ -1692,10 +1692,10 @@ void CSharedFilesCtrl::OnNmDblClk(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 
 void CSharedFilesCtrl::CreateMenues()
 {
-    if (m_PrioMenu) VERIFY( m_PrioMenu.DestroyMenu() );
-    if (m_CollectionsMenu) VERIFY( m_CollectionsMenu.DestroyMenu() );
-    if (m_PowerSharedMenu) VERIFY( m_PowerSharedMenu.DestroyMenu() ); //>>> WiZaRd::PowerShare
-    if (m_SharedFilesMenu) VERIFY( m_SharedFilesMenu.DestroyMenu() );
+    if (m_PrioMenu) VERIFY(m_PrioMenu.DestroyMenu());
+    if (m_CollectionsMenu) VERIFY(m_CollectionsMenu.DestroyMenu());
+    if (m_PowerSharedMenu) VERIFY(m_PowerSharedMenu.DestroyMenu());   //>>> WiZaRd::PowerShare
+    if (m_SharedFilesMenu) VERIFY(m_SharedFilesMenu.DestroyMenu());
 
 
     m_PrioMenu.CreateMenu();
@@ -1748,10 +1748,10 @@ void CSharedFilesCtrl::CreateMenues()
     m_SharedFilesMenu.AppendMenu(MF_STRING,MP_DETAIL, GetResString(IDS_SHOWDETAILS), _T("FILEINFO"));
     m_SharedFilesMenu.AppendMenu(MF_STRING,MP_CMT, GetResString(IDS_CMT_ADD), _T("FILECOMMENTS"));
     if (thePrefs.GetShowCopyEd2kLinkCmd())
-        m_SharedFilesMenu.AppendMenu(MF_STRING,MP_GETED2KLINK, GetResString(IDS_DL_LINK1), _T("ED2KLINK") );
+        m_SharedFilesMenu.AppendMenu(MF_STRING,MP_GETED2KLINK, GetResString(IDS_DL_LINK1), _T("ED2KLINK"));
     else
-        m_SharedFilesMenu.AppendMenu(MF_STRING,MP_SHOWED2KLINK, GetResString(IDS_DL_SHOWED2KLINK), _T("ED2KLINK") );
-	m_SharedFilesMenu.AppendMenu(MF_STRING, MP_FEEDBACK, GetResString(IDS_UPLOAD_FEEDBACK), L"MESSAGE"); //>>> WiZaRd::Upload Feedback
+        m_SharedFilesMenu.AppendMenu(MF_STRING,MP_SHOWED2KLINK, GetResString(IDS_DL_SHOWED2KLINK), _T("ED2KLINK"));
+    m_SharedFilesMenu.AppendMenu(MF_STRING, MP_FEEDBACK, GetResString(IDS_UPLOAD_FEEDBACK), L"MESSAGE"); //>>> WiZaRd::Upload Feedback
     m_SharedFilesMenu.AppendMenu(MF_STRING,MP_FIND, GetResString(IDS_FIND), _T("Search"));
     m_SharedFilesMenu.AppendMenu(MF_STRING|MF_SEPARATOR);
 
@@ -1956,7 +1956,7 @@ void CSharedFilesCtrl::AddShareableFiles(CString strFromDir)
         {
             ff.GetLastWriteTime(tFoundFileTime);
         }
-        catch(CException* ex)
+        catch (CException* ex)
         {
             ex->Delete();
         }
@@ -2046,10 +2046,10 @@ BOOL CSharedFilesCtrl::OnNMClick(NMHDR *pNMHDR, LRESULT *pResult)
         {
             // determine if the checkbox was clicked
             CRect recItem;
-            if(GetItemRect(iItem, recItem, LVIR_BOUNDS))
+            if (GetItemRect(iItem, recItem, LVIR_BOUNDS))
             {
                 CPoint pointHit = pNMListView->ptAction;
-                ASSERT( recItem.PtInRect(pointHit) );
+                ASSERT(recItem.PtInRect(pointHit));
                 recItem.left += sm_iIconOffset;
                 recItem.right = recItem.left + 16;
                 recItem.top += (recItem.Height() > 16) ? ((recItem.Height() - 16) / 2) : 0;
@@ -2084,7 +2084,7 @@ void CSharedFilesCtrl::CheckBoxClicked(int iItem)
         // this is currently shared so unshare it
         if (theApp.sharedfiles->ShouldBeShared(pFile->GetPath(), pFile->GetFilePath(), true))
             return; // not allowed to unshare this file
-        VERIFY( theApp.sharedfiles->ExcludeFile(pFile->GetFilePath()) );
+        VERIFY(theApp.sharedfiles->ExcludeFile(pFile->GetFilePath()));
         // update GUI stuff
         ShowFilesCount();
         theApp.emuledlg->sharedfileswnd->ShowSelectedFilesDetails();
@@ -2095,7 +2095,7 @@ void CSharedFilesCtrl::CheckBoxClicked(int iItem)
     {
         if (!thePrefs.IsShareableDirectory(pFile->GetPath()))
             return; // not allowed to share
-        VERIFY( theApp.sharedfiles->AddSingleSharedFile(pFile->GetFilePath()) );
+        VERIFY(theApp.sharedfiles->AddSingleSharedFile(pFile->GetFilePath()));
         ShowFilesCount();
         theApp.emuledlg->sharedfileswnd->ShowSelectedFilesDetails();
         theApp.emuledlg->sharedfileswnd->OnSingleFileShareStatusChanged();
@@ -2118,9 +2118,9 @@ void CSharedFilesCtrl::OnMouseMove(UINT nFlags, CPoint point)
         if (iItem != (-1))
         {
             CRect recItem;
-            if(GetItemRect(iItem, recItem, LVIR_BOUNDS))
+            if (GetItemRect(iItem, recItem, LVIR_BOUNDS))
             {
-                ASSERT( recItem.PtInRect(point) );
+                ASSERT(recItem.PtInRect(point));
                 recItem.left += sm_iIconOffset;
                 recItem.right = recItem.left + 16;
                 recItem.top += (recItem.Height() > 16) ? ((recItem.Height() - 16) / 2) : 0;
@@ -2176,7 +2176,7 @@ DROPEFFECT CSharedFilesCtrl::CShareDropTarget::OnDragEnter(CWnd* pWnd, COleDataO
     if (m_bUseDnDHelper)
     {
         IDataObject* piDataObj = pDataObject->GetIDataObject(FALSE);
-        m_piDropHelper->DragEnter (pWnd->GetSafeHwnd(), piDataObj, &point, dwEffect);
+        m_piDropHelper->DragEnter(pWnd->GetSafeHwnd(), piDataObj, &point, dwEffect);
     }
 
     return dwEffect;
@@ -2213,9 +2213,9 @@ BOOL CSharedFilesCtrl::CShareDropTarget::OnDrop(CWnd* /*pWnd*/, COleDataObject* 
             CString strSingleDirectory = _T(""); // which would be this one
 
             UINT nFileCount = DragQueryFile(hDrop, (UINT)(-1), NULL, 0);
-            for (UINT nFile = 0; nFile < nFileCount; nFile++ )
+            for (UINT nFile = 0; nFile < nFileCount; nFile++)
             {
-                if (DragQueryFile(hDrop, nFile, strFilePath.GetBuffer(MAX_PATH), MAX_PATH) > 0 )
+                if (DragQueryFile(hDrop, nFile, strFilePath.GetBuffer(MAX_PATH), MAX_PATH) > 0)
                 {
                     strFilePath.ReleaseBuffer();
                     if (ff.FindFile(strFilePath, 0))
@@ -2226,7 +2226,7 @@ BOOL CSharedFilesCtrl::CShareDropTarget::OnDrop(CWnd* /*pWnd*/, COleDataObject* 
                                 || (!ff.IsDirectory() && (ff.GetLength()==0 || ff.GetLength()>MAX_EMULE_FILE_SIZE))
                                 || (ff.IsDirectory() && !thePrefs.IsShareableDirectory(ff.GetFilePath() + _T('\\')))
                                 || (ff.IsDirectory() && theApp.sharedfiles->ShouldBeShared(ff.GetFilePath()+ _T('\\'), _T(""), false))
-                                || (!ff.IsDirectory() && theApp.sharedfiles->ShouldBeShared(ff.GetFilePath(), ff.GetFilePath().Left(ff.GetFilePath().ReverseFind('\\') + 1), false)) )
+                                || (!ff.IsDirectory() && theApp.sharedfiles->ShouldBeShared(ff.GetFilePath(), ff.GetFilePath().Left(ff.GetFilePath().ReverseFind('\\') + 1), false)))
                         {
                             DebugLog(_T("Drag&Drop'ed shared File ignored (%s)"), ff.GetFilePath());
                             ff.Close();
@@ -2234,12 +2234,12 @@ BOOL CSharedFilesCtrl::CShareDropTarget::OnDrop(CWnd* /*pWnd*/, COleDataObject* 
                         }
                         if (ff.IsDirectory())
                         {
-                            DEBUG_ONLY( DebugLog(_T("Drag'n'Drop'ed directory: %s"), ff.GetFilePath()+ _T('\\'))  );
+                            DEBUG_ONLY(DebugLog(_T("Drag'n'Drop'ed directory: %s"), ff.GetFilePath()+ _T('\\')));
                             liToAddDirs.AddTail(ff.GetFilePath() + _T('\\'));
                         }
                         else
                         {
-                            DEBUG_ONLY( DebugLog(_T("Drag'n'Drop'ed file: %s"), ff.GetFilePath()) );
+                            DEBUG_ONLY(DebugLog(_T("Drag'n'Drop'ed file: %s"), ff.GetFilePath()));
                             liToAddFiles.AddTail(ff.GetFilePath());
                             if (bFromSingleDirectory)
                             {
@@ -2267,8 +2267,8 @@ BOOL CSharedFilesCtrl::CShareDropTarget::OnDrop(CWnd* /*pWnd*/, COleDataObject* 
             {
                 // add the directories first as they could
                 // make single file adds invalid if they are contained in one of those dirs already
-                for (POSITION pos = liToAddDirs.GetHeadPosition(); pos != NULL; )
-                    VERIFY( theApp.sharedfiles->AddSingleSharedDirectory(liToAddDirs.GetNext(pos)) ); // should always succeed
+                for (POSITION pos = liToAddDirs.GetHeadPosition(); pos != NULL;)
+                    VERIFY(theApp.sharedfiles->AddSingleSharedDirectory(liToAddDirs.GetNext(pos)));   // should always succeed
 
                 bool bHaveFiles = false;
                 while (!liToAddFiles.IsEmpty())
@@ -2284,8 +2284,8 @@ BOOL CSharedFilesCtrl::CShareDropTarget::OnDrop(CWnd* /*pWnd*/, COleDataObject* 
                 if (bHaveFiles && liToAddDirs.IsEmpty() && bFromSingleDirectory)
                 {
                     // if we added only files from the same directory, show and select this in the filesystem tree
-                    ASSERT( !strSingleDirectory.IsEmpty() );
-                    VERIFY( theApp.emuledlg->sharedfileswnd->m_ctlSharedDirTree.ShowFileSystemDirectory(strSingleDirectory) );
+                    ASSERT(!strSingleDirectory.IsEmpty());
+                    VERIFY(theApp.emuledlg->sharedfileswnd->m_ctlSharedDirTree.ShowFileSystemDirectory(strSingleDirectory));
                 }
                 else if (!liToAddDirs.IsEmpty() && !bHaveFiles)
                 {

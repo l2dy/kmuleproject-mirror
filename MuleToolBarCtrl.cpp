@@ -87,7 +87,7 @@ CMuleToolbarCtrl::CMuleToolbarCtrl()
 CMuleToolbarCtrl::~CMuleToolbarCtrl()
 {
     if (m_bmpBack.m_hObject)
-        VERIFY( m_bmpBack.DeleteObject() );
+        VERIFY(m_bmpBack.DeleteObject());
 }
 
 void CMuleToolbarCtrl::Init(void)
@@ -158,7 +158,7 @@ void CMuleToolbarCtrl::Init(void)
     AddStrings(cButtonStrings);
 
     // initialize buttons:
-    for(int i = 0; i < m_buttoncount; i++)
+    for (int i = 0; i < m_buttoncount; i++)
     {
         TBButtons[i].fsState	= TBSTATE_ENABLED;
         TBButtons[i].fsStyle	= TBSTYLE_CHECKGROUP;
@@ -199,7 +199,7 @@ void CMuleToolbarCtrl::Init(void)
             AddButtons(1, &sepButton);
             continue;
         }
-        if(index < _countof(TBButtons))
+        if (index < _countof(TBButtons))
             AddButtons(1, &TBButtons[index]);
         else
             ASSERT(0);
@@ -427,7 +427,7 @@ void CMuleToolbarCtrl::OnNmRClick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
                 i++;
             }
         }
-        ASSERT( i-1 == astrToolbarFiles.GetCount() );
+        ASSERT(i-1 == astrToolbarFiles.GetCount());
     }
     if (!checked)
     {
@@ -500,7 +500,7 @@ void CMuleToolbarCtrl::OnNmRClick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
                 i++;
             }
         }
-        ASSERT( i-1 == astrSkinFiles.GetCount() );
+        ASSERT(i-1 == astrSkinFiles.GetCount());
     }
     if (!checked)
     {
@@ -516,10 +516,10 @@ void CMuleToolbarCtrl::OnNmRClick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
     //
     CMenu menuTextLabels;
     menuTextLabels.CreateMenu();
-    ASSERT( MP_NOTEXTLABELS == MP_TEXTLABELS-1 && MP_NOTEXTLABELS == MP_TEXTLABELSONRIGHT-2 );
-    ASSERT( MP_NOTEXTLABELS + (int)NoLabels == MP_NOTEXTLABELS );
-    ASSERT( MP_NOTEXTLABELS + (int)LabelsBelow == MP_TEXTLABELS );
-    ASSERT( MP_NOTEXTLABELS + (int)LabelsRight == MP_TEXTLABELSONRIGHT );
+    ASSERT(MP_NOTEXTLABELS == MP_TEXTLABELS-1 && MP_NOTEXTLABELS == MP_TEXTLABELSONRIGHT-2);
+    ASSERT(MP_NOTEXTLABELS + (int)NoLabels == MP_NOTEXTLABELS);
+    ASSERT(MP_NOTEXTLABELS + (int)LabelsBelow == MP_TEXTLABELS);
+    ASSERT(MP_NOTEXTLABELS + (int)LabelsRight == MP_TEXTLABELSONRIGHT);
     menuTextLabels.AppendMenu(MF_STRING | MF_ENABLED, MP_NOTEXTLABELS, GetResString(IDS_NOTEXTLABELS));
     menuTextLabels.AppendMenu(MF_STRING | MF_ENABLED, MP_TEXTLABELS, GetResString(IDS_ENABLETEXTLABELS));
     menuTextLabels.AppendMenu(MF_STRING | MF_ENABLED, MP_TEXTLABELSONRIGHT, GetResString(IDS_TEXTLABELSONRIGHT));
@@ -529,7 +529,7 @@ void CMuleToolbarCtrl::OnNmRClick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
     menuTextLabels.AppendMenu(MF_SEPARATOR);
     menuTextLabels.AppendMenu(MF_STRING, MP_LARGEICONS, GetResString(IDS_LARGEICONS));
     menuTextLabels.AppendMenu(MF_STRING, MP_SMALLICONS, GetResString(IDS_SMALLICONS));
-    ASSERT( MP_LARGEICONS == MP_SMALLICONS-1 );
+    ASSERT(MP_LARGEICONS == MP_SMALLICONS-1);
     menuTextLabels.CheckMenuRadioItem(MP_LARGEICONS, MP_SMALLICONS, m_sizBtnBmp.cx == 16 ? MP_SMALLICONS : MP_LARGEICONS, MF_BYCOMMAND);
     menuTextLabels.EnableMenuItem(m_sizBtnBmp.cx == 16 ? MP_SMALLICONS : MP_LARGEICONS, MF_BYCOMMAND | MF_DISABLED);
 
@@ -639,7 +639,7 @@ void CMuleToolbarCtrl::ChangeToolbarBitmap(const CString& path, bool bRefresh)
         ImageList.Add(CTempIconLoader(_T("PREFERENCES"), m_sizBtnBmp.cx, m_sizBtnBmp.cy));
         ImageList.Add(CTempIconLoader(_T("TOOLS"), m_sizBtnBmp.cx, m_sizBtnBmp.cy));
         ImageList.Add(CTempIconLoader(_T("HELP"), m_sizBtnBmp.cx, m_sizBtnBmp.cy));
-        ASSERT( ImageList.GetImageCount() == NUM_BUTTON_BITMAPS );
+        ASSERT(ImageList.GetImageCount() == NUM_BUTTON_BITMAPS);
         CImageList* pimlOld = SetImageList(&ImageList);
         ImageList.Detach();
         if (pimlOld)
@@ -663,7 +663,7 @@ BOOL CMuleToolbarCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
         TCHAR buffer[MAX_PATH];
         _sntprintf(buffer, _countof(buffer), _T("%s"), thePrefs.GetMuleDirectory(EMULE_TOOLBARDIR));
         buffer[_countof(buffer) - 1] = L'\0';
-        if(SelectDir(m_hWnd, buffer, GetResString(IDS_SELECTTOOLBARBITMAPDIR)))
+        if (SelectDir(m_hWnd, buffer, GetResString(IDS_SELECTTOOLBARBITMAPDIR)))
             thePrefs.SetMuleDirectory(EMULE_TOOLBARDIR, buffer);
         break;
     }
@@ -692,7 +692,7 @@ BOOL CMuleToolbarCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
         strFilter += _T("||");
         CFileDialog dialog(TRUE, EMULTB_BASEEXT _T(".bmp"), NULL, OFN_HIDEREADONLY | OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST, strFilter, NULL, 0);
         if (IDOK == dialog.DoModal())
-            if(thePrefs.GetToolbarBitmapSettings()!=dialog.GetPathName())
+            if (thePrefs.GetToolbarBitmapSettings()!=dialog.GetPathName())
             {
                 ChangeToolbarBitmap(dialog.GetPathName(), true);
                 thePrefs.SetToolbarBitmapSettings(dialog.GetPathName());
@@ -737,7 +737,7 @@ BOOL CMuleToolbarCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
         TCHAR buffer[MAX_PATH];
         _sntprintf(buffer, _countof(buffer), _T("%s"), thePrefs.GetMuleDirectory(EMULE_SKINDIR, false));
         buffer[_countof(buffer) - 1] = L'\0';
-        if(SelectDir(m_hWnd, buffer, GetResString(IDS_SELSKINPROFILEDIR)))
+        if (SelectDir(m_hWnd, buffer, GetResString(IDS_SELSKINPROFILEDIR)))
             thePrefs.SetMuleDirectory(EMULE_SKINDIR, buffer);
         break;
     }
@@ -837,13 +837,13 @@ void CMuleToolbarCtrl::Refresh()
         REBARBANDINFO rbbi = {0};
         CSize sizeBar;
         GetMaxSize(&sizeBar);
-        ASSERT( sizeBar.cx != 0 && sizeBar.cy != 0 );
+        ASSERT(sizeBar.cx != 0 && sizeBar.cy != 0);
         rbbi.cbSize = sizeof(rbbi);
         rbbi.fMask = RBBIM_CHILDSIZE | RBBIM_IDEALSIZE;
         rbbi.cxMinChild = sizeBar.cy;
         rbbi.cyMinChild = sizeBar.cy;
         rbbi.cxIdeal = sizeBar.cx;
-        VERIFY( theApp.emuledlg->m_ctlMainTopReBar.SetBandInfo(MULE_TOOLBAR_BAND_NR, &rbbi) );
+        VERIFY(theApp.emuledlg->m_ctlMainTopReBar.SetBandInfo(MULE_TOOLBAR_BAND_NR, &rbbi));
 
         theApp.emuledlg->AddAnchor(theApp.emuledlg->m_ctlMainTopReBar.m_hWnd, TOP_LEFT, TOP_RIGHT);
     }
@@ -925,7 +925,7 @@ void CMuleToolbarCtrl::OnTbnReset(NMHDR* /*pNMHDR*/, LRESULT* /*pResult*/)
             AddButtons(1, &sepButton);
             continue;
         }
-        if(index < _countof(TBButtons))
+        if (index < _countof(TBButtons))
             AddButtons(1, &TBButtons[index]);
         else
             ASSERT(0);
@@ -994,7 +994,7 @@ void CMuleToolbarCtrl::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
     // not use the value of that parameter to limit the invokation of our correction code.
     //
 
-    if (   theApp.m_ullComCtrlVer >= MAKEDLLVERULL(6,16,0,0)
+    if (theApp.m_ullComCtrlVer >= MAKEDLLVERULL(6,16,0,0)
             && (m_eLabelType == NoLabels || (m_eLabelType == LabelsRight && m_sizBtnBmp.cx == 16)))
     {
         ChangeToolbarBitmap(thePrefs.GetToolbarBitmapSettings(), true);
@@ -1017,13 +1017,13 @@ void CMuleToolbarCtrl::UpdateIdealSize()
         // let the rebar know what's our new current ideal size, so the chevron is handled correctly..
         CSize sizeBar;
         GetMaxSize(&sizeBar);
-        ASSERT( sizeBar.cx != 0 && sizeBar.cy != 0 );
+        ASSERT(sizeBar.cx != 0 && sizeBar.cy != 0);
 
         REBARBANDINFO rbbi = {0};
         rbbi.cbSize = sizeof(rbbi);
         rbbi.fMask = RBBIM_IDEALSIZE;
         rbbi.cxIdeal = sizeBar.cx;
-        VERIFY( theApp.emuledlg->m_ctlMainTopReBar.SetBandInfo(MULE_TOOLBAR_BAND_NR, &rbbi) );
+        VERIFY(theApp.emuledlg->m_ctlMainTopReBar.SetBandInfo(MULE_TOOLBAR_BAND_NR, &rbbi));
     }
 }
 
@@ -1160,13 +1160,13 @@ void CMuleToolbarCtrl::UpdateBackground()
                 if (theApp.emuledlg->m_ctlMainTopReBar.SetBandInfo(MULE_TOOLBAR_BAND_NR, &rbbi))
                 {
                     if (m_bmpBack.m_hObject)
-                        VERIFY( m_bmpBack.DeleteObject() );
+                        VERIFY(m_bmpBack.DeleteObject());
                     m_bmpBack.Attach(hbmp);
                     hbmp = NULL;
                 }
             }
             if (hbmp)
-                VERIFY( DeleteObject(hbmp) );
+                VERIFY(DeleteObject(hbmp));
         }
         else
         {
@@ -1181,7 +1181,7 @@ void CMuleToolbarCtrl::UpdateBackground()
                 if (theApp.emuledlg->m_ctlMainTopReBar.SetBandInfo(MULE_TOOLBAR_BAND_NR, &rbbi))
                 {
                     if (m_bmpBack.m_hObject)
-                        VERIFY( m_bmpBack.DeleteObject() );
+                        VERIFY(m_bmpBack.DeleteObject());
                 }
             }
         }

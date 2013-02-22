@@ -45,7 +45,7 @@ BEGIN_MESSAGE_MAP(CClientDetailPage, CResizablePage)
 END_MESSAGE_MAP()
 
 CClientDetailPage::CClientDetailPage()
-    : CResizablePage(CClientDetailPage::IDD, 0 )
+    : CResizablePage(CClientDetailPage::IDD, 0)
 {
     m_paClients		= NULL;
     m_bDataChanged	= false;
@@ -139,7 +139,7 @@ BOOL CClientDetailPage::OnSetActive()
             GetDlgItem(IDC_DDOWNLOADING)->SetWindowText(_T("-"));
 
         if (client->GetRequestFile())
-            GetDlgItem(IDC_UPLOADING)->SetWindowText( client->GetRequestFile()->GetFileName()  );
+            GetDlgItem(IDC_UPLOADING)->SetWindowText(client->GetRequestFile()->GetFileName());
         else
             GetDlgItem(IDC_UPLOADING)->SetWindowText(_T("-"));
 
@@ -162,7 +162,7 @@ BOOL CClientDetailPage::OnSetActive()
 
             if (theApp.clientcredits->CryptoAvailable())
             {
-                switch(client->Credits()->GetCurrentIdentState(client->GetIP()))
+                switch (client->Credits()->GetCurrentIdentState(client->GetIP()))
                 {
                 case IS_NOTAVAILABLE:
                     GetDlgItem(IDC_CDIDENT)->SetWindowText(GetResString(IDS_IDENTNOSUPPORT));
@@ -221,10 +221,10 @@ BOOL CClientDetailPage::OnSetActive()
         else
             GetDlgItem(IDC_DSCORE)->SetWindowText(_T("-"));
 
-        if (client->GetKadPort() )
-            buffer.Format( _T("%s"), GetResString(IDS_CONNECTED));
+        if (client->GetKadPort())
+            buffer.Format(_T("%s"), GetResString(IDS_CONNECTED));
         else
-            buffer.Format( _T("%s"), GetResString(IDS_DISCONNECTED));
+            buffer.Format(_T("%s"), GetResString(IDS_DISCONNECTED));
         GetDlgItem(IDC_CLIENTDETAIL_KADCON)->SetWindowText(buffer);
 
         m_bDataChanged = false;

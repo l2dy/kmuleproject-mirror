@@ -178,7 +178,7 @@ public:
     CAICHHashTree(uint64 nDataSize, bool bLeftBranch, uint64 nBaseSize);
     ~CAICHHashTree();
     void			SetBlockHash(uint64 nSize, uint64 nStartPos, CAICHHashAlgo* pHashAlg);
-    bool			ReCalculateHash(CAICHHashAlgo* hashalg, bool bDontReplace );
+    bool			ReCalculateHash(CAICHHashAlgo* hashalg, bool bDontReplace);
     bool			VerifyHashTree(CAICHHashAlgo* hashalg, bool bDeleteBadTrees);
     CAICHHashTree*	FindHash(uint64 nStartPos, uint64 nSize)
     {

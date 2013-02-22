@@ -224,7 +224,7 @@ void CPPgStats::Localize(void)
         GetDlgItem(IDC_STATIC_CGRAPHRATIO)->SetWindowText(GetResString(IDS_PPGSTATS_ACRATIO));
         SetWindowText(GetResString(IDS_STATSSETUPINFO));
         GetDlgItem(IDC_PREFCOLORS)->SetWindowText(GetResString(IDS_COLORS));
-        SetDlgItemText(IDC_FILL_GRAPHS, GetResString(IDS_FILLGRAPHS) );
+        SetDlgItemText(IDC_FILL_GRAPHS, GetResString(IDS_FILLGRAPHS));
 
         m_colors.ResetContent();
         int iItem;
@@ -294,7 +294,7 @@ void CPPgStats::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
     }
     else
     {
-        ASSERT( pScrollBar->GetSafeHwnd() == m_ctlGraphsAvgTime.m_hWnd );
+        ASSERT(pScrollBar->GetSafeHwnd() == m_ctlGraphsAvgTime.m_hWnd);
         if (m_iStatsUpdate != position + 1)
         {
             m_iStatsUpdate = position + 1;

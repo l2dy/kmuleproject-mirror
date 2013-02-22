@@ -682,13 +682,13 @@ __interface IStencilCacheMgr
 #pragma warning(push)
 #pragma warning(disable:4199)
 [
-    soap_handler(	name=		ID_STENCILCACHEMGR_WEBSERVICE_NAME,
-                    namespace=	ID_STENCILCACHEMGR_WEBSERVICE_URL,
-                    protocol=	"soap"
+    soap_handler(name=		ID_STENCILCACHEMGR_WEBSERVICE_NAME,
+                 namespace=	ID_STENCILCACHEMGR_WEBSERVICE_URL,
+                 protocol=	"soap"
                 ),
     request_handler(
         name=		ID_STENCILCACHEMGR_WEBSERVICE_NAME,
-        sdl=		ID_STENCILCACHEMGR_WEBSERVICE_WSDL )
+        sdl=		ID_STENCILCACHEMGR_WEBSERVICE_WSDL)
 ]
 class CStencilCacheManager :
     public IStencilCacheMgr
@@ -792,7 +792,7 @@ private:
 };
 #endif //_ATL_STENCILCACHE_NOWEBSERVICE
 #ifndef _ATL_STENCILCACHE_NOUI
-typedef HRESULT (CStencilCacheMgrObject::*PFNGETDATA)(__int64 *pdwSize);
+typedef HRESULT(CStencilCacheMgrObject::*PFNGETDATA)(__int64 *pdwSize);
 
 struct CCache_data
 {

@@ -31,9 +31,9 @@ void CInputBox::OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/)
 CMuleSystrayDlg::CMuleSystrayDlg(CWnd* pParent, CPoint pt, int iMaxUp, int iMaxDown, int iCurUp, int iCurDown)
     : CDialog(CMuleSystrayDlg::IDD, pParent)
 {
-    if(iCurDown == UNLIMITED)
+    if (iCurDown == UNLIMITED)
         iCurDown = 0;
-    if(iCurUp == UNLIMITED)
+    if (iCurUp == UNLIMITED)
         iCurUp = 0;
 
     //{{AFX_DATA_INIT(CMuleSystrayDlg)
@@ -54,9 +54,9 @@ CMuleSystrayDlg::CMuleSystrayDlg(CWnd* pParent, CPoint pt, int iMaxUp, int iMaxD
 
 CMuleSystrayDlg::~CMuleSystrayDlg()
 {
-    if(m_hUpArrow)
+    if (m_hUpArrow)
         DestroyIcon(m_hUpArrow);
-    if(m_hDownArrow)
+    if (m_hDownArrow)
         DestroyIcon(m_hDownArrow);
 }
 
@@ -98,9 +98,9 @@ END_MESSAGE_MAP()
 void CMuleSystrayDlg::OnMouseMove(UINT nFlags, CPoint point)
 {
     CWnd *pWnd = ChildWindowFromPoint(point, CWP_SKIPINVISIBLE|CWP_SKIPDISABLED);
-    if(pWnd)
+    if (pWnd)
     {
-        if(pWnd == this || pWnd == &m_ctrlSidebar)
+        if (pWnd == this || pWnd == &m_ctrlSidebar)
             SetCapture();			// me, myself and i
         else
             ReleaseCapture();		// sweet child of mine
@@ -128,14 +128,14 @@ BOOL CMuleSystrayDlg::OnInitDialog()
     LOGFONT lfStaticFont = {0};
 
     p = GetDlgItem(IDC_SPEED);
-    if(p)
+    if (p)
     {
         p->GetFont()->GetLogFont(&lfStaticFont);
         bValidFont = true;
     }
 
     p = GetDlgItem(IDC_SPEED);
-    if(p)
+    if (p)
     {
         p->GetWindowRect(r);
         ScreenToClient(r);
@@ -150,7 +150,7 @@ BOOL CMuleSystrayDlg::OnInitDialog()
         m_ctrlSpeed.m_sIcon.cy = 16;
         m_ctrlSpeed.m_hIcon = theApp.LoadIcon(_T("SPEED"), m_ctrlSpeed.m_sIcon.cx, m_ctrlSpeed.m_sIcon.cy);
         m_ctrlSpeed.m_bParentCapture = true;
-        if(bValidFont)
+        if (bValidFont)
         {
             LOGFONT lfFont = lfStaticFont;
             lfFont.lfWeight += 200;			// make it bold
@@ -161,7 +161,7 @@ BOOL CMuleSystrayDlg::OnInitDialog()
     }
 
     p = GetDlgItem(IDC_TOMAX);
-    if(p)
+    if (p)
     {
         p->GetWindowRect(r);
         ScreenToClient(r);
@@ -176,12 +176,12 @@ BOOL CMuleSystrayDlg::OnInitDialog()
         m_ctrlAllToMax.m_sIcon.cy = 16;
         m_ctrlAllToMax.m_hIcon = theApp.LoadIcon(_T("SPEEDMAX"), m_ctrlAllToMax.m_sIcon.cx, m_ctrlAllToMax.m_sIcon.cy);
         m_ctrlAllToMax.m_bParentCapture = true;
-        if(bValidFont)
+        if (bValidFont)
             m_ctrlAllToMax.m_cfFont.CreateFontIndirect(&lfStaticFont);
     }
 
     p = GetDlgItem(IDC_TOMIN);
-    if(p)
+    if (p)
     {
         p->GetWindowRect(r);
         ScreenToClient(r);
@@ -196,12 +196,12 @@ BOOL CMuleSystrayDlg::OnInitDialog()
         m_ctrlAllToMin.m_sIcon.cy = 16;
         m_ctrlAllToMin.m_hIcon = theApp.LoadIcon(_T("SPEEDMIN"), m_ctrlAllToMin.m_sIcon.cx, m_ctrlAllToMin.m_sIcon.cy);
         m_ctrlAllToMin.m_bParentCapture = true;
-        if(bValidFont)
+        if (bValidFont)
             m_ctrlAllToMin.m_cfFont.CreateFontIndirect(&lfStaticFont);
     }
 
     p = GetDlgItem(IDC_RESTORE);
-    if(p)
+    if (p)
     {
         p->GetWindowRect(r);
         ScreenToClient(r);
@@ -216,7 +216,7 @@ BOOL CMuleSystrayDlg::OnInitDialog()
         m_ctrlRestore.m_sIcon.cy = 16;
         m_ctrlRestore.m_hIcon = theApp.LoadIcon(_T("RESTOREWINDOW"), m_ctrlRestore.m_sIcon.cx, m_ctrlRestore.m_sIcon.cy);
         m_ctrlRestore.m_bParentCapture = true;
-        if(bValidFont)
+        if (bValidFont)
         {
             LOGFONT lfFont = lfStaticFont;
             lfFont.lfWeight += 200;			// make it bold
@@ -225,7 +225,7 @@ BOOL CMuleSystrayDlg::OnInitDialog()
     }
 
     p = GetDlgItem(IDC_PREFERENCES);
-    if(p)
+    if (p)
     {
         p->GetWindowRect(r);
         ScreenToClient(r);
@@ -240,12 +240,12 @@ BOOL CMuleSystrayDlg::OnInitDialog()
         m_ctrlPreferences.m_sIcon.cy = 16;
         m_ctrlPreferences.m_hIcon = theApp.LoadIcon(_T("Preferences"), m_ctrlPreferences.m_sIcon.cx, m_ctrlPreferences.m_sIcon.cy);
         m_ctrlPreferences.m_bParentCapture = true;
-        if(bValidFont)
+        if (bValidFont)
             m_ctrlPreferences.m_cfFont.CreateFontIndirect(&lfStaticFont);
     }
 
     p = GetDlgItem(IDC_TRAY_EXIT);
-    if(p)
+    if (p)
     {
         p->GetWindowRect(r);
         ScreenToClient(r);
@@ -260,17 +260,17 @@ BOOL CMuleSystrayDlg::OnInitDialog()
         m_ctrlExit.m_sIcon.cy = 16;
         m_ctrlExit.m_hIcon = theApp.LoadIcon(_T("EXIT"), m_ctrlExit.m_sIcon.cx, m_ctrlExit.m_sIcon.cy);
         m_ctrlExit.m_bParentCapture = true;
-        if(bValidFont)
+        if (bValidFont)
             m_ctrlExit.m_cfFont.CreateFontIndirect(&lfStaticFont);
     }
 
-    if((p = GetDlgItem(IDC_DOWNLBL)) != NULL)
+    if ((p = GetDlgItem(IDC_DOWNLBL)) != NULL)
         p->SetWindowText(GetResString(IDS_PW_CON_DOWNLBL));
-    if((p = GetDlgItem(IDC_UPLBL)) != NULL)
+    if ((p = GetDlgItem(IDC_UPLBL)) != NULL)
         p->SetWindowText(GetResString(IDS_PW_CON_UPLBL));
-    if((p = GetDlgItem(IDC_DOWNKB)) != NULL)
+    if ((p = GetDlgItem(IDC_DOWNKB)) != NULL)
         p->SetWindowText(GetResString(IDS_KBYTESPERSEC));
-    if((p = GetDlgItem(IDC_UPKB)) != NULL)
+    if ((p = GetDlgItem(IDC_UPKB)) != NULL)
         p->SetWindowText(GetResString(IDS_KBYTESPERSEC));
 
     m_ctrlDownSpeedSld.SetRange(0,m_iMaxDown);
@@ -312,11 +312,11 @@ BOOL CMuleSystrayDlg::OnInitDialog()
     int xpos, ypos;
 
     GetWindowRect(r);
-    if(m_ptInitialPosition.x + r.Width() < rDesktop.right)
+    if (m_ptInitialPosition.x + r.Width() < rDesktop.right)
         xpos = pt.x;
     else
         xpos = pt.x - r.Width();
-    if(m_ptInitialPosition.y - r.Height() < rDesktop.top)
+    if (m_ptInitialPosition.y - r.Height() < rDesktop.top)
         ypos = pt.y;
     else
         ypos = pt.y - r.Height();
@@ -331,20 +331,20 @@ void CMuleSystrayDlg::OnChangeDowntxt()
 {
     UpdateData();
 
-    if(thePrefs.GetMaxGraphDownloadRate() == UNLIMITED)	//Cax2 - shouldn't be anymore...
+    if (thePrefs.GetMaxGraphDownloadRate() == UNLIMITED)	//Cax2 - shouldn't be anymore...
     {
-        if(m_nDownSpeedTxt > 64)		//Cax2 - why 64 ???
+        if (m_nDownSpeedTxt > 64)		//Cax2 - why 64 ???
             m_nDownSpeedTxt = 64;
     }
     else
     {
-        if(m_nDownSpeedTxt > thePrefs.GetMaxGraphDownloadRate())
+        if (m_nDownSpeedTxt > thePrefs.GetMaxGraphDownloadRate())
             m_nDownSpeedTxt = thePrefs.GetMaxGraphDownloadRate();
     }
 
     m_ctrlDownSpeedSld.SetPos(m_nDownSpeedTxt);
 
-    if(m_nDownSpeedTxt < 1)
+    if (m_nDownSpeedTxt < 1)
     {
         m_nDownSpeedTxt = 0;
         m_DownSpeedInput.EnableWindow(false);
@@ -358,19 +358,19 @@ void CMuleSystrayDlg::OnChangeDowntxt()
 void CMuleSystrayDlg::OnChangeUptxt()
 {
     UpdateData();
-    if(thePrefs.GetMaxGraphUploadRate(true) == UNLIMITED)
+    if (thePrefs.GetMaxGraphUploadRate(true) == UNLIMITED)
     {
-        if(m_nUpSpeedTxt > 16)
+        if (m_nUpSpeedTxt > 16)
             m_nUpSpeedTxt = 16;
     }
     else
     {
-        if(m_nUpSpeedTxt > thePrefs.GetMaxGraphUploadRate(true))
+        if (m_nUpSpeedTxt > thePrefs.GetMaxGraphUploadRate(true))
             m_nUpSpeedTxt = thePrefs.GetMaxGraphUploadRate(true);
     }
     m_ctrlUpSpeedSld.SetPos(m_nUpSpeedTxt);
 
-    if(m_nUpSpeedTxt < 1)
+    if (m_nUpSpeedTxt < 1)
     {
         m_nUpSpeedTxt = 0;
         m_UpSpeedInput.EnableWindow(false);
@@ -382,10 +382,10 @@ void CMuleSystrayDlg::OnChangeUptxt()
 
 void CMuleSystrayDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
-    if(pScrollBar == (CScrollBar*)&m_ctrlDownSpeedSld)
+    if (pScrollBar == (CScrollBar*)&m_ctrlDownSpeedSld)
     {
         m_nDownSpeedTxt = m_ctrlDownSpeedSld.GetPos();
-        if(m_nDownSpeedTxt < 1)
+        if (m_nDownSpeedTxt < 1)
         {
             m_nDownSpeedTxt = 0;
             m_DownSpeedInput.EnableWindow(false);
@@ -397,10 +397,10 @@ void CMuleSystrayDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
         UpdateData(FALSE);
         thePrefs.SetMaxDownload((m_nDownSpeedTxt == 0) ? UNLIMITED : m_nDownSpeedTxt);
     }
-    else if(pScrollBar == (CScrollBar*)&m_ctrlUpSpeedSld)
+    else if (pScrollBar == (CScrollBar*)&m_ctrlUpSpeedSld)
     {
         m_nUpSpeedTxt = m_ctrlUpSpeedSld.GetPos();
-        if(m_nUpSpeedTxt < 1)
+        if (m_nUpSpeedTxt < 1)
         {
             m_nUpSpeedTxt = 0;
             m_UpSpeedInput.EnableWindow(false);
@@ -431,7 +431,7 @@ void CMuleSystrayDlg::OnRButtonDown(UINT nFlags, CPoint point)
     CRect systrayRect;
     GetClientRect(&systrayRect);
 
-    if(point.x<=systrayRect.left || point.x>=systrayRect.right || point.y<=systrayRect.top || point.y>=systrayRect.bottom)
+    if (point.x<=systrayRect.left || point.x>=systrayRect.right || point.y<=systrayRect.top || point.y>=systrayRect.bottom)
     {
         ReleaseCapture();
         EndDialog(m_nExitCode);
@@ -445,7 +445,7 @@ void CMuleSystrayDlg::OnKillFocus(CWnd* pNewWnd)
 {
     CDialog::OnKillFocus(pNewWnd);
 
-    if(!m_bClosingDown)
+    if (!m_bClosingDown)
     {
         ReleaseCapture();
         EndDialog(m_nExitCode);
@@ -455,7 +455,7 @@ void CMuleSystrayDlg::OnKillFocus(CWnd* pNewWnd)
 
 void CMuleSystrayDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 {
-    if(!bShow && !m_bClosingDown)
+    if (!bShow && !m_bClosingDown)
     {
         ReleaseCapture();
         EndDialog(m_nExitCode);
@@ -467,7 +467,7 @@ void CMuleSystrayDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 
 void CMuleSystrayDlg::OnCaptureChanged(CWnd *pWnd)
 {
-    if(pWnd && pWnd != this && !IsChild(pWnd))
+    if (pWnd && pWnd != this && !IsChild(pWnd))
     {
         EndDialog(m_nExitCode);
         m_bClosingDown = true;
@@ -477,7 +477,7 @@ void CMuleSystrayDlg::OnCaptureChanged(CWnd *pWnd)
 
 BOOL CMuleSystrayDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 {
-    if(HIWORD(wParam) == BN_CLICKED)
+    if (HIWORD(wParam) == BN_CLICKED)
     {
         ReleaseCapture();
         m_nExitCode = LOWORD(wParam);

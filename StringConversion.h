@@ -104,7 +104,7 @@ public:
         }
 
         m_iChars = AtlUnicodeToUTF8(rwstr, rwstr.GetLength(), m_psz, iBuffSize);
-        ASSERT( m_iChars > 0 || rwstr.GetLength() == 0 );
+        ASSERT(m_iChars > 0 || rwstr.GetLength() == 0);
     }
 
     TUnicodeToUTF8(LPCWSTR pwsz, int iLength = -1)
@@ -125,7 +125,7 @@ public:
         }
 
         m_iChars = AtlUnicodeToUTF8(pwsz, iLength, m_psz, iBuffSize);
-        ASSERT( m_iChars > 0 || iLength == 0 );
+        ASSERT(m_iChars > 0 || iLength == 0);
     }
 
     ~TUnicodeToUTF8()
@@ -179,7 +179,7 @@ public:
         m_psz[1] = 0xBBU;
         m_psz[2] = 0xBFU;
         m_iChars = 3 + AtlUnicodeToUTF8(rwstr, rwstr.GetLength(), m_psz + 3, iBuffSize - 3);
-        ASSERT( m_iChars > 3 || rwstr.GetLength() == 0 );
+        ASSERT(m_iChars > 3 || rwstr.GetLength() == 0);
     }
 
     ~TUnicodeToBOMUTF8()
@@ -230,7 +230,7 @@ public:
         }
 
         m_iChars = WideCharToMultiByte(uCodePage, 0, rwstr, rwstr.GetLength(), m_psz, iBuffSize, NULL, 0);
-        ASSERT( m_iChars > 0 || rwstr.GetLength() == 0 );
+        ASSERT(m_iChars > 0 || rwstr.GetLength() == 0);
     }
 
     ~TUnicodeToMultiByte()

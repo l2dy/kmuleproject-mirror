@@ -30,7 +30,7 @@ template <class T> void QuickSortRecursive(T *pArr, int d, int h, BOOL bAscendin
     i = h;
     j = d;
 
-    str = pArr[((int) ((d+h) / 2))];
+    str = pArr[((int)((d+h) / 2))];
 
     do
     {
@@ -46,10 +46,10 @@ template <class T> void QuickSortRecursive(T *pArr, int d, int h, BOOL bAscendin
             while (pArr[i] < str) i--;
         }
 
-        if ( i >= j )
+        if (i >= j)
         {
 
-            if ( i != j )
+            if (i != j)
             {
                 T zal;
 

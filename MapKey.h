@@ -53,7 +53,7 @@ class CSKey : public CObject
 public:
     CSKey(const uchar* key = 0)
     {
-        if(key) md4cpy(m_key, key);
+        if (key) md4cpy(m_key, key);
         else md4clr(m_key);
     }
     CSKey(const CSKey& k1)

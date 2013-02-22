@@ -65,7 +65,7 @@ public:
         m_strKeyword = rstrKeyword;
         // min. keyword char is allowed to be < 3 in some cases (see also 'CSearchManager::GetWords')
         //ASSERT( rstrKeyword.GetLength() >= 3 );
-        ASSERT( !rstrKeyword.IsEmpty() );
+        ASSERT(!rstrKeyword.IsEmpty());
         KadGetKeywordHash(rstrKeyword, &m_nKadID);
         SetNextPublishTime(0);
         SetPublishedCount(0);
@@ -261,7 +261,7 @@ void CPublishKeywordList::AddKeywords(CKnownFile* pFile)
             m_lstKeywords.AddTail(pPubKw);
             SetNextPublishTime(0);
         }
-        if(pPubKw->AddRef(pFile) && pPubKw->GetNextPublishTime() > MIN2S(30))
+        if (pPubKw->AddRef(pFile) && pPubKw->GetNextPublishTime() > MIN2S(30))
         {
             // User may be adding and removing files, so if this is a keyword that
             // has already been published, we reduce the time, but still give the user
@@ -374,7 +374,7 @@ BOOL CAddFileThread::InitInstance()
 int CAddFileThread::Run()
 {
     DbgSetThreadName("Hashing %s", m_strFilename);
-    if ( !(m_pOwner || m_partfile) || m_strFilename.IsEmpty() || !theApp.emuledlg->IsRunning() )
+    if (!(m_pOwner || m_partfile) || m_strFilename.IsEmpty() || !theApp.emuledlg->IsRunning())
         return 0;
 
     CoInitialize(NULL);
@@ -514,7 +514,7 @@ void CSharedFileList::FindSharedFiles()
             listlock.Unlock();
         }
 
-        ASSERT( theApp.downloadqueue );
+        ASSERT(theApp.downloadqueue);
         if (theApp.downloadqueue)
             theApp.downloadqueue->AddPartFilesToShare(); // read partfiles
     }
@@ -560,19 +560,19 @@ void CSharedFileList::FindSharedFiles()
 
     AddFilesFromDirectory(tempDir);
     tempDir.MakeLower();
-    l_sAdded.AddHead( tempDir );
+    l_sAdded.AddHead(tempDir);
 
     for (int ix=1; ix<thePrefs.GetCatCount(); ix++)
     {
-        tempDir=CString( thePrefs.GetCatPath(ix) );
+        tempDir=CString(thePrefs.GetCatPath(ix));
         if (tempDir.Right(1)!=L"\\")
             tempDir+=L"\\";
         ltempDir=tempDir;
         ltempDir.MakeLower();
 
-        if( l_sAdded.Find( ltempDir ) ==NULL )
+        if (l_sAdded.Find(ltempDir) ==NULL)
         {
-            l_sAdded.AddHead( ltempDir );
+            l_sAdded.AddHead(ltempDir);
             AddFilesFromDirectory(tempDir);
         }
     }
@@ -585,9 +585,9 @@ void CSharedFileList::FindSharedFiles()
         ltempDir= tempDir;
         ltempDir.MakeLower();
 
-        if( l_sAdded.Find( ltempDir ) ==NULL )
+        if (l_sAdded.Find(ltempDir) ==NULL)
         {
-            l_sAdded.AddHead( ltempDir );
+            l_sAdded.AddHead(ltempDir);
             AddFilesFromDirectory(tempDir);
         }
     }
@@ -634,7 +634,7 @@ bool CSharedFileList::AddSingleSharedFile(const CString& rstrFilePath, bool bNoU
     bool bExclude = false;
     bool bShared = false;
     // first check if we are explicty exluding this file
-    for (POSITION pos = m_liSingleExcludedFiles.GetHeadPosition(); pos != NULL; m_liSingleExcludedFiles.GetNext(pos) )
+    for (POSITION pos = m_liSingleExcludedFiles.GetHeadPosition(); pos != NULL; m_liSingleExcludedFiles.GetNext(pos))
     {
         if (rstrFilePath.CompareNoCase(m_liSingleExcludedFiles.GetAt(pos)) == 0)
         {
@@ -698,9 +698,9 @@ bool CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd)
 
 bool CSharedFileList::AddFile(CKnownFile* pFile)
 {
-    ASSERT( pFile->GetFileIdentifier().HasExpectedMD4HashCount() );
-    ASSERT( !pFile->IsKindOf(RUNTIME_CLASS(CPartFile)) || !STATIC_DOWNCAST(CPartFile, pFile)->m_bMD4HashsetNeeded );
-    ASSERT( !pFile->IsShellLinked() || ShouldBeShared(pFile->GetSharedDirectory(), _T(""), false) );
+    ASSERT(pFile->GetFileIdentifier().HasExpectedMD4HashCount());
+    ASSERT(!pFile->IsKindOf(RUNTIME_CLASS(CPartFile)) || !STATIC_DOWNCAST(CPartFile, pFile)->m_bMD4HashsetNeeded);
+    ASSERT(!pFile->IsShellLinked() || ShouldBeShared(pFile->GetSharedDirectory(), _T(""), false));
     CCKey key(pFile->GetFileHash());
     CKnownFile* pFileInMap;
     if (m_Files_map.Lookup(key, pFileInMap))
@@ -720,10 +720,10 @@ bool CSharedFileList::AddFile(CKnownFile* pFile)
 
     bool bKeywordsNeedUpdated = true;
 
-    if(!pFile->IsPartFile() && !pFile->m_pCollection && CCollection::HasCollectionExtention(pFile->GetFileName()))
+    if (!pFile->IsPartFile() && !pFile->m_pCollection && CCollection::HasCollectionExtention(pFile->GetFileName()))
     {
         pFile->m_pCollection = new CCollection();
-        if(!pFile->m_pCollection->InitCollectionFromFile(pFile->GetFilePath(), pFile->GetFileName()))
+        if (!pFile->m_pCollection->InitCollectionFromFile(pFile->GetFilePath(), pFile->GetFileName()))
         {
             delete pFile->m_pCollection;
             pFile->m_pCollection = NULL;
@@ -737,12 +737,12 @@ bool CSharedFileList::AddFile(CKnownFile* pFile)
             //During the initial startup, sharedfiles is not accessable
             //to SetFileName which will then not call AddKeywords..
             //But when it is accessable, we don't allow it to readd them.
-            if(theApp.sharedfiles)
+            if (theApp.sharedfiles)
                 bKeywordsNeedUpdated = false;
         }
     }
 
-    if(bKeywordsNeedUpdated)
+    if (bKeywordsNeedUpdated)
         m_keywords->AddKeywords(pFile);
 
     pFile->SetLastSeen();
@@ -760,8 +760,8 @@ void CSharedFileList::FileHashingFinished(CKnownFile* file)
     //	- reading shared directories at startup and hashing files which were not found in known.met
     //	- reading shared directories during runtime (user hit Reload button, added a shared directory, ...)
 
-    ASSERT( !IsFilePtrInList(file) );
-    ASSERT( !theApp.knownfiles->IsFilePtrInList(file) );
+    ASSERT(!IsFilePtrInList(file));
+    ASSERT(!theApp.knownfiles->IsFilePtrInList(file));
 
     CKnownFile* found_file = GetFileByID(file->GetFileHash());
     if (found_file == NULL)
@@ -840,7 +840,7 @@ void CSharedFileList::SetOutputCtrl(CSharedFilesCtrl* in_ctrl)
 
 uint8 GetRealPrio(uint8 in)
 {
-    switch(in)
+    switch (in)
     {
     case 4 :
         return 0;
@@ -1024,7 +1024,7 @@ void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file, CSafeMemFile
                 }
                 else if (_aMetaTags[i].nName == FT_MEDIA_LENGTH && pTag->IsInt())
                 {
-                    ASSERT( _aMetaTags[i].nED2KType == TAGTYPE_STRING );
+                    ASSERT(_aMetaTags[i].nED2KType == TAGTYPE_STRING);
                     // eMule versions >= 0.42.4 support the media length tag with type 'integer'
                     if (uEmuleVer >= MAKE_CLIENT_VERSION(0,42,4))
                     {
@@ -1154,13 +1154,13 @@ void CSharedFileList::HashNextFile()
 // SLUGFILLER: SafeHash
 bool CSharedFileList::IsHashing(const CString& rstrDirectory, const CString& rstrName)
 {
-    for (POSITION pos = waitingforhash_list.GetHeadPosition(); pos != 0; )
+    for (POSITION pos = waitingforhash_list.GetHeadPosition(); pos != 0;)
     {
         const UnknownFile_Struct* pFile = waitingforhash_list.GetNext(pos);
         if (!pFile->strName.CompareNoCase(rstrName) && !CompareDirectories(pFile->strDirectory, rstrDirectory))
             return true;
     }
-    for (POSITION pos = currentlyhashing_list.GetHeadPosition(); pos != 0; )
+    for (POSITION pos = currentlyhashing_list.GetHeadPosition(); pos != 0;)
     {
         const UnknownFile_Struct* pFile = currentlyhashing_list.GetNext(pos);
         if (!pFile->strName.CompareNoCase(rstrName) && !CompareDirectories(pFile->strDirectory, rstrDirectory))
@@ -1171,7 +1171,7 @@ bool CSharedFileList::IsHashing(const CString& rstrDirectory, const CString& rst
 
 void CSharedFileList::RemoveFromHashing(CKnownFile* hashed)
 {
-    for (POSITION pos = currentlyhashing_list.GetHeadPosition(); pos != 0; )
+    for (POSITION pos = currentlyhashing_list.GetHeadPosition(); pos != 0;)
     {
         POSITION posLast = pos;
         const UnknownFile_Struct* pFile = currentlyhashing_list.GetNext(pos);
@@ -1187,7 +1187,7 @@ void CSharedFileList::RemoveFromHashing(CKnownFile* hashed)
 
 void CSharedFileList::HashFailed(UnknownFile_Struct* hashed)
 {
-    for (POSITION pos = currentlyhashing_list.GetHeadPosition(); pos != 0; )
+    for (POSITION pos = currentlyhashing_list.GetHeadPosition(); pos != 0;)
     {
         POSITION posLast = pos;
         const UnknownFile_Struct* pFile = currentlyhashing_list.GetNext(pos);
@@ -1205,10 +1205,10 @@ void CSharedFileList::HashFailed(UnknownFile_Struct* hashed)
 void CSharedFileList::UpdateFile(CKnownFile* toupdate)
 {
 //>>> WiZaRd::PowerShare - CPU!
-    if(::GetTickCount() > toupdate->guifileupdatetime) //once per second
+    if (::GetTickCount() > toupdate->guifileupdatetime) //once per second
         return;
     toupdate->guifileupdatetime = ::GetTickCount() + 1000;
-    if(theApp.emuledlg->sharedfileswnd->m_hWnd && output)
+    if (theApp.emuledlg->sharedfileswnd->m_hWnd && output)
 //<<< WiZaRd::PowerShare - CPU!
         output->UpdateFile(toupdate);
 }
@@ -1225,10 +1225,10 @@ void CSharedFileList::Publish()
     bool isFirewalled = theApp.IsFirewalled();
     bool bDirectCallback = Kademlia::CKademlia::IsRunning() && !Kademlia::CUDPFirewallTester::IsFirewalledUDP(true) && Kademlia::CUDPFirewallTester::IsVerified();
 
-    if( Kademlia::CKademlia::IsConnected() && ( !isFirewalled || ( isFirewalled && theApp.clientlist->GetBuddyStatus() == Connected) || bDirectCallback) && GetCount() && Kademlia::CKademlia::GetPublish())
+    if (Kademlia::CKademlia::IsConnected() && (!isFirewalled || (isFirewalled && theApp.clientlist->GetBuddyStatus() == Connected) || bDirectCallback) && GetCount() && Kademlia::CKademlia::GetPublish())
     {
         //We are connected to Kad. We are either open or have a buddy. And Kad is ready to start publishing.
-        if( Kademlia::CKademlia::GetTotalStoreKey() < KADEMLIATOTALSTOREKEY)
+        if (Kademlia::CKademlia::GetTotalStoreKey() < KADEMLIATOTALSTOREKEY)
         {
             //We are not at the max simultaneous keyword publishes
             if (tNow >= m_keywords->GetNextPublishTime())
@@ -1237,12 +1237,12 @@ void CSharedFileList::Publish()
 
                 //Get the next keyword which has to be (re)-published
                 CPublishKeyword* pPubKw = m_keywords->GetNextKeyword();
-                if(pPubKw)
+                if (pPubKw)
                 {
                     //We have the next keyword to check if it can be published
 
                     //Debug check to make sure things are going well.
-                    ASSERT( pPubKw->GetRefCount() != 0 );
+                    ASSERT(pPubKw->GetRefCount() != 0);
 
                     if (tNow >= pPubKw->GetNextPublishTime())
                     {
@@ -1262,18 +1262,18 @@ void CSharedFileList::Publish()
                             for (int f = 0; f < aFiles.GetSize(); f++)
                             {
                                 //Debug check to make sure things are working well.
-                                ASSERT_VALID( aFiles[f] );
+                                ASSERT_VALID(aFiles[f]);
                                 // JOHNTODO - Why is this happening.. I think it may have to do with downloading a file that is already
                                 // in the known file list..
 //								ASSERT( IsFilePtrInList(aFiles[f]) );
 
                                 //Only publish complete files as someone else should have the full file to publish these keywords.
                                 //As a side effect, this may help reduce people finding incomplete files in the network.
-                                if( !aFiles[f]->IsPartFile() && IsFilePtrInList(aFiles[f]))
+                                if (!aFiles[f]->IsPartFile() && IsFilePtrInList(aFiles[f]))
                                 {
                                     count++;
                                     pSearch->AddFileID(Kademlia::CUInt128(aFiles[f]->GetFileHash()));
-                                    if( count > 150 )
+                                    if (count > 150)
                                     {
                                         //We only publish up to 150 files per keyword publish then rotate the list.
                                         pPubKw->RotateReferences(f);
@@ -1282,7 +1282,7 @@ void CSharedFileList::Publish()
                                 }
                             }
 
-                            if( count )
+                            if (count)
                             {
                                 //Start our keyword publish
                                 pPubKw->SetNextPublishTime(tNow+(KADEMLIAREPUBLISHTIMEK));
@@ -1301,18 +1301,18 @@ void CSharedFileList::Publish()
             }
         }
 
-        if( Kademlia::CKademlia::GetTotalStoreSrc() < KADEMLIATOTALSTORESRC)
+        if (Kademlia::CKademlia::GetTotalStoreSrc() < KADEMLIATOTALSTORESRC)
         {
-            if(tNow >= m_lastPublishKadSrc)
+            if (tNow >= m_lastPublishKadSrc)
             {
-                if(m_currFileSrc > GetCount())
+                if (m_currFileSrc > GetCount())
                     m_currFileSrc = 0;
                 CKnownFile* pCurKnownFile = GetFileByIndex(m_currFileSrc);
-                if(pCurKnownFile)
+                if (pCurKnownFile)
                 {
-                    if(pCurKnownFile->PublishSrc())
+                    if (pCurKnownFile->PublishSrc())
                     {
-                        if(Kademlia::CSearchManager::PrepareLookup(Kademlia::CSearch::STOREFILE, true, Kademlia::CUInt128(pCurKnownFile->GetFileHash()))==NULL)
+                        if (Kademlia::CSearchManager::PrepareLookup(Kademlia::CSearch::STOREFILE, true, Kademlia::CUInt128(pCurKnownFile->GetFileHash()))==NULL)
                             pCurKnownFile->SetLastPublishTimeKadSrc(0,0);
                     }
                 }
@@ -1324,18 +1324,18 @@ void CSharedFileList::Publish()
             }
         }
 
-        if( Kademlia::CKademlia::GetTotalStoreNotes() < KADEMLIATOTALSTORENOTES)
+        if (Kademlia::CKademlia::GetTotalStoreNotes() < KADEMLIATOTALSTORENOTES)
         {
-            if(tNow >= m_lastPublishKadNotes)
+            if (tNow >= m_lastPublishKadNotes)
             {
-                if(m_currFileNotes > GetCount())
+                if (m_currFileNotes > GetCount())
                     m_currFileNotes = 0;
                 CKnownFile* pCurKnownFile = GetFileByIndex(m_currFileNotes);
-                if(pCurKnownFile)
+                if (pCurKnownFile)
                 {
-                    if(pCurKnownFile->PublishNotes())
+                    if (pCurKnownFile->PublishNotes())
                     {
-                        if(Kademlia::CSearchManager::PrepareLookup(Kademlia::CSearch::STORENOTES, true, Kademlia::CUInt128(pCurKnownFile->GetFileHash()))==NULL)
+                        if (Kademlia::CSearchManager::PrepareLookup(Kademlia::CSearch::STORENOTES, true, Kademlia::CUInt128(pCurKnownFile->GetFileHash()))==NULL)
                             pCurKnownFile->SetLastPublishTimeKadNotes(0);
                     }
                 }
@@ -1362,8 +1362,8 @@ void CSharedFileList::RemoveKeywords(CKnownFile* pFile)
 void CSharedFileList::DeletePartFileInstances() const
 {
     // this is only allowed during shut down
-    ASSERT( theApp.m_app_state == APP_STATE_SHUTTINGDOWN );
-    ASSERT( theApp.knownfiles );
+    ASSERT(theApp.m_app_state == APP_STATE_SHUTTINGDOWN);
+    ASSERT(theApp.knownfiles);
 
     POSITION pos = m_Files_map.GetStartPosition();
     while (pos)
@@ -1424,14 +1424,14 @@ bool CSharedFileList::ShouldBeShared(CString strPath, CString strFilePath, bool 
     // check if this file is explicit unshared
     if (!strFilePath.IsEmpty())
     {
-        for (POSITION pos = m_liSingleExcludedFiles.GetHeadPosition(); pos != NULL; m_liSingleExcludedFiles.GetNext(pos) )
+        for (POSITION pos = m_liSingleExcludedFiles.GetHeadPosition(); pos != NULL; m_liSingleExcludedFiles.GetNext(pos))
         {
             if (strFilePath.CompareNoCase(m_liSingleExcludedFiles.GetAt(pos)) == 0)
                 return false;
         }
 
         // check if this file is explicit shared
-        for (POSITION pos = m_liSingleSharedFiles.GetHeadPosition(); pos != NULL; m_liSingleSharedFiles.GetNext(pos) )
+        for (POSITION pos = m_liSingleSharedFiles.GetHeadPosition(); pos != NULL; m_liSingleSharedFiles.GetNext(pos))
         {
             if (strFilePath.CompareNoCase(m_liSingleSharedFiles.GetAt(pos)) == 0)
                 return true;
@@ -1450,7 +1450,7 @@ bool CSharedFileList::ContainsSingleSharedFiles(CString strDirectory) const
 {
     if (strDirectory.Right(1) != '\\')
         strDirectory += '\\';
-    for (POSITION pos = m_liSingleSharedFiles.GetHeadPosition(); pos != NULL; m_liSingleSharedFiles.GetNext(pos) )
+    for (POSITION pos = m_liSingleSharedFiles.GetHeadPosition(); pos != NULL; m_liSingleSharedFiles.GetNext(pos))
     {
         if (strDirectory.CompareNoCase(m_liSingleSharedFiles.GetAt(pos).Left(strDirectory.GetLength())) == 0)
             return true;
@@ -1462,7 +1462,7 @@ bool CSharedFileList::ExcludeFile(CString strFilePath)
 {
     bool bShared = false;
     // first check if we are explicty sharing this file
-    for (POSITION pos = m_liSingleSharedFiles.GetHeadPosition(); pos != NULL; m_liSingleSharedFiles.GetNext(pos) )
+    for (POSITION pos = m_liSingleSharedFiles.GetHeadPosition(); pos != NULL; m_liSingleSharedFiles.GetNext(pos))
     {
         if (strFilePath.CompareNoCase(m_liSingleSharedFiles.GetAt(pos)) == 0)
         {
@@ -1518,7 +1518,7 @@ void CSharedFileList::CheckAndAddSingleFile(const CFileFind& ff)
     ULONGLONG ullFoundFileSize = ff.GetLength();
 
     // check if this file is explicit unshared
-    for (POSITION pos = m_liSingleExcludedFiles.GetHeadPosition(); pos != NULL; m_liSingleExcludedFiles.GetNext(pos) )
+    for (POSITION pos = m_liSingleExcludedFiles.GetHeadPosition(); pos != NULL; m_liSingleExcludedFiles.GetNext(pos))
     {
         if (strFoundFilePath.CompareNoCase(m_liSingleExcludedFiles.GetAt(pos)) == 0)
             return;
@@ -1530,7 +1530,7 @@ void CSharedFileList::CheckAndAddSingleFile(const CFileFind& ff)
     {
         ff.GetLastWriteTime(tFoundFileTime);
     }
-    catch(CException* ex)
+    catch (CException* ex)
     {
         ex->Delete();
     }
@@ -1569,7 +1569,7 @@ void CSharedFileList::CheckAndAddSingleFile(const CFileFind& ff)
                             CFileFind ffResolved;
                             if (!ffResolved.FindFile(szResolvedPath))
                                 return;
-                            VERIFY( !ffResolved.FindNextFile() );
+                            VERIFY(!ffResolved.FindNextFile());
                             if (ffResolved.IsDirectory() || ffResolved.IsDots() || ffResolved.IsSystem() || ffResolved.IsTemporary() || ffResolved.GetLength() == 0 || ffResolved.GetLength() > MAX_EMULE_FILE_SIZE)
                                 return;
                             strShellLinkDir = strFoundDirectory;
@@ -1640,9 +1640,9 @@ void CSharedFileList::CheckAndAddSingleFile(const CFileFind& ff)
             if (!pFileInMap->IsKindOf(RUNTIME_CLASS(CPartFile)) || theApp.downloadqueue->IsPartFile(pFileInMap))
             {
                 if (pFileInMap->GetFilePath().CompareNoCase(toadd->GetFilePath()) != 0) /* is it actually really the same file in the same place we already share? if so don't bother too much */
-                    LogWarning( GetResString(IDS_ERR_DUPL_FILES) , pFileInMap->GetFilePath(), strFoundFilePath);
+                    LogWarning(GetResString(IDS_ERR_DUPL_FILES) , pFileInMap->GetFilePath(), strFoundFilePath);
                 else
-                    DebugLog( _T("File shared twice, might have been a single shared file before - %s") , pFileInMap->GetFilePath());
+                    DebugLog(_T("File shared twice, might have been a single shared file before - %s") , pFileInMap->GetFilePath());
             }
         }
         else
@@ -1663,7 +1663,7 @@ void CSharedFileList::CheckAndAddSingleFile(const CFileFind& ff)
                 && !thePrefs.IsTempFile(strFoundDirectory, strFoundFileName)
                 && !thePrefs.IsForbiddenFile(strFoundFileName)) //>>> WiZaRd::Remove forbidden files
         {
-			UnknownFile_Struct* tohash = new UnknownFile_Struct(strFoundFileName, strFoundDirectory, strShellLinkDir); //>>> WiZaRd::HashingQueue Optimisation
+            UnknownFile_Struct* tohash = new UnknownFile_Struct(strFoundFileName, strFoundDirectory, strShellLinkDir); //>>> WiZaRd::HashingQueue Optimisation
             waitingforhash_list.AddTail(tohash);
         }
         else
@@ -1702,7 +1702,7 @@ void CSharedFileList::Save() const
             }
             sdirfile.Close();
         }
-        catch(CFileException* error)
+        catch (CFileException* error)
         {
             TCHAR buffer[MAX_CFEXP_ERRORMSG];
             error->GetErrorMessage(buffer,_countof(buffer));
@@ -1761,7 +1761,7 @@ void CSharedFileList::LoadSingleSharedFilesList()
             }
             sdirfile->Close();
         }
-        catch(CFileException* error)
+        catch (CFileException* error)
         {
             TCHAR buffer[MAX_CFEXP_ERRORMSG];
             error->GetErrorMessage(buffer,_countof(buffer));
@@ -1776,7 +1776,7 @@ void CSharedFileList::LoadSingleSharedFilesList()
 
 bool CSharedFileList::AddSingleSharedDirectory(const CString& rstrFilePath, bool bNoUpdate)
 {
-    ASSERT( rstrFilePath.Right(1) == _T('\\') );
+    ASSERT(rstrFilePath.Right(1) == _T('\\'));
     // check if we share this dir already or are not allowed to
     if (ShouldBeShared(rstrFilePath, _T(""), false) || !thePrefs.IsShareableDirectory(rstrFilePath))
         return false;
@@ -1833,13 +1833,13 @@ CString CSharedFileList::GetPseudoDirName(const CString& strDirectoryName)
     if (!strPseudoName.IsEmpty())
     {
         // remove first backslash
-        ASSERT( strPseudoName.GetAt(0) == _T('\\') );
+        ASSERT(strPseudoName.GetAt(0) == _T('\\'));
         strPseudoName = strPseudoName.Right(strPseudoName.GetLength() - 1);
     }
     else
     {
         // must be a rootdirectory
-        ASSERT( strDirectoryTmp.GetLength() == 2 );
+        ASSERT(strDirectoryTmp.GetLength() == 2);
         strPseudoName = strDirectoryTmp;
     }
     // we have the name, make sure it is unique
@@ -1890,7 +1890,7 @@ bool CSharedFileList::GetPopularityRank(const CKnownFile* pFile, UINT& rnOutSess
     // cycle all files, each file which has more request than the given files lowers the rank
     CKnownFile* cur_file;
     CCKey bufKey;
-    for (POSITION pos = m_Files_map.GetStartPosition(); pos != 0; )
+    for (POSITION pos = m_Files_map.GetStartPosition(); pos != 0;)
     {
         m_Files_map.GetNextAssoc(pos,bufKey,cur_file);
         if (cur_file == pFile)
@@ -1919,26 +1919,26 @@ void CSharedFileList::GetUsefulDirectories(CStringList& dirList, const bool bFor
         PathRemoveBackslash(strSharedFileDir.GetBuffer());
         strSharedFileDir.ReleaseBuffer();
 
-        if(!dirList.Find(strSharedFileDir))
+        if (!dirList.Find(strSharedFileDir))
         {
 //>>> WiZaRd::SharePermissions
             // pick the proper permissions for the current directory
             bool bAdd = false;
-            for(POSITION pos = thePrefs.shareddir_list.GetHeadPosition(), pos2 = thePrefs.shareddir_list_permissions.GetHeadPosition(); pos != NULL;)
+            for (POSITION pos = thePrefs.shareddir_list.GetHeadPosition(), pos2 = thePrefs.shareddir_list_permissions.GetHeadPosition(); pos != NULL;)
             {
                 CString strCurrentDir = thePrefs.shareddir_list.GetNext(pos);
                 uint8 permission = thePrefs.shareddir_list_permissions.GetNext(pos2);
 
-                if(strCurrentDir.CompareNoCase(strSharedFileDir) == 0) //found dir
+                if (strCurrentDir.CompareNoCase(strSharedFileDir) == 0) //found dir
                 {
-                    if(permission == eSP_Options)
+                    if (permission == eSP_Options)
                         permission = (uint8)thePrefs.CanSeeShares() + 1;
-                    if(permission == eSP_Everybody || (permission == eSP_Friends && bForAFriend))
+                    if (permission == eSP_Everybody || (permission == eSP_Friends && bForAFriend))
                         bAdd = true;
                     break;
                 }
             }
-            if(bAdd)
+            if (bAdd)
 //<<< WiZaRd::SharePermissions
                 dirList.AddTail(strSharedFileDir);
         }
@@ -1948,40 +1948,40 @@ void CSharedFileList::GetUsefulDirectories(CStringList& dirList, const bool bFor
 //>>> WiZaRd::HashingQueue Optimisation
 UnknownFile_Struct::UnknownFile_Struct(const CString& sName, const CString& sDirectory, const CString& sSharedDirectory)
 {
-	strName = sName;
-	strDirectory = sDirectory;
-	strSharedDirectory = sSharedDirectory;
+    strName = sName;
+    strDirectory = sDirectory;
+    strSharedDirectory = sSharedDirectory;
 
-	uiFileSize = (uint64)0;
-	CString strFilePath = L"";
-	if(_tmakepathlimit(strFilePath.GetBuffer(MAX_PATH), NULL, strDirectory, strName, NULL))
-	{
-		strFilePath.ReleaseBuffer();
-		uiFileSize = GetFileSizeOnDisk(strFilePath);
-	}	
+    uiFileSize = (uint64)0;
+    CString strFilePath = L"";
+    if (_tmakepathlimit(strFilePath.GetBuffer(MAX_PATH), NULL, strDirectory, strName, NULL))
+    {
+        strFilePath.ReleaseBuffer();
+        uiFileSize = GetFileSizeOnDisk(strFilePath);
+    }
 }
 
 // Hash smallest file first to speed up file sharing
-UnknownFile_Struct* CSharedFileList::getNextFileToHash() 
+UnknownFile_Struct* CSharedFileList::getNextFileToHash()
 {
-	UnknownFile_Struct* ret = NULL;
+    UnknownFile_Struct* ret = NULL;
 
-	uint64 fileSize = _UI64_MAX;
-	POSITION smallestFilePos = NULL;
-	for (POSITION pos = waitingforhash_list.GetHeadPosition(); pos; waitingforhash_list.GetNext(pos))
-	{
-		const UnknownFile_Struct* pFile = waitingforhash_list.GetAt(pos);
-		if(pFile->uiFileSize < fileSize)
-		{
-			fileSize = pFile->uiFileSize;
-			smallestFilePos = pos;
-		}
-	}
+    uint64 fileSize = _UI64_MAX;
+    POSITION smallestFilePos = NULL;
+    for (POSITION pos = waitingforhash_list.GetHeadPosition(); pos; waitingforhash_list.GetNext(pos))
+    {
+        const UnknownFile_Struct* pFile = waitingforhash_list.GetAt(pos);
+        if (pFile->uiFileSize < fileSize)
+        {
+            fileSize = pFile->uiFileSize;
+            smallestFilePos = pos;
+        }
+    }
 
-	ASSERT(smallestFilePos != NULL);	
-	ret = waitingforhash_list.GetAt(smallestFilePos);
-	waitingforhash_list.RemoveAt(smallestFilePos);
-	
-	return ret;
+    ASSERT(smallestFilePos != NULL);
+    ret = waitingforhash_list.GetAt(smallestFilePos);
+    waitingforhash_list.RemoveAt(smallestFilePos);
+
+    return ret;
 }
 //<<< WiZaRd::HashingQueue Optimisation

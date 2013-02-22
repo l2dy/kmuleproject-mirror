@@ -298,7 +298,7 @@ BOOL CTreeOptionsCtrl::OnDeleteItem(NMHDR *pNMHDR, LRESULT *pResult)
     return FALSE;
 }
 
-void CTreeOptionsCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags )
+void CTreeOptionsCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     if (nChar == VK_RIGHT)
     {

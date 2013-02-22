@@ -185,19 +185,19 @@ UINT CFrameGrabThread::GrabFrames()
             {
                 // we could also directly create a Bitmap in memory, however this caused problems/failed with *some* movie files
                 // when I tried it for the MMPreview, while this method works always - so I'll continue to use this one
-                long nFullBufferLen = sizeof( BITMAPFILEHEADER ) + size;
+                long nFullBufferLen = sizeof(BITMAPFILEHEADER) + size;
                 char* buffer = new char[nFullBufferLen];
 
                 BITMAPFILEHEADER bfh;
-                memset( &bfh, 0, sizeof( bfh ) );
+                memset(&bfh, 0, sizeof(bfh));
                 bfh.bfType = 'MB';
                 bfh.bfSize = nFullBufferLen;
-                bfh.bfOffBits = sizeof( BITMAPINFOHEADER ) + sizeof( BITMAPFILEHEADER );
-                memcpy(buffer,&bfh,sizeof( bfh ) );
+                bfh.bfOffBits = sizeof(BITMAPINFOHEADER) + sizeof(BITMAPFILEHEADER);
+                memcpy(buffer,&bfh,sizeof(bfh));
 
                 try
                 {
-                    hr = pDet->GetBitmapBits(dStartTime+ (nFramesGrabbed*TIMEBETWEENFRAMES), NULL, buffer + sizeof( bfh ), width, height);
+                    hr = pDet->GetBitmapBits(dStartTime+ (nFramesGrabbed*TIMEBETWEENFRAMES), NULL, buffer + sizeof(bfh), width, height);
                 }
                 catch (...)
                 {
@@ -253,7 +253,7 @@ UINT CFrameGrabThread::GrabFrames()
         }
         return nFramesGrabbed;
     }
-    catch(...)
+    catch (...)
     {
         ASSERT(0);
         return 0;

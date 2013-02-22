@@ -30,14 +30,14 @@ protected:
 
 public:
     CCryptProv() throw();
-    CCryptProv( const CCryptProv& prov ) throw();
-    explicit CCryptProv( HCRYPTPROV hProv, BOOL bTakeOwnership = FALSE ) throw();
+    CCryptProv(const CCryptProv& prov) throw();
+    explicit CCryptProv(HCRYPTPROV hProv, BOOL bTakeOwnership = FALSE) throw();
     ~CCryptProv() throw();
 
-    CCryptProv& operator=( const CCryptProv& prov ) throw();
+    CCryptProv& operator=(const CCryptProv& prov) throw();
 
     HRESULT AddRef() throw();
-    void Attach( HCRYPTPROV hProv, BOOL bTakeOwnership = FALSE ) throw();
+    void Attach(HCRYPTPROV hProv, BOOL bTakeOwnership = FALSE) throw();
     HCRYPTPROV Detach() throw();
     HRESULT Release() throw();
 
@@ -58,7 +58,7 @@ public:
     HRESULT Uninitialize();
 
     HRESULT GetParam(DWORD dwParam, BYTE * pbData, DWORD * pdwDataLen, DWORD dwFlags = 0) throw();
-    HRESULT SetParam( DWORD dwParam, BYTE* pbData, DWORD dwFlags = 0) throw();
+    HRESULT SetParam(DWORD dwParam, BYTE* pbData, DWORD dwFlags = 0) throw();
     HRESULT GetName(__out_ecount_part_z(*pdwLength, *pdwLength) LPSTR szBuf, __inout DWORD * pdwLength) throw();
     HRESULT GetContainer(__out_ecount_part_z(*pdwLength, *pdwLength) LPSTR szBuf, __inout DWORD * pdwLength) throw();
     HRESULT GetImpType(DWORD * pdwImpType) throw();
@@ -67,7 +67,7 @@ public:
     HRESULT GetSecurityDesc(SECURITY_INFORMATION * pSecInfo) throw();
     HRESULT SetSecurityDesc(SECURITY_INFORMATION SecInfo) throw();
 
-    HRESULT GenRandom(ULONG nLength, BYTE* pbBuffer ) throw();
+    HRESULT GenRandom(ULONG nLength, BYTE* pbBuffer) throw();
 
     inline HCRYPTPROV GetHandle() throw()
     {
@@ -85,11 +85,11 @@ protected:
 
 public:
     CCryptHash() throw();
-    CCryptHash( const CCryptHash& hash ) throw();
-    explicit CCryptHash( HCRYPTHASH hHash, BOOL bTakeOwnership = FALSE ) throw();
+    CCryptHash(const CCryptHash& hash) throw();
+    explicit CCryptHash(HCRYPTHASH hHash, BOOL bTakeOwnership = FALSE) throw();
     ~CCryptHash() throw();
 
-    void Attach( HCRYPTHASH hHash, BOOL bTakeOwnership = FALSE ) throw();
+    void Attach(HCRYPTHASH hHash, BOOL bTakeOwnership = FALSE) throw();
     void Destroy() throw();
     HCRYPTHASH Detach() throw();
     HCRYPTHASH Duplicate() const throw();
@@ -132,11 +132,11 @@ protected:
 
 public:
     CCryptKey() throw();
-    CCryptKey( const CCryptKey& key ) throw();
-    explicit CCryptKey( HCRYPTKEY hKey, BOOL bTakeOwnership = FALSE ) throw();
+    CCryptKey(const CCryptKey& key) throw();
+    explicit CCryptKey(HCRYPTKEY hKey, BOOL bTakeOwnership = FALSE) throw();
     ~CCryptKey() throw();
 
-    void Attach( HCRYPTKEY hKey, BOOL bTakeOwnership = FALSE ) throw();
+    void Attach(HCRYPTKEY hKey, BOOL bTakeOwnership = FALSE) throw();
     void Destroy() throw();
     HCRYPTKEY Detach() throw();
     HCRYPTKEY Duplicate() const throw();

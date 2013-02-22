@@ -86,7 +86,7 @@ void CDirectoryTreeCtrl::OnTvnItemexpanding(NMHDR *pNMHDR, LRESULT *pResult)
     HTREEITEM hItem = pNMTreeView->itemNew.hItem;
     // remove all subitems
     HTREEITEM hRemove = GetChildItem(hItem);
-    while(hRemove)
+    while (hRemove)
     {
         DeleteItem(hRemove);
         hRemove = GetChildItem(hItem);
@@ -180,10 +180,10 @@ void CDirectoryTreeCtrl::MarkChilds(HTREEITEM hChild,bool mark)
     Expand(hChild, TVE_TOGGLE); // VQB - make sure tree has entries
     HTREEITEM hChild2;
     hChild2 = GetChildItem(hChild);
-    while( hChild2 != NULL)
+    while (hChild2 != NULL)
     {
         MarkChilds(hChild2,mark);
-        hChild2 = GetNextSiblingItem( hChild2 );
+        hChild2 = GetNextSiblingItem(hChild2);
     }
     Expand(hChild, TVE_TOGGLE); // VQB - restore tree to initial disposition
 }
@@ -213,7 +213,7 @@ void CDirectoryTreeCtrl::Init(void)
         // Get the system image list using a "path" which is available on all systems. [patch by bluecow]
         hImgList = (HIMAGELIST)SHGetFileInfo(_T("."), 0, &shFinfo, sizeof(shFinfo),
                                              SHGFI_SYSICONINDEX | SHGFI_SMALLICON);
-        if(!hImgList)
+        if (!hImgList)
         {
             TRACE(_T("Cannot retrieve the Handle of SystemImageList!"));
             //return;
@@ -232,7 +232,7 @@ void CDirectoryTreeCtrl::Init(void)
         drivebuffer[_countof(drivebuffer) - 1] = L'\0';
 
         const TCHAR* pos = drivebuffer;
-        while(*pos != L'\0')
+        while (*pos != L'\0')
         {
 
             // Copy drive name
@@ -290,17 +290,17 @@ HTREEITEM CDirectoryTreeCtrl::AddChildItem(HTREEITEM hRoot, CString strText)
     if (wWinVer != _WINVER_95_ && wWinVer != _WINVER_NT4_)
     {
         CString strTemp = strDir;
-        if(strTemp.Right(1) != L"\\")
+        if (strTemp.Right(1) != L"\\")
             strTemp += L"\\";
 
         UINT nType = GetDriveType(strTemp);
-        if(DRIVE_REMOVABLE <= nType && nType <= DRIVE_RAMDISK)
+        if (DRIVE_REMOVABLE <= nType && nType <= DRIVE_RAMDISK)
             itInsert.item.iImage = nType;
 
         SHFILEINFO shFinfo;
         shFinfo.szDisplayName[0] = L'\0';
-        if(!SHGetFileInfo(strTemp, 0, &shFinfo,	sizeof(shFinfo),
-                          SHGFI_ICON | SHGFI_SMALLICON | SHGFI_DISPLAYNAME))
+        if (!SHGetFileInfo(strTemp, 0, &shFinfo,	sizeof(shFinfo),
+                           SHGFI_ICON | SHGFI_SMALLICON | SHGFI_DISPLAYNAME))
         {
             TRACE(_T("Error Gettting SystemFileInfo!"));
             itInsert.itemex.iImage = 0; // :(
@@ -320,8 +320,8 @@ HTREEITEM CDirectoryTreeCtrl::AddChildItem(HTREEITEM hRoot, CString strText)
             }
         }
 
-        if(!SHGetFileInfo(strTemp, 0, &shFinfo, sizeof(shFinfo),
-                          SHGFI_ICON | SHGFI_OPENICON | SHGFI_SMALLICON))
+        if (!SHGetFileInfo(strTemp, 0, &shFinfo, sizeof(shFinfo),
+                           SHGFI_ICON | SHGFI_OPENICON | SHGFI_SMALLICON))
         {
             TRACE(_T("Error Gettting SystemFileInfo!"));
             itInsert.itemex.iImage = 0;
@@ -345,7 +345,7 @@ CString CDirectoryTreeCtrl::GetFullPath(HTREEITEM hItem)
 {
     CString strDir;
     HTREEITEM hSearchItem = hItem;
-    while(hSearchItem != NULL)
+    while (hSearchItem != NULL)
     {
         CString strSearchItemDir;
         STreeItem* pti = (STreeItem*)GetItemData(hSearchItem);
@@ -417,7 +417,7 @@ bool CDirectoryTreeCtrl::HasSubdirectories(CString strDir)
 
 void CDirectoryTreeCtrl::GetSharedDirectories(CStringList* list)
 {
-    for (POSITION pos = m_lstShared.GetHeadPosition(); pos != NULL; )
+    for (POSITION pos = m_lstShared.GetHeadPosition(); pos != NULL;)
         list->AddTail(m_lstShared.GetNext(pos));
 }
 
@@ -425,7 +425,7 @@ void CDirectoryTreeCtrl::SetSharedDirectories(CStringList* list)
 {
     m_lstShared.RemoveAll();
 
-    for (POSITION pos = list->GetHeadPosition(); pos != NULL; )
+    for (POSITION pos = list->GetHeadPosition(); pos != NULL;)
     {
         CString str = list->GetNext(pos);
         if (str.Left(2)==_T("\\\\")) continue;
@@ -441,7 +441,7 @@ bool CDirectoryTreeCtrl::HasSharedSubdirectory(CString strDir)
     if (strDir.Right(1) != _T('\\'))
         strDir += _T('\\');
     strDir.MakeLower();
-    for (POSITION pos = m_lstShared.GetHeadPosition(); pos != NULL; )
+    for (POSITION pos = m_lstShared.GetHeadPosition(); pos != NULL;)
     {
         CString str = m_lstShared.GetNext(pos);
         str.MakeLower();
@@ -467,7 +467,7 @@ bool CDirectoryTreeCtrl::IsShared(CString strDir)
 {
     if (strDir.Right(1) != _T('\\'))
         strDir += _T('\\');
-    for (POSITION pos = m_lstShared.GetHeadPosition(); pos != NULL; )
+    for (POSITION pos = m_lstShared.GetHeadPosition(); pos != NULL;)
     {
         CString str = m_lstShared.GetNext(pos);
         if (str.Right(1) != _T('\\'))
@@ -493,7 +493,7 @@ void CDirectoryTreeCtrl::DelShare(CString strDir)
 {
     if (strDir.Right(1) != _T('\\'))
         strDir += _T('\\');
-    for (POSITION pos = m_lstShared.GetHeadPosition(); pos != NULL; )
+    for (POSITION pos = m_lstShared.GetHeadPosition(); pos != NULL;)
     {
         POSITION pos2 = pos;
         CString str = m_lstShared.GetNext(pos);
@@ -505,7 +505,7 @@ void CDirectoryTreeCtrl::DelShare(CString strDir)
 void CDirectoryTreeCtrl::UpdateParentItems(HTREEITEM hChild)
 {
     HTREEITEM hSearch = GetParentItem(hChild);
-    while(hSearch != NULL)
+    while (hSearch != NULL)
     {
         if (HasSharedSubdirectory(GetFullPath(hSearch)))
             SetItemState(hSearch, TVIS_BOLD, TVIS_BOLD);
@@ -593,7 +593,7 @@ void CDirectoryTreeCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
     // display menu
     if (!bMenuIsEmpty)
         SharedMenu.TrackPopupMenu(TPM_LEFTALIGN |TPM_RIGHTBUTTON, ptMenu.x, ptMenu.y, this);
-    VERIFY( SharedMenu.DestroyMenu() );
+    VERIFY(SharedMenu.DestroyMenu());
 }
 
 void CDirectoryTreeCtrl::OnRButtonDown(UINT /*nFlags*/, CPoint /*point*/)
@@ -622,6 +622,6 @@ void CDirectoryTreeCtrl::OnTvnDeleteItem(NMHDR *pNMHDR, LRESULT *pResult)
 {
     LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
     if (pNMTreeView->itemOld.lParam)
-        delete (STreeItem*)pNMTreeView->itemOld.lParam;
+        delete(STreeItem*)pNMTreeView->itemOld.lParam;
     *pResult = 0;
 }

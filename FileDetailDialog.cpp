@@ -84,7 +84,7 @@ void UpdateFileDetailsPages(CListViewPropertySheet *pSheet,
 
             if (!bFound)
             {
-                ASSERT( iMediaInfoPage >= 0 );
+                ASSERT(iMediaInfoPage >= 0);
                 if (!bUpdateWindow)
                 {
                     pSheet->SetRedraw(FALSE);
@@ -120,7 +120,7 @@ void UpdateFileDetailsPages(CListViewPropertySheet *pSheet,
 
             if (!bFound)
             {
-                ASSERT( iArchiveInfoPage >= 0 );
+                ASSERT(iArchiveInfoPage >= 0);
                 if (!bUpdateWindow)
                 {
                     pSheet->SetRedraw(FALSE);

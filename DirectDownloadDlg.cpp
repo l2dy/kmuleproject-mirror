@@ -48,7 +48,7 @@ CDirectDownloadDlg::CDirectDownloadDlg(CWnd* pParent /*=NULL*/)
 CDirectDownloadDlg::~CDirectDownloadDlg()
 {
     if (m_icnWnd)
-        VERIFY( DestroyIcon(m_icnWnd) );
+        VERIFY(DestroyIcon(m_icnWnd));
 }
 
 void CDirectDownloadDlg::DoDataExchange(CDataExchange* pDX)
@@ -107,7 +107,7 @@ void CDirectDownloadDlg::OnOK()
                 delete pLink;
             }
         }
-        catch(CString error)
+        catch (CString error)
         {
             TCHAR szBuffer[200];
             _sntprintf(szBuffer, _countof(szBuffer), GetResString(IDS_ERR_INVALIDLINK), error);

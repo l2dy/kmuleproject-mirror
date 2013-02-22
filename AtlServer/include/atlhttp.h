@@ -374,7 +374,7 @@ __interface IAuthInfo
     HRESULT GetUsername(__out_ecount_part_z_opt(*pdwBuffSize, *pdwBuffSize) LPTSTR szUid, __inout DWORD *pdwBuffSize);
     HRESULT GetDomain(__out_ecount_part_z_opt(*pdwBuffSize, *pdwBuffSize) LPTSTR szDomain, __inout DWORD *pdwBuffSize);
 };
-typedef HRESULT (IAuthInfo::*PFNAUTHFUNC)(LPTSTR szPwd, DWORD *pdwSize);
+typedef HRESULT(IAuthInfo::*PFNAUTHFUNC)(LPTSTR szPwd, DWORD *pdwSize);
 
 // pure virtual class that describes required functions for authoriztion
 // objects
@@ -608,7 +608,7 @@ public:
 
     bool ClearBuffer(unsigned long nSize) throw()
     {
-        if(nSize > m_cbAlloc)
+        if (nSize > m_cbAlloc)
             return false;
 
         ZeroMemory(pvBuffer, nSize);

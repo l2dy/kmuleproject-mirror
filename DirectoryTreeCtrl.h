@@ -49,7 +49,7 @@ public:
     // construction / destruction
     CDirectoryTreeCtrl();
     virtual ~CDirectoryTreeCtrl();
-    virtual BOOL OnCommand(WPARAM wParam,LPARAM lParam );
+    virtual BOOL OnCommand(WPARAM wParam,LPARAM lParam);
 
 protected:
     DECLARE_MESSAGE_MAP()

@@ -29,12 +29,12 @@ class CCollection;
 
 struct UnknownFile_Struct
 {
-	UnknownFile_Struct(const CString& sName, const CString& sDirectory, const CString& sSharedDirectory = L""); //>>> WiZaRd::HashingQueue Optimisation
+    UnknownFile_Struct(const CString& sName, const CString& sDirectory, const CString& sSharedDirectory = L""); //>>> WiZaRd::HashingQueue Optimisation
 
     CString strName;
     CString strDirectory;
     CString strSharedDirectory;
-	uint64	uiFileSize; //>>> WiZaRd::HashingQueue Optimisation
+    uint64	uiFileSize; //>>> WiZaRd::HashingQueue Optimisation
 };
 
 class CSharedFileList
@@ -143,7 +143,7 @@ public:
 //<<< WiZaRd::Don't send empty dirs
 //>>> WiZaRd::HashingQueue Optimisation
 private:
-	UnknownFile_Struct*	getNextFileToHash();
+    UnknownFile_Struct*	getNextFileToHash();
 //<<< WiZaRd::HashingQueue Optimisation
 };
 

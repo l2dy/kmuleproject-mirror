@@ -58,7 +58,7 @@ CString CIni::GetDefaultIniFile(bool bModulPath)
     CString strApplName;
     DWORD dwModPathLen = GetModuleFileName(NULL, strTemp.GetBuffer(MAX_PATH), MAX_PATH);
     strTemp.ReleaseBuffer((dwModPathLen == 0 || dwModPathLen == MAX_PATH) ? 0 : -1);
-    _tsplitpath( strTemp, drive, dir, fname, ext );
+    _tsplitpath(strTemp, drive, dir, fname, ext);
     strTemp = fname;
     strTemp += _T(".ini");
     if (bModulPath)
@@ -747,7 +747,7 @@ void CIni::SerGet(bool bGet, DWORD *ar, int nCount, LPCTSTR lpszEntry, LPCTSTR l
             for (int i = 0; i < nCount; i++)
             {
                 nOffset = Parse(strBuffer, nOffset, strTemp);
-                if(strTemp.GetLength() == 0)
+                if (strTemp.GetLength() == 0)
                     ar[i] = dwDefault;
                 else
                     ar[i] = (DWORD)_tstoi(strTemp);

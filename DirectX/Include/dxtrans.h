@@ -268,7 +268,7 @@ extern "C" {
 #endif
 
     void * __RPC_USER MIDL_user_allocate(size_t);
-    void __RPC_USER MIDL_user_free( void * );
+    void __RPC_USER MIDL_user_free(void *);
 
     /* interface __MIDL_itf_dxtrans_0000 */
     /* [local] */
@@ -398,26 +398,26 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IDXBaseObject * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IDXBaseObject * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IDXBaseObject * This);
 
-        HRESULT ( STDMETHODCALLTYPE *GetGenerationId )(
+        HRESULT(STDMETHODCALLTYPE *GetGenerationId)(
             IDXBaseObject * This,
             /* [out] */ ULONG *pID);
 
-        HRESULT ( STDMETHODCALLTYPE *IncrementGenerationId )(
+        HRESULT(STDMETHODCALLTYPE *IncrementGenerationId)(
             IDXBaseObject * This,
             /* [in] */ BOOL bRefresh);
 
-        HRESULT ( STDMETHODCALLTYPE *GetObjectSize )(
+        HRESULT(STDMETHODCALLTYPE *GetObjectSize)(
             IDXBaseObject * This,
             /* [out] */ ULONG *pcbSize);
 
@@ -647,31 +647,31 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IDXTransformFactory * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IDXTransformFactory * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IDXTransformFactory * This);
 
         /* [local] */
-        HRESULT ( STDMETHODCALLTYPE *QueryService )(
+        HRESULT(STDMETHODCALLTYPE *QueryService)(
             IDXTransformFactory * This,
             /* [in] */ REFGUID guidService,
             /* [in] */ REFIID riid,
             /* [out] */ void **ppvObject);
 
-        HRESULT ( STDMETHODCALLTYPE *SetService )(
+        HRESULT(STDMETHODCALLTYPE *SetService)(
             IDXTransformFactory * This,
             /* [in] */ REFGUID guidService,
             /* [in] */ IUnknown *pUnkService,
             /* [in] */ BOOL bWeakReference);
 
-        HRESULT ( STDMETHODCALLTYPE *CreateTransform )(
+        HRESULT(STDMETHODCALLTYPE *CreateTransform)(
             IDXTransformFactory * This,
             /* [size_is][in] */ IUnknown **punkInputs,
             /* [in] */ ULONG ulNumInputs,
@@ -683,7 +683,7 @@ public:
             /* [in] */ REFIID TransIID,
             /* [iid_is][out] */ void **ppTransform);
 
-        HRESULT ( STDMETHODCALLTYPE *InitializeTransform )(
+        HRESULT(STDMETHODCALLTYPE *InitializeTransform)(
             IDXTransformFactory * This,
             /* [in] */ IDXTransform *pTransform,
             /* [size_is][in] */ IUnknown **punkInputs,
@@ -890,30 +890,30 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IDXTransform * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IDXTransform * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IDXTransform * This);
 
-        HRESULT ( STDMETHODCALLTYPE *GetGenerationId )(
+        HRESULT(STDMETHODCALLTYPE *GetGenerationId)(
             IDXTransform * This,
             /* [out] */ ULONG *pID);
 
-        HRESULT ( STDMETHODCALLTYPE *IncrementGenerationId )(
+        HRESULT(STDMETHODCALLTYPE *IncrementGenerationId)(
             IDXTransform * This,
             /* [in] */ BOOL bRefresh);
 
-        HRESULT ( STDMETHODCALLTYPE *GetObjectSize )(
+        HRESULT(STDMETHODCALLTYPE *GetObjectSize)(
             IDXTransform * This,
             /* [out] */ ULONG *pcbSize);
 
-        HRESULT ( STDMETHODCALLTYPE *Setup )(
+        HRESULT(STDMETHODCALLTYPE *Setup)(
             IDXTransform * This,
             /* [size_is][in] */ IUnknown *const *punkInputs,
             /* [in] */ ULONG ulNumInputs,
@@ -921,35 +921,35 @@ public:
             /* [in] */ ULONG ulNumOutputs,
             /* [in] */ DWORD dwFlags);
 
-        HRESULT ( STDMETHODCALLTYPE *Execute )(
+        HRESULT(STDMETHODCALLTYPE *Execute)(
             IDXTransform * This,
             /* [in] */ const GUID *pRequestID,
             /* [in] */ const DXBNDS *pClipBnds,
             /* [in] */ const DXVEC *pPlacement);
 
-        HRESULT ( STDMETHODCALLTYPE *MapBoundsIn2Out )(
+        HRESULT(STDMETHODCALLTYPE *MapBoundsIn2Out)(
             IDXTransform * This,
             /* [in] */ const DXBNDS *pInBounds,
             /* [in] */ ULONG ulNumInBnds,
             /* [in] */ ULONG ulOutIndex,
             /* [out] */ DXBNDS *pOutBounds);
 
-        HRESULT ( STDMETHODCALLTYPE *MapBoundsOut2In )(
+        HRESULT(STDMETHODCALLTYPE *MapBoundsOut2In)(
             IDXTransform * This,
             /* [in] */ ULONG ulOutIndex,
             /* [in] */ const DXBNDS *pOutBounds,
             /* [in] */ ULONG ulInIndex,
             /* [out] */ DXBNDS *pInBounds);
 
-        HRESULT ( STDMETHODCALLTYPE *SetMiscFlags )(
+        HRESULT(STDMETHODCALLTYPE *SetMiscFlags)(
             IDXTransform * This,
             /* [in] */ DWORD dwMiscFlags);
 
-        HRESULT ( STDMETHODCALLTYPE *GetMiscFlags )(
+        HRESULT(STDMETHODCALLTYPE *GetMiscFlags)(
             IDXTransform * This,
             /* [out] */ DWORD *pdwMiscFlags);
 
-        HRESULT ( STDMETHODCALLTYPE *GetInOutInfo )(
+        HRESULT(STDMETHODCALLTYPE *GetInOutInfo)(
             IDXTransform * This,
             /* [in] */ BOOL bIsOutput,
             /* [in] */ ULONG ulIndex,
@@ -958,11 +958,11 @@ public:
             /* [out][in] */ ULONG *pcIDs,
             /* [out] */ IUnknown **ppUnkCurrentObject);
 
-        HRESULT ( STDMETHODCALLTYPE *SetQuality )(
+        HRESULT(STDMETHODCALLTYPE *SetQuality)(
             IDXTransform * This,
             /* [in] */ float fQuality);
 
-        HRESULT ( STDMETHODCALLTYPE *GetQuality )(
+        HRESULT(STDMETHODCALLTYPE *GetQuality)(
             IDXTransform * This,
             /* [out] */ float *fQuality);
 
@@ -1191,18 +1191,18 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IDXSurfacePick * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IDXSurfacePick * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IDXSurfacePick * This);
 
-        HRESULT ( STDMETHODCALLTYPE *PointPick )(
+        HRESULT(STDMETHODCALLTYPE *PointPick)(
             IDXSurfacePick * This,
             /* [in] */ const DXVEC *pPoint,
             /* [out] */ ULONG *pulInputSurfaceIndex,
@@ -1286,18 +1286,18 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IDXTBindHost * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IDXTBindHost * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IDXTBindHost * This);
 
-        HRESULT ( STDMETHODCALLTYPE *SetBindHost )(
+        HRESULT(STDMETHODCALLTYPE *SetBindHost)(
             IDXTBindHost * This,
             /* [in] */ IBindHost *pBindHost);
 
@@ -1444,38 +1444,38 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IDXTaskManager * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IDXTaskManager * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IDXTaskManager * This);
 
-        HRESULT ( STDMETHODCALLTYPE *QueryNumProcessors )(
+        HRESULT(STDMETHODCALLTYPE *QueryNumProcessors)(
             IDXTaskManager * This,
             /* [out] */ ULONG *pulNumProc);
 
-        HRESULT ( STDMETHODCALLTYPE *SetThreadPoolSize )(
+        HRESULT(STDMETHODCALLTYPE *SetThreadPoolSize)(
             IDXTaskManager * This,
             /* [in] */ ULONG ulNumThreads);
 
-        HRESULT ( STDMETHODCALLTYPE *GetThreadPoolSize )(
+        HRESULT(STDMETHODCALLTYPE *GetThreadPoolSize)(
             IDXTaskManager * This,
             /* [out] */ ULONG *pulNumThreads);
 
-        HRESULT ( STDMETHODCALLTYPE *SetConcurrencyLimit )(
+        HRESULT(STDMETHODCALLTYPE *SetConcurrencyLimit)(
             IDXTaskManager * This,
             /* [in] */ ULONG ulNumThreads);
 
-        HRESULT ( STDMETHODCALLTYPE *GetConcurrencyLimit )(
+        HRESULT(STDMETHODCALLTYPE *GetConcurrencyLimit)(
             IDXTaskManager * This,
             /* [out] */ ULONG *pulNumThreads);
 
-        HRESULT ( STDMETHODCALLTYPE *ScheduleTasks )(
+        HRESULT(STDMETHODCALLTYPE *ScheduleTasks)(
             IDXTaskManager * This,
             /* [in] */ DXTMTASKINFO TaskInfo[  ],
             /* [in] */ HANDLE Events[  ],
@@ -1483,13 +1483,13 @@ public:
             /* [in] */ ULONG ulNumTasks,
             /* [in] */ ULONG ulWaitPeriod);
 
-        HRESULT ( STDMETHODCALLTYPE *TerminateTasks )(
+        HRESULT(STDMETHODCALLTYPE *TerminateTasks)(
             IDXTaskManager * This,
             /* [in] */ DWORD TaskIDs[  ],
             /* [in] */ ULONG ulCount,
             /* [in] */ ULONG ulTimeOut);
 
-        HRESULT ( STDMETHODCALLTYPE *TerminateRequest )(
+        HRESULT(STDMETHODCALLTYPE *TerminateRequest)(
             IDXTaskManager * This,
             /* [in] */ REFIID RequestID,
             /* [in] */ ULONG ulTimeOut);
@@ -1899,18 +1899,18 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IDXSurfaceFactory * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IDXSurfaceFactory * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IDXSurfaceFactory * This);
 
-        HRESULT ( STDMETHODCALLTYPE *CreateSurface )(
+        HRESULT(STDMETHODCALLTYPE *CreateSurface)(
             IDXSurfaceFactory * This,
             /* [in] */ IUnknown *pDirectDraw,
             /* [in] */ const DDSURFACEDESC *pDDSurfaceDesc,
@@ -1921,7 +1921,7 @@ public:
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppDXSurface);
 
-        HRESULT ( STDMETHODCALLTYPE *CreateFromDDSurface )(
+        HRESULT(STDMETHODCALLTYPE *CreateFromDDSurface)(
             IDXSurfaceFactory * This,
             /* [in] */ IUnknown *pDDrawSurface,
             /* [in] */ const GUID *pFormatID,
@@ -1930,7 +1930,7 @@ public:
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppDXSurface);
 
-        HRESULT ( STDMETHODCALLTYPE *LoadImage )(
+        HRESULT(STDMETHODCALLTYPE *LoadImage)(
             IDXSurfaceFactory * This,
             /* [in] */ const LPWSTR pszFileName,
             /* [in] */ IUnknown *pDirectDraw,
@@ -1939,7 +1939,7 @@ public:
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppDXSurface);
 
-        HRESULT ( STDMETHODCALLTYPE *LoadImageFromStream )(
+        HRESULT(STDMETHODCALLTYPE *LoadImageFromStream)(
             IDXSurfaceFactory * This,
             /* [in] */ IStream *pStream,
             /* [in] */ IUnknown *pDirectDraw,
@@ -1948,7 +1948,7 @@ public:
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppDXSurface);
 
-        HRESULT ( STDMETHODCALLTYPE *CopySurfaceToNewFormat )(
+        HRESULT(STDMETHODCALLTYPE *CopySurfaceToNewFormat)(
             IDXSurfaceFactory * This,
             /* [in] */ IDXSurface *pSrc,
             /* [in] */ IUnknown *pDirectDraw,
@@ -1956,7 +1956,7 @@ public:
             /* [in] */ const GUID *pDestFormatID,
             /* [out] */ IDXSurface **ppNewSurface);
 
-        HRESULT ( STDMETHODCALLTYPE *CreateD3DRMTexture )(
+        HRESULT(STDMETHODCALLTYPE *CreateD3DRMTexture)(
             IDXSurfaceFactory * This,
             /* [in] */ IDXSurface *pSrc,
             /* [in] */ IUnknown *pDirectDraw,
@@ -1964,7 +1964,7 @@ public:
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppTexture3);
 
-        HRESULT ( STDMETHODCALLTYPE *BitBlt )(
+        HRESULT(STDMETHODCALLTYPE *BitBlt)(
             IDXSurfaceFactory * This,
             /* [in] */ IDXSurface *pDest,
             /* [in] */ const DXVEC *pPlacement,
@@ -2228,70 +2228,70 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IDXSurfaceModifier * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IDXSurfaceModifier * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IDXSurfaceModifier * This);
 
-        HRESULT ( STDMETHODCALLTYPE *SetFillColor )(
+        HRESULT(STDMETHODCALLTYPE *SetFillColor)(
             IDXSurfaceModifier * This,
             /* [in] */ DXSAMPLE Color);
 
-        HRESULT ( STDMETHODCALLTYPE *GetFillColor )(
+        HRESULT(STDMETHODCALLTYPE *GetFillColor)(
             IDXSurfaceModifier * This,
             /* [out] */ DXSAMPLE *pColor);
 
-        HRESULT ( STDMETHODCALLTYPE *SetBounds )(
+        HRESULT(STDMETHODCALLTYPE *SetBounds)(
             IDXSurfaceModifier * This,
             /* [in] */ const DXBNDS *pBounds);
 
-        HRESULT ( STDMETHODCALLTYPE *SetBackground )(
+        HRESULT(STDMETHODCALLTYPE *SetBackground)(
             IDXSurfaceModifier * This,
             /* [in] */ IDXSurface *pSurface);
 
-        HRESULT ( STDMETHODCALLTYPE *GetBackground )(
+        HRESULT(STDMETHODCALLTYPE *GetBackground)(
             IDXSurfaceModifier * This,
             /* [out] */ IDXSurface **ppSurface);
 
-        HRESULT ( STDMETHODCALLTYPE *SetCompositeOperation )(
+        HRESULT(STDMETHODCALLTYPE *SetCompositeOperation)(
             IDXSurfaceModifier * This,
             /* [in] */ DXSURFMODCOMPOP CompOp);
 
-        HRESULT ( STDMETHODCALLTYPE *GetCompositeOperation )(
+        HRESULT(STDMETHODCALLTYPE *GetCompositeOperation)(
             IDXSurfaceModifier * This,
             /* [out] */ DXSURFMODCOMPOP *pCompOp);
 
-        HRESULT ( STDMETHODCALLTYPE *SetForeground )(
+        HRESULT(STDMETHODCALLTYPE *SetForeground)(
             IDXSurfaceModifier * This,
             /* [in] */ IDXSurface *pSurface,
             /* [in] */ BOOL bTile,
             /* [in] */ const POINT *pOrigin);
 
-        HRESULT ( STDMETHODCALLTYPE *GetForeground )(
+        HRESULT(STDMETHODCALLTYPE *GetForeground)(
             IDXSurfaceModifier * This,
             /* [out] */ IDXSurface **ppSurface,
             /* [out] */ BOOL *pbTile,
             /* [out] */ POINT *pOrigin);
 
-        HRESULT ( STDMETHODCALLTYPE *SetOpacity )(
+        HRESULT(STDMETHODCALLTYPE *SetOpacity)(
             IDXSurfaceModifier * This,
             /* [in] */ float Opacity);
 
-        HRESULT ( STDMETHODCALLTYPE *GetOpacity )(
+        HRESULT(STDMETHODCALLTYPE *GetOpacity)(
             IDXSurfaceModifier * This,
             /* [out] */ float *pOpacity);
 
-        HRESULT ( STDMETHODCALLTYPE *SetLookup )(
+        HRESULT(STDMETHODCALLTYPE *SetLookup)(
             IDXSurfaceModifier * This,
             /* [in] */ IDXLookupTable *pLookupTable);
 
-        HRESULT ( STDMETHODCALLTYPE *GetLookup )(
+        HRESULT(STDMETHODCALLTYPE *GetLookup)(
             IDXSurfaceModifier * This,
             /* [out] */ IDXLookupTable **ppLookupTable);
 
@@ -2652,47 +2652,47 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IDXSurface * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IDXSurface * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IDXSurface * This);
 
-        HRESULT ( STDMETHODCALLTYPE *GetGenerationId )(
+        HRESULT(STDMETHODCALLTYPE *GetGenerationId)(
             IDXSurface * This,
             /* [out] */ ULONG *pID);
 
-        HRESULT ( STDMETHODCALLTYPE *IncrementGenerationId )(
+        HRESULT(STDMETHODCALLTYPE *IncrementGenerationId)(
             IDXSurface * This,
             /* [in] */ BOOL bRefresh);
 
-        HRESULT ( STDMETHODCALLTYPE *GetObjectSize )(
+        HRESULT(STDMETHODCALLTYPE *GetObjectSize)(
             IDXSurface * This,
             /* [out] */ ULONG *pcbSize);
 
-        HRESULT ( STDMETHODCALLTYPE *GetPixelFormat )(
+        HRESULT(STDMETHODCALLTYPE *GetPixelFormat)(
             IDXSurface * This,
             /* [out] */ GUID *pFormatID,
             /* [out] */ DXSAMPLEFORMATENUM *pSampleFormatEnum);
 
-        HRESULT ( STDMETHODCALLTYPE *GetBounds )(
+        HRESULT(STDMETHODCALLTYPE *GetBounds)(
             IDXSurface * This,
             /* [out] */ DXBNDS *pBounds);
 
-        HRESULT ( STDMETHODCALLTYPE *GetStatusFlags )(
+        HRESULT(STDMETHODCALLTYPE *GetStatusFlags)(
             IDXSurface * This,
             /* [out] */ DWORD *pdwStatusFlags);
 
-        HRESULT ( STDMETHODCALLTYPE *SetStatusFlags )(
+        HRESULT(STDMETHODCALLTYPE *SetStatusFlags)(
             IDXSurface * This,
             /* [in] */ DWORD dwStatusFlags);
 
-        HRESULT ( STDMETHODCALLTYPE *LockSurface )(
+        HRESULT(STDMETHODCALLTYPE *LockSurface)(
             IDXSurface * This,
             /* [in] */ const DXBNDS *pBounds,
             /* [in] */ ULONG ulTimeOut,
@@ -2701,31 +2701,31 @@ public:
             /* [iid_is][out] */ void **ppPointer,
             /* [out] */ ULONG *pulGenerationId);
 
-        HRESULT ( STDMETHODCALLTYPE *GetDirectDrawSurface )(
+        HRESULT(STDMETHODCALLTYPE *GetDirectDrawSurface)(
             IDXSurface * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppSurface);
 
-        HRESULT ( STDMETHODCALLTYPE *GetColorKey )(
+        HRESULT(STDMETHODCALLTYPE *GetColorKey)(
             IDXSurface * This,
             DXSAMPLE *pColorKey);
 
-        HRESULT ( STDMETHODCALLTYPE *SetColorKey )(
+        HRESULT(STDMETHODCALLTYPE *SetColorKey)(
             IDXSurface * This,
             DXSAMPLE ColorKey);
 
-        HRESULT ( STDMETHODCALLTYPE *LockSurfaceDC )(
+        HRESULT(STDMETHODCALLTYPE *LockSurfaceDC)(
             IDXSurface * This,
             /* [in] */ const DXBNDS *pBounds,
             /* [in] */ ULONG ulTimeOut,
             /* [in] */ DWORD dwFlags,
             /* [out] */ IDXDCLock **ppDCLock);
 
-        HRESULT ( STDMETHODCALLTYPE *SetAppData )(
+        HRESULT(STDMETHODCALLTYPE *SetAppData)(
             IDXSurface * This,
             DWORD_PTR dwAppData);
 
-        HRESULT ( STDMETHODCALLTYPE *GetAppData )(
+        HRESULT(STDMETHODCALLTYPE *GetAppData)(
             IDXSurface * This,
             DWORD_PTR *pdwAppData);
 
@@ -2979,18 +2979,18 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IDXSurfaceInit * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IDXSurfaceInit * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IDXSurfaceInit * This);
 
-        HRESULT ( STDMETHODCALLTYPE *InitSurface )(
+        HRESULT(STDMETHODCALLTYPE *InitSurface)(
             IDXSurfaceInit * This,
             /* [in] */ IUnknown *pDirectDraw,
             /* [in] */ const DDSURFACEDESC *pDDSurfaceDesc,
@@ -3083,18 +3083,18 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IDXARGBSurfaceInit * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IDXARGBSurfaceInit * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IDXARGBSurfaceInit * This);
 
-        HRESULT ( STDMETHODCALLTYPE *InitSurface )(
+        HRESULT(STDMETHODCALLTYPE *InitSurface)(
             IDXARGBSurfaceInit * This,
             /* [in] */ IUnknown *pDirectDraw,
             /* [in] */ const DDSURFACEDESC *pDDSurfaceDesc,
@@ -3102,13 +3102,13 @@ public:
             /* [in] */ const DXBNDS *pBounds,
             /* [in] */ DWORD dwFlags);
 
-        HRESULT ( STDMETHODCALLTYPE *InitFromDDSurface )(
+        HRESULT(STDMETHODCALLTYPE *InitFromDDSurface)(
             IDXARGBSurfaceInit * This,
             /* [in] */ IUnknown *pDDrawSurface,
             /* [in] */ const GUID *pFormatID,
             /* [in] */ DWORD dwFlags);
 
-        HRESULT ( STDMETHODCALLTYPE *InitFromRawSurface )(
+        HRESULT(STDMETHODCALLTYPE *InitFromRawSurface)(
             IDXARGBSurfaceInit * This,
             /* [in] */ IDXRawSurface *pRawSurface);
 
@@ -3270,57 +3270,57 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IDXARGBReadPtr * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IDXARGBReadPtr * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IDXARGBReadPtr * This);
 
-        HRESULT ( STDMETHODCALLTYPE *GetSurface )(
+        HRESULT(STDMETHODCALLTYPE *GetSurface)(
             IDXARGBReadPtr * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppSurface);
 
-        DXSAMPLEFORMATENUM ( STDMETHODCALLTYPE *GetNativeType )(
+        DXSAMPLEFORMATENUM(STDMETHODCALLTYPE *GetNativeType)(
             IDXARGBReadPtr * This,
             /* [out] */ DXNATIVETYPEINFO *pInfo);
 
-        void ( STDMETHODCALLTYPE *Move )(
+        void (STDMETHODCALLTYPE *Move)(
             IDXARGBReadPtr * This,
             /* [in] */ long cSamples);
 
-        void ( STDMETHODCALLTYPE *MoveToRow )(
+        void (STDMETHODCALLTYPE *MoveToRow)(
             IDXARGBReadPtr * This,
             /* [in] */ ULONG y);
 
-        void ( STDMETHODCALLTYPE *MoveToXY )(
+        void (STDMETHODCALLTYPE *MoveToXY)(
             IDXARGBReadPtr * This,
             /* [in] */ ULONG x,
             /* [in] */ ULONG y);
 
-        ULONG ( STDMETHODCALLTYPE *MoveAndGetRunInfo )(
+        ULONG(STDMETHODCALLTYPE *MoveAndGetRunInfo)(
             IDXARGBReadPtr * This,
             /* [in] */ ULONG Row,
             /* [out] */ const DXRUNINFO **ppInfo);
 
-        DXSAMPLE *( STDMETHODCALLTYPE *Unpack )(
+        DXSAMPLE *(STDMETHODCALLTYPE *Unpack)(
             IDXARGBReadPtr * This,
             /* [in] */ DXSAMPLE *pSamples,
             /* [in] */ ULONG cSamples,
             /* [in] */ BOOL bMove);
 
-        DXPMSAMPLE *( STDMETHODCALLTYPE *UnpackPremult )(
+        DXPMSAMPLE *(STDMETHODCALLTYPE *UnpackPremult)(
             IDXARGBReadPtr * This,
             /* [in] */ DXPMSAMPLE *pSamples,
             /* [in] */ ULONG cSamples,
             /* [in] */ BOOL bMove);
 
-        void ( STDMETHODCALLTYPE *UnpackRect )(
+        void (STDMETHODCALLTYPE *UnpackRect)(
             IDXARGBReadPtr * This,
             /* [in] */ const DXPACKEDRECTDESC *pRectDesc);
 
@@ -3567,82 +3567,82 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IDXARGBReadWritePtr * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IDXARGBReadWritePtr * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IDXARGBReadWritePtr * This);
 
-        HRESULT ( STDMETHODCALLTYPE *GetSurface )(
+        HRESULT(STDMETHODCALLTYPE *GetSurface)(
             IDXARGBReadWritePtr * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppSurface);
 
-        DXSAMPLEFORMATENUM ( STDMETHODCALLTYPE *GetNativeType )(
+        DXSAMPLEFORMATENUM(STDMETHODCALLTYPE *GetNativeType)(
             IDXARGBReadWritePtr * This,
             /* [out] */ DXNATIVETYPEINFO *pInfo);
 
-        void ( STDMETHODCALLTYPE *Move )(
+        void (STDMETHODCALLTYPE *Move)(
             IDXARGBReadWritePtr * This,
             /* [in] */ long cSamples);
 
-        void ( STDMETHODCALLTYPE *MoveToRow )(
+        void (STDMETHODCALLTYPE *MoveToRow)(
             IDXARGBReadWritePtr * This,
             /* [in] */ ULONG y);
 
-        void ( STDMETHODCALLTYPE *MoveToXY )(
+        void (STDMETHODCALLTYPE *MoveToXY)(
             IDXARGBReadWritePtr * This,
             /* [in] */ ULONG x,
             /* [in] */ ULONG y);
 
-        ULONG ( STDMETHODCALLTYPE *MoveAndGetRunInfo )(
+        ULONG(STDMETHODCALLTYPE *MoveAndGetRunInfo)(
             IDXARGBReadWritePtr * This,
             /* [in] */ ULONG Row,
             /* [out] */ const DXRUNINFO **ppInfo);
 
-        DXSAMPLE *( STDMETHODCALLTYPE *Unpack )(
+        DXSAMPLE *(STDMETHODCALLTYPE *Unpack)(
             IDXARGBReadWritePtr * This,
             /* [in] */ DXSAMPLE *pSamples,
             /* [in] */ ULONG cSamples,
             /* [in] */ BOOL bMove);
 
-        DXPMSAMPLE *( STDMETHODCALLTYPE *UnpackPremult )(
+        DXPMSAMPLE *(STDMETHODCALLTYPE *UnpackPremult)(
             IDXARGBReadWritePtr * This,
             /* [in] */ DXPMSAMPLE *pSamples,
             /* [in] */ ULONG cSamples,
             /* [in] */ BOOL bMove);
 
-        void ( STDMETHODCALLTYPE *UnpackRect )(
+        void (STDMETHODCALLTYPE *UnpackRect)(
             IDXARGBReadWritePtr * This,
             /* [in] */ const DXPACKEDRECTDESC *pRectDesc);
 
-        void ( STDMETHODCALLTYPE *PackAndMove )(
+        void (STDMETHODCALLTYPE *PackAndMove)(
             IDXARGBReadWritePtr * This,
             /* [in] */ const DXSAMPLE *pSamples,
             /* [in] */ ULONG cSamples);
 
-        void ( STDMETHODCALLTYPE *PackPremultAndMove )(
+        void (STDMETHODCALLTYPE *PackPremultAndMove)(
             IDXARGBReadWritePtr * This,
             /* [in] */ const DXPMSAMPLE *pSamples,
             /* [in] */ ULONG cSamples);
 
-        void ( STDMETHODCALLTYPE *PackRect )(
+        void (STDMETHODCALLTYPE *PackRect)(
             IDXARGBReadWritePtr * This,
             /* [in] */ const DXPACKEDRECTDESC *pRectDesc);
 
-        void ( STDMETHODCALLTYPE *CopyAndMoveBoth )(
+        void (STDMETHODCALLTYPE *CopyAndMoveBoth)(
             IDXARGBReadWritePtr * This,
             /* [in] */ DXBASESAMPLE *pScratchBuffer,
             /* [in] */ IDXARGBReadPtr *pSrc,
             /* [in] */ ULONG cSamples,
             /* [in] */ BOOL bIsOpaque);
 
-        void ( STDMETHODCALLTYPE *CopyRect )(
+        void (STDMETHODCALLTYPE *CopyRect)(
             IDXARGBReadWritePtr * This,
             /* [in] */ DXBASESAMPLE *pScratchBuffer,
             /* [in] */ const RECT *pDestRect,
@@ -3650,24 +3650,24 @@ public:
             /* [in] */ const POINT *pSrcOrigin,
             /* [in] */ BOOL bIsOpaque);
 
-        void ( STDMETHODCALLTYPE *FillAndMove )(
+        void (STDMETHODCALLTYPE *FillAndMove)(
             IDXARGBReadWritePtr * This,
             /* [in] */ DXBASESAMPLE *pScratchBuffer,
             /* [in] */ DXPMSAMPLE SampVal,
             /* [in] */ ULONG cSamples,
             /* [in] */ BOOL bDoOver);
 
-        void ( STDMETHODCALLTYPE *FillRect )(
+        void (STDMETHODCALLTYPE *FillRect)(
             IDXARGBReadWritePtr * This,
             /* [in] */ const RECT *pRect,
             /* [in] */ DXPMSAMPLE SampVal,
             /* [in] */ BOOL bDoOver);
 
-        void ( STDMETHODCALLTYPE *OverSample )(
+        void (STDMETHODCALLTYPE *OverSample)(
             IDXARGBReadWritePtr * This,
             /* [in] */ const DXOVERSAMPLEDESC *pOverDesc);
 
-        void ( STDMETHODCALLTYPE *OverArrayAndMove )(
+        void (STDMETHODCALLTYPE *OverArrayAndMove)(
             IDXARGBReadWritePtr * This,
             /* [in] */ DXBASESAMPLE *pScratchBuffer,
             /* [in] */ const DXPMSAMPLE *pSrc,
@@ -3902,7 +3902,7 @@ IDXDCLock :
     public IUnknown
     {
 public:
-        virtual HDC STDMETHODCALLTYPE GetDC( void) = 0;
+        virtual HDC STDMETHODCALLTYPE GetDC(void) = 0;
 
     };
 
@@ -3912,18 +3912,18 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IDXDCLock * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IDXDCLock * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IDXDCLock * This);
 
-        HDC ( STDMETHODCALLTYPE *GetDC )(
+        HDC(STDMETHODCALLTYPE *GetDC)(
             IDXDCLock * This);
 
         END_INTERFACE
@@ -4002,18 +4002,18 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IDXTScaleOutput * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IDXTScaleOutput * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IDXTScaleOutput * This);
 
-        HRESULT ( STDMETHODCALLTYPE *SetOutputSize )(
+        HRESULT(STDMETHODCALLTYPE *SetOutputSize)(
             IDXTScaleOutput * This,
             /* [in] */ const SIZE OutSize,
             /* [in] */ BOOL bMaintainAspect);
@@ -4100,29 +4100,29 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IDXGradient * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IDXGradient * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IDXGradient * This);
 
-        HRESULT ( STDMETHODCALLTYPE *SetOutputSize )(
+        HRESULT(STDMETHODCALLTYPE *SetOutputSize)(
             IDXGradient * This,
             /* [in] */ const SIZE OutSize,
             /* [in] */ BOOL bMaintainAspect);
 
-        HRESULT ( STDMETHODCALLTYPE *SetGradient )(
+        HRESULT(STDMETHODCALLTYPE *SetGradient)(
             IDXGradient * This,
             DXSAMPLE StartColor,
             DXSAMPLE EndColor,
             BOOL bHorizontal);
 
-        HRESULT ( STDMETHODCALLTYPE *GetOutputSize )(
+        HRESULT(STDMETHODCALLTYPE *GetOutputSize)(
             IDXGradient * This,
             /* [out] */ SIZE *pOutSize);
 
@@ -4231,26 +4231,26 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IDXTScale * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IDXTScale * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IDXTScale * This);
 
-        HRESULT ( STDMETHODCALLTYPE *SetScales )(
+        HRESULT(STDMETHODCALLTYPE *SetScales)(
             IDXTScale * This,
             /* [in] */ float Scales[ 2 ]);
 
-        HRESULT ( STDMETHODCALLTYPE *GetScales )(
+        HRESULT(STDMETHODCALLTYPE *GetScales)(
             IDXTScale * This,
             /* [out] */ float Scales[ 2 ]);
 
-        HRESULT ( STDMETHODCALLTYPE *ScaleFitToSize )(
+        HRESULT(STDMETHODCALLTYPE *ScaleFitToSize)(
             IDXTScale * This,
             /* [out][in] */ DXBNDS *pClipBounds,
             /* [in] */ SIZE FitToSize,
@@ -4404,28 +4404,28 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IDXEffect * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IDXEffect * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IDXEffect * This);
 
-        HRESULT ( STDMETHODCALLTYPE *GetTypeInfoCount )(
+        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
             IDXEffect * This,
             /* [out] */ UINT *pctinfo);
 
-        HRESULT ( STDMETHODCALLTYPE *GetTypeInfo )(
+        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
             IDXEffect * This,
             /* [in] */ UINT iTInfo,
             /* [in] */ LCID lcid,
             /* [out] */ ITypeInfo **ppTInfo);
 
-        HRESULT ( STDMETHODCALLTYPE *GetIDsOfNames )(
+        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
             IDXEffect * This,
             /* [in] */ REFIID riid,
             /* [size_is][in] */ LPOLESTR *rgszNames,
@@ -4434,7 +4434,7 @@ public:
             /* [size_is][out] */ DISPID *rgDispId);
 
         /* [local] */
-        HRESULT ( STDMETHODCALLTYPE *Invoke )(
+        HRESULT(STDMETHODCALLTYPE *Invoke)(
             IDXEffect * This,
             /* [in] */ DISPID dispIdMember,
             /* [in] */ REFIID riid,
@@ -4446,32 +4446,32 @@ public:
             /* [out] */ UINT *puArgErr);
 
         /* [id][propget] */
-        HRESULT ( STDMETHODCALLTYPE *get_Capabilities )(
+        HRESULT(STDMETHODCALLTYPE *get_Capabilities)(
             IDXEffect * This,
             /* [retval][out] */ long *pVal);
 
         /* [id][propget] */
-        HRESULT ( STDMETHODCALLTYPE *get_Progress )(
+        HRESULT(STDMETHODCALLTYPE *get_Progress)(
             IDXEffect * This,
             /* [retval][out] */ float *pVal);
 
         /* [id][propput] */
-        HRESULT ( STDMETHODCALLTYPE *put_Progress )(
+        HRESULT(STDMETHODCALLTYPE *put_Progress)(
             IDXEffect * This,
             /* [in] */ float newVal);
 
         /* [id][propget] */
-        HRESULT ( STDMETHODCALLTYPE *get_StepResolution )(
+        HRESULT(STDMETHODCALLTYPE *get_StepResolution)(
             IDXEffect * This,
             /* [retval][out] */ float *pVal);
 
         /* [id][propget] */
-        HRESULT ( STDMETHODCALLTYPE *get_Duration )(
+        HRESULT(STDMETHODCALLTYPE *get_Duration)(
             IDXEffect * This,
             /* [retval][out] */ float *pVal);
 
         /* [id][propput] */
-        HRESULT ( STDMETHODCALLTYPE *put_Duration )(
+        HRESULT(STDMETHODCALLTYPE *put_Duration)(
             IDXEffect * This,
             /* [in] */ float newVal);
 
@@ -4658,46 +4658,46 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IDXLookupTable * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IDXLookupTable * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IDXLookupTable * This);
 
-        HRESULT ( STDMETHODCALLTYPE *GetGenerationId )(
+        HRESULT(STDMETHODCALLTYPE *GetGenerationId)(
             IDXLookupTable * This,
             /* [out] */ ULONG *pID);
 
-        HRESULT ( STDMETHODCALLTYPE *IncrementGenerationId )(
+        HRESULT(STDMETHODCALLTYPE *IncrementGenerationId)(
             IDXLookupTable * This,
             /* [in] */ BOOL bRefresh);
 
-        HRESULT ( STDMETHODCALLTYPE *GetObjectSize )(
+        HRESULT(STDMETHODCALLTYPE *GetObjectSize)(
             IDXLookupTable * This,
             /* [out] */ ULONG *pcbSize);
 
-        HRESULT ( STDMETHODCALLTYPE *GetTables )(
+        HRESULT(STDMETHODCALLTYPE *GetTables)(
             IDXLookupTable * This,
             /* [out] */ BYTE RedLUT[ 256 ],
             /* [out] */ BYTE GreenLUT[ 256 ],
             /* [out] */ BYTE BlueLUT[ 256 ],
             /* [out] */ BYTE AlphaLUT[ 256 ]);
 
-        HRESULT ( STDMETHODCALLTYPE *IsChannelIdentity )(
+        HRESULT(STDMETHODCALLTYPE *IsChannelIdentity)(
             IDXLookupTable * This,
             /* [out] */ DXBASESAMPLE *pSampleBools);
 
-        HRESULT ( STDMETHODCALLTYPE *GetIndexValues )(
+        HRESULT(STDMETHODCALLTYPE *GetIndexValues)(
             IDXLookupTable * This,
             /* [in] */ ULONG Index,
             /* [out] */ DXBASESAMPLE *pSample);
 
-        HRESULT ( STDMETHODCALLTYPE *ApplyTables )(
+        HRESULT(STDMETHODCALLTYPE *ApplyTables)(
             IDXLookupTable * This,
             /* [out][in] */ DXSAMPLE *pSamples,
             /* [in] */ ULONG cSamples);
@@ -4858,18 +4858,18 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IDXRawSurface * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IDXRawSurface * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IDXRawSurface * This);
 
-        HRESULT ( STDMETHODCALLTYPE *GetSurfaceInfo )(
+        HRESULT(STDMETHODCALLTYPE *GetSurfaceInfo)(
             IDXRawSurface * This,
             DXRAWSURFACEINFO *pSurfaceInfo);
 
@@ -4949,18 +4949,18 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             IHTMLDXTransform * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             IHTMLDXTransform * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             IHTMLDXTransform * This);
 
-        HRESULT ( STDMETHODCALLTYPE *SetHostUrl )(
+        HRESULT(STDMETHODCALLTYPE *SetHostUrl)(
             IHTMLDXTransform * This,
             BSTR bstrHostUrl);
 
@@ -5080,12 +5080,12 @@ public:
         virtual /* [id][propget] */ HRESULT STDMETHODCALLTYPE get_Status(
             /* [retval][out] */ DXTFILTER_STATUS *peVal) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE Apply( void) = 0;
+        virtual /* [id] */ HRESULT STDMETHODCALLTYPE Apply(void) = 0;
 
         virtual /* [id] */ HRESULT STDMETHODCALLTYPE Play(
             /* [optional][in] */ VARIANT varDuration) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE Stop( void) = 0;
+        virtual /* [id] */ HRESULT STDMETHODCALLTYPE Stop(void) = 0;
 
     };
 
@@ -5095,28 +5095,28 @@ public:
     {
         BEGIN_INTERFACE
 
-        HRESULT ( STDMETHODCALLTYPE *QueryInterface )(
+        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
             ICSSFilterDispatch * This,
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ void **ppvObject);
 
-        ULONG ( STDMETHODCALLTYPE *AddRef )(
+        ULONG(STDMETHODCALLTYPE *AddRef)(
             ICSSFilterDispatch * This);
 
-        ULONG ( STDMETHODCALLTYPE *Release )(
+        ULONG(STDMETHODCALLTYPE *Release)(
             ICSSFilterDispatch * This);
 
-        HRESULT ( STDMETHODCALLTYPE *GetTypeInfoCount )(
+        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
             ICSSFilterDispatch * This,
             /* [out] */ UINT *pctinfo);
 
-        HRESULT ( STDMETHODCALLTYPE *GetTypeInfo )(
+        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
             ICSSFilterDispatch * This,
             /* [in] */ UINT iTInfo,
             /* [in] */ LCID lcid,
             /* [out] */ ITypeInfo **ppTInfo);
 
-        HRESULT ( STDMETHODCALLTYPE *GetIDsOfNames )(
+        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
             ICSSFilterDispatch * This,
             /* [in] */ REFIID riid,
             /* [size_is][in] */ LPOLESTR *rgszNames,
@@ -5125,7 +5125,7 @@ public:
             /* [size_is][out] */ DISPID *rgDispId);
 
         /* [local] */
-        HRESULT ( STDMETHODCALLTYPE *Invoke )(
+        HRESULT(STDMETHODCALLTYPE *Invoke)(
             ICSSFilterDispatch * This,
             /* [in] */ DISPID dispIdMember,
             /* [in] */ REFIID riid,
@@ -5137,51 +5137,51 @@ public:
             /* [out] */ UINT *puArgErr);
 
         /* [id][propget] */
-        HRESULT ( STDMETHODCALLTYPE *get_Percent )(
+        HRESULT(STDMETHODCALLTYPE *get_Percent)(
             ICSSFilterDispatch * This,
             /* [retval][out] */ float *pVal);
 
         /* [id][propput] */
-        HRESULT ( STDMETHODCALLTYPE *put_Percent )(
+        HRESULT(STDMETHODCALLTYPE *put_Percent)(
             ICSSFilterDispatch * This,
             /* [in] */ float newVal);
 
         /* [id][propget] */
-        HRESULT ( STDMETHODCALLTYPE *get_Duration )(
+        HRESULT(STDMETHODCALLTYPE *get_Duration)(
             ICSSFilterDispatch * This,
             /* [retval][out] */ float *pVal);
 
         /* [id][propput] */
-        HRESULT ( STDMETHODCALLTYPE *put_Duration )(
+        HRESULT(STDMETHODCALLTYPE *put_Duration)(
             ICSSFilterDispatch * This,
             /* [in] */ float newVal);
 
         /* [id][propget] */
-        HRESULT ( STDMETHODCALLTYPE *get_Enabled )(
+        HRESULT(STDMETHODCALLTYPE *get_Enabled)(
             ICSSFilterDispatch * This,
             /* [retval][out] */ VARIANT_BOOL *pfVal);
 
         /* [id][propput] */
-        HRESULT ( STDMETHODCALLTYPE *put_Enabled )(
+        HRESULT(STDMETHODCALLTYPE *put_Enabled)(
             ICSSFilterDispatch * This,
             /* [in] */ VARIANT_BOOL fVal);
 
         /* [id][propget] */
-        HRESULT ( STDMETHODCALLTYPE *get_Status )(
+        HRESULT(STDMETHODCALLTYPE *get_Status)(
             ICSSFilterDispatch * This,
             /* [retval][out] */ DXTFILTER_STATUS *peVal);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *Apply )(
+        HRESULT(STDMETHODCALLTYPE *Apply)(
             ICSSFilterDispatch * This);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *Play )(
+        HRESULT(STDMETHODCALLTYPE *Play)(
             ICSSFilterDispatch * This,
             /* [optional][in] */ VARIANT varDuration);
 
         /* [id] */
-        HRESULT ( STDMETHODCALLTYPE *Stop )(
+        HRESULT(STDMETHODCALLTYPE *Stop)(
             ICSSFilterDispatch * This);
 
         END_INTERFACE
@@ -5457,10 +5457,10 @@ class DECLSPEC_UUID("385A91BC-1E8A-4e4a-A7A6-F4FC1E6CA1BD")
 
     /* Additional Prototypes for ALL interfaces */
 
-    unsigned long             __RPC_USER  VARIANT_UserSize(     unsigned long *, unsigned long            , VARIANT * );
-    unsigned char * __RPC_USER  VARIANT_UserMarshal(  unsigned long *, unsigned char *, VARIANT * );
-    unsigned char * __RPC_USER  VARIANT_UserUnmarshal(unsigned long *, unsigned char *, VARIANT * );
-    void                      __RPC_USER  VARIANT_UserFree(     unsigned long *, VARIANT * );
+    unsigned long             __RPC_USER  VARIANT_UserSize(unsigned long *, unsigned long            , VARIANT *);
+    unsigned char * __RPC_USER  VARIANT_UserMarshal(unsigned long *, unsigned char *, VARIANT *);
+    unsigned char * __RPC_USER  VARIANT_UserUnmarshal(unsigned long *, unsigned char *, VARIANT *);
+    void                      __RPC_USER  VARIANT_UserFree(unsigned long *, VARIANT *);
 
     /* end of Additional Prototypes */
 

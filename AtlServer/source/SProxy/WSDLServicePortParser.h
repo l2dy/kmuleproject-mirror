@@ -47,7 +47,7 @@ public:
 
     inline void SetPort(CWSDLPort *pPort)
     {
-        ATLASSERT( pPort != NULL );
+        ATLASSERT(pPort != NULL);
 
         m_pPort = pPort;
     }

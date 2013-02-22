@@ -199,7 +199,7 @@ extern const __declspec(selectany) CXSDTypeLookup g_xsdLookup;
 
 inline HRESULT GetXSDType(const CStringW& strUri, const CStringW& strName, XSDTYPE *pXSD)
 {
-    ATLASSERT( pXSD != NULL );
+    ATLASSERT(pXSD != NULL);
     *pXSD = XSDTYPE_ERR;
     if (strUri == XSD_NAMESPACEW)
     {

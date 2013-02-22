@@ -86,11 +86,11 @@ public:
         case FT_MEDIA_TITLE:
         case FT_MEDIA_ALBUM:
         case FT_MEDIA_ARTIST:
-            ASSERT( m_uIntegerOperator == ED2K_SEARCH_OP_EQUAL );
+            ASSERT(m_uIntegerOperator == ED2K_SEARCH_OP_EQUAL);
             strDbg.AppendFormat(_T("%s=%s"), DbgGetFileMetaTagName(m_iTag), OptUtf8ToStr(m_str));
             break;
         default:
-            ASSERT( m_iTag == FT_FILENAME );
+            ASSERT(m_iTag == FT_FILENAME);
             strDbg.AppendFormat(_T("\"%s\""), OptUtf8ToStr(m_str));
         }
         return strDbg;
@@ -124,7 +124,7 @@ public:
             m_aExpr.Add(SEARCHOPTOK_NOT);
         else
         {
-            ASSERT( eOperator == SEARCHOP_AND );
+            ASSERT(eOperator == SEARCHOP_AND);
             m_aExpr.Add(SEARCHOPTOK_AND);
         }
     }

@@ -99,7 +99,7 @@ public:
     UINT GetFoundFiles(UINT searchID) const
     {
         UINT returnVal = 0;
-        VERIFY( m_foundFilesCount.Lookup(searchID, returnVal) );
+        VERIFY(m_foundFilesCount.Lookup(searchID, returnVal));
         return returnVal;
     }
     // mobilemule

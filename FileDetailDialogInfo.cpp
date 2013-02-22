@@ -102,7 +102,7 @@ BOOL CFileDetailDialogInfo::OnInitDialog()
     ;
 
     // start time for calling 'RefreshData'
-    VERIFY( (m_timer = SetTimer(301, 5000, 0)) != NULL );
+    VERIFY((m_timer = SetTimer(301, 5000, 0)) != NULL);
 
     return TRUE;
 }
@@ -261,8 +261,8 @@ void CFileDetailDialogInfo::RefreshData()
             {
                 str =file->GetFileName().Mid(pos + 1);
                 str.MakeUpper();
-                str.Append(_T("  (") );
-                str.Append( GetResString(IDS_UNVERIFIED) + _T(')'));
+                str.Append(_T("  ("));
+                str.Append(GetResString(IDS_UNVERIFIED) + _T(')'));
             }
             else
                 str = GetResString(IDS_UNKNOWN);
@@ -406,7 +406,7 @@ void CFileDetailDialogInfo::Localize()
     GetDlgItem(IDC_FD_COMPR)->SetWindowText(GetResString(IDS_FD_COMPR)+_T(':'));
     GetDlgItem(IDC_FD_XAICH)->SetWindowText(GetResString(IDS_AICHHASH)+_T(':'));
     SetDlgItemText(IDC_REMAINING_TEXT, GetResString(IDS_DL_REMAINS)+_T(':'));
-    SetDlgItemText(IDC_FD_X10, GetResString(IDS_TYPE)+_T(':') );
+    SetDlgItemText(IDC_FD_X10, GetResString(IDS_TYPE)+_T(':'));
 }
 
 HBRUSH CFileDetailDialogInfo::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)

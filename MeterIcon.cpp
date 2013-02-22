@@ -41,9 +41,9 @@ COLORREF CMeterIcon::GetMeterColor(int nLevel) const
 // it the nLevel is greater than the values defined in m_pLimits the last value in the array is used
 {
     // begin GetMeterColor
-    for(int i = 0; i < m_nEntries; i++)
+    for (int i = 0; i < m_nEntries; i++)
     {
-        if(nLevel <= m_pLimits[i])
+        if (nLevel <= m_pLimits[i])
         {
             return m_pColors[i];
         }
@@ -64,17 +64,17 @@ HICON CMeterIcon::CreateMeterIcon(const int *pBarData)
     HDC hIconDC = CreateCompatibleDC(hScreenDC);
     HDC hMaskDC = CreateCompatibleDC(hScreenDC);
 
-    if(hScreenDC == NULL)
+    if (hScreenDC == NULL)
     {
         // begin error check
         return NULL;
     }// end error check
-    if(hIconDC == NULL)
+    if (hIconDC == NULL)
     {
         // begin error check
         return NULL;
     }// end error check
-    if(hMaskDC == NULL)
+    if (hMaskDC == NULL)
     {
         // begin error check
         return NULL;
@@ -82,58 +82,58 @@ HICON CMeterIcon::CreateMeterIcon(const int *pBarData)
 
     // load bitmaps
     iiNewIcon.hbmColor = CreateCompatibleBitmap(hScreenDC,m_sDimensions.cx,m_sDimensions.cy);
-    if(iiNewIcon.hbmColor == NULL)
+    if (iiNewIcon.hbmColor == NULL)
     {
         // begin error check
         return NULL;
     }// end error check
-    if(!::ReleaseDC(NULL,hScreenDC))	// release this ASAP
+    if (!::ReleaseDC(NULL,hScreenDC))	// release this ASAP
     {
         // begin DC not released
         return NULL;
     }// end DC not released
     iiNewIcon.hbmMask = CreateCompatibleBitmap(hMaskDC,m_sDimensions.cx,m_sDimensions.cy);
-    if(iiNewIcon.hbmMask == NULL)
+    if (iiNewIcon.hbmMask == NULL)
     {
         // begin error check
         return NULL;
     }// end error check
     HGDIOBJ hOldIconDC = ::SelectObject(hIconDC,iiNewIcon.hbmColor);
-    if(hOldIconDC == NULL)
+    if (hOldIconDC == NULL)
     {
         // begin error check
         return NULL;
     }// end error check
     HGDIOBJ hOldMaskDC = ::SelectObject(hMaskDC,iiNewIcon.hbmMask);
-    if(hOldMaskDC == NULL)
+    if (hOldMaskDC == NULL)
     {
         // begin error check
         return NULL;
     }// end error check
 
     // initilize the bitmaps
-    if(!BitBlt(hIconDC,0,0,m_sDimensions.cx,m_sDimensions.cy,NULL,0,0,BLACKNESS))
+    if (!BitBlt(hIconDC,0,0,m_sDimensions.cx,m_sDimensions.cy,NULL,0,0,BLACKNESS))
     {
         // begin BitBlt failed
         return NULL;
     }// end BitBlt failed
-    if(!BitBlt(hMaskDC,0,0,m_sDimensions.cx,m_sDimensions.cy,NULL,0,0,WHITENESS))
+    if (!BitBlt(hMaskDC,0,0,m_sDimensions.cx,m_sDimensions.cy,NULL,0,0,WHITENESS))
     {
         // begin BitBlt failed
         return NULL;
     }// end BitBlt failed
 
     // draw the meters
-    for(int i = 0; i < m_nNumBars; i++)
-        if(DrawIconMeter(hIconDC,hMaskDC,pBarData[i],i) == false)
+    for (int i = 0; i < m_nNumBars; i++)
+        if (DrawIconMeter(hIconDC,hMaskDC,pBarData[i],i) == false)
             return false;
 
-    if(!DrawIconEx(hIconDC,0,0,m_hFrame,m_sDimensions.cx,m_sDimensions.cy,NULL,NULL,DI_NORMAL|DI_IMAGE))
+    if (!DrawIconEx(hIconDC,0,0,m_hFrame,m_sDimensions.cx,m_sDimensions.cy,NULL,NULL,DI_NORMAL|DI_IMAGE))
     {
         // begin error check
         return NULL;
     }// end error check
-    if(!DrawIconEx(hMaskDC,0,0,m_hFrame,m_sDimensions.cx,m_sDimensions.cy,NULL,NULL,DI_NORMAL|DI_MASK))
+    if (!DrawIconEx(hMaskDC,0,0,m_hFrame,m_sDimensions.cx,m_sDimensions.cy,NULL,NULL,DI_NORMAL|DI_MASK))
     {
         // begin error check
         return NULL;
@@ -158,34 +158,34 @@ bool CMeterIcon::DrawIconMeter(HDC hDestDC, HDC hDestDCMask, int nLevel, int nPo
     // begin DrawIconMeter
     // draw meter
     HBRUSH hBrush = CreateSolidBrush(GetMeterColor(nLevel));
-    if(hBrush == NULL)
+    if (hBrush == NULL)
     {
         // begin error check
         return false;
     }// end error check
     HGDIOBJ hOldBrush = SelectObject(hDestDC,hBrush);
-    if(hOldBrush == NULL)
+    if (hOldBrush == NULL)
     {
         // begin error check
         return false;
     }// end error check
     HPEN hPen = CreatePen(PS_SOLID,1,m_crBorderColor);
-    if(hPen == NULL)
+    if (hPen == NULL)
         return false;
     HGDIOBJ hOldPen = SelectObject(hDestDC,hPen);
-    if(hOldPen == NULL)
+    if (hOldPen == NULL)
         return false;
-    if(!Rectangle(hDestDC,((m_sDimensions.cx-1)/m_nNumBars)*nPos+m_nSpacingWidth,m_sDimensions.cy-((nLevel*(m_sDimensions.cy-1)/m_nMaxVal)+1),((m_sDimensions.cx-1)/m_nNumBars)*(nPos+1)+1,m_sDimensions.cy))
+    if (!Rectangle(hDestDC,((m_sDimensions.cx-1)/m_nNumBars)*nPos+m_nSpacingWidth,m_sDimensions.cy-((nLevel*(m_sDimensions.cy-1)/m_nMaxVal)+1),((m_sDimensions.cx-1)/m_nNumBars)*(nPos+1)+1,m_sDimensions.cy))
     {
         // begin error check
         return false;
     }// end error check
-    if(!DeleteObject(SelectObject(hDestDC,hOldPen)))
+    if (!DeleteObject(SelectObject(hDestDC,hOldPen)))
     {
         // begin error check
         return false;
     }// end error check
-    if(!DeleteObject(SelectObject(hDestDC,hOldBrush)))
+    if (!DeleteObject(SelectObject(hDestDC,hOldBrush)))
     {
         // begin error check
         return false;
@@ -193,40 +193,40 @@ bool CMeterIcon::DrawIconMeter(HDC hDestDC, HDC hDestDCMask, int nLevel, int nPo
 
     // draw meter mask
     HBRUSH hDestDCMaskBrush = CreateSolidBrush(RGB(0,0,0));
-    if(hDestDCMaskBrush == NULL)
+    if (hDestDCMaskBrush == NULL)
     {
         // begin error check
         return false;
     }// end error check
     HGDIOBJ hOldDestDCMaskBrush = SelectObject(hDestDCMask,hDestDCMaskBrush);
-    if(hOldDestDCMaskBrush == NULL)
+    if (hOldDestDCMaskBrush == NULL)
     {
         // begin error check
         return false;
     }// end error check
     HPEN hMaskPen = CreatePen(PS_SOLID,1,RGB(0,0,0));
-    if(hMaskPen == NULL)
+    if (hMaskPen == NULL)
         return false;
     HGDIOBJ hOldMaskPen = SelectObject(hDestDCMask,hMaskPen);
-    if(hOldMaskPen == NULL)
+    if (hOldMaskPen == NULL)
         return false;
 
     if (nLevel>0)
-        if(!Rectangle(hDestDCMask,
-                      m_sDimensions.cx-2,
-                      m_sDimensions.cy-((nLevel*(m_sDimensions.cy-1)/m_nMaxVal)+1),
-                      m_sDimensions.cx,
-                      m_sDimensions.cy))
+        if (!Rectangle(hDestDCMask,
+                       m_sDimensions.cx-2,
+                       m_sDimensions.cy-((nLevel*(m_sDimensions.cy-1)/m_nMaxVal)+1),
+                       m_sDimensions.cx,
+                       m_sDimensions.cy))
         {
             // begin error check
             return false;
         }// end error check
-    if(!DeleteObject(SelectObject(hDestDCMask,hOldMaskPen)))
+    if (!DeleteObject(SelectObject(hDestDCMask,hOldMaskPen)))
     {
         // begin error check
         return false;
     }// end error check
-    if(!DeleteObject(SelectObject(hDestDCMask,hOldDestDCMaskBrush)))
+    if (!DeleteObject(SelectObject(hDestDCMask,hOldDestDCMaskBrush)))
     {
         // begin error check
         return false;
@@ -249,7 +249,7 @@ HICON CMeterIcon::Create(const int *pBarData)
 // must call init once before calling
 {
     // begin Create
-    if(!m_bInit)
+    if (!m_bInit)
         return NULL;
     return CreateMeterIcon(pBarData);
 }// end Create
@@ -328,7 +328,7 @@ bool CMeterIcon::SetColorLevels(const int* pLimits, const COLORREF* pColors, int
     m_pLimits = new int[nEntries];
     m_pColors = new COLORREF[nEntries];
     // copy values
-    for(int i = 0; i < nEntries; i++)
+    for (int i = 0; i < nEntries; i++)
     {
         // begin copy
         m_pLimits[i] = pLimits[i];

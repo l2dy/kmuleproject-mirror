@@ -122,7 +122,7 @@ bool CUrlClient::SetUrl(LPCTSTR pszUrl, UINT nIP)
 //	if (m_nConnectIP == INADDR_NONE)
 //		m_nConnectIP = 0;
     m_nUserIDHybrid = htonl(m_nConnectIP);
-    ASSERT( m_nUserIDHybrid != 0 );
+    ASSERT(m_nUserIDHybrid != 0);
     m_nUserPort = Url.nPort;
     return true;
 }
@@ -352,7 +352,7 @@ bool CUrlClient::ProcessHttpDownResponse(const CStringAArray& astrHeaders)
     return true;
 }
 
-bool CUpDownClient::ProcessHttpDownResponse(const CStringAArray& )
+bool CUpDownClient::ProcessHttpDownResponse(const CStringAArray&)
 {
     ASSERT(0);
     return false;
@@ -397,12 +397,12 @@ void CUpDownClient::ProcessHttpBlockPacket(const BYTE* pucData, UINT uSize)
         credits->AddDownloaded(uSize, GetIP());
 //>>> WiZaRd::ClientAnalyzer
     //WiZaRd: the question is: may an URLCLIENT have credits at all!?
-    if(pAntiLeechData)
+    if (pAntiLeechData)
         pAntiLeechData->AddDownloaded(uSize, GetAvailablePartCount() != reqfile->GetPartCount(), reqfile->GetSourceCount());
 //<<< WiZaRd::ClientAnalyzer
     nEndPos--;
 
-    for (POSITION pos = m_PendingBlocks_list.GetHeadPosition(); pos != NULL; )
+    for (POSITION pos = m_PendingBlocks_list.GetHeadPosition(); pos != NULL;)
     {
         POSITION posLast = pos;
         Pending_Block_Struct *cur_block = m_PendingBlocks_list.GetNext(pos);

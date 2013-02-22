@@ -234,8 +234,8 @@ void CSearchListCtrl::SetAllIcons()
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("FileCommentsOvl"))), 1);
     // Apply the image list also to the listview control, even if we use our own 'DrawItem'.
     // This is needed to give the listview control a chance to initialize the row height.
-    ASSERT( (GetStyle() & LVS_SHAREIMAGELISTS) != 0 );
-    VERIFY( ApplyImageList(m_ImageList) == NULL );
+    ASSERT((GetStyle() & LVS_SHAREIMAGELISTS) != 0);
+    VERIFY(ApplyImageList(m_ImageList) == NULL);
 
     // NOTE: There is another image list applied to this particular listview control!
     // See also the 'Init' function.
@@ -244,7 +244,7 @@ void CSearchListCtrl::SetAllIcons()
 void CSearchListCtrl::Init(CSearchList* in_searchlist)
 {
     SetPrefsKey(_T("SearchListCtrl"));
-    ASSERT( (GetStyle() & LVS_SINGLESEL) == 0 );
+    ASSERT((GetStyle() & LVS_SINGLESEL) == 0);
     SetStyle();
 
     CToolTipCtrl* tooltip = GetToolTips();
@@ -469,7 +469,7 @@ void CSearchListCtrl::UpdateSources(const CSearchFile* toupdate)
         if (toupdate->IsListExpanded())
         {
             const SearchList* list = theApp.searchlist->GetSearchListForID(toupdate->GetSearchID());
-            for (POSITION pos = list->GetHeadPosition(); pos != NULL; )
+            for (POSITION pos = list->GetHeadPosition(); pos != NULL;)
             {
                 const CSearchFile* cur_file = list->GetNext(pos);
                 if (cur_file->GetListParent() == toupdate)
@@ -747,14 +747,14 @@ int CSearchListCtrl::Compare(const CSearchFile *item1, const CSearchFile *item2,
     }
 
 //>>> WiZaRd::AntiFake
-    if(thePrefs.GetSpamFilterMode() >= eSFM_AutoSort)
+    if (thePrefs.GetSpamFilterMode() >= eSFM_AutoSort)
     {
         //always apply fakesort
         int rating1 = GetFakeAlyzerRating(item1);
         int rating2 = GetFakeAlyzerRating(item2);
-        if(rating1 != rating2)
+        if (rating1 != rating2)
         {
-            if(bSortAscending)
+            if (bSortAscending)
                 return CompareUnsigned(rating1, rating2);
             else
                 return CompareUnsigned(rating2, rating1);
@@ -830,16 +830,16 @@ int CSearchListCtrl::Compare(const CSearchFile *item1, const CSearchFile *item2,
         int rating2 = 0;
         CString str1 = GetFakeComment(item1, !thePrefs.IsExtControlsEnabled(), &rating1);
         CString str2 = GetFakeComment(item2, !thePrefs.IsExtControlsEnabled(), &rating2);
-        if(rating1 != rating2)
+        if (rating1 != rating2)
         {
-            if(bSortAscending)
+            if (bSortAscending)
                 return CompareUnsigned(rating1, rating2);
             else
                 return CompareUnsigned(rating2, rating1);
         }
         else
         {
-            if(thePrefs.IsExtControlsEnabled())
+            if (thePrefs.IsExtControlsEnabled())
             {
                 str1.Remove(L'\n');
                 str1.Replace(L'\t', L' ');
@@ -916,11 +916,11 @@ void CSearchListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
     GetPopupMenuPos(*this, point);
     m_SearchFileMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this);
     if (uInsertedMenuItem)
-        VERIFY( m_SearchFileMenu.RemoveMenu(uInsertedMenuItem, MF_BYCOMMAND) );
+        VERIFY(m_SearchFileMenu.RemoveMenu(uInsertedMenuItem, MF_BYCOMMAND));
     if (uInsertedMenuItem2)
-        VERIFY( m_SearchFileMenu.RemoveMenu(uInsertedMenuItem2, MF_BYCOMMAND) );
+        VERIFY(m_SearchFileMenu.RemoveMenu(uInsertedMenuItem2, MF_BYCOMMAND));
     m_SearchFileMenu.RemoveMenu(m_SearchFileMenu.GetMenuItemCount()-1, MF_BYPOSITION);
-    VERIFY( WebMenu.DestroyMenu() );
+    VERIFY(WebMenu.DestroyMenu());
 }
 
 BOOL CSearchListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
@@ -1117,7 +1117,7 @@ void CSearchListCtrl::OnLvnDeleteAllItems(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 void CSearchListCtrl::CreateMenues()
 {
     if (m_SearchFileMenu)
-        VERIFY( m_SearchFileMenu.DestroyMenu() );
+        VERIFY(m_SearchFileMenu.DestroyMenu());
 
     m_SearchFileMenu.CreatePopupMenu();
     m_SearchFileMenu.AddMenuTitle(GetResString(IDS_FILE), true);
@@ -1193,7 +1193,7 @@ void CSearchListCtrl::OnLvnGetInfoTip(NMHDR *pNMHDR, LRESULT *pResult)
 
 //>>> WiZaRd::AntiFake
                 const CString strFakeInfo = GetFakeComment(file, false);
-                if(!strFakeInfo.IsEmpty())
+                if (!strFakeInfo.IsEmpty())
                     strHead.AppendFormat(L"%s\n", strFakeInfo);
 //<<< WiZaRd::AntiFake
 
@@ -1439,7 +1439,7 @@ void CSearchListCtrl::ExpandCollapseItem(int iItem, int iAction)
             // Go through the whole list to find out the sources for this file
             SetRedraw(FALSE);
             const SearchList* list = theApp.searchlist->GetSearchListForID(searchfile->GetSearchID());
-            for (POSITION pos = list->GetHeadPosition(); pos != NULL; )
+            for (POSITION pos = list->GetHeadPosition(); pos != NULL;)
             {
                 const CSearchFile* cur_file = list->GetNext(pos);
                 if (cur_file->GetListParent() == searchfile)
@@ -1541,7 +1541,7 @@ void CSearchListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     GetClientRect(&rcClient);
     CSearchFile *content = (CSearchFile *)lpDrawItemStruct->itemData;
 //>>> WiZaRd::AntiFake
-    if(thePrefs.GetSpamFilterMode() >= eSFM_Colored)
+    if (thePrefs.GetSpamFilterMode() >= eSFM_Colored)
         ColorSearchFile(content, dc);
 //<<< WiZaRd::AntiFake
     if ((lpDrawItemStruct->itemState & ODS_SELECTED) == 0)
@@ -1659,7 +1659,7 @@ void CSearchListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     DrawFocusRect(dc, lpDrawItemStruct->rcItem, lpDrawItemStruct->itemState & ODS_FOCUS, bCtrlFocused, lpDrawItemStruct->itemState & ODS_SELECTED);
 
     //draw tree last so it draws over selected and focus (looks better)
-    if(tree_start < tree_end)
+    if (tree_start < tree_end)
     {
         //set new bounds
         RECT tree_rect;
@@ -1684,14 +1684,14 @@ void CSearchListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
         pn.CreatePen(PS_SOLID, 1, crLine);
         oldpn = dc.SelectObject(&pn);
 
-        if(isChild)
+        if (isChild)
         {
             //draw the line to the status bar
             dc.MoveTo(tree_end+10, middle);
             dc.LineTo(tree_start + 4, middle);
 
             //draw the line to the child node
-            if(hasNext)
+            if (hasNext)
             {
                 dc.MoveTo(treeCenter, middle);
                 dc.LineTo(treeCenter, cur_rec.bottom + 1);
@@ -1795,8 +1795,8 @@ void CSearchListCtrl::DrawSourceChild(CDC *dc, int nColumn, LPRECT lpRect, UINT 
     case 0:  		// file name
     {
         UINT uOffset = 8 + 8 + theApp.GetSmallSytemIconSize().cy + sm_iLabelOffset;
-        if (   (thePrefs.ShowRatingIndicator() && (src->HasComment() || src->HasRating() || src->IsKadCommentSearchRunning()))
-                || src->IsConsideredSpam() )
+        if ((thePrefs.ShowRatingIndicator() && (src->HasComment() || src->HasRating() || src->IsKadCommentSearchRunning()))
+                || src->IsConsideredSpam())
             uOffset += 16;
         lpRect->left += uOffset;
         dc->DrawText(szItem, -1, lpRect, MLC_DT_TEXT | uDrawTextAlignment);
@@ -1823,8 +1823,8 @@ void CSearchListCtrl::DrawSourceParent(CDC *dc, int nColumn, LPRECT lpRect, UINT
     case 0:  		// file name
     {
         UINT uOffset = 8 + theApp.GetSmallSytemIconSize().cx + sm_iLabelOffset;
-        if (   (thePrefs.ShowRatingIndicator() && (src->HasComment() || src->HasRating() || src->IsKadCommentSearchRunning()))
-                || src->IsConsideredSpam() )
+        if ((thePrefs.ShowRatingIndicator() && (src->HasComment() || src->HasRating() || src->IsKadCommentSearchRunning()))
+                || src->IsConsideredSpam())
             uOffset += 16;
         lpRect->left += uOffset;
         dc->DrawText(szItem, -1, lpRect, MLC_DT_TEXT | uDrawTextAlignment);
@@ -1893,9 +1893,9 @@ void CSearchListCtrl::SetHighlightColors()
 
     for (int shades=0; shades<AVBLYSHADECOUNT; shades++)
     {
-        m_crShades[shades]=RGB(	GetRValue(normFGC) + (rdelta*shades),
-                                GetGValue(normFGC) + (gdelta*shades),
-                                GetBValue(normFGC) + (bdelta*shades));
+        m_crShades[shades]=RGB(GetRValue(normFGC) + (rdelta*shades),
+                               GetGValue(normFGC) + (gdelta*shades),
+                               GetBValue(normFGC) + (bdelta*shades));
     }
 }
 
@@ -1946,8 +1946,8 @@ void CSearchListCtrl::GetItemDisplayText(const CSearchFile *src, int iSubItem, L
         break;
 
     case 1:			// file size
-        if (   src->GetListParent() == NULL
-                || (thePrefs.GetDebugSearchResultDetailLevel() >= 1 && src->GetFileSize() != src->GetListParent()->GetFileSize()) )
+        if (src->GetListParent() == NULL
+                || (thePrefs.GetDebugSearchResultDetailLevel() >= 1 && src->GetFileSize() != src->GetListParent()->GetFileSize()))
         {
             _tcsncpy(pszText, FormatFileSize(src->GetFileSize()), cchTextMax);
         }
@@ -1991,8 +1991,8 @@ void CSearchListCtrl::GetItemDisplayText(const CSearchFile *src, int iSubItem, L
         break;
 
     case 3:			// complete sources
-        if (   src->GetListParent() == NULL
-                || (thePrefs.GetDebugSearchResultDetailLevel() >= 1 && thePrefs.IsExtControlsEnabled()) )
+        if (src->GetListParent() == NULL
+                || (thePrefs.GetDebugSearchResultDetailLevel() >= 1 && thePrefs.IsExtControlsEnabled()))
         {
             _tcsncpy(pszText, GetCompleteSourcesDisplayString(src, src->GetSourceCount()), cchTextMax);
         }
@@ -2080,7 +2080,7 @@ void CSearchListCtrl::GetItemDisplayText(const CSearchFile *src, int iSubItem, L
     case 15:
     {
         CString str = GetFakeComment(src, !thePrefs.IsExtControlsEnabled());
-        if(thePrefs.IsExtControlsEnabled())
+        if (thePrefs.IsExtControlsEnabled())
         {
             str.Remove(L'\n');
             str.Replace(L'\t', L' ');

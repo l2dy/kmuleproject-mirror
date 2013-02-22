@@ -87,12 +87,12 @@ public:
     CString GetFullErrorMessage(DWORD dwError);
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
-/*
-    DWORD GetLastCalledSend() const
-    {
-        return lastCalledSend;
-    }
-*/
+    /*
+        DWORD GetLastCalledSend() const
+        {
+            return lastCalledSend;
+        }
+    */
 //<<< WiZaRd::ZZUL Upload [ZZ]
     uint64 GetSentBytesCompleteFileSinceLastCallAndReset();
     uint64 GetSentBytesPartFileSinceLastCallAndReset();
@@ -181,26 +181,26 @@ private:
     bool m_bUsesBigSendBuffers;
 //>>> WiZaRd::Count block/success send [Xman?]
 private:
-	CList<float> m_blockhistory;
+    CList<float> m_blockhistory;
 
-	float	avg_block_ratio;		//the average block of last 20 seconds
-	float	sum_blockhistory;		//the sum of all stored ratio samples
-	UINT	blockedsendcount;
-	UINT	sendcount;
-	UINT	blockedsendcount_overall;
-	UINT	sendcount_overall;
+    float	avg_block_ratio;		//the average block of last 20 seconds
+    float	sum_blockhistory;		//the sum of all stored ratio samples
+    UINT	blockedsendcount;
+    UINT	sendcount;
+    UINT	blockedsendcount_overall;
+    UINT	sendcount_overall;
 public:
-	virtual	float	GetOverallBlockingRatio() const;
-	virtual	float	GetBlockingRatio() const;
-	virtual	float	GetAndStepBlockRatio();
+    virtual	float	GetOverallBlockingRatio() const;
+    virtual	float	GetBlockingRatio() const;
+    virtual	float	GetAndStepBlockRatio();
 //<<< WiZaRd::Count block/success send [Xman?]
 //>>> WiZaRd::ZZUL Upload [ZZ]
 private:
-	UINT	GetNeededBytes(const char* sendbuffer, const UINT sendblen, const UINT sent, const bool currentPacket_is_controlpacket, const DWORD lastCalledSend);
-	UINT	m_actualPayloadSizeSentForThisPacket;
-	bool	m_bConnectionIsReadyForSend;
-	bool	useLargeBuffer;
-	bool	bufferExpanded;
-	CCriticalSection statsLocker;	
+    UINT	GetNeededBytes(const char* sendbuffer, const UINT sendblen, const UINT sent, const bool currentPacket_is_controlpacket, const DWORD lastCalledSend);
+    UINT	m_actualPayloadSizeSentForThisPacket;
+    bool	m_bConnectionIsReadyForSend;
+    bool	useLargeBuffer;
+    bool	bufferExpanded;
+    CCriticalSection statsLocker;
 //<<< WiZaRd::ZZUL Upload [ZZ]
 };

@@ -271,10 +271,10 @@ __inline int md4cmp(const void* hash1, const void* hash2)
 
 __inline bool isnulmd4(const void* hash)
 {
-    return  (((UINT*)hash)[0] == 0 &&
-             ((UINT*)hash)[1] == 0 &&
-             ((UINT*)hash)[2] == 0 &&
-             ((UINT*)hash)[3] == 0);
+    return (((UINT*)hash)[0] == 0 &&
+            ((UINT*)hash)[1] == 0 &&
+            ((UINT*)hash)[2] == 0 &&
+            ((UINT*)hash)[3] == 0);
 }
 
 // md4clr -- replacement for memset(hash,0,16)
@@ -489,7 +489,7 @@ bool	GetDiskSpaceInfo(LPCTSTR pDirectory, uint64& freespace, uint64& totalspace)
 bool	CheckURL(CString& strURL);
 template <class T> __inline double	GetRatioDouble(const T& ul, const T& dl)
 {
-	return dl ? ((double)ul / dl) : 0;
+    return dl ? ((double)ul / dl) : 0;
 }
 CString	GetFileNameFromURL(const CString& strURL);
 uint64	GetFileSizeOnDisk(const CString& strFilePath);

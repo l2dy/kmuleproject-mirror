@@ -55,9 +55,9 @@ void CMuleStatusBarCtrl::OnLButtonDblClk(UINT /*nFlags*/, CPoint point)
     switch (iPane)
     {
     case SBarLog:
-        if(thePrefs.GetLog2Disk())
+        if (thePrefs.GetLog2Disk())
             ShellOpenFile(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + L"eMule.log");
-        if(thePrefs.GetDebug2Disk())
+        if (thePrefs.GetDebug2Disk())
             ShellOpenFile(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + L"eMule_Verbose.log");
         break;
 

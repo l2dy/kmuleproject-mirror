@@ -58,7 +58,7 @@ int CComboBoxEx2::AddItem(LPCTSTR pszText, int iImage)
 BOOL CComboBoxEx2::PreTranslateMessage(MSG* pMsg)
 {
     // there seems to be no way that we get the WM_CHARTOITEM for this control
-    ASSERT( pMsg->message != WM_CHARTOITEM );
+    ASSERT(pMsg->message != WM_CHARTOITEM);
 
     if (pMsg->message == WM_KEYDOWN)
     {

@@ -90,9 +90,9 @@ void CUploadListCtrl::Init()
     InsertColumn(6, GetResString(IDS_STATUS),		LVCFMT_LEFT,  100);
     InsertColumn(7, GetResString(IDS_UPSTATUS),		LVCFMT_LEFT,  DFLT_PARTSTATUS_COL_WIDTH);
     InsertColumn(8, GetResString(IDS_CD_CSOFT),		LVCFMT_LEFT,  DFLT_CLIENTSOFT_COL_WIDTH);
-	InsertColumn(9, GetResString(IDS_UPSLOTNUMBER), LVCFMT_LEFT,  60);
+    InsertColumn(9, GetResString(IDS_UPSLOTNUMBER), LVCFMT_LEFT,  60);
 #ifdef _DEBUG
-	InsertColumn(10, L"Blocking Ratio", LVCFMT_LEFT, 60, -1, true); //>>> WiZaRd::Count block/success send
+    InsertColumn(10, L"Blocking Ratio", LVCFMT_LEFT, 60, -1, true); //>>> WiZaRd::Count block/success send
 #endif
 
     SetAllIcons();
@@ -145,15 +145,15 @@ void CUploadListCtrl::Localize()
     hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
     pHeaderCtrl->SetItem(8, &hdi);
 
-	strRes = GetResString(IDS_UPSLOTNUMBER);
-	hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-	pHeaderCtrl->SetItem(9, &hdi);
+    strRes = GetResString(IDS_UPSLOTNUMBER);
+    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
+    pHeaderCtrl->SetItem(9, &hdi);
 
 #ifdef _DEBUG
 //>>> WiZaRd::Count block/success send
-	strRes = L"Blocking Ratio";
-	hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-	pHeaderCtrl->SetItem(10, &hdi);
+    strRes = L"Blocking Ratio";
+    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
+    pHeaderCtrl->SetItem(10, &hdi);
 //<<< WiZaRd::Count block/success send
 #endif
 }
@@ -190,8 +190,8 @@ void CUploadListCtrl::SetAllIcons()
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("OverlaySecureObfu"))), 3);
     // Apply the image list also to the listview control, even if we use our own 'DrawItem'.
     // This is needed to give the listview control a chance to initialize the row height.
-    ASSERT( (GetStyle() & LVS_SHAREIMAGELISTS) != 0 );
-    VERIFY( ApplyImageList(m_ImageList) == NULL );
+    ASSERT((GetStyle() & LVS_SHAREIMAGELISTS) != 0);
+    VERIFY(ApplyImageList(m_ImageList) == NULL);
 }
 
 void CUploadListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
@@ -209,23 +209,23 @@ void CUploadListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     GetClientRect(&rcClient);
     const CUpDownClient *client = (CUpDownClient *)lpDrawItemStruct->itemData;
 //>>> WiZaRd::ZZUL Upload [ZZ]
-	if(client->IsScheduledForRemoval()) 
-	{
-		if(client->GetSlotNumber() > theApp.uploadqueue->GetActiveUploadsCount()) 
-			dc.SetTextColor(RGB(255, 170, 170));
-		else
-			dc.SetTextColor(RGB(255, 50, 50));
-	}
-	else 
+    if (client->IsScheduledForRemoval())
+    {
+        if (client->GetSlotNumber() > theApp.uploadqueue->GetActiveUploadsCount())
+            dc.SetTextColor(RGB(255, 170, 170));
+        else
+            dc.SetTextColor(RGB(255, 50, 50));
+    }
+    else
 //<<< WiZaRd::ZZUL Upload [ZZ]
 //>>> WiZaRd::Count block/success send
-	//count a client as "full" if he is either transferring (above trickle speed) or blocking too much
-//	if(client->GetSlotNumber() > theApp.uploadqueue->GetActiveUploadsCount()) 
-	if(client->GetDatarate() < 1024
-	   || (client->socket && client->socket->GetOverallBlockingRatio() > 95	//95% of all send were blocked - thePrefs.GetMaxBlockRate()
-	   && client->socket->GetBlockingRatio() > 96))		//96% the last 20 seconds - thePrefs.GetMaxBlockRate20()
+        //count a client as "full" if he is either transferring (above trickle speed) or blocking too much
+//	if(client->GetSlotNumber() > theApp.uploadqueue->GetActiveUploadsCount())
+        if (client->GetDatarate() < 1024
+                || (client->socket && client->socket->GetOverallBlockingRatio() > 95	//95% of all send were blocked - thePrefs.GetMaxBlockRate()
+                    && client->socket->GetBlockingRatio() > 96))		//96% the last 20 seconds - thePrefs.GetMaxBlockRate20()
 //<<< WiZaRd::Count block/success send
-        dc.SetTextColor(::GetSysColor(COLOR_GRAYTEXT));
+            dc.SetTextColor(::GetSysColor(COLOR_GRAYTEXT));
 
     CHeaderCtrl *pHeaderCtrl = GetHeaderCtrl();
     int iCount = pHeaderCtrl->GetItemCount();
@@ -249,7 +249,7 @@ void CUploadListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
                 {
 //>>> WiZaRd::ClientAnalyzer
                     int plusminus = 0;
-                    if(badguy != -1 && client->IsBadGuy())
+                    if (badguy != -1 && client->IsBadGuy())
                     {
                         int iIconPosY = (cur_rec.Height() > 16) ? ((cur_rec.Height() - 16) / 2) : 1;
                         POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
@@ -387,11 +387,11 @@ void CUploadListCtrl::GetItemDisplayText(const CUpDownClient *client, int iSubIt
     case 4:
         if (client->HasLowID())
 //>>> WiZaRd::Fix for LowID slots only on connection [VQB]
-			if(client->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick)
-				_sntprintf(pszText, cchTextMax, L"%s (%s %s)", CastSecondsToHM((client->GetWaitTime())/1000), GetResString(IDS_IDLOW), CastSecondsToHM((::GetTickCount()-client->GetUpStartTimeDelay()-client->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick)/1000));
-			else
+            if (client->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick)
+                _sntprintf(pszText, cchTextMax, L"%s (%s %s)", CastSecondsToHM((client->GetWaitTime())/1000), GetResString(IDS_IDLOW), CastSecondsToHM((::GetTickCount()-client->GetUpStartTimeDelay()-client->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick)/1000));
+            else
 //<<< WiZaRd::Fix for LowID slots only on connection [VQB]
-				_sntprintf(pszText, cchTextMax, _T("%s (%s)"), CastSecondsToHM(client->GetWaitTime() / 1000), GetResString(IDS_IDLOW));
+                _sntprintf(pszText, cchTextMax, _T("%s (%s)"), CastSecondsToHM(client->GetWaitTime() / 1000), GetResString(IDS_IDLOW));
         else
             _tcsncpy(pszText, CastSecondsToHM(client->GetWaitTime() / 1000), cchTextMax);
         break;
@@ -412,22 +412,22 @@ void CUploadListCtrl::GetItemDisplayText(const CUpDownClient *client, int iSubIt
         _tcsncpy(pszText, client->DbgGetFullClientSoftVer(), cchTextMax);
         break;
 
-	case 9:
-		_sntprintf(pszText, cchTextMax, L"%u", client->GetSlotNumber());
-		break;
+    case 9:
+        _sntprintf(pszText, cchTextMax, L"%u", client->GetSlotNumber());
+        break;
 
 #ifdef _DEBUG
 //>>> WiZaRd::Count block/success send
-	case 10: 
-	{
-		CString sBuffer = L"";
-		if(client->socket)
-			sBuffer.Format(L"%.2f%% (%.2f%%)", client->socket->GetBlockingRatio(), client->socket->GetOverallBlockingRatio());
-		else
-			sBuffer = L"-";
-		_tcsncpy(pszText, sBuffer, cchTextMax);
-		break;
-	}
+    case 10:
+    {
+        CString sBuffer = L"";
+        if (client->socket)
+            sBuffer.Format(L"%.2f%% (%.2f%%)", client->socket->GetBlockingRatio(), client->socket->GetOverallBlockingRatio());
+        else
+            sBuffer = L"-";
+        _tcsncpy(pszText, sBuffer, cchTextMax);
+        break;
+    }
 //<<< WiZaRd::Count block/success send
 #endif
     }
@@ -590,28 +590,28 @@ int CUploadListCtrl::SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
     case 8:
         //Proper sorting ;)
         iResult = item1->GetClientSoft() - item2->GetClientSoft();
-        if(iResult == 0)
+        if (iResult == 0)
             iResult = CompareLocaleStringNoCase(item1->DbgGetFullClientSoftVer(), item2->DbgGetFullClientSoftVer());
         break;
 
-	case 9:
-		iResult = CompareUnsigned(item1->GetSlotNumber(), item2->GetSlotNumber());
-		break;
+    case 9:
+        iResult = CompareUnsigned(item1->GetSlotNumber(), item2->GetSlotNumber());
+        break;
 
 #ifdef _DEBUG
 //>>> WiZaRd::Count block/success send
-	case 10:
-		if(item1->socket && item2->socket)
-		{
-			iResult = CompareFloat(item1->socket->GetBlockingRatio(), item2->socket->GetBlockingRatio());
-			if(iResult == 0)
-				iResult = CompareFloat(item1->socket->GetOverallBlockingRatio(), item2->socket->GetOverallBlockingRatio());
-		}
-		else if(item1->socket)
-			iResult = -1;
-		else if(item2->socket)
-			iResult = 1;
-		break;
+    case 10:
+        if (item1->socket && item2->socket)
+        {
+            iResult = CompareFloat(item1->socket->GetBlockingRatio(), item2->socket->GetBlockingRatio());
+            if (iResult == 0)
+                iResult = CompareFloat(item1->socket->GetOverallBlockingRatio(), item2->socket->GetOverallBlockingRatio());
+        }
+        else if (item1->socket)
+            iResult = -1;
+        else if (item2->socket)
+            iResult = 1;
+        break;
 //<<< WiZaRd::Count block/success send
 #endif
     }

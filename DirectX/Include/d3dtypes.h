@@ -119,9 +119,9 @@ typedef LONG D3DFIXED;
  */
 #define D3DENUMRET_OK                            DDENUMRET_OK
 
-typedef HRESULT (CALLBACK* LPD3DVALIDATECALLBACK)(LPVOID lpUserArg, DWORD dwOffset);
-typedef HRESULT (CALLBACK* LPD3DENUMTEXTUREFORMATSCALLBACK)(LPDDSURFACEDESC lpDdsd, LPVOID lpContext);
-typedef HRESULT (CALLBACK* LPD3DENUMPIXELFORMATSCALLBACK)(LPDDPIXELFORMAT lpDDPixFmt, LPVOID lpContext);
+typedef HRESULT(CALLBACK* LPD3DVALIDATECALLBACK)(LPVOID lpUserArg, DWORD dwOffset);
+typedef HRESULT(CALLBACK* LPD3DENUMTEXTUREFORMATSCALLBACK)(LPDDSURFACEDESC lpDdsd, LPVOID lpContext);
+typedef HRESULT(CALLBACK* LPD3DENUMPIXELFORMATSCALLBACK)(LPDDPIXELFORMAT lpDDPixFmt, LPVOID lpContext);
 
 #ifndef DX_SHARED_DEFINES
 
@@ -291,23 +291,23 @@ public:
     friend int operator == (const _D3DVECTOR& v1, const _D3DVECTOR& v2);
 
     // Length-related functions
-    friend D3DVALUE SquareMagnitude (const _D3DVECTOR& v);
-    friend D3DVALUE Magnitude (const _D3DVECTOR& v);
+    friend D3DVALUE SquareMagnitude(const _D3DVECTOR& v);
+    friend D3DVALUE Magnitude(const _D3DVECTOR& v);
 
     // Returns vector with same direction and unit length
-    friend _D3DVECTOR Normalize (const _D3DVECTOR& v);
+    friend _D3DVECTOR Normalize(const _D3DVECTOR& v);
 
     // Return min/max component of the input vector
-    friend D3DVALUE Min (const _D3DVECTOR& v);
-    friend D3DVALUE Max (const _D3DVECTOR& v);
+    friend D3DVALUE Min(const _D3DVECTOR& v);
+    friend D3DVALUE Max(const _D3DVECTOR& v);
 
     // Return memberwise min/max of input vectors
-    friend _D3DVECTOR Minimize (const _D3DVECTOR& v1, const _D3DVECTOR& v2);
-    friend _D3DVECTOR Maximize (const _D3DVECTOR& v1, const _D3DVECTOR& v2);
+    friend _D3DVECTOR Minimize(const _D3DVECTOR& v1, const _D3DVECTOR& v2);
+    friend _D3DVECTOR Maximize(const _D3DVECTOR& v1, const _D3DVECTOR& v2);
 
     // Dot and cross product
-    friend D3DVALUE DotProduct (const _D3DVECTOR& v1, const _D3DVECTOR& v2);
-    friend _D3DVECTOR CrossProduct (const _D3DVECTOR& v1, const _D3DVECTOR& v2);
+    friend D3DVALUE DotProduct(const _D3DVECTOR& v1, const _D3DVECTOR& v2);
+    friend _D3DVECTOR CrossProduct(const _D3DVECTOR& v1, const _D3DVECTOR& v2);
 
 #endif
 #endif /* DIRECT3D_VERSION >= 0x0500 */
@@ -571,10 +571,10 @@ typedef struct _D3DMATRIX
         D3DVALUE m[4][4];
     };
     _D3DMATRIX() { }
-    _D3DMATRIX( D3DVALUE _m00, D3DVALUE _m01, D3DVALUE _m02, D3DVALUE _m03,
-                D3DVALUE _m10, D3DVALUE _m11, D3DVALUE _m12, D3DVALUE _m13,
-                D3DVALUE _m20, D3DVALUE _m21, D3DVALUE _m22, D3DVALUE _m23,
-                D3DVALUE _m30, D3DVALUE _m31, D3DVALUE _m32, D3DVALUE _m33
+    _D3DMATRIX(D3DVALUE _m00, D3DVALUE _m01, D3DVALUE _m02, D3DVALUE _m03,
+               D3DVALUE _m10, D3DVALUE _m11, D3DVALUE _m12, D3DVALUE _m13,
+               D3DVALUE _m20, D3DVALUE _m21, D3DVALUE _m22, D3DVALUE _m23,
+               D3DVALUE _m30, D3DVALUE _m31, D3DVALUE _m32, D3DVALUE _m33
               )
     {
         m[0][0] = _m00;

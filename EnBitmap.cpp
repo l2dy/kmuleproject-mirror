@@ -150,7 +150,7 @@ IPicture* CEnBitmap::LoadFromBuffer(BYTE* pBuff, int nSize)
                 // does not get deleted when all COM pointers were released. It eventually gets deleted only
                 // when process terminated. Using 'fRunmode=TRUE' does prevent this behaviour and does not
                 // seem to have any other side effects.
-                VERIFY( OleLoadPicture(pStream, nSize, TRUE/*FALSE*/, IID_IPicture, (LPVOID*)&pPicture) == S_OK );
+                VERIFY(OleLoadPicture(pStream, nSize, TRUE/*FALSE*/, IID_IPicture, (LPVOID*)&pPicture) == S_OK);
                 pStream->Release();
             }
             else
