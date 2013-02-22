@@ -16,10 +16,10 @@ static char THIS_FILE[] = __FILE__;
 
 
 // drawable area of the dialog
-#define SCREEN_LEFT		6
+#define SCREEN_LEFT		5
 #define SCREEN_TOP		175
 #define SCREEN_RIGHT	345
-#define SCREEN_BOTTOM	296
+#define SCREEN_BOTTOM	275
 
 // button to dismiss dialog
 #define BUTTON_TOP_Y	0

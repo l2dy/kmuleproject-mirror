@@ -235,14 +235,6 @@ BEGIN
                     WS_TABSTOP,13,171,201,12
 END
 
-IDD_SPLASH DIALOGEX 0, 0, 234, 185
-STYLE DS_SETFONT | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CLIPSIBLINGS | 
-    WS_CLIPCHILDREN
-EXSTYLE WS_EX_TOPMOST
-FONT 8, "MS Shell Dlg", 0, 0, 0x0
-BEGIN
-END
-
 IDD_PPG_PROXY DIALOGEX 0, 0, 231, 141
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Proxy"
@@ -1981,6 +1973,10 @@ BEGIN
     IDS_IDHIGH              "Open"
     IDS_PROXY_OPERATING_SYSTEM "Get proxy settings from operating system"
     IDS_OPENPREFINI         "Open %s"
+    IDS_CHECKEXTRACT         "Try to automatically extract completed archive files"
+    IDS_RADIOEXTRACTINCOMING "into the Incoming folder\n(will automatically share all contents)"
+    IDS_RADIOEXTRACTOTHER    "into a specific (other) folder:"
+    IDS_STATICEXTRACT        "Automatically extract archive files"
 END
 
 STRINGTABLE 
@@ -3482,14 +3478,6 @@ STRINGTABLE
 BEGIN    
     IDS_DONOTASKAGAIN       "Don't ask me again"
     IDS_POPULARITY          "Popularity Rank"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_CHECKEXTRACT         "Try to automatically extract completed archive files"
-    IDS_RADIOEXTRACTINCOMING "into the Incoming folder\n(will automatically share all contents)"
-    IDS_RADIOEXTRACTOTHER    "into a specific (other) folder:"
-    IDS_STATICEXTRACT        "Automatically extract archive files"
 END
 
 #endif    // Englisch (USA) resources

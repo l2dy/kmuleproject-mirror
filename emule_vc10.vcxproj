@@ -217,6 +217,7 @@
     <ClCompile Include="Mod\Modname.cpp" />
     <ClCompile Include="Mod\ProgressIndicator.cpp" />
     <ClCompile Include="Mod\SnarlInterface.cpp" />
+    <ClCompile Include="Mod\SplashScreenEx.cpp" />
     <ClCompile Include="Mod\WebHelper.cpp" />
     <ClCompile Include="OtherFunctions.cpp" />
     <ClCompile Include="Packets.cpp" />
@@ -369,7 +370,6 @@
     <ClCompile Include="SearchResultsWnd.cpp" />
     <ClCompile Include="SharedDirsTreeCtrl.cpp" />
     <ClCompile Include="SharedFilesWnd.cpp" />
-    <ClCompile Include="SplashScreen.cpp" />
     <ClCompile Include="SplitterControl.cpp" />
     <ClCompile Include="StatisticsDlg.cpp" />
     <ClCompile Include="StatisticsTree.cpp" />
@@ -783,6 +783,7 @@
     <ClInclude Include="Mod\ProgressIndicator.h" />
     <ClInclude Include="Mod\resourcemod.h" />
     <ClInclude Include="Mod\SnarlInterface.h" />
+    <ClInclude Include="Mod\SplashScreenEx.h" />
     <ClInclude Include="Mod\WebHelper.h" />
     <ClInclude Include="Opcodes.h" />
     <ClInclude Include="OtherFunctions.h" />
@@ -937,7 +938,6 @@
     <ClInclude Include="SearchResultsWnd.h" />
     <ClInclude Include="SharedDirsTreeCtrl.h" />
     <ClInclude Include="SharedFilesWnd.h" />
-    <ClInclude Include="SplashScreen.h" />
     <ClInclude Include="SplitterControl.h" />
     <ClInclude Include="StatisticsDlg.h" />
     <ClInclude Include="StatisticsTree.h" />

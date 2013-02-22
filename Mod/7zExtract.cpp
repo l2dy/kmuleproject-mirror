@@ -24,7 +24,6 @@
 bool ExtractSevenZipArchive(const CString& strArchiveName, const CString& strDestination)
 {	
 	CString msg = L"";
-	bool sevenziperror = false;
 	try
 	{
 		SevenZip::SevenZipLibrary lib;
@@ -39,20 +38,16 @@ bool ExtractSevenZipArchive(const CString& strArchiveName, const CString& strDes
 	catch(SevenZip::SevenZipException& ex)
 	{		
 		msg.Format(L"Failed to extract archive \"%s\" to \"%s\" - %s", strArchiveName, strDestination, ex.GetMessage());
-		sevenziperror = true;
 	}
 	catch(...)
 	{
 		msg.Format(L"Failed to extract archive \"%s\" to \"%s\" - unknown error", strArchiveName, strDestination);
-		sevenziperror = true;
 	}
 
 	theApp.QueueLogLineEx(LOG_ERROR, msg);
-	if (theApp.emuledlg)
+	if(theApp.emuledlg)
 		theApp.emuledlg->ShowNotifier(msg, TBN_IMPORTANTEVENT);
 
-	if (sevenziperror)
-		return false;
+	return false;
 
-	return true;
 }

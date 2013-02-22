@@ -171,3 +171,5 @@ XXXXYYZZ:
  * kMule will now try to detect WINE and skip the guilty code parts automatically
  * if the detection fails OR if you installed a proper wmvcore.dll file and want to use it, you can add a "WineCompatibility=0/1" entry in the kMule.ini file
 + added button to edit kMule.ini to extended options page [WiZaRd]
+~ changed splashscreen to splashscreenex [WiZaRd - original by TBH]
+~ added ipfilter progress to splash [WiZaRd - original by JvA (X-Ray)]

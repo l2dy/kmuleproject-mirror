@@ -44,7 +44,10 @@ class CAbstractFile;
 class CUpDownClient;
 class CFirewallOpener;
 class CUPnPImplWrapper;
-class CSplashScreen;
+//>>> WiZaRd::New Splash [TBH]
+//class CSplashScreen;
+class CSplashScreenEx;	
+//<<< WiZaRd::New Splash [TBH]
 class CAntiLeechDataList; //>>> WiZaRd::ClientAnalyzer
 class CAutoUpdate; //>>> WiZaRd::AutoUpdate
 class CCustomSearches; //>>> WiZaRd::CustomSearches
@@ -238,11 +241,17 @@ protected:
     bool m_bAutoStart;
 
     // Splash screen
+//>>> WiZaRd::New Splash [TBH]
+private:
+	//CSplashScreen*	m_pSplashWnd;
+	CSplashScreenEx*	m_pSplashWnd;
+	DWORD			m_dwSplashTime;
 public:
-    CSplashScreen *m_pSplashWnd;
-    DWORD m_dwSplashTime;
-    void ShowSplash();
-    void DestroySplash();
+	void			ShowSplash();
+	void			DestroySplash();
+	bool			IsSplashActive() const	{return m_pSplashWnd != NULL;}
+	void			SetSplashText(const CString& s);
+//<<< WiZaRd::New Splash [TBH]
 
 private:
     UINT     m_wTimerRes;

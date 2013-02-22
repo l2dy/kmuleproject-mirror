@@ -30,6 +30,7 @@
 #include "HttpDownloadDlg.h"
 #include "./Mod/extractfile.h"
 //<<< WiZaRd::IPFilter-Update
+#include "MuleStatusBarCtrl.h" //>>> WiZaRd::LoadStatus [X-Ray]
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -83,6 +84,23 @@ int CIPFilter::LoadFromDefaultFile(bool bShowResponse)
 int CIPFilter::AddFromFile(LPCTSTR pszFilePath, bool bShowResponse)
 {
     DWORD dwStart = GetTickCount();
+
+//>>> WiZaRd::LoadStatus [X-Ray]
+	UINT	uLineCount = 0;
+	UINT	uLastPercent = 0;
+	UINT	uPercent =  0;
+	double	dPercent = 0;
+	CStdioFile countFile;
+	CString strPercent = L"";
+	if(countFile.Open(pszFilePath, CFile::modeRead))
+	{
+		CString strBuffer = L"";
+		while(countFile.ReadString(strBuffer))
+			++uLineCount;
+		countFile.Close();
+	}
+//<<< WiZaRd::LoadStatus [X-Ray]
+
     FILE* readFile = _tfsopen(pszFilePath, _T("r"), _SH_DENYWR);
     if (readFile != NULL)
     {
@@ -159,6 +177,22 @@ int CIPFilter::AddFromFile(LPCTSTR pszFilePath, bool bShowResponse)
                     // (nVersion == 2) ? OptUtf8ToStr(szName, iLen) :
                     AddIPRange(uStart, uEnd, DFLT_FILTER_LEVEL, CStringA(szName, iLen));
                     iFoundRanges++;
+
+//>>> WiZaRd::LoadStatus [X-Ray]
+					if(uLineCount)
+					{
+						dPercent = (double)uLineCount != 0.0 ? (double)(iLine)/(double)uLineCount*100.0 : 0.0;
+						uPercent = (UINT)dPercent;
+						if(uPercent != uLastPercent)
+						{						
+							strPercent.Format(L"Loading IPfilter - %.2f%%...", dPercent);
+							theApp.SetSplashText(strPercent);
+							if (theApp.emuledlg && theApp.emuledlg->statusbar->m_hWnd)
+								theApp.emuledlg->statusbar->SetText(strPercent, SBarLog, 0);
+							uLastPercent = uPercent;
+						}
+					}
+//<<< WiZaRd::LoadStatus [X-Ray]
                 }
             }
         }
@@ -169,6 +203,23 @@ int CIPFilter::AddFromFile(LPCTSTR pszFilePath, bool bShowResponse)
             while (fgets(szBuffer, _countof(szBuffer), readFile) != NULL)
             {
                 iLine++;
+
+//>>> WiZaRd::LoadStatus [X-Ray]
+				if(uLineCount)
+				{
+					dPercent = (double)uLineCount != 0.0 ? (double)(iLine)/(double)uLineCount*100.0 : 0.0;
+					uPercent = (UINT)dPercent;
+					if(uPercent != uLastPercent)
+					{
+						strPercent.Format(L"Loading IPfilter - %.2f%%...", dPercent);
+						theApp.SetSplashText(strPercent);
+						if (theApp.emuledlg && theApp.emuledlg->statusbar->m_hWnd)
+							theApp.emuledlg->statusbar->SetText(strPercent, SBarLog, 0);
+						uLastPercent = uPercent;
+					}
+				}
+//<<< WiZaRd::LoadStatus [X-Ray]
+
                 sbuffer = szBuffer;
 
                 // ignore comments & too short lines
@@ -428,8 +479,45 @@ bool CIPFilter::ParseFilterLine2(const CStringA& sbuffer, UINT& ip1, UINT& ip2, 
 
 void CIPFilter::RemoveAllIPFilters()
 {
+//>>> WiZaRd::LoadStatus [X-Ray]
+	UINT	uLineCount = m_iplist.GetCount();
+	UINT	uLastPercent = 0;
+	UINT	uPercent =  0;
+	double	dPercent = 0.0;
+	CString strPercent = L"";
+//<<< WiZaRd::LoadStatus [X-Ray]
     for (int i = 0; i < m_iplist.GetCount(); i++)
+    {
         delete m_iplist[i];
+
+//>>> WiZaRd::LoadStatus [X-Ray]
+		if(uLineCount)
+		{
+			dPercent = (double)uLineCount != 0.0 ? (double)(i)/(double)uLineCount*100.0 : 0.0;
+			uPercent = (UINT)dPercent;
+			if(uPercent != uLastPercent)
+			{				
+				strPercent.Format(L"Unloading IPfilter - %.2f%%...", dPercent);
+				if(theApp.emuledlg)
+				{
+					if (theApp.emuledlg->statusbar->m_hWnd)
+						theApp.emuledlg->statusbar->SetText(strPercent, SBarLog, 0);
+				}
+				uLastPercent = uPercent;
+			}
+		}
+//<<< WiZaRd::LoadStatus [X-Ray]
+    }
+//>>> WiZaRd::LoadStatus [X-Ray]
+	if(uLineCount)
+	{
+		strPercent.Format(L"Unloading IPfilter - 100%%!");
+		theApp.SetSplashText(strPercent);
+		if (theApp.emuledlg && theApp.emuledlg->statusbar->m_hWnd)
+			theApp.emuledlg->statusbar->SetText(strPercent, SBarLog, 0);
+	}
+//<<< WiZaRd::LoadStatus [X-Ray]
+
     m_iplist.RemoveAll();
     m_pLastHit = NULL;
 }

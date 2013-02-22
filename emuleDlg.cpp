@@ -46,7 +46,6 @@
 #include "Opcodes.h"
 #include "SharedFileList.h"
 #include "ED2KLink.h"
-#include "Splashscreen.h"
 #include "PartFileConvert.h"
 #include "EnBitmap.h"
 #include "Exceptions.h"
@@ -679,7 +678,8 @@ void CALLBACK CemuleDlg::StartupTimer(HWND /*hwnd*/, UINT /*uiMsg*/, UINT /*idEv
             break;
         default:
             theApp.emuledlg->CreateMiniMule();
-            theApp.emuledlg->StopTimer();
+			theApp.DestroySplash(); //>>> WiZaRd::New Splash [TBH]
+            theApp.emuledlg->StopTimer();			
             break;
         }
     }
@@ -2758,6 +2758,8 @@ LRESULT CemuleDlg::OnKickIdle(UINT /*nWhy*/, long lIdleCount)
 {
     LRESULT lResult = 0;
 
+//>>> WiZaRd::New Splash [TBH]
+/*
     if (theApp.m_pSplashWnd)
     {
         if (::GetCurrentTime() - theApp.m_dwSplashTime > 2500)
@@ -2772,6 +2774,8 @@ LRESULT CemuleDlg::OnKickIdle(UINT /*nWhy*/, long lIdleCount)
             lResult = 1;
         }
     }
+*/
+//<<< WiZaRd::New Splash [TBH]
 
     if (m_bStartMinimized)
         PostStartupMinimized();
@@ -2896,6 +2900,8 @@ BOOL CemuleDlg::PreTranslateMessage(MSG* pMsg)
 {
     BOOL bResult = CTrayDialog::PreTranslateMessage(pMsg);
 
+//>>> WiZaRd::New Splash [TBH]
+/*
     if (theApp.m_pSplashWnd && theApp.m_pSplashWnd->m_hWnd != NULL &&
             (pMsg->message == WM_KEYDOWN	   ||
              pMsg->message == WM_SYSKEYDOWN	   ||
@@ -2910,6 +2916,8 @@ BOOL CemuleDlg::PreTranslateMessage(MSG* pMsg)
         UpdateWindow();
     }
     else
+*/
+//<<< WiZaRd::New Splash [TBH]
     {
         if (pMsg->message == WM_KEYDOWN)
         {

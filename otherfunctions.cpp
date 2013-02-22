@@ -4775,29 +4775,33 @@ uint64	GetFileSizeOnDisk(const CString& strFilePath)
 //>>> WiZaRd::Wine Compatibility
 bool RunningWine()
 {	
-	bool runningWine = false;
+	static int runningWine = -1;
 
-	if(GetProcAddress(GetModuleHandle(L"kernel32"), _TWINAPI("wine_get_unix_file_name")) != NULL)
+	if(runningWine == -1)
 	{
-		runningWine = true;
-		theApp.QueueLogLineEx(LOG_WARNING, L"Detected WINE via kernel32.dll");
-	}
-	else if(GetProcAddress(GetModuleHandle(L"ntdll"), _TWINAPI("wine_get_unix_file_name")) != NULL)
-	{
-		runningWine = true;
-		theApp.QueueLogLineEx(LOG_WARNING, L"Detected WINE via ntdll.dll");
-	}
-	else
-	{
-		CRegKey key;
-		if(key.Open(HKEY_CURRENT_USER, L"Software\\Wine", KEY_READ) == ERROR_SUCCESS)
+		runningWine = 0;
+		if(GetProcAddress(GetModuleHandle(L"kernel32"), _TWINAPI("wine_get_unix_file_name")) != NULL)
 		{
-			runningWine = true;
-			theApp.QueueLogLineEx(LOG_WARNING, L"Detected WINE via registry");
+			runningWine = 1;
+			theApp.QueueLogLineEx(LOG_WARNING, L"Detected WINE via kernel32.dll");
+		}
+		else if(GetProcAddress(GetModuleHandle(L"ntdll"), _TWINAPI("wine_get_unix_file_name")) != NULL)
+		{
+			runningWine = 1;
+			theApp.QueueLogLineEx(LOG_WARNING, L"Detected WINE via ntdll.dll");
+		}
+		else
+		{
+			CRegKey key;
+			if(key.Open(HKEY_CURRENT_USER, L"Software\\Wine", KEY_READ) == ERROR_SUCCESS)
+			{
+				runningWine = 1;
+				theApp.QueueLogLineEx(LOG_WARNING, L"Detected WINE via registry");
+			}
 		}
 	}
 
-	return runningWine;	
+	return runningWine != 0;	
 }
 //<<< WiZaRd::Wine Compatibility
 //<<< WiZaRd::Additional Functions

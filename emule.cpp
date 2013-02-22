@@ -64,7 +64,10 @@
 #include "HelpIDs.h"
 #include "UPnPImplWrapper.h"
 #include "VisualStylesXP.h"
-#include "Splashscreen.h"
+//>>> WiZaRd::New Splash [TBH]
+//#include "SplashScreen.h"
+#include "./Mod/SplashScreenEx.h"
+//<<< WiZaRd::New Splash [TBH]
 #include "./Mod/ClientAnalyzer.h" //>>> WiZaRd::ClientAnalyzer
 #include "./Mod/autoUpdate.h" //>>> WiZaRd::AutoUpdate
 #include "./Mod/CustomSearches.h" //>>> WiZaRd::CustomSearches
@@ -609,7 +612,23 @@ BOOL CemuleApp::InitInstance()
 
     // show splashscreen as early as possible to "entertain" user while starting kMule
     if(!thePrefs.IsFirstStart() && thePrefs.UseSplashScreen())
-        ShowSplash();
+	{
+//>>> WiZaRd::New Splash [TBH]
+		//don't show splash on old windows versions
+		switch (thePrefs.GetWindowsVersion())
+		{				
+			case _WINVER_98_:
+			case _WINVER_95_:	
+			case _WINVER_ME_:
+			case _WINVER_NT4_:
+				break;
+			default:
+				ShowSplash();
+				break;
+		}
+		//ShowSplash();
+//<<< WiZaRd::New Splash [TBH]        
+	}
     theStats.Init();
 
     // check if we have to restart eMule as Secure user
@@ -648,8 +667,8 @@ BOOL CemuleApp::InitInstance()
         theVerboseLog.Open();
         theVerboseLog.Log(_T("\r\n"));
     }
-    Log(_T("Starting %s"), GetClientVersionString());
-    theApp.QueueLogLine(LOG_WARNING, L"Based on %s", GetClientVersionStringBase());
+    theApp.QueueLogLine(LOG_INFO, L"Starting " + GetClientVersionString());
+    theApp.QueueLogLine(LOG_WARNING, L"Based upon " + GetClientVersionStringBase());
 
     SetConsoleCtrlHandler(ConsoleCtrlHandler, TRUE);
 
@@ -2322,6 +2341,8 @@ void CemuleApp::ShowSplash()
     ASSERT( m_pSplashWnd == NULL );
     if (m_pSplashWnd == NULL)
     {
+//>>> WiZaRd::New Splash [TBH]
+/*
         m_pSplashWnd = new CSplashScreen;
         if (m_pSplashWnd != NULL)
         {
@@ -2338,6 +2359,34 @@ void CemuleApp::ShowSplash()
                 m_pSplashWnd = NULL;
             }
         }
+*/
+		m_pSplashWnd = new CSplashScreenEx();
+		if (m_pSplashWnd != NULL)
+		{
+			//ASSERT(m_hWnd);
+			if(m_pSplashWnd->Create(NULL, NULL, 0, CSS_FADE | CSS_CENTERSCREEN | CSS_SHADOW))
+			{
+				m_pSplashWnd->SetTextFont(L"Impact", 14, /*CSS_TEXT_BOLD*/NULL);
+				m_pSplashWnd->SetBitmap(L"About", RGB(0, 255, 0));
+				m_pSplashWnd->SetTextColor(RGB(0, 0, 0));
+				
+				// 350*300 (BxH)
+				CRect rect = CRect(5, 195, 345, 275);
+				m_pSplashWnd->SetTextRect(rect);
+				m_pSplashWnd->SetTextFormat(/*DT_SINGLELINE |*/ DT_CENTER | DT_VCENTER | DT_WORDBREAK);				
+				m_pSplashWnd->Show();
+
+				SetSplashText(L"Starting " + GetClientVersionString() + L"\r\n" + L"Based upon " + GetClientVersionStringBase());
+				if(RunningWine())
+				{
+					Sleep(500);
+					SetSplashText(L"WINE detected!");
+				}
+			}
+			else
+				DestroySplash();
+		}
+//<<< WiZaRd::New Splash [TBH]
     }
 }
 
@@ -2345,8 +2394,11 @@ void CemuleApp::DestroySplash()
 {
     if (m_pSplashWnd != NULL)
     {
-        m_pSplashWnd->DestroyWindow();
-        delete m_pSplashWnd;
+//>>> WiZaRd::New Splash [TBH]
+        //m_pSplashWnd->DestroyWindow();
+        //delete m_pSplashWnd;
+		m_pSplashWnd->Hide();
+//<<< WiZaRd::New Splash [TBH]
         m_pSplashWnd = NULL;
     }
 #ifdef _BETA
@@ -2354,6 +2406,14 @@ void CemuleApp::DestroySplash()
         AfxMessageBox(GetResString(IDS_BETANAG), MB_ICONINFORMATION | MB_OK, 0);
 #endif
 }
+
+//>>> WiZaRd::New Splash [TBH]
+void CemuleApp::SetSplashText(const CString& s)
+{
+	if(m_pSplashWnd)	
+		m_pSplashWnd->SetText(s);
+}
+//<<< WiZaRd::New Splash [TBH]
 
 //>>> WiZaRd::Easy ModVersion
 CString  CemuleApp::GetClientVersionString() const

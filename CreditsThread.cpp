@@ -439,13 +439,17 @@ void CCreditsThread::InitText()
     sTmp.Format(L"02:04:Build%s", GetModVersionNumber());
     m_arCredits.Add(sTmp);
     m_arCredits.Add(L"S:10");
+	m_arCredits.Add(L"01:06:For " + CString(MOD_HOMEPAGE));
+	m_arCredits.Add(L"S:10");
+	m_arCredits.Add(L"01:06:Copyright (C) 2012-2013 tuxman/WiZaRd");
+	m_arCredits.Add(L"S:10");
     m_arCredits.Add(L"02:04:Modders");
     m_arCredits.Add(L"S:5");
     m_arCredits.Add(L"01:06:tuxman");
     m_arCredits.Add(L"S:5");
     m_arCredits.Add(L"01:06:WiZaRd");
     m_arCredits.Add(L"S:5");
-    m_arCredits.Add(L"S:10");
+    m_arCredits.Add(L"S:50");
 
 // 	m_arCredits.Add(L"02:04:Grafix by");
 // 	m_arCredits.Add(L"S:5");

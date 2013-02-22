@@ -603,9 +603,6 @@
     <ClCompile Include="SharedFilesWnd.cpp">
       <Filter>Interface Source</Filter>
     </ClCompile>
-    <ClCompile Include="SplashScreen.cpp">
-      <Filter>Interface Source</Filter>
-    </ClCompile>
     <ClCompile Include="SplitterControl.cpp">
       <Filter>Interface Source</Filter>
     </ClCompile>
@@ -727,6 +724,9 @@
       <Filter>Mod\Source</Filter>
     </ClCompile>
     <ClCompile Include="Mod\7zExtract.cpp">
+      <Filter>Mod\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Mod\SplashScreenEx.cpp">
       <Filter>Mod\Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -2214,9 +2214,6 @@
     <ClInclude Include="SharedFilesWnd.h">
       <Filter>Interface Header</Filter>
     </ClInclude>
-    <ClInclude Include="SplashScreen.h">
-      <Filter>Interface Header</Filter>
-    </ClInclude>
     <ClInclude Include="SplitterControl.h">
       <Filter>Interface Header</Filter>
     </ClInclude>
@@ -2347,6 +2344,9 @@
       <Filter>Mod\Header</Filter>
     </ClInclude>
     <ClInclude Include="Mod\7zExtract.h">
+      <Filter>Mod\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Mod\SplashScreenEx.h">
       <Filter>Mod\Header</Filter>
     </ClInclude>
   </ItemGroup>

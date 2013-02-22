@@ -1373,7 +1373,6 @@
 #define IDC_STATISTICS                  2289
 #define IDC_STATSSCOPE                  2291
 #define IDD_STATISTICS                  2296
-#define IDD_SPLASH                      2300
 #define IDC_SCOPE_U                     2305
 #define IDC_EXIT                        2311
 #define IDC_SPLASHON                    2315
