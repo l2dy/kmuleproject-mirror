@@ -173,3 +173,4 @@ XXXXYYZZ:
 + added button to edit kMule.ini to extended options page [WiZaRd]
 ~ changed splashscreen to splashscreenex [WiZaRd - original by TBH]
 ~ added ipfilter progress to splash [WiZaRd - original by JvA (X-Ray)]
++ added option to automatically extract supported archive files [Tuxman/WiZaRd]
