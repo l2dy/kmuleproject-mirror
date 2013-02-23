@@ -555,9 +555,6 @@
     <ClCompile Include="PPgGeneral.cpp">
       <Filter>Interface Source</Filter>
     </ClCompile>
-    <ClCompile Include="PPgMessages.cpp">
-      <Filter>Interface Source</Filter>
-    </ClCompile>
     <ClCompile Include="PPgProxy.cpp">
       <Filter>Interface Source</Filter>
     </ClCompile>
@@ -2158,9 +2155,6 @@
       <Filter>Interface Header</Filter>
     </ClInclude>
     <ClInclude Include="PPgGeneral.h">
-      <Filter>Interface Header</Filter>
-    </ClInclude>
-    <ClInclude Include="PPgMessages.h">
       <Filter>Interface Header</Filter>
     </ClInclude>
     <ClInclude Include="PPgProxy.h">

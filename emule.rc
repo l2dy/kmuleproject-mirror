@@ -343,7 +343,7 @@ BEGIN
     PUSHBUTTON      "...",IDC_BROWSEX2,211,199,14,14
 END
 
-IDD_PPG_DIRECTORIES DIALOGEX 0, 0, 231, 241
+IDD_PPG_DIRECTORIES DIALOGEX 0, 0, 231, 299
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Directories"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
@@ -352,19 +352,15 @@ BEGIN
     PUSHBUTTON      "...",IDC_SELINCDIR,210,7,14,14
     EDITTEXT        IDC_TEMPFILES,11,45,200,12,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_SELTEMPDIR,196,39,14,14
-    CONTROL         "",IDC_SHARESELECTOR,"SysTreeView32",TVS_HASBUTTONS | 
-                    TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS | 
-                    TVS_CHECKBOXES | WS_BORDER | WS_TABSTOP | 0x800,10,76,
-                    211,110
     CONTROL         "",IDC_UNCLIST,"SysListView32",LVS_REPORT | 
                     LVS_SINGLESEL | LVS_ALIGNLEFT | LVS_NOSORTHEADER | 
-                    WS_BORDER | WS_TABSTOP,10,190,195,43
-    PUSHBUTTON      "+",IDC_UNCADD,208,190,14,13,BS_CENTER
-    PUSHBUTTON      "-",IDC_UNCREM,208,220,14,13,BS_CENTER
+                    WS_BORDER | WS_TABSTOP,10,76,195,218
+    PUSHBUTTON      "+",IDC_UNCADD,208,76,14,13,BS_CENTER
+    PUSHBUTTON      "-",IDC_UNCREM,208,281,14,13,BS_CENTER
     GROUPBOX        "Incoming Files",IDC_INCOMING_FRM,4,2,223,30
     GROUPBOX        "Temporary Files",IDC_TEMP_FRM,4,34,223,29
     GROUPBOX        "Shared Directories (Ctrl-Click includes subdirectories)",
-                    IDC_SHARED_FRM,4,65,223,172
+                    IDC_SHARED_FRM,4,65,223,232
     PUSHBUTTON      "+",IDC_SELTEMPDIRADD,212,45,11,12,BS_CENTER
 END
 
@@ -488,22 +484,22 @@ BEGIN
     GROUPBOX        "General",IDC_GENERAL,4,2,394,41
 END
 
-IDD_PPG_TWEAKS DIALOGEX 0, 0, 231, 258
+IDD_PPG_TWEAKS DIALOGEX 0, 0, 231, 299
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Tweaks"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     LTEXT           "Static",IDC_WARNING,4,2,213,39
     CONTROL         "",IDC_EXT_OPTS,"SysTreeView32",TVS_SHOWSELALWAYS | 
-                    WS_BORDER | WS_TABSTOP | 0x800,4,46,223,142
-    LTEXT           "File buffer size",IDC_FILEBUFFERSIZE_STATIC,4,192,213,8
+                    WS_BORDER | WS_TABSTOP | 0x800,4,46,223,180
+    LTEXT           "File buffer size",IDC_FILEBUFFERSIZE_STATIC,4,231,213,8
     CONTROL         "",IDC_FILEBUFFERSIZE,"msctls_trackbar32",WS_TABSTOP,9,
-                    202,211,11
-    LTEXT           "Queue size",IDC_QUEUESIZE_STATIC,4,215,103,8
+                    241,211,11
+    LTEXT           "Queue size",IDC_QUEUESIZE_STATIC,4,254,103,8
     CONTROL         "",IDC_QUEUESIZE,"msctls_trackbar32",TBS_AUTOTICKS | 
-                    WS_TABSTOP,9,225,211,11
-    PUSHBUTTON      "Open preferences.ini",IDC_OPENPREFINI,11,243,102,14
-    PUSHBUTTON      "Open kMule.ini",IDC_OPENMODPREFINI,116,243,102,14
+                    WS_TABSTOP,9,264,211,11
+    PUSHBUTTON      "Open preferences.ini",IDC_OPENPREFINI,11,282,102,14
+    PUSHBUTTON      "Open kMule.ini",IDC_OPENMODPREFINI,116,282,102,14
 END
 
 IDD_ADDFRIEND DIALOGEX 0, 0, 271, 190
@@ -652,45 +648,59 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,4,55,139,10
 END
 
-IDD_PPG_SECURITY DIALOGEX 0, 0, 231, 163
+IDD_PPG_SECURITY DIALOGEX 0, 0, 231, 299
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Security"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    GROUPBOX        "IP Filter",IDC_STATIC_IPFILTER,4,2,223,62
-    LTEXT           "Filter level:",IDC_STATIC_FILTERLEVEL,11,14,54,8,0,
+    GROUPBOX        "IP Filter",IDC_STATIC_IPFILTER,4,133,223,62
+    LTEXT           "Filter level:",IDC_STATIC_FILTERLEVEL,11,145,54,8,0,
                     WS_EX_RIGHT
-    LTEXT           "<",IDC_STATIC_FILTERLEVEL2,72,14,8,9
-    EDITTEXT        IDC_FILTERLEVEL,81,12,30,12,ES_AUTOHSCROLL | ES_NUMBER
-    PUSHBUTTON      "Reload",IDC_RELOADFILTER,119,12,50,12
-    PUSHBUTTON      "Edit",IDC_EDITFILTER,171,12,50,12
+    LTEXT           "<",IDC_STATIC_FILTERLEVEL2,72,145,8,9
+    EDITTEXT        IDC_FILTERLEVEL,81,143,30,12,ES_AUTOHSCROLL | ES_NUMBER
+    PUSHBUTTON      "Reload",IDC_RELOADFILTER,119,143,50,12
+    PUSHBUTTON      "Edit",IDC_EDITFILTER,171,143,50,12
     LTEXT           "Update from URL: (filter.dat- or PeerGuardian-format)",
-                    IDC_STATIC_UPDATEFROM,11,26,202,8
-    EDITTEXT        IDC_UPDATEURL,11,36,160,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "v",IDC_DD,174,36,11,12,BS_CENTER
-    PUSHBUTTON      "Load",IDC_LOADURL,186,36,35,12
+                    IDC_STATIC_UPDATEFROM,11,157,202,8
+    EDITTEXT        IDC_UPDATEURL,11,167,160,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "v",IDC_DD,174,167,11,12,BS_CENTER
+    PUSHBUTTON      "Load",IDC_LOADURL,186,167,35,12
     GROUPBOX        "See My Shared Files/Directories",IDC_SEEMYSHARE_FRM,4,
-                    66,223,26
+                    106,223,26
     CONTROL         "Everybody",IDC_SEESHARE1,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,11,77,73,10
+                    WS_GROUP | WS_TABSTOP,11,117,73,10
     CONTROL         "Only friends",IDC_SEESHARE2,"Button",BS_AUTORADIOBUTTON,
-                    88,77,71,10
+                    88,117,71,10
     CONTROL         "Nobody",IDC_SEESHARE3,"Button",BS_AUTORADIOBUTTON,166,
-                    77,52,10
-    GROUPBOX        "Protocol Obfuscation",IDC_SEC_OBFUSCATIONBOX,4,96,223,
+                    116,52,10
+    GROUPBOX        "Protocol Obfuscation",IDC_SEC_OBFUSCATIONBOX,4,196,223,
                     34,WS_GROUP
     CONTROL         "Enable protocol obfuscation",IDC_ENABLEOBFUSCATION,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,107,202,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,207,202,10
     CONTROL         "Allow obfuscated connections only (not recommended)",
                     IDC_ONLYOBFUSCATED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    11,117,202,10
-    GROUPBOX        "Misc",IDC_SEC_MISC,4,130,223,31,WS_GROUP
+                    11,217,202,10
+    GROUPBOX        "Misc",IDC_SEC_MISC,4,230,223,31,WS_GROUP
     CONTROL         "Run eMule as unprivileged user",IDC_RUNASUSER,"Button",
-                    BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,11,139,212,10
+                    BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,11,239,212,10
     CONTROL         "Warn when opening untrusted files",IDC_CHECK_FILE_OPEN,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,149,212,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,249,212,10
     CONTROL         "Update ipfilters on startup?",IDC_IPFILTER_AUTOUPDATE,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,51,202,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,182,202,10
+    LTEXT           "Filter messages containing: (Separator | )",
+                    IDC_FILTERLABEL,11,12,205,8
+    EDITTEXT        IDC_FILTER,11,23,209,12,ES_AUTOHSCROLL
+    CONTROL         "Accept from friends only",IDC_MSGONLYFRIENDS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,11,39,202,8
+    GROUPBOX        "Comments",IDC_STATIC_COMMENTS,4,53,223,51
+    LTEXT           "Ignore comments containing: (Separator | )",
+                    IDC_FILTERCOMMENTSLABEL,11,61,205,8
+    EDITTEXT        IDC_COMMENTFILTER,11,73,209,12,ES_MULTILINE | 
+                    ES_AUTOHSCROLL
+    GROUPBOX        "Messages",IDC_MSG,4,3,223,50
+    CONTROL         "Indicate downloads with comments/rating by icon",
+                    IDC_INDICATERATINGS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,11,88,203,10
 END
 
 IDD_INPUTBOX DIALOGEX 0, 0, 256, 65
@@ -1307,27 +1317,6 @@ BEGIN
     PUSHBUTTON      "Restore archive",IDC_RESTOREARCH,98,159,117,14
     PUSHBUTTON      "?",IDC_AP_EXPLAIN,219,159,17,14
     RTEXT           "1233333",IDC_INFO_FILECOUNT,295,159,105,8
-END
-
-IDD_PPG_MESSAGES DIALOGEX 0, 0, 231, 107
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "Messages and Comments"
-FONT 8, "MS Shell Dlg", 0, 0, 0x0
-BEGIN
-    LTEXT           "Filter messages containing: (Separator | )",
-                    IDC_FILTERLABEL,11,11,205,8
-    EDITTEXT        IDC_FILTER,11,21,209,12,ES_AUTOHSCROLL
-    CONTROL         "Accept from friends only",IDC_MSGONLYFRIENDS,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,11,38,202,8
-    GROUPBOX        "Comments",IDC_STATIC_COMMENTS,4,53,223,51
-    LTEXT           "Ignore comments containing: (Separator | )",
-                    IDC_FILTERCOMMENTSLABEL,11,64,205,8
-    EDITTEXT        IDC_COMMENTFILTER,11,74,209,12,ES_MULTILINE | 
-                    ES_AUTOHSCROLL
-    GROUPBOX        "Messages",IDC_MSG,4,1,223,50
-    CONTROL         "Indicate downloads with comments/rating by icon",
-                    IDC_INDICATERATINGS,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,11,90,203,10
 END
 
 IDD_DOWNLOAD_TOOLBARS DIALOGEX 0, 0, 412, 14
@@ -2371,7 +2360,6 @@ BEGIN
     IDS_PW_NICK             "Nick"
     IDS_PW_INCOMING         "Incoming Files"
     IDS_PW_TEMP             "Temporary Files"
-    IDS_PW_SHARED           "Shared Directories (Ctrl-Click includes subdirectories)"
     IDS_PW_CONNECTION       "Connection"
     IDS_PW_DOWNL            "Download limit"
     IDS_PW_UPL              "Upload limit"

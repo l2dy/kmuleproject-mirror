@@ -515,7 +515,7 @@ BOOL CChatWnd::OnHelpInfo(HELPINFO* /*pHelpInfo*/)
 
 void CChatWnd::OnStnDblClickFriendIcon()
 {
-    theApp.emuledlg->ShowPreferences(IDD_PPG_MESSAGES);
+    theApp.emuledlg->ShowPreferences(IDD_PPG_SECURITY);
 }
 
 BOOL CChatWnd::OnCommand(WPARAM wParam, LPARAM lParam)

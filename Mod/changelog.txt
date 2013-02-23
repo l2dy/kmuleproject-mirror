@@ -174,3 +174,6 @@ XXXXYYZZ:
 ~ changed splashscreen to splashscreenex [WiZaRd - original by TBH]
 ~ added ipfilter progress to splash [WiZaRd - original by JvA (X-Ray)]
 + added option to automatically extract supported archive files [Tuxman/WiZaRd]
+~ unified messages & security tabs in options [WiZaRd]
+~ removed shared dirs from options [WiZaRd]
+ * using the shared files tab offers way more functionality!

@@ -15,7 +15,6 @@ public:
     void Localize(void);
 
 protected:
-    CDirectoryTreeCtrl m_ShareSelector;
     CListCtrl m_ctlUncPaths;
     HICON m_icoBrowse;
 

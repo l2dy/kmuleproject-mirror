@@ -258,7 +258,7 @@
 #define IDS_PW_NICK                     392
 #define IDS_PW_INCOMING                 393
 #define IDS_PW_TEMP                     394
-#define IDS_PW_SHARED                   396
+//#define IDS_PW_SHARED                   396
 #define IDS_PW_CONNECTION               397
 #define IDS_PW_DOWNL                    398
 #define IDS_PW_UPL                      399
@@ -1802,7 +1802,7 @@
 #define IDC_STATIC_LANGUAGE             2978
 #define IDC_AP_EXPLAIN                  2979
 #define IDD_ARCHPREV                    2980
-#define IDD_PPG_MESSAGES                2981
+//#define IDD_PPG_MESSAGES                2981
 #define IDC_ARCHPROGRESS                2982
 #define IDC_FILL_GRAPHS                 2983
 #define IDC_GENERAL                     2984

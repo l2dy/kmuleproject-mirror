@@ -354,7 +354,6 @@
     <ClCompile Include="PPgDisplay.cpp" />
     <ClCompile Include="PPgFiles.cpp" />
     <ClCompile Include="PPgGeneral.cpp" />
-    <ClCompile Include="PPgMessages.cpp" />
     <ClCompile Include="PPgProxy.cpp" />
     <ClCompile Include="PPgSecurity.cpp" />
     <ClCompile Include="PPgStats.cpp" />
@@ -920,7 +919,6 @@
     <ClInclude Include="PPgDisplay.h" />
     <ClInclude Include="PPgFiles.h" />
     <ClInclude Include="PPgGeneral.h" />
-    <ClInclude Include="PPgMessages.h" />
     <ClInclude Include="PPgProxy.h" />
     <ClInclude Include="PPgSecurity.h" />
     <ClInclude Include="PPgStats.h" />

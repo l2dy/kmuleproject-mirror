@@ -31,7 +31,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 IMPLEMENT_DYNAMIC(CPreferencesDlg, CTreePropSheet)
-
 BEGIN_MESSAGE_MAP(CPreferencesDlg, CTreePropSheet)
     ON_WM_DESTROY()
     ON_WM_HELPINFO()
@@ -49,7 +48,6 @@ CPreferencesDlg::CPreferencesDlg()
     m_wndTweaks.m_psp.dwFlags &= ~PSH_HASHELP;
     m_wndSecurity.m_psp.dwFlags &= ~PSH_HASHELP;
     m_wndProxy.m_psp.dwFlags &= ~PSH_HASHELP;
-    m_wndMessages.m_psp.dwFlags &= ~PSH_HASHELP;
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
     m_wndDebug.m_psp.dwFlags &= ~PSH_HASHELP;
 #endif
@@ -62,7 +60,6 @@ CPreferencesDlg::CPreferencesDlg()
     AddPage(&m_wndDirectories);
     AddPage(&m_wndFiles);
     AddPage(&m_wndStats);
-    AddPage(&m_wndMessages);
     AddPage(&m_wndSecurity);
     AddPage(&m_wndTweaks);
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
@@ -105,7 +102,6 @@ void CPreferencesDlg::UpdateShownPages()
             &m_wndDirectories,
             &m_wndFiles,
             &m_wndStats,
-            &m_wndMessages,
             &m_wndSecurity,
             &m_wndTweaks,
     #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
@@ -127,7 +123,6 @@ void CPreferencesDlg::UpdateShownPages()
         AddPage(&m_wndDirectories);
         AddPage(&m_wndFiles);
         AddPage(&m_wndStats);
-        AddPage(&m_wndMessages);
         AddPage(&m_wndSecurity);
         AddPage(&m_wndTweaks);
     #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
@@ -168,7 +163,6 @@ void CPreferencesDlg::Localize()
     m_wndSecurity.Localize();
     m_wndTweaks.Localize();
     m_wndProxy.Localize();
-    m_wndMessages.Localize();
 
     int c = 0;
 
@@ -183,7 +177,6 @@ void CPreferencesDlg::Localize()
         pTree->SetItemText(GetPageTreeItem(c++), RemoveAmpersand(GetResString(IDS_PW_DIR)));
         pTree->SetItemText(GetPageTreeItem(c++), RemoveAmpersand(GetResString(IDS_PW_FILES)));
         pTree->SetItemText(GetPageTreeItem(c++), RemoveAmpersand(GetResString(IDS_STATSSETUPINFO)));
-        pTree->SetItemText(GetPageTreeItem(c++), RemoveAmpersand(GetResString(IDS_MESSAGESCOMMENTS)));
         pTree->SetItemText(GetPageTreeItem(c++), RemoveAmpersand(GetResString(IDS_SECURITY)));
         pTree->SetItemText(GetPageTreeItem(c++), RemoveAmpersand(GetResString(IDS_PW_TWEAK)));
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
