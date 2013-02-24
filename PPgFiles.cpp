@@ -80,6 +80,8 @@ BOOL CPPgFiles::OnInitDialog()
 
     AddBuddyButton(GetDlgItem(IDC_VIDEOPLAYER)->m_hWnd, ::GetDlgItem(m_hWnd, IDC_BROWSEV));
     InitAttachedBrowseButton(::GetDlgItem(m_hWnd, IDC_BROWSEV), m_icoBrowse);
+	AddBuddyButton(GetDlgItem(IDC_EXTRACTFOLDER)->m_hWnd, ::GetDlgItem(m_hWnd, IDC_BROWSEX2));
+	InitAttachedBrowseButton(::GetDlgItem(m_hWnd, IDC_BROWSEX2), m_icoBrowse);
 
     LoadSettings();
     Localize();

@@ -185,7 +185,7 @@ int CIPFilter::AddFromFile(LPCTSTR pszFilePath, bool bShowResponse)
                         uPercent = (UINT)dPercent;
                         if (uPercent != uLastPercent)
                         {
-                            strPercent.Format(L"Loading IPfilter - %.2f%%...", dPercent);
+                            strPercent.Format(L"Loading IP-Filter: %.2f%%...", dPercent);
                             theApp.SetSplashText(strPercent);
                             if (theApp.emuledlg && theApp.emuledlg->statusbar->m_hWnd)
                                 theApp.emuledlg->statusbar->SetText(strPercent, SBarLog, 0);
@@ -211,7 +211,7 @@ int CIPFilter::AddFromFile(LPCTSTR pszFilePath, bool bShowResponse)
                     uPercent = (UINT)dPercent;
                     if (uPercent != uLastPercent)
                     {
-                        strPercent.Format(L"Loading IPfilter - %.2f%%...", dPercent);
+                        strPercent.Format(L"Loading IP-Filter: %.2f%%...", dPercent);
                         theApp.SetSplashText(strPercent);
                         if (theApp.emuledlg && theApp.emuledlg->statusbar->m_hWnd)
                             theApp.emuledlg->statusbar->SetText(strPercent, SBarLog, 0);
@@ -497,7 +497,7 @@ void CIPFilter::RemoveAllIPFilters()
             uPercent = (UINT)dPercent;
             if (uPercent != uLastPercent)
             {
-                strPercent.Format(L"Unloading IPfilter - %.2f%%...", dPercent);
+                strPercent.Format(L"Unloading IP-Filter: %.2f%%...", dPercent);
                 if (theApp.emuledlg)
                 {
                     if (theApp.emuledlg->statusbar->m_hWnd)
@@ -511,7 +511,7 @@ void CIPFilter::RemoveAllIPFilters()
 //>>> WiZaRd::LoadStatus [X-Ray]
     if (uLineCount)
     {
-        strPercent.Format(L"Unloading IPfilter - 100%%!");
+        strPercent.Format(L"Unloading IP-Filter: 100%%!");
         theApp.SetSplashText(strPercent);
         if (theApp.emuledlg && theApp.emuledlg->statusbar->m_hWnd)
             theApp.emuledlg->statusbar->SetText(strPercent, SBarLog, 0);
