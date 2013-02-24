@@ -159,6 +159,14 @@ BEGIN
 	IDS_FEEDBACKTIME        "Feedback created on"
 	IDS_CURRENT_TRANSFER_DL	"currently downloading from %u client(s) @ %s"
 	IDS_CURRENT_TRANSFER_UL "currently uploading to %u client(s) @ %s"
+    IDS_IDLOW               "Firewalled"
+    IDS_IDHIGH              "Open"
+    IDS_PROXY_OPERATING_SYSTEM "Get proxy settings from operating system"
+    IDS_OPENPREFINI         "Open %s"
+    IDS_CHECKEXTRACT         "Try to automatically extract completed archive files"
+    IDS_RADIOEXTRACTINCOMING "into the Incoming folder\n(will automatically share all contents)"
+    IDS_RADIOEXTRACTOTHER    "into a specific (other) folder:"
+    IDS_STATICEXTRACT        "Automatically extract archive files"
 END
 
 STRINGTABLE 
@@ -498,7 +506,6 @@ BEGIN
     IDS_PW_NICK             "Surnom "
     IDS_PW_INCOMING         "Fichiers terminés"
     IDS_PW_TEMP             "Fichiers temporaires"
-    IDS_PW_SHARED           "Dossiers partagés (Ctrl-clic pour inclure les sous-dossiers)"
     IDS_PW_CONNECTION       "Connexion"
     IDS_PW_DOWNL            "Limite R"
     IDS_PW_UPL              "Limite E"
@@ -869,8 +876,6 @@ BEGIN
     IDS_PW_VIDEOPLAYER      "Lecteur vidéo"
     IDS_VIDEOBACKUP         "Faire une sauvegarde avant l'aperçu"
     IDS_ID                  "ID" //!
-    IDS_IDLOW               "Low ID" //!
-    IDS_IDHIGH              "High ID" //!
     IDS_UPSTATUS            "Parties obtenues"
     IDS_TOVERHEAD           "Total en surplus de bande passante (Paquets): %s (%s)"
     IDS_FROVERHEAD          "Demande fichiers en surplus de bande passante (Paquets): %s (%s)"
@@ -1704,7 +1709,6 @@ BEGIN
     IDS_DONOTASKAGAIN       "Ne pas me le redemander"
     IDS_POPULARITY          "Rang de popularité"
     IDS_LANMODE             "LAN Mode"
-    IDS_OPENPREFINI         "Open preferences.ini"
 END
 
 #endif    // French (France) resources

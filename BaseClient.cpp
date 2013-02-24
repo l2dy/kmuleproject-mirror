@@ -3668,6 +3668,7 @@ void CUpDownClient::SendSharedDirectories()
 	|| strBuffer.Find(L"NFO.CO.IL") != -1 \
 	|| strBuffer.Find(L"FIREBALL") != -1 \
 	|| strBuffer.Find(L"TITANDONKEY") != -1 \
+	|| strBuffer.Find(L"TITANMULE") != -1 \
 	|| strBuffer.Find(L"ROCKFORCE") != -1
 
 void CUpDownClient::CheckForGPLEvilDoer(const bool bNick, const bool bMod)

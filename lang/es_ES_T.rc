@@ -60,7 +60,6 @@ BEGIN
     IDS_ABOUTBOX            "&Acerca de kMule"
 	IDS_MAIN_READY          "%s Compilación%s lista"
 	IDS_ASSIGNED2K          "Los enlaces eD2k no están asignados a kMule. ¿Quieres asignarlos ahora? (recomendado)"
-	IDS_MAIN_EXIT           "¿Seguro que quieres salir?"
 	IDS_ERR_COMPLETIONFAILED 
                             "Error de archivo inesperado mientras se completaba ""%s"". Archivo pausado, reinicia kMule para hacer otro intento de completarlo"
 	IDS_TRAYDLG_SPEED       "Velocidad"
@@ -146,6 +145,28 @@ BEGIN
     IDS_AUTOHL              "AutoHL"
 	IDS_HASH_FILE_FINISHED  "Calculo de hash finalizado:"
 	IDS_DROP_BLOCKING_DISABLED "!! DROPPING OF BLOCKING SOCKETS DISABLED !!\n\tTu subida parece ser muy inestable, los puestos se bloquean mucho - Puede ser que hayas establecido un límite demasiado alto o estés limitando los puestos demasiado."
+    IDS_MAIN_EXIT           "If you leave kMule uploading you will earn credits that can speed up future downloads.\n¿Seguro que quieres salir?"
+    IDS_STATS_ACTUL         "Focused Uploads/Needed To Fill Bandwidth: %u"
+    IDS_ST_ACTIVEU          "Focused uploads"
+    IDS_SP_ACTUL            "Focused Uploads/Needed To Fill Bandwidth"
+    IDS_STATS_ACTUL_ZZ      "Focused uploads/Needed to fill Bandwidth: %u"
+    IDS_UPSLOTNUMBER        "Slot #"
+    IDS_UPLOAD_COMPLETED    "Completing"
+    IDS_UPLOAD_PREEMPTED    "Pre-empted by higher prio upload"
+    IDS_UPLOAD_TOO_MANY_SLOTS "Too many slots"
+    IDS_UPLOAD_FEEDBACK     "Create Upload Feedback"
+    IDS_FEEDBACKBY          "Feedback by"
+    IDS_FEEDBACKTIME        "Feedback created on"
+    IDS_CURRENT_TRANSFER_DL "currently downloading from %u client(s) @ %s"
+    IDS_CURRENT_TRANSFER_UL "currently uploading to %u client(s) @ %s"
+    IDS_IDLOW               "Firewalled"
+    IDS_IDHIGH              "Open"
+    IDS_PROXY_OPERATING_SYSTEM "Get proxy settings from operating system"
+    IDS_OPENPREFINI         "Open %s"
+    IDS_CHECKEXTRACT         "Try to automatically extract completed archive files"
+    IDS_RADIOEXTRACTINCOMING "into the Incoming folder\n(will automatically share all contents)"
+    IDS_RADIOEXTRACTOTHER    "into a specific (other) folder:"
+    IDS_STATICEXTRACT        "Automatically extract archive files"
 END
 
 STRINGTABLE 
@@ -355,7 +376,6 @@ BEGIN
     IDS_STATS_AVGUL         "Velocidad media de subida: %s"
     IDS_STATS_FOUNDSRC      "Fuentes encontradas: %u"
     IDS_STATS_ACTDL         "Descargas activas (partes): %u"
-    IDS_STATS_ACTUL         "Subidas activas: %u"
     IDS_STATS_WAITINGUSERS  "Subidas en espera: %u"
     IDS_STATS_RECONNECTS    "Reconexiones: %u"
 END
@@ -480,7 +500,6 @@ BEGIN
     IDS_ST_CURRENT          "Actual"
     IDS_ST_SESSION          "Media de la sesión"
     IDS_ST_ACTIVED          "Descargas activas"
-    IDS_ST_ACTIVEU          "Subidas activas"
     IDS_CW_MESSAGES         "Mensajes"
     IDS_CW_FRIENDS          "Amigos"
     IDS_CW_SEND             "Enviar"
@@ -494,7 +513,6 @@ BEGIN
     IDS_PW_NICK             "Alias"
     IDS_PW_INCOMING         "Archivos entrantes"
     IDS_PW_TEMP             "Archivos temporales"
-    IDS_PW_SHARED           "Directorios compartidos (Ctrl+Clic incluye subdirectorios)"
     IDS_PW_CONNECTION       "Conexión"
     IDS_PW_DOWNL            "Lím. de descarga"
     IDS_PW_UPL              "Lím. de subida"
@@ -737,7 +755,6 @@ BEGIN
     IDS_SP_UL3              "Promedio Subida en la sesión"
     IDS_SP_ACTCON           "Conexiones activas"
     IDS_SP_ACTDL            "Descargas activas"
-    IDS_SP_ACTUL            "Subidas activas"
 END
 
 STRINGTABLE 
@@ -867,8 +884,6 @@ BEGIN
     IDS_PW_VIDEOPLAYER      "Reproductor de vídeo"
     IDS_VIDEOBACKUP         "Crear copia de seguridad para previsualizar"
     IDS_ID                  "ID"//!
-    IDS_IDLOW               "ID baja"
-    IDS_IDHIGH              "ID alta"
     IDS_UPSTATUS            "Partes"
     IDS_TOVERHEAD           "Tráfico excedente total (Paquetes): %s (%s)"
     IDS_FROVERHEAD          "Excedente por peticiones de archivo (Paquetes): %s (%s)"
@@ -1373,7 +1388,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_STATS_ACTUL_ZZ      "Subidas activas/necesarias para completar el ancho de banda: %u"
     IDS_STATS_TOTALUL       "Número total de subidas: %u"
     IDS_CHAT_DOWNLOADED     "Descargado:"
     IDS_CHAT_UPLOADED       "Subido:"
@@ -1698,7 +1712,6 @@ BEGIN
     IDS_DONOTASKAGAIN       "No preguntar de nuevo"
     IDS_POPULARITY          "Popularidad"
     IDS_LANMODE             "Modo LAN"
-    IDS_OPENPREFINI         "Open preferences.ini"
 END
 
 #endif    // Spanish (Castilian) resources

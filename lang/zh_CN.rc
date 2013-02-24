@@ -160,7 +160,15 @@ BEGIN
 	IDS_FEEDBACKBY          "反馈信息来自:"
 	IDS_FEEDBACKTIME        "反馈信息创建于"
 	IDS_CURRENT_TRANSFER_DL	"当前正从 %u 个用户下载, 速度为%s"
-	IDS_CURRENT_TRANSFER_UL "当前正向 %u 个用户上传, 速度为%s"	
+	IDS_CURRENT_TRANSFER_UL "当前正向 %u 个用户上传, 速度为%s"
+    IDS_IDLOW               "Firewalled"
+    IDS_IDHIGH              "Open"
+    IDS_PROXY_OPERATING_SYSTEM "Get proxy settings from operating system"
+    IDS_OPENPREFINI         "Open %s"
+    IDS_CHECKEXTRACT         "Try to automatically extract completed archive files"
+    IDS_RADIOEXTRACTINCOMING "into the Incoming folder\n(will automatically share all contents)"
+    IDS_RADIOEXTRACTOTHER    "into a specific (other) folder:"
+    IDS_STATICEXTRACT        "Automatically extract archive files"
 END
 
 STRINGTABLE 
@@ -429,8 +437,6 @@ BEGIN
     IDS_PW_VIDEOPLAYER      "视频播放器"
     IDS_VIDEOBACKUP         "预览时建立备份"
     IDS_ID                  "ID" //!
-    IDS_IDLOW               "LowID"
-    IDS_IDHIGH              "HighID"
     IDS_UPSTATUS            "已获得部分"
     IDS_TOVERHEAD           "总开销(包):%s(%s)"
     IDS_FROVERHEAD          "文件请求开销(包):%s(%s)"
@@ -559,7 +565,6 @@ BEGIN
     IDS_PW_NICK             "昵称"
     IDS_PW_INCOMING         "下载文件"
     IDS_PW_TEMP             "临时文件"
-    IDS_PW_SHARED           "共享目录(按着CTRL键点击以选择子目录)"
     IDS_PW_CONNECTION       "连接"
     IDS_PW_DOWNL            "下载限制"
     IDS_PW_UPL              "上传限制"
@@ -1683,7 +1688,6 @@ BEGIN
     IDS_DONOTASKAGAIN       "不再询问" //"Don't ask me again"
     IDS_POPULARITY          "普及率" //"Popularity Rank"
     IDS_LANMODE             "局域网模式" //"LAN Mode"
-    IDS_OPENPREFINI         "Open preferences.ini"
 END
 
 
