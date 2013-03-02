@@ -64,7 +64,7 @@ public:
     bool		Add(const CUInt128 &uID, UINT uIP, uint16 uUDPPort, uint16 uTCPPort, uint8 uVersion, CKadUDPKey cUDPKey, bool& bIPVerified, bool bUpdate, bool bFromNodesDat, bool bFromHello);
     bool		AddUnfiltered(const CUInt128 &uID, UINT uIP, uint16 uUDPPort, uint16 uTCPPort, uint8 uVersion, CKadUDPKey cUDPKey, bool& bIPVerified, bool bUpdate, bool bFromNodesDat, bool bFromHello);
     bool		Add(CContact* pContact, bool& bUpdate, bool& bOutIPVerified);
-    void		ReadFile(CString strSpecialNodesdate = _T(""));
+    void		ReadFile(CString strSpecialNodesdate = L"");
     bool		VerifyContact(const CUInt128 &uID, UINT uIP);
     CContact*	GetContact(const CUInt128 &uID) const;
     CContact*	GetContact(UINT uIP, uint16 nPort, bool bTCPPort) const;

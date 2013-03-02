@@ -540,7 +540,7 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* pFromEntry)
 
         // copy over the different names, if they are different the one we have right now
         ASSERT(m_listFileNames.GetCount() == 1);   // we should have only one name here, since its the entry from one sinlge source
-        structFileNameEntry structCurrentName = {_T(""), 0};;
+        structFileNameEntry structCurrentName = {L"", 0};;
         if (m_listFileNames.GetHeadPosition() != NULL)
             structCurrentName = m_listFileNames.RemoveHead();
 
@@ -800,7 +800,7 @@ void CKeyEntry::ReadPublishTrackingDataFromFile(CDataIO* pData, bool bIncludesAI
         else
             sToAdd.m_byAICHHashIdx = _UI16_MAX;
 
-        AdjustGlobalPublishTracking(sToAdd.m_uIP, true, _T(""));
+        AdjustGlobalPublishTracking(sToAdd.m_uIP, true, L"");
 
         m_pliPublishingIPs->AddTail(sToAdd);
     }

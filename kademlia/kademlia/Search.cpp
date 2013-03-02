@@ -896,7 +896,7 @@ void CSearch::StorePacket()
             listTag.push_back(new CKadTagStr(TAG_FILENAME, pFile->GetFileName()));
             if (pFile->GetFileRating() != 0)
                 listTag.push_back(new CKadTagUInt(TAG_FILERATING, pFile->GetFileRating()));
-            if (pFile->GetFileComment() != _T(""))
+            if (pFile->GetFileComment() != L"")
                 listTag.push_back(new CKadTagStr(TAG_DESCRIPTION, pFile->GetFileComment()));
             if (pFromContact->GetVersion() >= 2/*47a*/)
                 listTag.push_back(new CKadTagUInt(TAG_FILESIZE, pFile->GetFileSize()));

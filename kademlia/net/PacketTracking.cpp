@@ -223,7 +223,7 @@ bool CPacketTracking::InTrackListIsAllowedPacket(UINT uIP, uint8 byOpcode, bool 
                 if (!rCurTrackedRequest.m_bDbgLogged)
                 {
                     rCurTrackedRequest.m_bDbgLogged = true;
-                    DebugLog(_T("Kad: Request flood detected for opcode 0x%X (0x%X) from IP %s - Droping packets with this opcode"), byOpcode, byDbgOrgOpcode, ipstr(ntohl(uIP)));
+                    DebugLog(_T("Kad: Request flood detected for opcode 0x%X (0x%X) from IP %s - Dropping packets with this opcode"), byOpcode, byDbgOrgOpcode, ipstr(ntohl(uIP)));
                 }
                 return false; // drop packet
             }

@@ -243,7 +243,7 @@ void CKademliaUDPListener::ProcessPacket(const byte* pbyData, UINT uLenData, UIN
     // we do not accept (<= 0.48a) unencrypted incoming packages from port 53 (DNS) to avoid attacks based on DNS protocol confusion
     if (uUDPPort == 53 && senderUDPKey.IsEmpty())
     {
-        DEBUG_ONLY(DebugLog(_T("Droping incoming unencrypted packet on port 53 (DNS), IP: %s"), ipstr(ntohl(uIP))));
+        DEBUG_ONLY(DebugLog(_T("Dropping incoming unencrypted packet on port 53 (DNS), IP: %s"), ipstr(ntohl(uIP))));
         return;
     }
 

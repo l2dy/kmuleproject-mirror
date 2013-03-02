@@ -382,7 +382,7 @@ void CRoutingZone::WriteFile()
                 file.WriteUInt8(pContact->IsIpVerified() ? 1 : 0);
             }
             file.Close();
-            AddDebugLogLine(false, _T("Wrote %ld contact%s to file."), listContacts.size(), ((listContacts.size() == 1) ? _T("") : _T("s")));
+            AddDebugLogLine(false, _T("Wrote %ld contact%s to file."), listContacts.size(), ((listContacts.size() == 1) ? L"" : _T("s")));
         }
         else
             DebugLogError(_T("Unable to store Kad file: %s"), m_sFilename);
