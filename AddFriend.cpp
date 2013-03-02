@@ -73,7 +73,7 @@ BOOL CAddFriend::OnInitDialog()
         if (m_pShowFriend->HasUserhash())
             SetDlgItemText(IDC_USERHASH, md4str(m_pShowFriend->m_abyUserhash));
         else
-            SetDlgItemText(IDC_USERHASH, _T(""));
+            SetDlgItemText(IDC_USERHASH, L"");
 
         if (m_pShowFriend->m_dwLastSeen)
         {
@@ -92,7 +92,7 @@ BOOL CAddFriend::OnInitDialog()
     {
         SetIcon(m_icnWnd = theApp.LoadIcon(_T("AddFriend")), FALSE);
         ((CEdit*)GetDlgItem(IDC_USERNAME))->SetLimitText(thePrefs.GetMaxUserNickLength());
-        SetDlgItemText(IDC_USERHASH, _T(""));
+        SetDlgItemText(IDC_USERHASH, L"");
     }
     return TRUE;
 }

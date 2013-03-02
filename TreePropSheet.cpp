@@ -796,7 +796,7 @@ BOOL CTreePropSheet::OnInitDialog()
     // calculate caption height
     CTabCtrl	wndTabCtrl;
     wndTabCtrl.Create(WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS, rectFrame, this, 0x1234);
-    wndTabCtrl.InsertItem(0, _T(""));
+    wndTabCtrl.InsertItem(0, L"");
     CRect	rectFrameCaption;
     wndTabCtrl.GetItemRect(0, rectFrameCaption);
     wndTabCtrl.DestroyWindow();

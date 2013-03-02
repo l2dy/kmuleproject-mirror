@@ -412,13 +412,13 @@ void CPPgConnection::ShowLimitValues()
     CString buffer;
 
     if (!IsDlgButtonChecked(IDC_ULIMIT_LBL))
-        buffer = _T("");
+        buffer = L"";
     else
         buffer.Format(_T("%u %s"), m_ctlMaxUp.GetPos(), GetResString(IDS_KBYTESPERSEC));
     GetDlgItem(IDC_KBS4)->SetWindowText(buffer);
 
     if (!IsDlgButtonChecked(IDC_DLIMIT_LBL))
-        buffer = _T("");
+        buffer = L"";
     else
         buffer.Format(_T("%u %s"), m_ctlMaxDown.GetPos(), GetResString(IDS_KBYTESPERSEC));
     GetDlgItem(IDC_KBS1)->SetWindowText(buffer);

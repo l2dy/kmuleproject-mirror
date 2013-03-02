@@ -102,7 +102,7 @@ BOOL CSmileySelector::Create(CWnd *pWndParent, const RECT *pRect, CEdit *pwndEdi
     CString strClassName = AfxRegisterWndClass(
                                CS_CLASSDC | CS_SAVEBITS | CS_HREDRAW | CS_VREDRAW,
                                AfxGetApp()->LoadStandardCursor(IDC_ARROW), (HBRUSH)(crBackground + 1), 0);
-    if (!CWnd::CreateEx(0, strClassName, _T(""),
+    if (!CWnd::CreateEx(0, strClassName, L"",
                         WS_POPUP
                         | WS_BORDER
                         | WS_CLIPCHILDREN

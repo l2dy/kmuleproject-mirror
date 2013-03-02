@@ -2210,7 +2210,7 @@ BOOL CSharedFilesCtrl::CShareDropTarget::OnDrop(CWnd* /*pWnd*/, COleDataObject* 
             CStringList liToAddFiles; // all files too add
             CStringList liToAddDirs; // all directories to add
             bool bFromSingleDirectory = true; // are all files from within the same directory
-            CString strSingleDirectory = _T(""); // which would be this one
+            CString strSingleDirectory = L""; // which would be this one
 
             UINT nFileCount = DragQueryFile(hDrop, (UINT)(-1), NULL, 0);
             for (UINT nFile = 0; nFile < nFileCount; nFile++)
@@ -2225,7 +2225,7 @@ BOOL CSharedFilesCtrl::CShareDropTarget::OnDrop(CWnd* /*pWnd*/, COleDataObject* 
                         if (ff.IsDots() || ff.IsSystem() || ff.IsTemporary()
                                 || (!ff.IsDirectory() && (ff.GetLength()==0 || ff.GetLength()>MAX_EMULE_FILE_SIZE))
                                 || (ff.IsDirectory() && !thePrefs.IsShareableDirectory(ff.GetFilePath() + _T('\\')))
-                                || (ff.IsDirectory() && theApp.sharedfiles->ShouldBeShared(ff.GetFilePath()+ _T('\\'), _T(""), false))
+                                || (ff.IsDirectory() && theApp.sharedfiles->ShouldBeShared(ff.GetFilePath()+ _T('\\'), L"", false))
                                 || (!ff.IsDirectory() && theApp.sharedfiles->ShouldBeShared(ff.GetFilePath(), ff.GetFilePath().Left(ff.GetFilePath().ReverseFind('\\') + 1), false)))
                         {
                             DebugLog(_T("Drag&Drop'ed shared File ignored (%s)"), ff.GetFilePath());
@@ -2293,7 +2293,7 @@ BOOL CSharedFilesCtrl::CShareDropTarget::OnDrop(CWnd* /*pWnd*/, COleDataObject* 
                     if (liToAddDirs.GetCount() == 1)
                         theApp.emuledlg->sharedfileswnd->m_ctlSharedDirTree.ShowSharedDirectory(liToAddDirs.GetHead());
                     else
-                        theApp.emuledlg->sharedfileswnd->m_ctlSharedDirTree.ShowSharedDirectory(_T(""));
+                        theApp.emuledlg->sharedfileswnd->m_ctlSharedDirTree.ShowSharedDirectory(L"");
                 }
                 else
                 {

@@ -51,7 +51,7 @@ LastCommonRouteFinder::LastCommonRouteFinder()
     m_NeedMoreSlots = true;
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
-    m_state = _T("");
+    m_state = L"";
 
     needMoreHosts = false;
 
@@ -177,7 +177,7 @@ CurrentPingStruct LastCommonRouteFinder::GetCurrentPing()
     }
     else
     {
-        returnVal.state = _T("");
+        returnVal.state = L"";
         returnVal.latency = 0;
         returnVal.lowest = 0;
         returnVal.currentLimit = 0;
@@ -802,7 +802,7 @@ UINT LastCommonRouteFinder::RunInternal()
             }
 
             pingLocker.Lock();
-            m_state = _T("");
+            m_state = L"";
             pingLocker.Unlock();
 
             // There may be several reasons to start over with tracerouting again.

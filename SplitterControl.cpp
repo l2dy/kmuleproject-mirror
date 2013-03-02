@@ -67,7 +67,7 @@ void CSplitterControl::Create(DWORD dwStyle, const CRect &rect, CWnd *pParent, U
     else // SPS_HORIZONTAL
         rc.bottom = rc.top + 4;
 
-    CStatic::Create(_T(""), dwStyle, rc, pParent, nID);
+    CStatic::Create(L"", dwStyle, rc, pParent, nID);
 
     if (!m_hcurMoveVert)
     {

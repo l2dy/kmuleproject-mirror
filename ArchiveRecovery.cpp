@@ -1964,7 +1964,7 @@ bool CArchiveRecovery::recoverISO(CFile *isoInput, CFile *isoOutput, archiveScan
         ISO_FileFolderEntry rootdir;
         memcpy(&rootdir, svd.descr_type!=0xff?svd.rootdir:pvd.rootdir, 33);
 
-        ISOReadDirectory(aitp, LODWORD(rootdir.sector1OfExtension), isoInput, _T(""));
+        ISOReadDirectory(aitp, LODWORD(rootdir.sector1OfExtension), isoInput, L"");
     }
 
     return true;

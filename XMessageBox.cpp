@@ -1192,7 +1192,7 @@ CXDialogTemplate::CXDialogTemplate(HWND hWnd,
             mbrect.right += 2*SpacingSize;
 
         SetRect(&iconrect, icon_x, icon_y, icon_x + cxIcon + 2, icon_y + cyIcon + 2);
-        AddItem(CXDialogItem::STATICTEXT, 1000, &iconrect, _T(""));
+        AddItem(CXDialogItem::STATICTEXT, 1000, &iconrect, L"");
 
         ///+++1.8
         if (m_bVistaStyle)
@@ -2089,7 +2089,7 @@ INT_PTR CALLBACK CXDialogTemplate::MsgBoxDlgProc(HWND hwnd,
                 TCHAR szBuf[100];
                 ::GetPrivateProfileString(_T("DoNotAsk"),	// section name
                                           szKey,			// key name
-                                          _T(""),			// default string
+                                          L"",			// default string
                                           szBuf,			// destination buffer
                                           countof(szBuf)-1,	// size of destination buffer
                                           szPathName);		// initialization file name
@@ -2715,7 +2715,7 @@ void CXDialogItem::AddItem(CXDialogTemplate& dialog,
 
     int stringLength = (int)(lpszCaption ? _tcslen(lpszCaption) : 0);	//+++1.5
     m_pszCaption = new TCHAR [stringLength + 1];				//+++1.5
-    _tcscpy(m_pszCaption, lpszCaption ? lpszCaption : _T(""));	//+++1.5
+    _tcscpy(m_pszCaption, lpszCaption ? lpszCaption : L"");	//+++1.5
 }
 
 #ifndef XMESSAGEBOX_DO_NOT_SAVE_CHECKBOX
@@ -2914,7 +2914,7 @@ DWORD XMessageBoxGetCheckBox(LPCTSTR lpszCompanyName,
         // data string is hex value of XMessageBox return code
         ::GetPrivateProfileString(_T("DoNotAsk"),	// section name
                                   szKey,			// key name
-                                  _T(""),			// default string
+                                  L"",			// default string
                                   szBuf,			// destination buffer
                                   countof(szBuf)-1,	// size of destination buffer
                                   szPathName);		// initialization file name

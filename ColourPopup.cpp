@@ -121,8 +121,8 @@ CColourPopup::CColourPopup(CPoint p, COLORREF crColour, CWnd* pParentWnd,
 
     m_crColour       = m_crInitialColour = crColour;
     m_pParent        = pParentWnd;
-    m_strDefaultText = (szDefaultText)? szDefaultText : _T("");
-    m_strCustomText  = (szCustomText)?  szCustomText  : _T("");
+    m_strDefaultText = (szDefaultText)? szDefaultText : L"";
+    m_strCustomText  = (szCustomText)?  szCustomText  : L"";
 
     CColourPopup::Create(p, crColour, pParentWnd, szDefaultText, szCustomText);
 }
@@ -217,7 +217,7 @@ BOOL CColourPopup::Create(CPoint p, COLORREF crColour, CWnd* pParentWnd,
                           (HBRUSH)(COLOR_BTNFACE+1),
                           0);
 
-    if (!CWnd::CreateEx(0, szClassName, _T(""), WS_VISIBLE|WS_POPUP,
+    if (!CWnd::CreateEx(0, szClassName, L"", WS_VISIBLE|WS_POPUP,
                         p.x, p.y, 100, 100, // size updated soon
                         pParentWnd->GetSafeHwnd(), 0, NULL))
         return FALSE;
@@ -724,7 +724,7 @@ void CColourPopup::CreateToolTips()
         CRect rect;
         if (!GetCellRect(i, rect))
             continue;
-        m_ToolTip.AddTool(this,_T(""), rect, 1); //  GetColourName(i)
+        m_ToolTip.AddTool(this,L"", rect, 1); //  GetColourName(i)
     }
 }
 

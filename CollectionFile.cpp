@@ -91,7 +91,7 @@ CCollectionFile::CCollectionFile(CFileDataIO* in_data)
             SetFileType(rstrFileType);
     }
 
-    if (GetFileSize() == (uint64)0 || !GetFileName().Compare(_T("")))
+    if (GetFileSize() == (uint64)0 || !GetFileName().Compare(L""))
         ASSERT(0);
 
 //>>> WiZaRd::CollectionEnhancement

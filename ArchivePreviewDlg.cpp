@@ -366,7 +366,7 @@ int CArchivePreviewDlg::ShowAceResults(int succ, archiveScannerThreadParams_s* t
 
     SetDlgItemText(IDC_INFO_STATUS, GetResString(IDS_ARCPARSED) + _T(" ") +
                    (tp->ai->ACEdir->IsEmpty()?GetResString(IDS_ARCPREV_INSUFFDATA):
-                    (tp->file->IsPartFile()?GetResString(IDS_ARCPREV_LISTMAYBEINCOMPL):_T(""))));
+                    (tp->file->IsPartFile()?GetResString(IDS_ARCPREV_LISTMAYBEINCOMPL):L"")));
 
     if (!tp->ai->ACEdir->IsEmpty())
     {
@@ -538,7 +538,7 @@ int CArchivePreviewDlg::ShowISOResults(int succ, archiveScannerThreadParams_s* t
     // file content into list
     SetDlgItemText(IDC_INFO_STATUS, GetResString(IDS_ARCPARSED) + _T(" ") +
                    (tp->ai->ISOdir->IsEmpty()?GetResString(IDS_ARCPREV_INSUFFDATA):
-                    (tp->file->IsPartFile()?GetResString(IDS_ARCPREV_LISTMAYBEINCOMPL):_T(""))));
+                    (tp->file->IsPartFile()?GetResString(IDS_ARCPREV_LISTMAYBEINCOMPL):L"")));
 
     DWORD filecount = 0;
 
@@ -683,7 +683,7 @@ int CArchivePreviewDlg::ShowRarResults(int succ, archiveScannerThreadParams_s* t
     else
         SetDlgItemText(IDC_INFO_STATUS, GetResString(IDS_ARCPARSED) + _T(" ") +
                        (tp->ai->RARdir->IsEmpty()?GetResString(IDS_ARCPREV_INSUFFDATA):
-                        (tp->file->IsPartFile()?GetResString(IDS_ARCPREV_LISTMAYBEINCOMPL):_T(""))));
+                        (tp->file->IsPartFile()?GetResString(IDS_ARCPREV_LISTMAYBEINCOMPL):L"")));
 
     if (!tp->ai->RARdir->IsEmpty())
     {
@@ -1086,10 +1086,10 @@ void CArchivePreviewDlg::UpdateArchiveDisplay(bool doscan)
     m_ContentList.UpdateWindow();
 
     // set infos
-    SetDlgItemText(IDC_APV_FILEINFO, _T(""));
-    SetDlgItemText(IDC_INFO_ATTR, _T(""));
-    SetDlgItemText(IDC_INFO_STATUS, _T(""));
-    SetDlgItemText(IDC_INFO_FILECOUNT, _T(""));
+    SetDlgItemText(IDC_APV_FILEINFO, L"");
+    SetDlgItemText(IDC_INFO_ATTR, L"");
+    SetDlgItemText(IDC_INFO_STATUS, L"");
+    SetDlgItemText(IDC_INFO_FILECOUNT, L"");
 
     if (m_paFiles == NULL || m_paFiles->GetSize() == 0)
         return;

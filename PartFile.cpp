@@ -576,7 +576,7 @@ EPartFileLoadResult CPartFile::ImportShareazaTempfile(LPCTSTR in_directory,LPCTS
     if (!sdFile.Open(fullname, CFile::modeRead|CFile::osSequentialScan|CFile::typeBinary|CFile::shareDenyWrite, &fexpMet))
     {
         CString strError;
-        strError.Format(GetResString(IDS_ERR_OPENMET), in_filename, _T(""));
+        strError.Format(GetResString(IDS_ERR_OPENMET), in_filename, L"");
         TCHAR szError[MAX_CFEXP_ERRORMSG];
         if (fexpMet.GetErrorMessage(szError, ARRSIZE(szError)))
         {
@@ -852,7 +852,7 @@ EPartFileLoadResult CPartFile::LoadPartFile(LPCTSTR in_directory,LPCTSTR in_file
     if (!metFile.Open(m_fullname, CFile::modeRead|CFile::osSequentialScan|CFile::typeBinary|CFile::shareDenyWrite, &fexpMet))
     {
         CString strError;
-        strError.Format(GetResString(IDS_ERR_OPENMET), m_partmetfilename, _T(""));
+        strError.Format(GetResString(IDS_ERR_OPENMET), m_partmetfilename, L"");
         TCHAR szError[MAX_CFEXP_ERRORMSG];
         if (fexpMet.GetErrorMessage(szError, ARRSIZE(szError)))
         {
@@ -1476,7 +1476,7 @@ EPartFileLoadResult CPartFile::LoadPartFile(LPCTSTR in_directory,LPCTSTR in_file
                 {
                     SetFileOp(PFOP_HASHING);
                     SetFileOpProgress(0);
-                    addfilethread->SetValues(0, GetPath(), m_hpartfile.GetFileName(), _T(""), this);
+                    addfilethread->SetValues(0, GetPath(), m_hpartfile.GetFileName(), L"", this);
                     addfilethread->ResumeThread();
                 }
                 else
@@ -3445,7 +3445,7 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
             TCHAR mytemppath[MAX_PATH];
             _tcscpy(mytemppath,m_fullname);
             mytemppath[ _tcslen(mytemppath)-_tcslen(m_partmetfilename)-1]=0;
-            addfilethread->SetValues(NULL, mytemppath, RemoveFileExtension(m_partmetfilename), _T(""), this);
+            addfilethread->SetValues(NULL, mytemppath, RemoveFileExtension(m_partmetfilename), L"", this);
             addfilethread->ResumeThread();
         }
         else
@@ -5949,7 +5949,7 @@ CString CPartFile::GetInfoSummary(bool bNoFormatCommands) const
     else
         status.Format(_T("%s\n"), getPartfileStatus());
 
-    CString strHeadFormatCommand = bNoFormatCommands ? _T("") : _T("<br_head>");
+    CString strHeadFormatCommand = bNoFormatCommands ? L"" : _T("<br_head>");
     CString info;
     info.Format(_T("%s\n")
                 + GetResString(IDS_FD_HASH) + _T(" %s\n")
@@ -6474,7 +6474,7 @@ void CPartFile::RefilterFileComments()
                 // comment filters are already in lowercase, compare with temp. lowercased received comment
                 if (strCommentLower.Find(strFilter) >= 0)
                 {
-                    cur_src->SetFileComment(_T(""));
+                    cur_src->SetFileComment(L"");
                     cur_src->SetFileRating(0);
                     break;
                 }

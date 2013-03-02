@@ -58,7 +58,7 @@ void CIconStatic::SetIcon(LPCTSTR pszIconID)
     // the window label which is already specified for the window (the label which comes from the resource)
     CString strText;
     CStatic::GetWindowText(strText);
-    CStatic::SetWindowText(_T(""));
+    CStatic::SetWindowText(L"");
     if (!strText.IsEmpty() && m_strText.IsEmpty())
         m_strText = strText;
 

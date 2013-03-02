@@ -312,7 +312,7 @@ public:
             }
             return (*m_pfnMediaInfo_Get)(Handle, StreamKind, StreamNumber, strNewParameter, KindOfInfo, KindOfSearch);
         }
-        return _T("");
+        return L"";
     }
 
     int Count_Get(void* Handle, stream_t_C StreamKind, int StreamNumber)
@@ -528,7 +528,7 @@ int CGetMediaInfoThread::Run()
 {
     CoInitialize(NULL);
 
-    HWND hwndRE = CreateWindow(RICHEDIT_CLASS, _T(""), ES_MULTILINE | ES_READONLY | WS_DISABLED, 0, 0, 200, 200, NULL, NULL, NULL, NULL);
+    HWND hwndRE = CreateWindow(RICHEDIT_CLASS, L"", ES_MULTILINE | ES_READONLY | WS_DISABLED, 0, 0, 200, 200, NULL, NULL, NULL, NULL);
     ASSERT(hwndRE);
     if (hwndRE && m_hFont)
         ::SendMessage(hwndRE, WM_SETFONT, (WPARAM)m_hFont, 0);
@@ -627,7 +627,7 @@ LRESULT CFileInfoDialog::OnMediaInfoResult(WPARAM, LPARAM lParam)
     SetDlgItemText(IDC_ASAMPLERATE, _T("-"));
     SetDlgItemText(IDC_ABITRATE, _T("-"));
     SetDlgItemText(IDC_ALANGUAGE, _T("-"));
-    SetDlgItemText(IDC_FULL_FILE_INFO, _T(""));
+    SetDlgItemText(IDC_FULL_FILE_INFO, L"");
 
     SMediaInfoThreadResult* pThreadRes = (SMediaInfoThreadResult*)lParam;
     if (pThreadRes == NULL)
@@ -641,20 +641,20 @@ LRESULT CFileInfoDialog::OnMediaInfoResult(WPARAM, LPARAM lParam)
 
     if (paMediaInfo->GetSize() != m_paFiles->GetSize())
     {
-        SetDlgItemText(IDC_FORMAT, _T(""));
-        SetDlgItemText(IDC_FILESIZE, _T(""));
-        SetDlgItemText(IDC_LENGTH, _T(""));
-        SetDlgItemText(IDC_VCODEC, _T(""));
-        SetDlgItemText(IDC_VBITRATE, _T(""));
-        SetDlgItemText(IDC_VWIDTH, _T(""));
-        SetDlgItemText(IDC_VASPECT, _T(""));
-        SetDlgItemText(IDC_VFPS, _T(""));
-        SetDlgItemText(IDC_ACODEC, _T(""));
-        SetDlgItemText(IDC_ACHANNEL, _T(""));
-        SetDlgItemText(IDC_ASAMPLERATE, _T(""));
-        SetDlgItemText(IDC_ABITRATE, _T(""));
-        SetDlgItemText(IDC_ALANGUAGE, _T(""));
-        SetDlgItemText(IDC_FULL_FILE_INFO, _T(""));
+        SetDlgItemText(IDC_FORMAT, L"");
+        SetDlgItemText(IDC_FILESIZE, L"");
+        SetDlgItemText(IDC_LENGTH, L"");
+        SetDlgItemText(IDC_VCODEC, L"");
+        SetDlgItemText(IDC_VBITRATE, L"");
+        SetDlgItemText(IDC_VWIDTH, L"");
+        SetDlgItemText(IDC_VASPECT, L"");
+        SetDlgItemText(IDC_VFPS, L"");
+        SetDlgItemText(IDC_ACODEC, L"");
+        SetDlgItemText(IDC_ACHANNEL, L"");
+        SetDlgItemText(IDC_ASAMPLERATE, L"");
+        SetDlgItemText(IDC_ABITRATE, L"");
+        SetDlgItemText(IDC_ALANGUAGE, L"");
+        SetDlgItemText(IDC_FULL_FILE_INFO, L"");
         delete pThreadRes;
         return 1;
     }
@@ -793,7 +793,7 @@ LRESULT CFileInfoDialog::OnMediaInfoResult(WPARAM, LPARAM lParam)
         if (!bDiffVideoCompression && !ami.strVideoFormat.IsEmpty())
             SetDlgItemText(IDC_VCODEC, ami.strVideoFormat);
         else
-            SetDlgItemText(IDC_VCODEC, _T(""));
+            SetDlgItemText(IDC_VCODEC, L"");
 
         if (!bDiffVideoBitRate && ami.video.dwBitRate)
         {
@@ -804,7 +804,7 @@ LRESULT CFileInfoDialog::OnMediaInfoResult(WPARAM, LPARAM lParam)
             SetDlgItemText(IDC_VBITRATE, buffer);
         }
         else
-            SetDlgItemText(IDC_VBITRATE, _T(""));
+            SetDlgItemText(IDC_VBITRATE, L"");
 
         buffer.Empty();
         if (!bDiffVideoWidth && ami.video.bmiHeader.biWidth && !bDiffVideoHeight && ami.video.bmiHeader.biHeight)
@@ -813,7 +813,7 @@ LRESULT CFileInfoDialog::OnMediaInfoResult(WPARAM, LPARAM lParam)
             SetDlgItemText(IDC_VWIDTH, buffer);
         }
         else
-            SetDlgItemText(IDC_VWIDTH, _T(""));
+            SetDlgItemText(IDC_VWIDTH, L"");
 
         if (!bDiffVideoAspectRatio && ami.fVideoAspectRatio)
         {
@@ -824,7 +824,7 @@ LRESULT CFileInfoDialog::OnMediaInfoResult(WPARAM, LPARAM lParam)
             SetDlgItemText(IDC_VASPECT, buffer);
         }
         else
-            SetDlgItemText(IDC_VASPECT, _T(""));
+            SetDlgItemText(IDC_VASPECT, L"");
 
         if (!bDiffVideoFrameRate && ami.fVideoFrameRate)
         {
@@ -832,7 +832,7 @@ LRESULT CFileInfoDialog::OnMediaInfoResult(WPARAM, LPARAM lParam)
             SetDlgItemText(IDC_VFPS, buffer);
         }
         else
-            SetDlgItemText(IDC_VFPS, _T(""));
+            SetDlgItemText(IDC_VFPS, L"");
     }
 
     if (ami.iAudioStreams)
@@ -845,7 +845,7 @@ LRESULT CFileInfoDialog::OnMediaInfoResult(WPARAM, LPARAM lParam)
         if (!bDiffAudioCompression && !ami.strAudioFormat.IsEmpty())
             SetDlgItemText(IDC_ACODEC, ami.strAudioFormat);
         else
-            SetDlgItemText(IDC_ACODEC, _T(""));
+            SetDlgItemText(IDC_ACODEC, L"");
 
         if (!bDiffAudioChannels && ami.audio.nChannels)
         {
@@ -866,7 +866,7 @@ LRESULT CFileInfoDialog::OnMediaInfoResult(WPARAM, LPARAM lParam)
             }
         }
         else
-            SetDlgItemText(IDC_ACHANNEL, _T(""));
+            SetDlgItemText(IDC_ACHANNEL, L"");
 
         if (!bDiffAudioSamplesPerSec && ami.audio.nSamplesPerSec)
         {
@@ -874,7 +874,7 @@ LRESULT CFileInfoDialog::OnMediaInfoResult(WPARAM, LPARAM lParam)
             SetDlgItemText(IDC_ASAMPLERATE, buffer);
         }
         else
-            SetDlgItemText(IDC_ASAMPLERATE, _T(""));
+            SetDlgItemText(IDC_ASAMPLERATE, L"");
 
         if (!bDiffAudioAvgBytesPerSec && ami.audio.nAvgBytesPerSec)
         {
@@ -885,12 +885,12 @@ LRESULT CFileInfoDialog::OnMediaInfoResult(WPARAM, LPARAM lParam)
             SetDlgItemText(IDC_ABITRATE, buffer);
         }
         else
-            SetDlgItemText(IDC_ABITRATE, _T(""));
+            SetDlgItemText(IDC_ABITRATE, L"");
 
         if (!bDiffAudioLanguage && !ami.strAudioLanguage.IsEmpty())
             SetDlgItemText(IDC_ALANGUAGE, ami.strAudioLanguage);
         else
-            SetDlgItemText(IDC_ALANGUAGE, _T(""));
+            SetDlgItemText(IDC_ALANGUAGE, L"");
     }
 
     if (!m_bReducedDlg)

@@ -120,7 +120,7 @@ void CFileIdentifierBase::WriteIdentifier(CFileDataIO* pFile, bool bKadExcludeMD
 CString	CFileIdentifierBase::DbgInfo() const
 {
     //TODO fileident
-    return _T("");
+    return L"";
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // CFileIdentifier

@@ -34,7 +34,7 @@ END_MESSAGE_MAP()
 
 CListViewSearchDlg::CListViewSearchDlg(CWnd* pParent /*=NULL*/)
     : CDialog(CListViewSearchDlg::IDD, pParent)
-    , m_strFindText(_T(""))
+    , m_strFindText(L"")
 {
     m_pListView = NULL;
     m_iSearchColumn = 0;

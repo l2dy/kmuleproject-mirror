@@ -484,7 +484,7 @@ void CHTRichEditCtrl::SafeAddLine(int nPos, LPCTSTR pszLine, int iLen, long& lSt
             // delete 1st line
             int iLine0Len = LineLength(0) + 1; // add NL character
             SetSel(0, iLine0Len);
-            ReplaceSel(_T(""));
+            ReplaceSel(L"");
 
             // update any possible available selection
             lStartChar -= iLine0Len;
@@ -521,12 +521,12 @@ void CHTRichEditCtrl::SafeAddLine(int nPos, LPCTSTR pszLine, int iLen, long& lSt
         {
             // delete the previous partially added line
             SetSel(nPos, -1);
-            ReplaceSel(_T(""));
+            ReplaceSel(L"");
 
             // delete 1st line
             int iLine0Len = LineLength(0) + 1; // add NL character
             SetSel(0, iLine0Len);
-            ReplaceSel(_T(""));
+            ReplaceSel(L"");
 
             // update any possible available selection
             lStartChar -= iLine0Len;
@@ -561,7 +561,7 @@ void CHTRichEditCtrl::Reset()
 {
     m_astrBuff.RemoveAll();
     SetRedraw(FALSE);
-    SetWindowText(_T(""));
+    SetWindowText(L"");
     SetRedraw();
     Invalidate();
 }
@@ -1531,7 +1531,7 @@ bool CHTRichEditCtrl::AddCaptcha(HBITMAP hbmp)
 
     if ((hr = pIRichEditOle->InsertObject(&reobject)) != S_OK)
         return false;
-    ReplaceSel(_T(""));
+    ReplaceSel(L"");
 
     return true;
 }

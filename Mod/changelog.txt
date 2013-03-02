@@ -163,7 +163,7 @@ Legend:    + added    ~ changed    - removed    ! fixed    > updated
 ! fixed a minimule crash under Wine - thx to ]Axl[ [WiZaRd]
 ~ don't check for "already in use" ports when updating or UPnP has been disabled [WiZaRd]
 
-XXXXYYZZ:
+20130224:
 ~ for bettter understanding, we changed "low id" to "firewalled" and "high id" to "open" [WiZaRd]
 + added button to proxy dialog to retrieve the OS proxy settings [WiZaRd]
 ! WINE compatibility [WiZaRd] - see bewlow!
@@ -178,3 +178,6 @@ XXXXYYZZ:
 ~ removed shared dirs from options [WiZaRd]
  * using the shared files tab offers way more functionality!
 ~ added "titanmule" to GPL breakers string list [WiZaRd]
+
+XXXXYYZZ:
+> updated miniupnplib support to v1.8 (11/02/2013) [Tuxman/WiZaRd]

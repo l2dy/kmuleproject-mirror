@@ -384,7 +384,7 @@ void CMuleToolbarCtrl::OnNmRClick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
         menuBitmaps.EnableMenuItem(MP_TOOLBARBITMAP, MF_DISABLED);
         checked = true;
     }
-    m_astrToolbarPaths.Add(_T("")); // dummy entry for 'Default' menu item
+    m_astrToolbarPaths.Add(L""); // dummy entry for 'Default' menu item
     int i = 1;
     if (!thePrefs.GetMuleDirectory(EMULE_TOOLBARDIR).IsEmpty())
     {
@@ -457,7 +457,7 @@ void CMuleToolbarCtrl::OnNmRClick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
         menuSkins.EnableMenuItem(MP_SKIN_PROFILE, MF_DISABLED);
         checked = true;
     }
-    m_astrSkinPaths.Add(_T("")); // dummy entry for 'Default' menu item
+    m_astrSkinPaths.Add(L""); // dummy entry for 'Default' menu item
     i = 1;
     if (!thePrefs.GetMuleDirectory(EMULE_SKINDIR, false).IsEmpty())
     {

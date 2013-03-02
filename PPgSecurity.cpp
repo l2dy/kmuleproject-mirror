@@ -366,7 +366,7 @@ BOOL CPPgSecurity::PreTranslateMessage(MSG* pMsg)
                     GetDlgItem(IDC_UPDATEURL)->GetWindowText(strText);
                     if (!strText.IsEmpty())
                     {
-                        GetDlgItem(IDC_UPDATEURL)->SetWindowText(_T("")); // this seems to be the only chance to let the dropdown list to disapear
+                        GetDlgItem(IDC_UPDATEURL)->SetWindowText(L""); // this seems to be the only chance to let the dropdown list to disapear
                         GetDlgItem(IDC_UPDATEURL)->SetWindowText(strText);
                         ((CEdit*)GetDlgItem(IDC_UPDATEURL))->SetSel(strText.GetLength(), strText.GetLength());
                     }
@@ -390,7 +390,7 @@ void CPPgSecurity::OnDDClicked()
 {
     CWnd* box=GetDlgItem(IDC_UPDATEURL);
     box->SetFocus();
-    box->SetWindowText(_T(""));
+    box->SetWindowText(L"");
     box->SendMessage(WM_KEYDOWN,VK_DOWN,0x00510001);
 }
 

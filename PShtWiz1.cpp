@@ -468,7 +468,7 @@ BOOL CPPgWiz1Ports::OnInitDialog()
     SetDlgItemText(IDC_TESTINFO , GetResString(IDS_TESTINFO));
     SetDlgItemText(IDC_STARTTEST, GetResString(IDS_STARTTEST));
     SetDlgItemText(IDC_UPNPSTART, GetResString(IDS_UPNPSTART));
-    SetDlgItemText(IDC_UPNPSTATUS, _T(""));
+    SetDlgItemText(IDC_UPNPSTATUS, L"");
 
     return TRUE;
 }

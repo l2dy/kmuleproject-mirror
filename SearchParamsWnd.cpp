@@ -704,7 +704,7 @@ BOOL CSearchParamsWnd::PreTranslateMessage(MSG* pMsg)
                 m_ctlName.GetWindowText(strText);
                 if (!strText.IsEmpty())
                 {
-                    m_ctlName.SetWindowText(_T("")); // this seems to be the only chance to let the dropdown list to disapear
+                    m_ctlName.SetWindowText(L""); // this seems to be the only chance to let the dropdown list to disapear
                     m_ctlName.SetWindowText(strText);
                     m_ctlName.SetSel(strText.GetLength(), strText.GetLength());
                 }
@@ -784,7 +784,7 @@ void CSearchParamsWnd::OnCbnSelEndOkMethod()
 void CSearchParamsWnd::OnDDClicked()
 {
     m_ctlName.SetFocus();
-    m_ctlName.SetWindowText(_T(""));
+    m_ctlName.SetWindowText(L"");
     m_ctlName.SendMessage(WM_KEYDOWN, VK_DOWN, 0x00510001);
 }
 
@@ -807,7 +807,7 @@ void CSearchParamsWnd::OnEnChangeName()
 
 void CSearchParamsWnd::OnBnClickedSearchReset()
 {
-    m_ctlName.SetWindowText(_T(""));
+    m_ctlName.SetWindowText(L"");
 
     // Win98: "CComboBoxEx2::SelectString" fails under Win98!
     //if (!m_ctlFileType.SelectString(GetResString(IDS_SEARCH_ANY)))
@@ -816,7 +816,7 @@ void CSearchParamsWnd::OnBnClickedSearchReset()
         m_ctlFileType.SetCurSel(0);
 
     for (int i = 0; i < m_ctlOpts.GetItemCount(); i++)
-        m_ctlOpts.SetItemText(i, 1, _T(""));
+        m_ctlOpts.SetItemText(i, 1, L"");
 
     OnEnChangeName();
 }
@@ -1002,7 +1002,7 @@ SSearchParams* CSearchParamsWnd::GetParameters()
     if (ullMaxSize < ullMinSize)
     {
         ullMaxSize = 0; // TODO: Create a message box for that
-        m_ctlOpts.SetItemText(orMaxSize, 1, _T(""));
+        m_ctlOpts.SetItemText(orMaxSize, 1, L"");
     }
 
     CString strExtension;

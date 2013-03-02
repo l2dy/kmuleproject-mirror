@@ -284,7 +284,7 @@ BOOL CStatisticsTree::CheckState(HTREEITEM hItem, UINT state)
 CString CStatisticsTree::GetItemText(HTREEITEM theItem)
 {
     if (theItem == NULL)
-        return _T("");
+        return L"";
 
     TVITEM item;
     TCHAR szText[1024];
@@ -299,7 +299,7 @@ CString CStatisticsTree::GetItemText(HTREEITEM theItem)
         return szText;
     }
 
-    return _T("");
+    return L"";
 }
 
 // This seperates the title from the value in a tree item that has
@@ -314,19 +314,19 @@ CString CStatisticsTree::GetItemText(HTREEITEM theItem)
 CString CStatisticsTree::GetItemText(HTREEITEM theItem, int getPart)
 {
     if (theItem == NULL)
-        return _T("");
+        return L"";
 
     CString fullText, returnText;
     fullText = GetItemText(theItem);
 
     if (fullText.IsEmpty())
-        return _T("");
+        return L"";
 
     int posSeparator = fullText.Find(_T(": "));
 
     if (posSeparator < 1)
     {
-        returnText = getPart == GET_TITLE ? fullText : _T("");
+        returnText = getPart == GET_TITLE ? fullText : L"";
         return returnText;
     }
 
@@ -335,7 +335,7 @@ CString CStatisticsTree::GetItemText(HTREEITEM theItem, int getPart)
     else if (getPart == GET_VALUE)
         returnText = fullText.Mid(posSeparator + 2);
     else
-        returnText = _T("");
+        returnText = L"";
 
     return returnText;
 }
@@ -544,10 +544,10 @@ CString CStatisticsTree::GetHTMLForExport(HTREEITEM theItem, int theItemLevel, b
         else
         {
             strChild = _T("space");
-            strDiv=_T("");
-            strDivStart=_T("");
-            strDivEnd=_T("");
-            strName=_T("");
+            strDiv=L"";
+            strDivStart=L"";
+            strDivEnd=L"";
+            strName=L"";
         }
         strBuffer += _T("\n");
         for (int i = 0; i < theItemLevel; i++)

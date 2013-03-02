@@ -1129,7 +1129,7 @@ void CAICHRecoveryHashSet::UntrustedHashReceived(const CAICHHash& Hash, UINT dwF
         {
             if (!m_aUntrustedHashs[i].AddSigningIP(dwFromIP, true))
             {
-                AddDebugLogLine(DLP_LOW, false, _T("Received different AICH hashs for file %s from IP/20 %s, ignored"), (m_pOwner != NULL) ? m_pOwner->GetFileName() : _T(""), dwFromIP);
+                AddDebugLogLine(DLP_LOW, false, _T("Received different AICH hashs for file %s from IP/20 %s, ignored"), (m_pOwner != NULL) ? m_pOwner->GetFileName() : L"", dwFromIP);
                 // nothing changed, so we can return early without any rechecks
                 return;
             }
@@ -1164,7 +1164,7 @@ void CAICHRecoveryHashSet::UntrustedHashReceived(const CAICHHash& Hash, UINT dwF
     {
         //trusted
         //theApp.QueueDebugLogLine(false, _T("AICH Hash received: %s (%sadded), We have now %u hash from %u unique IPs. We trust the Hash %s from %u clients (%u%%). Added IP:%s, file: %s")
-        //, Hash.GetString(), bAdded? _T(""):_T("not "), m_aUntrustedHashs.GetCount(), nSigningIPsTotal, m_aUntrustedHashs[nMostTrustedPos].m_Hash.GetString()
+        //, Hash.GetString(), bAdded? L"":_T("not "), m_aUntrustedHashs.GetCount(), nSigningIPsTotal, m_aUntrustedHashs[nMostTrustedPos].m_Hash.GetString()
         //, nMostTrustedIPs, (100 * nMostTrustedIPs)/nSigningIPsTotal, ipstr(dwFromIP & 0x00F0FFFF), m_pOwner->GetFileName());
 
         SetStatus(AICH_TRUSTED);
@@ -1178,7 +1178,7 @@ void CAICHRecoveryHashSet::UntrustedHashReceived(const CAICHHash& Hash, UINT dwF
     {
         // untrusted
         //theApp.QueueDebugLogLine(false, _T("AICH Hash received: %s (%sadded), We have now %u hash from %u unique IPs. Best Hash (%s) is from %u clients (%u%%) - but we dont trust it yet. Added IP:%s, file: %s")
-        //	, Hash.GetString(), bAdded? _T(""):_T("not "), m_aUntrustedHashs.GetCount(), nSigningIPsTotal, m_aUntrustedHashs[nMostTrustedPos].m_Hash.GetString()
+        //	, Hash.GetString(), bAdded? L"":_T("not "), m_aUntrustedHashs.GetCount(), nSigningIPsTotal, m_aUntrustedHashs[nMostTrustedPos].m_Hash.GetString()
         //	, nMostTrustedIPs, (100 * nMostTrustedIPs)/nSigningIPsTotal, ipstr(dwFromIP & 0x00F0FFFF), m_pOwner->GetFileName());
 
         SetStatus(AICH_UNTRUSTED);

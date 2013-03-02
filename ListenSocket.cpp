@@ -949,7 +949,7 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
                                 theApp.sharedfiles->m_Files_map.GetNextAssoc(pos, bufKey, cur_file);
 
                                 // all files which are not within a shared directory have to be single shared files
-                                if (((!bSingleSharedFiles && CompareDirectories(strReqDir, cur_file->GetSharedDirectory()) == 0) || (bSingleSharedFiles && !theApp.sharedfiles->ShouldBeShared(cur_file->GetSharedDirectory(), _T(""), false)))
+                                if (((!bSingleSharedFiles && CompareDirectories(strReqDir, cur_file->GetSharedDirectory()) == 0) || (bSingleSharedFiles && !theApp.sharedfiles->ShouldBeShared(cur_file->GetSharedDirectory(), L"", false)))
                                         && (!cur_file->IsLargeFile() || client->SupportsLargeFiles()))
                                 {
                                     list.AddTail(cur_file);

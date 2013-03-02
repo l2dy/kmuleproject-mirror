@@ -121,7 +121,7 @@ void CChatWnd::ShowFriendMsgDetails(CFriend* pFriend)
         // Name
         if (pFriend->GetLinkedClient())
             GetDlgItem(IDC_FRIENDS_NAME_EDIT)->SetWindowText(pFriend->GetLinkedClient()->GetUserName());
-        else if (pFriend->m_strName != _T(""))
+        else if (pFriend->m_strName != L"")
             GetDlgItem(IDC_FRIENDS_NAME_EDIT)->SetWindowText(pFriend->m_strName);
         else
             GetDlgItem(IDC_FRIENDS_NAME_EDIT)->SetWindowText(_T("?"));
@@ -489,7 +489,7 @@ void CChatWnd::ScrollHistory(bool down)
     else
         --ci->history_pos;
 
-    CString strBuffer = (ci->history_pos == ci->history.GetCount()) ? _T("") : ci->history.GetAt(ci->history_pos);
+    CString strBuffer = (ci->history_pos == ci->history.GetCount()) ? L"" : ci->history.GetAt(ci->history_pos);
     m_wndMessage.SetWindowText(strBuffer);
     m_wndMessage.SetSel(strBuffer.GetLength(), strBuffer.GetLength());
 }
@@ -556,7 +556,7 @@ void CChatWnd::OnBnClickedClose()
     CString strMessage;
     m_wndMessage.GetWindowText(strMessage);
     if (!strMessage.IsEmpty())
-        m_wndMessage.SetWindowText(_T(""));
+        m_wndMessage.SetWindowText(L"");
 //<<< Tux::Fix
     chatselector.EndSession();
 }
@@ -569,7 +569,7 @@ void CChatWnd::OnBnClickedSend()
     if (!strMessage.IsEmpty())
     {
         if (chatselector.SendMessage(strMessage))
-            m_wndMessage.SetWindowText(_T(""));
+            m_wndMessage.SetWindowText(L"");
     }
 
     m_wndMessage.SetFocus();

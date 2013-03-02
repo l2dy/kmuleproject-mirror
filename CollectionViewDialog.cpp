@@ -181,7 +181,7 @@ void CCollectionViewDialog::DownloadSelected(void)
 
     if (m_AddNewCatagory.GetCheck() && !iNewIndex)
     {
-        iNewIndex = theApp.emuledlg->transferwnd->AddCategory(m_pCollection->m_sCollectionName, thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR), _T(""), _T(""), true);
+        iNewIndex = theApp.emuledlg->transferwnd->AddCategory(m_pCollection->m_sCollectionName, thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR), L"", L"", true);
         theApp.emuledlg->searchwnd->UpdateCatTabs();
     }
 

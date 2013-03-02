@@ -36,7 +36,7 @@ CString	CShareableFile::GetInfoSummary(bool bNoFormatCommands) const
     if (strType.IsEmpty())
         strType = _T("-");
 
-    CString strHeadFormatCommand = bNoFormatCommands ? _T("") : _T("<br_head>");
+    CString strHeadFormatCommand = bNoFormatCommands ? L"" : _T("<br_head>");
     CString info;
     info.Format(_T("%s\n")
                 + GetResString(IDS_FD_SIZE) + _T(" %s\n") + strHeadFormatCommand + _T("\n")

@@ -460,7 +460,7 @@ bool CKnownFile::CreateFromFile(LPCTSTR in_directory, LPCTSTR in_filename, LPVOI
     CString strFilePath;
     if (!_tmakepathlimit(strFilePath.GetBuffer(MAX_PATH), NULL, in_directory, in_filename, NULL))
     {
-        LogError(GetResString(IDS_ERR_FILEOPEN), in_filename, _T(""));
+        LogError(GetResString(IDS_ERR_FILEOPEN), in_filename, L"");
         return false;
     }
     strFilePath.ReleaseBuffer();
@@ -468,7 +468,7 @@ bool CKnownFile::CreateFromFile(LPCTSTR in_directory, LPCTSTR in_filename, LPVOI
     FILE* file = _tfsopen(strFilePath, _T("rbS"), _SH_DENYNO); // can not use _SH_DENYWR because we may access a completing part file
     if (!file)
     {
-        LogError(GetResString(IDS_ERR_FILEOPEN) + _T(" - %s"), strFilePath, _T(""), _tcserror(errno));
+        LogError(GetResString(IDS_ERR_FILEOPEN) + _T(" - %s"), strFilePath, L"", _tcserror(errno));
         return false;
     }
 
@@ -635,7 +635,7 @@ bool CKnownFile::CreateAICHHashSetOnly()
     FILE* file = _tfsopen(GetFilePath(), _T("rbS"), _SH_DENYNO); // can not use _SH_DENYWR because we may access a completing part file
     if (!file)
     {
-        LogError(GetResString(IDS_ERR_FILEOPEN) + _T(" - %s"), GetFilePath(), _T(""), _tcserror(errno));
+        LogError(GetResString(IDS_ERR_FILEOPEN) + _T(" - %s"), GetFilePath(), L"", _tcserror(errno));
         return false;
     }
     // we are reading the file data later in 8K blocks, adjust the internal file stream buffer accordingly
@@ -2021,7 +2021,7 @@ bool CKnownFile::PublishNotes()
     {
         return false;
     }
-    if (GetFileComment() != _T(""))
+    if (GetFileComment() != L"")
     {
         m_lastPublishTimeKadNotes = (UINT)time(NULL)+KADEMLIAREPUBLISHTIMEN;
         return true;
@@ -2122,7 +2122,7 @@ CString CKnownFile::GetInfoSummary(bool bNoFormatCommands) const
                    , IsAICHRecoverHashSetAvailable() ? _T("Yes") : _T("No"));
 #endif
 
-    CString strHeadFormatCommand = bNoFormatCommands ? _T("") : _T("<br_head>");
+    CString strHeadFormatCommand = bNoFormatCommands ? L"" : _T("<br_head>");
     CString info;
     info.Format(_T("%s\n")
                 + CString(_T("eD2K ")) + GetResString(IDS_FD_HASH) + _T(" %s\n")

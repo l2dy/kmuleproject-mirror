@@ -172,9 +172,9 @@ void CSearchList::NewSearch(CSearchListCtrl* pWnd, CStringA strResultFileType, U
             m_astrSpamCheckCurSearchExp.Add(strQuoted);
             strSearchExpression.Delete(nPos, (nPos2 - nPos) + 1);
         }
-        strSearchExpression.Replace(_T("AND"), _T(""));
-        strSearchExpression.Replace(_T("OR"), _T(""));
-        strSearchExpression.Replace(_T("NOT"), _T(""));
+        strSearchExpression.Replace(_T("AND"), L"");
+        strSearchExpression.Replace(_T("OR"), L"");
+        strSearchExpression.Replace(_T("NOT"), L"");
         nPos = 0;
         CString strToken = strSearchExpression.Tokenize(_T(".[]()!-'_ "), nPos);
         while (!strToken.IsEmpty())

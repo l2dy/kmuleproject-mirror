@@ -351,7 +351,7 @@ CString	CSearchResultsWnd::CreateWebQuery(SSearchParams* pParams)
 
         break;
     default:
-        return _T("");
+        return L"";
     }
     return query;
 }

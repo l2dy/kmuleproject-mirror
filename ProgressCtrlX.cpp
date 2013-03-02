@@ -474,7 +474,7 @@ void CProgressCtrlX::SetTextFormat(LPCTSTR szFormat, DWORD ffFormat)
     if (!szFormat || !szFormat[0] || !ffFormat)
     {
         ModifyStyle(PBS_TEXTMASK, 0);
-        SetWindowText(_T(""));
+        SetWindowText(L"");
     }
     else
     {

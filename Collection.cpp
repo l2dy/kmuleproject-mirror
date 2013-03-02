@@ -37,8 +37,8 @@ static char THIS_FILE[] = __FILE__;
 #define COLLECTION_FILE_VERSION2_LARGEFILES		0x02
 
 CCollection::CCollection(void)
-    : m_sCollectionName(_T(""))
-    , m_sCollectionAuthorName(_T(""))
+    : m_sCollectionName(L"")
+    , m_sCollectionAuthorName(L"")
     , m_bTextFormat(false)
 {
     m_CollectionFilesMap.InitHashTable(1031);
@@ -141,7 +141,7 @@ void CCollection::SetCollectionAuthorKey(const byte* abyCollectionAuthorKey, UIN
 
 bool CCollection::InitCollectionFromFile(const CString& sFilePath, CString sFileName)
 {
-    DEBUG_ONLY(sFileName.Replace(COLLECTION_FILEEXTENSION, _T("")));
+    DEBUG_ONLY(sFileName.Replace(COLLECTION_FILEEXTENSION, L""));
 
     bool bCollectionLoaded = false;
 
@@ -222,14 +222,14 @@ bool CCollection::InitCollectionFromFile(const CString& sFilePath, CString sFile
                     delete[] m_pabyCollectionAuthorKey;
                     m_pabyCollectionAuthorKey = NULL;
                     m_nKeySize = 0;
-                    m_sCollectionAuthorName = _T("");
+                    m_sCollectionAuthorName = L"";
                 }
                 else
                     DebugLog(_T("Collection %s: Public key verified"), m_sCollectionName);
 
             }
             else
-                m_sCollectionAuthorName = _T("");
+                m_sCollectionAuthorName = L"";
             data.Close();
         }
         catch (CFileException* error)
@@ -444,7 +444,7 @@ CString CCollection::GetCollectionAuthorKeyString()
     if (m_pabyCollectionAuthorKey != NULL)
         return EncodeBase16(m_pabyCollectionAuthorKey, m_nKeySize);
     else
-        return CString(_T(""));
+        return CString(L"");
 }
 
 CString	CCollection::GetAuthorKeyHashString()
@@ -456,5 +456,5 @@ CString	CCollection::GetAuthorKeyHashString()
         strResult.MakeUpper();
         return strResult;
     }
-    return CString(_T(""));
+    return CString(L"");
 }

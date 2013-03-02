@@ -634,7 +634,7 @@ void CToolTipCtrlX::OnNmCustomDraw(NMHDR *pNMHDR, LRESULT *pResult)
     // NMTTCUSTOMDRAW 00000a50	DT_NOPREFIX |               DT_EXTERNALLEADING | DT_EXPANDTABS | DT_WORDBREAK
 
     //if (pNMCD->nmcd.dwDrawStage == CDDS_PREPAINT && pNMCD->uDrawFlags & DT_CALCRECT)
-    //	DebugLog(_T(""));
+    //	DebugLog(L"");
     //DebugLog(_T("OnNmCustomDraw: DrawFlags=%08x DrawStage=%08x ItemSpec=%08x ItemState=%08x ItemlParam=%08x rc=%4d,%4d,(%4dx%4d), styles=%08x  exStyles=%08x"), pNMCD->uDrawFlags, pNMCD->nmcd.dwDrawStage, pNMCD->nmcd.dwItemSpec, pNMCD->nmcd.uItemState, pNMCD->nmcd.lItemlParam, pNMCD->nmcd.rc.left, pNMCD->nmcd.rc.top, pNMCD->nmcd.rc.right - pNMCD->nmcd.rc.left, pNMCD->nmcd.rc.bottom - pNMCD->nmcd.rc.top, GetStyle(), GetWindowLong(m_hWnd, GWL_EXSTYLE));
 
     if (theApp.m_ullComCtrlVer <= MAKEDLLVERULL(5,81,0,0))

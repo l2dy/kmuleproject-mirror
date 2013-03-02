@@ -479,7 +479,7 @@ CString CAbstractFile::GetED2kLink(bool bHashset, bool bHTML, bool bHostname, bo
     if (this == NULL)
     {
         ASSERT(0);
-        return _T("");
+        return L"";
     }
     CString strLink, strBuffer;
     strLink.Format(_T("ed2k://|file|%s|%I64u|%s|"),

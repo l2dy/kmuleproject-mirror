@@ -67,14 +67,6 @@ enum EKadState
     KS_CONNECTING_FWCHECK_UDP
 };
 
-//>>> WiZaRd::ClientAnalyzer
-#define SO_SHAREAZA2		28	// Spike2 - Enhanced Client Recognition
-#define SO_SHAREAZA3		40  // Spike2 - Enhanced Client Recognition
-#define SO_MLDONKEY2		52	// Spike2 - Enhanced Client Recognition (from aMule)
-#define SO_SHAREAZA4		68	// Spike2 - Enhanced Client Recognition (from aMule)
-#define SO_MLDONKEY3		152	// Spike2 - Enhanced Client Recognition (from aMule)
-//<<< WiZaRd::ClientAnalyzer
-
 enum EClientSoftware
 {
     SO_EMULE			= 0,	// default
@@ -90,13 +82,18 @@ enum EClientSoftware
     SO_MLDONKEY			= 10,	// ET_COMPATIBLECLIENT
     SO_LPHANT			= 20,	// ET_COMPATIBLECLIENT
 //>>> WiZaRd::ClientAnalyzer
+	SO_SHAREAZA2		= 28,	// Spike2 - Enhanced Client Recognition
     SO_TRUSTYFILES		= 30,	// Spike2 - Enhanced Client Recognition
+	SO_SHAREAZA3		= 40,	// Spike2 - Enhanced Client Recognition
 //<<< WiZaRd::ClientAnalyzer
     // other client types which are not identified with ET_COMPATIBLECLIENT
     SO_EDONKEYHYBRID	= 50,
 //>>> WiZaRd::ClientAnalyzer
     SO_EDONKEY			= 51,	// Spike2 - Enhanced Client Recognition (from aMule)
+	SO_MLDONKEY2		= 52,	// Spike2 - Enhanced Client Recognition (from aMule)
     SO_OLDEMULE			= 53,	// Spike2 - Enhanced Client Recognition (from aMule)
+	SO_SHAREAZA4		= 68,	// Spike2 - Enhanced Client Recognition (from aMule)
+	SO_MLDONKEY3		= 152,	// Spike2 - Enhanced Client Recognition (from aMule)
 //<<< WiZaRd::ClientAnalyzer
     SO_URL,
     SO_UNKNOWN

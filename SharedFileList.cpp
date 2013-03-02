@@ -700,7 +700,7 @@ bool CSharedFileList::AddFile(CKnownFile* pFile)
 {
     ASSERT(pFile->GetFileIdentifier().HasExpectedMD4HashCount());
     ASSERT(!pFile->IsKindOf(RUNTIME_CLASS(CPartFile)) || !STATIC_DOWNCAST(CPartFile, pFile)->m_bMD4HashsetNeeded);
-    ASSERT(!pFile->IsShellLinked() || ShouldBeShared(pFile->GetSharedDirectory(), _T(""), false));
+    ASSERT(!pFile->IsShellLinked() || ShouldBeShared(pFile->GetSharedDirectory(), L"", false));
     CCKey key(pFile->GetFileHash());
     CKnownFile* pFileInMap;
     if (m_Files_map.Lookup(key, pFileInMap))
@@ -1778,7 +1778,7 @@ bool CSharedFileList::AddSingleSharedDirectory(const CString& rstrFilePath, bool
 {
     ASSERT(rstrFilePath.Right(1) == _T('\\'));
     // check if we share this dir already or are not allowed to
-    if (ShouldBeShared(rstrFilePath, _T(""), false) || !thePrefs.IsShareableDirectory(rstrFilePath))
+    if (ShouldBeShared(rstrFilePath, L"", false) || !thePrefs.IsShareableDirectory(rstrFilePath))
         return false;
     thePrefs.shareddir_list.AddTail(rstrFilePath); // adds the new directory as shared, GUI updates need to be done by the caller
     thePrefs.shareddir_list_permissions.AddTail(eSP_Options); //>>> WiZaRd::SharePermissions
@@ -1798,10 +1798,10 @@ CString CSharedFileList::GetPseudoDirName(const CString& strDirectoryName)
     // but we still want to use a descriptive name so the information of files sorted by directories is not lost
     // So, in general we use only the name of the directory, shared subdirs keep the path up to the highest shared dir,
     // this way we never reveal the name of any not directly shared directory. We then make sure its unique.
-    if (!ShouldBeShared(strDirectoryName, _T(""), false))
+    if (!ShouldBeShared(strDirectoryName, L"", false))
     {
         ASSERT(0);
-        return _T("");
+        return L"";
     }
     // does the name already exists?
     for (POSITION pos = m_mapPseudoDirNames.GetStartPosition(); pos != NULL;)
@@ -1827,7 +1827,7 @@ CString CSharedFileList::GetPseudoDirName(const CString& strDirectoryName)
     {
         strPseudoName = strDirectoryTmp.Right(strDirectoryTmp.GetLength() - iPos) + strPseudoName;
         strDirectoryTmp.Truncate(iPos);
-        if (!ShouldBeShared(strDirectoryTmp, _T(""), false))
+        if (!ShouldBeShared(strDirectoryTmp, L"", false))
             break;
     }
     if (!strPseudoName.IsEmpty())
@@ -1859,7 +1859,7 @@ CString CSharedFileList::GetPseudoDirName(const CString& strDirectoryName)
             {
                 // wth?
                 ASSERT(0);
-                return _T("");
+                return L"";
             }
         }
     }

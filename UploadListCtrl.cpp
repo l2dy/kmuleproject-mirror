@@ -368,7 +368,7 @@ void CUploadListCtrl::GetItemDisplayText(const CUpDownClient *client, int iSubIt
     case 1:
     {
         const CKnownFile *file = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
-        _tcsncpy(pszText, file != NULL ? file->GetFileName() : _T(""), cchTextMax);
+        _tcsncpy(pszText, file != NULL ? file->GetFileName() : L"", cchTextMax);
         break;
     }
 

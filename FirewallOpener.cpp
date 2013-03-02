@@ -307,7 +307,7 @@ bool CFirewallOpener::DoesRuleExist(const CString strName)
 
 bool CFirewallOpener::DoesRuleExist(const uint16 nPortNumber,const uint8 byProtocol)
 {
-    return DoAction(FOC_FINDRULEBYPORT, CICSRuleInfo(nPortNumber, byProtocol, _T("")));
+    return DoAction(FOC_FINDRULEBYPORT, CICSRuleInfo(nPortNumber, byProtocol, L""));
 }
 
 bool CFirewallOpener::OpenPort(const uint16 nPortNumber,const uint8 byProtocol,const CString strRuleName, const bool bRemoveOnExit)

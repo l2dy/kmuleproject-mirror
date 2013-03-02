@@ -245,24 +245,24 @@ void CSharedDirsTreeCtrl::InitalizeStandardItems()
 
     FetchSharedDirsList();
 
-    m_pRootDirectoryItem = new CDirectoryItem(_T(""), TVI_ROOT);
-    CDirectoryItem* pAll = new CDirectoryItem(_T(""), 0, SDI_ALL);
+    m_pRootDirectoryItem = new CDirectoryItem(L"", TVI_ROOT);
+    CDirectoryItem* pAll = new CDirectoryItem(L"", 0, SDI_ALL);
     pAll->m_htItem = InsertItem(TVIF_TEXT | TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE | TVIF_STATE, GetResString(IDS_ALLSHAREDFILES), 0, 0, TVIS_EXPANDED, TVIS_EXPANDED, (LPARAM)pAll, TVI_ROOT, TVI_LAST);
     m_pRootDirectoryItem->liSubDirectories.AddTail(pAll);
 
-    CDirectoryItem* pIncoming = new CDirectoryItem(_T(""), pAll->m_htItem, SDI_INCOMING);
+    CDirectoryItem* pIncoming = new CDirectoryItem(L"", pAll->m_htItem, SDI_INCOMING);
     pIncoming->m_htItem = InsertItem(TVIF_TEXT | TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE, GetResString(IDS_INCOMING_FILES), 2, 2, 0, 0, (LPARAM)pIncoming, pAll->m_htItem, TVI_LAST);
     m_pRootDirectoryItem->liSubDirectories.AddTail(pIncoming);
 
-    CDirectoryItem* pTemp = new CDirectoryItem(_T(""), pAll->m_htItem, SDI_TEMP);
+    CDirectoryItem* pTemp = new CDirectoryItem(L"", pAll->m_htItem, SDI_TEMP);
     pTemp->m_htItem = InsertItem(TVIF_TEXT | TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE, GetResString(IDS_INCOMPLETE_FILES), 1, 1, 0, 0, (LPARAM)pTemp, pAll->m_htItem, TVI_LAST);
     m_pRootDirectoryItem->liSubDirectories.AddTail(pTemp);
 
-    CDirectoryItem* pDir = new CDirectoryItem(_T(""), pAll->m_htItem, SDI_DIRECTORY);
+    CDirectoryItem* pDir = new CDirectoryItem(L"", pAll->m_htItem, SDI_DIRECTORY);
     pDir->m_htItem = InsertItem(TVIF_TEXT | TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE | TVIF_STATE, GetResString(IDS_SHARED_DIRECTORIES), 5, 5, TVIS_EXPANDED, TVIS_EXPANDED, (LPARAM)pDir, pAll->m_htItem, TVI_LAST);
     m_pRootDirectoryItem->liSubDirectories.AddTail(pDir);
 
-    m_pRootUnsharedDirectries = new CDirectoryItem(_T(""), TVI_ROOT, SDI_FILESYSTEMPARENT);
+    m_pRootUnsharedDirectries = new CDirectoryItem(L"", TVI_ROOT, SDI_FILESYSTEMPARENT);
     m_pRootUnsharedDirectries->m_htItem = InsertItem(TVIF_TEXT | TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE | TVIF_CHILDREN, GetResString(IDS_ALLDIRECTORIES), 4, 4, 0, 0, (LPARAM)m_pRootUnsharedDirectries, TVI_ROOT, TVI_LAST);
 }
 
@@ -404,7 +404,7 @@ void CSharedDirsTreeCtrl::FilterTreeReloadTree()
 //>>> WiZaRd::SharedView Ed2kType [Avi3k]
             for (int i = 0; i < ARRSIZE(_aEd2kTypeView); i++)
             {
-                CDirectoryItem* pEd2kType = new CDirectoryItem(_T(""), 0, SDI_ED2KFILETYPE_ALL, _aEd2kTypeView[i].eType);
+                CDirectoryItem* pEd2kType = new CDirectoryItem(L"", 0, SDI_ED2KFILETYPE_ALL, _aEd2kTypeView[i].eType);
                 pEd2kType->m_htItem = InsertItem(TVIF_TEXT | TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE, GetResString(_aEd2kTypeView[i].uStringId), i+SV_OFFSET, i+SV_OFFSET, 0, 0, (LPARAM)pEd2kType, pCurrent->m_htItem, TVI_LAST);
                 pCurrent->liSubDirectories.AddTail(pEd2kType);
             }
@@ -453,7 +453,7 @@ void CSharedDirsTreeCtrl::FilterTreeReloadTree()
 //>>> WiZaRd::SharedView Ed2kType [WiZaRd]
             for (int i = 0; i < ARRSIZE(_aEd2kTypeView); i++)
             {
-                CDirectoryItem* pEd2kType = new CDirectoryItem(_T(""), 0, SDI_ED2KFILETYPE_INC, _aEd2kTypeView[i].eType);
+                CDirectoryItem* pEd2kType = new CDirectoryItem(L"", 0, SDI_ED2KFILETYPE_INC, _aEd2kTypeView[i].eType);
                 pEd2kType->m_htItem = InsertItem(TVIF_TEXT | TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE, GetResString(_aEd2kTypeView[i].uStringId), i+SV_OFFSET, i+SV_OFFSET, 0, 0, (LPARAM)pEd2kType, pCurrent->m_htItem, TVI_LAST);
                 pCurrent->liSubDirectories.AddTail(pEd2kType);
             }
@@ -470,7 +470,7 @@ void CSharedDirsTreeCtrl::FilterTreeReloadTree()
                     if (pCatStruct != NULL)
                     {
                         //temp dir
-                        CDirectoryItem* pCatTemp = new CDirectoryItem(_T(""), 0, SDI_TEMP, i);
+                        CDirectoryItem* pCatTemp = new CDirectoryItem(L"", 0, SDI_TEMP, i);
                         pCatTemp->m_htItem = InsertItem(TVIF_TEXT | TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE, pCatStruct->strTitle, 3, 3, 0, 0, (LPARAM)pCatTemp, pCurrent->m_htItem, TVI_LAST);
                         pCurrent->liSubDirectories.AddTail(pCatTemp);
 
@@ -480,7 +480,7 @@ void CSharedDirsTreeCtrl::FilterTreeReloadTree()
 //>>> WiZaRd::SharedView Ed2kType [WiZaRd]
             for (int i = 0; i < ARRSIZE(_aEd2kTypeView); i++)
             {
-                CDirectoryItem* pEd2kType = new CDirectoryItem(_T(""), 0, SDI_ED2KFILETYPE_TMP, _aEd2kTypeView[i].eType);
+                CDirectoryItem* pEd2kType = new CDirectoryItem(L"", 0, SDI_ED2KFILETYPE_TMP, _aEd2kTypeView[i].eType);
                 pEd2kType->m_htItem = InsertItem(TVIF_TEXT | TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE, GetResString(_aEd2kTypeView[i].uStringId), i+SV_OFFSET, i+SV_OFFSET, 0, 0, (LPARAM)pEd2kType, pCurrent->m_htItem, TVI_LAST);
                 pCurrent->liSubDirectories.AddTail(pEd2kType);
             }
@@ -494,7 +494,7 @@ void CSharedDirsTreeCtrl::FilterTreeReloadTree()
 //>>> WiZaRd::SharedView Ed2kType [WiZaRd]
             for (int i = 0; i < ARRSIZE(_aEd2kTypeView); i++)
             {
-                CDirectoryItem* pEd2kType = new CDirectoryItem(_T(""), 0, SDI_ED2KFILETYPE_SUB, _aEd2kTypeView[i].eType);
+                CDirectoryItem* pEd2kType = new CDirectoryItem(L"", 0, SDI_ED2KFILETYPE_SUB, _aEd2kTypeView[i].eType);
                 pEd2kType->m_htItem = InsertItem(TVIF_TEXT | TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE, GetResString(_aEd2kTypeView[i].uStringId), i+SV_OFFSET, i+SV_OFFSET, 0, 0, (LPARAM)pEd2kType, pCurrent->m_htItem, TVI_LAST);
                 pCurrent->liSubDirectories.AddTail(pEd2kType);
             }

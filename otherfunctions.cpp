@@ -583,7 +583,7 @@ bool Ask4RegFix(bool checkOnly, bool dontAsk, bool bAutoTakeCollections)
 
                 VERIFY(regkey.Create(hkeyCR, _T("Software\\Classes\\ed2k")) == ERROR_SUCCESS);
                 VERIFY(regkey.SetStringValue(NULL, _T("URL: ed2k Protocol")) == ERROR_SUCCESS);
-                VERIFY(regkey.SetStringValue(_T("URL Protocol"), _T("")) == ERROR_SUCCESS);
+                VERIFY(regkey.SetStringValue(_T("URL Protocol"), L"") == ERROR_SUCCESS);
 
                 VERIFY(regkey.Open(hkeyCR, _T("Software\\Classes\\ed2k\\shell\\open")) == ERROR_SUCCESS);
                 regkey.RecurseDeleteKey(_T("ddexec"));
@@ -1414,7 +1414,7 @@ CString CleanupFilename(CString filename, bool bExtension)
     CString resToken = strlink.Tokenize(_T("|"), curPos);
     while (!resToken.IsEmpty())
     {
-        filename.Replace(resToken, _T(""));
+        filename.Replace(resToken, L"");
         resToken = strlink.Tokenize(_T("|"), curPos);
     }
 
@@ -1506,15 +1506,15 @@ CString CleanupFilename(CString filename, bool bExtension)
     }
 
     // additional formatting
-    filename.Replace(_T("()"), _T(""));
+    filename.Replace(_T("()"), L"");
     filename.Replace(_T("  "), _T(" "));
     filename.Replace(_T(" ."), _T("."));
     filename.Replace(_T("( "), _T("("));
     filename.Replace(_T(" )"), _T(")"));
-    filename.Replace(_T("()"), _T(""));
+    filename.Replace(_T("()"), L"");
     filename.Replace(_T("{ "), _T("{"));
     filename.Replace(_T(" }"), _T("}"));
-    filename.Replace(_T("{}"), _T(""));
+    filename.Replace(_T("{}"), L"");
 
     filename.Trim();
     return filename;
@@ -1804,7 +1804,7 @@ CString GetFileTypeByName(LPCTSTR pszFileName)
     case ED2KFT_EMULECOLLECTION:
         return _T(ED2KFTSTR_EMULECOLLECTION);
     default:
-        return _T("");
+        return L"";
     }
 }
 
@@ -1823,7 +1823,7 @@ CString GetFileTypeDisplayStrFromED2KFileType(LPCTSTR pszED2KFileType)
         else if (_tcscmp(pszED2KFileType, _T(ED2KFTSTR_CDIMAGE)) == 0)  return GetResString(IDS_SEARCH_CDIMG);
         else if (_tcscmp(pszED2KFileType, _T(ED2KFTSTR_EMULECOLLECTION)) == 0)	return GetResString(IDS_SEARCH_EMULECOLLECTION);
     }
-    return _T("");
+    return L"";
 }
 
 class CED2KFileTypes
@@ -2186,7 +2186,7 @@ LPCTSTR GetShellExecuteErrMsg(DWORD dwShellExecError)
     };
 
     if (dwShellExecError > 32)
-        return _T("");	// No error
+        return L"";	// No error
 
     // Search error message
     for (UINT i = 0; i < _countof(s_aszWinExecErrMsg); i++)
@@ -3905,7 +3905,7 @@ static const SFileExts s_fileexts[] =
     {PIC_GIF,				_T("GIF"),			_T("|GIF|") },
     {DOCUMENT_PDF,			_T("PDF"),			_T("|PDF|") },
     {FILETYPE_EXECUTABLE,	_T("WIN/DOS EXE"),	_T("|EXE|COM|DLL|SYS|CPL|FON|OCX|SCR|VBX|") },
-    {FILETYPE_UNKNOWN,		_T(""),	 			_T("") }
+    {FILETYPE_UNKNOWN,		L"",	 			L"" }
 };
 
 #define HEADERCHECKSIZE 16

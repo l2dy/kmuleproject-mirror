@@ -156,7 +156,7 @@ void CIni::Init(LPCTSTR lpszFileName, LPCTSTR lpszSection)
 CString CIni::GetString(LPCTSTR lpszEntry, LPCTSTR lpszDefault, LPCTSTR lpszSection)
 {
     if (lpszDefault == NULL)
-        return GetLPCSTR(lpszEntry, lpszSection, _T(""));
+        return GetLPCSTR(lpszEntry, lpszSection, L"");
     else
         return GetLPCSTR(lpszEntry, lpszSection, lpszDefault);
 }
@@ -171,7 +171,7 @@ CString CIni::GetStringLong(LPCTSTR lpszEntry, LPCTSTR lpszDefault, LPCTSTR lpsz
 
     do
     {
-        GetPrivateProfileString(m_strSection, lpszEntry, (lpszDefault == NULL) ? _T("") : lpszDefault,
+        GetPrivateProfileString(m_strSection, lpszEntry, (lpszDefault == NULL) ? L"" : lpszDefault,
                                 ret.GetBufferSetLength(maxstrlen), maxstrlen, m_strFileName);
         ret.ReleaseBuffer();
         if ((unsigned int)ret.GetLength() < maxstrlen - 2)
@@ -542,7 +542,7 @@ void CIni::SerGet(bool bGet, CString *ar, int nCount, LPCTSTR lpszEntry, LPCTSTR
         CString strBuffer;
         if (bGet)
         {
-            strBuffer = GetString(lpszEntry, _T(""), lpszSection);
+            strBuffer = GetString(lpszEntry, L"", lpszSection);
             int nOffset = 0;
             for (int i = 0; i < nCount; i++)
             {
@@ -571,7 +571,7 @@ void CIni::SerGet(bool bGet, double *ar, int nCount, LPCTSTR lpszEntry, LPCTSTR 
         CString strBuffer;
         if (bGet)
         {
-            strBuffer = GetString(lpszEntry, _T(""), lpszSection);
+            strBuffer = GetString(lpszEntry, L"", lpszSection);
             CString strTemp;
             int nOffset = 0;
             for (int i = 0; i < nCount; i++)
@@ -605,7 +605,7 @@ void CIni::SerGet(bool bGet, float *ar, int nCount, LPCTSTR lpszEntry, LPCTSTR l
         CString strBuffer;
         if (bGet)
         {
-            strBuffer = GetString(lpszEntry, _T(""), lpszSection);
+            strBuffer = GetString(lpszEntry, L"", lpszSection);
             CString strTemp;
             int nOffset = 0;
             for (int i = 0; i < nCount; i++)
@@ -639,7 +639,7 @@ void CIni::SerGet(bool bGet, int *ar, int nCount, LPCTSTR lpszEntry, LPCTSTR lps
         CString strBuffer;
         if (bGet)
         {
-            strBuffer = GetString(lpszEntry, _T(""), lpszSection);
+            strBuffer = GetString(lpszEntry, L"", lpszSection);
             CString strTemp;
             int nOffset = 0;
             for (int i = 0; i < nCount; i++)
@@ -673,7 +673,7 @@ void CIni::SerGet(bool bGet, unsigned char *ar, int nCount, LPCTSTR lpszEntry, L
         CString strBuffer;
         if (bGet)
         {
-            strBuffer = GetString(lpszEntry, _T(""), lpszSection);
+            strBuffer = GetString(lpszEntry, L"", lpszSection);
             CString strTemp;
             int nOffset = 0;
             for (int i = 0; i < nCount; i++)
@@ -707,7 +707,7 @@ void CIni::SerGet(bool bGet, short *ar, int nCount, LPCTSTR lpszEntry, LPCTSTR l
         CString strBuffer;
         if (bGet)
         {
-            strBuffer = GetString(lpszEntry, _T(""), lpszSection);
+            strBuffer = GetString(lpszEntry, L"", lpszSection);
             CString strTemp;
             int nOffset = 0;
             for (int i = 0; i < nCount; i++)
@@ -741,7 +741,7 @@ void CIni::SerGet(bool bGet, DWORD *ar, int nCount, LPCTSTR lpszEntry, LPCTSTR l
         CString strBuffer;
         if (bGet)
         {
-            strBuffer = GetString(lpszEntry, _T(""), lpszSection);
+            strBuffer = GetString(lpszEntry, L"", lpszSection);
             CString strTemp;
             int nOffset = 0;
             for (int i = 0; i < nCount; i++)
@@ -775,7 +775,7 @@ void CIni::SerGet(bool bGet, WORD *ar, int nCount, LPCTSTR lpszEntry, LPCTSTR lp
         CString strBuffer;
         if (bGet)
         {
-            strBuffer = GetString(lpszEntry, _T(""), lpszSection);
+            strBuffer = GetString(lpszEntry, L"", lpszSection);
             CString strTemp;
             int nOffset = 0;
             for (int i = 0; i < nCount; i++)

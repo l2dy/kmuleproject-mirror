@@ -481,9 +481,9 @@ void CMuleListCtrl::SetColors()
         theApp.LoadSkinColorAlt(strKey + _T("Hl"), _T("DefLvHl"), crHighlight);
 
         TCHAR szColor[MAX_PATH];
-        GetPrivateProfileString(_T("Colors"), strKey + _T("BkImg"), _T(""), szColor, _countof(szColor), pszSkinProfile);
+        GetPrivateProfileString(_T("Colors"), strKey + _T("BkImg"), L"", szColor, _countof(szColor), pszSkinProfile);
         if (szColor[0] == L'\0')
-            GetPrivateProfileString(_T("Colors"), _T("DefLvBkImg"), _T(""), szColor, _countof(szColor), pszSkinProfile);
+            GetPrivateProfileString(_T("Colors"), _T("DefLvBkImg"), L"", szColor, _countof(szColor), pszSkinProfile);
         if (szColor[0] != L'\0')
             strBkImage = szColor;
     }

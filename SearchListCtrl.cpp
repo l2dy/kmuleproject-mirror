@@ -259,7 +259,7 @@ void CSearchListCtrl::Init(CSearchList* in_searchlist)
 
     InsertColumn(0, GetResString(IDS_DL_FILENAME),	LVCFMT_LEFT,  DFLT_FILENAME_COL_WIDTH);
     InsertColumn(1, GetResString(IDS_DL_SIZE),		LVCFMT_RIGHT, DFLT_SIZE_COL_WIDTH);
-    InsertColumn(2, GetResString(IDS_SEARCHAVAIL) + (thePrefs.IsExtControlsEnabled() ? _T(" (") + GetResString(IDS_DL_SOURCES) + _T(')') : _T("")), LVCFMT_RIGHT, 60);
+    InsertColumn(2, GetResString(IDS_SEARCHAVAIL) + (thePrefs.IsExtControlsEnabled() ? _T(" (") + GetResString(IDS_DL_SOURCES) + _T(')') : L""), LVCFMT_RIGHT, 60);
     InsertColumn(3, GetResString(IDS_COMPLSOURCES),	LVCFMT_RIGHT,  70);
     InsertColumn(4, GetResString(IDS_TYPE),			LVCFMT_LEFT,  DFLT_FILETYPE_COL_WIDTH);
     InsertColumn(5, GetResString(IDS_FILEID),		LVCFMT_LEFT,  DFLT_HASH_COL_WIDTH	,		-1, true);
@@ -336,7 +336,7 @@ void CSearchListCtrl::Localize()
             strRes = GetResString(IDS_DL_SIZE);
             break;
         case 2:
-            strRes = GetResString(IDS_SEARCHAVAIL) + (thePrefs.IsExtControlsEnabled() ? _T(" (") + GetResString(IDS_DL_SOURCES) + _T(')') : _T(""));
+            strRes = GetResString(IDS_SEARCHAVAIL) + (thePrefs.IsExtControlsEnabled() ? _T(" (") + GetResString(IDS_DL_SOURCES) + _T(')') : L"");
             break;
         case 3:
             strRes = GetResString(IDS_COMPLSOURCES);

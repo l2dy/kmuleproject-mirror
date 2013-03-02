@@ -166,7 +166,7 @@ LRESULT CCommentDialog::OnDataChanged(WPARAM, LPARAM)
 
 void CCommentDialog::OnBnClickedReset()
 {
-    SetDlgItemText(IDC_CMT_TEXT, _T(""));
+    SetDlgItemText(IDC_CMT_TEXT, L"");
     m_bMergedComment = false;
     m_ratebox.SetCurSel(0);
 }

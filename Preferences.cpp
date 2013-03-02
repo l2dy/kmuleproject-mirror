@@ -1960,14 +1960,14 @@ void CPreferences::LoadPreferences()
     if (strNick.IsEmpty())
         SetUserNick(DEFAULT_NICK);
 
-    m_strIncomingDir = ini.GetString(L"IncomingDir", _T(""));
+    m_strIncomingDir = ini.GetString(L"IncomingDir", L"");
     if (m_strIncomingDir.IsEmpty()) // We want GetDefaultDirectory to also create the folder, so we have to know if we use the default or not
         m_strIncomingDir = GetDefaultDirectory(EMULE_INCOMINGDIR, true);
     MakeFoldername(m_strIncomingDir);
 
     // load tempdir(s) setting
     CString tempdirs;
-    tempdirs = ini.GetString(L"TempDir", _T(""));
+    tempdirs = ini.GetString(L"TempDir", L"");
     if (tempdirs.IsEmpty()) // We want GetDefaultDirectory to also create the folder, so we have to know if we use the default or not
         tempdirs = GetDefaultDirectory(EMULE_TEMPDIR, true);
     tempdirs += L"|" + ini.GetString(L"TempDirs");
@@ -2286,7 +2286,7 @@ void CPreferences::LoadPreferences()
     // Toolbar
     m_sToolbarSettings = ini.GetString(L"ToolbarSetting", strDefaultToolbar);
     m_sToolbarBitmap = ini.GetString(L"ToolbarBitmap", L"");
-    m_sToolbarBitmapFolder = ini.GetString(L"ToolbarBitmapFolder", _T(""));
+    m_sToolbarBitmapFolder = ini.GetString(L"ToolbarBitmapFolder", L"");
     if (m_sToolbarBitmapFolder.IsEmpty()) // We want GetDefaultDirectory to also create the folder, so we have to know if we use the default or not
         m_sToolbarBitmapFolder = GetDefaultDirectory(EMULE_TOOLBARDIR, true);
     m_nToolbarLabels = (EToolbarLabelType)ini.GetInt(L"ToolbarLabels", CMuleToolbarCtrl::GetDefaultLabelType());
@@ -2296,7 +2296,7 @@ void CPreferences::LoadPreferences()
     m_bUseSystemFontForMainControls=ini.GetBool(L"UseSystemFontForMainControls",0);
     m_bRTLWindowsLayout = ini.GetBool(L"RTLWindowsLayout");
     m_strSkinProfile = ini.GetString(L"SkinProfile", L"");
-    m_strSkinProfileDir = ini.GetString(L"SkinProfileDir", _T(""));
+    m_strSkinProfileDir = ini.GetString(L"SkinProfileDir", L"");
     if (m_strSkinProfileDir.IsEmpty()) // We want GetDefaultDirectory to also create the folder, so we have to know if we use the default or not
         m_strSkinProfileDir = GetDefaultDirectory(EMULE_SKINDIR, true);
 

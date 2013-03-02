@@ -1633,7 +1633,7 @@ int CTransferWnd::AddCategory(CString newtitle,CString newincoming,CString newco
 int CTransferWnd::AddCategoryInteractive()
 {
     m_nLastCatTT=-1;
-    int newindex = AddCategory(_T("?"),thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR),_T(""),_T(""),false);
+    int newindex = AddCategory(_T("?"),thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR),L"",L"",false);
     CCatDialog dialog(newindex);
     if (dialog.DoModal() == IDOK)
     {

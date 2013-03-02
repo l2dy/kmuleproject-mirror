@@ -346,7 +346,7 @@ void CFileDetailDialogInfo::RefreshData()
         else if (iMD4HashsetAvailable == m_paFiles->GetSize() && iAICHHashsetAvailable == m_paFiles->GetSize())
             SetDlgItemText(IDC_HASHSET, GetResString(IDS_YES) +  + _T(" (eD2K + AICH)"));
         else
-            SetDlgItemText(IDC_HASHSET, _T(""));
+            SetDlgItemText(IDC_HASHSET, L"");
     }
 
     str.Format(GetResString(IDS_SOURCESINFO), uSources, uValidSources, uNNPSources, uA4AFSources);

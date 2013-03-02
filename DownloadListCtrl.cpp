@@ -597,7 +597,7 @@ void CDownloadListCtrl::GetFileItemDisplayText(CPartFile *lpPartFile, int iSubIt
         break;
 
     case 12: // cat
-        _tcsncpy(pszText, (lpPartFile->GetCategory() != 0) ? thePrefs.GetCategory(lpPartFile->GetCategory())->strTitle : _T(""), cchTextMax);
+        _tcsncpy(pszText, (lpPartFile->GetCategory() != 0) ? thePrefs.GetCategory(lpPartFile->GetCategory())->strTitle : L"", cchTextMax);
         break;
     case 13: // added on
         if (lpPartFile->GetCrCFileDate() != NULL)

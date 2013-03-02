@@ -184,14 +184,14 @@ void CEditDelayed::OnInit(CHeaderCtrl* pColumnHeader, CArray<int, int>* paIgnore
     else
         pImageList->Add(CTempIconLoader(_T("KADNODESEARCH")));
     m_iwColumn.SetImageList(pImageList);
-    m_iwColumn.Create(_T(""), WS_CHILD | WS_VISIBLE, CRect(0, 0, ICON_LEFTSPACE, rectWindow.bottom), this, 1);
+    m_iwColumn.Create(L"", WS_CHILD | WS_VISIBLE, CRect(0, 0, ICON_LEFTSPACE, rectWindow.bottom), this, 1);
 
     pImageList = new CImageList();
     pImageList->Create(16, 16, theApp.m_iDfltImageListColorFlags | ILC_MASK, 0, 1);
     pImageList->Add(CTempIconLoader(_T("FILTERCLEAR1")));
     pImageList->Add(CTempIconLoader(_T("FILTERCLEAR2")));
     m_iwReset.SetImageList(pImageList);
-    m_iwReset.Create(_T(""), WS_CHILD , CRect(0, 0, ICON_LEFTSPACE, rectWindow.bottom), this, 1);
+    m_iwReset.Create(L"", WS_CHILD , CRect(0, 0, ICON_LEFTSPACE, rectWindow.bottom), this, 1);
 
     if (paIgnoredColums != NULL)
         m_aIgnoredColums.Copy(*paIgnoredColums);
@@ -285,7 +285,7 @@ void CEditDelayed::OnLButtonUp(UINT nFlags, CPoint point)
         GetClientRect(&editRect);
         if (m_pointMousePos.x > editRect.right - ICON_LEFTSPACE)
         {
-            SetWindowText(_T(""));
+            SetWindowText(L"");
             DoDelayedEvalute();
             m_bShowResetButton = false;
             SetEditRect(true);
@@ -347,7 +347,7 @@ void CEditDelayed::ShowColumnText(bool bShow)
     else if (!bShow && m_bShowsColumnText)
     {
         m_bShowsColumnText = false;
-        SetWindowText(_T(""));
+        SetWindowText(L"");
     }
 }
 

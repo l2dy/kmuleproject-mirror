@@ -268,7 +268,7 @@ void CClientListCtrl::GetItemDisplayText(const CUpDownClient *client, int iSubIt
         break;
 
     case 2:
-        _tcsncpy(pszText, client->credits != NULL ? CastItoXBytes(client->credits->GetUploadedTotal(), false, false) : _T(""), cchTextMax);
+        _tcsncpy(pszText, client->credits != NULL ? CastItoXBytes(client->credits->GetUploadedTotal(), false, false) : L"", cchTextMax);
         break;
 
     case 3:
@@ -276,7 +276,7 @@ void CClientListCtrl::GetItemDisplayText(const CUpDownClient *client, int iSubIt
         break;
 
     case 4:
-        _tcsncpy(pszText, client->credits != NULL ? CastItoXBytes(client->credits->GetDownloadedTotal(), false, false) : _T(""), cchTextMax);
+        _tcsncpy(pszText, client->credits != NULL ? CastItoXBytes(client->credits->GetDownloadedTotal(), false, false) : L"", cchTextMax);
         break;
 
     case 5:

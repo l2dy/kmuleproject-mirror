@@ -87,7 +87,7 @@ void CCaptchaGenerator::Clear()
 {
     delete m_pimgCaptcha;
     m_pimgCaptcha = NULL;
-    m_strCaptchaText = _T("");
+    m_strCaptchaText = L"";
 }
 
 bool CCaptchaGenerator::WriteCaptchaImage(CFileDataIO& file)

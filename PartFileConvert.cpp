@@ -727,9 +727,9 @@ void CPartFileConvertDlg::UpdateJobInfo(ConvertJob* job)
     if (job==NULL)
     {
         SetDlgItemText(IDC_CURJOB, GetResString(IDS_FSTAT_WAITING));
-        SetDlgItemText(IDC_CONV_PROZENT, _T(""));
+        SetDlgItemText(IDC_CONV_PROZENT, L"");
         pb_current.SetPos(0);
-        SetDlgItemText(IDC_CONV_PB_LABEL,_T(""));
+        SetDlgItemText(IDC_CONV_PB_LABEL,L"");
         return;
     }
 
@@ -744,7 +744,7 @@ void CPartFileConvertDlg::UpdateJobInfo(ConvertJob* job)
     {
         joblist.SetItemText(itemnr,0, job->filename.IsEmpty()?job->folder:job->filename);
         joblist.SetItemText(itemnr,1, CPartFileConvert::GetReturncodeText(job->state));
-        buffer=_T("");
+        buffer=L"";
         if (job->size>0)
             buffer.Format(GetResString(IDS_IMP_SIZE),CastItoXBytes(job->size, false, false),CastItoXBytes(job->spaceneeded, false, false));
         joblist.SetItemText(itemnr,2, buffer);
