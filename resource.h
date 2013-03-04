@@ -1870,6 +1870,7 @@
 #define IDS_RADIOEXTRACTINCOMING        4037
 #define IDS_RADIOEXTRACTOTHER           4038
 #define IDS_STATICEXTRACT               4039
+#define IDS_RENAME_WITHOUT_EXTENSION    4040
 #define IDA_ENTER                       32771
 
 // Next default values for new objects

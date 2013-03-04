@@ -181,3 +181,4 @@ Legend:    + added    ~ changed    - removed    ! fixed    > updated
 
 XXXXYYZZ:
 > updated miniupnplib support to v1.8 (11/02/2013) [Tuxman/WiZaRd]
+~ renaming a shared file keeps the original file extension now [Tuxman]

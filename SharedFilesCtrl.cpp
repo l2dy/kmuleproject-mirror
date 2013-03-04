@@ -1162,10 +1162,12 @@ BOOL CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                 InputBox inputbox;
                 CString title = GetResString(IDS_RENAME);
                 title.Remove(_T('&'));
-                inputbox.SetLabels(title, GetResString(IDS_DL_FILENAME), pKnownFile->GetFileName());
+                inputbox.SetLabels(title, GetResString(IDS_DL_FILENAME) + GetResString(IDS_RENAME_WITHOUT_EXTENSION), pKnownFile->GetFileName());
                 inputbox.SetEditFilenameMode();
                 inputbox.DoModal();
                 CString newname = inputbox.GetInput();
+                CString oldextension = ::PathFindExtension(pKnownFile->GetFileName());
+
                 if (!inputbox.WasCancelled() && newname.GetLength()>0)
                 {
                     // at least prevent users from specifying something like "..\dir\file"
@@ -1175,6 +1177,8 @@ BOOL CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                         AfxMessageBox(GetErrorMessage(ERROR_BAD_PATHNAME));
                         break;
                     }
+
+                    newname += "."+oldextension;
 
                     CString newpath;
                     PathCombine(newpath.GetBuffer(MAX_PATH), file->GetPath(), newname);

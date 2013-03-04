@@ -3466,6 +3466,7 @@ STRINGTABLE
 BEGIN    
     IDS_DONOTASKAGAIN       "Don't ask me again"
     IDS_POPULARITY          "Popularity Rank"
+    IDS_RENAME_WITHOUT_EXTENSION " (without extension)"
 END
 
 #endif    // Englisch (USA) resources
