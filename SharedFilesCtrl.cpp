@@ -1178,7 +1178,8 @@ BOOL CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                         break;
                     }
 
-                    newname += "."+oldextension;
+                    if (!oldextension.IsEmpty())
+                        newname += "."+oldextension;
 
                     CString newpath;
                     PathCombine(newpath.GetBuffer(MAX_PATH), file->GetPath(), newname);
