@@ -1162,11 +1162,15 @@ BOOL CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                 InputBox inputbox;
                 CString title = GetResString(IDS_RENAME);
                 title.Remove(_T('&'));
-                inputbox.SetLabels(title, GetResString(IDS_DL_FILENAME) + GetResString(IDS_RENAME_WITHOUT_EXTENSION), pKnownFile->GetFileName());
+//>>> Tux::RenameWithoutExtension
+                inputbox.SetLabels(title, GetResString(IDS_DL_FILENAME) + GetResString(IDS_RENAME_WITHOUT_EXTENSION), pKnownFile->GetFileName()); // modified
+//<<< Tux::RenameWithoutExtension
                 inputbox.SetEditFilenameMode();
                 inputbox.DoModal();
                 CString newname = inputbox.GetInput();
+//>>> Tux::RenameWithoutExtension
                 CString oldextension = ::PathFindExtension(pKnownFile->GetFileName());
+//<<< Tux::RenameWithoutExtension
 
                 if (!inputbox.WasCancelled() && newname.GetLength()>0)
                 {
@@ -1178,8 +1182,10 @@ BOOL CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                         break;
                     }
 
-                    if (!oldextension.IsEmpty())
+//>>> Tux::RenameWithoutExtension
+                    if (!oldextension.IsEmpty() && oldextension != ::PathFindExtension(newname))
                         newname += "."+oldextension;
+//<<< Tux::RenameWithoutExtension
 
                     CString newpath;
                     PathCombine(newpath.GetBuffer(MAX_PATH), file->GetPath(), newname);
