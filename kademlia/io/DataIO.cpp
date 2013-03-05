@@ -238,7 +238,11 @@ CKadTag *CDataIO::ReadTag(bool bOptACP)
         }
 
         default:
-            throw new CNotSupportedException;
+//>>> WiZaRd
+            //this exception is not handled properly anywhere!
+            //throw new CNotSupportedException;
+            throw CString(L"An unsupported operation was attempted!");
+//<<< WiZaRd
         }
         delete [] pcName;
         pcName = NULL;
@@ -256,11 +260,8 @@ CKadTag *CDataIO::ReadTag(bool bOptACP)
 void CDataIO::ReadTagList(TagList* pTaglist, bool bOptACP)
 {
     UINT uCount = ReadByte();
-    for (UINT i=0; i<uCount; i++)
-    {
-        CKadTag* pTag = ReadTag(bOptACP);
-        pTaglist->push_back(pTag);
-    }
+    for (UINT i = 0; i < uCount; ++i)
+        pTaglist->push_back(ReadTag(bOptACP));
 }
 
 void CDataIO::WriteByte(byte byVal)
@@ -482,7 +483,7 @@ bool CKademlia::InitUnicode(HMODULE hInst)
 //
 //	int iDiffs = 0;
 //	FILE* fp = fopen("wclwrtab.bin", "wb");
-//	for (UINT ch = 0; ch < 0x10000; ch++)
+//	for (UINT ch = 0; ch < 0x10000; ++ch)
 //	{
 //		WCHAR wch = (WCHAR)ch;
 //		int iRes = LCMapString(MAKELCID(MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US), SORT_DEFAULT), LCMAP_LOWERCASE, &wch, 1, &wch, 1);
@@ -490,7 +491,7 @@ bool CKademlia::InitUnicode(HMODULE hInst)
 //		if (wch != ch)
 //		{
 //			fwprintf(fpt, L"%04x != %04x: %c %c\r\n", ch, wch, ch, wch);
-//			iDiffs++;
+//			++iDiffs;
 //		}
 //		fwrite(&wch, sizeof(wch), 1, fp);
 //	}
@@ -516,14 +517,14 @@ bool CKademlia::InitUnicode(HMODULE hInst)
 //	FILE* fpt = fopen("wclwrtab_use.txt", "wb");
 //	fputwc(0xFEFF, fpt);
 //	int iDiffs = 0;
-//	for (UINT ch = 0; ch < 0x10000; ch++)
+//	for (UINT ch = 0; ch < 0x10000; ++ch)
 //	{
 //		WCHAR wch = ch;
 //		wch = pLowerMap[wch];
 //		if (wch != ch)
 //		{
 //			fwprintf(fpt, L"%04x != %04x: %c %c\r\n", ch, wch, ch, wch);
-//			iDiffs++;
+//			++iDiffs;
 //		}
 //	}
 //	fclose(fpt);
@@ -560,7 +561,7 @@ void KadTagStrMakeLower(CKadTagValueString& rwstr)
     int iLen = rwstr.GetLength();
     LPWSTR pwsz = rwstr.GetBuffer(iLen);
     while ((*pwsz = s_awcLowerMap[*pwsz]) != L'\0')
-        pwsz++;
+        ++pwsz;
     rwstr.ReleaseBuffer(iLen);
 #endif
 }

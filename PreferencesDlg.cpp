@@ -17,6 +17,7 @@
 #include "stdafx.h"
 #include "emule.h"
 #include "PreferencesDlg.h"
+#include "emuleDlg.h" //>>> WiZaRd::Automatic Restart
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -29,6 +30,8 @@ static char THIS_FILE[] = __FILE__;
 #else
 #define PAGE_COUNT	10
 #endif
+
+bool CPreferencesDlg::m_bRestartApp = false; //>>> WiZaRd::Automatic Restart
 
 IMPLEMENT_DYNAMIC(CPreferencesDlg, CTreePropSheet)
 BEGIN_MESSAGE_MAP(CPreferencesDlg, CTreePropSheet)
@@ -84,8 +87,23 @@ void CPreferencesDlg::OnDestroy()
     CTreePropSheet::OnDestroy();
     if (m_bSaveIniFile)
     {
-        thePrefs.Save();
-        m_bSaveIniFile = false;
+		m_bSaveIniFile = false;
+//>>> WiZaRd::Optimization
+		// this can take a while - "entertain" the user :)
+		CWaitCursor curWait; 		
+//<<< WiZaRd::Optimization
+        thePrefs.Save();      
+//>>> WiZaRd::Automatic Restart
+		if(CPreferencesDlg::IsRestartPlanned())
+		{			
+			if (AfxMessageBox(GetResString(IDS_SETTINGCHANGED_RESTART), MB_YESNO | MB_ICONEXCLAMATION,0)==IDYES)
+			{
+				theApp.PlanRestart();
+				theApp.emuledlg->OnClose();
+				return;
+			}
+		}
+//<<< WiZaRd::Automatic Restart
     }
     m_pPshStartPage = GetPage(GetActiveIndex())->m_psp.pszTemplate;
 }

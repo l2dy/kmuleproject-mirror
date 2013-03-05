@@ -29,6 +29,7 @@
 #include "ListenSocket.h"
 #include "ClientUDPSocket.h"
 #include "LastCommonRouteFinder.h"
+#include "PreferencesDlg.h" //>>> WiZaRd::Automatic Restart
 
 
 #ifdef _DEBUG
@@ -330,7 +331,10 @@ BOOL CPPgConnection::OnApply()
     theApp.emuledlg->ShowConnectionState();
 
     if (bRestartApp)
-        AfxMessageBox(GetResString(IDS_NOPORTCHANGEPOSSIBLE));
+//>>> WiZaRd::Automatic Restart
+		//AfxMessageBox(GetResString(IDS_NOPORTCHANGEPOSSIBLE));
+		CPreferencesDlg::PlanRestart();
+//<<< WiZaRd::Automatic Restart        
 
     OnEnChangePorts(2);
 
@@ -541,7 +545,7 @@ void CPPgConnection::SetRatioIcon()
     if (upload == 0)
         upload = UNLIMITED;
 
-    int ratio = min(8, int(GetRatioDouble(upload, maxUpload)/0.125));
+	const int ratio = GetRatioSmileyIndex(upload, maxUpload);
     if (ratio == lastRatio)
         return;
 

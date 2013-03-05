@@ -26,6 +26,7 @@
 #include "HelpIDs.h"
 #include "UserMsgs.h"
 #include "opcodes.h"
+#include "PreferencesDlg.h" //>>> WiZaRd::Automatic Restart
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -326,7 +327,10 @@ BOOL CPPgDirectories::OnApply()
 
 
     if (testtempdirchanged)
-        AfxMessageBox(GetResString(IDS_SETTINGCHANGED_RESTART));
+//>>> WiZaRd::Automatic Restart
+        //AfxMessageBox(GetResString(IDS_SETTINGCHANGED_RESTART));
+		CPreferencesDlg::PlanRestart();
+//<<< WiZaRd::Automatic Restart
 
     theApp.emuledlg->sharedfileswnd->Reload();
 

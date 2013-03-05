@@ -181,4 +181,6 @@ Legend:    + added    ~ changed    - removed    ! fixed    > updated
 
 XXXXYYZZ:
 > updated miniupnplib support to v1.8 (11/02/2013) [Tuxman/WiZaRd]
++ kMule will now offer to restart itself if necessary [WiZaRd]
+! fixed minimule ratio icon when uploading only [WiZaRd]
 ~ renaming a shared file keeps the original file extension now [Tuxman]

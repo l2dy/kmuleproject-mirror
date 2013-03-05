@@ -1144,7 +1144,10 @@ public:
         return m_bCompleteSource;
     }
     bool	IsBadGuy() const;
-    void	CheckForGPLEvilDoer(const bool bNick, const bool bMod); //>>> WiZaRd::More GPLEvilDoers
+//>>> WiZaRd::More GPLEvilDoers
+	bool	IsGPLBreaker() const	{return m_bGPLEvilDoerMod || m_bGPLEvilDoerNick;}
+    void	CheckForGPLEvilDoer(const bool bNick, const bool bMod);
+//<<< WiZaRd::More GPLEvilDoers
 
 private:
     UINT m_fAICHHashRequested : 1, //>>> Security Check

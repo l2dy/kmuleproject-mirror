@@ -763,7 +763,9 @@ void CSharedFilesCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
                 {
                     if (pKnownFile == NULL)
                         break;
-                    m_ImageList.Draw(dc, m_iRatio[min(8, int(pKnownFile->GetSharingRatio()/0.1875))], cur_rec.TopLeft(), ILD_NORMAL);
+					// TODO: why did we choose a different quotient here?
+                    //m_ImageList.Draw(dc, m_iRatio[min(8, int(pKnownFile->GetSharingRatio()/0.1875))], cur_rec.TopLeft(), ILD_NORMAL);
+					m_ImageList.Draw(dc, m_iRatio[GetRatioSmileyIndex(pKnownFile->GetSharingRatio() *  ratioSmileyCount)], cur_rec.TopLeft(), ILD_NORMAL);
                     break;
                 }
 //<<< WiZaRd::Ratio Indicator
@@ -1163,17 +1165,18 @@ BOOL CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                 CString title = GetResString(IDS_RENAME);
                 title.Remove(_T('&'));
 //>>> Tux::RenameWithoutExtension
-                inputbox.SetLabels(title, GetResString(IDS_DL_FILENAME) + GetResString(IDS_RENAME_WITHOUT_EXTENSION), pKnownFile->GetFileName()); // modified
+                inputbox.SetLabels(title, GetResString(IDS_DL_FILENAME) + GetResString(IDS_RENAME_WITHOUT_EXTENSION), RemoveFileExtension(pKnownFile->GetFileName())); // modified
 //<<< Tux::RenameWithoutExtension
                 inputbox.SetEditFilenameMode();
                 inputbox.DoModal();
                 CString newname = inputbox.GetInput();
 //>>> Tux::RenameWithoutExtension
                 // TODO: Sonderfälle (.tar.gz, .tar.bz2) überprüfen und ggf. berücksichtigen
-                CString oldextension = ::PathFindExtension(pKnownFile->GetFileName());
+                const CString oldextension = ::PathFindExtension(pKnownFile->GetFileName());				
 //<<< Tux::RenameWithoutExtension
 
-                if (!inputbox.WasCancelled() && newname.GetLength()>0)
+				const CString oldname = pKnownFile->GetFileName();
+                if (!inputbox.WasCancelled() && newname.GetLength()>0 && newname != oldname)
                 {
                     // at least prevent users from specifying something like "..\dir\file"
                     static const TCHAR _szInvFileNameChars[] = _T("\\/:*?\"<>|");
@@ -1185,7 +1188,7 @@ BOOL CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 
 //>>> Tux::RenameWithoutExtension
                     if (!oldextension.IsEmpty() && oldextension != ::PathFindExtension(newname))
-                        newname += "."+oldextension;
+                        newname.Append(oldextension);
 //<<< Tux::RenameWithoutExtension
 
                     CString newpath;
@@ -1206,9 +1209,9 @@ BOOL CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                     }
                     else
                     {
-                        theApp.sharedfiles->RemoveKeywords(pKnownFile);
+                        //theApp.sharedfiles->RemoveKeywords(pKnownFile); //>>> WiZaRd:: Fix! Done in CKnownFile::SetFileName()!
                         pKnownFile->SetFileName(newname);
-                        theApp.sharedfiles->AddKeywords(pKnownFile);
+                        //theApp.sharedfiles->AddKeywords(pKnownFile); //>>> WiZaRd:: Fix! Done in CKnownFile::SetFileName()!
                     }
                     pKnownFile->SetFilePath(newpath);
                     UpdateFile(pKnownFile);

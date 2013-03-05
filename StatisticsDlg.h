@@ -36,12 +36,12 @@ public:
     enum { IDD = IDD_STATISTICS };
 
     void Localize();
-    void SetCurrentRate(float uploadrate, float downloadrate);
+    void SetCurrentRate(double uploadrate, double downloadrate);
     void ShowInterval();
     // -khaos--+++> Optional force update parameter.
     void ShowStatistics(bool forceUpdate = false);
     // <-----khaos-
-    void SetARange(bool SetDownload,int maxValue);
+    void SetARange(bool SetDownload, double maxValue);
     void RepaintMeters();
 
     void	UpdateConnectionsGraph();

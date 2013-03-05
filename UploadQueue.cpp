@@ -1128,6 +1128,9 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
             return; //nope - come back later...
         }
 //<<< WiZaRd::ClientAnalyzer
+
+		if (client->IsBanned())
+			return;
     }
 
     uint16 cSameIP = 0;
@@ -1347,8 +1350,8 @@ bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client, LPCTSTR pszReaso
 
             if (thePrefs.GetLogUlDlEvents())
 //>>> WiZaRd::ZZUL Upload [ZZ]
-                AddDebugLogLine(DLP_DEFAULT, true,_T("Removing client from upload list: %s Client: %s Transferred: %s SessionUp: %s QueueSessionUp: %s QueueSessionPayload: %s In buffer: %s Req blocks: %i File: %s"), pszReason==NULL ? _T("") : pszReason, client->DbgGetClientInfo(), CastSecondsToHM(client->GetUpStartTimeDelay()/1000), CastItoXBytes(client->GetSessionUp(), false, false), CastItoXBytes(client->GetQueueSessionUp(), false, false), CastItoXBytes(client->GetQueueSessionPayloadUp(), false, false), CastItoXBytes(client->GetPayloadInBuffer()), client->GetNumberOfRequestedBlocksInQueue(), (theApp.sharedfiles->GetFileByID(client->GetUploadFileID())?theApp.sharedfiles->GetFileByID(client->GetUploadFileID())->GetFileName():_T("")));
-            //AddDebugLogLine(DLP_DEFAULT, true,_T("Removing client from upload list: %s Client: %s Transferred: %s SessionUp: %s QueueSessionPayload: %s In buffer: %s Req blocks: %i File: %s"), pszReason==NULL ? _T("") : pszReason, client->DbgGetClientInfo(), CastSecondsToHM( client->GetUpStartTimeDelay()/1000), CastItoXBytes(client->GetSessionUp(), false, false), CastItoXBytes(client->GetQueueSessionPayloadUp(), false, false), CastItoXBytes(client->GetPayloadInBuffer()), client->GetNumberOfRequestedBlocksInQueue(), (theApp.sharedfiles->GetFileByID(client->GetUploadFileID())?theApp.sharedfiles->GetFileByID(client->GetUploadFileID())->GetFileName():_T("")));
+                AddDebugLogLine(DLP_DEFAULT, true,_T("Removing client from upload list: %s Client: %s Transferred: %s SessionUp: %s QueueSessionUp: %s QueueSessionPayload: %s In buffer: %s Req blocks: %i File: %s"), pszReason==NULL ? L"" : pszReason, client->DbgGetClientInfo(), CastSecondsToHM(client->GetUpStartTimeDelay()/1000), CastItoXBytes(client->GetSessionUp(), false, false), CastItoXBytes(client->GetQueueSessionUp(), false, false), CastItoXBytes(client->GetQueueSessionPayloadUp(), false, false), CastItoXBytes(client->GetPayloadInBuffer()), client->GetNumberOfRequestedBlocksInQueue(), (theApp.sharedfiles->GetFileByID(client->GetUploadFileID())?theApp.sharedfiles->GetFileByID(client->GetUploadFileID())->GetFileName():L""));
+            //AddDebugLogLine(DLP_DEFAULT, true,_T("Removing client from upload list: %s Client: %s Transferred: %s SessionUp: %s QueueSessionPayload: %s In buffer: %s Req blocks: %i File: %s"), pszReason==NULL ? L"" : pszReason, client->DbgGetClientInfo(), CastSecondsToHM( client->GetUpStartTimeDelay()/1000), CastItoXBytes(client->GetSessionUp(), false, false), CastItoXBytes(client->GetQueueSessionPayloadUp(), false, false), CastItoXBytes(client->GetPayloadInBuffer()), client->GetNumberOfRequestedBlocksInQueue(), (theApp.sharedfiles->GetFileByID(client->GetUploadFileID())?theApp.sharedfiles->GetFileByID(client->GetUploadFileID())->GetFileName():L""));
 //<<< WiZaRd::ZZUL Upload [ZZ]
 //>>> WiZaRd::Fix for LowID slots only on connection [VQB]
             //client->m_bAddNextConnect = false;
@@ -2067,7 +2070,7 @@ bool CUploadQueue::RightClientIsBetter(CUpDownClient* leftClient, UINT leftScore
          ) ||
          leftClient == NULL // there's no old client to compare with, so rightClient is better (than null)
         ) &&
-        (!rightClient->IsBanned()) && // don't allow banned client to be best
+        /*!rightClient->IsBanned() &&*/ // don't allow banned client to be best - they have 0 score - how could they?!
         !IsDownloading(rightClient) // don't allow downloading clients to be best
     )
         return true;
@@ -2342,7 +2345,7 @@ bool CUploadQueue::AddUpNextClient(LPCTSTR pszReason, CUpDownClient* directadd, 
             MoveDownInUploadQueue(newclient);
 
             if (pszReason && thePrefs.GetLogUlDlEvents())
-                AddDebugLogLine(false, _T("Unscheduling client from being removed from upload list: %s Client: %s File: %s"), pszReason, newclient->DbgGetClientInfo(), (theApp.sharedfiles->GetFileByID(newclient->GetUploadFileID())?theApp.sharedfiles->GetFileByID(newclient->GetUploadFileID())->GetFileName():_T("")));
+                AddDebugLogLine(false, _T("Unscheduling client from being removed from upload list: %s Client: %s File: %s"), pszReason, newclient->DbgGetClientInfo(), (theApp.sharedfiles->GetFileByID(newclient->GetUploadFileID())?theApp.sharedfiles->GetFileByID(newclient->GetUploadFileID())->GetFileName():L""));
             return true;
         }
 
@@ -2360,7 +2363,7 @@ bool CUploadQueue::AddUpNextClient(LPCTSTR pszReason, CUpDownClient* directadd, 
 //<<< WiZaRd::Optimization
 
     if (pszReason && thePrefs.GetLogUlDlEvents())
-        AddDebugLogLine(false, _T("Adding client to upload list: %s Client: %s File: %s"), pszReason, newclient->DbgGetClientInfo(), (theApp.sharedfiles->GetFileByID(newclient->GetUploadFileID())?theApp.sharedfiles->GetFileByID(newclient->GetUploadFileID())->GetFileName():_T("")));
+        AddDebugLogLine(false, _T("Adding client to upload list: %s Client: %s File: %s"), pszReason, newclient->DbgGetClientInfo(), (theApp.sharedfiles->GetFileByID(newclient->GetUploadFileID())?theApp.sharedfiles->GetFileByID(newclient->GetUploadFileID())->GetFileName():L""));
 
     // tell the client that we are now ready to upload
     if (!newclient->socket || !newclient->socket->IsConnected())
@@ -2412,7 +2415,7 @@ bool CUploadQueue::AcceptNewClient() const
 void CUploadQueue::ScheduleRemovalFromUploadQueue(CUpDownClient* client, LPCTSTR pszDebugReason, CString strDisplayReason, bool earlyabort)
 {
     if (thePrefs.GetLogUlDlEvents())
-        AddDebugLogLine(DLP_VERYLOW, true,_T("Scheduling to remove client from upload list: %s Client: %s Transfered: %s SessionUp: %s QueueSessionUp: %s QueueSessionPayload: %s File: %s"), pszDebugReason==NULL ? _T("") : pszDebugReason, client->DbgGetClientInfo(), CastSecondsToHM(client->GetUpStartTimeDelay()/1000), CastItoXBytes(client->GetSessionUp(), false, false), CastItoXBytes(client->GetQueueSessionUp(), false, false), CastItoXBytes(client->GetQueueSessionPayloadUp(), false, false), (theApp.sharedfiles->GetFileByID(client->GetUploadFileID())?theApp.sharedfiles->GetFileByID(client->GetUploadFileID())->GetFileName():_T("")));
+        AddDebugLogLine(DLP_VERYLOW, true,_T("Scheduling to remove client from upload list: %s Client: %s Transfered: %s SessionUp: %s QueueSessionUp: %s QueueSessionPayload: %s File: %s"), pszDebugReason==NULL ? L"" : pszDebugReason, client->DbgGetClientInfo(), CastSecondsToHM(client->GetUpStartTimeDelay()/1000), CastItoXBytes(client->GetSessionUp(), false, false), CastItoXBytes(client->GetQueueSessionUp(), false, false), CastItoXBytes(client->GetQueueSessionPayloadUp(), false, false), (theApp.sharedfiles->GetFileByID(client->GetUploadFileID())?theApp.sharedfiles->GetFileByID(client->GetUploadFileID())->GetFileName():L""));
 
     client->ScheduleRemovalFromUploadQueue(pszDebugReason, strDisplayReason, earlyabort);
     MoveDownInUploadQueue(client);

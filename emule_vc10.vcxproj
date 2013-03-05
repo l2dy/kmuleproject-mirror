@@ -214,6 +214,7 @@
     <ClCompile Include="Mod\ClientAnalyzer.cpp" />
     <ClCompile Include="Mod\CustomSearches.cpp" />
     <ClCompile Include="Mod\extractfile.cpp" />
+    <ClCompile Include="Mod\loadStatus.cpp" />
     <ClCompile Include="Mod\Modname.cpp" />
     <ClCompile Include="Mod\ProgressIndicator.cpp" />
     <ClCompile Include="Mod\SnarlInterface.cpp" />
@@ -777,6 +778,7 @@
     <ClInclude Include="Mod\ClientAnalyzer.h" />
     <ClInclude Include="Mod\CustomSearches.h" />
     <ClInclude Include="Mod\extractfile.h" />
+    <ClInclude Include="Mod\loadStatus.h" />
     <ClInclude Include="Mod\Modname.h" />
     <ClInclude Include="Mod\ModOpcodes.h" />
     <ClInclude Include="Mod\ProgressIndicator.h" />

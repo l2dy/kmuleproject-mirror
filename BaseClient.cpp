@@ -2644,7 +2644,11 @@ void CUpDownClient::ResetFileStatusInfo()
 
 bool CUpDownClient::IsBanned() const
 {
-    return theApp.clientlist->IsBannedClient(GetIP());
+//>>> WiZaRd::Optimization
+	if(GetUploadState() == US_BANNED)
+		return true;
+//<<< WiZaRd::Optimization
+    return theApp.clientlist->IsBannedClient(GetConnectIP());
 }
 
 void CUpDownClient::SendPreviewRequest(const CAbstractFile* pForFile)
@@ -3194,7 +3198,7 @@ void CUpDownClient::CheckFailedFileIdReqs(const uchar* aucFileHash)
                 theApp.clientlist->TrackBadRequest(this, -2); // reset so the client will not be rebanned right after the ban is lifted
                 Ban(_T("FileReq flood"));
             }
-            throw CString(thePrefs.GetLogBannedClients() ? _T("FileReq flood") : _T(""));
+            throw CString(thePrefs.GetLogBannedClients() ? _T("FileReq flood") : L"");
         }
     }
 }
@@ -3228,7 +3232,7 @@ void  CUpDownClient::SetMessageFiltered(bool bVal)
 bool  CUpDownClient::IsObfuscatedConnectionEstablished() const
 {
     if (socket != NULL && socket->IsConnected())
-        return socket->IsObfusicating();
+        return socket->IsObfuscating();
     else
         return false;
 }
@@ -3366,7 +3370,7 @@ void CUpDownClient::ProcessChatMessage(CSafeMemFile* data, UINT nLength)
                     // replace captchaanswer with withheld message and show it
                     strMessage = m_strCaptchaPendingMsg;
                     m_cCaptchasSent = 0;
-                    m_strCaptchaChallenge = _T("");
+                    m_strCaptchaChallenge = L"";
                     Packet* packet = new Packet(OP_CHATCAPTCHARES, 1, OP_EMULEPROT, false);
                     packet->pBuffer[0] = 0; // status response
                     theStats.AddUpDataOverheadOther(packet->size);
@@ -3380,8 +3384,8 @@ void CUpDownClient::ProcessChatMessage(CSafeMemFile* data, UINT nLength)
                 {
                     DebugLogWarning(_T("Captcha answer failed (%s)"), DbgGetClientInfo());
                     m_nChatCaptchaState = CA_NONE;
-                    m_strCaptchaChallenge = _T("");
-                    m_strCaptchaPendingMsg = _T("");
+                    m_strCaptchaChallenge = L"";
+                    m_strCaptchaPendingMsg = L"";
                     Packet* packet = new Packet(OP_CHATCAPTCHARES, 1, OP_EMULEPROT, false);
                     packet->pBuffer[0] = (m_cCaptchasSent < 3)? 1 : 2; // status response
                     theStats.AddUpDataOverheadOther(packet->size);
@@ -3408,7 +3412,7 @@ void CUpDownClient::ProcessChatMessage(CSafeMemFile* data, UINT nLength)
             {
                 int curPos=0;
                 CString resToken = CString(URLINDICATOR).Tokenize(_T("|"), curPos);
-                while (resToken != _T(""))
+                while (resToken != L"")
                 {
                     if (strMessage.Find(resToken) > (-1))
                         bIsSpam = true;

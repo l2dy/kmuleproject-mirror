@@ -1617,7 +1617,7 @@ bool CemuleDlg::CanClose()
 
 void CemuleDlg::OnClose()
 {
-    if (!CanClose())
+    if (!theApp.IsRestartPlanned() && !CanClose()) //>>> WiZaRd::Automatic Restart
         return;
 
     Log(L"Closing " + CString(MOD_VERSION_PLAIN));
@@ -1940,7 +1940,7 @@ void CemuleDlg::StartConnection()
     if (!Kademlia::CKademlia::IsRunning())
     {
         // UPnP is still trying to open the ports. In order to not get a LowID by connecting to the servers / kad before
-        // the ports are opened we delay the connection untill UPnP gets a result or the timeout is reached
+        // the ports are opened we delay the connection until UPnP gets a result or the timeout is reached
         // If the user clicks two times on the button, let him have his will and connect regardless
         if (m_hUPnPTimeOutTimer != 0 && !m_bConnectRequestDelayedForUPnP)
         {
@@ -1961,9 +1961,7 @@ void CemuleDlg::StartConnection()
 
             // kad
             if (!Kademlia::CKademlia::IsRunning())
-            {
                 Kademlia::CKademlia::Start();
-            }
         }
 
         ShowConnectionState();
@@ -3177,8 +3175,21 @@ void CemuleDlg::UPnPTimeOutTimer(HWND /*hwnd*/, UINT /*uiMsg*/, UINT /*idEvent*/
 LRESULT CemuleDlg::OnUPnPResult(WPARAM wParam, LPARAM lParam)
 {
     bool bWasRefresh = lParam != 0;
-    if (!bWasRefresh && wParam == CUPnPImpl::UPNP_FAILED)
+//>>> WiZaRd - handle "UPNP_TIMEOUT" events!
+//	if (!bWasRefresh && wParam == CUPnPImpl::UPNP_FAILED)
+	if (!bWasRefresh && wParam != CUPnPImpl::UPNP_OK)
+//<<< WiZaRd - handle "UPNP_TIMEOUT" events!
+	{	
+//>>> WiZaRd - handle "UPNP_TIMEOUT" events!
+		//just to be sure, stop any running services and also delete the forwarded ports (if necessary)
+		if(wParam == CUPnPImpl::UPNP_TIMEOUT)
     {
+			theApp.m_pUPnPFinder->GetImplementation()->StopAsyncFind();
+			if (thePrefs.CloseUPnPOnExit())
+				theApp.m_pUPnPFinder->GetImplementation()->DeletePorts();
+		}
+//<<< WiZaRd - handle "UPNP_TIMEOUT" events!
+
         // UPnP failed, check if we can retry it with another implementation
         if (theApp.m_pUPnPFinder->SwitchImplentation())
         {
@@ -3195,18 +3206,20 @@ LRESULT CemuleDlg::OnUPnPResult(WPARAM wParam, LPARAM lParam)
         m_hUPnPTimeOutTimer = 0;
     }
     if (IsRunning() && m_bConnectRequestDelayedForUPnP)
-    {
         StartConnection();
-    }
-    if (!bWasRefresh && wParam == CUPnPImpl::UPNP_OK)
-    {
-        // remember the last working implementation
-        thePrefs.SetLastWorkingUPnPImpl(theApp.m_pUPnPFinder->GetImplementation()->GetImplementationID());
-        Log(GetResString(IDS_UPNPSUCCESS), theApp.m_pUPnPFinder->GetImplementation()->GetUsedTCPPort()
-            , theApp.m_pUPnPFinder->GetImplementation()->GetUsedUDPPort());
-    }
-    else if (!bWasRefresh)
-        LogWarning(GetResString(IDS_UPNPFAILED));
+
+	if (!bWasRefresh)
+	{
+		if(wParam == CUPnPImpl::UPNP_OK)
+		{
+			// remember the last working implementation
+			thePrefs.SetLastWorkingUPnPImpl(theApp.m_pUPnPFinder->GetImplementation()->GetImplementationID());
+			Log(GetResString(IDS_UPNPSUCCESS), theApp.m_pUPnPFinder->GetImplementation()->GetUsedTCPPort()
+				, theApp.m_pUPnPFinder->GetImplementation()->GetUsedUDPPort());
+		}
+		else
+			LogWarning(GetResString(IDS_UPNPFAILED));
+	}
 
     return 0;
 }
@@ -3225,24 +3238,26 @@ LRESULT  CemuleDlg::OnPowerBroadcast(WPARAM wParam, LPARAM lParam)
             PostMessage(WM_SYSCOMMAND , MP_CONNECT, 0); // tell to connect.. a sec later...
         }
         return TRUE; // message processed.
-        break;
     }
+
     case PBT_APMSUSPEND:
     {
         DebugLog(_T("System is going is suspending operation, disconnecting. wParam=%d lPararm=%ld"),wParam,lParam);
         m_bKadSuspendDisconnect = Kademlia::CKademlia::IsConnected();
         CloseConnection();
         return TRUE; // message processed.
-        break;
     }
+
     default:
         return FALSE; // we do not process this message
     }
-
 }
 
 void CemuleDlg::StartUPnP(bool bReset, uint16 nForceTCPPort, uint16 nForceUDPPort)
 {
+	if (!thePrefs.IsUPnPEnabled())
+		return;
+
     if (theApp.m_pUPnPFinder != NULL && (m_hUPnPTimeOutTimer == 0 || !bReset))
     {
         if (bReset)
@@ -3274,36 +3289,62 @@ void CemuleDlg::StartUPnP(bool bReset, uint16 nForceTCPPort, uint16 nForceUDPPor
         ASSERT(0);
 }
 
+//>>> WiZaRd
+void	CemuleDlg::RemoveUPnPMappings()
+{
+	if (!thePrefs.IsUPnPEnabled())
+		return;
+
+	if (theApp.m_pUPnPFinder != NULL && m_hUPnPTimeOutTimer == 0)
+	{
+		try
+		{
+			if (theApp.m_pUPnPFinder->GetImplementation()->IsReady())
+			{
+				theApp.m_pUPnPFinder->GetImplementation()->StopAsyncFind();
+				/*if (thePrefs.CloseUPnPOnExit())*/
+					theApp.m_pUPnPFinder->GetImplementation()->DeletePorts();
+			}
+			else
+				DebugLogWarning(L"RemoveUPnPMappings, implementation not ready");
+		}
+		catch ( CUPnPImpl::UPnPError& ) {}
+		catch ( CException* e ) { e->Delete(); }
+	}
+	else
+		ASSERT(0);
+}
+//<<< WiZaRd
+
 void CemuleDlg::RefreshUPnP(bool bRequestAnswer)
 {
     if (!thePrefs.IsUPnPEnabled())
         return;
-    if (theApp.m_pUPnPFinder != NULL && m_hUPnPTimeOutTimer == 0)
-    {
-        try
-        {
-            if (theApp.m_pUPnPFinder->GetImplementation()->IsReady())
-            {
-                if (bRequestAnswer)
-                    theApp.m_pUPnPFinder->GetImplementation()->SetMessageOnResult(GetSafeHwnd(), UM_UPNP_RESULT);
-                if (theApp.m_pUPnPFinder->GetImplementation()->CheckAndRefresh() && bRequestAnswer)
-                {
-                    VERIFY((m_hUPnPTimeOutTimer = ::SetTimer(NULL, NULL, SEC2MS(10), UPnPTimeOutTimer)) != NULL);
-                }
-                else
-                    theApp.m_pUPnPFinder->GetImplementation()->SetMessageOnResult(0, 0);
-            }
-            else
-                DebugLogWarning(_T("RefreshUPnP, implementation not ready"));
-        }
-        catch (CUPnPImpl::UPnPError&) {}
-        catch (CException* e)
-        {
-            e->Delete();
-        }
-    }
-    else
-        ASSERT(0);
+
+	if (theApp.m_pUPnPFinder != NULL && m_hUPnPTimeOutTimer == 0)
+	{
+		try
+		{
+			if (theApp.m_pUPnPFinder->GetImplementation()->IsReady())
+			{
+				if (bRequestAnswer)
+					theApp.m_pUPnPFinder->GetImplementation()->SetMessageOnResult(GetSafeHwnd(), UM_UPNP_RESULT);
+				if (theApp.m_pUPnPFinder->GetImplementation()->CheckAndRefresh() && bRequestAnswer)
+					VERIFY((m_hUPnPTimeOutTimer = ::SetTimer(NULL, NULL, SEC2MS(10), UPnPTimeOutTimer)) != NULL);
+				else
+					theApp.m_pUPnPFinder->GetImplementation()->SetMessageOnResult(0, 0);
+			}
+			else
+				DebugLogWarning(_T("RefreshUPnP, implementation not ready"));
+		}
+		catch (CUPnPImpl::UPnPError&) {}
+		catch (CException* e)
+		{
+			e->Delete();
+		}
+	}
+	else
+		ASSERT(0);
 }
 
 BOOL CemuleDlg::OnDeviceChange(UINT nEventType, DWORD_PTR dwData)
@@ -3369,7 +3410,6 @@ BOOL CemuleDlg::OnDeviceChange(UINT nEventType, DWORD_PTR dwData)
     return __super::OnDeviceChange(nEventType, dwData);
 }
 
-
 //////////////////////////////////////////////////////////////////
 // Windows 7 GUI goodies
 
@@ -3377,7 +3417,6 @@ BOOL CemuleDlg::OnDeviceChange(UINT nEventType, DWORD_PTR dwData)
 // update thumbbarbutton structs and add/update the GUI thumbbar
 void CemuleDlg::UpdateThumbBarButtons(bool initialAddToDlg)
 {
-
     if (!m_pTaskbarList)
         return;
 
@@ -3479,7 +3518,7 @@ void CemuleDlg::EnableTaskbarGoodies(bool enable)
 {
     if (m_pTaskbarList)
     {
-        m_pTaskbarList->SetOverlayIcon(m_hWnd, NULL, _T(""));
+        m_pTaskbarList->SetOverlayIcon(m_hWnd, NULL, L"");
         if (!enable)
         {
             m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);

@@ -263,7 +263,13 @@ public:
     CString  GetClientVersionString() const;
     CString  GetClientVersionStringBase(const bool bDebug = false) const;
 //<<< WiZaRd::Easy ModVersion
-
+//>>> WiZaRd::Automatic Restart
+public:
+	bool	IsRestartPlanned() const	{return m_bRestartApp;}
+	void	PlanRestart()				{m_bRestartApp = true;}
+private:
+	bool	m_bRestartApp;
+//<<< WiZaRd::Automatic Restart
 };
 
 extern CemuleApp theApp;

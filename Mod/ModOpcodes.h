@@ -31,6 +31,7 @@ static const CString strRatioSmilies[] =
     L"SMILEY_HAPPY",
     L"SMILEY_LAUGH",
 };
+static const UINT ratioSmileyCount = _countof(strRatioSmilies) - 1;
 //<<< WiZaRd::Ratio Indicator
 
 //>>> PreviewIndicator [WiZaRd]

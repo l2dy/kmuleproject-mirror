@@ -96,9 +96,9 @@ public:
     void	SetConnectionEncryption(bool bEnabled, const uchar* pTargetClientHash, bool bServerConnection);
     UINT	GetRealReceivedBytes() const
     {
-        return m_nObfuscationBytesReceived;    // indicates how many bytes were received including obfusication so that the parent knows if the receive limit was reached
+        return m_nObfuscationBytesReceived;    // indicates how many bytes were received including obfuscation so that the parent knows if the receive limit was reached
     }
-    bool	IsObfusicating() const
+    bool	IsObfuscating() const
     {
         return m_StreamCryptState == ECS_ENCRYPTING && m_EncryptionMethod == ENM_OBFUSCATION;
     }

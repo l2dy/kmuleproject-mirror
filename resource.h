@@ -970,7 +970,7 @@
 #define IDS_STARTTEST                   1280
 #define IDS_TESTINFO                    1281
 #define IDS_CONNECTIONTEST              1282
-#define IDS_NOPORTCHANGEPOSSIBLE        1283
+//#define IDS_NOPORTCHANGEPOSSIBLE        1283
 #define IDS_NETWORK_INFO                1284
 #define IDS_SP_TOTALUL                  1285
 #define IDS_SP_ULFRIENDS                1286

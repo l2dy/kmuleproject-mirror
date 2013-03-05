@@ -76,7 +76,12 @@ CList<UINT, UINT> CKademlia::m_liStatsEstUsersProbes;
 _ContactList CKademlia::s_liBootstapList;
 
 CKademlia::CKademlia()
-{}
+{
+	m_pPrefs = NULL;
+	m_pRoutingZone = NULL;
+	m_pUDPListener = NULL;
+	m_pIndexed = NULL;
+}
 
 void CKademlia::Start()
 {
@@ -135,6 +140,9 @@ void CKademlia::Start(CPrefs *pPrefs)
         m_pInstance->m_pUDPListener = new CKademliaUDPListener();
         // Mark Kad as running state.
         m_bRunning = true;
+
+		if(theApp.emuledlg)
+			theApp.emuledlg->ShowConnectionState();// Update GUI
     }
     catch (CException *e)
     {
@@ -187,6 +195,9 @@ void CKademlia::Stop()
 
     // Make sure all zones are removed.
     m_mapEvents.clear();
+
+	if(theApp.emuledlg)
+		theApp.emuledlg->ShowConnectionState();// Update GUI
 }
 
 void CKademlia::Process()
@@ -209,11 +220,19 @@ void CKademlia::Process()
     if (m_tNextFirewallCheck <= tNow)
         RecheckFirewalled();
     if (m_tNextUPnPCheck != 0 && m_tNextUPnPCheck <= tNow)
-    {
-        theApp.emuledlg->RefreshUPnP();
+    {        
+//>>> WiZaRd::"HARD" upnp reset
+		// obviously, "RefreshUPnP" fails pretty often? try a "HARD" reset in that case!
+		if (Kademlia::CKademlia::IsConnected() && Kademlia::CKademlia::IsFirewalled())
+		{
+			theApp.emuledlg->RemoveUPnPMappings();
+			theApp.emuledlg->StartUPnP();
+		}
+		else
+//<<< WiZaRd::"HARD" upnp reset
+			theApp.emuledlg->RefreshUPnP();
         m_tNextUPnPCheck = 0; // will be reset on firewallcheck
     }
-
     if (m_tNextSelfLookup <= tNow)
     {
         CSearchManager::FindNode(m_pInstance->m_pPrefs->GetKadID(), true);
@@ -364,8 +383,7 @@ UINT CKademlia::GetKademliaUsers(bool bNewMethod)
     {
         if (bNewMethod)
             return CalculateKadUsersNew();
-        else
-            return m_pInstance->m_pPrefs->GetKademliaUsers();
+        return m_pInstance->m_pPrefs->GetKademliaUsers();
     }
     return 0;
 }
@@ -422,7 +440,7 @@ bool CKademlia::GetPublish()
 {
     if (m_pInstance && m_pInstance->m_pPrefs)
         return m_pInstance->m_pPrefs->GetPublish();
-    return 0;
+	return false;
 }
 
 void CKademlia::Bootstrap(LPCTSTR szHost, uint16 uPort)
@@ -445,30 +463,33 @@ void CKademlia::Bootstrap(UINT uIP, uint16 uPort)
 
 void CKademlia::RecheckFirewalled()
 {
-    if (m_pInstance && m_pInstance->GetPrefs() && !IsRunningInLANMode())
-    {
-        // Something is forcing a new firewall check
-        // Stop any new buddy requests, and tell the client
-        // to recheck it's IP which in turns rechecks firewall.
-        m_pInstance->m_pPrefs->SetFindBuddy(false);
-        m_pInstance->m_pPrefs->SetRecheckIP();
-        // also UDP check
-        CUDPFirewallTester::ReCheckFirewallUDP(false);
+	if(!IsRunningInLANMode())
+	{
+		if (m_pInstance && m_pInstance->GetPrefs())
+		{
+			// Something is forcing a new firewall check
+			// Stop any new buddy requests, and tell the client
+			// to recheck it's IP which in turns rechecks firewall.
+			m_pInstance->m_pPrefs->SetFindBuddy(false);
+			m_pInstance->m_pPrefs->SetRecheckIP();
+			// also UDP check
+			CUDPFirewallTester::ReCheckFirewallUDP(false);
+		}
+	}
 
-        time_t tNow = time(NULL);
-        // Delay the next buddy search to at least 5 minutes after our firewallcheck so we are sure to be still firewalled
-        m_tNextFindBuddy = (m_tNextFindBuddy < MIN2S(5) + tNow) ? (MIN2S(5) + tNow) : m_tNextFindBuddy;
-        //m_tNextFirewallCheck = HR2S(1) + tNow;
-        m_tNextFirewallCheck = MIN2S(15) + tNow;
-        m_tNextUPnPCheck = m_tNextFirewallCheck - MIN2S(1);
-    }
+	time_t tNow = time(NULL);
+	// Delay the next buddy search to at least 5 minutes after our firewallcheck so we are sure to be still firewalled
+	m_tNextFindBuddy = (m_tNextFindBuddy < MIN2S(5) + tNow) ? (MIN2S(5) + tNow) : m_tNextFindBuddy;
+	//m_tNextFirewallCheck = HR2S(1) + tNow;
+	m_tNextFirewallCheck = MIN2S(15) + tNow;
+	m_tNextUPnPCheck = m_tNextFirewallCheck - MIN2S(1);
 }
 
 CPrefs *CKademlia::GetPrefs()
 {
     if (m_pInstance == NULL || m_pInstance->m_pPrefs == NULL)
     {
-        //ASSERT(0);
+//		ASSERT(0); //fires from EncryptedDatagramSocket.cpp - if (!Kademlia::CKademlia::IsRunning() && Kademlia::CKademlia::GetPrefs() == NULL)
         return NULL;
     }
     return m_pInstance->m_pPrefs;
@@ -516,17 +537,17 @@ bool CKademlia::FindNodeIDByIP(CKadClientSearcher& rRequester, UINT dwIP, uint16
         ASSERT(0);
         return false;
     }
+
     // first search our known contacts if we can deliver a result without asking, otherwise forward the request
-    CContact* pContact;
-    if ((pContact = GetRoutingZone()->GetContact(ntohl(dwIP), nTCPPort, true)) != NULL)
+    CContact* pContact = GetRoutingZone()->GetContact(ntohl(dwIP), nTCPPort, true);
+    if(pContact != NULL)
     {
         uchar uchID[16];
         pContact->GetClientID().ToByteArray(uchID);
         rRequester.KadSearchNodeIDByIPResult(KCSR_SUCCEEDED, uchID);
         return true;
     }
-    else
-        return GetUDPListener()->FindNodeIDByIP(&rRequester, ntohl(dwIP), nTCPPort, nUDPPort, byKadVersion);
+    return GetUDPListener()->FindNodeIDByIP(&rRequester, ntohl(dwIP), nTCPPort, nUDPPort, byKadVersion);
 }
 
 bool CKademlia::FindIPByNodeID(CKadClientSearcher& rRequester, const uchar* pachNodeID)
@@ -536,9 +557,10 @@ bool CKademlia::FindIPByNodeID(CKadClientSearcher& rRequester, const uchar* pach
         ASSERT(0);
         return false;
     }
+
     // first search our known contacts if we can deliver a result without asking, otherwise forward the request
-    CContact* pContact;
-    if ((pContact = GetRoutingZone()->GetContact(CUInt128(pachNodeID))) != NULL)
+    CContact* pContact = GetRoutingZone()->GetContact(CUInt128(pachNodeID));
+    if (pContact != NULL)
     {
         // make sure that this entry is not too old, otherwise just do a search to be sure
         if (pContact->GetLastSeen() != 0 && time(NULL) - pContact->GetLastSeen() < 1800)
@@ -596,18 +618,17 @@ UINT CKademlia::CalculateKadUsersNew()
     // the idea of calculating the user count with this method is simple:
     // whenever we do search for any NodeID (except in certain cases were the result is not usable),
     // we remember the distance of the closest node we found. Because we assume all NodeIDs are distributed
-    // equally, we can calcualte based on this distance how "filled" the possible NodesID room is and by this
+    // equally, we can calculate based on this distance how "filled" the possible NodesID room is and by this
     // calculate how many users there are. Of course this only works if we have enough samples, because
     // each single sample will be wrong, but the average of them should produce a usable number. To avoid
     // drifts caused by a a single (or more) really close or really far away hits, we do use median-average instead through
-
-    // doesnt works well if we have no files to index and nothing to download and the numbers seems to be a bit too low
+    // doesn't work well if we have no files to index and nothing to download and the numbers seems to be a bit too low
     // compared to out other method. So lets stay with the old one for now, but keeps this here as alternative
 
     if (m_liStatsEstUsersProbes.GetCount() < 10)
         return 0;
-    UINT nMedian = 0;
 
+    UINT nMedian = 0;
     CList<UINT, UINT> liMedian;
     for (POSITION pos1 = m_liStatsEstUsersProbes.GetHeadPosition(); pos1 != NULL;)
     {
@@ -625,13 +646,15 @@ UINT CKademlia::CalculateKadUsersNew()
         if (!bInserted)
             liMedian.AddTail(nProbe);
     }
+
     // cut away 1/3 of the values - 1/6 of the top and 1/6 of the bottom  to avoid spikes having too much influence, build the average of the rest
     sint32 nCut = liMedian.GetCount() / 6;
-    for (int i = 0; i != nCut; i++)
+    for (int i = 0; i != nCut; ++i)
     {
         liMedian.RemoveHead();
         liMedian.RemoveTail();
     }
+
     uint64 nAverage = 0;
     for (POSITION pos1 = liMedian.GetHeadPosition(); pos1 != NULL;)
         nAverage += liMedian.GetNext(pos1);
@@ -652,7 +675,7 @@ UINT CKademlia::CalculateKadUsersNew()
     }
     float fNewRatio = CKademlia::GetPrefs()->StatsGetKadV8Ratio();
     float fFirewalledModifyTotal = 0;
-    if (fNewRatio > 0 && fFirewalledModifyNew > 0) // weigth the old and the new modifier based on how many new contacts we have
+    if (fNewRatio > 0 && fFirewalledModifyNew > 0) // weight the old and the new modifier based on how many new contacts we have
         fFirewalledModifyTotal = (fNewRatio * fFirewalledModifyNew) + ((1 - fNewRatio) * fFirewalledModifyOld);
     else
         fFirewalledModifyTotal = fFirewalledModifyOld;

@@ -197,7 +197,7 @@ BOOL CStatisticsDlg::OnInitDialog()
     // Set the trend ratio of the Active Connections trend in the Connection Statistics scope.
     m_Statistics.SetTrendRatio(0, thePrefs.GetStatsConnectionsGraphRatio());
 
-    m_Statistics.SetYUnits(_T(""));
+    m_Statistics.SetYUnits(L"");
     m_Statistics.SetXUnits(GetResString(IDS_TIME));
 
     RepaintMeters();
@@ -293,9 +293,9 @@ BOOL CStatisticsDlg::OnInitDialog()
 
     m_TimeToolTips = new CToolTipCtrl();
     m_TimeToolTips->Create(this);
-    m_TimeToolTips->AddTool(GetDlgItem(IDC_SCOPE_D), _T(""), NULL, 0);
-    m_TimeToolTips->AddTool(GetDlgItem(IDC_SCOPE_U), _T(""), NULL, 0);
-    m_TimeToolTips->AddTool(GetDlgItem(IDC_STATSSCOPE),	_T(""), NULL, 0);
+    m_TimeToolTips->AddTool(GetDlgItem(IDC_SCOPE_D), L"", NULL, 0);
+    m_TimeToolTips->AddTool(GetDlgItem(IDC_SCOPE_U), L"", NULL, 0);
+    m_TimeToolTips->AddTool(GetDlgItem(IDC_STATSSCOPE),	L"", NULL, 0);
     // Any Autopop-Time which is specified higher than ~30 sec. will get reset to 5 sec.
     m_TimeToolTips->SetDelayTime(TTDT_AUTOPOP, 30000);
     m_TimeToolTips->SetDelayTime(TTDT_INITIAL, 30000);
@@ -672,7 +672,7 @@ void CStatisticsDlg::RepaintMeters()
     m_Statistics.SetLegendLabel(GetResString(IDS_ST_ACTIVED), 3);				// Active Downloads
 }
 
-void CStatisticsDlg::SetCurrentRate(float uploadrate, float downloadrate)
+void CStatisticsDlg::SetCurrentRate(double uploadrate, double downloadrate)
 {
     if (!theApp.emuledlg->IsRunning())
         return;
@@ -691,9 +691,9 @@ void CStatisticsDlg::SetCurrentRate(float uploadrate, float downloadrate)
     // current rate to network (standardPackets + controlPackets)
     m_dPlotDataUp[2] = uploadrate;
     // current rate (excl. overhead)
-    m_dPlotDataUp[3] = uploadrate - (float)theStats.GetUpDatarateOverhead() / 1024;
+    m_dPlotDataUp[3] = uploadrate - (double)theStats.GetUpDatarateOverhead() / 1024.0;
     // current rate to friends
-    m_dPlotDataUp[4] = uploadrate - (float)theApp.uploadqueue->GetToNetworkDatarate() / 1024;
+    m_dPlotDataUp[4] = uploadrate - (double)theApp.uploadqueue->GetToNetworkDatarate() / 1024.0;
     m_UploadOMeter.AppendPoints(m_dPlotDataUp);
 
     // Connections
@@ -2881,7 +2881,7 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
             const unsigned char* pszFileName;
             HTREEITEM* pTag;
             blockFiles.GetNextAssoc(pos, pszFileName, pTag);
-            stattree.SetItemText(*pTag, _T(""));
+            stattree.SetItemText(*pTag, L"");
         }
         pos = g_allocations.GetStartPosition();
         while (pos != NULL)
@@ -2990,7 +2990,7 @@ void CStatisticsDlg::ShowInterval()
     }
 }
 
-void CStatisticsDlg::SetARange(bool SetDownload, int maxValue)
+void CStatisticsDlg::SetARange(bool SetDownload, double maxValue)
 {
     if (SetDownload)
     {

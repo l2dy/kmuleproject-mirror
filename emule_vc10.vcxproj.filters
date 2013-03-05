@@ -61,6 +61,9 @@
     <Filter Include="Resource Files\Images">
       <UniqueIdentifier>{496c84bc-34d5-4bfe-91dd-feca70da47eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Smilies">
+      <UniqueIdentifier>{f9be4f92-d07b-4077-b641-14018e8e5b1c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AbstractFile.cpp">
@@ -724,6 +727,9 @@
       <Filter>Mod\Source</Filter>
     </ClCompile>
     <ClCompile Include="Mod\SplashScreenEx.cpp">
+      <Filter>Mod\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Mod\loadStatus.cpp">
       <Filter>Mod\Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1571,34 +1577,34 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="res\Smiley_Cry.gif">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\Smiley_Disgust.gif">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\Smiley_Happy.gif">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\Smiley_lookside.gif">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\Smiley_Love.gif">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\Smiley_Sad.gif">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\Smiley_Skeptic.gif">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\Smiley_Smile.gif">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Smilies</Filter>
     </None>
     <None Include="res\Smiley_Wink.gif">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Smilies</Filter>
+    </None>
+    <None Include="res\Smiley_Disgust.gif">
+      <Filter>Resource Files\Smilies</Filter>
+    </None>
+    <None Include="res\Smiley_Happy.gif">
+      <Filter>Resource Files\Smilies</Filter>
     </None>
     <None Include="res\Smiley_Laugh.gif">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Smilies</Filter>
+    </None>
+    <None Include="res\Smiley_lookside.gif">
+      <Filter>Resource Files\Smilies</Filter>
+    </None>
+    <None Include="res\Smiley_Love.gif">
+      <Filter>Resource Files\Smilies</Filter>
+    </None>
+    <None Include="res\Smiley_Sad.gif">
+      <Filter>Resource Files\Smilies</Filter>
+    </None>
+    <None Include="res\Smiley_Skeptic.gif">
+      <Filter>Resource Files\Smilies</Filter>
+    </None>
+    <None Include="res\Smiley_Smile.gif">
+      <Filter>Resource Files\Smilies</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -2341,6 +2347,9 @@
       <Filter>Mod\Header</Filter>
     </ClInclude>
     <ClInclude Include="Mod\SplashScreenEx.h">
+      <Filter>Mod\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Mod\loadStatus.h">
       <Filter>Mod\Header</Filter>
     </ClInclude>
   </ItemGroup>

@@ -498,7 +498,7 @@ BOOL CemuleApp::InitInstance()
     ///////////////////////////////////////////////////////////////////////////
     // Locale initialization -- BE VERY CAREFUL HERE!!!
     //
-    _tsetlocale(LC_ALL, _T(""));		// set all categories of locale to user-default ANSI code page obtained from the OS.
+    _tsetlocale(LC_ALL, L"");		// set all categories of locale to user-default ANSI code page obtained from the OS.
     _tsetlocale(LC_NUMERIC, _T("C"));	// set numeric category to 'C'
     //_tsetlocale(LC_CTYPE, _T("C"));		// set character types category to 'C' (VERY IMPORTANT, we need binary string compares!)
 
@@ -610,6 +610,7 @@ BOOL CemuleApp::InitInstance()
         return FALSE;
     }
 
+	m_bRestartApp = false; //>>> WiZaRd::Automatic Restart
     // show splashscreen as early as possible to "entertain" user while starting kMule
     if (!thePrefs.IsFirstStart() && thePrefs.UseSplashScreen())
     {
@@ -793,14 +794,21 @@ BOOL CemuleApp::InitInstance()
     ClearDebugLogQueue(true);
     ClearLogQueue(true);
 
-    AddDebugLogLine(DLP_VERYLOW, _T("%hs: returning: FALSE"), __FUNCTION__);
-
 //>>> WiZaRd::AutoUpdate
     autoUpdater->ApplyUpdate();
     delete autoUpdater;
     autoUpdater = NULL;
 //<<< WiZaRd::AutoUpdate
+//>>> WiZaRd::Automatic Restart
+	if(m_bRestartApp)
+	{
+		CString strExePath;
+		strExePath.Format(L"%s%s.exe", thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), m_pszExeName);
+		ShellOpenFile(strExePath);
+	}
+//<<< WiZaRd::Automatic Restart
 
+	AddDebugLogLine(DLP_VERYLOW, L"%hs: returning: FALSE", __FUNCTION__);
     return FALSE;
 }
 
@@ -1134,9 +1142,9 @@ CString CemuleApp::CopyTextFromClipboard()
     }
 
     if (!IsClipboardFormatAvailable(CF_TEXT))
-        return _T("");
+        return L"";
     if (!OpenClipboard(NULL))
-        return _T("");
+        return L"";
 
     CString	retstring;
     HGLOBAL	hglb = GetClipboardData(CF_TEXT);
@@ -1355,7 +1363,7 @@ int CemuleApp::GetFileTypeSystemImageIdx(LPCTSTR pszFilePath, int iLength /* = -
             }
         }
         if (pszCacheExt == NULL)
-            pszCacheExt = _T("");	// empty extension
+            pszCacheExt = L"";	// empty extension
     }
 
     // Search extension in "ext->idx" cache.
@@ -1475,17 +1483,13 @@ void CemuleApp::SetPublicIP(const UINT dwIP)
         m_dwPublicIP = dwIP;
         if (bChange)
         {
+			// Public IP has been changed
             ResetLocalIP();
-
-            // Public IP has been changed
-            CString s = ipstr(m_dwPublicIP);
-            if (s.Right(2) == L".0")
-                theApp.QueueDebugLogLineEx(LOG_WARNING, L"WARNING: your IP contains a \"0\" at last position - you will receive a LOWID!");
 
             if (thePrefs.IsUPnPEnabled() && theApp.emuledlg && theApp.m_pUPnPFinder)
             {
                 theApp.QueueDebugLogLineEx(LOG_WARNING, L"Resetting UPnP due to IP change...");
-                theApp.emuledlg->RefreshUPnP(false);
+                theApp.emuledlg->RefreshUPnP(true);
             }
         }
 //<<< WiZaRd::Recode
@@ -1545,7 +1549,7 @@ HICON CemuleApp::LoadIcon(LPCTSTR lpszResourceName, int cx, int cy, UINT uFlags)
     {
         // load icon resource file specification from skin profile
         TCHAR szSkinResource[MAX_PATH];
-        GetPrivateProfileString(_T("Icons"), lpszResourceName, _T(""), szSkinResource, _countof(szSkinResource), pszSkinProfile);
+        GetPrivateProfileString(_T("Icons"), lpszResourceName, L"", szSkinResource, _countof(szSkinResource), pszSkinProfile);
         if (szSkinResource[0] != L'\0')
         {
             // expand any optional available environment strings
@@ -1686,7 +1690,7 @@ HBITMAP CemuleApp::LoadImage(LPCTSTR lpszResourceName, LPCTSTR pszResourceType) 
     {
         // load resource file specification from skin profile
         TCHAR szSkinResource[MAX_PATH];
-        GetPrivateProfileString(_T("Bitmaps"), lpszResourceName, _T(""), szSkinResource, _countof(szSkinResource), pszSkinProfile);
+        GetPrivateProfileString(_T("Bitmaps"), lpszResourceName, L"", szSkinResource, _countof(szSkinResource), pszSkinProfile);
         if (szSkinResource[0] != L'\0')
         {
             // expand any optional available environment strings
@@ -1732,7 +1736,7 @@ CString CemuleApp::GetSkinFileItem(LPCTSTR lpszResourceName, LPCTSTR pszResource
     {
         // load resource file specification from skin profile
         TCHAR szSkinResource[MAX_PATH];
-        GetPrivateProfileString(pszResourceType, lpszResourceName, _T(""), szSkinResource, _countof(szSkinResource), pszSkinProfile);
+        GetPrivateProfileString(pszResourceType, lpszResourceName, L"", szSkinResource, _countof(szSkinResource), pszSkinProfile);
         if (szSkinResource[0] != L'\0')
         {
             // expand any optional available environment strings
@@ -1762,7 +1766,7 @@ CString CemuleApp::GetSkinFileItem(LPCTSTR lpszResourceName, LPCTSTR pszResource
             return szFullResPath;
         }
     }
-    return _T("");
+    return L"";
 }
 
 bool CemuleApp::LoadSkinColor(LPCTSTR pszKey, COLORREF& crColor) const
@@ -1771,7 +1775,7 @@ bool CemuleApp::LoadSkinColor(LPCTSTR pszKey, COLORREF& crColor) const
     if (pszSkinProfile != NULL && pszSkinProfile[0] != L'\0')
     {
         TCHAR szColor[MAX_PATH];
-        GetPrivateProfileString(_T("Colors"), pszKey, _T(""), szColor, _countof(szColor), pszSkinProfile);
+        GetPrivateProfileString(_T("Colors"), pszKey, L"", szColor, _countof(szColor), pszSkinProfile);
         if (szColor[0] != L'\0')
         {
             UINT red, grn, blu;

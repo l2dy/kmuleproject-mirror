@@ -962,7 +962,10 @@ void CSearch::StorePacket()
             ASSERT(CKadUDPKey(0) == pFromContact->GetUDPKey());
         }
         // Inc total request answers
-        m_uAnswers++;
+//>>> WiZaRd::FiX?
+//	++m_uAnswers; 
+	++m_uTotalRequestAnswers;
+//<<< WiZaRd::FiX?
         break;
     }
     case FINDSOURCE:
@@ -998,7 +1001,10 @@ void CSearch::StorePacket()
             ASSERT(CKadUDPKey(0) == pFromContact->GetUDPKey());
         }
         // Inc total request answers
-        m_uAnswers++;
+//>>> WiZaRd::FiX?
+//	++m_uAnswers; 
+	++m_uTotalRequestAnswers;
+//<<< WiZaRd::FiX?
         break;
     }
     case NODESPECIAL:

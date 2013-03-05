@@ -251,7 +251,7 @@ void CPublishKeywordList::AddKeywords(CKnownFile* pFile)
     const Kademlia::WordList& wordlist = pFile->GetKadKeywords();
     //ASSERT( wordlist.size() > 0 );
     Kademlia::WordList::const_iterator it;
-    for (it = wordlist.begin(); it != wordlist.end(); it++)
+	for (it = wordlist.begin(); it != wordlist.end(); ++it)
     {
         const CStringW& strKeyword = *it;
         CPublishKeyword* pPubKw = FindKeyword(strKeyword);
@@ -277,7 +277,7 @@ void CPublishKeywordList::RemoveKeywords(CKnownFile* pFile)
     const Kademlia::WordList& wordlist = pFile->GetKadKeywords();
     //ASSERT( wordlist.size() > 0 );
     Kademlia::WordList::const_iterator it;
-    for (it = wordlist.begin(); it != wordlist.end(); it++)
+	for (it = wordlist.begin(); it != wordlist.end(); ++it)
     {
         const CStringW& strKeyword = *it;
         POSITION pos;
@@ -339,8 +339,8 @@ void CPublishKeywordList::Dump()
     while (pos)
     {
         CPublishKeyword* pPubKw = m_lstKeywords.GetNext(pos);
-        TRACE(_T("%3u: %-10ls  ref=%u  %s\n"), i, pPubKw->GetKeyword(), pPubKw->GetRefCount(), CastSecondsToHM(pPubKw->GetNextPublishTime()));
-        i++;
+		TRACE(L"%3u: %-10ls  ref=%u  %s\n", i, pPubKw->GetKeyword(), pPubKw->GetRefCount(), CastSecondsToHM(pPubKw->GetNextPublishTime()));
+		++i;
     }
 }
 #endif
@@ -389,9 +389,9 @@ int CAddFileThread::Run()
     _tmakepathlimit(strFilePath.GetBuffer(MAX_PATH), NULL, m_strDirectory, m_strFilename, NULL);
     strFilePath.ReleaseBuffer();
     if (m_partfile)
-        Log(GetResString(IDS_HASHINGFILE) + _T(" \"%s\" \"%s\""), m_partfile->GetFileName(), strFilePath);
+		Log(GetResString(IDS_HASHINGFILE) + L" \"%s\" \"%s\"", m_partfile->GetFileName(), strFilePath);
     else
-        Log(GetResString(IDS_HASHINGFILE) + _T(" \"%s\""), strFilePath);
+		Log(GetResString(IDS_HASHINGFILE) + L" \"%s\"", strFilePath);
 
     CKnownFile* newrecord = new CKnownFile();
     if (newrecord->CreateFromFile(m_strDirectory, m_strFilename, m_partfile) && theApp.emuledlg && theApp.emuledlg->IsRunning()) // SLUGFILLER: SafeHash - in case of shutdown while still hashing
@@ -432,7 +432,7 @@ int CAddFileThread::Run()
 
 CSharedFileList::CSharedFileList()
 {
-    output = 0;
+    output = NULL;
     m_Files_map.InitHashTable(1031);
     m_keywords = new CPublishKeywordList;
     m_currFileSrc = 0;
@@ -449,16 +449,10 @@ CSharedFileList::CSharedFileList()
 CSharedFileList::~CSharedFileList()
 {
     while (!waitingforhash_list.IsEmpty())
-    {
-        UnknownFile_Struct* nextfile = waitingforhash_list.RemoveHead();
-        delete nextfile;
-    }
+		delete waitingforhash_list.RemoveHead();
     // SLUGFILLER: SafeHash
     while (!currentlyhashing_list.IsEmpty())
-    {
-        UnknownFile_Struct* nextfile = currentlyhashing_list.RemoveHead();
-        delete nextfile;
-    }
+		delete currentlyhashing_list.RemoveHead();
     // SLUGFILLER: SafeHash
     delete m_keywords;
 
@@ -478,17 +472,14 @@ CSharedFileList::~CSharedFileList()
 
 void CSharedFileList::CopySharedFileMap(CMap<CCKey,const CCKey&,CKnownFile*,CKnownFile*> &Files_Map)
 {
-    if (!m_Files_map.IsEmpty())
-    {
-        POSITION pos = m_Files_map.GetStartPosition();
-        while (pos)
-        {
-            CCKey key;
-            CKnownFile* cur_file;
-            m_Files_map.GetNextAssoc(pos, key, cur_file);
-            Files_Map.SetAt(key, cur_file);
-        }
-    }
+	POSITION pos = m_Files_map.GetStartPosition();
+	while (pos)
+	{
+		CCKey key;
+		CKnownFile* cur_file;
+		m_Files_map.GetNextAssoc(pos, key, cur_file);
+		Files_Map.SetAt(key, cur_file);
+	}
 }
 
 void CSharedFileList::FindSharedFiles()
@@ -523,30 +514,33 @@ void CSharedFileList::FindSharedFiles()
 
     // khaos::kmod+ Fix: Shared files loaded multiple times.
     CStringList l_sAdded;
-    CString tempDir;
-    CString ltempDir;
-    tempDir = thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR);
-    if (tempDir.Right(1)!=L"\\")
-        tempDir+=L"\\";
+	CString tempDir = thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR);
+	if (tempDir.Right(1) != L"\\")
+		tempDir.Append(L"\\");
 
 #ifdef _BETA
     // In Betaversion we create a testfile which is published in order to make testing easier
     // by allowing to easily find files which are published and shared by "new" nodes
     CStdioFile f;
     CString strBetaFileName;
-    strBetaFileName.Format(_T("eMule%u.%u%c.%u Beta Testfile "), CemuleApp::m_nVersionMjr,
-                           CemuleApp::m_nVersionMin, _T('a') + CemuleApp::m_nVersionUpd, CemuleApp::m_nVersionBld);
+	strBetaFileName.Format(L"eMule%u.%u%c.%u Beta Testfile ", CemuleApp::m_nVersionMjr, 
+		CemuleApp::m_nVersionMin, L'a' + CemuleApp::m_nVersionUpd, CemuleApp::m_nVersionBld);
     MD5Sum md5(strBetaFileName);
-    strBetaFileName += md5.GetHash().Left(6) + _T(".txt");
-    if (!f.Open(tempDir + strBetaFileName, CFile::modeCreate | CFile::modeWrite | CFile::shareDenyWrite))
-        ASSERT(0);
+    strBetaFileName.Append(md5.GetHash().Left(6) + L".txt");
+	if(::PathFileExists(tempDir + strBetaFileName))
+		;	//if this call is successful, then this means that the file already exists and thus there is no need to recreate it
+			//this happens e.g. when pressing the "reload" button in shared files wnd during runtime
+			//if it doesn't exist we continue and try to create it :)
+			//POSSIBLE TODO: check the contents of the file... though it's unlikely to be different...
+	else if (!f.Open(tempDir + strBetaFileName, CFile::modeCreate | CFile::modeWrite | CFile::shareDenyWrite))
+		ASSERT(0);
     else
     {
         try
         {
             // do not translate the content!
-            f.WriteString(strBetaFileName + '\n'); // garantuees a different hash on different versions
-            f.WriteString(_T("This file is automatically created by eMule Beta versions to help the developers testing and debugging new the new features. eMule will delete this file when exiting, otherwise you can remove this file at any time.\nThanks for beta testing eMule :)"));
+			f.WriteString(strBetaFileName + '\n'); // guarantees a different hash on different versions
+			f.WriteString(L"This file is automatically created by eMule Beta versions to help the developers testing and debugging new the new features. eMule will delete this file when exiting, otherwise you can remove this file at any time.\nThanks for beta testing eMule :)");
             f.Close();
         }
         catch (CFileException* ex)
@@ -557,43 +551,44 @@ void CSharedFileList::FindSharedFiles()
     }
 #endif
 
-
     AddFilesFromDirectory(tempDir);
     tempDir.MakeLower();
     l_sAdded.AddHead(tempDir);
 
-    for (int ix=1; ix<thePrefs.GetCatCount(); ix++)
-    {
-        tempDir=CString(thePrefs.GetCatPath(ix));
-        if (tempDir.Right(1)!=L"\\")
-            tempDir+=L"\\";
-        ltempDir=tempDir;
-        ltempDir.MakeLower();
+	CString ltempDir = L"";
+	for (int ix = 1; ix < thePrefs.GetCatCount(); ++ix)
+	{
+		tempDir = thePrefs.GetCatPath(ix);
+		if (tempDir.Right(1) != L"\\")
+			tempDir.Append(L"\\");
+		ltempDir = tempDir;
+		ltempDir.MakeLower();
 
-        if (l_sAdded.Find(ltempDir) ==NULL)
-        {
-            l_sAdded.AddHead(ltempDir);
-            AddFilesFromDirectory(tempDir);
-        }
-    }
+		if(l_sAdded.Find(ltempDir) == NULL)
+		{
+			l_sAdded.AddHead(ltempDir);
+			AddFilesFromDirectory(tempDir);
+		}
+	}
 
-    for (POSITION pos = thePrefs.shareddir_list.GetHeadPosition(); pos != 0;)
-    {
-        tempDir = thePrefs.shareddir_list.GetNext(pos);
-        if (tempDir.Right(1)!=L"\\")
-            tempDir+=L"\\";
-        ltempDir= tempDir;
-        ltempDir.MakeLower();
+	for (POSITION pos = thePrefs.shareddir_list.GetHeadPosition();pos != 0;)
+	{
+		tempDir = thePrefs.shareddir_list.GetNext(pos);
+		if (tempDir.Right(1) != L"\\")
+			tempDir.Append(L"\\");
+		ltempDir = tempDir;
+		ltempDir.MakeLower();
 
-        if (l_sAdded.Find(ltempDir) ==NULL)
-        {
-            l_sAdded.AddHead(ltempDir);
-            AddFilesFromDirectory(tempDir);
-        }
-    }
-    // add all single shared files
-    for (POSITION pos = m_liSingleSharedFiles.GetHeadPosition(); pos != NULL; m_liSingleSharedFiles.GetNext(pos))
-        CheckAndAddSingleFile(m_liSingleSharedFiles.GetAt(pos));
+		if(l_sAdded.Find(ltempDir) == NULL)
+		{
+			l_sAdded.AddHead(ltempDir);
+			AddFilesFromDirectory(tempDir);
+		}
+	}
+
+	// add all single shared files
+	for (POSITION pos = m_liSingleSharedFiles.GetHeadPosition(); pos != NULL;)
+		CheckAndAddSingleFile(m_liSingleSharedFiles.GetNext(pos));
 
     // khaos::kmod-
     if (waitingforhash_list.IsEmpty())
@@ -611,7 +606,7 @@ void CSharedFileList::AddFilesFromDirectory(const CString& rstrDirectory)
     CString strSearchPath(rstrDirectory);
     PathAddBackslash(strSearchPath.GetBuffer(strSearchPath.GetLength() + 1));
     strSearchPath.ReleaseBuffer();
-    strSearchPath += _T("*");
+	strSearchPath += L"*";
     bool end = !ff.FindFile(strSearchPath, 0);
     if (end)
     {
@@ -633,7 +628,7 @@ bool CSharedFileList::AddSingleSharedFile(const CString& rstrFilePath, bool bNoU
 {
     bool bExclude = false;
     bool bShared = false;
-    // first check if we are explicty exluding this file
+	// first check if we are explicitly excluding this file
     for (POSITION pos = m_liSingleExcludedFiles.GetHeadPosition(); pos != NULL; m_liSingleExcludedFiles.GetNext(pos))
     {
         if (rstrFilePath.CompareNoCase(m_liSingleExcludedFiles.GetAt(pos)) == 0)
@@ -705,8 +700,8 @@ bool CSharedFileList::AddFile(CKnownFile* pFile)
     CKnownFile* pFileInMap;
     if (m_Files_map.Lookup(key, pFileInMap))
     {
-        TRACE(_T("%hs: File already in shared file list: %s \"%s\" \"%s\"\n"), __FUNCTION__, md4str(pFileInMap->GetFileHash()), pFileInMap->GetFileName(), pFileInMap->GetFilePath());
-        TRACE(_T("%hs: File to add:                      %s \"%s\" \"%s\"\n"), __FUNCTION__, md4str(pFile->GetFileHash()), pFile->GetFileName(), pFile->GetFilePath());
+        TRACE(L"%hs: File already in shared file list: %s \"%s\" \"%s\"\n", __FUNCTION__, md4str(pFileInMap->GetFileHash()), pFileInMap->GetFileName(), pFileInMap->GetFilePath());
+        TRACE(L"%hs: File to add:                      %s \"%s\" \"%s\"\n", __FUNCTION__, md4str(pFile->GetFileHash()), pFile->GetFileName(), pFile->GetFilePath());
         if (!pFileInMap->IsKindOf(RUNTIME_CLASS(CPartFile)) || theApp.downloadqueue->IsPartFile(pFileInMap))
             LogWarning(GetResString(IDS_ERR_DUPL_FILES), pFileInMap->GetFilePath(), pFile->GetFilePath());
         return false;
@@ -783,8 +778,8 @@ void CSharedFileList::FileHashingFinished(CKnownFile* file)
     }
     else
     {
-        TRACE(_T("%hs: File already in shared file list: %s \"%s\"\n"), __FUNCTION__, md4str(found_file->GetFileHash()), found_file->GetFilePath());
-        TRACE(_T("%hs: File to add:                      %s \"%s\"\n"), __FUNCTION__, md4str(file->GetFileHash()), file->GetFilePath());
+        TRACE(L"%hs: File already in shared file list: %s \"%s\"\n", __FUNCTION__, md4str(found_file->GetFileHash()), found_file->GetFilePath());
+        TRACE(L"%hs: File to add:                      %s \"%s\"\n", __FUNCTION__, md4str(file->GetFileHash()), file->GetFilePath());
         LogWarning(GetResString(IDS_ERR_DUPL_FILES), found_file->GetFilePath(), file->GetFilePath());
 
         RemoveFromHashing(file);
@@ -799,7 +794,7 @@ bool CSharedFileList::RemoveFile(CKnownFile* pFile, bool bDeleted)
 {
     CSingleLock listlock(&m_mutWriteList);
     listlock.Lock();
-    bool bResult = (m_Files_map.RemoveKey(CCKey(pFile->GetFileHash())) != FALSE);
+    const bool bResult = m_Files_map.RemoveKey(CCKey(pFile->GetFileHash())) != FALSE;
     listlock.Unlock();
 
     output->RemoveFile(pFile, bDeleted);
@@ -867,9 +862,9 @@ CKnownFile* CSharedFileList::GetFileByIndex(int index)
         m_Files_map.GetNextAssoc(pos,bufKey,cur_file);
         if (index==count)
             return cur_file;
-        count++;
+        ++count;
     }
-    return 0;
+    return NULL;
 }
 
 void CSharedFileList::ClearKadSourcePublishInfo()
@@ -907,16 +902,14 @@ void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file, CSafeMemFile
     }
     files->WriteUInt32(nClientID);
     files->WriteUInt16(nClientPort);
-    //TRACE(_T("Publishing file: Hash=%s  ClientIP=%s  ClientPort=%u\n"), md4str(cur_file->GetFileHash()), ipstr(nClientID), nClientPort);
+    //TRACE(L"Publishing file: Hash=%s  ClientIP=%s  ClientPort=%u\n", md4str(cur_file->GetFileHash()), ipstr(nClientID), nClientPort);
 
     CSimpleArray<CTag*> tags;
 
     tags.Add(new CTag(FT_FILENAME, cur_file->GetFileName()));
 
     if (!cur_file->IsLargeFile())
-    {
         tags.Add(new CTag(FT_FILESIZE, (UINT)(uint64)cur_file->GetFileSize()));
-    }
     else
     {
         // we send a real 64 bit tag to other clients.
@@ -968,7 +961,7 @@ void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file, CSafeMemFile
     if (uEmuleVer == 0)
     {
         CString strExt;
-        int iExt = cur_file->GetFileName().ReverseFind(_T('.'));
+        int iExt = cur_file->GetFileName().ReverseFind(L'.');
         if (iExt != -1)
         {
             strExt = cur_file->GetFileName().Mid(iExt);
@@ -1001,7 +994,7 @@ void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file, CSafeMemFile
             { FT_MEDIA_BITRATE,	TAGTYPE_UINT32, FT_ED2K_MEDIA_BITRATE },
             { FT_MEDIA_CODEC,	TAGTYPE_STRING, FT_ED2K_MEDIA_CODEC }
         };
-        for (int i = 0; i < ARRSIZE(_aMetaTags); i++)
+        for (int i = 0; i < ARRSIZE(_aMetaTags); ++i)
         {
             CTag* pTag = cur_file->GetTag(_aMetaTags[i].nName);
             if (pTag != NULL)
@@ -1050,10 +1043,10 @@ void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file, CSafeMemFile
         eStrEncode = utf8strRaw;
 
     files->WriteUInt32(tags.GetSize());
-    for (int i = 0; i < tags.GetSize(); i++)
+    for (int i = 0; i < tags.GetSize(); ++i)
     {
         const CTag* pTag = tags[i];
-        //TRACE(_T("  %s\n"), pTag->GetFullInfo(DbgGetFileMetaTagName));
+        //TRACE(L"  %s\n", pTag->GetFullInfo(DbgGetFileMetaTagName));
         if (uEmuleVer >= MAKE_CLIENT_VERSION(0,42,7))
             pTag->WriteNewEd2kTag(files, eStrEncode);
         else
@@ -1069,8 +1062,7 @@ uint64 CSharedFileList::GetDatasize(uint64 &pbytesLargest) const
 {
     pbytesLargest=0;
     // <-----khaos-
-    uint64 fsize;
-    fsize=0;
+    uint64 fsize = 0;
 
     CCKey bufKey;
     CKnownFile* cur_file;
@@ -1100,7 +1092,7 @@ CKnownFile* CSharedFileList::GetFileByID(const uchar* hash) const
 
 CKnownFile* CSharedFileList::GetFileByIdentifier(const CFileIdentifierBase& rFileIdent, bool bStrict) const
 {
-    CKnownFile* pResult;
+    CKnownFile* pResult = NULL;
     if (m_Files_map.Lookup(CCKey(rFileIdent.GetMD4Hash()), pResult))
     {
         if (bStrict)
@@ -1108,8 +1100,7 @@ CKnownFile* CSharedFileList::GetFileByIdentifier(const CFileIdentifierBase& rFil
         else
             return pResult->GetFileIdentifier().CompareRelaxed(rFileIdent) ? pResult : NULL;
     }
-    else
-        return NULL;
+    return NULL;
 }
 
 
@@ -1117,11 +1108,11 @@ bool CSharedFileList::IsFilePtrInList(const CKnownFile* file) const
 {
     if (file)
     {
+        CCKey key;
+        CKnownFile* cur_file;
         POSITION pos = m_Files_map.GetStartPosition();
         while (pos)
         {
-            CCKey key;
-            CKnownFile* cur_file;
             m_Files_map.GetNextAssoc(pos, key, cur_file);
             if (file == cur_file)
                 return true;
@@ -1142,6 +1133,7 @@ void CSharedFileList::HashNextFile()
     // SLUGFILLER: SafeHash
     if (waitingforhash_list.IsEmpty())
         return;
+
     UnknownFile_Struct* nextfile = getNextFileToHash(); //>>> WiZaRd::HashingQueue Optimisation
     currentlyhashing_list.AddTail(nextfile);	// SLUGFILLER: SafeHash - keep track
     CAddFileThread* addfilethread = (CAddFileThread*) AfxBeginThread(RUNTIME_CLASS(CAddFileThread), THREAD_PRIORITY_BELOW_NORMAL,0, CREATE_SUSPENDED);
@@ -1259,7 +1251,7 @@ void CSharedFileList::Publish()
                             //Add all file IDs which relate to the current keyword to be published
                             const CSimpleKnownFileArray& aFiles = pPubKw->GetReferences();
                             UINT count = 0;
-                            for (int f = 0; f < aFiles.GetSize(); f++)
+                            for (int f = 0; f < aFiles.GetSize(); ++f)
                             {
                                 //Debug check to make sure things are working well.
                                 ASSERT_VALID(aFiles[f]);
@@ -1271,7 +1263,7 @@ void CSharedFileList::Publish()
                                 //As a side effect, this may help reduce people finding incomplete files in the network.
                                 if (!aFiles[f]->IsPartFile() && IsFilePtrInList(aFiles[f]))
                                 {
-                                    count++;
+                                    ++count;
                                     pSearch->AddFileID(Kademlia::CUInt128(aFiles[f]->GetFileHash()));
                                     if (count > 150)
                                     {
@@ -1316,7 +1308,7 @@ void CSharedFileList::Publish()
                             pCurKnownFile->SetLastPublishTimeKadSrc(0,0);
                     }
                 }
-                m_currFileSrc++;
+                ++m_currFileSrc;
 
                 // even if we did not publish a source, reset the timer so that this list is processed
                 // only every KADEMLIAPUBLISHTIME seconds.
@@ -1339,7 +1331,7 @@ void CSharedFileList::Publish()
                             pCurKnownFile->SetLastPublishTimeKadNotes(0);
                     }
                 }
-                m_currFileNotes++;
+                ++m_currFileNotes;
 
                 // even if we did not publish a source, reset the timer so that this list is processed
                 // only every KADEMLIAPUBLISHTIME seconds.
@@ -1407,33 +1399,30 @@ void CSharedFileList::RebuildMetaData()
 bool CSharedFileList::ShouldBeShared(CString strPath, CString strFilePath, bool bMustBeShared) const
 {
     // determines if a file should be a shared file based on out shared directories/files preferences
-    CStringList l_sAdded;
-
     if (CompareDirectories(strPath, thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR)) == 0)
         return true;
 
-    for (int ix=1; ix<thePrefs.GetCatCount(); ix++)
+    for (int ix=1; ix<thePrefs.GetCatCount();++ix)
     {
         if (CompareDirectories(strPath, thePrefs.GetCatPath(ix)) == 0)
             return true;
     }
-
     if (bMustBeShared)
         return false;
 
     // check if this file is explicit unshared
     if (!strFilePath.IsEmpty())
     {
-        for (POSITION pos = m_liSingleExcludedFiles.GetHeadPosition(); pos != NULL; m_liSingleExcludedFiles.GetNext(pos))
+        for (POSITION pos = m_liSingleExcludedFiles.GetHeadPosition(); pos != NULL;)
         {
-            if (strFilePath.CompareNoCase(m_liSingleExcludedFiles.GetAt(pos)) == 0)
+            if (strFilePath.CompareNoCase(m_liSingleExcludedFiles.GetNext(pos)) == 0)
                 return false;
         }
 
         // check if this file is explicit shared
-        for (POSITION pos = m_liSingleSharedFiles.GetHeadPosition(); pos != NULL; m_liSingleSharedFiles.GetNext(pos))
+        for (POSITION pos = m_liSingleSharedFiles.GetHeadPosition(); pos != NULL;)
         {
-            if (strFilePath.CompareNoCase(m_liSingleSharedFiles.GetAt(pos)) == 0)
+            if (strFilePath.CompareNoCase(m_liSingleSharedFiles.GetNext(pos)) == 0)
                 return true;
         }
     }
@@ -1461,7 +1450,7 @@ bool CSharedFileList::ContainsSingleSharedFiles(CString strDirectory) const
 bool CSharedFileList::ExcludeFile(CString strFilePath)
 {
     bool bShared = false;
-    // first check if we are explicty sharing this file
+	// first check if we are explicitly sharing this file
     for (POSITION pos = m_liSingleSharedFiles.GetHeadPosition(); pos != NULL; m_liSingleSharedFiles.GetNext(pos))
     {
         if (strFilePath.CompareNoCase(m_liSingleSharedFiles.GetAt(pos)) == 0)
@@ -1472,7 +1461,7 @@ bool CSharedFileList::ExcludeFile(CString strFilePath)
         }
     }
 
-    // check if we implicity share this file
+	// check if we implicitly share this file
     bShared |= ShouldBeShared(strFilePath.Left(strFilePath.ReverseFind('\\') + 1), strFilePath, false);
 
     if (!bShared)
@@ -1538,14 +1527,14 @@ void CSharedFileList::CheckAndAddSingleFile(const CFileFind& ff)
     // ignore real(!) LNK files
     TCHAR szExt[_MAX_EXT];
     _tsplitpath(strFoundFileName, NULL, NULL, NULL, szExt);
-    if (_tcsicmp(szExt, _T(".lnk")) == 0)
+	if (_tcsicmp(szExt, L".lnk") == 0)
     {
         SHFILEINFO info;
         if (SHGetFileInfo(strFoundFilePath, 0, &info, sizeof(info), SHGFI_ATTRIBUTES) && (info.dwAttributes & SFGAO_LINK))
         {
             if (!thePrefs.GetResolveSharedShellLinks())
             {
-                TRACE(_T("%hs: Did not share file \"%s\" - not supported file type\n"), __FUNCTION__, strFoundFilePath);
+				TRACE(L"%hs: Did not share file \"%s\" - not supported file type\n", __FUNCTION__, strFoundFilePath);
                 return;
             }
             // Win98: Would need to implement a different code path which is using 'IShellLinkA' on Win9x.
@@ -1560,7 +1549,7 @@ void CSharedFileList::CheckAndAddSingleFile(const CFileFind& ff)
                         TCHAR szResolvedPath[MAX_PATH];
                         if (pShellLink->GetPath(szResolvedPath, _countof(szResolvedPath), (WIN32_FIND_DATA *)NULL/*DO NOT USE (read below)*/, 0) == NOERROR)
                         {
-                            // WIN32_FIND_DATA povided by "IShellLink::GetPath" contains the file stats which where
+                            // WIN32_FIND_DATA provided by "IShellLink::GetPath" contains the file stats which where
                             // taken when the shortcut was created! Thus the file stats which are returned do *not*
                             // reflect the current real file stats. So, do *not* use that data!
                             //
@@ -1587,7 +1576,7 @@ void CSharedFileList::CheckAndAddSingleFile(const CFileFind& ff)
                                 return;
                             }
                             if (strFoundDirectory.Right(1) != L"\\")
-                                strFoundDirectory += _T('\\');
+                                strFoundDirectory += L'\\';
                         }
                     }
                 }
@@ -1596,7 +1585,7 @@ void CSharedFileList::CheckAndAddSingleFile(const CFileFind& ff)
     }
 
     // ignore real(!) thumbs.db files -- seems that lot of ppl have 'thumbs.db' files without the 'System' file attribute
-    if (strFoundFileName.CompareNoCase(_T("thumbs.db")) == 0)
+    if (strFoundFileName.CompareNoCase(L"thumbs.db") == 0)
     {
         // if that's a valid 'Storage' file, we declare it as a "thumbs.db" file.
         CComPtr<IStorage> pStorage;
@@ -1610,7 +1599,7 @@ void CSharedFileList::CheckAndAddSingleFile(const CFileFind& ff)
                 {
                     CoTaskMemFree(statstg.pwcsName);
                     statstg.pwcsName = NULL;
-                    TRACE(_T("%hs: Did not share file \"%s\" - not supported file type\n"), __FUNCTION__, strFoundFilePath);
+                    TRACE(L"%hs: Did not share file \"%s\" - not supported file type\n", __FUNCTION__, strFoundFilePath);
                     return;
                 }
             }
@@ -1619,11 +1608,11 @@ void CSharedFileList::CheckAndAddSingleFile(const CFileFind& ff)
 
     UINT fdate = (UINT)tFoundFileTime.GetTime();
     if (fdate == 0)
-        fdate = (UINT)-1;
+        fdate = _UI32_MAX;
     if (fdate == -1)
     {
         if (thePrefs.GetVerbose())
-            AddDebugLogLine(false, _T("Failed to get file date of \"%s\""), strFoundFilePath);
+            AddDebugLogLine(false, L"Failed to get file date of \"%s\"", strFoundFilePath);
     }
     else
         AdjustNTFSDaylightFileTime(fdate, strFoundFilePath);
@@ -1635,20 +1624,20 @@ void CSharedFileList::CheckAndAddSingleFile(const CFileFind& ff)
         CKnownFile* pFileInMap;
         if (m_Files_map.Lookup(key, pFileInMap))
         {
-            TRACE(_T("%hs: File already in shared file list: %s \"%s\"\n"), __FUNCTION__, md4str(pFileInMap->GetFileHash()), pFileInMap->GetFilePath());
-            TRACE(_T("%hs: File to add:                      %s \"%s\"\n"), __FUNCTION__, md4str(toadd->GetFileHash()), strFoundFilePath);
+            TRACE(L"%hs: File already in shared file list: %s \"%s\"\n", __FUNCTION__, md4str(pFileInMap->GetFileHash()), pFileInMap->GetFilePath());
+            TRACE(L"%hs: File to add:                      %s \"%s\"\n", __FUNCTION__, md4str(toadd->GetFileHash()), strFoundFilePath);
             if (!pFileInMap->IsKindOf(RUNTIME_CLASS(CPartFile)) || theApp.downloadqueue->IsPartFile(pFileInMap))
             {
                 if (pFileInMap->GetFilePath().CompareNoCase(toadd->GetFilePath()) != 0) /* is it actually really the same file in the same place we already share? if so don't bother too much */
-                    LogWarning(GetResString(IDS_ERR_DUPL_FILES) , pFileInMap->GetFilePath(), strFoundFilePath);
+                    LogWarning(GetResString(IDS_ERR_DUPL_FILES), pFileInMap->GetFilePath(), strFoundFilePath);
                 else
-                    DebugLog(_T("File shared twice, might have been a single shared file before - %s") , pFileInMap->GetFilePath());
+                    DebugLog(L"File shared twice, might have been a single shared file before - %s" , pFileInMap->GetFilePath());
             }
         }
         else
         {
             if (!strShellLinkDir.IsEmpty())
-                DebugLog(_T("Shared link: %s from %s"), strFoundFilePath, strShellLinkDir);
+                DebugLog(L"Shared link: %s from %s", strFoundFilePath, strShellLinkDir);
             toadd->SetPath(strFoundDirectory);
             toadd->SetFilePath(strFoundFilePath);
             toadd->SetSharedDirectory(strShellLinkDir);
@@ -1667,7 +1656,7 @@ void CSharedFileList::CheckAndAddSingleFile(const CFileFind& ff)
             waitingforhash_list.AddTail(tohash);
         }
         else
-            TRACE(_T("%hs: Did not share file \"%s\" - already hashing or temp. file\n"), __FUNCTION__, strFoundFilePath);
+            TRACE(L"%hs: Did not share file \"%s\" - already hashing or temp. file\n", __FUNCTION__, strFoundFilePath);
         // SLUGFILLER: SafeHash
     }
 }
@@ -1691,7 +1680,7 @@ void CSharedFileList::Save() const
             }
             for (POSITION pos = m_liSingleExcludedFiles.GetHeadPosition(); pos != 0;)
             {
-                sdirfile.WriteString(_T("-") + m_liSingleExcludedFiles.GetNext(pos)); // a '-' prefix means excluded
+                sdirfile.WriteString(L"-" + m_liSingleExcludedFiles.GetNext(pos)); // a '-' prefix means excluded
                 sdirfile.Write(L"\r\n", sizeof(TCHAR)*2);
             }
             if (thePrefs.GetCommitFiles() >= 2 || (thePrefs.GetCommitFiles() >= 1 && !theApp.emuledlg->IsRunning()))
@@ -1776,7 +1765,7 @@ void CSharedFileList::LoadSingleSharedFilesList()
 
 bool CSharedFileList::AddSingleSharedDirectory(const CString& rstrFilePath, bool bNoUpdate)
 {
-    ASSERT(rstrFilePath.Right(1) == _T('\\'));
+    ASSERT(rstrFilePath.Right(1) == L'\\');
     // check if we share this dir already or are not allowed to
     if (ShouldBeShared(rstrFilePath, L"", false) || !thePrefs.IsShareableDirectory(rstrFilePath))
         return false;
@@ -1818,12 +1807,12 @@ CString CSharedFileList::GetPseudoDirName(const CString& strDirectoryName)
 
     // create a new Pseudoname
     CString strDirectoryTmp = strDirectoryName;
-    if (strDirectoryTmp.Right(1) == _T('\\'))
+    if (strDirectoryTmp.Right(1) == L'\\')
         strDirectoryTmp.Truncate(strDirectoryTmp.GetLength() - 1);
 
     CString strPseudoName;
     int iPos;
-    while ((iPos = strDirectoryTmp.ReverseFind(_T('\\'))) != (-1))
+    while ((iPos = strDirectoryTmp.ReverseFind(L'\\')) != (-1))
     {
         strPseudoName = strDirectoryTmp.Right(strDirectoryTmp.GetLength() - iPos) + strPseudoName;
         strDirectoryTmp.Truncate(iPos);
@@ -1833,7 +1822,7 @@ CString CSharedFileList::GetPseudoDirName(const CString& strDirectoryName)
     if (!strPseudoName.IsEmpty())
     {
         // remove first backslash
-        ASSERT(strPseudoName.GetAt(0) == _T('\\'));
+        ASSERT(strPseudoName.GetAt(0) == L'\\');
         strPseudoName = strPseudoName.Right(strPseudoName.GetLength() - 1);
     }
     else
@@ -1845,13 +1834,13 @@ CString CSharedFileList::GetPseudoDirName(const CString& strDirectoryName)
     // we have the name, make sure it is unique
     if (m_mapPseudoDirNames.Lookup(strPseudoName, strDirectoryTmp))
     {
-        CString strUnique;
-        for (iPos = 2; ; iPos++)
+        CString strUnique = L"";
+        for (iPos = 2; ; ++iPos)
         {
-            strUnique.Format(_T("%s_%u"), strPseudoName, iPos);
+            strUnique.Format(L"%s_%u", strPseudoName, iPos);
             if (!m_mapPseudoDirNames.Lookup(strUnique, strDirectoryTmp))
             {
-                DebugLog(_T("Using Pseudoname %s for directory %s"), strUnique, strDirectoryName);
+                DebugLog(L"Using Pseudoname %s for directory %s", strUnique, strDirectoryName);
                 m_mapPseudoDirNames.SetAt(strUnique, strDirectoryName);
                 return strUnique;
             }
@@ -1865,7 +1854,7 @@ CString CSharedFileList::GetPseudoDirName(const CString& strDirectoryName)
     }
     else
     {
-        DebugLog(_T("Using Pseudoname %s for directory %s"), strPseudoName, strDirectoryName);
+        DebugLog(L"Using Pseudoname %s for directory %s", strPseudoName, strDirectoryName);
         m_mapPseudoDirNames.SetAt(strPseudoName, strDirectoryName);
         return strPseudoName;
     }
@@ -1888,7 +1877,7 @@ bool CSharedFileList::GetPopularityRank(const CKnownFile* pFile, UINT& rnOutSess
         return false;
     }
     // cycle all files, each file which has more request than the given files lowers the rank
-    CKnownFile* cur_file;
+    CKnownFile* cur_file = NULL;
     CCKey bufKey;
     for (POSITION pos = m_Files_map.GetStartPosition(); pos != 0;)
     {
@@ -1896,13 +1885,13 @@ bool CSharedFileList::GetPopularityRank(const CKnownFile* pFile, UINT& rnOutSess
         if (cur_file == pFile)
             continue;
         if (cur_file->statistic.GetAllTimeRequests() > pFile->statistic.GetAllTimeRequests())
-            rnOutTotal++;
+            ++rnOutTotal;
         if (cur_file->statistic.GetRequests() > pFile->statistic.GetRequests())
-            rnOutSession++;
+            ++rnOutSession;
     }
     // we start at rank #1, not 0
-    rnOutSession++;
-    rnOutTotal++;
+    ++rnOutSession;
+    ++rnOutTotal;
     return true;
 }
 

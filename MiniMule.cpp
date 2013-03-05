@@ -937,7 +937,7 @@ uint8 CMiniMule::GetTransparency() const
 //>>> WiZaRd::Ratio Indicator
 void CMiniMule::SetRatioIcon()
 {
-    int ratio = min(8, int(GetRatioDouble(theStats.sessionSentBytes, theStats.sessionReceivedBytes)/0.125));
+    const int ratio = GetRatioSmileyIndex(theStats.sessionSentBytes, theStats.sessionReceivedBytes);
     if (ratio == lastRatio)
         return;
 

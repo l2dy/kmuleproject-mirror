@@ -487,10 +487,11 @@ uint16	GetRandomTCPPort();
 uint16	GetRandomUDPPort();
 bool	GetDiskSpaceInfo(LPCTSTR pDirectory, uint64& freespace, uint64& totalspace);
 bool	CheckURL(CString& strURL);
-template <class T> __inline double	GetRatioDouble(const T& ul, const T& dl)
-{
-    return dl ? ((double)ul / dl) : 0;
-}
+//>>> WiZaRd::Ratio Indicator
+double	GetRatioDouble(const uint64& ul, const uint64& dl);
+int		GetRatioSmileyIndex(const double& dRatio);
+int		GetRatioSmileyIndex(const uint64& ul, const uint64& dl);
+//<<< WiZaRd::Ratio Indicator
 CString	GetFileNameFromURL(const CString& strURL);
 uint64	GetFileSizeOnDisk(const CString& strFilePath);
 bool	RunningWine(); //>>> WiZaRd::Wine Compatibility

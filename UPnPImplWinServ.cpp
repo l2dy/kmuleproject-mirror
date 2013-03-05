@@ -953,7 +953,7 @@ HRESULT CUPnPImplWinServ::InvokeAction(ServicePointer pService,
 
     m_tLastEvent = GetTickCount();
     CString strInArgs;
-    strInArgs.SetString(pszInArgString ? pszInArgString : _T(""));
+    strInArgs.SetString(pszInArgString ? pszInArgString : L"");
 
     HRESULT hr = S_OK;
 
