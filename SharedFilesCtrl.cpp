@@ -1169,6 +1169,7 @@ BOOL CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                 inputbox.DoModal();
                 CString newname = inputbox.GetInput();
 //>>> Tux::RenameWithoutExtension
+                // TODO: Sonderfälle (.tar.gz, .tar.bz2) überprüfen und ggf. berücksichtigen
                 CString oldextension = ::PathFindExtension(pKnownFile->GetFileName());
 //<<< Tux::RenameWithoutExtension
 
