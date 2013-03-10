@@ -216,7 +216,7 @@ public:
                 // - if one of 2 last numbers change, there is a garanty that the DLL is compatible with old one.
                 // So you should test the version of the DLL, and if one of the 2 first numbers change, not load it.
                 // ---
-                // eMule currently handles v0.5.1.0, v0.6.0.0, v0.6.1.0
+                // eMule currently handles v0.5.1.0 up to v0.7.99.0
                 else if (ullVersion >= MAKEDLLVERULL(0, 5, 0, 0) && ullVersion < MAKEDLLVERULL(0, 7, 0, 0))
                 {
                     // Don't use 'MediaInfo_Info_Version' with version v0.5+. This function is exported,
