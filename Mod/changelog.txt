@@ -184,3 +184,4 @@ XXXXYYZZ:
 + kMule will now offer to restart itself if necessary [WiZaRd]
 ! fixed minimule ratio icon when uploading only [WiZaRd]
 ~ renaming a shared file keeps the original file extension now [Tuxman]
+~ added a couple of ED2KFileTypes [Tuxman]
