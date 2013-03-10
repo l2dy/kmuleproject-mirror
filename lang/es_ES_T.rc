@@ -100,13 +100,11 @@ BEGIN
     IDS_WRN_TEMPFILES_RESERVED 
                             "El directorio de temporales no debe estar en un directorio de instalación de kMule."
     IDS_SETTINGCHANGED_RESTART 
-                            "Por favor, reinicia kMule para que los cambios hagan efecto."
+                            "Por favor, reinicia kMule para que los cambios hagan efecto.\nRestart now?"
     IDS_IMPORTSPLPF         "Importar descargas (*Mule,eDonkey,Overnet)"	
     IDS_ASKDOWNLOADLANG     "El idioma que has seleccionado no está instalado en tu sistema. ¿Quieres que kMule lo descargue de http://kMule.emulefuture.de ?"	
     IDS_SHAREDTITLE         "Compartido"	
     IDS_RUNASUSER           "Ejecutar kMule como un usuario sin privilegios."	
-    IDS_NOPORTCHANGEPOSSIBLE 
-                            "El cambio de puertos no es posible después de conectarse a los clientes, o mientras se está conectado a Kad.\n\nPor favor reinicia kMule con el cambio de puertos."
     IDS_WIZ_STARTWITHWINDOWS 
                             "Activa esta opción para iniciar kMule junto con Windows."							
     IDS_AICH_WARNUSER       "Desde la versión 0.44a usa un archivo hash adicional que reduce los datos perdidos al detectar corrupción. Puesto que estás actualizando desde una versión anterior, kMule necesita recalcular el hash de todos tus archivos compartidos. Ésto llevará un momento, pero sólo se realizará una vez."							

@@ -100,13 +100,11 @@ BEGIN
     IDS_WRN_TEMPFILES_RESERVED 
                             "Le répertoire temporaire ne doit pas être configuré dans le répertoire d'installation de kMule."
     IDS_SETTINGCHANGED_RESTART 
-                            "Pour que les changements prennent effet, veuillez redémarrer kMule !"
+                            "Pour que les changements prennent effet, veuillez redémarrer kMule!\nRestart now?"
     IDS_IMPORTSPLPF         "Importer les fichier part (*Mule,eDonkey,Overnet)"	
     IDS_ASKDOWNLOADLANG     "La langue sélectionnée n'est pas installée sur votre système. Est-ce que vous voulez que kMule la télécharge depuis http://kMule.emulefuture.de ?"	
     IDS_SHAREDTITLE         "Partagés"	
     IDS_RUNASUSER           "Lancer kMule avec un utilisateur non-privilégié"	
-    IDS_NOPORTCHANGEPOSSIBLE 
-                            "Le changement de ports n'est pas possible après s'être connecté avec des clients ou le réseau Kad !\n\nVeuillez redémarrer kMule avec le changement de configuration des ports"
     IDS_WIZ_STARTWITHWINDOWS 
                             "Activez cette option pour que kMule démarre en même temps que Windows."							
     IDS_AICH_WARNUSER       "Depuis la version 0.44a, eMule utilise un hachage de fichier supplémentaire qui permet de réduire considérablement la perte de données lorqu'une corruption de celles-ci est détectée. Parce que vous venez de mettre à jour depuis une version antérieure, kMule a besoin de re-hacher tous les fichiers partagés pour calculer l'hachage supplémentaire. Ceci peut prendre du temps mais ça n'aura lieu qu'une seule fois.  "							

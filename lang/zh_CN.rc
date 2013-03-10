@@ -103,13 +103,11 @@ BEGIN
     IDS_WRN_TEMPFILES_RESERVED 
                             "禁止将Temp目录设置为kMule的安装目录."
     IDS_SETTINGCHANGED_RESTART 
-                            "要使更改的设置生效, 请重启kMule!"
+                            "要使更改的设置生效, 请重启kMule!\nRestart now?"
     IDS_IMPORTSPLPF         "导入未完成下载(*Mule, eDonkey, Overnet)"	
     IDS_ASKDOWNLOADLANG     "您所选择的语言包并未安装在您的系统里. 是否允许kMule从http://kMule.emulefuture.de下载语言包?"	
     IDS_SHAREDTITLE         "共享eD2K|Kad"	
     IDS_RUNASUSER           "以非特权用户身份运行kMule"	
-    IDS_NOPORTCHANGEPOSSIBLE 
-                            "当您连接上别的客户端或者连接到Kad时, 无法更改端口号.\n\n您必须重启kMule才能改变端口设置."
     IDS_WIZ_STARTWITHWINDOWS 
                             "如果你想kMule在Windows启动时自动运行, 请启用这个选项."							
     IDS_AICH_WARNUSER       "从0.44a版本开始, eMule增加了一种文件hash, 它可以在文件发生损坏时极大地减少数据丢失. 由于您是从早期版本升级上来的, kMule必须重新hash您的所有共享文件并计算生成新的AICH Hash. 这个过程会花费不少时间, 但是它只执行一次."							

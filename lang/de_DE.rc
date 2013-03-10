@@ -1074,7 +1074,7 @@ BEGIN
     IDS_ALBUM               "Album" //!
     IDS_CD_UPLOADREQ        "Angefordert zum Upload:"
     IDS_SETTINGCHANGED_RESTART 
-                            "Damit die geänderten Einstellungen greifen, muss kMule neu gestartet werden!"
+                            "Damit die geänderten Einstellungen greifen, muss kMule neu gestartet werden!\nSoll kMule jetzt neu gestartet werden?"
     IDS_CREDITSEXPIRED      ", %u Clients wurden gelöscht (seit 5 Monaten nicht gesehen)"
     IDS_SOURCESINFO         "%u  (nützlich: %u, NNP: %u, A4AF: %u)"
     IDS_META_DATA           "Meta-Daten"
@@ -1292,8 +1292,6 @@ BEGIN
     IDS_STARTTEST           "Ports testen"
     IDS_TESTINFO            "Hier kann ein Test gestartet werden, um zu erkunden, ob der eingestellte TCP und UDP Port von aussen erreichbar sind. Der Erfolg dieses Tests sagt aus, ob Server und andere Clients sich verbinden können. Der TCP-Port Test sollte unbedingt erfolgreich sein!"
     IDS_CONNECTIONTEST      "Verbindungstest"
-    IDS_NOPORTCHANGEPOSSIBLE 
-                            "Ein Portwechsel ist nicht mehr möglich, nachdem zu anderen Clients verbunden wurde und solange keine Kad-Verbindung besteht!\n\nBitte starte kMule neu, um die geänderten Porteinstellungen zu übernehmen."
     IDS_NETWORK_INFO        "Netzwerk Informationen"
     IDS_SP_TOTALUL          "Upload Gesamtanzahl"
     IDS_SP_ULFRIENDS        "Akt. Freundesuploads"

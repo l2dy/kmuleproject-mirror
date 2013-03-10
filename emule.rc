@@ -1899,13 +1899,11 @@ BEGIN
     IDS_WRN_TEMPFILES_RESERVED 
                             "The temporary directory must not be set to an kMule installation directory."
     IDS_SETTINGCHANGED_RESTART 
-                            "For the changed settings to take effect, please restart kMule!"
+                            "For the changed settings to take effect, please restart kMule!\nRestart now?"
     IDS_IMPORTSPLPF         "Import Downloads (*Mule,eDonkey,Overnet)"
     IDS_ASKDOWNLOADLANG     "The language you selected is not installed on your system. Do you want kMule to download it from http://kMule.emulefuture.de?"
     IDS_SHAREDTITLE         "Shared"
     IDS_RUNASUSER           "Run kMule as unprivileged user"
-    IDS_NOPORTCHANGEPOSSIBLE 
-                            "The change of ports is not possible after you connected with clients or while connected to Kad!\n\nPlease restart kMule with the changed port settings."
     IDS_WIZ_STARTWITHWINDOWS 
                             "Enable this so that kMule will run when you start windows."
     IDS_AICH_WARNUSER       "Since version 0.44a eMule uses an additional file hash which helps to greatly reduce the data loss when a corruption is detected. Because your are updating from an earlier version, kMule needs to rehash all your shared files to calculate the new hash. This may take a while but is an one-time action.  "

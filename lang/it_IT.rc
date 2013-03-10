@@ -99,13 +99,11 @@ BEGIN
     IDS_WRN_TEMPFILES_RESERVED 
                             "La cartella dei file temporanei non può corrispondere ad una cartella di installazione di kMule."
     IDS_SETTINGCHANGED_RESTART 
-                            "Affinchè le modifiche abbiano effetto, per favore riavvia kMule!"
+                            "Affinchè le modifiche abbiano effetto, per favore riavvia kMule!\nRestart now?"
     IDS_IMPORTSPLPF         "Importa Download (*Mule, eDonkey, Overnet)"	
     IDS_ASKDOWNLOADLANG     "La lingua che hai selezionato non è installata nel tuo sistema. Vuoi che kMule la scarichi da http://kMule.emulefuture.de?"	
     IDS_SHAREDTITLE         "Condiviso"	
     IDS_RUNASUSER           "Esegui kMule come utente non privilegiato"	
-    IDS_NOPORTCHANGEPOSSIBLE 
-                            "La modifica delle porte non è possibile dopo che è stata effettuata la connessione con gli altri client o mentre sei connesso alla rete Kad!\n\nPer favore riavvia kMule con le nuove impostazioni delle porte."
     IDS_WIZ_STARTWITHWINDOWS 
                             "Abilitando questa opzione kMule si avvierà all’avvio di windows."							
     IDS_AICH_WARNUSER       "Dalla versione 0.44a eMule usa un hash dei file addizionale che apporta un aiuto sostanziale nel ridurre la perdita dei dati quando vengono rilevate parti corrotte. Siccome hai effettuato un aggiornamento da una versione precedente, kMule ha bisogno di effettuare il rehash di tutti i tuoi file condivisi per calcolare il nuovo hash. Questo potrebbe richiedere qualche minuto ma verrà effettuato una sola volta.  "							
