@@ -4763,29 +4763,29 @@ bool CheckURL(CString& strURL)
 //>>> WiZaRd::Ratio Indicator
 double	GetRatioDouble(const uint64& ul, const uint64& dl)
 {
-	double ret = DBL_MAX; // upload only? best value :)
+    double ret = DBL_MAX; // upload only? best value :)
 
-	if(dl != 0) 
-		ret = (double)ul / dl;
+    if (dl != 0)
+        ret = (double)ul / dl;
 
-	return ret;
+    return ret;
 }
 
 int	GetRatioSmileyIndex(const double& dRatio)
 {
-	int index = dRatio > INT_MAX ? INT_MAX : int(dRatio);
-	if(index < 0)
-		index = 0;
-	if(index > ratioSmileyCount)
-		index = ratioSmileyCount;	
+    int index = dRatio > INT_MAX ? INT_MAX : int(dRatio);
+    if (index < 0)
+        index = 0;
+    if (index > ratioSmileyCount)
+        index = ratioSmileyCount;
 
-	return index;
+    return index;
 }
 
 int GetRatioSmileyIndex(const uint64& ul, const uint64& dl)
 {
-	return GetRatioSmileyIndex(GetRatioDouble(ul, dl) * ratioSmileyCount);
-	
+    return GetRatioSmileyIndex(GetRatioDouble(ul, dl) * ratioSmileyCount);
+
 }
 //<<< WiZaRd::Ratio Indicator
 

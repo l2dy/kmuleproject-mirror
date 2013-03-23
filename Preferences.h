@@ -323,10 +323,12 @@ public:
     static  bool    m_bLogA4AF; // ZZ:DownloadManager
     static	bool	m_bLogUlDlEvents;
     static	bool	m_bUseDebugDevice;
+#if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
     static	int		m_iDebugClientTCPLevel;
     static	int		m_iDebugClientUDPLevel;
     static	int		m_iDebugClientKadUDPLevel;
     static	int		m_iDebugSearchResultDetailLevel;
+#endif
     static	bool	m_bupdatequeuelist;
     static	int		m_istartnextfile;
     static	bool	m_bshowoverhead;
@@ -2100,6 +2102,7 @@ public:
     {
         return m_bVerbose && true;
     }
+#if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
     static	bool	GetUseDebugDevice()
     {
         return m_bUseDebugDevice;
@@ -2120,6 +2123,29 @@ public:
     {
         return m_iDebugSearchResultDetailLevel;
     }
+#else
+    // for normal release builds these options are all turned off
+    inline static bool  GetUseDebugDevice()
+    {
+        return false;
+    }
+    inline static int   GetDebugClientTCPLevel()
+    {
+        return 0;
+    }
+    inline static int   GetDebugClientUDPLevel()
+    {
+        return 0;
+    }
+    inline static int   GetDebugClientKadUDPLevel()
+    {
+        return 0;
+    }
+    inline static int   GetDebugSearchResultDetailLevel()
+    {
+        return 0;
+    }
+#endif
     static	int		GetVerboseLogPriority()
     {
         return	m_byLogLevel;

@@ -90,7 +90,7 @@ bool CRoutingBin::AddContact(CContact *pContact)
 {
     ASSERT(pContact != NULL);
 
-    if(m_listEntries.size() >= K)
+    if (m_listEntries.size() >= K)
         return false; //>>> WiZaRd - quick return
 
     UINT cSameSubnets = 0;
@@ -384,7 +384,7 @@ void CRoutingBin::PushToBottom(CContact* pContact) // puts an existing contact f
     ASSERT(GetContact(pContact->GetClientID()) == pContact);
 //>>> WiZaRd::Optimization - remove function OH
 //	RemoveContact(pContact, true);
-	m_listEntries.remove(pContact);
+    m_listEntries.remove(pContact);
 //<<< WiZaRd::Optimization - remove function OH
     m_listEntries.push_back(pContact);
 }

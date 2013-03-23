@@ -86,10 +86,10 @@ int CIPFilter::AddFromFile(LPCTSTR pszFilePath, bool bShowResponse)
     DWORD dwStart = GetTickCount();
 
 //>>> WiZaRd::LoadStatus [X-Ray]
-	CLoadStatus loadStatus;
-	loadStatus.SetLoadMode(true);
-	loadStatus.SetLoadString(L"IP-Filter");
-	loadStatus.ReadLineCount(pszFilePath);
+    CLoadStatus loadStatus;
+    loadStatus.SetLoadMode(true);
+    loadStatus.SetLoadString(L"IP-Filter");
+    loadStatus.ReadLineCount(pszFilePath);
 //<<< WiZaRd::LoadStatus [X-Ray]
 
     FILE* readFile = _tfsopen(pszFilePath, _T("r"), _SH_DENYWR);
@@ -169,7 +169,7 @@ int CIPFilter::AddFromFile(LPCTSTR pszFilePath, bool bShowResponse)
                     AddIPRange(uStart, uEnd, DFLT_FILTER_LEVEL, CStringA(szName, iLen));
                     iFoundRanges++;
 
-					loadStatus.UpdateCount(iLine); //>>> WiZaRd::LoadStatus [X-Ray]
+                    loadStatus.UpdateCount(iLine); //>>> WiZaRd::LoadStatus [X-Ray]
                 }
             }
         }
@@ -181,7 +181,7 @@ int CIPFilter::AddFromFile(LPCTSTR pszFilePath, bool bShowResponse)
             {
                 iLine++;
 
-				loadStatus.UpdateCount(iLine); //>>> WiZaRd::LoadStatus [X-Ray]
+                loadStatus.UpdateCount(iLine); //>>> WiZaRd::LoadStatus [X-Ray]
 
                 sbuffer = szBuffer;
 
@@ -322,7 +322,7 @@ int CIPFilter::AddFromFile(LPCTSTR pszFilePath, bool bShowResponse)
             delete[] pcToDelete;
         }
 
-		loadStatus.Complete(); //>>> WiZaRd::LoadStatus [X-Ray]
+        loadStatus.Complete(); //>>> WiZaRd::LoadStatus [X-Ray]
         if (thePrefs.GetVerbose())
         {
             DWORD dwEnd = GetTickCount();
@@ -444,18 +444,18 @@ bool CIPFilter::ParseFilterLine2(const CStringA& sbuffer, UINT& ip1, UINT& ip2, 
 void CIPFilter::RemoveAllIPFilters()
 {
 //>>> WiZaRd::LoadStatus [X-Ray]
-	CLoadStatus loadStatus;
-	loadStatus.SetLoadMode(false);
-	loadStatus.SetLoadString(L"IP-Filter");
-	loadStatus.SetLineCount(m_iplist.GetCount());
+    CLoadStatus loadStatus;
+    loadStatus.SetLoadMode(false);
+    loadStatus.SetLoadString(L"IP-Filter");
+    loadStatus.SetLineCount(m_iplist.GetCount());
 //<<< WiZaRd::LoadStatus [X-Ray]
     for (int i = 0; i < m_iplist.GetCount(); i++)
     {
         delete m_iplist[i];
-		loadStatus.UpdateCount(i); //>>> WiZaRd::LoadStatus [X-Ray]
+        loadStatus.UpdateCount(i); //>>> WiZaRd::LoadStatus [X-Ray]
     }
 
-	loadStatus.Complete(); //>>> WiZaRd::LoadStatus [X-Ray]
+    loadStatus.Complete(); //>>> WiZaRd::LoadStatus [X-Ray]
     m_iplist.RemoveAll();
     m_pLastHit = NULL;
 }

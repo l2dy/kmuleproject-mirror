@@ -439,13 +439,13 @@ void CPPgWiz1Ports::OnStartConTest()
         if (!theApp.IsPortchangeAllowed())
         {
 //>>> WiZaRd::Automatic Restart
-			//AfxMessageBox(GetResString(IDS_NOPORTCHANGEPOSSIBLE));
-			if (AfxMessageBox(GetResString(IDS_SETTINGCHANGED_RESTART), MB_YESNO | MB_ICONEXCLAMATION,0)==IDYES)
-			{
-				theApp.PlanRestart();
-				theApp.emuledlg->OnClose();
-			}
-//<<< WiZaRd::Automatic Restart            
+            //AfxMessageBox(GetResString(IDS_NOPORTCHANGEPOSSIBLE));
+            if (AfxMessageBox(GetResString(IDS_SETTINGCHANGED_RESTART), MB_YESNO | MB_ICONEXCLAMATION,0)==IDYES)
+            {
+                theApp.PlanRestart();
+                theApp.emuledlg->OnClose();
+            }
+//<<< WiZaRd::Automatic Restart
             return;
         }
 
@@ -1156,16 +1156,16 @@ BOOL FirstTimeWizard()
 
     if ((thePrefs.port!=theApp.listensocket->GetConnectedPort()) || (thePrefs.udpport!=theApp.clientudp->GetConnectedPort()))
         if (!theApp.IsPortchangeAllowed())
-		{
+        {
 //>>> WiZaRd::Automatic Restart
-			//AfxMessageBox(GetResString(IDS_NOPORTCHANGEPOSSIBLE));
-			if (AfxMessageBox(GetResString(IDS_SETTINGCHANGED_RESTART), MB_YESNO | MB_ICONEXCLAMATION,0)==IDYES)
-			{
-				theApp.PlanRestart();
-				theApp.emuledlg->OnClose();
-			}
-//<<< WiZaRd::Automatic Restart            
-		}
+            //AfxMessageBox(GetResString(IDS_NOPORTCHANGEPOSSIBLE));
+            if (AfxMessageBox(GetResString(IDS_SETTINGCHANGED_RESTART), MB_YESNO | MB_ICONEXCLAMATION,0)==IDYES)
+            {
+                theApp.PlanRestart();
+                theApp.emuledlg->OnClose();
+            }
+//<<< WiZaRd::Automatic Restart
+        }
         else
         {
             theApp.listensocket->Rebind() ;

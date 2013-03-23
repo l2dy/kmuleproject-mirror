@@ -77,10 +77,10 @@ _ContactList CKademlia::s_liBootstapList;
 
 CKademlia::CKademlia()
 {
-	m_pPrefs = NULL;
-	m_pRoutingZone = NULL;
-	m_pUDPListener = NULL;
-	m_pIndexed = NULL;
+    m_pPrefs = NULL;
+    m_pRoutingZone = NULL;
+    m_pUDPListener = NULL;
+    m_pIndexed = NULL;
 }
 
 void CKademlia::Start()
@@ -141,8 +141,8 @@ void CKademlia::Start(CPrefs *pPrefs)
         // Mark Kad as running state.
         m_bRunning = true;
 
-		if(theApp.emuledlg)
-			theApp.emuledlg->ShowConnectionState();// Update GUI
+        if (theApp.emuledlg)
+            theApp.emuledlg->ShowConnectionState();// Update GUI
     }
     catch (CException *e)
     {
@@ -196,8 +196,8 @@ void CKademlia::Stop()
     // Make sure all zones are removed.
     m_mapEvents.clear();
 
-	if(theApp.emuledlg)
-		theApp.emuledlg->ShowConnectionState();// Update GUI
+    if (theApp.emuledlg)
+        theApp.emuledlg->ShowConnectionState();// Update GUI
 }
 
 void CKademlia::Process()
@@ -220,17 +220,17 @@ void CKademlia::Process()
     if (m_tNextFirewallCheck <= tNow)
         RecheckFirewalled();
     if (m_tNextUPnPCheck != 0 && m_tNextUPnPCheck <= tNow)
-    {        
+    {
 //>>> WiZaRd::"HARD" upnp reset
-		// obviously, "RefreshUPnP" fails pretty often? try a "HARD" reset in that case!
-		if (Kademlia::CKademlia::IsConnected() && Kademlia::CKademlia::IsFirewalled())
-		{
-			theApp.emuledlg->RemoveUPnPMappings();
-			theApp.emuledlg->StartUPnP();
-		}
-		else
+        // obviously, "RefreshUPnP" fails pretty often? try a "HARD" reset in that case!
+        if (Kademlia::CKademlia::IsConnected() && Kademlia::CKademlia::IsFirewalled())
+        {
+            theApp.emuledlg->RemoveUPnPMappings();
+            theApp.emuledlg->StartUPnP();
+        }
+        else
 //<<< WiZaRd::"HARD" upnp reset
-			theApp.emuledlg->RefreshUPnP();
+            theApp.emuledlg->RefreshUPnP();
         m_tNextUPnPCheck = 0; // will be reset on firewallcheck
     }
     if (m_tNextSelfLookup <= tNow)
@@ -440,7 +440,7 @@ bool CKademlia::GetPublish()
 {
     if (m_pInstance && m_pInstance->m_pPrefs)
         return m_pInstance->m_pPrefs->GetPublish();
-	return false;
+    return false;
 }
 
 void CKademlia::Bootstrap(LPCTSTR szHost, uint16 uPort)
@@ -463,26 +463,26 @@ void CKademlia::Bootstrap(UINT uIP, uint16 uPort)
 
 void CKademlia::RecheckFirewalled()
 {
-	if(!IsRunningInLANMode())
-	{
-		if (m_pInstance && m_pInstance->GetPrefs())
-		{
-			// Something is forcing a new firewall check
-			// Stop any new buddy requests, and tell the client
-			// to recheck it's IP which in turns rechecks firewall.
-			m_pInstance->m_pPrefs->SetFindBuddy(false);
-			m_pInstance->m_pPrefs->SetRecheckIP();
-			// also UDP check
-			CUDPFirewallTester::ReCheckFirewallUDP(false);
-		}
-	}
+    if (!IsRunningInLANMode())
+    {
+        if (m_pInstance && m_pInstance->GetPrefs())
+        {
+            // Something is forcing a new firewall check
+            // Stop any new buddy requests, and tell the client
+            // to recheck it's IP which in turns rechecks firewall.
+            m_pInstance->m_pPrefs->SetFindBuddy(false);
+            m_pInstance->m_pPrefs->SetRecheckIP();
+            // also UDP check
+            CUDPFirewallTester::ReCheckFirewallUDP(false);
+        }
+    }
 
-	time_t tNow = time(NULL);
-	// Delay the next buddy search to at least 5 minutes after our firewallcheck so we are sure to be still firewalled
-	m_tNextFindBuddy = (m_tNextFindBuddy < MIN2S(5) + tNow) ? (MIN2S(5) + tNow) : m_tNextFindBuddy;
-	//m_tNextFirewallCheck = HR2S(1) + tNow;
-	m_tNextFirewallCheck = MIN2S(15) + tNow;
-	m_tNextUPnPCheck = m_tNextFirewallCheck - MIN2S(1);
+    time_t tNow = time(NULL);
+    // Delay the next buddy search to at least 5 minutes after our firewallcheck so we are sure to be still firewalled
+    m_tNextFindBuddy = (m_tNextFindBuddy < MIN2S(5) + tNow) ? (MIN2S(5) + tNow) : m_tNextFindBuddy;
+    //m_tNextFirewallCheck = HR2S(1) + tNow;
+    m_tNextFirewallCheck = MIN2S(15) + tNow;
+    m_tNextUPnPCheck = m_tNextFirewallCheck - MIN2S(1);
 }
 
 CPrefs *CKademlia::GetPrefs()
@@ -540,7 +540,7 @@ bool CKademlia::FindNodeIDByIP(CKadClientSearcher& rRequester, UINT dwIP, uint16
 
     // first search our known contacts if we can deliver a result without asking, otherwise forward the request
     CContact* pContact = GetRoutingZone()->GetContact(ntohl(dwIP), nTCPPort, true);
-    if(pContact != NULL)
+    if (pContact != NULL)
     {
         uchar uchID[16];
         pContact->GetClientID().ToByteArray(uchID);

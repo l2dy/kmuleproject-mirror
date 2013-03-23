@@ -332,9 +332,9 @@ BOOL CPPgConnection::OnApply()
 
     if (bRestartApp)
 //>>> WiZaRd::Automatic Restart
-		//AfxMessageBox(GetResString(IDS_NOPORTCHANGEPOSSIBLE));
-		CPreferencesDlg::PlanRestart();
-//<<< WiZaRd::Automatic Restart        
+        //AfxMessageBox(GetResString(IDS_NOPORTCHANGEPOSSIBLE));
+        CPreferencesDlg::PlanRestart();
+//<<< WiZaRd::Automatic Restart
 
     OnEnChangePorts(2);
 
@@ -545,7 +545,7 @@ void CPPgConnection::SetRatioIcon()
     if (upload == 0)
         upload = UNLIMITED;
 
-	const int ratio = GetRatioSmileyIndex(upload, maxUpload);
+    const int ratio = GetRatioSmileyIndex(upload, maxUpload);
     if (ratio == lastRatio)
         return;
 

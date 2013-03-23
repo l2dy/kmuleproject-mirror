@@ -1145,7 +1145,10 @@ public:
     }
     bool	IsBadGuy() const;
 //>>> WiZaRd::More GPLEvilDoers
-	bool	IsGPLBreaker() const	{return m_bGPLEvilDoerMod || m_bGPLEvilDoerNick;}
+    bool	IsGPLBreaker() const
+    {
+        return m_bGPLEvilDoerMod || m_bGPLEvilDoerNick;
+    }
     void	CheckForGPLEvilDoer(const bool bNick, const bool bMod);
 //<<< WiZaRd::More GPLEvilDoers
 

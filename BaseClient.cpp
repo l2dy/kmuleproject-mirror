@@ -2061,6 +2061,10 @@ void CUpDownClient::InitClientSoftwareVersion()
             m_clientSoft = SO_EASYMULE2;
             pszSoftware = L"EasyMule2";
             break;
+        case SO_NEOLOADER:
+            m_clientSoft = SO_NEOLOADER;
+            pszSoftware = L"NeoLoader";
+            break;
 // Spike2 - Enhanced Client Recognition - END
 //<<< WiZaRd::ClientAnalyzer
         default:
@@ -2146,6 +2150,16 @@ void CUpDownClient::InitClientSoftwareVersion()
                     else
                         iLen = _sntprintf(szSoftware, ARRSIZE(szSoftware), L"%s v%u.%u%c", pszSoftware, nClientMajVersion, nClientMinVersion, L'a' + nClientUpVersion - 1);
                 }
+            }
+            else if (m_clientSoft == SO_NEOLOADER)
+            {
+                if (nClientMinVersion < 10)
+                    iLen = _sntprintf(szSoftware, ARRSIZE(szSoftware), L"%s v%u.0%u", pszSoftware, nClientMajVersion, nClientMinVersion);
+                else
+                    iLen = _sntprintf(szSoftware, ARRSIZE(szSoftware), L"%s v%u.%u", pszSoftware, nClientMajVersion, nClientMinVersion);
+
+                if (nClientUpVersion != 0)
+                    iLen += _sntprintf(szSoftware + iLen, ARRSIZE(szSoftware) - iLen, _T("%c"), _T('a') + nClientUpVersion - 1);
             }
 // Spike2 - Enhanced Client Recognition - END
 //<<< WiZaRd::ClientAnalyzer
@@ -2645,8 +2659,8 @@ void CUpDownClient::ResetFileStatusInfo()
 bool CUpDownClient::IsBanned() const
 {
 //>>> WiZaRd::Optimization
-	if(GetUploadState() == US_BANNED)
-		return true;
+    if (GetUploadState() == US_BANNED)
+        return true;
 //<<< WiZaRd::Optimization
     return theApp.clientlist->IsBannedClient(GetConnectIP());
 }

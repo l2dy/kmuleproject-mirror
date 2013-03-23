@@ -1,4 +1,5 @@
 #pragma once
+#if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
 #include "TreeOptionsCtrlEx.h"
 
 #define	MAX_DETAIL_ITEMS	3
@@ -45,3 +46,4 @@ protected:
     afx_msg void OnHelp();
     afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
 };
+#endif

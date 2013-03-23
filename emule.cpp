@@ -610,7 +610,7 @@ BOOL CemuleApp::InitInstance()
         return FALSE;
     }
 
-	m_bRestartApp = false; //>>> WiZaRd::Automatic Restart
+    m_bRestartApp = false; //>>> WiZaRd::Automatic Restart
     // show splashscreen as early as possible to "entertain" user while starting kMule
     if (!thePrefs.IsFirstStart() && thePrefs.UseSplashScreen())
     {
@@ -800,15 +800,15 @@ BOOL CemuleApp::InitInstance()
     autoUpdater = NULL;
 //<<< WiZaRd::AutoUpdate
 //>>> WiZaRd::Automatic Restart
-	if(m_bRestartApp)
-	{
-		CString strExePath;
-		strExePath.Format(L"%s%s.exe", thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), m_pszExeName);
-		ShellOpenFile(strExePath);
-	}
+    if (m_bRestartApp)
+    {
+        CString strExePath;
+        strExePath.Format(L"%s%s.exe", thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), m_pszExeName);
+        ShellOpenFile(strExePath);
+    }
 //<<< WiZaRd::Automatic Restart
 
-	AddDebugLogLine(DLP_VERYLOW, L"%hs: returning: FALSE", __FUNCTION__);
+    AddDebugLogLine(DLP_VERYLOW, L"%hs: returning: FALSE", __FUNCTION__);
     return FALSE;
 }
 
@@ -1483,7 +1483,7 @@ void CemuleApp::SetPublicIP(const UINT dwIP)
         m_dwPublicIP = dwIP;
         if (bChange)
         {
-			// Public IP has been changed
+            // Public IP has been changed
             ResetLocalIP();
 
             if (thePrefs.IsUPnPEnabled() && theApp.emuledlg && theApp.m_pUPnPFinder)

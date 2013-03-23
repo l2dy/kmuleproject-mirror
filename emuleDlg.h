@@ -116,7 +116,7 @@ public:
         return m_iMsgIcon!=0;
     }
     void SetToolTipsDelay(UINT uDelay);
-	void RemoveUPnPMappings(); //>>> WiZaRd
+    void RemoveUPnPMappings(); //>>> WiZaRd
     void StartUPnP(bool bReset = true, uint16 nForceTCPPort = 0, uint16 nForceUDPPort = 0);
     void RefreshUPnP(bool bRequestAnswer = false);
     HBRUSH GetCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
@@ -150,7 +150,7 @@ public:
 //>>> WiZaRd::MediaInfoDLL Update
     void	UpdateMediaInfoDLL();
 //<<< WiZaRd::MediaInfoDLL Update
-	afx_msg void OnClose(); //>>> WiZaRd::Automatic Restart
+    afx_msg void OnClose(); //>>> WiZaRd::Automatic Restart
 
 protected:
     HICON			m_hIcon;

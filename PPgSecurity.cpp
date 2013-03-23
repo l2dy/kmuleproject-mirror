@@ -47,10 +47,10 @@ bool GetMimeType(LPCTSTR pszFilePath, CString& rstrMimeType);
 IMPLEMENT_DYNAMIC(CPPgSecurity, CPropertyPage)
 
 BEGIN_MESSAGE_MAP(CPPgSecurity, CPropertyPage)
-	ON_EN_CHANGE(IDC_FILTER, OnSettingsChange)
-	ON_EN_CHANGE(IDC_COMMENTFILTER, OnSettingsChange)
-	ON_BN_CLICKED(IDC_MSGONLYFRIENDS , OnSettingsChange)
-	ON_BN_CLICKED(IDC_INDICATERATINGS , OnSettingsChange)
+    ON_EN_CHANGE(IDC_FILTER, OnSettingsChange)
+    ON_EN_CHANGE(IDC_COMMENTFILTER, OnSettingsChange)
+    ON_BN_CLICKED(IDC_MSGONLYFRIENDS , OnSettingsChange)
+    ON_BN_CLICKED(IDC_INDICATERATINGS , OnSettingsChange)
     ON_BN_CLICKED(IDC_RELOADFILTER, OnReloadIPFilter)
     ON_BN_CLICKED(IDC_EDITFILTER, OnEditIPFilter)
     ON_EN_CHANGE(IDC_FILTERLEVEL, OnSettingsChange)
@@ -88,18 +88,18 @@ void CPPgSecurity::LoadSettings(void)
 {
     CString strBuffer;
 
-	if (thePrefs.msgonlyfriends)
-		CheckDlgButton(IDC_MSGONLYFRIENDS,1);
-	else
-		CheckDlgButton(IDC_MSGONLYFRIENDS,0);
+    if (thePrefs.msgonlyfriends)
+        CheckDlgButton(IDC_MSGONLYFRIENDS,1);
+    else
+        CheckDlgButton(IDC_MSGONLYFRIENDS,0);
 
-	if(thePrefs.indicateratings)
-		CheckDlgButton(IDC_INDICATERATINGS,1);
-	else
-		CheckDlgButton(IDC_INDICATERATINGS,0);
+    if (thePrefs.indicateratings)
+        CheckDlgButton(IDC_INDICATERATINGS,1);
+    else
+        CheckDlgButton(IDC_INDICATERATINGS,0);
 
-	GetDlgItem(IDC_FILTER)->SetWindowText(thePrefs.messageFilter);
-	GetDlgItem(IDC_COMMENTFILTER)->SetWindowText(thePrefs.commentFilter);
+    GetDlgItem(IDC_FILTER)->SetWindowText(thePrefs.messageFilter);
+    GetDlgItem(IDC_COMMENTFILTER)->SetWindowText(thePrefs.commentFilter);
 
     strBuffer.Format(_T("%i"), thePrefs.filterlevel);
     GetDlgItem(IDC_FILTERLEVEL)->SetWindowText(strBuffer);
@@ -173,28 +173,28 @@ BOOL CPPgSecurity::OnInitDialog()
 
 BOOL CPPgSecurity::OnApply()
 {
-	thePrefs.msgonlyfriends = IsDlgButtonChecked(IDC_MSGONLYFRIENDS)!=0;
-	thePrefs.indicateratings = IsDlgButtonChecked(IDC_INDICATERATINGS)!=0;
+    thePrefs.msgonlyfriends = IsDlgButtonChecked(IDC_MSGONLYFRIENDS)!=0;
+    thePrefs.indicateratings = IsDlgButtonChecked(IDC_INDICATERATINGS)!=0;
 
-	GetDlgItem(IDC_FILTER)->GetWindowText(thePrefs.messageFilter);
+    GetDlgItem(IDC_FILTER)->GetWindowText(thePrefs.messageFilter);
 
-	CString strCommentFilters;
-	GetDlgItem(IDC_COMMENTFILTER)->GetWindowText(strCommentFilters);
-	strCommentFilters.MakeLower();
-	CString strNewCommentFilters;
-	int curPos = 0;
-	CString strFilter(strCommentFilters.Tokenize(_T("|"), curPos));
-	while (!strFilter.IsEmpty())
-	{
-		strFilter.Trim();
-		if (!strNewCommentFilters.IsEmpty())
-			strNewCommentFilters += _T('|');
-		strNewCommentFilters += strFilter;
-		strFilter = strCommentFilters.Tokenize(_T("|"), curPos);
-	}
-	thePrefs.commentFilter = strNewCommentFilters;
-	if (thePrefs.commentFilter != strCommentFilters)
-		SetDlgItemText(IDC_COMMENTFILTER, thePrefs.commentFilter);
+    CString strCommentFilters;
+    GetDlgItem(IDC_COMMENTFILTER)->GetWindowText(strCommentFilters);
+    strCommentFilters.MakeLower();
+    CString strNewCommentFilters;
+    int curPos = 0;
+    CString strFilter(strCommentFilters.Tokenize(_T("|"), curPos));
+    while (!strFilter.IsEmpty())
+    {
+        strFilter.Trim();
+        if (!strNewCommentFilters.IsEmpty())
+            strNewCommentFilters += _T('|');
+        strNewCommentFilters += strFilter;
+        strFilter = strCommentFilters.Tokenize(_T("|"), curPos);
+    }
+    thePrefs.commentFilter = strNewCommentFilters;
+    if (thePrefs.commentFilter != strCommentFilters)
+        SetDlgItemText(IDC_COMMENTFILTER, thePrefs.commentFilter);
 
     TCHAR buffer[510];
     if (GetDlgItem(IDC_FILTERLEVEL)->GetWindowTextLength())
@@ -231,14 +231,14 @@ void CPPgSecurity::Localize(void)
     if (m_hWnd)
     {
         SetWindowText(GetResString(IDS_SECURITY));
-		GetDlgItem(IDC_FILTERCOMMENTSLABEL)->SetWindowText(GetResString(IDS_FILTERCOMMENTSLABEL));
-		GetDlgItem(IDC_STATIC_COMMENTS)->SetWindowText(GetResString(IDS_COMMENT));
-		GetDlgItem(IDC_INDICATERATINGS)->SetWindowText(GetResString(IDS_INDICATERATINGS));
+        GetDlgItem(IDC_FILTERCOMMENTSLABEL)->SetWindowText(GetResString(IDS_FILTERCOMMENTSLABEL));
+        GetDlgItem(IDC_STATIC_COMMENTS)->SetWindowText(GetResString(IDS_COMMENT));
+        GetDlgItem(IDC_INDICATERATINGS)->SetWindowText(GetResString(IDS_INDICATERATINGS));
 
-		GetDlgItem(IDC_FILTERLABEL)->SetWindowText(GetResString(IDS_FILTERLABEL));
-		GetDlgItem(IDC_MSG)->SetWindowText(GetResString(IDS_CW_MESSAGES));
+        GetDlgItem(IDC_FILTERLABEL)->SetWindowText(GetResString(IDS_FILTERLABEL));
+        GetDlgItem(IDC_MSG)->SetWindowText(GetResString(IDS_CW_MESSAGES));
 
-		GetDlgItem(IDC_MSGONLYFRIENDS)->SetWindowText(GetResString(IDS_MSGONLYFRIENDS));
+        GetDlgItem(IDC_MSGONLYFRIENDS)->SetWindowText(GetResString(IDS_MSGONLYFRIENDS));
 
         GetDlgItem(IDC_STATIC_IPFILTER)->SetWindowText(GetResString(IDS_IPFILTER));
         GetDlgItem(IDC_RELOADFILTER)->SetWindowText(GetResString(IDS_SF_RELOAD));

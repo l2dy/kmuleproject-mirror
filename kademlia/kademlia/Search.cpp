@@ -963,8 +963,8 @@ void CSearch::StorePacket()
         }
         // Inc total request answers
 //>>> WiZaRd::FiX?
-//	++m_uAnswers; 
-	++m_uTotalRequestAnswers;
+//	++m_uAnswers;
+        ++m_uTotalRequestAnswers;
 //<<< WiZaRd::FiX?
         break;
     }
@@ -1002,8 +1002,8 @@ void CSearch::StorePacket()
         }
         // Inc total request answers
 //>>> WiZaRd::FiX?
-//	++m_uAnswers; 
-	++m_uTotalRequestAnswers;
+//	++m_uAnswers;
+        ++m_uTotalRequestAnswers;
 //<<< WiZaRd::FiX?
         break;
     }

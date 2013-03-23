@@ -1129,8 +1129,8 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
         }
 //<<< WiZaRd::ClientAnalyzer
 
-		if (client->IsBanned())
-			return;
+        if (client->IsBanned())
+            return;
     }
 
     uint16 cSameIP = 0;

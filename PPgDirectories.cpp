@@ -260,22 +260,22 @@ BOOL CPPgDirectories::OnApply()
 
 //>>> WiZaRd::SharePermissions
     CStringList tmpDirs;
-	// check shared directories for reserved folder names
+    // check shared directories for reserved folder names
     for (int i = 0; i < m_ctlUncPaths.GetItemCount(); ++i)
-	{
-		const CString rstrDir = m_ctlUncPaths.GetItemText(i, 0);
-		if (thePrefs.IsShareableDirectory(rstrDir))
-			tmpDirs.AddTail(rstrDir);
-	}
+    {
+        const CString rstrDir = m_ctlUncPaths.GetItemText(i, 0);
+        if (thePrefs.IsShareableDirectory(rstrDir))
+            tmpDirs.AddTail(rstrDir);
+    }
 
     for (POSITION pos = thePrefs.shareddir_list.GetHeadPosition(), pos2 = thePrefs.shareddir_list_permissions.GetHeadPosition(); pos != NULL;)
-    {		
+    {
         POSITION posLast = pos;
         CString strCurrentDir = thePrefs.shareddir_list.GetNext(pos);
         POSITION posLast2 = pos2;
         thePrefs.shareddir_list_permissions.GetNext(pos2);
-		if(!PathIsUNC(strCurrentDir)) // non UNC paths are handled in shared files dialog
-			continue;
+        if (!PathIsUNC(strCurrentDir)) // non UNC paths are handled in shared files dialog
+            continue;
 
         bool bFound = false;
         for (POSITION pos3 = tmpDirs.GetHeadPosition(); pos3 != NULL && !bFound;)
@@ -329,7 +329,7 @@ BOOL CPPgDirectories::OnApply()
     if (testtempdirchanged)
 //>>> WiZaRd::Automatic Restart
         //AfxMessageBox(GetResString(IDS_SETTINGCHANGED_RESTART));
-		CPreferencesDlg::PlanRestart();
+        CPreferencesDlg::PlanRestart();
 //<<< WiZaRd::Automatic Restart
 
     theApp.emuledlg->sharedfileswnd->Reload();

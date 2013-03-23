@@ -763,9 +763,9 @@ void CSharedFilesCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
                 {
                     if (pKnownFile == NULL)
                         break;
-					// TODO: why did we choose a different quotient here?
+                    // TODO: why did we choose a different quotient here?
                     //m_ImageList.Draw(dc, m_iRatio[min(8, int(pKnownFile->GetSharingRatio()/0.1875))], cur_rec.TopLeft(), ILD_NORMAL);
-					m_ImageList.Draw(dc, m_iRatio[GetRatioSmileyIndex(pKnownFile->GetSharingRatio() *  ratioSmileyCount)], cur_rec.TopLeft(), ILD_NORMAL);
+                    m_ImageList.Draw(dc, m_iRatio[GetRatioSmileyIndex(pKnownFile->GetSharingRatio() *  ratioSmileyCount)], cur_rec.TopLeft(), ILD_NORMAL);
                     break;
                 }
 //<<< WiZaRd::Ratio Indicator
@@ -1172,10 +1172,10 @@ BOOL CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                 CString newname = inputbox.GetInput();
 //>>> Tux::RenameWithoutExtension
                 // TODO: Sonderfälle (.tar.gz, .tar.bz2) überprüfen und ggf. berücksichtigen
-                const CString oldextension = ::PathFindExtension(pKnownFile->GetFileName());				
+                const CString oldextension = ::PathFindExtension(pKnownFile->GetFileName());
 //<<< Tux::RenameWithoutExtension
 
-				const CString oldname = pKnownFile->GetFileName();
+                const CString oldname = pKnownFile->GetFileName();
                 if (!inputbox.WasCancelled() && newname.GetLength()>0 && newname != oldname)
                 {
                     // at least prevent users from specifying something like "..\dir\file"

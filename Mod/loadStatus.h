@@ -19,21 +19,21 @@
 class CLoadStatus
 {
 public:
-	CLoadStatus();
-	virtual ~CLoadStatus();
+    CLoadStatus();
+    virtual ~CLoadStatus();
 
-	void	SetLoadString(const CString& strLoadString);
-	void	SetLoadMode(const bool bLoading);
-	void	SetLineCount(const UINT iCount);
-	void	ReadLineCount(LPCTSTR pszFilePath);
-	void	UpdateCount(const UINT iCount);
-	void	Complete();
+    void	SetLoadString(const CString& strLoadString);
+    void	SetLoadMode(const bool bLoading);
+    void	SetLineCount(const UINT iCount);
+    void	ReadLineCount(LPCTSTR pszFilePath);
+    void	UpdateCount(const UINT iCount);
+    void	Complete();
 
 private:
-	UINT	m_uLineCount;
-	UINT	m_uLastPercent;
-	UINT	m_uPercent;
-	double	m_dPercent;
-	CString	m_strLoadString;
-	bool	m_bLoadMode;
+    UINT	m_uLineCount;
+    UINT	m_uLastPercent;
+    UINT	m_uPercent;
+    double	m_dPercent;
+    CString	m_strLoadString;
+    bool	m_bLoadMode;
 };

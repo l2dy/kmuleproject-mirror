@@ -3177,17 +3177,17 @@ LRESULT CemuleDlg::OnUPnPResult(WPARAM wParam, LPARAM lParam)
     bool bWasRefresh = lParam != 0;
 //>>> WiZaRd - handle "UPNP_TIMEOUT" events!
 //	if (!bWasRefresh && wParam == CUPnPImpl::UPNP_FAILED)
-	if (!bWasRefresh && wParam != CUPnPImpl::UPNP_OK)
+    if (!bWasRefresh && wParam != CUPnPImpl::UPNP_OK)
 //<<< WiZaRd - handle "UPNP_TIMEOUT" events!
-	{	
-//>>> WiZaRd - handle "UPNP_TIMEOUT" events!
-		//just to be sure, stop any running services and also delete the forwarded ports (if necessary)
-		if(wParam == CUPnPImpl::UPNP_TIMEOUT)
     {
-			theApp.m_pUPnPFinder->GetImplementation()->StopAsyncFind();
-			if (thePrefs.CloseUPnPOnExit())
-				theApp.m_pUPnPFinder->GetImplementation()->DeletePorts();
-		}
+//>>> WiZaRd - handle "UPNP_TIMEOUT" events!
+        //just to be sure, stop any running services and also delete the forwarded ports (if necessary)
+        if (wParam == CUPnPImpl::UPNP_TIMEOUT)
+        {
+            theApp.m_pUPnPFinder->GetImplementation()->StopAsyncFind();
+            if (thePrefs.CloseUPnPOnExit())
+                theApp.m_pUPnPFinder->GetImplementation()->DeletePorts();
+        }
 //<<< WiZaRd - handle "UPNP_TIMEOUT" events!
 
         // UPnP failed, check if we can retry it with another implementation
@@ -3208,18 +3208,18 @@ LRESULT CemuleDlg::OnUPnPResult(WPARAM wParam, LPARAM lParam)
     if (IsRunning() && m_bConnectRequestDelayedForUPnP)
         StartConnection();
 
-	if (!bWasRefresh)
-	{
-		if(wParam == CUPnPImpl::UPNP_OK)
-		{
-			// remember the last working implementation
-			thePrefs.SetLastWorkingUPnPImpl(theApp.m_pUPnPFinder->GetImplementation()->GetImplementationID());
-			Log(GetResString(IDS_UPNPSUCCESS), theApp.m_pUPnPFinder->GetImplementation()->GetUsedTCPPort()
-				, theApp.m_pUPnPFinder->GetImplementation()->GetUsedUDPPort());
-		}
-		else
-			LogWarning(GetResString(IDS_UPNPFAILED));
-	}
+    if (!bWasRefresh)
+    {
+        if (wParam == CUPnPImpl::UPNP_OK)
+        {
+            // remember the last working implementation
+            thePrefs.SetLastWorkingUPnPImpl(theApp.m_pUPnPFinder->GetImplementation()->GetImplementationID());
+            Log(GetResString(IDS_UPNPSUCCESS), theApp.m_pUPnPFinder->GetImplementation()->GetUsedTCPPort()
+                , theApp.m_pUPnPFinder->GetImplementation()->GetUsedUDPPort());
+        }
+        else
+            LogWarning(GetResString(IDS_UPNPFAILED));
+    }
 
     return 0;
 }
@@ -3255,8 +3255,8 @@ LRESULT  CemuleDlg::OnPowerBroadcast(WPARAM wParam, LPARAM lParam)
 
 void CemuleDlg::StartUPnP(bool bReset, uint16 nForceTCPPort, uint16 nForceUDPPort)
 {
-	if (!thePrefs.IsUPnPEnabled())
-		return;
+    if (!thePrefs.IsUPnPEnabled())
+        return;
 
     if (theApp.m_pUPnPFinder != NULL && (m_hUPnPTimeOutTimer == 0 || !bReset))
     {
@@ -3292,27 +3292,30 @@ void CemuleDlg::StartUPnP(bool bReset, uint16 nForceTCPPort, uint16 nForceUDPPor
 //>>> WiZaRd
 void	CemuleDlg::RemoveUPnPMappings()
 {
-	if (!thePrefs.IsUPnPEnabled())
-		return;
+    if (!thePrefs.IsUPnPEnabled())
+        return;
 
-	if (theApp.m_pUPnPFinder != NULL && m_hUPnPTimeOutTimer == 0)
-	{
-		try
-		{
-			if (theApp.m_pUPnPFinder->GetImplementation()->IsReady())
-			{
-				theApp.m_pUPnPFinder->GetImplementation()->StopAsyncFind();
-				/*if (thePrefs.CloseUPnPOnExit())*/
-					theApp.m_pUPnPFinder->GetImplementation()->DeletePorts();
-			}
-			else
-				DebugLogWarning(L"RemoveUPnPMappings, implementation not ready");
-		}
-		catch ( CUPnPImpl::UPnPError& ) {}
-		catch ( CException* e ) { e->Delete(); }
-	}
-	else
-		ASSERT(0);
+    if (theApp.m_pUPnPFinder != NULL && m_hUPnPTimeOutTimer == 0)
+    {
+        try
+        {
+            if (theApp.m_pUPnPFinder->GetImplementation()->IsReady())
+            {
+                theApp.m_pUPnPFinder->GetImplementation()->StopAsyncFind();
+                /*if (thePrefs.CloseUPnPOnExit())*/
+                theApp.m_pUPnPFinder->GetImplementation()->DeletePorts();
+            }
+            else
+                DebugLogWarning(L"RemoveUPnPMappings, implementation not ready");
+        }
+        catch (CUPnPImpl::UPnPError&) {}
+        catch (CException* e)
+        {
+            e->Delete();
+        }
+    }
+    else
+        ASSERT(0);
 }
 //<<< WiZaRd
 
@@ -3321,30 +3324,30 @@ void CemuleDlg::RefreshUPnP(bool bRequestAnswer)
     if (!thePrefs.IsUPnPEnabled())
         return;
 
-	if (theApp.m_pUPnPFinder != NULL && m_hUPnPTimeOutTimer == 0)
-	{
-		try
-		{
-			if (theApp.m_pUPnPFinder->GetImplementation()->IsReady())
-			{
-				if (bRequestAnswer)
-					theApp.m_pUPnPFinder->GetImplementation()->SetMessageOnResult(GetSafeHwnd(), UM_UPNP_RESULT);
-				if (theApp.m_pUPnPFinder->GetImplementation()->CheckAndRefresh() && bRequestAnswer)
-					VERIFY((m_hUPnPTimeOutTimer = ::SetTimer(NULL, NULL, SEC2MS(10), UPnPTimeOutTimer)) != NULL);
-				else
-					theApp.m_pUPnPFinder->GetImplementation()->SetMessageOnResult(0, 0);
-			}
-			else
-				DebugLogWarning(_T("RefreshUPnP, implementation not ready"));
-		}
-		catch (CUPnPImpl::UPnPError&) {}
-		catch (CException* e)
-		{
-			e->Delete();
-		}
-	}
-	else
-		ASSERT(0);
+    if (theApp.m_pUPnPFinder != NULL && m_hUPnPTimeOutTimer == 0)
+    {
+        try
+        {
+            if (theApp.m_pUPnPFinder->GetImplementation()->IsReady())
+            {
+                if (bRequestAnswer)
+                    theApp.m_pUPnPFinder->GetImplementation()->SetMessageOnResult(GetSafeHwnd(), UM_UPNP_RESULT);
+                if (theApp.m_pUPnPFinder->GetImplementation()->CheckAndRefresh() && bRequestAnswer)
+                    VERIFY((m_hUPnPTimeOutTimer = ::SetTimer(NULL, NULL, SEC2MS(10), UPnPTimeOutTimer)) != NULL);
+                else
+                    theApp.m_pUPnPFinder->GetImplementation()->SetMessageOnResult(0, 0);
+            }
+            else
+                DebugLogWarning(_T("RefreshUPnP, implementation not ready"));
+        }
+        catch (CUPnPImpl::UPnPError&) {}
+        catch (CException* e)
+        {
+            e->Delete();
+        }
+    }
+    else
+        ASSERT(0);
 }
 
 BOOL CemuleDlg::OnDeviceChange(UINT nEventType, DWORD_PTR dwData)

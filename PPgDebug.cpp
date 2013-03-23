@@ -15,6 +15,7 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #include "stdafx.h"
+#if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
 #include "emule.h"
 #include "PPgDebug.h"
 #include "Preferences.h"
@@ -218,3 +219,4 @@ BOOL CPPgDebug::OnHelpInfo(HELPINFO* /*pHelpInfo*/)
     OnHelp();
     return TRUE;
 }
+#endif

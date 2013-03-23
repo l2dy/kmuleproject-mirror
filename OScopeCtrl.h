@@ -6,30 +6,33 @@
 class COScopeCtrl : public CWnd
 {
 public:
-	COScopeCtrl(const int NTrends = 1);
+    COScopeCtrl(const int NTrends = 1);
     virtual ~COScopeCtrl();
 
-	virtual BOOL Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, const UINT nID = NULL);
+    virtual BOOL Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, const UINT nID = NULL);
 
-	void SetTrendRatio(const int iTrend, const UINT iRatio = 1);
-	void SetLegendLabel(const CString& string, const int iTrend);
-	void SetBarsPlot(const bool BarsPlot, const int iTrend);
-	void SetRange(const double& dLower, const double& dUpper, const int iTrend = 0);
-	void SetRanges(const double& dLower, const double& dUpper);
-	void SetXUnits(const CString& string, const CString& XMin = L"", const CString& XMax = L"");
-	void SetYUnits(const CString& string, const CString& YMin = L"", const CString& YMax = L"");
-	void SetGridColor(const COLORREF color);
-	void SetPlotColor(const COLORREF color, const int iTrend = 0);
-	COLORREF GetPlotColor(const int iTrend = 0);
-	void SetBackgroundColor(const COLORREF color);
-	void GetPlotRect(CRect& rPlotRect) { rPlotRect = m_rectPlot; }
+    void SetTrendRatio(const int iTrend, const UINT iRatio = 1);
+    void SetLegendLabel(const CString& string, const int iTrend);
+    void SetBarsPlot(const bool BarsPlot, const int iTrend);
+    void SetRange(const double& dLower, const double& dUpper, const int iTrend = 0);
+    void SetRanges(const double& dLower, const double& dUpper);
+    void SetXUnits(const CString& string, const CString& XMin = L"", const CString& XMax = L"");
+    void SetYUnits(const CString& string, const CString& YMin = L"", const CString& YMax = L"");
+    void SetGridColor(const COLORREF color);
+    void SetPlotColor(const COLORREF color, const int iTrend = 0);
+    COLORREF GetPlotColor(const int iTrend = 0);
+    void SetBackgroundColor(const COLORREF color);
+    void GetPlotRect(CRect& rPlotRect)
+    {
+        rPlotRect = m_rectPlot;
+    }
 
-	void AppendPoints(const double dNewPoint[], const bool bInvalidate = true, const bool bAdd2List = true, const bool bUseTrendRatio = true);
-	void AppendEmptyPoints(const double dNewPoint[], const bool bInvalidate = true, const bool bAdd2List = true, const bool bUseTrendRatio = true);
-	void InvalidateCtrl(const bool deleteGraph = true);
+    void AppendPoints(const double dNewPoint[], const bool bInvalidate = true, const bool bAdd2List = true, const bool bUseTrendRatio = true);
+    void AppendEmptyPoints(const double dNewPoint[], const bool bInvalidate = true, const bool bAdd2List = true, const bool bUseTrendRatio = true);
+    void InvalidateCtrl(const bool deleteGraph = true);
     void DrawPoint();
     void Reset();
-	int ReCreateGraph();
+    int ReCreateGraph();
 
     bool ready;
     bool drawBars;

@@ -226,37 +226,37 @@ BOOL CPPgProxy::OnHelpInfo(HELPINFO* /*pHelpInfo*/)
 
 void GetProxyParams(LPCTSTR pszProxyServer, CString& strProxyUser, CString& strProxyPass, CString& strProxyServer, uint16& uProxyPort)
 {
-	// reset variables
-	strProxyUser = strProxyPass = strProxyServer = L"";
-	uProxyPort = 0;
+    // reset variables
+    strProxyUser = strProxyPass = strProxyServer = L"";
+    uProxyPort = 0;
 
-	// try to detect the set proxy server, username, pass & port if possible
-	CString strProxyString = pszProxyServer;
-	int posServer = strProxyString.Find(L'@');
-	CString part1 = strProxyString.Mid(0, posServer);
-	CString part2 = strProxyString.Mid(posServer + 1); // skip '@'
+    // try to detect the set proxy server, username, pass & port if possible
+    CString strProxyString = pszProxyServer;
+    int posServer = strProxyString.Find(L'@');
+    CString part1 = strProxyString.Mid(0, posServer);
+    CString part2 = strProxyString.Mid(posServer + 1); // skip '@'
 
-	// i.e. either only "server" OR "server:port"
-	CString strServerNameAndPort = part2.IsEmpty() ? part1 : part2;
-	int pos = strServerNameAndPort.Find(L':');
-	if(pos == -1)
-		strProxyServer = strServerNameAndPort;
-	else
-	{
-		strProxyServer = strServerNameAndPort.Mid(0, pos);
-		uProxyPort = (uint16)_tstoi(strServerNameAndPort.Mid(pos + 1)); // skip ':'
-	}
+    // i.e. either only "server" OR "server:port"
+    CString strServerNameAndPort = part2.IsEmpty() ? part1 : part2;
+    int pos = strServerNameAndPort.Find(L':');
+    if (pos == -1)
+        strProxyServer = strServerNameAndPort;
+    else
+    {
+        strProxyServer = strServerNameAndPort.Mid(0, pos);
+        uProxyPort = (uint16)_tstoi(strServerNameAndPort.Mid(pos + 1)); // skip ':'
+    }
 
-	// i.e. either "user:pass@server:port" OR "user@server:port" OR "user@server"
-	CString strUserNameAndPass = part2.IsEmpty() ? L"" : part1;
-	pos = strUserNameAndPass.Find(L':');
-	if(pos == -1)
-		strProxyUser = strUserNameAndPass;
-	else
-	{
-		strProxyUser = strUserNameAndPass.Mid(0, pos);
-		strProxyPass = strUserNameAndPass.Mid(pos + 1); // skip ':'
-	}
+    // i.e. either "user:pass@server:port" OR "user@server:port" OR "user@server"
+    CString strUserNameAndPass = part2.IsEmpty() ? L"" : part1;
+    pos = strUserNameAndPass.Find(L':');
+    if (pos == -1)
+        strProxyUser = strUserNameAndPass;
+    else
+    {
+        strProxyUser = strUserNameAndPass.Mid(0, pos);
+        strProxyPass = strUserNameAndPass.Mid(pos + 1); // skip ':'
+    }
 }
 
 // retrieves the proxy settings from registry
@@ -286,14 +286,14 @@ ProxySettings getWinProxy()
         CString strProxyPass = L"";
         CString strProxyServer = L"";
         uint16 uProxyPort = 0;
-#ifdef _DEBUG		
-		// quickly debug all possible combinations
-		GetProxyParams(L"user:pass@server.de:80", strProxyUser, strProxyPass, strProxyServer, uProxyPort);
-		GetProxyParams(L"user@server.de:80", strProxyUser, strProxyPass, strProxyServer, uProxyPort);
-		GetProxyParams(L"server.de:80", strProxyUser, strProxyPass, strProxyServer, uProxyPort);
-		GetProxyParams(L"server.de", strProxyUser, strProxyPass, strProxyServer, uProxyPort);
+#ifdef _DEBUG
+        // quickly debug all possible combinations
+        GetProxyParams(L"user:pass@server.de:80", strProxyUser, strProxyPass, strProxyServer, uProxyPort);
+        GetProxyParams(L"user@server.de:80", strProxyUser, strProxyPass, strProxyServer, uProxyPort);
+        GetProxyParams(L"server.de:80", strProxyUser, strProxyPass, strProxyServer, uProxyPort);
+        GetProxyParams(L"server.de", strProxyUser, strProxyPass, strProxyServer, uProxyPort);
 #endif
-		GetProxyParams(pszProxyServer, strProxyUser, strProxyPass, strProxyServer, uProxyPort);
+        GetProxyParams(pszProxyServer, strProxyUser, strProxyPass, strProxyServer, uProxyPort);
 
         proxy.user = strProxyUser;
         proxy.password = strProxyPass;

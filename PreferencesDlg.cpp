@@ -87,22 +87,22 @@ void CPreferencesDlg::OnDestroy()
     CTreePropSheet::OnDestroy();
     if (m_bSaveIniFile)
     {
-		m_bSaveIniFile = false;
+        m_bSaveIniFile = false;
 //>>> WiZaRd::Optimization
-		// this can take a while - "entertain" the user :)
-		CWaitCursor curWait; 		
+        // this can take a while - "entertain" the user :)
+        CWaitCursor curWait;
 //<<< WiZaRd::Optimization
-        thePrefs.Save();      
+        thePrefs.Save();
 //>>> WiZaRd::Automatic Restart
-		if(CPreferencesDlg::IsRestartPlanned())
-		{			
-			if (AfxMessageBox(GetResString(IDS_SETTINGCHANGED_RESTART), MB_YESNO | MB_ICONEXCLAMATION,0)==IDYES)
-			{
-				theApp.PlanRestart();
-				theApp.emuledlg->OnClose();
-				return;
-			}
-		}
+        if (CPreferencesDlg::IsRestartPlanned())
+        {
+            if (AfxMessageBox(GetResString(IDS_SETTINGCHANGED_RESTART), MB_YESNO | MB_ICONEXCLAMATION,0)==IDYES)
+            {
+                theApp.PlanRestart();
+                theApp.emuledlg->OnClose();
+                return;
+            }
+        }
 //<<< WiZaRd::Automatic Restart
     }
     m_pPshStartPage = GetPage(GetActiveIndex())->m_psp.pszTemplate;

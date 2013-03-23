@@ -22,12 +22,12 @@
 
 CLoadStatus::CLoadStatus()
 {
-	m_uLineCount = 0;
-	m_uLastPercent = 0;
-	m_uPercent =  0;
-	m_dPercent = 0;
-	m_strLoadString = L"";
-	m_bLoadMode = true;
+    m_uLineCount = 0;
+    m_uLastPercent = 0;
+    m_uPercent =  0;
+    m_dPercent = 0;
+    m_strLoadString = L"";
+    m_bLoadMode = true;
 }
 
 CLoadStatus::~CLoadStatus()
@@ -36,50 +36,50 @@ CLoadStatus::~CLoadStatus()
 
 void	CLoadStatus::SetLoadMode(const bool bLoading)
 {
-	m_bLoadMode = bLoading;
+    m_bLoadMode = bLoading;
 }
 
 void	CLoadStatus::SetLoadString(const CString& strLoadString)
 {
-	m_strLoadString = strLoadString;
+    m_strLoadString = strLoadString;
 }
 
 void	CLoadStatus::SetLineCount(const UINT iCount)
 {
-	m_uLineCount = iCount;
+    m_uLineCount = iCount;
 }
 
 void	CLoadStatus::ReadLineCount(LPCTSTR pszFilePath)
 {
-	CStdioFile countFile;
-	if (countFile.Open(pszFilePath, CFile::modeRead))
-	{
-		CString strBuffer = L"";
-		while (countFile.ReadString(strBuffer))
-			++m_uLineCount;
-		countFile.Close();
-	}
+    CStdioFile countFile;
+    if (countFile.Open(pszFilePath, CFile::modeRead))
+    {
+        CString strBuffer = L"";
+        while (countFile.ReadString(strBuffer))
+            ++m_uLineCount;
+        countFile.Close();
+    }
 }
 
 void	CLoadStatus::UpdateCount(const UINT iLine)
-{	
-	if (m_uLineCount)
-	{		
-		m_dPercent = (double)m_uLineCount != 0.0 ? (double)(iLine)/(double)m_uLineCount*100.0 : 0.0;
-		m_uPercent = (UINT)m_dPercent;
-		if (m_uPercent != m_uLastPercent)
-		{
-			CString strPercent = L"";
-			strPercent.Format(L"%s %s: %.2f%%...", m_bLoadMode ? L"Loading" : L"Unloading", m_strLoadString, m_dPercent);
-			theApp.SetSplashText(strPercent);
-			if (theApp.emuledlg && theApp.emuledlg->statusbar->m_hWnd)
-				theApp.emuledlg->statusbar->SetText(strPercent, SBarLog, 0);
-			m_uLastPercent = m_uPercent;
-		}
-	}
+{
+    if (m_uLineCount)
+    {
+        m_dPercent = (double)m_uLineCount != 0.0 ? (double)(iLine)/(double)m_uLineCount*100.0 : 0.0;
+        m_uPercent = (UINT)m_dPercent;
+        if (m_uPercent != m_uLastPercent)
+        {
+            CString strPercent = L"";
+            strPercent.Format(L"%s %s: %.2f%%...", m_bLoadMode ? L"Loading" : L"Unloading", m_strLoadString, m_dPercent);
+            theApp.SetSplashText(strPercent);
+            if (theApp.emuledlg && theApp.emuledlg->statusbar->m_hWnd)
+                theApp.emuledlg->statusbar->SetText(strPercent, SBarLog, 0);
+            m_uLastPercent = m_uPercent;
+        }
+    }
 }
 
 void	CLoadStatus::Complete()
 {
-	UpdateCount(m_uLineCount);
+    UpdateCount(m_uLineCount);
 }

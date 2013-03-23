@@ -46,12 +46,33 @@ public:
         UPNP_TIMEOUT
     };
 
-	virtual void	StartDiscovery(uint16 /*nTCPPort*/, uint16 /*nUDPPort*/, uint16 /*nTCPWebPort*/) {AfxDebugBreak();}	//= 0;
-	virtual bool	CheckAndRefresh() {AfxDebugBreak(); return false;}	//= 0;
-	virtual void	StopAsyncFind() {AfxDebugBreak();}	//= 0;
-	virtual void	DeletePorts() {AfxDebugBreak();}	//= 0;
-	virtual bool	IsReady() {AfxDebugBreak(); return false;}	//= 0;
-	virtual int		GetImplementationID() {AfxDebugBreak(); return 0;}	//= 0;
+    virtual void	StartDiscovery(uint16 /*nTCPPort*/, uint16 /*nUDPPort*/, uint16 /*nTCPWebPort*/)
+    {
+        AfxDebugBreak();   //= 0;
+    }
+    virtual bool	CheckAndRefresh()
+    {
+        AfxDebugBreak();    //= 0;
+        return false;
+    }
+    virtual void	StopAsyncFind()
+    {
+        AfxDebugBreak();   //= 0;
+    }
+    virtual void	DeletePorts()
+    {
+        AfxDebugBreak();   //= 0;
+    }
+    virtual bool	IsReady()
+    {
+        AfxDebugBreak();    //= 0;
+        return false;
+    }
+    virtual int		GetImplementationID()
+    {
+        AfxDebugBreak();    //= 0;
+        return 0;
+    }
 
     void			LateEnableWebServerPort(uint16 nPort); // Add Webserverport on already installed portmapping
 

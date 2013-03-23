@@ -55,9 +55,15 @@ public:
 
 //>>> WiZaRd::Automatic Restart
 public:
-	static bool	IsRestartPlanned()			{return m_bRestartApp;}
-	static void	PlanRestart()				{m_bRestartApp = true;}
+    static bool	IsRestartPlanned()
+    {
+        return m_bRestartApp;
+    }
+    static void	PlanRestart()
+    {
+        m_bRestartApp = true;
+    }
 private:
-	static bool	m_bRestartApp;
+    static bool	m_bRestartApp;
 //<<< WiZaRd::Automatic Restart
 };

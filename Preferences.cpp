@@ -253,13 +253,11 @@ bool	CPreferences::m_bLogA4AF; // ZZ:DownloadManager
 bool	CPreferences::m_bLogUlDlEvents;
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
 bool	CPreferences::m_bUseDebugDevice = true;
-#else
-bool	CPreferences::m_bUseDebugDevice = false;
-#endif
 int		CPreferences::m_iDebugClientTCPLevel;
 int		CPreferences::m_iDebugClientUDPLevel;
 int		CPreferences::m_iDebugClientKadUDPLevel;
 int		CPreferences::m_iDebugSearchResultDetailLevel;
+#endif
 bool	CPreferences::m_bupdatequeuelist;
 int		CPreferences::m_istartnextfile;
 bool	CPreferences::m_bshowoverhead;
@@ -2175,12 +2173,14 @@ void CPreferences::LoadPreferences()
     m_iDebugClientUDPLevel = ini.GetInt(L"DebugClientUDP", 0);
     m_iDebugClientKadUDPLevel = ini.GetInt(L"DebugClientKadUDP", 0);
     m_iDebugSearchResultDetailLevel = ini.GetInt(L"DebugSearchResultDetailLevel", 0);
-#else
-    // for normal release builds ensure that those options are all turned off
-    m_iDebugClientTCPLevel = 0;
-    m_iDebugClientUDPLevel = 0;
-    m_iDebugClientKadUDPLevel = 0;
-    m_iDebugSearchResultDetailLevel = 0;
+    /*
+    #else
+        // for normal release builds ensure that those options are all turned off
+        m_iDebugClientTCPLevel = 0;
+        m_iDebugClientUDPLevel = 0;
+        m_iDebugClientKadUDPLevel = 0;
+        m_iDebugSearchResultDetailLevel = 0;
+    */
 #endif
 
     m_bpreviewprio=ini.GetBool(L"PreviewPrio",false);

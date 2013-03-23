@@ -59,7 +59,7 @@ protected:
     void			DeletePorts(bool bSkipLock);
 
 private:
-	void	StartThread();
+    void	StartThread();
     uint16	m_nOldUDPPort;
     uint16	m_nOldTCPPort;
     uint16	m_nOldTCPWebPort;
