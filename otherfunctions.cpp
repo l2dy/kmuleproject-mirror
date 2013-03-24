@@ -1531,6 +1531,7 @@ struct SED2KFileType
     { _T(".aif"),   ED2KFT_AUDIO },     // Audio Interchange File Format
     { _T(".aifc"),  ED2KFT_AUDIO },     // Audio Interchange File Format
     { _T(".aiff"),  ED2KFT_AUDIO },     // Audio Interchange File Format
+    { _T(".alac"),  ED2KFT_AUDIO },     // Apple Lossless Audio Codec File
     { _T(".amr"),   ED2KFT_AUDIO },     // Adaptive Multi-Rate Codec File
     { _T(".ape"),   ED2KFT_AUDIO },     // Monkey's Audio Lossless Audio File
     { _T(".au"),    ED2KFT_AUDIO },     // Audio File (Sun, Unix)
