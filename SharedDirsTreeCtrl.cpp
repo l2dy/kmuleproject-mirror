@@ -1328,7 +1328,9 @@ void CSharedDirsTreeCtrl::EditSharedDirectories(const CDirectoryItem* pDir, bool
     FilterTreeReloadTree();
 
     // sync with the preferences list
-    //thePrefs.shareddir_list.RemoveAll(); //>>> WiZaRd::SharePermissions
+//>>> WiZaRd::SharePermissions
+/*
+    //thePrefs.shareddir_list.RemoveAll(); 
     POSITION pos = m_strliSharedDirs.GetHeadPosition();
     // copy list
     while (pos)
@@ -1336,8 +1338,10 @@ void CSharedDirsTreeCtrl::EditSharedDirectories(const CDirectoryItem* pDir, bool
         CString strPath = m_strliSharedDirs.GetNext(pos);
         if (strPath.Right(1) != L"\\")
             strPath.Append(L"\\");
-        //thePrefs.shareddir_list.AddTail(strPath); //>>> WiZaRd::SharePermissions
+        thePrefs.shareddir_list.AddTail(strPath);
     }
+*/
+//<<< WiZaRd::SharePermissions
 
 //>>> WiZaRd::SharePermissions
     for (POSITION pos = thePrefs.shareddir_list.GetHeadPosition(), pos2 = thePrefs.shareddir_list_permissions.GetHeadPosition(); pos != NULL;)
@@ -1351,7 +1355,10 @@ void CSharedDirsTreeCtrl::EditSharedDirectories(const CDirectoryItem* pDir, bool
         for (POSITION pos3 = m_strliSharedDirs.GetHeadPosition(); pos3 != NULL && !bFound;)
         {
             POSITION posLast3 = pos3;
-            if (m_strliSharedDirs.GetNext(pos3).CompareNoCase(strCurrentDir) == 0)
+			CString strPath = m_strliSharedDirs.GetNext(pos3);
+			if(strPath.Right(1) != L"\\")
+				strPath.Append(L"\\");
+            if(strPath.CompareNoCase(strCurrentDir) == 0)
             {
                 bFound = true;
                 m_strliSharedDirs.RemoveAt(posLast3);
@@ -1365,7 +1372,10 @@ void CSharedDirsTreeCtrl::EditSharedDirectories(const CDirectoryItem* pDir, bool
     }
     while (!m_strliSharedDirs.IsEmpty())
     {
-        thePrefs.shareddir_list.AddTail(m_strliSharedDirs.RemoveHead());
+		CString strPath = m_strliSharedDirs.RemoveHead();
+		if(strPath.Right(1) != L"\\")
+			strPath.Append(L"\\");
+        thePrefs.shareddir_list.AddTail(strPath);
         thePrefs.shareddir_list_permissions.AddTail(eSP_Options);
     }
     ASSERT(thePrefs.shareddir_list.GetCount() == thePrefs.shareddir_list_permissions.GetCount());
