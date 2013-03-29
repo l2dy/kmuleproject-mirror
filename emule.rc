@@ -336,7 +336,7 @@ BEGIN
     CONTROL         "Try to automatically extract completed archive files",IDC_CHECKEXTRACT,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,162,179,10
     CONTROL         "into the Incoming folder\n(will automatically share all contents)",IDC_RADIOEXTRACTINCOMING,
-                    "Button",BS_AUTORADIOBUTTON | BS_TOP | BS_MULTILINE,23,174,205,17
+                    "Button",BS_AUTORADIOBUTTON | BS_TOP | BS_MULTILINE,23,174,193,17
     CONTROL         "into a specific (other) folder:",IDC_RADIOEXTRACTOTHER,
                     "Button",BS_AUTORADIOBUTTON,23,192,107,10
     EDITTEXT        IDC_EXTRACTFOLDER,10,204,211,12,ES_AUTOHSCROLL
