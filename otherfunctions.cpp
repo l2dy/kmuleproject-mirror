@@ -1560,6 +1560,7 @@ struct SED2KFileType
     { _T(".mpc"),   ED2KFT_AUDIO },     // Musepack Compressed Audio File
     { _T(".mtm"),   ED2KFT_AUDIO },     // MultiTracker Module
     { _T(".ogg"),   ED2KFT_AUDIO },     // Ogg Vorbis Compressed Audio File
+    { _T(".opus"),  ED2KFT_AUDIO },     // Opus Audio File
     { _T(".psm"),   ED2KFT_AUDIO },     // Protracker Studio Module
     { _T(".ptm"),   ED2KFT_AUDIO },     // PolyTracker Module
     { _T(".ra"),    ED2KFT_AUDIO },     // Real Audio File
@@ -1735,6 +1736,8 @@ struct SED2KFileType
     { _T(".ods"),   ED2KFT_DOCUMENT },  // Open Document File
     { _T(".odt"),   ED2KFT_DOCUMENT },  // Open Document File
     { _T(".pdf"),   ED2KFT_DOCUMENT },  // Portable Document Format File
+    { _T(".pmd"),   ED2KFT_DOCUMENT },  // PageMaker Publication
+    { _T(".pmv"),   ED2KFT_DOCUMENT },  // PlanMaker Spreadsheet
     { _T(".pps"),   ED2KFT_DOCUMENT },  // PowerPoint Slide Show
     { _T(".ppt"),   ED2KFT_DOCUMENT },  // PowerPoint Presentation
     { _T(".pptx"),  ED2KFT_DOCUMENT },  // PowerPoint Presentation
@@ -1742,6 +1745,7 @@ struct SED2KFileType
     { _T(".qpw"),   ED2KFT_DOCUMENT },  // Quattro Pro Spreadsheet
     { _T(".rtf"),   ED2KFT_DOCUMENT },  // Rich Text Format File
     { _T(".text"),  ED2KFT_DOCUMENT },  // General Text File
+    { _T(".tmd"),   ED2KFT_DOCUMENT },  // TextMaker Document
     { _T(".txt"),   ED2KFT_DOCUMENT },  // Text File
     { _T(".wpd"),   ED2KFT_DOCUMENT },  // WordPerfect Document
     { _T(".wri"),   ED2KFT_DOCUMENT },  // Windows Write Document
