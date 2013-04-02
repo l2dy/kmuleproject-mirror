@@ -1526,236 +1526,237 @@ struct SED2KFileType
     EED2KFileType iFileType;
 } g_aED2KFileTypes[] =
 {
-    { _T(".aac"),   ED2KFT_AUDIO },     // Advanced Audio Coding File
-    { _T(".ac3"),   ED2KFT_AUDIO },     // Audio Codec 3 File
-    { _T(".aif"),   ED2KFT_AUDIO },     // Audio Interchange File Format
-    { _T(".aifc"),  ED2KFT_AUDIO },     // Audio Interchange File Format
-    { _T(".aiff"),  ED2KFT_AUDIO },     // Audio Interchange File Format
-    { _T(".alac"),  ED2KFT_AUDIO },     // Apple Lossless Audio Codec File
-    { _T(".amr"),   ED2KFT_AUDIO },     // Adaptive Multi-Rate Codec File
-    { _T(".ape"),   ED2KFT_AUDIO },     // Monkey's Audio Lossless Audio File
-    { _T(".au"),    ED2KFT_AUDIO },     // Audio File (Sun, Unix)
-    { _T(".aud"),   ED2KFT_AUDIO },     // General Audio File
-    { _T(".audio"), ED2KFT_AUDIO },     // General Audio File
-    { _T(".cda"),   ED2KFT_AUDIO },     // CD Audio Track
-    { _T(".dmf"),   ED2KFT_AUDIO },     // Delusion Digital Music File
-    { _T(".dsm"),   ED2KFT_AUDIO },     // Digital Sound Module
-    { _T(".dts"),   ED2KFT_AUDIO },     // DTS Encoded Audio File
-    { _T(".far"),   ED2KFT_AUDIO },     // Farandole Composer Module
-    { _T(".flac"),  ED2KFT_AUDIO },     // Free Lossless Audio Codec File
-    { _T(".it"),    ED2KFT_AUDIO },     // Impulse Tracker Module
-    { _T(".m1a"),   ED2KFT_AUDIO },     // MPEG-1 Audio File
-    { _T(".m2a"),   ED2KFT_AUDIO },     // MPEG-2 Audio File
-    { _T(".m4a"),   ED2KFT_AUDIO },     // MPEG-4 Audio File
-    { _T(".mdl"),   ED2KFT_AUDIO },     // DigiTrakker Module
-    { _T(".med"),   ED2KFT_AUDIO },     // Amiga MED Sound File
-    { _T(".mid"),   ED2KFT_AUDIO },     // MIDI File
-    { _T(".midi"),  ED2KFT_AUDIO },     // MIDI File
-    { _T(".mka"),   ED2KFT_AUDIO },     // Matroska Audio File
-    { _T(".mod"),   ED2KFT_AUDIO },     // Amiga Music Module File
-    { _T(".mp1"),   ED2KFT_AUDIO },     // MPEG-1 Audio File
-    { _T(".mp2"),   ED2KFT_AUDIO },     // MPEG-2 Audio File
-    { _T(".mp3"),   ED2KFT_AUDIO },     // MPEG-3 Audio File
-    { _T(".mpa"),   ED2KFT_AUDIO },     // MPEG Audio File
-    { _T(".mpc"),   ED2KFT_AUDIO },     // Musepack Compressed Audio File
-    { _T(".mtm"),   ED2KFT_AUDIO },     // MultiTracker Module
-    { _T(".ogg"),   ED2KFT_AUDIO },     // Ogg Vorbis Compressed Audio File
-    { _T(".opus"),  ED2KFT_AUDIO },     // Opus Audio File
-    { _T(".psm"),   ED2KFT_AUDIO },     // Protracker Studio Module
-    { _T(".ptm"),   ED2KFT_AUDIO },     // PolyTracker Module
-    { _T(".ra"),    ED2KFT_AUDIO },     // Real Audio File
-    { _T(".rmi"),   ED2KFT_AUDIO },     // MIDI File
-    { _T(".s3m"),   ED2KFT_AUDIO },     // Scream Tracker 3 Module
-    { _T(".shn"),   ED2KFT_AUDIO },     // Shorten Audio File
-    { _T(".snd"),   ED2KFT_AUDIO },     // Audio File (Sun, Unix)
-    { _T(".stm"),   ED2KFT_AUDIO },     // Scream Tracker 2 Module
-    { _T(".tak"),   ED2KFT_AUDIO },     // Tom's Audio-Kompressor File
-    { _T(".umx"),   ED2KFT_AUDIO },     // Unreal Music Package
-    { _T(".wav"),   ED2KFT_AUDIO },     // WAVE Audio File
-    { _T(".w64"),   ED2KFT_AUDIO },     // Sonic Foundry Video Editor Wave64 File
-    { _T(".wma"),   ED2KFT_AUDIO },     // Windows Media Audio File
-    { _T(".wv"),    ED2KFT_AUDIO },     // WavPack Audio File
-    { _T(".xm"),    ED2KFT_AUDIO },     // Fasttracker 2 Extended Module
+    { L".aac",   ED2KFT_AUDIO },     // Advanced Audio Coding File
+    { L".ac3",   ED2KFT_AUDIO },     // Audio Codec 3 File
+    { L".aif",   ED2KFT_AUDIO },     // Audio Interchange File Format
+    { L".aifc",  ED2KFT_AUDIO },     // Audio Interchange File Format
+    { L".aiff",  ED2KFT_AUDIO },     // Audio Interchange File Format
+    { L".alac",  ED2KFT_AUDIO },     // Apple Lossless Audio Codec File
+    { L".amr",   ED2KFT_AUDIO },     // Adaptive Multi-Rate Codec File
+    { L".ape",   ED2KFT_AUDIO },     // Monkey's Audio Lossless Audio File
+    { L".au",    ED2KFT_AUDIO },     // Audio File (Sun, Unix)
+    { L".aud",   ED2KFT_AUDIO },     // General Audio File
+    { L".audio", ED2KFT_AUDIO },     // General Audio File
+    { L".cda",   ED2KFT_AUDIO },     // CD Audio Track
+    { L".dmf",   ED2KFT_AUDIO },     // Delusion Digital Music File
+    { L".dsm",   ED2KFT_AUDIO },     // Digital Sound Module
+    { L".dts",   ED2KFT_AUDIO },     // DTS Encoded Audio File
+    { L".far",   ED2KFT_AUDIO },     // Farandole Composer Module
+    { L".flac",  ED2KFT_AUDIO },     // Free Lossless Audio Codec File
+    { L".it",    ED2KFT_AUDIO },     // Impulse Tracker Module
+    { L".m1a",   ED2KFT_AUDIO },     // MPEG-1 Audio File
+    { L".m2a",   ED2KFT_AUDIO },     // MPEG-2 Audio File
+    { L".m4a",   ED2KFT_AUDIO },     // MPEG-4 Audio File
+    { L".mdl",   ED2KFT_AUDIO },     // DigiTrakker Module
+    { L".med",   ED2KFT_AUDIO },     // Amiga MED Sound File
+    { L".mid",   ED2KFT_AUDIO },     // MIDI File
+    { L".midi",  ED2KFT_AUDIO },     // MIDI File
+    { L".mka",   ED2KFT_AUDIO },     // Matroska Audio File
+    { L".mod",   ED2KFT_AUDIO },     // Amiga Music Module File
+    { L".mp1",   ED2KFT_AUDIO },     // MPEG-1 Audio File
+    { L".mp2",   ED2KFT_AUDIO },     // MPEG-2 Audio File
+    { L".mp3",   ED2KFT_AUDIO },     // MPEG-3 Audio File
+    { L".mpa",   ED2KFT_AUDIO },     // MPEG Audio File
+    { L".mpc",   ED2KFT_AUDIO },     // Musepack Compressed Audio File
+    { L".mtm",   ED2KFT_AUDIO },     // MultiTracker Module
+    { L".ogg",   ED2KFT_AUDIO },     // Ogg Vorbis Compressed Audio File
+    { L".opus",  ED2KFT_AUDIO },     // Opus Audio File
+    { L".psm",   ED2KFT_AUDIO },     // Protracker Studio Module
+    { L".ptm",   ED2KFT_AUDIO },     // PolyTracker Module
+    { L".ra",    ED2KFT_AUDIO },     // Real Audio File
+    { L".rmi",   ED2KFT_AUDIO },     // MIDI File
+    { L".s3m",   ED2KFT_AUDIO },     // Scream Tracker 3 Module
+    { L".shn",   ED2KFT_AUDIO },     // Shorten Audio File
+    { L".snd",   ED2KFT_AUDIO },     // Audio File (Sun, Unix)
+    { L".stm",   ED2KFT_AUDIO },     // Scream Tracker 2 Module
+    { L".tak",   ED2KFT_AUDIO },     // Tom's Audio-Kompressor File
+    { L".umx",   ED2KFT_AUDIO },     // Unreal Music Package
+    { L".wav",   ED2KFT_AUDIO },     // WAVE Audio File
+    { L".w64",   ED2KFT_AUDIO },     // Sonic Foundry Video Editor Wave64 File
+    { L".wma",   ED2KFT_AUDIO },     // Windows Media Audio File
+    { L".wv",    ED2KFT_AUDIO },     // WavPack Audio File
+    { L".xm",    ED2KFT_AUDIO },     // Fasttracker 2 Extended Module
 
-    { _T(".3g2"),   ED2KFT_VIDEO },     // 3GPP Multimedia File
-    { _T(".3gp"),   ED2KFT_VIDEO },     // 3GPP Multimedia File
-    { _T(".3gp2"),  ED2KFT_VIDEO },     // 3GPP Multimedia File
-    { _T(".3gpp"),  ED2KFT_VIDEO },     // 3GPP Multimedia File
-    { _T(".amv"),   ED2KFT_VIDEO },     // Anime Music Video File
-    { _T(".asf"),   ED2KFT_VIDEO },     // Advanced Systems Format File
-    { _T(".avi"),   ED2KFT_VIDEO },     // Audio Video Interleave File
-    { _T(".bik"),   ED2KFT_VIDEO },     // BINK Video File
-    { _T(".divx"),  ED2KFT_VIDEO },     // DivX-Encoded Movie File
-    { _T(".dvr-ms"),ED2KFT_VIDEO },     // Microsoft Digital Video Recording
-    { _T(".flc"),   ED2KFT_VIDEO },     // FLIC Video File
-    { _T(".fli"),   ED2KFT_VIDEO },     // FLIC Video File
-    { _T(".flic"),  ED2KFT_VIDEO },     // FLIC Video File
-    { _T(".flv"),   ED2KFT_VIDEO },     // Flash Video File
-    { _T(".hdmov"), ED2KFT_VIDEO },     // High-Definition QuickTime Movie
-    { _T(".ifo"),   ED2KFT_VIDEO },     // DVD-Video Disc Information File
-    { _T(".m1v"),   ED2KFT_VIDEO },     // MPEG-1 Video File
-    { _T(".m2t"),   ED2KFT_VIDEO },     // MPEG-2 Video Transport Stream
-    { _T(".m2ts"),  ED2KFT_VIDEO },     // MPEG-2 Video Transport Stream
-    { _T(".m2v"),   ED2KFT_VIDEO },     // MPEG-2 Video File
-    { _T(".m4b"),   ED2KFT_VIDEO },     // MPEG-4 Video File
-    { _T(".m4v"),   ED2KFT_VIDEO },     // MPEG-4 Video File
-    { _T(".mkv"),   ED2KFT_VIDEO },     // Matroska Video File
-    { _T(".mov"),   ED2KFT_VIDEO },     // QuickTime Movie File
-    { _T(".movie"), ED2KFT_VIDEO },     // QuickTime Movie File
-    { _T(".mp1v"),  ED2KFT_VIDEO },     // MPEG-1 Video File
-    { _T(".mp2v"),  ED2KFT_VIDEO },     // MPEG-2 Video File
-    { _T(".mp4"),   ED2KFT_VIDEO },     // MPEG-4 Video File
-    { _T(".mpe"),   ED2KFT_VIDEO },     // MPEG Video File
-    { _T(".mpeg"),  ED2KFT_VIDEO },     // MPEG Video File
-    { _T(".mpg"),   ED2KFT_VIDEO },     // MPEG Video File
-    { _T(".mpv"),   ED2KFT_VIDEO },     // MPEG Video File
-    { _T(".mpv1"),  ED2KFT_VIDEO },     // MPEG-1 Video File
-    { _T(".mpv2"),  ED2KFT_VIDEO },     // MPEG-2 Video File
-    { _T(".ogm"),   ED2KFT_VIDEO },     // Ogg Media File
-    { _T(".ogv"),   ED2KFT_VIDEO },     // Ogg Video File
-    { _T(".pva"),   ED2KFT_VIDEO },     // MPEG Video File
-    { _T(".qt"),    ED2KFT_VIDEO },     // QuickTime Movie
-    { _T(".ram"),   ED2KFT_VIDEO },     // Real Audio Media
-    { _T(".ratdvd"),ED2KFT_VIDEO },     // RatDVD Disk Image
-    { _T(".rm"),    ED2KFT_VIDEO },     // Real Media File
-    { _T(".rmm"),   ED2KFT_VIDEO },     // Real Media File
-    { _T(".rmvb"),  ED2KFT_VIDEO },     // Real Video Variable Bit Rate File
-    { _T(".rv"),    ED2KFT_VIDEO },     // Real Video File
-    { _T(".smil"),  ED2KFT_VIDEO },     // SMIL Presentation File
-    { _T(".smk"),   ED2KFT_VIDEO },     // Smacker Compressed Movie File
-    { _T(".swf"),   ED2KFT_VIDEO },     // Macromedia Flash Movie
-    { _T(".tp"),    ED2KFT_VIDEO },     // Video Transport Stream File
-    { _T(".ts"),    ED2KFT_VIDEO },     // Video Transport Stream File
-    { _T(".vid"),   ED2KFT_VIDEO },     // General Video File
-    { _T(".video"), ED2KFT_VIDEO },     // General Video File
-    { _T(".vob"),   ED2KFT_VIDEO },     // DVD Video Object File
-    { _T(".vp6"),   ED2KFT_VIDEO },     // TrueMotion VP6 Video File
-    { _T(".wm"),    ED2KFT_VIDEO },     // Windows Media Video File
-    { _T(".wmv"),   ED2KFT_VIDEO },     // Windows Media Video File
-    { _T(".xvid"),  ED2KFT_VIDEO },     // Xvid-Encoded Video File
+    { L".3g2",   ED2KFT_VIDEO },     // 3GPP Multimedia File
+    { L".3gp",   ED2KFT_VIDEO },     // 3GPP Multimedia File
+    { L".3gp2",  ED2KFT_VIDEO },     // 3GPP Multimedia File
+    { L".3gpp",  ED2KFT_VIDEO },     // 3GPP Multimedia File
+    { L".amv",   ED2KFT_VIDEO },     // Anime Music Video File
+    { L".asf",   ED2KFT_VIDEO },     // Advanced Systems Format File
+    { L".avi",   ED2KFT_VIDEO },     // Audio Video Interleave File
+    { L".bik",   ED2KFT_VIDEO },     // BINK Video File
+    { L".divx",  ED2KFT_VIDEO },     // DivX-Encoded Movie File
+    { L".dvr-ms",ED2KFT_VIDEO },     // Microsoft Digital Video Recording
+    { L".flc",   ED2KFT_VIDEO },     // FLIC Video File
+    { L".fli",   ED2KFT_VIDEO },     // FLIC Video File
+    { L".flic",  ED2KFT_VIDEO },     // FLIC Video File
+    { L".flv",   ED2KFT_VIDEO },     // Flash Video File
+    { L".hdmov", ED2KFT_VIDEO },     // High-Definition QuickTime Movie
+    { L".ifo",   ED2KFT_VIDEO },     // DVD-Video Disc Information File
+    { L".m1v",   ED2KFT_VIDEO },     // MPEG-1 Video File
+    { L".m2t",   ED2KFT_VIDEO },     // MPEG-2 Video Transport Stream
+    { L".m2ts",  ED2KFT_VIDEO },     // MPEG-2 Video Transport Stream
+    { L".m2v",   ED2KFT_VIDEO },     // MPEG-2 Video File
+    { L".m4b",   ED2KFT_VIDEO },     // MPEG-4 Video File
+    { L".m4v",   ED2KFT_VIDEO },     // MPEG-4 Video File
+    { L".mkv",   ED2KFT_VIDEO },     // Matroska Video File
+    { L".mov",   ED2KFT_VIDEO },     // QuickTime Movie File
+    { L".movie", ED2KFT_VIDEO },     // QuickTime Movie File
+    { L".mp1v",  ED2KFT_VIDEO },     // MPEG-1 Video File
+    { L".mp2v",  ED2KFT_VIDEO },     // MPEG-2 Video File
+    { L".mp4",   ED2KFT_VIDEO },     // MPEG-4 Video File
+    { L".mpe",   ED2KFT_VIDEO },     // MPEG Video File
+    { L".mpeg",  ED2KFT_VIDEO },     // MPEG Video File
+    { L".mpg",   ED2KFT_VIDEO },     // MPEG Video File
+    { L".mpv",   ED2KFT_VIDEO },     // MPEG Video File
+    { L".mpv1",  ED2KFT_VIDEO },     // MPEG-1 Video File
+    { L".mpv2",  ED2KFT_VIDEO },     // MPEG-2 Video File
+    { L".ogm",   ED2KFT_VIDEO },     // Ogg Media File
+    { L".ogv",   ED2KFT_VIDEO },     // Ogg Video File
+    { L".pva",   ED2KFT_VIDEO },     // MPEG Video File
+    { L".qt",    ED2KFT_VIDEO },     // QuickTime Movie
+    { L".ram",   ED2KFT_VIDEO },     // Real Audio Media
+    { L".ratdvd",ED2KFT_VIDEO },     // RatDVD Disk Image
+    { L".rm",    ED2KFT_VIDEO },     // Real Media File
+    { L".rmm",   ED2KFT_VIDEO },     // Real Media File
+    { L".rmvb",  ED2KFT_VIDEO },     // Real Video Variable Bit Rate File
+    { L".rv",    ED2KFT_VIDEO },     // Real Video File
+    { L".smil",  ED2KFT_VIDEO },     // SMIL Presentation File
+    { L".smk",   ED2KFT_VIDEO },     // Smacker Compressed Movie File
+    { L".swf",   ED2KFT_VIDEO },     // Macromedia Flash Movie
+    { L".tp",    ED2KFT_VIDEO },     // Video Transport Stream File
+    { L".ts",    ED2KFT_VIDEO },     // Video Transport Stream File
+    { L".vid",   ED2KFT_VIDEO },     // General Video File
+    { L".video", ED2KFT_VIDEO },     // General Video File
+    { L".vob",   ED2KFT_VIDEO },     // DVD Video Object File
+    { L".vp6",   ED2KFT_VIDEO },     // TrueMotion VP6 Video File
+    { L".wm",    ED2KFT_VIDEO },     // Windows Media Video File
+    { L".wmv",   ED2KFT_VIDEO },     // Windows Media Video File
+    { L".xvid",  ED2KFT_VIDEO },     // Xvid-Encoded Video File
 
-    { _T(".bmp"),   ED2KFT_IMAGE },     // Bitmap Image File
-    { _T(".emf"),   ED2KFT_IMAGE },     // Enhanced Windows Metafile
-    { _T(".gif"),   ED2KFT_IMAGE },     // Graphical Interchange Format File
-    { _T(".ico"),   ED2KFT_IMAGE },     // Icon File
-    { _T(".jfif"),  ED2KFT_IMAGE },     // JPEG File Interchange Format
-    { _T(".jpe"),   ED2KFT_IMAGE },     // JPEG Image File
-    { _T(".jpeg"),  ED2KFT_IMAGE },     // JPEG Image File
-    { _T(".jpg"),   ED2KFT_IMAGE },     // JPEG Image File
-    { _T(".pct"),   ED2KFT_IMAGE },     // PICT Picture File
-    { _T(".pcx"),   ED2KFT_IMAGE },     // Paintbrush Bitmap Image File
-    { _T(".pic"),   ED2KFT_IMAGE },     // PICT Picture File
-    { _T(".pict"),  ED2KFT_IMAGE },     // PICT Picture File
-    { _T(".png"),   ED2KFT_IMAGE },     // Portable Network Graphic
-    { _T(".psd"),   ED2KFT_IMAGE },     // Photoshop Document
-    { _T(".psp"),   ED2KFT_IMAGE },     // Paint Shop Pro Image File
-    { _T(".pspimage"), ED2KFT_IMAGE },  // Paint Shop Pro Image File
-    { _T(".tga"),   ED2KFT_IMAGE },     // Targa Graphic
-    { _T(".tif"),   ED2KFT_IMAGE },     // Tagged Image File
-    { _T(".tiff"),  ED2KFT_IMAGE },     // Tagged Image File
-    { _T(".wmf"),   ED2KFT_IMAGE },     // Windows Metafile
-    { _T(".wmp"),   ED2KFT_IMAGE },     // Windows Media Photo File
-    { _T(".xbm"),   ED2KFT_IMAGE },     // X Bitmap File
-    { _T(".xif"),   ED2KFT_IMAGE },     // ScanSoft Pagis Extended Image Format File
-    { _T(".xpm"),   ED2KFT_IMAGE },     // X Pixmap File
+    { L".bmp",   ED2KFT_IMAGE },     // Bitmap Image File
+    { L".emf",   ED2KFT_IMAGE },     // Enhanced Windows Metafile
+    { L".gif",   ED2KFT_IMAGE },     // Graphical Interchange Format File
+    { L".ico",   ED2KFT_IMAGE },     // Icon File
+    { L".jfif",  ED2KFT_IMAGE },     // JPEG File Interchange Format
+    { L".jpe",   ED2KFT_IMAGE },     // JPEG Image File
+    { L".jpeg",  ED2KFT_IMAGE },     // JPEG Image File
+    { L".jpg",   ED2KFT_IMAGE },     // JPEG Image File
+    { L".pct",   ED2KFT_IMAGE },     // PICT Picture File
+    { L".pcx",   ED2KFT_IMAGE },     // Paintbrush Bitmap Image File
+    { L".pic",   ED2KFT_IMAGE },     // PICT Picture File
+    { L".pict",  ED2KFT_IMAGE },     // PICT Picture File
+    { L".png",   ED2KFT_IMAGE },     // Portable Network Graphic
+    { L".psd",   ED2KFT_IMAGE },     // Photoshop Document
+    { L".psp",   ED2KFT_IMAGE },     // Paint Shop Pro Image File
+    { L".pspimage", ED2KFT_IMAGE },  // Paint Shop Pro Image File
+    { L".tga",   ED2KFT_IMAGE },     // Targa Graphic
+    { L".tif",   ED2KFT_IMAGE },     // Tagged Image File
+    { L".tiff",  ED2KFT_IMAGE },     // Tagged Image File
+    { L".wmf",   ED2KFT_IMAGE },     // Windows Metafile
+    { L".wmp",   ED2KFT_IMAGE },     // Windows Media Photo File
+    { L".xbm",   ED2KFT_IMAGE },     // X Bitmap File
+    { L".xif",   ED2KFT_IMAGE },     // ScanSoft Pagis Extended Image Format File
+    { L".xpm",   ED2KFT_IMAGE },     // X Pixmap File
 
-    { _T(".7z"),    ED2KFT_ARCHIVE },   // 7-Zip Compressed File
-    { _T(".ace"),   ED2KFT_ARCHIVE },   // WinAce Compressed File
-    { _T(".alz"),   ED2KFT_ARCHIVE },   // ALZip Archive
-    { _T(".arc"),   ED2KFT_ARCHIVE },   // Compressed File Archive
-    { _T(".arj"),   ED2KFT_ARCHIVE },   // ARJ Compressed File Archive
-    { _T(".bz2"),   ED2KFT_ARCHIVE },   // Bzip Compressed File
-    { _T(".cab"),   ED2KFT_ARCHIVE },   // Cabinet File
-    { _T(".cbr"),   ED2KFT_ARCHIVE },   // Comic Book RAR Archive
-    { _T(".cbz"),   ED2KFT_ARCHIVE },   // Comic Book ZIP Archive
-    { _T(".gz"),    ED2KFT_ARCHIVE },   // Gnu Zipped File
-    { _T(".hqx"),   ED2KFT_ARCHIVE },	// BinHex 4.0 Encoded File
-    { _T(".jar"),   ED2KFT_ARCHIVE },   // Java Archive File
-    { _T(".lha"),   ED2KFT_ARCHIVE },   // LHARC Compressed Archive
-    { _T(".lzh"),   ED2KFT_ARCHIVE },   // LZH Compressed File
-    { _T(".msi"),   ED2KFT_ARCHIVE },   // Microsoft Installer File
-    { _T(".pak"),   ED2KFT_ARCHIVE },   // PAK (Packed) File
-    { _T(".par"),   ED2KFT_ARCHIVE },   // Parchive Index File
-    { _T(".par2"),  ED2KFT_ARCHIVE },   // Parchive 2 Index File
-    { _T(".rar"),   ED2KFT_ARCHIVE },   // WinRAR Compressed Archive
-    { _T(".sit"),   ED2KFT_ARCHIVE },   // Stuffit Archive
-    { _T(".sitx"),  ED2KFT_ARCHIVE },   // Stuffit X Archive
-    { _T(".sqx"),   ED2KFT_ARCHIVE },   // Squeez Archive
-    { _T(".tar"),   ED2KFT_ARCHIVE },   // Consolidated Unix File Archive
-    { _T(".tbz2"),  ED2KFT_ARCHIVE },   // Tar BZip 2 Compressed File
-    { _T(".tgz"),   ED2KFT_ARCHIVE },   // Gzipped Tar File
-    { _T(".xpi"),   ED2KFT_ARCHIVE },   // Mozilla Installer Package
-    { _T(".z"),     ED2KFT_ARCHIVE },   // Unix Compressed File
-    { _T(".zip"),   ED2KFT_ARCHIVE },   // Zipped File
-    { _T(".zipx"),  ED2KFT_ARCHIVE },   // WinZip Archive File
+    { L".7z",    ED2KFT_ARCHIVE },   // 7-Zip Compressed File
+    { L".ace",   ED2KFT_ARCHIVE },   // WinAce Compressed File
+    { L".alz",   ED2KFT_ARCHIVE },   // ALZip Archive
+    { L".arc",   ED2KFT_ARCHIVE },   // Compressed File Archive
+    { L".arj",   ED2KFT_ARCHIVE },   // ARJ Compressed File Archive
+    { L".bz2",   ED2KFT_ARCHIVE },   // Bzip Compressed File
+    { L".cab",   ED2KFT_ARCHIVE },   // Cabinet File
+    { L".cbr",   ED2KFT_ARCHIVE },   // Comic Book RAR Archive
+    { L".cbz",   ED2KFT_ARCHIVE },   // Comic Book ZIP Archive
+    { L".gz",    ED2KFT_ARCHIVE },   // Gnu Zipped File
+    { L".hqx",   ED2KFT_ARCHIVE },	// BinHex 4.0 Encoded File
+    { L".jar",   ED2KFT_ARCHIVE },   // Java Archive File
+    { L".lha",   ED2KFT_ARCHIVE },   // LHARC Compressed Archive
+    { L".lzh",   ED2KFT_ARCHIVE },   // LZH Compressed File
+    { L".msi",   ED2KFT_ARCHIVE },   // Microsoft Installer File
+    { L".pak",   ED2KFT_ARCHIVE },   // PAK (Packed) File
+    { L".par",   ED2KFT_ARCHIVE },   // Parchive Index File
+    { L".par2",  ED2KFT_ARCHIVE },   // Parchive 2 Index File
+    { L".rar",   ED2KFT_ARCHIVE },   // WinRAR Compressed Archive
+    { L".sit",   ED2KFT_ARCHIVE },   // Stuffit Archive
+    { L".sitx",  ED2KFT_ARCHIVE },   // Stuffit X Archive
+    { L".sqx",   ED2KFT_ARCHIVE },   // Squeez Archive
+    { L".tar",   ED2KFT_ARCHIVE },   // Consolidated Unix File Archive
+    { L".tbz2",  ED2KFT_ARCHIVE },   // Tar BZip 2 Compressed File
+    { L".tgz",   ED2KFT_ARCHIVE },   // Gzipped Tar File
+    { L".uha",    ED2KFT_ARCHIVE },   // uharc compression
+    { L".xpi",   ED2KFT_ARCHIVE },   // Mozilla Installer Package
+    { L".z",     ED2KFT_ARCHIVE },   // Unix Compressed File
+    { L".zip",   ED2KFT_ARCHIVE },   // Zipped File
+    { L".zipx",  ED2KFT_ARCHIVE },   // WinZip Archive File
 
-    { _T(".app"),   ED2KFT_PROGRAM },   // Mac OS X Application File
-    { _T(".bat"),   ED2KFT_PROGRAM },	// Batch File
-    { _T(".cmd"),   ED2KFT_PROGRAM },	// Command File
-    { _T(".com"),   ED2KFT_PROGRAM },	// COM File
-    { _T(".exe"),   ED2KFT_PROGRAM },	// Executable File
-    { _T(".hta"),   ED2KFT_PROGRAM },	// HTML Application
-    { _T(".js"),    ED2KFT_PROGRAM },	// Java Script
-    { _T(".jse"),   ED2KFT_PROGRAM },	// Encoded  Java Script
-    { _T(".msc"),   ED2KFT_PROGRAM },	// Microsoft Common Console File
-    { _T(".vbe"),   ED2KFT_PROGRAM },	// Encoded Visual Basic Script File
-    { _T(".vbs"),   ED2KFT_PROGRAM },	// Visual Basic Script File
-    { _T(".wsf"),   ED2KFT_PROGRAM },	// Windows Script File
-    { _T(".wsh"),   ED2KFT_PROGRAM },	// Windows Scripting Host File
+    { L".app",   ED2KFT_PROGRAM },   // Mac OS X Application File
+    { L".bat",   ED2KFT_PROGRAM },	// Batch File
+    { L".cmd",   ED2KFT_PROGRAM },	// Command File
+    { L".com",   ED2KFT_PROGRAM },	// COM File
+    { L".exe",   ED2KFT_PROGRAM },	// Executable File
+    { L".hta",   ED2KFT_PROGRAM },	// HTML Application
+    { L".js",    ED2KFT_PROGRAM },	// Java Script
+    { L".jse",   ED2KFT_PROGRAM },	// Encoded  Java Script
+    { L".msc",   ED2KFT_PROGRAM },	// Microsoft Common Console File
+    { L".vbe",   ED2KFT_PROGRAM },	// Encoded Visual Basic Script File
+    { L".vbs",   ED2KFT_PROGRAM },	// Visual Basic Script File
+    { L".wsf",   ED2KFT_PROGRAM },	// Windows Script File
+    { L".wsh",   ED2KFT_PROGRAM },	// Windows Scripting Host File
 
-    { _T(".bin"),   ED2KFT_CDIMAGE },   // CD Image
-    { _T(".bwa"),   ED2KFT_CDIMAGE },   // BlindWrite Disk Information File
-    { _T(".bwi"),   ED2KFT_CDIMAGE },   // BlindWrite CD/DVD Disc Image
-    { _T(".bws"),   ED2KFT_CDIMAGE },   // BlindWrite Sub Code File
-    { _T(".bwt"),   ED2KFT_CDIMAGE },   // BlindWrite 4 Disk Image
-    { _T(".ccd"),   ED2KFT_CDIMAGE },   // CloneCD Disk Image
-    { _T(".cue"),   ED2KFT_CDIMAGE },   // Cue Sheet File
-    { _T(".dmg"),   ED2KFT_CDIMAGE },   // Mac OS X Disk Image
-    { _T(".img"),   ED2KFT_CDIMAGE },   // Disk Image Data File
-    { _T(".iso"),   ED2KFT_CDIMAGE },   // Disc Image File
-    { _T(".mdf"),   ED2KFT_CDIMAGE },   // Media Disc Image File
-    { _T(".mds"),   ED2KFT_CDIMAGE },   // Media Descriptor File
-    { _T(".nrg"),   ED2KFT_CDIMAGE },   // Nero CD/DVD Image File
-    { _T(".sub"),   ED2KFT_CDIMAGE },   // Subtitle File
-    { _T(".toast"), ED2KFT_CDIMAGE },   // Toast Disc Image
+    { L".bin",   ED2KFT_CDIMAGE },   // CD Image
+    { L".bwa",   ED2KFT_CDIMAGE },   // BlindWrite Disk Information File
+    { L".bwi",   ED2KFT_CDIMAGE },   // BlindWrite CD/DVD Disc Image
+    { L".bws",   ED2KFT_CDIMAGE },   // BlindWrite Sub Code File
+    { L".bwt",   ED2KFT_CDIMAGE },   // BlindWrite 4 Disk Image
+    { L".ccd",   ED2KFT_CDIMAGE },   // CloneCD Disk Image
+    { L".cue",   ED2KFT_CDIMAGE },   // Cue Sheet File
+    { L".dmg",   ED2KFT_CDIMAGE },   // Mac OS X Disk Image
+    { L".img",   ED2KFT_CDIMAGE },   // Disk Image Data File
+    { L".iso",   ED2KFT_CDIMAGE },   // Disc Image File
+    { L".mdf",   ED2KFT_CDIMAGE },   // Media Disc Image File
+    { L".mds",   ED2KFT_CDIMAGE },   // Media Descriptor File
+    { L".nrg",   ED2KFT_CDIMAGE },   // Nero CD/DVD Image File
+    { L".sub",   ED2KFT_CDIMAGE },   // Subtitle File
+    { L".toast", ED2KFT_CDIMAGE },   // Toast Disc Image
 
-    { _T(".chm"),   ED2KFT_DOCUMENT },  // Compiled HTML Help File
-    { _T(".css"),   ED2KFT_DOCUMENT },  // Cascading Style Sheet
-    { _T(".diz"),   ED2KFT_DOCUMENT },  // Description in Zip File
-    { _T(".doc"),   ED2KFT_DOCUMENT },  // Document File
-    { _T(".docx"),  ED2KFT_DOCUMENT },  // Document File
-    { _T(".dot"),   ED2KFT_DOCUMENT },  // Document Template File
-    { _T(".dotx"),  ED2KFT_DOCUMENT },  // Document Template File
-    { _T(".hlp"),   ED2KFT_DOCUMENT },  // Help File
-    { _T(".htm"),   ED2KFT_DOCUMENT },  // HTML File
-    { _T(".html"),  ED2KFT_DOCUMENT },  // HTML File
-    { _T(".nfo"),   ED2KFT_DOCUMENT },  // Warez Information File
-    { _T(".odb"),   ED2KFT_DOCUMENT },  // Open Document File
-    { _T(".odf"),   ED2KFT_DOCUMENT },  // Open Document File
-    { _T(".odp"),   ED2KFT_DOCUMENT },  // Open Document File
-    { _T(".ods"),   ED2KFT_DOCUMENT },  // Open Document File
-    { _T(".odt"),   ED2KFT_DOCUMENT },  // Open Document File
-    { _T(".pdf"),   ED2KFT_DOCUMENT },  // Portable Document Format File
-    { _T(".pmd"),   ED2KFT_DOCUMENT },  // PageMaker Publication
-    { _T(".pmv"),   ED2KFT_DOCUMENT },  // PlanMaker Spreadsheet
-    { _T(".pps"),   ED2KFT_DOCUMENT },  // PowerPoint Slide Show
-    { _T(".ppt"),   ED2KFT_DOCUMENT },  // PowerPoint Presentation
-    { _T(".pptx"),  ED2KFT_DOCUMENT },  // PowerPoint Presentation
-    { _T(".ps"),    ED2KFT_DOCUMENT },  // PostScript File
-    { _T(".qpw"),   ED2KFT_DOCUMENT },  // Quattro Pro Spreadsheet
-    { _T(".rtf"),   ED2KFT_DOCUMENT },  // Rich Text Format File
-    { _T(".text"),  ED2KFT_DOCUMENT },  // General Text File
-    { _T(".tmd"),   ED2KFT_DOCUMENT },  // TextMaker Document
-    { _T(".txt"),   ED2KFT_DOCUMENT },  // Text File
-    { _T(".wpd"),   ED2KFT_DOCUMENT },  // WordPerfect Document
-    { _T(".wri"),   ED2KFT_DOCUMENT },  // Windows Write Document
-    { _T(".xls"),   ED2KFT_DOCUMENT },  // Microsoft Excel Spreadsheet
-    { _T(".xlsx"),  ED2KFT_DOCUMENT },  // Microsoft Excel Spreadsheet
-    { _T(".xlt"),   ED2KFT_DOCUMENT },  // Microsoft Excel Template File
-    { _T(".xltx"),  ED2KFT_DOCUMENT },  // Microsoft Excel Template File
-    { _T(".xml"),   ED2KFT_DOCUMENT },  // XML File
+    { L".chm",   ED2KFT_DOCUMENT },  // Compiled HTML Help File
+    { L".css",   ED2KFT_DOCUMENT },  // Cascading Style Sheet
+    { L".diz",   ED2KFT_DOCUMENT },  // Description in Zip File
+    { L".doc",   ED2KFT_DOCUMENT },  // Document File
+    { L".docx",  ED2KFT_DOCUMENT },  // Document File
+    { L".dot",   ED2KFT_DOCUMENT },  // Document Template File
+    { L".dotx",  ED2KFT_DOCUMENT },  // Document Template File
+    { L".hlp",   ED2KFT_DOCUMENT },  // Help File
+    { L".htm",   ED2KFT_DOCUMENT },  // HTML File
+    { L".html",  ED2KFT_DOCUMENT },  // HTML File
+    { L".nfo",   ED2KFT_DOCUMENT },  // Warez Information File
+    { L".odb",   ED2KFT_DOCUMENT },  // Open Document File
+    { L".odf",   ED2KFT_DOCUMENT },  // Open Document File
+    { L".odp",   ED2KFT_DOCUMENT },  // Open Document File
+    { L".ods",   ED2KFT_DOCUMENT },  // Open Document File
+    { L".odt",   ED2KFT_DOCUMENT },  // Open Document File
+    { L".pdf",   ED2KFT_DOCUMENT },  // Portable Document Format File
+    { L".pmd",   ED2KFT_DOCUMENT },  // PageMaker Publication
+    { L".pmv",   ED2KFT_DOCUMENT },  // PlanMaker Spreadsheet
+    { L".pps",   ED2KFT_DOCUMENT },  // PowerPoint Slide Show
+    { L".ppt",   ED2KFT_DOCUMENT },  // PowerPoint Presentation
+    { L".pptx",  ED2KFT_DOCUMENT },  // PowerPoint Presentation
+    { L".ps",    ED2KFT_DOCUMENT },  // PostScript File
+    { L".qpw",   ED2KFT_DOCUMENT },  // Quattro Pro Spreadsheet
+    { L".rtf",   ED2KFT_DOCUMENT },  // Rich Text Format File
+    { L".text",  ED2KFT_DOCUMENT },  // General Text File
+    { L".tmd",   ED2KFT_DOCUMENT },  // TextMaker Document
+    { L".txt",   ED2KFT_DOCUMENT },  // Text File
+    { L".wpd",   ED2KFT_DOCUMENT },  // WordPerfect Document
+    { L".wri",   ED2KFT_DOCUMENT },  // Windows Write Document
+    { L".xls",   ED2KFT_DOCUMENT },  // Microsoft Excel Spreadsheet
+    { L".xlsx",  ED2KFT_DOCUMENT },  // Microsoft Excel Spreadsheet
+    { L".xlt",   ED2KFT_DOCUMENT },  // Microsoft Excel Template File
+    { L".xltx",  ED2KFT_DOCUMENT },  // Microsoft Excel Template File
+    { L".xml",   ED2KFT_DOCUMENT },  // XML File
 
-    { _T(".emulecollection"), ED2KFT_EMULECOLLECTION }
+    { L".emulecollection", ED2KFT_EMULECOLLECTION }
 };
 
 int __cdecl CompareE2DKFileType(const void* p1, const void* p2)
