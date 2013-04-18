@@ -197,7 +197,7 @@ BOOL CClientDetailPage::OnSetActive()
         if (client->IsBadGuy())
             GetDlgItem(IDC_ANTILEECH_INFO)->SetWindowText(client->GetAntiLeechData()->GetAntiLeechDataString());
         else
-            GetDlgItem(IDC_ANTILEECH_INFO)->SetWindowText(GetResString(IDS_UNKNOWN));
+            GetDlgItem(IDC_ANTILEECH_INFO)->SetWindowText(GetResString(IDS_UNAVAILABLE));
 //<<< WiZaRd::ClientAnalyzer
 
         if (client->GetUserName() && client->Credits()!=NULL)

@@ -1964,6 +1964,8 @@ BEGIN
     IDS_RADIOEXTRACTINCOMING "into the Incoming folder\n(will automatically share all contents)"
     IDS_RADIOEXTRACTOTHER    "into a specific (other) folder:"
     IDS_STATICEXTRACT        "Automatically extract archive files"
+	IDS_UNAVAILABLE			 "Not available"
+	IDS_NOCONNECTLOW2LOW     "Cannot connect firewalled to firewalled"
 END
 
 STRINGTABLE 
@@ -2128,8 +2130,7 @@ BEGIN
     IDS_ONQUEUE             "On Queue"
     IDS_TRANSFERRING        "Transferring"
     IDS_RECHASHSET          "Receiving hashset"
-    IDS_NONEEDEDPARTS       "No needed parts"
-    IDS_NOCONNECTLOW2LOW    "Cannot connect LowID to LowID"
+    IDS_NONEEDEDPARTS       "No needed parts"    
     IDS_UNKNOWN             "Unknown"
     IDS_ASKED4ANOTHERFILE   "Asked for another file"
     IDS_Q_CANCELDL          "Are you sure that you want to cancel and delete these files?\n"

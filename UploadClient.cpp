@@ -955,7 +955,7 @@ UINT CUpDownClient::SendBlockData()
                 // Give clients in queue a chance to kick this client out.
                 // It will be kicked out only if queue contains a client
                 // of same/higher class as this client, and that new
-                // client must either be a high ID client, or a low ID
+                // client must either be a high ID client, or a firewalled
                 // client that is currently connected.
                 wasRemoved = theApp.uploadqueue->RemoveOrMoveDown(this);
 

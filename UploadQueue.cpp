@@ -147,8 +147,8 @@ BOOL SecondIsBetterClient(const bool bPaybackCheck, const CUpDownClient* first, 
 /**
  * Find the highest ranking client in the waiting queue, and return it.
  *
- * Low id client are ranked as lowest possible, unless they are currently connected.
- * A low id client that is not connected, but would have been ranked highest if it
+ * Firewalled clients are ranked as lowest possible, unless they are currently connected.
+ * A firewalled client that is not connected, but would have been ranked highest if it
  * had been connected, gets a flag set. This flag means that the client should be
  * allowed to get an upload slot immediately once it connects.
  *
@@ -2092,10 +2092,10 @@ bool CUploadQueue::RightClientIsBetter(CUpDownClient* leftClient, UINT leftScore
 	*    6: Clients that wants powershared files of prio lowest
 	*    7: Other clients
 	*
-	* Since low ID clients are only put in an upload slot when they call us, it means they will
+	* Since firewalled clients are only put in an upload slot when they call us, it means they will
 	* have to wait about 10-30 minutes longer to be put in an upload slot than a high id client.
-	* In that time, the low ID client could possibly have gone from being a trickle slot, into
-	* being a fully activated slot. At the time when the low ID client would have been put into an
+	* In that time, the firewalled client could possibly have gone from being a trickle slot, into
+	* being a fully activated slot. At the time when the firewalled client would have been put into an
 	* upload slot, if it had been a high id slot, a boolean flag is set to true (AddNextConnect = true).
 	*
 	* A client that has AddNextConnect set when it calls back, will immiediately be given an upload slot.
@@ -2103,9 +2103,9 @@ bool CUploadQueue::RightClientIsBetter(CUpDownClient* leftClient, UINT leftScore
 	* queue taken into consideration. It will be added so that it is before all clients (within in its class)
 	* that entered queue later than it. This way it will be able to possibly skip being a trickle slot,
 	* since it has already been forced to wait extra time to be put in a upload slot. This makes the
-	* low ID clients have almost exactly the same bandwidth from us (proportionally to the number of low ID
+	* firewalled clients have almost exactly the same bandwidth from us (proportionally to the number of firewalled
 	* clients compared to the number of high ID clients) as high ID clients. This is a definitely a further
-	* improvement of VQB's excellent low ID handling.
+	* improvement of VQB's excellent firewalled handling.
 	*
 	* @param newclient address of the client that should be inserted in the uploading list
 */
