@@ -2067,6 +2067,13 @@ bool CKnownFile::IsMovie() const
     return (ED2KFT_VIDEO == GetED2KFileTypeID(GetFileName()));
 }
 
+//>>> MusicPreview
+bool CKnownFile::IsMusic() const
+{
+    return (ED2KFT_AUDIO == GetED2KFileTypeID(GetFileName()) );
+}
+//<<< MusicPreview
+
 // function assumes that this file is shared and that any needed permission to preview exists. checks have to be done before calling!
 bool CKnownFile::GrabImage(uint8 nFramesToGrab, double dStartTime, bool bReduceColor, uint16 nMaxWidth, void* pSender)
 {

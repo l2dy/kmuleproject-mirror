@@ -4087,7 +4087,10 @@ bool CPartFile::IsArchive(bool onlyPreviewable) const
 
 bool CPartFile::IsPreviewableFileType() const
 {
-    return IsArchive(true) || IsMovie();
+//>>> MusicPreview
+//    return IsArchive(true) || IsMovie();
+    return IsArchive(true) || IsMovie() || IsMusic();
+//<<< MusicPreview
 }
 
 void CPartFile::SetDownPriority(uint8 np, bool resort)

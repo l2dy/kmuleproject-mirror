@@ -162,6 +162,7 @@ public:
 
     // preview
     bool	IsMovie() const;
+    bool    IsMusic() const; //<<< MusicPreview
     virtual bool GrabImage(uint8 nFramesToGrab, double dStartTime, bool bReduceColor, uint16 nMaxWidth, void* pSender);
     virtual void GrabbingFinished(CxImage** imgResults, uint8 nFramesGrabbed, void* pSender);
 

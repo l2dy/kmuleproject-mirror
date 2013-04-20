@@ -23,7 +23,6 @@
 #include "emuledlg.h"
 #include "Preferences.h"
 #include "HelpIDs.h"
-#include ".\ppgfiles.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
