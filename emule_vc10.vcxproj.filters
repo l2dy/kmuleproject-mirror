@@ -732,6 +732,9 @@
     <ClCompile Include="Mod\loadStatus.cpp">
       <Filter>Mod\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Mod\ModIconMapping.cpp">
+      <Filter>Mod\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <MASM Include="MD4_asm.asm">
@@ -2350,6 +2353,9 @@
       <Filter>Mod\Header</Filter>
     </ClInclude>
     <ClInclude Include="Mod\loadStatus.h">
+      <Filter>Mod\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Mod\ModIconMapping.h">
       <Filter>Mod\Header</Filter>
     </ClInclude>
   </ItemGroup>

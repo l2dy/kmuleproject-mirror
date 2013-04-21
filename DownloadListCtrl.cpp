@@ -45,6 +45,7 @@
 #include "SearchDlg.h"
 #include "SharedFileList.h"
 #include "ToolbarWnd.h"
+#include "./Mod/ModIconMapping.h" //>>> WiZaRd::ModIconMappings
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -187,20 +188,12 @@ void CDownloadListCtrl::SetAllIcons()
     ApplyImageList(NULL);
     m_ImageList.DeleteImageList();
     m_ImageList.Create(16, 16, theApp.m_iDfltImageListColorFlags | ILC_MASK, 0, 1);
+	FillClientIconImageList(m_ImageList); // 18
     m_ImageList.Add(CTempIconLoader(_T("SrcDownloading")));
     m_ImageList.Add(CTempIconLoader(_T("SrcOnQueue")));
     m_ImageList.Add(CTempIconLoader(_T("SrcConnecting")));
     m_ImageList.Add(CTempIconLoader(_T("SrcNNPQF")));
     m_ImageList.Add(CTempIconLoader(_T("SrcUnknown")));
-    m_ImageList.Add(CTempIconLoader(_T("ClientCompatible")));
-    m_ImageList.Add(CTempIconLoader(_T("Friend")));
-    m_ImageList.Add(CTempIconLoader(_T("ClientEDonkey")));
-    m_ImageList.Add(CTempIconLoader(_T("ClientMLDonkey")));
-    m_ImageList.Add(CTempIconLoader(_T("ClientEDonkeyHybrid")));
-    m_ImageList.Add(CTempIconLoader(_T("ClientShareaza")));
-    m_ImageList.Add(CTempIconLoader(_T("Server")));
-    m_ImageList.Add(CTempIconLoader(_T("ClientAMule")));
-    m_ImageList.Add(CTempIconLoader(_T("ClientLPhant")));
     m_ImageList.Add(CTempIconLoader(_T("Rating_NotRated")));
     m_ImageList.Add(CTempIconLoader(_T("Rating_Fake")));
     m_ImageList.Add(CTempIconLoader(_T("Rating_Poor")));
@@ -210,7 +203,6 @@ void CDownloadListCtrl::SetAllIcons()
     m_ImageList.Add(CTempIconLoader(_T("Collection_Search"))); // rating for comments are searched on kad
     m_iFDC = m_ImageList.Add(CTempIconLoader(L"Dissimilar_Name")); //>>> FDC [BlueSonicBoy]
     m_iPreview = m_ImageList.Add(CTempIconLoader(L"PREVIEW")); //>>> PreviewIndicator [WiZaRd]
-    badguy = m_ImageList.Add(CTempIconLoader(L"BADGUY")); //>>> WiZaRd::ClientAnalyzer
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("ClientSecureOvl"))), 1);
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("OverlayObfu"))), 2);
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("OverlaySecureObfu"))), 3);
@@ -642,7 +634,7 @@ void CDownloadListCtrl::DrawFileItem(CDC *dc, int nColumn, LPCRECT lpRect, UINT 
 
         if (thePrefs.ShowRatingIndicator() && (pPartFile->HasComment() || pPartFile->HasRating() || pPartFile->IsKadCommentSearchRunning()))
         {
-            m_ImageList.Draw(dc, pPartFile->UserRating(true) + 14, CPoint(rcDraw.left + 2, rcDraw.top + iIconPosY), ILD_NORMAL);
+            m_ImageList.Draw(dc, pPartFile->UserRating(true) + 18+6, CPoint(rcDraw.left + 2, rcDraw.top + iIconPosY), ILD_NORMAL);
             rcDraw.left += 2 + RATING_ICON_WIDTH;
         }
 
@@ -855,85 +847,81 @@ void CDownloadListCtrl::DrawSourceItem(CDC *dc, int nColumn, LPCRECT lpRect, UIN
             switch (pClient->GetDownloadState())
             {
             case DS_CONNECTING:
-                m_ImageList.Draw(dc, 2, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 18+3, point, ILD_NORMAL);
                 break;
             case DS_CONNECTED:
-                m_ImageList.Draw(dc, 2, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 18+3, point, ILD_NORMAL);
                 break;
             case DS_WAITCALLBACKKAD:
             case DS_WAITCALLBACK:
-                m_ImageList.Draw(dc, 2, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 18+3, point, ILD_NORMAL);
                 break;
             case DS_ONQUEUE:
                 if (pClient->IsRemoteQueueFull())
-                    m_ImageList.Draw(dc, 3, point, ILD_NORMAL);
+                    m_ImageList.Draw(dc, 18+4, point, ILD_NORMAL);
                 else
-                    m_ImageList.Draw(dc, 1, point, ILD_NORMAL);
+                    m_ImageList.Draw(dc, 18+2, point, ILD_NORMAL);
                 break;
             case DS_DOWNLOADING:
-                m_ImageList.Draw(dc, 0, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 18+1, point, ILD_NORMAL);
                 break;
             case DS_REQHASHSET:
-                m_ImageList.Draw(dc, 0, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 18+1, point, ILD_NORMAL);
                 break;
             case DS_NONEEDEDPARTS:
-                m_ImageList.Draw(dc, 3, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 18+4, point, ILD_NORMAL);
                 break;
             case DS_ERROR:
-                m_ImageList.Draw(dc, 3, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 18+4, point, ILD_NORMAL);
                 break;
             case DS_TOOMANYCONNS:
             case DS_TOOMANYCONNSKAD:
-                m_ImageList.Draw(dc, 2, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 18+3, point, ILD_NORMAL);
                 break;
             default:
-                m_ImageList.Draw(dc, 4, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 18+5, point, ILD_NORMAL);
                 break;
             }
         }
         else
         {
-            m_ImageList.Draw(dc, 3, point, ILD_NORMAL);
+            m_ImageList.Draw(dc, 18+4, point, ILD_NORMAL);
         }
         cur_rec.left += 20;
 
 //>>> WiZaRd::ClientAnalyzer
         int plusminus = 0;
-        if (badguy != -1 && pClient->IsBadGuy())
+        if (pClient->IsBadGuy())
         {
             int iIconPosY = (cur_rec.Height() > 16) ? ((cur_rec.Height() - 16) / 2) : 1;
             POINT point = {cur_rec.left, cur_rec.top + iIconPosY};
-            m_ImageList.Draw(dc, badguy, point, ILD_NORMAL);
+            m_ImageList.Draw(dc, 18, point, ILD_NORMAL);
             cur_rec.left += 17;
             plusminus += 17;
         }
 //<<< WiZaRd::ClientAnalyzer
-        UINT uOvlImg = 0;
-        if ((pClient->Credits() && pClient->Credits()->GetCurrentIdentState(pClient->GetIP()) == IS_IDENTIFIED))
-            uOvlImg |= 1;
-        if (pClient->IsObfuscatedConnectionEstablished())
-            uOvlImg |= 2;
 
-        POINT point2 = {cur_rec.left, cur_rec.top + iIconPosY};
-        if (pClient->IsFriend())
-            m_ImageList.Draw(dc, 6, point2, ILD_NORMAL | INDEXTOOVERLAYMASK(uOvlImg));
-        else if (pClient->GetClientSoft() == SO_EDONKEYHYBRID)
-            m_ImageList.Draw(dc, 9, point2, ILD_NORMAL | INDEXTOOVERLAYMASK(uOvlImg));
-        else if (pClient->GetClientSoft() == SO_MLDONKEY)
-            m_ImageList.Draw(dc, 8, point2, ILD_NORMAL | INDEXTOOVERLAYMASK(uOvlImg));
-        else if (pClient->GetClientSoft() == SO_SHAREAZA)
-            m_ImageList.Draw(dc, 10, point2, ILD_NORMAL | INDEXTOOVERLAYMASK(uOvlImg));
-        else if (pClient->GetClientSoft() == SO_URL)
-            m_ImageList.Draw(dc, 11, point2, ILD_NORMAL | INDEXTOOVERLAYMASK(uOvlImg));
-        else if (pClient->GetClientSoft() == SO_AMULE)
-            m_ImageList.Draw(dc, 12, point2, ILD_NORMAL | INDEXTOOVERLAYMASK(uOvlImg));
-        else if (pClient->GetClientSoft() == SO_LPHANT)
-            m_ImageList.Draw(dc, 13, point2, ILD_NORMAL | INDEXTOOVERLAYMASK(uOvlImg));
-        else if (pClient->ExtProtocolAvailable())
-            m_ImageList.Draw(dc, 5, point2, ILD_NORMAL | INDEXTOOVERLAYMASK(uOvlImg));
-        else
-            m_ImageList.Draw(dc, 7, point2, ILD_NORMAL | INDEXTOOVERLAYMASK(uOvlImg));
+		int iImage = GetClientImageIndex(pClient->IsFriend(), pClient->GetClientSoft(), pClient->Credits() && pClient->Credits()->GetScoreRatio(pClient->GetIP()) > 1, pClient->ExtProtocolAvailable());
+
+		UINT nOverlayImage = 0;
+		if ((pClient->Credits() && pClient->Credits()->GetCurrentIdentState(pClient->GetIP()) == IS_IDENTIFIED))
+			nOverlayImage |= 1;
+		if (pClient->IsObfuscatedConnectionEstablished())
+			nOverlayImage |= 2;
+		POINT point2 = { cur_rec.left, cur_rec.top + iIconPosY };
+		m_ImageList.Draw(dc, iImage, point2, ILD_NORMAL | INDEXTOOVERLAYMASK(nOverlayImage));
         cur_rec.left += 20;
+
+//>>> WiZaRd::ModIconMappings
+		int icoindex = pClient->GetModIconIndex();
+		if(icoindex != MODMAP_NONE)
+		{	
+			POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
+			theApp.theModIconMap->DrawModIcon(dc, icoindex, point, ILD_NORMAL);
+			cur_rec.left += 17;
+			plusminus += 17;
+		}
+//<<< WiZaRd::ModIconMappings
 
         dc->DrawText(szItem, -1, &cur_rec, MLC_DT_TEXT | uDrawTextAlignment);
         cur_rec.left -= plusminus; //>>> WiZaRd::ClientAnalyzer

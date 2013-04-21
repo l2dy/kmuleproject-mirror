@@ -26,7 +26,7 @@ class CUInt128;
 };
 typedef CTypedPtrList<CPtrList, CUpDownClient*> CUpDownClientPtrList;
 
-#define	NUM_CLIENTLIST_STATS	20 //>>> WiZaRd::Detect UDP problem clients
+#define	NUM_CLIENTLIST_STATS	21 //>>> WiZaRd::Detect UDP problem clients
 #define BAN_CLEANUP_TIME		1200000 // 20 min
 
 //------------CDeletedClient Class----------------------
@@ -83,6 +83,7 @@ public:
                           CMap<UINT, UINT, UINT, UINT>& clientVersionEDonkey,
                           CMap<UINT, UINT, UINT, UINT>& clientVersionEDonkeyHybrid,
                           CMap<UINT, UINT, UINT, UINT>& clientVersionEMule,
+						  CMap<UINT, UINT, UINT, UINT>& clientVersionKMule,
                           CMap<UINT, UINT, UINT, UINT>& clientVersionAMule);
     UINT	GetClientCount()
     {
@@ -176,4 +177,9 @@ private:
     CList<IPANDTICS> listFirewallCheckRequests;
     CList<IPANDTICS> listDirectCallbackRequests;
     CList<CONNECTINGCLIENT> m_liConnectingClients;
+
+//>>> WiZaRd::ModIconMapper
+public:
+	void	UpdateModIconIndexes() const;
+//<<< WiZaRd::ModIconMapper
 };

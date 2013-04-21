@@ -87,27 +87,30 @@ int		GetFakeAlyzerRating(const CSearchFile* content, CString* ret)
     if (content->GetIntTagValue(FT_MEDIA_LENGTH) > 0)
         nAvgBitrate = (UINT)(uint64)(content->GetFileSize() / 128ULL) / content->GetIntTagValue(FT_MEDIA_LENGTH);
     const CString strCodec = content->GetStrTagValue(FT_MEDIA_CODEC);
-    if (nBitrate || nAvgBitrate || !strCodec.IsEmpty())
+    if (nBitrate || nAvgBitrate/* || !strCodec.IsEmpty()*/)
     {
         if (content->GetFileType() == ED2KFTSTR_AUDIO || content->GetFileType() == ED2KFTSTR_VIDEO)
         {
             if (content->GetFileType() == ED2KFTSTR_AUDIO)
             {
                 const bool isMP3 = content->GetFileName().Right(4).MakeLower() == L".mp3";
-                // No serious files have lower rate than this
-                if (isMP3 && nBitrate >= 128 && nBitrate % 8 == 0 && nBitrate < 1500 && nBitrate <= 2 * nAvgBitrate)
-                {
-                    if (ret)
-                        ret->AppendFormat(L"%s+Good bitrate for .mp3 file!", ret->IsEmpty() ? L"" : L"\n\t");
-                    ++nPositives;
-                }
-                // Illegal!?
-                else if ((isMP3 && nBitrate < 56) || (nBitrate > 4 * nAvgBitrate) || (nBitrate % 2 != 0))
-                {
-                    if (ret)
-                        ret->AppendFormat(L"%s-Illegal/bad bitrate for .mp3 file!", ret->IsEmpty() ? L"" : L"\n\t");
-                    ++nNegatives;
-                }
+				if(!isMP3 || nBitrate != nAvgBitrate) // skip possible VBR files
+				{
+					// No serious files have lower rate than this
+					if (isMP3 && nBitrate >= 128 && nBitrate % 8 == 0 && nBitrate < 1500 && nBitrate <= 2 * nAvgBitrate)
+					{
+						if (ret)
+							ret->AppendFormat(L"%s+Good bitrate for .mp3 file!", ret->IsEmpty() ? L"" : L"\n\t");
+						++nPositives;
+					}
+					// Illegal!?
+					else if ((isMP3 && nBitrate < 56) || (nBitrate > 4 * nAvgBitrate) || (nBitrate % 2 != 0))
+					{
+						if (ret)
+							ret->AppendFormat(L"%s-Illegal/bad bitrate for .mp3 file!", ret->IsEmpty() ? L"" : L"\n\t");
+						++nNegatives;
+					}
+				}
             }
             else //if (content->GetFileType() == ED2KFTSTR_VIDEO)
             {

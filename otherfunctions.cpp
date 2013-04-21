@@ -4864,4 +4864,62 @@ bool RunningWine()
     return runningWine != 0;
 }
 //<<< WiZaRd::Wine Compatibility
+
+void	FillClientIconImageList(CImageList& imageList)
+{
+	imageList.Add(CTempIconLoader(L"Friend"));						// 0
+	imageList.Add(CTempIconLoader(L"ClientEDonkey"));				// 1
+	imageList.Add(CTempIconLoader(L"ClientEDonkeyPlus"));			// 2
+	imageList.Add(CTempIconLoader(L"ClientCompatible"));			// 3
+	imageList.Add(CTempIconLoader(L"ClientCompatiblePlus"));		// 4
+	imageList.Add(CTempIconLoader(L"ClientMLDonkey"));				// 5
+	imageList.Add(CTempIconLoader(L"ClientMLDonkeyPlus"));			// 6
+	imageList.Add(CTempIconLoader(L"ClientEDonkeyHybrid"));			// 7
+	imageList.Add(CTempIconLoader(L"ClientEDonkeyHybridPlus"));		// 8
+	imageList.Add(CTempIconLoader(L"ClientShareaza"));				// 9
+	imageList.Add(CTempIconLoader(L"ClientShareazaPlus"));			//10
+	imageList.Add(CTempIconLoader(L"ClientAMule"));					//11
+	imageList.Add(CTempIconLoader(L"ClientAMulePlus"));				//12
+	imageList.Add(CTempIconLoader(L"ClientLPhant"));				//13
+	imageList.Add(CTempIconLoader(L"ClientLPhantPlus"));			//14
+	imageList.Add(CTempIconLoader(L"ClientkMule"));					//15
+	imageList.Add(CTempIconLoader(L"ClientkMulePlus"));				//16
+	imageList.Add(CTempIconLoader(L"Server"));						//17
+	imageList.Add(CTempIconLoader(L"BADGUY"));						//18
+}
+
+int	GetClientImageIndex(const bool bFriend, const UINT nClientVersion, const bool bExt, const bool bPlus)
+{
+	int index = 0;
+
+	if(!bFriend)
+	{
+		if(nClientVersion == SO_URL)
+			index = 17;
+		else
+		{			
+			if(nClientVersion == SO_KMULE)
+				index = 15;
+			else if(nClientVersion == SO_EDONKEYHYBRID)
+				index = 7;
+			else if(nClientVersion == SO_MLDONKEY)
+				index = 5;
+			else if(nClientVersion == SO_SHAREAZA)
+				index = 9;
+			else if(nClientVersion == SO_AMULE)
+				index = 11;
+			else if(nClientVersion == SO_LPHANT)
+				index = 13;
+			else if(bExt)	
+				index = 3;
+			else 
+				index = 1;
+
+			if(bPlus)
+				index += 1;
+		}
+	}
+
+	return index;
+}
 //<<< WiZaRd::Additional Functions

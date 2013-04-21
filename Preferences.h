@@ -166,6 +166,7 @@ public:
     static	uint64	cumUpData_EDONKEY;
     static	uint64	cumUpData_EDONKEYHYBRID;
     static	uint64	cumUpData_EMULE;
+	static	uint64	cumUpData_KMULE;
     static	uint64	cumUpData_MLDONKEY;
     static	uint64	cumUpData_AMULE;
     static	uint64	cumUpData_EMULECOMPAT;
@@ -174,6 +175,7 @@ public:
     static	uint64	sesUpData_EDONKEY;
     static	uint64	sesUpData_EDONKEYHYBRID;
     static	uint64	sesUpData_EMULE;
+	static	uint64	sesUpData_KMULE;
     static	uint64	sesUpData_MLDONKEY;
     static	uint64	sesUpData_AMULE;
     static	uint64	sesUpData_EMULECOMPAT;
@@ -217,6 +219,7 @@ public:
     static	uint64	cumDownData_EDONKEY;
     static	uint64	cumDownData_EDONKEYHYBRID;
     static	uint64	cumDownData_EMULE;
+	static	uint64	cumDownData_KMULE;
     static	uint64	cumDownData_MLDONKEY;
     static	uint64	cumDownData_AMULE;
     static	uint64	cumDownData_EMULECOMPAT;
@@ -226,6 +229,7 @@ public:
     static	uint64	sesDownData_EDONKEY;
     static	uint64	sesDownData_EDONKEYHYBRID;
     static	uint64	sesDownData_EMULE;
+	static	uint64	sesDownData_KMULE;
     static	uint64	sesDownData_MLDONKEY;
     static	uint64	sesDownData_AMULE;
     static	uint64	sesDownData_EMULECOMPAT;
@@ -856,6 +860,7 @@ public:
         return   GetCumUpData_EDONKEY()
                  + GetCumUpData_EDONKEYHYBRID()
                  + GetCumUpData_EMULE()
+				 + GetCumUpData_KMULE()
                  + GetCumUpData_MLDONKEY()
                  + GetCumUpData_AMULE()
                  + GetCumUpData_EMULECOMPAT()
@@ -873,6 +878,10 @@ public:
     {
         return (cumUpData_EMULE +			sesUpData_EMULE);
     }
+	static	uint64	GetCumUpData_KMULE()
+	{
+		return (cumUpData_KMULE +			sesUpData_KMULE);
+	}
     static	uint64	GetCumUpData_MLDONKEY()
     {
         return (cumUpData_MLDONKEY +		sesUpData_MLDONKEY);
@@ -896,6 +905,7 @@ public:
         return   sesUpData_EDONKEY
                  + sesUpData_EDONKEYHYBRID
                  + sesUpData_EMULE
+				 + sesUpData_KMULE
                  + sesUpData_MLDONKEY
                  + sesUpData_AMULE
                  + sesUpData_EMULECOMPAT
@@ -913,6 +923,10 @@ public:
     {
         return sesUpData_EMULE;
     }
+	static	uint64	GetUpData_KMULE()
+	{
+		return sesUpData_KMULE;
+	}
     static	uint64	GetUpData_MLDONKEY()
     {
         return sesUpData_MLDONKEY;
@@ -993,6 +1007,7 @@ public:
         return   GetCumDownData_EDONKEY()
                  + GetCumDownData_EDONKEYHYBRID()
                  + GetCumDownData_EMULE()
+				 + GetCumDownData_KMULE()
                  + GetCumDownData_MLDONKEY()
                  + GetCumDownData_AMULE()
                  + GetCumDownData_EMULECOMPAT()
@@ -1011,6 +1026,10 @@ public:
     {
         return (cumDownData_EMULE +			sesDownData_EMULE);
     }
+	static	uint64	GetCumDownData_KMULE()
+	{
+		return (cumDownData_KMULE +			sesDownData_KMULE);
+	}
     static	uint64	GetCumDownData_MLDONKEY()
     {
         return (cumDownData_MLDONKEY +			sesDownData_MLDONKEY);
@@ -1038,6 +1057,7 @@ public:
         return   sesDownData_EDONKEY
                  + sesDownData_EDONKEYHYBRID
                  + sesDownData_EMULE
+				 + sesDownData_KMULE
                  + sesDownData_MLDONKEY
                  + sesDownData_AMULE
                  + sesDownData_EMULECOMPAT
@@ -1056,6 +1076,10 @@ public:
     {
         return sesDownData_EMULE;
     }
+	static	uint64	GetDownData_KMULE()
+	{
+		return sesDownData_KMULE;
+	}
     static	uint64	GetDownData_MLDONKEY()
     {
         return sesDownData_MLDONKEY;
@@ -2518,6 +2542,17 @@ public:
         return m_bNeedsWineCompatibility;
     }
 //<<< WiZaRd::Wine Compatibility
+//>>> WiZaRd::ModIconDLL Update
+private:
+	static	bool	m_bModIconDllAutoUpdate;
+public:
+	static	CString	m_strModIconDllUpdateURL;
+
+	static	bool	IsAutoUpdateModIconDllEnabled()		{return m_bModIconDllAutoUpdate;}
+	static	void	SetAutoUpdateModIconDll(const bool b)	{m_bModIconDllAutoUpdate = b;}
+
+	static  CString GetModIconDllUpdateURL()			{return m_strModIconDllUpdateURL;}
+//<<< WiZaRd::ModIconDLL Update
 };
 
 extern CPreferences thePrefs;

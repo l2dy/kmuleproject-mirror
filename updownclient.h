@@ -1223,5 +1223,12 @@ private:
     bool		m_bScheduledForRemovalWillKeepWaitingTimeIntact;
     DWORD		m_bScheduledForRemovalAtTick;
 //<<< WiZaRd::ZZUL Upload [ZZ]
+//>>> WiZaRd::ModIconMapper	
+private:
+	int		m_iModIconIndex;
+public:
+	int		GetModIconIndex() const;
+	void	CheckModIconIndex();
+//<<< WiZaRd::ModIconMapper
 };
 //#pragma pack()

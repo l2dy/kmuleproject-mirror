@@ -137,6 +137,7 @@ UINT	CPreferences::cumUpAvgTime;
 uint64	CPreferences::cumUpData_EDONKEY;
 uint64	CPreferences::cumUpData_EDONKEYHYBRID;
 uint64	CPreferences::cumUpData_EMULE;
+uint64	CPreferences::cumUpData_KMULE;
 uint64	CPreferences::cumUpData_MLDONKEY;
 uint64	CPreferences::cumUpData_AMULE;
 uint64	CPreferences::cumUpData_EMULECOMPAT;
@@ -144,6 +145,7 @@ uint64	CPreferences::cumUpData_SHAREAZA;
 uint64	CPreferences::sesUpData_EDONKEY;
 uint64	CPreferences::sesUpData_EDONKEYHYBRID;
 uint64	CPreferences::sesUpData_EMULE;
+uint64	CPreferences::sesUpData_KMULE;
 uint64	CPreferences::sesUpData_MLDONKEY;
 uint64	CPreferences::sesUpData_AMULE;
 uint64	CPreferences::sesUpData_EMULECOMPAT;
@@ -173,6 +175,7 @@ UINT	CPreferences::sesPartsSavedByICH;
 uint64	CPreferences::cumDownData_EDONKEY;
 uint64	CPreferences::cumDownData_EDONKEYHYBRID;
 uint64	CPreferences::cumDownData_EMULE;
+uint64	CPreferences::cumDownData_KMULE;
 uint64	CPreferences::cumDownData_MLDONKEY;
 uint64	CPreferences::cumDownData_AMULE;
 uint64	CPreferences::cumDownData_EMULECOMPAT;
@@ -181,6 +184,7 @@ uint64	CPreferences::cumDownData_URL;
 uint64	CPreferences::sesDownData_EDONKEY;
 uint64	CPreferences::sesDownData_EDONKEYHYBRID;
 uint64	CPreferences::sesDownData_EMULE;
+uint64	CPreferences::sesDownData_KMULE;
 uint64	CPreferences::sesDownData_MLDONKEY;
 uint64	CPreferences::sesDownData_AMULE;
 uint64	CPreferences::sesDownData_EMULECOMPAT;
@@ -432,6 +436,10 @@ float	CPreferences::m_fMaxBlockRate;
 float	CPreferences::m_fMaxBlockRate20;
 //<<< WiZaRd::Drop Blocking Sockets [Xman?]
 bool	CPreferences::m_bNeedsWineCompatibility; //>>> WiZaRd::Wine Compatibility
+//>>> WiZaRd::ModIconDLL Update
+bool	CPreferences::m_bModIconDllAutoUpdate;
+CString	CPreferences::m_strModIconDllUpdateURL;
+//<<< WiZaRd::ModIconDLL Update
 
 CPreferences::CPreferences()
 {
@@ -824,6 +832,7 @@ void CPreferences::SaveStats(int bBackUp)
     ini.WriteUInt64(L"DownData_EDONKEY", GetCumDownData_EDONKEY());
     ini.WriteUInt64(L"DownData_EDONKEYHYBRID", GetCumDownData_EDONKEYHYBRID());
     ini.WriteUInt64(L"DownData_EMULE", GetCumDownData_EMULE());
+	ini.WriteUInt64(L"DownData_KMULE", GetCumDownData_KMULE());
     ini.WriteUInt64(L"DownData_MLDONKEY", GetCumDownData_MLDONKEY());
     ini.WriteUInt64(L"DownData_LMULE", GetCumDownData_EMULECOMPAT());
     ini.WriteUInt64(L"DownData_AMULE", GetCumDownData_AMULE());
@@ -858,6 +867,7 @@ void CPreferences::SaveStats(int bBackUp)
     ini.WriteUInt64(L"UpData_EDONKEY", GetCumUpData_EDONKEY());
     ini.WriteUInt64(L"UpData_EDONKEYHYBRID", GetCumUpData_EDONKEYHYBRID());
     ini.WriteUInt64(L"UpData_EMULE", GetCumUpData_EMULE());
+	ini.WriteUInt64(L"UpData_KMULE", GetCumUpData_KMULE());
     ini.WriteUInt64(L"UpData_MLDONKEY", GetCumUpData_MLDONKEY());
     ini.WriteUInt64(L"UpData_LMULE", GetCumUpData_EMULECOMPAT());
     ini.WriteUInt64(L"UpData_AMULE", GetCumUpData_AMULE());
@@ -1172,6 +1182,7 @@ void CPreferences::ResetCumulativeStatistics()
     cumUpData_EDONKEY=0;
     cumUpData_EDONKEYHYBRID=0;
     cumUpData_EMULE=0;
+	cumUpData_KMULE = 0;
     cumUpData_MLDONKEY=0;
     cumUpData_AMULE=0;
     cumUpData_EMULECOMPAT=0;
@@ -1188,6 +1199,7 @@ void CPreferences::ResetCumulativeStatistics()
     cumDownData_EDONKEY=0;
     cumDownData_EDONKEYHYBRID=0;
     cumDownData_EMULE=0;
+	cumDownData_KMULE = 0;
     cumDownData_MLDONKEY=0;
     cumDownData_AMULE=0;
     cumDownData_EMULECOMPAT=0;
@@ -1287,6 +1299,7 @@ bool CPreferences::LoadStats(int loadBackUp)
     cumUpData_EDONKEY				= ini.GetUInt64(L"UpData_EDONKEY");
     cumUpData_EDONKEYHYBRID			= ini.GetUInt64(L"UpData_EDONKEYHYBRID");
     cumUpData_EMULE					= ini.GetUInt64(L"UpData_EMULE");
+	cumUpData_KMULE					= ini.GetUInt64(L"UpData_KMULE");
     cumUpData_MLDONKEY				= ini.GetUInt64(L"UpData_MLDONKEY");
     cumUpData_EMULECOMPAT			= ini.GetUInt64(L"UpData_LMULE");
     cumUpData_AMULE					= ini.GetUInt64(L"UpData_AMULE");
@@ -1315,6 +1328,7 @@ bool CPreferences::LoadStats(int loadBackUp)
     cumDownData_EDONKEY				= ini.GetUInt64(L"DownData_EDONKEY");
     cumDownData_EDONKEYHYBRID		= ini.GetUInt64(L"DownData_EDONKEYHYBRID");
     cumDownData_EMULE				= ini.GetUInt64(L"DownData_EMULE");
+	cumDownData_KMULE				= ini.GetUInt64(L"DownData_KMULE");
     cumDownData_MLDONKEY			= ini.GetUInt64(L"DownData_MLDONKEY");
     cumDownData_EMULECOMPAT			= ini.GetUInt64(L"DownData_LMULE");
     cumDownData_AMULE				= ini.GetUInt64(L"DownData_AMULE");
@@ -1391,6 +1405,7 @@ bool CPreferences::LoadStats(int loadBackUp)
         sesUpData_EDONKEY			= 0;
         sesUpData_EDONKEYHYBRID		= 0;
         sesUpData_EMULE				= 0;
+		sesUpData_KMULE				= 0;
         sesUpData_MLDONKEY			= 0;
         sesUpData_AMULE				= 0;
         sesUpData_EMULECOMPAT		= 0;
@@ -1401,6 +1416,7 @@ bool CPreferences::LoadStats(int loadBackUp)
         sesDownData_EDONKEY			= 0;
         sesDownData_EDONKEYHYBRID	= 0;
         sesDownData_EMULE			= 0;
+		sesDownData_KMULE			= 0;
         sesDownData_MLDONKEY		= 0;
         sesDownData_AMULE			= 0;
         sesDownData_EMULECOMPAT		= 0;
@@ -1835,6 +1851,10 @@ void CPreferences::SavekMulePrefs()
     ini.WriteFloat(L"SocketBlockRate", m_fMaxBlockRate);
     ini.WriteFloat(L"SocketBlockRate20", m_fMaxBlockRate20);
 //<<< WiZaRd::Drop Blocking Sockets [Xman?]
+//>>> WiZaRd::ModIconDLL Update
+	ini.WriteBool(L"AutoUpdateModIconDll", m_bModIconDllAutoUpdate);
+	ini.WriteString(L"UpdateURLModIconDll", m_strModIconDllUpdateURL);
+//<<< WiZaRd::ModIconDLL Update
 }
 //<<< WiZaRd::Own Prefs
 
@@ -2455,6 +2475,10 @@ void CPreferences::LoadkMulePrefs()
 //>>> WiZaRd::Wine Compatibility
     m_bNeedsWineCompatibility = ini.GetBool(L"WineCompatibility", RunningWine());
 //<<< WiZaRd::Wine Compatibility
+//>>> WiZaRd::ModIconDLL Update
+	m_bModIconDllAutoUpdate = ini.GetBool(L"AutoUpdateModIconDll", true);
+	m_strModIconDllUpdateURL = ini.GetString(L"UpdateURLModIconDll", MOD_MODICON_URL);
+//<<< WiZaRd::ModIconDLL Update
 }
 //<<< WiZaRd::Own Prefs
 

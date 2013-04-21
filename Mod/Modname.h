@@ -23,6 +23,7 @@
 #define MOD_IPPFILTER_URL	L"http://ip-filter.emulefuture.de/download.php?file=ipfilter.zip"
 #define MOD_MEDIAINFO_URL	L"http://mediainfo.emulefuture.de/download.php?file=MediaInfo.zip"
 #define MOD_NODES_URL		L"http://server-met.emulefuture.de/download.php?file=nodes.dat"
+#define MOD_MODICON_URL		L"http://modicon.emulefuture.de/"
 #define MOD_HOMEPAGE		L"http://www.emulefuture.de"
 #define MOD_BASE_HOMEPAGE	L"http://www.emule-project.net"
 #define MOD_WIKI			L"http://kMule.emulefuture.de/wiki/"

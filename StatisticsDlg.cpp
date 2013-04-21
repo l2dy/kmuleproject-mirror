@@ -808,6 +808,15 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                         stattree.SetItemText(down_scb[i] , cbuffer);
                         i++;
 
+						DownDataClient = thePrefs.GetDownData_KMULE();
+						if (DownDataTotal != 0 && DownDataClient != 0)
+							percentClientTransferred = (double) 100 * DownDataClient / DownDataTotal;
+						else
+							percentClientTransferred = 0;
+						cbuffer.Format(L"kMule: %s (%1.1f%%)", CastItoXBytes(DownDataClient, false, false), percentClientTransferred);
+						stattree.SetItemText(down_scb[i] , cbuffer);
+						++i;
+
                         DownDataClient = thePrefs.GetDownData_EDONKEYHYBRID();
                         if (DownDataTotal!=0 && DownDataClient!=0)
                             percentClientTransferred = (double) 100 * DownDataClient / DownDataTotal;
@@ -1076,6 +1085,15 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                         stattree.SetItemText(down_tcb[i] , cbuffer);
                         i++;
 
+						DownDataClient = thePrefs.GetCumDownData_KMULE();
+						if (DownDataTotal != 0 && DownDataClient != 0)
+							percentClientTransferred = (double) 100 * DownDataClient / DownDataTotal;
+						else
+							percentClientTransferred = 0;
+						cbuffer.Format(L"kMule: %s (%1.1f%%)", CastItoXBytes(DownDataClient, false, false), percentClientTransferred);
+						stattree.SetItemText(down_tcb[i] , cbuffer);
+						++i;
+
                         DownDataClient = thePrefs.GetCumDownData_EDONKEYHYBRID();
                         if (DownDataTotal!=0 && DownDataClient!=0)
                             percentClientTransferred = (double) 100 * DownDataClient / DownDataTotal;
@@ -1278,6 +1296,15 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                         cbuffer.Format(_T("eMule: %s (%1.1f%%)") , CastItoXBytes(UpDataClient, false, false) , percentClientTransferred);
                         stattree.SetItemText(up_scb[i] , cbuffer);
                         i++;
+
+						UpDataClient = thePrefs.GetUpData_KMULE();
+						if (UpDataTotal != 0 && UpDataClient != 0)
+							percentClientTransferred = (double) 100 * UpDataClient / UpDataTotal;
+						else
+							percentClientTransferred = 0;
+						cbuffer.Format(L"kMule: %s (%1.1f%%)", CastItoXBytes(UpDataClient, false, false), percentClientTransferred);
+						stattree.SetItemText(up_scb[i] , cbuffer);
+						++i;
 
                         UpDataClient = thePrefs.GetUpData_EDONKEYHYBRID();
                         if (UpDataTotal!=0 && UpDataClient!=0)
@@ -1490,6 +1517,15 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                         cbuffer.Format(_T("eMule: %s (%1.1f%%)") , CastItoXBytes(UpDataClient, false, false) , percentClientTransferred);
                         stattree.SetItemText(up_tcb[i] , cbuffer);
                         i++;
+
+						UpDataClient = thePrefs.GetCumUpData_KMULE();
+						if (UpDataTotal != 0 && UpDataClient != 0)
+							percentClientTransferred = (double) 100 * UpDataClient / UpDataTotal;
+						else
+							percentClientTransferred = 0;
+						cbuffer.Format(L"kMule: %s (%1.1f%%)", CastItoXBytes(UpDataClient, false, false), percentClientTransferred);
+						stattree.SetItemText(up_tcb[i] , cbuffer);
+						++i;
 
                         UpDataClient = thePrefs.GetCumUpData_EDONKEYHYBRID();
                         if (UpDataTotal!=0 && UpDataClient!=0)
@@ -1949,6 +1985,15 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                                 stattree.SetItemText(time_aap_up_dc[mx][i] , cbuffer);
                                 i++;
 
+								UpDataClient = (uint64)(thePrefs.GetCumUpData_KMULE() * avgModifier[mx]);
+								if (UpDataTotal!=0 && UpDataClient!=0)
+									percentClientTransferred = (double) 100 * UpDataClient / UpDataTotal;
+								else
+									percentClientTransferred = 0;
+								cbuffer.Format(L"kMule: %s (%1.1f%%)", CastItoXBytes(UpDataClient, false, false), percentClientTransferred);
+								stattree.SetItemText(time_aap_up_dc[mx][i] , cbuffer);
+								++i;
+
                                 UpDataClient = (uint64)(thePrefs.GetCumUpData_EDONKEYHYBRID() * avgModifier[mx]);
                                 if (UpDataTotal!=0 && UpDataClient!=0)
                                     percentClientTransferred = (double) 100 * UpDataClient / UpDataTotal;
@@ -2137,6 +2182,15 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                                 stattree.SetItemText(time_aap_down_dc[mx][i] , cbuffer);
                                 i++;
 
+								DownDataClient = (uint64)(thePrefs.GetCumDownData_KMULE() * avgModifier[mx]);
+								if (DownDataTotal != 0 && DownDataClient != 0)
+									percentClientTransferred = (double) 100 * DownDataClient / DownDataTotal;
+								else
+									percentClientTransferred = 0;
+								cbuffer.Format(L"kMule: %s (%1.1f%%)", CastItoXBytes(DownDataClient, false, false), percentClientTransferred);
+								stattree.SetItemText(time_aap_down_dc[mx][i] , cbuffer);
+								i++;
+
                                 DownDataClient = (uint64)(thePrefs.GetCumDownData_EDONKEYHYBRID() * avgModifier[mx]);
                                 if (DownDataTotal!=0 && DownDataClient!=0)
                                     percentClientTransferred = (double) 100 * DownDataClient / DownDataTotal;
@@ -2314,6 +2368,7 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
         CMap<UINT, UINT, UINT, UINT>	clientVersionEDonkey;
         CMap<UINT, UINT, UINT, UINT>	clientVersionEDonkeyHybrid;
         CMap<UINT, UINT, UINT, UINT>	clientVersionEMule;
+		CMap<UINT, UINT, UINT, UINT>	clientVersionKMule;
         CMap<UINT, UINT, UINT, UINT>	clientVersionAMule;
         UINT									totalclient;
         int										myStats[NUM_CLIENTLIST_STATS];
@@ -2322,6 +2377,7 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                                          clientVersionEDonkey,
                                          clientVersionEDonkeyHybrid,
                                          clientVersionEMule,
+										 clientVersionKMule,
                                          clientVersionAMule);
 
         cbuffer.Format(_T("%s: %u "), GetResString(IDS_CLIENTLIST), totalclient);
@@ -2340,25 +2396,29 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
         // CLIENTS -> CLIENT SOFTWARE SECTION
         if (forceUpdate || stattree.IsExpanded(hclisoft))
         {
+			int i = 0;
             cbuffer.Format(_T("eMule: %i (%1.1f%%)"),		myStats[ 2],(double)100*myStats[ 2]/totalclient);
-            stattree.SetItemText(clisoft[0], cbuffer);
+            stattree.SetItemText(clisoft[i++], cbuffer);
+			cbuffer.Format(L"kMule: %i (%1.1f%%)",			myStats[20],(double)100*myStats[20]/totalclient);
+			stattree.SetItemText(clisoft[i++], cbuffer);
             cbuffer.Format(_T("eD Hybrid: %i (%1.1f%%)"),	myStats[ 4],(double)100*myStats[ 4]/totalclient);
-            stattree.SetItemText(clisoft[1], cbuffer);
+            stattree.SetItemText(clisoft[i++], cbuffer);
             cbuffer.Format(_T("eDonkey: %i (%1.1f%%)"),		myStats[ 1],(double)100*myStats[ 1]/totalclient);
-            stattree.SetItemText(clisoft[2], cbuffer);
+            stattree.SetItemText(clisoft[i++], cbuffer);
             cbuffer.Format(_T("aMule: %i (%1.1f%%)"),		myStats[10],(double)100*myStats[10]/totalclient);
-            stattree.SetItemText(clisoft[3], cbuffer);
+            stattree.SetItemText(clisoft[i++], cbuffer);
             cbuffer.Format(_T("MLdonkey: %i (%1.1f%%)"),	myStats[ 3],(double)100*myStats[ 3]/totalclient);
-            stattree.SetItemText(clisoft[4], cbuffer);
+            stattree.SetItemText(clisoft[i++], cbuffer);
             cbuffer.Format(_T("Shareaza: %i (%1.1f%%)"),	myStats[11],(double)100*myStats[11]/totalclient);
-            stattree.SetItemText(clisoft[5], cbuffer);
+            stattree.SetItemText(clisoft[i++], cbuffer);
             cbuffer.Format(_T("eM Compat: %i (%1.1f%%)"),	myStats[ 5],(double)100*myStats[ 5]/totalclient);
-            stattree.SetItemText(clisoft[6], cbuffer);
+            stattree.SetItemText(clisoft[i++], cbuffer);
             cbuffer.Format(GetResString(IDS_STATS_UNKNOWNCLIENT)+_T(" (%1.1f%%)"),myStats[0] , (double)100*myStats[0]/totalclient);
-            stattree.SetItemText(clisoft[7], cbuffer);
+            stattree.SetItemText(clisoft[i++], cbuffer);
 
+			int index = 0;
             // CLIENTS -> CLIENT SOFTWARE -> EMULE SECTION
-            if (forceUpdate || stattree.IsExpanded(clisoft[0]) || cli_lastCount[0] == 0)
+            if (forceUpdate || stattree.IsExpanded(clisoft[index]) || cli_lastCount[index] == 0)
             {
                 UINT verCount = 0;
 
@@ -2416,40 +2476,133 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                     if (i >= MAX_SUB_CLIENT_VERSIONS/2)
                         totalOther += topcnt;
 
-                    if (i >= cli_lastCount[0])
+                    if (i >= cli_lastCount[index])
                     {
                         if (i == MAX_SUB_CLIENT_VERSIONS/2)
-                            cli_other[0] = stattree.InsertItem(GetResString(IDS_FSTAT_WAITING), clisoft[0]);
+                            cli_other[index] = stattree.InsertItem(GetResString(IDS_FSTAT_WAITING), clisoft[index]);
                         if (i >= MAX_SUB_CLIENT_VERSIONS/2)
-                            cli_versions[MAX_SUB_CLIENT_VERSIONS*0+i] = stattree.InsertItem(cbuffer, cli_other[0]);
+                            cli_versions[MAX_SUB_CLIENT_VERSIONS*index+i] = stattree.InsertItem(cbuffer, cli_other[index]);
                         else
-                            cli_versions[MAX_SUB_CLIENT_VERSIONS*0+i] = stattree.InsertItem(cbuffer, clisoft[0]);
+                            cli_versions[MAX_SUB_CLIENT_VERSIONS*index+i] = stattree.InsertItem(cbuffer, clisoft[index]);
                     }
                     else
-                        stattree.SetItemText(cli_versions[MAX_SUB_CLIENT_VERSIONS*0+i], cbuffer);
+                        stattree.SetItemText(cli_versions[MAX_SUB_CLIENT_VERSIONS*index+i], cbuffer);
 
                     verCount++;
                 }
                 if (verCount > MAX_SUB_CLIENT_VERSIONS/2)
                 {
                     cbuffer.Format(_T("%s: %i (%1.1f%%)"), GetResString(IDS_STATS_MINORCLIENTS), totalOther, (double)100 * totalOther / myStats[2]);
-                    stattree.SetItemText(cli_other[0], cbuffer);
+                    stattree.SetItemText(cli_other[index], cbuffer);
                 }
-                if (verCount < cli_lastCount[0])
+                if (verCount < cli_lastCount[index])
                 {
-                    for (UINT i = 0; i < cli_lastCount[0] - verCount; i++)
+                    for (UINT i = 0; i < cli_lastCount[index] - verCount; i++)
                     {
-                        stattree.DeleteItem(cli_versions[cli_lastCount[0] + (MAX_SUB_CLIENT_VERSIONS*0-1) - i]);
-                        if (cli_lastCount[0] + (MAX_SUB_CLIENT_VERSIONS*0-1) - i == MAX_SUB_CLIENT_VERSIONS/2)
-                            stattree.DeleteItem(cli_other[0]);
+                        stattree.DeleteItem(cli_versions[cli_lastCount[index] + (MAX_SUB_CLIENT_VERSIONS*index-1) - i]);
+                        if (cli_lastCount[index] + (MAX_SUB_CLIENT_VERSIONS*index-1) - i == MAX_SUB_CLIENT_VERSIONS/2)
+                            stattree.DeleteItem(cli_other[index]);
                     }
                 }
-                cli_lastCount[0] = verCount;
+                cli_lastCount[index] = verCount;
             } // End Clients -> Client Software -> eMule Section
+			++index;
 
+			// CLIENTS -> CLIENT SOFTWARE -> kMule SECTION
+			if (forceUpdate || stattree.IsExpanded(clisoft[index]) || cli_lastCount[index] == 0)
+			{
+				UINT verCount = 0;
+
+				//--- find top 4 kMule client versions ---
+				UINT currtopcnt = 0;
+				UINT currtopver = 0;
+				UINT totalOther = 0;
+				for (UINT i = 0; i < MAX_SUB_CLIENT_VERSIONS; i++)
+				{
+					POSITION pos = clientVersionKMule.GetStartPosition();
+					UINT topver = 0;
+					UINT topcnt = 0;
+					double topper = 0.0;
+					while (pos)
+					{
+						UINT ver;
+						UINT cnt;
+						clientVersionKMule.GetNextAssoc(pos, ver, cnt);
+						if (currtopcnt < cnt)
+						{
+							topper = (double)cnt/myStats[20];
+							topver = ver;
+							topcnt = cnt;
+							currtopcnt = cnt;
+							currtopver = ver;
+						}
+						else if (currtopcnt == cnt && currtopver < ver)
+						{
+							topver = ver;
+							currtopver = ver;
+						}
+					}
+					currtopcnt = 0;
+					currtopver = 0;
+					clientVersionKMule.RemoveKey(topver);
+
+					if (topcnt)
+					{
+						UINT verMaj = topver/(100*10*100);
+						UINT verMin = (topver - (verMaj*100*10*100))/(100*10);
+						UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
+
+						cbuffer.Format(L"Build%u", verMaj);
+						if(verMin < 10)
+							cbuffer.AppendFormat(L"0%u", verMin);
+						else
+							cbuffer.AppendFormat(L"%u", verMin);
+						if(verUp < 10)
+							cbuffer.AppendFormat(L"0%u", verUp);
+						else
+							cbuffer.AppendFormat(L"%u", verUp);
+						cbuffer.Format(L": %i (%1.1f%%)", topcnt, topper*100);
+					}
+					else
+						continue;
+
+					if (i >= MAX_SUB_CLIENT_VERSIONS/2)
+						totalOther += topcnt;
+
+					if (i >= cli_lastCount[index])
+					{
+						if (i == MAX_SUB_CLIENT_VERSIONS/2)
+							cli_other[index] = stattree.InsertItem(GetResString(IDS_FSTAT_WAITING), clisoft[index]);
+						if (i >= MAX_SUB_CLIENT_VERSIONS/2)
+							cli_versions[MAX_SUB_CLIENT_VERSIONS*index+i] = stattree.InsertItem(cbuffer, cli_other[index]);
+						else
+							cli_versions[MAX_SUB_CLIENT_VERSIONS*index+i] = stattree.InsertItem(cbuffer, clisoft[index]);
+					}
+					else
+						stattree.SetItemText(cli_versions[MAX_SUB_CLIENT_VERSIONS*index+i], cbuffer);
+
+					verCount++;
+				}
+				if (verCount > MAX_SUB_CLIENT_VERSIONS/2)
+				{
+					cbuffer.Format(_T("%s: %i (%1.1f%%)"), GetResString(IDS_STATS_MINORCLIENTS), totalOther, (double)100 * totalOther / myStats[20]);
+					stattree.SetItemText(cli_other[index], cbuffer);
+				}
+				if (verCount < cli_lastCount[index])
+				{
+					for (UINT i = 0; i < cli_lastCount[index] - verCount; i++)
+					{
+						stattree.DeleteItem(cli_versions[cli_lastCount[index] + (MAX_SUB_CLIENT_VERSIONS*index-1) - i]);
+						if (cli_lastCount[index] + (MAX_SUB_CLIENT_VERSIONS*index-1) - i == MAX_SUB_CLIENT_VERSIONS/2)
+							stattree.DeleteItem(cli_other[index]);
+					}
+				}
+				cli_lastCount[index] = verCount;
+			} // End Clients -> Client Software -> kMule Section
+			++index;
 
             // CLIENTS -> CLIENT SOFTWARE -> eD HYBRID SECTION
-            if (forceUpdate || stattree.IsExpanded(clisoft[1]) || cli_lastCount[1] == 0)
+            if (forceUpdate || stattree.IsExpanded(clisoft[index]) || cli_lastCount[index] == 0)
             {
                 UINT verCount = 0;
 
@@ -2499,14 +2652,14 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                     if (i >= MAX_SUB_CLIENT_VERSIONS/2)
                         totalOther += topcnt;
 
-                    if (i >= cli_lastCount[1])
+                    if (i >= cli_lastCount[index])
                     {
                         if (i == MAX_SUB_CLIENT_VERSIONS/2)
-                            cli_other[1] = stattree.InsertItem(GetResString(IDS_FSTAT_WAITING), clisoft[1]);
+                            cli_other[index] = stattree.InsertItem(GetResString(IDS_FSTAT_WAITING), clisoft[index]);
                         if (i >= MAX_SUB_CLIENT_VERSIONS/2)
-                            cli_versions[MAX_SUB_CLIENT_VERSIONS*1+i] = stattree.InsertItem(cbuffer, cli_other[1]);
+                            cli_versions[MAX_SUB_CLIENT_VERSIONS*index+i] = stattree.InsertItem(cbuffer, cli_other[index]);
                         else
-                            cli_versions[MAX_SUB_CLIENT_VERSIONS*1+i] = stattree.InsertItem(cbuffer, clisoft[1]);
+                            cli_versions[MAX_SUB_CLIENT_VERSIONS*index+i] = stattree.InsertItem(cbuffer, clisoft[index]);
                     }
                     else
                         stattree.SetItemText(cli_versions[MAX_SUB_CLIENT_VERSIONS*1+i], cbuffer);
@@ -2516,23 +2669,24 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                 if (verCount > MAX_SUB_CLIENT_VERSIONS/2)
                 {
                     cbuffer.Format(_T("%s: %i (%1.1f%%)"), GetResString(IDS_STATS_MINORCLIENTS), totalOther, (double)100 * totalOther / myStats[4]);
-                    stattree.SetItemText(cli_other[1], cbuffer);
+                    stattree.SetItemText(cli_other[index], cbuffer);
                 }
-                if (verCount < cli_lastCount[1])
+                if (verCount < cli_lastCount[index])
                 {
-                    for (UINT i = 0; i < cli_lastCount[1] - verCount; i++)
+                    for (UINT i = 0; i < cli_lastCount[index] - verCount; i++)
                     {
-                        stattree.DeleteItem(cli_versions[cli_lastCount[1] + (MAX_SUB_CLIENT_VERSIONS*1-1) - i]);
-                        if (cli_lastCount[1] + (MAX_SUB_CLIENT_VERSIONS*1-1) - i == MAX_SUB_CLIENT_VERSIONS/2)
-                            stattree.DeleteItem(cli_other[1]);
+                        stattree.DeleteItem(cli_versions[cli_lastCount[index] + (MAX_SUB_CLIENT_VERSIONS*index-1) - i]);
+                        if (cli_lastCount[index] + (MAX_SUB_CLIENT_VERSIONS*index-1) - i == MAX_SUB_CLIENT_VERSIONS/2)
+                            stattree.DeleteItem(cli_other[index]);
                     }
                 }
-                cli_lastCount[1] = verCount;
+                cli_lastCount[index] = verCount;
             } // End Clients -> Client Software -> eD Hybrid Section
+			++index;
 
 
             // CLIENTS -> CLIENT SOFTWARE -> EDONKEY SECTION
-            if (forceUpdate || stattree.IsExpanded(clisoft[2]) || cli_lastCount[2] == 0)
+            if (forceUpdate || stattree.IsExpanded(clisoft[index]) || cli_lastCount[index] == 0)
             {
                 UINT verCount = 0;
 
@@ -2582,40 +2736,41 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                     if (i >= MAX_SUB_CLIENT_VERSIONS/2)
                         totalOther += topcnt;
 
-                    if (i >= cli_lastCount[2])
+                    if (i >= cli_lastCount[index])
                     {
                         if (i == MAX_SUB_CLIENT_VERSIONS/2)
-                            cli_other[2] = stattree.InsertItem(GetResString(IDS_FSTAT_WAITING), clisoft[2]);
+                            cli_other[index] = stattree.InsertItem(GetResString(IDS_FSTAT_WAITING), clisoft[index]);
                         if (i >= MAX_SUB_CLIENT_VERSIONS/2)
-                            cli_versions[MAX_SUB_CLIENT_VERSIONS*2+i] = stattree.InsertItem(cbuffer, cli_other[2]);
+                            cli_versions[MAX_SUB_CLIENT_VERSIONS*index+i] = stattree.InsertItem(cbuffer, cli_other[index]);
                         else
-                            cli_versions[MAX_SUB_CLIENT_VERSIONS*2+i] = stattree.InsertItem(cbuffer, clisoft[2]);
+                            cli_versions[MAX_SUB_CLIENT_VERSIONS*index+i] = stattree.InsertItem(cbuffer, clisoft[index]);
                     }
                     else
-                        stattree.SetItemText(cli_versions[MAX_SUB_CLIENT_VERSIONS*2+i], cbuffer);
+                        stattree.SetItemText(cli_versions[MAX_SUB_CLIENT_VERSIONS*index+i], cbuffer);
 
                     verCount++;
                 }
                 if (verCount > MAX_SUB_CLIENT_VERSIONS/2)
                 {
                     cbuffer.Format(_T("%s: %i (%1.1f%%)"), GetResString(IDS_STATS_MINORCLIENTS), totalOther, (double)100 * totalOther / myStats[1]);
-                    stattree.SetItemText(cli_other[2], cbuffer);
+                    stattree.SetItemText(cli_other[index], cbuffer);
                 }
-                if (verCount < cli_lastCount[2])
+                if (verCount < cli_lastCount[index])
                 {
-                    for (UINT i = 0; i < cli_lastCount[2] - verCount; i++)
+                    for (UINT i = 0; i < cli_lastCount[index] - verCount; i++)
                     {
-                        stattree.DeleteItem(cli_versions[cli_lastCount[2] + (MAX_SUB_CLIENT_VERSIONS*2-1) - i]);
-                        if (cli_lastCount[2] + (MAX_SUB_CLIENT_VERSIONS*2-1) - i == MAX_SUB_CLIENT_VERSIONS/2)
-                            stattree.DeleteItem(cli_other[2]);
+                        stattree.DeleteItem(cli_versions[cli_lastCount[index] + (MAX_SUB_CLIENT_VERSIONS*index-1) - i]);
+                        if (cli_lastCount[index] + (MAX_SUB_CLIENT_VERSIONS*index-1) - i == MAX_SUB_CLIENT_VERSIONS/2)
+                            stattree.DeleteItem(cli_other[index]);
                     }
                 }
-                cli_lastCount[2] = verCount;
+                cli_lastCount[index] = verCount;
             } // End Clients -> Client Software -> eDonkey Section
+			++index;
 
 
             // CLIENTS -> CLIENT SOFTWARE -> AMULE SECTION
-            if (forceUpdate || stattree.IsExpanded(clisoft[3]) || cli_lastCount[3] == 0)
+            if (forceUpdate || stattree.IsExpanded(clisoft[index]) || cli_lastCount[index] == 0)
             {
                 UINT verCount = 0;
 
@@ -2668,35 +2823,35 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
                     if (i >= MAX_SUB_CLIENT_VERSIONS/2)
                         totalOther += topcnt;
 
-                    if (i >= cli_lastCount[3])
+                    if (i >= cli_lastCount[index])
                     {
                         if (i == MAX_SUB_CLIENT_VERSIONS/2)
-                            cli_other[3] = stattree.InsertItem(GetResString(IDS_FSTAT_WAITING), clisoft[3]);
+                            cli_other[index] = stattree.InsertItem(GetResString(IDS_FSTAT_WAITING), clisoft[index]);
                         if (i >= MAX_SUB_CLIENT_VERSIONS/2)
-                            cli_versions[MAX_SUB_CLIENT_VERSIONS*3+i] = stattree.InsertItem(cbuffer, cli_other[3]);
+                            cli_versions[MAX_SUB_CLIENT_VERSIONS*index+i] = stattree.InsertItem(cbuffer, cli_other[index]);
                         else
-                            cli_versions[MAX_SUB_CLIENT_VERSIONS*3+i] = stattree.InsertItem(cbuffer, clisoft[3]);
+                            cli_versions[MAX_SUB_CLIENT_VERSIONS*index+i] = stattree.InsertItem(cbuffer, clisoft[index]);
                     }
                     else
-                        stattree.SetItemText(cli_versions[MAX_SUB_CLIENT_VERSIONS*3+i], cbuffer);
+                        stattree.SetItemText(cli_versions[MAX_SUB_CLIENT_VERSIONS*index+i], cbuffer);
 
                     verCount++;
                 }
                 if (verCount > MAX_SUB_CLIENT_VERSIONS/2)
                 {
                     cbuffer.Format(_T("%s: %i (%1.1f%%)"), GetResString(IDS_STATS_MINORCLIENTS), totalOther, (double)100 * totalOther / myStats[10]);
-                    stattree.SetItemText(cli_other[3], cbuffer);
+                    stattree.SetItemText(cli_other[index], cbuffer);
                 }
-                if (verCount < cli_lastCount[3])
+                if (verCount < cli_lastCount[index])
                 {
-                    for (UINT i = 0; i < cli_lastCount[3] - verCount; i++)
+                    for (UINT i = 0; i < cli_lastCount[index] - verCount; i++)
                     {
-                        stattree.DeleteItem(cli_versions[cli_lastCount[3] + (MAX_SUB_CLIENT_VERSIONS*3-1) - i]);
-                        if (cli_lastCount[3] + (MAX_SUB_CLIENT_VERSIONS*3-1) - i == MAX_SUB_CLIENT_VERSIONS/2)
-                            stattree.DeleteItem(cli_other[3]);
+                        stattree.DeleteItem(cli_versions[cli_lastCount[index] + (MAX_SUB_CLIENT_VERSIONS*index-1) - i]);
+                        if (cli_lastCount[index] + (MAX_SUB_CLIENT_VERSIONS*index-1) - i == MAX_SUB_CLIENT_VERSIONS/2)
+                            stattree.DeleteItem(cli_other[index]);
                     }
                 }
-                cli_lastCount[3] = verCount;
+                cli_lastCount[index] = verCount;
             } // End Clients -> Client Software -> aMule Section
 
         } // - End Clients -> Client Software Section
@@ -3324,16 +3479,21 @@ void CStatisticsDlg::OnStnDblclickStatsscope()
 LRESULT CStatisticsDlg::OnOscopePositionMsg(WPARAM /*wParam*/, LPARAM lParam)
 {
     LPCTSTR pszInfo = (LPCTSTR)lParam;
-    m_TimeToolTips->UpdateTipText(pszInfo, GetDlgItem(IDC_SCOPE_D));
-    m_TimeToolTips->UpdateTipText(pszInfo, GetDlgItem(IDC_SCOPE_U));
-    m_TimeToolTips->UpdateTipText(pszInfo, GetDlgItem(IDC_STATSSCOPE));
-    m_TimeToolTips->Update();
+	if(m_TimeToolTips)
+	{
+		m_TimeToolTips->UpdateTipText(pszInfo, GetDlgItem(IDC_SCOPE_D));
+		m_TimeToolTips->UpdateTipText(pszInfo, GetDlgItem(IDC_SCOPE_U));
+		m_TimeToolTips->UpdateTipText(pszInfo, GetDlgItem(IDC_STATSSCOPE));
+		m_TimeToolTips->Update();
+	}
     return 0;
 }
 
 BOOL CStatisticsDlg::PreTranslateMessage(MSG* pMsg)
 {
-    m_TimeToolTips->RelayEvent(pMsg);
+	// WiZaRd: FiX! If stats are the last opened window and tooltips aren't created while launching, we may crash here
+	if(m_TimeToolTips)
+		m_TimeToolTips->RelayEvent(pMsg);
 
     if (pMsg->message == WM_KEYDOWN)
     {

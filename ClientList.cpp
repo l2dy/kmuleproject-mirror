@@ -67,6 +67,7 @@ void CClientList::GetStatistics(UINT &ruTotalClients, int stats[NUM_CLIENTLIST_S
                                 CMap<UINT, UINT, UINT, UINT>& clientVersionEDonkey,
                                 CMap<UINT, UINT, UINT, UINT>& clientVersionEDonkeyHybrid,
                                 CMap<UINT, UINT, UINT, UINT>& clientVersionEMule,
+								CMap<UINT, UINT, UINT, UINT>& clientVersionKMule,
                                 CMap<UINT, UINT, UINT, UINT>& clientVersionAMule)
 {
     ruTotalClients = list.GetCount();
@@ -86,6 +87,13 @@ void CClientList::GetStatistics(UINT &ruTotalClients, int stats[NUM_CLIENTLIST_S
             stats[2]++;
             clientVersionEMule[cur_client->GetVersion()]++;
             break;
+
+//>>> WiZaRd::kMule Version Ident
+		case SO_KMULE:
+			++stats[20];
+			++clientVersionKMule[cur_client->GetVersion()];
+			break;
+//<<< WiZaRd::kMule Version Ident
 
         case SO_EDONKEYHYBRID :
             stats[4]++;
@@ -1097,3 +1105,11 @@ bool CClientList::AllowCalbackRequest(UINT dwIP) const
     }
     return true;
 }
+
+//>>> WiZaRd::ModIconMapper
+void CClientList::UpdateModIconIndexes() const
+{
+	for(POSITION pos = list.GetHeadPosition(); pos != NULL;)  
+		list.GetNext(pos)->CheckModIconIndex();
+}
+//<<< WiZaRd::ModIconMapper

@@ -322,11 +322,6 @@ private:
     }
 
     CList<int> m_liDefaultHiddenColumns;
-
-//>>> WiZaRd::ClientAnalyzer
-public:
-    int badguy;
-//<<< WiZaRd::ClientAnalyzer
 };
 
 void GetContextMenuPosition(CListCtrl& lv, CPoint& point);

@@ -96,6 +96,7 @@
 #include "./Mod/extractfile.h"
 //<<< WiZaRd::MediaInfoDLL Update
 #include "./Mod/CustomSearches.h" //>>> WiZaRd::CustomSearches
+#include "./Mod/ModIconMapping.h" //>>> WiZaRd::ModIconMappings
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -327,6 +328,10 @@ void DialogCreateIndirect(CDialog *pWnd, UINT uID)
 //#include <winuser.h>
 BOOL CemuleDlg::OnInitDialog()
 {
+	//WiZaRd: updates that are performed on startup might take a while... moved here to avoid ASSERTs
+	theApp.SetSplashText(L"Loading modicons..."); //>>> WiZaRd::New Splash
+	theApp.theModIconMap = new CModIconMapper(); //>>> WiZaRd::ModIconMappings
+
 #ifdef HAVE_WIN7_SDK_H
     // allow the TaskbarButtonCreated- & (tbb-)WM_COMMAND message to be sent to our window if our app is running elevated
     if (thePrefs.GetWindowsVersion() >= _WINVER_7_)
@@ -700,6 +705,10 @@ void CemuleDlg::StopTimer()
         delete theApp.pstrPendingLink;
     }
 
+//>>> WiZaRd::ModIconDLL Update
+	if (thePrefs.IsAutoUpdateModIconDllEnabled())
+		theApp.theModIconMap->Update();
+//<<< WiZaRd::ModIconDLL Update
 //>>> WiZaRd::IPFilter-Update
     if (thePrefs.IsAutoUpdateIPFilterEnabled())
         theApp.ipfilter->UpdateIPFilterURL();
@@ -1753,6 +1762,10 @@ void CemuleDlg::OnClose()
     delete theApp.customSearches;
     theApp.customSearches = NULL;
 //<<< WiZaRd::CustomSearches
+//>>> WiZaRd::ModIconMappings
+	delete theApp.theModIconMap;
+	theApp.theModIconMap = NULL;
+//<<< WiZaRd::ModIconMappings
 //>>> WiZaRd::ClientAnalyzer
     //moved down so all other cleanups can perform first...
     delete theApp.antileechlist;

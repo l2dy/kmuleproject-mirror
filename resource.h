@@ -2,6 +2,8 @@
 // Microsoft Visual C++ generated include file.
 // Used by emule.rc
 //
+#include "./Mod/resourcemod.h"
+
 #define IDC_STATUSBAR                   100
 #define IDD_ABOUTBOX                    101
 #define IDD_EMULE_DIALOG                102

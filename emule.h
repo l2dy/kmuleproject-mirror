@@ -51,6 +51,7 @@ class CSplashScreenEx;
 class CAntiLeechDataList; //>>> WiZaRd::ClientAnalyzer
 class CAutoUpdate; //>>> WiZaRd::AutoUpdate
 class CCustomSearches; //>>> WiZaRd::CustomSearches
+class CModIconMapper; //>>> WiZaRd::ModIconMappings
 
 struct SLogItem;
 
@@ -87,6 +88,7 @@ public:
     CAntiLeechDataList* antileechlist; //>>> WiZaRd::ClientAnalyzer
     CAutoUpdate*		autoUpdater; //>>> WiZaRd::AutoUpdate
     CCustomSearches*	customSearches; //>>> WiZaRd::CustomSearches
+	CModIconMapper*		theModIconMap; //>>> WiZaRd::ModIconMappings
 
     HANDLE				m_hMutexOneInstance;
     int					m_iDfltImageListColorFlags;

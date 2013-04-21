@@ -31,6 +31,7 @@
 #include "ChatWnd.h"
 #include "Kademlia/Kademlia/Kademlia.h"
 #include "Kademlia/net/KademliaUDPListener.h"
+#include "./Mod/ModIconMapping.h" //>>> WiZaRd::ModIconMappings
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -132,16 +133,7 @@ void CClientListCtrl::SetAllIcons()
     ApplyImageList(NULL);
     m_ImageList.DeleteImageList();
     m_ImageList.Create(16, 16, theApp.m_iDfltImageListColorFlags | ILC_MASK, 0, 1);
-    m_ImageList.Add(CTempIconLoader(_T("ClientEDonkey")));
-    m_ImageList.Add(CTempIconLoader(_T("ClientCompatible")));
-    m_ImageList.Add(CTempIconLoader(_T("Friend")));
-    m_ImageList.Add(CTempIconLoader(_T("ClientMLDonkey")));
-    m_ImageList.Add(CTempIconLoader(_T("ClientEDonkeyHybrid")));
-    m_ImageList.Add(CTempIconLoader(_T("ClientShareaza")));
-    m_ImageList.Add(CTempIconLoader(_T("Server")));
-    m_ImageList.Add(CTempIconLoader(_T("ClientAMule")));
-    m_ImageList.Add(CTempIconLoader(_T("ClientLPhant")));
-    badguy = m_ImageList.Add(CTempIconLoader(L"BADGUY")); //>>> WiZaRd::ClientAnalyzer
+    FillClientIconImageList(m_ImageList);
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("ClientSecureOvl"))), 1);
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("OverlayObfu"))), 2);
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("OverlaySecureObfu"))), 3);
@@ -188,34 +180,16 @@ void CClientListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
                 {
 //>>> WiZaRd::ClientAnalyzer
                     int plusminus = 0;
-                    if (badguy != -1 && client->IsBadGuy())
+                    if (client->IsBadGuy())
                     {
                         int iIconPosY = (cur_rec.Height() > 16) ? ((cur_rec.Height() - 16) / 2) : 1;
                         POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
-                        m_ImageList.Draw(dc, badguy, point, ILD_NORMAL);
+                        m_ImageList.Draw(dc, 18, point, ILD_NORMAL);
                         cur_rec.left += 17;
                         plusminus += 17;
                     }
 //<<< WiZaRd::ClientAnalyzer
-                    int iImage;
-                    if (client->IsFriend())
-                        iImage = 2;
-                    else if (client->GetClientSoft() == SO_EDONKEYHYBRID)
-                        iImage = 4;
-                    else if (client->GetClientSoft() == SO_MLDONKEY)
-                        iImage = 3;
-                    else if (client->GetClientSoft() == SO_SHAREAZA)
-                        iImage = 5;
-                    else if (client->GetClientSoft() == SO_URL)
-                        iImage = 6;
-                    else if (client->GetClientSoft() == SO_AMULE)
-                        iImage = 7;
-                    else if (client->GetClientSoft() == SO_LPHANT)
-                        iImage = 8;
-                    else if (client->ExtProtocolAvailable())
-                        iImage = 1;
-                    else
-                        iImage = 0;
+                    int iImage = GetClientImageIndex(client->IsFriend(), client->GetClientSoft(), client->Credits() && client->Credits()->GetScoreRatio(client->GetIP()) > 1, client->ExtProtocolAvailable());
 
                     UINT nOverlayImage = 0;
                     if ((client->Credits() && client->Credits()->GetCurrentIdentState(client->GetIP()) == IS_IDENTIFIED))
@@ -227,6 +201,18 @@ void CClientListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
                     m_ImageList.Draw(dc, iImage, point, ILD_NORMAL | INDEXTOOVERLAYMASK(nOverlayImage));
 
                     cur_rec.left += 16 + sm_iLabelOffset;
+
+//>>> WiZaRd::ModIconMappings
+					int icoindex = client->GetModIconIndex();
+					if(icoindex != MODMAP_NONE)
+					{	
+						POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
+						theApp.theModIconMap->DrawModIcon(dc, icoindex, point, ILD_NORMAL);
+						cur_rec.left += 17;
+						plusminus += 17;
+					}
+//<<< WiZaRd::ModIconMappings
+
                     dc.DrawText(szItem, -1, &cur_rec, MLC_DT_TEXT | uDrawTextAlignment);
                     cur_rec.left -= 16;
                     cur_rec.right -= sm_iSubItemInset;

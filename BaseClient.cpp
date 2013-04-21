@@ -61,6 +61,7 @@
 #include "./Mod/ClientAnalyzer.h"
 #include "Version.h"
 //<<< WiZaRd::ClientAnalyzer
+#include "./Mod/ModIconMapping.h" //>>> WiZaRd::ModIconMapper
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -68,7 +69,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#define URLINDICATOR	_T("http:|www.|.de |.net |.com |.org |.to |.tk |.cc |.fr |ftp:|ed2k:|https:|ftp.|.info|.biz|.uk|.eu|.es|.tv|.cn|.tw|.ws|.nu|.jp")
+#define URLINDICATOR	L"http:|www.|.de |.net |.com |.org |.to |.tk |.cc |.fr |ftp:|ed2k:|https:|ftp.|.info|.biz|.uk|.eu|.es|.tv|.cn|.tw|.ws|.nu|.jp"
 
 IMPLEMENT_DYNAMIC(CClientException, CException)
 IMPLEMENT_DYNAMIC(CUpDownClient, CObject)
@@ -107,6 +108,7 @@ CUpDownClient::CUpDownClient(CPartFile* in_reqfile, uint16 in_port, UINT in_user
 
 void CUpDownClient::Init()
 {
+	m_iModIconIndex = MODMAP_NONE; //>>> WiZaRd::ModIconMapper
 //>>> WiZaRd::ZZUL Upload [ZZ]
     m_nCurQueueSessionUp = 0;
     m_nCurSessionPayloadUp = 0;
@@ -303,7 +305,7 @@ CUpDownClient::~CUpDownClient()
         m_Friend->SetLinkedClient(NULL);
     }
     ASSERT(m_nConnectingState == CCS_NONE || !theApp.emuledlg->IsRunning());
-    theApp.clientlist->RemoveClient(this, _T("Destructing client object"));
+    theApp.clientlist->RemoveClient(this, L"Destructing client object");
 
     if (socket)
     {
@@ -421,19 +423,19 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 
     data->ReadHash16(m_achUserHash);
     if (bDbgInfo)
-        m_strHelloInfo.AppendFormat(_T("Hash=%s (%s)"), md4str(m_achUserHash), DbgGetHashTypeString(m_achUserHash));
+        m_strHelloInfo.AppendFormat(L"Hash=%s (%s)", md4str(m_achUserHash), DbgGetHashTypeString(m_achUserHash));
     m_nUserIDHybrid = data->ReadUInt32();
     if (bDbgInfo)
-        m_strHelloInfo.AppendFormat(_T("  UserID=%u (%s)"), m_nUserIDHybrid, ipstr(m_nUserIDHybrid));
+        m_strHelloInfo.AppendFormat(L"  UserID=%u (%s)", m_nUserIDHybrid, ipstr(m_nUserIDHybrid));
     uint16 nUserPort = data->ReadUInt16(); // hmm clientport is sent twice - why?
     if (bDbgInfo)
-        m_strHelloInfo.AppendFormat(_T("  Port=%u"), nUserPort);
+        m_strHelloInfo.AppendFormat(L"  Port=%u", nUserPort);
 
     DWORD dwEmuleTags = 0;
     bool bPrTag = false;
     UINT tagcount = data->ReadUInt32();
     if (bDbgInfo)
-        m_strHelloInfo.AppendFormat(_T("  Tags=%u"), tagcount);
+        m_strHelloInfo.AppendFormat(L"  Tags=%u", tagcount);
 
 //>>> WiZaRd::ClientAnalyzer
     bool bNick = false;
@@ -460,16 +462,16 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
                         TCHAR* psz = m_pszUsername;
                         while (*psz != L'\0')
                         {
-                            if (*psz == _T('\n') || *psz == _T('\r'))
-                                *psz = _T(' ');
+                            if (*psz == L'\n' || *psz == L'\r')
+                                *psz = L' ';
                             psz++;
                         }
                     }
-                    m_strHelloInfo.AppendFormat(_T("\n  Name='%s'"), m_pszUsername);
+                    m_strHelloInfo.AppendFormat(L"\n  Name='%s'", m_pszUsername);
                 }
             }
             else if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(_T("\n  ***UnkType=%s"), temptag.GetFullInfo());
+                m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
             bNick = true; //>>> WiZaRd::ClientAnalyzer
             break;
 
@@ -477,33 +479,33 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
             if (temptag.IsInt())
             {
                 if (bDbgInfo)
-                    m_strHelloInfo.AppendFormat(_T("\n  Version=%u"), temptag.GetInt());
+                    m_strHelloInfo.AppendFormat(L"\n  Version=%u", temptag.GetInt());
                 m_nClientVersion = temptag.GetInt();
             }
             else if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(_T("\n  ***UnkType=%s"), temptag.GetFullInfo());
+                m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
             break;
 
         case CT_PORT:
             if (temptag.IsInt())
             {
                 if (bDbgInfo)
-                    m_strHelloInfo.AppendFormat(_T("\n  Port=%u"), temptag.GetInt());
+                    m_strHelloInfo.AppendFormat(L"\n  Port=%u", temptag.GetInt());
                 nUserPort = (uint16)temptag.GetInt();
             }
             else if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(_T("\n  ***UnkType=%s"), temptag.GetFullInfo());
+                m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
             break;
 
         case CT_MOD_VERSION:
             if (temptag.IsStr())
                 m_strModVersion = temptag.GetStr();
             else if (temptag.IsInt())
-                m_strModVersion.Format(_T("ModID=%u"), temptag.GetInt());
+                m_strModVersion.Format(L"ModID=%u", temptag.GetInt());
             else
-                m_strModVersion = _T("ModID=<Unknown>");
+                m_strModVersion = L"ModID=<Unknown>";
             if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(_T("\n  ModID=%s"), m_strModVersion);
+                m_strHelloInfo.AppendFormat(L"\n  ModID=%s", m_strModVersion);
             bMod = true; //>>> WiZaRd::ClientAnalyzer
             break;
 
@@ -515,12 +517,12 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
                 m_nKadPort = (uint16)(temptag.GetInt() >> 16);
                 m_nUDPPort = (uint16)temptag.GetInt();
                 if (bDbgInfo)
-                    m_strHelloInfo.AppendFormat(_T("\n  KadPort=%u  UDPPort=%u"), m_nKadPort, m_nUDPPort);
+                    m_strHelloInfo.AppendFormat(L"\n  KadPort=%u  UDPPort=%u", m_nKadPort, m_nUDPPort);
                 dwEmuleTags |= 1;
                 bWasUDPPortSent = true; //>>> WiZaRd::ClientAnalyzer //>>> zz_fly::Bad Shareaza detection
             }
             else if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(_T("\n  ***UnkType=%s"), temptag.GetFullInfo());
+                m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
             break;
 
         case CT_EMULE_BUDDYUDP:
@@ -530,10 +532,10 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
             {
                 m_nBuddyPort = (uint16)temptag.GetInt();
                 if (bDbgInfo)
-                    m_strHelloInfo.AppendFormat(_T("\n  BuddyPort=%u"), m_nBuddyPort);
+                    m_strHelloInfo.AppendFormat(L"\n  BuddyPort=%u", m_nBuddyPort);
             }
             else if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(_T("\n  ***UnkType=%s"), temptag.GetFullInfo());
+                m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
             break;
 
         case CT_EMULE_BUDDYIP:
@@ -542,10 +544,10 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
             {
                 m_nBuddyIP = temptag.GetInt();
                 if (bDbgInfo)
-                    m_strHelloInfo.AppendFormat(_T("\n  BuddyIP=%s"), ipstr(m_nBuddyIP));
+                    m_strHelloInfo.AppendFormat(L"\n  BuddyIP=%s", ipstr(m_nBuddyIP));
             }
             else if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(_T("\n  ***UnkType=%s"), temptag.GetFullInfo());
+                m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
             break;
 
         case CT_EMULE_MISCOPTIONS1:
@@ -578,8 +580,8 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
                 dwEmuleTags |= 2;
                 if (bDbgInfo)
                 {
-                    m_strHelloInfo.AppendFormat(_T("\n  PeerCache=%u  UDPVer=%u  DataComp=%u  SecIdent=%u  SrcExchg=%u")
-                                                _T("  ExtReq=%u  Commnt=%u  Preview=%u  NoViewFiles=%u  Unicode=%u"),
+                    m_strHelloInfo.AppendFormat(L"\n  PeerCache=%u  UDPVer=%u  DataComp=%u  SecIdent=%u  SrcExchg=%u"
+                                                L"  ExtReq=%u  Commnt=%u  Preview=%u  NoViewFiles=%u  Unicode=%u",
                                                 m_fPeerCache, m_byUDPVer, m_byDataCompVer, m_bySupportSecIdent, m_bySourceExchange1Ver,
                                                 m_byExtendedRequestsVer, m_byAcceptCommentVer, m_fSupportsPreview, m_fNoViewSharedFiles, m_bUnicodeSupport);
                 }
@@ -591,7 +593,7 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 //<<< WiZaRd::ClientAnalyzer
             }
             else if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(_T("\n  ***UnkType=%s"), temptag.GetFullInfo());
+                m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
             break;
 
         case CT_EMULE_MISCOPTIONS2:
@@ -622,7 +624,7 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
                 m_byKadVersion			= (uint8)((temptag.GetInt() >>  0) & 0x0f);
                 dwEmuleTags |= 8;
                 if (bDbgInfo)
-                    m_strHelloInfo.AppendFormat(_T("\n  KadVersion=%u, LargeFiles=%u ExtMultiPacket=%u CryptLayerSupport=%u CryptLayerRequest=%u CryptLayerRequires=%u SupportsSourceEx2=%u SupportsCaptcha=%u DirectUDPCallback=%u"), m_byKadVersion, m_fSupportsLargeFiles, m_fExtMultiPacket, m_fSupportsCryptLayer, m_fRequestsCryptLayer, m_fRequiresCryptLayer, m_fSupportsSourceEx2, m_fSupportsCaptcha, m_fDirectUDPCallback);
+                    m_strHelloInfo.AppendFormat(L"\n  KadVersion=%u, LargeFiles=%u ExtMultiPacket=%u CryptLayerSupport=%u CryptLayerRequest=%u CryptLayerRequires=%u SupportsSourceEx2=%u SupportsCaptcha=%u DirectUDPCallback=%u", m_byKadVersion, m_fSupportsLargeFiles, m_fExtMultiPacket, m_fSupportsCryptLayer, m_fRequestsCryptLayer, m_fRequiresCryptLayer, m_fSupportsSourceEx2, m_fSupportsCaptcha, m_fDirectUDPCallback);
                 m_fRequestsCryptLayer &= m_fSupportsCryptLayer;
                 m_fRequiresCryptLayer &= m_fRequestsCryptLayer;
 //>>> WiZaRd::ClientAnalyzer
@@ -633,7 +635,7 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 //<<< WiZaRd::ClientAnalyzer
             }
             else if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(_T("\n  ***UnkType=%s"), temptag.GetFullInfo());
+                m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
             break;
 
         case CT_EMULE_VERSION:
@@ -651,10 +653,10 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
                 m_fSharedDirectories = 1;
                 dwEmuleTags |= 4;
                 if (bDbgInfo)
-                    m_strHelloInfo.AppendFormat(_T("\n  ClientVer=%u.%u.%u.%u  Comptbl=%u"), (m_nClientVersion >> 17) & 0x7f, (m_nClientVersion >> 10) & 0x7f, (m_nClientVersion >> 7) & 0x07, m_nClientVersion & 0x7f, m_byCompatibleClient);
+                    m_strHelloInfo.AppendFormat(L"\n  ClientVer=%u.%u.%u.%u  Comptbl=%u", (m_nClientVersion >> 17) & 0x7f, (m_nClientVersion >> 10) & 0x7f, (m_nClientVersion >> 7) & 0x07, m_nClientVersion & 0x7f, m_byCompatibleClient);
             }
             else if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(_T("\n  ***UnkType=%s"), temptag.GetFullInfo());
+                m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
             break;
 
 //>>> WiZaRd::ICS [enkeyDEV]
@@ -677,14 +679,14 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
                 bPrTag = true;
             }
             if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(_T("\n  ***UnkTag=%s"), temptag.GetFullInfo());
+                m_strHelloInfo.AppendFormat(L"\n  ***UnkTag=%s", temptag.GetFullInfo());
         }
     }
     m_nUserPort = nUserPort;
     m_dwServerIP = data->ReadUInt32();
     m_nServerPort = data->ReadUInt16();
     if (bDbgInfo)
-        m_strHelloInfo.AppendFormat(_T("\n  Server=%s:%u"), ipstr(m_dwServerIP), m_nServerPort);
+        m_strHelloInfo.AppendFormat(L"\n  Server=%s:%u", ipstr(m_dwServerIP), m_nServerPort);
 
     // Check for additional data in Hello packet to determine client's software version.
     //
@@ -698,13 +700,13 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
         {
             m_bIsML = true;
             if (bDbgInfo)
-                m_strHelloInfo += _T("\n  ***AddData: \"MLDK\"");
+                m_strHelloInfo += L"\n  ***AddData: \"MLDK\"";
         }
         else
         {
             m_bIsHybrid = true;
             if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(_T("\n  ***AddData: UINT=%u (0x%08x)"), test, test);
+                m_strHelloInfo.AppendFormat(L"\n  ***AddData: UINT=%u (0x%08x)", test, test);
         }
     }
     else if (bDbgInfo && data->GetPosition() < data->GetLength())
@@ -713,16 +715,16 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
         if (uAddHelloDataSize == sizeof(UINT))
         {
             DWORD dwAddHelloInt32 = data->ReadUInt32();
-            m_strHelloInfo.AppendFormat(_T("\n  ***AddData: UINT=%u (0x%08x)"), dwAddHelloInt32, dwAddHelloInt32);
+            m_strHelloInfo.AppendFormat(L"\n  ***AddData: UINT=%u (0x%08x)", dwAddHelloInt32, dwAddHelloInt32);
         }
         else if (uAddHelloDataSize == sizeof(UINT)+sizeof(uint16))
         {
             DWORD dwAddHelloInt32 = data->ReadUInt32();
             WORD w = data->ReadUInt16();
-            m_strHelloInfo.AppendFormat(_T("\n  ***AddData: UINT=%u (0x%08x),  uint16=%u (0x%04x)"), dwAddHelloInt32, dwAddHelloInt32, w, w);
+            m_strHelloInfo.AppendFormat(L"\n  ***AddData: UINT=%u (0x%08x),  uint16=%u (0x%04x)", dwAddHelloInt32, dwAddHelloInt32, w, w);
         }
         else
-            m_strHelloInfo.AppendFormat(_T("\n  ***AddData: %u bytes"), uAddHelloDataSize);
+            m_strHelloInfo.AppendFormat(L"\n  ***AddData: %u bytes", uAddHelloDataSize);
     }
 
     SOCKADDR_IN sockAddr = {0};
@@ -744,7 +746,7 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
         if (!theApp.clientlist->ComparePriorUserhash(m_dwUserIP, m_nUserPort, pFoundCredits))
         {
             if (thePrefs.GetLogBannedClients())
-                AddDebugLogLine(false, _T("Clients: %s (%s), Banreason: Userhash changed (Found in TrackedClientsList)"), GetUserName(), ipstr(GetConnectIP()));
+                AddDebugLogLine(false, L"Clients: %s (%s), Banreason: Userhash changed (Found in TrackedClientsList)", GetUserName(), ipstr(GetConnectIP()));
             Ban();
         }
     }
@@ -753,7 +755,7 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
         // userhash change ok, however two hours "waittime" before it can be used
         credits = pFoundCredits;
         if (thePrefs.GetLogBannedClients())
-            AddDebugLogLine(false, _T("Clients: %s (%s), Banreason: Userhash changed"), GetUserName(), ipstr(GetConnectIP()));
+            AddDebugLogLine(false, L"Clients: %s (%s), Banreason: Userhash changed", GetUserName(), ipstr(GetConnectIP()));
         Ban();
     }
 
@@ -836,14 +838,15 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
         }
         pAntiLeechData->Check4ModFaker(bIsBadShareaza);
     }
-    CheckForGPLEvilDoer(bNick, bMod); //>>> WiZaRd::More GPLEvilDoers
+    CheckForGPLEvilDoer(bNick, bMod); //>>> WiZaRd::More GPLEvilDoers	
 //<<< WiZaRd::ClientAnalyzer
+	CheckModIconIndex(); //>>> WiZaRd::ModIconMapper
 
     if (m_bIsHybrid)
         m_fSharedDirectories = 1;
 
     if (thePrefs.GetVerbose() && GetServerIP() == INADDR_NONE)
-        AddDebugLogLine(false, _T("Received invalid server IP %s from %s"), ipstr(GetServerIP()), DbgGetClientInfo());
+        AddDebugLogLine(false, L"Received invalid server IP %s from %s", ipstr(GetServerIP()), DbgGetClientInfo());
 
     return bIsMule;
 }
@@ -939,12 +942,12 @@ void CUpDownClient::ProcessMuleInfoPacket(const uchar* pachPacket, UINT nSize)
     m_byCompatibleClient = 0;
     m_byEmuleVersion = data.ReadUInt8();
     if (bDbgInfo)
-        m_strMuleInfo.AppendFormat(_T("EmuleVer=0x%x"), (UINT)m_byEmuleVersion);
+        m_strMuleInfo.AppendFormat(L"EmuleVer=0x%x", (UINT)m_byEmuleVersion);
     if (m_byEmuleVersion == 0x2B)
         m_byEmuleVersion = 0x22;
     uint8 protversion = data.ReadUInt8();
     if (bDbgInfo)
-        m_strMuleInfo.AppendFormat(_T("  ProtVer=%u"), (UINT)protversion);
+        m_strMuleInfo.AppendFormat(L"  ProtVer=%u", (UINT)protversion);
 
     m_incompletepartVer = 0;	//>>> WiZaRd::ICS [enkeyDEV]
 
@@ -976,7 +979,7 @@ void CUpDownClient::ProcessMuleInfoPacket(const uchar* pachPacket, UINT nSize)
 
     UINT tagcount = data.ReadUInt32();
     if (bDbgInfo)
-        m_strMuleInfo.AppendFormat(_T("  Tags=%u"), (UINT)tagcount);
+        m_strMuleInfo.AppendFormat(L"  Tags=%u", (UINT)tagcount);
 
     bool bMod = false; //>>> WiZaRd::ClientAnalyzer
     for (UINT i = 0; i < tagcount; i++)
@@ -991,10 +994,10 @@ void CUpDownClient::ProcessMuleInfoPacket(const uchar* pachPacket, UINT nSize)
             {
                 m_byDataCompVer = (uint8)temptag.GetInt();
                 if (bDbgInfo)
-                    m_strMuleInfo.AppendFormat(_T("\n  Compr=%u"), (UINT)temptag.GetInt());
+                    m_strMuleInfo.AppendFormat(L"\n  Compr=%u", (UINT)temptag.GetInt());
             }
             else if (bDbgInfo)
-                m_strMuleInfo.AppendFormat(_T("\n  ***UnkType=%s"), temptag.GetFullInfo());
+                m_strMuleInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
             break;
 
         case ET_UDPPORT:
@@ -1004,10 +1007,10 @@ void CUpDownClient::ProcessMuleInfoPacket(const uchar* pachPacket, UINT nSize)
             {
                 m_nUDPPort = (uint16)temptag.GetInt();
                 if (bDbgInfo)
-                    m_strMuleInfo.AppendFormat(_T("\n  UDPPort=%u"), (UINT)temptag.GetInt());
+                    m_strMuleInfo.AppendFormat(L"\n  UDPPort=%u", (UINT)temptag.GetInt());
             }
             else if (bDbgInfo)
-                m_strMuleInfo.AppendFormat(_T("\n  ***UnkType=%s"), temptag.GetFullInfo());
+                m_strMuleInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
             break;
 
         case ET_UDPVER:
@@ -1017,10 +1020,10 @@ void CUpDownClient::ProcessMuleInfoPacket(const uchar* pachPacket, UINT nSize)
             {
                 m_byUDPVer = (uint8)temptag.GetInt();
                 if (bDbgInfo)
-                    m_strMuleInfo.AppendFormat(_T("\n  UDPVer=%u"), (UINT)temptag.GetInt());
+                    m_strMuleInfo.AppendFormat(L"\n  UDPVer=%u", (UINT)temptag.GetInt());
             }
             else if (bDbgInfo)
-                m_strMuleInfo.AppendFormat(_T("\n  ***UnkType=%s"), temptag.GetFullInfo());
+                m_strMuleInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
             break;
 
         case ET_SOURCEEXCHANGE:
@@ -1030,10 +1033,10 @@ void CUpDownClient::ProcessMuleInfoPacket(const uchar* pachPacket, UINT nSize)
             {
                 m_bySourceExchange1Ver = (uint8)temptag.GetInt();
                 if (bDbgInfo)
-                    m_strMuleInfo.AppendFormat(_T("\n  SrcExch=%u"), (UINT)temptag.GetInt());
+                    m_strMuleInfo.AppendFormat(L"\n  SrcExch=%u", (UINT)temptag.GetInt());
             }
             else if (bDbgInfo)
-                m_strMuleInfo.AppendFormat(_T("\n  ***UnkType=%s"), temptag.GetFullInfo());
+                m_strMuleInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
             break;
 
         case ET_COMMENTS:
@@ -1043,10 +1046,10 @@ void CUpDownClient::ProcessMuleInfoPacket(const uchar* pachPacket, UINT nSize)
             {
                 m_byAcceptCommentVer = (uint8)temptag.GetInt();
                 if (bDbgInfo)
-                    m_strMuleInfo.AppendFormat(_T("\n  Commnts=%u"), (UINT)temptag.GetInt());
+                    m_strMuleInfo.AppendFormat(L"\n  Commnts=%u", (UINT)temptag.GetInt());
             }
             else if (bDbgInfo)
-                m_strMuleInfo.AppendFormat(_T("\n  ***UnkType=%s"), temptag.GetFullInfo());
+                m_strMuleInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
             break;
 
         case ET_EXTENDEDREQUEST:
@@ -1056,10 +1059,10 @@ void CUpDownClient::ProcessMuleInfoPacket(const uchar* pachPacket, UINT nSize)
             {
                 m_byExtendedRequestsVer = (uint8)temptag.GetInt();
                 if (bDbgInfo)
-                    m_strMuleInfo.AppendFormat(_T("\n  ExtReq=%u"), (UINT)temptag.GetInt());
+                    m_strMuleInfo.AppendFormat(L"\n  ExtReq=%u", (UINT)temptag.GetInt());
             }
             else if (bDbgInfo)
-                m_strMuleInfo.AppendFormat(_T("\n  ***UnkType=%s"), temptag.GetFullInfo());
+                m_strMuleInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
             break;
 
         case ET_COMPATIBLECLIENT:
@@ -1069,10 +1072,10 @@ void CUpDownClient::ProcessMuleInfoPacket(const uchar* pachPacket, UINT nSize)
             {
                 m_byCompatibleClient = (uint8)temptag.GetInt();
                 if (bDbgInfo)
-                    m_strMuleInfo.AppendFormat(_T("\n  Comptbl=%u"), (UINT)temptag.GetInt());
+                    m_strMuleInfo.AppendFormat(L"\n  Comptbl=%u", (UINT)temptag.GetInt());
             }
             else if (bDbgInfo)
-                m_strMuleInfo.AppendFormat(_T("\n  ***UnkType=%s"), temptag.GetFullInfo());
+                m_strMuleInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
             break;
 
         case ET_FEATURES:
@@ -1084,21 +1087,21 @@ void CUpDownClient::ProcessMuleInfoPacket(const uchar* pachPacket, UINT nSize)
                 m_bySupportSecIdent = (uint8)((temptag.GetInt()) & 3);
                 m_fSupportsPreview  = (temptag.GetInt() >> 7) & 1;
                 if (bDbgInfo)
-                    m_strMuleInfo.AppendFormat(_T("\n  SecIdent=%u  Preview=%u"), m_bySupportSecIdent, m_fSupportsPreview);
+                    m_strMuleInfo.AppendFormat(L"\n  SecIdent=%u  Preview=%u", m_bySupportSecIdent, m_fSupportsPreview);
             }
             else if (bDbgInfo)
-                m_strMuleInfo.AppendFormat(_T("\n  ***UnkType=%s"), temptag.GetFullInfo());
+                m_strMuleInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
             break;
 
         case ET_MOD_VERSION:
             if (temptag.IsStr())
                 m_strModVersion = temptag.GetStr();
             else if (temptag.IsInt())
-                m_strModVersion.Format(_T("ModID=%u"), temptag.GetInt());
+                m_strModVersion.Format(L"ModID=%u", temptag.GetInt());
             else
-                m_strModVersion = _T("ModID=<Unknwon>");
+                m_strModVersion = L"ModID=<Unknwon>";
             if (bDbgInfo)
-                m_strMuleInfo.AppendFormat(_T("\n  ModID=%s"), m_strModVersion);
+                m_strMuleInfo.AppendFormat(L"\n  ModID=%s", m_strModVersion);
             bMod = true; //>>> WiZaRd::ClientAnalyzer
             break;
 
@@ -1116,7 +1119,7 @@ void CUpDownClient::ProcessMuleInfoPacket(const uchar* pachPacket, UINT nSize)
 
         default:
             if (bDbgInfo)
-                m_strMuleInfo.AppendFormat(_T("\n  ***UnkTag=%s"), temptag.GetFullInfo());
+                m_strMuleInfo.AppendFormat(L"\n  ***UnkTag=%s", temptag.GetFullInfo());
         }
     }
     if (m_byDataCompVer == 0)
@@ -1129,7 +1132,7 @@ void CUpDownClient::ProcessMuleInfoPacket(const uchar* pachPacket, UINT nSize)
     }
     if (bDbgInfo && data.GetPosition() < data.GetLength())
     {
-        m_strMuleInfo.AppendFormat(_T("\n  ***AddData: %u bytes"), data.GetLength() - data.GetPosition());
+        m_strMuleInfo.AppendFormat(L"\n  ***AddData: %u bytes", data.GetLength() - data.GetPosition());
     }
 
     m_bEmuleProtocol = true;
@@ -1144,7 +1147,7 @@ void CUpDownClient::ProcessMuleInfoPacket(const uchar* pachPacket, UINT nSize)
         if (pAntiLeechData)
             pAntiLeechData->Check4ModThief();
 //>>> WiZaRd::BadClientFlag
-#define XTREME_ADDON L" «" + m_strModVersion + L"»"
+#define XTREME_ADDON L" ï¿½" + m_strModVersion + L"ï¿½"
         //to find all Xtreme based clients it's easier to search for their "anti-modthief"
         CString nick(m_pszUsername);
         if (nick.Find(XTREME_ADDON)
@@ -1162,12 +1165,13 @@ void CUpDownClient::ProcessMuleInfoPacket(const uchar* pachPacket, UINT nSize)
 //		pAntiLeechData->Check4ModFaker();
 //>>> WiZaRd::More GPLEvilDoers
         CheckForGPLEvilDoer(false, true);
-//<<< WiZaRd::More GPLEvilDoers
+//<<< WiZaRd::More GPLEvilDoers		
     }
 //<<< WiZaRd::ClientAnalyzer
+	CheckModIconIndex(); //>>> WiZaRd::ModIconMapper
 
     if (thePrefs.GetVerbose() && GetServerIP() == INADDR_NONE)
-        AddDebugLogLine(false, _T("Received invalid server IP %s from %s"), ipstr(GetServerIP()), DbgGetClientInfo());
+        AddDebugLogLine(false, L"Received invalid server IP %s from %s", ipstr(GetServerIP()), DbgGetClientInfo());
 }
 
 void CUpDownClient::SendHelloAnswer()
@@ -1411,7 +1415,7 @@ void CUpDownClient::ProcessMuleCommentPacket(const uchar* pachPacket, UINT nSize
                 strCommentLower.MakeLower();
 
                 int iPos = 0;
-                CString strFilter(thePrefs.GetCommentFilter().Tokenize(_T("|"), iPos));
+                CString strFilter(thePrefs.GetCommentFilter().Tokenize(L"|", iPos));
                 while (!strFilter.IsEmpty())
                 {
                     // comment filters are already in lowercase, compare with temp. lowercased received comment
@@ -1422,7 +1426,7 @@ void CUpDownClient::ProcessMuleCommentPacket(const uchar* pachPacket, UINT nSize
                         SetSpammer(true);
                         break;
                     }
-                    strFilter = thePrefs.GetCommentFilter().Tokenize(_T("|"), iPos);
+                    strFilter = thePrefs.GetCommentFilter().Tokenize(L"|", iPos);
                 }
             }
         }
@@ -1445,21 +1449,21 @@ bool CUpDownClient::Disconnected(LPCTSTR pszReason, bool bFromSocket)
 
     // TODO LOGREMOVE
     if (m_nConnectingState == CCS_DIRECTCALLBACK)
-        DebugLog(_T("Direct Callback failed - %s"), DbgGetClientInfo());
+        DebugLog(L"Direct Callback failed - %s", DbgGetClientInfo());
 
     if (GetKadState() == KS_QUEUED_FWCHECK_UDP || GetKadState() == KS_CONNECTING_FWCHECK_UDP)
         Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, true, ntohl(GetConnectIP()), 0); // inform the tester that this test was cancelled
     else if (GetKadState() == KS_FWCHECK_UDP)
         Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, false, ntohl(GetConnectIP()), 0); // inform the tester that this test has failed
     else if (GetKadState() == KS_CONNECTED_BUDDY)
-        DebugLogWarning(_T("Buddy client disconnected - %s, %s"), pszReason, DbgGetClientInfo());
+        DebugLogWarning(L"Buddy client disconnected - %s, %s", pszReason, DbgGetClientInfo());
     //If this is a KAD client object, just delete it!
     SetKadState(KS_NONE);
 
     if (GetUploadState() == US_UPLOADING || GetUploadState() == US_CONNECTING)
     {
         // sets US_NONE
-        theApp.uploadqueue->RemoveFromUploadQueue(this, CString(_T("CUpDownClient::Disconnected: ")) + pszReason);
+        theApp.uploadqueue->RemoveFromUploadQueue(this, CString(L"CUpDownClient::Disconnected: ") + pszReason);
     }
 
     // 28-Jun-2004 [bc]: re-applied this patch which was in 0.30b-0.30e. it does not seem to solve the bug but
@@ -1476,14 +1480,14 @@ bool CUpDownClient::Disconnected(LPCTSTR pszReason, bool bFromSocket)
         //
         // 2.) The remote client may have already received those blocks from some other client when it gets the next
         // upload slot.
-        DebugLogWarning(_T("Disconnected client with non empty block send queue; %s reqs: %s doneblocks: %s"), DbgGetClientInfo(), m_BlockRequests_queue.GetCount() > 0 ? _T("true") : _T("false"), m_DoneBlocks_list.GetCount() ? _T("true") : _T("false"));
+        DebugLogWarning(L"Disconnected client with non empty block send queue; %s reqs: %s doneblocks: %s", DbgGetClientInfo(), m_BlockRequests_queue.GetCount() > 0 ? L"true" : L"false", m_DoneBlocks_list.GetCount() ? L"true" : L"false");
         ClearUploadBlockRequests();
     }
 
     if (GetDownloadState() == DS_DOWNLOADING)
     {
         ASSERT(m_nConnectingState == CCS_NONE);
-        SetDownloadState(DS_ONQUEUE, CString(_T("Disconnected: ")) + pszReason);
+        SetDownloadState(DS_ONQUEUE, CString(L"Disconnected: ") + pszReason);
     }
     else
     {
@@ -1585,13 +1589,13 @@ bool CUpDownClient::Disconnected(LPCTSTR pszReason, bool bFromSocket)
     if (bDelete)
     {
         if (thePrefs.GetDebugClientTCPLevel() > 0)
-            Debug(_T("--- Deleted client            %s; Reason=%s\n"), DbgGetClientInfo(true), pszReason);
+            Debug(L"--- Deleted client            %s; Reason=%s\n", DbgGetClientInfo(true), pszReason);
         return true;
     }
     else
     {
         if (thePrefs.GetDebugClientTCPLevel() > 0)
-            Debug(_T("--- Disconnected client       %s; Reason=%s\n"), DbgGetClientInfo(true), pszReason);
+            Debug(L"--- Disconnected client       %s; Reason=%s\n", DbgGetClientInfo(true), pszReason);
         m_fHashsetRequestingMD4 = 0;
         m_fHashsetRequestingAICH = 0;
         SetSentCancelTransfer(0);
@@ -1641,7 +1645,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
     // Check for 1) Already Connected/Connecting
     if (m_nConnectingState != CCS_NONE)
     {
-        DebugLog(_T("TryToConnect: Already Connecting (%s)"), DbgGetClientInfo());// TODO LogRemove
+        DebugLog(L"TryToConnect: Already Connecting (%s)", DbgGetClientInfo());// TODO LogRemove
         return true;
     }
     else if (socket != NULL)
@@ -1650,11 +1654,11 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
         {
             if (CheckHandshakeFinished())
             {
-                DEBUG_ONLY(DebugLog(_T("TryToConnect: Already Connected (%s)"), DbgGetClientInfo()));  // TODO LogRemove
+                DEBUG_ONLY(DebugLog(L"TryToConnect: Already Connected (%s)", DbgGetClientInfo()));  // TODO LogRemove
                 ConnectionEstablished();
             }
             else
-                DebugLogWarning(_T("TryToConnect found connected socket, but without Handshake finished - %s"), DbgGetClientInfo());
+                DebugLogWarning(L"TryToConnect found connected socket, but without Handshake finished - %s", DbgGetClientInfo());
             return true;
         }
         else
@@ -1668,9 +1672,9 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
     if (!bIgnoreMaxCon && theApp.listensocket->TooManySockets())
     {
         // This is a sanitize check and counts as a "hard failure", so this check should be also done before calling
-        // TryToConnect if a special handling, like waiting till there are enough connection avaiable should be fone
-        DebugLogWarning(_T("TryToConnect: Too many connections sanitize check (%s)"), DbgGetClientInfo());
-        if (Disconnected(_T("Too many connections")))
+        // TryToConnect if a special handling, like waiting till there are enough connection available should be fone
+        DebugLogWarning(L"TryToConnect: Too many connections sanitize check (%s)", DbgGetClientInfo());
+        if (Disconnected(L"Too many connections"))
         {
             delete this;
             return false;
@@ -1680,8 +1684,8 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
     // do not try to connect to source which are incompatible with our encryption setting (one requires it, and the other one doesn't supports it)
     if ((thePrefs.IsClientCryptLayerRequired() && !SupportsCryptLayer()))
     {
-        DEBUG_ONLY(AddDebugLogLine(DLP_DEFAULT, false, _T("Rejected outgoing connection because CryptLayer-Setting (Obfuscation) was incompatible %s"), DbgGetClientInfo()));
-        if (Disconnected(_T("CryptLayer-Settings (Obfuscation) incompatible")))
+        DEBUG_ONLY(AddDebugLogLine(DLP_DEFAULT, false, L"Rejected outgoing connection because CryptLayer-Setting (Obfuscation) was incompatible %s", DbgGetClientInfo()));
+        if (Disconnected(L"CryptLayer-Settings (Obfuscation) incompatible"))
         {
             delete this;
             return false;
@@ -1701,7 +1705,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
         {
             if (thePrefs.GetLogFilteredIPs())
                 AddDebugLogLine(true, GetResString(IDS_IPFILTERED), ipstr(uClientIP), theApp.ipfilter->GetLastHit());
-            if (Disconnected(_T("IPFilter")))
+            if (Disconnected(L"IPFilter"))
             {
                 delete this;
                 return false;
@@ -1713,8 +1717,8 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
         if (theApp.clientlist->IsBannedClient(uClientIP))
         {
             if (thePrefs.GetLogBannedClients())
-                AddDebugLogLine(false, _T("Refused to connect to banned client %s"), DbgGetClientInfo());
-            if (Disconnected(_T("Banned IP")))
+                AddDebugLogLine(false, L"Refused to connect to banned client %s", DbgGetClientInfo());
+            if (Disconnected(L"Banned IP"))
             {
                 delete this;
                 return false;
@@ -1731,7 +1735,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
             // We cannot reach this client, so we hard fail to connect, if this client should be kept,
             // for example because we might want to wait a bit and hope we get a highid, this check has
             // to be done before calling this function
-            if (Disconnected(_T("LowID->LowID")))
+            if (Disconnected(L"LowID->LowID"))
             {
                 delete this;
                 return false;
@@ -1742,8 +1746,8 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
         // are callbacks disallowed?
         if (bNoCallbacks)
         {
-            DebugLogError(_T("TryToConnect: Would like to do callback on a no-callback client, %s"), DbgGetClientInfo());
-            if (Disconnected(_T("LowID: No Callback Option allowed")))
+            DebugLogError(L"TryToConnect: Would like to do callback on a no-callback client, %s", DbgGetClientInfo());
+            if (Disconnected(L"LowID: No Callback Option allowed"))
             {
                 delete this;
                 return false;
@@ -1757,7 +1761,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
              ))
         {
             // Nope
-            if (Disconnected(_T("LowID: No Callback Option available")))
+            if (Disconnected(L"LowID: No Callback Option available"))
             {
                 delete this;
                 return false;
@@ -1784,7 +1788,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
         {
             socket->Safe_Delete();
             // we let the timeout handle the cleanup in this case
-            DebugLogError(_T("TryToConnect: Failed to create socket for outgoing connection, %s"), DbgGetClientInfo());
+            DebugLogError(L"TryToConnect: Failed to create socket for outgoing connection, %s", DbgGetClientInfo());
         }
         else
             Connect();
@@ -1796,7 +1800,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
     {
         m_nConnectingState = CCS_DIRECTCALLBACK;
         // TODO LOGREMOVE
-        DebugLog(_T("Direct Callback on port %u to client %s (%s) "), GetKadPort(), DbgGetClientInfo(), md4str(GetUserHash()));
+        DebugLog(L"Direct Callback on port %u to client %s (%s) ", GetKadPort(), DbgGetClientInfo(), md4str(GetUserHash()));
         CSafeMemFile data;
         data.WriteUInt16(thePrefs.GetPort()); // needs to know our port
         data.WriteHash16(thePrefs.GetUserHash()); // and userhash
@@ -1818,7 +1822,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
     if (GetUploadState() == US_CONNECTING)
     {
         ASSERT(0); // we should never try to connect in this case, but wait for the LowID to connect to us
-        DebugLogError(_T("LowID and US_CONNECTING (%s)"), DbgGetClientInfo());
+        DebugLogError(L"LowID and US_CONNECTING (%s)", DbgGetClientInfo());
     }
 
     if (HasValidBuddyID() && Kademlia::CKademlia::IsConnected())
@@ -1850,10 +1854,10 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
             if (Kademlia::CKademlia::GetPrefs()->GetTotalSource() > 0 || Kademlia::CSearchManager::AlreadySearchingFor(Kademlia::CUInt128(GetBuddyID())))
             {
                 //There are too many source lookups already or we are already searching this key.
-                // bad luck, as lookups aren't supposed to hapen anyway, we just let it fail, if we want
+                // bad luck, as lookups aren't supposed to happen anyway, we just let it fail, if we want
                 // to actually really use lookups (so buddies without known IPs), this should be reworked
                 // for example by adding a queuesystem for queries
-                DebugLogWarning(_T("TryToConnect: Buddy without knonw IP, Lookup crrently impossible"));
+                DebugLogWarning(L"TryToConnect: Buddy without knonw IP, Lookup crrently impossible");
                 return true;
             }
             if (Kademlia::CSearchManager::StartSearch(findSource))
@@ -1872,7 +1876,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
     else
     {
         ASSERT(0);
-        DebugLogError(_T("TryToConnect: Bug: No Callback available despite prechecks"));
+        DebugLogError(L"TryToConnect: Bug: No Callback available despite prechecks");
         return true;
     }
 }
@@ -1882,7 +1886,7 @@ void CUpDownClient::Connect()
     // enable or disable crypting based on our and the remote clients preference
     if (HasValidHash() && SupportsCryptLayer() && (RequestsCryptLayer() || thePrefs.IsClientCryptLayerRequested()))
     {
-        //DebugLog(_T("Enabling CryptLayer on outgoing connection to client %s"), DbgGetClientInfo()); // to be removed later
+        //DebugLog(L"Enabling CryptLayer on outgoing connection to client %s", DbgGetClientInfo()); // to be removed later
         socket->SetConnectionEncryption(true, GetUserHash(), false);
     }
     else
@@ -1904,11 +1908,11 @@ void CUpDownClient::ConnectionEstablished()
 
     // was this a direct callback?
     if (m_nConnectingState == CCS_DIRECTCALLBACK) // TODO LOGREMOVE
-        DebugLog(_T("Direct Callback succeeded, connection established - %s"), DbgGetClientInfo());
+        DebugLog(L"Direct Callback succeeded, connection established - %s", DbgGetClientInfo());
 
     // remove the connecting timer and state
     //if (m_nConnectingState == CCS_NONE) // TODO LOGREMOVE
-    //	DEBUG_ONLY( DebugLog(_T("ConnectionEstablished with CCS_NONE (incoming, thats fine)")) );
+    //	DEBUG_ONLY( DebugLog(L"ConnectionEstablished with CCS_NONE (incoming, thats fine)")) );
     m_nConnectingState = CCS_NONE;
     theApp.clientlist->RemoveConnectingClient(this);
 
@@ -1926,12 +1930,12 @@ void CUpDownClient::ConnectionEstablished()
         break;
     case KS_CONNECTING_BUDDY:
     case KS_INCOMING_BUDDY:
-        DEBUG_ONLY(DebugLog(_T("Set KS_CONNECTED_BUDDY for client %s"), DbgGetClientInfo()));
+        DEBUG_ONLY(DebugLog(L"Set KS_CONNECTED_BUDDY for client %s", DbgGetClientInfo()));
         SetKadState(KS_CONNECTED_BUDDY);
         break;
     case KS_CONNECTING_FWCHECK_UDP:
         SetKadState(KS_FWCHECK_UDP);
-        DEBUG_ONLY(DebugLog(_T("Set KS_FWCHECK_UDP for client %s"), DbgGetClientInfo()));
+        DEBUG_ONLY(DebugLog(L"Set KS_FWCHECK_UDP for client %s", DbgGetClientInfo()));
         SendFirewallCheckUDPRequest();
         break;
     }
@@ -2003,311 +2007,315 @@ void CUpDownClient::ConnectionEstablished()
 
 void CUpDownClient::InitClientSoftwareVersion()
 {
+	CString szSoftware = L"";
     if (m_pszUsername == NULL)
     {
         m_clientSoft = SO_UNKNOWN;
-        return;
     }
-
-    int iHashType = GetHashType();
-    if (m_bEmuleProtocol || iHashType == SO_EMULE)
-    {
-        LPCTSTR pszSoftware;
-        switch (m_byCompatibleClient)
-        {
-        case SO_CDONKEY:
-            m_clientSoft = SO_CDONKEY;
-            pszSoftware = _T("cDonkey");
-            break;
-        case SO_XMULE:
-            m_clientSoft = SO_XMULE;
-            pszSoftware = _T("xMule");
-            break;
-        case SO_AMULE:
-            m_clientSoft = SO_AMULE;
-            pszSoftware = _T("aMule");
-            break;
-        case SO_SHAREAZA:
+	else
+	{
+		int iHashType = GetHashType();
+		if (m_bEmuleProtocol || iHashType == SO_EMULE)
+		{
+			CString pszSoftware;
+			switch (m_byCompatibleClient)
+			{
+			case SO_CDONKEY:
+				m_clientSoft = SO_CDONKEY;
+				pszSoftware = L"cDonkey";
+				break;
+			case SO_XMULE:
+				m_clientSoft = SO_XMULE;
+				pszSoftware = L"xMule";
+				break;
+			case SO_AMULE:
+				m_clientSoft = SO_AMULE;
+				pszSoftware = L"aMule";
+				break;
+			case SO_SHAREAZA:
 //>>> WiZaRd::ClientAnalyzer
 // Spike2 - Enhanced Client Recognition - START
-            // removed "case 40"... this is now integrated here
-        case SO_SHAREAZA2:
-        case SO_SHAREAZA3:
-        case SO_SHAREAZA4:
+				// removed "case 40"... this is now integrated here
+			case SO_SHAREAZA2:
+			case SO_SHAREAZA3:
+			case SO_SHAREAZA4:
 // Spike2 - Enhanced Client Recognition - END
 //<<< WiZaRd::ClientAnalyzer
-            m_clientSoft = SO_SHAREAZA;
-            pszSoftware = _T("Shareaza");
-            break;
-        case SO_LPHANT:
-            m_clientSoft = SO_LPHANT;
-            pszSoftware = _T("lphant");
-            break;
+				m_clientSoft = SO_SHAREAZA;
+				pszSoftware = L"Shareaza";
+				break;
+			case SO_LPHANT:
+				m_clientSoft = SO_LPHANT;
+				pszSoftware = L"lphant";
+				break;
 //>>> WiZaRd::ClientAnalyzer
 // Spike2 - Enhanced Client Recognition - START
-        case SO_EMULEPLUS:
-            m_clientSoft = SO_EMULEPLUS;
-            pszSoftware = L"eMule Plus";
-            break;
-        case SO_HYDRANODE:
-            m_clientSoft = SO_HYDRANODE;
-            pszSoftware = L"Hydranode";
-            break;
-        case SO_TRUSTYFILES:
-            m_clientSoft = SO_TRUSTYFILES;
-            pszSoftware = L"TrustyFiles";
-            break;
-        case SO_EASYMULE2:
-            m_clientSoft = SO_EASYMULE2;
-            pszSoftware = L"EasyMule2";
-            break;
-        case SO_NEOLOADER:
-            m_clientSoft = SO_NEOLOADER;
-            pszSoftware = L"NeoLoader";
-            break;
+			case SO_EMULEPLUS:
+				m_clientSoft = SO_EMULEPLUS;
+				pszSoftware = L"eMule Plus";
+				break;
+			case SO_HYDRANODE:
+				m_clientSoft = SO_HYDRANODE;
+				pszSoftware = L"Hydranode";
+				break;
+			case SO_TRUSTYFILES:
+				m_clientSoft = SO_TRUSTYFILES;
+				pszSoftware = L"TrustyFiles";
+				break;
+			case SO_EASYMULE2:
+				m_clientSoft = SO_EASYMULE2;
+				pszSoftware = L"EasyMule2";
+				break;
+			case SO_NEOLOADER:
+				m_clientSoft = SO_NEOLOADER;
+				pszSoftware = L"NeoLoader";
+				break;
+//>>> WiZaRd::kMule Version Ident
+			// not used, yet...
+			case SO_KMULE:
+				m_clientSoft = SO_KMULE;
+				pszSoftware = L"kMule";
+				break;
+//<<< WiZaRd::kMule Version Ident
 // Spike2 - Enhanced Client Recognition - END
 //<<< WiZaRd::ClientAnalyzer
-        default:
-            if (m_bIsML || m_byCompatibleClient == SO_MLDONKEY || m_byCompatibleClient == SO_MLDONKEY2 || m_byCompatibleClient == SO_MLDONKEY3) //>>> WiZaRd::ClientAnalyzer // Spike2 - Enhanced Client Recognition
-            {
-                m_clientSoft = SO_MLDONKEY;
-                pszSoftware = _T("MLdonkey");
-            }
-            else if (m_bIsHybrid || m_byCompatibleClient == SO_EDONKEYHYBRID) //>>> WiZaRd::ClientAnalyzer // Spike2 - Enhanced Client Recognition
-            {
-                m_clientSoft = SO_EDONKEYHYBRID;
-                pszSoftware = _T("eDonkeyHybrid");
-            }
-            else if (m_byCompatibleClient != 0)
-            {
+			default:
+				if (m_bIsML 
+					|| m_byCompatibleClient == SO_MLDONKEY 
+//>>> WiZaRd::ClientAnalyzer // Spike2 - Enhanced Client Recognition
+					|| m_byCompatibleClient == SO_MLDONKEY2 
+					|| m_byCompatibleClient == SO_MLDONKEY3) 
+//<<< WiZaRd::ClientAnalyzer // Spike2 - Enhanced Client Recognition
+				{
+					m_clientSoft = SO_MLDONKEY;
+					pszSoftware = L"MLdonkey";
+				}
+				else if (m_bIsHybrid 
+//>>> WiZaRd::ClientAnalyzer // Spike2 - Enhanced Client Recognition
+					|| m_byCompatibleClient == SO_EDONKEYHYBRID) 
+//<<< WiZaRd::ClientAnalyzer // Spike2 - Enhanced Client Recognition
+				{
+					m_clientSoft = SO_EDONKEYHYBRID;
+					pszSoftware = L"eDonkeyHybrid";
+				}
+				else if (m_byCompatibleClient != 0)
+				{
 //>>> WiZaRd::ClientAnalyzer
 // Spike2 - Enhanced Client Recognition - START
 //WiZaRd: this is highly unreliable and thus I removed it
-// 					// Recognize other Shareazas - just to be sure :)
-// 					if (StrStrI(m_pszUsername, L"shareaza"))
-// 					{
-// 						m_clientSoft = SO_SHAREAZA;
-// 						pszSoftware = L"Shareaza";
-// 					}
-                // Recognize all eMulePlus - just to be sure !
-//					else
-                if (StrStr(m_strModVersion, L"Plus 1"))
-                {
-                    m_clientSoft = SO_EMULEPLUS;
-                    pszSoftware = L"eMule Plus";
-                }
-                else
+ 					// Recognize other Shareazas - just to be sure :)
+ 					/*if (StrStrI(m_pszUsername, L"shareaza"))
+ 					{
+ 						m_clientSoft = SO_SHAREAZA;
+ 						pszSoftware = L"Shareaza";
+ 					}
+ 					// Recognize all eMulePlus - just to be sure !
+					else*/ if (StrStr(m_strModVersion, L"Plus 1"))
+					{
+						m_clientSoft = SO_EMULEPLUS;
+						pszSoftware = L"eMule Plus";
+					}
+					else
 // Spike2 - Enhanced Client Recognition - END
 //<<< WiZaRd::ClientAnalyzer
-                {
-                    m_clientSoft = SO_XMULE; // means: 'eMule Compatible'
-                    pszSoftware = _T("eMule Compat");
-                }
-            }
-            else
-            {
-                m_clientSoft = SO_EMULE;
-                pszSoftware = _T("eMule");
-            }
-        }
+					{
+						m_clientSoft = SO_XMULE; // means: 'eMule Compatible'
+						pszSoftware = L"eMule Compat";
+					}
+				}
+				else
+				{
+					m_clientSoft = SO_EMULE;
+					pszSoftware = L"eMule";
+				}
+				break;
+			}
 
-        int iLen;
-        TCHAR szSoftware[128];
-        if (m_byEmuleVersion == 0)
-        {
-            m_nClientVersion = MAKE_CLIENT_VERSION(0, 0, 0);
-            iLen = _sntprintf(szSoftware, ARRSIZE(szSoftware), _T("%s"), pszSoftware);
-        }
-        else if (m_byEmuleVersion != 0x99)
-        {
-            UINT nClientMinVersion = (m_byEmuleVersion >> 4)*10 + (m_byEmuleVersion & 0x0f);
-            m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
-            iLen = _sntprintf(szSoftware, ARRSIZE(szSoftware), _T("%s v0.%u"), pszSoftware, nClientMinVersion);
-        }
-        else
-        {
-            UINT nClientMajVersion = (m_nClientVersion >> 17) & 0x7f;
-            UINT nClientMinVersion = (m_nClientVersion >> 10) & 0x7f;
-            UINT nClientUpVersion  = (m_nClientVersion >>  7) & 0x07;
-            m_nClientVersion = MAKE_CLIENT_VERSION(nClientMajVersion, nClientMinVersion, nClientUpVersion);
-            if (m_clientSoft == SO_EMULE)
-                iLen = _sntprintf(szSoftware, ARRSIZE(szSoftware), _T("%s v%u.%u%c"), pszSoftware, nClientMajVersion, nClientMinVersion, _T('a') + nClientUpVersion);
+			if (m_byEmuleVersion == 0)
+			{
+				m_nClientVersion = MAKE_CLIENT_VERSION(0, 0, 0);
+				szSoftware = pszSoftware;
+			}
+			else if (m_byEmuleVersion != 0x99)
+			{
+				UINT nClientMinVersion = (m_byEmuleVersion >> 4)*10 + (m_byEmuleVersion & 0x0f);
+				m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
+				szSoftware.Format(L"%s v0.%u", pszSoftware, nClientMinVersion);
+			}
+			else
+			{
+				UINT nClientMajVersion = (m_nClientVersion >> 17) & 0x7f;
+				UINT nClientMinVersion = (m_nClientVersion >> 10) & 0x7f;
+				UINT nClientUpVersion  = (m_nClientVersion >>  7) & 0x07;
+//>>> WiZaRd::kMule Version Ident
+				// Some hack solution to accept the current kMule string scheme while we aren't identifying as SO_KMULE straight away
+				if (m_clientSoft == SO_EMULE && _tcscmp(m_strModVersion, L"kMule Build") == 0)
+				{
+					CString tmp = m_strModVersion.Mid(11);
+					m_clientSoft = SO_KMULE;
+					m_strModVersion = L"";
+					nClientMajVersion = (UINT)_tstoi(tmp.Mid(0, 4));
+					nClientMinVersion = (UINT)_tstoi(tmp.Mid(4, 2));
+					nClientUpVersion = (UINT)_tstoi(tmp.Mid(6, 2));
+				}
+//<<< WiZaRd::kMule Version Ident
+				m_nClientVersion = MAKE_CLIENT_VERSION(nClientMajVersion, nClientMinVersion, nClientUpVersion);
+				if (m_clientSoft == SO_EMULE)
+					szSoftware.Format(L"%s v%u.%u%c", pszSoftware, nClientMajVersion, nClientMinVersion, L'a' + nClientUpVersion);
 //>>> WiZaRd::ClientAnalyzer
 // Spike2 - Enhanced Client Recognition - START
-            else if (m_clientSoft == SO_EMULEPLUS)
-            {
-                if (nClientMinVersion == 0)
-                {
-                    if (nClientUpVersion == 0)
-                        iLen = _sntprintf(szSoftware, ARRSIZE(szSoftware), L"%s v%u", pszSoftware, nClientMajVersion);
-                    else
-                        iLen = _sntprintf(szSoftware, ARRSIZE(szSoftware), L"%s v%u%c", pszSoftware, nClientMajVersion, L'a' + nClientUpVersion - 1);
-                }
-                else
-                {
-                    if (nClientUpVersion == 0)
-                        iLen = _sntprintf(szSoftware, ARRSIZE(szSoftware), L"%s v%u.%u", pszSoftware, nClientMajVersion, nClientMinVersion);
-                    else
-                        iLen = _sntprintf(szSoftware, ARRSIZE(szSoftware), L"%s v%u.%u%c", pszSoftware, nClientMajVersion, nClientMinVersion, L'a' + nClientUpVersion - 1);
-                }
-            }
-            else if (m_clientSoft == SO_NEOLOADER)
-            {
-                if (nClientMinVersion < 10)
-                    iLen = _sntprintf(szSoftware, ARRSIZE(szSoftware), L"%s v%u.0%u", pszSoftware, nClientMajVersion, nClientMinVersion);
-                else
-                    iLen = _sntprintf(szSoftware, ARRSIZE(szSoftware), L"%s v%u.%u", pszSoftware, nClientMajVersion, nClientMinVersion);
+				else if (m_clientSoft == SO_EMULEPLUS)
+				{
+					szSoftware.Format(L"%s v%u", pszSoftware, nClientMajVersion);
+					if(nClientMinVersion != 0)
+						szSoftware.AppendFormat(L".%u", nClientMinVersion);
+					if(nClientUpVersion != 0)
+						szSoftware.AppendFormat(L"%c", L'a' + nClientUpVersion - 1);
+				}
+				else if (m_clientSoft == SO_NEOLOADER)
+				{
+					if (nClientMinVersion < 10)
+						szSoftware.Format(L"%s v%u.0%u", pszSoftware, nClientMajVersion, nClientMinVersion);
+					else
+						szSoftware.Format(L"%s v%u.%u", pszSoftware, nClientMajVersion, nClientMinVersion);
 
-                if (nClientUpVersion != 0)
-                    iLen += _sntprintf(szSoftware + iLen, ARRSIZE(szSoftware) - iLen, _T("%c"), _T('a') + nClientUpVersion - 1);
-            }
+					if (nClientUpVersion != 0)
+						szSoftware.AppendFormat(L"%c", L'a' + nClientUpVersion - 1);
+				}
 // Spike2 - Enhanced Client Recognition - END
+//>>> WiZaRd::kMule Version Ident
+				// not used, yet...
+				else if(m_clientSoft == SO_KMULE)
+				{
+					// we (will) use	nClientMajVersion (4 digits = year)
+					//					nClientMinVersion (2 digits = month)
+					//					nClientUpVersion (2 digits = day)
+					szSoftware.Format(L"%s Build%u", nClientMajVersion);
+					if(nClientMinVersion < 10)
+						szSoftware.AppendFormat(L"0%u", nClientMinVersion);
+					else
+						szSoftware.AppendFormat(L"%u", nClientMinVersion);
+					if(nClientUpVersion < 10)
+						szSoftware.AppendFormat(L"0%u", nClientUpVersion);
+					else
+						szSoftware.AppendFormat(L"%u", nClientUpVersion);
+				}
+//<<< WiZaRd::kMule Version Ident
 //<<< WiZaRd::ClientAnalyzer
-            else if (m_clientSoft == SO_AMULE || nClientUpVersion != 0)
-                iLen = _sntprintf(szSoftware, ARRSIZE(szSoftware), _T("%s v%u.%u.%u"), pszSoftware, nClientMajVersion, nClientMinVersion, nClientUpVersion);
-            else if (m_clientSoft == SO_LPHANT)
-            {
-                if (nClientMinVersion < 10)
-                    iLen = _sntprintf(szSoftware, ARRSIZE(szSoftware), _T("%s v%u.0%u"), pszSoftware, (nClientMajVersion-1), nClientMinVersion);
-                else
-                    iLen = _sntprintf(szSoftware, ARRSIZE(szSoftware), _T("%s v%u.%u"), pszSoftware, (nClientMajVersion-1), nClientMinVersion);
-            }
-            else
-                iLen = _sntprintf(szSoftware, ARRSIZE(szSoftware), _T("%s v%u.%u"), pszSoftware, nClientMajVersion, nClientMinVersion);
-        }
-        if (iLen > 0)
-        {
-            memcpy(m_strClientSoftware.GetBuffer(iLen), szSoftware, iLen*sizeof(TCHAR));
-            m_strClientSoftware.ReleaseBuffer(iLen);
-        }
-        return;
-    }
+				else if (m_clientSoft == SO_AMULE || nClientUpVersion != 0)
+					szSoftware.Format(L"%s v%u.%u.%u", pszSoftware, nClientMajVersion, nClientMinVersion, nClientUpVersion);
+				else if (m_clientSoft == SO_LPHANT)
+				{
+					if (nClientMinVersion < 10)
+						szSoftware.Format(L"%s v%u.0%u", pszSoftware, (nClientMajVersion-1), nClientMinVersion);
+					else
+						szSoftware.Format(L"%s v%u.%u", pszSoftware, (nClientMajVersion-1), nClientMinVersion);
+				}
+				else
+					szSoftware.Format(L"%s v%u.%u", pszSoftware, nClientMajVersion, nClientMinVersion);
+			}
+        } 
+		else if (m_bIsHybrid 
+			|| m_byCompatibleClient == SO_EDONKEYHYBRID) //>>> WiZaRd::ClientAnalyzer // Spike2 - Enhanced Client Recognition
+		{
+			m_clientSoft = SO_EDONKEYHYBRID;
+			// seen:
+			// 105010	0.50.10
+			// 10501	0.50.1
+			// 10405	1.4.5 // netfinity
+			// 10300	1.3.0
+			// 10212	1.2.2 // Spike2
+			// 10211	1.2.1
+			// 10103	1.1.3
+			// 10102	1.1.2
+			// 10100	1.1
+			// 1051		0.51.0
+			// 1002		1.0.2
+			// 1000		1.0
+			// 501		0.50.1
 
-    if (m_bIsHybrid || m_byCompatibleClient == SO_EDONKEYHYBRID) //>>> WiZaRd::ClientAnalyzer // Spike2 - Enhanced Client Recognition
-    {
-        m_clientSoft = SO_EDONKEYHYBRID;
-        // seen:
-        // 105010	0.50.10
-        // 10501	0.50.1
-        // 10405	1.4.5 // netfinity
-        // 10300	1.3.0
-        // 10212	1.2.2 // Spike2
-        // 10201	1.2.1
-        // 10103	1.1.3
-        // 10102	1.1.2
-        // 10100	1.1
-        // 1051		0.51.0
-        // 1002		1.0.2
-        // 1000		1.0
-        // 501		0.50.1
+			UINT nClientMajVersion;
+			UINT nClientMinVersion;
+			UINT nClientUpVersion;
+			if (m_nClientVersion > 100000)
+			{
+				UINT uMaj = m_nClientVersion/100000;
+				nClientMajVersion = uMaj - 1;
+				nClientMinVersion = (m_nClientVersion - uMaj*100000) / 100;
+				nClientUpVersion = m_nClientVersion % 100;
+			}
+			else if (m_nClientVersion >= 10100 && m_nClientVersion <= 10409) //>>> WiZaRd::ClientAnalyzer // netfinity
+			{
+				UINT uMaj = m_nClientVersion/10000;
+				nClientMajVersion = uMaj;
+				nClientMinVersion = (m_nClientVersion - uMaj*10000) / 100;
+				nClientUpVersion = m_nClientVersion % 10;
+			}
+			else if (m_nClientVersion > 10000)
+			{
+				UINT uMaj = m_nClientVersion/10000;
+				nClientMajVersion = uMaj - 1;
+				nClientMinVersion = (m_nClientVersion - uMaj*10000) / 10;
+				nClientUpVersion = m_nClientVersion % 10;
+			}
+			else if (m_nClientVersion >= 1000 && m_nClientVersion < 1020)
+			{
+				UINT uMaj = m_nClientVersion/1000;
+				nClientMajVersion = uMaj;
+				nClientMinVersion = (m_nClientVersion - uMaj*1000) / 10;
+				nClientUpVersion = m_nClientVersion % 10;
+			}
+			else if (m_nClientVersion > 1000)
+			{
+				UINT uMaj = m_nClientVersion/1000;
+				nClientMajVersion = uMaj - 1;
+				nClientMinVersion = m_nClientVersion - uMaj*1000;
+				nClientUpVersion = 0;
+			}
+			else if (m_nClientVersion > 100)
+			{
+				UINT uMin = m_nClientVersion/10;
+				nClientMajVersion = 0;
+				nClientMinVersion = uMin;
+				nClientUpVersion = m_nClientVersion - uMin*10;
+			}
+			else
+			{
+				nClientMajVersion = 0;
+				nClientMinVersion = m_nClientVersion;
+				nClientUpVersion = 0;
+			}
+			m_nClientVersion = MAKE_CLIENT_VERSION(nClientMajVersion, nClientMinVersion, nClientUpVersion);
 
-        UINT nClientMajVersion;
-        UINT nClientMinVersion;
-        UINT nClientUpVersion;
-        if (m_nClientVersion > 100000)
-        {
-            UINT uMaj = m_nClientVersion/100000;
-            nClientMajVersion = uMaj - 1;
-            nClientMinVersion = (m_nClientVersion - uMaj*100000) / 100;
-            nClientUpVersion = m_nClientVersion % 100;
-        }
-        else if (m_nClientVersion >= 10100 && m_nClientVersion <= 10409) //>>> WiZaRd::ClientAnalyzer // netfinity
-        {
-            UINT uMaj = m_nClientVersion/10000;
-            nClientMajVersion = uMaj;
-            nClientMinVersion = (m_nClientVersion - uMaj*10000) / 100;
-            nClientUpVersion = m_nClientVersion % 10;
-        }
-        else if (m_nClientVersion > 10000)
-        {
-            UINT uMaj = m_nClientVersion/10000;
-            nClientMajVersion = uMaj - 1;
-            nClientMinVersion = (m_nClientVersion - uMaj*10000) / 10;
-            nClientUpVersion = m_nClientVersion % 10;
-        }
-        else if (m_nClientVersion >= 1000 && m_nClientVersion < 1020)
-        {
-            UINT uMaj = m_nClientVersion/1000;
-            nClientMajVersion = uMaj;
-            nClientMinVersion = (m_nClientVersion - uMaj*1000) / 10;
-            nClientUpVersion = m_nClientVersion % 10;
-        }
-        else if (m_nClientVersion > 1000)
-        {
-            UINT uMaj = m_nClientVersion/1000;
-            nClientMajVersion = uMaj - 1;
-            nClientMinVersion = m_nClientVersion - uMaj*1000;
-            nClientUpVersion = 0;
-        }
-        else if (m_nClientVersion > 100)
-        {
-            UINT uMin = m_nClientVersion/10;
-            nClientMajVersion = 0;
-            nClientMinVersion = uMin;
-            nClientUpVersion = m_nClientVersion - uMin*10;
-        }
-        else
-        {
-            nClientMajVersion = 0;
-            nClientMinVersion = m_nClientVersion;
-            nClientUpVersion = 0;
-        }
-        m_nClientVersion = MAKE_CLIENT_VERSION(nClientMajVersion, nClientMinVersion, nClientUpVersion);
-
-        int iLen;
-        TCHAR szSoftware[128];
-        if (nClientUpVersion)
-            iLen = _sntprintf(szSoftware, ARRSIZE(szSoftware), _T("eDonkeyHybrid v%u.%u.%u"), nClientMajVersion, nClientMinVersion, nClientUpVersion);
-        else
-            iLen = _sntprintf(szSoftware, ARRSIZE(szSoftware), _T("eDonkeyHybrid v%u.%u"), nClientMajVersion, nClientMinVersion);
-        if (iLen > 0)
-        {
-            memcpy(m_strClientSoftware.GetBuffer(iLen), szSoftware, iLen*sizeof(TCHAR));
-            m_strClientSoftware.ReleaseBuffer(iLen);
-        }
-        return;
-    }
-
-    if (m_bIsML || iHashType == SO_MLDONKEY)
-    {
-        m_clientSoft = SO_MLDONKEY;
-        UINT nClientMinVersion = m_nClientVersion;
-        m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
-        TCHAR szSoftware[128];
-        int iLen = _sntprintf(szSoftware, ARRSIZE(szSoftware), _T("MLdonkey v0.%u"), nClientMinVersion);
-        if (iLen > 0)
-        {
-            memcpy(m_strClientSoftware.GetBuffer(iLen), szSoftware, iLen*sizeof(TCHAR));
-            m_strClientSoftware.ReleaseBuffer(iLen);
-        }
-        return;
-    }
-
-    if (iHashType == SO_OLDEMULE)
-    {
-        m_clientSoft = SO_OLDEMULE;
-        UINT nClientMinVersion = m_nClientVersion;
-        m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
-        TCHAR szSoftware[128];
-        int iLen = _sntprintf(szSoftware, ARRSIZE(szSoftware), _T("Old eMule v0.%u"), nClientMinVersion);
-        if (iLen > 0)
-        {
-            memcpy(m_strClientSoftware.GetBuffer(iLen), szSoftware, iLen*sizeof(TCHAR));
-            m_strClientSoftware.ReleaseBuffer(iLen);
-        }
-        return;
-    }
-
-    m_clientSoft = SO_EDONKEY;
-    UINT nClientMinVersion = m_nClientVersion;
-    m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
-    TCHAR szSoftware[128];
-    int iLen = _sntprintf(szSoftware, ARRSIZE(szSoftware), _T("eDonkey v0.%u"), nClientMinVersion);
-    if (iLen > 0)
-    {
-        memcpy(m_strClientSoftware.GetBuffer(iLen), szSoftware, iLen*sizeof(TCHAR));
-        m_strClientSoftware.ReleaseBuffer(iLen);
-    }
+			if (nClientUpVersion)
+				szSoftware.Format(L"eDonkeyHybrid v%u.%u.%u", nClientMajVersion, nClientMinVersion, nClientUpVersion);
+			else
+				szSoftware.Format(L"eDonkeyHybrid v%u.%u", nClientMajVersion, nClientMinVersion);
+		}
+		else if (m_bIsML || iHashType == SO_MLDONKEY)
+		{
+			m_clientSoft = SO_MLDONKEY;
+			UINT nClientMinVersion = m_nClientVersion;
+			m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
+			szSoftware.Format(L"MLdonkey v0.%u", nClientMinVersion);
+		}
+		else if (iHashType == SO_OLDEMULE)
+		{
+			m_clientSoft = SO_OLDEMULE;
+			UINT nClientMinVersion = m_nClientVersion;
+			m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
+			szSoftware.Format(L"Old eMule v0.%u", nClientMinVersion);
+		}
+		else 
+		{
+			m_clientSoft = SO_EDONKEY;
+			UINT nClientMinVersion = m_nClientVersion;
+			m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
+			szSoftware.Format(L"eDonkey v0.%u", nClientMinVersion);
+		}
+		if(!szSoftware.IsEmpty())
+			m_strClientSoftware = szSoftware;
+	}
 }
 
 int CUpDownClient::GetHashType() const
@@ -2341,7 +2349,7 @@ void CUpDownClient::RequestSharedFileList()
     }
     else
     {
-        LogWarning(LOG_STATUSBAR, _T("Requesting shared files from user %s (%u) is already in progress"), GetUserName(), GetUserIDHybrid());
+        LogWarning(LOG_STATUSBAR, L"Requesting shared files from user %s (%u) is already in progress", GetUserName(), GetUserIDHybrid());
     }
 }
 
@@ -2414,7 +2422,7 @@ void CUpDownClient::SendSignaturePacket()
     if (credits->m_dwCryptRndChallengeFrom == 0)
     {
         if (thePrefs.GetLogSecureIdent())
-            AddDebugLogLine(false, _T("Want to send signature but challenge value is invalid ('%s')"), GetUserName());
+            AddDebugLogLine(false, L"Want to send signature but challenge value is invalid ('%s')", GetUserName());
         return;
     }
     // v2
@@ -2478,13 +2486,13 @@ void CUpDownClient::ProcessPublicKeyPacket(const uchar* pachPacket, UINT nSize)
         {
             // something is wrong
             if (thePrefs.GetLogSecureIdent())
-                AddDebugLogLine(false, _T("Invalid State error: IS_KEYANDSIGNEEDED in ProcessPublicKeyPacket"));
+                AddDebugLogLine(false, L"Invalid State error: IS_KEYANDSIGNEEDED in ProcessPublicKeyPacket");
         }
     }
     else
     {
         if (thePrefs.GetLogSecureIdent())
-            AddDebugLogLine(false, _T("Failed to use new received public key"));
+            AddDebugLogLine(false, L"Failed to use new received public key");
     }
 }
 
@@ -2516,7 +2524,7 @@ void CUpDownClient::ProcessSignaturePacket(const uchar* pachPacket, UINT nSize)
     if (m_dwLastSignatureIP == GetIP())
     {
         if (thePrefs.GetLogSecureIdent())
-            AddDebugLogLine(false, _T("received multiple signatures from one client"));
+            AddDebugLogLine(false, L"received multiple signatures from one client");
         return;
     }
 
@@ -2524,23 +2532,23 @@ void CUpDownClient::ProcessSignaturePacket(const uchar* pachPacket, UINT nSize)
     if (credits->GetSecIDKeyLen() == 0)
     {
         if (thePrefs.GetLogSecureIdent())
-            AddDebugLogLine(false, _T("received signature for client without public key"));
+            AddDebugLogLine(false, L"received signature for client without public key");
         return;
     }
 
-    // and one more check: did we ask for a signature and sent a challange packet?
+    // and one more check: did we ask for a signature and sent a challenge packet?
     if (credits->m_dwCryptRndChallengeFor == 0)
     {
         if (thePrefs.GetLogSecureIdent())
-            AddDebugLogLine(false, _T("received signature for client with invalid challenge value ('%s')"), GetUserName());
+            AddDebugLogLine(false, L"received signature for client with invalid challenge value ('%s')", GetUserName());
         return;
     }
 
     if (theApp.clientcredits->VerifyIdent(credits, pachPacket+1, pachPacket[0], GetIP(), byChaIPKind))
     {
-        // result is saved in function abouve
+        // result is saved in function above
         //if (thePrefs.GetLogSecureIdent())
-        //	AddDebugLogLine(false, _T("'%s' has passed the secure identification, V2 State: %i"), GetUserName(), byChaIPKind);
+        //	AddDebugLogLine(false, L"'%s' has passed the secure identification, V2 State: %i", GetUserName(), byChaIPKind);
 
         // inform our friendobject if needed
         if (GetFriend() != NULL && GetFriend()->IsTryingToConnect())
@@ -2551,7 +2559,7 @@ void CUpDownClient::ProcessSignaturePacket(const uchar* pachPacket, UINT nSize)
         if (GetFriend() != NULL && GetFriend()->IsTryingToConnect())
             GetFriend()->UpdateFriendConnectionState(FCR_SECUREIDENTFAILED);
         if (thePrefs.GetLogSecureIdent())
-            AddDebugLogLine(false, _T("'%s' has failed the secure identification, V2 State: %i"), GetUserName(), byChaIPKind);
+            AddDebugLogLine(false, L"'%s' has failed the secure identification, V2 State: %i", GetUserName(), byChaIPKind);
     }
     m_dwLastSignatureIP = GetIP();
 //>>> WiZaRd::ClientAnalyzer
@@ -2579,7 +2587,7 @@ void CUpDownClient::SendSecIdentStatePacket()
         if (nValue == 0)
         {
             //if (thePrefs.GetLogSecureIdent())
-            //	AddDebugLogLine(false, _T("Not sending SecIdentState Packet, because State is Zero"));
+            //	AddDebugLogLine(false, L"Not sending SecIdentState Packet, because State is Zero"));
             return;
         }
         // crypt: send random data to sign
@@ -2777,7 +2785,7 @@ void CUpDownClient::ProcessPreviewAnswer(const uchar* pachPacket, UINT nSize)
         {
             UINT nImgSize = data.ReadUInt32();
             if (nImgSize > nSize)
-                throw CString(_T("CUpDownClient::ProcessPreviewAnswer - Provided image size exceeds limit"));
+                throw CString(L"CUpDownClient::ProcessPreviewAnswer - Provided image size exceeds limit");
             pBuffer = new BYTE[nImgSize];
             data.Read(pBuffer, nImgSize);
             CxImage* image = new CxImage(pBuffer, nImgSize, CXIMAGE_FORMAT_PNG);
@@ -2823,7 +2831,7 @@ bool CUpDownClient::SendPacket(Packet* packet, bool bDeletePacket, bool bVerifyC
     }
     else
     {
-        DebugLogError(_T("Outgoing packet (0x%X) discarded because expected socket or connection does not exists %s"), packet->opcode, DbgGetClientInfo());
+        DebugLogError(L"Outgoing packet (0x%X) discarded because expected socket or connection does not exists %s", packet->opcode, DbgGetClientInfo());
         if (bDeletePacket)
             delete packet;
         return false;
@@ -2835,6 +2843,7 @@ void CUpDownClient::AssertValid() const
 {
     CObject::AssertValid();
 
+	(void)m_iModIconIndex; //>>> WiZaRd::ModIconMappings
 //>>> WiZaRd::ClientAnalyzer
     CHECK_PTR(pAntiLeechData);
     (void)m_uiRealVersion;
@@ -2958,24 +2967,24 @@ LPCTSTR CUpDownClient::DbgGetDownloadState() const
 {
     const static LPCTSTR apszState[] =
     {
-        _T("Downloading"),
-        _T("OnQueue"),
-        _T("Connected"),
-        _T("Connecting"),
-        _T("WaitCallback"),
-        _T("WaitCallbackKad"),
-        _T("ReqHashSet"),
-        _T("NoNeededParts"),
-        _T("TooManyConns"),
-        _T("TooManyConnsKad"),
-        _T("LowToLowIp"),
-        _T("Banned"),
-        _T("Error"),
-        _T("None"),
-        _T("RemoteQueueFull")
+        L"Downloading",
+        L"OnQueue",
+        L"Connected",
+        L"Connecting",
+        L"WaitCallback",
+        L"WaitCallbackKad",
+        L"ReqHashSet",
+        L"NoNeededParts",
+        L"TooManyConns",
+        L"TooManyConnsKad",
+        L"LowToLowIp",
+        L"Banned",
+        L"Error",
+        L"None",
+        L"RemoteQueueFull"
     };
     if (GetDownloadState() >= ARRSIZE(apszState))
-        return _T("*Unknown*");
+        return L"*Unknown*";
     return apszState[GetDownloadState()];
 }
 
@@ -2983,14 +2992,14 @@ LPCTSTR CUpDownClient::DbgGetUploadState() const
 {
     const static LPCTSTR apszState[] =
     {
-        _T("Uploading"),
-        _T("OnUploadQueue"),
-        _T("Connecting"),
-        _T("Banned"),
-        _T("None")
+        L"Uploading",
+        L"OnUploadQueue",
+        L"Connecting",
+        L"Banned",
+        L"None"
     };
     if (GetUploadState() >= ARRSIZE(apszState))
-        return _T("*Unknown*");
+        return L"*Unknown*";
     return apszState[GetUploadState()];
 }
 
@@ -2998,20 +3007,20 @@ LPCTSTR CUpDownClient::DbgGetKadState() const
 {
     const static LPCTSTR apszState[] =
     {
-        _T("None"),
-        _T("FwCheckQueued"),
-        _T("FwCheckConnecting"),
-        _T("FwCheckConnected"),
-        _T("BuddyQueued"),
-        _T("BuddyIncoming"),
-        _T("BuddyConnecting"),
-        _T("BuddyConnected"),
-        _T("QueuedFWCheckUDP"),
-        _T("FWCheckUDP"),
-        _T("FwCheckConnectingUDP")
-    };
+		L"None",
+		L"FwCheckQueued",
+		L"FwCheckConnecting",
+		L"FwCheckConnected",
+		L"BuddyQueued",
+		L"BuddyIncoming",
+		L"BuddyConnecting",
+		L"BuddyConnected",
+		L"QueuedFWCheckUDP",
+		L"FWCheckUDP",
+		L"FwCheckConnectingUDP"
+	};
     if (GetKadState() >= ARRSIZE(apszState))
-        return _T("*Unknown*");
+        return L"*Unknown*";
     return apszState[GetKadState()];
 }
 
@@ -3036,7 +3045,7 @@ CString CUpDownClient::DbgGetClientInfo(bool bFormatIP) const
             {
                 if (GetConnectIP())
                 {
-                    str.Format(_T("%u@%s (%s) '%s' (%s,%s/%s/%s)"),
+                    str.Format(L"%u@%s (%s) '%s' (%s,%s/%s/%s)",
                                GetUserIDHybrid(), ipstr(GetServerIP()),
                                ipstr(GetConnectIP()),
                                GetUserName(),
@@ -3045,7 +3054,7 @@ CString CUpDownClient::DbgGetClientInfo(bool bFormatIP) const
                 }
                 else
                 {
-                    str.Format(_T("%u@%s '%s' (%s,%s/%s/%s)"),
+                    str.Format(L"%u@%s '%s' (%s,%s/%s/%s)",
                                GetUserIDHybrid(), ipstr(GetServerIP()),
                                GetUserName(),
                                DbgGetFullClientSoftVer(),
@@ -3054,7 +3063,7 @@ CString CUpDownClient::DbgGetClientInfo(bool bFormatIP) const
             }
             else
             {
-                str.Format(bFormatIP ? _T("%-15s '%s' (%s,%s/%s/%s)") : _T("%s '%s' (%s,%s/%s/%s)"),
+                str.Format(bFormatIP ? L"%-15s '%s' (%s,%s/%s/%s)" : L"%s '%s' (%s,%s/%s/%s)",
                            ipstr(GetConnectIP()),
                            GetUserName(),
                            DbgGetFullClientSoftVer(),
@@ -3063,7 +3072,7 @@ CString CUpDownClient::DbgGetClientInfo(bool bFormatIP) const
         }
         catch (...)
         {
-            str.Format(_T("%p - Invalid client instance"), this);
+            str.Format(L"%p - Invalid client instance", this);
         }
     }
     return str;
@@ -3075,7 +3084,7 @@ bool CUpDownClient::CheckHandshakeFinished() const
     {
         // 24-Nov-2004 [bc]: The reason for this is that 2 clients are connecting to each other at the same..
         //if (thePrefs.GetVerbose())
-        //	AddDebugLogLine(DLP_VERYLOW, false, _T("Handshake not finished - while processing packet: %s; %s"), DbgGetClientTCPOpcode(protocol, opcode), DbgGetClientInfo());
+        //	AddDebugLogLine(DLP_VERYLOW, false, L"Handshake not finished - while processing packet: %s; %s", DbgGetClientTCPOpcode(protocol, opcode), DbgGetClientInfo());
         return false;
     }
 
@@ -3210,9 +3219,9 @@ void CUpDownClient::CheckFailedFileIdReqs(const uchar* aucFileHash)
             if (theApp.clientlist->GetBadRequests(this) == 2)
             {
                 theApp.clientlist->TrackBadRequest(this, -2); // reset so the client will not be rebanned right after the ban is lifted
-                Ban(_T("FileReq flood"));
+                Ban(L"FileReq flood");
             }
-            throw CString(thePrefs.GetLogBannedClients() ? _T("FileReq flood") : L"");
+            throw CString(thePrefs.GetLogBannedClients() ? L"FileReq flood" : L"");
         }
     }
 }
@@ -3265,7 +3274,7 @@ void CUpDownClient::ProcessChatMessage(CSafeMemFile* data, UINT nLength)
         if (!GetMessageFiltered())
         {
             if (thePrefs.GetVerbose())
-                AddDebugLogLine(false,_T("Filtered Message from '%s' (IP:%s)"), GetUserName(), ipstr(GetConnectIP()));
+                AddDebugLogLine(false,L"Filtered Message from '%s' (IP:%s)", GetUserName(), ipstr(GetConnectIP()));
         }
         SetMessageFiltered(true);
         return;
@@ -3273,7 +3282,7 @@ void CUpDownClient::ProcessChatMessage(CSafeMemFile* data, UINT nLength)
 
     CString strMessage(data->ReadString(GetUnicodeSupport()!=utf8strNone, nLength));
     if (thePrefs.GetDebugClientTCPLevel() > 0)
-        Debug(_T("  %s\n"), strMessage);
+        Debug(L"  %s\n", strMessage);
 
     // default filtering
     CString strMessageCheck(strMessage);
@@ -3298,7 +3307,7 @@ void CUpDownClient::ProcessChatMessage(CSafeMemFile* data, UINT nLength)
 
     CString resToken;
     int curPos = 0;
-    resToken = thePrefs.GetMessageFilter().Tokenize(_T("|"), curPos);
+    resToken = thePrefs.GetMessageFilter().Tokenize(L"|", curPos);
     while (!resToken.IsEmpty())
     {
         resToken.Trim();
@@ -3315,7 +3324,7 @@ void CUpDownClient::ProcessChatMessage(CSafeMemFile* data, UINT nLength)
 //<<< WiZaRd::ClientAnalyzer
             return;
         }
-        resToken = thePrefs.GetMessageFilter().Tokenize(_T("|"), curPos);
+        resToken = thePrefs.GetMessageFilter().Tokenize(L"|", curPos);
     }
 
     // advanced spamfilter check
@@ -3351,7 +3360,7 @@ void CUpDownClient::ProcessChatMessage(CSafeMemFile* data, UINT nLength)
                         else
                         {
                             ASSERT(0);
-                            DebugLogError(_T("Failed to create Captcha for client %s"), DbgGetClientInfo());
+                            DebugLogError(L"Failed to create Captcha for client %s", DbgGetClientInfo());
                         }
                     }
                 }
@@ -3363,12 +3372,12 @@ void CUpDownClient::ProcessChatMessage(CSafeMemFile* data, UINT nLength)
                     {
                         m_cCaptchasSent++;
                         // always sent in english
-                        CString rstrMessage = _T("In order to avoid spam messages, this user requires you to solve a captcha before you can send a message to him. However your client does not support captchas, so you will not be able to chat with this user.");
-                        DebugLog(_T("Received message from client not supporting captchs, filtered and sent notifier (%s)"), DbgGetClientInfo());
+                        CString rstrMessage = L"In order to avoid spam messages, this user requires you to solve a captcha before you can send a message to him. However your client does not support captchas, so you will not be able to chat with this user.";
+                        DebugLog(L"Received message from client not supporting captchas, filtered and sent notifier (%s)", DbgGetClientInfo());
                         SendChatMessage(rstrMessage); // could delete client
                     }
                     else
-                        DebugLog(_T("Received message from client not supporting captchs, filtered, didn't sent notifier (%s)"), DbgGetClientInfo());
+                        DebugLog(L"Received message from client not supporting captchas, filtered, didn't sent notifier (%s)", DbgGetClientInfo());
                 }
                 return;
             }
@@ -3379,7 +3388,7 @@ void CUpDownClient::ProcessChatMessage(CSafeMemFile* data, UINT nLength)
                 if (m_strCaptchaChallenge.CompareNoCase(strMessage.Trim().Right(min(strMessage.GetLength(), m_strCaptchaChallenge.GetLength()))) == 0)
                 {
                     // allright
-                    DebugLog(_T("Captcha solved, showing withheld message (%s)"), DbgGetClientInfo());
+                    DebugLog(L"Captcha solved, showing withheld message (%s)", DbgGetClientInfo());
                     m_nChatCaptchaState = CA_CAPTCHASOLVED; // this state isn't persitent, but the messagecounter will be used to determine later if the captcha has been solved
                     // replace captchaanswer with withheld message and show it
                     strMessage = m_strCaptchaPendingMsg;
@@ -3396,7 +3405,7 @@ void CUpDownClient::ProcessChatMessage(CSafeMemFile* data, UINT nLength)
                 }
                 else  // wrong, cleanup and ignore
                 {
-                    DebugLogWarning(_T("Captcha answer failed (%s)"), DbgGetClientInfo());
+                    DebugLogWarning(L"Captcha answer failed (%s)", DbgGetClientInfo());
                     m_nChatCaptchaState = CA_NONE;
                     m_strCaptchaChallenge = L"";
                     m_strCaptchaPendingMsg = L"";
@@ -3409,7 +3418,7 @@ void CUpDownClient::ProcessChatMessage(CSafeMemFile* data, UINT nLength)
             }
         }
         else
-            DEBUG_ONLY(DebugLog(_T("Message passed CaptchaFilter - already solved or not needed (%s)"), DbgGetClientInfo()));
+            DEBUG_ONLY(DebugLog(L"Message passed CaptchaFilter - already solved or not needed (%s)", DbgGetClientInfo()));
 
     }
     if (!IsFriend()) // friends are never spammer... (but what if two spammers are friends :P )
@@ -3425,12 +3434,12 @@ void CUpDownClient::ProcessChatMessage(CSafeMemFile* data, UINT nLength)
             if (GetMessagesSent() == 0)
             {
                 int curPos=0;
-                CString resToken = CString(URLINDICATOR).Tokenize(_T("|"), curPos);
+                CString resToken = CString(URLINDICATOR).Tokenize(L"|", curPos);
                 while (resToken != L"")
                 {
                     if (strMessage.Find(resToken) > (-1))
                         bIsSpam = true;
-                    resToken= CString(URLINDICATOR).Tokenize(_T("|"),curPos);
+                    resToken= CString(URLINDICATOR).Tokenize(L"|",curPos);
                 }
                 // second fixed criteria: he sent me 4  or more messages and I didn't answered him once
                 if (GetMessagesReceived() > 3)
@@ -3442,7 +3451,7 @@ void CUpDownClient::ProcessChatMessage(CSafeMemFile* data, UINT nLength)
             if (IsSpammer())
             {
                 if (thePrefs.GetVerbose())
-                    AddDebugLogLine(false, _T("'%s' has been marked as spammer"), GetUserName());
+                    AddDebugLogLine(false, L"'%s' has been marked as spammer", GetUserName());
             }
             SetSpammer(true);
             theApp.emuledlg->chatwnd->chatselector.EndSession(this);
@@ -3488,16 +3497,16 @@ void CUpDownClient::ProcessCaptchaRequest(CSafeMemFile* data)
                     DeleteObject(hbmp);
                 }
                 else
-                    DebugLogWarning(_T("Received captcha request from client, Creating bitmap failed (%s)"), DbgGetClientInfo());
+                    DebugLogWarning(L"Received captcha request from client, Creating bitmap failed (%s)", DbgGetClientInfo());
             }
             else
-                DebugLogWarning(_T("Received captcha request from client, processing image failed or invalid pixel size (%s)"), DbgGetClientInfo());
+                DebugLogWarning(L"Received captcha request from client, processing image failed or invalid pixel size (%s)", DbgGetClientInfo());
         }
         else
-            DebugLogWarning(_T("Received captcha request from client, size sanitize check failed (%u) (%s)"), nSize, DbgGetClientInfo());
+            DebugLogWarning(L"Received captcha request from client, size sanitize check failed (%u) (%s)", nSize, DbgGetClientInfo());
     }
     else
-        DebugLogWarning(_T("Received captcha request from client, but don't accepting it at this time (%s)"), DbgGetClientInfo());
+        DebugLogWarning(L"Received captcha request from client, but don't accepting it at this time (%s)", DbgGetClientInfo());
 }
 
 void CUpDownClient::ProcessCaptchaReqRes(uint8 nStatus)
@@ -3512,7 +3521,7 @@ void CUpDownClient::ProcessCaptchaReqRes(uint8 nStatus)
     else
     {
         m_nChatCaptchaState = CA_NONE;
-        DebugLogWarning(_T("Received captcha result from client, but don't accepting it at this time (%s)"), DbgGetClientInfo());
+        DebugLogWarning(L"Received captcha result from client, but don't accepting it at this time (%s)", DbgGetClientInfo());
     }
 }
 
@@ -3575,7 +3584,7 @@ void CUpDownClient::ProcessFirewallCheckUDPRequest(CSafeMemFile* data)
 {
     if (!Kademlia::CKademlia::IsRunning() || Kademlia::CKademlia::GetUDPListener() == NULL)
     {
-        DebugLogWarning(_T("Ignored Kad Firewallrequest UDP because Kad is not running (%s)"), DbgGetClientInfo());
+        DebugLogWarning(L"Ignored Kad Firewallrequest UDP because Kad is not running (%s)", DbgGetClientInfo());
         return;
     }
     // first search if we know this IP already, if so the result might be biased and we need tell the requester
@@ -3590,11 +3599,11 @@ void CUpDownClient::ProcessFirewallCheckUDPRequest(CSafeMemFile* data)
     UINT dwSenderKey = data->ReadUInt32();
     if (nRemoteInternPort == 0)
     {
-        DebugLogError(_T("UDP Firewallcheck requested with Intern Port == 0 (%s)"), DbgGetClientInfo());
+        DebugLogError(L"UDP Firewallcheck requested with Intern Port == 0 (%s)", DbgGetClientInfo());
         return;
     }
     if (dwSenderKey == 0)
-        DebugLogWarning(_T("UDP Firewallcheck requested with SenderKey == 0 (%s)"), DbgGetClientInfo());
+        DebugLogWarning(L"UDP Firewallcheck requested with SenderKey == 0 (%s)", DbgGetClientInfo());
 
     CSafeMemFile fileTestPacket1;
     fileTestPacket1.WriteUInt8(bErrorAlreadyKnown ? 1 : 0);
@@ -3615,7 +3624,7 @@ void CUpDownClient::ProcessFirewallCheckUDPRequest(CSafeMemFile* data)
         Kademlia::CKademlia::GetUDPListener()->SendPacket(&fileTestPacket2, KADEMLIA2_FIREWALLUDP, ntohl(GetConnectIP())
                 , nRemoteExternPort, Kademlia::CKadUDPKey(dwSenderKey, theApp.GetPublicIP(false)), NULL);
     }
-    DebugLog(_T("Answered UDP Firewallcheck request (%s)"), DbgGetClientInfo());
+    DebugLog(L"Answered UDP Firewallcheck request (%s)", DbgGetClientInfo());
 }
 
 void CUpDownClient::SetConnectOptions(uint8 byOptions, bool bEncryption, bool bCallback)
@@ -3771,9 +3780,9 @@ void	CUpDownClient::ProcessSourceRequest(const BYTE* packet, const UINT size, co
     if (thePrefs.GetDebugClientTCPLevel() > 0)
     {
         if (bMultipacket)
-            DebugRecv((bXS2 ? "OP_MPRequestSources2" : "OP_MPRequestSources"), this, packet);
+            DebugRecv(bXS2 ? "OP_MPRequestSources2" : "OP_MPRequestSources", this, packet);
         else
-            DebugRecv((bXS2 ? "OP_RequestSources2" : "OP_RequestSources"), this, (size >= 16) ? packet : NULL);
+            DebugRecv(bXS2 ? "OP_RequestSources2" : "OP_RequestSources", this, (size >= 16) ? packet : NULL);
     }
 
     if (!bMultipacket)
@@ -3902,7 +3911,7 @@ void	CUpDownClient::ProcessSourceAnswer(const BYTE* packet, const UINT size, con
 {
     const bool bXS2 = opcode == OP_ANSWERSOURCES || opcode == OP_ANSWERSOURCES2;
     if (thePrefs.GetDebugClientTCPLevel() > 0)
-        DebugRecv((bXS2 ? "OP_AnswerSources2" : "OP_AnswerSources"), this, (size >= (UINT)(16+bXS2 ? 1 : 0)) ? packet : NULL);
+        DebugRecv(bXS2 ? "OP_AnswerSources2" : "OP_AnswerSources", this, (size >= (UINT)(16+bXS2 ? 1 : 0)) ? packet : NULL);
     theStats.AddDownDataOverheadSourceExchange(uRawSize);
 
 //>>> Security Check
@@ -4007,3 +4016,23 @@ bool	CUpDownClient::GetScheduledRemovalLimboComplete() const
     return m_bScheduledForRemoval && ::GetTickCount()-m_bScheduledForRemovalAtTick > SEC2MS(10);
 }
 //<<< WiZaRd::ZZUL Upload [ZZ]
+//>>> WiZaRd::ModIconMapper
+void	CUpDownClient::CheckModIconIndex()
+{
+	if(m_strModVersion.IsEmpty())
+	{
+		m_iModIconIndex = MODMAP_NONE;
+		return;
+	}
+
+	m_iModIconIndex = theApp.theModIconMap->GetIconIndexForModstring(m_strModVersion);
+}
+
+int	CUpDownClient::GetModIconIndex() const
+{
+	//if he's a bad one, just return that icon straight away
+	if(IsBadGuy())
+		return MODMAP_BADGUY;
+	return m_iModIconIndex;
+}
+//<<< WiZaRd::ModIconMapper

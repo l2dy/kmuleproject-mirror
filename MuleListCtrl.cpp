@@ -108,7 +108,6 @@ CMuleListCtrl::CMuleListCtrl(PFNLVCOMPARE pfnCompare, DWORD dwParamSort)
     m_uIDAccel = IDR_LISTVIEW;
     m_eUpdateMode = lazy;
     m_iAutoSizeWidth = LVSCW_AUTOSIZE;
-    badguy = -1; //>>> WiZaRd::ClientAnalyzer
 }
 
 CMuleListCtrl::~CMuleListCtrl()

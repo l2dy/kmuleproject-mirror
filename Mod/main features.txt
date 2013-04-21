@@ -13,3 +13,5 @@ The main features of our new client are
 * improved first start assistant incl. connection wizard
 * ICS, SOTN, Powershare, Anti-HideOS
 * searchCatch & passive src finding for more sources :)
+* automatic downloaded archive extraction
+* improved WINE support

@@ -495,4 +495,6 @@ int		GetRatioSmileyIndex(const uint64& ul, const uint64& dl);
 CString	GetFileNameFromURL(const CString& strURL);
 uint64	GetFileSizeOnDisk(const CString& strFilePath);
 bool	RunningWine(); //>>> WiZaRd::Wine Compatibility
+void	FillClientIconImageList(CImageList& imageList);
+int		GetClientImageIndex(const bool bFriend, const UINT nClientVersion, const bool bExt, bool bPlus);
 //<<< WiZaRd::Additional Functions
