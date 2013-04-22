@@ -1,4 +1,5 @@
 #pragma once
+#include "HyperTextCtrl.h" //>>> WiZaRd::Honor translators
 
 class CPPgGeneral : public CPropertyPage
 {
@@ -37,4 +38,9 @@ protected:
     afx_msg void OnCbnCloseupLangs();
     afx_msg void OnHelp();
     afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
+
+//>>> WiZaRd::Honor translators
+	CHyperTextCtrl m_wndShowTranslatorHP;
+	void UpdateTranslatorField();
+//<<< WiZaRd::Honor translators
 };

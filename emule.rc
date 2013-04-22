@@ -261,42 +261,44 @@ BEGIN
     PUSHBUTTON      "Get proxy settings from operating system",IDC_PROXY_OPERATING_SYSTEM,5,140,220,14
 END
 
-IDD_PPG_GENERAL DIALOGEX 0, 0, 231, 205
+IDD_PPG_GENERAL DIALOGEX 0, 0, 231, 243
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "General"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     GROUPBOX        "User Name:",IDC_NICK_FRM,4,2,223,29
     EDITTEXT        IDC_NICK,11,13,209,12,ES_AUTOHSCROLL
-    GROUPBOX        "Language:",IDC_LANG_FRM,4,32,223,29
+    GROUPBOX        "Language:",IDC_LANG_FRM,4,32,223,51
     COMBOBOX        IDC_LANGS,11,43,209,310,CBS_DROPDOWNLIST | CBS_SORT | 
                     WS_VSCROLL | WS_TABSTOP
-    GROUPBOX        "Misc:",IDC_MISC_FRM,4,63,223,84
+    GROUPBOX        "Misc:",IDC_MISC_FRM,4,97,223,84
     CONTROL         "Bring to front on link click",IDC_BRINGTOFOREGROUND,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,74,202,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,108,202,10
     CONTROL         "Prompt on exit",IDC_EXIT,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,11,84,202,10
+                    WS_TABSTOP,11,118,202,10
     CONTROL         "Onlinesig",IDC_ONLINESIG,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,11,94,202,10
-    GROUPBOX        "Startup",IDC_STARTUP,3,148,223,56
+                    WS_TABSTOP,11,128,202,10
+    GROUPBOX        "Startup",IDC_STARTUP,3,185,223,56
     CONTROL         "Check for new version on startup",IDC_CHECK4UPDATE,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,162,153,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,199,153,10
     CONTROL         "",IDC_CHECKDAYS,"msctls_trackbar32",TBS_AUTOTICKS | 
-                    WS_TABSTOP,169,165,53,10
-    LTEXT           "days",IDC_DAYS,171,156,48,9
+                    WS_TABSTOP,169,202,53,10
+    LTEXT           "days",IDC_DAYS,171,193,48,9
     CONTROL         "Show splash screen",IDC_SPLASHON,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,11,172,158,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,11,209,158,10
     CONTROL         "Startup Minimized",IDC_STARTMIN,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,11,182,190,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,11,219,190,10
     CONTROL         "Start with Windows",IDC_STARTWIN,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,11,192,190,10
-    PUSHBUTTON      "Edit Web Services...",IDC_WEBSVEDIT,11,126,100,14
-    PUSHBUTTON      "Handle eD2K Links",IDC_ED2KFIX,116,126,106,14
+                    BS_AUTOCHECKBOX | WS_TABSTOP,11,229,190,10
+    PUSHBUTTON      "Edit Web Services...",IDC_WEBSVEDIT,11,160,100,14
+    PUSHBUTTON      "Handle eD2K Links",IDC_ED2KFIX,116,160,106,14
     CONTROL         "Enable Minimule window",IDC_MINIMULE,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,11,104,202,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,11,138,202,10
     CONTROL         "Prevent Standby mode while eMule is running",
-                    IDC_PREVENTSTANDBY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    11,114,212,10
+                    IDC_PREVENTSTANDBY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,148,212,10
+    LTEXT           "Translated by:",IDC_TRANSLATED_BY_LABEL,13,58,62,9
+    LTEXT           "some translator",IDC_TRANSLATED_BY_NAME,82,57,137,9
+    CONTROL         "",IDC_TRANSLATED_BY_URL,"Static",SS_BLACKFRAME | SS_CENTERIMAGE | NOT WS_VISIBLE,14,68,206,10
 END
 
 IDD_PPG_FILES DIALOGEX 0, 0, 231, 299
@@ -1428,6 +1430,8 @@ CLIENTAMULE             ICON                    "res\\ClientAMule.ico"
 CLIENTAMULEPLUS         ICON                    "res\\ClientAMulePlus.ico"
 CLIENTLPHANT            ICON                    "res\\ClientLPhant.ico"
 CLIENTLPHANTPLUS        ICON                    "res\\ClientLPhantPlus.ico"
+CLIENTKMULE             ICON                    "res\\ClientkMule.ico"
+CLIENTKMULEPLUS         ICON                    "res\\ClientkMulePlus.ico"
 SRCDOWNLOADING          ICON                    "res\\Client0.ico"
 SRCCONNECTING           ICON                    "res\\Client1.ico"
 SRCONQUEUE              ICON                    "res\\Client2.ico"
@@ -1782,17 +1786,6 @@ BEGIN
     LTEXT           "-",IDC_FS_POPULARITY2_VAL,356,60,34,8
 END
 
-IDD_SHAREDDIRECTORIES DIALOGEX 0, 0, 186, 93
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
-    WS_SYSMENU
-CAPTION "Dialog"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,129,7,50,14
-    PUSHBUTTON      "Abbrechen",IDCANCEL,129,24,50,14
-END
-
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // Icon
@@ -1826,7 +1819,7 @@ BEGIN
         HORZGUIDE, 60
     END
 
-    "IDD_SHAREDDIRECTORIES", DIALOG
+    IDD_SHAREDDIRECTORIES, DIALOG
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 179
@@ -1966,6 +1959,11 @@ BEGIN
     IDS_STATICEXTRACT        "Automatically extract archive files"
 	IDS_UNAVAILABLE			 "Not available"
 	IDS_NOCONNECTLOW2LOW     "Cannot connect firewalled to firewalled"
+	IDS_TRANSLATED_BY_LABEL	 "Translated by:"
+	IDS_TRANSLATED_BY_NAME	 "Tuxman/WiZaRd"
+	IDS_TRANSLATED_BY_URL	 "http://kmule.emulefuture.de"
+	IDS_TRANSLATED_BY_HOMEPAGE "Visit translators' homepage"
+    IDS_RENAME_WITHOUT_EXTENSION " (without extension)"
 END
 
 STRINGTABLE 
@@ -3465,7 +3463,6 @@ STRINGTABLE
 BEGIN    
     IDS_DONOTASKAGAIN       "Don't ask me again"
     IDS_POPULARITY          "Popularity Rank"
-    IDS_RENAME_WITHOUT_EXTENSION " (without extension)"
 END
 
 #endif    // Englisch (USA) resources

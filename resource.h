@@ -1832,54 +1832,13 @@
 #define IDC_FS_POPULARITY2_LBL          3010
 #define IDC_FS_POPULARITY2_VAL          3011
 #define IDC_OPENPREFINI                 3012
-#define IDS_KAD_SEARCH_KEYWORD_CLEANUP  4000
-#define IDC_ANTILEECH_INFO              4001
-#define IDC_ANTILEECH_LABEL             4002
-#define IDS_ANTILEECH_LABEL             4003
-#define IDS_POWERSHARE_PREFIX           4004
-#define IDS_POWERSHARE                  4005
-#define IDS_ON                          4006
-#define IDS_OFF                         4007
-#define IDS_UPDATE_AVAIL_QUESTION       4008
-#define IDC_IPFILTER_AUTOUPDATE         4009
-#define IDS_IPFILTER_AUTOUPDATE         4010
-#define IDC_FDCRESET                    4011
-#define IDS_UDP_DISABLED                4012
-#define IDS_RATIO                       4013
-#define IDC_RATIOICON                   4014
-#define IDS_RESTART_NOW_QUESTION        4015
-#define IDS_AUTOHL                      4016
-#define IDS_HASH_FILE_FINISHED          4017
-#define IDS_DROP_BLOCKING_DISABLED      4018
-#define IDS_UPSLOTNUMBER                4019
-#define IDS_UPLOAD_COMPLETED            4020
-#define IDS_UPLOAD_PREEMPTED            4021
-#define IDS_UPLOAD_TOO_MANY_SLOTS       4022
-#define IDS_UPLOAD_FEEDBACK             4023
-#define IDS_FEEDBACKBY                  4024
-#define IDS_FEEDBACKTIME                4025
-#define IDS_CURRENT_TRANSFER_DL         4026
-#define IDS_CURRENT_TRANSFER_UL         4027
-#define IDC_PROXY_OPERATING_SYSTEM      4028
-#define IDS_PROXY_OPERATING_SYSTEM      4029
-#define IDC_OPENMODPREFINI              4030
-#define IDC_EXTRACTFOLDER               4031
-#define IDC_CHECKEXTRACT                4032
-#define IDC_RADIOEXTRACTINCOMING        4033
-#define IDC_RADIOEXTRACTOTHER           4034
-#define IDC_STATICEXTRACT               4035
-#define IDS_CHECKEXTRACT                4036
-#define IDS_RADIOEXTRACTINCOMING        4037
-#define IDS_RADIOEXTRACTOTHER           4038
-#define IDS_STATICEXTRACT               4039
-#define IDS_RENAME_WITHOUT_EXTENSION    4040
 #define IDA_ENTER                       32771
 
 // Next default values for new objects
-//
+// 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        1566
+#define _APS_NEXT_RESOURCE_VALUE        1567
 #define _APS_NEXT_COMMAND_VALUE         32773
 #define _APS_NEXT_CONTROL_VALUE         3018
 #define _APS_NEXT_SYMED_VALUE           1591

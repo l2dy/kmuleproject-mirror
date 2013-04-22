@@ -61,5 +61,24 @@
 #define IDS_PROXY_OPERATING_SYSTEM		4029
 #define IDC_OPENMODPREFINI				4030
 #define IDS_UNAVAILABLE					4031
+//>>> WiZaRd::Honor translators
+#define IDC_TRANSLATED_BY_LABEL			4032
+#define IDC_TRANSLATED_BY_NAME			4033
+#define IDC_TRANSLATED_BY_URL			4034
+#define IDS_TRANSLATED_BY_LABEL			4035
+#define IDS_TRANSLATED_BY_NAME			4036
+#define IDS_TRANSLATED_BY_URL			4037
+#define IDS_TRANSLATED_BY_HOMEPAGE		4038
+//<<< WiZaRd::Honor translators
+#define IDC_CHECKEXTRACT                4040
+#define IDC_RADIOEXTRACTINCOMING        4041
+#define IDC_RADIOEXTRACTOTHER           4042
+#define IDC_EXTRACTFOLDER               4043
+#define IDC_STATICEXTRACT               4044
+#define IDS_CHECKEXTRACT                4045
+#define IDS_RADIOEXTRACTINCOMING        4046
+#define IDS_RADIOEXTRACTOTHER           4047
+#define IDS_STATICEXTRACT               4048
+#define IDS_RENAME_WITHOUT_EXTENSION    4049
 
 // this line is needed or we get a "fatal error RC1004: unexpected end of file found" - thanks for those wonderful bugs, Microsoft!

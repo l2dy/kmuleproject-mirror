@@ -735,6 +735,9 @@
     <ClCompile Include="Mod\ModIconMapping.cpp">
       <Filter>Mod\Source</Filter>
     </ClCompile>
+    <ClCompile Include="HyperTextCtrl.cpp">
+      <Filter>Interface Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <MASM Include="MD4_asm.asm">
@@ -1609,6 +1612,12 @@
     <None Include="res\Smiley_Smile.gif">
       <Filter>Resource Files\Smilies</Filter>
     </None>
+    <None Include="res\ClientkMule.ico">
+      <Filter>Resource Files\Icons</Filter>
+    </None>
+    <None Include="res\ClientkMulePlus.ico">
+      <Filter>Resource Files\Icons</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractFile.h">
@@ -2357,6 +2366,9 @@
     </ClInclude>
     <ClInclude Include="Mod\ModIconMapping.h">
       <Filter>Mod\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="HyperTextCtrl.h">
+      <Filter>Interface Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

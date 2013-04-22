@@ -76,7 +76,7 @@ void CModIconMapper::Update()
 				&& DownloadFromURLToFile(MODICONDLL_URL, NEW_MODICONDLL_DLL))
 			{
 //>>> WiZaRd::ModIconDLL Update
-				if(Extract(NEW_MODICONDLL_DLL, thePrefs.GetMuleDirectory(EMULE_CONFIGDIR), L"ModIconDLL.dll", true, 1, L"ModIconDLL.dll"))
+				if(Extract(NEW_MODICONDLL_DLL, CUR_MODICONDLL_DLL, DFLT_MODICONDLL_FILENAME, true, 1, DFLT_MODICONDLL_FILENAME))
 //<<< WiZaRd::ModIconDLL Update
 				{
 					Reload();

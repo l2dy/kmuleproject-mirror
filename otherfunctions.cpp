@@ -4922,4 +4922,39 @@ int	GetClientImageIndex(const bool bFriend, const UINT nClientVersion, const boo
 
 	return index;
 }
+
+//NOTE: this retrieves a copy of the HAND cursor - it has to be destroyed in ANY case!
+HCURSOR		CreateHandCursor()
+{
+	HCURSOR hLinkCursor = NULL;
+	HCURSOR hHandCursor = NULL;
+
+#ifdef IDC_HAND
+	hHandCursor = ::LoadCursor(NULL, IDC_HAND); // Load Windows' hand cursor
+	if (hHandCursor != NULL)                    // if not available, load it from winhlp32.exe
+		hLinkCursor = CopyCursor(hHandCursor);
+	else
+#endif //IDC_HAND	
+	{
+		// This retrieves cursor #106 from winhlp32.exe, which is a hand pointer
+		CString strWinDir; 
+		(void)GetWindowsDirectory(strWinDir.GetBuffer(MAX_PATH), MAX_PATH);
+		strWinDir.ReleaseBuffer();
+		strWinDir += L"\\winhlp32.exe";
+
+		HMODULE hModule = LoadLibrary(strWinDir);
+		if (hModule)
+		{
+			hHandCursor = ::LoadCursor(hModule, MAKEINTRESOURCE(106));
+			if (hHandCursor != NULL)
+				hLinkCursor = CopyCursor(hHandCursor);
+			FreeLibrary(hModule);
+		}
+	}
+
+	if (hLinkCursor == NULL)
+		hLinkCursor = CopyCursor(::LoadCursor(NULL, IDC_ARROW));
+
+	return hLinkCursor;
+}
 //<<< WiZaRd::Additional Functions

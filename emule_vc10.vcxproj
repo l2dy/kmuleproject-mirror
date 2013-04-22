@@ -190,6 +190,7 @@
     <ClCompile Include="FriendList.cpp" />
     <ClCompile Include="GZipFile.cpp" />
     <ClCompile Include="HttpClientReqSocket.cpp" />
+    <ClCompile Include="HyperTextCtrl.cpp" />
     <ClCompile Include="I18n.cpp" />
     <ClCompile Include="Ini2.cpp" />
     <ClCompile Include="IPFilter.cpp" />
@@ -456,6 +457,8 @@
     <None Include="res\ClientDefaultPlus.ico" />
     <None Include="res\ClienteDonkeyHybrid.ico" />
     <None Include="res\ClienteDonkeyHybridPlus.ico" />
+    <None Include="res\ClientkMule.ico" />
+    <None Include="res\ClientkMulePlus.ico" />
     <None Include="res\ClientlPhant.ico" />
     <None Include="res\ClientlPhantPlus.ico" />
     <None Include="res\ClientMLDonkey.ico" />
@@ -758,6 +761,7 @@
     <ClInclude Include="FriendList.h" />
     <ClInclude Include="GZipFile.h" />
     <ClInclude Include="HttpClientReqSocket.h" />
+    <ClInclude Include="HyperTextCtrl.h" />
     <ClInclude Include="Ini2.h" />
     <ClInclude Include="IPFilter.h" />
     <ClInclude Include="kademlia\utils\KadClientSearcher.h" />

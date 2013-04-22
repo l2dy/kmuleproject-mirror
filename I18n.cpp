@@ -18,10 +18,22 @@ CString GetResString(UINT uStringID, WORD wLanguageID)
     CString resString;
     if (s_hLangDLL)
         (void)resString.LoadString(s_hLangDLL, uStringID, wLanguageID);
-    if (resString.IsEmpty())
+    if (resString.IsEmpty() && wLanguageID != LANGID_EN_US)
         (void)resString.LoadString(GetModuleHandle(NULL), uStringID, LANGID_EN_US);
     return resString;
 }
+
+//>>> WiZaRd::Honor translators
+CString GetCurrentResString(UINT uStringID)
+{
+	CString resString;
+	if (s_hLangDLL)
+		resString.LoadString(s_hLangDLL, uStringID);
+	else
+		resString.LoadString(GetModuleHandle(NULL), uStringID);
+	return resString;
+}
+//<<< WiZaRd::Honor translators
 
 CString GetResString(UINT uStringID)
 {

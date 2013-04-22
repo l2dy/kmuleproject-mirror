@@ -170,6 +170,7 @@ CString _GetResString(RESSTRIDTYPE StringID);
 #define	IDS2RESIDTYPE(id)	id
 CString GetResString(RESSTRIDTYPE StringID);
 #define _GetResString(id)	GetResString(id)
+CString GetCurrentResString(RESSTRIDTYPE StringID); //>>> WiZaRd::Honor translators
 #endif//!USE_STRING_IDS
 void InitThreadLocale();
 
@@ -497,4 +498,5 @@ uint64	GetFileSizeOnDisk(const CString& strFilePath);
 bool	RunningWine(); //>>> WiZaRd::Wine Compatibility
 void	FillClientIconImageList(CImageList& imageList);
 int		GetClientImageIndex(const bool bFriend, const UINT nClientVersion, const bool bExt, bool bPlus);
+HCURSOR		CreateHandCursor();
 //<<< WiZaRd::Additional Functions
