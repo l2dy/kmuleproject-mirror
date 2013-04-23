@@ -3856,21 +3856,31 @@ void CPartFile::PerformFileCompleteEnd(DWORD dwResult)
             }
         }
 
-        //>>> Tux::AutoExtract
+//>>> Tux::AutoExtract
         if (thePrefs.m_bExtractArchives && GetFileTypeByName(GetFileName()) == _T(ED2KFTSTR_ARCHIVE))
         {
-            Log(LOG_STATUSBAR,L"The newly downloaded file can be extracted auto-magically. Let's do that!");
+            Log(LOG_STATUSBAR, L"The newly downloaded file can be extracted auto-magically. Let's do that!");
 
             CString targetDir = L"";
             if (thePrefs.m_bExtractToIncomingDir || thePrefs.m_strExtractFolder.IsEmpty())
                 targetDir = thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR);
             else
                 targetDir = thePrefs.m_strExtractFolder;
+			if(targetDir.Right(1) != L'\\')
+				targetDir.AppendChar(L'\\');
 
-            if (ExtractSevenZipArchive(GetFullName(),targetDir))
-                Log(LOG_STATUSBAR,L"Auto-magic extraction succeeded. Yay!");
+			if(!::PathFileExists(targetDir) && !::CreateDirectory(targetDir, 0))
+				theApp.QueueLogLineEx(LOG_STATUSBAR|LOG_ERROR, L"Failed to create desired extraction path \"%s\" (%s)", targetDir, GetErrorMessage(GetLastError()));
+			else
+			{
+				targetDir.AppendFormat(L"%s\\", RemoveFileExtension(GetFileName()));
+				if(!::PathFileExists(targetDir) && !::CreateDirectory(targetDir, 0))
+					theApp.QueueLogLineEx(LOG_STATUSBAR|LOG_ERROR, L"Failed to create desired extraction sub path \"%s\" (%s)", targetDir, GetErrorMessage(GetLastError()));            
+				else if (ExtractSevenZipArchive(GetFullName(), targetDir))
+					Log(LOG_STATUSBAR, L"Auto-magic extraction succeeded. Yay!");
+			}
         }
-        //<<< Tux::AutoExtract
+//<<< Tux::AutoExtract
     }
 
     theApp.downloadqueue->StartNextFileIfPrefs(GetCategory());

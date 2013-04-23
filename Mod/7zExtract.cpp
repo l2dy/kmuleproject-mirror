@@ -37,7 +37,8 @@ bool ExtractSevenZipArchive(const CString& strArchiveName, const CString& strDes
     }
     catch (SevenZip::SevenZipException& ex)
     {
-        msg.Format(L"Failed to extract archive \"%s\" to \"%s\" - %s", strArchiveName, strDestination, ex.GetMessage());
+		CString error = ex.GetMessage().c_str();
+        msg.Format(L"Failed to extract archive \"%s\" to \"%s\" - %s", strArchiveName, strDestination, error);
     }
     catch (...)
     {
