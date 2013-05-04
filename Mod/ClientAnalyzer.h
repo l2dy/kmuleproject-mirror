@@ -227,7 +227,7 @@ public:
     }
     void	SetLastSeen()
     {
-        m_pData->dwLastSeen = time(NULL);
+        m_pData->dwLastSeen = (DWORD)time(NULL);
     }
 
     DWORD	GetFirstMet() const
@@ -236,7 +236,7 @@ public:
     }
     void	SetFirstMet()
     {
-        m_pData->dwFirstMet = time(NULL);
+        m_pData->dwFirstMet = (DWORD)time(NULL);
     }
 
 //keep bad status for some time
@@ -246,7 +246,7 @@ public:
     }
     void	SetBadTimer()
     {
-        m_pData->dwBadTimer = time(NULL);
+        m_pData->dwBadTimer = (DWORD)time(NULL);
     }
 
     void	SetParent(CUpDownClient* client, const bool bSetOnly = false);
@@ -361,7 +361,7 @@ public:
         corruptPartSenderInfo()
         {
             md4clr(hash);
-            dwAdded = time(NULL);
+            dwAdded = (DWORD)time(NULL);
         }
         corruptPartSenderInfo(const uchar* thash, DWORD tdwAdded)
         {

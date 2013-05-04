@@ -1528,7 +1528,7 @@ loadstart:
         UINT count = file.ReadUInt32();
         UINT cDeleted = 0;
 
-        const DWORD dwExpired = time(NULL) - 12960000; // today - 150 days
+        const DWORD dwExpired = (DWORD)time(NULL) - 12960000; // today - 150 days
         for (UINT i = 0; i < count; ++i)
         {
             CAntiLeechData* newcredits = new CAntiLeechData(&file);
@@ -1567,7 +1567,7 @@ loadstart:
         if (file.GetPosition() != file.GetLength()) //avoid "corrupt antileech.met" message
             countBad = file.ReadUInt32();
         UINT cDeletedBad = 0;
-        const DWORD dwExpiredBad = time(NULL) - 5184000; // today - 60 days
+        const DWORD dwExpiredBad = (DWORD)time(NULL) - 5184000; // today - 60 days
 
         uchar hash[16];
         DWORD dwAdded = 0;
