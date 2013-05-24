@@ -65,8 +65,8 @@
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" />
     <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ExecutablePath)</ExecutablePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\AtlServer\include;.\DirectX\Extras\DirectShow\Include;.\DirectX\Include;..\SevenZip++;$(IncludePath);$(IncludePath)</IncludePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\AtlServer\include;.\DirectX\Extras\DirectShow\Include;.\DirectX\Include;..\SevenZip++;$(IncludePath);$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\AtlServer\include;.\DirectX\Extras\DirectShow\Include;.\DirectX\Include;.\7zip\CPP\;.\7zip\CPP\7zip;.\7zip\CPP\7zip\UI\Console;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\AtlServer\include;.\DirectX\Extras\DirectShow\Include;.\DirectX\Include;.\7zip\CPP\;.\7zip\CPP\7zip;.\7zip\CPP\7zip\UI\Console;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <CustomBuildStep>
@@ -97,7 +97,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>version.lib;winmm.lib;ADSIId.lib;crypt32.lib;wmvcore.lib;..\zlib\debug_vc10\zlib.lib;..\crypto51\debug_vc10\cryptlib.lib;..\id3lib\libprj\Debug_vc10\id3libD.lib;..\CxImage\debug_vc10\cximage.lib;..\png\projects\visualc10\Win32_LIB_Debug\libpngd.lib;..\ResizableLib\Unicode_Debug_vc10\ResizableLib.lib;..\miniupnpc\Debug_vc10\miniupnpc.lib;..\SevenZip++\Lib\7zpp_ud.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>version.lib;winmm.lib;ADSIId.lib;crypt32.lib;wmvcore.lib;..\zlib\debug_vc10\zlib.lib;..\crypto51\debug_vc10\cryptlib.lib;..\id3lib\libprj\Debug_vc10\id3libD.lib;..\CxImage\debug_vc10\cximage.lib;..\png\projects\visualc10\Win32_LIB_Debug\libpngd.lib;..\ResizableLib\Unicode_Debug_vc10\ResizableLib.lib;..\miniupnpc\Debug_vc10\miniupnpc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>nafxcwd.lib;msvcprtd.lib;MSVCRTD.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <DelayLoadDLLs>oleacc.dll;gdiplus.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -144,7 +144,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/safeseh %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>unicows.lib;kernel32.lib;advapi32.lib;user32.lib;gdi32.lib;shell32.lib;comdlg32.lib;version.lib;mpr.lib;rasapi32.lib;winmm.lib;winspool.lib;vfw32.lib;secur32.lib;oleacc.lib;oledlg.lib;sensapi.lib;gdiplus.lib;ADSIId.lib;crypt32.lib;wmvcore.lib;..\zlib\release_vc10\zlib.lib;..\crypto51\release_vc10\cryptlib.lib;..\id3lib\libprj\Release_vc10\id3lib.lib;..\CxImage\Release_vc10\cximage.lib;..\png\projects\visualc10\Win32_LIB_Release\libpng.lib;..\ResizableLib\Unicode_Release_vc10\ResizableLib.lib;..\miniupnpc\Release_vc10\miniupnpc.lib;..\SevenZip++\Lib\7zpp_u.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>unicows.lib;kernel32.lib;advapi32.lib;user32.lib;gdi32.lib;shell32.lib;comdlg32.lib;version.lib;mpr.lib;rasapi32.lib;winmm.lib;winspool.lib;vfw32.lib;secur32.lib;oleacc.lib;oledlg.lib;sensapi.lib;gdiplus.lib;ADSIId.lib;crypt32.lib;wmvcore.lib;..\zlib\release_vc10\zlib.lib;..\crypto51\release_vc10\cryptlib.lib;..\id3lib\libprj\Release_vc10\id3lib.lib;..\CxImage\Release_vc10\cximage.lib;..\png\projects\visualc10\Win32_LIB_Release\libpng.lib;..\ResizableLib\Unicode_Release_vc10\ResizableLib.lib;..\miniupnpc\Release_vc10\miniupnpc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>kernel32.lib;advapi32.lib;user32.lib;gdi32.lib;shell32.lib;comdlg32.lib;version.lib;mpr.lib;rasapi32.lib;winmm.lib;winspool.lib;vfw32.lib;secur32.lib;oleacc.lib;oledlg.lib;sensapi.lib;nafxcwd.lib;msvcprt.lib;MSVCRT.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <DelayLoadDLLs>oleacc.dll;gdiplus.dll;ws2_32.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -159,6 +159,105 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="7zip\CPP\7zip\Archive\Common\OutStreamWithCRC.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\Common\CreateCoder.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\Common\CWrappers.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\Common\FilePathAutoRename.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\Common\FileStreams.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\Common\FilterCoder.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\Common\InBuffer.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\Common\InMemStream.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\Common\InOutTempBuffer.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\Common\LimitedStreams.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\Common\LockedStream.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\Common\MemBlocks.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\Common\MethodId.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\Common\MethodProps.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\Common\OffsetStream.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\Common\OutBuffer.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\Common\OutMemStream.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\Common\ProgressMt.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\Common\ProgressUtils.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\Common\StreamBinder.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\Common\StreamObjects.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\Common\StreamUtils.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\Common\VirtThread.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\Compress\CopyCoder.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Common\ArchiveCommandLine.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Common\ArchiveExtractCallback.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Common\ArchiveName.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Common\ArchiveOpenCallback.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Common\Bench.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Common\DefaultName.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Common\EnumDirItems.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Common\Extract.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Common\ExtractingFilePath.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Common\LoadCodecs.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Common\OpenArchive.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Common\PropIDUtils.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Common\SetProperties.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Common\SortUtils.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Common\TempFiles.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Common\Update.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Common\UpdateAction.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Common\UpdateCallback.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Common\UpdatePair.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Common\UpdateProduce.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Common\WorkDir.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Common\ZipRegistry.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Console\BenchCon.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Console\ConsoleClose.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Console\ExtractCallbackConsole.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Console\List.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Console\OpenCallbackConsole.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Console\PercentPrinter.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Console\UpdateCallbackConsole.cpp" />
+    <ClCompile Include="7zip\CPP\7zip\UI\Console\UserInputUtils.cpp" />
+    <ClCompile Include="7zip\CPP\Common\CommandLineParser.cpp" />
+    <ClCompile Include="7zip\CPP\Common\CRC.cpp" />
+    <ClCompile Include="7zip\CPP\Common\IntToString.cpp" />
+    <ClCompile Include="7zip\CPP\Common\ListFileUtils.cpp" />
+    <ClCompile Include="7zip\CPP\Common\MyString.cpp" />
+    <ClCompile Include="7zip\CPP\Common\MyVector.cpp" />
+    <ClCompile Include="7zip\CPP\Common\NewHandler.cpp" />
+    <ClCompile Include="7zip\CPP\Common\StdInStream.cpp" />
+    <ClCompile Include="7zip\CPP\Common\StdOutStream.cpp" />
+    <ClCompile Include="7zip\CPP\Common\StringConvert.cpp" />
+    <ClCompile Include="7zip\CPP\Common\StringToInt.cpp" />
+    <ClCompile Include="7zip\CPP\Common\UTFConvert.cpp" />
+    <ClCompile Include="7zip\CPP\Common\Wildcard.cpp" />
+    <ClCompile Include="7zip\CPP\Windows\DLL.cpp" />
+    <ClCompile Include="7zip\CPP\Windows\Error.cpp" />
+    <ClCompile Include="7zip\CPP\Windows\FileDir.cpp" />
+    <ClCompile Include="7zip\CPP\Windows\FileFind.cpp" />
+    <ClCompile Include="7zip\CPP\Windows\FileIO.cpp" />
+    <ClCompile Include="7zip\CPP\Windows\FileName.cpp" />
+    <ClCompile Include="7zip\CPP\Windows\MemoryLock.cpp" />
+    <ClCompile Include="7zip\CPP\Windows\PropVariant.cpp" />
+    <ClCompile Include="7zip\CPP\Windows\PropVariantConversions.cpp" />
+    <ClCompile Include="7zip\CPP\Windows\Registry.cpp" />
+    <ClCompile Include="7zip\CPP\Windows\System.cpp" />
+    <ClCompile Include="7zip\CPP\Windows\Time.cpp" />
+    <ClCompile Include="7zip\C\7zCrc.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Default</CompileAs>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="7zip\C\Alloc.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Default</CompileAs>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="7zip\C\CpuArch.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Default</CompileAs>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="7zip\C\Threads.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Default</CompileAs>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="AbstractFile.cpp" />
     <ClCompile Include="AICHSyncThread.cpp" />
     <ClCompile Include="ArchiveRecovery.cpp" />
@@ -209,7 +308,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Mod\7zExtract.cpp" />
+    <ClCompile Include="Mod\7z\7z.cpp" />
     <ClCompile Include="Mod\AntiFake.cpp" />
     <ClCompile Include="Mod\autoUpdate.cpp" />
     <ClCompile Include="Mod\ClientAnalyzer.cpp" />
@@ -405,6 +504,11 @@
     <ClCompile Include="TrayMenuBtn.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <MASM Include="7zip\Asm\x86\7zAsm.asm">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </MASM>
+    <MASM Include="7zip\Asm\x86\7zCrcOpt.asm" />
     <MASM Include="MD4_asm.asm">
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">2</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">2</WarningLevel>
@@ -726,6 +830,100 @@
     <None Include="..\docs\readme.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="7zip\CPP\7zip\Archive\Common\OutStreamWithCRC.h" />
+    <ClInclude Include="7zip\CPP\7zip\Common\CreateCoder.h" />
+    <ClInclude Include="7zip\CPP\7zip\Common\CWrappers.h" />
+    <ClInclude Include="7zip\CPP\7zip\Common\FilePathAutoRename.h" />
+    <ClInclude Include="7zip\CPP\7zip\Common\FileStreams.h" />
+    <ClInclude Include="7zip\CPP\7zip\Common\FilterCoder.h" />
+    <ClInclude Include="7zip\CPP\7zip\Common\InBuffer.h" />
+    <ClInclude Include="7zip\CPP\7zip\Common\InMemStream.h" />
+    <ClInclude Include="7zip\CPP\7zip\Common\InOutTempBuffer.h" />
+    <ClInclude Include="7zip\CPP\7zip\Common\LimitedStreams.h" />
+    <ClInclude Include="7zip\CPP\7zip\Common\LockedStream.h" />
+    <ClInclude Include="7zip\CPP\7zip\Common\MemBlocks.h" />
+    <ClInclude Include="7zip\CPP\7zip\Common\MethodId.h" />
+    <ClInclude Include="7zip\CPP\7zip\Common\MethodProps.h" />
+    <ClInclude Include="7zip\CPP\7zip\Common\OffsetStream.h" />
+    <ClInclude Include="7zip\CPP\7zip\Common\OutBuffer.h" />
+    <ClInclude Include="7zip\CPP\7zip\Common\OutMemStream.h" />
+    <ClInclude Include="7zip\CPP\7zip\Common\ProgressMt.h" />
+    <ClInclude Include="7zip\CPP\7zip\Common\ProgressUtils.h" />
+    <ClInclude Include="7zip\CPP\7zip\Common\RegisterArc.h" />
+    <ClInclude Include="7zip\CPP\7zip\Common\RegisterCodec.h" />
+    <ClInclude Include="7zip\CPP\7zip\Common\StreamBinder.h" />
+    <ClInclude Include="7zip\CPP\7zip\Common\StreamObjects.h" />
+    <ClInclude Include="7zip\CPP\7zip\Common\StreamUtils.h" />
+    <ClInclude Include="7zip\CPP\7zip\Common\VirtThread.h" />
+    <ClInclude Include="7zip\CPP\7zip\Compress\CopyCoder.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\ArchiveCommandLine.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\ArchiveExtractCallback.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\ArchiveName.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\ArchiveOpenCallback.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\Bench.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\DefaultName.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\DirItem.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\EnumDirItems.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\ExitCode.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\Extract.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\ExtractingFilePath.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\ExtractMode.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\IFileExtractCallback.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\LoadCodecs.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\OpenArchive.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\Property.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\PropIDUtils.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\SetProperties.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\SortUtils.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\TempFiles.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\Update.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\UpdateAction.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\UpdateCallback.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\UpdatePair.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\UpdateProduce.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\WorkDir.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Common\ZipRegistry.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Console\BenchCon.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Console\ConsoleClose.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Console\ExtractCallbackConsole.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Console\List.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Console\OpenCallbackConsole.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Console\PercentPrinter.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Console\UpdateCallbackConsole.h" />
+    <ClInclude Include="7zip\CPP\7zip\UI\Console\UserInputUtils.h" />
+    <ClInclude Include="7zip\CPP\Common\Buffer.h" />
+    <ClInclude Include="7zip\CPP\Common\CommandLineParser.h" />
+    <ClInclude Include="7zip\CPP\Common\ComTry.h" />
+    <ClInclude Include="7zip\CPP\Common\Defs.h" />
+    <ClInclude Include="7zip\CPP\Common\IntToString.h" />
+    <ClInclude Include="7zip\CPP\Common\ListFileUtils.h" />
+    <ClInclude Include="7zip\CPP\Common\MyCom.h" />
+    <ClInclude Include="7zip\CPP\Common\MyString.h" />
+    <ClInclude Include="7zip\CPP\Common\MyVector.h" />
+    <ClInclude Include="7zip\CPP\Common\NewHandler.h" />
+    <ClInclude Include="7zip\CPP\Common\StdInStream.h" />
+    <ClInclude Include="7zip\CPP\Common\StdOutStream.h" />
+    <ClInclude Include="7zip\CPP\Common\StringConvert.h" />
+    <ClInclude Include="7zip\CPP\Common\StringToInt.h" />
+    <ClInclude Include="7zip\CPP\Common\UTFConvert.h" />
+    <ClInclude Include="7zip\CPP\Common\Wildcard.h" />
+    <ClInclude Include="7zip\CPP\Windows\DLL.h" />
+    <ClInclude Include="7zip\CPP\Windows\Error.h" />
+    <ClInclude Include="7zip\CPP\Windows\FileDir.h" />
+    <ClInclude Include="7zip\CPP\Windows\FileFind.h" />
+    <ClInclude Include="7zip\CPP\Windows\FileIO.h" />
+    <ClInclude Include="7zip\CPP\Windows\FileName.h" />
+    <ClInclude Include="7zip\CPP\Windows\MemoryLock.h" />
+    <ClInclude Include="7zip\CPP\Windows\NtCheck.h" />
+    <ClInclude Include="7zip\CPP\Windows\PropVariant.h" />
+    <ClInclude Include="7zip\CPP\Windows\PropVariantConversions.h" />
+    <ClInclude Include="7zip\CPP\Windows\Registry.h" />
+    <ClInclude Include="7zip\CPP\Windows\System.h" />
+    <ClInclude Include="7zip\CPP\Windows\Time.h" />
+    <ClInclude Include="7zip\C\7zCrc.h" />
+    <ClInclude Include="7zip\C\Alloc.h" />
+    <ClInclude Include="7zip\C\CpuArch.h" />
+    <ClInclude Include="7zip\C\Threads.h" />
     <ClInclude Include="AbstractFile.h" />
     <ClInclude Include="AICHSyncThread.h" />
     <ClInclude Include="ArchiveRecovery.h" />
@@ -777,7 +975,9 @@
     <ClInclude Include="MD5Sum.h" />
     <ClInclude Include="Mdump.h" />
     <ClInclude Include="MediaInfo.h" />
-    <ClInclude Include="Mod\7zExtract.h" />
+    <ClInclude Include="Mod\7z\7z.h" />
+    <ClInclude Include="Mod\7z\7z_defines.h" />
+    <ClInclude Include="Mod\7z\7z_include.h" />
     <ClInclude Include="Mod\AntiFake.h" />
     <ClInclude Include="Mod\autoUpdate.h" />
     <ClInclude Include="Mod\ClientAnalyzer.h" />

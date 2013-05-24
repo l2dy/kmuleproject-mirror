@@ -1,4 +1,5 @@
 #pragma once
+#include "./Mod/7z/7z_defines.h" //>>> WiZaRd::7zip
 
 // This file provides a way for local compiler site configurations (e.g. installed SDKs).
 

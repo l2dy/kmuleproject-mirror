@@ -57,6 +57,7 @@
 #include "CollectionViewDialog.h"
 #include "Collection.h"
 #include "Mod/7zExtract.h"
+#include "./Mod/7z/7z.h" //>>> WiZaRd::7zip
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -3860,7 +3861,7 @@ void CPartFile::PerformFileCompleteEnd(DWORD dwResult)
         if (thePrefs.m_bExtractArchives && GetFileTypeByName(GetFileName()) == _T(ED2KFTSTR_ARCHIVE))
         {
             Log(LOG_STATUSBAR, L"The newly downloaded file can be extracted auto-magically. Let's do that!");
-
+						
             CString targetDir = L"";
             if (thePrefs.m_bExtractToIncomingDir || thePrefs.m_strExtractFolder.IsEmpty())
                 targetDir = thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR);
@@ -3876,8 +3877,8 @@ void CPartFile::PerformFileCompleteEnd(DWORD dwResult)
 				targetDir.AppendFormat(L"%s\\", RemoveFileExtension(GetFileName()));
 				if(!::PathFileExists(targetDir) && !::CreateDirectory(targetDir, 0))
 					theApp.QueueLogLineEx(LOG_STATUSBAR|LOG_ERROR, L"Failed to create desired extraction sub path \"%s\" (%s)", targetDir, GetErrorMessage(GetLastError()));            
-				else if (ExtractSevenZipArchive(GetFullName(), targetDir))
-					Log(LOG_STATUSBAR, L"Auto-magic extraction succeeded. Yay!");
+				else 
+					m_SevenZipThreadHandler.ExtractArchive(GetFullName(), targetDir); //>>> WiZaRd::7zip
 			}
         }
 //<<< Tux::AutoExtract

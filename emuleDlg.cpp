@@ -97,6 +97,7 @@
 //<<< WiZaRd::MediaInfoDLL Update
 #include "./Mod/CustomSearches.h" //>>> WiZaRd::CustomSearches
 #include "./Mod/ModIconMapping.h" //>>> WiZaRd::ModIconMappings
+#include "./Mod/7z/7z.h" //>>> WiZaRd::7zip
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -181,6 +182,10 @@ BEGIN_MESSAGE_MAP(CemuleDlg, CTrayDialog)
     ON_MESSAGE(TM_FILEALLOCEXC, OnFileAllocExc)
     ON_MESSAGE(TM_FILECOMPLETED, OnFileCompleted)
     ON_MESSAGE(TM_CONSOLETHREADEVENT, OnConsoleThreadEvent)
+//>>> WiZaRd::7zip
+	ON_MESSAGE(TM_SEVENZIP_JOB_DONE, OnSevenZipJobDone) 
+	ON_MESSAGE(TM_SEVENZIP_JOB_FAILED, OnSevenZipJobFailed) 
+//<<< WiZaRd::7zip
 
 #ifdef HAVE_WIN7_SDK_H
     ON_REGISTERED_MESSAGE(UWM_TASK_BUTTON_CREATED, OnTaskbarBtnCreated)
@@ -631,23 +636,22 @@ void CALLBACK CemuleDlg::StartupTimer(HWND /*hwnd*/, UINT /*uiMsg*/, UINT /*idEv
         switch (theApp.emuledlg->status)
         {
         case 0:
-            theApp.emuledlg->status++;
+            ++theApp.emuledlg->status;
             theApp.emuledlg->ready = true;
             theApp.sharedfiles->SetOutputCtrl(&theApp.emuledlg->sharedfileswnd->sharedfilesctrl);
-            theApp.emuledlg->status++;
+            ++theApp.emuledlg->status;
             break;
-        case 1:
-            break;
+        
         case 2:
-            theApp.emuledlg->status++;
-            theApp.emuledlg->status++;
+            ++theApp.emuledlg->status;
+			m_SevenZipThreadHandler.Init(); //>>> WiZaRd::7zip			
+            ++theApp.emuledlg->status;
             break;
-        case 3:
-            break;
+
         case 4:
         {
             bool bError = false;
-            theApp.emuledlg->status++;
+            ++theApp.emuledlg->status;
 
             // NOTE: If we have an unhandled exception in CDownloadQueue::Init, MFC will silently catch it
             // and the creation of the TCP and the UDP socket will not be done -> client will get a LowID!
@@ -679,13 +683,18 @@ void CALLBACK CemuleDlg::StartupTimer(HWND /*hwnd*/, UINT /*uiMsg*/, UINT /*idEv
         case 5:
             if (thePrefs.IsStoringSearchesEnabled())
                 theApp.searchlist->LoadSearches();
-            theApp.emuledlg->status++;
+            ++theApp.emuledlg->status;
             break;
         default:
             theApp.emuledlg->CreateMiniMule();
             theApp.DestroySplash(); //>>> WiZaRd::New Splash [TBH]
             theApp.emuledlg->StopTimer();
             break;
+
+		// Temp states that aren't actually reached
+		case 1:
+		case 3:
+			break;
         }
     }
     CATCH_DFLT_EXCEPTIONS(_T("CemuleDlg::StartupTimer"))
@@ -726,6 +735,18 @@ void CemuleDlg::StopTimer()
     //so we wait until all is done and explicitly start the timer AFTERWARDS
     if (theApp.uploadqueue)
         theApp.uploadqueue->StartTimer();
+
+#ifdef _DEBUG
+	CString targetDir[] = {
+		L"C:\\util\\7z458.tar",
+		L"C:\\util\\7z458.tar.bz2",
+		L"C:\\util\\7z458_extra.7z",
+		L"C:\\util\\93317470eMule-VeryCD-src.rar",
+		L"C:\\util\\autoupdate_article.zip",
+	};
+	for(int i = 0; i < _countof(targetDir); ++i)
+		m_SevenZipThreadHandler.ExtractArchive(targetDir[i], L"C:\\util\\test\\");
+#endif
 }
 
 void CemuleDlg::OnSysCommand(UINT nID, LPARAM lParam)
@@ -1771,6 +1792,7 @@ void CemuleDlg::OnClose()
     delete theApp.antileechlist;
     theApp.antileechlist = NULL;
 //<<< WiZaRd::ClientAnalyzer
+	m_SevenZipThreadHandler.UnInit(); //>>> WiZaRd::7zip
 
     thePrefs.Uninit();
     theApp.m_app_state = APP_STATE_DONE;
@@ -3798,3 +3820,26 @@ void	CemuleDlg::UpdateMediaInfoDLL()
     }
 }
 //<<< WiZaRd::MediaInfoDLL Update
+//>>> WiZaRd::7zip
+LRESULT CemuleDlg::OnSevenZipJobDone(WPARAM wParam, LPARAM lParam)
+{
+	if (theApp.m_app_state == APP_STATE_SHUTTINGDOWN)
+		return FALSE;
+
+	Log(LOG_STATUSBAR|LOG_SUCCESS, L"Auto-magic extraction succeeded. Yay!");
+	m_SevenZipThreadHandler.JobDone();
+
+	return 0;
+}
+
+LRESULT CemuleDlg::OnSevenZipJobFailed(WPARAM wParam, LPARAM lParam)
+{
+	if (theApp.m_app_state == APP_STATE_SHUTTINGDOWN)
+		return FALSE;
+
+	Log(LOG_STATUSBAR|LOG_ERROR, L"Auto-magic extraction failed. Boo!");
+	m_SevenZipThreadHandler.JobDone();
+
+	return 0;
+}
+//<<< WiZaRd::7zip

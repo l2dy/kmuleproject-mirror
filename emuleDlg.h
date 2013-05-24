@@ -294,6 +294,11 @@ protected:
 
     // UPnP
     afx_msg LRESULT OnUPnPResult(WPARAM wParam, LPARAM lParam);
+
+//>>> WiZaRd::7zip
+	afx_msg LRESULT OnSevenZipJobDone(WPARAM wParam, LPARAM lParam); 
+	afx_msg LRESULT OnSevenZipJobFailed(WPARAM wParam, LPARAM lParam); 
+//<<< WiZaRd::7zip
 };
 
 
@@ -306,7 +311,11 @@ enum EEMuleAppMsgs
     TM_FILEALLOCEXC,
     TM_FILECOMPLETED,
     TM_FILEOPPROGRESS,
-    TM_CONSOLETHREADEVENT
+    TM_CONSOLETHREADEVENT,
+//>>> WiZaRd::7zip
+	TM_SEVENZIP_JOB_DONE,
+	TM_SEVENZIP_JOB_FAILED, 
+//<<< WiZaRd::7zip
 };
 
 enum EWebinterfaceOrders
