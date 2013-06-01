@@ -359,6 +359,6 @@ void CPPgFiles::CheckAvailableSettings()
 	GetDlgItem(IDC_CHECKEXTRACT)->EnableWindow(bEnableFlag);
 	GetDlgItem(IDC_RADIOEXTRACTINCOMING)->EnableWindow(bEnableFlag);
 	GetDlgItem(IDC_RADIOEXTRACTOTHER)->EnableWindow(bEnableFlag);
-	GetDlgItem(IDC_REMEMBERDOWNLOADED)->EnableWindow(bEnableFlag);
-	GetDlgItem(IDC_REMEMBERCANCELLED)->EnableWindow(bEnableFlag);
+	GetDlgItem(IDC_BROWSEX2)->EnableWindow(bEnableFlag);
+	GetDlgItem(IDC_EXTRACTFOLDER)->EnableWindow(bEnableFlag);
 }
