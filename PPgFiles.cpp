@@ -23,6 +23,7 @@
 #include "emuledlg.h"
 #include "Preferences.h"
 #include "HelpIDs.h"
+#include "./Mod/7z/7z.h" //>>> WiZaRd::7zip
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -87,6 +88,7 @@ BOOL CPPgFiles::OnInitDialog()
 
     LoadSettings();
     Localize();
+	CheckAvailableSettings();
 
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
@@ -348,4 +350,15 @@ void CPPgFiles::OnDestroy()
         VERIFY(DestroyIcon(m_icoBrowse));
         m_icoBrowse = NULL;
     }
+}
+
+void CPPgFiles::CheckAvailableSettings()
+{
+	const BOOL bEnableFlag = m_SevenZipThreadHandler.IsSevenZipAvailable() ? TRUE : FALSE;
+	GetDlgItem(IDC_STATICEXTRACT)->EnableWindow(bEnableFlag);
+	GetDlgItem(IDC_CHECKEXTRACT)->EnableWindow(bEnableFlag);
+	GetDlgItem(IDC_RADIOEXTRACTINCOMING)->EnableWindow(bEnableFlag);
+	GetDlgItem(IDC_RADIOEXTRACTOTHER)->EnableWindow(bEnableFlag);
+	GetDlgItem(IDC_REMEMBERDOWNLOADED)->EnableWindow(bEnableFlag);
+	GetDlgItem(IDC_REMEMBERCANCELLED)->EnableWindow(bEnableFlag);
 }

@@ -17,8 +17,9 @@ protected:
     CListBox m_uncfolders;
     HICON m_icoBrowse;
 
-    void LoadSettings(void);
+    void LoadSettings(void);	
     void OnSettingsChangeCat(uint8 index);
+	void CheckAvailableSettings();
 
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     virtual BOOL OnInitDialog();

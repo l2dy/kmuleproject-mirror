@@ -26,15 +26,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 // Helper
-FILE* getCustomStream()
-{
-	static FILE* handler = NULL;
-	if(handler == NULL)
-		//handler = _tfsopen(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + L"7z.log", L"a+b", _SH_DENYWR);
-		handler = _tfsopen(L"C:\\util\\7z.log", L"a+b", _SH_DENYWR);
-	return handler;
-}
-CStdOutStream  g_CustStream(getCustomStream());
+CStdOutStream  g_CustStream(m_SevenZipThreadHandler.GetCustomStream());
 
 // from Main.cpp:
 static void ShowMessageAndThrowException(LPCTSTR message, NExitCode::EEnum code)
@@ -168,15 +160,20 @@ CSevenZipThreadHandler::CSevenZipThreadHandler()
 {
 	m_bAbort = false;
 	m_Thread = NULL;
+	m_pFileHandle = NULL;
 }
 
 CSevenZipThreadHandler::~CSevenZipThreadHandler()
 {
+	if(m_pFileHandle)
+		fclose(m_pFileHandle);
 }
 
 void CSevenZipThreadHandler::Init()
 {
 	theApp.QueueLogLineEx(LOG_INFO, L"7z: %s", kCopyrightString);
+	if(m_pFileHandle == NULL)
+		m_pFileHandle = _tfsopen(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + L"7z.log", L"a+b", _SH_DENYWR);
 	//theApp.QueueLogLineEx(LOG_INFO, L"7z: # CPUs: %I64u", (UInt64)NWindows::NSystem::GetNumberOfProcessors());
 }
 
@@ -186,13 +183,29 @@ void CSevenZipThreadHandler::UnInit()
 	AbortThread();
 }
 
+bool	CSevenZipThreadHandler::IsSevenZipAvailable() const
+{
+	DWORD dwVersion = 0;
+	HINSTANCE hinstDll = LoadLibrary(L"7z.dll");
+    if(hinstDll)
+	{
+		// TODO: check for a valid .dll version?
+        FreeLibrary(hinstDll);
+	}
+	return dwVersion != 0;
+}
+
+FILE*	CSevenZipThreadHandler::GetCustomStream()
+{
+	return m_pFileHandle;
+}
 
 void	CSevenZipThreadHandler::AddJob(CSevenZipWorkerThread* thread)
 {
 	if(m_Thread)
 	{
 //		JobLocker.Lock();
-		m_JobList.AddTail(thread); // RS-TODO: dup job check!
+		m_JobList.AddTail(thread); // TODO: dup job check!
 //		JobLocker.Unlock();
 	}
 	else

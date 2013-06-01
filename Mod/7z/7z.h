@@ -56,8 +56,10 @@ public:
 	void	UnInit();
 	void	JobDone();
 	bool	AbortThread();
+	FILE*	GetCustomStream();
 
 	void	ExtractArchive(const CString& strArchive, const CString& strTargetDir);
+	bool	IsSevenZipAvailable() const;
 	
 private:
 	void	AddJob(CSevenZipWorkerThread* thread);
@@ -68,6 +70,7 @@ private:
 	bool	m_bAbort;
 	CMutex	m_mutSync;
 	CSevenZipWorkerThread*	m_Thread;
+	FILE*	m_pFileHandle;
 };
 
 extern CSevenZipThreadHandler m_SevenZipThreadHandler;

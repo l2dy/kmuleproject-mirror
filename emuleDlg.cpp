@@ -735,18 +735,6 @@ void CemuleDlg::StopTimer()
     //so we wait until all is done and explicitly start the timer AFTERWARDS
     if (theApp.uploadqueue)
         theApp.uploadqueue->StartTimer();
-
-#ifdef _DEBUG
-	CString targetDir[] = {
-		L"C:\\util\\7z458.tar",
-		L"C:\\util\\7z458.tar.bz2",
-		L"C:\\util\\7z458_extra.7z",
-		L"C:\\util\\93317470eMule-VeryCD-src.rar",
-		L"C:\\util\\autoupdate_article.zip",
-	};
-	for(int i = 0; i < _countof(targetDir); ++i)
-		m_SevenZipThreadHandler.ExtractArchive(targetDir[i], L"C:\\util\\test\\");
-#endif
 }
 
 void CemuleDlg::OnSysCommand(UINT nID, LPARAM lParam)
