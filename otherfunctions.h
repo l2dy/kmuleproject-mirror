@@ -497,6 +497,6 @@ CString	GetFileNameFromURL(const CString& strURL);
 uint64	GetFileSizeOnDisk(const CString& strFilePath);
 bool	RunningWine(); //>>> WiZaRd::Wine Compatibility
 void	FillClientIconImageList(CImageList& imageList);
-int		GetClientImageIndex(const bool bFriend, const UINT nClientVersion, const bool bExt, bool bPlus);
+int		GetClientImageIndex(const bool bFriend, const UINT nClientVersion, const bool bPlus, bool bExt);
 HCURSOR		CreateHandCursor();
 //<<< WiZaRd::Additional Functions

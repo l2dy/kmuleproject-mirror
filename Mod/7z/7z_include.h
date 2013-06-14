@@ -58,7 +58,7 @@
 HINSTANCE g_hInstance = 0;
 
 static LPCTSTR kDefaultSfxModule = L"7zCon.sfx";
-static LPCTSTR kCopyrightString = L"\n7-Zip"
+static LPCTSTR kCopyrightString = L"7-Zip"
 #ifndef EXTERNAL_CODECS
 	L" (A)"
 #endif
@@ -66,7 +66,7 @@ static LPCTSTR kCopyrightString = L"\n7-Zip"
 #ifdef _WIN64
 	L" [64]"
 #endif
-	L" " MY_VERSION_COPYRIGHT_DATE L"\n";
+	L" " MY_VERSION_COPYRIGHT_DATE;
 
 static LPCTSTR kHelpString =
 	L"\nUsage: 7z"

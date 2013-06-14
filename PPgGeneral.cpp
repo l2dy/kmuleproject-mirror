@@ -323,7 +323,7 @@ void CPPgGeneral::Localize(void)
         GetDlgItem(IDC_STARTWIN)->SetWindowText(GetResString(IDS_STARTWITHWINDOWS));
         GetDlgItem(IDC_MINIMULE)->SetWindowText(GetResString(IDS_ENABLEMINIMULE));
         GetDlgItem(IDC_PREVENTSTANDBY)->SetWindowText(GetResString(IDS_PREVENTSTANDBY));
-		GetDlgItem(IDC_TRANSLATED_BY_URL)->SetWindowText(GetResString(IDS_TRANSLATED_BY_LABEL)); //>>> WiZaRd::Honor translators
+		GetDlgItem(IDC_TRANSLATED_BY_LABEL)->SetWindowText(GetResString(IDS_TRANSLATED_BY_LABEL)); //>>> WiZaRd::Honor translators
     }
 }
 

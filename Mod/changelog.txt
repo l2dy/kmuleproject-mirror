@@ -194,3 +194,8 @@ Legend:    + added    ~ changed    - removed    ! fixed    > updated
 + added kMule ul/dl stats [WiZaRd]
 + added kMule client icon [WiZaRd]
 ~ replaced SevenZip++ by 7z console code to allow extraction of non-7z/zip archives [WiZaRd]
+
+XXXXYYZZ:
+! fixed missing "Translated by" label - thx to THOR [WiZaRd]
+! fixed wrong client icons - thx to SS1900 [WiZaRd]
+! fixed (wrong) disabled 7z controls [WiZaRd]

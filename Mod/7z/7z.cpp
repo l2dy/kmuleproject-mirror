@@ -188,8 +188,9 @@ bool	CSevenZipThreadHandler::IsSevenZipAvailable() const
 	DWORD dwVersion = 0;
 	HINSTANCE hinstDll = LoadLibrary(L"7z.dll");
     if(hinstDll)
-	{
+	{		
 		// TODO: check for a valid .dll version?
+		dwVersion = 1;
         FreeLibrary(hinstDll);
 	}
 	return dwVersion != 0;

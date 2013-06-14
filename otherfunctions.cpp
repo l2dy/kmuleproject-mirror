@@ -4888,7 +4888,7 @@ void	FillClientIconImageList(CImageList& imageList)
 	imageList.Add(CTempIconLoader(L"BADGUY"));						//18
 }
 
-int	GetClientImageIndex(const bool bFriend, const UINT nClientVersion, const bool bExt, const bool bPlus)
+int	GetClientImageIndex(const bool bFriend, const UINT nClientVersion, const bool bPlus, const bool bExt)
 {
 	int index = 0;
 
