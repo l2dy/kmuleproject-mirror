@@ -1684,13 +1684,14 @@ struct SED2KFileType
     { L".tar",   ED2KFT_ARCHIVE },   // Consolidated Unix File Archive
     { L".tbz2",  ED2KFT_ARCHIVE },   // Tar BZip 2 Compressed File
     { L".tgz",   ED2KFT_ARCHIVE },   // Gzipped Tar File
-    { L".uha",    ED2KFT_ARCHIVE },   // uharc compression
+    { L".uha",   ED2KFT_ARCHIVE },   // uharc compression
     { L".xpi",   ED2KFT_ARCHIVE },   // Mozilla Installer Package
     { L".z",     ED2KFT_ARCHIVE },   // Unix Compressed File
     { L".zip",   ED2KFT_ARCHIVE },   // Zipped File
     { L".zipx",  ED2KFT_ARCHIVE },   // WinZip Archive File
 
-    { L".app",   ED2KFT_PROGRAM },   // Mac OS X Application File
+    { L".apk",   ED2KFT_PROGRAM },  // Android package
+    { L".app",   ED2KFT_PROGRAM },  // Mac OS X Application File
     { L".bat",   ED2KFT_PROGRAM },	// Batch File
     { L".cmd",   ED2KFT_PROGRAM },	// Command File
     { L".com",   ED2KFT_PROGRAM },	// COM File

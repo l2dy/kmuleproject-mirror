@@ -199,3 +199,4 @@ XXXXYYZZ:
 ! fixed missing "Translated by" label - thx to THOR [WiZaRd]
 ! fixed wrong client icons - thx to SS1900 [WiZaRd]
 ! fixed (wrong) disabled 7z controls [WiZaRd]
+~ added .apk support [Tuxman]
