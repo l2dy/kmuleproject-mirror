@@ -26,8 +26,6 @@
 
 //////////////////////////////////////////////////////////////////////////
 // Helper
-CStdOutStream  g_CustStream(m_SevenZipThreadHandler.GetCustomStream());
-
 // from Main.cpp:
 static void ShowMessageAndThrowException(LPCTSTR message, NExitCode::EEnum code)
 {
@@ -395,6 +393,7 @@ int ExecuteSevenZipCommandLine(LPCTSTR pszCommandLine)
 	}
 #endif
 
+	CStdOutStream  g_CustStream(m_SevenZipThreadHandler.GetCustomStream());
 	CStdOutStream& stdStream = g_CustStream;
 	//CStdOutStream &stdStream = options.StdOutMode ? g_StdErr : g_StdOut;
 	//g_StdStream = &stdStream;

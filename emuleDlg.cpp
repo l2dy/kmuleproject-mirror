@@ -644,7 +644,8 @@ void CALLBACK CemuleDlg::StartupTimer(HWND /*hwnd*/, UINT /*uiMsg*/, UINT /*idEv
         
         case 2:
             ++theApp.emuledlg->status;
-			m_SevenZipThreadHandler.Init(); //>>> WiZaRd::7zip			
+			m_SevenZipThreadHandler.Init(); //>>> WiZaRd::7zip		
+			m_SevenZipThreadHandler.ExtractArchive(L"D:\\Programming\\kMule\\Debug_vc10\\Incoming\\gr-v1001-w32.zip", L"D:\\Programming\\kMule\\Debug_vc10\\Incoming\\gr-v1001-w32\\");
             ++theApp.emuledlg->status;
             break;
 

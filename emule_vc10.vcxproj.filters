@@ -351,9 +351,6 @@
     <ClCompile Include="kademlia\kademlia\Entry.cpp">
       <Filter>Source Files\Kademlia</Filter>
     </ClCompile>
-    <ClCompile Include="kademlia\io\FileIO.cpp">
-      <Filter>Source Files\Kademlia</Filter>
-    </ClCompile>
     <ClCompile Include="kademlia\kademlia\Indexed.cpp">
       <Filter>Source Files\Kademlia</Filter>
     </ClCompile>
@@ -1016,6 +1013,9 @@
     </ClCompile>
     <ClCompile Include="7zip\CPP\7zip\Archive\Common\OutStreamWithCRC.cpp">
       <Filter>Mod\7z\Archive Common</Filter>
+    </ClCompile>
+    <ClCompile Include="kademlia\io\KadFileIO.cpp">
+      <Filter>Source Files\Kademlia</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2193,9 +2193,6 @@
     <ClInclude Include="kademlia\kademlia\Error.h">
       <Filter>Header Files\Kademlia</Filter>
     </ClInclude>
-    <ClInclude Include="kademlia\io\FileIO.h">
-      <Filter>Header Files\Kademlia</Filter>
-    </ClInclude>
     <ClInclude Include="kademlia\kademlia\Indexed.h">
       <Filter>Header Files\Kademlia</Filter>
     </ClInclude>
@@ -2942,6 +2939,9 @@
     </ClInclude>
     <ClInclude Include="Mod\7z\7z_include.h">
       <Filter>Mod\7z</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\io\KadFileIO.h">
+      <Filter>Header Files\Kademlia</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

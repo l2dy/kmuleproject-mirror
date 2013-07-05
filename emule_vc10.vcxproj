@@ -377,7 +377,7 @@
     <ClCompile Include="kademlia\routing\Contact.cpp" />
     <ClCompile Include="kademlia\io\DataIO.cpp" />
     <ClCompile Include="kademlia\kademlia\Entry.cpp" />
-    <ClCompile Include="kademlia\io\FileIO.cpp" />
+    <ClCompile Include="kademlia\io\KadFileIO.cpp" />
     <ClCompile Include="kademlia\kademlia\Indexed.cpp" />
     <ClCompile Include="kademlia\io\IOException.cpp" />
     <ClCompile Include="kademlia\kademlia\Kademlia.cpp" />
@@ -1038,7 +1038,7 @@
     <ClInclude Include="kademlia\kademlia\Defines.h" />
     <ClInclude Include="kademlia\kademlia\Entry.h" />
     <ClInclude Include="kademlia\kademlia\Error.h" />
-    <ClInclude Include="kademlia\io\FileIO.h" />
+    <ClInclude Include="kademlia\io\KadFileIO.h" />
     <ClInclude Include="kademlia\kademlia\Indexed.h" />
     <ClInclude Include="kademlia\io\IOException.h" />
     <ClInclude Include="kademlia\kademlia\Kademlia.h" />

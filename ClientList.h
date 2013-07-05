@@ -26,11 +26,11 @@ class CUInt128;
 };
 typedef CTypedPtrList<CPtrList, CUpDownClient*> CUpDownClientPtrList;
 
-#define	NUM_CLIENTLIST_STATS	21 //>>> WiZaRd::Detect UDP problem clients
+#define	NUM_CLIENTLIST_STATS	22 //>>> WiZaRd::Detect UDP problem clients //>>> WiZaRd::kMule Version Ident
 #define BAN_CLEANUP_TIME		1200000 // 20 min
 
 //------------CDeletedClient Class----------------------
-// this class / list is a bit overkill, but currently needed to avoid any exploit possibtility
+// this class / list is a bit overkill, but currently needed to avoid any exploit possibility
 // it will keep track of certain clients attributes for 2 hours, while the CUpDownClient object might be deleted already
 // currently: IP, Port, UserHash
 struct PORTANDHASH

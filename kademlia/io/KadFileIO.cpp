@@ -29,7 +29,7 @@ there client on the eMule forum..
 */
 
 #include "stdafx.h"
-#include "./FileIO.h"
+#include "./KadFileIO.h"
 #include "./IOException.h"
 
 #ifdef _DEBUG
