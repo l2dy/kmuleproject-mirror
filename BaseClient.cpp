@@ -2149,7 +2149,7 @@ void CUpDownClient::InitClientSoftwareVersion()
 				UINT nClientUpVersion  = (m_nClientVersion >>  7) & 0x07;
 //>>> WiZaRd::kMule Version Ident
 				// Some hack solution to accept the current kMule string scheme while we aren't identifying as SO_KMULE straight away
-				if (m_clientSoft == SO_EMULE && _tcscmp(m_strModVersion, L"kMule Build") == 0)
+				if (m_clientSoft == SO_EMULE && _tcsncmp(m_strModVersion, L"kMule Build", 11) == 0)
 				{
 					CString tmp = m_strModVersion.Mid(11);
 					m_clientSoft = SO_KMULE;
