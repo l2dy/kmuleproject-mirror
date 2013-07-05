@@ -2190,7 +2190,7 @@ void CUpDownClient::InitClientSoftwareVersion()
 					// we (will) use	nClientMajVersion (4 digits = year)
 					//					nClientMinVersion (2 digits = month)
 					//					nClientUpVersion (2 digits = day)
-					szSoftware.Format(L"%s Build%u", nClientMajVersion);
+					szSoftware.Format(L"kMule Build%u", nClientMajVersion);
 					if(nClientMinVersion < 10)
 						szSoftware.AppendFormat(L"0%u", nClientMinVersion);
 					else
@@ -4031,8 +4031,9 @@ void	CUpDownClient::CheckModIconIndex()
 int	CUpDownClient::GetModIconIndex() const
 {
 	//if he's a bad one, just return that icon straight away
-	if(IsBadGuy())
-		return MODMAP_BADGUY;
+	// Bad guy icon already implemented via CA :)
+//	if(IsBadGuy())
+//		return MODMAP_BADGUY;
 	return m_iModIconIndex;
 }
 //<<< WiZaRd::ModIconMapper

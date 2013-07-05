@@ -205,3 +205,4 @@ Legend:    + added    ~ changed    - removed    ! fixed    > updated
 ! fixed crash on automatic extraction - thx to satanius [WiZaRd]
 
 XXXXYYZZ:
+! fixed duplicated badguy icons caused by modicons - thx to SS1900 [WiZaRd]
