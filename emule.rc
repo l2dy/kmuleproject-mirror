@@ -1557,6 +1557,14 @@ BADGUY                  ICON                    "res\\Badguy.ico"
 DISSIMILAR_NAME         ICON                    "res\\FDC.ico"
 SEARCH_MULTI            ICON                    "res\\Search_Multi.ico"
 SEARCH_EN               ICON                    "res\\Search_En.ico"
+HEALTH_0                ICON                    "res\\Health\\health_0.ico"
+HEALTH_1                ICON                    "res\\Health\\health_1.ico"
+HEALTH_2                ICON                    "res\\Health\\health_2.ico"
+HEALTH_3                ICON                    "res\\Health\\health_3.ico"
+HEALTH_4                ICON                    "res\\Health\\health_4.ico"
+HEALTH_5                ICON                    "res\\Health\\health_5.ico"
+HEALTH_6                ICON                    "res\\Health\\health_6.ico"
+HEALTH_7                ICON                    "res\\Health\\health_7.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //

@@ -87,6 +87,9 @@ CDownloadListCtrl::CDownloadListCtrl()
     SetSkinKey(L"DownloadsLv");
     m_dwLastAvailableCommandsCheck = 0;
     m_availableCommandsDirty = true;
+	m_iFDC = -1; //>>> FDC [BlueSonicBoy]
+	m_iPreview = -1; //>>> PreviewIndicator [WiZaRd]
+	m_iHealthIndex = -1; //>>> Health Indicator File Availability [WiZaRd]
 }
 
 CDownloadListCtrl::~CDownloadListCtrl()
@@ -142,6 +145,7 @@ void CDownloadListCtrl::Init()
     InsertColumn(11, lsctitle,							LVCFMT_LEFT,  120,						-1, true);
     InsertColumn(12, GetResString(IDS_CAT),				LVCFMT_LEFT,  100,						-1, true);
     InsertColumn(13, GetResString(IDS_ADDEDON),			LVCFMT_LEFT,  120);
+	InsertColumn(14, GetResString(IDS_SEARCHAVAIL),		LVCFMT_LEFT,   70);	//>>> Health Indicator File Availability [WiZaRd]
 
     SetAllIcons();
     Localize();
@@ -203,6 +207,16 @@ void CDownloadListCtrl::SetAllIcons()
     m_ImageList.Add(CTempIconLoader(_T("Collection_Search"))); // rating for comments are searched on kad
     m_iFDC = m_ImageList.Add(CTempIconLoader(L"Dissimilar_Name")); //>>> FDC [BlueSonicBoy]
     m_iPreview = m_ImageList.Add(CTempIconLoader(L"PREVIEW")); //>>> PreviewIndicator [WiZaRd]
+//>>> Health Indicator File Availability [WiZaRd]
+	m_iHealthIndex = m_ImageList.Add(CTempIconLoader(L"HEALTH_0"));
+	m_ImageList.Add(CTempIconLoader(L"HEALTH_1"));
+	m_ImageList.Add(CTempIconLoader(L"HEALTH_2"));
+	m_ImageList.Add(CTempIconLoader(L"HEALTH_3"));
+	m_ImageList.Add(CTempIconLoader(L"HEALTH_4"));
+	m_ImageList.Add(CTempIconLoader(L"HEALTH_5"));
+	m_ImageList.Add(CTempIconLoader(L"HEALTH_6"));
+	m_ImageList.Add(CTempIconLoader(L"HEALTH_7"));
+//<<< Health Indicator File Availability [WiZaRd]
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("ClientSecureOvl"))), 1);
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("OverlayObfu"))), 2);
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("OverlaySecureObfu"))), 3);
@@ -591,12 +605,18 @@ void CDownloadListCtrl::GetFileItemDisplayText(CPartFile *lpPartFile, int iSubIt
     case 12: // cat
         _tcsncpy(pszText, (lpPartFile->GetCategory() != 0) ? thePrefs.GetCategory(lpPartFile->GetCategory())->strTitle : L"", cchTextMax);
         break;
+
     case 13: // added on
         if (lpPartFile->GetCrCFileDate() != NULL)
             _tcsncpy(pszText, lpPartFile->GetCrCFileDate().Format(thePrefs.GetDateTimeFormat4Lists()), cchTextMax);
         else
             _tcsncpy(pszText, _T("?"), cchTextMax);
         break;
+
+//>>> Health Indicator File Availability [WiZaRd]
+	case 14:
+		break;
+//<<< Health Indicator File Availability [WiZaRd]
     }
     pszText[cchTextMax - 1] = L'\0';
 }
@@ -690,6 +710,40 @@ void CDownloadListCtrl::DrawFileItem(CDC *dc, int nColumn, LPCRECT lpRect, UINT 
         }
         break;
     }
+
+//>>> Health Indicator File Availability [WiZaRd]
+	case 14:
+	{
+		CRect rcDraw(lpRect);
+		int available = pPartFile->GetAvailablePartCount()*100/pPartFile->GetPartCount(); //get available parts in %
+		POINT pt = rcDraw.TopLeft();
+		if (available >= 25) // 25%-49% display first bar
+			m_ImageList.Draw(dc, m_iHealthIndex, pt, ILD_NORMAL);
+		else
+			m_ImageList.Draw(dc, m_iHealthIndex+4, pt, ILD_NORMAL);
+		pt.x += 10;
+		
+		if (available >= 50) // 50%-74% display second bar
+			m_ImageList.Draw(dc, m_iHealthIndex+1, pt, ILD_NORMAL);
+		else
+			m_ImageList.Draw(dc, m_iHealthIndex+5, pt, ILD_NORMAL);
+		pt.x += 10;
+		
+		if (available >= 75) // 75%-99% display third bar
+			m_ImageList.Draw(dc, m_iHealthIndex+2, pt, ILD_NORMAL);
+		else
+			m_ImageList.Draw(dc, m_iHealthIndex+6, pt, ILD_NORMAL);
+		pt.x += 10;
+		
+		if (available == 100) // 100% display all fours
+			m_ImageList.Draw(dc, m_iHealthIndex+3, pt, ILD_NORMAL);
+		else
+			m_ImageList.Draw(dc, m_iHealthIndex+7, pt, ILD_NORMAL);
+		pt.x += 10;
+
+		break;
+	}
+//<<< Health Indicator File Availability [WiZaRd]
 
     default:
         dc->DrawText(szItem, -1, const_cast<LPRECT>(lpRect), MLC_DT_TEXT | uDrawTextAlignment);
@@ -826,6 +880,12 @@ void CDownloadListCtrl::GetSourceItemDisplayText(const CtrlItem_Struct *pCtrlIte
 
     case 13:	// added on
         break;
+
+//>>> Health Indicator File Availability [WiZaRd]
+	case 14:
+		// TODO: could show the clients' availability
+		break;
+//<<< Health Indicator File Availability [WiZaRd]
     }
     pszText[cchTextMax - 1] = L'\0';
 }
@@ -970,6 +1030,7 @@ void CDownloadListCtrl::DrawSourceItem(CDC *dc, int nColumn, LPCRECT lpRect, UIN
     case 11:	// last received
     case 12:	// category
     case 13:	// added on
+	case 14:	//>>> Health Indicator File Availability [WiZaRd]
         break;
 
     default:
@@ -2418,12 +2479,18 @@ int CDownloadListCtrl::Compare(const CPartFile *file1, const CPartFile *file2, L
                                          (const_cast<CPartFile*>(file2)->GetCategory() != 0) ? thePrefs.GetCategory(const_cast<CPartFile*>(file2)->GetCategory())->strTitle:GetResString(IDS_ALL));
         break;
 
-    case 13: // addeed on asc
+    case 13: // added on asc
         if (file1->GetCrCFileDate() > file2->GetCrCFileDate())
             comp = 1;
         else if (file1->GetCrCFileDate() < file2->GetCrCFileDate())
             comp = -1;
         break;
+
+//>>> Health Indicator File Availability [WiZaRd]
+	case 14:
+		comp = CompareUnsigned64(file1->GetAvailablePartCount()*100/file1->GetPartCount(), file2->GetAvailablePartCount()*100/file1->GetPartCount());
+		break;
+//<<< Health Indicator File Availability [WiZaRd]
     }
     return comp;
 }

@@ -2370,8 +2370,8 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
         CMap<UINT, UINT, UINT, UINT>	clientVersionEMule;
 		CMap<UINT, UINT, UINT, UINT>	clientVersionKMule;
         CMap<UINT, UINT, UINT, UINT>	clientVersionAMule;
-        UINT									totalclient;
-        int										myStats[NUM_CLIENTLIST_STATS];
+        UINT							totalclient;
+        int								myStats[NUM_CLIENTLIST_STATS];
 
         theApp.clientlist->GetStatistics(totalclient, myStats,
                                          clientVersionEDonkey,
@@ -2561,7 +2561,7 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
 							cbuffer.AppendFormat(L"0%u", verUp);
 						else
 							cbuffer.AppendFormat(L"%u", verUp);
-						cbuffer.Format(L": %i (%1.1f%%)", topcnt, topper*100);
+						cbuffer.AppendFormat(L": %i (%1.1f%%)", topcnt, topper*100);
 					}
 					else
 						continue;
