@@ -27,6 +27,7 @@ class CAICHHashTree;
 class CAICHRecoveryHashSet;
 class CCollection;
 class CAICHHashAlgo;
+class CPartStatus; //>>> Sub-Chunk-Transfer [WiZaRd]
 
 typedef CTypedPtrList<CPtrList, CUpDownClient*> CUpDownClientPtrList;
 
@@ -268,4 +269,9 @@ public:
 public:
     CString GetFeedBackString() const;
 //<<< WiZaRd::Upload Feedback
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+public:
+	virtual void	AddToPartsInfo(const CPartStatus* partstatus);
+	virtual void	RemoveFromPartsInfo(const CPartStatus* partstatus);
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 };

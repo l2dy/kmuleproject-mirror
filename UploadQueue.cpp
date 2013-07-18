@@ -1095,6 +1095,10 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 
 //>>> WiZaRd::ClientAnalyzer
         reqfile = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+		if (reqfile == NULL && client->SupportsSCT())
+			reqfile = (CKnownFile*)theApp.downloadqueue->GetFileByID((uchar*)client->GetUploadFileID());
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         if (reqfile == NULL)
             return; //should never happen, just in case, though...
         if (client->DownloadingAndUploadingFilesAreEqual(reqfile))
@@ -1119,6 +1123,10 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
     {
 //>>> WiZaRd::ClientAnalyzer
         reqfile = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+		if (reqfile == NULL && client->SupportsSCT())
+			reqfile = (CKnownFile*)theApp.downloadqueue->GetFileByID((uchar*)client->GetUploadFileID());
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         if (reqfile == NULL)
             return; //should never happen, just in case, though...
         if (client->DownloadingAndUploadingFilesAreEqual(reqfile))
@@ -1398,7 +1406,11 @@ bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client, LPCTSTR pszReaso
             CKnownFile* requestedFile = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
             if (requestedFile != NULL)
             {
-                requestedFile->UpdatePartsInfo();
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+				if (client->GetUpPartStatus() != NULL && requestedFile != (CKnownFile*)client->GetRequestFile())
+					requestedFile->RemoveFromPartsInfo(client->GetUpPartStatus());
+				//requestedFile->UpdatePartsInfo();
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]                
             }
             theApp.clientlist->AddTrackClient(client); // Keep track of this client
             client->SetUploadState(US_NONE);
@@ -2354,6 +2366,10 @@ bool CUploadQueue::AddUpNextClient(LPCTSTR pszReason, CUpDownClient* directadd, 
 
 //>>> WiZaRd::Optimization
     CKnownFile* reqfile = theApp.sharedfiles->GetFileByID((uchar*)newclient->GetUploadFileID());
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	if (reqfile == NULL && newclient->SupportsSCT())
+		reqfile = (CKnownFile*)theApp.downloadqueue->GetFileByID((uchar*)newclient->GetUploadFileID());
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     if (reqfile == NULL)
     {
         if (thePrefs.GetLogUlDlEvents())

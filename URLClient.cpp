@@ -26,6 +26,7 @@
 #include "Statistics.h"
 #include "ClientCredits.h"
 #include "./Mod/ClientAnalyzer.h" //>>> WiZaRd::ClientAnalyzer
+#include "./Mod/NetF/PartStatus.h" //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -50,9 +51,17 @@ void CUrlClient::SetRequestFile(CPartFile* pReqFile)
     CUpDownClient::SetRequestFile(pReqFile);
     if (reqfile)
     {
-        m_nPartCount = reqfile->GetPartCount();
-        m_abyPartStatus = new uint8[m_nPartCount];
-        memset(m_abyPartStatus, 1, m_nPartCount);
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+		if (m_pPartStatus != NULL)
+			reqfile->RemoveFromPartsInfo(m_pPartStatus);
+		delete m_pPartStatus;
+		m_pPartStatus = NULL; // In case CCrumbMap constructor fails
+		m_pPartStatus = new CCrumbMap(pReqFile->GetFileSize());
+		m_pPartStatus->Set(0, pReqFile->GetFileSize() - 1ULL);
+        //m_nPartCount = reqfile->GetPartCount();
+        //m_abyPartStatus = new uint8[m_nPartCount];
+        //memset(m_abyPartStatus, 1, m_nPartCount);
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         m_bCompleteSource = true;
     }
 }

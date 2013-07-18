@@ -63,20 +63,35 @@ enum eSharePermissions
 };
 //<<< WiZaRd::SharePermissions
 
-#define FDC_SENSITIVITY		83		//>>> FDC [BlueSonicBoy]
-#define FT_AUTOHL		"AUTOHL"	//>>> WiZaRd::AutoHL
+#define FDC_SENSITIVITY		83				//>>> FDC [BlueSonicBoy]
+#define FT_AUTOHL		"AUTOHL"			//>>> WiZaRd::AutoHL
 
 //>>> WiZaRd::Check DiskSpace
-#define RESERVE_MAX			1024 //MB
-#define RESERVE_MB			10 //MB
-#define RESERVE_PERCENT		5  //%
+#define RESERVE_MAX			1024			//MB
+#define RESERVE_MB			10				//MB
+#define RESERVE_PERCENT		5				//%
 //<<< WiZaRd::Check DiskSpace
 
 #define FT_POWERSHARE			"ZZUL_POWERSHARE" //>>> WiZaRd::PowerShare
-#define FT_SOTN					"SOTN" //>>> WiZaRd::Intelligent SOTN
-#define FT_FOLDER				"FOLDER" //>>> WiZaRd::CollectionEnhancement
+#define FT_SOTN					"SOTN"		//>>> WiZaRd::Intelligent SOTN
+#define FT_FOLDER				"FOLDER"	//>>> WiZaRd::CollectionEnhancement
 
 //>>> WiZaRd::ICS [enkeyDEV]
 #define ET_INCOMPLETEPARTS		0x3D
-#define OP_FILEINCSTATUS		0x8E //Incomplete part packet (like OP_FILESTATUS)
+#define OP_FILEINCSTATUS		0x8E		//Incomplete part packet (like OP_FILESTATUS)
 //<<< WiZaRd::ICS [enkeyDEV]
+
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+// eDonkey hybrid op-codes
+#define OP_HORDESLOTREQ			0x65		// <HASH (file) [16]>
+#define OP_HORDESLOTREJ			0x66		// <HASH (file) [16]>
+#define OP_HORDESLOTANS			0x67		// <HASH (file) [16]>
+#define OP_CRUMBSETANS			0x68
+#define OP_CRUMBSETREQ			0x69		// <HASH (file) [16]>
+#define OP_CRUMBCOMPLETE		0x6A		// <HASH (file) [16]> <Crumb [4]>
+#define OP_PUBLICIPNOTIFY		0x6B		// <IP (receiver) [4]>   Hybrids sends this when IP in Hello packet doesn't match
+
+#define OP_CRUMBCOMPLETE		0x6A		// <HASH (file) [16]> <Crumb [4]>
+#define CT_PROTOCOLREVISION		"pr"		//! Used to identify crumbs support
+#define CRUMBSIZE				486400ui64  //! Chunk size of revised protocol (475kB)
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]

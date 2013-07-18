@@ -33,6 +33,7 @@ class CEMSocket;
 class CAICHHash;
 enum EUtf8Str;
 class CAntiLeechData; //>>> WiZaRd::ClientAnalyzer
+class CPartStatus; //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
 struct Pending_Block_Struct
 {
@@ -542,19 +543,13 @@ public:
     UINT			GetPayloadInBuffer() const;
 
     bool			ProcessExtendedInfo(CSafeMemFile* packet, CKnownFile* tempreqfile, const bool isUDP = false);
-    uint16			GetUpPartCount() const
-    {
-        return m_nUpPartCount;
-    }
+    UINT			GetUpPartCount() const;
     void			DrawUpStatusBar(CDC* dc, RECT* rect, bool onlygreyrect, bool  bFlat) const;
-    bool			IsUpPartAvailable(UINT iPart) const
-    {
-        return (iPart >= m_nUpPartCount || !m_abyUpPartStatus) ? false : m_abyUpPartStatus[iPart] != 0;
-    }
-    uint8*			GetUpPartStatus() const
-    {
-        return m_abyUpPartStatus;
-    }
+    bool			IsUpPartAvailable(UINT iPart) const;
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	const CPartStatus*	GetUpPartStatus() const;
+    //uint8*			GetUpPartStatus() const;
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     float           GetCombinedFilePrioAndCredit();
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -581,18 +576,12 @@ public:
     {
         m_fileReaskTimes.SetAt(reqfile, ::GetTickCount());
     }
-    bool			IsPartAvailable(UINT iPart) const
-    {
-        return (iPart >= m_nPartCount || !m_abyPartStatus) ? false : m_abyPartStatus[iPart] != 0;
-    }
-    uint8*			GetPartStatus() const
-    {
-        return m_abyPartStatus;
-    }
-    uint16			GetPartCount() const
-    {
-        return m_nPartCount;
-    }
+    bool			IsPartAvailable(UINT iPart) const;
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	const CPartStatus*	GetPartStatus() const;
+    //uint8*			GetPartStatus() const;
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+    UINT			GetPartCount() const;
     UINT			GetDownloadDatarate() const
     {
         return m_nDownDatarate;
@@ -860,7 +849,10 @@ public:
     CClientReqSocket* socket;
     CClientCredits*	credits;
     CFriend*		m_Friend;
-    uint8*			m_abyUpPartStatus;
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	CPartStatus*	m_pUpPartStatus;
+    //uint8*			m_abyUpPartStatus;	
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     CTypedPtrList<CPtrList, CPartFile*> m_OtherRequests_list;
     CTypedPtrList<CPtrList, CPartFile*> m_OtherNoNeeded_list;
     uint16			m_lastPartAsked;
@@ -981,7 +973,7 @@ protected:
     UINT		m_nCurSessionDown;
     UINT		m_nCurQueueSessionPayloadUp;
     UINT		m_addedPayloadQueueSession;
-    uint16		m_nUpPartCount;
+    //uint16		m_nUpPartCount; //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
     uint16		m_nUpCompleteSourcesCount;
     uchar		requpfileid[16];
     UINT		m_slotNumber;
@@ -1001,7 +993,10 @@ protected:
     CPartFile*	reqfile;
     CAICHHash*  m_pReqFileAICHHash;
     UINT		m_cDownAsked;
-    uint8*		m_abyPartStatus;
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	CPartStatus*	m_pPartStatus;
+    //uint8*		m_abyPartStatus;
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]    
     CString		m_strClientFilename;
     UINT		m_nTransferredDown;
     UINT        m_nCurSessionPayloadDown;
@@ -1014,7 +1009,7 @@ protected:
     //--group to aligned int32
     bool		m_bRemoteQueueFull;
     bool		m_bCompleteSource;
-    uint16		m_nPartCount;
+    //uint16		m_nPartCount; //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
     //--group to aligned int32
     uint16		m_cShowDR;
     bool		m_bReaskPending;
@@ -1225,10 +1220,18 @@ private:
 //<<< WiZaRd::ZZUL Upload [ZZ]
 //>>> WiZaRd::ModIconMapper	
 private:
-	int		m_iModIconIndex;
+	int			m_iModIconIndex;
 public:
-	int		GetModIconIndex() const;
-	void	CheckModIconIndex();
+	int			GetModIconIndex() const;
+	void		CheckModIconIndex();
 //<<< WiZaRd::ModIconMapper
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+private:
+	int			m_nProtocolRevision;
+public:
+	int			GetSCTVersion() const	{return m_nProtocolRevision;}
+	bool		SupportsSCT() const		{return m_nProtocolRevision > 0;}
+	void		ProcessCrumbComplete(CSafeMemFile* data);
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 };
 //#pragma pack()

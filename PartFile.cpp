@@ -58,6 +58,7 @@
 #include "Collection.h"
 #include "Mod/7zExtract.h"
 #include "./Mod/7z/7z.h" //>>> WiZaRd::7zip
+#include "./Mod/NetF/PartStatus.h" //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -334,6 +335,10 @@ void CPartFile::Init()
     lastSwapForSourceExchangeTick = ::GetTickCount();
     m_DeadSourceList.Init(false);
     m_bPauseOnPreview = false;
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	m_pPartStatus = new CPartFileStatus(this);
+	m_pPublishedPartStatus = NULL;
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 }
 
 CPartFile::~CPartFile()
@@ -378,6 +383,11 @@ CPartFile::~CPartFile()
     }
     delete m_pAICHRecoveryHashSet;
     m_pAICHRecoveryHashSet = NULL;
+
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	delete m_pPartStatus;
+	delete m_pPublishedPartStatus;
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 }
 
 #ifdef _DEBUG
@@ -1295,6 +1305,13 @@ EPartFileLoadResult CPartFile::LoadPartFile(LPCTSTR in_directory,LPCTSTR in_file
         }
 
         metFile.Close();
+
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+		// Make crumbs shareable
+		// TODO: Check crumb hashes!
+		delete m_pPublishedPartStatus;
+		m_pPublishedPartStatus = new CCrumbMap(m_pPartStatus);
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     }
     catch (CFileException* error)
     {
@@ -2245,6 +2262,8 @@ uint64 CPartFile::GetTotalGapSizeInPart(UINT uPart) const
     return GetTotalGapSizeInRange(uRangeStart, uRangeEnd);
 }
 
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+/*
 bool CPartFile::GetNextEmptyBlockInPart(UINT partNumber, Requested_Block_Struct *result) const
 {
     Gap_Struct *firstGap;
@@ -2350,6 +2369,53 @@ bool CPartFile::GetNextEmptyBlockInPart(UINT partNumber, Requested_Block_Struct 
     // No suitable gap found
     return false;
 }
+*/
+bool CPartFile::GetNextEmptyBlockInPart(UINT const partNumber, Requested_Block_Struct* const result, uint64 const bytesToRequest, const CPartStatus* const availableParts, const CUpDownClient* const client) const
+{
+	uint64	const partStart = partNumber * PARTSIZE;
+	uint64	const partEnd = (partNumber + 1) * PARTSIZE - 1;
+	uint64	start = 0;
+	uint64	end = partEnd;
+
+	// Spread out the downloads to enable SCT features 
+	if (client)
+		start = partStart + ((client->GetUserHash()[14] + client->GetUserHash()[15]) % 53) * EMBLOCKSIZE;
+	else
+		start = partStart + ((rand() + ::GetTickCount()) % 53) * EMBLOCKSIZE; // Randomizer isn't very good! :(
+
+	// Find a needed block 
+	if (!m_pPartStatus->FindFirstNeeded(start, end, availableParts))
+	{
+		start = partStart;
+		end = partEnd;
+		if (!m_pPartStatus->FindFirstNeeded(start, end, availableParts))
+			return false;
+	}
+
+	// Trim the block
+	if (end - start > bytesToRequest)
+		end = start + bytesToRequest - 1;
+	uint64	const blockLimit = partStart + (uint64)((UINT)(start - partStart)/EMBLOCKSIZE + 1)*EMBLOCKSIZE - 1;
+	if (end > blockLimit && (end - start) < EMBLOCKSIZE)
+		end = blockLimit;
+	else if (end > (blockLimit + EMBLOCKSIZE) && (end - start) < 2 * EMBLOCKSIZE)
+		end = blockLimit + EMBLOCKSIZE;
+	else if (end > blockLimit + 2 * EMBLOCKSIZE)
+		end = blockLimit + 2 * EMBLOCKSIZE;
+	if (end > partEnd)
+		end = partEnd;
+
+	// Return the result
+	if (result != NULL)
+	{
+		result->StartOffset = start;
+		result->EndOffset = end;
+		md4cpy(result->FileID, GetFileHash());
+		result->transferred = 0;
+	}
+	return true;
+}
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
 void CPartFile::FillGap(uint64 start, uint64 end)
 {
@@ -4677,13 +4743,37 @@ Packet* CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 byR
     data.WriteUInt16((uint16)nCount);
 
     bool bNeeded;
-    const uint8* reqstatus = forClient->GetUpPartStatus();
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	const CPartStatus* const reqstatus = forClient->GetUpPartStatus();
+    //const uint8* reqstatus = forClient->GetUpPartStatus();
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     for (POSITION pos = srclist.GetHeadPosition(); pos != 0;)
     {
         bNeeded = false;
         const CUpDownClient* cur_src = srclist.GetNext(pos);
         if (cur_src->HasLowID() || !cur_src->IsValidSource())
             continue;
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+		const CPartStatus* const srcstatus = cur_src->GetPartStatus();
+		if (srcstatus)
+		{
+			if (cur_src->GetPartCount() == GetPartCount())
+			{
+				if (reqstatus)
+				{
+					ASSERT( forClient->GetUpPartCount() == GetPartCount() );
+					// only send sources which have needed parts for this client
+					if (reqstatus->IsNeeded(srcstatus))
+						bNeeded = true;
+				}
+				else
+				{
+					// We know this client is valid. But don't know the part count status.. So, currently we just send them.
+					if (srcstatus->IsNeeded())
+						bNeeded = true;
+				}
+			}
+/*
         const uint8* srcstatus = cur_src->GetPartStatus();
         if (srcstatus)
         {
@@ -4715,6 +4805,8 @@ Packet* CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 byR
                     }
                 }
             }
+*/
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
             else
             {
                 // should never happen
@@ -5360,6 +5452,11 @@ void CPartFile::FlushBuffer(bool forcewait, bool bNoAICH)
                     if (posCorrupted)
                         corrupted_list.RemoveAt(posCorrupted);
 
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+					if (m_pPublishedPartStatus)
+						m_pPublishedPartStatus->SetPart(uPartNumber);
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+
                     if (status == PS_EMPTY)
                     {
                         if (theApp.emuledlg->IsRunning()) // may be called during shutdown!
@@ -5421,6 +5518,15 @@ void CPartFile::FlushBuffer(bool forcewait, bool bNoAICH)
                     }
                 }
             }
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+			else
+			{
+				// TODO: Check crumb hashes
+				for (UINT crumb = uPartNumber * 20UL; crumb < (uPartNumber + 1) * 20UL && crumb < (UINT) (uint64) (GetFileSize() + CRUMBSIZE - 1ULL) / CRUMBSIZE ; crumb++)
+					if (m_pPublishedPartStatus != NULL && IsComplete((uint64) crumb * CRUMBSIZE, (uint64) (crumb + 1) * CRUMBSIZE - 1, true))
+						m_pPublishedPartStatus->SetCrumb(crumb);
+			}
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
             // Any parts other than last must be full size
             partRange = PARTSIZE - 1;
@@ -6503,8 +6609,16 @@ void CPartFile::RefilterFileComments()
 void CPartFile::SetFileSize(EMFileSize nFileSize)
 {
     ASSERT(m_pAICHRecoveryHashSet != NULL);
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	if (nFileSize == GetFileSize() && m_pPublishedPartStatus)
+		return;
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     m_pAICHRecoveryHashSet->SetFileSize(nFileSize);
     CKnownFile::SetFileSize(nFileSize);
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	delete m_pPublishedPartStatus;
+	m_pPublishedPartStatus = new CCrumbMap(nFileSize);
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 }
 
 bool	CPartFile::IsCompletePart(const UINT part, const bool bOnlyReal) const
@@ -6633,8 +6747,12 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
     bool isPreviewEnable = (thePrefs.GetPreviewPrio() || thePrefs.IsExtControlsEnabled() && GetPreviewPrio()) && IsPreviewableFileType(); //>>> taz::Optimization
     for (uint16 part_idx = 0; part_idx < GetPartCount(); ++part_idx)
     {
-        if (sender->IsPartAvailable(part_idx)
-                && GetNextEmptyBlockInPart(part_idx, 0))
+        if (
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+				GetNextEmptyBlockInPart(part_idx, 0, EMBLOCKSIZE, sender->GetPartStatus(), sender))
+				//sender->IsPartAvailable(part_idx)
+                //&& GetNextEmptyBlockInPart(part_idx, 0))
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         {
             UINT complete_src = 0;
             UINT incomplete_src = 0;
@@ -6736,9 +6854,12 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
     delete[] partsDownloading;
     partsDownloading = NULL;
 
-    if (sender->m_lastPartAsked != _UI16_MAX
-            && sender->IsPartAvailable(sender->m_lastPartAsked)
-            && GetNextEmptyBlockInPart(sender->m_lastPartAsked, 0))
+    if (sender->m_lastPartAsked != _UI16_MAX            
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+			&& GetNextEmptyBlockInPart(sender->m_lastPartAsked, 0, EMBLOCKSIZE, sender->GetPartStatus(), sender))
+			//&& sender->IsPartAvailable(sender->m_lastPartAsked)
+            //&& GetNextEmptyBlockInPart(sender->m_lastPartAsked, 0))
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     {
         chunk_list.AddHead(sender->m_lastPartAsked);
         chunk_pref.AddHead((uint64) 0);
@@ -6757,7 +6878,10 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
     for (POSITION scan_chunks = chunk_list.GetHeadPosition(); scan_chunks; chunk_list.GetNext(scan_chunks))
     {
         sender->m_lastPartAsked = chunk_list.GetAt(scan_chunks);
-        while (GetNextEmptyBlockInPart(chunk_list.GetAt(scan_chunks), block))
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+		while (GetNextEmptyBlockInPart(chunk_list.GetAt(scan_chunks), block, EMBLOCKSIZE, sender->GetPartStatus(), sender))
+        //while (GetNextEmptyBlockInPart(chunk_list.GetAt(scan_chunks), block))
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         {
             requestedblocks_list.AddTail(block);
             newblocks[newblockcount++] = block;
@@ -6928,3 +7052,153 @@ void	CPartFile::SetUseAutoHL(const bool b)
     m_bUseAutoHL = b;
 }
 //<<< WiZaRd::AutoHL
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+void CPartFile::AddToPartsInfo(const CPartStatus* const partstatus)
+{
+	if (time(NULL) - m_nCompleteSourcesTime > 0)
+	{
+		CPartFile::UpdatePartsInfo();
+		return;
+	}
+
+	if( !IsPartFile() )
+	{
+		CKnownFile::AddToPartsInfo(partstatus);
+		return;
+	}
+
+	if (partstatus != NULL && partstatus->GetSize() == this->GetFileSize())
+	{
+		if ((UINT)m_SrcpartFrequency.GetSize() < GetPartCount())
+		{
+			m_SrcpartFrequency.SetSize(GetPartCount());
+			for (UINT i = 0; i < GetPartCount(); i++)
+				m_SrcpartFrequency[i] = 0;
+		}
+
+		uint64	start = 0ULL;
+		uint64	stop = ~0ULL;
+		while (partstatus->FindFirstComplete(start, stop))
+		{
+			uint16	first, last;
+			first = static_cast<uint16>((start + (PARTSIZE - 1ULL)) / PARTSIZE);
+			if (stop == GetFileSize() - 1ULL)
+				last = static_cast<uint16>(stop / PARTSIZE + 1ULL);
+			else
+				last = static_cast<uint16>((stop + 1ULL) / PARTSIZE);
+			for (UINT i = first; i < last; i++)
+			{
+				m_SrcpartFrequency[i] += 1;
+			}
+			start = stop + 1;
+			stop = ~0ULL;
+		}
+	}
+
+	UpdateDisplayedInfo();
+}
+
+void CPartFile::RemoveFromPartsInfo(const CPartStatus* const partstatus)
+{
+	if (time(NULL) - m_nCompleteSourcesTime > 0) 
+	{
+		CPartFile::UpdatePartsInfo();
+		return;
+	}
+
+	if( !IsPartFile() )
+	{
+		CKnownFile::RemoveFromPartsInfo(partstatus);
+		return;
+	}
+
+	if ((UINT)m_SrcpartFrequency.GetSize() < GetPartCount())
+	{
+		m_SrcpartFrequency.SetSize(GetPartCount());
+		for (UINT i = 0; i < GetPartCount(); i++)
+			m_SrcpartFrequency[i] = 0;
+		return;
+	}
+
+	if (partstatus != NULL && partstatus->GetSize() == this->GetFileSize())
+	{
+		uint64	start = 0ULL;
+		uint64	stop = ~0ULL;
+		while (partstatus->FindFirstComplete(start, stop))
+		{
+			uint16	first, last;
+			first = static_cast<uint16>((start + (PARTSIZE - 1ULL)) / PARTSIZE);
+			if (stop == GetFileSize() - 1ULL)
+				last = static_cast<uint16>(stop / PARTSIZE + 1ULL);
+			else
+				last = static_cast<uint16>((stop + 1ULL) / PARTSIZE);
+			for (UINT i = first; i < last; i++)
+			{
+				m_SrcpartFrequency[i] -= 1;
+			}
+			start = stop + 1;
+			stop = ~0ULL;
+		}
+	}
+
+	UpdateDisplayedInfo();
+}
+
+bool CPartFileStatus::FindFirstComplete(uint64& start, uint64& stop) const
+{
+	uint64	begin = start;
+	uint64	end = stop;
+
+	if (GetSize() == 0 || start >= GetSize() || start > stop)
+		return false;
+
+	if (stop >= GetSize())
+		stop = GetSize() - 1ULL;
+	for (POSITION pos = m_file->gaplist.GetHeadPosition();pos != 0; ){
+		const Gap_Struct* const cur_gap = m_file->gaplist.GetNext(pos);
+		if ((start <= cur_gap->end) && (stop >= cur_gap->start)) {
+			if(start < cur_gap->start) {
+				stop = cur_gap->start - 1ULL;
+			} else if(end > cur_gap->end) {
+				start = cur_gap->end + 1ULL;
+			} else {
+				start = begin;
+				stop = end;
+				return false;
+			}
+		}
+	}
+
+
+	return true;
+}
+
+bool CPartFileStatus::FindFirstNeeded(uint64& start, uint64& stop) const
+{
+	if (GetSize() == 0 || start >= GetSize() || start > stop)
+		return false;
+
+	if (stop >= GetSize())
+		stop = GetSize() - 1ULL;
+	for (POSITION pos = m_file->gaplist.GetHeadPosition();pos != 0;)
+	{
+		const Gap_Struct* const cur_gap = m_file->gaplist.GetNext(pos);
+		if (   (cur_gap->start >= start          && cur_gap->end   <= stop)
+			|| (cur_gap->start >= start          && cur_gap->start <= stop)
+			|| (cur_gap->end   <= stop           && cur_gap->end   >= start)
+			|| (start          >= cur_gap->start && stop           <= cur_gap->end)
+			)
+		{
+			uint64	start2 = max(cur_gap->start, start);
+			uint64	stop2 = min(cur_gap->end, stop);
+			if (m_file->ShrinkToAvoidAlreadyRequested(start2, stop2))
+			{
+				start = start2;
+				stop = stop2;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]

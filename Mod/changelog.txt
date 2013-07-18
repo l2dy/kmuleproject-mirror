@@ -208,4 +208,6 @@ XXXXYYZZ:
 > updated miniupnplib support to v1.8 (03/05/2013) [Tuxman/WiZaRd]
 ! fixed duplicated badguy icons caused by modicons - thx to SS1900 [WiZaRd]
 ! fixed kMule version display in stats [WiZaRd]
+! fixed iSOTN [WiZaRd]
 + added file availability (health) display - original by Morph4u (?) [WiZaRd]
++ added SCT by Netfinity [WiZaRd]

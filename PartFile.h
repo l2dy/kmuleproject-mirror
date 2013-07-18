@@ -82,6 +82,7 @@ class CUpDownClient;
 enum EDownloadState;
 class CxImage;
 class CSafeMemFile;
+class CPartStatus; //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
 #pragma pack(1)
 struct Requested_Block_Struct
@@ -452,7 +453,7 @@ public:
 #endif
 
 protected:
-    bool	GetNextEmptyBlockInPart(UINT partnumber, Requested_Block_Struct* result) const;
+    //bool	GetNextEmptyBlockInPart(UINT partnumber, Requested_Block_Struct* result) const; //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
     void	CompleteFile(bool hashingdone);
     void	CreatePartFile(UINT cat = 0);
     void	Init();
@@ -551,4 +552,18 @@ public:
     void	SetUseAutoHL(const bool b);
     void    SetAutoHL();
 //<<< WiZaRd::AutoHL
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+public:
+	friend class CPartFileStatus;
+	virtual void	AddToPartsInfo(const CPartStatus* partstatus);
+	virtual void	RemoveFromPartsInfo(const CPartStatus* partstatus);	
+
+	const CPartStatus*	GetDonePartStatus() const {return (const CPartStatus*) m_pPartStatus;}
+	const CPartStatus*	GetPublishedPartStatus() const {return m_pPublishedPartStatus;}
+private:
+	CPartStatus*		m_pPartStatus;
+	CPartStatus*		m_pPublishedPartStatus;
+protected:
+	bool	GetNextEmptyBlockInPart(UINT partnumber, Requested_Block_Struct* result, uint64 bytesToRequest = CRUMBSIZE, const CPartStatus* availableParts = 0, const CUpDownClient* client = 0) const;
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 };

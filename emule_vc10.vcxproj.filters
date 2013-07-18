@@ -94,6 +94,15 @@
     <Filter Include="Mod\7z\ASM">
       <UniqueIdentifier>{ca0356cd-e7ab-4c55-8103-939823923ea0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Mod\NetF">
+      <UniqueIdentifier>{bd497397-b28e-44ad-b3d3-29d7834f1fd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mod\NetF\Source">
+      <UniqueIdentifier>{0e952cb9-f964-463f-8aab-5731bb102aa4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mod\NetF\Header">
+      <UniqueIdentifier>{e06e5e16-c879-487a-a15c-fa36a8b922c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AbstractFile.cpp">
@@ -1016,6 +1025,12 @@
     </ClCompile>
     <ClCompile Include="kademlia\io\KadFileIO.cpp">
       <Filter>Source Files\Kademlia</Filter>
+    </ClCompile>
+    <ClCompile Include="Mod\NetF\CrumbHashSet.cpp">
+      <Filter>Mod\NetF\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Mod\NetF\PartStatus.cpp">
+      <Filter>Mod\NetF\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2942,6 +2957,12 @@
     </ClInclude>
     <ClInclude Include="kademlia\io\KadFileIO.h">
       <Filter>Header Files\Kademlia</Filter>
+    </ClInclude>
+    <ClInclude Include="Mod\NetF\PartStatus.h">
+      <Filter>Mod\NetF\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Mod\NetF\CrumbHashSet.h">
+      <Filter>Mod\NetF\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -62,6 +62,7 @@
 #include "Version.h"
 //<<< WiZaRd::ClientAnalyzer
 #include "./Mod/ModIconMapping.h" //>>> WiZaRd::ModIconMapper
+#include "./Mod/NetF/PartStatus.h" //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -164,10 +165,15 @@ void CUpDownClient::Init()
     m_bUDPPending = false;
     m_byEmuleVersion = 0;
     m_nUserPort = 0;
-    m_nPartCount = 0;
-    m_nUpPartCount = 0;
-    m_abyPartStatus = 0;
-    m_abyUpPartStatus = 0;
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	m_pPartStatus = NULL;
+	m_pUpPartStatus = NULL;
+	m_nProtocolRevision = 0;
+    //m_nPartCount = 0;
+    //m_nUpPartCount = 0;
+    //m_abyPartStatus = 0;
+    //m_abyUpPartStatus = 0;
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     m_dwUploadTime = 0;
     m_nTransferredDown = 0;
     m_nDownDatarate = 0;
@@ -315,21 +321,18 @@ CUpDownClient::~CUpDownClient()
 
     free(m_pszUsername);
 
-//>>> WiZaRd::ICS [enkeyDEV]
-    delete[] m_abyIncPartStatus;
-    m_abyIncPartStatus = NULL;
-//<<< WiZaRd::ICS [enkeyDEV]
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	delete m_pPartStatus;
+	m_pPartStatus = NULL;
 
-//>>> WiZaRd::AntiHideOS [netfinity]
-    delete[] m_abySeenPartStatus;
-    m_abySeenPartStatus = NULL;
-//<<< WiZaRd::AntiHideOS [netfinity]
+	delete m_pUpPartStatus;
+	m_pUpPartStatus = NULL;
+    //delete[] m_abyPartStatus;
+    //m_abyPartStatus = NULL;
 
-    delete[] m_abyPartStatus;
-    m_abyPartStatus = NULL;
-
-    delete[] m_abyUpPartStatus;
-    m_abyUpPartStatus = NULL;
+    //delete[] m_abyUpPartStatus;
+    //m_abyUpPartStatus = NULL;
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
     ClearUploadBlockRequests();
 
@@ -392,6 +395,7 @@ void CUpDownClient::ClearHelloProperties()
     m_fSupportsFileIdent = 0;
     m_strModVersion.Empty(); //>>> WiZaRd::Missing code?
     m_incompletepartVer = 0; //>>> WiZaRd::ICS [enkeyDEV]
+	m_nProtocolRevision = 0; //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 }
 
 bool CUpDownClient::ProcessHelloPacket(const uchar* pachPacket, UINT nSize)
@@ -676,6 +680,12 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
             // we use the "pr=1" tag to determine them.
             if (temptag.GetName() && temptag.GetName()[0]=='p' && temptag.GetName()[1]=='r')
             {
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+				if (temptag.IsInt())
+					m_nProtocolRevision = temptag.GetInt();
+				else if (bDbgInfo)
+					m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
                 bPrTag = true;
             }
             if (bDbgInfo)
@@ -1219,6 +1229,11 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
     if (bSendICS)
         ++tagcount;
 //<<< WiZaRd::ICS [enkeyDev]
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	const bool bSendSCT = !m_pszUsername || SupportsSCT();
+	if (bSendSCT)
+		++tagcount;
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
     data->WriteUInt32(tagcount);
 
@@ -1379,6 +1394,13 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
         tagICS.WriteTagToFile(data);
     }
 //<<< WiZaRd::ICS [enkeyDev]
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	if(bSendSCT)
+	{
+		CTag tagProtocolRevision(CT_PROTOCOLREVISION, CPartStatus::PROTOCOL_REVISION);
+		tagProtocolRevision.WriteTagToFile(data);
+	}
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
     data->WriteUInt32(0);
     data->WriteUInt16(0);
@@ -2644,8 +2666,15 @@ void CUpDownClient::InfoPacketsReceived()
 
 void CUpDownClient::ResetFileStatusInfo()
 {
-    delete[] m_abyPartStatus;
-    m_abyPartStatus = NULL;
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	if (m_pPartStatus != NULL && reqfile != NULL)
+		reqfile->RemoveFromPartsInfo(m_pPartStatus);
+	delete m_pPartStatus;
+	m_pPartStatus = NULL;
+    //delete[] m_abyPartStatus;
+    //m_abyPartStatus = NULL;
+	//m_nPartCount = 0;
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 //>>> WiZaRd::ICS [enkeyDev]
     delete[] m_abyIncPartStatus;
     m_abyIncPartStatus = NULL;
@@ -2654,8 +2683,7 @@ void CUpDownClient::ResetFileStatusInfo()
     delete[] m_abySeenPartStatus;
     m_abySeenPartStatus = NULL;
 //<<< WiZaRd::AntiHideOS [netfinity]
-    m_nRemoteQueueRank = 0;
-    m_nPartCount = 0;
+    m_nRemoteQueueRank = 0;    
     m_strClientFilename.Empty();
     m_bCompleteSource = false;
     m_uFileRating = 0;
@@ -2857,7 +2885,14 @@ void CUpDownClient::AssertValid() const
     CHECK_PTR(credits);
     CHECK_PTR(m_Friend);
     CHECK_OBJ(reqfile);
-    (void)m_abyUpPartStatus;
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	(void)m_pUpPartStatus;
+	(void)m_pPartStatus;
+    //(void)m_abyUpPartStatus;
+	//(void)m_nUpPartCount;
+	//(void)m_abyPartStatus;
+	//(void)m_nPartCount;
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     m_OtherRequests_list.AssertValid();
     m_OtherNoNeeded_list.AssertValid();
     (void)m_lastPartAsked;
@@ -2910,8 +2945,7 @@ void CUpDownClient::AssertValid() const
     (void)m_nCurSessionUp;
     (void)m_nCurSessionPayloadUp; //>>> WiZaRd::ZZUL Upload [ZZ]
     (void)m_nCurQueueSessionPayloadUp;
-    (void)m_addedPayloadQueueSession;
-    (void)m_nUpPartCount;
+    (void)m_addedPayloadQueueSession;    
     (void)m_nUpCompleteSourcesCount;
     (void)s_UpStatusBar;
     (void)requpfileid;
@@ -2921,8 +2955,7 @@ void CUpDownClient::AssertValid() const
     m_DoneBlocks_list.AssertValid();
     m_RequestedFiles_list.AssertValid();
     ASSERT(m_nDownloadState >= DS_DOWNLOADING && m_nDownloadState <= DS_NONE);
-    (void)m_cDownAsked;
-    (void)m_abyPartStatus;
+    (void)m_cDownAsked;    
     (void)m_strClientFilename;
     (void)m_nTransferredDown;
     (void)m_nCurSessionPayloadDown;
@@ -2934,7 +2967,6 @@ void CUpDownClient::AssertValid() const
     (void)m_cShowDR;
     (void)m_nRemoteQueueRank;
     (void)m_dwLastBlockReceived;
-    (void)m_nPartCount;
     ASSERT(m_nSourceFrom >= SF_SERVER && m_nSourceFrom <= SF_LINK);
     CHECK_BOOL(m_bRemoteQueueFull);
     CHECK_BOOL(m_bCompleteSource);
