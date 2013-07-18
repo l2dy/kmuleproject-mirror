@@ -52,6 +52,7 @@ public:
 
 protected:
     bool	ProcessPacket(const BYTE* packet, UINT size, uint8 opcode, UINT ip, uint16 port);
+	bool	ProcessModPacket(BYTE* packet, const UINT size, const uint8 opcode, const UINT ip, const uint16 port); //>>> WiZaRd::ModProt
 
     virtual void	OnSend(int nErrorCode);
     virtual void	OnReceive(int nErrorCode);

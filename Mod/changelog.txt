@@ -211,3 +211,5 @@ XXXXYYZZ:
 ! fixed iSOTN [WiZaRd]
 + added file availability (health) display - original by Morph4u (?) [WiZaRd]
 + added SCT by Netfinity [WiZaRd]
++ added modprot support [WiZaRd]
+ * includes LowID UDP Ping support

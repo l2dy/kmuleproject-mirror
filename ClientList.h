@@ -143,7 +143,7 @@ public:
 
     // Direct Callback List
     void	AddTrackCallbackRequests(UINT dwIP);
-    bool	AllowCalbackRequest(UINT dwIP) const;
+    bool	AllowCallbackRequest(UINT dwIP) const;
 
     // Connecting Clients
     void	AddConnectingClient(CUpDownClient* pToAdd);

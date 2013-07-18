@@ -195,6 +195,7 @@ CString DbgGetClientID(UINT nClientID);
 int GetHashType(const uchar* hash);
 CString DbgGetDonkeyClientTCPOpcode(UINT opcode);
 CString DbgGetMuleClientTCPOpcode(UINT opcode);
+CString	DbgGetModTCPOpcode(const UINT opcode); //>>> WiZaRd::ModProt
 CString DbgGetClientTCPOpcode(UINT protocol, UINT opcode);
 CString DbgGetClientTCPPacket(UINT protocol, UINT opcode, UINT size);
 CString DbgGetBlockInfo(const Requested_Block_Struct* block);

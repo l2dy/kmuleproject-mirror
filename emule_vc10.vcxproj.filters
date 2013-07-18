@@ -1032,6 +1032,9 @@
     <ClCompile Include="Mod\NetF\PartStatus.cpp">
       <Filter>Mod\NetF\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Mod\ModProt.cpp">
+      <Filter>Mod\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <MASM Include="MD4_asm.asm">
@@ -2963,6 +2966,9 @@
     </ClInclude>
     <ClInclude Include="Mod\NetF\CrumbHashSet.h">
       <Filter>Mod\NetF\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Mod\ModProt.h">
+      <Filter>Mod\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

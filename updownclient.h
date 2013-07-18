@@ -1074,7 +1074,10 @@ protected:
          m_fSupportsCaptcha	  : 1,
          m_fDirectUDPCallback : 1,
          m_fSupportsFileIdent : 1; // 0 bits left
-    UINT m_fHashsetRequestingAICH : 1; // 31 bits left
+    UINT m_fHashsetRequestingAICH : 1, // 31 bits left
+		 m_fAICHHashRequested : 1, //>>> Security Check
+		 m_fSourceExchangeRequested : 1, //>>> Security Check
+		 m_fSupportsModProt	  : 1; //>>> WiZaRd::ModProt
     CTypedPtrList<CPtrList, Pending_Block_Struct*>	 m_PendingBlocks_list;
     CTypedPtrList<CPtrList, Requested_Block_Struct*> m_DownloadBlocks_list;
 
@@ -1147,9 +1150,6 @@ public:
     void	CheckForGPLEvilDoer(const bool bNick, const bool bMod);
 //<<< WiZaRd::More GPLEvilDoers
 
-private:
-    UINT m_fAICHHashRequested : 1, //>>> Security Check
-         m_fSourceExchangeRequested : 1; //>>> Security Check
 //>>> WiZaRd::BadClientFlag
 //"bad" doesn't mean "leecher" here but "bad for the network"
 private:
@@ -1233,5 +1233,17 @@ public:
 	bool		SupportsSCT() const		{return m_nProtocolRevision > 0;}
 	void		ProcessCrumbComplete(CSafeMemFile* data);
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+//>>> WiZaRd::ModProt
+//>>> LowID UDP Ping Support
+private:
+	bool	m_bSupportsLowIDUDPPing;
+public:
+	bool	SupportsLowIDUDPPing() const					{return m_bSupportsLowIDUDPPing;}
+//<<< LowID UDP Ping Support
+public:
+	bool	SupportsModProt() const							{return m_fSupportsModProt;}
+	void	SendModInfoPacket() const;
+	void	ProcessModInfoPacket(const uchar* pachPacket, const UINT nSize);
+//<<< WiZaRd::ModProt
 };
 //#pragma pack()

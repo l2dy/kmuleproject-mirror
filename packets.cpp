@@ -228,6 +228,10 @@ void Packet::PackPacket()
     }
     if (prot == OP_KADEMLIAHEADER)
         prot = OP_KADEMLIAPACKEDPROT;
+//>>> WiZaRd::ModProt
+	else if(prot == OP_MODPROT)
+		prot = OP_MODPROT_PACKED;
+//<<< WiZaRd::ModProt
     else
         prot = OP_PACKEDPROT;
     memcpy(pBuffer,output,newsize);
@@ -238,7 +242,7 @@ void Packet::PackPacket()
 
 bool Packet::UnPackPacket(UINT uMaxDecompressedSize)
 {
-    ASSERT(prot == OP_PACKEDPROT || prot == OP_KADEMLIAPACKEDPROT);
+    ASSERT(prot == OP_PACKEDPROT || prot == OP_KADEMLIAPACKEDPROT || prot == OP_MODPROT_PACKED); //>>> WiZaRd::ModProt
     UINT nNewSize = size*10+300;
     if (nNewSize > uMaxDecompressedSize)
     {
@@ -267,6 +271,10 @@ bool Packet::UnPackPacket(UINT uMaxDecompressedSize)
         pBuffer = (char*)unpack;
         if (prot == OP_KADEMLIAPACKEDPROT)
             prot = OP_KADEMLIAHEADER;
+//>>> WiZaRd::ModProt
+		else if(prot == OP_MODPROT_PACKED)
+			prot = OP_MODPROT;
+//<<< WiZaRd::ModProt
         else
             prot =  OP_EMULEPROT;
         return true;

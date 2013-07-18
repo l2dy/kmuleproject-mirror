@@ -260,13 +260,22 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
                 // start secure identification, if
                 //  - we have received OP_EMULEINFO and OP_HELLOANSWER (old eMule)
                 //	- we have received eMule-OP_HELLOANSWER (new eMule)
+				if(!client->SupportsModProt()) // check for mod prot - we will start the SUI when we receive the mod info packet //>>> WiZaRd::ModProt
                 if (client->GetInfoPacketsReceived() == IP_BOTH)
                     client->InfoPacketsReceived();
 
                 if (client)
                 {
-                    client->ConnectionEstablished();
-                    theApp.emuledlg->transferwnd->GetClientList()->RefreshClient(client);
+//>>> WiZaRd::ModProt
+					// if this client uses mod protocol extensions
+					if (client->SupportsModProt()) 
+						client->SendModInfoPacket(); // we send him the mod info packet with our extensions
+					else // we *DO NOT* call ConnectionEstablished at this point, will be called when we receive the Mod Info from this client
+//<<< WiZaRd::ModProt
+					{
+						client->ConnectionEstablished();
+						theApp.emuledlg->transferwnd->GetClientList()->RefreshClient(client);
+					}
                 }
                 break;
             }
@@ -331,13 +340,22 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
                 client->SendHelloAnswer();
 
                 if (client)
+				{
+//>>> WiZaRd::ModProt
+					// if this client uses mod protocol extensions
+					if (client->SupportsModProt()) 
+						client->SendModInfoPacket(); // we send him the mod info packet with our extensions
+					else // we *DO NOT* call ConnectionEstablished at this point, will be called when we receive the Mod Info from this client
+//<<< WiZaRd::ModProt
                     client->ConnectionEstablished();
+				}
 
                 ASSERT(client);
                 if (client)
                 {
                     // start secure identification, if
                     //	- we have received eMule-OP_HELLO (new eMule)
+					if(!client->SupportsModProt()) // check for mod prot - we will start the SUI when we receive the mod info packet //>>> WiZaRd::ModProt
                     if (client->GetInfoPacketsReceived() == IP_BOTH)
                         client->InfoPacketsReceived();
 
@@ -2188,6 +2206,20 @@ bool CClientReqSocket::PacketReceivedCppEH(Packet* packet)
     case OP_EMULEPROT:
         bResult = ProcessExtPacket((const BYTE*)packet->pBuffer, packet->size, packet->opcode, uRawSize);
         break;
+//>>> WiZaRd::ModProt
+	// dispatch mod packets to the right processing functions
+	case OP_MODPROT_PACKED:
+		if (!packet->UnPackPacket())
+		{
+			if (thePrefs.GetVerbose())
+				AddDebugLogLine(false, L"Failed to decompress client Mod TCP packet; %s; %s", DbgGetClientTCPPacket(packet->prot, packet->opcode, packet->size), DbgGetClientInfo());
+			bResult = false;
+			break;
+		}
+	case OP_MODPROT:
+		bResult = ProcessModPacket((const BYTE*)packet->pBuffer, packet->size, packet->opcode, uRawSize);
+		break;
+//<<< WiZaRd::ModProt
     default:
     {
         theStats.AddDownDataOverheadOther(uRawSize);

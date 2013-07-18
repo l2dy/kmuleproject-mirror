@@ -415,6 +415,10 @@ void CEMSocket::OnReceive(int nErrorCode)
             case OP_EDONKEYPROT:
             case OP_PACKEDPROT:
             case OP_EMULEPROT:
+//>>> WiZaRd::ModProt
+			case OP_MODPROT_PACKED:
+			case OP_MODPROT:
+//<<< WiZaRd::ModProt
                 break;
             default:
                 EMTrace("CEMSocket::OnReceive ERROR Wrong header");

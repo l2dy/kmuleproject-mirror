@@ -317,6 +317,7 @@
     <ClCompile Include="Mod\loadStatus.cpp" />
     <ClCompile Include="Mod\ModIconMapping.cpp" />
     <ClCompile Include="Mod\Modname.cpp" />
+    <ClCompile Include="Mod\ModProt.cpp" />
     <ClCompile Include="Mod\NetF\CrumbHashSet.cpp" />
     <ClCompile Include="Mod\NetF\PartStatus.cpp" />
     <ClCompile Include="Mod\ProgressIndicator.cpp" />
@@ -989,6 +990,7 @@
     <ClInclude Include="Mod\ModIconMapping.h" />
     <ClInclude Include="Mod\Modname.h" />
     <ClInclude Include="Mod\ModOpcodes.h" />
+    <ClInclude Include="Mod\ModProt.h" />
     <ClInclude Include="Mod\NetF\CrumbHashSet.h" />
     <ClInclude Include="Mod\NetF\PartStatus.h" />
     <ClInclude Include="Mod\ProgressIndicator.h" />

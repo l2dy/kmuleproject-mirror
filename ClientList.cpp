@@ -45,6 +45,15 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+//>>> WiZaRd::FiX
+//helper function... use the available IP
+bool CompareIP(const CUpDownClient* client, const UINT dwIP)
+{
+	if(client->GetIP() != 0)
+		return client->GetIP() == dwIP;
+	return client->GetConnectIP() == dwIP;
+}
+//<<< WiZaRd::FiX
 
 CClientList::CClientList()
 {
@@ -301,7 +310,7 @@ CUpDownClient* CClientList::FindClientByIP(UINT clientip, UINT port) const
     for (POSITION pos = list.GetHeadPosition(); pos != NULL;)
     {
         CUpDownClient* cur_client = list.GetNext(pos);
-        if (cur_client->GetIP() == clientip && cur_client->GetUserPort() == port)
+        if (CompareIP(cur_client, clientip) && cur_client->GetUserPort() == port)
             return cur_client;
     }
     return 0;
@@ -315,7 +324,7 @@ CUpDownClient* CClientList::FindClientByUserHash(const uchar* clienthash, UINT d
         CUpDownClient* cur_client = list.GetNext(pos);
         if (!md4cmp(cur_client->GetUserHash() ,clienthash))
         {
-            if ((dwIP == 0 || dwIP == cur_client->GetIP()) && (nTCPPort == 0 || nTCPPort == cur_client->GetUserPort()))
+            if ((dwIP == 0 || CompareIP(cur_client, dwIP)) && (nTCPPort == 0 || nTCPPort == cur_client->GetUserPort()))
                 return cur_client;
             else
                 pFound = pFound != NULL ? pFound : cur_client;
@@ -329,7 +338,7 @@ CUpDownClient* CClientList::FindClientByIP(UINT clientip) const
     for (POSITION pos = list.GetHeadPosition(); pos != NULL;)
     {
         CUpDownClient* cur_client = list.GetNext(pos);
-        if (cur_client->GetIP() == clientip)
+        if (CompareIP(cur_client, clientip))
             return cur_client;
     }
     return 0;
@@ -340,7 +349,7 @@ CUpDownClient* CClientList::FindClientByIP_UDP(UINT clientip, UINT nUDPport) con
     for (POSITION pos = list.GetHeadPosition(); pos != NULL;)
     {
         CUpDownClient* cur_client = list.GetNext(pos);
-        if (cur_client->GetIP() == clientip && cur_client->GetUDPPort() == nUDPport)
+        if (CompareIP(cur_client, clientip) && cur_client->GetUDPPort() == nUDPport)
             return cur_client;
     }
     return 0;
@@ -362,7 +371,7 @@ CUpDownClient* CClientList::FindClientByIP_KadPort(UINT ip, uint16 port) const
     for (POSITION pos = list.GetHeadPosition(); pos != NULL;)
     {
         CUpDownClient* cur_client = list.GetNext(pos);
-        if (cur_client->GetIP() == ip && cur_client->GetKadPort() == port)
+        if (CompareIP(cur_client, ip) && cur_client->GetKadPort() == port)
             return cur_client;
     }
     return 0;
@@ -1096,7 +1105,7 @@ void CClientList::AddTrackCallbackRequests(UINT dwIP)
     }
 }
 
-bool CClientList::AllowCalbackRequest(UINT dwIP) const
+bool CClientList::AllowCallbackRequest(UINT dwIP) const
 {
     for (POSITION pos = listDirectCallbackRequests.GetHeadPosition(); pos != NULL; listDirectCallbackRequests.GetNext(pos))
     {

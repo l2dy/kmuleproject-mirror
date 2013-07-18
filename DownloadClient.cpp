@@ -1843,8 +1843,15 @@ void CUpDownClient::UDPReaskForDownload()
     if (m_nTotalUDPPackets > 3 && ((float)(m_nFailedUDPPackets/m_nTotalUDPPackets) > .3))
         return;
 
-    if (GetUDPPort() != 0 && GetUDPVersion() != 0 && thePrefs.GetUDPPort() != 0 &&
-            !theApp.IsFirewalled() && !(socket && socket->IsConnected()) && !thePrefs.GetProxySettings().UseProxy)
+    if (GetUDPPort() != 0 
+		&& GetUDPVersion() != 0 
+		&& thePrefs.GetUDPPort() != 0 
+//>>> WiZaRd::ModProt
+		//&& !theApp.IsFirewalled() 
+		&& (!theApp.IsFirewalled() || SupportsLowIDUDPPing()) //>>> LowID UDP Ping Support
+//<<< WiZaRd::ModProt
+		&& !(socket && socket->IsConnected()) 
+		&& !thePrefs.GetProxySettings().UseProxy)
     {
         if (!HasLowID())
         {

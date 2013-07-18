@@ -180,6 +180,67 @@ void CClientUDPSocket::OnReceive(int nErrorCode)
                         throw CString(_T("Kad packet too short"));
                     break;
                 }
+//>>> WiZaRd::ModProt
+				case OP_MODPROT_PACKED:
+				{
+					theStats.AddDownDataOverheadOther(nPacketLen);
+					if (nPacketLen >= 2)
+					{
+						UINT nNewSize = nPacketLen*10+300;
+						BYTE* unpack = NULL;
+						uLongf unpackedsize = 0;
+						int iZLibResult = 0;
+						do 
+						{
+							delete[] unpack;
+							unpack = new BYTE[nNewSize];
+							unpackedsize = nNewSize-2;
+							iZLibResult = uncompress(unpack+2, &unpackedsize, pBuffer+2, nPacketLen-2);
+							nNewSize *= 2; // size for the next try if needed
+						} 
+						while (iZLibResult == Z_BUF_ERROR && nNewSize < 250000);
+
+						if (iZLibResult == Z_OK)
+						{
+							unpack[0] = OP_MODPROT;
+							unpack[1] = pBuffer[1];
+							try
+							{
+								ProcessModPacket(unpack+2, unpackedsize, unpack[1], sockAddr.sin_addr.S_un.S_addr, ntohs(sockAddr.sin_port));
+							}
+ 							catch(...)
+ 							{
+ 								delete[] unpack;
+								unpack = NULL;
+ 								throw;
+							}
+						}
+						else
+						{
+							delete[] unpack;
+							unpack = NULL;
+							CString strError = L"";
+							strError.Format(L"Failed to uncompress Mod packet: zip error: %d (%hs)", iZLibResult, zError(iZLibResult));
+							throw strError;
+						}
+						delete[] unpack;
+						unpack = NULL;
+					}
+					else
+						throw CString(L"Mod packet (compressed) too short");
+					break;
+				}
+				case OP_MODPROT:
+				{
+					theStats.AddDownDataOverheadOther(nPacketLen);
+					if (nPacketLen >= 2)
+						ProcessModPacket(pBuffer+2, nPacketLen-2, pBuffer[1], sockAddr.sin_addr.S_un.S_addr, ntohs(sockAddr.sin_port));
+					else
+						throw CString(L"Mod packet too short");
+					break;
+				}
+//<<< WiZaRd::ModProt
+
                 default:
                 {
                     CString strError;
@@ -471,7 +532,7 @@ bool CClientUDPSocket::ProcessPacket(const BYTE* packet, UINT size, uint8 opcode
     {
         if (thePrefs.GetDebugClientUDPLevel() > 0)
             DebugRecv("OP_DIRECTCALLBACKREQ", NULL, NULL, ip);
-        if (!theApp.clientlist->AllowCalbackRequest(ip))
+        if (!theApp.clientlist->AllowCallbackRequest(ip))
         {
             DebugLogWarning(_T("Ignored DirectCallback Request because this IP (%s) has sent too many request within a short time"), ipstr(ip));
             break;

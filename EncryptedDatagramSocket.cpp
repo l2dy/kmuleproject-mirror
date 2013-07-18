@@ -174,6 +174,10 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(BYTE* pbyBufIn, int nBufLen,
     case OP_UDPRESERVEDPROT1:
     case OP_UDPRESERVEDPROT2:
     case OP_PACKEDPROT:
+//>>> WiZaRd::ModProt
+	case OP_MODPROT_PACKED:
+	case OP_MODPROT:
+//<<< WiZaRd::ModProt
         return nResult; // no encrypted packet (see description on top)
     }
 
@@ -374,6 +378,10 @@ int CEncryptedDatagramSocket::EncryptSendClient(uchar** ppbyBuf, int nBufLen, co
         case OP_UDPRESERVEDPROT1:
         case OP_UDPRESERVEDPROT2:
         case OP_PACKEDPROT:
+//>>> WiZaRd::ModProt
+		case OP_MODPROT_PACKED:
+		case OP_MODPROT:
+//<<< WiZaRd::ModProt
             break;
         default:
             bOk = true;

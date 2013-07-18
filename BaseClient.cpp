@@ -277,6 +277,10 @@ void CUpDownClient::Init()
     m_fDirectUDPCallback = 0;
     m_cCaptchasSent = 0;
     m_fSupportsFileIdent = 0;
+//>>> WiZaRd::ModProt
+	m_fSupportsModProt = 0;
+	m_bSupportsLowIDUDPPing = false; //>>> LowID UDP Ping Support
+//<<< WiZaRd::ModProt
 }
 
 CUpDownClient::~CUpDownClient()
@@ -396,6 +400,11 @@ void CUpDownClient::ClearHelloProperties()
     m_strModVersion.Empty(); //>>> WiZaRd::Missing code?
     m_incompletepartVer = 0; //>>> WiZaRd::ICS [enkeyDEV]
 	m_nProtocolRevision = 0; //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+//>>> WiZaRd::ModProt
+	//Clear all mod flags here, too
+	m_fSupportsModProt = 0;
+	m_bSupportsLowIDUDPPing = false; //>>> LowID UDP Ping Support
+//<<< WiZaRd::ModProt
 }
 
 bool CUpDownClient::ProcessHelloPacket(const uchar* pachPacket, UINT nSize)
@@ -622,13 +631,19 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
                 m_fRequiresCryptLayer	= (temptag.GetInt() >>  9) & 0x01;
                 m_fRequestsCryptLayer	= (temptag.GetInt() >>  8) & 0x01;
                 m_fSupportsCryptLayer	= (temptag.GetInt() >>  7) & 0x01;
+//>>> WiZaRd::ModProt
                 // reserved 1
+				m_fSupportsModProt		= (temptag.GetInt() >>  6) & 0x01;
+//<<< WiZaRd::ModProt
                 m_fExtMultiPacket		= (temptag.GetInt() >>  5) & 0x01;
                 m_fSupportsLargeFiles   = (temptag.GetInt() >>  4) & 0x01;
                 m_byKadVersion			= (uint8)((temptag.GetInt() >>  0) & 0x0f);
                 dwEmuleTags |= 8;
                 if (bDbgInfo)
-                    m_strHelloInfo.AppendFormat(L"\n  KadVersion=%u, LargeFiles=%u ExtMultiPacket=%u CryptLayerSupport=%u CryptLayerRequest=%u CryptLayerRequires=%u SupportsSourceEx2=%u SupportsCaptcha=%u DirectUDPCallback=%u", m_byKadVersion, m_fSupportsLargeFiles, m_fExtMultiPacket, m_fSupportsCryptLayer, m_fRequestsCryptLayer, m_fRequiresCryptLayer, m_fSupportsSourceEx2, m_fSupportsCaptcha, m_fDirectUDPCallback);
+//>>> WiZaRd::ModProt
+					m_strHelloInfo.AppendFormat(L"\n  KadVersion=%u, LargeFiles=%u ExtMultiPacket=%u CryptLayerSupport=%u CryptLayerRequest=%u CryptLayerRequires=%u m_fSupportsSourceEx2=%u  SupportsCaptcha=%u DirectUDPCallback=%u m_fSupportsModProt=%u", m_byKadVersion, m_fSupportsLargeFiles, m_fExtMultiPacket, m_fSupportsCryptLayer, m_fRequestsCryptLayer, m_fRequiresCryptLayer, m_fSupportsSourceEx2, m_fSupportsCaptcha, m_fDirectUDPCallback, m_fSupportsModProt);
+                    //m_strHelloInfo.AppendFormat(L"\n  KadVersion=%u, LargeFiles=%u ExtMultiPacket=%u CryptLayerSupport=%u CryptLayerRequest=%u CryptLayerRequires=%u SupportsSourceEx2=%u SupportsCaptcha=%u DirectUDPCallback=%u", m_byKadVersion, m_fSupportsLargeFiles, m_fExtMultiPacket, m_fSupportsCryptLayer, m_fRequestsCryptLayer, m_fRequiresCryptLayer, m_fSupportsSourceEx2, m_fSupportsCaptcha, m_fDirectUDPCallback);
+//<<< WiZaRd::ModProt
                 m_fRequestsCryptLayer &= m_fSupportsCryptLayer;
                 m_fRequiresCryptLayer &= m_fRequestsCryptLayer;
 //>>> WiZaRd::ClientAnalyzer
@@ -1340,7 +1355,10 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
     const UINT uKadVersion			= KADEMLIA_VERSION;
     const UINT uSupportLargeFiles	= 1;
     const UINT uExtMultiPacket		= 1;
-    const UINT uReserved			= 0; // mod bit
+//>>> WiZaRd::ModProt
+    //const UINT uReserved			= 0; // mod bit
+	const UINT uModProt				= 1;
+//<<< WiZaRd::ModProt
     const UINT uSupportsCryptLayer	= 1;
     const UINT uRequestsCryptLayer	= thePrefs.IsClientCryptLayerRequested() ? 1 : 0;
     const UINT uRequiresCryptLayer	= thePrefs.IsClientCryptLayerRequired() ? 1 : 0;
@@ -1360,7 +1378,10 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
                         (uRequiresCryptLayer	<<  9) |
                         (uRequestsCryptLayer	<<  8) |
                         (uSupportsCryptLayer	<<  7) |
-                        (uReserved				<<  6) |
+//>>> WiZaRd::ModProt
+                        //(uReserved				<<  6) |
+						(uModProt				<<  6) |
+//<<< WiZaRd::ModProt
                         (uExtMultiPacket		<<  5) |
                         (uSupportLargeFiles		<<  4) |
                         (uKadVersion			<<  0)

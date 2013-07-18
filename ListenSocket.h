@@ -75,6 +75,7 @@ protected:
 
     bool	ProcessPacket(const BYTE* packet, UINT size,UINT opcode);
     bool	ProcessExtPacket(const BYTE* packet, UINT size, UINT opcode, UINT uRawSize);
+	bool	ProcessModPacket(const BYTE* packet, const UINT size, const UINT opcode, const UINT uRawSize); //>>> WiZaRd::ModProt
     void	PacketToDebugLogLine(LPCTSTR protocol, const uchar* packet, UINT size, UINT opcode);
     void	SetConState(SocketState val);
 

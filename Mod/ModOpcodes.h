@@ -95,3 +95,21 @@ enum eSharePermissions
 #define CT_PROTOCOLREVISION		"pr"		//! Used to identify crumbs support
 #define CRUMBSIZE				486400ui64  //! Chunk size of revised protocol (475kB)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+
+//>>> WiZaRd::ModProt
+//opcodes
+#define	OP_MODPROT				0x4D	//'M'
+#define	OP_MODPROT_PACKED		0x6D	//'m'
+#define	OP_MODINFOPACKET		0x01
+#define OP_MODMULTIPACKET 		0x11
+#define OP_MODMULTIPACKETANSWER 0x12
+
+//tags
+#define MISC_PROTOCOL_EXTENSIONS 	0x4D
+#define MISC_PROTOCOL_EXTENSIONS2 	0x6D
+#define KAD_EMULE_BUDDYID			0x40
+#define XS_EMULE_BUDDYIP			0x42
+#define XS_EMULE_BUDDYUDP			0x62
+#define NEO_PROTOCOL_EXTENSIONS 	0x4E
+#define NEO_PROTOCOL_EXTENSIONS2 	0x6E
+//<<< WiZaRd::ModProt

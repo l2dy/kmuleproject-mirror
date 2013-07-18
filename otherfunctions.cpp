@@ -2781,6 +2781,28 @@ CString DbgGetMuleClientTCPOpcode(UINT opcode)
     return strOpcode;
 }
 
+//>>> WiZaRd::ModProt
+CString		DbgGetModTCPOpcode(const UINT opcode)
+{
+	static const struct
+	{
+		LPCTSTR pszOpcode;
+		UINT uOpcode;
+	} _aOpcodes[] =
+	{
+		_STRVAL(OP_MODINFOPACKET)
+	};
+
+	for (int i = 0; i < _countof(_aOpcodes); ++i)
+	{
+		if (_aOpcodes[i].uOpcode == opcode)
+			return _aOpcodes[i].pszOpcode;
+	}
+	CString strOpcode;
+	strOpcode.Format(L"0x%02x", opcode);
+	return strOpcode;
+}
+//<<< WiZaRd::ModProt
 #undef _STRVAL
 
 CString DbgGetClientTCPPacket(UINT protocol, UINT opcode, UINT size)
@@ -2792,6 +2814,12 @@ CString DbgGetClientTCPPacket(UINT protocol, UINT opcode, UINT size)
         str.Format(_T("protocol=Packed  opcode=%s  size=%u"), DbgGetMuleClientTCPOpcode(opcode), size);
     else if (protocol == OP_EMULEPROT)
         str.Format(_T("protocol=eMule  opcode=%s  size=%u"), DbgGetMuleClientTCPOpcode(opcode), size);
+//>>> WiZaRd::ModProt
+	else if (protocol == OP_MODPROT_PACKED)
+		str.Format(L"protocol=Packed ModProt opcode=%s size=%u", DbgGetModTCPOpcode(opcode), size);
+	else if (protocol == OP_MODPROT)
+		str.Format(L"protocol=ModProt opcode=%s size=%u", DbgGetModTCPOpcode(opcode), size);
+//<<< WiZaRd::ModProt
     else
         str.Format(_T("protocol=0x%02x  opcode=0x%02x  size=%u"), protocol, opcode, size);
     return str;
@@ -2806,6 +2834,12 @@ CString DbgGetClientTCPOpcode(UINT protocol, UINT opcode)
         str.Format(_T("%s"), DbgGetMuleClientTCPOpcode(opcode));
     else if (protocol == OP_EMULEPROT)
         str.Format(_T("%s"), DbgGetMuleClientTCPOpcode(opcode));
+//>>> WiZaRd::ModProt
+	else if (protocol == OP_MODPROT_PACKED)
+		str.Format(L"protocol=Packed ModProt opcode=%s", DbgGetModTCPOpcode(opcode));
+	else if (protocol == OP_MODPROT)
+		str.Format(L"protocol=ModProt opcode=%s", DbgGetModTCPOpcode(opcode));
+//<<< WiZaRd::ModProt
     else
         str.Format(_T("protocol=0x%02x  opcode=0x%02x"), protocol, opcode);
     return str;
@@ -4912,9 +4946,9 @@ int	GetClientImageIndex(const bool bFriend, const UINT nClientVersion, const boo
 			else if(nClientVersion == SO_LPHANT)
 				index = 13;
 			else if(bExt)	
-				index = 3;
-			else 
 				index = 1;
+			else 
+				index = 3;
 
 			if(bPlus)
 				index += 1;
