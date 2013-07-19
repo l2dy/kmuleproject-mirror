@@ -1035,6 +1035,9 @@
     <ClCompile Include="Mod\ModProt.cpp">
       <Filter>Mod\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Mod\QOS.cpp">
+      <Filter>Mod\Header</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <MASM Include="MD4_asm.asm">
@@ -2968,6 +2971,9 @@
       <Filter>Mod\NetF\Header</Filter>
     </ClInclude>
     <ClInclude Include="Mod\ModProt.h">
+      <Filter>Mod\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Mod\QOS.h">
       <Filter>Mod\Header</Filter>
     </ClInclude>
   </ItemGroup>

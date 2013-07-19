@@ -42,6 +42,7 @@
 #include "SHAHashSet.h"
 #include "Log.h"
 #include "./Mod/ClientAnalyzer.h" //>>> WiZaRd::ClientAnalyzer
+#include "./Mod/QOS.h" //>>> WiZaRd::QOS
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -171,6 +172,7 @@ bool CClientReqSocket::CheckTimeOut()
 void CClientReqSocket::OnClose(int nErrorCode)
 {
     ASSERT(theApp.listensocket->IsValidSocket(this));
+	theQOSManager.RemoveSocket(m_SocketData.hSocket); //>>> WiZaRd::QOS
     CEMSocket::OnClose(nErrorCode);
 
     LPCTSTR pszReason;
@@ -2156,6 +2158,7 @@ void CClientReqSocket::OnConnect(int nErrorCode)
     {
         //This socket may have been delayed by SP2 protection, lets make sure it doesn't time out instantly.
         ResetTimeOutTimer();
+		theQOSManager.AddSocket(m_SocketData.hSocket, NULL /*lpSockAddr*/); //>>> WiZaRd::QOS
     }
 }
 
@@ -2630,6 +2633,8 @@ void CListenSocket::OnAccept(int nErrorCode)
                 newclient->AttachHandle(sNew);
 
                 AddConnection();
+
+				theQOSManager.AddSocket(newclient->GetSocketHandle(), NULL /*lpSockAddr*/); //>>> WiZaRd::QOS
             }
             else
             {
@@ -2665,6 +2670,8 @@ void CListenSocket::OnAccept(int nErrorCode)
                 }
 
                 AddConnection();
+
+				theQOSManager.AddSocket(newclient->GetSocketHandle(), NULL /*lpSockAddr*/); //>>> WiZaRd::QOS
 
                 if (SockAddr.sin_addr.S_un.S_addr == 0) // for safety..
                 {

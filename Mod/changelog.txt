@@ -213,3 +213,4 @@ XXXXYYZZ:
 + added SCT by Netfinity [WiZaRd]
 + added modprot support [WiZaRd]
  * includes LowID UDP Ping support
++ added QOS support by Netfinity [WiZaRd]

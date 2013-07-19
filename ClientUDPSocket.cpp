@@ -41,6 +41,7 @@
 #include "./kademlia/utils/KadUDPKey.h"
 #include "./Mod/ClientAnalyzer.h" //>>> WiZaRd::ClientAnalyzer
 #include "emuleDlg.h"
+#include "./Mod/QOS.h" //>>> WiZaRd::QOS
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -655,6 +656,14 @@ SocketSentBytes CClientUDPSocket::SendControlData(UINT maxNumberOfBytesToSend, U
 
 int CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,UINT dwIP, uint16 nPort)
 {
+//>>> WiZaRd::QOS
+	// netfinity: This is an absurd way to enable QOS for UDP
+	sockaddr_in dest;
+	dest.sin_family = AF_INET;
+	dest.sin_addr.s_addr = htonl(dwIP);
+	dest.sin_port = htons(nPort);
+	theQOSManager.AddSocket(m_hSocket, reinterpret_cast<PSOCKADDR>(&dest));
+//<<< WiZaRd::QOS
     // NOTE: *** This function is invoked from a *different* thread!
     UINT result = CAsyncSocket::SendTo(lpBuf,nBufLen,nPort,ipstr(dwIP));
     if (result == (UINT)SOCKET_ERROR)
@@ -668,6 +677,7 @@ int CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,UINT dwIP, uint16 nPort)
         if (thePrefs.GetVerbose())
             DebugLogError(_T("Error: Client UDP socket, failed to send data to %s:%u: %s"), ipstr(dwIP), nPort, GetErrorMessage(error, 1));
     }
+	theQOSManager.RemoveSocket(m_hSocket); //>>> WiZaRd::QOS
     return 0;
 }
 

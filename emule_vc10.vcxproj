@@ -321,6 +321,7 @@
     <ClCompile Include="Mod\NetF\CrumbHashSet.cpp" />
     <ClCompile Include="Mod\NetF\PartStatus.cpp" />
     <ClCompile Include="Mod\ProgressIndicator.cpp" />
+    <ClCompile Include="Mod\QOS.cpp" />
     <ClCompile Include="Mod\SnarlInterface.cpp" />
     <ClCompile Include="Mod\SplashScreenEx.cpp" />
     <ClCompile Include="Mod\WebHelper.cpp" />
@@ -994,6 +995,7 @@
     <ClInclude Include="Mod\NetF\CrumbHashSet.h" />
     <ClInclude Include="Mod\NetF\PartStatus.h" />
     <ClInclude Include="Mod\ProgressIndicator.h" />
+    <ClInclude Include="Mod\QOS.h" />
     <ClInclude Include="Mod\resourcemod.h" />
     <ClInclude Include="Mod\SnarlInterface.h" />
     <ClInclude Include="Mod\SplashScreenEx.h" />
