@@ -110,7 +110,7 @@ BOOL CQOS::Reinitialize()
 		}
 	}
 
-	return FALSE;
+	return success;
 }
 
 BOOL CQOS::AddSocket(SOCKET socket, const SOCKADDR* const dest)
@@ -200,49 +200,56 @@ BOOL CQOS::RemoveSocket(SOCKET socket)
 
 BOOL CQOS::SetDataRate(DWORD const datarate)
 {
-	if (m_qosHandle == NULL)
-		return FALSE;
+	BOOL success = FALSE;
 
-	if (m_qosDatarate == datarate)
-		return TRUE;
-
-	CSingleLock lock(&m_qosLocker, TRUE);
-
-	const DWORD error = SetDataRate_internal(datarate);
-	if (error != 0)
+	if (m_qosHandle != NULL)
 	{
-		DebugLogError(L"QOSSetDataRate: Error %d (%s).", error, GetErrorMessage(error, 0));
-		if (clock() - m_qosLastInit < SEC2MS(5))
-		{
-			return FALSE;
-		}
-		else if (error == ERROR_SYSTEM_POWERSTATE_TRANSITION || error == ERROR_SYSTEM_POWERSTATE_COMPLEX_TRANSITION || error == ERROR_DEVICE_REINITIALIZATION_NEEDED || error == ERROR_NOT_FOUND)
-		{
-			if(!Reinitialize())
-			{
-				DebugLogError(L"QOSSetDataRate: Reinitialization was unsuccessful.");
-				return FALSE;
-			}
-			else
-				DebugLog(L"QOSSetDataRate: Reinitialized!");
-		}
+		if (m_qosDatarate == datarate)
+			success = TRUE;
 		else
 		{
-			return FALSE;
+			success = TRUE;
+
+			CSingleLock lock(&m_qosLocker, TRUE);
+
+			const DWORD error = SetDataRate_internal(datarate);
+			if (error != 0)
+			{
+				DebugLogError(L"QOSSetDataRate: Error %d (%s).", error, GetErrorMessage(error, 0));
+				if (clock() - m_qosLastInit < SEC2MS(5))
+					success = FALSE;
+				else if (error == ERROR_SYSTEM_POWERSTATE_TRANSITION || error == ERROR_SYSTEM_POWERSTATE_COMPLEX_TRANSITION || error == ERROR_DEVICE_REINITIALIZATION_NEEDED || error == ERROR_NOT_FOUND)
+				{
+					if(!Reinitialize())
+					{
+						DebugLogError(L"QOSSetDataRate: Reinitialization was unsuccessful.");
+						success = FALSE;
+					}
+					else
+						DebugLog(L"QOSSetDataRate: Reinitialized!");
+				}
+				else
+				{
+					success = FALSE;
+				}
+			}
 		}
 	}
-	return TRUE;
+
+	return success;
 }
 
 DWORD CQOS::AddSocket_internal(SOCKET const socket, const SOCKADDR* const dest)
 {
+	DWORD result = 0;
 	if (m_pQOSAddSocketToFlow(m_qosHandle, socket, const_cast<PSOCKADDR>(dest), QOSTrafficTypeBackground, QOS_NON_ADAPTIVE_FLOW, &m_qosFlowId) == 0)
-		return GetLastError();
-	return 0;
+		result = GetLastError();
+	return result;
 }
 
 DWORD CQOS::SetDataRate_internal(DWORD datarate)
 {
+	DWORD result = 0;
 	if (m_qosFlowId != 0)
 	{
 		m_qosDatarate = datarate;
@@ -253,13 +260,9 @@ DWORD CQOS::SetDataRate_internal(DWORD datarate)
 		QOS_FLOWRATE_OUTGOING	qosFlowRate = {(static_cast<UINT64>(datarate) * 8ULL * 110ULL) / 100ULL, /*QOSShapeOnly*/ QOSShapeAndMark};
 		QOS_TRAFFIC_TYPE		qosTrafficType = QOSTrafficTypeBackground;
 		if (m_pQOSSetFlow(m_qosHandle, m_qosFlowId, QOSSetTrafficType, sizeof(QOS_TRAFFIC_TYPE), &qosTrafficType, 0, NULL) == 0)
-		{
-			return GetLastError();
-		}
-		if (m_pQOSSetFlow(m_qosHandle, m_qosFlowId, QOSSetOutgoingRate, sizeof(QOS_FLOWRATE_OUTGOING), &qosFlowRate, 0, NULL) == 0)
-		{
-			return GetLastError();
-		}
+			result = GetLastError();
+		else if (m_pQOSSetFlow(m_qosHandle, m_qosFlowId, QOSSetOutgoingRate, sizeof(QOS_FLOWRATE_OUTGOING), &qosFlowRate, 0, NULL) == 0)
+			result = GetLastError();
 	}
-	return 0;
+	return result;
 }
