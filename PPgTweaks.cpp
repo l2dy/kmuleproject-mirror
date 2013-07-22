@@ -28,6 +28,9 @@
 #include "Log.h"
 #include "UserMsgs.h"
 #include "PreferencesDlg.h"
+#ifdef INFO_WND
+#include "./Mod/InfoWnd.h" //>>> WiZaRd::InfoWnd
+#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -72,6 +75,7 @@ CPPgTweaks::CPPgTweaks()
     m_bLogA4AF = false;
     m_bLogUlDlEvents = false;
     m_bLog2Disk = false;
+	m_bLogAnalyzerToDisk = false; //>>> WiZaRd::ClientAnalyzer
     m_bDebug2Disk = false;
     m_iCommitFiles = 0;
     m_bFilterLANIPs = false;
@@ -113,6 +117,7 @@ CPPgTweaks::CPPgTweaks()
     m_htiLogFileSaving = NULL;
     m_htiLogUlDlEvents = NULL;
     m_htiLog2Disk = NULL;
+	m_htiLogAnalyzerToDisk = NULL; //>>> WiZaRd::ClientAnalyzer
     m_htiDebug2Disk = NULL;
     m_htiCommit = NULL;
     m_htiCommitNever = NULL;
@@ -225,6 +230,7 @@ void CPPgTweaks::DoDataExchange(CDataExchange* pDX)
         // Logging group
         //
         m_htiLog2Disk = m_ctrlTreeOptions.InsertCheckBox(GetResString(IDS_LOG2DISK), TVI_ROOT, m_bLog2Disk);
+		//m_htiLogAnalyzerToDisk = m_ctrlTreeOptions.InsertCheckBox(GetResString(IDS_LOG2DISK), TVI_ROOT, m_bLogAnalyzerToDisk); //>>> WiZaRd::ClientAnalyzer
         if (thePrefs.GetEnableVerboseOptions())
         {
             m_htiVerboseGroup = m_ctrlTreeOptions.InsertGroup(GetResString(IDS_VERBOSE), iImgLog, TVI_ROOT);
@@ -328,6 +334,7 @@ void CPPgTweaks::DoDataExchange(CDataExchange* pDX)
     // Logging group
     //
     DDX_TreeCheck(pDX, IDC_EXT_OPTS, m_htiLog2Disk, m_bLog2Disk);
+	//DDX_TreeCheck(pDX, IDC_EXT_OPTS, m_htiLogAnalyzerToDisk, m_bLogAnalyzerToDisk); //>>> WiZaRd::ClientAnalyzer
     if (m_htiLogLevel)
     {
         DDX_TreeEdit(pDX, IDC_EXT_OPTS, m_htiLogLevel, m_iLogLevel);
@@ -406,6 +413,7 @@ BOOL CPPgTweaks::OnInitDialog()
         m_iLogLevel = 5 - thePrefs.m_byLogLevel;
     }
     m_bLog2Disk = thePrefs.log2disk;
+	m_bLogAnalyzerToDisk = thePrefs.m_bLogAnalyzerToDisk; //>>> WiZaRd::ClientAnalyzer
     m_iCommitFiles = thePrefs.m_iCommitFiles;
     m_iExtractMetaData = thePrefs.m_iExtractMetaData;
     m_bFilterLANIPs = thePrefs.filterLANIPs;
@@ -482,6 +490,13 @@ BOOL CPPgTweaks::OnApply()
     if (!UpdateData())
         return FALSE;
 
+#ifdef INFO_WND
+//>>> WiZaRd::InfoWnd
+	const bool bVerbose = thePrefs.GetVerbose();
+	const bool bAnalyzer = thePrefs.GetLogAnalyzerEvents(); //>>> WiZaRd::ClientAnalyzer
+//<<< WiZaRd::InfoWnd
+#endif
+
     thePrefs.SetMaxConsPerFive(m_iMaxConnPerFive ? m_iMaxConnPerFive : DFLT_MAXCONPERFIVE);
     thePrefs.SetMaxHalfConnections(m_iMaxHalfOpen ? m_iMaxHalfOpen : DFLT_MAXHALFOPEN);
     thePrefs.m_bConditionalTCPAccept = m_bConditionalTCPAccept;
@@ -500,6 +515,14 @@ BOOL CPPgTweaks::OnApply()
     else if (thePrefs.log2disk && !m_bLog2Disk)
         theLog.Close();
     thePrefs.log2disk = m_bLog2Disk;
+
+//>>> WiZaRd::ClientAnalyzer
+	if (!thePrefs.m_bLogAnalyzerToDisk && m_bLogAnalyzerToDisk)
+		theAnalyzerLog.Open();
+	else if (thePrefs.m_bLogAnalyzerToDisk && !m_bLogAnalyzerToDisk)
+		theAnalyzerLog.Close();
+	thePrefs.m_bLogAnalyzerToDisk = m_bLogAnalyzerToDisk;
+//<<< WiZaRd::ClientAnalyzer
 
     if (thePrefs.GetEnableVerboseOptions())
     {
@@ -542,6 +565,9 @@ BOOL CPPgTweaks::OnApply()
     if (thePrefs.GetYourHostname() != m_sYourHostname)
     {
         thePrefs.SetYourHostname(m_sYourHostname);
+#ifdef INFO_WND
+		theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
+#endif
     }
     thePrefs.m_bOpenPortsOnStartUp = m_bFirewallStartup;
 
@@ -562,6 +588,23 @@ BOOL CPPgTweaks::OnApply()
     thePrefs.ChangeUserDirMode(m_iShareeMule);
 
     thePrefs.m_bA4AFSaveCpu = m_bA4AFSaveCpu;
+
+#ifdef INFO_WND
+//>>> WiZaRd::InfoWnd
+//>>> WiZaRd::ClientAnalyzer
+	if(thePrefs.GetLogAnalyzerEvents() != bAnalyzer)
+	{
+		theApp.emuledlg->infoWnd->ToggleAnalyzerWindow();
+		theApp.emuledlg->infoWnd->UpdateLogTabSelection();
+	}
+//<<< WiZaRd::ClientAnalyzer
+	if(thePrefs.GetEnableVerboseOptions() != bVerbose)
+	{
+		theApp.emuledlg->infoWnd->ToggleDebugWindow();
+		theApp.emuledlg->infoWnd->UpdateLogTabSelection();
+	}
+//<<< WiZaRd::InfoWnd
+#endif
 
     SetModified(FALSE);
     return CPropertyPage::OnApply();
@@ -605,6 +648,7 @@ void CPPgTweaks::Localize(void)
         if (m_htiConditionalTCPAccept) m_ctrlTreeOptions.SetItemText(m_htiConditionalTCPAccept, GetResString(IDS_CONDTCPACCEPT));
         if (m_htiAutoTakeEd2kLinks) m_ctrlTreeOptions.SetItemText(m_htiAutoTakeEd2kLinks, GetResString(IDS_AUTOTAKEED2KLINKS));
         if (m_htiLog2Disk) m_ctrlTreeOptions.SetItemText(m_htiLog2Disk, GetResString(IDS_LOG2DISK));
+		//if (m_htiLogAnalyzerToDisk) m_ctrlTreeOptions.SetItemText(m_htiLogAnalyzerToDisk, GetResString(IDS_LOG2DISK)); //>>> WiZaRd::ClientAnalyzer
         if (m_htiVerboseGroup) m_ctrlTreeOptions.SetItemText(m_htiVerboseGroup, GetResString(IDS_VERBOSE));
         if (m_htiVerbose) m_ctrlTreeOptions.SetItemText(m_htiVerbose, GetResString(IDS_ENABLED));
         if (m_htiDebug2Disk) m_ctrlTreeOptions.SetItemText(m_htiDebug2Disk, GetResString(IDS_LOG2DISK));
@@ -680,6 +724,7 @@ void CPPgTweaks::OnDestroy()
     m_htiLogLevel = NULL;
     m_htiLogUlDlEvents = NULL;
     m_htiLog2Disk = NULL;
+	m_htiLogAnalyzerToDisk = NULL; //>>> WiZaRd::ClientAnalyzer
     m_htiDebug2Disk = NULL;
     m_htiCommit = NULL;
     m_htiCommitNever = NULL;

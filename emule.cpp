@@ -71,6 +71,8 @@
 #include "./Mod/ClientAnalyzer.h" //>>> WiZaRd::ClientAnalyzer
 #include "./Mod/autoUpdate.h" //>>> WiZaRd::AutoUpdate
 #include "./Mod/CustomSearches.h" //>>> WiZaRd::CustomSearches
+#include "./Mod/NATPMPWrapper.h" //>>> WiZaRd::NAT-PMP
+#include "./Mod/NetF/DesktopIntegration.h" //>>> WiZaRd::DesktopIntegration [Netfinity]
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -92,6 +94,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CLogFile theLog;
+CLogFile theAnalyzerLog; //>>> WiZaRd::ClientAnalyzer
 CLogFile theVerboseLog;
 bool g_bGdiPlusInstalled = false;
 
@@ -652,21 +655,31 @@ BOOL CemuleApp::InitInstance()
 #ifdef _DEBUG
     _sntprintf(s_szCrtDebugReportFilePath, _countof(s_szCrtDebugReportFilePath) - 1, _T("%s%s"), thePrefs.GetMuleDirectory(EMULE_LOGDIR, false), APP_CRT_DEBUG_LOG_FILE);
 #endif
-    VERIFY(theLog.SetFilePath(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + _T("eMule.log")));
-    VERIFY(theVerboseLog.SetFilePath(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + _T("eMule_Verbose.log")));
+    VERIFY(theLog.SetFilePath(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + L"kMule.log"));
+    VERIFY(theVerboseLog.SetFilePath(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + L"kMule_Verbose.log"));
+	VERIFY(theAnalyzerLog.SetFilePath(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + L"kMule_Analyzer.log")); //>>> WiZaRd::ClientAnalyzer
     theLog.SetMaxFileSize(thePrefs.GetMaxLogFileSize());
     theLog.SetFileFormat(thePrefs.GetLogFileFormat());
-    theVerboseLog.SetMaxFileSize(thePrefs.GetMaxLogFileSize());
-    theVerboseLog.SetFileFormat(thePrefs.GetLogFileFormat());
     if (thePrefs.GetLog2Disk())
     {
         theLog.Open();
-        theLog.Log(_T("\r\n"));
+        theLog.Log(L"\r\n");
     }
+//>>> WiZaRd::ClientAnalyzer
+	theAnalyzerLog.SetMaxFileSize(thePrefs.GetMaxLogFileSize());
+	theAnalyzerLog.SetFileFormat(thePrefs.GetLogFileFormat());
+	if (thePrefs.GetLogAnalyzerToDisk())
+	{
+		theAnalyzerLog.Open();
+		theAnalyzerLog.Log(L"\r\n");
+	}
+//<<< WiZaRd::ClientAnalyzer
+	theVerboseLog.SetMaxFileSize(thePrefs.GetMaxLogFileSize());
+	theVerboseLog.SetFileFormat(thePrefs.GetLogFileFormat());
     if (thePrefs.GetDebug2Disk())
     {
         theVerboseLog.Open();
-        theVerboseLog.Log(_T("\r\n"));
+        theVerboseLog.Log(L"\r\n");
     }
     theApp.QueueLogLine(LOG_INFO, L"Starting " + GetClientVersionString());
     theApp.QueueLogLine(LOG_WARNING, L"Based upon " + GetClientVersionStringBase());
@@ -715,6 +728,7 @@ BOOL CemuleApp::InitInstance()
 
     // UPnP Port forwarding
     m_pUPnPFinder = new CUPnPImplWrapper();
+	m_pNATPMPThreadWrapper = new CNATPMPThreadWrapper(); //>>> WiZaRd::NAT-PMP
 
     // Highres scheduling gives better resolution for Sleep(...) calls, and timeGetTime() calls
     m_wTimerRes = 0;
@@ -1331,7 +1345,7 @@ bool CemuleApp::ShowWebHelp(UINT uTopic)
         strHelpURL.Format(_T("http://onlinehelp.emule-project.net/help.php?language=%u&topic=%u"), thePrefs.GetLanguageID(), uTopic);
         break;
     }
-    ShellExecute(NULL, NULL, strHelpURL, NULL, thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), SW_SHOWDEFAULT);
+    _ShellExecute(NULL, NULL, strHelpURL, NULL, thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), SW_SHOWDEFAULT);
     return true;
 }
 
@@ -1491,6 +1505,13 @@ void CemuleApp::SetPublicIP(const UINT dwIP)
                 theApp.QueueDebugLogLineEx(LOG_WARNING, L"Resetting UPnP due to IP change...");
                 theApp.emuledlg->RefreshUPnP(true);
             }
+//>>> WiZaRd::NAT-PMP
+			if (/*thePrefs.IsNATPMPEnabled() &&*/ theApp.emuledlg && theApp.m_pNATPMPThreadWrapper)
+			{
+				theApp.QueueDebugLogLineEx(LOG_WARNING, L"Resetting NATPMP due to IP change...");
+				theApp.emuledlg->RefreshNATPMP(true);
+			}
+//<<< WiZaRd::NAT-PMP
         }
 //<<< WiZaRd::Recode
     }
@@ -2143,6 +2164,18 @@ void CemuleApp::CreateAllFonts()
     LPLOGFONT plfHyperText = thePrefs.GetHyperTextLogFont();
     if (plfHyperText==NULL || plfHyperText->lfFaceName[0]==L'\0' || !m_fontHyperText.CreateFontIndirect(plfHyperText))
         CreatePointFont(m_fontHyperText, 10 * 10, lfDefault.lfFaceName);
+
+#ifdef INFO_WND
+	///////////////////////////////////////////////////////////////////////////
+	// Verbose Log-font
+	//
+	// Why can't this font set via the font dialog??
+	//	HFONT hFontMono = CreateFont(10, 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, _T("Lucida Console"));
+	//	m_fontLog.Attach(hFontMono);
+	LPLOGFONT plfLog = thePrefs.GetLogFont();
+	if (plfLog!=NULL && plfLog->lfFaceName[0]!= L'\0')
+		m_fontLog.CreateFontIndirect(plfLog);
+#endif
 
     ///////////////////////////////////////////////////////////////////////////
     // Font used for Message and IRC edit control, default font, just a little

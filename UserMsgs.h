@@ -47,5 +47,6 @@ enum EUserWndMessages
     UM_ARCHIVESCANDONE,
 
     // UPnP
-    UM_UPNP_RESULT
+    UM_UPNP_RESULT,
+	UM_NATPMP_RESULT //>>> WiZaRd::NAT-PMP
 };

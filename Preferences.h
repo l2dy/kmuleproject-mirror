@@ -366,6 +366,7 @@ public:
     static	bool	m_bUpdate;
 
     static	bool	log2disk;
+	static	bool	m_bLogAnalyzerToDisk; //>>> WiZaRd::ClientAnalyzer
     static	bool	debug2disk;
     static	int		iMaxLogBuff;
     static	UINT	uMaxLogFileSize;
@@ -1808,6 +1809,12 @@ public:
     {
         return log2disk;
     }
+//>>> WiZaRd::ClientAnalyzer
+	static	bool	GetLogAnalyzerToDisk()
+	{
+		return m_bLogAnalyzerToDisk;
+	}
+//<<< WiZaRd::ClientAnalyzer
     static	bool	GetDebug2Disk()
     {
         return m_bVerbose && debug2disk;

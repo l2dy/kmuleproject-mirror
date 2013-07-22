@@ -48,6 +48,7 @@ class CUPnPImplWrapper;
 //class CSplashScreen;
 class CSplashScreenEx;
 //<<< WiZaRd::New Splash [TBH]
+class CNATPMPThreadWrapper; //>>> WiZaRd::NAT-PMP
 class CAntiLeechDataList; //>>> WiZaRd::ClientAnalyzer
 class CAutoUpdate; //>>> WiZaRd::AutoUpdate
 class CCustomSearches; //>>> WiZaRd::CustomSearches
@@ -85,6 +86,7 @@ public:
     CIPFilter*			ipfilter;
     CFirewallOpener*	m_pFirewallOpener;
     CUPnPImplWrapper*	m_pUPnPFinder;
+	CNATPMPThreadWrapper*	m_pNATPMPThreadWrapper; //>>> WiZaRd::NAT-PMP
     CAntiLeechDataList* antileechlist; //>>> WiZaRd::ClientAnalyzer
     CAutoUpdate*		autoUpdater; //>>> WiZaRd::AutoUpdate
     CCustomSearches*	customSearches; //>>> WiZaRd::CustomSearches
@@ -95,6 +97,9 @@ public:
     CFont				m_fontHyperText;
     CFont				m_fontDefaultBold;
     CFont				m_fontSymbol;
+#ifdef INFO_WND
+	CFont				m_fontLog; //>>> WiZaRd::InfoWnd
+#endif
     CFont				m_fontChatEdit;
     CBrush				m_brushBackwardDiagonal;
     static const UINT	m_nVersionMjr;

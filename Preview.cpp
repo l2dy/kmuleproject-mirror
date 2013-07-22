@@ -25,6 +25,7 @@
 #include "MenuCmds.h"
 #include "opcodes.h"
 #include "DownloadQueue.h"
+#include "./Mod/NetF/DesktopIntegration.h" //>>> WiZaRd::DesktopIntegration [Netfinity]
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -376,7 +377,7 @@ void ExecutePartFile(CPartFile* file, LPCTSTR pszCommand, LPCTSTR pszCommandArgs
     TRACE(_T("  Command =%s\n"), strCommand);
     TRACE(_T("  Args    =%s\n"), strArgs);
     TRACE(_T("  Dir     =%s\n"), strCommandDir);
-    DWORD_PTR dwError = (DWORD_PTR)ShellExecute(NULL, pszVerb, strCommand, strArgs.IsEmpty() ? NULL : strArgs, strCommandDir.IsEmpty() ? NULL : strCommandDir, SW_SHOWNORMAL);
+    DWORD_PTR dwError = (DWORD_PTR)_ShellExecute(NULL, pszVerb, strCommand, strArgs.IsEmpty() ? NULL : strArgs, strCommandDir.IsEmpty() ? NULL : strCommandDir, SW_SHOWNORMAL);
     if (dwError <= 32)
     {
         //

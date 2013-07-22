@@ -88,4 +88,5 @@ protected:
 };
 
 extern CLogFile theLog;
+extern CLogFile	theAnalyzerLog; //>>> WiZaRd::ClientAnalyzer
 extern CLogFile theVerboseLog;

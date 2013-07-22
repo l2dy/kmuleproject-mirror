@@ -211,13 +211,19 @@ void AddLogTextV(UINT uFlags, EDebugLogPriority dlpPriority, LPCTSTR pszLine, va
         int iLen = _sntprintf(szFullLogLine, _countof(szFullLogLine), _T("%s: %s\r\n"), CTime::GetCurrentTime().Format(thePrefs.GetDateTimeFormat4Log()), szLogLine);
         if (iLen > 0)
         {
-            if (!(uFlags & LOG_DEBUG))
+//>>> WiZaRd::ClientAnalyzer
+			if (/*thePrefs.GetVerbose() &&*/ (uFlags & LOG_CA))
+			{
+				if (thePrefs.GetLogAnalyzerToDisk())
+					theAnalyzerLog.Log(szFullLogLine, iLen);
+			}
+//<<< WiZaRd::ClientAnalyzer
+            else if (!(uFlags & LOG_DEBUG))
             {
                 if (thePrefs.GetLog2Disk())
                     theLog.Log(szFullLogLine, iLen);
             }
-
-            if (thePrefs.GetVerbose() && ((uFlags & LOG_DEBUG) || thePrefs.GetFullVerbose()))
+            else if (thePrefs.GetVerbose() && ((uFlags & LOG_DEBUG) || thePrefs.GetFullVerbose()))
             {
                 if (thePrefs.GetDebug2Disk())
                     theVerboseLog.Log(szFullLogLine, iLen);

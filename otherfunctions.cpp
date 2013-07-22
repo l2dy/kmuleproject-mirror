@@ -54,6 +54,7 @@
 #include "HttpDownloadDlg.h"
 #include "kademlia/routing/RoutingZone.h"
 #include <IPHlpApi.h>
+#include "./Mod/NetF/DesktopIntegration.h" //>>> WiZaRd::DesktopIntegration [Netfinity]
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -293,7 +294,7 @@ void ShellOpenFile(CString name, LPCTSTR pszVerb)
 {
     if ((pszVerb == NULL || pszVerb[0] == L'\0' || _tcsicmp(pszVerb, _T("open"))) && !CheckFileOpen(name, NULL))
         return;
-    ShellExecute(NULL, pszVerb, name, NULL, NULL, SW_SHOW);
+    _ShellExecute(NULL, pszVerb, name, NULL, NULL, SW_SHOW);
 }
 
 bool ShellDeleteFile(LPCTSTR pszFilePath)
@@ -1197,7 +1198,7 @@ bool CWebServices::RunURL(const CAbstractFile* file, UINT uMenuID)
 
             // Open URL
             TRACE(_T("Starting URL: %s\n"), strUrlTemplate);
-            return (int)ShellExecute(NULL, NULL, strUrlTemplate, NULL, thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), SW_SHOWDEFAULT) > 32;
+            return (int)_ShellExecute(NULL, NULL, strUrlTemplate, NULL, thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), SW_SHOWDEFAULT) > 32;
         }
     }
     return false;
@@ -1205,7 +1206,7 @@ bool CWebServices::RunURL(const CAbstractFile* file, UINT uMenuID)
 
 void CWebServices::Edit()
 {
-    ShellExecute(NULL, _T("open"), thePrefs.GetTxtEditor(), _T("\"") + thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + _T("webservices.dat\""), NULL, SW_SHOW);
+    _ShellExecute(NULL, _T("open"), thePrefs.GetTxtEditor(), _T("\"") + thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + _T("webservices.dat\""), NULL, SW_SHOW);
 }
 
 typedef struct

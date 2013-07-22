@@ -210,7 +210,9 @@ XXXXYYZZ:
 ! fixed kMule version display in stats [WiZaRd]
 ! fixed iSOTN [WiZaRd]
 + added file availability (health) display - original by Morph4u (?) [WiZaRd]
-+ added SCT by Netfinity [WiZaRd]
++ added SCT - original by Netfinity [WiZaRd]
 + added modprot support [WiZaRd]
  * includes LowID UDP Ping support
-+ added QOS support by Netfinity [WiZaRd]
++ added QOS support - original by Netfinity [WiZaRd]
++ added DesktopIntegration for even better WINE support - original by Netfinity [WiZaRd]
++ added info window with logs [WiZaRd]

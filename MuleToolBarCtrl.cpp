@@ -27,6 +27,9 @@
 #include "SharedFilesWnd.h"
 #include "ChatWnd.h"
 #include "StatisticsDlg.h"
+#ifdef INFO_WND
+#include "./Mod/InfoWnd.h" //>>> WiZaRd::InfoWnd
+#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -34,8 +37,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
-#define	NUM_BUTTON_BITMAPS	8
 
 #define	EMULTB_BASEEXT		_T("eMuleToolbar.kad02")
 
@@ -147,6 +148,15 @@ void CMuleToolbarCtrl::Init(void)
     lLen += lLen2;
     ++m_buttoncount;
 
+#ifdef INFO_WND
+//>>> WiZaRd::InfoWnd
+	lLen2 = _tcslen(GetResString(IDS_INFO)) + 1;
+	memcpy(cButtonStrings+lLen, GetResString(IDS_INFO), lLen2*sizeof(TCHAR));
+	lLen += lLen2;
+	++m_buttoncount;
+//<<< WiZaRd::InfoWnd
+#endif
+
     lLen2 = _tcslen(GetResString(IDS_EM_HELP)) + 1;
     memcpy(cButtonStrings+lLen, GetResString(IDS_EM_HELP), lLen2*sizeof(TCHAR));
     lLen += lLen2;
@@ -224,6 +234,9 @@ void CMuleToolbarCtrl::SetAllButtonsStrings()
         IDS_EM_STATISTIC,
         IDS_EM_PREFS,
         IDS_TOOLS,
+#ifdef INFO_WND
+		IDS_INFO,
+#endif
         IDS_EM_HELP
     };
     TBBUTTONINFO tbi;
@@ -610,7 +623,7 @@ void CMuleToolbarCtrl::ChangeToolbarBitmap(const CString& path, bool bRefresh)
     {
         BITMAP bm = {0};
         Bitmap.GetObject(sizeof(bm), &bm);
-        if (bm.bmWidth == NUM_BUTTON_BITMAPS*m_sizBtnBmp.cx && bm.bmHeight == m_sizBtnBmp.cy)
+        if (bm.bmWidth == TBBTN_COUNT*m_sizBtnBmp.cx && bm.bmHeight == m_sizBtnBmp.cy)
         {
             bool bAlpha = bm.bmBitsPixel > 24;
             if (ImageList.Create(m_sizBtnBmp.cx, bm.bmHeight, bAlpha ? ILC_COLOR32 : (theApp.m_iDfltImageListColorFlags | ILC_MASK), 0, 1))
@@ -638,8 +651,11 @@ void CMuleToolbarCtrl::ChangeToolbarBitmap(const CString& path, bool bRefresh)
         ImageList.Add(CTempIconLoader(_T("STATISTICS"), m_sizBtnBmp.cx, m_sizBtnBmp.cy));
         ImageList.Add(CTempIconLoader(_T("PREFERENCES"), m_sizBtnBmp.cx, m_sizBtnBmp.cy));
         ImageList.Add(CTempIconLoader(_T("TOOLS"), m_sizBtnBmp.cx, m_sizBtnBmp.cy));
+#ifdef INFO_WND
+		ImageList.Add(CTempIconLoader(L"INFO", m_sizBtnBmp.cx, m_sizBtnBmp.cy)); //>>> WiZaRd::InfoWnd
+#endif
         ImageList.Add(CTempIconLoader(_T("HELP"), m_sizBtnBmp.cx, m_sizBtnBmp.cy));
-        ASSERT(ImageList.GetImageCount() == NUM_BUTTON_BITMAPS);
+        ASSERT(ImageList.GetImageCount() == TBBTN_COUNT);
         CImageList* pimlOld = SetImageList(&ImageList);
         ImageList.Detach();
         if (pimlOld)
@@ -875,7 +891,10 @@ void CMuleToolbarCtrl::Refresh()
             theApp.emuledlg->sharedfileswnd,
             theApp.emuledlg->searchwnd,
             theApp.emuledlg->chatwnd,
-            theApp.emuledlg->statisticswnd
+            theApp.emuledlg->statisticswnd,
+#ifdef INFO_WND
+			theApp.emuledlg->infoWnd, //>>> WiZaRd::InfoWnd
+#endif
         };
         for (int i = 0; i < _countof(wnds); i++)
         {

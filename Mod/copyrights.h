@@ -14,27 +14,6 @@
 //You should have received a copy of the GNU General Public License
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-#include "stdafx.h"
-#include "CrumbHashSet.h"
-#include "SafeFile.h"
-#include "Log.h"
+#pragma once
 
-CCrumbHashSet::CCrumbHashSet(UINT crumbCount, CSafeMemFile* data)
-{
-	m_SHAHashValid = false;
-	m_CrumbCount = crumbCount;
-	m_CrumbHashSet = new unsigned char[crumbCount * 8];
-	if (data)
-	{
-		data->Read(m_CrumbHashSet, crumbCount * 8);
-	}
-	else
-	{
-		memset(m_CrumbHashSet, 0, crumbCount * 8);
-	}
-}
-
-CCrumbHashSet::~CCrumbHashSet()
-{
-	delete[] m_CrumbHashSet;
-}
+void	PrintCopyrights();

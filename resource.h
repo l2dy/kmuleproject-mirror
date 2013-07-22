@@ -1320,7 +1320,6 @@
 #define IDC_TEXT_FORMAT                 2207
 #define IDC_QUEUECOUNT_LABEL            2212
 #define IDC_FSTATIC2                    2217
-#define IDC_MYINFO                      2219
 #define IDC_MSTATIC3                    2221
 #define IDC_FSTATIC4                    2222
 #define IDC_FSTATIC5                    2223

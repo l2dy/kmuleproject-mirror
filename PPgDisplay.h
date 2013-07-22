@@ -16,6 +16,15 @@ public:
     void Localize(void);
 
 protected:
+#ifdef INFO_WND
+//>>> WiZaRd::InfoWnd
+	enum ESelectFont
+	{
+		sfChat,
+		sfLog
+	} m_eSelectFont;
+//<<< WiZaRd::InfoWnd
+#endif
     void LoadSettings(void);
 
     void DrawPreview();		//Cax2 - aqua bar

@@ -52,6 +52,7 @@
 #include "Log.h"
 #include "KnownFileList.h"
 #include "VisualStylesXP.h"
+#include "./Mod/NetF/DesktopIntegration.h" //>>> WiZaRd::DesktopIntegration [Netfinity]
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1155,7 +1156,7 @@ BOOL CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
             break;
         case MP_OPENFOLDER:
             if (file && !file->IsPartFile())
-                ShellExecute(NULL, _T("open"), _T("explorer"), _T("/select,\"") + file->GetFilePath() + _T("\""), NULL, SW_SHOW);
+                _ShellExecute(NULL, _T("open"), _T("explorer"), _T("/select,\"") + file->GetFilePath() + _T("\""), NULL, SW_SHOW);
             break;
         case MP_RENAME:
         case MPG_F2:

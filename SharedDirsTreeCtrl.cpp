@@ -27,6 +27,7 @@
 #include "TransferDlg.h"
 #include "SharedFileList.h"
 #include "SharedFilesWnd.h"
+#include "./Mod/NetF/DesktopIntegration.h" //>>> WiZaRd::DesktopIntegration [Netfinity]
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -759,13 +760,11 @@ BOOL CSharedDirsTreeCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
         {
         case MP_OPENFOLDER:
             if (pSelectedDir && !pSelectedDir->m_strFullPath.IsEmpty() /*&& pSelectedDir->m_eItemType == SDI_NO*/)
-            {
-                ShellExecute(NULL, _T("open"), pSelectedDir->m_strFullPath, NULL, NULL, SW_SHOW);
-            }
+                _ShellExecute(NULL, _T("open"), pSelectedDir->m_strFullPath, NULL, NULL, SW_SHOW);
             else if (pSelectedDir && pSelectedDir->m_eItemType == SDI_INCOMING)
-                ShellExecute(NULL, _T("open"), thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR), NULL, NULL, SW_SHOW);
+                _ShellExecute(NULL, _T("open"), thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR), NULL, NULL, SW_SHOW);
             else if (pSelectedDir && pSelectedDir->m_eItemType == SDI_TEMP)
-                ShellExecute(NULL, _T("open"), thePrefs.GetTempDir(), NULL, NULL, SW_SHOW);
+                _ShellExecute(NULL, _T("open"), thePrefs.GetTempDir(), NULL, NULL, SW_SHOW);
             break;
         case MP_SHAREDIR:
             EditSharedDirectories(pSelectedDir, true, false);

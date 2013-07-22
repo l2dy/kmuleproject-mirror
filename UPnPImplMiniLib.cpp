@@ -24,7 +24,6 @@
 #include ".\miniupnpc\miniupnpc.h"
 #include ".\miniupnpc\upnpcommands.h"
 #include ".\miniupnpc\upnperrors.h"
-#include ".\miniupnpc\miniupnpcstrings.h"
 
 
 #ifdef _DEBUG
@@ -177,8 +176,7 @@ void CUPnPImplMiniLib::DeletePorts(bool bSkipLock)
 
 void CUPnPImplMiniLib::StartDiscovery(uint16 nTCPPort, uint16 nUDPPort, uint16 nTCPWebPort)
 {
-    DebugLog(L"Using MiniUPnPLib based implementation");
-    DebugLog(L"miniupnpc (c) 2006-2009 Thomas Bernard - http://miniupnp.free.fr/ - Build %hs (%hs)", MINIUPNPC_VERSION_STRING, OS_STRING);
+    DebugLog(L"Using MiniUPnPLib based implementation");    
     m_nOldUDPPort = (ArePortsForwarded() == TRIS_TRUE) ? m_nUDPPort : 0;
     m_nUDPPort = nUDPPort;
     m_nOldTCPPort = (ArePortsForwarded() == TRIS_TRUE) ? m_nTCPPort : 0;

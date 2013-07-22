@@ -1038,6 +1038,18 @@
     <ClCompile Include="Mod\QOS.cpp">
       <Filter>Mod\Header</Filter>
     </ClCompile>
+    <ClCompile Include="Mod\NATPMPWrapper.cpp">
+      <Filter>Mod\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Mod\InfoWnd.cpp">
+      <Filter>Mod\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Mod\NetF\DesktopIntegration.cpp">
+      <Filter>Mod\NetF\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Mod\copyrights.cpp">
+      <Filter>Mod\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <MASM Include="MD4_asm.asm">
@@ -1923,6 +1935,30 @@
     </None>
     <None Include="res\ClientkMulePlus.ico">
       <Filter>Resource Files\Icons</Filter>
+    </None>
+    <None Include="res\Health\health_0.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Health\health_1.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Health\health_2.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Health\health_3.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Health\health_4.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Health\health_5.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Health\health_6.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Health\health_7.ico">
+      <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -2974,6 +3010,18 @@
       <Filter>Mod\Header</Filter>
     </ClInclude>
     <ClInclude Include="Mod\QOS.h">
+      <Filter>Mod\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Mod\NATPMPWrapper.h">
+      <Filter>Mod\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Mod\InfoWnd.h">
+      <Filter>Mod\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Mod\NetF\DesktopIntegration.h">
+      <Filter>Mod\NetF\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Mod\copyrights.h">
       <Filter>Mod\Header</Filter>
     </ClInclude>
   </ItemGroup>

@@ -23,6 +23,7 @@
 #include "MenuCmds.h"
 #include "Log.h"
 #include <richole.h>
+#include "./Mod/NetF/DesktopIntegration.h" //>>> WiZaRd::DesktopIntegration [Netfinity]
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -829,7 +830,7 @@ BOOL CHTRichEditCtrl::OnEnLink(NMHDR *pNMHDR, LRESULT *pResult)
         {
             if (_tcsncmp(strUrl, s_apszSchemes[i].pszScheme, s_apszSchemes[i].iLen) == 0)
             {
-                ShellExecute(NULL, NULL, strUrl, NULL, NULL, SW_SHOWDEFAULT);
+                _ShellExecute(NULL, NULL, strUrl, NULL, NULL, SW_SHOWDEFAULT);
                 *pResult = 1;
                 bMsgHandled = TRUE; // do not route this message to any parent
                 break;

@@ -80,5 +80,17 @@
 #define IDS_RADIOEXTRACTOTHER           4047
 #define IDS_STATICEXTRACT               4048
 #define IDS_RENAME_WITHOUT_EXTENSION    4049
+//#ifdef INFO_WND
+//>>> WiZaRd::InfoWnd
+#define IDD_INFO						4050
+#define IDC_MYINFOLIST					4051
+#define IDC_TAB3						4052
+#define IDC_LOGBOX						4053
+#define IDC_ANALYZER_LOG				4054 //>>> WiZaRd::ClientAnalyzer
+#define IDC_DEBUG_LOG					4055
+#define IDC_LOGRESET					4056
+#define IDC_MYINFO						4057
+//<<< WiZaRd::InfoWnd
+//#endif
 
 // this line is needed or we get a "fatal error RC1004: unexpected end of file found" - thanks for those wonderful bugs, Microsoft!

@@ -29,6 +29,9 @@
 #define MP_CMT					10208
 #define MP_HM_CON				10209
 //#define MP_HM_SRVR				10210
+#ifdef INFO_WND
+#define MP_HM_INFO				10210 //>>> WiZaRd::ClientAnalyzer
+#endif
 #define MP_HM_TRANSFER			10211
 #define MP_HM_SEARCH			10212
 #define MP_HM_FILES				10213

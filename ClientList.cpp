@@ -38,6 +38,9 @@
 #include "Log.h"
 #include "packets.h"
 #include "Statistics.h"
+#ifdef INFO_WND
+#include "./Mod/InfoWnd.h" //>>> WiZaRd::ClientAnalyzer
+#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -651,6 +654,9 @@ void CClientList::Process()
                 m_nBuddyStatus = Connecting;
                 cur_client->SetKadState(KS_CONNECTING_BUDDY);
                 cur_client->TryToConnect(true, true);
+#ifdef INFO_WND
+				theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
+#endif
             }
             else if (m_nBuddyStatus == Connected)
                 cur_client->SetKadState(KS_NONE);
@@ -681,6 +687,9 @@ void CClientList::Process()
             {
                 m_pBuddy = cur_client;
                 m_nBuddyStatus = Connected;
+#ifdef INFO_WND
+				theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
+#endif
             }
             if (m_pBuddy == cur_client && theApp.IsFirewalled() && cur_client->SendBuddyPingPong())
             {
@@ -717,6 +726,9 @@ void CClientList::Process()
             }
             m_pBuddy = NULL;
             m_nBuddyStatus = Disconnected;
+#ifdef INFO_WND
+			theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
+#endif
         }
     }
 
@@ -904,6 +916,9 @@ void CClientList::RemoveFromKadList(CUpDownClient* torem)
         {
             m_nBuddyStatus = Disconnected; //>>> WiZaRd::FiX?
             m_pBuddy = NULL;
+#ifdef INFO_WND
+			theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
+#endif
         }
         m_KadList.RemoveAt(pos);
     }

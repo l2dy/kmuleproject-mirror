@@ -32,6 +32,7 @@
 #include "hypertextctrl.h"
 #include <deque>
 #include "otherfunctions.h" //for CreateHandCursor()
+#include "./Mod/NetF/DesktopIntegration.h" //>>> WiZaRd::DesktopIntegration [Netfinity]
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -98,7 +99,7 @@ void CHyperLink::Execute(){
 	switch(m_Type)
 	{
 	case lt_Shell:
-		ShellExecute(NULL, NULL, m_sCommand, NULL, m_sDirectory, SW_SHOWDEFAULT);
+		_ShellExecute(NULL, NULL, m_sCommand, NULL, m_sDirectory, SW_SHOWDEFAULT);
 		break;
 
 	case lt_Message:

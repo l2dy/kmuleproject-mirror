@@ -45,6 +45,9 @@ class CTransferDlg;
 struct Status;
 class CMuleSystrayDlg;
 class CMiniMule;
+#ifdef INFO_WND
+class CInfoWnd; //>>> WiZaRd::InfoWnd
+#endif
 
 // emuleapp <-> emuleapp
 #define OP_ED2KLINK				12000
@@ -107,6 +110,9 @@ public:
     void StopTimer();
     void DoVersioncheck(bool manual);
     void ApplyHyperTextFont(LPLOGFONT pFont);
+#ifdef INFO_WND
+	void ApplyLogFont(LPLOGFONT pFont); //>>> WiZaRd::InfoWnd
+#endif
     void ProcessED2KLink(LPCTSTR pszData);
     void SetStatusBarPartsSize();
     int ShowPreferences(UINT uStartPageID = (UINT)-1);
@@ -119,6 +125,11 @@ public:
     void RemoveUPnPMappings(); //>>> WiZaRd
     void StartUPnP(bool bReset = true, uint16 nForceTCPPort = 0, uint16 nForceUDPPort = 0);
     void RefreshUPnP(bool bRequestAnswer = false);
+//>>> WiZaRd::NAT-PMP
+	void RemoveNATPMPMappings();
+	void StartNATPMP(bool bReset = true, uint16 nForceTCPPort = 0, uint16 nForceUDPPort = 0);
+	void RefreshNATPMP(bool bRequestAnswer = false);
+//<<< WiZaRd::NAT-PMP
     HBRUSH GetCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 
     virtual void TrayMinimizeToTrayChange();
@@ -126,6 +137,9 @@ public:
     virtual void HtmlHelp(DWORD_PTR dwData, UINT nCmd = 0x000F);
 
     CTransferDlg*	transferwnd;
+#ifdef INFO_WND
+	CInfoWnd*		infoWnd; //>>> WiZaRd::InfoWnd
+#endif
     CServerWnd*		serverwnd;
     CPreferencesDlg* preferenceswnd;
     CSharedFilesWnd* sharedfileswnd;
@@ -181,6 +195,7 @@ protected:
     char			m_acVCDNSBuffer[MAXGETHOSTSTRUCT];
     bool			m_iMsgBlinkState;
     bool			m_bConnectRequestDelayedForUPnP;
+	bool			m_bConnectRequestDelayedForNATPMP; //>>> WiZaRd::NAT-PMP
     bool			m_bKadSuspendDisconnect;
     bool			m_bInitedCOM;
 #ifdef HAVE_WIN7_SDK_H
@@ -208,6 +223,10 @@ protected:
     // UPnP TimeOutTimer
     UINT_PTR m_hUPnPTimeOutTimer;
     static void CALLBACK UPnPTimeOutTimer(HWND hwnd, UINT uiMsg, UINT idEvent, DWORD dwTime);
+//>>> WiZaRd::NAT-PMP
+	UINT_PTR m_hNATPMPTimeOutTimer;
+	static void CALLBACK NATPMPTimeOutTimer(HWND hwnd, UINT uiMsg, UINT idEvent, DWORD dwTime);
+//<<< WiZaRd::NAT-PMP
 
     void StartConnection();
     void CloseConnection();
@@ -294,6 +313,8 @@ protected:
 
     // UPnP
     afx_msg LRESULT OnUPnPResult(WPARAM wParam, LPARAM lParam);
+
+	afx_msg LRESULT OnNATPMPResult(WPARAM wParam, LPARAM lParam); //>>> WiZaRd::NAT-PMP
 
 //>>> WiZaRd::7zip
 	afx_msg LRESULT OnSevenZipJobDone(WPARAM wParam, LPARAM lParam); 

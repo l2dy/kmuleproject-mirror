@@ -27,6 +27,8 @@
 //////////////////////////////////////////////////////////////////////////
 // Helper
 // from Main.cpp:
+HINSTANCE g_hInstance = 0;
+
 static void ShowMessageAndThrowException(LPCTSTR message, NExitCode::EEnum code)
 {
 	theApp.QueueLogLineEx(LOG_WARNING, L"7z: %s", message);
@@ -168,8 +170,7 @@ CSevenZipThreadHandler::~CSevenZipThreadHandler()
 }
 
 void CSevenZipThreadHandler::Init()
-{
-	theApp.QueueLogLineEx(LOG_INFO, L"7z: %s", kCopyrightString);
+{	
 	if(m_pFileHandle == NULL)
 		m_pFileHandle = _tfsopen(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + L"7z.log", L"a+b", _SH_DENYWR);
 	//theApp.QueueLogLineEx(LOG_INFO, L"7z: # CPUs: %I64u", (UInt64)NWindows::NSystem::GetNumberOfProcessors());

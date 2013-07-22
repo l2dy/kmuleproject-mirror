@@ -2011,7 +2011,7 @@ void CTempCAList::Verify(CUpDownClient* client)
         //of the client as "AttachToAlreadyKnown"?
         if (LeftIsBetter(pLeft, client))
         {
-            theApp.QueueLogLineEx(LOG_WARNING, L"%s: verification of CA data for %s canceled (%s is \"better\")", md4str(client->GetUserHash()), client->DbgGetClientInfo(), pLeft->DbgGetClientInfo());
+            theApp.QueueLogLineEx(LOG_CA | LOG_WARNING, L"%s: verification of CA data for %s canceled (%s is \"better\")", md4str(client->GetUserHash()), client->DbgGetClientInfo(), pLeft->DbgGetClientInfo());
             return; //nothing to do if the old one is the better one
         }
 
@@ -2024,7 +2024,7 @@ void CTempCAList::Verify(CUpDownClient* client)
             pList->RemoveAt(pos);
 
 //			ASSERT(pos != pList->GetHeadPosition());
-            theApp.QueueLogLineEx(LOG_WARNING, L"%s: swapping CA data for %s and %s during verification", md4str(client->GetUserHash()), client->DbgGetClientInfo(), pLeft->DbgGetClientInfo());
+            theApp.QueueLogLineEx(LOG_CA | LOG_WARNING, L"%s: swapping CA data for %s and %s during verification", md4str(client->GetUserHash()), client->DbgGetClientInfo(), pLeft->DbgGetClientInfo());
 
             //copy the "bad" clients' data to the bottom and attach it
             pList->AddTail(new CAntiLeechData(head));

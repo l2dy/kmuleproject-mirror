@@ -97,7 +97,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>version.lib;winmm.lib;ADSIId.lib;crypt32.lib;wmvcore.lib;..\zlib\debug_vc10\zlib.lib;..\crypto51\debug_vc10\cryptlib.lib;..\id3lib\libprj\Debug_vc10\id3libD.lib;..\CxImage\debug_vc10\cximage.lib;..\png\projects\visualc10\Win32_LIB_Debug\libpngd.lib;..\ResizableLib\Unicode_Debug_vc10\ResizableLib.lib;..\miniupnpc\Debug_vc10\miniupnpc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>version.lib;winmm.lib;ADSIId.lib;crypt32.lib;wmvcore.lib;..\zlib\debug_vc10\zlib.lib;..\crypto51\debug_vc10\cryptlib.lib;..\id3lib\libprj\Debug_vc10\id3libD.lib;..\CxImage\debug_vc10\cximage.lib;..\png\projects\visualc10\Win32_LIB_Debug\libpngd.lib;..\ResizableLib\Unicode_Debug_vc10\ResizableLib.lib;..\miniupnpc\Debug_vc10\miniupnpc.lib;..\libnatpmp\msvc\Debug_vc10\libnatpmp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>nafxcwd.lib;msvcprtd.lib;MSVCRTD.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <DelayLoadDLLs>oleacc.dll;gdiplus.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -144,7 +144,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/safeseh %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>unicows.lib;kernel32.lib;advapi32.lib;user32.lib;gdi32.lib;shell32.lib;comdlg32.lib;version.lib;mpr.lib;rasapi32.lib;winmm.lib;winspool.lib;vfw32.lib;secur32.lib;oleacc.lib;oledlg.lib;sensapi.lib;gdiplus.lib;ADSIId.lib;crypt32.lib;wmvcore.lib;..\zlib\release_vc10\zlib.lib;..\crypto51\release_vc10\cryptlib.lib;..\id3lib\libprj\Release_vc10\id3lib.lib;..\CxImage\Release_vc10\cximage.lib;..\png\projects\visualc10\Win32_LIB_Release\libpng.lib;..\ResizableLib\Unicode_Release_vc10\ResizableLib.lib;..\miniupnpc\Release_vc10\miniupnpc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>unicows.lib;kernel32.lib;advapi32.lib;user32.lib;gdi32.lib;shell32.lib;comdlg32.lib;version.lib;mpr.lib;rasapi32.lib;winmm.lib;winspool.lib;vfw32.lib;secur32.lib;oleacc.lib;oledlg.lib;sensapi.lib;gdiplus.lib;ADSIId.lib;crypt32.lib;wmvcore.lib;..\zlib\release_vc10\zlib.lib;..\crypto51\release_vc10\cryptlib.lib;..\id3lib\libprj\Release_vc10\id3lib.lib;..\CxImage\Release_vc10\cximage.lib;..\png\projects\visualc10\Win32_LIB_Release\libpng.lib;..\ResizableLib\Unicode_Release_vc10\ResizableLib.lib;..\miniupnpc\Release_vc10\miniupnpc.lib;..\libnatpmp\msvc\Release_vc10\libnatpmp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>kernel32.lib;advapi32.lib;user32.lib;gdi32.lib;shell32.lib;comdlg32.lib;version.lib;mpr.lib;rasapi32.lib;winmm.lib;winspool.lib;vfw32.lib;secur32.lib;oleacc.lib;oledlg.lib;sensapi.lib;nafxcwd.lib;msvcprt.lib;MSVCRT.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <DelayLoadDLLs>oleacc.dll;gdiplus.dll;ws2_32.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -312,13 +312,17 @@
     <ClCompile Include="Mod\AntiFake.cpp" />
     <ClCompile Include="Mod\autoUpdate.cpp" />
     <ClCompile Include="Mod\ClientAnalyzer.cpp" />
+    <ClCompile Include="Mod\copyrights.cpp" />
     <ClCompile Include="Mod\CustomSearches.cpp" />
     <ClCompile Include="Mod\extractfile.cpp" />
+    <ClCompile Include="Mod\InfoWnd.cpp" />
+    <ClCompile Include="Mod\NATPMPWrapper.cpp" />
     <ClCompile Include="Mod\loadStatus.cpp" />
     <ClCompile Include="Mod\ModIconMapping.cpp" />
     <ClCompile Include="Mod\Modname.cpp" />
     <ClCompile Include="Mod\ModProt.cpp" />
     <ClCompile Include="Mod\NetF\CrumbHashSet.cpp" />
+    <ClCompile Include="Mod\NetF\DesktopIntegration.cpp" />
     <ClCompile Include="Mod\NetF\PartStatus.cpp" />
     <ClCompile Include="Mod\ProgressIndicator.cpp" />
     <ClCompile Include="Mod\QOS.cpp" />
@@ -672,6 +676,14 @@
     <None Include="res\Global.ico" />
     <None Include="res\HardDisk.gif" />
     <None Include="res\HardDisk.ico" />
+    <None Include="res\Health\health_0.ico" />
+    <None Include="res\Health\health_1.ico" />
+    <None Include="res\Health\health_2.ico" />
+    <None Include="res\Health\health_3.ico" />
+    <None Include="res\Health\health_4.ico" />
+    <None Include="res\Health\health_5.ico" />
+    <None Include="res\Health\health_6.ico" />
+    <None Include="res\Health\health_7.ico" />
     <None Include="res\Help.ico" />
     <None Include="res\Import.ico" />
     <None Include="res\Incoming.gif" />
@@ -985,14 +997,18 @@
     <ClInclude Include="Mod\AntiFake.h" />
     <ClInclude Include="Mod\autoUpdate.h" />
     <ClInclude Include="Mod\ClientAnalyzer.h" />
+    <ClInclude Include="Mod\copyrights.h" />
     <ClInclude Include="Mod\CustomSearches.h" />
     <ClInclude Include="Mod\extractfile.h" />
+    <ClInclude Include="Mod\InfoWnd.h" />
+    <ClInclude Include="Mod\NATPMPWrapper.h" />
     <ClInclude Include="Mod\loadStatus.h" />
     <ClInclude Include="Mod\ModIconMapping.h" />
     <ClInclude Include="Mod\Modname.h" />
     <ClInclude Include="Mod\ModOpcodes.h" />
     <ClInclude Include="Mod\ModProt.h" />
     <ClInclude Include="Mod\NetF\CrumbHashSet.h" />
+    <ClInclude Include="Mod\NetF\DesktopIntegration.h" />
     <ClInclude Include="Mod\NetF\PartStatus.h" />
     <ClInclude Include="Mod\ProgressIndicator.h" />
     <ClInclude Include="Mod\QOS.h" />

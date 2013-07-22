@@ -9,6 +9,16 @@
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 #endif
 
+#define INFO_WND		//>>> WiZaRd::InfoWnd
+//>>> WiZaRd::DesktopIntegration [Netfinity]
+//#define WINE_SUPPORT	
+//#ifdef	WINE_SUPPORT
+#define _ShellExecute	theDesktop.ShellExecute
+//#else
+//#define _ShellExecute	ShellExecute
+//#endif
+//<<< WiZaRd::DesktopIntegration [Netfinity]
+
 #include <emule_site_config.h>
 
 // MSDN: Using the Windows Headers

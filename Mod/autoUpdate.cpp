@@ -25,6 +25,7 @@
 #include "Log.h"
 #include "extractfile.h"
 //<<< WiZaRd::kMule
+#include "./Mod/NetF/DesktopIntegration.h" //>>> WiZaRd::DesktopIntegration [Netfinity]
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -73,7 +74,7 @@ void	CAutoUpdate::CheckForUpdates()
         {
             if (m_uiUpdateApplication == UPDATE_DOWNLOADPAGE)
             {
-                ShellExecute(NULL, NULL, m_strUpdateURL, NULL, thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), SW_SHOWDEFAULT);
+                _ShellExecute(NULL, NULL, m_strUpdateURL, NULL, thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), SW_SHOWDEFAULT);
             }
             else
             {
@@ -113,7 +114,7 @@ bool	CAutoUpdate::ApplyUpdate() const
         const CString strUpdateFile = GetUpdateFile();
         if (::PathFileExists(strUpdateFile))
         {
-            ShellExecute(NULL, L"open", strUpdateFile, NULL, NULL, SW_SHOWDEFAULT);
+            _ShellExecute(NULL, L"open", strUpdateFile, NULL, NULL, SW_SHOWDEFAULT);
             if (m_bDeleteAfterUpdate)
                 _tremove(strUpdateFile);
             return true;
@@ -223,7 +224,7 @@ uint8	CAutoUpdate::IsUpdateAvail()
             if (AfxMessageBox(GetResString(IDS_NEWVERSIONAVLBETA) + GetResString(IDS_VISITVERSIONCHECK), MB_OK) == IDOK)
             {
                 CString theUrl = thePrefs.GetVersionCheckBaseURL() + L"/beta";
-                ShellExecute(NULL, NULL, theUrl, NULL, thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), SW_SHOWDEFAULT);
+                _ShellExecute(NULL, NULL, theUrl, NULL, thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), SW_SHOWDEFAULT);
             }
 #endif
         }

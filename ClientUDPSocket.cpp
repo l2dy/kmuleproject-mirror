@@ -662,6 +662,8 @@ int CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,UINT dwIP, uint16 nPort)
 	dest.sin_family = AF_INET;
 	dest.sin_addr.s_addr = htonl(dwIP);
 	dest.sin_port = htons(nPort);
+	// From MSDN:
+	//Note  DestAddr is optional if the socket is already connected. If this parameter is specified, the remote IP address and port must match those used in the socket's connect call.
 	theQOSManager.AddSocket(m_hSocket, reinterpret_cast<PSOCKADDR>(&dest));
 //<<< WiZaRd::QOS
     // NOTE: *** This function is invoked from a *different* thread!
@@ -720,6 +722,11 @@ bool CClientUDPSocket::Create()
         ret = CAsyncSocket::Create(thePrefs.GetUDPPort(), SOCK_DGRAM, FD_READ | FD_WRITE, thePrefs.GetBindAddrW()) != FALSE;
         if (ret)
         {
+//>>> WiZaRd::QOS
+			BOOL optval = TRUE;
+			DWORD bytesReturned;
+			WSAIoctl(m_hSocket, SIO_UDP_CONNRESET, &optval, sizeof(optval), NULL, 0, &bytesReturned, NULL, NULL);
+//<<< WiZaRd::QOS
             m_port = thePrefs.GetUDPPort();
             // the default socket size seems to be not enough for this UDP socket
             // because we tend to drop packets if several flow in at the same time

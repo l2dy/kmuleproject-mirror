@@ -290,6 +290,7 @@ bool	CPreferences::watchclipboard;
 bool	CPreferences::m_bFirstStart;
 bool	CPreferences::m_bUpdate;
 bool	CPreferences::log2disk;
+bool	CPreferences::m_bLogAnalyzerToDisk; //>>> WiZaRd::ClientAnalyzer
 bool	CPreferences::debug2disk;
 int		CPreferences::iMaxLogBuff;
 UINT	CPreferences::uMaxLogFileSize;
@@ -313,8 +314,13 @@ CString	CPreferences::m_strDateTimeFormat4Lists;
 LOGFONT CPreferences::m_lfHyperText;
 LOGFONT CPreferences::m_lfLogText;
 COLORREF CPreferences::m_crLogError = RGB(255, 0, 0);
-COLORREF CPreferences::m_crLogWarning = RGB(128, 0, 128);
-COLORREF CPreferences::m_crLogSuccess = RGB(0, 0, 255);
+//>>> WiZaRd::"Proper" Colors
+//showing warnings in blue and success in green makes more sense :P
+COLORREF CPreferences::m_crLogWarning = RGB(0, 0, 255);
+COLORREF CPreferences::m_crLogSuccess = RGB(0, 192, 0);
+//COLORREF CPreferences::m_crLogWarning = RGB(128, 0, 128);
+//COLORREF CPreferences::m_crLogSuccess = RGB(0, 0, 255);
+//<<< WiZaRd::"Proper" Colors
 int		CPreferences::m_iExtractMetaData;
 bool	CPreferences::m_bAdjustNTFSDaylightFileTime = true;
 bool	CPreferences::m_bRearrangeKadSearchKeywords;
@@ -1711,6 +1717,7 @@ void CPreferences::SavePreferences()
     ini.WriteBool(L"DisableKnownClientList",m_bDisableKnownClientList);
     ini.WriteBool(L"DisableQueueList",m_bDisableQueueList);
     ini.WriteBool(L"SaveLogToDisk",log2disk);
+	ini.WriteBool(L"SaveAnalyzerLogToDisk", m_bLogAnalyzerToDisk); //>>> WiZaRd::ClientAnalyzer
     ini.WriteBool(L"SaveDebugToDisk",debug2disk);
     ini.WriteBool(L"MessagesFromFriendsOnly",msgonlyfriends);
     ini.WriteBool(L"ShowInfoOnCatTabs",showCatTabInfos);
@@ -2167,10 +2174,12 @@ void CPreferences::LoadPreferences()
     m_bIRCAddTimeStamp = ini.GetBool(L"IRCAddTimestamp", true);
 
     log2disk = ini.GetBool(L"SaveLogToDisk", false);
+	m_bLogAnalyzerToDisk = ini.GetBool(L"SaveAnalyzerLogToDisk", false); //>>> WiZaRd::ClientAnalyzer
     uMaxLogFileSize = ini.GetInt(L"MaxLogFileSize", 1024*1024);
     iMaxLogBuff = ini.GetInt(L"MaxLogBuff",64) * 1024;
     m_iLogFileFormat = (ELogFileFormat)ini.GetInt(L"LogFileFormat", Unicode);
     m_bEnableVerboseOptions=ini.GetBool(L"VerboseOptions", true);
+	m_bLogAnalyzerEvents = ini.GetBool(L"LogAnalyzerEvents", true); //>>> WiZaRd::ClientAnalyzer
     if (m_bEnableVerboseOptions)
     {
         m_bVerbose=ini.GetBool(L"Verbose",false);
@@ -2178,8 +2187,7 @@ void CPreferences::LoadPreferences()
         debug2disk=ini.GetBool(L"SaveDebugToDisk", false);
         m_bDebugSourceExchange=ini.GetBool(L"DebugSourceExchange",false);
         m_bLogBannedClients=ini.GetBool(L"LogBannedClients", true);
-        m_bLogRatingDescReceived=ini.GetBool(L"LogRatingDescReceived",true);
-        m_bLogAnalyzerEvents = ini.GetBool(L"LogAnalyzerEvents", true); //>>> WiZaRd::ClientAnalyzer
+        m_bLogRatingDescReceived=ini.GetBool(L"LogRatingDescReceived",true);        
         m_bLogSecureIdent=ini.GetBool(L"LogSecureIdent",true);
         m_bLogFilteredIPs=ini.GetBool(L"LogFilteredIPs",true);
         m_bLogFileSaving=ini.GetBool(L"LogFileSaving",false);

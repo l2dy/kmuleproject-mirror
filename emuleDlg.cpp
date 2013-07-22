@@ -98,6 +98,12 @@
 #include "./Mod/CustomSearches.h" //>>> WiZaRd::CustomSearches
 #include "./Mod/ModIconMapping.h" //>>> WiZaRd::ModIconMappings
 #include "./Mod/7z/7z.h" //>>> WiZaRd::7zip
+#include "./Mod/NATPMPWrapper.h" //>>> WiZaRd::NAT-PMP
+#ifdef INFO_WND
+#include "./Mod/InfoWnd.h" //>>> WiZaRd::InfoWnd
+#endif
+#include "./Mod/NetF/DesktopIntegration.h" //>>> WiZaRd::DesktopIntegration [Netfinity]
+#include "./Mod/copyrights.h" //>>> WiZaRd::Copyrights
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -171,6 +177,7 @@ BEGIN_MESSAGE_MAP(CemuleDlg, CTrayDialog)
 
     // UPnP
     ON_MESSAGE(UM_UPNP_RESULT, OnUPnPResult)
+	ON_MESSAGE(UM_NATPMP_RESULT, OnNATPMPResult) //>>> WiZaRd::NAT-PMP
 
     ///////////////////////////////////////////////////////////////////////////
     // WM_APP messages
@@ -199,6 +206,9 @@ CemuleDlg::CemuleDlg(CWnd* pParent /*=NULL*/)
     g_uMainThreadId = GetCurrentThreadId();
     preferenceswnd = new CPreferencesDlg;
     transferwnd = new CTransferDlg;
+#ifdef INFO_WND
+	infoWnd = new CInfoWnd; //>>> WiZaRd::InfoWnd
+#endif
     sharedfileswnd = new CSharedFilesWnd;
     searchwnd = new CSearchDlg;
     chatwnd = new CChatWnd;
@@ -236,6 +246,10 @@ CemuleDlg::CemuleDlg(CWnd* pParent /*=NULL*/)
     m_uLastSysTrayIconCookie = SYS_TRAY_ICON_COOKIE_FORCE_UPDATE;
     m_hUPnPTimeOutTimer = 0;
     m_bConnectRequestDelayedForUPnP = false;
+//>>> WiZaRd::NAT-PMP
+	m_hNATPMPTimeOutTimer = 0;
+	m_bConnectRequestDelayedForNATPMP = false;
+//<<< WiZaRd::NAT-PMP
     m_bKadSuspendDisconnect = false;
     m_bInitedCOM = false;
 
@@ -294,6 +308,9 @@ CemuleDlg::~CemuleDlg()
     //VERIFY( m_SysMenuOptions.DestroyMenu() );
 
     delete preferenceswnd;
+#ifdef INFO_WND
+	delete infoWnd; //>>> WiZaRd::InfoWnd
+#endif
     delete sharedfileswnd;
     delete chatwnd;
     delete statisticswnd;
@@ -436,6 +453,9 @@ BOOL CemuleDlg::OnInitDialog()
     DialogCreateIndirect(chatwnd, IDD_CHAT);
     transferwnd->Create(this);
     DialogCreateIndirect(statisticswnd, IDD_STATISTICS);
+#ifdef INFO_WND
+	DialogCreateIndirect(infoWnd, IDD_INFO); //>>> WiZaRd::InfoWnd
+#endif
 
     // with the top rebar control, some XP themes look better with some additional lite borders.. some not..
     //sharedfileswnd->ModifyStyleEx(0, WS_EX_STATICEDGE);
@@ -443,6 +463,9 @@ BOOL CemuleDlg::OnInitDialog()
     //chatwnd->ModifyStyleEx(0, WS_EX_STATICEDGE);
     //transferwnd->ModifyStyleEx(0, WS_EX_STATICEDGE);
     //statisticswnd->ModifyStyleEx(0, WS_EX_STATICEDGE);
+#ifdef INFO_WND
+	//infoWnd->ModifyStyleEx(0, WS_EX_STATICEDGE); //>>> WiZaRd::InfoWnd
+#endif
 
     // optional: restore last used main window dialog
     if (thePrefs.GetRestoreLastMainWndDlg())
@@ -464,6 +487,13 @@ BOOL CemuleDlg::OnInitDialog()
         case IDD_STATISTICS:
             SetActiveDialog(statisticswnd);
             break;
+#ifdef INFO_WND
+//>>> WiZaRd::InfoWnd
+		case IDD_INFO:
+			SetActiveDialog(infoWnd);
+			break;
+//<<< WiZaRd::InfoWnd
+#endif
         }
     }
 
@@ -491,7 +521,10 @@ BOOL CemuleDlg::OnInitDialog()
         sharedfileswnd,
         searchwnd,
         chatwnd,
-        statisticswnd
+        statisticswnd,
+#ifdef INFO_WND
+		infoWnd, //>>> WiZaRd::InfoWnd
+#endif
     };
     for (int i = 0; i < _countof(apWnds); i++)
         apWnds[i]->SetWindowPos(NULL, rcClient.left, rcClient.top, rcClient.Width(), rcClient.Height(), SWP_NOZORDER);
@@ -502,6 +535,9 @@ BOOL CemuleDlg::OnInitDialog()
     AddAnchor(*searchwnd,		TOP_LEFT, BOTTOM_RIGHT);
     AddAnchor(*chatwnd,			TOP_LEFT, BOTTOM_RIGHT);
     AddAnchor(*statisticswnd,	TOP_LEFT, BOTTOM_RIGHT);
+#ifdef INFO_WND
+	AddAnchor(*infoWnd,			TOP_LEFT, BOTTOM_RIGHT); //>>> WiZaRd::InfoWnd
+#endif
     AddAnchor(*pwndToolbarX,	TOP_LEFT, TOP_RIGHT);
     AddAnchor(*statusbar,		BOTTOM_LEFT, BOTTOM_RIGHT);
 
@@ -588,9 +624,9 @@ BOOL CemuleDlg::OnInitDialog()
     theStats.starttime = GetTickCount();
 
     // Start UPnP prot forwarding
-    if (thePrefs.IsUPnPEnabled())
-        StartUPnP();
-
+	StartUPnP();
+	StartNATPMP(); //>>> WiZaRd::NAT-PMP
+	
     VERIFY(m_pDropTarget->Register(this));
 
     // start aichsyncthread
@@ -644,6 +680,7 @@ void CALLBACK CemuleDlg::StartupTimer(HWND /*hwnd*/, UINT /*uiMsg*/, UINT /*idEv
         
         case 2:
             ++theApp.emuledlg->status;
+			PrintCopyrights(); //>>> WiZaRd::Copyrights
 			m_SevenZipThreadHandler.Init(); //>>> WiZaRd::7zip		
             ++theApp.emuledlg->status;
             break;
@@ -890,24 +927,43 @@ void CemuleDlg::AddLogText(UINT uFlags, LPCTSTR pszText)
     int iLen = _sntprintf(temp, _countof(temp), _T("%s: %s\r\n"), CTime::GetCurrentTime().Format(thePrefs.GetDateTimeFormat4Log()), pszText);
     if (iLen >= 0)
     {
-        if (!(uFlags & LOG_DEBUG))
+//>>> WiZaRd::ClientAnalyzer
+        if (/*thePrefs.GetVerbose() &&*/ (uFlags & LOG_CA))
         {
+#ifdef INFO_WND
+//>>> WiZaRd::InfoWnd
+			infoWnd->analyzerLog->AddTyped(temp, iLen, uFlags & LOGMSGTYPEMASK);
+			if (IsWindow(infoWnd->StatusSelector) && infoWnd->StatusSelector.GetCurSel() != CInfoWnd::PaneCA)
+				infoWnd->StatusSelector.HighlightItem(CInfoWnd::PaneCA, TRUE);
+//<<< WiZaRd::InfoWnd
+#endif
+            if (thePrefs.GetLogAnalyzerToDisk())
+                theAnalyzerLog.Log(temp, iLen);
+        }
+//<<< WiZaRd::ClientAnalyzer
+        else if (!(uFlags & LOG_DEBUG))
+        {
+#ifdef INFO_WND
+//>>> WiZaRd::InfoWnd
+			infoWnd->logbox->AddTyped(temp, iLen, uFlags & LOGMSGTYPEMASK);
+			if (IsWindow(infoWnd->StatusSelector) && infoWnd->StatusSelector.GetCurSel() != CInfoWnd::PaneLog)
+				infoWnd->StatusSelector.HighlightItem(CInfoWnd::PaneLog, TRUE);
+//<<< WiZaRd::InfoWnd
+#endif
             if (!(uFlags & LOG_DONTNOTIFY) && ready)
                 ShowNotifier(pszText, TBN_LOG);
             if (thePrefs.GetLog2Disk())
                 theLog.Log(temp, iLen);
         }
-
-//>>> WiZaRd::ClientAnalyzer
-        if (thePrefs.GetVerbose() && (uFlags & LOG_CA))
+        else if (thePrefs.GetVerbose() && ((uFlags & LOG_DEBUG) || thePrefs.GetFullVerbose()))
         {
-            if (thePrefs.GetDebug2Disk())
-                theVerboseLog.Log(temp, iLen);
-        }
-//<<< WiZaRd::ClientAnalyzer
-
-        if (thePrefs.GetVerbose() && ((uFlags & LOG_DEBUG) || thePrefs.GetFullVerbose()))
-        {
+#ifdef INFO_WND
+//>>> WiZaRd::InfoWnd
+			infoWnd->debuglog->AddTyped(temp, iLen, uFlags & LOGMSGTYPEMASK);
+			if (IsWindow(infoWnd->StatusSelector) && infoWnd->StatusSelector.GetCurSel() != CInfoWnd::PaneVerboseLog)
+				infoWnd->StatusSelector.HighlightItem(CInfoWnd::PaneVerboseLog, TRUE);
+//<<< WiZaRd::InfoWnd
+#endif
             if (thePrefs.GetDebug2Disk())
                 theVerboseLog.Log(temp, iLen);
         }
@@ -951,7 +1007,9 @@ CString CemuleDlg::GetConnectionStateString()
 void CemuleDlg::ShowConnectionState()
 {
     theApp.downloadqueue->OnConnectionState(theApp.IsConnected());
-
+#ifdef INFO_WND
+	infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
+#endif
     ShowConnectionStateIcon();
     statusbar->SetText(GetConnectionStateString(), SBarConnected, 0);
 
@@ -1591,7 +1649,7 @@ LRESULT CemuleDlg::OnConsoleThreadEvent(WPARAM wParam, LPARAM lParam)
         // when we exit right now.
         //
         // Of course, there may be some data loss. But it's the same amount of data loss which
-        // could occure if we keep running. But if we keep running and wait until Windows
+        // could occur if we keep running. But if we keep running and wait until Windows
         // terminates us after 20 sec, there is also the chance for file corruption.
         if (thePrefs.GetDebug2Disk())
         {
@@ -1672,6 +1730,12 @@ void CemuleDlg::OnClose()
             thePrefs.SetLastMainWndDlgID(IDD_TRANSFER);
         else if (activewnd->IsKindOf(RUNTIME_CLASS(CStatisticsDlg)))
             thePrefs.SetLastMainWndDlgID(IDD_STATISTICS);
+#ifdef INFO_WND
+//>>> WiZaRd::InfoWnd
+		else if (activewnd->IsKindOf(RUNTIME_CLASS(CInfoWnd)))
+			thePrefs.SetLastMainWndDlgID(IDD_INFO);
+//<<< WiZaRd::InfoWnd
+#endif
         else
         {
             ASSERT(0);
@@ -1698,6 +1762,9 @@ void CemuleDlg::OnClose()
     //sharedfileswnd->sharedfilesctrl.SaveSettings();
     //chatwnd->m_FriendListCtrl.SaveSettings();
     searchwnd->SaveAllSettings();
+#ifdef INFO_WND
+	infoWnd->SaveAllSettings(); //>>> WiZaRd::InfoWnd
+#endif
 
     theApp.searchlist->SaveSpamFilter();
     if (thePrefs.IsStoringSearchesEnabled())
@@ -1767,6 +1834,10 @@ void CemuleDlg::OnClose()
     theApp.lastCommonRouteFinder = NULL;
     delete theApp.m_pUPnPFinder;
     theApp.m_pUPnPFinder = NULL;
+//>>> WiZaRd::NAT-PMP
+	delete theApp.m_pNATPMPThreadWrapper;
+	theApp.m_pNATPMPThreadWrapper = NULL;
+//<<< WiZaRd::NAT-PMP
 //>>> WiZaRd::CustomSearches
     delete theApp.customSearches;
     theApp.customSearches = NULL;
@@ -1965,21 +2036,38 @@ void CemuleDlg::StartConnection()
         // UPnP is still trying to open the ports. In order to not get a LowID by connecting to the servers / kad before
         // the ports are opened we delay the connection until UPnP gets a result or the timeout is reached
         // If the user clicks two times on the button, let him have his will and connect regardless
-        if (m_hUPnPTimeOutTimer != 0 && !m_bConnectRequestDelayedForUPnP)
+        if (m_hUPnPTimeOutTimer != 0 && !m_bConnectRequestDelayedForUPnP)			
         {
             AddLogLine(false, GetResString(IDS_DELAYEDBYUPNP));
             AddLogLine(true, GetResString(IDS_DELAYEDBYUPNP2));
             m_bConnectRequestDelayedForUPnP = true;
             return;
         }
+//>>> WiZaRd::NAT-PMP
+		else if (m_hNATPMPTimeOutTimer != 0 && !m_bConnectRequestDelayedForNATPMP)
+		{			
+			AddLogLine(false, L"Connecting to the network is delayed, because NAT-PMP is still busy configuring the port forwardings."); // GetResString(IDS_DELAYEDBYUPNP)
+			AddLogLine(true, L"Please wait some seconds, kMule will connect as soon as NAT-PMP finished."); // GetResString(IDS_DELAYEDBYUPNP2)
+			m_bConnectRequestDelayedForNATPMP = true;
+			return;
+		}
+//<<< WiZaRd::NAT-PMP
         else
         {
-            m_bConnectRequestDelayedForUPnP = false;
+            m_bConnectRequestDelayedForUPnP = false;			
             if (m_hUPnPTimeOutTimer != 0)
             {
                 VERIFY(::KillTimer(NULL, m_hUPnPTimeOutTimer));
                 m_hUPnPTimeOutTimer = 0;
             }
+//>>> WiZaRd::NAT-PMP
+			m_bConnectRequestDelayedForNATPMP = false;
+			if (m_hNATPMPTimeOutTimer != 0)
+			{
+				VERIFY(::KillTimer(NULL, m_hNATPMPTimeOutTimer));
+				m_hNATPMPTimeOutTimer = 0;
+			}
+//<<< WiZaRd::NAT-PMP
             AddLogLine(true, GetResString(IDS_CONNECTING));
 
             // kad
@@ -2139,6 +2227,9 @@ void CemuleDlg::ShowNotifier(LPCTSTR pszText, int iMsgType)
         snarlTitle = GetResString(IDS_SV_LOG);
         snarlClass = L"Log";
 //<<< Tux::SnarlSupport
+#ifdef INFO_WND
+		SetActiveDialog(infoWnd); //>>> WiZaRd::InfoWnd
+#endif
         break;
 
     case TBN_IMPORTANTEVENT:
@@ -2146,6 +2237,9 @@ void CemuleDlg::ShowNotifier(LPCTSTR pszText, int iMsgType)
         snarlTitle = GetResString(IDS_ERROR);
         snarlClass = L"Error";
 //<<< Tux::SnarlSupport
+#ifdef INFO_WND
+		SetActiveDialog(infoWnd); //>>> WiZaRd::InfoWnd
+#endif
         break;
 
     case TBN_NEWVERSION:
@@ -2442,83 +2536,89 @@ BOOL CemuleDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 {
     switch (wParam)
     {
-    case TBBTN_TRANSFERS:
-    case MP_HM_TRANSFER:
-        SetActiveDialog(transferwnd);
-        break;
-    case TBBTN_SEARCH:
-    case MP_HM_SEARCH:
-        SetActiveDialog(searchwnd);
-        break;
-    case TBBTN_SHARED:
-    case MP_HM_FILES:
-        SetActiveDialog(sharedfileswnd);
-        break;
-    case TBBTN_MESSAGES:
-    case MP_HM_MSGS:
-        SetActiveDialog(chatwnd);
-        break;
-    case TBBTN_STATS:
-    case MP_HM_STATS:
-        SetActiveDialog(statisticswnd);
-        break;
-    case TBBTN_OPTIONS:
-    case MP_HM_PREFS:
-        toolbar->CheckButton(TBBTN_OPTIONS, TRUE);
-        ShowPreferences();
-        toolbar->CheckButton(TBBTN_OPTIONS, FALSE);
-        break;
-    case TBBTN_TOOLS:
-        ShowToolPopup(true);
-        break;
-    case MP_HM_OPENINC:
-        ShellExecute(NULL, _T("open"), thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR),NULL, NULL, SW_SHOW);
-        break;
-    case MP_HM_HELP:
-    case TBBTN_HELP:
-        if (activewnd != NULL)
-        {
-            HELPINFO hi;
-            ZeroMemory(&hi, sizeof(HELPINFO));
-            hi.cbSize = sizeof(HELPINFO);
-            activewnd->SendMessage(WM_HELP, 0, (LPARAM)&hi);
-        }
-        else
-            wParam = ID_HELP;
-        break;
-    case MP_HM_EXIT:
-        OnClose();
-        break;
-    case MP_HM_LINK1:
-        ShellExecute(NULL, NULL, MOD_HOMEPAGE, NULL, thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), SW_SHOWDEFAULT);
-        break;
-    case MP_HM_LINK2:
-        ShellExecute(NULL, NULL, MOD_BASE_HOMEPAGE+ CString(_T("/faq/")), NULL, thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), SW_SHOWDEFAULT);
-        break;
-    case MP_VERSIONCHECK:
-        DoVersioncheck(true);
-        break;
-    case MP_WEBSVC_EDIT:
-        theWebServices.Edit();
-        break;
-    case MP_HM_CONVERTPF:
-        CPartFileConvert::ShowGUI();
-        break;
-    case MP_HM_1STSWIZARD:
-        FirstTimeWizard();
-        break;
-    case MP_HM_IPFILTER:
-    {
-        CIPFilterDlg dlg;
-        dlg.DoModal();
-        break;
-    }
-    case MP_HM_DIRECT_DOWNLOAD:
-    {
-        CDirectDownloadDlg dlg;
-        dlg.DoModal();
-        break;
-    }
+		case TBBTN_TRANSFERS:
+		case MP_HM_TRANSFER:
+			SetActiveDialog(transferwnd);
+			break;
+		case TBBTN_SEARCH:
+		case MP_HM_SEARCH:
+			SetActiveDialog(searchwnd);
+			break;
+		case TBBTN_SHARED:
+		case MP_HM_FILES:
+			SetActiveDialog(sharedfileswnd);
+			break;
+		case TBBTN_MESSAGES:
+		case MP_HM_MSGS:
+			SetActiveDialog(chatwnd);
+			break;
+		case TBBTN_STATS:
+		case MP_HM_STATS:
+			SetActiveDialog(statisticswnd);
+			break;
+		case TBBTN_OPTIONS:
+		case MP_HM_PREFS:
+			toolbar->CheckButton(TBBTN_OPTIONS, TRUE);
+			ShowPreferences();
+			toolbar->CheckButton(TBBTN_OPTIONS, FALSE);
+			break;
+		case TBBTN_TOOLS:
+			ShowToolPopup(true);
+			break;
+		case MP_HM_OPENINC:
+			_ShellExecute(NULL, _T("open"), thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR),NULL, NULL, SW_SHOW);
+			break;
+		case MP_HM_HELP:
+		case TBBTN_HELP:
+			if (activewnd != NULL)
+			{
+				HELPINFO hi;
+				ZeroMemory(&hi, sizeof(HELPINFO));
+				hi.cbSize = sizeof(HELPINFO);
+				activewnd->SendMessage(WM_HELP, 0, (LPARAM)&hi);
+			}
+			else
+				wParam = ID_HELP;
+			break;
+		case MP_HM_EXIT:
+			OnClose();
+			break;
+		case MP_HM_LINK1:
+			_ShellExecute(NULL, NULL, MOD_HOMEPAGE, NULL, thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), SW_SHOWDEFAULT);
+			break;
+		case MP_HM_LINK2:
+			_ShellExecute(NULL, NULL, MOD_BASE_HOMEPAGE+ CString(_T("/faq/")), NULL, thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), SW_SHOWDEFAULT);
+			break;
+		case MP_VERSIONCHECK:
+			DoVersioncheck(true);
+			break;
+		case MP_WEBSVC_EDIT:
+			theWebServices.Edit();
+			break;
+		case MP_HM_CONVERTPF:
+			CPartFileConvert::ShowGUI();
+			break;
+		case MP_HM_1STSWIZARD:
+			FirstTimeWizard();
+			break;
+		case MP_HM_IPFILTER:
+		{
+			CIPFilterDlg dlg;
+			dlg.DoModal();
+			break;
+		}
+		case MP_HM_DIRECT_DOWNLOAD:
+		{
+			CDirectDownloadDlg dlg;
+			dlg.DoModal();
+			break;
+		}
+#ifdef INFO_WND
+		case TBBTN_INFO:
+		case MP_HM_INFO:
+			SetActiveDialog(infoWnd); //>>> WiZaRd::InfoWnd
+			break;
+#endif
     }
     if (wParam>=MP_WEBURL && wParam<=MP_WEBURL+99)
     {
@@ -2587,6 +2687,9 @@ void CemuleDlg::ShowToolPopup(bool toolsonly)
         menu.AppendMenu(MF_STRING,MP_HM_MSGS, GetResString(IDS_EM_MESSAGES), _T("MESSAGES"));
         menu.AppendMenu(MF_STRING,MP_HM_STATS, GetResString(IDS_EM_STATISTIC), _T("STATISTICS"));
         menu.AppendMenu(MF_STRING,MP_HM_PREFS, GetResString(IDS_EM_PREFS), _T("PREFERENCES"));
+#ifdef INFO_WND
+		menu.AppendMenu(MF_STRING, MP_HM_INFO, GetResString(IDS_INFO), L"INFO"); //>>> WiZaRd::ClientAnalyzer
+#endif
         menu.AppendMenu(MF_STRING,MP_HM_HELP, GetResString(IDS_EM_HELP), _T("HELP"));
         menu.AppendMenu(MF_SEPARATOR);
     }
@@ -2837,6 +2940,9 @@ int CemuleDlg::MapWindowToToolbarButton(CWnd* pWnd) const
     else if (pWnd == sharedfileswnd)iButtonID = TBBTN_SHARED;
     else if (pWnd == searchwnd)     iButtonID = TBBTN_SEARCH;
     else if (pWnd == statisticswnd)	iButtonID = TBBTN_STATS;
+#ifdef INFO_WND
+	else if (pWnd == infoWnd)		iButtonID = TBBTN_INFO; //>>> WiZaRd::InfoWnd
+#endif
     else ASSERT(0);
     return iButtonID;
 }
@@ -2861,6 +2967,13 @@ CWnd* CemuleDlg::MapToolbarButtonToWindow(int iButtonID) const
     case TBBTN_STATS:
         pWnd = statisticswnd;
         break;
+#ifdef INFO_WND
+//>>> WiZaRd::InfoWnd
+	case TBBTN_INFO:
+		pWnd = infoWnd;
+		break;
+//<<< WiZaRd::InfoWnd
+#endif
     default:
         pWnd = NULL;
         ASSERT(0);
@@ -3037,7 +3150,7 @@ void CemuleDlg::HtmlHelp(DWORD_PTR dwData, UINT nCmd)
         if (AfxMessageBox(CString(pApp->m_pszHelpFilePath) + _T("\n\n") + strHelpError + _T("\n\n") + GetResString(IDS_ERR_NOHELP), MB_YESNO | MB_ICONERROR) == IDYES)
         {
             CString strUrl = CString(MOD_BASE_HOMEPAGE) + _T("/home/perl/help.cgi");
-            ShellExecute(NULL, NULL, strUrl, NULL, thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), SW_SHOWDEFAULT);
+            _ShellExecute(NULL, NULL, strUrl, NULL, thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), SW_SHOWDEFAULT);
         }
     }
 }
@@ -3229,7 +3342,13 @@ LRESULT CemuleDlg::OnUPnPResult(WPARAM wParam, LPARAM lParam)
         m_hUPnPTimeOutTimer = 0;
     }
     if (IsRunning() && m_bConnectRequestDelayedForUPnP)
-        StartConnection();
+	{
+//>>> WiZaRd::NAT-PMP
+		m_bConnectRequestDelayedForUPnP = false;
+		if(!m_bConnectRequestDelayedForNATPMP)
+//<<< WiZaRd::NAT-PMP
+			StartConnection();
+	}
 
     if (!bWasRefresh)
     {
@@ -3258,6 +3377,7 @@ LRESULT  CemuleDlg::OnPowerBroadcast(WPARAM wParam, LPARAM lParam)
         {
             DebugLog(_T("Reconnect after Power state change. wParam=%d lPararm=%ld"),wParam,lParam);
             RefreshUPnP(true);
+			RefreshNATPMP(true); //>>> WiZaRd::NAT-PMP
             PostMessage(WM_SYSCOMMAND , MP_CONNECT, 0); // tell to connect.. a sec later...
         }
         return TRUE; // message processed.

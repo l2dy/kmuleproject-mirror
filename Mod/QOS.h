@@ -46,7 +46,7 @@ private:
 	HANDLE				m_qosHandle;
 	QOS_FLOWID			m_qosFlowId;
 	DWORD				m_qosDatarate;
-	CMap<SOCKET, SOCKET&, DWORD, DWORD> m_qosSockets;
+	CList<SOCKET>		m_qosSockets;
 	clock_t				m_qosLastInit;
 	CCriticalSection	m_qosLocker;
 

@@ -19,6 +19,7 @@
 #include "MenuCmds.h"
 #include "RichEditCtrlX.h"
 #include "OtherFunctions.h"
+#include "./Mod/NetF/DesktopIntegration.h" //>>> WiZaRd::DesktopIntegration [Netfinity]
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -139,7 +140,7 @@ BOOL CRichEditCtrlX::OnEnLink(NMHDR *pNMHDR, LRESULT *pResult)
         CString strUrl;
         GetTextRange(pEnLink->chrg.cpMin, pEnLink->chrg.cpMax, strUrl);
 
-        ShellExecute(NULL, NULL, strUrl, NULL, NULL, SW_SHOWDEFAULT);
+        _ShellExecute(NULL, NULL, strUrl, NULL, NULL, SW_SHOWDEFAULT);
         *pResult = 1;
         bMsgHandled = TRUE; // do not route this message to any parent
     }

@@ -33,6 +33,7 @@
 //<<< WiZaRd::IPFilter-Update
 #include "Log.h"
 #include "./kademlia/kademlia/Kademlia.h" //>>> WiZaRd::IPFiltering
+#include "./Mod/NetF/DesktopIntegration.h" //>>> WiZaRd::DesktopIntegration [Netfinity]
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -273,7 +274,7 @@ void CPPgSecurity::OnReloadIPFilter()
 
 void CPPgSecurity::OnEditIPFilter()
 {
-    ShellExecute(NULL, _T("open"), thePrefs.GetTxtEditor(),
+    _ShellExecute(NULL, _T("open"), thePrefs.GetTxtEditor(),
                  _T("\"") + thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + DFLT_IPFILTER_FILENAME _T("\""), NULL, SW_SHOW);
 }
 

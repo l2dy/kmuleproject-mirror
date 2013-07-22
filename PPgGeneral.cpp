@@ -31,6 +31,9 @@
 #include "HelpIDs.h"
 #include "StringConversion.h"
 #include "Log.h"
+#ifdef INFO_WND
+#include "./Mod/InfoWnd.h" //>>> WiZaRd::ClientAnalyzer
+#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -261,6 +264,9 @@ BOOL CPPgGeneral::OnApply()
             theApp.emuledlg->sharedfileswnd->Localize();
             theApp.emuledlg->chatwnd->Localize();
             theApp.emuledlg->Localize();
+#ifdef INFO_WND
+			theApp.emuledlg->infoWnd->Localize(); //>>> WiZaRd::InfoWnd
+#endif
 			UpdateTranslatorField(); //>>> WiZaRd::Honor translators
         }
     }

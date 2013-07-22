@@ -24,90 +24,83 @@
 CQOS theQOSManager;
 
 CQOS::CQOS()
-{
-	// Try enable qWAVE API
-	QOS_VERSION	qosVersion = {1,0};
+{	
 	m_qosHandle = NULL;
 	m_qosFlowId = 0;
+
+	// Try enable qWAVE API	
 	m_hQWAVE = ::LoadLibrary(L"Qwave.dll");
-	if (m_hQWAVE != NULL)
+	if(m_hQWAVE != NULL)
 	{
 		m_pQOSCreateHandle = (t_QOSCreateHandle)::GetProcAddress(m_hQWAVE, "QOSCreateHandle");
 		m_pQOSCloseHandle = (t_QOSCloseHandle)::GetProcAddress(m_hQWAVE, "QOSCloseHandle");
 		m_pQOSAddSocketToFlow = (t_QOSAddSocketToFlow)::GetProcAddress(m_hQWAVE, "QOSAddSocketToFlow");
 		m_pQOSRemoveSocketFromFlow = (t_QOSRemoveSocketFromFlow)::GetProcAddress(m_hQWAVE, "QOSRemoveSocketFromFlow");
 		m_pQOSSetFlow = (t_QOSSetFlow) ::GetProcAddress(m_hQWAVE, "QOSSetFlow");
-		if (m_pQOSCreateHandle == NULL || m_pQOSCloseHandle == NULL || m_pQOSAddSocketToFlow == NULL || m_pQOSRemoveSocketFromFlow == NULL || m_pQOSSetFlow == NULL)
+		if(m_pQOSCreateHandle == NULL || m_pQOSCloseHandle == NULL || m_pQOSAddSocketToFlow == NULL || m_pQOSRemoveSocketFromFlow == NULL || m_pQOSSetFlow == NULL)
 		{
 			::FreeLibrary(m_hQWAVE);
 			m_hQWAVE = NULL;
 		}
 		else
-		{
-			m_pQOSCreateHandle(&qosVersion, &m_qosHandle);
-			m_qosLastInit = clock();
-		}
-	}
+			Reinitialize();
+	}	
 	::SetCriticalSectionSpinCount(m_qosLocker, 4000); // To reduce task switching on multicore CPU's
 }
 
 CQOS::~CQOS()
 {
 	// Free qWAVE API
-	if (m_qosHandle != NULL)
+	if(m_qosHandle != NULL)
 		m_pQOSCloseHandle(m_qosHandle);
-	if (m_hQWAVE != NULL)
+	if(m_hQWAVE != NULL)
 		::FreeLibrary(m_hQWAVE);
 }
 
 BOOL CQOS::Reinitialize()
 {
-	BOOL success = FALSE;
+	BOOL success = FALSE;	
+	
+	CSingleLock lock(&m_qosLocker, TRUE);
 
-	if (m_hQWAVE != NULL)
+	// Drop old flow
+	if(m_qosHandle != NULL)
 	{
-		CSingleLock lock(&m_qosLocker, TRUE);
-		m_qosLastInit = clock();
-
-		// Drop old flow
-		if (m_qosHandle != NULL)
-		{
-			if (m_qosFlowId != 0)
-				m_pQOSRemoveSocketFromFlow(m_qosHandle, NULL, m_qosFlowId, 0);
-			m_pQOSCloseHandle(m_qosHandle);
-		}
-
-		// Create a new flow
-		QOS_VERSION	qosVersion = {1,0};
+		const DWORD error = RemoveSocket_internal(NULL);
+		ASSERT(error == 0);
+		m_pQOSCloseHandle(m_qosHandle);
 		m_qosHandle = NULL;
-		m_qosFlowId = 0;
-		m_pQOSCreateHandle(&qosVersion, &m_qosHandle);
+	}
 
-		if (m_qosHandle != NULL)
+	// Create a new flow
+	m_qosFlowId = 0;
+	QOS_VERSION	qosVersion = {1, 0};		
+	m_pQOSCreateHandle(&qosVersion, &m_qosHandle);
+	m_qosLastInit = clock();
+
+	if(m_qosHandle != NULL)
+	{
+		success = TRUE;
+
+		// Add back sockets to the new flow
+		for (POSITION pos = m_qosSockets.GetHeadPosition(); pos != 0;)
 		{
-			success = TRUE;
-
-			// Add back sockets to the new flow
-			for (POSITION pos = m_qosSockets.GetStartPosition(); pos != 0;)
+			POSITION posLast = pos;
+			SOCKET	socket = m_qosSockets.GetNext(pos);
+			const DWORD error = AddSocket_internal(socket, NULL);
+			if(error != 0)
 			{
-				SOCKET	socket;
-				DWORD	temp;
-				m_qosSockets.GetNextAssoc(pos, socket, temp);
-				const DWORD error = AddSocket_internal(socket, NULL);
-				if (error != 0)
-				{
-					if (error == ERROR_NOT_FOUND)
-						m_qosSockets.RemoveKey(socket);
-					else
-						success = FALSE;
-				}
+				if(error == ERROR_NOT_FOUND)
+					m_qosSockets.RemoveAt(posLast);
+				else
+					success = FALSE;
 			}
-
-			// Update flow with the wanted datarate
-			const DWORD datarate = m_qosDatarate;
-			SetDataRate_internal(1);
-			SetDataRate_internal(datarate);
 		}
+
+		// Update flow with the wanted datarate
+		const DWORD datarate = m_qosDatarate;
+		SetDataRate_internal(1);
+		SetDataRate_internal(datarate);
 	}
 
 	return success;
@@ -117,23 +110,22 @@ BOOL CQOS::AddSocket(SOCKET socket, const SOCKADDR* const dest)
 {
 	BOOL success = FALSE;
 
-	if (m_qosHandle != NULL && socket != INVALID_SOCKET)
+	if(m_qosHandle != NULL && socket != INVALID_SOCKET)
 	{
 		success = TRUE;
 		CSingleLock lock(&m_qosLocker, TRUE);
 
 		const DWORD error = AddSocket_internal(socket, dest);
-		if (error == 0)
-			m_qosSockets.SetAt(socket, 1);
-		else if (error == ERROR_SYSTEM_POWERSTATE_TRANSITION 
-				|| error == ERROR_SYSTEM_POWERSTATE_COMPLEX_TRANSITION 
-				|| error == ERROR_DEVICE_REINITIALIZATION_NEEDED 
-				|| (error == ERROR_NOT_FOUND && m_qosSockets.IsEmpty()))
+		if(error == ERROR_SYSTEM_POWERSTATE_TRANSITION 
+			|| error == ERROR_SYSTEM_POWERSTATE_COMPLEX_TRANSITION 
+			|| error == ERROR_DEVICE_REINITIALIZATION_NEEDED 
+			|| (error == ERROR_NOT_FOUND && m_qosSockets.IsEmpty()))
 		{
-			if (clock() - m_qosLastInit < SEC2MS(5))
+			if(clock() - m_qosLastInit < SEC2MS(5))
 				success = FALSE;
 			else
 			{
+				lock.Unlock();
 				DebugLogError(L"QOSAddSocket: Error %d (%s).", error, GetErrorMessage(error, 0));
 				if(!Reinitialize())
 				{
@@ -147,11 +139,13 @@ BOOL CQOS::AddSocket(SOCKET socket, const SOCKADDR* const dest)
 				}
 			}
 		}
-		else
+		else if(error != 0)
 		{
-			if (error != ERROR_NOT_FOUND)
+			if(error != ERROR_NOT_FOUND)
 				DebugLogError(L"QOSAddSocket: Error %d (%s).", error, GetErrorMessage(error, 0));
-			m_qosSockets.RemoveKey(socket);
+			POSITION posFind = m_qosSockets.Find(socket);
+			if(posFind)
+				m_qosSockets.RemoveAt(posFind);
 			success = FALSE;
 		}
 	}
@@ -163,34 +157,40 @@ BOOL CQOS::RemoveSocket(SOCKET socket)
 {
 	BOOL success = FALSE;
 
-	if (m_qosHandle != NULL && socket != INVALID_SOCKET)
+	if(m_qosHandle != NULL && socket != INVALID_SOCKET)
 	{
 		CSingleLock lock(&m_qosLocker, TRUE);
 
-		if (m_qosSockets.RemoveKey(socket))
-		{
-			success = TRUE;
+		success = TRUE;
 
-			if (m_pQOSRemoveSocketFromFlow(m_qosHandle, socket, m_qosFlowId, 0) == 0)
+		const DWORD error = RemoveSocket_internal(socket);
+		if(error != 0)			
+		{
+			DebugLogError(L"QOSRemoveSocket: Error %d (%s).", error, GetErrorMessage(error, 0));
+			if(error == ERROR_NOT_FOUND)
 			{
-				const DWORD error = GetLastError();
-				DebugLogError(L"QOSRemoveSocket: Error %d (%s).", error, GetErrorMessage(error, 0));
-				if (clock() - m_qosLastInit < SEC2MS(5))
-					success = FALSE;
-				else if (error == ERROR_SYSTEM_POWERSTATE_TRANSITION || error == ERROR_SYSTEM_POWERSTATE_COMPLEX_TRANSITION || error == ERROR_DEVICE_REINITIALIZATION_NEEDED || error == ERROR_NOT_FOUND)
+				ASSERT(0);
+				success = TRUE; // not found? removed already!
+			}
+			else if(clock() - m_qosLastInit < SEC2MS(5))
+				success = FALSE;
+			else if(error == ERROR_SYSTEM_POWERSTATE_TRANSITION 
+				|| error == ERROR_SYSTEM_POWERSTATE_COMPLEX_TRANSITION 
+				|| error == ERROR_DEVICE_REINITIALIZATION_NEEDED 
+				/*|| error == ERROR_NOT_FOUND*/)
+			{
+				lock.Unlock();
+				if(!Reinitialize())
 				{
-					if(!Reinitialize())
-					{
-						DebugLogError(L"QOSRemoveSocket: Reinitialization was unsuccessful.");;
-						success = FALSE;
-					}
-					else
-						DebugLog(L"QOSRemoveSocket: Reinitialized!");
+					DebugLogError(L"QOSRemoveSocket: Reinitialization was unsuccessful.");;
+					success = FALSE;
 				}
 				else
-				{
-					success = FALSE;
-				}
+					DebugLog(L"QOSRemoveSocket: Reinitialized!");
+			}
+			else
+			{
+				success = FALSE;
 			}
 		}
 	}
@@ -202,9 +202,9 @@ BOOL CQOS::SetDataRate(DWORD const datarate)
 {
 	BOOL success = FALSE;
 
-	if (m_qosHandle != NULL)
+	if(m_qosHandle != NULL)
 	{
-		if (m_qosDatarate == datarate)
+		if(m_qosDatarate == datarate)
 			success = TRUE;
 		else
 		{
@@ -213,13 +213,17 @@ BOOL CQOS::SetDataRate(DWORD const datarate)
 			CSingleLock lock(&m_qosLocker, TRUE);
 
 			const DWORD error = SetDataRate_internal(datarate);
-			if (error != 0)
+			if(error != 0)
 			{
 				DebugLogError(L"QOSSetDataRate: Error %d (%s).", error, GetErrorMessage(error, 0));
-				if (clock() - m_qosLastInit < SEC2MS(5))
+				if(clock() - m_qosLastInit < SEC2MS(5))
 					success = FALSE;
-				else if (error == ERROR_SYSTEM_POWERSTATE_TRANSITION || error == ERROR_SYSTEM_POWERSTATE_COMPLEX_TRANSITION || error == ERROR_DEVICE_REINITIALIZATION_NEEDED || error == ERROR_NOT_FOUND)
+				else if(error == ERROR_SYSTEM_POWERSTATE_TRANSITION 
+					|| error == ERROR_SYSTEM_POWERSTATE_COMPLEX_TRANSITION
+					|| error == ERROR_DEVICE_REINITIALIZATION_NEEDED 
+					|| error == ERROR_NOT_FOUND)
 				{
+					lock.Unlock();
 					if(!Reinitialize())
 					{
 						DebugLogError(L"QOSSetDataRate: Reinitialization was unsuccessful.");
@@ -242,26 +246,54 @@ BOOL CQOS::SetDataRate(DWORD const datarate)
 DWORD CQOS::AddSocket_internal(SOCKET const socket, const SOCKADDR* const dest)
 {
 	DWORD result = 0;
-	if (m_pQOSAddSocketToFlow(m_qosHandle, socket, const_cast<PSOCKADDR>(dest), QOSTrafficTypeBackground, QOS_NON_ADAPTIVE_FLOW, &m_qosFlowId) == 0)
-		result = GetLastError();
+
+	POSITION posFind = m_qosSockets.Find(socket);
+	if(posFind == 0) // don't "double-add"
+	{
+		if(m_pQOSAddSocketToFlow(m_qosHandle, socket, const_cast<PSOCKADDR>(dest), QOSTrafficTypeBackground, QOS_NON_ADAPTIVE_FLOW, &m_qosFlowId) == 0)
+			result = GetLastError();
+		if(result == 0)
+			m_qosSockets.AddTail(socket);
+	}
+
+	return result;
+}
+
+DWORD CQOS::RemoveSocket_internal(SOCKET const socket)
+{
+	DWORD result = 0;
+
+	POSITION posFind = m_qosSockets.Find(socket);
+	if(posFind)
+	{
+		m_qosSockets.RemoveAt(posFind);
+		if(m_pQOSRemoveSocketFromFlow(m_qosHandle, socket, m_qosFlowId, 0) == 0)
+			result = GetLastError();
+
+		// obviously, and empty flow leads to ERROR_NOT_FOUND when adding another socket
+		// thus, we reset the flow ID if necessary
+		if(m_qosSockets.IsEmpty())
+			m_qosFlowId = 0;
+	}
+
 	return result;
 }
 
 DWORD CQOS::SetDataRate_internal(DWORD datarate)
 {
 	DWORD result = 0;
-	if (m_qosFlowId != 0)
+	if(m_qosFlowId != 0)
 	{
 		m_qosDatarate = datarate;
 		// Make sure flowrate is atleast 1 kB/s
-		if (datarate < 1024) 
+		if(datarate < 1024) 
 			datarate = 1024;
 		// Make flowrate 110% of eMules internal upload speed to give room for IP headers
 		QOS_FLOWRATE_OUTGOING	qosFlowRate = {(static_cast<UINT64>(datarate) * 8ULL * 110ULL) / 100ULL, /*QOSShapeOnly*/ QOSShapeAndMark};
 		QOS_TRAFFIC_TYPE		qosTrafficType = QOSTrafficTypeBackground;
-		if (m_pQOSSetFlow(m_qosHandle, m_qosFlowId, QOSSetTrafficType, sizeof(QOS_TRAFFIC_TYPE), &qosTrafficType, 0, NULL) == 0)
+		if(m_pQOSSetFlow(m_qosHandle, m_qosFlowId, QOSSetTrafficType, sizeof(QOS_TRAFFIC_TYPE), &qosTrafficType, 0, NULL) == 0)
 			result = GetLastError();
-		else if (m_pQOSSetFlow(m_qosHandle, m_qosFlowId, QOSSetOutgoingRate, sizeof(QOS_FLOWRATE_OUTGOING), &qosFlowRate, 0, NULL) == 0)
+		else if(m_pQOSSetFlow(m_qosHandle, m_qosFlowId, QOSSetOutgoingRate, sizeof(QOS_FLOWRATE_OUTGOING), &qosFlowRate, 0, NULL) == 0)
 			result = GetLastError();
 	}
 	return result;
