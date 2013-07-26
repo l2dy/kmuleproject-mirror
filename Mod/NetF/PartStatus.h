@@ -20,16 +20,26 @@
 class CSafeMemFile;
 class CPartFile;
 
+// Special values
+enum 
+{
+	PROTOCOL_REVISION_0 = 0,
+	PROTOCOL_REVISION_1 = 1,
+	PROTOCOL_REVISION_2 = 2
+};
+
 class CPartStatus
 {
 public:
 	// Destructor
 	CPartStatus() {}
 	virtual			~CPartStatus() {}
-	// Manipulation routines
+	// Cloning
+	virtual CPartStatus*	Clone() = 0;
+	// Manipulation routines (has to be overriden)
 	virtual void	Set(uint64 start, uint64 stop) = 0;
 	virtual void	Clear(uint64 start, uint64 stop) = 0;
-	// 
+	// Bytes (has to be overriden)
 	virtual uint64	GetSize() const = 0;
 	virtual uint64	GetChunkSize() const = 0;
 	virtual bool	IsComplete(uint64 start = 0, uint64 stop = ~0ULL) const = 0;
@@ -39,8 +49,9 @@ public:
 	virtual uint64	GetCompleted(uint64 start = 0, uint64 stop = ~0ULL) const;
 	virtual uint64	GetNeeded(uint64 start = 0, uint64 stop = ~0ULL) const;
 	virtual uint64	GetNeeded(const CPartStatus* from) const;
-	virtual bool	IsNeeded(uint64 start = 0, uint64 stop = ~0ULL) const {return GetNeeded(start, stop) > 0;}
-	virtual bool	IsNeeded(const CPartStatus* from) const {return GetNeeded(from) > 0;}
+	virtual bool	IsNeeded(uint64 start = 0, uint64 stop = ~0ULL) const {return FindFirstNeeded(start, stop);}
+	virtual bool	IsNeeded(const CPartStatus* from) const {uint64 start = 0; uint64 stop = ~0ULL; return FindFirstNeeded(start, stop, from);}
+	virtual bool	IsPartial(uint64 start = 0, uint64 stop = ~0ULL) const {return GetNeeded(start, stop) > 0 && GetCompleted(start, stop) > 0;}
 	virtual bool	FindFirstNeeded(uint64& start, uint64& stop, const CPartStatus* from) const;
 	// AICH chunks
 	virtual void	SetAICH(UINT chunk) {uint64 startOffset = (uint64) (chunk / 53) * PARTSIZE + (chunk % 53) * EMBLOCKSIZE; Set(startOffset, ((chunk % 53) != 52 ? startOffset + EMBLOCKSIZE - 1ULL : ((chunk + 1) / 53) * PARTSIZE));}
@@ -58,14 +69,33 @@ public:
 	virtual UINT	GetPartCount() const throw() {return (UINT) ((uint64) (GetSize() + PARTSIZE - 1ULL) / PARTSIZE);}
 	virtual UINT	GeteD2KPartCount() const throw() {return (UINT) ((uint64) (GetSize() / PARTSIZE + 1));}
 	virtual bool	IsCompletePart(UINT part) const {return IsComplete((uint64) part * PARTSIZE, (uint64) (part + 1) * PARTSIZE - 1ULL);}
+	virtual bool	IsPartialPart(UINT part) const {return IsPartial((uint64) part * PARTSIZE, (uint64) (part + 1) * PARTSIZE - 1ULL);}
 	// Read/Write part status vectors
-	virtual void	ReadPartStatus(CSafeMemFile* data, bool defState);
-	virtual void	WritePartStatus(CSafeMemFile* data, bool defState, int protocolRevision = 0) const;
-	// Special values
-	enum {
-		PROTOCOL_REVISION = 1
-	};
+	static CPartStatus*		CreatePartStatus(CSafeMemFile* data, const uint64 size, bool defState = true);
+	virtual void			WritePartStatus(CSafeMemFile* data, int protocolRevision = PROTOCOL_REVISION_0, bool defState = true) const;	
 };
+
+/*class CGenericPartMap : public CPartStatus
+{
+public:
+	// Constructors / Destructor
+			CGenericPartMap(uint64 size);
+			CGenericPartMap(const CPartStatus* source);
+			~CGenericPartMap();
+	// Cloning
+	CPartStatus*	Clone() {return new CGenericPartMap(this);}
+	// Bytes
+	uint64	GetSize() const throw() {return m_size;}
+	uint64	GetChunkSize() const throw() {return 1;}
+	void	Set(uint64 start, uint64 stop);
+	void	Clear(uint64 start, uint64 stop);
+	bool	IsComplete(uint64 start, uint64 stop) const;
+	bool	FindFirstComplete(uint64& start, uint64& stop) const;
+	bool	FindFirstNeeded(uint64& start, uint64& stop) const;
+private:
+	uint64	m_size;
+	uint8*	m_chunks;
+};*/
 
 class CPartFileStatus : public CPartStatus
 {
@@ -75,8 +105,9 @@ public:
 	~CPartFileStatus() {}
 	//
 private:
-	void	Set(uint64, uint64) {}	// Not used! (Should throw exception?)
-	void	Clear(uint64, uint64) {}	// Not used! (Should throw exception?)
+	CPartStatus*	Clone() {ASSERT(0); return NULL;}	// Not used! (Should throw exception?)
+	void	Set(uint64, uint64) {ASSERT(0); }	// Not used! (Should throw exception?)
+	void	Clear(uint64, uint64) {ASSERT(0); }	// Not used! (Should throw exception?)
 public:
 	uint64	GetSize() const;
 	uint64	GetChunkSize() const {return 1;}
@@ -94,6 +125,8 @@ public:
 			CAICHMap(uint64 size);
 			CAICHMap(const CPartStatus* source);
 			~CAICHMap();
+	// Cloning
+	CPartStatus*	Clone() {return new CAICHMap(this);}
 	// Bytes
 	uint64	GetSize() const throw() {return m_size;}
 	uint64	GetChunkSize() const throw() {return EMBLOCKSIZE;}
@@ -111,9 +144,9 @@ private:
 	void	_SetAICH(const UINT chunk) throw() {m_chunks[chunk >> 3] |= (1 << (chunk & 0x7));}
 	void	_ClearAICH(const UINT chunk) throw() {m_chunks[chunk >> 3] &= ~(1 << (chunk & 0x7));}
 	UINT	_GetAICHCount() const throw() {return _GetAICHCount(m_size);}
-	UINT	_GetAICHCount(const uint64 size) const throw() {return static_cast<UINT>(53ULL * size / PARTSIZE + ((size % PARTSIZE) + EMBLOCKSIZE - 1ULL) / EMBLOCKSIZE);}
-	UINT	_GetAICHStart(const uint64 start) const throw() {return static_cast<UINT>(53ULL * start / PARTSIZE + ((start % PARTSIZE) + EMBLOCKSIZE - 1ULL) / EMBLOCKSIZE);}
-	UINT	_GetAICHEnd(const uint64 stop) const throw() {return static_cast<UINT>(53ULL * stop / PARTSIZE + ((stop % PARTSIZE) + 1ULL) / EMBLOCKSIZE);}
+	UINT	_GetAICHCount(const uint64 size) const throw() {return static_cast<UINT>(53ULL * (size / PARTSIZE) + ((size % PARTSIZE) + EMBLOCKSIZE - 1ULL) / EMBLOCKSIZE);}
+	UINT	_GetAICHStart(const uint64 start) const throw() {return static_cast<UINT>(53ULL * (start / PARTSIZE) + (start % PARTSIZE) / EMBLOCKSIZE);}
+	UINT	_GetAICHEnd(const uint64 stop) const throw() {return _GetAICHStart(stop) + 1;}
 	bool	_IsCompleteAICH(const UINT chunk) const throw() {return ((m_chunks[chunk >> 3] >> (chunk & 0x7)) & 0x1) != 0;}
 	uint64	m_size;
 	uint8*	m_chunks;
@@ -126,6 +159,8 @@ public:
 			CCrumbMap(uint64 size);
 			CCrumbMap(const CPartStatus* source);
 			~CCrumbMap();
+	// Cloning
+	CPartStatus*	Clone() {return new CCrumbMap(this);}
 	// Bytes
 	uint64	GetSize() const throw() {return m_size;}
 	uint64	GetChunkSize() const throw() {return CRUMBSIZE;}
@@ -155,6 +190,8 @@ public:
 			CPartMap(uint64 size);
 			CPartMap(const CPartStatus* source);
 			~CPartMap();
+	// Cloning
+	CPartStatus*	Clone() {return new CPartMap(this);}
 	// Bytes
 	uint64	GetSize() const throw() {return m_size;}
 	uint64	GetChunkSize() const throw() {return PARTSIZE;}
@@ -168,6 +205,7 @@ public:
 	void	ClearPart(UINT part) {ASSERT(part < _GetPartsCount()); _ClearPart(part);}
 	UINT	GetPartsCount() const throw() {return _GetPartCount();}
 	bool	IsCompletePart(UINT part) const {ASSERT(part < _GetPartsCount()); return _IsCompletePart(part);}
+	bool	IsPartialPart(uint16 part) const {ASSERT(part < _GetPartsCount()); return false;}
 private:
 	void	_SetPart(const UINT part) throw() {m_chunks[part >> 3] |= (1 << (part & 0x7));}
 	void	_ClearPart(const UINT part) throw() {m_chunks[part >> 3] &= ~(1 << (part & 0x7));}

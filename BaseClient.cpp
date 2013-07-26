@@ -1418,7 +1418,7 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 	if(bSendSCT)
 	{
-		CTag tagProtocolRevision(CT_PROTOCOLREVISION, CPartStatus::PROTOCOL_REVISION);
+		CTag tagProtocolRevision(CT_PROTOCOLREVISION, PROTOCOL_REVISION_2); // Enable EMBLOCK (AICH) sized crumbs as well as normal crumbs
 		tagProtocolRevision.WriteTagToFile(data);
 	}
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]

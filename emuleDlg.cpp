@@ -612,11 +612,7 @@ BOOL CemuleDlg::OnInitDialog()
         m_bStartMinimizedChecked = true;
     }
     SetWindowPlacement(&wp);
-
-    // wait for the first start wizard to finish before starting the timer
-    if (thePrefs.IsFirstStart())
-        FirstTimeWizard();
-
+	
     VERIFY((m_hTimer = ::SetTimer(NULL, NULL, 300, StartupTimer)) != NULL);
     if (thePrefs.GetVerbose() && !m_hTimer)
         AddDebugLogLine(true,_T("Failed to create 'startup' timer - %s"),GetErrorMessage(GetLastError()));
@@ -626,7 +622,13 @@ BOOL CemuleDlg::OnInitDialog()
     // Start UPnP prot forwarding
 	StartUPnP();
 	StartNATPMP(); //>>> WiZaRd::NAT-PMP
-	
+
+	// wait for the first start wizard to finish before starting the timer
+	// WiZaRd: do *NOT* wait here!
+	// the first time wizard may create both listeners already and retrying to create them in startuptimer would render them unusable
+	if (thePrefs.IsFirstStart())		
+		FirstTimeWizard();
+
     VERIFY(m_pDropTarget->Register(this));
 
     // start aichsyncthread
@@ -702,6 +704,7 @@ void CALLBACK CemuleDlg::StartupTimer(HWND /*hwnd*/, UINT /*uiMsg*/, UINT /*idEv
                 LogError(LOG_STATUSBAR,_T("Failed to initialize download queue - Unknown exception"));
                 bError = true;
             }
+			
             if (!theApp.listensocket->StartListening())
                 bError = true;
             if (!theApp.clientudp->Create()) // we use KAD only so that IS a serious error!

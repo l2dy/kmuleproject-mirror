@@ -88,7 +88,10 @@ public:
     //******************** MD4 Related
     bool			CalculateMD4HashByHashSet(bool bVerifyOnly, bool bDeleteOnVerifyFail = true);
     bool			LoadMD4HashsetFromFile(CFileDataIO* file, bool bVerifyExistingHash);
-    void			WriteMD4HashsetToFile(CFileDataIO* pFile) const;
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	void			WriteMD4HashsetToFile(CFileDataIO* pFile, bool bHashSetOnly = false) const;
+    //void			WriteMD4HashsetToFile(CFileDataIO* pFile) const;
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
     bool			SetMD4HashSet(const CArray<uchar*, uchar*>& aHashset);
     uchar*			GetMD4PartHash(UINT part) const;

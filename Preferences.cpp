@@ -2176,7 +2176,11 @@ void CPreferences::LoadPreferences()
 	m_bLogAnalyzerEvents = ini.GetBool(L"LogAnalyzerEvents", true); //>>> WiZaRd::ClientAnalyzer
     if (m_bEnableVerboseOptions)
     {
+#ifdef _DEBUG
+		m_bVerbose = ini.GetBool(L"Verbose", true);
+#else
         m_bVerbose=ini.GetBool(L"Verbose",false);
+#endif
         m_bFullVerbose=ini.GetBool(L"FullVerbose",false);
         debug2disk=ini.GetBool(L"SaveDebugToDisk", false);
         m_bDebugSourceExchange=ini.GetBool(L"DebugSourceExchange",false);

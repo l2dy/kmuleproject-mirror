@@ -2315,7 +2315,17 @@ bool CKnownFile::WriteSafePartStatus(CSafeMemFile* data_out, CUpDownClient* send
 {
     if (WritePartStatus(data_out, sender, bUDP))
         return true;
-    data_out->WriteUInt16(0); //i.e. "complete file"
+
+	//i.e. "complete file"
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	if(sender && sender->GetSCTVersion() > PROTOCOL_REVISION_1)
+	{
+		data_out->WriteUInt16(1);
+		data_out->WriteUInt8(0);
+	}
+	else
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+		data_out->WriteUInt16(0); 
     return false;
 }
 
@@ -2335,14 +2345,45 @@ bool CKnownFile::WritePartStatus(CSafeMemFile* file, CUpDownClient* client, cons
 	uint64	partSize = PARTSIZE;	
 	uint64	size = GetFileSize();
 	CPartFile* pThis = bPartfile ? (CPartFile*)this : NULL;
+	UINT sctDivider = 1;
 	if(pThis)
 	{
 		if (pThis->GetPublishedPartStatus() == NULL)
 			DebugLogError(L"%hs: No part data available (part file not initialized!?)", __FUNCTION__);
-		else if (client && client->SupportsSCT() && size < (441 * PARTSIZE) && pThis->GetPublishedPartStatus()->GetChunkSize() < PARTSIZE)
+		else if (client && client->SupportsSCT())
 		{
-			partSize = CRUMBSIZE;
-			parts = (uint16)((size + partSize - 1) / partSize);
+			// Decide chunk size for part vector (limit to 8000 sub chunks, to keep part vector size less than 1kB?)
+			if (client->GetSCTVersion() >= PROTOCOL_REVISION_1)
+			{
+				bool isSubChunksAvailable = false;
+				UINT partCount = (UINT)((size + PARTSIZE - 1) / PARTSIZE);
+				for (UINT i = 0; i < partCount; ++i)
+				{
+					if (pThis->GetPublishedPartStatus()->IsPartialPart(i))
+					{
+						isSubChunksAvailable = true;
+						break;
+					}
+				}
+
+				// Only send sub chunks if there are incomplete parts shared
+				if (isSubChunksAvailable)
+				{
+					if (client->GetSCTVersion() >= PROTOCOL_REVISION_2)
+					{
+						if (size <= (8000 * EMBLOCKSIZE) && pThis->GetPublishedPartStatus()->GetChunkSize() < PARTSIZE)
+							partSize = EMBLOCKSIZE;
+						sctDivider = (UINT)((PARTSIZE + partSize - 1) / partSize);
+					}
+					else if (size <= (8000 * CRUMBSIZE) && pThis->GetPublishedPartStatus()->GetChunkSize() < PARTSIZE)
+					{
+						partSize = CRUMBSIZE;
+						sctDivider = CRUMBSPERPART;
+					}
+				}
+			}
+
+			parts = (uint16)(sctDivider * (size / PARTSIZE) + ((size % PARTSIZE) + partSize - 1) / partSize);
 		}
 	}
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
@@ -2359,19 +2400,23 @@ bool CKnownFile::WritePartStatus(CSafeMemFile* file, CUpDownClient* client, cons
     const bool bWriteStatus = bSameFile && client && client->m_abyUpPartStatusHidden;
 //<<< WiZaRd::FiX
 	bool partCompletelyShown = true; 
-	uint16 lastPart = 0;
+	UINT lastPart = 0;
     while (done != parts)
     {
         //fill one uint8 with data...
         uint8 towrite = 0;
         for (uint8 i = 0; i < 8; ++i)
         {
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+			UINT cur_part = done / sctDivider;
+			const UINT subChunk = done % sctDivider;
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
             if (
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 					(partSize != PARTSIZE || done < partcount)	//valid part
                     //of course it's complete if it's a complete file
                     //or the part is complete
-					&& (!bPartfile || (pThis->GetPublishedPartStatus() && pThis->GetPublishedPartStatus()->IsComplete(done*PARTSIZE, (done + 1)*PARTSIZE - 1))))
+					&& (!bPartfile || (pThis->GetPublishedPartStatus() && pThis->GetPublishedPartStatus()->IsComplete((uint64) cur_part * PARTSIZE + subChunk * partSize, (uint64) cur_part * PARTSIZE + (subChunk + 1) * partSize - 1))))
 					//done < partcount	//valid part
                     //&& (!bPartfile || pThis->IsComplete(done*PARTSIZE, (done + 1)*PARTSIZE - 1, true)))
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
@@ -2384,7 +2429,10 @@ bool CKnownFile::WritePartStatus(CSafeMemFile* file, CUpDownClient* client, cons
             }
 
             ++done;
-			const uint16 cur_part = (uint16)floor((float)done / (PARTSIZE/partSize));
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+			//cur_part = (UINT)floor((float)done / (PARTSIZE/partSize));
+			cur_part = done / sctDivider;
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 			if(lastPart != cur_part)
 			{
 //>>> WiZaRd::FiX
@@ -2475,6 +2523,7 @@ uint8* CKnownFile::GetPartStatus(CUpDownClient* client) const
 	uint16	partCount = parts;
 	uint64	partSize = PARTSIZE;
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	UINT sctDivider = 1;
 	if(pThis)
 	{
 		// parts taken from CPartStatus::WritePartStatus
@@ -2482,10 +2531,40 @@ uint8* CKnownFile::GetPartStatus(CUpDownClient* client) const
 		uint64	size = GetFileSize();
 		if (pThis->GetPublishedPartStatus() == NULL)
 			DebugLogError(L"%hs: No part data available (part file not initialized!?)", __FUNCTION__);
-		else if (client && client->SupportsSCT() && size < (441 * PARTSIZE) && pThis->GetPublishedPartStatus()->GetChunkSize() < PARTSIZE)
+		else if (client && client->SupportsSCT())
 		{
-			partSize = CRUMBSIZE;
-			partCount = (uint16)((size + partSize - 1) / partSize);
+			// Decide chunk size for part vector (limit to 8000 sub chunks, to keep part vector size less than 1kB?)
+			if (client->GetSCTVersion() >= PROTOCOL_REVISION_1)
+			{
+				bool isSubChunksAvailable = false;
+				UINT partCount = (UINT)((size + PARTSIZE - 1) / PARTSIZE);
+				for (UINT i = 0; i < partCount; ++i)
+				{
+					if (pThis->GetPublishedPartStatus()->IsPartialPart(i))
+					{
+						isSubChunksAvailable = true;
+						break;
+					}
+				}
+
+				// Only send sub chunks if there are incomplete parts shared
+				if (isSubChunksAvailable)
+				{
+					if (client->GetSCTVersion() >= PROTOCOL_REVISION_2)
+					{
+						if (size <= (8000 * EMBLOCKSIZE) && pThis->GetPublishedPartStatus()->GetChunkSize() < PARTSIZE)
+							partSize = EMBLOCKSIZE;
+						sctDivider = (uint16)((PARTSIZE + partSize - 1) / partSize);
+					}
+					else if (size <= (8000 * CRUMBSIZE) && pThis->GetPublishedPartStatus()->GetChunkSize() < PARTSIZE)
+					{
+						partSize = CRUMBSIZE;
+						sctDivider = CRUMBSPERPART;
+					}
+				}
+			}
+
+			partCount = (uint16)(sctDivider * (size / PARTSIZE) + ((size % PARTSIZE) + partSize - 1) / partSize);
 		}
 	}
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
@@ -2493,15 +2572,19 @@ uint8* CKnownFile::GetPartStatus(CUpDownClient* client) const
 	memset(abyTmpPartStatus, 0, partCount*sizeof(uint8)); //show all
 
 	for(uint16 i = 0; i < partCount; ++i)
-	{
-		const uint16 cur_part = (uint16)floor((float)i / (PARTSIZE/partSize));
+	{		
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+		//const UINT cur_part = (UINT)floor((float)i / (PARTSIZE/partSize));
+		const UINT cur_part = i / sctDivider;
+		const UINT subChunk = i % sctDivider;
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
 		//we allow to send this chunk if either...		
 		const bool bShowPart = !bSOTN									// SOTN is OFF
 			|| (tmparray[cur_part] <= iMinAvailablePartFrenquencyPrev)	// it's the rarest chunk
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 			// or if it's complete, already
-			|| (client && client->IsPartAvailable(cur_part) && (!bUsePart || (pThis->GetPublishedPartStatus() && pThis->GetPublishedPartStatus()->IsComplete((uint64) i * partSize, (uint64) (i + 1) * partSize - 1)))); // show parts that the other client has
+			|| (client && client->IsPartAvailable(cur_part) && (!bUsePart || (pThis->GetPublishedPartStatus() && pThis->GetPublishedPartStatus()->IsComplete((uint64) cur_part * PARTSIZE + subChunk * partSize, (uint64) cur_part * PARTSIZE + (subChunk + 1) * partSize - 1)))); // show parts that the other client has
 			//|| (client && client->IsPartAvailable(cur_part) && (!bUsePart || pThis->IsComplete((uint64) i * partSize, (uint64) (i + 1) * partSize - 1, true))); // show parts that the other client has
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 

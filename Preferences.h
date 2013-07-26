@@ -2113,7 +2113,7 @@ public:
 //>>> WiZaRd::ClientAnalyzer
     static	bool	GetLogAnalyzerEvents()
     {
-        return m_bVerbose && m_bLogAnalyzerEvents;
+        return m_bLogAnalyzerEvents;
     }
 //<<< WiZaRd::ClientAnalyzer
     static	bool	GetLogSecureIdent()

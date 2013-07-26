@@ -777,9 +777,9 @@ BEGIN
     GROUPBOX        "Connection Test",IDC_TESTFRAME,0,101,317,55
     LTEXT           "Description of the test...",IDC_TESTINFO,4,111,309,36
     PUSHBUTTON      "Start test...",IDC_STARTTEST,247,139,67,14
-    CONTROL         "",IDC_UPNPPROGRESS,"msctls_progress32",WS_BORDER,193,76,
-                    118,8
-    PUSHBUTTON      "Use UPnP to Setup Ports",IDC_UPNPSTART,192,60,119,14
+    CONTROL         "",IDC_UPNPPROGRESS,"msctls_progress32",WS_BORDER,150,76,
+                    160,8
+    PUSHBUTTON      "Use UPnP to Setup Ports",IDC_UPNPSTART,150,60,160,14
     CTEXT           "UPnP Status",IDC_UPNPSTATUS,0,85,317,17
 END
 

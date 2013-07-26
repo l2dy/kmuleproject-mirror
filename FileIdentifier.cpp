@@ -255,12 +255,20 @@ uint16 CFileIdentifier::GetTheoreticalMD4PartHashCount() const
     return uResult;
 }
 
-void CFileIdentifier::WriteMD4HashsetToFile(CFileDataIO* pFile) const
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+void CFileIdentifier::WriteMD4HashsetToFile(CFileDataIO* pFile, bool bHashSetOnly) const
+//void CFileIdentifier::WriteMD4HashsetToFile(CFileDataIO* pFile) const
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 {
     ASSERT(!isnulmd4(m_abyMD4Hash));
-    pFile->WriteHash16(m_abyMD4Hash);
-    UINT uParts = m_aMD4HashSet.GetCount();
-    pFile->WriteUInt16((uint16)uParts);
+	UINT uParts = m_aMD4HashSet.GetCount();
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	if (!bHashSetOnly)
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	{
+		pFile->WriteHash16(m_abyMD4Hash);
+		pFile->WriteUInt16((uint16)uParts);
+	}
     for (UINT i = 0; i < uParts; i++)
         pFile->WriteHash16(m_aMD4HashSet[i]);
 }

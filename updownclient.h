@@ -1077,10 +1077,14 @@ protected:
     UINT m_fHashsetRequestingAICH : 1, // 31 bits left
 		 m_fAICHHashRequested : 1, //>>> Security Check
 		 m_fSourceExchangeRequested : 1, //>>> Security Check
-		 m_fSupportsModProt	  : 1; //>>> WiZaRd::ModProt
+m_fSupportsModProt	  : 1; //>>> WiZaRd::ModProt
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+public:
     CTypedPtrList<CPtrList, Pending_Block_Struct*>	 m_PendingBlocks_list;
     CTypedPtrList<CPtrList, Requested_Block_Struct*> m_DownloadBlocks_list;
 
+protected:
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     bool    m_bSourceExchangeSwapped; // ZZ:DownloadManager
     DWORD   lastSwapForSourceExchangeTick; // ZZ:DownloadManaager
     bool    DoSwap(CPartFile* SwapTo, bool bRemoveCompletely, LPCTSTR reason); // ZZ:DownloadManager
@@ -1231,6 +1235,7 @@ private:
 public:
 	int			GetSCTVersion() const	{return m_nProtocolRevision;}
 	bool		SupportsSCT() const		{return m_nProtocolRevision > 0;}
+	void		SendCrumbSetPacket(const uchar* const pData, size_t const nSize);
 	void		ProcessCrumbComplete(CSafeMemFile* data);
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 //>>> WiZaRd::ModProt

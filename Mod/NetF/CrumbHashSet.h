@@ -30,7 +30,7 @@ public:
 private:
 	unsigned char*	m_CrumbHashSet;
 	UINT			m_CrumbCount;
-	unsigned char	m_SHAHash[20];
+	unsigned char	m_SHAHash[CRUMBSPERPART];
 	bool			m_SHAHashValid;
 };
 

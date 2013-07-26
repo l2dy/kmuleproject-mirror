@@ -573,7 +573,7 @@ void CUpDownClient::ProcessFileInfo(CSafeMemFile* data, CPartFile* file)
 		if (m_pPartStatus != NULL)
 			file->RemoveFromPartsInfo(m_pPartStatus);
 		delete m_pPartStatus;
-		m_pPartStatus = NULL; // In case CCrumbMap constructor fails
+		m_pPartStatus = NULL; // In case we fail to create the part status object
 		m_pPartStatus = new CCrumbMap(file->GetFileSize());
 		m_pPartStatus->Set(0, reqfile->GetFileSize() - 1ULL);
 		const UINT m_nPartCount = reqfile->GetPartCount();
@@ -641,9 +641,28 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPart
 	if (m_pPartStatus != NULL)
 		reqfile->RemoveFromPartsInfo(m_pPartStatus);
 	delete m_pPartStatus;
-	m_pPartStatus = NULL; // In case CCrumbMap constructor fails
-	m_pPartStatus = new CCrumbMap(reqfile->GetFileSize());
-	m_pPartStatus->ReadPartStatus(data, true);
+	m_pPartStatus = NULL; // In case we fail to create the part status object
+	m_pPartStatus = CPartStatus::CreatePartStatus(data, reqfile->GetFileSize());
+	/*if (!reqfile->GetDonePartStatus() || reqfile->GetDonePartStatus()->GetNeeded(m_pPartStatus) > 0)
+		bPartsNeeded = true;
+	if (m_pPartStatus->IsComplete())
+		m_bCompleteSource = true;*/
+	// netfinity: Update upload partstatus if we are downloading this file and there is more pieces available in the download partstatus
+	if(!md4cmp(GetUploadFileID(), file->GetFileHash()) && (m_pUpPartStatus == NULL || (m_pPartStatus->GetCompleted() >= m_pUpPartStatus->GetCompleted())))
+	{
+		CPartFile* tempreqfile = (CPartFile*)theApp.sharedfiles->GetFileByID(GetUploadFileID());
+		if (tempreqfile && m_pUpPartStatus != NULL)
+			tempreqfile->AddToPartsInfo(m_pUpPartStatus);
+
+		delete m_pUpPartStatus;
+		m_pUpPartStatus = NULL;
+		m_pUpPartStatus = m_pPartStatus->Clone();
+
+		
+		if (tempreqfile != NULL)
+			tempreqfile->AddToPartsInfo(m_pUpPartStatus);
+	}
+
 	const UINT m_nPartCount = GetPartCount();
 
 	bool bPartsNeeded = false;
@@ -1835,7 +1854,6 @@ void CUpDownClient::UDPReaskForDownload()
     if (!reqfile || m_bUDPPending)
         return;
 
-    //TODO: This should be changed to determine if the last 4 UDP packets failed, not the total one.
 //>>> WiZaRd::Detect UDP problem clients
     if (m_uiFailedUDPPacketsInARow > 3)
         return;

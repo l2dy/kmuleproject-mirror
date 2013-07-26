@@ -55,7 +55,7 @@ void CUrlClient::SetRequestFile(CPartFile* pReqFile)
 		if (m_pPartStatus != NULL)
 			reqfile->RemoveFromPartsInfo(m_pPartStatus);
 		delete m_pPartStatus;
-		m_pPartStatus = NULL; // In case CCrumbMap constructor fails
+		m_pPartStatus = NULL; // In case we fail to create the part status object
 		m_pPartStatus = new CCrumbMap(pReqFile->GetFileSize());
 		m_pPartStatus->Set(0, pReqFile->GetFileSize() - 1ULL);
         //m_nPartCount = reqfile->GetPartCount();

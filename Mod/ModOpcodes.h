@@ -82,18 +82,25 @@ enum eSharePermissions
 //<<< WiZaRd::ICS [enkeyDEV]
 
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+#define FORCE_AICH_TIME					MIN2MS(5)
+#define RESCAN_SHAREABLE_INTERVAL		MIN2MS(1)
+#define EMBLOCKSPERPART					53			//! Number of AICH blocks fitting in one part
+#define CRUMBSIZE						486400ui64  //! Chunk size of revised protocol (475kB)
+#define CRUMBSPERPART					20			//! Number of crumbs fitting in one part
+
 // eDonkey hybrid op-codes
 #define OP_HORDESLOTREQ			0x65		// <HASH (file) [16]>
 #define OP_HORDESLOTREJ			0x66		// <HASH (file) [16]>
 #define OP_HORDESLOTANS			0x67		// <HASH (file) [16]>
-#define OP_CRUMBSETANS			0x68
+#define OP_CRUMBSETANS					0x68		// <HASH (file) [16]> <HasCrumbSet [1]> <HASH (crumb) [8]>*(CrumbCNT)  for files containing only one part
+// or <HASH (file) [16]> <HasPartHashSet [1]> <HASH (part) [8]>*(PartCNT) <HasCrumbSet [1]> <HASH (crumb) [8]>*(CrumbCNT)  for larger files
+
 #define OP_CRUMBSETREQ			0x69		// <HASH (file) [16]>
 #define OP_CRUMBCOMPLETE		0x6A		// <HASH (file) [16]> <Crumb [4]>
 #define OP_PUBLICIPNOTIFY		0x6B		// <IP (receiver) [4]>   Hybrids sends this when IP in Hello packet doesn't match
 
 #define OP_CRUMBCOMPLETE		0x6A		// <HASH (file) [16]> <Crumb [4]>
 #define CT_PROTOCOLREVISION		"pr"		//! Used to identify crumbs support
-#define CRUMBSIZE				486400ui64  //! Chunk size of revised protocol (475kB)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
 //>>> WiZaRd::ModProt

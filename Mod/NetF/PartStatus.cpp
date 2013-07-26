@@ -20,9 +20,6 @@
 #include "Log.h"
 #include "PartFile.h"
 
-//#define CRUMBSIZE	(475 * 1024)
-//#define PARTSIZE	(9500 * 1024)
-
 uint64
 CPartStatus::GetCompleted(uint64 start, uint64 stop) const
 {
@@ -105,126 +102,260 @@ CPartStatus::FindFirstNeeded(uint64& start, uint64& stop, const CPartStatus* con
 	return false;
 }
 
+CPartStatus*
+	CPartStatus::CreatePartStatus(CSafeMemFile* const data, const uint64 size, const bool defState)
+{
+	uint64	sctSize = 0ULL;
+	uint16	sctDivider = 0;
+	uint16	sctCount;
+	CPartStatus* partStatus = NULL;
+
+	ASSERT(data != 0);
+
+	try
+	{
+		sctCount = data->ReadUInt16();
+		// Special case
+		if (sctCount == 0)
+		{
+			partStatus = new CAICHMap(size); // temporarily used until standard container is implemented
+			if (defState == true)
+				partStatus->Set(0, size - 1);
+			else
+				partStatus->Clear(0, size - 1);	
+			return partStatus;
+		}
+		// Future versions of the protocol may send a partmap of size 1 to indicate it doesn't have any data to share yet!
+		else if (sctCount == 1)
+		{
+			partStatus = new CAICHMap(size); // temporarily used until standard container is implemented
+			if (data->ReadUInt8() & 0x01)
+				partStatus->Set(0, size - 1);
+			else
+				partStatus->Clear(0, size - 1);	
+			return partStatus;
+		}
+
+		uint16 const wholePartCount = static_cast<uint16>(size / PARTSIZE);
+		// Check for standard part vector
+		if ((UINT) sctCount == (UINT) ((size + (PARTSIZE - 1)) / PARTSIZE))
+		{
+			partStatus = new CAICHMap(size); // temporarily used until standard container is implemented
+			sctSize = PARTSIZE;
+			sctDivider = 1;
+		}
+		// Check for AICH chunks
+		else if ((UINT) sctCount == (UINT) (53 * wholePartCount + ((size % PARTSIZE) + (EMBLOCKSIZE - 1)) / EMBLOCKSIZE))
+		{
+			DebugLog(_T(__FUNCTION__) _T("; Part vector has AICH sub chunks! :)"));
+			partStatus = new CAICHMap(size);
+			sctSize = EMBLOCKSIZE;
+			sctDivider = EMBLOCKSPERPART;
+		}
+		else if (wholePartCount > 1) // needed to avoid ambiguity with crumbs
+		{
+			if ((UINT) sctCount == (UINT) (27 * wholePartCount + ((size % PARTSIZE) + (2 * EMBLOCKSIZE - 1)) / (2 * EMBLOCKSIZE)))
+			{
+				DebugLog(_T(__FUNCTION__) _T("; Part vector has AICH x2 sub chunks! :)"));
+				partStatus = new CAICHMap(size);
+				sctSize = 2 * EMBLOCKSIZE;
+				sctDivider = 27;
+			}
+			else if ((UINT) sctCount == (UINT) (14 * wholePartCount + ((size % PARTSIZE) + (4 * EMBLOCKSIZE - 1)) / (4 * EMBLOCKSIZE)))
+			{
+				DebugLog(_T(__FUNCTION__) _T("; Part vector has AICH x4 sub chunks! :)"));
+				partStatus = new CAICHMap(size);
+				sctSize = 4 * EMBLOCKSIZE;
+				sctDivider = 14;
+			}
+			else if ((UINT) sctCount == (UINT) (7 * wholePartCount + ((size % PARTSIZE) + (8 * EMBLOCKSIZE - 1)) / (8 * EMBLOCKSIZE)))
+			{
+				DebugLog(_T(__FUNCTION__) _T("; Part vector has AICH x8 sub chunks! :)"));
+				partStatus = new CAICHMap(size);
+				sctSize = 8 * EMBLOCKSIZE;
+				sctDivider = 7;
+			}
+			else if ((UINT) sctCount == (UINT) (4 * wholePartCount + ((size % PARTSIZE) + (16 * EMBLOCKSIZE - 1)) / (16 * EMBLOCKSIZE)))
+			{
+				DebugLog(_T(__FUNCTION__) _T("; Part vector has AICH x16 sub chunks! :)"));
+				partStatus = new CAICHMap(size);
+				sctSize = 16 * EMBLOCKSIZE;
+				sctDivider = 4;
+			}
+			else if ((UINT) sctCount == (UINT) (2 * wholePartCount + ((size % PARTSIZE) + (32 * EMBLOCKSIZE - 1)) / (32 * EMBLOCKSIZE)))
+			{
+				DebugLog(_T(__FUNCTION__) _T("; Part vector has AICH x32 sub chunks! :)"));
+				partStatus = new CAICHMap(size);
+				sctSize = 32 * EMBLOCKSIZE;
+				sctDivider = 2;
+			}
+		}
+		// Check for Crumbs
+		if (sctSize == 0ULL && (UINT) sctCount == (UINT) ((size + (CRUMBSIZE - 1)) / CRUMBSIZE))
+		{
+			DebugLog(_T(__FUNCTION__) _T("; Part vector has crumbs! :)"));
+			partStatus = new CCrumbMap(size);
+			sctSize = CRUMBSIZE;
+			sctDivider = CRUMBSPERPART;
+		}
+		// Invalid part status vector?
+		if (sctSize == 0ULL) 
+		{
+			CString error;
+			error.Format(_T(__FUNCTION__) _T("; Part/subchunk count (%u) doesn't match any known subchunk format!"), static_cast<unsigned int>(sctCount));
+			throw error;
+		}
+
+		// Validate part count
+		uint16 const expectedSctCount = (uint16) (wholePartCount * sctDivider + ((size % PARTSIZE) + (sctSize - 1)) / sctSize);
+		if (sctCount != expectedSctCount)
+		{
+			CString error;
+			error.Format(_T(__FUNCTION__) _T("; Invalid part/subchunk count: %u, expected %u"), static_cast<unsigned int>(sctCount), static_cast<unsigned int>(expectedSctCount));
+			throw error;
+		}
+		// Check all bytes of the part status vector is available (final corruption check)
+		if (((sctCount + 7) / 8) > (data->GetLength() - data->GetPosition()))
+		{
+			CString error;
+			error.Format(_T(__FUNCTION__) _T("; Part status vector with %u part/subchunk(s) is incomplete. %u bytes privided but %u needed."), static_cast<unsigned int>(sctCount), static_cast<unsigned int>(data->GetLength() - data->GetPosition()), static_cast<unsigned int>((sctCount + 7) / 8));
+			throw error;
+		}
+		// Read part status vector
+		uint64	start = 0, stop = 0;
+		bool	laststate = false;
+		uint8	tmp;
+		for (uint16 i = 0; i < sctCount; i++)
+		{
+			uint16 const shift = i & 0x0007; 
+			uint16 const part = i / sctDivider;
+			uint16 const subChunk = i % sctDivider;
+
+			if (shift == 0)
+				tmp = data->ReadUInt8();
+			if (((tmp >> shift) & 0x01) == 0)
+			{
+				if (laststate == true)
+				{
+					if (stop != 0)
+						partStatus->Set(start, stop);
+					start = part * PARTSIZE + subChunk * sctSize;
+				}
+				stop = part * PARTSIZE + (subChunk + 1) * sctSize - 1;
+				laststate = false;
+			}
+			else
+			{
+				if (laststate == false)
+				{
+					if (stop != 0)
+						partStatus->Clear(start, stop);
+					start = part * PARTSIZE + subChunk * sctSize;
+				}
+				stop = part * PARTSIZE + (subChunk + 1) * sctSize - 1;
+				laststate = true;
+			}
+		}
+		stop = size - 1;
+		if (start <= stop)
+		{
+			if (laststate == true) 
+				partStatus->Set(start, stop);
+			else
+				partStatus->Clear(start, stop);
+		}
+	}
+	catch(...)
+	{
+		delete partStatus;
+		throw;
+	}
+
+	return partStatus;
+}
+
 void
-CPartStatus::ReadPartStatus(CSafeMemFile* const data, const bool defState)
+	CPartStatus::WritePartStatus(CSafeMemFile* const data, const int protocolRevision, const bool defState) const
 {
 	const uint64	size = GetSize();
 	uint64	sctSize = PARTSIZE;
 	uint16	sctDivider = 1;
-	uint16	partCount, expectedPartCount;
-
-	ASSERT(data != 0);
-	
-	partCount = data->ReadUInt16();
-	// Special case
-	if (partCount == 0)
-	{
-		if (defState == true)
-			Set(0, size - 1);
-		else
-			Clear(0, size - 1);	
-		return;
-	}
-	// Future versions of the protocol may send a partmap of size 1 to indicate it doesn't have any data to share yet!
-	else if (partCount == 1)
-	{
-		if (data->ReadUInt8() & 0x01)
-			Set(0, size - 1);
-		else
-			Clear(0, size - 1);	
-		return;
-	}
-	// Check for Crumbs
-	if ((UINT) partCount == (UINT) ((size + (CRUMBSIZE - 1)) / CRUMBSIZE)) //20 * (m_size / PARTSIZE) + (m_size % PARTSIZE + (CRUMBSIZE - 1)) / CRUMBSIZE)
-	{
-		DebugLog(_T(__FUNCTION__) _T("; Part vector has crumbs! :)"));
-		sctSize = CRUMBSIZE;
-		sctDivider = 20;
-	}
-	// Validate part count
-	//expectedPartCount = (uint16) (size / sctSize + 1); //sctDivider * (m_size / PARTSIZE) + (m_size % PARTSIZE + (sctSize - 1)) / sctSize;
-	expectedPartCount = (uint16) ((size + (sctSize - 1)) / sctSize); //sctDivider * (m_size / PARTSIZE) + (m_size % PARTSIZE + (sctSize - 1)) / sctSize;
-	if (partCount != expectedPartCount)
-	{
-		CString error;
-		error.Format(_T(__FUNCTION__) _T("; Invalid part count: %u, expected %u"), partCount, expectedPartCount);
-		throw error;
-	}
-	// TODO: Check all bytes of the part status vector is available (final corruption check)
-	// Read part status vector
-	uint64	start = 0, stop = 0;
-	bool	laststate = false;
-	uint8	tmp = 0;
-	for (uint16 i = 0; i < partCount; i++)
-	{
-		if (i % 8 == 0)
-			tmp = data->ReadUInt8();
-		if (((tmp >> (i % 8)) & 0x01) == 0)
-		{
-			if (laststate == true)
-			{
-				if (stop != 0)
-					Set(start, stop);
-				start = i * sctSize; //(i / sctDivider) * PARTSIZE + (i % sctDivider) * sctSize;
-			}
-			stop = (i + 1) * sctSize - 1; //((i + 1) / sctDivider) * PARTSIZE + ((i + 1) % sctDivider) * sctSize - 1;
-			laststate = false;
-		}
-		else
-		{
-			if (laststate == false)
-			{
-				if (stop != 0)
-					Clear(start, stop);
-				start = i * sctSize; //(i / sctDivider) * PARTSIZE + (i % sctDivider) * sctSize;
-			}
-			stop = (i + 1) * sctSize - 1; //((i + 1) / sctDivider) * PARTSIZE + ((i + 1) % sctDivider) * sctSize - 1;
-			laststate = true;
-		}
-	}
-	stop = size - 1;
-	if (start <= stop)
-	{
-		if (laststate == true) 
-			Set(start, stop);
-		else
-			Clear(start, stop);
-	}
-}
-
-void
-CPartStatus::WritePartStatus(CSafeMemFile* const data, const bool defState, const int protocolRevision) const
-{
-	const uint64	size = GetSize();
-	uint64	sctSize = PARTSIZE;
 	uint16	sctCount;
 	uint8	tmp;
 
-	// Decide chunk size for part vector
-	if (protocolRevision >= 1 && size < (441 * PARTSIZE) && GetChunkSize() < PARTSIZE)
-		sctSize = CRUMBSIZE;
-
-	sctCount = (uint16) ((size + sctSize - 1) / sctSize);
-
 	// Special case when all parts have the same state
-	if (IsComplete(0, size - 1) && defState == true)
+	uint64 sizeNeeded = GetNeeded(0, size - 1);
+	if (defState == true && sizeNeeded == 0)
 	{
 		data->WriteUInt16(0);
 		return;
 	}
+	else if (sizeNeeded == size)
+	{
+		if (defState == false)
+		{
+			data->WriteUInt16(0);
+			return;
+		}
+		else if (protocolRevision >= PROTOCOL_REVISION_2)
+		{
+			data->WriteUInt16(1);
+			data->WriteUInt8(0);
+			return;
+		}
+	}
+
+	// Decide chunk size for part vector (limit to 8000 sub chunks, to keep part vector size less than 1kB?)
+	if (protocolRevision >= PROTOCOL_REVISION_1)
+	{
+		bool isSubChunksAvailable = false;
+		uint16 partCount = static_cast<uint16>((size + PARTSIZE - 1) / PARTSIZE);
+		for (uint16 i = 0; i < partCount; ++i)
+		{
+			if (IsPartialPart(i))
+			{
+				isSubChunksAvailable = true;
+				break;
+			}
+		}
+
+		// Only send sub chunks if there are incomplete parts shared
+		if (isSubChunksAvailable)
+		{
+			if (protocolRevision >= PROTOCOL_REVISION_2)
+			{
+				if (size <= (8000 * EMBLOCKSIZE) && GetChunkSize() < PARTSIZE)
+				{
+					sctSize = EMBLOCKSIZE;
+				}
+				sctDivider = static_cast<uint16>((PARTSIZE + sctSize - 1) / sctSize);
+			}
+			else if (size <= (8000 * CRUMBSIZE) && GetChunkSize() < PARTSIZE)
+			{
+				sctSize = CRUMBSIZE;
+				sctDivider = CRUMBSPERPART;
+			}
+		}
+	}
+
+	sctCount = static_cast<uint16>(sctDivider * (size / PARTSIZE) + ((size % PARTSIZE) + sctSize - 1) / sctSize);
 
 	// Write parts
 	data->WriteUInt16(sctCount);
 	uint16 i;
 	for (i = 0; i < sctCount; i++)
 	{
-		if (i % 8 == 0)
+		uint16 const shift = i & 0x0007;
+		uint16 const part = i / sctDivider;
+		uint16 const subChunk = i % sctDivider;
+
+		if (shift == 0)
 			tmp = 0;
-		if (IsComplete((uint64) i * sctSize, (uint64) (i + 1) * sctSize - 1))
-			tmp |= (1 << (i % 8));
+		if (IsComplete((uint64) part * PARTSIZE + subChunk * sctSize, (uint64) part * PARTSIZE + (subChunk + 1) * sctSize - 1))
+			tmp |= (1 << shift);
 		else
-			tmp &= ~(1 << (i % 8));
-		if (i % 8 == 7)
+			tmp &= ~(1 << shift);
+		if (shift == 7)
 			data->WriteUInt8(tmp);
 	}
 	if (i % 8 != 0)
@@ -345,7 +476,7 @@ CAICHMap::FindFirstComplete(uint64& start, uint64& stop) const
 	if (first_chunk < end_chunk && bComplete)
 	{
 		start = max(start, (uint64) (first_chunk / 53ULL) * PARTSIZE + (first_chunk % 53ULL) * EMBLOCKSIZE);
-		stop = min(stop, (uint64) (last_chunk / 53ULL) * PARTSIZE + (last_chunk % 53ULL) * EMBLOCKSIZE) - 1ULL;
+		stop = min(stop, (uint64) (last_chunk / 53ULL) * PARTSIZE + min((last_chunk % 53ULL) * EMBLOCKSIZE, PARTSIZE) - 1ULL);
 	}
 	return bComplete;
 }
@@ -384,7 +515,7 @@ CAICHMap::FindFirstNeeded(uint64& start, uint64& stop) const
 	if (first_chunk < end_chunk && bNeeded)
 	{
 		start = max(start, (uint64) (first_chunk / 53ULL) * PARTSIZE + (first_chunk % 53ULL) * EMBLOCKSIZE);
-		stop = min(stop, (uint64) (last_chunk / 53ULL) * PARTSIZE + (last_chunk % 53ULL) * EMBLOCKSIZE) - 1ULL;
+		stop = min(stop, (uint64) (last_chunk / 53ULL) * PARTSIZE + min((last_chunk % 53ULL) * EMBLOCKSIZE, PARTSIZE) - 1ULL);
 	}
 	return bNeeded;
 }

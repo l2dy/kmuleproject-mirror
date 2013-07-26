@@ -338,6 +338,7 @@ void CPartFile::Init()
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 	m_pPartStatus = new CPartFileStatus(this);
 	m_pPublishedPartStatus = NULL;
+	m_nLastShareableChunkScan = clock();
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 }
 
@@ -1305,13 +1306,6 @@ EPartFileLoadResult CPartFile::LoadPartFile(LPCTSTR in_directory,LPCTSTR in_file
         }
 
         metFile.Close();
-
-//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-		// Make crumbs shareable
-		// TODO: Check crumb hashes!
-		delete m_pPublishedPartStatus;
-		m_pPublishedPartStatus = new CCrumbMap(m_pPartStatus);
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     }
     catch (CFileException* error)
     {
@@ -1500,6 +1494,16 @@ EPartFileLoadResult CPartFile::LoadPartFile(LPCTSTR in_directory,LPCTSTR in_file
                 else
                     SetStatus(PS_ERROR);
             }
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+			else if (m_pPublishedPartStatus)
+			{
+				for (UINT i = 0; i < GetPartCount(); i++)
+				{
+					if (GetDonePartStatus()->IsCompletePart(i))
+						m_pPublishedPartStatus->SetPart(i);
+				}
+			}
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         }
     }
     catch (CFileException* error)
@@ -2904,6 +2908,59 @@ UINT CPartFile::Process(UINT reducedownload, UINT icounter/*in percent*/)
         memset(src_stats,0,sizeof(src_stats));
         memset(net_stats,0,sizeof(net_stats));
         UINT nCountForState;
+
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+		if (dwCurTick - m_nLastShareableChunkScan > RESCAN_SHAREABLE_INTERVAL && !srclist.IsEmpty())
+		{
+			bool hasUseForSubChunks = true; // false
+			/*for (POSITION pos = m_ClientUploadList.GetHeadPosition(); pos != NULL;)
+			{
+				CUpDownClient* const pCurClient = m_ClientUploadList.GetNext(pos);
+				if (pCurClient->GetProtocolRevision() >= CPartStatus::PROTOCOL_REVISION_1)
+				{
+					hasUseForSubChunks = true;
+					break;
+				}
+			}*/
+
+			bool canRequestRecoveryData = false;
+			if (m_pAICHRecoveryHashSet->HasValidMasterHash() && (m_pAICHRecoveryHashSet->GetStatus() == AICH_TRUSTED || m_pAICHRecoveryHashSet->GetStatus() == AICH_VERIFIED))
+			{
+				for (POSITION pos = srclist.GetHeadPosition(); pos != NULL;)
+				{
+					CUpDownClient* const pCurClient = srclist.GetNext(pos);
+					if (pCurClient->IsSupportingAICH() && pCurClient->GetReqFileAICHHash() != NULL && !pCurClient->IsAICHReqPending()
+						&& (*pCurClient->GetReqFileAICHHash()) == m_pAICHRecoveryHashSet->GetMasterHash())
+					{
+						canRequestRecoveryData = true;
+						break;
+					}
+				}
+			}
+
+			// Check if there are any incompletes that aren't shared
+			if (GetPublishedPartStatus() && GetDonePartStatus() && hasUseForSubChunks && canRequestRecoveryData)
+			{
+				uint64 start = 0;
+				uint64 stop = ~0ULL;
+				CPartStatus* donePartStatus = new CAICHMap(GetDonePartStatus()); // Convert to AICH vector to clip away any done blocks that are not full AICH blocks
+				while (GetPublishedPartStatus()->FindFirstNeeded(start, stop, donePartStatus))
+				{
+					uint16 firstPart = static_cast<uint16>(start / PARTSIZE);
+					uint16 lastPart = static_cast<uint16>(stop / PARTSIZE);
+					for (uint16 part = firstPart; part <= lastPart; ++part)
+					{
+						if (!IsCorruptedPart(part) && EstimatePartCompletion(part) >= FORCE_AICH_TIME)
+							RequestAICHRecovery(part);
+					}
+					start = (lastPart + 1) * PARTSIZE;
+					stop = ~0ULL;
+				}
+			}
+
+			m_nLastShareableChunkScan = dwCurTick;
+		}
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
         uint16 tmp_counter = 0;  //>>> WiZaRd::AutoHL
         for (POSITION pos = srclist.GetHeadPosition(); pos != NULL;)
@@ -5504,6 +5561,11 @@ void CPartFile::FlushBuffer(bool forcewait, bool bNoAICH)
                     else if (thePrefs.cumLostFromCorruption >= uRecovered)
                         thePrefs.cumLostFromCorruption -= uRecovered;
 
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+					if(m_pPublishedPartStatus)
+						m_pPublishedPartStatus->SetPart(uPartNumber);
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+
                     if (status == PS_EMPTY)
                     {
                         if (theApp.emuledlg->IsRunning()) // may be called during shutdown!
@@ -5521,10 +5583,12 @@ void CPartFile::FlushBuffer(bool forcewait, bool bNoAICH)
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 			else
 			{
-				// TODO: Check crumb hashes
-				for (UINT crumb = uPartNumber * 20UL; crumb < (uPartNumber + 1) * 20UL && crumb < (UINT) (uint64) (GetFileSize() + CRUMBSIZE - 1ULL) / CRUMBSIZE ; crumb++)
-					if (m_pPublishedPartStatus != NULL && IsComplete((uint64) crumb * CRUMBSIZE, (uint64) (crumb + 1) * CRUMBSIZE - 1, true))
-						m_pPublishedPartStatus->SetCrumb(crumb);
+				// Attempt to share incomplete part if it will not complete within a decent time frame and we already have recover data available
+				if (m_pAICHRecoveryHashSet && m_pAICHRecoveryHashSet->IsPartDataAvailable((uint64)uPartNumber * PARTSIZE))
+				{
+					if (EstimatePartCompletion(uPartNumber) >= FORCE_AICH_TIME)
+						AICHRecoveryDataAvailable(uPartNumber);
+				}
 			}
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
@@ -6398,6 +6462,13 @@ void CPartFile::RequestAICHRecovery(UINT nPart)
     if ((cAICHClients | cAICHLowIDClients) == 0)
     {
         AddDebugLogLine(DLP_DEFAULT, false, _T("Unable to request AICH Recoverydata because found no client who supports it and has the same hash as the trusted one"));
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+		if (IsCorruptedPart(nPart))
+		{
+			if (m_pPublishedPartStatus)
+				m_pPublishedPartStatus->ClearPart(nPart);
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+		}
         return;
     }
     UINT nSeclectedClient;
@@ -6488,6 +6559,15 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
         return;
     }
 
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	if (!m_pPublishedPartStatus) // Should never happen!!!
+		m_pPublishedPartStatus = new CAICHMap(m_nFileSize);
+	CPartStatus* oldPublishedPartStatus = m_pPublishedPartStatus->Clone();
+	if (IsCorruptedPart(nPart))
+	{
+		// netfinity: Make the part a complete gap in case something goes wrong
+		AddGap(PARTSIZE*(uint64)nPart, PARTSIZE*(uint64)nPart + length - 1);
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     // now compare the hash we just did, to the verified hash and readd all blocks which are ok
     UINT nRecovered = 0;
     for (UINT pos = 0; pos < length; pos += EMBLOCKSIZE)
@@ -6507,11 +6587,13 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
             nRecovered += nBlockSize;
             // tell the blackbox about the verified data
             m_CorruptionBlackBox.VerifiedData(PARTSIZE*(uint64)nPart+pos, PARTSIZE*(uint64)nPart + pos + (nBlockSize-1));
+			m_pPublishedPartStatus->Set(PARTSIZE*(uint64)nPart+pos, PARTSIZE*(uint64)nPart + pos + (nBlockSize-1)); //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
         }
         else
         {
             // inform our "blackbox" about the corrupted block which may ban clients who sent it
             m_CorruptionBlackBox.CorruptedData(PARTSIZE*(uint64)nPart+pos, PARTSIZE*(uint64)nPart + pos + (nBlockSize-1));
+			m_pPublishedPartStatus->Clear(PARTSIZE*(uint64)nPart+pos, PARTSIZE*(uint64)nPart + pos + (nBlockSize-1)); //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
         }
     }
     m_CorruptionBlackBox.EvaluateData((uint16)nPart);
@@ -6534,6 +6616,10 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
             if (!m_FileIdentifier.HasAICHHash())
                 m_pAICHRecoveryHashSet->SetStatus(AICH_ERROR); // set it to error on unverified hashs
             AddGap(PARTSIZE*(uint64)nPart, (((uint64)nPart*PARTSIZE)+length)-1);
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+			if (m_pPublishedPartStatus)
+				m_pPublishedPartStatus->ClearPart(nPart);
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
             ASSERT(0);
             return;
         }
@@ -6544,6 +6630,10 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
             POSITION posCorrupted = corrupted_list.Find((uint16)nPart);
             if (posCorrupted)
                 corrupted_list.RemoveAt(posCorrupted);
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+			if(m_pPublishedPartStatus)
+				m_pPublishedPartStatus->SetPart(nPart);
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
             if (status == PS_EMPTY && theApp.emuledlg->IsRunning())
             {
                 if (m_FileIdentifier.HasExpectedMD4HashCount() && !m_bMD4HashsetNeeded)
@@ -6567,6 +6657,33 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
     // make sure the user appreciates our great recovering work :P
     AddLogLine(true, GetResString(IDS_AICH_WORKED), CastItoXBytes(nRecovered), CastItoXBytes(length), nPart, GetFileName());
     //AICH successfully recovered %s of %s from part %u for %s
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	}
+	else
+	{
+		for (UINT pos = 0; pos < length; pos += EMBLOCKSIZE)
+		{
+			const UINT nBlockSize = min(EMBLOCKSIZE, length - pos);
+			const CAICHHashTree* const pVerifiedBlock = pVerifiedHash->FindHash(pos, nBlockSize);
+			const CAICHHashTree* const pOurBlock = htOurHash.FindHash(pos, nBlockSize);
+			if ( pVerifiedBlock == NULL || pOurBlock == NULL || !pVerifiedBlock->m_bHashValid || !pOurBlock->m_bHashValid)
+			{
+				ASSERT( false );
+				continue;
+			}
+			if (pOurBlock->m_Hash == pVerifiedBlock->m_Hash)
+				m_pPublishedPartStatus->Set(PARTSIZE*(uint64)nPart+pos, PARTSIZE*(uint64)nPart + pos + (nBlockSize-1));
+			else
+				m_pPublishedPartStatus->Clear(PARTSIZE*(uint64)nPart+pos, PARTSIZE*(uint64)nPart + pos + (nBlockSize-1));
+		}
+	}
+
+	if (oldPublishedPartStatus->IsNeeded(m_pPublishedPartStatus))
+	{
+		AddDebugLogLine(DLP_DEFAULT, false, _T("Processing AICH Recovery data: New sub chunks available!"));
+		// TODO: Possibly inform clients we are uploading too about the new chunks (only relevant if the part is rare or is being downloaded by the client)
+	}
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 }
 
 CString CPartFile::GetTempPath() const
@@ -6617,7 +6734,7 @@ void CPartFile::SetFileSize(EMFileSize nFileSize)
     CKnownFile::SetFileSize(nFileSize);
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 	delete m_pPublishedPartStatus;
-	m_pPublishedPartStatus = new CCrumbMap(nFileSize);
+	m_pPublishedPartStatus = new CAICHMap(nFileSize);
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 }
 
@@ -7200,5 +7317,38 @@ bool CPartFileStatus::FindFirstNeeded(uint64& start, uint64& stop) const
 		}
 	}
 	return false;
+}
+
+// Estimate time to part completion
+clock_t CPartFile::EstimatePartCompletion(const UINT nPart) const
+{
+	UINT partDownloadRate = 0;
+	uint64 partRemaining = GetDonePartStatus()->GetNeeded((uint64) nPart * PARTSIZE, (uint64) (nPart + 1) * PARTSIZE - 1ULL);
+
+	for(POSITION pos = m_downloadingSourceList.GetHeadPosition();pos!=0;)
+	{
+		CUpDownClient* const cur_src = m_downloadingSourceList.GetNext(pos);
+		if (thePrefs.m_iDbgHeap >= 2)
+			ASSERT_VALID( cur_src );
+		if (cur_src && cur_src->socket && cur_src->GetDownloadState() == DS_DOWNLOADING)
+		{
+			bool isDownloadingPart = false;
+			for (POSITION pos = cur_src->m_PendingBlocks_list.GetHeadPosition(); pos !=0;)
+			{
+				Pending_Block_Struct* const pendBlock = cur_src->m_PendingBlocks_list.GetNext(pos);
+				if (pendBlock->block->StartOffset >= ((uint64) nPart * PARTSIZE) && pendBlock->block->StartOffset < (((uint64) nPart + 1) * PARTSIZE))
+				{
+					isDownloadingPart = true;
+					break;
+				}
+			}
+			if (isDownloadingPart)
+				partDownloadRate += cur_src->GetDownloadDatarate();
+		}
+	}
+
+	if (partDownloadRate > 0)
+		return static_cast<clock_t>(partRemaining / partDownloadRate) * CLOCKS_PER_SEC;
+	return ~0UL;
 }
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]

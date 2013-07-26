@@ -563,7 +563,9 @@ public:
 private:
 	CPartStatus*		m_pPartStatus;
 	CPartStatus*		m_pPublishedPartStatus;
+	clock_t				m_nLastShareableChunkScan;
 protected:
-	bool	GetNextEmptyBlockInPart(UINT partnumber, Requested_Block_Struct* result, uint64 bytesToRequest = CRUMBSIZE, const CPartStatus* availableParts = 0, const CUpDownClient* client = 0) const;
+	bool				GetNextEmptyBlockInPart(UINT partnumber, Requested_Block_Struct* result, uint64 bytesToRequest = CRUMBSIZE, const CPartStatus* availableParts = 0, const CUpDownClient* client = 0) const;
+	clock_t				EstimatePartCompletion(const UINT nPart) const; // Estimate time to part completion
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 };

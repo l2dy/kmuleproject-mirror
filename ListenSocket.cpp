@@ -1120,6 +1120,20 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
 				break; // We don't care!!!
 			}
 
+			case OP_CRUMBSETREQ: // <file hash>
+			{
+				if (thePrefs.GetDebugClientTCPLevel() > 0)
+					DebugRecv("OP_CrumbSetReq", client);
+				theStats.AddDownDataOverheadOther(size);
+
+				DebugLog(_T("Received OP_CRUMBSETREQ: %s"), client->DbgGetClientInfo());
+
+				if (size != 16)
+					throw GetResString(IDS_ERR_WRONGHPACKAGESIZE);
+				client->SendCrumbSetPacket(packet, 16);
+				break;
+			}
+
 			case OP_CRUMBCOMPLETE: // <file hash><crumb:32>
 			{
 				if (thePrefs.GetDebugClientTCPLevel() > 0)

@@ -217,3 +217,4 @@ XXXXYYZZ:
 + added DesktopIntegration for even better WINE support - original by Netfinity [WiZaRd]
 + added info window with logs [WiZaRd]
 ~ kMule will now try different settings if the default shared usage setting fails to create all necessary folders [WiZaRd]
+! fixed problem with race conditions on startup which could cause kMule not to connect when using the first start wizard [WiZaRd]

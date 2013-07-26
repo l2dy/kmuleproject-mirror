@@ -567,8 +567,7 @@ bool CUpDownClient::ProcessExtendedInfo(CSafeMemFile* data, CKnownFile* tempreqf
     }
 
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	m_pUpPartStatus = new CCrumbMap(tempreqfile->GetFileSize());
-	m_pUpPartStatus->ReadPartStatus(data, true);
+	m_pUpPartStatus = CPartStatus::CreatePartStatus(data, tempreqfile->GetFileSize());
 		
 	// netfinity: Update download partstatus if we are downloading this file and there is more pieces available in the upload partstatus
 	if (reqfile == tempreqfile && (m_pPartStatus == NULL || (m_pUpPartStatus->GetCompleted() >= m_pPartStatus->GetCompleted())))
@@ -577,7 +576,7 @@ bool CUpDownClient::ProcessExtendedInfo(CSafeMemFile* data, CKnownFile* tempreqf
 			reqfile->RemoveFromPartsInfo(m_pPartStatus);
 		delete m_pPartStatus;
 		m_pPartStatus = NULL;
-		m_pPartStatus = new CCrumbMap(m_pUpPartStatus);
+		m_pPartStatus = m_pUpPartStatus->Clone();
 
 		reqfile->AddToPartsInfo(m_pPartStatus);
 	}
@@ -604,7 +603,7 @@ bool CUpDownClient::ProcessExtendedInfo(CSafeMemFile* data, CKnownFile* tempreqf
 	uint16 complcount = 0; //>>> WiZaRd::ClientAnalyzer
 	while (done != m_nUpPartCount)
 	{
-		if(m_pPartStatus->IsComplete((uint64)done*PARTSIZE, ((uint64)(done+1)*PARTSIZE)-1))
+		if(m_pUpPartStatus->IsComplete((uint64)done*PARTSIZE, ((uint64)(done+1)*PARTSIZE)-1))
 		{
 			if (bShouldCheck && !bPartsNeeded && !((CPartFile*)tempreqfile)->IsComplete((uint64)done*PARTSIZE, ((uint64)(done+1)*PARTSIZE)-1, false))
 				bPartsNeeded = true;
@@ -1560,3 +1559,45 @@ uint64 CUpDownClient::GetCurrentSessionLimit() const
     return (uint64)SESSIONMAXTRANS*(m_curSessionAmountNumber+1)+1*1024;
 }
 //<<< WiZaRd::ZZUL Upload [ZZ]
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+void CUpDownClient::SendCrumbSetPacket(const uchar* const pData, size_t const nSize)
+{
+	Packet* packet;
+	CSafeMemFile fileResponse(1024);
+
+	if (nSize != 16)
+	{
+		ASSERT( false );
+		return;
+	}
+	CKnownFile* file = theApp.sharedfiles->GetFileByID(pData);
+	if (!file) file = theApp.downloadqueue->GetFileByID(pData);
+	if (!file){
+		CheckFailedFileIdReqs(pData);
+		throw GetResString(IDS_ERR_REQ_FNF) + _T(" (SendCrumbSetPacket)");
+	}
+	// Write file hash
+	fileResponse.WriteHash16(pData);
+	// Write part hash set
+	if (file->GetED2KPartCount() > 1)
+	{
+		if (file->GetFileIdentifier().HasExpectedMD4HashCount())
+		{
+			fileResponse.WriteUInt8(1); // Part hash set available
+			file->GetFileIdentifier().WriteMD4HashsetToFile(&fileResponse, true);
+		}
+		else
+			fileResponse.WriteUInt8(0); // Part hash set not yet available
+	}
+	// Write crumbs hash set
+	fileResponse.WriteUInt8(0); // Set to 1 when crumb hash set is available
+	// TODO: Generate crumb hash and insert here
+
+	if (thePrefs.GetDebugClientTCPLevel() > 0)
+		DebugSend("OP__CrumbSetAnswer", this, pData);
+	packet = new Packet(&fileResponse, OP_EDONKEYPROT, OP_CRUMBSETANS);
+
+	theStats.AddUpDataOverheadFileRequest(packet->size);
+	SendPacket(packet, true);
+}
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
