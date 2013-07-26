@@ -1245,14 +1245,13 @@ CAICHRequestedData CAICHRecoveryHashSet::GetAICHReqDetails(const  CUpDownClient*
 
 void CAICHRecoveryHashSet::AddStoredAICHHash(CAICHHash Hash)
 {
-#ifdef _DEBUG
     if (m_liAICHHashsStored.Find(Hash) != NULL)
     {
-        theApp.QueueDebugLogLine(false, _T("AICH hash storing is not unique - %s"), Hash.GetString());
+        theApp.QueueDebugLogLine(false, L"AICH hash storing is not unique - %s", Hash.GetString());
         ASSERT(0);
     }
-#endif
-    m_liAICHHashsStored.AddTail(Hash);
+	else
+		m_liAICHHashsStored.AddTail(Hash);
 }
 
 bool CAICHRecoveryHashSet::IsPartDataAvailable(uint64 nPartStartPos)

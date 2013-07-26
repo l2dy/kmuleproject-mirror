@@ -399,7 +399,8 @@ void CInfoWnd::UpdateMyInfo()
 	m_MyInfo.Invalidate();
 }
 
-CString CInfoWnd::GetMyInfoString() {
+CString CInfoWnd::GetMyInfoString() 
+{
 	CString buffer;
 	m_MyInfo.GetWindowText(buffer);
 

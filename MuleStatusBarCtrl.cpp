@@ -21,6 +21,9 @@
 #include "emuledlg.h"
 #include "StatisticsDlg.h"
 #include "ChatWnd.h"
+#ifdef INFO_WND
+#include "./Mod/InfoWnd.h" //>>> WiZaRd::InfoWnd
+#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -55,10 +58,14 @@ void CMuleStatusBarCtrl::OnLButtonDblClk(UINT /*nFlags*/, CPoint point)
     switch (iPane)
     {
     case SBarLog:
+#ifdef INFO_WND
+		theApp.emuledlg->SetActiveDialog(theApp.emuledlg->infoWnd); //>>> WiZaRd::InfoWnd
+#else
         if (thePrefs.GetLog2Disk())
             ShellOpenFile(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + L"eMule.log");
         if (thePrefs.GetDebug2Disk())
             ShellOpenFile(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + L"eMule_Verbose.log");
+#endif
         break;
 
     case SBarUsers:

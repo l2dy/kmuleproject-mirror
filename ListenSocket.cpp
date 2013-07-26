@@ -172,7 +172,6 @@ bool CClientReqSocket::CheckTimeOut()
 void CClientReqSocket::OnClose(int nErrorCode)
 {
     ASSERT(theApp.listensocket->IsValidSocket(this));
-	theQOSManager.RemoveSocket(m_SocketData.hSocket); //>>> WiZaRd::QOS
     CEMSocket::OnClose(nErrorCode);
 
     LPCTSTR pszReason;
@@ -2157,8 +2156,7 @@ void CClientReqSocket::OnConnect(int nErrorCode)
     else
     {
         //This socket may have been delayed by SP2 protection, lets make sure it doesn't time out instantly.
-        ResetTimeOutTimer();
-		theQOSManager.AddSocket(m_SocketData.hSocket, NULL /*lpSockAddr*/); //>>> WiZaRd::QOS
+        ResetTimeOutTimer();		
     }
 }
 
@@ -2633,8 +2631,6 @@ void CListenSocket::OnAccept(int nErrorCode)
                 newclient->AttachHandle(sNew);
 
                 AddConnection();
-
-				theQOSManager.AddSocket(newclient->GetSocketHandle(), NULL /*lpSockAddr*/); //>>> WiZaRd::QOS
             }
             else
             {
@@ -2670,8 +2666,6 @@ void CListenSocket::OnAccept(int nErrorCode)
                 }
 
                 AddConnection();
-
-				theQOSManager.AddSocket(newclient->GetSocketHandle(), NULL /*lpSockAddr*/); //>>> WiZaRd::QOS
 
                 if (SockAddr.sin_addr.S_un.S_addr == 0) // for safety..
                 {
@@ -2719,18 +2713,12 @@ void CListenSocket::Process()
         if (cur_sock->deletethis)
         {
             if (cur_sock->m_SocketData.hSocket != INVALID_SOCKET)
-            {
                 cur_sock->Close();			// calls 'closesocket'
-            }
             else
-            {
                 cur_sock->Delete_Timed();	// may delete 'cur_sock'
-            }
         }
         else
-        {
             cur_sock->CheckTimeOut();		// may call 'shutdown'
-        }
     }
 
     if ((GetOpenSockets() + 5 < thePrefs.GetMaxConnections()) && !bListening)
@@ -2760,15 +2748,16 @@ void CListenSocket::RecalculateStats()
 void CListenSocket::AddSocket(CClientReqSocket* toadd)
 {
     socket_list.AddTail(toadd);
+	theQOSManager.AddSocket(toadd->GetSocketHandle(), NULL /*lpSockAddr*/); //>>> WiZaRd::QOS
 }
 
 void CListenSocket::RemoveSocket(CClientReqSocket* todel)
 {
-    for (POSITION pos = socket_list.GetHeadPosition(); pos != NULL;)
-    {
-        POSITION posLast = pos;
-        if (socket_list.GetNext(pos) == todel)
-            socket_list.RemoveAt(posLast);
+	POSITION posFind = socket_list.Find(todel);
+	if(posFind)
+	{
+		theQOSManager.AddSocket(socket_list.GetAt(posFind)->GetSocketHandle(), NULL /*lpSockAddr*/); //>>> WiZaRd::QOS		
+		socket_list.RemoveAt(posFind);		
     }
 }
 

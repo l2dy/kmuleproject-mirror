@@ -172,7 +172,7 @@ CChatItem* CChatSelector::StartSession(CUpDownClient* client, bool show)
     pf.dxOffset = 150;
     chatitem->log->SetParaFormat(pf);
 
-    if (thePrefs.GetIRCAddTimeStamp())
+    if (thePrefs.GetAddTimeStamp())
         AddTimeStamp(chatitem);
     chatitem->log->AppendKeyWord(GetResString(IDS_CHAT_START) + client->GetUserName() + _T("\n"), STATUS_MSG_COLOR);
     client->SetChatState(MS_CHATTING);
@@ -248,7 +248,7 @@ void CChatSelector::ProcessMessage(CUpDownClient* sender, const CString& message
         ci = StartSession(sender, false);
         isNewChatWindow = true;
     }
-    if (thePrefs.GetIRCAddTimeStamp())
+    if (thePrefs.GetAddTimeStamp())
         AddTimeStamp(ci);
     ci->log->AppendKeyWord(sender->GetUserName(), RECV_SOURCE_MSG_COLOR);
     ci->log->AppendText(_T(": "));
@@ -281,7 +281,7 @@ void CChatSelector::ShowCaptchaRequest(CUpDownClient* sender, HBITMAP bmpCaptcha
     CChatItem* ci = GetItemByClient(sender);
     if (ci != NULL)
     {
-        if (thePrefs.GetIRCAddTimeStamp())
+        if (thePrefs.GetAddTimeStamp())
             AddTimeStamp(ci);
         ci->log->AppendKeyWord(_T("*** ") + GetResString(IDS_CAPTCHAREQUEST), STATUS_MSG_COLOR);
         ci->log->AddCaptcha(bmpCaptcha);
@@ -294,7 +294,7 @@ void CChatSelector::ShowCaptchaResult(CUpDownClient* sender, CString strResult)
     CChatItem* ci = GetItemByClient(sender);
     if (ci != NULL)
     {
-        if (thePrefs.GetIRCAddTimeStamp())
+        if (thePrefs.GetAddTimeStamp())
             AddTimeStamp(ci);
         ci->log->AppendKeyWord(_T("*** ") + strResult + _T("\n"), STATUS_MSG_COLOR);
     }
@@ -332,7 +332,7 @@ bool CChatSelector::SendMessage(const CString& rstrMessage)
     {
         // 1.) the client is connected already - this is simple, jsut send it
         ci->client->SendChatMessage(rstrMessage);
-        if (thePrefs.GetIRCAddTimeStamp())
+        if (thePrefs.GetAddTimeStamp())
             AddTimeStamp(ci);
         ci->log->AppendKeyWord(thePrefs.GetUserNick(), SENT_TARGET_MSG_COLOR);
         ci->log->AppendText(_T(": "));
@@ -352,7 +352,7 @@ bool CChatSelector::SendMessage(const CString& rstrMessage)
     {
         // this is a normal client, who is not connected right now. just try to connect to the given IP, without any
         // additional checks or searchings.
-        if (thePrefs.GetIRCAddTimeStamp())
+        if (thePrefs.GetAddTimeStamp())
             AddTimeStamp(ci);
         ci->log->AppendKeyWord(_T("*** ") + GetResString(IDS_CONNECTING), STATUS_MSG_COLOR);
         ci->strMessagePending = rstrMessage;
@@ -378,7 +378,7 @@ void CChatSelector::ConnectingResult(CUpDownClient* sender, bool success)
         }
         else
         {
-            if (thePrefs.GetIRCAddTimeStamp())
+            if (thePrefs.GetAddTimeStamp())
                 AddTimeStamp(ci);
             ci->log->AppendKeyWord(GetResString(IDS_CHATDISCONNECTED) + _T("\n"), STATUS_MSG_COLOR);
         }
@@ -388,7 +388,7 @@ void CChatSelector::ConnectingResult(CUpDownClient* sender, bool success)
         ci->log->AppendKeyWord(_T(" ...") + GetResString(IDS_TREEOPTIONS_OK) + _T("\n"), STATUS_MSG_COLOR);
         ci->client->SendChatMessage(ci->strMessagePending);
 
-        if (thePrefs.GetIRCAddTimeStamp())
+        if (thePrefs.GetAddTimeStamp())
             AddTimeStamp(ci);
         ci->log->AppendKeyWord(thePrefs.GetUserNick(), SENT_TARGET_MSG_COLOR);
         ci->log->AppendText(_T(": "));
@@ -400,7 +400,7 @@ void CChatSelector::ConnectingResult(CUpDownClient* sender, bool success)
     }
     else
     {
-        if (thePrefs.GetIRCAddTimeStamp())
+        if (thePrefs.GetAddTimeStamp())
             AddTimeStamp(ci);
         ci->log->AppendKeyWord(_T("*** Connected\n"), STATUS_MSG_COLOR);
     }
@@ -702,7 +702,7 @@ void CChatSelector::ReportConnectionProgress(CUpDownClient* pClient, CString str
     CChatItem* ci = GetItemByClient(pClient);
     if (!ci)
         return;
-    if (thePrefs.GetIRCAddTimeStamp() && !bNoTimeStamp)
+    if (thePrefs.GetAddTimeStamp() && !bNoTimeStamp)
         AddTimeStamp(ci);
     ci->log->AppendKeyWord(strProgressDesc, STATUS_MSG_COLOR);
 }

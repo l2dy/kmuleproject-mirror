@@ -2227,9 +2227,6 @@ void CemuleDlg::ShowNotifier(LPCTSTR pszText, int iMsgType)
         snarlTitle = GetResString(IDS_SV_LOG);
         snarlClass = L"Log";
 //<<< Tux::SnarlSupport
-#ifdef INFO_WND
-		SetActiveDialog(infoWnd); //>>> WiZaRd::InfoWnd
-#endif
         break;
 
     case TBN_IMPORTANTEVENT:
@@ -2237,9 +2234,6 @@ void CemuleDlg::ShowNotifier(LPCTSTR pszText, int iMsgType)
         snarlTitle = GetResString(IDS_ERROR);
         snarlClass = L"Error";
 //<<< Tux::SnarlSupport
-#ifdef INFO_WND
-		SetActiveDialog(infoWnd); //>>> WiZaRd::InfoWnd
-#endif
         break;
 
     case TBN_NEWVERSION:

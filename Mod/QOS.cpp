@@ -20,6 +20,9 @@
 #include "Log.h"
 #include "opcodes.h"
 #include "otherfunctions.h"
+#include "emule.h"
+
+//#define DEBUG_QOS
 
 CQOS theQOSManager;
 
@@ -50,6 +53,13 @@ CQOS::CQOS()
 
 CQOS::~CQOS()
 {
+	// just to be sure
+	const DWORD error = RemoveSocket_internal(NULL);
+	if(m_qosSockets.IsEmpty())
+		ASSERT(error == 0 || error == ERROR_NOT_FOUND);
+	else
+		ASSERT(error == 0);		
+
 	// Free qWAVE API
 	if(m_qosHandle != NULL)
 		m_pQOSCloseHandle(m_qosHandle);
@@ -67,7 +77,10 @@ BOOL CQOS::Reinitialize()
 	if(m_qosHandle != NULL)
 	{
 		const DWORD error = RemoveSocket_internal(NULL);
-		ASSERT(error == 0);
+		if(m_qosSockets.IsEmpty())
+			ASSERT(error == 0 || error == ERROR_NOT_FOUND);
+		else
+			ASSERT(error == 0);
 		m_pQOSCloseHandle(m_qosHandle);
 		m_qosHandle = NULL;
 	}
@@ -116,37 +129,33 @@ BOOL CQOS::AddSocket(SOCKET socket, const SOCKADDR* const dest)
 		CSingleLock lock(&m_qosLocker, TRUE);
 
 		const DWORD error = AddSocket_internal(socket, dest);
-		if(error == ERROR_SYSTEM_POWERSTATE_TRANSITION 
-			|| error == ERROR_SYSTEM_POWERSTATE_COMPLEX_TRANSITION 
-			|| error == ERROR_DEVICE_REINITIALIZATION_NEEDED 
-			|| (error == ERROR_NOT_FOUND && m_qosSockets.IsEmpty()))
+		if(error != 0)
 		{
+			theApp.QueueDebugLogLineEx(LOG_ERROR, L"QOS: QOSAddSocket: Error %d (%s).", error, GetErrorMessage(error, 0));
 			if(clock() - m_qosLastInit < SEC2MS(5))
 				success = FALSE;
-			else
+			else if(error == ERROR_SYSTEM_POWERSTATE_TRANSITION 
+				|| error == ERROR_SYSTEM_POWERSTATE_COMPLEX_TRANSITION 
+				|| error == ERROR_DEVICE_REINITIALIZATION_NEEDED 
+				|| error == ERROR_NOT_FOUND/*(error == ERROR_NOT_FOUND && m_qosSockets.IsEmpty())*/)
 			{
-				lock.Unlock();
-				DebugLogError(L"QOSAddSocket: Error %d (%s).", error, GetErrorMessage(error, 0));
+				lock.Unlock();			
 				if(!Reinitialize())
 				{
-					DebugLogError(L"QOSAddSocket: Reinitialization was unsuccessful.");
+					theApp.QueueDebugLogLineEx(LOG_ERROR, L"QOS: QOSAddSocket: Reinitialization was unsuccessful.");
 					success = FALSE;
 				}
 				else
 				{
-					DebugLog(L"QOSAddSocket: Reinitialized!");
+					theApp.QueueDebugLogLineEx(LOG_WARNING, L"QOS: QOSAddSocket: Reinitialized!");
 					success = AddSocket(socket, dest);
 				}
 			}
-		}
-		else if(error != 0)
-		{
-			if(error != ERROR_NOT_FOUND)
-				DebugLogError(L"QOSAddSocket: Error %d (%s).", error, GetErrorMessage(error, 0));
-			POSITION posFind = m_qosSockets.Find(socket);
-			if(posFind)
-				m_qosSockets.RemoveAt(posFind);
-			success = FALSE;
+			else
+			{
+				RemoveSocket_internal(socket);
+				success = FALSE;
+			}
 		}
 	}
 
@@ -159,14 +168,13 @@ BOOL CQOS::RemoveSocket(SOCKET socket)
 
 	if(m_qosHandle != NULL && socket != INVALID_SOCKET)
 	{
-		CSingleLock lock(&m_qosLocker, TRUE);
-
 		success = TRUE;
+		CSingleLock lock(&m_qosLocker, TRUE);
 
 		const DWORD error = RemoveSocket_internal(socket);
 		if(error != 0)			
 		{
-			DebugLogError(L"QOSRemoveSocket: Error %d (%s).", error, GetErrorMessage(error, 0));
+			theApp.QueueDebugLogLineEx(LOG_ERROR, L"QOS: QOSRemoveSocket: Error %d (%s).", error, GetErrorMessage(error, 0));
 			if(error == ERROR_NOT_FOUND)
 			{
 				ASSERT(0);
@@ -182,16 +190,14 @@ BOOL CQOS::RemoveSocket(SOCKET socket)
 				lock.Unlock();
 				if(!Reinitialize())
 				{
-					DebugLogError(L"QOSRemoveSocket: Reinitialization was unsuccessful.");;
+					theApp.QueueDebugLogLineEx(LOG_ERROR, L"QOS: QOSRemoveSocket: Reinitialization was unsuccessful.");;
 					success = FALSE;
 				}
 				else
-					DebugLog(L"QOSRemoveSocket: Reinitialized!");
+					theApp.QueueDebugLogLineEx(LOG_WARNING, L"QOS: QOSRemoveSocket: Reinitialized!");
 			}
 			else
-			{
 				success = FALSE;
-			}
 		}
 	}
 
@@ -215,7 +221,7 @@ BOOL CQOS::SetDataRate(DWORD const datarate)
 			const DWORD error = SetDataRate_internal(datarate);
 			if(error != 0)
 			{
-				DebugLogError(L"QOSSetDataRate: Error %d (%s).", error, GetErrorMessage(error, 0));
+				theApp.QueueDebugLogLineEx(LOG_ERROR, L"QOS: QOSSetDataRate: Error %d (%s).", error, GetErrorMessage(error, 0));
 				if(clock() - m_qosLastInit < SEC2MS(5))
 					success = FALSE;
 				else if(error == ERROR_SYSTEM_POWERSTATE_TRANSITION 
@@ -226,16 +232,14 @@ BOOL CQOS::SetDataRate(DWORD const datarate)
 					lock.Unlock();
 					if(!Reinitialize())
 					{
-						DebugLogError(L"QOSSetDataRate: Reinitialization was unsuccessful.");
+						theApp.QueueDebugLogLineEx(LOG_ERROR, L"QOS: QOSSetDataRate: Reinitialization was unsuccessful.");
 						success = FALSE;
 					}
 					else
-						DebugLog(L"QOSSetDataRate: Reinitialized!");
+						theApp.QueueDebugLogLineEx(LOG_WARNING, L"QOS: QOSSetDataRate: Reinitialized!");
 				}
 				else
-				{
 					success = FALSE;
-				}
 			}
 		}
 	}
@@ -248,13 +252,23 @@ DWORD CQOS::AddSocket_internal(SOCKET const socket, const SOCKADDR* const dest)
 	DWORD result = 0;
 
 	POSITION posFind = m_qosSockets.Find(socket);
+#ifdef DEBUG_QOS
+	theApp.QueueDebugLogLineEx(LOG_WARNING, L"** QOS: adding socket %i (%s:%u) to %u", (int)socket, ipstr(dest ? ((SOCKADDR_IN*)(dest))->sin_addr.s_addr : 0), dest ? ((SOCKADDR_IN*)(dest))->sin_port : 0, m_qosFlowId);
+#endif
 	if(posFind == 0) // don't "double-add"
 	{
-		if(m_pQOSAddSocketToFlow(m_qosHandle, socket, const_cast<PSOCKADDR>(dest), QOSTrafficTypeBackground, QOS_NON_ADAPTIVE_FLOW, &m_qosFlowId) == 0)
+		if(m_pQOSAddSocketToFlow(m_qosHandle, socket, (PSOCKADDR)dest, QOSTrafficTypeBackground, QOS_NON_ADAPTIVE_FLOW, &m_qosFlowId) == 0)
 			result = GetLastError();
 		if(result == 0)
 			m_qosSockets.AddTail(socket);
+#ifdef DEBUG_QOS
+		theApp.QueueDebugLogLineEx(LOG_WARNING, L"** QOS: result %u - flow %u", result, m_qosFlowId);
+#endif
 	}
+#ifdef DEBUG_QOS
+	else
+		theApp.QueueDebugLogLineEx(LOG_WARNING, L"** QOS: prevented double-add");
+#endif
 
 	return result;
 }
@@ -264,17 +278,33 @@ DWORD CQOS::RemoveSocket_internal(SOCKET const socket)
 	DWORD result = 0;
 
 	POSITION posFind = m_qosSockets.Find(socket);
-	if(posFind)
+#ifdef DEBUG_QOS
+	theApp.QueueDebugLogLineEx(LOG_WARNING, L"** QOS: removing socket %i from flow %u", (int)socket, m_qosFlowId);
+#endif
+	if(posFind || socket == NULL)
 	{
-		m_qosSockets.RemoveAt(posFind);
+		if(socket != NULL)
+			m_qosSockets.RemoveAt(posFind);
 		if(m_pQOSRemoveSocketFromFlow(m_qosHandle, socket, m_qosFlowId, 0) == 0)
 			result = GetLastError();
 
-		// obviously, and empty flow leads to ERROR_NOT_FOUND when adding another socket
+		// obviously, an empty flow leads to ERROR_NOT_FOUND when adding another socket
 		// thus, we reset the flow ID if necessary
+#ifdef DEBUG_QOS
+		theApp.QueueDebugLogLineEx(LOG_WARNING, L"** QOS: result %u", result);
+#endif
 		if(m_qosSockets.IsEmpty())
+		{
+#ifdef DEBUG_QOS
+			theApp.QueueDebugLogLineEx(LOG_WARNING, L"** QOS: flow empty - resetting flowID");
+#endif
 			m_qosFlowId = 0;
+		}
 	}
+#ifdef DEBUG_QOS
+	else
+		theApp.QueueDebugLogLineEx(LOG_WARNING, L"** QOS: not found!?");
+#endif
 
 	return result;
 }

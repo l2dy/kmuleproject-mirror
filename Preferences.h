@@ -16,7 +16,14 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #pragma once
 
-const CString strDefaultToolbar = _T("000102030499050607");
+enum eDirectoryMode
+{
+	eDM_Auto = -1,
+	eDM_MultiUser = 0,
+	eDM_PublicUser = 1,
+	eDM_Executable = 2,
+	eDM_Count = 3,
+};
 
 enum EViewSharedFilesAccess
 {
@@ -301,7 +308,7 @@ public:
     // <-----khaos-
     static	UINT	statsAverageMinutes;
 
-    static	bool	m_bIRCAddTimeStamp;
+    static	bool	m_bAddTimeStamp;
 
     static	bool	m_bRemove2bin;
     static	bool	m_bShowCopyEd2kLinkCmd;
@@ -1439,9 +1446,9 @@ public:
         return m_bRTLWindowsLayout;
     }
 
-    static	bool	GetIRCAddTimeStamp()
+    static	bool	GetAddTimeStamp()
     {
-        return m_bIRCAddTimeStamp;
+        return m_bAddTimeStamp;
     }
 
     static	WORD	GetWindowsVersion();
@@ -2560,6 +2567,11 @@ public:
 
 	static  CString GetModIconDllUpdateURL()			{return m_strModIconDllUpdateURL;}
 //<<< WiZaRd::ModIconDLL Update
+//>>> WiZaRd
+public:
+	static	int		GetCurrentUserDirMode()				{return m_nCurrentUserDirMode;}
+	static	void	SetCurrentUserDirMode(const int i)	{m_nCurrentUserDirMode = i;}
+//<<< WiZaRd
 };
 
 extern CPreferences thePrefs;

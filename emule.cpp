@@ -591,12 +591,12 @@ BOOL CemuleApp::InitInstance()
     if (!AfxInitRichEdit2())
     {
         if (!AfxInitRichEdit())
-            AfxMessageBox(_T("Fatal Error: No Rich Edit control library found!")); // should never happen..
+            AfxMessageBox(_T("Fatal Error: No Rich Edit control library found!")); // should never happen...
     }
 
     if (!Kademlia::CKademlia::InitUnicode(AfxGetInstanceHandle()))
     {
-        AfxMessageBox(_T("Fatal Error: Failed to load Unicode character tables for Kademlia!")); // should never happen..
+        AfxMessageBox(_T("Fatal Error: Failed to load Unicode character tables for Kademlia!")); // should never happen...
         return FALSE; // DO *NOT* START !!!
     }
 
@@ -604,14 +604,35 @@ BOOL CemuleApp::InitInstance()
     if (!SelfTest())
         return FALSE; // DO *NOT* START !!!
 
+//>>> WiZaRd
     // create & initialize all the important stuff
-    thePrefs.Init();
-    if (!PathFileExists(thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR)) || !PathFileExists(thePrefs.GetTempDir()))
-    {
-        // here we have problems with the shared usage setting and should inform the user about it
-        // OR we could automatically choose a different setup...
-        return FALSE;
-    }
+	CList<int> dirModes;
+	for(int i = 0; i < eDM_Count; ++i)
+		dirModes.AddTail(i);
+	bool bSuccess = false;
+	do 
+	{
+		thePrefs.Init();
+		if (!PathFileExists(thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR)) || !PathFileExists(thePrefs.GetTempDir()))
+		{
+			// TODO: here we have problems with the shared usage setting and should inform the user about it
+			// OR we could automatically choose a different setup...
+			POSITION find = dirModes.Find(thePrefs.GetCurrentUserDirMode());
+			if(find)
+				dirModes.RemoveAt(find);
+
+			if(dirModes.IsEmpty())
+			{
+				AfxMessageBox(L"Fatal Error: Failed to create incoming/temp directories!"); // should never happen...	
+				return FALSE;
+			}
+			thePrefs.SetCurrentUserDirMode(dirModes.RemoveHead());
+		}
+		else
+			bSuccess = true;
+	} 
+	while(!bSuccess);
+//<<< WiZaRd
 
     m_bRestartApp = false; //>>> WiZaRd::Automatic Restart
     // show splashscreen as early as possible to "entertain" user while starting kMule

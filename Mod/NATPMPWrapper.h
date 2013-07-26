@@ -19,6 +19,8 @@
 #include ".\libnatpmp\natpmp.h"
 
 #define LIBNAT_VERSION_STRING	L"20120821"	//v1.3
+#define DFLT_NATPMP_LIFETIME	3600
+#define NATPMP_REFRESH_TIME		(DFLT_NATPMP_LIFETIME - 100)
 
 class CNATPMPThreadWrapper;
 class CNATPMPThread;
@@ -58,12 +60,16 @@ public:
 	bool		CheckAndRefresh();
 	void		AddTask(_ENATPMPTask task, const bool bLock = true);
 	void		RemovePendingTasks();
+	void		StartRefreshTimer();
+	void		KillRefreshTimer();
 
 private:
 	void		StartThread();
 	void		AddPort(const uint16 port, const int protocol, const bool bLock = true);
+	static VOID CALLBACK RefreshTimer(HWND hWnd, UINT nMsg, UINT nId, DWORD dwTime);
 	HANDLE		m_hThreadHandle;
 
+	UINT_PTR	m_hRefreshTimer;
 	CList<uint16>	m_portList[2];
 	CList<ENATPMPTask>	m_taskList;
 	bool			m_bMessageWanted;

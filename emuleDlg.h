@@ -31,7 +31,6 @@ class CUInt128;
 };
 
 class CChatWnd;
-class CIrcWnd;
 class CKnownFileList;
 class CMainFrameDropTarget;
 class CMuleStatusBarCtrl;
@@ -147,7 +146,6 @@ public:
     CChatWnd*		chatwnd;
     CMuleStatusBarCtrl* statusbar;
     CStatisticsDlg*  statisticswnd;
-    CIrcWnd*		ircwnd;
     CReBarCtrl		m_ctlMainTopReBar;
     CMuleToolbarCtrl* toolbar;
     CWnd*			activewnd;

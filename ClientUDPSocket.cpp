@@ -624,6 +624,20 @@ SocketSentBytes CClientUDPSocket::SendControlData(UINT maxNumberOfBytesToSend, U
                 //DEBUG_ONLY(  AddDebugLogLine(DLP_VERYLOW, false, _T("Sent obfuscated UDP packet to clientIP: %s, Kad: %s, ReceiverKey: %u"), ipstr(cur_packet->dwIP), cur_packet->bKad ? _T("Yes") : _T("No"), cur_packet->nReceiverVerifyKey) );
             }
 
+//>>> WiZaRd::QOS
+			// netfinity: This is an absurd way to enable QOS for UDP
+			sockaddr_in dest;
+			dest.sin_family = AF_INET;
+//>>> WiZaRd::FiX?
+			// From MSDN:
+			//Note  DestAddr is optional if the socket is already connected. If this parameter is specified, the remote IP address and port must match those used in the socket's connect call.
+			dest.sin_addr.s_addr = cur_packet->dwIP;
+			dest.sin_port = cur_packet->nPort;
+			//dest.sin_addr.s_addr = htonl(cur_packet->dwIP);
+			//dest.sin_port = htons(cur_packet->nPort);
+//<<< WiZaRd::FiX?			
+			theQOSManager.AddSocket(m_hSocket, (SOCKADDR*)&dest);
+//<<< WiZaRd::QOS
             if (!SendTo((char*)sendbuffer, nLen, cur_packet->dwIP, cur_packet->nPort))
             {
                 sentBytes += nLen; // ZZ:UploadBandWithThrottler (UDP)
@@ -632,6 +646,7 @@ SocketSentBytes CClientUDPSocket::SendControlData(UINT maxNumberOfBytesToSend, U
                 delete cur_packet->packet;
                 delete cur_packet;
             }
+			theQOSManager.RemoveSocket(m_hSocket); //>>> WiZaRd::QOS
             delete[] sendbuffer;
         }
         else
@@ -656,30 +671,20 @@ SocketSentBytes CClientUDPSocket::SendControlData(UINT maxNumberOfBytesToSend, U
 
 int CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,UINT dwIP, uint16 nPort)
 {
-//>>> WiZaRd::QOS
-	// netfinity: This is an absurd way to enable QOS for UDP
-	sockaddr_in dest;
-	dest.sin_family = AF_INET;
-	dest.sin_addr.s_addr = htonl(dwIP);
-	dest.sin_port = htons(nPort);
-	// From MSDN:
-	//Note  DestAddr is optional if the socket is already connected. If this parameter is specified, the remote IP address and port must match those used in the socket's connect call.
-	theQOSManager.AddSocket(m_hSocket, reinterpret_cast<PSOCKADDR>(&dest));
-//<<< WiZaRd::QOS
     // NOTE: *** This function is invoked from a *different* thread!
     UINT result = CAsyncSocket::SendTo(lpBuf,nBufLen,nPort,ipstr(dwIP));
     if (result == (UINT)SOCKET_ERROR)
     {
         UINT error = GetLastError();
         if (error == WSAEWOULDBLOCK)
-        {
+        {			
             m_bWouldBlock = true;
             return -1;
         }
         if (thePrefs.GetVerbose())
             DebugLogError(_T("Error: Client UDP socket, failed to send data to %s:%u: %s"), ipstr(dwIP), nPort, GetErrorMessage(error, 1));
-    }
-	theQOSManager.RemoveSocket(m_hSocket); //>>> WiZaRd::QOS
+		// WiZaRd: TODO: Flowing over here and returning 0 means "success"!?
+    }	
     return 0;
 }
 
@@ -722,11 +727,6 @@ bool CClientUDPSocket::Create()
         ret = CAsyncSocket::Create(thePrefs.GetUDPPort(), SOCK_DGRAM, FD_READ | FD_WRITE, thePrefs.GetBindAddrW()) != FALSE;
         if (ret)
         {
-//>>> WiZaRd::QOS
-			BOOL optval = TRUE;
-			DWORD bytesReturned;
-			WSAIoctl(m_hSocket, SIO_UDP_CONNRESET, &optval, sizeof(optval), NULL, 0, &bytesReturned, NULL, NULL);
-//<<< WiZaRd::QOS
             m_port = thePrefs.GetUDPPort();
             // the default socket size seems to be not enough for this UDP socket
             // because we tend to drop packets if several flow in at the same time

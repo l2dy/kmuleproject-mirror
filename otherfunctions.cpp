@@ -55,6 +55,9 @@
 #include "kademlia/routing/RoutingZone.h"
 #include <IPHlpApi.h>
 #include "./Mod/NetF/DesktopIntegration.h" //>>> WiZaRd::DesktopIntegration [Netfinity]
+#ifdef INFO_WND
+#include "./Mod/InfoWnd.h" //>>> WiZaRd::InfoWnd
+#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -4440,6 +4443,9 @@ bool ContactAdd(Kademlia::CContact* pContact)
         return false;
 
     m_lContacts.AddTail(pContact);
+#ifdef INFO_WND
+	theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
+#endif
     return true;
 }
 
@@ -4447,7 +4453,12 @@ void ContactRem(Kademlia::CContact* pContact)
 {
     POSITION pos = m_lContacts.Find(pContact);
     if (pos != NULL)
+	{
         m_lContacts.RemoveAt(pos);
+#ifdef INFO_WND
+		theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
+#endif
+	}
 }
 
 UINT nKadSearchCount = 0;
@@ -4459,12 +4470,20 @@ UINT GetKadSearchCount()
 void SearchAdd()
 {
     ++nKadSearchCount;
+#ifdef INFO_WND
+	theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
+#endif
 }
 
 void SearchRem()
 {
     if (nKadSearchCount > 0)
+	{
         --nKadSearchCount;
+#ifdef INFO_WND
+		theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
+#endif
+	}
 }
 //<<< WiZaRd::Functions from removed files
 //>>> WiZaRd::Additional Functions

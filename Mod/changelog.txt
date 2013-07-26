@@ -209,10 +209,11 @@ XXXXYYZZ:
 ! fixed duplicated badguy icons caused by modicons - thx to SS1900 [WiZaRd]
 ! fixed kMule version display in stats [WiZaRd]
 ! fixed iSOTN [WiZaRd]
-+ added file availability (health) display - original by Morph4u (?) [WiZaRd]
++ added file & client availability (health) display - original by Morph4u (?) [WiZaRd]
 + added SCT - original by Netfinity [WiZaRd]
 + added modprot support [WiZaRd]
  * includes LowID UDP Ping support
 + added QOS support - original by Netfinity [WiZaRd]
 + added DesktopIntegration for even better WINE support - original by Netfinity [WiZaRd]
 + added info window with logs [WiZaRd]
+~ kMule will now try different settings if the default shared usage setting fails to create all necessary folders [WiZaRd]

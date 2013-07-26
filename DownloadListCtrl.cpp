@@ -740,7 +740,6 @@ void CDownloadListCtrl::DrawFileItem(CDC *dc, int nColumn, LPCRECT lpRect, UINT 
 		else
 			m_ImageList.Draw(dc, m_iHealthIndex+7, pt, ILD_NORMAL);
 		pt.x += 10;
-
 		break;
 	}
 //<<< Health Indicator File Availability [WiZaRd]
@@ -883,7 +882,6 @@ void CDownloadListCtrl::GetSourceItemDisplayText(const CtrlItem_Struct *pCtrlIte
 
 //>>> Health Indicator File Availability [WiZaRd]
 	case 14:
-		// TODO: could show the clients' availability
 		break;
 //<<< Health Indicator File Availability [WiZaRd]
     }
@@ -1030,8 +1028,40 @@ void CDownloadListCtrl::DrawSourceItem(CDC *dc, int nColumn, LPCRECT lpRect, UIN
     case 11:	// last received
     case 12:	// category
     case 13:	// added on
-	case 14:	//>>> Health Indicator File Availability [WiZaRd]
-        break;
+		break;
+
+//>>> Health Indicator File Availability [WiZaRd]
+	case 14:
+	{
+		CRect rcDraw(lpRect);
+		int available = pClient->GetAvailablePartCount()*100/pCtrlItem->owner->GetPartCount(); //get available parts in %
+		POINT pt = rcDraw.TopLeft();
+		if (available >= 25) // 25%-49% display first bar
+			m_ImageList.Draw(dc, m_iHealthIndex, pt, ILD_NORMAL);
+		else
+			m_ImageList.Draw(dc, m_iHealthIndex+4, pt, ILD_NORMAL);
+		pt.x += 10;
+
+		if (available >= 50) // 50%-74% display second bar
+			m_ImageList.Draw(dc, m_iHealthIndex+1, pt, ILD_NORMAL);
+		else
+			m_ImageList.Draw(dc, m_iHealthIndex+5, pt, ILD_NORMAL);
+		pt.x += 10;
+
+		if (available >= 75) // 75%-99% display third bar
+			m_ImageList.Draw(dc, m_iHealthIndex+2, pt, ILD_NORMAL);
+		else
+			m_ImageList.Draw(dc, m_iHealthIndex+6, pt, ILD_NORMAL);
+		pt.x += 10;
+
+		if (available == 100) // 100% display all fours
+			m_ImageList.Draw(dc, m_iHealthIndex+3, pt, ILD_NORMAL);
+		else
+			m_ImageList.Draw(dc, m_iHealthIndex+7, pt, ILD_NORMAL);
+		pt.x += 10;
+		break;
+	}
+//<<< Health Indicator File Availability [WiZaRd]
 
     default:
         dc->DrawText(szItem, -1, const_cast<LPRECT>(lpRect), MLC_DT_TEXT | uDrawTextAlignment);
@@ -2518,6 +2548,7 @@ int CDownloadListCtrl::Compare(const CUpDownClient *client1, const CUpDownClient
     case 4: //speed asc
         return CompareUnsigned(client1->GetDownloadDatarate(), client2->GetDownloadDatarate());
 
+	case 14: //>>> Health Indicator File Availability [WiZaRd]
     case 5: //progress asc
         return CompareUnsigned(client1->GetAvailablePartCount(), client2->GetAvailablePartCount());
 
@@ -2563,6 +2594,7 @@ int CDownloadListCtrl::Compare(const CUpDownClient *client1, const CUpDownClient
         }
         return client1->GetDownloadState() - client2->GetDownloadState();
     }
+
     return 0;
 }
 

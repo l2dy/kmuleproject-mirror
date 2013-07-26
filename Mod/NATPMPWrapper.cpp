@@ -24,6 +24,7 @@
 #include "emuleDlg.h"
 #include "opcodes.h"
 #include "UserMsgs.h"
+#include "Exceptions.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -35,6 +36,7 @@ static char THIS_FILE[] = __FILE__;
 // CNATPMPThreadWrapper
 CNATPMPThreadWrapper::CNATPMPThreadWrapper()
 {
+	m_hRefreshTimer = NULL;
 	m_bAbortDiscovery = false;
 	m_hThreadHandle = NULL;
 
@@ -54,8 +56,43 @@ CNATPMPThreadWrapper::CNATPMPThreadWrapper()
 
 CNATPMPThreadWrapper::~CNATPMPThreadWrapper()
 {
+	KillRefreshTimer();
+
 	delete m_pNATPMP;
 	m_pNATPMP = NULL;
+}
+
+void CNATPMPThreadWrapper::StartRefreshTimer()
+{
+	if(m_hRefreshTimer == NULL)
+	{
+		VERIFY((m_hRefreshTimer = SetTimer(0, 0, NATPMP_REFRESH_TIME, RefreshTimer)) != NULL);
+		if (thePrefs.GetVerbose() && !m_hRefreshTimer)
+			AddDebugLogLine(true, L"Failed to create 'NAT-PMP refresh' timer - %s", GetErrorMessage(GetLastError()));
+	}
+}
+
+void CNATPMPThreadWrapper::KillRefreshTimer()
+{
+	if (m_hRefreshTimer)
+	{
+		KillTimer(0, m_hRefreshTimer);
+		m_hRefreshTimer = NULL;
+	}
+}
+
+VOID CALLBACK CNATPMPThreadWrapper::RefreshTimer(HWND /*hwnd*/, UINT /*uMsg*/, UINT_PTR /*idEvent*/, DWORD /*dwTime*/)
+{
+	// NOTE: Always handle all type of MFC exceptions in TimerProcs - otherwise we'll get mem leaks
+	try
+	{
+		// Barry - Don't do anything if the app is shutting down - can cause unhandled exceptions
+		if (!theApp.emuledlg->IsRunning())
+			return;
+
+		theApp.emuledlg->RefreshNATPMP();
+	}
+	CATCH_DFLT_EXCEPTIONS(L"CNATPMPThreadWrapper::RefreshTimer")
 }
 
 bool	CNATPMPThreadWrapper::IsReady()
@@ -102,9 +139,11 @@ void	CNATPMPThreadWrapper::DeletePorts()
 	for(int i = 0; i < _countof(m_portList); ++i)
 		m_portList[i].RemoveAll();
 	AddTask(eDeleteTCPMappings, false);
-	AddTask(eDeleteUDPMappings, false);
+	AddTask(eDeleteUDPMappings, false);	
 
 	m_settingsLock.Unlock();
+
+	KillRefreshTimer();
 }
 
 void	CNATPMPThreadWrapper::StartDiscovery(const uint16 nTCPPort, const uint16 nUDPPort)
@@ -180,7 +219,7 @@ bool CNATPMPThreadWrapper::CheckAndRefresh()
 	// and refresh them if not
 	if (m_bAbortDiscovery)
 	{
-		DebugLog(L"Not refreshing NATPMP ports because they don't seem to be forwarded in the first place");
+		DebugLog(L"Not refreshing NATPMP ports because they don't seem to be mapped in the first place");
 		return false;
 	}
 //>>> WiZaRd
@@ -496,8 +535,10 @@ int CNATPMPThread::Run()
 					for(POSITION pos = m_pOwner->m_portList[NATPMP_PROTOCOL_TCP-1].GetHeadPosition(); pos;)
 					{
 						uint16 port = m_pOwner->m_portList[NATPMP_PROTOCOL_TCP-1].GetNext(pos);
-						if(!m_pNATPMP->AddPortMapping(port, port, NATPMP_PROTOCOL_TCP, 3600))
-							bSucceeded = false;					
+						if(m_pNATPMP->AddPortMapping(port, port, NATPMP_PROTOCOL_TCP, DFLT_NATPMP_LIFETIME))
+							m_pOwner->StartRefreshTimer();
+						else
+							bSucceeded = false;
 					}
 					break;
 
@@ -505,7 +546,9 @@ int CNATPMPThread::Run()
 					for(POSITION pos = m_pOwner->m_portList[NATPMP_PROTOCOL_UDP-1].GetHeadPosition(); pos;)
 					{
 						uint16 port = m_pOwner->m_portList[NATPMP_PROTOCOL_UDP-1].GetNext(pos);
-						if(!m_pNATPMP->AddPortMapping(port, port, NATPMP_PROTOCOL_UDP, 3600))
+						if(m_pNATPMP->AddPortMapping(port, port, NATPMP_PROTOCOL_UDP, DFLT_NATPMP_LIFETIME))
+							m_pOwner->StartRefreshTimer();
+						else
 							bSucceeded = false;					
 					}
 					break;
@@ -560,7 +603,7 @@ LRESULT CemuleDlg::OnNATPMPResult(WPARAM wParam, LPARAM lParam)
 //<<< WiZaRd - handle "NATPMP_TIMEOUT" events!
 	{
 //>>> WiZaRd - handle "NATPMP_TIMEOUT" events!
-		//just to be sure, stop any running services and also delete the forwarded ports (if necessary)
+		//just to be sure, stop any running services and also delete the mapped ports (if necessary)
 		if (wParam == CNATPMP::NATPMP_TIMEOUT)
 		{
 			theApp.m_pNATPMPThreadWrapper->StopAsyncFind();
@@ -586,12 +629,12 @@ LRESULT CemuleDlg::OnNATPMPResult(WPARAM wParam, LPARAM lParam)
 		if (wParam == CNATPMP::NATPMP_OK)
 		{
 			// remember the last working implementation
-			// TODO: ports are not correct here, though that not that import, right now
-			Log(L"NAT-PMP successfully set up forwardings for ports %u (TCP) and %u (UDP)", thePrefs.GetPort(), thePrefs.GetUDPPort());
+			// TODO: ports may not be correct here, though that not that import, right now
+			Log(L"NAT-PMP successfully set up mappings for ports %u (TCP) and %u (UDP)", thePrefs.GetPort(), thePrefs.GetUDPPort());
 			//Log(GetResString(IDS_UPNPSUCCESS), theApp.m_pNATPMPThreadWrapper->GetUsedTCPPort(), theApp.m_pNATPMPThreadWrapper->GetUsedUDPPort());
 		}
 		else
-			LogWarning(L"NAT-PMP failed to setup port forwardings, please foward those ports manually if necessary!"); // GetResString(IDS_UPNPFAILED)
+			LogWarning(L"NAT-PMP failed to setup port mappings, please map those ports manually if necessary!"); // GetResString(IDS_UPNPFAILED)
 	}
 
 	return 0;
@@ -607,7 +650,7 @@ void CemuleDlg::StartNATPMP(bool bReset, uint16 nForceTCPPort, uint16 nForceUDPP
 	{
 		if (bReset)
 		{
-			Log(L"Trying to setup port forwardings with NAT-PMP..."); // GetResString(IDS_UPNPSETUP)
+			Log(L"Trying to setup port mappings with NAT-PMP..."); // GetResString(IDS_UPNPSETUP)
 		}
 		try
 		{

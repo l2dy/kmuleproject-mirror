@@ -57,14 +57,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-enum eDirectoryMode
-{
-    eDM_Auto = -1,
-    eDM_MultiUser = 0,
-    eDM_PublicUser = 1,
-    eDM_Executable = 2
-};
-
 CPreferences thePrefs;
 
 CString CPreferences::m_astrDefaultDirs[EMULE_DIRCOUNT];
@@ -232,7 +224,7 @@ UINT	CPreferences::m_uTransferWnd1;
 UINT	CPreferences::m_uTransferWnd2;
 UINT	CPreferences::statsMax;
 UINT	CPreferences::statsAverageMinutes;
-bool	CPreferences::m_bIRCAddTimeStamp;
+bool	CPreferences::m_bAddTimeStamp;
 bool	CPreferences::m_bRemove2bin;
 bool	CPreferences::m_bShowCopyEd2kLinkCmd;
 bool	CPreferences::m_bpreviewprio;
@@ -1682,7 +1674,8 @@ void CPreferences::SavePreferences()
     ini.WriteString(L"FilenameCleanups",filenameCleanups);
     ini.WriteInt(L"ExtractMetaData",m_iExtractMetaData);
 
-    ini.WriteBool(L"IRCAddTimestamp", m_bIRCAddTimeStamp);
+	ini.DeleteKey(L"IRCAddTimestamp"); // delete old setting
+    ini.WriteBool(L"AddTimestamp", m_bAddTimeStamp);
 
     ini.WriteBool(L"Verbose", m_bVerbose);
     ini.WriteBool(L"DebugSourceExchange", m_bDebugSourceExchange);	// do *not* use the according 'Get...' function here!
@@ -2171,7 +2164,8 @@ void CPreferences::LoadPreferences()
     m_strDateTimeFormat4Log = ini.GetString(L"DateTimeFormat4Log", L"%c");
     m_strDateTimeFormat4Lists = ini.GetString(L"DateTimeFormat4Lists", L"%c");
 
-    m_bIRCAddTimeStamp = ini.GetBool(L"IRCAddTimestamp", true);
+	m_bAddTimeStamp = ini.GetBool(L"IRCAddTimestamp", true);
+    m_bAddTimeStamp = ini.GetBool(L"AddTimestamp", m_bAddTimeStamp);
 
     log2disk = ini.GetBool(L"SaveLogToDisk", false);
 	m_bLogAnalyzerToDisk = ini.GetBool(L"SaveAnalyzerLogToDisk", false); //>>> WiZaRd::ClientAnalyzer

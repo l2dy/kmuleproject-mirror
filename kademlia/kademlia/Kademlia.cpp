@@ -227,10 +227,19 @@ void CKademlia::Process()
         {
             theApp.emuledlg->RemoveUPnPMappings();
             theApp.emuledlg->StartUPnP();
+
+//>>> WiZaRd::NAT-PMP
+			theApp.emuledlg->RemoveNATPMPMappings();
+			theApp.emuledlg->StartNATPMP();
+//<<< WiZaRd::NAT-PMP
         }
         else
 //<<< WiZaRd::"HARD" upnp reset
+		{
             theApp.emuledlg->RefreshUPnP();
+			theApp.emuledlg->RefreshNATPMP();
+		}
+//<<< WiZaRd::NAT-PMP
         m_tNextUPnPCheck = 0; // will be reset on firewallcheck
     }
     if (m_tNextSelfLookup <= tNow)

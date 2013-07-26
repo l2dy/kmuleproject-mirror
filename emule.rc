@@ -1376,8 +1376,6 @@ TRANSFER                ICON                    "res\\Transfer.ico"
 SHAREDFILES             ICON                    "res\\SharedFiles.ico"
 STATISTICS              ICON                    "res\\Statistics.ico"
 MESSAGES                ICON                    "res\\Messages.ico"
-IRC                     ICON                    "res\\IRC.ico"
-IRCCLIPBOARD            ICON                    "res\\IRCClipboard.ico"
 PREFERENCES             ICON                    "res\\Preferences.ico"
 TOOLS                   ICON                    "res\\Tools.ico"
 HELP                    ICON                    "res\\Help.ico"
@@ -1993,6 +1991,7 @@ BEGIN
 	IDS_TRANSLATED_BY_URL	 "http://kmule.emulefuture.de"
 	IDS_TRANSLATED_BY_HOMEPAGE "Visit translators' homepage"
     IDS_RENAME_WITHOUT_EXTENSION " (without extension)"
+	IDS_HYPERTEXT_FONT_HINT "Font for Server-, and Message-Window"
 END
 
 STRINGTABLE 
@@ -3059,8 +3058,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_TREEOPTIONS_FALSE   "False"
-    IDS_TREEOPTIONS_OK      "OK"
-    IDS_HYPERTEXT_FONT_HINT "Font for Server-, Message- and IRC-Window"
+    IDS_TREEOPTIONS_OK      "OK"    
     IDS_SELECT_FONT         "Select Font"
     IDS_KBITSSEC            "kBit/s"
     IDS_KBYTESSEC           "kByte/s"
