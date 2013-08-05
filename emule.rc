@@ -148,7 +148,8 @@ BEGIN
     CONTROL         "",IDC_TAB1,"SysTabControl32",WS_TABSTOP,5,17,157,16
     LTEXT           "Do *NOT* resize this dlg resource!",IDC_STATIC,108,2,55,
                     16,NOT WS_VISIBLE
-    PUSHBUTTON      "Search Parameters...",IDC_OPEN_PARAMS_WND,164,1,116,14
+    PUSHBUTTON      "Search Parameters...",IDC_OPEN_PARAMS_WND,164,1,116,14,
+					NOT WS_VISIBLE
     EDITTEXT        IDC_FILTER,164,17,116,14,ES_MULTILINE | ES_AUTOHSCROLL
     CONTROL         "",IDC_PROGRESS1,"msctls_progress32",WS_BORDER,5,112,275,
                     7
