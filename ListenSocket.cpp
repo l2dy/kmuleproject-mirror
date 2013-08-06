@@ -146,6 +146,15 @@ bool CClientReqSocket::CheckTimeOut()
         return false;
     }
     UINT uTimeout = GetTimeOut();
+//>>> WiZaRd::NatTraversal [Xanatos]
+	// Note: the eserver may delay every callback request up to 15 seconds, 
+	//			so a full symmetric connection attempt with callback from booth sides
+	//			may get delayed up to 30 seconds, as the normal socket timeout
+	//			is 40 seconds we must extend it.
+	// WiZaRd: we have no servers... drop that part? prolly doesn't hurt...
+	if (HaveUtpLayer())
+		uTimeout += SEC2MS(30);
+//<<< WiZaRd::NatTraversal [Xanatos]
     if (client)
     {
         if (client->GetKadState() == KS_CONNECTED_BUDDY)
@@ -224,7 +233,10 @@ void CClientReqSocket::Safe_Delete()
     ASSERT(theApp.listensocket->IsValidSocket(this));
     AsyncSelect(0);
     deltimer = ::GetTickCount();
-    if (m_SocketData.hSocket != INVALID_SOCKET) // deadlake PROXYSUPPORT - changed to AsyncSocketEx
+//>>> WiZaRd::NatTraversal [Xanatos]
+	if (m_SocketData.hSocket != INVALID_SOCKET || HaveUtpLayer()) // deadlake PROXYSUPPORT - changed to AsyncSocketEx
+    //if (m_SocketData.hSocket != INVALID_SOCKET) // deadlake PROXYSUPPORT - changed to AsyncSocketEx
+//<<< WiZaRd::NatTraversal [Xanatos]
         ShutDown(SD_BOTH);
     if (client)
         client->socket = 0;
@@ -1767,6 +1779,15 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
                 data_in.ReadHash16(reqfilehash);
                 if (thePrefs.GetDebugClientTCPLevel() > 0)
                     DebugRecv("OP_ReaskCallbackTCP", client, reqfilehash);
+
+//>>> WiZaRd::NatTraversal [Xanatos]
+				if(isnulmd4(reqfilehash))
+				{
+					theApp.clientudp->ProcessPacket(packet+(4+2+16+1), size-(4+2+16+1), data_in.ReadUInt8(), destip, destport);
+					break;
+				}
+//<<< WiZaRd::NatTraversal [Xanatos]
+
                 CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
 
                 bool bSenderMultipleIpUnknown = false;
@@ -2726,7 +2747,10 @@ void CListenSocket::Process()
         CClientReqSocket* cur_sock = socket_list.GetAt(pos2);
         if (cur_sock->deletethis)
         {
-            if (cur_sock->m_SocketData.hSocket != INVALID_SOCKET)
+//>>> WiZaRd::NatTraversal [Xanatos]
+			if (cur_sock->m_SocketData.hSocket != INVALID_SOCKET || cur_sock->HaveUtpLayer(true))
+            //if (cur_sock->m_SocketData.hSocket != INVALID_SOCKET)
+//<<< WiZaRd::NatTraversal [Xanatos]
                 cur_sock->Close();			// calls 'closesocket'
             else
                 cur_sock->Delete_Timed();	// may delete 'cur_sock'

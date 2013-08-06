@@ -32,6 +32,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#ifdef USE_NAT_PMP
+
 //////////////////////////////////////////////////////////////////////////
 // CNATPMPThreadWrapper
 CNATPMPThreadWrapper::CNATPMPThreadWrapper()
@@ -732,3 +734,5 @@ void CemuleDlg::RefreshNATPMP(bool bRequestAnswer)
 	else
 		ASSERT(0);
 }
+
+#endif

@@ -133,7 +133,14 @@ protected:
         aborted
     };
 
-private:
+//>>> WiZaRd::NatTraversal [Xanatos]
+	// UTP layer is a layer without an underlying TCP socket there for it have to do some stuff on its own
+	virtual bool IsUtpLayer() {return false;}
+
+protected:
+//private:
+//<<< WiZaRd::NatTraversal [Xanatos]
+
     //Layer state can't be set directly from derived classes
     void SetLayerState(int nLayerState);
     int m_nLayerState;

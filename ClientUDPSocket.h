@@ -17,6 +17,7 @@
 #pragma once
 #include "UploadBandwidthThrottler.h" // ZZ:UploadBandWithThrottler (UDP)
 #include "EncryptedDatagramSocket.h"
+#include <map> //>>> WiZaRd::NatTraversal [Xanatos]
 
 class Packet;
 
@@ -51,7 +52,7 @@ public:
     SocketSentBytes  SendControlData(UINT maxNumberOfBytesToSend, UINT minFragSize); // ZZ:UploadBandWithThrottler (UDP)
 
 protected:
-    bool	ProcessPacket(const BYTE* packet, UINT size, uint8 opcode, UINT ip, uint16 port);
+    //bool	ProcessPacket(const BYTE* packet, UINT size, uint8 opcode, UINT ip, uint16 port); //>>> WiZaRd::NatTraversal [Xanatos]
 	bool	ProcessModPacket(BYTE* packet, const UINT size, const uint8 opcode, const UINT ip, const uint16 port); //>>> WiZaRd::ModProt
 
     virtual void	OnSend(int nErrorCode);
@@ -69,4 +70,35 @@ private:
     CTypedPtrList<CPtrList, UDPPack*> controlpacket_queue;
 
     CCriticalSection sendLocker; // ZZ:UploadBandWithThrottler (UDP)
+
+//>>> WiZaRd::NatTraversal [Xanatos]
+public:
+	bool	ProcessPacket(const BYTE* packet, UINT size, uint8 opcode, UINT ip, uint16 port);
+	void	SetConnectionEncryption(UINT dwIP, uint16 nPort, bool bEncrypt, const uchar* pTargetClientHash = NULL);
+	byte*	GetHashForEncryption(UINT dwIP, uint16 nPort);
+	bool	IsObfuscating(UINT dwIP, uint16 nPort)	{return GetHashForEncryption(dwIP, nPort) != NULL;}
+	void	SendUtpPacket(const byte *data, size_t len, const struct sockaddr *to, socklen_t tolen);
+
+private:
+	struct SIpPort
+	{
+		UINT dwIP;
+		uint16 nPort;
+
+		bool operator< (const SIpPort &Other) const 
+		{
+			if(dwIP == Other.dwIP)
+				return nPort < Other.nPort;
+			return dwIP < Other.dwIP;
+		}
+	};
+
+	struct SHash
+	{
+		byte	UserHash[16];
+		UINT	LastUsed;
+	};
+
+	std::map<SIpPort, SHash>		m_HashMap;
+//<<< WiZaRd::NatTraversal [Xanatos]
 };

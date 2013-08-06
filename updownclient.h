@@ -95,7 +95,11 @@ public:
         return true;
     }
     virtual bool	Disconnected(LPCTSTR pszReason, bool bFromSocket = false);
-    virtual bool	TryToConnect(bool bIgnoreMaxCon = false, bool bNoCallbacks = false, CRuntimeClass* pClassSocket = NULL);
+
+//>>> WiZaRd::NatTraversal [Xanatos]
+	virtual bool	TryToConnect(bool bIgnoreMaxCon = false, bool bNoCallbacks = false, CRuntimeClass* pClassSocket = NULL, bool bUseUTP = false);
+    //virtual bool	TryToConnect(bool bIgnoreMaxCon = false, bool bNoCallbacks = false, CRuntimeClass* pClassSocket = NULL);
+//<<< WiZaRd::NatTraversal [Xanatos]
     virtual void	Connect();
     virtual void	ConnectionEstablished();
     virtual void	OnSocketConnected(int nErrorCode);
@@ -1077,7 +1081,8 @@ protected:
     UINT m_fHashsetRequestingAICH : 1, // 31 bits left
 		 m_fAICHHashRequested : 1, //>>> Security Check
 		 m_fSourceExchangeRequested : 1, //>>> Security Check
-m_fSupportsModProt	  : 1; //>>> WiZaRd::ModProt
+		 m_fSupportsModProt	  : 1, //>>> WiZaRd::ModProt
+		 m_fSupportsNatTraversal : 1; //>>> WiZaRd::NatTraversal [Xanatos]
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 public:
     CTypedPtrList<CPtrList, Pending_Block_Struct*>	 m_PendingBlocks_list;
@@ -1250,5 +1255,10 @@ public:
 	void	SendModInfoPacket() const;
 	void	ProcessModInfoPacket(const uchar* pachPacket, const UINT nSize);
 //<<< WiZaRd::ModProt
+//>>> WiZaRd::NatTraversal [Xanatos]
+public:
+	bool			SupportsNatTraversal() const			{return m_fSupportsNatTraversal;}
+	void			SetNatTraversalSupport(bool bVal)		{m_fSupportsNatTraversal = bVal ? 1 : 0;}
+//<<< WiZaRd::NatTraversal [Xanatos]
 };
 //#pragma pack()

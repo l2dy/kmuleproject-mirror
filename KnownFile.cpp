@@ -1433,7 +1433,10 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
             return NULL;
         }
 
-        if (cur_src->HasLowID() || cur_src == forClient || !(cur_src->GetUploadState() == US_UPLOADING || cur_src->GetUploadState() == US_ONUPLOADQUEUE))
+//>>> WiZaRd::NatTraversal [Xanatos]
+		if ((cur_src->HasLowID() && !cur_src->SupportsNatTraversal()) || cur_src == forClient || !(cur_src->GetUploadState() == US_UPLOADING || cur_src->GetUploadState() == US_ONUPLOADQUEUE))
+        //if (cur_src->HasLowID() || cur_src == forClient || !(cur_src->GetUploadState() == US_UPLOADING || cur_src->GetUploadState() == US_ONUPLOADQUEUE))
+//<<< WiZaRd::NatTraversal [Xanatos]
             continue;
         if (!cur_src->IsEd2kClient())
             continue;
@@ -1582,8 +1585,20 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
                 const uint8 uSupportsCryptLayer	= cur_src->SupportsCryptLayer() ? 1 : 0;
                 const uint8 uRequestsCryptLayer	= cur_src->RequestsCryptLayer() ? 1 : 0;
                 const uint8 uRequiresCryptLayer	= cur_src->RequiresCryptLayer() ? 1 : 0;
-                //const uint8 uDirectUDPCallback	= cur_src->SupportsDirectUDPCallback() ? 1 : 0;
-                const uint8 byCryptOptions = /*(uDirectUDPCallback << 3) |*/ (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
+
+//>>> WiZaRd::NatTraversal [Xanatos]
+				uint8 byCryptOptions = (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
+
+				if(forClient->SupportsNatTraversal()) //>>> WiZaRd::FiX for NAT-T
+				{
+					const uint8 uDirectUDPCallback		= cur_src->SupportsDirectUDPCallback() ? 1 : 0;
+					const uint8 uSupportsNatTraversal	= cur_src->SupportsNatTraversal() ? 1 : 0;
+					byCryptOptions |= (uSupportsNatTraversal << 7) | (uDirectUDPCallback << 3);
+				}
+
+//                //const uint8 uDirectUDPCallback	= cur_src->SupportsDirectUDPCallback() ? 1 : 0;
+//                const uint8 byCryptOptions = /*(uDirectUDPCallback << 3) |*/ (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
+//<<< WiZaRd::NatTraversal [Xanatos]
                 data.WriteUInt8(byCryptOptions);
             }
             if (nCount > 500)

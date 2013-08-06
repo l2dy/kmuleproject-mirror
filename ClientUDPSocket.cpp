@@ -756,3 +756,81 @@ bool CClientUDPSocket::Rebind()
     Close();
     return Create();
 }
+
+//>>> WiZaRd::NatTraversal [Xanatos]
+void CClientUDPSocket::SetConnectionEncryption(UINT dwIP, uint16 nPort, bool bEncrypt, const uchar* pTargetClientHash)
+{
+	SIpPort IpPort = {dwIP, nPort};
+	std::map<SIpPort, SHash>::iterator I = m_HashMap.find(IpPort);
+	if(bEncrypt)
+	{
+		if(I == m_HashMap.end())
+		{
+			SHash Hash;
+			if(pTargetClientHash)
+				md4cpy(Hash.UserHash, pTargetClientHash);
+			else
+				md4clr(Hash.UserHash);
+			I = m_HashMap.insert(std::map<SIpPort, SHash>::value_type(IpPort, Hash)).first;
+		}
+		I->second.LastUsed = ::GetTickCount();
+	}
+	else if(I != m_HashMap.end())
+		m_HashMap.erase(I);
+}
+
+byte* CClientUDPSocket::GetHashForEncryption(UINT dwIP, uint16 nPort)
+{
+	SIpPort IpPort = {dwIP, nPort};
+	std::map<SIpPort, SHash>::iterator I = m_HashMap.find(IpPort);
+	if(I == m_HashMap.end())
+		return NULL;
+	I->second.LastUsed = ::GetTickCount();
+	// Note: if we don't know how to encrypt but have got a incoming encrypted packet, 
+	//	we use our own hash to encrypt as we expect the remote side to know it and try it.
+	//	if(isnulmd4(I->second.UserHash))
+	//		md4cpy(Hash.UserHash, thePrefs.GetUserHash());
+	return I->second.UserHash;
+}
+
+union UUtpHdr
+{
+	UINT Bits;
+	struct SUtpHdr
+	{
+		UINT
+ver:	4,
+type:	4,
+ext:	8,
+connid:	16;
+	} Fields;
+};
+
+void CClientUDPSocket::SendUtpPacket(const byte *data, size_t len, const struct sockaddr *to, socklen_t tolen)
+{
+	byte* pTargetClientHash = GetHashForEncryption(((SOCKADDR_IN*)to)->sin_addr.S_un.S_addr, ntohs(((SOCKADDR_IN*)to)->sin_port));
+
+	ASSERT(len >= 4);
+
+	UUtpHdr UtpHdr;
+	UtpHdr.Bits = *((UINT*)data);
+	if(pTargetClientHash && UtpHdr.Fields.type == 4) // ST_SYN
+	{
+		CSafeMemFile data_out(128);
+		data_out.WriteHash16(thePrefs.GetUserHash());
+		Packet* packet = new Packet(&data_out, OP_UDPRESERVEDPROT2);
+		packet->opcode = 0xFF; // Key Frame
+		theStats.AddUpDataOverheadOther(packet->size);
+		SendPacket(packet, ((SOCKADDR_IN*)to)->sin_addr.S_un.S_addr, ntohs(((SOCKADDR_IN*)to)->sin_port), pTargetClientHash != NULL, pTargetClientHash, false, 0);
+	}
+
+	Packet* frame = new Packet(OP_UDPRESERVEDPROT2);
+	frame->opcode = 0x00; // UTP Frame
+	frame->pBuffer = new char[len];
+	memcpy(frame->pBuffer, data, len);
+	frame->size = len;
+
+	//theStats.AddUpDataOverheadOther(0); // its counted as TCP elseware
+	SendPacket(frame, ((SOCKADDR_IN*)to)->sin_addr.S_un.S_addr, ntohs(((SOCKADDR_IN*)to)->sin_port), pTargetClientHash != NULL, pTargetClientHash, false, 0);
+}
+//<<< WiZaRd::NatTraversal [Xanatos]

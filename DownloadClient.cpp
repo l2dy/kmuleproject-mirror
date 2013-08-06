@@ -237,7 +237,10 @@ bool CUpDownClient::AskForDownload()
             return true;
         }
         // if we are lowid <-> lowid but contacted the source before already, keep it in the hope that we might turn highid again
-        if (HasLowID() && !theApp.CanDoCallback() && GetLastAskedTime() > 0)
+//>>> WiZaRd::NatTraversal [Xanatos]
+		if (HasLowID() && !theApp.CanDoCallback(this) && GetLastAskedTime() > 0)
+        //if (HasLowID() && !theApp.CanDoCallback() && GetLastAskedTime() > 0)
+//<<< WiZaRd::NatTraversal [Xanatos]
         {
             if (GetDownloadState() != DS_LOWTOLOWIP)
                 SetDownloadState(DS_LOWTOLOWIP);

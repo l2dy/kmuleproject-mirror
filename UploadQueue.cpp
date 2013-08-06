@@ -40,6 +40,7 @@
 #include "Kademlia/Kademlia/Prefs.h"
 #include "Log.h"
 #include "./Mod/ClientAnalyzer.h" //>>> WiZaRd::ClientAnalyzer
+#include "./Mod/Neo/UtpSocket.h" //>>> WiZaRd::NatTraversal [Xanatos]
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1532,6 +1533,8 @@ VOID CALLBACK CUploadQueue::UploadTimer(HWND /*hwnd*/, UINT /*uMsg*/, UINT_PTR /
         // other threads may have queued up log lines. This prints them.
         theApp.HandleLogQueues();
         // Elandal: ThreadSafeLogging <--
+
+		CUtpSocket::Process(); //>>> WiZaRd::NatTraversal [Xanatos]
 
         // ZZ:UploadSpeedSense -->
         theApp.lastCommonRouteFinder->SetPrefs(thePrefs.IsDynUpEnabled(),

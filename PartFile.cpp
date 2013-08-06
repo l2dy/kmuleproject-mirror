@@ -3045,7 +3045,10 @@ UINT CPartFile::Process(UINT reducedownload, UINT icounter/*in percent*/)
                 if (cur_src->HasLowID())
                 {
                     //Make sure we still cannot callback to this Client..
-                    if (!theApp.CanDoCallback())
+//>>> WiZaRd::NatTraversal [Xanatos]
+					if (!theApp.CanDoCallback(cur_src))
+                    //if (!theApp.CanDoCallback())
+//<<< WiZaRd::NatTraversal [Xanatos]
                     {
                         //If we are almost maxed on sources, slowly remove these client to see if we can find a better source.
                         if (((dwCurTick - lastpurgetime) > SEC2MS(30)) && (this->GetSourceCount() >= (GetMaxSources()*.8)))
@@ -4808,7 +4811,10 @@ Packet* CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 byR
     {
         bNeeded = false;
         const CUpDownClient* cur_src = srclist.GetNext(pos);
-        if (cur_src->HasLowID() || !cur_src->IsValidSource())
+//>>> WiZaRd::NatTraversal [Xanatos]
+		if ((cur_src->HasLowID() && !cur_src->SupportsNatTraversal()) || !cur_src->IsValidSource())
+        //if (cur_src->HasLowID() || !cur_src->IsValidSource())
+//<<< WiZaRd::NatTraversal [Xanatos]
             continue;
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 		const CPartStatus* const srcstatus = cur_src->GetPartStatus();
@@ -4897,8 +4903,19 @@ Packet* CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 byR
                 const uint8 uSupportsCryptLayer	= cur_src->SupportsCryptLayer() ? 1 : 0;
                 const uint8 uRequestsCryptLayer	= cur_src->RequestsCryptLayer() ? 1 : 0;
                 const uint8 uRequiresCryptLayer	= cur_src->RequiresCryptLayer() ? 1 : 0;
-                //const uint8 uDirectUDPCallback	= cur_src->SupportsDirectUDPCallback() ? 1 : 0;
-                const uint8 byCryptOptions = /*(uDirectUDPCallback << 3) |*/ (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
+//>>> WiZaRd::NatTraversal [Xanatos]
+				uint8 byCryptOptions = (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
+
+				//if(forClient->SupportsSourceExchangeExt())
+				if(forClient->SupportsNatTraversal()) //>>> WiZaRd::FiX for NAT-T
+				{
+					const uint8 uDirectUDPCallback		= cur_src->SupportsDirectUDPCallback() ? 1 : 0;
+					const uint8 uSupportsNatTraversal	= cur_src->SupportsNatTraversal() ? 1 : 0;
+					byCryptOptions |= (uSupportsNatTraversal << 7) | (uDirectUDPCallback << 3);
+				}
+//                //const uint8 uDirectUDPCallback	= cur_src->SupportsDirectUDPCallback() ? 1 : 0;
+//                const uint8 byCryptOptions = /*(uDirectUDPCallback << 3) |*/ (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
+//<<< WiZaRd::NatTraversal [Xanatos]
                 data.WriteUInt8(byCryptOptions);
             }
             if (nCount > 500)

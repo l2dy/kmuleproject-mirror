@@ -124,11 +124,13 @@ public:
     void RemoveUPnPMappings(); //>>> WiZaRd
     void StartUPnP(bool bReset = true, uint16 nForceTCPPort = 0, uint16 nForceUDPPort = 0);
     void RefreshUPnP(bool bRequestAnswer = false);
+#ifdef USE_NAT_PMP
 //>>> WiZaRd::NAT-PMP
 	void RemoveNATPMPMappings();
 	void StartNATPMP(bool bReset = true, uint16 nForceTCPPort = 0, uint16 nForceUDPPort = 0);
 	void RefreshNATPMP(bool bRequestAnswer = false);
 //<<< WiZaRd::NAT-PMP
+#endif
     HBRUSH GetCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 
     virtual void TrayMinimizeToTrayChange();
@@ -193,7 +195,9 @@ protected:
     char			m_acVCDNSBuffer[MAXGETHOSTSTRUCT];
     bool			m_iMsgBlinkState;
     bool			m_bConnectRequestDelayedForUPnP;
+#ifdef USE_NAT_PMP
 	bool			m_bConnectRequestDelayedForNATPMP; //>>> WiZaRd::NAT-PMP
+#endif
     bool			m_bKadSuspendDisconnect;
     bool			m_bInitedCOM;
 #ifdef HAVE_WIN7_SDK_H
@@ -221,10 +225,12 @@ protected:
     // UPnP TimeOutTimer
     UINT_PTR m_hUPnPTimeOutTimer;
     static void CALLBACK UPnPTimeOutTimer(HWND hwnd, UINT uiMsg, UINT idEvent, DWORD dwTime);
+#ifdef USE_NAT_PMP
 //>>> WiZaRd::NAT-PMP
 	UINT_PTR m_hNATPMPTimeOutTimer;
 	static void CALLBACK NATPMPTimeOutTimer(HWND hwnd, UINT uiMsg, UINT idEvent, DWORD dwTime);
 //<<< WiZaRd::NAT-PMP
+#endif
 
     void StartConnection();
     void CloseConnection();
@@ -312,7 +318,9 @@ protected:
     // UPnP
     afx_msg LRESULT OnUPnPResult(WPARAM wParam, LPARAM lParam);
 
+#ifdef USE_NAT_PMP
 	afx_msg LRESULT OnNATPMPResult(WPARAM wParam, LPARAM lParam); //>>> WiZaRd::NAT-PMP
+#endif
 
 //>>> WiZaRd::7zip
 	afx_msg LRESULT OnSevenZipJobDone(WPARAM wParam, LPARAM lParam); 

@@ -205,6 +205,8 @@ public:
     BOOL AddLayer(CAsyncSocketExLayer *pLayer);
 #endif //NOLAYERS
 
+	BOOL HaveUtpLayer(bool bActive = false); //>>> WiZaRd::NatTraversal [Xanatos]
+
     //Returns the handle of the socket.
     SOCKET GetSocketHandle();
 

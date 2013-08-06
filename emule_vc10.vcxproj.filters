@@ -103,6 +103,9 @@
     <Filter Include="Mod\NetF\Header">
       <UniqueIdentifier>{e06e5e16-c879-487a-a15c-fa36a8b922c4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Mod\Neo">
+      <UniqueIdentifier>{8f56296c-af1f-43d1-a471-0feb077a9850}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AbstractFile.cpp">
@@ -1049,6 +1052,12 @@
     </ClCompile>
     <ClCompile Include="Mod\copyrights.cpp">
       <Filter>Mod\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Mod\Neo\Buffer.cpp">
+      <Filter>Mod\Neo</Filter>
+    </ClCompile>
+    <ClCompile Include="Mod\Neo\UtpSocket.cpp">
+      <Filter>Mod\Neo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3023,6 +3032,12 @@
     </ClInclude>
     <ClInclude Include="Mod\copyrights.h">
       <Filter>Mod\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Mod\Neo\UtpSocket.h">
+      <Filter>Mod\Neo</Filter>
+    </ClInclude>
+    <ClInclude Include="Mod\Neo\Buffer.h">
+      <Filter>Mod\Neo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

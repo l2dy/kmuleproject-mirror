@@ -98,7 +98,9 @@
 #include "./Mod/CustomSearches.h" //>>> WiZaRd::CustomSearches
 #include "./Mod/ModIconMapping.h" //>>> WiZaRd::ModIconMappings
 #include "./Mod/7z/7z.h" //>>> WiZaRd::7zip
+#ifdef USE_NAT_PMP
 #include "./Mod/NATPMPWrapper.h" //>>> WiZaRd::NAT-PMP
+#endif
 #ifdef INFO_WND
 #include "./Mod/InfoWnd.h" //>>> WiZaRd::InfoWnd
 #endif
@@ -177,7 +179,9 @@ BEGIN_MESSAGE_MAP(CemuleDlg, CTrayDialog)
 
     // UPnP
     ON_MESSAGE(UM_UPNP_RESULT, OnUPnPResult)
+#ifdef USE_NAT_PMP
 	ON_MESSAGE(UM_NATPMP_RESULT, OnNATPMPResult) //>>> WiZaRd::NAT-PMP
+#endif
 
     ///////////////////////////////////////////////////////////////////////////
     // WM_APP messages
@@ -246,10 +250,12 @@ CemuleDlg::CemuleDlg(CWnd* pParent /*=NULL*/)
     m_uLastSysTrayIconCookie = SYS_TRAY_ICON_COOKIE_FORCE_UPDATE;
     m_hUPnPTimeOutTimer = 0;
     m_bConnectRequestDelayedForUPnP = false;
+#ifdef USE_NAT_PMP
 //>>> WiZaRd::NAT-PMP
 	m_hNATPMPTimeOutTimer = 0;
 	m_bConnectRequestDelayedForNATPMP = false;
 //<<< WiZaRd::NAT-PMP
+#endif
     m_bKadSuspendDisconnect = false;
     m_bInitedCOM = false;
 
@@ -621,7 +627,9 @@ BOOL CemuleDlg::OnInitDialog()
 
     // Start UPnP prot forwarding
 	StartUPnP();
+#ifdef USE_NAT_PMP
 	StartNATPMP(); //>>> WiZaRd::NAT-PMP
+#endif
 
 	// wait for the first start wizard to finish before starting the timer
 	// WiZaRd: do *NOT* wait here!
@@ -1837,10 +1845,12 @@ void CemuleDlg::OnClose()
     theApp.lastCommonRouteFinder = NULL;
     delete theApp.m_pUPnPFinder;
     theApp.m_pUPnPFinder = NULL;
+#ifdef USE_NAT_PMP
 //>>> WiZaRd::NAT-PMP
 	delete theApp.m_pNATPMPThreadWrapper;
 	theApp.m_pNATPMPThreadWrapper = NULL;
 //<<< WiZaRd::NAT-PMP
+#endif
 //>>> WiZaRd::CustomSearches
     delete theApp.customSearches;
     theApp.customSearches = NULL;
@@ -2046,6 +2056,7 @@ void CemuleDlg::StartConnection()
             m_bConnectRequestDelayedForUPnP = true;
             return;
         }
+#ifdef USE_NAT_PMP
 //>>> WiZaRd::NAT-PMP
 		else if (m_hNATPMPTimeOutTimer != 0 && !m_bConnectRequestDelayedForNATPMP)
 		{			
@@ -2055,6 +2066,7 @@ void CemuleDlg::StartConnection()
 			return;
 		}
 //<<< WiZaRd::NAT-PMP
+#endif
         else
         {
             m_bConnectRequestDelayedForUPnP = false;			
@@ -2063,6 +2075,7 @@ void CemuleDlg::StartConnection()
                 VERIFY(::KillTimer(NULL, m_hUPnPTimeOutTimer));
                 m_hUPnPTimeOutTimer = 0;
             }
+#ifdef USE_NAT_PMP
 //>>> WiZaRd::NAT-PMP
 			m_bConnectRequestDelayedForNATPMP = false;
 			if (m_hNATPMPTimeOutTimer != 0)
@@ -2071,6 +2084,7 @@ void CemuleDlg::StartConnection()
 				m_hNATPMPTimeOutTimer = 0;
 			}
 //<<< WiZaRd::NAT-PMP
+#endif
             AddLogLine(true, GetResString(IDS_CONNECTING));
 
             // kad
@@ -3340,10 +3354,12 @@ LRESULT CemuleDlg::OnUPnPResult(WPARAM wParam, LPARAM lParam)
     }
     if (IsRunning() && m_bConnectRequestDelayedForUPnP)
 	{
+#ifdef USE_NAT_PMP
 //>>> WiZaRd::NAT-PMP
 		m_bConnectRequestDelayedForUPnP = false;
 		if(!m_bConnectRequestDelayedForNATPMP)
 //<<< WiZaRd::NAT-PMP
+#endif
 			StartConnection();
 	}
 
@@ -3374,7 +3390,9 @@ LRESULT  CemuleDlg::OnPowerBroadcast(WPARAM wParam, LPARAM lParam)
         {
             DebugLog(_T("Reconnect after Power state change. wParam=%d lPararm=%ld"),wParam,lParam);
             RefreshUPnP(true);
+#ifdef USE_NAT_PMP
 			RefreshNATPMP(true); //>>> WiZaRd::NAT-PMP
+#endif
             PostMessage(WM_SYSCOMMAND , MP_CONNECT, 0); // tell to connect.. a sec later...
         }
         return TRUE; // message processed.
@@ -3926,7 +3944,7 @@ void	CemuleDlg::UpdateMediaInfoDLL()
 }
 //<<< WiZaRd::MediaInfoDLL Update
 //>>> WiZaRd::7zip
-LRESULT CemuleDlg::OnSevenZipJobDone(WPARAM wParam, LPARAM lParam)
+LRESULT CemuleDlg::OnSevenZipJobDone(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
 	if (theApp.m_app_state == APP_STATE_SHUTTINGDOWN)
 		return FALSE;
@@ -3937,7 +3955,7 @@ LRESULT CemuleDlg::OnSevenZipJobDone(WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-LRESULT CemuleDlg::OnSevenZipJobFailed(WPARAM wParam, LPARAM lParam)
+LRESULT CemuleDlg::OnSevenZipJobFailed(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
 	if (theApp.m_app_state == APP_STATE_SHUTTINGDOWN)
 		return FALSE;

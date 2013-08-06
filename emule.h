@@ -48,7 +48,9 @@ class CUPnPImplWrapper;
 //class CSplashScreen;
 class CSplashScreenEx;
 //<<< WiZaRd::New Splash [TBH]
+#ifdef USE_NAT_PMP
 class CNATPMPThreadWrapper; //>>> WiZaRd::NAT-PMP
+#endif
 class CAntiLeechDataList; //>>> WiZaRd::ClientAnalyzer
 class CAutoUpdate; //>>> WiZaRd::AutoUpdate
 class CCustomSearches; //>>> WiZaRd::CustomSearches
@@ -86,7 +88,9 @@ public:
     CIPFilter*			ipfilter;
     CFirewallOpener*	m_pFirewallOpener;
     CUPnPImplWrapper*	m_pUPnPFinder;
+#ifdef USE_NAT_PMP
 	CNATPMPThreadWrapper*	m_pNATPMPThreadWrapper; //>>> WiZaRd::NAT-PMP
+#endif
     CAntiLeechDataList* antileechlist; //>>> WiZaRd::ClientAnalyzer
     CAutoUpdate*		autoUpdater; //>>> WiZaRd::AutoUpdate
     CCustomSearches*	customSearches; //>>> WiZaRd::CustomSearches
@@ -172,7 +176,10 @@ public:
     bool		IsConnected();
     bool		IsConnecting();
     bool		IsFirewalled();
-    bool		CanDoCallback();
+//>>> WiZaRd::NatTraversal [Xanatos]
+	bool		CanDoCallback(const CUpDownClient* client);
+    //bool		CanDoCallback();
+//<<< WiZaRd::NatTraversal [Xanatos]
     UINT		GetID();
     UINT		GetPublicIP(bool bIgnoreKadIP = false) const;	// return current (valid) public IP or 0 if unknown
     void		SetPublicIP(const UINT dwIP);

@@ -71,7 +71,9 @@
 #include "./Mod/ClientAnalyzer.h" //>>> WiZaRd::ClientAnalyzer
 #include "./Mod/autoUpdate.h" //>>> WiZaRd::AutoUpdate
 #include "./Mod/CustomSearches.h" //>>> WiZaRd::CustomSearches
+#ifdef USE_NAT_PMP
 #include "./Mod/NATPMPWrapper.h" //>>> WiZaRd::NAT-PMP
+#endif
 #include "./Mod/NetF/DesktopIntegration.h" //>>> WiZaRd::DesktopIntegration [Netfinity]
 
 #ifdef _DEBUG
@@ -749,7 +751,9 @@ BOOL CemuleApp::InitInstance()
 
     // UPnP Port forwarding
     m_pUPnPFinder = new CUPnPImplWrapper();
+#ifdef USE_NAT_PMP
 	m_pNATPMPThreadWrapper = new CNATPMPThreadWrapper(); //>>> WiZaRd::NAT-PMP
+#endif
 
     // Highres scheduling gives better resolution for Sleep(...) calls, and timeGetTime() calls
     m_wTimerRes = 0;
@@ -1526,6 +1530,7 @@ void CemuleApp::SetPublicIP(const UINT dwIP)
                 theApp.QueueDebugLogLineEx(LOG_WARNING, L"Resetting UPnP due to IP change...");
                 theApp.emuledlg->RefreshUPnP(true);
             }
+#ifdef USE_NAT_PMP
 //>>> WiZaRd::NAT-PMP
 			if (/*thePrefs.IsNATPMPEnabled() &&*/ theApp.emuledlg && theApp.m_pNATPMPThreadWrapper)
 			{
@@ -1533,6 +1538,7 @@ void CemuleApp::SetPublicIP(const UINT dwIP)
 				theApp.emuledlg->RefreshNATPMP(true);
 			}
 //<<< WiZaRd::NAT-PMP
+#endif
         }
 //<<< WiZaRd::Recode
     }
@@ -1552,12 +1558,25 @@ bool CemuleApp::IsFirewalled()
     return true; // firewalled
 }
 
-bool CemuleApp::CanDoCallback()
+//>>> WiZaRd::NatTraversal [Xanatos]
+bool CemuleApp::CanDoCallback(const CUpDownClient* client)
+//bool CemuleApp::CanDoCallback()
+//<<< WiZaRd::NatTraversal [Xanatos]
 {
+//>>> WiZaRd::NatTraversal [Xanatos]
+	// Note: this is meant for debug purpose only, when we add a source by the CAddSourceDlg
+	if(client->SupportsNatTraversal() && client->GetUserPort() == 0)
+		return true; // the client does not have a TCP port and is NAT traversal enabled we can try it
+//<<< WiZaRd::NatTraversal [Xanatos]
     if (Kademlia::CKademlia::IsConnected())
     {
         if (Kademlia::CKademlia::IsFirewalled())
         {
+//>>> WiZaRd::NatTraversal [Xanatos]
+			//Both Connected - Both Firewalled, but both Nat Traversal Enabled
+			if(client->SupportsNatTraversal())				
+				return true;
+//<<< WiZaRd::NatTraversal [Xanatos]
             //Only Kad Connected - Kad Firewalled
             return false;
         }

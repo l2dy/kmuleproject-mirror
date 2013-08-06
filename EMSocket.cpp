@@ -27,6 +27,7 @@
 #include "Preferences.h"
 #include "emuleDlg.h"
 #include "Log.h"
+#include "./Mod/Neo/UtpSocket.h" //>>> WiZaRd::NatTraversal [Xanatos]
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -150,6 +151,7 @@ CEMSocket::CEMSocket(void)
     m_bBusy = false;
     m_hasSent = false;
     m_bUsesBigSendBuffers = false;
+	m_pUtpLayer = NULL; //>>> WiZaRd::NatTraversal [Xanatos]
 }
 
 CEMSocket::~CEMSocket()
@@ -289,7 +291,10 @@ BOOL CEMSocket::AsyncSelect(long lEvent)
         EMTrace("  FD_WRITE");
 #endif
     // deadlake changed to AsyncSocketEx PROXYSUPPORT
-    if (m_SocketData.hSocket != INVALID_SOCKET)
+//>>> WiZaRd::NatTraversal [Xanatos]
+	if (m_SocketData.hSocket != INVALID_SOCKET || HaveUtpLayer())
+    //if (m_SocketData.hSocket != INVALID_SOCKET)
+//<<< WiZaRd::NatTraversal [Xanatos]
         return CEncryptedStreamSocket::AsyncSelect(lEvent);
     return true;
 }
@@ -1271,6 +1276,10 @@ int CEMSocket::Receive(void* lpBuf, int nBufLen, int nFlags)
 void CEMSocket::RemoveAllLayers()
 {
     CEncryptedStreamSocket::RemoveAllLayers();
+//>>> WiZaRd::NatTraversal [Xanatos]
+	delete m_pUtpLayer;
+	m_pUtpLayer = NULL;
+//<<< WiZaRd::NatTraversal [Xanatos]
     delete m_pProxyLayer;
     m_pProxyLayer = NULL;
 }
@@ -1360,6 +1369,7 @@ void CEMSocket::AssertValid() const
     const_cast<CEMSocket*>(this)->sendLocker.Lock();
 
     ASSERT(byConnected==ES_DISCONNECTED || byConnected==ES_NOTCONNECTED || byConnected==ES_CONNECTED);
+	CHECK_PTR(m_pUtpLayer); //>>> WiZaRd::NatTraversal [Xanatos]
     CHECK_BOOL(m_bProxyConnectFailed);
     CHECK_PTR(m_pProxyLayer);
     (void)downloadLimit;
@@ -1490,3 +1500,11 @@ float CEMSocket::GetAndStepBlockRatio()
     return avg_block_ratio;
 }
 //<<< WiZaRd::Count block/success send [Xman?]
+//>>> WiZaRd::NatTraversal [Xanatos]
+CUtpSocket* CEMSocket::InitUtpSupport()
+{
+	m_pUtpLayer = new CUtpSocket;
+	AddLayer(m_pUtpLayer);
+	return m_pUtpLayer;
+}
+//<<< WiZaRd::NatTraversal [Xanatos]

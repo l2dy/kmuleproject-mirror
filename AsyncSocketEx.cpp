@@ -68,6 +68,7 @@ to tim.kosse@gmx.de
 #ifndef NOLAYERS
 #include "AsyncSocketExLayer.h"
 #endif //NOLAYERS
+#include "./Mod/Neo/UtpSocket.h" //>>> WiZaRd::NatTraversal [Xanatos]
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -330,7 +331,10 @@ public:
                     return 0;
                 CAsyncSocketEx *pSocket = (CAsyncSocketEx *)wParam;
                 CAsyncSocketExLayer::t_LayerNotifyMsg *pMsg = (CAsyncSocketExLayer::t_LayerNotifyMsg *)lParam;
-                if (pSocket->m_SocketData.hSocket == INVALID_SOCKET)
+//>>> WiZaRd::NatTraversal [Xanatos]
+				if (pSocket->m_SocketData.hSocket == INVALID_SOCKET && !pSocket->HaveUtpLayer())
+                //if (pSocket->m_SocketData.hSocket == INVALID_SOCKET)
+//<<< WiZaRd::NatTraversal [Xanatos]
                 {
                     delete pMsg;
                     return 0;
@@ -1065,11 +1069,19 @@ int CAsyncSocketEx::OnLayerCallback(const CAsyncSocketExLayer *pLayer, int /*nTy
 
 BOOL CAsyncSocketEx::GetSockOpt(int nOptionName, void* lpOptionValue, int* lpOptionLen, int nLevel /*=SOL_SOCKET*/)
 {
+//>>> WiZaRd::NatTraversal [Xanatos]
+	if(HaveUtpLayer())
+		return ((CUtpSocket*)m_pFirstLayer)->GetSockOpt(nOptionName, lpOptionValue, lpOptionLen);
+//<<< WiZaRd::NatTraversal [Xanatos]
     return getsockopt(m_SocketData.hSocket, nLevel, nOptionName, (LPSTR)lpOptionValue, lpOptionLen) != SOCKET_ERROR;
 }
 
 BOOL CAsyncSocketEx::SetSockOpt(int nOptionName, const void* lpOptionValue, int nOptionLen, int nLevel /*=SOL_SOCKET*/)
 {
+//>>> WiZaRd::NatTraversal [Xanatos]
+	if(HaveUtpLayer())
+		return ((CUtpSocket*)m_pFirstLayer)->SetSockOpt(nOptionName, lpOptionValue, nOptionLen);
+//<<< WiZaRd::NatTraversal [Xanatos]
     return setsockopt(m_SocketData.hSocket, nLevel, nOptionName, (LPSTR)lpOptionValue, nOptionLen) != SOCKET_ERROR;
 }
 
@@ -1112,3 +1124,16 @@ void CAsyncSocketEx::Dump(CDumpContext& dc) const
     CObject::Dump(dc);
 }
 #endif
+
+//>>> WiZaRd::NatTraversal [Xanatos]
+BOOL CAsyncSocketEx::HaveUtpLayer(bool bActive)
+{
+	if(m_pFirstLayer && m_pFirstLayer->IsUtpLayer())
+	{
+		if(bActive && m_pFirstLayer->GetLayerState() != CAsyncSocketExLayer::connected)
+			return FALSE;
+		return TRUE;
+	}
+	return FALSE;
+}
+//<<< WiZaRd::NatTraversal [Xanatos]

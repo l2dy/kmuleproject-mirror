@@ -120,3 +120,7 @@ enum eSharePermissions
 #define NEO_PROTOCOL_EXTENSIONS 	0x4E
 #define NEO_PROTOCOL_EXTENSIONS2 	0x6E
 //<<< WiZaRd::ModProt
+//>>> WiZaRd::NatTraversal [Xanatos]
+#define CT_EMULE_BUDDYID			0xBF
+#define OP_HOLEPUNCH				0xA1
+//<<< WiZaRd::NatTraversal [Xanatos]

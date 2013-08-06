@@ -563,6 +563,19 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
                 m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
             break;
 
+//>>> WiZaRd::NatTraversal [Xanatos]
+		case CT_EMULE_BUDDYID:
+			if(temptag.IsHash())
+			{
+				SetBuddyID(temptag.GetHash());
+				if (bDbgInfo)
+					m_strHelloInfo.AppendFormat(L"\n  BuddyID=%s", ipstr(m_nBuddyIP));
+			}
+			else if (bDbgInfo)
+				m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+			break;
+//<<< WiZaRd::NatTraversal [Xanatos]
+
         case CT_EMULE_MISCOPTIONS1:
             //  3 AICH Version (0 = not supported)
             //  1 Unicode
@@ -1225,6 +1238,10 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
     data->WriteHash16(thePrefs.GetUserHash());
     UINT clientid;
     clientid = theApp.GetID();
+//>>> WiZaRd::NatTraversal [Xanatos]
+	if(clientid == 0 && socket->HaveUtpLayer())
+		clientid = 1; // we must send a ID != 0 otherwise the remote cleint would think we ahe High ID
+//<<< WiZaRd::NatTraversal [Xanatos]
 
     data->WriteUInt32(clientid);
     data->WriteUInt16(thePrefs.GetPort());
@@ -1232,7 +1249,10 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
     UINT tagcount = 6;
 
     if (theApp.clientlist->GetBuddy() && theApp.IsFirewalled())
-        tagcount += 2;
+//>>> WiZaRd::NatTraversal [Xanatos]
+		tagcount += 3;
+        //tagcount += 2;
+//<<< WiZaRd::NatTraversal [Xanatos]
 
 //>>> WiZaRd::Easy ModVersion
     const bool bSend = !m_pszUsername || !m_strModVersion.IsEmpty();
@@ -1316,6 +1336,11 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
                           ((UINT)theApp.clientlist->GetBuddy()->GetUDPPort())
                          );
         tagBuddyPort.WriteTagToFile(data);
+
+//>>> WiZaRd::NatTraversal [Xanatos]
+		CTag tagBuddyID(CT_EMULE_BUDDYID, theApp.clientlist->GetBuddy()->GetBuddyID()); 
+		tagBuddyID.WriteTagToFile(data);
+//<<< WiZaRd::NatTraversal [Xanatos]
     }
 
     // eMule Misc. Options #1
@@ -1654,7 +1679,10 @@ bool CUpDownClient::Disconnected(LPCTSTR pszReason, bool bFromSocket)
 //Returned bool is not if the TryToConnect is successful or not..
 //false means the client was deleted!
 //true means the client was not deleted!
-bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntimeClass* pClassSocket)
+//>>> WiZaRd::NatTraversal [Xanatos]
+bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntimeClass* pClassSocket, bool bUseUTP)
+//bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntimeClass* pClassSocket)
+//<<< WiZaRd::NatTraversal [Xanatos]
 {
     // There are 7 possible ways how we are going to connect in this function, sorted by priority:
     // 1) Already Connected/Connecting
@@ -1770,10 +1798,16 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
         }
     }
 
-    if (HasLowID())
+//>>> WiZaRd::NatTraversal [Xanatos]
+	if(HasLowID() && !bUseUTP)
+    //if (HasLowID())
+//<<< WiZaRd::NatTraversal [Xanatos]
     {
         ASSERT(pClassSocket == NULL);
-        if (!theApp.CanDoCallback()) // lowid2lowid check used for the whole function, don't remove
+//>>> WiZaRd::NatTraversal [Xanatos]
+		if (!theApp.CanDoCallback(this))
+        //if (!theApp.CanDoCallback()) // lowid2lowid check used for the whole function, don't remove
+//<<< WiZaRd::NatTraversal [Xanatos]
         {
             // We cannot reach this client, so we hard fail to connect, if this client should be kept,
             // for example because we might want to wait a bit and hope we get a highid, this check has
@@ -1820,13 +1854,22 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
 
     ////////////////////////////////////////////////////////////
     // 3) Normal Outgoing TCP Connection
-    if (!HasLowID())
+//>>> WiZaRd::NatTraversal [Xanatos]
+	// if direct callback is possible and we are firewalled use UTP
+	bUseUTP = (SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && GetConnectIP() != 0) && theApp.IsFirewalled();
+	if(!HasLowID() || bUseUTP)
+    //if (!HasLowID())
+//<<< WiZaRd::NatTraversal [Xanatos]
     {
         m_nConnectingState = CCS_DIRECTTCP;
         if (pClassSocket == NULL)
             pClassSocket = RUNTIME_CLASS(CClientReqSocket);
         socket = static_cast<CClientReqSocket*>(pClassSocket->CreateObject());
         socket->SetClient(this);
+//>>> WiZaRd::NatTraversal [Xanatos]
+		if(bUseUTP)
+			socket->InitUtpSupport();
+//<<< WiZaRd::NatTraversal [Xanatos]
         if (!socket->Create())
         {
             socket->Safe_Delete();
@@ -1873,21 +1916,70 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
         m_nConnectingState = CCS_KADCALLBACK;
         if (GetBuddyIP() && GetBuddyPort())
         {
-            CSafeMemFile bio(34);
-            bio.WriteUInt128(&Kademlia::CUInt128(GetBuddyID()));
-            bio.WriteUInt128(&Kademlia::CUInt128(reqfile->GetFileHash()));
-            bio.WriteUInt16(thePrefs.GetPort());
-            if (thePrefs.GetDebugClientKadUDPLevel() > 0 || thePrefs.GetDebugClientUDPLevel() > 0)
-                DebugSend("KadCallbackReq", this);
-            Packet* packet = new Packet(&bio, OP_KADEMLIAHEADER);
-            packet->opcode = KADEMLIA_CALLBACK_REQ;
-            theStats.AddUpDataOverheadKad(packet->size);
-            // FIXME: We dont know which kadversion the buddy has, so we need to send unencrypted
-            theApp.clientudp->SendPacket(packet, GetBuddyIP(), GetBuddyPort(), false, NULL, true, 0);
-            SetDownloadState(DS_WAITCALLBACKKAD);
+//>>> WiZaRd::NatTraversal [Xanatos]
+			if(theApp.IsFirewalled())
+			{
+				// Here we know we need a bidirectional hole punch so we request a UTP Callback
+				ASSERT(SupportsNatTraversal());
+
+				DebugLog(_T("Hole Punch on port %u to client %s (%s) "), GetKadPort(), DbgGetClientInfo(), md4str(GetUserHash()));
+				Packet* dummy = new Packet(OP_EMULEPROT);
+				dummy->opcode = OP_HOLEPUNCH;
+				theApp.clientudp->SendPacket(dummy, GetConnectIP(), GetKadPort(), ShouldReceiveCryptUDPPackets(), GetUserHash(), false, 0);
+
+
+				CSafeMemFile data(128);
+				data.WriteHash16(GetBuddyID());
+				uchar hash[16]; 
+				md4clr(hash);
+				data.WriteHash16(hash); // a invalid NULL hash indicates that this is a Custom Packet, not a file reask
+
+				data.WriteHash16(thePrefs.GetUserHash());
+				data.WriteUInt8(GetMyConnectOptions(true, true));
+
+				if (thePrefs.GetDebugClientUDPLevel() > 0)
+					DebugSend("OP__ReaskCallbackUDP", this, reqfile->GetFileHash());
+				Packet* response = new Packet(&data, OP_EMULEPROT);
+				response->opcode = OP_REASKCALLBACKUDP;
+				theStats.AddUpDataOverheadFileRequest(response->size);
+				theApp.downloadqueue->AddUDPFileReasks();
+				// FIXME: We dont know which kadversion the buddy has, so we need to send unencrypted
+				theApp.clientudp->SendPacket(response, GetBuddyIP(), GetBuddyPort(), false, NULL, true, 0);
+
+				return true;
+			}
+			else
+//<<< WiZaRd::NatTraversal [Xanatos]
+			{
+				CSafeMemFile bio(34);
+				bio.WriteUInt128(&Kademlia::CUInt128(GetBuddyID()));
+				bio.WriteUInt128(&Kademlia::CUInt128(reqfile->GetFileHash()));
+				bio.WriteUInt16(thePrefs.GetPort());
+				if (thePrefs.GetDebugClientKadUDPLevel() > 0 || thePrefs.GetDebugClientUDPLevel() > 0)
+					DebugSend("KadCallbackReq", this);
+				Packet* packet = new Packet(&bio, OP_KADEMLIAHEADER);
+				packet->opcode = KADEMLIA_CALLBACK_REQ;
+				theStats.AddUpDataOverheadKad(packet->size);
+				// FIXME: We dont know which kadversion the buddy has, so we need to send unencrypted
+				theApp.clientudp->SendPacket(packet, GetBuddyIP(), GetBuddyPort(), false, NULL, true, 0);
+				SetDownloadState(DS_WAITCALLBACKKAD);
+			}
         }
         else
         {
+//>>> WiZaRd::NatTraversal [Xanatos]
+			if(theApp.IsFirewalled())
+			{
+				// kademlia callbacks for NAT-T are not possible
+				if(Disconnected(L"LowID->LowID"))
+				{
+					delete this;
+					return false;
+				}
+				return true;
+			}
+//<<< WiZaRd::NatTraversal [Xanatos]
+
             // I don't think we should ever have a buddy without its IP (anymore), but nevertheless let the functionality in
             //Create search to find buddy.
             Kademlia::CSearch *findSource = new Kademlia::CSearch;
@@ -1930,16 +2022,33 @@ void CUpDownClient::Connect()
     if (HasValidHash() && SupportsCryptLayer() && (RequestsCryptLayer() || thePrefs.IsClientCryptLayerRequested()))
     {
         //DebugLog(L"Enabling CryptLayer on outgoing connection to client %s", DbgGetClientInfo()); // to be removed later
-        socket->SetConnectionEncryption(true, GetUserHash(), false);
+//>>> WiZaRd::NatTraversal [Xanatos]
+		if(socket->HaveUtpLayer())
+			theApp.clientudp->SetConnectionEncryption(GetIP(), GetKadPort(), true, GetUserHash());
+		else
+//<<< WiZaRd::NatTraversal [Xanatos]
+			socket->SetConnectionEncryption(true, GetUserHash(), false);
     }
     else
-        socket->SetConnectionEncryption(false, NULL, false);
+	{
+//>>> WiZaRd::NatTraversal [Xanatos]
+		if(socket->HaveUtpLayer())
+			theApp.clientudp->SetConnectionEncryption(GetConnectIP(), GetKadPort(), false);
+		else
+//<<< WiZaRd::NatTraversal [Xanatos]
+			socket->SetConnectionEncryption(false, NULL, false);
+	}
 
     //Try to always tell the socket to WaitForOnConnect before you call Connect.
     socket->WaitForOnConnect();
     SOCKADDR_IN sockAddr = {0};
     sockAddr.sin_family = AF_INET;
-    sockAddr.sin_port = htons(GetUserPort());
+//>>> WiZaRd::NatTraversal [Xanatos]
+	if(socket->HaveUtpLayer())
+		sockAddr.sin_port = htons(GetKadPort() ? GetKadPort() : GetUDPPort());
+	else
+//<<< WiZaRd::NatTraversal [Xanatos]
+		sockAddr.sin_port = htons(GetUserPort());
     sockAddr.sin_addr.S_un.S_addr = GetConnectIP();
     socket->Connect((SOCKADDR*)&sockAddr, sizeof sockAddr);
     SendHelloPacket();
@@ -3308,7 +3417,14 @@ void  CUpDownClient::SetMessageFiltered(bool bVal)
 bool  CUpDownClient::IsObfuscatedConnectionEstablished() const
 {
     if (socket != NULL && socket->IsConnected())
+	{
+//>>> WiZaRd::NatTraversal [Xanatos]
+		if(socket->HaveUtpLayer())
+			return theApp.clientudp->IsObfuscating(GetConnectIP(), GetKadPort());
+		else
+//<<< WiZaRd::NatTraversal [Xanatos]
         return socket->IsObfuscating();
+	}
     else
         return false;
 }
@@ -3686,6 +3802,7 @@ void CUpDownClient::SetConnectOptions(uint8 byOptions, bool bEncryption, bool bC
     SetCryptLayerRequest((byOptions & 0x02) != 0 && bEncryption);
     SetCryptLayerRequires((byOptions & 0x04) != 0 && bEncryption);
     SetDirectUDPCallbackSupport((byOptions & 0x08) != 0 && bCallback);
+	SetNatTraversalSupport((byOptions & 0x80) != 0 && bCallback); //>>> WiZaRd::NatTraversal [Xanatos]
 }
 
 void CUpDownClient::SendSharedDirectories()
