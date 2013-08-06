@@ -20,6 +20,12 @@
 #include "Log.h"
 #include "PartFile.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
 uint64
 CPartStatus::GetCompleted(uint64 start, uint64 stop) const
 {
@@ -224,7 +230,7 @@ CPartStatus*
 		// Read part status vector
 		uint64	start = 0, stop = 0;
 		bool	laststate = false;
-		uint8	tmp;
+		uint8	tmp = 0;
 		for (uint16 i = 0; i < sctCount; i++)
 		{
 			uint16 const shift = i & 0x0007; 

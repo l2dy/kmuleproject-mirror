@@ -21,6 +21,12 @@
 #include "knownfile.h"
 #include "log.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
 // File size       Data parts      ED2K parts      ED2K part hashs		AICH part hashs
 // -------------------------------------------------------------------------------------------
 // 1..PARTSIZE-1   1               1               0(!)					0 (!)

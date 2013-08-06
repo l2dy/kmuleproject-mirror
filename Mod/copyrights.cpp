@@ -25,6 +25,12 @@
 #include "./Mod/NATPMPWrapper.h"  //>>> WiZaRd::NAT-PMP
 #endif
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
 void PrintCopyrights()
 {
 	theApp.QueueDebugLogLineEx(LOG_WARNING, L"** Copyright Information:");

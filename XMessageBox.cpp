@@ -143,6 +143,12 @@
 #include "emule.h"
 #include "otherfunctions.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
 #ifndef IDS_OK
 #define IDS_OK				0
 #endif
