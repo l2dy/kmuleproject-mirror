@@ -25,60 +25,60 @@ class CHTRichEditCtrl;
 
 class CInfoWnd : public CResizableDialog
 {
-	DECLARE_DYNAMIC(CInfoWnd)
+    DECLARE_DYNAMIC(CInfoWnd)
 
 public:
-	CInfoWnd(CWnd* pParent = NULL);   // standard constructor
-	virtual ~CInfoWnd();
+    CInfoWnd(CWnd* pParent = NULL);   // standard constructor
+    virtual ~CInfoWnd();
 
-	void	Localize();
-	void	ToggleDebugWindow();
-	void	ToggleAnalyzerWindow(); //>>> WiZaRd::ClientAnalyzer
-	void	UpdateMyInfo();
-	void	UpdateLogTabSelection();
-	void	SaveAllSettings();
-	void	ShowNetworkInfo();
-	CString GetMyInfoString();
+    void	Localize();
+    void	ToggleDebugWindow();
+    void	ToggleAnalyzerWindow(); //>>> WiZaRd::ClientAnalyzer
+    void	UpdateMyInfo();
+    void	UpdateLogTabSelection();
+    void	SaveAllSettings();
+    void	ShowNetworkInfo();
+    CString GetMyInfoString();
 
 // Dialog Data
-	enum { IDD = IDD_INFO };
+    enum { IDD = IDD_INFO };
 
-	enum ELogPaneItems
-	{
-		PaneLog			= 0, // those are CTabCtrl item indices
-		PaneCA			= 1, //>>> WiZaRd::ClientAnalyzer
-		PaneVerboseLog	= 2
-	};
+    enum ELogPaneItems
+    {
+        PaneLog			= 0, // those are CTabCtrl item indices
+        PaneCA			= 1, //>>> WiZaRd::ClientAnalyzer
+        PaneVerboseLog	= 2
+    };
 
-	CHTRichEditCtrl* logbox;
-	CHTRichEditCtrl* analyzerLog; //>>> WiZaRd::ClientAnalyzer
-	CHTRichEditCtrl* debuglog;
-	CClosableTabCtrl StatusSelector;
+    CHTRichEditCtrl* logbox;
+    CHTRichEditCtrl* analyzerLog; //>>> WiZaRd::ClientAnalyzer
+    CHTRichEditCtrl* debuglog;
+    CClosableTabCtrl StatusSelector;
 
 private:
-	CIconStatic m_ctrlMyInfoFrm;
-	CImageList m_imlLogPanes;
-	bool	debug;	
-	bool	analyzer; //>>> WiZaRd::ClientAnalyzer
-	CRichEditCtrlX m_MyInfo;
-	CHARFORMAT m_cfDef;
-	CHARFORMAT m_cfBold;
+    CIconStatic m_ctrlMyInfoFrm;
+    CImageList m_imlLogPanes;
+    bool	debug;
+    bool	analyzer; //>>> WiZaRd::ClientAnalyzer
+    CRichEditCtrlX m_MyInfo;
+    CHARFORMAT m_cfDef;
+    CHARFORMAT m_cfBold;
 
-	void	ResetLog();
-	void	ResetAnalyzerLog(); //>>> WiZaRd::ClientAnalyzer
-	void	ResetDebugLog();	
+    void	ResetLog();
+    void	ResetAnalyzerLog(); //>>> WiZaRd::ClientAnalyzer
+    void	ResetDebugLog();
 
 protected:
-	void	SetAllIcons();
+    void	SetAllIcons();
 
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnInitDialog();
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual BOOL OnInitDialog();
 
-	DECLARE_MESSAGE_MAP()
-	afx_msg void OnBnClickedResetLog();
-	afx_msg void OnBnConnect();
-	afx_msg void OnTcnSelchangeTab3(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnSysColorChange();
-	afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+    DECLARE_MESSAGE_MAP()
+    afx_msg void OnBnClickedResetLog();
+    afx_msg void OnBnConnect();
+    afx_msg void OnTcnSelchangeTab3(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnSysColorChange();
+    afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
+    afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 };

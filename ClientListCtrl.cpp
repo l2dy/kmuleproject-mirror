@@ -203,14 +203,14 @@ void CClientListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
                     cur_rec.left += 16 + sm_iLabelOffset;
 
 //>>> WiZaRd::ModIconMappings
-					int icoindex = client->GetModIconIndex();
-					if(icoindex != MODMAP_NONE)
-					{	
-						POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
-						theApp.theModIconMap->DrawModIcon(dc, icoindex, point, ILD_NORMAL);
-						cur_rec.left += 17;
-						plusminus += 17;
-					}
+                    int icoindex = client->GetModIconIndex();
+                    if (icoindex != MODMAP_NONE)
+                    {
+                        POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
+                        theApp.theModIconMap->DrawModIcon(dc, icoindex, point, ILD_NORMAL);
+                        cur_rec.left += 17;
+                        plusminus += 17;
+                    }
 //<<< WiZaRd::ModIconMappings
 
                     dc.DrawText(szItem, -1, &cur_rec, MLC_DT_TEXT | uDrawTextAlignment);

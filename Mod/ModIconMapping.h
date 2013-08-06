@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////
 //ModIconDLL
-// 
+//
 //Copyright (C)2006 WiZaRd ( thewizardofdos@gmail.com / http://kademlia-net.de )
 //
 //This program is free software; you can redistribute it and/or
@@ -28,46 +28,52 @@
 class CModIconMapper
 {
 public:
-	CModIconMapper();
-	~CModIconMapper();
+    CModIconMapper();
+    ~CModIconMapper();
 
-	bool	IsDLLavailable()		{return m_bDLLAvailable;}
-	void	Reload();
-	void	Load(const CString& strDLLToLoad);
-	void	Update();
-	void	Unload();
+    bool	IsDLLavailable()
+    {
+        return m_bDLLAvailable;
+    }
+    void	Reload();
+    void	Load(const CString& strDLLToLoad);
+    void	Update();
+    void	Unload();
 
-	BOOL	DrawModIcon(CDC* pDC, const int& nImage, POINT pt, const UINT& nStyle);
-	CImageList*	GetModImageList() {return &modimagelist;}; //>>> JvA::Redesigned Client Detail Dialog [BlueSonicBoy]
-
-public:
-	DWORD	GetVersion() const;
-	CString	GetVersionString() const;
-
-private:
-	typedef DWORD (__cdecl *GETDLLVERSION)();
-	GETDLLVERSION DLLGetVersion;
-	
-public:
-	void	FillModIconList();
-private:
-	typedef int (__cdecl *DLLFILLMODICONLIST)(CImageList* pImageList);
-	DLLFILLMODICONLIST DLLFillModIconList;
+    BOOL	DrawModIcon(CDC* pDC, const int& nImage, POINT pt, const UINT& nStyle);
+    CImageList*	GetModImageList()
+    {
+        return &modimagelist;
+    }; //>>> JvA::Redesigned Client Detail Dialog [BlueSonicBoy]
 
 public:
-	int		GetIconIndexForModstring(const CString& strMod);
+    DWORD	GetVersion() const;
+    CString	GetVersionString() const;
+
 private:
-	typedef int (__cdecl *DLLGETICONINDEXFORMODSTRING)(const CString& strMessage);
-	DLLGETICONINDEXFORMODSTRING DLLGetIconIndexForModstring;
+    typedef DWORD (__cdecl *GETDLLVERSION)();
+    GETDLLVERSION DLLGetVersion;
 
 public:
-	void	DumpIconList() const;
+    void	FillModIconList();
 private:
-	typedef CString (__cdecl *DLLDUMPICONLIST)();
-	DLLDUMPICONLIST DLLDumpIconList;
+    typedef int (__cdecl *DLLFILLMODICONLIST)(CImageList* pImageList);
+    DLLFILLMODICONLIST DLLFillModIconList;
+
+public:
+    int		GetIconIndexForModstring(const CString& strMod);
+private:
+    typedef int (__cdecl *DLLGETICONINDEXFORMODSTRING)(const CString& strMessage);
+    DLLGETICONINDEXFORMODSTRING DLLGetIconIndexForModstring;
+
+public:
+    void	DumpIconList() const;
+private:
+    typedef CString(__cdecl *DLLDUMPICONLIST)();
+    DLLDUMPICONLIST DLLDumpIconList;
 
 private:
-	HINSTANCE	m_hDLLInstance;
-	bool		m_bDLLAvailable;
-	CImageList modimagelist;
+    HINSTANCE	m_hDLLInstance;
+    bool		m_bDLLAvailable;
+    CImageList modimagelist;
 };

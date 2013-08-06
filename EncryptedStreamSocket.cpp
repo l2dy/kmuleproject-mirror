@@ -236,8 +236,8 @@ int CEncryptedStreamSocket::Receive(void* lpBuf, int nBufLen, int nFlags)
         case OP_PACKEDPROT:
         case OP_EMULEPROT:
 //>>> WiZaRd::ModProt
-		case OP_MODPROT_PACKED:
-		case OP_MODPROT:
+        case OP_MODPROT_PACKED:
+        case OP_MODPROT:
 //<<< WiZaRd::ModProt
             bNormalHeader = true;
             break;
@@ -788,8 +788,8 @@ uint8 CEncryptedStreamSocket::GetSemiRandomNotProtocolMarker() const
         case OP_PACKEDPROT:
         case OP_EMULEPROT:
 //>>> WiZaRd::ModProt
-		case OP_MODPROT_PACKED:
-		case OP_MODPROT:
+        case OP_MODPROT_PACKED:
+        case OP_MODPROT:
 //<<< WiZaRd::ModProt
             break;
         default:

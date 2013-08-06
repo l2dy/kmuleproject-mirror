@@ -151,7 +151,7 @@ CEMSocket::CEMSocket(void)
     m_bBusy = false;
     m_hasSent = false;
     m_bUsesBigSendBuffers = false;
-	m_pUtpLayer = NULL; //>>> WiZaRd::NatTraversal [Xanatos]
+    m_pUtpLayer = NULL; //>>> WiZaRd::NatTraversal [Xanatos]
 }
 
 CEMSocket::~CEMSocket()
@@ -292,8 +292,8 @@ BOOL CEMSocket::AsyncSelect(long lEvent)
 #endif
     // deadlake changed to AsyncSocketEx PROXYSUPPORT
 //>>> WiZaRd::NatTraversal [Xanatos]
-	if (m_SocketData.hSocket != INVALID_SOCKET || HaveUtpLayer())
-    //if (m_SocketData.hSocket != INVALID_SOCKET)
+    if (m_SocketData.hSocket != INVALID_SOCKET || HaveUtpLayer())
+        //if (m_SocketData.hSocket != INVALID_SOCKET)
 //<<< WiZaRd::NatTraversal [Xanatos]
         return CEncryptedStreamSocket::AsyncSelect(lEvent);
     return true;
@@ -421,8 +421,8 @@ void CEMSocket::OnReceive(int nErrorCode)
             case OP_PACKEDPROT:
             case OP_EMULEPROT:
 //>>> WiZaRd::ModProt
-			case OP_MODPROT_PACKED:
-			case OP_MODPROT:
+            case OP_MODPROT_PACKED:
+            case OP_MODPROT:
 //<<< WiZaRd::ModProt
                 break;
             default:
@@ -1277,8 +1277,8 @@ void CEMSocket::RemoveAllLayers()
 {
     CEncryptedStreamSocket::RemoveAllLayers();
 //>>> WiZaRd::NatTraversal [Xanatos]
-	delete m_pUtpLayer;
-	m_pUtpLayer = NULL;
+    delete m_pUtpLayer;
+    m_pUtpLayer = NULL;
 //<<< WiZaRd::NatTraversal [Xanatos]
     delete m_pProxyLayer;
     m_pProxyLayer = NULL;
@@ -1369,7 +1369,7 @@ void CEMSocket::AssertValid() const
     const_cast<CEMSocket*>(this)->sendLocker.Lock();
 
     ASSERT(byConnected==ES_DISCONNECTED || byConnected==ES_NOTCONNECTED || byConnected==ES_CONNECTED);
-	CHECK_PTR(m_pUtpLayer); //>>> WiZaRd::NatTraversal [Xanatos]
+    CHECK_PTR(m_pUtpLayer); //>>> WiZaRd::NatTraversal [Xanatos]
     CHECK_BOOL(m_bProxyConnectFailed);
     CHECK_PTR(m_pProxyLayer);
     (void)downloadLimit;
@@ -1503,8 +1503,8 @@ float CEMSocket::GetAndStepBlockRatio()
 //>>> WiZaRd::NatTraversal [Xanatos]
 CUtpSocket* CEMSocket::InitUtpSupport()
 {
-	m_pUtpLayer = new CUtpSocket;
-	AddLayer(m_pUtpLayer);
-	return m_pUtpLayer;
+    m_pUtpLayer = new CUtpSocket;
+    AddLayer(m_pUtpLayer);
+    return m_pUtpLayer;
 }
 //<<< WiZaRd::NatTraversal [Xanatos]

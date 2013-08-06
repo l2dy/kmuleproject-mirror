@@ -206,9 +206,12 @@ private:
 //<<< WiZaRd::ZZUL Upload [ZZ]
 //>>> WiZaRd::NatTraversal [Xanatos]
 public:
-	CUtpSocket* InitUtpSupport();
-	CUtpSocket* GetUtpLayer()	{return m_pUtpLayer;}
+    CUtpSocket* InitUtpSupport();
+    CUtpSocket* GetUtpLayer()
+    {
+        return m_pUtpLayer;
+    }
 protected:
-	CUtpSocket* m_pUtpLayer;
+    CUtpSocket* m_pUtpLayer;
 //<<< WiZaRd::NatTraversal [Xanatos]
 };

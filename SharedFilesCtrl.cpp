@@ -997,6 +997,8 @@ void CSharedFilesCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 //	m_PrioMenu.CheckMenuRadioItem(MP_PRIOVERYLOW, MP_PRIOAUTO, uPrioMenuItem, 0);
 //<<< WiZaRd::PowerShare
 
+    m_PrioMenu.CheckMenuItem(MP_SPREADPRIORITY, ((CKnownFile*)pFile)->IsSpreadPriority() ? MF_CHECKED : MF_UNCHECKED); //>>> Tux::Spread Priority v3
+
     bool bSingleCompleteFileSelected = (iSelectedItems == 1 && (iCompleteFileSelected == 1 || bContainsOnlyShareableFile));
     m_SharedFilesMenu.EnableMenuItem(MP_OPEN, bSingleCompleteFileSelected ? MF_ENABLED : MF_GRAYED);
     UINT uInsertedMenuItem = 0;
@@ -1421,6 +1423,17 @@ BOOL CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
             break;
         }
 //<<< WiZaRd::PowerShare
+//>>> Tux::Spread Priority v3
+        case MP_SPREADPRIORITY:
+        {
+            while (!selectedKnown.IsEmpty())
+            {
+                CKnownFile* thisfile = selectedKnown.RemoveHead();
+                thisfile->SetSpreadPriority(!thisfile->IsSpreadPriority());
+            }
+            break;
+        }
+//<<< Tux::Spread Priority v3
 //>>> WiZaRd::Upload Feedback
         case MP_FEEDBACK:
         {
@@ -1737,47 +1750,52 @@ void CSharedFilesCtrl::CreateMenues()
     m_PowerSharedMenu.AppendMenu(MF_STRING,MP_POWERSHARE_OFF, GetResString(IDS_POWERSHARE) + L" " + GetResString(IDS_OFF), L"DELETE");
 //<<< WiZaRd::PowerShare
 
-    m_CollectionsMenu.CreateMenu();
-    m_CollectionsMenu.AddMenuTitle(NULL, true);
-    m_CollectionsMenu.AppendMenu(MF_STRING,MP_CREATECOLLECTION, GetResString(IDS_CREATECOLLECTION), _T("COLLECTION_ADD"));
-    m_CollectionsMenu.AppendMenu(MF_STRING,MP_MODIFYCOLLECTION, GetResString(IDS_MODIFYCOLLECTION), _T("COLLECTION_EDIT"));
-    m_CollectionsMenu.AppendMenu(MF_STRING,MP_VIEWCOLLECTION, GetResString(IDS_VIEWCOLLECTION), _T("COLLECTION_VIEW"));
-    m_CollectionsMenu.AppendMenu(MF_STRING,MP_SEARCHAUTHOR, GetResString(IDS_SEARCHAUTHORCOLLECTION), _T("COLLECTION_SEARCH"));
+//>>> Tux::Spread Priority v3
+    m_PrioMenu.AppendMenu(MF_SEPARATOR);
+    m_PrioMenu.AppendMenu(MF_STRING,MP_SPREADPRIORITY, GetResString(L"Spread Priority", L"PRIORITY");
+//<<< Tux::Spread Priority v3
 
-    m_SharedFilesMenu.CreatePopupMenu();
-    m_SharedFilesMenu.AddMenuTitle(GetResString(IDS_SHAREDFILES), true);
+                          m_CollectionsMenu.CreateMenu();
+                          m_CollectionsMenu.AddMenuTitle(NULL, true);
+                          m_CollectionsMenu.AppendMenu(MF_STRING,MP_CREATECOLLECTION, GetResString(IDS_CREATECOLLECTION), _T("COLLECTION_ADD"));
+                          m_CollectionsMenu.AppendMenu(MF_STRING,MP_MODIFYCOLLECTION, GetResString(IDS_MODIFYCOLLECTION), _T("COLLECTION_EDIT"));
+                          m_CollectionsMenu.AppendMenu(MF_STRING,MP_VIEWCOLLECTION, GetResString(IDS_VIEWCOLLECTION), _T("COLLECTION_VIEW"));
+                          m_CollectionsMenu.AppendMenu(MF_STRING,MP_SEARCHAUTHOR, GetResString(IDS_SEARCHAUTHORCOLLECTION), _T("COLLECTION_SEARCH"));
 
-    m_SharedFilesMenu.AppendMenu(MF_STRING,MP_OPEN, GetResString(IDS_OPENFILE), _T("OPENFILE"));
-    m_SharedFilesMenu.AppendMenu(MF_STRING,MP_OPENFOLDER, GetResString(IDS_OPENFOLDER), _T("OPENFOLDER"));
-    m_SharedFilesMenu.AppendMenu(MF_STRING,MP_RENAME, GetResString(IDS_RENAME) + _T("..."), _T("FILERENAME"));
-    m_SharedFilesMenu.AppendMenu(MF_STRING,MP_REMOVE, GetResString(IDS_DELETE), _T("DELETE"));
-    m_SharedFilesMenu.AppendMenu(MF_STRING,MP_UNSHAREFILE, GetResString(IDS_UNSHARE), _T("KADBOOTSTRAP")); // TODO: better icon
+                          m_SharedFilesMenu.CreatePopupMenu();
+                          m_SharedFilesMenu.AddMenuTitle(GetResString(IDS_SHAREDFILES), true);
 
-    m_SharedFilesMenu.AppendMenu(MF_STRING|MF_SEPARATOR);
-    m_SharedFilesMenu.AppendMenu(MF_STRING|MF_POPUP,(UINT_PTR)m_PrioMenu.m_hMenu, GetResString(IDS_PRIORITY) + _T(" (") + GetResString(IDS_PW_CON_UPLBL) + _T(")"), _T("FILEPRIORITY"));
-    m_SharedFilesMenu.AppendMenu(MF_STRING|MF_POPUP,(UINT_PTR)m_PowerSharedMenu.m_hMenu, GetResString(IDS_POWERSHARE), L"UPLOAD"); //>>> WiZaRd::PowerShare
-    m_SharedFilesMenu.AppendMenu(MF_STRING|MF_SEPARATOR);
+                          m_SharedFilesMenu.AppendMenu(MF_STRING,MP_OPEN, GetResString(IDS_OPENFILE), _T("OPENFILE"));
+                          m_SharedFilesMenu.AppendMenu(MF_STRING,MP_OPENFOLDER, GetResString(IDS_OPENFOLDER), _T("OPENFOLDER"));
+                          m_SharedFilesMenu.AppendMenu(MF_STRING,MP_RENAME, GetResString(IDS_RENAME) + _T("..."), _T("FILERENAME"));
+                          m_SharedFilesMenu.AppendMenu(MF_STRING,MP_REMOVE, GetResString(IDS_DELETE), _T("DELETE"));
+                          m_SharedFilesMenu.AppendMenu(MF_STRING,MP_UNSHAREFILE, GetResString(IDS_UNSHARE), _T("KADBOOTSTRAP")); // TODO: better icon
 
-    m_SharedFilesMenu.AppendMenu(MF_STRING|MF_POPUP,(UINT_PTR)m_CollectionsMenu.m_hMenu, GetResString(IDS_META_COLLECTION), _T("AABCollectionFileType"));
-    m_SharedFilesMenu.AppendMenu(MF_STRING|MF_SEPARATOR);
+                          m_SharedFilesMenu.AppendMenu(MF_STRING|MF_SEPARATOR);
+                          m_SharedFilesMenu.AppendMenu(MF_STRING|MF_POPUP,(UINT_PTR)m_PrioMenu.m_hMenu, GetResString(IDS_PRIORITY) + _T(" (") + GetResString(IDS_PW_CON_UPLBL) + _T(")"), _T("FILEPRIORITY"));
+                          m_SharedFilesMenu.AppendMenu(MF_STRING|MF_POPUP,(UINT_PTR)m_PowerSharedMenu.m_hMenu, GetResString(IDS_POWERSHARE), L"UPLOAD"); //>>> WiZaRd::PowerShare
+                          m_SharedFilesMenu.AppendMenu(MF_STRING|MF_SEPARATOR);
 
-    m_SharedFilesMenu.AppendMenu(MF_STRING,MP_DETAIL, GetResString(IDS_SHOWDETAILS), _T("FILEINFO"));
-    m_SharedFilesMenu.AppendMenu(MF_STRING,MP_CMT, GetResString(IDS_CMT_ADD), _T("FILECOMMENTS"));
-    if (thePrefs.GetShowCopyEd2kLinkCmd())
-        m_SharedFilesMenu.AppendMenu(MF_STRING,MP_GETED2KLINK, GetResString(IDS_DL_LINK1), _T("ED2KLINK"));
-    else
-        m_SharedFilesMenu.AppendMenu(MF_STRING,MP_SHOWED2KLINK, GetResString(IDS_DL_SHOWED2KLINK), _T("ED2KLINK"));
-    m_SharedFilesMenu.AppendMenu(MF_STRING, MP_FEEDBACK, GetResString(IDS_UPLOAD_FEEDBACK), L"MESSAGE"); //>>> WiZaRd::Upload Feedback
-    m_SharedFilesMenu.AppendMenu(MF_STRING,MP_FIND, GetResString(IDS_FIND), _T("Search"));
-    m_SharedFilesMenu.AppendMenu(MF_STRING|MF_SEPARATOR);
+                          m_SharedFilesMenu.AppendMenu(MF_STRING|MF_POPUP,(UINT_PTR)m_CollectionsMenu.m_hMenu, GetResString(IDS_META_COLLECTION), _T("AABCollectionFileType"));
+                          m_SharedFilesMenu.AppendMenu(MF_STRING|MF_SEPARATOR);
+
+                          m_SharedFilesMenu.AppendMenu(MF_STRING,MP_DETAIL, GetResString(IDS_SHOWDETAILS), _T("FILEINFO"));
+                          m_SharedFilesMenu.AppendMenu(MF_STRING,MP_CMT, GetResString(IDS_CMT_ADD), _T("FILECOMMENTS"));
+                          if (thePrefs.GetShowCopyEd2kLinkCmd())
+                          m_SharedFilesMenu.AppendMenu(MF_STRING,MP_GETED2KLINK, GetResString(IDS_DL_LINK1), _T("ED2KLINK"));
+                          else
+                              m_SharedFilesMenu.AppendMenu(MF_STRING,MP_SHOWED2KLINK, GetResString(IDS_DL_SHOWED2KLINK), _T("ED2KLINK"));
+                              m_SharedFilesMenu.AppendMenu(MF_STRING, MP_FEEDBACK, GetResString(IDS_UPLOAD_FEEDBACK), L"MESSAGE"); //>>> WiZaRd::Upload Feedback
+                              m_SharedFilesMenu.AppendMenu(MF_STRING,MP_FIND, GetResString(IDS_FIND), _T("Search"));
+                              m_SharedFilesMenu.AppendMenu(MF_STRING|MF_SEPARATOR);
 
 #if defined(_DEBUG)
-    if (thePrefs.IsExtControlsEnabled())
-    {
-        //JOHNTODO: Not for release as we need kad lowID users in the network to see how well this work work. Also, we do not support these links yet.
-        m_SharedFilesMenu.AppendMenu(MF_STRING,MP_GETKADSOURCELINK, _T("Copy eD2K Links To Clipboard (Kad)"));
-        m_SharedFilesMenu.AppendMenu(MF_STRING|MF_SEPARATOR);
-    }
+                              if (thePrefs.IsExtControlsEnabled())
+        {
+            //JOHNTODO: Not for release as we need kad lowID users in the network to see how well this work work. Also, we do not support these links yet.
+            m_SharedFilesMenu.AppendMenu(MF_STRING,MP_GETKADSOURCELINK, _T("Copy eD2K Links To Clipboard (Kad)"));
+                m_SharedFilesMenu.AppendMenu(MF_STRING|MF_SEPARATOR);
+            }
 #endif
 }
 

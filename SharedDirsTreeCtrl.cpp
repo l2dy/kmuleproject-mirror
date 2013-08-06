@@ -1328,18 +1328,18 @@ void CSharedDirsTreeCtrl::EditSharedDirectories(const CDirectoryItem* pDir, bool
 
     // sync with the preferences list
 //>>> WiZaRd::SharePermissions
-/*
-    //thePrefs.shareddir_list.RemoveAll(); 
-    POSITION pos = m_strliSharedDirs.GetHeadPosition();
-    // copy list
-    while (pos)
-    {
-        CString strPath = m_strliSharedDirs.GetNext(pos);
-        if (strPath.Right(1) != L"\\")
-            strPath.Append(L"\\");
-        thePrefs.shareddir_list.AddTail(strPath);
-    }
-*/
+    /*
+        //thePrefs.shareddir_list.RemoveAll();
+        POSITION pos = m_strliSharedDirs.GetHeadPosition();
+        // copy list
+        while (pos)
+        {
+            CString strPath = m_strliSharedDirs.GetNext(pos);
+            if (strPath.Right(1) != L"\\")
+                strPath.Append(L"\\");
+            thePrefs.shareddir_list.AddTail(strPath);
+        }
+    */
 //<<< WiZaRd::SharePermissions
 
 //>>> WiZaRd::SharePermissions
@@ -1354,10 +1354,10 @@ void CSharedDirsTreeCtrl::EditSharedDirectories(const CDirectoryItem* pDir, bool
         for (POSITION pos3 = m_strliSharedDirs.GetHeadPosition(); pos3 != NULL && !bFound;)
         {
             POSITION posLast3 = pos3;
-			CString strPath = m_strliSharedDirs.GetNext(pos3);
-			if(strPath.Right(1) != L"\\")
-				strPath.Append(L"\\");
-            if(strPath.CompareNoCase(strCurrentDir) == 0)
+            CString strPath = m_strliSharedDirs.GetNext(pos3);
+            if (strPath.Right(1) != L"\\")
+                strPath.Append(L"\\");
+            if (strPath.CompareNoCase(strCurrentDir) == 0)
             {
                 bFound = true;
                 m_strliSharedDirs.RemoveAt(posLast3);
@@ -1371,9 +1371,9 @@ void CSharedDirsTreeCtrl::EditSharedDirectories(const CDirectoryItem* pDir, bool
     }
     while (!m_strliSharedDirs.IsEmpty())
     {
-		CString strPath = m_strliSharedDirs.RemoveHead();
-		if(strPath.Right(1) != L"\\")
-			strPath.Append(L"\\");
+        CString strPath = m_strliSharedDirs.RemoveHead();
+        if (strPath.Right(1) != L"\\")
+            strPath.Append(L"\\");
         thePrefs.shareddir_list.AddTail(strPath);
         thePrefs.shareddir_list_permissions.AddTail(eSP_Options);
     }

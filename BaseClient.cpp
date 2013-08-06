@@ -109,7 +109,7 @@ CUpDownClient::CUpDownClient(CPartFile* in_reqfile, uint16 in_port, UINT in_user
 
 void CUpDownClient::Init()
 {
-	m_iModIconIndex = MODMAP_NONE; //>>> WiZaRd::ModIconMapper
+    m_iModIconIndex = MODMAP_NONE; //>>> WiZaRd::ModIconMapper
 //>>> WiZaRd::ZZUL Upload [ZZ]
     m_nCurQueueSessionUp = 0;
     m_nCurSessionPayloadUp = 0;
@@ -166,9 +166,9 @@ void CUpDownClient::Init()
     m_byEmuleVersion = 0;
     m_nUserPort = 0;
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	m_pPartStatus = NULL;
-	m_pUpPartStatus = NULL;
-	m_nProtocolRevision = 0;
+    m_pPartStatus = NULL;
+    m_pUpPartStatus = NULL;
+    m_nProtocolRevision = 0;
     //m_nPartCount = 0;
     //m_nUpPartCount = 0;
     //m_abyPartStatus = 0;
@@ -278,8 +278,8 @@ void CUpDownClient::Init()
     m_cCaptchasSent = 0;
     m_fSupportsFileIdent = 0;
 //>>> WiZaRd::ModProt
-	m_fSupportsModProt = 0;
-	m_bSupportsLowIDUDPPing = false; //>>> LowID UDP Ping Support
+    m_fSupportsModProt = 0;
+    m_bSupportsLowIDUDPPing = false; //>>> LowID UDP Ping Support
 //<<< WiZaRd::ModProt
 }
 
@@ -326,11 +326,11 @@ CUpDownClient::~CUpDownClient()
     free(m_pszUsername);
 
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	delete m_pPartStatus;
-	m_pPartStatus = NULL;
+    delete m_pPartStatus;
+    m_pPartStatus = NULL;
 
-	delete m_pUpPartStatus;
-	m_pUpPartStatus = NULL;
+    delete m_pUpPartStatus;
+    m_pUpPartStatus = NULL;
     //delete[] m_abyPartStatus;
     //m_abyPartStatus = NULL;
 
@@ -399,11 +399,11 @@ void CUpDownClient::ClearHelloProperties()
     m_fSupportsFileIdent = 0;
     m_strModVersion.Empty(); //>>> WiZaRd::Missing code?
     m_incompletepartVer = 0; //>>> WiZaRd::ICS [enkeyDEV]
-	m_nProtocolRevision = 0; //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+    m_nProtocolRevision = 0; //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 //>>> WiZaRd::ModProt
-	//Clear all mod flags here, too
-	m_fSupportsModProt = 0;
-	m_bSupportsLowIDUDPPing = false; //>>> LowID UDP Ping Support
+    //Clear all mod flags here, too
+    m_fSupportsModProt = 0;
+    m_bSupportsLowIDUDPPing = false; //>>> LowID UDP Ping Support
 //<<< WiZaRd::ModProt
 }
 
@@ -564,16 +564,16 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
             break;
 
 //>>> WiZaRd::NatTraversal [Xanatos]
-		case CT_EMULE_BUDDYID:
-			if(temptag.IsHash())
-			{
-				SetBuddyID(temptag.GetHash());
-				if (bDbgInfo)
-					m_strHelloInfo.AppendFormat(L"\n  BuddyID=%s", ipstr(m_nBuddyIP));
-			}
-			else if (bDbgInfo)
-				m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
-			break;
+        case CT_EMULE_BUDDYID:
+            if (temptag.IsHash())
+            {
+                SetBuddyID(temptag.GetHash());
+                if (bDbgInfo)
+                    m_strHelloInfo.AppendFormat(L"\n  BuddyID=%s", ipstr(m_nBuddyIP));
+            }
+            else if (bDbgInfo)
+                m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+            break;
 //<<< WiZaRd::NatTraversal [Xanatos]
 
         case CT_EMULE_MISCOPTIONS1:
@@ -646,7 +646,7 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
                 m_fSupportsCryptLayer	= (temptag.GetInt() >>  7) & 0x01;
 //>>> WiZaRd::ModProt
                 // reserved 1
-				m_fSupportsModProt		= (temptag.GetInt() >>  6) & 0x01;
+                m_fSupportsModProt		= (temptag.GetInt() >>  6) & 0x01;
 //<<< WiZaRd::ModProt
                 m_fExtMultiPacket		= (temptag.GetInt() >>  5) & 0x01;
                 m_fSupportsLargeFiles   = (temptag.GetInt() >>  4) & 0x01;
@@ -654,8 +654,8 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
                 dwEmuleTags |= 8;
                 if (bDbgInfo)
 //>>> WiZaRd::ModProt
-					m_strHelloInfo.AppendFormat(L"\n  KadVersion=%u, LargeFiles=%u ExtMultiPacket=%u CryptLayerSupport=%u CryptLayerRequest=%u CryptLayerRequires=%u m_fSupportsSourceEx2=%u  SupportsCaptcha=%u DirectUDPCallback=%u m_fSupportsModProt=%u", m_byKadVersion, m_fSupportsLargeFiles, m_fExtMultiPacket, m_fSupportsCryptLayer, m_fRequestsCryptLayer, m_fRequiresCryptLayer, m_fSupportsSourceEx2, m_fSupportsCaptcha, m_fDirectUDPCallback, m_fSupportsModProt);
-                    //m_strHelloInfo.AppendFormat(L"\n  KadVersion=%u, LargeFiles=%u ExtMultiPacket=%u CryptLayerSupport=%u CryptLayerRequest=%u CryptLayerRequires=%u SupportsSourceEx2=%u SupportsCaptcha=%u DirectUDPCallback=%u", m_byKadVersion, m_fSupportsLargeFiles, m_fExtMultiPacket, m_fSupportsCryptLayer, m_fRequestsCryptLayer, m_fRequiresCryptLayer, m_fSupportsSourceEx2, m_fSupportsCaptcha, m_fDirectUDPCallback);
+                    m_strHelloInfo.AppendFormat(L"\n  KadVersion=%u, LargeFiles=%u ExtMultiPacket=%u CryptLayerSupport=%u CryptLayerRequest=%u CryptLayerRequires=%u m_fSupportsSourceEx2=%u  SupportsCaptcha=%u DirectUDPCallback=%u m_fSupportsModProt=%u", m_byKadVersion, m_fSupportsLargeFiles, m_fExtMultiPacket, m_fSupportsCryptLayer, m_fRequestsCryptLayer, m_fRequiresCryptLayer, m_fSupportsSourceEx2, m_fSupportsCaptcha, m_fDirectUDPCallback, m_fSupportsModProt);
+                //m_strHelloInfo.AppendFormat(L"\n  KadVersion=%u, LargeFiles=%u ExtMultiPacket=%u CryptLayerSupport=%u CryptLayerRequest=%u CryptLayerRequires=%u SupportsSourceEx2=%u SupportsCaptcha=%u DirectUDPCallback=%u", m_byKadVersion, m_fSupportsLargeFiles, m_fExtMultiPacket, m_fSupportsCryptLayer, m_fRequestsCryptLayer, m_fRequiresCryptLayer, m_fSupportsSourceEx2, m_fSupportsCaptcha, m_fDirectUDPCallback);
 //<<< WiZaRd::ModProt
                 m_fRequestsCryptLayer &= m_fSupportsCryptLayer;
                 m_fRequiresCryptLayer &= m_fRequestsCryptLayer;
@@ -709,10 +709,10 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
             if (temptag.GetName() && temptag.GetName()[0]=='p' && temptag.GetName()[1]=='r')
             {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-				if (temptag.IsInt())
-					m_nProtocolRevision = temptag.GetInt();
-				else if (bDbgInfo)
-					m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+                if (temptag.IsInt())
+                    m_nProtocolRevision = temptag.GetInt();
+                else if (bDbgInfo)
+                    m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
                 bPrTag = true;
             }
@@ -876,9 +876,9 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
         }
         pAntiLeechData->Check4ModFaker(bIsBadShareaza);
     }
-    CheckForGPLEvilDoer(bNick, bMod); //>>> WiZaRd::More GPLEvilDoers	
+    CheckForGPLEvilDoer(bNick, bMod); //>>> WiZaRd::More GPLEvilDoers
 //<<< WiZaRd::ClientAnalyzer
-	CheckModIconIndex(); //>>> WiZaRd::ModIconMapper
+    CheckModIconIndex(); //>>> WiZaRd::ModIconMapper
 
     if (m_bIsHybrid)
         m_fSharedDirectories = 1;
@@ -1203,10 +1203,10 @@ void CUpDownClient::ProcessMuleInfoPacket(const uchar* pachPacket, UINT nSize)
 //		pAntiLeechData->Check4ModFaker();
 //>>> WiZaRd::More GPLEvilDoers
         CheckForGPLEvilDoer(false, true);
-//<<< WiZaRd::More GPLEvilDoers		
+//<<< WiZaRd::More GPLEvilDoers
     }
 //<<< WiZaRd::ClientAnalyzer
-	CheckModIconIndex(); //>>> WiZaRd::ModIconMapper
+    CheckModIconIndex(); //>>> WiZaRd::ModIconMapper
 
     if (thePrefs.GetVerbose() && GetServerIP() == INADDR_NONE)
         AddDebugLogLine(false, L"Received invalid server IP %s from %s", ipstr(GetServerIP()), DbgGetClientInfo());
@@ -1239,8 +1239,8 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
     UINT clientid;
     clientid = theApp.GetID();
 //>>> WiZaRd::NatTraversal [Xanatos]
-	if(clientid == 0 && socket->HaveUtpLayer())
-		clientid = 1; // we must send a ID != 0 otherwise the remote cleint would think we ahe High ID
+    if (clientid == 0 && socket->HaveUtpLayer())
+        clientid = 1; // we must send a ID != 0 otherwise the remote cleint would think we ahe High ID
 //<<< WiZaRd::NatTraversal [Xanatos]
 
     data->WriteUInt32(clientid);
@@ -1250,8 +1250,8 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 
     if (theApp.clientlist->GetBuddy() && theApp.IsFirewalled())
 //>>> WiZaRd::NatTraversal [Xanatos]
-		tagcount += 3;
-        //tagcount += 2;
+        tagcount += 3;
+    //tagcount += 2;
 //<<< WiZaRd::NatTraversal [Xanatos]
 
 //>>> WiZaRd::Easy ModVersion
@@ -1265,9 +1265,9 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
         ++tagcount;
 //<<< WiZaRd::ICS [enkeyDev]
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	const bool bSendSCT = !m_pszUsername || SupportsSCT();
-	if (bSendSCT)
-		++tagcount;
+    const bool bSendSCT = !m_pszUsername || SupportsSCT();
+    if (bSendSCT)
+        ++tagcount;
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
     data->WriteUInt32(tagcount);
@@ -1338,8 +1338,8 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
         tagBuddyPort.WriteTagToFile(data);
 
 //>>> WiZaRd::NatTraversal [Xanatos]
-		CTag tagBuddyID(CT_EMULE_BUDDYID, theApp.clientlist->GetBuddy()->GetBuddyID()); 
-		tagBuddyID.WriteTagToFile(data);
+        CTag tagBuddyID(CT_EMULE_BUDDYID, theApp.clientlist->GetBuddy()->GetBuddyID());
+        tagBuddyID.WriteTagToFile(data);
 //<<< WiZaRd::NatTraversal [Xanatos]
     }
 
@@ -1382,7 +1382,7 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
     const UINT uExtMultiPacket		= 1;
 //>>> WiZaRd::ModProt
     //const UINT uReserved			= 0; // mod bit
-	const UINT uModProt				= 1;
+    const UINT uModProt				= 1;
 //<<< WiZaRd::ModProt
     const UINT uSupportsCryptLayer	= 1;
     const UINT uRequestsCryptLayer	= thePrefs.IsClientCryptLayerRequested() ? 1 : 0;
@@ -1405,7 +1405,7 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
                         (uSupportsCryptLayer	<<  7) |
 //>>> WiZaRd::ModProt
                         //(uReserved				<<  6) |
-						(uModProt				<<  6) |
+                        (uModProt				<<  6) |
 //<<< WiZaRd::ModProt
                         (uExtMultiPacket		<<  5) |
                         (uSupportLargeFiles		<<  4) |
@@ -1441,11 +1441,11 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
     }
 //<<< WiZaRd::ICS [enkeyDev]
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	if(bSendSCT)
-	{
-		CTag tagProtocolRevision(CT_PROTOCOLREVISION, PROTOCOL_REVISION_2); // Enable EMBLOCK (AICH) sized crumbs as well as normal crumbs
-		tagProtocolRevision.WriteTagToFile(data);
-	}
+    if (bSendSCT)
+    {
+        CTag tagProtocolRevision(CT_PROTOCOLREVISION, PROTOCOL_REVISION_2); // Enable EMBLOCK (AICH) sized crumbs as well as normal crumbs
+        tagProtocolRevision.WriteTagToFile(data);
+    }
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
     data->WriteUInt32(0);
@@ -1799,14 +1799,14 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
     }
 
 //>>> WiZaRd::NatTraversal [Xanatos]
-	if(HasLowID() && !bUseUTP)
-    //if (HasLowID())
+    if (HasLowID() && !bUseUTP)
+        //if (HasLowID())
 //<<< WiZaRd::NatTraversal [Xanatos]
     {
         ASSERT(pClassSocket == NULL);
 //>>> WiZaRd::NatTraversal [Xanatos]
-		if (!theApp.CanDoCallback(this))
-        //if (!theApp.CanDoCallback()) // lowid2lowid check used for the whole function, don't remove
+        if (!theApp.CanDoCallback(this))
+            //if (!theApp.CanDoCallback()) // lowid2lowid check used for the whole function, don't remove
 //<<< WiZaRd::NatTraversal [Xanatos]
         {
             // We cannot reach this client, so we hard fail to connect, if this client should be kept,
@@ -1855,10 +1855,10 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
     ////////////////////////////////////////////////////////////
     // 3) Normal Outgoing TCP Connection
 //>>> WiZaRd::NatTraversal [Xanatos]
-	// if direct callback is possible and we are firewalled use UTP
-	bUseUTP = (SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && GetConnectIP() != 0) && theApp.IsFirewalled();
-	if(!HasLowID() || bUseUTP)
-    //if (!HasLowID())
+    // if direct callback is possible and we are firewalled use UTP
+    bUseUTP = (SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && GetConnectIP() != 0) && theApp.IsFirewalled();
+    if (!HasLowID() || bUseUTP)
+        //if (!HasLowID())
 //<<< WiZaRd::NatTraversal [Xanatos]
     {
         m_nConnectingState = CCS_DIRECTTCP;
@@ -1867,8 +1867,8 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
         socket = static_cast<CClientReqSocket*>(pClassSocket->CreateObject());
         socket->SetClient(this);
 //>>> WiZaRd::NatTraversal [Xanatos]
-		if(bUseUTP)
-			socket->InitUtpSupport();
+        if (bUseUTP)
+            socket->InitUtpSupport();
 //<<< WiZaRd::NatTraversal [Xanatos]
         if (!socket->Create())
         {
@@ -1917,67 +1917,67 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
         if (GetBuddyIP() && GetBuddyPort())
         {
 //>>> WiZaRd::NatTraversal [Xanatos]
-			if(theApp.IsFirewalled())
-			{
-				// Here we know we need a bidirectional hole punch so we request a UTP Callback
-				ASSERT(SupportsNatTraversal());
+            if (theApp.IsFirewalled())
+            {
+                // Here we know we need a bidirectional hole punch so we request a UTP Callback
+                ASSERT(SupportsNatTraversal());
 
-				DebugLog(_T("Hole Punch on port %u to client %s (%s) "), GetKadPort(), DbgGetClientInfo(), md4str(GetUserHash()));
-				Packet* dummy = new Packet(OP_EMULEPROT);
-				dummy->opcode = OP_HOLEPUNCH;
-				theApp.clientudp->SendPacket(dummy, GetConnectIP(), GetKadPort(), ShouldReceiveCryptUDPPackets(), GetUserHash(), false, 0);
+                DebugLog(_T("Hole Punch on port %u to client %s (%s) "), GetKadPort(), DbgGetClientInfo(), md4str(GetUserHash()));
+                Packet* dummy = new Packet(OP_EMULEPROT);
+                dummy->opcode = OP_HOLEPUNCH;
+                theApp.clientudp->SendPacket(dummy, GetConnectIP(), GetKadPort(), ShouldReceiveCryptUDPPackets(), GetUserHash(), false, 0);
 
 
-				CSafeMemFile data(128);
-				data.WriteHash16(GetBuddyID());
-				uchar hash[16]; 
-				md4clr(hash);
-				data.WriteHash16(hash); // a invalid NULL hash indicates that this is a Custom Packet, not a file reask
+                CSafeMemFile data(128);
+                data.WriteHash16(GetBuddyID());
+                uchar hash[16];
+                md4clr(hash);
+                data.WriteHash16(hash); // a invalid NULL hash indicates that this is a Custom Packet, not a file reask
 
-				data.WriteHash16(thePrefs.GetUserHash());
-				data.WriteUInt8(GetMyConnectOptions(true, true));
+                data.WriteHash16(thePrefs.GetUserHash());
+                data.WriteUInt8(GetMyConnectOptions(true, true));
 
-				if (thePrefs.GetDebugClientUDPLevel() > 0)
-					DebugSend("OP__ReaskCallbackUDP", this, reqfile->GetFileHash());
-				Packet* response = new Packet(&data, OP_EMULEPROT);
-				response->opcode = OP_REASKCALLBACKUDP;
-				theStats.AddUpDataOverheadFileRequest(response->size);
-				theApp.downloadqueue->AddUDPFileReasks();
-				// FIXME: We dont know which kadversion the buddy has, so we need to send unencrypted
-				theApp.clientudp->SendPacket(response, GetBuddyIP(), GetBuddyPort(), false, NULL, true, 0);
+                if (thePrefs.GetDebugClientUDPLevel() > 0)
+                    DebugSend("OP__ReaskCallbackUDP", this, reqfile->GetFileHash());
+                Packet* response = new Packet(&data, OP_EMULEPROT);
+                response->opcode = OP_REASKCALLBACKUDP;
+                theStats.AddUpDataOverheadFileRequest(response->size);
+                theApp.downloadqueue->AddUDPFileReasks();
+                // FIXME: We dont know which kadversion the buddy has, so we need to send unencrypted
+                theApp.clientudp->SendPacket(response, GetBuddyIP(), GetBuddyPort(), false, NULL, true, 0);
 
-				return true;
-			}
-			else
+                return true;
+            }
+            else
 //<<< WiZaRd::NatTraversal [Xanatos]
-			{
-				CSafeMemFile bio(34);
-				bio.WriteUInt128(&Kademlia::CUInt128(GetBuddyID()));
-				bio.WriteUInt128(&Kademlia::CUInt128(reqfile->GetFileHash()));
-				bio.WriteUInt16(thePrefs.GetPort());
-				if (thePrefs.GetDebugClientKadUDPLevel() > 0 || thePrefs.GetDebugClientUDPLevel() > 0)
-					DebugSend("KadCallbackReq", this);
-				Packet* packet = new Packet(&bio, OP_KADEMLIAHEADER);
-				packet->opcode = KADEMLIA_CALLBACK_REQ;
-				theStats.AddUpDataOverheadKad(packet->size);
-				// FIXME: We dont know which kadversion the buddy has, so we need to send unencrypted
-				theApp.clientudp->SendPacket(packet, GetBuddyIP(), GetBuddyPort(), false, NULL, true, 0);
-				SetDownloadState(DS_WAITCALLBACKKAD);
-			}
+            {
+                CSafeMemFile bio(34);
+                bio.WriteUInt128(&Kademlia::CUInt128(GetBuddyID()));
+                bio.WriteUInt128(&Kademlia::CUInt128(reqfile->GetFileHash()));
+                bio.WriteUInt16(thePrefs.GetPort());
+                if (thePrefs.GetDebugClientKadUDPLevel() > 0 || thePrefs.GetDebugClientUDPLevel() > 0)
+                    DebugSend("KadCallbackReq", this);
+                Packet* packet = new Packet(&bio, OP_KADEMLIAHEADER);
+                packet->opcode = KADEMLIA_CALLBACK_REQ;
+                theStats.AddUpDataOverheadKad(packet->size);
+                // FIXME: We dont know which kadversion the buddy has, so we need to send unencrypted
+                theApp.clientudp->SendPacket(packet, GetBuddyIP(), GetBuddyPort(), false, NULL, true, 0);
+                SetDownloadState(DS_WAITCALLBACKKAD);
+            }
         }
         else
         {
 //>>> WiZaRd::NatTraversal [Xanatos]
-			if(theApp.IsFirewalled())
-			{
-				// kademlia callbacks for NAT-T are not possible
-				if(Disconnected(L"LowID->LowID"))
-				{
-					delete this;
-					return false;
-				}
-				return true;
-			}
+            if (theApp.IsFirewalled())
+            {
+                // kademlia callbacks for NAT-T are not possible
+                if (Disconnected(L"LowID->LowID"))
+                {
+                    delete this;
+                    return false;
+                }
+                return true;
+            }
 //<<< WiZaRd::NatTraversal [Xanatos]
 
             // I don't think we should ever have a buddy without its IP (anymore), but nevertheless let the functionality in
@@ -2023,32 +2023,32 @@ void CUpDownClient::Connect()
     {
         //DebugLog(L"Enabling CryptLayer on outgoing connection to client %s", DbgGetClientInfo()); // to be removed later
 //>>> WiZaRd::NatTraversal [Xanatos]
-		if(socket->HaveUtpLayer())
-			theApp.clientudp->SetConnectionEncryption(GetIP(), GetKadPort(), true, GetUserHash());
-		else
+        if (socket->HaveUtpLayer())
+            theApp.clientudp->SetConnectionEncryption(GetIP(), GetKadPort(), true, GetUserHash());
+        else
 //<<< WiZaRd::NatTraversal [Xanatos]
-			socket->SetConnectionEncryption(true, GetUserHash(), false);
+            socket->SetConnectionEncryption(true, GetUserHash(), false);
     }
     else
-	{
+    {
 //>>> WiZaRd::NatTraversal [Xanatos]
-		if(socket->HaveUtpLayer())
-			theApp.clientudp->SetConnectionEncryption(GetConnectIP(), GetKadPort(), false);
-		else
+        if (socket->HaveUtpLayer())
+            theApp.clientudp->SetConnectionEncryption(GetConnectIP(), GetKadPort(), false);
+        else
 //<<< WiZaRd::NatTraversal [Xanatos]
-			socket->SetConnectionEncryption(false, NULL, false);
-	}
+            socket->SetConnectionEncryption(false, NULL, false);
+    }
 
     //Try to always tell the socket to WaitForOnConnect before you call Connect.
     socket->WaitForOnConnect();
     SOCKADDR_IN sockAddr = {0};
     sockAddr.sin_family = AF_INET;
 //>>> WiZaRd::NatTraversal [Xanatos]
-	if(socket->HaveUtpLayer())
-		sockAddr.sin_port = htons(GetKadPort() ? GetKadPort() : GetUDPPort());
-	else
+    if (socket->HaveUtpLayer())
+        sockAddr.sin_port = htons(GetKadPort() ? GetKadPort() : GetUDPPort());
+    else
 //<<< WiZaRd::NatTraversal [Xanatos]
-		sockAddr.sin_port = htons(GetUserPort());
+        sockAddr.sin_port = htons(GetUserPort());
     sockAddr.sin_addr.S_un.S_addr = GetConnectIP();
     socket->Connect((SOCKADDR*)&sockAddr, sizeof sockAddr);
     SendHelloPacket();
@@ -2159,315 +2159,315 @@ void CUpDownClient::ConnectionEstablished()
 
 void CUpDownClient::InitClientSoftwareVersion()
 {
-	CString szSoftware = L"";
+    CString szSoftware = L"";
     if (m_pszUsername == NULL)
     {
         m_clientSoft = SO_UNKNOWN;
     }
-	else
-	{
-		int iHashType = GetHashType();
-		if (m_bEmuleProtocol || iHashType == SO_EMULE)
-		{
-			CString pszSoftware;
-			switch (m_byCompatibleClient)
-			{
-			case SO_CDONKEY:
-				m_clientSoft = SO_CDONKEY;
-				pszSoftware = L"cDonkey";
-				break;
-			case SO_XMULE:
-				m_clientSoft = SO_XMULE;
-				pszSoftware = L"xMule";
-				break;
-			case SO_AMULE:
-				m_clientSoft = SO_AMULE;
-				pszSoftware = L"aMule";
-				break;
-			case SO_SHAREAZA:
+    else
+    {
+        int iHashType = GetHashType();
+        if (m_bEmuleProtocol || iHashType == SO_EMULE)
+        {
+            CString pszSoftware;
+            switch (m_byCompatibleClient)
+            {
+            case SO_CDONKEY:
+                m_clientSoft = SO_CDONKEY;
+                pszSoftware = L"cDonkey";
+                break;
+            case SO_XMULE:
+                m_clientSoft = SO_XMULE;
+                pszSoftware = L"xMule";
+                break;
+            case SO_AMULE:
+                m_clientSoft = SO_AMULE;
+                pszSoftware = L"aMule";
+                break;
+            case SO_SHAREAZA:
 //>>> WiZaRd::ClientAnalyzer
 // Spike2 - Enhanced Client Recognition - START
-				// removed "case 40"... this is now integrated here
-			case SO_SHAREAZA2:
-			case SO_SHAREAZA3:
-			case SO_SHAREAZA4:
+                // removed "case 40"... this is now integrated here
+            case SO_SHAREAZA2:
+            case SO_SHAREAZA3:
+            case SO_SHAREAZA4:
 // Spike2 - Enhanced Client Recognition - END
 //<<< WiZaRd::ClientAnalyzer
-				m_clientSoft = SO_SHAREAZA;
-				pszSoftware = L"Shareaza";
-				break;
-			case SO_LPHANT:
-				m_clientSoft = SO_LPHANT;
-				pszSoftware = L"lphant";
-				break;
+                m_clientSoft = SO_SHAREAZA;
+                pszSoftware = L"Shareaza";
+                break;
+            case SO_LPHANT:
+                m_clientSoft = SO_LPHANT;
+                pszSoftware = L"lphant";
+                break;
 //>>> WiZaRd::ClientAnalyzer
 // Spike2 - Enhanced Client Recognition - START
-			case SO_EMULEPLUS:
-				m_clientSoft = SO_EMULEPLUS;
-				pszSoftware = L"eMule Plus";
-				break;
-			case SO_HYDRANODE:
-				m_clientSoft = SO_HYDRANODE;
-				pszSoftware = L"Hydranode";
-				break;
-			case SO_TRUSTYFILES:
-				m_clientSoft = SO_TRUSTYFILES;
-				pszSoftware = L"TrustyFiles";
-				break;
-			case SO_EASYMULE2:
-				m_clientSoft = SO_EASYMULE2;
-				pszSoftware = L"EasyMule2";
-				break;
-			case SO_NEOLOADER:
-				m_clientSoft = SO_NEOLOADER;
-				pszSoftware = L"NeoLoader";
-				break;
+            case SO_EMULEPLUS:
+                m_clientSoft = SO_EMULEPLUS;
+                pszSoftware = L"eMule Plus";
+                break;
+            case SO_HYDRANODE:
+                m_clientSoft = SO_HYDRANODE;
+                pszSoftware = L"Hydranode";
+                break;
+            case SO_TRUSTYFILES:
+                m_clientSoft = SO_TRUSTYFILES;
+                pszSoftware = L"TrustyFiles";
+                break;
+            case SO_EASYMULE2:
+                m_clientSoft = SO_EASYMULE2;
+                pszSoftware = L"EasyMule2";
+                break;
+            case SO_NEOLOADER:
+                m_clientSoft = SO_NEOLOADER;
+                pszSoftware = L"NeoLoader";
+                break;
 //>>> WiZaRd::kMule Version Ident
-			// not used, yet...
-			case SO_KMULE:
-				m_clientSoft = SO_KMULE;
-				pszSoftware = L"kMule";
-				break;
+                // not used, yet...
+            case SO_KMULE:
+                m_clientSoft = SO_KMULE;
+                pszSoftware = L"kMule";
+                break;
 //<<< WiZaRd::kMule Version Ident
 // Spike2 - Enhanced Client Recognition - END
 //<<< WiZaRd::ClientAnalyzer
-			default:
-				if (m_bIsML 
-					|| m_byCompatibleClient == SO_MLDONKEY 
+            default:
+                if (m_bIsML
+                        || m_byCompatibleClient == SO_MLDONKEY
 //>>> WiZaRd::ClientAnalyzer // Spike2 - Enhanced Client Recognition
-					|| m_byCompatibleClient == SO_MLDONKEY2 
-					|| m_byCompatibleClient == SO_MLDONKEY3) 
+                        || m_byCompatibleClient == SO_MLDONKEY2
+                        || m_byCompatibleClient == SO_MLDONKEY3)
 //<<< WiZaRd::ClientAnalyzer // Spike2 - Enhanced Client Recognition
-				{
-					m_clientSoft = SO_MLDONKEY;
-					pszSoftware = L"MLdonkey";
-				}
-				else if (m_bIsHybrid 
+                {
+                    m_clientSoft = SO_MLDONKEY;
+                    pszSoftware = L"MLdonkey";
+                }
+                else if (m_bIsHybrid
 //>>> WiZaRd::ClientAnalyzer // Spike2 - Enhanced Client Recognition
-					|| m_byCompatibleClient == SO_EDONKEYHYBRID) 
+                         || m_byCompatibleClient == SO_EDONKEYHYBRID)
 //<<< WiZaRd::ClientAnalyzer // Spike2 - Enhanced Client Recognition
-				{
-					m_clientSoft = SO_EDONKEYHYBRID;
-					pszSoftware = L"eDonkeyHybrid";
-				}
-				else if (m_byCompatibleClient != 0)
-				{
+                {
+                    m_clientSoft = SO_EDONKEYHYBRID;
+                    pszSoftware = L"eDonkeyHybrid";
+                }
+                else if (m_byCompatibleClient != 0)
+                {
 //>>> WiZaRd::ClientAnalyzer
 // Spike2 - Enhanced Client Recognition - START
 //WiZaRd: this is highly unreliable and thus I removed it
- 					// Recognize other Shareazas - just to be sure :)
- 					/*if (StrStrI(m_pszUsername, L"shareaza"))
- 					{
- 						m_clientSoft = SO_SHAREAZA;
- 						pszSoftware = L"Shareaza";
- 					}
- 					// Recognize all eMulePlus - just to be sure !
-					else*/ if (StrStr(m_strModVersion, L"Plus 1"))
-					{
-						m_clientSoft = SO_EMULEPLUS;
-						pszSoftware = L"eMule Plus";
-					}
-					else
+                    // Recognize other Shareazas - just to be sure :)
+                    /*if (StrStrI(m_pszUsername, L"shareaza"))
+                    {
+                    	m_clientSoft = SO_SHAREAZA;
+                    	pszSoftware = L"Shareaza";
+                    }
+                    // Recognize all eMulePlus - just to be sure !
+                    else*/ if (StrStr(m_strModVersion, L"Plus 1"))
+                    {
+                        m_clientSoft = SO_EMULEPLUS;
+                        pszSoftware = L"eMule Plus";
+                    }
+                    else
 // Spike2 - Enhanced Client Recognition - END
 //<<< WiZaRd::ClientAnalyzer
-					{
-						m_clientSoft = SO_XMULE; // means: 'eMule Compatible'
-						pszSoftware = L"eMule Compat";
-					}
-				}
-				else
-				{
-					m_clientSoft = SO_EMULE;
-					pszSoftware = L"eMule";
-				}
-				break;
-			}
+                    {
+                        m_clientSoft = SO_XMULE; // means: 'eMule Compatible'
+                        pszSoftware = L"eMule Compat";
+                    }
+                }
+                else
+                {
+                    m_clientSoft = SO_EMULE;
+                    pszSoftware = L"eMule";
+                }
+                break;
+            }
 
-			if (m_byEmuleVersion == 0)
-			{
-				m_nClientVersion = MAKE_CLIENT_VERSION(0, 0, 0);
-				szSoftware = pszSoftware;
-			}
-			else if (m_byEmuleVersion != 0x99)
-			{
-				UINT nClientMinVersion = (m_byEmuleVersion >> 4)*10 + (m_byEmuleVersion & 0x0f);
-				m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
-				szSoftware.Format(L"%s v0.%u", pszSoftware, nClientMinVersion);
-			}
-			else
-			{
-				UINT nClientMajVersion = (m_nClientVersion >> 17) & 0x7f;
-				UINT nClientMinVersion = (m_nClientVersion >> 10) & 0x7f;
-				UINT nClientUpVersion  = (m_nClientVersion >>  7) & 0x07;
+            if (m_byEmuleVersion == 0)
+            {
+                m_nClientVersion = MAKE_CLIENT_VERSION(0, 0, 0);
+                szSoftware = pszSoftware;
+            }
+            else if (m_byEmuleVersion != 0x99)
+            {
+                UINT nClientMinVersion = (m_byEmuleVersion >> 4)*10 + (m_byEmuleVersion & 0x0f);
+                m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
+                szSoftware.Format(L"%s v0.%u", pszSoftware, nClientMinVersion);
+            }
+            else
+            {
+                UINT nClientMajVersion = (m_nClientVersion >> 17) & 0x7f;
+                UINT nClientMinVersion = (m_nClientVersion >> 10) & 0x7f;
+                UINT nClientUpVersion  = (m_nClientVersion >>  7) & 0x07;
 //>>> WiZaRd::kMule Version Ident
-				// Some hack solution to accept the current kMule string scheme while we aren't identifying as SO_KMULE straight away
-				if (m_clientSoft == SO_EMULE && _tcsncmp(m_strModVersion, L"kMule Build", 11) == 0)
-				{
-					CString tmp = m_strModVersion.Mid(11);
-					m_clientSoft = SO_KMULE;
-					m_strModVersion = L"";
-					nClientMajVersion = (UINT)_tstoi(tmp.Mid(0, 4));
-					nClientMinVersion = (UINT)_tstoi(tmp.Mid(4, 2));
-					nClientUpVersion = (UINT)_tstoi(tmp.Mid(6, 2));
-				}
+                // Some hack solution to accept the current kMule string scheme while we aren't identifying as SO_KMULE straight away
+                if (m_clientSoft == SO_EMULE && _tcsncmp(m_strModVersion, L"kMule Build", 11) == 0)
+                {
+                    CString tmp = m_strModVersion.Mid(11);
+                    m_clientSoft = SO_KMULE;
+                    m_strModVersion = L"";
+                    nClientMajVersion = (UINT)_tstoi(tmp.Mid(0, 4));
+                    nClientMinVersion = (UINT)_tstoi(tmp.Mid(4, 2));
+                    nClientUpVersion = (UINT)_tstoi(tmp.Mid(6, 2));
+                }
 //<<< WiZaRd::kMule Version Ident
-				m_nClientVersion = MAKE_CLIENT_VERSION(nClientMajVersion, nClientMinVersion, nClientUpVersion);
-				if (m_clientSoft == SO_EMULE)
-					szSoftware.Format(L"%s v%u.%u%c", pszSoftware, nClientMajVersion, nClientMinVersion, L'a' + nClientUpVersion);
+                m_nClientVersion = MAKE_CLIENT_VERSION(nClientMajVersion, nClientMinVersion, nClientUpVersion);
+                if (m_clientSoft == SO_EMULE)
+                    szSoftware.Format(L"%s v%u.%u%c", pszSoftware, nClientMajVersion, nClientMinVersion, L'a' + nClientUpVersion);
 //>>> WiZaRd::ClientAnalyzer
 // Spike2 - Enhanced Client Recognition - START
-				else if (m_clientSoft == SO_EMULEPLUS)
-				{
-					szSoftware.Format(L"%s v%u", pszSoftware, nClientMajVersion);
-					if(nClientMinVersion != 0)
-						szSoftware.AppendFormat(L".%u", nClientMinVersion);
-					if(nClientUpVersion != 0)
-						szSoftware.AppendFormat(L"%c", L'a' + nClientUpVersion - 1);
-				}
-				else if (m_clientSoft == SO_NEOLOADER)
-				{
-					if (nClientMinVersion < 10)
-						szSoftware.Format(L"%s v%u.0%u", pszSoftware, nClientMajVersion, nClientMinVersion);
-					else
-						szSoftware.Format(L"%s v%u.%u", pszSoftware, nClientMajVersion, nClientMinVersion);
+                else if (m_clientSoft == SO_EMULEPLUS)
+                {
+                    szSoftware.Format(L"%s v%u", pszSoftware, nClientMajVersion);
+                    if (nClientMinVersion != 0)
+                        szSoftware.AppendFormat(L".%u", nClientMinVersion);
+                    if (nClientUpVersion != 0)
+                        szSoftware.AppendFormat(L"%c", L'a' + nClientUpVersion - 1);
+                }
+                else if (m_clientSoft == SO_NEOLOADER)
+                {
+                    if (nClientMinVersion < 10)
+                        szSoftware.Format(L"%s v%u.0%u", pszSoftware, nClientMajVersion, nClientMinVersion);
+                    else
+                        szSoftware.Format(L"%s v%u.%u", pszSoftware, nClientMajVersion, nClientMinVersion);
 
-					if (nClientUpVersion != 0)
-						szSoftware.AppendFormat(L"%c", L'a' + nClientUpVersion - 1);
-				}
+                    if (nClientUpVersion != 0)
+                        szSoftware.AppendFormat(L"%c", L'a' + nClientUpVersion - 1);
+                }
 // Spike2 - Enhanced Client Recognition - END
 //>>> WiZaRd::kMule Version Ident
-				// not used, yet...
-				else if(m_clientSoft == SO_KMULE)
-				{
-					// we (will) use	nClientMajVersion (4 digits = year)
-					//					nClientMinVersion (2 digits = month)
-					//					nClientUpVersion (2 digits = day)
-					szSoftware.Format(L"kMule Build%u", nClientMajVersion);
-					if(nClientMinVersion < 10)
-						szSoftware.AppendFormat(L"0%u", nClientMinVersion);
-					else
-						szSoftware.AppendFormat(L"%u", nClientMinVersion);
-					if(nClientUpVersion < 10)
-						szSoftware.AppendFormat(L"0%u", nClientUpVersion);
-					else
-						szSoftware.AppendFormat(L"%u", nClientUpVersion);
-				}
+                // not used, yet...
+                else if (m_clientSoft == SO_KMULE)
+                {
+                    // we (will) use	nClientMajVersion (4 digits = year)
+                    //					nClientMinVersion (2 digits = month)
+                    //					nClientUpVersion (2 digits = day)
+                    szSoftware.Format(L"kMule Build%u", nClientMajVersion);
+                    if (nClientMinVersion < 10)
+                        szSoftware.AppendFormat(L"0%u", nClientMinVersion);
+                    else
+                        szSoftware.AppendFormat(L"%u", nClientMinVersion);
+                    if (nClientUpVersion < 10)
+                        szSoftware.AppendFormat(L"0%u", nClientUpVersion);
+                    else
+                        szSoftware.AppendFormat(L"%u", nClientUpVersion);
+                }
 //<<< WiZaRd::kMule Version Ident
 //<<< WiZaRd::ClientAnalyzer
-				else if (m_clientSoft == SO_AMULE || nClientUpVersion != 0)
-					szSoftware.Format(L"%s v%u.%u.%u", pszSoftware, nClientMajVersion, nClientMinVersion, nClientUpVersion);
-				else if (m_clientSoft == SO_LPHANT)
-				{
-					if (nClientMinVersion < 10)
-						szSoftware.Format(L"%s v%u.0%u", pszSoftware, (nClientMajVersion-1), nClientMinVersion);
-					else
-						szSoftware.Format(L"%s v%u.%u", pszSoftware, (nClientMajVersion-1), nClientMinVersion);
-				}
-				else
-					szSoftware.Format(L"%s v%u.%u", pszSoftware, nClientMajVersion, nClientMinVersion);
-			}
-        } 
-		else if (m_bIsHybrid 
-			|| m_byCompatibleClient == SO_EDONKEYHYBRID) //>>> WiZaRd::ClientAnalyzer // Spike2 - Enhanced Client Recognition
-		{
-			m_clientSoft = SO_EDONKEYHYBRID;
-			// seen:
-			// 105010	0.50.10
-			// 10501	0.50.1
-			// 10405	1.4.5 // netfinity
-			// 10300	1.3.0
-			// 10212	1.2.2 // Spike2
-			// 10211	1.2.1
-			// 10103	1.1.3
-			// 10102	1.1.2
-			// 10100	1.1
-			// 1051		0.51.0
-			// 1002		1.0.2
-			// 1000		1.0
-			// 501		0.50.1
+                else if (m_clientSoft == SO_AMULE || nClientUpVersion != 0)
+                    szSoftware.Format(L"%s v%u.%u.%u", pszSoftware, nClientMajVersion, nClientMinVersion, nClientUpVersion);
+                else if (m_clientSoft == SO_LPHANT)
+                {
+                    if (nClientMinVersion < 10)
+                        szSoftware.Format(L"%s v%u.0%u", pszSoftware, (nClientMajVersion-1), nClientMinVersion);
+                    else
+                        szSoftware.Format(L"%s v%u.%u", pszSoftware, (nClientMajVersion-1), nClientMinVersion);
+                }
+                else
+                    szSoftware.Format(L"%s v%u.%u", pszSoftware, nClientMajVersion, nClientMinVersion);
+            }
+        }
+        else if (m_bIsHybrid
+                 || m_byCompatibleClient == SO_EDONKEYHYBRID) //>>> WiZaRd::ClientAnalyzer // Spike2 - Enhanced Client Recognition
+        {
+            m_clientSoft = SO_EDONKEYHYBRID;
+            // seen:
+            // 105010	0.50.10
+            // 10501	0.50.1
+            // 10405	1.4.5 // netfinity
+            // 10300	1.3.0
+            // 10212	1.2.2 // Spike2
+            // 10211	1.2.1
+            // 10103	1.1.3
+            // 10102	1.1.2
+            // 10100	1.1
+            // 1051		0.51.0
+            // 1002		1.0.2
+            // 1000		1.0
+            // 501		0.50.1
 
-			UINT nClientMajVersion;
-			UINT nClientMinVersion;
-			UINT nClientUpVersion;
-			if (m_nClientVersion > 100000)
-			{
-				UINT uMaj = m_nClientVersion/100000;
-				nClientMajVersion = uMaj - 1;
-				nClientMinVersion = (m_nClientVersion - uMaj*100000) / 100;
-				nClientUpVersion = m_nClientVersion % 100;
-			}
-			else if (m_nClientVersion >= 10100 && m_nClientVersion <= 10409) //>>> WiZaRd::ClientAnalyzer // netfinity
-			{
-				UINT uMaj = m_nClientVersion/10000;
-				nClientMajVersion = uMaj;
-				nClientMinVersion = (m_nClientVersion - uMaj*10000) / 100;
-				nClientUpVersion = m_nClientVersion % 10;
-			}
-			else if (m_nClientVersion > 10000)
-			{
-				UINT uMaj = m_nClientVersion/10000;
-				nClientMajVersion = uMaj - 1;
-				nClientMinVersion = (m_nClientVersion - uMaj*10000) / 10;
-				nClientUpVersion = m_nClientVersion % 10;
-			}
-			else if (m_nClientVersion >= 1000 && m_nClientVersion < 1020)
-			{
-				UINT uMaj = m_nClientVersion/1000;
-				nClientMajVersion = uMaj;
-				nClientMinVersion = (m_nClientVersion - uMaj*1000) / 10;
-				nClientUpVersion = m_nClientVersion % 10;
-			}
-			else if (m_nClientVersion > 1000)
-			{
-				UINT uMaj = m_nClientVersion/1000;
-				nClientMajVersion = uMaj - 1;
-				nClientMinVersion = m_nClientVersion - uMaj*1000;
-				nClientUpVersion = 0;
-			}
-			else if (m_nClientVersion > 100)
-			{
-				UINT uMin = m_nClientVersion/10;
-				nClientMajVersion = 0;
-				nClientMinVersion = uMin;
-				nClientUpVersion = m_nClientVersion - uMin*10;
-			}
-			else
-			{
-				nClientMajVersion = 0;
-				nClientMinVersion = m_nClientVersion;
-				nClientUpVersion = 0;
-			}
-			m_nClientVersion = MAKE_CLIENT_VERSION(nClientMajVersion, nClientMinVersion, nClientUpVersion);
+            UINT nClientMajVersion;
+            UINT nClientMinVersion;
+            UINT nClientUpVersion;
+            if (m_nClientVersion > 100000)
+            {
+                UINT uMaj = m_nClientVersion/100000;
+                nClientMajVersion = uMaj - 1;
+                nClientMinVersion = (m_nClientVersion - uMaj*100000) / 100;
+                nClientUpVersion = m_nClientVersion % 100;
+            }
+            else if (m_nClientVersion >= 10100 && m_nClientVersion <= 10409) //>>> WiZaRd::ClientAnalyzer // netfinity
+            {
+                UINT uMaj = m_nClientVersion/10000;
+                nClientMajVersion = uMaj;
+                nClientMinVersion = (m_nClientVersion - uMaj*10000) / 100;
+                nClientUpVersion = m_nClientVersion % 10;
+            }
+            else if (m_nClientVersion > 10000)
+            {
+                UINT uMaj = m_nClientVersion/10000;
+                nClientMajVersion = uMaj - 1;
+                nClientMinVersion = (m_nClientVersion - uMaj*10000) / 10;
+                nClientUpVersion = m_nClientVersion % 10;
+            }
+            else if (m_nClientVersion >= 1000 && m_nClientVersion < 1020)
+            {
+                UINT uMaj = m_nClientVersion/1000;
+                nClientMajVersion = uMaj;
+                nClientMinVersion = (m_nClientVersion - uMaj*1000) / 10;
+                nClientUpVersion = m_nClientVersion % 10;
+            }
+            else if (m_nClientVersion > 1000)
+            {
+                UINT uMaj = m_nClientVersion/1000;
+                nClientMajVersion = uMaj - 1;
+                nClientMinVersion = m_nClientVersion - uMaj*1000;
+                nClientUpVersion = 0;
+            }
+            else if (m_nClientVersion > 100)
+            {
+                UINT uMin = m_nClientVersion/10;
+                nClientMajVersion = 0;
+                nClientMinVersion = uMin;
+                nClientUpVersion = m_nClientVersion - uMin*10;
+            }
+            else
+            {
+                nClientMajVersion = 0;
+                nClientMinVersion = m_nClientVersion;
+                nClientUpVersion = 0;
+            }
+            m_nClientVersion = MAKE_CLIENT_VERSION(nClientMajVersion, nClientMinVersion, nClientUpVersion);
 
-			if (nClientUpVersion)
-				szSoftware.Format(L"eDonkeyHybrid v%u.%u.%u", nClientMajVersion, nClientMinVersion, nClientUpVersion);
-			else
-				szSoftware.Format(L"eDonkeyHybrid v%u.%u", nClientMajVersion, nClientMinVersion);
-		}
-		else if (m_bIsML || iHashType == SO_MLDONKEY)
-		{
-			m_clientSoft = SO_MLDONKEY;
-			UINT nClientMinVersion = m_nClientVersion;
-			m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
-			szSoftware.Format(L"MLdonkey v0.%u", nClientMinVersion);
-		}
-		else if (iHashType == SO_OLDEMULE)
-		{
-			m_clientSoft = SO_OLDEMULE;
-			UINT nClientMinVersion = m_nClientVersion;
-			m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
-			szSoftware.Format(L"Old eMule v0.%u", nClientMinVersion);
-		}
-		else 
-		{
-			m_clientSoft = SO_EDONKEY;
-			UINT nClientMinVersion = m_nClientVersion;
-			m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
-			szSoftware.Format(L"eDonkey v0.%u", nClientMinVersion);
-		}
-		if(!szSoftware.IsEmpty())
-			m_strClientSoftware = szSoftware;
-	}
+            if (nClientUpVersion)
+                szSoftware.Format(L"eDonkeyHybrid v%u.%u.%u", nClientMajVersion, nClientMinVersion, nClientUpVersion);
+            else
+                szSoftware.Format(L"eDonkeyHybrid v%u.%u", nClientMajVersion, nClientMinVersion);
+        }
+        else if (m_bIsML || iHashType == SO_MLDONKEY)
+        {
+            m_clientSoft = SO_MLDONKEY;
+            UINT nClientMinVersion = m_nClientVersion;
+            m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
+            szSoftware.Format(L"MLdonkey v0.%u", nClientMinVersion);
+        }
+        else if (iHashType == SO_OLDEMULE)
+        {
+            m_clientSoft = SO_OLDEMULE;
+            UINT nClientMinVersion = m_nClientVersion;
+            m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
+            szSoftware.Format(L"Old eMule v0.%u", nClientMinVersion);
+        }
+        else
+        {
+            m_clientSoft = SO_EDONKEY;
+            UINT nClientMinVersion = m_nClientVersion;
+            m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
+            szSoftware.Format(L"eDonkey v0.%u", nClientMinVersion);
+        }
+        if (!szSoftware.IsEmpty())
+            m_strClientSoftware = szSoftware;
+    }
 }
 
 int CUpDownClient::GetHashType() const
@@ -2797,13 +2797,13 @@ void CUpDownClient::InfoPacketsReceived()
 void CUpDownClient::ResetFileStatusInfo()
 {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	if (m_pPartStatus != NULL && reqfile != NULL)
-		reqfile->RemoveFromPartsInfo(m_pPartStatus);
-	delete m_pPartStatus;
-	m_pPartStatus = NULL;
+    if (m_pPartStatus != NULL && reqfile != NULL)
+        reqfile->RemoveFromPartsInfo(m_pPartStatus);
+    delete m_pPartStatus;
+    m_pPartStatus = NULL;
     //delete[] m_abyPartStatus;
     //m_abyPartStatus = NULL;
-	//m_nPartCount = 0;
+    //m_nPartCount = 0;
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 //>>> WiZaRd::ICS [enkeyDev]
     delete[] m_abyIncPartStatus;
@@ -2813,7 +2813,7 @@ void CUpDownClient::ResetFileStatusInfo()
     delete[] m_abySeenPartStatus;
     m_abySeenPartStatus = NULL;
 //<<< WiZaRd::AntiHideOS [netfinity]
-    m_nRemoteQueueRank = 0;    
+    m_nRemoteQueueRank = 0;
     m_strClientFilename.Empty();
     m_bCompleteSource = false;
     m_uFileRating = 0;
@@ -3001,7 +3001,7 @@ void CUpDownClient::AssertValid() const
 {
     CObject::AssertValid();
 
-	(void)m_iModIconIndex; //>>> WiZaRd::ModIconMappings
+    (void)m_iModIconIndex; //>>> WiZaRd::ModIconMappings
 //>>> WiZaRd::ClientAnalyzer
     CHECK_PTR(pAntiLeechData);
     (void)m_uiRealVersion;
@@ -3016,12 +3016,12 @@ void CUpDownClient::AssertValid() const
     CHECK_PTR(m_Friend);
     CHECK_OBJ(reqfile);
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	(void)m_pUpPartStatus;
-	(void)m_pPartStatus;
+    (void)m_pUpPartStatus;
+    (void)m_pPartStatus;
     //(void)m_abyUpPartStatus;
-	//(void)m_nUpPartCount;
-	//(void)m_abyPartStatus;
-	//(void)m_nPartCount;
+    //(void)m_nUpPartCount;
+    //(void)m_abyPartStatus;
+    //(void)m_nPartCount;
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     m_OtherRequests_list.AssertValid();
     m_OtherNoNeeded_list.AssertValid();
@@ -3075,7 +3075,7 @@ void CUpDownClient::AssertValid() const
     (void)m_nCurSessionUp;
     (void)m_nCurSessionPayloadUp; //>>> WiZaRd::ZZUL Upload [ZZ]
     (void)m_nCurQueueSessionPayloadUp;
-    (void)m_addedPayloadQueueSession;    
+    (void)m_addedPayloadQueueSession;
     (void)m_nUpCompleteSourcesCount;
     (void)s_UpStatusBar;
     (void)requpfileid;
@@ -3085,7 +3085,7 @@ void CUpDownClient::AssertValid() const
     m_DoneBlocks_list.AssertValid();
     m_RequestedFiles_list.AssertValid();
     ASSERT(m_nDownloadState >= DS_DOWNLOADING && m_nDownloadState <= DS_NONE);
-    (void)m_cDownAsked;    
+    (void)m_cDownAsked;
     (void)m_strClientFilename;
     (void)m_nTransferredDown;
     (void)m_nCurSessionPayloadDown;
@@ -3169,18 +3169,18 @@ LPCTSTR CUpDownClient::DbgGetKadState() const
 {
     const static LPCTSTR apszState[] =
     {
-		L"None",
-		L"FwCheckQueued",
-		L"FwCheckConnecting",
-		L"FwCheckConnected",
-		L"BuddyQueued",
-		L"BuddyIncoming",
-		L"BuddyConnecting",
-		L"BuddyConnected",
-		L"QueuedFWCheckUDP",
-		L"FWCheckUDP",
-		L"FwCheckConnectingUDP"
-	};
+        L"None",
+        L"FwCheckQueued",
+        L"FwCheckConnecting",
+        L"FwCheckConnected",
+        L"BuddyQueued",
+        L"BuddyIncoming",
+        L"BuddyConnecting",
+        L"BuddyConnected",
+        L"QueuedFWCheckUDP",
+        L"FWCheckUDP",
+        L"FwCheckConnectingUDP"
+    };
     if (GetKadState() >= ARRSIZE(apszState))
         return L"*Unknown*";
     return apszState[GetKadState()];
@@ -3417,14 +3417,14 @@ void  CUpDownClient::SetMessageFiltered(bool bVal)
 bool  CUpDownClient::IsObfuscatedConnectionEstablished() const
 {
     if (socket != NULL && socket->IsConnected())
-	{
+    {
 //>>> WiZaRd::NatTraversal [Xanatos]
-		if(socket->HaveUtpLayer())
-			return theApp.clientudp->IsObfuscating(GetConnectIP(), GetKadPort());
-		else
+        if (socket->HaveUtpLayer())
+            return theApp.clientudp->IsObfuscating(GetConnectIP(), GetKadPort());
+        else
 //<<< WiZaRd::NatTraversal [Xanatos]
-        return socket->IsObfuscating();
-	}
+            return socket->IsObfuscating();
+    }
     else
         return false;
 }
@@ -3802,7 +3802,7 @@ void CUpDownClient::SetConnectOptions(uint8 byOptions, bool bEncryption, bool bC
     SetCryptLayerRequest((byOptions & 0x02) != 0 && bEncryption);
     SetCryptLayerRequires((byOptions & 0x04) != 0 && bEncryption);
     SetDirectUDPCallbackSupport((byOptions & 0x08) != 0 && bCallback);
-	SetNatTraversalSupport((byOptions & 0x80) != 0 && bCallback); //>>> WiZaRd::NatTraversal [Xanatos]
+    SetNatTraversalSupport((byOptions & 0x80) != 0 && bCallback); //>>> WiZaRd::NatTraversal [Xanatos]
 }
 
 void CUpDownClient::SendSharedDirectories()
@@ -4189,21 +4189,21 @@ bool	CUpDownClient::GetScheduledRemovalLimboComplete() const
 //>>> WiZaRd::ModIconMapper
 void	CUpDownClient::CheckModIconIndex()
 {
-	if(m_strModVersion.IsEmpty())
-	{
-		m_iModIconIndex = MODMAP_NONE;
-		return;
-	}
+    if (m_strModVersion.IsEmpty())
+    {
+        m_iModIconIndex = MODMAP_NONE;
+        return;
+    }
 
-	m_iModIconIndex = theApp.theModIconMap->GetIconIndexForModstring(m_strModVersion);
+    m_iModIconIndex = theApp.theModIconMap->GetIconIndexForModstring(m_strModVersion);
 }
 
 int	CUpDownClient::GetModIconIndex() const
 {
-	//if he's a bad one, just return that icon straight away
-	// Bad guy icon already implemented via CA :)
+    //if he's a bad one, just return that icon straight away
+    // Bad guy icon already implemented via CA :)
 //	if(IsBadGuy())
 //		return MODMAP_BADGUY;
-	return m_iModIconIndex;
+    return m_iModIconIndex;
 }
 //<<< WiZaRd::ModIconMapper

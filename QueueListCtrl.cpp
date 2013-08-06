@@ -159,7 +159,7 @@ void CQueueListCtrl::SetAllIcons()
     ApplyImageList(NULL);
     m_ImageList.DeleteImageList();
     m_ImageList.Create(16, 16, theApp.m_iDfltImageListColorFlags | ILC_MASK, 0, 1);
-	FillClientIconImageList(m_ImageList);
+    FillClientIconImageList(m_ImageList);
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("ClientSecureOvl"))), 1);
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("OverlayObfu"))), 2);
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("OverlaySecureObfu"))), 3);
@@ -229,14 +229,14 @@ void CQueueListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
                     cur_rec.left += 16 + sm_iLabelOffset;
 
 //>>> WiZaRd::ModIconMappings
-					int icoindex = client->GetModIconIndex();
-					if(icoindex != MODMAP_NONE)
-					{	
-						POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
-						theApp.theModIconMap->DrawModIcon(dc, icoindex, point, ILD_NORMAL);
-						cur_rec.left += 17;
-						plusminus += 17;
-					}
+                    int icoindex = client->GetModIconIndex();
+                    if (icoindex != MODMAP_NONE)
+                    {
+                        POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
+                        theApp.theModIconMap->DrawModIcon(dc, icoindex, point, ILD_NORMAL);
+                        cur_rec.left += 17;
+                        plusminus += 17;
+                    }
 //<<< WiZaRd::ModIconMappings
 
                     dc.DrawText(szItem, -1, &cur_rec, MLC_DT_TEXT | uDrawTextAlignment);

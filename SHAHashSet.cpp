@@ -1250,8 +1250,8 @@ void CAICHRecoveryHashSet::AddStoredAICHHash(CAICHHash Hash)
         theApp.QueueDebugLogLine(false, L"AICH hash storing is not unique - %s", Hash.GetString());
         ASSERT(0);
     }
-	else
-		m_liAICHHashsStored.AddTail(Hash);
+    else
+        m_liAICHHashsStored.AddTail(Hash);
 }
 
 bool CAICHRecoveryHashSet::IsPartDataAvailable(uint64 nPartStartPos)

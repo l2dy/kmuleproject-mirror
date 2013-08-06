@@ -31,7 +31,7 @@ protected:
     bool m_bLogA4AF;
     bool m_bLogUlDlEvents;
     bool m_bLog2Disk;
-	bool m_bLogAnalyzerToDisk; //>>> WiZaRd::ClientAnalyzer
+    bool m_bLogAnalyzerToDisk; //>>> WiZaRd::ClientAnalyzer
     bool m_bDebug2Disk;
     int m_iCommitFiles;
     bool m_bFilterLANIPs;
@@ -58,6 +58,7 @@ protected:
     int m_iShareeMule;
     bool bShowedWarning;
     bool m_bResolveShellLinks;
+    int m_iSpreadPrioLimit; //>>> Tux::Spread Priority v3
 
 
     CSliderCtrl m_ctlFileBuffSize;
@@ -80,7 +81,7 @@ protected:
     HTREEITEM m_htiLogA4AF;
     HTREEITEM m_htiLogUlDlEvents;
     HTREEITEM m_htiLog2Disk;
-	HTREEITEM m_htiLogAnalyzerToDisk; //>>> WiZaRd::ClientAnalyzer
+    HTREEITEM m_htiLogAnalyzerToDisk; //>>> WiZaRd::ClientAnalyzer
     HTREEITEM m_htiDebug2Disk;
     HTREEITEM m_htiCommit;
     HTREEITEM m_htiCommitNever;
@@ -119,6 +120,7 @@ protected:
     HTREEITEM m_htiShareeMuleOldStyle;
     //HTREEITEM m_htiExtractMetaDataMediaDet;
     HTREEITEM m_htiResolveShellLinks;
+    HTREEITEM m_htiSpreadPrioLimit; //>>> Tux::Spread Priority v3
 
     virtual void DoDataExchange(CDataExchange* pDX);
     virtual BOOL OnInitDialog();

@@ -89,12 +89,12 @@ public:
     CFirewallOpener*	m_pFirewallOpener;
     CUPnPImplWrapper*	m_pUPnPFinder;
 #ifdef USE_NAT_PMP
-	CNATPMPThreadWrapper*	m_pNATPMPThreadWrapper; //>>> WiZaRd::NAT-PMP
+    CNATPMPThreadWrapper*	m_pNATPMPThreadWrapper; //>>> WiZaRd::NAT-PMP
 #endif
     CAntiLeechDataList* antileechlist; //>>> WiZaRd::ClientAnalyzer
     CAutoUpdate*		autoUpdater; //>>> WiZaRd::AutoUpdate
     CCustomSearches*	customSearches; //>>> WiZaRd::CustomSearches
-	CModIconMapper*		theModIconMap; //>>> WiZaRd::ModIconMappings
+    CModIconMapper*		theModIconMap; //>>> WiZaRd::ModIconMappings
 
     HANDLE				m_hMutexOneInstance;
     int					m_iDfltImageListColorFlags;
@@ -102,7 +102,7 @@ public:
     CFont				m_fontDefaultBold;
     CFont				m_fontSymbol;
 #ifdef INFO_WND
-	CFont				m_fontLog; //>>> WiZaRd::InfoWnd
+    CFont				m_fontLog; //>>> WiZaRd::InfoWnd
 #endif
     CFont				m_fontChatEdit;
     CBrush				m_brushBackwardDiagonal;
@@ -177,7 +177,7 @@ public:
     bool		IsConnecting();
     bool		IsFirewalled();
 //>>> WiZaRd::NatTraversal [Xanatos]
-	bool		CanDoCallback(const CUpDownClient* client);
+    bool		CanDoCallback(const CUpDownClient* client);
     //bool		CanDoCallback();
 //<<< WiZaRd::NatTraversal [Xanatos]
     UINT		GetID();

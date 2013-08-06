@@ -182,64 +182,64 @@ void CClientUDPSocket::OnReceive(int nErrorCode)
                     break;
                 }
 //>>> WiZaRd::ModProt
-				case OP_MODPROT_PACKED:
-				{
-					theStats.AddDownDataOverheadOther(nPacketLen);
-					if (nPacketLen >= 2)
-					{
-						UINT nNewSize = nPacketLen*10+300;
-						BYTE* unpack = NULL;
-						uLongf unpackedsize = 0;
-						int iZLibResult = 0;
-						do 
-						{
-							delete[] unpack;
-							unpack = new BYTE[nNewSize];
-							unpackedsize = nNewSize-2;
-							iZLibResult = uncompress(unpack+2, &unpackedsize, pBuffer+2, nPacketLen-2);
-							nNewSize *= 2; // size for the next try if needed
-						} 
-						while (iZLibResult == Z_BUF_ERROR && nNewSize < 250000);
+                case OP_MODPROT_PACKED:
+                {
+                    theStats.AddDownDataOverheadOther(nPacketLen);
+                    if (nPacketLen >= 2)
+                    {
+                        UINT nNewSize = nPacketLen*10+300;
+                        BYTE* unpack = NULL;
+                        uLongf unpackedsize = 0;
+                        int iZLibResult = 0;
+                        do
+                        {
+                            delete[] unpack;
+                            unpack = new BYTE[nNewSize];
+                            unpackedsize = nNewSize-2;
+                            iZLibResult = uncompress(unpack+2, &unpackedsize, pBuffer+2, nPacketLen-2);
+                            nNewSize *= 2; // size for the next try if needed
+                        }
+                        while (iZLibResult == Z_BUF_ERROR && nNewSize < 250000);
 
-						if (iZLibResult == Z_OK)
-						{
-							unpack[0] = OP_MODPROT;
-							unpack[1] = pBuffer[1];
-							try
-							{
-								ProcessModPacket(unpack+2, unpackedsize, unpack[1], sockAddr.sin_addr.S_un.S_addr, ntohs(sockAddr.sin_port));
-							}
- 							catch(...)
- 							{
- 								delete[] unpack;
-								unpack = NULL;
- 								throw;
-							}
-						}
-						else
-						{
-							delete[] unpack;
-							unpack = NULL;
-							CString strError = L"";
-							strError.Format(L"Failed to uncompress Mod packet: zip error: %d (%hs)", iZLibResult, zError(iZLibResult));
-							throw strError;
-						}
-						delete[] unpack;
-						unpack = NULL;
-					}
-					else
-						throw CString(L"Mod packet (compressed) too short");
-					break;
-				}
-				case OP_MODPROT:
-				{
-					theStats.AddDownDataOverheadOther(nPacketLen);
-					if (nPacketLen >= 2)
-						ProcessModPacket(pBuffer+2, nPacketLen-2, pBuffer[1], sockAddr.sin_addr.S_un.S_addr, ntohs(sockAddr.sin_port));
-					else
-						throw CString(L"Mod packet too short");
-					break;
-				}
+                        if (iZLibResult == Z_OK)
+                        {
+                            unpack[0] = OP_MODPROT;
+                            unpack[1] = pBuffer[1];
+                            try
+                            {
+                                ProcessModPacket(unpack+2, unpackedsize, unpack[1], sockAddr.sin_addr.S_un.S_addr, ntohs(sockAddr.sin_port));
+                            }
+                            catch (...)
+                            {
+                                delete[] unpack;
+                                unpack = NULL;
+                                throw;
+                            }
+                        }
+                        else
+                        {
+                            delete[] unpack;
+                            unpack = NULL;
+                            CString strError = L"";
+                            strError.Format(L"Failed to uncompress Mod packet: zip error: %d (%hs)", iZLibResult, zError(iZLibResult));
+                            throw strError;
+                        }
+                        delete[] unpack;
+                        unpack = NULL;
+                    }
+                    else
+                        throw CString(L"Mod packet (compressed) too short");
+                    break;
+                }
+                case OP_MODPROT:
+                {
+                    theStats.AddDownDataOverheadOther(nPacketLen);
+                    if (nPacketLen >= 2)
+                        ProcessModPacket(pBuffer+2, nPacketLen-2, pBuffer[1], sockAddr.sin_addr.S_un.S_addr, ntohs(sockAddr.sin_port));
+                    else
+                        throw CString(L"Mod packet too short");
+                    break;
+                }
 //<<< WiZaRd::ModProt
 
                 default:
@@ -625,18 +625,18 @@ SocketSentBytes CClientUDPSocket::SendControlData(UINT maxNumberOfBytesToSend, U
             }
 
 //>>> WiZaRd::QOS
-			// netfinity: This is an absurd way to enable QOS for UDP
-			sockaddr_in dest;
-			dest.sin_family = AF_INET;
+            // netfinity: This is an absurd way to enable QOS for UDP
+            sockaddr_in dest;
+            dest.sin_family = AF_INET;
 //>>> WiZaRd::FiX?
-			// From MSDN:
-			//Note  DestAddr is optional if the socket is already connected. If this parameter is specified, the remote IP address and port must match those used in the socket's connect call.
-			dest.sin_addr.s_addr = cur_packet->dwIP;
-			dest.sin_port = cur_packet->nPort;
-			//dest.sin_addr.s_addr = htonl(cur_packet->dwIP);
-			//dest.sin_port = htons(cur_packet->nPort);
-//<<< WiZaRd::FiX?			
-			theQOSManager.AddSocket(m_hSocket, (SOCKADDR*)&dest);
+            // From MSDN:
+            //Note  DestAddr is optional if the socket is already connected. If this parameter is specified, the remote IP address and port must match those used in the socket's connect call.
+            dest.sin_addr.s_addr = cur_packet->dwIP;
+            dest.sin_port = cur_packet->nPort;
+            //dest.sin_addr.s_addr = htonl(cur_packet->dwIP);
+            //dest.sin_port = htons(cur_packet->nPort);
+//<<< WiZaRd::FiX?
+            theQOSManager.AddSocket(m_hSocket, (SOCKADDR*)&dest);
 //<<< WiZaRd::QOS
             if (!SendTo((char*)sendbuffer, nLen, cur_packet->dwIP, cur_packet->nPort))
             {
@@ -646,7 +646,7 @@ SocketSentBytes CClientUDPSocket::SendControlData(UINT maxNumberOfBytesToSend, U
                 delete cur_packet->packet;
                 delete cur_packet;
             }
-			theQOSManager.RemoveSocket(m_hSocket); //>>> WiZaRd::QOS
+            theQOSManager.RemoveSocket(m_hSocket); //>>> WiZaRd::QOS
             delete[] sendbuffer;
         }
         else
@@ -677,14 +677,14 @@ int CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,UINT dwIP, uint16 nPort)
     {
         UINT error = GetLastError();
         if (error == WSAEWOULDBLOCK)
-        {			
+        {
             m_bWouldBlock = true;
             return -1;
         }
         if (thePrefs.GetVerbose())
             DebugLogError(_T("Error: Client UDP socket, failed to send data to %s:%u: %s"), ipstr(dwIP), nPort, GetErrorMessage(error, 1));
-		// WiZaRd: TODO: Flowing over here and returning 0 means "success"!?
-    }	
+        // WiZaRd: TODO: Flowing over here and returning 0 means "success"!?
+    }
     return 0;
 }
 
@@ -760,77 +760,77 @@ bool CClientUDPSocket::Rebind()
 //>>> WiZaRd::NatTraversal [Xanatos]
 void CClientUDPSocket::SetConnectionEncryption(UINT dwIP, uint16 nPort, bool bEncrypt, const uchar* pTargetClientHash)
 {
-	SIpPort IpPort = {dwIP, nPort};
-	std::map<SIpPort, SHash>::iterator I = m_HashMap.find(IpPort);
-	if(bEncrypt)
-	{
-		if(I == m_HashMap.end())
-		{
-			SHash Hash;
-			if(pTargetClientHash)
-				md4cpy(Hash.UserHash, pTargetClientHash);
-			else
-				md4clr(Hash.UserHash);
-			I = m_HashMap.insert(std::map<SIpPort, SHash>::value_type(IpPort, Hash)).first;
-		}
-		I->second.LastUsed = ::GetTickCount();
-	}
-	else if(I != m_HashMap.end())
-		m_HashMap.erase(I);
+    SIpPort IpPort = {dwIP, nPort};
+    std::map<SIpPort, SHash>::iterator I = m_HashMap.find(IpPort);
+    if (bEncrypt)
+    {
+        if (I == m_HashMap.end())
+        {
+            SHash Hash;
+            if (pTargetClientHash)
+                md4cpy(Hash.UserHash, pTargetClientHash);
+            else
+                md4clr(Hash.UserHash);
+            I = m_HashMap.insert(std::map<SIpPort, SHash>::value_type(IpPort, Hash)).first;
+        }
+        I->second.LastUsed = ::GetTickCount();
+    }
+    else if (I != m_HashMap.end())
+        m_HashMap.erase(I);
 }
 
 byte* CClientUDPSocket::GetHashForEncryption(UINT dwIP, uint16 nPort)
 {
-	SIpPort IpPort = {dwIP, nPort};
-	std::map<SIpPort, SHash>::iterator I = m_HashMap.find(IpPort);
-	if(I == m_HashMap.end())
-		return NULL;
-	I->second.LastUsed = ::GetTickCount();
-	// Note: if we don't know how to encrypt but have got a incoming encrypted packet, 
-	//	we use our own hash to encrypt as we expect the remote side to know it and try it.
-	//	if(isnulmd4(I->second.UserHash))
-	//		md4cpy(Hash.UserHash, thePrefs.GetUserHash());
-	return I->second.UserHash;
+    SIpPort IpPort = {dwIP, nPort};
+    std::map<SIpPort, SHash>::iterator I = m_HashMap.find(IpPort);
+    if (I == m_HashMap.end())
+        return NULL;
+    I->second.LastUsed = ::GetTickCount();
+    // Note: if we don't know how to encrypt but have got a incoming encrypted packet,
+    //	we use our own hash to encrypt as we expect the remote side to know it and try it.
+    //	if(isnulmd4(I->second.UserHash))
+    //		md4cpy(Hash.UserHash, thePrefs.GetUserHash());
+    return I->second.UserHash;
 }
 
 union UUtpHdr
 {
-	UINT Bits;
-	struct SUtpHdr
-	{
-		UINT
-ver:	4,
-type:	4,
-ext:	8,
-connid:	16;
-	} Fields;
+    UINT Bits;
+    struct SUtpHdr
+    {
+        UINT
+        ver:	4,
+                type:	4,
+                ext:	8,
+                connid:	16;
+    } Fields;
 };
 
 void CClientUDPSocket::SendUtpPacket(const byte *data, size_t len, const struct sockaddr *to, socklen_t /*tolen*/)
 {
-	byte* pTargetClientHash = GetHashForEncryption(((SOCKADDR_IN*)to)->sin_addr.S_un.S_addr, ntohs(((SOCKADDR_IN*)to)->sin_port));
+    byte* pTargetClientHash = GetHashForEncryption(((SOCKADDR_IN*)to)->sin_addr.S_un.S_addr, ntohs(((SOCKADDR_IN*)to)->sin_port));
 
-	ASSERT(len >= 4);
+    ASSERT(len >= 4);
 
-	UUtpHdr UtpHdr;
-	UtpHdr.Bits = *((UINT*)data);
-	if(pTargetClientHash && UtpHdr.Fields.type == 4) // ST_SYN
-	{
-		CSafeMemFile data_out(128);
-		data_out.WriteHash16(thePrefs.GetUserHash());
-		Packet* packet = new Packet(&data_out, OP_UDPRESERVEDPROT2);
-		packet->opcode = 0xFF; // Key Frame
-		theStats.AddUpDataOverheadOther(packet->size);
-		SendPacket(packet, ((SOCKADDR_IN*)to)->sin_addr.S_un.S_addr, ntohs(((SOCKADDR_IN*)to)->sin_port), pTargetClientHash != NULL, pTargetClientHash, false, 0);
-	}
+    UUtpHdr UtpHdr;
+    UtpHdr.Bits = *((UINT*)data);
+    if (pTargetClientHash && UtpHdr.Fields.type == 4) // ST_SYN
+    {
+        CSafeMemFile data_out(128);
+        data_out.WriteHash16(thePrefs.GetUserHash());
+        Packet* packet = new Packet(&data_out, OP_UDPRESERVEDPROT2);
+        packet->opcode = 0xFF; // Key Frame
+        theStats.AddUpDataOverheadOther(packet->size);
+        SendPacket(packet, ((SOCKADDR_IN*)to)->sin_addr.S_un.S_addr, ntohs(((SOCKADDR_IN*)to)->sin_port), pTargetClientHash != NULL, pTargetClientHash, false, 0);
+    }
 
-	Packet* frame = new Packet(OP_UDPRESERVEDPROT2);
-	frame->opcode = 0x00; // UTP Frame
-	frame->pBuffer = new char[len];
-	memcpy(frame->pBuffer, data, len);
-	frame->size = len;
+    Packet* frame = new Packet(OP_UDPRESERVEDPROT2);
+    frame->opcode = 0x00; // UTP Frame
+    frame->pBuffer = new char[len];
+    memcpy(frame->pBuffer, data, len);
+    frame->size = len;
 
-	//theStats.AddUpDataOverheadOther(0); // its counted as TCP elseware
-	SendPacket(frame, ((SOCKADDR_IN*)to)->sin_addr.S_un.S_addr, ntohs(((SOCKADDR_IN*)to)->sin_port), pTargetClientHash != NULL, pTargetClientHash, false, 0);
+    //theStats.AddUpDataOverheadOther(0); // its counted as TCP elseware
+    SendPacket(frame, ((SOCKADDR_IN*)to)->sin_addr.S_un.S_addr, ntohs(((SOCKADDR_IN*)to)->sin_port), pTargetClientHash != NULL, pTargetClientHash, false, 0);
 }
 //<<< WiZaRd::NatTraversal [Xanatos]

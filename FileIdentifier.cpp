@@ -267,14 +267,14 @@ void CFileIdentifier::WriteMD4HashsetToFile(CFileDataIO* pFile, bool bHashSetOnl
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 {
     ASSERT(!isnulmd4(m_abyMD4Hash));
-	UINT uParts = m_aMD4HashSet.GetCount();
+    UINT uParts = m_aMD4HashSet.GetCount();
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	if (!bHashSetOnly)
+    if (!bHashSetOnly)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	{
-		pFile->WriteHash16(m_abyMD4Hash);
-		pFile->WriteUInt16((uint16)uParts);
-	}
+    {
+        pFile->WriteHash16(m_abyMD4Hash);
+        pFile->WriteUInt16((uint16)uParts);
+    }
     for (UINT i = 0; i < uParts; i++)
         pFile->WriteHash16(m_aMD4HashSet[i]);
 }

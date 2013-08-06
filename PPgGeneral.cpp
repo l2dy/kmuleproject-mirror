@@ -64,7 +64,7 @@ END_MESSAGE_MAP()
 
 CPPgGeneral::CPPgGeneral()
     : CPropertyPage(CPPgGeneral::IDD)
-{	
+{
 }
 
 CPPgGeneral::~CPPgGeneral()
@@ -199,8 +199,8 @@ BOOL CPPgGeneral::OnInitDialog()
     Localize();
     GetDlgItem(IDC_CHECKDAYS)->ShowWindow(IsDlgButtonChecked(IDC_CHECK4UPDATE) ? SW_SHOW : SW_HIDE);
     GetDlgItem(IDC_DAYS)->ShowWindow(IsDlgButtonChecked(IDC_CHECK4UPDATE) ? SW_SHOW : SW_HIDE);
-		
-	UpdateTranslatorField(); //>>> WiZaRd::Honor translators
+
+    UpdateTranslatorField(); //>>> WiZaRd::Honor translators
 
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
@@ -265,9 +265,9 @@ BOOL CPPgGeneral::OnApply()
             theApp.emuledlg->chatwnd->Localize();
             theApp.emuledlg->Localize();
 #ifdef INFO_WND
-			theApp.emuledlg->infoWnd->Localize(); //>>> WiZaRd::InfoWnd
+            theApp.emuledlg->infoWnd->Localize(); //>>> WiZaRd::InfoWnd
 #endif
-			UpdateTranslatorField(); //>>> WiZaRd::Honor translators
+            UpdateTranslatorField(); //>>> WiZaRd::Honor translators
         }
     }
 
@@ -329,7 +329,7 @@ void CPPgGeneral::Localize(void)
         GetDlgItem(IDC_STARTWIN)->SetWindowText(GetResString(IDS_STARTWITHWINDOWS));
         GetDlgItem(IDC_MINIMULE)->SetWindowText(GetResString(IDS_ENABLEMINIMULE));
         GetDlgItem(IDC_PREVENTSTANDBY)->SetWindowText(GetResString(IDS_PREVENTSTANDBY));
-		GetDlgItem(IDC_TRANSLATED_BY_LABEL)->SetWindowText(GetResString(IDS_TRANSLATED_BY_LABEL)); //>>> WiZaRd::Honor translators
+        GetDlgItem(IDC_TRANSLATED_BY_LABEL)->SetWindowText(GetResString(IDS_TRANSLATED_BY_LABEL)); //>>> WiZaRd::Honor translators
     }
 }
 
@@ -428,34 +428,34 @@ BOOL CPPgGeneral::OnHelpInfo(HELPINFO* /*pHelpInfo*/)
 //>>> WiZaRd::Honor translators
 void CPPgGeneral::UpdateTranslatorField()
 {
-	CString strName = GetCurrentResString(IDS_TRANSLATED_BY_NAME);
-	if(strName.IsEmpty())
-	{
-		GetDlgItem(IDC_TRANSLATED_BY_NAME)->ShowWindow(SW_HIDE);
-	}
-	else
-	{
-		GetDlgItem(IDC_TRANSLATED_BY_NAME)->SetWindowText(strName);
-		GetDlgItem(IDC_TRANSLATED_BY_NAME)->ShowWindow(SW_SHOW);
+    CString strName = GetCurrentResString(IDS_TRANSLATED_BY_NAME);
+    if (strName.IsEmpty())
+    {
+        GetDlgItem(IDC_TRANSLATED_BY_NAME)->ShowWindow(SW_HIDE);
+    }
+    else
+    {
+        GetDlgItem(IDC_TRANSLATED_BY_NAME)->SetWindowText(strName);
+        GetDlgItem(IDC_TRANSLATED_BY_NAME)->ShowWindow(SW_SHOW);
 
-		CString strURL = GetCurrentResString(IDS_TRANSLATED_BY_URL);
-		if(!m_wndShowTranslatorHP.GetSafeHwnd())
-		{
-			CRect rect2;
-			GetDlgItem(IDC_TRANSLATED_BY_URL)->GetWindowRect(rect2);
-			::MapWindowPoints(NULL, m_hWnd, (LPPOINT)&rect2, 2);
-			m_wndShowTranslatorHP.CreateEx(NULL, 0, L"MsgWnd", WS_BORDER | WS_CHILD | HTC_WORDWRAP | HTC_UNDERLINE_HOVER, rect2.left, rect2.top, rect2.Width(), rect2.Height(), m_hWnd, 0);
-		}
-		m_wndShowTranslatorHP.ShowWindow(strURL.IsEmpty() ? SW_HIDE : SW_SHOW);
-		if(!strURL.IsEmpty())
-		{
-			m_wndShowTranslatorHP.Clear();
-			m_wndShowTranslatorHP.SetFont(GetFont());
-			m_wndShowTranslatorHP.SetBkColor(::GetSysColor(COLOR_WINDOW)); // still not the right color, will fix this later (need to merge the .rc file before it changes ;))		
-			//m_wndShowTranslatorHP.SetTextColor(thePrefs.GetTransferWndFont());
+        CString strURL = GetCurrentResString(IDS_TRANSLATED_BY_URL);
+        if (!m_wndShowTranslatorHP.GetSafeHwnd())
+        {
+            CRect rect2;
+            GetDlgItem(IDC_TRANSLATED_BY_URL)->GetWindowRect(rect2);
+            ::MapWindowPoints(NULL, m_hWnd, (LPPOINT)&rect2, 2);
+            m_wndShowTranslatorHP.CreateEx(NULL, 0, L"MsgWnd", WS_BORDER | WS_CHILD | HTC_WORDWRAP | HTC_UNDERLINE_HOVER, rect2.left, rect2.top, rect2.Width(), rect2.Height(), m_hWnd, 0);
+        }
+        m_wndShowTranslatorHP.ShowWindow(strURL.IsEmpty() ? SW_HIDE : SW_SHOW);
+        if (!strURL.IsEmpty())
+        {
+            m_wndShowTranslatorHP.Clear();
+            m_wndShowTranslatorHP.SetFont(GetFont());
+            m_wndShowTranslatorHP.SetBkColor(::GetSysColor(COLOR_WINDOW)); // still not the right color, will fix this later (need to merge the .rc file before it changes ;))
+            //m_wndShowTranslatorHP.SetTextColor(thePrefs.GetTransferWndFont());
 
-			m_wndShowTranslatorHP.AppendHyperLink(GetResString(IDS_TRANSLATED_BY_HOMEPAGE), 0, GetResString(IDS_TRANSLATED_BY_URL), 0, 0);
-		}
-	}
+            m_wndShowTranslatorHP.AppendHyperLink(GetResString(IDS_TRANSLATED_BY_HOMEPAGE), 0, GetResString(IDS_TRANSLATED_BY_URL), 0, 0);
+        }
+    }
 }
 //<<< WiZaRd::Honor translators

@@ -94,7 +94,7 @@ enum EClientSoftware
     SO_OLDEMULE			= 53,	// Spike2 - Enhanced Client Recognition (from aMule)
     SO_SHAREAZA4		= 68,	// Spike2 - Enhanced Client Recognition (from aMule)
     SO_NEOLOADER        = 78,   // Neo Loader
-	SO_KMULE			= 80,	//>>> WiZaRd::kMule Version Ident
+    SO_KMULE			= 80,	//>>> WiZaRd::kMule Version Ident
     SO_MLDONKEY3		= 152,	// Spike2 - Enhanced Client Recognition (from aMule)
 //<<< WiZaRd::ClientAnalyzer
     SO_URL,

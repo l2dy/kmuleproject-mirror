@@ -68,16 +68,16 @@ void CUpDownClient::DrawStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bool
     s_StatusBar.Fill(crNeither);
 
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	const CPartStatus* m_abyPartStatus = GetPartStatus(); 
-	const UINT m_nPartCount = GetPartCount();
+    const CPartStatus* m_abyPartStatus = GetPartStatus();
+    const UINT m_nPartCount = GetPartCount();
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     if (!onlygreyrect && reqfile
-			&& (m_abyPartStatus
+            && (m_abyPartStatus
                 || m_abyIncPartStatus	//>>> WiZaRd::ICS [enkeyDEV]
                 || m_abySeenPartStatus	//>>> WiZaRd::AntiHideOS [netfinity]
                )
        )
-    {		
+    {
         COLORREF crBoth;
         COLORREF crClientOnly;
         COLORREF crPending;
@@ -238,8 +238,8 @@ bool CUpDownClient::AskForDownload()
         }
         // if we are lowid <-> lowid but contacted the source before already, keep it in the hope that we might turn highid again
 //>>> WiZaRd::NatTraversal [Xanatos]
-		if (HasLowID() && !theApp.CanDoCallback(this) && GetLastAskedTime() > 0)
-        //if (HasLowID() && !theApp.CanDoCallback() && GetLastAskedTime() > 0)
+        if (HasLowID() && !theApp.CanDoCallback(this) && GetLastAskedTime() > 0)
+            //if (HasLowID() && !theApp.CanDoCallback() && GetLastAskedTime() > 0)
 //<<< WiZaRd::NatTraversal [Xanatos]
         {
             if (GetDownloadState() != DS_LOWTOLOWIP)
@@ -360,8 +360,8 @@ void CUpDownClient::SendFileRequest()
         if (thePrefs.GetDebugClientTCPLevel() > 0)
             DebugSend("OP__MPSetReqFileID", this, reqfile->GetFileHash());
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-		if (reqfile->GetFileSize() > (SupportsSCT() ? (uint64)CRUMBSIZE : (uint64)PARTSIZE))
-        //if (reqfile->GetPartCount() > 1)
+        if (reqfile->GetFileSize() > (SupportsSCT() ? (uint64)CRUMBSIZE : (uint64)PARTSIZE))
+            //if (reqfile->GetPartCount() > 1)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
             dataFileReq.WriteUInt8(OP_SETREQFILEID);
 
@@ -449,8 +449,8 @@ void CUpDownClient::SendFileRequest()
         // if the remote client answers the OP_REQUESTFILENAME with OP_REQFILENAMEANSWER the file is shared by the remote client. if we
         // know that the file is shared, we know also that the file is complete and don't need to request the file status.
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-		if (reqfile->GetFileSize() > (SupportsSCT() ? (uint64)CRUMBSIZE : (uint64)PARTSIZE))
-        //if (reqfile->GetPartCount() > 1)
+        if (reqfile->GetFileSize() > (SupportsSCT() ? (uint64)CRUMBSIZE : (uint64)PARTSIZE))
+            //if (reqfile->GetPartCount() > 1)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         {
             if (thePrefs.GetDebugClientTCPLevel() > 0)
@@ -568,23 +568,23 @@ void CUpDownClient::ProcessFileInfo(CSafeMemFile* data, CPartFile* file)
     // if the remote client answers the OP_REQUESTFILENAME with OP_REQFILENAMEANSWER the file is shared by the remote client. if we
     // know that the file is shared, we know also that the file is complete and don't need to request the file status.
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	if ((!SupportsSCT() && reqfile->GetPartCount() == 1) || (SupportsSCT() && reqfile->GetFileSize() <= CRUMBSIZE))
-    //if (reqfile->GetPartCount() == 1)
+    if ((!SupportsSCT() && reqfile->GetPartCount() == 1) || (SupportsSCT() && reqfile->GetFileSize() <= CRUMBSIZE))
+        //if (reqfile->GetPartCount() == 1)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-		if (m_pPartStatus != NULL)
-			file->RemoveFromPartsInfo(m_pPartStatus);
-		delete m_pPartStatus;
-		m_pPartStatus = NULL; // In case we fail to create the part status object
-		m_pPartStatus = new CCrumbMap(file->GetFileSize());
-		m_pPartStatus->Set(0, reqfile->GetFileSize() - 1ULL);
-		const UINT m_nPartCount = reqfile->GetPartCount();
+        if (m_pPartStatus != NULL)
+            file->RemoveFromPartsInfo(m_pPartStatus);
+        delete m_pPartStatus;
+        m_pPartStatus = NULL; // In case we fail to create the part status object
+        m_pPartStatus = new CCrumbMap(file->GetFileSize());
+        m_pPartStatus->Set(0, reqfile->GetFileSize() - 1ULL);
+        const UINT m_nPartCount = reqfile->GetPartCount();
         //delete[] m_abyPartStatus;
         //m_abyPartStatus = NULL;
-		//m_nPartCount = reqfile->GetPartCount();
-		//m_abyPartStatus = new uint8[m_nPartCount];
-		//memset(m_abyPartStatus,1,m_nPartCount);
+        //m_nPartCount = reqfile->GetPartCount();
+        //m_abyPartStatus = new uint8[m_nPartCount];
+        //memset(m_abyPartStatus,1,m_nPartCount);
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 //>>> WiZaRd::ICS [enkeyDEV]
         delete[] m_abyIncPartStatus;
@@ -593,7 +593,7 @@ void CUpDownClient::ProcessFileInfo(CSafeMemFile* data, CPartFile* file)
 //>>> WiZaRd::AntiHideOS [netfinity]
         delete[] m_abySeenPartStatus;
         m_abySeenPartStatus = NULL;
-//<<< WiZaRd::AntiHideOS [netfinity]        
+//<<< WiZaRd::AntiHideOS [netfinity]
         m_bCompleteSource = true;
 //>>> WiZaRd::ClientAnalyzer
         if (pAntiLeechData)
@@ -625,8 +625,8 @@ void CUpDownClient::ProcessFileInfo(CSafeMemFile* data, CPartFile* file)
         else
             SendStartupLoadReq();
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-		if (m_pPartStatus != NULL)
-			reqfile->AddToPartsInfo(m_pPartStatus);
+        if (m_pPartStatus != NULL)
+            reqfile->AddToPartsInfo(m_pPartStatus);
         //reqfile->UpdatePartsInfo();
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     }
@@ -639,129 +639,129 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPart
         if (reqfile==NULL)
             throw GetResString(IDS_ERR_WRONGFILEID) + _T(" (ProcessFileStatus; reqfile==NULL)");
         throw GetResString(IDS_ERR_WRONGFILEID) + _T(" (ProcessFileStatus; reqfile!=file)");
-    }    
+    }
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	if (m_pPartStatus != NULL)
-		reqfile->RemoveFromPartsInfo(m_pPartStatus);
-	delete m_pPartStatus;
-	m_pPartStatus = NULL; // In case we fail to create the part status object
-	m_pPartStatus = CPartStatus::CreatePartStatus(data, reqfile->GetFileSize());
-	/*if (!reqfile->GetDonePartStatus() || reqfile->GetDonePartStatus()->GetNeeded(m_pPartStatus) > 0)
-		bPartsNeeded = true;
-	if (m_pPartStatus->IsComplete())
-		m_bCompleteSource = true;*/
-	// netfinity: Update upload partstatus if we are downloading this file and there is more pieces available in the download partstatus
-	if(!md4cmp(GetUploadFileID(), file->GetFileHash()) && (m_pUpPartStatus == NULL || (m_pPartStatus->GetCompleted() >= m_pUpPartStatus->GetCompleted())))
-	{
-		CPartFile* tempreqfile = (CPartFile*)theApp.sharedfiles->GetFileByID(GetUploadFileID());
-		if (tempreqfile && m_pUpPartStatus != NULL)
-			tempreqfile->AddToPartsInfo(m_pUpPartStatus);
+    if (m_pPartStatus != NULL)
+        reqfile->RemoveFromPartsInfo(m_pPartStatus);
+    delete m_pPartStatus;
+    m_pPartStatus = NULL; // In case we fail to create the part status object
+    m_pPartStatus = CPartStatus::CreatePartStatus(data, reqfile->GetFileSize());
+    /*if (!reqfile->GetDonePartStatus() || reqfile->GetDonePartStatus()->GetNeeded(m_pPartStatus) > 0)
+    	bPartsNeeded = true;
+    if (m_pPartStatus->IsComplete())
+    	m_bCompleteSource = true;*/
+    // netfinity: Update upload partstatus if we are downloading this file and there is more pieces available in the download partstatus
+    if (!md4cmp(GetUploadFileID(), file->GetFileHash()) && (m_pUpPartStatus == NULL || (m_pPartStatus->GetCompleted() >= m_pUpPartStatus->GetCompleted())))
+    {
+        CPartFile* tempreqfile = (CPartFile*)theApp.sharedfiles->GetFileByID(GetUploadFileID());
+        if (tempreqfile && m_pUpPartStatus != NULL)
+            tempreqfile->AddToPartsInfo(m_pUpPartStatus);
 
-		delete m_pUpPartStatus;
-		m_pUpPartStatus = NULL;
-		m_pUpPartStatus = m_pPartStatus->Clone();
+        delete m_pUpPartStatus;
+        m_pUpPartStatus = NULL;
+        m_pUpPartStatus = m_pPartStatus->Clone();
 
-		
-		if (tempreqfile != NULL)
-			tempreqfile->AddToPartsInfo(m_pUpPartStatus);
-	}
 
-	const UINT m_nPartCount = GetPartCount();
+        if (tempreqfile != NULL)
+            tempreqfile->AddToPartsInfo(m_pUpPartStatus);
+    }
 
-	bool bPartsNeeded = false;
-	int iNeeded = 0;
-	uint16 done = 0;
-	uint16 owned = 0; //>>> WiZaRd: Anti HideOS
-	const bool checkSeenParts = IsPartialSource(); //>>> WiZaRd::AntiHideOS [netfinity]
-	while (done != m_nPartCount)
-	{
-		if (IsPartAvailable(done)
-//>>> WiZaRd::AntiHideOS [netfinity]
-			|| (checkSeenParts && m_abySeenPartStatus[done])
-//<<< WiZaRd::AntiHideOS [netfinity]
-			)
-		{
-			if (!reqfile->IsComplete((uint64)done*PARTSIZE, ((uint64)(done+1)*PARTSIZE)-1, false))
-			{
-				bPartsNeeded = true;
-				++iNeeded;
-			}
-			++owned; //>>> WiZaRd: Anti HideOS
-		}
-		++done;
-	}
-	m_bCompleteSource = (owned == m_nPartCount); //>>> WiZaRd: Anti HideOS
-/*
-    uint16 nED2KPartCount = data->ReadUInt16();
-    delete[] m_abyPartStatus;
-    m_abyPartStatus = NULL;
+    const UINT m_nPartCount = GetPartCount();
+
     bool bPartsNeeded = false;
     int iNeeded = 0;
-    if (!nED2KPartCount)
+    uint16 done = 0;
+    uint16 owned = 0; //>>> WiZaRd: Anti HideOS
+    const bool checkSeenParts = IsPartialSource(); //>>> WiZaRd::AntiHideOS [netfinity]
+    while (done != m_nPartCount)
     {
-        m_nPartCount = reqfile->GetPartCount();
-        m_abyPartStatus = new uint8[m_nPartCount];
-        memset(m_abyPartStatus, 1, m_nPartCount);
-        bPartsNeeded = true;
-        m_bCompleteSource = true;
-        if (bUdpPacket ? (thePrefs.GetDebugClientUDPLevel() > 0) : (thePrefs.GetDebugClientTCPLevel() > 0))
-        {
-            for (UINT i = 0; i < m_nPartCount; i++)
-            {
-                if (!reqfile->IsComplete((uint64)i*PARTSIZE, ((uint64)(i+1)*PARTSIZE)-1, false))
-                    ++iNeeded;
-            }
-        }
-    }
-    else
-    {
-        if (reqfile->GetED2KPartCount() != nED2KPartCount)
-        {
-            if (thePrefs.GetVerbose())
-            {
-                DebugLogWarning(_T("FileName: \"%s\""), m_strClientFilename);
-                DebugLogWarning(_T("FileStatus: %s"), DbgGetFileStatus(nED2KPartCount, data));
-            }
-            CString strError;
-            strError.Format(_T("ProcessFileStatus - wrong part number recv=%u  expected=%u  %s"), nED2KPartCount, reqfile->GetED2KPartCount(), DbgGetFileInfo(reqfile->GetFileHash()));
-            m_nPartCount = 0;
-            throw strError;
-        }
-        m_nPartCount = reqfile->GetPartCount();
-
-        m_bCompleteSource = false;        
-		m_abyPartStatus = new uint8[m_nPartCount];
-        UINT done = 0;
-        uint16 owned = 0; //>>> WiZaRd: Anti HideOS
-        const bool checkSeenParts = IsPartialSource(); //>>> WiZaRd::AntiHideOS [netfinity]
-        while (done != m_nPartCount)
-        {
-            const uint8 toread = data->ReadUInt8();
-            for (UINT i = 0; i != 8; i++)
-            {
-				const bool partDone = ((toread >> i) & 1) ? 1 : 0;
-                m_abyPartStatus[done] = partDone;
-                if (partDone
+        if (IsPartAvailable(done)
 //>>> WiZaRd::AntiHideOS [netfinity]
-                        || (checkSeenParts && m_abySeenPartStatus[done])
+                || (checkSeenParts && m_abySeenPartStatus[done])
 //<<< WiZaRd::AntiHideOS [netfinity]
-                   )
+           )
+        {
+            if (!reqfile->IsComplete((uint64)done*PARTSIZE, ((uint64)(done+1)*PARTSIZE)-1, false))
+            {
+                bPartsNeeded = true;
+                ++iNeeded;
+            }
+            ++owned; //>>> WiZaRd: Anti HideOS
+        }
+        ++done;
+    }
+    m_bCompleteSource = (owned == m_nPartCount); //>>> WiZaRd: Anti HideOS
+    /*
+        uint16 nED2KPartCount = data->ReadUInt16();
+        delete[] m_abyPartStatus;
+        m_abyPartStatus = NULL;
+        bool bPartsNeeded = false;
+        int iNeeded = 0;
+        if (!nED2KPartCount)
+        {
+            m_nPartCount = reqfile->GetPartCount();
+            m_abyPartStatus = new uint8[m_nPartCount];
+            memset(m_abyPartStatus, 1, m_nPartCount);
+            bPartsNeeded = true;
+            m_bCompleteSource = true;
+            if (bUdpPacket ? (thePrefs.GetDebugClientUDPLevel() > 0) : (thePrefs.GetDebugClientTCPLevel() > 0))
+            {
+                for (UINT i = 0; i < m_nPartCount; i++)
                 {
-                    if (!reqfile->IsComplete((uint64)done*PARTSIZE, ((uint64)(done+1)*PARTSIZE)-1, false))
-                    {
-                        bPartsNeeded = true;
+                    if (!reqfile->IsComplete((uint64)i*PARTSIZE, ((uint64)(i+1)*PARTSIZE)-1, false))
                         ++iNeeded;
-                    }
-                    ++owned; //>>> WiZaRd: Anti HideOS
                 }
-                ++done;
-                if (done == m_nPartCount)
-                    break;
             }
         }
-        m_bCompleteSource = (owned == m_nPartCount); //>>> WiZaRd: Anti HideOS
-    }
-*/
+        else
+        {
+            if (reqfile->GetED2KPartCount() != nED2KPartCount)
+            {
+                if (thePrefs.GetVerbose())
+                {
+                    DebugLogWarning(_T("FileName: \"%s\""), m_strClientFilename);
+                    DebugLogWarning(_T("FileStatus: %s"), DbgGetFileStatus(nED2KPartCount, data));
+                }
+                CString strError;
+                strError.Format(_T("ProcessFileStatus - wrong part number recv=%u  expected=%u  %s"), nED2KPartCount, reqfile->GetED2KPartCount(), DbgGetFileInfo(reqfile->GetFileHash()));
+                m_nPartCount = 0;
+                throw strError;
+            }
+            m_nPartCount = reqfile->GetPartCount();
+
+            m_bCompleteSource = false;
+    		m_abyPartStatus = new uint8[m_nPartCount];
+            UINT done = 0;
+            uint16 owned = 0; //>>> WiZaRd: Anti HideOS
+            const bool checkSeenParts = IsPartialSource(); //>>> WiZaRd::AntiHideOS [netfinity]
+            while (done != m_nPartCount)
+            {
+                const uint8 toread = data->ReadUInt8();
+                for (UINT i = 0; i != 8; i++)
+                {
+    				const bool partDone = ((toread >> i) & 1) ? 1 : 0;
+                    m_abyPartStatus[done] = partDone;
+                    if (partDone
+    //>>> WiZaRd::AntiHideOS [netfinity]
+                            || (checkSeenParts && m_abySeenPartStatus[done])
+    //<<< WiZaRd::AntiHideOS [netfinity]
+                       )
+                    {
+                        if (!reqfile->IsComplete((uint64)done*PARTSIZE, ((uint64)(done+1)*PARTSIZE)-1, false))
+                        {
+                            bPartsNeeded = true;
+                            ++iNeeded;
+                        }
+                        ++owned; //>>> WiZaRd: Anti HideOS
+                    }
+                    ++done;
+                    if (done == m_nPartCount)
+                        break;
+                }
+            }
+            m_bCompleteSource = (owned == m_nPartCount); //>>> WiZaRd: Anti HideOS
+        }
+    */
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
 //>>> WiZaRd::ClientAnalyzer
@@ -774,7 +774,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPart
         TCHAR* psz = new TCHAR[m_nPartCount + 1];
         UINT i;
         for (i = 0; i < m_nPartCount; i++)
-			psz[i] = IsPartAvailable(i) ? _T('#') : _T('.');
+            psz[i] = IsPartAvailable(i) ? _T('#') : _T('.');
         psz[i] = L'\0';
         Debug(_T("  Parts=%u  %s  Needed=%u\n"), m_nPartCount, psz, iNeeded);
         delete[] psz;
@@ -808,8 +808,8 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPart
             SetDownloadState(DS_ONQUEUE);
     }
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	if (m_pPartStatus != NULL)
-		reqfile->AddToPartsInfo(m_pPartStatus);
+    if (m_pPartStatus != NULL)
+        reqfile->AddToPartsInfo(m_pPartStatus);
     //reqfile->UpdatePartsInfo();
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 }
@@ -985,11 +985,11 @@ void CUpDownClient::SetDownloadState(EDownloadState nNewState, LPCTSTR pszReason
             if (nNewState == DS_NONE)
             {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-				delete m_pPartStatus;
-				m_pPartStatus = NULL;
+                delete m_pPartStatus;
+                m_pPartStatus = NULL;
                 //delete[] m_abyPartStatus;
                 //m_abyPartStatus = NULL;
-				//m_nPartCount = 0;
+                //m_nPartCount = 0;
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 //>>> WiZaRd::ICS [enkeyDEV]
                 delete[] m_abyIncPartStatus;
@@ -998,7 +998,7 @@ void CUpDownClient::SetDownloadState(EDownloadState nNewState, LPCTSTR pszReason
 //>>> WiZaRd::AntiHideOS [netfinity]
                 delete[] m_abySeenPartStatus;
                 m_abySeenPartStatus = NULL;
-//<<< WiZaRd::AntiHideOS [netfinity]                
+//<<< WiZaRd::AntiHideOS [netfinity]
             }
             if (socket && nNewState != DS_ERROR)
                 socket->DisableDownloadLimit();
@@ -1740,11 +1740,11 @@ uint16 CUpDownClient::GetAvailablePartCount() const
 {
     UINT result = 0;
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	if (m_pPartStatus == NULL)
-		return (uint16) 0;
-	for (uint16 i = 0; i < m_pPartStatus->GetPartCount(); ++i)
-	//for (UINT i = 0; i < m_nPartCount; ++i)
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]    
+    if (m_pPartStatus == NULL)
+        return (uint16) 0;
+    for (uint16 i = 0; i < m_pPartStatus->GetPartCount(); ++i)
+        //for (UINT i = 0; i < m_nPartCount; ++i)
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     {
         if (IsPartAvailable(i))
             ++result;
@@ -1864,15 +1864,15 @@ void CUpDownClient::UDPReaskForDownload()
     if (m_nTotalUDPPackets > 3 && ((float)(m_nFailedUDPPackets/m_nTotalUDPPackets) > .3))
         return;
 
-    if (GetUDPPort() != 0 
-		&& GetUDPVersion() != 0 
-		&& thePrefs.GetUDPPort() != 0 
+    if (GetUDPPort() != 0
+            && GetUDPVersion() != 0
+            && thePrefs.GetUDPPort() != 0
 //>>> WiZaRd::ModProt
-		//&& !theApp.IsFirewalled() 
-		&& (!theApp.IsFirewalled() || SupportsLowIDUDPPing()) //>>> LowID UDP Ping Support
+            //&& !theApp.IsFirewalled()
+            && (!theApp.IsFirewalled() || SupportsLowIDUDPPing()) //>>> LowID UDP Ping Support
 //<<< WiZaRd::ModProt
-		&& !(socket && socket->IsConnected()) 
-		&& !thePrefs.GetProxySettings().UseProxy)
+            && !(socket && socket->IsConnected())
+            && !thePrefs.GetProxySettings().UseProxy)
     {
         if (!HasLowID())
         {
@@ -2971,19 +2971,19 @@ UINT	CUpDownClient::GetPartCount() const
 	return m_nPartCount;
 }
 */
-bool	CUpDownClient::IsPartAvailable(UINT iPart) const 
+bool	CUpDownClient::IsPartAvailable(UINT iPart) const
 {
-	return ((m_pPartStatus && iPart < m_pPartStatus->GetPartCount()) ? m_pPartStatus->IsCompletePart(iPart) : false);
+    return ((m_pPartStatus && iPart < m_pPartStatus->GetPartCount()) ? m_pPartStatus->IsCompletePart(iPart) : false);
 }
 
 const CPartStatus*	CUpDownClient::GetPartStatus() const
-{ 
-	return m_pPartStatus; 
+{
+    return m_pPartStatus;
 }
 
 UINT	CUpDownClient::GetPartCount() const
-{ 
-	return (m_pPartStatus != NULL ? m_pPartStatus->GetPartCount() : 0); 
+{
+    return (m_pPartStatus != NULL ? m_pPartStatus->GetPartCount() : 0);
 }
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
@@ -3026,7 +3026,7 @@ void CUpDownClient::ProcessFileIncStatus(CSafeMemFile* data, const UINT size, co
 //			m_nPartCount = 0;  //do not reset... in case of malformed packet we would loose all data
             throw strError;
         }
-		const UINT m_nPartCount = GetPartCount(); //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+        const UINT m_nPartCount = GetPartCount(); //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
         ASSERT(m_nPartCount == reqfile->GetPartCount()); //do not reset... in case of malformed packet we would loose all data
 //		m_nPartCount = reqfile->GetPartCount();
 
@@ -3055,7 +3055,7 @@ bool CUpDownClient::IsIncPartAvailable(const uint16 iPart) const
     if (IsCompleteSource())
         return false; //if he has the file complete then NO part can be incomplete...
 //<<< WiZaRd::Optimization
-	const UINT m_nPartCount = GetPartCount(); //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+    const UINT m_nPartCount = GetPartCount(); //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
     return	(iPart >= m_nPartCount || m_abyIncPartStatus == NULL) ? 0 : m_abyIncPartStatus[iPart] == 1;
 }
 //<<< WiZaRd::ICS [enkeyDEV]
@@ -3092,14 +3092,14 @@ UINT	CUpDownClient::GetDownTime() const
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 void CUpDownClient::ProcessCrumbComplete(CSafeMemFile* data)
 {
-	CPartFile*	pPartFile;
-	uchar		abyHash[16];
-	UINT		crumbIndex;
-	data->ReadHash16(abyHash);
-	crumbIndex = data->ReadUInt32();
-	pPartFile = theApp.downloadqueue->GetFileByID(abyHash);
+    CPartFile*	pPartFile;
+    uchar		abyHash[16];
+    UINT		crumbIndex;
+    data->ReadHash16(abyHash);
+    crumbIndex = data->ReadUInt32();
+    pPartFile = theApp.downloadqueue->GetFileByID(abyHash);
 
-	if (pPartFile == reqfile && m_pPartStatus != NULL)
-		m_pPartStatus->SetCrumb(crumbIndex);
+    if (pPartFile == reqfile && m_pPartStatus != NULL)
+        m_pPartStatus->SetCrumb(crumbIndex);
 }
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]

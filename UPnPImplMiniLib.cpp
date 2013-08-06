@@ -176,7 +176,7 @@ void CUPnPImplMiniLib::DeletePorts(bool bSkipLock)
 
 void CUPnPImplMiniLib::StartDiscovery(uint16 nTCPPort, uint16 nUDPPort, uint16 nTCPWebPort)
 {
-    DebugLog(L"Using MiniUPnPLib based implementation");    
+    DebugLog(L"Using MiniUPnPLib based implementation");
     m_nOldUDPPort = (ArePortsForwarded() == TRIS_TRUE) ? m_nUDPPort : 0;
     m_nUDPPort = nUDPPort;
     m_nOldTCPPort = (ArePortsForwarded() == TRIS_TRUE) ? m_nTCPPort : 0;

@@ -2788,23 +2788,23 @@ CString DbgGetMuleClientTCPOpcode(UINT opcode)
 //>>> WiZaRd::ModProt
 CString		DbgGetModTCPOpcode(const UINT opcode)
 {
-	static const struct
-	{
-		LPCTSTR pszOpcode;
-		UINT uOpcode;
-	} _aOpcodes[] =
-	{
-		_STRVAL(OP_MODINFOPACKET)
-	};
+    static const struct
+    {
+        LPCTSTR pszOpcode;
+        UINT uOpcode;
+    } _aOpcodes[] =
+    {
+        _STRVAL(OP_MODINFOPACKET)
+    };
 
-	for (int i = 0; i < _countof(_aOpcodes); ++i)
-	{
-		if (_aOpcodes[i].uOpcode == opcode)
-			return _aOpcodes[i].pszOpcode;
-	}
-	CString strOpcode;
-	strOpcode.Format(L"0x%02x", opcode);
-	return strOpcode;
+    for (int i = 0; i < _countof(_aOpcodes); ++i)
+    {
+        if (_aOpcodes[i].uOpcode == opcode)
+            return _aOpcodes[i].pszOpcode;
+    }
+    CString strOpcode;
+    strOpcode.Format(L"0x%02x", opcode);
+    return strOpcode;
 }
 //<<< WiZaRd::ModProt
 #undef _STRVAL
@@ -2819,10 +2819,10 @@ CString DbgGetClientTCPPacket(UINT protocol, UINT opcode, UINT size)
     else if (protocol == OP_EMULEPROT)
         str.Format(_T("protocol=eMule  opcode=%s  size=%u"), DbgGetMuleClientTCPOpcode(opcode), size);
 //>>> WiZaRd::ModProt
-	else if (protocol == OP_MODPROT_PACKED)
-		str.Format(L"protocol=Packed ModProt opcode=%s size=%u", DbgGetModTCPOpcode(opcode), size);
-	else if (protocol == OP_MODPROT)
-		str.Format(L"protocol=ModProt opcode=%s size=%u", DbgGetModTCPOpcode(opcode), size);
+    else if (protocol == OP_MODPROT_PACKED)
+        str.Format(L"protocol=Packed ModProt opcode=%s size=%u", DbgGetModTCPOpcode(opcode), size);
+    else if (protocol == OP_MODPROT)
+        str.Format(L"protocol=ModProt opcode=%s size=%u", DbgGetModTCPOpcode(opcode), size);
 //<<< WiZaRd::ModProt
     else
         str.Format(_T("protocol=0x%02x  opcode=0x%02x  size=%u"), protocol, opcode, size);
@@ -2839,10 +2839,10 @@ CString DbgGetClientTCPOpcode(UINT protocol, UINT opcode)
     else if (protocol == OP_EMULEPROT)
         str.Format(_T("%s"), DbgGetMuleClientTCPOpcode(opcode));
 //>>> WiZaRd::ModProt
-	else if (protocol == OP_MODPROT_PACKED)
-		str.Format(L"protocol=Packed ModProt opcode=%s", DbgGetModTCPOpcode(opcode));
-	else if (protocol == OP_MODPROT)
-		str.Format(L"protocol=ModProt opcode=%s", DbgGetModTCPOpcode(opcode));
+    else if (protocol == OP_MODPROT_PACKED)
+        str.Format(L"protocol=Packed ModProt opcode=%s", DbgGetModTCPOpcode(opcode));
+    else if (protocol == OP_MODPROT)
+        str.Format(L"protocol=ModProt opcode=%s", DbgGetModTCPOpcode(opcode));
 //<<< WiZaRd::ModProt
     else
         str.Format(_T("protocol=0x%02x  opcode=0x%02x"), protocol, opcode);
@@ -4259,8 +4259,8 @@ uint8 GetMyConnectOptions(bool bEncryption, bool bCallback)
     const uint8 uDirectUDPCallback	= (bCallback && theApp.IsFirewalled() && Kademlia::CKademlia::IsRunning() && !Kademlia::CUDPFirewallTester::IsFirewalledUDP(true) && Kademlia::CUDPFirewallTester::IsVerified()) ? 1 : 0;
 
 //>>> WiZaRd::NatTraversal [Xanatos]
-	const uint8 uSupportsNatTraversal	= 1/*(bCallback) ? 1 : 0*/; //>>> WiZaRd::FiX for NAT-T
-	const uint8 byCryptOptions = (uSupportsNatTraversal << 7) | (uDirectUDPCallback << 3) | (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
+    const uint8 uSupportsNatTraversal	= 1/*(bCallback) ? 1 : 0*/; //>>> WiZaRd::FiX for NAT-T
+    const uint8 byCryptOptions = (uSupportsNatTraversal << 7) | (uDirectUDPCallback << 3) | (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
     //const uint8 byCryptOptions = (uDirectUDPCallback << 3) | (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
 //<<< WiZaRd::NatTraversal [Xanatos]
     return byCryptOptions;
@@ -4448,7 +4448,7 @@ bool ContactAdd(Kademlia::CContact* pContact)
 
     m_lContacts.AddTail(pContact);
 #ifdef INFO_WND
-	theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
+    theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
 #endif
     return true;
 }
@@ -4457,12 +4457,12 @@ void ContactRem(Kademlia::CContact* pContact)
 {
     POSITION pos = m_lContacts.Find(pContact);
     if (pos != NULL)
-	{
+    {
         m_lContacts.RemoveAt(pos);
 #ifdef INFO_WND
-		theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
+        theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
 #endif
-	}
+    }
 }
 
 UINT nKadSearchCount = 0;
@@ -4475,19 +4475,19 @@ void SearchAdd()
 {
     ++nKadSearchCount;
 #ifdef INFO_WND
-	theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
+    theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
 #endif
 }
 
 void SearchRem()
 {
     if (nKadSearchCount > 0)
-	{
+    {
         --nKadSearchCount;
 #ifdef INFO_WND
-		theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
+        theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
 #endif
-	}
+    }
 }
 //<<< WiZaRd::Functions from removed files
 //>>> WiZaRd::Additional Functions
@@ -4926,94 +4926,94 @@ bool RunningWine()
 
 void	FillClientIconImageList(CImageList& imageList)
 {
-	imageList.Add(CTempIconLoader(L"Friend"));						// 0
-	imageList.Add(CTempIconLoader(L"ClientEDonkey"));				// 1
-	imageList.Add(CTempIconLoader(L"ClientEDonkeyPlus"));			// 2
-	imageList.Add(CTempIconLoader(L"ClientCompatible"));			// 3
-	imageList.Add(CTempIconLoader(L"ClientCompatiblePlus"));		// 4
-	imageList.Add(CTempIconLoader(L"ClientMLDonkey"));				// 5
-	imageList.Add(CTempIconLoader(L"ClientMLDonkeyPlus"));			// 6
-	imageList.Add(CTempIconLoader(L"ClientEDonkeyHybrid"));			// 7
-	imageList.Add(CTempIconLoader(L"ClientEDonkeyHybridPlus"));		// 8
-	imageList.Add(CTempIconLoader(L"ClientShareaza"));				// 9
-	imageList.Add(CTempIconLoader(L"ClientShareazaPlus"));			//10
-	imageList.Add(CTempIconLoader(L"ClientAMule"));					//11
-	imageList.Add(CTempIconLoader(L"ClientAMulePlus"));				//12
-	imageList.Add(CTempIconLoader(L"ClientLPhant"));				//13
-	imageList.Add(CTempIconLoader(L"ClientLPhantPlus"));			//14
-	imageList.Add(CTempIconLoader(L"ClientkMule"));					//15
-	imageList.Add(CTempIconLoader(L"ClientkMulePlus"));				//16
-	imageList.Add(CTempIconLoader(L"Server"));						//17
-	imageList.Add(CTempIconLoader(L"BADGUY"));						//18
+    imageList.Add(CTempIconLoader(L"Friend"));						// 0
+    imageList.Add(CTempIconLoader(L"ClientEDonkey"));				// 1
+    imageList.Add(CTempIconLoader(L"ClientEDonkeyPlus"));			// 2
+    imageList.Add(CTempIconLoader(L"ClientCompatible"));			// 3
+    imageList.Add(CTempIconLoader(L"ClientCompatiblePlus"));		// 4
+    imageList.Add(CTempIconLoader(L"ClientMLDonkey"));				// 5
+    imageList.Add(CTempIconLoader(L"ClientMLDonkeyPlus"));			// 6
+    imageList.Add(CTempIconLoader(L"ClientEDonkeyHybrid"));			// 7
+    imageList.Add(CTempIconLoader(L"ClientEDonkeyHybridPlus"));		// 8
+    imageList.Add(CTempIconLoader(L"ClientShareaza"));				// 9
+    imageList.Add(CTempIconLoader(L"ClientShareazaPlus"));			//10
+    imageList.Add(CTempIconLoader(L"ClientAMule"));					//11
+    imageList.Add(CTempIconLoader(L"ClientAMulePlus"));				//12
+    imageList.Add(CTempIconLoader(L"ClientLPhant"));				//13
+    imageList.Add(CTempIconLoader(L"ClientLPhantPlus"));			//14
+    imageList.Add(CTempIconLoader(L"ClientkMule"));					//15
+    imageList.Add(CTempIconLoader(L"ClientkMulePlus"));				//16
+    imageList.Add(CTempIconLoader(L"Server"));						//17
+    imageList.Add(CTempIconLoader(L"BADGUY"));						//18
 }
 
 int	GetClientImageIndex(const bool bFriend, const UINT nClientVersion, const bool bPlus, const bool bExt)
 {
-	int index = 0;
+    int index = 0;
 
-	if(!bFriend)
-	{
-		if(nClientVersion == SO_URL)
-			index = 17;
-		else
-		{			
-			if(nClientVersion == SO_KMULE)
-				index = 15;
-			else if(nClientVersion == SO_EDONKEYHYBRID)
-				index = 7;
-			else if(nClientVersion == SO_MLDONKEY)
-				index = 5;
-			else if(nClientVersion == SO_SHAREAZA)
-				index = 9;
-			else if(nClientVersion == SO_AMULE)
-				index = 11;
-			else if(nClientVersion == SO_LPHANT)
-				index = 13;
-			else if(bExt)	
-				index = 1;
-			else 
-				index = 3;
+    if (!bFriend)
+    {
+        if (nClientVersion == SO_URL)
+            index = 17;
+        else
+        {
+            if (nClientVersion == SO_KMULE)
+                index = 15;
+            else if (nClientVersion == SO_EDONKEYHYBRID)
+                index = 7;
+            else if (nClientVersion == SO_MLDONKEY)
+                index = 5;
+            else if (nClientVersion == SO_SHAREAZA)
+                index = 9;
+            else if (nClientVersion == SO_AMULE)
+                index = 11;
+            else if (nClientVersion == SO_LPHANT)
+                index = 13;
+            else if (bExt)
+                index = 1;
+            else
+                index = 3;
 
-			if(bPlus)
-				index += 1;
-		}
-	}
+            if (bPlus)
+                index += 1;
+        }
+    }
 
-	return index;
+    return index;
 }
 
 //NOTE: this retrieves a copy of the HAND cursor - it has to be destroyed in ANY case!
 HCURSOR		CreateHandCursor()
 {
-	HCURSOR hLinkCursor = NULL;
-	HCURSOR hHandCursor = NULL;
+    HCURSOR hLinkCursor = NULL;
+    HCURSOR hHandCursor = NULL;
 
 #ifdef IDC_HAND
-	hHandCursor = ::LoadCursor(NULL, IDC_HAND); // Load Windows' hand cursor
-	if (hHandCursor != NULL)                    // if not available, load it from winhlp32.exe
-		hLinkCursor = CopyCursor(hHandCursor);
-	else
+    hHandCursor = ::LoadCursor(NULL, IDC_HAND); // Load Windows' hand cursor
+    if (hHandCursor != NULL)                    // if not available, load it from winhlp32.exe
+        hLinkCursor = CopyCursor(hHandCursor);
+    else
 #endif //IDC_HAND	
-	{
-		// This retrieves cursor #106 from winhlp32.exe, which is a hand pointer
-		CString strWinDir; 
-		(void)GetWindowsDirectory(strWinDir.GetBuffer(MAX_PATH), MAX_PATH);
-		strWinDir.ReleaseBuffer();
-		strWinDir += L"\\winhlp32.exe";
+    {
+        // This retrieves cursor #106 from winhlp32.exe, which is a hand pointer
+        CString strWinDir;
+        (void)GetWindowsDirectory(strWinDir.GetBuffer(MAX_PATH), MAX_PATH);
+        strWinDir.ReleaseBuffer();
+        strWinDir += L"\\winhlp32.exe";
 
-		HMODULE hModule = LoadLibrary(strWinDir);
-		if (hModule)
-		{
-			hHandCursor = ::LoadCursor(hModule, MAKEINTRESOURCE(106));
-			if (hHandCursor != NULL)
-				hLinkCursor = CopyCursor(hHandCursor);
-			FreeLibrary(hModule);
-		}
-	}
+        HMODULE hModule = LoadLibrary(strWinDir);
+        if (hModule)
+        {
+            hHandCursor = ::LoadCursor(hModule, MAKEINTRESOURCE(106));
+            if (hHandCursor != NULL)
+                hLinkCursor = CopyCursor(hHandCursor);
+            FreeLibrary(hModule);
+        }
+    }
 
-	if (hLinkCursor == NULL)
-		hLinkCursor = CopyCursor(::LoadCursor(NULL, IDC_ARROW));
+    if (hLinkCursor == NULL)
+        hLinkCursor = CopyCursor(::LoadCursor(NULL, IDC_ARROW));
 
-	return hLinkCursor;
+    return hLinkCursor;
 }
 //<<< WiZaRd::Additional Functions

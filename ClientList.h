@@ -83,7 +83,7 @@ public:
                           CMap<UINT, UINT, UINT, UINT>& clientVersionEDonkey,
                           CMap<UINT, UINT, UINT, UINT>& clientVersionEDonkeyHybrid,
                           CMap<UINT, UINT, UINT, UINT>& clientVersionEMule,
-						  CMap<UINT, UINT, UINT, UINT>& clientVersionKMule,
+                          CMap<UINT, UINT, UINT, UINT>& clientVersionKMule,
                           CMap<UINT, UINT, UINT, UINT>& clientVersionAMule);
     UINT	GetClientCount()
     {
@@ -180,6 +180,6 @@ private:
 
 //>>> WiZaRd::ModIconMapper
 public:
-	void	UpdateModIconIndexes() const;
+    void	UpdateModIconIndexes() const;
 //<<< WiZaRd::ModIconMapper
 };

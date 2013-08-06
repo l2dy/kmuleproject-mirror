@@ -608,32 +608,32 @@ BOOL CemuleApp::InitInstance()
 
 //>>> WiZaRd
     // create & initialize all the important stuff
-	CList<int> dirModes;
-	for(int i = 0; i < eDM_Count; ++i)
-		dirModes.AddTail(i);
-	bool bSuccess = false;
-	do 
-	{
-		thePrefs.Init();
-		if (!PathFileExists(thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR)) || !PathFileExists(thePrefs.GetTempDir()))
-		{
-			// TODO: here we have problems with the shared usage setting and should inform the user about it
-			// OR we could automatically choose a different setup...
-			POSITION find = dirModes.Find(thePrefs.GetCurrentUserDirMode());
-			if(find)
-				dirModes.RemoveAt(find);
+    CList<int> dirModes;
+    for (int i = 0; i < eDM_Count; ++i)
+        dirModes.AddTail(i);
+    bool bSuccess = false;
+    do
+    {
+        thePrefs.Init();
+        if (!PathFileExists(thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR)) || !PathFileExists(thePrefs.GetTempDir()))
+        {
+            // TODO: here we have problems with the shared usage setting and should inform the user about it
+            // OR we could automatically choose a different setup...
+            POSITION find = dirModes.Find(thePrefs.GetCurrentUserDirMode());
+            if (find)
+                dirModes.RemoveAt(find);
 
-			if(dirModes.IsEmpty())
-			{
-				AfxMessageBox(L"Fatal Error: Failed to create incoming/temp directories!"); // should never happen...	
-				return FALSE;
-			}
-			thePrefs.SetCurrentUserDirMode(dirModes.RemoveHead());
-		}
-		else
-			bSuccess = true;
-	} 
-	while(!bSuccess);
+            if (dirModes.IsEmpty())
+            {
+                AfxMessageBox(L"Fatal Error: Failed to create incoming/temp directories!"); // should never happen...
+                return FALSE;
+            }
+            thePrefs.SetCurrentUserDirMode(dirModes.RemoveHead());
+        }
+        else
+            bSuccess = true;
+    }
+    while (!bSuccess);
 //<<< WiZaRd
 
     m_bRestartApp = false; //>>> WiZaRd::Automatic Restart
@@ -680,7 +680,7 @@ BOOL CemuleApp::InitInstance()
 #endif
     VERIFY(theLog.SetFilePath(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + L"kMule.log"));
     VERIFY(theVerboseLog.SetFilePath(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + L"kMule_Verbose.log"));
-	VERIFY(theAnalyzerLog.SetFilePath(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + L"kMule_Analyzer.log")); //>>> WiZaRd::ClientAnalyzer
+    VERIFY(theAnalyzerLog.SetFilePath(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + L"kMule_Analyzer.log")); //>>> WiZaRd::ClientAnalyzer
     theLog.SetMaxFileSize(thePrefs.GetMaxLogFileSize());
     theLog.SetFileFormat(thePrefs.GetLogFileFormat());
     if (thePrefs.GetLog2Disk())
@@ -689,16 +689,16 @@ BOOL CemuleApp::InitInstance()
         theLog.Log(L"\r\n");
     }
 //>>> WiZaRd::ClientAnalyzer
-	theAnalyzerLog.SetMaxFileSize(thePrefs.GetMaxLogFileSize());
-	theAnalyzerLog.SetFileFormat(thePrefs.GetLogFileFormat());
-	if (thePrefs.GetLogAnalyzerToDisk())
-	{
-		theAnalyzerLog.Open();
-		theAnalyzerLog.Log(L"\r\n");
-	}
+    theAnalyzerLog.SetMaxFileSize(thePrefs.GetMaxLogFileSize());
+    theAnalyzerLog.SetFileFormat(thePrefs.GetLogFileFormat());
+    if (thePrefs.GetLogAnalyzerToDisk())
+    {
+        theAnalyzerLog.Open();
+        theAnalyzerLog.Log(L"\r\n");
+    }
 //<<< WiZaRd::ClientAnalyzer
-	theVerboseLog.SetMaxFileSize(thePrefs.GetMaxLogFileSize());
-	theVerboseLog.SetFileFormat(thePrefs.GetLogFileFormat());
+    theVerboseLog.SetMaxFileSize(thePrefs.GetMaxLogFileSize());
+    theVerboseLog.SetFileFormat(thePrefs.GetLogFileFormat());
     if (thePrefs.GetDebug2Disk())
     {
         theVerboseLog.Open();
@@ -752,7 +752,7 @@ BOOL CemuleApp::InitInstance()
     // UPnP Port forwarding
     m_pUPnPFinder = new CUPnPImplWrapper();
 #ifdef USE_NAT_PMP
-	m_pNATPMPThreadWrapper = new CNATPMPThreadWrapper(); //>>> WiZaRd::NAT-PMP
+    m_pNATPMPThreadWrapper = new CNATPMPThreadWrapper(); //>>> WiZaRd::NAT-PMP
 #endif
 
     // Highres scheduling gives better resolution for Sleep(...) calls, and timeGetTime() calls
@@ -1365,11 +1365,11 @@ bool CemuleApp::ShowWebHelp(UINT uTopic)
 {
     CString strHelpURL = MOD_WIKI;
 
-	// TODO: implement Wiki!
+    // TODO: implement Wiki!
 //    switch (uTopic)
     {
 //		default:
-			strHelpURL.Format(_T("http://onlinehelp.emule-project.net/help.php?language=%u&topic=%u"), thePrefs.GetLanguageID(), uTopic);
+        strHelpURL.Format(_T("http://onlinehelp.emule-project.net/help.php?language=%u&topic=%u"), thePrefs.GetLanguageID(), uTopic);
 //			break;
     }
     _ShellExecute(NULL, NULL, strHelpURL, NULL, thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), SW_SHOWDEFAULT);
@@ -1534,11 +1534,11 @@ void CemuleApp::SetPublicIP(const UINT dwIP)
             }
 #ifdef USE_NAT_PMP
 //>>> WiZaRd::NAT-PMP
-			if (/*thePrefs.IsNATPMPEnabled() &&*/ theApp.emuledlg && theApp.m_pNATPMPThreadWrapper)
-			{
-				theApp.QueueDebugLogLineEx(LOG_WARNING, L"Resetting NATPMP due to IP change...");
-				theApp.emuledlg->RefreshNATPMP(true);
-			}
+            if (/*thePrefs.IsNATPMPEnabled() &&*/ theApp.emuledlg && theApp.m_pNATPMPThreadWrapper)
+            {
+                theApp.QueueDebugLogLineEx(LOG_WARNING, L"Resetting NATPMP due to IP change...");
+                theApp.emuledlg->RefreshNATPMP(true);
+            }
 //<<< WiZaRd::NAT-PMP
 #endif
         }
@@ -1566,18 +1566,18 @@ bool CemuleApp::CanDoCallback(const CUpDownClient* client)
 //<<< WiZaRd::NatTraversal [Xanatos]
 {
 //>>> WiZaRd::NatTraversal [Xanatos]
-	// Note: this is meant for debug purpose only, when we add a source by the CAddSourceDlg
-	if(client->SupportsNatTraversal() && client->GetUserPort() == 0)
-		return true; // the client does not have a TCP port and is NAT traversal enabled we can try it
+    // Note: this is meant for debug purpose only, when we add a source by the CAddSourceDlg
+    if (client->SupportsNatTraversal() && client->GetUserPort() == 0)
+        return true; // the client does not have a TCP port and is NAT traversal enabled we can try it
 //<<< WiZaRd::NatTraversal [Xanatos]
     if (Kademlia::CKademlia::IsConnected())
     {
         if (Kademlia::CKademlia::IsFirewalled())
         {
 //>>> WiZaRd::NatTraversal [Xanatos]
-			//Both Connected - Both Firewalled, but both Nat Traversal Enabled
-			if(client->SupportsNatTraversal())				
-				return true;
+            //Both Connected - Both Firewalled, but both Nat Traversal Enabled
+            if (client->SupportsNatTraversal())
+                return true;
 //<<< WiZaRd::NatTraversal [Xanatos]
             //Only Kad Connected - Kad Firewalled
             return false;
@@ -2208,15 +2208,15 @@ void CemuleApp::CreateAllFonts()
         CreatePointFont(m_fontHyperText, 10 * 10, lfDefault.lfFaceName);
 
 #ifdef INFO_WND
-	///////////////////////////////////////////////////////////////////////////
-	// Verbose Log-font
-	//
-	// Why can't this font set via the font dialog??
-	//	HFONT hFontMono = CreateFont(10, 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, _T("Lucida Console"));
-	//	m_fontLog.Attach(hFontMono);
-	LPLOGFONT plfLog = thePrefs.GetLogFont();
-	if (plfLog!=NULL && plfLog->lfFaceName[0]!= L'\0')
-		m_fontLog.CreateFontIndirect(plfLog);
+    ///////////////////////////////////////////////////////////////////////////
+    // Verbose Log-font
+    //
+    // Why can't this font set via the font dialog??
+    //	HFONT hFontMono = CreateFont(10, 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, _T("Lucida Console"));
+    //	m_fontLog.Attach(hFontMono);
+    LPLOGFONT plfLog = thePrefs.GetLogFont();
+    if (plfLog!=NULL && plfLog->lfFaceName[0]!= L'\0')
+        m_fontLog.CreateFontIndirect(plfLog);
 #endif
 
     ///////////////////////////////////////////////////////////////////////////

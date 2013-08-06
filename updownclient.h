@@ -97,7 +97,7 @@ public:
     virtual bool	Disconnected(LPCTSTR pszReason, bool bFromSocket = false);
 
 //>>> WiZaRd::NatTraversal [Xanatos]
-	virtual bool	TryToConnect(bool bIgnoreMaxCon = false, bool bNoCallbacks = false, CRuntimeClass* pClassSocket = NULL, bool bUseUTP = false);
+    virtual bool	TryToConnect(bool bIgnoreMaxCon = false, bool bNoCallbacks = false, CRuntimeClass* pClassSocket = NULL, bool bUseUTP = false);
     //virtual bool	TryToConnect(bool bIgnoreMaxCon = false, bool bNoCallbacks = false, CRuntimeClass* pClassSocket = NULL);
 //<<< WiZaRd::NatTraversal [Xanatos]
     virtual void	Connect();
@@ -551,7 +551,7 @@ public:
     void			DrawUpStatusBar(CDC* dc, RECT* rect, bool onlygreyrect, bool  bFlat) const;
     bool			IsUpPartAvailable(UINT iPart) const;
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	const CPartStatus*	GetUpPartStatus() const;
+    const CPartStatus*	GetUpPartStatus() const;
     //uint8*			GetUpPartStatus() const;
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     float           GetCombinedFilePrioAndCredit();
@@ -582,7 +582,7 @@ public:
     }
     bool			IsPartAvailable(UINT iPart) const;
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	const CPartStatus*	GetPartStatus() const;
+    const CPartStatus*	GetPartStatus() const;
     //uint8*			GetPartStatus() const;
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     UINT			GetPartCount() const;
@@ -854,8 +854,8 @@ public:
     CClientCredits*	credits;
     CFriend*		m_Friend;
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	CPartStatus*	m_pUpPartStatus;
-    //uint8*			m_abyUpPartStatus;	
+    CPartStatus*	m_pUpPartStatus;
+    //uint8*			m_abyUpPartStatus;
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     CTypedPtrList<CPtrList, CPartFile*> m_OtherRequests_list;
     CTypedPtrList<CPtrList, CPartFile*> m_OtherNoNeeded_list;
@@ -998,9 +998,9 @@ protected:
     CAICHHash*  m_pReqFileAICHHash;
     UINT		m_cDownAsked;
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	CPartStatus*	m_pPartStatus;
+    CPartStatus*	m_pPartStatus;
     //uint8*		m_abyPartStatus;
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]    
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     CString		m_strClientFilename;
     UINT		m_nTransferredDown;
     UINT        m_nCurSessionPayloadDown;
@@ -1079,10 +1079,10 @@ protected:
          m_fDirectUDPCallback : 1,
          m_fSupportsFileIdent : 1; // 0 bits left
     UINT m_fHashsetRequestingAICH : 1, // 31 bits left
-		 m_fAICHHashRequested : 1, //>>> Security Check
-		 m_fSourceExchangeRequested : 1, //>>> Security Check
-		 m_fSupportsModProt	  : 1, //>>> WiZaRd::ModProt
-		 m_fSupportsNatTraversal : 1; //>>> WiZaRd::NatTraversal [Xanatos]
+         m_fAICHHashRequested : 1, //>>> Security Check
+         m_fSourceExchangeRequested : 1, //>>> Security Check
+         m_fSupportsModProt	  : 1, //>>> WiZaRd::ModProt
+         m_fSupportsNatTraversal : 1; //>>> WiZaRd::NatTraversal [Xanatos]
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 public:
     CTypedPtrList<CPtrList, Pending_Block_Struct*>	 m_PendingBlocks_list;
@@ -1227,38 +1227,56 @@ private:
     bool		m_bScheduledForRemovalWillKeepWaitingTimeIntact;
     DWORD		m_bScheduledForRemovalAtTick;
 //<<< WiZaRd::ZZUL Upload [ZZ]
-//>>> WiZaRd::ModIconMapper	
+//>>> WiZaRd::ModIconMapper
 private:
-	int			m_iModIconIndex;
+    int			m_iModIconIndex;
 public:
-	int			GetModIconIndex() const;
-	void		CheckModIconIndex();
+    int			GetModIconIndex() const;
+    void		CheckModIconIndex();
 //<<< WiZaRd::ModIconMapper
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 private:
-	int			m_nProtocolRevision;
+    int			m_nProtocolRevision;
 public:
-	int			GetSCTVersion() const	{return m_nProtocolRevision;}
-	bool		SupportsSCT() const		{return m_nProtocolRevision > 0;}
-	void		SendCrumbSetPacket(const uchar* const pData, size_t const nSize);
-	void		ProcessCrumbComplete(CSafeMemFile* data);
+    int			GetSCTVersion() const
+    {
+        return m_nProtocolRevision;
+    }
+    bool		SupportsSCT() const
+    {
+        return m_nProtocolRevision > 0;
+    }
+    void		SendCrumbSetPacket(const uchar* const pData, size_t const nSize);
+    void		ProcessCrumbComplete(CSafeMemFile* data);
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 //>>> WiZaRd::ModProt
 //>>> LowID UDP Ping Support
 private:
-	bool	m_bSupportsLowIDUDPPing;
+    bool	m_bSupportsLowIDUDPPing;
 public:
-	bool	SupportsLowIDUDPPing() const					{return m_bSupportsLowIDUDPPing;}
+    bool	SupportsLowIDUDPPing() const
+    {
+        return m_bSupportsLowIDUDPPing;
+    }
 //<<< LowID UDP Ping Support
 public:
-	bool	SupportsModProt() const							{return m_fSupportsModProt;}
-	void	SendModInfoPacket() const;
-	void	ProcessModInfoPacket(const uchar* pachPacket, const UINT nSize);
+    bool	SupportsModProt() const
+    {
+        return m_fSupportsModProt;
+    }
+    void	SendModInfoPacket() const;
+    void	ProcessModInfoPacket(const uchar* pachPacket, const UINT nSize);
 //<<< WiZaRd::ModProt
 //>>> WiZaRd::NatTraversal [Xanatos]
 public:
-	bool			SupportsNatTraversal() const			{return m_fSupportsNatTraversal;}
-	void			SetNatTraversalSupport(bool bVal)		{m_fSupportsNatTraversal = bVal ? 1 : 0;}
+    bool			SupportsNatTraversal() const
+    {
+        return m_fSupportsNatTraversal;
+    }
+    void			SetNatTraversalSupport(bool bVal)
+    {
+        m_fSupportsNatTraversal = bVal ? 1 : 0;
+    }
 //<<< WiZaRd::NatTraversal [Xanatos]
 };
 //#pragma pack()

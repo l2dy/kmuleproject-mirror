@@ -29,48 +29,48 @@ int ExecuteSevenZipCommandLine(LPCTSTR pszCommandLine);
 // CSevenZipWorkerThread
 class CSevenZipWorkerThread : public CWinThread
 {
-	DECLARE_DYNCREATE(CSevenZipWorkerThread)
+    DECLARE_DYNCREATE(CSevenZipWorkerThread)
 protected:
-	CSevenZipWorkerThread();
+    CSevenZipWorkerThread();
 public:
-	virtual BOOL InitInstance();
-	virtual int	Run();
-	void	SetValues(CSevenZipThreadHandler* pOwner, const CString pszCommandLine);
+    virtual BOOL InitInstance();
+    virtual int	Run();
+    void	SetValues(CSevenZipThreadHandler* pOwner, const CString pszCommandLine);
 
-private:	
-	CSevenZipThreadHandler* m_pOwner;
+private:
+    CSevenZipThreadHandler* m_pOwner;
 
-	CString		m_strCommandLine;
+    CString		m_strCommandLine;
 };
 
 //////////////////////////////////////////////////////////////////////////
 // CSevenZipThreadHandler
 class CSevenZipThreadHandler
 {
-	friend class CSevenZipWorkerThread;
+    friend class CSevenZipWorkerThread;
 public:
-	CSevenZipThreadHandler();
-	virtual ~CSevenZipThreadHandler();
+    CSevenZipThreadHandler();
+    virtual ~CSevenZipThreadHandler();
 
-	void	Init();
-	void	UnInit();
-	void	JobDone();
-	bool	AbortThread();
-	FILE*	GetCustomStream();
+    void	Init();
+    void	UnInit();
+    void	JobDone();
+    bool	AbortThread();
+    FILE*	GetCustomStream();
 
-	void	ExtractArchive(const CString& strArchive, const CString& strTargetDir);
-	bool	IsSevenZipAvailable() const;
-	
+    void	ExtractArchive(const CString& strArchive, const CString& strTargetDir);
+    bool	IsSevenZipAvailable() const;
+
 private:
-	void	AddJob(CSevenZipWorkerThread* thread);
-	void	KillJobQueue();
+    void	AddJob(CSevenZipWorkerThread* thread);
+    void	KillJobQueue();
 
-	CCriticalSection JobLocker;
-	CList<CSevenZipWorkerThread*>	m_JobList;
-	bool	m_bAbort;
-	CMutex	m_mutSync;
-	CSevenZipWorkerThread*	m_Thread;
-	FILE*	m_pFileHandle;
+    CCriticalSection JobLocker;
+    CList<CSevenZipWorkerThread*>	m_JobList;
+    bool	m_bAbort;
+    CMutex	m_mutSync;
+    CSevenZipWorkerThread*	m_Thread;
+    FILE*	m_pFileHandle;
 };
 
 extern CSevenZipThreadHandler m_SevenZipThreadHandler;

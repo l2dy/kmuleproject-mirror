@@ -30,12 +30,12 @@ static CNATPMP* m_pNATPMP = NULL;
 
 enum ENATPMPTask
 {
-	eInitializeNATPMP = 0,
-	eRetrievePublicIP,
-	eMapTCPPorts,
-	eMapUDPPorts,
-	eDeleteTCPMappings,
-	eDeleteUDPMappings,
+    eInitializeNATPMP = 0,
+    eRetrievePublicIP,
+    eMapTCPPorts,
+    eMapUDPPorts,
+    eDeleteTCPMappings,
+    eDeleteUDPMappings,
 };
 
 #ifdef _DEBUG
@@ -46,83 +46,86 @@ enum ENATPMPTask
 
 class CNATPMPThreadWrapper
 {
-	friend class CNATPMPThread;
+    friend class CNATPMPThread;
 
 public:
-	CNATPMPThreadWrapper();
-	virtual ~CNATPMPThreadWrapper();
+    CNATPMPThreadWrapper();
+    virtual ~CNATPMPThreadWrapper();
 
-	bool		IsReady();
-	void		StopAsyncFind();
-	void		DeletePorts();
-	void		StartDiscovery(uint16 nTCPPort, uint16 nUDPPort);
-	void		SetMessageWanted(const bool bWanted);
-	bool		CheckAndRefresh();
-	void		AddTask(_ENATPMPTask task, const bool bLock = true);
-	void		RemovePendingTasks();
-	void		StartRefreshTimer();
-	void		KillRefreshTimer();
+    bool		IsReady();
+    void		StopAsyncFind();
+    void		DeletePorts();
+    void		StartDiscovery(uint16 nTCPPort, uint16 nUDPPort);
+    void		SetMessageWanted(const bool bWanted);
+    bool		CheckAndRefresh();
+    void		AddTask(_ENATPMPTask task, const bool bLock = true);
+    void		RemovePendingTasks();
+    void		StartRefreshTimer();
+    void		KillRefreshTimer();
 
 private:
-	void		StartThread();
-	void		AddPort(const uint16 port, const int protocol, const bool bLock = true);
-	static VOID CALLBACK RefreshTimer(HWND hWnd, UINT nMsg, UINT nId, DWORD dwTime);
-	HANDLE		m_hThreadHandle;
+    void		StartThread();
+    void		AddPort(const uint16 port, const int protocol, const bool bLock = true);
+    static VOID CALLBACK RefreshTimer(HWND hWnd, UINT nMsg, UINT nId, DWORD dwTime);
+    HANDLE		m_hThreadHandle;
 
-	UINT_PTR	m_hRefreshTimer;
-	CList<uint16>	m_portList[2];
-	CList<ENATPMPTask>	m_taskList;
-	bool			m_bMessageWanted;
-	CCriticalSection	m_settingsLock;
-	CMutex			m_mutBusy;
-	volatile bool	m_bAbortDiscovery;	
+    UINT_PTR	m_hRefreshTimer;
+    CList<uint16>	m_portList[2];
+    CList<ENATPMPTask>	m_taskList;
+    bool			m_bMessageWanted;
+    CCriticalSection	m_settingsLock;
+    CMutex			m_mutBusy;
+    volatile bool	m_bAbortDiscovery;
 };
 
 class CNATPMPThread : public CWinThread
 {
-	DECLARE_DYNCREATE(CNATPMPThread)
+    DECLARE_DYNCREATE(CNATPMPThread)
 protected:
-	CNATPMPThread();
+    CNATPMPThread();
 
 public:
-	virtual BOOL InitInstance();
-	virtual int	Run();
-	void	SetValues(CNATPMPThreadWrapper* pOwner)	{m_pOwner = pOwner;}
+    virtual BOOL InitInstance();
+    virtual int	Run();
+    void	SetValues(CNATPMPThreadWrapper* pOwner)
+    {
+        m_pOwner = pOwner;
+    }
 
 private:
-	CNATPMPThreadWrapper*	m_pOwner;
+    CNATPMPThreadWrapper*	m_pOwner;
 };
 
 class CNATPMP
-{	
-	friend class CNATPMPThreadWrapper;
+{
+    friend class CNATPMPThreadWrapper;
 public:
-	CNATPMP();
-	virtual ~CNATPMP();
+    CNATPMP();
+    virtual ~CNATPMP();
 
-	enum
-	{
-		NATPMP_OK,
-		NATPMP_FAILED,
-		NATPMP_TIMEOUT
-	};
+    enum
+    {
+        NATPMP_OK,
+        NATPMP_FAILED,
+        NATPMP_TIMEOUT
+    };
 
-	bool		GetPublicIPAddress();	
-	bool		AddPortMapping(const uint16 publicPort, const uint16 privatePort, const int protocol, const UINT lifeTime);
-	bool		RemovePortMapping(const uint16 publicPort, const uint16 privatePort, const int protocol);
-	bool		RemovePortMappings(const int protocol);
-	bool		RemoveAllPortMappings();
-	bool		Reset();
+    bool		GetPublicIPAddress();
+    bool		AddPortMapping(const uint16 publicPort, const uint16 privatePort, const int protocol, const UINT lifeTime);
+    bool		RemovePortMapping(const uint16 publicPort, const uint16 privatePort, const int protocol);
+    bool		RemovePortMappings(const int protocol);
+    bool		RemoveAllPortMappings();
+    bool		Reset();
 
-private:	
-	bool		Init();
-	bool		UnInit();
-	bool		PerformMapping(const uint16 publicPort, const uint16 privatePort, const int protocol, const UINT lifeTime);
-	bool		PerformSelect();
+private:
+    bool		Init();
+    bool		UnInit();
+    bool		PerformMapping(const uint16 publicPort, const uint16 privatePort, const int protocol, const UINT lifeTime);
+    bool		PerformSelect();
 
-	bool		m_bInitialised;
-	natpmp_t	m_natpmp;
-	int			m_ForceGW;
-	in_addr_t	m_Gateway;
-	in_addr		m_PublicIP;
+    bool		m_bInitialised;
+    natpmp_t	m_natpmp;
+    int			m_ForceGW;
+    in_addr_t	m_Gateway;
+    in_addr		m_PublicIP;
 };

@@ -11,7 +11,7 @@
 
 #define INFO_WND		//>>> WiZaRd::InfoWnd
 //>>> WiZaRd::DesktopIntegration [Netfinity]
-//#define WINE_SUPPORT	
+//#define WINE_SUPPORT
 //#ifdef	WINE_SUPPORT
 #define _ShellExecute	theDesktop.ShellExecute
 //#else

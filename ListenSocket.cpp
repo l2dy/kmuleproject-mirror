@@ -147,13 +147,13 @@ bool CClientReqSocket::CheckTimeOut()
     }
     UINT uTimeout = GetTimeOut();
 //>>> WiZaRd::NatTraversal [Xanatos]
-	// Note: the eserver may delay every callback request up to 15 seconds, 
-	//			so a full symmetric connection attempt with callback from booth sides
-	//			may get delayed up to 30 seconds, as the normal socket timeout
-	//			is 40 seconds we must extend it.
-	// WiZaRd: we have no servers... drop that part? prolly doesn't hurt...
-	if (HaveUtpLayer())
-		uTimeout += SEC2MS(30);
+    // Note: the eserver may delay every callback request up to 15 seconds,
+    //			so a full symmetric connection attempt with callback from booth sides
+    //			may get delayed up to 30 seconds, as the normal socket timeout
+    //			is 40 seconds we must extend it.
+    // WiZaRd: we have no servers... drop that part? prolly doesn't hurt...
+    if (HaveUtpLayer())
+        uTimeout += SEC2MS(30);
 //<<< WiZaRd::NatTraversal [Xanatos]
     if (client)
     {
@@ -234,8 +234,8 @@ void CClientReqSocket::Safe_Delete()
     AsyncSelect(0);
     deltimer = ::GetTickCount();
 //>>> WiZaRd::NatTraversal [Xanatos]
-	if (m_SocketData.hSocket != INVALID_SOCKET || HaveUtpLayer()) // deadlake PROXYSUPPORT - changed to AsyncSocketEx
-    //if (m_SocketData.hSocket != INVALID_SOCKET) // deadlake PROXYSUPPORT - changed to AsyncSocketEx
+    if (m_SocketData.hSocket != INVALID_SOCKET || HaveUtpLayer()) // deadlake PROXYSUPPORT - changed to AsyncSocketEx
+        //if (m_SocketData.hSocket != INVALID_SOCKET) // deadlake PROXYSUPPORT - changed to AsyncSocketEx
 //<<< WiZaRd::NatTraversal [Xanatos]
         ShutDown(SD_BOTH);
     if (client)
@@ -273,22 +273,22 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
                 // start secure identification, if
                 //  - we have received OP_EMULEINFO and OP_HELLOANSWER (old eMule)
                 //	- we have received eMule-OP_HELLOANSWER (new eMule)
-				if(!client->SupportsModProt()) // check for mod prot - we will start the SUI when we receive the mod info packet //>>> WiZaRd::ModProt
-                if (client->GetInfoPacketsReceived() == IP_BOTH)
-                    client->InfoPacketsReceived();
+                if (!client->SupportsModProt()) // check for mod prot - we will start the SUI when we receive the mod info packet //>>> WiZaRd::ModProt
+                    if (client->GetInfoPacketsReceived() == IP_BOTH)
+                        client->InfoPacketsReceived();
 
                 if (client)
                 {
 //>>> WiZaRd::ModProt
-					// if this client uses mod protocol extensions
-					if (client->SupportsModProt()) 
-						client->SendModInfoPacket(); // we send him the mod info packet with our extensions
-					else // we *DO NOT* call ConnectionEstablished at this point, will be called when we receive the Mod Info from this client
+                    // if this client uses mod protocol extensions
+                    if (client->SupportsModProt())
+                        client->SendModInfoPacket(); // we send him the mod info packet with our extensions
+                    else // we *DO NOT* call ConnectionEstablished at this point, will be called when we receive the Mod Info from this client
 //<<< WiZaRd::ModProt
-					{
-						client->ConnectionEstablished();
-						theApp.emuledlg->transferwnd->GetClientList()->RefreshClient(client);
-					}
+                    {
+                        client->ConnectionEstablished();
+                        theApp.emuledlg->transferwnd->GetClientList()->RefreshClient(client);
+                    }
                 }
                 break;
             }
@@ -353,24 +353,24 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
                 client->SendHelloAnswer();
 
                 if (client)
-				{
+                {
 //>>> WiZaRd::ModProt
-					// if this client uses mod protocol extensions
-					if (client->SupportsModProt()) 
-						client->SendModInfoPacket(); // we send him the mod info packet with our extensions
-					else // we *DO NOT* call ConnectionEstablished at this point, will be called when we receive the Mod Info from this client
+                    // if this client uses mod protocol extensions
+                    if (client->SupportsModProt())
+                        client->SendModInfoPacket(); // we send him the mod info packet with our extensions
+                    else // we *DO NOT* call ConnectionEstablished at this point, will be called when we receive the Mod Info from this client
 //<<< WiZaRd::ModProt
-                    client->ConnectionEstablished();
-				}
+                        client->ConnectionEstablished();
+                }
 
                 ASSERT(client);
                 if (client)
                 {
                     // start secure identification, if
                     //	- we have received eMule-OP_HELLO (new eMule)
-					if(!client->SupportsModProt()) // check for mod prot - we will start the SUI when we receive the mod info packet //>>> WiZaRd::ModProt
-                    if (client->GetInfoPacketsReceived() == IP_BOTH)
-                        client->InfoPacketsReceived();
+                    if (!client->SupportsModProt()) // check for mod prot - we will start the SUI when we receive the mod info packet //>>> WiZaRd::ModProt
+                        if (client->GetInfoPacketsReceived() == IP_BOTH)
+                            client->InfoPacketsReceived();
 
                     if (client->GetKadPort() && client->GetKadVersion() > 1)
                         Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
@@ -401,8 +401,8 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
                     {
                         if (!((reqfile = theApp.downloadqueue->GetFileByID(reqfilehash)) != NULL
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-								&& reqfile->GetFileSize() > (client->SupportsSCT() ? (uint64)CRUMBSIZE : (uint64)PARTSIZE)) )
-                                //&& reqfile->GetFileSize() > (uint64)PARTSIZE))
+                                && reqfile->GetFileSize() > (client->SupportsSCT() ? (uint64)CRUMBSIZE : (uint64)PARTSIZE)))
+                            //&& reqfile->GetFileSize() > (uint64)PARTSIZE))
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
                         {
                             client->CheckFailedFileIdReqs(reqfilehash);
@@ -436,8 +436,8 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
                     // if we are downloading this file, this could be a new source
                     // no passive adding of files with only one part
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-					if (reqfile->IsPartFile() && reqfile->GetFileSize() > (client->SupportsSCT() ? (uint64)CRUMBSIZE : (uint64)PARTSIZE))
-                    //if (reqfile->IsPartFile() && reqfile->GetFileSize() > (uint64)PARTSIZE)
+                    if (reqfile->IsPartFile() && reqfile->GetFileSize() > (client->SupportsSCT() ? (uint64)CRUMBSIZE : (uint64)PARTSIZE))
+                        //if (reqfile->IsPartFile() && reqfile->GetFileSize() > (uint64)PARTSIZE)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
                     {
                         if (((CPartFile*)reqfile)->GetMaxSources() > ((CPartFile*)reqfile)->GetSourceCount())
@@ -477,8 +477,8 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
                     {
                         if (!((reqfile = theApp.downloadqueue->GetFileByID(packet)) != NULL
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-								&& reqfile->GetFileSize() > (client->SupportsSCT() ? (uint64)CRUMBSIZE : (uint64)PARTSIZE)) )
-                                //&& reqfile->GetFileSize() > (uint64)PARTSIZE))
+                                && reqfile->GetFileSize() > (client->SupportsSCT() ? (uint64)CRUMBSIZE : (uint64)PARTSIZE)))
+                            //&& reqfile->GetFileSize() > (uint64)PARTSIZE))
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
                         {
                             // send file request no such file packet (0x48)
@@ -613,8 +613,8 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
                 {
                     CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(packet);
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-					if (reqfile == NULL && client->SupportsSCT())
-						reqfile = theApp.downloadqueue->GetFileByID(packet);
+                    if (reqfile == NULL && client->SupportsSCT())
+                        reqfile = theApp.downloadqueue->GetFileByID(packet);
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
                     if (reqfile)
                     {
@@ -1099,65 +1099,65 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
                 break;
             }
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-			case OP_HORDESLOTREQ:
-			{
-				if (thePrefs.GetDebugClientTCPLevel() > 0)
-					DebugRecv("OP_HordeSlotRequest", client);
-				theStats.AddDownDataOverheadOther(size);
+            case OP_HORDESLOTREQ:
+            {
+                if (thePrefs.GetDebugClientTCPLevel() > 0)
+                    DebugRecv("OP_HordeSlotRequest", client);
+                theStats.AddDownDataOverheadOther(size);
 
-				// We don't support this so we reject!
-				CSafeMemFile data_out(16);
-				data_out.WriteHash16(packet);
-				Packet* packet_out = new Packet(&data_out);
-				packet_out->opcode = OP_HORDESLOTREJ;
-				if (thePrefs.GetDebugClientTCPLevel() > 0)
-					DebugSend("OP__HordeSlotReject", client, packet);
-				theStats.AddUpDataOverheadFileRequest(packet_out->size);
-				SendPacket(packet_out, true);						
-				break;
-			}
+                // We don't support this so we reject!
+                CSafeMemFile data_out(16);
+                data_out.WriteHash16(packet);
+                Packet* packet_out = new Packet(&data_out);
+                packet_out->opcode = OP_HORDESLOTREJ;
+                if (thePrefs.GetDebugClientTCPLevel() > 0)
+                    DebugSend("OP__HordeSlotReject", client, packet);
+                theStats.AddUpDataOverheadFileRequest(packet_out->size);
+                SendPacket(packet_out, true);
+                break;
+            }
 
-			case OP_HORDESLOTANS:
-			{
-				if (thePrefs.GetDebugClientTCPLevel() > 0)
-					DebugRecv("OP_HordeSlotAccept", client);
-				theStats.AddDownDataOverheadOther(size);				
-				break; // We don't care!!!
-			}
-			case OP_HORDESLOTREJ:
-			{
-				if (thePrefs.GetDebugClientTCPLevel() > 0)
-					DebugRecv("OP_HordeSlotReject", client);
-				theStats.AddDownDataOverheadOther(size);				
-				break; // We don't care!!!
-			}
+            case OP_HORDESLOTANS:
+            {
+                if (thePrefs.GetDebugClientTCPLevel() > 0)
+                    DebugRecv("OP_HordeSlotAccept", client);
+                theStats.AddDownDataOverheadOther(size);
+                break; // We don't care!!!
+            }
+            case OP_HORDESLOTREJ:
+            {
+                if (thePrefs.GetDebugClientTCPLevel() > 0)
+                    DebugRecv("OP_HordeSlotReject", client);
+                theStats.AddDownDataOverheadOther(size);
+                break; // We don't care!!!
+            }
 
-			case OP_CRUMBSETREQ: // <file hash>
-			{
-				if (thePrefs.GetDebugClientTCPLevel() > 0)
-					DebugRecv("OP_CrumbSetReq", client);
-				theStats.AddDownDataOverheadOther(size);
+            case OP_CRUMBSETREQ: // <file hash>
+            {
+                if (thePrefs.GetDebugClientTCPLevel() > 0)
+                    DebugRecv("OP_CrumbSetReq", client);
+                theStats.AddDownDataOverheadOther(size);
 
-				DebugLog(_T("Received OP_CRUMBSETREQ: %s"), client->DbgGetClientInfo());
+                DebugLog(_T("Received OP_CRUMBSETREQ: %s"), client->DbgGetClientInfo());
 
-				if (size != 16)
-					throw GetResString(IDS_ERR_WRONGHPACKAGESIZE);
-				client->SendCrumbSetPacket(packet, 16);
-				break;
-			}
+                if (size != 16)
+                    throw GetResString(IDS_ERR_WRONGHPACKAGESIZE);
+                client->SendCrumbSetPacket(packet, 16);
+                break;
+            }
 
-			case OP_CRUMBCOMPLETE: // <file hash><crumb:32>
-			{
-				if (thePrefs.GetDebugClientTCPLevel() > 0)
-					DebugRecv("OP_CrumbComplete", client);
-				theStats.AddDownDataOverheadOther(size);
+            case OP_CRUMBCOMPLETE: // <file hash><crumb:32>
+            {
+                if (thePrefs.GetDebugClientTCPLevel() > 0)
+                    DebugRecv("OP_CrumbComplete", client);
+                theStats.AddDownDataOverheadOther(size);
 
-				DebugLog(L"Received OP_CRUMBCOMPLETE: %s", client->DbgGetClientInfo());
+                DebugLog(L"Received OP_CRUMBCOMPLETE: %s", client->DbgGetClientInfo());
 
-				CSafeMemFile data(packet, size);
-				client->ProcessCrumbComplete(&data);
-				break;
-			}
+                CSafeMemFile data(packet, size);
+                client->ProcessCrumbComplete(&data);
+                break;
+            }
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
             default:
                 theStats.AddDownDataOverheadOther(size);
@@ -1253,8 +1253,8 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
                     {
                         if (!((reqfile = theApp.downloadqueue->GetFileByID(fileIdent.GetMD4Hash())) != NULL
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-								&& reqfile->GetFileSize() > (client->SupportsSCT() ? (uint64)CRUMBSIZE : (uint64)PARTSIZE)) )
-                                //&& reqfile->GetFileSize() > (uint64)PARTSIZE))
+                                && reqfile->GetFileSize() > (client->SupportsSCT() ? (uint64)CRUMBSIZE : (uint64)PARTSIZE)))
+                            //&& reqfile->GetFileSize() > (uint64)PARTSIZE))
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
                         {
                             bNotFound = true;
@@ -1279,8 +1279,8 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
                     {
                         if (!((reqfile = theApp.downloadqueue->GetFileByID(reqfilehash)) != NULL
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-								&& reqfile->GetFileSize() > (client->SupportsSCT() ? (uint64)CRUMBSIZE : (uint64)PARTSIZE)) )
-                                //&& reqfile->GetFileSize() > (uint64)PARTSIZE))
+                                && reqfile->GetFileSize() > (client->SupportsSCT() ? (uint64)CRUMBSIZE : (uint64)PARTSIZE)))
+                            //&& reqfile->GetFileSize() > (uint64)PARTSIZE))
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
                         {
                             bNotFound = true;
@@ -1353,8 +1353,8 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
                         // if we are downloading this file, this could be a new source
                         // no passive adding of files with only one part
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-						if (reqfile->IsPartFile() && reqfile->GetFileSize() > (client->SupportsSCT() ? (uint64)CRUMBSIZE : (uint64)PARTSIZE))
-                        //if (reqfile->IsPartFile() && reqfile->GetFileSize() > (uint64)PARTSIZE)
+                        if (reqfile->IsPartFile() && reqfile->GetFileSize() > (client->SupportsSCT() ? (uint64)CRUMBSIZE : (uint64)PARTSIZE))
+                            //if (reqfile->IsPartFile() && reqfile->GetFileSize() > (uint64)PARTSIZE)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
                         {
                             if (((CPartFile*)reqfile)->GetMaxSources() > ((CPartFile*)reqfile)->GetSourceCount())
@@ -1781,11 +1781,11 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
                     DebugRecv("OP_ReaskCallbackTCP", client, reqfilehash);
 
 //>>> WiZaRd::NatTraversal [Xanatos]
-				if(isnulmd4(reqfilehash))
-				{
-					theApp.clientudp->ProcessPacket(packet+(4+2+16+1), size-(4+2+16+1), data_in.ReadUInt8(), destip, destport);
-					break;
-				}
+                if (isnulmd4(reqfilehash))
+                {
+                    theApp.clientudp->ProcessPacket(packet+(4+2+16+1), size-(4+2+16+1), data_in.ReadUInt8(), destip, destport);
+                    break;
+                }
 //<<< WiZaRd::NatTraversal [Xanatos]
 
                 CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
@@ -2191,7 +2191,7 @@ void CClientReqSocket::OnConnect(int nErrorCode)
     else
     {
         //This socket may have been delayed by SP2 protection, lets make sure it doesn't time out instantly.
-        ResetTimeOutTimer();		
+        ResetTimeOutTimer();
     }
 }
 
@@ -2243,18 +2243,18 @@ bool CClientReqSocket::PacketReceivedCppEH(Packet* packet)
         bResult = ProcessExtPacket((const BYTE*)packet->pBuffer, packet->size, packet->opcode, uRawSize);
         break;
 //>>> WiZaRd::ModProt
-	// dispatch mod packets to the right processing functions
-	case OP_MODPROT_PACKED:
-		if (!packet->UnPackPacket())
-		{
-			if (thePrefs.GetVerbose())
-				AddDebugLogLine(false, L"Failed to decompress client Mod TCP packet; %s; %s", DbgGetClientTCPPacket(packet->prot, packet->opcode, packet->size), DbgGetClientInfo());
-			bResult = false;
-			break;
-		}
-	case OP_MODPROT:
-		bResult = ProcessModPacket((const BYTE*)packet->pBuffer, packet->size, packet->opcode, uRawSize);
-		break;
+        // dispatch mod packets to the right processing functions
+    case OP_MODPROT_PACKED:
+        if (!packet->UnPackPacket())
+        {
+            if (thePrefs.GetVerbose())
+                AddDebugLogLine(false, L"Failed to decompress client Mod TCP packet; %s; %s", DbgGetClientTCPPacket(packet->prot, packet->opcode, packet->size), DbgGetClientInfo());
+            bResult = false;
+            break;
+        }
+    case OP_MODPROT:
+        bResult = ProcessModPacket((const BYTE*)packet->pBuffer, packet->size, packet->opcode, uRawSize);
+        break;
 //<<< WiZaRd::ModProt
     default:
     {
@@ -2748,8 +2748,8 @@ void CListenSocket::Process()
         if (cur_sock->deletethis)
         {
 //>>> WiZaRd::NatTraversal [Xanatos]
-			if (cur_sock->m_SocketData.hSocket != INVALID_SOCKET || cur_sock->HaveUtpLayer(true))
-            //if (cur_sock->m_SocketData.hSocket != INVALID_SOCKET)
+            if (cur_sock->m_SocketData.hSocket != INVALID_SOCKET || cur_sock->HaveUtpLayer(true))
+                //if (cur_sock->m_SocketData.hSocket != INVALID_SOCKET)
 //<<< WiZaRd::NatTraversal [Xanatos]
                 cur_sock->Close();			// calls 'closesocket'
             else
@@ -2786,16 +2786,16 @@ void CListenSocket::RecalculateStats()
 void CListenSocket::AddSocket(CClientReqSocket* toadd)
 {
     socket_list.AddTail(toadd);
-	theQOSManager.AddSocket(toadd->GetSocketHandle(), NULL /*lpSockAddr*/); //>>> WiZaRd::QOS
+    theQOSManager.AddSocket(toadd->GetSocketHandle(), NULL /*lpSockAddr*/); //>>> WiZaRd::QOS
 }
 
 void CListenSocket::RemoveSocket(CClientReqSocket* todel)
 {
-	POSITION posFind = socket_list.Find(todel);
-	if(posFind)
-	{
-		theQOSManager.AddSocket(socket_list.GetAt(posFind)->GetSocketHandle(), NULL /*lpSockAddr*/); //>>> WiZaRd::QOS		
-		socket_list.RemoveAt(posFind);		
+    POSITION posFind = socket_list.Find(todel);
+    if (posFind)
+    {
+        theQOSManager.AddSocket(socket_list.GetAt(posFind)->GetSocketHandle(), NULL /*lpSockAddr*/); //>>> WiZaRd::QOS
+        socket_list.RemoveAt(posFind);
     }
 }
 

@@ -87,9 +87,9 @@ CDownloadListCtrl::CDownloadListCtrl()
     SetSkinKey(L"DownloadsLv");
     m_dwLastAvailableCommandsCheck = 0;
     m_availableCommandsDirty = true;
-	m_iFDC = -1; //>>> FDC [BlueSonicBoy]
-	m_iPreview = -1; //>>> PreviewIndicator [WiZaRd]
-	m_iHealthIndex = -1; //>>> Health Indicator File Availability [WiZaRd]
+    m_iFDC = -1; //>>> FDC [BlueSonicBoy]
+    m_iPreview = -1; //>>> PreviewIndicator [WiZaRd]
+    m_iHealthIndex = -1; //>>> Health Indicator File Availability [WiZaRd]
 }
 
 CDownloadListCtrl::~CDownloadListCtrl()
@@ -145,7 +145,7 @@ void CDownloadListCtrl::Init()
     InsertColumn(11, lsctitle,							LVCFMT_LEFT,  120,						-1, true);
     InsertColumn(12, GetResString(IDS_CAT),				LVCFMT_LEFT,  100,						-1, true);
     InsertColumn(13, GetResString(IDS_ADDEDON),			LVCFMT_LEFT,  120);
-	InsertColumn(14, GetResString(IDS_SEARCHAVAIL),		LVCFMT_LEFT,   70);	//>>> Health Indicator File Availability [WiZaRd]
+    InsertColumn(14, GetResString(IDS_SEARCHAVAIL),		LVCFMT_LEFT,   70);	//>>> Health Indicator File Availability [WiZaRd]
 
     SetAllIcons();
     Localize();
@@ -192,7 +192,7 @@ void CDownloadListCtrl::SetAllIcons()
     ApplyImageList(NULL);
     m_ImageList.DeleteImageList();
     m_ImageList.Create(16, 16, theApp.m_iDfltImageListColorFlags | ILC_MASK, 0, 1);
-	FillClientIconImageList(m_ImageList); // 18
+    FillClientIconImageList(m_ImageList); // 18
     m_ImageList.Add(CTempIconLoader(_T("SrcDownloading")));
     m_ImageList.Add(CTempIconLoader(_T("SrcOnQueue")));
     m_ImageList.Add(CTempIconLoader(_T("SrcConnecting")));
@@ -208,14 +208,14 @@ void CDownloadListCtrl::SetAllIcons()
     m_iFDC = m_ImageList.Add(CTempIconLoader(L"Dissimilar_Name")); //>>> FDC [BlueSonicBoy]
     m_iPreview = m_ImageList.Add(CTempIconLoader(L"PREVIEW")); //>>> PreviewIndicator [WiZaRd]
 //>>> Health Indicator File Availability [WiZaRd]
-	m_iHealthIndex = m_ImageList.Add(CTempIconLoader(L"HEALTH_0"));
-	m_ImageList.Add(CTempIconLoader(L"HEALTH_1"));
-	m_ImageList.Add(CTempIconLoader(L"HEALTH_2"));
-	m_ImageList.Add(CTempIconLoader(L"HEALTH_3"));
-	m_ImageList.Add(CTempIconLoader(L"HEALTH_4"));
-	m_ImageList.Add(CTempIconLoader(L"HEALTH_5"));
-	m_ImageList.Add(CTempIconLoader(L"HEALTH_6"));
-	m_ImageList.Add(CTempIconLoader(L"HEALTH_7"));
+    m_iHealthIndex = m_ImageList.Add(CTempIconLoader(L"HEALTH_0"));
+    m_ImageList.Add(CTempIconLoader(L"HEALTH_1"));
+    m_ImageList.Add(CTempIconLoader(L"HEALTH_2"));
+    m_ImageList.Add(CTempIconLoader(L"HEALTH_3"));
+    m_ImageList.Add(CTempIconLoader(L"HEALTH_4"));
+    m_ImageList.Add(CTempIconLoader(L"HEALTH_5"));
+    m_ImageList.Add(CTempIconLoader(L"HEALTH_6"));
+    m_ImageList.Add(CTempIconLoader(L"HEALTH_7"));
 //<<< Health Indicator File Availability [WiZaRd]
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("ClientSecureOvl"))), 1);
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("OverlayObfu"))), 2);
@@ -614,8 +614,8 @@ void CDownloadListCtrl::GetFileItemDisplayText(CPartFile *lpPartFile, int iSubIt
         break;
 
 //>>> Health Indicator File Availability [WiZaRd]
-	case 14:
-		break;
+    case 14:
+        break;
 //<<< Health Indicator File Availability [WiZaRd]
     }
     pszText[cchTextMax - 1] = L'\0';
@@ -712,36 +712,36 @@ void CDownloadListCtrl::DrawFileItem(CDC *dc, int nColumn, LPCRECT lpRect, UINT 
     }
 
 //>>> Health Indicator File Availability [WiZaRd]
-	case 14:
-	{
-		CRect rcDraw(lpRect);
-		int available = pPartFile->GetAvailablePartCount()*100/pPartFile->GetPartCount(); //get available parts in %
-		POINT pt = rcDraw.TopLeft();
-		if (available >= 25) // 25%-49% display first bar
-			m_ImageList.Draw(dc, m_iHealthIndex, pt, ILD_NORMAL);
-		else
-			m_ImageList.Draw(dc, m_iHealthIndex+4, pt, ILD_NORMAL);
-		pt.x += 10;
-		
-		if (available >= 50) // 50%-74% display second bar
-			m_ImageList.Draw(dc, m_iHealthIndex+1, pt, ILD_NORMAL);
-		else
-			m_ImageList.Draw(dc, m_iHealthIndex+5, pt, ILD_NORMAL);
-		pt.x += 10;
-		
-		if (available >= 75) // 75%-99% display third bar
-			m_ImageList.Draw(dc, m_iHealthIndex+2, pt, ILD_NORMAL);
-		else
-			m_ImageList.Draw(dc, m_iHealthIndex+6, pt, ILD_NORMAL);
-		pt.x += 10;
-		
-		if (available == 100) // 100% display all fours
-			m_ImageList.Draw(dc, m_iHealthIndex+3, pt, ILD_NORMAL);
-		else
-			m_ImageList.Draw(dc, m_iHealthIndex+7, pt, ILD_NORMAL);
-		pt.x += 10;
-		break;
-	}
+    case 14:
+    {
+        CRect rcDraw(lpRect);
+        int available = pPartFile->GetAvailablePartCount()*100/pPartFile->GetPartCount(); //get available parts in %
+        POINT pt = rcDraw.TopLeft();
+        if (available >= 25) // 25%-49% display first bar
+            m_ImageList.Draw(dc, m_iHealthIndex, pt, ILD_NORMAL);
+        else
+            m_ImageList.Draw(dc, m_iHealthIndex+4, pt, ILD_NORMAL);
+        pt.x += 10;
+
+        if (available >= 50) // 50%-74% display second bar
+            m_ImageList.Draw(dc, m_iHealthIndex+1, pt, ILD_NORMAL);
+        else
+            m_ImageList.Draw(dc, m_iHealthIndex+5, pt, ILD_NORMAL);
+        pt.x += 10;
+
+        if (available >= 75) // 75%-99% display third bar
+            m_ImageList.Draw(dc, m_iHealthIndex+2, pt, ILD_NORMAL);
+        else
+            m_ImageList.Draw(dc, m_iHealthIndex+6, pt, ILD_NORMAL);
+        pt.x += 10;
+
+        if (available == 100) // 100% display all fours
+            m_ImageList.Draw(dc, m_iHealthIndex+3, pt, ILD_NORMAL);
+        else
+            m_ImageList.Draw(dc, m_iHealthIndex+7, pt, ILD_NORMAL);
+        pt.x += 10;
+        break;
+    }
 //<<< Health Indicator File Availability [WiZaRd]
 
     default:
@@ -881,8 +881,8 @@ void CDownloadListCtrl::GetSourceItemDisplayText(const CtrlItem_Struct *pCtrlIte
         break;
 
 //>>> Health Indicator File Availability [WiZaRd]
-	case 14:
-		break;
+    case 14:
+        break;
 //<<< Health Indicator File Availability [WiZaRd]
     }
     pszText[cchTextMax - 1] = L'\0';
@@ -959,26 +959,26 @@ void CDownloadListCtrl::DrawSourceItem(CDC *dc, int nColumn, LPCRECT lpRect, UIN
         }
 //<<< WiZaRd::ClientAnalyzer
 
-		int iImage = GetClientImageIndex(pClient->IsFriend(), pClient->GetClientSoft(), pClient->Credits() && pClient->Credits()->GetScoreRatio(pClient->GetIP()) > 1, pClient->ExtProtocolAvailable());
+        int iImage = GetClientImageIndex(pClient->IsFriend(), pClient->GetClientSoft(), pClient->Credits() && pClient->Credits()->GetScoreRatio(pClient->GetIP()) > 1, pClient->ExtProtocolAvailable());
 
-		UINT nOverlayImage = 0;
-		if ((pClient->Credits() && pClient->Credits()->GetCurrentIdentState(pClient->GetIP()) == IS_IDENTIFIED))
-			nOverlayImage |= 1;
-		if (pClient->IsObfuscatedConnectionEstablished())
-			nOverlayImage |= 2;
-		POINT point2 = { cur_rec.left, cur_rec.top + iIconPosY };
-		m_ImageList.Draw(dc, iImage, point2, ILD_NORMAL | INDEXTOOVERLAYMASK(nOverlayImage));
+        UINT nOverlayImage = 0;
+        if ((pClient->Credits() && pClient->Credits()->GetCurrentIdentState(pClient->GetIP()) == IS_IDENTIFIED))
+            nOverlayImage |= 1;
+        if (pClient->IsObfuscatedConnectionEstablished())
+            nOverlayImage |= 2;
+        POINT point2 = { cur_rec.left, cur_rec.top + iIconPosY };
+        m_ImageList.Draw(dc, iImage, point2, ILD_NORMAL | INDEXTOOVERLAYMASK(nOverlayImage));
         cur_rec.left += 20;
 
 //>>> WiZaRd::ModIconMappings
-		int icoindex = pClient->GetModIconIndex();
-		if(icoindex != MODMAP_NONE)
-		{	
-			POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
-			theApp.theModIconMap->DrawModIcon(dc, icoindex, point, ILD_NORMAL);
-			cur_rec.left += 17;
-			plusminus += 17;
-		}
+        int icoindex = pClient->GetModIconIndex();
+        if (icoindex != MODMAP_NONE)
+        {
+            POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
+            theApp.theModIconMap->DrawModIcon(dc, icoindex, point, ILD_NORMAL);
+            cur_rec.left += 17;
+            plusminus += 17;
+        }
 //<<< WiZaRd::ModIconMappings
 
         dc->DrawText(szItem, -1, &cur_rec, MLC_DT_TEXT | uDrawTextAlignment);
@@ -1028,39 +1028,39 @@ void CDownloadListCtrl::DrawSourceItem(CDC *dc, int nColumn, LPCRECT lpRect, UIN
     case 11:	// last received
     case 12:	// category
     case 13:	// added on
-		break;
+        break;
 
 //>>> Health Indicator File Availability [WiZaRd]
-	case 14:
-	{
-		CRect rcDraw(lpRect);
-		int available = pClient->GetAvailablePartCount()*100/pCtrlItem->owner->GetPartCount(); //get available parts in %
-		POINT pt = rcDraw.TopLeft();
-		if (available >= 25) // 25%-49% display first bar
-			m_ImageList.Draw(dc, m_iHealthIndex, pt, ILD_NORMAL);
-		else
-			m_ImageList.Draw(dc, m_iHealthIndex+4, pt, ILD_NORMAL);
-		pt.x += 10;
+    case 14:
+    {
+        CRect rcDraw(lpRect);
+        int available = pClient->GetAvailablePartCount()*100/pCtrlItem->owner->GetPartCount(); //get available parts in %
+        POINT pt = rcDraw.TopLeft();
+        if (available >= 25) // 25%-49% display first bar
+            m_ImageList.Draw(dc, m_iHealthIndex, pt, ILD_NORMAL);
+        else
+            m_ImageList.Draw(dc, m_iHealthIndex+4, pt, ILD_NORMAL);
+        pt.x += 10;
 
-		if (available >= 50) // 50%-74% display second bar
-			m_ImageList.Draw(dc, m_iHealthIndex+1, pt, ILD_NORMAL);
-		else
-			m_ImageList.Draw(dc, m_iHealthIndex+5, pt, ILD_NORMAL);
-		pt.x += 10;
+        if (available >= 50) // 50%-74% display second bar
+            m_ImageList.Draw(dc, m_iHealthIndex+1, pt, ILD_NORMAL);
+        else
+            m_ImageList.Draw(dc, m_iHealthIndex+5, pt, ILD_NORMAL);
+        pt.x += 10;
 
-		if (available >= 75) // 75%-99% display third bar
-			m_ImageList.Draw(dc, m_iHealthIndex+2, pt, ILD_NORMAL);
-		else
-			m_ImageList.Draw(dc, m_iHealthIndex+6, pt, ILD_NORMAL);
-		pt.x += 10;
+        if (available >= 75) // 75%-99% display third bar
+            m_ImageList.Draw(dc, m_iHealthIndex+2, pt, ILD_NORMAL);
+        else
+            m_ImageList.Draw(dc, m_iHealthIndex+6, pt, ILD_NORMAL);
+        pt.x += 10;
 
-		if (available == 100) // 100% display all fours
-			m_ImageList.Draw(dc, m_iHealthIndex+3, pt, ILD_NORMAL);
-		else
-			m_ImageList.Draw(dc, m_iHealthIndex+7, pt, ILD_NORMAL);
-		pt.x += 10;
-		break;
-	}
+        if (available == 100) // 100% display all fours
+            m_ImageList.Draw(dc, m_iHealthIndex+3, pt, ILD_NORMAL);
+        else
+            m_ImageList.Draw(dc, m_iHealthIndex+7, pt, ILD_NORMAL);
+        pt.x += 10;
+        break;
+    }
 //<<< Health Indicator File Availability [WiZaRd]
 
     default:
@@ -2517,9 +2517,9 @@ int CDownloadListCtrl::Compare(const CPartFile *file1, const CPartFile *file2, L
         break;
 
 //>>> Health Indicator File Availability [WiZaRd]
-	case 14:
-		comp = CompareUnsigned64(file1->GetAvailablePartCount()*100/file1->GetPartCount(), file2->GetAvailablePartCount()*100/file1->GetPartCount());
-		break;
+    case 14:
+        comp = CompareUnsigned64(file1->GetAvailablePartCount()*100/file1->GetPartCount(), file2->GetAvailablePartCount()*100/file1->GetPartCount());
+        break;
 //<<< Health Indicator File Availability [WiZaRd]
     }
     return comp;
@@ -2548,7 +2548,7 @@ int CDownloadListCtrl::Compare(const CUpDownClient *client1, const CUpDownClient
     case 4: //speed asc
         return CompareUnsigned(client1->GetDownloadDatarate(), client2->GetDownloadDatarate());
 
-	case 14: //>>> Health Indicator File Availability [WiZaRd]
+    case 14: //>>> Health Indicator File Availability [WiZaRd]
     case 5: //progress asc
         return CompareUnsigned(client1->GetAvailablePartCount(), client2->GetAvailablePartCount());
 

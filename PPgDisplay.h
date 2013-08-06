@@ -18,11 +18,11 @@ public:
 protected:
 #ifdef INFO_WND
 //>>> WiZaRd::InfoWnd
-	enum ESelectFont
-	{
-		sfChat,
-		sfLog
-	} m_eSelectFont;
+    enum ESelectFont
+    {
+        sfChat,
+        sfLog
+    } m_eSelectFont;
 //<<< WiZaRd::InfoWnd
 #endif
     void LoadSettings(void);

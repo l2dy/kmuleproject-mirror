@@ -271,7 +271,14 @@ public:
 //<<< WiZaRd::Upload Feedback
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 public:
-	virtual void	AddToPartsInfo(const CPartStatus* partstatus);
-	virtual void	RemoveFromPartsInfo(const CPartStatus* partstatus);
+    virtual void	AddToPartsInfo(const CPartStatus* partstatus);
+    virtual void	RemoveFromPartsInfo(const CPartStatus* partstatus);
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+//>>> Tux::Spread Priority v3
+private:
+    bool	m_bHasSpreadPriority;
+public:
+    bool	IsSpreadPriority() const;
+    void	SetSpreadPriority(bool spreadprio);
+//<<< Tux::Spread Priority v3
 };

@@ -49,6 +49,6 @@ enum EUserWndMessages
     // UPnP
     UM_UPNP_RESULT,
 #ifdef USE_NAT_PMP
-	UM_NATPMP_RESULT //>>> WiZaRd::NAT-PMP
+    UM_NATPMP_RESULT //>>> WiZaRd::NAT-PMP
 #endif
 };

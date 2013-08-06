@@ -52,9 +52,9 @@ static char THIS_FILE[] = __FILE__;
 //helper function... use the available IP
 bool CompareIP(const CUpDownClient* client, const UINT dwIP)
 {
-	if(client->GetIP() != 0)
-		return client->GetIP() == dwIP;
-	return client->GetConnectIP() == dwIP;
+    if (client->GetIP() != 0)
+        return client->GetIP() == dwIP;
+    return client->GetConnectIP() == dwIP;
 }
 //<<< WiZaRd::FiX
 
@@ -79,7 +79,7 @@ void CClientList::GetStatistics(UINT &ruTotalClients, int stats[NUM_CLIENTLIST_S
                                 CMap<UINT, UINT, UINT, UINT>& clientVersionEDonkey,
                                 CMap<UINT, UINT, UINT, UINT>& clientVersionEDonkeyHybrid,
                                 CMap<UINT, UINT, UINT, UINT>& clientVersionEMule,
-								CMap<UINT, UINT, UINT, UINT>& clientVersionKMule,
+                                CMap<UINT, UINT, UINT, UINT>& clientVersionKMule,
                                 CMap<UINT, UINT, UINT, UINT>& clientVersionAMule)
 {
     ruTotalClients = list.GetCount();
@@ -101,10 +101,10 @@ void CClientList::GetStatistics(UINT &ruTotalClients, int stats[NUM_CLIENTLIST_S
             break;
 
 //>>> WiZaRd::kMule Version Ident
-		case SO_KMULE:
-			++stats[20];
-			++clientVersionKMule[cur_client->GetVersion()];
-			break;
+        case SO_KMULE:
+            ++stats[20];
+            ++clientVersionKMule[cur_client->GetVersion()];
+            break;
 //<<< WiZaRd::kMule Version Ident
 
         case SO_EDONKEYHYBRID :
@@ -655,7 +655,7 @@ void CClientList::Process()
                 cur_client->SetKadState(KS_CONNECTING_BUDDY);
                 cur_client->TryToConnect(true, true);
 #ifdef INFO_WND
-				theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
+                theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
 #endif
             }
             else if (m_nBuddyStatus == Connected)
@@ -688,7 +688,7 @@ void CClientList::Process()
                 m_pBuddy = cur_client;
                 m_nBuddyStatus = Connected;
 #ifdef INFO_WND
-				theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
+                theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
 #endif
             }
             if (m_pBuddy == cur_client && theApp.IsFirewalled() && cur_client->SendBuddyPingPong())
@@ -727,7 +727,7 @@ void CClientList::Process()
             m_pBuddy = NULL;
             m_nBuddyStatus = Disconnected;
 #ifdef INFO_WND
-			theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
+            theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
 #endif
         }
     }
@@ -917,7 +917,7 @@ void CClientList::RemoveFromKadList(CUpDownClient* torem)
             m_nBuddyStatus = Disconnected; //>>> WiZaRd::FiX?
             m_pBuddy = NULL;
 #ifdef INFO_WND
-			theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
+            theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
 #endif
         }
         m_KadList.RemoveAt(pos);
@@ -1133,7 +1133,7 @@ bool CClientList::AllowCallbackRequest(UINT dwIP) const
 //>>> WiZaRd::ModIconMapper
 void CClientList::UpdateModIconIndexes() const
 {
-	for(POSITION pos = list.GetHeadPosition(); pos != NULL;)  
-		list.GetNext(pos)->CheckModIconIndex();
+    for (POSITION pos = list.GetHeadPosition(); pos != NULL;)
+        list.GetNext(pos)->CheckModIconIndex();
 }
 //<<< WiZaRd::ModIconMapper

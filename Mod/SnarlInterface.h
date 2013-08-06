@@ -353,7 +353,7 @@ public:
     static void FreeString(LPCSTR str)
     {
         delete [] str;
-		str = NULL;
+        str = NULL;
     }
     static void FreeString(LPWSTR str)
     {
@@ -363,7 +363,7 @@ public:
     static void FreeString(LPCWSTR str)
     {
         delete [] str;
-		str = NULL;
+        str = NULL;
     }
 
     /// <summary>Send message to Snarl.</summary>

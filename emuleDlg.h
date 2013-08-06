@@ -110,7 +110,7 @@ public:
     void DoVersioncheck(bool manual);
     void ApplyHyperTextFont(LPLOGFONT pFont);
 #ifdef INFO_WND
-	void ApplyLogFont(LPLOGFONT pFont); //>>> WiZaRd::InfoWnd
+    void ApplyLogFont(LPLOGFONT pFont); //>>> WiZaRd::InfoWnd
 #endif
     void ProcessED2KLink(LPCTSTR pszData);
     void SetStatusBarPartsSize();
@@ -126,9 +126,9 @@ public:
     void RefreshUPnP(bool bRequestAnswer = false);
 #ifdef USE_NAT_PMP
 //>>> WiZaRd::NAT-PMP
-	void RemoveNATPMPMappings();
-	void StartNATPMP(bool bReset = true, uint16 nForceTCPPort = 0, uint16 nForceUDPPort = 0);
-	void RefreshNATPMP(bool bRequestAnswer = false);
+    void RemoveNATPMPMappings();
+    void StartNATPMP(bool bReset = true, uint16 nForceTCPPort = 0, uint16 nForceUDPPort = 0);
+    void RefreshNATPMP(bool bRequestAnswer = false);
 //<<< WiZaRd::NAT-PMP
 #endif
     HBRUSH GetCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
@@ -139,7 +139,7 @@ public:
 
     CTransferDlg*	transferwnd;
 #ifdef INFO_WND
-	CInfoWnd*		infoWnd; //>>> WiZaRd::InfoWnd
+    CInfoWnd*		infoWnd; //>>> WiZaRd::InfoWnd
 #endif
     CServerWnd*		serverwnd;
     CPreferencesDlg* preferenceswnd;
@@ -196,7 +196,7 @@ protected:
     bool			m_iMsgBlinkState;
     bool			m_bConnectRequestDelayedForUPnP;
 #ifdef USE_NAT_PMP
-	bool			m_bConnectRequestDelayedForNATPMP; //>>> WiZaRd::NAT-PMP
+    bool			m_bConnectRequestDelayedForNATPMP; //>>> WiZaRd::NAT-PMP
 #endif
     bool			m_bKadSuspendDisconnect;
     bool			m_bInitedCOM;
@@ -227,8 +227,8 @@ protected:
     static void CALLBACK UPnPTimeOutTimer(HWND hwnd, UINT uiMsg, UINT idEvent, DWORD dwTime);
 #ifdef USE_NAT_PMP
 //>>> WiZaRd::NAT-PMP
-	UINT_PTR m_hNATPMPTimeOutTimer;
-	static void CALLBACK NATPMPTimeOutTimer(HWND hwnd, UINT uiMsg, UINT idEvent, DWORD dwTime);
+    UINT_PTR m_hNATPMPTimeOutTimer;
+    static void CALLBACK NATPMPTimeOutTimer(HWND hwnd, UINT uiMsg, UINT idEvent, DWORD dwTime);
 //<<< WiZaRd::NAT-PMP
 #endif
 
@@ -319,12 +319,12 @@ protected:
     afx_msg LRESULT OnUPnPResult(WPARAM wParam, LPARAM lParam);
 
 #ifdef USE_NAT_PMP
-	afx_msg LRESULT OnNATPMPResult(WPARAM wParam, LPARAM lParam); //>>> WiZaRd::NAT-PMP
+    afx_msg LRESULT OnNATPMPResult(WPARAM wParam, LPARAM lParam); //>>> WiZaRd::NAT-PMP
 #endif
 
 //>>> WiZaRd::7zip
-	afx_msg LRESULT OnSevenZipJobDone(WPARAM wParam, LPARAM lParam); 
-	afx_msg LRESULT OnSevenZipJobFailed(WPARAM wParam, LPARAM lParam); 
+    afx_msg LRESULT OnSevenZipJobDone(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnSevenZipJobFailed(WPARAM wParam, LPARAM lParam);
 //<<< WiZaRd::7zip
 };
 
@@ -340,8 +340,8 @@ enum EEMuleAppMsgs
     TM_FILEOPPROGRESS,
     TM_CONSOLETHREADEVENT,
 //>>> WiZaRd::7zip
-	TM_SEVENZIP_JOB_DONE,
-	TM_SEVENZIP_JOB_FAILED, 
+    TM_SEVENZIP_JOB_DONE,
+    TM_SEVENZIP_JOB_FAILED,
 //<<< WiZaRd::7zip
 };
 

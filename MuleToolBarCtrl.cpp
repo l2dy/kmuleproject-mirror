@@ -150,10 +150,10 @@ void CMuleToolbarCtrl::Init(void)
 
 #ifdef INFO_WND
 //>>> WiZaRd::InfoWnd
-	lLen2 = _tcslen(GetResString(IDS_INFO)) + 1;
-	memcpy(cButtonStrings+lLen, GetResString(IDS_INFO), lLen2*sizeof(TCHAR));
-	lLen += lLen2;
-	++m_buttoncount;
+    lLen2 = _tcslen(GetResString(IDS_INFO)) + 1;
+    memcpy(cButtonStrings+lLen, GetResString(IDS_INFO), lLen2*sizeof(TCHAR));
+    lLen += lLen2;
+    ++m_buttoncount;
 //<<< WiZaRd::InfoWnd
 #endif
 
@@ -235,7 +235,7 @@ void CMuleToolbarCtrl::SetAllButtonsStrings()
         IDS_EM_PREFS,
         IDS_TOOLS,
 #ifdef INFO_WND
-		IDS_INFO,
+        IDS_INFO,
 #endif
         IDS_EM_HELP
     };
@@ -652,7 +652,7 @@ void CMuleToolbarCtrl::ChangeToolbarBitmap(const CString& path, bool bRefresh)
         ImageList.Add(CTempIconLoader(_T("PREFERENCES"), m_sizBtnBmp.cx, m_sizBtnBmp.cy));
         ImageList.Add(CTempIconLoader(_T("TOOLS"), m_sizBtnBmp.cx, m_sizBtnBmp.cy));
 #ifdef INFO_WND
-		ImageList.Add(CTempIconLoader(L"INFO", m_sizBtnBmp.cx, m_sizBtnBmp.cy)); //>>> WiZaRd::InfoWnd
+        ImageList.Add(CTempIconLoader(L"INFO", m_sizBtnBmp.cx, m_sizBtnBmp.cy)); //>>> WiZaRd::InfoWnd
 #endif
         ImageList.Add(CTempIconLoader(_T("HELP"), m_sizBtnBmp.cx, m_sizBtnBmp.cy));
         ASSERT(ImageList.GetImageCount() == TBBTN_COUNT);
@@ -893,7 +893,7 @@ void CMuleToolbarCtrl::Refresh()
             theApp.emuledlg->chatwnd,
             theApp.emuledlg->statisticswnd,
 #ifdef INFO_WND
-			theApp.emuledlg->infoWnd, //>>> WiZaRd::InfoWnd
+            theApp.emuledlg->infoWnd, //>>> WiZaRd::InfoWnd
 #endif
         };
         for (int i = 0; i < _countof(wnds); i++)

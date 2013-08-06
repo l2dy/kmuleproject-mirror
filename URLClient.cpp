@@ -52,12 +52,12 @@ void CUrlClient::SetRequestFile(CPartFile* pReqFile)
     if (reqfile)
     {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-		if (m_pPartStatus != NULL)
-			reqfile->RemoveFromPartsInfo(m_pPartStatus);
-		delete m_pPartStatus;
-		m_pPartStatus = NULL; // In case we fail to create the part status object
-		m_pPartStatus = new CCrumbMap(pReqFile->GetFileSize());
-		m_pPartStatus->Set(0, pReqFile->GetFileSize() - 1ULL);
+        if (m_pPartStatus != NULL)
+            reqfile->RemoveFromPartsInfo(m_pPartStatus);
+        delete m_pPartStatus;
+        m_pPartStatus = NULL; // In case we fail to create the part status object
+        m_pPartStatus = new CCrumbMap(pReqFile->GetFileSize());
+        m_pPartStatus->Set(0, pReqFile->GetFileSize() - 1ULL);
         //m_nPartCount = reqfile->GetPartCount();
         //m_abyPartStatus = new uint8[m_nPartCount];
         //memset(m_abyPartStatus, 1, m_nPartCount);

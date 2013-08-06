@@ -59,7 +59,7 @@ void CMuleStatusBarCtrl::OnLButtonDblClk(UINT /*nFlags*/, CPoint point)
     {
     case SBarLog:
 #ifdef INFO_WND
-		theApp.emuledlg->SetActiveDialog(theApp.emuledlg->infoWnd); //>>> WiZaRd::InfoWnd
+        theApp.emuledlg->SetActiveDialog(theApp.emuledlg->infoWnd); //>>> WiZaRd::InfoWnd
 #else
         if (thePrefs.GetLog2Disk())
             ShellOpenFile(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + L"eMule.log");

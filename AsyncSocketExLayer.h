@@ -134,8 +134,11 @@ protected:
     };
 
 //>>> WiZaRd::NatTraversal [Xanatos]
-	// UTP layer is a layer without an underlying TCP socket there for it have to do some stuff on its own
-	virtual bool IsUtpLayer() {return false;}
+    // UTP layer is a layer without an underlying TCP socket there for it have to do some stuff on its own
+    virtual bool IsUtpLayer()
+    {
+        return false;
+    }
 
 protected:
 //private:

@@ -275,7 +275,7 @@ void CPPgSecurity::OnReloadIPFilter()
 void CPPgSecurity::OnEditIPFilter()
 {
     _ShellExecute(NULL, _T("open"), thePrefs.GetTxtEditor(),
-                 _T("\"") + thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + DFLT_IPFILTER_FILENAME _T("\""), NULL, SW_SHOW);
+                  _T("\"") + thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + DFLT_IPFILTER_FILENAME _T("\""), NULL, SW_SHOW);
 }
 
 void CPPgSecurity::OnLoadIPFFromURL()

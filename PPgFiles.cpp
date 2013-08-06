@@ -54,9 +54,9 @@ BEGIN_MESSAGE_MAP(CPPgFiles, CPropertyPage)
     ON_BN_CLICKED(IDC_BROWSEV, BrowseVideoplayer)
     ON_BN_CLICKED(IDC_BROWSEX2, BrowseExtractfolder)
     ON_EN_CHANGE(IDC_EXTRACTFOLDER, OnSettingsChange)
-	ON_BN_CLICKED(IDC_CHECKEXTRACT, OnSettingsChange)
-	ON_BN_CLICKED(IDC_RADIOEXTRACTINCOMING, OnSettingsChange)
-	ON_BN_CLICKED(IDC_RADIOEXTRACTOTHER, OnSettingsChange)
+    ON_BN_CLICKED(IDC_CHECKEXTRACT, OnSettingsChange)
+    ON_BN_CLICKED(IDC_RADIOEXTRACTINCOMING, OnSettingsChange)
+    ON_BN_CLICKED(IDC_RADIOEXTRACTOTHER, OnSettingsChange)
     ON_WM_HELPINFO()
     ON_WM_DESTROY()
 END_MESSAGE_MAP()
@@ -88,7 +88,7 @@ BOOL CPPgFiles::OnInitDialog()
 
     LoadSettings();
     Localize();
-	CheckAvailableSettings();
+    CheckAvailableSettings();
 
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
@@ -354,11 +354,11 @@ void CPPgFiles::OnDestroy()
 
 void CPPgFiles::CheckAvailableSettings()
 {
-	const BOOL bEnableFlag = m_SevenZipThreadHandler.IsSevenZipAvailable() ? TRUE : FALSE;
-	GetDlgItem(IDC_STATICEXTRACT)->EnableWindow(bEnableFlag);
-	GetDlgItem(IDC_CHECKEXTRACT)->EnableWindow(bEnableFlag);
-	GetDlgItem(IDC_RADIOEXTRACTINCOMING)->EnableWindow(bEnableFlag);
-	GetDlgItem(IDC_RADIOEXTRACTOTHER)->EnableWindow(bEnableFlag);
-	GetDlgItem(IDC_BROWSEX2)->EnableWindow(bEnableFlag);
-	GetDlgItem(IDC_EXTRACTFOLDER)->EnableWindow(bEnableFlag);
+    const BOOL bEnableFlag = m_SevenZipThreadHandler.IsSevenZipAvailable() ? TRUE : FALSE;
+    GetDlgItem(IDC_STATICEXTRACT)->EnableWindow(bEnableFlag);
+    GetDlgItem(IDC_CHECKEXTRACT)->EnableWindow(bEnableFlag);
+    GetDlgItem(IDC_RADIOEXTRACTINCOMING)->EnableWindow(bEnableFlag);
+    GetDlgItem(IDC_RADIOEXTRACTOTHER)->EnableWindow(bEnableFlag);
+    GetDlgItem(IDC_BROWSEX2)->EnableWindow(bEnableFlag);
+    GetDlgItem(IDC_EXTRACTFOLDER)->EnableWindow(bEnableFlag);
 }

@@ -75,7 +75,7 @@ CPPgTweaks::CPPgTweaks()
     m_bLogA4AF = false;
     m_bLogUlDlEvents = false;
     m_bLog2Disk = false;
-	m_bLogAnalyzerToDisk = false; //>>> WiZaRd::ClientAnalyzer
+    m_bLogAnalyzerToDisk = false; //>>> WiZaRd::ClientAnalyzer
     m_bDebug2Disk = false;
     m_iCommitFiles = 0;
     m_bFilterLANIPs = false;
@@ -99,6 +99,7 @@ CPPgTweaks::CPPgTweaks()
     m_bSkipWANPPPSetup = false;
     m_iShareeMule = 0;
     m_bResolveShellLinks = false;
+    m_iSpreadPrioLimit = 0; //>>> Tux::Spread Priority v3
 
     bShowedWarning = false;
     m_bInitializedTreeOpts = false;
@@ -117,7 +118,7 @@ CPPgTweaks::CPPgTweaks()
     m_htiLogFileSaving = NULL;
     m_htiLogUlDlEvents = NULL;
     m_htiLog2Disk = NULL;
-	m_htiLogAnalyzerToDisk = NULL; //>>> WiZaRd::ClientAnalyzer
+    m_htiLogAnalyzerToDisk = NULL; //>>> WiZaRd::ClientAnalyzer
     m_htiDebug2Disk = NULL;
     m_htiCommit = NULL;
     m_htiCommitNever = NULL;
@@ -154,6 +155,7 @@ CPPgTweaks::CPPgTweaks()
     m_htiShareeMulePublicUser = NULL;
     m_htiShareeMuleOldStyle = NULL;
     m_htiResolveShellLinks = NULL;
+    m_htiSpreadPrioLimit = NULL; //>>> Tux::Spread Priority v3
 }
 
 CPPgTweaks::~CPPgTweaks()
@@ -225,12 +227,16 @@ void CPPgTweaks::DoDataExchange(CDataExchange* pDX)
         m_htiExtractMetaDataID3Lib = m_ctrlTreeOptions.InsertRadioButton(GetResString(IDS_META_DATA_ID3LIB), m_htiExtractMetaData, m_iExtractMetaData == 1);
         //m_htiExtractMetaDataMediaDet = m_ctrlTreeOptions.InsertRadioButton(GetResString(IDS_META_DATA_MEDIADET), m_htiExtractMetaData, m_iExtractMetaData == 2);
         m_htiResolveShellLinks = m_ctrlTreeOptions.InsertCheckBox(GetResString(IDS_RESOLVELINKS), TVI_ROOT, m_bResolveShellLinks);
+//>>> Tux::Spread Priority v3
+        m_htiSpreadPrioLimit = m_ctrlTreeOptions.InsertItem(GetResString(IDS_SPREADPRIOLIMIT), TREEOPTSCTRLIMG_EDIT, TREEOPTSCTRLIMG_EDIT, TVI_ROOT);
+        m_ctrlTreeOptions.AddEditBox(m_htiSpreadPrioLimit, RUNTIME_CLASS(CNumTreeOptionsEdit));
+//<<< Tux::Spread Priority v3
 
         /////////////////////////////////////////////////////////////////////////////
         // Logging group
         //
         m_htiLog2Disk = m_ctrlTreeOptions.InsertCheckBox(GetResString(IDS_LOG2DISK), TVI_ROOT, m_bLog2Disk);
-		//m_htiLogAnalyzerToDisk = m_ctrlTreeOptions.InsertCheckBox(GetResString(IDS_LOG2DISK), TVI_ROOT, m_bLogAnalyzerToDisk); //>>> WiZaRd::ClientAnalyzer
+        //m_htiLogAnalyzerToDisk = m_ctrlTreeOptions.InsertCheckBox(GetResString(IDS_LOG2DISK), TVI_ROOT, m_bLogAnalyzerToDisk); //>>> WiZaRd::ClientAnalyzer
         if (thePrefs.GetEnableVerboseOptions())
         {
             m_htiVerboseGroup = m_ctrlTreeOptions.InsertGroup(GetResString(IDS_VERBOSE), iImgLog, TVI_ROOT);
@@ -329,12 +335,16 @@ void CPPgTweaks::DoDataExchange(CDataExchange* pDX)
     DDX_TreeRadio(pDX, IDC_EXT_OPTS, m_htiCommit, m_iCommitFiles);
     DDX_TreeRadio(pDX, IDC_EXT_OPTS, m_htiExtractMetaData, m_iExtractMetaData);
     DDX_TreeCheck(pDX, IDC_EXT_OPTS, m_htiResolveShellLinks, m_bResolveShellLinks);
+//>>> Tux::Spread Priority v3
+    DDX_TreeEdit(pDX, IDC_EXT_OPTS, m_htiSpreadPrioLimit, m_iSpreadPrioLimit);
+    DDV_MinMaxInt(pDX, m_iSpreadPrioLimit, 1, INT_MAX);
+//<<< Tux::Spread Priority v3
 
     /////////////////////////////////////////////////////////////////////////////
     // Logging group
     //
     DDX_TreeCheck(pDX, IDC_EXT_OPTS, m_htiLog2Disk, m_bLog2Disk);
-	//DDX_TreeCheck(pDX, IDC_EXT_OPTS, m_htiLogAnalyzerToDisk, m_bLogAnalyzerToDisk); //>>> WiZaRd::ClientAnalyzer
+    //DDX_TreeCheck(pDX, IDC_EXT_OPTS, m_htiLogAnalyzerToDisk, m_bLogAnalyzerToDisk); //>>> WiZaRd::ClientAnalyzer
     if (m_htiLogLevel)
     {
         DDX_TreeEdit(pDX, IDC_EXT_OPTS, m_htiLogLevel, m_iLogLevel);
@@ -413,7 +423,7 @@ BOOL CPPgTweaks::OnInitDialog()
         m_iLogLevel = 5 - thePrefs.m_byLogLevel;
     }
     m_bLog2Disk = thePrefs.log2disk;
-	m_bLogAnalyzerToDisk = thePrefs.m_bLogAnalyzerToDisk; //>>> WiZaRd::ClientAnalyzer
+    m_bLogAnalyzerToDisk = thePrefs.m_bLogAnalyzerToDisk; //>>> WiZaRd::ClientAnalyzer
     m_iCommitFiles = thePrefs.m_iCommitFiles;
     m_iExtractMetaData = thePrefs.m_iExtractMetaData;
     m_bFilterLANIPs = thePrefs.filterLANIPs;
@@ -421,6 +431,7 @@ BOOL CPPgTweaks::OnInitDialog()
     m_bSparsePartFiles = thePrefs.GetSparsePartFiles();
     m_bFullAlloc= thePrefs.m_bAllocFull;
     m_bResolveShellLinks = thePrefs.GetResolveSharedShellLinks();
+    m_iSpreadPrioLimit = thePrefs.GetSpreadPrioLimit(); //>>> Tux::Spread Priority v3
     m_sYourHostname = thePrefs.GetYourHostname();
     m_bFirewallStartup = ((thePrefs.GetWindowsVersion() == _WINVER_XP_) ? thePrefs.m_bOpenPortsOnStartUp : 0);
     m_bAutoArchDisable = !thePrefs.m_bAutomaticArcPreviewStart;
@@ -492,8 +503,8 @@ BOOL CPPgTweaks::OnApply()
 
 #ifdef INFO_WND
 //>>> WiZaRd::InfoWnd
-	const bool bVerbose = thePrefs.GetVerbose();
-	const bool bAnalyzer = thePrefs.GetLogAnalyzerEvents(); //>>> WiZaRd::ClientAnalyzer
+    const bool bVerbose = thePrefs.GetVerbose();
+    const bool bAnalyzer = thePrefs.GetLogAnalyzerEvents(); //>>> WiZaRd::ClientAnalyzer
 //<<< WiZaRd::InfoWnd
 #endif
 
@@ -517,11 +528,11 @@ BOOL CPPgTweaks::OnApply()
     thePrefs.log2disk = m_bLog2Disk;
 
 //>>> WiZaRd::ClientAnalyzer
-	if (!thePrefs.m_bLogAnalyzerToDisk && m_bLogAnalyzerToDisk)
-		theAnalyzerLog.Open();
-	else if (thePrefs.m_bLogAnalyzerToDisk && !m_bLogAnalyzerToDisk)
-		theAnalyzerLog.Close();
-	thePrefs.m_bLogAnalyzerToDisk = m_bLogAnalyzerToDisk;
+    if (!thePrefs.m_bLogAnalyzerToDisk && m_bLogAnalyzerToDisk)
+        theAnalyzerLog.Open();
+    else if (thePrefs.m_bLogAnalyzerToDisk && !m_bLogAnalyzerToDisk)
+        theAnalyzerLog.Close();
+    thePrefs.m_bLogAnalyzerToDisk = m_bLogAnalyzerToDisk;
 //<<< WiZaRd::ClientAnalyzer
 
     if (thePrefs.GetEnableVerboseOptions())
@@ -562,11 +573,12 @@ BOOL CPPgTweaks::OnApply()
     thePrefs.m_bSparsePartFiles = m_bSparsePartFiles;
     thePrefs.m_bAllocFull= m_bFullAlloc;
     thePrefs.m_bResolveSharedShellLinks = m_bResolveShellLinks;
+    thePrefs.SetSpreadPrioLimit(m_iSpreadPrioLimit); //>>> Tux::Spread Priority v3
     if (thePrefs.GetYourHostname() != m_sYourHostname)
     {
         thePrefs.SetYourHostname(m_sYourHostname);
 #ifdef INFO_WND
-		theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
+        theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
 #endif
     }
     thePrefs.m_bOpenPortsOnStartUp = m_bFirewallStartup;
@@ -592,17 +604,17 @@ BOOL CPPgTweaks::OnApply()
 #ifdef INFO_WND
 //>>> WiZaRd::InfoWnd
 //>>> WiZaRd::ClientAnalyzer
-	if(thePrefs.GetLogAnalyzerEvents() != bAnalyzer)
-	{
-		theApp.emuledlg->infoWnd->ToggleAnalyzerWindow();
-		theApp.emuledlg->infoWnd->UpdateLogTabSelection();
-	}
+    if (thePrefs.GetLogAnalyzerEvents() != bAnalyzer)
+    {
+        theApp.emuledlg->infoWnd->ToggleAnalyzerWindow();
+        theApp.emuledlg->infoWnd->UpdateLogTabSelection();
+    }
 //<<< WiZaRd::ClientAnalyzer
-	if(thePrefs.GetEnableVerboseOptions() != bVerbose)
-	{
-		theApp.emuledlg->infoWnd->ToggleDebugWindow();
-		theApp.emuledlg->infoWnd->UpdateLogTabSelection();
-	}
+    if (thePrefs.GetEnableVerboseOptions() != bVerbose)
+    {
+        theApp.emuledlg->infoWnd->ToggleDebugWindow();
+        theApp.emuledlg->infoWnd->UpdateLogTabSelection();
+    }
 //<<< WiZaRd::InfoWnd
 #endif
 
@@ -648,7 +660,7 @@ void CPPgTweaks::Localize(void)
         if (m_htiConditionalTCPAccept) m_ctrlTreeOptions.SetItemText(m_htiConditionalTCPAccept, GetResString(IDS_CONDTCPACCEPT));
         if (m_htiAutoTakeEd2kLinks) m_ctrlTreeOptions.SetItemText(m_htiAutoTakeEd2kLinks, GetResString(IDS_AUTOTAKEED2KLINKS));
         if (m_htiLog2Disk) m_ctrlTreeOptions.SetItemText(m_htiLog2Disk, GetResString(IDS_LOG2DISK));
-		//if (m_htiLogAnalyzerToDisk) m_ctrlTreeOptions.SetItemText(m_htiLogAnalyzerToDisk, GetResString(IDS_LOG2DISK)); //>>> WiZaRd::ClientAnalyzer
+        //if (m_htiLogAnalyzerToDisk) m_ctrlTreeOptions.SetItemText(m_htiLogAnalyzerToDisk, GetResString(IDS_LOG2DISK)); //>>> WiZaRd::ClientAnalyzer
         if (m_htiVerboseGroup) m_ctrlTreeOptions.SetItemText(m_htiVerboseGroup, GetResString(IDS_VERBOSE));
         if (m_htiVerbose) m_ctrlTreeOptions.SetItemText(m_htiVerbose, GetResString(IDS_ENABLED));
         if (m_htiDebug2Disk) m_ctrlTreeOptions.SetItemText(m_htiDebug2Disk, GetResString(IDS_LOG2DISK));
@@ -693,6 +705,7 @@ void CPPgTweaks::Localize(void)
         if (m_htiShareeMulePublicUser) m_ctrlTreeOptions.SetItemText(m_htiShareeMulePublicUser, GetResString(IDS_SHAREEMULEPUBLIC));
         if (m_htiShareeMuleOldStyle) m_ctrlTreeOptions.SetItemText(m_htiShareeMuleOldStyle, GetResString(IDS_SHAREEMULEOLD));
         if (m_htiResolveShellLinks) m_ctrlTreeOptions.SetItemText(m_htiResolveShellLinks, GetResString(IDS_RESOLVELINKS));
+        if (m_htiResolveShellLinks) m_ctrlTreeOptions.SetItemText(m_htiSpreadPrioLimit, GetResString(IDS_SPREADPRIOLIMIT)); //>>> Tux::Spread Priority v3
 
         CString temp;
         temp.Format(_T("%s: %s"), GetResString(IDS_FILEBUFFERSIZE), CastItoXBytes(m_iFileBufferSize, false, false));
@@ -724,7 +737,7 @@ void CPPgTweaks::OnDestroy()
     m_htiLogLevel = NULL;
     m_htiLogUlDlEvents = NULL;
     m_htiLog2Disk = NULL;
-	m_htiLogAnalyzerToDisk = NULL; //>>> WiZaRd::ClientAnalyzer
+    m_htiLogAnalyzerToDisk = NULL; //>>> WiZaRd::ClientAnalyzer
     m_htiDebug2Disk = NULL;
     m_htiCommit = NULL;
     m_htiCommitNever = NULL;
@@ -762,6 +775,7 @@ void CPPgTweaks::OnDestroy()
     m_htiShareeMuleOldStyle = NULL;
     //m_htiExtractMetaDataMediaDet = NULL;
     m_htiResolveShellLinks = NULL;
+    m_htiSpreadPrioLimit = NULL; //>>> Tux::Spread Priority v3
 
     CPropertyPage::OnDestroy();
 }

@@ -554,18 +554,24 @@ public:
 //<<< WiZaRd::AutoHL
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 public:
-	friend class CPartFileStatus;
-	virtual void	AddToPartsInfo(const CPartStatus* partstatus);
-	virtual void	RemoveFromPartsInfo(const CPartStatus* partstatus);	
+    friend class CPartFileStatus;
+    virtual void	AddToPartsInfo(const CPartStatus* partstatus);
+    virtual void	RemoveFromPartsInfo(const CPartStatus* partstatus);
 
-	const CPartStatus*	GetDonePartStatus() const {return (const CPartStatus*) m_pPartStatus;}
-	const CPartStatus*	GetPublishedPartStatus() const {return m_pPublishedPartStatus;}
+    const CPartStatus*	GetDonePartStatus() const
+    {
+        return (const CPartStatus*) m_pPartStatus;
+    }
+    const CPartStatus*	GetPublishedPartStatus() const
+    {
+        return m_pPublishedPartStatus;
+    }
 private:
-	CPartStatus*		m_pPartStatus;
-	CPartStatus*		m_pPublishedPartStatus;
-	clock_t				m_nLastShareableChunkScan;
+    CPartStatus*		m_pPartStatus;
+    CPartStatus*		m_pPublishedPartStatus;
+    clock_t				m_nLastShareableChunkScan;
 protected:
-	bool				GetNextEmptyBlockInPart(UINT partnumber, Requested_Block_Struct* result, uint64 bytesToRequest = CRUMBSIZE, const CPartStatus* availableParts = 0, const CUpDownClient* client = 0) const;
-	clock_t				EstimatePartCompletion(const UINT nPart) const; // Estimate time to part completion
+    bool				GetNextEmptyBlockInPart(UINT partnumber, Requested_Block_Struct* result, uint64 bytesToRequest = CRUMBSIZE, const CPartStatus* availableParts = 0, const CUpDownClient* client = 0) const;
+    clock_t				EstimatePartCompletion(const UINT nPart) const; // Estimate time to part completion
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 };

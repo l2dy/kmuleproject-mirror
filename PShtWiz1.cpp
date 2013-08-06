@@ -378,7 +378,7 @@ void CPPgWiz1Ports::OnCancel()
 void CPPgWiz1Ports::OnStartUPnP()
 {
     CDlgPageWizard::OnApply();
-	thePrefs.m_bEnableUPnP = true; // just to be sure :)
+    thePrefs.m_bEnableUPnP = true; // just to be sure :)
     theApp.emuledlg->StartUPnP(true, GetTCPPort(), GetUDPPort());
 
     GetDlgItem(IDC_UPNPSTATUS)->SetWindowText(GetResString(IDS_UPNPSETUP));
@@ -1155,7 +1155,7 @@ BOOL FirstTimeWizard()
         thePrefs.udpport = GetRandomUDPPort();
 
     if ((thePrefs.port!=theApp.listensocket->GetConnectedPort()) || (thePrefs.udpport!=theApp.clientudp->GetConnectedPort()))
-	{
+    {
         if (!theApp.IsPortchangeAllowed())
         {
 //>>> WiZaRd::Automatic Restart
@@ -1172,7 +1172,7 @@ BOOL FirstTimeWizard()
             theApp.listensocket->Rebind() ;
             theApp.clientudp->Rebind();
         }
-	}
+    }
 
     return TRUE;
 }

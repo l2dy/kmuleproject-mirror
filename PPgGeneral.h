@@ -40,7 +40,7 @@ protected:
     afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
 
 //>>> WiZaRd::Honor translators
-	CHyperTextCtrl m_wndShowTranslatorHP;
-	void UpdateTranslatorField();
+    CHyperTextCtrl m_wndShowTranslatorHP;
+    void UpdateTranslatorField();
 //<<< WiZaRd::Honor translators
 };

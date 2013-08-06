@@ -729,8 +729,8 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool bDoStatsUpdate)
             if (bDoStatsUpdate)
             {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-				if (toremove->GetPartStatus() != NULL)
-					cur_file->RemoveFromPartsInfo(toremove->GetPartStatus());
+                if (toremove->GetPartStatus() != NULL)
+                    cur_file->RemoveFromPartsInfo(toremove->GetPartStatus());
                 //cur_file->UpdatePartsInfo();
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
                 cur_file->UpdateAvailablePartsCount();

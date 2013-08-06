@@ -229,8 +229,8 @@ void Packet::PackPacket()
     if (prot == OP_KADEMLIAHEADER)
         prot = OP_KADEMLIAPACKEDPROT;
 //>>> WiZaRd::ModProt
-	else if(prot == OP_MODPROT)
-		prot = OP_MODPROT_PACKED;
+    else if (prot == OP_MODPROT)
+        prot = OP_MODPROT_PACKED;
 //<<< WiZaRd::ModProt
     else
         prot = OP_PACKEDPROT;
@@ -272,8 +272,8 @@ bool Packet::UnPackPacket(UINT uMaxDecompressedSize)
         if (prot == OP_KADEMLIAPACKEDPROT)
             prot = OP_KADEMLIAHEADER;
 //>>> WiZaRd::ModProt
-		else if(prot == OP_MODPROT_PACKED)
-			prot = OP_MODPROT;
+        else if (prot == OP_MODPROT_PACKED)
+            prot = OP_MODPROT;
 //<<< WiZaRd::ModProt
         else
             prot =  OP_EMULEPROT;

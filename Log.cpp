@@ -212,11 +212,11 @@ void AddLogTextV(UINT uFlags, EDebugLogPriority dlpPriority, LPCTSTR pszLine, va
         if (iLen > 0)
         {
 //>>> WiZaRd::ClientAnalyzer
-			if (/*thePrefs.GetVerbose() &&*/ (uFlags & LOG_CA))
-			{
-				if (thePrefs.GetLogAnalyzerToDisk())
-					theAnalyzerLog.Log(szFullLogLine, iLen);
-			}
+            if (/*thePrefs.GetVerbose() &&*/ (uFlags & LOG_CA))
+            {
+                if (thePrefs.GetLogAnalyzerToDisk())
+                    theAnalyzerLog.Log(szFullLogLine, iLen);
+            }
 //<<< WiZaRd::ClientAnalyzer
             else if (!(uFlags & LOG_DEBUG))
             {

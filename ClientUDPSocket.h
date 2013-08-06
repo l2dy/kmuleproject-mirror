@@ -53,7 +53,7 @@ public:
 
 protected:
     //bool	ProcessPacket(const BYTE* packet, UINT size, uint8 opcode, UINT ip, uint16 port); //>>> WiZaRd::NatTraversal [Xanatos]
-	bool	ProcessModPacket(BYTE* packet, const UINT size, const uint8 opcode, const UINT ip, const uint16 port); //>>> WiZaRd::ModProt
+    bool	ProcessModPacket(BYTE* packet, const UINT size, const uint8 opcode, const UINT ip, const uint16 port); //>>> WiZaRd::ModProt
 
     virtual void	OnSend(int nErrorCode);
     virtual void	OnReceive(int nErrorCode);
@@ -73,32 +73,35 @@ private:
 
 //>>> WiZaRd::NatTraversal [Xanatos]
 public:
-	bool	ProcessPacket(const BYTE* packet, UINT size, uint8 opcode, UINT ip, uint16 port);
-	void	SetConnectionEncryption(UINT dwIP, uint16 nPort, bool bEncrypt, const uchar* pTargetClientHash = NULL);
-	byte*	GetHashForEncryption(UINT dwIP, uint16 nPort);
-	bool	IsObfuscating(UINT dwIP, uint16 nPort)	{return GetHashForEncryption(dwIP, nPort) != NULL;}
-	void	SendUtpPacket(const byte *data, size_t len, const struct sockaddr *to, socklen_t tolen);
+    bool	ProcessPacket(const BYTE* packet, UINT size, uint8 opcode, UINT ip, uint16 port);
+    void	SetConnectionEncryption(UINT dwIP, uint16 nPort, bool bEncrypt, const uchar* pTargetClientHash = NULL);
+    byte*	GetHashForEncryption(UINT dwIP, uint16 nPort);
+    bool	IsObfuscating(UINT dwIP, uint16 nPort)
+    {
+        return GetHashForEncryption(dwIP, nPort) != NULL;
+    }
+    void	SendUtpPacket(const byte *data, size_t len, const struct sockaddr *to, socklen_t tolen);
 
 private:
-	struct SIpPort
-	{
-		UINT dwIP;
-		uint16 nPort;
+    struct SIpPort
+    {
+        UINT dwIP;
+        uint16 nPort;
 
-		bool operator< (const SIpPort &Other) const 
-		{
-			if(dwIP == Other.dwIP)
-				return nPort < Other.nPort;
-			return dwIP < Other.dwIP;
-		}
-	};
+        bool operator< (const SIpPort &Other) const
+        {
+            if (dwIP == Other.dwIP)
+                return nPort < Other.nPort;
+            return dwIP < Other.dwIP;
+        }
+    };
 
-	struct SHash
-	{
-		byte	UserHash[16];
-		UINT	LastUsed;
-	};
+    struct SHash
+    {
+        byte	UserHash[16];
+        UINT	LastUsed;
+    };
 
-	std::map<SIpPort, SHash>		m_HashMap;
+    std::map<SIpPort, SHash>		m_HashMap;
 //<<< WiZaRd::NatTraversal [Xanatos]
 };

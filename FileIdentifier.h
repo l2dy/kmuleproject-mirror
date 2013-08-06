@@ -89,7 +89,7 @@ public:
     bool			CalculateMD4HashByHashSet(bool bVerifyOnly, bool bDeleteOnVerifyFail = true);
     bool			LoadMD4HashsetFromFile(CFileDataIO* file, bool bVerifyExistingHash);
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	void			WriteMD4HashsetToFile(CFileDataIO* pFile, bool bHashSetOnly = false) const;
+    void			WriteMD4HashsetToFile(CFileDataIO* pFile, bool bHashSetOnly = false) const;
     //void			WriteMD4HashsetToFile(CFileDataIO* pFile) const;
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 

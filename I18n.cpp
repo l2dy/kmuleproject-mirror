@@ -26,12 +26,12 @@ CString GetResString(UINT uStringID, WORD wLanguageID)
 //>>> WiZaRd::Honor translators
 CString GetCurrentResString(UINT uStringID)
 {
-	CString resString;
-	if (s_hLangDLL)
-		resString.LoadString(s_hLangDLL, uStringID);
-	else
-		resString.LoadString(GetModuleHandle(NULL), uStringID);
-	return resString;
+    CString resString;
+    if (s_hLangDLL)
+        resString.LoadString(s_hLangDLL, uStringID);
+    else
+        resString.LoadString(GetModuleHandle(NULL), uStringID);
+    return resString;
 }
 //<<< WiZaRd::Honor translators
 

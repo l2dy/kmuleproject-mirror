@@ -29,32 +29,32 @@ typedef BOOL (WINAPI *t_QOSSetFlow)(HANDLE QOSHandle, QOS_FLOWID FlowId, QOS_SET
 class CQOS
 {
 public:
-	CQOS();
-	virtual ~CQOS();
+    CQOS();
+    virtual ~CQOS();
 
-	BOOL				Reinitialize();
-	BOOL				AddSocket(SOCKET socket, const SOCKADDR* dest);
-	BOOL				RemoveSocket(SOCKET socket);
-	BOOL				SetDataRate(DWORD datarate);
+    BOOL				Reinitialize();
+    BOOL				AddSocket(SOCKET socket, const SOCKADDR* dest);
+    BOOL				RemoveSocket(SOCKET socket);
+    BOOL				SetDataRate(DWORD datarate);
 
 private:
-	DWORD				AddSocket_internal(SOCKET socket, const SOCKADDR* dest);
-	DWORD				RemoveSocket_internal(SOCKET socket);
-	DWORD				SetDataRate_internal(DWORD datarate);
+    DWORD				AddSocket_internal(SOCKET socket, const SOCKADDR* dest);
+    DWORD				RemoveSocket_internal(SOCKET socket);
+    DWORD				SetDataRate_internal(DWORD datarate);
 
-	HMODULE				m_hQWAVE;
-	HANDLE				m_qosHandle;
-	QOS_FLOWID			m_qosFlowId;
-	DWORD				m_qosDatarate;
-	CList<SOCKET>		m_qosSockets;
-	clock_t				m_qosLastInit;
-	CCriticalSection	m_qosLocker;
+    HMODULE				m_hQWAVE;
+    HANDLE				m_qosHandle;
+    QOS_FLOWID			m_qosFlowId;
+    DWORD				m_qosDatarate;
+    CList<SOCKET>		m_qosSockets;
+    clock_t				m_qosLastInit;
+    CCriticalSection	m_qosLocker;
 
-	t_QOSCreateHandle	m_pQOSCreateHandle;
-	t_QOSCloseHandle	m_pQOSCloseHandle;
-	t_QOSAddSocketToFlow	m_pQOSAddSocketToFlow;
-	t_QOSRemoveSocketFromFlow	m_pQOSRemoveSocketFromFlow;
-	t_QOSSetFlow		m_pQOSSetFlow;
+    t_QOSCreateHandle	m_pQOSCreateHandle;
+    t_QOSCloseHandle	m_pQOSCloseHandle;
+    t_QOSAddSocketToFlow	m_pQOSAddSocketToFlow;
+    t_QOSRemoveSocketFromFlow	m_pQOSRemoveSocketFromFlow;
+    t_QOSSetFlow		m_pQOSSetFlow;
 };
 
 extern CQOS theQOSManager;

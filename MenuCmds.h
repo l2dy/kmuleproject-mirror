@@ -220,3 +220,4 @@
 #define MP_PSPRIOAUTO			15331
 //<<< WiZaRd::PowerShare
 #define MP_FEEDBACK				15332	//>>> WiZaRd::Upload Feedback
+#define MP_SPREADPRIORITY       15333   //>>> Tux::Spread Priority v3

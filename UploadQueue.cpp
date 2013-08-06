@@ -1097,8 +1097,8 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 //>>> WiZaRd::ClientAnalyzer
         reqfile = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-		if (reqfile == NULL && client->SupportsSCT())
-			reqfile = (CKnownFile*)theApp.downloadqueue->GetFileByID((uchar*)client->GetUploadFileID());
+        if (reqfile == NULL && client->SupportsSCT())
+            reqfile = (CKnownFile*)theApp.downloadqueue->GetFileByID((uchar*)client->GetUploadFileID());
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         if (reqfile == NULL)
             return; //should never happen, just in case, though...
@@ -1125,8 +1125,8 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 //>>> WiZaRd::ClientAnalyzer
         reqfile = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-		if (reqfile == NULL && client->SupportsSCT())
-			reqfile = (CKnownFile*)theApp.downloadqueue->GetFileByID((uchar*)client->GetUploadFileID());
+        if (reqfile == NULL && client->SupportsSCT())
+            reqfile = (CKnownFile*)theApp.downloadqueue->GetFileByID((uchar*)client->GetUploadFileID());
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         if (reqfile == NULL)
             return; //should never happen, just in case, though...
@@ -1243,6 +1243,38 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
             AddUpNextClient(L"Small File Priority Slot", client);
             return;
         }
+
+//>>> Tux::Spread Priority v3
+        // remark: order is low - normal - high - very high - very low
+        if (reqfile->IsSpreadPriority() &&
+                reqfile != NULL && !reqfile->IsAutoUpPriority() && !reqfile->IsPartFile() &&
+                ::GetTickCount() > reqfile->m_uiLastPrioSet + MIN2MS(2) // last prio change was > 2 mins ago
+           )
+        {
+            // 1) much too less complete sources, push it to the max
+            if (reqfile->m_nCompleteSourcesCount < thePrefs.GetSpreadPrioLimit() && reqfile->GetUpPriority() != PR_VERYHIGH)
+            {
+                reqfile->SetUpPriority(PR_VERYHIGH);
+                if (thePrefs.GetLogUlDlEvents())
+                    AddDebugLogLine(false, _T("Priority for file %s auto-increased to %s (complete sources: %i)"), reqfile->GetFileName(), reqfile->GetUpPriorityDisplayString(), reqfile->m_nCompleteSourcesCount);
+            }
+            // 2) a bit too less complete sources, push it stepwise
+            else if (reqfile->m_nCompleteSourcesCount == thePrefs.GetSpreadPrioLimit() && reqfile->GetUpPriority() != PR_VERYHIGH)
+            {
+                for (int prioCnt = 0; prioCnt < (reqfile->m_nCompleteSourcesCount / thePrefs.GetSpreadPrioLimit()) && reqfile->GetUpPriority() < PR_VERYHIGH; prioCnt++)
+                    reqfile->SetUpPriority(reqfile->GetUpPriority() < PR_VERYLOW ? reqfile->GetUpPriority() + 1 : 0);
+                if (thePrefs.GetLogUlDlEvents())
+                    AddDebugLogLine(false, _T("Priority for file %s auto-increased to %s (complete sources: %i)"), reqfile->GetFileName(), reqfile->GetUpPriorityDisplayString(), reqfile->m_nCompleteSourcesCount);
+            }
+            // 3) "too many" complete sources now, we can turn it down...
+            else if (reqfile->m_nCompleteSourcesCount > thePrefs.GetSpreadPrioLimit() && reqfile->GetUpPriority() < PR_VERYLOW)
+            {
+                reqfile->SetUpPriority(reqfile->GetUpPriority() > PR_LOW ? reqfile->GetUpPriority() - 1 : 4);
+                if (thePrefs.GetLogUlDlEvents())
+                    AddDebugLogLine(false, _T("Priority for file %s auto-decreased to %s (complete sources: %i)"), reqfile->GetFileName(), reqfile->GetUpPriorityDisplayString(), reqfile->m_nCompleteSourcesCount);
+            }
+        }
+//<<< Tux::Spread Priority v3
 
         // cap the list
         // the queue limit in prefs is only a soft limit. Hard limit is 25% higher, to let in powershare clients and other
@@ -1408,10 +1440,10 @@ bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client, LPCTSTR pszReaso
             if (requestedFile != NULL)
             {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-				if (client->GetUpPartStatus() != NULL && requestedFile != (CKnownFile*)client->GetRequestFile())
-					requestedFile->RemoveFromPartsInfo(client->GetUpPartStatus());
-				//requestedFile->UpdatePartsInfo();
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]                
+                if (client->GetUpPartStatus() != NULL && requestedFile != (CKnownFile*)client->GetRequestFile())
+                    requestedFile->RemoveFromPartsInfo(client->GetUpPartStatus());
+                //requestedFile->UpdatePartsInfo();
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
             }
             theApp.clientlist->AddTrackClient(client); // Keep track of this client
             client->SetUploadState(US_NONE);
@@ -1534,7 +1566,7 @@ VOID CALLBACK CUploadQueue::UploadTimer(HWND /*hwnd*/, UINT /*uMsg*/, UINT_PTR /
         theApp.HandleLogQueues();
         // Elandal: ThreadSafeLogging <--
 
-		CUtpSocket::Process(); //>>> WiZaRd::NatTraversal [Xanatos]
+        CUtpSocket::Process(); //>>> WiZaRd::NatTraversal [Xanatos]
 
         // ZZ:UploadSpeedSense -->
         theApp.lastCommonRouteFinder->SetPrefs(thePrefs.IsDynUpEnabled(),
@@ -2370,8 +2402,8 @@ bool CUploadQueue::AddUpNextClient(LPCTSTR pszReason, CUpDownClient* directadd, 
 //>>> WiZaRd::Optimization
     CKnownFile* reqfile = theApp.sharedfiles->GetFileByID((uchar*)newclient->GetUploadFileID());
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	if (reqfile == NULL && newclient->SupportsSCT())
-		reqfile = (CKnownFile*)theApp.downloadqueue->GetFileByID((uchar*)newclient->GetUploadFileID());
+    if (reqfile == NULL && newclient->SupportsSCT())
+        reqfile = (CKnownFile*)theApp.downloadqueue->GetFileByID((uchar*)newclient->GetUploadFileID());
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     if (reqfile == NULL)
     {

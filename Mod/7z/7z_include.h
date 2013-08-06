@@ -58,64 +58,64 @@
 static LPCTSTR kDefaultSfxModule = L"7zCon.sfx";
 static LPCTSTR kCopyrightString = L"7-Zip"
 #ifndef EXTERNAL_CODECS
-	L" (A)"
+                                  L" (A)"
 #endif
 
 #ifdef _WIN64
-	L" [64]"
+                                  L" [64]"
 #endif
-	L"";
+                                  L"";
 //	L" " MY_VERSION_COPYRIGHT_DATE;
 
 static LPCTSTR kHelpString =
-	L"\nUsage: 7z"
+    L"\nUsage: 7z"
 #ifdef _NO_CRYPTO
-	L"r"
+    L"r"
 #else
 #ifndef EXTERNAL_CODECS
-	L"a"
+    L"a"
 #endif
 #endif
-	L" <command> [<switches>...] <archive_name> [<file_names>...]\n"
-	L"       [<@listfiles...>]\n"
-	L"\n"
-	L"<Commands>\n"
-	L"  a: Add files to archive\n"
-	L"  b: Benchmark\n"
-	L"  d: Delete files from archive\n"
-	L"  e: Extract files from archive (without using directory names)\n"
-	L"  l: List contents of archive\n"
-	//    L"  l[a|t][f]: List contents of archive\n"
-	//    L"    a - with Additional fields\n"
-	//    L"    t - with all fields\n"
-	//    L"    f - with Full pathnames\n"
-	L"  t: Test integrity of archive\n"
-	L"  u: Update files to archive\n"
-	L"  x: eXtract files with full paths\n"
-	L"<Switches>\n"
-	L"  -ai[r[-|0]]{@listfile|!wildcard}: Include archives\n"
-	L"  -ax[r[-|0]]{@listfile|!wildcard}: eXclude archives\n"
-	L"  -bd: Disable percentage indicator\n"
-	L"  -i[r[-|0]]{@listfile|!wildcard}: Include filenames\n"
-	L"  -m{Parameters}: set compression Method\n"
-	L"  -o{Directory}: set Output directory\n"
+    L" <command> [<switches>...] <archive_name> [<file_names>...]\n"
+    L"       [<@listfiles...>]\n"
+    L"\n"
+    L"<Commands>\n"
+    L"  a: Add files to archive\n"
+    L"  b: Benchmark\n"
+    L"  d: Delete files from archive\n"
+    L"  e: Extract files from archive (without using directory names)\n"
+    L"  l: List contents of archive\n"
+    //    L"  l[a|t][f]: List contents of archive\n"
+    //    L"    a - with Additional fields\n"
+    //    L"    t - with all fields\n"
+    //    L"    f - with Full pathnames\n"
+    L"  t: Test integrity of archive\n"
+    L"  u: Update files to archive\n"
+    L"  x: eXtract files with full paths\n"
+    L"<Switches>\n"
+    L"  -ai[r[-|0]]{@listfile|!wildcard}: Include archives\n"
+    L"  -ax[r[-|0]]{@listfile|!wildcard}: eXclude archives\n"
+    L"  -bd: Disable percentage indicator\n"
+    L"  -i[r[-|0]]{@listfile|!wildcard}: Include filenames\n"
+    L"  -m{Parameters}: set compression Method\n"
+    L"  -o{Directory}: set Output directory\n"
 #ifndef _NO_CRYPTO
-	L"  -p{Password}: set Password\n"
+    L"  -p{Password}: set Password\n"
 #endif
-	L"  -r[-|0]: Recurse subdirectories\n"
-	L"  -scs{UTF-8 | WIN | DOS}: set charset for list files\n"
-	L"  -sfx[{name}]: Create SFX archive\n"
-	L"  -si[{name}]: read data from stdin\n"
-	L"  -slt: show technical information for l (List) command\n"
-	L"  -so: write data to stdout\n"
-	L"  -ssc[-]: set sensitive case mode\n"
-	L"  -ssw: compress shared files\n"
-	L"  -t{Type}: Set type of archive\n"
-	L"  -u[-][p#][q#][r#][x#][y#][z#][!newArchiveName]: Update options\n"
-	L"  -v{Size}[b|k|m|g]: Create volumes\n"
-	L"  -w[{path}]: assign Work directory. Empty path means a temporary directory\n"
-	L"  -x[r[-|0]]]{@listfile|!wildcard}: eXclude filenames\n"
-	L"  -y: assume Yes on all queries\n";
+    L"  -r[-|0]: Recurse subdirectories\n"
+    L"  -scs{UTF-8 | WIN | DOS}: set charset for list files\n"
+    L"  -sfx[{name}]: Create SFX archive\n"
+    L"  -si[{name}]: read data from stdin\n"
+    L"  -slt: show technical information for l (List) command\n"
+    L"  -so: write data to stdout\n"
+    L"  -ssc[-]: set sensitive case mode\n"
+    L"  -ssw: compress shared files\n"
+    L"  -t{Type}: Set type of archive\n"
+    L"  -u[-][p#][q#][r#][x#][y#][z#][!newArchiveName]: Update options\n"
+    L"  -v{Size}[b|k|m|g]: Create volumes\n"
+    L"  -w[{path}]: assign Work directory. Empty path means a temporary directory\n"
+    L"  -x[r[-|0]]]{@listfile|!wildcard}: eXclude filenames\n"
+    L"  -y: assume Yes on all queries\n";
 
 // exception messages
 static LPCTSTR kEverythingIsOk		= L"Everything is OK";
