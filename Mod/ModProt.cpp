@@ -126,7 +126,7 @@ void CUpDownClient::ProcessModInfoPacket(const uchar* pachPacket, const UINT nSi
 
 bool CClientReqSocket::ProcessModPacket(const BYTE* packet, const UINT size, const UINT opcode, const UINT uRawSize)
 {
-	const UINT protocol = OP_MODPROT;
+	//const UINT protocol = OP_MODPROT;
 	try
 	{
 		try

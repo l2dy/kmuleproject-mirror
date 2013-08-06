@@ -26,7 +26,7 @@ public:
 	virtual void OnReceive(int nErrorCode)		{ TriggerEvent(FD_READ, nErrorCode, TRUE); }
 	virtual void OnSend(int nErrorCode)			{ TriggerEvent(FD_WRITE, nErrorCode, TRUE);	}
 	virtual void OnConnect(int nErrorCode)		{ TriggerEvent(FD_CONNECT, nErrorCode, TRUE); }
-/**/virtual void OnAccept(int nErrorCode)		{ ASSERT(0); /*TriggerEvent(FD_ACCEPT, nErrorCode, TRUE);*/ } // shell never be called
+/**/virtual void OnAccept(int /*nErrorCode*/)		{ ASSERT(0); /*TriggerEvent(FD_ACCEPT, nErrorCode, TRUE);*/ } // shell never be called
 	virtual void OnClose(int nErrorCode)		{ TriggerEvent(FD_CLOSE, nErrorCode, TRUE); }
 
 	//Operations

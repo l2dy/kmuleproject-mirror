@@ -64,11 +64,6 @@ static char THIS_FILE[] = __FILE__;
 
 CString SnarlInterface::szIcons[TBN_DOWNLOADADDED]; //>>> WiZaRd
 
-//namespace Snarl
-//{
-//namespace V42
-//{
-
 // ----------------------------------------------------------------------------
 // Static Snarl interface functions
 // ----------------------------------------------------------------------------
@@ -826,4 +821,3 @@ LPCTSTR SnarlInterface::GetIcon(const int iIconIndex)
     return szIcons[iIconIndex];
 }
 //<<< WiZaRd
-//}} // namespace Snarl::V42

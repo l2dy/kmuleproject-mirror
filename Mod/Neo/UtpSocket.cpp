@@ -92,12 +92,12 @@ void utp_error(void* userdata, int errcode)
 	pSocket->OnClose(errcode);
 }
 
-void utp_overhead(void *userdata, bool send, size_t count, int type)
+void utp_overhead(void* /*userdata*/, bool /*send*/, size_t /*count*/, int /*type*/)
 {
 	//CUtpSocket* pSocket = ((CUtpSocket*)userdata);
 }
 
-void got_incoming_connection(void *userdata, struct UTPSocket *socket)
+void got_incoming_connection(void* /*userdata*/, struct UTPSocket *socket)
 {
 	//CClientUDPSocket* clientudp = ((CClientUDPSocket*)userdata);
 	CClientReqSocket* newclient = new CClientReqSocket; // this installs itself: theApp.listensocket->AddSocket(this);
@@ -274,7 +274,7 @@ BOOL CUtpSocket::SetSockOpt(int nOptionName, const void* lpOptionValue, int nOpt
 		if(nOptionLen != sizeof(int))
 			return FALSE;
 		int PreAlloc = *((int*)lpOptionValue);
-		if(m_ReadBuffer.GetSize() < PreAlloc)
+		if((int)m_ReadBuffer.GetSize() < PreAlloc)
 			PreAlloc = 0; // we can not set less than we have in buffer
 		else
 			PreAlloc -= m_ReadBuffer.GetSize();
@@ -288,7 +288,7 @@ BOOL CUtpSocket::SetSockOpt(int nOptionName, const void* lpOptionValue, int nOpt
 		if(nOptionLen != sizeof(int))
 			return FALSE;
 		int PreAlloc = *((int*)lpOptionValue);
-		if(m_WriteBuffer.GetSize() < PreAlloc)
+		if((int)m_WriteBuffer.GetSize() < PreAlloc)
 			PreAlloc = 0; // we can not set less than we have in buffer
 		else
 			PreAlloc -= m_WriteBuffer.GetSize();

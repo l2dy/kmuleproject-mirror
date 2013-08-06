@@ -23,10 +23,6 @@ enum TbnMsg
 #define SMTO_NOTIMEOUTIFNOTHUNG 8
 #endif
 
-//namespace Snarl
-//{
-//	namespace V42
-//	{
 static LPCTSTR SnarlWindowClass = L"w>Snarl";
 static LPCTSTR SnarlWindowTitle = L"Snarl";
 
@@ -357,6 +353,7 @@ public:
     static void FreeString(LPCSTR str)
     {
         delete [] str;
+		str = NULL;
     }
     static void FreeString(LPWSTR str)
     {
@@ -366,6 +363,7 @@ public:
     static void FreeString(LPCWSTR str)
     {
         delete [] str;
+		str = NULL;
     }
 
     /// <summary>Send message to Snarl.</summary>
@@ -515,6 +513,4 @@ public:
     static LPCTSTR GetIcon(const int iIconIndex);
 //<<< WiZaRd
 }; // class SnarlInterface
-//	} // namespace V42
-//} // namespace Snarl
 //<<< Tux::SnarlSupport

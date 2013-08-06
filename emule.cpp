@@ -1364,11 +1364,13 @@ void CemuleApp::ShowHelp(UINT uTopic, UINT uCmd)
 bool CemuleApp::ShowWebHelp(UINT uTopic)
 {
     CString strHelpURL = MOD_WIKI;
-    switch (uTopic)
+
+	// TODO: implement Wiki!
+//    switch (uTopic)
     {
-    default:
-        strHelpURL.Format(_T("http://onlinehelp.emule-project.net/help.php?language=%u&topic=%u"), thePrefs.GetLanguageID(), uTopic);
-        break;
+//		default:
+			strHelpURL.Format(_T("http://onlinehelp.emule-project.net/help.php?language=%u&topic=%u"), thePrefs.GetLanguageID(), uTopic);
+//			break;
     }
     _ShellExecute(NULL, NULL, strHelpURL, NULL, thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), SW_SHOWDEFAULT);
     return true;
