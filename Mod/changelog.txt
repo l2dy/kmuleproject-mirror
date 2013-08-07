@@ -220,3 +220,5 @@ XXXXYYZZ:
 ! fixed problem with race conditions on startup which could cause kMule not to connect when using the first start wizard [WiZaRd]
 + added NAT-T support - original by David Xanatos [WiZaRd]
 + added Spread Priority v3 [Tuxman]
++ added Clipboard Watchdog [Tuxman]
+ * provides a more elegant way to watch the clipboard for eD2k links

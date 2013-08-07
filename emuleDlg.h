@@ -165,6 +165,10 @@ public:
     void	UpdateMediaInfoDLL();
 //<<< WiZaRd::MediaInfoDLL Update
     afx_msg void OnClose(); //>>> WiZaRd::Automatic Restart
+//>>> Tux::Clipboard Watchdog
+    HWND	hClipboardViewer;
+	bool    bClipboardWatchdog;
+//<<< Tux::Clipboard Watchdog
 
 protected:
     HICON			m_hIcon;
@@ -326,6 +330,11 @@ protected:
     afx_msg LRESULT OnSevenZipJobDone(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnSevenZipJobFailed(WPARAM wParam, LPARAM lParam);
 //<<< WiZaRd::7zip
+
+//>>> Tux::Clipboard Watchdog
+    afx_msg void OnChangeCbChain(HWND hWndRemove, HWND hWndAfter);
+    afx_msg void OnDrawClipboard();
+//<<< Tux::Clipboard Watchdog
 };
 
 

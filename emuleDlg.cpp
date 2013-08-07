@@ -152,6 +152,10 @@ BEGIN_MESSAGE_MAP(CemuleDlg, CTrayDialog)
     ON_WM_DESTROY()
     ON_WM_SETTINGCHANGE()
     ON_WM_DEVICECHANGE()
+//>>> Tux::Clipboard Watchdog
+    ON_WM_CHANGECBCHAIN()
+    ON_WM_DRAWCLIPBOARD()
+//<<< Tux::Clipboard Watchdog
     ON_MESSAGE(WM_POWERBROADCAST, OnPowerBroadcast)
 
     ///////////////////////////////////////////////////////////////////////////
@@ -478,26 +482,26 @@ BOOL CemuleDlg::OnInitDialog()
     {
         switch (thePrefs.GetLastMainWndDlgID())
         {
-        case IDD_FILES:
-            SetActiveDialog(sharedfileswnd);
-            break;
-        case IDD_SEARCH:
-            SetActiveDialog(searchwnd);
-            break;
-        case IDD_CHAT:
-            SetActiveDialog(chatwnd);
-            break;
-        case IDD_TRANSFER:
-            SetActiveDialog(transferwnd);
-            break;
-        case IDD_STATISTICS:
-            SetActiveDialog(statisticswnd);
-            break;
+            case IDD_FILES:
+                SetActiveDialog(sharedfileswnd);
+                break;
+            case IDD_SEARCH:
+                SetActiveDialog(searchwnd);
+                break;
+            case IDD_CHAT:
+                SetActiveDialog(chatwnd);
+                break;
+            case IDD_TRANSFER:
+                SetActiveDialog(transferwnd);
+                break;
+            case IDD_STATISTICS:
+                SetActiveDialog(statisticswnd);
+                break;
 #ifdef INFO_WND
 //>>> WiZaRd::InfoWnd
-        case IDD_INFO:
-            SetActiveDialog(infoWnd);
-            break;
+            case IDD_INFO:
+                SetActiveDialog(infoWnd);
+                break;
 //<<< WiZaRd::InfoWnd
 #endif
         }
@@ -648,8 +652,43 @@ BOOL CemuleDlg::OnInitDialog()
     if (!thePrefs.HasCustomTaskIconColor())
         SetTaskbarIconColor();
 
+//>>> Tux::Clipboard Watchdog
+    // we want to watch the clipboard for eD2k links - put eMule into the clipboard chain
+    hClipboardViewer = SetClipboardViewer();
+	bClipboardWatchdog = true;
+//<<< Tux::Clipboard Watchdog
+
     return TRUE;
 }
+
+//>>> Tux::Clipboard Watchdog
+void CemuleDlg::OnChangeCbChain(HWND hWndRemove, HWND hWndAfter)
+{
+    if (hClipboardViewer == hWndRemove)
+        hClipboardViewer = hWndAfter;
+    else if (hClipboardViewer != NULL)
+        ::SendMessage(hClipboardViewer, WM_CHANGECBCHAIN, (WPARAM)hWndRemove, (LPARAM)hWndAfter);
+}
+
+void CemuleDlg::OnDrawClipboard()
+{
+    if (theApp.m_app_state == APP_STATE_SHUTTINGDOWN || !bClipboardWatchdog)
+        return;
+
+    ::PostMessage(hClipboardViewer, WM_DRAWCLIPBOARD, (WPARAM)NULL, (LPARAM)NULL);
+
+    if (OpenClipboard())
+    {
+        if (thePrefs.WatchClipboard4ED2KLinks())
+            theApp.SearchClipboard();
+
+        CloseClipboard();
+    }
+    else {
+        AddDebugLogLine(DLP_VERYLOW, _T("Failed to hook into the clipboard for unknown reasons :-( disabling the Watchdog for this session."));
+    }
+}
+//<<< Tux::Clipboard Watchdog
 
 // modders: dont remove or change the original versioncheck! (additionals are ok)
 void CemuleDlg::DoVersioncheck(bool manual)
@@ -681,68 +720,68 @@ void CALLBACK CemuleDlg::StartupTimer(HWND /*hwnd*/, UINT /*uiMsg*/, UINT /*idEv
     {
         switch (theApp.emuledlg->status)
         {
-        case 0:
-            ++theApp.emuledlg->status;
-            theApp.emuledlg->ready = true;
-            theApp.sharedfiles->SetOutputCtrl(&theApp.emuledlg->sharedfileswnd->sharedfilesctrl);
-            ++theApp.emuledlg->status;
-            break;
+            case 0:
+                ++theApp.emuledlg->status;
+                theApp.emuledlg->ready = true;
+                theApp.sharedfiles->SetOutputCtrl(&theApp.emuledlg->sharedfileswnd->sharedfilesctrl);
+                ++theApp.emuledlg->status;
+                break;
 
-        case 2:
-            ++theApp.emuledlg->status;
-            PrintCopyrights(); //>>> WiZaRd::Copyrights
-            m_SevenZipThreadHandler.Init(); //>>> WiZaRd::7zip
-            ++theApp.emuledlg->status;
-            break;
+            case 2:
+                ++theApp.emuledlg->status;
+                PrintCopyrights(); //>>> WiZaRd::Copyrights
+                m_SevenZipThreadHandler.Init(); //>>> WiZaRd::7zip
+                ++theApp.emuledlg->status;
+                break;
 
-        case 4:
-        {
-            bool bError = false;
-            ++theApp.emuledlg->status;
-
-            // NOTE: If we have an unhandled exception in CDownloadQueue::Init, MFC will silently catch it
-            // and the creation of the TCP and the UDP socket will not be done -> client will get a LowID!
-            try
+            case 4:
             {
-                theApp.downloadqueue->Init();
-            }
-            catch (...)
-            {
-                ASSERT(0);
-                LogError(LOG_STATUSBAR,_T("Failed to initialize download queue - Unknown exception"));
-                bError = true;
-            }
+                bool bError = false;
+                ++theApp.emuledlg->status;
 
-            if (!theApp.listensocket->StartListening())
-                bError = true;
-            if (!theApp.clientudp->Create()) // we use KAD only so that IS a serious error!
-                bError = true;
+                // NOTE: If we have an unhandled exception in CDownloadQueue::Init, MFC will silently catch it
+                // and the creation of the TCP and the UDP socket will not be done -> client will get a LowID!
+                try
+                {
+                    theApp.downloadqueue->Init();
+                }
+                catch (...)
+                {
+                    ASSERT(0);
+                    LogError(LOG_STATUSBAR,_T("Failed to initialize download queue - Unknown exception"));
+                    bError = true;
+                }
 
-            if (!bError) // show the success msg, only if we had no serious error
-                AddLogLine(true, GetResString(IDS_MAIN_READY), MOD_VERSION_PLAIN, GetModVersionNumber());
+                if (!theApp.listensocket->StartListening())
+                    bError = true;
+                if (!theApp.clientudp->Create()) // we use KAD only so that IS a serious error!
+                    bError = true;
 
-            theApp.emuledlg->OnBnClickedConnect();
+                if (!bError) // show the success msg, only if we had no serious error
+                    AddLogLine(true, GetResString(IDS_MAIN_READY), MOD_VERSION_PLAIN, GetModVersionNumber());
+
+                theApp.emuledlg->OnBnClickedConnect();
 
 #ifdef HAVE_WIN7_SDK_H
-            theApp.emuledlg->UpdateStatusBarProgress();
+                theApp.emuledlg->UpdateStatusBarProgress();
 #endif
-            break;
-        }
-        case 5:
-            if (thePrefs.IsStoringSearchesEnabled())
-                theApp.searchlist->LoadSearches();
-            ++theApp.emuledlg->status;
-            break;
-        default:
-            theApp.emuledlg->CreateMiniMule();
-            theApp.DestroySplash(); //>>> WiZaRd::New Splash [TBH]
-            theApp.emuledlg->StopTimer();
-            break;
+                break;
+            }
+            case 5:
+                if (thePrefs.IsStoringSearchesEnabled())
+                    theApp.searchlist->LoadSearches();
+                ++theApp.emuledlg->status;
+                break;
+            default:
+                theApp.emuledlg->CreateMiniMule();
+                theApp.DestroySplash(); //>>> WiZaRd::New Splash [TBH]
+                theApp.emuledlg->StopTimer();
+                break;
 
-            // Temp states that aren't actually reached
-        case 1:
-        case 3:
-            break;
+                // Temp states that aren't actually reached
+            case 1:
+            case 3:
+                break;
         }
     }
     CATCH_DFLT_EXCEPTIONS(_T("CemuleDlg::StartupTimer"))
@@ -806,23 +845,23 @@ void CemuleDlg::OnSysCommand(UINT nID, LPARAM lParam)
 
     switch (nID /*& 0xFFF0*/)
     {
-    case MP_ABOUTBOX:
-    {
-        CCreditsDlg dlgAbout;
-        dlgAbout.DoModal();
-        break;
-    }
-    case MP_VERSIONCHECK:
-        DoVersioncheck(true);
-        break;
-    case MP_CONNECT:
-        StartConnection();
-        break;
-    case MP_DISCONNECT:
-        CloseConnection();
-        break;
-    default:
-        CTrayDialog::OnSysCommand(nID, lParam);
+        case MP_ABOUTBOX:
+        {
+            CCreditsDlg dlgAbout;
+            dlgAbout.DoModal();
+            break;
+        }
+        case MP_VERSIONCHECK:
+            DoVersioncheck(true);
+            break;
+        case MP_CONNECT:
+            StartConnection();
+            break;
+        case MP_DISCONNECT:
+            CloseConnection();
+            break;
+        default:
+            CTrayDialog::OnSysCommand(nID, lParam);
     }
 
     if ((nID & 0xFFF0) == SC_MINIMIZE		||
@@ -1313,37 +1352,37 @@ void CemuleDlg::ProcessED2KLink(LPCTSTR pszData)
         _ASSERT(pLink !=0);
         switch (pLink->GetKind())
         {
-        case CED2KLink::kFile:
-        {
-            CED2KFileLink* pFileLink = pLink->GetFileLink();
-            _ASSERT(pFileLink !=0);
-            theApp.downloadqueue->AddFileLinkToDownload(pFileLink,searchwnd->GetSelectedCat());
-        }
-        break;
-        case CED2KLink::kNodesList:
-        {
-            CED2KNodesListLink* pListLink = pLink->GetNodesListLink();
-            _ASSERT(pListLink !=0);
-            CString strAddress = pListLink->GetAddress();
-            // Becasue the nodes.dat is vital for kad and its routing and doesn't needs to be updated in general
-            // we request a confirm to avoid accidental / malicious updating of this file. This is a bit inconsitent
-            // as the same kinda applies to the server.met, but those require more updates and are easier to understand
-            CString strConfirm;
-            strConfirm.Format(GetResString(IDS_CONFIRMNODESDOWNLOAD), strAddress);
-            if (strAddress.GetLength() != 0 && AfxMessageBox(strConfirm, MB_YESNO | MB_ICONQUESTION, 0) == IDYES)
-                UpdateNodesDatFromURL(strAddress);
-        }
-        break;
-        case CED2KLink::kSearch:
-        {
-            CED2KSearchLink* pListLink = pLink->GetSearchLink();
-            _ASSERT(pListLink !=0);
-            SetActiveDialog(searchwnd);
-            searchwnd->ProcessEd2kSearchLinkRequest(pListLink->GetSearchTerm());
-        }
-        break;
-        default:
+            case CED2KLink::kFile:
+            {
+                CED2KFileLink* pFileLink = pLink->GetFileLink();
+                _ASSERT(pFileLink !=0);
+                theApp.downloadqueue->AddFileLinkToDownload(pFileLink,searchwnd->GetSelectedCat());
+            }
             break;
+            case CED2KLink::kNodesList:
+            {
+                CED2KNodesListLink* pListLink = pLink->GetNodesListLink();
+                _ASSERT(pListLink !=0);
+                CString strAddress = pListLink->GetAddress();
+                // Becasue the nodes.dat is vital for kad and its routing and doesn't needs to be updated in general
+                // we request a confirm to avoid accidental / malicious updating of this file. This is a bit inconsitent
+                // as the same kinda applies to the server.met, but those require more updates and are easier to understand
+                CString strConfirm;
+                strConfirm.Format(GetResString(IDS_CONFIRMNODESDOWNLOAD), strAddress);
+                if (strAddress.GetLength() != 0 && AfxMessageBox(strConfirm, MB_YESNO | MB_ICONQUESTION, 0) == IDYES)
+                    UpdateNodesDatFromURL(strAddress);
+            }
+            break;
+            case CED2KLink::kSearch:
+            {
+                CED2KSearchLink* pListLink = pLink->GetSearchLink();
+                _ASSERT(pListLink !=0);
+                SetActiveDialog(searchwnd);
+                searchwnd->ProcessEd2kSearchLinkRequest(pListLink->GetSearchTerm());
+            }
+            break;
+            default:
+                break;
         }
         delete pLink;
     }
@@ -1866,6 +1905,11 @@ void CemuleDlg::OnClose()
 //<<< WiZaRd::ClientAnalyzer
     m_SevenZipThreadHandler.UnInit(); //>>> WiZaRd::7zip
 
+//>>> Tux::Clipboard Watchdog
+    // eMule goes afk :-) throw it out of the chain
+    ChangeClipboardChain(hClipboardViewer);
+//<<< Tux::Clipboard Watchdog
+
     thePrefs.Uninit();
     theApp.m_app_state = APP_STATE_DONE;
     CTrayDialog::OnCancel();
@@ -1973,21 +2017,21 @@ void CemuleDlg::OnTrayRButtonUp(CPoint pt)
         m_pSystrayDlg = NULL;
         switch (nResult)
         {
-        case IDC_TOMAX:
-            QuickSpeedOther(MP_QS_UA);
-            break;
-        case IDC_TOMIN:
-            QuickSpeedOther(MP_QS_PA);
-            break;
-        case IDC_RESTORE:
-            RestoreWindow();
-            break;
-        case IDC_EXIT:
-            OnClose();
-            break;
-        case IDC_PREFERENCES:
-            ShowPreferences();
-            break;
+            case IDC_TOMAX:
+                QuickSpeedOther(MP_QS_UA);
+                break;
+            case IDC_TOMIN:
+                QuickSpeedOther(MP_QS_PA);
+                break;
+            case IDC_RESTORE:
+                RestoreWindow();
+                break;
+            case IDC_EXIT:
+                OnClose();
+                break;
+            case IDC_PREFERENCES:
+                ShowPreferences();
+                break;
         }
     }
 }
@@ -2217,55 +2261,55 @@ void CemuleDlg::ShowNotifier(LPCTSTR pszText, int iMsgType)
 
     switch (iMsgType)
     {
-    case TBN_CHAT:
+        case TBN_CHAT:
 //>>> Tux::SnarlSupport
-        snarlTitle = GetResString(IDS_TBN_NEWCHATMSG);
-        snarlClass = L"NewChatMsg";
+            snarlTitle = GetResString(IDS_TBN_NEWCHATMSG);
+            snarlClass = L"NewChatMsg";
 //<<< Tux::SnarlSupport
-        break;
+            break;
 
-    case TBN_DOWNLOADFINISHED:
+        case TBN_DOWNLOADFINISHED:
 //>>> Tux::SnarlSupport
-        snarlTitle = GetResString(IDS_TBN_DOWNLOADDONE);
-        snarlClass = L"DownloadDone";
+            snarlTitle = GetResString(IDS_TBN_DOWNLOADDONE);
+            snarlClass = L"DownloadDone";
 //<<< Tux::SnarlSupport
-        break;
+            break;
 
-    case TBN_DOWNLOADADDED:
+        case TBN_DOWNLOADADDED:
 //>>> Tux::SnarlSupport
-        snarlTitle = GetResString(IDS_TBN_ONNEWDOWNLOAD);
-        snarlClass = L"NewDownload";
+            snarlTitle = GetResString(IDS_TBN_ONNEWDOWNLOAD);
+            snarlClass = L"NewDownload";
 //<<< Tux::SnarlSupport
-        break;
+            break;
 
-    case TBN_LOG:
+        case TBN_LOG:
 //>>> Tux::SnarlSupport
-        // TODO: rauswerfen
-        snarlTitle = GetResString(IDS_SV_LOG);
-        snarlClass = L"Log";
+            // TODO: rauswerfen
+            snarlTitle = GetResString(IDS_SV_LOG);
+            snarlClass = L"Log";
 //<<< Tux::SnarlSupport
-        break;
+            break;
 
-    case TBN_IMPORTANTEVENT:
+        case TBN_IMPORTANTEVENT:
 //>>> Tux::SnarlSupport
-        snarlTitle = GetResString(IDS_ERROR);
-        snarlClass = L"Error";
+            snarlTitle = GetResString(IDS_ERROR);
+            snarlClass = L"Error";
 //<<< Tux::SnarlSupport
-        break;
+            break;
 
-    case TBN_NEWVERSION:
+        case TBN_NEWVERSION:
 //>>> Tux::SnarlSupport
-        snarlTitle = GetResString(IDS_CB_TBN_ONNEWVERSION);
-        snarlClass = L"NewVersion";
+            snarlTitle = GetResString(IDS_CB_TBN_ONNEWVERSION);
+            snarlClass = L"NewVersion";
 //<<< Tux::SnarlSupport
-        break;
+            break;
 
-    case TBN_NULL:
+        case TBN_NULL:
 //>>> Tux::SnarlSupport
-        snarlTitle = GetResString(IDS_PW_MISC);
-        snarlClass = L"Misc";
+            snarlTitle = GetResString(IDS_PW_MISC);
+            snarlClass = L"Misc";
 //<<< Tux::SnarlSupport
-        break;
+            break;
     }
 
 //>>> Tux::SnarlSupport
@@ -2384,42 +2428,42 @@ void CemuleDlg::Localize()
 
         switch (thePrefs.GetWindowsVersion())
         {
-        case _WINVER_98_:
-        case _WINVER_95_:
-        case _WINVER_ME_:
-            // NOTE: I think the reason why the old version of the following code crashed under Win9X was because
-            // of the menus were destroyed right after they were added to the system menu. New code should work
-            // under Win9X too but I can't test it.
-            break;
-        default:
-        {
-            // localize the 'speed control' sub menus by deleting the current menus and creating a new ones.
-
-            // remove any already available 'speed control' menus from system menu
-            UINT uOptMenuPos = pSysMenu->GetMenuItemCount() - 1;
-            CMenu* pAccelMenu = pSysMenu->GetSubMenu(uOptMenuPos);
-            if (pAccelMenu)
+            case _WINVER_98_:
+            case _WINVER_95_:
+            case _WINVER_ME_:
+                // NOTE: I think the reason why the old version of the following code crashed under Win9X was because
+                // of the menus were destroyed right after they were added to the system menu. New code should work
+                // under Win9X too but I can't test it.
+                break;
+            default:
             {
-                ASSERT(pAccelMenu->m_hMenu == m_SysMenuOptions.m_hMenu);
-                VERIFY(pSysMenu->RemoveMenu(uOptMenuPos, MF_BYPOSITION));
-                pAccelMenu = NULL;
-            }
+                // localize the 'speed control' sub menus by deleting the current menus and creating a new ones.
 
-            // destroy all 'speed control' menus
-            if (m_menuUploadCtrl)
-                VERIFY(m_menuUploadCtrl.DestroyMenu());
-            if (m_menuDownloadCtrl)
-                VERIFY(m_menuDownloadCtrl.DestroyMenu());
-            if (m_SysMenuOptions)
-                VERIFY(m_SysMenuOptions.DestroyMenu());
+                // remove any already available 'speed control' menus from system menu
+                UINT uOptMenuPos = pSysMenu->GetMenuItemCount() - 1;
+                CMenu* pAccelMenu = pSysMenu->GetSubMenu(uOptMenuPos);
+                if (pAccelMenu)
+                {
+                    ASSERT(pAccelMenu->m_hMenu == m_SysMenuOptions.m_hMenu);
+                    VERIFY(pSysMenu->RemoveMenu(uOptMenuPos, MF_BYPOSITION));
+                    pAccelMenu = NULL;
+                }
 
-            // create new 'speed control' menus
-            if (m_SysMenuOptions.CreateMenu())
-            {
-                AddSpeedSelectorMenus(&m_SysMenuOptions);
-                pSysMenu->AppendMenu(MF_STRING|MF_POPUP, (UINT_PTR)m_SysMenuOptions.m_hMenu, GetResString(IDS_EM_PREFS));
+                // destroy all 'speed control' menus
+                if (m_menuUploadCtrl)
+                    VERIFY(m_menuUploadCtrl.DestroyMenu());
+                if (m_menuDownloadCtrl)
+                    VERIFY(m_menuDownloadCtrl.DestroyMenu());
+                if (m_SysMenuOptions)
+                    VERIFY(m_SysMenuOptions.DestroyMenu());
+
+                // create new 'speed control' menus
+                if (m_SysMenuOptions.CreateMenu())
+                {
+                    AddSpeedSelectorMenus(&m_SysMenuOptions);
+                    pSysMenu->AppendMenu(MF_STRING|MF_POPUP, (UINT_PTR)m_SysMenuOptions.m_hMenu, GetResString(IDS_EM_PREFS));
+                }
             }
-        }
         }
     }
 
@@ -2442,14 +2486,14 @@ void CemuleDlg::QuickSpeedOther(UINT nID)
 {
     switch (nID)
     {
-    case MP_QS_PA:
-        thePrefs.SetMaxUpload(1);
-        thePrefs.SetMaxDownload(1);
-        break ;
-    case MP_QS_UA:
-        thePrefs.SetMaxUpload(thePrefs.GetMaxGraphUploadRate(true));
-        thePrefs.SetMaxDownload(thePrefs.GetMaxGraphDownloadRate());
-        break ;
+        case MP_QS_PA:
+            thePrefs.SetMaxUpload(1);
+            thePrefs.SetMaxDownload(1);
+            break ;
+        case MP_QS_UA:
+            thePrefs.SetMaxUpload(thePrefs.GetMaxGraphUploadRate(true));
+            thePrefs.SetMaxDownload(thePrefs.GetMaxGraphDownloadRate());
+            break ;
     }
 }
 
@@ -2458,40 +2502,40 @@ void CemuleDlg::QuickSpeedUpload(UINT nID)
 {
     switch (nID)
     {
-    case MP_QS_U10:
-        thePrefs.SetMaxUpload((UINT)(thePrefs.GetMaxGraphUploadRate(true)*0.1));
-        break ;
-    case MP_QS_U20:
-        thePrefs.SetMaxUpload((UINT)(thePrefs.GetMaxGraphUploadRate(true)*0.2));
-        break ;
-    case MP_QS_U30:
-        thePrefs.SetMaxUpload((UINT)(thePrefs.GetMaxGraphUploadRate(true)*0.3));
-        break ;
-    case MP_QS_U40:
-        thePrefs.SetMaxUpload((UINT)(thePrefs.GetMaxGraphUploadRate(true)*0.4));
-        break ;
-    case MP_QS_U50:
-        thePrefs.SetMaxUpload((UINT)(thePrefs.GetMaxGraphUploadRate(true)*0.5));
-        break ;
-    case MP_QS_U60:
-        thePrefs.SetMaxUpload((UINT)(thePrefs.GetMaxGraphUploadRate(true)*0.6));
-        break ;
-    case MP_QS_U70:
-        thePrefs.SetMaxUpload((UINT)(thePrefs.GetMaxGraphUploadRate(true)*0.7));
-        break ;
-    case MP_QS_U80:
-        thePrefs.SetMaxUpload((UINT)(thePrefs.GetMaxGraphUploadRate(true)*0.8));
-        break ;
-    case MP_QS_U90:
-        thePrefs.SetMaxUpload((UINT)(thePrefs.GetMaxGraphUploadRate(true)*0.9));
-        break ;
-    case MP_QS_U100:
-        thePrefs.SetMaxUpload((UINT)thePrefs.GetMaxGraphUploadRate(true));
-        break ;
+        case MP_QS_U10:
+            thePrefs.SetMaxUpload((UINT)(thePrefs.GetMaxGraphUploadRate(true)*0.1));
+            break ;
+        case MP_QS_U20:
+            thePrefs.SetMaxUpload((UINT)(thePrefs.GetMaxGraphUploadRate(true)*0.2));
+            break ;
+        case MP_QS_U30:
+            thePrefs.SetMaxUpload((UINT)(thePrefs.GetMaxGraphUploadRate(true)*0.3));
+            break ;
+        case MP_QS_U40:
+            thePrefs.SetMaxUpload((UINT)(thePrefs.GetMaxGraphUploadRate(true)*0.4));
+            break ;
+        case MP_QS_U50:
+            thePrefs.SetMaxUpload((UINT)(thePrefs.GetMaxGraphUploadRate(true)*0.5));
+            break ;
+        case MP_QS_U60:
+            thePrefs.SetMaxUpload((UINT)(thePrefs.GetMaxGraphUploadRate(true)*0.6));
+            break ;
+        case MP_QS_U70:
+            thePrefs.SetMaxUpload((UINT)(thePrefs.GetMaxGraphUploadRate(true)*0.7));
+            break ;
+        case MP_QS_U80:
+            thePrefs.SetMaxUpload((UINT)(thePrefs.GetMaxGraphUploadRate(true)*0.8));
+            break ;
+        case MP_QS_U90:
+            thePrefs.SetMaxUpload((UINT)(thePrefs.GetMaxGraphUploadRate(true)*0.9));
+            break ;
+        case MP_QS_U100:
+            thePrefs.SetMaxUpload((UINT)thePrefs.GetMaxGraphUploadRate(true));
+            break ;
 //		case MP_QS_UPC: thePrefs.SetMaxUpload(UNLIMITED); break ;
-    case MP_QS_UP10:
-        thePrefs.SetMaxUpload(GetRecMaxUpload());
-        break ;
+        case MP_QS_UP10:
+            thePrefs.SetMaxUpload(GetRecMaxUpload());
+            break ;
     }
 }
 
@@ -2499,36 +2543,36 @@ void CemuleDlg::QuickSpeedDownload(UINT nID)
 {
     switch (nID)
     {
-    case MP_QS_D10:
-        thePrefs.SetMaxDownload((UINT)(thePrefs.GetMaxGraphDownloadRate()*0.1));
-        break ;
-    case MP_QS_D20:
-        thePrefs.SetMaxDownload((UINT)(thePrefs.GetMaxGraphDownloadRate()*0.2));
-        break ;
-    case MP_QS_D30:
-        thePrefs.SetMaxDownload((UINT)(thePrefs.GetMaxGraphDownloadRate()*0.3));
-        break ;
-    case MP_QS_D40:
-        thePrefs.SetMaxDownload((UINT)(thePrefs.GetMaxGraphDownloadRate()*0.4));
-        break ;
-    case MP_QS_D50:
-        thePrefs.SetMaxDownload((UINT)(thePrefs.GetMaxGraphDownloadRate()*0.5));
-        break ;
-    case MP_QS_D60:
-        thePrefs.SetMaxDownload((UINT)(thePrefs.GetMaxGraphDownloadRate()*0.6));
-        break ;
-    case MP_QS_D70:
-        thePrefs.SetMaxDownload((UINT)(thePrefs.GetMaxGraphDownloadRate()*0.7));
-        break ;
-    case MP_QS_D80:
-        thePrefs.SetMaxDownload((UINT)(thePrefs.GetMaxGraphDownloadRate()*0.8));
-        break ;
-    case MP_QS_D90:
-        thePrefs.SetMaxDownload((UINT)(thePrefs.GetMaxGraphDownloadRate()*0.9));
-        break ;
-    case MP_QS_D100:
-        thePrefs.SetMaxDownload((UINT)thePrefs.GetMaxGraphDownloadRate());
-        break ;
+        case MP_QS_D10:
+            thePrefs.SetMaxDownload((UINT)(thePrefs.GetMaxGraphDownloadRate()*0.1));
+            break ;
+        case MP_QS_D20:
+            thePrefs.SetMaxDownload((UINT)(thePrefs.GetMaxGraphDownloadRate()*0.2));
+            break ;
+        case MP_QS_D30:
+            thePrefs.SetMaxDownload((UINT)(thePrefs.GetMaxGraphDownloadRate()*0.3));
+            break ;
+        case MP_QS_D40:
+            thePrefs.SetMaxDownload((UINT)(thePrefs.GetMaxGraphDownloadRate()*0.4));
+            break ;
+        case MP_QS_D50:
+            thePrefs.SetMaxDownload((UINT)(thePrefs.GetMaxGraphDownloadRate()*0.5));
+            break ;
+        case MP_QS_D60:
+            thePrefs.SetMaxDownload((UINT)(thePrefs.GetMaxGraphDownloadRate()*0.6));
+            break ;
+        case MP_QS_D70:
+            thePrefs.SetMaxDownload((UINT)(thePrefs.GetMaxGraphDownloadRate()*0.7));
+            break ;
+        case MP_QS_D80:
+            thePrefs.SetMaxDownload((UINT)(thePrefs.GetMaxGraphDownloadRate()*0.8));
+            break ;
+        case MP_QS_D90:
+            thePrefs.SetMaxDownload((UINT)(thePrefs.GetMaxGraphDownloadRate()*0.9));
+            break ;
+        case MP_QS_D100:
+            thePrefs.SetMaxDownload((UINT)thePrefs.GetMaxGraphDownloadRate());
+            break ;
 //		case MP_QS_DC: thePrefs.SetMaxDownload(UNLIMITED); break ;
     }
 }
@@ -2547,88 +2591,88 @@ BOOL CemuleDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 {
     switch (wParam)
     {
-    case TBBTN_TRANSFERS:
-    case MP_HM_TRANSFER:
-        SetActiveDialog(transferwnd);
-        break;
-    case TBBTN_SEARCH:
-    case MP_HM_SEARCH:
-        SetActiveDialog(searchwnd);
-        break;
-    case TBBTN_SHARED:
-    case MP_HM_FILES:
-        SetActiveDialog(sharedfileswnd);
-        break;
-    case TBBTN_MESSAGES:
-    case MP_HM_MSGS:
-        SetActiveDialog(chatwnd);
-        break;
-    case TBBTN_STATS:
-    case MP_HM_STATS:
-        SetActiveDialog(statisticswnd);
-        break;
-    case TBBTN_OPTIONS:
-    case MP_HM_PREFS:
-        toolbar->CheckButton(TBBTN_OPTIONS, TRUE);
-        ShowPreferences();
-        toolbar->CheckButton(TBBTN_OPTIONS, FALSE);
-        break;
-    case TBBTN_TOOLS:
-        ShowToolPopup(true);
-        break;
-    case MP_HM_OPENINC:
-        _ShellExecute(NULL, _T("open"), thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR),NULL, NULL, SW_SHOW);
-        break;
-    case MP_HM_HELP:
-    case TBBTN_HELP:
-        if (activewnd != NULL)
+        case TBBTN_TRANSFERS:
+        case MP_HM_TRANSFER:
+            SetActiveDialog(transferwnd);
+            break;
+        case TBBTN_SEARCH:
+        case MP_HM_SEARCH:
+            SetActiveDialog(searchwnd);
+            break;
+        case TBBTN_SHARED:
+        case MP_HM_FILES:
+            SetActiveDialog(sharedfileswnd);
+            break;
+        case TBBTN_MESSAGES:
+        case MP_HM_MSGS:
+            SetActiveDialog(chatwnd);
+            break;
+        case TBBTN_STATS:
+        case MP_HM_STATS:
+            SetActiveDialog(statisticswnd);
+            break;
+        case TBBTN_OPTIONS:
+        case MP_HM_PREFS:
+            toolbar->CheckButton(TBBTN_OPTIONS, TRUE);
+            ShowPreferences();
+            toolbar->CheckButton(TBBTN_OPTIONS, FALSE);
+            break;
+        case TBBTN_TOOLS:
+            ShowToolPopup(true);
+            break;
+        case MP_HM_OPENINC:
+            _ShellExecute(NULL, _T("open"), thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR),NULL, NULL, SW_SHOW);
+            break;
+        case MP_HM_HELP:
+        case TBBTN_HELP:
+            if (activewnd != NULL)
+            {
+                HELPINFO hi;
+                ZeroMemory(&hi, sizeof(HELPINFO));
+                hi.cbSize = sizeof(HELPINFO);
+                activewnd->SendMessage(WM_HELP, 0, (LPARAM)&hi);
+            }
+            else
+                wParam = ID_HELP;
+            break;
+        case MP_HM_EXIT:
+            OnClose();
+            break;
+        case MP_HM_LINK1:
+            _ShellExecute(NULL, NULL, MOD_HOMEPAGE, NULL, thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), SW_SHOWDEFAULT);
+            break;
+        case MP_HM_LINK2:
+            _ShellExecute(NULL, NULL, MOD_BASE_HOMEPAGE+ CString(_T("/faq/")), NULL, thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), SW_SHOWDEFAULT);
+            break;
+        case MP_VERSIONCHECK:
+            DoVersioncheck(true);
+            break;
+        case MP_WEBSVC_EDIT:
+            theWebServices.Edit();
+            break;
+        case MP_HM_CONVERTPF:
+            CPartFileConvert::ShowGUI();
+            break;
+        case MP_HM_1STSWIZARD:
+            FirstTimeWizard();
+            break;
+        case MP_HM_IPFILTER:
         {
-            HELPINFO hi;
-            ZeroMemory(&hi, sizeof(HELPINFO));
-            hi.cbSize = sizeof(HELPINFO);
-            activewnd->SendMessage(WM_HELP, 0, (LPARAM)&hi);
+            CIPFilterDlg dlg;
+            dlg.DoModal();
+            break;
         }
-        else
-            wParam = ID_HELP;
-        break;
-    case MP_HM_EXIT:
-        OnClose();
-        break;
-    case MP_HM_LINK1:
-        _ShellExecute(NULL, NULL, MOD_HOMEPAGE, NULL, thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), SW_SHOWDEFAULT);
-        break;
-    case MP_HM_LINK2:
-        _ShellExecute(NULL, NULL, MOD_BASE_HOMEPAGE+ CString(_T("/faq/")), NULL, thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), SW_SHOWDEFAULT);
-        break;
-    case MP_VERSIONCHECK:
-        DoVersioncheck(true);
-        break;
-    case MP_WEBSVC_EDIT:
-        theWebServices.Edit();
-        break;
-    case MP_HM_CONVERTPF:
-        CPartFileConvert::ShowGUI();
-        break;
-    case MP_HM_1STSWIZARD:
-        FirstTimeWizard();
-        break;
-    case MP_HM_IPFILTER:
-    {
-        CIPFilterDlg dlg;
-        dlg.DoModal();
-        break;
-    }
-    case MP_HM_DIRECT_DOWNLOAD:
-    {
-        CDirectDownloadDlg dlg;
-        dlg.DoModal();
-        break;
-    }
+        case MP_HM_DIRECT_DOWNLOAD:
+        {
+            CDirectDownloadDlg dlg;
+            dlg.DoModal();
+            break;
+        }
 #ifdef INFO_WND
-    case TBBTN_INFO:
-    case MP_HM_INFO:
-        SetActiveDialog(infoWnd); //>>> WiZaRd::InfoWnd
-        break;
+        case TBBTN_INFO:
+        case MP_HM_INFO:
+            SetActiveDialog(infoWnd); //>>> WiZaRd::InfoWnd
+            break;
 #endif
     }
     if (wParam>=MP_WEBURL && wParam<=MP_WEBURL+99)
@@ -2963,31 +3007,31 @@ CWnd* CemuleDlg::MapToolbarButtonToWindow(int iButtonID) const
     CWnd* pWnd;
     switch (iButtonID)
     {
-    case TBBTN_TRANSFERS:
-        pWnd = transferwnd;
-        break;
-    case TBBTN_MESSAGES:
-        pWnd = chatwnd;
-        break;
-    case TBBTN_SHARED:
-        pWnd = sharedfileswnd;
-        break;
-    case TBBTN_SEARCH:
-        pWnd = searchwnd;
-        break;
-    case TBBTN_STATS:
-        pWnd = statisticswnd;
-        break;
+        case TBBTN_TRANSFERS:
+            pWnd = transferwnd;
+            break;
+        case TBBTN_MESSAGES:
+            pWnd = chatwnd;
+            break;
+        case TBBTN_SHARED:
+            pWnd = sharedfileswnd;
+            break;
+        case TBBTN_SEARCH:
+            pWnd = searchwnd;
+            break;
+        case TBBTN_STATS:
+            pWnd = statisticswnd;
+            break;
 #ifdef INFO_WND
 //>>> WiZaRd::InfoWnd
-    case TBBTN_INFO:
-        pWnd = infoWnd;
-        break;
+        case TBBTN_INFO:
+            pWnd = infoWnd;
+            break;
 //<<< WiZaRd::InfoWnd
 #endif
-    default:
-        pWnd = NULL;
-        ASSERT(0);
+        default:
+            pWnd = NULL;
+            ASSERT(0);
     }
     return pWnd;
 }
@@ -2996,16 +3040,16 @@ bool CemuleDlg::IsWindowToolbarButton(int iButtonID) const
 {
     switch (iButtonID)
     {
-    case TBBTN_TRANSFERS:
-        return true;
-    case TBBTN_MESSAGES:
-        return true;
-    case TBBTN_SHARED:
-        return true;
-    case TBBTN_SEARCH:
-        return true;
-    case TBBTN_STATS:
-        return true;
+        case TBBTN_TRANSFERS:
+            return true;
+        case TBBTN_MESSAGES:
+            return true;
+        case TBBTN_SHARED:
+            return true;
+        case TBBTN_SEARCH:
+            return true;
+        case TBBTN_STATS:
+            return true;
     }
     return false;
 }
@@ -3384,30 +3428,30 @@ LRESULT  CemuleDlg::OnPowerBroadcast(WPARAM wParam, LPARAM lParam)
     //DebugLog(_T("DEBUG:Power state change. wParam=%d lPararm=%ld"),wParam,lParam);
     switch (wParam)
     {
-    case PBT_APMRESUMEAUTOMATIC:
-    {
-        if (m_bKadSuspendDisconnect)
+        case PBT_APMRESUMEAUTOMATIC:
         {
-            DebugLog(_T("Reconnect after Power state change. wParam=%d lPararm=%ld"),wParam,lParam);
-            RefreshUPnP(true);
+            if (m_bKadSuspendDisconnect)
+            {
+                DebugLog(_T("Reconnect after Power state change. wParam=%d lPararm=%ld"),wParam,lParam);
+                RefreshUPnP(true);
 #ifdef USE_NAT_PMP
-            RefreshNATPMP(true); //>>> WiZaRd::NAT-PMP
+                RefreshNATPMP(true); //>>> WiZaRd::NAT-PMP
 #endif
-            PostMessage(WM_SYSCOMMAND , MP_CONNECT, 0); // tell to connect.. a sec later...
+                PostMessage(WM_SYSCOMMAND , MP_CONNECT, 0); // tell to connect.. a sec later...
+            }
+            return TRUE; // message processed.
         }
-        return TRUE; // message processed.
-    }
 
-    case PBT_APMSUSPEND:
-    {
-        DebugLog(_T("System is going is suspending operation, disconnecting. wParam=%d lPararm=%ld"),wParam,lParam);
-        m_bKadSuspendDisconnect = Kademlia::CKademlia::IsConnected();
-        CloseConnection();
-        return TRUE; // message processed.
-    }
+        case PBT_APMSUSPEND:
+        {
+            DebugLog(_T("System is going is suspending operation, disconnecting. wParam=%d lPararm=%ld"),wParam,lParam);
+            m_bKadSuspendDisconnect = Kademlia::CKademlia::IsConnected();
+            CloseConnection();
+            return TRUE; // message processed.
+        }
 
-    default:
-        return FALSE; // we do not process this message
+        default:
+            return FALSE; // we do not process this message
     }
 }
 
@@ -3592,22 +3636,22 @@ void CemuleDlg::UpdateThumbBarButtons(bool initialAddToDlg)
 
         switch (i)
         {
-        case TBB_THROTTLE:
-        {
-            m_thbButtons[i].hIcon   = theApp.LoadIcon(_T("SPEEDMIN"), 16, 16);
-            tooltip = GetResString(IDS_PW_PA);
-            break;
-        }
-        case TBB_UNTHROTTLE:
-        {
-            m_thbButtons[i].hIcon   =  theApp.LoadIcon(_T("SPEEDMAX"), 16, 16);
-            tooltip = GetResString(IDS_PW_UA);
-            break;
-        }
-        case TBB_PREFERENCES:
-            m_thbButtons[i].hIcon   =  theApp.LoadIcon(_T("PREFERENCES"), 16, 16);
-            tooltip = GetResString(IDS_EM_PREFS);
-            break;
+            case TBB_THROTTLE:
+            {
+                m_thbButtons[i].hIcon   = theApp.LoadIcon(_T("SPEEDMIN"), 16, 16);
+                tooltip = GetResString(IDS_PW_PA);
+                break;
+            }
+            case TBB_UNTHROTTLE:
+            {
+                m_thbButtons[i].hIcon   =  theApp.LoadIcon(_T("SPEEDMAX"), 16, 16);
+                tooltip = GetResString(IDS_PW_UA);
+                break;
+            }
+            case TBB_PREFERENCES:
+                m_thbButtons[i].hIcon   =  theApp.LoadIcon(_T("PREFERENCES"), 16, 16);
+                tooltip = GetResString(IDS_EM_PREFS);
+                break;
         }
         // set tooltips in widechar
         if (!tooltip.IsEmpty())
@@ -3635,15 +3679,15 @@ void CemuleDlg::OnTBBPressed(UINT id)
 {
     switch (id)
     {
-    case TBB_THROTTLE:
-        QuickSpeedOther(MP_QS_PA);
-        break;
-    case TBB_UNTHROTTLE:
-        QuickSpeedOther(MP_QS_UA);
-        break;
-    case TBB_PREFERENCES:
-        ShowPreferences();
-        break;
+        case TBB_THROTTLE:
+            QuickSpeedOther(MP_QS_PA);
+            break;
+        case TBB_UNTHROTTLE:
+            QuickSpeedOther(MP_QS_UA);
+            break;
+        case TBB_PREFERENCES:
+            ShowPreferences();
+            break;
     }
 }
 

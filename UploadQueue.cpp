@@ -1247,14 +1247,14 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 
 //>>> Tux::Spread Priority v3
         // remark: order is low - normal - high - very high - very low
-        if (reqfile != NULL 
-				&& reqfile->IsSpreadPriority() 
-                && !reqfile->IsAutoUpPriority() 
-				&& !reqfile->IsPartFile() 
+        if (reqfile != NULL
+                && reqfile->IsSpreadPriority()
+                && !reqfile->IsAutoUpPriority()
+                && !reqfile->IsPartFile()
                 && ::GetTickCount() > reqfile->GetLastPrioTime() + MIN2MS(2) // last prio change was > 2 mins ago
            )
-		{
-			reqfile->SetLastPrioTime(::GetTickCount());
+        {
+            reqfile->SetLastPrioTime(::GetTickCount());
             // 1) much too less complete sources, push it to the max
             if (reqfile->m_nCompleteSourcesCount < thePrefs.GetSpreadPrioLimit() && reqfile->GetUpPriority() != PR_VERYHIGH)
             {
@@ -1624,12 +1624,16 @@ VOID CALLBACK CUploadQueue::UploadTimer(HWND /*hwnd*/, UINT /*uMsg*/, UINT_PTR /
             }
 
             theApp.listensocket->UpdateConnectionsStatus();
-            if (thePrefs.WatchClipboard4ED2KLinks())
-            {
-                // TODO: Remove this from here. This has to be done with a clipboard chain
-                // and *not* with a timer!!
-                theApp.SearchClipboard();
-            }
+//>>> Tux::Clipboard Watchdog
+/*
+			if (thePrefs.WatchClipboard4ED2KLinks())
+			{
+				// TODO: Remove this from here. This has to be done with a clipboard chain
+				// and *not* with a timer!!
+				theApp.SearchClipboard();
+			}
+*/
+//<<< Tux::Clipboard Watchdog
 
             // 2 seconds
             i2Secs++;
