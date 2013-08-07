@@ -222,3 +222,4 @@ XXXXYYZZ:
 + added Spread Priority v3 [Tuxman]
 + added Clipboard Watchdog [Tuxman]
  * provides a more elegant way to watch the clipboard for eD2k links
++ added the eD2k LinkCreator to the Tools menu [Tuxman]

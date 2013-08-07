@@ -82,6 +82,7 @@
 #define MP_PAUSEONPREVIEW		10261
 //#define MP_VIEW_KADCONTACTS		10262
 //#define MP_VIEW_KADLOOKUP		10263
+#define MP_HM_LINKCREATOR		10264 //>>> Tux::LinkCreator Integration
 
 //>>> WiZaRd::PowerShare
 //#define MP_PRIOVERYLOW			10300

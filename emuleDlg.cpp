@@ -92,9 +92,7 @@
 #include <dbt.h>
 #include "XMessageBox.h"
 #include "./Mod/autoUpdate.h" //>>> WiZaRd::AutoUpdate
-//>>> WiZaRd::MediaInfoDLL Update
-#include "./Mod/extractfile.h"
-//<<< WiZaRd::MediaInfoDLL Update
+#include "./Mod/extractfile.h" //>>> WiZaRd::MediaInfoDLL Update
 #include "./Mod/CustomSearches.h" //>>> WiZaRd::CustomSearches
 #include "./Mod/ModIconMapping.h" //>>> WiZaRd::ModIconMappings
 #include "./Mod/7z/7z.h" //>>> WiZaRd::7zip
@@ -2656,6 +2654,15 @@ BOOL CemuleDlg::OnCommand(WPARAM wParam, LPARAM lParam)
         case MP_HM_1STSWIZARD:
             FirstTimeWizard();
             break;
+//>>> Tux::LinkCreator Integration
+        case MP_HM_LINKCREATOR:
+        {
+            CString strLCFilename;
+            strLCFilename.Format(L"%sLinkCreator.exe", thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR));
+            _ShellExecute(NULL, NULL, strLCFilename, NULL, thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), SW_SHOWDEFAULT);
+            break;
+        }
+//<<< Tux::LinkCreator Integration
         case MP_HM_IPFILTER:
         {
             CIPFilterDlg dlg;
@@ -2753,6 +2760,12 @@ void CemuleDlg::ShowToolPopup(bool toolsonly)
     menu.AppendMenu(MF_STRING,MP_HM_CONVERTPF, GetResString(IDS_IMPORTSPLPF) + _T("..."), _T("CONVERT"));
     menu.AppendMenu(MF_STRING,MP_HM_1STSWIZARD, GetResString(IDS_WIZ1) + _T("..."), _T("WIZARD"));
     menu.AppendMenu(MF_STRING,MP_HM_IPFILTER, GetResString(IDS_IPFILTER) + _T("..."), _T("IPFILTER"));
+//>>> Tux::LinkCreator Integration
+    CString strLCFilename;
+    strLCFilename.Format(L"%sLinkCreator.exe", thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR));
+    if (::PathFileExists(strLCFilename))
+        menu.AppendMenu(MF_STRING,MP_HM_LINKCREATOR, _T("LinkCreator..."), _T("CLIENTCOMPATIBLEPLUS"));
+//<<< Tux::LinkCreator Integration
     menu.AppendMenu(MF_STRING,MP_HM_DIRECT_DOWNLOAD, GetResString(IDS_SW_DIRECTDOWNLOAD) + _T("..."), _T("PASTELINK"));
     menu.AppendMenu(MF_STRING, MP_VERSIONCHECK, GetResString(IDS_VERSIONCHECK), L"WEB");
 
