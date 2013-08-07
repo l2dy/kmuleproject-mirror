@@ -39,7 +39,7 @@
     <p>
         Install the <a href="http://msdn.microsoft.com/en-us/windows/bb980924.aspx">Windows SDK</a> appropriate for your
         operating system<a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=6b6c21d2-2006-4afa-9702-529fa782d63b&displaylang=en"></a>.
-        Use the "Install Now" or "Archive" links to get the SDK. There are downloads for Vista and Windows 7. You can
+        Use the "Install Now" link to get the SDK. You can
         optionally install the Windows Performance Toolkit, Debugging Tools, and Application Verifier. The Help is also
         optional.</p>
     <p>
@@ -67,13 +67,13 @@
         Win32 compiles. To correct this the x64 compiles should be placed in an x64 directory using the <strong>$(PlatformName)</strong>
         macro.</p>
     <p>
-        Add the $(Platform) macro to &#8220;Configuration Properties &gt; General &gt; Output directory&#8221; so the
+        Add the $(PlatformName) macro to &#8220;Configuration Properties &gt; General &gt; Output directory&#8221; so the
         entry becomes $(SolutionDir)<strong>$(PlatformName)\</strong>$(Configuration)\.</p>
     <p>
-        Add the $(Platform) macro to &#8220;Configuration Properties&nbsp; &gt; General&gt; Intermediate Directory&#8221;
+        Add the $(PlatformName) macro to &#8220;Configuration Properties&nbsp; &gt; General&gt; Intermediate Directory&#8221;
         so the entry becomes <strong>$(PlatformName)\</strong>$(Configuration)\.</p>
     <p>
-        Check the x64 &#8220;Configuration Properties &gt; Linker &gt; Debugging &gt; Generate Program Database File&#8221;
+        Check the x64 Debug configuration &#8220;Configuration Properties &gt; Linker &gt; Debugging &gt; Generate Program Database File&#8221;
         for $(ProjectDir)<strong>$(PlatformName)\</strong>$(ConfigurationName)\$(TargetName).pdb<strong>.</strong></p>
     <p>
         Compile the project. If there are compile errors you may need to add the <strong>$(PlatformName)</strong> macro
