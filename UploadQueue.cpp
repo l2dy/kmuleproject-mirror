@@ -41,6 +41,7 @@
 #include "Log.h"
 #include "./Mod/ClientAnalyzer.h" //>>> WiZaRd::ClientAnalyzer
 #include "./Mod/Neo/UtpSocket.h" //>>> WiZaRd::NatTraversal [Xanatos]
+#include "PartFile.h" //>>> Tux::Spread Priority v3
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1246,11 +1247,14 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 
 //>>> Tux::Spread Priority v3
         // remark: order is low - normal - high - very high - very low
-        if (reqfile->IsSpreadPriority() &&
-                reqfile != NULL && !reqfile->IsAutoUpPriority() && !reqfile->IsPartFile() &&
-                ::GetTickCount() > reqfile->m_uiLastPrioSet + MIN2MS(2) // last prio change was > 2 mins ago
+        if (reqfile != NULL 
+				&& reqfile->IsSpreadPriority() 
+                && !reqfile->IsAutoUpPriority() 
+				&& !reqfile->IsPartFile() 
+                && ::GetTickCount() > reqfile->GetLastPrioTime() + MIN2MS(2) // last prio change was > 2 mins ago
            )
-        {
+		{
+			reqfile->SetLastPrioTime(::GetTickCount());
             // 1) much too less complete sources, push it to the max
             if (reqfile->m_nCompleteSourcesCount < thePrefs.GetSpreadPrioLimit() && reqfile->GetUpPriority() != PR_VERYHIGH)
             {

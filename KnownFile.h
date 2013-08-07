@@ -277,8 +277,11 @@ public:
 //>>> Tux::Spread Priority v3
 private:
     bool	m_bHasSpreadPriority;
+	UINT	m_uiLastPrioSet;
 public:
-    bool	IsSpreadPriority() const;
-    void	SetSpreadPriority(bool spreadprio);
+	UINT	GetLastPrioTime() const				{return m_uiLastPrioSet;}
+	void	SetLastPrioTime(const UINT time)	{m_uiLastPrioSet = time;}
+    bool	IsSpreadPriority() const			{return m_bHasSpreadPriority;}
+    void	SetSpreadPriority(bool spreadprio)	{m_bHasSpreadPriority = spreadprio;}
 //<<< Tux::Spread Priority v3
 };

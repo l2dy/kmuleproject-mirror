@@ -200,6 +200,7 @@ public:
     void		UpdateLargeIconSize();
     bool		IsXPThemeActive() const;
     bool		IsVistaThemeActive() const;
+	bool		IsWinSock2Available() const;
 
     bool		GetLangHelpFilePath(CString& strResult);
     void		SetHelpFilePath(LPCTSTR pszHelpFilePath);
@@ -251,8 +252,9 @@ protected:
     CTypedPtrList<CPtrList, SLogItem*> m_QueueLog;
     // Elandal:ThreadSafeLogging <--
 
-    UINT m_dwPublicIP;
-    bool m_bAutoStart;
+    UINT		m_dwPublicIP;
+    bool		m_bAutoStart;
+	WSADATA		m_wsaData;
 
     // Splash screen
 //>>> WiZaRd::New Splash [TBH]

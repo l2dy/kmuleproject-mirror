@@ -79,7 +79,10 @@ CKnownFile::CKnownFile()
     guifileupdatetime = ::GetTickCount() + 1000; //>>> WiZaRd::PowerShare - CPU!
     m_bPowerShared = false; //>>> WiZaRd::PowerShare
     m_iNameContinuityBad = 0; //>>> FDC [BlueSonicBoy]
-    m_bHasSpreadPriority = false; //>>> Tux::Spread Priority v3
+//>>> Tux::Spread Priority v3
+    m_bHasSpreadPriority = false; 
+	m_uiLastPrioSet = 0;
+//<<< Tux::Spread Priority v3
     m_iPartCount = 0;
     m_iED2KPartCount = 0;
     m_tUtcLastModified = (UINT)-1;
@@ -3084,14 +3087,3 @@ void CKnownFile::RemoveFromPartsInfo(const CPartStatus* partstatus)
         theApp.emuledlg->sharedfileswnd->sharedfilesctrl.UpdateFile(this);
 }
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
-//>>> Tux::Spread Priority v3
-bool CKnownFile::IsSpreadPriority()
-{
-    return m_bHasSpreadPriority;
-}
-
-void CKnownFile::SetSpreadPriority(bool spreadprio)
-{
-    m_bHasSpreadPriority = spreadprio;
-}
-//<<< Tux::Spread Priority v3

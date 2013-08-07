@@ -2588,8 +2588,10 @@ public:
     }
 //<<< WiZaRd
 //>>> Tux::Spread Priority v3
+private:
+	static	int		m_iSpreadPrioLimit;
 public:
-    static	bool	GetSpreadPrioLimit()
+    static	int	GetSpreadPrioLimit()
     {
         return m_iSpreadPrioLimit;
     }
@@ -2597,8 +2599,6 @@ public:
     {
         m_iSpreadPrioLimit = i;
     }
-private:
-    static	int		m_iSpreadPrioLimit;
 //<<< Tux::Spread Priority v3
 };
 

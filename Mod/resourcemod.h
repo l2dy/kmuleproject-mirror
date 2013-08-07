@@ -93,6 +93,7 @@
 //<<< WiZaRd::InfoWnd
 //>>> Tux::Spread Priority v3
 #define IDS_SPREADPRIOLIMIT             4058
+#define IDS_SPREADPRIORITY				4059
 //<<< Tux::Spread Priority v3
 //#endif
 
