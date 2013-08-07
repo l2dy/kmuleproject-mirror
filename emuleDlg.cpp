@@ -653,7 +653,7 @@ BOOL CemuleDlg::OnInitDialog()
 //>>> Tux::Clipboard Watchdog
     // we want to watch the clipboard for eD2k links - put eMule into the clipboard chain
     hClipboardViewer = SetClipboardViewer();
-	bClipboardWatchdog = true;
+    bClipboardWatchdog = true;
 //<<< Tux::Clipboard Watchdog
 
     return TRUE;
@@ -684,6 +684,7 @@ void CemuleDlg::OnDrawClipboard()
     }
     else {
         AddDebugLogLine(DLP_VERYLOW, _T("Failed to hook into the clipboard for unknown reasons :-( disabling the Watchdog for this session."));
+        bClipboardWatchdog = false;
     }
 }
 //<<< Tux::Clipboard Watchdog
