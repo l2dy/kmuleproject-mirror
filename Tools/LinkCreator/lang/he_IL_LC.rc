@@ -1,10 +1,9 @@
 /////////////////////////////////////////////////////////////////////////////
-// Hebrδisch resources
+// HebrΧ”isch resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_HEB)
 #ifdef _WIN32
 LANGUAGE LANG_HEBREW, SUBLANG_DEFAULT
-#pragma code_page(1255)
 #endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
@@ -14,54 +13,54 @@ LANGUAGE LANG_HEBREW, SUBLANG_DEFAULT
 
 STRINGTABLE 
 BEGIN
-    IDS_LINKCREATOR         "ιεφψ χιωεψι ΰιξιεμ"
+    IDS_LINKCREATOR         "Χ™Χ•Χ¦Χ¨ Χ§Χ™Χ©Χ•Χ¨Χ™ ΧΧ™ΧΧ™Χ•Χ"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_FILELOCATION        "ξιχεν ωμ δχεαυ ωμε ϊψφδ μιφεψ χιωεψ ed2k"
-    IDS_BROWSE              "ςιιο..."
-    IDS_ADDHTTP             "δερσ"
-    IDS_HTTPREMOVE          "δρψ"
-    IDS_HTTPADDRESS         "λϊεαϊ HTTP ΰτωψιϊ ςαεψ χεαυ ζδ ΰωψ ιϊεερσ μχιωεψ (ςαεψ χιωεψιν ςν ξχεψεϊ HTTP)"
-    IDS_ADDEDHTTPSOURCES    "ξχεψεϊ HTTP ωπερτε"
-    IDS_HTTPCLEAR           "ξηχ δλμ"
-    IDS_ED2KLINK            "χιωεψ ed2k ςαεψ χεαυ ζδ"
+    IDS_FILELOCATION        "ΧΧ™Χ§Χ•Χ Χ©Χ Χ”Χ§Χ•Χ‘Χ¥ Χ©ΧΧ• ΧªΧ¨Χ¦Χ” ΧΧ™Χ¦Χ•Χ¨ Χ§Χ™Χ©Χ•Χ¨ ed2k"
+    IDS_BROWSE              "ΧΆΧ™Χ™Χ..."
+    IDS_ADDHTTP             "Χ”Χ•Χ΅Χ£"
+    IDS_HTTPREMOVE          "Χ”Χ΅Χ¨"
+    IDS_HTTPADDRESS         "Χ›ΧªΧ•Χ‘Χª HTTP ΧΧ¤Χ©Χ¨Χ™Χª ΧΆΧ‘Χ•Χ¨ Χ§Χ•Χ‘Χ¥ Χ–Χ” ΧΧ©Χ¨ Χ™ΧªΧ•Χ•Χ΅Χ£ ΧΧ§Χ™Χ©Χ•Χ¨ (ΧΆΧ‘Χ•Χ¨ Χ§Χ™Χ©Χ•Χ¨Χ™Χ ΧΆΧ ΧΧ§Χ•Χ¨Χ•Χª HTTP)"
+    IDS_ADDEDHTTPSOURCES    "ΧΧ§Χ•Χ¨Χ•Χª HTTP Χ©Χ Χ•Χ΅Χ¤Χ•"
+    IDS_HTTPCLEAR           "ΧΧ—Χ§ Χ”Χ›Χ"
+    IDS_ED2KLINK            "Χ§Χ™Χ©Χ•Χ¨ ed2k ΧΆΧ‘Χ•Χ¨ Χ§Χ•Χ‘Χ¥ Χ–Χ”"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_START               "δϊημ"
-    IDS_CANCEL              "αθμ"
-    IDS_EXIT                "ιφιΰδ"
-    IDS_WITHHASHSET         "φεψ χιωεψ ςν ρθ δΰω (ςεζψ μδτιυ χαφιν ηγωιν επγιψιν ξδψ ιεϊψ, δχιωεψ ΰψεκ ιεϊψ)"
-    IDS_EX1                 "γεβξδ: ""http://www.mywebspace.com/files/"" (ων χεαυ ξχεξι ιϊεερσ μλϊεαϊ)"
-    IDS_EX2                 "       ΰε: ""http://www.mywebspace.com/files/myfile.zip"""
-    IDS_COPYTOCLIPBOARD     "δςϊχ μχμιταεψγ"
-    IDS_WITHAICH            "φεψ χιωεψ ςν δΰω AICH"
-    IDS_COPYRIGHTS          "λμ δζλειεϊ ωξεψεϊ © %s μ-eMule-Project.net"
-    IDS_TRANSLATION         "ϊεψβν μςαψιϊ ς""ι Avi3k ξ-hebMule.sf.net"
-    IDS_ABOUT               "ςμ ιεφψ χιωεψι ΰιξιεμ..."
-    IDS_OK                  "ΰιωεψ"
-    IDS_HASHING             "ξαφς δΰωιπβ..."
-    IDS_INVALIDFILEPATH     "ξιχεν δχεαυ ωδελπρ μΰ ϊχιο, πλωμ ααιφες δΰω μχεαυ"
-    IDS_INVALIDURL          "λϊεαϊ δ-URL μΰ ϊχιπδ"
-    IDS_CANTOPENFILE        "μΰ ιλεμ μτϊεη χεαυ: "
+    IDS_START               "Χ”ΧªΧ—Χ"
+    IDS_CANCEL              "Χ‘ΧΧ"
+    IDS_EXIT                "Χ™Χ¦Χ™ΧΧ”"
+    IDS_WITHHASHSET         "Χ¦Χ•Χ¨ Χ§Χ™Χ©Χ•Χ¨ ΧΆΧ Χ΅Χ Χ”ΧΧ© (ΧΆΧ•Χ–Χ¨ ΧΧ”Χ¤Χ™Χ¥ Χ§Χ‘Χ¦Χ™Χ Χ—Χ“Χ©Χ™Χ Χ•Χ Χ“Χ™Χ¨Χ™Χ ΧΧ”Χ¨ Χ™Χ•ΧªΧ¨, Χ”Χ§Χ™Χ©Χ•Χ¨ ΧΧ¨Χ•Χ Χ™Χ•ΧªΧ¨)"
+    IDS_EX1                 "Χ“Χ•Χ’ΧΧ”: ""http://www.mywebspace.com/files/"" (Χ©Χ Χ§Χ•Χ‘Χ¥ ΧΧ§Χ•ΧΧ™ Χ™ΧªΧ•Χ•Χ΅Χ£ ΧΧ›ΧªΧ•Χ‘Χª)"
+    IDS_EX2                 "       ΧΧ•: ""http://www.mywebspace.com/files/myfile.zip"""
+    IDS_COPYTOCLIPBOARD     "Χ”ΧΆΧªΧ§ ΧΧ§ΧΧ™Χ¤Χ‘Χ•Χ¨Χ“"
+    IDS_WITHAICH            "Χ¦Χ•Χ¨ Χ§Χ™Χ©Χ•Χ¨ ΧΆΧ Χ”ΧΧ© AICH"
+    IDS_COPYRIGHTS          "Χ›Χ Χ”Χ–Χ›Χ•Χ™Χ•Χª Χ©ΧΧ•Χ¨Χ•Χª Β© %s Χ-eMule-Project.net"
+    IDS_TRANSLATION         "ΧªΧ•Χ¨Χ’Χ ΧΧΆΧ‘Χ¨Χ™Χª ΧΆ""Χ™ Avi3k Χ-hebMule.sf.net"
+    IDS_ABOUT               "ΧΆΧ Χ™Χ•Χ¦Χ¨ Χ§Χ™Χ©Χ•Χ¨Χ™ ΧΧ™ΧΧ™Χ•Χ..."
+    IDS_OK                  "ΧΧ™Χ©Χ•Χ¨"
+    IDS_HASHING             "ΧΧ‘Χ¦ΧΆ Χ”ΧΧ©Χ™Χ Χ’..."
+    IDS_INVALIDFILEPATH     "ΧΧ™Χ§Χ•Χ Χ”Χ§Χ•Χ‘Χ¥ Χ©Χ”Χ•Χ›Χ Χ΅ ΧΧ ΧªΧ§Χ™Χ, Χ Χ›Χ©Χ Χ‘Χ‘Χ™Χ¦Χ•ΧΆ Χ”ΧΧ© ΧΧ§Χ•Χ‘Χ¥"
+    IDS_INVALIDURL          "Χ›ΧªΧ•Χ‘Χª Χ”-URL ΧΧ ΧªΧ§Χ™Χ Χ”"
+    IDS_CANTOPENFILE        "ΧΧ Χ™Χ›Χ•Χ ΧΧ¤ΧªΧ•Χ— Χ§Χ•Χ‘Χ¥: "
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_CANTCREATEAICH      "πλωμ αηιωεα ρθ δΰω AICH μχεαυ "
-    IDS_SOURCESMANAGEMENT   "ξπδμ ξχεψεϊ"
-    IDS_CLIENTSCOURCE       "χμιιπθ ΰτωψι λξχεψ (ΰιι τι ετεψθ ωμ ξωϊξωι ΰιξιεμ):"
-    IDS_CLIENTSOURCESLIST   "δερσ ξχεψεϊ χμιιπθιν"
-    IDS_ERRCLIENTSOURCE     "ξχεψ χμιιπθ μΰ ϊχιο.\nΰπΰ δλπρ ΰϊ δτεψξθ: ""ΰιι τι:τεψθ""  ΰε  ""λϊεαϊ:τεψθ"" !"
-    IDS_CHECKSOURCE         "αγεχ ξχεψ"
-    IDS_ERR_WEBSOURCECHECK  "ωβιΰδ: μΰ ιλεμ μβωϊ μξχεψ ωφειιο."
+    IDS_CANTCREATEAICH      "Χ Χ›Χ©Χ Χ‘Χ—Χ™Χ©Χ•Χ‘ Χ΅Χ Χ”ΧΧ© AICH ΧΧ§Χ•Χ‘Χ¥ "
+    IDS_SOURCESMANAGEMENT   "ΧΧ Χ”Χ ΧΧ§Χ•Χ¨Χ•Χª"
+    IDS_CLIENTSCOURCE       "Χ§ΧΧ™Χ™Χ Χ ΧΧ¤Χ©Χ¨Χ™ Χ›ΧΧ§Χ•Χ¨ (ΧΧ™Χ™ Χ¤Χ™ Χ•Χ¤Χ•Χ¨Χ Χ©Χ ΧΧ©ΧªΧΧ©Χ™ ΧΧ™ΧΧ™Χ•Χ):"
+    IDS_CLIENTSOURCESLIST   "Χ”Χ•Χ΅Χ£ ΧΧ§Χ•Χ¨Χ•Χª Χ§ΧΧ™Χ™Χ ΧΧ™Χ"
+    IDS_ERRCLIENTSOURCE     "ΧΧ§Χ•Χ¨ Χ§ΧΧ™Χ™Χ Χ ΧΧ ΧªΧ§Χ™Χ.\nΧΧ Χ Χ”Χ›Χ Χ΅ ΧΧª Χ”Χ¤Χ•Χ¨ΧΧ: ""ΧΧ™Χ™ Χ¤Χ™:Χ¤Χ•Χ¨Χ""  ΧΧ•  ""Χ›ΧªΧ•Χ‘Χª:Χ¤Χ•Χ¨Χ"" !"
+    IDS_CHECKSOURCE         "Χ‘Χ“Χ•Χ§ ΧΧ§Χ•Χ¨"
+    IDS_ERR_WEBSOURCECHECK  "Χ©Χ’Χ™ΧΧ”: ΧΧ Χ™Χ›Χ•Χ ΧΧ’Χ©Χª ΧΧΧ§Χ•Χ¨ Χ©Χ¦Χ•Χ™Χ™Χ."
     IDS_ERR_WEBSOURCECHECK_NOMATCH 
-                            "ωβιΰδ: βεγμ δχεαυ δξψεηχ μΰ ϊεΰν μβεγμ δχεαυ δξχεξι."
-    IDS_FILETOOLARGE        "The selected file is larger than the eD2k-Network supports!"
+                            "Χ©Χ’Χ™ΧΧ”: Χ’Χ•Χ“Χ Χ”Χ§Χ•Χ‘Χ¥ Χ”ΧΧ¨Χ•Χ—Χ§ ΧΧ ΧªΧ•ΧΧ ΧΧ’Χ•Χ“Χ Χ”Χ§Χ•Χ‘Χ¥ Χ”ΧΧ§Χ•ΧΧ™."
+    IDS_FILETOOLARGE        "The selected file is larger than the eD2k Network supports!"
 END
 
-#endif    // Hebrδisch resources
+#endif    // HebrΓ¤isch resources
 /////////////////////////////////////////////////////////////////////////////

@@ -4,7 +4,6 @@
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
 #ifdef _WIN32
 LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
-#pragma code_page(1251)
 #endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
@@ -14,53 +13,53 @@ LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 
 STRINGTABLE 
 BEGIN
-    IDS_LINKCREATOR         "Создатель ссылки eMule"
+    IDS_LINKCREATOR         "РЎРѕР·РґР°С‚РµР»СЊ СЃСЃС‹Р»РєРё eMule"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_FILELOCATION        "Путь к файлу, для которого Вы хотите создать ссылку eD2K"
-    IDS_BROWSE              "Просмотр"
-    IDS_ADDHTTP             "Добавить"
-    IDS_HTTPREMOVE          "Удалить"
-    IDS_HTTPADDRESS         "Дополнительный HTTP адрес для этого файла, который будет добавлен в ссылку (для ссылок с Web источником)"
-    IDS_ADDEDHTTPSOURCES    "Добавлен HTTP источник"
-    IDS_HTTPCLEAR           "Очистить"
-    IDS_ED2KLINK            "Готовая ссылка eD2K для этого файла"
+    IDS_FILELOCATION        "РџСѓС‚СЊ Рє С„Р°Р№Р»Сѓ, РґР»СЏ РєРѕС‚РѕСЂРѕРіРѕ Р’С‹ С…РѕС‚РёС‚Рµ СЃРѕР·РґР°С‚СЊ СЃСЃС‹Р»РєСѓ eD2K"
+    IDS_BROWSE              "РџСЂРѕСЃРјРѕС‚СЂ"
+    IDS_ADDHTTP             "Р”РѕР±Р°РІРёС‚СЊ"
+    IDS_HTTPREMOVE          "РЈРґР°Р»РёС‚СЊ"
+    IDS_HTTPADDRESS         "Р”РѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Р№ HTTP Р°РґСЂРµСЃ РґР»СЏ СЌС‚РѕРіРѕ С„Р°Р№Р»Р°, РєРѕС‚РѕСЂС‹Р№ Р±СѓРґРµС‚ РґРѕР±Р°РІР»РµРЅ РІ СЃСЃС‹Р»РєСѓ (РґР»СЏ СЃСЃС‹Р»РѕРє СЃ Web РёСЃС‚РѕС‡РЅРёРєРѕРј)"
+    IDS_ADDEDHTTPSOURCES    "Р”РѕР±Р°РІР»РµРЅ HTTP РёСЃС‚РѕС‡РЅРёРє"
+    IDS_HTTPCLEAR           "РћС‡РёСЃС‚РёС‚СЊ"
+    IDS_ED2KLINK            "Р“РѕС‚РѕРІР°СЏ СЃСЃС‹Р»РєР° eD2K РґР»СЏ СЌС‚РѕРіРѕ С„Р°Р№Р»Р°"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_START               "Сгенерировать"
-    IDS_CANCEL              "Отменить"
-    IDS_EXIT                "Выход"
-    IDS_WITHHASHSET         "Создать ссылку с хешем данных (помогает быстрее распределять редкие файлы)"
-    IDS_EX1                 "Пример: ""http://www.mywebspace.com/files/"" (местное имя файла будет приложено)"
-    IDS_EX2                 "          или: ""http://www.mywebspace.com/files/myfile.zip"""
-    IDS_COPYTOCLIPBOARD     "Скопировать в буфер обмена"
-    IDS_WITHAICH            "Создать ссылку с AICH хешем"
-    IDS_COPYRIGHTS          "Copyright © 2004-2005 by eMule-Project.net"
-    IDS_TRANSLATION         "На русский язык перевёл Т-Мас"
-    IDS_ABOUT               "Про"
+    IDS_START               "РЎРіРµРЅРµСЂРёСЂРѕРІР°С‚СЊ"
+    IDS_CANCEL              "РћС‚РјРµРЅРёС‚СЊ"
+    IDS_EXIT                "Р’С‹С…РѕРґ"
+    IDS_WITHHASHSET         "РЎРѕР·РґР°С‚СЊ СЃСЃС‹Р»РєСѓ СЃ С…РµС€РµРј РґР°РЅРЅС‹С… (РїРѕРјРѕРіР°РµС‚ Р±С‹СЃС‚СЂРµРµ СЂР°СЃРїСЂРµРґРµР»СЏС‚СЊ СЂРµРґРєРёРµ С„Р°Р№Р»С‹)"
+    IDS_EX1                 "РџСЂРёРјРµСЂ: ""http://www.mywebspace.com/files/"" (РјРµСЃС‚РЅРѕРµ РёРјСЏ С„Р°Р№Р»Р° Р±СѓРґРµС‚ РїСЂРёР»РѕР¶РµРЅРѕ)"
+    IDS_EX2                 "          РёР»Рё: ""http://www.mywebspace.com/files/myfile.zip"""
+    IDS_COPYTOCLIPBOARD     "РЎРєРѕРїРёСЂРѕРІР°С‚СЊ РІ Р±СѓС„РµСЂ РѕР±РјРµРЅР°"
+    IDS_WITHAICH            "РЎРѕР·РґР°С‚СЊ СЃСЃС‹Р»РєСѓ СЃ AICH С…РµС€РµРј"
+    IDS_COPYRIGHTS          "Copyright В© 2004-2005 by eMule-Project.net"
+    IDS_TRANSLATION         "РќР° СЂСѓСЃСЃРєРёР№ СЏР·С‹Рє РїРµСЂРµРІС‘Р» Рў-РњР°СЃ"
+    IDS_ABOUT               "РџСЂРѕ"
     IDS_OK                  "OK"
-    IDS_HASHING             "Хеширование"
-    IDS_INVALIDFILEPATH     "Путь к файлу неверный. Хеширование невозможно."
-    IDS_INVALIDURL          "URL неверный"
-    IDS_CANTOPENFILE        "Невозможно открыть файл: "
+    IDS_HASHING             "РҐРµС€РёСЂРѕРІР°РЅРёРµ"
+    IDS_INVALIDFILEPATH     "РџСѓС‚СЊ Рє С„Р°Р№Р»Сѓ РЅРµРІРµСЂРЅС‹Р№. РҐРµС€РёСЂРѕРІР°РЅРёРµ РЅРµРІРѕР·РјРѕР¶РЅРѕ."
+    IDS_INVALIDURL          "URL РЅРµРІРµСЂРЅС‹Р№"
+    IDS_CANTOPENFILE        "РќРµРІРѕР·РјРѕР¶РЅРѕ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р»: "
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_CANTCREATEAICH      "Ошибка при пересчёте AICH хеша "
-    IDS_SOURCESMANAGEMENT   "Управление источников"
-    IDS_CLIENTSCOURCE       "Дополнительный клиент, который будет добавлен как источник (IP/Хост и порт eMule клиентов)"
-    IDS_CLIENTSOURCESLIST   "Добавлен источник клиента"
-    IDS_ERRCLIENTSOURCE     "Неверный синтаксис источника клиента\nПожалуйста введите в формате: ""IP:Порт"" или ""Имя хоста:Порт"" !"  
-    IDS_CHECKSOURCE         "Проверить источник"
-    IDS_ERR_WEBSOURCECHECK  "Ошибка: Нет доступа к указанным ресурсам."
+    IDS_CANTCREATEAICH      "РћС€РёР±РєР° РїСЂРё РїРµСЂРµСЃС‡С‘С‚Рµ AICH С…РµС€Р° "
+    IDS_SOURCESMANAGEMENT   "РЈРїСЂР°РІР»РµРЅРёРµ РёСЃС‚РѕС‡РЅРёРєРѕРІ"
+    IDS_CLIENTSCOURCE       "Р”РѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Р№ РєР»РёРµРЅС‚, РєРѕС‚РѕСЂС‹Р№ Р±СѓРґРµС‚ РґРѕР±Р°РІР»РµРЅ РєР°Рє РёСЃС‚РѕС‡РЅРёРє (IP/РҐРѕСЃС‚ Рё РїРѕСЂС‚ eMule РєР»РёРµРЅС‚РѕРІ)"
+    IDS_CLIENTSOURCESLIST   "Р”РѕР±Р°РІР»РµРЅ РёСЃС‚РѕС‡РЅРёРє РєР»РёРµРЅС‚Р°"
+    IDS_ERRCLIENTSOURCE     "РќРµРІРµСЂРЅС‹Р№ СЃРёРЅС‚Р°РєСЃРёСЃ РёСЃС‚РѕС‡РЅРёРєР° РєР»РёРµРЅС‚Р°\nРџРѕР¶Р°Р»СѓР№СЃС‚Р° РІРІРµРґРёС‚Рµ РІ С„РѕСЂРјР°С‚Рµ: ""IP:РџРѕСЂС‚"" РёР»Рё ""РРјСЏ С…РѕСЃС‚Р°:РџРѕСЂС‚"" !"  
+    IDS_CHECKSOURCE         "РџСЂРѕРІРµСЂРёС‚СЊ РёСЃС‚РѕС‡РЅРёРє"
+    IDS_ERR_WEBSOURCECHECK  "РћС€РёР±РєР°: РќРµС‚ РґРѕСЃС‚СѓРїР° Рє СѓРєР°Р·Р°РЅРЅС‹Рј СЂРµСЃСѓСЂСЃР°Рј."
     IDS_ERR_WEBSOURCECHECK_NOMATCH 
-                            "Ошибка: Удалённый размер ресурса не совпадает с местным размером ресурса."
-    IDS_FILETOOLARGE        "Выбранный файл больше чем поддерживается сетью eD2K!"
+                            "РћС€РёР±РєР°: РЈРґР°Р»С‘РЅРЅС‹Р№ СЂР°Р·РјРµСЂ СЂРµСЃСѓСЂСЃР° РЅРµ СЃРѕРІРїР°РґР°РµС‚ СЃ РјРµСЃС‚РЅС‹Рј СЂР°Р·РјРµСЂРѕРј СЂРµСЃСѓСЂСЃР°."
+    IDS_FILETOOLARGE        "Р’С‹Р±СЂР°РЅРЅС‹Р№ С„Р°Р№Р» Р±РѕР»СЊС€Рµ С‡РµРј РїРѕРґРґРµСЂР¶РёРІР°РµС‚СЃСЏ СЃРµС‚СЊСЋ eD2K!"
 END
 
 
