@@ -1300,8 +1300,8 @@ END
 STRINGTABLE 
 BEGIN
     IDS_LOG_FILE_SAVING     "Logge Dateispeicher-Aktionen"
-    IDS_DELETEIPFILTERS     "Sollen die markierten IP Filter gelöscht werden?"
-    IDS_TOTAL_IPFILTER_LABEL "IP Filter gesamt:"
+    IDS_DELETEIPFILTERS     "Sollen die markierten IP-Filter gelöscht werden?"
+    IDS_TOTAL_IPFILTER_LABEL "IP-Filter gesamt:"
     IDS_TOTAL_IPS_LABEL     "IP Anzahl:"    
     IDS_APPEND              "Verschmelzen..."
     IDS_SAVE                "Speichern"
@@ -1319,8 +1319,8 @@ STRINGTABLE
 BEGIN
     IDS_KNOWN               "Bekannt"
     IDS_KADCONTACTSREAD     "%u Kontakte aus Datei eingelesen."
-    IDS_ERR_KADCONTACTS     "Keine Kad Kontakte gefunden. Bitte Bootstrappe oder downloade eine nodes.dat -Datei!"
-    IDS_METATAGS            "Meta Tag Anzahl:"
+    IDS_ERR_KADCONTACTS     "Keine Kad-Kontakte gefunden. Bitte Bootstrappe oder downloade eine nodes.dat -Datei!"
+    IDS_METATAGS            "Metatag-Anzahl:"
     IDS_FILEFORMAT          "Dateiformat"
     IDS_UDPREASKS           "UDP Datei-Neuanfragen"
     IDS_DYNUP_PINGTOLERANCE_MS "Ping-Toleranz (ms)"
@@ -1338,7 +1338,7 @@ BEGIN
     IDS_A4AF_FILES          "A4AF Datei"
     IDS_FO_PREFBUTTON       "Öffne diese Ports an WinXP-interner Firewall"
     IDS_FO_PREF_SUCCCEEDED  "Die gewählten Ports wurden erfolgreich an der WinXP-internen Firewall geöffnet.\nBeachte, dass Desktopfirewalls von Drittherstellern und Router von diesen Massnahmen nicht betroffen sind!"
-    IDS_FO_PREF_FAILED      "Die interne Windows XP Firewall konnte nicht für die ausgewählten Ports konfiguriert werden!"
+    IDS_FO_PREF_FAILED      "Die interne Windows-XP-Firewall konnte nicht für die ausgewählten Ports konfiguriert werden!"
 END
 
 STRINGTABLE 
@@ -1379,8 +1379,8 @@ STRINGTABLE
 BEGIN
     IDS_CHAT_IDENT          "Identifikation:"
     IDS_MAXHALFOPENCONS     "Max. halboffene Verbindungen"
-    IDS_KAD_WAITCBK         "Warte auf Kad Rückruf"
-    IDS_KAD_TOOMANDYKADLKPS "Zu viele Kad Suchen"
+    IDS_KAD_WAITCBK         "Warte auf Kad-Rückruf"
+    IDS_KAD_TOOMANDYKADLKPS "Zu viele Kad-Suchen"
     IDS_INDEXED             "Indexiert"
     IDS_KADINFO_SRC         "\tQuelle: %u\r\n"
     IDS_KADINFO_KEYW        "\tSchlüsselwort: %u\r\n"
@@ -1418,8 +1418,8 @@ BEGIN
     IDS_PF_ADVANCEDCALC     "Nutze fortgeschrittene Methode für Restzeitbestimmung"
     IDS_LD_COPYCLIPBOARD    "In Zwischenablage kopieren"
     IDS_LD_HOSTNAME         "Benutze Hostnamen (aus den Einstellungen) anstatt der IP, wenn eD2K-Links mit Quelle erstellt werden"
-    IDS_SAVEACFAILED        "AICH Hashset konnte nicht gespeichert werden!"
-    IDS_AICHHASH            "AICH Hash" //!
+    IDS_SAVEACFAILED        "AICH-Hashset konnte nicht gespeichert werden!"
+    IDS_AICHHASH            "AICH-Hash" //!
     IDS_BYTESPERSEC         "B/s"			//!
     IDS_KBYTESPERSEC        "KB/s"		//!
     IDS_MBYTESPERSEC        "MB/s"		//!
@@ -1451,7 +1451,7 @@ BEGIN
     IDS_THELOAD             "Auslastung"
     IDS_EXTRACT_META_DATA   "Metadaten extrahieren"
     IDS_META_DATA_MEDIADET  "DirectShow (für alle anderen Audio-/Videodateien)"
-    IDS_META_DATA_ID3LIB    "ID3 Bibliothek (nur für MPEG Audiodateien)"    
+    IDS_META_DATA_ID3LIB    "ID3-Bibliothek (nur für MPEG-Audiodateien)"    
     IDS_ASREGEXPR           "als regulärer Ausdruck"
     IDS_STATIC_REGEXP       "Regulärer Ausdruck für die Ansichtsfilterung:"
     IDS_CARE4ALL            "alle Dateien betrachten"
@@ -1587,7 +1587,7 @@ BEGIN
     IDS_ARCHPREV_ATTRIBINFO "Erklärung möglicher Dateiattribute:\r\n\r\nP\tDatei ist passwortgeschützt\r\nD\tist ein Verzeichnis\r\nC\tbesitzt Kommentar\r\nLx\tKompressionsstufe x\r\nM\tkomprimierte Daten liegen noch nicht komplett vor\r\n<\tDatei wird aus vorigem Teilarchiv fortgeführt\r\n>\tDatei wird im nächsten Teilarchiv fortgesetzt\r\n"
     IDS_CONTENT_INFO        "Inhaltsinformation"
     IDS_MESSAGESCOMMENTS    "Nachrichten, Kommentare"
-    IDS_PROTOCOLOBFUSCATION "Protokoll Obfuskation (Verschleierung)"
+    IDS_PROTOCOLOBFUSCATION "Protokollobfuskation (Verschleierung)"
     IDS_ONLYOBFUSCATED      "Erlaube nur obfuskierte Verbindungen (nicht empfohlen)"
 END
 
@@ -1615,12 +1615,12 @@ BEGIN
     IDS_UPNPSETUP           "Versuche Port-Weiterleitungen via UPnP einzustellen..."
     IDS_UPNPFAILED          "UPnP konnte die Portweiterleitung nicht konfigurieren. Bitte führe die Portweiterleitung manuell durch!"
     IDS_UPNPSUCCESS         "UPnP hat erfolgreich Portweiterleitungen für die Ports %u (TCP) und %u (UDP) durchgeführt."
-    IDS_UPNP_NOSERVICE      "UPnP Device Host Dienst läuft nicht - überspringe UPnP Setup"
+    IDS_UPNP_NOSERVICE      "UPnP-Device-Host-Dienst läuft nicht - überspringe UPnP-Setup"
     IDS_DELAYEDBYUPNP       "Die Verbindung mit dem Netzwerk wird verzögert, da UPnP noch die Portweiterleitungen konfiguriert."    
     IDS_UPNP                "UPnP" //!
     IDS_UPNPCLOSEONEXIT     "Lösche UPnP Portweiterleitungen beim Programmende"
-    IDS_UPNPSKIPWANIP       "Überspringe WAN IP Setup"
-    IDS_UPNPSKIPWANPPP      "Überspringe WAN PPP Setup"    
+    IDS_UPNPSKIPWANIP       "Überspringe WAN-IP-Setup"
+    IDS_UPNPSKIPWANPPP      "Überspringe WAN-PPP-Setup"    
     IDS_SHAREEMULEMULTI     "Jeder Nutzer hat seine eigene Konfiguration und Downloads"
     IDS_SHAREEMULEPUBLIC    "Jeder hat dieselbe Konfiguration und Downloads"
     IDS_SHAREEMULEOLD       "Speichert die Konfiguration und Downloads im Programmverzeichnis"
@@ -1632,15 +1632,15 @@ BEGIN
     IDS_MARKSPAM            "Als Spam markieren"
     IDS_MARKNOTSPAM         "Als Nicht-Spam markieren"
     IDS_CAPTCHAREQUEST      "Im Spam-Nachrichten zu vermeiden, setzt dieser Benutzer voraus, dass du ein Captcha löst, bevor du ihm Nachrichten senden kannst. Bitte gib als Antwort die Buchstaben dieses Bildes ein:"
-    IDS_CAPTCHAFAILED       "Deine Antwort zur Captcha war fehlerhaft womit deine Nachricht ignoriert wurde. Du kannst eine neue Captcha durch das Senden einer neuen Nachricht anfordern."
-    IDS_CAPTCHASOLVED       "Du hast den Captcha Test bestanden. Deine Nachricht hat den Empfänger erreicht."
+    IDS_CAPTCHAFAILED       "Deine Antwort auf das Captcha war fehlerhaft, womit deine Nachricht ignoriert wurde. Du kannst ein neues Captcha durch das Senden einer neuen Nachricht anfordern."
+    IDS_CAPTCHASOLVED       "Du hast den Captcha-Test bestanden. Deine Nachricht hat den Empfänger erreicht."
     IDS_DOWNLOADING_NODESDAT_FROM "Lade nodes.dat von %s"
     IDS_DOWNLOADING_NODESDAT "Lade nodes.dat..."
     IDS_ERR_FAILEDDOWNLOADNODES "Fehler beim Herunterladen der nodes.dat von %s"    
     IDS_KADID               "KadID" //!
-    IDS_SEARCHINGFRIENDKAD  "Suche nach Freunden im Kad Netzwerk"
+    IDS_SEARCHINGFRIENDKAD  "Suche nach Freunden im Kad-Netzwerk"
     IDS_FOUND               "gefunden"
-    IDS_EXTERNUDPPORT       "externer UDP Port"
+    IDS_EXTERNUDPPORT       "externer UDP-Port"
     IDS_STORESEARCHES       "Suchlisten nach Neustarts wiederherstellen"    
     IDS_EDITSPAMFILTER      "Ändere Spamfilter..."
     IDS_EDITSPAMFILTERCOMMENTS "Ändere Spam-Filter für Kommentare"        
@@ -1672,7 +1672,7 @@ BEGIN
     IDS_PREVIEWWITH         "Vorschau mit"    
     IDS_DONOTASKAGAIN       "nicht erneut nachfragen"
     IDS_POPULARITY          "Popularitätsrang"
-    IDS_LANMODE             "LAN Modus"
+    IDS_LANMODE             "LAN-Modus"
 END
 
 #endif    // German (Germany) resources
