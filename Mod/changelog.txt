@@ -223,3 +223,4 @@ XXXXYYZZ:
 + added Clipboard Watchdog [Tuxman]
  * provides a more elegant way to watch the clipboard for eD2k links
 + added the eD2k LinkCreator to the Tools menu [Tuxman]
+~ added temporary DownThemAll! downloads to known partial files [Tuxman]

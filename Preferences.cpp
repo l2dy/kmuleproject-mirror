@@ -425,7 +425,7 @@ uint16  CPreferences::m_iMaxSourcesHL;
 //>>> WiZaRd::Remove forbidden files
 bool	CPreferences::m_bRemoveForbiddenFiles;
 // do not share a file with one of these patterns because they are practically worthless
-CString	CPreferences::m_strForbiddenFileFilters = L".fb!|.jc!|.antifrag|.dctmp|.bc!|.!ut|.getright|.partial|.partial.sd|.part|.part.met|.part.met.bak|.part.met.backup";
+CString	CPreferences::m_strForbiddenFileFilters = L".fb!|.jc!|.antifrag|.dtapart|.dctmp|.bc!|.!ut|.getright|.partial|.partial.sd|.part|.part.met|.part.met.bak|.part.met.backup";
 //<<< WiZaRd::Remove forbidden files
 //>>> WiZaRd::Drop Blocking Sockets [Xman?]
 bool	CPreferences::m_bDropBlockingSession = true;
