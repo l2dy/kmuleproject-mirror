@@ -44,7 +44,7 @@ public:
 
 	void SetLang(LANGID lid);
 	LANGID GetLang() { return m_lid; }
-	const CString GetVersion() { return CString(_T("0.8")); }
+	const CString GetVersion() { return CString(_T("0.9")); }
 
 protected:
 	DECLARE_MESSAGE_MAP()
