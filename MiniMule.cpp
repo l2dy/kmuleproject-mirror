@@ -110,6 +110,8 @@ CMiniMule::CMiniMule(CWnd* pParent /*=NULL*/)
     : CDHtmlDialog(CMiniMule::IDD, CMiniMule::IDH, pParent)
 {
     ASSERT(GetCurrentThreadId() == g_uMainThreadId);
+	m_iInInitDialog = 0;
+	m_bDestroyAfterInitDialog = false;
     m_iInCallback = 0;
     m_bResolveImages = true;
 //>>> WiZaRd::Static MM
@@ -126,6 +128,7 @@ CMiniMule::CMiniMule(CWnd* pParent /*=NULL*/)
 
 CMiniMule::~CMiniMule()
 {
+	ASSERT(m_iInInitDialog == 0);
 }
 
 STDMETHODIMP CMiniMule::GetOptionKeyPath(LPOLESTR* /*pchKey*/, DWORD /*dw*/)
@@ -264,7 +267,25 @@ BOOL CMiniMule::OnInitDialog()
 
     // TODO: Only in debug build: Check the size of the dialog resource right before 'OnInitDialog'
     // to ensure the window is small enough!
-    CDHtmlDialog::OnInitDialog();
+
+	// PROBLEM: 'CDHtmlDialog::OnInitDialog' creates the IE control asynchronously and it causes the application
+	// to dispatch messages - this creates lot of problems. Therefore we have the 'm_iInInitDialog' flag which
+	// must get evaluated when ever calling a MiniMule function, especially before the MiniMule gets destroyed.
+	// If this is not done, we may crash due to that we are deleting the MiniMule and OCX control while it is
+	// being created.
+	//
+
+	TRACE("%s before CDHtmlDialog::OnInitDialog()\n", __FUNCTION__);
+	ASSERT_VALID(this);
+	ASSERT( m_iInInitDialog == 0);
+	m_iInInitDialog++;
+
+	CDHtmlDialog::OnInitDialog();
+
+	m_iInInitDialog--;
+	ASSERT( m_iInInitDialog == 0);
+	TRACE("%s after CDHtmlDialog::OnInitDialog()\n", __FUNCTION__);
+	ASSERT_VALID(this);
 
     const uint8 uWndTransparency = GetTransparency();
     if (uWndTransparency)
@@ -290,7 +311,9 @@ BOOL CMiniMule::OnInitDialog()
 void CMiniMule::OnClose()
 {
     TRACE(L"%s\n", __FUNCTION__);
-    ASSERT(GetCurrentThreadId() == g_uMainThreadId);
+	ASSERT_VALID(this);
+	ASSERT( GetCurrentThreadId() == g_uMainThreadId );
+	ASSERT( m_iInInitDialog == 0);
     ASSERT(m_iInCallback == 0);
     KillAutoCloseTimer();
 
@@ -325,7 +348,9 @@ void CMiniMule::OnClose()
 void CMiniMule::OnDestroy()
 {
     TRACE(L"%s\n", __FUNCTION__);
-    ASSERT(GetCurrentThreadId() == g_uMainThreadId);
+	ASSERT_VALID(this);
+	ASSERT(GetCurrentThreadId() == g_uMainThreadId);
+	ASSERT(m_iInInitDialog == 0);
     ASSERT(m_iInCallback == 0);
     KillAutoCloseTimer();
     CDHtmlDialog::OnDestroy();
@@ -334,6 +359,9 @@ void CMiniMule::OnDestroy()
 void CMiniMule::PostNcDestroy()
 {
     TRACE(L"%s\n", __FUNCTION__);
+	ASSERT_VALID(this);
+	ASSERT(GetCurrentThreadId() == g_uMainThreadId);
+	ASSERT(m_iInInitDialog == 0);
     CDHtmlDialog::PostNcDestroy();
     if (theApp.emuledlg)
         theApp.emuledlg->m_pMiniMule = NULL;
@@ -392,6 +420,7 @@ void CMiniMule::Localize()
 
 void CMiniMule::UpdateContent(UINT uUpDatarate, UINT uDownDatarate)
 {
+	ASSERT_VALID(this);
     ASSERT(GetCurrentThreadId() == g_uMainThreadId);
     if (m_bResolveImages)
     {
@@ -478,6 +507,7 @@ void CMiniMule::UpdateContent(UINT uUpDatarate, UINT uDownDatarate)
 
 STDMETHODIMP CMiniMule::TranslateUrl(DWORD /*dwTranslate*/, OLECHAR* pchURLIn, OLECHAR** ppchURLOut)
 {
+	ASSERT_VALID(this);
     ASSERT(GetCurrentThreadId() == g_uMainThreadId);
     UNREFERENCED_PARAMETER(pchURLIn);
     TRACE(L"%hs: %ls\n", __FUNCTION__, pchURLIn);
@@ -487,6 +517,7 @@ STDMETHODIMP CMiniMule::TranslateUrl(DWORD /*dwTranslate*/, OLECHAR* pchURLIn, O
 
 void CMiniMule::_OnBeforeNavigate2(LPDISPATCH pDisp, VARIANT* URL, VARIANT* /*Flags*/, VARIANT* /*TargetFrameName*/, VARIANT* /*PostData*/, VARIANT* /*Headers*/, BOOL* Cancel)
 {
+	ASSERT_VALID(this);
     ASSERT(GetCurrentThreadId() == g_uMainThreadId);
     CString strURL(V_BSTR(URL));
     TRACE(L"%hs: %s\n", __FUNCTION__, strURL);
@@ -513,6 +544,7 @@ void CMiniMule::_OnBeforeNavigate2(LPDISPATCH pDisp, VARIANT* URL, VARIANT* /*Fl
 
 void CMiniMule::OnBeforeNavigate(LPDISPATCH pDisp, LPCTSTR pszUrl)
 {
+	ASSERT_VALID(this);
     ASSERT(GetCurrentThreadId() == g_uMainThreadId);
     TRACE(L"%hs: %s\n", __FUNCTION__, pszUrl);
     CDHtmlDialog::OnBeforeNavigate(pDisp, pszUrl);
@@ -520,6 +552,7 @@ void CMiniMule::OnBeforeNavigate(LPDISPATCH pDisp, LPCTSTR pszUrl)
 
 void CMiniMule::OnNavigateComplete(LPDISPATCH pDisp, LPCTSTR pszUrl)
 {
+	ASSERT_VALID(this);
     ASSERT(GetCurrentThreadId() == g_uMainThreadId);
     TRACE(L"%hs: %s\n", __FUNCTION__, pszUrl);
     // If the HTML file contains 'OnLoad' scripts, the HTML DOM is fully accessible
@@ -529,6 +562,7 @@ void CMiniMule::OnNavigateComplete(LPDISPATCH pDisp, LPCTSTR pszUrl)
 
 void CMiniMule::OnDocumentComplete(LPDISPATCH pDisp, LPCTSTR pszUrl)
 {
+	ASSERT_VALID(this);
     ASSERT(GetCurrentThreadId() == g_uMainThreadId);
     if (theApp.emuledlg->m_pMiniMule == NULL)
     {
@@ -614,11 +648,17 @@ void CMiniMule::OnDocumentComplete(LPDISPATCH pDisp, LPCTSTR pszUrl)
     }
 }
 
+#if 0
 UINT GetTaskbarPos(HWND hwndTaskbar)
 {
     if (hwndTaskbar != NULL)
     {
-        // See also: Q179908
+		// See also: Q179908
+		//
+		// However, using 'SHAppBarMessage' is quite *dangerous* because it sends a message to a different thread. This
+		// means that the sending thread will process incoming non queued messages while waiting for its message to be processed.
+		// In other words, while processing 'SHAppBarMessage' our thread will receive incoming messages.
+		//
         APPBARDATA abd = {0};
         abd.cbSize = sizeof abd;
         abd.hWnd = hwndTaskbar;
@@ -639,9 +679,12 @@ UINT GetTaskbarPos(HWND hwndTaskbar)
     }
     return ABE_BOTTOM;
 }
+#endif
 
 void CMiniMule::AutoSizeAndPosition(CSize sizClient)
 {
+	ASSERT_VALID(this);
+	ASSERT(GetCurrentThreadId() == g_uMainThreadId);
     TRACE("AutoSizeAndPosition: %dx%d\n", sizClient.cx, sizClient.cy);
     CSize sizDesktop(GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));
     if (sizClient.cx > sizDesktop.cx/2)
@@ -664,7 +707,25 @@ void CMiniMule::AutoSizeAndPosition(CSize sizClient)
     if (hWndTaskbar)
         ::GetWindowRect(hWndTaskbar, &rcTaskbar);
     CPoint ptWnd;
-    UINT uTaskbarPos = GetTaskbarPos(hWndTaskbar);
+	UINT uTaskbarPos;
+#if 0
+	// Do *NOT* use 'GetTaskbarPos' (which will use 'SHAppBarMessage') -- it may cause us to crash due to internal
+	// details in 'SHAppBarMessage'!
+	uTaskbarPos = GetTaskbarPos(hWndTaskbar);
+#else
+	if (rcTaskbar.left == 0) {
+		if (rcTaskbar.top == 0) {
+			if (rcTaskbar.Width() > rcTaskbar.Height())
+				uTaskbarPos = ABE_TOP;
+			else
+				uTaskbarPos = ABE_LEFT;
+		}
+		else
+			uTaskbarPos = ABE_BOTTOM;
+	}
+	else
+		uTaskbarPos = ABE_RIGHT;
+#endif
     switch (uTaskbarPos)
     {
     case ABE_TOP:
@@ -695,12 +756,16 @@ void CMiniMule::AutoSizeAndPosition(CSize sizClient)
 
 void CMiniMule::CreateAutoCloseTimer()
 {
+	ASSERT_VALID(this);
+	ASSERT(GetCurrentThreadId() == g_uMainThreadId);
     if (m_uAutoCloseTimer == 0)
         m_uAutoCloseTimer = SetTimer(IDT_AUTO_CLOSE_TIMER, 3000, NULL);
 }
 
 void CMiniMule::KillAutoCloseTimer()
 {
+	ASSERT_VALID(this);
+	ASSERT(GetCurrentThreadId() == g_uMainThreadId);
     if (m_uAutoCloseTimer != 0)
     {
         VERIFY(KillTimer(m_uAutoCloseTimer));
@@ -710,9 +775,11 @@ void CMiniMule::KillAutoCloseTimer()
 
 void CMiniMule::OnTimer(UINT nIDEvent)
 {
-    ASSERT(GetCurrentThreadId() == g_uMainThreadId);
+	ASSERT_VALID(this);
+	ASSERT(GetCurrentThreadId() == g_uMainThreadId);
     if (GetAutoClose() && nIDEvent == m_uAutoCloseTimer)
     {
+		ASSERT(m_iInInitDialog == 0);
         KillAutoCloseTimer();
 
         CPoint pt;
@@ -732,6 +799,9 @@ void CMiniMule::OnTimer(UINT nIDEvent)
 
 void CMiniMule::RestoreMainWindow()
 {
+	ASSERT_VALID(this);
+	ASSERT(GetCurrentThreadId() == g_uMainThreadId);
+	ASSERT(m_iInInitDialog == 0);
     if (theApp.emuledlg->IsRunning() && !theApp.emuledlg->IsWindowVisible())
     {
         if (!theApp.emuledlg->IsPreferencesDlgOpen())
@@ -751,6 +821,9 @@ void CMiniMule::RestoreMainWindow()
 
 void CMiniMule::OnNcLButtonDblClk(UINT nHitTest, CPoint point)
 {
+	ASSERT_VALID(this);
+	ASSERT(GetCurrentThreadId() == g_uMainThreadId);
+	ASSERT(m_iInInitDialog == 0);
     CDHtmlDialog::OnNcLButtonDblClk(nHitTest, point);
     if (nHitTest == HTCAPTION)
         RestoreMainWindow();
@@ -758,7 +831,9 @@ void CMiniMule::OnNcLButtonDblClk(UINT nHitTest, CPoint point)
 
 HRESULT CMiniMule::OnRestoreMainWindow(IHTMLElement* /*pElement*/)
 {
-    ASSERT(GetCurrentThreadId() == g_uMainThreadId);
+	ASSERT_VALID(this);
+	ASSERT(GetCurrentThreadId() == g_uMainThreadId);
+	ASSERT(m_iInInitDialog == 0);
     CCounter cc(m_iInCallback);
     RestoreMainWindow();
     return S_OK;
@@ -766,7 +841,9 @@ HRESULT CMiniMule::OnRestoreMainWindow(IHTMLElement* /*pElement*/)
 
 HRESULT CMiniMule::OnOpenIncomingFolder(IHTMLElement* /*pElement*/)
 {
-    ASSERT(GetCurrentThreadId() == g_uMainThreadId);
+	ASSERT_VALID(this);
+	ASSERT(GetCurrentThreadId() == g_uMainThreadId);
+	ASSERT(m_iInInitDialog == 0);
     CCounter cc(m_iInCallback);
     if (theApp.emuledlg->IsRunning())
     {
@@ -782,7 +859,9 @@ HRESULT CMiniMule::OnOpenIncomingFolder(IHTMLElement* /*pElement*/)
 
 HRESULT CMiniMule::OnOptions(IHTMLElement* /*pElement*/)
 {
-    ASSERT(GetCurrentThreadId() == g_uMainThreadId);
+	ASSERT_VALID(this);
+	ASSERT(GetCurrentThreadId() == g_uMainThreadId);
+	ASSERT(m_iInInitDialog == 0);
     CCounter cc(m_iInCallback);
     if (theApp.emuledlg->IsRunning())
     {
@@ -801,7 +880,9 @@ HRESULT CMiniMule::OnOptions(IHTMLElement* /*pElement*/)
 
 STDMETHODIMP CMiniMule::ShowContextMenu(DWORD /*dwID*/, POINT* /*ppt*/, IUnknown* /*pcmdtReserved*/, IDispatch* /*pdispReserved*/)
 {
-    ASSERT(GetCurrentThreadId() == g_uMainThreadId);
+	ASSERT_VALID(this);
+	ASSERT(GetCurrentThreadId() == g_uMainThreadId);
+	ASSERT(m_iInInitDialog == 0);
     CCounter cc(m_iInCallback);
     // Avoid IE context menu
     return S_OK;	// S_OK = Host displayed its own user interface (UI). MSHTML will not attempt to display its UI.
@@ -809,7 +890,9 @@ STDMETHODIMP CMiniMule::ShowContextMenu(DWORD /*dwID*/, POINT* /*ppt*/, IUnknown
 
 STDMETHODIMP CMiniMule::TranslateAccelerator(LPMSG lpMsg, const GUID* /*pguidCmdGroup*/, DWORD /*nCmdID*/)
 {
-    ASSERT(GetCurrentThreadId() == g_uMainThreadId);
+	ASSERT_VALID(this);
+	ASSERT(GetCurrentThreadId() == g_uMainThreadId);
+	ASSERT(m_iInInitDialog == 0);
     CCounter cc(m_iInCallback);
     // Allow only some basic keys
     //

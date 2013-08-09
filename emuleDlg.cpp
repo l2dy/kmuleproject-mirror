@@ -1218,7 +1218,7 @@ void CemuleDlg::ShowTransferRate(bool bForceAll)
 //<<< WiZaRd::SessionRatio
         SetWindowText(szBuff);
     }
-    if (m_pMiniMule && m_pMiniMule->m_hWnd && m_pMiniMule->IsWindowVisible())
+    if (m_pMiniMule && m_pMiniMule->m_hWnd && m_pMiniMule->IsWindowVisible() && !m_pMiniMule->IsInInitDialog())
     {
         m_pMiniMule->UpdateContent(m_uUpDatarate, m_uDownDatarate);
     }
@@ -1919,7 +1919,12 @@ void CemuleDlg::DestroyMiniMule()
 {
     if (m_pMiniMule)
     {
-        if (!m_pMiniMule->IsInCallback()) // for safety
+		if (m_pMiniMule->IsInInitDialog())
+		{
+			TRACE("%s - *** Cannot destroy Minimule, it's still in 'OnInitDialog'\n", __FUNCTION__);
+			m_pMiniMule->SetDestroyAfterInitDialog();
+		}
+		else if (!m_pMiniMule->IsInCallback()) // for safety
         {
             TRACE(L"%s - m_pMiniMule->DestroyWindow();\n", __FUNCTION__);
             m_pMiniMule->DestroyWindow();
@@ -1957,7 +1962,7 @@ void CemuleDlg::OnTrayLButtonUp(CPoint /*pt*/)
 
     if (m_pMiniMule)
     {
-        if (thePrefs.GetEnableMiniMule())
+        if (thePrefs.GetEnableMiniMule() && !m_pMiniMule->IsInInitDialog())
         {
             TRACE(L"%s - m_pMiniMule->ShowWindow(SW_SHOW);\n", __FUNCTION__);
             m_pMiniMule->ShowHide();
@@ -2472,7 +2477,7 @@ void CemuleDlg::Localize()
     ShowTransferRate(true);
     ShowUserCount();
     CPartFileConvert::Localize();
-    if (m_pMiniMule)
+    if (m_pMiniMule && !m_pMiniMule->IsInInitDialog())
         m_pMiniMule->Localize();
 }
 
@@ -3865,7 +3870,7 @@ void CemuleDlg::SetTaskbarIconColor()
             if (hTheme != NULL)
             {
 
-                if (!g_xpStyle.GetThemeColor(hTheme, TNP_BACKGROUND, 0, TMT_FILLCOLORHINT, &cr) == S_OK)
+                if (g_xpStyle.GetThemeColor(hTheme, TNP_BACKGROUND, 0, TMT_FILLCOLORHINT, &cr) != S_OK)
                     ASSERT(0);
                 g_xpStyle.CloseThemeData(hTheme);
             }

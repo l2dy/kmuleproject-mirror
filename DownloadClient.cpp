@@ -1288,6 +1288,10 @@ void CUpDownClient::SendBlockRequests()
 
     theStats.AddUpDataOverheadFileRequest(packet->size);
     SendPacket(packet, true);
+
+	// on highspeed downloads, we want this packet to get out asap, so wakeup the throttler if he is sleeping
+	// because there was nothing to send yet
+	theApp.uploadBandwidthThrottler->NewUploadDataAvailable();
 }
 
 /* Barry - Originally this only wrote to disk when a full 180k block

@@ -698,7 +698,7 @@ UINT UploadBandwidthThrottler::RunInternal()
 
         if (timeSinceLastLoop < sleepTime)
 		{
-			if (nCanSend == 0)
+			/*if (nCanSend == 0)
 			{
 //				if (theApp.m_pUploadDiskIOThread != NULL)
 //					theApp.m_pUploadDiskIOThread->SocketNeedsMoreData();
@@ -706,7 +706,7 @@ UINT UploadBandwidthThrottler::RunInternal()
 			}
 			else if (cBusy == nCanSend)
 				WaitForSingleObject(m_eventSocketAvailable, sleepTime-timeSinceLastLoop);
-			else
+			else*/
 				Sleep(sleepTime-timeSinceLastLoop);
 		}
 

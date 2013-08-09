@@ -37,12 +37,17 @@ public:
     {
         return m_iInCallback != 0;
     }
+	bool IsInInitDialog() const { return m_iInInitDialog != 0; }
+	bool GetDestroyAfterInitDialog() const { return m_bDestroyAfterInitDialog; }
+	void SetDestroyAfterInitDialog() { m_bDestroyAfterInitDialog = true; }
     void UpdateContent(UINT uUpDatarate = (UINT)-1, UINT uDownDatarate = (UINT)-1);
     void Localize();
     void ShowHide(const bool bHide = false); //>>> WiZaRd::Static MM
 
 protected:
-    int m_iInCallback;
+	int m_iInInitDialog;
+	int m_iInCallback;
+	bool m_bDestroyAfterInitDialog;
     bool m_bResolveImages;
 //>>> WiZaRd::Static MM
     //bool m_bRestoreMainWnd;

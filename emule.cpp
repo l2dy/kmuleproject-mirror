@@ -625,6 +625,7 @@ BOOL CemuleApp::InitInstance()
 			return FALSE;
 		}
 	}
+	TRACE(L"Using WinSock v%u.%u...\n", LOBYTE(m_wsaData.wVersion), HIBYTE(m_wsaData.wVersion));
 #if _MFC_VER==0x0700 || _MFC_VER==0x0710 || _MFC_VER==0x0800 || _MFC_VER==0x0900 || _MFC_VER==0x0A00
     atexit(__AfxSocketTerm);
 #else
@@ -2458,7 +2459,12 @@ bool CemuleApp::IsVistaThemeActive() const
 
 bool CemuleApp::IsWinSock2Available() const
 {
-	return LOBYTE(m_wsaData.wVersion) == 2 && HIBYTE(m_wsaData.wVersion ) == 2;
+#if 0
+	return LOBYTE(m_wsaData.wVersion) == 2 && HIBYTE(m_wsaData.wVersion) == 2;
+#else
+	// disable WinSock v2 for now - we have to fix some things in EMSocket/UploadbandwidthThrottler, first or we'll get freezes!
+	return false; 
+#endif
 }
 
 void CemuleApp::ShowSplash()

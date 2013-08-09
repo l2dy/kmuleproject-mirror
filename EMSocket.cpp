@@ -765,10 +765,8 @@ void CEMSocket::OnSend(int nErrorCode)
 SocketSentBytes CEMSocket::Send(UINT maxNumberOfBytesToSend, UINT minFragSize, bool onlyAllowedToSendControlPacket)
 {
 	if (byConnected == ES_DISCONNECTED)
-	{
-		SocketSentBytes returnVal = { false, 0, 0 };
-		return returnVal;
-	}
+		return SocketSentBytes(false, 0, 0);
+
 	if (m_bOverlappedSending)
 		return SendOv(maxNumberOfBytesToSend, minFragSize, onlyAllowedToSendControlPacket);
 	else
@@ -801,10 +799,7 @@ SocketSentBytes CEMSocket::SendStd(UINT maxNumberOfBytesToSend, UINT minFragSize
 //>>> WiZaRd::ZZUL Upload [ZZ]
     //sendLocker.Lock();
     if (maxNumberOfBytesToSend == 0 && ::GetTickCount() - lastCalledSend < SEC2MS(1))
-    {
-        SocketSentBytes returnVal = { true, 0, 0 };
-        return returnVal;
-    }
+        return SocketSentBytes(true, 0, 0);;
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
     bool anErrorHasOccured = false;
@@ -910,9 +905,8 @@ SocketSentBytes CEMSocket::SendStd(UINT maxNumberOfBytesToSend, UINT minFragSize
                     // if we reach this point, then there's something wrong with the while condition above!
                     ASSERT(0);
                     theApp.QueueDebugLogLine(true,_T("EMSocket: Couldn't get a new packet! There's an error in the first while condition in EMSocket::Send()"));
-
-                    SocketSentBytes returnVal = { true, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall };
-                    return returnVal;
+					                    
+                    return SocketSentBytes(true, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall);
                 }
 
                 // We found a package to send. Get the data to send from the
@@ -992,8 +986,7 @@ SocketSentBytes CEMSocket::SendStd(UINT maxNumberOfBytesToSend, UINT minFragSize
 //<<< WiZaRd::Count block/success send [Xman?]
                         //sendLocker.Unlock(); //>>> WiZaRd::ZZUL Upload [ZZ]
 
-                        SocketSentBytes returnVal = { true, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall };
-                        return returnVal; // Send() blocked, onsend will be called when ready to send again
+                        return SocketSentBytes(true, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall);; // Send() blocked, onsend will be called when ready to send again
                     }
                     else
                     {
@@ -1110,7 +1103,7 @@ SocketSentBytes CEMSocket::SendStd(UINT maxNumberOfBytesToSend, UINT minFragSize
         sendLocker.Unlock();
     }
 
-    SocketSentBytes returnVal = { !anErrorHasOccured, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall, errorThatOccured };
+    SocketSentBytes returnVal(!anErrorHasOccured, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall, errorThatOccured);
     /*
         if(onlyAllowedToSendControlPacket && (!controlpacket_queue.IsEmpty() || sendbuffer != NULL && m_currentPacket_is_controlpacket))
         {
@@ -1125,7 +1118,7 @@ SocketSentBytes CEMSocket::SendStd(UINT maxNumberOfBytesToSend, UINT minFragSize
 
         sendLocker.Unlock();
 
-        SocketSentBytes returnVal = { !anErrorHasOccured, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall };
+        SocketSentBytes returnVal(!anErrorHasOccured, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall);
     */
 //<<< WiZaRd::ZZUL Upload [ZZ]
     return returnVal;
@@ -1309,26 +1302,23 @@ SocketSentBytes CEMSocket::SendOv(UINT maxNumberOfBytesToSend, UINT minFragSize,
 			ZeroMemory(m_pPendingSendOperation, sizeof(WSAOVERLAPPED));
 			m_pPendingSendOperation->hEvent = theApp.uploadBandwidthThrottler->GetSocketAvailableEvent();
 			DWORD dwBytesSent = 0;
-			if (WSASend(GetSocketHandle(), m_aBufferSend.GetData(), m_aBufferSend.GetCount(), &dwBytesSent, 0, m_pPendingSendOperation, NULL) == 0)
+//>>> WiZaRd::Count block/success send [Xman?]
+			if (!onlyAllowedToSendControlPacket)
 			{
-				ASSERT( dwBytesSent > 0 );
-				CleanUpOverlappedSendOperation(false);
-				lastCalledSend = ::GetTickCount(); //>>> WiZaRd::ZZUL Upload [ZZ]
+				++sendcount;
+				++sendcount_overall;
 			}
-			else
+//<<< WiZaRd::Count block/success send [Xman?]
+			UINT result = WSASend(GetSocketHandle(), m_aBufferSend.GetData(), m_aBufferSend.GetCount(), &dwBytesSent, 0, m_pPendingSendOperation, NULL);
+			if(result == SOCKET_ERROR)
 			{
 				int nError = WSAGetLastError();
 				if (nError != WSA_IO_PENDING)
 				{
-//>>> WiZaRd::Count block/success send [Xman?]
-					if (!onlyAllowedToSendControlPacket)
-					{
-						++sendcount;
-						++sendcount_overall;
-					}
-//<<< WiZaRd::Count block/success send [Xman?]
 					if (nError == WSAEWOULDBLOCK)
 					{
+						m_bBusy = true;
+
 //>>> WiZaRd::Count block/success send [Xman?]
 						if (!onlyAllowedToSendControlPacket)
 						{
@@ -1336,6 +1326,8 @@ SocketSentBytes CEMSocket::SendOv(UINT maxNumberOfBytesToSend, UINT minFragSize,
 							++blockedsendcount_overall;
 						}
 //<<< WiZaRd::Count block/success send [Xman?]
+
+						return SocketSentBytes(true, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall);; // Send() blocked, onsend will be called when ready to send again
 					}
 					else
 					{
@@ -1350,6 +1342,12 @@ SocketSentBytes CEMSocket::SendOv(UINT maxNumberOfBytesToSend, UINT minFragSize,
 					theApp.QueueDebugLogLineEx(ERROR, _T("WSASend() Error: %u, %s"), nError, GetErrorMessage(nError));
 				}
 			}
+			else
+			{
+				ASSERT( dwBytesSent > 0 );
+				CleanUpOverlappedSendOperation(false);
+				lastCalledSend = ::GetTickCount(); //>>> WiZaRd::ZZUL Upload [ZZ]
+			}
 		}
     }
 
@@ -1363,7 +1361,7 @@ SocketSentBytes CEMSocket::SendOv(UINT maxNumberOfBytesToSend, UINT minFragSize,
         sendLocker.Unlock();
     }
 
-    SocketSentBytes returnVal = { !anErrorHasOccured, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall, errorThatOccured };
+    SocketSentBytes returnVal(!anErrorHasOccured, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall, errorThatOccured);
 
 /*
 	if(onlyAllowedToSendControlPacket && !controlpacket_queue.IsEmpty())
@@ -1376,7 +1374,7 @@ SocketSentBytes CEMSocket::SendOv(UINT maxNumberOfBytesToSend, UINT minFragSize,
 	}
 
     sendLocker.Unlock();
-    SocketSentBytes returnVal = { !anErrorHasOccured, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall };
+    SocketSentBytes returnVal(!anErrorHasOccured, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall);
 */
 //<<< WiZaRd::ZZUL Upload [ZZ]
 
@@ -1732,7 +1730,6 @@ bool CEMSocket::UseBigSendBuffer()
 
 bool CEMSocket::IsBusyExtensiveCheck()
 {
-
 	if (!m_bOverlappedSending)
 		return m_bBusy;
 

@@ -664,8 +664,7 @@ SocketSentBytes CClientUDPSocket::SendControlData(UINT maxNumberOfBytesToSend, U
     }
     sendLocker.Unlock();
 
-    SocketSentBytes returnVal = { true, 0, sentBytes };
-    return returnVal;
+    return SocketSentBytes(true, 0, sentBytes);
 // <-- ZZ:UploadBandWithThrottler (UDP)
 }
 
