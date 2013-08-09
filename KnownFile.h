@@ -274,14 +274,12 @@ public:
     virtual void	AddToPartsInfo(const CPartStatus* partstatus);
     virtual void	RemoveFromPartsInfo(const CPartStatus* partstatus);
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
-//>>> Tux::Spread Priority v3
+//>>> WiZaRd::Queued Count
 private:
-    bool	m_bHasSpreadPriority;
-	UINT	m_uiLastPrioSet;
+	UINT	m_uiQueuedCount;
 public:
-	UINT	GetLastPrioTime() const				{return m_uiLastPrioSet;}
-	void	SetLastPrioTime(const UINT time)	{m_uiLastPrioSet = time;}
-    bool	IsSpreadPriority() const			{return m_bHasSpreadPriority;}
-    void	SetSpreadPriority(bool spreadprio)	{m_bHasSpreadPriority = spreadprio;}
-//<<< Tux::Spread Priority v3
+	UINT	GetRealQueuedCount() const	{return m_uiQueuedCount;}
+	void	IncRealQueuedCount(CUpDownClient* client);
+	void	DecRealQueuedCount(CUpDownClient* client);
+//<<< WiZaRd::Queued Count
 };

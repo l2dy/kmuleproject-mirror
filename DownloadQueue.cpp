@@ -1698,3 +1698,19 @@ void CDownloadQueue::RefilterAllComments()
         cur_file->RefilterFileComments();
     }
 }
+
+//>>> WiZaRd::Improved Auto Prio
+void	CDownloadQueue::GetActiveFilesAndSourceCount(UINT& files, UINT& srcs)
+{
+	for (POSITION pos = theApp.downloadqueue->filelist.GetHeadPosition(); pos;)
+	{
+		const CPartFile* cur_file = theApp.downloadqueue->filelist.GetNext(pos);
+		if (!cur_file->IsStopped() && !cur_file->IsPaused() //just to be sure...
+			&& (cur_file->GetStatus() == PS_READY || cur_file->GetStatus() == PS_EMPTY))
+		{
+			++files;
+			srcs += cur_file->GetSourceCount();
+		}
+	}
+}
+//<<< WiZaRd::Improved Auto Prio

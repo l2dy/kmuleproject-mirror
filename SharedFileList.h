@@ -145,6 +145,14 @@ public:
 private:
     UnknownFile_Struct*	getNextFileToHash();
 //<<< WiZaRd::HashingQueue Optimisation
+//>>> Queued Count
+private:
+	UINT	m_uiQueuedFilesCount;
+public:
+	UINT	GetQueuedFilesCount() const	{return m_uiQueuedFilesCount;}
+	void	IncQueuedFilesCount()		{++m_uiQueuedFilesCount;}
+	void	DecQueuedFilesCount()		{--m_uiQueuedFilesCount;}
+//<<< Queued Count
 };
 
 class CAddFileThread : public CWinThread

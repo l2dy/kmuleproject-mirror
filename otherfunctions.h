@@ -501,3 +501,4 @@ void	FillClientIconImageList(CImageList& imageList);
 int		GetClientImageIndex(const bool bFriend, const UINT nClientVersion, const bool bPlus, bool bExt);
 HCURSOR		CreateHandCursor();
 //<<< WiZaRd::Additional Functions
+uint8	CalcPrioFromSrcAverage(const UINT srcs, const float avg); //>>> WiZaRd::Improved Auto Prio

@@ -79,10 +79,6 @@ CKnownFile::CKnownFile()
     guifileupdatetime = ::GetTickCount() + 1000; //>>> WiZaRd::PowerShare - CPU!
     m_bPowerShared = false; //>>> WiZaRd::PowerShare
     m_iNameContinuityBad = 0; //>>> FDC [BlueSonicBoy]
-//>>> Tux::Spread Priority v3
-    m_bHasSpreadPriority = false; 
-	m_uiLastPrioSet = 0;
-//<<< Tux::Spread Priority v3
     m_iPartCount = 0;
     m_iED2KPartCount = 0;
     m_tUtcLastModified = (UINT)-1;
@@ -111,6 +107,7 @@ CKnownFile::CKnownFile()
     m_pCollection = NULL;
     m_timeLastSeen = 0;
     m_bAICHRecoverHashSetAvailable = false;
+	m_uiQueuedCount = 0; //>>> Queued Count
 }
 
 CKnownFile::~CKnownFile()
@@ -428,7 +425,7 @@ void CKnownFile::AddUploadingClient(CUpDownClient* client)
     if (pos == NULL)
     {
         m_ClientUploadList.AddTail(client);
-        UpdateAutoUpPriority();
+        //UpdateAutoUpPriority(); //>>> WiZaRd::Queued Count
     }
 }
 
@@ -438,7 +435,7 @@ void CKnownFile::RemoveUploadingClient(CUpDownClient* client)
     if (pos != NULL)
     {
         m_ClientUploadList.RemoveAt(pos);
-        UpdateAutoUpPriority();
+        //UpdateAutoUpPriority(); //>>> WiZaRd::Queued Count
     }
 }
 
@@ -1657,7 +1654,24 @@ void CKnownFile::UpdateAutoUpPriority()
 {
     if (!IsAutoUpPriority())
         return;
-    if (GetQueuedCount() > 20)
+
+//>>> WiZaRd::Improved Auto Prio
+	// calc average src and adapt the prio to it
+	UINT maxsrc = theApp.uploadqueue->GetWaitingUserCount();
+	float avg = 0.0f;
+	UINT nCount = theApp.sharedfiles->GetQueuedFilesCount();
+	if(nCount)
+		avg = (float)maxsrc/nCount;
+	else
+		avg = (float)maxsrc;
+
+	const uint8 toSet = CalcPrioFromSrcAverage(GetRealQueuedCount(), avg);
+	if(GetUpPriority() != toSet)
+	{
+		SetUpPriority(toSet);
+		theApp.sharedfiles->UpdateFile(this);
+	}
+    /*if (GetQueuedCount() > 20)
     {
         if (GetUpPriority() != PR_LOW)
         {
@@ -1679,7 +1693,8 @@ void CKnownFile::UpdateAutoUpPriority()
     {
         SetUpPriority(PR_HIGH);
         theApp.sharedfiles->UpdateFile(this);
-    }
+    }*/
+//<<< WiZaRd::Improved Auto Prio
 }
 
 void CKnownFile::SetUpPriority(uint8 iNewUpPriority, bool bSave)
@@ -3087,3 +3102,23 @@ void CKnownFile::RemoveFromPartsInfo(const CPartStatus* partstatus)
         theApp.emuledlg->sharedfileswnd->sharedfilesctrl.UpdateFile(this);
 }
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+//>>> WiZaRd::Queued Count
+void	CKnownFile::IncRealQueuedCount(CUpDownClient* /*client*/)
+{
+	if(m_uiQueuedCount == 0)
+		theApp.sharedfiles->IncQueuedFilesCount();
+	++m_uiQueuedCount;
+	UpdateAutoUpPriority(); //>>> WiZaRd::Improved Auto Prio
+}
+
+void	CKnownFile::DecRealQueuedCount(CUpDownClient* /*client*/)
+{	
+	if(m_uiQueuedCount > 0)
+		--m_uiQueuedCount;
+	else 
+		ASSERT(0);	
+	if(m_uiQueuedCount == 0)
+		theApp.sharedfiles->DecQueuedFilesCount();
+	UpdateAutoUpPriority(); //>>> WiZaRd::Improved Auto Prio
+}
+//<<< WiZaRd::Queued Count

@@ -997,8 +997,6 @@ void CSharedFilesCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 //	m_PrioMenu.CheckMenuRadioItem(MP_PRIOVERYLOW, MP_PRIOAUTO, uPrioMenuItem, 0);
 //<<< WiZaRd::PowerShare
 
-    m_PrioMenu.CheckMenuItem(MP_SPREADPRIORITY, pSingleSelFile && ((CKnownFile*)pSingleSelFile)->IsSpreadPriority() ? MF_CHECKED : MF_UNCHECKED); //>>> Tux::Spread Priority v3
-
     bool bSingleCompleteFileSelected = (iSelectedItems == 1 && (iCompleteFileSelected == 1 || bContainsOnlyShareableFile));
     m_SharedFilesMenu.EnableMenuItem(MP_OPEN, bSingleCompleteFileSelected ? MF_ENABLED : MF_GRAYED);
     UINT uInsertedMenuItem = 0;
@@ -1423,17 +1421,6 @@ BOOL CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
             break;
         }
 //<<< WiZaRd::PowerShare
-//>>> Tux::Spread Priority v3
-        case MP_SPREADPRIORITY:
-        {
-            while (!selectedKnown.IsEmpty())
-            {
-                CKnownFile* thisfile = selectedKnown.RemoveHead();
-                thisfile->SetSpreadPriority(!thisfile->IsSpreadPriority());
-            }
-            break;
-        }
-//<<< Tux::Spread Priority v3
 //>>> WiZaRd::Upload Feedback
         case MP_FEEDBACK:
         {
@@ -1749,11 +1736,6 @@ void CSharedFilesCtrl::CreateMenues()
     m_PowerSharedMenu.AppendMenu(MF_STRING,MP_POWERSHARE_ON, GetResString(IDS_POWERSHARE) + L" " + GetResString(IDS_ON), L"UPLOAD");
     m_PowerSharedMenu.AppendMenu(MF_STRING,MP_POWERSHARE_OFF, GetResString(IDS_POWERSHARE) + L" " + GetResString(IDS_OFF), L"DELETE");
 //<<< WiZaRd::PowerShare
-
-//>>> Tux::Spread Priority v3
-    m_PrioMenu.AppendMenu(MF_SEPARATOR);
-    m_PrioMenu.AppendMenu(MF_STRING,MP_SPREADPRIORITY, GetResString(IDS_SPREADPRIORITY), L"PRIORITY");
-//<<< Tux::Spread Priority v3
 
     m_CollectionsMenu.CreateMenu();
     m_CollectionsMenu.AddMenuTitle(NULL, true);

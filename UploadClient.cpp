@@ -921,6 +921,16 @@ void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
 
     if (oldreqfile)
         oldreqfile->RemoveUploadingClient(this);
+
+//>>> QueuedCount
+	if(GetUploadState() == US_ONUPLOADQUEUE)
+	{
+		if (oldreqfile)
+			oldreqfile->DecRealQueuedCount(this); 
+		if(newreqfile)
+			newreqfile->IncRealQueuedCount(this); 
+	}
+//<<< QueuedCount
 }
 
 bool CUpDownClient::AddReqBlock(Requested_Block_Struct* reqblock, const bool bChecksNecessary)
@@ -1037,8 +1047,10 @@ UINT CUpDownClient::SendBlockData()
                 CKnownFile* file = theApp.sharedfiles->GetFileByID(GetUploadFileID());
                 if (file)
                 {
-                    srccount = file->m_nCompleteSourcesCount;
-                    //					srccount += file->GetRealQueuedCount(); //if you implemented that...
+//>>> WiZaRd::Queued Count
+                    //srccount = file->m_nCompleteSourcesCount;
+                    srccount += file->GetRealQueuedCount();
+//<<< WiZaRd::Queued Count
                 }
             }
             pAntiLeechData->AddUploaded(sentBytesCompleteFile, false, srccount);
@@ -1046,7 +1058,7 @@ UINT CUpDownClient::SendBlockData()
         }
 //<<< WiZaRd::ClientAnalyzer
 
-        sentBytesPayload = s->GetSentPayloadSinceLastCallAndReset();
+        sentBytesPayload = s->GetSentPayloadSinceLastCall(true);
         m_nCurQueueSessionPayloadUp = (UINT)(m_nCurQueueSessionPayloadUp + sentBytesPayload);
 
 //>>> WiZaRd::ZZUL Upload [ZZ]

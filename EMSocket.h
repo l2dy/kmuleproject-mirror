@@ -17,7 +17,7 @@
 #pragma once
 #include "EncryptedStreamSocket.h"
 #include "OtherFunctions.h"
-#include "ThrottledSocket.h" // ZZ:UploadBandWithThrottler (UDP)
+#include "ThrottledSocket.h" // ZZ:UploadBandWithThrottler
 
 class CUtpSocket; //>>> WiZaRd::NatTraversal [Xanatos]
 class CAsyncProxySocketLayer;
@@ -35,7 +35,7 @@ struct StandardPacketQueueEntry
     Packet* packet;
 };
 
-class CEMSocket : public CEncryptedStreamSocket, public ThrottledFileSocket // ZZ:UploadBandWithThrottler (UDP)
+class CEMSocket : public CEncryptedStreamSocket, public ThrottledFileSocket // ZZ:UploadBandWithThrottler
 {
     DECLARE_DYNAMIC(CEMSocket)
 public:
@@ -58,15 +58,12 @@ public:
     void	SetDownloadLimit(UINT limit);
     void	DisableDownloadLimit();
     BOOL	AsyncSelect(long lEvent);
-    virtual bool IsBusy() const
-    {
-        return m_bBusy;
-    }
-    virtual bool HasQueues() const
-    {
-        return (sendbuffer || standartpacket_queue.GetCount() > 0 || controlpacket_queue.GetCount() > 0);   // not trustworthy threaded? but it's ok if we don't get the correct result now and then
-    }
-    virtual bool UseBigSendBuffer();
+	virtual bool IsBusyExtensiveCheck();
+	virtual bool IsBusyQuickCheck() const;
+	virtual bool HasQueues(bool bOnlyStandardPackets = false) const;
+	virtual bool IsEnoughFileDataQueued(UINT nMinFilePayloadBytes) const;
+	virtual bool UseBigSendBuffer();
+	int			 DbgGetStdQueueCount() const	{return standartpacket_queue.GetCount();}
 
     virtual UINT GetTimeOut() const;
     virtual void SetTimeOut(UINT uTimeOut);
@@ -98,7 +95,7 @@ public:
     uint64 GetSentBytesCompleteFileSinceLastCallAndReset();
     uint64 GetSentBytesPartFileSinceLastCallAndReset();
     uint64 GetSentBytesControlPacketSinceLastCallAndReset();
-    uint64 GetSentPayloadSinceLastCallAndReset();
+    uint64 GetSentPayloadSinceLastCall(bool bReset);
     void TruncateQueues();
 
     virtual SocketSentBytes SendControlData(UINT maxNumberOfBytesToSend, UINT minFragSize)
@@ -136,8 +133,11 @@ protected:
 
 private:
     virtual SocketSentBytes Send(UINT maxNumberOfBytesToSend, UINT minFragSize, bool onlyAllowedToSendControlPacket);
+	SocketSentBytes SendStd(UINT maxNumberOfBytesToSend, UINT minFragSize, bool onlyAllowedToSendControlPacket);
+	SocketSentBytes SendOv(UINT maxNumberOfBytesToSend, UINT minFragSize, bool onlyAllowedToSendControlPacket);
     void	ClearQueues();
     virtual int Receive(void* lpBuf, int nBufLen, int nFlags = 0);
+	void	CleanUpOverlappedSendOperation(bool bCancelRequestFirst);
 
     UINT GetNextFragSize(UINT current, UINT minFragSize);
     bool    HasSent()
@@ -162,6 +162,8 @@ private:
     char*	sendbuffer;
     UINT	sendblen;
     UINT	sent;
+	LPWSAOVERLAPPED m_pPendingSendOperation;
+	CArray<WSABUF> m_aBufferSend;
 
     CTypedPtrList<CPtrList, Packet*> controlpacket_queue;
     CList<StandardPacketQueueEntry> standartpacket_queue;
@@ -175,11 +177,12 @@ private:
     DWORD lastCalledSend;
     DWORD lastSent;
     UINT lastFinishedStandard;
-    UINT m_actualPayloadSize;
+    UINT m_actualPayloadSize;			// Payloadsize of the data currently in sendbuffer
     UINT m_actualPayloadSizeSent;
     bool m_bBusy;
     bool m_hasSent;
     bool m_bUsesBigSendBuffers;
+	bool m_bOverlappedSending;
 //>>> WiZaRd::Count block/success send [Xman?]
 private:
     CList<float> m_blockhistory;

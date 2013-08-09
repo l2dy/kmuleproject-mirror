@@ -2587,19 +2587,6 @@ public:
         m_nCurrentUserDirMode = i;
     }
 //<<< WiZaRd
-//>>> Tux::Spread Priority v3
-private:
-	static	int		m_iSpreadPrioLimit;
-public:
-    static	int	GetSpreadPrioLimit()
-    {
-        return m_iSpreadPrioLimit;
-    }
-    static	void	SetSpreadPrioLimit(const int i)
-    {
-        m_iSpreadPrioLimit = i;
-    }
-//<<< Tux::Spread Priority v3
 };
 
 extern CPreferences thePrefs;

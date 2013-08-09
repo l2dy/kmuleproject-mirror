@@ -99,7 +99,6 @@ CPPgTweaks::CPPgTweaks()
     m_bSkipWANPPPSetup = false;
     m_iShareeMule = 0;
     m_bResolveShellLinks = false;
-    m_iSpreadPrioLimit = 0; //>>> Tux::Spread Priority v3
 
     bShowedWarning = false;
     m_bInitializedTreeOpts = false;
@@ -155,7 +154,6 @@ CPPgTweaks::CPPgTweaks()
     m_htiShareeMulePublicUser = NULL;
     m_htiShareeMuleOldStyle = NULL;
     m_htiResolveShellLinks = NULL;
-    m_htiSpreadPrioLimit = NULL; //>>> Tux::Spread Priority v3
 }
 
 CPPgTweaks::~CPPgTweaks()
@@ -227,10 +225,6 @@ void CPPgTweaks::DoDataExchange(CDataExchange* pDX)
         m_htiExtractMetaDataID3Lib = m_ctrlTreeOptions.InsertRadioButton(GetResString(IDS_META_DATA_ID3LIB), m_htiExtractMetaData, m_iExtractMetaData == 1);
         //m_htiExtractMetaDataMediaDet = m_ctrlTreeOptions.InsertRadioButton(GetResString(IDS_META_DATA_MEDIADET), m_htiExtractMetaData, m_iExtractMetaData == 2);
         m_htiResolveShellLinks = m_ctrlTreeOptions.InsertCheckBox(GetResString(IDS_RESOLVELINKS), TVI_ROOT, m_bResolveShellLinks);
-//>>> Tux::Spread Priority v3
-        m_htiSpreadPrioLimit = m_ctrlTreeOptions.InsertItem(GetResString(IDS_SPREADPRIOLIMIT), TREEOPTSCTRLIMG_EDIT, TREEOPTSCTRLIMG_EDIT, TVI_ROOT);
-        m_ctrlTreeOptions.AddEditBox(m_htiSpreadPrioLimit, RUNTIME_CLASS(CNumTreeOptionsEdit));
-//<<< Tux::Spread Priority v3
 
         /////////////////////////////////////////////////////////////////////////////
         // Logging group
@@ -335,10 +329,6 @@ void CPPgTweaks::DoDataExchange(CDataExchange* pDX)
     DDX_TreeRadio(pDX, IDC_EXT_OPTS, m_htiCommit, m_iCommitFiles);
     DDX_TreeRadio(pDX, IDC_EXT_OPTS, m_htiExtractMetaData, m_iExtractMetaData);
     DDX_TreeCheck(pDX, IDC_EXT_OPTS, m_htiResolveShellLinks, m_bResolveShellLinks);
-//>>> Tux::Spread Priority v3
-    DDX_TreeEdit(pDX, IDC_EXT_OPTS, m_htiSpreadPrioLimit, m_iSpreadPrioLimit);
-    DDV_MinMaxInt(pDX, m_iSpreadPrioLimit, 1, INT_MAX);
-//<<< Tux::Spread Priority v3
 
     /////////////////////////////////////////////////////////////////////////////
     // Logging group
@@ -431,7 +421,6 @@ BOOL CPPgTweaks::OnInitDialog()
     m_bSparsePartFiles = thePrefs.GetSparsePartFiles();
     m_bFullAlloc= thePrefs.m_bAllocFull;
     m_bResolveShellLinks = thePrefs.GetResolveSharedShellLinks();
-    m_iSpreadPrioLimit = thePrefs.GetSpreadPrioLimit(); //>>> Tux::Spread Priority v3
     m_sYourHostname = thePrefs.GetYourHostname();
     m_bFirewallStartup = ((thePrefs.GetWindowsVersion() == _WINVER_XP_) ? thePrefs.m_bOpenPortsOnStartUp : 0);
     m_bAutoArchDisable = !thePrefs.m_bAutomaticArcPreviewStart;
@@ -573,7 +562,6 @@ BOOL CPPgTweaks::OnApply()
     thePrefs.m_bSparsePartFiles = m_bSparsePartFiles;
     thePrefs.m_bAllocFull= m_bFullAlloc;
     thePrefs.m_bResolveSharedShellLinks = m_bResolveShellLinks;
-    thePrefs.SetSpreadPrioLimit(m_iSpreadPrioLimit); //>>> Tux::Spread Priority v3
     if (thePrefs.GetYourHostname() != m_sYourHostname)
     {
         thePrefs.SetYourHostname(m_sYourHostname);
@@ -705,7 +693,6 @@ void CPPgTweaks::Localize(void)
         if (m_htiShareeMulePublicUser) m_ctrlTreeOptions.SetItemText(m_htiShareeMulePublicUser, GetResString(IDS_SHAREEMULEPUBLIC));
         if (m_htiShareeMuleOldStyle) m_ctrlTreeOptions.SetItemText(m_htiShareeMuleOldStyle, GetResString(IDS_SHAREEMULEOLD));
         if (m_htiResolveShellLinks) m_ctrlTreeOptions.SetItemText(m_htiResolveShellLinks, GetResString(IDS_RESOLVELINKS));
-        if (m_htiResolveShellLinks) m_ctrlTreeOptions.SetItemText(m_htiSpreadPrioLimit, GetResString(IDS_SPREADPRIOLIMIT)); //>>> Tux::Spread Priority v3
 
         CString temp;
         temp.Format(_T("%s: %s"), GetResString(IDS_FILEBUFFERSIZE), CastItoXBytes(m_iFileBufferSize, false, false));
@@ -775,7 +762,6 @@ void CPPgTweaks::OnDestroy()
     m_htiShareeMuleOldStyle = NULL;
     //m_htiExtractMetaDataMediaDet = NULL;
     m_htiResolveShellLinks = NULL;
-    m_htiSpreadPrioLimit = NULL; //>>> Tux::Spread Priority v3
 
     CPropertyPage::OnDestroy();
 }

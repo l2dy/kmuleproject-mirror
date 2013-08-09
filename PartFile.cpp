@@ -5911,7 +5911,19 @@ void CPartFile::UpdateAutoDownPriority()
 {
     if (!IsAutoDownPriority())
         return;
-    if (GetSourceCount() > 100)
+
+//>>> WiZaRd::Improved Auto Prio
+	// calc average src and adapt the prio to it
+	UINT counter = 0;
+	UINT srcs = 0;
+	theApp.downloadqueue->GetActiveFilesAndSourceCount(counter, srcs);
+
+	float avg = 0.0f;
+	if(counter)
+		avg = (float)srcs/counter;
+
+	SetDownPriority(CalcPrioFromSrcAverage(GetSourceCount(), avg));
+    /*if (GetSourceCount() > 100)
     {
         SetDownPriority(PR_LOW);
         return;
@@ -5921,7 +5933,8 @@ void CPartFile::UpdateAutoDownPriority()
         SetDownPriority(PR_NORMAL);
         return;
     }
-    SetDownPriority(PR_HIGH);
+    SetDownPriority(PR_HIGH);*/
+//<<< WiZaRd::Improved Auto Prio
 }
 
 UINT CPartFile::GetCategory() /*const*/

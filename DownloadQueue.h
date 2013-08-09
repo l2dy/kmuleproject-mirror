@@ -198,4 +198,8 @@ public:
 private:
     UINT	m_uiHLCount;
 //<<< WiZaRd::AutoLH
+//>>> WiZaRd::Improved Auto Prio
+public:
+	void	GetActiveFilesAndSourceCount(UINT& files, UINT& srcs);
+//<<< WiZaRd::Improved Auto Prio
 };

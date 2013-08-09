@@ -58,8 +58,6 @@ protected:
     int m_iShareeMule;
     bool bShowedWarning;
     bool m_bResolveShellLinks;
-    int m_iSpreadPrioLimit; //>>> Tux::Spread Priority v3
-
 
     CSliderCtrl m_ctlFileBuffSize;
     CSliderCtrl m_ctlQueueSize;
@@ -120,7 +118,6 @@ protected:
     HTREEITEM m_htiShareeMuleOldStyle;
     //HTREEITEM m_htiExtractMetaDataMediaDet;
     HTREEITEM m_htiResolveShellLinks;
-    HTREEITEM m_htiSpreadPrioLimit; //>>> Tux::Spread Priority v3
 
     virtual void DoDataExchange(CDataExchange* pDX);
     virtual BOOL OnInitDialog();

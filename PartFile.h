@@ -574,4 +574,8 @@ protected:
     bool				GetNextEmptyBlockInPart(UINT partnumber, Requested_Block_Struct* result, uint64 bytesToRequest = CRUMBSIZE, const CPartStatus* availableParts = 0, const CUpDownClient* client = 0) const;
     clock_t				EstimatePartCompletion(const UINT nPart) const; // Estimate time to part completion
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+//>>> WiZaRd::Improved Auto Prio
+public:
+	bool	IsPaused() const						{return paused;} 
+//<<< WiZaRd::Improved Auto Prio
 };

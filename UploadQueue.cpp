@@ -41,7 +41,6 @@
 #include "Log.h"
 #include "./Mod/ClientAnalyzer.h" //>>> WiZaRd::ClientAnalyzer
 #include "./Mod/Neo/UtpSocket.h" //>>> WiZaRd::NatTraversal [Xanatos]
-#include "PartFile.h" //>>> Tux::Spread Priority v3
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1244,42 +1243,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
             AddUpNextClient(L"Small File Priority Slot", client);
             return;
         }
-
-//>>> Tux::Spread Priority v3
-        // remark: order is low - normal - high - very high - very low
-        if (reqfile != NULL
-                && reqfile->IsSpreadPriority()
-                && !reqfile->IsAutoUpPriority()
-                && !reqfile->IsPartFile()
-                && ::GetTickCount() > reqfile->GetLastPrioTime() + MIN2MS(2) // last prio change was > 2 mins ago
-           )
-        {
-            reqfile->SetLastPrioTime(::GetTickCount());
-            // 1) much too less complete sources, push it to the max
-            if (reqfile->m_nCompleteSourcesCount < thePrefs.GetSpreadPrioLimit() && reqfile->GetUpPriority() != PR_VERYHIGH)
-            {
-                reqfile->SetUpPriority(PR_VERYHIGH);
-                if (thePrefs.GetLogUlDlEvents())
-                    AddDebugLogLine(false, _T("Priority for file %s auto-increased to %s (complete sources: %i)"), reqfile->GetFileName(), reqfile->GetUpPriorityDisplayString(), reqfile->m_nCompleteSourcesCount);
-            }
-            // 2) a bit too less complete sources, push it stepwise
-            else if (reqfile->m_nCompleteSourcesCount == thePrefs.GetSpreadPrioLimit() && reqfile->GetUpPriority() != PR_VERYHIGH)
-            {
-                for (int prioCnt = 0; prioCnt < (reqfile->m_nCompleteSourcesCount / thePrefs.GetSpreadPrioLimit()) && reqfile->GetUpPriority() < PR_VERYHIGH; prioCnt++)
-                    reqfile->SetUpPriority(reqfile->GetUpPriority() < PR_VERYLOW ? reqfile->GetUpPriority() + 1 : 0);
-                if (thePrefs.GetLogUlDlEvents())
-                    AddDebugLogLine(false, _T("Priority for file %s auto-increased to %s (complete sources: %i)"), reqfile->GetFileName(), reqfile->GetUpPriorityDisplayString(), reqfile->m_nCompleteSourcesCount);
-            }
-            // 3) "too many" complete sources now, we can turn it down...
-            else if (reqfile->m_nCompleteSourcesCount > thePrefs.GetSpreadPrioLimit() && reqfile->GetUpPriority() < PR_VERYLOW)
-            {
-                reqfile->SetUpPriority(reqfile->GetUpPriority() > PR_LOW ? reqfile->GetUpPriority() - 1 : 4);
-                if (thePrefs.GetLogUlDlEvents())
-                    AddDebugLogLine(false, _T("Priority for file %s auto-decreased to %s (complete sources: %i)"), reqfile->GetFileName(), reqfile->GetUpPriorityDisplayString(), reqfile->m_nCompleteSourcesCount);
-            }
-        }
-//<<< Tux::Spread Priority v3
-
+		
         // cap the list
         // the queue limit in prefs is only a soft limit. Hard limit is 25% higher, to let in powershare clients and other
         // high ranking clients after soft limit has been reached
@@ -1334,6 +1298,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
         m_bStatisticsWaitingListDirty = true;
         waitinglist.AddTail(client);
         client->SetUploadState(US_ONUPLOADQUEUE);
+		reqfile->IncRealQueuedCount(client); //>>> QueuedCount
 //>>> WiZaRd::ZZUL Upload [ZZ]
         // Add client to waiting list. If addInFirstPlace is set, client should not have its waiting time resetted
         theApp.emuledlg->transferwnd->GetQueueList()->AddClient(client, (addInFirstPlace == false));
@@ -1501,6 +1466,12 @@ void CUploadQueue::RemoveFromWaitingQueue(POSITION pos, bool updatewindow)
     //todelete->m_bAddNextConnect = false;
 //<<< WiZaRd::Fix for LowID slots only on connection [VQB]
     todelete->SetUploadState(US_NONE);
+
+//>>> QueuedCount
+	CKnownFile* oldreqfile = todelete->GetUploadFileID() ? theApp.sharedfiles->GetFileByID(todelete->GetUploadFileID()) : NULL;
+	if (oldreqfile)
+		oldreqfile->DecRealQueuedCount(todelete); 
+//<<< QueuedCount
 }
 
 void CUploadQueue::UpdateMaxClientScore()
@@ -1855,15 +1826,18 @@ UINT CUploadQueue::GetWaitingUserForFileCount(const CSimpleArray<CObject*>& raFi
 
     m_bStatisticsWaitingListDirty = false;
     UINT nResult = 0;
-    for (POSITION pos = waitinglist.GetHeadPosition(); pos != 0;)
+//>>> QueuedCount
+    //for (POSITION pos = waitinglist.GetHeadPosition(); pos != 0;)
     {
-        const CUpDownClient* cur_client = waitinglist.GetNext(pos);
+//        const CUpDownClient* cur_client = waitinglist.GetNext(pos);
         for (int i = 0; i < raFiles.GetSize(); i++)
         {
-            if (md4cmp(((CKnownFile*)raFiles[i])->GetFileHash(), cur_client->GetUploadFileID()) == 0)
-                nResult++;
+            //if (md4cmp(((CKnownFile*)raFiles[i])->GetFileHash(), cur_client->GetUploadFileID()) == 0)
+            //    nResult++;
+			nResult += ((CKnownFile*)raFiles[i])->GetRealQueuedCount();
         }
     }
+//<<< QueuedCount
     return nResult;
 }
 

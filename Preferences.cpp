@@ -438,9 +438,6 @@ bool	CPreferences::m_bNeedsWineCompatibility; //>>> WiZaRd::Wine Compatibility
 bool	CPreferences::m_bModIconDllAutoUpdate;
 CString	CPreferences::m_strModIconDllUpdateURL;
 //<<< WiZaRd::ModIconDLL Update
-//>>> Tux::Spread Priority v3
-int		CPreferences::m_iSpreadPrioLimit;
-//<<< Tux::Spread Priority v3
 
 CPreferences::CPreferences()
 {
@@ -1858,7 +1855,6 @@ void CPreferences::SavekMulePrefs()
     ini.WriteBool(L"AutoUpdateModIconDll", m_bModIconDllAutoUpdate);
     ini.WriteString(L"UpdateURLModIconDll", m_strModIconDllUpdateURL);
 //<<< WiZaRd::ModIconDLL Update
-    ini.WriteInt(L"SpreadPrioLimit",m_iSpreadPrioLimit); //>>> Tux::Spread Priority v3
 }
 //<<< WiZaRd::Own Prefs
 
@@ -2489,7 +2485,6 @@ void CPreferences::LoadkMulePrefs()
     m_bModIconDllAutoUpdate = ini.GetBool(L"AutoUpdateModIconDll", true);
     m_strModIconDllUpdateURL = ini.GetString(L"UpdateURLModIconDll", MOD_MODICON_URL);
 //<<< WiZaRd::ModIconDLL Update
-    m_iSpreadPrioLimit = ini.GetInt(L"SpreadPrioLimit",5); //>>> Tux::Spread Priority v3
 }
 //<<< WiZaRd::Own Prefs
 

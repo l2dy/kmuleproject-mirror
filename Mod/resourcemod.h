@@ -91,10 +91,6 @@
 #define IDC_LOGRESET					4056
 #define IDC_MYINFO						4057
 //<<< WiZaRd::InfoWnd
-//>>> Tux::Spread Priority v3
-#define IDS_SPREADPRIOLIMIT             4058
-#define IDS_SPREADPRIORITY				4059
-//<<< Tux::Spread Priority v3
 //#endif
 
 // this line is needed or we get a "fatal error RC1004: unexpected end of file found" - thanks for those wonderful bugs, Microsoft!

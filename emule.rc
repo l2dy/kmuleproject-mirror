@@ -1993,8 +1993,6 @@ BEGIN
 	IDS_TRANSLATED_BY_HOMEPAGE "Visit translators' homepage"
     IDS_RENAME_WITHOUT_EXTENSION " (without extension)"
 	IDS_HYPERTEXT_FONT_HINT "Font for Server-, and Message-Window"
-	IDS_SPREADPRIOLIMIT     "Spread Priority activation limit (stepwise)"
-	IDS_SPREADPRIORITY		"Spread Priority"
 END
 
 STRINGTABLE 

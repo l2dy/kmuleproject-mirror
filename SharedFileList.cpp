@@ -432,6 +432,7 @@ int CAddFileThread::Run()
 
 CSharedFileList::CSharedFileList()
 {
+	m_uiQueuedFilesCount = 0; //>>> Queued Count
     output = NULL;
     m_Files_map.InitHashTable(1031);
     m_keywords = new CPublishKeywordList;

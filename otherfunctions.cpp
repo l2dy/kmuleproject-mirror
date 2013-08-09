@@ -5017,3 +5017,20 @@ HCURSOR		CreateHandCursor()
     return hLinkCursor;
 }
 //<<< WiZaRd::Additional Functions
+//>>> WiZaRd::Improved Auto Prio
+uint8	CalcPrioFromSrcAverage(const UINT srcs, const float avg)
+{
+	uint8 prio = PR_NORMAL;			// default
+
+	if(srcs < avg*0.50f)				//50% less
+		prio = PR_VERYHIGH;
+	else if(srcs < avg*0.75f)		//25% less
+		prio = PR_HIGH;
+	else if(srcs > avg*1.50f)		//50% more
+		prio = PR_VERYLOW;
+	else if(srcs > avg*1.25f)		//25% more
+		prio = PR_LOW;
+
+	return prio;
+}
+//<<< WiZaRd::Improved Auto Prio
