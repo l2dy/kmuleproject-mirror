@@ -662,6 +662,7 @@ BOOL CemuleDlg::OnInitDialog()
 //>>> Tux::Clipboard Watchdog
 void CemuleDlg::OnChangeCbChain(HWND hWndRemove, HWND hWndAfter)
 {
+    // adds kMule to the chain or removes it on shutdown
     if (hClipboardViewer == hWndRemove)
         hClipboardViewer = hWndAfter;
     else if (hClipboardViewer != NULL)
@@ -670,15 +671,16 @@ void CemuleDlg::OnChangeCbChain(HWND hWndRemove, HWND hWndAfter)
 
 void CemuleDlg::OnDrawClipboard()
 {
-    if (theApp.m_app_state == APP_STATE_SHUTTINGDOWN || !bClipboardWatchdog)
+    // triggered when the clipboard contents change.
+    if (theApp.m_app_state == APP_STATE_SHUTTINGDOWN || !bClipboardWatchdog || !thePrefs.WatchClipboard4ED2KLinks())
+        // don't waste resources if kMule is shutting down or we can't/shouldn't watch the clipboard
         return;
 
     ::PostMessage(hClipboardViewer, WM_DRAWCLIPBOARD, (WPARAM)NULL, (LPARAM)NULL);
 
     if (OpenClipboard())
     {
-        if (thePrefs.WatchClipboard4ED2KLinks())
-            theApp.SearchClipboard();
+        theApp.SearchClipboard();
 
         CloseClipboard();
     }
