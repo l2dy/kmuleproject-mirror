@@ -236,7 +236,7 @@ BOOL CPPgAbout::OnHelpInfo(HELPINFO* /*pHelpInfo*/)
 
 void CPPgAbout::OnBnClickedDonateTux()
 {
-	CString url = L"http://www.amazon.de/registry/wishlist/FNE7OMIHR5AC"; // TODO
+	CString url = L"http://www.amazon.de/registry/wishlist/N16BDCERSOZK";
 	_ShellExecute(NULL, NULL, url, NULL, thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), SW_SHOWDEFAULT);
 }
 

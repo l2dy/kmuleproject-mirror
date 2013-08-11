@@ -64,14 +64,14 @@ BEGIN
                             "Unerwarteter Dateifehler beim Fertigstellen von %s. Datei wird pausiert; starten Sie kMule neu, um das Fertigstellen erneut zu versuchen."
 	IDS_TRAYDLG_SPEED       "Geschwindigkeit"
 	IDS_ERR_LOSTC           "Verbindung zu %s verloren"
-    IDS_PW_FILTER           "Client LAN-IPs filtern"
-	IDS_RAU_WARNING         "Diese Einstellung gibt kMule mehr Sicherheit gegen Angriffe und Exploits. Wir empfehlen diese Option zu nutzen.\nWir empfehlen jedoch, vorher die kMule Dokumentation zu diesem Punkt zu lesen!\n\nDie Änderung wird nach dem Neustart von kMule aktiv."
+    IDS_PW_FILTER           "Client-LAN-IPs filtern"
+	IDS_RAU_WARNING         "Diese Einstellung gibt kMule mehr Sicherheit gegen Angriffe und Exploits. Wir empfehlen diese Option zu nutzen.\nWir empfehlen jedoch, vorher die kMule-Dokumentation zu diesem Punkt zu lesen!\n\nDie Änderung wird nach dem Neustart von kMule aktiv."
     IDS_RAU_RUNNING         "kMule läuft als unpriviligierter Benutzer ""%s"""
     IDS_RAU_FAILED          "kMule konnte nicht als unpriviligierter Benutzer ""kMule_Secure"" gestartet werden. Die Rechte des gegenwärtigen Benutzers (""%s"") werden beibehalten."
     IDS_INSTALL_SKIN        "Installiere Skin"
-    IDS_INSTALL_SKIN_NODIR  "Kein Skin Verzeichnis ausgewählt oder Verzeichnis ist nicht zugreifbar!"
+    IDS_INSTALL_SKIN_NODIR  "Kein Skinverzeichnis ausgewählt oder Verzeichnis ist nicht zugreifbar!"
     IDS_INSTALL_SKIN_DIR_ERROR 
-                            "Das Verzeichnis ""%s"" konnte nicht für das Skin - %s erzeugt werden."
+                            "Das Verzeichnis ""%s"" konnte nicht für den Skin - %s erzeugt werden."
     IDS_INSTALL_SKIN_FILE_ERROR 
                             "Die Datei ""%s"" konnte nicht vom Skin zur lokalent Datei ""%s"" entpackt werden - %s"
     IDS_INSTALL_SKIN_PKG_ERROR 
@@ -84,18 +84,18 @@ BEGIN
     IDS_FO_PREF_STARTUP     "Ports bei der WinXP Firewall beim Starten/Beenden automatisch öffnen/schliessen"
     IDS_PORTINFO            "kMule nutzt zwei Ports für die Kommunikation mit Servern und anderen Clients. Diese Ports müssen frei und von anderen Clients erreichbar sein. Der TCP Port muss verfügbar sein, um die Hauptfunktionalitäten zu gewährleisten. Der UDP Port wird für Kad (serverloses Netzwerk) und Netzwerkentlastung (Overhead-Verringerung) genutzt.\n\nDu kannst die Ports hier ändern, solange keine Netzwerkaktivitäten gestartet wurden."
     IDS_TWEAKS_WARNING      "Warnung: Ändere diese Einstellungen nicht, außer du weißt genau was du tust. Ansonsten können negative Effekte auftreten! kMule funktioniert auch wunderbar, ohne diese Einstellungen zu verändern."
-    IDS_CMT_AIDE            "Kommentiere die Datei hier. Für eine Videodatei zB. gebe die Laufzeit, Thema, Sprache,... an, oder informiere über einen Fake."
-    IDS_NEWVERSIONAVL       "Eine neue Version von kMule ist verfügbar. Besuche die Projekt-Homepage um mehr Informationen zu erhalten."
-    IDS_CB_TBN_ONNEWVERSION "Neue kMule Version gefunden"
-    IDS_NONEWERVERSION      "Es ist keine neue kMule Version verfügbar."
+    IDS_CMT_AIDE            "Kommentiere die Datei hier. Für eine Videodatei z.B. gib die Laufzeit, Thema, Sprache,... an, oder informiere über einen Fake."
+    IDS_NEWVERSIONAVL       "Eine neue Version von kMule ist verfügbar. Besuche die Projekt-Homepage, um mehr Informationen zu erhalten."
+    IDS_CB_TBN_ONNEWVERSION "Neue kMule-Version gefunden"
+    IDS_NONEWERVERSION      "Es ist keine neue kMule-Version verfügbar."
     IDS_FIRSTAUTODOWN       "Soll kMule die Download-Prioritäten verwalten?\n\nIst diese Option aktiviert, ist es für kMule möglich sicherzustellen, dass Downloads mit vielen Quellen nicht Downloads mit wenigen Quellen stört. Diese Einstellung wirkt sich auf zukünftige Downloads aus."
     IDS_FIRSTAUTOUP         "Soll kMule die Upload-Prioritäten verwalten?\n\nIst diese Option aktiviert, kann kMule seltene Dateien bevorzugen. Wird diese Option deaktiviert, verhält sich dies entgegengesetzt (seltene Dateien für andere schwerer zu bekommen, weit verbreitete Dateien besser). Diese Einstellung wirkt sich auf zukünftige freigegebene Dateien aus."
-    IDS_FIRSTCOMPLETE       "Der Startassistent wurde nun durchgeführt.\n\nAlle diese Einstellungen und mehr können geändert werden, klicke dazu auf das Einstellungen-Symbol oben rechts in der Toolbar. Für Erklärungen und weitere Informationen schaue in die Hilfe, durch Drücken der F1-Taste!"
+    IDS_FIRSTCOMPLETE       "Der Startassistent wurde nun durchgeführt.\n\nAlle diese Einstellungen und mehr können geändert werden, klicke dazu auf das Einstellungen-Symbol oben rechts in der Toolbar. Für Erklärungen und weitere Informationen schaue mittels Drücken der F1-Taste in die Hilfe!"
     IDS_WIZ1_WELCOME_TITLE  "Willkommen zu kMule"
     IDS_WIZ1_WELCOME_ACTIONS 
                             "Dieser Assistent leitet dich durch die ersten Schritte der Einrichtung von kMule."
     IDS_WIZ1                "Erst-Start-Assistent"
-    IDS_HM_LINKHP           "kMule Homepage"
+    IDS_HM_LINKHP           "kMule-Homepage"
     IDS_WRN_INCFILE_RESERVED 
                             "Das Eingangs-Verzeichnis darf kein kMule-Installations-Verzeichnis sein."
     IDS_WRN_TEMPFILES_RESERVED 
@@ -114,13 +114,13 @@ BEGIN
     IDS_RUNNINGRESTRICTED   "kMule läuft mit eingeschränkten Rechten"
     IDS_MEDIAINFO_DLLMISSING 
                             "Es ist keine MediaInfo-Bibliothek installiert. Wenn du in diesem Dialog mehr Informationen über Audio- und Videodateien erhalten möchtest,\r\nlade die MediaInfo-Bibliothek von http://sourceforge.net/projects/mediainfo/ herunter und kopiere die Datei ""MediaInfo.dll"" in\r\ndas kMule-Installationsverzeichnis ""%s"".\r\n"
-    IDS_LOADFILTER_EMTOOLBAR "Werkzeugleiste Bildateien"
+    IDS_LOADFILTER_EMTOOLBAR "Werkzeugleiste Bilddateien"
     IDS_LOADFILTER_EMSKINFILES "Skindateien"
-    IDS_DELAYEDBYUPNP2      "Bitte warte einige Sekunden, kMule wird sich verbinden sobald UPnP fertig ist."
+    IDS_DELAYEDBYUPNP2      "Bitte warte einige Sekunden, kMule wird sich verbinden, sobald UPnP fertig ist."
 	IDS_SHAREEMULELABEL     "kMule mit anderen Benutztern teilen"
     IDS_SHAREEMULEWARNING   "Durch das Ändern dieser Option wird kMule eine andere Konfiguration benutzen. Deine aktuellen Einstellungen werden ignoriert werden und bereits gestartete Downloads werden nicht fortgesetzt. Du kannst später wieder zur aktuellen Version durch das Ändern dieser Option wechseln.\n\nUm diese Änderung zu übernehmen muss kMule neu gestartet werden."
-    IDS_PREVENTSTANDBY      "Verhindere Standby-Modus während kMule läuft"
-    IDS_WRN_INCFILE_EXISTS  "Du hast ein neues, nichtleeres Verzeichnis für fertiggestellte Dateien ausgewählt. Alle enthaltenen Dateien werden automatisch durch kMule freigegeben."
+    IDS_PREVENTSTANDBY      "Verhindere Standby-Modus, während kMule läuft"
+    IDS_WRN_INCFILE_EXISTS  "Du hast ein neues, nicht leeres Verzeichnis für fertiggestellte Dateien ausgewählt. Alle enthaltenen Dateien werden automatisch durch kMule freigegeben."
     IDS_WIZZARDOBFUSCATION  "Aktiviere diese Einstellung, wenn du Protokoll-Obfuskation einschalten willst.\n\nFalls dein Provider versucht kMule zu blockieren oder einzuschränken, kann diese Funktion helfen, solche Einschränkungen zu umgehen."
     IDS_BETANAG             "Dies ist eine Beta-Version von kMule. Bitte melde Probleme im Forum (http://www.emulefuture.de) und achte dort auch auf neue Versionen."
 	IDS_CLOSEEMULE          "kMule beenden"
@@ -138,7 +138,7 @@ BEGIN
     IDS_UPDATE_AVAIL_QUESTION 
                             "Eine neue Version ist verfügbar!\nMöchten Sie %s jetzt herunterladen und installieren?\n\nHinweis: es ist ein Neustart nötig!"
     IDS_IPFILTER_AUTOUPDATE "IPFilter beim Start aktualisieren?"
-    IDS_UDP_DISABLED        "UDP abgeschalten"
+    IDS_UDP_DISABLED        "UDP abgeschaltet"
     IDS_RATIO               "Ratio"
 	IDS_RESTART_NOW_QUESTION "Möchten Sie jetzt neu starten?\nBitte beachten Sie: die Aktualisierung ist erst bereit wenn Sie kMule neu gestartet haben!"
 	IDS_AUTOHL              "AutoHL"
@@ -235,8 +235,8 @@ BEGIN
     IDS_ERR_ILLFORMEDHASH   "Ungültiger Hash"
     IDS_ERR_BADED2KLINK     "Kein gültiger eD2K-Link"
     IDS_ERR_NOSLLINK        "Kein eD2K Server- oder Dateilink"
-    IDS_ERR_WRONGPACKAGESIZE "Ungültige OP_FILEREQUEST Paketgrösse"
-    IDS_ERR_WRONGHPACKAGESIZE "Ungültige OP_HASHSETREQUEST Paketgrösse"
+    IDS_ERR_WRONGPACKAGESIZE "Ungültige OP_FILEREQUEST-Paketgröße"
+    IDS_ERR_WRONGHPACKAGESIZE "Ungültige OP_HASHSETREQUEST-Paketgröße"
     IDS_ERR_UNKNOWNCLIENTACTION 
                             "Unbekannter Client sendet ein Paket des erweiterten Protokolls."
     IDS_ERR_OPENMET         "Fehler: part.met Datei konnte nicht geöffnet werden! (%s => %s)"
@@ -292,8 +292,8 @@ END
 STRINGTABLE 
 BEGIN
     IDS_ERR_REHASH          "Warnung: %s ist möglicherweise beschädigt, vollständig geladene Teile werden überprüft"
-    IDS_SKIN_PROF           "Skin Profile"
-    IDS_ERR_PART_FNF        ".part Datei konnte nicht gefunden werden"
+    IDS_SKIN_PROF           "Skinprofile"
+    IDS_ERR_PART_FNF        ".part-Datei konnte nicht gefunden werden"
     IDS_KADOPEN             "Offen"
     IDS_ERR_SAVEMET         "FEHLER beim Speichern der part-Datei: %s (%s)"
     IDS_ERR_FOUNDCORRUPTION "Beschädigter Teil (%u) gefunden in %s"
@@ -312,7 +312,7 @@ STRINGTABLE
 BEGIN
     IDS_SHAREDFOLDERS       "Freigegebene Verzeichnisse"
     IDS_VIEW1               "Ansehen "
-    IDS_VIEW2               " (Nicht geshared)"
+    IDS_VIEW2               " (Nicht freigegeben)"
     IDS_PRIOLOW             "Niedrig"
     IDS_PRIONORMAL          "Normal" //!
     IDS_PRIOHIGH            "Hoch"
@@ -463,7 +463,7 @@ BEGIN
     IDS_SV_UPDATE           "Aktualisieren"
     IDS_SF_FILES            "Freigegebene Dateien"
     IDS_SF_STATISTICS       "Statistik"
-    IDS_SF_RELOAD           "Neu &Laden"
+    IDS_SF_RELOAD           "Neu &laden"
     IDS_SF_CURRENT          "Seit Programmstart"
     IDS_SF_TOTAL            "Gesamt"
     IDS_SF_TRANS            "Übertragen:"
@@ -510,8 +510,8 @@ BEGIN
     IDS_PW_INCOMING         "Eingehende Dateien"
     IDS_PW_TEMP             "Temporäre Dateien"
     IDS_PW_CONNECTION       "Verbindung"
-    IDS_PW_DOWNL            "Download Limit"
-    IDS_PW_UPL              "Upload Limit"
+    IDS_PW_DOWNL            "Downloadlimit"
+    IDS_PW_UPL              "Uploadlimit"
 END
 
 STRINGTABLE 
@@ -544,7 +544,7 @@ BEGIN
     IDS_EM_MESSAGES         "&Nachrichten"
     IDS_EM_STATISTIC        "St&atistik"
     IDS_EM_PREFS            "&Optionen"
-    IDS_MB_LANGUAGEINFO     "Deutsch wurde als Standardsprache festgelegt. Dies kannst Du jederzeit in den Einstellungen ändern."
+    IDS_MB_LANGUAGEINFO     "Deutsch wurde als Standardsprache festgelegt. Dies kannst du jederzeit in den Einstellungen ändern."
     IDS_FD_GENERAL          "Allgemein"
     IDS_FD_MET              "met-Datei:"
     IDS_FD_HASH             "Hash:" //!
@@ -563,8 +563,8 @@ BEGIN
     IDS_CD_UNAME            "Name:" //!
     IDS_CD_UHASH            "Hash:" //!
     IDS_CD_CSOFT            "Software" //!
-    IDS_CD_UIP              "IP Adresse:"
-    IDS_CD_SIP              "Server IP:" //!
+    IDS_CD_UIP              "IP-Adresse:"
+    IDS_CD_SIP              "Server-IP:" //!
     IDS_CD_SNAME            "Servername:"
     IDS_CD_CDOWN            "Lädt derzeit:"
     IDS_CD_DOWN             "Downloaded (Session):"
@@ -579,10 +579,10 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_CD_MOD              "DL/UP Modifizierer:"
+    IDS_CD_MOD              "DL/UP-Modifizierer:"
     IDS_CD_RATING           "Bewertung (gesamt):"
     IDS_CD_USCORE           "Warteliste Punkte:"
-    IDS_CD_TITLE            "Client Details" //!
+    IDS_CD_TITLE            "Clientdetails" //!
     IDS_PW_MAXSOURCES       "Max. Quellen je Datei"
     IDS_SHAREDFILESCOUNT    "Anzahl freigegebener Dateien: %u"
     IDS_SF_SIZE             "Gesamtgröße freigegebener Dateien: %s"
@@ -608,7 +608,7 @@ BEGIN
     IDS_DATE                "Datum"
     IDS_PARTINFOS           "Tempdatei:"
     IDS_PARTINFOS2          "Herunterladend (von %u Quellen)"
-    IDS_USERID              "BenutzerID"
+    IDS_USERID              "Benutzer-ID"
     IDS_CLIENT              "Client" //!
     IDS_SERVER              "Server" //!
 END
@@ -660,7 +660,7 @@ BEGIN
     IDS_MINS                "Mins"
     IDS_HOURS               "H"
     IDS_DAYS                "T"
-    IDS_ED2KLINKFIX         "eD2K Links"
+    IDS_ED2KLINKFIX         "eD2K-Links"
 END
 
 STRINGTABLE 
