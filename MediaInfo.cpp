@@ -2112,6 +2112,7 @@ public:
             //
 //>>> WiZaRd::Wine Compatibility
             // WINE ships a 1kB sized wmvcore.dll by default which causes the GetProcAddress calls below to crash kMule under WINE
+            // (fixed early 2013? http://source.winehq.org/git/wine.git/blob/HEAD:/dlls/wmvcore/wmvcore.spec)
             if (!thePrefs.WeNeedWineCompatibility())
 //<<< WiZaRd::Wine Compatibility
             {
