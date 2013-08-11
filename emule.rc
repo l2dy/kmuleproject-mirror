@@ -3173,7 +3173,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_TEXTLABELS          "Text Label Options"
+    IDS_TEXTLABELS          "Toolbar Options"
     IDS_ENABLETEXTLABELS    "Show Text Labels"
     IDS_CUSTOMIZETOOLBAR    "Customize Toolbar..."
     IDS_MINBITRATE          "Min. Bitrate [kBit/s]"    

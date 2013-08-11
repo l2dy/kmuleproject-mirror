@@ -1240,7 +1240,7 @@ BEGIN
     IDS_ESTTIMELEFT         "Restzeit:"
     IDS_TRANSFER_RATE_LABEL "Transferrate:"
     IDS_SAVELOG             "Log abspeichern"    
-    IDS_ASKDOWNLOADLANGCAP  "Downloade Sprachdateien"
+    IDS_ASKDOWNLOADLANGCAP  "Lade Sprachdateien herunter"
     IDS_DELETESELECTED      "Löschen"
     IDS_ERR_FAILEDDOWNLOADLANG 
                             "Download und Installation der ausgewählten Sprache fehlgeschlagen (Download von:%s)!"
@@ -1250,7 +1250,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_TEXTLABELS          "Textoptionen"
+    IDS_TEXTLABELS          "Toolbaroptionen"
     IDS_ENABLETEXTLABELS    "Symboltitel anzeigen"
     IDS_CUSTOMIZETOOLBAR    "Toolbar anpassen..."
     IDS_MINBITRATE          "min. Bitrate [kBit/s]" //!    
