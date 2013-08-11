@@ -236,12 +236,12 @@ BOOL CPPgAbout::OnHelpInfo(HELPINFO* /*pHelpInfo*/)
 
 void CPPgAbout::OnBnClickedDonateTux()
 {
-	CString url = L"http://www.amazon.de/registry/wishlist/N16BDCERSOZK";
+	CString url = L"http://www.amazon.de/registry/wishlist/N16BDCERSOZK?tag=kMule-21";
 	_ShellExecute(NULL, NULL, url, NULL, thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), SW_SHOWDEFAULT);
 }
 
 void CPPgAbout::OnBnClickedDonateWiZaRd()
 {
-	CString url = L"http://www.amazon.de/registry/wishlist/FNE7OMIHR5AC";
+	CString url = L"http://www.amazon.de/registry/wishlist/FNE7OMIHR5AC?tag=kMule-21";
 	_ShellExecute(NULL, NULL, url, NULL, thePrefs.GetMuleDirectory(EMULE_EXECUTEABLEDIR), SW_SHOWDEFAULT);
 }

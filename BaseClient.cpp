@@ -3902,6 +3902,32 @@ bool CUpDownClient::IsBadGuy() const
     return pAntiLeechData->IsBadGuy();
 }
 
+int CUpDownClient::GetAnalyzerIconIndex() const
+{
+	int ret = -1;
+
+	if (pAntiLeechData == NULL)
+	{		
+		if(pAntiLeechData->GetBadForThisSession() != 0)
+			ret = 1; // red
+		else
+		{
+			float fCAScore = pAntiLeechData->GetScore();
+			if(fCAScore < AT_BASESCORE)
+				ret = 0;
+			else if(fCAScore != AT_BASESCORE)
+			{
+				if(fCAScore < 2 * AT_BASESCORE)
+					ret = 2; // blue - nice score!
+				else
+					ret = 3; // green - good score!
+			}
+		}
+	}
+
+	return ret;
+}
+
 Packet* GetEmptyXSPacket(const CUpDownClient* forClient, CKnownFile* kreqfile, uint8 byRequestedVersion, uint16 nRequestedOptions)
 {
     CSafeMemFile data(1024);

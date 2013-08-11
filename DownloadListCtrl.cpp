@@ -192,7 +192,7 @@ void CDownloadListCtrl::SetAllIcons()
     ApplyImageList(NULL);
     m_ImageList.DeleteImageList();
     m_ImageList.Create(16, 16, theApp.m_iDfltImageListColorFlags | ILC_MASK, 0, 1);
-    FillClientIconImageList(m_ImageList); // 18
+    FillClientIconImageList(m_ImageList); // 21
     m_ImageList.Add(CTempIconLoader(_T("SrcDownloading")));
     m_ImageList.Add(CTempIconLoader(_T("SrcOnQueue")));
     m_ImageList.Add(CTempIconLoader(_T("SrcConnecting")));
@@ -654,7 +654,7 @@ void CDownloadListCtrl::DrawFileItem(CDC *dc, int nColumn, LPCRECT lpRect, UINT 
 
         if (thePrefs.ShowRatingIndicator() && (pPartFile->HasComment() || pPartFile->HasRating() || pPartFile->IsKadCommentSearchRunning()))
         {
-            m_ImageList.Draw(dc, pPartFile->UserRating(true) + 18+6, CPoint(rcDraw.left + 2, rcDraw.top + iIconPosY), ILD_NORMAL);
+            m_ImageList.Draw(dc, pPartFile->UserRating(true) + 21+6, CPoint(rcDraw.left + 2, rcDraw.top + iIconPosY), ILD_NORMAL);
             rcDraw.left += 2 + RATING_ICON_WIDTH;
         }
 
@@ -905,55 +905,56 @@ void CDownloadListCtrl::DrawSourceItem(CDC *dc, int nColumn, LPCRECT lpRect, UIN
             switch (pClient->GetDownloadState())
             {
             case DS_CONNECTING:
-                m_ImageList.Draw(dc, 18+3, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 21+3, point, ILD_NORMAL);
                 break;
             case DS_CONNECTED:
-                m_ImageList.Draw(dc, 18+3, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 21+3, point, ILD_NORMAL);
                 break;
             case DS_WAITCALLBACKKAD:
             case DS_WAITCALLBACK:
-                m_ImageList.Draw(dc, 18+3, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 21+3, point, ILD_NORMAL);
                 break;
             case DS_ONQUEUE:
                 if (pClient->IsRemoteQueueFull())
-                    m_ImageList.Draw(dc, 18+4, point, ILD_NORMAL);
+                    m_ImageList.Draw(dc, 21+4, point, ILD_NORMAL);
                 else
-                    m_ImageList.Draw(dc, 18+2, point, ILD_NORMAL);
+                    m_ImageList.Draw(dc, 21+2, point, ILD_NORMAL);
                 break;
             case DS_DOWNLOADING:
-                m_ImageList.Draw(dc, 18+1, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 21+1, point, ILD_NORMAL);
                 break;
             case DS_REQHASHSET:
-                m_ImageList.Draw(dc, 18+1, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 21+1, point, ILD_NORMAL);
                 break;
             case DS_NONEEDEDPARTS:
-                m_ImageList.Draw(dc, 18+4, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 21+4, point, ILD_NORMAL);
                 break;
             case DS_ERROR:
-                m_ImageList.Draw(dc, 18+4, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 21+4, point, ILD_NORMAL);
                 break;
             case DS_TOOMANYCONNS:
             case DS_TOOMANYCONNSKAD:
-                m_ImageList.Draw(dc, 18+3, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 21+3, point, ILD_NORMAL);
                 break;
             default:
-                m_ImageList.Draw(dc, 18+5, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 21+5, point, ILD_NORMAL);
                 break;
             }
         }
         else
         {
-            m_ImageList.Draw(dc, 18+4, point, ILD_NORMAL);
+            m_ImageList.Draw(dc, 21+4, point, ILD_NORMAL);
         }
         cur_rec.left += 20;
 
 //>>> WiZaRd::ClientAnalyzer
         int plusminus = 0;
-        if (pClient->IsBadGuy())
+		int iCAIconIndex = pClient->GetAnalyzerIconIndex();
+        if(iCAIconIndex != -1)
         {
             int iIconPosY = (cur_rec.Height() > 16) ? ((cur_rec.Height() - 16) / 2) : 1;
             POINT point = {cur_rec.left, cur_rec.top + iIconPosY};
-            m_ImageList.Draw(dc, 18, point, ILD_NORMAL);
+            m_ImageList.Draw(dc, 18 + iCAIconIndex, point, ILD_NORMAL);
             cur_rec.left += 17;
             plusminus += 17;
         }

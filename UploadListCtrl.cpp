@@ -235,11 +235,12 @@ void CUploadListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
                 {
 //>>> WiZaRd::ClientAnalyzer
                     int plusminus = 0;
-                    if (client->IsBadGuy())
+					int iCAIconIndex = client->GetAnalyzerIconIndex();
+					if(iCAIconIndex != -1)
                     {
                         int iIconPosY = (cur_rec.Height() > 16) ? ((cur_rec.Height() - 16) / 2) : 1;
                         POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
-                        m_ImageList.Draw(dc, 18, point, ILD_NORMAL);
+                        m_ImageList.Draw(dc, 18 + iCAIconIndex, point, ILD_NORMAL);
                         cur_rec.left += 17;
                         plusminus += 17;
                     }

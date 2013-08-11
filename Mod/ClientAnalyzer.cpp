@@ -437,7 +437,7 @@ void CAntiLeechData::Init()
     memset(m_pData, 0, sizeof(CAntiLeechStruct));
     md4clr(m_pData->abyKey);
     m_uiBadForThisSession = 0;
-    m_fLastScore = 1.0f;
+    m_fLastScore = AT_BASESCORE;
     SetLastSeen();
     SetFirstMet();
     m_pParent = NULL;
@@ -840,8 +840,8 @@ bool	CAntiLeechData::IsBadGuy() const
 {
     if (/*thePrefs.IsExcludeULDLBadGuys() &&*/ !m_bBadWithoutULDL)
         return false;
-    return m_fLastScore < 1.0f;
-//	return m_fLastScore < 1.0f
+    return m_fLastScore < AT_BASESCORE;
+//	return m_fLastScore < AT_BASESCORE
 //		|| m_uiBadForThisSession != 0;
 }
 

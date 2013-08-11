@@ -1153,6 +1153,7 @@ public:
         return m_bCompleteSource;
     }
     bool	IsBadGuy() const;
+	int		GetAnalyzerIconIndex() const;
 //>>> WiZaRd::More GPLEvilDoers
     bool	IsGPLBreaker() const
     {
