@@ -385,7 +385,12 @@ void CUpDownClient::SendFileRequest()
             if (SupportsSourceExchange2())
             {
                 dataFileReq.WriteUInt8(OP_REQUESTSOURCES2);
-                dataFileReq.WriteUInt8(SOURCEEXCHANGE2_VERSION);
+//>>> WiZaRd::ExtendedXS [Xanatos]
+				if(SupportsExtendedSourceExchange())
+					dataFileReq.WriteUInt8(SOURCEEXCHANGEEXT_VERSION);
+				else
+//<<< WiZaRd::ExtendedXS [Xanatos]
+					dataFileReq.WriteUInt8(SOURCEEXCHANGE2_VERSION);
                 const uint16 nOptions = 0; // 16 ... Reserved
                 dataFileReq.WriteUInt16(nOptions);
             }
@@ -485,7 +490,12 @@ void CUpDownClient::SendFileRequest()
             if (SupportsSourceExchange2())
             {
                 packet = new Packet(OP_REQUESTSOURCES2,19,OP_EMULEPROT);
-                PokeUInt8(&packet->pBuffer[0], SOURCEEXCHANGE2_VERSION);
+//>>> WiZaRd::ExtendedXS [Xanatos]
+				if(SupportsExtendedSourceExchange())
+					PokeUInt8(&packet->pBuffer[0], SOURCEEXCHANGEEXT_VERSION);
+				else
+//<<< WiZaRd::ExtendedXS [Xanatos]
+					PokeUInt8(&packet->pBuffer[0], SOURCEEXCHANGE2_VERSION);
                 const uint16 nOptions = 0; // 16 ... Reserved
                 PokeUInt16(&packet->pBuffer[1], nOptions);
                 md4cpy(&packet->pBuffer[3],reqfile->GetFileHash());

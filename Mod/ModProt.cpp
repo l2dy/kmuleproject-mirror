@@ -46,6 +46,15 @@ void CUpDownClient::SendModInfoPacket() const
 
     CList<CTag*> tagList; // netfinity: Add tags to a linked list to prevent mismatch
     tagList.AddTail(new CTag(CT_MOD_VERSION, MOD_VERSION));
+	
+	// Misc mod community features	
+	const UINT uSupportsIPv6		= 1; //>>> WiZaRd::IPv6 [Xanatos]
+	const UINT uSupportsExtXS		= 1; //>>> WiZaRd::ExtendedXS [Xanatos]
+	tagList.AddTail(new CTag(CT_EMULE_MISCOPTIONS1,
+		(uSupportsIPv6			<<  1) |	//>>> WiZaRd::IPv6 [Xanatos]
+		(uSupportsExtXS			<<  0)		//>>> WiZaRd::ExtendedXS [Xanatos]
+		));
+
 
     // we are done writing tags... flush them into the packet
     CSafeMemFile data(128);
@@ -90,30 +99,46 @@ void CUpDownClient::ProcessModInfoPacket(const uchar* pachPacket, const UINT nSi
         CTag temptag(&data, false);
         switch (temptag.GetNameID()) // here we distinguish only tags with an uint8 ID, all named tags are handled below
         {
-        case CT_MOD_VERSION:
-        {
-            if (temptag.IsStr())
-                m_strModVersion = temptag.GetStr();
-            else if (temptag.IsInt())
-                m_strModVersion.Format(L"%u", temptag.GetInt());
-            else
-                m_strModVersion = L"<Unknown>";
+			case CT_MOD_VERSION:
+			{
+				if (temptag.IsStr())
+					m_strModVersion = temptag.GetStr();
+				else if (temptag.IsInt())
+					m_strModVersion.Format(L"%u", temptag.GetInt());
+				else
+					m_strModVersion = L"<Unknown>";
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
-            if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(L"\n  ModID=%s", m_strModVersion);
+				if (bDbgInfo)
+					m_strModInfo.AppendFormat(L"\n  ModID=%s", m_strModVersion);
 #endif
-            break;
-        }
+				break;
+			}
 
-        default:
-        {
-            // now we handle custom named tags, we use a series of (else)if's and strcmp, note: this is *not* unicode!!!
+			case CT_EMULE_MISCOPTIONS1:
+			{
+				//	1 IPv6 support
+				//	1 ExtendedXS
+				if (temptag.IsInt())
+				{
+					m_fSupportsIPv6			= (temptag.GetInt() >>  1) & 0x01; //>>> WiZaRd::IPv6 [Xanatos]
+					m_fSupportsExtendedXS	= (temptag.GetInt() >>  0) & 0x01; //>>> WiZaRd::ExtendedXS [Xanatos]
+					if (bDbgInfo)
+						m_strModInfo.AppendFormat(L"\n  IPv6=%u  ExtendedXS=%u", m_fSupportsIPv6, m_fSupportsExtendedXS);
+				}
+				else if (bDbgInfo)
+					m_strModInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+				break;
+			}
+
+			default:
+			{
+				// now we handle custom named tags, we use a series of (else)if's and strcmp, note: this is *not* unicode!!!
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
-            if (bDbgInfo)
-                m_strModInfo.AppendFormat(L"\n  ***UnkTag=%s", temptag.GetFullInfo());
+				if (bDbgInfo)
+					m_strModInfo.AppendFormat(L"\n  ***UnkTag=%s", temptag.GetFullInfo());
 #endif
-            break;
-        }
+				break;
+			}
         }
     }
 

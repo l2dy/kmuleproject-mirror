@@ -51,6 +51,7 @@ CPreferencesDlg::CPreferencesDlg()
     m_wndTweaks.m_psp.dwFlags &= ~PSH_HASHELP;
     m_wndSecurity.m_psp.dwFlags &= ~PSH_HASHELP;
     m_wndProxy.m_psp.dwFlags &= ~PSH_HASHELP;
+	m_wndAbout.m_psp.dwFlags &= ~PSH_HASHELP; //>>> WiZaRd::AboutPage
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
     m_wndDebug.m_psp.dwFlags &= ~PSH_HASHELP;
 #endif
@@ -65,6 +66,7 @@ CPreferencesDlg::CPreferencesDlg()
     AddPage(&m_wndStats);
     AddPage(&m_wndSecurity);
     AddPage(&m_wndTweaks);
+	AddPage(&m_wndAbout); //>>> WiZaRd::AboutPage
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
     AddPage(&m_wndDebug);
 #endif
@@ -181,6 +183,7 @@ void CPreferencesDlg::Localize()
     m_wndSecurity.Localize();
     m_wndTweaks.Localize();
     m_wndProxy.Localize();
+	m_wndAbout.Localize(); //>>> WiZaRd::AboutPage
 
     int c = 0;
 
@@ -197,6 +200,7 @@ void CPreferencesDlg::Localize()
         pTree->SetItemText(GetPageTreeItem(c++), RemoveAmpersand(GetResString(IDS_STATSSETUPINFO)));
         pTree->SetItemText(GetPageTreeItem(c++), RemoveAmpersand(GetResString(IDS_SECURITY)));
         pTree->SetItemText(GetPageTreeItem(c++), RemoveAmpersand(GetResString(IDS_PW_TWEAK)));
+		pTree->SetItemText(GetPageTreeItem(c++), RemoveAmpersand(GetResString(IDS_ABOUTBOX))); //>>> WiZaRd::AboutPage
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
         pTree->SetItemText(GetPageTreeItem(c++), _T("Debug"));
 #endif

@@ -1398,7 +1398,12 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
     {
         // the client uses SourceExchange2 and requested the highest version he knows
         // and we send the highest version we know, but of course not higher than his request
-        byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGE2_VERSION);
+//>>> WiZaRd::ExtendedXS [Xanatos]
+		if(forClient->SupportsExtendedSourceExchange())
+			byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGEEXT_VERSION);
+		else
+//<<< WiZaRd::ExtendedXS [Xanatos]
+			byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGE2_VERSION);
         bIsSX2Packet = true;
         data.WriteUInt8(byUsedVersion);
 
@@ -1571,8 +1576,15 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
                 dwID = cur_src->GetIP();
             data.WriteUInt32(dwID);
             data.WriteUInt16(cur_src->GetUserPort());
-            data.WriteUInt32(cur_src->GetServerIP());
-            data.WriteUInt16(cur_src->GetServerPort());
+//>>> WiZaRd::ExtendedXS [Xanatos]
+			if(forClient->SupportsExtendedSourceExchange())
+				cur_src->WriteExtendedSourceExchangeData(data);
+			else
+//<<< WiZaRd::ExtendedXS [Xanatos]
+			{
+				data.WriteUInt32(cur_src->GetServerIP());
+				data.WriteUInt16(cur_src->GetServerPort());
+			}
             if (byUsedVersion >= 2)
                 data.WriteHash16(cur_src->GetUserHash());
             if (byUsedVersion >= 4)

@@ -3802,7 +3802,7 @@ void CUpDownClient::SetConnectOptions(uint8 byOptions, bool bEncryption, bool bC
     SetCryptLayerRequest((byOptions & 0x02) != 0 && bEncryption);
     SetCryptLayerRequires((byOptions & 0x04) != 0 && bEncryption);
     SetDirectUDPCallbackSupport((byOptions & 0x08) != 0 && bCallback);
-    SetNatTraversalSupport((byOptions & 0x80) != 0 && bCallback); //>>> WiZaRd::NatTraversal [Xanatos]
+    SetNatTraversalSupport((byOptions & 0x80) != 0/* && bCallback*/); //>>> WiZaRd::NatTraversal [Xanatos]
 }
 
 void CUpDownClient::SendSharedDirectories()
@@ -4207,3 +4207,78 @@ int	CUpDownClient::GetModIconIndex() const
     return m_iModIconIndex;
 }
 //<<< WiZaRd::ModIconMapper
+//>>> WiZaRd::ExtendedXS [Xanatos]
+void CUpDownClient::WriteExtendedSourceExchangeData(CSafeMemFile& data) const
+{
+	ULONGLONG pos = data.GetPosition();
+	uint8 tagcount = 0;			// max 255 tags - plenty of fun for everyone ;)
+	data.WriteUInt8(tagcount);
+
+//>>> WiZaRd::NatTraversal [Xanatos]
+	if (HasLowID())
+	{
+		if(SupportsDirectUDPCallback())
+		{
+			tagcount += 2;
+
+			CTag tagIPv4(CT_EMULE_ADDRESS, GetIP()); 
+			tagIPv4.WriteTagToFile(&data);
+
+			CTag tagUdpPorts(CT_EMULE_UDPPORTS, 
+				((UINT)GetKadPort() << 16) |
+				((UINT)GetUDPPort() <<  0)
+				); 
+			tagUdpPorts.WriteTagToFile(&data);
+		}
+
+		if(GetBuddyIP())
+		{
+			tagcount += 2;
+
+			CTag tagBuddyIP(CT_EMULE_BUDDYIP, GetBuddyIP() ); 
+			tagBuddyIP.WriteTagToFile(&data);
+
+			CTag tagBuddyPort(CT_EMULE_BUDDYUDP, 
+				//	( RESERVED						 )
+				((UINT)GetBuddyPort() ) 
+				);
+			tagBuddyPort.WriteTagToFile(&data);
+		}
+
+		if(!isnulmd4(GetBuddyID()))
+		{
+			tagcount += 1;
+
+			CTag tagBuddyID(CT_EMULE_BUDDYID, GetBuddyID()); 
+			tagBuddyID.WriteTagToFile(&data);
+		}
+	}
+//<<< WiZaRd::NatTraversal [Xanatos]
+
+	if(GetServerIP() != 0)
+	{
+		tagcount += 2;
+
+		CTag tagServerIP(CT_EMULE_SERVERIP, GetServerIP()); 
+		tagServerIP.WriteTagToFile(&data);
+
+		CTag tagServerPorts(CT_EMULE_SERVERTCP, 
+			//	( RESERVED						  )
+			((UINT)GetServerPort() )
+			); 
+		tagServerPorts.WriteTagToFile(&data);
+	}
+
+	if(HasIPv6())
+	{
+		tagcount += 1;
+
+		CTag tagIPv6(CT_NEOMULE_IP_V6, GetIPv6()); 
+		tagIPv6.WriteTagToFile(&data);
+	}
+
+	data.Seek(pos, CFile::begin);
+	data.WriteUInt8(tagcount);
+	data.SeekToEnd();
+}
+//<<< WiZaRd::ExtendedXS [Xanatos]

@@ -223,24 +223,24 @@ UINT64 GetHTTPRequestDataSize(CString strSource)
 	CString host,res;
 	int port=0;
 
-	if (strSource.Left(7).CompareNoCase("http://")==0)
+	if (strSource.Left(7).CompareNoCase(L"http://")==0)
 		host=strSource.Mid(7);
 	else 
 		host=strSource;
 
-	int pos=host.Find(':');
-	int posr=host.Find('/');
+	int pos=host.Find(L':');
+	int posr=host.Find(L'/');
 	if (posr==-1)
 		return 0;
 	if (pos>-1 && posr>pos)
-		port=atoi(host.Mid(pos+1,posr-pos-1));
+		port=_tstoi(host.Mid(pos+1,posr-pos-1));
 	res=host.Mid(posr);
 	host=host.Left( (pos>0)?pos: posr);
 
 
 	// Initialize use of the WinINet functions
 	HINTERNET hInternet=InternetOpen(
-		"LinkCreatorAgent",
+		L"LinkCreatorAgent",
 		INTERNET_OPEN_TYPE_PRECONFIG,
 		NULL,
 		NULL,
@@ -251,14 +251,14 @@ UINT64 GetHTTPRequestDataSize(CString strSource)
 		return 0;
 
 	// Opens an HTTP session for the ressources host
-	HINTERNET hConnect = ::InternetConnect(hInternet, host, (port)?port:INTERNET_DEFAULT_HTTP_PORT, "", "", INTERNET_SERVICE_HTTP, 0, 0);
+	HINTERNET hConnect = ::InternetConnect(hInternet, host, (port)?port:INTERNET_DEFAULT_HTTP_PORT, L"", L"", INTERNET_SERVICE_HTTP, 0, 0);
 	if (!hConnect) {
 		InternetCloseHandle(hInternet);
 		return 0;
 	}
 
 	// requests a ressource via http
-	HINTERNET hHttpFile = ::HttpOpenRequest(hConnect, "GET", res, HTTP_VERSION, NULL, 0, INTERNET_FLAG_DONT_CACHE, 0);
+	HINTERNET hHttpFile = ::HttpOpenRequest(hConnect, L"GET", res, HTTP_VERSION, NULL, 0, INTERNET_FLAG_DONT_CACHE, 0);
 	if (!hHttpFile) {
 		InternetCloseHandle(hConnect);
 		InternetCloseHandle(hInternet);

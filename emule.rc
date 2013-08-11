@@ -323,6 +323,18 @@ BEGIN
     CONTROL         "",IDC_TRANSLATED_BY_URL,"Static",SS_BLACKFRAME | SS_CENTERIMAGE | NOT WS_VISIBLE,14,68,206,10
 END
 
+IDD_PPG_ABOUT DIALOGEX 0, 0, 231, 299
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "About..."
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    GROUPBOX        "Donations:",IDC_DONATION_FRM,4,214,223,84
+    LTEXT           "Donation Desc",IDC_DONATION_DESC,10,223,212,55
+    CONTROL         "",IDC_ABOUTINFOBOX,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,2,3,227,209
+    PUSHBUTTON      "Tux @ Amazon",IDC_DONATION_TUX,117,281,106,14
+    PUSHBUTTON      "WiZaRd @ Amazon",IDC_DONATION_WIZARD,7,281,106,14
+END
+
 IDD_PPG_FILES DIALOGEX 0, 0, 231, 299
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Files"
@@ -1993,6 +2005,10 @@ BEGIN
 	IDS_TRANSLATED_BY_HOMEPAGE "Visit translators' homepage"
     IDS_RENAME_WITHOUT_EXTENSION " (without extension)"
 	IDS_HYPERTEXT_FONT_HINT "Font for Server-, and Message-Window"
+    IDS_DONATION_LABEL      "Donations:"
+    IDS_DONATION_DESC       "Working on kMule is fun but it's also requiring a lot of time.\nIf you like kMule and want to say 'thanks' to the people who created it, you can use the buttons below to access our wishlists at Amazon and buy us a present."
+    IDS_DONATION_TUX        "Tux @ Amazon"
+    IDS_DONATION_WIZARD     "WiZaRd @ Amazon"
 END
 
 STRINGTABLE 

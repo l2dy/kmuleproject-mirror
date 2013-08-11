@@ -91,6 +91,18 @@
 #define IDC_LOGRESET					4056
 #define IDC_MYINFO						4057
 //<<< WiZaRd::InfoWnd
+//>>> WiZaRd::AboutPage
+#define IDD_PPG_ABOUT					4058
+#define IDC_ABOUTINFOBOX				4059
+#define IDC_DONATION_TUX				4060
+#define IDC_DONATION_WIZARD				4061
+#define IDS_DONATION_TUX				4062
+#define IDS_DONATION_WIZARD				4063
+#define IDC_DONATION_FRM				4064
+#define IDC_DONATION_DESC				4065
+#define IDS_DONATION_LABEL				4066
+#define IDS_DONATION_DESC				4067
+//<<< WiZaRd::AboutPage
 //#endif
 
 // this line is needed or we get a "fatal error RC1004: unexpected end of file found" - thanks for those wonderful bugs, Microsoft!

@@ -1059,6 +1059,9 @@
     <ClCompile Include="Mod\Neo\UtpSocket.cpp">
       <Filter>Mod\Neo</Filter>
     </ClCompile>
+    <ClCompile Include="Mod\PPgAbout.cpp">
+      <Filter>Mod\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <MASM Include="MD4_asm.asm">
@@ -3038,6 +3041,9 @@
     </ClInclude>
     <ClInclude Include="Mod\Neo\Buffer.h">
       <Filter>Mod\Neo</Filter>
+    </ClInclude>
+    <ClInclude Include="Mod\PPgAbout.h">
+      <Filter>Mod\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

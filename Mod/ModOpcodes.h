@@ -124,3 +124,13 @@ enum eSharePermissions
 #define CT_EMULE_BUDDYID			0xBF
 #define OP_HOLEPUNCH				0xA1
 //<<< WiZaRd::NatTraversal [Xanatos]
+//>>> WiZaRd::ExtendedXS [Xanatos]
+#define CT_EMULE_ADDRESS			0xB0
+#define CT_EMULE_SERVERIP			0xBA
+#define CT_EMULE_SERVERTCP			0xBB
+#define CT_EMULE_CONOPTS			0xBE
+#define CT_EMULE_BUDDYID			0xBF
+#define CT_NEOMULE_IP_V6			0xAE //>>> WiZaRd::IPv6 [Xanatos]
+
+#define	SOURCEEXCHANGEEXT_VERSION	1
+//<<< WiZaRd::ExtendedXS [Xanatos]

@@ -58,14 +58,14 @@ BOOL CLinkCreatorApp::InitInstance()
 		LPCTSTR pszParam = __targv[i];
 		if (pszParam[0] == _T('-') || pszParam[0] == _T('/'))
 			pszParam++;
-		if (!_stricmp(pszParam,_T("lang")))
+		if (!_tcsicmp(pszParam,_T("lang")))
 		{
 			i++;
 			ASSERT( i<__argc );
 			LPCTSTR pszLangID = __targv[i];
-			SetLang( (LANGID)atoi(pszLangID) );
+			SetLang( (LANGID)_tstoi(pszLangID) );
 		}
-		if (!_stricmp(pszParam,_T("hashfile")))
+		if (!_tcsicmp(pszParam,_T("hashfile")))
 		{
 			i++;
 			ASSERT( i<__argc );

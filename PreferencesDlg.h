@@ -8,6 +8,7 @@
 #include "PPgDisplay.h"
 #include "PPgSecurity.h"
 #include "PPgProxy.h"
+#include "./Mod/PPgAbout.h" //>>> WiZaRd::AboutPage
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
 #include "PPgDebug.h"
 #endif
@@ -31,6 +32,7 @@ public:
     CPPgDisplay		m_wndDisplay;
     CPPgSecurity	m_wndSecurity;
     CPPgProxy		m_wndProxy;
+	CPPgAbout		m_wndAbout; //>>> WiZaRd::AboutPage
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
     CPPgDebug		m_wndDebug;
 #endif

@@ -326,6 +326,7 @@
     <ClCompile Include="Mod\NetF\CrumbHashSet.cpp" />
     <ClCompile Include="Mod\NetF\DesktopIntegration.cpp" />
     <ClCompile Include="Mod\NetF\PartStatus.cpp" />
+    <ClCompile Include="Mod\PPgAbout.cpp" />
     <ClCompile Include="Mod\ProgressIndicator.cpp" />
     <ClCompile Include="Mod\QOS.cpp" />
     <ClCompile Include="Mod\SnarlInterface.cpp" />
@@ -1014,6 +1015,7 @@
     <ClInclude Include="Mod\NetF\CrumbHashSet.h" />
     <ClInclude Include="Mod\NetF\DesktopIntegration.h" />
     <ClInclude Include="Mod\NetF\PartStatus.h" />
+    <ClInclude Include="Mod\PPgAbout.h" />
     <ClInclude Include="Mod\ProgressIndicator.h" />
     <ClInclude Include="Mod\QOS.h" />
     <ClInclude Include="Mod\resourcemod.h" />

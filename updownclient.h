@@ -1082,7 +1082,9 @@ protected:
          m_fAICHHashRequested : 1, //>>> Security Check
          m_fSourceExchangeRequested : 1, //>>> Security Check
          m_fSupportsModProt	  : 1, //>>> WiZaRd::ModProt
-         m_fSupportsNatTraversal : 1; //>>> WiZaRd::NatTraversal [Xanatos]
+		 m_fSupportsNatTraversal : 1, //>>> WiZaRd::NatTraversal [Xanatos]
+		 m_fSupportsIPv6 : 1, //>>> WiZaRd::IPv6 [Xanatos]
+		 m_fSupportsExtendedXS : 1; //>>> WiZaRd::ExtendedXS [Xanatos]
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 public:
     CTypedPtrList<CPtrList, Pending_Block_Struct*>	 m_PendingBlocks_list;
@@ -1260,23 +1262,26 @@ public:
     }
 //<<< LowID UDP Ping Support
 public:
-    bool	SupportsModProt() const
-    {
-        return m_fSupportsModProt;
-    }
+    bool	SupportsModProt() const	{return m_fSupportsModProt;}
     void	SendModInfoPacket() const;
     void	ProcessModInfoPacket(const uchar* pachPacket, const UINT nSize);
 //<<< WiZaRd::ModProt
 //>>> WiZaRd::NatTraversal [Xanatos]
 public:
-    bool			SupportsNatTraversal() const
-    {
-        return m_fSupportsNatTraversal;
-    }
-    void			SetNatTraversalSupport(bool bVal)
-    {
-        m_fSupportsNatTraversal = bVal ? 1 : 0;
-    }
+    bool	SupportsNatTraversal() const		{return m_fSupportsNatTraversal;}
+    void	SetNatTraversalSupport(bool bVal)	{m_fSupportsNatTraversal = bVal ? 1 : 0;}
 //<<< WiZaRd::NatTraversal [Xanatos]
+//>>> WiZaRd::IPv6 [Xanatos]
+public:
+	bool	SupportsIPv6() const	{return m_fSupportsIPv6;}
+	// TODO: pseudo feature - does nothing right now!
+	bool	HasIPv6() const			{return false;}
+	UINT	GetIPv6() const			{return 0;}
+//<<< WiZaRd::IPv6 [Xanatos]
+//>>> WiZaRd::ExtendedXS [Xanatos]
+public:
+	bool	SupportsExtendedSourceExchange() const	{return m_fSupportsExtendedXS;}
+	void	WriteExtendedSourceExchangeData(CSafeMemFile& data) const;
+//<<< WiZaRd::ExtendedXS [Xanatos]
 };
 //#pragma pack()

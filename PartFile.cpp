@@ -4782,7 +4782,12 @@ Packet* CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 byR
     {
         // the client uses SourceExchange2 and requested the highest version he knows
         // and we send the highest version we know, but of course not higher than his request
-        byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGE2_VERSION);
+//>>> WiZaRd::ExtendedXS [Xanatos]
+		if(forClient->SupportsExtendedSourceExchange())
+			byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGEEXT_VERSION);
+		else
+//<<< WiZaRd::ExtendedXS [Xanatos]
+			byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGE2_VERSION);
         bIsSX2Packet = true;
         data.WriteUInt8(byUsedVersion);
 
@@ -4888,8 +4893,15 @@ Packet* CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 byR
                 dwID = ntohl(cur_src->GetUserIDHybrid());
             data.WriteUInt32(dwID);
             data.WriteUInt16(cur_src->GetUserPort());
-            data.WriteUInt32(cur_src->GetServerIP());
-            data.WriteUInt16(cur_src->GetServerPort());
+//>>> WiZaRd::ExtendedXS [Xanatos]
+			if(forClient->SupportsExtendedSourceExchange())
+				cur_src->WriteExtendedSourceExchangeData(data);
+			else
+//<<< WiZaRd::ExtendedXS [Xanatos]
+			{
+				data.WriteUInt32(cur_src->GetServerIP());
+				data.WriteUInt16(cur_src->GetServerPort());
+			}
             if (byUsedVersion >= 2)
                 data.WriteHash16(cur_src->GetUserHash());
             if (byUsedVersion >= 4)
@@ -4953,6 +4965,7 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
     }
 
     UINT uPacketSXVersion = 0;
+	UINT uDataSize = 0;
     if (!bSourceExchange2)
     {
         // for SX1 (deprecated):
@@ -4960,7 +4973,7 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
         // exchange version while reading the packet data. Otherwise we could experience a higher
         // chance in dealing with wrong source data, userhashs and finally duplicate sources.
         nCount = sources->ReadUInt16();
-        UINT uDataSize = (UINT)(sources->GetLength() - sources->GetPosition());
+        uDataSize = (UINT)(sources->GetLength() - sources->GetPosition());
         // Checks if version 1 packet is correct size
         if (nCount*(4+2+4+2) == uDataSize)
         {
@@ -5035,8 +5048,11 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
     {
         // for SX2:
         // We only check if the version is known by us and do a quick sanitize check on known version
-        // other then SX1, the packet will be ignored if any error appears, sicne it can't be a "misunderstanding" anymore
-        if (uClientSXVersion > SOURCEEXCHANGE2_VERSION || uClientSXVersion == 0)
+        // other then SX1, the packet will be ignored if any error appears, since it can't be a "misunderstanding" anymore
+//>>> WiZaRd::ExtendedXS [Xanatos]
+		if (uClientSXVersion > (pClient->SupportsExtendedSourceExchange() ? SOURCEEXCHANGEEXT_VERSION : SOURCEEXCHANGE2_VERSION) || uClientSXVersion == 0)
+		//if (uClientSXVersion > SOURCEEXCHANGE2_VERSION || uClientSXVersion == 0)
+//<<< WiZaRd::ExtendedXS [Xanatos]        
         {
             if (thePrefs.GetVerbose())
             {
@@ -5050,45 +5066,135 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
         }
         // all known versions use the first 2 bytes as count and unknown version are already filtered above
         nCount = sources->ReadUInt16();
-        UINT uDataSize = (UINT)(sources->GetLength() - sources->GetPosition());
-        bool bError = false;
-        switch (uClientSXVersion)
-        {
-        case 1:
-            bError = nCount*(4+2+4+2) != uDataSize;
-            break;
-        case 2:
-        case 3:
-            bError = nCount*(4+2+4+2+16) != uDataSize;
-            break;
-        case 4:
-            bError = nCount*(4+2+4+2+16+1) != uDataSize;
-            break;
-        default:
-            ASSERT(0);
-        }
+		uDataSize = (UINT)(sources->GetLength() - sources->GetPosition());
+//>>> WiZaRd::ExtendedXS [Xanatos]
+		if(pClient->SupportsExtendedSourceExchange())
+			uPacketSXVersion = 4;
+		else // Note: Since the extended Format has variable length entries such a simple integrity test can not be performed
+//<<< WiZaRd::ExtendedXS [Xanatos]
+		{			
+			bool bError = false;
+			switch (uClientSXVersion)
+			{
+				case 1:
+					bError = nCount*(4+2+4+2) != uDataSize;
+					break;
+				case 2:
+				case 3:
+					bError = nCount*(4+2+4+2+16) != uDataSize;
+					break;
+				case 4:
+					bError = nCount*(4+2+4+2+16+1) != uDataSize;
+					break;
+				default:
+					ASSERT(0);
+			}
 
-        if (bError)
-        {
-            ASSERT(0);
-            if (thePrefs.GetVerbose())
-            {
-                CString strDbgClientInfo;
-                if (pClient)
-                    strDbgClientInfo.Format(_T("%s, "), pClient->DbgGetClientInfo());
-                DebugLogWarning(_T("Received invalid/corrupt SX2 packet (v%u, count=%u, size=%u), %sFile=\"%s\""), uClientSXVersion, nCount, uDataSize, strDbgClientInfo, GetFileName());
-            }
-            return;
-        }
-        uPacketSXVersion = uClientSXVersion;
+			if (bError)
+			{
+				ASSERT(0);
+				if (thePrefs.GetVerbose())
+				{
+					CString strDbgClientInfo;
+					if (pClient)
+						strDbgClientInfo.Format(_T("%s, "), pClient->DbgGetClientInfo());
+					DebugLogWarning(_T("Received invalid/corrupt SX2 packet (v%u, count=%u, size=%u), %sFile=\"%s\""), uClientSXVersion, nCount, uDataSize, strDbgClientInfo, GetFileName());
+				}
+				return;
+			}
+			uPacketSXVersion = uClientSXVersion;
+		}
     }
 
     for (UINT i = 0; i < nCount; i++)
     {
         UINT dwID = sources->ReadUInt32();
         uint16 nPort = sources->ReadUInt16();
-        UINT dwServerIP = sources->ReadUInt32();
-        uint16 nServerPort = sources->ReadUInt16();
+//>>> WiZaRd::ExtendedXS [Xanatos]
+        //UINT dwServerIP = sources->ReadUInt32();
+        //uint16 nServerPort = sources->ReadUInt16();
+		UINT dwServerIP = 0;
+		uint16 nServerPort = 0;
+		UINT dwIP = 0;
+		uint16 nUDPPort = 0;
+		uint16 nKadPort = 0;
+		UINT dwBuddyIP = 0;
+		uint16 nBuddyPort = 0;
+		byte BuddyID[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		bool bError = false;
+		if(pClient->SupportsExtendedSourceExchange())
+		{
+			uint8 tagcount = sources->ReadUInt8();
+			for (uint8 i = 0; i < tagcount; i++)
+			{
+				CTag temptag(sources, true);
+				switch (temptag.GetNameID())
+				{
+//>>> WiZaRd::NatTraversal [Xanatos]
+					case CT_EMULE_ADDRESS:
+						if(temptag.IsInt())
+							dwIP = temptag.GetInt();
+						break;
+					case CT_EMULE_UDPPORTS:
+						if(temptag.IsInt())
+						{
+							nKadPort = (uint16)(temptag.GetInt() >> 16);
+							nUDPPort = (uint16)temptag.GetInt();
+						}
+						break;
+
+					case CT_EMULE_BUDDYIP:
+						if(temptag.IsInt())
+							dwBuddyIP = temptag.GetInt();
+						break;
+					case CT_EMULE_BUDDYUDP:
+						if(temptag.IsInt())
+							nBuddyPort = (uint16)temptag.GetInt();
+						break;
+					case CT_EMULE_BUDDYID:
+						if(temptag.IsHash())
+							md4cpy(BuddyID, temptag.GetHash());
+						break;
+//<<< WiZaRd::NatTraversal [Xanatos]
+
+					case CT_EMULE_SERVERIP:
+						if(temptag.IsInt())
+							dwServerIP = temptag.GetInt();
+						break;
+					case CT_EMULE_SERVERTCP:
+						if(temptag.IsInt())
+							dwServerIP = (uint16)temptag.GetInt();
+						break;
+
+//>>> WiZaRd::IPv6 [Xanatos]
+					case CT_NEOMULE_IP_V6:
+						break;
+//<<< WiZaRd::IPv6 [Xanatos]
+
+					default:
+						AddDebugLogLine(false, L"Ignoring unknown ExtSX Tag from: %s", pClient->DbgGetClientInfo());
+				}
+			}
+
+			if(bError)
+			{
+				ASSERT(0);
+				if (thePrefs.GetVerbose())
+				{
+					CString strDbgClientInfo;
+					if (pClient)
+						strDbgClientInfo.Format(_T("%s, "), pClient->DbgGetClientInfo());
+					DebugLogWarning(L"Received invalid/corrupt ExtSX packet (v%u, count=%u, size=%u), %sFile=\"%s\"", uClientSXVersion, nCount, uDataSize, strDbgClientInfo, GetFileName());
+				}
+				return;
+			}
+		}
+		else
+		{
+			dwServerIP = sources->ReadUInt32();
+			nServerPort = sources->ReadUInt16();
+		}
+//<<< WiZaRd::ExtendedXS [Xanatos]
 
         uchar achUserHash[16];
         if (uPacketSXVersion >= 2)
@@ -5187,6 +5293,26 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
                 newsource = new CUpDownClient(this, nPort, dwID, dwServerIP, nServerPort, false);
             else
                 newsource = new CUpDownClient(this, nPort, dwID, dwServerIP, nServerPort, true);
+//>>> WiZaRd::ExtendedXS [Xanatos]
+			if(pClient->SupportsExtendedSourceExchange())
+			{
+//>>> WiZaRd::NatTraversal [Xanatos]
+				if(dwIP)
+					newsource->SetIP(dwIP);
+				if(nUDPPort)
+					newsource->SetUDPPort(nUDPPort);
+				if(nKadPort)
+					newsource->SetKadPort(nKadPort);
+
+				if(dwBuddyIP)
+					newsource->SetBuddyIP(dwBuddyIP);
+				if(nBuddyPort)
+					newsource->SetBuddyPort(nBuddyPort);
+				if(!isnulmd4(BuddyID))
+					newsource->SetBuddyID(BuddyID);
+//<<< WiZaRd::NatTraversal [Xanatos]
+			}
+//<<< WiZaRd::ExtendedXS [Xanatos]
             if (uPacketSXVersion >= 2)
                 newsource->SetUserHash(achUserHash);
             if (uPacketSXVersion >= 4)

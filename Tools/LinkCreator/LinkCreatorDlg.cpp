@@ -612,10 +612,10 @@ void CLinkCreatorDlg::RenewFileLink()
 
 	CString newlink=CreateED2kLink(m_pKnownFile, strWebsources + strClientSources, bHashset);
 
-	if (strlen(newlink)>2038){
+	if (_tcslen(newlink)>2038){
 		if (IsDlgButtonChecked(IDC_LENGTHCHECK)) {
 			// remove http sources until strlen is <=2038
-			while (strlen(newlink)>2038) {
+			while (_tcslen(newlink)>2038) {
 				int pos1=newlink.Find(_T("|s="));
 				if (pos1==-1)
 					break;
@@ -657,11 +657,11 @@ void CLinkCreatorDlg::OnBnClickedAddClientSource()
 	if (pos>4) {
 		host=newsource.Left(pos);
 		sport=newsource.Mid(pos+1);
-		port=atoi(sport);
+		port=_tstoi(sport);
 
 		// check ip
 		if (_istdigit(host.GetAt(0))) {
-			if (inet_addr(host) == INADDR_NONE )
+			if (inet_addr(CT2CA(host)) == INADDR_NONE )
 				syntaxok=false;
 		}
 
@@ -753,7 +753,7 @@ void CLinkCreatorDlg::SetButtonStates()
 	if (IsDlgButtonChecked(IDC_CHECKSOURCE))
 		if (GetDlgItem(IDC_START)->IsWindowEnabled()==FALSE)
 			checkflag=false;
-	GetDlgItem(IDC_ADDHTTP)->EnableWindow(buffer.GetLength()>12 && buffer.Left(7).CompareNoCase("http://")==0 && checkflag );
+	GetDlgItem(IDC_ADDHTTP)->EnableWindow(buffer.GetLength()>12 && buffer.Left(7).CompareNoCase(L"http://")==0 && checkflag );
 	
 	// remove
 	GetDlgItem(IDC_HTTPREMOVE)->EnableWindow((m_ctrlHttpSources.GetCurSel() != LB_ERR));

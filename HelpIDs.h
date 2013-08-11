@@ -147,3 +147,4 @@
 #define eMule_FAQ_GUI_Messages		205
 //#define eMule_FAQ_GUI_IRC			206
 #define eMule_FAQ_GUI_Statistics	207
+#define eMule_FAQ_Preferences_About 208 //>>> WiZaRd::AboutPage

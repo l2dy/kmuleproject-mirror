@@ -224,3 +224,5 @@ XXXXYYZZ:
 + added the eD2k LinkCreator to the Tools menu [Tuxman]
 ~ added temporary DownThemAll! downloads to known partial files [Tuxman]
 + automatic priorities are more flexible now and also set VERYLOW and VERYHIGH states [WiZaRd]
++ added extendedXS support - original by David Xanatos [WiZaRd]
++ added basic IPv6 support - original by David Xanatos [WiZaRd]
