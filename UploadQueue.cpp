@@ -1406,6 +1406,10 @@ bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client, LPCTSTR pszReaso
             }
 
             CKnownFile* requestedFile = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+			if (requestedFile == NULL && client->GetSCTVersion() > 0)
+				requestedFile = (CKnownFile*)theApp.downloadqueue->GetFileByID((uchar*)client->GetUploadFileID());
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
             if (requestedFile != NULL)
             {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]

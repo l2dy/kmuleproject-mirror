@@ -5726,11 +5726,21 @@ void CPartFile::FlushBuffer(bool forcewait, bool bNoAICH)
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
             else
             {
-                // Attempt to share incomplete part if it will not complete within a decent time frame and we already have recover data available
+                // Attempt to share incomplete part if it will not complete within a decent time frame and we already have recovery data available
                 if (m_pAICHRecoveryHashSet && m_pAICHRecoveryHashSet->IsPartDataAvailable((uint64)uPartNumber * PARTSIZE))
                 {
                     if (EstimatePartCompletion(uPartNumber) >= FORCE_AICH_TIME)
-                        AICHRecoveryDataAvailable(uPartNumber);
+					{
+						AICHRecoveryDataAvailable(uPartNumber);
+						
+						// TODO!
+						/*// Perform AICH hashing and share blocks that hashed successful
+						CPartHashThread* const parthashthread = (CPartHashThread*) AfxBeginThread(RUNTIME_CLASS(CPartHashThread), THREAD_PRIORITY_LOWEST,0, CREATE_SUSPENDED);
+						if (parthashthread == nullptr)
+							throw CString(_T(__FUNCTION__) _T(": Failed to create worker thread!"));
+						parthashthread->SetSinglePartHash(this, uPartNumber, false, false, true);	// Special case, doesn't increment hashing parts, since part isn't really complete
+						parthashthread->ResumeThread();*/
+					}
                 }
             }
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]

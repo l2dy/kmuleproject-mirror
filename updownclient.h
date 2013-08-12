@@ -1241,6 +1241,7 @@ public:
 private:
     int			m_nProtocolRevision;
 public:
+	CKnownFile*	GetUploadReqFile() const;
     int			GetSCTVersion() const
     {
         return m_nProtocolRevision;

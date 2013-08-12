@@ -76,11 +76,7 @@ void CUpDownClient::DrawUpStatusBar(CDC* dc, RECT* rect, bool onlygreyrect, bool
     }
 
     // wistily: UpStatusFix
-    CKnownFile* currequpfile = theApp.sharedfiles->GetFileByID(requpfileid);
-//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-    if (currequpfile == NULL && SupportsSCT())
-        currequpfile = theApp.downloadqueue->GetFileByID(requpfileid);
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+    CKnownFile* currequpfile = GetUploadReqFile();
     EMFileSize filesize;
     if (currequpfile)
         filesize = currequpfile->GetFileSize();
@@ -195,11 +191,7 @@ float CUpDownClient::GetCombinedFilePrioAndCredit()
 int GetFilePrio(const CKnownFile* currequpfile); //>>> WiZaRd::ClientAnalyzer
 int CUpDownClient::GetFilePrioAsNumber() const
 {
-    CKnownFile* currequpfile = theApp.sharedfiles->GetFileByID(requpfileid);
-//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-    if (currequpfile == NULL && SupportsSCT())
-        currequpfile = theApp.downloadqueue->GetFileByID(requpfileid);
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+    CKnownFile* currequpfile = GetUploadReqFile();
     if (!currequpfile)
         return 0;
 
@@ -267,11 +259,7 @@ UINT CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybaseval
     if (m_bGPLEvilDoerNick || m_bGPLEvilDoerMod || IsBanned()) //>>> WiZaRd::More GPLEvilDoers
         return 0;
 
-    CKnownFile* currequpfile = theApp.sharedfiles->GetFileByID(requpfileid);
-//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-    if (currequpfile == NULL && SupportsSCT())
-        currequpfile = theApp.downloadqueue->GetFileByID(requpfileid);
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+    CKnownFile* currequpfile = GetUploadReqFile();
     if (!currequpfile)
         return 0;
 
@@ -353,7 +341,7 @@ void CUpDownClient::CreateNextBlockPackage(bool bBigBuffer)
             CKnownFile* srcfile = theApp.sharedfiles->GetFileByID(currentblock->FileID);
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
             if (srcfile == NULL && SupportsSCT())
-                srcfile = theApp.downloadqueue->GetFileByID(requpfileid);
+                srcfile = theApp.downloadqueue->GetFileByID(currentblock->FileID);
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
             if (!srcfile)
                 throw GetResString(IDS_ERR_REQ_FNF);
@@ -577,6 +565,28 @@ bool CUpDownClient::ProcessExtendedInfo(CSafeMemFile* data, CKnownFile* tempreqf
         delete m_pPartStatus;
         m_pPartStatus = NULL;
         m_pPartStatus = m_pUpPartStatus->Clone();
+
+		UpdateDisplayedInfo(false);
+		reqfile->UpdateAvailablePartsCount();
+
+		/*if (!reqfile->GetDonePartStatus() || reqfile->GetDonePartStatus()->GetNeeded(m_pPartStatus) > 0)
+		{
+			if (GetDownloadState() == DS_NONEEDEDPARTS)
+			{
+				if (socket && socket->IsConnected() && GetTimeUntilReask(reqfile, true) == 0)
+				{
+					if (reqfile->m_bMD4HashsetNeeded || (reqfile->IsAICHPartHashSetNeeded() && SupportsFileIdentifiers() 
+						&& GetReqFileAICHHash() != NULL && *GetReqFileAICHHash() == reqfile->GetFileIdentifier().GetAICHHash())) //If we are using the eMule filerequest packets, this is taken care of in the Multipacket!
+						SendHashSetRequest();
+					else
+						SendStartupLoadReq();
+				}
+				else
+				{
+					SetDownloadState(DS_ONQUEUE);
+				}
+			}
+		}*/
 
         reqfile->AddToPartsInfo(m_pPartStatus);
     }
@@ -1044,7 +1054,7 @@ UINT CUpDownClient::SendBlockData()
             UINT srccount = _UI32_MAX; //no file? then default to non-rare...
             if (GetUploadFileID())
             {
-                CKnownFile* file = theApp.sharedfiles->GetFileByID(GetUploadFileID());
+                CKnownFile* file = GetUploadReqFile();
                 if (file)
                 {
 //>>> WiZaRd::Queued Count
@@ -1198,6 +1208,10 @@ void CUpDownClient::SendHashsetPacket(const uchar* pData, UINT nSize, bool bFile
         if (!fileIdent.ReadIdentifier(&data))
             throw _T("Bad FileIdentifier (OP_HASHSETREQUEST2)");
         CKnownFile* file = theApp.sharedfiles->GetFileByIdentifier(fileIdent, false);
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+		if (!file && SupportsSCT()) // No FNF for existing files when using SCT
+			file = theApp.downloadqueue->GetFileByID(fileIdent.GetMD4Hash()); // Shouldn't we be able to search download queue by file identifier
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         if (file == NULL)
         {
             CheckFailedFileIdReqs(fileIdent.GetMD4Hash());
@@ -1227,6 +1241,10 @@ void CUpDownClient::SendHashsetPacket(const uchar* pData, UINT nSize, bool bFile
             return;
         }
         CKnownFile* file = theApp.sharedfiles->GetFileByID(pData);
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+		if (!file && SupportsSCT()) // No FNF for existing files when using SCT
+			file = theApp.downloadqueue->GetFileByID(pData); // Shouldn't we be able to search download queue by file identifier
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         if (!file)
         {
             CheckFailedFileIdReqs(pData);
@@ -1256,14 +1274,29 @@ void CUpDownClient::ClearUploadBlockRequests()
 
 void CUpDownClient::SendRankingInfo()
 {
-    if (!ExtProtocolAvailable())
-        return;
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+//     if (!ExtProtocolAvailable())
+//         return;
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     UINT nRank = theApp.uploadqueue->GetWaitingPosition(this);
     if (!nRank)
         return;
-    Packet* packet = new Packet(OP_QUEUERANKING,12,OP_EMULEPROT);
-    PokeUInt16(packet->pBuffer+0, (uint16)nRank);
-    memset(packet->pBuffer+2, 0, 10);
+
+	Packet* packet = NULL;
+	if(ExtProtocolAvailable()) //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	{
+		packet = new Packet(OP_QUEUERANKING,12,OP_EMULEPROT);
+		PokeUInt16(packet->pBuffer+0, (uint16)nRank);
+		memset(packet->pBuffer+2, 0, 10);
+	}
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	else // netfinity: Just for the sake of our beloved donkeys
+	{
+		packet = new Packet(OP_QUEUERANK,4,OP_EDONKEYPROT);
+		PokeUInt32(packet->pBuffer+0, (UINT)nRank);
+	}
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+
     if (thePrefs.GetDebugClientTCPLevel() > 0)
         DebugSend("OP__QueueRank", this);
     theStats.AddUpDataOverheadFileRequest(packet->size);
@@ -1612,5 +1645,14 @@ void CUpDownClient::SendCrumbSetPacket(const uchar* const pData, size_t const nS
 
     theStats.AddUpDataOverheadFileRequest(packet->size);
     SendPacket(packet, true);
+}
+
+CKnownFile*	CUpDownClient::GetUploadReqFile() const
+{
+	CKnownFile* currequpfile = theApp.sharedfiles->GetFileByID(requpfileid);
+	if (currequpfile == NULL && SupportsSCT())
+		currequpfile = theApp.downloadqueue->GetFileByID(requpfileid);
+
+	return currequpfile;
 }
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
