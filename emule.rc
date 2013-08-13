@@ -2012,6 +2012,9 @@ BEGIN
     IDS_DONATION_DESC       "Working on kMule is fun but it's also requiring a lot of time.\nIf you like kMule and want to say 'thanks' to the people who created it, you can use the buttons below to access our wishlists at Amazon and buy us a present."
     IDS_DONATION_TUX        "Tux @ Amazon"
     IDS_DONATION_WIZARD     "WiZaRd @ Amazon"
+    IDS_PRIOAUTOVERYHIGH    "Auto [VHi]"
+    IDS_PRIOAUTOVERYLOW     "Auto [VLo]"
+
 END
 
 STRINGTABLE 

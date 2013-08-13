@@ -2293,7 +2293,10 @@ CString CKnownFile::GetUpPriorityDisplayString() const
     switch (GetUpPriority())
     {
     case PR_VERYLOW:
-        buffer = GetResString(IDS_PRIOVERYLOW);
+		if (IsAutoUpPriority())
+			buffer = GetResString(IDS_PRIOAUTOVERYLOW);
+		else
+			buffer = GetResString(IDS_PRIOVERYLOW);
         break;
     case PR_LOW:
         if (IsAutoUpPriority())
@@ -2314,7 +2317,10 @@ CString CKnownFile::GetUpPriorityDisplayString() const
             buffer = GetResString(IDS_PRIOHIGH);
         break;
     case PR_VERYHIGH:
-        buffer = GetResString(IDS_PRIORELEASE);
+		if (IsAutoUpPriority())
+			buffer = GetResString(IDS_PRIOAUTOVERYHIGH);
+		else
+			buffer = GetResString(IDS_PRIORELEASE);
         break;
     default:
         buffer = L"";

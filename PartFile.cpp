@@ -427,7 +427,7 @@ void CPartFile::AssertValid() const
     CHECK_BOOL(stopped);
     CHECK_BOOL(insufficient);
     CHECK_BOOL(m_bCompletionError);
-    ASSERT(m_iDownPriority == PR_LOW || m_iDownPriority == PR_NORMAL || m_iDownPriority == PR_HIGH);
+    ASSERT(m_iDownPriority == PR_VERYLOW || m_iDownPriority == PR_LOW || m_iDownPriority == PR_NORMAL || m_iDownPriority == PR_HIGH || m_iDownPriority == PR_VERYHIGH); //>>> WiZaRd::Improved Auto Prio
     CHECK_BOOL(m_bAutoDownPriority);
     ASSERT(status == PS_READY || status == PS_EMPTY || status == PS_WAITINGFORHASH || status == PS_ERROR || status == PS_COMPLETING || status == PS_COMPLETE);
     CHECK_BOOL(newdate);
@@ -1036,7 +1036,7 @@ EPartFileLoadResult CPartFile::LoadPartFile(LPCTSTR in_directory,LPCTSTR in_file
                             }
                             else
                             {
-                                if (m_iDownPriority != PR_LOW && m_iDownPriority != PR_NORMAL && m_iDownPriority != PR_HIGH)
+                                if (m_iDownPriority != PR_VERYLOW && m_iDownPriority != PR_LOW && m_iDownPriority != PR_NORMAL && m_iDownPriority != PR_HIGH && m_iDownPriority != PR_VERYHIGH) //>>> WiZaRd::Improved Auto Prio
                                     m_iDownPriority = PR_NORMAL;
                                 SetAutoDownPriority(false);
                             }
@@ -4234,11 +4234,11 @@ void CPartFile::SetDownPriority(uint8 np, bool resort)
 {
     //Changed the default resort to true. As it is was, we almost never sorted the download list when a priority changed.
     //If we don't keep the download list sorted, priority means nothing in downloadqueue.cpp->process().
-    //Also, if we call this method with the same priotiry, don't do anything to help use less CPU cycles.
+    //Also, if we call this method with the same priority, don't do anything to help use less CPU cycles.
     if (m_iDownPriority != np)
     {
-        //We have a new priotiry
-        if (np != PR_LOW && np != PR_NORMAL && np != PR_HIGH)
+        //We have a new priority
+        if (np != PR_VERYLOW && np != PR_LOW && np != PR_NORMAL && np != PR_HIGH && np != PR_VERYHIGH)
         {
             //This should never happen.. Default to Normal.
             ASSERT(0);
@@ -4246,7 +4246,7 @@ void CPartFile::SetDownPriority(uint8 np, bool resort)
         }
 
         m_iDownPriority = np;
-        //Some methods will change a batch of priorites then call these methods.
+        //Some methods will change a batch of priorities then call these methods.
         if (resort)
         {
             //Sort the downloadqueue so contacting sources work correctly.

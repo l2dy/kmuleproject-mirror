@@ -103,6 +103,10 @@
 #define IDS_DONATION_LABEL				4066
 #define IDS_DONATION_DESC				4067
 //<<< WiZaRd::AboutPage
+//>>> WiZaRd::Improved Auto Prio
+#define IDS_PRIOAUTOVERYHIGH			4068
+#define IDS_PRIOAUTOVERYLOW				4069
+//<<< WiZaRd::Improved Auto Prio
 //#endif
 
 // this line is needed or we get a "fatal error RC1004: unexpected end of file found" - thanks for those wonderful bugs, Microsoft!

@@ -539,6 +539,15 @@ void CDownloadListCtrl::GetFileItemDisplayText(CPartFile *lpPartFile, int iSubIt
     case 7:		// prio
         switch (lpPartFile->GetDownPriority())
         {
+//>>> WiZaRd::Improved Auto Prio
+		case PR_VERYLOW:
+			if (lpPartFile->IsAutoDownPriority())
+				_tcsncpy(pszText, GetResString(IDS_PRIOAUTOVERYLOW), cchTextMax);
+			else
+				_tcsncpy(pszText, GetResString(IDS_PRIOVERYLOW), cchTextMax);
+			break;
+//<<< WiZaRd::Improved Auto Prio
+
         case PR_LOW:
             if (lpPartFile->IsAutoDownPriority())
                 _tcsncpy(pszText, GetResString(IDS_PRIOAUTOLOW), cchTextMax);
@@ -559,6 +568,15 @@ void CDownloadListCtrl::GetFileItemDisplayText(CPartFile *lpPartFile, int iSubIt
             else
                 _tcsncpy(pszText, GetResString(IDS_PRIOHIGH), cchTextMax);
             break;
+
+//>>> WiZaRd::Improved Auto Prio
+		case PR_VERYHIGH:
+			if (lpPartFile->IsAutoDownPriority())
+				_tcsncpy(pszText, GetResString(IDS_PRIOAUTOVERYHIGH), cchTextMax);
+			else
+				_tcsncpy(pszText, GetResString(IDS_PRIOHIGH), cchTextMax);
+			break;
+//<<< WiZaRd::Improved Auto Prio
         }
         break;
 
@@ -1437,12 +1455,20 @@ void CDownloadListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
                 UINT uCurPrioMenuItem = 0;
                 if (pFile->IsAutoDownPriority())
                     uCurPrioMenuItem = MP_PRIOAUTO;
+//>>> WiZaRd::Improved Auto Prio
+				else if(pFile->GetDownPriority() == PR_VERYHIGH)
+					uCurPrioMenuItem = MP_PRIOVERYHIGH;
+//<<< WiZaRd::Improved Auto Prio
                 else if (pFile->GetDownPriority() == PR_HIGH)
                     uCurPrioMenuItem = MP_PRIOHIGH;
                 else if (pFile->GetDownPriority() == PR_NORMAL)
                     uCurPrioMenuItem = MP_PRIONORMAL;
                 else if (pFile->GetDownPriority() == PR_LOW)
                     uCurPrioMenuItem = MP_PRIOLOW;
+//>>> WiZaRd::Improved Auto Prio
+				else if(pFile->GetDownPriority() == PR_VERYLOW)
+					uCurPrioMenuItem = MP_PRIOVERYLOW;
+//<<< WiZaRd::Improved Auto Prio
                 else
                     ASSERT(0);
 
@@ -1740,12 +1766,20 @@ CTitleMenu* CDownloadListCtrl::GetPrioMenu()
                 UINT uCurPrioMenuItem = 0;
                 if (pFile->IsAutoDownPriority())
                     uCurPrioMenuItem = MP_PRIOAUTO;
+//>>> WiZaRd::Improved Auto Prio
+				else if(pFile->GetDownPriority() == PR_VERYHIGH)
+					uCurPrioMenuItem = MP_PRIOVERYHIGH;
+//<<< WiZaRd::Improved Auto Prio
                 else if (pFile->GetDownPriority() == PR_HIGH)
                     uCurPrioMenuItem = MP_PRIOHIGH;
                 else if (pFile->GetDownPriority() == PR_NORMAL)
                     uCurPrioMenuItem = MP_PRIONORMAL;
                 else if (pFile->GetDownPriority() == PR_LOW)
                     uCurPrioMenuItem = MP_PRIOLOW;
+//>>> WiZaRd::Improved Auto Prio
+				else if(pFile->GetDownPriority() == PR_VERYLOW)
+					uCurPrioMenuItem = MP_PRIOVERYLOW;
+//<<< WiZaRd::Improved Auto Prio
                 else
                     ASSERT(0);
 
@@ -1898,50 +1932,58 @@ BOOL CDownloadListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                 }
                 break;
             }
-            case MP_PRIOHIGH:
-                SetRedraw(false);
-                while (!selectedList.IsEmpty())
-                {
-                    CPartFile* partfile = selectedList.GetHead();
-                    partfile->SetAutoDownPriority(false);
-                    partfile->SetDownPriority(PR_HIGH);
-                    selectedList.RemoveHead();
-                }
-                SetRedraw(true);
-                break;
-            case MP_PRIOLOW:
-                SetRedraw(false);
-                while (!selectedList.IsEmpty())
-                {
-                    CPartFile* partfile = selectedList.GetHead();
-                    partfile->SetAutoDownPriority(false);
-                    partfile->SetDownPriority(PR_LOW);
-                    selectedList.RemoveHead();
-                }
-                SetRedraw(true);
-                break;
-            case MP_PRIONORMAL:
-                SetRedraw(false);
-                while (!selectedList.IsEmpty())
-                {
-                    CPartFile* partfile = selectedList.GetHead();
-                    partfile->SetAutoDownPriority(false);
-                    partfile->SetDownPriority(PR_NORMAL);
-                    selectedList.RemoveHead();
-                }
-                SetRedraw(true);
-                break;
-            case MP_PRIOAUTO:
-                SetRedraw(false);
-                while (!selectedList.IsEmpty())
-                {
-                    CPartFile* partfile = selectedList.GetHead();
-                    partfile->SetAutoDownPriority(true);
-                    partfile->SetDownPriority(PR_HIGH);
-                    selectedList.RemoveHead();
-                }
-                SetRedraw(true);
-                break;
+
+			case MP_PRIOVERYHIGH: //>>> WiZaRd::Improved Auto Prio
+			case MP_PRIOHIGH:
+			case MP_PRIONORMAL:
+			case MP_PRIOLOW:
+			case MP_PRIOVERYLOW: //>>> WiZaRd::Improved Auto Prio
+			case MP_PRIOAUTO:
+			{
+				SetRedraw(FALSE);
+				CPartFile* partfile = NULL;
+				uint8 newPrio = PR_NORMAL;
+				switch (wParam)
+				{
+//>>> WiZaRd::Improved Auto Prio
+					case MP_PRIOVERYLOW:
+						newPrio = PR_VERYLOW;
+						break;
+//<<< WiZaRd::Improved Auto Prio
+					case MP_PRIOLOW:
+						newPrio = PR_LOW;
+						break;
+					case MP_PRIONORMAL:
+						newPrio = PR_NORMAL;
+						break;
+					case MP_PRIOHIGH:
+						newPrio = PR_HIGH;
+						break;
+//>>> WiZaRd::Improved Auto Prio
+					case MP_PRIOVERYHIGH:
+						newPrio = PR_VERYHIGH;
+						break;
+//<<< WiZaRd::Improved Auto Prio
+					case MP_PRIOAUTO:
+						newPrio = PR_AUTO;
+						break;
+				}
+				while (!selectedList.IsEmpty())
+				{
+					partfile = selectedList.GetHead();
+					partfile->SetAutoDownPriority(wParam == MP_PRIOAUTO);
+					if(newPrio == PR_AUTO)
+					{
+						//partfile->SetDownPriority(PR_HIGH);
+						partfile->UpdateAutoDownPriority();
+					}
+					else
+						partfile->SetUpPriority(newPrio);					
+					selectedList.RemoveHead();
+				}
+				SetRedraw(TRUE);
+				break;
+			}
             case MP_PAUSE:
                 SetRedraw(false);
                 while (!selectedList.IsEmpty())
@@ -2671,9 +2713,11 @@ void CDownloadListCtrl::CreateMenues()
     //
     m_PrioMenu.CreateMenu();
     m_PrioMenu.AddMenuTitle(NULL, true);
+	m_PrioMenu.AppendMenu(MF_STRING, MP_PRIOVERYLOW, GetResString(IDS_PRIOVERYLOW), L"DOWNLOAD"); //>>> WiZaRd::Improved Auto Prio
     m_PrioMenu.AppendMenu(MF_STRING, MP_PRIOLOW, GetResString(IDS_PRIOLOW), L"PRIO_LOW");
     m_PrioMenu.AppendMenu(MF_STRING, MP_PRIONORMAL, GetResString(IDS_PRIONORMAL), L"PRIO_NORMAL");
     m_PrioMenu.AppendMenu(MF_STRING, MP_PRIOHIGH, GetResString(IDS_PRIOHIGH), L"PRIO_HIGH");
+	m_PrioMenu.AppendMenu(MF_STRING, MP_PRIOVERYHIGH, GetResString(IDS_PRIORELEASE), L"UPLOAD"); //>>> WiZaRd::Improved Auto Prio
     m_PrioMenu.AppendMenu(MF_STRING, MP_PRIOAUTO, GetResString(IDS_PRIOAUTO), L"PRIO_AUTO");
     m_FileMenu.AppendMenu(MF_STRING|MF_POPUP, (UINT_PTR)m_PrioMenu.m_hMenu, GetResString(IDS_PRIORITY) + _T(" (") + GetResString(IDS_DOWNLOAD) + _T(")"), _T("FILEPRIORITY"));
 

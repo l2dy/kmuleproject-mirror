@@ -1378,33 +1378,38 @@ BOOL CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 //<<< WiZaRd::PowerShare
             bool bSelected = false;
             POSITION pos = selectedList.GetHeadPosition();
+			uint8 newPrio = PR_NORMAL;
+			switch (wParam)
+			{
+				case MP_PRIOVERYLOW:
+					newPrio = PR_VERYLOW;
+					break;
+				case MP_PRIOLOW:
+					newPrio = PR_LOW;
+					break;
+				case MP_PRIONORMAL:
+					newPrio = PR_NORMAL;
+					break;
+				case MP_PRIOHIGH:
+					newPrio = PR_HIGH;
+					break;
+				case MP_PRIOVERYHIGH:
+					newPrio = PR_VERYHIGH;
+					break;
+				case MP_PRIOAUTO:
+					newPrio = PR_AUTO;
+					break;
+			}
             while (pos != NULL)
             {
                 if (!selectedList.GetAt(pos)->IsKindOf(RUNTIME_CLASS(CKnownFile)))
                     continue;
                 CKnownFile* file = (CKnownFile*)selectedList.GetNext(pos);
                 file->SetAutoUpPriority(wParam == MP_PRIOAUTO);
-                switch (wParam)
-                {
-                case MP_PRIOVERYLOW:
-                    file->SetUpPriority(PR_VERYLOW);
-                    break;
-                case MP_PRIOLOW:
-                    file->SetUpPriority(PR_LOW);
-                    break;
-                case MP_PRIONORMAL:
-                    file->SetUpPriority(PR_NORMAL);
-                    break;
-                case MP_PRIOHIGH:
-                    file->SetUpPriority(PR_HIGH);
-                    break;
-                case MP_PRIOVERYHIGH:
-                    file->SetUpPriority(PR_VERYHIGH);
-                    break;
-                case MP_PRIOAUTO:
-                    file->UpdateAutoUpPriority();
-                    break;
-                }
+				if(newPrio == PR_AUTO)
+					file->UpdateAutoUpPriority();
+				else
+					file->SetUpPriority(newPrio);
                 file->SetPowerShared(bPS); //>>> WiZaRd::PowerShare
                 UpdateFile(file, false, &bSelected);
             }
