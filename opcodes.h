@@ -153,8 +153,8 @@
 #define UNLIMITED				0xFFFF
 
 //Proxytypes deadlake
-#define PROXYTYPE_SOCKS4	0
-#define PROXYTYPE_SOCKS4A	1
+//#define PROXYTYPE_SOCKS4	0
+//#define PROXYTYPE_SOCKS4A	1
 #define PROXYTYPE_SOCKS5	2
 #define PROXYTYPE_HTTP10	3
 #define PROXYTYPE_HTTP11	4

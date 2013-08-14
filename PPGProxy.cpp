@@ -161,14 +161,7 @@ void CPPgProxy::OnCbnSelChangeProxyType()
 {
     SetModified(TRUE);
     CComboBox* cbbox = (CComboBox*)GetDlgItem(IDC_PROXYTYPE);
-    if (!(cbbox->GetCurSel() == PROXYTYPE_SOCKS5 || cbbox->GetCurSel() == PROXYTYPE_HTTP10 || cbbox->GetCurSel() == PROXYTYPE_HTTP11))
-    {
-        ((CButton*)GetDlgItem(IDC_ENABLEAUTH))->SetCheck(0);
-        OnBnClickedEnableAuthentication();
-        GetDlgItem(IDC_ENABLEAUTH)->EnableWindow(FALSE);
-    }
-    else
-        GetDlgItem(IDC_ENABLEAUTH)->EnableWindow(TRUE);
+    GetDlgItem(IDC_ENABLEAUTH)->EnableWindow(TRUE);
 }
 
 void CPPgProxy::LoadSettings()

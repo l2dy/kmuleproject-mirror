@@ -71,8 +71,8 @@ Parametes:
 - ProxyUser and ProxyPass are only available for SOCKS5 proxies.
 
 supported proxy types:
-PROXYTYPE_SOCKS4
-PROXYTYPE_SOCKS4A
+PROXYTYPE_SOCKS4  // not in kMule
+PROXYTYPE_SOCKS4A // not in kMule
 PROXYTYPE_SOCKS5
 PROXYTYPE_HTTP11
 PROXYTYPE_HTTP10
@@ -166,8 +166,8 @@ void CAsyncProxySocketLayer::SetProxy(int nProxyType)
 void CAsyncProxySocketLayer::SetProxy(int nProxyType, const CStringA& strProxyHost, int ProxyPort)
 {
     //Validate the parameters
-    ASSERT(nProxyType == PROXYTYPE_SOCKS4  ||
-           nProxyType == PROXYTYPE_SOCKS4A ||
+    ASSERT(/*nProxyType == PROXYTYPE_SOCKS4  ||
+           nProxyType == PROXYTYPE_SOCKS4A ||*/
            nProxyType == PROXYTYPE_SOCKS5  ||
            nProxyType == PROXYTYPE_HTTP10	||
            nProxyType == PROXYTYPE_HTTP11);
@@ -199,7 +199,7 @@ void CAsyncProxySocketLayer::SetProxy(int nProxyType, const CStringA& strProxyHo
     m_ProxyData.strProxyUser = strProxyUser;
     m_ProxyData.strProxyPass = strProxyPass;
 }
-
+/*
 CStringA GetSocks4Error(UINT ver, UINT cd)
 {
     if (ver != 0)
@@ -227,7 +227,7 @@ CStringA GetSocks4Error(UINT ver, UINT cd)
     }
     }
 }
-
+*/
 CStringA GetSocks5Error(UINT rep)
 {
     switch (rep)
@@ -297,6 +297,8 @@ void CAsyncProxySocketLayer::OnReceive(int nErrorCode)
     if (m_nProxyOpState == 0) //We should not receive a response yet!
         return;
 
+//>>> Tux::Proxy Stuff
+/*
     if (m_ProxyData.nProxyType == PROXYTYPE_SOCKS4 || m_ProxyData.nProxyType == PROXYTYPE_SOCKS4A)
     {
         if (m_nProxyOpState == 1    // Response to initial connect or bind request
@@ -402,7 +404,10 @@ void CAsyncProxySocketLayer::OnReceive(int nErrorCode)
             }
         }
     }
-    else if (m_ProxyData.nProxyType == PROXYTYPE_SOCKS5)
+    else
+*/
+//<<< Tux::Proxy Stuff
+    if (m_ProxyData.nProxyType == PROXYTYPE_SOCKS5)
     {
         if (m_nProxyOpState == 1    // Response to initialization request
                 || m_nProxyOpState == 2)// Response to authentication request
@@ -756,7 +761,7 @@ BOOL CAsyncProxySocketLayer::Connect(LPCSTR lpszHostAddress, UINT nHostPort)
         else
         {
             // Can't resolve hostname
-            if (m_ProxyData.nProxyType == PROXYTYPE_SOCKS4A ||
+            if (/*m_ProxyData.nProxyType == PROXYTYPE_SOCKS4A ||*/
                     m_ProxyData.nProxyType == PROXYTYPE_SOCKS5  ||
                     m_ProxyData.nProxyType == PROXYTYPE_HTTP10  ||
                     m_ProxyData.nProxyType == PROXYTYPE_HTTP11)
@@ -862,7 +867,8 @@ void CAsyncProxySocketLayer::OnConnect(int nErrorCode)
             return; // Somehow OnConnect has been called more than once
 
         ClearBuffer();
-
+//>>> Tux::Proxy Stuff
+/*
         if (m_ProxyData.nProxyType == PROXYTYPE_SOCKS4 || m_ProxyData.nProxyType == PROXYTYPE_SOCKS4A)
         {
             const char* pszAsciiProxyPeerHost;
@@ -948,7 +954,9 @@ void CAsyncProxySocketLayer::OnConnect(int nErrorCode)
                 return;
             }
         }
-        else if (m_ProxyData.nProxyType == PROXYTYPE_SOCKS5)
+        else */
+//<<< Tux::Proxy Stuff
+        if (m_ProxyData.nProxyType == PROXYTYPE_SOCKS5)
         {
             // SOCKS 5
             // -------------------------------------------------------------------------------------------

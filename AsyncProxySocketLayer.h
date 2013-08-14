@@ -73,8 +73,8 @@ Parametes:
 - ProxyUser and ProxyPass are only available for SOCKS5 proxies.
 
 supported proxy types:
-PROXYTYPE_SOCKS4
-PROXYTYPE_SOCKS4A
+PROXYTYPE_SOCKS4    // not in kMule
+PROXYTYPE_SOCKS4A   // not in kMule
 PROXYTYPE_SOCKS5
 PROXYTYPE_HTTP11
 PROXYTYPE_HTTP10
@@ -118,6 +118,7 @@ Version history
 */
 #pragma once
 #include "AsyncSocketExLayer.h"
+#include "opcodes.h" //>>> Tux::Proxy Stuff
 
 class CAsyncProxySocketLayer : public CAsyncSocketExLayer
 {
@@ -223,12 +224,7 @@ struct t_ListenSocketCreatedStruct
     UINT nPort;
 };
 
-//Proxytypes
-#define PROXYTYPE_SOCKS4	0
-#define PROXYTYPE_SOCKS4A	1
-#define PROXYTYPE_SOCKS5	2
-#define PROXYTYPE_HTTP10	3
-#define PROXYTYPE_HTTP11	4
+//Proxytypes //>>> Tux::Proxy Stuff - predefined elsewhere
 
 #define PROXYOP_CONNECT	1
 #define PROXYOP_BIND	2

@@ -211,10 +211,14 @@ void CEMSocket::InitProxySupport()
         m_pProxyLayer = new CAsyncProxySocketLayer;
         switch (settings.type)
         {
+//>>> Tux::Proxy Stuff
+/*
 			case PROXYTYPE_SOCKS4:
 			case PROXYTYPE_SOCKS4A:
 				m_pProxyLayer->SetProxy(settings.type, settings.name, settings.port);
 				break;
+*/
+//<<< Tux::Proxy Stuff
 			case PROXYTYPE_SOCKS5:
 			case PROXYTYPE_HTTP10:
 			case PROXYTYPE_HTTP11:

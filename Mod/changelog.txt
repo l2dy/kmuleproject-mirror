@@ -232,3 +232,4 @@ XXXXYYZZ:
  * black skull: bad
  * blue skull: nice score (>1.0 - 2.0)
  * green skull: good score (> 2.0)
+- removed SOCKS4(a) proxy support, no one uses them [Tuxman]
