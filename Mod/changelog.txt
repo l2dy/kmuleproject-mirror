@@ -227,9 +227,10 @@ XXXXYYZZ:
 + added extendedXS support - original by David Xanatos [WiZaRd]
 + added basic IPv6 support - original by David Xanatos [WiZaRd]
 + added "About kMule" page to options with information and donation possibility [WiZaRd]
-+ added additional CA icons, depending on the CA status/score [WiZaRd]
++ Feature request: added additional CA icons, depending on the CA status/score [WiZaRd]
  * red skull: very bad
  * black skull: bad
  * blue skull: nice score (>1.0 - 2.0)
  * green skull: good score (> 2.0)
 - removed SOCKS4(a) proxy support, no one uses them [Tuxman]
+~ changed references in mdump from "eMule" to "kMule" [WiZaRd]

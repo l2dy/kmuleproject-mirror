@@ -3906,7 +3906,7 @@ int CUpDownClient::GetAnalyzerIconIndex() const
 {
 	int ret = -1;
 
-	if (pAntiLeechData == NULL)
+	if (pAntiLeechData != NULL)
 	{		
 		if(pAntiLeechData->GetBadForThisSession() != 0)
 			ret = 1; // red

@@ -122,11 +122,15 @@ void CUpDownClient::ProcessModInfoPacket(const uchar* pachPacket, const UINT nSi
 				{
 					m_fSupportsIPv6			= (temptag.GetInt() >>  1) & 0x01; //>>> WiZaRd::IPv6 [Xanatos]
 					m_fSupportsExtendedXS	= (temptag.GetInt() >>  0) & 0x01; //>>> WiZaRd::ExtendedXS [Xanatos]
+#if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
 					if (bDbgInfo)
 						m_strModInfo.AppendFormat(L"\n  IPv6=%u  ExtendedXS=%u", m_fSupportsIPv6, m_fSupportsExtendedXS);
+#endif
 				}
+#if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
 				else if (bDbgInfo)
 					m_strModInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+#endif
 				break;
 			}
 

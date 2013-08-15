@@ -79,7 +79,7 @@ CString getCenteredString(const CString str)
 			CString buffer(L' ', maxchars);
 			ret.AppendFormat(L"%s%s%s", buffer, line, buffer);
 
-			line = L"";
+			line = strToken;
 		}
 		strToken = str.Tokenize(L" ", nTokenPos);
 	}
@@ -138,7 +138,7 @@ BOOL CPPgAbout::OnInitDialog()
 	aboutInfo->AddLine(getCenteredString(credits) + L"\n", -1, false, RGB(0, 0, 0), RGB(255, 255, 255), 0);
 	credits.Format(L"You can also use the forum to request new features from the developers - we're a very friendly bunch and are always keen to hear what people want.");
 	aboutInfo->AddLine(getCenteredString(credits) + L"\n", -1, false, RGB(0, 0, 0), RGB(255, 255, 255), 0);
-	credits.Format(L"Lastly, although %s will notify you when an update is available (assuming you're happy for it to do so), you can also keep up-to-date on the next release (and development work in general) by following the forums.", MOD_VERSION_PLAIN);
+	credits.Format(L"Lastly, although %s will notify you when an update is available (assuming you're happy for it to do so), you can also stay up-to-date on the next release (and development work in general) by following the forums.", MOD_VERSION_PLAIN);
 	aboutInfo->AddLine(getCenteredString(credits) + L"\n", -1, false, RGB(0, 0, 0), RGB(255, 255, 255), 0);
 
 	// content

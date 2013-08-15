@@ -61,7 +61,7 @@ void CMiniDumper::Enable(LPCTSTR pszAppName, bool bShowErrors, LPCTSTR pszDumpDi
 }
 
 #define DBGHELP_HINT _T("You can get the required DBGHELP.DLL by downloading the \"User Mode Process Dumper\" from \"Microsoft Download Center\".\r\n\r\n") \
-	_T("Extract the \"User Mode Process Dumper\" and locate the \"x86\" folder. Copy the DBGHELP.DLL from the \"x86\" folder into your eMule installation folder and/or into your Windows system/system32 folder.")
+	_T("Extract the \"User Mode Process Dumper\" and locate the \"x86\" folder. Copy the DBGHELP.DLL from the \"x86\" folder into your kMule installation folder and/or into your Windows system/system32 folder.")
 
 
 HMODULE CMiniDumper::GetDebugHelperDll(FARPROC* ppfnMiniDumpWriteDump, bool bShowErrors)
@@ -103,7 +103,7 @@ LONG CMiniDumper::TopLevelFilter(struct _EXCEPTION_POINTERS* pExceptionInfo)
         {
             // Ask user if they want to save a dump file
             // Do *NOT* localize that string (in fact, do not use MFC to load it)!
-            if (MessageBox(NULL, _T("eMule crashed :-(\r\n\r\nA diagnostic file can be created which will help the author to resolve this problem. This file will be saved on your Disk (and not sent).\r\n\r\nDo you want to create this file now?"), m_szAppName, MB_ICONSTOP | MB_YESNO) == IDYES)
+            if (MessageBox(NULL, _T("kMule crashed :-(\r\n\r\nA diagnostic file can be created which will help the author to resolve this problem. This file will be saved on your Disk (and not sent).\r\n\r\nDo you want to create this file now?"), m_szAppName, MB_ICONSTOP | MB_YESNO) == IDYES)
             {
                 // Create full path for DUMP file
                 TCHAR szDumpPath[MAX_PATH];
@@ -154,7 +154,7 @@ LONG CMiniDumper::TopLevelFilter(struct _EXCEPTION_POINTERS* pExceptionInfo)
                     if (bOK)
                     {
                         // Do *NOT* localize that string (in fact, do not use MFC to load it)!
-                        _sntprintf(szResult, _countof(szResult) - 1, _T("Saved dump file to \"%s\".\r\n\r\nPlease send this file together with a detailed bug report to %s !\r\n\r\nThank you for helping to improve eMule."), szDumpPath, MODDER_MAIL);
+                        _sntprintf(szResult, _countof(szResult) - 1, _T("Saved dump file to \"%s\".\r\n\r\nPlease send this file together with a detailed bug report to %s !\r\n\r\nThank you for helping to improve kMule."), szDumpPath, MODDER_MAIL);
                         szResult[_countof(szResult) - 1] = L'\0';
                         lRetValue = EXCEPTION_EXECUTE_HANDLER;
                     }
