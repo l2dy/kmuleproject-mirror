@@ -154,7 +154,10 @@ bool CUpDownClient::Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash) c
     if (HasLowID())
     {
         //User is firewalled.. Must do two checks..
-        if (GetIP()!=0	&& GetIP() == tocomp->GetIP())
+//>>> WiZaRd::IPv6 [Xanatos]
+		if ((!GetIPv4().IsNull() && GetIPv4() == tocomp->GetIPv4()) || (!GetIPv6().IsNull() && GetIPv6() == tocomp->GetIPv6()))
+        //if (GetIP()!=0 && GetIP() == tocomp->GetIP())
+//<<< WiZaRd::IPv6 [Xanatos]
         {
             //The IP of both match
             if (GetUserPort()!=0 && GetUserPort() == tocomp->GetUserPort())
@@ -186,9 +189,14 @@ bool CUpDownClient::Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash) c
         return false;
     }
 
-    if ((GetIP()!=0 && GetIP() == tocomp->GetIP())
-            || (GetUserIDHybrid()!=0 && GetUserIDHybrid() == tocomp->GetUserIDHybrid())
-            || (GetConnectIP()!=0 && GetConnectIP() == tocomp->GetConnectIP())) //WiZaRd: fallback for "fresh" clients
+//>>> WiZaRd::IPv6 [Xanatos]
+	if (((!GetIPv4().IsNull() && GetIPv4() == tocomp->GetIPv4()) || (!GetIPv6().IsNull() && GetIPv6() == tocomp->GetIPv6()))
+		|| (GetUserIDHybrid()!=0 && GetUserIDHybrid() == tocomp->GetUserIDHybrid())
+		|| (!GetConnectIP().IsNull() && GetConnectIP() == tocomp->GetConnectIP())) //WiZaRd: fallback for "fresh" clients
+//     if ((GetIP()!=0 && GetIP() == tocomp->GetIP())
+//             || (GetUserIDHybrid()!=0 && GetUserIDHybrid() == tocomp->GetUserIDHybrid())
+//             || (GetConnectIP()!=0 && GetConnectIP() == tocomp->GetConnectIP())) //WiZaRd: fallback for "fresh" clients
+//<<< WiZaRd::IPv6 [Xanatos]
     {
         //The IP of both match
         if (GetUserPort()!=0 && GetUserPort() == tocomp->GetUserPort())
@@ -1940,7 +1948,10 @@ void CUpDownClient::UDPReaskForDownload()
             theStats.AddUpDataOverheadFileRequest(response->size);
             theApp.downloadqueue->AddUDPFileReasks();
             // FIXME: We dont know which kadversion the buddy has, so we need to send unencrypted
-            theApp.clientudp->SendPacket(response, GetBuddyIP(), GetBuddyPort(), false, NULL, true, 0);
+//>>> WiZaRd::IPv6 [Xanatos]
+			theApp.clientudp->SendPacket(response, CAddress(_ntohl(GetBuddyIP())), GetBuddyPort(), false, NULL, true, 0);
+            //theApp.clientudp->SendPacket(response, GetBuddyIP(), GetBuddyPort(), false, NULL, true, 0);
+//<<< WiZaRd::IPv6 [Xanatos]
             m_nTotalUDPPackets++;
         }
     }

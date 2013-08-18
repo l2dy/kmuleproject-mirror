@@ -229,10 +229,16 @@ public:
         m_Hash = k1.m_Hash ;
         return *this;
     }
-    bool	AddSigningIP(UINT dwIP, bool bTestOnly);
+//>>> WiZaRd::IPv6 [Xanatos]
+	bool	AddSigningIP(const _CIPAddress& IP, bool bTestOnly);
+    //bool	AddSigningIP(UINT dwIP, bool bTestOnly);
+//<<< WiZaRd::IPv6 [Xanatos]
 
     CAICHHash				m_Hash;
-    CArray<UINT, UINT>	m_adwIpsSigning;
+//>>> WiZaRd::IPv6 [Xanatos]
+	CArray<_CIPAddress, _CIPAddress>	m_adwIpsSigning;
+    //CArray<UINT, UINT>	m_adwIpsSigning;
+//<<< WiZaRd::IPv6 [Xanatos]
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -269,7 +275,10 @@ public:
     bool			ReadRecoveryData(uint64 nPartStartPos, CSafeMemFile* fileDataIn);
     bool			ReCalculateHash(bool bDontReplace = false);
     bool			VerifyHashTree(bool bDeleteBadTrees);
-    void			UntrustedHashReceived(const CAICHHash& Hash, UINT dwFromIP);
+//>>> WiZaRd::IPv6 [Xanatos]
+	void			UntrustedHashReceived(const CAICHHash& Hash, const _CIPAddress& FromIP);
+    //void			UntrustedHashReceived(const CAICHHash& Hash, UINT dwFromIP);
+//<<< WiZaRd::IPv6 [Xanatos]
     bool			IsPartDataAvailable(uint64 nPartStartPos);
     void			SetStatus(EAICHStatus bNewValue)
     {

@@ -5037,3 +5037,48 @@ uint8	CalcPrioFromSrcAverage(const UINT srcs, const float avg)
 	return prio;
 }
 //<<< WiZaRd::Improved Auto Prio
+//>>> WiZaRd::IPv6 [Xanatos]
+void DebugRecv(LPCSTR pszMsg, const CUpDownClient* client, const uchar* packet, const _CIPAddress& IP)
+{
+	// 111.222.333.444 = 15 chars
+	if (client){
+		if (client != NULL && packet != NULL)
+			Debug(_T("%-24hs from %s; %s\n"), pszMsg, client->DbgGetClientInfo(true), DbgGetFileInfo(packet));
+		else if (client != NULL && packet == NULL)
+			Debug(_T("%-24hs from %s\n"), pszMsg, client->DbgGetClientInfo(true));
+		else if (client == NULL && packet != NULL)
+			Debug(_T("%-24hs; %s\n"), pszMsg, DbgGetFileInfo(packet));
+		else
+			Debug(_T("%-24hs\n"), pszMsg);
+	}
+	else{
+		if (!IP.IsNull() && packet != NULL)
+			Debug(_T("%-24hs from %-15s; %s\n"), pszMsg, ipstr(IP), DbgGetFileInfo(packet));
+		else if (!IP.IsNull() && packet == NULL)
+			Debug(_T("%-24hs from %-15s\n"), pszMsg, ipstr(IP));
+		else if (IP.IsNull() && packet != NULL)
+			Debug(_T("%-24hs; %s\n"), pszMsg, DbgGetFileInfo(packet));
+		else
+			Debug(_T("%-24hs\n"), pszMsg);
+	}
+}
+
+void DebugRecv(LPCSTR pszOpcode, const _CIPAddress& IP, uint16 port)
+{
+	TCHAR szIPPort[22];
+	_stprintf(szIPPort, _T("%s:%u"), ipstr(IP), port);
+	Debug(_T("%-24hs from %-21s\n"), pszOpcode, szIPPort);
+}
+
+void DebugSend(LPCSTR pszOpcode, const _CIPAddress& IP, uint16 port)
+{
+	TCHAR szIPPort[22];
+	_stprintf(szIPPort, _T("%s:%u"), ipstr(IP), port);
+	Debug(_T(">>> %-20hs to   %-21s\n"), pszOpcode, szIPPort);
+}
+
+CString ipstr(const CAddress& IP)
+{
+	return IP.ToStringW().c_str();
+}
+//<<< WiZaRd::IPv6 [Xanatos]

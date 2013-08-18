@@ -1573,7 +1573,10 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
             if (byUsedVersion >= 3)
                 dwID = cur_src->GetUserIDHybrid();
             else
-                dwID = cur_src->GetIP();
+//>>> WiZaRd::IPv6 [Xanatos]
+				dwID = _ntohl(cur_src->GetIP().ToIPv4());
+                //dwID = cur_src->GetIP();
+//<<< WiZaRd::IPv6 [Xanatos]
             data.WriteUInt32(dwID);
             data.WriteUInt16(cur_src->GetUserPort());
 //>>> WiZaRd::ExtendedXS [Xanatos]
@@ -2175,7 +2178,10 @@ bool CKnownFile::PublishSrc()
         CUpDownClient* buddy = theApp.clientlist->GetBuddy();
         if (buddy)
         {
-            lastBuddyIP = theApp.clientlist->GetBuddy()->GetIP();
+//>>> WiZaRd::IPv6 [Xanatos]
+			lastBuddyIP = _ntohl(theApp.clientlist->GetBuddy()->GetIP().ToIPv4());
+            //lastBuddyIP = theApp.clientlist->GetBuddy()->GetIP();
+//<<< WiZaRd::IPv6 [Xanatos]
             if (lastBuddyIP != m_lastBuddyIP)
             {
                 SetLastPublishTimeKadSrc((UINT)time(NULL)+KADEMLIAREPUBLISHTIMES, lastBuddyIP);
@@ -2680,7 +2686,10 @@ bool CKnownFile::IsSharedInKad() const
     {
         if (theApp.IsFirewalled() && theApp.IsConnected())
         {
-            if ((theApp.clientlist->GetBuddy() && (GetLastPublishBuddy() == theApp.clientlist->GetBuddy()->GetIP()))
+//>>> WiZaRd::IPv6 [Xanatos]
+			if ((theApp.clientlist->GetBuddy() && (GetLastPublishBuddy() == _ntohl(theApp.clientlist->GetBuddy()->GetIP().ToIPv4())))
+			//if ((theApp.clientlist->GetBuddy() && (GetLastPublishBuddy() == theApp.clientlist->GetBuddy()->GetIP()))
+//<<< WiZaRd::IPv6 [Xanatos]            
                     || (Kademlia::CKademlia::IsRunning() && !Kademlia::CUDPFirewallTester::IsFirewalledUDP(true) && Kademlia::CUDPFirewallTester::IsVerified()))
             {
                 bSharedInKad = true;

@@ -292,6 +292,13 @@ public:
 private:
     bool	m_bRestartApp;
 //<<< WiZaRd::Automatic Restart
+//>>> WiZaRd::IPv6 [Xanatos]
+public:
+	const _CIPAddress&	GetPublicIPv6() const		{return m_PublicIPv6;}
+	void		SetPublicIPv6(const CAddress& IP)	{m_PublicIPv6 = IP;}
+private:
+	_CIPAddress m_PublicIPv6;
+//<<< WiZaRd::IPv6 [Xanatos]
 };
 
 extern CemuleApp theApp;

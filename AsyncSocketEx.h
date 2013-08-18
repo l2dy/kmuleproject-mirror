@@ -103,7 +103,7 @@ public:
     //Creates a socket.
     BOOL Create(UINT nSocketPort = 0, int nSocketType = SOCK_STREAM,
                 long lEvent = FD_READ | FD_WRITE | FD_OOB | FD_ACCEPT |	FD_CONNECT | FD_CLOSE,
-                LPCSTR lpszSocketAddress = NULL, BOOL bReuseAddr = FALSE);
+                LPCSTR lpszSocketAddress = NULL, BOOL bReuseAddr = FALSE, bool bIPv6 = FALSE); //>>> WiZaRd::IPv6 [Xanatos]
 
 
     //Attributes
@@ -224,8 +224,9 @@ protected:
     //Strucure to hold the socket data
     struct t_AsyncSocketExData
     {
-        SOCKET hSocket; //Socket handle
-        int nSocketIndex; //Index of socket, required by CAsyncSocketExHelperWindow
+        SOCKET	hSocket; //Socket handle
+        int		nSocketIndex; //Index of socket, required by CAsyncSocketExHelperWindow
+		bool	bIPv6; //>>> WiZaRd::IPv6 [Xanatos]
     } m_SocketData;
 
     //If using layers, only the events specified with m_lEvent will send to the event handlers.

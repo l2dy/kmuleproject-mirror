@@ -373,7 +373,11 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
                             client->InfoPacketsReceived();
 
                     if (client->GetKadPort() && client->GetKadVersion() > 1)
-                        Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
+//>>> WiZaRd::IPv6 [Xanatos]
+						if(!client->GetIPv4().IsNull())
+							Kademlia::CKademlia::Bootstrap(client->GetIPv4().ToIPv4(), client->GetKadPort());
+						//Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
+//<<< WiZaRd::IPv6 [Xanatos]
                 }
                 break;
             }
@@ -823,8 +827,12 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
                     Debug(_T("  NewUserID=%u (%08x, %s)  NewServerIP=%u (%08x, %s)\n"), nNewUserID, nNewUserID, ipstr(nNewUserID), nNewServerIP, nNewServerIP, ipstr(nNewServerIP));
                 if (IsLowID(nNewUserID))
                 {
+					; // removed server support
                 }
-                else if (nNewUserID == client->GetIP())
+//>>> WiZaRd::IPv6 [Xanatos]
+                //else if (nNewUserID == client->GetIP())
+				else if (nNewUserID == ntohl(client->GetIP().ToIPv4()))
+//<<< WiZaRd::IPv6 [Xanatos]
                 {
                     // client changed server and has a HighID(IP)
                     client->SetUserIDHybrid(ntohl(nNewUserID));
@@ -1233,7 +1241,11 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
                 client->CheckHandshakeFinished();
 
                 if (client->GetKadPort() && client->GetKadVersion() > 1)
-                    Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
+//>>> WiZaRd::IPv6 [Xanatos]
+					if(!client->GetIPv4().IsNull())
+						Kademlia::CKademlia::Bootstrap(client->GetIPv4().ToIPv4(), client->GetKadPort());
+					//Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
+//<<< WiZaRd::IPv6 [Xanatos]
 
                 CSafeMemFile data_in(packet, size);
                 uint64 nSize = 0;
@@ -1434,7 +1446,11 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
                 client->CheckHandshakeFinished();
 
                 if (client->GetKadPort() && client->GetKadVersion() > 1)
-                    Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
+//>>> WiZaRd::IPv6 [Xanatos]
+					if(!client->GetIPv4().IsNull())
+						Kademlia::CKademlia::Bootstrap(client->GetIPv4().ToIPv4(), client->GetKadPort());
+						//Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
+//<<< WiZaRd::IPv6 [Xanatos]
 
                 CSafeMemFile data_in(packet, size);
 
@@ -1667,8 +1683,18 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
 
                 if (thePrefs.GetDebugClientTCPLevel() > 0)
                     DebugSend("OP__PublicIPAns", client);
-                Packet* pPacket = new Packet(OP_PUBLICIP_ANSWER, 4, OP_EMULEPROT);
-                PokeUInt32(pPacket->pBuffer, client->GetIP());
+//>>> WiZaRd::IPv6 [Xanatos]
+				Packet* pPacket = new Packet(OP_PUBLICIP_ANSWER, client->GetIP().Type() == CAddress::IPv4 ? 4 : 20, OP_EMULEPROT);
+				if(client->GetIP().Type() == CAddress::IPv4)
+					PokeUInt32(pPacket->pBuffer, _ntohl(client->GetIP().ToIPv4()));
+				else
+				{
+					PokeUInt32(pPacket->pBuffer, _UI32_MAX);
+					memcpy(pPacket->pBuffer, client->GetIP().Data(), 16);
+				}
+                //Packet* pPacket = new Packet(OP_PUBLICIP_ANSWER, 4, OP_EMULEPROT);
+                //PokeUInt32(pPacket->pBuffer, client->GetIP());
+//<<< WiZaRd::IPv6 [Xanatos]
                 theStats.AddUpDataOverheadOther(pPacket->size);
                 SendPacket(pPacket);
                 break;
@@ -1719,7 +1745,10 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
                     UINT ip = data.ReadUInt32();
                     uint16 tcp = data.ReadUInt16();
                     CUpDownClient* callback;
-                    callback = theApp.clientlist->FindClientByIP(ntohl(ip), tcp);
+//>>> WiZaRd::IPv6 [Xanatos]
+					callback = theApp.clientlist->FindClientByIP(_CIPAddress(ip), tcp);
+                    //callback = theApp.clientlist->FindClientByIP(ntohl(ip), tcp);
+//<<< WiZaRd::IPv6 [Xanatos]
                     if (callback == NULL)
                     {
                         callback = new CUpDownClient(NULL,tcp,ip,0,0);
@@ -1773,7 +1802,22 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
                     break;
                 }
                 CSafeMemFile data_in(packet, size);
-                UINT destip = data_in.ReadUInt32();
+
+//>>> WiZaRd::IPv6 [Xanatos]
+				int Offset = 4;
+				CAddress destip;
+				UINT dwIP = data_in.ReadUInt32();
+				if(dwIP == -1)
+				{
+					Offset += 16;
+					byte uIP[16];
+					data_in.ReadHash16(uIP);
+					destip = CAddress(uIP);
+				}
+				else
+					destip = CAddress(_ntohl(dwIP));
+                //UINT destip = data_in.ReadUInt32();
+//<<< WiZaRd::IPv6 [Xanatos]
                 uint16 destport = data_in.ReadUInt16();
                 uchar reqfilehash[16];
                 data_in.ReadHash16(reqfilehash);
@@ -1783,7 +1827,10 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
 //>>> WiZaRd::NatTraversal [Xanatos]
                 if (isnulmd4(reqfilehash))
                 {
-                    theApp.clientudp->ProcessPacket(packet+(4+2+16+1), size-(4+2+16+1), data_in.ReadUInt8(), destip, destport);
+//>>> WiZaRd::IPv6 [Xanatos]
+					theApp.clientudp->ProcessPacket(packet+(Offset+2+16+1), size-(Offset+2+16+1), data_in.ReadUInt8(), destip, destport);
+                    //theApp.clientudp->ProcessPacket(packet+(4+2+16+1), size-(4+2+16+1), data_in.ReadUInt8(), destip, destport);
+//<<< WiZaRd::IPv6 [Xanatos]
                     break;
                 }
 //<<< WiZaRd::NatTraversal [Xanatos]
@@ -2052,7 +2099,10 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
                 // Kad related packet, replaces KADEMLIA_FIREWALLED_ACK_RES
                 if (thePrefs.GetDebugClientTCPLevel() > 0)
                     DebugRecv("OP_KAD_FWTCPCHECK_ACK", client);
-                if (theApp.clientlist->IsKadFirewallCheckIP(client->GetIP()))
+//>>> WiZaRd::IPv6 [Xanatos]
+				if (theApp.clientlist->IsKadFirewallCheckIP(_ntohl(client->GetIP().ToIPv4())))
+                //if (theApp.clientlist->IsKadFirewallCheckIP(client->GetIP()))
+//<<< WiZaRd::IPv6 [Xanatos]
                 {
                     if (Kademlia::CKademlia::IsRunning())
                         Kademlia::CKademlia::GetPrefs()->IncFirewalled();
@@ -2149,11 +2199,20 @@ void CClientReqSocket::PacketToDebugLogLine(LPCTSTR protocol, const uchar* packe
 CString CClientReqSocket::DbgGetClientInfo()
 {
     CString str;
-    SOCKADDR_IN sockAddr = {0};
+//>>> WiZaRd::IPv6 [Xanatos]
+	SOCKADDR_IN6 sockAddr = {0};
+    //SOCKADDR_IN sockAddr = {0};
+//<<< WiZaRd::IPv6 [Xanatos]
     int nSockAddrLen = sizeof(sockAddr);
     GetPeerName((SOCKADDR*)&sockAddr, &nSockAddrLen);
-    if (sockAddr.sin_addr.S_un.S_addr != 0 && (client == NULL || sockAddr.sin_addr.S_un.S_addr != client->GetIP()))
-        str.AppendFormat(_T("IP=%s"), ipstr(sockAddr.sin_addr));
+//>>> WiZaRd::IPv6 [Xanatos]
+	_CIPAddress IP;
+	IP.FromSA((SOCKADDR*)&sockAddr, nSockAddrLen);
+	if (!IP.IsNull() && (client == NULL || IP != client->GetIP()))
+		str.AppendFormat(_T("IP=%s"), IP.ToStringW().c_str());
+//     if (sockAddr.sin_addr.S_un.S_addr != 0 && (client == NULL || sockAddr.sin_addr.S_un.S_addr != client->GetIP()))
+//         str.AppendFormat(_T("IP=%s"), ipstr(sockAddr.sin_addr));
+//<<< WiZaRd::IPv6 [Xanatos]
     if (client)
     {
         if (!str.IsEmpty())
@@ -2361,7 +2420,10 @@ void CClientReqSocket::OnReceive(int nErrorCode)
 bool CClientReqSocket::Create()
 {
     theApp.listensocket->AddConnection();
-    return (CAsyncSocketEx::Create(0, SOCK_STREAM, FD_WRITE | FD_READ | FD_CLOSE | FD_CONNECT, thePrefs.GetBindAddrA()) != FALSE);
+//>>> WiZaRd::IPv6 [Xanatos]
+	return (CAsyncSocketEx::Create(0, SOCK_STREAM, FD_WRITE | FD_READ | FD_CLOSE | FD_CONNECT, thePrefs.GetBindAddrA(), FALSE, TRUE) != FALSE);
+//    return (CAsyncSocketEx::Create(0, SOCK_STREAM, FD_WRITE | FD_READ | FD_CLOSE | FD_CONNECT, thePrefs.GetBindAddrA()) != FALSE);
+//<<< WiZaRd::IPv6 [Xanatos]
 }
 
 SocketSentBytes CClientReqSocket::SendControlData(UINT maxNumberOfBytesToSend, UINT overchargeMaxBytesToSend)
@@ -2479,7 +2541,10 @@ bool CListenSocket::StartListening()
     // socket is already used by some other application (e.g. a 2nd emule), we though bind
     // to that socket leading to the situation that 2 applications are listening at the same
     // port!
-    if (!Create(thePrefs.GetPort(), SOCK_STREAM, FD_ACCEPT, thePrefs.GetBindAddrA(), FALSE/*bReuseAddr*/))
+//>>> WiZaRd::IPv6 [Xanatos]
+    //if (!Create(thePrefs.GetPort(), SOCK_STREAM, FD_ACCEPT, thePrefs.GetBindAddrA(), FALSE/*bReuseAddr*/))
+	if (!Create(thePrefs.GetPort(), SOCK_STREAM, FD_ACCEPT, thePrefs.GetBindAddrA(), FALSE/*bReuseAddr*/, TRUE))
+//<<< WiZaRd::IPv6 [Xanatos]
     {
         CString strError;
         strError.Format(GetResString(IDS_MAIN_SOCKETERROR), thePrefs.GetPort());
@@ -2558,43 +2623,46 @@ void CListenSocket::StopListening()
     maxconnectionreached++;
 }
 
-static int s_iAcceptConnectionCondRejected;
-
-int CALLBACK AcceptConnectionCond(LPWSABUF lpCallerId, LPWSABUF /*lpCallerData*/, LPQOS /*lpSQOS*/, LPQOS /*lpGQOS*/,
-                                  LPWSABUF /*lpCalleeId*/, LPWSABUF /*lpCalleeData*/, GROUP FAR* /*g*/, DWORD /*dwCallbackData*/)
-{
-    if (lpCallerId && lpCallerId->buf && lpCallerId->len >= sizeof SOCKADDR_IN)
-    {
-        LPSOCKADDR_IN pSockAddr = (LPSOCKADDR_IN)lpCallerId->buf;
-        ASSERT(pSockAddr->sin_addr.S_un.S_addr != 0 && pSockAddr->sin_addr.S_un.S_addr != INADDR_NONE);
-
-        if (theApp.ipfilter->IsFiltered(pSockAddr->sin_addr.S_un.S_addr))
-        {
-            if (thePrefs.GetLogFilteredIPs())
-                AddDebugLogLine(false, _T("Rejecting connection attempt (IP=%s) - IP filter (%s)"), ipstr(pSockAddr->sin_addr.S_un.S_addr), theApp.ipfilter->GetLastHit());
-            s_iAcceptConnectionCondRejected = 1;
-            return CF_REJECT;
-        }
-
-        if (theApp.clientlist->IsBannedClient(pSockAddr->sin_addr.S_un.S_addr))
-        {
-            if (thePrefs.GetLogBannedClients())
-            {
-                CUpDownClient* pClient = theApp.clientlist->FindClientByIP(pSockAddr->sin_addr.S_un.S_addr);
-                AddDebugLogLine(false, _T("Rejecting connection attempt of banned client %s %s"), ipstr(pSockAddr->sin_addr.S_un.S_addr), pClient->DbgGetClientInfo());
-            }
-            s_iAcceptConnectionCondRejected = 2;
-            return CF_REJECT;
-        }
-    }
-    else
-    {
-        if (thePrefs.GetVerbose())
-            DebugLogError(_T("Client TCP socket: AcceptConnectionCond unexpected lpCallerId"));
-    }
-
-    return CF_ACCEPT;
-}
+//>>> WiZaRd::IPv6 [Xanatos]
+// unsupported with IPv6
+// static int s_iAcceptConnectionCondRejected;
+// 
+// int CALLBACK AcceptConnectionCond(LPWSABUF lpCallerId, LPWSABUF /*lpCallerData*/, LPQOS /*lpSQOS*/, LPQOS /*lpGQOS*/,
+//                                   LPWSABUF /*lpCalleeId*/, LPWSABUF /*lpCalleeData*/, GROUP FAR* /*g*/, DWORD /*dwCallbackData*/)
+// {
+//     if (lpCallerId && lpCallerId->buf && lpCallerId->len >= sizeof SOCKADDR_IN)
+//     {
+//         LPSOCKADDR_IN pSockAddr = (LPSOCKADDR_IN)lpCallerId->buf;
+//         ASSERT(pSockAddr->sin_addr.S_un.S_addr != 0 && pSockAddr->sin_addr.S_un.S_addr != INADDR_NONE);
+// 
+//         if (theApp.ipfilter->IsFiltered(pSockAddr->sin_addr.S_un.S_addr))
+//         {
+//             if (thePrefs.GetLogFilteredIPs())
+//                 AddDebugLogLine(false, _T("Rejecting connection attempt (IP=%s) - IP filter (%s)"), ipstr(pSockAddr->sin_addr.S_un.S_addr), theApp.ipfilter->GetLastHit());
+//             s_iAcceptConnectionCondRejected = 1;
+//             return CF_REJECT;
+//         }
+// 
+//         if (theApp.clientlist->IsBannedClient(pSockAddr->sin_addr.S_un.S_addr))
+//         {
+//             if (thePrefs.GetLogBannedClients())
+//             {
+//                 CUpDownClient* pClient = theApp.clientlist->FindClientByIP(pSockAddr->sin_addr.S_un.S_addr);
+//                 AddDebugLogLine(false, _T("Rejecting connection attempt of banned client %s %s"), ipstr(pSockAddr->sin_addr.S_un.S_addr), pClient->DbgGetClientInfo());
+//             }
+//             s_iAcceptConnectionCondRejected = 2;
+//             return CF_REJECT;
+//         }
+//     }
+//     else
+//     {
+//         if (thePrefs.GetVerbose())
+//             DebugLogError(_T("Client TCP socket: AcceptConnectionCond unexpected lpCallerId"));
+//     }
+// 
+//     return CF_ACCEPT;
+// }
+//<<< WiZaRd::IPv6 [Xanatos]
 
 void CListenSocket::OnAccept(int nErrorCode)
 {
@@ -2621,9 +2689,14 @@ void CListenSocket::OnAccept(int nErrorCode)
             m_nPendingConnections--;
 
             CClientReqSocket* newclient;
-            SOCKADDR_IN SockAddr = {0};
+//>>> WiZaRd::IPv6 [Xanatos]
+            //SOCKADDR_IN SockAddr = {0};
+			SOCKADDR_IN6 SockAddr = {0};
+//<<< WiZaRd::IPv6 [Xanatos]
             int iSockAddrLen = sizeof SockAddr;
-            if (thePrefs.GetConditionalTCPAccept() && !thePrefs.GetProxySettings().UseProxy)
+//>>> WiZaRd::IPv6 [Xanatos]
+			// IPv6-TODO: add this
+            /*if (thePrefs.GetConditionalTCPAccept() && !thePrefs.GetProxySettings().UseProxy)
             {
                 s_iAcceptConnectionCondRejected = 0;
                 SOCKET sNew = WSAAccept(m_SocketData.hSocket, (SOCKADDR*)&SockAddr, &iSockAddrLen, AcceptConnectionCond, 0);
@@ -2667,7 +2740,8 @@ void CListenSocket::OnAccept(int nErrorCode)
 
                 AddConnection();
             }
-            else
+            else*/
+//<<< WiZaRd::IPv6 [Xanatos]
             {
                 newclient = new CClientReqSocket;
                 if (!Accept(*newclient, (SOCKADDR*)&SockAddr, &iSockAddrLen))
@@ -2702,29 +2776,56 @@ void CListenSocket::OnAccept(int nErrorCode)
 
                 AddConnection();
 
-                if (SockAddr.sin_addr.S_un.S_addr == 0) // for safety..
+//>>> WiZaRd::IPv6 [Xanatos]				
+				if (memcmp(&SockAddr.sin6_addr, &in6addr_any, sizeof in6addr_any) == 0)  // for safety..
+                //if (SockAddr.sin_addr.S_un.S_addr == 0) // for safety..
+//<<< WiZaRd::IPv6 [Xanatos]
                 {
                     iSockAddrLen = sizeof SockAddr;
                     newclient->GetPeerName((SOCKADDR*)&SockAddr, &iSockAddrLen);
-                    DebugLogWarning(_T("SockAddr.sin_addr.S_un.S_addr == 0;  GetPeerName returned %s"), ipstr(SockAddr.sin_addr.S_un.S_addr));
+//>>> WiZaRd::IPv6 [Xanatos]
+					CAddress address;
+					address.FromSA((SOCKADDR*)&SockAddr, iSockAddrLen);
+					DebugLogWarning(_T("SockAddr.sin_addr.S_un.S_addr == 0;  GetPeerName returned %s"), ipstr(address));
+                    //DebugLogWarning(_T("SockAddr.sin_addr.S_un.S_addr == 0;  GetPeerName returned %s"), ipstr(SockAddr.sin_addr.S_un.S_addr));
+//<<< WiZaRd::IPv6 [Xanatos]
                 }
 
-                ASSERT(SockAddr.sin_addr.S_un.S_addr != 0 && SockAddr.sin_addr.S_un.S_addr != INADDR_NONE);
+//>>> WiZaRd::IPv6 [Xanatos]
+				_CIPAddress IP;
+				IP.FromSA((SOCKADDR*)&SockAddr, iSockAddrLen);
+				ASSERT( !IP.IsNull() );
 
-                if (theApp.ipfilter->IsFiltered(SockAddr.sin_addr.S_un.S_addr))
+				if(!IP.Convert(CAddress::IPv4))
+				{
+					// IPv6-TODO: Add IPv6 ban list and IpFilter
+					newclient->AsyncSelect(FD_WRITE | FD_READ | FD_CLOSE);
+					continue;
+				}
+
+				UINT dwIP = IP.ToIPv4();
+
+                //ASSERT(SockAddr.sin_addr.S_un.S_addr != 0 && SockAddr.sin_addr.S_un.S_addr != INADDR_NONE);
+				//UINT dwIP = SockAddr.sin_addr.S_un.S_addr;
+//<<< WiZaRd::IPv6 [Xanatos]
+
+                if (theApp.ipfilter->IsFiltered(dwIP))
                 {
                     if (thePrefs.GetLogFilteredIPs())
-                        AddDebugLogLine(false, _T("Rejecting connection attempt (IP=%s) - IP filter (%s)"), ipstr(SockAddr.sin_addr.S_un.S_addr), theApp.ipfilter->GetLastHit());
+                        AddDebugLogLine(false, _T("Rejecting connection attempt (IP=%s) - IP filter (%s)"), ipstr(dwIP), theApp.ipfilter->GetLastHit());
                     newclient->Safe_Delete();
                     continue;
                 }
 
-                if (theApp.clientlist->IsBannedClient(SockAddr.sin_addr.S_un.S_addr))
+                if (theApp.clientlist->IsBannedClient(dwIP))
                 {
                     if (thePrefs.GetLogBannedClients())
                     {
-                        CUpDownClient* pClient = theApp.clientlist->FindClientByIP(SockAddr.sin_addr.S_un.S_addr);
-                        AddDebugLogLine(false, _T("Rejecting connection attempt of banned client %s %s"), ipstr(SockAddr.sin_addr.S_un.S_addr), pClient->DbgGetClientInfo());
+//>>> WiZaRd::IPv6 [Xanatos]
+						CUpDownClient* pClient = theApp.clientlist->FindClientByIP(_CIPAddress(_ntohl(dwIP)));
+                        //CUpDownClient* pClient = theApp.clientlist->FindClientByIP(dwIP);
+//<<< WiZaRd::IPv6 [Xanatos]
+                        AddDebugLogLine(false, _T("Rejecting connection attempt of banned client %s %s"), ipstr(dwIP), pClient->DbgGetClientInfo());
                     }
                     newclient->Safe_Delete();
                     continue;

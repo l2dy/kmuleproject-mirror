@@ -107,7 +107,13 @@ void CCorruptionBlackBox::TransferredData(uint64 nStartPos, uint64 nEndPos, cons
         ASSERT(0);
         return;
     }
-    UINT dwSenderIP = pSender->GetIP();
+
+//>>> WiZaRd::IPv6 [Xanatos]
+	if(pSender->GetIP().Type() != CAddress::IPv4) // IPv6-TODO: Add IPv6 ban list
+		return;
+	UINT dwSenderIP = _ntohl(pSender->GetIP().ToIPv4());
+    //UINT dwSenderIP = pSender->GetIP();
+//<<< WiZaRd::IPv6 [Xanatos]
     // we store records seperated for each part, so we don't have to search all entries everytime
 
     // convert pos to relative block pos
@@ -427,7 +433,10 @@ void CCorruptionBlackBox::EvaluateData(uint16 nPart)
             if (nCorruptPercentage > CBB_BANTHRESHOLD)
             {
 
-                CUpDownClient* pEvilClient = theApp.clientlist->FindClientByIP(aGuiltyClients[k]);
+//>>> WiZaRd::IPv6 [Xanatos]
+				CUpDownClient* pEvilClient = theApp.clientlist->FindClientByIP(_CIPAddress(_ntohl(aGuiltyClients[k])));
+                //CUpDownClient* pEvilClient = theApp.clientlist->FindClientByIP(aGuiltyClients[k]);
+//<<< WiZaRd::IPv6 [Xanatos]
                 if (pEvilClient != NULL)
                 {
                     AddDebugLogLine(DLP_HIGH, false, _T("CorruptionBlackBox: Banning: Found client which send %s of %s corrupted data, %s"), CastItoXBytes(aDataCorrupt[k]), CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])), pEvilClient->DbgGetClientInfo());
@@ -443,7 +452,10 @@ void CCorruptionBlackBox::EvaluateData(uint16 nPart)
             }
             else
             {
-                CUpDownClient* pSuspectClient = theApp.clientlist->FindClientByIP(aGuiltyClients[k]);
+//>>> WiZaRd::IPv6 [Xanatos]
+				CUpDownClient* pSuspectClient = theApp.clientlist->FindClientByIP(_CIPAddress(_ntohl(aGuiltyClients[k])));
+                //CUpDownClient* pSuspectClient = theApp.clientlist->FindClientByIP(aGuiltyClients[k]);
+//<<< WiZaRd::IPv6 [Xanatos]
                 if (pSuspectClient != NULL)
                 {
                     AddDebugLogLine(DLP_DEFAULT, false, _T("CorruptionBlackBox: Reporting: Found client which probably send %s of %s corrupted data, but it is within the acceptable limit, %s"), CastItoXBytes(aDataCorrupt[k]), CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])), pSuspectClient->DbgGetClientInfo());

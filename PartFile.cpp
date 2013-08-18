@@ -3275,7 +3275,10 @@ void CPartFile::AddSources(CSafeMemFile* sources, UINT serverip, uint16 serverpo
 #ifdef _DEBUG
                 if (thePrefs.GetLogBannedClients())
                 {
-                    CUpDownClient* pClient = theApp.clientlist->FindClientByIP(userid);
+//>>> WiZaRd::IPv6 [Xanatos]
+					CUpDownClient* pClient = theApp.clientlist->FindClientByIP(_CIPAddress(_ntohl(userid)));
+                    //CUpDownClient* pClient = theApp.clientlist->FindClientByIP(userid);
+//<<< WiZaRd::IPv6 [Xanatos]
                     AddDebugLogLine(false, _T("Ignored source (IP=%s) received from server - banned client %s"), ipstr(userid), pClient->DbgGetClientInfo());
                 }
 #endif
@@ -5116,6 +5119,7 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
 		UINT dwServerIP = 0;
 		uint16 nServerPort = 0;
 		UINT dwIP = 0;
+		CAddress IPv6; //>>> WiZaRd::IPv6 [Xanatos]
 		uint16 nUDPPort = 0;
 		uint16 nKadPort = 0;
 		UINT dwBuddyIP = 0;
@@ -5168,7 +5172,12 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
 
 //>>> WiZaRd::IPv6 [Xanatos]
 					case CT_NEOMULE_IP_V6:
+					{
+						byte uIP[16];
+						md4cpy(uIP, temptag.GetHash());
+						IPv6 = CAddress(uIP);
 						break;
+					}
 //<<< WiZaRd::IPv6 [Xanatos]
 
 					default:
@@ -5230,7 +5239,10 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
 #ifdef _DEBUG
                     if (thePrefs.GetLogBannedClients())
                     {
-                        CUpDownClient* pClient = theApp.clientlist->FindClientByIP(dwIDED2K);
+//>>> WiZaRd::IPv6 [Xanatos]
+						CUpDownClient* pClient = theApp.clientlist->FindClientByIP(_CIPAddress(_ntohl(dwIDED2K)));
+                        //CUpDownClient* pClient = theApp.clientlist->FindClientByIP(dwIDED2K);
+//<<< WiZaRd::IPv6 [Xanatos]
                         AddDebugLogLine(false, _T("Ignored source (IP=%s) received via source exchange - banned client %s"), ipstr(dwIDED2K), pClient->DbgGetClientInfo());
                     }
 #endif
@@ -5269,7 +5281,10 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
 #ifdef _DEBUG
                     if (thePrefs.GetLogBannedClients())
                     {
-                        CUpDownClient* pClient = theApp.clientlist->FindClientByIP(dwID);
+//>>> WiZaRd::IPv6 [Xanatos]
+						CUpDownClient* pClient = theApp.clientlist->FindClientByIP(_CIPAddress(_ntohl(dwID)));
+                        //CUpDownClient* pClient = theApp.clientlist->FindClientByIP(dwID);
+//<<< WiZaRd::IPv6 [Xanatos]
                         AddDebugLogLine(false, _T("Ignored source (IP=%s) received via source exchange - banned client %s"), ipstr(dwID), pClient->DbgGetClientInfo());
                     }
 #endif
@@ -5297,8 +5312,12 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
 			if(pClient->SupportsExtendedSourceExchange())
 			{
 //>>> WiZaRd::NatTraversal [Xanatos]
+//>>> WiZaRd::IPv6 [Xanatos]
 				if(dwIP)
-					newsource->SetIP(dwIP);
+					newsource->SetIP(CAddress(_ntohl(dwIP)));
+				if(!IPv6.IsNull())
+					newsource->SetIPv6(IPv6);
+//<<< WiZaRd::IPv6 [Xanatos]
 				if(nUDPPort)
 					newsource->SetUDPPort(nUDPPort);
 				if(nKadPort)

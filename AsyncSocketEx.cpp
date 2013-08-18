@@ -487,6 +487,7 @@ IMPLEMENT_DYNAMIC(CAsyncSocketEx, CObject)
 CAsyncSocketEx::CAsyncSocketEx()
 {
     m_SocketData.hSocket = INVALID_SOCKET;
+	m_SocketData.bIPv6 = false; //>>> WiZaRd::IPv6 [Xanatos]
     m_SocketData.nSocketIndex = -1;
     m_pLocalAsyncSocketExThreadData = 0;
 #ifndef NOLAYERS
@@ -505,7 +506,7 @@ CAsyncSocketEx::~CAsyncSocketEx()
 
 BOOL CAsyncSocketEx::Create(UINT nSocketPort /*=0*/, int nSocketType /*=SOCK_STREAM*/,
                             long lEvent /*=FD_READ | FD_WRITE | FD_OOB | FD_ACCEPT | FD_CONNECT | FD_CLOSE*/,
-                            LPCSTR lpszSocketAddress /*=NULL*/, BOOL bReuseAddr /*=FALSE*/)
+                            LPCSTR lpszSocketAddress /*=NULL*/, BOOL bReuseAddr /*=FALSE*/, bool bIPv6 /*=FALSE*/) //>>> WiZaRd::IPv6 [Xanatos]
 {
     //Close the socket, although this should not happen
     if (GetSocketHandle() != INVALID_SOCKET)
@@ -528,9 +529,13 @@ BOOL CAsyncSocketEx::Create(UINT nSocketPort /*=0*/, int nSocketType /*=SOCK_STR
     else
 #endif //NOLAYERS
     {
-        SOCKET hSocket = socket(AF_INET, nSocketType, 0);
-        if (hSocket == INVALID_SOCKET)
-            return FALSE;
+//>>> WiZaRd::IPv6 [Xanatos]
+		//SOCKET hSocket = socket(AF_INET, nSocketType, 0);
+		SOCKET hSocket = socket(bIPv6 ? AF_INET6 : AF_INET, nSocketType, 0);
+//<<< WiZaRd::IPv6 [Xanatos]
+		if (hSocket == INVALID_SOCKET)
+			return FALSE;
+		m_SocketData.bIPv6 = bIPv6; //>>> WiZaRd::IPv6 [Xanatos]
         m_SocketData.hSocket = hSocket;
 
         AttachHandle(hSocket);
@@ -556,6 +561,15 @@ BOOL CAsyncSocketEx::Create(UINT nSocketPort /*=0*/, int nSocketType /*=SOCK_STR
             int iOptVal = 1;
             VERIFY(SetSockOpt(SO_REUSEADDR, &iOptVal, sizeof iOptVal));
         }
+
+//>>> WiZaRd::IPv6 [Xanatos]
+		if(bIPv6)
+		{
+			int iOptVal = 0; // Enable this socket to accept IPv4 and IPv6 packets at the same time
+			VERIFY( SetSockOpt(IPV6_V6ONLY, &iOptVal, sizeof iOptVal, IPPROTO_IPV6) );
+		}
+		m_SocketData.bIPv6 = bIPv6;
+//<<< WiZaRd::IPv6 [Xanatos]
 
         if (!Bind(nSocketPort, lpszSocketAddress))
         {
@@ -593,6 +607,31 @@ BOOL CAsyncSocketEx::OnHostNameResolved(const SOCKADDR_IN * /*pSockAddr*/)
 
 BOOL CAsyncSocketEx::Bind(UINT nSocketPort, LPCSTR lpszSocketAddress)
 {
+//>>> WiZaRd::IPv6 [Xanatos]
+	if(m_SocketData.bIPv6)
+	{
+		SOCKADDR_IN6 sockAddr = {0};
+		int iSockAddrLen = sizeof(sockAddr);
+		if (lpszSocketAddress == NULL)
+			sockAddr.sin6_addr = in6addr_any;
+		else 
+		{
+			struct sockaddr_storage ss;
+			int sslen = sizeof(ss);
+			if(lpszSocketAddress != NULL && WSAStringToAddressA((char*)lpszSocketAddress, AF_INET6, NULL, (struct sockaddr*)&ss, &sslen) == 0)
+				sockAddr.sin6_addr = ((struct sockaddr_in6 *)&ss)->sin6_addr;
+			else
+			{
+				WSASetLastError(WSAEINVAL);
+				return FALSE;
+			}
+		}
+		sockAddr.sin6_family = AF_INET6;
+		sockAddr.sin6_port = htons((u_short)nSocketPort);
+		return Bind((SOCKADDR*)&sockAddr, iSockAddrLen);
+	}
+//<<< WiZaRd::IPv6 [Xanatos]
+
     SOCKADDR_IN sockAddr = {0};
     if (lpszSocketAddress == NULL)
         sockAddr.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -813,6 +852,28 @@ BOOL CAsyncSocketEx::Connect(LPCSTR lpszHostAddress, UINT nHostPort)
     else
 #endif //NOLAYERS
     {
+//>>> WiZaRd::IPv6 [Xanatos]
+		if(m_SocketData.bIPv6)
+		{
+			SOCKADDR_IN6 sockAddr = {0};
+			int iSockAddrLen = sizeof(sockAddr);
+
+			struct sockaddr_storage ss;
+			int sslen = sizeof(ss);
+			if(lpszHostAddress != NULL && WSAStringToAddressA((char*)lpszHostAddress, AF_INET6, NULL, (struct sockaddr*)&ss, &sslen) == 0)
+				sockAddr.sin6_addr = ((struct sockaddr_in6 *)&ss)->sin6_addr;
+			else
+			{
+				WSASetLastError(WSAEINVAL);
+				return FALSE;
+			}
+
+			sockAddr.sin6_family = AF_INET6;
+			sockAddr.sin6_port = htons((u_short)nHostPort);
+			return CAsyncSocketEx::Connect((SOCKADDR*)&sockAddr, iSockAddrLen);
+		}
+//<<< WiZaRd::IPv6 [Xanatos]
+
         SOCKADDR_IN sockAddr = {0};
         sockAddr.sin_addr.s_addr = inet_addr(lpszHostAddress);
         if (sockAddr.sin_addr.s_addr == INADDR_NONE)

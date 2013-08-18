@@ -1062,6 +1062,9 @@
     <ClCompile Include="Mod\PPgAbout.cpp">
       <Filter>Mod\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Mod\Neo\Address.cpp">
+      <Filter>Mod\Neo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <MASM Include="MD4_asm.asm">
@@ -3044,6 +3047,9 @@
     </ClInclude>
     <ClInclude Include="Mod\PPgAbout.h">
       <Filter>Mod\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Mod\Neo\Address.h">
+      <Filter>Mod\Neo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

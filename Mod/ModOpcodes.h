@@ -130,7 +130,11 @@ enum eSharePermissions
 #define CT_EMULE_SERVERTCP			0xBB
 #define CT_EMULE_CONOPTS			0xBE
 #define CT_EMULE_BUDDYID			0xBF
-#define CT_NEOMULE_IP_V6			0xAE //>>> WiZaRd::IPv6 [Xanatos]
+//>>> WiZaRd::IPv6 [Xanatos]
+#define CT_NEOMULE_YOUR_IP			0xAD
+#define CT_NEOMULE_IP_V6			0xAE
+#define	TAG_IPv6					"ip6"	// Unfirewalled IPv6 
+//<<< WiZaRd::IPv6 [Xanatos]
 
 #define	SOURCEEXCHANGEEXT_VERSION	1
 //<<< WiZaRd::ExtendedXS [Xanatos]

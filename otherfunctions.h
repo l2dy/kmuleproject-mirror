@@ -502,3 +502,9 @@ int		GetClientImageIndex(const bool bFriend, const UINT nClientVersion, const bo
 HCURSOR		CreateHandCursor();
 //<<< WiZaRd::Additional Functions
 uint8	CalcPrioFromSrcAverage(const UINT srcs, const float avg); //>>> WiZaRd::Improved Auto Prio
+//>>> WiZaRd::IPv6 [Xanatos]
+void DebugRecv(LPCSTR pszMsg, const CUpDownClient* client, const uchar* packet, const CAddress& IP);
+void DebugRecv(LPCSTR pszOpcode, const CAddress& IP, uint16 port);
+void DebugSend(LPCSTR pszOpcode, const CAddress& IP, uint16 port);
+CString ipstr(const CAddress& IP);
+//<<< WiZaRd::IPv6 [Xanatos]

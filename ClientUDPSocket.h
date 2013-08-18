@@ -25,7 +25,7 @@ class Packet;
 struct UDPPack
 {
     Packet* packet;
-    UINT	dwIP;
+	_CIPAddress dwIP;
     uint16	nPort;
     UINT	dwTime;
     bool	bEncrypt;
@@ -48,18 +48,18 @@ public:
     {
         return m_port;
     }
-    bool	SendPacket(Packet* packet, UINT dwIP, uint16 nPort, bool bEncrypt, const uchar* pachTargetClientHashORKadID, bool bKad, UINT nReceiverVerifyKey);
+    bool	SendPacket(Packet* packet, const _CIPAddress& dwIP, uint16 nPort, bool bEncrypt, const uchar* pachTargetClientHashORKadID, bool bKad, UINT nReceiverVerifyKey);
     SocketSentBytes  SendControlData(UINT maxNumberOfBytesToSend, UINT minFragSize); // ZZ:UploadBandWithThrottler (UDP)
 
 protected:
-    //bool	ProcessPacket(const BYTE* packet, UINT size, uint8 opcode, UINT ip, uint16 port); //>>> WiZaRd::NatTraversal [Xanatos]
-    bool	ProcessModPacket(BYTE* packet, const UINT size, const uint8 opcode, const UINT ip, const uint16 port); //>>> WiZaRd::ModProt
+    //bool	ProcessPacket(const BYTE* packet, UINT size, uint8 opcode, const _CIPAddress& ip, uint16 port); //>>> WiZaRd::NatTraversal [Xanatos]
+    bool	ProcessModPacket(BYTE* packet, const UINT size, const uint8 opcode, const _CIPAddress& ip, const uint16 port); //>>> WiZaRd::ModProt
 
     virtual void	OnSend(int nErrorCode);
     virtual void	OnReceive(int nErrorCode);
 
 private:
-    int		SendTo(char* lpBuf,int nBufLen,UINT dwIP, uint16 nPort);
+    int		SendTo(char* lpBuf, int nBufLen, const _CIPAddress& dwIP, uint16 nPort);
     bool	IsBusy() const
     {
         return m_bWouldBlock;
@@ -73,10 +73,10 @@ private:
 
 //>>> WiZaRd::NatTraversal [Xanatos]
 public:
-    bool	ProcessPacket(const BYTE* packet, UINT size, uint8 opcode, UINT ip, uint16 port);
-    void	SetConnectionEncryption(UINT dwIP, uint16 nPort, bool bEncrypt, const uchar* pTargetClientHash = NULL);
-    byte*	GetHashForEncryption(UINT dwIP, uint16 nPort);
-    bool	IsObfuscating(UINT dwIP, uint16 nPort)
+    bool	ProcessPacket(const BYTE* packet, UINT size, uint8 opcode, const _CIPAddress& ip, uint16 port);
+    void	SetConnectionEncryption(const _CIPAddress& dwIP, uint16 nPort, bool bEncrypt, const uchar* pTargetClientHash = NULL);
+    byte*	GetHashForEncryption(const _CIPAddress& dwIP, uint16 nPort);
+    bool	IsObfuscating(const _CIPAddress& dwIP, uint16 nPort)
     {
         return GetHashForEncryption(dwIP, nPort) != NULL;
     }
@@ -85,15 +85,32 @@ public:
 private:
     struct SIpPort
     {
-        UINT dwIP;
+        _CIPAddress IP;
         uint16 nPort;
 
         bool operator< (const SIpPort &Other) const
         {
-            if (dwIP == Other.dwIP)
-                return nPort < Other.nPort;
-            return dwIP < Other.dwIP;
-        }
+			if(IP.Type() != Other.IP.Type())
+				return IP.Type() < Other.IP.Type();
+			if(IP.Type() == _CIPAddress::IPv6)
+			{
+				if(int cmp = memcmp(IP.Data(), Other.IP.Data(), 16))
+					return cmp < 0;
+			}
+			else if(IP.Type() == _CIPAddress::IPv4)
+			{
+				UINT r = IP.ToIPv4();
+				UINT l = Other.IP.ToIPv4();
+				if(r != l)
+					return r < l;
+			}
+			else
+			{
+				ASSERT(0);
+				return false;
+			}
+			return nPort < Other.nPort;
+		}
     };
 
     struct SHash

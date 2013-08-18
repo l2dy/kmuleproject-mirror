@@ -124,13 +124,20 @@ bool CUrlClient::SetUrl(LPCTSTR pszUrl, UINT nIP)
     SetUserName(szUrl);
 
     //NOTE: be very careful with what is stored in the following IP/ID/Port members!
-    if (nIP)
+//>>> WiZaRd::IPv6 [Xanatos]
+	if (nIP)
+		m_nConnectIP = _CIPAddress(_ntohl(nIP));
+	else
+		m_nConnectIP = _CIPAddress(_ntohl(inet_addr(CT2A(szHostName))));
+	m_nUserIDHybrid = m_nConnectIP.ToIPv4();
+    /*if (nIP)
         m_nConnectIP = nIP;
     else
         m_nConnectIP = inet_addr(CT2A(szHostName));
 //	if (m_nConnectIP == INADDR_NONE)
 //		m_nConnectIP = 0;
-    m_nUserIDHybrid = htonl(m_nConnectIP);
+    m_nUserIDHybrid = htonl(m_nConnectIP);*/
+//<<< WiZaRd::IPv6 [Xanatos]
     ASSERT(m_nUserIDHybrid != 0);
     m_nUserPort = Url.nPort;
     return true;
@@ -206,7 +213,10 @@ bool CUrlClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntimeCla
 
 void CUrlClient::Connect()
 {
-    if (GetConnectIP() != 0 && GetConnectIP() != INADDR_NONE)
+//>>> WiZaRd::IPv6 [Xanatos]
+	if (!GetConnectIP().IsNull() && GetConnectIP().ToIPv4() != INADDR_NONE)
+    //if (GetConnectIP() != 0 && GetConnectIP() != INADDR_NONE)
+//<<< WiZaRd::IPv6 [Xanatos]
     {
         CUpDownClient::Connect();
         return;

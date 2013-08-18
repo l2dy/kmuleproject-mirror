@@ -50,11 +50,19 @@ static char THIS_FILE[] = __FILE__;
 
 //>>> WiZaRd::FiX
 //helper function... use the available IP
-bool CompareIP(const CUpDownClient* client, const UINT dwIP)
+bool CompareIP(const CUpDownClient* client, const _CIPAddress& dwIP)
 {
-    if (client->GetIP() != 0)
-        return client->GetIP() == dwIP;
-    return client->GetConnectIP() == dwIP;
+//>>> WiZaRd::IPv6 [Xanatos]
+	_CIPAddress comp = dwIP.Type() == CAddress::IPv6 ? client->GetIPv6() : client->GetIP();
+	if(comp.IsNull())
+		comp = client->GetConnectIP();
+	if(!comp.IsNull())
+		return comp == dwIP;
+	return false;
+	/*if (client->GetIP() != 0)
+		return client->GetIP() == dwIP;
+	return client->GetConnectIP() == dwIP;*/
+//<<< WiZaRd::IPv6 [Xanatos]        
 }
 //<<< WiZaRd::FiX
 
@@ -308,7 +316,10 @@ bool CClientList::AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket*
     return false;
 }
 
-CUpDownClient* CClientList::FindClientByIP(UINT clientip, UINT port) const
+//>>> WiZaRd::IPv6 [Xanatos]
+CUpDownClient* CClientList::FindClientByIP(const _CIPAddress& clientip, UINT port) const
+//CUpDownClient* CClientList::FindClientByIP(UINT clientip, UINT port) const
+//<<< WiZaRd::IPv6 [Xanatos]
 {
     for (POSITION pos = list.GetHeadPosition(); pos != NULL;)
     {
@@ -319,7 +330,10 @@ CUpDownClient* CClientList::FindClientByIP(UINT clientip, UINT port) const
     return 0;
 }
 
-CUpDownClient* CClientList::FindClientByUserHash(const uchar* clienthash, UINT dwIP, uint16 nTCPPort) const
+//>>> WiZaRd::IPv6 [Xanatos]
+CUpDownClient* CClientList::FindClientByUserHash(const uchar* clienthash, const _CIPAddress& dwIP, uint16 nTCPPort) const
+//CUpDownClient* CClientList::FindClientByUserHash(const uchar* clienthash, UINT dwIP, uint16 nTCPPort) const
+//<<< WiZaRd::IPv6 [Xanatos]
 {
     CUpDownClient* pFound = NULL;
     for (POSITION pos = list.GetHeadPosition(); pos != NULL;)
@@ -327,7 +341,10 @@ CUpDownClient* CClientList::FindClientByUserHash(const uchar* clienthash, UINT d
         CUpDownClient* cur_client = list.GetNext(pos);
         if (!md4cmp(cur_client->GetUserHash() ,clienthash))
         {
-            if ((dwIP == 0 || CompareIP(cur_client, dwIP)) && (nTCPPort == 0 || nTCPPort == cur_client->GetUserPort()))
+//>>> WiZaRd::IPv6 [Xanatos]
+            if ((dwIP.IsNull() || CompareIP(cur_client, dwIP)) && (nTCPPort == 0 || nTCPPort == cur_client->GetUserPort()))
+            //if ((dwIP == 0 || CompareIP(cur_client, dwIP)) && (nTCPPort == 0 || nTCPPort == cur_client->GetUserPort()))
+//<<< WiZaRd::IPv6 [Xanatos]
                 return cur_client;
             else
                 pFound = pFound != NULL ? pFound : cur_client;
@@ -336,7 +353,10 @@ CUpDownClient* CClientList::FindClientByUserHash(const uchar* clienthash, UINT d
     return pFound;
 }
 
-CUpDownClient* CClientList::FindClientByIP(UINT clientip) const
+//>>> WiZaRd::IPv6 [Xanatos]
+CUpDownClient* CClientList::FindClientByIP(const _CIPAddress& clientip) const
+//CUpDownClient* CClientList::FindClientByIP(UINT clientip) const
+//<<< WiZaRd::IPv6 [Xanatos]
 {
     for (POSITION pos = list.GetHeadPosition(); pos != NULL;)
     {
@@ -347,7 +367,10 @@ CUpDownClient* CClientList::FindClientByIP(UINT clientip) const
     return 0;
 }
 
-CUpDownClient* CClientList::FindClientByIP_UDP(UINT clientip, UINT nUDPport) const
+//>>> WiZaRd::IPv6 [Xanatos]
+CUpDownClient* CClientList::FindClientByIP_UDP(const _CIPAddress& clientip, UINT nUDPport) const
+//CUpDownClient* CClientList::FindClientByIP_UDP(UINT clientip, UINT nUDPport) const
+//<<< WiZaRd::IPv6 [Xanatos]
 {
     for (POSITION pos = list.GetHeadPosition(); pos != NULL;)
     {
@@ -369,7 +392,10 @@ CUpDownClient* CClientList::FindClientByUserID_KadPort(UINT clientID, uint16 kad
     return 0;
 }
 
-CUpDownClient* CClientList::FindClientByIP_KadPort(UINT ip, uint16 port) const
+//>>> WiZaRd::IPv6 [Xanatos]
+CUpDownClient* CClientList::FindClientByIP_KadPort(const _CIPAddress& ip, uint16 port) const
+//CUpDownClient* CClientList::FindClientByIP_KadPort(UINT ip, uint16 port) const
+//<<< WiZaRd::IPv6 [Xanatos]
 {
     for (POSITION pos = list.GetHeadPosition(); pos != NULL;)
     {
@@ -428,8 +454,14 @@ void CClientList::RemoveAllBannedClients()
 
 void CClientList::AddTrackClient(CUpDownClient* toadd)
 {
+//>>> WiZaRd::IPv6 [Xanatos]
+	if(toadd->GetIP().Type() != CAddress::IPv4) // IPv6-TODO: Add IPv6 tracking
+		return;
+	UINT dwIP = _ntohl(toadd->GetIP().ToIPv4());
+	//UINT dwIP = toadd->GetIP();
+//<<< WiZaRd::IPv6 [Xanatos]
     CDeletedClient* pResult = 0;
-    if (m_trackedClientsList.Lookup(toadd->GetIP(), pResult))
+    if (m_trackedClientsList.Lookup(dwIP, pResult))
     {
         pResult->m_dwInserted = ::GetTickCount();
         for (int i = 0; i != pResult->m_ItemsList.GetCount(); i++)
@@ -446,7 +478,7 @@ void CClientList::AddTrackClient(CUpDownClient* toadd)
     }
     else
     {
-        m_trackedClientsList.SetAt(toadd->GetIP(), new CDeletedClient(toadd));
+        m_trackedClientsList.SetAt(dwIP, new CDeletedClient(toadd));
     }
 }
 
@@ -481,13 +513,19 @@ UINT CClientList::GetClientsFromIP(UINT dwIP) const
 
 void CClientList::TrackBadRequest(const CUpDownClient* upcClient, int nIncreaseCounter)
 {
+//>>> WiZaRd::IPv6 [Xanatos]
+	if(upcClient->GetIP().Type() != CAddress::IPv4) // IPv6-TODO: Add IPv6 tracking
+		return;
+	UINT dwIP = _ntohl(upcClient->GetIP().ToIPv4());
+	//UINT dwIP = upcClient->GetIP();
+//<<< WiZaRd::IPv6 [Xanatos]
     CDeletedClient* pResult = NULL;
-    if (upcClient->GetIP() == 0)
+    if (dwIP == 0)
     {
         ASSERT(0);
         return;
     }
-    if (m_trackedClientsList.Lookup(upcClient->GetIP(), pResult))
+    if (m_trackedClientsList.Lookup(dwIP, pResult))
     {
         pResult->m_dwInserted = ::GetTickCount();
         pResult->m_cBadRequest += nIncreaseCounter;
@@ -496,19 +534,25 @@ void CClientList::TrackBadRequest(const CUpDownClient* upcClient, int nIncreaseC
     {
         CDeletedClient* ccToAdd = new CDeletedClient(upcClient);
         ccToAdd->m_cBadRequest = nIncreaseCounter;
-        m_trackedClientsList.SetAt(upcClient->GetIP(), ccToAdd);
+        m_trackedClientsList.SetAt(dwIP, ccToAdd);
     }
 }
 
 UINT CClientList::GetBadRequests(const CUpDownClient* upcClient) const
 {
+//>>> WiZaRd::IPv6 [Xanatos]
+	if(upcClient->GetIP().Type() != CAddress::IPv4) // IPv6-TODO: Add IPv6 tracking
+		return 0;
+	UINT dwIP = _ntohl(upcClient->GetIP().ToIPv4());
+	//UINT dwIP = upcClient->GetIP();
+//<<< WiZaRd::IPv6 [Xanatos]
     CDeletedClient* pResult = NULL;
-    if (upcClient->GetIP() == 0)
+    if (dwIP == 0)
     {
         ASSERT(0);
         return 0;
     }
-    if (m_trackedClientsList.Lookup(upcClient->GetIP(), pResult))
+    if (m_trackedClientsList.Lookup(dwIP, pResult))
     {
         return pResult->m_cBadRequest;
     }
@@ -627,7 +671,10 @@ void CClientList::Process()
             {
                 if (thePrefs.GetDebugClientKadUDPLevel() > 0)
                     DebugSend("KADEMLIA_FIREWALLED_ACK_RES", cur_client->GetIP(), cur_client->GetKadPort());
-                Kademlia::CKademlia::GetUDPListener()->SendNullPacket(KADEMLIA_FIREWALLED_ACK_RES, ntohl(cur_client->GetIP()), cur_client->GetKadPort(), 0, NULL);
+//>>> WiZaRd::IPv6 [Xanatos]
+                Kademlia::CKademlia::GetUDPListener()->SendNullPacket(KADEMLIA_FIREWALLED_ACK_RES, cur_client->GetIP().ToIPv4(), cur_client->GetKadPort(), 0, NULL);
+                //Kademlia::CKademlia::GetUDPListener()->SendNullPacket(KADEMLIA_FIREWALLED_ACK_RES, ntohl(cur_client->GetIP()), cur_client->GetKadPort(), 0, NULL);
+//<<< WiZaRd::IPv6 [Xanatos]
             }
             //We are done with this client. Set Kad status to KS_NONE and it will be removed in the next cycle.
             if (cur_client != NULL)
@@ -826,7 +873,10 @@ bool CClientList::RequestTCP(Kademlia::CContact* contact, uint8 byConnectOptions
     if (GetLocalIP() == nContactIP && thePrefs.GetPort() == contact->GetTCPPort())
         return false;
 
-    CUpDownClient* pNewClient = FindClientByIP(nContactIP, contact->GetTCPPort());
+//>>> WiZaRd::IPv6 [Xanatos]
+    CUpDownClient* pNewClient = FindClientByIP(CAddress(_ntohl(nContactIP)), contact->GetTCPPort());
+    //CUpDownClient* pNewClient = FindClientByIP(nContactIP, contact->GetTCPPort());
+//<<< WiZaRd::IPv6 [Xanatos]
 
     if (!pNewClient)
         pNewClient = new CUpDownClient(0, contact->GetTCPPort(), contact->GetIPAddress(), 0, 0, false);
@@ -856,7 +906,10 @@ void CClientList::RequestBuddy(Kademlia::CContact* contact, uint8 byConnectOptio
     if (GetLocalIP() == nContactIP && thePrefs.GetPort() == contact->GetTCPPort())
         return;
 
-    CUpDownClient* pNewClient = FindClientByIP(nContactIP, contact->GetTCPPort());
+//>>> WiZaRd::IPv6 [Xanatos]
+    CUpDownClient* pNewClient = FindClientByIP(CAddress(_ntohl(nContactIP)), contact->GetTCPPort());
+    //CUpDownClient* pNewClient = FindClientByIP(nContactIP, contact->GetTCPPort());
+//<<< WiZaRd::IPv6 [Xanatos]
     if (!pNewClient)
         pNewClient = new CUpDownClient(0, contact->GetTCPPort(), contact->GetIPAddress(), 0, 0, false);
     else if (pNewClient->GetKadState() != KS_NONE)
@@ -883,7 +936,10 @@ bool CClientList::IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128*
     UINT nContactIP = ntohl(contact->GetIPAddress());
     //If eMule already knows this client, abort this.. It could cause conflicts.
     //Although the odds of this happening is very small, it could still happen.
-    if (FindClientByIP(nContactIP, contact->GetTCPPort()))
+//>>> WiZaRd::IPv6 [Xanatos]
+    if (FindClientByIP(CAddress(_ntohl(nContactIP)), contact->GetTCPPort()))
+    //if (FindClientByIP(nContactIP, contact->GetTCPPort()))
+//<<< WiZaRd::IPv6 [Xanatos]
         return false;
     else if (IsKadFirewallCheckIP(nContactIP))  // doing a kad firewall check with this IP, abort
     {
@@ -939,7 +995,10 @@ void CClientList::AddToKadList(CUpDownClient* toadd)
 bool CClientList::DoRequestFirewallCheckUDP(const Kademlia::CContact& contact)
 {
     // first make sure we don't know this IP already from somewhere
-    if (FindClientByIP(ntohl(contact.GetIPAddress())) != NULL)
+//>>> WiZaRd::IPv6 [Xanatos]
+    if (FindClientByIP(CAddress(contact.GetIPAddress())) != NULL)
+    //if (FindClientByIP(ntohl(contact.GetIPAddress())) != NULL)
+//<<< WiZaRd::IPv6 [Xanatos]
         return false;
     // fine, justcreate the client object, set the state and wait
     // TODO: We don't know the clients usershash, this means we cannot build an obfuscated connection, which

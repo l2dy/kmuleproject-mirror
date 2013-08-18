@@ -67,7 +67,7 @@ BOOL CAddFriend::OnInitDialog()
         SendDlgItemMessage(IDC_PORT, EM_SETREADONLY, TRUE);
         SendDlgItemMessage(IDC_USERNAME, EM_SETREADONLY, TRUE);
 
-        SetDlgItemInt(IDC_IP, m_pShowFriend->m_dwLastUsedIP, FALSE);
+        SetDlgItemText(IDC_IP, ipstr(m_pShowFriend->m_dwLastUsedIP));
         SetDlgItemInt(IDC_PORT, m_pShowFriend->m_nLastUsedPort, FALSE);
         SetDlgItemText(IDC_USERNAME, m_pShowFriend->m_strName);
         if (m_pShowFriend->HasUserhash())
@@ -159,7 +159,10 @@ void CAddFriend::OnAddBtn()
         // why did we offer an edit control for entering the userhash but did not store it?
         ;
 
-        if (!theApp.friendlist->AddFriend(NULL, 0, ip, (uint16)uPort, 0, strUserName, 0))
+//>>> WiZaRd::IPv6 [Xanatos]
+		if (!theApp.friendlist->AddFriend(NULL, 0, CAddress(_ntohl(ip)), (uint16)uPort, 0, strUserName, 0))
+        //if (!theApp.friendlist->AddFriend(NULL, 0, ip, (uint16)uPort, 0, strUserName, 0))
+//<<< WiZaRd::IPv6 [Xanatos]
         {
             AfxMessageBox(GetResString(IDS_WRN_FRIENDDUPLIPPORT));
             GetDlgItem(IDC_IP)->SetFocus();

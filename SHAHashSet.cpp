@@ -609,9 +609,13 @@ bool CAICHHashTree::ReduceToBaseSize(uint64 nBaseSize)
 
 /////////////////////////////////////////////////////////////////////////////////////////
 ///CAICHUntrustedHash
-bool CAICHUntrustedHash::AddSigningIP(UINT dwIP, bool bTestOnly)
+//>>> WiZaRd::IPv6 [Xanatos]
+bool CAICHUntrustedHash::AddSigningIP(const _CIPAddress& dwIP, bool bTestOnly)
 {
-    dwIP &= 0x00F0FFFF; // we use only the 20 most significant bytes for unique IPs
+//bool CAICHUntrustedHash::AddSigningIP(UINT dwIP, bool bTestOnly)
+// {
+//     dwIP &= 0x00F0FFFF; // we use only the 20 most significant bytes for unique IPs
+//<<< WiZaRd::IPv6 [Xanatos]
     for (int i=0; i < m_adwIpsSigning.GetCount(); i++)
     {
         if (m_adwIpsSigning[i] == dwIP)
@@ -1101,7 +1105,10 @@ void CAICHRecoveryHashSet::SetFileSize(EMFileSize nSize)
     m_pHashTree.SetBaseSize((nSize <= (uint64)PARTSIZE) ? EMBLOCKSIZE : PARTSIZE);
 }
 
-void CAICHRecoveryHashSet::UntrustedHashReceived(const CAICHHash& Hash, UINT dwFromIP)
+//>>> WiZaRd::IPv6 [Xanatos]
+void CAICHRecoveryHashSet::UntrustedHashReceived(const CAICHHash& Hash, const _CIPAddress& dwFromIP)
+//void CAICHRecoveryHashSet::UntrustedHashReceived(const CAICHHash& Hash, UINT dwFromIP)
+//<<< WiZaRd::IPv6 [Xanatos]
 {
     switch (GetStatus())
     {
@@ -1129,7 +1136,7 @@ void CAICHRecoveryHashSet::UntrustedHashReceived(const CAICHHash& Hash, UINT dwF
         {
             if (!m_aUntrustedHashs[i].AddSigningIP(dwFromIP, true))
             {
-                AddDebugLogLine(DLP_LOW, false, _T("Received different AICH hashs for file %s from IP/20 %s, ignored"), (m_pOwner != NULL) ? m_pOwner->GetFileName() : L"", dwFromIP);
+                AddDebugLogLine(DLP_LOW, false, _T("Received different AICH hashs for file %s from IP/20 %s, ignored"), (m_pOwner != NULL) ? m_pOwner->GetFileName() : L"", ipstr(dwFromIP));
                 // nothing changed, so we can return early without any rechecks
                 return;
             }

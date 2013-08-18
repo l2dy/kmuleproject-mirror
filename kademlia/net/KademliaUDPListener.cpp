@@ -2098,7 +2098,10 @@ void CKademliaUDPListener::SendPacket(const byte *pbyData, UINT uLenData, UINT u
     if (uLenData > 200)
         pPacket->PackPacket();
     theStats.AddUpDataOverheadKad(pPacket->size);
-    theApp.clientudp->SendPacket(pPacket, ntohl(uDestinationHost), uDestinationPort, true
+//>>> WiZaRd::IPv6 [Xanatos]
+	theApp.clientudp->SendPacket(pPacket, _CIPAddress(uDestinationHost), uDestinationPort, true
+    //theApp.clientudp->SendPacket(pPacket, ntohl(uDestinationHost), uDestinationPort, true
+//<<< WiZaRd::IPv6 [Xanatos]
                                  , (uCryptTargetID != NULL) ? uCryptTargetID->GetData() : NULL
                                  , true , targetUDPKey.GetKeyValue(theApp.GetPublicIP(false)));
 }
@@ -2114,7 +2117,10 @@ void CKademliaUDPListener::SendPacket(const byte *pbyData, UINT uLenData, byte b
     if (uLenData > 200)
         pPacket->PackPacket();
     theStats.AddUpDataOverheadKad(pPacket->size);
-    theApp.clientudp->SendPacket(pPacket, ntohl(uDestinationHost), uDestinationPort, true
+//>>> WiZaRd::IPv6 [Xanatos]
+	theApp.clientudp->SendPacket(pPacket, _CIPAddress(uDestinationHost), uDestinationPort, true
+    //theApp.clientudp->SendPacket(pPacket, ntohl(uDestinationHost), uDestinationPort, true
+//<<< WiZaRd::IPv6 [Xanatos]
                                  , (uCryptTargetID != NULL) ? uCryptTargetID->GetData() : NULL
                                  , true , targetUDPKey.GetKeyValue(theApp.GetPublicIP(false)));
 }
@@ -2127,7 +2133,10 @@ void CKademliaUDPListener::SendPacket(CSafeMemFile *pbyData, byte byOpcode, UINT
     if (pPacket->size > 200)
         pPacket->PackPacket();
     theStats.AddUpDataOverheadKad(pPacket->size);
-    theApp.clientudp->SendPacket(pPacket, ntohl(uDestinationHost), uDestinationPort, true
+//>>> WiZaRd::IPv6 [Xanatos]
+	theApp.clientudp->SendPacket(pPacket, CAddress(uDestinationHost), uDestinationPort, true
+    //theApp.clientudp->SendPacket(pPacket, ntohl(uDestinationHost), uDestinationPort, true
+//<<< WiZaRd::IPv6 [Xanatos]
                                  , (uCryptTargetID != NULL) ? uCryptTargetID->GetData() : NULL
                                  , true , targetUDPKey.GetKeyValue(theApp.GetPublicIP(false)));
 }

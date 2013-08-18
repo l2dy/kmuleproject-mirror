@@ -85,8 +85,12 @@ public:
         return waitinglist.GetAt(curpos);
     }
 
-    CUpDownClient*	GetWaitingClientByIP_UDP(UINT dwIP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs = NULL);
-    CUpDownClient*	GetWaitingClientByIP(UINT dwIP);
+//>>> WiZaRd::IPv6 [Xanatos]
+	CUpDownClient*	GetWaitingClientByIP_UDP(const _CIPAddress& IP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs = NULL);
+	CUpDownClient*	GetWaitingClientByIP(const _CIPAddress& IP);
+//     CUpDownClient*	GetWaitingClientByIP_UDP(UINT dwIP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs = NULL);
+//     CUpDownClient*	GetWaitingClientByIP(UINT dwIP);
+//<<< WiZaRd::IPv6 [Xanatos]
     CUpDownClient*	GetNextClient(const CUpDownClient* update);
 
 

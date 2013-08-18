@@ -321,6 +321,7 @@
     <ClCompile Include="Mod\ModIconMapping.cpp" />
     <ClCompile Include="Mod\Modname.cpp" />
     <ClCompile Include="Mod\ModProt.cpp" />
+    <ClCompile Include="Mod\Neo\Address.cpp" />
     <ClCompile Include="Mod\Neo\Buffer.cpp" />
     <ClCompile Include="Mod\Neo\UtpSocket.cpp" />
     <ClCompile Include="Mod\NetF\CrumbHashSet.cpp" />
@@ -1010,6 +1011,7 @@
     <ClInclude Include="Mod\Modname.h" />
     <ClInclude Include="Mod\ModOpcodes.h" />
     <ClInclude Include="Mod\ModProt.h" />
+    <ClInclude Include="Mod\Neo\Address.h" />
     <ClInclude Include="Mod\Neo\Buffer.h" />
     <ClInclude Include="Mod\Neo\UtpSocket.h" />
     <ClInclude Include="Mod\NetF\CrumbHashSet.h" />

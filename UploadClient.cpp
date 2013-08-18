@@ -1363,8 +1363,16 @@ void CUpDownClient::AddRequestCount(const uchar* fileid)
 
 void  CUpDownClient::UnBan()
 {
+//>>> WiZaRd::IPv6 [Xanatos]
+	// IPv6-TODO: Add IPv6 ban list
+	if(GetIPv4().IsNull())
+		return;
+//<<< WiZaRd::IPv6 [Xanatos]
     theApp.clientlist->AddTrackClient(this);
-    theApp.clientlist->RemoveBannedClient(GetIP());
+//>>> WiZaRd::IPv6 [Xanatos]
+	theApp.clientlist->RemoveBannedClient(_ntohl(GetIP().ToIPv4()));
+    //theApp.clientlist->RemoveBannedClient(GetIP());
+//<<< WiZaRd::IPv6 [Xanatos]
     SetUploadState(US_NONE);
     ClearWaitStartTime();
     theApp.emuledlg->transferwnd->ShowQueueCount(theApp.uploadqueue->GetWaitingUserCount());
@@ -1378,6 +1386,11 @@ void  CUpDownClient::UnBan()
 
 void CUpDownClient::Ban(LPCTSTR pszReason)
 {
+//>>> WiZaRd::IPv6 [Xanatos]
+	// IPv6-TODO: Add IPv6 ban list
+	if(GetIPv4().IsNull())
+		return;
+//<<< WiZaRd::IPv6 [Xanatos]
     SetChatState(MS_NONE);
     theApp.clientlist->AddTrackClient(this);
     if (!IsBanned())
@@ -1392,7 +1405,10 @@ void CUpDownClient::Ban(LPCTSTR pszReason)
             AddDebugLogLine(false,_T("Banned: (refreshed): %s; %s"), pszReason==NULL ? _T("Aggressive behaviour") : pszReason, DbgGetClientInfo());
     }
 #endif
-    theApp.clientlist->AddBannedClient(GetIP());
+//>>> WiZaRd::IPv6 [Xanatos]
+	theApp.clientlist->AddBannedClient(_ntohl(GetIP().ToIPv4()));
+    //theApp.clientlist->AddBannedClient(GetIP());
+//<<< WiZaRd::IPv6 [Xanatos]
     SetUploadState(US_BANNED);
     theApp.emuledlg->transferwnd->ShowQueueCount(theApp.uploadqueue->GetWaitingUserCount());
     theApp.emuledlg->transferwnd->GetQueueList()->RefreshClient(this);

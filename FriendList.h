@@ -31,14 +31,17 @@ public:
     void		SaveList();
     bool		LoadList();
     void		RefreshFriend(CFriend* torefresh) const;
-    CFriend*	SearchFriend(const uchar* achUserHash, UINT dwIP, uint16 nPort) const;
+    CFriend*	SearchFriend(const uchar* achUserHash, _CIPAddress dwIP, uint16 nPort) const;
     void		SetWindow(CFriendListCtrl* NewWnd)
     {
         m_wndOutput = NewWnd;
     }
     void		ShowFriends() const;
     bool		AddFriend(CUpDownClient* toadd);
-    bool		AddFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort,
+//>>> WiZaRd::IPv6 [Xanatos]
+	bool		AddFriend(const uchar* abyUserhash, UINT dwLastSeen, const _CIPAddress& dwLastUsedIP, uint16 nLastUsedPort, 
+    //bool		AddFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort,
+//<<< WiZaRd::IPv6 [Xanatos]
                           UINT dwLastChatted, LPCTSTR pszName, UINT dwHasHash);
     void		RemoveFriend(CFriend* todel);
     void		RemoveAllFriendSlots();

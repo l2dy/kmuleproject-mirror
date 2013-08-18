@@ -618,7 +618,10 @@ BOOL CChatSelector::OnCommand(WPARAM wParam, LPARAM lParam)
         const CChatItem* ci = GetItemByIndex(m_iContextIndex);
         if (ci)
         {
-            CFriend* fr = theApp.friendlist->SearchFriend(ci->client->GetUserHash(), 0, 0);
+//>>> WiZaRd::IPv6 [Xanatos]
+			CFriend* fr = theApp.friendlist->SearchFriend(ci->client->GetUserHash(), _CIPAddress(), 0);
+            //CFriend* fr = theApp.friendlist->SearchFriend(ci->client->GetUserHash(), 0, 0);
+//<<< WiZaRd::IPv6 [Xanatos]
             if (!fr)
                 theApp.friendlist->AddFriend(ci->client);
         }
@@ -629,7 +632,10 @@ BOOL CChatSelector::OnCommand(WPARAM wParam, LPARAM lParam)
         const CChatItem* ci = GetItemByIndex(m_iContextIndex);
         if (ci)
         {
-            CFriend* fr = theApp.friendlist->SearchFriend(ci->client->GetUserHash(), 0, 0);
+//>>> WiZaRd::IPv6 [Xanatos]
+			CFriend* fr = theApp.friendlist->SearchFriend(ci->client->GetUserHash(), _CIPAddress(), 0);
+            //CFriend* fr = theApp.friendlist->SearchFriend(ci->client->GetUserHash(), 0, 0);
+//<<< WiZaRd::IPv6 [Xanatos]
             if (fr)
                 theApp.friendlist->RemoveFriend(fr);
         }
@@ -665,7 +671,10 @@ void CChatSelector::OnContextMenu(CWnd*, CPoint point)
     if (ci == NULL)
         return;
 
-    CFriend* pFriend = theApp.friendlist->SearchFriend(ci->client->GetUserHash(), 0, 0);
+//>>> WiZaRd::IPv6 [Xanatos]
+	CFriend* pFriend = theApp.friendlist->SearchFriend(ci->client->GetUserHash(), _CIPAddress(), 0);
+    //CFriend* pFriend = theApp.friendlist->SearchFriend(ci->client->GetUserHash(), 0, 0);
+//<<< WiZaRd::IPv6 [Xanatos]
 
     CTitleMenu menu;
     menu.CreatePopupMenu();

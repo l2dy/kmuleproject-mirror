@@ -84,7 +84,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Base
     CUpDownClient(CClientReqSocket* sender = 0);
-    CUpDownClient(CPartFile* in_reqfile, uint16 in_port, UINT in_userid, UINT in_serverup, uint16 in_serverport, bool ed2kID = false);
+    CUpDownClient(CPartFile* in_reqfile, uint16 in_port, UINT in_userid, UINT in_serverup, uint16 in_serverport, bool ed2kID = false);	
     virtual ~CUpDownClient();
 
     void			StartDownload();
@@ -118,20 +118,27 @@ public:
         return m_pszUsername;
     }
     void			SetUserName(LPCTSTR pszNewName);
-    UINT			GetIP() const
+    _CIPAddress		GetIP() const
     {
         return m_dwUserIP;
     }
-    void			SetIP(UINT val)   //Only use this when you know the real IP or when your clearing it.
+    void			SetIP(_CIPAddress val)   //Only use this when you know the real IP or when your clearing it.
     {
-        m_dwUserIP = val;
-        m_nConnectIP = val;
+//>>> WiZaRd::IPv6 [Xanatos]
+		if(val.Convert(CAddress::IPv4)) // Check if the IP is a mapped IPv4
+			m_UserIPv4 = val;
+		else
+			m_UserIPv6 = val;
+		UpdateIP(val);
+//<<< WiZaRd::IPv6 [Xanatos]
+        //m_dwUserIP = val;
+        //m_nConnectIP = val;
     }
     __inline bool	HasLowID() const
     {
         return (m_nUserIDHybrid < 16777216);
     }
-    UINT			GetConnectIP() const
+    _CIPAddress		GetConnectIP() const
     {
         return m_nConnectIP;
     }
@@ -888,8 +895,8 @@ protected:
     void	SendFirewallCheckUDPRequest();
     void	SendHashSetRequest();
 
-    UINT	m_nConnectIP;		// holds the supposed IP or (after we had a connection) the real IP
-    UINT	m_dwUserIP;			// holds 0 (real IP not yet available) or the real IP (after we had a connection)
+    _CIPAddress	m_nConnectIP;		// holds the supposed IP or (after we had a connection) the real IP	
+    _CIPAddress	m_dwUserIP;			// holds 0 (real IP not yet available) or the real IP (after we had a connection)
     UINT	m_dwServerIP;
     UINT	m_nUserIDHybrid;
     uint16	m_nUserPort;
@@ -920,7 +927,7 @@ protected:
     uint8	m_byInfopacketsReceived;	// have we received the edonkeyprot and emuleprot packet already (see InfoPacketsReceived() )
     uint8	m_bySupportSecIdent;
     //--group to aligned int32
-    UINT	m_dwLastSignatureIP;
+    _CIPAddress	m_dwLastSignatureIP; //>>> WiZaRd::IPv6 [Xanatos]
     CString m_strClientSoftware;
     CString m_strModVersion;
     UINT	m_dwLastSourceRequest;
@@ -1275,10 +1282,26 @@ public:
 //<<< WiZaRd::NatTraversal [Xanatos]
 //>>> WiZaRd::IPv6 [Xanatos]
 public:
-	bool	SupportsIPv6() const	{return m_fSupportsIPv6;}
-	// TODO: pseudo feature - does nothing right now!
-	bool	HasIPv6() const			{return false;}
-	UINT	GetIPv6() const			{return 0;}
+	CUpDownClient(CPartFile* in_reqfile, uint16 in_port, const _CIPAddress& IP, UINT in_serverup, uint16 in_serverport);
+	bool	SupportsIPv6() const							{return m_fSupportsIPv6;}
+	const CAddress&	GetIPv4() const							{return m_UserIPv4;}
+	const CAddress&	GetIPv6() const							{return m_UserIPv6;}
+	bool	IsIPv6Open() const								{return m_bOpenIPv6;}
+	void	UpdateIP( const CAddress& val )
+	{
+		m_nConnectIP = val;
+		m_dwUserIP = val;
+	}
+	void			SetIPv6(const CAddress& val)
+	{
+		ASSERT(val.Type() == CAddress::IPv6);
+		m_UserIPv6 = val;
+		m_bOpenIPv6 = true;
+	}
+protected:
+	_CIPAddress m_UserIPv6;
+	bool	 m_bOpenIPv6;
+	_CIPAddress m_UserIPv4;
 //<<< WiZaRd::IPv6 [Xanatos]
 //>>> WiZaRd::ExtendedXS [Xanatos]
 public:

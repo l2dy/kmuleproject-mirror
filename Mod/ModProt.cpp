@@ -239,7 +239,10 @@ bool CClientReqSocket::ProcessModPacket(const BYTE* packet, const UINT size, con
     return true;
 }
 
-bool CClientUDPSocket::ProcessModPacket(BYTE* /*packet*/, const UINT size, const uint8 opcode, const UINT ip, const uint16 port)
+//>>> WiZaRd::IPv6 [Xanatos]
+bool CClientUDPSocket::ProcessModPacket(BYTE* /*packet*/, const UINT size, const uint8 opcode, const _CIPAddress& ip, const uint16 port)
+//bool CClientUDPSocket::ProcessModPacket(BYTE* /*packet*/, const UINT size, const uint8 opcode, const UINT ip, const uint16 port)
+//<<< WiZaRd::IPv6 [Xanatos]
 {
 //	const UINT protocol = OP_MODPROT;
     CUpDownClient* client = theApp.clientlist->FindClientByIP_UDP(ip, port);

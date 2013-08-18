@@ -227,7 +227,10 @@ BOOL CFriendListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                 cur_friend->GetLinkedClient()->RequestSharedFileList();
             else
             {
-                CUpDownClient* newclient = new CUpDownClient(0, cur_friend->m_nLastUsedPort, cur_friend->m_dwLastUsedIP, 0, 0, true);
+//>>> WiZaRd::IPv6 [Xanatos]
+				CUpDownClient* newclient = new CUpDownClient(0, cur_friend->m_nLastUsedPort, cur_friend->m_dwLastUsedIP, 0, 0);
+                //CUpDownClient* newclient = new CUpDownClient(0, cur_friend->m_nLastUsedPort, cur_friend->m_dwLastUsedIP, 0, 0, true);
+//<<< WiZaRd::IPv6 [Xanatos]
 //>>> WiZaRd::Easy ModVersion
                 //Short note: because of the overhead saving code in baseclient by Morph
                 //const bool bSend = !m_pszUsername || !m_strModVersion.IsEmpty();

@@ -41,6 +41,10 @@
 #include "Log.h"
 #include "./Mod/ClientAnalyzer.h" //>>> WiZaRd::ClientAnalyzer
 #include "./Mod/Neo/UtpSocket.h" //>>> WiZaRd::NatTraversal [Xanatos]
+//>>> WiZaRd::IPv6 [Xanatos]
+#include <iphlpapi.h>
+#pragma comment(lib, "IPHLPAPI.lib")
+//<<< WiZaRd::IPv6 [Xanatos]
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1025,16 +1029,24 @@ bool CUploadQueue::CanForceClient(UINT curUploadSlots) const
     return false;
 }
 
-CUpDownClient* CUploadQueue::GetWaitingClientByIP_UDP(UINT dwIP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs)
+//>>> WiZaRd::IPv6 [Xanatos]
+CUpDownClient* CUploadQueue::GetWaitingClientByIP_UDP(const _CIPAddress& IP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs)
+//CUpDownClient* CUploadQueue::GetWaitingClientByIP_UDP(UINT dwIP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs)
+//<<< WiZaRd::IPv6 [Xanatos]
 {
     CUpDownClient* pMatchingIPClient = NULL;
     UINT cMatches = 0;
     for (POSITION pos = waitinglist.GetHeadPosition(); pos != 0;)
     {
         CUpDownClient* cur_client = waitinglist.GetNext(pos);
-        if (dwIP == cur_client->GetIP() && nUDPPort == cur_client->GetUDPPort())
-            return cur_client;
-        else if (dwIP == cur_client->GetIP() && bIgnorePortOnUniqueIP)
+//>>> WiZaRd::IPv6 [Xanatos]
+		if ((IP.Type() == CAddress::IPv6 ? IP == cur_client->GetIPv6() : IP == cur_client->GetIP()) && nUDPPort == cur_client->GetUDPPort())
+			return cur_client;
+		else if ((IP.Type() == CAddress::IPv6 ? IP == cur_client->GetIPv6() : IP == cur_client->GetIP()) && bIgnorePortOnUniqueIP)
+//         if (dwIP == cur_client->GetIP() && nUDPPort == cur_client->GetUDPPort())
+//             return cur_client;
+//         else if (dwIP == cur_client->GetIP() && bIgnorePortOnUniqueIP)
+//<<< WiZaRd::IPv6 [Xanatos]
         {
             pMatchingIPClient = cur_client;
             cMatches++;
@@ -1049,12 +1061,18 @@ CUpDownClient* CUploadQueue::GetWaitingClientByIP_UDP(UINT dwIP, uint16 nUDPPort
         return NULL;
 }
 
-CUpDownClient* CUploadQueue::GetWaitingClientByIP(UINT dwIP)
+//>>> WiZaRd::IPv6 [Xanatos]
+CUpDownClient* CUploadQueue::GetWaitingClientByIP(const _CIPAddress& IP)
+//CUpDownClient* CUploadQueue::GetWaitingClientByIP(UINT dwIP)
+//<<< WiZaRd::IPv6 [Xanatos]
 {
     for (POSITION pos = waitinglist.GetHeadPosition(); pos != 0;)
     {
         CUpDownClient* cur_client = waitinglist.GetNext(pos);
-        if (dwIP == cur_client->GetIP())
+//>>> WiZaRd::IPv6 [Xanatos]
+		if (IP.Type() == CAddress::IPv6 ? IP == cur_client->GetIPv6() : IP == cur_client->GetIP())
+        //if (dwIP == cur_client->GetIP())
+//<<< WiZaRd::IPv6 [Xanatos]
             return cur_client;
     }
     return 0;
@@ -1224,7 +1242,11 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
             DEBUG_ONLY(AddDebugLogLine(false,_T("%s's (%s) request to enter the queue was rejected, because of too many clients with the same IP"), client->GetUserName(), ipstr(client->GetConnectIP())));
         return;
     }
-    else if (theApp.clientlist->GetClientsFromIP(client->GetIP()) >= 3)
+//>>> WiZaRd::IPv6 [Xanatos]
+	// IPv6-TODO: Add IPv6 ban list
+	else if (client->GetIP().Type() == CAddress::IPv4 && theApp.clientlist->GetClientsFromIP(_ntohl(client->GetIP().ToIPv4())) >= 3)
+    //else if (theApp.clientlist->GetClientsFromIP(client->GetIP()) >= 3)
+//<<< WiZaRd::IPv6 [Xanatos]
     {
         if (thePrefs.GetVerbose())
             DEBUG_ONLY(AddDebugLogLine(false,_T("%s's (%s) request to enter the queue was rejected, because of too many clients with the same IP (found in TrackedClientsList)"), client->GetUserName(), ipstr(client->GetConnectIP())));
@@ -1578,6 +1600,45 @@ VOID CALLBACK CUploadQueue::UploadTimer(HWND /*hwnd*/, UINT /*uMsg*/, UINT_PTR /
         if (counter >= 10)
         {
             counter=0;
+
+//>>> WiZaRd::IPv6 [Xanatos]
+			ULONG outBufLen = 0;
+			DWORD dwRetVal = GetAdaptersAddresses(AF_INET6/*AF_UNSPEC*/, GAA_FLAG_INCLUDE_PREFIX, NULL, NULL, &outBufLen);
+			ASSERT(dwRetVal == ERROR_BUFFER_OVERFLOW);
+			PIP_ADAPTER_ADDRESSES pAddresses = (IP_ADAPTER_ADDRESSES *) malloc(outBufLen);
+			if(GetAdaptersAddresses(AF_INET6/*AF_UNSPEC*/, GAA_FLAG_INCLUDE_PREFIX, NULL, pAddresses, &outBufLen) == NO_ERROR)
+			{
+				for(PIP_ADAPTER_ADDRESSES pCurrAddresses = pAddresses; pCurrAddresses; pCurrAddresses = pCurrAddresses->Next) 
+				{
+					for (PIP_ADAPTER_UNICAST_ADDRESS pUnicast = pCurrAddresses->FirstUnicastAddress; pUnicast != NULL; pUnicast = pUnicast->Next)
+					{
+						if (pUnicast->Address.lpSockaddr->sa_family != AF_INET6)
+							continue;
+
+						sockaddr_in6 *sa_in6 = (sockaddr_in6 *)pUnicast->Address.lpSockaddr;
+						if(sa_in6->sin6_addr.u.Byte[0] == 0x00)
+							continue; // IP is local loopback address
+						if(sa_in6->sin6_addr.u.Byte[0] == 0xFE && sa_in6->sin6_addr.u.Byte[1] == 0x80)
+							continue; // IP that is constructed from MAC address, and is only available to machines on the same switch.
+						if(sa_in6->sin6_addr.u.Byte[11] == 0xFF && sa_in6->sin6_addr.u.Byte[12] == 0xFE)
+							continue; // IP that is constructed from MAC address and ISP provided subnet prefix. This could be seen as your static IP.
+						// IP that is constructed from ISP provided subnet prefix and some random digits. 
+						// This IP changes every time you power on your PC, and is the IP newer versions of Windows uses as the preferred source IP.
+
+						CAddress IPv6;
+						IPv6.FromSA(pUnicast->Address.lpSockaddr, pUnicast->Address.iSockaddrLength);
+						if(IPv6 != theApp.GetPublicIPv6())
+						{
+							theApp.SetPublicIPv6(IPv6);
+							DebugLog(L"Found Public IPv6: %s", IPv6.ToStringW().c_str());
+						}
+						break;
+					}
+				}
+			}
+			if (pAddresses)
+				free(pAddresses);
+//<<< WiZaRd::IPv6 [Xanatos]
 
             // try to use different time intervals here to not create any disk-IO bottle necks by saving all files at once
             theApp.clientcredits->Process();	// 13 minutes

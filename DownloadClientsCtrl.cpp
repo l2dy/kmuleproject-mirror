@@ -544,7 +544,11 @@ BOOL CDownloadClientsCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
         }
         case MP_BOOT:
             if (client->GetKadPort() && client->GetKadVersion() > 1)
-                Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
+//>>> WiZaRd::IPv6 [Xanatos]
+				if(!client->GetIPv4().IsNull())
+					Kademlia::CKademlia::Bootstrap(client->GetIPv4().ToIPv4(), client->GetKadPort());
+                //Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
+//<<< WiZaRd::IPv6 [Xanatos]
             break;
         }
     }

@@ -99,11 +99,22 @@ public:
         return m_pCredits;
     }
     void	ClearWaitStartTime();
-    void	AddDownloaded(UINT bytes, UINT dwForIP);
-    void	AddUploaded(UINT bytes, UINT dwForIP);
+//>>> WiZaRd::IPv6 [Xanatos]
+	void	AddDownloaded(UINT bytes, const _CIPAddress& ForIP);
+	void	AddUploaded(UINT bytes, const _CIPAddress& ForIP);
+	float	GetScoreRatio(const _CIPAddress& ForIP) /*const*/; //>>> WiZaRd::CPU calm down
+	EIdentState	GetCurrentIdentState(const _CIPAddress& ForIP) const; // can be != IdentState
+	UINT	GetSecureWaitStartTime(const _CIPAddress& ForIP);
+	void	SetSecWaitStartTime(const _CIPAddress& ForIP);
+//  void	AddDownloaded(UINT bytes, UINT dwForIP);
+//  void	AddUploaded(UINT bytes, UINT dwForIP);
+// 	float	GetScoreRatio(UINT dwForIP) /*const*/; //>>> WiZaRd::CPU calm down
+// 	EIdentState	GetCurrentIdentState(UINT dwForIP) const; // can be != IdentState
+// 	UINT	GetSecureWaitStartTime(UINT dwForIP);
+// 	void	SetSecWaitStartTime(UINT dwForIP);
+//<<< WiZaRd::IPv6 [Xanatos]
     uint64	GetUploadedTotal() const;
-    uint64	GetDownloadedTotal() const;
-    float	GetScoreRatio(UINT dwForIP) /*const*/; //>>> WiZaRd::CPU calm down
+    uint64	GetDownloadedTotal() const;    
     void	SetLastSeen()
     {
         m_pCredits->nLastSeen = time(NULL);
@@ -111,21 +122,25 @@ public:
     bool	SetSecureIdent(const uchar* pachIdent, uint8 nIdentLen); // Public key cannot change, use only if there is not public key yet
     UINT	m_dwCryptRndChallengeFor;
     UINT	m_dwCryptRndChallengeFrom;
-    EIdentState	GetCurrentIdentState(UINT dwForIP) const; // can be != IdentState
-    UINT	GetSecureWaitStartTime(UINT dwForIP);
-    void	SetSecWaitStartTime(UINT dwForIP);
 protected:
-    void	Verified(UINT dwForIP);
+//>>> WiZaRd::IPv6 [Xanatos]
+	void	Verified(const _CIPAddress& ForIP);
+    //void	Verified(UINT dwForIP);
+//<<< WiZaRd::IPv6 [Xanatos]
     EIdentState IdentState;
 private:
     void			InitalizeIdent();
     CreditStruct*	m_pCredits;
     byte			m_abyPublicKey[80];			// even keys which are not verified will be stored here, and - if verified - copied into the struct
     uint8			m_nPublicKeyLen;
-    UINT			m_dwIdentIP;
+//>>> WiZaRd::IPv6 [Xanatos]
+	_CIPAddress		m_dwIdentIP;
+	_CIPAddress		m_dwWaitTimeIP;			   // client IP assigned to the waittime
+    //UINT			m_dwIdentIP;
+	//UINT			m_dwWaitTimeIP;			   // client IP assigned to the waittime
+//<<< WiZaRd::IPv6 [Xanatos]
     UINT			m_dwSecureWaitTime;
-    UINT			m_dwUnSecureWaitTime;
-    UINT			m_dwWaitTimeIP;			   // client IP assigned to the waittime
+    UINT			m_dwUnSecureWaitTime;    
 
 //>>> WiZaRd::CPU calm down
 private:
@@ -141,8 +156,12 @@ public:
     ~CClientCreditsList();
 
     // return signature size, 0 = Failed | use sigkey param for debug only
-    uint8	CreateSignature(CClientCredits* pTarget, uchar* pachOutput, uint8 nMaxSize, UINT ChallengeIP, uint8 byChaIPKind, CryptoPP::RSASSA_PKCS1v15_SHA_Signer* sigkey = NULL);
-    bool	VerifyIdent(CClientCredits* pTarget, const uchar* pachSignature, uint8 nInputSize, UINT dwForIP, uint8 byChaIPKind);
+//>>> WiZaRd::IPv6 [Xanatos]
+	uint8	CreateSignature(CClientCredits* pTarget, uchar* pachOutput, uint8 nMaxSize, const _CIPAddress& ChallengeIP, uint8 byChaIPKind, CryptoPP::RSASSA_PKCS1v15_SHA_Signer* sigkey = NULL);
+	bool	VerifyIdent(CClientCredits* pTarget, const uchar* pachSignature, uint8 nInputSize, const _CIPAddress& dwForIP, uint8 byChaIPKind);
+//     uint8	CreateSignature(CClientCredits* pTarget, uchar* pachOutput, uint8 nMaxSize, UINT ChallengeIP, uint8 byChaIPKind, CryptoPP::RSASSA_PKCS1v15_SHA_Signer* sigkey = NULL);
+//     bool	VerifyIdent(CClientCredits* pTarget, const uchar* pachSignature, uint8 nInputSize, UINT dwForIP, uint8 byChaIPKind);
+//<<< WiZaRd::IPv6 [Xanatos]
 
     CClientCredits* GetCredit(const uchar* key) ;
     void	Process();

@@ -22,6 +22,9 @@ CUtpSocket::CUtpSocket()
 {
     m_Socket = NULL;
 
+	m_ReadBuffer.AllocBuffer(64*1024/*, false, false*/); // Note: UTP can push more data into the buffer than expected
+	m_WriteBuffer.AllocBuffer(16*1024);
+
     m_ShutDown = 0;
 
     g_UtpSockets.insert(this);

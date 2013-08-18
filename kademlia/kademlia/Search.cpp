@@ -749,7 +749,10 @@ void CSearch::StorePacket()
                         listTag.push_back(new CKadTagUInt8(TAG_SOURCETYPE, 5));
                     else
                         listTag.push_back(new CKadTagUInt8(TAG_SOURCETYPE, 3));
-                    listTag.push_back(new CKadTagUInt(TAG_SERVERIP, theApp.clientlist->GetBuddy()->GetIP()));
+//>>> WiZaRd::IPv6 [Xanatos]
+					listTag.push_back(new CKadTagUInt(TAG_SERVERIP, _ntohl(theApp.clientlist->GetBuddy()->GetIP().ToIPv4())));
+					//listTag.push_back(new CKadTagUInt(TAG_SERVERIP, theApp.clientlist->GetBuddy()->GetIP()));
+//<<< WiZaRd::IPv6 [Xanatos]                    
                     listTag.push_back(new CKadTagUInt(TAG_SERVERPORT, theApp.clientlist->GetBuddy()->GetUDPPort()));
                     listTag.push_back(new CKadTagStr(TAG_BUDDYHASH, CStringW(md4str(uBuddyID.GetData()))));
                     listTag.push_back(new CKadTagUInt(TAG_SOURCEPORT, thePrefs.GetPort()));
@@ -757,9 +760,7 @@ void CSearch::StorePacket()
                         listTag.push_back(new CKadTagUInt16(TAG_SOURCEUPORT, CKademlia::GetPrefs()->GetInternKadPort()));
 
                     if (pFromContact->GetVersion() >= 2/*47a*/)
-                    {
                         listTag.push_back(new CKadTagUInt(TAG_FILESIZE, pFile->GetFileSize()));
-                    }
                 }
                 else
                 {
@@ -787,6 +788,13 @@ void CSearch::StorePacket()
 
             listTag.push_back(new CKadTagUInt8(TAG_ENCRYPTION, CKademlia::GetPrefs()->GetMyConnectOptions(true, true)));
 
+//>>> WiZaRd::IPv6 [Xanatos]
+			if(!theApp.GetPublicIPv6().IsNull())
+			{
+				CUInt128 IPv6(theApp.GetPublicIPv6().Data());
+				listTag.push_back(new CKadTagStr(TAG_IPv6, IPv6.ToHexString()));
+			}
+//<<< WiZaRd::IPv6 [Xanatos]
 
             // Send packet
             CKademlia::GetUDPListener()->SendPublishSourcePacket(pFromContact, m_uTarget, uID, listTag);
@@ -1057,6 +1065,7 @@ void CSearch::ProcessResultFile(const CUInt128 &uAnswer, TagList *plistInfo)
     //UINT uClientID = 0;
     CUInt128 uBuddy;
     uint8 byCryptOptions = 0; // 0 = not supported
+	CUInt128 IPv6; //>>> WiZaRd::IPv6 [Xanatos]
 
     for (TagList::const_iterator itTagList = plistInfo->begin(); itTagList != plistInfo->end(); ++itTagList)
     {
@@ -1085,6 +1094,16 @@ void CSearch::ProcessResultFile(const CUInt128 &uAnswer, TagList *plistInfo)
         }
         else if (!pTag->m_name.Compare(TAG_ENCRYPTION))
             byCryptOptions = (uint8)pTag->GetInt();
+//>>> WiZaRd::IPv6 [Xanatos]
+		else if (!pTag->m_name.Compare(TAG_IPv6)) 
+		{
+			uchar ucharIPv6[16];
+			if (pTag->IsStr() && strmd4(pTag->GetStr(), ucharIPv6))
+				IPv6 = CUInt128(ucharIPv6);
+			else
+				TRACE("+++ Invalid TAG_IPv6 tag\n");
+		}
+//<<< WiZaRd::IPv6 [Xanatos]
 
         delete pTag;
     }
@@ -1093,14 +1112,17 @@ void CSearch::ProcessResultFile(const CUInt128 &uAnswer, TagList *plistInfo)
     // Process source based on it's type. Currently only one method is needed to process all types.
     switch (uType)
     {
-    case 1:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-        m_uAnswers++;
-        theApp.downloadqueue->KademliaSearchFile(m_uSearchID, &uAnswer, &uBuddy, uType, uIP, uTCPPort, uUDPPort, uBuddyIP, uBuddyPort, byCryptOptions);
-        break;
+		case 1:
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+			m_uAnswers++;
+//>>> WiZaRd::IPv6 [Xanatos]
+			theApp.downloadqueue->KademliaSearchFile(m_uSearchID, &uAnswer, &uBuddy, uType, uIP, uTCPPort, uUDPPort, uBuddyIP, uBuddyPort, byCryptOptions, &IPv6);
+			//theApp.downloadqueue->KademliaSearchFile(m_uSearchID, &uAnswer, &uBuddy, uType, uIP, uTCPPort, uUDPPort, uBuddyIP, uBuddyPort, byCryptOptions);
+//<<< WiZaRd::IPv6 [Xanatos]
+			break;
     }
 }
 
