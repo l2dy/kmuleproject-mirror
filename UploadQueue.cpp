@@ -1660,16 +1660,12 @@ VOID CALLBACK CUploadQueue::UploadTimer(HWND /*hwnd*/, UINT /*uMsg*/, UINT_PTR /
             }
 
             theApp.listensocket->UpdateConnectionsStatus();
-//>>> Tux::Clipboard Watchdog
-/*
 			if (thePrefs.WatchClipboard4ED2KLinks())
 			{
 				// TODO: Remove this from here. This has to be done with a clipboard chain
 				// and *not* with a timer!!
 				theApp.SearchClipboard();
 			}
-*/
-//<<< Tux::Clipboard Watchdog
 
             // 2 seconds
             i2Secs++;

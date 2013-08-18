@@ -150,10 +150,6 @@ BEGIN_MESSAGE_MAP(CemuleDlg, CTrayDialog)
     ON_WM_DESTROY()
     ON_WM_SETTINGCHANGE()
     ON_WM_DEVICECHANGE()
-//>>> Tux::Clipboard Watchdog
-    ON_WM_CHANGECBCHAIN()
-    ON_WM_DRAWCLIPBOARD()
-//<<< Tux::Clipboard Watchdog
     ON_MESSAGE(WM_POWERBROADCAST, OnPowerBroadcast)
 
     ///////////////////////////////////////////////////////////////////////////
@@ -650,46 +646,8 @@ BOOL CemuleDlg::OnInitDialog()
     if (!thePrefs.HasCustomTaskIconColor())
         SetTaskbarIconColor();
 
-//>>> Tux::Clipboard Watchdog
-    // we want to watch the clipboard for eD2k links - put eMule into the clipboard chain
-    hClipboardViewer = SetClipboardViewer();
-    bClipboardWatchdog = true;
-//<<< Tux::Clipboard Watchdog
-
     return TRUE;
 }
-
-//>>> Tux::Clipboard Watchdog
-void CemuleDlg::OnChangeCbChain(HWND hWndRemove, HWND hWndAfter)
-{
-    // adds kMule to the chain or removes it on shutdown
-    if (hClipboardViewer == hWndRemove)
-        hClipboardViewer = hWndAfter;
-    else if (hClipboardViewer != NULL)
-        ::SendMessage(hClipboardViewer, WM_CHANGECBCHAIN, (WPARAM)hWndRemove, (LPARAM)hWndAfter);
-}
-
-void CemuleDlg::OnDrawClipboard()
-{
-    // triggered when the clipboard contents change.
-    if (theApp.m_app_state == APP_STATE_SHUTTINGDOWN || !bClipboardWatchdog || !thePrefs.WatchClipboard4ED2KLinks())
-        // don't waste resources if kMule is shutting down or we can't/shouldn't watch the clipboard
-        return;
-
-    ::PostMessage(hClipboardViewer, WM_DRAWCLIPBOARD, (WPARAM)NULL, (LPARAM)NULL);
-
-    if (OpenClipboard())
-    {
-        theApp.SearchClipboard();
-
-        CloseClipboard();
-    }
-    else {
-        AddDebugLogLine(DLP_VERYLOW, _T("Failed to hook into the clipboard for unknown reasons :-( disabling the Watchdog for this session."));
-        bClipboardWatchdog = false;
-    }
-}
-//<<< Tux::Clipboard Watchdog
 
 // modders: dont remove or change the original versioncheck! (additionals are ok)
 void CemuleDlg::DoVersioncheck(bool manual)
@@ -1905,11 +1863,6 @@ void CemuleDlg::OnClose()
     theApp.antileechlist = NULL;
 //<<< WiZaRd::ClientAnalyzer
     m_SevenZipThreadHandler.UnInit(); //>>> WiZaRd::7zip
-
-//>>> Tux::Clipboard Watchdog
-    // eMule goes afk :-) throw it out of the chain
-    ChangeClipboardChain(hClipboardViewer);
-//<<< Tux::Clipboard Watchdog
 
     thePrefs.Uninit();
     theApp.m_app_state = APP_STATE_DONE;
