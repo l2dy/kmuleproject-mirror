@@ -2014,7 +2014,7 @@ BEGIN
     IDS_DONATION_WIZARD     "WiZaRd @ Amazon"
     IDS_PRIOAUTOVERYHIGH    "Auto [VHi]"
     IDS_PRIOAUTOVERYLOW     "Auto [VLo]"
-
+	IDS_WAITING_USERS       "Waiting Users"
 END
 
 STRINGTABLE 

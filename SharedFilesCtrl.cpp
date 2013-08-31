@@ -283,7 +283,7 @@ void CSharedFilesCtrl::Init()
     InsertColumn(16,GetResString(IDS_LENGTH),			LVCFMT_RIGHT, DFLT_LENGTH_COL_WIDTH,	-1, true);
     InsertColumn(17,GetResString(IDS_BITRATE),			LVCFMT_RIGHT, DFLT_BITRATE_COL_WIDTH,	-1, true);
     InsertColumn(18,GetResString(IDS_CODEC),			LVCFMT_LEFT,  DFLT_CODEC_COL_WIDTH,		-1, true);
-	InsertColumn(19,GetResString(IDS_WAITING),			LVCFMT_LEFT,  20,						-1); //>>> WiZaRd::Queued Count
+	InsertColumn(19,GetResString(IDS_WAITING_USERS),	LVCFMT_LEFT,  20,						-1); //>>> WiZaRd::Queued Count
 
     SetAllIcons();
     CreateMenues();
@@ -433,7 +433,7 @@ void CSharedFilesCtrl::Localize()
     pHeaderCtrl->SetItem(18, &hdi);
 
 //>>> WiZaRd::Queued Count
-	strRes = GetResString(IDS_WAITING);
+	strRes = GetResString(IDS_WAITING_USERS);
 	hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
 	pHeaderCtrl->SetItem(19, &hdi);
 //<<< WiZaRd::Queued Count

@@ -107,6 +107,7 @@
 #define IDS_PRIOAUTOVERYHIGH			4068
 #define IDS_PRIOAUTOVERYLOW				4069
 //<<< WiZaRd::Improved Auto Prio
+#define IDS_WAITING_USERS				4070 //>>> WiZaRd::Queued Count
 //#endif
 
 // this line is needed or we get a "fatal error RC1004: unexpected end of file found" - thanks for those wonderful bugs, Microsoft!
