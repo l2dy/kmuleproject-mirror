@@ -695,6 +695,16 @@ CString CUPnPImplWinServ::GetLocalRoutableIP(ServicePointer pService)
     DWORD nInterfaceIndex = 0;
     DWORD ip = inet_addr(pszExternalIP);
 
+//>>> WiZaRd::Find Best Interface IP [netfinity]
+	DWORD localIP = GetBestInterfaceIP(ip);
+	if (localIP != INADDR_NONE) // We found our IP address, if not we would just continue with the original algorithm
+	{
+		CString strLocalIP = ipstr(localIP);
+		theApp.QueueDebugLogLineEx(LOG_WARNING, L"UPnP route: %s->%s", strLocalIP, strExternalIP);
+		return strLocalIP;
+	}
+//<<< WiZaRd::Find Best Interface IP [netfinity]
+
     // Get the interface through which the UPnP device has a route
     HRESULT hrRes = (HRESULT)-1;
     if (m_pfGetBestInterface != NULL)

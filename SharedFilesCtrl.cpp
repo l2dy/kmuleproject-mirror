@@ -283,6 +283,7 @@ void CSharedFilesCtrl::Init()
     InsertColumn(16,GetResString(IDS_LENGTH),			LVCFMT_RIGHT, DFLT_LENGTH_COL_WIDTH,	-1, true);
     InsertColumn(17,GetResString(IDS_BITRATE),			LVCFMT_RIGHT, DFLT_BITRATE_COL_WIDTH,	-1, true);
     InsertColumn(18,GetResString(IDS_CODEC),			LVCFMT_LEFT,  DFLT_CODEC_COL_WIDTH,		-1, true);
+	InsertColumn(19,GetResString(IDS_WAITING),			LVCFMT_LEFT,  20,						-1); //>>> WiZaRd::Queued Count
 
     SetAllIcons();
     CreateMenues();
@@ -430,6 +431,12 @@ void CSharedFilesCtrl::Localize()
     strRes = GetResString(IDS_CODEC);
     hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
     pHeaderCtrl->SetItem(18, &hdi);
+
+//>>> WiZaRd::Queued Count
+	strRes = GetResString(IDS_WAITING);
+	hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
+	pHeaderCtrl->SetItem(19, &hdi);
+//<<< WiZaRd::Queued Count
 
     CreateMenues();
 
@@ -907,6 +914,12 @@ void CSharedFilesCtrl::GetItemDisplayText(const CShareableFile* file, int iSubIt
         case 18:
             _tcsncpy(pszText, GetCodecDisplayName(pKnownFile->GetStrTagValue(FT_MEDIA_CODEC)), cchTextMax);
             break;
+
+//>>> WiZaRd::Queued Count
+		case 19:
+			_sntprintf(pszText, cchTextMax, L"%u", pKnownFile->GetRealQueuedCount());
+			break;
+//<<< WiZaRd::Queued Count
         }
     }
 
@@ -1641,6 +1654,11 @@ int CSharedFilesCtrl::SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort
                 iResult = CompareOptLocaleStringNoCaseUndefinedAtBottom(GetCodecDisplayName(kitem1->GetStrTagValue(FT_MEDIA_CODEC)), GetCodecDisplayName(kitem2->GetStrTagValue(FT_MEDIA_CODEC)), bSortAscending);
                 break;
 
+//>>> WiZaRd::Queued Count
+			case 19:
+				iResult = CompareUnsigned(kitem1->GetRealQueuedCount(), kitem2->GetRealQueuedCount());
+				break;
+//<<< WiZaRd::Queued Count
 
             case 106: //all requests
                 iResult = CompareUnsigned(kitem1->statistic.GetAllTimeRequests(), kitem2->statistic.GetAllTimeRequests());

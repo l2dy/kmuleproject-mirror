@@ -58,6 +58,8 @@
 #ifdef INFO_WND
 #include "./Mod/InfoWnd.h" //>>> WiZaRd::InfoWnd
 #endif
+#include <netioapi.h> //>>> WiZaRd::Find Best Interface IP [netfinity]
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -5082,3 +5084,55 @@ CString ipstr(const CAddress& IP)
 	return IP.ToStringW().c_str();
 }
 //<<< WiZaRd::IPv6 [Xanatos]
+
+//>>> WiZaRd::Find Best Interface IP [netfinity]
+ULONG GetBestInterfaceIP(const ULONG dest_addr)
+{
+	ULONG bestInterfaceIP = INADDR_NONE;
+
+	HINSTANCE m_hIPHlp = ::LoadLibrary(L"Iphlpapi.dll");
+	if (m_hIPHlp != NULL)
+	{
+		typedef DWORD (WINAPI *t_GetBestInterface)(
+			IPAddr dwDestAddr,
+			PDWORD pdwBestIfIndex);
+		typedef DWORD (WINAPI *t_GetBestRoute2)(
+			NET_LUID *InterfaceLuid,
+			NET_IFINDEX InterfaceIndex,
+			const SOCKADDR_INET *SourceAddress,
+			const SOCKADDR_INET *DestinationAddress,
+			ULONG AddressSortOptions,
+			PMIB_IPFORWARD_ROW2 BestRoute,
+			SOCKADDR_INET *BestSourceAddress);
+
+		t_GetBestInterface s_pGetBestInterface = (t_GetBestInterface) ::GetProcAddress(m_hIPHlp, "GetBestInterface");
+		t_GetBestRoute2 s_pGetBestRoute2 = (t_GetBestRoute2) ::GetProcAddress(m_hIPHlp, "GetBestRoute2");
+
+		SOCKADDR_INET		saBestInterfaceAddress = {0};
+		SOCKADDR_INET		saDestinationAddress = {0};
+		MIB_IPFORWARD_ROW2	rowBestRoute = {0};
+		DWORD	dwBestIfIndex;
+		DWORD	dwError;
+
+		saDestinationAddress.Ipv4.sin_family = AF_INET;
+		saDestinationAddress.Ipv4.sin_addr.S_un.S_addr = dest_addr;
+
+		if (s_pGetBestInterface != nullptr && s_pGetBestRoute2 != nullptr && dest_addr != INADDR_NONE)
+		{
+			dwError = s_pGetBestInterface(dest_addr, &dwBestIfIndex);
+			if (dwError == NO_ERROR)
+			{
+				dwError = s_pGetBestRoute2(nullptr, dwBestIfIndex, nullptr, &saDestinationAddress, 0, &rowBestRoute, &saBestInterfaceAddress);
+				if (dwError == NO_ERROR)
+					bestInterfaceIP = saBestInterfaceAddress.Ipv4.sin_addr.S_un.S_addr;
+				else
+					DebugLogError(_T(__FUNCTION__) _T(": Failed to retrieve best route source ip address to dest %s: %s"), ipstr(dest_addr), GetErrorMessage(dwError, 1));
+			}
+			else
+				DebugLogError(_T(__FUNCTION__) _T(": Failed to retrieve best interface index for destination %s: %s"), ipstr(dest_addr), GetErrorMessage(dwError, 1));
+		}
+	}
+	
+	return bestInterfaceIP;
+}
+//<<< WiZaRd::Find Best Interface IP [netfinity]
