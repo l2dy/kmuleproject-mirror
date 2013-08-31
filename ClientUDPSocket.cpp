@@ -41,7 +41,9 @@
 #include "./kademlia/utils/KadUDPKey.h"
 #include "./Mod/ClientAnalyzer.h" //>>> WiZaRd::ClientAnalyzer
 #include "emuleDlg.h"
+#ifdef USE_QOS
 #include "./Mod/QOS.h" //>>> WiZaRd::QOS
+#endif
 #include "./Mod/Neo/UtpSocket.h" //>>> WiZaRd::NatTraversal [Xanatos]
 
 #ifdef _DEBUG
@@ -469,6 +471,10 @@ bool CClientUDPSocket::ProcessPacket(const BYTE* packet, UINT size, uint8 opcode
 
         bool bSenderMultipleIpUnknown = false;
         CUpDownClient* sender = theApp.uploadqueue->GetWaitingClientByIP_UDP(ip, port, true, &bSenderMultipleIpUnknown);
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+		if (!reqfile && sender && sender->GetSCTVersion() > PROTOCOL_REVISION_0) // No FNF for existing files when using SCT
+			reqfile = theApp.downloadqueue->GetFileByID(reqfilehash);
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         if (!reqfile)
         {
             if (thePrefs.GetDebugClientUDPLevel() > 0)
@@ -745,6 +751,7 @@ SocketSentBytes CClientUDPSocket::SendControlData(UINT maxNumberOfBytesToSend, U
                 //DEBUG_ONLY(  AddDebugLogLine(DLP_VERYLOW, false, _T("Sent obfuscated UDP packet to clientIP: %s, Kad: %s, ReceiverKey: %u"), ipstr(cur_packet->dwIP), cur_packet->bKad ? _T("Yes") : _T("No"), cur_packet->nReceiverVerifyKey) );
             }
 
+#ifdef USE_QOS
 //>>> WiZaRd::QOS
             // netfinity: This is an absurd way to enable QOS for UDP
 //>>> WiZaRd::IPv6 [Xanatos]
@@ -764,6 +771,7 @@ SocketSentBytes CClientUDPSocket::SendControlData(UINT maxNumberOfBytesToSend, U
 //<<< WiZaRd::IPv6 [Xanatos]
             theQOSManager.AddSocket(m_hSocket, (SOCKADDR*)&dest);
 //<<< WiZaRd::QOS
+#endif
             if (!SendTo((char*)sendbuffer, nLen, cur_packet->dwIP, cur_packet->nPort))
             {
                 sentBytes += nLen; // ZZ:UploadBandWithThrottler (UDP)
@@ -772,7 +780,9 @@ SocketSentBytes CClientUDPSocket::SendControlData(UINT maxNumberOfBytesToSend, U
                 delete cur_packet->packet;
                 delete cur_packet;
             }
+#ifdef USE_QOS
             theQOSManager.RemoveSocket(m_hSocket); //>>> WiZaRd::QOS
+#endif
             delete[] sendbuffer;
         }
         else

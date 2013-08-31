@@ -862,7 +862,7 @@ void CKademliaUDPListener::Process_KADEMLIA2_RES(const byte *pbyPacketData, UINT
                             // (or in the near future), so we do not try to add those contacts to our routingzone and we also don't
                             // deliver them back to the searchmanager (because he would UDP-ask them for further results), but only report
                             // them to to FirewallChecker - this will of course cripple the search but thats not the point, since we only
-                            // care for IPs and not the radom set target
+                            // care for IPs and not the random set target
                             CUDPFirewallTester::AddPossibleTestContact(uIDResult, uIPResult, uUDPPortResult, uTCPPortResult, uTarget, uVersion, 0, false);
                         }
                         else
@@ -874,7 +874,7 @@ void CKademliaUDPListener::Process_KADEMLIA2_RES(const byte *pbyPacketData, UINT
                                 pResults->push_back(pTemp);
                             else
                             {
-                                nIgnoredCount++;
+                                ++nIgnoredCount;
                                 delete pTemp;
                             }
                         }
@@ -897,7 +897,7 @@ void CKademliaUDPListener::Process_KADEMLIA2_RES(const byte *pbyPacketData, UINT
         throw;
     }
     if (nIgnoredCount > 0)
-        DebugLogWarning(_T("Ignored %u bad contacts in routing answer from %s"), nIgnoredCount, ipstr(ntohl(uIP)));
+        DebugLogWarning(_T("Ignored %u bad contact(s) in routing answer from %s"), nIgnoredCount, ipstr(ntohl(uIP)));
     CSearchManager::ProcessResponse(uTarget, uIP, uUDPPort, pResults);
 }
 

@@ -316,9 +316,7 @@ void CKnownFile::UpdatePartsInfo()
                 else
                     last = static_cast<uint16>((stop + 1ULL) / PARTSIZE);
                 for (UINT i = first; i < last; i++)
-                {
                     m_AvailPartFrequency[i] += 1;
-                }
                 start = stop + 1;
                 stop = ~0ULL;
             }

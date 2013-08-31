@@ -182,7 +182,7 @@ void CUpDownClient::Init()
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
     m_pPartStatus = NULL;
     m_pUpPartStatus = NULL;
-    m_nProtocolRevision = 0;
+    m_nProtocolRevision = PROTOCOL_REVISION_0;
     //m_nPartCount = 0;
     //m_nUpPartCount = 0;
     //m_abyPartStatus = 0;
@@ -351,9 +351,14 @@ CUpDownClient::~CUpDownClient()
     free(m_pszUsername);
 
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+// 	if(reqfile && m_pPartStatus)
+// 		reqfile->RemoveFromPartsInfo(m_pPartStatus);
     delete m_pPartStatus;
     m_pPartStatus = NULL;
 
+// 	CKnownFile* currequpfile  = GetUploadReqFile();
+// 	if(currequpfile  && m_pUpPartStatus)
+// 		currequpfile ->RemoveFromPartsInfo(m_pUpPartStatus);
     delete m_pUpPartStatus;
     m_pUpPartStatus = NULL;
     //delete[] m_abyPartStatus;
@@ -424,7 +429,7 @@ void CUpDownClient::ClearHelloProperties()
     m_fSupportsFileIdent = 0;
     m_strModVersion.Empty(); //>>> WiZaRd::Missing code?
     m_incompletepartVer = 0; //>>> WiZaRd::ICS [enkeyDEV]
-    m_nProtocolRevision = 0; //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+    m_nProtocolRevision = PROTOCOL_REVISION_0; //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 //>>> WiZaRd::ModProt
     //Clear all mod flags here, too
     m_fSupportsModProt = 0;
@@ -757,6 +762,24 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 				m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
 			break;
 //<<< WiZaRd::IPv6 [Xanatos]
+//>>> WiZaRd::ModProt
+		case CT_NEOMULE_MISCOPTIONS:
+			if (temptag.IsInt()) 
+			{
+				m_fSupportsIPv6			= (temptag.GetInt() >>  2) & 0x01; //>>> WiZaRd::IPv6 [Xanatos]
+				m_fSupportsNatTraversal	= (temptag.GetInt() >>  1) & 0x01; //>>> WiZaRd::NatTraversal [Xanatos]
+				m_fSupportsExtendedXS	= (temptag.GetInt() >>  0) & 0x01; //>>> WiZaRd::ExtendedXS [Xanatos]
+#if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
+				if (bDbgInfo)
+					m_strHelloInfo.AppendFormat(L"\n  IPv6=%u  NatTraveral=%u  ExtendedXS=%u", m_fSupportsIPv6, m_fSupportsNatTraversal, m_fSupportsExtendedXS);
+#endif
+			}
+#if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
+			else if (bDbgInfo)
+				m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+#endif
+			break;
+//<<< WiZaRd::ModProt
 
         default:
             // Since eDonkeyHybrid 1.3 is no longer sending the additional Int32 at the end of the Hello packet,
@@ -1348,6 +1371,11 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 	if(!theApp.GetPublicIPv6().IsNull())
 		tagcount += 1;
 //<<< WiZaRd::IPv6 [Xanatos]
+//>>> WiZaRd::ModProt
+	const bool bSendMiscHelloTag = !m_pszUsername || SupportsExtendedSourceExchange() || SupportsIPv6() || SupportsNatTraversal();
+	if(bSendMiscHelloTag)
+		++tagcount;
+//<<< WiZaRd::ModProt
 
     data->WriteUInt32(tagcount);
 
@@ -1547,6 +1575,17 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 		tagIPv6.WriteTagToFile(data);
 	}
 //<<< WiZaRd::IPv6 [Xanatos]
+//>>> WiZaRd::ModProt	
+	const UINT uSupportsExtXS		= 1; //>>> WiZaRd::ExtendedXS [Xanatos]
+	const UINT uSupportsNatTraversal = 1; //>>> WiZaRd::NatTraversal [Xanatos]
+	const UINT uSupportsIPv6		= 1; //>>> WiZaRd::IPv6 [Xanatos]	
+	CTag tagMisOptionsN(CT_NEOMULE_MISCOPTIONS, 
+		((uSupportsIPv6			<<  2) |	//>>> WiZaRd::IPv6 [Xanatos]
+		(uSupportsNatTraversal	<<  1) |	//>>> WiZaRd::NatTraversal [Xanatos]
+		(uSupportsExtXS			<<  0)		//>>> WiZaRd::ExtendedXS [Xanatos]
+		));
+	tagMisOptionsN.WriteTagToFile(data);
+//<<< WiZaRd::ModProt
 
     data->WriteUInt32(0);
     data->WriteUInt16(0);
@@ -4509,3 +4548,14 @@ void CUpDownClient::WriteExtendedSourceExchangeData(CSafeMemFile& data) const
 	data.SeekToEnd();
 }
 //<<< WiZaRd::ExtendedXS [Xanatos]
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+int CUpDownClient::GetSCTVersion() const
+{
+	return m_nProtocolRevision;
+}
+
+bool CUpDownClient::SupportsSCT() const
+{
+	return m_nProtocolRevision > PROTOCOL_REVISION_0;
+}
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]

@@ -368,7 +368,7 @@ void CUpDownClient::SendFileRequest()
         if (thePrefs.GetDebugClientTCPLevel() > 0)
             DebugSend("OP__MPSetReqFileID", this, reqfile->GetFileHash());
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-		if (reqfile->GetPartCount() > 1 || GetSCTVersion() > 0)
+		if (reqfile->GetPartCount() > 1 || GetSCTVersion() > PROTOCOL_REVISION_0)
             //if (reqfile->GetPartCount() > 1)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
             dataFileReq.WriteUInt8(OP_SETREQFILEID);
@@ -462,7 +462,7 @@ void CUpDownClient::SendFileRequest()
         // if the remote client answers the OP_REQUESTFILENAME with OP_REQFILENAMEANSWER the file is shared by the remote client. if we
         // know that the file is shared, we know also that the file is complete and don't need to request the file status.
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-        if (reqfile->GetPartCount() > 1 || GetSCTVersion() >= CPartFileStatus::PROTOCOL_REVISION_1)
+        if (reqfile->GetPartCount() > 1 || GetSCTVersion() > PROTOCOL_REVISION_0)
             //if (reqfile->GetPartCount() > 1)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         {
@@ -591,11 +591,11 @@ void CUpDownClient::ProcessFileInfo(CSafeMemFile* data, CPartFile* file)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-        if (m_pPartStatus != NULL)
-            file->RemoveFromPartsInfo(m_pPartStatus);
+//         if (m_pPartStatus != NULL)
+//             file->RemoveFromPartsInfo(m_pPartStatus);
         delete m_pPartStatus;
-        m_pPartStatus = NULL; // In case CAICHMap constructor fails
-        m_pPartStatus = new CAICHMap(file->GetFileSize());
+        m_pPartStatus = NULL; // In case CAICHStatusVector constructor fails
+        m_pPartStatus = new CAICHStatusVector(file);
         m_pPartStatus->Set(0, reqfile->GetFileSize() - 1ULL);
         const UINT m_nPartCount = reqfile->GetPartCount();
         //delete[] m_abyPartStatus;
@@ -659,29 +659,34 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPart
         throw GetResString(IDS_ERR_WRONGFILEID) + _T(" (ProcessFileStatus; reqfile!=file)");
     }
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-    if (m_pPartStatus != NULL)
-        reqfile->RemoveFromPartsInfo(m_pPartStatus);
+//     if (m_pPartStatus != NULL)
+//         reqfile->RemoveFromPartsInfo(m_pPartStatus);
     delete m_pPartStatus;
     m_pPartStatus = NULL; // In case we fail to create the part status object
-    m_pPartStatus = CPartStatus::CreatePartStatus(data, reqfile->GetFileSize());
+    m_pPartStatus = CPartStatus::CreatePartStatus(data, reqfile);
+
+	ProcessDownloadFileStatus(bUdpPacket, file);
+}
+
+bool CUpDownClient::ProcessDownloadFileStatus(const bool bUDPPacket, CPartFile* file, bool bAllowCloning)
+{
     /*if (!reqfile->GetDonePartStatus() || reqfile->GetDonePartStatus()->GetNeeded(m_pPartStatus) > 0)
     	bPartsNeeded = true;
     if (m_pPartStatus->IsComplete())
     	m_bCompleteSource = true;*/
     // netfinity: Update upload partstatus if we are downloading this file and there is more pieces available in the download partstatus
-    if (!md4cmp(GetUploadFileID(), file->GetFileHash()) && (m_pUpPartStatus == NULL || (m_pPartStatus->GetCompleted() >= m_pUpPartStatus->GetCompleted())))
+	bAllowCloning = bAllowCloning && !md4cmp(GetUploadFileID(), file->GetFileHash());
+    if(bAllowCloning && (m_pUpPartStatus == NULL || (m_pPartStatus->GetCompleted() >= m_pUpPartStatus->GetCompleted())))
     {
-        CPartFile* tempreqfile = (CPartFile*)theApp.sharedfiles->GetFileByID(GetUploadFileID());
-        if (tempreqfile && m_pUpPartStatus != NULL)
-            tempreqfile->AddToPartsInfo(m_pUpPartStatus);
+//         if (m_pUpPartStatus != NULL)
+//             file->RemoveFromPartsInfo(m_pUpPartStatus);
 
         delete m_pUpPartStatus;
         m_pUpPartStatus = NULL;
         m_pUpPartStatus = m_pPartStatus->Clone();
 
 
-        if (tempreqfile != NULL)
-            tempreqfile->AddToPartsInfo(m_pUpPartStatus);
+		file->AddToPartsInfo(m_pUpPartStatus);
     }
 
     const UINT m_nPartCount = GetPartCount();
@@ -760,9 +765,9 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPart
     				const bool partDone = ((toread >> i) & 1) ? 1 : 0;
                     m_abyPartStatus[done] = partDone;
                     if (partDone
-    //>>> WiZaRd::AntiHideOS [netfinity]
+//>>> WiZaRd::AntiHideOS [netfinity]
                             || (checkSeenParts && m_abySeenPartStatus[done])
-    //<<< WiZaRd::AntiHideOS [netfinity]
+//<<< WiZaRd::AntiHideOS [netfinity]
                        )
                     {
                         if (!reqfile->IsComplete((uint64)done*PARTSIZE, ((uint64)(done+1)*PARTSIZE)-1, false))
@@ -787,7 +792,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPart
         pAntiLeechData->Check4FileFaker();
 //<<< WiZaRd::ClientAnalyzer
 
-    if (bUdpPacket ? (thePrefs.GetDebugClientUDPLevel() > 0) : (thePrefs.GetDebugClientTCPLevel() > 0))
+    if (bUDPPacket ? (thePrefs.GetDebugClientUDPLevel() > 0) : (thePrefs.GetDebugClientTCPLevel() > 0))
     {
         TCHAR* psz = new TCHAR[m_nPartCount + 1];
         UINT i;
@@ -798,18 +803,19 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPart
         delete[] psz;
     }
 
-    UpdateDisplayedInfo(bUdpPacket);
+    UpdateDisplayedInfo(bUDPPacket);
     reqfile->UpdateAvailablePartsCount();
 
     // NOTE: This function is invoked from TCP and UDP socket!
-    if (!bUdpPacket)
+    if (!bUDPPacket)
     {
         if (!bPartsNeeded)
         {
 			if (GetDownloadState() != DS_DOWNLOADING) // If we are in downloading state this is handled in a different place (e.g Delayed NNP)
 			{
 				SetDownloadState(DS_NONEEDEDPARTS);
-				SwapToAnotherFile(_T("A4AF for NNP file. CUpDownClient::ProcessFileStatus() TCP"), true, false, false, NULL, true, true);
+				if(SwapToAnotherFile(_T("A4AF for NNP file. CUpDownClient::ProcessFileStatus() TCP"), true, false, false, NULL, true, true))
+					SendFileRequest(); // netfinity: We need to send request here, or we might get stuck!!!
 			}
         }
 		else if (GetDownloadState() == DS_DOWNLOADING) // We might have asked for a new file status if we got NNP
@@ -837,6 +843,10 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPart
     if (m_pPartStatus != NULL)
         reqfile->AddToPartsInfo(m_pPartStatus);
     //reqfile->UpdatePartsInfo();
+
+	if(bAllowCloning)
+		ProcessUploadFileStatus(bUDPPacket, file, false);
+	return true;
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 }
 
@@ -1011,6 +1021,8 @@ void CUpDownClient::SetDownloadState(EDownloadState nNewState, LPCTSTR pszReason
             if (nNewState == DS_NONE)
             {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+// 				if(reqfile && m_pPartStatus)
+// 					reqfile->RemoveFromPartsInfo(m_pPartStatus);
                 delete m_pPartStatus;
                 m_pPartStatus = NULL;
                 //delete[] m_abyPartStatus;
@@ -2865,12 +2877,12 @@ void CUpDownClient::ProcessAICHFileHash(CSafeMemFile* data, CPartFile* file, con
 //>>> WiZaRd::ClientAnalyzer
 //>>> WiZaRd::Additional Security Check
     CString msg = L"";
-    if (!IsCompleteSource() && file == reqfile)
-    {
-        theApp.QueueDebugLogLineEx(LOG_WARNING, L"Received AICH hash from client %s that CAN not have the AICH hash", DbgGetClientInfo());
-        //TODO? mark all chunks as being "available"
-        //Also: is this logline still correct with >v0.50?
-    }
+//     if (!IsCompleteSource() && file == reqfile)
+//     {
+//         theApp.QueueDebugLogLineEx(LOG_WARNING, L"Received AICH hash from client %s that CAN not have the AICH hash", DbgGetClientInfo());
+//         //TODO? mark all chunks as being "available"
+//         //Also: is this logline still correct with >v0.50?
+//     }
     if (!IsSupportingAICH())
         msg.Format(L"Client %s sent AICH hash without supporting the protocol!", DbgGetClientInfo());
     //>0.50 sent the AICH hash on every file request... even if we didn't request it (isn't that some wasting of OH?)
@@ -3125,14 +3137,12 @@ UINT	CUpDownClient::GetDownTime() const
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 void CUpDownClient::ProcessCrumbComplete(CSafeMemFile* data)
 {
-    CPartFile*	pPartFile;
     uchar		abyHash[16];
-    UINT		crumbIndex;
     data->ReadHash16(abyHash);
-    crumbIndex = data->ReadUInt32();
-    pPartFile = theApp.downloadqueue->GetFileByID(abyHash);
+    UINT crumbIndex = data->ReadUInt32();
+    CPartFile* pPartFile = theApp.downloadqueue->GetFileByID(abyHash);
 
-    if (pPartFile == reqfile && m_pPartStatus != NULL)
+    if(pPartFile && pPartFile == reqfile && m_pPartStatus != NULL)
 	{
 		reqfile->RemoveFromPartsInfo(m_pPartStatus);
         m_pPartStatus->SetCrumb(crumbIndex);

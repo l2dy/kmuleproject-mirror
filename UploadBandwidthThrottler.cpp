@@ -652,7 +652,9 @@ UINT UploadBandwidthThrottler::RunInternal()
             doubleSendSize = minFragSize; // don't send two packages at a time at very low speeds to give them a smoother load
         }
 
+#ifdef USE_QOS
         //theQOSManager.SetDataRate(max<DWORD>(allowedDataRate, 1024)); //>>> WiZaRd::QOS
+#endif
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
         //realBytesToSpend = _I64_MAX/2;

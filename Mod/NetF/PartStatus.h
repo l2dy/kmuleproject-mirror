@@ -20,19 +20,14 @@
 
 class CSafeMemFile;
 
-// Special values
-enum
-{
-    PROTOCOL_REVISION_0 = 0,
-    PROTOCOL_REVISION_1 = 1,
-    PROTOCOL_REVISION_2 = 2
-};
-
 class CPartStatus
 {
+private:
+	CKnownFile*				m_pStatusFile;
 public:
+	CPartStatus();
 	// Destructor
-	virtual					~CPartStatus() {}
+	virtual					~CPartStatus();
 	// Cloning
 	virtual CPartStatus*	Clone() = 0;
 	// Manipulation routines (has to be overriden)
@@ -69,25 +64,21 @@ public:
 	virtual bool			IsCompletePart(UINT part) const {return IsComplete((uint64) part * PARTSIZE, (uint64) (part + 1) * PARTSIZE - 1ULL);}
 	virtual bool			IsPartialPart(UINT part) const {return IsPartial((uint64) part * PARTSIZE, (uint64) (part + 1) * PARTSIZE - 1ULL);}
 	// Read/Write part status vectors
-	static CPartStatus*		CreatePartStatus(CSafeMemFile* data, const uint64 size, bool defState = true);
+	static CPartStatus*		CreatePartStatus(CSafeMemFile* data, CKnownFile* pFile, bool defState = true);
 	virtual void			WritePartStatus(CSafeMemFile* data, int protocolRevision = PROTOCOL_REVISION_0, bool defState = true) const;
-	// Special values
-	enum {
-		PROTOCOL_REVISION_0 = 0,
-		PROTOCOL_REVISION_1 = 1,
-		PROTOCOL_REVISION_2 = 2
-	};
+	CKnownFile*				GetStatusFile() const;
+	void					SetStatusFile(CKnownFile* pFile);
 };
 
-/*class CGenericPartMap : public CPartStatus
+/*class CGenericStatusVector : public CPartStatus
 {
 public:
 	// Constructors / Destructor
-			CGenericPartMap(uint64 size);
-			CGenericPartMap(const CPartStatus* source);
-			~CGenericPartMap();
+			CGenericStatusVector(uint64 size);
+			CGenericStatusVector(const CPartStatus* source);
+			~CGenericStatusVector();
 	// Cloning
-	CPartStatus*	Clone() {return new CGenericPartMap(this);}
+	CPartStatus*	Clone() {return new CGenericStatusVector(this);}
 	// Bytes
 	uint64	GetSize() const throw() {return m_size;}
 	uint64	GetChunkSize() const throw() {return 1;}
@@ -101,15 +92,16 @@ private:
 	uint8*	m_chunks;
 };*/
 
-class CAICHMap : public CPartStatus
+class CAICHStatusVector : public CPartStatus
 {
 public:
 	// Constructors / Destructor
-			CAICHMap(uint64 size);
-			CAICHMap(const CPartStatus* source);
-			~CAICHMap();
+			CAICHStatusVector(uint64 size);
+			CAICHStatusVector(CKnownFile* pFile);
+			CAICHStatusVector(const CPartStatus* source);
+			~CAICHStatusVector();
 	// Cloning
-	CPartStatus*	Clone() {return new CAICHMap(this);}
+	CPartStatus*	Clone() {return new CAICHStatusVector(this);}
 	// Bytes
 	uint64	GetSize() const throw() {return m_size;}
 	uint64	GetChunkSize() const throw() {return EMBLOCKSIZE;}
@@ -135,15 +127,15 @@ private:
 	uint8*	m_chunks;
 };
 
-class CCrumbMap : public CPartStatus
+class CCrumbStatusVector : public CPartStatus
 {
 public:
 	// Constructors / Destructor
-			CCrumbMap(uint64 size);
-			CCrumbMap(const CPartStatus* source);
-			~CCrumbMap();
+			CCrumbStatusVector(CKnownFile* pFile);
+			CCrumbStatusVector(const CPartStatus* source);
+			~CCrumbStatusVector();
 	// Cloning
-	CPartStatus*	Clone() {return new CCrumbMap(this);}
+	CPartStatus*	Clone() {return new CCrumbStatusVector(this);}
 	// Bytes
 	uint64	GetSize() const throw() {return m_size;}
 	uint64	GetChunkSize() const throw() {return CRUMBSIZE;}
@@ -166,15 +158,15 @@ private:
 	uint8*	m_chunks;
 };
 
-/*class CPartMap : public CPartStatus
+/*class CPartStatusVector : public CPartStatus
 {
 public:
 	// Constructors / Destructor
-			CPartMap(uint64 size);
-			CPartMap(const CPartStatus* source);
-			~CPartMap();
+			CPartStatusVector(CKnownFile* pFile);
+			CPartStatusVector(const CPartStatus* source);
+			~CPartStatusVector();
 	// Cloning
-	CPartStatus*	Clone() {return new CPartMap(this);}
+	CPartStatus*	Clone() {return new CPartStatusVector(this);}
 	// Bytes
 	uint64	GetSize() const throw() {return m_size;}
 	uint64	GetChunkSize() const throw() {return PARTSIZE;}

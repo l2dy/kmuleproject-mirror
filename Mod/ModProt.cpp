@@ -151,6 +151,8 @@ void CUpDownClient::ProcessModInfoPacket(const uchar* pachPacket, const UINT nSi
     if (bDbgInfo && data.GetPosition() < data.GetLength())
         m_strModInfo.AppendFormat(L"\n  ***AddData: %u bytes", data.GetLength() - data.GetPosition());
 #endif
+
+	InitClientSoftwareVersion();
 }
 
 bool CClientReqSocket::ProcessModPacket(const BYTE* packet, const UINT size, const UINT opcode, const UINT uRawSize)

@@ -75,6 +75,7 @@
 #include "./Mod/NATPMPWrapper.h" //>>> WiZaRd::NAT-PMP
 #endif
 #include "./Mod/NetF/DesktopIntegration.h" //>>> WiZaRd::DesktopIntegration [Netfinity]
+#include <iphlpapi.h> //>>> WiZaRd::IPv6 [Xanatos]
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -2572,3 +2573,44 @@ BOOL CemuleApp::OnIdle(LONG lCount)
     return FALSE;
 }
 //<<< WiZaRd::Save CPU & Wine Compatibility
+//>>> WiZaRd::IPv6 [Xanatos]
+void	CemuleApp::UpdateIPv6()
+{
+	ULONG outBufLen = 0;
+	DWORD dwRetVal = GetAdaptersAddresses(AF_INET6/*AF_UNSPEC*/, GAA_FLAG_INCLUDE_PREFIX, NULL, NULL, &outBufLen);
+	ASSERT(dwRetVal == ERROR_BUFFER_OVERFLOW);
+	PIP_ADAPTER_ADDRESSES pAddresses = (IP_ADAPTER_ADDRESSES *) malloc(outBufLen);
+	if(GetAdaptersAddresses(AF_INET6/*AF_UNSPEC*/, GAA_FLAG_INCLUDE_PREFIX, NULL, pAddresses, &outBufLen) == NO_ERROR)
+	{
+		for(PIP_ADAPTER_ADDRESSES pCurrAddresses = pAddresses; pCurrAddresses; pCurrAddresses = pCurrAddresses->Next) 
+		{
+			for (PIP_ADAPTER_UNICAST_ADDRESS pUnicast = pCurrAddresses->FirstUnicastAddress; pUnicast != NULL; pUnicast = pUnicast->Next)
+			{
+				if (pUnicast->Address.lpSockaddr->sa_family != AF_INET6)
+					continue;
+
+				sockaddr_in6 *sa_in6 = (sockaddr_in6 *)pUnicast->Address.lpSockaddr;
+				if(sa_in6->sin6_addr.u.Byte[0] == 0x00)
+					continue; // IP is local loopback address
+				if(sa_in6->sin6_addr.u.Byte[0] == 0xFE && sa_in6->sin6_addr.u.Byte[1] == 0x80)
+					continue; // IP that is constructed from MAC address, and is only available to machines on the same switch.
+				if(sa_in6->sin6_addr.u.Byte[11] == 0xFF && sa_in6->sin6_addr.u.Byte[12] == 0xFE)
+					continue; // IP that is constructed from MAC address and ISP provided subnet prefix. This could be seen as your static IP.
+				// IP that is constructed from ISP provided subnet prefix and some random digits. 
+				// This IP changes every time you power on your PC, and is the IP newer versions of Windows uses as the preferred source IP.
+
+				CAddress IPv6;
+				IPv6.FromSA(pUnicast->Address.lpSockaddr, pUnicast->Address.iSockaddrLength);
+				if(IPv6 != GetPublicIPv6())
+				{
+					SetPublicIPv6(IPv6);
+					DebugLog(L"Found Public IPv6: %s", IPv6.ToStringW().c_str());
+				}
+				break;
+			}
+		}
+	}
+	if (pAddresses)
+		free(pAddresses);
+}
+//<<< WiZaRd::IPv6 [Xanatos]

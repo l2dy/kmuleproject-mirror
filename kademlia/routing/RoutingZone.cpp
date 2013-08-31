@@ -1026,7 +1026,7 @@ void CRoutingZone::SetAllContactsVerified()
 
 bool CRoutingZone::IsAcceptableContact(const CContact* pToCheck) const
 {
-    // Check if we know a conact with the same ID or IP but notmatching IP/ID and other limitations, similar checks like when adding a node to the table except allowing duplicates
+    // Check if we know a contact with the same ID or IP but not matching IP/ID and other limitations, similar checks like when adding a node to the table except allowing duplicates
     // we use this to check KADEMLIA_RES routing answers on searches
     if (pToCheck->GetVersion() <= 1)	// No Kad1 Contacts allowed
         return false;
@@ -1036,7 +1036,7 @@ bool CRoutingZone::IsAcceptableContact(const CContact* pToCheck) const
         if (pDuplicate->IsIpVerified()
                 && (pDuplicate->GetIPAddress() != pToCheck->GetIPAddress() || pDuplicate->GetUDPPort() != pToCheck->GetUDPPort()))
         {
-            // already existing verfied node with different IP
+            // already existing verified node with different IP
             return false;
         }
         else

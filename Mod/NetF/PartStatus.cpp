@@ -26,6 +26,26 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+CPartStatus::CPartStatus()
+{
+	m_pStatusFile = NULL;
+}
+
+CPartStatus::~CPartStatus()
+{
+	ASSERT(m_pStatusFile == NULL);
+}
+
+CKnownFile* CPartStatus::GetStatusFile() const
+{
+	return m_pStatusFile;
+}
+
+void CPartStatus::SetStatusFile(CKnownFile* pFile)
+{
+	m_pStatusFile = pFile;
+}
+
 uint64
 CPartStatus::GetCompleted(uint64 start, uint64 stop) const
 {
@@ -109,8 +129,9 @@ CPartStatus::FindFirstNeeded(uint64& start, uint64& stop, const CPartStatus* con
 }
 
 CPartStatus*
-CPartStatus::CreatePartStatus(CSafeMemFile* const data, const uint64 size, const bool defState)
+CPartStatus::CreatePartStatus(CSafeMemFile* const data, CKnownFile* pFile, const bool defState)
 {
+	uint64 size = pFile->GetFileSize();
 	uint64	sctSize = 0ULL;
 	uint16	sctDivider = 0;
 	uint16	sctCount;
@@ -124,7 +145,7 @@ CPartStatus::CreatePartStatus(CSafeMemFile* const data, const uint64 size, const
 		// Special case
 		if (sctCount == 0)
 		{
-			partStatus = new CAICHMap(size); // temporarily used until standard container is implemented
+			partStatus = new CAICHStatusVector(pFile); // temporarily used until standard container is implemented
 			if (defState == true)
 				partStatus->Set(0, size - 1);
 			else
@@ -134,7 +155,7 @@ CPartStatus::CreatePartStatus(CSafeMemFile* const data, const uint64 size, const
 		// Future versions of the protocol may send a partmap of size 1 to indicate it doesn't have any data to share yet!
 		else if (sctCount == 1)
 		{
-			partStatus = new CAICHMap(size); // temporarily used until standard container is implemented
+			partStatus = new CAICHStatusVector(pFile); // temporarily used until standard container is implemented
 			if (data->ReadUInt8() & 0x01)
 				partStatus->Set(0, size - 1);
 			else
@@ -146,7 +167,7 @@ CPartStatus::CreatePartStatus(CSafeMemFile* const data, const uint64 size, const
 		// Check for standard part vector
 		if ((UINT) sctCount == (UINT) ((size + (PARTSIZE - 1)) / PARTSIZE))
 		{
-			partStatus = new CAICHMap(size); // temporarily used until standard container is implemented
+			partStatus = new CAICHStatusVector(pFile); // temporarily used until standard container is implemented
 			sctSize = PARTSIZE;
 			sctDivider = 1;
 		}
@@ -154,7 +175,7 @@ CPartStatus::CreatePartStatus(CSafeMemFile* const data, const uint64 size, const
 		else if ((UINT) sctCount == (UINT) (53 * wholePartCount + ((size % PARTSIZE) + (EMBLOCKSIZE - 1)) / EMBLOCKSIZE))
 		{
 			DebugLog(_T(__FUNCTION__) _T("; Part vector has AICH sub chunks! :)"));
-			partStatus = new CAICHMap(size);
+			partStatus = new CAICHStatusVector(pFile);
 			sctSize = EMBLOCKSIZE;
 			sctDivider = EMBLOCKSPERPART;
 		}
@@ -163,35 +184,35 @@ CPartStatus::CreatePartStatus(CSafeMemFile* const data, const uint64 size, const
 			if ((UINT) sctCount == (UINT) (27 * wholePartCount + ((size % PARTSIZE) + (2 * EMBLOCKSIZE - 1)) / (2 * EMBLOCKSIZE)))
 			{
 				DebugLog(_T(__FUNCTION__) _T("; Part vector has AICH x2 sub chunks! :)"));
-				partStatus = new CAICHMap(size);
+				partStatus = new CAICHStatusVector(pFile);
 				sctSize = 2 * EMBLOCKSIZE;
 				sctDivider = 27;
 			}
 			else if ((UINT) sctCount == (UINT) (14 * wholePartCount + ((size % PARTSIZE) + (4 * EMBLOCKSIZE - 1)) / (4 * EMBLOCKSIZE)))
 			{
 				DebugLog(_T(__FUNCTION__) _T("; Part vector has AICH x4 sub chunks! :)"));
-				partStatus = new CAICHMap(size);
+				partStatus = new CAICHStatusVector(pFile);
 				sctSize = 4 * EMBLOCKSIZE;
 				sctDivider = 14;
 			}
 			else if ((UINT) sctCount == (UINT) (7 * wholePartCount + ((size % PARTSIZE) + (8 * EMBLOCKSIZE - 1)) / (8 * EMBLOCKSIZE)))
 			{
 				DebugLog(_T(__FUNCTION__) _T("; Part vector has AICH x8 sub chunks! :)"));
-				partStatus = new CAICHMap(size);
+				partStatus = new CAICHStatusVector(pFile);
 				sctSize = 8 * EMBLOCKSIZE;
 				sctDivider = 7;
 			}
 			else if ((UINT) sctCount == (UINT) (4 * wholePartCount + ((size % PARTSIZE) + (16 * EMBLOCKSIZE - 1)) / (16 * EMBLOCKSIZE)))
 			{
 				DebugLog(_T(__FUNCTION__) _T("; Part vector has AICH x16 sub chunks! :)"));
-				partStatus = new CAICHMap(size);
+				partStatus = new CAICHStatusVector(pFile);
 				sctSize = 16 * EMBLOCKSIZE;
 				sctDivider = 4;
 			}
 			else if ((UINT) sctCount == (UINT) (2 * wholePartCount + ((size % PARTSIZE) + (32 * EMBLOCKSIZE - 1)) / (32 * EMBLOCKSIZE)))
 			{
 				DebugLog(_T(__FUNCTION__) _T("; Part vector has AICH x32 sub chunks! :)"));
-				partStatus = new CAICHMap(size);
+				partStatus = new CAICHStatusVector(pFile);
 				sctSize = 32 * EMBLOCKSIZE;
 				sctDivider = 2;
 			}
@@ -200,7 +221,7 @@ CPartStatus::CreatePartStatus(CSafeMemFile* const data, const uint64 size, const
 		if (sctSize == 0ULL && (UINT) sctCount == (UINT) ((size + (CRUMBSIZE - 1)) / CRUMBSIZE))
 		{
 			DebugLog(_T(__FUNCTION__) _T("; Part vector has crumbs! :)"));
-			partStatus = new CCrumbMap(size);
+			partStatus = new CCrumbStatusVector(pFile);
 			sctSize = CRUMBSIZE;
 			sctDivider = CRUMBSPERPART;
 		}
@@ -224,7 +245,7 @@ CPartStatus::CreatePartStatus(CSafeMemFile* const data, const uint64 size, const
 		if (((sctCount + 7) / 8) > (data->GetLength() - data->GetPosition()))
 		{
 			CString error;
-			error.Format(_T(__FUNCTION__) _T("; Part status vector with %u part/subchunk(s) is incomplete. %u bytes privided but %u needed."), static_cast<unsigned int>(sctCount), static_cast<unsigned int>(data->GetLength() - data->GetPosition()), static_cast<unsigned int>((sctCount + 7) / 8));
+			error.Format(_T(__FUNCTION__) _T("; Part status vector with %u part/subchunk(s) is incomplete. %u bytes provided but %u needed."), static_cast<unsigned int>(sctCount), static_cast<unsigned int>(data->GetLength() - data->GetPosition()), static_cast<unsigned int>((sctCount + 7) / 8));
 			throw error;
 		}
 		// Read part status vector
@@ -369,10 +390,11 @@ CPartStatus::WritePartStatus(CSafeMemFile* const data, const int protocolRevisio
 }
 
 //
-//	CAICHMap
+//	CAICHStatusVector
 //
 
-CAICHMap::CAICHMap(const uint64 size)
+// only used within partfile.cpp!
+CAICHStatusVector::CAICHStatusVector(const uint64 size)
 {
 	UINT const chunks_count = _GetAICHCount(size);
 	size_t const vector_size = (chunks_count + 7) / 8;
@@ -382,8 +404,23 @@ CAICHMap::CAICHMap(const uint64 size)
 		m_chunks[i] = 0;
 }
 
-CAICHMap::CAICHMap(const CPartStatus* const source)
+CAICHStatusVector::CAICHStatusVector(CKnownFile* pFile)
 {
+	SetStatusFile(pFile);
+	uint64 size = GetStatusFile()->GetFileSize();
+
+	UINT const chunks_count = _GetAICHCount(size);
+	size_t const vector_size = (chunks_count + 7) / 8;
+	m_size = size;
+	m_chunks = new uint8[vector_size];
+	for (UINT i = 0; i < vector_size; i++)
+		m_chunks[i] = 0;
+}
+
+CAICHStatusVector::CAICHStatusVector(const CPartStatus* const source)
+{
+	SetStatusFile(source->GetStatusFile());
+
 	const uint64 size = source->GetSize();
 	const UINT chunks_count = _GetAICHCount(size);
 	m_size = size;
@@ -397,13 +434,18 @@ CAICHMap::CAICHMap(const CPartStatus* const source)
 	}
 }
 
-CAICHMap::~CAICHMap()
+CAICHStatusVector::~CAICHStatusVector()
 {
+	if(GetStatusFile())
+	{
+		GetStatusFile()->RemoveFromPartsInfo(this);
+		SetStatusFile(NULL);
+	}
 	delete[] m_chunks;
 }
 
 void
-CAICHMap::Set(uint64 start, uint64 stop)
+CAICHStatusVector::Set(uint64 start, uint64 stop)
 {
 	if (start >= m_size || start > stop)
 		throw CString(_T(__FUNCTION__) _T("; invalid start position"));
@@ -416,7 +458,7 @@ CAICHMap::Set(uint64 start, uint64 stop)
 }
 
 void
-CAICHMap::Clear(uint64 start, uint64 stop)
+CAICHStatusVector::Clear(uint64 start, uint64 stop)
 {
 	if (start >= m_size || start > stop)
 		throw CString(_T(__FUNCTION__) _T("; invalid start position"));
@@ -429,7 +471,7 @@ CAICHMap::Clear(uint64 start, uint64 stop)
 }
 
 bool
-CAICHMap::IsComplete(uint64 start, uint64 stop) const
+CAICHStatusVector::IsComplete(uint64 start, uint64 stop) const
 {
 	if (start >= m_size || start > stop)
 		throw CString(_T(__FUNCTION__) _T("; invalid start position"));
@@ -443,7 +485,7 @@ CAICHMap::IsComplete(uint64 start, uint64 stop) const
 }
 
 bool
-CAICHMap::FindFirstComplete(uint64& start, uint64& stop) const
+CAICHStatusVector::FindFirstComplete(uint64& start, uint64& stop) const
 {
 	if (start >= m_size || start > stop)
 		return false;
@@ -482,7 +524,7 @@ CAICHMap::FindFirstComplete(uint64& start, uint64& stop) const
 }
 
 bool
-CAICHMap::FindFirstNeeded(uint64& start, uint64& stop) const
+CAICHStatusVector::FindFirstNeeded(uint64& start, uint64& stop) const
 {
 	if (start >= m_size || start > stop)
 		return false;
@@ -521,11 +563,14 @@ CAICHMap::FindFirstNeeded(uint64& start, uint64& stop) const
 }
 
 //
-//	CCrumbMap
+//	CCrumbStatusVector
 //
 
-CCrumbMap::CCrumbMap(const uint64 size)
+CCrumbStatusVector::CCrumbStatusVector(CKnownFile* pFile)
 {
+	SetStatusFile(pFile);
+	uint64 size = GetStatusFile()->GetFileSize();
+
 	UINT const chunks_count = (UINT) ((size + (CRUMBSIZE - 1)) / CRUMBSIZE);
 	size_t const vector_size = (chunks_count + 7) / 8;
 	m_size = size;
@@ -534,7 +579,7 @@ CCrumbMap::CCrumbMap(const uint64 size)
 		m_chunks[i] = 0;
 }
 
-CCrumbMap::CCrumbMap(const CPartStatus* const source)
+CCrumbStatusVector::CCrumbStatusVector(const CPartStatus* const source)
 {
 	const uint64 size = source->GetSize();
 	const UINT chunks_count = (UINT) ((size + (CRUMBSIZE - 1)) / CRUMBSIZE);
@@ -549,13 +594,18 @@ CCrumbMap::CCrumbMap(const CPartStatus* const source)
 	}
 }
 
-CCrumbMap::~CCrumbMap()
+CCrumbStatusVector::~CCrumbStatusVector()
 {
+	if(GetStatusFile())
+	{
+		GetStatusFile()->RemoveFromPartsInfo(this);
+		SetStatusFile(NULL);
+	}
 	delete[] m_chunks;
 }
 
 void
-CCrumbMap::Set(uint64 start, uint64 stop)
+CCrumbStatusVector::Set(uint64 start, uint64 stop)
 {
 	if (start >= m_size || start > stop)
 		throw CString(_T(__FUNCTION__) _T("; invalid start position"));
@@ -572,7 +622,7 @@ CCrumbMap::Set(uint64 start, uint64 stop)
 }
 
 void
-CCrumbMap::Clear(uint64 start, uint64 stop)
+CCrumbStatusVector::Clear(uint64 start, uint64 stop)
 {
 	if (start >= m_size || start > stop)
 		throw CString(_T(__FUNCTION__) _T("; invalid start position"));
@@ -589,7 +639,7 @@ CCrumbMap::Clear(uint64 start, uint64 stop)
 }
 
 bool
-CCrumbMap::IsComplete(uint64 start, uint64 stop) const
+CCrumbStatusVector::IsComplete(uint64 start, uint64 stop) const
 {
 	if (start >= m_size || start > stop)
 		throw CString(_T(__FUNCTION__) _T("; invalid start position"));
@@ -607,7 +657,7 @@ CCrumbMap::IsComplete(uint64 start, uint64 stop) const
 }
 
 bool
-CCrumbMap::FindFirstComplete(uint64& start, uint64& stop) const
+CCrumbStatusVector::FindFirstComplete(uint64& start, uint64& stop) const
 {
 	if (start >= m_size || start > stop)
 		return false;
@@ -646,7 +696,7 @@ CCrumbMap::FindFirstComplete(uint64& start, uint64& stop) const
 }
 
 bool
-CCrumbMap::FindFirstNeeded(uint64& start, uint64& stop) const
+CCrumbStatusVector::FindFirstNeeded(uint64& start, uint64& stop) const
 {
 	if (start >= m_size || start > stop)
 		return false;
@@ -685,7 +735,7 @@ CCrumbMap::FindFirstNeeded(uint64& start, uint64& stop) const
 }
 
 /*uint64
-CCrumbMap::GetNeeded(const CPartStatus* const from) const
+CCrumbStatusVector::GetNeeded(const CPartStatus* const from) const
 {
 	uint64	needed = 0;
 	for (int i=0; i<_GetCrumbsCount(); i++)

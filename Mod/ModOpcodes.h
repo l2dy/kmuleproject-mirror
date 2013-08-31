@@ -101,6 +101,14 @@ enum eSharePermissions
 
 #define OP_CRUMBCOMPLETE		0x6A		// <HASH (file) [16]> <Crumb [4]>
 #define CT_PROTOCOLREVISION		"pr"		//! Used to identify crumbs support
+
+// Special values
+enum
+{
+	PROTOCOL_REVISION_0 = 0,
+	PROTOCOL_REVISION_1 = 1,
+	PROTOCOL_REVISION_2 = 2
+};
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
 //>>> WiZaRd::ModProt
@@ -119,6 +127,7 @@ enum eSharePermissions
 #define XS_EMULE_BUDDYUDP			0x62
 #define NEO_PROTOCOL_EXTENSIONS 	0x4E
 #define NEO_PROTOCOL_EXTENSIONS2 	0x6E
+#define CT_NEOMULE_MISCOPTIONS		0xAA
 //<<< WiZaRd::ModProt
 //>>> WiZaRd::NatTraversal [Xanatos]
 #define CT_EMULE_BUDDYID			0xBF

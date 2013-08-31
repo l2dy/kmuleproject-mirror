@@ -1247,16 +1247,12 @@ public:
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 private:
     int			m_nProtocolRevision;
+	bool		ProcessDownloadFileStatus(const bool bUDPPacket, CPartFile* file, bool bAllowCloning = true);
+	bool		ProcessUploadFileStatus(const bool bUDPPacket, CKnownFile* file, bool bAllowCloning = true);
 public:
 	CKnownFile*	GetUploadReqFile() const;
-    int			GetSCTVersion() const
-    {
-        return m_nProtocolRevision;
-    }
-    bool		SupportsSCT() const
-    {
-        return m_nProtocolRevision > 0;
-    }
+    int			GetSCTVersion() const;
+    bool		SupportsSCT() const;
     void		SendCrumbSetPacket(const uchar* const pData, size_t const nSize);
     void		ProcessCrumbComplete(CSafeMemFile* data);
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]

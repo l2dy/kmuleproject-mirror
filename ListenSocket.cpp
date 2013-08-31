@@ -42,7 +42,9 @@
 #include "SHAHashSet.h"
 #include "Log.h"
 #include "./Mod/ClientAnalyzer.h" //>>> WiZaRd::ClientAnalyzer
+#ifdef USE_QOS
 #include "./Mod/QOS.h" //>>> WiZaRd::QOS
+#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1839,6 +1841,10 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
 
                 bool bSenderMultipleIpUnknown = false;
                 CUpDownClient* sender = theApp.uploadqueue->GetWaitingClientByIP_UDP(destip, destport, true, &bSenderMultipleIpUnknown);
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+				if (reqfile == NULL && sender && sender->SupportsSCT())
+					reqfile = theApp.downloadqueue->GetFileByID(reqfilehash);
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
                 if (!reqfile)
                 {
                     if (thePrefs.GetDebugClientUDPLevel() > 0)
@@ -1958,6 +1964,10 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
                 uchar abyHash[16];
                 data.ReadHash16(abyHash);
                 CKnownFile* pPartFile = theApp.sharedfiles->GetFileByID(abyHash);
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+				if (pPartFile == NULL && client->SupportsSCT())
+					pPartFile = theApp.downloadqueue->GetFileByID(abyHash);
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
                 if (pPartFile == NULL)
                 {
                     client->CheckFailedFileIdReqs(abyHash);
@@ -2887,7 +2897,9 @@ void CListenSocket::RecalculateStats()
 void CListenSocket::AddSocket(CClientReqSocket* toadd)
 {
     socket_list.AddTail(toadd);
+#ifdef USE_QOS
     theQOSManager.AddSocket(toadd->GetSocketHandle(), NULL /*lpSockAddr*/); //>>> WiZaRd::QOS
+#endif
 }
 
 void CListenSocket::RemoveSocket(CClientReqSocket* todel)
@@ -2895,7 +2907,9 @@ void CListenSocket::RemoveSocket(CClientReqSocket* todel)
     POSITION posFind = socket_list.Find(todel);
     if (posFind)
     {
+#ifdef USE_QOS
         theQOSManager.AddSocket(socket_list.GetAt(posFind)->GetSocketHandle(), NULL /*lpSockAddr*/); //>>> WiZaRd::QOS
+#endif
         socket_list.RemoveAt(posFind);
     }
 }

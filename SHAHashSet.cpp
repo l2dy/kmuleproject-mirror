@@ -216,7 +216,7 @@ const CAICHHashTree* CAICHHashTree::FindExistingHash(uint64 nStartPos, uint64 nS
             else
             {
                 ASSERT(m_pLeftTree->m_nDataSize == nLeft);
-                return m_pLeftTree->FindHash(nStartPos, nSize, nLevel);
+                return m_pLeftTree->FindExistingHash(nStartPos, nSize, nLevel); //>>> WiZaRd::FiX [netfinity]
             }
         }
         else
@@ -232,7 +232,7 @@ const CAICHHashTree* CAICHHashTree::FindExistingHash(uint64 nStartPos, uint64 nS
             else
             {
                 ASSERT(m_pRightTree->m_nDataSize == nRight);
-                return m_pRightTree->FindHash(nStartPos, nSize, nLevel);
+                return m_pRightTree->FindExistingHash(nStartPos, nSize, nLevel); //>>> WiZaRd::FiX [netfinity]
             }
         }
     }
@@ -816,6 +816,11 @@ bool CAICHRecoveryHashSet::ReadRecoveryData(uint64 nPartStartPos, CSafeMemFile* 
             }
         }
     }
+//>>> WiZaRd::FiX [netfinity]
+	// netfinity: New versions of CreateRecoveryData always write a 16bit integer here, so we have to read it or skip it
+	else if (fileDataIn->GetLength() - fileDataIn->GetPosition() >= 2)
+		fileDataIn->ReadUInt16();
+//<<< WiZaRd::FiX [netfinity]
 
     if (nHashsAvailable == 0)
     {
