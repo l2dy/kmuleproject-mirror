@@ -33,14 +33,14 @@ static char THIS_FILE[] = __FILE__;
 
 void PrintCopyrights()
 {
-    theApp.QueueDebugLogLineEx(LOG_WARNING, L"** Copyright Information:");
-    theApp.QueueDebugLogLineEx(LOG_SUCCESS, L"%s (c) 2012-2013 %s Team (tuxman/WiZaRd) - %s - Build%s", MOD_VERSION_PLAIN, MOD_VERSION_PLAIN, MOD_HOMEPAGE, GetModVersionNumber());
-    theApp.QueueDebugLogLineEx(LOG_WARNING, L"%s is using code from:", MOD_VERSION_PLAIN);
-    theApp.QueueDebugLogLineEx(LOG_SUCCESS, L"eMule (c) 2002-2009 Merkur - http://www.emule-project.net/ - v%u.%u%c",VERSION_MJR, VERSION_MIN, L'a' + VERSION_UPDATE);
-    theApp.QueueDebugLogLineEx(LOG_SUCCESS, L"%s - 7z.org - %s (%s)", MY_COPYRIGHT, kCopyrightString, MY_7ZIP_VERSION, MY_DATE); //>>> WiZaRd::7zip
-    theApp.QueueDebugLogLineEx(LOG_SUCCESS, L"miniupnpc (c) 2006-2009 Thomas Bernard - http://miniupnp.free.fr/ - Build %hs (%hs)", MINIUPNPC_VERSION_STRING, OS_STRING);
+    theApp.QueueLogLineEx(LOG_WARNING, L"** Copyright Information:");
+    theApp.QueueLogLineEx(LOG_SUCCESS, L"%s (c) 2012-2013 %s Team (tuxman/WiZaRd) - %s - Build%s", MOD_VERSION_PLAIN, MOD_VERSION_PLAIN, MOD_HOMEPAGE, GetModVersionNumber());
+    theApp.QueueLogLineEx(LOG_WARNING, L"%s is using code from:", MOD_VERSION_PLAIN);
+    theApp.QueueLogLineEx(LOG_SUCCESS, L"eMule (c) 2002-2009 Merkur - http://www.emule-project.net/ - v%u.%u%c",VERSION_MJR, VERSION_MIN, L'a' + VERSION_UPDATE);
+    theApp.QueueLogLineEx(LOG_SUCCESS, L"%s - 7z.org - %s (%s)", MY_COPYRIGHT, kCopyrightString, MY_7ZIP_VERSION, MY_DATE); //>>> WiZaRd::7zip
+    theApp.QueueLogLineEx(LOG_SUCCESS, L"miniupnpc (c) 2006-2009 Thomas Bernard - http://miniupnp.free.fr/ - Build %hs (%hs)", MINIUPNPC_VERSION_STRING, OS_STRING);
 #ifdef USE_NAT_PMP
-    theApp.QueueDebugLogLineEx(LOG_SUCCESS, L"libnatpmp (c) 2007-2012 Thomas Bernard - http://miniupnp.free.fr/ - Build %s", LIBNAT_VERSION_STRING); //>>> WiZaRd::NAT-PMP
+    theApp.QueueLogLineEx(LOG_SUCCESS, L"libnatpmp (c) 2007-2012 Thomas Bernard - http://miniupnp.free.fr/ - Build %s", LIBNAT_VERSION_STRING); //>>> WiZaRd::NAT-PMP
 #endif
-    theApp.QueueDebugLogLineEx(LOG_WARNING, L"**");
+    theApp.QueueLogLineEx(LOG_WARNING, L"**");
 }
