@@ -396,11 +396,14 @@ void CInfoWnd::ToggleAnalyzerWindow()
 
 void CInfoWnd::UpdateMyInfo()
 {
-    m_MyInfo.SetRedraw(FALSE);
-    m_MyInfo.SetWindowText(L"");
-    CreateNetworkInfo(m_MyInfo, m_cfDef, m_cfBold, true);
-    m_MyInfo.SetRedraw(TRUE);
-    m_MyInfo.Invalidate();
+	if(theApp.m_app_state == APP_STATE_RUNNING)
+	{
+		m_MyInfo.SetRedraw(FALSE);
+		m_MyInfo.SetWindowText(L"");
+		CreateNetworkInfo(m_MyInfo, m_cfDef, m_cfBold, true);
+		m_MyInfo.SetRedraw(TRUE);
+		m_MyInfo.Invalidate();
+	}
 }
 
 CString CInfoWnd::GetMyInfoString()
