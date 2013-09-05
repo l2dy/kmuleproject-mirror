@@ -80,7 +80,7 @@ protected:
 //	CMenu			m_PrioMenu;
 //<<< WiZaRd::PowerShare
     int				m_iRatio[9]; //>>> WiZaRd::Ratio Indicator
-    bool			m_aSortBySecondValue[4];
+    bool			m_aSortBySecondValue[3];
     CImageList		m_ImageList;
     CDirectoryItem*	m_pDirectoryFilter;
     volatile UINT nAICHHashing;

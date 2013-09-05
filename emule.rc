@@ -2015,6 +2015,8 @@ BEGIN
     IDS_PRIOAUTOVERYHIGH    "Auto [VHi]"
     IDS_PRIOAUTOVERYLOW     "Auto [VLo]"
 	IDS_WAITING_USERS       "Waiting Users"
+	IDS_HEALTH				"Health"
+	IDS_NO_BAD_BEHAVIOUR_DETECTED "No bad behaviour detected"
 END
 
 STRINGTABLE 

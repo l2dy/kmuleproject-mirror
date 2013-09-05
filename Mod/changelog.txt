@@ -233,4 +233,7 @@ XXXXYYZZ:
 - removed SOCKS4(a) proxy support, no one uses them [Tuxman]
 ~ changed references in mdump from "eMule" to "kMule" [WiZaRd]
 + added "waiting" user column to shared files window [WiZaRd]
-+ Make UPnP work on interfaces with secondary IPs - original by Netfinity [WiZaRd]
++ make UPnP work on interfaces with secondary IPs - original by Netfinity [WiZaRd]
++ added file health display to shared files window [WiZaRd]
+~ replaced "Shared" title with "Indexed" in shared files window because it describes the information of the column way better [WiZaRd]
+~ improved CA information in client details

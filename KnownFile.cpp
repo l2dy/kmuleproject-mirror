@@ -108,6 +108,10 @@ CKnownFile::CKnownFile()
     m_timeLastSeen = 0;
     m_bAICHRecoverHashSetAvailable = false;
 	m_uiQueuedCount = 0; //>>> Queued Count
+//>>> WiZaRd::FileHealth
+	m_dwLastFileHealthCalc = ::GetTickCount(); 
+	m_fLastHealthValue = 0;
+//<<< WiZaRd::FileHealth
 }
 
 CKnownFile::~CKnownFile()
@@ -3147,3 +3151,117 @@ void	CKnownFile::DecRealQueuedCount(CUpDownClient* /*client*/)
 	UpdateAutoUpPriority(); //>>> WiZaRd::Improved Auto Prio
 }
 //<<< WiZaRd::Queued Count
+//>>> WiZaRd::FileHealth
+float CKnownFile::GetFileHealth()
+{	
+	if(::GetTickCount() - m_dwLastFileHealthCalc >= SEC2MS(15))
+	{
+		m_dwLastFileHealthCalc = ::GetTickCount();
+
+		//just to be sure... clear variables before proceeding
+		m_fLastHealthValue = 0;
+
+		//now, here, we calculate the average availability of each chunk
+		const uint16 parts = GetPartCount();
+		UINT completesources = 1;
+		UINT counter = 0;
+		float sum = 0;
+
+		//if we do not have the file complete
+		CPartFile* pFile = NULL;
+		if(IsPartFile())
+			pFile = (CPartFile*)this;
+
+		CList<const CUpDownClient*> list;
+		if(pFile)
+		{
+			completesources = 0; //... remove us as "complete source"
+			sum += pFile->GetPercentCompleted(); //... and add us as a partial source
+			++counter;
+			
+			for(POSITION pos = pFile->srclist.GetHeadPosition(); pos;)
+			{
+				const CUpDownClient* client = pFile->srclist.GetNext(pos);
+				const CPartStatus* status = client->GetPartStatus();
+				if(!status /*|| client->GetPartCount() != parts*/)
+					continue;
+
+				list.AddTail(client);
+				uint16 tmpcount = 0;
+				for(uint16 i = 0; i < parts; ++i)
+				{
+					if(status->IsCompletePart(i))
+						++tmpcount;
+				}
+
+				if(tmpcount == parts)
+					++completesources;
+				else
+				{
+					++counter;
+					sum += (float)((double)parts != 0.0 ? (double)tmpcount/(double)parts*100.0 : 0.0);
+				}
+			}
+//>>> Keep A4AF infos
+			/*for (POSITION pos = pFile->A4AFsrclist.GetHeadPosition(); pos;)
+			{
+				const CUpDownClient* client = pFile->A4AFsrclist.GetNext(pos);
+				const CPartStatus* status = client->GetPartStatus(pFile);
+				if(!status)
+					continue;
+
+				list.AddTail(client);
+				uint16 tmpcount = 0;
+				for(uint16 i = 0; i < parts; ++i)
+				{
+					if(status->IsCompletePart(i))
+						++tmpcount;
+				}
+
+				if(tmpcount == parts)
+					++completesources;
+				else
+				{
+					++counter;
+					sum += (float)((double)parts != 0.0 ? (double)tmpcount/(double)parts*100.0 : 0.0);
+				}
+			}*/
+//<<< Keep A4AF infos
+		}
+
+		for(POSITION pos = m_ClientUploadList.GetHeadPosition(); pos;)
+		{
+			const CUpDownClient* client = m_ClientUploadList.GetNext(pos);		
+			const CPartStatus* status = client->GetUpPartStatus();
+			if(status == NULL /*|| client->GetUpPartCount() != parts*/)
+				continue;
+			if(list.Find(client))
+				continue;
+
+			uint16 tmpcount = 0;
+			for(uint16 i = 0; i < parts; ++i)
+			{
+				if(status->IsCompletePart(i))
+					++tmpcount;
+			}
+
+			if(tmpcount == parts)
+				++completesources;
+			else
+			{
+				++counter;
+				sum += (float)((double)parts != 0.0 ? (double)tmpcount/(double)parts*100.0 : 0.0);
+			}
+		}
+
+		//we have at least X complete sources
+		completesources = max(completesources, m_nCompleteSourcesCount);
+		m_fLastHealthValue = 100.0f*completesources; // base
+
+		//add average completion of each chunk
+		if(counter)
+			m_fLastHealthValue += sum/counter;
+	}
+	return m_fLastHealthValue;
+}
+//<<< WiZaRd::FileHealth

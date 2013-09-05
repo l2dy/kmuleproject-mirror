@@ -276,7 +276,7 @@ void CSharedFilesCtrl::Init()
     InsertColumn(9, GetResString(IDS_SHARED_STATUS),	LVCFMT_LEFT,  DFLT_PARTSTATUS_COL_WIDTH);
     InsertColumn(10, GetResString(IDS_FOLDER),			LVCFMT_LEFT,  DFLT_FOLDER_COL_WIDTH,	-1, true);
     InsertColumn(11,GetResString(IDS_COMPLSOURCES),		LVCFMT_RIGHT, 60);
-    InsertColumn(12,GetResString(IDS_SHAREDTITLE),		LVCFMT_LEFT,  20);
+    InsertColumn(12,GetResString(IDS_INDEXED),			LVCFMT_LEFT,  20);
     InsertColumn(13,GetResString(IDS_ARTIST),			LVCFMT_LEFT,  DFLT_ARTIST_COL_WIDTH,	-1, true);
     InsertColumn(14,GetResString(IDS_ALBUM),			LVCFMT_LEFT,  DFLT_ALBUM_COL_WIDTH,		-1, true);
     InsertColumn(15,GetResString(IDS_TITLE),			LVCFMT_LEFT,  DFLT_TITLE_COL_WIDTH,		-1, true);
@@ -284,6 +284,7 @@ void CSharedFilesCtrl::Init()
     InsertColumn(17,GetResString(IDS_BITRATE),			LVCFMT_RIGHT, DFLT_BITRATE_COL_WIDTH,	-1, true);
     InsertColumn(18,GetResString(IDS_CODEC),			LVCFMT_LEFT,  DFLT_CODEC_COL_WIDTH,		-1, true);
 	InsertColumn(19,GetResString(IDS_WAITING_USERS),	LVCFMT_LEFT,  20,						-1); //>>> WiZaRd::Queued Count
+	InsertColumn(20,GetResString(IDS_HEALTH),			LVCFMT_LEFT,  70,						-1); //>>> WiZaRd::FileHealth	
 
     SetAllIcons();
     CreateMenues();
@@ -292,11 +293,8 @@ void CSharedFilesCtrl::Init()
     m_aSortBySecondValue[0] = true; // Requests:			Sort by 2nd value by default
     m_aSortBySecondValue[1] = true; // Accepted Requests:	Sort by 2nd value by default
     m_aSortBySecondValue[2] = true; // Transferred Data:	Sort by 2nd value by default
-    m_aSortBySecondValue[3] = false; // Shared ED2K|Kad:	Sort by 1st value by default
     if (GetSortItem() >= 6 && GetSortItem() <= 8)
         m_aSortBySecondValue[GetSortItem() - 6] = GetSortSecondValue();
-    else if (GetSortItem() == 12)
-        m_aSortBySecondValue[3] = GetSortSecondValue();
     SetSortArrow();
     SortItems(SortProc, GetSortItem() + (GetSortAscending() ? 0 : 20) + (GetSortSecondValue() ? 100 : 0));
 
@@ -327,8 +325,6 @@ void CSharedFilesCtrl::SetAllIcons()
     m_ImageList.DeleteImageList();
     m_ImageList.Create(16, 16, theApp.m_iDfltImageListColorFlags | ILC_MASK, 0, 1);
     m_ImageList.Add(CTempIconLoader(_T("EMPTY")));
-    m_ImageList.Add(CTempIconLoader(_T("FileSharedServer")));
-    m_ImageList.Add(CTempIconLoader(_T("FileSharedKad")));
     m_ImageList.Add(CTempIconLoader(_T("Rating_NotRated")));
     m_ImageList.Add(CTempIconLoader(_T("Rating_Fake")));
     m_ImageList.Add(CTempIconLoader(_T("Rating_Poor")));
@@ -354,89 +350,36 @@ void CSharedFilesCtrl::Localize()
     hdi.mask = HDI_TEXT;
     CString strRes;
 
-    strRes = GetResString(IDS_DL_FILENAME);
-    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-    pHeaderCtrl->SetItem(0, &hdi);
+	CString strTitles[] = {
+		GetResString(IDS_DL_FILENAME),
+		GetResString(IDS_DL_SIZE),
+		GetResString(IDS_TYPE),
+		GetResString(IDS_PRIORITY),
+		GetResString(IDS_RATIO), //>>> WiZaRd::Ratio Indicator
+		GetResString(IDS_FILEID),
+		GetResString(IDS_SF_REQUESTS),
+		GetResString(IDS_SF_ACCEPTS),
+		GetResString(IDS_SF_TRANSFERRED),
+		GetResString(IDS_SHARED_STATUS),
+		GetResString(IDS_FOLDER),
+		GetResString(IDS_COMPLSOURCES),
+		GetResString(IDS_INDEXED),
+		GetResString(IDS_ARTIST),
+		GetResString(IDS_ALBUM),
+		GetResString(IDS_TITLE),
+		GetResString(IDS_LENGTH),
+		GetResString(IDS_BITRATE),
+		GetResString(IDS_CODEC),
+		GetResString(IDS_WAITING_USERS), //>>> WiZaRd::Queued Count
+		GetResString(IDS_HEALTH), //>>> WiZaRd::FileHealth
+	};
 
-    strRes = GetResString(IDS_DL_SIZE);
-    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-    pHeaderCtrl->SetItem(1, &hdi);
-
-    strRes = GetResString(IDS_TYPE);
-    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-    pHeaderCtrl->SetItem(2, &hdi);
-
-    strRes = GetResString(IDS_PRIORITY);
-    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-    pHeaderCtrl->SetItem(3, &hdi);
-
-//>>> WiZaRd::Ratio Indicator
-    strRes = GetResString(IDS_RATIO);
-    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-    pHeaderCtrl->SetItem(4, &hdi);
-//<<< WiZaRd::Ratio Indicator
-
-    strRes = GetResString(IDS_FILEID);
-    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-    pHeaderCtrl->SetItem(5, &hdi);
-
-    strRes = GetResString(IDS_SF_REQUESTS);
-    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-    pHeaderCtrl->SetItem(6, &hdi);
-
-    strRes = GetResString(IDS_SF_ACCEPTS);
-    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-    pHeaderCtrl->SetItem(7, &hdi);
-
-    strRes = GetResString(IDS_SF_TRANSFERRED);
-    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-    pHeaderCtrl->SetItem(8, &hdi);
-
-    strRes = GetResString(IDS_SHARED_STATUS);
-    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-    pHeaderCtrl->SetItem(9, &hdi);
-
-    strRes = GetResString(IDS_FOLDER);
-    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-    pHeaderCtrl->SetItem(10, &hdi);
-
-    strRes = GetResString(IDS_COMPLSOURCES);
-    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-    pHeaderCtrl->SetItem(11, &hdi);
-
-    strRes = GetResString(IDS_SHAREDTITLE);
-    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-    pHeaderCtrl->SetItem(12, &hdi);
-
-    strRes = GetResString(IDS_ARTIST);
-    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-    pHeaderCtrl->SetItem(13, &hdi);
-
-    strRes = GetResString(IDS_ALBUM);
-    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-    pHeaderCtrl->SetItem(14, &hdi);
-
-    strRes = GetResString(IDS_TITLE);
-    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-    pHeaderCtrl->SetItem(15, &hdi);
-
-    strRes = GetResString(IDS_LENGTH);
-    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-    pHeaderCtrl->SetItem(16, &hdi);
-
-    strRes = GetResString(IDS_BITRATE);
-    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-    pHeaderCtrl->SetItem(17, &hdi);
-
-    strRes = GetResString(IDS_CODEC);
-    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-    pHeaderCtrl->SetItem(18, &hdi);
-
-//>>> WiZaRd::Queued Count
-	strRes = GetResString(IDS_WAITING_USERS);
-	hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-	pHeaderCtrl->SetItem(19, &hdi);
-//<<< WiZaRd::Queued Count
+	for(UINT i = 0; i != _countof(strTitles); ++i)
+	{
+		strRes = strTitles[i];
+		hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
+		pHeaderCtrl->SetItem(i, &hdi);
+	}
 
     CreateMenues();
 
@@ -789,13 +732,6 @@ void CSharedFilesCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
                     }
                     break;
 
-                case 12:
-                    if (pKnownFile == NULL)
-                        break;
-                    if (pKnownFile->IsSharedInKad())
-                        m_ImageList.Draw(dc, 2, cur_rec.TopLeft(), ILD_NORMAL);
-                    break;
-
                 default:
                     dc.DrawText(szItem, -1, &cur_rec, MLC_DT_TEXT | uDrawTextAlignment);
                     break;
@@ -920,6 +856,12 @@ void CSharedFilesCtrl::GetItemDisplayText(const CShareableFile* file, int iSubIt
 			_sntprintf(pszText, cchTextMax, L"%u", pKnownFile->GetRealQueuedCount());
 			break;
 //<<< WiZaRd::Queued Count
+
+//>>> WiZaRd::FileHealth
+		case 20:
+			_sntprintf(pszText, cchTextMax, L"%.2f", pKnownFile->GetFileHealth()/100.0);
+			break;
+//<<< WiZaRd::FileHealth
         }
     }
 
@@ -1503,13 +1445,6 @@ void CSharedFilesCtrl::OnLvnColumnClick(NMHDR *pNMHDR, LRESULT *pResult)
             m_aSortBySecondValue[pNMListView->iSubItem - 6] = !m_aSortBySecondValue[pNMListView->iSubItem - 6];
         adder = m_aSortBySecondValue[pNMListView->iSubItem - 6] ? 100 : 0;
     }
-    else if (pNMListView->iSubItem == 12) // 12=IDS_SHAREDTITLE
-    {
-        ASSERT(3 < _countof(m_aSortBySecondValue));
-        if (GetSortItem() == pNMListView->iSubItem && !sortAscending) // check for 'descending' because the initial sort order is also 'descending'
-            m_aSortBySecondValue[3] = !m_aSortBySecondValue[3];
-        adder = m_aSortBySecondValue[3] ? 100 : 0;
-    }
 
     // Sort table
     if (adder == 0)
@@ -1628,6 +1563,13 @@ int CSharedFilesCtrl::SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort
 
             case 12: //ed2k shared
                 iResult = kitem1->IsSharedInKad() - kitem2->IsSharedInKad();
+				if(iResult == 0)
+				{
+					UINT tNow = time(NULL);
+					int i1 = (tNow < kitem1->GetLastPublishTimeKadSrc()) ? 1 : 0;
+					int i2 = (tNow < kitem2->GetLastPublishTimeKadSrc()) ? 1 : 0;
+					iResult = i1 - i2;
+				}
                 break;
 
             case 13:
@@ -1660,6 +1602,12 @@ int CSharedFilesCtrl::SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort
 				break;
 //<<< WiZaRd::Queued Count
 
+//>>> WiZaRd::FileHealth
+			case 20:
+				iResult = CompareFloat(kitem1->GetFileHealth(), kitem2->GetFileHealth());
+				break;
+//<<< WiZaRd::FileHealth
+
             case 106: //all requests
                 iResult = CompareUnsigned(kitem1->statistic.GetAllTimeRequests(), kitem2->statistic.GetAllTimeRequests());
                 break;
@@ -1671,15 +1619,6 @@ int CSharedFilesCtrl::SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort
             case 108: //all transferred
                 iResult = CompareUnsigned64(kitem1->statistic.GetAllTimeTransferred(), kitem2->statistic.GetAllTimeTransferred());
                 break;
-
-            case 112:  //kad shared
-            {
-                UINT tNow = time(NULL);
-                int i1 = (tNow < kitem1->GetLastPublishTimeKadSrc()) ? 1 : 0;
-                int i2 = (tNow < kitem2->GetLastPublishTimeKadSrc()) ? 1 : 0;
-                iResult = i1 - i2;
-                break;
-            }
             }
         }
     }

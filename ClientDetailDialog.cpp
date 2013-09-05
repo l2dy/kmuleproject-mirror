@@ -194,10 +194,12 @@ BOOL CClientDetailPage::OnSetActive()
             buffer.Append(L" || ?");
         GetDlgItem(IDC_DRATIO)->SetWindowText(buffer);
         GetDlgItem(IDC_ANTILEECH_LABEL)->SetWindowText(GetResString(IDS_ANTILEECH_LABEL));
-        if (client->IsBadGuy() || (client->GetAntiLeechData() && client->GetAntiLeechData()->GetBadForThisSession() != 0))
+		if(client->GetAntiLeechData() == NULL)
+			GetDlgItem(IDC_ANTILEECH_INFO)->SetWindowText(GetResString(IDS_UNAVAILABLE));
+        else if(client->IsBadGuy() || client->GetAntiLeechData()->GetBadForThisSession() != 0)
             GetDlgItem(IDC_ANTILEECH_INFO)->SetWindowText(client->GetAntiLeechData()->GetAntiLeechDataString());
         else
-            GetDlgItem(IDC_ANTILEECH_INFO)->SetWindowText(GetResString(IDS_UNAVAILABLE));
+			GetDlgItem(IDC_ANTILEECH_INFO)->SetWindowText(GetResString(IDS_NO_BAD_BEHAVIOUR_DETECTED));
 //<<< WiZaRd::ClientAnalyzer
 
         if (client->GetUserName() && client->Credits()!=NULL)

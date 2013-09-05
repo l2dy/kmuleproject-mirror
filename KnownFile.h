@@ -282,4 +282,11 @@ public:
 	void	IncRealQueuedCount(CUpDownClient* client);
 	void	DecRealQueuedCount(CUpDownClient* client);
 //<<< WiZaRd::Queued Count
+//>>> WiZaRd::FileHealth
+public:
+	float	GetFileHealth();
+private:
+	UINT	m_dwLastFileHealthCalc;
+	float	m_fLastHealthValue;
+//<<< WiZaRd::FileHealth
 };
