@@ -4912,7 +4912,10 @@ Packet* CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 byR
         {
             nCount++;
             UINT dwID;
-            if (byUsedVersion >= 3)
+//>>> WiZaRd::NatTraversal [Xanatos]
+			if (byUsedVersion >= 3 && !cur_src->HasLowID())
+            //if (byUsedVersion >= 3)
+//<<< WiZaRd::NatTraversal [Xanatos]
                 dwID = cur_src->GetUserIDHybrid();
             else
                 dwID = ntohl(cur_src->GetUserIDHybrid());
@@ -5693,23 +5696,7 @@ void CPartFile::FlushBuffer(bool forcewait, bool bNoAICH)
                     if (posCorrupted)
                         corrupted_list.RemoveAt(posCorrupted);
 
-//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-                    if (m_pPublishedPartStatus)
-                        m_pPublishedPartStatus->SetPart(uPartNumber);
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
-
-                    if (status == PS_EMPTY)
-                    {
-                        if (theApp.emuledlg->IsRunning()) // may be called during shutdown!
-                        {
-                            if (m_FileIdentifier.HasExpectedMD4HashCount() && !m_bMD4HashsetNeeded)
-                            {
-                                // Successfully completed part, make it available for sharing
-                                SetStatus(PS_READY);
-                                theApp.sharedfiles->SafeAddKFile(this);
-                            }
-                        }
-                    }
+					CompletedPart(uPartNumber);
                 }
             }
             else if (IsCorruptedPart(uPartNumber))
@@ -5745,30 +5732,17 @@ void CPartFile::FlushBuffer(bool forcewait, bool bNoAICH)
                     else if (thePrefs.cumLostFromCorruption >= uRecovered)
                         thePrefs.cumLostFromCorruption -= uRecovered;
 
-//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-                    if (m_pPublishedPartStatus)
-                        m_pPublishedPartStatus->SetPart(uPartNumber);
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
-
-                    if (status == PS_EMPTY)
-                    {
-                        if (theApp.emuledlg->IsRunning()) // may be called during shutdown!
-                        {
-                            if (m_FileIdentifier.HasExpectedMD4HashCount() && !m_bMD4HashsetNeeded)
-                            {
-                                // Successfully recovered part, make it available for sharing
-                                SetStatus(PS_READY);
-                                theApp.sharedfiles->SafeAddKFile(this);
-                            }
-                        }
-                    }
+					CompletedPart(uPartNumber);
                 }
             }
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
             else
             {
                 // Attempt to share incomplete part if it will not complete within a decent time frame and we already have recovery data available
-                if (m_pAICHRecoveryHashSet && m_pAICHRecoveryHashSet->IsPartDataAvailable((uint64)uPartNumber * PARTSIZE))
+				if (m_pAICHRecoveryHashSet 
+						&& m_pAICHRecoveryHashSet->HasValidMasterHash() 
+						&& (m_pAICHRecoveryHashSet->GetStatus() == AICH_TRUSTED || m_pAICHRecoveryHashSet->GetStatus() == AICH_VERIFIED) 
+						&& m_pAICHRecoveryHashSet->IsPartDataAvailable((uint64)uPartNumber * PARTSIZE))
                 {
                     if (EstimatePartCompletion(uPartNumber) >= FORCE_AICH_TIME)
 					{
@@ -6837,19 +6811,8 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
                 POSITION posCorrupted = corrupted_list.Find((uint16)nPart);
                 if (posCorrupted)
                     corrupted_list.RemoveAt(posCorrupted);
-//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-                if (m_pPublishedPartStatus)
-                    m_pPublishedPartStatus->SetPart(nPart);
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
-                if (status == PS_EMPTY && theApp.emuledlg->IsRunning())
-                {
-                    if (m_FileIdentifier.HasExpectedMD4HashCount() && !m_bMD4HashsetNeeded)
-                    {
-                        // Successfully recovered part, make it available for sharing
-                        SetStatus(PS_READY);
-                        theApp.sharedfiles->SafeAddKFile(this);
-                    }
-                }
+
+				CompletedPart(nPart);
 
                 if (theApp.emuledlg->IsRunning())
                 {
@@ -7566,3 +7529,22 @@ clock_t CPartFile::EstimatePartCompletion(const UINT nPart) const
     return ~0UL;
 }
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+
+// Helper func to be called whenever a part completes
+void CPartFile::CompletedPart(UINT nPartNumber)
+{
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	if (m_pPublishedPartStatus)
+		m_pPublishedPartStatus->SetPart(nPartNumber);
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+
+	if(theApp.emuledlg->IsRunning() // may be called during shutdown!
+		&& status == PS_EMPTY
+		&& m_FileIdentifier.HasExpectedMD4HashCount() 
+		&& !m_bMD4HashsetNeeded)
+	{
+		// Successfully completed part, make it available for sharing
+		SetStatus(PS_READY);
+		theApp.sharedfiles->SafeAddKFile(this);
+	}
+}

@@ -1572,11 +1572,14 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
         {
             nCount++;
             UINT dwID;
-            if (byUsedVersion >= 3)
+//>>> WiZaRd::NatTraversal [Xanatos]
+			if (byUsedVersion >= 3 && !cur_src->HasLowID())
+            //if (byUsedVersion >= 3)
+//<<< WiZaRd::NatTraversal [Xanatos]
                 dwID = cur_src->GetUserIDHybrid();
             else
 //>>> WiZaRd::IPv6 [Xanatos]
-				dwID = _ntohl(cur_src->GetIP().ToIPv4());
+				dwID = ntohl(cur_src->GetUserIDHybrid()); // consistency for NAT-T
                 //dwID = cur_src->GetIP();
 //<<< WiZaRd::IPv6 [Xanatos]
             data.WriteUInt32(dwID);

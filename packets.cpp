@@ -767,7 +767,10 @@ bool CTag::WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode) const
 
     // don't write tags of unknown types, we wouldn't be able to read them in again
     // and the met file would be corrupted
-    if (IsStr() || IsInt() || IsFloat() || IsBlob() || IsInt64())
+//>>> WiZaRd::ExtendedXS [Xanatos]
+	if (IsHash() || IsStr() || IsInt() || IsFloat() || IsBlob() || IsInt64())
+    //if (IsStr() || IsInt() || IsFloat() || IsBlob() || IsInt64())
+//<<< WiZaRd::ExtendedXS [Xanatos]
     {
         file->WriteUInt8(m_uType);
 

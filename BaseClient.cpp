@@ -1448,7 +1448,7 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
         tagBuddyPort.WriteTagToFile(data);
 
 //>>> WiZaRd::NatTraversal [Xanatos]
-        CTag tagBuddyID(CT_EMULE_BUDDYID, 16, theApp.clientlist->GetBuddy()->GetBuddyID());
+        CTag tagBuddyID(CT_EMULE_BUDDYID, theApp.clientlist->GetBuddy()->GetBuddyID());
         tagBuddyID.WriteTagToFile(data);
 //<<< WiZaRd::NatTraversal [Xanatos]
     }
@@ -1560,7 +1560,7 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 //>>> WiZaRd::IPv6 [Xanatos]
 	if(GetConnectIP().Type() == CAddress::IPv6)
 	{
-		CTag tagYourIP(CT_NEOMULE_YOUR_IP, 16, GetConnectIP().Data());
+		CTag tagYourIP(CT_NEOMULE_YOUR_IP, GetConnectIP().Data());
 		tagYourIP.WriteTagToFile(data);
 	}
 	else
@@ -1571,7 +1571,7 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 
 	if(!theApp.GetPublicIPv6().IsNull())
 	{
-		CTag tagIPv6(CT_NEOMULE_IP_V6, 16, theApp.GetPublicIPv6().Data()); 
+		CTag tagIPv6(CT_NEOMULE_IP_V6, theApp.GetPublicIPv6().Data()); 
 		tagIPv6.WriteTagToFile(data);
 	}
 //<<< WiZaRd::IPv6 [Xanatos]
@@ -4486,13 +4486,13 @@ void CUpDownClient::WriteExtendedSourceExchangeData(CSafeMemFile& data) const
 			CTag tagIPv4(CT_EMULE_ADDRESS, _ntohl(GetIPv4().ToIPv4())); 
 			//CTag tagIPv4(CT_EMULE_ADDRESS, GetIP()); 
 //<<< WiZaRd::IPv6 [Xanatos]
-			tagIPv4.WriteTagToFile(&data);
+			tagIPv4.WriteNewEd2kTag(&data);
 
 			CTag tagUdpPorts(CT_EMULE_UDPPORTS, 
 				((UINT)GetKadPort() << 16) |
 				((UINT)GetUDPPort() <<  0)
 				); 
-			tagUdpPorts.WriteTagToFile(&data);
+			tagUdpPorts.WriteNewEd2kTag(&data);
 		}
 
 		if(GetBuddyIP())
@@ -4500,13 +4500,13 @@ void CUpDownClient::WriteExtendedSourceExchangeData(CSafeMemFile& data) const
 			tagcount += 2;
 
 			CTag tagBuddyIP(CT_EMULE_BUDDYIP, GetBuddyIP() ); 
-			tagBuddyIP.WriteTagToFile(&data);
+			tagBuddyIP.WriteNewEd2kTag(&data);
 
 			CTag tagBuddyPort(CT_EMULE_BUDDYUDP, 
 				//	( RESERVED						 )
 				((UINT)GetBuddyPort() ) 
 				);
-			tagBuddyPort.WriteTagToFile(&data);
+			tagBuddyPort.WriteNewEd2kTag(&data);
 		}
 
 		if(!isnulmd4(GetBuddyID()))
@@ -4514,7 +4514,7 @@ void CUpDownClient::WriteExtendedSourceExchangeData(CSafeMemFile& data) const
 			++tagcount;
 
 			CTag tagBuddyID(CT_EMULE_BUDDYID, GetBuddyID()); 
-			tagBuddyID.WriteTagToFile(&data);
+			tagBuddyID.WriteNewEd2kTag(&data);
 		}
 	}
 //<<< WiZaRd::NatTraversal [Xanatos]
@@ -4524,13 +4524,13 @@ void CUpDownClient::WriteExtendedSourceExchangeData(CSafeMemFile& data) const
 		tagcount += 2;
 
 		CTag tagServerIP(CT_EMULE_SERVERIP, GetServerIP()); 
-		tagServerIP.WriteTagToFile(&data);
+		tagServerIP.WriteNewEd2kTag(&data);
 
 		CTag tagServerPorts(CT_EMULE_SERVERTCP, 
 			//	( RESERVED						  )
 			((UINT)GetServerPort() )
 			); 
-		tagServerPorts.WriteTagToFile(&data);
+		tagServerPorts.WriteNewEd2kTag(&data);
 	}
 
 //>>> WiZaRd::IPv6 [Xanatos]
@@ -4539,7 +4539,7 @@ void CUpDownClient::WriteExtendedSourceExchangeData(CSafeMemFile& data) const
 		++tagcount;
 
 		CTag tagIPv6(CT_NEOMULE_IP_V6, GetIPv6().Data()); 
-		tagIPv6.WriteTagToFile(&data);
+		tagIPv6.WriteNewEd2kTag(&data);
 	}
 //<<< WiZaRd::IPv6 [Xanatos]
 

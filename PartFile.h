@@ -459,6 +459,7 @@ protected:
     void	Init();
 
 private:
+	void	CompletedPart(UINT nPartNumber);
     BOOL 		PerformFileComplete(); // Lord KiRon
     static UINT CompleteThreadProc(LPVOID pvParams); // Lord KiRon - Used as separate thread to complete file
     static UINT AFX_CDECL AllocateSpaceThread(LPVOID lpParam);
