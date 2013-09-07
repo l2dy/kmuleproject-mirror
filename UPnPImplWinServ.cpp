@@ -216,9 +216,7 @@ bool CUPnPImplWinServ::IsReady()
     }
 
     if (!bResult)
-    {
-        Log(GetResString(IDS_UPNP_NOSERVICE));
-    }
+        theApp.QueueLogLineEx(LOG_WARNING, GetResString(IDS_UPNP_NOSERVICE));
 
     return bResult;
 }

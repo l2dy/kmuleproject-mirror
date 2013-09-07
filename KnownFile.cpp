@@ -931,7 +931,7 @@ bool CKnownFile::LoadTagsFromFile(CFileDataIO* file)
                 SetLastPublishTimeKadSrc(newtag->GetInt(), 0);
             if (GetLastPublishTimeKadSrc() > (UINT)time(NULL)+KADEMLIAREPUBLISHTIMES)
             {
-                //There may be a posibility of an older client that saved a random number here.. This will check for that..
+                //There may be a possibility of an older client that saved a random number here.. This will check for that..
                 SetLastPublishTimeKadSrc(0,0);
             }
             delete newtag;
@@ -2490,6 +2490,8 @@ bool CKnownFile::WritePartStatus(CSafeMemFile* file, CUpDownClient* client, cons
                 else
                     partCompletelyShown = false;
             }
+			else
+				partCompletelyShown = false;
 
             ++done;
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
@@ -2503,10 +2505,10 @@ bool CKnownFile::WritePartStatus(CSafeMemFile* file, CUpDownClient* client, cons
                 if (bWriteStatus && lastPart < partcount) //valid part
 //<<< WiZaRd::FiX
                 {
-                    if (partCompletelyShown)
-                        client->m_abyUpPartStatusHidden[lastPart] = toSet;
-                    else
+                    if (partCompletelyShown)              
                         client->m_abyUpPartStatusHidden[lastPart] = 0;  //not hidden anymore
+					else
+						client->m_abyUpPartStatusHidden[lastPart] = toSet;
                 }
                 lastPart = cur_part;
                 partCompletelyShown = true;

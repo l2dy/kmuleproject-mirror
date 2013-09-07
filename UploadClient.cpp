@@ -1223,6 +1223,22 @@ void CUpDownClient::SendHashsetPacket(const uchar* pData, UINT nSize, bool bFile
         CFileIdentifierSA fileIdent;
         if (!fileIdent.ReadIdentifier(&data))
             throw _T("Bad FileIdentifier (OP_HASHSETREQUEST2)");
+//>>> WiZaRd::Prevent clients from probing Hashset without ask a file [Enig123]
+		if (isnulmd4(fileIdent.GetMD4Hash()))
+		{
+			DebugLogWarning(L"Client %s tried to probe Hashset without asking for a file.", DbgGetClientInfo());
+			CheckFailedFileIdReqs(fileIdent.GetMD4Hash());			
+			//Ban(L"Hashset Prober");
+			return;
+		}
+		else if (md4cmp(requpfileid, fileIdent.GetMD4Hash()))
+		{
+			CheckFailedFileIdReqs(fileIdent.GetMD4Hash());
+			DebugLogWarning(_T("Client %s tried to request Hashset of file that's different from its requested file."), DbgGetClientInfo());
+			//Ban(L"Hashset Prober");
+			return;
+		}
+//<<< WiZaRd::Prevent clients from probing Hashset without ask a file [Enig123]
         CKnownFile* file = theApp.sharedfiles->GetFileByIdentifier(fileIdent, false);
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 		if (!file && SupportsSCT()) // No FNF for existing files when using SCT
@@ -1256,6 +1272,22 @@ void CUpDownClient::SendHashsetPacket(const uchar* pData, UINT nSize, bool bFile
             ASSERT(0);
             return;
         }
+//>>> WiZaRd::Prevent clients from probing Hashset without ask a file [Enig123]
+		if (isnulmd4(requpfileid))
+		{
+			DebugLogWarning(L"Client %s tried to probe Hashset without asking for a file.", DbgGetClientInfo());
+			CheckFailedFileIdReqs(pData);			
+			//Ban(L"Hashset Prober");
+			return;
+		}
+		else if (md4cmp(requpfileid, pData))
+		{
+			CheckFailedFileIdReqs(pData);
+			DebugLogWarning(_T("Client %s tried to request Hashset of file that's different from its requested file."), DbgGetClientInfo());
+			//Ban(L"Hashset Prober");
+			return;
+		}
+//<<< WiZaRd::Prevent clients from probing Hashset without ask a file [Enig123]
         CKnownFile* file = theApp.sharedfiles->GetFileByID(pData);
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 		if (!file && SupportsSCT()) // No FNF for existing files when using SCT

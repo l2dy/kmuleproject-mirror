@@ -2794,20 +2794,20 @@ void CUpDownClient::ProcessAICHAnswer(const uchar* packet, UINT size)
         {
             if (pPartFile->GetAICHRecoveryHashSet()->ReadRecoveryData((uint64)request.m_nPart*PARTSIZE, &data))
             {
-                // finally all checks passed, everythings seem to be fine
-                AddDebugLogLine(DLP_DEFAULT, false, _T("AICH Packet Answer: Succeeded to read and validate received recoverydata"));
+                // finally all checks passed, everything seem to be fine
+                theApp.QueueDebugLogLineEx(LOG_SUCCESS, L"AICH Packet Answer: Succeeded to read and validate received recoverydata");
                 CAICHRecoveryHashSet::RemoveClientAICHRequest(this);
                 pPartFile->AICHRecoveryDataAvailable(request.m_nPart);
                 return;
             }
             else
-                DebugLogError(_T("AICH Packet Answer: Failed to read and validate received recoverydata"));
+                theApp.QueueDebugLogLineEx(LOG_ERROR, L"AICH Packet Answer: Failed to read and validate received recoverydata");
         }
         else
-            AddDebugLogLine(DLP_HIGH, false, _T("AICH Packet Answer: Masterhash differs from packethash or hashset has no trusted Masterhash"));
+            theApp.QueueDebugLogLineEx(LOG_ERROR, L"AICH Packet Answer: Masterhash differs from packethash or hashset has no trusted Masterhash");
     }
     else
-        AddDebugLogLine(DLP_HIGH, false, _T("AICH Packet Answer: requested values differ from values in packet"));
+        theApp.QueueDebugLogLineEx(LOG_ERROR, L"AICH Packet Answer: requested values differ from values in packet");
 
     CAICHRecoveryHashSet::ClientAICHRequestFailed(this);
 }

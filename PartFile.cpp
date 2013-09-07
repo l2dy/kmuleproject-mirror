@@ -1089,7 +1089,7 @@ EPartFileLoadResult CPartFile::LoadPartFile(LPCTSTR in_directory,LPCTSTR in_file
                         SetLastPublishTimeKadSrc(newtag->GetInt(), 0);
                         if (GetLastPublishTimeKadSrc() > (UINT)time(NULL)+KADEMLIAREPUBLISHTIMES)
                         {
-                            //There may be a posibility of an older client that saved a random number here.. This will check for that..
+                            //There may be a possibility of an older client that saved a random number here.. This will check for that..
                             SetLastPublishTimeKadSrc(0,0);
                         }
                     }
@@ -1100,9 +1100,7 @@ EPartFileLoadResult CPartFile::LoadPartFile(LPCTSTR in_directory,LPCTSTR in_file
                 {
                     ASSERT(newtag->IsInt());
                     if (newtag->IsInt())
-                    {
                         SetLastPublishTimeKadNotes(newtag->GetInt());
-                    }
                     delete newtag;
                     break;
                 }
@@ -5736,7 +5734,7 @@ void CPartFile::FlushBuffer(bool forcewait, bool bNoAICH)
                 }
             }
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-            else
+            else if(theApp.m_app_state == APP_STATE_RUNNING) //>>> WiZaRd: FiX
             {
                 // Attempt to share incomplete part if it will not complete within a decent time frame and we already have recovery data available
 				if (m_pAICHRecoveryHashSet 
@@ -6687,7 +6685,7 @@ void CPartFile::RequestAICHRecovery(UINT nPart)
         ASSERT(0);
         return;
     }
-    AddDebugLogLine(DLP_DEFAULT, false, L"Requesting AICH Hash (%s) from client %s", cAICHClients? L"Open" : L"Firewalled", pClient->DbgGetClientInfo());
+    AddDebugLogLine(DLP_DEFAULT, false, L"Requesting AICH Hash (%s) from client %s", cAICHClients? GetResString(IDS_IDHIGH) : GetResString(IDS_IDLOW), pClient->DbgGetClientInfo());
     pClient->SendAICHRequest(this, (uint16)nPart);
 }
 
@@ -7547,4 +7545,17 @@ void CPartFile::CompletedPart(UINT nPartNumber)
 		SetStatus(PS_READY);
 		theApp.sharedfiles->SafeAddKFile(this);
 	}
+}
+
+UINT CPartFile::GetCompletePartCount() const
+{
+	UINT count = 0;
+
+	for(UINT i = 0; i < GetPartCount(); ++i)
+	{
+		if (IsComplete((uint64)i*PARTSIZE,((uint64)(i+1)*PARTSIZE)-1, true))
+			++count;
+	}
+
+	return count;
 }

@@ -632,11 +632,11 @@ LRESULT CemuleDlg::OnNATPMPResult(WPARAM wParam, LPARAM lParam)
         {
             // remember the last working implementation
             // TODO: ports may not be correct here, though that not that import, right now
-            Log(L"NAT-PMP successfully set up mappings for ports %u (TCP) and %u (UDP)", thePrefs.GetPort(), thePrefs.GetUDPPort());
-            //Log(GetResString(IDS_UPNPSUCCESS), theApp.m_pNATPMPThreadWrapper->GetUsedTCPPort(), theApp.m_pNATPMPThreadWrapper->GetUsedUDPPort());
+            theApp.QueueLogLineEx(LOG_SUCCESS, L"NAT-PMP successfully set up mappings for ports %u (TCP) and %u (UDP)", thePrefs.GetPort(), thePrefs.GetUDPPort());
+            //theApp.QueueLogLineEx(LOG_SUCCESS, GetResString(IDS_UPNPSUCCESS), theApp.m_pNATPMPThreadWrapper->GetUsedTCPPort(), theApp.m_pNATPMPThreadWrapper->GetUsedUDPPort());
         }
         else
-            LogWarning(L"NAT-PMP failed to setup port mappings, please map those ports manually if necessary!"); // GetResString(IDS_UPNPFAILED)
+            theApp.QueueLogLineEx(LOG_ERROR, L"NAT-PMP failed to setup port mappings, please map those ports manually if necessary!"); // GetResString(IDS_UPNPFAILED)
     }
 
     return 0;

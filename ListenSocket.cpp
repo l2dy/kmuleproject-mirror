@@ -2219,7 +2219,7 @@ CString CClientReqSocket::DbgGetClientInfo()
 	_CIPAddress IP;
 	IP.FromSA((SOCKADDR*)&sockAddr, nSockAddrLen);
 	if (!IP.IsNull() && (client == NULL || IP != client->GetIP()))
-		str.AppendFormat(_T("IP=%s"), IP.ToStringW().c_str());
+		str.AppendFormat(_T("IP=%s"), ipstr(IP));
 //     if (sockAddr.sin_addr.S_un.S_addr != 0 && (client == NULL || sockAddr.sin_addr.S_un.S_addr != client->GetIP()))
 //         str.AppendFormat(_T("IP=%s"), ipstr(sockAddr.sin_addr));
 //<<< WiZaRd::IPv6 [Xanatos]

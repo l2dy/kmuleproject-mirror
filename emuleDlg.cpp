@@ -3387,11 +3387,11 @@ LRESULT CemuleDlg::OnUPnPResult(WPARAM wParam, LPARAM lParam)
         {
             // remember the last working implementation
             thePrefs.SetLastWorkingUPnPImpl(theApp.m_pUPnPFinder->GetImplementation()->GetImplementationID());
-            Log(GetResString(IDS_UPNPSUCCESS), theApp.m_pUPnPFinder->GetImplementation()->GetUsedTCPPort()
+            theApp.QueueLogLineEx(LOG_SUCCESS, GetResString(IDS_UPNPSUCCESS), theApp.m_pUPnPFinder->GetImplementation()->GetUsedTCPPort()
                 , theApp.m_pUPnPFinder->GetImplementation()->GetUsedUDPPort());
         }
         else
-            LogWarning(GetResString(IDS_UPNPFAILED));
+            theApp.QueueLogLineEx(LOG_ERROR, GetResString(IDS_UPNPFAILED));
     }
 
     return 0;

@@ -237,3 +237,6 @@ XXXXYYZZ:
 + added file health display to shared files window [WiZaRd]
 ~ replaced "Shared" title with "Indexed" in shared files window because it describes the information of the column way better [WiZaRd]
 ~ improved CA information in client details
++ added complete part count to file details [WiZaRd]
++ added anti-hashset probe code - original by Enig123 [WiZaRd]
++ added support for peerblock cache.p2b format - orignal by ElKarro [WiZaRd]

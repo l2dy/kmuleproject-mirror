@@ -664,11 +664,11 @@ void CKademliaUDPListener::Process_KADEMLIA2_HELLO_RES_ACK(const byte *pbyPacket
     CUInt128 uRemoteID;
     fileIO.ReadUInt128(&uRemoteID);
     if (!CKademlia::GetRoutingZone()->VerifyContact(uRemoteID, uIP))
-    {
         DebugLogWarning(_T("Kad: Process_KADEMLIA2_HELLO_RES_ACK: Unable to find valid sender in routing table (sender: %s)"), ipstr(ntohl(uIP)));
-    }
-    //else
-    //	DEBUG_ONLY( AddDebugLogLine(DLP_LOW, false, _T("Verified contact (%s) by HELLO_RES_ACK"), ipstr(ntohl(uIP))) );
+// #ifdef _DEBUG
+//     else
+//     	AddDebugLogLine(DLP_LOW, false, _T("Verified contact (%s) by HELLO_RES_ACK"), ipstr(ntohl(uIP)));
+// #endif
 }
 
 // Used in Kad2.0 only
@@ -816,11 +816,11 @@ void CKademliaUDPListener::Process_KADEMLIA2_RES(const byte *pbyPacketData, UINT
     {
         // yup it is, set the contact as verified
         if (!CKademlia::GetRoutingZone()->VerifyContact(uContactID, uIP))
-        {
             DebugLogWarning(_T("Kad: KADEMLIA2_RES: Unable to find valid sender in routing table (sender: %s)"), ipstr(ntohl(uIP)));
-        }
-        else
-            DEBUG_ONLY(AddDebugLogLine(DLP_VERYLOW, false, _T("Verified contact with legacy challenge (KADEMLIA2_REQ) - %s"), ipstr(ntohl(uIP))));
+// #ifdef _DEBUG
+//         else
+//             AddDebugLogLine(DLP_VERYLOW, false, _T("Verified contact with legacy challenge (KADEMLIA2_REQ) - %s"), ipstr(ntohl(uIP)));
+// #endif
         return; // we do not actually care for its other content
     }
 
@@ -897,7 +897,7 @@ void CKademliaUDPListener::Process_KADEMLIA2_RES(const byte *pbyPacketData, UINT
         throw;
     }
     if (nIgnoredCount > 0)
-        DebugLogWarning(_T("Ignored %u bad contact(s) in routing answer from %s"), nIgnoredCount, ipstr(ntohl(uIP)));
+        DebugLogWarning(L"Ignored %u/%u bad contact(s) in routing answer from %s", nIgnoredCount, uNumContacts, ipstr(ntohl(uIP)));
     CSearchManager::ProcessResponse(uTarget, uIP, uUDPPort, pResults);
 }
 
@@ -2031,11 +2031,11 @@ void CKademliaUDPListener::Process_KADEMLIA2_PONG(const byte* pbyPacketData, UIN
     {
         // yup it is, set the contact as verified
         if (!CKademlia::GetRoutingZone()->VerifyContact(uContactID, uIP))
-        {
             DebugLogWarning(_T("Kad: KADEMLIA2_PONG: Unable to find valid sender in routing table (sender: %s)"), ipstr(ntohl(uIP)));
-        }
-        else
-            DEBUG_ONLY(AddDebugLogLine(DLP_LOW, false, _T("Verified contact with legacy challenge (KADEMLIA2_PING) - %s"), ipstr(ntohl(uIP))));
+// #ifdef _DEBUG
+//         else
+//             AddDebugLogLine(DLP_LOW, false, _T("Verified contact with legacy challenge (KADEMLIA2_PING) - %s"), ipstr(ntohl(uIP)));
+// #endif
         // we might care for its other content
     }
 

@@ -733,7 +733,7 @@ void CDownloadListCtrl::DrawFileItem(CDC *dc, int nColumn, LPCRECT lpRect, UINT 
     case 14:
     {
         CRect rcDraw(lpRect);
-        int available = pPartFile->GetAvailablePartCount()*100/pPartFile->GetPartCount(); //get available parts in %
+        int available = !pPartFile->IsPartFile() ? 100 : (pPartFile->GetAvailablePartCount()*100/pPartFile->GetPartCount()); //get available parts in %
         POINT pt = rcDraw.TopLeft();
         if (available >= 25) // 25%-49% display first bar
             m_ImageList.Draw(dc, m_iHealthIndex, pt, ILD_NORMAL);
@@ -1053,7 +1053,7 @@ void CDownloadListCtrl::DrawSourceItem(CDC *dc, int nColumn, LPCRECT lpRect, UIN
     case 14:
     {
         CRect rcDraw(lpRect);
-        int available = pClient->GetAvailablePartCount()*100/pCtrlItem->owner->GetPartCount(); //get available parts in %
+        int available = pClient->IsCompleteSource() ? 100 : (pClient->GetAvailablePartCount()*100/pCtrlItem->owner->GetPartCount()); //get available parts in %
         POINT pt = rcDraw.TopLeft();
         if (available >= 25) // 25%-49% display first bar
             m_ImageList.Draw(dc, m_iHealthIndex, pt, ILD_NORMAL);
@@ -2565,8 +2565,12 @@ int CDownloadListCtrl::Compare(const CPartFile *file1, const CPartFile *file2, L
 
 //>>> Health Indicator File Availability [WiZaRd]
     case 14:
-        comp = CompareUnsigned64(file1->GetAvailablePartCount()*100/file1->GetPartCount(), file2->GetAvailablePartCount()*100/file1->GetPartCount());
+	{
+		float val1 = !file1->IsPartFile() ? 100 : (file1->GetAvailablePartCount()*100/file1->GetPartCount());
+		float val2 = !file2->IsPartFile() ? 100 : (file2->GetAvailablePartCount()*100/file2->GetPartCount());
+        comp = CompareFloat(val1, val2);
         break;
+	}
 //<<< Health Indicator File Availability [WiZaRd]
     }
     return comp;
@@ -2594,8 +2598,7 @@ int CDownloadListCtrl::Compare(const CUpDownClient *client1, const CUpDownClient
 
     case 4: //speed asc
         return CompareUnsigned(client1->GetDownloadDatarate(), client2->GetDownloadDatarate());
-
-    case 14: //>>> Health Indicator File Availability [WiZaRd]
+		    
     case 5: //progress asc
         return CompareUnsigned(client1->GetAvailablePartCount(), client2->GetAvailablePartCount());
 
@@ -2640,6 +2643,15 @@ int CDownloadListCtrl::Compare(const CUpDownClient *client1, const CUpDownClient
                 return -1;
         }
         return client1->GetDownloadState() - client2->GetDownloadState();
+
+//>>> Health Indicator File Availability [WiZaRd]
+		case 14:
+		{
+			float val1 = client1->IsCompleteSource() ? 100 : (client1->GetAvailablePartCount()*100/client1->GetRequestFile()->GetPartCount());
+			float val2 = client2->IsCompleteSource() ? 100 : (client2->GetAvailablePartCount()*100/client2->GetRequestFile()->GetPartCount());
+			return CompareFloat(val1, val2);
+		}
+//<<< Health Indicator File Availability [WiZaRd]
     }
 
     return 0;

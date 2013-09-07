@@ -160,9 +160,7 @@ void UploadBandwidthThrottler::AddToStandardList(UINT index, ThrottledFileSocket
 
         RemoveFromStandardListNoLock(socket);
         if (index > (UINT)m_StandardOrder_list.GetSize())
-        {
             index = m_StandardOrder_list.GetSize();
-        }
         m_StandardOrder_list.InsertAt(index, socket);
 
         sendLocker.Unlock();

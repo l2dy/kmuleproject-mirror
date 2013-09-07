@@ -2604,7 +2604,7 @@ void	CemuleApp::UpdateIPv6()
 				if(IPv6 != GetPublicIPv6())
 				{
 					SetPublicIPv6(IPv6);
-					DebugLog(L"Found Public IPv6: %s", IPv6.ToStringW().c_str());
+					DebugLog(L"Found Public IPv6: %s", ipstr(IPv6));
 				}
 				break;
 			}

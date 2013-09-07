@@ -239,8 +239,8 @@ const CAICHHashTree* CAICHHashTree::FindExistingHash(uint64 nStartPos, uint64 nS
 }
 
 // recursive
-// calculates missing hash fromt he existing ones
-// overwrites existing hashs
+// calculates missing hash from the existing ones
+// overwrites existing hashes
 // fails if no hash is found for any branch
 bool CAICHHashTree::ReCalculateHash(CAICHHashAlgo* hashalg, bool bDontReplace)
 {
@@ -657,7 +657,7 @@ bool CAICHRecoveryHashSet::GetPartHashs(CArray<CAICHHash>& rResult) const
 
     UINT uPartCount = (uint16)(((uint64)m_pOwner->GetFileSize() + (PARTSIZE - 1)) / PARTSIZE);
     if (uPartCount <= 1)
-        return true; // No AICH Part Hashs
+        return true; // No AICH Part Hashes
     for (UINT nPart = 0; nPart < uPartCount; nPart++)
     {
         uint64 nPartStartPos = (uint64)nPart*PARTSIZE;
@@ -1278,9 +1278,7 @@ bool CAICHRecoveryHashSet::IsPartDataAvailable(uint64 nPartStartPos)
     {
         const CAICHHashTree* phtToCheck = m_pHashTree.FindExistingHash(nPartStartPos+nPartPos, min(EMBLOCKSIZE, nPartSize-nPartPos));
         if (phtToCheck == NULL || !phtToCheck->m_bHashValid)
-        {
             return false;
-        }
     }
     return true;
 }

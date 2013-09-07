@@ -113,8 +113,7 @@ BOOL CClientDetailPage::OnSetActive()
         else
             buffer = GetResString(IDS_IDENTNOSUPPORT);
 #if defined(_DEBUG)
-        if (client->IsObfuscatedConnectionEstablished())
-            buffer += _T("(In Use)");
+		buffer.AppendFormat(L" (%s)", client->IsObfuscatedConnectionEstablished() ? GetResString(IDS_ENABLED) : GetResString(IDS_DISABLED));
 #endif
         GetDlgItem(IDC_OBFUSCATION_STAT)->SetWindowText(buffer);
 
@@ -195,11 +194,27 @@ BOOL CClientDetailPage::OnSetActive()
         GetDlgItem(IDC_DRATIO)->SetWindowText(buffer);
         GetDlgItem(IDC_ANTILEECH_LABEL)->SetWindowText(GetResString(IDS_ANTILEECH_LABEL));
 		if(client->GetAntiLeechData() == NULL)
-			GetDlgItem(IDC_ANTILEECH_INFO)->SetWindowText(GetResString(IDS_UNAVAILABLE));
+			buffer = GetResString(IDS_UNAVAILABLE);
         else if(client->IsBadGuy() || client->GetAntiLeechData()->GetBadForThisSession() != 0)
-            GetDlgItem(IDC_ANTILEECH_INFO)->SetWindowText(client->GetAntiLeechData()->GetAntiLeechDataString());
+            buffer = client->GetAntiLeechData()->GetAntiLeechDataString();
         else
-			GetDlgItem(IDC_ANTILEECH_INFO)->SetWindowText(GetResString(IDS_NO_BAD_BEHAVIOUR_DETECTED));
+		{
+#ifdef _DEBUG
+			float fCAScore = client->GetAntiLeechData()->GetScore();
+			if(fCAScore < AT_BASESCORE)
+				buffer = GetResString(IDS_NO_BAD_BEHAVIOUR_DETECTED);
+			else if(fCAScore != AT_BASESCORE)
+			{
+				if(fCAScore < 2 * AT_BASESCORE)
+					buffer = "Nice score!"; // blue - nice score!
+				else
+					buffer = "Good score!";  // green - good score!
+			}
+#else
+			buffer = GetResString(IDS_NO_BAD_BEHAVIOUR_DETECTED);
+#endif
+		}
+		GetDlgItem(IDC_ANTILEECH_INFO)->SetWindowText(buffer);
 //<<< WiZaRd::ClientAnalyzer
 
         if (client->GetUserName() && client->Credits()!=NULL)

@@ -135,7 +135,9 @@ void CFileDetailDialogInfo::RefreshData()
 
         // if file is completed, we output the 'file path' and not the 'part.met file path'
         if (file->GetStatus(true) == PS_COMPLETE)
-            GetDlgItem(IDC_FD_X2)->SetWindowText(GetResString(IDS_DL_FILENAME));
+            GetDlgItem(IDC_FD_X2)->SetWindowText(GetResString(IDS_DL_FILENAME) + L":");
+		else 
+			GetDlgItem(IDC_FD_X2)->SetWindowText(GetResString(IDS_FD_MET));
 
         SetDlgItemText(IDC_FNAME, file->GetFileName());
         SetDlgItemText(IDC_METFILE, file->GetFullName());
@@ -147,7 +149,7 @@ void CFileDetailDialogInfo::RefreshData()
             str = file->getPartfileStatus();
         SetDlgItemText(IDC_PFSTATUS, str);
 
-        str.Format(_T("%u;  %s: %u (%.1f%%)"), file->GetPartCount(), GetResString(IDS_AVAILABLE) , file->GetAvailablePartCount(), (float)((file->GetAvailablePartCount()*100)/file->GetPartCount()));
+        str.Format(_T("%u;  %s: %u (%.1f%%);  %s: %u (%.1f%%)"), file->GetPartCount(), GetResString(IDS_AVAILABLE) , file->GetAvailablePartCount(), (float)((file->GetAvailablePartCount()*100)/file->GetPartCount()), GetResString(IDS_COMPLETE), file->GetCompletePartCount(), (float)((file->GetCompletePartCount()*100)/file->GetPartCount()));
         SetDlgItemText(IDC_PARTCOUNT, str);
 
         // date created

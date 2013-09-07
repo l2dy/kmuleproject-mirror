@@ -579,4 +579,6 @@ protected:
 public:
 	bool	IsPaused() const						{return paused;} 
 //<<< WiZaRd::Improved Auto Prio
+public:
+	UINT	GetCompletePartCount() const;
 };

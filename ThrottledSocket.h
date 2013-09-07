@@ -56,7 +56,7 @@ public:
 		AfxDebugBreak();
 		return false;
 	}
-	virtual bool HasQueues(bool /*bOnlyStandardPackets*/ = false)
+	virtual bool HasQueues(bool /*bOnlyStandardPackets*/ = false) const
 	{
 		AfxDebugBreak();
 		return false;
