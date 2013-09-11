@@ -808,6 +808,12 @@ bool CTag::WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode) const
             file->WriteUInt32(m_nBlobSize);
             file->Write(m_pData, m_nBlobSize);
         }
+//>>> WiZaRd::ExtendedXS [Xanatos]
+		else if(IsHash())
+		{
+			file->WriteHash16(m_pData);
+		}
+//<<< WiZaRd::ExtendedXS [Xanatos]
         //TODO: Support more tag types
         else
         {
