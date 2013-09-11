@@ -18,6 +18,7 @@
 #include <dbghelp.h>
 #include "mdump.h"
 #include "./Mod/Modname.h"
+#include "otherfunctions.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -60,20 +61,20 @@ void CMiniDumper::Enable(LPCTSTR pszAppName, bool bShowErrors, LPCTSTR pszDumpDi
     }
 }
 
-#define DBGHELP_HINT _T("You can get the required DBGHELP.DLL by downloading the \"User Mode Process Dumper\" from \"Microsoft Download Center\".\r\n\r\n") \
-	_T("Extract the \"User Mode Process Dumper\" and locate the \"x86\" folder. Copy the DBGHELP.DLL from the \"x86\" folder into your kMule installation folder and/or into your Windows system/system32 folder.")
+#define DBGHELP_HINT L"You can get the required DBGHELP.DLL by downloading the \"User Mode Process Dumper\" from \"Microsoft Download Center\".\r\n\r\n" \
+	L"Extract the \"User Mode Process Dumper\" and locate the \"x86\" folder. Copy the DBGHELP.DLL from the \"x86\" folder into your kMule installation folder and/or into your Windows system/system32 folder."
 
 
 HMODULE CMiniDumper::GetDebugHelperDll(FARPROC* ppfnMiniDumpWriteDump, bool bShowErrors)
 {
     *ppfnMiniDumpWriteDump = NULL;
-    HMODULE hDll = LoadLibrary(_T("DBGHELP.DLL"));
+    HMODULE hDll = LoadLibrary(L"DBGHELP.DLL");
     if (hDll == NULL)
     {
         if (bShowErrors)
         {
             // Do *NOT* localize that string (in fact, do not use MFC to load it)!
-            MessageBox(NULL, _T("DBGHELP.DLL not found. Please install a DBGHELP.DLL.\r\n\r\n") DBGHELP_HINT, m_szAppName, MB_ICONSTOP | MB_OK);
+            MessageBox(NULL, L"DBGHELP.DLL not found. Please install a DBGHELP.DLL.\r\n\r\n" DBGHELP_HINT, m_szAppName, MB_ICONSTOP | MB_OK);
         }
     }
     else
@@ -84,7 +85,7 @@ HMODULE CMiniDumper::GetDebugHelperDll(FARPROC* ppfnMiniDumpWriteDump, bool bSho
             if (bShowErrors)
             {
                 // Do *NOT* localize that string (in fact, do not use MFC to load it)!
-                MessageBox(NULL, _T("DBGHELP.DLL found is too old. Please upgrade to version 5.1 (or later) of DBGHELP.DLL.\r\n\r\n") DBGHELP_HINT, m_szAppName, MB_ICONSTOP | MB_OK);
+                MessageBox(NULL, L"DBGHELP.DLL found is too old. Please upgrade to version 5.1 (or later) of DBGHELP.DLL.\r\n\r\n" DBGHELP_HINT, m_szAppName, MB_ICONSTOP | MB_OK);
             }
         }
     }
@@ -103,7 +104,7 @@ LONG CMiniDumper::TopLevelFilter(struct _EXCEPTION_POINTERS* pExceptionInfo)
         {
             // Ask user if they want to save a dump file
             // Do *NOT* localize that string (in fact, do not use MFC to load it)!
-            if (MessageBox(NULL, _T("kMule crashed :-(\r\n\r\nA diagnostic file can be created which will help the author to resolve this problem. This file will be saved on your Disk (and not sent).\r\n\r\nDo you want to create this file now?"), m_szAppName, MB_ICONSTOP | MB_YESNO) == IDYES)
+            if (MessageBox(NULL, L"kMule crashed :-(\r\n\r\nA diagnostic file can be created which will help the author to resolve this problem. This file will be saved on your Disk (and not sent).\r\n\r\nDo you want to create this file now?", m_szAppName, MB_ICONSTOP | MB_YESNO) == IDYES)
             {
                 // Create full path for DUMP file
                 TCHAR szDumpPath[MAX_PATH];
@@ -117,17 +118,17 @@ LONG CMiniDumper::TopLevelFilter(struct _EXCEPTION_POINTERS* pExceptionInfo)
                 size_t uBaseNameLen = _tcslen(szBaseName);
 
                 time_t tNow = time(NULL);
-                _tcsftime(szBaseName + uBaseNameLen, _countof(szBaseName) - uBaseNameLen, _T("_%Y%m%d-%H%M%S"), localtime(&tNow));
+                _tcsftime(szBaseName + uBaseNameLen, _countof(szBaseName) - uBaseNameLen, L"_%Y%m%d-%H%M%S", localtime(&tNow));
                 szBaseName[_countof(szBaseName) - 1] = L'\0';
 
                 // Replace spaces and dots in file name.
                 LPTSTR psz = szBaseName;
                 while (*psz != L'\0')
                 {
-                    if (*psz == _T('.'))
-                        *psz = _T('-');
-                    else if (*psz == _T(' '))
-                        *psz = _T('_');
+                    if (*psz == L'.')
+                        *psz = L'-';
+                    else if (*psz == L' ')
+                        *psz = L'_';
                     psz++;
                 }
                 if (uDumpPathLen < _countof(szDumpPath) - 1)
@@ -137,7 +138,7 @@ LONG CMiniDumper::TopLevelFilter(struct _EXCEPTION_POINTERS* pExceptionInfo)
                     uDumpPathLen = _tcslen(szDumpPath);
                     if (uDumpPathLen < _countof(szDumpPath) - 1)
                     {
-                        _tcsncat(szDumpPath, _T(".dmp"), _countof(szDumpPath) - uDumpPathLen - 1);
+                        _tcsncat(szDumpPath, L".dmp", _countof(szDumpPath) - uDumpPathLen - 1);
                         szDumpPath[_countof(szDumpPath) - 1] = L'\0';
                     }
                 }
@@ -154,14 +155,14 @@ LONG CMiniDumper::TopLevelFilter(struct _EXCEPTION_POINTERS* pExceptionInfo)
                     if (bOK)
                     {
                         // Do *NOT* localize that string (in fact, do not use MFC to load it)!
-                        _sntprintf(szResult, _countof(szResult) - 1, _T("Saved dump file to \"%s\".\r\n\r\nPlease send this file together with a detailed bug report to %s !\r\n\r\nThank you for helping to improve kMule."), szDumpPath, MODDER_MAIL);
+                        _sntprintf(szResult, _countof(szResult) - 1, L"Saved dump file to \"%s\".\r\n\r\nPlease send this file together with a detailed bug report to %s !\r\n\r\nThank you for helping to improve kMule.", szDumpPath, MODDER_MAIL);
                         szResult[_countof(szResult) - 1] = L'\0';
                         lRetValue = EXCEPTION_EXECUTE_HANDLER;
                     }
                     else
                     {
                         // Do *NOT* localize that string (in fact, do not use MFC to load it)!
-                        _sntprintf(szResult, _countof(szResult) - 1, _T("Failed to save dump file to \"%s\".\r\n\r\nError: %u"), szDumpPath, GetLastError());
+                        _sntprintf(szResult, _countof(szResult) - 1, L"Failed to save dump file to \"%s\".\r\n\r\nError: %s", szDumpPath, GetErrorMessage(GetLastError()));
                         szResult[_countof(szResult) - 1] = L'\0';
                     }
                     CloseHandle(hFile);
@@ -169,7 +170,7 @@ LONG CMiniDumper::TopLevelFilter(struct _EXCEPTION_POINTERS* pExceptionInfo)
                 else
                 {
                     // Do *NOT* localize that string (in fact, do not use MFC to load it)!
-                    _sntprintf(szResult, _countof(szResult) - 1, _T("Failed to create dump file \"%s\".\r\n\r\nError: %u"), szDumpPath, GetLastError());
+                    _sntprintf(szResult, _countof(szResult) - 1, L"Failed to create dump file \"%s\".\r\n\r\nError: %s", szDumpPath, GetErrorMessage(GetLastError()));
                     szResult[_countof(szResult) - 1] = L'\0';
                 }
             }
