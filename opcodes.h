@@ -80,7 +80,7 @@
 #define KADEMLIADISCONNECTDELAY	MIN2S(20)	//20 mins
 #define	KADEMLIAMAXINDEX		50000		//Total keyword indexes.
 #define	KADEMLIAMAXENTRIES		60000		//Total keyword entries.
-#define KADEMLIAMAXSOUCEPERFILE 1000		//Max number of sources per file in index.
+#define KADEMLIAMAXSOURCEPERFILE 1000		//Max number of sources per file in index.
 #define KADEMLIAMAXNOTESPERFILE	150			//Max number of notes per entry in index.
 #define KADEMLIAFIREWALLCHECKS	4			//Firewallcheck Request at a time
 

@@ -832,6 +832,17 @@ void CKademliaUDPListener::Process_KADEMLIA2_RES(const byte *pbyPacketData, UINT
         throw strError;
     }
 
+	// Verify that the search is still active and contains no more than the requested numbers of contacts
+	if (uNumContacts > CSearchManager::GetExpectedResponseContactCount(uTarget))
+	{
+		if (CSearchManager::GetExpectedResponseContactCount(uTarget) == 0)
+			DebugLogWarning(_T("Kad: KADEMLIA2_RES: Search already expired, ignoring answer (sender: %s)"), ipstr(ntohl(uIP)));
+		else
+			DebugLogWarning(_T("Kad: KADEMLIA2_RES: Contact sent more nodes (%u) than requested (%u), ignoring answer (sender: %s)")
+			, uNumContacts, CSearchManager::GetExpectedResponseContactCount(uTarget), ipstr(ntohl(uIP)));
+		return;
+	}
+
     // is this a search for firewallcheck ips?
     bool bIsFirewallUDPCheckSearch = false;
     if (CUDPFirewallTester::IsFWCheckUDPRunning() && CSearchManager::IsFWCheckUDPSearch(uTarget))

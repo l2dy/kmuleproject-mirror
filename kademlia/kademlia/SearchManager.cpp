@@ -568,6 +568,21 @@ void CSearchManager::ProcessPublishResult(const CUInt128 &uTarget, const uint8 u
     pSearch->m_uAnswers++;
 }
 
+uint8 CSearchManager::GetExpectedResponseContactCount(const CUInt128 &uTarget)
+{
+	uint8 expectedCount = 0;
+
+	CSearch *pSearch = NULL;
+	SearchMap::const_iterator itSearchMap = m_mapSearches.find(uTarget);
+	if (itSearchMap != m_mapSearches.end())
+		pSearch = itSearchMap->second;
+
+	// If this search was deleted before this response, delete contacts and abort, otherwise process them.
+	if (pSearch != NULL)
+		expectedCount = pSearch->GetRequestContactCount();
+
+	return expectedCount;
+}
 
 void CSearchManager::ProcessResponse(const CUInt128 &uTarget, UINT uFromIP, uint16 uFromPort, ContactList *plistResults)
 {

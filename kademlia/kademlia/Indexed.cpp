@@ -84,7 +84,7 @@ CIndexed::~CIndexed()
 {
     if (!m_bDataLoaded)
     {
-        // the user clicked on disconnect/close just after he started kad (on probably just before posting in the forum the emule doenst works :P )
+        // the user clicked on disconnect/close just after he started kad (and probably just before posting in the forum that emule doesn't work :P)
         // while the loading thread is still busy. First tell the thread to abort its loading, afterwards wait for it to terminate
         // and then delete all loaded items without writing them to the files (as they are incomplete and unchanged)
         DebugLogWarning(_T("Kad stopping while still loading CIndexed data, waiting for abort"));
@@ -116,7 +116,6 @@ CIndexed::~CIndexed()
             delete pCurrSrcHash;
         }
 
-//>>> WiZaRd::MemLeak FiX
         pos1 = m_mapLoad.GetStartPosition();
         while (pos1 != NULL)
         {
@@ -125,7 +124,6 @@ CIndexed::~CIndexed()
             m_mapLoad.GetNextAssoc(pos1, key1, pLoad);
             delete pLoad;
         }
-//<<< WiZaRd::MemLeak FiX
 
         pos1 = m_mapKeyword.GetStartPosition();
         while (pos1 != NULL)
@@ -156,7 +154,7 @@ CIndexed::~CIndexed()
     }
     else
     {
-        // standart cleanup with sotring
+        // standard cleanup with sorting
         try
         {
             UINT uTotalSource = 0;
@@ -409,12 +407,8 @@ void CIndexed::Clean(void)
             }
         }
 
-//>>> WiZaRd::FiX
-//		m_uTotalIndexSource = uTotalSource;
-//		m_uTotalIndexKeyword = uTotalKey;
-        m_uTotalIndexSource = uTotalSource-uRemovedSource;
-        m_uTotalIndexKeyword = uTotalKey-uRemovedKey;
-//<<< WiZaRd::FiX
+        m_uTotalIndexSource = uTotalSource - uRemovedSource;
+        m_uTotalIndexKeyword = uTotalKey - uRemovedKey;
         AddDebugLogLine(false, _T("Removed %u keyword out of %u and %u source out of %u"), uRemovedKey, uTotalKey, uRemovedSource, uTotalSource);
 //		m_tLastClean = time(NULL) + MIN2S(30); //WiZ: Moved up!
     }
@@ -578,7 +572,7 @@ bool CIndexed::AddSources(const CUInt128& uKeyID, const CUInt128& uSourceID, Kad
                 {
                     delete pCurrSource->ptrlEntryList.RemoveHead();
                     pCurrSource->ptrlEntryList.AddHead(pEntry);
-                    uLoad = (uint8)((uSize*100)/KADEMLIAMAXSOUCEPERFILE);
+                    uLoad = (uint8)((uSize*100)/KADEMLIAMAXSOURCEPERFILE);
                     return true;
                 }
             }
@@ -587,12 +581,12 @@ bool CIndexed::AddSources(const CUInt128& uKeyID, const CUInt128& uSourceID, Kad
                 //This should never happen!
                 pCurrSource->ptrlEntryList.AddHead(pEntry);
                 ASSERT(0);
-                uLoad = (uint8)((uSize*100)/KADEMLIAMAXSOUCEPERFILE);
+                uLoad = (uint8)((uSize*100)/KADEMLIAMAXSOURCEPERFILE);
                 m_uTotalIndexSource++;
                 return true;
             }
         }
-        if (uSize > KADEMLIAMAXSOUCEPERFILE)
+        if (uSize > KADEMLIAMAXSOURCEPERFILE)
         {
             Source* pCurrSource = pCurrSrcHash->ptrlistSource.RemoveTail();
             delete pCurrSource->ptrlEntryList.RemoveTail();
@@ -609,7 +603,7 @@ bool CIndexed::AddSources(const CUInt128& uKeyID, const CUInt128& uSourceID, Kad
             pCurrSource->ptrlEntryList.AddHead(pEntry);
             pCurrSrcHash->ptrlistSource.AddHead(pCurrSource);
             m_uTotalIndexSource++;
-            uLoad = (uint8)((uSize*100)/KADEMLIAMAXSOUCEPERFILE);
+            uLoad = (uint8)((uSize*100)/KADEMLIAMAXSOURCEPERFILE);
             return true;
         }
     }
@@ -667,10 +661,7 @@ bool CIndexed::AddNotes(const CUInt128& uKeyID, const CUInt128& uSourceID, Kadem
                 pCurrNote->ptrlEntryList.AddHead(pEntry);
                 ASSERT(0);
                 uLoad = (uint8)((uSize*100)/KADEMLIAMAXNOTESPERFILE);
-//>>> WiZaRd::FiX? We are adding NOTES here!
-//				m_uTotalIndexKeyword++;
                 ++m_uTotalIndexNotes;
-//<<< WiZaRd::FiX? We are adding NOTES here!
                 return true;
             }
         }
@@ -691,10 +682,7 @@ bool CIndexed::AddNotes(const CUInt128& uKeyID, const CUInt128& uSourceID, Kadem
             pCurrNote->ptrlEntryList.AddHead(pEntry);
             pCurrNoteHash->ptrlistSource.AddHead(pCurrNote);
             uLoad = (uint8)((uSize*100)/KADEMLIAMAXNOTESPERFILE);
-//>>> WiZaRd::FiX? We are adding NOTES here!
-//			m_uTotalIndexKeyword++;
             ++m_uTotalIndexNotes;
-//<<< WiZaRd::FiX? We are adding NOTES here!
             return true;
         }
     }
