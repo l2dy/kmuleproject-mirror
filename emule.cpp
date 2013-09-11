@@ -658,7 +658,7 @@ BOOL CemuleApp::InitInstance()
     do
     {
         thePrefs.Init();
-        if (!PathFileExists(thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR)) || !PathFileExists(thePrefs.GetTempDir()))
+        if (!PathFileExists(thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR)) || !PathFileExists(thePrefs.GetTempDir()) || !IsDirectoryWriteable(thePrefs.GetMuleDirectory(EMULE_CONFIGDIR)))
         {
             // TODO: here we have problems with the shared usage setting and should inform the user about it
             // OR we could automatically choose a different setup...
@@ -672,6 +672,7 @@ BOOL CemuleApp::InitInstance()
                 return FALSE;
             }
             thePrefs.SetCurrentUserDirMode(dirModes.RemoveHead());
+			thePrefs.ClearUserDirs(); // force re-creation of directories
         }
         else
             bSuccess = true;

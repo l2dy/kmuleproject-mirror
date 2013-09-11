@@ -5136,3 +5136,33 @@ ULONG GetBestInterfaceIP(const ULONG dest_addr)
 	return bestInterfaceIP;
 }
 //<<< WiZaRd::Find Best Interface IP [netfinity]
+//>>> WiZaRd
+// Unfortunately, Win2K and higher don't allow to read the "read-only" attribute of directories anymore.
+// This is a workaround for that issue.
+bool IsDirectoryWriteable(LPCTSTR pszDirectory)
+{
+	bool writeable = false;
+
+	if(PathFileExists(pszDirectory) || ::CreateDirectory(pszDirectory, 0))
+	{
+		const CString strFilename = pszDirectory + (CString)L"test.file";
+		HANDLE hFile = CreateFile(strFilename,
+			GENERIC_WRITE,				// open for writing
+			NULL,						// don't share
+			NULL,						// no security
+			CREATE_ALWAYS,				// always create
+			FILE_ATTRIBUTE_TEMPORARY,	// just a temporary file
+			NULL);						// no attr. template
+
+		if (hFile != INVALID_HANDLE_VALUE)
+		{
+			CloseHandle(hFile);
+			::DeleteFile(strFilename);
+
+			writeable = true;
+		}
+	}
+
+	return writeable;
+}
+//<<< WiZaRd

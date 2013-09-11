@@ -2807,7 +2807,7 @@ CString CPreferences::GetDefaultDirectory(EDefaultDirectory eDirectory, bool bCr
 {
     if (m_astrDefaultDirs[0].IsEmpty())  // already have all directories fetched and stored?
     {
-        // Get out exectuable starting directory which was our default till Vista
+        // Get out executable starting directory which was our default till Vista
         TCHAR tchBuffer[MAX_PATH];
         ::GetModuleFileName(NULL, tchBuffer, _countof(tchBuffer));
         tchBuffer[_countof(tchBuffer) - 1] = L'\0';
@@ -3148,3 +3148,11 @@ bool CPreferences::IsForbiddenFile(const CString& rstrName)
     return false;
 }
 //<<< Remove forbidden files CString CPreferences::m_strExtractFolder;
+
+//>>> WiZaRd
+void CPreferences::ClearUserDirs()
+{
+	for(int i = 0; i != EMULE_DIRCOUNT; ++i)
+		m_astrDefaultDirs[i] = L"";
+}
+//<<< WiZaRd

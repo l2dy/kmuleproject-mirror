@@ -2586,6 +2586,7 @@ public:
     {
         m_nCurrentUserDirMode = i;
     }
+	static	void	ClearUserDirs();
 //<<< WiZaRd
 };
 
