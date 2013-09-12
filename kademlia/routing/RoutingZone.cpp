@@ -1069,23 +1069,5 @@ void CRoutingZone::RemoveFilteredContacts()
         m_pSubZones[0]->RemoveFilteredContacts();
         m_pSubZones[1]->RemoveFilteredContacts();
     }
-    /*if (!IsLeaf())
-    	return;
-
-    ContactList listEntries;
-    m_pBin->GetEntries(&listEntries);
-    CContact *pContact = NULL;
-    for (ContactList::iterator itContactList = listEntries.begin(); itContactList != listEntries.end(); ++itContactList)
-    {
-    	pContact = *itContactList;
-    	if(theApp.ipfilter->IsFiltered(ntohl(pContact->GetIPAddress())))
-    	{
-    		if (thePrefs.GetLogFilteredIPs())
-    			AddDebugLogLine(false, L"Removed contact (IP=%s) from the list of Kad contacts - IP filter (%s)", ipstr(ntohl(pContact->GetIPAddress())), theApp.ipfilter->GetLastHit());
-    		m_pBin->RemoveContact(pContact);
-    		delete pContact;
-    	}
-    }
-    */
 }
 //<<< WiZaRd::IPFiltering

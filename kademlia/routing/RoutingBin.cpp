@@ -466,11 +466,17 @@ void CRoutingBin::RemoveFilteredContacts()
         pContact = *itContactList;
         if (theApp.ipfilter->IsFiltered(ntohl(pContact->GetIPAddress())))
         {
-            if (thePrefs.GetLogFilteredIPs())
-                AddDebugLogLine(false, L"Removed contact (IP=%s) from the list of Kad contacts - IP filter (%s)", ipstr(ntohl(pContact->GetIPAddress())), theApp.ipfilter->GetLastHit());
-            m_listEntries.remove(pContact);
-            if (!m_bDontDeleteContacts)
-                delete pContact;
+			if(!pContact->InUse())
+			{
+				if (thePrefs.GetLogFilteredIPs())
+					AddDebugLogLine(false, L"Removed contact (IP=%s) from the list of Kad contacts - IP filter (%s)", ipstr(ntohl(pContact->GetIPAddress())), theApp.ipfilter->GetLastHit());
+
+				RemoveContact(pContact);
+				//if (!m_bDontDeleteContacts)
+					delete pContact;
+			}
+			else if (thePrefs.GetLogFilteredIPs())
+				theApp.QueueDebugLogLineEx(LOG_WARNING, L"Didn't remove in-use contact (IP=%s) from the list of Kad contacts - IP filter (%s)", ipstr(ntohl(pContact->GetIPAddress())), theApp.ipfilter->GetLastHit());
         }
     }
 }
