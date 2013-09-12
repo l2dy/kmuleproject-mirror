@@ -852,22 +852,6 @@ uint8 GetRealPrio(uint8 in)
     return 0;
 }
 
-CKnownFile* CSharedFileList::GetFileByIndex(int index)
-{
-    int count=0;
-    CKnownFile* cur_file;
-    CCKey bufKey;
-
-    for (POSITION pos = m_Files_map.GetStartPosition(); pos != 0;)
-    {
-        m_Files_map.GetNextAssoc(pos,bufKey,cur_file);
-        if (index==count)
-            return cur_file;
-        ++count;
-    }
-    return NULL;
-}
-
 void CSharedFileList::ClearKadSourcePublishInfo()
 {
     CKnownFile* cur_file;
@@ -1104,6 +1088,35 @@ CKnownFile* CSharedFileList::GetFileByIdentifier(const CFileIdentifierBase& rFil
     return NULL;
 }
 
+CKnownFile* CSharedFileList::GetFileByIndex(int index) const
+{
+	int count = 0;
+	CKnownFile* cur_file;
+	CCKey bufKey;
+
+	for (POSITION pos = m_Files_map.GetStartPosition(); pos != 0;)
+	{
+		m_Files_map.GetNextAssoc(pos,bufKey,cur_file);
+		if (index==count)
+			return cur_file;
+		++count;
+	}
+	return NULL;
+}
+
+CKnownFile* CSharedFileList::GetFileByAICH(const CAICHHash& rHash) const // slow
+{
+	CKnownFile* cur_file;
+	CCKey bufKey;
+
+	for (POSITION pos = m_Files_map.GetStartPosition(); pos != 0;)
+	{
+		m_Files_map.GetNextAssoc(pos,bufKey,cur_file);
+		if (cur_file->GetFileIdentifierC().HasAICHHash() && cur_file->GetFileIdentifierC().GetAICHHash() == rHash)
+			return cur_file;
+	}
+	return 0;
+}
 
 bool CSharedFileList::IsFilePtrInList(const CKnownFile* file) const
 {
