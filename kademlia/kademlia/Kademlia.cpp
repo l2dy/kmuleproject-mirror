@@ -732,7 +732,7 @@ bool CKademlia::IsRunningInLANMode()
 //>>> WiZaRd::IPFiltering
 void CKademlia::RemoveFilteredContacts()
 {
-    CRoutingZone* routingZone = CKademlia::GetRoutingZone();
+	CRoutingZone* routingZone = CKademlia::GetRoutingZone();
     if (routingZone)
         routingZone->RemoveFilteredContacts();
 }

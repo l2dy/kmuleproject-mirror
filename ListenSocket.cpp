@@ -3017,21 +3017,25 @@ bool CClientReqSocket::ExpandReceiveBuffer()
     int len = sizeof(val);
 
     GetSockOpt(SO_RCVBUF, &val, &len);
-    theApp.QueueDebugLogLine(false, L"CEMSocket::ExpandReceiveBuffer(): Setting SO_RCVBUF. Was (%i bytes = %s)", val, CastItoXBytes((UINT)val, false, false));
+#ifdef _DEBUG
+    theApp.QueueDebugLogLineEx(LOG_INFO, L"CEMSocket::ExpandReceiveBuffer(): Setting SO_RCVBUF. Was (%i bytes = %s)", val, CastItoXBytes((UINT)val, false, false));
+#endif
 
     val = 1024*1024;
     HRESULT rcvBufResult = SetSockOpt(SO_RCVBUF, &val, sizeof(int));
     if (rcvBufResult == SOCKET_ERROR)
     {
         CString pstrReason = GetErrorMessage(WSAGetLastError(), 1);
-        theApp.QueueDebugLogLine(false, L"CClientReqSocket::ExpandReceiveBuffer(): Couldn't set SO_RCVBUF: %s", pstrReason);
+        theApp.QueueDebugLogLineEx(LOG_ERROR, L"CClientReqSocket::ExpandReceiveBuffer(): Couldn't set SO_RCVBUF: %s", pstrReason);
 
         return false;
     }
     else
     {
         GetSockOpt(SO_RCVBUF, &val, &len);
-        theApp.QueueDebugLogLine(false, L"CEMSocket::ExpandReceiveBuffer(): Changed SO_RCVBUF. Now %i bytes = %s", val, CastItoXBytes((UINT)val, false, false));
+#ifdef _DEBUG
+		theApp.QueueDebugLogLineEx(LOG_SUCCESS, L"CEMSocket::ExpandReceiveBuffer(): Changed SO_RCVBUF. Now %i bytes = %s", val, CastItoXBytes((UINT)val, false, false));
+#endif
 
         BOOL noDelayBool = true;
         SetSockOpt(TCP_NODELAY, &noDelayBool, sizeof(noDelayBool));

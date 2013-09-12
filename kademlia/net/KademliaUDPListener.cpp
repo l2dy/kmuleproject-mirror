@@ -788,7 +788,7 @@ void CKademliaUDPListener::Process_KADEMLIA2_RES(const byte *pbyPacketData, UINT
     if (!IsOnOutTrackList(uIP, KADEMLIA2_REQ))
     {
         CString strError;
-        strError.Format(_T("***NOTE: Received unrequested response packet, size (%u) in %hs"), uLenPacket, __FUNCTION__);
+        strError.Format(L"***NOTE: Received unrequested response packet, size (%u) in %hs", uLenPacket, __FUNCTION__);
         throw strError;
     }
 
@@ -816,7 +816,7 @@ void CKademliaUDPListener::Process_KADEMLIA2_RES(const byte *pbyPacketData, UINT
     {
         // yup it is, set the contact as verified
         if (!CKademlia::GetRoutingZone()->VerifyContact(uContactID, uIP))
-            DebugLogWarning(_T("Kad: KADEMLIA2_RES: Unable to find valid sender in routing table (sender: %s)"), ipstr(ntohl(uIP)));
+            DebugLogWarning(L"Kad: KADEMLIA2_RES: Unable to find valid sender in routing table (sender: %s)", ipstr(ntohl(uIP)));
 // #ifdef _DEBUG
 //         else
 //             AddDebugLogLine(DLP_VERYLOW, false, _T("Verified contact with legacy challenge (KADEMLIA2_REQ) - %s"), ipstr(ntohl(uIP)));
@@ -828,18 +828,18 @@ void CKademliaUDPListener::Process_KADEMLIA2_RES(const byte *pbyPacketData, UINT
     if (uLenPacket != (UINT)(16+1 + (16+4+2+2+1)*uNumContacts))
     {
         CString strError;
-        strError.Format(_T("***NOTE: Received wrong size (%u) packet in %hs"), uLenPacket, __FUNCTION__);
+        strError.Format(L"***NOTE: Received wrong size (%u) packet in %hs", uLenPacket, __FUNCTION__);
         throw strError;
     }
 
 	// Verify that the search is still active and contains no more than the requested numbers of contacts
-	if (uNumContacts > CSearchManager::GetExpectedResponseContactCount(uTarget))
+	const uint8 expectedCount = CSearchManager::GetExpectedResponseContactCount(uTarget);
+	if (uNumContacts > expectedCount)
 	{
-		if (CSearchManager::GetExpectedResponseContactCount(uTarget) == 0)
-			DebugLogWarning(_T("Kad: KADEMLIA2_RES: Search already expired, ignoring answer (sender: %s)"), ipstr(ntohl(uIP)));
+		if (expectedCount == 0)
+			DebugLogWarning(L"Kad: KADEMLIA2_RES: Search already expired, ignoring answer (sender: %s)", ipstr(ntohl(uIP)));
 		else
-			DebugLogWarning(_T("Kad: KADEMLIA2_RES: Contact sent more nodes (%u) than requested (%u), ignoring answer (sender: %s)")
-			, uNumContacts, CSearchManager::GetExpectedResponseContactCount(uTarget), ipstr(ntohl(uIP)));
+			DebugLogWarning(L"Kad: KADEMLIA2_RES: Contact sent more nodes (%u) than requested (%u), ignoring answer (sender: %s)", uNumContacts, expectedCount, ipstr(ntohl(uIP)));
 		return;
 	}
 
@@ -853,7 +853,7 @@ void CKademliaUDPListener::Process_KADEMLIA2_RES(const byte *pbyPacketData, UINT
     CUInt128 uIDResult;
     try
     {
-        for (uint8 iIndex=0; iIndex<uNumContacts; iIndex++)
+        for (uint8 iIndex = 0; iIndex < uNumContacts; ++iIndex)
         {
             fileIO.ReadUInt128(&uIDResult);
             UINT uIPResult = fileIO.ReadUInt32();
@@ -865,35 +865,39 @@ void CKademliaUDPListener::Process_KADEMLIA2_RES(const byte *pbyPacketData, UINT
             {
                 if (::IsGoodIPPort(uhostIPResult, uUDPPortResult))
                 {
-                    if (!::theApp.ipfilter->IsFiltered(uhostIPResult) && !(uUDPPortResult == 53 && uVersion <= KADEMLIA_VERSION5_48a)  /*No DNS Port without encryption*/)
+					if (uUDPPortResult == 53 && uVersion <= KADEMLIA_VERSION5_48a) /*No DNS Port without encryption*/
+					{
+						if(thePrefs.GetLogFilteredIPs())
+							AddDebugLogLine(false, L"Ignored kad contact (IP=%s:%u) - Bad port (Kad2_Res)", ipstr(uhostIPResult), uUDPPortResult);
+					}
+					else if(theApp.ipfilter->IsFiltered(uhostIPResult))
+					{
+						if (::thePrefs.GetLogFilteredIPs())
+							AddDebugLogLine(false, L"Ignored kad contact (IP=%s:%u) - IP filter (%s)" , ipstr(uhostIPResult), uUDPPortResult,::theApp.ipfilter->GetLastHit());
+							
+					}
+					else if (bIsFirewallUDPCheckSearch)
                     {
-                        if (bIsFirewallUDPCheckSearch)
-                        {
-                            // UDP FirewallCheck searches are special. The point is we need an IP which we didn't sent an UDP message yet
-                            // (or in the near future), so we do not try to add those contacts to our routingzone and we also don't
-                            // deliver them back to the searchmanager (because he would UDP-ask them for further results), but only report
-                            // them to to FirewallChecker - this will of course cripple the search but thats not the point, since we only
-                            // care for IPs and not the random set target
-                            CUDPFirewallTester::AddPossibleTestContact(uIDResult, uIPResult, uUDPPortResult, uTCPPortResult, uTarget, uVersion, 0, false);
-                        }
+                        // UDP FirewallCheck searches are special. The point is we need an IP which we didn't sent an UDP message yet
+                        // (or in the near future), so we do not try to add those contacts to our routingzone and we also don't
+                        // deliver them back to the searchmanager (because he would UDP-ask them for further results), but only report
+                        // them to to FirewallChecker - this will of course cripple the search but thats not the point, since we only
+                        // care for IPs and not the random set target
+                        CUDPFirewallTester::AddPossibleTestContact(uIDResult, uIPResult, uUDPPortResult, uTCPPortResult, uTarget, uVersion, 0, false);
+                    }
+                    else
+                    {
+                        bool bVerified = false;
+                        bool bWasAdded = pRoutingZone->AddUnfiltered(uIDResult, uIPResult, uUDPPortResult, uTCPPortResult, uVersion, 0, bVerified, false, false, false);
+                        CContact* pTemp = new CContact(uIDResult, uIPResult, uUDPPortResult, uTCPPortResult, uTarget, uVersion, 0, false);
+                        if (bWasAdded || pRoutingZone->IsAcceptableContact(pTemp))
+                            pResults->push_back(pTemp);
                         else
                         {
-                            bool bVerified = false;
-                            bool bWasAdded = pRoutingZone->AddUnfiltered(uIDResult, uIPResult, uUDPPortResult, uTCPPortResult, uVersion, 0, bVerified, false, false, false);
-                            CContact* pTemp = new CContact(uIDResult, uIPResult, uUDPPortResult, uTCPPortResult, uTarget, uVersion, 0, false);
-                            if (bWasAdded || pRoutingZone->IsAcceptableContact(pTemp))
-                                pResults->push_back(pTemp);
-                            else
-                            {
-                                ++nIgnoredCount;
-                                delete pTemp;
-                            }
+                            ++nIgnoredCount;
+                            delete pTemp;
                         }
                     }
-                    else if (!(uUDPPortResult == 53 && uVersion <= KADEMLIA_VERSION5_48a) && ::thePrefs.GetLogFilteredIPs())
-                        AddDebugLogLine(false, _T("Ignored kad contact (IP=%s:%u) - IP filter (%s)") , ipstr(uhostIPResult), uUDPPortResult,::theApp.ipfilter->GetLastHit());
-                    else if (::thePrefs.GetLogFilteredIPs())
-                        AddDebugLogLine(false, _T("Ignored kad contact (IP=%s:%u) - Bad port (Kad2_Res)"), ipstr(uhostIPResult), uUDPPortResult);
                 }
                 else if (::thePrefs.GetLogFilteredIPs())
                     AddDebugLogLine(false, _T("Ignored kad contact (IP=%s) - Bad IP"), ipstr(uhostIPResult));
