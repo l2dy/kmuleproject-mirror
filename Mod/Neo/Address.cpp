@@ -113,9 +113,12 @@ void CAddress::FromSA(const sockaddr* sa, int sa_len, uint16* pPort)
 			break;
 		}
 		default:
-			ASSERT(0);
+		{
+			//WiZaRd: happens e.g. when a disconnect occurs and we don't have the IP, yet
+			//ASSERT(0); 
 			m_eAF = None;
 			break;
+		}
 	}
 }
 
@@ -252,7 +255,7 @@ int _inet_aton(const char *from, struct in_addr *in)
 		x = strtoul(from, &p, 0);
 		if(x != (unsigned char)x || p == from)
 			return 0;       /* parse error */
-		to[i] = x;
+		to[i] = (unsigned char)x;
 		if(*p == '.')
 			p++;
 		else if(*p != 0)
@@ -322,8 +325,8 @@ int _inet_pton(int af, const char *src, void *dst)
 		if(x != (unsigned short)x || *p != ':' && !delimchar(*p))
 			return 0;                       /* parse error */
 
-		to[i] = x>>8;
-		to[i+1] = x;
+		to[i] = (unsigned char)(x>>8);
+		to[i+1] = (unsigned char)x;
 		if(*p == ':'){
 			if(*++p == ':'){        /* :: is elided zero short(s) */
 				if (elipsis)

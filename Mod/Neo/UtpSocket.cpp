@@ -162,13 +162,14 @@ void CUtpSocket::Setup(struct UTPSocket* Socket)
         UTPFunctionTable utp_callbacks = {&utp_read, &utp_write, &utp_get_rb_size, &utp_state, &utp_error, &utp_overhead};
         UTP_SetCallbacks(m_Socket, &utp_callbacks, this);
     }
-    else
-    {
-        ASSERT(m_Socket);
+    else if(m_Socket)
+    {        
         UTP_Close(m_Socket);
-        UTP_SetCallbacks(m_Socket, NULL, NULL); // make sure this will not be refered anymore
+        UTP_SetCallbacks(m_Socket, NULL, NULL); // make sure this will not be referred anymore
         m_Socket = NULL;
     }
+	else
+		ASSERT(0);
 }
 
 void CUtpSocket::Close()

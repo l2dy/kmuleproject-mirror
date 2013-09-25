@@ -791,7 +791,7 @@ void CIndexed::SendValidKeywordResult(const CUInt128& uKeyID, const SSearchTerm*
                                     byIO.WriteUInt128(Kademlia::CKademlia::GetPrefs()->GetKadID());
                                     byIO.WriteUInt128(uKeyID);
                                     byIO.WriteUInt16(0);
-                                    DEBUG_ONLY(DebugLog(_T("Sent %u keyword search results in one packet to avoid fragmentation"), iUnsentCount));
+                                    //DEBUG_ONLY(DebugLog(_T("Sent %u keyword search results in one packet to avoid fragmentation"), iUnsentCount));
                                     iUnsentCount = 0;
                                 }
                                 ASSERT(byIO.GetUsed() + byIOTmp.GetUsed() <= UDP_KAD_MAXFRAGMENT);
@@ -823,11 +823,10 @@ void CIndexed::SendValidKeywordResult(const CUInt128& uKeyID, const SSearchTerm*
             UINT uLen = sizeof(byPacket)-byIO.GetAvailable();
             PokeUInt16(pbyCountPos, (uint16)iUnsentCount);
             if (thePrefs.GetDebugClientKadUDPLevel() > 0)
-            {
                 DebugSend("KADEMLIA2_SEARCH_RES", uIP, uPort);
-            }
-            CKademlia::GetUDPListener()->SendPacket(byPacket, uLen, uIP, uPort, senderUDPKey, NULL);
-            DEBUG_ONLY(DebugLog(_T("Sent %u keyword search results in last packet to avoid fragmentation"), iUnsentCount));
+
+			CKademlia::GetUDPListener()->SendPacket(byPacket, uLen, uIP, uPort, senderUDPKey, NULL);
+            //DEBUG_ONLY(DebugLog(_T("Sent %u keyword search results in last packet to avoid fragmentation"), iUnsentCount));
         }
         else if (iCount > 0)
             ASSERT(0);
@@ -913,10 +912,9 @@ void CIndexed::SendValidSourceResult(const CUInt128& uKeyID, UINT uIP, uint16 uP
             UINT uLen = sizeof(byPacket)-byIO.GetAvailable();
             PokeUInt16(pbyCountPos, (uint16)iUnsentCount);
             if (thePrefs.GetDebugClientKadUDPLevel() > 0)
-            {
                 DebugSend("KADEMLIA2_SEARCH_RES", uIP, uPort);
-            }
-            CKademlia::GetUDPListener()->SendPacket(byPacket, uLen, uIP, uPort, senderUDPKey, NULL);
+
+			CKademlia::GetUDPListener()->SendPacket(byPacket, uLen, uIP, uPort, senderUDPKey, NULL);
             //DEBUG_ONLY(DebugLog(_T("Sent %u source search results in last packet to avoid fragmentation"), iUnsentCount));
         }
         else if (iCount > 0)
@@ -981,7 +979,7 @@ void CIndexed::SendValidNoteResult(const CUInt128& uKeyID, UINT uIP, uint16 uPor
                                 byIO.WriteUInt128(Kademlia::CKademlia::GetPrefs()->GetKadID());
                                 byIO.WriteUInt128(uKeyID);
                                 byIO.WriteUInt16(0);
-                                DEBUG_ONLY(DebugLog(_T("Sent %u keyword search results in one packet to avoid fragmentation"), iUnsentCount));
+                                //DEBUG_ONLY(DebugLog(_T("Sent %u keyword search results in one packet to avoid fragmentation"), iUnsentCount));
                                 iUnsentCount = 0;
                             }
                             ASSERT(byIO.GetUsed() + byIOTmp.GetUsed() <= UDP_KAD_MAXFRAGMENT);
@@ -1001,11 +999,10 @@ void CIndexed::SendValidNoteResult(const CUInt128& uKeyID, UINT uIP, uint16 uPor
                 UINT uLen = sizeof(byPacket)-byIO.GetAvailable();
                 PokeUInt16(pbyCountPos, (uint16)iUnsentCount);
                 if (thePrefs.GetDebugClientKadUDPLevel() > 0)
-                {
                     DebugSend("KADEMLIA2_SEARCH_RES", uIP, uPort);
-                }
-                CKademlia::GetUDPListener()->SendPacket(byPacket, uLen, uIP, uPort, senderUDPKey, NULL);
-                DEBUG_ONLY(DebugLog(_T("Sent %u note search results in last packet to avoid fragmentation"), iUnsentCount));
+
+				CKademlia::GetUDPListener()->SendPacket(byPacket, uLen, uIP, uPort, senderUDPKey, NULL);
+                //DEBUG_ONLY(DebugLog(_T("Sent %u note search results in last packet to avoid fragmentation"), iUnsentCount));
             }
             else if (uCount > 0)
                 ASSERT(0);

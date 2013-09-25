@@ -354,7 +354,8 @@ void CCorruptionBlackBox::CorruptedData(uint64 nStartPos, uint64 nEndPos)
             }
         }
     }
-    AddDebugLogLine(DLP_HIGH, false, _T("Found and marked %I64u recorded bytes of %I64u as corrupted in the CorruptionBlackBox records"), nDbgVerifiedBytes, (nEndPos-nStartPos)+1);
+	if(nDbgVerifiedBytes != 0)
+		AddDebugLogLine(DLP_HIGH, false, L"Found and marked %I64u recorded bytes of %I64u as corrupted in the CorruptionBlackBox records", nDbgVerifiedBytes, (nEndPos-nStartPos)+1);
 }
 
 void CCorruptionBlackBox::EvaluateData(uint16 nPart)
@@ -458,11 +459,11 @@ void CCorruptionBlackBox::EvaluateData(uint16 nPart)
 //<<< WiZaRd::IPv6 [Xanatos]
                 if (pSuspectClient != NULL)
                 {
-                    AddDebugLogLine(DLP_DEFAULT, false, _T("CorruptionBlackBox: Reporting: Found client which probably send %s of %s corrupted data, but it is within the acceptable limit, %s"), CastItoXBytes(aDataCorrupt[k]), CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])), pSuspectClient->DbgGetClientInfo());
+                    AddDebugLogLine(DLP_DEFAULT, false, L"CorruptionBlackBox: Reporting: Found client which probably sent %s of %s corrupted data, but it is within the acceptable limit, %s", CastItoXBytes(aDataCorrupt[k]), CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])), pSuspectClient->DbgGetClientInfo());
                     theApp.clientlist->AddTrackClient(pSuspectClient);
                 }
                 else
-                    AddDebugLogLine(DLP_DEFAULT, false, _T("CorruptionBlackBox: Reporting: Found client which probably send %s of %s corrupted data, but it is within the acceptable limit, %s"), CastItoXBytes(aDataCorrupt[k]), CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])), ipstr(aGuiltyClients[k]));
+                    AddDebugLogLine(DLP_DEFAULT, false, L"CorruptionBlackBox: Reporting: Found client which probably sent %s of %s corrupted data, but it is within the acceptable limit, %s", CastItoXBytes(aDataCorrupt[k]), CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])), ipstr(aGuiltyClients[k]));
             }
         }
     }

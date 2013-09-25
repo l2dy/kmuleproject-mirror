@@ -289,4 +289,6 @@ private:
 	UINT	m_dwLastFileHealthCalc;
 	float	m_fLastHealthValue;
 //<<< WiZaRd::FileHealth
+protected:
+	void	UpdateCompleteSrcCount(const bool bPartFile, CArray<uint16, uint16>& count, const CArray<uint16/*, uint16*/>& availPartFrequency);
 };

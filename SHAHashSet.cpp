@@ -144,9 +144,7 @@ CAICHHashTree* CAICHHashTree::FindHash(uint64 nStartPos, uint64 nSize, uint8* nL
             if (m_pLeftTree == NULL)
                 m_pLeftTree = new CAICHHashTree(nLeft, true, (nLeft <= PARTSIZE) ? EMBLOCKSIZE : PARTSIZE);
             else
-            {
                 ASSERT(m_pLeftTree->m_nDataSize == nLeft);
-            }
             return m_pLeftTree->FindHash(nStartPos, nSize, nLevel);
         }
         else
@@ -160,9 +158,7 @@ CAICHHashTree* CAICHHashTree::FindHash(uint64 nStartPos, uint64 nSize, uint8* nL
             if (m_pRightTree == NULL)
                 m_pRightTree = new CAICHHashTree(nRight, false, (nRight <= PARTSIZE) ? EMBLOCKSIZE : PARTSIZE);
             else
-            {
                 ASSERT(m_pRightTree->m_nDataSize == nRight);
-            }
             return m_pRightTree->FindHash(nStartPos, nSize, nLevel);
         }
     }
@@ -244,7 +240,7 @@ const CAICHHashTree* CAICHHashTree::FindExistingHash(uint64 nStartPos, uint64 nS
 // fails if no hash is found for any branch
 bool CAICHHashTree::ReCalculateHash(CAICHHashAlgo* hashalg, bool bDontReplace)
 {
-    ASSERT(!((m_pLeftTree != NULL) ^ (m_pRightTree != NULL)));
+    //ASSERT(!((m_pLeftTree != NULL) ^ (m_pRightTree != NULL)));
     if (m_pLeftTree && m_pRightTree)
     {
         if (!m_pLeftTree->ReCalculateHash(hashalg, bDontReplace) || !m_pRightTree->ReCalculateHash(hashalg, bDontReplace))
@@ -263,8 +259,15 @@ bool CAICHHashTree::ReCalculateHash(CAICHHashAlgo* hashalg, bool bDontReplace)
         else
             return m_bHashValid;
     }
-    else
-        return true;
+    else if(((m_pLeftTree != NULL) ^ (m_pRightTree != NULL)))
+	{
+		// WiZaRd: *test*
+		//ASSERT(0);
+		theApp.QueueDebugLogLineEx(LOG_ERROR, L"DEBUG: Invalid hash - original code would allow it!");
+		return true;        
+	}
+	else
+		return true;
 }
 
 bool CAICHHashTree::VerifyHashTree(CAICHHashAlgo* hashalg, bool bDeleteBadTrees)
@@ -743,9 +746,8 @@ bool CAICHRecoveryHashSet::CreatePartRecoveryData(uint64 nPartStartPos, CFileDat
         fileDataOut->WriteUInt16(0); // no 32bit hashs to write
 
     if (!bDbgDontLoad)
-    {
         FreeHashSet();
-    }
+
     return bResult;
 }
 
@@ -775,7 +777,7 @@ bool CAICHRecoveryHashSet::ReadRecoveryData(uint64 nPartStartPos, CSafeMemFile* 
     uint16 nHashsAvailable = fileDataIn->ReadUInt16();
     if (fileDataIn->GetLength()-fileDataIn->GetPosition() < nHashsToRead*(HASHSIZE+2) || (nHashsToRead != nHashsAvailable && nHashsAvailable != 0))
     {
-        // this check is redunant, CSafememfile would catch such an error too
+        // this check is redundant, CSafememfile would catch such an error too
         theApp.QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("Failed to read RecoveryData for %s - Received datasize/amounts of hashs was invalid (1)"), m_pOwner->GetFileName());
         return false;
     }
@@ -1266,16 +1268,18 @@ CAICHRequestedData CAICHRecoveryHashSet::GetAICHReqDetails(const  CUpDownClient*
     return empty;
 }
 
-void CAICHRecoveryHashSet::AddStoredAICHHash(CAICHHash Hash, ULONGLONG nFilePos)
+bool CAICHRecoveryHashSet::AddStoredAICHHash(CAICHHash Hash, ULONGLONG nFilePos)
 {
 	ULONGLONG nTmp;
 	if (m_mapAICHHashsStored.Lookup(Hash, nTmp) == TRUE)
     {
         theApp.QueueDebugLogLine(false, L"AICH hash storing is not unique - %s", Hash.GetString());
         ASSERT(0);
+		return false;
     }
-    else
-        m_mapAICHHashsStored.SetAt(Hash, nFilePos);
+
+	m_mapAICHHashsStored.SetAt(Hash, nFilePos);
+	return true;
 }
 
 bool CAICHRecoveryHashSet::IsPartDataAvailable(uint64 nPartStartPos)

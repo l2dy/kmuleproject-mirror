@@ -510,3 +510,5 @@ CString ipstr(const CAddress& IP);
 //<<< WiZaRd::IPv6 [Xanatos]
 ULONG GetBestInterfaceIP(const ULONG dest_addr); //>>> WiZaRd::Find Best Interface IP [netfinity]
 bool IsDirectoryWriteable(LPCTSTR pszDirectory); //>>> WiZaRd
+void CreateBetaFile();
+void DeleteBetaFile();

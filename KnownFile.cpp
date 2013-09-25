@@ -57,6 +57,7 @@ extern wchar_t *ID3_GetStringW(const ID3_Frame *frame, ID3_FieldID fldName);
 #include "UploadQueue.h" //>>> WiZaRd::PowerShare
 #include "./Mod/ProgressIndicator.h" //>>> WiZaRd::HashProgress Indication
 #include "./Mod/NetF/PartStatus.h" //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+#include "./Mod/Median.h" //>>> WiZaRd::Complete Files As Median
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -187,9 +188,7 @@ void CKnownFile::DrawShareStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bo
 
             UINT tempCompleteSources = m_nCompleteSourcesCountLo;
             if (tempCompleteSources > 0)
-            {
-                tempCompleteSources--;
-            }
+                --tempCompleteSources;
 
             for (UINT i = 0; i < GetPartCount(); i++)
             {
@@ -212,13 +211,9 @@ void CKnownFile::DrawShareStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bo
         // We have no info about chunk frequency in the net, so just color the chunk we have as black.
         COLORREF crNooneAsked;
         if (bFlat)
-        {
             crNooneAsked = RGB(0, 0, 0);
-        }
         else
-        {
             crNooneAsked = RGB(104, 104, 104);
-        }
         s_ShareStatusBar.Fill(crNooneAsked);
     }
 
@@ -345,78 +340,8 @@ void CKnownFile::UpdatePartsInfo()
     }
 
     if (flag)
-    {
-        m_nCompleteSourcesCount = m_nCompleteSourcesCountLo = m_nCompleteSourcesCountHi = 0;
+		UpdateCompleteSrcCount(false, count, m_AvailPartFrequency);
 
-        if (partcount > 0)
-            m_nCompleteSourcesCount = m_AvailPartFrequency[0];
-        for (UINT i = 1; i < partcount; i++)
-        {
-            if (m_nCompleteSourcesCount > m_AvailPartFrequency[i])
-                m_nCompleteSourcesCount = m_AvailPartFrequency[i];
-        }
-
-        count.Add(m_nCompleteSourcesCount+1); // plus 1 since we have the file complete too
-
-        int n = count.GetSize();
-        if (n > 0)
-        {
-            // SLUGFILLER: heapsortCompletesrc
-            int r;
-            for (r = n/2; r--;)
-                HeapSort(count, r, n-1);
-            for (r = n; --r;)
-            {
-                uint16 t = count[r];
-                count[r] = count[0];
-                count[0] = t;
-                HeapSort(count, 0, r-1);
-            }
-            // SLUGFILLER: heapsortCompletesrc
-
-            // calculate range
-            int i = n >> 1;			// (n / 2)
-            int j = (n * 3) >> 2;	// (n * 3) / 4
-            int k = (n * 7) >> 3;	// (n * 7) / 8
-
-            //For complete files, trust the people your uploading to more...
-
-            //For low guess and normal guess count
-            //	If we see more sources then the guessed low and normal, use what we see.
-            //	If we see less sources then the guessed low, adjust network accounts for 100%, we account for 0% with what we see and make sure we are still above the normal.
-            //For high guess
-            //  Adjust 100% network and 0% what we see.
-            if (n < 20)
-            {
-                if (count.GetAt(i) < m_nCompleteSourcesCount)
-                    m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
-                else
-                    m_nCompleteSourcesCountLo = count.GetAt(i);
-                m_nCompleteSourcesCount= m_nCompleteSourcesCountLo;
-                m_nCompleteSourcesCountHi= count.GetAt(j);
-                if (m_nCompleteSourcesCountHi < m_nCompleteSourcesCount)
-                    m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
-            }
-            else
-                //Many sources..
-                //For low guess
-                //	Use what we see.
-                //For normal guess
-                //	Adjust network accounts for 100%, we account for 0% with what we see and make sure we are still above the low.
-                //For high guess
-                //  Adjust network accounts for 100%, we account for 0% with what we see and make sure we are still above the normal.
-            {
-                m_nCompleteSourcesCountLo= m_nCompleteSourcesCount;
-                m_nCompleteSourcesCount= count.GetAt(j);
-                if (m_nCompleteSourcesCount < m_nCompleteSourcesCountLo)
-                    m_nCompleteSourcesCount = m_nCompleteSourcesCountLo;
-                m_nCompleteSourcesCountHi= count.GetAt(k);
-                if (m_nCompleteSourcesCountHi < m_nCompleteSourcesCount)
-                    m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
-            }
-        }
-        m_nCompleteSourcesTime = time(NULL) + (60);
-    }
     if (theApp.sharedfiles)
         theApp.sharedfiles->UpdateFile(this);
 }
@@ -3270,3 +3195,123 @@ float CKnownFile::GetFileHealth()
 	return m_fLastHealthValue;
 }
 //<<< WiZaRd::FileHealth
+
+void CKnownFile::UpdateCompleteSrcCount(const bool bPartFile, CArray<uint16, uint16>& count, const CArray<uint16/*, uint16*/>& availPartFrequency)
+{
+	const UINT partcount = GetPartCount();
+
+	m_nCompleteSourcesCount = m_nCompleteSourcesCountLo = m_nCompleteSourcesCountHi = 0;
+
+	if (partcount > 0)
+		m_nCompleteSourcesCount = availPartFrequency[0];
+	for (UINT i = 1; i < partcount; ++i)
+	{
+		if (m_nCompleteSourcesCount > availPartFrequency[i])
+			m_nCompleteSourcesCount = availPartFrequency[i];
+	}
+
+	count.Add(m_nCompleteSourcesCount + bPartFile ? 0 : 1); // plus 1 since we have the file complete too
+
+	int n = count.GetSize();
+	if(bPartFile && n < 5)
+	{
+		//Not many sources, so just use what you see..
+		m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
+		m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
+	}
+	else if (n > 0)
+	{
+#ifdef _DEBUG
+//>>> WiZaRd::Complete Files As Median
+		CMedian<uint16> median;
+		int num = count.GetCount();
+		for(int i = 0; i != num; ++i)
+			median.AddVal(count[i]);
+		median.GetMedian(); // sorts the internal vector
+		std::vector<uint16> medianVector = median.GetMedianVector();
+		std::vector<uint16> median1;
+		std::vector<uint16> median2;
+		for(int i = 0; i != num; ++i)
+		{
+			if(i < num / 2)
+				median1.push_back(medianVector[i]);
+			else
+				median2.push_back(medianVector[i]);
+		}
+		median.SetMedianVector(median1);
+		m_nCompleteSourcesCountLo = median.GetMedian();			
+
+		median.SetMedianVector(median2);
+		m_nCompleteSourcesCountHi = median.GetMedian();
+
+		m_nCompleteSourcesCount = (m_nCompleteSourcesCountLo + m_nCompleteSourcesCountHi) / 2;
+//<<< WiZaRd::Complete Files As Median
+#else
+		// SLUGFILLER: heapsortCompletesrc
+		int r;
+		for (r = n/2; r--;)
+			HeapSort(count, r, n-1);
+		for (r = n; --r;)
+		{
+			uint16 t = count[r];
+			count[r] = count[0];
+			count[0] = t;
+			HeapSort(count, 0, r-1);
+		}
+		// SLUGFILLER: heapsortCompletesrc
+
+		// calculate range
+		int i = n >> 1;			// (n / 2)
+		int j = (n * 3) >> 2;	// (n * 3) / 4
+		int k = (n * 7) >> 3;	// (n * 7) / 8
+
+		//For complete files, trust the people your uploading to more...
+		//When still a part file, adjust your guesses by 20% to what you see..
+		if (n < 20)
+		{
+			//For low guess and normal guess count
+			//	If we see more sources then the guessed low and normal, use what we see.
+			//	If we see less sources then the guessed low, adjust network accounts for 80/100%, we account for 0% with what we see and make sure we are still above the normal.
+			//For high guess
+			//  Adjust 80/100% network and 0% what we see.
+			if (count.GetAt(i) < m_nCompleteSourcesCount)
+				m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
+			else if(bPartFile)
+				m_nCompleteSourcesCountLo = (uint16)((float)(count.GetAt(i)*.8)+(float)(m_nCompleteSourcesCount*.2));
+			else
+				m_nCompleteSourcesCountLo = count.GetAt(i);
+			m_nCompleteSourcesCount = m_nCompleteSourcesCountLo;
+			if(bPartFile)
+				m_nCompleteSourcesCountHi = (uint16)((float)(count.GetAt(j)*.8)+(float)(m_nCompleteSourcesCount*.2));
+			else
+				m_nCompleteSourcesCountHi = count.GetAt(j);
+			if (m_nCompleteSourcesCountHi < m_nCompleteSourcesCount)
+				m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
+		}
+		else
+		{
+			//Many sources..
+			//For low guess
+			//	Use what we see.
+			//For normal guess
+			//	Adjust network accounts for 80/100%, we account for 0% with what we see and make sure we are still above the low.
+			//For high guess
+			//  Adjust network accounts for 80/100%, we account for 0% with what we see and make sure we are still above the normal.
+			m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
+			if(bPartFile)
+				m_nCompleteSourcesCount = (uint16)((float)(count.GetAt(j)*.8)+(float)(m_nCompleteSourcesCount*.2));
+			else 
+				m_nCompleteSourcesCount = count.GetAt(j);
+			if (m_nCompleteSourcesCount < m_nCompleteSourcesCountLo)
+				m_nCompleteSourcesCount = m_nCompleteSourcesCountLo;
+			if(bPartFile)
+				m_nCompleteSourcesCountHi = (uint16)((float)(count.GetAt(k)*.8)+(float)(m_nCompleteSourcesCount*.2));
+			else
+				m_nCompleteSourcesCountHi = count.GetAt(k);
+			if (m_nCompleteSourcesCountHi < m_nCompleteSourcesCount)
+				m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
+		}
+#endif
+	}
+	m_nCompleteSourcesTime = time(NULL) + (60);
+}

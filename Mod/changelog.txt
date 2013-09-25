@@ -241,3 +241,4 @@ XXXXYYZZ:
 + added anti-hashset probe code - original by Enig123 [WiZaRd]
 + added support for peerblock cache.p2b format - orignal by ElKarro [WiZaRd]
 ! fixed crash on ip-filter update if blocked nodes are currently in use [WiZaRd]
+~ part files are shared ASAP, now [WiZaRd]

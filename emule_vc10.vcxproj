@@ -316,6 +316,7 @@
     <ClCompile Include="Mod\CustomSearches.cpp" />
     <ClCompile Include="Mod\extractfile.cpp" />
     <ClCompile Include="Mod\InfoWnd.cpp" />
+    <ClCompile Include="Mod\Median.cpp" />
     <ClCompile Include="Mod\NATPMPWrapper.cpp" />
     <ClCompile Include="Mod\loadStatus.cpp" />
     <ClCompile Include="Mod\ModIconMapping.cpp" />
@@ -1005,6 +1006,7 @@
     <ClInclude Include="Mod\CustomSearches.h" />
     <ClInclude Include="Mod\extractfile.h" />
     <ClInclude Include="Mod\InfoWnd.h" />
+    <ClInclude Include="Mod\Median.h" />
     <ClInclude Include="Mod\NATPMPWrapper.h" />
     <ClInclude Include="Mod\loadStatus.h" />
     <ClInclude Include="Mod\ModIconMapping.h" />

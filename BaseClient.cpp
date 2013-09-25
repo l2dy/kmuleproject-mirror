@@ -1656,7 +1656,7 @@ bool CUpDownClient::Disconnected(LPCTSTR pszReason, bool bFromSocket)
 
     // TODO LOGREMOVE
     if (m_nConnectingState == CCS_DIRECTCALLBACK)
-        DebugLog(L"Direct Callback failed - %s", DbgGetClientInfo());
+        DebugLogError(L"Direct Callback failed - %s", DbgGetClientInfo());
 
     if (GetKadState() == KS_QUEUED_FWCHECK_UDP || GetKadState() == KS_CONNECTING_FWCHECK_UDP)
 //>>> WiZaRd::IPv6 [Xanatos]
@@ -1756,7 +1756,7 @@ bool CUpDownClient::Disconnected(LPCTSTR pszReason, bool bFromSocket)
         bDelete = false;
     }
 
-    // Dead Soure Handling
+    // Dead Source Handling
     //
     // If we failed to connect to that client, it is supposed to be 'dead'. Add the IP
     // to the 'dead sources' lists so we don't waste resources and bandwidth to connect

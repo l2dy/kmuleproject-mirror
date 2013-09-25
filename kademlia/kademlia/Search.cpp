@@ -368,8 +368,8 @@ void CSearch::ProcessResponse(UINT uFromIP, uint16 uFromPort, ContactList *plist
         }
     }
 
-    // Make sure the node is not sending more results than we requested, which is not only a protocol vialoation
-    // but most likely a malicous answer
+    // Make sure the node is not sending more results than we requested, which is not only a protocol violation
+    // but most likely a malicious answer
     if (plistResults->size() > GetRequestContactCount() && !(pRequestedMoreNodesContact == pFromContact && plistResults->size() <= KADEMLIA_FIND_VALUE_MORE))
     {
         DebugLogWarning(_T("Node %s sent more contacts than requested on a routing query, ignoring response"), ipstr(ntohl(uFromIP)));

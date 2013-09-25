@@ -63,8 +63,12 @@ void CDownloadQueue::AddPartFilesToShare()
     for (POSITION pos = filelist.GetHeadPosition(); pos != 0;)
     {
         CPartFile* cur_file = filelist.GetNext(pos);
-        if (cur_file->GetStatus(true) == PS_READY)
+        if (cur_file->GetStatus(true) == PS_READY
+			|| (cur_file->GetStatus(true) == PS_EMPTY && !cur_file->m_bMD4HashsetNeeded)) //>>> WiZaRd::Immediate File Sharing
+		{
+			cur_file->SetStatus(PS_READY); //>>> WiZaRd::Immediate File Sharing
             theApp.sharedfiles->SafeAddKFile(cur_file, true);
+		}
     }
 }
 
@@ -106,8 +110,12 @@ void CDownloadQueue::Init()
             {
                 count++;
                 filelist.AddTail(toadd);			// to downloadqueue
-                if (toadd->GetStatus(true) == PS_READY)
+                if (toadd->GetStatus(true) == PS_READY
+					|| (toadd->GetStatus(true) == PS_EMPTY && !toadd->m_bMD4HashsetNeeded)) //>>> WiZaRd::Immediate File Sharing
+				{
+					toadd->SetStatus(PS_READY); //>>> WiZaRd::Immediate File Sharing
                     theApp.sharedfiles->SafeAddKFile(toadd); // part files are always shared files
+				}
                 theApp.emuledlg->transferwnd->GetDownloadList()->AddFile(toadd);// show in downloadwindow
             }
             else
@@ -129,8 +137,12 @@ void CDownloadQueue::Init()
                 toadd->SavePartFile(true); // resave backup, don't overwrite existing bak files yet
                 count++;
                 filelist.AddTail(toadd);			// to downloadqueue
-                if (toadd->GetStatus(true) == PS_READY)
+                if (toadd->GetStatus(true) == PS_READY
+					|| (toadd->GetStatus(true) == PS_EMPTY && !toadd->m_bMD4HashsetNeeded)) //>>> WiZaRd::Immediate File Sharing
+				{
+					toadd->SetStatus(PS_READY); //>>> WiZaRd::Immediate File Sharing
                     theApp.sharedfiles->SafeAddKFile(toadd); // part files are always shared files
+				}
                 theApp.emuledlg->transferwnd->GetDownloadList()->AddFile(toadd);// show in downloadwindow
 
                 AddLogLine(false, GetResString(IDS_RECOVERED_PARTMET), toadd->GetFileName());
@@ -318,34 +330,44 @@ void CDownloadQueue::AddFileLinkToDownload(CED2KFileLink* pLink, int cat)
         partfile = GetFileByID(pLink->GetHashKey());
     if (partfile)
     {
+//>>> WiZaRd::Immediate File Sharing
+		if (partfile->GetStatus(true) == PS_READY 
+			|| (partfile->GetStatus() == PS_EMPTY && !partfile->m_bMD4HashsetNeeded))
+		{
+			partfile->SetStatus(PS_READY);
+			if(theApp.sharedfiles->GetFileByID(partfile->GetFileHash()) == NULL)	
+				theApp.sharedfiles->SafeAddKFile(partfile);
+		}
+//<<< WiZaRd::Immediate File Sharing
+
         // match the fileidentifier and only if the are the same add possible sources
         CFileIdentifierSA tmpFileIdent(pLink->GetHashKey(), pLink->GetSize(), pLink->GetAICHHash(), pLink->HasValidAICHHash());
         if (partfile->GetFileIdentifier().CompareRelaxed(tmpFileIdent))
         {
-            if (pLink->HasValidSources())
-                partfile->AddClientSources(pLink->SourcesList, 1, false);
             if (!partfile->GetFileIdentifier().HasAICHHash() && tmpFileIdent.HasAICHHash())
             {
                 partfile->GetFileIdentifier().SetAICHHash(tmpFileIdent.GetAICHHash());
                 partfile->GetAICHRecoveryHashSet()->SetMasterHash(tmpFileIdent.GetAICHHash(), AICH_VERIFIED);
                 partfile->GetAICHRecoveryHashSet()->FreeHashSet();
-
             }
+
+			if (pLink->HasValidSources())
+				partfile->AddClientSources(pLink->SourcesList, 1, false);
+
+			if (pLink->HasHostnameSources())
+			{
+				POSITION pos = pLink->m_HostnameSourcesList.GetHeadPosition();
+				while (pos != NULL)
+				{
+					const SUnresolvedHostname* pUnresHost = pLink->m_HostnameSourcesList.GetNext(pos);
+					m_srcwnd.AddToResolve(pLink->GetHashKey(), pUnresHost->strHostname, pUnresHost->nPort, pUnresHost->strURL);
+				}
+			}
         }
         else
             DebugLogWarning(_T("FileIdentifier mismatch when trying to add ed2k link to existing download - AICH Hash or Size might differ, no sources added. File: %s"),
                             partfile->GetFileName());
-    }
-
-    if (pLink->HasHostnameSources())
-    {
-        POSITION pos = pLink->m_HostnameSourcesList.GetHeadPosition();
-        while (pos != NULL)
-        {
-            const SUnresolvedHostname* pUnresHost = pLink->m_HostnameSourcesList.GetNext(pos);
-            m_srcwnd.AddToResolve(pLink->GetHashKey(), pUnresHost->strHostname, pUnresHost->nPort, pUnresHost->strURL);
-        }
-    }
+	}
 }
 
 void CDownloadQueue::AddToResolved(CPartFile* pFile, SUnresolvedHostname* pUH)
@@ -365,6 +387,15 @@ void CDownloadQueue::AddDownload(CPartFile* newfile,bool paused)
     filelist.AddTail(newfile);
     SortByPriority();
     CheckDiskspace();
+//>>> WiZaRd::Immediate File Sharing
+	if (newfile->GetStatus(true) == PS_READY 
+		|| (newfile->GetStatus(true) == PS_EMPTY && !newfile->m_bMD4HashsetNeeded))
+	{
+		newfile->SetStatus(PS_READY);
+		if(theApp.sharedfiles->GetFileByID(newfile->GetFileHash()) == NULL)	
+			theApp.sharedfiles->SafeAddKFile(newfile);
+	}
+//<<< WiZaRd::Immediate File Sharing
     theApp.emuledlg->transferwnd->GetDownloadList()->AddFile(newfile);
     AddLogLine(true, GetResString(IDS_NEWDOWNLOAD), newfile->GetFileName());
     CString msgTemp;

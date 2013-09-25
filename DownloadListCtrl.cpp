@@ -2566,8 +2566,8 @@ int CDownloadListCtrl::Compare(const CPartFile *file1, const CPartFile *file2, L
 //>>> Health Indicator File Availability [WiZaRd]
     case 14:
 	{
-		float val1 = !file1->IsPartFile() ? 100 : (file1->GetAvailablePartCount()*100/file1->GetPartCount());
-		float val2 = !file2->IsPartFile() ? 100 : (file2->GetAvailablePartCount()*100/file2->GetPartCount());
+		float val1 = (float)(!file1->IsPartFile() ? 100 : (file1->GetAvailablePartCount()*100.0/file1->GetPartCount()));
+		float val2 = (float)(!file2->IsPartFile() ? 100 : (file2->GetAvailablePartCount()*100.0/file2->GetPartCount()));
         comp = CompareFloat(val1, val2);
         break;
 	}
@@ -2647,8 +2647,8 @@ int CDownloadListCtrl::Compare(const CUpDownClient *client1, const CUpDownClient
 //>>> Health Indicator File Availability [WiZaRd]
 		case 14:
 		{
-			float val1 = client1->IsCompleteSource() ? 100 : (client1->GetAvailablePartCount()*100/client1->GetRequestFile()->GetPartCount());
-			float val2 = client2->IsCompleteSource() ? 100 : (client2->GetAvailablePartCount()*100/client2->GetRequestFile()->GetPartCount());
+			float val1 = (float)(client1->IsCompleteSource() ? 100 : (client1->GetAvailablePartCount()*100.0/client1->GetRequestFile()->GetPartCount()));
+			float val2 = (float)(client2->IsCompleteSource() ? 100 : (client2->GetAvailablePartCount()*100.0/client2->GetRequestFile()->GetPartCount()));
 			return CompareFloat(val1, val2);
 		}
 //<<< Health Indicator File Availability [WiZaRd]

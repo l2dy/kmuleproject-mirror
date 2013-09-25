@@ -1101,6 +1101,16 @@ void CUpDownClient::ProcessHashSet(const uchar* packet, UINT size, bool bFileIde
             DebugLog(_T("Received valid AICH Part Hashset form %s, file: %s"), DbgGetClientInfo(), reqfile->GetFileName());
         m_fHashsetRequestingMD4 = 0;
         m_fHashsetRequestingAICH = 0;
+
+//>>> WiZaRd::Immediate File Sharing
+		if (reqfile->GetStatus(true) == PS_READY 
+			|| (reqfile->GetStatus() == PS_EMPTY && !reqfile->m_bMD4HashsetNeeded))
+		{
+			reqfile->SetStatus(PS_READY);
+			if(theApp.sharedfiles->GetFileByID(reqfile->GetFileHash()) == NULL)	
+				theApp.sharedfiles->SafeAddKFile(reqfile);
+		}
+//<<< WiZaRd::Immediate File Sharing
     }
     else
     {
@@ -1117,6 +1127,16 @@ void CUpDownClient::ProcessHashSet(const uchar* packet, UINT size, bool bFileIde
             reqfile->m_bMD4HashsetNeeded = true;
             throw GetResString(IDS_ERR_BADHASHSET);
         }
+
+//>>> WiZaRd::Immediate File Sharing
+		if (reqfile->GetStatus(true) == PS_READY 
+			|| (reqfile->GetStatus() == PS_EMPTY && !reqfile->m_bMD4HashsetNeeded))
+		{
+			reqfile->SetStatus(PS_READY);
+			if(theApp.sharedfiles->GetFileByID(reqfile->GetFileHash()) == NULL)	
+				theApp.sharedfiles->SafeAddKFile(reqfile);
+		}
+//<<< WiZaRd::Immediate File Sharing
     }
     SendStartupLoadReq();
 }
@@ -2837,7 +2857,7 @@ void CUpDownClient::ProcessAICHRequest(const uchar* packet, UINT size)
             recHashSet.SetMasterHash(pKnownFile->GetFileIdentifier().GetAICHHash(), AICH_HASHSETCOMPLETE);
             if (recHashSet.CreatePartRecoveryData((uint64)nPart*PARTSIZE, &fileResponse))
             {
-                AddDebugLogLine(DLP_HIGH, false, _T("AICH Packet Request: Successfully created and send recoverydata for %s to %s"), pKnownFile->GetFileName(), DbgGetClientInfo());
+                AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Successfully created and sent recoverydata for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
                 if (thePrefs.GetDebugClientTCPLevel() > 0)
                     DebugSend("OP__AichAnswer", this, pKnownFile->GetFileHash());
                 Packet* packAnswer = new Packet(&fileResponse, OP_EMULEPROT, OP_AICHANSWER);
@@ -2846,16 +2866,16 @@ void CUpDownClient::ProcessAICHRequest(const uchar* packet, UINT size)
                 return;
             }
             else
-                AddDebugLogLine(DLP_HIGH, false, _T("AICH Packet Request: Failed to create recoverydata for %s to %s"), pKnownFile->GetFileName(), DbgGetClientInfo());
+                AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to create recoverydata for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
         }
         else
         {
-            AddDebugLogLine(DLP_HIGH, false, _T("AICH Packet Request: Failed to create recoverydata - Hashset not ready or requested Hash differs from Masterhash for %s to %s"), pKnownFile->GetFileName(), DbgGetClientInfo());
+            AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to create recoverydata - Hashset not ready or requested Hash differs from Masterhash for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
         }
 
     }
     else
-        AddDebugLogLine(DLP_HIGH, false, _T("AICH Packet Request: Failed to find requested shared file -  %s"), DbgGetClientInfo());
+        AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to find requested shared file -  %s", DbgGetClientInfo());
 
     if (thePrefs.GetDebugClientTCPLevel() > 0)
         DebugSend("OP__AichAnswer", this, abyHash);

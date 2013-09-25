@@ -450,6 +450,18 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
                             theApp.downloadqueue->CheckAndAddKnownSource((CPartFile*)reqfile, client, true);
                     }
 
+//>>> WiZaRd::Immediate File Sharing
+					// Immediate File Sharing has a problem: it will show small files to other clients to be complete!
+					if(reqfile 
+						&& reqfile->IsPartFile() 
+						&& (reqfile->GetFileSize() <= (uint64)PARTSIZE
+							|| ((CPartFile*)reqfile)->GetAvailablePartCount() == 0))
+						{
+						//DebugLogError(L"DBG: %s: Did not answer OP_REQUESTFILENAME because file is too small!", client->DbgGetClientInfo());
+						break; //do NOT answer!
+					}
+//<<< WiZaRd::Immediate File Sharing
+
                     // send filename etc
                     CSafeMemFile data_out(128);
                     data_out.WriteHash16(reqfile->GetFileHash());
@@ -1375,6 +1387,18 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
                                 theApp.downloadqueue->CheckAndAddKnownSource((CPartFile*)reqfile, client, true);
                         }
 
+//>>> WiZaRd::Immediate File Sharing
+						// Immediate File Sharing has a problem: it will show small files to other clients to be complete!
+						if(reqfile 
+							&& reqfile->IsPartFile() 
+							&& (reqfile->GetFileSize() <= (uint64)PARTSIZE
+								|| ((CPartFile*)reqfile)->GetAvailablePartCount() == 0))
+						{
+							//DebugLogError(L"DBG: %s: Did not answer OP_REQUESTFILENAME because file is too small!", client->DbgGetClientInfo());
+							break; //do NOT answer!
+						}
+//<<< WiZaRd::Immediate File Sharing
+
                         data_out.WriteUInt8(OP_REQFILENAMEANSWER);
                         data_out.WriteString(reqfile->GetFileName(), client->GetUnicodeSupport());
                         break;
@@ -2276,16 +2300,16 @@ void CClientReqSocket::OnError(int nErrorCode)
     if (thePrefs.GetVerbose())
     {
         if (nErrorCode == ERR_WRONGHEADER)
-            strTCPError = _T("Error: Wrong header");
+            strTCPError = L"Error: Wrong header";
         else if (nErrorCode == ERR_TOOBIG)
-            strTCPError = _T("Error: Too much data sent");
+            strTCPError = L"Error: Too much data sent";
         else if (nErrorCode == ERR_ENCRYPTION)
-            strTCPError = _T("Error: Encryption layer error");
+            strTCPError = L"Error: Encryption layer error";
         else if (nErrorCode == ERR_ENCRYPTION_NOTALLOWED)
-            strTCPError = _T("Error: Unencrypted Connection when Encryption was required");
+            strTCPError = L"Error: Unencrypted Connection when Encryption was required";
         else
             strTCPError = GetErrorMessage(nErrorCode);
-        DebugLogWarning(_T("Client TCP socket: %s; %s"), strTCPError, DbgGetClientInfo());
+        DebugLogError(L"Client TCP socket: %s; %s", strTCPError, DbgGetClientInfo());
     }
 
     Disconnect(strTCPError);

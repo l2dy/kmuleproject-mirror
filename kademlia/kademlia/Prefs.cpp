@@ -233,23 +233,16 @@ void CPrefs::SetKademliaFiles()
     //If that fails, we use a set value based on previous tests..
     UINT nKadAverage = Kademlia::CKademlia::GetIndexed()->GetFileKeyCount();
 
-#ifdef _DEBUG
-    CString method;
-#endif
-
-#ifdef _DEBUG
-    method.Format(_T("Kad file estimate used Kad avg(%u)"), nKadAverage);
-#endif
     if (nKadAverage < 108)
     {
 #ifdef _DEBUG
-        method.Format(_T("Kad file estimate used default avg(108)"));
+        AddDebugLogLine(DLP_VERYLOW, false, L"Kad file estimate used default avg: 108");
 #endif
-
         nKadAverage = 108;
     }
 #ifdef _DEBUG
-    AddDebugLogLine(DLP_VERYLOW, false, method);
+	else
+		AddDebugLogLine(DLP_VERYLOW, false, L"Kad file estimate used Kad avg: %u", nKadAverage);
 #endif
 
     m_uKademliaFiles = nKadAverage*m_uKademliaUsers;

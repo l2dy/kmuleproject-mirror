@@ -160,7 +160,7 @@ void CPPgProxy::OnBnClickedEnableAuthentication()
 void CPPgProxy::OnCbnSelChangeProxyType()
 {
     SetModified(TRUE);
-    CComboBox* cbbox = (CComboBox*)GetDlgItem(IDC_PROXYTYPE);
+    //CComboBox* cbbox = (CComboBox*)GetDlgItem(IDC_PROXYTYPE);
     GetDlgItem(IDC_ENABLEAUTH)->EnableWindow(TRUE);
 }
 

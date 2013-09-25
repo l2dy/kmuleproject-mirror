@@ -59,6 +59,7 @@
 #include "./Mod/InfoWnd.h" //>>> WiZaRd::InfoWnd
 #endif
 #include <netioapi.h> //>>> WiZaRd::Find Best Interface IP [netfinity]
+#include "MD5Sum.h"
 
 
 #ifdef _DEBUG
@@ -5166,3 +5167,58 @@ bool IsDirectoryWriteable(LPCTSTR pszDirectory)
 	return writeable;
 }
 //<<< WiZaRd
+
+CString GetBetaFileName()
+{
+	CString strBetaFileName = L"";
+
+	strBetaFileName.Format(L"eMule%u.%u%c.%u Beta Testfile ", CemuleApp::m_nVersionMjr,
+		CemuleApp::m_nVersionMin, L'a' + CemuleApp::m_nVersionUpd, CemuleApp::m_nVersionBld);
+	MD5Sum md5(strBetaFileName);
+	strBetaFileName.Append(md5.GetHash().Left(6) + L".txt");
+
+	return strBetaFileName;
+}
+
+void CreateBetaFile()
+{
+#ifdef _BETA
+	// In Betaversion we create a testfile which is published in order to make testing easier
+	// by allowing to easily find files which are published and shared by "new" nodes
+	CString strBetaFileName = GetBetaFileName();
+	CString tempDir = thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR);
+	if (tempDir.Right(1) != L"\\")
+		tempDir.Append(L"\\");
+
+	// always create it - this will ensure that the file content is correct!
+	CStdioFile f;
+	if (!f.Open(tempDir + strBetaFileName, CFile::modeCreate | CFile::modeWrite | CFile::shareDenyWrite))
+		ASSERT(0);
+	else
+	{
+		try
+		{
+			// do not translate the content!
+			f.WriteString(strBetaFileName + '\n'); // guarantees a different hash on different versions
+			f.WriteString(L"This file is automatically created by eMule Beta versions to help the developers testing and debugging new the new features. eMule will delete this file when exiting, otherwise you can remove this file at any time.\nThanks for beta testing eMule :)");
+			f.Close();
+		}
+		catch (CFileException* ex)
+		{
+			ASSERT(0);
+			ex->Delete();
+		}
+	}
+#endif
+}
+
+void DeleteBetaFile()
+{
+	// On Beta builds we created a testfile, delete it when closing eMule
+	CString strBetaFileName = GetBetaFileName();
+	CString tempDir = thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR);
+	if (tempDir.Right(1) != L"\\")
+		tempDir += L"\\";
+
+	::DeleteFile(tempDir + strBetaFileName);
+}

@@ -2952,9 +2952,51 @@ UINT CPartFile::Process(UINT reducedownload, UINT icounter/*in percent*/)
 							{
 								if (m_pAICHRecoveryHashSet->IsPartDataAvailable(part * PARTSIZE))
 								{
-									AICHRecoveryDataAvailable(part);
-
 									// TODO!
+									UINT uPartNumber = part;
+									UINT partRange = PARTSIZE - 1;
+									if(part == lastPart && m_hpartfile.GetLength() % PARTSIZE > 0)
+										partRange = (UINT)(m_hpartfile.GetLength() % PARTSIZE) - 1;
+
+									// Is part corrupt
+									bool bAICHAgreed = false;
+									if (!HashSinglePart(uPartNumber, &bAICHAgreed))
+									{
+										LogWarning(LOG_STATUSBAR, GetResString(IDS_ERR_PARTCORRUPT), uPartNumber, GetFileName());
+										AddGap(PARTSIZE*(uint64)uPartNumber, PARTSIZE*(uint64)uPartNumber + partRange);
+
+										// add part to corrupted list, if not already there
+										if (!IsCorruptedPart(uPartNumber))
+											corrupted_list.AddTail((uint16)uPartNumber);
+
+										// request AICH recovery data, except if AICH already agreed anyway or we explict dont want to
+										if (/*!bNoAICH &&*/ !bAICHAgreed)
+											RequestAICHRecovery((uint16)uPartNumber);
+
+										// update stats
+										m_uCorruptionLoss += (partRange + 1);
+										thePrefs.Add2LostFromCorruption(partRange + 1);
+									}
+									else
+									{
+										if (!m_bMD4HashsetNeeded)
+										{
+											if (thePrefs.GetVerbose())
+												AddDebugLogLine(DLP_VERYLOW, false, _T("Finished part %u of \"%s\""), uPartNumber, GetFileName());
+										}
+
+										// tell the blackbox about the verified data
+										m_CorruptionBlackBox.VerifiedData(PARTSIZE*(uint64)uPartNumber, PARTSIZE*(uint64)uPartNumber + partRange);
+
+										// if this part was successfully completed (although ICH is active), remove from corrupted list
+										POSITION posCorrupted = corrupted_list.Find((uint16)uPartNumber);
+										if (posCorrupted)
+											corrupted_list.RemoveAt(posCorrupted);
+
+										CompletedPart(uPartNumber);
+									}
+																
+									//AICHRecoveryDataAvailable(part);									
 									/*// Perform AICH hashing and share blocks that hashed successful
 									CPartHashThread* const parthashthread = (CPartHashThread*) AfxBeginThread(RUNTIME_CLASS(CPartHashThread), THREAD_PRIORITY_LOWEST,0, CREATE_SUSPENDED);
 									if (parthashthread == nullptr)
@@ -3369,29 +3411,6 @@ void CPartFile::AddSource(LPCTSTR pszURL, UINT nIP)
         UpdatePartsInfo();
 }
 
-// SLUGFILLER: heapsortCompletesrc
-static void HeapSort(CArray<uint16, uint16>& count, UINT first, UINT last)
-{
-    UINT r;
-    for (r = first; !(r & (UINT)INT_MIN) && (r<<1) < last;)
-    {
-        UINT r2 = (r<<1)+1;
-        if (r2 != last)
-            if (count[r2] < count[r2+1])
-                r2++;
-        if (count[r] < count[r2])
-        {
-            uint16 t = count[r2];
-            count[r2] = count[r];
-            count[r] = t;
-            r = r2;
-        }
-        else
-            break;
-    }
-}
-// SLUGFILLER: heapsortCompletesrc
-
 void CPartFile::UpdatePartsInfo()
 {
     if (!IsPartFile())
@@ -3463,86 +3482,8 @@ void CPartFile::UpdatePartsInfo()
     }
 
     if (flag)
-    {
-        m_nCompleteSourcesCount = m_nCompleteSourcesCountLo = m_nCompleteSourcesCountHi = 0;
+		UpdateCompleteSrcCount(true, count, m_SrcpartFrequency);
 
-        for (UINT i = 0; i < partcount; i++)
-        {
-            if (!i)
-                m_nCompleteSourcesCount = m_SrcpartFrequency[i];
-            else if (m_nCompleteSourcesCount > m_SrcpartFrequency[i])
-                m_nCompleteSourcesCount = m_SrcpartFrequency[i];
-        }
-
-        count.Add(m_nCompleteSourcesCount);
-
-        int n = count.GetSize();
-        // moved from below
-        //Not many sources, so just use what you see..
-        if (n < 5)
-        {
-            m_nCompleteSourcesCountLo= m_nCompleteSourcesCount;
-            m_nCompleteSourcesCountHi= m_nCompleteSourcesCount;
-        }
-        else
-//		if (n > 0) // Always trus
-        {
-            // SLUGFILLER: heapsortCompletesrc
-            int r;
-            for (r = n/2; r--;)
-                HeapSort(count, r, n-1);
-            for (r = n; --r;)
-            {
-                uint16 t = count[r];
-                count[r] = count[0];
-                count[0] = t;
-                HeapSort(count, 0, r-1);
-            }
-            // SLUGFILLER: heapsortCompletesrc
-
-            // calculate range
-            int i = n >> 1;			// (n / 2)
-            int j = (n * 3) >> 2;	// (n * 3) / 4
-            int k = (n * 7) >> 3;	// (n * 7) / 8
-
-            //When still a part file, adjust your guesses by 20% to what you see..
-
-            //For low guess and normal guess count
-            //	If we see more sources then the guessed low and normal, use what we see.
-            //	If we see less sources then the guessed low, adjust network accounts for 80%, we account for 20% with what we see and make sure we are still above the normal.
-            //For high guess
-            //  Adjust 80% network and 20% what we see.
-            if (n < 20)
-            {
-                if (count.GetAt(i) < m_nCompleteSourcesCount)
-                    m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
-                else
-                    m_nCompleteSourcesCountLo = (uint16)((float)(count.GetAt(i)*.8)+(float)(m_nCompleteSourcesCount*.2));
-                m_nCompleteSourcesCount= m_nCompleteSourcesCountLo;
-                m_nCompleteSourcesCountHi= (uint16)((float)(count.GetAt(j)*.8)+(float)(m_nCompleteSourcesCount*.2));
-                if (m_nCompleteSourcesCountHi < m_nCompleteSourcesCount)
-                    m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
-            }
-            else
-                //Many sources..
-                //For low guess
-                //	Use what we see.
-                //For normal guess
-                //	Adjust network accounts for 80%, we account for 20% with what we see and make sure we are still above the low.
-                //For high guess
-                //  Adjust network accounts for 80%, we account for 20% with what we see and make sure we are still above the normal.
-            {
-                m_nCompleteSourcesCountLo= m_nCompleteSourcesCount;
-                m_nCompleteSourcesCount= (uint16)((float)(count.GetAt(j)*.8)+(float)(m_nCompleteSourcesCount*.2));
-                if (m_nCompleteSourcesCount < m_nCompleteSourcesCountLo)
-                    m_nCompleteSourcesCount = m_nCompleteSourcesCountLo;
-                m_nCompleteSourcesCountHi= (uint16)((float)(count.GetAt(k)*.8)+(float)(m_nCompleteSourcesCount*.2));
-                if (m_nCompleteSourcesCountHi < m_nCompleteSourcesCount)
-                    m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
-            }
-        }
-        m_nCompleteSourcesTime = time(NULL) + (60);
-    }
     NewSrcIncPartsInfo(); //>>> WiZaRd::ICS [enkeyDEV]
     UpdateDisplayedInfo();
 }
@@ -5734,7 +5675,7 @@ void CPartFile::FlushBuffer(bool forcewait, bool bNoAICH)
                 }
             }
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-            else if(theApp.m_app_state == APP_STATE_RUNNING) //>>> WiZaRd: FiX
+            else if(!bNoAICH && theApp.m_app_state == APP_STATE_RUNNING) //>>> WiZaRd: FiX
             {
                 // Attempt to share incomplete part if it will not complete within a decent time frame and we already have recovery data available
 				if (m_pAICHRecoveryHashSet 
@@ -5743,10 +5684,46 @@ void CPartFile::FlushBuffer(bool forcewait, bool bNoAICH)
 						&& m_pAICHRecoveryHashSet->IsPartDataAvailable((uint64)uPartNumber * PARTSIZE))
                 {
                     if (EstimatePartCompletion(uPartNumber) >= FORCE_AICH_TIME)
-					{
-						AICHRecoveryDataAvailable(uPartNumber);
-						
+					{	
 						// TODO!
+						// Is part corrupt
+						bool bAICHAgreed = false;
+						if (!HashSinglePart(uPartNumber, &bAICHAgreed))
+						{
+							LogWarning(LOG_STATUSBAR, GetResString(IDS_ERR_PARTCORRUPT), uPartNumber, GetFileName());
+							AddGap(PARTSIZE*(uint64)uPartNumber, PARTSIZE*(uint64)uPartNumber + partRange);
+
+							// add part to corrupted list, if not already there
+							if (!IsCorruptedPart(uPartNumber))
+								corrupted_list.AddTail((uint16)uPartNumber);
+
+							// request AICH recovery data, except if AICH already agreed anyway or we explict dont want to
+							if (!bNoAICH && !bAICHAgreed)
+								RequestAICHRecovery((uint16)uPartNumber);
+
+							// update stats
+							m_uCorruptionLoss += (partRange + 1);
+							thePrefs.Add2LostFromCorruption(partRange + 1);
+						}
+						else
+						{
+							if (!m_bMD4HashsetNeeded)
+							{
+								if (thePrefs.GetVerbose())
+									AddDebugLogLine(DLP_VERYLOW, false, _T("Finished part %u of \"%s\""), uPartNumber, GetFileName());
+							}
+
+							// tell the blackbox about the verified data
+							m_CorruptionBlackBox.VerifiedData(PARTSIZE*(uint64)uPartNumber, PARTSIZE*(uint64)uPartNumber + partRange);
+
+							// if this part was successfully completed (although ICH is active), remove from corrupted list
+							POSITION posCorrupted = corrupted_list.Find((uint16)uPartNumber);
+							if (posCorrupted)
+								corrupted_list.RemoveAt(posCorrupted);
+
+							CompletedPart(uPartNumber);
+						}
+						//AICHRecoveryDataAvailable(uPartNumber);
 						/*// Perform AICH hashing and share blocks that hashed successful
 						CPartHashThread* const parthashthread = (CPartHashThread*) AfxBeginThread(RUNTIME_CLASS(CPartHashThread), THREAD_PRIORITY_LOWEST,0, CREATE_SUSPENDED);
 						if (parthashthread == nullptr)

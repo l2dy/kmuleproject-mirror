@@ -316,7 +316,7 @@ public:
     static void		RemoveClientAICHRequest(const CUpDownClient* pClient);
     static bool		IsClientRequestPending(const CPartFile* pForFile, uint16 nPart);
     static CAICHRequestedData GetAICHReqDetails(const  CUpDownClient* pClient);
-    static void		AddStoredAICHHash(CAICHHash Hash, ULONGLONG nFilePos);
+    static bool		AddStoredAICHHash(CAICHHash Hash, ULONGLONG nFilePos);
     void			DbgTest();
 
     CAICHHashTree	m_pHashTree;

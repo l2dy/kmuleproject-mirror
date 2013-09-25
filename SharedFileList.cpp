@@ -457,18 +457,7 @@ CSharedFileList::~CSharedFileList()
     // SLUGFILLER: SafeHash
     delete m_keywords;
 
-#ifdef _BETA
-    // On Beta builds we created a testfile, delete it when closing eMule
-    CString tempDir = thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR);
-    if (tempDir.Right(1)!=L"\\")
-        tempDir+=L"\\";
-    CString strBetaFileName;
-    strBetaFileName.Format(_T("eMule%u.%u%c.%u Beta Testfile "), CemuleApp::m_nVersionMjr,
-                           CemuleApp::m_nVersionMin, _T('a') + CemuleApp::m_nVersionUpd, CemuleApp::m_nVersionBld);
-    MD5Sum md5(strBetaFileName);
-    strBetaFileName += md5.GetHash().Left(6) + _T(".txt");
-    DeleteFile(tempDir + strBetaFileName);
-#endif
+	DeleteBetaFile();
 }
 
 void CSharedFileList::CopySharedFileMap(CMap<CCKey,const CCKey&,CKnownFile*,CKnownFile*> &Files_Map)
@@ -511,46 +500,14 @@ void CSharedFileList::FindSharedFiles()
             theApp.downloadqueue->AddPartFilesToShare(); // read partfiles
     }
 
-
-
     // khaos::kmod+ Fix: Shared files loaded multiple times.
     CStringList l_sAdded;
     CString tempDir = thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR);
     if (tempDir.Right(1) != L"\\")
         tempDir.Append(L"\\");
 
-#ifdef _BETA
-    // In Betaversion we create a testfile which is published in order to make testing easier
-    // by allowing to easily find files which are published and shared by "new" nodes
-    CStdioFile f;
-    CString strBetaFileName;
-    strBetaFileName.Format(L"eMule%u.%u%c.%u Beta Testfile ", CemuleApp::m_nVersionMjr,
-                           CemuleApp::m_nVersionMin, L'a' + CemuleApp::m_nVersionUpd, CemuleApp::m_nVersionBld);
-    MD5Sum md5(strBetaFileName);
-    strBetaFileName.Append(md5.GetHash().Left(6) + L".txt");
-    if (::PathFileExists(tempDir + strBetaFileName))
-        ;	//if this call is successful, then this means that the file already exists and thus there is no need to recreate it
-    //this happens e.g. when pressing the "reload" button in shared files wnd during runtime
-    //if it doesn't exist we continue and try to create it :)
-    //POSSIBLE TODO: check the contents of the file... though it's unlikely to be different...
-    else if (!f.Open(tempDir + strBetaFileName, CFile::modeCreate | CFile::modeWrite | CFile::shareDenyWrite))
-        ASSERT(0);
-    else
-    {
-        try
-        {
-            // do not translate the content!
-            f.WriteString(strBetaFileName + '\n'); // guarantees a different hash on different versions
-            f.WriteString(L"This file is automatically created by eMule Beta versions to help the developers testing and debugging new the new features. eMule will delete this file when exiting, otherwise you can remove this file at any time.\nThanks for beta testing eMule :)");
-            f.Close();
-        }
-        catch (CFileException* ex)
-        {
-            ASSERT(0);
-            ex->Delete();
-        }
-    }
-#endif
+	DeleteBetaFile(); // just to be sure ;)
+    CreateBetaFile();
 
     AddFilesFromDirectory(tempDir);
     tempDir.MakeLower();
@@ -1314,7 +1271,13 @@ void CSharedFileList::Publish()
                 if (m_currFileSrc > GetCount())
                     m_currFileSrc = 0;
                 CKnownFile* pCurKnownFile = GetFileByIndex(m_currFileSrc);
-                if (pCurKnownFile)
+                if (pCurKnownFile
+//>>> WiZaRd::Immediate File Sharing
+					&& !(pCurKnownFile->IsPartFile()
+						&& (pCurKnownFile->GetFileSize() <= (uint64)PARTSIZE
+						|| ((CPartFile*)pCurKnownFile)->GetAvailablePartCount() == 0))
+//<<< WiZaRd::Immediate File Sharing
+				)
                 {
                     if (pCurKnownFile->PublishSrc())
                     {
@@ -1337,7 +1300,13 @@ void CSharedFileList::Publish()
                 if (m_currFileNotes > GetCount())
                     m_currFileNotes = 0;
                 CKnownFile* pCurKnownFile = GetFileByIndex(m_currFileNotes);
-                if (pCurKnownFile)
+                if (pCurKnownFile
+//>>> WiZaRd::Immediate File Sharing
+					&& !(pCurKnownFile->IsPartFile()
+						&& (pCurKnownFile->GetFileSize() <= (uint64)PARTSIZE
+						|| ((CPartFile*)pCurKnownFile)->GetAvailablePartCount() == 0))
+//<<< WiZaRd::Immediate File Sharing
+				)
                 {
                     if (pCurKnownFile->PublishNotes())
                     {

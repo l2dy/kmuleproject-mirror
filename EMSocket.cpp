@@ -436,6 +436,10 @@ void CEMSocket::OnReceive(int nErrorCode)
 //<<< WiZaRd::ModProt
                 break;
             default:
+				/*if(client)
+					theApp.QueueDebugLogLineEx(LOG_ERROR, L"Wrong header: 0x%02x (%s)", pendingPacket->prot, client->DbgGetClientInfo());
+				else*/
+					theApp.QueueDebugLogLineEx(LOG_ERROR, L"Wrong header: 0x%02x", pendingPacket->prot);
                 EMTrace("CEMSocket::OnReceive ERROR Wrong header");
                 delete pendingPacket;
                 pendingPacket = NULL;
@@ -446,6 +450,10 @@ void CEMSocket::OnReceive(int nErrorCode)
             // Security: Check for buffer overflow (2MB)
             if (pendingPacket->size > sizeof(GlobalReadBuffer))
             {
+//				if(client)
+//					theApp.QueueDebugLogLineEx(LOG_ERROR, L"DBG: ERR_TOOBIG - %s > %s (%s)", CastItoIShort(pendingPacket->size, false, false), CastItoIShort(sizeof(GlobalReadBuffer), false, false), client->DbgGetClientInfo());
+//				else
+//					theApp.QueueDebugLogLineEx(LOG_ERROR, L"DBG: ERR_TOOBIG - %s > %s", CastItoIShort(pendingPacket->size, false, false), CastItoIShort(sizeof(GlobalReadBuffer), false, false));
                 delete pendingPacket;
                 pendingPacket = NULL;
                 OnError(ERR_TOOBIG);
