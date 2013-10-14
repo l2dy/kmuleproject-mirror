@@ -134,9 +134,7 @@ CRoutingZone::~CRoutingZone()
 #endif
     // Root node is processed first so that we can write our contact list and delete all branches.
     if ((m_pSuperZone == NULL) && (m_sFilename.GetLength() > 0))
-    {
         WriteFile();
-    }
     // If this zone is a leaf, delete our contact bin.
     if (IsLeaf())
         delete m_pBin;
@@ -180,7 +178,7 @@ void CRoutingZone::ReadFile(CString strSpecialNodesdate)
                         UINT nBoostrapEdition = file.ReadUInt32();
                         if (nBoostrapEdition == 1)
                         {
-                            // this is a special bootstrap-only nodes.dat, handle it in a seperate reading function
+                            // this is a special bootstrap-only nodes.dat, handle it in a separate reading function
                             ReadBootstrapNodesDat(file);
                             file.Close();
                             return;
@@ -228,12 +226,12 @@ void CRoutingZone::ReadFile(CString strSpecialNodesdate)
                             if (::theApp.ipfilter->IsFiltered(uhostIP))
                             {
                                 if (::thePrefs.GetLogFilteredIPs())
-                                    AddDebugLogLine(false, _T("Ignored kad contact (IP=%s:%u)--read known.dat -- - IP filter (%s)") , ipstr(uhostIP), uUDPPort, ::theApp.ipfilter->GetLastHit());
+                                    AddDebugLogLine(false, L"Ignored kad contact (IP=%s:%u)--read known.dat -- - IP filter (%s)" , ipstr(uhostIP), uUDPPort, ::theApp.ipfilter->GetLastHit());
                             }
                             else if (uUDPPort == 53 && uContactVersion <= KADEMLIA_VERSION5_48a)  /*No DNS Port without encryption*/
                             {
                                 if (::thePrefs.GetLogFilteredIPs())
-                                    AddDebugLogLine(false, _T("Ignored kad contact (IP=%s:%u)--read known.dat") , ipstr(uhostIP), uUDPPort);
+                                    AddDebugLogLine(false, L"Ignored kad contact (IP=%s:%u)--read known.dat" , ipstr(uhostIP), uUDPPort);
                             }
                             else
                             {
@@ -248,19 +246,19 @@ void CRoutingZone::ReadFile(CString strSpecialNodesdate)
                 AddLogLine(false, GetResString(IDS_KADCONTACTSREAD), uValidContacts);
                 if (!bDoHaveVerifiedContacts)
                 {
-                    DebugLogWarning(_T("No verified contacts found in nodes.dat - might be an old file version. Setting all contacts verified for this time to speed up Kad bootstrapping"));
+                    DebugLogWarning(L"No verified contacts found in nodes.dat - might be an old file version. Setting all contacts verified for this time to speed up Kad bootstrapping");
                     SetAllContactsVerified();
                 }
             }
             file.Close();
         }
         else
-            DebugLogWarning(_T("Unable to read Kad file: %s"), m_sFilename);
+            DebugLogWarning(L"Unable to read Kad file: %s", m_sFilename);
     }
     catch (CFileException* e)
     {
         e->Delete();
-        DebugLogError(_T("CFileException in CRoutingZone::readFile"));
+        DebugLogError(L"CFileException in CRoutingZone::readFile");
     }
 }
 
@@ -272,7 +270,7 @@ void CRoutingZone::ReadBootstrapNodesDat(CFileDataIO& file)
     // we will be able to bootstrap faster than on a normal nodes.dat and more important, if we would deliver
     // a normal nodes.dat with eMule, those 50 nodes would be kinda DDOSed because everyone adds them to their routing
     // table, while with this style, we don't actually add any of the contacts to our routing table in the end and we
-    // ask only one of those 1000 contacts one time (well or more untill we find an alive one).
+    // ask only one of those 1000 contacts one time (well or more until we find an alive one).
     if (!CKademlia::s_liBootstapList.IsEmpty())
     {
         ASSERT(0);
@@ -297,20 +295,20 @@ void CRoutingZone::ReadBootstrapNodesDat(CFileDataIO& file)
                 if (::theApp.ipfilter->IsFiltered(uhostIP))
                 {
                     if (::thePrefs.GetLogFilteredIPs())
-                        AddDebugLogLine(false, _T("Ignored kad contact (IP=%s:%u)--read known.dat -- - IP filter (%s)") , ipstr(uhostIP), uUDPPort, ::theApp.ipfilter->GetLastHit());
+                        AddDebugLogLine(false, L"Ignored kad contact (IP=%s:%u)--read known.dat -- - IP filter (%s)" , ipstr(uhostIP), uUDPPort, ::theApp.ipfilter->GetLastHit());
                 }
                 else if (uUDPPort == 53 && uContactVersion <= KADEMLIA_VERSION5_48a)
                 {
                     if (::thePrefs.GetLogFilteredIPs())
-                        AddDebugLogLine(false, _T("Ignored kad contact (IP=%s:%u)--read known.dat") , ipstr(uhostIP), uUDPPort);
+                        AddDebugLogLine(false, L"Ignored kad contact (IP=%s:%u)--read known.dat" , ipstr(uhostIP), uUDPPort);
                 }
                 else if (uContactVersion > 1) // only kad2 nodes
                 {
                     // we want the 50 nodes closest to our own ID (provides randomness between different users and gets has good chances to get a bootstrap with close Nodes which is a nice start for our routing table)
                     CUInt128 uDistance = uMe;
                     uDistance.Xor(uID);
-                    uValidContacts++;
-                    // don't bother if we already have 50 and the farest distance is smaller than this contact
+                    ++uValidContacts;
+                    // don't bother if we already have 50 and the farthest distance is smaller than this contact
                     if (CKademlia::s_liBootstapList.GetCount() < 50 || CKademlia::s_liBootstapList.GetTail()->GetDistance() > uDistance)
                     {
                         // look were to put this contact into the proper position
@@ -338,7 +336,7 @@ void CRoutingZone::ReadBootstrapNodesDat(CFileDataIO& file)
             uNumContacts--;
         }
         AddLogLine(false, GetResString(IDS_KADCONTACTSREAD), CKademlia::s_liBootstapList.GetCount());
-        DebugLog(_T("Loaded Bootstrap nodes.dat, selected %u out of %u valid contacts"), CKademlia::s_liBootstapList.GetCount(), uValidContacts);
+        DebugLog(L"Loaded Bootstrap nodes.dat, selected %u out of %u valid contacts", CKademlia::s_liBootstapList.GetCount(), uValidContacts);
     }
 }
 
@@ -347,7 +345,7 @@ void CRoutingZone::WriteFile()
     // don't overwrite a bootstrap nodes.dat with an empty one, if we didn't finished probing
     if (!CKademlia::s_liBootstapList.IsEmpty() && GetNumContacts() == 0)
     {
-        DebugLogWarning(_T("Skipped storing nodes.dat, because we have an unfinished bootstrap of the nodes.dat version and no contacts in our routing table"));
+        DebugLogWarning(L"Skipped storing nodes.dat, because we have an unfinished bootstrap of the nodes.dat version and no contacts in our routing table");
         return;
     }
     try
@@ -382,22 +380,28 @@ void CRoutingZone::WriteFile()
                 file.WriteUInt8(pContact->IsIpVerified() ? 1 : 0);
             }
             file.Close();
-            AddDebugLogLine(false, _T("Wrote %ld contact%s to file."), listContacts.size(), ((listContacts.size() == 1) ? L"" : _T("s")));
+            AddDebugLogLine(false, L"Wrote %ld contact%s to file.", listContacts.size(), (listContacts.size() == 1) ? L"" : L"s");
         }
         else
-            DebugLogError(_T("Unable to store Kad file: %s"), m_sFilename);
+            DebugLogError(L"Unable to store Kad file: %s", m_sFilename);
     }
     catch (CFileException* e)
     {
         e->Delete();
-        AddDebugLogLine(false, _T("CFileException in CRoutingZone::writeFile"));
+        AddDebugLogLine(false, L"CFileException in CRoutingZone::writeFile");
     }
 }
 
 #ifdef _DEBUG
 void CRoutingZone::DbgWriteBootstrapFile()
 {
-    DebugLogWarning(_T("Writing special bootstrap nodes.dat - not intended for normal use"));
+	// don't overwrite a bootstrap nodes.dat with an empty one, if we didn't finished probing
+	if (!CKademlia::s_liBootstapList.IsEmpty() && GetNumContacts() == 0)
+	{
+		DebugLogWarning(L"Skipped storing nodes.dat, because we have an unfinished bootstrap of the nodes.dat version and no contacts in our routing table");
+		return;
+	}
+    DebugLogWarning(L"Writing special bootstrap nodes.dat - not intended for normal use");
     try
     {
         // Write a saved contact list.
@@ -408,12 +412,12 @@ void CRoutingZone::DbgWriteBootstrapFile()
         {
             setvbuf(file.m_pStream, NULL, _IOFBF, 32768);
 
-            // The bootstrap method gets a very nice sample of contacts to save.
-            ContactMap mapContacts;
+            // The bootstrap method gets a very nice sample of contacts to save.            
             CUInt128 uRandom(CUInt128((ULONG)0), 0);
             CUInt128 uDistance = uRandom;
             uDistance.Xor(uMe);
-            GetClosestTo(2, uRandom, uDistance, 1200, &mapContacts, false, false);
+ 			ContactMap mapContacts;
+ 			GetClosestTo(2, uRandom, uDistance, 1200, &mapContacts, false, false);			
             // filter out Kad1 nodes
             for (ContactMap::iterator itContactMap = mapContacts.begin(); itContactMap != mapContacts.end();)
             {
@@ -440,15 +444,15 @@ void CRoutingZone::DbgWriteBootstrapFile()
                 file.WriteUInt8(pContact->GetVersion());
             }
             file.Close();
-            AddDebugLogLine(false, _T("Wrote %ld contact to bootstrap file."), mapContacts.size());
+            AddDebugLogLine(false, _T("Wrote %ld contact%s to bootstrap file."), mapContacts.size(), (mapContacts.size() == 1) ? L"" : L"s");
         }
         else
-            DebugLogError(_T("Unable to store Kad file: %s"), m_sFilenameBootstrap);
+            DebugLogError(L"Unable to store Kad file: %s", m_sFilenameBootstrap);
     }
     catch (CFileException* e)
     {
         e->Delete();
-        AddDebugLogLine(false, _T("CFileException in CRoutingZone::writeFile"));
+        AddDebugLogLine(false, L"CFileException in CRoutingZone::writeFile");
     }
 
 }

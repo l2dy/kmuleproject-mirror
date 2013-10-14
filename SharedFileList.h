@@ -154,6 +154,8 @@ public:
 	void	IncQueuedFilesCount()		{++m_uiQueuedFilesCount;}
 	void	DecQueuedFilesCount()		{--m_uiQueuedFilesCount;}
 //<<< Queued Count
+private:
+	time_t	m_nFileUpdateTime;
 };
 
 class CAddFileThread : public CWinThread

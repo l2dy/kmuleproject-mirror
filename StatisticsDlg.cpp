@@ -126,7 +126,7 @@ void CStatisticsDlg::SetAllIcons()
     iml.Add(CTempIconLoader(_T("StatsMonth")));				// Time > Averages and Projections > Monthly
     iml.Add(CTempIconLoader(_T("StatsYear")));				// Time > Averages and Projections > Yearly
     iml.Add(CTempIconLoader(_T("HardDisk")));				// Diskspace
-    iml.Add(CTempIconLoader(L"BADGUY"));					// 18 //>>> WiZaRd::ClientAnalyzer
+    iml.Add(CTempIconLoader(L"ANALYZER1"));					// 18 //>>> WiZaRd::ClientAnalyzer
     stattree.SetImageList(&iml, TVSIL_NORMAL);
     imagelistStatTree.DeleteImageList();
     imagelistStatTree.Attach(iml.Detach());

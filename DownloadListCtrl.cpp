@@ -192,7 +192,7 @@ void CDownloadListCtrl::SetAllIcons()
     ApplyImageList(NULL);
     m_ImageList.DeleteImageList();
     m_ImageList.Create(16, 16, theApp.m_iDfltImageListColorFlags | ILC_MASK, 0, 1);
-    FillClientIconImageList(m_ImageList); // 21
+    FillClientIconImageList(m_ImageList); // 22
     m_ImageList.Add(CTempIconLoader(_T("SrcDownloading")));
     m_ImageList.Add(CTempIconLoader(_T("SrcOnQueue")));
     m_ImageList.Add(CTempIconLoader(_T("SrcConnecting")));
@@ -672,7 +672,7 @@ void CDownloadListCtrl::DrawFileItem(CDC *dc, int nColumn, LPCRECT lpRect, UINT 
 
         if (thePrefs.ShowRatingIndicator() && (pPartFile->HasComment() || pPartFile->HasRating() || pPartFile->IsKadCommentSearchRunning()))
         {
-            m_ImageList.Draw(dc, pPartFile->UserRating(true) + 21+6, CPoint(rcDraw.left + 2, rcDraw.top + iIconPosY), ILD_NORMAL);
+            m_ImageList.Draw(dc, pPartFile->UserRating(true) + 22+6, CPoint(rcDraw.left + 2, rcDraw.top + iIconPosY), ILD_NORMAL);
             rcDraw.left += 2 + RATING_ICON_WIDTH;
         }
 
@@ -923,45 +923,45 @@ void CDownloadListCtrl::DrawSourceItem(CDC *dc, int nColumn, LPCRECT lpRect, UIN
             switch (pClient->GetDownloadState())
             {
             case DS_CONNECTING:
-                m_ImageList.Draw(dc, 21+3, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 22+3, point, ILD_NORMAL);
                 break;
             case DS_CONNECTED:
-                m_ImageList.Draw(dc, 21+3, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 22+3, point, ILD_NORMAL);
                 break;
             case DS_WAITCALLBACKKAD:
             case DS_WAITCALLBACK:
-                m_ImageList.Draw(dc, 21+3, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 22+3, point, ILD_NORMAL);
                 break;
             case DS_ONQUEUE:
                 if (pClient->IsRemoteQueueFull())
-                    m_ImageList.Draw(dc, 21+4, point, ILD_NORMAL);
+                    m_ImageList.Draw(dc, 22+4, point, ILD_NORMAL);
                 else
-                    m_ImageList.Draw(dc, 21+2, point, ILD_NORMAL);
+                    m_ImageList.Draw(dc, 22+2, point, ILD_NORMAL);
                 break;
             case DS_DOWNLOADING:
-                m_ImageList.Draw(dc, 21+1, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 22+1, point, ILD_NORMAL);
                 break;
             case DS_REQHASHSET:
-                m_ImageList.Draw(dc, 21+1, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 22+1, point, ILD_NORMAL);
                 break;
             case DS_NONEEDEDPARTS:
-                m_ImageList.Draw(dc, 21+4, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 22+4, point, ILD_NORMAL);
                 break;
             case DS_ERROR:
-                m_ImageList.Draw(dc, 21+4, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 22+4, point, ILD_NORMAL);
                 break;
             case DS_TOOMANYCONNS:
             case DS_TOOMANYCONNSKAD:
-                m_ImageList.Draw(dc, 21+3, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 22+3, point, ILD_NORMAL);
                 break;
             default:
-                m_ImageList.Draw(dc, 21+5, point, ILD_NORMAL);
+                m_ImageList.Draw(dc, 22+5, point, ILD_NORMAL);
                 break;
             }
         }
         else
         {
-            m_ImageList.Draw(dc, 21+4, point, ILD_NORMAL);
+            m_ImageList.Draw(dc, 22+4, point, ILD_NORMAL);
         }
         cur_rec.left += 20;
 

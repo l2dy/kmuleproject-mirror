@@ -245,7 +245,7 @@ void CInfoWnd::SetAllIcons()
     CImageList iml;
     iml.Create(16, 16, theApp.m_iDfltImageListColorFlags | ILC_MASK, 0, 1);
     iml.Add(CTempIconLoader(L"Log"));
-    iml.Add(CTempIconLoader(L"BADGUY"));
+    iml.Add(CTempIconLoader(L"ANALYZER1"));
     StatusSelector.SetImageList(&iml);
     m_imlLogPanes.DeleteImageList();
     m_imlLogPanes.Attach(iml.Detach());

@@ -442,6 +442,7 @@ CSharedFileList::CSharedFileList()
     m_lastPublishKadNotes = 0;
     m_currFileKey = 0;
     bHaveSingleSharedFiles = false;
+	m_nFileUpdateTime = time(NULL);
 
     LoadSingleSharedFilesList();
     FindSharedFiles();
@@ -1179,6 +1180,19 @@ void CSharedFileList::UpdateFile(CKnownFile* toupdate)
 void CSharedFileList::Process()
 {
     Publish();
+
+	if(time(NULL) - m_nFileUpdateTime > 0)
+	{
+		m_nFileUpdateTime = time(NULL) + (60);
+		POSITION pos = m_Files_map.GetStartPosition();
+		CCKey key;
+		CKnownFile* cur_file;
+		while (pos)
+		{			
+			m_Files_map.GetNextAssoc(pos, key, cur_file);
+			cur_file->ProcessFile();
+		}
+	}
 }
 
 void CSharedFileList::Publish()

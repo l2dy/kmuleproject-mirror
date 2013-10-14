@@ -97,7 +97,7 @@ CKnownFile::CKnownFile()
     (void)m_strComment;
     kadFileSearchID = 0;
     SetLastPublishTimeKadSrc(0,0);
-    m_nCompleteSourcesTime = time(NULL);
+	m_bCompleteSrcUpdateNecessary = false;
     m_nCompleteSourcesCount = 1;
     m_nCompleteSourcesCountLo = 1;
     m_nCompleteSourcesCountHi = 1;
@@ -127,7 +127,7 @@ void CKnownFile::AssertValid() const
 
     (void)m_tUtcLastModified;
     (void)statistic;
-    (void)m_nCompleteSourcesTime;
+	CHECK_BOOL(m_bCompleteSrcUpdateNecessary);
     (void)m_nCompleteSourcesCount;
     (void)m_nCompleteSourcesCountLo;
     (void)m_nCompleteSourcesCountHi;
@@ -194,9 +194,7 @@ void CKnownFile::DrawShareStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bo
             {
                 UINT frequency = tempCompleteSources;
                 if (!m_AvailPartFrequency.IsEmpty())
-                {
                     frequency = max(m_AvailPartFrequency[i], tempCompleteSources);
-                }
 
                 if (frequency > 0)
                 {
@@ -220,6 +218,7 @@ void CKnownFile::DrawShareStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bo
     s_ShareStatusBar.Draw(dc, rect->left, rect->top, bFlat);
 }
 
+#ifndef _DEBUG
 // SLUGFILLER: heapsortCompletesrc
 static void HeapSort(CArray<uint16,uint16> &count, UINT first, UINT last)
 {
@@ -242,6 +241,7 @@ static void HeapSort(CArray<uint16,uint16> &count, UINT first, UINT last)
     }
 }
 // SLUGFILLER: heapsortCompletesrc
+#endif
 
 void CKnownFile::UpdateFileRatingCommentAvail(bool bForceUpdate)
 {
@@ -278,7 +278,6 @@ void CKnownFile::UpdatePartsInfo()
 {
     // Cache part count
     UINT partcount = GetPartCount();
-    bool flag = (time(NULL) - m_nCompleteSourcesTime > 0);
 
     // Reset part counters
     if ((UINT)m_AvailPartFrequency.GetSize() < partcount)
@@ -293,9 +292,6 @@ void CKnownFile::UpdatePartsInfo()
         m_SOTNAvailPartFrequency[i] = 0; //>>> WiZaRd::Intelligent SOTN
     }
 
-    CArray<uint16, uint16> count;
-    if (flag)
-        count.SetSize(0, m_ClientUploadList.GetSize());
     for (POSITION pos = m_ClientUploadList.GetHeadPosition(); pos != 0;)
     {
         CUpDownClient* cur_src = m_ClientUploadList.GetNext(pos);
@@ -314,13 +310,11 @@ void CKnownFile::UpdatePartsInfo()
                     last = static_cast<uint16>(stop / PARTSIZE + 1ULL);
                 else
                     last = static_cast<uint16>((stop + 1ULL) / PARTSIZE);
-                for (UINT i = first; i < last; i++)
+                for (UINT i = first; i < last; ++i)
                     m_AvailPartFrequency[i] += 1;
                 start = stop + 1;
                 stop = ~0ULL;
             }
-            if (flag)
-                count.Add(cur_src->GetUpCompleteSourcesCount());
         }
         /*
         //This could be a partfile that just completed.. Many of these clients will not have this information.
@@ -339,8 +333,7 @@ void CKnownFile::UpdatePartsInfo()
         cur_src->GetUploadingAndUploadedPart(m_AvailPartFrequency, m_SOTNAvailPartFrequency); //>>> WiZaRd::Intelligent SOTN
     }
 
-    if (flag)
-		UpdateCompleteSrcCount(false, count, m_AvailPartFrequency);
+	m_bCompleteSrcUpdateNecessary = true;
 
     if (theApp.sharedfiles)
         theApp.sharedfiles->UpdateFile(this);
@@ -2343,32 +2336,26 @@ bool CKnownFile::WritePartStatus(CSafeMemFile* file, CUpDownClient* client, cons
             // Decide chunk size for part vector (limit to 8000 sub chunks, to keep part vector size less than 1kB?)
             if (client->GetSCTVersion() >= PROTOCOL_REVISION_1)
             {
-                bool isSubChunksAvailable = false;
-                UINT partCount = (UINT)((size + PARTSIZE - 1) / PARTSIZE);
-                for (UINT i = 0; i < partCount; ++i)
-                {
-                    if (pThis->GetPublishedPartStatus()->IsPartialPart(i))
-                    {
-                        isSubChunksAvailable = true;
-                        break;
-                    }
-                }
-
-                // Only send sub chunks if there are incomplete parts shared
-                if (isSubChunksAvailable)
-                {
-                    if (client->GetSCTVersion() >= PROTOCOL_REVISION_2)
-                    {
-                        if (size <= (8000 * EMBLOCKSIZE) && pThis->GetPublishedPartStatus()->GetChunkSize() < PARTSIZE)
-                            partSize = EMBLOCKSIZE;
-                        sctDivider = (UINT)((PARTSIZE + partSize - 1) / partSize);
-                    }
-                    else if (size <= (8000 * CRUMBSIZE) && pThis->GetPublishedPartStatus()->GetChunkSize() < PARTSIZE)
-                    {
-                        partSize = CRUMBSIZE;
-                        sctDivider = CRUMBSPERPART;
-                    }
-                }
+				const UINT partCount = (UINT)((size + PARTSIZE - 1) / PARTSIZE);
+				for (UINT i = 0; i < partCount; ++i)
+				{
+					if (pThis->GetPublishedPartStatus()->IsPartialPart(i))
+					{
+						// Only send sub chunks if there are incomplete parts shared
+						if (client->GetSCTVersion() >= PROTOCOL_REVISION_2)
+						{
+							if (size <= (8000 * EMBLOCKSIZE) && pThis->GetPublishedPartStatus()->GetChunkSize() < PARTSIZE)
+								partSize = EMBLOCKSIZE;
+							sctDivider = (uint16)((PARTSIZE + partSize - 1) / partSize);
+						}
+						else if (size <= (8000 * CRUMBSIZE) && pThis->GetPublishedPartStatus()->GetChunkSize() < PARTSIZE)
+						{
+							partSize = CRUMBSIZE;
+							sctDivider = CRUMBSPERPART;
+						}
+						break;
+					}
+				}
             }
 
             parts = (uint16)(sctDivider * (size / PARTSIZE) + ((size % PARTSIZE) + partSize - 1) / partSize);
@@ -2432,7 +2419,11 @@ bool CKnownFile::WritePartStatus(CSafeMemFile* file, CUpDownClient* client, cons
                 {
                     if (partCompletelyShown)              
                         client->m_abyUpPartStatusHidden[lastPart] = 0;  //not hidden anymore
-					else
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+					// only mark COMPLETE parts as hidden
+					else if(!bPartfile || (pThis->GetPublishedPartStatus() && pThis->GetPublishedPartStatus()->IsComplete((uint64) cur_part * PARTSIZE + subChunk * partSize, (uint64) cur_part * PARTSIZE + (subChunk + 1) * partSize - 1)))
+					//else if(!bPartfile || pThis->IsComplete(done*PARTSIZE, (done + 1)*PARTSIZE - 1, true))
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 						client->m_abyUpPartStatusHidden[lastPart] = toSet;
                 }
                 lastPart = cur_part;
@@ -2461,8 +2452,6 @@ bool CKnownFile::WritePartStatus(CSafeMemFile* file, CUpDownClient* client, cons
 //m_SOTNAvailPartFrequency counts up how often a chunk is visible to remote users
 uint8* CKnownFile::GetPartStatus(CUpDownClient* client) const
 {
-    const uint16 parts = GetED2KPartCount();
-
     bool bSOTN = GetShareOnlyTheNeed() && (!client || client->GetIncompletePartVersion() == 0); //>>> WiZaRd::ICS [enkeyDEV]
 //>>> Create tmp array
     //the problem is that m_AvailPartFrequency will only check clients in our queue!
@@ -2472,45 +2461,41 @@ uint8* CKnownFile::GetPartStatus(CUpDownClient* client) const
     tmparray.SetSize(partcount);
     const bool bUsePart = IsPartFile();
     CPartFile* pThis = bUsePart ? (CPartFile*)this : NULL;
+
+	// search the least available parts
+	uint16 iMinAvailablePartFrenquency = _UI16_MAX;
+	uint16 iMinAvailablePartFrenquencyPrev = _UI16_MAX;
     for (uint16 i = 0; i < partcount; i++)
     {
         if (bUsePart)
-            tmparray[i] = pThis->GetSrcPartFrequency(i) + pThis->IsComplete(PARTSIZE*i, PARTSIZE*(i+1)-1, true);
+            tmparray[i] = (pThis->GetSrcPartFrequency(i) + (pThis->IsComplete(PARTSIZE*i, PARTSIZE*(i+1)-1, true) ? 1 : 0));
         else if (!m_AvailPartFrequency.IsEmpty())
             tmparray[i] = m_AvailPartFrequency[i];
+		else
+			tmparray[i] = 0;
         if (!m_SOTNAvailPartFrequency.IsEmpty())
             tmparray[i] = tmparray[i] + m_SOTNAvailPartFrequency[i];
+
+		// a part qualifies if the remote client doesn't have it but we have
+		if ((!client						//we don't have to check client
+			|| !client->IsPartAvailable(i))	//or he does not own that part
+			&& (!bUsePart					//of course it's complete if it's a complete file
+			|| pThis->IsComplete(PARTSIZE*i, PARTSIZE*(i+1)-1, true)) //or the part is complete
+			)
+		{
+			if (tmparray[i] < iMinAvailablePartFrenquency)
+				iMinAvailablePartFrenquency = tmparray[i];
+			else if (tmparray[i] < iMinAvailablePartFrenquencyPrev)
+				iMinAvailablePartFrenquencyPrev = tmparray[i];
+		}
     }
 //<<< Create tmp array
-    uint16 iMinAvailablePartFrenquency = _UI16_MAX;
-    uint16 iMinAvailablePartFrenquencyPrev = _UI16_MAX;
-    if (bSOTN)
-    {
-        //for (uint16 i = 0; i < parts; ++i)
-        for (uint16 i = 0; i < partcount; ++i)
-        {
-            if ((!client						//we don't have to check client
-                    || !client->IsPartAvailable(i))	//or he does not own that part
-                    //&& i < GetPartCount()			//and it's a valid part
-                    && (!bUsePart					//of course it's complete if it's a complete file
-                        || pThis->IsComplete(PARTSIZE*i, PARTSIZE*(i+1)-1, true)) //or the part is complete
-               )
-            {
-                if (tmparray[i] < iMinAvailablePartFrenquency)
-                    iMinAvailablePartFrenquency = tmparray[i];
-                else if (tmparray[i] < iMinAvailablePartFrenquencyPrev)
-                    iMinAvailablePartFrenquencyPrev = tmparray[i];
-            }
-        }
-        if (iMinAvailablePartFrenquency == _UI16_MAX)
-            bSOTN = false;
-    }
 
-    //First check if we hide something...
-    uint8*	abyTmpPartStatus = NULL;
-    bool bNeedThisFunction = bUsePart; //we need it for part files in any case...
+	// if all parts are equally rare, don't hide anything
+	if (iMinAvailablePartFrenquency == _UI16_MAX)
+		bSOTN = false;
 
-    uint16	partCount = parts;
+    uint16	partCount = GetED2KPartCount();
     uint64	partSize = PARTSIZE;
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
     UINT sctDivider = 1;
@@ -2526,30 +2511,24 @@ uint8* CKnownFile::GetPartStatus(CUpDownClient* client) const
             // Decide chunk size for part vector (limit to 8000 sub chunks, to keep part vector size less than 1kB?)
             if (client->GetSCTVersion() >= PROTOCOL_REVISION_1)
             {
-                bool isSubChunksAvailable = false;
-                UINT partCount = (UINT)((size + PARTSIZE - 1) / PARTSIZE);
+                const UINT partCount = (UINT)((size + PARTSIZE - 1) / PARTSIZE);
                 for (UINT i = 0; i < partCount; ++i)
                 {
                     if (pThis->GetPublishedPartStatus()->IsPartialPart(i))
                     {
-                        isSubChunksAvailable = true;
+						// Only send sub chunks if there are incomplete parts shared
+						if (client->GetSCTVersion() >= PROTOCOL_REVISION_2)
+						{
+							if (size <= (8000 * EMBLOCKSIZE) && pThis->GetPublishedPartStatus()->GetChunkSize() < PARTSIZE)
+								partSize = EMBLOCKSIZE;
+							sctDivider = (uint16)((PARTSIZE + partSize - 1) / partSize);
+						}
+						else if (size <= (8000 * CRUMBSIZE) && pThis->GetPublishedPartStatus()->GetChunkSize() < PARTSIZE)
+						{
+							partSize = CRUMBSIZE;
+							sctDivider = CRUMBSPERPART;
+						}
                         break;
-                    }
-                }
-
-                // Only send sub chunks if there are incomplete parts shared
-                if (isSubChunksAvailable)
-                {
-                    if (client->GetSCTVersion() >= PROTOCOL_REVISION_2)
-                    {
-                        if (size <= (8000 * EMBLOCKSIZE) && pThis->GetPublishedPartStatus()->GetChunkSize() < PARTSIZE)
-                            partSize = EMBLOCKSIZE;
-                        sctDivider = (uint16)((PARTSIZE + partSize - 1) / partSize);
-                    }
-                    else if (size <= (8000 * CRUMBSIZE) && pThis->GetPublishedPartStatus()->GetChunkSize() < PARTSIZE)
-                    {
-                        partSize = CRUMBSIZE;
-                        sctDivider = CRUMBSPERPART;
                     }
                 }
             }
@@ -2558,8 +2537,11 @@ uint8* CKnownFile::GetPartStatus(CUpDownClient* client) const
         }
     }
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
-    abyTmpPartStatus = new uint8[partCount];
-    memset(abyTmpPartStatus, 0, partCount*sizeof(uint8)); //show all
+
+	//First check if we hide something...
+	uint8*	abyTmpPartStatus = new uint8[partCount];
+	memset(abyTmpPartStatus, 0, partCount*sizeof(uint8)); //show all
+	bool	bNeedThisFunction = bUsePart; //we need it for part files in any case...    
 
     for (uint16 i = 0; i < partCount; ++i)
     {
@@ -2570,12 +2552,12 @@ uint8* CKnownFile::GetPartStatus(CUpDownClient* client) const
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
         //we allow to send this chunk if either...
-        const bool bShowPart = !bSOTN									// SOTN is OFF
-                               || (tmparray[cur_part] <= iMinAvailablePartFrenquencyPrev)	// it's the rarest chunk
+        const bool bShowPart = !bSOTN														// SOTN is OFF
+                               || (tmparray[cur_part] <= iMinAvailablePartFrenquencyPrev)	// it's one of the rarest chunks
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
                                // or if it's complete, already
                                || (client && client->IsPartAvailable(cur_part) && (!bUsePart || (pThis->GetPublishedPartStatus() && pThis->GetPublishedPartStatus()->IsComplete((uint64) cur_part * PARTSIZE + subChunk * partSize, (uint64) cur_part * PARTSIZE + (subChunk + 1) * partSize - 1)))); // show parts that the other client has
-        //|| (client && client->IsPartAvailable(cur_part) && (!bUsePart || pThis->IsComplete((uint64) i * partSize, (uint64) (i + 1) * partSize - 1, true))); // show parts that the other client has
+								//|| (client && client->IsPartAvailable(cur_part) && (!bUsePart || pThis->IsComplete((uint64) i * partSize, (uint64) (i + 1) * partSize - 1, true))); // show parts that the other client has
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
         if (!bShowPart)
@@ -2979,88 +2961,6 @@ CString CKnownFile::GetFeedBackString() const
     return feed;
 }
 //<<< WiZaRd::Upload Feedback
-//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-void CKnownFile::AddToPartsInfo(const CPartStatus* partstatus)
-{
-    if (time(NULL) - m_nCompleteSourcesTime > 0)
-    {
-        CKnownFile::UpdatePartsInfo();
-        return;
-    }
-
-    if (partstatus != NULL && partstatus->GetSize() == this->GetFileSize())
-    {
-        if ((UINT)m_AvailPartFrequency.GetSize() < GetPartCount())
-        {
-            m_AvailPartFrequency.SetSize(GetPartCount());
-            for (UINT i = 0; i < GetPartCount(); i++)
-                m_AvailPartFrequency[i] = 0;
-        }
-
-        uint64	start = 0ULL;
-        uint64	stop = ~0ULL;
-        while (partstatus->FindFirstComplete(start, stop))
-        {
-            uint16	first, last;
-            first = static_cast<uint16>((start + (PARTSIZE - 1ULL)) / PARTSIZE);
-            if (stop == GetFileSize() - 1ULL)
-                last = static_cast<uint16>(stop / PARTSIZE + 1ULL);
-            else
-                last = static_cast<uint16>((stop + 1ULL) / PARTSIZE);
-            for (UINT i = first; i < last; i++)
-            {
-                m_AvailPartFrequency[i] += 1;
-            }
-            start = stop + 1;
-            stop = ~0ULL;
-        }
-    }
-
-    if (theApp.emuledlg->sharedfileswnd->m_hWnd)
-        theApp.emuledlg->sharedfileswnd->sharedfilesctrl.UpdateFile(this);
-}
-
-void CKnownFile::RemoveFromPartsInfo(const CPartStatus* partstatus)
-{
-    if (time(NULL) - m_nCompleteSourcesTime > 0)
-    {
-        CKnownFile::UpdatePartsInfo();
-        return;
-    }
-
-    if ((UINT)m_AvailPartFrequency.GetSize() < GetPartCount())
-    {
-        m_AvailPartFrequency.SetSize(GetPartCount());
-        for (UINT i = 0; i < GetPartCount(); i++)
-            m_AvailPartFrequency[i] = 0;
-        return;
-    }
-
-    if (partstatus != NULL && partstatus->GetSize() == this->GetFileSize())
-    {
-        uint64	start = 0ULL;
-        uint64	stop = ~0ULL;
-        while (partstatus->FindFirstComplete(start, stop))
-        {
-            uint16	first, last;
-            first = static_cast<uint16>((start + (PARTSIZE - 1ULL)) / PARTSIZE);
-            if (stop == GetFileSize() - 1ULL)
-                last = static_cast<uint16>(stop / PARTSIZE + 1ULL);
-            else
-                last = static_cast<uint16>((stop + 1ULL) / PARTSIZE);
-            for (UINT i = first; i < last; i++)
-            {
-                m_AvailPartFrequency[i] -= 1;
-            }
-            start = stop + 1;
-            stop = ~0ULL;
-        }
-    }
-
-    if (theApp.emuledlg->sharedfileswnd->m_hWnd)
-        theApp.emuledlg->sharedfileswnd->sharedfilesctrl.UpdateFile(this);
-}
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 //>>> WiZaRd::Queued Count
 void	CKnownFile::IncRealQueuedCount(CUpDownClient* /*client*/)
 {
@@ -3196,55 +3096,100 @@ float CKnownFile::GetFileHealth()
 }
 //<<< WiZaRd::FileHealth
 
-void CKnownFile::UpdateCompleteSrcCount(const bool bPartFile, CArray<uint16, uint16>& count, const CArray<uint16/*, uint16*/>& availPartFrequency)
+void CKnownFile::UpdateCompleteSrcCount()
 {
 	const UINT partcount = GetPartCount();
 
 	m_nCompleteSourcesCount = m_nCompleteSourcesCountLo = m_nCompleteSourcesCountHi = 0;
 
-	if (partcount > 0)
-		m_nCompleteSourcesCount = availPartFrequency[0];
-	for (UINT i = 1; i < partcount; ++i)
+	// retrieve users complete src count values
+	CArray<uint16, uint16> count;
+	CPartFile* pFile = IsPartFile() ? (CPartFile*)this : NULL;
+	if(pFile)
+		pFile->GetCompleteSrcCount(count);
+	GetCompleteSrcCount(count);		
+
+	if ((UINT)m_AvailPartFrequency.GetSize() < partcount)
 	{
-		if (m_nCompleteSourcesCount > availPartFrequency[i])
-			m_nCompleteSourcesCount = availPartFrequency[i];
+		m_AvailPartFrequency.SetSize(partcount);		
+		for (UINT i = 0; i < partcount; ++i)
+			m_AvailPartFrequency[i] = 0;
 	}
 
-	count.Add(m_nCompleteSourcesCount + bPartFile ? 0 : 1); // plus 1 since we have the file complete too
+//		theApp.QueueDebugLogLineEx(LOG_CA|LOG_WARNING, L"*DEBUG START*: %s", GetFileName());
+	CArray<uint16, uint16> availPartFrequency;
+	availPartFrequency.SetSize(partcount);
+	for(UINT i = 0; i < partcount; ++i)
+	{
+		availPartFrequency[i] = m_AvailPartFrequency[i];
+		if(pFile) // we may have complete src on partfiles that won't request the file, so we adjust the src count to the max of both
+			availPartFrequency[i] = max(pFile->GetSrcPartFrequency(i), availPartFrequency[i]);
+//			theApp.QueueDebugLogLineEx(LOG_CA|LOG_INFO, L"Part %u - avail: %u", i, availPartFrequency[i]);
+		if(i == 0)
+			m_nCompleteSourcesCount = availPartFrequency[i];
+		else if(m_nCompleteSourcesCount > availPartFrequency[i])
+		{
+			m_nCompleteSourcesCount = availPartFrequency[i];
+//				theApp.QueueDebugLogLineEx(LOG_CA|LOG_INFO, L"Complete Src Count -> %u:%u", i, m_nCompleteSourcesCount);
+		}			
+	}
+//		theApp.QueueDebugLogLineEx(LOG_CA|LOG_INFO, L"Complete Src Count: %u", m_nCompleteSourcesCount);
 
-	int n = count.GetSize();
-	if(bPartFile && n < 5)
+	count.Add(m_nCompleteSourcesCount + (pFile ? 0 : 1)); // plus 1 since we have the file complete, too
+
+	const int n = count.GetSize();
+	/*if(bPartFile && n < 5)
 	{
 		//Not many sources, so just use what you see..
 		m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
 		m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
 	}
-	else if (n > 0)
+	else*/ if (n > 0)
 	{
 #ifdef _DEBUG
 //>>> WiZaRd::Complete Files As Median
 		CMedian<uint16> median;
-		int num = count.GetCount();
-		for(int i = 0; i != num; ++i)
+		for(int i = 0; i < n; ++i)
 			median.AddVal(count[i]);
-		median.GetMedian(); // sorts the internal vector
-		std::vector<uint16> medianVector = median.GetMedianVector();
+		median.SortVals(); // sorts the internal vector
+		std::vector<uint16> medianVector = median.GetMedianVector();			
 		std::vector<uint16> median1;
 		std::vector<uint16> median2;
-		for(int i = 0; i != num; ++i)
+		const int half = (n / 2);
+		for(int i = 0; i < half; ++i)
 		{
-			if(i < num / 2)
-				median1.push_back(medianVector[i]);
-			else
-				median2.push_back(medianVector[i]);
+			TRACE(L"Median Vector %i: %i\n", i, medianVector[i]);
+			median1.push_back(medianVector[i]);
+		}
+		for(int i = half; i < n; ++i)
+		{
+			TRACE(L"Median Vector %i: %i\n", i, medianVector[i]);
+			median2.push_back(medianVector[i]);
 		}
 		median.SetMedianVector(median1);
+		median1 = median.GetMedianVector();
+		for(size_t i = 0; i < median1.size(); ++i)
+			TRACE(L"Low Vector %i: %i\n", i, median1[i]);
 		m_nCompleteSourcesCountLo = median.GetMedian();			
+		TRACE(L"Low Median: %u\n", m_nCompleteSourcesCountLo);
 
 		median.SetMedianVector(median2);
+		median2 = median.GetMedianVector();
+		for(size_t i = 0; i < median2.size(); ++i)
+			TRACE(L"High Vector %i: %i\n", i, median2[i]);
 		m_nCompleteSourcesCountHi = median.GetMedian();
+		TRACE(L"High Median: %u\n", m_nCompleteSourcesCountHi);
 
-		m_nCompleteSourcesCount = (m_nCompleteSourcesCountLo + m_nCompleteSourcesCountHi) / 2;
+		if(m_nCompleteSourcesCountLo < m_nCompleteSourcesCount)
+			m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
+		if(m_nCompleteSourcesCountHi < m_nCompleteSourcesCount)
+			m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
+		if(m_nCompleteSourcesCount == 0)
+		{
+			m_nCompleteSourcesCount = (m_nCompleteSourcesCountLo + m_nCompleteSourcesCountHi) / 2;
+//				theApp.QueueDebugLogLineEx(LOG_CA|LOG_INFO, L"Complete Src Count (Avg): %u", m_nCompleteSourcesCount);
+		}			
+//			theApp.QueueDebugLogLineEx(LOG_CA|LOG_WARNING, L"*DEBUG END*");
 //<<< WiZaRd::Complete Files As Median
 #else
 		// SLUGFILLER: heapsortCompletesrc
@@ -3312,6 +3257,24 @@ void CKnownFile::UpdateCompleteSrcCount(const bool bPartFile, CArray<uint16, uin
 				m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
 		}
 #endif
+	}	
+}
+
+void CKnownFile::GetCompleteSrcCount(CArray<uint16, uint16>& count)
+{
+	for (POSITION pos = m_ClientUploadList.GetHeadPosition(); pos != 0;)
+	{
+		CUpDownClient* cur_src = m_ClientUploadList.GetNext(pos);
+		if (cur_src->GetUpCompleteSourcesCount() != _UI16_MAX) //>>> WiZaRd::Use client info only if sent!
+			count.Add(cur_src->GetUpCompleteSourcesCount());
 	}
-	m_nCompleteSourcesTime = time(NULL) + (60);
+}
+
+void CKnownFile::ProcessFile()
+{
+	if(m_bCompleteSrcUpdateNecessary)
+	{
+		m_bCompleteSrcUpdateNecessary = false;
+		UpdateCompleteSrcCount();
+	}
 }

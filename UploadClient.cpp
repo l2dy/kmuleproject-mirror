@@ -524,8 +524,6 @@ void CUpDownClient::CreateNextBlockPackage(bool bBigBuffer)
 bool CUpDownClient::ProcessExtendedInfo(CSafeMemFile* data, CKnownFile* file, const bool bIsUDP)
 {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-//     if (m_pUpPartStatus != NULL)
-//         file->RemoveFromPartsInfo(m_pUpPartStatus);
 //	delete[] m_abyUpPartStatus;
 //	m_abyUpPartStatus = NULL;
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
@@ -541,7 +539,7 @@ bool CUpDownClient::ProcessExtendedInfo(CSafeMemFile* data, CKnownFile* file, co
     delete m_pUpPartStatus;
     m_pUpPartStatus = NULL;
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
-    m_nUpCompleteSourcesCount= 0;
+    m_nUpCompleteSourcesCount= _UI16_MAX; //>>> WiZaRd::Use client info only if sent!
 
     if (GetExtendedRequestsVersion() == 0)
     {
@@ -577,14 +575,7 @@ bool CUpDownClient::ProcessExtendedInfo(CSafeMemFile* data, CKnownFile* file, co
         uint16 nCompleteCountNew = data->ReadUInt16();
         SetUpCompleteSourcesCount(nCompleteCountNew);
         if (nCompleteCountLast != nCompleteCountNew)
-        {
-//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-            /*if (m_pUpPartStatus != NULL)
-                file->AddToPartsInfo(m_pUpPartStatus);*/
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
-			// WiZaRd: just updating the src count seems to be correct
             file->UpdatePartsInfo();
-        }
     }
 
 	return true;
@@ -596,9 +587,6 @@ bool CUpDownClient::ProcessUploadFileStatus(const bool bUDPPacket, CKnownFile* f
 	bAllowCloning = bAllowCloning && reqfile == file;
     if(bAllowCloning && (m_pPartStatus == NULL || (m_pUpPartStatus->GetCompleted() >= m_pPartStatus->GetCompleted())))
     {
-//         if (m_pPartStatus != NULL)
-//             reqfile->RemoveFromPartsInfo(m_pPartStatus);
-
         delete m_pPartStatus;
         m_pPartStatus = NULL;
         m_pPartStatus = m_pUpPartStatus->Clone();
@@ -624,8 +612,6 @@ bool CUpDownClient::ProcessUploadFileStatus(const bool bUDPPacket, CKnownFile* f
 				}
 			}
 		}*/
-
-        reqfile->AddToPartsInfo(m_pPartStatus);
     }
 
     // Passive Src Finding
@@ -922,9 +908,6 @@ void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
 
     // clear old status
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-// 	if(oldreqfile && m_pUpPartStatus != NULL)
-// 		oldreqfile->RemoveFromPartsInfo(m_pUpPartStatus);
-
     delete m_pUpPartStatus;
     m_pUpPartStatus = NULL;
     //delete[] m_abyUpPartStatus;
@@ -935,7 +918,7 @@ void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
     delete[] m_abyUpPartStatusHidden;
     m_abyUpPartStatusHidden = NULL;
 //<<< WiZaRd::Intelligent SOTN
-    m_nUpCompleteSourcesCount= 0;
+    m_nUpCompleteSourcesCount= _UI16_MAX; //>>> WiZaRd::Use client info only if sent!
 
     if (newreqfile)
     {
@@ -1234,7 +1217,7 @@ void CUpDownClient::SendHashsetPacket(const uchar* pData, UINT nSize, bool bFile
 		else if (md4cmp(requpfileid, fileIdent.GetMD4Hash()))
 		{
 			CheckFailedFileIdReqs(fileIdent.GetMD4Hash());
-			DebugLogWarning(_T("Client %s tried to request Hashset of file that's different from its requested file."), DbgGetClientInfo());
+			DebugLogWarning(L"Client %s tried to request Hashset of file that's different from its requested file.", DbgGetClientInfo());
 			//Ban(L"Hashset Prober");
 			return;
 		}
@@ -1283,7 +1266,7 @@ void CUpDownClient::SendHashsetPacket(const uchar* pData, UINT nSize, bool bFile
 		else if (md4cmp(requpfileid, pData))
 		{
 			CheckFailedFileIdReqs(pData);
-			DebugLogWarning(_T("Client %s tried to request Hashset of file that's different from its requested file."), DbgGetClientInfo());
+			DebugLogWarning(L"Client %s tried to request Hashset of file that's different from its requested file.", DbgGetClientInfo());
 			//Ban(L"Hashset Prober");
 			return;
 		}

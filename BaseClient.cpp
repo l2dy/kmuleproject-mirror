@@ -258,7 +258,7 @@ void CUpDownClient::Init()
     m_bySupportSecIdent = 0;
     m_byInfopacketsReceived = IP_NONE;
     m_lastPartAsked = (uint16)-1;
-    m_nUpCompleteSourcesCount= 0;
+    m_nUpCompleteSourcesCount = _UI16_MAX; //>>> WiZaRd::Use client info only if sent!
     m_fSupportsPreview = 0;
     m_fPreviewReqPending = 0;
     m_fPreviewAnsPending = 0;
@@ -351,14 +351,9 @@ CUpDownClient::~CUpDownClient()
     free(m_pszUsername);
 
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-// 	if(reqfile && m_pPartStatus)
-// 		reqfile->RemoveFromPartsInfo(m_pPartStatus);
     delete m_pPartStatus;
     m_pPartStatus = NULL;
 
-// 	CKnownFile* currequpfile  = GetUploadReqFile();
-// 	if(currequpfile  && m_pUpPartStatus)
-// 		currequpfile ->RemoveFromPartsInfo(m_pUpPartStatus);
     delete m_pUpPartStatus;
     m_pUpPartStatus = NULL;
     //delete[] m_abyPartStatus;
@@ -2984,8 +2979,6 @@ void CUpDownClient::InfoPacketsReceived()
 void CUpDownClient::ResetFileStatusInfo()
 {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-    if (m_pPartStatus != NULL && reqfile != NULL)
-        reqfile->RemoveFromPartsInfo(m_pPartStatus);
     delete m_pPartStatus;
     m_pPartStatus = NULL;
     //delete[] m_abyPartStatus;
@@ -4144,19 +4137,20 @@ int CUpDownClient::GetAnalyzerIconIndex() const
 	if (pAntiLeechData != NULL)
 	{		
 		if(pAntiLeechData->GetBadForThisSession() != 0)
-			ret = 1; // red
+			ret = 0; // bad guy!
 		else
 		{
 			float fCAScore = pAntiLeechData->GetScore();
-			if(fCAScore < AT_BASESCORE)
-				ret = 0;
-			else if(fCAScore != AT_BASESCORE)
-			{
-				if(fCAScore < 2 * AT_BASESCORE)
-					ret = 2; // blue - nice score!
-				else
-					ret = 3; // green - good score!
-			}
+			/*if(fCAScore < 0)
+				ret = 0; // very bad guy!
+			else*/ if(fCAScore < AT_BASESCORE)
+				ret = 1; // bad guy!
+			else if(fCAScore < 2 * AT_BASESCORE)
+				ret = 2; // no important data
+			else if(fCAScore < 3 * AT_BASESCORE)
+				ret = 3; // good score!
+			else
+				ret = 4; // very good score!
 		}
 	}
 

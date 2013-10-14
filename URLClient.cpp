@@ -52,9 +52,6 @@ void CUrlClient::SetRequestFile(CPartFile* pReqFile)
     if (reqfile)
     {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-//         if (m_pPartStatus != NULL)
-//             reqfile->RemoveFromPartsInfo(m_pPartStatus);
-
         delete m_pPartStatus;
         m_pPartStatus = NULL; // In case CAICHStatusVector constructor fails
         m_pPartStatus = new CAICHStatusVector(pReqFile);
@@ -62,8 +59,6 @@ void CUrlClient::SetRequestFile(CPartFile* pReqFile)
         //m_nPartCount = reqfile->GetPartCount();
         //m_abyPartStatus = new uint8[m_nPartCount];
         //memset(m_abyPartStatus, 1, m_nPartCount);
-
-		reqfile->AddToPartsInfo(m_pPartStatus);
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         m_bCompleteSource = true;
     }

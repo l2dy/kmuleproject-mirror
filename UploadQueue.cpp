@@ -1429,13 +1429,7 @@ bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client, LPCTSTR pszReaso
 				requestedFile = (CKnownFile*)theApp.downloadqueue->GetFileByID((uchar*)client->GetUploadFileID());
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
             if (requestedFile != NULL)
-            {
-//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-                if (client->GetUpPartStatus() != NULL && requestedFile != (CKnownFile*)client->GetRequestFile())
-                    requestedFile->RemoveFromPartsInfo(client->GetUpPartStatus());
-                //requestedFile->UpdatePartsInfo();
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
-            }
+                requestedFile->UpdatePartsInfo();
             theApp.clientlist->AddTrackClient(client); // Keep track of this client
             client->SetUploadState(US_NONE);
             client->ClearUploadBlockRequests();

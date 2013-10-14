@@ -1323,7 +1323,7 @@ void CemuleDlg::ProcessED2KLink(LPCTSTR pszData)
                 CED2KNodesListLink* pListLink = pLink->GetNodesListLink();
                 _ASSERT(pListLink !=0);
                 CString strAddress = pListLink->GetAddress();
-                // Becasue the nodes.dat is vital for kad and its routing and doesn't needs to be updated in general
+                // Because the nodes.dat is vital for kad and its routing and doesn't needs to be updated in general
                 // we request a confirm to avoid accidental / malicious updating of this file. This is a bit inconsitent
                 // as the same kinda applies to the server.met, but those require more updates and are easier to understand
                 CString strConfirm;

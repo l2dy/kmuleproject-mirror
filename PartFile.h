@@ -532,7 +532,7 @@ public:
 //<<< WiZaRd::ICS [enkeyDEV]
 //>>> WiZaRd::Intelligent SOTN
 public:
-    uint16	GetSrcPartFrequency(const uint16& part)
+    uint16	GetSrcPartFrequency(const UINT part)
     {
         return m_SrcpartFrequency[part];
     }
@@ -556,9 +556,6 @@ public:
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 public:
     friend class CPartFileStatus;
-    virtual void	AddToPartsInfo(const CPartStatus* partstatus);
-    virtual void	RemoveFromPartsInfo(const CPartStatus* partstatus);
-
     const CPartStatus*	GetDonePartStatus() const
     {
         return (const CPartStatus*) m_pPartStatus;
@@ -581,4 +578,5 @@ public:
 //<<< WiZaRd::Improved Auto Prio
 public:
 	UINT	GetCompletePartCount() const;
+	void	GetCompleteSrcCount(CArray<uint16, uint16>& count);
 };

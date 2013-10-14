@@ -241,7 +241,7 @@ void	CModIconMapper::FillModIconList()
         theApp.QueueLogLineEx(LOG_WARNING, L"*** ModIconDLL: Loaded %i icon mappings from .dll", iLoaded);
     }
     else //we have to keep the "badguy" icon local
-        modimagelist.Add(CTempIconLoader(L"BADGUY"));
+        modimagelist.Add(CTempIconLoader(L"ANALYZER1"));
     theApp.clientlist->UpdateModIconIndexes();
 }
 

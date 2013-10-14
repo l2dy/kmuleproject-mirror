@@ -1125,7 +1125,7 @@ public:
     {
         return m_incompletepartVer;
     }
-    bool	IsIncPartAvailable(const uint16 iPart) const;
+    bool	IsIncPartAvailable(const UINT iPart) const;
 //<<< WiZaRd::ICS [enkeyDEV]
 //>>> WiZaRd::AntiHideOS [netfinity]
 public:

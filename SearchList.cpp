@@ -670,7 +670,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse, UINT dwFro
                 if (uTrustValue > 0 && nPublishInfoTags > 0)
                     uTrustValue = uTrustValue / nPublishInfoTags;
                 parent->SetKadPublishInfo(((uDifferentNames & 0xFF) << 24) | ((uPublishersKnown & 0xFF) << 16) | ((uTrustValue & 0xFFFF) << 0));
-                // if all childs have the same AICH hash (or none), set the parent hash to it, otherwise clear it (see KademliaSearchKeyword)
+                // if all children have the same AICH hash (or none), set the parent hash to it, otherwise clear it (see KademliaSearchKeyword)
                 if (bHasMultipleAICHHashs || !bAICHHashValid)
                     parent->GetFileIdentifier().ClearAICHHash();
                 else if (bAICHHashValid)
@@ -1033,9 +1033,7 @@ void CSearchList::DoSpamRating(CSearchFile* pSearchFile, bool bIsClientFile, boo
     {
 #endif
         // 2-3 FileNames
-        // consider also filenames of childs / parents / silblings and take the highest rating
-
-
+        // consider also filenames of children / parents / siblings and take the highest rating
         UINT nHighestRating;
         if (pParent != NULL)
         {

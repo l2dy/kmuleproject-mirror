@@ -227,9 +227,10 @@ XXXXYYZZ:
 + added "About kMule" page to options with information and donation possibility [WiZaRd]
 + Feature request: added additional CA icons, depending on the CA status/score [WiZaRd]
  * angry pirate: very bad
- * black skull: bad
- * treasure chest: nice score (>1.0 - 2.0)
- * happy pirate: good score (> 2.0)
+ * black skull: bad (score < 1)
+ * closed treasure chest: unknown (score < 2)
+ * open treasure chest: good (score < 3.0)
+ * happy pirate: very good
 - removed SOCKS4(a) proxy support, no one uses them [Tuxman]
 ~ changed references in mdump from "eMule" to "kMule" [WiZaRd]
 + added "waiting" user column to shared files window [WiZaRd]

@@ -517,19 +517,15 @@ bool CClientUDPSocket::ProcessPacket(const BYTE* packet, UINT size, uint8 opcode
                 //anything to the extended info data as this will be taken care of in ProcessExtendedInfo()
                 //Update extended info.
                 if (sender->GetUDPVersion() > 3)
-                {
                     sender->ProcessExtendedInfo(&data_in, reqfile, true);
-                }
                 //Update our complete source counts.
                 else if (sender->GetUDPVersion() > 2)
                 {
-                    uint16 nCompleteCountLast= sender->GetUpCompleteSourcesCount();
+                    uint16 nCompleteCountLast = sender->GetUpCompleteSourcesCount();
                     uint16 nCompleteCountNew = data_in.ReadUInt16();
                     sender->SetUpCompleteSourcesCount(nCompleteCountNew);
                     if (nCompleteCountLast != nCompleteCountNew)
-                    {
                         reqfile->UpdatePartsInfo();
-                    }
                 }
                 CSafeMemFile data_out(128);
                 if (sender->GetUDPVersion() > 3)

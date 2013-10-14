@@ -195,23 +195,29 @@ BOOL CClientDetailPage::OnSetActive()
         GetDlgItem(IDC_ANTILEECH_LABEL)->SetWindowText(GetResString(IDS_ANTILEECH_LABEL));
 		if(client->GetAntiLeechData() == NULL)
 			buffer = GetResString(IDS_UNAVAILABLE);
-        else if(client->IsBadGuy() || client->GetAntiLeechData()->GetBadForThisSession() != 0)
-            buffer = client->GetAntiLeechData()->GetAntiLeechDataString();
         else
 		{
-#ifdef _DEBUG
-			float fCAScore = client->GetAntiLeechData()->GetScore();
-			if(fCAScore < AT_BASESCORE)
+			if(client->IsBadGuy() || client->GetAntiLeechData()->GetBadForThisSession() != 0)
+				buffer = client->GetAntiLeechData()->GetAntiLeechDataString();
+			else
 				buffer = GetResString(IDS_NO_BAD_BEHAVIOUR_DETECTED);
-			else if(fCAScore != AT_BASESCORE)
+#ifdef _DEBUG
+			if(client->GetAntiLeechData()->GetBadForThisSession() != 0)
+				buffer += L"\r\nVery bad guy!"; // very bad guy!
+			else
 			{
-				if(fCAScore < 2 * AT_BASESCORE)
-					buffer = "Nice score!"; // blue - nice score!
+				float fCAScore = client->GetAntiLeechData()->GetScore();
+				/*if(fCAScore < 0)
+					buffer += L"\r\nVery bad guy!"; // very bad guy!
+				else*/ if(fCAScore < AT_BASESCORE)
+					buffer += L"\r\nBad guy!"; // bad guy!
+				else if(fCAScore < 2 * AT_BASESCORE)
+					buffer += L"\r\nSuspect!";  // no important data
+				else if(fCAScore < 3 * AT_BASESCORE)
+					buffer += L"\r\nGood score!";  // good score!
 				else
-					buffer = "Good score!";  // green - good score!
+					buffer += L"\r\nVery good score!"; // very good score!
 			}
-#else
-			buffer = GetResString(IDS_NO_BAD_BEHAVIOUR_DETECTED);
 #endif
 		}
 		GetDlgItem(IDC_ANTILEECH_INFO)->SetWindowText(buffer);

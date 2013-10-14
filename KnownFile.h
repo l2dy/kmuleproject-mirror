@@ -190,7 +190,6 @@ public:
     UINT	m_tUtcLastModified;
 
     CStatisticFile statistic;
-    time_t m_nCompleteSourcesTime;
     uint16 m_nCompleteSourcesCount;
     uint16 m_nCompleteSourcesCountLo;
     uint16 m_nCompleteSourcesCountHi;
@@ -269,11 +268,6 @@ public:
 public:
     CString GetFeedBackString() const;
 //<<< WiZaRd::Upload Feedback
-//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-public:
-    virtual void	AddToPartsInfo(const CPartStatus* partstatus);
-    virtual void	RemoveFromPartsInfo(const CPartStatus* partstatus);
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 //>>> WiZaRd::Queued Count
 private:
 	UINT	m_uiQueuedCount;
@@ -290,5 +284,10 @@ private:
 	float	m_fLastHealthValue;
 //<<< WiZaRd::FileHealth
 protected:
-	void	UpdateCompleteSrcCount(const bool bPartFile, CArray<uint16, uint16>& count, const CArray<uint16/*, uint16*/>& availPartFrequency);
+	bool	m_bCompleteSrcUpdateNecessary;
+public:
+	void	ProcessFile();
+protected:
+	void	UpdateCompleteSrcCount();
+	void	GetCompleteSrcCount(CArray<uint16, uint16>& count);
 };

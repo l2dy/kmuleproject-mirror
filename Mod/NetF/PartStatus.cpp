@@ -438,7 +438,7 @@ CAICHStatusVector::~CAICHStatusVector()
 {
 	if(GetStatusFile())
 	{
-		GetStatusFile()->RemoveFromPartsInfo(this);
+		//GetStatusFile()->RemoveFromPartsInfo(this);
 		SetStatusFile(NULL);
 	}
 	delete[] m_chunks;
@@ -598,7 +598,7 @@ CCrumbStatusVector::~CCrumbStatusVector()
 {
 	if(GetStatusFile())
 	{
-		GetStatusFile()->RemoveFromPartsInfo(this);
+		//GetStatusFile()->RemoveFromPartsInfo(this);
 		SetStatusFile(NULL);
 	}
 	delete[] m_chunks;

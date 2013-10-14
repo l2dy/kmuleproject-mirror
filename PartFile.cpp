@@ -317,7 +317,7 @@ void CPartFile::Init()
     m_bLocalSrcReqQueued = false;
     memset(src_stats,0,sizeof(src_stats));
     memset(net_stats,0,sizeof(net_stats));
-    m_nCompleteSourcesTime = time(NULL);
+	m_bCompleteSrcUpdateNecessary = false;
     m_nCompleteSourcesCount = 0;
     m_nCompleteSourcesCountLo = 0;
     m_nCompleteSourcesCountHi = 0;
@@ -533,7 +533,7 @@ void CPartFile::CreatePartFile(UINT cat)
 
     m_SrcpartFrequency.SetSize(GetPartCount());
     m_SrcIncPartFrequency.SetSize(GetPartCount()); //>>> WiZaRd::ICS [enkeyDEV]
-    for (UINT i = 0; i < GetPartCount(); i++)
+    for (UINT i = 0; i < GetPartCount(); ++i)
     {
         m_SrcpartFrequency[i] = 0;
         m_SrcIncPartFrequency[i] = 0; //>>> WiZaRd::ICS [enkeyDEV]
@@ -1419,7 +1419,7 @@ EPartFileLoadResult CPartFile::LoadPartFile(LPCTSTR in_directory,LPCTSTR in_file
 
         m_SrcpartFrequency.SetSize(GetPartCount());
         m_SrcIncPartFrequency.SetSize(GetPartCount()); //>>> WiZaRd::ICS [enkeyDEV]
-        for (UINT i = 0; i < GetPartCount(); i++)
+        for (UINT i = 0; i < GetPartCount(); ++i)
         {
             m_SrcpartFrequency[i] = 0;
             m_SrcIncPartFrequency[i] = 0; //>>> WiZaRd::ICS [enkeyDEV]
@@ -3421,7 +3421,6 @@ void CPartFile::UpdatePartsInfo()
 
     // Cache part count
     UINT partcount = GetPartCount();
-    bool flag = (time(NULL) - m_nCompleteSourcesTime > 0);
 
     // Reset part counters
     if ((UINT)m_SrcpartFrequency.GetSize() < partcount)
@@ -3430,24 +3429,25 @@ void CPartFile::UpdatePartsInfo()
     if ((uint16)m_SrcIncPartFrequency.GetSize() < partcount)
         m_SrcIncPartFrequency.SetSize(partcount);
 //<<< WiZaRd::ICS [enkeyDEV]
-    for (UINT i = 0; i < partcount; i++)
+    for (UINT i = 0; i < partcount; ++i)
     {
         m_SrcpartFrequency[i] = 0;
         m_SrcIncPartFrequency[i] = 0; //>>> WiZaRd::ICS [enkeyDEV]
     }
 
-    CArray<uint16, uint16> count;
-    if (flag)
-        count.SetSize(0, srclist.GetSize());
     for (POSITION pos = srclist.GetHeadPosition(); pos != 0;)
     {
         CUpDownClient* cur_src = srclist.GetNext(pos);
-        if (cur_src->GetPartStatus())
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+		const CPartStatus* cur_status = cur_src->GetPartStatus();
+        if (cur_status != NULL && cur_src->GetPartCount() == partcount)
+		//if(cur_src->GetPartStatus() != NULL && cur_src->GetPartCount() == partcount)
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         {
 //>>> WiZaRd::AntiHideOS/WiZaRd::ICS
 //in general: the more common a part is, the less we will ask for it
 //general parts: we know they are available, default weight
-#define DEFAULT_WEIGHT	0x02	//official was 1
+#define DEFAULT_WEIGHT	0x01	//official was 1
 //a seen part gets lower priority because we *know* it exists but can't request it
 #define SEEN_WEIGHT		0x01
 //<<< WiZaRd::AntiHideOS/WiZaRd::ICS
@@ -3470,19 +3470,14 @@ void CPartFile::UpdatePartsInfo()
                     m_SrcpartFrequency[i] += SEEN_WEIGHT;
 //<<< WiZaRd::AntiHideOS [netfinity]
 //>>> WiZaRd::ICS [enkeyDEV]
-                else if (cur_src->IsIncPartAvailable((uint16)i))
+                else if (cur_src->IsIncPartAvailable(i))
                     m_SrcIncPartFrequency[i] += 1;
 //<<< WiZaRd::ICS [enkeyDEV]
-            }
-            if (flag)
-            {
-                count.Add(cur_src->GetUpCompleteSourcesCount());
             }
         }
     }
 
-    if (flag)
-		UpdateCompleteSrcCount(true, count, m_SrcpartFrequency);
+	m_bCompleteSrcUpdateNecessary = true;
 
     NewSrcIncPartsInfo(); //>>> WiZaRd::ICS [enkeyDEV]
     UpdateDisplayedInfo();
@@ -7315,97 +7310,6 @@ void	CPartFile::SetUseAutoHL(const bool b)
 }
 //<<< WiZaRd::AutoHL
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-void CPartFile::AddToPartsInfo(const CPartStatus* const partstatus)
-{
-    if (time(NULL) - m_nCompleteSourcesTime > 0)
-    {
-        CPartFile::UpdatePartsInfo();
-        return;
-    }
-
-    if (!IsPartFile())
-    {
-        CKnownFile::AddToPartsInfo(partstatus);
-        return;
-    }
-
-    if (partstatus != NULL && partstatus->GetSize() == this->GetFileSize())
-    {
-        if ((UINT)m_SrcpartFrequency.GetSize() < GetPartCount())
-        {
-            m_SrcpartFrequency.SetSize(GetPartCount());
-            for (UINT i = 0; i < GetPartCount(); i++)
-                m_SrcpartFrequency[i] = 0;
-        }
-
-        uint64	start = 0ULL;
-        uint64	stop = ~0ULL;
-        while (partstatus->FindFirstComplete(start, stop))
-        {
-            uint16	first, last;
-            first = static_cast<uint16>((start + (PARTSIZE - 1ULL)) / PARTSIZE);
-            if (stop == GetFileSize() - 1ULL)
-                last = static_cast<uint16>(stop / PARTSIZE + 1ULL);
-            else
-                last = static_cast<uint16>((stop + 1ULL) / PARTSIZE);
-            for (UINT i = first; i < last; i++)
-            {
-                m_SrcpartFrequency[i] += 1;
-            }
-            start = stop + 1;
-            stop = ~0ULL;
-        }
-    }
-
-    UpdateDisplayedInfo();
-}
-
-void CPartFile::RemoveFromPartsInfo(const CPartStatus* const partstatus)
-{
-    if (time(NULL) - m_nCompleteSourcesTime > 0)
-    {
-        CPartFile::UpdatePartsInfo();
-        return;
-    }
-
-    if (!IsPartFile())
-    {
-        CKnownFile::RemoveFromPartsInfo(partstatus);
-        return;
-    }
-
-    if ((UINT)m_SrcpartFrequency.GetSize() < GetPartCount())
-    {
-        m_SrcpartFrequency.SetSize(GetPartCount());
-        for (UINT i = 0; i < GetPartCount(); i++)
-            m_SrcpartFrequency[i] = 0;
-        return;
-    }
-
-    if (partstatus != NULL && partstatus->GetSize() == this->GetFileSize())
-    {
-        uint64	start = 0ULL;
-        uint64	stop = ~0ULL;
-        while (partstatus->FindFirstComplete(start, stop))
-        {
-            uint16	first, last;
-            first = static_cast<uint16>((start + (PARTSIZE - 1ULL)) / PARTSIZE);
-            if (stop == GetFileSize() - 1ULL)
-                last = static_cast<uint16>(stop / PARTSIZE + 1ULL);
-            else
-                last = static_cast<uint16>((stop + 1ULL) / PARTSIZE);
-            for (UINT i = first; i < last; i++)
-            {
-                m_SrcpartFrequency[i] -= 1;
-            }
-            start = stop + 1;
-            stop = ~0ULL;
-        }
-    }
-
-    UpdateDisplayedInfo();
-}
-
 bool CPartFileStatus::FindFirstComplete(uint64& start, uint64& stop) const
 {
     uint64	begin = start;
@@ -7535,4 +7439,20 @@ UINT CPartFile::GetCompletePartCount() const
 	}
 
 	return count;
+}
+
+void CPartFile::GetCompleteSrcCount(CArray<uint16, uint16>& count)
+{
+/*
+	// WiZaRd: while thinking about this... we don't need the partfile info, do we?
+	// It's only valid for the same file as requested but in that case, we will get that info from CKnownFile?
+	for (POSITION pos = srclist.GetHeadPosition(); pos != 0;)
+	{
+		CUpDownClient* cur_src = srclist.GetNext(pos);
+		if (cur_src->GetUpCompleteSourcesCount() != _UI16_MAX	//>>> WiZaRd::Use client info only if sent!
+			&& cur_src->GetUploadFileID()			// and only if a file was requested (which will use the complete src count
+			&& md4cmp(cur_src->GetUploadFileID(), GetFileHash()) == 0)	// and only if it's the SAME file!
+			count.Add(cur_src->GetUpCompleteSourcesCount());
+	}
+*/
 }

@@ -88,6 +88,9 @@ void CQueueListCtrl::Init()
     InsertColumn(8, GetResString(IDS_BANNED),		LVCFMT_LEFT,  60);
     InsertColumn(9, GetResString(IDS_UPSTATUS),		LVCFMT_LEFT, DFLT_PARTSTATUS_COL_WIDTH);
     InsertColumn(10, GetResString(IDS_CD_CSOFT),	LVCFMT_LEFT, DFLT_CLIENTSOFT_COL_WIDTH);
+#ifdef _DEBUG
+	InsertColumn(11, GetResString(IDS_COMPLSOURCES),LVCFMT_LEFT,   70);
+#endif
 
     SetAllIcons();
     Localize();
@@ -146,6 +149,12 @@ void CQueueListCtrl::Localize()
     strRes = GetResString(IDS_CD_CSOFT);
     hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
     pHeaderCtrl->SetItem(10, &hdi);
+
+#ifdef _DEBUG
+	strRes = GetResString(IDS_COMPLSOURCES);
+	hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
+	pHeaderCtrl->SetItem(11, &hdi);
+#endif
 }
 
 void CQueueListCtrl::OnSysColorChange()
@@ -345,6 +354,15 @@ void CQueueListCtrl::GetItemDisplayText(const CUpDownClient *client, int iSubIte
     case 10:
         _tcsncpy(pszText, client->DbgGetFullClientSoftVer(), cchTextMax);
         break;
+
+#ifdef _DEBUG
+	case 11:
+		if(client->GetUpCompleteSourcesCount() != _UI16_MAX)
+			_sntprintf(pszText, cchTextMax, L"%u", client->GetUpCompleteSourcesCount());
+		else
+			_tcsncpy(pszText, L"-", cchTextMax);
+		break;
+#endif
     }
     pszText[cchTextMax - 1] = L'\0';
 }
@@ -511,6 +529,14 @@ int CQueueListCtrl::SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
         if (iResult == 0)
             iResult = CompareLocaleStringNoCase(item1->DbgGetFullClientSoftVer(), item2->DbgGetFullClientSoftVer());
         break;
+
+#ifdef _DEBUG
+	case 11:
+		iResult = (item1->GetUpCompleteSourcesCount() != _UI16_MAX) - (item2->GetUpCompleteSourcesCount() != _UI16_MAX);
+		if(iResult == 0)
+			iResult = CompareUnsigned(item1->GetUpCompleteSourcesCount(), item2->GetUpCompleteSourcesCount());
+		break;
+#endif
     }
 
     if (lParamSort >= 100)

@@ -4947,10 +4947,11 @@ void	FillClientIconImageList(CImageList& imageList)
     imageList.Add(CTempIconLoader(L"ClientkMule"));					//15
     imageList.Add(CTempIconLoader(L"ClientkMulePlus"));				//16
     imageList.Add(CTempIconLoader(L"Server"));						//17
-    imageList.Add(CTempIconLoader(L"BADGUY"));						//18
-	imageList.Add(CTempIconLoader(L"BADGUYRED"));					//19
-	imageList.Add(CTempIconLoader(L"BADGUYBLUE"));					//20
-	imageList.Add(CTempIconLoader(L"BADGUYGREEN"));					//21
+    imageList.Add(CTempIconLoader(L"ANALYZER0"));					//18
+	imageList.Add(CTempIconLoader(L"ANALYZER1"));					//19
+	imageList.Add(CTempIconLoader(L"ANALYZER2"));					//20
+	imageList.Add(CTempIconLoader(L"ANALYZER3"));					//21
+	imageList.Add(CTempIconLoader(L"ANALYZER4"));					//22
 }
 
 int	GetClientImageIndex(const bool bFriend, const UINT nClientVersion, const bool bPlus, const bool bExt)

@@ -591,8 +591,6 @@ void CUpDownClient::ProcessFileInfo(CSafeMemFile* data, CPartFile* file)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-//         if (m_pPartStatus != NULL)
-//             file->RemoveFromPartsInfo(m_pPartStatus);
         delete m_pPartStatus;
         m_pPartStatus = NULL; // In case CAICHStatusVector constructor fails
         m_pPartStatus = new CAICHStatusVector(file);
@@ -642,11 +640,7 @@ void CUpDownClient::ProcessFileInfo(CSafeMemFile* data, CPartFile* file)
             SendHashSetRequest();
         else
             SendStartupLoadReq();
-//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-        if (m_pPartStatus != NULL)
-            reqfile->AddToPartsInfo(m_pPartStatus);
-        //reqfile->UpdatePartsInfo();
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+        reqfile->UpdatePartsInfo();
     }
 }
 
@@ -659,8 +653,6 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPart
         throw GetResString(IDS_ERR_WRONGFILEID) + _T(" (ProcessFileStatus; reqfile!=file)");
     }
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-//     if (m_pPartStatus != NULL)
-//         reqfile->RemoveFromPartsInfo(m_pPartStatus);
     delete m_pPartStatus;
     m_pPartStatus = NULL; // In case we fail to create the part status object
     m_pPartStatus = CPartStatus::CreatePartStatus(data, reqfile);
@@ -678,15 +670,9 @@ bool CUpDownClient::ProcessDownloadFileStatus(const bool bUDPPacket, CPartFile* 
 	bAllowCloning = bAllowCloning && !md4cmp(GetUploadFileID(), file->GetFileHash());
     if(bAllowCloning && (m_pUpPartStatus == NULL || (m_pPartStatus->GetCompleted() >= m_pUpPartStatus->GetCompleted())))
     {
-//         if (m_pUpPartStatus != NULL)
-//             file->RemoveFromPartsInfo(m_pUpPartStatus);
-
         delete m_pUpPartStatus;
         m_pUpPartStatus = NULL;
         m_pUpPartStatus = m_pPartStatus->Clone();
-
-
-		file->AddToPartsInfo(m_pUpPartStatus);
     }
 
     const UINT m_nPartCount = GetPartCount();
@@ -839,11 +825,8 @@ bool CUpDownClient::ProcessDownloadFileStatus(const bool bUDPPacket, CPartFile* 
         else
             SetDownloadState(DS_ONQUEUE);
     }
+    reqfile->UpdatePartsInfo();
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-    if (m_pPartStatus != NULL)
-        reqfile->AddToPartsInfo(m_pPartStatus);
-    //reqfile->UpdatePartsInfo();
-
 	if(bAllowCloning)
 		ProcessUploadFileStatus(bUDPPacket, file, false);
 	return true;
@@ -1021,8 +1004,6 @@ void CUpDownClient::SetDownloadState(EDownloadState nNewState, LPCTSTR pszReason
             if (nNewState == DS_NONE)
             {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-// 				if(reqfile && m_pPartStatus)
-// 					reqfile->RemoveFromPartsInfo(m_pPartStatus);
                 delete m_pPartStatus;
                 m_pPartStatus = NULL;
                 //delete[] m_abyPartStatus;
@@ -1098,7 +1079,7 @@ void CUpDownClient::ProcessHashSet(const uchar* packet, UINT size, bool bFileIde
             reqfile->SetAICHHashSetNeeded(true);
         }
         else if (m_fHashsetRequestingAICH)
-            DebugLog(_T("Received valid AICH Part Hashset form %s, file: %s"), DbgGetClientInfo(), reqfile->GetFileName());
+            DebugLog(_T("Received valid AICH Part Hashset from %s, file: %s"), DbgGetClientInfo(), reqfile->GetFileName());
         m_fHashsetRequestingMD4 = 0;
         m_fHashsetRequestingAICH = 0;
 
@@ -2487,7 +2468,7 @@ bool CUpDownClient::DoSwap(CPartFile* SwapTo, bool bRemoveCompletely, LPCTSTR re
     SetDownloadState(DS_NONE);
     CPartFile* pOldRequestFile = reqfile;
     SetRequestFile(SwapTo);
-    //pOldRequestFile->UpdatePartsInfo(); //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+    pOldRequestFile->UpdatePartsInfo();
     pOldRequestFile->UpdateAvailablePartsCount();
 
     SwapTo->srclist.AddTail(this);
@@ -3038,7 +3019,7 @@ UINT	CUpDownClient::GetPartCount() const
 */
 bool	CUpDownClient::IsPartAvailable(UINT iPart) const
 {
-    return ((m_pPartStatus && iPart < m_pPartStatus->GetPartCount()) ? m_pPartStatus->IsCompletePart(iPart) : false);
+    return m_bCompleteSource || ((m_pPartStatus && iPart < m_pPartStatus->GetPartCount()) ? m_pPartStatus->IsCompletePart(iPart) : false);
 }
 
 const CPartStatus*	CUpDownClient::GetPartStatus() const
@@ -3114,7 +3095,7 @@ void CUpDownClient::ProcessFileIncStatus(CSafeMemFile* data, const UINT size, co
     reqfile->NewSrcIncPartsInfo();
 }
 
-bool CUpDownClient::IsIncPartAvailable(const uint16 iPart) const
+bool CUpDownClient::IsIncPartAvailable(const UINT iPart) const
 {
 //>>> WiZaRd::Optimization
     if (IsCompleteSource())
@@ -3164,13 +3145,10 @@ void CUpDownClient::ProcessCrumbComplete(CSafeMemFile* data)
 
     if(pPartFile && pPartFile == reqfile && m_pPartStatus != NULL)
 	{
-		reqfile->RemoveFromPartsInfo(m_pPartStatus);
         m_pPartStatus->SetCrumb(crumbIndex);
 
 		UpdateDisplayedInfo(false);
 		reqfile->UpdateAvailablePartsCount();
-
-		reqfile->AddToPartsInfo(m_pPartStatus);
 
 		// TODO: Test and check if we exited NNP state
 	}

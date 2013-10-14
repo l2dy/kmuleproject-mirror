@@ -69,11 +69,11 @@ public:
 		return m_MedianValues;
 	}
 
-private:
 	void	SortVals()
 	{
 		sort(m_MedianValues.begin(), m_MedianValues.end());
 	}
 
+private:
 	std::vector<T>	m_MedianValues;
 };
