@@ -282,7 +282,7 @@ void CCorruptionBlackBox::VerifiedData(uint64 nStartPos, uint64 nEndPos)
     #else
     	UINT nClients = 0;
     #endif
-    	AddDebugLogLine(DLP_DEFAULT, false, _T("Found and marked %u recorded bytes of %u as verified in the CorruptionBlackBox records, %u(%u) records found, %u different clients"), nDbgVerifiedBytes, (nEndPos-nStartPos)+1, m_aaRecords[nPart].GetCount(), nDbgOldEntries, nClients);*/
+    	AddDebugLogLine(DLP_DEFAULT, false, L"Found and marked %s recorded bytes of %s as verified in the CorruptionBlackBox records, %u(%u) records found, %u different clients", CastItoXBytes(nDbgVerifiedBytes), CastItoXBytes((nEndPos-nStartPos)+1), m_aaRecords[nPart].GetCount(), nDbgOldEntries, nClients);*/
 }
 
 
@@ -355,7 +355,7 @@ void CCorruptionBlackBox::CorruptedData(uint64 nStartPos, uint64 nEndPos)
         }
     }
 	if(nDbgVerifiedBytes != 0)
-		AddDebugLogLine(DLP_HIGH, false, L"Found and marked %I64u recorded bytes of %I64u as corrupted in the CorruptionBlackBox records", nDbgVerifiedBytes, (nEndPos-nStartPos)+1);
+		AddDebugLogLine(DLP_HIGH, false, L"Found and marked %s recorded bytes of %s as corrupted in the CorruptionBlackBox records", CastItoXBytes(nDbgVerifiedBytes), CastItoXBytes((nEndPos-nStartPos)+1));
 }
 
 void CCorruptionBlackBox::EvaluateData(uint16 nPart)
