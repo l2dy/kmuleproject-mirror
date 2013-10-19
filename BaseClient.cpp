@@ -4143,11 +4143,11 @@ int CUpDownClient::GetAnalyzerIconIndex() const
 			float fCAScore = pAntiLeechData->GetScore();
 			/*if(fCAScore < 0)
 				ret = 0; // very bad guy!
-			else*/ if(fCAScore < AT_BASESCORE)
+			else*/ if(fCAScore < 0.5)
 				ret = 1; // bad guy!
-			else if(fCAScore < 2 * AT_BASESCORE)
+			else if(fCAScore < 1.3)
 				ret = 2; // no important data
-			else if(fCAScore < 3 * AT_BASESCORE)
+			else if(fCAScore < 3.0)
 				ret = 3; // good score!
 			else
 				ret = 4; // very good score!

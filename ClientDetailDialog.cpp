@@ -198,9 +198,7 @@ BOOL CClientDetailPage::OnSetActive()
         else
 		{
 			if(client->IsBadGuy() || client->GetAntiLeechData()->GetBadForThisSession() != 0)
-				buffer = client->GetAntiLeechData()->GetAntiLeechDataString();
-			else
-				buffer = GetResString(IDS_NO_BAD_BEHAVIOUR_DETECTED);
+				buffer = client->GetAntiLeechData()->GetAntiLeechDataString();			
 #ifdef _DEBUG
 			if(client->GetAntiLeechData()->GetBadForThisSession() != 0)
 				buffer += L"\r\nVery bad guy!"; // very bad guy!
@@ -209,15 +207,18 @@ BOOL CClientDetailPage::OnSetActive()
 				float fCAScore = client->GetAntiLeechData()->GetScore();
 				/*if(fCAScore < 0)
 					buffer += L"\r\nVery bad guy!"; // very bad guy!
-				else*/ if(fCAScore < AT_BASESCORE)
+				else*/ if(fCAScore < 0.5)
 					buffer += L"\r\nBad guy!"; // bad guy!
-				else if(fCAScore < 2 * AT_BASESCORE)
-					buffer += L"\r\nSuspect!";  // no important data
-				else if(fCAScore < 3 * AT_BASESCORE)
+				else if(fCAScore < 1.3)
+					buffer.AppendFormat(L"\r\n%s!", GetResString(IDS_NO_BAD_BEHAVIOUR_DETECTED));  // no important data
+				else if(fCAScore < 3.0)
 					buffer += L"\r\nGood score!";  // good score!
 				else
 					buffer += L"\r\nVery good score!"; // very good score!
 			}
+#else
+			else
+				buffer = GetResString(IDS_NO_BAD_BEHAVIOUR_DETECTED);
 #endif
 		}
 		GetDlgItem(IDC_ANTILEECH_INFO)->SetWindowText(buffer);
