@@ -238,7 +238,7 @@ CemuleDlg::CemuleDlg(CWnd* pParent /*=NULL*/)
     m_iMsgBlinkState = false;
     m_icoSysTrayConnected = NULL;
     m_icoSysTrayDisconnected = NULL;
-    m_icoSysTrayLowID = NULL;
+    m_icoSysTrayFirewalled = NULL;
     usericon = NULL;
     m_icoSysTrayCurrent = NULL;
     m_hTimer = 0;
@@ -293,7 +293,7 @@ CemuleDlg::~CemuleDlg()
     }
     if (m_icoSysTrayConnected) VERIFY(::DestroyIcon(m_icoSysTrayConnected));
     if (m_icoSysTrayDisconnected) VERIFY(::DestroyIcon(m_icoSysTrayDisconnected));
-    if (m_icoSysTrayLowID) VERIFY(::DestroyIcon(m_icoSysTrayLowID));
+    if (m_icoSysTrayFirewalled) VERIFY(::DestroyIcon(m_icoSysTrayFirewalled));
     if (usericon) VERIFY(::DestroyIcon(usericon));
 
 #ifdef HAVE_WIN7_SDK_H
@@ -2165,7 +2165,7 @@ void CemuleDlg::UpdateTrayIcon(int iPercent)
         if (theApp.IsConnected())
         {
             if (theApp.IsFirewalled())
-                m_TrayIcon.Init(m_icoSysTrayLowID, 100, 1, 1, 16, 16, thePrefs.GetStatsColor(11));
+                m_TrayIcon.Init(m_icoSysTrayFirewalled, 100, 1, 1, 16, 16, thePrefs.GetStatsColor(11));
             else
                 m_TrayIcon.Init(m_icoSysTrayConnected, 100, 1, 1, 16, 16, thePrefs.GetStatsColor(11));
         }
@@ -2324,7 +2324,7 @@ void CemuleDlg::SetAllIcons()
         VERIFY(::DestroyIcon(m_hIcon));
     // NOTE: the application icon name is prefixed with "AAA" to make sure it's alphabetically sorted by the
     // resource compiler as the 1st icon in the resource table!
-    m_hIcon = AfxGetApp()->LoadIcon(_T("AAAEMULEAPP"));
+    m_hIcon = AfxGetApp()->LoadIcon(L"AAAEMULEAPP");
     SetIcon(m_hIcon, TRUE);
     // this scales the 32x32 icon down to 16x16, does not look nice at least under WinXP
     //SetIcon(m_hIcon, FALSE);
@@ -2335,9 +2335,9 @@ void CemuleDlg::SetAllIcons()
         if (connicons[i])
             VERIFY(::DestroyIcon(connicons[i]));
     }
-    connicons[0] = theApp.LoadIcon(_T("ConnectedNotNot"), 16, 16);
-    connicons[1] = theApp.LoadIcon(_T("ConnectedLowLow"), 16, 16);
-    connicons[2] = theApp.LoadIcon(_T("ConnectedHighHigh"), 16, 16);
+    connicons[0] = theApp.LoadIcon(L"ConnectedNotNot", 16, 16);
+    connicons[1] = theApp.LoadIcon(L"ConnectedLowLow", 16, 16);
+    connicons[2] = theApp.LoadIcon(L"ConnectedHighHigh", 16, 16);
     ShowConnectionStateIcon();
 
     // transfer state
@@ -2346,24 +2346,24 @@ void CemuleDlg::SetAllIcons()
         if (transicons[i])
             VERIFY(::DestroyIcon(transicons[i]));
     }
-    transicons[0] = theApp.LoadIcon(_T("UP0DOWN0"), 16, 16);
-    transicons[1] = theApp.LoadIcon(_T("UP0DOWN1"), 16, 16);
-    transicons[2] = theApp.LoadIcon(_T("UP1DOWN0"), 16, 16);
-    transicons[3] = theApp.LoadIcon(_T("UP1DOWN1"), 16, 16);
+    transicons[0] = theApp.LoadIcon(L"UP0DOWN0", 16, 16);
+    transicons[1] = theApp.LoadIcon(L"UP0DOWN1", 16, 16);
+    transicons[2] = theApp.LoadIcon(L"UP1DOWN0", 16, 16);
+    transicons[3] = theApp.LoadIcon(L"UP1DOWN1", 16, 16);
     ShowTransferStateIcon();
 
     // users state
     if (usericon) VERIFY(::DestroyIcon(usericon));
-    usericon = theApp.LoadIcon(_T("StatsClients"), 16, 16);
+    usericon = theApp.LoadIcon(L"StatsClients", 16, 16);
     ShowUserStateIcon();
 
     // traybar icons
     if (m_icoSysTrayConnected) VERIFY(::DestroyIcon(m_icoSysTrayConnected));
     if (m_icoSysTrayDisconnected) VERIFY(::DestroyIcon(m_icoSysTrayDisconnected));
-    if (m_icoSysTrayLowID) VERIFY(::DestroyIcon(m_icoSysTrayLowID));
-    m_icoSysTrayConnected = theApp.LoadIcon(_T("TrayConnected"), 16, 16);
-    m_icoSysTrayDisconnected = theApp.LoadIcon(_T("TrayNotConnected"), 16, 16);
-    m_icoSysTrayLowID = theApp.LoadIcon(_T("TrayLowID"), 16, 16);
+    if (m_icoSysTrayFirewalled) VERIFY(::DestroyIcon(m_icoSysTrayFirewalled));
+    m_icoSysTrayConnected = theApp.LoadIcon(L"TrayConnected", 16, 16);
+    m_icoSysTrayDisconnected = theApp.LoadIcon(L"TrayNotConnected", 16, 16);
+    m_icoSysTrayFirewalled = theApp.LoadIcon(L"TrayFirewalled", 16, 16);
     ShowTransferRate(true);
 
     for (int i = 0; i < _countof(imicons); ++i)
@@ -2372,8 +2372,8 @@ void CemuleDlg::SetAllIcons()
             VERIFY(::DestroyIcon(imicons[i]));
     }
     imicons[0] = NULL;
-    imicons[1] = theApp.LoadIcon(_T("Message"), 16, 16);
-    imicons[2] = theApp.LoadIcon(_T("MessagePending"), 16, 16);
+    imicons[1] = theApp.LoadIcon(L"Message", 16, 16);
+    imicons[2] = theApp.LoadIcon(L"MessagePending", 16, 16);
     ShowMessageState(m_iMsgIcon);
 }
 

@@ -180,7 +180,7 @@ protected:
     CMeterIcon		m_TrayIcon;
     HICON			m_icoSysTrayConnected;		// do not use those icons for anything else than the traybar!!!
     HICON			m_icoSysTrayDisconnected;	// do not use those icons for anything else than the traybar!!!
-    HICON			m_icoSysTrayLowID;	// do not use those icons for anything else than the traybar!!!
+    HICON			m_icoSysTrayFirewalled;		// do not use those icons for anything else than the traybar!!!
     int				m_iMsgIcon;
     UINT			m_uLastSysTrayIconCookie;
     UINT			m_uUpDatarate;
