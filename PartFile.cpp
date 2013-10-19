@@ -3337,11 +3337,14 @@ void CPartFile::AddSources(CSafeMemFile* sources, UINT serverip, uint16 serverpo
 #ifdef _DEBUG
                 if (thePrefs.GetLogBannedClients())
                 {
+					CString strDbgClientInfo;					
 //>>> WiZaRd::IPv6 [Xanatos]
 					CUpDownClient* pClient = theApp.clientlist->FindClientByIP(_CIPAddress(_ntohl(userid)));
                     //CUpDownClient* pClient = theApp.clientlist->FindClientByIP(userid);
 //<<< WiZaRd::IPv6 [Xanatos]
-                    AddDebugLogLine(false, _T("Ignored source (IP=%s) received from server - banned client %s"), ipstr(userid), pClient->DbgGetClientInfo());
+					if (pClient)
+						strDbgClientInfo.Format(L" - banned client %s", pClient->DbgGetClientInfo());
+                    AddDebugLogLine(false, L"Ignored source (IP=%s) received from server%s", ipstr(userid), strDbgClientInfo);
                 }
 #endif
                 continue;
@@ -5012,7 +5015,7 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
         // We only check if the version is known by us and do a quick sanitize check on known version
         // other then SX1, the packet will be ignored if any error appears, since it can't be a "misunderstanding" anymore
 //>>> WiZaRd::ExtendedXS [Xanatos]
-		if (uClientSXVersion > (pClient->SupportsExtendedSourceExchange() ? SOURCEEXCHANGEEXT_VERSION : SOURCEEXCHANGE2_VERSION) || uClientSXVersion == 0)
+		if ((pClient && uClientSXVersion > (pClient->SupportsExtendedSourceExchange() ? SOURCEEXCHANGEEXT_VERSION : SOURCEEXCHANGE2_VERSION)) || uClientSXVersion == 0)
 		//if (uClientSXVersion > SOURCEEXCHANGE2_VERSION || uClientSXVersion == 0)
 //<<< WiZaRd::ExtendedXS [Xanatos]        
         {
@@ -5030,7 +5033,7 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
         nCount = sources->ReadUInt16();
 		uDataSize = (UINT)(sources->GetLength() - sources->GetPosition());
 //>>> WiZaRd::ExtendedXS [Xanatos]
-		if(pClient->SupportsExtendedSourceExchange())
+		if(pClient && pClient->SupportsExtendedSourceExchange())
 			uPacketSXVersion = 4;
 		else // Note: Since the extended Format has variable length entries such a simple integrity test can not be performed
 //<<< WiZaRd::ExtendedXS [Xanatos]
@@ -5085,7 +5088,7 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
 		uint16 nBuddyPort = 0;
 		byte BuddyID[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		bool bError = false;
-		if(pClient->SupportsExtendedSourceExchange())
+		if(pClient && pClient->SupportsExtendedSourceExchange())
 		{
 			uint8 tagcount = sources->ReadUInt8();
 			for (uint8 i = 0; i < tagcount; i++)
@@ -5190,7 +5193,7 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
                 if (theApp.ipfilter->IsFiltered(dwIDED2K))
                 {
                     if (thePrefs.GetLogFilteredIPs())
-                        AddDebugLogLine(false, _T("Ignored source (IP=%s) received via source exchange - IP filter (%s)"), ipstr(dwIDED2K), theApp.ipfilter->GetLastHit());
+                        AddDebugLogLine(false, L"Ignored source (IP=%s) received via source exchange - IP filter (%s)", ipstr(dwIDED2K), theApp.ipfilter->GetLastHit());
                     continue;
                 }
                 if (theApp.clientlist->IsBannedClient(dwIDED2K))
@@ -5198,11 +5201,14 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
 #ifdef _DEBUG
                     if (thePrefs.GetLogBannedClients())
                     {
+						CString strDbgClientInfo;
 //>>> WiZaRd::IPv6 [Xanatos]
 						CUpDownClient* pClient = theApp.clientlist->FindClientByIP(_CIPAddress(_ntohl(dwIDED2K)));
                         //CUpDownClient* pClient = theApp.clientlist->FindClientByIP(dwIDED2K);
 //<<< WiZaRd::IPv6 [Xanatos]
-                        AddDebugLogLine(false, _T("Ignored source (IP=%s) received via source exchange - banned client %s"), ipstr(dwIDED2K), pClient->DbgGetClientInfo());
+						if (pClient)
+							strDbgClientInfo.Format(L" - banned client %s", pClient->DbgGetClientInfo());
+                        AddDebugLogLine(false, L"Ignored source (IP=%s) received via source exchange%s", ipstr(dwIDED2K), strDbgClientInfo);
                     }
 #endif
                     continue;
@@ -5232,7 +5238,7 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
                 if (theApp.ipfilter->IsFiltered(dwID))
                 {
                     if (thePrefs.GetLogFilteredIPs())
-                        AddDebugLogLine(false, _T("Ignored source (IP=%s) received via source exchange - IP filter (%s)"), ipstr(dwID), theApp.ipfilter->GetLastHit());
+                        AddDebugLogLine(false, L"Ignored source (IP=%s) received via source exchange - IP filter (%s)", ipstr(dwID), theApp.ipfilter->GetLastHit());
                     continue;
                 }
                 if (theApp.clientlist->IsBannedClient(dwID))
@@ -5240,11 +5246,14 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
 #ifdef _DEBUG
                     if (thePrefs.GetLogBannedClients())
                     {
+						CString strDbgClientInfo;
 //>>> WiZaRd::IPv6 [Xanatos]
 						CUpDownClient* pClient = theApp.clientlist->FindClientByIP(_CIPAddress(_ntohl(dwID)));
                         //CUpDownClient* pClient = theApp.clientlist->FindClientByIP(dwID);
 //<<< WiZaRd::IPv6 [Xanatos]
-                        AddDebugLogLine(false, _T("Ignored source (IP=%s) received via source exchange - banned client %s"), ipstr(dwID), pClient->DbgGetClientInfo());
+						if (pClient)
+							strDbgClientInfo.Format(L" - banned client %s", pClient->DbgGetClientInfo());
+                        AddDebugLogLine(false, L"Ignored source (IP=%s) received via source exchange%s", ipstr(dwID), strDbgClientInfo);
                     }
 #endif
                     continue;
@@ -5268,7 +5277,7 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
             else
                 newsource = new CUpDownClient(this, nPort, dwID, dwServerIP, nServerPort, true);
 //>>> WiZaRd::ExtendedXS [Xanatos]
-			if(pClient->SupportsExtendedSourceExchange())
+			if(pClient && pClient->SupportsExtendedSourceExchange())
 			{
 //>>> WiZaRd::NatTraversal [Xanatos]
 //>>> WiZaRd::IPv6 [Xanatos]

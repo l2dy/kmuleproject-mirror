@@ -2421,8 +2421,8 @@ bool CKnownFile::WritePartStatus(CSafeMemFile* file, CUpDownClient* client, cons
                         client->m_abyUpPartStatusHidden[lastPart] = 0;  //not hidden anymore
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 					// only mark COMPLETE parts as hidden
-					else if(!bPartfile || (pThis->GetPublishedPartStatus() && pThis->GetPublishedPartStatus()->IsComplete((uint64) cur_part * PARTSIZE + subChunk * partSize, (uint64) cur_part * PARTSIZE + (subChunk + 1) * partSize - 1)))
-					//else if(!bPartfile || pThis->IsComplete(done*PARTSIZE, (done + 1)*PARTSIZE - 1, true))
+					else if(!bPartfile || (pThis->GetPublishedPartStatus() && pThis->GetPublishedPartStatus()->IsComplete((uint64) lastPart * PARTSIZE + subChunk * partSize, (uint64) lastPart * PARTSIZE + (subChunk + 1) * partSize - 1)))
+					//else if(!bPartfile || pThis->IsComplete(lastPart*PARTSIZE, (lastPart + 1)*PARTSIZE - 1, true))
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 						client->m_abyUpPartStatusHidden[lastPart] = toSet;
                 }
