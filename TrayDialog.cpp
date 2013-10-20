@@ -168,7 +168,10 @@ void CTrayDialog::TraySetToolTip(LPCTSTR lpszToolTip)
 BOOL CTrayDialog::TrayShow()
 {
     BOOL bSuccess = FALSE;
-    if (!m_bTrayIconVisible)
+//>>> WiZaRd::FiX?
+	// Sometimes m_bTrayIconVisible is true but the icon isn't shown? There's no harm in trying to add the icon again as far as I know...
+//	if (!m_bTrayIconVisible) 
+//<<< WiZaRd::FiX?
     {
         bSuccess = Shell_NotifyIcon(NIM_ADD, &m_nidIconData);
         if (bSuccess)
@@ -180,7 +183,10 @@ BOOL CTrayDialog::TrayShow()
 BOOL CTrayDialog::TrayHide()
 {
     BOOL bSuccess = FALSE;
-    if (m_bTrayIconVisible)
+//>>> WiZaRd::FiX?
+	// Sometimes m_bTrayIconVisible is true but the icon isn't shown? There's no harm in trying to delete the icon again as far as I know...
+//	if (!m_bTrayIconVisible) 
+//<<< WiZaRd::FiX?
     {
         bSuccess = Shell_NotifyIcon(NIM_DELETE, &m_nidIconData);
         if (bSuccess)
