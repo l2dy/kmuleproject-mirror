@@ -48,9 +48,11 @@ void CUpDownClient::SendModInfoPacket() const
     tagList.AddTail(new CTag(CT_MOD_VERSION, MOD_VERSION));
 	
 	// Misc mod community features	
+	const UINT uSupportsUPS			= 1; //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
 	const UINT uSupportsIPv6		= 1; //>>> WiZaRd::IPv6 [Xanatos]
-	const UINT uSupportsExtXS		= 1; //>>> WiZaRd::ExtendedXS [Xanatos]
+	const UINT uSupportsExtXS		= 1; //>>> WiZaRd::ExtendedXS [Xanatos]	
 	tagList.AddTail(new CTag(CT_EMULE_MISCOPTIONS1,
+		(uSupportsUPS			<<  2) |	//>>> WiZaRd::Unsolicited PartStatus [Netfinity]
 		(uSupportsIPv6			<<  1) |	//>>> WiZaRd::IPv6 [Xanatos]
 		(uSupportsExtXS			<<  0)		//>>> WiZaRd::ExtendedXS [Xanatos]
 		));
@@ -116,15 +118,17 @@ void CUpDownClient::ProcessModInfoPacket(const uchar* pachPacket, const UINT nSi
 
 			case CT_EMULE_MISCOPTIONS1:
 			{
+				//  1 UPS support
 				//	1 IPv6 support
 				//	1 ExtendedXS
 				if (temptag.IsInt())
 				{
+					m_fSupportsUnsolicitedPartStatus = (temptag.GetInt() >>  2) & 0x01; //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
 					m_fSupportsIPv6			= (temptag.GetInt() >>  1) & 0x01; //>>> WiZaRd::IPv6 [Xanatos]
 					m_fSupportsExtendedXS	= (temptag.GetInt() >>  0) & 0x01; //>>> WiZaRd::ExtendedXS [Xanatos]
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
 					if (bDbgInfo)
-						m_strModInfo.AppendFormat(L"\n  IPv6=%u  ExtendedXS=%u", m_fSupportsIPv6, m_fSupportsExtendedXS);
+						m_strModInfo.AppendFormat(L"\n  UPS=%u  IPv6=%u  ExtendedXS=%u", m_fSupportsUnsolicitedPartStatus, m_fSupportsIPv6, m_fSupportsExtendedXS);
 #endif
 				}
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)

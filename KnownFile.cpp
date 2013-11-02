@@ -2452,48 +2452,83 @@ bool CKnownFile::WritePartStatus(CSafeMemFile* file, CUpDownClient* client, cons
 //m_SOTNAvailPartFrequency counts up how often a chunk is visible to remote users
 uint8* CKnownFile::GetPartStatus(CUpDownClient* client) const
 {
-    bool bSOTN = GetShareOnlyTheNeed() && (!client || client->GetIncompletePartVersion() == 0); //>>> WiZaRd::ICS [enkeyDEV]
+//>>> WiZaRd::ICS [enkeyDEV]
+	// We don't use SotN for ICS enabled clients because they should always see the real file status and will select the rarest chunk by themselves
+    bool bSOTN = GetShareOnlyTheNeed() && (!client || client->GetIncompletePartVersion() == 0);
+//<<< WiZaRd::ICS [enkeyDEV]
+	const uint16 partcount = GetPartCount();
+	const bool bUsePart = IsPartFile();
+	CPartFile* pThis = bUsePart ? (CPartFile*)this : NULL;
 //>>> Create tmp array
-    //the problem is that m_AvailPartFrequency will only check clients in our queue!
-    //so create a tmparray and update its values
-    CArray<uint16, uint16> tmparray;
-    const uint16 partcount = GetPartCount();
-    tmparray.SetSize(partcount);
-    const bool bUsePart = IsPartFile();
-    CPartFile* pThis = bUsePart ? (CPartFile*)this : NULL;
+	CList<int> shownChunks;
+	{
+		//the problem is that m_AvailPartFrequency will only check clients in our queue!
+		//so create a tmparray and update its values
+		CArray<uint16, uint16> tmparray;    
+		tmparray.SetSize(partcount);
 
-	// search the least available parts
-	uint16 iMinAvailablePartFrenquency = _UI16_MAX;
-	uint16 iMinAvailablePartFrenquencyPrev = _UI16_MAX;
-    for (uint16 i = 0; i < partcount; i++)
-    {
-        if (bUsePart)
-            tmparray[i] = (pThis->GetSrcPartFrequency(i) + (pThis->IsComplete(PARTSIZE*i, PARTSIZE*(i+1)-1, true) ? 1 : 0));
-        else if (!m_AvailPartFrequency.IsEmpty())
-            tmparray[i] = m_AvailPartFrequency[i];
-		else
-			tmparray[i] = 0;
-        if (!m_SOTNAvailPartFrequency.IsEmpty())
-            tmparray[i] = tmparray[i] + m_SOTNAvailPartFrequency[i];
-
-		// a part qualifies if the remote client doesn't have it but we have
-		if ((!client						//we don't have to check client
-			|| !client->IsPartAvailable(i))	//or he does not own that part
-			&& (!bUsePart					//of course it's complete if it's a complete file
-			|| pThis->IsComplete(PARTSIZE*i, PARTSIZE*(i+1)-1, true)) //or the part is complete
-			)
+		// search the least available parts
+		uint16 iMinAvailablePartFrenquency = _UI16_MAX;
+		uint16 iMinAvailablePartFrenquencyPrev = _UI16_MAX;
+		for (uint16 i = 0; i < partcount; i++)
 		{
-			if (tmparray[i] < iMinAvailablePartFrenquency)
-				iMinAvailablePartFrenquency = tmparray[i];
-			else if (tmparray[i] < iMinAvailablePartFrenquencyPrev)
-				iMinAvailablePartFrenquencyPrev = tmparray[i];
-		}
-    }
-//<<< Create tmp array
+			if (bUsePart)
+				tmparray[i] = (pThis->GetSrcPartFrequency(i) + (pThis->IsComplete(PARTSIZE*i, PARTSIZE*(i+1)-1, true) ? 1 : 0));
+			else if (!m_AvailPartFrequency.IsEmpty())
+				tmparray[i] = m_AvailPartFrequency[i];
+			else
+				tmparray[i] = 0;
+			if (!m_SOTNAvailPartFrequency.IsEmpty())
+				tmparray[i] = tmparray[i] + m_SOTNAvailPartFrequency[i];
 
-	// if all parts are equally rare, don't hide anything
-	if (iMinAvailablePartFrenquency == _UI16_MAX)
-		bSOTN = false;
+			// a part qualifies if the remote client doesn't have it but we have
+			if ((!client						//we don't have to check client
+				|| !client->IsPartAvailable(i))	//or he does not own that part
+				&& (!bUsePart					//of course it's complete if it's a complete file
+				|| pThis->IsComplete(PARTSIZE*i, PARTSIZE*(i+1)-1, true)) //or the part is complete
+				)
+			{
+				if (tmparray[i] < iMinAvailablePartFrenquency)
+					iMinAvailablePartFrenquency = tmparray[i];
+				else if (tmparray[i] < iMinAvailablePartFrenquencyPrev)
+					iMinAvailablePartFrenquencyPrev = tmparray[i];
+			}
+		}
+
+		/*
+		// if all parts are equally rare, don't hide anything
+		if (iMinAvailablePartFrenquency == _UI16_MAX)
+			bSOTN = false;
+		*/
+
+		CArray<int> minFreqArray;
+		CArray<int> lastminFreqArray;
+		for (uint16 i = 0; i < partcount; i++)
+		{
+			if(tmparray[i] == iMinAvailablePartFrenquency)
+				minFreqArray.Add(i);
+			else if (tmparray[i] == iMinAvailablePartFrenquencyPrev)
+				lastminFreqArray.Add(i);
+		}		
+		const UINT targetValues = (minFreqArray.GetCount() + lastminFreqArray.GetCount()) < 3 ? (minFreqArray.GetCount() + lastminFreqArray.GetCount()) : 3;
+		while(shownChunks.GetCount() < targetValues && !minFreqArray.IsEmpty())
+		{
+			int index = rand() % minFreqArray.GetCount();
+			int val = minFreqArray[index];
+
+			shownChunks.AddTail(val);
+			minFreqArray.RemoveAt(index);
+		}
+		while(shownChunks.GetCount() < targetValues && !lastminFreqArray.IsEmpty())
+		{
+			int index = rand() % lastminFreqArray.GetCount();
+			int val = lastminFreqArray[index];
+
+			shownChunks.AddTail(val);
+			lastminFreqArray.RemoveAt(index);
+		}
+	}
+//<<< Create tmp array
 
     uint16	partCount = GetED2KPartCount();
     uint64	partSize = PARTSIZE;
@@ -2553,7 +2588,8 @@ uint8* CKnownFile::GetPartStatus(CUpDownClient* client) const
 
         //we allow to send this chunk if either...
         const bool bShowPart = !bSOTN														// SOTN is OFF
-                               || (tmparray[cur_part] <= iMinAvailablePartFrenquencyPrev)	// it's one of the rarest chunks
+                               //|| (tmparray[cur_part] <= iMinAvailablePartFrenquencyPrev)	// it's one of the rarest chunks TODO
+							   || shownChunks.Find(cur_part)
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
                                // or if it's complete, already
                                || (client && client->IsPartAvailable(cur_part) && (!bUsePart || (pThis->GetPublishedPartStatus() && pThis->GetPublishedPartStatus()->IsComplete((uint64) cur_part * PARTSIZE + subChunk * partSize, (uint64) cur_part * PARTSIZE + (subChunk + 1) * partSize - 1)))); // show parts that the other client has

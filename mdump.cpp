@@ -55,6 +55,9 @@ void CMiniDumper::Enable(LPCTSTR pszAppName, bool bShowErrors, LPCTSTR pszDumpDi
     {
         if (pfnMiniDumpWriteDump)
             SetUnhandledExceptionFilter(TopLevelFilter);
+#if _MSC_VER >= 1400
+		_set_invalid_parameter_handler(InvalidParameterHandler);
+#endif
         FreeLibrary(hDbgHelpDll);
         hDbgHelpDll = NULL;
         pfnMiniDumpWriteDump = NULL;
@@ -184,10 +187,27 @@ LONG CMiniDumper::TopLevelFilter(struct _EXCEPTION_POINTERS* pExceptionInfo)
         MessageBox(NULL, szResult, m_szAppName, MB_ICONINFORMATION | MB_OK);
 
 #ifndef _DEBUG
-    // Exit the process only in release builds, so that in debug builds the exceptio is passed to a possible
+    // Exit the process only in release builds, so that in debug builds the exception is passed to a possible
     // installed debugger
     ExitProcess(0);
 #else
     return lRetValue;
 #endif
+}
+
+void CMiniDumper::InvalidParameterHandler(const wchar_t *pszExpression, const wchar_t *pszFunction, const wchar_t *pszFile, unsigned int nLine, uintptr_t pReserved)
+{
+	(pszExpression);
+	(pszFunction);
+	(pszFile);
+	(nLine);
+	(pReserved);
+
+	TRACE(L"Invalid parameter detected in function %s."
+		L" File: %s Line: %d\n", pszFunction, pszFile, nLine);
+	TRACE(L"Expression: %s\n", pszExpression);
+	/*_call_reportfault(_CRT_DEBUGGER_INVALIDPARAMETER,
+		STATUS_INVALID_CRUNTIME_PARAMETER,
+		EXCEPTION_NONCONTINUABLE);*/
+	TerminateProcess(GetCurrentProcess(), STATUS_INVALID_CRUNTIME_PARAMETER);
 }

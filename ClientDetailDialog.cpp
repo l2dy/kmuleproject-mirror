@@ -188,7 +188,7 @@ BOOL CClientDetailPage::OnSetActive()
 
 //>>> WiZaRd::ClientAnalyzer
         if (client->GetAntiLeechData())
-            buffer.AppendFormat(L" || %.1f", client->GetAntiLeechData()->GetScore());
+            buffer.AppendFormat(L" || %.2f", client->GetAntiLeechData()->GetScore());
         else
             buffer.Append(L" || ?");
         GetDlgItem(IDC_DRATIO)->SetWindowText(buffer);

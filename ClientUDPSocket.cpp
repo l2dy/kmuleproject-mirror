@@ -472,7 +472,7 @@ bool CClientUDPSocket::ProcessPacket(const BYTE* packet, UINT size, uint8 opcode
         bool bSenderMultipleIpUnknown = false;
         CUpDownClient* sender = theApp.uploadqueue->GetWaitingClientByIP_UDP(ip, port, true, &bSenderMultipleIpUnknown);
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-		if (!reqfile && sender && sender->GetSCTVersion() > PROTOCOL_REVISION_0) // No FNF for existing files when using SCT
+		if (!reqfile && sender && sender->SupportsSCT()) // No FNF for existing files when using SCT
 			reqfile = theApp.downloadqueue->GetFileByID(reqfilehash);
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         if (!reqfile)

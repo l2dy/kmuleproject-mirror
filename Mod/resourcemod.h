@@ -111,5 +111,9 @@
 #define IDS_HEALTH						4071 //>>> WiZaRd::FileHealth
 #define IDS_NO_BAD_BEHAVIOUR_DETECTED	4072 //>>> WiZaRd::ClientAnalyzer
 //#endif
+#define IDC_CHECKALL					4073
+#define IDC_UNCHECKALL					4074
+#define IDS_CHECKALL					4075
+#define IDS_UNCHECKALL					4076
 
 // this line is needed or we get a "fatal error RC1004: unexpected end of file found" - thanks for those wonderful bugs, Microsoft!

@@ -6584,6 +6584,19 @@ void CPartFile::RequestAICHRecovery(UINT nPart)
     if (!m_pAICHRecoveryHashSet->HasValidMasterHash() || (m_pAICHRecoveryHashSet->GetStatus() != AICH_TRUSTED && m_pAICHRecoveryHashSet->GetStatus() != AICH_VERIFIED))
     {
         AddDebugLogLine(DLP_DEFAULT, false, _T("Unable to request AICH Recoverydata because we have no trusted Masterhash"));
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]		
+		// netfinity: Use CorruptionBlackBox even when AICH data is not available
+		if (IsCorruptedPart(nPart))
+		{
+			m_CorruptionBlackBox.CorruptedData(PARTSIZE*(uint64)nPart, PARTSIZE*(uint64)nPart+PARTSIZE-1);
+			m_CorruptionBlackBox.EvaluateData(nPart/*, this, PARTSIZE*/);
+			SavePartFile();
+#ifdef USE_GENERIC_PARTSTATUS
+			if (m_pPublishedPartStatus)
+				m_pPublishedPartStatus->ClearPart(nPart);
+#endif
+		}
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]		
         return;
     }
     if (GetFileSize() <= (uint64)EMBLOCKSIZE || GetFileSize() - PARTSIZE*(uint64)nPart <= (uint64)EMBLOCKSIZE)
@@ -6813,7 +6826,7 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
         for (UINT pos = 0; pos < length; pos += EMBLOCKSIZE)
         {
             const UINT nBlockSize = min(EMBLOCKSIZE, length - pos);
-            const CAICHHashTree* const pVerifiedBlock = pVerifiedHash->FindHash(pos, nBlockSize);
+			const CAICHHashTree* pVerifiedBlock = pVerifiedHash->FindExistingHash(pos, nBlockSize);
             const CAICHHashTree* const pOurBlock = htOurHash.FindHash(pos, nBlockSize);
             if (pVerifiedBlock == NULL || pOurBlock == NULL || !pVerifiedBlock->m_bHashValid || !pOurBlock->m_bHashValid)
             {

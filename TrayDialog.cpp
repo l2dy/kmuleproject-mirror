@@ -20,6 +20,11 @@
 #include "emuledlg.h"
 #include "MenuCmds.h"
 #include "UserMsgs.h"
+#if (_WIN32_IE >= 0x600)
+#include "Preferences.h"
+#include "otherfunctions.h"
+#include "opcodes.h"
+#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -54,12 +59,15 @@ DWORD GetDllVersion(LPCTSTR lpszDllName)
     return dwVersion;
 }
 
-bool SupportExtendedToolTips()
+DWORD GetShellVersion()
+//bool SupportExtendedToolTips()
 {
     //see ms-help://MS.VSCC.2003/MS.MSDNQTR.2005JUL.1033/shellcc/platform/shell/reference/structures/notifyicondata.htm
 //	static const bool bSupportsExtendedToolTips = GetDllVersion(TEXT("comctl32.dll")) >= MAKELONG(5,0);
-    static const bool bSupportsExtendedToolTips = GetDllVersion(TEXT("shell32.dll")) >= MAKELONG(5,0);
-    return bSupportsExtendedToolTips;
+//    static const bool bSupportsExtendedToolTips = GetDllVersion(TEXT("shell32.dll")) >= MAKELONG(5,0);
+//    return bSupportsExtendedToolTips;
+	static const DWORD dwShellVersion = GetDllVersion(TEXT("shell32.dll"));
+	return dwShellVersion;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -79,15 +87,53 @@ END_MESSAGE_MAP()
 CTrayDialog::CTrayDialog(UINT uIDD,CWnd* pParent /*=NULL*/)
     : CTrayDialogBase(uIDD, pParent)
 {
-//	ZeroMemory(&m_nidIconData, sizeof(NOTIFYICONDATA));
-    m_nidIconData.cbSize = SupportExtendedToolTips() ? sizeof(NOTIFYICONDATA) : sizeof(NOTIFYICONDATA_V1_SIZE);
-//	m_nidIconData.cbSize = NOTIFYICONDATA_V1_SIZE;
-    m_nidIconData.hWnd = 0;
-    m_nidIconData.uID = 1;
+	ZeroMemory(&m_nidIconData, sizeof(NOTIFYICONDATA));
+	const DWORD version = GetShellVersion();
+#ifdef NOTIFYICON_VERSION_4
+	if(version >= MAKEDLLVERULL(6,0,6,0))
+	{
+		m_nidIconData.cbSize = sizeof(NOTIFYICONDATA);
+		m_nidIconData.uVersion = NOTIFYICON_VERSION_4;
+	}
+	else if(version >= MAKEDLLVERULL(6,0,0,0))
+	{
+		m_nidIconData.cbSize = NOTIFYICONDATA_V3_SIZE;
+		m_nidIconData.uVersion = NOTIFYICON_VERSION_4;
+	}
+	else 
+#endif
+	if(version >= MAKEDLLVERULL(5,0,0,0))
+	{
+		m_nidIconData.cbSize = NOTIFYICONDATA_V2_SIZE;
+		m_nidIconData.uVersion = NOTIFYICON_VERSION;
+	}
+	else
+	{
+		m_nidIconData.cbSize = NOTIFYICONDATA_V1_SIZE;
+		m_nidIconData.uVersion = 0;
+	}
+    m_nidIconData.hWnd = 0;    
     m_nidIconData.uCallbackMessage = UM_TRAY_ICON_NOTIFY_MESSAGE;
     m_nidIconData.hIcon = 0;
     m_nidIconData.szTip[0] = L'\0';
     m_nidIconData.uFlags = NIF_MESSAGE;
+
+#ifdef NOTIFYICON_VERSION_4
+	// NOTIFYICON_VERSION_4 requires that the tooltip is drawn by the user
+	if(m_nidIconData.uVersion == NOTIFYICON_VERSION_4)
+		m_nidIconData.uFlags |= NIF_SHOWTIP;
+#endif
+#if (_WIN32_IE >= 0x600)
+	// Windows 7 and later: A registered GUID that identifies the icon. This value overrides uID and is the recommended method of identifying the icon. The NIF_GUID flag must be set in the uFlags member.
+	if (thePrefs.GetWindowsVersion() >= _WINVER_7_)
+	{
+		m_nidIconData.uFlags |= NIF_GUID;
+		CLSIDFromString(EMULE_GUID_BASE, &m_nidIconData.guidItem);
+	}
+	else
+#endif
+		m_nidIconData.uID = 1;
+
     m_bTrayIconVisible = false;
     m_pbMinimizeToTray = NULL;
     m_nDefaultMenuItem = 0;
@@ -153,7 +199,7 @@ void CTrayDialog::TraySetIcon(HICON hIcon, const bool bDelete)
 
 void CTrayDialog::TraySetToolTip(LPCTSTR lpszToolTip)
 {
-    const size_t usedSize = SupportExtendedToolTips() ? NOTIFYICONDATA_V2_TIP_SIZE : NOTIFYICONDATA_V1_TIP_SIZE;
+    const size_t usedSize = (GetShellVersion() >= MAKEDLLVERULL(5,0,0,0)) ? NOTIFYICONDATA_V2_TIP_SIZE : NOTIFYICONDATA_V1_TIP_SIZE;
     ASSERT(_tcslen(lpszToolTip) > 0 && _tcslen(lpszToolTip) < usedSize);
     _tcsncpy(m_nidIconData.szTip, lpszToolTip, usedSize);
     m_nidIconData.szTip[usedSize - 1] = L'\0';
@@ -239,16 +285,35 @@ BOOL CTrayDialog::TraySetMenu(HMENU hMenu)
 
 LRESULT CTrayDialog::OnTrayNotify(WPARAM wParam, LPARAM lParam)
 {
-    UINT uID = (UINT)wParam;
-    if (uID != 1)
-        return 0;
-
     CPoint pt;
-    UINT uMsg = (UINT)lParam;
+    UINT uMsg = 0;
+	UINT uID = 0;
+#ifdef NOTIFYICON_VERSION_4
+	if(m_nidIconData.uVersion == NOTIFYICON_VERSION_4)
+	{
+		// contains notification events, such as NIN_BALLOONSHOW, NIN_POPUPOPEN, or WM_CONTEXTMENU.
+		uMsg = LOWORD(lParam);
+		// contains the icon ID. Icon IDs are restricted to a length of 16 bits
+		uID = HIWORD(lParam);
+		
+		pt.x = GET_X_LPARAM(wParam);
+		pt.y = GET_Y_LPARAM(wParam);
+	}
+	else
+#endif
+	{		
+		uMsg = (UINT)lParam;	
+		uID = (UINT)wParam;
+
+		GetCursorPos(&pt);
+	}
+
+	if (uID != 1)
+		return 0;
+
     switch (uMsg)
     {
-    case WM_MOUSEMOVE:
-        GetCursorPos(&pt);
+    case WM_MOUSEMOVE:        
         ClientToScreen(&pt);
         OnTrayMouseMove(pt);
         break;

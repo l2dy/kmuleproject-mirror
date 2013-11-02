@@ -143,6 +143,9 @@ void CUpDownClient::Init()
     m_abyIncPartStatus = NULL;
     m_incompletepartVer = 0;
 //<<< WiZaRd::ICS [enkeyDEV]
+//>>> WiZaRd::Unsolicited PartStatus [Netfinity]
+	m_byFileRequestState = 0;
+//<<< WiZaRd::Unsolicited PartStatus [Netfinity]
     m_abySeenPartStatus = NULL; //>>> WiZaRd::AntiHideOS [netfinity]
     m_nChatstate = MS_NONE;
     m_nKadState = KS_NONE;
@@ -1809,6 +1812,7 @@ bool CUpDownClient::Disconnected(LPCTSTR pszReason, bool bFromSocket)
         SetSentCancelTransfer(0);
         m_bHelloAnswerPending = false;
         m_fQueueRankPending = 0;
+		m_byFileRequestState = 0; //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
         m_fFailedFileIdReqs = 0;
         m_fUnaskQueueRankRecv = 0;
         m_fSentOutOfPartReqs = 0;
@@ -4137,7 +4141,7 @@ int CUpDownClient::GetAnalyzerIconIndex() const
 	if (pAntiLeechData != NULL)
 	{		
 		if(pAntiLeechData->GetBadForThisSession() != 0)
-			ret = 0; // bad guy!
+			ret = 0; // very bad guy!
 		else
 		{
 			float fCAScore = pAntiLeechData->GetScore();

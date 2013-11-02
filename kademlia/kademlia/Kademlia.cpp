@@ -117,7 +117,8 @@ void CKademlia::Start(CPrefs *pPrefs)
         // Init big timer for Zones
         m_tBigTimer = time(NULL);
         // First Firewall check is done on connect, init next check.
-        m_tNextFirewallCheck = time(NULL) + (HR2S(1));
+        //m_tNextFirewallCheck = time(NULL) + (HR2S(1));
+		m_tNextFirewallCheck = time(NULL)  + MIN2S(15);
         m_tNextUPnPCheck = m_tNextFirewallCheck - MIN2S(1);
         // Find a buddy after the first 5mins of starting the client.
         // We wait just in case it takes a bit for the client to determine firewall status..

@@ -13,6 +13,7 @@ private:
 
     static HMODULE GetDebugHelperDll(FARPROC* ppfnMiniDumpWriteDump, bool bShowErrors);
     static LONG WINAPI TopLevelFilter(struct _EXCEPTION_POINTERS* pExceptionInfo);
+	static void InvalidParameterHandler(const wchar_t *pszExpression, const wchar_t *pszFunction, const wchar_t *pszFile, unsigned int nLine, uintptr_t pReserved);
 };
 
 extern CMiniDumper theCrashDumper;
