@@ -1278,57 +1278,59 @@ BEGIN
     PUSHBUTTON      "Cancel",IDC_CCOLL_CANCEL,346,209,50,14
     CONTROL         "",IDC_COLLECTIONLISTCTRL,"SysListView32",LVS_REPORT | 
                     LVS_SHAREIMAGELISTS | LVS_OWNERDRAWFIXED | LVS_ALIGNLEFT | 
-                    WS_BORDER | WS_TABSTOP,7,87,394,49
+                    WS_BORDER | WS_TABSTOP,213,17,186,138
     CONTROL         "",IDC_COLLECTIONAVAILLIST,"SysListView32",LVS_REPORT | 
                     LVS_SHAREIMAGELISTS | LVS_OWNERDRAWFIXED | LVS_ALIGNLEFT | 
-                    WS_BORDER | WS_TABSTOP,7,17,393,50
-    PUSHBUTTON      "<--",IDC_COLLECTIONREMOVE,193,70,16,14,BS_ICON
-    PUSHBUTTON      "-->",IDC_COLLECTIONADD,175,70,16,14,BS_ICON
-    EDITTEXT        IDC_COLLECTIONNAMEEDIT,94,152,296,12,ES_AUTOHSCROLL
-    LTEXT           "Collection List",IDC_COLLECTIONLISTLABEL,20,76,90,8
-    PUSHBUTTON      "Shared Files",IDC_COLLECTIONVIEWSHAREBUTTON,23,4,87,13,
+                    WS_BORDER | WS_TABSTOP,4,17,186,138
+    PUSHBUTTON      "-->",IDC_COLLECTIONADD,193,65,16,14,BS_ICON
+    PUSHBUTTON      "<--",IDC_COLLECTIONREMOVE,193,81,16,14,BS_ICON
+    EDITTEXT        IDC_COLLECTIONNAMEEDIT,94,169,296,12,ES_AUTOHSCROLL
+    LTEXT           "Collection List",IDC_COLLECTIONLISTLABEL,226,6,90,8
+    PUSHBUTTON      "Shared Files",IDC_COLLECTIONVIEWSHAREBUTTON,20,4,87,13,
                     BS_LEFT
-    ICON            "",IDC_COLLECTIONLISTICON,7,76,21,20
-    ICON            "",IDC_COLLECTIONSOURCELISTICON,7,6,21,20
+    ICON            "",IDC_COLLECTIONLISTICON,213,6,21,20
+    ICON            "",IDC_COLLECTIONSOURCELISTICON,4,6,20,20
     CONTROL         "Sign collection with name and key",
                     IDC_COLLECTIONCREATESIGNCHECK,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,15,193,367,10
+                    WS_TABSTOP,15,210,264,10
     CONTROL         "Save collection in a simple text format",
                     IDC_COLLECTIONCREATEFORMAT,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,15,183,368,10
-    LTEXT           "Static",IDC_CCOLL_STATIC_NAME,14,153,75,10,0,
+                    WS_TABSTOP,15,200,263,10
+    LTEXT           "Static",IDC_CCOLL_STATIC_NAME,14,170,75,10,0,
                     WS_EX_RIGHT
-    GROUPBOX        "Basic Options",IDC_CCOLL_BASICOPTIONS,7,142,389,27
-    GROUPBOX        "Advanced Options",IDC_CCOLL_ADVANCEDOPTIONS,7,173,389,
+    GROUPBOX        "Basic Options",IDC_CCOLL_BASICOPTIONS,7,159,389,27
+    GROUPBOX        "Advanced Options",IDC_CCOLL_ADVANCEDOPTIONS,7,190,277,
                     34
 END
 
-IDD_COLLECTIONVIEWDIALOG DIALOGEX 0, 0, 418, 252
+IDD_COLLECTIONVIEWDIALOG DIALOGEX 0, 0, 419, 246
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | 
     WS_THICKFRAME
 CAPTION "Dialog"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    DEFPUSHBUTTON   "Exit",IDC_VCOLL_CLOSE,361,232,50,14
+    PUSHBUTTON      "Check all",IDC_CHECKALL,7,163,50,14
+    PUSHBUTTON      "Uncheck all",IDC_UNCHECKALL,62,163,50,14
+    DEFPUSHBUTTON   "Download",IDC_VIEWCOLLECTIONDL,305,227,50,14
+    PUSHBUTTON      "Exit",IDC_VCOLL_CLOSE,361,227,50,14
     CONTROL         "",IDC_COLLECTIONVEWLIST,"SysListView32",LVS_REPORT | 
                     LVS_SHAREIMAGELISTS | LVS_OWNERDRAWFIXED | LVS_ALIGNLEFT | 
                     WS_BORDER | WS_TABSTOP,7,17,404,140
-    PUSHBUTTON      "Download",IDC_VIEWCOLLECTIONDL,305,232,50,14
     CONTROL         "Add new downloads in a collection category",
                     IDC_COLLECTIONVIEWCATEGORYCHECK,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,15,211,377,10
+                    WS_TABSTOP,15,229,276,10
     LTEXT           "Collection List",IDC_COLLECTIONVIEWLISTLABEL,24,7,99,8
-    ICON            "",IDC_COLLECTIONVIEWLISTICON,7,6,20,20
-    LTEXT           "Author: ",IDC_COLLECTIONVIEWAUTHORLABEL,15,171,88,8,0,
+    ICON            "",IDC_COLLECTIONVIEWLISTICON,7,6,21,20
+    LTEXT           "Author: ",IDC_COLLECTIONVIEWAUTHORLABEL,15,189,88,8,0,
                     WS_EX_RIGHT
-    LTEXT           "Author Key: ",IDC_COLLECTIONVIEWAUTHORKEYLABEL,15,183,
+    LTEXT           "Author Key: ",IDC_COLLECTIONVIEWAUTHORKEYLABEL,15,201,
                     88,8,0,WS_EX_RIGHT
-    EDITTEXT        IDC_COLLECTIONVIEWAUTHOR,108,171,298,12,ES_AUTOHSCROLL | 
+    EDITTEXT        IDC_COLLECTIONVIEWAUTHOR,108,189,298,12,ES_AUTOHSCROLL | 
                     ES_READONLY | NOT WS_BORDER
-    EDITTEXT        IDC_COLLECTIONVIEWAUTHORKEY,108,183,298,12,
+    EDITTEXT        IDC_COLLECTIONVIEWAUTHORKEY,108,201,298,12,
                     ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
-    GROUPBOX        "Details",IDC_VCOLL_DETAILS,7,161,404,36
-    GROUPBOX        "Options",IDC_VCOLL_OPTIONS,7,201,404,25
+    GROUPBOX        "Details",IDC_VCOLL_DETAILS,7,179,404,36
+    GROUPBOX        "Options",IDC_VCOLL_OPTIONS,7,219,290,25
 END
 
 IDD_ARCHPREV DIALOGEX 0, 0, 407, 180
@@ -1434,8 +1436,8 @@ INFO                    ICON                    "res\\Info.ico"
 CANCEL                  ICON                    "res\\Cancel.ico"
 FORWARD                 ICON                    "res\\NavigateForward.ico"
 BACK                    ICON                    "res\\NavigateBack.ico"
-UP                      ICON                    "res\\up.ico"
-DOWN                    ICON                    "res\\down.ico"
+LEFT                    ICON                    "res\\left.ico"
+RIGHT                   ICON                    "res\\right.ico"
 CLOSETAB                ICON                    "res\\CloseTab.ico"
 CLOSETABSELECTED        ICON                    "res\\CloseTabSelected.ico"
 DOWNLOAD                ICON                    "res\\Download.ico"
@@ -2018,6 +2020,8 @@ BEGIN
 	IDS_WAITING_USERS       "Waiting Users"
 	IDS_HEALTH				"Health"
 	IDS_NO_BAD_BEHAVIOUR_DETECTED "No bad behaviour detected"
+    IDS_CHECKALL            "Check all"
+    IDS_UNCHECKALL          "Uncheck all"
 END
 
 STRINGTABLE 

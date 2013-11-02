@@ -48,6 +48,8 @@ IMPLEMENT_DYNAMIC(CCollectionViewDialog, CDialog)
 BEGIN_MESSAGE_MAP(CCollectionViewDialog, CResizableDialog)
     ON_BN_CLICKED(IDC_VCOLL_CLOSE, OnBnClickedOk)
     ON_BN_CLICKED(IDC_VIEWCOLLECTIONDL, OnBnClickedViewCollection)
+	ON_BN_CLICKED(IDC_CHECKALL, OnBnClickedCheckAll)
+	ON_BN_CLICKED(IDC_UNCHECKALL, OnBnClickedUncheckAll)
     ON_NOTIFY(NM_DBLCLK, IDC_COLLECTIONVEWLIST, OnNmDblClkCollectionList)
 END_MESSAGE_MAP()
 
@@ -76,6 +78,8 @@ void CCollectionViewDialog::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_COLLECTIONVIEWLISTICON, m_CollectionViewListIcon);
     DDX_Control(pDX, IDC_VIEWCOLLECTIONDL, m_CollectionDownload);
     DDX_Control(pDX, IDC_VCOLL_CLOSE, m_CollectionExit);
+	DDX_Control(pDX, IDC_CHECKALL, m_CheckAll);
+	DDX_Control(pDX, IDC_UNCHECKALL, m_UncheckAll);
     DDX_Control(pDX, IDC_COLLECTIONVIEWAUTHOR, m_CollectionViewAuthor);
     DDX_Control(pDX, IDC_COLLECTIONVIEWAUTHORKEY, m_CollectionViewAuthorKey);
 }
@@ -101,7 +105,9 @@ BOOL CCollectionViewDialog::OnInitDialog(void)
         return TRUE;
     }
 
-    m_CollectionViewList.Init(_T("CollectionView"));
+	m_CollectionViewList.SetContextMenu(false);
+	m_CollectionViewList.SetCheckboxes(true);
+    m_CollectionViewList.Init(_T("CollectionView"));	
     SetIcon(m_icoWnd = theApp.LoadIcon(_T("Collection_View")), FALSE);
 
     m_AddNewCatagory.SetCheck(false);
@@ -111,6 +117,8 @@ BOOL CCollectionViewDialog::OnInitDialog(void)
     m_CollectionViewListIcon.SetIcon(m_icoColl = theApp.LoadIcon(_T("AABCollectionFileType")));
     m_CollectionDownload.SetWindowText(GetResString(IDS_DOWNLOAD));
     m_CollectionExit.SetWindowText(GetResString(IDS_CW_CLOSE));
+	m_CheckAll.SetWindowText(GetResString(IDS_CHECKALL));
+	m_UncheckAll.SetWindowText(GetResString(IDS_UNCHECKALL));
     SetDlgItemText(IDC_COLLECTIONVIEWAUTHORLABEL, GetResString(IDS_AUTHOR) + _T(":"));
     SetDlgItemText(IDC_COLLECTIONVIEWAUTHORKEYLABEL, GetResString(IDS_AUTHORKEY) + _T(":"));
     SetDlgItemText(IDC_COLLECTIONVIEWCATEGORYCHECK, GetResString(IDS_COLL_ADDINCAT));
@@ -121,6 +129,8 @@ BOOL CCollectionViewDialog::OnInitDialog(void)
     m_CollectionViewAuthorKey.SetWindowText(m_pCollection->GetAuthorKeyHashString());
 
     AddAnchor(IDC_COLLECTIONVEWLIST, TOP_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_CHECKALL, BOTTOM_LEFT);
+	AddAnchor(IDC_UNCHECKALL, BOTTOM_LEFT);
     AddAnchor(IDC_VCOLL_DETAILS, BOTTOM_LEFT, BOTTOM_RIGHT);
     AddAnchor(IDC_VCOLL_OPTIONS, BOTTOM_LEFT, BOTTOM_RIGHT);
     AddAnchor(IDC_COLLECTIONVIEWAUTHORLABEL, BOTTOM_LEFT);
@@ -138,21 +148,10 @@ BOOL CCollectionViewDialog::OnInitDialog(void)
         CCollectionFile* pCollectionFile;
         CSKey key;
         m_pCollection->m_CollectionFilesMap.GetNextAssoc(pos, key, pCollectionFile);
-
-        int iImage = theApp.GetFileTypeSystemImageIdx(pCollectionFile->GetFileName());
-        int iItem = m_CollectionViewList.InsertItem(LVIF_TEXT | LVIF_PARAM | (iImage > 0 ? LVIF_IMAGE : 0), m_CollectionViewList.GetItemCount(), NULL, 0, 0, iImage, (LPARAM)pCollectionFile);
-        if (iItem != -1)
-        {
-            m_CollectionViewList.SetItemText(iItem, colName, pCollectionFile->GetFileName());
-            m_CollectionViewList.SetItemText(iItem, colSize, CastItoXBytes(pCollectionFile->GetFileSize()));
-            m_CollectionViewList.SetItemText(iItem, colHash, md4str(pCollectionFile->GetFileHash()));
-            m_CollectionViewList.SetItemText(iItem, colFolder, pCollectionFile->GetDownloadDirectory(true)); //>>> WiZaRd::CollectionEnhancement
-        }
+		m_CollectionViewList.AddFileToList(pCollectionFile);
     }
 
-    int iItem = m_CollectionViewList.GetItemCount();
-    while (iItem)
-        m_CollectionViewList.SetItemState(--iItem, LVIS_SELECTED, LVIS_SELECTED);
+	m_CollectionViewList.CheckAll();
 
     CString strTitle;
     strTitle.Format(GetResString(IDS_COLLECTIONLIST) + _T(" (%u)"), m_CollectionViewList.GetItemCount());
@@ -186,11 +185,9 @@ void CCollectionViewDialog::DownloadSelected(void)
     }
 
     CTypedPtrList<CPtrList, CCollectionFile*> collectionFileList;
-    POSITION pos = m_CollectionViewList.GetFirstSelectedItemPosition();
-    while (pos != NULL)
-    {
-        int index = m_CollectionViewList.GetNextSelectedItem(pos);
-        if (index >= 0)
+	for(int index = 0; index < m_CollectionViewList.GetItemCount(); ++index)
+	{
+		if(m_CollectionViewList.GetCheck(index))
             collectionFileList.AddTail((CCollectionFile*)m_CollectionViewList.GetItemData(index));
     }
 
@@ -211,4 +208,14 @@ void CCollectionViewDialog::OnBnClickedViewCollection()
 void CCollectionViewDialog::OnBnClickedOk()
 {
     OnOK();
+}
+
+void CCollectionViewDialog::OnBnClickedCheckAll()
+{
+	m_CollectionViewList.CheckAll();
+}
+
+void CCollectionViewDialog::OnBnClickedUncheckAll()
+{
+	m_CollectionViewList.UncheckAll();
 }

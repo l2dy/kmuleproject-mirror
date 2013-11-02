@@ -16,6 +16,7 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #include "stdafx.h"
 #include "emule.h"
+#include "emuleDlg.h"
 #include "CollectionListCtrl.h"
 #include "OtherFunctions.h"
 #include "AbstractFile.h"
@@ -23,6 +24,7 @@
 #include "HighColorTab.hpp"
 #include "ListViewWalkerPropertySheet.h"
 #include "UserMsgs.h"
+#include "MemDC.h"
 //>>> WiZaRd::CollectionEnhancement
 #include "TitleMenu.h"
 #include "MenuCmds.h"
@@ -155,37 +157,212 @@ enum ECols
 IMPLEMENT_DYNAMIC(CCollectionListCtrl, CMuleListCtrl)
 
 BEGIN_MESSAGE_MAP(CCollectionListCtrl, CMuleListCtrl)
-    ON_NOTIFY_REFLECT(LVN_COLUMNCLICK, OnLvnColumnClick)
-    ON_NOTIFY_REFLECT(NM_RCLICK, OnNmRClick)
+    ON_NOTIFY_REFLECT(LVN_COLUMNCLICK, OnLvnColumnClick)	
+    ON_NOTIFY_REFLECT(LVN_GETDISPINFO, OnLvnGetDispInfo)
+    ON_NOTIFY_REFLECT(NM_CLICK, OnNmClick)
+    ON_WM_CONTEXTMENU() //>>> WiZaRd::CollectionEnhancement
+    ON_WM_SYSCOLORCHANGE()
 END_MESSAGE_MAP()
 
 CCollectionListCtrl::CCollectionListCtrl()
     : CListCtrlItemWalk(this)
 {
-}
-
-CCollectionListCtrl::~CCollectionListCtrl()
-{
+	m_bCheckBoxes = false;
+	m_bContextMenu = false;
 }
 
 void CCollectionListCtrl::Init(CString strNameAdd)
 {
     SetPrefsKey(_T("CollectionListCtrl") + strNameAdd);
-
-    ASSERT(GetStyle() & LVS_SHAREIMAGELISTS);
-    SendMessage(LVM_SETIMAGELIST, LVSIL_SMALL, (LPARAM)theApp.GetSystemImageList());
-
     ASSERT((GetStyle() & LVS_SINGLESEL) == 0);
-    SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_INFOTIP);
+	UINT nStyle = LVS_EX_FULLROWSELECT | LVS_EX_INFOTIP;
+	if(m_bCheckBoxes)
+		nStyle |= LVS_EX_CHECKBOXES;
+    SetExtendedStyle(nStyle);
 
     InsertColumn(colName, GetResString(IDS_DL_FILENAME),	LVCFMT_LEFT,  DFLT_FILENAME_COL_WIDTH);
     InsertColumn(colSize, GetResString(IDS_DL_SIZE),		LVCFMT_RIGHT, DFLT_SIZE_COL_WIDTH);
-    InsertColumn(colHash, GetResString(IDS_FILEHASH),		LVCFMT_LEFT,  DFLT_HASH_COL_WIDTH);
+    InsertColumn(colHash, GetResString(IDS_FILEHASH),		LVCFMT_LEFT,  DFLT_HASH_COL_WIDTH, -1, true);
     InsertColumn(colFolder, GetResString(IDS_FOLDER),		LVCFMT_LEFT,  DFLT_FOLDER_COL_WIDTH); //>>> WiZaRd::CollectionEnhancement
 
+    SetAllIcons();
+    Localize();
     LoadSettings();
     SetSortArrow();
     SortItems(SortProc, MAKELONG(GetSortItem(), (GetSortAscending() ? 0 : 1)));
+}
+
+void CCollectionListCtrl::Localize()
+{
+    CHeaderCtrl *pHeaderCtrl = GetHeaderCtrl();
+    HDITEM hdi;
+    hdi.mask = HDI_TEXT;
+
+    CString strRes;
+    strRes = GetResString(IDS_DL_FILENAME);
+    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
+    pHeaderCtrl->SetItem(0, &hdi);
+
+    strRes = GetResString(IDS_DL_SIZE);
+    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
+    pHeaderCtrl->SetItem(1, &hdi);
+
+    strRes = GetResString(IDS_FILEHASH);
+    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
+    pHeaderCtrl->SetItem(2, &hdi);
+
+//>>> WiZaRd::CollectionEnhancement
+    strRes = GetResString(IDS_FOLDER);
+    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
+    pHeaderCtrl->SetItem(3, &hdi);
+//<<< WiZaRd::CollectionEnhancement
+}
+
+void CCollectionListCtrl::OnSysColorChange()
+{
+    CMuleListCtrl::OnSysColorChange();
+    SetAllIcons();
+}
+
+void CCollectionListCtrl::SetAllIcons()
+{
+    ApplyImageList(NULL);
+    m_ImageList.DeleteImageList();
+    m_ImageList.Create(16, 16, theApp.m_iDfltImageListColorFlags | ILC_MASK, 0, 1);
+
+    // Apply the image list also to the listview control, even if we use our own 'DrawItem'.
+    // This is needed to give the listview control a chance to initialize the row height.
+    ASSERT((GetStyle() & LVS_SHAREIMAGELISTS) != 0);
+    VERIFY(ApplyImageList(m_ImageList) == NULL);
+}
+
+void CCollectionListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
+{
+	if (!theApp.emuledlg->IsRunning())
+		return;
+	if (!lpDrawItemStruct->itemData)
+		return;	
+
+	CCustomMemDC dc(CDC::FromHandle(lpDrawItemStruct->hDC), &lpDrawItemStruct->rcItem);
+	BOOL bCtrlFocused;
+	InitItemMemDC(dc, lpDrawItemStruct, bCtrlFocused);
+	CRect cur_rec(lpDrawItemStruct->rcItem);
+	CRect rcClient;
+	GetClientRect(&rcClient);
+	const CAbstractFile* pFile = (CAbstractFile*)lpDrawItemStruct->itemData;
+
+	CHeaderCtrl *pHeaderCtrl = GetHeaderCtrl();
+	int iCount = pHeaderCtrl->GetItemCount();
+	cur_rec.right = cur_rec.left - sm_iLabelOffset;
+	cur_rec.left += sm_iIconOffset;
+	for (int iCurrent = 0; iCurrent < iCount; iCurrent++)
+	{
+		int iColumn = pHeaderCtrl->OrderToIndex(iCurrent);
+		if (!IsColumnHidden(iColumn))
+		{
+			UINT uDrawTextAlignment;
+			int iColumnWidth = GetColumnWidth(iColumn, uDrawTextAlignment);
+			cur_rec.right += iColumnWidth;
+			if (cur_rec.left < cur_rec.right && HaveIntersection(rcClient, cur_rec))
+			{
+				TCHAR szItem[1024];
+				GetItemDisplayText(pFile, iColumn, szItem, _countof(szItem));
+				switch (iColumn)
+				{
+					case 0:
+					{
+						CRect rcDraw(cur_rec);
+						int iIconPosY = (rcDraw.Height() > theApp.GetSmallSytemIconSize().cy) ? ((rcDraw.Height() - theApp.GetSmallSytemIconSize().cy) / 2) : 0;
+
+						if(m_bCheckBoxes)
+						{
+							CRect draw(rcDraw.left, rcDraw.top, rcDraw.left+16, rcDraw.bottom);
+							UINT nFlag = DFCS_BUTTONCHECK;
+							if(GetCheck(lpDrawItemStruct->itemID))
+								nFlag |= DFCS_CHECKED;
+							dc->DrawFrameControl(draw, DFC_BUTTON, nFlag);
+							rcDraw.left += 16;
+						}
+
+						int iImage = theApp.GetFileTypeSystemImageIdx(pFile->GetFileName());
+						if (theApp.GetSystemImageList() != NULL)
+							::ImageList_Draw(theApp.GetSystemImageList(), iImage, dc->GetSafeHdc(), rcDraw.left, rcDraw.top + iIconPosY, ILD_TRANSPARENT);
+						rcDraw.left += theApp.GetSmallSytemIconSize().cx;
+
+						rcDraw.left += sm_iLabelOffset;
+						dc->DrawText(szItem, -1, &rcDraw, MLC_DT_TEXT | uDrawTextAlignment);
+						break;
+					}
+
+					default:
+						dc.DrawText(szItem, -1, &cur_rec, MLC_DT_TEXT | uDrawTextAlignment);
+						break;
+				}
+			}
+			cur_rec.left += iColumnWidth;
+		}
+	}
+
+	DrawFocusRect(dc, lpDrawItemStruct->rcItem, lpDrawItemStruct->itemState & ODS_FOCUS, bCtrlFocused, lpDrawItemStruct->itemState & ODS_SELECTED);
+}
+
+void CCollectionListCtrl::GetItemDisplayText(const CAbstractFile *pFile, int iSubItem, LPTSTR pszText, int cchTextMax)
+{
+    if (pszText == NULL || cchTextMax <= 0)
+    {
+        ASSERT(0);
+        return;
+    }
+    pszText[0] = L'\0';
+	CString buffer = L"";
+    switch (iSubItem)
+    {
+		case 0:
+			buffer = pFile->GetFileName();				
+			break;
+
+		case 1:
+			buffer = CastItoXBytes(pFile->GetFileSize());
+			break;
+
+		case 2:
+			buffer = md4str(pFile->GetFileHash());
+			break;
+
+//>>> WiZaRd::CollectionEnhancement
+		case 3:
+			buffer = pFile->GetDownloadDirectory(true); 
+			break;
+//<<< WiZaRd::CollectionEnhancement
+    }
+	_tcsncpy(pszText, buffer, cchTextMax);
+    pszText[cchTextMax - 1] = L'\0';
+}
+
+void CCollectionListCtrl::OnLvnGetDispInfo(NMHDR *pNMHDR, LRESULT *pResult)
+{
+    if (theApp.emuledlg->IsRunning())
+    {
+        // Although we have an owner drawn listview control we store the text for the primary item in the listview, to be
+        // capable of quick searching those items via the keyboard. Because our listview items may change their contents,
+        // we do this via a text callback function. The listview control will send us the LVN_DISPINFO notification if
+        // it needs to know the contents of the primary item.
+        //
+        // But, the listview control sends this notification all the time, even if we do not search for an item. At least
+        // this notification is only sent for the visible items and not for all items in the list. Though, because this
+        // function is invoked *very* often, do *NOT* put any time consuming code in here.
+        //
+        // Vista: That callback is used to get the strings for the label tips for the sub(!) items.
+        //
+        NMLVDISPINFO *pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
+        if (pDispInfo->item.mask & LVIF_TEXT)
+        {
+            const CAbstractFile* pClient = reinterpret_cast<CAbstractFile*>(pDispInfo->item.lParam);
+            if (pClient != NULL)
+                GetItemDisplayText(pClient, pDispInfo->item.iSubItem, pDispInfo->item.pszText, pDispInfo->item.cchTextMax);
+        }
+    }
+    *pResult = 0;
 }
 
 void CCollectionListCtrl::OnLvnColumnClick(NMHDR *pNMHDR, LRESULT *pResult)
@@ -218,54 +395,131 @@ int CCollectionListCtrl::SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamS
     int iResult;
     switch (LOWORD(lParamSort))
     {
-    case colName:
-        iResult = CompareLocaleStringNoCase(item1->GetFileName(),item2->GetFileName());
-        break;
+		case colName:
+			iResult = CompareLocaleStringNoCase(item1->GetFileName(),item2->GetFileName());
+			break;
 
-    case colSize:
-        iResult = CompareUnsigned64(item1->GetFileSize(), item2->GetFileSize());
-        break;
+		case colSize:
+			iResult = CompareUnsigned64(item1->GetFileSize(), item2->GetFileSize());
+			break;
 
-    case colHash:
-        iResult = memcmp(item1->GetFileHash(), item2->GetFileHash(), 16);
-        break;
+		case colHash:
+			iResult = memcmp(item1->GetFileHash(), item2->GetFileHash(), 16);
+			break;
 
 //>>> WiZaRd::CollectionEnhancement
-    case colFolder:
-        iResult = CompareOptLocaleStringNoCaseUndefinedAtBottom(item1->GetDownloadDirectory(true), item2->GetDownloadDirectory(true), true);
-        break;
+		case colFolder:
+			iResult = CompareOptLocaleStringNoCaseUndefinedAtBottom(item1->GetDownloadDirectory(true), item2->GetDownloadDirectory(true), true);
+			break;
 //<<< WiZaRd::CollectionEnhancement
 
-    default:
-        return 0;
+		default:
+			return 0;
     }
     if (HIWORD(lParamSort))
         iResult = -iResult;
     return iResult;
 }
 
-void CCollectionListCtrl::OnNmRClick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
-{
 //>>> WiZaRd::CollectionEnhancement
-    UINT flag = MF_STRING;
-    if (GetNextItem(-1, LVIS_SELECTED | LVIS_FOCUSED) == -1)
-        flag = MF_GRAYED;
+void CCollectionListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
+{
+	if(m_bContextMenu)
+	{
+		UINT flag = MF_STRING;
+		if (GetNextItem(-1, LVIS_SELECTED | LVIS_FOCUSED) == -1)
+			flag = MF_GRAYED;
 
-    POINT point;
-    ::GetCursorPos(&point);
+		CTitleMenu popupMenu;
+		popupMenu.CreatePopupMenu();
+		if(thePrefs.IsExtControlsEnabled())
+			popupMenu.AppendMenu(flag, MP_META_DATA, GetResString(IDS_META_DATA));
+		popupMenu.AppendMenu(flag, MP_RENAME, GetResString(IDS_FOLDER));
+		popupMenu.SetDefaultItem(thePrefs.IsExtControlsEnabled() ? MP_META_DATA : MP_RENAME);
 
-    CTitleMenu popupMenu;
-    popupMenu.CreatePopupMenu();
-    popupMenu.AppendMenu(flag, MP_META_DATA, GetResString(IDS_META_DATA));
-    popupMenu.AppendMenu(flag, MP_RENAME, GetResString(IDS_FOLDER));
-    popupMenu.SetDefaultItem(MP_META_DATA);
-
-    popupMenu.TrackPopupMenu(TPM_LEFTALIGN |TPM_RIGHTBUTTON, point.x, point.y, this);
-    VERIFY(popupMenu.DestroyMenu());
-
-    *pResult = 0;
-//<<< WiZaRd::CollectionEnhancement
+		GetPopupMenuPos(*this, point);
+		popupMenu.TrackPopupMenu(TPM_LEFTALIGN |TPM_RIGHTBUTTON, point.x, point.y, this);
+		//VERIFY(popupMenu.DestroyMenu());
+	}
 }
+
+BOOL CCollectionListCtrl::OnCommand(WPARAM wParam,LPARAM lParam)
+{
+    int iSel = GetNextItem(-1, LVIS_SELECTED | LVIS_FOCUSED);
+    if (iSel != -1)
+    {
+        CTypedPtrList<CPtrList, CAbstractFile*> abstractFileList;
+        POSITION pos = GetFirstSelectedItemPosition();
+        while (pos != NULL)
+        {
+            int index = GetNextSelectedItem(pos);
+            if (index >= 0)
+                abstractFileList.AddTail((CAbstractFile*)GetItemData(index));
+        }
+        switch (wParam)
+        {
+			case MP_META_DATA:
+			{
+				ASSERT(m_bContextMenu && thePrefs.IsExtControlsEnabled());
+				if (!abstractFileList.IsEmpty())
+				{
+					CCollectionFileDetailsSheet dialog(abstractFileList, 0, this);
+					dialog.DoModal();
+				}
+				return TRUE;
+			}
+
+			case MP_RENAME:
+			{
+				ASSERT(m_bContextMenu);
+				CString strDirectory = L"";
+				if (!abstractFileList.IsEmpty())
+					strDirectory = abstractFileList.GetHead()->GetDownloadDirectory();
+				InputBox inputbox;
+				CString title = GetResString(IDS_FOLDER);
+				inputbox.SetLabels(title, GetResString(IDS_FOLDER), strDirectory);
+				inputbox.SetEditFilenameMode();
+				inputbox.DoModal();
+				strDirectory = inputbox.GetInput();
+				if (!inputbox.WasCancelled())
+				{
+					LVFINDINFO find;
+					find.flags = LVFI_PARAM;
+					int iItem = -1;
+					for (POSITION pos = abstractFileList.GetHeadPosition(); pos;)
+					{
+						CAbstractFile* pAbstractFile = abstractFileList.GetNext(pos);
+						pAbstractFile->SetDownloadDirectory(strDirectory);
+
+						// update the displayed file
+						find.lParam = (LPARAM)pAbstractFile;
+						iItem = FindItem(&find);
+						if (iItem != -1)
+							SetItemText(iItem, colFolder, pAbstractFile->GetDownloadDirectory(true));
+					}
+				}
+				return TRUE;
+			}
+
+			case VK_SPACE:
+			{
+				if(m_bCheckBoxes)
+				{
+					POSITION pos = GetFirstSelectedItemPosition();
+					while (pos != NULL)
+					{
+						int index = GetNextSelectedItem(pos);
+						if (index >= 0)
+							SetCheck(index, !GetCheck(index));
+					}
+					return TRUE;
+				}
+			}
+        }
+    }
+    return __super::OnCommand(wParam, lParam);
+}
+//<<< WiZaRd::CollectionEnhancement
 
 void CCollectionListCtrl::AddFileToList(CAbstractFile* pAbstractFile)
 {
@@ -302,63 +556,29 @@ void CCollectionListCtrl::RemoveFileFromList(CAbstractFile* pAbstractFile)
         ASSERT(0);
 }
 
-//>>> WiZaRd::CollectionEnhancement
-BOOL CCollectionListCtrl::OnCommand(WPARAM wParam,LPARAM lParam)
+void CCollectionListCtrl::OnNmClick(NMHDR *pNMHDR, LRESULT * /*pResult*/)
 {
-    int iSel = GetNextItem(-1, LVIS_SELECTED | LVIS_FOCUSED);
-    if (iSel != -1)
-    {
-        CTypedPtrList<CPtrList, CAbstractFile*> abstractFileList;
-        POSITION pos = GetFirstSelectedItemPosition();
-        while (pos != NULL)
-        {
-            int index = GetNextSelectedItem(pos);
-            if (index >= 0)
-                abstractFileList.AddTail((CAbstractFile*)GetItemData(index));
-        }
-        switch (wParam)
-        {
-        case MP_META_DATA:
-        {
-            if (!abstractFileList.IsEmpty())
-            {
-                CCollectionFileDetailsSheet dialog(abstractFileList, 0, this);
-                dialog.DoModal();
-            }
-            return TRUE;
-        }
-        case MP_RENAME:
-        {
-            CString strDirectory = L"";
-            if (!abstractFileList.IsEmpty())
-                strDirectory = abstractFileList.GetHead()->GetDownloadDirectory();
-            InputBox inputbox;
-            CString title = GetResString(IDS_FOLDER);
-            inputbox.SetLabels(title, GetResString(IDS_FOLDER), strDirectory);
-            inputbox.SetEditFilenameMode();
-            inputbox.DoModal();
-            strDirectory = inputbox.GetInput();
-            if (!inputbox.WasCancelled())
-            {
-                LVFINDINFO find;
-                find.flags = LVFI_PARAM;
-                int iItem = -1;
-                for (POSITION pos = abstractFileList.GetHeadPosition(); pos;)
-                {
-                    CAbstractFile* pAbstractFile = abstractFileList.GetNext(pos);
-                    pAbstractFile->SetDownloadDirectory(strDirectory);
-
-                    // update the displayed file
-                    find.lParam = (LPARAM)pAbstractFile;
-                    iItem = FindItem(&find);
-                    if (iItem != -1)
-                        SetItemText(iItem, colFolder, pAbstractFile->GetDownloadDirectory(true));
-                }
-            }
-            return TRUE;
-        }
-        }
-    }
-    return __super::OnCommand(wParam, lParam);
+	POINT pt;
+	::GetCursorPos(&pt);
+	ScreenToClient(&pt);
+	if (pt.x < 16)
+	{
+		NMLISTVIEW *pNMListView = (NMLISTVIEW *)pNMHDR;
+		BOOL bChecked = GetCheck(pNMListView->iItem);
+		SetCheck(pNMListView->iItem, !bChecked);
+	}
 }
-//<<< WiZaRd::CollectionEnhancement
+
+void CCollectionListCtrl::CheckAll()
+{
+	ASSERT(m_bCheckBoxes);
+	for(int i = 0; i < GetItemCount(); ++i)
+		SetCheck(i, TRUE);
+}
+
+void CCollectionListCtrl::UncheckAll()
+{
+	ASSERT(m_bCheckBoxes);
+	for(int i = 0; i < GetItemCount(); ++i)
+		SetCheck(i, FALSE);
+}
