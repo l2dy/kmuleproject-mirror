@@ -164,6 +164,7 @@ CAICHHashTree* CAICHHashTree::FindHash(uint64 nStartPos, uint64 nSize, uint8* nL
     }
 }
 
+// find existing hash, which is part of a properly build tree/branch
 // recursive
 const CAICHHashTree* CAICHHashTree::FindExistingHash(uint64 nStartPos, uint64 nSize, uint8* nLevel) const
 {
@@ -187,7 +188,10 @@ const CAICHHashTree* CAICHHashTree::FindExistingHash(uint64 nStartPos, uint64 nS
     if (nStartPos == 0 && nSize == m_nDataSize)
     {
         // this is the searched hash
-        return this;
+        if (m_bHashValid)
+            return this;
+        else
+            return NULL;
     }
     else if (m_nDataSize <= GetBaseSize())  // sanity
     {
@@ -207,7 +211,7 @@ const CAICHHashTree* CAICHHashTree::FindExistingHash(uint64 nStartPos, uint64 nS
                 ASSERT(false);
                 return NULL;
             }
-            if (m_pLeftTree == NULL)
+            if (m_pLeftTree == NULL || !m_pLeftTree->m_bHashValid)
                 return NULL;
             else
             {
@@ -223,7 +227,7 @@ const CAICHHashTree* CAICHHashTree::FindExistingHash(uint64 nStartPos, uint64 nS
                 ASSERT(false);
                 return NULL;
             }
-            if (m_pRightTree == NULL)
+            if (m_pRightTree == NULL || !m_pRightTree->m_bHashValid)
                 return NULL;
             else
             {
@@ -286,7 +290,7 @@ bool CAICHHashTree::VerifyHashTree(CAICHHashAlgo* hashalg, bool bDeleteBadTrees)
         return false;
     }
 
-    // calculated missing hashs without overwriting anything
+    // calculate missing hashs without overwriting anything
     if (m_pLeftTree && !m_pLeftTree->m_bHashValid)
         m_pLeftTree->ReCalculateHash(hashalg, true);
     if (m_pRightTree && !m_pRightTree->m_bHashValid)
@@ -329,9 +333,20 @@ bool CAICHHashTree::VerifyHashTree(CAICHHashAlgo* hashalg, bool bDeleteBadTrees)
         return m_pLeftTree->VerifyHashTree(hashalg, bDeleteBadTrees) && m_pRightTree->VerifyHashTree(hashalg, bDeleteBadTrees);
     }
     else
+    {
         // last hash in branch - nothing below to verify
-        return true;
 
+        // delete empty (without a hash) branches if they exist - they may actually have hashes in leafs below but they are not part of the tree
+        // because of that, the tree itself can still succeed verification
+        if (bDeleteBadTrees)
+        {
+            if (m_pLeftTree && !m_pLeftTree->m_bHashValid)
+                delete m_pLeftTree;
+            if (m_pRightTree && !m_pRightTree->m_bHashValid)
+                delete m_pRightTree;
+        }
+        return true;
+    }
 }
 
 void CAICHHashTree::SetBlockHash(uint64 nSize, uint64 nStartPos, CAICHHashAlgo* pHashAlg)
@@ -836,7 +851,7 @@ bool CAICHRecoveryHashSet::ReadRecoveryData(uint64 nPartStartPos, CSafeMemFile* 
         // some final check if all hashs we wanted are there
         for (UINT nPartPos = 0; nPartPos < nPartSize; nPartPos += EMBLOCKSIZE)
         {
-            CAICHHashTree* phtToCheck = m_pHashTree.FindHash(nPartStartPos+nPartPos, min(EMBLOCKSIZE, nPartSize-nPartPos));
+            const CAICHHashTree* phtToCheck = m_pHashTree.FindExistingHash(nPartStartPos+nPartPos, min(EMBLOCKSIZE, nPartSize-nPartPos));
             if (phtToCheck == NULL || !phtToCheck->m_bHashValid)
             {
                 theApp.QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("Failed to read RecoveryData for %s - Error while verifying presence of all lowest level hashs"), m_pOwner->GetFileName());

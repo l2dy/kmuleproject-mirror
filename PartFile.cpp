@@ -6693,7 +6693,7 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
 
 
 
-    CAICHHashTree* pVerifiedHash = m_pAICHRecoveryHashSet->m_pHashTree.FindHash((uint64)nPart*PARTSIZE, length);
+    const CAICHHashTree* pVerifiedHash = m_pAICHRecoveryHashSet->m_pHashTree.FindExistingHash((uint64)nPart*PARTSIZE, length);
     if (pVerifiedHash == NULL || !pVerifiedHash->m_bHashValid)
     {
         AddDebugLogLine(DLP_DEFAULT, false, _T("Processing AICH Recovery data: Unable to get verified hash from hashset (should never happen)"));
@@ -6733,7 +6733,7 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
         for (UINT pos = 0; pos < length; pos += EMBLOCKSIZE)
         {
             const UINT nBlockSize = min(EMBLOCKSIZE, length - pos);
-            CAICHHashTree* pVerifiedBlock = pVerifiedHash->FindHash(pos, nBlockSize);
+            const CAICHHashTree* pVerifiedBlock = pVerifiedHash->FindExistingHash(pos, nBlockSize);
             CAICHHashTree* pOurBlock = htOurHash.FindHash(pos, nBlockSize);
             if (pVerifiedBlock == NULL || pOurBlock == NULL || !pVerifiedBlock->m_bHashValid || !pOurBlock->m_bHashValid)
             {
