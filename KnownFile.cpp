@@ -2511,7 +2511,7 @@ uint8* CKnownFile::GetPartStatus(CUpDownClient* client) const
 				lastminFreqArray.Add(i);
 		}		
 		const UINT targetValues = (minFreqArray.GetCount() + lastminFreqArray.GetCount()) < 3 ? (minFreqArray.GetCount() + lastminFreqArray.GetCount()) : 3;
-		while(shownChunks.GetCount() < targetValues && !minFreqArray.IsEmpty())
+		while((UINT)shownChunks.GetCount() < targetValues && !minFreqArray.IsEmpty())
 		{
 			int index = rand() % minFreqArray.GetCount();
 			int val = minFreqArray[index];
@@ -2519,7 +2519,7 @@ uint8* CKnownFile::GetPartStatus(CUpDownClient* client) const
 			shownChunks.AddTail(val);
 			minFreqArray.RemoveAt(index);
 		}
-		while(shownChunks.GetCount() < targetValues && !lastminFreqArray.IsEmpty())
+		while((UINT)shownChunks.GetCount() < targetValues && !lastminFreqArray.IsEmpty())
 		{
 			int index = rand() % lastminFreqArray.GetCount();
 			int val = lastminFreqArray[index];

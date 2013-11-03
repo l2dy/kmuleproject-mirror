@@ -5223,3 +5223,12 @@ void DeleteBetaFile()
 
 	::DeleteFile(tempDir + strBetaFileName);
 }
+
+void GetPartStartAndEnd(const UINT uPartNumber, const EMFileSize emFileSize, uint64& uStart, uint64& uEnd)
+{
+	uStart = PARTSIZE*(uint64)uPartNumber;
+	if (PARTSIZE*(uint64)(uPartNumber+1) > emFileSize)
+		uEnd = emFileSize;
+	else
+		uEnd = PARTSIZE*(uint64)(uPartNumber+1);
+}

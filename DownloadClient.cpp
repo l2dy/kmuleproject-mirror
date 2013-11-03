@@ -56,56 +56,65 @@ CBarShader CUpDownClient::s_StatusBar(16);
 void CUpDownClient::DrawStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bool  bFlat) const
 {
     COLORREF crNeither;
-    if (bFlat)
-        crNeither = RGB(224, 224, 224);
-    else
-        crNeither = RGB(240, 240, 240);
+	COLORREF crBoth;
+	COLORREF crClientOnly;
+	COLORREF crPending;
+	COLORREF crNextPending;
+	COLORREF crClientPartial = RGB(170, 50, 224); //>>> WiZaRd::ICS [enkeyDEV]
+	COLORREF crClientSeen = RGB(150, 240, 240); //>>> WiZaRd::AntiHideOS [netfinity]
+#ifdef _DEBUG
+	COLORREF crSCT = RGB(255, 128, 0); //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+#endif
 
-    ASSERT(reqfile);
+	if (bFlat)
+	{
+		crNeither = RGB(224, 224, 224);
+		crBoth = RGB(0, 0, 0);
+		crClientOnly = RGB(0, 100, 255);
+		crPending = RGB(0, 150, 0);
+		crNextPending = RGB(255, 208, 0);
+	}
+	else
+	{
+		crNeither = RGB(240, 240, 240);
+		crBoth = RGB(104, 104, 104);
+		crClientOnly = RGB(0, 100, 255);
+		crPending = RGB(0, 150, 0);
+		crNextPending = RGB(255, 208, 0);
+	}   
+
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
     const CPartStatus* abyPartStatus = GetPartStatus();    
-	EMFileSize filesize = reqfile->GetFileSize();
 	UINT nPartCount = GetPartCount();
 	UINT nStepCount = nPartCount;
-	if (abyPartStatus && SupportsSCT())
-		nStepCount = abyPartStatus->GetCrumbsCount();
+	EMFileSize filesize = PARTSIZE;
+	if(reqfile)
+		filesize = reqfile->GetFileSize();
+	else
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+		if (abyPartStatus && SupportsSCT())
+		{
+			nStepCount = abyPartStatus->GetCrumbsCount();
+			filesize = (uint64)(CRUMBSIZE * (uint64)abyPartStatus->GetCrumbsCount());
+		}
+		else
+			filesize = (uint64)(PARTSIZE * (uint64)GetUpPartCount());
+	//filesize = (uint64)(PARTSIZE * (uint64)m_nUpPartCount);
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]	
+
 	s_StatusBar.SetFileSize(filesize);
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]    
     s_StatusBar.SetHeight(rect->bottom - rect->top);
     s_StatusBar.SetWidth(rect->right - rect->left);
     s_StatusBar.Fill(crNeither);
 
-    if (!onlygreyrect && reqfile
-            && (abyPartStatus
+	uint64 uStart = 0;
+	uint64 uEnd = 0;
+    if (!onlygreyrect 
+			&& (abyPartStatus
                 || m_abyIncPartStatus	//>>> WiZaRd::ICS [enkeyDEV]
-                || m_abySeenPartStatus	//>>> WiZaRd::AntiHideOS [netfinity]
-               )
+                || m_abySeenPartStatus)	//>>> WiZaRd::AntiHideOS [netfinity]               
        )
     {
-        COLORREF crBoth;
-        COLORREF crClientOnly;
-        COLORREF crPending;
-        COLORREF crNextPending;
-        COLORREF crClientPartial = RGB(170, 50, 224); //>>> WiZaRd::ICS [enkeyDEV]
-        COLORREF crClientSeen = RGB(150, 240, 240); //>>> WiZaRd::AntiHideOS [netfinity]
-#ifdef _DEBUG
-		COLORREF crSCT = RGB(255, 128, 0);
-#endif
-        if (bFlat)
-        {
-            crBoth = RGB(0, 0, 0);
-            crClientOnly = RGB(0, 100, 255);
-            crPending = RGB(0, 150, 0);
-            crNextPending = RGB(255, 208, 0);
-        }
-        else
-        {
-            crBoth = RGB(104, 104, 104);
-            crClientOnly = RGB(0, 100, 255);
-            crPending = RGB(0, 150, 0);
-            crNextPending = RGB(255, 208, 0);
-        }
-
         BYTE* pcNextPendingBlks = NULL;
         if (m_nDownloadState == DS_DOWNLOADING)
         {
@@ -113,7 +122,7 @@ void CUpDownClient::DrawStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bool
             memset(pcNextPendingBlks, 0, nPartCount); // do not use '_strnset' for uninitialized memory!
             for (POSITION pos = m_PendingBlocks_list.GetHeadPosition(); pos != 0;)
             {
-                UINT uPart = (UINT)(m_PendingBlocks_list.GetNext(pos)->block->StartOffset / PARTSIZE);
+                const UINT uPart = (UINT)(m_PendingBlocks_list.GetNext(pos)->block->StartOffset / PARTSIZE);
                 if (uPart < nPartCount)
                     pcNextPendingBlks[uPart] = 1;
             }
@@ -125,22 +134,15 @@ void CUpDownClient::DrawStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bool
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-			uint64 partsize = PARTSIZE;
 			if(abyPartStatus && SupportsSCT())
 			{
-				partsize = CRUMBSIZE;
 				if(i != 0 && (i % CRUMBSPERPART) == 0)
 					++nPart;
 			}
 			else
 				++nPart;
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
-            const uint64 uStart = partsize*(uint64)i;
-            uint64 uEnd;
-            if (partsize*(uint64)(i+1) > reqfile->GetFileSize())
-                uEnd = reqfile->GetFileSize();
-            else
-                uEnd = partsize*(uint64)(i+1);
+            GetPartStartAndEnd(i, filesize, uStart, uEnd);
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
             //if (IsPartAvailable(i))
 			if(abyPartStatus && abyPartStatus->IsComplete(uStart, uEnd-1))
