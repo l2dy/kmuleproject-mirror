@@ -2230,7 +2230,7 @@ BEGIN
     IDS_PERMISSION          "Permission"
     IDS_SHAREDFILES         "Shared Files"
     IDS_PRIOVERYLOW         "Very Low"
-    IDS_PRIORELEASE         "Release"
+    IDS_PRIORELEASE         "Very high"
     IDS_FSTATUS_FRIENDSONLY "Friends only"
     IDS_VIAPASSIVE          "via Passive"
     IDS_ERR_RENAMESF        "Failed to rename\r\n    ""%s""\r\nto\r\n    ""%s""\r\n\r\n%s"
