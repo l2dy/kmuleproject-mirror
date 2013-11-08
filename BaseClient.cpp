@@ -4171,7 +4171,12 @@ Packet* GetEmptyXSPacket(const CUpDownClient* forClient, CKnownFile* kreqfile, u
     {
         // the client uses SourceExchange2 and requested the highest version he knows
         // and we send the highest version we know, but of course not higher than his request
-        byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGE2_VERSION);
+//>>> WiZaRd::ExtendedXS [Xanatos]
+		if(forClient->SupportsExtendedSourceExchange())
+			byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGEEXT_VERSION);
+		else
+//<<< WiZaRd::ExtendedXS [Xanatos]
+			byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGE2_VERSION);
         bIsSX2Packet = true;
         data.WriteUInt8(byUsedVersion);
 
