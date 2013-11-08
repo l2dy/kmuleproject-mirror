@@ -111,6 +111,7 @@ void CUpDownClient::DrawUpStatusBar(CDC* dc, RECT* rect, bool onlygreyrect, bool
     if (!onlygreyrect && abyUpPartStatus)
     {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]	
+		bool bCompletePart = false;
 		for (UINT i = 0, nPart = 0; i < nStepCount; ++i)
 		//for (UINT i = 0; i < nUpPartCount; ++i)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
@@ -119,10 +120,16 @@ void CUpDownClient::DrawUpStatusBar(CDC* dc, RECT* rect, bool onlygreyrect, bool
 			if(abyUpPartStatus && SupportsSCT())
 			{
 				if(i != 0 && (i % CRUMBSPERPART) == 0)
+				{
 					++nPart;
+					bCompletePart = abyUpPartStatus->IsCompletePart(nPart);
+				}
 			}
 			else
+			{
 				++nPart;
+				bCompletePart = false;
+			}
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 			GetPartStartAndEnd(i, filesize, uStart, uEnd);
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
@@ -131,7 +138,7 @@ void CUpDownClient::DrawUpStatusBar(CDC* dc, RECT* rect, bool onlygreyrect, bool
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 			{
 #ifdef _DEBUG
-				if(SupportsSCT() && !abyUpPartStatus->IsCompletePart(nPart))
+				if(SupportsSCT() && !bCompletePart)
 					s_StatusBar.FillRange(uStart, uEnd, crSCT);
 				else
 #endif
@@ -611,15 +618,22 @@ bool CUpDownClient::ProcessExtendedInfo(CSafeMemFile* data, CKnownFile* file, co
 	return true;
 }
 
-bool CUpDownClient::ProcessUploadFileStatus(const bool bUDPPacket, CKnownFile* file, bool bAllowCloning)
+bool CUpDownClient::ProcessUploadFileStatus(const bool bUDPPacket, CKnownFile* file, bool bMergeIfPossible)
 {
     // netfinity: Update download partstatus if we are downloading this file and there is more pieces available in the upload partstatus
-	bAllowCloning = bAllowCloning && reqfile == file;
-    if(bAllowCloning && (m_pPartStatus == NULL || (m_pUpPartStatus->GetCompleted() >= m_pPartStatus->GetCompleted())))
+	bMergeIfPossible = bMergeIfPossible && reqfile == file;
+    if(bMergeIfPossible)
     {
-        delete m_pPartStatus;
-        m_pPartStatus = NULL;
-        m_pPartStatus = m_pUpPartStatus->Clone();
+		if(m_pPartStatus == NULL)        
+			m_pPartStatus = m_pUpPartStatus->Clone();
+		else
+		{
+			for(UINT uCrumb = 0; uCrumb < m_pUpPartStatus->GetCrumbsCount(); ++uCrumb)
+			{
+				if(m_pUpPartStatus->IsCompleteCrumb(uCrumb))
+					m_pPartStatus->SetCrumb(uCrumb);
+			}
+		}
 
 		UpdateDisplayedInfo(false);
 		reqfile->UpdateAvailablePartsCount();
@@ -645,11 +659,15 @@ bool CUpDownClient::ProcessUploadFileStatus(const bool bUDPPacket, CKnownFile* f
     }
 
     // Passive Src Finding
+	CPartFile* pFile = file->IsPartFile() ? (CPartFile*)file : NULL;
     bool bPartsNeeded = false;
-    bool bShouldCheck = bUDPPacket && file->IsPartFile()
-                        && (((CPartFile*)file)->GetStatus() == PS_EMPTY || ((CPartFile*)file)->GetStatus() == PS_READY)
-                        && !(GetDownloadState() == DS_ONQUEUE && reqfile == file);
-
+    bool bShouldCheck = bUDPPacket && pFile
+                        && (pFile->GetStatus() == PS_EMPTY || pFile->GetStatus() == PS_READY);
+                        /*&& (GetDownloadState() != DS_ONQUEUE || reqfile != file)*/
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	if (bShouldCheck && (!pFile->GetDonePartStatus() || pFile->GetDonePartStatus()->GetNeeded(m_pPartStatus) > 0))
+		bPartsNeeded = true;
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     uint16 done = 0;
     uint16 complcount = 0; //>>> WiZaRd::ClientAnalyzer
 	const UINT m_nUpPartCount = GetUpPartCount();
@@ -657,7 +675,7 @@ bool CUpDownClient::ProcessUploadFileStatus(const bool bUDPPacket, CKnownFile* f
     {
         if (m_pUpPartStatus->IsComplete((uint64)done*PARTSIZE, ((uint64)(done+1)*PARTSIZE)-1))
         {
-            if (bShouldCheck && !bPartsNeeded && !((CPartFile*)file)->IsComplete((uint64)done*PARTSIZE, ((uint64)(done+1)*PARTSIZE)-1, false))
+            if (bShouldCheck && !bPartsNeeded && !pFile->IsComplete((uint64)done*PARTSIZE, ((uint64)(done+1)*PARTSIZE)-1, false))
                 bPartsNeeded = true;
             //We may want to use this for another feature..
 //			if (!tempreqfile->IsComplete((uint64)done*PARTSIZE,((uint64)(done+1)*PARTSIZE)-1))
@@ -760,37 +778,40 @@ bool CUpDownClient::ProcessUploadFileStatus(const bool bUDPPacket, CKnownFile* f
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
     // Passive Src Finding
-    if (bPartsNeeded)
-    {
-        //the client was a NNS but isn't any more
-        if (GetDownloadState() == DS_NONEEDEDPARTS && reqfile == file)
-        {
-            if (GetTimeUntilReask(reqfile, true) == 0)
-                AskForDownload();
-        }
-        else if (GetDownloadState() != DS_ONQUEUE)
-        {
-            //the client maybe isn't in our downloadqueue.. let's look if we should add the client
-            if ((((CPartFile*)file)->GetSourceCount() < ((CPartFile*)file)->GetMaxSources())
-                    || ((CPartFile*)file)->GetSourceCount() < ((CPartFile*)file)->GetMaxSources()*0.8f + 1)
-            {
-                if (theApp.downloadqueue->CheckAndAddKnownSource((CPartFile*)file,this, true))
-                    AddDebugLogLine(false, L"Found new source on reask-ping: %s, file: %s", DbgGetClientInfo(), file->GetFileName());
-            }
-        }
-        else
-        {
-            if (AddRequestForAnotherFile((CPartFile*)file))
-            {
-                theApp.emuledlg->transferwnd->GetDownloadList()->AddSource((CPartFile*)file,this,true);
-                AddDebugLogLine(false, L"Found new A4AF source on reask-ping: %s, file: %s", DbgGetClientInfo(), file->GetFileName());
-            }
-        }
+    if(bShouldCheck)
+	{
+		if(bPartsNeeded)
+		{
+			//the client was a NNS but isn't any more
+			if (GetDownloadState() == DS_NONEEDEDPARTS && reqfile == file)
+			{
+				if (GetTimeUntilReask(reqfile, true) == 0)
+					AskForDownload();
+			}
+			else if (GetDownloadState() != DS_ONQUEUE)
+			{
+				//the client maybe isn't in our downloadqueue.. let's look if we should add the client
+				if ((pFile->GetSourceCount() < pFile->GetMaxSources())
+						|| pFile->GetSourceCount() < pFile->GetMaxSources()*0.8f + 1)
+				{
+					if (theApp.downloadqueue->CheckAndAddKnownSource(pFile, this, true))
+						AddDebugLogLine(false, L"Found new source on reask-ping: %s, file: %s", DbgGetClientInfo(), file->GetFileName());
+				}
+			}
+			else
+			{
+				if (AddRequestForAnotherFile(pFile))
+				{
+					theApp.emuledlg->transferwnd->GetDownloadList()->AddSource(pFile, this, true);
+					AddDebugLogLine(false, L"Found new A4AF source on reask-ping: %s, file: %s", DbgGetClientInfo(), file->GetFileName());
+				}
+			}
+		}
     }
 
     theApp.emuledlg->transferwnd->GetQueueList()->RefreshClient(this);
-	if(bAllowCloning && file->IsPartFile())
-		ProcessDownloadFileStatus(bUDPPacket, (CPartFile*)file, false);
+	if(bMergeIfPossible && pFile)
+		ProcessDownloadFileStatus(bUDPPacket, pFile, false);
     return true;
 }
 

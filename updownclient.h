@@ -1248,8 +1248,8 @@ public:
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 private:
     int			m_nProtocolRevision;
-	bool		ProcessDownloadFileStatus(const bool bUDPPacket, CPartFile* file, bool bAllowCloning = true);
-	bool		ProcessUploadFileStatus(const bool bUDPPacket, CKnownFile* file, bool bAllowCloning = true);
+	bool		ProcessDownloadFileStatus(const bool bUDPPacket, CPartFile* file, bool bMergeIfPossible = true);
+	bool		ProcessUploadFileStatus(const bool bUDPPacket, CKnownFile* file, bool bMergeIfPossible = true);
 public:
 	CKnownFile*	GetUploadReqFile() const;
     int			GetSCTVersion() const;

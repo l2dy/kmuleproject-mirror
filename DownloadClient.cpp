@@ -129,6 +129,7 @@ void CUpDownClient::DrawStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bool
         }
 
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]	
+		bool bCompletePart = false;
 		for (UINT i = 0, nPart = 0; i < nStepCount; ++i)
         //for (UINT i = 0; i < nPartCount; ++i)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
@@ -137,10 +138,16 @@ void CUpDownClient::DrawStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bool
 			if(abyPartStatus && SupportsSCT())
 			{
 				if(i != 0 && (i % CRUMBSPERPART) == 0)
+				{
 					++nPart;
+					bCompletePart = abyPartStatus->IsCompletePart(nPart);
+				}
 			}
 			else
+			{
 				++nPart;
+				bCompletePart = false;
+			}
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
             GetPartStartAndEnd(i, filesize, uStart, uEnd);
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
@@ -148,13 +155,12 @@ void CUpDownClient::DrawStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bool
 			if(abyPartStatus && abyPartStatus->IsComplete(uStart, uEnd-1))
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
             {
-#ifdef _DEBUG
-				if(SupportsSCT() && !abyPartStatus->IsCompletePart(nPart))
-					s_StatusBar.FillRange(uStart, uEnd, crSCT);
-				else
-#endif
                 if (reqfile->IsComplete(uStart, uEnd-1, false))
                     s_StatusBar.FillRange(uStart, uEnd, crBoth);
+#ifdef _DEBUG
+				else if(SupportsSCT() && !bCompletePart)
+					s_StatusBar.FillRange(uStart, uEnd, crSCT);
+#endif
                 else if (GetSessionDown() > 0 && m_nDownloadState == DS_DOWNLOADING && m_nLastBlockOffset >= uStart && m_nLastBlockOffset < uEnd)
                     s_StatusBar.FillRange(uStart, uEnd, crPending);
                 else if (pcNextPendingBlks != NULL && pcNextPendingBlks[nPart] == 1)
@@ -693,17 +699,24 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPart
 	ProcessDownloadFileStatus(bUdpPacket, file);
 }
 
-bool CUpDownClient::ProcessDownloadFileStatus(const bool bUDPPacket, CPartFile* file, bool bAllowCloning)
+bool CUpDownClient::ProcessDownloadFileStatus(const bool bUDPPacket, CPartFile* file, bool bMergeIfPossible)
 {
     /*if (m_pPartStatus->IsComplete())
     	m_bCompleteSource = true;*/
     // netfinity: Update upload partstatus if we are downloading this file and there is more pieces available in the download partstatus
-	bAllowCloning = bAllowCloning && !md4cmp(GetUploadFileID(), file->GetFileHash());
-    if(bAllowCloning && (m_pUpPartStatus == NULL || (m_pPartStatus->GetCompleted() >= m_pUpPartStatus->GetCompleted())))
+	bMergeIfPossible = bMergeIfPossible && !md4cmp(GetUploadFileID(), file->GetFileHash());
+    if(bMergeIfPossible)
     {
-        delete m_pUpPartStatus;
-        m_pUpPartStatus = NULL;
-        m_pUpPartStatus = m_pPartStatus->Clone();
+		if(m_pUpPartStatus == NULL)        
+			m_pUpPartStatus = m_pPartStatus->Clone();
+		else
+		{
+			for(UINT uCrumb = 0; uCrumb < m_pPartStatus->GetCrumbsCount(); ++uCrumb)
+			{
+				if(m_pPartStatus->IsCompleteCrumb(uCrumb))
+					m_pUpPartStatus->SetCrumb(uCrumb);
+			}
+		}        
     }
 
     const UINT m_nPartCount = GetPartCount();
@@ -862,7 +875,7 @@ bool CUpDownClient::ProcessDownloadFileStatus(const bool bUDPPacket, CPartFile* 
     }
     reqfile->UpdatePartsInfo();
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	if(bAllowCloning)
+	if(bMergeIfPossible)
 		ProcessUploadFileStatus(bUDPPacket, file, false);
 	return true;
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
@@ -3147,7 +3160,7 @@ bool CUpDownClient::IsPartialSource() const
     if (reqfile == NULL || m_abySeenPartStatus == NULL)
         return false;
 
-    CKnownFile* file = theApp.sharedfiles->GetFileByID(GetUploadFileID());
+    CKnownFile* file = GetUploadReqFile();
     return file == reqfile;
 }
 //<<< WiZaRd::AntiHideOS [netfinity]
