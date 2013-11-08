@@ -54,6 +54,7 @@ protected:
     afx_msg void OnLvnColumnClick(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnGetDispInfo(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnContextMenu(CWnd* pWnd, CPoint point); //>>> WiZaRd::CollectionEnhancement
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnNmClick(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnListModified(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnSysColorChange();

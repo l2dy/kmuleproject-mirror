@@ -161,6 +161,7 @@ BEGIN_MESSAGE_MAP(CCollectionListCtrl, CMuleListCtrl)
     ON_NOTIFY_REFLECT(LVN_GETDISPINFO, OnLvnGetDispInfo)
     ON_NOTIFY_REFLECT(NM_CLICK, OnNmClick)
     ON_WM_CONTEXTMENU() //>>> WiZaRd::CollectionEnhancement
+	ON_WM_KEYDOWN()
     ON_WM_SYSCOLORCHANGE()
 END_MESSAGE_MAP()
 
@@ -500,21 +501,6 @@ BOOL CCollectionListCtrl::OnCommand(WPARAM wParam,LPARAM lParam)
 				}
 				return TRUE;
 			}
-
-			case VK_SPACE:
-			{
-				if(m_bCheckBoxes)
-				{
-					POSITION pos = GetFirstSelectedItemPosition();
-					while (pos != NULL)
-					{
-						int index = GetNextSelectedItem(pos);
-						if (index >= 0)
-							SetCheck(index, !GetCheck(index));
-					}
-					return TRUE;
-				}
-			}
         }
     }
     return __super::OnCommand(wParam, lParam);
@@ -564,21 +550,42 @@ void CCollectionListCtrl::OnNmClick(NMHDR *pNMHDR, LRESULT * /*pResult*/)
 	if (pt.x < 16)
 	{
 		NMLISTVIEW *pNMListView = (NMLISTVIEW *)pNMHDR;
-		BOOL bChecked = GetCheck(pNMListView->iItem);
-		SetCheck(pNMListView->iItem, !bChecked);
+		SetCheck(pNMListView->iItem, !GetCheck(pNMListView->iItem));
 	}
+}
+
+void CCollectionListCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	if (nChar == VK_SPACE && m_bCheckBoxes)
+	{
+		SetRedraw(FALSE);
+		POSITION pos = GetFirstSelectedItemPosition();
+		while (pos != NULL)
+		{
+			int index = GetNextSelectedItem(pos);
+			if (index >= 0)
+				SetCheck(index, !GetCheck(index));
+		}
+		SetRedraw(TRUE);
+	}
+
+	__super::OnKeyDown(nChar, nRepCnt, nFlags);
 }
 
 void CCollectionListCtrl::CheckAll()
 {
+	SetRedraw(FALSE);
 	ASSERT(m_bCheckBoxes);
 	for(int i = 0; i < GetItemCount(); ++i)
 		SetCheck(i, TRUE);
+	SetRedraw(TRUE);
 }
 
 void CCollectionListCtrl::UncheckAll()
 {
+	SetRedraw(FALSE);
 	ASSERT(m_bCheckBoxes);
 	for(int i = 0; i < GetItemCount(); ++i)
 		SetCheck(i, FALSE);
+	SetRedraw(TRUE);
 }
