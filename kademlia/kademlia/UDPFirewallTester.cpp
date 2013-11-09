@@ -49,7 +49,7 @@ UINT CUDPFirewallTester::m_dwLastSucceededTime = 0;
 CList<CContact> CUDPFirewallTester::m_liPossibleTestClients;
 CList<UsedClient_Struct> CUDPFirewallTester::m_liUsedTestClients;
 
-bool CUDPFirewallTester::IsFirewalledUDP(bool bLastStateIfTesting)
+bool CUDPFirewallTester::IsFirewalledUDP(const bool bLastStateIfTesting)
 {
     if (CKademlia::IsRunningInLANMode())
         return false;
@@ -81,7 +81,7 @@ bool CUDPFirewallTester::GetUDPCheckClientsNeeded()
     return (m_byFWChecksRunningUDP + m_byFWChecksFinishedUDP) < UDP_FIREWALLTEST_CLIENTSTOASK;
 }
 
-void CUDPFirewallTester::SetUDPFWCheckResult(bool bSucceeded, bool bTestCancelled, UINT uFromIP, uint16 nIncomingPort)
+void CUDPFirewallTester::SetUDPFWCheckResult(const bool bSucceeded, const bool bTestCancelled, const UINT uFromIP, const uint16 nIncomingPort)
 {
     // check if we actually requested a firewallcheck from this cleint
     bool bRequested = false;
@@ -178,19 +178,26 @@ void CUDPFirewallTester::SetUDPFWCheckResult(bool bSucceeded, bool bTestCancelle
         DebugLogWarning(_T("Kad UDP firewalltest from %s cancelled"), ipstr(ntohl(uFromIP)));
     QueryNextClient();
 }
-void CUDPFirewallTester::ReCheckFirewallUDP(bool bSetUnverified)
+
+bool CUDPFirewallTester::ReCheckFirewallUDP(const bool bSetUnverified)
 {
-    ASSERT(m_byFWChecksRunningUDP == 0);
-    m_byFWChecksRunningUDP = 0;
-    m_byFWChecksFinishedUDP = 0;
-    m_dwLastSucceededTime = 0;
-    m_dwTestStart = ::GetTickCount();
-    m_bTimedOut = false;
-    m_bFirewalledLastStateUDP = m_bFirewalledUDP;
-    m_bIsFWVerifiedUDP = (m_bIsFWVerifiedUDP && !bSetUnverified);
-    CSearchManager::FindNodeFWCheckUDP(); // start a lookup for a random node to find suitable IPs
-    m_bNodeSearchStarted = true;
-    CKademlia::GetPrefs()->FindExternKadPort(true);
+	bool checked = false;
+	if(CUDPFirewallTester::GetRunningFWChecks())
+	{
+		//ASSERT(m_byFWChecksRunningUDP == 0);
+		m_byFWChecksRunningUDP = 0;
+		m_byFWChecksFinishedUDP = 0;
+		m_dwLastSucceededTime = 0;
+		m_dwTestStart = ::GetTickCount();
+		m_bTimedOut = false;
+		m_bFirewalledLastStateUDP = m_bFirewalledUDP;
+		m_bIsFWVerifiedUDP = (m_bIsFWVerifiedUDP && !bSetUnverified);
+		CSearchManager::FindNodeFWCheckUDP(); // start a lookup for a random node to find suitable IPs
+		m_bNodeSearchStarted = true;
+		CKademlia::GetPrefs()->FindExternKadPort(true);
+		checked = true;
+	}
+	return checked;
 }
 
 void CUDPFirewallTester::Connected()
@@ -226,18 +233,18 @@ void CUDPFirewallTester::Reset()
     // keep the list of used clients
 }
 
-void CUDPFirewallTester::AddPossibleTestContact(const CUInt128 &uClientID, UINT uIp, uint16 uUdpPort, uint16 uTcpPort, const CUInt128 &uTarget, uint8 uVersion, CKadUDPKey cUDPKey, bool bIPVerified)
+void CUDPFirewallTester::AddPossibleTestContact(const CUInt128 &uClientID, const UINT uIp, const uint16 uUdpPort, const uint16 uTcpPort, const CUInt128 &uTarget, const uint8 uVersion, const CKadUDPKey& cUDPKey, const bool bIPVerified)
 {
-    if (!IsFWCheckUDPRunning())
-        return;
-    // add the possible contact to our list - no checks in advance
-    m_liPossibleTestClients.AddHead(CContact(uClientID, uIp, uUdpPort, uTcpPort, uTarget, uVersion, cUDPKey, bIPVerified));
-    QueryNextClient();
+    if (IsFWCheckUDPRunning())
+	{
+		// add the possible contact to our list - no checks in advance
+		m_liPossibleTestClients.AddHead(CContact(uClientID, uIp, uUdpPort, uTcpPort, uTarget, uVersion, cUDPKey, bIPVerified));
+		QueryNextClient();
+	}
 }
 
 void CUDPFirewallTester::QueryNextClient()  // try the next available client for the firewallcheck
 {
-
     if (!IsFWCheckUDPRunning() || !GetUDPCheckClientsNeeded() || CKademlia::GetPrefs()->FindExternKadPort(false))
         return; // check if more tests are needed and wait till we know our extern port
 
@@ -286,4 +293,9 @@ void CUDPFirewallTester::QueryNextClient()  // try the next available client for
 bool CUDPFirewallTester::IsVerified()
 {
     return m_bIsFWVerifiedUDP || CKademlia::IsRunningInLANMode();
+}
+
+uint8 CUDPFirewallTester::GetRunningFWChecks()
+{
+	return m_byFWChecksRunningUDP;
 }
