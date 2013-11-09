@@ -695,6 +695,13 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPart
     delete m_pPartStatus;
     m_pPartStatus = NULL; // In case we fail to create the part status object
     m_pPartStatus = CPartStatus::CreatePartStatus(data, reqfile);
+//>>> WiZaRd::AntiHideOS [netfinity]
+    if (m_abySeenPartStatus == NULL)
+    {
+        m_abySeenPartStatus = new uint8[m_pPartStatus->GetPartCount()];
+        memset(m_abySeenPartStatus, 0, m_pPartStatus->GetPartCount());
+    }
+//<<< WiZaRd::AntiHideOS [netfinity]
 
 	ProcessDownloadFileStatus(bUdpPacket, file);
 }
@@ -732,7 +739,10 @@ bool CUpDownClient::ProcessDownloadFileStatus(const bool bUDPPacket, CPartFile* 
     const bool checkSeenParts = IsPartialSource(); //>>> WiZaRd::AntiHideOS [netfinity]
     while (done != m_nPartCount)
     {
-        if (IsPartAvailable(done)
+		bool bPartAvail = IsPartAvailable(done);
+		if(bPartAvail)
+			m_abySeenPartStatus[done] = 1; //>>> WiZaRd::AntiHideOS [netfinity]
+        if (bPartAvail
 //>>> WiZaRd::AntiHideOS [netfinity]
                 || (checkSeenParts && m_abySeenPartStatus[done])
 //<<< WiZaRd::AntiHideOS [netfinity]

@@ -2969,7 +2969,7 @@ UINT CPartFile::Process(UINT reducedownload, UINT icounter/*in percent*/)
 										if (!IsCorruptedPart(uPartNumber))
 											corrupted_list.AddTail((uint16)uPartNumber);
 
-										// request AICH recovery data, except if AICH already agreed anyway or we explict dont want to
+										// request AICH recovery data, except if AICH already agreed anyway or we explicitly don't want to
 										if (/*!bNoAICH &&*/ !bAICHAgreed)
 											RequestAICHRecovery((uint16)uPartNumber);
 
@@ -2982,7 +2982,7 @@ UINT CPartFile::Process(UINT reducedownload, UINT icounter/*in percent*/)
 										if (!m_bMD4HashsetNeeded)
 										{
 											if (thePrefs.GetVerbose())
-												AddDebugLogLine(DLP_VERYLOW, false, _T("Finished part %u of \"%s\""), uPartNumber, GetFileName());
+												AddDebugLogLine(DLP_VERYLOW, false, L"Finished part %u of \"%s\"", uPartNumber, GetFileName());
 										}
 
 										// tell the blackbox about the verified data
@@ -2995,14 +2995,6 @@ UINT CPartFile::Process(UINT reducedownload, UINT icounter/*in percent*/)
 
 										CompletedPart(uPartNumber);
 									}
-																
-									//AICHRecoveryDataAvailable(part);									
-									/*// Perform AICH hashing and share blocks that hashed successful
-									CPartHashThread* const parthashthread = (CPartHashThread*) AfxBeginThread(RUNTIME_CLASS(CPartHashThread), THREAD_PRIORITY_LOWEST,0, CREATE_SUSPENDED);
-									if (parthashthread == nullptr)
-										throw CString(_T(__FUNCTION__) _T(": Failed to create worker thread!"));
-									parthashthread->SetSinglePartHash(this, part, false, false, true);
-									parthashthread->ResumeThread();*/
 								}
 								else if (canRequestRecoveryData)
 									partsToRequestsRecoveryData.AddTail(part);
@@ -3454,22 +3446,12 @@ void CPartFile::UpdatePartsInfo()
 //a seen part gets lower priority because we *know* it exists but can't request it
 #define SEEN_WEIGHT		0x01
 //<<< WiZaRd::AntiHideOS/WiZaRd::ICS
-//>>> WiZaRd::AntiHideOS [netfinity]
-            if (!cur_src->m_abySeenPartStatus)
-            {
-                cur_src->m_abySeenPartStatus = new uint8[partcount];
-                memset(cur_src->m_abySeenPartStatus, 0, partcount);
-            }
-//<<< WiZaRd::AntiHideOS [netfinity]
             for (UINT i = 0; i < partcount; i++)
             {
                 if (cur_src->IsPartAvailable(i))
-                {
-                    m_SrcpartFrequency[i] += DEFAULT_WEIGHT;
-                    cur_src->m_abySeenPartStatus[i] = 1; //>>> WiZaRd::AntiHideOS [netfinity]
-                }
+                    m_SrcpartFrequency[i] += DEFAULT_WEIGHT;                    
 //>>> WiZaRd::AntiHideOS [netfinity]
-                else if ((cur_src->m_abySeenPartStatus && cur_src->m_abySeenPartStatus[i] == 1))
+                else if (cur_src->m_abySeenPartStatus && cur_src->m_abySeenPartStatus[i] == 1)
                     m_SrcpartFrequency[i] += SEEN_WEIGHT;
 //<<< WiZaRd::AntiHideOS [netfinity]
 //>>> WiZaRd::ICS [enkeyDEV]
@@ -5615,7 +5597,7 @@ void CPartFile::FlushBuffer(bool forcewait, bool bNoAICH)
                     if (!IsCorruptedPart(uPartNumber))
                         corrupted_list.AddTail((uint16)uPartNumber);
 
-                    // request AICH recovery data, except if AICH already agreed anyway or we explict dont want to
+                    // request AICH recovery data, except if AICH already agreed anyway or we explicitly don't want to
                     if (!bNoAICH && !bAICHAgreed)
                         RequestAICHRecovery((uint16)uPartNumber);
 
@@ -5628,7 +5610,7 @@ void CPartFile::FlushBuffer(bool forcewait, bool bNoAICH)
                     if (!m_bMD4HashsetNeeded)
                     {
                         if (thePrefs.GetVerbose())
-                            AddDebugLogLine(DLP_VERYLOW, false, _T("Finished part %u of \"%s\""), uPartNumber, GetFileName());
+                            AddDebugLogLine(DLP_VERYLOW, false, L"Finished part %u of \"%s\"", uPartNumber, GetFileName());
                     }
 
                     // tell the blackbox about the verified data
@@ -5679,7 +5661,7 @@ void CPartFile::FlushBuffer(bool forcewait, bool bNoAICH)
                 }
             }
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-            else if(!bNoAICH && theApp.m_app_state == APP_STATE_RUNNING) //>>> WiZaRd: FiX
+            else if(theApp.m_app_state == APP_STATE_RUNNING) //>>> WiZaRd: FiX
             {
                 // Attempt to share incomplete part if it will not complete within a decent time frame and we already have recovery data available
 				if (m_pAICHRecoveryHashSet 
@@ -5689,7 +5671,6 @@ void CPartFile::FlushBuffer(bool forcewait, bool bNoAICH)
                 {
                     if (EstimatePartCompletion(uPartNumber) >= FORCE_AICH_TIME)
 					{	
-						// TODO!
 						// Is part corrupt
 						bool bAICHAgreed = false;
 						if (!HashSinglePart(uPartNumber, &bAICHAgreed))
@@ -5701,7 +5682,7 @@ void CPartFile::FlushBuffer(bool forcewait, bool bNoAICH)
 							if (!IsCorruptedPart(uPartNumber))
 								corrupted_list.AddTail((uint16)uPartNumber);
 
-							// request AICH recovery data, except if AICH already agreed anyway or we explict dont want to
+							// request AICH recovery data, except if AICH already agreed anyway or we explicitly don't want to
 							if (!bNoAICH && !bAICHAgreed)
 								RequestAICHRecovery((uint16)uPartNumber);
 
@@ -5714,7 +5695,7 @@ void CPartFile::FlushBuffer(bool forcewait, bool bNoAICH)
 							if (!m_bMD4HashsetNeeded)
 							{
 								if (thePrefs.GetVerbose())
-									AddDebugLogLine(DLP_VERYLOW, false, _T("Finished part %u of \"%s\""), uPartNumber, GetFileName());
+									AddDebugLogLine(DLP_VERYLOW, false, L"Finished part %u of \"%s\"", uPartNumber, GetFileName());
 							}
 
 							// tell the blackbox about the verified data
@@ -5727,13 +5708,6 @@ void CPartFile::FlushBuffer(bool forcewait, bool bNoAICH)
 
 							CompletedPart(uPartNumber);
 						}
-						//AICHRecoveryDataAvailable(uPartNumber);
-						/*// Perform AICH hashing and share blocks that hashed successful
-						CPartHashThread* const parthashthread = (CPartHashThread*) AfxBeginThread(RUNTIME_CLASS(CPartHashThread), THREAD_PRIORITY_LOWEST,0, CREATE_SUSPENDED);
-						if (parthashthread == nullptr)
-							throw CString(_T(__FUNCTION__) _T(": Failed to create worker thread!"));
-						parthashthread->SetSinglePartHash(this, uPartNumber, false, false, true);	// Special case, doesn't increment hashing parts, since part isn't really complete
-						parthashthread->ResumeThread();*/
 					}
                 }
             }
@@ -6581,7 +6555,7 @@ bool CPartFile::RightFileHasHigherPrio(CPartFile* left, CPartFile* right)
 
 void CPartFile::RequestAICHRecovery(UINT nPart)
 {
-    if (!m_pAICHRecoveryHashSet->HasValidMasterHash() || (m_pAICHRecoveryHashSet->GetStatus() != AICH_TRUSTED && m_pAICHRecoveryHashSet->GetStatus() != AICH_VERIFIED))
+    if(m_pAICHRecoveryHashSet == NULL || !m_pAICHRecoveryHashSet->HasValidMasterHash() || (m_pAICHRecoveryHashSet->GetStatus() != AICH_TRUSTED && m_pAICHRecoveryHashSet->GetStatus() != AICH_VERIFIED))
     {
         AddDebugLogLine(DLP_DEFAULT, false, _T("Unable to request AICH Recoverydata because we have no trusted Masterhash"));
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]		
@@ -6589,7 +6563,7 @@ void CPartFile::RequestAICHRecovery(UINT nPart)
 		if (IsCorruptedPart(nPart))
 		{
 			m_CorruptionBlackBox.CorruptedData(PARTSIZE*(uint64)nPart, PARTSIZE*(uint64)nPart+PARTSIZE-1);
-			m_CorruptionBlackBox.EvaluateData(nPart/*, this, PARTSIZE*/);
+			m_CorruptionBlackBox.EvaluateData((uint16)nPart/*, this, PARTSIZE*/);
 			SavePartFile();
 #ifdef USE_GENERIC_PARTSTATUS
 			if (m_pPublishedPartStatus)
@@ -6690,6 +6664,7 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
         ASSERT(0);
         return;
     }
+
     FlushBuffer(true, true);
     UINT length = PARTSIZE;
     if ((ULONGLONG)PARTSIZE*(uint64)(nPart+1) > m_hpartfile.GetLength())
@@ -6697,14 +6672,15 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
         length = (UINT)(m_hpartfile.GetLength() - ((ULONGLONG)PARTSIZE*(uint64)nPart));
         ASSERT(length <= PARTSIZE);
     }
-    // if the part was already ok, it would now be complete
+
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+    /*// if the part was already ok, it would now be complete
     if (IsComplete((uint64)nPart*PARTSIZE, (((uint64)nPart*PARTSIZE)+length)-1, true))
     {
         AddDebugLogLine(DLP_DEFAULT, false, _T("Processing AICH Recovery data: The part (%u) is already complete, canceling"));
         return;
-    }
-
-
+    }*/
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
     const CAICHHashTree* pVerifiedHash = m_pAICHRecoveryHashSet->m_pHashTree.FindExistingHash((uint64)nPart*PARTSIZE, length);
     if (pVerifiedHash == NULL || !pVerifiedHash->m_bHashValid)
@@ -6713,6 +6689,7 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
         ASSERT(0);
         return;
     }
+
     CAICHHashTree htOurHash(pVerifiedHash->m_nDataSize, pVerifiedHash->m_bIsLeftBranch, pVerifiedHash->GetBaseSize());
     try
     {
@@ -6736,7 +6713,7 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
     if (!m_pPublishedPartStatus) // Should never happen!!!
         m_pPublishedPartStatus = new CAICHStatusVector(m_nFileSize);
     CPartStatus* oldPublishedPartStatus = m_pPublishedPartStatus->Clone();
-    if (IsCorruptedPart(nPart))
+    if (IsCorruptedPart(nPart) && IsComplete(PARTSIZE*(uint64)nPart, PARTSIZE*(uint64)nPart + length - 1, true)) // netfinity: We only want to do recovery at part completion
     {
         // netfinity: Make the part a complete gap in case something goes wrong
         AddGap(PARTSIZE*(uint64)nPart, PARTSIZE*(uint64)nPart + length - 1);
@@ -6855,7 +6832,7 @@ CString CPartFile::GetTempPath() const
 
 void CPartFile::RefilterFileComments()
 {
-    // check all availabe comments against our filter again
+    // check all available comments against our filter again
     if (thePrefs.GetCommentFilter().IsEmpty())
         return;
     for (POSITION pos = srclist.GetHeadPosition(); pos != NULL;)

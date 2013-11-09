@@ -296,40 +296,18 @@ void CKnownFile::UpdatePartsInfo()
     {
         CUpDownClient* cur_src = m_ClientUploadList.GetNext(pos);
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-        // netfinity: the following code is much faster when using generic partstatus vectors than the original
         const CPartStatus* cur_status = cur_src->GetUpPartStatus();
-        if (cur_status != NULL && cur_src->GetUpPartCount() == partcount)
-        {
-            uint64	start = 0ULL;
-            uint64	stop = ~0ULL;
-            while (cur_status->FindFirstComplete(start, stop))
-            {
-                uint16	first, last;
-                first = static_cast<uint16>((start + (PARTSIZE - 1ULL)) / PARTSIZE);
-                if (stop == GetFileSize() - 1ULL)
-                    last = static_cast<uint16>(stop / PARTSIZE + 1ULL);
-                else
-                    last = static_cast<uint16>((stop + 1ULL) / PARTSIZE);
-                for (UINT i = first; i < last; ++i)
-                    m_AvailPartFrequency[i] += 1;
-                start = stop + 1;
-                stop = ~0ULL;
-            }
-        }
-        /*
         //This could be a partfile that just completed.. Many of these clients will not have this information.
-        if (cur_src->m_abyUpPartStatus && cur_src->GetUpPartCount() == partcount)
+		if(cur_status != NULL && cur_src->GetUpPartCount() == partcount)
+        //if(cur_src->m_abyUpPartStatus && cur_src->GetUpPartCount() == partcount)
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         {
             for (UINT i = 0; i < partcount; i++)
             {
                 if (cur_src->IsUpPartAvailable(i))
                     m_AvailPartFrequency[i] += 1;
             }
-            if (flag)
-                count.Add(cur_src->GetUpCompleteSourcesCount());
         }
-        */
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         cur_src->GetUploadingAndUploadedPart(m_AvailPartFrequency, m_SOTNAvailPartFrequency); //>>> WiZaRd::Intelligent SOTN
     }
 
@@ -1883,7 +1861,7 @@ void CKnownFile::UpdateMetaDataTags()
             {
                 // ID3LIB BUG: If there are ID3v2 _and_ ID3v1 tags available, id3lib
                 // destroys (actually corrupts) the Unicode strings from ID3v2 tags due to
-                // converting Unicode to ASCII and then convertion back from ASCII to Unicode.
+                // converting Unicode to ASCII and then conversion back from ASCII to Unicode.
                 // To prevent this, we force the reading of ID3v2 tags only, in case there are
                 // also ID3v1 tags available.
                 ID3_Tag myTag;
@@ -1920,6 +1898,14 @@ void CKnownFile::UpdateMetaDataTags()
                     }
                 }
 
+				// WiZaRd: this seems to crash on id3lib 3.8.3 - here's the stack trace:
+				/*kMule.exe!std::list<ID3_Frame *,std::allocator<ID3_Frame *> >::_Orphan_ptr(std::list<ID3_Frame *,std::allocator<ID3_Frame *> > & _Cont, std::_List_nod<ID3_Frame *,std::allocator<ID3_Frame *> >::_Node * _Ptr)  Zeile 1533 + 0x8 Bytes	C++
+				kMule.exe!std::list<ID3_Frame *,std::allocator<ID3_Frame *> >::clear()  Zeile 1102	C++
+				kMule.exe!ID3_TagImpl::Clear()  Zeile 137	C++
+				kMule.exe!ID3_TagImpl::~ID3_TagImpl()  Zeile 124	C++
+				kMule.exe!ID3_TagImpl::`scalar deleting destructor'()  + 0x16 Bytes	C++
+				kMule.exe!ID3_Tag::~ID3_Tag()  Zeile 305 + 0x25 Bytes	C++*/
+				// It's definitely caused by myTag.CreateIterator and delete iter afterwards, so either live with mem leaks or let it crash?
                 ID3_Tag::Iterator* iter = myTag.CreateIterator();
                 const ID3_Frame* frame;
                 while ((frame = iter->GetNext()) != NULL)
@@ -1971,7 +1957,7 @@ void CKnownFile::UpdateMetaDataTags()
                     }
                     }
                 }
-                delete iter;
+                delete iter; // accept mem leaks?
             }
             catch (...)
             {
@@ -3182,7 +3168,7 @@ void CKnownFile::UpdateCompleteSrcCount()
 	}
 	else*/ if (n > 0)
 	{
-#ifdef _DEBUG
+//#ifdef _DEBUG
 //>>> WiZaRd::Complete Files As Median
 		CMedian<uint16> median;
 		for(int i = 0; i < n; ++i)
@@ -3227,7 +3213,7 @@ void CKnownFile::UpdateCompleteSrcCount()
 		}			
 //			theApp.QueueDebugLogLineEx(LOG_CA|LOG_WARNING, L"*DEBUG END*");
 //<<< WiZaRd::Complete Files As Median
-#else
+/*#else
 		// SLUGFILLER: heapsortCompletesrc
 		int r;
 		for (r = n/2; r--;)
@@ -3257,12 +3243,12 @@ void CKnownFile::UpdateCompleteSrcCount()
 			//  Adjust 80/100% network and 0% what we see.
 			if (count.GetAt(i) < m_nCompleteSourcesCount)
 				m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
-			else if(bPartFile)
+			else if(pFile)
 				m_nCompleteSourcesCountLo = (uint16)((float)(count.GetAt(i)*.8)+(float)(m_nCompleteSourcesCount*.2));
 			else
 				m_nCompleteSourcesCountLo = count.GetAt(i);
 			m_nCompleteSourcesCount = m_nCompleteSourcesCountLo;
-			if(bPartFile)
+			if(pFile)
 				m_nCompleteSourcesCountHi = (uint16)((float)(count.GetAt(j)*.8)+(float)(m_nCompleteSourcesCount*.2));
 			else
 				m_nCompleteSourcesCountHi = count.GetAt(j);
@@ -3279,20 +3265,20 @@ void CKnownFile::UpdateCompleteSrcCount()
 			//For high guess
 			//  Adjust network accounts for 80/100%, we account for 0% with what we see and make sure we are still above the normal.
 			m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
-			if(bPartFile)
+			if(pFile)
 				m_nCompleteSourcesCount = (uint16)((float)(count.GetAt(j)*.8)+(float)(m_nCompleteSourcesCount*.2));
 			else 
 				m_nCompleteSourcesCount = count.GetAt(j);
 			if (m_nCompleteSourcesCount < m_nCompleteSourcesCountLo)
 				m_nCompleteSourcesCount = m_nCompleteSourcesCountLo;
-			if(bPartFile)
+			if(pFile)
 				m_nCompleteSourcesCountHi = (uint16)((float)(count.GetAt(k)*.8)+(float)(m_nCompleteSourcesCount*.2));
 			else
 				m_nCompleteSourcesCountHi = count.GetAt(k);
 			if (m_nCompleteSourcesCountHi < m_nCompleteSourcesCount)
 				m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
 		}
-#endif
+#endif*/
 	}	
 }
 

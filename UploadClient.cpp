@@ -624,8 +624,17 @@ bool CUpDownClient::ProcessUploadFileStatus(const bool bUDPPacket, CKnownFile* f
 	bMergeIfPossible = bMergeIfPossible && reqfile == file;
     if(bMergeIfPossible)
     {
-		if(m_pPartStatus == NULL)        
+		if(m_pPartStatus == NULL)
+		{
 			m_pPartStatus = m_pUpPartStatus->Clone();
+//>>> WiZaRd::AntiHideOS [netfinity]
+			if (m_abySeenPartStatus == NULL)
+			{
+				m_abySeenPartStatus = new uint8[m_pPartStatus->GetPartCount()];
+				memset(m_abySeenPartStatus, 0, m_pPartStatus->GetPartCount());
+			}
+//<<< WiZaRd::AntiHideOS [netfinity]
+		}
 		else
 		{
 			for(UINT uCrumb = 0; uCrumb < m_pUpPartStatus->GetCrumbsCount(); ++uCrumb)
