@@ -218,7 +218,8 @@ void CKademlia::Process()
         bUpdateUserFile = true;
         m_tStatusUpdate = MIN2S(1) + tNow;
     }
-    if (m_tNextFirewallCheck <= tNow)
+	// WiZaRd: only automatically recheck firewalled status if we ARE firewalled
+    if (m_tNextFirewallCheck <= tNow && Kademlia::CKademlia::IsConnected() && Kademlia::CKademlia::IsFirewalled())
         RecheckFirewalled();
     if (m_tNextUPnPCheck != 0 && m_tNextUPnPCheck <= tNow)
     {

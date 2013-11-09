@@ -1551,6 +1551,8 @@ void CemuleApp::SetPublicIP(const UINT dwIP)
                 //Kad loaded the old IP, we must reset
                 if (Kademlia::CKademlia::IsRunning()) //one more check
                     Kademlia::CKademlia::GetPrefs()->SetIPAddress(htonl(dwIP));
+				// WiZaRd: recheck firewalled status on IP change
+				Kademlia::CKademlia::RecheckFirewalled(); 
 //<<< WiZaRd::Reconnect KAD
             }
         }
