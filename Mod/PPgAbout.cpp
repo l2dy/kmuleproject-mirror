@@ -115,7 +115,7 @@ BOOL CPPgAbout::OnInitDialog()
 	{
 		aboutInfo->SetProfileSkinKey(L"Log");
 		aboutInfo->ModifyStyleEx(0, WS_EX_STATICEDGE, SWP_FRAMECHANGED);
-		aboutInfo->SendMessage(EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN, MAKELONG(3, 3));
+		aboutInfo->SendMessage(EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN, MAKELONG(3, 3));		
 		/*if (theApp.m_fontLog.m_hObject)
 			aboutInfo->SetFont(&theApp.m_fontLog);*/
 		aboutInfo->SetFont(&m_AboutFont);
@@ -181,6 +181,7 @@ BOOL CPPgAbout::OnInitDialog()
 	aboutInfo->AddLine(getCenteredString(credits) + L"\n", -1, false, RGB(0, 0, 0), RGB(255, 255, 255), 0);
 	credits.Format(L"Source code is available (via SVN) from SourceForge (Project \"kMuleProject\")");
 	aboutInfo->AddLine(getCenteredString(credits) + L"\n", -1, false, RGB(0, 0, 0), RGB(255, 255, 255), 0);
+	aboutInfo->ScrollToFirstLine();
 //<<< WiZaRd::ModCredits
 
     Localize();
