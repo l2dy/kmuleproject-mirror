@@ -162,6 +162,7 @@ void CSearchResultsWnd::OnInitialUpdate()
         GetDlgItem(IDC_STATIC_DLTOof)->SetFont(&theApp.m_fontSymbol);
         GetDlgItem(IDC_STATIC_DLTOof)->SetWindowText(GetExStyle() & WS_EX_LAYOUTRTL ? _T("3") : _T("4")); // show a right-arrow
     }
+	m_ctlOpenParamsWnd.ShowWindow(SW_HIDE);
 }
 
 void CSearchResultsWnd::DoDataExchange(CDataExchange* pDX)
@@ -1412,9 +1413,7 @@ void CSearchResultsWnd::OnDestroy()
         TCITEM tci;
         tci.mask = TCIF_PARAM;
         if (searchselect.GetItem(i, &tci) && tci.lParam != NULL)
-        {
             delete(SSearchParams*)tci.lParam;
-        }
     }
 
     CResizableFormView::OnDestroy();
@@ -1436,15 +1435,11 @@ BOOL CSearchResultsWnd::OnHelpInfo(HELPINFO* /*pHelpInfo*/)
 
 LRESULT CSearchResultsWnd::OnIdleUpdateCmdUI(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
-    BOOL bSearchParamsWndVisible = theApp.emuledlg->searchwnd->IsSearchParamsWndVisible();
-    if (!bSearchParamsWndVisible)
-    {
+	// if the application is not ready, default to "visible"
+    if(theApp.emuledlg != NULL && theApp.emuledlg->searchwnd != NULL && !theApp.emuledlg->searchwnd->IsSearchParamsWndVisible())
         m_ctlOpenParamsWnd.ShowWindow(SW_SHOW);
-    }
     else
-    {
         m_ctlOpenParamsWnd.ShowWindow(SW_HIDE);
-    }
     return 0;
 }
 

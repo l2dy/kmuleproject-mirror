@@ -77,10 +77,6 @@ int CSearchDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
     context.m_pCurrentDoc = NULL;
     context.m_pNewViewClass = RUNTIME_CLASS(CSearchResultsWnd);
     context.m_pNewDocTemplate = NULL;
-    m_pwndResults = (CSearchResultsWnd*)CreateView(&context);
-    m_pwndParams->m_searchdlg = m_pwndResults;
-    m_pwndResults->ModifyStyle(WS_BORDER, 0);
-    m_pwndResults->ModifyStyleEx(WS_EX_CLIENTEDGE, WS_EX_STATICEDGE);
 
     m_pwndParams->Create(this, IDD_SEARCH_PARAMS,
                          WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_SIZE_FIXED | CBRS_SIZE_DYNAMIC | CBRS_GRIPPER,
@@ -93,6 +89,10 @@ int CSearchDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
     EnableDocking(CBRS_ALIGN_ANY);
     DockControlBar(m_pwndParams, AFX_IDW_DOCKBAR_TOP, (LPRECT)NULL);
 
+	m_pwndResults = (CSearchResultsWnd*)CreateView(&context);
+	m_pwndParams->m_searchdlg = m_pwndResults;
+	m_pwndResults->ModifyStyle(WS_BORDER, 0);
+	m_pwndResults->ModifyStyleEx(WS_EX_CLIENTEDGE, WS_EX_STATICEDGE);
     m_pwndResults->m_pwndParams = m_pwndParams;
     m_pwndResults->SendMessage(WM_INITIALUPDATE);
 
