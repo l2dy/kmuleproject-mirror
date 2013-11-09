@@ -4161,50 +4161,6 @@ int CUpDownClient::GetAnalyzerIconIndex() const
 	return ret;
 }
 
-Packet* GetEmptyXSPacket(const CUpDownClient* forClient, CKnownFile* kreqfile, uint8 byRequestedVersion, uint16 nRequestedOptions)
-{
-    CSafeMemFile data(1024);
-
-    uint8 byUsedVersion;
-    bool bIsSX2Packet;
-    if (forClient->SupportsSourceExchange2() && byRequestedVersion > 0)
-    {
-        // the client uses SourceExchange2 and requested the highest version he knows
-        // and we send the highest version we know, but of course not higher than his request
-//>>> WiZaRd::ExtendedXS [Xanatos]
-		if(forClient->SupportsExtendedSourceExchange())
-			byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGEEXT_VERSION);
-		else
-//<<< WiZaRd::ExtendedXS [Xanatos]
-			byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGE2_VERSION);
-        bIsSX2Packet = true;
-        data.WriteUInt8(byUsedVersion);
-
-        // we don't support any special SX2 options yet, reserved for later use
-        if (nRequestedOptions != 0)
-            DebugLogWarning(L"Client requested unknown options for SourceExchange2: %u (%s)", nRequestedOptions, forClient->DbgGetClientInfo());
-    }
-    else
-    {
-        byUsedVersion = forClient->GetSourceExchange1Version();
-        bIsSX2Packet = false;
-        if (forClient->SupportsSourceExchange2())
-            DebugLogWarning(L"Client which announced to support SX2 sent SX1 packet instead (%s)", forClient->DbgGetClientInfo());
-    }
-
-    data.WriteHash16(kreqfile->GetFileIdentifier().GetMD4Hash());
-    data.WriteUInt16(0);
-
-    Packet* result = new Packet(&data, OP_EMULEPROT);
-    result->opcode = bIsSX2Packet ? OP_ANSWERSOURCES2 : OP_ANSWERSOURCES;
-    // (1+)16+2+501*(4+2+4+2+16+1) = 14547 (14548) bytes max.
-    //	if (result->size > 354)
-    //		result->PackPacket();
-    if (thePrefs.GetDebugSourceExchange())
-        AddDebugLogLine(false, L"SXSend: Client source response SX2=%s, Version=%u; Count=%u, %s, File=\"%s\"", bIsSX2Packet ? L"Yes" : L"No", byUsedVersion, 0, forClient->DbgGetClientInfo(), kreqfile->GetFileName());
-    return result;
-}
-
 void	CUpDownClient::ProcessSourceRequest(const BYTE* packet, const UINT size, const UINT opcode, const UINT uRawSize, CSafeMemFile* data, CKnownFile* kreqfile)
 {
     const bool bMultipacket = data != NULL;
@@ -4299,7 +4255,7 @@ void	CUpDownClient::ProcessSourceRequest(const BYTE* packet, const UINT size, co
             Packet* tosend = kreqfile->CreateSrcInfoPacket(this, byRequestedVersion, byRequestedOptions);
             //WiZaRd: explicitly answer with "0" sources so the remote client doesn't hammer us
             if (tosend == NULL)
-                tosend = GetEmptyXSPacket(this, kreqfile, byRequestedVersion, byRequestedOptions);
+                tosend = kreqfile->GetEmptyXSPacket(this, byRequestedVersion, byRequestedOptions);
             if (tosend)
             {
                 if (thePrefs.GetDebugClientTCPLevel() > 0)
@@ -4322,7 +4278,7 @@ void	CUpDownClient::ProcessSourceRequest(const BYTE* packet, const UINT size, co
 
             //WiZaRd: explicitly answer with "0" sources so the remote client doesn't hammer us
             SetLastSrcReqTime();
-            Packet* tosend = GetEmptyXSPacket(this, kreqfile, byRequestedVersion, byRequestedOptions);
+            Packet* tosend = kreqfile->GetEmptyXSPacket(this, byRequestedVersion, byRequestedOptions);
             if (tosend)
             {
                 if (thePrefs.GetDebugClientTCPLevel() > 0)
@@ -4474,81 +4430,59 @@ int	CUpDownClient::GetModIconIndex() const
 //>>> WiZaRd::ExtendedXS [Xanatos]
 void CUpDownClient::WriteExtendedSourceExchangeData(CSafeMemFile& data) const
 {
-	ULONGLONG pos = data.GetPosition();
-	uint8 tagcount = 0;			// max 255 tags - plenty of fun for everyone ;)
-	data.WriteUInt8(tagcount);
+	CList<CTag*> tagList;
 
 //>>> WiZaRd::NatTraversal [Xanatos]
 	if (HasLowID())
 	{
 		if(SupportsDirectUDPCallback())
 		{
-			tagcount += 2;
-
 //>>> WiZaRd::IPv6 [Xanatos]
-			CTag tagIPv4(CT_EMULE_ADDRESS, _ntohl(GetIPv4().ToIPv4())); 
-			//CTag tagIPv4(CT_EMULE_ADDRESS, GetIP()); 
+			tagList.AddTail(new CTag(CT_EMULE_ADDRESS, _ntohl(GetIPv4().ToIPv4())));
+			//tagList.AddTail(new CTag(CT_EMULE_ADDRESS, GetIP())); 
 //<<< WiZaRd::IPv6 [Xanatos]
-			tagIPv4.WriteNewEd2kTag(&data);
-
-			CTag tagUdpPorts(CT_EMULE_UDPPORTS, 
+			tagList.AddTail(new CTag(CT_EMULE_UDPPORTS, 
 				((UINT)GetKadPort() << 16) |
 				((UINT)GetUDPPort() <<  0)
-				); 
-			tagUdpPorts.WriteNewEd2kTag(&data);
+				));
 		}
 
 		if(GetBuddyIP())
 		{
-			tagcount += 2;
-
-			CTag tagBuddyIP(CT_EMULE_BUDDYIP, GetBuddyIP() ); 
-			tagBuddyIP.WriteNewEd2kTag(&data);
-
-			CTag tagBuddyPort(CT_EMULE_BUDDYUDP, 
+			tagList.AddTail(new CTag(CT_EMULE_BUDDYIP, GetBuddyIP())); 
+			tagList.AddTail(new CTag(CT_EMULE_BUDDYUDP, 
 				//	( RESERVED						 )
 				((UINT)GetBuddyPort() ) 
-				);
-			tagBuddyPort.WriteNewEd2kTag(&data);
+				));
 		}
 
 		if(!isnulmd4(GetBuddyID()))
-		{
-			++tagcount;
-
-			CTag tagBuddyID(CT_EMULE_BUDDYID, GetBuddyID()); 
-			tagBuddyID.WriteNewEd2kTag(&data);
-		}
+			tagList.AddTail(new CTag(CT_EMULE_BUDDYID, GetBuddyID()));
 	}
 //<<< WiZaRd::NatTraversal [Xanatos]
 
 	if(GetServerIP() != 0)
 	{
-		tagcount += 2;
-
-		CTag tagServerIP(CT_EMULE_SERVERIP, GetServerIP()); 
-		tagServerIP.WriteNewEd2kTag(&data);
-
-		CTag tagServerPorts(CT_EMULE_SERVERTCP, 
+		tagList.AddTail(new CTag(CT_EMULE_SERVERIP, GetServerIP())); 
+		tagList.AddTail(new CTag(CT_EMULE_SERVERTCP, 
 			//	( RESERVED						  )
 			((UINT)GetServerPort() )
-			); 
-		tagServerPorts.WriteNewEd2kTag(&data);
+			)); 
 	}
 
 //>>> WiZaRd::IPv6 [Xanatos]
 	if(IsIPv6Open())
-	{
-		++tagcount;
-
-		CTag tagIPv6(CT_NEOMULE_IP_V6, GetIPv6().Data()); 
-		tagIPv6.WriteNewEd2kTag(&data);
-	}
+		tagList.AddTail(new CTag(CT_NEOMULE_IP_V6, GetIPv6().Data()));
 //<<< WiZaRd::IPv6 [Xanatos]
 
-	data.Seek(pos, CFile::begin);
-	data.WriteUInt8(tagcount);
-	data.SeekToEnd();
+	data.WriteUInt8((uint8)tagList.GetCount()); // max 255 tags - plenty of fun for everyone ;)
+	while(!tagList.IsEmpty())
+	{
+		CTag* emTag = tagList.RemoveHead();
+		if (emTag)
+			emTag->WriteNewEd2kTag(&data);
+		delete emTag;
+	}
 }
 //<<< WiZaRd::ExtendedXS [Xanatos]
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]

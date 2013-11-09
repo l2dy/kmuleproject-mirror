@@ -152,6 +152,7 @@ public:
     bool	PublishNotes();
 
     // file sharing
+	Packet* GetEmptyXSPacket(const CUpDownClient* forClient, uint8 byRequestedVersion, uint16 nRequestedOptions) const;
     virtual Packet* CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 byRequestedVersion, uint16 nRequestedOptions) const;
     UINT	GetMetaDataVer() const
     {

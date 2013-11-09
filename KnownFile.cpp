@@ -1359,7 +1359,7 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
                 {
                     if (rcvstatus->IsNeeded(srcstatus))
                     {
-                        // We know the recieving client needs a chunk from this client.
+                        // We know the receiving client needs a chunk from this client.
                         bNeeded = true;
                     }
                 }
@@ -1414,7 +1414,7 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
                     {
                         if (srcstatus[x] && !rcvstatus[x])
                         {
-                            // We know the recieving client needs a chunk from this client.
+                            // We know the receiving client needs a chunk from this client.
                             bNeeded = true;
                             break;
                         }
@@ -1536,6 +1536,50 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
     if (thePrefs.GetDebugSourceExchange())
         AddDebugLogLine(false, _T("SXSend: Client source response SX2=%s, Version=%u; Count=%u, %s, File=\"%s\""), bIsSX2Packet ? _T("Yes") : _T("No"), byUsedVersion, nCount, forClient->DbgGetClientInfo(), GetFileName());
     return result;
+}
+
+Packet* CKnownFile::GetEmptyXSPacket(const CUpDownClient* forClient, uint8 byRequestedVersion, uint16 nRequestedOptions) const
+{
+	CSafeMemFile data(1024);
+
+	uint8 byUsedVersion;
+	bool bIsSX2Packet;
+	if (forClient->SupportsSourceExchange2() && byRequestedVersion > 0)
+	{
+		// the client uses SourceExchange2 and requested the highest version he knows
+		// and we send the highest version we know, but of course not higher than his request
+//>>> WiZaRd::ExtendedXS [Xanatos]
+		if(forClient->SupportsExtendedSourceExchange())
+			byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGEEXT_VERSION);
+		else
+//<<< WiZaRd::ExtendedXS [Xanatos]
+			byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGE2_VERSION);
+		bIsSX2Packet = true;
+		data.WriteUInt8(byUsedVersion);
+
+		// we don't support any special SX2 options yet, reserved for later use
+		if (nRequestedOptions != 0)
+			DebugLogWarning(L"Client requested unknown options for SourceExchange2: %u (%s)", nRequestedOptions, forClient->DbgGetClientInfo());
+	}
+	else
+	{
+		byUsedVersion = forClient->GetSourceExchange1Version();
+		bIsSX2Packet = false;
+		if (forClient->SupportsSourceExchange2())
+			DebugLogWarning(L"Client which announced to support SX2 sent SX1 packet instead (%s)", forClient->DbgGetClientInfo());
+	}
+
+	data.WriteHash16(forClient->GetUploadFileID());
+	data.WriteUInt16(0);
+
+	Packet* result = new Packet(&data, OP_EMULEPROT);
+	result->opcode = bIsSX2Packet ? OP_ANSWERSOURCES2 : OP_ANSWERSOURCES;
+	// (1+)16+2+501*(4+2+4+2+16+1) = 14547 (14548) bytes max.
+	//	if (result->size > 354)
+	//		result->PackPacket();
+	if (thePrefs.GetDebugSourceExchange())
+		AddDebugLogLine(false, L"SXSend: Client source response SX2=%s, Version=%u; Count=%u, %s, File=\"%s\"", bIsSX2Packet ? L"Yes" : L"No", byUsedVersion, 0, forClient->DbgGetClientInfo(), GetFileName());
+	return result;
 }
 
 void CKnownFile::SetFileComment(LPCTSTR pszComment)

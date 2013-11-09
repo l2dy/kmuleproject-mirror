@@ -92,7 +92,7 @@ enum eSharePermissions
 #define OP_HORDESLOTREQ			0x65		// <HASH (file) [16]>
 #define OP_HORDESLOTREJ			0x66		// <HASH (file) [16]>
 #define OP_HORDESLOTANS			0x67		// <HASH (file) [16]>
-#define OP_CRUMBSETANS					0x68		// <HASH (file) [16]> <HasCrumbSet [1]> <HASH (crumb) [8]>*(CrumbCNT)  for files containing only one part
+#define OP_CRUMBSETANS			0x68		// <HASH (file) [16]> <HasCrumbSet [1]> <HASH (crumb) [8]>*(CrumbCNT)  for files containing only one part
 // or <HASH (file) [16]> <HasPartHashSet [1]> <HASH (part) [8]>*(PartCNT) <HasCrumbSet [1]> <HASH (crumb) [8]>*(CrumbCNT)  for larger files
 
 #define OP_CRUMBSETREQ			0x69		// <HASH (file) [16]>
