@@ -84,7 +84,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Base
     CUpDownClient(CClientReqSocket* sender = 0);
-    CUpDownClient(CPartFile* in_reqfile, uint16 in_port, UINT in_userid, UINT in_serverup, uint16 in_serverport, bool ed2kID = false);	
+    CUpDownClient(CPartFile* in_reqfile, uint16 in_port, UINT in_userid, UINT in_serverup, uint16 in_serverport, bool ed2kID = false);
     virtual ~CUpDownClient();
 
     void			StartDownload();
@@ -125,11 +125,11 @@ public:
     void			SetIP(_CIPAddress val)   //Only use this when you know the real IP or when your clearing it.
     {
 //>>> WiZaRd::IPv6 [Xanatos]
-		if(val.Convert(CAddress::IPv4)) // Check if the IP is a mapped IPv4
-			m_UserIPv4 = val;
-		else
-			m_UserIPv6 = val;
-		UpdateIP(val);
+        if (val.Convert(CAddress::IPv4)) // Check if the IP is a mapped IPv4
+            m_UserIPv4 = val;
+        else
+            m_UserIPv6 = val;
+        UpdateIP(val);
 //<<< WiZaRd::IPv6 [Xanatos]
         //m_dwUserIP = val;
         //m_nConnectIP = val;
@@ -895,7 +895,7 @@ protected:
     void	SendFirewallCheckUDPRequest();
     void	SendHashSetRequest();
 
-    _CIPAddress	m_nConnectIP;		// holds the supposed IP or (after we had a connection) the real IP	
+    _CIPAddress	m_nConnectIP;		// holds the supposed IP or (after we had a connection) the real IP
     _CIPAddress	m_dwUserIP;			// holds 0 (real IP not yet available) or the real IP (after we had a connection)
     UINT	m_dwServerIP;
     UINT	m_nUserIDHybrid;
@@ -1089,10 +1089,10 @@ protected:
          m_fAICHHashRequested : 1, //>>> Security Check
          m_fSourceExchangeRequested : 1, //>>> Security Check
          m_fSupportsModProt	  : 1, //>>> WiZaRd::ModProt
-		 m_fSupportsNatTraversal : 1, //>>> WiZaRd::NatTraversal [Xanatos]
-		 m_fSupportsIPv6 : 1, //>>> WiZaRd::IPv6 [Xanatos]
-		 m_fSupportsExtendedXS : 1, //>>> WiZaRd::ExtendedXS [Xanatos]
-		 m_fSupportsUnsolicitedPartStatus : 1; //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
+         m_fSupportsNatTraversal : 1, //>>> WiZaRd::NatTraversal [Xanatos]
+         m_fSupportsIPv6 : 1, //>>> WiZaRd::IPv6 [Xanatos]
+         m_fSupportsExtendedXS : 1, //>>> WiZaRd::ExtendedXS [Xanatos]
+         m_fSupportsUnsolicitedPartStatus : 1; //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 public:
     CTypedPtrList<CPtrList, Pending_Block_Struct*>	 m_PendingBlocks_list;
@@ -1161,7 +1161,7 @@ public:
         return m_bCompleteSource;
     }
     bool	IsBadGuy() const;
-	int		GetAnalyzerIconIndex() const;
+    int		GetAnalyzerIconIndex() const;
 //>>> WiZaRd::More GPLEvilDoers
     bool	IsGPLBreaker() const
     {
@@ -1248,10 +1248,10 @@ public:
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 private:
     int			m_nProtocolRevision;
-	bool		ProcessDownloadFileStatus(const bool bUDPPacket, CPartFile* file, bool bMergeIfPossible = true);
-	bool		ProcessUploadFileStatus(const bool bUDPPacket, CKnownFile* file, bool bMergeIfPossible = true);
+    bool		ProcessDownloadFileStatus(const bool bUDPPacket, CPartFile* file, bool bMergeIfPossible = true);
+    bool		ProcessUploadFileStatus(const bool bUDPPacket, CKnownFile* file, bool bMergeIfPossible = true);
 public:
-	CKnownFile*	GetUploadReqFile() const;
+    CKnownFile*	GetUploadReqFile() const;
     int			GetSCTVersion() const;
     bool		SupportsSCT() const;
     void		SendCrumbSetPacket(const uchar* const pData, size_t const nSize);
@@ -1279,37 +1279,37 @@ public:
 //<<< WiZaRd::NatTraversal [Xanatos]
 //>>> WiZaRd::IPv6 [Xanatos]
 public:
-	CUpDownClient(CPartFile* in_reqfile, uint16 in_port, const _CIPAddress& IP, UINT in_serverup, uint16 in_serverport);
-	bool	SupportsIPv6() const							{return m_fSupportsIPv6;}
-	const CAddress&	GetIPv4() const							{return m_UserIPv4;}
-	const CAddress&	GetIPv6() const							{return m_UserIPv6;}
-	bool	IsIPv6Open() const								{return m_bOpenIPv6;}
-	void	UpdateIP( const CAddress& val )
-	{
-		m_nConnectIP = val;
-		m_dwUserIP = val;
-	}
-	void			SetIPv6(const CAddress& val)
-	{
-		ASSERT(val.Type() == CAddress::IPv6);
-		m_UserIPv6 = val;
-		m_bOpenIPv6 = true;
-	}
+    CUpDownClient(CPartFile* in_reqfile, uint16 in_port, const _CIPAddress& IP, UINT in_serverup, uint16 in_serverport);
+    bool	SupportsIPv6() const							{return m_fSupportsIPv6;}
+    const CAddress&	GetIPv4() const							{return m_UserIPv4;}
+    const CAddress&	GetIPv6() const							{return m_UserIPv6;}
+    bool	IsIPv6Open() const								{return m_bOpenIPv6;}
+    void	UpdateIP(const CAddress& val)
+    {
+        m_nConnectIP = val;
+        m_dwUserIP = val;
+    }
+    void			SetIPv6(const CAddress& val)
+    {
+        ASSERT(val.Type() == CAddress::IPv6);
+        m_UserIPv6 = val;
+        m_bOpenIPv6 = true;
+    }
 protected:
-	_CIPAddress m_UserIPv6;
-	bool	 m_bOpenIPv6;
-	_CIPAddress m_UserIPv4;
+    _CIPAddress m_UserIPv6;
+    bool	 m_bOpenIPv6;
+    _CIPAddress m_UserIPv4;
 //<<< WiZaRd::IPv6 [Xanatos]
 //>>> WiZaRd::ExtendedXS [Xanatos]
 public:
-	bool	SupportsExtendedSourceExchange() const	{return m_fSupportsExtendedXS;}
-	void	WriteExtendedSourceExchangeData(CSafeMemFile& data) const;
+    bool	SupportsExtendedSourceExchange() const	{return m_fSupportsExtendedXS;}
+    void	WriteExtendedSourceExchangeData(CSafeMemFile& data) const;
 //<<< WiZaRd::ExtendedXS [Xanatos]
 //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
 private:
-	uint8	m_byFileRequestState;
+    uint8	m_byFileRequestState;
 public:
-	bool	SupportUnsolicitedPartStatus() const	{return m_fSupportsUnsolicitedPartStatus;} 
+    bool	SupportUnsolicitedPartStatus() const	{return m_fSupportsUnsolicitedPartStatus;}
 //<<< WiZaRd::Unsolicited PartStatus [Netfinity]
 };
 //#pragma pack()

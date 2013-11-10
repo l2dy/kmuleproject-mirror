@@ -305,45 +305,45 @@ LRESULT CSharedFilesWnd::DefWindowProc(UINT message, WPARAM wParam, LPARAM lPara
 {
     switch (message)
     {
-    case WM_PAINT:
-        if (m_wndSplitter)
-        {
-            CRect rcWnd;
-            GetWindowRect(rcWnd);
-            if (rcWnd.Width() > 0)
+        case WM_PAINT:
+            if (m_wndSplitter)
             {
-                CRect rcSpl;
-                m_ctlSharedDirTree.GetWindowRect(rcSpl);
-                ScreenToClient(rcSpl);
-                rcSpl.left = rcSpl.right + SPLITTER_MARGIN;
-                rcSpl.right = rcSpl.left + SPLITTER_WIDTH;
+                CRect rcWnd;
+                GetWindowRect(rcWnd);
+                if (rcWnd.Width() > 0)
+                {
+                    CRect rcSpl;
+                    m_ctlSharedDirTree.GetWindowRect(rcSpl);
+                    ScreenToClient(rcSpl);
+                    rcSpl.left = rcSpl.right + SPLITTER_MARGIN;
+                    rcSpl.right = rcSpl.left + SPLITTER_WIDTH;
 
-                CRect rcFilter;
-                m_ctlFilter.GetWindowRect(rcFilter);
-                ScreenToClient(rcFilter);
-                rcSpl.top = rcFilter.top;
-                m_wndSplitter.MoveWindow(rcSpl, TRUE);
+                    CRect rcFilter;
+                    m_ctlFilter.GetWindowRect(rcFilter);
+                    ScreenToClient(rcFilter);
+                    rcSpl.top = rcFilter.top;
+                    m_wndSplitter.MoveWindow(rcSpl, TRUE);
+                }
             }
-        }
-        break;
+            break;
 
-    case WM_NOTIFY:
-        if (wParam == IDC_SPLITTER_SHAREDFILES)
-        {
-            SPC_NMHDR* pHdr = (SPC_NMHDR*)lParam;
-            DoResize(pHdr->delta);
-        }
-        break;
+        case WM_NOTIFY:
+            if (wParam == IDC_SPLITTER_SHAREDFILES)
+            {
+                SPC_NMHDR* pHdr = (SPC_NMHDR*)lParam;
+                DoResize(pHdr->delta);
+            }
+            break;
 
-    case WM_SIZE:
-        if (m_wndSplitter)
-        {
-            CRect rcWnd;
-            GetWindowRect(rcWnd);
-            ScreenToClient(rcWnd);
-            m_wndSplitter.SetRange(rcWnd.left + SPLITTER_RANGE_MIN, rcWnd.left + SPLITTER_RANGE_MAX);
-        }
-        break;
+        case WM_SIZE:
+            if (m_wndSplitter)
+            {
+                CRect rcWnd;
+                GetWindowRect(rcWnd);
+                ScreenToClient(rcWnd);
+                m_wndSplitter.SetRange(rcWnd.left + SPLITTER_RANGE_MIN, rcWnd.left + SPLITTER_RANGE_MAX);
+            }
+            break;
     }
     return CResizableDialog::DefWindowProc(message, wParam, lParam);
 }

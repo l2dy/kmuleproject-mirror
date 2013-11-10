@@ -33,8 +33,8 @@ public:
     void Localize();
 
 private:
-	CHTRichEditCtrl* aboutInfo;
-	CFont	m_AboutFont;
+    CHTRichEditCtrl* aboutInfo;
+    CFont	m_AboutFont;
 
 protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
@@ -45,8 +45,8 @@ protected:
 
     DECLARE_MESSAGE_MAP()
     afx_msg void OnSettingsChange()				{SetModified();}
-	afx_msg void OnBnClickedDonateTux();
-	afx_msg void OnBnClickedDonateWiZaRd();
+    afx_msg void OnBnClickedDonateTux();
+    afx_msg void OnBnClickedDonateWiZaRd();
     afx_msg void OnHelp();
     afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
 };

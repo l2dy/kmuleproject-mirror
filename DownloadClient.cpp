@@ -56,58 +56,58 @@ CBarShader CUpDownClient::s_StatusBar(16);
 void CUpDownClient::DrawStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bool  bFlat) const
 {
     COLORREF crNeither;
-	COLORREF crBoth;
-	COLORREF crClientOnly;
-	COLORREF crPending;
-	COLORREF crNextPending;
-	COLORREF crClientPartial = RGB(170, 50, 224); //>>> WiZaRd::ICS [enkeyDEV]
-	COLORREF crClientSeen = RGB(150, 240, 240); //>>> WiZaRd::AntiHideOS [netfinity]
-	COLORREF crSCT = RGB(255, 128, 0); //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+    COLORREF crBoth;
+    COLORREF crClientOnly;
+    COLORREF crPending;
+    COLORREF crNextPending;
+    COLORREF crClientPartial = RGB(170, 50, 224); //>>> WiZaRd::ICS [enkeyDEV]
+    COLORREF crClientSeen = RGB(150, 240, 240); //>>> WiZaRd::AntiHideOS [netfinity]
+    COLORREF crSCT = RGB(255, 128, 0); //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
-	if (bFlat)
-	{
-		crNeither = RGB(224, 224, 224);
-		crBoth = RGB(0, 0, 0);
-		crClientOnly = RGB(0, 100, 255);
-		crPending = RGB(0, 150, 0);
-		crNextPending = RGB(255, 208, 0);
-	}
-	else
-	{
-		crNeither = RGB(240, 240, 240);
-		crBoth = RGB(104, 104, 104);
-		crClientOnly = RGB(0, 100, 255);
-		crPending = RGB(0, 150, 0);
-		crNextPending = RGB(255, 208, 0);
-	}   
+    if (bFlat)
+    {
+        crNeither = RGB(224, 224, 224);
+        crBoth = RGB(0, 0, 0);
+        crClientOnly = RGB(0, 100, 255);
+        crPending = RGB(0, 150, 0);
+        crNextPending = RGB(255, 208, 0);
+    }
+    else
+    {
+        crNeither = RGB(240, 240, 240);
+        crBoth = RGB(104, 104, 104);
+        crClientOnly = RGB(0, 100, 255);
+        crPending = RGB(0, 150, 0);
+        crNextPending = RGB(255, 208, 0);
+    }
 
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-    const CPartStatus* abyPartStatus = GetPartStatus();    
-	UINT nPartCount = GetPartCount();
-	const UINT nStepCount = (abyPartStatus && SupportsSCT()) ? abyPartStatus->GetCrumbsCount() : nPartCount;
-	EMFileSize filesize = PARTSIZE;
-	if(reqfile)
-		filesize = reqfile->GetFileSize();
-	else
+    const CPartStatus* abyPartStatus = GetPartStatus();
+    UINT nPartCount = GetPartCount();
+    const UINT nStepCount = (abyPartStatus && SupportsSCT()) ? abyPartStatus->GetCrumbsCount() : nPartCount;
+    EMFileSize filesize = PARTSIZE;
+    if (reqfile)
+        filesize = reqfile->GetFileSize();
+    else
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-		if (abyPartStatus && SupportsSCT())
-			filesize = (uint64)(CRUMBSIZE * (uint64)abyPartStatus->GetCrumbsCount());
-		else
-			filesize = (uint64)(PARTSIZE * (uint64)nPartCount);
-	//filesize = (uint64)(PARTSIZE * (uint64)nPartCount);
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]	
+        if (abyPartStatus && SupportsSCT())
+            filesize = (uint64)(CRUMBSIZE * (uint64)abyPartStatus->GetCrumbsCount());
+        else
+            filesize = (uint64)(PARTSIZE * (uint64)nPartCount);
+    //filesize = (uint64)(PARTSIZE * (uint64)nPartCount);
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
-	s_StatusBar.SetFileSize(filesize);
+    s_StatusBar.SetFileSize(filesize);
     s_StatusBar.SetHeight(rect->bottom - rect->top);
     s_StatusBar.SetWidth(rect->right - rect->left);
     s_StatusBar.Fill(crNeither);
 
-	uint64 uStart = 0;
-	uint64 uEnd = 0;
-    if (!onlygreyrect 
-			&& (abyPartStatus
+    uint64 uStart = 0;
+    uint64 uEnd = 0;
+    if (!onlygreyrect
+            && (abyPartStatus
                 || m_abyIncPartStatus	//>>> WiZaRd::ICS [enkeyDEV]
-                || m_abySeenPartStatus)	//>>> WiZaRd::AntiHideOS [netfinity]               
+                || m_abySeenPartStatus)	//>>> WiZaRd::AntiHideOS [netfinity]
        )
     {
         BYTE* pcNextPendingBlks = NULL;
@@ -123,40 +123,40 @@ void CUpDownClient::DrawStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bool
             }
         }
 
-//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]	
-		bool bCompletePart = abyPartStatus ? abyPartStatus->IsCompletePart(0) : false;
-		for (UINT i = 0, nPart = 0; i < nStepCount; ++i)
-        //for (UINT i = 0; i < nPartCount; ++i)
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+        bool bCompletePart = abyPartStatus ? abyPartStatus->IsCompletePart(0) : false;
+        for (UINT i = 0, nPart = 0; i < nStepCount; ++i)
+            //for (UINT i = 0; i < nPartCount; ++i)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-			uint64 partsize = PARTSIZE;
-			if(abyPartStatus && SupportsSCT())
-			{
-				partsize = CRUMBSIZE;
-				if(i != 0 && (i % CRUMBSPERPART) == 0)
-				{
-					++nPart;
-					bCompletePart = abyPartStatus->IsCompletePart(nPart);
-				}
-			}
-			else
-			{
-				++nPart;
-				bCompletePart = false;
-			}
+            uint64 partsize = PARTSIZE;
+            if (abyPartStatus && SupportsSCT())
+            {
+                partsize = CRUMBSIZE;
+                if (i != 0 && (i % CRUMBSPERPART) == 0)
+                {
+                    ++nPart;
+                    bCompletePart = abyPartStatus->IsCompletePart(nPart);
+                }
+            }
+            else
+            {
+                ++nPart;
+                bCompletePart = false;
+            }
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
             GetPartStartAndEnd(i, partsize, filesize, uStart, uEnd);
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
             //if (IsPartAvailable(i))
-			if(abyPartStatus && abyPartStatus->IsComplete(uStart, uEnd-1))
+            if (abyPartStatus && abyPartStatus->IsComplete(uStart, uEnd-1))
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
             {
                 if (reqfile->IsComplete(uStart, uEnd-1, false))
                     s_StatusBar.FillRange(uStart, uEnd, crBoth);
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-				else if(SupportsSCT() && !bCompletePart)
-					s_StatusBar.FillRange(uStart, uEnd, crSCT);
+                else if (SupportsSCT() && !bCompletePart)
+                    s_StatusBar.FillRange(uStart, uEnd, crSCT);
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
                 else if (GetSessionDown() > 0 && m_nDownloadState == DS_DOWNLOADING && m_nLastBlockOffset >= uStart && m_nLastBlockOffset < uEnd)
                     s_StatusBar.FillRange(uStart, uEnd, crPending);
@@ -189,8 +189,8 @@ bool CUpDownClient::Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash) c
     {
         //User is firewalled.. Must do two checks..
 //>>> WiZaRd::IPv6 [Xanatos]
-		if ((!GetIPv4().IsNull() && GetIPv4() == tocomp->GetIPv4()) || (!GetIPv6().IsNull() && GetIPv6() == tocomp->GetIPv6()))
-        //if (GetIP()!=0 && GetIP() == tocomp->GetIP())
+        if ((!GetIPv4().IsNull() && GetIPv4() == tocomp->GetIPv4()) || (!GetIPv6().IsNull() && GetIPv6() == tocomp->GetIPv6()))
+            //if (GetIP()!=0 && GetIP() == tocomp->GetIP())
 //<<< WiZaRd::IPv6 [Xanatos]
         {
             //The IP of both match
@@ -224,9 +224,9 @@ bool CUpDownClient::Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash) c
     }
 
 //>>> WiZaRd::IPv6 [Xanatos]
-	if (((!GetIPv4().IsNull() && GetIPv4() == tocomp->GetIPv4()) || (!GetIPv6().IsNull() && GetIPv6() == tocomp->GetIPv6()))
-		|| (GetUserIDHybrid()!=0 && GetUserIDHybrid() == tocomp->GetUserIDHybrid())
-		|| (!GetConnectIP().IsNull() && GetConnectIP() == tocomp->GetConnectIP())) //WiZaRd: fallback for "fresh" clients
+    if (((!GetIPv4().IsNull() && GetIPv4() == tocomp->GetIPv4()) || (!GetIPv6().IsNull() && GetIPv6() == tocomp->GetIPv6()))
+            || (GetUserIDHybrid()!=0 && GetUserIDHybrid() == tocomp->GetUserIDHybrid())
+            || (!GetConnectIP().IsNull() && GetConnectIP() == tocomp->GetConnectIP())) //WiZaRd: fallback for "fresh" clients
 //     if ((GetIP()!=0 && GetIP() == tocomp->GetIP())
 //             || (GetUserIDHybrid()!=0 && GetUserIDHybrid() == tocomp->GetUserIDHybrid())
 //             || (GetConnectIP()!=0 && GetConnectIP() == tocomp->GetConnectIP())) //WiZaRd: fallback for "fresh" clients
@@ -402,7 +402,7 @@ void CUpDownClient::SendFileRequest()
         if (thePrefs.GetDebugClientTCPLevel() > 0)
             DebugSend("OP__MPSetReqFileID", this, reqfile->GetFileHash());
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-		if (reqfile->GetPartCount() > 1 || SupportsSCT())
+        if (reqfile->GetPartCount() > 1 || SupportsSCT())
             //if (reqfile->GetPartCount() > 1)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
             dataFileReq.WriteUInt8(OP_SETREQFILEID);
@@ -428,11 +428,11 @@ void CUpDownClient::SendFileRequest()
             {
                 dataFileReq.WriteUInt8(OP_REQUESTSOURCES2);
 //>>> WiZaRd::ExtendedXS [Xanatos]
-				if(SupportsExtendedSourceExchange())
-					dataFileReq.WriteUInt8(SOURCEEXCHANGEEXT_VERSION);
-				else
+                if (SupportsExtendedSourceExchange())
+                    dataFileReq.WriteUInt8(SOURCEEXCHANGEEXT_VERSION);
+                else
 //<<< WiZaRd::ExtendedXS [Xanatos]
-					dataFileReq.WriteUInt8(SOURCEEXCHANGE2_VERSION);
+                    dataFileReq.WriteUInt8(SOURCEEXCHANGE2_VERSION);
                 const uint16 nOptions = 0; // 16 ... Reserved
                 dataFileReq.WriteUInt16(nOptions);
             }
@@ -533,11 +533,11 @@ void CUpDownClient::SendFileRequest()
             {
                 packet = new Packet(OP_REQUESTSOURCES2,19,OP_EMULEPROT);
 //>>> WiZaRd::ExtendedXS [Xanatos]
-				if(SupportsExtendedSourceExchange())
-					PokeUInt8(&packet->pBuffer[0], SOURCEEXCHANGEEXT_VERSION);
-				else
+                if (SupportsExtendedSourceExchange())
+                    PokeUInt8(&packet->pBuffer[0], SOURCEEXCHANGEEXT_VERSION);
+                else
 //<<< WiZaRd::ExtendedXS [Xanatos]
-					PokeUInt8(&packet->pBuffer[0], SOURCEEXCHANGE2_VERSION);
+                    PokeUInt8(&packet->pBuffer[0], SOURCEEXCHANGE2_VERSION);
                 const uint16 nOptions = 0; // 16 ... Reserved
                 PokeUInt16(&packet->pBuffer[1], nOptions);
                 md4cpy(&packet->pBuffer[3],reqfile->GetFileHash());
@@ -578,7 +578,7 @@ void CUpDownClient::SendFileRequest()
         }
     }
     SetLastAskedTime();
-	m_byFileRequestState = 1; //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
+    m_byFileRequestState = 1; //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
 }
 
 void CUpDownClient::SendStartupLoadReq()
@@ -590,7 +590,7 @@ void CUpDownClient::SendStartupLoadReq()
     }
     m_fQueueRankPending = 1;
     m_fUnaskQueueRankRecv = 0;
-	m_byFileRequestState = 2; //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
+    m_byFileRequestState = 2; //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
     if (thePrefs.GetDebugClientTCPLevel() > 0)
         DebugSend("OP__StartupLoadReq", this);
     CSafeMemFile dataStartupLoadReq(16);
@@ -622,8 +622,8 @@ void CUpDownClient::ProcessFileInfo(CSafeMemFile* data, CPartFile* file)
     // if the remote client answers the OP_REQUESTFILENAME with OP_REQFILENAMEANSWER the file is shared by the remote client. if we
     // know that the file is shared, we know also that the file is complete and don't need to request the file status.
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-    if(!SupportsSCT() && reqfile->GetPartCount() == 1)
-    //if (reqfile->GetPartCount() == 1)
+    if (!SupportsSCT() && reqfile->GetPartCount() == 1)
+        //if (reqfile->GetPartCount() == 1)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
@@ -674,7 +674,7 @@ void CUpDownClient::ProcessFileInfo(CSafeMemFile* data, CPartFile* file)
         if (reqfile->m_bMD4HashsetNeeded || (reqfile->IsAICHPartHashSetNeeded() && SupportsFileIdentifiers()
                                              && GetReqFileAICHHash() != NULL && *GetReqFileAICHHash() == reqfile->GetFileIdentifier().GetAICHHash()))
             SendHashSetRequest();
-        else if(m_byFileRequestState == 1) //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
+        else if (m_byFileRequestState == 1) //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
             SendStartupLoadReq();
         reqfile->UpdatePartsInfo();
     }
@@ -700,7 +700,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPart
     }
 //<<< WiZaRd::AntiHideOS [netfinity]
 
-	ProcessDownloadFileStatus(bUdpPacket, file);
+    ProcessDownloadFileStatus(bUdpPacket, file);
 }
 
 bool CUpDownClient::ProcessDownloadFileStatus(const bool bUDPPacket, CPartFile* file, bool bMergeIfPossible)
@@ -708,27 +708,27 @@ bool CUpDownClient::ProcessDownloadFileStatus(const bool bUDPPacket, CPartFile* 
     /*if (m_pPartStatus->IsComplete())
     	m_bCompleteSource = true;*/
     // netfinity: Update upload partstatus if we are downloading this file and there is more pieces available in the download partstatus
-	bMergeIfPossible = bMergeIfPossible && !md4cmp(GetUploadFileID(), file->GetFileHash());
-    if(bMergeIfPossible)
+    bMergeIfPossible = bMergeIfPossible && !md4cmp(GetUploadFileID(), file->GetFileHash());
+    if (bMergeIfPossible)
     {
-		if(m_pUpPartStatus == NULL)        
-			m_pUpPartStatus = m_pPartStatus->Clone();
-		else
-		{
-			for(UINT uCrumb = 0; uCrumb < m_pPartStatus->GetCrumbsCount(); ++uCrumb)
-			{
-				if(m_pPartStatus->IsCompleteCrumb(uCrumb))
-					m_pUpPartStatus->SetCrumb(uCrumb);
-			}
-		}        
+        if (m_pUpPartStatus == NULL)
+            m_pUpPartStatus = m_pPartStatus->Clone();
+        else
+        {
+            for (UINT uCrumb = 0; uCrumb < m_pPartStatus->GetCrumbsCount(); ++uCrumb)
+            {
+                if (m_pPartStatus->IsCompleteCrumb(uCrumb))
+                    m_pUpPartStatus->SetCrumb(uCrumb);
+            }
+        }
     }
 
     const UINT m_nPartCount = GetPartCount();
 
-	bool bPartsNeeded = false;
+    bool bPartsNeeded = false;
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	if (!reqfile->GetDonePartStatus() || reqfile->GetDonePartStatus()->GetNeeded(m_pPartStatus) > 0)
-		bPartsNeeded = true;
+    if (!reqfile->GetDonePartStatus() || reqfile->GetDonePartStatus()->GetNeeded(m_pPartStatus) > 0)
+        bPartsNeeded = true;
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     int iNeeded = 0;
     uint16 done = 0;
@@ -736,9 +736,9 @@ bool CUpDownClient::ProcessDownloadFileStatus(const bool bUDPPacket, CPartFile* 
     const bool checkSeenParts = IsPartialSource(); //>>> WiZaRd::AntiHideOS [netfinity]
     while (done != m_nPartCount)
     {
-		bool bPartAvail = IsPartAvailable(done);
-		if(bPartAvail)
-			m_abySeenPartStatus[done] = 1; //>>> WiZaRd::AntiHideOS [netfinity]
+        bool bPartAvail = IsPartAvailable(done);
+        if (bPartAvail)
+            m_abySeenPartStatus[done] = 1; //>>> WiZaRd::AntiHideOS [netfinity]
         if (bPartAvail
 //>>> WiZaRd::AntiHideOS [netfinity]
                 || (checkSeenParts && m_abySeenPartStatus[done])
@@ -806,9 +806,9 @@ bool CUpDownClient::ProcessDownloadFileStatus(const bool bUDPPacket, CPartFile* 
     				const bool partDone = ((toread >> i) & 1) ? 1 : 0;
                     m_abyPartStatus[done] = partDone;
                     if (partDone
-//>>> WiZaRd::AntiHideOS [netfinity]
+    //>>> WiZaRd::AntiHideOS [netfinity]
                             || (checkSeenParts && m_abySeenPartStatus[done])
-//<<< WiZaRd::AntiHideOS [netfinity]
+    //<<< WiZaRd::AntiHideOS [netfinity]
                        )
                     {
                         if (!reqfile->IsComplete((uint64)done*PARTSIZE, ((uint64)(done+1)*PARTSIZE)-1, false))
@@ -852,39 +852,39 @@ bool CUpDownClient::ProcessDownloadFileStatus(const bool bUDPPacket, CPartFile* 
     {
         if (!bPartsNeeded)
         {
-			if (GetDownloadState() != DS_DOWNLOADING) // If we are in downloading state this is handled in a different place (e.g Delayed NNP)
-			{
-				SetDownloadState(DS_NONEEDEDPARTS);
-				if(SwapToAnotherFile(_T("A4AF for NNP file. CUpDownClient::ProcessFileStatus() TCP"), true, false, false, NULL, true, true))
-					SendFileRequest(); // netfinity: We need to send request here, or we might get stuck!!!
-			}
+            if (GetDownloadState() != DS_DOWNLOADING) // If we are in downloading state this is handled in a different place (e.g Delayed NNP)
+            {
+                SetDownloadState(DS_NONEEDEDPARTS);
+                if (SwapToAnotherFile(_T("A4AF for NNP file. CUpDownClient::ProcessFileStatus() TCP"), true, false, false, NULL, true, true))
+                    SendFileRequest(); // netfinity: We need to send request here, or we might get stuck!!!
+            }
         }
-		else if (GetDownloadState() == DS_DOWNLOADING) // We might have asked for a new file status if we got NNP
-			SendBlockRequests();
+        else if (GetDownloadState() == DS_DOWNLOADING) // We might have asked for a new file status if we got NNP
+            SendBlockRequests();
         else if (reqfile->m_bMD4HashsetNeeded || (reqfile->IsAICHPartHashSetNeeded() && SupportsFileIdentifiers()
                  && GetReqFileAICHHash() != NULL && *GetReqFileAICHHash() == reqfile->GetFileIdentifier().GetAICHHash())) //If we are using the eMule filerequest packets, this is taken care of in the Multipacket!
             SendHashSetRequest();
-		else if(m_byFileRequestState == 1) //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
-			SendStartupLoadReq();
+        else if (m_byFileRequestState == 1) //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
+            SendStartupLoadReq();
     }
     else
     {
         if (!bPartsNeeded)
         {
-			if (GetDownloadState() != DS_DOWNLOADING) // If we are in downloading state this is handled in a different place (e.g Delayed NNP)
-			{
-				SetDownloadState(DS_NONEEDEDPARTS);
-				//SwapToAnotherFile(_T("A4AF for NNP file. CUpDownClient::ProcessFileStatus() UDP"), true, false, false, NULL, true, false);
-			}
+            if (GetDownloadState() != DS_DOWNLOADING) // If we are in downloading state this is handled in a different place (e.g Delayed NNP)
+            {
+                SetDownloadState(DS_NONEEDEDPARTS);
+                //SwapToAnotherFile(_T("A4AF for NNP file. CUpDownClient::ProcessFileStatus() UDP"), true, false, false, NULL, true, false);
+            }
         }
         else
             SetDownloadState(DS_ONQUEUE);
     }
     reqfile->UpdatePartsInfo();
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	if(bMergeIfPossible)
-		ProcessUploadFileStatus(bUDPPacket, file, false);
-	return true;
+    if (bMergeIfPossible)
+        ProcessUploadFileStatus(bUDPPacket, file, false);
+    return true;
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 }
 
@@ -955,34 +955,34 @@ void CUpDownClient::SetDownloadState(EDownloadState nNewState, LPCTSTR pszReason
 
         switch (nNewState)
         {
-        case DS_CONNECTING:
-            m_dwLastTriedToConnect = ::GetTickCount();
-            break;
-        case DS_TOOMANYCONNSKAD:
-            //This client had already been set to DS_CONNECTING.
-            //So we reset this time so it isn't stuck at TOOMANYCONNS for 20mins.
-            m_dwLastTriedToConnect = ::GetTickCount()-20*60*1000;
-            break;
-        case DS_WAITCALLBACKKAD:
-        case DS_WAITCALLBACK:
-            break;
-        case DS_NONEEDEDPARTS:
-            // Since tcp asks never sets reask time if the result is DS_NONEEDEDPARTS
-            // If we set this, we will not reask for that file until some time has passed.
-            SetLastAskedTime();
-            //DontSwapTo(reqfile);
+            case DS_CONNECTING:
+                m_dwLastTriedToConnect = ::GetTickCount();
+                break;
+            case DS_TOOMANYCONNSKAD:
+                //This client had already been set to DS_CONNECTING.
+                //So we reset this time so it isn't stuck at TOOMANYCONNS for 20mins.
+                m_dwLastTriedToConnect = ::GetTickCount()-20*60*1000;
+                break;
+            case DS_WAITCALLBACKKAD:
+            case DS_WAITCALLBACK:
+                break;
+            case DS_NONEEDEDPARTS:
+                // Since tcp asks never sets reask time if the result is DS_NONEEDEDPARTS
+                // If we set this, we will not reask for that file until some time has passed.
+                SetLastAskedTime();
+                //DontSwapTo(reqfile);
 
-            /*default:
-            	switch( m_nDownloadState )
-            	{
-            		case DS_WAITCALLBACK:
-            		case DS_WAITCALLBACKKAD:
-            			break;
-            		default:
-            			m_dwLastTriedToConnect = ::GetTickCount()-20*60*1000;
-            			break;
-            	}
-            	break;*/
+                /*default:
+                	switch( m_nDownloadState )
+                	{
+                		case DS_WAITCALLBACK:
+                		case DS_WAITCALLBACKKAD:
+                			break;
+                		default:
+                			m_dwLastTriedToConnect = ::GetTickCount()-20*60*1000;
+                			break;
+                	}
+                	break;*/
         }
 
         if (reqfile)
@@ -1015,8 +1015,8 @@ void CUpDownClient::SetDownloadState(EDownloadState nNewState, LPCTSTR pszReason
             {
                 switch (nNewState)
                 {
-                case DS_NONEEDEDPARTS:
-                    pszReason = _T("NNP. You don't need any parts from this client.");
+                    case DS_NONEEDEDPARTS:
+                        pszReason = _T("NNP. You don't need any parts from this client.");
                 }
 
                 if (thePrefs.GetLogUlDlEvents())
@@ -1139,13 +1139,13 @@ void CUpDownClient::ProcessHashSet(const uchar* packet, UINT size, bool bFileIde
         m_fHashsetRequestingAICH = 0;
 
 //>>> WiZaRd::Immediate File Sharing
-		if (reqfile->GetStatus(true) == PS_READY 
-			|| (reqfile->GetStatus() == PS_EMPTY && !reqfile->m_bMD4HashsetNeeded))
-		{
-			reqfile->SetStatus(PS_READY);
-			if(theApp.sharedfiles->GetFileByID(reqfile->GetFileHash()) == NULL)	
-				theApp.sharedfiles->SafeAddKFile(reqfile);
-		}
+        if (reqfile->GetStatus(true) == PS_READY
+                || (reqfile->GetStatus() == PS_EMPTY && !reqfile->m_bMD4HashsetNeeded))
+        {
+            reqfile->SetStatus(PS_READY);
+            if (theApp.sharedfiles->GetFileByID(reqfile->GetFileHash()) == NULL)
+                theApp.sharedfiles->SafeAddKFile(reqfile);
+        }
 //<<< WiZaRd::Immediate File Sharing
     }
     else
@@ -1165,17 +1165,17 @@ void CUpDownClient::ProcessHashSet(const uchar* packet, UINT size, bool bFileIde
         }
 
 //>>> WiZaRd::Immediate File Sharing
-		if (reqfile->GetStatus(true) == PS_READY 
-			|| (reqfile->GetStatus() == PS_EMPTY && !reqfile->m_bMD4HashsetNeeded))
-		{
-			reqfile->SetStatus(PS_READY);
-			if(theApp.sharedfiles->GetFileByID(reqfile->GetFileHash()) == NULL)	
-				theApp.sharedfiles->SafeAddKFile(reqfile);
-		}
+        if (reqfile->GetStatus(true) == PS_READY
+                || (reqfile->GetStatus() == PS_EMPTY && !reqfile->m_bMD4HashsetNeeded))
+        {
+            reqfile->SetStatus(PS_READY);
+            if (theApp.sharedfiles->GetFileByID(reqfile->GetFileHash()) == NULL)
+                theApp.sharedfiles->SafeAddKFile(reqfile);
+        }
 //<<< WiZaRd::Immediate File Sharing
     }
-	if(m_byFileRequestState == 1) //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
-		SendStartupLoadReq();
+    if (m_byFileRequestState == 1) //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
+        SendStartupLoadReq();
 }
 
 void CUpDownClient::CreateBlockRequests(int iMaxBlocks)
@@ -1384,9 +1384,9 @@ void CUpDownClient::SendBlockRequests()
     theStats.AddUpDataOverheadFileRequest(packet->size);
     SendPacket(packet, true);
 
-	// on highspeed downloads, we want this packet to get out asap, so wakeup the throttler if he is sleeping
-	// because there was nothing to send yet
-	theApp.uploadBandwidthThrottler->NewUploadDataAvailable();
+    // on highspeed downloads, we want this packet to get out asap, so wakeup the throttler if he is sleeping
+    // because there was nothing to send yet
+    theApp.uploadBandwidthThrottler->NewUploadDataAvailable();
 }
 
 /* Barry - Originally this only wrote to disk when a full 180k block
@@ -1928,19 +1928,19 @@ void CUpDownClient::UDPReaskFNF()
             reqfile->m_DeadSourceList.AddDeadSource(this);
         switch (GetDownloadState())
         {
-        case DS_ONQUEUE:
-        case DS_NONEEDEDPARTS:
-            DontSwapTo(reqfile);
-            if (SwapToAnotherFile(_T("Source says it doesn't have the file. CUpDownClient::UDPReaskFNF()"), true, true, true, NULL, false, false))
-                break;
-            /*fall through*/
-        default:
-            theApp.downloadqueue->RemoveSource(this);
-            if (!socket)
-            {
-                if (Disconnected(_T("UDPReaskFNF socket=NULL")))
-                    delete this;
-            }
+            case DS_ONQUEUE:
+            case DS_NONEEDEDPARTS:
+                DontSwapTo(reqfile);
+                if (SwapToAnotherFile(_T("Source says it doesn't have the file. CUpDownClient::UDPReaskFNF()"), true, true, true, NULL, false, false))
+                    break;
+                /*fall through*/
+            default:
+                theApp.downloadqueue->RemoveSource(this);
+                if (!socket)
+                {
+                    if (Disconnected(_T("UDPReaskFNF socket=NULL")))
+                        delete this;
+                }
         }
     }
     else
@@ -2018,7 +2018,7 @@ void CUpDownClient::UDPReaskForDownload()
             theApp.downloadqueue->AddUDPFileReasks();
             // FIXME: We dont know which kadversion the buddy has, so we need to send unencrypted
 //>>> WiZaRd::IPv6 [Xanatos]
-			theApp.clientudp->SendPacket(response, CAddress(_ntohl(GetBuddyIP())), GetBuddyPort(), false, NULL, true, 0);
+            theApp.clientudp->SendPacket(response, CAddress(_ntohl(GetBuddyIP())), GetBuddyPort(), false, NULL, true, 0);
             //theApp.clientudp->SendPacket(response, GetBuddyIP(), GetBuddyPort(), false, NULL, true, 0);
 //<<< WiZaRd::IPv6 [Xanatos]
             m_nTotalUDPPackets++;
@@ -2658,13 +2658,13 @@ bool CUpDownClient::IsValidSource() const
     bool valid = false;
     switch (GetDownloadState())
     {
-    case DS_DOWNLOADING:
-    case DS_ONQUEUE:
-    case DS_CONNECTED:
-    case DS_NONEEDEDPARTS:
-    case DS_REMOTEQUEUEFULL:
-    case DS_REQHASHSET:
-        valid = IsEd2kClient();
+        case DS_DOWNLOADING:
+        case DS_ONQUEUE:
+        case DS_CONNECTED:
+        case DS_NONEEDEDPARTS:
+        case DS_REMOTEQUEUEFULL:
+        case DS_REQHASHSET:
+            valid = IsEd2kClient();
     }
     return valid;
 }
@@ -2886,29 +2886,29 @@ void CUpDownClient::ProcessAICHRequest(const uchar* packet, UINT size)
                 && pKnownFile->GetPartCount() > nPart
                 && pKnownFile->GetFileSize() > (uint64)EMBLOCKSIZE && (uint64)pKnownFile->GetFileSize() - PARTSIZE*(uint64)nPart > EMBLOCKSIZE)
         {
-			if(pKnownFile->GetFileIdentifier().GetAICHHash() == ahMasterHash)
-			{
-				CSafeMemFile fileResponse;
-				fileResponse.WriteHash16(pKnownFile->GetFileHash());
-				fileResponse.WriteUInt16(nPart);
-				pKnownFile->GetFileIdentifier().GetAICHHash().Write(&fileResponse);
-				CAICHRecoveryHashSet recHashSet(pKnownFile, pKnownFile->GetFileSize());
-				recHashSet.SetMasterHash(pKnownFile->GetFileIdentifier().GetAICHHash(), AICH_HASHSETCOMPLETE);
-				if (recHashSet.CreatePartRecoveryData((uint64)nPart*PARTSIZE, &fileResponse))
-				{
-					AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Successfully created and sent recoverydata for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
-					if (thePrefs.GetDebugClientTCPLevel() > 0)
-						DebugSend("OP__AichAnswer", this, pKnownFile->GetFileHash());
-					Packet* packAnswer = new Packet(&fileResponse, OP_EMULEPROT, OP_AICHANSWER);
-					theStats.AddUpDataOverheadFileRequest(packAnswer->size);
-					SafeConnectAndSendPacket(packAnswer);
-					return;
-				}
-				else
-					AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to create recoverydata for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
-			}
-			else
-				AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to create recoverydata - requested Hash differs from Masterhash for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
+            if (pKnownFile->GetFileIdentifier().GetAICHHash() == ahMasterHash)
+            {
+                CSafeMemFile fileResponse;
+                fileResponse.WriteHash16(pKnownFile->GetFileHash());
+                fileResponse.WriteUInt16(nPart);
+                pKnownFile->GetFileIdentifier().GetAICHHash().Write(&fileResponse);
+                CAICHRecoveryHashSet recHashSet(pKnownFile, pKnownFile->GetFileSize());
+                recHashSet.SetMasterHash(pKnownFile->GetFileIdentifier().GetAICHHash(), AICH_HASHSETCOMPLETE);
+                if (recHashSet.CreatePartRecoveryData((uint64)nPart*PARTSIZE, &fileResponse))
+                {
+                    AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Successfully created and sent recoverydata for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
+                    if (thePrefs.GetDebugClientTCPLevel() > 0)
+                        DebugSend("OP__AichAnswer", this, pKnownFile->GetFileHash());
+                    Packet* packAnswer = new Packet(&fileResponse, OP_EMULEPROT, OP_AICHANSWER);
+                    theStats.AddUpDataOverheadFileRequest(packAnswer->size);
+                    SafeConnectAndSendPacket(packAnswer);
+                    return;
+                }
+                else
+                    AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to create recoverydata for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
+            }
+            else
+                AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to create recoverydata - requested Hash differs from Masterhash for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
         }
         else
             AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to create recoverydata - Hashset not ready for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
@@ -2975,30 +2975,30 @@ void CUpDownClient::ProcessAICHFileHash(CSafeMemFile* data, CPartFile* file, con
             // we try to swap to another file ignoring no needed parts files
             switch (GetDownloadState())
             {
-            case DS_REQHASHSET:
-                // for the love of eMule, don't accept a hashset from him :)
-                if (m_fHashsetRequestingMD4)
-                {
-                    DebugLogWarning(_T("... also cancelled hash set request from client due to AICH mismatch"));
-                    pPartFile->m_bMD4HashsetNeeded = true;
-                }
-                if (m_fHashsetRequestingAICH)
-                {
-                    ASSERT(0);
-                    pPartFile->SetAICHHashSetNeeded(true);
-                }
-                m_fHashsetRequestingMD4 = false;
-                m_fHashsetRequestingAICH = false;
-            case DS_CONNECTED:
-            case DS_ONQUEUE:
-            case DS_NONEEDEDPARTS:
-            case DS_DOWNLOADING:
-                DontSwapTo(pPartFile); // ZZ:DownloadManager
-                if (!SwapToAnotherFile(_T("Source says it doesn't have the file (AICH mismatch). CUpDownClient::ProcessAICHFileHash"), true, true, true, NULL, false, false))   // ZZ:DownloadManager
-                {
-                    theApp.downloadqueue->RemoveSource(this);
-                }
-                return;
+                case DS_REQHASHSET:
+                    // for the love of eMule, don't accept a hashset from him :)
+                    if (m_fHashsetRequestingMD4)
+                    {
+                        DebugLogWarning(_T("... also cancelled hash set request from client due to AICH mismatch"));
+                        pPartFile->m_bMD4HashsetNeeded = true;
+                    }
+                    if (m_fHashsetRequestingAICH)
+                    {
+                        ASSERT(0);
+                        pPartFile->SetAICHHashSetNeeded(true);
+                    }
+                    m_fHashsetRequestingMD4 = false;
+                    m_fHashsetRequestingAICH = false;
+                case DS_CONNECTED:
+                case DS_ONQUEUE:
+                case DS_NONEEDEDPARTS:
+                case DS_DOWNLOADING:
+                    DontSwapTo(pPartFile); // ZZ:DownloadManager
+                    if (!SwapToAnotherFile(_T("Source says it doesn't have the file (AICH mismatch). CUpDownClient::ProcessAICHFileHash"), true, true, true, NULL, false, false))   // ZZ:DownloadManager
+                    {
+                        theApp.downloadqueue->RemoveSource(this);
+                    }
+                    return;
             }
         }
     }
@@ -3201,14 +3201,14 @@ void CUpDownClient::ProcessCrumbComplete(CSafeMemFile* data)
     UINT crumbIndex = data->ReadUInt32();
     CPartFile* pPartFile = theApp.downloadqueue->GetFileByID(abyHash);
 
-    if(pPartFile && pPartFile == reqfile && m_pPartStatus != NULL)
-	{
+    if (pPartFile && pPartFile == reqfile && m_pPartStatus != NULL)
+    {
         m_pPartStatus->SetCrumb(crumbIndex);
 
-		UpdateDisplayedInfo(false);
-		reqfile->UpdateAvailablePartsCount();
+        UpdateDisplayedInfo(false);
+        reqfile->UpdateAvailablePartsCount();
 
-		// TODO: Test and check if we exited NNP state
-	}
+        // TODO: Test and check if we exited NNP state
+    }
 }
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]

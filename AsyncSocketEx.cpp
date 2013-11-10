@@ -279,30 +279,30 @@ public:
                         //Dispatch to CAsyncSocketEx instance
                         switch (nEvent)
                         {
-                        case FD_READ:
-                        {
-                            DWORD nBytes;
-                            if (!pSocket->IOCtl(FIONREAD, &nBytes))
-                                nErrorCode = WSAGetLastError();
-                            if (nBytes != 0 || nErrorCode != 0)
+                            case FD_READ:
+                            {
+                                DWORD nBytes;
+                                if (!pSocket->IOCtl(FIONREAD, &nBytes))
+                                    nErrorCode = WSAGetLastError();
+                                if (nBytes != 0 || nErrorCode != 0)
+                                    pSocket->OnReceive(nErrorCode);
+                                break;
+                            }
+                            case FD_FORCEREAD: //Forceread does not check if there's data waiting
                                 pSocket->OnReceive(nErrorCode);
-                            break;
-                        }
-                        case FD_FORCEREAD: //Forceread does not check if there's data waiting
-                            pSocket->OnReceive(nErrorCode);
-                            break;
-                        case FD_WRITE:
-                            pSocket->OnSend(nErrorCode);
-                            break;
-                        case FD_CONNECT:
-                            pSocket->OnConnect(nErrorCode);
-                            break;
-                        case FD_ACCEPT:
-                            pSocket->OnAccept(nErrorCode);
-                            break;
-                        case FD_CLOSE:
-                            pSocket->OnClose(nErrorCode);
-                            break;
+                                break;
+                            case FD_WRITE:
+                                pSocket->OnSend(nErrorCode);
+                                break;
+                            case FD_CONNECT:
+                                pSocket->OnConnect(nErrorCode);
+                                break;
+                            case FD_ACCEPT:
+                                pSocket->OnAccept(nErrorCode);
+                                break;
+                            case FD_CLOSE:
+                                pSocket->OnClose(nErrorCode);
+                                break;
                         }
                     }
 #ifndef NOLAYERS
@@ -351,30 +351,30 @@ public:
                     //Dispatch to socket class
                     switch (nEvent)
                     {
-                    case FD_READ:
-                        if (pSocket->m_lEvent & FD_READ)
-                            pSocket->OnReceive(nErrorCode);
-                        break;
-                    case FD_FORCEREAD:
-                        if (pSocket->m_lEvent & FD_FORCEREAD)
-                            pSocket->OnReceive(nErrorCode);
-                        break;
-                    case FD_WRITE:
-                        if (pSocket->m_lEvent & FD_WRITE)
-                            pSocket->OnSend(nErrorCode);
-                        break;
-                    case FD_CONNECT:
-                        if (pSocket->m_lEvent & FD_CONNECT)
-                            pSocket->OnConnect(nErrorCode);
-                        break;
-                    case FD_ACCEPT:
-                        if (pSocket->m_lEvent & FD_ACCEPT)
-                            pSocket->OnAccept(nErrorCode);
-                        break;
-                    case FD_CLOSE:
-                        if (pSocket->m_lEvent & FD_CLOSE)
-                            pSocket->OnClose(nErrorCode);
-                        break;
+                        case FD_READ:
+                            if (pSocket->m_lEvent & FD_READ)
+                                pSocket->OnReceive(nErrorCode);
+                            break;
+                        case FD_FORCEREAD:
+                            if (pSocket->m_lEvent & FD_FORCEREAD)
+                                pSocket->OnReceive(nErrorCode);
+                            break;
+                        case FD_WRITE:
+                            if (pSocket->m_lEvent & FD_WRITE)
+                                pSocket->OnSend(nErrorCode);
+                            break;
+                        case FD_CONNECT:
+                            if (pSocket->m_lEvent & FD_CONNECT)
+                                pSocket->OnConnect(nErrorCode);
+                            break;
+                        case FD_ACCEPT:
+                            if (pSocket->m_lEvent & FD_ACCEPT)
+                                pSocket->OnAccept(nErrorCode);
+                            break;
+                        case FD_CLOSE:
+                            if (pSocket->m_lEvent & FD_CLOSE)
+                                pSocket->OnClose(nErrorCode);
+                            break;
                     }
                 }
                 delete pMsg;
@@ -487,7 +487,7 @@ IMPLEMENT_DYNAMIC(CAsyncSocketEx, CObject)
 CAsyncSocketEx::CAsyncSocketEx()
 {
     m_SocketData.hSocket = INVALID_SOCKET;
-	m_SocketData.bIPv6 = false; //>>> WiZaRd::IPv6 [Xanatos]
+    m_SocketData.bIPv6 = false; //>>> WiZaRd::IPv6 [Xanatos]
     m_SocketData.nSocketIndex = -1;
     m_pLocalAsyncSocketExThreadData = 0;
 #ifndef NOLAYERS
@@ -530,12 +530,12 @@ BOOL CAsyncSocketEx::Create(UINT nSocketPort /*=0*/, int nSocketType /*=SOCK_STR
 #endif //NOLAYERS
     {
 //>>> WiZaRd::IPv6 [Xanatos]
-		//SOCKET hSocket = socket(AF_INET, nSocketType, 0);
-		SOCKET hSocket = socket(bIPv6 ? AF_INET6 : AF_INET, nSocketType, 0);
+        //SOCKET hSocket = socket(AF_INET, nSocketType, 0);
+        SOCKET hSocket = socket(bIPv6 ? AF_INET6 : AF_INET, nSocketType, 0);
 //<<< WiZaRd::IPv6 [Xanatos]
-		if (hSocket == INVALID_SOCKET)
-			return FALSE;
-		m_SocketData.bIPv6 = bIPv6; //>>> WiZaRd::IPv6 [Xanatos]
+        if (hSocket == INVALID_SOCKET)
+            return FALSE;
+        m_SocketData.bIPv6 = bIPv6; //>>> WiZaRd::IPv6 [Xanatos]
         m_SocketData.hSocket = hSocket;
 
         AttachHandle(hSocket);
@@ -563,12 +563,12 @@ BOOL CAsyncSocketEx::Create(UINT nSocketPort /*=0*/, int nSocketType /*=SOCK_STR
         }
 
 //>>> WiZaRd::IPv6 [Xanatos]
-		if(bIPv6)
-		{
-			int iOptVal = 0; // Enable this socket to accept IPv4 and IPv6 packets at the same time
-			VERIFY( SetSockOpt(IPV6_V6ONLY, &iOptVal, sizeof iOptVal, IPPROTO_IPV6) );
-		}
-		m_SocketData.bIPv6 = bIPv6;
+        if (bIPv6)
+        {
+            int iOptVal = 0; // Enable this socket to accept IPv4 and IPv6 packets at the same time
+            VERIFY(SetSockOpt(IPV6_V6ONLY, &iOptVal, sizeof iOptVal, IPPROTO_IPV6));
+        }
+        m_SocketData.bIPv6 = bIPv6;
 //<<< WiZaRd::IPv6 [Xanatos]
 
         if (!Bind(nSocketPort, lpszSocketAddress))
@@ -608,28 +608,28 @@ BOOL CAsyncSocketEx::OnHostNameResolved(const SOCKADDR_IN * /*pSockAddr*/)
 BOOL CAsyncSocketEx::Bind(UINT nSocketPort, LPCSTR lpszSocketAddress)
 {
 //>>> WiZaRd::IPv6 [Xanatos]
-	if(m_SocketData.bIPv6)
-	{
-		SOCKADDR_IN6 sockAddr = {0};
-		int iSockAddrLen = sizeof(sockAddr);
-		if (lpszSocketAddress == NULL)
-			sockAddr.sin6_addr = in6addr_any;
-		else 
-		{
-			struct sockaddr_storage ss;
-			int sslen = sizeof(ss);
-			if(lpszSocketAddress != NULL && WSAStringToAddressA((char*)lpszSocketAddress, AF_INET6, NULL, (struct sockaddr*)&ss, &sslen) == 0)
-				sockAddr.sin6_addr = ((struct sockaddr_in6 *)&ss)->sin6_addr;
-			else
-			{
-				WSASetLastError(WSAEINVAL);
-				return FALSE;
-			}
-		}
-		sockAddr.sin6_family = AF_INET6;
-		sockAddr.sin6_port = htons((u_short)nSocketPort);
-		return Bind((SOCKADDR*)&sockAddr, iSockAddrLen);
-	}
+    if (m_SocketData.bIPv6)
+    {
+        SOCKADDR_IN6 sockAddr = {0};
+        int iSockAddrLen = sizeof(sockAddr);
+        if (lpszSocketAddress == NULL)
+            sockAddr.sin6_addr = in6addr_any;
+        else
+        {
+            struct sockaddr_storage ss;
+            int sslen = sizeof(ss);
+            if (lpszSocketAddress != NULL && WSAStringToAddressA((char*)lpszSocketAddress, AF_INET6, NULL, (struct sockaddr*)&ss, &sslen) == 0)
+                sockAddr.sin6_addr = ((struct sockaddr_in6 *)&ss)->sin6_addr;
+            else
+            {
+                WSASetLastError(WSAEINVAL);
+                return FALSE;
+            }
+        }
+        sockAddr.sin6_family = AF_INET6;
+        sockAddr.sin6_port = htons((u_short)nSocketPort);
+        return Bind((SOCKADDR*)&sockAddr, iSockAddrLen);
+    }
 //<<< WiZaRd::IPv6 [Xanatos]
 
     SOCKADDR_IN sockAddr = {0};
@@ -853,25 +853,25 @@ BOOL CAsyncSocketEx::Connect(LPCSTR lpszHostAddress, UINT nHostPort)
 #endif //NOLAYERS
     {
 //>>> WiZaRd::IPv6 [Xanatos]
-		if(m_SocketData.bIPv6)
-		{
-			SOCKADDR_IN6 sockAddr = {0};
-			int iSockAddrLen = sizeof(sockAddr);
+        if (m_SocketData.bIPv6)
+        {
+            SOCKADDR_IN6 sockAddr = {0};
+            int iSockAddrLen = sizeof(sockAddr);
 
-			struct sockaddr_storage ss;
-			int sslen = sizeof(ss);
-			if(lpszHostAddress != NULL && WSAStringToAddressA((char*)lpszHostAddress, AF_INET6, NULL, (struct sockaddr*)&ss, &sslen) == 0)
-				sockAddr.sin6_addr = ((struct sockaddr_in6 *)&ss)->sin6_addr;
-			else
-			{
-				WSASetLastError(WSAEINVAL);
-				return FALSE;
-			}
+            struct sockaddr_storage ss;
+            int sslen = sizeof(ss);
+            if (lpszHostAddress != NULL && WSAStringToAddressA((char*)lpszHostAddress, AF_INET6, NULL, (struct sockaddr*)&ss, &sslen) == 0)
+                sockAddr.sin6_addr = ((struct sockaddr_in6 *)&ss)->sin6_addr;
+            else
+            {
+                WSASetLastError(WSAEINVAL);
+                return FALSE;
+            }
 
-			sockAddr.sin6_family = AF_INET6;
-			sockAddr.sin6_port = htons((u_short)nHostPort);
-			return CAsyncSocketEx::Connect((SOCKADDR*)&sockAddr, iSockAddrLen);
-		}
+            sockAddr.sin6_family = AF_INET6;
+            sockAddr.sin6_port = htons((u_short)nHostPort);
+            return CAsyncSocketEx::Connect((SOCKADDR*)&sockAddr, iSockAddrLen);
+        }
 //<<< WiZaRd::IPv6 [Xanatos]
 
         SOCKADDR_IN sockAddr = {0};

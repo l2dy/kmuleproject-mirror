@@ -652,42 +652,42 @@ inline HRESULT AtlGetSAXValue<bool>(bool *pVal, __in_z const wchar_t *wsz, int c
     HRESULT hr = E_FAIL;
     switch (wsz[0])
     {
-    case L'1':
-    {
-        if (cch==1)
+        case L'1':
         {
-            *pVal = true;
-            hr = S_OK;
+            if (cch==1)
+            {
+                *pVal = true;
+                hr = S_OK;
+            }
+            break;
         }
-        break;
-    }
-    case L'0':
-    {
-        if (cch==1)
+        case L'0':
         {
-            *pVal = false;
-            hr = S_OK;
+            if (cch==1)
+            {
+                *pVal = false;
+                hr = S_OK;
+            }
+            break;
         }
-        break;
-    }
-    case L't':
-    {
-        if (cch==sizeof("true")-1 && !wcsncmp(wsz, L"true", cch))
+        case L't':
         {
-            *pVal = true;
-            hr = S_OK;
+            if (cch==sizeof("true")-1 && !wcsncmp(wsz, L"true", cch))
+            {
+                *pVal = true;
+                hr = S_OK;
+            }
+            break;
         }
-        break;
-    }
-    case L'f':
-    {
-        if (cch==sizeof("false")-1 && !wcsncmp(wsz, L"false", cch))
+        case L'f':
         {
-            *pVal = false;
-            hr = S_OK;
+            if (cch==sizeof("false")-1 && !wcsncmp(wsz, L"false", cch))
+            {
+                *pVal = false;
+                hr = S_OK;
+            }
+            break;
         }
-        break;
-    }
     }
 
     return hr;
@@ -1030,49 +1030,49 @@ inline HRESULT AtlGenXMLValue<double>(IWriteStream *pStream, double *pVal)
     HRESULT hr;
     switch (_fpclass(*pVal))
     {
-    case _FPCLASS_SNAN:
-    case _FPCLASS_QNAN:
-    {
-        hr = pStream->WriteStream("NaN", 3, NULL);
-        break;
-    }
-    case _FPCLASS_NINF:
-    {
-        hr = pStream->WriteStream("-INF", 4, NULL);
-        break;
-    }
-    case _FPCLASS_PINF:
-    {
-        hr = pStream->WriteStream("INF", 3, NULL);
-        break;
-    }
-    case _FPCLASS_NZ:
-    {
-        hr = pStream->WriteStream("-0", 2, NULL);
-        break;
-    }
-    default:
-    {
-        /***
-        * 2 = sign + decimal point
-        * ndec = decimal digits
-        * 5 = exponent letter (e or E), exponent sign, three digits exponent
-        * 1 = extra space for rounding
-        * 1 = string terminator '\0'
-        ***/
-        const int ndec = 512;
-        CHAR szBuf[ndec+9];
-        szBuf[0] = '\0';
-        Checked::gcvt_s(szBuf, _countof(szBuf), *pVal, ndec);
-        size_t nLen = strlen(szBuf);
-        if (nLen && szBuf[nLen-1] == '.')
+        case _FPCLASS_SNAN:
+        case _FPCLASS_QNAN:
         {
-            szBuf[--nLen] = '\0';
+            hr = pStream->WriteStream("NaN", 3, NULL);
+            break;
         }
+        case _FPCLASS_NINF:
+        {
+            hr = pStream->WriteStream("-INF", 4, NULL);
+            break;
+        }
+        case _FPCLASS_PINF:
+        {
+            hr = pStream->WriteStream("INF", 3, NULL);
+            break;
+        }
+        case _FPCLASS_NZ:
+        {
+            hr = pStream->WriteStream("-0", 2, NULL);
+            break;
+        }
+        default:
+        {
+            /***
+            * 2 = sign + decimal point
+            * ndec = decimal digits
+            * 5 = exponent letter (e or E), exponent sign, three digits exponent
+            * 1 = extra space for rounding
+            * 1 = string terminator '\0'
+            ***/
+            const int ndec = 512;
+            CHAR szBuf[ndec+9];
+            szBuf[0] = '\0';
+            Checked::gcvt_s(szBuf, _countof(szBuf), *pVal, ndec);
+            size_t nLen = strlen(szBuf);
+            if (nLen && szBuf[nLen-1] == '.')
+            {
+                szBuf[--nLen] = '\0';
+            }
 
-        hr = pStream->WriteStream(szBuf, (int)nLen, NULL);
-        break;
-    }
+            hr = pStream->WriteStream(szBuf, (int)nLen, NULL);
+            break;
+        }
     }
 
     return hr;
@@ -2223,63 +2223,63 @@ inline size_t AtlSoapGetElementSize(SOAPTYPES type)
     size_t nRet;
     switch (type)
     {
-    case SOAPTYPE_BOOLEAN:
-        nRet = sizeof(bool);
-        break;
-    case SOAPTYPE_FLOAT:
-        nRet = sizeof(float);
-        break;
-    case SOAPTYPE_DOUBLE:
-    case SOAPTYPE_DECIMAL:
-        nRet = sizeof(double);
-        break;
-    case SOAPTYPE_HEXBINARY:
-    case SOAPTYPE_BASE64BINARY:
-        nRet = sizeof(ATLSOAP_BLOB);
-        break;
-    case SOAPTYPE_INTEGER:
-    case SOAPTYPE_NONPOSITIVEINTEGER:
-    case SOAPTYPE_NEGATIVEINTEGER:
-    case SOAPTYPE_LONG:
-        nRet = sizeof(__int64);
-        break;
-    case SOAPTYPE_INT:
-        nRet = sizeof(int);
-        break;
-    case SOAPTYPE_SHORT:
-        nRet = sizeof(short);
-        break;
-    case SOAPTYPE_BYTE:
-        nRet = sizeof(char);
-        break;
-    case SOAPTYPE_POSITIVEINTEGER:
-    case SOAPTYPE_NONNEGATIVEINTEGER:
-    case SOAPTYPE_UNSIGNEDLONG:
-        nRet = sizeof(unsigned __int64);
-        break;
-    case SOAPTYPE_UNSIGNEDINT:
-        nRet = sizeof(unsigned int);
-        break;
-    case SOAPTYPE_UNSIGNEDSHORT:
-        nRet = sizeof(unsigned short);
-        break;
-    case SOAPTYPE_UNSIGNEDBYTE:
-        nRet = sizeof(unsigned char);
-        break;
-    default:
-        if ((type != SOAPTYPE_ERR) && (type != SOAPTYPE_UNK) && (type != SOAPTYPE_USERBASE))
-        {
-            // treat as string
-            nRet = sizeof(BSTR);
-        }
-        else
-        {
-            ATLTRACE(_T("ATLSOAP: AtlSoapGetElementSize -- internal error.\r\n"));
-            // should never get here
-            ATLASSERT(FALSE);
-            nRet = 0;
-        }
-        break;
+        case SOAPTYPE_BOOLEAN:
+            nRet = sizeof(bool);
+            break;
+        case SOAPTYPE_FLOAT:
+            nRet = sizeof(float);
+            break;
+        case SOAPTYPE_DOUBLE:
+        case SOAPTYPE_DECIMAL:
+            nRet = sizeof(double);
+            break;
+        case SOAPTYPE_HEXBINARY:
+        case SOAPTYPE_BASE64BINARY:
+            nRet = sizeof(ATLSOAP_BLOB);
+            break;
+        case SOAPTYPE_INTEGER:
+        case SOAPTYPE_NONPOSITIVEINTEGER:
+        case SOAPTYPE_NEGATIVEINTEGER:
+        case SOAPTYPE_LONG:
+            nRet = sizeof(__int64);
+            break;
+        case SOAPTYPE_INT:
+            nRet = sizeof(int);
+            break;
+        case SOAPTYPE_SHORT:
+            nRet = sizeof(short);
+            break;
+        case SOAPTYPE_BYTE:
+            nRet = sizeof(char);
+            break;
+        case SOAPTYPE_POSITIVEINTEGER:
+        case SOAPTYPE_NONNEGATIVEINTEGER:
+        case SOAPTYPE_UNSIGNEDLONG:
+            nRet = sizeof(unsigned __int64);
+            break;
+        case SOAPTYPE_UNSIGNEDINT:
+            nRet = sizeof(unsigned int);
+            break;
+        case SOAPTYPE_UNSIGNEDSHORT:
+            nRet = sizeof(unsigned short);
+            break;
+        case SOAPTYPE_UNSIGNEDBYTE:
+            nRet = sizeof(unsigned char);
+            break;
+        default:
+            if ((type != SOAPTYPE_ERR) && (type != SOAPTYPE_UNK) && (type != SOAPTYPE_USERBASE))
+            {
+                // treat as string
+                nRet = sizeof(BSTR);
+            }
+            else
+            {
+                ATLTRACE(_T("ATLSOAP: AtlSoapGetElementSize -- internal error.\r\n"));
+                // should never get here
+                ATLASSERT(FALSE);
+                nRet = 0;
+            }
+            break;
     }
 
     return nRet;
@@ -2292,67 +2292,67 @@ inline HRESULT AtlSoapGetElementValue(const wchar_t *wsz, int cch,
 
     switch (type)
     {
-    case SOAPTYPE_BOOLEAN:
-        hr = AtlGetSAXValue((bool *)pVal, wsz, cch);
-        break;
-    case SOAPTYPE_FLOAT:
-        hr = AtlGetSAXValue((float *)pVal, wsz, cch);
-        break;
-    case SOAPTYPE_DOUBLE:
-    case SOAPTYPE_DECIMAL:
-        hr = AtlGetSAXValue((double *)pVal, wsz, cch);
-        break;
-    case SOAPTYPE_HEXBINARY:
-        hr = AtlGetSAXBlobValue((ATLSOAP_BLOB *)pVal, wsz, cch, pMemMgr, true);
-        break;
-    case SOAPTYPE_BASE64BINARY:
-        hr = AtlGetSAXBlobValue((ATLSOAP_BLOB *)pVal, wsz, cch, pMemMgr, false);
-        break;
+        case SOAPTYPE_BOOLEAN:
+            hr = AtlGetSAXValue((bool *)pVal, wsz, cch);
+            break;
+        case SOAPTYPE_FLOAT:
+            hr = AtlGetSAXValue((float *)pVal, wsz, cch);
+            break;
+        case SOAPTYPE_DOUBLE:
+        case SOAPTYPE_DECIMAL:
+            hr = AtlGetSAXValue((double *)pVal, wsz, cch);
+            break;
+        case SOAPTYPE_HEXBINARY:
+            hr = AtlGetSAXBlobValue((ATLSOAP_BLOB *)pVal, wsz, cch, pMemMgr, true);
+            break;
+        case SOAPTYPE_BASE64BINARY:
+            hr = AtlGetSAXBlobValue((ATLSOAP_BLOB *)pVal, wsz, cch, pMemMgr, false);
+            break;
 
-    case SOAPTYPE_INTEGER:
-    case SOAPTYPE_NONPOSITIVEINTEGER:
-    case SOAPTYPE_NEGATIVEINTEGER:
-    case SOAPTYPE_LONG:
-        hr = AtlGetSAXValue((__int64 *)pVal, wsz, cch);
-        break;
-    case SOAPTYPE_INT:
-        hr = AtlGetSAXValue((int *)pVal, wsz, cch);
-        break;
-    case SOAPTYPE_SHORT:
-        hr = AtlGetSAXValue((short *)pVal, wsz, cch);
-        break;
-    case SOAPTYPE_BYTE:
-        hr = AtlGetSAXValue((char *)pVal, wsz, cch);
-        break;
-    case SOAPTYPE_POSITIVEINTEGER:
-    case SOAPTYPE_NONNEGATIVEINTEGER:
-    case SOAPTYPE_UNSIGNEDLONG:
-        hr = AtlGetSAXValue((unsigned __int64 *)pVal, wsz, cch);
-        break;
-    case SOAPTYPE_UNSIGNEDINT:
-        hr = AtlGetSAXValue((unsigned int *)pVal, wsz, cch);
-        break;
-    case SOAPTYPE_UNSIGNEDSHORT:
-        hr = AtlGetSAXValue((unsigned short *)pVal, wsz, cch);
-        break;
-    case SOAPTYPE_UNSIGNEDBYTE:
-        hr = AtlGetSAXValue((unsigned char *)pVal, wsz, cch);
-        break;
-    default:
-        if ((type != SOAPTYPE_ERR) && (type != SOAPTYPE_UNK) && (type != SOAPTYPE_USERBASE))
-        {
-            hr = AtlGetSAXValue((BSTR *)pVal, wsz, cch);
-        }
+        case SOAPTYPE_INTEGER:
+        case SOAPTYPE_NONPOSITIVEINTEGER:
+        case SOAPTYPE_NEGATIVEINTEGER:
+        case SOAPTYPE_LONG:
+            hr = AtlGetSAXValue((__int64 *)pVal, wsz, cch);
+            break;
+        case SOAPTYPE_INT:
+            hr = AtlGetSAXValue((int *)pVal, wsz, cch);
+            break;
+        case SOAPTYPE_SHORT:
+            hr = AtlGetSAXValue((short *)pVal, wsz, cch);
+            break;
+        case SOAPTYPE_BYTE:
+            hr = AtlGetSAXValue((char *)pVal, wsz, cch);
+            break;
+        case SOAPTYPE_POSITIVEINTEGER:
+        case SOAPTYPE_NONNEGATIVEINTEGER:
+        case SOAPTYPE_UNSIGNEDLONG:
+            hr = AtlGetSAXValue((unsigned __int64 *)pVal, wsz, cch);
+            break;
+        case SOAPTYPE_UNSIGNEDINT:
+            hr = AtlGetSAXValue((unsigned int *)pVal, wsz, cch);
+            break;
+        case SOAPTYPE_UNSIGNEDSHORT:
+            hr = AtlGetSAXValue((unsigned short *)pVal, wsz, cch);
+            break;
+        case SOAPTYPE_UNSIGNEDBYTE:
+            hr = AtlGetSAXValue((unsigned char *)pVal, wsz, cch);
+            break;
+        default:
+            if ((type != SOAPTYPE_ERR) && (type != SOAPTYPE_UNK) && (type != SOAPTYPE_USERBASE))
+            {
+                hr = AtlGetSAXValue((BSTR *)pVal, wsz, cch);
+            }
 #ifdef _DEBUG
-        else
-        {
-            ATLTRACE(_T("ATLSOAP: AtlSoapGetElementValue -- internal error.\r\n"));
+            else
+            {
+                ATLTRACE(_T("ATLSOAP: AtlSoapGetElementValue -- internal error.\r\n"));
 
-            // should never get here
-            ATLASSERT(FALSE);
-        }
+                // should never get here
+                ATLASSERT(FALSE);
+            }
 #endif
-        break;
+            break;
     }
 
     return hr;
@@ -2364,67 +2364,67 @@ inline HRESULT AtlSoapGenElementValue(void *pVal, IWriteStream *pStream, SOAPTYP
 
     switch (type)
     {
-    case SOAPTYPE_BOOLEAN:
-        hr = AtlGenXMLValue(pStream, (bool *)pVal);
-        break;
-    case SOAPTYPE_FLOAT:
-        hr = AtlGenXMLValue(pStream, (float *)pVal);
-        break;
-    case SOAPTYPE_DOUBLE:
-    case SOAPTYPE_DECIMAL:
-        hr = AtlGenXMLValue(pStream, (double *)pVal);
-        break;
-    case SOAPTYPE_HEXBINARY:
-        hr = AtlGenXMLBlobValue(pStream, (ATLSOAP_BLOB *)pVal, pMemMgr, true);
-        break;
-    case SOAPTYPE_BASE64BINARY:
-        hr = AtlGenXMLBlobValue(pStream, (ATLSOAP_BLOB *)pVal, pMemMgr, false);
-        break;
+        case SOAPTYPE_BOOLEAN:
+            hr = AtlGenXMLValue(pStream, (bool *)pVal);
+            break;
+        case SOAPTYPE_FLOAT:
+            hr = AtlGenXMLValue(pStream, (float *)pVal);
+            break;
+        case SOAPTYPE_DOUBLE:
+        case SOAPTYPE_DECIMAL:
+            hr = AtlGenXMLValue(pStream, (double *)pVal);
+            break;
+        case SOAPTYPE_HEXBINARY:
+            hr = AtlGenXMLBlobValue(pStream, (ATLSOAP_BLOB *)pVal, pMemMgr, true);
+            break;
+        case SOAPTYPE_BASE64BINARY:
+            hr = AtlGenXMLBlobValue(pStream, (ATLSOAP_BLOB *)pVal, pMemMgr, false);
+            break;
 
-    case SOAPTYPE_INTEGER:
-    case SOAPTYPE_NONPOSITIVEINTEGER:
-    case SOAPTYPE_NEGATIVEINTEGER:
-    case SOAPTYPE_LONG:
-        hr = AtlGenXMLValue(pStream, (__int64 *)pVal);
-        break;
-    case SOAPTYPE_INT:
-        hr = AtlGenXMLValue(pStream, (int *)pVal);
-        break;
-    case SOAPTYPE_SHORT:
-        hr = AtlGenXMLValue(pStream, (short *)pVal);
-        break;
-    case SOAPTYPE_BYTE:
-        hr = AtlGenXMLValue(pStream, (char *)pVal);
-        break;
-    case SOAPTYPE_POSITIVEINTEGER:
-    case SOAPTYPE_NONNEGATIVEINTEGER:
-    case SOAPTYPE_UNSIGNEDLONG:
-        hr = AtlGenXMLValue(pStream, (unsigned __int64 *)pVal);
-        break;
-    case SOAPTYPE_UNSIGNEDINT:
-        hr = AtlGenXMLValue(pStream, (unsigned int *)pVal);
-        break;
-    case SOAPTYPE_UNSIGNEDSHORT:
-        hr = AtlGenXMLValue(pStream, (unsigned short *)pVal);
-        break;
-    case SOAPTYPE_UNSIGNEDBYTE:
-        hr = AtlGenXMLValue(pStream, (unsigned char *)pVal);
-        break;
-    default:
-        if ((type != SOAPTYPE_ERR) && (type != SOAPTYPE_UNK) && (type != SOAPTYPE_USERBASE))
-        {
-            hr = AtlGenXMLValue(pStream, (BSTR *)pVal);
-        }
+        case SOAPTYPE_INTEGER:
+        case SOAPTYPE_NONPOSITIVEINTEGER:
+        case SOAPTYPE_NEGATIVEINTEGER:
+        case SOAPTYPE_LONG:
+            hr = AtlGenXMLValue(pStream, (__int64 *)pVal);
+            break;
+        case SOAPTYPE_INT:
+            hr = AtlGenXMLValue(pStream, (int *)pVal);
+            break;
+        case SOAPTYPE_SHORT:
+            hr = AtlGenXMLValue(pStream, (short *)pVal);
+            break;
+        case SOAPTYPE_BYTE:
+            hr = AtlGenXMLValue(pStream, (char *)pVal);
+            break;
+        case SOAPTYPE_POSITIVEINTEGER:
+        case SOAPTYPE_NONNEGATIVEINTEGER:
+        case SOAPTYPE_UNSIGNEDLONG:
+            hr = AtlGenXMLValue(pStream, (unsigned __int64 *)pVal);
+            break;
+        case SOAPTYPE_UNSIGNEDINT:
+            hr = AtlGenXMLValue(pStream, (unsigned int *)pVal);
+            break;
+        case SOAPTYPE_UNSIGNEDSHORT:
+            hr = AtlGenXMLValue(pStream, (unsigned short *)pVal);
+            break;
+        case SOAPTYPE_UNSIGNEDBYTE:
+            hr = AtlGenXMLValue(pStream, (unsigned char *)pVal);
+            break;
+        default:
+            if ((type != SOAPTYPE_ERR) && (type != SOAPTYPE_UNK) && (type != SOAPTYPE_USERBASE))
+            {
+                hr = AtlGenXMLValue(pStream, (BSTR *)pVal);
+            }
 #ifdef _DEBUG
-        else
-        {
-            ATLTRACE(_T("ATLSOAP: AtlSoapGenElementValue -- internal error.\r\n"));
+            else
+            {
+                ATLTRACE(_T("ATLSOAP: AtlSoapGenElementValue -- internal error.\r\n"));
 
-            // should never get here
-            ATLASSERT(FALSE);
-        }
+                // should never get here
+                ATLASSERT(FALSE);
+            }
 #endif
-        break;
+            break;
     }
     return hr;
 }
@@ -2435,46 +2435,46 @@ inline HRESULT AtlSoapCleanupElement(void *pVal, SOAPTYPES type, IAtlMemMgr *pMe
 
     switch (type)
     {
-    case SOAPTYPE_BOOLEAN:
-    case SOAPTYPE_FLOAT:
-    case SOAPTYPE_DOUBLE:
-    case SOAPTYPE_DECIMAL:
-    case SOAPTYPE_INT:
-    case SOAPTYPE_INTEGER:
-    case SOAPTYPE_NONPOSITIVEINTEGER:
-    case SOAPTYPE_NEGATIVEINTEGER:
-    case SOAPTYPE_LONG:
-    case SOAPTYPE_SHORT:
-    case SOAPTYPE_BYTE:
-    case SOAPTYPE_POSITIVEINTEGER:
-    case SOAPTYPE_NONNEGATIVEINTEGER:
-    case SOAPTYPE_UNSIGNEDLONG:
-    case SOAPTYPE_UNSIGNEDINT:
-    case SOAPTYPE_UNSIGNEDSHORT:
-    case SOAPTYPE_UNSIGNEDBYTE:
-        break;
+        case SOAPTYPE_BOOLEAN:
+        case SOAPTYPE_FLOAT:
+        case SOAPTYPE_DOUBLE:
+        case SOAPTYPE_DECIMAL:
+        case SOAPTYPE_INT:
+        case SOAPTYPE_INTEGER:
+        case SOAPTYPE_NONPOSITIVEINTEGER:
+        case SOAPTYPE_NEGATIVEINTEGER:
+        case SOAPTYPE_LONG:
+        case SOAPTYPE_SHORT:
+        case SOAPTYPE_BYTE:
+        case SOAPTYPE_POSITIVEINTEGER:
+        case SOAPTYPE_NONNEGATIVEINTEGER:
+        case SOAPTYPE_UNSIGNEDLONG:
+        case SOAPTYPE_UNSIGNEDINT:
+        case SOAPTYPE_UNSIGNEDSHORT:
+        case SOAPTYPE_UNSIGNEDBYTE:
+            break;
 
-    case SOAPTYPE_HEXBINARY:
-    case SOAPTYPE_BASE64BINARY:
-        hr = AtlCleanupBlobValue((ATLSOAP_BLOB *)pVal, pMemMgr);
-        break;
+        case SOAPTYPE_HEXBINARY:
+        case SOAPTYPE_BASE64BINARY:
+            hr = AtlCleanupBlobValue((ATLSOAP_BLOB *)pVal, pMemMgr);
+            break;
 
-    default:
-        if ((type != SOAPTYPE_ERR) && (type != SOAPTYPE_UNK) && (type != SOAPTYPE_USERBASE))
-        {
-            // treat as string
-            hr = AtlCleanupValue((BSTR *)pVal);
-        }
+        default:
+            if ((type != SOAPTYPE_ERR) && (type != SOAPTYPE_UNK) && (type != SOAPTYPE_USERBASE))
+            {
+                // treat as string
+                hr = AtlCleanupValue((BSTR *)pVal);
+            }
 #ifdef _DEBUG
-        else
-        {
-            ATLTRACE(_T("ATLSOAP: AtlSoapCleanupElement -- internal error.\r\n"));
+            else
+            {
+                ATLTRACE(_T("ATLSOAP: AtlSoapCleanupElement -- internal error.\r\n"));
 
-            // should never get here
-            ATLASSERT(FALSE);
-        }
+                // should never get here
+                ATLASSERT(FALSE);
+            }
 #endif
-        break;
+            break;
     }
 
     return hr;
@@ -2956,44 +2956,44 @@ ATL_NOINLINE inline HRESULT __stdcall CSoapFaultParser::characters(
     {
         switch (m_dwState)
         {
-        case STATE_FAULTCODE:
-            if (m_pFault->m_soapErrCode == SOAP_E_UNK)
-            {
-                hr = m_pFault->SetErrorCode(wszChars, m_wszSoapPrefix,
-                cchChars, m_cchSoapPrefix, false);
-            }
-            break;
-        case STATE_FAULTSTRING:
-            if (m_pFault->m_strFaultString.GetLength() == 0)
-            {
-                m_pFault->m_strFaultString.SetString(wszChars, cchChars);
+            case STATE_FAULTCODE:
+                if (m_pFault->m_soapErrCode == SOAP_E_UNK)
+                {
+                    hr = m_pFault->SetErrorCode(wszChars, m_wszSoapPrefix,
+                    cchChars, m_cchSoapPrefix, false);
+                }
+                break;
+            case STATE_FAULTSTRING:
+                if (m_pFault->m_strFaultString.GetLength() == 0)
+                {
+                    m_pFault->m_strFaultString.SetString(wszChars, cchChars);
+                    hr = S_OK;
+                }
+                break;
+            case STATE_FAULTACTOR:
+                if (m_pFault->m_strFaultActor.GetLength() == 0)
+                {
+                    m_pFault->m_strFaultActor.SetString(wszChars, cchChars);
+                    hr = S_OK;
+                }
+                break;
+            case STATE_DETAIL:
+                if (m_pFault->m_strDetail.GetLength() == 0)
+                {
+                    m_pFault->m_strDetail.SetString(wszChars, cchChars);
+                    hr = S_OK;
+                }
+                break;
+            case STATE_START:
+            case STATE_ENVELOPE :
+            case STATE_BODY :
+            case STATE_SKIP:
                 hr = S_OK;
-            }
-            break;
-        case STATE_FAULTACTOR:
-            if (m_pFault->m_strFaultActor.GetLength() == 0)
-            {
-                m_pFault->m_strFaultActor.SetString(wszChars, cchChars);
-                hr = S_OK;
-            }
-            break;
-        case STATE_DETAIL:
-            if (m_pFault->m_strDetail.GetLength() == 0)
-            {
-                m_pFault->m_strDetail.SetString(wszChars, cchChars);
-                hr = S_OK;
-            }
-            break;
-        case STATE_START:
-        case STATE_ENVELOPE :
-        case STATE_BODY :
-        case STATE_SKIP:
-            hr = S_OK;
-            break;
-        default:
-            // should never get here
-            ATLASSERT(FALSE);
-            break;
+                break;
+            default:
+                // should never get here
+                ATLASSERT(FALSE);
+                break;
         }
     }
     _ATLCATCHALL()
@@ -4676,47 +4676,47 @@ private:
         __int64 nVal = 0;
         switch (pMap->pEntries[nSizeIs].nVal)
         {
-        case SOAPTYPE_INTEGER:
-        case SOAPTYPE_NONPOSITIVEINTEGER:
-        case SOAPTYPE_NEGATIVEINTEGER:
-        case SOAPTYPE_LONG:
-            nVal = *((__int64 *)pVal);
-            break;
-        case SOAPTYPE_INT:
-            nVal = *((int *)pVal);
-            break;
-        case SOAPTYPE_SHORT:
-            nVal = *((short *)pVal);
-            break;
-        case SOAPTYPE_BYTE:
-            nVal = *((char *)pVal);
-            break;
-        case SOAPTYPE_POSITIVEINTEGER:
-        case SOAPTYPE_NONNEGATIVEINTEGER:
-        case SOAPTYPE_UNSIGNEDLONG:
-            unsigned __int64 n;
-            n = *((unsigned __int64 *)pVal);
-            if (n > _I64_MAX)
-            {
-                // come on ...
+            case SOAPTYPE_INTEGER:
+            case SOAPTYPE_NONPOSITIVEINTEGER:
+            case SOAPTYPE_NEGATIVEINTEGER:
+            case SOAPTYPE_LONG:
+                nVal = *((__int64 *)pVal);
+                break;
+            case SOAPTYPE_INT:
+                nVal = *((int *)pVal);
+                break;
+            case SOAPTYPE_SHORT:
+                nVal = *((short *)pVal);
+                break;
+            case SOAPTYPE_BYTE:
+                nVal = *((char *)pVal);
+                break;
+            case SOAPTYPE_POSITIVEINTEGER:
+            case SOAPTYPE_NONNEGATIVEINTEGER:
+            case SOAPTYPE_UNSIGNEDLONG:
+                unsigned __int64 n;
+                n = *((unsigned __int64 *)pVal);
+                if (n > _I64_MAX)
+                {
+                    // come on ...
+                    nVal = 0;
+                }
+                else
+                {
+                    nVal = (__int64)n;
+                }
+                break;
+            case SOAPTYPE_UNSIGNEDINT:
+                nVal = *((unsigned int *)pVal);
+                break;
+            case SOAPTYPE_UNSIGNEDSHORT:
+                nVal = *((unsigned short *)pVal);
+                break;
+            case SOAPTYPE_UNSIGNEDBYTE:
+                nVal = *((unsigned char *)pVal);
+                break;
+            default:
                 nVal = 0;
-            }
-            else
-            {
-                nVal = (__int64)n;
-            }
-            break;
-        case SOAPTYPE_UNSIGNEDINT:
-            nVal = *((unsigned int *)pVal);
-            break;
-        case SOAPTYPE_UNSIGNEDSHORT:
-            nVal = *((unsigned short *)pVal);
-            break;
-        case SOAPTYPE_UNSIGNEDBYTE:
-            nVal = *((unsigned char *)pVal);
-            break;
-        default:
-            nVal = 0;
         }
 
         if (nVal < 0)
@@ -5719,105 +5719,105 @@ public:
         HRESULT hr = S_OK;
         switch (m_dwState)
         {
-        case SOAP_PARAMS:
-        case SOAP_HEADERS:
-        {
-            hr = ProcessParams(wszNamespaceUri, cchNamespaceUri, wszLocalName,
-                               cchLocalName, pAttributes);
-
-            break;
-        }
-        case SOAP_START:
-        case SOAP_ENVELOPE:
-        case SOAP_HEADERS_DONE:
-        {
-            ULONG nNamespaceHash = AtlSoapHashStr(wszNamespaceUri,
-                                                  cchNamespaceUri);
-            if (nNamespaceHash != SOAP_ENV)
+            case SOAP_PARAMS:
+            case SOAP_HEADERS:
             {
-                ATLTRACE(_T("ATLSOAP: CSoapRootHandler::startElement -- incorrect SOAP-ENV namespace.\r\n"));
+                hr = ProcessParams(wszNamespaceUri, cchNamespaceUri, wszLocalName,
+                                   cchLocalName, pAttributes);
 
-                return E_FAIL;
+                break;
             }
-
-            ULONG nElementHash = AtlSoapHashStr(wszLocalName, cchLocalName);
-
-            if (nElementHash == ENVELOPE &&
-                    IsEqualElement(
-                        sizeof(SOAP_ENVELOPEA)-1, SOAP_ENVELOPEW,
-                        sizeof(SOAPENV_NAMESPACEA)-1, SOAPENV_NAMESPACEW,
-                        cchLocalName, wszLocalName,
-                        cchNamespaceUri, wszNamespaceUri))
+            case SOAP_START:
+            case SOAP_ENVELOPE:
+            case SOAP_HEADERS_DONE:
             {
-                // Envelope must be first element in package
-
-                if (m_dwState != SOAP_START)
+                ULONG nNamespaceHash = AtlSoapHashStr(wszNamespaceUri,
+                                                      cchNamespaceUri);
+                if (nNamespaceHash != SOAP_ENV)
                 {
-                    ATLTRACE(_T("ATLSOAP: CSoapRootHandler::startElement -- invalid SOAP message format: \"Envelope\" in unexpected location.\r\n"));
+                    ATLTRACE(_T("ATLSOAP: CSoapRootHandler::startElement -- incorrect SOAP-ENV namespace.\r\n"));
 
-                    hr = E_FAIL;
-                }
-                m_dwState = SOAP_ENVELOPE;
-            }
-            else if (nElementHash == HEADER &&
-                     IsEqualElement(sizeof(SOAP_HEADERA)-1, SOAP_HEADERW,
-                                    sizeof(SOAPENV_NAMESPACEA)-1, SOAPENV_NAMESPACEW,
-                                    cchLocalName, wszLocalName,
-                                    cchNamespaceUri, wszNamespaceUri))
-            {
-                if (m_dwState != SOAP_ENVELOPE)
-                {
-                    ATLTRACE(_T("ATLSOAP: CSoapRootHandler::startElement -- invalid SOAP message format: \"Headers\" in unexpected location.\r\n"));
-
-                    hr = E_FAIL;
+                    return E_FAIL;
                 }
 
-                m_dwState = SOAP_HEADERS;
-            }
-            else if (nElementHash == BODY &&
-                     IsEqualElement(sizeof(SOAP_BODYA)-1, SOAP_BODYW,
-                                    sizeof(SOAPENV_NAMESPACEA)-1, SOAPENV_NAMESPACEW,
-                                    cchLocalName, wszLocalName,
-                                    cchNamespaceUri, wszNamespaceUri))
-            {
-                if (m_dwState == SOAP_START)
+                ULONG nElementHash = AtlSoapHashStr(wszLocalName, cchLocalName);
+
+                if (nElementHash == ENVELOPE &&
+                        IsEqualElement(
+                            sizeof(SOAP_ENVELOPEA)-1, SOAP_ENVELOPEW,
+                            sizeof(SOAPENV_NAMESPACEA)-1, SOAPENV_NAMESPACEW,
+                            cchLocalName, wszLocalName,
+                            cchNamespaceUri, wszNamespaceUri))
                 {
-                    ATLTRACE(_T("ATLSOAP: CSoapRootHandler::startElement -- invalid SOAP message format: \"Body\" in unexpected location.\r\n"));
+                    // Envelope must be first element in package
 
-                    hr = E_FAIL;
+                    if (m_dwState != SOAP_START)
+                    {
+                        ATLTRACE(_T("ATLSOAP: CSoapRootHandler::startElement -- invalid SOAP message format: \"Envelope\" in unexpected location.\r\n"));
+
+                        hr = E_FAIL;
+                    }
+                    m_dwState = SOAP_ENVELOPE;
                 }
-                m_dwState = SOAP_BODY;
-            }
-
-            break;
-        }
-        case SOAP_BODY:
-        {
-            hr = DispatchSoapCall(wszNamespaceUri, cchNamespaceUri,
-                                  wszLocalName, cchLocalName);
-
-            m_dwState = SOAP_PARAMS;
-
-            if (SUCCEEDED(hr))
-            {
-                if (GetState().pMap->dwCallFlags & SOAPFLAG_PAD)
+                else if (nElementHash == HEADER &&
+                         IsEqualElement(sizeof(SOAP_HEADERA)-1, SOAP_HEADERW,
+                                        sizeof(SOAPENV_NAMESPACEA)-1, SOAPENV_NAMESPACEW,
+                                        cchLocalName, wszLocalName,
+                                        cchNamespaceUri, wszNamespaceUri))
                 {
-                    hr = startElement(wszNamespaceUri, cchNamespaceUri,
-                                      wszLocalName, cchLocalName, wszQName, cchQName,
-                                      pAttributes);
-                }
-            }
+                    if (m_dwState != SOAP_ENVELOPE)
+                    {
+                        ATLTRACE(_T("ATLSOAP: CSoapRootHandler::startElement -- invalid SOAP message format: \"Headers\" in unexpected location.\r\n"));
 
-            break;
-        }
+                        hr = E_FAIL;
+                    }
+
+                    m_dwState = SOAP_HEADERS;
+                }
+                else if (nElementHash == BODY &&
+                         IsEqualElement(sizeof(SOAP_BODYA)-1, SOAP_BODYW,
+                                        sizeof(SOAPENV_NAMESPACEA)-1, SOAPENV_NAMESPACEW,
+                                        cchLocalName, wszLocalName,
+                                        cchNamespaceUri, wszNamespaceUri))
+                {
+                    if (m_dwState == SOAP_START)
+                    {
+                        ATLTRACE(_T("ATLSOAP: CSoapRootHandler::startElement -- invalid SOAP message format: \"Body\" in unexpected location.\r\n"));
+
+                        hr = E_FAIL;
+                    }
+                    m_dwState = SOAP_BODY;
+                }
+
+                break;
+            }
+            case SOAP_BODY:
+            {
+                hr = DispatchSoapCall(wszNamespaceUri, cchNamespaceUri,
+                                      wszLocalName, cchLocalName);
+
+                m_dwState = SOAP_PARAMS;
+
+                if (SUCCEEDED(hr))
+                {
+                    if (GetState().pMap->dwCallFlags & SOAPFLAG_PAD)
+                    {
+                        hr = startElement(wszNamespaceUri, cchNamespaceUri,
+                                          wszLocalName, cchLocalName, wszQName, cchQName,
+                                          pAttributes);
+                    }
+                }
+
+                break;
+            }
 
 #ifdef _DEBUG
 
-        default:
-        {
-            // should never get here -- internal error
-            ATLASSERT(FALSE);
-        }
+            default:
+            {
+                // should never get here -- internal error
+                ATLASSERT(FALSE);
+            }
 
 #endif // _DEBUG
         }

@@ -267,11 +267,11 @@ typedef struct DXTFilter DXTFilter;
 extern "C" {
 #endif
 
-    void * __RPC_USER MIDL_user_allocate(size_t);
-    void __RPC_USER MIDL_user_free(void *);
+void * __RPC_USER MIDL_user_allocate(size_t);
+void __RPC_USER MIDL_user_free(void *);
 
-    /* interface __MIDL_itf_dxtrans_0000 */
-    /* [local] */
+/* interface __MIDL_itf_dxtrans_0000 */
+/* [local] */
 
 #include <servprov.h>
 #include <ddraw.h>
@@ -280,15 +280,15 @@ extern "C" {
 #include <urlmon.h>
 #if 0
 // Bogus definition used to make MIDL compiler happy
-    typedef void DDSURFACEDESC;
+typedef void DDSURFACEDESC;
 
-    typedef void D3DRMBOX;
+typedef void D3DRMBOX;
 
-    typedef void D3DVECTOR;
+typedef void D3DVECTOR;
 
-    typedef void D3DRMMATRIX4D;
+typedef void D3DRMMATRIX4D;
 
-    typedef void *LPSECURITY_ATTRIBUTES;
+typedef void *LPSECURITY_ATTRIBUTES;
 
 #endif
 #ifdef _DXTRANSIMPL
@@ -315,43 +315,43 @@ extern "C" {
 //
 //   All GUIDs for DXTransform are declared in DXTGUID.C in the SDK include directory
 //
-    EXTERN_C const GUID DDPF_RGB1;
-    EXTERN_C const GUID DDPF_RGB2;
-    EXTERN_C const GUID DDPF_RGB4;
-    EXTERN_C const GUID DDPF_RGB8;
-    EXTERN_C const GUID DDPF_RGB332;
-    EXTERN_C const GUID DDPF_ARGB4444;
-    EXTERN_C const GUID DDPF_RGB565;
-    EXTERN_C const GUID DDPF_BGR565;
-    EXTERN_C const GUID DDPF_RGB555;
-    EXTERN_C const GUID DDPF_ARGB1555;
-    EXTERN_C const GUID DDPF_RGB24;
-    EXTERN_C const GUID DDPF_BGR24;
-    EXTERN_C const GUID DDPF_RGB32;
-    EXTERN_C const GUID DDPF_BGR32;
-    EXTERN_C const GUID DDPF_ABGR32;
-    EXTERN_C const GUID DDPF_ARGB32;
-    EXTERN_C const GUID DDPF_PMARGB32;
-    EXTERN_C const GUID DDPF_A1;
-    EXTERN_C const GUID DDPF_A2;
-    EXTERN_C const GUID DDPF_A4;
-    EXTERN_C const GUID DDPF_A8;
-    EXTERN_C const GUID DDPF_Z8;
-    EXTERN_C const GUID DDPF_Z16;
-    EXTERN_C const GUID DDPF_Z24;
-    EXTERN_C const GUID DDPF_Z32;
+EXTERN_C const GUID DDPF_RGB1;
+EXTERN_C const GUID DDPF_RGB2;
+EXTERN_C const GUID DDPF_RGB4;
+EXTERN_C const GUID DDPF_RGB8;
+EXTERN_C const GUID DDPF_RGB332;
+EXTERN_C const GUID DDPF_ARGB4444;
+EXTERN_C const GUID DDPF_RGB565;
+EXTERN_C const GUID DDPF_BGR565;
+EXTERN_C const GUID DDPF_RGB555;
+EXTERN_C const GUID DDPF_ARGB1555;
+EXTERN_C const GUID DDPF_RGB24;
+EXTERN_C const GUID DDPF_BGR24;
+EXTERN_C const GUID DDPF_RGB32;
+EXTERN_C const GUID DDPF_BGR32;
+EXTERN_C const GUID DDPF_ABGR32;
+EXTERN_C const GUID DDPF_ARGB32;
+EXTERN_C const GUID DDPF_PMARGB32;
+EXTERN_C const GUID DDPF_A1;
+EXTERN_C const GUID DDPF_A2;
+EXTERN_C const GUID DDPF_A4;
+EXTERN_C const GUID DDPF_A8;
+EXTERN_C const GUID DDPF_Z8;
+EXTERN_C const GUID DDPF_Z16;
+EXTERN_C const GUID DDPF_Z24;
+EXTERN_C const GUID DDPF_Z32;
 //
 //   Component categories
 //
-    EXTERN_C const GUID CATID_DXImageTransform;
-    EXTERN_C const GUID CATID_DX3DTransform;
-    EXTERN_C const GUID CATID_DXAuthoringTransform;
-    EXTERN_C const GUID CATID_DXSurface;
+EXTERN_C const GUID CATID_DXImageTransform;
+EXTERN_C const GUID CATID_DX3DTransform;
+EXTERN_C const GUID CATID_DXAuthoringTransform;
+EXTERN_C const GUID CATID_DXSurface;
 //
 //   Service IDs
 //
-    EXTERN_C const GUID SID_SDirectDraw;
-    EXTERN_C const GUID SID_SDirect3DRM;
+EXTERN_C const GUID SID_SDirectDraw;
+EXTERN_C const GUID SID_SDirect3DRM;
 #define SID_SDXTaskManager CLSID_DXTaskManager
 #define SID_SDXSurfaceFactory IID_IDXSurfaceFactory
 #define SID_SDXTransformFactory IID_IDXTransformFactory
@@ -362,17 +362,17 @@ extern "C" {
 #define DXTRANS_TLB_MINOR_VER 1
 
 
-    extern RPC_IF_HANDLE __MIDL_itf_dxtrans_0000_v0_0_c_ifspec;
-    extern RPC_IF_HANDLE __MIDL_itf_dxtrans_0000_v0_0_s_ifspec;
+extern RPC_IF_HANDLE __MIDL_itf_dxtrans_0000_v0_0_c_ifspec;
+extern RPC_IF_HANDLE __MIDL_itf_dxtrans_0000_v0_0_s_ifspec;
 
 #ifndef __IDXBaseObject_INTERFACE_DEFINED__
 #define __IDXBaseObject_INTERFACE_DEFINED__
 
-    /* interface IDXBaseObject */
-    /* [local][unique][helpstring][uuid][object] */
+/* interface IDXBaseObject */
+/* [local][unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IDXBaseObject;
+EXTERN_C const IID IID_IDXBaseObject;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 

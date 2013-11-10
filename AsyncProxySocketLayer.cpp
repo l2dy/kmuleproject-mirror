@@ -168,9 +168,9 @@ void CAsyncProxySocketLayer::SetProxy(int nProxyType, const CStringA& strProxyHo
     //Validate the parameters
     ASSERT(/*nProxyType == PROXYTYPE_SOCKS4  ||
            nProxyType == PROXYTYPE_SOCKS4A ||*/
-           nProxyType == PROXYTYPE_SOCKS5  ||
-           nProxyType == PROXYTYPE_HTTP10	||
-           nProxyType == PROXYTYPE_HTTP11);
+        nProxyType == PROXYTYPE_SOCKS5  ||
+        nProxyType == PROXYTYPE_HTTP10	||
+        nProxyType == PROXYTYPE_HTTP11);
     ASSERT(!m_nProxyOpID);
     ASSERT(!strProxyHost.IsEmpty());
     ASSERT(ProxyPort > 0);
@@ -232,30 +232,30 @@ CStringA GetSocks5Error(UINT rep)
 {
     switch (rep)
     {
-    case 0x00:
-        return "";
-    case 0x01:
-        return "General SOCKS server failure";
-    case 0x02:
-        return "Connection not allowed by ruleset";
-    case 0x03:
-        return "Network unreachable";
-    case 0x04:
-        return "Host unreachable";
-    case 0x05:
-        return "Connection refused";
-    case 0x06:
-        return "TTL expired";
-    case 0x07:
-        return "Command not supported";
-    case 0x08:
-        return "Address type not supported";
-    default:
-    {
-        CStringA strError;
-        strError.Format("Unknown reply: %u", rep);
-        return strError;
-    }
+        case 0x00:
+            return "";
+        case 0x01:
+            return "General SOCKS server failure";
+        case 0x02:
+            return "Connection not allowed by ruleset";
+        case 0x03:
+            return "Network unreachable";
+        case 0x04:
+            return "Host unreachable";
+        case 0x05:
+            return "Connection refused";
+        case 0x06:
+            return "TTL expired";
+        case 0x07:
+            return "Command not supported";
+        case 0x08:
+            return "Address type not supported";
+        default:
+        {
+            CStringA strError;
+            strError.Format("Unknown reply: %u", rep);
+            return strError;
+        }
     }
 }
 
@@ -298,114 +298,114 @@ void CAsyncProxySocketLayer::OnReceive(int nErrorCode)
         return;
 
 //>>> Tux::Proxy Stuff
-/*
-    if (m_ProxyData.nProxyType == PROXYTYPE_SOCKS4 || m_ProxyData.nProxyType == PROXYTYPE_SOCKS4A)
-    {
-        if (m_nProxyOpState == 1    // Response to initial connect or bind request
-                || m_nProxyOpState == 2)// Response (2nd) to bind request
+    /*
+        if (m_ProxyData.nProxyType == PROXYTYPE_SOCKS4 || m_ProxyData.nProxyType == PROXYTYPE_SOCKS4A)
         {
-            if (!m_pRecvBuffer)
-                m_pRecvBuffer = new char[8];
-            int numread = ReceiveNext(m_pRecvBuffer + m_nRecvBufferPos, 8 - m_nRecvBufferPos);
-            if (numread == SOCKET_ERROR)
+            if (m_nProxyOpState == 1    // Response to initial connect or bind request
+                    || m_nProxyOpState == 2)// Response (2nd) to bind request
             {
-                int nErrorCode = WSAGetLastError();
-                if (nErrorCode != WSAEWOULDBLOCK)
+                if (!m_pRecvBuffer)
+                    m_pRecvBuffer = new char[8];
+                int numread = ReceiveNext(m_pRecvBuffer + m_nRecvBufferPos, 8 - m_nRecvBufferPos);
+                if (numread == SOCKET_ERROR)
                 {
-                    DoLayerCallback(LAYERCALLBACK_LAYERSPECIFIC, PROXYERROR_REQUESTFAILED, nErrorCode);
-                    if (m_nProxyOpID == PROXYOP_CONNECT)
-                        TriggerEvent(FD_CONNECT, nErrorCode, TRUE);
-                    else
-                        TriggerEvent(FD_ACCEPT, nErrorCode, TRUE);
-                    Reset();
-                    ClearBuffer();
-                }
-                return;
-            }
-            m_nRecvBufferPos += numread;
-
-            //                +----+----+----+----+----+----+----+----+
-            //                | VN | CD | DSTPORT |      DSTIP        |
-            //                +----+----+----+----+----+----+----+----+
-            // # of bytes:       1    1      2              4
-            //
-            // VN is the version of the reply code and should be 0. CD is the result
-            // code with one of the following values:
-            //
-            //        90: request granted
-            //        91: request rejected or failed
-            //        92: request rejected becasue SOCKS server cannot connect to
-            //            identd on the client
-            //        93: request rejected because the client program and identd
-            //            report different user-ids
-
-            if (m_nRecvBufferPos == 8)
-            {
-                TRACE(L"SOCKS4 response: VN=%u  CD=%u  DSTPORT=%u  DSTIP=%s\n", (BYTE)m_pRecvBuffer[0], (BYTE)m_pRecvBuffer[1], ntohs(*(u_short*)&m_pRecvBuffer[2]), ipstrA(*(u_long*)&m_pRecvBuffer[4]));
-                if (m_pRecvBuffer[0] != 0 || m_pRecvBuffer[1] != 90)
-                {
-                    DoLayerCallback(LAYERCALLBACK_LAYERSPECIFIC, PROXYERROR_REQUESTFAILED, 0, (LPARAM)(LPCSTR)GetSocks4Error(m_pRecvBuffer[0], m_pRecvBuffer[1]));
-                    if (m_nProxyOpID == PROXYOP_CONNECT)
-                        TriggerEvent(FD_CONNECT, WSAECONNABORTED, TRUE);
-                    else
-                        TriggerEvent(FD_ACCEPT, WSAECONNABORTED, TRUE);
-                    Reset();
-                    ClearBuffer();
-                    return;
-                }
-                // Proxy SHOULD answer with DSTPORT and DSTIP. Most proxies do, but some answer with 0.0.0.0:0
-                //ASSERT( m_nProxyPeerPort == *(u_short*)&m_pRecvBuffer[2] );
-                //ASSERT( m_nProxyPeerIP == 0 || m_nProxyPeerIP == *(u_long*)&m_pRecvBuffer[4] );
-
-                if ((m_nProxyOpID == PROXYOP_CONNECT && m_nProxyOpState == 1) ||
-                        (m_nProxyOpID == PROXYOP_BIND  && m_nProxyOpState == 2))
-                {
-                    int nOpIDEvent = m_nProxyOpID == PROXYOP_CONNECT ? FD_CONNECT : FD_ACCEPT;
-                    ClearBuffer();
-                    Reset();
-                    TriggerEvent(nOpIDEvent, 0, TRUE);
-                    TriggerEvent(FD_READ, 0, TRUE);
-                    TriggerEvent(FD_WRITE, 0, TRUE);
-                    return;
-                }
-                else if (m_nProxyOpID == PROXYOP_BIND && m_nProxyOpState == 1)
-                {
-                    // Listen socket created
-                    m_nProxyOpState = 2;
-                    u_long ip = *(u_long*)&m_pRecvBuffer[4];
-                    if (ip == 0)
+                    int nErrorCode = WSAGetLastError();
+                    if (nErrorCode != WSAEWOULDBLOCK)
                     {
-                        // No IP returned, use the IP of the proxy server
-                        SOCKADDR SockAddr = {0};
-                        int SockAddrLen = sizeof(SockAddr);
-                        if (GetPeerName(&SockAddr, &SockAddrLen))
-                        {
-                            ip = ((LPSOCKADDR_IN)&SockAddr)->sin_addr.S_un.S_addr;
-                        }
+                        DoLayerCallback(LAYERCALLBACK_LAYERSPECIFIC, PROXYERROR_REQUESTFAILED, nErrorCode);
+                        if (m_nProxyOpID == PROXYOP_CONNECT)
+                            TriggerEvent(FD_CONNECT, nErrorCode, TRUE);
                         else
-                        {
-                            DoLayerCallback(LAYERCALLBACK_LAYERSPECIFIC, PROXYERROR_REQUESTFAILED, 0);
-                            if (m_nProxyOpID == PROXYOP_CONNECT)
-                                TriggerEvent(FD_CONNECT, WSAECONNABORTED, TRUE);
-                            else
-                                TriggerEvent(FD_ACCEPT, WSAECONNABORTED, TRUE);
-                            Reset();
-                            ClearBuffer();
-                            return;
-                        }
+                            TriggerEvent(FD_ACCEPT, nErrorCode, TRUE);
+                        Reset();
+                        ClearBuffer();
                     }
-                    t_ListenSocketCreatedStruct data;
-                    data.ip = ip;
-                    data.nPort = *(u_short*)&m_pRecvBuffer[2];
-                    DoLayerCallback(LAYERCALLBACK_LAYERSPECIFIC, PROXYSTATUS_LISTENSOCKETCREATED, 0, (LPARAM)&data);
-                    // Wait for 2nd response to bind request
+                    return;
                 }
-                ClearBuffer();
+                m_nRecvBufferPos += numread;
+
+                //                +----+----+----+----+----+----+----+----+
+                //                | VN | CD | DSTPORT |      DSTIP        |
+                //                +----+----+----+----+----+----+----+----+
+                // # of bytes:       1    1      2              4
+                //
+                // VN is the version of the reply code and should be 0. CD is the result
+                // code with one of the following values:
+                //
+                //        90: request granted
+                //        91: request rejected or failed
+                //        92: request rejected becasue SOCKS server cannot connect to
+                //            identd on the client
+                //        93: request rejected because the client program and identd
+                //            report different user-ids
+
+                if (m_nRecvBufferPos == 8)
+                {
+                    TRACE(L"SOCKS4 response: VN=%u  CD=%u  DSTPORT=%u  DSTIP=%s\n", (BYTE)m_pRecvBuffer[0], (BYTE)m_pRecvBuffer[1], ntohs(*(u_short*)&m_pRecvBuffer[2]), ipstrA(*(u_long*)&m_pRecvBuffer[4]));
+                    if (m_pRecvBuffer[0] != 0 || m_pRecvBuffer[1] != 90)
+                    {
+                        DoLayerCallback(LAYERCALLBACK_LAYERSPECIFIC, PROXYERROR_REQUESTFAILED, 0, (LPARAM)(LPCSTR)GetSocks4Error(m_pRecvBuffer[0], m_pRecvBuffer[1]));
+                        if (m_nProxyOpID == PROXYOP_CONNECT)
+                            TriggerEvent(FD_CONNECT, WSAECONNABORTED, TRUE);
+                        else
+                            TriggerEvent(FD_ACCEPT, WSAECONNABORTED, TRUE);
+                        Reset();
+                        ClearBuffer();
+                        return;
+                    }
+                    // Proxy SHOULD answer with DSTPORT and DSTIP. Most proxies do, but some answer with 0.0.0.0:0
+                    //ASSERT( m_nProxyPeerPort == *(u_short*)&m_pRecvBuffer[2] );
+                    //ASSERT( m_nProxyPeerIP == 0 || m_nProxyPeerIP == *(u_long*)&m_pRecvBuffer[4] );
+
+                    if ((m_nProxyOpID == PROXYOP_CONNECT && m_nProxyOpState == 1) ||
+                            (m_nProxyOpID == PROXYOP_BIND  && m_nProxyOpState == 2))
+                    {
+                        int nOpIDEvent = m_nProxyOpID == PROXYOP_CONNECT ? FD_CONNECT : FD_ACCEPT;
+                        ClearBuffer();
+                        Reset();
+                        TriggerEvent(nOpIDEvent, 0, TRUE);
+                        TriggerEvent(FD_READ, 0, TRUE);
+                        TriggerEvent(FD_WRITE, 0, TRUE);
+                        return;
+                    }
+                    else if (m_nProxyOpID == PROXYOP_BIND && m_nProxyOpState == 1)
+                    {
+                        // Listen socket created
+                        m_nProxyOpState = 2;
+                        u_long ip = *(u_long*)&m_pRecvBuffer[4];
+                        if (ip == 0)
+                        {
+                            // No IP returned, use the IP of the proxy server
+                            SOCKADDR SockAddr = {0};
+                            int SockAddrLen = sizeof(SockAddr);
+                            if (GetPeerName(&SockAddr, &SockAddrLen))
+                            {
+                                ip = ((LPSOCKADDR_IN)&SockAddr)->sin_addr.S_un.S_addr;
+                            }
+                            else
+                            {
+                                DoLayerCallback(LAYERCALLBACK_LAYERSPECIFIC, PROXYERROR_REQUESTFAILED, 0);
+                                if (m_nProxyOpID == PROXYOP_CONNECT)
+                                    TriggerEvent(FD_CONNECT, WSAECONNABORTED, TRUE);
+                                else
+                                    TriggerEvent(FD_ACCEPT, WSAECONNABORTED, TRUE);
+                                Reset();
+                                ClearBuffer();
+                                return;
+                            }
+                        }
+                        t_ListenSocketCreatedStruct data;
+                        data.ip = ip;
+                        data.nPort = *(u_short*)&m_pRecvBuffer[2];
+                        DoLayerCallback(LAYERCALLBACK_LAYERSPECIFIC, PROXYSTATUS_LISTENSOCKETCREATED, 0, (LPARAM)&data);
+                        // Wait for 2nd response to bind request
+                    }
+                    ClearBuffer();
+                }
             }
         }
-    }
-    else
-*/
+        else
+    */
 //<<< Tux::Proxy Stuff
     if (m_ProxyData.nProxyType == PROXYTYPE_SOCKS5)
     {
@@ -762,9 +762,9 @@ BOOL CAsyncProxySocketLayer::Connect(LPCSTR lpszHostAddress, UINT nHostPort)
         {
             // Can't resolve hostname
             if (/*m_ProxyData.nProxyType == PROXYTYPE_SOCKS4A ||*/
-                    m_ProxyData.nProxyType == PROXYTYPE_SOCKS5  ||
-                    m_ProxyData.nProxyType == PROXYTYPE_HTTP10  ||
-                    m_ProxyData.nProxyType == PROXYTYPE_HTTP11)
+                m_ProxyData.nProxyType == PROXYTYPE_SOCKS5  ||
+                m_ProxyData.nProxyType == PROXYTYPE_HTTP10  ||
+                m_ProxyData.nProxyType == PROXYTYPE_HTTP11)
             {
                 //Can send domain names to proxy
 
@@ -868,93 +868,93 @@ void CAsyncProxySocketLayer::OnConnect(int nErrorCode)
 
         ClearBuffer();
 //>>> Tux::Proxy Stuff
-/*
-        if (m_ProxyData.nProxyType == PROXYTYPE_SOCKS4 || m_ProxyData.nProxyType == PROXYTYPE_SOCKS4A)
-        {
-            const char* pszAsciiProxyPeerHost;
-            int iSizeAsciiProxyPeerHost;
-            if (m_nProxyPeerIP == 0)
-            {
-                pszAsciiProxyPeerHost = m_pProxyPeerHost;
-                iSizeAsciiProxyPeerHost = strlen(pszAsciiProxyPeerHost) + 1;
-            }
-            else
-            {
-                pszAsciiProxyPeerHost = 0;
-                iSizeAsciiProxyPeerHost = 0;
-            }
+        /*
+                if (m_ProxyData.nProxyType == PROXYTYPE_SOCKS4 || m_ProxyData.nProxyType == PROXYTYPE_SOCKS4A)
+                {
+                    const char* pszAsciiProxyPeerHost;
+                    int iSizeAsciiProxyPeerHost;
+                    if (m_nProxyPeerIP == 0)
+                    {
+                        pszAsciiProxyPeerHost = m_pProxyPeerHost;
+                        iSizeAsciiProxyPeerHost = strlen(pszAsciiProxyPeerHost) + 1;
+                    }
+                    else
+                    {
+                        pszAsciiProxyPeerHost = 0;
+                        iSizeAsciiProxyPeerHost = 0;
+                    }
 
-            // SOCKS 4
-            // ---------------------------------------------------------------------------
-            //            +----+----+----+----+----+----+----+----+----+----+....+----+
-            //            | VN | CD | DSTPORT |      DSTIP        | USERID       |NULL|
-            //            +----+----+----+----+----+----+----+----+----+----+....+----+
-            //# of bytes:   1    1      2              4           variable       1
+                    // SOCKS 4
+                    // ---------------------------------------------------------------------------
+                    //            +----+----+----+----+----+----+----+----+----+----+....+----+
+                    //            | VN | CD | DSTPORT |      DSTIP        | USERID       |NULL|
+                    //            +----+----+----+----+----+----+----+----+----+----+....+----+
+                    //# of bytes:   1    1      2              4           variable       1
 
-            char* pcReq = (char*)_alloca(9 + iSizeAsciiProxyPeerHost);
-            pcReq[0] = 4;											// VN: 4
-            pcReq[1] = (m_nProxyOpID == PROXYOP_CONNECT) ? 1 : 2;	// CD: 1=CONNECT, 2=BIND
-            *(u_short*)&pcReq[2] = m_nProxyPeerPort;				// DSTPORT
+                    char* pcReq = (char*)_alloca(9 + iSizeAsciiProxyPeerHost);
+                    pcReq[0] = 4;											// VN: 4
+                    pcReq[1] = (m_nProxyOpID == PROXYOP_CONNECT) ? 1 : 2;	// CD: 1=CONNECT, 2=BIND
+                    *(u_short*)&pcReq[2] = m_nProxyPeerPort;				// DSTPORT
 
-            int iReqLen = 4 + 4 + 1;
-            if (m_nProxyPeerIP == 0)
-            {
-                ASSERT(m_ProxyData.nProxyType == PROXYTYPE_SOCKS4A);
-                ASSERT(strcmp(pszAsciiProxyPeerHost, "") != 0);
-                ASSERT(iSizeAsciiProxyPeerHost > 0);
+                    int iReqLen = 4 + 4 + 1;
+                    if (m_nProxyPeerIP == 0)
+                    {
+                        ASSERT(m_ProxyData.nProxyType == PROXYTYPE_SOCKS4A);
+                        ASSERT(strcmp(pszAsciiProxyPeerHost, "") != 0);
+                        ASSERT(iSizeAsciiProxyPeerHost > 0);
 
-                // For version 4A, if the client cannot resolve the destination host's
-                // domain name to find its IP address, it should set the first three bytes
-                // of DSTIP to NULL and the last byte to a non-zero value. (This corresponds
-                // to IP address 0.0.0.x, with x nonzero.)
+                        // For version 4A, if the client cannot resolve the destination host's
+                        // domain name to find its IP address, it should set the first three bytes
+                        // of DSTIP to NULL and the last byte to a non-zero value. (This corresponds
+                        // to IP address 0.0.0.x, with x nonzero.)
 
-                // DSTIP: Set the IP to 0.0.0.x (x is nonzero)
-                pcReq[4] = 0;
-                pcReq[5] = 0;
-                pcReq[6] = 0;
-                pcReq[7] = 1;
+                        // DSTIP: Set the IP to 0.0.0.x (x is nonzero)
+                        pcReq[4] = 0;
+                        pcReq[5] = 0;
+                        pcReq[6] = 0;
+                        pcReq[7] = 1;
 
-                pcReq[8] = 0;	// Terminating NUL-byte for USERID
+                        pcReq[8] = 0;	// Terminating NUL-byte for USERID
 
-                // Following the NULL byte terminating USERID, the client must send the
-                // destination domain name and termiantes it with another NULL byte.
+                        // Following the NULL byte terminating USERID, the client must send the
+                        // destination domain name and termiantes it with another NULL byte.
 
-                // Add hostname (including terminating NUL-byte)
-                memcpy(&pcReq[9], pszAsciiProxyPeerHost, iSizeAsciiProxyPeerHost);
-                iReqLen += iSizeAsciiProxyPeerHost;
-            }
-            else
-            {
-                *(u_long*)&pcReq[4] = m_nProxyPeerIP;	// DSTIP
-                pcReq[8] = 0;							// Terminating NUL-byte for USERID
-            }
+                        // Add hostname (including terminating NUL-byte)
+                        memcpy(&pcReq[9], pszAsciiProxyPeerHost, iSizeAsciiProxyPeerHost);
+                        iReqLen += iSizeAsciiProxyPeerHost;
+                    }
+                    else
+                    {
+                        *(u_long*)&pcReq[4] = m_nProxyPeerIP;	// DSTIP
+                        pcReq[8] = 0;							// Terminating NUL-byte for USERID
+                    }
 
-            int res = SendNext(pcReq, iReqLen);
-            if (res == SOCKET_ERROR)
-            {
-                int nErrorCode = WSAGetLastError();
-                DoLayerCallback(LAYERCALLBACK_LAYERSPECIFIC, PROXYERROR_REQUESTFAILED, nErrorCode);
-                if (m_nProxyOpID == PROXYOP_CONNECT)
-                    TriggerEvent(FD_CONNECT, (nErrorCode == WSAEWOULDBLOCK) ? WSAECONNABORTED : nErrorCode, TRUE);
-                else
-                    TriggerEvent(FD_ACCEPT, nErrorCode, TRUE);
-                Reset();
-                ClearBuffer();
-                return;
-            }
-            else if (res < iReqLen)
-            {
-                DoLayerCallback(LAYERCALLBACK_LAYERSPECIFIC, PROXYERROR_REQUESTFAILED, 0);
-                if (m_nProxyOpID == PROXYOP_CONNECT)
-                    TriggerEvent(FD_CONNECT, WSAECONNABORTED, TRUE);
-                else
-                    TriggerEvent(FD_ACCEPT, WSAECONNABORTED, TRUE);
-                Reset();
-                ClearBuffer();
-                return;
-            }
-        }
-        else */
+                    int res = SendNext(pcReq, iReqLen);
+                    if (res == SOCKET_ERROR)
+                    {
+                        int nErrorCode = WSAGetLastError();
+                        DoLayerCallback(LAYERCALLBACK_LAYERSPECIFIC, PROXYERROR_REQUESTFAILED, nErrorCode);
+                        if (m_nProxyOpID == PROXYOP_CONNECT)
+                            TriggerEvent(FD_CONNECT, (nErrorCode == WSAEWOULDBLOCK) ? WSAECONNABORTED : nErrorCode, TRUE);
+                        else
+                            TriggerEvent(FD_ACCEPT, nErrorCode, TRUE);
+                        Reset();
+                        ClearBuffer();
+                        return;
+                    }
+                    else if (res < iReqLen)
+                    {
+                        DoLayerCallback(LAYERCALLBACK_LAYERSPECIFIC, PROXYERROR_REQUESTFAILED, 0);
+                        if (m_nProxyOpID == PROXYOP_CONNECT)
+                            TriggerEvent(FD_CONNECT, WSAECONNABORTED, TRUE);
+                        else
+                            TriggerEvent(FD_ACCEPT, WSAECONNABORTED, TRUE);
+                        Reset();
+                        ClearBuffer();
+                        return;
+                    }
+                }
+                else */
 //<<< Tux::Proxy Stuff
         if (m_ProxyData.nProxyType == PROXYTYPE_SOCKS5)
         {

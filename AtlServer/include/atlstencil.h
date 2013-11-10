@@ -2067,203 +2067,203 @@ public:
 
         switch (pToken->type)
         {
-        case STENCIL_TEXTTAG:
-        {
-            pWriteStream->WriteStream(pToken->pStart,
-                                      (int)((pToken->pEnd-pToken->pStart)+1), NULL);
-            dwNextToken = dwIndex+1;
-        }
-        break;
-        case STENCIL_ITERATORSTART:
-        {
-            HTTP_CODE hcErr = STENCIL_SUCCESS;
-
-#ifdef ATL_DEBUG_STENCILS
-            // A 'while' token has to at least be followed by an endwhile!
-            if (!IsValidIndex(dwIndex+1))
+            case STENCIL_TEXTTAG:
             {
-                // This should have been caught at parse time
-                dwNextToken = STENCIL_INVALIDINDEX;
-                hcErrorCode = AtlsHttpError(500, ISE_SUBERR_STENCIL_INVALIDINDEX);
-                ATLASSERT(FALSE);
-                break;
-            }
-
-            // End of loop should be valid
-            if (!IsValidIndex(pToken->dwLoopIndex))
-            {
-                // This should have been caught at parse time
-                dwNextToken = STENCIL_INVALIDINDEX;
-                hcErrorCode = AtlsHttpError(500, ISE_SUBERR_STENCIL_MISMATCHWHILE);
-                ATLASSERT(FALSE);
-                break;
-            }
-
-            if (pToken->dwFnOffset == STENCIL_INVALIDOFFSET)
-            {
-                // This should have been caught at parse time
-                dwNextToken = STENCIL_INVALIDINDEX;
-                hcErrorCode = AtlsHttpError(500, ISE_SUBERR_STENCIL_INVALIDFUNCOFFSET);
-                ATLASSERT(FALSE);
-                break;
-            }
-#endif // ATL_DEBUG_STENCILS
-
-            DWORD dwLoopIndex = pToken->dwLoopIndex; // points to the end of the loop
-
-            // Call the replacement method
-            // if it returns HTTP_SUCCESS, enter the loop
-            // if it returns HTTP_S_FALSE, terminate the loop
-            hcErr = pReplacer->RenderReplacement(pToken->dwFnOffset,
-                                                 pToken->dwObjOffset, pToken->dwMap, (void *) pToken->dwData);
-
-            if (hcErr == HTTP_SUCCESS)
-            {
+                pWriteStream->WriteStream(pToken->pStart,
+                                          (int)((pToken->pEnd-pToken->pStart)+1), NULL);
                 dwNextToken = dwIndex+1;
-                hcErrorCode = HTTP_SUCCESS;
             }
-            else if (hcErr == HTTP_S_FALSE)
-            {
-                dwNextToken = dwLoopIndex+1;
-                hcErrorCode = HTTP_SUCCESS;
-            }
-            else
-            {
-                dwNextToken = STENCIL_INVALIDINDEX;
-                hcErrorCode = hcErr;
-                break;
-            }
-        }
-        break;
-        case STENCIL_REPLACEMENT:
-        {
-#ifdef ATL_DEBUG_STENCILS
-            if (pToken->dwFnOffset == STENCIL_INVALIDOFFSET)
-            {
-                // This should have been caught at parse time
-                ATLASSERT(FALSE);
-                dwNextToken = STENCIL_INVALIDINDEX;
-                hcErrorCode = AtlsHttpError(500, ISE_SUBERR_STENCIL_INVALIDFUNCOFFSET);
-                break;
-            }
-#endif // ATL_DEBUG_STENCILS
-
-            hcErrorCode = pReplacer->RenderReplacement(pToken->dwFnOffset,
-                          pToken->dwObjOffset, pToken->dwMap, (void *)pToken->dwData);
-
-            if (IsAsyncContinueStatus(hcErrorCode))
-                dwNextToken = dwIndex; // call the tag again after we get back
-            else
-            {
-                dwNextToken = dwIndex + 1;
-
-                // when returned from a handler, these indicate that the handler is done
-                // and that we should move on to the next handler when called back
-                if (hcErrorCode == HTTP_SUCCESS_ASYNC_DONE)
-                    hcErrorCode = HTTP_SUCCESS_ASYNC;
-                else if (hcErrorCode == HTTP_SUCCESS_ASYNC_NOFLUSH_DONE)
-                    hcErrorCode = HTTP_SUCCESS_ASYNC_NOFLUSH;
-            }
-        }
-        break;
-        case STENCIL_ITERATOREND:
-        {
-            dwNextToken = pToken->dwLoopIndex;
-            hcErrorCode = HTTP_SUCCESS;
-            ATLASSERT(GetToken(dwNextToken)->type == STENCIL_ITERATORSTART);
-        }
-        break;
-        case STENCIL_CONDITIONALSTART:
-        {
-#ifdef ATL_DEBUG_STENCILS
-            if (pToken->type == STENCIL_CONDITIONALSTART && pToken->dwFnOffset == STENCIL_INVALIDOFFSET)
-            {
-                // This should have been caught at parse time
-                ATLASSERT(FALSE);
-                dwNextToken = STENCIL_INVALIDINDEX;
-                hcErrorCode = AtlsHttpError(500, ISE_SUBERR_STENCIL_INVALIDFUNCOFFSET);
-                break;
-            }
-
-            if (pToken->dwLoopIndex == STENCIL_INVALIDINDEX)
-            {
-                // This should have been caught at parse time
-                ATLASSERT(FALSE);
-                dwNextToken = STENCIL_INVALIDINDEX;
-                hcErrorCode = AtlsHttpError(500, ISE_SUBERR_STENCIL_MISMATCHIF);
-                break;
-            }
-#endif // ATL_DEBUG_STENCILS
-
-            DWORD dwLoopIndex = pToken->dwLoopIndex; // points to the end of the loop
-
-            HTTP_CODE hcErr;
-            // Call the replacement method.
-            // If it returns HTTP_SUCCESS, we render everything up to
-            //  the end of the conditional.
-            // if it returns HTTP_S_FALSE, the condition is not met and we
-            //  render the else part if it exists or jump past the endif otherwise
-            hcErr = pReplacer->RenderReplacement(pToken->dwFnOffset,
-                                                 pToken->dwObjOffset, pToken->dwMap, (void *)pToken->dwData);
-
-            if (hcErr == HTTP_SUCCESS)
-            {
-                dwNextToken = dwIndex+1;
-                hcErrorCode = HTTP_SUCCESS;
-            }
-            else if (hcErr == HTTP_S_FALSE)
-            {
-                dwNextToken = dwLoopIndex+1;
-                hcErrorCode = HTTP_SUCCESS;
-            }
-            else
-            {
-                dwNextToken = STENCIL_INVALIDINDEX;
-                hcErrorCode = hcErr;
-                break;
-            }
-        }
-        break;
-        case STENCIL_CONDITIONALELSE:
-        {
-#ifdef ATL_DEBUG_STENCILS
-            if (pToken->dwLoopIndex == STENCIL_INVALIDINDEX)
-            {
-                // This should have been caught at parse time
-                ATLASSERT(FALSE);
-                dwNextToken = STENCIL_INVALIDINDEX;
-                hcErrorCode = AtlsHttpError(500, ISE_SUBERR_STENCIL_MISMATCHIF);
-                break;
-            }
-#endif // ATL_DEBUG_STENCILS
-
-            dwNextToken = pToken->dwLoopIndex+1;
-            hcErrorCode = HTTP_SUCCESS;
-        }
-        break;
-        case STENCIL_CONDITIONALEND:
-        {
-            dwNextToken = dwIndex+1;
-            hcErrorCode = HTTP_SUCCESS;
-        }
-        break;
-        case STENCIL_LOCALE:
-        {
-            if (pState)
-            {
-                pState->locale = (LCID) pToken->dwData;
-            }
-            SetThreadLocale((LCID) pToken->dwData);
-            dwNextToken = dwIndex + 1;
-        }
-        break;
-        default:
-        {
-            ATLASSERT(FALSE);
-            dwNextToken = STENCIL_INVALIDINDEX;
-            hcErrorCode = AtlsHttpError(500, ISE_SUBERR_STENCIL_UNEXPECTEDTYPE);
             break;
-        }
+            case STENCIL_ITERATORSTART:
+            {
+                HTTP_CODE hcErr = STENCIL_SUCCESS;
+
+#ifdef ATL_DEBUG_STENCILS
+                // A 'while' token has to at least be followed by an endwhile!
+                if (!IsValidIndex(dwIndex+1))
+                {
+                    // This should have been caught at parse time
+                    dwNextToken = STENCIL_INVALIDINDEX;
+                    hcErrorCode = AtlsHttpError(500, ISE_SUBERR_STENCIL_INVALIDINDEX);
+                    ATLASSERT(FALSE);
+                    break;
+                }
+
+                // End of loop should be valid
+                if (!IsValidIndex(pToken->dwLoopIndex))
+                {
+                    // This should have been caught at parse time
+                    dwNextToken = STENCIL_INVALIDINDEX;
+                    hcErrorCode = AtlsHttpError(500, ISE_SUBERR_STENCIL_MISMATCHWHILE);
+                    ATLASSERT(FALSE);
+                    break;
+                }
+
+                if (pToken->dwFnOffset == STENCIL_INVALIDOFFSET)
+                {
+                    // This should have been caught at parse time
+                    dwNextToken = STENCIL_INVALIDINDEX;
+                    hcErrorCode = AtlsHttpError(500, ISE_SUBERR_STENCIL_INVALIDFUNCOFFSET);
+                    ATLASSERT(FALSE);
+                    break;
+                }
+#endif // ATL_DEBUG_STENCILS
+
+                DWORD dwLoopIndex = pToken->dwLoopIndex; // points to the end of the loop
+
+                // Call the replacement method
+                // if it returns HTTP_SUCCESS, enter the loop
+                // if it returns HTTP_S_FALSE, terminate the loop
+                hcErr = pReplacer->RenderReplacement(pToken->dwFnOffset,
+                                                     pToken->dwObjOffset, pToken->dwMap, (void *) pToken->dwData);
+
+                if (hcErr == HTTP_SUCCESS)
+                {
+                    dwNextToken = dwIndex+1;
+                    hcErrorCode = HTTP_SUCCESS;
+                }
+                else if (hcErr == HTTP_S_FALSE)
+                {
+                    dwNextToken = dwLoopIndex+1;
+                    hcErrorCode = HTTP_SUCCESS;
+                }
+                else
+                {
+                    dwNextToken = STENCIL_INVALIDINDEX;
+                    hcErrorCode = hcErr;
+                    break;
+                }
+            }
+            break;
+            case STENCIL_REPLACEMENT:
+            {
+#ifdef ATL_DEBUG_STENCILS
+                if (pToken->dwFnOffset == STENCIL_INVALIDOFFSET)
+                {
+                    // This should have been caught at parse time
+                    ATLASSERT(FALSE);
+                    dwNextToken = STENCIL_INVALIDINDEX;
+                    hcErrorCode = AtlsHttpError(500, ISE_SUBERR_STENCIL_INVALIDFUNCOFFSET);
+                    break;
+                }
+#endif // ATL_DEBUG_STENCILS
+
+                hcErrorCode = pReplacer->RenderReplacement(pToken->dwFnOffset,
+                              pToken->dwObjOffset, pToken->dwMap, (void *)pToken->dwData);
+
+                if (IsAsyncContinueStatus(hcErrorCode))
+                    dwNextToken = dwIndex; // call the tag again after we get back
+                else
+                {
+                    dwNextToken = dwIndex + 1;
+
+                    // when returned from a handler, these indicate that the handler is done
+                    // and that we should move on to the next handler when called back
+                    if (hcErrorCode == HTTP_SUCCESS_ASYNC_DONE)
+                        hcErrorCode = HTTP_SUCCESS_ASYNC;
+                    else if (hcErrorCode == HTTP_SUCCESS_ASYNC_NOFLUSH_DONE)
+                        hcErrorCode = HTTP_SUCCESS_ASYNC_NOFLUSH;
+                }
+            }
+            break;
+            case STENCIL_ITERATOREND:
+            {
+                dwNextToken = pToken->dwLoopIndex;
+                hcErrorCode = HTTP_SUCCESS;
+                ATLASSERT(GetToken(dwNextToken)->type == STENCIL_ITERATORSTART);
+            }
+            break;
+            case STENCIL_CONDITIONALSTART:
+            {
+#ifdef ATL_DEBUG_STENCILS
+                if (pToken->type == STENCIL_CONDITIONALSTART && pToken->dwFnOffset == STENCIL_INVALIDOFFSET)
+                {
+                    // This should have been caught at parse time
+                    ATLASSERT(FALSE);
+                    dwNextToken = STENCIL_INVALIDINDEX;
+                    hcErrorCode = AtlsHttpError(500, ISE_SUBERR_STENCIL_INVALIDFUNCOFFSET);
+                    break;
+                }
+
+                if (pToken->dwLoopIndex == STENCIL_INVALIDINDEX)
+                {
+                    // This should have been caught at parse time
+                    ATLASSERT(FALSE);
+                    dwNextToken = STENCIL_INVALIDINDEX;
+                    hcErrorCode = AtlsHttpError(500, ISE_SUBERR_STENCIL_MISMATCHIF);
+                    break;
+                }
+#endif // ATL_DEBUG_STENCILS
+
+                DWORD dwLoopIndex = pToken->dwLoopIndex; // points to the end of the loop
+
+                HTTP_CODE hcErr;
+                // Call the replacement method.
+                // If it returns HTTP_SUCCESS, we render everything up to
+                //  the end of the conditional.
+                // if it returns HTTP_S_FALSE, the condition is not met and we
+                //  render the else part if it exists or jump past the endif otherwise
+                hcErr = pReplacer->RenderReplacement(pToken->dwFnOffset,
+                                                     pToken->dwObjOffset, pToken->dwMap, (void *)pToken->dwData);
+
+                if (hcErr == HTTP_SUCCESS)
+                {
+                    dwNextToken = dwIndex+1;
+                    hcErrorCode = HTTP_SUCCESS;
+                }
+                else if (hcErr == HTTP_S_FALSE)
+                {
+                    dwNextToken = dwLoopIndex+1;
+                    hcErrorCode = HTTP_SUCCESS;
+                }
+                else
+                {
+                    dwNextToken = STENCIL_INVALIDINDEX;
+                    hcErrorCode = hcErr;
+                    break;
+                }
+            }
+            break;
+            case STENCIL_CONDITIONALELSE:
+            {
+#ifdef ATL_DEBUG_STENCILS
+                if (pToken->dwLoopIndex == STENCIL_INVALIDINDEX)
+                {
+                    // This should have been caught at parse time
+                    ATLASSERT(FALSE);
+                    dwNextToken = STENCIL_INVALIDINDEX;
+                    hcErrorCode = AtlsHttpError(500, ISE_SUBERR_STENCIL_MISMATCHIF);
+                    break;
+                }
+#endif // ATL_DEBUG_STENCILS
+
+                dwNextToken = pToken->dwLoopIndex+1;
+                hcErrorCode = HTTP_SUCCESS;
+            }
+            break;
+            case STENCIL_CONDITIONALEND:
+            {
+                dwNextToken = dwIndex+1;
+                hcErrorCode = HTTP_SUCCESS;
+            }
+            break;
+            case STENCIL_LOCALE:
+            {
+                if (pState)
+                {
+                    pState->locale = (LCID) pToken->dwData;
+                }
+                SetThreadLocale((LCID) pToken->dwData);
+                dwNextToken = dwIndex + 1;
+            }
+            break;
+            default:
+            {
+                ATLASSERT(FALSE);
+                dwNextToken = STENCIL_INVALIDINDEX;
+                hcErrorCode = AtlsHttpError(500, ISE_SUBERR_STENCIL_UNEXPECTEDTYPE);
+                break;
+            }
         }
 
         ATLASSERT(dwNextToken != dwIndex || IsAsyncContinueStatus(hcErrorCode));
@@ -2679,7 +2679,7 @@ private:
             pch++;
         }
 
-        return(nHash);
+        return (nHash);
     }
 
 public:
@@ -2691,12 +2691,12 @@ public:
 
     static bool CompareElements(INARGTYPE pair1, INARGTYPE pair2) throw()
     {
-        return((pair1.strDllPath == pair2.strDllPath) && (pair1.strHandlerName == pair2.strHandlerName));
+        return ((pair1.strDllPath == pair2.strDllPath) && (pair1.strHandlerName == pair2.strHandlerName));
     }
 
     static int CompareElementsOrdered(INARGTYPE pair1, INARGTYPE pair2) throw()
     {
-        return(pair1.strDllPath.Compare(pair2.strDllPath));
+        return (pair1.strDllPath.Compare(pair2.strDllPath));
     }
 };
 

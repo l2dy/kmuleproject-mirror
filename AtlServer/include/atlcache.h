@@ -3131,12 +3131,12 @@ class CElementTraits< CDataConnection > :
 public:
     static ULONG Hash(INARGTYPE t)
     {
-        return(ULONG(ULONG_PTR(&t)));
+        return (ULONG(ULONG_PTR(&t)));
     }
 
     static bool CompareElements(INARGTYPE element1, INARGTYPE element2)
     {
-        return(element1.m_session.m_spOpenRowset == element2.m_session.m_spOpenRowset);
+        return (element1.m_session.m_spOpenRowset == element2.m_session.m_spOpenRowset);
     }
 
     static int CompareElementsOrdered(INARGTYPE /*element1*/, INARGTYPE /*element2*/)

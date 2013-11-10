@@ -193,177 +193,177 @@ CAntiLeechData::CAntiLeechData(CFileDataIO* file)
         switch (newtag->GetNameID())
         {
 //>>> RARE files
-        case AT_UPLOAD_RARE:
-        {
-            if (newtag->IsInt64(false))
-                m_pData->uSentBytesRare = newtag->GetInt64();
-            else if (newtag->IsInt())
-                ((UINT*)&m_pData->uSentBytesRare)[0] = newtag->GetInt();
-            break;
-        }
-        case AT_UPLOAD_RARE_HI:
-        {
-            if (newtag->IsInt())
-                ((UINT*)&m_pData->uSentBytesRare)[1] = newtag->GetInt();
-            break;
-        }
-        case AT_DOWNLOAD_RARE:
-        {
-            if (newtag->IsInt64(false))
-                m_pData->uGotBytesRare = newtag->GetInt64();
-            else if (newtag->IsInt())
-                ((UINT*)&m_pData->uGotBytesRare)[0] = newtag->GetInt();
-            break;
-        }
-        case AT_DOWNLOAD_RARE_HI:
-        {
-            if (newtag->IsInt())
-                ((UINT*)&m_pData->uGotBytesRare)[1] = newtag->GetInt();
-            break;
-        }
+            case AT_UPLOAD_RARE:
+            {
+                if (newtag->IsInt64(false))
+                    m_pData->uSentBytesRare = newtag->GetInt64();
+                else if (newtag->IsInt())
+                    ((UINT*)&m_pData->uSentBytesRare)[0] = newtag->GetInt();
+                break;
+            }
+            case AT_UPLOAD_RARE_HI:
+            {
+                if (newtag->IsInt())
+                    ((UINT*)&m_pData->uSentBytesRare)[1] = newtag->GetInt();
+                break;
+            }
+            case AT_DOWNLOAD_RARE:
+            {
+                if (newtag->IsInt64(false))
+                    m_pData->uGotBytesRare = newtag->GetInt64();
+                else if (newtag->IsInt())
+                    ((UINT*)&m_pData->uGotBytesRare)[0] = newtag->GetInt();
+                break;
+            }
+            case AT_DOWNLOAD_RARE_HI:
+            {
+                if (newtag->IsInt())
+                    ((UINT*)&m_pData->uGotBytesRare)[1] = newtag->GetInt();
+                break;
+            }
 //<<< RARE files
-        case AT_UPLOAD_PART:
-        {
-            if (newtag->IsInt64(false))
-                m_pData->uSentBytesPartial = newtag->GetInt64();
-            else if (newtag->IsInt())
-                ((UINT*)&m_pData->uSentBytesPartial)[0] = newtag->GetInt();
-            break;
-        }
-        case AT_UPLOAD_PART_HI:
-        {
-            if (newtag->IsInt())
-                ((UINT*)&m_pData->uSentBytesPartial)[1] = newtag->GetInt();
-            break;
-        }
-        case AT_UPLOAD:
-        {
-            if (newtag->IsInt64(false))
-                m_pData->uSentBytes = newtag->GetInt64();
-            else if (newtag->IsInt())
-                ((UINT*)&m_pData->uSentBytes)[0] = newtag->GetInt();
-            break;
-        }
-        case AT_UPLOAD_HI:
-        {
-            if (newtag->IsInt())
-                ((UINT*)&m_pData->uSentBytes)[1] = newtag->GetInt();
-            break;
-        }
+            case AT_UPLOAD_PART:
+            {
+                if (newtag->IsInt64(false))
+                    m_pData->uSentBytesPartial = newtag->GetInt64();
+                else if (newtag->IsInt())
+                    ((UINT*)&m_pData->uSentBytesPartial)[0] = newtag->GetInt();
+                break;
+            }
+            case AT_UPLOAD_PART_HI:
+            {
+                if (newtag->IsInt())
+                    ((UINT*)&m_pData->uSentBytesPartial)[1] = newtag->GetInt();
+                break;
+            }
+            case AT_UPLOAD:
+            {
+                if (newtag->IsInt64(false))
+                    m_pData->uSentBytes = newtag->GetInt64();
+                else if (newtag->IsInt())
+                    ((UINT*)&m_pData->uSentBytes)[0] = newtag->GetInt();
+                break;
+            }
+            case AT_UPLOAD_HI:
+            {
+                if (newtag->IsInt())
+                    ((UINT*)&m_pData->uSentBytes)[1] = newtag->GetInt();
+                break;
+            }
 
 
-        case AT_DOWNLOAD_PART:
-        {
-            if (newtag->IsInt64(false))
-                m_pData->uGotBytesPartial = newtag->GetInt64();
-            else if (newtag->IsInt())
-                ((UINT*)&m_pData->uGotBytesPartial)[0] = newtag->GetInt();
-            break;
-        }
-        case AT_DOWNLOAD_PART_HI:
-        {
-            if (newtag->IsInt())
-                ((UINT*)&m_pData->uGotBytesPartial)[1] = newtag->GetInt();
-            break;
-        }
-        case AT_DOWNLOAD:
-        {
-            if (newtag->IsInt64(false))
-                m_pData->uGotBytes = newtag->GetInt64();
-            else if (newtag->IsInt())
-                ((UINT*)&m_pData->uGotBytes)[0] = newtag->GetInt();
-            break;
-        }
-        case AT_DOWNLOAD_HI:
-        {
-            if (newtag->IsInt())
-                ((UINT*)&m_pData->uGotBytes)[1] = newtag->GetInt();
-            break;
-        }
+            case AT_DOWNLOAD_PART:
+            {
+                if (newtag->IsInt64(false))
+                    m_pData->uGotBytesPartial = newtag->GetInt64();
+                else if (newtag->IsInt())
+                    ((UINT*)&m_pData->uGotBytesPartial)[0] = newtag->GetInt();
+                break;
+            }
+            case AT_DOWNLOAD_PART_HI:
+            {
+                if (newtag->IsInt())
+                    ((UINT*)&m_pData->uGotBytesPartial)[1] = newtag->GetInt();
+                break;
+            }
+            case AT_DOWNLOAD:
+            {
+                if (newtag->IsInt64(false))
+                    m_pData->uGotBytes = newtag->GetInt64();
+                else if (newtag->IsInt())
+                    ((UINT*)&m_pData->uGotBytes)[0] = newtag->GetInt();
+                break;
+            }
+            case AT_DOWNLOAD_HI:
+            {
+                if (newtag->IsInt())
+                    ((UINT*)&m_pData->uGotBytes)[1] = newtag->GetInt();
+                break;
+            }
 
 
-        case AT_LASTSEEN:
-        {
-            if (newtag->IsInt())
-                m_pData->dwLastSeen = newtag->GetInt();
-            break;
-        }
-        case AT_FIRSTMET:
-        {
-            if (newtag->IsInt())
-                m_pData->dwFirstMet = newtag->GetInt();
-            break;
-        }
+            case AT_LASTSEEN:
+            {
+                if (newtag->IsInt())
+                    m_pData->dwLastSeen = newtag->GetInt();
+                break;
+            }
+            case AT_FIRSTMET:
+            {
+                if (newtag->IsInt())
+                    m_pData->dwFirstMet = newtag->GetInt();
+                break;
+            }
 //keep bad status for some time
-        case AT_BADTIMER:
-        {
-            if (newtag->IsInt())
-                m_pData->dwBadTimer = newtag->GetInt();
-            break;
-        }
-        case AT_BADSTATUS:
-        {
-            if (newtag->IsInt())
-                m_uiBadForThisSession = newtag->GetInt();
-            break;
-        }
+            case AT_BADTIMER:
+            {
+                if (newtag->IsInt())
+                    m_pData->dwBadTimer = newtag->GetInt();
+                break;
+            }
+            case AT_BADSTATUS:
+            {
+                if (newtag->IsInt())
+                    m_uiBadForThisSession = newtag->GetInt();
+                break;
+            }
 //keep bad status for some time
 
-        case AT_REASKS:
-        {
-            if (newtag->IsInt())
-                m_pData->uReasks = newtag->GetInt();
-            break;
-        }
-        case AT_AVGREASK:
-        {
-            if (newtag->IsInt())
-                m_pData->uAvgReaskTime = newtag->GetInt();
-            break;
-        }
-        case AT_SPAMS:
-        {
-            if (newtag->IsInt())
-                m_pData->iBlockedMessages = newtag->GetInt();
-            break;
-        }
-        case AT_XS_ASKS:
-        {
-            if (newtag->IsInt())
-                m_pData->uXSAsks = newtag->GetInt();
-            break;
-        }
-        case AT_XS_ANSW:
-        {
-            if (newtag->IsInt())
-                m_pData->uXSAnsw = newtag->GetInt();
-            break;
-        }
-        case AT_FASTXS_ASKS:
-        {
-            if (newtag->IsInt())
-                m_pData->iFastXSAsks = newtag->GetInt();
-            break;
-        }
+            case AT_REASKS:
+            {
+                if (newtag->IsInt())
+                    m_pData->uReasks = newtag->GetInt();
+                break;
+            }
+            case AT_AVGREASK:
+            {
+                if (newtag->IsInt())
+                    m_pData->uAvgReaskTime = newtag->GetInt();
+                break;
+            }
+            case AT_SPAMS:
+            {
+                if (newtag->IsInt())
+                    m_pData->iBlockedMessages = newtag->GetInt();
+                break;
+            }
+            case AT_XS_ASKS:
+            {
+                if (newtag->IsInt())
+                    m_pData->uXSAsks = newtag->GetInt();
+                break;
+            }
+            case AT_XS_ANSW:
+            {
+                if (newtag->IsInt())
+                    m_pData->uXSAnsw = newtag->GetInt();
+                break;
+            }
+            case AT_FASTXS_ASKS:
+            {
+                if (newtag->IsInt())
+                    m_pData->iFastXSAsks = newtag->GetInt();
+                break;
+            }
 
-        case AT_BADULSESSIONS:
-        {
-            if (newtag->IsInt())
-                m_pData->uBadULSessions = (uint8)newtag->GetInt();
-            break;
-        }
-        case AT_BADDLSESSIONS:
-        {
-            if (newtag->IsInt())
-                m_pData->uBadDLSessions = (uint8)newtag->GetInt();
-            break;
-        }
+            case AT_BADULSESSIONS:
+            {
+                if (newtag->IsInt())
+                    m_pData->uBadULSessions = (uint8)newtag->GetInt();
+                break;
+            }
+            case AT_BADDLSESSIONS:
+            {
+                if (newtag->IsInt())
+                    m_pData->uBadDLSessions = (uint8)newtag->GetInt();
+                break;
+            }
 
-        default:
-        {
-            bDel = false;
-            break;
-        }
+            default:
+            {
+                bDel = false;
+                break;
+            }
         }
         if (bDel)
             delete newtag;
@@ -936,29 +936,29 @@ void CAntiLeechData::SetBadForThisSession(const UINT i, const CString& strDetail
 
     switch (i)
     {
-    case AT_NICKTHIEF:
-        theApp.antileechlist->IncBadActionCounter(BAD_ACTION_NICKTHIEF);
-        break;
+        case AT_NICKTHIEF:
+            theApp.antileechlist->IncBadActionCounter(BAD_ACTION_NICKTHIEF);
+            break;
 
-    case AT_MODTHIEF:
-        theApp.antileechlist->IncBadActionCounter(BAD_ACTION_MODTHIEF);
-        break;
+        case AT_MODTHIEF:
+            theApp.antileechlist->IncBadActionCounter(BAD_ACTION_MODTHIEF);
+            break;
 
-    case AT_FILEFAKER:
-        theApp.antileechlist->IncBadActionCounter(BAD_ACTION_FILEFAKE);
-        break;
+        case AT_FILEFAKER:
+            theApp.antileechlist->IncBadActionCounter(BAD_ACTION_FILEFAKE);
+            break;
 
-    case AT_UDPFNFFAKER:
-        theApp.antileechlist->IncBadActionCounter(BAD_ACTION_UDPFNF);
-        break;
+        case AT_UDPFNFFAKER:
+            theApp.antileechlist->IncBadActionCounter(BAD_ACTION_UDPFNF);
+            break;
 
-    case AT_MODFAKER:
-        theApp.antileechlist->IncBadActionCounter(BAD_ACTION_MODFAKER);
-        break;
+        case AT_MODFAKER:
+            theApp.antileechlist->IncBadActionCounter(BAD_ACTION_MODFAKER);
+            break;
 
-    default:
-        ASSERT(0); //this should not happen...
-        return;
+        default:
+            ASSERT(0); //this should not happen...
+            return;
     }
 
     m_uiBadForThisSession |= i;
@@ -1792,37 +1792,37 @@ void CAntiLeechData::SetParent(CUpDownClient* client, const bool bSetOnly)
 
     switch (m_pParent->GetClientSoft())
     {
-    case SO_MLDONKEY:
-        m_uiReaskTime = MIN_REQUESTTIME;
-        break;
+        case SO_MLDONKEY:
+            m_uiReaskTime = MIN_REQUESTTIME;
+            break;
 
-    case SO_SHAREAZA:
-        m_uiReaskTime = MIN_REQUESTTIME*2;
-        break;
+        case SO_SHAREAZA:
+            m_uiReaskTime = MIN_REQUESTTIME*2;
+            break;
 
-        //21 mins - reask time by old version of the client
-        //taken from eMule+ source
-    case SO_EDONKEY:
-    case SO_OLDEMULE:
-        m_uiReaskTime = MIN2MS(21);
-        break;
+            //21 mins - reask time by old version of the client
+            //taken from eMule+ source
+        case SO_EDONKEY:
+        case SO_OLDEMULE:
+            m_uiReaskTime = MIN2MS(21);
+            break;
 
-        //eMule+ uses 1 minute less, though this shouldn't hurt...
-    case SO_EMULEPLUS:
-        m_uiReaskTime = MIN2MS(28);
-        break;
+            //eMule+ uses 1 minute less, though this shouldn't hurt...
+        case SO_EMULEPLUS:
+            m_uiReaskTime = MIN2MS(28);
+            break;
 
-    case SO_EMULE:
-        m_uiReaskTime = FILEREASKTIME;
-        break;
+        case SO_EMULE:
+            m_uiReaskTime = FILEREASKTIME;
+            break;
 
-        //any information about those 3 clients? I couldn't find their default reasktime...
+            //any information about those 3 clients? I couldn't find their default reasktime...
 //		case SO_TRUSTYFILES:
 //		case SO_HYDRANODE:
 //		case SO_EASYMULE2:
-    default:
-        m_uiReaskTime = MIN_REQUESTTIME; //we don't know their limits, default to lowest
-        break;
+        default:
+            m_uiReaskTime = MIN_REQUESTTIME; //we don't know their limits, default to lowest
+            break;
     }
 
     //if the client has credits...

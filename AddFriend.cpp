@@ -160,8 +160,8 @@ void CAddFriend::OnAddBtn()
         ;
 
 //>>> WiZaRd::IPv6 [Xanatos]
-		if (!theApp.friendlist->AddFriend(NULL, 0, CAddress(_ntohl(ip)), (uint16)uPort, 0, strUserName, 0))
-        //if (!theApp.friendlist->AddFriend(NULL, 0, ip, (uint16)uPort, 0, strUserName, 0))
+        if (!theApp.friendlist->AddFriend(NULL, 0, CAddress(_ntohl(ip)), (uint16)uPort, 0, strUserName, 0))
+            //if (!theApp.friendlist->AddFriend(NULL, 0, ip, (uint16)uPort, 0, strUserName, 0))
 //<<< WiZaRd::IPv6 [Xanatos]
         {
             AfxMessageBox(GetResString(IDS_WRN_FRIENDDUPLIPPORT));

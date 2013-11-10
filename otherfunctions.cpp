@@ -387,52 +387,52 @@ bool IsHexDigit(int c)
 {
     switch (c)
     {
-    case '0':
-        return true;
-    case '1':
-        return true;
-    case '2':
-        return true;
-    case '3':
-        return true;
-    case '4':
-        return true;
-    case '5':
-        return true;
-    case '6':
-        return true;
-    case '7':
-        return true;
-    case '8':
-        return true;
-    case '9':
-        return true;
-    case 'A':
-        return true;
-    case 'B':
-        return true;
-    case 'C':
-        return true;
-    case 'D':
-        return true;
-    case 'E':
-        return true;
-    case 'F':
-        return true;
-    case 'a':
-        return true;
-    case 'b':
-        return true;
-    case 'c':
-        return true;
-    case 'd':
-        return true;
-    case 'e':
-        return true;
-    case 'f':
-        return true;
-    default:
-        return false;
+        case '0':
+            return true;
+        case '1':
+            return true;
+        case '2':
+            return true;
+        case '3':
+            return true;
+        case '4':
+            return true;
+        case '5':
+            return true;
+        case '6':
+            return true;
+        case '7':
+            return true;
+        case '8':
+            return true;
+        case '9':
+            return true;
+        case 'A':
+            return true;
+        case 'B':
+            return true;
+        case 'C':
+            return true;
+        case 'D':
+            return true;
+        case 'E':
+            return true;
+        case 'F':
+            return true;
+        case 'a':
+            return true;
+        case 'b':
+            return true;
+        case 'c':
+            return true;
+        case 'd':
+            return true;
+        case 'e':
+            return true;
+        case 'f':
+            return true;
+        default:
+            return false;
     }
 }
 }
@@ -751,31 +751,31 @@ WORD DetectWinVersion()
 
     switch (osvi.dwPlatformId)
     {
-    case VER_PLATFORM_WIN32_NT:
-        if (osvi.dwMajorVersion <= 4)
-            return _WINVER_NT4_;
-        if (osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 0)
-            return _WINVER_2K_;
-        if (osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 1)
-            return _WINVER_XP_;
-        if (osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 2)
-            return _WINVER_2003_;
-        if (osvi.dwMajorVersion == 6 && osvi.dwMinorVersion == 0)
-            return _WINVER_VISTA_;
-        if (osvi.dwMajorVersion == 6 && osvi.dwMinorVersion == 1)
-            return _WINVER_7_;
-        if (osvi.dwMajorVersion == 6 && osvi.dwMinorVersion == 2)
-            return _WINVER_8_;
-        return _WINVER_7_; // never return Win95 if we get the info about a NT system
+        case VER_PLATFORM_WIN32_NT:
+            if (osvi.dwMajorVersion <= 4)
+                return _WINVER_NT4_;
+            if (osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 0)
+                return _WINVER_2K_;
+            if (osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 1)
+                return _WINVER_XP_;
+            if (osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 2)
+                return _WINVER_2003_;
+            if (osvi.dwMajorVersion == 6 && osvi.dwMinorVersion == 0)
+                return _WINVER_VISTA_;
+            if (osvi.dwMajorVersion == 6 && osvi.dwMinorVersion == 1)
+                return _WINVER_7_;
+            if (osvi.dwMajorVersion == 6 && osvi.dwMinorVersion == 2)
+                return _WINVER_8_;
+            return _WINVER_7_; // never return Win95 if we get the info about a NT system
 
-    case VER_PLATFORM_WIN32_WINDOWS:
-        if (osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 0)
-            return _WINVER_95_;
-        if (osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 10)
-            return _WINVER_98_;
-        if (osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 90)
-            return _WINVER_ME_;
-        break;
+        case VER_PLATFORM_WIN32_WINDOWS:
+            if (osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 0)
+                return _WINVER_95_;
+            if (osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 10)
+                return _WINVER_98_;
+            if (osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 90)
+                return _WINVER_ME_;
+            break;
     }
 
     return _WINVER_95_;		// there should'nt be anything lower than this
@@ -805,18 +805,18 @@ int IsRunningXPSP2OrHigher()
 {
     switch (thePrefs.GetWindowsVersion())
     {
-    case _WINVER_95_:
-    case _WINVER_98_:
-    case _WINVER_NT4_:
-    case _WINVER_2K_:
-    case _WINVER_ME_:
-        return 0;
-        break;
-    case _WINVER_XP_:
-        return IsRunningXPSP2();
-        break;
-    default:
-        return 1;
+        case _WINVER_95_:
+        case _WINVER_98_:
+        case _WINVER_NT4_:
+        case _WINVER_2K_:
+        case _WINVER_ME_:
+            return 0;
+            break;
+        case _WINVER_XP_:
+            return IsRunningXPSP2();
+            break;
+        default:
+            return 1;
     }
 }
 
@@ -884,18 +884,18 @@ CString GetRateString(UINT rate)
 {
     switch (rate)
     {
-    case 0:
-        return GetResString(IDS_CMT_NOTRATED);
-    case 1:
-        return GetResString(IDS_CMT_FAKE);
-    case 2:
-        return GetResString(IDS_CMT_POOR);
-    case 3:
-        return GetResString(IDS_CMT_FAIR);
-    case 4:
-        return GetResString(IDS_CMT_GOOD);
-    case 5:
-        return GetResString(IDS_CMT_EXCELLENT);
+        case 0:
+            return GetResString(IDS_CMT_NOTRATED);
+        case 1:
+            return GetResString(IDS_CMT_FAKE);
+        case 2:
+            return GetResString(IDS_CMT_POOR);
+        case 3:
+            return GetResString(IDS_CMT_FAIR);
+        case 4:
+            return GetResString(IDS_CMT_GOOD);
+        case 5:
+            return GetResString(IDS_CMT_EXCELLENT);
     }
     return GetResString(IDS_CMT_NOTRATED);
 }
@@ -1826,24 +1826,24 @@ CString GetFileTypeByName(LPCTSTR pszFileName)
     EED2KFileType iFileType = GetED2KFileTypeID(pszFileName);
     switch (iFileType)
     {
-    case ED2KFT_AUDIO:
-        return _T(ED2KFTSTR_AUDIO);
-    case ED2KFT_VIDEO:
-        return _T(ED2KFTSTR_VIDEO);
-    case ED2KFT_IMAGE:
-        return _T(ED2KFTSTR_IMAGE);
-    case ED2KFT_DOCUMENT:
-        return _T(ED2KFTSTR_DOCUMENT);
-    case ED2KFT_PROGRAM:
-        return _T(ED2KFTSTR_PROGRAM);
-    case ED2KFT_ARCHIVE:
-        return _T(ED2KFTSTR_ARCHIVE);
-    case ED2KFT_CDIMAGE:
-        return _T(ED2KFTSTR_CDIMAGE);
-    case ED2KFT_EMULECOLLECTION:
-        return _T(ED2KFTSTR_EMULECOLLECTION);
-    default:
-        return L"";
+        case ED2KFT_AUDIO:
+            return _T(ED2KFTSTR_AUDIO);
+        case ED2KFT_VIDEO:
+            return _T(ED2KFTSTR_VIDEO);
+        case ED2KFT_IMAGE:
+            return _T(ED2KFTSTR_IMAGE);
+        case ED2KFT_DOCUMENT:
+            return _T(ED2KFTSTR_DOCUMENT);
+        case ED2KFT_PROGRAM:
+            return _T(ED2KFTSTR_PROGRAM);
+        case ED2KFT_ARCHIVE:
+            return _T(ED2KFTSTR_ARCHIVE);
+        case ED2KFT_CDIMAGE:
+            return _T(ED2KFTSTR_CDIMAGE);
+        case ED2KFT_EMULECOLLECTION:
+            return _T(ED2KFTSTR_EMULECOLLECTION);
+        default:
+            return L"";
     }
 }
 
@@ -4948,10 +4948,10 @@ void	FillClientIconImageList(CImageList& imageList)
     imageList.Add(CTempIconLoader(L"ClientkMulePlus"));				//16
     imageList.Add(CTempIconLoader(L"Server"));						//17
     imageList.Add(CTempIconLoader(L"ANALYZER0"));					//18
-	imageList.Add(CTempIconLoader(L"ANALYZER1"));					//19
-	imageList.Add(CTempIconLoader(L"ANALYZER2"));					//20
-	imageList.Add(CTempIconLoader(L"ANALYZER3"));					//21
-	imageList.Add(CTempIconLoader(L"ANALYZER4"));					//22
+    imageList.Add(CTempIconLoader(L"ANALYZER1"));					//19
+    imageList.Add(CTempIconLoader(L"ANALYZER2"));					//20
+    imageList.Add(CTempIconLoader(L"ANALYZER3"));					//21
+    imageList.Add(CTempIconLoader(L"ANALYZER4"));					//22
 }
 
 int	GetClientImageIndex(const bool bFriend, const UINT nClientVersion, const bool bPlus, const bool bExt)
@@ -5027,115 +5027,117 @@ HCURSOR		CreateHandCursor()
 //>>> WiZaRd::Improved Auto Prio
 uint8	CalcPrioFromSrcAverage(const UINT srcs, const float avg)
 {
-	uint8 prio = PR_NORMAL;			// default
+    uint8 prio = PR_NORMAL;			// default
 
-	if(srcs < avg*0.50f)				//50% less
-		prio = PR_VERYHIGH;
-	else if(srcs < avg*0.75f)		//25% less
-		prio = PR_HIGH;
-	else if(srcs > avg*1.50f)		//50% more
-		prio = PR_VERYLOW;
-	else if(srcs > avg*1.25f)		//25% more
-		prio = PR_LOW;
+    if (srcs < avg*0.50f)				//50% less
+        prio = PR_VERYHIGH;
+    else if (srcs < avg*0.75f)		//25% less
+        prio = PR_HIGH;
+    else if (srcs > avg*1.50f)		//50% more
+        prio = PR_VERYLOW;
+    else if (srcs > avg*1.25f)		//25% more
+        prio = PR_LOW;
 
-	return prio;
+    return prio;
 }
 //<<< WiZaRd::Improved Auto Prio
 //>>> WiZaRd::IPv6 [Xanatos]
 void DebugRecv(LPCSTR pszMsg, const CUpDownClient* client, const uchar* packet, const _CIPAddress& IP)
 {
-	// 111.222.333.444 = 15 chars
-	if (client){
-		if (client != NULL && packet != NULL)
-			Debug(_T("%-24hs from %s; %s\n"), pszMsg, client->DbgGetClientInfo(true), DbgGetFileInfo(packet));
-		else if (client != NULL && packet == NULL)
-			Debug(_T("%-24hs from %s\n"), pszMsg, client->DbgGetClientInfo(true));
-		else if (client == NULL && packet != NULL)
-			Debug(_T("%-24hs; %s\n"), pszMsg, DbgGetFileInfo(packet));
-		else
-			Debug(_T("%-24hs\n"), pszMsg);
-	}
-	else{
-		if (!IP.IsNull() && packet != NULL)
-			Debug(_T("%-24hs from %-15s; %s\n"), pszMsg, ipstr(IP), DbgGetFileInfo(packet));
-		else if (!IP.IsNull() && packet == NULL)
-			Debug(_T("%-24hs from %-15s\n"), pszMsg, ipstr(IP));
-		else if (IP.IsNull() && packet != NULL)
-			Debug(_T("%-24hs; %s\n"), pszMsg, DbgGetFileInfo(packet));
-		else
-			Debug(_T("%-24hs\n"), pszMsg);
-	}
+    // 111.222.333.444 = 15 chars
+    if (client)
+    {
+        if (client != NULL && packet != NULL)
+            Debug(_T("%-24hs from %s; %s\n"), pszMsg, client->DbgGetClientInfo(true), DbgGetFileInfo(packet));
+        else if (client != NULL && packet == NULL)
+            Debug(_T("%-24hs from %s\n"), pszMsg, client->DbgGetClientInfo(true));
+        else if (client == NULL && packet != NULL)
+            Debug(_T("%-24hs; %s\n"), pszMsg, DbgGetFileInfo(packet));
+        else
+            Debug(_T("%-24hs\n"), pszMsg);
+    }
+    else
+    {
+        if (!IP.IsNull() && packet != NULL)
+            Debug(_T("%-24hs from %-15s; %s\n"), pszMsg, ipstr(IP), DbgGetFileInfo(packet));
+        else if (!IP.IsNull() && packet == NULL)
+            Debug(_T("%-24hs from %-15s\n"), pszMsg, ipstr(IP));
+        else if (IP.IsNull() && packet != NULL)
+            Debug(_T("%-24hs; %s\n"), pszMsg, DbgGetFileInfo(packet));
+        else
+            Debug(_T("%-24hs\n"), pszMsg);
+    }
 }
 
 void DebugRecv(LPCSTR pszOpcode, const _CIPAddress& IP, uint16 port)
 {
-	TCHAR szIPPort[22];
-	_stprintf(szIPPort, _T("%s:%u"), ipstr(IP), port);
-	Debug(_T("%-24hs from %-21s\n"), pszOpcode, szIPPort);
+    TCHAR szIPPort[22];
+    _stprintf(szIPPort, _T("%s:%u"), ipstr(IP), port);
+    Debug(_T("%-24hs from %-21s\n"), pszOpcode, szIPPort);
 }
 
 void DebugSend(LPCSTR pszOpcode, const _CIPAddress& IP, uint16 port)
 {
-	TCHAR szIPPort[22];
-	_stprintf(szIPPort, _T("%s:%u"), ipstr(IP), port);
-	Debug(_T(">>> %-20hs to   %-21s\n"), pszOpcode, szIPPort);
+    TCHAR szIPPort[22];
+    _stprintf(szIPPort, _T("%s:%u"), ipstr(IP), port);
+    Debug(_T(">>> %-20hs to   %-21s\n"), pszOpcode, szIPPort);
 }
 
 CString ipstr(const CAddress& IP)
 {
-	return IP.ToStringW().c_str();
+    return IP.ToStringW().c_str();
 }
 //<<< WiZaRd::IPv6 [Xanatos]
 
 //>>> WiZaRd::Find Best Interface IP [netfinity]
 ULONG GetBestInterfaceIP(const ULONG dest_addr)
 {
-	ULONG bestInterfaceIP = INADDR_NONE;
+    ULONG bestInterfaceIP = INADDR_NONE;
 
-	HINSTANCE m_hIPHlp = ::LoadLibrary(L"Iphlpapi.dll");
-	if (m_hIPHlp != NULL)
-	{
-		typedef DWORD (WINAPI *t_GetBestInterface)(
-			IPAddr dwDestAddr,
-			PDWORD pdwBestIfIndex);
-		typedef DWORD (WINAPI *t_GetBestRoute2)(
-			NET_LUID *InterfaceLuid,
-			NET_IFINDEX InterfaceIndex,
-			const SOCKADDR_INET *SourceAddress,
-			const SOCKADDR_INET *DestinationAddress,
-			ULONG AddressSortOptions,
-			PMIB_IPFORWARD_ROW2 BestRoute,
-			SOCKADDR_INET *BestSourceAddress);
+    HINSTANCE m_hIPHlp = ::LoadLibrary(L"Iphlpapi.dll");
+    if (m_hIPHlp != NULL)
+    {
+        typedef DWORD (WINAPI *t_GetBestInterface)(
+            IPAddr dwDestAddr,
+            PDWORD pdwBestIfIndex);
+        typedef DWORD (WINAPI *t_GetBestRoute2)(
+            NET_LUID *InterfaceLuid,
+            NET_IFINDEX InterfaceIndex,
+            const SOCKADDR_INET *SourceAddress,
+            const SOCKADDR_INET *DestinationAddress,
+            ULONG AddressSortOptions,
+            PMIB_IPFORWARD_ROW2 BestRoute,
+            SOCKADDR_INET *BestSourceAddress);
 
-		t_GetBestInterface s_pGetBestInterface = (t_GetBestInterface) ::GetProcAddress(m_hIPHlp, "GetBestInterface");
-		t_GetBestRoute2 s_pGetBestRoute2 = (t_GetBestRoute2) ::GetProcAddress(m_hIPHlp, "GetBestRoute2");
+        t_GetBestInterface s_pGetBestInterface = (t_GetBestInterface) ::GetProcAddress(m_hIPHlp, "GetBestInterface");
+        t_GetBestRoute2 s_pGetBestRoute2 = (t_GetBestRoute2) ::GetProcAddress(m_hIPHlp, "GetBestRoute2");
 
-		SOCKADDR_INET		saBestInterfaceAddress = {0};
-		SOCKADDR_INET		saDestinationAddress = {0};
-		MIB_IPFORWARD_ROW2	rowBestRoute = {0};
-		DWORD	dwBestIfIndex;
-		DWORD	dwError;
+        SOCKADDR_INET		saBestInterfaceAddress = {0};
+        SOCKADDR_INET		saDestinationAddress = {0};
+        MIB_IPFORWARD_ROW2	rowBestRoute = {0};
+        DWORD	dwBestIfIndex;
+        DWORD	dwError;
 
-		saDestinationAddress.Ipv4.sin_family = AF_INET;
-		saDestinationAddress.Ipv4.sin_addr.S_un.S_addr = dest_addr;
+        saDestinationAddress.Ipv4.sin_family = AF_INET;
+        saDestinationAddress.Ipv4.sin_addr.S_un.S_addr = dest_addr;
 
-		if (s_pGetBestInterface != nullptr && s_pGetBestRoute2 != nullptr && dest_addr != INADDR_NONE)
-		{
-			dwError = s_pGetBestInterface(dest_addr, &dwBestIfIndex);
-			if (dwError == NO_ERROR)
-			{
-				dwError = s_pGetBestRoute2(nullptr, dwBestIfIndex, nullptr, &saDestinationAddress, 0, &rowBestRoute, &saBestInterfaceAddress);
-				if (dwError == NO_ERROR)
-					bestInterfaceIP = saBestInterfaceAddress.Ipv4.sin_addr.S_un.S_addr;
-				else
-					DebugLogError(_T(__FUNCTION__) _T(": Failed to retrieve best route source ip address to dest %s: %s"), ipstr(dest_addr), GetErrorMessage(dwError, 1));
-			}
-			else
-				DebugLogError(_T(__FUNCTION__) _T(": Failed to retrieve best interface index for destination %s: %s"), ipstr(dest_addr), GetErrorMessage(dwError, 1));
-		}
-	}
-	
-	return bestInterfaceIP;
+        if (s_pGetBestInterface != nullptr && s_pGetBestRoute2 != nullptr && dest_addr != INADDR_NONE)
+        {
+            dwError = s_pGetBestInterface(dest_addr, &dwBestIfIndex);
+            if (dwError == NO_ERROR)
+            {
+                dwError = s_pGetBestRoute2(nullptr, dwBestIfIndex, nullptr, &saDestinationAddress, 0, &rowBestRoute, &saBestInterfaceAddress);
+                if (dwError == NO_ERROR)
+                    bestInterfaceIP = saBestInterfaceAddress.Ipv4.sin_addr.S_un.S_addr;
+                else
+                    DebugLogError(_T(__FUNCTION__) _T(": Failed to retrieve best route source ip address to dest %s: %s"), ipstr(dest_addr), GetErrorMessage(dwError, 1));
+            }
+            else
+                DebugLogError(_T(__FUNCTION__) _T(": Failed to retrieve best interface index for destination %s: %s"), ipstr(dest_addr), GetErrorMessage(dwError, 1));
+        }
+    }
+
+    return bestInterfaceIP;
 }
 //<<< WiZaRd::Find Best Interface IP [netfinity]
 //>>> WiZaRd
@@ -5143,92 +5145,92 @@ ULONG GetBestInterfaceIP(const ULONG dest_addr)
 // This is a workaround for that issue.
 bool IsDirectoryWriteable(LPCTSTR pszDirectory)
 {
-	bool writeable = false;
+    bool writeable = false;
 
-	if(PathFileExists(pszDirectory) || ::CreateDirectory(pszDirectory, 0))
-	{
-		const CString strFilename = pszDirectory + (CString)L"test.file";
-		HANDLE hFile = CreateFile(strFilename,
-			GENERIC_WRITE,				// open for writing
-			NULL,						// don't share
-			NULL,						// no security
-			CREATE_ALWAYS,				// always create
-			FILE_ATTRIBUTE_TEMPORARY,	// just a temporary file
-			NULL);						// no attr. template
+    if (PathFileExists(pszDirectory) || ::CreateDirectory(pszDirectory, 0))
+    {
+        const CString strFilename = pszDirectory + (CString)L"test.file";
+        HANDLE hFile = CreateFile(strFilename,
+                                  GENERIC_WRITE,				// open for writing
+                                  NULL,						// don't share
+                                  NULL,						// no security
+                                  CREATE_ALWAYS,				// always create
+                                  FILE_ATTRIBUTE_TEMPORARY,	// just a temporary file
+                                  NULL);						// no attr. template
 
-		if (hFile != INVALID_HANDLE_VALUE)
-		{
-			CloseHandle(hFile);
-			::DeleteFile(strFilename);
+        if (hFile != INVALID_HANDLE_VALUE)
+        {
+            CloseHandle(hFile);
+            ::DeleteFile(strFilename);
 
-			writeable = true;
-		}
-	}
+            writeable = true;
+        }
+    }
 
-	return writeable;
+    return writeable;
 }
 //<<< WiZaRd
 
 CString GetBetaFileName()
 {
-	CString strBetaFileName = L"";
+    CString strBetaFileName = L"";
 
-	strBetaFileName.Format(L"eMule%u.%u%c.%u Beta Testfile ", CemuleApp::m_nVersionMjr,
-		CemuleApp::m_nVersionMin, L'a' + CemuleApp::m_nVersionUpd, CemuleApp::m_nVersionBld);
-	MD5Sum md5(strBetaFileName);
-	strBetaFileName.Append(md5.GetHash().Left(6) + L".txt");
+    strBetaFileName.Format(L"eMule%u.%u%c.%u Beta Testfile ", CemuleApp::m_nVersionMjr,
+                           CemuleApp::m_nVersionMin, L'a' + CemuleApp::m_nVersionUpd, CemuleApp::m_nVersionBld);
+    MD5Sum md5(strBetaFileName);
+    strBetaFileName.Append(md5.GetHash().Left(6) + L".txt");
 
-	return strBetaFileName;
+    return strBetaFileName;
 }
 
 void CreateBetaFile()
 {
 #ifdef _BETA
-	// In Betaversion we create a testfile which is published in order to make testing easier
-	// by allowing to easily find files which are published and shared by "new" nodes
-	CString strBetaFileName = GetBetaFileName();
-	CString tempDir = thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR);
-	if (tempDir.Right(1) != L"\\")
-		tempDir.Append(L"\\");
+    // In Betaversion we create a testfile which is published in order to make testing easier
+    // by allowing to easily find files which are published and shared by "new" nodes
+    CString strBetaFileName = GetBetaFileName();
+    CString tempDir = thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR);
+    if (tempDir.Right(1) != L"\\")
+        tempDir.Append(L"\\");
 
-	// always create it - this will ensure that the file content is correct!
-	CStdioFile f;
-	if (!f.Open(tempDir + strBetaFileName, CFile::modeCreate | CFile::modeWrite | CFile::shareDenyWrite))
-		ASSERT(0);
-	else
-	{
-		try
-		{
-			// do not translate the content!
-			f.WriteString(strBetaFileName + '\n'); // guarantees a different hash on different versions
-			f.WriteString(L"This file is automatically created by eMule Beta versions to help the developers testing and debugging new the new features. eMule will delete this file when exiting, otherwise you can remove this file at any time.\nThanks for beta testing eMule :)");
-			f.Close();
-		}
-		catch (CFileException* ex)
-		{
-			ASSERT(0);
-			ex->Delete();
-		}
-	}
+    // always create it - this will ensure that the file content is correct!
+    CStdioFile f;
+    if (!f.Open(tempDir + strBetaFileName, CFile::modeCreate | CFile::modeWrite | CFile::shareDenyWrite))
+        ASSERT(0);
+    else
+    {
+        try
+        {
+            // do not translate the content!
+            f.WriteString(strBetaFileName + '\n'); // guarantees a different hash on different versions
+            f.WriteString(L"This file is automatically created by eMule Beta versions to help the developers testing and debugging new the new features. eMule will delete this file when exiting, otherwise you can remove this file at any time.\nThanks for beta testing eMule :)");
+            f.Close();
+        }
+        catch (CFileException* ex)
+        {
+            ASSERT(0);
+            ex->Delete();
+        }
+    }
 #endif
 }
 
 void DeleteBetaFile()
 {
-	// On Beta builds we created a testfile, delete it when closing eMule
-	CString strBetaFileName = GetBetaFileName();
-	CString tempDir = thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR);
-	if (tempDir.Right(1) != L"\\")
-		tempDir += L"\\";
+    // On Beta builds we created a testfile, delete it when closing eMule
+    CString strBetaFileName = GetBetaFileName();
+    CString tempDir = thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR);
+    if (tempDir.Right(1) != L"\\")
+        tempDir += L"\\";
 
-	::DeleteFile(tempDir + strBetaFileName);
+    ::DeleteFile(tempDir + strBetaFileName);
 }
 
 void GetPartStartAndEnd(const UINT uPartNumber, const uint64 partsize, const EMFileSize emFileSize, uint64& uStart, uint64& uEnd)
 {
-	uStart = partsize*(uint64)uPartNumber;
-	if (partsize*(uint64)(uPartNumber+1) > emFileSize)
-		uEnd = emFileSize;
-	else
-		uEnd = partsize*(uint64)(uPartNumber+1);
+    uStart = partsize*(uint64)uPartNumber;
+    if (partsize*(uint64)(uPartNumber+1) > emFileSize)
+        uEnd = emFileSize;
+    else
+        uEnd = partsize*(uint64)(uPartNumber+1);
 }

@@ -230,13 +230,13 @@ public:
         return *this;
     }
 //>>> WiZaRd::IPv6 [Xanatos]
-	bool	AddSigningIP(const _CIPAddress& IP, bool bTestOnly);
+    bool	AddSigningIP(const _CIPAddress& IP, bool bTestOnly);
     //bool	AddSigningIP(UINT dwIP, bool bTestOnly);
 //<<< WiZaRd::IPv6 [Xanatos]
 
     CAICHHash				m_Hash;
 //>>> WiZaRd::IPv6 [Xanatos]
-	CArray<_CIPAddress, _CIPAddress>	m_adwIpsSigning;
+    CArray<_CIPAddress, _CIPAddress>	m_adwIpsSigning;
     //CArray<UINT, UINT>	m_adwIpsSigning;
 //<<< WiZaRd::IPv6 [Xanatos]
 };
@@ -276,7 +276,7 @@ public:
     bool			ReCalculateHash(bool bDontReplace = false);
     bool			VerifyHashTree(bool bDeleteBadTrees);
 //>>> WiZaRd::IPv6 [Xanatos]
-	void			UntrustedHashReceived(const CAICHHash& Hash, const _CIPAddress& FromIP);
+    void			UntrustedHashReceived(const CAICHHash& Hash, const _CIPAddress& FromIP);
     //void			UntrustedHashReceived(const CAICHHash& Hash, UINT dwFromIP);
 //<<< WiZaRd::IPv6 [Xanatos]
     bool			IsPartDataAvailable(uint64 nPartStartPos);

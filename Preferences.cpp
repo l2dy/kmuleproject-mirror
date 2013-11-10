@@ -1027,122 +1027,122 @@ void CPreferences::Add2SessionTransferData(UINT uClientID, UINT uClientPort, BOO
 
     switch (bUpDown)
     {
-    case true:
-        //	Upline Data
-        switch (uClientID)
-        {
-            // Update session client breakdown stats for sent bytes...
-        case SO_EMULE:
-        case SO_OLDEMULE:
-            sesUpData_EMULE+=bytes;
-            break;
-        case SO_EDONKEYHYBRID:
-            sesUpData_EDONKEYHYBRID+=bytes;
-            break;
-        case SO_EDONKEY:
-            sesUpData_EDONKEY+=bytes;
-            break;
-        case SO_MLDONKEY:
-            sesUpData_MLDONKEY+=bytes;
-            break;
-        case SO_AMULE:
-            sesUpData_AMULE+=bytes;
-            break;
-        case SO_SHAREAZA:
-            sesUpData_SHAREAZA+=bytes;
-            break;
+        case true:
+            //	Upline Data
+            switch (uClientID)
+            {
+                    // Update session client breakdown stats for sent bytes...
+                case SO_EMULE:
+                case SO_OLDEMULE:
+                    sesUpData_EMULE+=bytes;
+                    break;
+                case SO_EDONKEYHYBRID:
+                    sesUpData_EDONKEYHYBRID+=bytes;
+                    break;
+                case SO_EDONKEY:
+                    sesUpData_EDONKEY+=bytes;
+                    break;
+                case SO_MLDONKEY:
+                    sesUpData_MLDONKEY+=bytes;
+                    break;
+                case SO_AMULE:
+                    sesUpData_AMULE+=bytes;
+                    break;
+                case SO_SHAREAZA:
+                    sesUpData_SHAREAZA+=bytes;
+                    break;
 //>>> WiZaRd::ClientAnalyzer
 // Spike2 - Enhanced Client Recognition - START
-        case SO_HYDRANODE:
-        case SO_EMULEPLUS:
-        case SO_TRUSTYFILES:
+                case SO_HYDRANODE:
+                case SO_EMULEPLUS:
+                case SO_TRUSTYFILES:
 // Spike2 - Enhanced Client Recognition - END
 //<<< WiZaRd::ClientAnalyzer
-        case SO_CDONKEY:
-        case SO_LPHANT:
-        case SO_XMULE:
-            sesUpData_EMULECOMPAT+=bytes;
-            break;
-        }
+                case SO_CDONKEY:
+                case SO_LPHANT:
+                case SO_XMULE:
+                    sesUpData_EMULECOMPAT+=bytes;
+                    break;
+            }
 
-        switch (uClientPort)
-        {
-            // Update session port breakdown stats for sent bytes...
-        case 4662:
-            sesUpDataPort_4662+=bytes;
-            break;
-            //case (UINT)-2:		sesUpDataPort_URL+=bytes;		break;
-        default:
-            sesUpDataPort_OTHER+=bytes;
-            break;
-        }
+            switch (uClientPort)
+            {
+                    // Update session port breakdown stats for sent bytes...
+                case 4662:
+                    sesUpDataPort_4662+=bytes;
+                    break;
+                    //case (UINT)-2:		sesUpDataPort_URL+=bytes;		break;
+                default:
+                    sesUpDataPort_OTHER+=bytes;
+                    break;
+            }
 
-        if (bFromPF)				sesUpData_Partfile+=bytes;
-        else						sesUpData_File+=bytes;
+            if (bFromPF)				sesUpData_Partfile+=bytes;
+            else						sesUpData_File+=bytes;
 
-        //	Add to our total for sent bytes...
-        theApp.UpdateSentBytes(bytes, sentToFriend);
+            //	Add to our total for sent bytes...
+            theApp.UpdateSentBytes(bytes, sentToFriend);
 
-        break;
+            break;
 
-    case false:
-        // Downline Data
-        switch (uClientID)
-        {
-            // Update session client breakdown stats for received bytes...
-        case SO_EMULE:
-        case SO_OLDEMULE:
-            sesDownData_EMULE+=bytes;
-            break;
-        case SO_EDONKEYHYBRID:
-            sesDownData_EDONKEYHYBRID+=bytes;
-            break;
-        case SO_EDONKEY:
-            sesDownData_EDONKEY+=bytes;
-            break;
-        case SO_MLDONKEY:
-            sesDownData_MLDONKEY+=bytes;
-            break;
-        case SO_AMULE:
-            sesDownData_AMULE+=bytes;
-            break;
-        case SO_SHAREAZA:
-            sesDownData_SHAREAZA+=bytes;
-            break;
+        case false:
+            // Downline Data
+            switch (uClientID)
+            {
+                    // Update session client breakdown stats for received bytes...
+                case SO_EMULE:
+                case SO_OLDEMULE:
+                    sesDownData_EMULE+=bytes;
+                    break;
+                case SO_EDONKEYHYBRID:
+                    sesDownData_EDONKEYHYBRID+=bytes;
+                    break;
+                case SO_EDONKEY:
+                    sesDownData_EDONKEY+=bytes;
+                    break;
+                case SO_MLDONKEY:
+                    sesDownData_MLDONKEY+=bytes;
+                    break;
+                case SO_AMULE:
+                    sesDownData_AMULE+=bytes;
+                    break;
+                case SO_SHAREAZA:
+                    sesDownData_SHAREAZA+=bytes;
+                    break;
 //>>> WiZaRd::ClientAnalyzer
 // Spike2 - Enhanced Client Recognition - START
-        case SO_HYDRANODE:
-        case SO_EMULEPLUS:
-        case SO_TRUSTYFILES:
+                case SO_HYDRANODE:
+                case SO_EMULEPLUS:
+                case SO_TRUSTYFILES:
 // Spike2 - Enhanced Client Recognition - END
 //<<< WiZaRd::ClientAnalyzer
-        case SO_CDONKEY:
-        case SO_LPHANT:
-        case SO_XMULE:
-            sesDownData_EMULECOMPAT+=bytes;
-            break;
-        case SO_URL:
-            sesDownData_URL+=bytes;
-            break;
-        }
+                case SO_CDONKEY:
+                case SO_LPHANT:
+                case SO_XMULE:
+                    sesDownData_EMULECOMPAT+=bytes;
+                    break;
+                case SO_URL:
+                    sesDownData_URL+=bytes;
+                    break;
+            }
 
-        switch (uClientPort)
-        {
-            // Update session port breakdown stats for received bytes...
-            // For now we are only going to break it down by default and non-default.
-            // A statistical analysis of all data sent from every single port/domain is
-            // beyond the scope of this add-on.
-        case 4662:
-            sesDownDataPort_4662+=bytes;
-            break;
-            //case (UINT)-2:		sesDownDataPort_URL+=bytes;		break;
-        default:
-            sesDownDataPort_OTHER+=bytes;
-            break;
-        }
+            switch (uClientPort)
+            {
+                    // Update session port breakdown stats for received bytes...
+                    // For now we are only going to break it down by default and non-default.
+                    // A statistical analysis of all data sent from every single port/domain is
+                    // beyond the scope of this add-on.
+                case 4662:
+                    sesDownDataPort_4662+=bytes;
+                    break;
+                    //case (UINT)-2:		sesDownDataPort_URL+=bytes;		break;
+                default:
+                    sesDownDataPort_OTHER+=bytes;
+                    break;
+            }
 
-        //	Add to our total for received bytes...
-        theApp.UpdateReceivedBytes(bytes);
+            //	Add to our total for received bytes...
+            theApp.UpdateReceivedBytes(bytes);
     }
 }
 
@@ -1247,19 +1247,19 @@ bool CPreferences::LoadStats(int loadBackUp)
 
     switch (loadBackUp)
     {
-    case 0:
-        // for transition...
-        if (PathFileExists(GetMuleDirectory(EMULE_CONFIGDIR) + L"statistics.ini"))
-            sINI.Format(L"%sstatistics.ini", GetMuleDirectory(EMULE_CONFIGDIR));
-        else
-            sINI.Format(L"%spreferences.ini", GetMuleDirectory(EMULE_CONFIGDIR));
-        break;
-    case 1:
-        sINI.Format(L"%sstatbkup.ini", GetMuleDirectory(EMULE_CONFIGDIR));
-        if (!findBackUp.FindFile(sINI))
-            return false;
-        SaveStats(2); // Save our temp backup of current values to statbkuptmp.ini, we will be renaming it at the end of this function.
-        break;
+        case 0:
+            // for transition...
+            if (PathFileExists(GetMuleDirectory(EMULE_CONFIGDIR) + L"statistics.ini"))
+                sINI.Format(L"%sstatistics.ini", GetMuleDirectory(EMULE_CONFIGDIR));
+            else
+                sINI.Format(L"%spreferences.ini", GetMuleDirectory(EMULE_CONFIGDIR));
+            break;
+        case 1:
+            sINI.Format(L"%sstatbkup.ini", GetMuleDirectory(EMULE_CONFIGDIR));
+            if (!findBackUp.FindFile(sINI))
+                return false;
+            SaveStats(2); // Save our temp backup of current values to statbkuptmp.ini, we will be renaming it at the end of this function.
+            break;
     }
 
     BOOL fileex = PathFileExists(sINI);
@@ -1862,52 +1862,52 @@ void CPreferences::ResetStatsColor(int index)
 {
     switch (index)
     {
-    case  0:
-        m_adwStatsColors[ 0]=RGB(0,  0, 0);
-        break;
-    case  1:
-        m_adwStatsColors[ 1]=RGB(255,255,255);
-        break;
-    case  2:
-        m_adwStatsColors[ 2]=RGB(128,255,128);
-        break;
-    case  3:
-        m_adwStatsColors[ 3]=RGB(0,210,  0);
-        break;
-    case  4:
-        m_adwStatsColors[ 4]=RGB(0,128,  0);
-        break;
-    case  5:
-        m_adwStatsColors[ 5]=RGB(255,128,128);
-        break;
-    case  6:
-        m_adwStatsColors[ 6]=RGB(200,  0,  0);
-        break;
-    case  7:
-        m_adwStatsColors[ 7]=RGB(140,  0,  0);
-        break;
-    case  8:
-        m_adwStatsColors[ 8]=RGB(150,150,255);
-        break;
-    case  9:
-        m_adwStatsColors[ 9]=RGB(192,  0,192);
-        break;
-    case 10:
-        m_adwStatsColors[10]=RGB(255,255,128);
-        break;
-    case 11:
-        m_adwStatsColors[11]=RGB(0,  0,  0);
-        bHasCustomTaskIconColor = false;
-        break;
-    case 12:
-        m_adwStatsColors[12]=RGB(255,255,255);
-        break;
-    case 13:
-        m_adwStatsColors[13]=RGB(255,255,255);
-        break;
-    case 14:
-        m_adwStatsColors[14]=RGB(255,190,190);
-        break;
+        case  0:
+            m_adwStatsColors[ 0]=RGB(0,  0, 0);
+            break;
+        case  1:
+            m_adwStatsColors[ 1]=RGB(255,255,255);
+            break;
+        case  2:
+            m_adwStatsColors[ 2]=RGB(128,255,128);
+            break;
+        case  3:
+            m_adwStatsColors[ 3]=RGB(0,210,  0);
+            break;
+        case  4:
+            m_adwStatsColors[ 4]=RGB(0,128,  0);
+            break;
+        case  5:
+            m_adwStatsColors[ 5]=RGB(255,128,128);
+            break;
+        case  6:
+            m_adwStatsColors[ 6]=RGB(200,  0,  0);
+            break;
+        case  7:
+            m_adwStatsColors[ 7]=RGB(140,  0,  0);
+            break;
+        case  8:
+            m_adwStatsColors[ 8]=RGB(150,150,255);
+            break;
+        case  9:
+            m_adwStatsColors[ 9]=RGB(192,  0,192);
+            break;
+        case 10:
+            m_adwStatsColors[10]=RGB(255,255,128);
+            break;
+        case 11:
+            m_adwStatsColors[11]=RGB(0,  0,  0);
+            bHasCustomTaskIconColor = false;
+            break;
+        case 12:
+            m_adwStatsColors[12]=RGB(255,255,255);
+            break;
+        case 13:
+            m_adwStatsColors[13]=RGB(255,255,255);
+            break;
+        case 14:
+            m_adwStatsColors[14]=RGB(255,190,190);
+            break;
     }
 }
 
@@ -2503,16 +2503,16 @@ UINT CPreferences::GetDefaultMaxConperFive()
 {
     switch (GetWindowsVersion())
     {
-    case _WINVER_98_:
-        return 5;
-    case _WINVER_95_:
-    case _WINVER_ME_:
-        return MAXCON5WIN9X;
-    case _WINVER_2K_:
-    case _WINVER_XP_:
-        return MAXCONPER5SEC;
-    default:
-        return MAXCONPER5SEC;
+        case _WINVER_98_:
+            return 5;
+        case _WINVER_95_:
+        case _WINVER_ME_:
+            return MAXCON5WIN9X;
+        case _WINVER_2K_:
+        case _WINVER_XP_:
+            return MAXCONPER5SEC;
+        default:
+            return MAXCONPER5SEC;
     }
 }
 
@@ -3005,19 +3005,19 @@ CString CPreferences::GetDefaultDirectory(EDefaultDirectory eDirectory, bool bCr
     {
         switch (eDirectory)  // create the underlying directory first - be sure to adjust this if changing default directories
         {
-        case EMULE_CONFIGDIR:
-        case EMULE_LOGDIR:
-            ::CreateDirectory(m_astrDefaultDirs[EMULE_CONFIGBASEDIR], NULL);
-            break;
-        case EMULE_TEMPDIR:
-        case EMULE_INCOMINGDIR:
-            ::CreateDirectory(m_astrDefaultDirs[EMULE_DATABASEDIR], NULL);
-            break;
-        case EMULE_ADDLANGDIR:
-        case EMULE_SKINDIR:
-        case EMULE_TOOLBARDIR:
-            ::CreateDirectory(m_astrDefaultDirs[EMULE_EXPANSIONDIR], NULL);
-            break;
+            case EMULE_CONFIGDIR:
+            case EMULE_LOGDIR:
+                ::CreateDirectory(m_astrDefaultDirs[EMULE_CONFIGBASEDIR], NULL);
+                break;
+            case EMULE_TEMPDIR:
+            case EMULE_INCOMINGDIR:
+                ::CreateDirectory(m_astrDefaultDirs[EMULE_DATABASEDIR], NULL);
+                break;
+            case EMULE_ADDLANGDIR:
+            case EMULE_SKINDIR:
+            case EMULE_TOOLBARDIR:
+                ::CreateDirectory(m_astrDefaultDirs[EMULE_EXPANSIONDIR], NULL);
+                break;
         }
         ::CreateDirectory(m_astrDefaultDirs[eDirectory], NULL);
         m_abDefaultDirsCreated[eDirectory] = true;
@@ -3029,17 +3029,17 @@ CString	CPreferences::GetMuleDirectory(EDefaultDirectory eDirectory, bool bCreat
 {
     switch (eDirectory)
     {
-    case EMULE_INCOMINGDIR:
-        return m_strIncomingDir;
-    case EMULE_TEMPDIR:
-        ASSERT(0); // use GetTempDir() instead! This function can only return the first tempdirectory
-        return GetTempDir(0);
-    case EMULE_SKINDIR:
-        return m_strSkinProfileDir;
-    case EMULE_TOOLBARDIR:
-        return m_sToolbarBitmapFolder;
-    default:
-        return GetDefaultDirectory(eDirectory, bCreate);
+        case EMULE_INCOMINGDIR:
+            return m_strIncomingDir;
+        case EMULE_TEMPDIR:
+            ASSERT(0); // use GetTempDir() instead! This function can only return the first tempdirectory
+            return GetTempDir(0);
+        case EMULE_SKINDIR:
+            return m_strSkinProfileDir;
+        case EMULE_TOOLBARDIR:
+            return m_sToolbarBitmapFolder;
+        default:
+            return GetDefaultDirectory(eDirectory, bCreate);
     }
 }
 
@@ -3047,17 +3047,17 @@ void CPreferences::SetMuleDirectory(EDefaultDirectory eDirectory, CString strNew
 {
     switch (eDirectory)
     {
-    case EMULE_INCOMINGDIR:
-        m_strIncomingDir = strNewDir;
-        break;
-    case EMULE_SKINDIR:
-        m_strSkinProfileDir = strNewDir;
-        break;
-    case EMULE_TOOLBARDIR:
-        m_sToolbarBitmapFolder = strNewDir;
-        break;
-    default:
-        ASSERT(0);
+        case EMULE_INCOMINGDIR:
+            m_strIncomingDir = strNewDir;
+            break;
+        case EMULE_SKINDIR:
+            m_strSkinProfileDir = strNewDir;
+            break;
+        case EMULE_TOOLBARDIR:
+            m_sToolbarBitmapFolder = strNewDir;
+            break;
+        default:
+            ASSERT(0);
     }
 }
 
@@ -3152,7 +3152,7 @@ bool CPreferences::IsForbiddenFile(const CString& rstrName)
 //>>> WiZaRd
 void CPreferences::ClearUserDirs()
 {
-	for(int i = 0; i != EMULE_DIRCOUNT; ++i)
-		m_astrDefaultDirs[i] = L"";
+    for (int i = 0; i != EMULE_DIRCOUNT; ++i)
+        m_astrDefaultDirs[i] = L"";
 }
 //<<< WiZaRd

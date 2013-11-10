@@ -1725,7 +1725,7 @@ class CElementTraits<SESSIONPTRTYPE> :
 public:
     static ULONG Hash(INARGTYPE obj) throw()
     {
-        return((ULONG)(ULONG_PTR)obj.p);
+        return ((ULONG)(ULONG_PTR)obj.p);
     }
 
     static BOOL CompareElements(OUTARGTYPE element1, OUTARGTYPE element2) throw()

@@ -436,11 +436,11 @@ public:
     {
         switch (nCmdToExec)
         {
-        case 0:
-            TCHAR *pStop = NULL;
-            int nValue = _tcstoul(strOptParam, &pStop, 10);
-            m_PoolMgr.SetSize(nValue);
-            break;
+            case 0:
+                TCHAR *pStop = NULL;
+                int nValue = _tcstoul(strOptParam, &pStop, 10);
+                m_PoolMgr.SetSize(nValue);
+                break;
         };
 
         return _AtlRedirectToPage(
@@ -872,22 +872,22 @@ public:
     {
         switch (nCmdToExec)
         {
-        case ATL_STENCILCACHECMD_CLEARALLSTATS:
-            m_MgrObj.ClearStats();
-            break;
+            case ATL_STENCILCACHECMD_CLEARALLSTATS:
+                m_MgrObj.ClearStats();
+                break;
 
-        case ATL_STENCILCACHECMD_REMOVESTENCIL:
-            m_MgrObj.RemoveStencilByName(strOptParam.AllocSysString());
-            break;
+            case ATL_STENCILCACHECMD_REMOVESTENCIL:
+                m_MgrObj.RemoveStencilByName(strOptParam.AllocSysString());
+                break;
 
-        case ATL_STENCILCACHECMD_REMOVEALLSTENCILS:
-            m_MgrObj.RemoveAllStencils();
-            break;
+            case ATL_STENCILCACHECMD_REMOVEALLSTENCILS:
+                m_MgrObj.RemoveAllStencils();
+                break;
 
-        case ATL_STENCILCACHECMD_SETDEFLIFESPAN:
-            TCHAR *pStop = NULL;
-            m_MgrObj.SetDefaultLifespan(_tcstoul(strOptParam, &pStop, 10));
-            break;
+            case ATL_STENCILCACHECMD_SETDEFLIFESPAN:
+                TCHAR *pStop = NULL;
+                m_MgrObj.SetDefaultLifespan(_tcstoul(strOptParam, &pStop, 10));
+                break;
         };
 
         return _AtlRedirectToPage(

@@ -39,9 +39,9 @@ public:
     static void		AddPossibleTestContact(const CUInt128 &uClientID, const UINT uIp, const uint16 uUdpPort, const uint16 uTcpPort, const CUInt128 &uTarget, const uint8 uVersion, const CKadUDPKey& cUDPKey, const bool bIPVerified);
     static void		Reset(); // when stopping Kad
     static void		Connected();
-    static void		QueryNextClient(); // try the next available client for the firewallcheck	
+    static void		QueryNextClient(); // try the next available client for the firewallcheck
 private:
-	static uint8	GetRunningFWChecks();
+    static uint8	GetRunningFWChecks();
     static bool		GetUDPCheckClientsNeeded(); // are we in search for testclients
     static bool		m_bFirewalledUDP;
     static bool		m_bFirewalledLastStateUDP;

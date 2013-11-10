@@ -459,40 +459,40 @@ void __cdecl __AfxSocketTerm()
 #error "You are using an MFC version which may require a special version of the above function!"
 #endif
 
-BOOL InitWinsock2(WSADATA *lpwsaData) 
-{  
-	_AFX_SOCK_STATE* pState = _afxSockState.GetData();
-	if (pState->m_pfnSockTerm == NULL)
-	{
-		// initialize Winsock library
-		WSADATA wsaData;
-		if (lpwsaData == NULL)
-			lpwsaData = &wsaData;
-		WORD wVersionRequested = MAKEWORD(2, 2);
-		int nResult = WSAStartup(wVersionRequested, lpwsaData);
-		if (nResult != 0)
-			return FALSE;
-		if (LOBYTE(lpwsaData->wVersion) != 2 || HIBYTE(lpwsaData->wVersion) != 2)
-		{
-			WSACleanup();
-			return FALSE;
-		}
-		// setup for termination of sockets
-		pState->m_pfnSockTerm = &AfxSocketTerm;
-	}
+BOOL InitWinsock2(WSADATA *lpwsaData)
+{
+    _AFX_SOCK_STATE* pState = _afxSockState.GetData();
+    if (pState->m_pfnSockTerm == NULL)
+    {
+        // initialize Winsock library
+        WSADATA wsaData;
+        if (lpwsaData == NULL)
+            lpwsaData = &wsaData;
+        WORD wVersionRequested = MAKEWORD(2, 2);
+        int nResult = WSAStartup(wVersionRequested, lpwsaData);
+        if (nResult != 0)
+            return FALSE;
+        if (LOBYTE(lpwsaData->wVersion) != 2 || HIBYTE(lpwsaData->wVersion) != 2)
+        {
+            WSACleanup();
+            return FALSE;
+        }
+        // setup for termination of sockets
+        pState->m_pfnSockTerm = &AfxSocketTerm;
+    }
 #ifndef _AFXDLL
-	//BLOCK: setup maps and lists specific to socket state
-	{
-		_AFX_SOCK_THREAD_STATE* pState = _afxSockThreadState;
-		if (pState->m_pmapSocketHandle == NULL)
-			pState->m_pmapSocketHandle = new CMapPtrToPtr;
-		if (pState->m_pmapDeadSockets == NULL)
-			pState->m_pmapDeadSockets = new CMapPtrToPtr;
-		if (pState->m_plistSocketNotifications == NULL)
-			pState->m_plistSocketNotifications = new CPtrList;
-	}
+    //BLOCK: setup maps and lists specific to socket state
+    {
+        _AFX_SOCK_THREAD_STATE* pState = _afxSockThreadState;
+        if (pState->m_pmapSocketHandle == NULL)
+            pState->m_pmapSocketHandle = new CMapPtrToPtr;
+        if (pState->m_pmapDeadSockets == NULL)
+            pState->m_pmapDeadSockets = new CMapPtrToPtr;
+        if (pState->m_plistSocketNotifications == NULL)
+            pState->m_plistSocketNotifications = new CPtrList;
+    }
 #endif
-	return TRUE;
+    return TRUE;
 }
 
 // CemuleApp Initialisierung
@@ -616,17 +616,17 @@ BOOL CemuleApp::InitInstance()
 
     CWinApp::InitInstance();
 
-	memset(&m_wsaData, 0, sizeof(WSADATA));
-	if (!InitWinsock2(&m_wsaData))
-	{
-		memset(&m_wsaData, 0, sizeof(WSADATA));
-		if (!AfxSocketInit(&m_wsaData))
-		{
-			AfxMessageBox(GetResString(IDS_SOCKETS_INIT_FAILED));
-			return FALSE;
-		}
-	}
-	TRACE(L"Using WinSock v%u.%u...\n", LOBYTE(m_wsaData.wVersion), HIBYTE(m_wsaData.wVersion));
+    memset(&m_wsaData, 0, sizeof(WSADATA));
+    if (!InitWinsock2(&m_wsaData))
+    {
+        memset(&m_wsaData, 0, sizeof(WSADATA));
+        if (!AfxSocketInit(&m_wsaData))
+        {
+            AfxMessageBox(GetResString(IDS_SOCKETS_INIT_FAILED));
+            return FALSE;
+        }
+    }
+    TRACE(L"Using WinSock v%u.%u...\n", LOBYTE(m_wsaData.wVersion), HIBYTE(m_wsaData.wVersion));
 #if _MFC_VER==0x0700 || _MFC_VER==0x0710 || _MFC_VER==0x0800 || _MFC_VER==0x0900 || _MFC_VER==0x0A00
     atexit(__AfxSocketTerm);
 #else
@@ -672,7 +672,7 @@ BOOL CemuleApp::InitInstance()
                 return FALSE;
             }
             thePrefs.SetCurrentUserDirMode(dirModes.RemoveHead());
-			thePrefs.ClearUserDirs(); // force re-creation of directories
+            thePrefs.ClearUserDirs(); // force re-creation of directories
         }
         else
             bSuccess = true;
@@ -688,14 +688,14 @@ BOOL CemuleApp::InitInstance()
         //don't show splash on old windows versions
         switch (thePrefs.GetWindowsVersion())
         {
-        case _WINVER_98_:
-        case _WINVER_95_:
-        case _WINVER_ME_:
-        case _WINVER_NT4_:
-            break;
-        default:
-            ShowSplash();
-            break;
+            case _WINVER_98_:
+            case _WINVER_95_:
+            case _WINVER_ME_:
+            case _WINVER_NT4_:
+                break;
+            default:
+                ShowSplash();
+                break;
         }
         //ShowSplash();
 //<<< WiZaRd::New Splash [TBH]
@@ -1551,8 +1551,8 @@ void CemuleApp::SetPublicIP(const UINT dwIP)
                 //Kad loaded the old IP, we must reset
                 if (Kademlia::CKademlia::IsRunning()) //one more check
                     Kademlia::CKademlia::GetPrefs()->SetIPAddress(htonl(dwIP));
-				// WiZaRd: recheck firewalled status on IP change
-				Kademlia::CKademlia::RecheckFirewalled(); 
+                // WiZaRd: recheck firewalled status on IP change
+                Kademlia::CKademlia::RecheckFirewalled();
 //<<< WiZaRd::Reconnect KAD
             }
         }
@@ -2464,10 +2464,10 @@ bool CemuleApp::IsVistaThemeActive() const
 bool CemuleApp::IsWinSock2Available() const
 {
 #if 0
-	return LOBYTE(m_wsaData.wVersion) == 2 && HIBYTE(m_wsaData.wVersion) == 2;
+    return LOBYTE(m_wsaData.wVersion) == 2 && HIBYTE(m_wsaData.wVersion) == 2;
 #else
-	// disable WinSock v2 for now - we have to fix some things in EMSocket/UploadbandwidthThrottler, first or we'll get freezes!
-	return false; 
+    // disable WinSock v2 for now - we have to fix some things in EMSocket/UploadbandwidthThrottler, first or we'll get freezes!
+    return false;
 #endif
 }
 
@@ -2579,41 +2579,41 @@ BOOL CemuleApp::OnIdle(LONG lCount)
 //>>> WiZaRd::IPv6 [Xanatos]
 void	CemuleApp::UpdateIPv6()
 {
-	ULONG outBufLen = 0;
-	DWORD dwRetVal = GetAdaptersAddresses(AF_INET6/*AF_UNSPEC*/, GAA_FLAG_INCLUDE_PREFIX, NULL, NULL, &outBufLen);
-	ASSERT(dwRetVal == ERROR_BUFFER_OVERFLOW);
-	PIP_ADAPTER_ADDRESSES pAddresses = (IP_ADAPTER_ADDRESSES *) malloc(outBufLen);
-	if(GetAdaptersAddresses(AF_INET6/*AF_UNSPEC*/, GAA_FLAG_INCLUDE_PREFIX, NULL, pAddresses, &outBufLen) == NO_ERROR)
-	{
-		for(PIP_ADAPTER_ADDRESSES pCurrAddresses = pAddresses; pCurrAddresses; pCurrAddresses = pCurrAddresses->Next) 
-		{
-			for (PIP_ADAPTER_UNICAST_ADDRESS pUnicast = pCurrAddresses->FirstUnicastAddress; pUnicast != NULL; pUnicast = pUnicast->Next)
-			{
-				if (pUnicast->Address.lpSockaddr->sa_family != AF_INET6)
-					continue;
+    ULONG outBufLen = 0;
+    DWORD dwRetVal = GetAdaptersAddresses(AF_INET6/*AF_UNSPEC*/, GAA_FLAG_INCLUDE_PREFIX, NULL, NULL, &outBufLen);
+    ASSERT(dwRetVal == ERROR_BUFFER_OVERFLOW);
+    PIP_ADAPTER_ADDRESSES pAddresses = (IP_ADAPTER_ADDRESSES *) malloc(outBufLen);
+    if (GetAdaptersAddresses(AF_INET6/*AF_UNSPEC*/, GAA_FLAG_INCLUDE_PREFIX, NULL, pAddresses, &outBufLen) == NO_ERROR)
+    {
+        for (PIP_ADAPTER_ADDRESSES pCurrAddresses = pAddresses; pCurrAddresses; pCurrAddresses = pCurrAddresses->Next)
+        {
+            for (PIP_ADAPTER_UNICAST_ADDRESS pUnicast = pCurrAddresses->FirstUnicastAddress; pUnicast != NULL; pUnicast = pUnicast->Next)
+            {
+                if (pUnicast->Address.lpSockaddr->sa_family != AF_INET6)
+                    continue;
 
-				sockaddr_in6 *sa_in6 = (sockaddr_in6 *)pUnicast->Address.lpSockaddr;
-				if(sa_in6->sin6_addr.u.Byte[0] == 0x00)
-					continue; // IP is local loopback address
-				if(sa_in6->sin6_addr.u.Byte[0] == 0xFE && sa_in6->sin6_addr.u.Byte[1] == 0x80)
-					continue; // IP that is constructed from MAC address, and is only available to machines on the same switch.
-				if(sa_in6->sin6_addr.u.Byte[11] == 0xFF && sa_in6->sin6_addr.u.Byte[12] == 0xFE)
-					continue; // IP that is constructed from MAC address and ISP provided subnet prefix. This could be seen as your static IP.
-				// IP that is constructed from ISP provided subnet prefix and some random digits. 
-				// This IP changes every time you power on your PC, and is the IP newer versions of Windows uses as the preferred source IP.
+                sockaddr_in6 *sa_in6 = (sockaddr_in6 *)pUnicast->Address.lpSockaddr;
+                if (sa_in6->sin6_addr.u.Byte[0] == 0x00)
+                    continue; // IP is local loopback address
+                if (sa_in6->sin6_addr.u.Byte[0] == 0xFE && sa_in6->sin6_addr.u.Byte[1] == 0x80)
+                    continue; // IP that is constructed from MAC address, and is only available to machines on the same switch.
+                if (sa_in6->sin6_addr.u.Byte[11] == 0xFF && sa_in6->sin6_addr.u.Byte[12] == 0xFE)
+                    continue; // IP that is constructed from MAC address and ISP provided subnet prefix. This could be seen as your static IP.
+                // IP that is constructed from ISP provided subnet prefix and some random digits.
+                // This IP changes every time you power on your PC, and is the IP newer versions of Windows uses as the preferred source IP.
 
-				CAddress IPv6;
-				IPv6.FromSA(pUnicast->Address.lpSockaddr, pUnicast->Address.iSockaddrLength);
-				if(IPv6 != GetPublicIPv6())
-				{
-					SetPublicIPv6(IPv6);
-					DebugLog(L"Found Public IPv6: %s", ipstr(IPv6));
-				}
-				break;
-			}
-		}
-	}
-	if (pAddresses)
-		free(pAddresses);
+                CAddress IPv6;
+                IPv6.FromSA(pUnicast->Address.lpSockaddr, pUnicast->Address.iSockaddrLength);
+                if (IPv6 != GetPublicIPv6())
+                {
+                    SetPublicIPv6(IPv6);
+                    DebugLog(L"Found Public IPv6: %s", ipstr(IPv6));
+                }
+                break;
+            }
+        }
+    }
+    if (pAddresses)
+        free(pAddresses);
 }
 //<<< WiZaRd::IPv6 [Xanatos]

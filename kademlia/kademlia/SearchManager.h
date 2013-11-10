@@ -57,7 +57,7 @@ public:
     static CSearch* PrepareFindKeywords(LPCTSTR szKeyword, UINT uSearchTermsSize, LPBYTE pucSearchTermsData);
     static bool StartSearch(CSearch* pSearch);
     static void ProcessResponse(const CUInt128 &uTarget, UINT uFromIP, uint16 uFromPort, ContactList *plistResults);
-	static uint8 GetExpectedResponseContactCount(const CUInt128 &uTarget);
+    static uint8 GetExpectedResponseContactCount(const CUInt128 &uTarget);
     static void ProcessResult(const CUInt128 &uTarget, const CUInt128 &uAnswer, TagList *plistInfo, UINT uFromIP, uint16 uFromPort);
     static void ProcessPublishResult(const CUInt128 &uTarget, const uint8 uLoad, const bool bLoadResponse);
     static void GetWords(LPCTSTR sz, WordList *plistWords);

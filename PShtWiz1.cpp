@@ -799,22 +799,22 @@ void CPPgWiz1Upload::OnNmClickProviders(NMHDR* /*pNMHDR*/, LRESULT* pResult)
     m_iSelectedItem = m_provider.GetSelectionMark();
     switch (m_iSelectedItem)
     {
-    case  0:
-        down = 0;
-        up = 0;
-        break;
-    case  1:
-        down = ((thePrefs.maxGraphDownloadRate * 1024) + 500) / 1000 * 8;
-        up = ((thePrefs.GetMaxGraphUploadRate(true) * 1024) + 500) / 1000 * 8;
-        break;
-    default:
-        if (m_iSelectedItem < _countof(dlspeeds))
-        {
-            down = dlspeeds[m_iSelectedItem];
-            up = ulspeeds[m_iSelectedItem];
+        case  0:
+            down = 0;
+            up = 0;
             break;
-        }
-        return;
+        case  1:
+            down = ((thePrefs.maxGraphDownloadRate * 1024) + 500) / 1000 * 8;
+            up = ((thePrefs.GetMaxGraphUploadRate(true) * 1024) + 500) / 1000 * 8;
+            break;
+        default:
+            if (m_iSelectedItem < _countof(dlspeeds))
+            {
+                down = dlspeeds[m_iSelectedItem];
+                up = ulspeeds[m_iSelectedItem];
+                break;
+            }
+            return;
     }
 
     SetDlgItemInt(IDC_WIZ_TRUEDOWNLOAD_BOX, down, FALSE);
@@ -1071,75 +1071,75 @@ BOOL FirstTimeWizard()
             {
                 switch (page5.m_iTotalDownload)
                 {
-                case 0:
-                    thePrefs.maxsourceperfile = 100;
-                    break;
-                case 1:
-                    thePrefs.maxsourceperfile = 60;
-                    break;
-                default:
-                    thePrefs.maxsourceperfile = 40;
-                    break;
+                    case 0:
+                        thePrefs.maxsourceperfile = 100;
+                        break;
+                    case 1:
+                        thePrefs.maxsourceperfile = 60;
+                        break;
+                    default:
+                        thePrefs.maxsourceperfile = 40;
+                        break;
                 }
             }
             else if (download < 62)
             {
                 switch (page5.m_iTotalDownload)
                 {
-                case 0:
-                    thePrefs.maxsourceperfile = 300;
-                    break;
-                case 1:
-                    thePrefs.maxsourceperfile = 200;
-                    break;
-                default:
-                    thePrefs.maxsourceperfile = 100;
-                    break;
+                    case 0:
+                        thePrefs.maxsourceperfile = 300;
+                        break;
+                    case 1:
+                        thePrefs.maxsourceperfile = 200;
+                        break;
+                    default:
+                        thePrefs.maxsourceperfile = 100;
+                        break;
                 }
             }
             else if (download < 187)
             {
                 switch (page5.m_iTotalDownload)
                 {
-                case 0:
-                    thePrefs.maxsourceperfile = 500;
-                    break;
-                case 1:
-                    thePrefs.maxsourceperfile = 400;
-                    break;
-                default:
-                    thePrefs.maxsourceperfile = 350;
-                    break;
+                    case 0:
+                        thePrefs.maxsourceperfile = 500;
+                        break;
+                    case 1:
+                        thePrefs.maxsourceperfile = 400;
+                        break;
+                    default:
+                        thePrefs.maxsourceperfile = 350;
+                        break;
                 }
             }
             else if (download <= 312)
             {
                 switch (page5.m_iTotalDownload)
                 {
-                case 0:
-                    thePrefs.maxsourceperfile = 800;
-                    break;
-                case 1:
-                    thePrefs.maxsourceperfile = 600;
-                    break;
-                default:
-                    thePrefs.maxsourceperfile = 400;
-                    break;
+                    case 0:
+                        thePrefs.maxsourceperfile = 800;
+                        break;
+                    case 1:
+                        thePrefs.maxsourceperfile = 600;
+                        break;
+                    default:
+                        thePrefs.maxsourceperfile = 400;
+                        break;
                 }
             }
             else
             {
                 switch (page5.m_iTotalDownload)
                 {
-                case 0:
-                    thePrefs.maxsourceperfile = 1000;
-                    break;
-                case 1:
-                    thePrefs.maxsourceperfile = 750;
-                    break;
-                default:
-                    thePrefs.maxsourceperfile = 500;
-                    break;
+                    case 0:
+                        thePrefs.maxsourceperfile = 1000;
+                        break;
+                    case 1:
+                        thePrefs.maxsourceperfile = 750;
+                        break;
+                    default:
+                        thePrefs.maxsourceperfile = 500;
+                        break;
                 }
             }
         }

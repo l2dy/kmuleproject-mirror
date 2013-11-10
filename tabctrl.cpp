@@ -353,20 +353,20 @@ BOOL TabControl::DragDetectPlus(CWnd* Handle, CPoint p)
         {
             switch (Msg.message)
             {
-            case WM_MOUSEMOVE:
-                bResult = !(PtInRect(DragRect, Msg.pt));
-                break;
-            case WM_RBUTTONUP:
-            case WM_LBUTTONUP:
-            case WM_CANCELMODE:
-                bDispatch = FALSE;
-                break;
-            case WM_QUIT:
-                ReleaseCapture();
-                return FALSE;
-            default:
-                TranslateMessage(&Msg);
-                DispatchMessage(&Msg);
+                case WM_MOUSEMOVE:
+                    bResult = !(PtInRect(DragRect, Msg.pt));
+                    break;
+                case WM_RBUTTONUP:
+                case WM_LBUTTONUP:
+                case WM_CANCELMODE:
+                    bDispatch = FALSE;
+                    break;
+                case WM_QUIT:
+                    ReleaseCapture();
+                    return FALSE;
+                default:
+                    TranslateMessage(&Msg);
+                    DispatchMessage(&Msg);
             }
         }
         else

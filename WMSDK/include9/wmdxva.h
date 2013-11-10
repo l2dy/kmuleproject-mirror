@@ -69,11 +69,11 @@ typedef interface IWMCodecVideoAccelerator IWMCodecVideoAccelerator;
 extern "C" {
 #endif
 
-    void * __RPC_USER MIDL_user_allocate(size_t);
-    void __RPC_USER MIDL_user_free(void *);
+void * __RPC_USER MIDL_user_allocate(size_t);
+void __RPC_USER MIDL_user_free(void *);
 
-    /* interface __MIDL_itf_wmdxva_0000 */
-    /* [local] */
+/* interface __MIDL_itf_wmdxva_0000 */
+/* [local] */
 
 //=========================================================================
 //
@@ -81,22 +81,22 @@ extern "C" {
 // Copyright (C) Microsoft Corporation.  All Rights Reserved.
 //
 //=========================================================================
-    EXTERN_GUID(IID_IWMPlayerTimestampHook,   0x28580dda, 0xd98e, 0x48d0, 0xb7, 0xae, 0x69, 0xe4, 0x73, 0xa0, 0x28, 0x25);
-    EXTERN_GUID(IID_IWMCodecVideoAccelerator, 0x990641b0, 0x739f, 0x4e94, 0xa8, 0x08, 0x98, 0x88, 0xda, 0x8f, 0x75, 0xaf);
-    EXTERN_GUID(IID_IWMCodecAMVideoAccelerator, 0xd98ee251, 0x34e0, 0x4a2d, 0x93, 0x12, 0x9b, 0x4c, 0x78, 0x8d, 0x9f, 0xa1);
+EXTERN_GUID(IID_IWMPlayerTimestampHook,   0x28580dda, 0xd98e, 0x48d0, 0xb7, 0xae, 0x69, 0xe4, 0x73, 0xa0, 0x28, 0x25);
+EXTERN_GUID(IID_IWMCodecVideoAccelerator, 0x990641b0, 0x739f, 0x4e94, 0xa8, 0x08, 0x98, 0x88, 0xda, 0x8f, 0x75, 0xaf);
+EXTERN_GUID(IID_IWMCodecAMVideoAccelerator, 0xd98ee251, 0x34e0, 0x4a2d, 0x93, 0x12, 0x9b, 0x4c, 0x78, 0x8d, 0x9f, 0xa1);
 
 
-    extern RPC_IF_HANDLE __MIDL_itf_wmdxva_0000_v0_0_c_ifspec;
-    extern RPC_IF_HANDLE __MIDL_itf_wmdxva_0000_v0_0_s_ifspec;
+extern RPC_IF_HANDLE __MIDL_itf_wmdxva_0000_v0_0_c_ifspec;
+extern RPC_IF_HANDLE __MIDL_itf_wmdxva_0000_v0_0_s_ifspec;
 
 #ifndef __IWMPlayerTimestampHook_INTERFACE_DEFINED__
 #define __IWMPlayerTimestampHook_INTERFACE_DEFINED__
 
-    /* interface IWMPlayerTimestampHook */
-    /* [local][unique][helpstring][uuid][object] */
+/* interface IWMPlayerTimestampHook */
+/* [local][unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IWMPlayerTimestampHook;
+EXTERN_C const IID IID_IWMPlayerTimestampHook;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 

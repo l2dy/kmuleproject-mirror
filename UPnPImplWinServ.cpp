@@ -150,17 +150,17 @@ bool CUPnPImplWinServ::IsReady()
 {
     switch (thePrefs.GetWindowsVersion())
     {
-    case _WINVER_ME_:
-        return true;
-    case _WINVER_2K_:
-    case _WINVER_XP_:
-    case _WINVER_2003_:
-    case _WINVER_VISTA_:
-    case _WINVER_7_:
-    case _WINVER_8_:
-        break;
-    default:
-        return false;
+        case _WINVER_ME_:
+            return true;
+        case _WINVER_2K_:
+        case _WINVER_XP_:
+        case _WINVER_2003_:
+        case _WINVER_VISTA_:
+        case _WINVER_7_:
+        case _WINVER_8_:
+            break;
+        default:
+            return false;
     }
     Init();
 
@@ -694,13 +694,13 @@ CString CUPnPImplWinServ::GetLocalRoutableIP(ServicePointer pService)
     DWORD ip = inet_addr(pszExternalIP);
 
 //>>> WiZaRd::Find Best Interface IP [netfinity]
-	DWORD localIP = GetBestInterfaceIP(ip);
-	if (localIP != INADDR_NONE) // We found our IP address, if not we would just continue with the original algorithm
-	{
-		CString strLocalIP = ipstr(localIP);
-		theApp.QueueDebugLogLineEx(LOG_WARNING, L"UPnP route: %s->%s", strLocalIP, strExternalIP);
-		return strLocalIP;
-	}
+    DWORD localIP = GetBestInterfaceIP(ip);
+    if (localIP != INADDR_NONE) // We found our IP address, if not we would just continue with the original algorithm
+    {
+        CString strLocalIP = ipstr(localIP);
+        theApp.QueueDebugLogLineEx(LOG_WARNING, L"UPnP route: %s->%s", strLocalIP, strExternalIP);
+        return strLocalIP;
+    }
 //<<< WiZaRd::Find Best Interface IP [netfinity]
 
     // Get the interface through which the UPnP device has a route

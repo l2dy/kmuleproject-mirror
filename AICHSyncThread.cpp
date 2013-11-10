@@ -63,8 +63,8 @@ int CAICHSyncThread::Run()
     bool bJustCreated = ConvertToKnown2ToKnown264(&file);
 
     // we collect all masterhashs which we find in the known2.met and store them in a list
-	CArray<CAICHHash> aKnown2Hashs;
-	CArray<ULONGLONG> aKnown2HashsFilePos;
+    CArray<CAICHHash> aKnown2Hashs;
+    CArray<ULONGLONG> aKnown2HashsFilePos;
     CString fullpath = thePrefs.GetMuleDirectory(EMULE_CONFIGDIR);
     fullpath.Append(KNOWN2_MET_FILENAME);
 
@@ -94,20 +94,20 @@ int CAICHSyncThread::Run()
             if (header != KNOWN2_MET_VERSION)
                 AfxThrowFileException(CFileException::endOfFile, 0, file.GetFileName());
 
-			//setvbuf(file.m_pStream, NULL, _IOFBF, 16384);
+            //setvbuf(file.m_pStream, NULL, _IOFBF, 16384);
             UINT nExistingSize = (UINT)file.GetLength();
-			UINT nHashCount = 0;
-			UINT nHashCountSize = 0;
+            UINT nHashCount = 0;
+            UINT nHashCountSize = 0;
             while (file.GetPosition() < nExistingSize)
             {
-				aKnown2HashsFilePos.Add(file.GetPosition());
-				aKnown2Hashs.Add(CAICHHash(&file));
+                aKnown2HashsFilePos.Add(file.GetPosition());
+                aKnown2Hashs.Add(CAICHHash(&file));
                 nHashCount = file.ReadUInt32();
-				nHashCountSize = nHashCount*CAICHHash::GetHashSize();
-				if (file.GetPosition() + nHashCountSize > nExistingSize)
+                nHashCountSize = nHashCount*CAICHHash::GetHashSize();
+                if (file.GetPosition() + nHashCountSize > nExistingSize)
                     AfxThrowFileException(CFileException::endOfFile, 0, file.GetFileName());
 
-				// skip the rest of this hashset
+                // skip the rest of this hashset
                 file.Seek(nHashCountSize, CFile::current);
                 nLastVerifiedPos = (UINT)file.GetPosition();
             }
@@ -162,9 +162,9 @@ int CAICHSyncThread::Run()
             if (pCurFile->GetFileIdentifier().HasAICHHash())
             {
                 bool bFound = false;
-				for (int i = 0; i < aKnown2Hashs.GetCount(); i++)
-				{
-					CAICHHash current_hash = aKnown2Hashs[i];
+                for (int i = 0; i < aKnown2Hashs.GetCount(); i++)
+                {
+                    CAICHHash current_hash = aKnown2Hashs[i];
                     if (current_hash == pCurFile->GetFileIdentifier().GetAICHHash())
                     {
                         bFound = true;
@@ -209,7 +209,7 @@ int CAICHSyncThread::Run()
     sharelock.Unlock();
 
     // removed all unused AICH hashsets from known2.met
-    if (liUsedHashs.GetCount() != aKnown2Hashs.GetCount() && 
+    if (liUsedHashs.GetCount() != aKnown2Hashs.GetCount() &&
             (!thePrefs.IsRememberingDownloadedFiles() || thePrefs.DoPartiallyPurgeOldKnownFiles()))
     {
         file.SeekToBegin();
@@ -220,79 +220,79 @@ int CAICHSyncThread::Run()
                 AfxThrowFileException(CFileException::endOfFile, 0, file.GetFileName());
 
             UINT nExistingSize = (UINT)file.GetLength();
-			UINT nHashCount = 0;
-			UINT nHashCountSize = 0;
+            UINT nHashCount = 0;
+            UINT nHashCountSize = 0;
             ULONGLONG posWritePos = file.GetPosition();
             ULONGLONG posReadPos = file.GetPosition();
             UINT nPurgeCount = 0;
             UINT nPurgeBecauseOld = 0;
-			UINT nPurgeBecauseDup = 0;
+            UINT nPurgeBecauseDup = 0;
             while (file.GetPosition() < nExistingSize)
             {
-				ULONGLONG nCurrentHashsetPos = file.GetPosition();
+                ULONGLONG nCurrentHashsetPos = file.GetPosition();
                 CAICHHash aichHash(&file);
                 nHashCount = file.ReadUInt32();
-				nHashCountSize = nHashCount*CAICHHash::GetHashSize();
-				if (file.GetPosition() + nHashCountSize > nExistingSize)
+                nHashCountSize = nHashCount*CAICHHash::GetHashSize();
+                if (file.GetPosition() + nHashCountSize > nExistingSize)
                     AfxThrowFileException(CFileException::endOfFile, 0, file.GetFileName());
 
-				if (!thePrefs.IsRememberingDownloadedFiles() && liUsedHashs.Find(aichHash) == NULL)
+                if (!thePrefs.IsRememberingDownloadedFiles() && liUsedHashs.Find(aichHash) == NULL)
                 {
                     // unused hashset skip the rest of this hashset
-					file.Seek(nHashCountSize, CFile::current);
-					++nPurgeCount;
+                    file.Seek(nHashCountSize, CFile::current);
+                    ++nPurgeCount;
                 }
                 else if (thePrefs.IsRememberingDownloadedFiles() && theApp.knownfiles->ShouldPurgeAICHHashset(aichHash))
                 {
                     ASSERT(thePrefs.DoPartiallyPurgeOldKnownFiles());
                     // also unused (purged) hashset skip the rest of this hashset
                     file.Seek(nHashCount*CAICHHash::GetHashSize(), CFile::current);
-					++nPurgeCount;
-					++nPurgeBecauseOld;
+                    ++nPurgeCount;
+                    ++nPurgeBecauseOld;
                 }
                 else if (nPurgeCount == 0)
                 {
-					file.Seek(nHashCountSize, CFile::current);
-					if(!CAICHRecoveryHashSet::AddStoredAICHHash(aichHash, nCurrentHashsetPos))
-					{				
-						++nPurgeCount;
-						++nPurgeBecauseDup;						
-					}
-					else
-					{
-						// used Hashset, but it does not need to be moved as nothing changed yet						
-						posWritePos = file.GetPosition();
-					}
+                    file.Seek(nHashCountSize, CFile::current);
+                    if (!CAICHRecoveryHashSet::AddStoredAICHHash(aichHash, nCurrentHashsetPos))
+                    {
+                        ++nPurgeCount;
+                        ++nPurgeBecauseDup;
+                    }
+                    else
+                    {
+                        // used Hashset, but it does not need to be moved as nothing changed yet
+                        posWritePos = file.GetPosition();
+                    }
                 }
                 else
                 {
-					if(!CAICHRecoveryHashSet::AddStoredAICHHash(aichHash, posWritePos))
-					{
-						file.Seek(nHashCountSize, CFile::current);
-						++nPurgeCount;
-						++nPurgeBecauseDup;						
-					}
-					else
-					{
-						// used Hashset, move position in file
-						BYTE* buffer = new BYTE[nHashCount*CAICHHash::GetHashSize()];
-						file.Read(buffer, nHashCount*CAICHHash::GetHashSize());
-						posReadPos = file.GetPosition();
-						file.Seek(posWritePos, CFile::begin);
-						file.Write(aichHash.GetRawHash(), CAICHHash::GetHashSize());
-						file.WriteUInt32(nHashCount);
-						file.Write(buffer, nHashCount*CAICHHash::GetHashSize());
-						delete[] buffer;
+                    if (!CAICHRecoveryHashSet::AddStoredAICHHash(aichHash, posWritePos))
+                    {
+                        file.Seek(nHashCountSize, CFile::current);
+                        ++nPurgeCount;
+                        ++nPurgeBecauseDup;
+                    }
+                    else
+                    {
+                        // used Hashset, move position in file
+                        BYTE* buffer = new BYTE[nHashCount*CAICHHash::GetHashSize()];
+                        file.Read(buffer, nHashCount*CAICHHash::GetHashSize());
+                        posReadPos = file.GetPosition();
+                        file.Seek(posWritePos, CFile::begin);
+                        file.Write(aichHash.GetRawHash(), CAICHHash::GetHashSize());
+                        file.WriteUInt32(nHashCount);
+                        file.Write(buffer, nHashCount*CAICHHash::GetHashSize());
+                        delete[] buffer;
 
-						posWritePos = file.GetPosition();
-						file.Seek(posReadPos, CFile::begin);
-					}
+                        posWritePos = file.GetPosition();
+                        file.Seek(posReadPos, CFile::begin);
+                    }
                 }
             }
             posReadPos = file.GetPosition();
             file.SetLength(posWritePos);
-			if(nPurgeCount)
-				theApp.QueueDebugLogLine(false, L"Cleaned up known2.met, removed %u hashsets, purged %u hashsets of old known files and %u duplicate hash entries (%s)", nPurgeCount - nPurgeBecauseOld - nPurgeBecauseDup, nPurgeBecauseOld, nPurgeBecauseDup, CastItoXBytes(nExistingSize - file.GetLength()));
+            if (nPurgeCount)
+                theApp.QueueDebugLogLine(false, L"Cleaned up known2.met, removed %u hashsets, purged %u hashsets of old known files and %u duplicate hash entries (%s)", nPurgeCount - nPurgeBecauseOld - nPurgeBecauseDup, nPurgeBecauseOld, nPurgeBecauseDup, CastItoXBytes(nExistingSize - file.GetLength()));
 
             file.Flush();
             file.Close();
@@ -317,26 +317,26 @@ int CAICHSyncThread::Run()
     else
     {
         // remember (/index) all hashes which are stored in the file for faster checking lateron
-		for (int i = 0; i < aKnown2Hashs.GetCount(); i++)
-			CAICHRecoveryHashSet::AddStoredAICHHash(aKnown2Hashs[i], aKnown2HashsFilePos[i]);
+        for (int i = 0; i < aKnown2Hashs.GetCount(); i++)
+            CAICHRecoveryHashSet::AddStoredAICHHash(aKnown2Hashs[i], aKnown2HashsFilePos[i]);
     }
 
 #ifdef _DEBUG
-	for (POSITION pos = liUsedHashs.GetHeadPosition();pos != 0;)
-	{
-		CAICHHash current_hash = liUsedHashs.GetNext(pos);
-		CKnownFile* pCurFile = theApp.sharedfiles->GetFileByAICH(current_hash);
-		if (pCurFile == NULL)
-		{
-			ASSERT(0);
-			continue;
-		}
-		CAICHRecoveryHashSet* pTempHashSet = new CAICHRecoveryHashSet(pCurFile);
-		pTempHashSet->SetFileSize(pCurFile->GetFileSize());
-		pTempHashSet->SetMasterHash(pCurFile->GetFileIdentifier().GetAICHHash(), AICH_HASHSETCOMPLETE);
-		ASSERT( pTempHashSet->LoadHashSet() );
-		delete pTempHashSet;
-	}
+    for (POSITION pos = liUsedHashs.GetHeadPosition(); pos != 0;)
+    {
+        CAICHHash current_hash = liUsedHashs.GetNext(pos);
+        CKnownFile* pCurFile = theApp.sharedfiles->GetFileByAICH(current_hash);
+        if (pCurFile == NULL)
+        {
+            ASSERT(0);
+            continue;
+        }
+        CAICHRecoveryHashSet* pTempHashSet = new CAICHRecoveryHashSet(pCurFile);
+        pTempHashSet->SetFileSize(pCurFile->GetFileSize());
+        pTempHashSet->SetMasterHash(pCurFile->GetFileIdentifier().GetAICHHash(), AICH_HASHSETCOMPLETE);
+        ASSERT(pTempHashSet->LoadHashSet());
+        delete pTempHashSet;
+    }
 #endif
     lockKnown2Met.Unlock();
 
@@ -344,7 +344,7 @@ int CAICHSyncThread::Run()
     if (thePrefs.IsFirstStart() && !m_liToHash.IsEmpty() && !bJustCreated)
         LogWarning(GetResString(IDS_AICH_WARNUSER));
 
-	if (!m_liToHash.IsEmpty())
+    if (!m_liToHash.IsEmpty())
     {
         theApp.QueueLogLine(true, GetResString(IDS_AICH_SYNCTOTAL), m_liToHash.GetCount());
         theApp.emuledlg->sharedfileswnd->sharedfilesctrl.SetAICHHashing(m_liToHash.GetCount());
@@ -445,16 +445,16 @@ bool CAICHSyncThread::ConvertToKnown2ToKnown264(CSafeFile* pTargetFile)
     {
         pTargetFile->WriteUInt8(KNOWN2_MET_VERSION);
         UINT nHashCount = 0;
-		UINT nHashCountSize = 0;
+        UINT nHashCountSize = 0;
         while (oldfile.GetPosition() < oldfile.GetLength())
         {
             CAICHHash aichHash(&oldfile);
             nHashCount = oldfile.ReadUInt16();
-			nHashCountSize = nHashCount*CAICHHash::GetHashSize();
-			if (oldfile.GetPosition() + nHashCountSize > oldfile.GetLength())
+            nHashCountSize = nHashCount*CAICHHash::GetHashSize();
+            if (oldfile.GetPosition() + nHashCountSize > oldfile.GetLength())
                 AfxThrowFileException(CFileException::endOfFile, 0, oldfile.GetFileName());
 
-			BYTE* buffer = new BYTE[nHashCountSize];
+            BYTE* buffer = new BYTE[nHashCountSize];
             oldfile.Read(buffer, nHashCountSize);
             pTargetFile->Write(aichHash.GetRawHash(), CAICHHash::GetHashSize());
             pTargetFile->WriteUInt32(nHashCount);

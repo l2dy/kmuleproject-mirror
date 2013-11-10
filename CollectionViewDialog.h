@@ -39,8 +39,8 @@ protected:
     CStatic m_CollectionViewListIcon;
     CButton m_CollectionDownload;
     CButton m_CollectionExit;
-	CButton m_CheckAll;
-	CButton m_UncheckAll;
+    CButton m_CheckAll;
+    CButton m_UncheckAll;
     CEdit m_CollectionViewAuthor;
     CEdit m_CollectionViewAuthorKey;
     CCollectionListCtrl m_CollectionViewList;
@@ -56,7 +56,7 @@ protected:
     DECLARE_MESSAGE_MAP()
     afx_msg void OnBnClickedOk();
     afx_msg void OnBnClickedViewCollection();
-	afx_msg void OnBnClickedCheckAll();
-	afx_msg void OnBnClickedUncheckAll();
+    afx_msg void OnBnClickedCheckAll();
+    afx_msg void OnBnClickedUncheckAll();
     afx_msg void OnNmDblClkCollectionList(NMHDR *pNMHDR, LRESULT *pResult);
 };

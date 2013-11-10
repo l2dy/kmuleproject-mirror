@@ -77,8 +77,8 @@ public:
 
     CKnownFile* GetFileByID(const uchar* filehash) const;
     CKnownFile* GetFileByIdentifier(const CFileIdentifierBase& rFileIdent, bool bStrict = false) const;
-	CKnownFile*	GetFileByIndex(int index) const; // slow
-	CKnownFile* GetFileByAICH(const CAICHHash& rHash) const; // slow
+    CKnownFile*	GetFileByIndex(int index) const; // slow
+    CKnownFile* GetFileByAICH(const CAICHHash& rHash) const; // slow
     bool	IsFilePtrInList(const CKnownFile* file) const; // slow
     bool	IsUnsharedFile(const uchar* auFileHash) const;
     bool	ShouldBeShared(CString strPath, CString strFilePath, bool bMustBeShared) const;
@@ -148,14 +148,14 @@ private:
 //<<< WiZaRd::HashingQueue Optimisation
 //>>> Queued Count
 private:
-	UINT	m_uiQueuedFilesCount;
+    UINT	m_uiQueuedFilesCount;
 public:
-	UINT	GetQueuedFilesCount() const	{return m_uiQueuedFilesCount;}
-	void	IncQueuedFilesCount()		{++m_uiQueuedFilesCount;}
-	void	DecQueuedFilesCount()		{--m_uiQueuedFilesCount;}
+    UINT	GetQueuedFilesCount() const	{return m_uiQueuedFilesCount;}
+    void	IncQueuedFilesCount()		{++m_uiQueuedFilesCount;}
+    void	DecQueuedFilesCount()		{--m_uiQueuedFilesCount;}
 //<<< Queued Count
 private:
-	time_t	m_nFileUpdateTime;
+    time_t	m_nFileUpdateTime;
 };
 
 class CAddFileThread : public CWinThread

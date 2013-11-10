@@ -89,7 +89,7 @@ void CQueueListCtrl::Init()
     InsertColumn(9, GetResString(IDS_UPSTATUS),		LVCFMT_LEFT, DFLT_PARTSTATUS_COL_WIDTH);
     InsertColumn(10, GetResString(IDS_CD_CSOFT),	LVCFMT_LEFT, DFLT_CLIENTSOFT_COL_WIDTH);
 #ifdef _DEBUG
-	InsertColumn(11, GetResString(IDS_COMPLSOURCES),LVCFMT_LEFT,   70);
+    InsertColumn(11, GetResString(IDS_COMPLSOURCES),LVCFMT_LEFT,   70);
 #endif
 
     SetAllIcons();
@@ -151,9 +151,9 @@ void CQueueListCtrl::Localize()
     pHeaderCtrl->SetItem(10, &hdi);
 
 #ifdef _DEBUG
-	strRes = GetResString(IDS_COMPLSOURCES);
-	hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
-	pHeaderCtrl->SetItem(11, &hdi);
+    strRes = GetResString(IDS_COMPLSOURCES);
+    hdi.pszText = const_cast<LPTSTR>((LPCTSTR)strRes);
+    pHeaderCtrl->SetItem(11, &hdi);
 #endif
 }
 
@@ -211,65 +211,65 @@ void CQueueListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
                 GetItemDisplayText(client, iColumn, szItem, _countof(szItem));
                 switch (iColumn)
                 {
-                case 0:
-                {
-//>>> WiZaRd::ClientAnalyzer
-                    int plusminus = 0;
-					int iCAIconIndex = client->GetAnalyzerIconIndex();
-					if(iCAIconIndex != -1)
+                    case 0:
                     {
+//>>> WiZaRd::ClientAnalyzer
+                        int plusminus = 0;
+                        int iCAIconIndex = client->GetAnalyzerIconIndex();
+                        if (iCAIconIndex != -1)
+                        {
+                            int iIconPosY = (cur_rec.Height() > 16) ? ((cur_rec.Height() - 16) / 2) : 1;
+                            POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
+                            m_ImageList.Draw(dc, 18 + iCAIconIndex, point, ILD_NORMAL);
+                            cur_rec.left += 17;
+                            plusminus += 17;
+                        }
+//<<< WiZaRd::ClientAnalyzer
+                        int iImage = GetClientImageIndex(client->IsFriend(), client->GetClientSoft(), client->Credits() && client->Credits()->GetScoreRatio(client->GetIP()) > 1, client->ExtProtocolAvailable());
+
+                        UINT nOverlayImage = 0;
+                        if ((client->Credits() && client->Credits()->GetCurrentIdentState(client->GetIP()) == IS_IDENTIFIED))
+                            nOverlayImage |= 1;
+                        if (client->IsObfuscatedConnectionEstablished())
+                            nOverlayImage |= 2;
                         int iIconPosY = (cur_rec.Height() > 16) ? ((cur_rec.Height() - 16) / 2) : 1;
                         POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
-                        m_ImageList.Draw(dc, 18 + iCAIconIndex, point, ILD_NORMAL);
-                        cur_rec.left += 17;
-                        plusminus += 17;
-                    }
-//<<< WiZaRd::ClientAnalyzer
-                    int iImage = GetClientImageIndex(client->IsFriend(), client->GetClientSoft(), client->Credits() && client->Credits()->GetScoreRatio(client->GetIP()) > 1, client->ExtProtocolAvailable());
+                        m_ImageList.Draw(dc, iImage, point, ILD_NORMAL | INDEXTOOVERLAYMASK(nOverlayImage));
 
-                    UINT nOverlayImage = 0;
-                    if ((client->Credits() && client->Credits()->GetCurrentIdentState(client->GetIP()) == IS_IDENTIFIED))
-                        nOverlayImage |= 1;
-                    if (client->IsObfuscatedConnectionEstablished())
-                        nOverlayImage |= 2;
-                    int iIconPosY = (cur_rec.Height() > 16) ? ((cur_rec.Height() - 16) / 2) : 1;
-                    POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
-                    m_ImageList.Draw(dc, iImage, point, ILD_NORMAL | INDEXTOOVERLAYMASK(nOverlayImage));
-
-                    cur_rec.left += 16 + sm_iLabelOffset;
+                        cur_rec.left += 16 + sm_iLabelOffset;
 
 //>>> WiZaRd::ModIconMappings
-                    int icoindex = client->GetModIconIndex();
-                    if (icoindex != MODMAP_NONE)
-                    {
-                        POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
-                        theApp.theModIconMap->DrawModIcon(dc, icoindex, point, ILD_NORMAL);
-                        cur_rec.left += 17;
-                        plusminus += 17;
-                    }
+                        int icoindex = client->GetModIconIndex();
+                        if (icoindex != MODMAP_NONE)
+                        {
+                            POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
+                            theApp.theModIconMap->DrawModIcon(dc, icoindex, point, ILD_NORMAL);
+                            cur_rec.left += 17;
+                            plusminus += 17;
+                        }
 //<<< WiZaRd::ModIconMappings
 
-                    dc.DrawText(szItem, -1, &cur_rec, MLC_DT_TEXT | uDrawTextAlignment);
-                    cur_rec.left -= 16;
-                    cur_rec.right -= sm_iSubItemInset;
-                    cur_rec.left -= plusminus; //>>> WiZaRd::ClientAnalyzer
-                    break;
-                }
-
-                case 9:
-                    if (client->GetUpPartCount())
-                    {
-                        cur_rec.bottom--;
-                        cur_rec.top++;
-                        client->DrawUpStatusBar(dc, &cur_rec, false, thePrefs.UseFlatBar());
-                        cur_rec.bottom++;
-                        cur_rec.top--;
+                        dc.DrawText(szItem, -1, &cur_rec, MLC_DT_TEXT | uDrawTextAlignment);
+                        cur_rec.left -= 16;
+                        cur_rec.right -= sm_iSubItemInset;
+                        cur_rec.left -= plusminus; //>>> WiZaRd::ClientAnalyzer
+                        break;
                     }
-                    break;
 
-                default:
-                    dc.DrawText(szItem, -1, &cur_rec, MLC_DT_TEXT | uDrawTextAlignment);
-                    break;
+                    case 9:
+                        if (client->GetUpPartCount())
+                        {
+                            cur_rec.bottom--;
+                            cur_rec.top++;
+                            client->DrawUpStatusBar(dc, &cur_rec, false, thePrefs.UseFlatBar());
+                            cur_rec.bottom++;
+                            cur_rec.top--;
+                        }
+                        break;
+
+                    default:
+                        dc.DrawText(szItem, -1, &cur_rec, MLC_DT_TEXT | uDrawTextAlignment);
+                        break;
                 }
             }
             cur_rec.left += iColumnWidth;
@@ -289,79 +289,79 @@ void CQueueListCtrl::GetItemDisplayText(const CUpDownClient *client, int iSubIte
     pszText[0] = L'\0';
     switch (iSubItem)
     {
-    case 0:
-        if (client->GetUserName() == NULL)
-            _sntprintf(pszText, cchTextMax, _T("(%s)"), GetResString(IDS_UNKNOWN));
-        else
-            _tcsncpy(pszText, client->GetUserName(), cchTextMax);
-        break;
-
-    case 1:
-    {
-        const CKnownFile *file = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
-        _tcsncpy(pszText, file != NULL ? file->GetFileName() : L"", cchTextMax);
-        break;
-    }
-
-    case 2:
-    {
-        const CKnownFile *file = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
-        if (file)
-            _tcsncpy(pszText, file->GetUpPriorityDisplayString(), cchTextMax); //>>> WiZaRd::PowerShare
-        break;
-    }
-
-    case 3:
-        _sntprintf(pszText, cchTextMax, _T("%i"), client->GetScore(false, false, true));
-        break;
-
-    case 4:
-        if (client->HasLowID())
-        {
-//>>> WiZaRd::Fix for LowID slots only on connection [VQB]
-            //if (client->m_bAddNextConnect)
-            //    _sntprintf(pszText, cchTextMax, _T("%i ****"),client->GetScore(false));
-            if (client->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick)
-                _sntprintf(pszText, cchTextMax, L"%i **** Awaited reconnect %s", client->GetScore(false), CastSecondsToHM((::GetTickCount()-client->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick)/1000));
-//<<< WiZaRd::Fix for LowID slots only on connection [VQB]
+        case 0:
+            if (client->GetUserName() == NULL)
+                _sntprintf(pszText, cchTextMax, _T("(%s)"), GetResString(IDS_UNKNOWN));
             else
-                _sntprintf(pszText, cchTextMax, _T("%i (%s)"),client->GetScore(false), GetResString(IDS_IDLOW));
+                _tcsncpy(pszText, client->GetUserName(), cchTextMax);
+            break;
+
+        case 1:
+        {
+            const CKnownFile *file = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
+            _tcsncpy(pszText, file != NULL ? file->GetFileName() : L"", cchTextMax);
+            break;
         }
-        else
-            _sntprintf(pszText, cchTextMax, _T("%i"), client->GetScore(false));
-        break;
 
-    case 5:
-        _sntprintf(pszText, cchTextMax, _T("%i"), client->GetAskedCount());
-        break;
+        case 2:
+        {
+            const CKnownFile *file = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
+            if (file)
+                _tcsncpy(pszText, file->GetUpPriorityDisplayString(), cchTextMax); //>>> WiZaRd::PowerShare
+            break;
+        }
 
-    case 6:
-        _tcsncpy(pszText, CastSecondsToHM((GetTickCount() - client->GetLastUpRequest()) / 1000), cchTextMax);
-        break;
+        case 3:
+            _sntprintf(pszText, cchTextMax, _T("%i"), client->GetScore(false, false, true));
+            break;
 
-    case 7:
-        _tcsncpy(pszText, CastSecondsToHM((GetTickCount() - client->GetWaitStartTime()) / 1000), cchTextMax);
-        break;
+        case 4:
+            if (client->HasLowID())
+            {
+//>>> WiZaRd::Fix for LowID slots only on connection [VQB]
+                //if (client->m_bAddNextConnect)
+                //    _sntprintf(pszText, cchTextMax, _T("%i ****"),client->GetScore(false));
+                if (client->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick)
+                    _sntprintf(pszText, cchTextMax, L"%i **** Awaited reconnect %s", client->GetScore(false), CastSecondsToHM((::GetTickCount()-client->m_dwWouldHaveGottenUploadSlotIfNotLowIdTick)/1000));
+//<<< WiZaRd::Fix for LowID slots only on connection [VQB]
+                else
+                    _sntprintf(pszText, cchTextMax, _T("%i (%s)"),client->GetScore(false), GetResString(IDS_IDLOW));
+            }
+            else
+                _sntprintf(pszText, cchTextMax, _T("%i"), client->GetScore(false));
+            break;
 
-    case 8:
-        _tcsncpy(pszText, GetResString(client->IsBanned() ? IDS_YES : IDS_NO), cchTextMax);
-        break;
+        case 5:
+            _sntprintf(pszText, cchTextMax, _T("%i"), client->GetAskedCount());
+            break;
 
-    case 9:
-        _tcsncpy(pszText, GetResString(IDS_UPSTATUS), cchTextMax);
-        break;
+        case 6:
+            _tcsncpy(pszText, CastSecondsToHM((GetTickCount() - client->GetLastUpRequest()) / 1000), cchTextMax);
+            break;
 
-    case 10:
-        _tcsncpy(pszText, client->DbgGetFullClientSoftVer(), cchTextMax);
-        break;
+        case 7:
+            _tcsncpy(pszText, CastSecondsToHM((GetTickCount() - client->GetWaitStartTime()) / 1000), cchTextMax);
+            break;
+
+        case 8:
+            _tcsncpy(pszText, GetResString(client->IsBanned() ? IDS_YES : IDS_NO), cchTextMax);
+            break;
+
+        case 9:
+            _tcsncpy(pszText, GetResString(IDS_UPSTATUS), cchTextMax);
+            break;
+
+        case 10:
+            _tcsncpy(pszText, client->DbgGetFullClientSoftVer(), cchTextMax);
+            break;
 
 #ifdef _DEBUG
-	case 11:
-		if(client->GetUpCompleteSourcesCount() != _UI16_MAX)
-			_sntprintf(pszText, cchTextMax, L"%u", client->GetUpCompleteSourcesCount());
-		else
-			_tcsncpy(pszText, L"-", cchTextMax);
-		break;
+        case 11:
+            if (client->GetUpCompleteSourcesCount() != _UI16_MAX)
+                _sntprintf(pszText, cchTextMax, L"%u", client->GetUpCompleteSourcesCount());
+            else
+                _tcsncpy(pszText, L"-", cchTextMax);
+            break;
 #endif
     }
     pszText[cchTextMax - 1] = L'\0';
@@ -401,17 +401,17 @@ void CQueueListCtrl::OnLvnColumnClick(NMHDR *pNMHDR, LRESULT *pResult)
     {
         switch (pNMListView->iSubItem)
         {
-        case 2: // Up Priority
-        case 3: // Rating
-        case 4: // Score
-        case 5: // Ask Count
-        case 8: // Banned
-        case 9: // Part Count
-            sortAscending = false;
-            break;
-        default:
-            sortAscending = true;
-            break;
+            case 2: // Up Priority
+            case 3: // Rating
+            case 4: // Score
+            case 5: // Ask Count
+            case 8: // Banned
+            case 9: // Part Count
+                sortAscending = false;
+                break;
+            default:
+                sortAscending = true;
+                break;
         }
     }
     else
@@ -433,109 +433,109 @@ int CQueueListCtrl::SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
     int iResult = 0;
     switch (iColumn)
     {
-    case 0:
-        if (item1->GetUserName() && item2->GetUserName())
-            iResult = CompareLocaleStringNoCase(item1->GetUserName(), item2->GetUserName());
-        else if (item1->GetUserName() == NULL)
-            iResult = 1; // place clients with no usernames at bottom
-        else if (item2->GetUserName() == NULL)
-            iResult = -1; // place clients with no usernames at bottom
-        break;
+        case 0:
+            if (item1->GetUserName() && item2->GetUserName())
+                iResult = CompareLocaleStringNoCase(item1->GetUserName(), item2->GetUserName());
+            else if (item1->GetUserName() == NULL)
+                iResult = 1; // place clients with no usernames at bottom
+            else if (item2->GetUserName() == NULL)
+                iResult = -1; // place clients with no usernames at bottom
+            break;
 
-    case 1:
-    {
-        const CKnownFile *file1 = theApp.sharedfiles->GetFileByID(item1->GetUploadFileID());
-        const CKnownFile *file2 = theApp.sharedfiles->GetFileByID(item2->GetUploadFileID());
-        if (file1 != NULL && file2 != NULL)
+        case 1:
         {
+            const CKnownFile *file1 = theApp.sharedfiles->GetFileByID(item1->GetUploadFileID());
+            const CKnownFile *file2 = theApp.sharedfiles->GetFileByID(item2->GetUploadFileID());
+            if (file1 != NULL && file2 != NULL)
+            {
 //>>> WiZaRd::PowerShare
-            iResult = file1->IsPowerShared()-file2->IsPowerShared();
-            if (iResult == 0)
+                iResult = file1->IsPowerShared()-file2->IsPowerShared();
+                if (iResult == 0)
 //<<< WiZaRd::PowerShare
-                iResult = CompareLocaleStringNoCase(file1->GetFileName(), file2->GetFileName());
-        }
-        else if (file1 == NULL)
-            iResult = 1;
-        else
-            iResult = -1;
-        break;
-    }
-
-    case 2:
-    {
-        const CKnownFile *file1 = theApp.sharedfiles->GetFileByID(item1->GetUploadFileID());
-        const CKnownFile *file2 = theApp.sharedfiles->GetFileByID(item2->GetUploadFileID());
-        if (file1 != NULL && file2 != NULL)
-        {
-//>>> WiZaRd::PowerShare
-            iResult = file1->IsPowerShared()-file2->IsPowerShared();
-            if (iResult == 0)
-//<<< WiZaRd::PowerShare
-                iResult = (file1->GetUpPriority() == PR_VERYLOW ? -1 : file1->GetUpPriority()) - (file2->GetUpPriority() == PR_VERYLOW ? -1 : file2->GetUpPriority());
-        }
-        else if (file1 == NULL)
-            iResult = 1;
-        else
-            iResult = -1;
-        break;
-    }
-
-    case 3:
-//>>> WiZaRd::PowerShare
-        iResult = item1->GetFriendSlot() - item2->GetFriendSlot();
-        if (iResult == 0)
-        {
-            CKnownFile* file1 = theApp.sharedfiles->GetFileByID(item1->GetUploadFileID());
-            CKnownFile* file2 = theApp.sharedfiles->GetFileByID(item2->GetUploadFileID());
-            bool bIsPS1 = file1 && file1->IsPowerShared();
-            bool bIsPS2 = file2 && file2->IsPowerShared();
-            if (bIsPS1 && bIsPS2)
-                iResult = (file1->GetUpPriority() == PR_VERYLOW ? -1 : file1->GetUpPriority()) - (file2->GetUpPriority() == PR_VERYLOW ? -1 : file2->GetUpPriority());
+                    iResult = CompareLocaleStringNoCase(file1->GetFileName(), file2->GetFileName());
+            }
+            else if (file1 == NULL)
+                iResult = 1;
             else
-                iResult = bIsPS1 - bIsPS2;
+                iResult = -1;
+            break;
         }
-        if (iResult == 0)
+
+        case 2:
+        {
+            const CKnownFile *file1 = theApp.sharedfiles->GetFileByID(item1->GetUploadFileID());
+            const CKnownFile *file2 = theApp.sharedfiles->GetFileByID(item2->GetUploadFileID());
+            if (file1 != NULL && file2 != NULL)
+            {
+//>>> WiZaRd::PowerShare
+                iResult = file1->IsPowerShared()-file2->IsPowerShared();
+                if (iResult == 0)
 //<<< WiZaRd::PowerShare
-            iResult = CompareUnsigned(item1->GetScore(false, false, true), item2->GetScore(false, false, true));
-        break;
+                    iResult = (file1->GetUpPriority() == PR_VERYLOW ? -1 : file1->GetUpPriority()) - (file2->GetUpPriority() == PR_VERYLOW ? -1 : file2->GetUpPriority());
+            }
+            else if (file1 == NULL)
+                iResult = 1;
+            else
+                iResult = -1;
+            break;
+        }
 
-    case 4:
-        iResult = CompareUnsigned(item1->GetScore(false), item2->GetScore(false));
-        break;
+        case 3:
+//>>> WiZaRd::PowerShare
+            iResult = item1->GetFriendSlot() - item2->GetFriendSlot();
+            if (iResult == 0)
+            {
+                CKnownFile* file1 = theApp.sharedfiles->GetFileByID(item1->GetUploadFileID());
+                CKnownFile* file2 = theApp.sharedfiles->GetFileByID(item2->GetUploadFileID());
+                bool bIsPS1 = file1 && file1->IsPowerShared();
+                bool bIsPS2 = file2 && file2->IsPowerShared();
+                if (bIsPS1 && bIsPS2)
+                    iResult = (file1->GetUpPriority() == PR_VERYLOW ? -1 : file1->GetUpPriority()) - (file2->GetUpPriority() == PR_VERYLOW ? -1 : file2->GetUpPriority());
+                else
+                    iResult = bIsPS1 - bIsPS2;
+            }
+            if (iResult == 0)
+//<<< WiZaRd::PowerShare
+                iResult = CompareUnsigned(item1->GetScore(false, false, true), item2->GetScore(false, false, true));
+            break;
 
-    case 5:
-        iResult = CompareUnsigned(item1->GetAskedCount(), item2->GetAskedCount());
-        break;
+        case 4:
+            iResult = CompareUnsigned(item1->GetScore(false), item2->GetScore(false));
+            break;
 
-    case 6:
-        iResult = CompareUnsigned(item1->GetLastUpRequest(), item2->GetLastUpRequest());
-        break;
+        case 5:
+            iResult = CompareUnsigned(item1->GetAskedCount(), item2->GetAskedCount());
+            break;
 
-    case 7:
-        iResult = CompareUnsigned(item1->GetWaitStartTime(), item2->GetWaitStartTime());
-        break;
+        case 6:
+            iResult = CompareUnsigned(item1->GetLastUpRequest(), item2->GetLastUpRequest());
+            break;
 
-    case 8:
-        iResult = item1->IsBanned() - item2->IsBanned();
-        break;
+        case 7:
+            iResult = CompareUnsigned(item1->GetWaitStartTime(), item2->GetWaitStartTime());
+            break;
 
-    case 9:
-        iResult = CompareUnsigned(item1->GetUpPartCount(), item2->GetUpPartCount());
-        break;
+        case 8:
+            iResult = item1->IsBanned() - item2->IsBanned();
+            break;
 
-    case 10:
-        //Proper sorting ;)
-        iResult = item1->GetClientSoft() - item2->GetClientSoft();
-        if (iResult == 0)
-            iResult = CompareLocaleStringNoCase(item1->DbgGetFullClientSoftVer(), item2->DbgGetFullClientSoftVer());
-        break;
+        case 9:
+            iResult = CompareUnsigned(item1->GetUpPartCount(), item2->GetUpPartCount());
+            break;
+
+        case 10:
+            //Proper sorting ;)
+            iResult = item1->GetClientSoft() - item2->GetClientSoft();
+            if (iResult == 0)
+                iResult = CompareLocaleStringNoCase(item1->DbgGetFullClientSoftVer(), item2->DbgGetFullClientSoftVer());
+            break;
 
 #ifdef _DEBUG
-	case 11:
-		iResult = (item1->GetUpCompleteSourcesCount() != _UI16_MAX) - (item2->GetUpCompleteSourcesCount() != _UI16_MAX);
-		if(iResult == 0)
-			iResult = CompareUnsigned(item1->GetUpCompleteSourcesCount(), item2->GetUpCompleteSourcesCount());
-		break;
+        case 11:
+            iResult = (item1->GetUpCompleteSourcesCount() != _UI16_MAX) - (item2->GetUpCompleteSourcesCount() != _UI16_MAX);
+            if (iResult == 0)
+                iResult = CompareUnsigned(item1->GetUpCompleteSourcesCount(), item2->GetUpCompleteSourcesCount());
+            break;
 #endif
     }
 
@@ -604,9 +604,9 @@ BOOL CQueueListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 
     switch (wParam)
     {
-    case MP_FIND:
-        OnFindStart();
-        return TRUE;
+        case MP_FIND:
+            OnFindStart();
+            return TRUE;
     }
 
     int iSel = GetNextItem(-1, LVIS_SELECTED | LVIS_FOCUSED);
@@ -615,59 +615,59 @@ BOOL CQueueListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
         CUpDownClient* client = (CUpDownClient*)GetItemData(iSel);
         switch (wParam)
         {
-        case MP_SHOWLIST:
-            client->RequestSharedFileList();
-            break;
-        case MP_MESSAGE:
-            theApp.emuledlg->chatwnd->StartSession(client);
-            break;
-        case MP_ADDFRIEND:
-            if (theApp.friendlist->AddFriend(client))
-                Update(iSel);
-            break;
+            case MP_SHOWLIST:
+                client->RequestSharedFileList();
+                break;
+            case MP_MESSAGE:
+                theApp.emuledlg->chatwnd->StartSession(client);
+                break;
+            case MP_ADDFRIEND:
+                if (theApp.friendlist->AddFriend(client))
+                    Update(iSel);
+                break;
 //>>> Tux::FriendHandling
-        case MP_REMOVEFRIEND:
-            if (client && client->IsFriend())
-            {
-                theApp.friendlist->RemoveFriend(client->m_Friend);
-                Update(iSel);
-            }
-            break;
-        case MP_FRIENDSLOT:
-            if (client)
-            {
-                bool IsAlready;
-                IsAlready = client->GetFriendSlot();
-                theApp.friendlist->RemoveAllFriendSlots();
-                if (!IsAlready)
-                    client->SetFriendSlot(true);
-                Update(iSel);
-            }
-            break;
+            case MP_REMOVEFRIEND:
+                if (client && client->IsFriend())
+                {
+                    theApp.friendlist->RemoveFriend(client->m_Friend);
+                    Update(iSel);
+                }
+                break;
+            case MP_FRIENDSLOT:
+                if (client)
+                {
+                    bool IsAlready;
+                    IsAlready = client->GetFriendSlot();
+                    theApp.friendlist->RemoveAllFriendSlots();
+                    if (!IsAlready)
+                        client->SetFriendSlot(true);
+                    Update(iSel);
+                }
+                break;
 //<<< Tux::FriendHandling
-        case MP_UNBAN:
-            if (client->IsBanned())
+            case MP_UNBAN:
+                if (client->IsBanned())
+                {
+                    client->UnBan();
+                    Update(iSel);
+                }
+                break;
+            case MP_DETAIL:
+            case MPG_ALTENTER:
+            case IDA_ENTER:
             {
-                client->UnBan();
-                Update(iSel);
+                CClientDetailDialog dialog(client, this);
+                dialog.DoModal();
+                break;
             }
-            break;
-        case MP_DETAIL:
-        case MPG_ALTENTER:
-        case IDA_ENTER:
-        {
-            CClientDetailDialog dialog(client, this);
-            dialog.DoModal();
-            break;
-        }
-        case MP_BOOT:
-            if (client->GetKadPort() && client->GetKadVersion() > 1)
+            case MP_BOOT:
+                if (client->GetKadPort() && client->GetKadVersion() > 1)
 //>>> WiZaRd::IPv6 [Xanatos]
-				if(!client->GetIPv4().IsNull())
-					Kademlia::CKademlia::Bootstrap(client->GetIPv4().ToIPv4(), client->GetKadPort());
-					//Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
+                    if (!client->GetIPv4().IsNull())
+                        Kademlia::CKademlia::Bootstrap(client->GetIPv4().ToIPv4(), client->GetKadPort());
+                //Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
 //<<< WiZaRd::IPv6 [Xanatos]
-            break;
+                break;
         }
     }
     return true;

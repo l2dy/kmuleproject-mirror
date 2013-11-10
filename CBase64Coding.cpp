@@ -61,7 +61,7 @@ static inline BYTE __get_character(const BYTE * buffer, const BYTE * decoder_tab
     {
         if (index >= size_of_buffer)
         {
-            return(BASE64_END_OF_BUFFER);
+            return (BASE64_END_OF_BUFFER);
         }
 
         return_value = buffer[ index ];
@@ -70,7 +70,7 @@ static inline BYTE __get_character(const BYTE * buffer, const BYTE * decoder_tab
     while (return_value != END_OF_BASE64_ENCODED_DATA &&
             decoder_table[ return_value ] == BASE64_IGNORABLE_CHARACTER);
 
-    return(return_value);
+    return (return_value);
 }
 
 CBase64Coding::CBase64Coding()
@@ -141,7 +141,7 @@ BOOL CBase64Coding::Encode(const char * source, int len, char * destination_stri
 
             destination[ number_of_bytes_encoded + 1 ] = 0;
 
-            return(TRUE);
+            return (TRUE);
         }
         else
         {
@@ -173,7 +173,7 @@ BOOL CBase64Coding::Encode(const char * source, int len, char * destination_stri
 
             destination[ number_of_bytes_encoded + 1 ] = 0;
 
-            return(TRUE);
+            return (TRUE);
         }
         else
         {
@@ -210,7 +210,7 @@ BOOL CBase64Coding::Encode(const char * source, int len, char * destination_stri
 
     destination[ number_of_bytes_encoded + 1 ] = 0;
 
-    return(TRUE);
+    return (TRUE);
 }
 
 // End of source
@@ -278,11 +278,11 @@ int _tmain(int number_of_command_line_arguments, LPCTSTR command_line_arguments[
         _tprintf(TEXT(&quot; %s\n&quot; , (LPCTSTR) encoded_data);
     }
 }</CODE></PRE>
-         <HR><I>Copyright, 2000, <A HREF="mailto:wfc@pobox.com">Samuel R. Blackburn</A></I><BR>
-                 $Workfile:
-                 CBase64Coding.cpp $<BR>
-                 $Modtime: 5/12/00 3:39p $
-                 </BODY>
+<HR><I>Copyright, 2000, <A HREF="mailto:wfc@pobox.com">Samuel R. Blackburn</A></I><BR>
+                                $Workfile:
+                                CBase64Coding.cpp $<BR>
+                                $Modtime: 5/12/00 3:39p $
+                                </BODY>
 
-                 </HTML>
+                                </HTML>
 #endif

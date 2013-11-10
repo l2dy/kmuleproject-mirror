@@ -135,151 +135,152 @@ int CIPFilter::AddFromFile(LPCTSTR pszFilePath, bool bShowResponse)
         {
             // Version 1: strings are ISO-8859-1 encoded
             // Version 2: strings are UTF-8 encoded
-			// Version 3: PeerBlock cache.p2b format
+            // Version 3: PeerBlock cache.p2b format
             uint8 nVersion;
             if (fread(&nVersion, sizeof nVersion, 1, readFile)==1 && (nVersion == 1 || nVersion == 2 || nVersion == 3)) //>>> WiZaRd::Support Peerblock [ElKarro]
             {
-				if(nVersion == 1 || nVersion == 2) //>>> WiZaRd::Support Peerblock [ElKarro]
-				{
-					while (!feof(readFile))
-					{
-						CHAR szName[256];
-						int iLen = 0;
-						for (;;) // read until NUL or EOF
-						{
-							int iChar = getc(readFile);
-							if (iChar == EOF)
-								break;
-							if (iLen < sizeof szName - 1)
-								szName[iLen++] = (CHAR)iChar;
-							if (iChar == '\0')
-								break;
-						}
-						szName[iLen] = '\0';
+                if (nVersion == 1 || nVersion == 2) //>>> WiZaRd::Support Peerblock [ElKarro]
+                {
+                    while (!feof(readFile))
+                    {
+                        CHAR szName[256];
+                        int iLen = 0;
+                        for (;;) // read until NUL or EOF
+                        {
+                            int iChar = getc(readFile);
+                            if (iChar == EOF)
+                                break;
+                            if (iLen < sizeof szName - 1)
+                                szName[iLen++] = (CHAR)iChar;
+                            if (iChar == '\0')
+                                break;
+                        }
+                        szName[iLen] = '\0';
 
-						UINT uStart;
-						if (fread(&uStart, sizeof uStart, 1, readFile) != 1)
-							break;
-						uStart = ntohl(uStart);
+                        UINT uStart;
+                        if (fread(&uStart, sizeof uStart, 1, readFile) != 1)
+                            break;
+                        uStart = ntohl(uStart);
 
-						UINT uEnd;
-						if (fread(&uEnd, sizeof uEnd, 1, readFile) != 1)
-							break;
-						uEnd = ntohl(uEnd);
+                        UINT uEnd;
+                        if (fread(&uEnd, sizeof uEnd, 1, readFile) != 1)
+                            break;
+                        uEnd = ntohl(uEnd);
 
-						iLine++;
-						// (nVersion == 2) ? OptUtf8ToStr(szName, iLen) :
-						AddIPRange(uStart, uEnd, DFLT_FILTER_LEVEL, CStringA(szName, iLen));
-						iFoundRanges++;
+                        iLine++;
+                        // (nVersion == 2) ? OptUtf8ToStr(szName, iLen) :
+                        AddIPRange(uStart, uEnd, DFLT_FILTER_LEVEL, CStringA(szName, iLen));
+                        iFoundRanges++;
 
-						loadStatus.UpdateCount(iLine); //>>> WiZaRd::LoadStatus [X-Ray]
-					}
-				}
+                        loadStatus.UpdateCount(iLine); //>>> WiZaRd::LoadStatus [X-Ray]
+                    }
+                }
 //>>> WiZaRd::Support Peerblock [ElKarro]
-				else
-				{
-					UINT namecount;
-					if (fread(&namecount, sizeof namecount, 1, readFile) == 1)
-					{
-						namecount = ntohl(namecount);
-						long *nameIdx = new long [namecount + 1];
+                else
+                {
+                    UINT namecount;
+                    if (fread(&namecount, sizeof namecount, 1, readFile) == 1)
+                    {
+                        namecount = ntohl(namecount);
+                        long *nameIdx = new long [namecount + 1];
 
-						if (nameIdx)
-						{
-							UINT maxStrLen = 0;
-							UINT strLen = 0;
+                        if (nameIdx)
+                        {
+                            UINT maxStrLen = 0;
+                            UINT strLen = 0;
 
-							nameIdx[0] = 0x0C;
+                            nameIdx[0] = 0x0C;
 
-							for(UINT i = 0; i < namecount; ++i)
-							{
-								for(strLen = 0; ; ++strLen)
-								{
-									CHAR ch;
-									if (fread(&ch, sizeof ch, 1, readFile) == 1)
-									{
-										if (ch == '\0')
-											break;
-									}
-									else
-									{
-										// unexpected EOF
-										strLen = 0;
-										break;
-									}
-								}
+                            for (UINT i = 0; i < namecount; ++i)
+                            {
+                                for (strLen = 0; ; ++strLen)
+                                {
+                                    CHAR ch;
+                                    if (fread(&ch, sizeof ch, 1, readFile) == 1)
+                                    {
+                                        if (ch == '\0')
+                                            break;
+                                    }
+                                    else
+                                    {
+                                        // unexpected EOF
+                                        strLen = 0;
+                                        break;
+                                    }
+                                }
 
-								if (strLen)
-								{
-									if (maxStrLen < strLen)
-										maxStrLen = strLen;
+                                if (strLen)
+                                {
+                                    if (maxStrLen < strLen)
+                                        maxStrLen = strLen;
 
-									nameIdx[i+1] = nameIdx[i] + strLen + 1;
-								}
-								else
-									break;
-							}
+                                    nameIdx[i+1] = nameIdx[i] + strLen + 1;
+                                }
+                                else
+                                    break;
+                            }
 
-							if (strLen)
-							{
-								UINT rangecount;
-								if (fread(&rangecount, sizeof rangecount, 1, readFile) == 1)
-								{
-									long rangeOfs = ftell(readFile);
+                            if (strLen)
+                            {
+                                UINT rangecount;
+                                if (fread(&rangecount, sizeof rangecount, 1, readFile) == 1)
+                                {
+                                    long rangeOfs = ftell(readFile);
 
-									if (rangeOfs >= 0x0C)
-									{
-										char *szName = new char [maxStrLen];
+                                    if (rangeOfs >= 0x0C)
+                                    {
+                                        char *szName = new char [maxStrLen];
 
-										if (szName)
-										{
-											rangecount = ntohl(rangecount);
-											for(UINT i = 0; i < rangecount; ++i)
-											{
-												struct {
-													UINT name;
-													UINT start;
-													UINT end;
-												} theRange;
+                                        if (szName)
+                                        {
+                                            rangecount = ntohl(rangecount);
+                                            for (UINT i = 0; i < rangecount; ++i)
+                                            {
+                                                struct
+                                                {
+                                                    UINT name;
+                                                    UINT start;
+                                                    UINT end;
+                                                } theRange;
 
-												if (fread(&theRange, sizeof theRange, 1, readFile) == 1)
-												{
-													UINT name = ntohl(theRange.name);
+                                                if (fread(&theRange, sizeof theRange, 1, readFile) == 1)
+                                                {
+                                                    UINT name = ntohl(theRange.name);
 
-													if (name < namecount)
-													{
-														if (fseek(readFile, nameIdx[name], SEEK_SET) == 0)
-														{
-															UINT iLen = nameIdx[name+1]-nameIdx[name] - 1;
-															if (fread(szName, sizeof(char), iLen, readFile) == iLen)
-															{
-																++iLine;
-																loadStatus.UpdateCount(iLine); //>>> WiZaRd::LoadStatus [X-Ray]
-																AddIPRange(ntohl(theRange.start), ntohl(theRange.end), DFLT_FILTER_LEVEL, CStringA(szName, iLen));
-																++iFoundRanges;
+                                                    if (name < namecount)
+                                                    {
+                                                        if (fseek(readFile, nameIdx[name], SEEK_SET) == 0)
+                                                        {
+                                                            UINT iLen = nameIdx[name+1]-nameIdx[name] - 1;
+                                                            if (fread(szName, sizeof(char), iLen, readFile) == iLen)
+                                                            {
+                                                                ++iLine;
+                                                                loadStatus.UpdateCount(iLine); //>>> WiZaRd::LoadStatus [X-Ray]
+                                                                AddIPRange(ntohl(theRange.start), ntohl(theRange.end), DFLT_FILTER_LEVEL, CStringA(szName, iLen));
+                                                                ++iFoundRanges;
 
-																rangeOfs += sizeof theRange;
+                                                                rangeOfs += sizeof theRange;
 
-																if (fseek(readFile, rangeOfs, SEEK_SET))
-																	break;
-															}
-														}
-													}
-												}
-											}
+                                                                if (fseek(readFile, rangeOfs, SEEK_SET))
+                                                                    break;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
 
-											delete [] szName;
-										}
-									}
-								}
-							}
-						}
+                                            delete [] szName;
+                                        }
+                                    }
+                                }
+                            }
+                        }
 
-						delete [] nameIdx;
-					}
-				}
+                        delete [] nameIdx;
+                    }
+                }
 //<<< WiZaRd::Support Peerblock [ElKarro]
-			}
+            }
         }
         else
         {

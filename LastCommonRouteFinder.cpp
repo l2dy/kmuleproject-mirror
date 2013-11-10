@@ -148,11 +148,11 @@ bool LastCommonRouteFinder::AddHostsToCheck(CUpDownClientPtrList &list)
                     }
 
 //>>> WiZaRd::IPv6 [Xanatos]
-					UINT ip = _ntohl(client->GetIP().ToIPv4());
-					if(ip)
-                    //UINT ip = client->GetIP();
+                    UINT ip = _ntohl(client->GetIP().ToIPv4());
+                    if (ip)
+                        //UINT ip = client->GetIP();
 //<<< WiZaRd::IPv6 [Xanatos]
-						AddHostToCheckNoLock(ip);
+                        AddHostToCheckNoLock(ip);
                 }
             }
         }

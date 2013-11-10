@@ -103,13 +103,13 @@ void CHyperLink::Execute()
 {
     switch (m_Type)
     {
-    case lt_Shell:
-        _ShellExecute(NULL, NULL, m_sCommand, NULL, m_sDirectory, SW_SHOWDEFAULT);
-        break;
+        case lt_Shell:
+            _ShellExecute(NULL, NULL, m_sCommand, NULL, m_sDirectory, SW_SHOWDEFAULT);
+            break;
 
-    case lt_Message:
-        PostMessage(m_hWnd, m_uMsg, m_wParam, m_lParam);
-        break;
+        case lt_Message:
+            PostMessage(m_hWnd, m_uMsg, m_wParam, m_lParam);
+            break;
     }
 }
 
@@ -157,355 +157,355 @@ void CPreparedHyperText::PrepareText(const CString& sText)
 
         switch (state)
         {
-        case unknown:
-            if (tspace(c))
-                state = space;
-            else if (c == L'@' && WordPos != i)
-                state = mail;
-            break;
+            case unknown:
+                if (tspace(c))
+                    state = space;
+                else if (c == L'@' && WordPos != i)
+                    state = mail;
+                break;
 
-        case space:
-            WordPos = i;
-            switch (c)
-            {
-            case L'h':
-                state = http0;
+            case space:
+                WordPos = i;
+                switch (c)
+                {
+                    case L'h':
+                        state = http0;
+                        break;
+                    case L'f':
+                        state = ftp0;
+                        break;
+                    case L'w':
+                        state = www0;
+                        break;
+                    case L'm':
+                        state = mailto0;
+                        break;
+                    case L'e':
+                        state = ed2k0;
+                        break;
+                    default:
+                        if (!tspace(c))
+                            state = unknown;
+                }
                 break;
-            case L'f':
-                state = ftp0;
-                break;
-            case L'w':
-                state = www0;
-                break;
-            case L'm':
-                state = mailto0;
-                break;
-            case L'e':
-                state = ed2k0;
-                break;
-            default:
-                if (!tspace(c))
+
+                /*----------------- http -----------------*/
+            case http0:
+                if (c == L't')
+                    state = http1;
+                else if (tspace(c))
+                    state = space;
+                else
                     state = unknown;
-            }
-            break;
+                break;
 
-            /*----------------- http -----------------*/
-        case http0:
-            if (c == L't')
-                state = http1;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case http1:
+                if (c == L't')
+                    state = http2;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-        case http1:
-            if (c == L't')
-                state = http2;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case http2:
+                if (c == L'p')
+                    state = http3;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-        case http2:
-            if (c == L'p')
-                state = http3;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case http3:
+                if (c == L':')
+                    state = http4;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-        case http3:
-            if (c == L':')
-                state = http4;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case http4:
+                if (c == L'/')
+                    state = http5;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-        case http4:
-            if (c == L'/')
-                state = http5;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case http5:
+                if (c == L'/')
+                    state = http6;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-        case http5:
-            if (c == L'/')
-                state = http6;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case http6:
+                if (tspace(c) || i == last)
+                {
+                    int len = i == last ? i - WordPos + 1 : i - WordPos;
+                    CString s = m_sText.Mid(WordPos, len);
+                    RemoveLastSign(s);
+                    m_Links.push_back(CHyperLink(WordPos, WordPos + len - 1, s, s, (LPCTSTR)NULL));
+                    state = space;
+                }
+                break;
 
-        case http6:
-            if (tspace(c) || i == last)
-            {
-                int len = i == last ? i - WordPos + 1 : i - WordPos;
-                CString s = m_sText.Mid(WordPos, len);
-                RemoveLastSign(s);
-                m_Links.push_back(CHyperLink(WordPos, WordPos + len - 1, s, s, (LPCTSTR)NULL));
-                state = space;
-            }
-            break;
+                /*----------------- ed2k -----------------*/
+            case ed2k0:
+                if (c == L'd')
+                    state = ed2k1;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-            /*----------------- ed2k -----------------*/
-        case ed2k0:
-            if (c == L'd')
-                state = ed2k1;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case ed2k1:
+                if (c == L'2')
+                    state = ed2k2;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-        case ed2k1:
-            if (c == L'2')
-                state = ed2k2;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case ed2k2:
+                if (c == L'k')
+                    state = ed2k3;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-        case ed2k2:
-            if (c == L'k')
-                state = ed2k3;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case ed2k3:
+                if (c == L':')
+                    state = ed2k4;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-        case ed2k3:
-            if (c == L':')
-                state = ed2k4;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case ed2k4:
+                if (c == L'/')
+                    state = ed2k5;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-        case ed2k4:
-            if (c == L'/')
-                state = ed2k5;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case ed2k5:
+                if (c == L'/')
+                    state = ed2k6;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-        case ed2k5:
-            if (c == L'/')
-                state = ed2k6;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case ed2k6:
+                if (tspace(c) || i == last)
+                {
+                    int len = i == last ? i - WordPos + 1 : i - WordPos;
+                    CString s = m_sText.Mid(WordPos, len);
+                    RemoveLastSign(s);
+                    m_Links.push_back(CHyperLink(WordPos, WordPos + len - 1, s, s, (LPCTSTR)NULL));
+                    state = space;
+                }
+                break;
+                /*----------------- ftp -----------------*/
+            case ftp0:
+                if (c == L't')
+                    state = ftp1;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-        case ed2k6:
-            if (tspace(c) || i == last)
-            {
-                int len = i == last ? i - WordPos + 1 : i - WordPos;
-                CString s = m_sText.Mid(WordPos, len);
-                RemoveLastSign(s);
-                m_Links.push_back(CHyperLink(WordPos, WordPos + len - 1, s, s, (LPCTSTR)NULL));
-                state = space;
-            }
-            break;
-            /*----------------- ftp -----------------*/
-        case ftp0:
-            if (c == L't')
-                state = ftp1;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case ftp1:
+                if (c == L'p')
+                    state = ftp2;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-        case ftp1:
-            if (c == L'p')
-                state = ftp2;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case ftp2:
+                if (c == L':')
+                    state = ftp3;
+                else if (c == L'.')
+                    state = ftp;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-        case ftp2:
-            if (c == L':')
-                state = ftp3;
-            else if (c == L'.')
-                state = ftp;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case ftp3:
+                if (c == L'/')
+                    state = ftp4;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-        case ftp3:
-            if (c == L'/')
-                state = ftp4;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case ftp4:
+                if (c == L'/')
+                    state = ftp5;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-        case ftp4:
-            if (c == L'/')
-                state = ftp5;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case ftp:
+                if (tspace(c) || i == last)
+                {
+                    int len = i == last ? i - WordPos + 1 : i - WordPos;
+                    CString s = CString(_T("ftp://")) + m_sText.Mid(WordPos, len);
+                    RemoveLastSign(s);
+                    m_Links.push_back(CHyperLink(WordPos, WordPos + len - 1, s, s, (LPCTSTR)NULL));
+                    state = space;
+                }
+                break;
 
-        case ftp:
-            if (tspace(c) || i == last)
-            {
-                int len = i == last ? i - WordPos + 1 : i - WordPos;
-                CString s = CString(_T("ftp://")) + m_sText.Mid(WordPos, len);
-                RemoveLastSign(s);
-                m_Links.push_back(CHyperLink(WordPos, WordPos + len - 1, s, s, (LPCTSTR)NULL));
-                state = space;
-            }
-            break;
+            case ftp5:
+                if (tspace(c) || i == last)
+                {
+                    int len = i == last ? i - WordPos + 1 : i - WordPos;
+                    CString s = m_sText.Mid(WordPos, len);
+                    RemoveLastSign(s);
+                    m_Links.push_back(CHyperLink(WordPos, WordPos + len - 1, s, s, (LPCTSTR)NULL));
+                    state = space;
+                }
+                break;
 
-        case ftp5:
-            if (tspace(c) || i == last)
-            {
-                int len = i == last ? i - WordPos + 1 : i - WordPos;
-                CString s = m_sText.Mid(WordPos, len);
-                RemoveLastSign(s);
-                m_Links.push_back(CHyperLink(WordPos, WordPos + len - 1, s, s, (LPCTSTR)NULL));
-                state = space;
-            }
-            break;
+                /*----------------- www -----------------*/
+            case www0:
+                if (c == L'w')
+                    state = www1;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-            /*----------------- www -----------------*/
-        case www0:
-            if (c == L'w')
-                state = www1;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case www1:
+                if (c == L'w')
+                    state = www2;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-        case www1:
-            if (c == L'w')
-                state = www2;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case www2:
+                if (c == L'.')
+                    state = www3;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-        case www2:
-            if (c == L'.')
-                state = www3;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case www3:
+                if (tspace(c) || i == last)
+                {
+                    int len = i == last ? i - WordPos + 1 : i - WordPos;
+                    CString s = CString(_T("http://")) + m_sText.Mid(WordPos, len);
+                    RemoveLastSign(s);
+                    m_Links.push_back(CHyperLink(WordPos, WordPos + len - 1, s, s, (LPCTSTR)NULL));
+                    state = space;
+                }
+                break;
 
-        case www3:
-            if (tspace(c) || i == last)
-            {
-                int len = i == last ? i - WordPos + 1 : i - WordPos;
-                CString s = CString(_T("http://")) + m_sText.Mid(WordPos, len);
-                RemoveLastSign(s);
-                m_Links.push_back(CHyperLink(WordPos, WordPos + len - 1, s, s, (LPCTSTR)NULL));
-                state = space;
-            }
-            break;
+                /*----------------- mailto -----------------*/
+            case mailto0:
+                if (c == L'a')
+                    state = mailto1;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-            /*----------------- mailto -----------------*/
-        case mailto0:
-            if (c == L'a')
-                state = mailto1;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case mailto1:
+                if (c == L'I')
+                    state = mailto2;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-        case mailto1:
-            if (c == L'I')
-                state = mailto2;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case mailto2:
+                if (c == _T('l'))
+                    state = mailto3;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-        case mailto2:
-            if (c == _T('l'))
-                state = mailto3;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case mailto3:
+                if (c == L't')
+                    state = mailto4;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-        case mailto3:
-            if (c == L't')
-                state = mailto4;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case mailto4:
+                if (c == _T('o'))
+                    state = mailto5;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-        case mailto4:
-            if (c == _T('o'))
-                state = mailto5;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case mailto5:
+                if (c == L':')
+                    state = mailto6;
+                else if (tspace(c))
+                    state = space;
+                else
+                    state = unknown;
+                break;
 
-        case mailto5:
-            if (c == L':')
-                state = mailto6;
-            else if (tspace(c))
-                state = space;
-            else
-                state = unknown;
-            break;
+            case mailto6:
+                if (tspace(c) || i == last)
+                {
+                    int len = i == last ? i - WordPos + 1 : i - WordPos;
+                    CString s = m_sText.Mid(WordPos, len);
+                    RemoveLastSign(s);
+                    m_Links.push_back(CHyperLink(WordPos, WordPos + len - 1, s, s, (LPCTSTR)NULL));
+                    state = space;
+                }
+                break;
 
-        case mailto6:
-            if (tspace(c) || i == last)
-            {
-                int len = i == last ? i - WordPos + 1 : i - WordPos;
-                CString s = m_sText.Mid(WordPos, len);
-                RemoveLastSign(s);
-                m_Links.push_back(CHyperLink(WordPos, WordPos + len - 1, s, s, (LPCTSTR)NULL));
-                state = space;
-            }
-            break;
-
-            /*----------------- mailto -----------------*/
-        case mail:
-            if (tspace(c) || i == last)
-            {
-                int len = i == last ? i - WordPos + 1 : i - WordPos;
-                CString s = CString(_T("mailto:")) + m_sText.Mid(WordPos, len);
-                RemoveLastSign(s);
-                m_Links.push_back(CHyperLink(WordPos, WordPos + len - 1, s, s, (LPCTSTR)NULL));
-                state = space;
-            }
-            break;
+                /*----------------- mailto -----------------*/
+            case mail:
+                if (tspace(c) || i == last)
+                {
+                    int len = i == last ? i - WordPos + 1 : i - WordPos;
+                    CString s = CString(_T("mailto:")) + m_sText.Mid(WordPos, len);
+                    RemoveLastSign(s);
+                    m_Links.push_back(CHyperLink(WordPos, WordPos + len - 1, s, s, (LPCTSTR)NULL));
+                    state = space;
+                }
+                break;
         }
     }
 
@@ -520,19 +520,19 @@ void CPreparedHyperText::RemoveLastSign(CString& sLink)
         TCHAR c = sLink[len-1];
         switch (c)
         {
-        case L'.':
-        case L',':
-        case L';':
-        case L'\"':
-        case L'\'':
-        case L'(':
-        case L')':
-        case L'[':
-        case L']':
-        case L'{':
-        case L'}':
-            sLink.Delete(len -1, 1);
-            break;
+            case L'.':
+            case L',':
+            case L';':
+            case L'\"':
+            case L'\'':
+            case L'(':
+            case L')':
+            case L'[':
+            case L']':
+            case L'{':
+            case L'}':
+                sLink.Delete(len -1, 1);
+                break;
         }
     }
 }
@@ -1151,41 +1151,41 @@ LRESULT CHyperTextCtrl::OnHScroll(WPARAM wParam, LPARAM lParam)
 
     switch (LOWORD(wParam))
     {
-    case SB_LEFT:
-        si.nPos=si.nMin;
-        break;
+        case SB_LEFT:
+            si.nPos=si.nMin;
+            break;
 
-    case SB_RIGHT:
-        si.nPos=si.nMax;
-        break;
+        case SB_RIGHT:
+            si.nPos=si.nMax;
+            break;
 
-    case SB_LINELEFT:
-        if (si.nPos > si.nMin)
-            --si.nPos;
-        break;
+        case SB_LINELEFT:
+            if (si.nPos > si.nMin)
+                --si.nPos;
+            break;
 
-    case SB_LINERIGHT:
-        if (si.nPos < si.nMax)
-            ++si.nPos;
-        break;
+        case SB_LINERIGHT:
+            if (si.nPos < si.nMax)
+                ++si.nPos;
+            break;
 
-    case SB_PAGELEFT:
-        if (si.nPos > si.nMin)
-            si.nPos -= si.nPage;
-        if (si.nPos < si.nMin)
-            si.nPos = si.nMin;
-        break;
+        case SB_PAGELEFT:
+            if (si.nPos > si.nMin)
+                si.nPos -= si.nPage;
+            if (si.nPos < si.nMin)
+                si.nPos = si.nMin;
+            break;
 
-    case SB_PAGERIGHT:
-        if (si.nPos < si.nMax)
-            si.nPos += si.nPage;
-        if (si.nPos > si.nMax)
-            si.nPos = si.nMax;
-        break;
+        case SB_PAGERIGHT:
+            if (si.nPos < si.nMax)
+                si.nPos += si.nPage;
+            if (si.nPos > si.nMax)
+                si.nPos = si.nMax;
+            break;
 
-    case SB_THUMBTRACK:
-        si.nPos=si.nTrackPos;
-        break;
+        case SB_THUMBTRACK:
+            si.nPos=si.nTrackPos;
+            break;
     }
 
     if (si.nMax != si.nMin)
@@ -1205,41 +1205,41 @@ LRESULT CHyperTextCtrl::OnVScroll(WPARAM wParam, LPARAM lParam)
 
     switch (LOWORD(wParam))
     {
-    case SB_TOP:
-        si.nPos=si.nMin;
-        break;
+        case SB_TOP:
+            si.nPos=si.nMin;
+            break;
 
-    case SB_BOTTOM:
-        si.nPos=si.nMax;
-        break;
+        case SB_BOTTOM:
+            si.nPos=si.nMax;
+            break;
 
-    case SB_LINEUP:
-        if (si.nPos > si.nMin)
-            --si.nPos;
-        break;
+        case SB_LINEUP:
+            if (si.nPos > si.nMin)
+                --si.nPos;
+            break;
 
-    case SB_LINEDOWN:
-        if (si.nPos < si.nMax)
-            ++si.nPos;
-        break;
+        case SB_LINEDOWN:
+            if (si.nPos < si.nMax)
+                ++si.nPos;
+            break;
 
-    case SB_PAGEUP:
-        if (si.nPos > si.nMin)
-            si.nPos-=si.nPage;
-        if (si.nPos < si.nMin)
-            si.nPos = si.nMin;
-        break;
+        case SB_PAGEUP:
+            if (si.nPos > si.nMin)
+                si.nPos-=si.nPage;
+            if (si.nPos < si.nMin)
+                si.nPos = si.nMin;
+            break;
 
-    case SB_PAGEDOWN:
-        if (si.nPos < si.nMax)
-            si.nPos+=si.nPage;
-        if (si.nPos > si.nMax)
-            si.nPos = si.nMax;
-        break;
+        case SB_PAGEDOWN:
+            if (si.nPos < si.nMax)
+                si.nPos+=si.nPage;
+            if (si.nPos > si.nMax)
+                si.nPos = si.nMax;
+            break;
 
-    case SB_THUMBTRACK:
-        si.nPos=si.nTrackPos;
-        break;
+        case SB_THUMBTRACK:
+            si.nPos=si.nTrackPos;
+            break;
     }
 
     if (si.nMax != si.nMin)

@@ -136,8 +136,8 @@ void CFileDetailDialogInfo::RefreshData()
         // if file is completed, we output the 'file path' and not the 'part.met file path'
         if (file->GetStatus(true) == PS_COMPLETE)
             GetDlgItem(IDC_FD_X2)->SetWindowText(GetResString(IDS_DL_FILENAME) + L":");
-		else 
-			GetDlgItem(IDC_FD_X2)->SetWindowText(GetResString(IDS_FD_MET));
+        else
+            GetDlgItem(IDC_FD_X2)->SetWindowText(GetResString(IDS_FD_MET));
 
         SetDlgItemText(IDC_FNAME, file->GetFileName());
         SetDlgItemText(IDC_METFILE, file->GetFullName());
@@ -213,16 +213,16 @@ void CFileDetailDialogInfo::RefreshData()
         // AICH Hash
         switch (file->GetAICHRecoveryHashSet()->GetStatus())
         {
-        case AICH_TRUSTED:
-        case AICH_VERIFIED:
-        case AICH_HASHSETCOMPLETE:
-            if (file->GetAICHRecoveryHashSet()->HasValidMasterHash())
-            {
-                SetDlgItemText(IDC_FD_AICHHASH, file->GetAICHRecoveryHashSet()->GetMasterHash().GetString());
-                break;
-            }
-        default:
-            SetDlgItemText(IDC_FD_AICHHASH, GetResString(IDS_UNKNOWN));
+            case AICH_TRUSTED:
+            case AICH_VERIFIED:
+            case AICH_HASHSETCOMPLETE:
+                if (file->GetAICHRecoveryHashSet()->HasValidMasterHash())
+                {
+                    SetDlgItemText(IDC_FD_AICHHASH, file->GetAICHRecoveryHashSet()->GetMasterHash().GetString());
+                    break;
+                }
+            default:
+                SetDlgItemText(IDC_FD_AICHHASH, GetResString(IDS_UNKNOWN));
         }
 
         // file type

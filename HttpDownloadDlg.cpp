@@ -765,21 +765,21 @@ void CHttpDownloadDlg::OnStatusCallBack(HINTERNET /*hInternet*/, DWORD dwInterne
 {
     switch (dwInternetStatus)
     {
-    case INTERNET_STATUS_RESOLVING_NAME:
-        SetStatus(GetResString(IDS_HTTPDOWNLOAD_RESOLVING_NAME), GetStatusInfo(lpvStatusInformation, dwStatusInformationLength));
-        break;
-    case INTERNET_STATUS_NAME_RESOLVED:
-        SetStatus(GetResString(IDS_HTTPDOWNLOAD_RESOLVED_NAME),	GetStatusInfo(lpvStatusInformation, dwStatusInformationLength));
-        break;
-    case INTERNET_STATUS_CONNECTING_TO_SERVER:
-        SetStatus(GetResString(IDS_HTTPDOWNLOAD_CONNECTING), GetStatusInfo(lpvStatusInformation, dwStatusInformationLength));
-        break;
-    case INTERNET_STATUS_CONNECTED_TO_SERVER:
-        SetStatus(GetResString(IDS_HTTPDOWNLOAD_CONNECTED), GetStatusInfo(lpvStatusInformation, dwStatusInformationLength));
-        break;
-    case INTERNET_STATUS_REDIRECT:
-        SetStatus(GetResString(IDS_HTTPDOWNLOAD_REDIRECTING), GetStatusInfo(lpvStatusInformation, dwStatusInformationLength));
-        break;
+        case INTERNET_STATUS_RESOLVING_NAME:
+            SetStatus(GetResString(IDS_HTTPDOWNLOAD_RESOLVING_NAME), GetStatusInfo(lpvStatusInformation, dwStatusInformationLength));
+            break;
+        case INTERNET_STATUS_NAME_RESOLVED:
+            SetStatus(GetResString(IDS_HTTPDOWNLOAD_RESOLVED_NAME),	GetStatusInfo(lpvStatusInformation, dwStatusInformationLength));
+            break;
+        case INTERNET_STATUS_CONNECTING_TO_SERVER:
+            SetStatus(GetResString(IDS_HTTPDOWNLOAD_CONNECTING), GetStatusInfo(lpvStatusInformation, dwStatusInformationLength));
+            break;
+        case INTERNET_STATUS_CONNECTED_TO_SERVER:
+            SetStatus(GetResString(IDS_HTTPDOWNLOAD_CONNECTED), GetStatusInfo(lpvStatusInformation, dwStatusInformationLength));
+            break;
+        case INTERNET_STATUS_REDIRECT:
+            SetStatus(GetResString(IDS_HTTPDOWNLOAD_REDIRECTING), GetStatusInfo(lpvStatusInformation, dwStatusInformationLength));
+            break;
     }
 }
 

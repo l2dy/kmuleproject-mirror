@@ -609,280 +609,280 @@ public:
 
             switch (GetInstruction(ip).type)
             {
-            case RE_NOP:
-                ip++;
-                break;
-
-            case RE_SYMBOL:
-                if (GetInstruction(ip).symbol.nSymbol == static_cast<size_t>(static_cast<_TUCHAR>(*sz)))
-                {
-                    sz = CharTraits::Next(sz);
+                case RE_NOP:
                     ip++;
-                }
-                else
-                {
-                    ip = (size_t) pContext->Pop();
-                }
-                break;
-
-            case RE_ANY:
-                if (*sz)
-                {
-                    sz = CharTraits::Next(sz);
-                    ip++;
-                }
-                else
-                {
-                    ip = (size_t) pContext->Pop();
-                }
-                break;
-
-            case RE_GROUP_START:
-                pContext->m_Matches[GetInstruction(ip).group.nGroup].szStart = sz;
-                ip++;
-                break;
-
-            case RE_GROUP_END:
-                pContext->m_Matches[GetInstruction(ip).group.nGroup].szEnd = sz;
-                ip++;
-                break;
-
-            case RE_PUSH_CHARPOS:
-                pContext->Push((void *) sz);
-                ip++;
-                break;
-
-            case RE_POP_CHARPOS:
-                sz = (RECHAR *) pContext->Pop();
-                ip++;
-                break;
-
-            case RE_CALL:
-                pContext->Push(ip+1);
-                ip = GetInstruction(ip).call.nTarget;
-                break;
-
-            case RE_JMP:
-                ip = GetInstruction(ip).jmp.nTarget;
-                break;
-
-            case RE_RETURN:
-                ip = (size_t) pContext->Pop();
-                break;
-
-            case RE_PUSH_MEMORY:
-                pContext->Push((void *)(pContext->m_Mem[GetInstruction(ip).memory.nIndex]));
-                ip++;
-                break;
-
-            case RE_POP_MEMORY:
-                pContext->m_Mem[GetInstruction(ip).memory.nIndex] = pContext->Pop();
-                ip++;
-                break;
-
-            case RE_STORE_CHARPOS:
-                pContext->m_Mem[GetInstruction(ip).memory.nIndex] = (void *) sz;
-                ip++;
-                break;
-
-            case RE_GET_CHARPOS:
-                sz = (RECHAR *) pContext->m_Mem[GetInstruction(ip).memory.nIndex];
-                ip++;
-                break;
-
-            case RE_STORE_STACKPOS:
-                pContext->m_Mem[GetInstruction(ip).memory.nIndex] = (void *) pContext->m_nTos;
-                ip++;
-                break;
-
-            case RE_GET_STACKPOS:
-                pContext->m_nTos = (size_t) pContext->m_Mem[GetInstruction(ip).memory.nIndex];
-                ip++;
-                break;
-
-            case RE_RET_NOMATCH:
-                if (sz == (RECHAR *) pContext->m_Mem[GetInstruction(ip).memory.nIndex])
-                {
-                    // do a return
-                    ip = (size_t) pContext->Pop();
-                }
-                else
-                    ip++;
-                break;
-
-            case RE_ADVANCE:
-                sz = CharTraits::Next(szCurrInput);
-                szCurrInput = sz;
-                if (*sz == '\0')
-                    goto Error;
-                ip = 0;
-                pContext->m_nTos = 0;
-                break;
-
-            case RE_FAIL:
-                goto Error;
-
-            case RE_RANGE:
-            {
-                if (*sz == '\0')
-                {
-                    ip = (size_t) pContext->Pop();
                     break;
-                }
 
-                RECHAR *pBits = reinterpret_cast<RECHAR *>((&m_Instructions[ip]+1));
-                size_t u = CharTraits::GetBitFieldForRangeArrayIndex(sz);
-                if (pBits[u >> 3] & 1 << (u & 0x7))
-                {
-                    ip += InstructionsPerRangeBitField();
-                    ip++;
-                    sz = CharTraits::Next(sz);
-                }
-                else
-                {
-                    ip = (size_t) pContext->Pop();
-                }
-            }
-            break;
-
-            case RE_NOTRANGE:
-            {
-                if (*sz == '\0')
-                {
-                    ip = (size_t) pContext->Pop();
-                    break;
-                }
-
-                RECHAR *pBits = reinterpret_cast<RECHAR *>((&m_Instructions[ip]+1));
-                size_t u = static_cast<size_t>(static_cast<_TUCHAR>(* ((RECHAR *) sz)));
-                if (pBits[u >> 3] & 1 << (u & 0x7))
-                {
-                    ip = (size_t) pContext->Pop();
-                }
-                else
-                {
-                    ip += InstructionsPerRangeBitField();
-                    ip++;
-                    sz = CharTraits::Next(sz);
-                }
-            }
-            break;
-
-            case RE_RANGE_EX:
-            {
-                if (*sz == '\0')
-                {
-                    ip = (size_t) pContext->Pop();
-                    break;
-                }
-
-                BOOL bMatch = FALSE;
-                size_t inEnd = GetInstruction(ip).range.nTarget;
-                ip++;
-
-                while (ip < inEnd)
-                {
-                    if (static_cast<size_t>(static_cast<_TUCHAR>(*sz)) >= GetInstruction(ip).memory.nIndex &&
-                            static_cast<size_t>(static_cast<_TUCHAR>(*sz)) <= GetInstruction(ip+1).memory.nIndex)
+                case RE_SYMBOL:
+                    if (GetInstruction(ip).symbol.nSymbol == static_cast<size_t>(static_cast<_TUCHAR>(*sz)))
                     {
-                        // if we match, we jump to the end
                         sz = CharTraits::Next(sz);
-                        ip = inEnd;
-                        bMatch = TRUE;
+                        ip++;
                     }
                     else
-                    {
-                        ip += 2;
-                    }
-                }
-                if (!bMatch)
-                {
-                    ip = (size_t) pContext->Pop();
-                }
-            }
-            break;
-
-            case RE_NOTRANGE_EX:
-            {
-                if (*sz == '\0')
-                {
-                    ip = (size_t) pContext->Pop();
-                    break;
-                }
-
-                BOOL bMatch = TRUE;
-                size_t inEnd = GetInstruction(ip).range.nTarget;
-                ip++;
-
-                while (ip < inEnd)
-                {
-                    if (static_cast<size_t>(static_cast<_TUCHAR>(*sz)) >= GetInstruction(ip).memory.nIndex &&
-                            static_cast<size_t>(static_cast<_TUCHAR>(*sz)) <= GetInstruction(ip+1).memory.nIndex)
                     {
                         ip = (size_t) pContext->Pop();
-                        bMatch = FALSE;
-                        break;
+                    }
+                    break;
+
+                case RE_ANY:
+                    if (*sz)
+                    {
+                        sz = CharTraits::Next(sz);
+                        ip++;
                     }
                     else
                     {
-                        // if we match, we jump to the end
-                        ip += 2;
+                        ip = (size_t) pContext->Pop();
                     }
-                }
-                if (bMatch)
-                    sz = CharTraits::Next(sz);
-            }
-            break;
+                    break;
 
-            case RE_PREVIOUS:
-            {
-                BOOL bMatch = FALSE;
-                if (m_bCaseSensitive)
-                {
-                    bMatch = !CharTraits::Strncmp(sz, pContext->m_Matches[GetInstruction(ip).prev.nGroup].szStart,
-                                                  pContext->m_Matches[GetInstruction(ip).prev.nGroup].szEnd-pContext->m_Matches[GetInstruction(ip).prev.nGroup].szStart);
-                }
-                else
-                {
-                    bMatch = !CharTraits::Strnicmp(sz, pContext->m_Matches[GetInstruction(ip).prev.nGroup].szStart,
-                                                   pContext->m_Matches[GetInstruction(ip).prev.nGroup].szEnd-pContext->m_Matches[GetInstruction(ip).prev.nGroup].szStart);
-                }
-                if (bMatch)
-                {
-                    sz += pContext->m_Matches[GetInstruction(ip).prev.nGroup].szEnd-pContext->m_Matches[GetInstruction(ip).prev.nGroup].szStart;
+                case RE_GROUP_START:
+                    pContext->m_Matches[GetInstruction(ip).group.nGroup].szStart = sz;
                     ip++;
                     break;
+
+                case RE_GROUP_END:
+                    pContext->m_Matches[GetInstruction(ip).group.nGroup].szEnd = sz;
+                    ip++;
+                    break;
+
+                case RE_PUSH_CHARPOS:
+                    pContext->Push((void *) sz);
+                    ip++;
+                    break;
+
+                case RE_POP_CHARPOS:
+                    sz = (RECHAR *) pContext->Pop();
+                    ip++;
+                    break;
+
+                case RE_CALL:
+                    pContext->Push(ip+1);
+                    ip = GetInstruction(ip).call.nTarget;
+                    break;
+
+                case RE_JMP:
+                    ip = GetInstruction(ip).jmp.nTarget;
+                    break;
+
+                case RE_RETURN:
+                    ip = (size_t) pContext->Pop();
+                    break;
+
+                case RE_PUSH_MEMORY:
+                    pContext->Push((void *)(pContext->m_Mem[GetInstruction(ip).memory.nIndex]));
+                    ip++;
+                    break;
+
+                case RE_POP_MEMORY:
+                    pContext->m_Mem[GetInstruction(ip).memory.nIndex] = pContext->Pop();
+                    ip++;
+                    break;
+
+                case RE_STORE_CHARPOS:
+                    pContext->m_Mem[GetInstruction(ip).memory.nIndex] = (void *) sz;
+                    ip++;
+                    break;
+
+                case RE_GET_CHARPOS:
+                    sz = (RECHAR *) pContext->m_Mem[GetInstruction(ip).memory.nIndex];
+                    ip++;
+                    break;
+
+                case RE_STORE_STACKPOS:
+                    pContext->m_Mem[GetInstruction(ip).memory.nIndex] = (void *) pContext->m_nTos;
+                    ip++;
+                    break;
+
+                case RE_GET_STACKPOS:
+                    pContext->m_nTos = (size_t) pContext->m_Mem[GetInstruction(ip).memory.nIndex];
+                    ip++;
+                    break;
+
+                case RE_RET_NOMATCH:
+                    if (sz == (RECHAR *) pContext->m_Mem[GetInstruction(ip).memory.nIndex])
+                    {
+                        // do a return
+                        ip = (size_t) pContext->Pop();
+                    }
+                    else
+                        ip++;
+                    break;
+
+                case RE_ADVANCE:
+                    sz = CharTraits::Next(szCurrInput);
+                    szCurrInput = sz;
+                    if (*sz == '\0')
+                        goto Error;
+                    ip = 0;
+                    pContext->m_nTos = 0;
+                    break;
+
+                case RE_FAIL:
+                    goto Error;
+
+                case RE_RANGE:
+                {
+                    if (*sz == '\0')
+                    {
+                        ip = (size_t) pContext->Pop();
+                        break;
+                    }
+
+                    RECHAR *pBits = reinterpret_cast<RECHAR *>((&m_Instructions[ip]+1));
+                    size_t u = CharTraits::GetBitFieldForRangeArrayIndex(sz);
+                    if (pBits[u >> 3] & 1 << (u & 0x7))
+                    {
+                        ip += InstructionsPerRangeBitField();
+                        ip++;
+                        sz = CharTraits::Next(sz);
+                    }
+                    else
+                    {
+                        ip = (size_t) pContext->Pop();
+                    }
                 }
-                ip = (size_t) pContext->Pop();
-            }
-            break;
-
-            case RE_MATCH:
-                pContext->m_Match.szEnd = sz;
-                if (!m_bCaseSensitive)
-                    FixupMatchContext(pContext, szIn, szInput);
-                if (ppszEnd)
-                    *ppszEnd = szIn + (sz - szInput);
-                if (szInput != szIn)
-                    free((void *) szInput);
-                return TRUE;
                 break;
 
-            case RE_PUSH_GROUP:
-                pContext->Push((void *) pContext->m_Matches[GetInstruction(ip).group.nGroup].szStart);
-                pContext->Push((void *) pContext->m_Matches[GetInstruction(ip).group.nGroup].szEnd);
-                ip++;
+                case RE_NOTRANGE:
+                {
+                    if (*sz == '\0')
+                    {
+                        ip = (size_t) pContext->Pop();
+                        break;
+                    }
+
+                    RECHAR *pBits = reinterpret_cast<RECHAR *>((&m_Instructions[ip]+1));
+                    size_t u = static_cast<size_t>(static_cast<_TUCHAR>(* ((RECHAR *) sz)));
+                    if (pBits[u >> 3] & 1 << (u & 0x7))
+                    {
+                        ip = (size_t) pContext->Pop();
+                    }
+                    else
+                    {
+                        ip += InstructionsPerRangeBitField();
+                        ip++;
+                        sz = CharTraits::Next(sz);
+                    }
+                }
                 break;
 
-            case RE_POP_GROUP:
-                pContext->m_Matches[GetInstruction(ip).group.nGroup].szEnd = (const RECHAR *) pContext->Pop();
-                pContext->m_Matches[GetInstruction(ip).group.nGroup].szStart = (const RECHAR *) pContext->Pop();
-                ip++;
+                case RE_RANGE_EX:
+                {
+                    if (*sz == '\0')
+                    {
+                        ip = (size_t) pContext->Pop();
+                        break;
+                    }
+
+                    BOOL bMatch = FALSE;
+                    size_t inEnd = GetInstruction(ip).range.nTarget;
+                    ip++;
+
+                    while (ip < inEnd)
+                    {
+                        if (static_cast<size_t>(static_cast<_TUCHAR>(*sz)) >= GetInstruction(ip).memory.nIndex &&
+                                static_cast<size_t>(static_cast<_TUCHAR>(*sz)) <= GetInstruction(ip+1).memory.nIndex)
+                        {
+                            // if we match, we jump to the end
+                            sz = CharTraits::Next(sz);
+                            ip = inEnd;
+                            bMatch = TRUE;
+                        }
+                        else
+                        {
+                            ip += 2;
+                        }
+                    }
+                    if (!bMatch)
+                    {
+                        ip = (size_t) pContext->Pop();
+                    }
+                }
                 break;
 
-            default:
-                ATLASSERT(FALSE);
+                case RE_NOTRANGE_EX:
+                {
+                    if (*sz == '\0')
+                    {
+                        ip = (size_t) pContext->Pop();
+                        break;
+                    }
+
+                    BOOL bMatch = TRUE;
+                    size_t inEnd = GetInstruction(ip).range.nTarget;
+                    ip++;
+
+                    while (ip < inEnd)
+                    {
+                        if (static_cast<size_t>(static_cast<_TUCHAR>(*sz)) >= GetInstruction(ip).memory.nIndex &&
+                                static_cast<size_t>(static_cast<_TUCHAR>(*sz)) <= GetInstruction(ip+1).memory.nIndex)
+                        {
+                            ip = (size_t) pContext->Pop();
+                            bMatch = FALSE;
+                            break;
+                        }
+                        else
+                        {
+                            // if we match, we jump to the end
+                            ip += 2;
+                        }
+                    }
+                    if (bMatch)
+                        sz = CharTraits::Next(sz);
+                }
                 break;
+
+                case RE_PREVIOUS:
+                {
+                    BOOL bMatch = FALSE;
+                    if (m_bCaseSensitive)
+                    {
+                        bMatch = !CharTraits::Strncmp(sz, pContext->m_Matches[GetInstruction(ip).prev.nGroup].szStart,
+                                                      pContext->m_Matches[GetInstruction(ip).prev.nGroup].szEnd-pContext->m_Matches[GetInstruction(ip).prev.nGroup].szStart);
+                    }
+                    else
+                    {
+                        bMatch = !CharTraits::Strnicmp(sz, pContext->m_Matches[GetInstruction(ip).prev.nGroup].szStart,
+                                                       pContext->m_Matches[GetInstruction(ip).prev.nGroup].szEnd-pContext->m_Matches[GetInstruction(ip).prev.nGroup].szStart);
+                    }
+                    if (bMatch)
+                    {
+                        sz += pContext->m_Matches[GetInstruction(ip).prev.nGroup].szEnd-pContext->m_Matches[GetInstruction(ip).prev.nGroup].szStart;
+                        ip++;
+                        break;
+                    }
+                    ip = (size_t) pContext->Pop();
+                }
+                break;
+
+                case RE_MATCH:
+                    pContext->m_Match.szEnd = sz;
+                    if (!m_bCaseSensitive)
+                        FixupMatchContext(pContext, szIn, szInput);
+                    if (ppszEnd)
+                        *ppszEnd = szIn + (sz - szInput);
+                    if (szInput != szIn)
+                        free((void *) szInput);
+                    return TRUE;
+                    break;
+
+                case RE_PUSH_GROUP:
+                    pContext->Push((void *) pContext->m_Matches[GetInstruction(ip).group.nGroup].szStart);
+                    pContext->Push((void *) pContext->m_Matches[GetInstruction(ip).group.nGroup].szEnd);
+                    ip++;
+                    break;
+
+                case RE_POP_GROUP:
+                    pContext->m_Matches[GetInstruction(ip).group.nGroup].szEnd = (const RECHAR *) pContext->Pop();
+                    pContext->m_Matches[GetInstruction(ip).group.nGroup].szStart = (const RECHAR *) pContext->Pop();
+                    ip++;
+                    break;
+
+                default:
+                    ATLASSERT(FALSE);
+                    break;
             }
         }
 
@@ -1781,148 +1781,148 @@ public:
         printf("%08x ", ip);
         switch (GetInstruction(ip).type)
         {
-        case RE_NOP:
-            printf("NOP\n");
-            ip++;
-            break;
+            case RE_NOP:
+                printf("NOP\n");
+                ip++;
+                break;
 
-        case RE_SYMBOL:
-            AtlprintfT<RECHAR>(CAToREChar<RECHAR>("Symbol %c\n"),GetInstruction(ip).symbol.nSymbol);
-            ip++;
-            break;
+            case RE_SYMBOL:
+                AtlprintfT<RECHAR>(CAToREChar<RECHAR>("Symbol %c\n"),GetInstruction(ip).symbol.nSymbol);
+                ip++;
+                break;
 
-        case RE_ANY:
-            printf("Any\n");
-            ip++;
-            break;
+            case RE_ANY:
+                printf("Any\n");
+                ip++;
+                break;
 
-        case RE_RANGE:
-            printf("Range\n");
-            ip++;
-            ip += InstructionsPerRangeBitField();
-            break;
+            case RE_RANGE:
+                printf("Range\n");
+                ip++;
+                ip += InstructionsPerRangeBitField();
+                break;
 
-        case RE_NOTRANGE:
-            printf("NOT Range\n");
-            ip++;
-            ip += InstructionsPerRangeBitField();
-            break;
+            case RE_NOTRANGE:
+                printf("NOT Range\n");
+                ip++;
+                ip += InstructionsPerRangeBitField();
+                break;
 
-        case RE_RANGE_EX:
-            printf("RangeEx %08x\n", GetInstruction(ip).range.nTarget);
-            ip++;
-            break;
+            case RE_RANGE_EX:
+                printf("RangeEx %08x\n", GetInstruction(ip).range.nTarget);
+                ip++;
+                break;
 
-        case RE_NOTRANGE_EX:
-            printf("NotRangeEx %08x\n", GetInstruction(ip).range.nTarget);
-            ip++;
-            break;
+            case RE_NOTRANGE_EX:
+                printf("NotRangeEx %08x\n", GetInstruction(ip).range.nTarget);
+                ip++;
+                break;
 
-        case RE_GROUP_START:
-            printf("Start group %d\n", GetInstruction(ip).group.nGroup);
-            ip++;
-            break;
+            case RE_GROUP_START:
+                printf("Start group %d\n", GetInstruction(ip).group.nGroup);
+                ip++;
+                break;
 
-        case RE_GROUP_END:
-            printf("Group end %d\n", GetInstruction(ip).group.nGroup);
-            ip++;
-            break;
+            case RE_GROUP_END:
+                printf("Group end %d\n", GetInstruction(ip).group.nGroup);
+                ip++;
+                break;
 
-        case RE_PUSH_CHARPOS:
-            printf("Push char pos\n");
-            ip++;
-            break;
+            case RE_PUSH_CHARPOS:
+                printf("Push char pos\n");
+                ip++;
+                break;
 
-        case RE_POP_CHARPOS:
-            printf("Pop char pos\n");
-            ip++;
-            break;
+            case RE_POP_CHARPOS:
+                printf("Pop char pos\n");
+                ip++;
+                break;
 
-        case RE_STORE_CHARPOS:
-            printf("Store char pos %d\n", GetInstruction(ip).memory.nIndex);
-            ip++;
-            break;
+            case RE_STORE_CHARPOS:
+                printf("Store char pos %d\n", GetInstruction(ip).memory.nIndex);
+                ip++;
+                break;
 
-        case RE_GET_CHARPOS:
-            printf("Get char pos %d\n", GetInstruction(ip).memory.nIndex);
-            ip++;
-            break;
+            case RE_GET_CHARPOS:
+                printf("Get char pos %d\n", GetInstruction(ip).memory.nIndex);
+                ip++;
+                break;
 
-        case RE_STORE_STACKPOS:
-            printf("Store stack pos %d\n", GetInstruction(ip).memory.nIndex);
-            ip++;
-            break;
+            case RE_STORE_STACKPOS:
+                printf("Store stack pos %d\n", GetInstruction(ip).memory.nIndex);
+                ip++;
+                break;
 
-        case RE_GET_STACKPOS:
-            printf("Get stack pos %d\n", GetInstruction(ip).memory.nIndex);
-            ip++;
-            break;
+            case RE_GET_STACKPOS:
+                printf("Get stack pos %d\n", GetInstruction(ip).memory.nIndex);
+                ip++;
+                break;
 
-        case RE_CALL:
-            printf("Call %08x\n", GetInstruction(ip).call.nTarget);
-            ip++;
-            break;
+            case RE_CALL:
+                printf("Call %08x\n", GetInstruction(ip).call.nTarget);
+                ip++;
+                break;
 
-        case RE_JMP:
-            printf("Jump %08x\n", GetInstruction(ip).jmp.nTarget);
-            ip++;
-            break;
+            case RE_JMP:
+                printf("Jump %08x\n", GetInstruction(ip).jmp.nTarget);
+                ip++;
+                break;
 
-        case RE_RETURN:
-            printf("return\n");
-            ip++;
-            break;
+            case RE_RETURN:
+                printf("return\n");
+                ip++;
+                break;
 
-        case RE_PUSH_MEMORY:
-            printf("Push memory %08x\n", GetInstruction(ip).memory.nIndex);
-            ip++;
-            break;
+            case RE_PUSH_MEMORY:
+                printf("Push memory %08x\n", GetInstruction(ip).memory.nIndex);
+                ip++;
+                break;
 
-        case RE_POP_MEMORY:
-            printf("Pop memory %08x\n", GetInstruction(ip).memory.nIndex);
-            ip++;
-            break;
+            case RE_POP_MEMORY:
+                printf("Pop memory %08x\n", GetInstruction(ip).memory.nIndex);
+                ip++;
+                break;
 
-        case RE_RET_NOMATCH:
-            printf("Return no match %08x\n", GetInstruction(ip).memory.nIndex);
-            ip++;
-            break;
+            case RE_RET_NOMATCH:
+                printf("Return no match %08x\n", GetInstruction(ip).memory.nIndex);
+                ip++;
+                break;
 
-        case RE_MATCH:
-            printf("END\n");
-            ip++;
-            break;
+            case RE_MATCH:
+                printf("END\n");
+                ip++;
+                break;
 
-        case RE_ADVANCE:
-            printf("ADVANCE\n");
-            ip++;
-            break;
+            case RE_ADVANCE:
+                printf("ADVANCE\n");
+                ip++;
+                break;
 
-        case RE_FAIL:
-            printf("FAIL\n");
-            ip++;
-            break;
+            case RE_FAIL:
+                printf("FAIL\n");
+                ip++;
+                break;
 
-        case RE_PREVIOUS:
-            printf("Prev %d\n", GetInstruction(ip).prev.nGroup);
-            ip++;
-            break;
+            case RE_PREVIOUS:
+                printf("Prev %d\n", GetInstruction(ip).prev.nGroup);
+                ip++;
+                break;
 
-        case RE_PUSH_GROUP:
-            printf("Push group %d\n", GetInstruction(ip).group.nGroup);
-            ip++;
-            break;
+            case RE_PUSH_GROUP:
+                printf("Push group %d\n", GetInstruction(ip).group.nGroup);
+                ip++;
+                break;
 
-        case RE_POP_GROUP:
-            printf("Pop group %d\n", GetInstruction(ip).group.nGroup);
-            ip++;
-            break;
+            case RE_POP_GROUP:
+                printf("Pop group %d\n", GetInstruction(ip).group.nGroup);
+                ip++;
+                break;
 
 
-        default:
-            printf("????\n");
-            ip++;
-            break;
+            default:
+                printf("????\n");
+                ip++;
+                break;
         }
         return ip;
     }

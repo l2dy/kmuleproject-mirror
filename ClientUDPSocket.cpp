@@ -84,29 +84,29 @@ void CClientUDPSocket::OnReceive(int nErrorCode)
 
     BYTE buffer[5000];
 //>>> WiZaRd::IPv6 [Xanatos]
-	SOCKADDR_IN6 sockAddr;
-	int iSockAddrLen = sizeof sockAddr;
-	int nRealLen = ReceiveFrom(buffer, sizeof buffer, (SOCKADDR*)&sockAddr, &iSockAddrLen);
-	_CIPAddress IP;
-	uint16 nPort;
-	IP.FromSA((SOCKADDR*)&sockAddr, iSockAddrLen, &nPort);
-	IP.Convert(CAddress::IPv4); // check if its a mapped IPv4 address
+    SOCKADDR_IN6 sockAddr;
+    int iSockAddrLen = sizeof sockAddr;
+    int nRealLen = ReceiveFrom(buffer, sizeof buffer, (SOCKADDR*)&sockAddr, &iSockAddrLen);
+    _CIPAddress IP;
+    uint16 nPort;
+    IP.FromSA((SOCKADDR*)&sockAddr, iSockAddrLen, &nPort);
+    IP.Convert(CAddress::IPv4); // check if its a mapped IPv4 address
 
-	// IPv6-TODO: Add IPv6 ban list
-	if (IP.Type() != CAddress::IPv4 || !(theApp.ipfilter->IsFiltered(_ntohl(IP.ToIPv4())) || theApp.clientlist->IsBannedClient(_ntohl(IP.ToIPv4()))))
+    // IPv6-TODO: Add IPv6 ban list
+    if (IP.Type() != CAddress::IPv4 || !(theApp.ipfilter->IsFiltered(_ntohl(IP.ToIPv4())) || theApp.clientlist->IsBannedClient(_ntohl(IP.ToIPv4()))))
 //     SOCKADDR_IN sockAddr = {0};
 //     int iSockAddrLen = sizeof sockAddr;
 //     int nRealLen = ReceiveFrom(buffer, sizeof buffer, (SOCKADDR*)&sockAddr, &iSockAddrLen);
 //     if (!(theApp.ipfilter->IsFiltered(sockAddr.sin_addr.S_un.S_addr) || theApp.clientlist->IsBannedClient(sockAddr.sin_addr.S_un.S_addr)))
-//<<< WiZaRd::IPv6 [Xanatos]    
+//<<< WiZaRd::IPv6 [Xanatos]
     {
         BYTE* pBuffer;
         UINT nReceiverVerifyKey;
         UINT nSenderVerifyKey;
 //>>> WiZaRd::IPv6 [Xanatos]
-		int nPacketLen = DecryptReceivedClient(buffer, nRealLen, &pBuffer, IP, &nReceiverVerifyKey, &nSenderVerifyKey);
+        int nPacketLen = DecryptReceivedClient(buffer, nRealLen, &pBuffer, IP, &nReceiverVerifyKey, &nSenderVerifyKey);
         //int nPacketLen = DecryptReceivedClient(buffer, nRealLen, &pBuffer, sockAddr.sin_addr.S_un.S_addr, &nReceiverVerifyKey, &nSenderVerifyKey);
-//<<< WiZaRd::IPv6 [Xanatos]    
+//<<< WiZaRd::IPv6 [Xanatos]
         if (nPacketLen >= 1)
         {
             CString strError;
@@ -114,217 +114,217 @@ void CClientUDPSocket::OnReceive(int nErrorCode)
             {
                 switch (pBuffer[0])
                 {
-                case OP_EMULEPROT:
-                {
-                    if (nPacketLen >= 2)
+                    case OP_EMULEPROT:
+                    {
+                        if (nPacketLen >= 2)
 //>>> WiZaRd::IPv6 [Xanatos]
-						ProcessPacket(pBuffer+2, nPacketLen-2, pBuffer[1], IP, nPort);
+                            ProcessPacket(pBuffer+2, nPacketLen-2, pBuffer[1], IP, nPort);
                         //ProcessPacket(pBuffer+2, nPacketLen-2, pBuffer[1], sockAddr.sin_addr.S_un.S_addr, ntohs(sockAddr.sin_port));
 //<<< WiZaRd::IPv6 [Xanatos]
-                    else
-                        throw CString(_T("eMule packet too short"));
-                    break;
-                }
-                case OP_KADEMLIAPACKEDPROT:
-                {
-                    theStats.AddDownDataOverheadKad(nPacketLen);
-                    if (nPacketLen >= 2)
+                        else
+                            throw CString(_T("eMule packet too short"));
+                        break;
+                    }
+                    case OP_KADEMLIAPACKEDPROT:
                     {
-                        UINT nNewSize = nPacketLen*10+300;
-                        BYTE* unpack = NULL;
-                        uLongf unpackedsize = 0;
-                        int iZLibResult = 0;
-                        do
+                        theStats.AddDownDataOverheadKad(nPacketLen);
+                        if (nPacketLen >= 2)
                         {
-                            delete[] unpack;
-                            unpack = new BYTE[nNewSize];
-                            unpackedsize = nNewSize-2;
-                            iZLibResult = uncompress(unpack+2, &unpackedsize, pBuffer+2, nPacketLen-2);
-                            nNewSize *= 2; // size for the next try if needed
-                        }
-                        while (iZLibResult == Z_BUF_ERROR && nNewSize < 250000);
-
-                        if (iZLibResult == Z_OK)
-                        {
-                            unpack[0] = OP_KADEMLIAHEADER;
-                            unpack[1] = pBuffer[1];
-                            try
-                            {
-//>>> WiZaRd::IPv6 [Xanatos]
-								Kademlia::CKademlia::ProcessPacket(unpack, unpackedsize+2, IP.ToIPv4(), nPort
-									, (Kademlia::CPrefs::GetUDPVerifyKey(_ntohl(IP.ToIPv4())) == nReceiverVerifyKey)
-									, Kademlia::CKadUDPKey(nSenderVerifyKey, theApp.GetPublicIP(false)) );
-                                /*Kademlia::CKademlia::ProcessPacket(unpack, unpackedsize+2, ntohl(sockAddr.sin_addr.S_un.S_addr), ntohs(sockAddr.sin_port)
-                                                                   , (Kademlia::CPrefs::GetUDPVerifyKey(sockAddr.sin_addr.S_un.S_addr) == nReceiverVerifyKey)
-                                                                   , Kademlia::CKadUDPKey(nSenderVerifyKey, theApp.GetPublicIP(false)));*/
-//<<< WiZaRd::IPv6 [Xanatos]
-                            }
-                            catch (...)
+                            UINT nNewSize = nPacketLen*10+300;
+                            BYTE* unpack = NULL;
+                            uLongf unpackedsize = 0;
+                            int iZLibResult = 0;
+                            do
                             {
                                 delete[] unpack;
-                                throw;
+                                unpack = new BYTE[nNewSize];
+                                unpackedsize = nNewSize-2;
+                                iZLibResult = uncompress(unpack+2, &unpackedsize, pBuffer+2, nPacketLen-2);
+                                nNewSize *= 2; // size for the next try if needed
                             }
+                            while (iZLibResult == Z_BUF_ERROR && nNewSize < 250000);
+
+                            if (iZLibResult == Z_OK)
+                            {
+                                unpack[0] = OP_KADEMLIAHEADER;
+                                unpack[1] = pBuffer[1];
+                                try
+                                {
+//>>> WiZaRd::IPv6 [Xanatos]
+                                    Kademlia::CKademlia::ProcessPacket(unpack, unpackedsize+2, IP.ToIPv4(), nPort
+                                                                       , (Kademlia::CPrefs::GetUDPVerifyKey(_ntohl(IP.ToIPv4())) == nReceiverVerifyKey)
+                                                                       , Kademlia::CKadUDPKey(nSenderVerifyKey, theApp.GetPublicIP(false)));
+                                    /*Kademlia::CKademlia::ProcessPacket(unpack, unpackedsize+2, ntohl(sockAddr.sin_addr.S_un.S_addr), ntohs(sockAddr.sin_port)
+                                                                       , (Kademlia::CPrefs::GetUDPVerifyKey(sockAddr.sin_addr.S_un.S_addr) == nReceiverVerifyKey)
+                                                                       , Kademlia::CKadUDPKey(nSenderVerifyKey, theApp.GetPublicIP(false)));*/
+//<<< WiZaRd::IPv6 [Xanatos]
+                                }
+                                catch (...)
+                                {
+                                    delete[] unpack;
+                                    throw;
+                                }
+                            }
+                            else
+                            {
+                                delete[] unpack;
+                                CString strError;
+                                strError.Format(_T("Failed to uncompress Kad packet: zip error: %d (%hs)"), iZLibResult, zError(iZLibResult));
+                                throw strError;
+                            }
+                            delete[] unpack;
                         }
                         else
-                        {
-                            delete[] unpack;
-                            CString strError;
-                            strError.Format(_T("Failed to uncompress Kad packet: zip error: %d (%hs)"), iZLibResult, zError(iZLibResult));
-                            throw strError;
-                        }
-                        delete[] unpack;
+                            throw CString(_T("Kad packet (compressed) too short"));
+                        break;
                     }
-                    else
-                        throw CString(_T("Kad packet (compressed) too short"));
-                    break;
-                }
-                case OP_KADEMLIAHEADER:
-                {
-                    theStats.AddDownDataOverheadKad(nPacketLen);
-                    if (nPacketLen >= 2)
+                    case OP_KADEMLIAHEADER:
                     {
+                        theStats.AddDownDataOverheadKad(nPacketLen);
+                        if (nPacketLen >= 2)
+                        {
 //>>> WiZaRd::ClientAnalyzer
 //>>> zz_fly::Bad Shareaza detection
 //note: a 'real' eMule v0.48a cannot send a packet with KADEMLIA_FIREWALLED2_REQ tag
-                        byte byOpcode = pBuffer[1];
-                        if (byOpcode == KADEMLIA_FIREWALLED2_REQ)
-                        {
-//>>> WiZaRd::IPv6 [Xanatos]
-							CUpDownClient* client = theApp.clientlist->FindClientByIP_KadPort(IP, nPort);
-                            //CUpDownClient* client = theApp.clientlist->FindClientByIP_KadPort(sockAddr.sin_addr.S_un.S_addr, ntohs(sockAddr.sin_port));
-//<<< WiZaRd::IPv6 [Xanatos]
-                            if (client != NULL && client->GetClientSoft() == SO_EMULE && client->GetVersion() != 0 && client->GetVersion() < MAKE_CLIENT_VERSION(0, 49, 0))
+                            byte byOpcode = pBuffer[1];
+                            if (byOpcode == KADEMLIA_FIREWALLED2_REQ)
                             {
-                                if (client->GetAntiLeechData())
-                                    client->GetAntiLeechData()->SetBadForThisSession(AT_MODTHIEF, L"Vagaa mod (fake KAD version)");
-                                break;
+//>>> WiZaRd::IPv6 [Xanatos]
+                                CUpDownClient* client = theApp.clientlist->FindClientByIP_KadPort(IP, nPort);
+                                //CUpDownClient* client = theApp.clientlist->FindClientByIP_KadPort(sockAddr.sin_addr.S_un.S_addr, ntohs(sockAddr.sin_port));
+//<<< WiZaRd::IPv6 [Xanatos]
+                                if (client != NULL && client->GetClientSoft() == SO_EMULE && client->GetVersion() != 0 && client->GetVersion() < MAKE_CLIENT_VERSION(0, 49, 0))
+                                {
+                                    if (client->GetAntiLeechData())
+                                        client->GetAntiLeechData()->SetBadForThisSession(AT_MODTHIEF, L"Vagaa mod (fake KAD version)");
+                                    break;
+                                }
                             }
-                        }
 //<<< zz_fly::Bad Shareaza detection
 //<<< WiZaRd::ClientAnalyzer
 //>>> WiZaRd::IPv6 [Xanatos]
-						Kademlia::CKademlia::ProcessPacket(pBuffer, nPacketLen, IP.ToIPv4(), nPort
-							, (Kademlia::CPrefs::GetUDPVerifyKey(_ntohl(IP.ToIPv4())) == nReceiverVerifyKey)
-							, Kademlia::CKadUDPKey(nSenderVerifyKey, theApp.GetPublicIP(false)) );
-                        /*Kademlia::CKademlia::ProcessPacket(pBuffer, nPacketLen, ntohl(sockAddr.sin_addr.S_un.S_addr), ntohs(sockAddr.sin_port)
-                                                           , (Kademlia::CPrefs::GetUDPVerifyKey(sockAddr.sin_addr.S_un.S_addr) == nReceiverVerifyKey)
-                                                           , Kademlia::CKadUDPKey(nSenderVerifyKey, theApp.GetPublicIP(false)));*/
+                            Kademlia::CKademlia::ProcessPacket(pBuffer, nPacketLen, IP.ToIPv4(), nPort
+                                                               , (Kademlia::CPrefs::GetUDPVerifyKey(_ntohl(IP.ToIPv4())) == nReceiverVerifyKey)
+                                                               , Kademlia::CKadUDPKey(nSenderVerifyKey, theApp.GetPublicIP(false)));
+                            /*Kademlia::CKademlia::ProcessPacket(pBuffer, nPacketLen, ntohl(sockAddr.sin_addr.S_un.S_addr), ntohs(sockAddr.sin_port)
+                                                               , (Kademlia::CPrefs::GetUDPVerifyKey(sockAddr.sin_addr.S_un.S_addr) == nReceiverVerifyKey)
+                                                               , Kademlia::CKadUDPKey(nSenderVerifyKey, theApp.GetPublicIP(false)));*/
 //<<< WiZaRd::IPv6 [Xanatos]
-                    }
-                    else
-                        throw CString(_T("Kad packet too short"));
-                    break;
-                }
-//>>> WiZaRd::ModProt
-                case OP_MODPROT_PACKED:
-                {
-                    theStats.AddDownDataOverheadOther(nPacketLen);
-                    if (nPacketLen >= 2)
-                    {
-                        UINT nNewSize = nPacketLen*10+300;
-                        BYTE* unpack = NULL;
-                        uLongf unpackedsize = 0;
-                        int iZLibResult = 0;
-                        do
-                        {
-                            delete[] unpack;
-                            unpack = new BYTE[nNewSize];
-                            unpackedsize = nNewSize-2;
-                            iZLibResult = uncompress(unpack+2, &unpackedsize, pBuffer+2, nPacketLen-2);
-                            nNewSize *= 2; // size for the next try if needed
                         }
-                        while (iZLibResult == Z_BUF_ERROR && nNewSize < 250000);
-
-                        if (iZLibResult == Z_OK)
+                        else
+                            throw CString(_T("Kad packet too short"));
+                        break;
+                    }
+//>>> WiZaRd::ModProt
+                    case OP_MODPROT_PACKED:
+                    {
+                        theStats.AddDownDataOverheadOther(nPacketLen);
+                        if (nPacketLen >= 2)
                         {
-                            unpack[0] = OP_MODPROT;
-                            unpack[1] = pBuffer[1];
-                            try
+                            UINT nNewSize = nPacketLen*10+300;
+                            BYTE* unpack = NULL;
+                            uLongf unpackedsize = 0;
+                            int iZLibResult = 0;
+                            do
                             {
-//>>> WiZaRd::IPv6 [Xanatos]
-								ProcessModPacket(unpack+2, unpackedsize, unpack[1], IP, nPort);
-                                //ProcessModPacket(unpack+2, unpackedsize, unpack[1], sockAddr.sin_addr.S_un.S_addr, ntohs(sockAddr.sin_port));
-//<<< WiZaRd::IPv6 [Xanatos]
+                                delete[] unpack;
+                                unpack = new BYTE[nNewSize];
+                                unpackedsize = nNewSize-2;
+                                iZLibResult = uncompress(unpack+2, &unpackedsize, pBuffer+2, nPacketLen-2);
+                                nNewSize *= 2; // size for the next try if needed
                             }
-                            catch (...)
+                            while (iZLibResult == Z_BUF_ERROR && nNewSize < 250000);
+
+                            if (iZLibResult == Z_OK)
+                            {
+                                unpack[0] = OP_MODPROT;
+                                unpack[1] = pBuffer[1];
+                                try
+                                {
+//>>> WiZaRd::IPv6 [Xanatos]
+                                    ProcessModPacket(unpack+2, unpackedsize, unpack[1], IP, nPort);
+                                    //ProcessModPacket(unpack+2, unpackedsize, unpack[1], sockAddr.sin_addr.S_un.S_addr, ntohs(sockAddr.sin_port));
+//<<< WiZaRd::IPv6 [Xanatos]
+                                }
+                                catch (...)
+                                {
+                                    delete[] unpack;
+                                    unpack = NULL;
+                                    throw;
+                                }
+                            }
+                            else
                             {
                                 delete[] unpack;
                                 unpack = NULL;
-                                throw;
+                                CString strError = L"";
+                                strError.Format(L"Failed to uncompress Mod packet: zip error: %d (%hs)", iZLibResult, zError(iZLibResult));
+                                throw strError;
+                            }
+                            delete[] unpack;
+                            unpack = NULL;
+                        }
+                        else
+                            throw CString(L"Mod packet (compressed) too short");
+                        break;
+                    }
+                    case OP_MODPROT:
+                    {
+                        theStats.AddDownDataOverheadOther(nPacketLen);
+                        if (nPacketLen >= 2)
+//>>> WiZaRd::IPv6 [Xanatos]
+                            ProcessModPacket(pBuffer+2, nPacketLen-2, pBuffer[1], IP, nPort);
+                        //ProcessModPacket(pBuffer+2, nPacketLen-2, pBuffer[1], sockAddr.sin_addr.S_un.S_addr, ntohs(sockAddr.sin_port));
+//<<< WiZaRd::IPv6 [Xanatos]
+                        else
+                            throw CString(L"Mod packet too short");
+                        break;
+                    }
+//<<< WiZaRd::ModProt
+//>>> WiZaRd::NatTraversal [Xanatos]
+                    case OP_UDPRESERVEDPROT2:
+                    {
+                        // Note: here we don't have opcodes, just [uint8 - Prot][n bytes - data]
+                        if (nPacketLen >= 2)
+                        {
+                            //#ifdef USE_IP_6 // NEO: IP6 - [IPv6]
+                            //if(bEncrypted && !IsObfusicating(IP, nPort))
+                            //	SetConnectionEncryption(IP, nPort, true);
+                            //#else // NEO: IP6 END
+                            //if(bEncrypted && !IsObfusicating(sockAddr.sin_addr.S_un.S_addr, ntohs(sockAddr.sin_port)))
+                            //	SetConnectionEncryption(sockAddr.sin_addr.S_un.S_addr, ntohs(sockAddr.sin_port), true);
+                            //#endif
+                            if (pBuffer[1] == 0x00) // UTP Frame
+                            {
+                                //theStats.AddUpDataOverheadOther(0); // its counted as TCP elseware
+                                CUtpSocket::ProcessUtpPacket(pBuffer+2, nPacketLen-2, (struct sockaddr*)&sockAddr, iSockAddrLen);
+                            }
+                            else if (pBuffer[1] == 0xFF) // Key Frame
+                            {
+                                int size = nPacketLen-2;
+                                const BYTE* packet = pBuffer+2;
+                                if (size < + 16)
+                                    throw CString(_T("Key packet too short"));
+
+                                theStats.AddUpDataOverheadOther(size);
+//>>> WiZaRd::IPv6 [Xanatos]
+                                SetConnectionEncryption(IP, nPort, packet != NULL);
+                                //SetConnectionEncryption(sockAddr.sin_addr.S_un.S_addr, ntohs(sockAddr.sin_port), packet);
+//<<< WiZaRd::IPv6 [Xanatos]
                             }
                         }
                         else
-                        {
-                            delete[] unpack;
-                            unpack = NULL;
-                            CString strError = L"";
-                            strError.Format(L"Failed to uncompress Mod packet: zip error: %d (%hs)", iZLibResult, zError(iZLibResult));
-                            throw strError;
-                        }
-                        delete[] unpack;
-                        unpack = NULL;
+                            throw CString(_T("Utp packet too short"));
+                        break;
                     }
-                    else
-                        throw CString(L"Mod packet (compressed) too short");
-                    break;
-                }
-                case OP_MODPROT:
-                {
-                    theStats.AddDownDataOverheadOther(nPacketLen);
-                    if (nPacketLen >= 2)
-//>>> WiZaRd::IPv6 [Xanatos]
-						ProcessModPacket(pBuffer+2, nPacketLen-2, pBuffer[1], IP, nPort);
-                        //ProcessModPacket(pBuffer+2, nPacketLen-2, pBuffer[1], sockAddr.sin_addr.S_un.S_addr, ntohs(sockAddr.sin_port));
-//<<< WiZaRd::IPv6 [Xanatos]
-                    else
-                        throw CString(L"Mod packet too short");
-                    break;
-                }
-//<<< WiZaRd::ModProt
-//>>> WiZaRd::NatTraversal [Xanatos]
-				case OP_UDPRESERVEDPROT2:
-				{
-					// Note: here we don't have opcodes, just [uint8 - Prot][n bytes - data]
-					if (nPacketLen >= 2)
-					{
-						//#ifdef USE_IP_6 // NEO: IP6 - [IPv6]
-						//if(bEncrypted && !IsObfusicating(IP, nPort))
-						//	SetConnectionEncryption(IP, nPort, true);
-						//#else // NEO: IP6 END
-						//if(bEncrypted && !IsObfusicating(sockAddr.sin_addr.S_un.S_addr, ntohs(sockAddr.sin_port)))
-						//	SetConnectionEncryption(sockAddr.sin_addr.S_un.S_addr, ntohs(sockAddr.sin_port), true);
-						//#endif
-						if(pBuffer[1] == 0x00) // UTP Frame
-						{
-							//theStats.AddUpDataOverheadOther(0); // its counted as TCP elseware
-							CUtpSocket::ProcessUtpPacket(pBuffer+2, nPacketLen-2, (struct sockaddr*)&sockAddr, iSockAddrLen);
-						}
-						else if(pBuffer[1] == 0xFF) // Key Frame
-						{
-							int size = nPacketLen-2;
-							const BYTE* packet = pBuffer+2;
-							if(size < + 16)
-								throw CString(_T("Key packet too short"));
-
-							theStats.AddUpDataOverheadOther(size);
-//>>> WiZaRd::IPv6 [Xanatos]
-							SetConnectionEncryption(IP, nPort, packet != NULL);
-							//SetConnectionEncryption(sockAddr.sin_addr.S_un.S_addr, ntohs(sockAddr.sin_port), packet);
-//<<< WiZaRd::IPv6 [Xanatos]
-						}
-					}
-					else
-						throw CString(_T("Utp packet too short"));
-					break;
-				}
 //<<< WiZaRd::NatTraversal [Xanatos]
 
-                default:
-                {
-                    CString strError;
-                    strError.Format(_T("Unknown protocol 0x%02x"), pBuffer[0]);
-                    throw strError;
-                }
+                    default:
+                    {
+                        CString strError;
+                        strError.Format(_T("Unknown protocol 0x%02x"), pBuffer[0]);
+                        throw strError;
+                    }
                 }
             }
             catch (CFileException* error)
@@ -392,8 +392,8 @@ void CClientUDPSocket::OnReceive(int nErrorCode)
             {
                 CString strClientInfo;
 //>>> WiZaRd::IPv6 [Xanatos]
-				if (iSockAddrLen > 0 && !IP.IsNull())
-					strClientInfo.Format(_T(" from %s:%u"), ipstr(IP), nPort);
+                if (iSockAddrLen > 0 && !IP.IsNull())
+                    strClientInfo.Format(_T(" from %s:%u"), ipstr(IP), nPort);
                 /*if (iSockAddrLen > 0 && sockAddr.sin_addr.S_un.S_addr != 0 && sockAddr.sin_addr.S_un.S_addr != INADDR_NONE)
                     strClientInfo.Format(_T(" from %s:%u"), ipstr(sockAddr.sin_addr), ntohs(sockAddr.sin_port));*/
 //<<< WiZaRd::IPv6 [Xanatos]
@@ -410,290 +410,290 @@ bool CClientUDPSocket::ProcessPacket(const BYTE* packet, UINT size, uint8 opcode
 {
     switch (opcode)
     {
-    case OP_REASKCALLBACKUDP:
-    {
-        if (thePrefs.GetDebugClientUDPLevel() > 0)
-            DebugRecv("OP_ReaskCallbackUDP", NULL, NULL, ip);
-        theStats.AddDownDataOverheadOther(size);
-        CUpDownClient* buddy = theApp.clientlist->GetBuddy();
-        if (buddy)
+        case OP_REASKCALLBACKUDP:
         {
-            if (size < 17 || buddy->socket == NULL)
-                break;
-            if (!md4cmp(packet, buddy->GetBuddyID()))
+            if (thePrefs.GetDebugClientUDPLevel() > 0)
+                DebugRecv("OP_ReaskCallbackUDP", NULL, NULL, ip);
+            theStats.AddDownDataOverheadOther(size);
+            CUpDownClient* buddy = theApp.clientlist->GetBuddy();
+            if (buddy)
             {
+                if (size < 17 || buddy->socket == NULL)
+                    break;
+                if (!md4cmp(packet, buddy->GetBuddyID()))
+                {
 //>>> WiZaRd::IPv6 [Xanatos]
-				byte head[4+16+2];
-				int len = 6;
-				if(ip.Type() == CAddress::IPv6)
-				{
-					len += 16;
-					PokeUInt32(head, 0);
-					memcpy(head+4, ip.Data(), 16);
-					PokeUInt16(head+20, port);
-				}
-				else
-				{
-					PokeUInt32(head, _ntohl(ip.ToIPv4()));
-					PokeUInt16(head+4, port);
-				}
+                    byte head[4+16+2];
+                    int len = 6;
+                    if (ip.Type() == CAddress::IPv6)
+                    {
+                        len += 16;
+                        PokeUInt32(head, 0);
+                        memcpy(head+4, ip.Data(), 16);
+                        PokeUInt16(head+20, port);
+                    }
+                    else
+                    {
+                        PokeUInt32(head, _ntohl(ip.ToIPv4()));
+                        PokeUInt16(head+4, port);
+                    }
 
-				Packet* response = new Packet(OP_EMULEPROT);
-				response->opcode = OP_REASKCALLBACKTCP;
-				response->pBuffer = new char[len + size-16];
-				memcpy(response->pBuffer, head, len);
-				memcpy(response->pBuffer + len, packet+16, size-16);
-				response->size = len + size-16;
-                /*PokeUInt32(const_cast<BYTE*>(packet)+10, ip);
-                PokeUInt16(const_cast<BYTE*>(packet)+14, port);
-                Packet* response = new Packet(OP_EMULEPROT);
-                response->opcode = OP_REASKCALLBACKTCP;
-                response->pBuffer = new char[size];
-                memcpy(response->pBuffer, packet+10, size-10);
-                response->size = size-10;*/
+                    Packet* response = new Packet(OP_EMULEPROT);
+                    response->opcode = OP_REASKCALLBACKTCP;
+                    response->pBuffer = new char[len + size-16];
+                    memcpy(response->pBuffer, head, len);
+                    memcpy(response->pBuffer + len, packet+16, size-16);
+                    response->size = len + size-16;
+                    /*PokeUInt32(const_cast<BYTE*>(packet)+10, ip);
+                    PokeUInt16(const_cast<BYTE*>(packet)+14, port);
+                    Packet* response = new Packet(OP_EMULEPROT);
+                    response->opcode = OP_REASKCALLBACKTCP;
+                    response->pBuffer = new char[size];
+                    memcpy(response->pBuffer, packet+10, size-10);
+                    response->size = size-10;*/
 //<<< WiZaRd::IPv6 [Xanatos]
 
-                if (thePrefs.GetDebugClientTCPLevel() > 0)
-                    DebugSend("OP__ReaskCallbackTCP", buddy);
-                theStats.AddUpDataOverheadFileRequest(response->size);
-                buddy->SendPacket(response, true);
+                    if (thePrefs.GetDebugClientTCPLevel() > 0)
+                        DebugSend("OP__ReaskCallbackTCP", buddy);
+                    theStats.AddUpDataOverheadFileRequest(response->size);
+                    buddy->SendPacket(response, true);
+                }
             }
-        }
-        break;
-    }
-    case OP_REASKFILEPING:
-    {
-        theStats.AddDownDataOverheadFileRequest(size);
-        CSafeMemFile data_in(packet, size);
-        uchar reqfilehash[16];
-        data_in.ReadHash16(reqfilehash);
-        CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
-
-        bool bSenderMultipleIpUnknown = false;
-        CUpDownClient* sender = theApp.uploadqueue->GetWaitingClientByIP_UDP(ip, port, true, &bSenderMultipleIpUnknown);
-//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-		if (!reqfile && sender && sender->SupportsSCT()) // No FNF for existing files when using SCT
-			reqfile = theApp.downloadqueue->GetFileByID(reqfilehash);
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
-        if (!reqfile)
-        {
-            if (thePrefs.GetDebugClientUDPLevel() > 0)
-            {
-                DebugRecv("OP_ReaskFilePing", NULL, reqfilehash, ip);
-                DebugSend("OP__FileNotFound", NULL);
-            }
-
-            Packet* response = new Packet(OP_FILENOTFOUND,0,OP_EMULEPROT);
-            theStats.AddUpDataOverheadFileRequest(response->size);
-            if (sender != NULL)
-                SendPacket(response, ip, port, sender->ShouldReceiveCryptUDPPackets(), sender->GetUserHash(), false, 0);
-            else
-                SendPacket(response, ip, port, false, NULL, false, 0);
             break;
         }
-        if (sender)
+        case OP_REASKFILEPING:
         {
-            if (thePrefs.GetDebugClientUDPLevel() > 0)
-                DebugRecv("OP_ReaskFilePing", sender, reqfilehash);
+            theStats.AddDownDataOverheadFileRequest(size);
+            CSafeMemFile data_in(packet, size);
+            uchar reqfilehash[16];
+            data_in.ReadHash16(reqfilehash);
+            CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
+
+            bool bSenderMultipleIpUnknown = false;
+            CUpDownClient* sender = theApp.uploadqueue->GetWaitingClientByIP_UDP(ip, port, true, &bSenderMultipleIpUnknown);
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+            if (!reqfile && sender && sender->SupportsSCT()) // No FNF for existing files when using SCT
+                reqfile = theApp.downloadqueue->GetFileByID(reqfilehash);
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+            if (!reqfile)
+            {
+                if (thePrefs.GetDebugClientUDPLevel() > 0)
+                {
+                    DebugRecv("OP_ReaskFilePing", NULL, reqfilehash, ip);
+                    DebugSend("OP__FileNotFound", NULL);
+                }
+
+                Packet* response = new Packet(OP_FILENOTFOUND,0,OP_EMULEPROT);
+                theStats.AddUpDataOverheadFileRequest(response->size);
+                if (sender != NULL)
+                    SendPacket(response, ip, port, sender->ShouldReceiveCryptUDPPackets(), sender->GetUserHash(), false, 0);
+                else
+                    SendPacket(response, ip, port, false, NULL, false, 0);
+                break;
+            }
+            if (sender)
+            {
+                if (thePrefs.GetDebugClientUDPLevel() > 0)
+                    DebugRecv("OP_ReaskFilePing", sender, reqfilehash);
 
 //>>> WiZaRd::ClientAnalyzer
-            if (sender->DownloadingAndUploadingFilesAreEqual(reqfile))
-            {
-                if (sender->GetAntiLeechData())
-                    sender->GetAntiLeechData()->SetBadForThisSession(AT_FILEFAKER);
-                break; //don't answer them...
-            }
+                if (sender->DownloadingAndUploadingFilesAreEqual(reqfile))
+                {
+                    if (sender->GetAntiLeechData())
+                        sender->GetAntiLeechData()->SetBadForThisSession(AT_FILEFAKER);
+                    break; //don't answer them...
+                }
 //<<< WiZaRd::ClientAnalyzer
 
-            //Make sure we are still thinking about the same file
-            if (md4cmp(reqfilehash, sender->GetUploadFileID()) == 0)
-            {
-                sender->AddAskedCount();
-                sender->SetLastUpRequest();
-                //I messed up when I first added extended info to UDP
-                //I should have originally used the entire ProcessExtenedInfo the first time.
-                //So now I am forced to check UDPVersion to see if we are sending all the extended info.
-                //For now on, we should not have to change anything here if we change
-                //anything to the extended info data as this will be taken care of in ProcessExtendedInfo()
-                //Update extended info.
-                if (sender->GetUDPVersion() > 3)
-                    sender->ProcessExtendedInfo(&data_in, reqfile, true);
-                //Update our complete source counts.
-                else if (sender->GetUDPVersion() > 2)
+                //Make sure we are still thinking about the same file
+                if (md4cmp(reqfilehash, sender->GetUploadFileID()) == 0)
                 {
-                    uint16 nCompleteCountLast = sender->GetUpCompleteSourcesCount();
-                    uint16 nCompleteCountNew = data_in.ReadUInt16();
-                    sender->SetUpCompleteSourcesCount(nCompleteCountNew);
-                    if (nCompleteCountLast != nCompleteCountNew)
-                        reqfile->UpdatePartsInfo();
-                }
-                CSafeMemFile data_out(128);
-                if (sender->GetUDPVersion() > 3)
-                    reqfile->WriteSafePartStatus(&data_out, sender, true); //>>> WiZaRd::Intelligent SOTN
-                data_out.WriteUInt16((uint16)(theApp.uploadqueue->GetWaitingPosition(sender)));
-                if (thePrefs.GetDebugClientUDPLevel() > 0)
-                    DebugSend("OP__ReaskAck", sender);
-                Packet* response = new Packet(&data_out, OP_EMULEPROT);
-                response->opcode = OP_REASKACK;
-                theStats.AddUpDataOverheadFileRequest(response->size);
-                SendPacket(response, ip, port, sender->ShouldReceiveCryptUDPPackets(), sender->GetUserHash(), false, 0);
-            }
-            else
-            {
-                DebugLogError(_T("Client UDP socket; ReaskFilePing; reqfile does not match"));
-                TRACE(_T("reqfile:         %s\n"), DbgGetFileInfo(reqfile->GetFileHash()));
-                TRACE(_T("sender->GetRequestFile(): %s\n"), sender->GetRequestFile() ? DbgGetFileInfo(sender->GetRequestFile()->GetFileHash()) : _T("(null)"));
-            }
-        }
-        else
-        {
-            if (thePrefs.GetDebugClientUDPLevel() > 0)
-                DebugRecv("OP_ReaskFilePing", NULL, reqfilehash, ip);
-            // Don't answer him. We probably have him on our queue already, but can't locate him. Force him to establish a TCP connection
-            if (!bSenderMultipleIpUnknown)
-            {
-                if (((UINT)theApp.uploadqueue->GetWaitingUserCount() + 50) > thePrefs.GetQueueSize())
-                {
+                    sender->AddAskedCount();
+                    sender->SetLastUpRequest();
+                    //I messed up when I first added extended info to UDP
+                    //I should have originally used the entire ProcessExtenedInfo the first time.
+                    //So now I am forced to check UDPVersion to see if we are sending all the extended info.
+                    //For now on, we should not have to change anything here if we change
+                    //anything to the extended info data as this will be taken care of in ProcessExtendedInfo()
+                    //Update extended info.
+                    if (sender->GetUDPVersion() > 3)
+                        sender->ProcessExtendedInfo(&data_in, reqfile, true);
+                    //Update our complete source counts.
+                    else if (sender->GetUDPVersion() > 2)
+                    {
+                        uint16 nCompleteCountLast = sender->GetUpCompleteSourcesCount();
+                        uint16 nCompleteCountNew = data_in.ReadUInt16();
+                        sender->SetUpCompleteSourcesCount(nCompleteCountNew);
+                        if (nCompleteCountLast != nCompleteCountNew)
+                            reqfile->UpdatePartsInfo();
+                    }
+                    CSafeMemFile data_out(128);
+                    if (sender->GetUDPVersion() > 3)
+                        reqfile->WriteSafePartStatus(&data_out, sender, true); //>>> WiZaRd::Intelligent SOTN
+                    data_out.WriteUInt16((uint16)(theApp.uploadqueue->GetWaitingPosition(sender)));
                     if (thePrefs.GetDebugClientUDPLevel() > 0)
-                        DebugSend("OP__QueueFull", NULL);
-                    Packet* response = new Packet(OP_QUEUEFULL,0,OP_EMULEPROT);
+                        DebugSend("OP__ReaskAck", sender);
+                    Packet* response = new Packet(&data_out, OP_EMULEPROT);
+                    response->opcode = OP_REASKACK;
                     theStats.AddUpDataOverheadFileRequest(response->size);
-                    SendPacket(response, ip, port, false, NULL, false, 0); // we cannot answer this one encrypted since we dont know this client
+                    SendPacket(response, ip, port, sender->ShouldReceiveCryptUDPPackets(), sender->GetUserHash(), false, 0);
+                }
+                else
+                {
+                    DebugLogError(_T("Client UDP socket; ReaskFilePing; reqfile does not match"));
+                    TRACE(_T("reqfile:         %s\n"), DbgGetFileInfo(reqfile->GetFileHash()));
+                    TRACE(_T("sender->GetRequestFile(): %s\n"), sender->GetRequestFile() ? DbgGetFileInfo(sender->GetRequestFile()->GetFileHash()) : _T("(null)"));
                 }
             }
             else
             {
-                DebugLogWarning(_T("UDP Packet received - multiple clients with the same IP but different UDP port found. Possible UDP Portmapping problem, enforcing TCP connection. IP: %s, Port: %u"), ipstr(ip), port);
+                if (thePrefs.GetDebugClientUDPLevel() > 0)
+                    DebugRecv("OP_ReaskFilePing", NULL, reqfilehash, ip);
+                // Don't answer him. We probably have him on our queue already, but can't locate him. Force him to establish a TCP connection
+                if (!bSenderMultipleIpUnknown)
+                {
+                    if (((UINT)theApp.uploadqueue->GetWaitingUserCount() + 50) > thePrefs.GetQueueSize())
+                    {
+                        if (thePrefs.GetDebugClientUDPLevel() > 0)
+                            DebugSend("OP__QueueFull", NULL);
+                        Packet* response = new Packet(OP_QUEUEFULL,0,OP_EMULEPROT);
+                        theStats.AddUpDataOverheadFileRequest(response->size);
+                        SendPacket(response, ip, port, false, NULL, false, 0); // we cannot answer this one encrypted since we dont know this client
+                    }
+                }
+                else
+                {
+                    DebugLogWarning(_T("UDP Packet received - multiple clients with the same IP but different UDP port found. Possible UDP Portmapping problem, enforcing TCP connection. IP: %s, Port: %u"), ipstr(ip), port);
+                }
             }
-        }
-        break;
-    }
-    case OP_QUEUEFULL:
-    {
-        theStats.AddDownDataOverheadFileRequest(size);
-        CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP_UDP(ip, port, true);
-        if (thePrefs.GetDebugClientUDPLevel() > 0)
-            DebugRecv("OP_QueueFull", sender, NULL, ip);
-        if (sender && sender->UDPPacketPending())
-        {
-            sender->SetRemoteQueueFull(true);
-            sender->UDPReaskACK(0);
-        }
-        else if (sender != NULL)
-            DebugLogError(_T("Received UDP Packet (OP_QUEUEFULL) which was not requested (pendingflag == false); Ignored packet - %s"), sender->DbgGetClientInfo());
-        break;
-    }
-    case OP_REASKACK:
-    {
-        theStats.AddDownDataOverheadFileRequest(size);
-        CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP_UDP(ip, port, true);
-        if (thePrefs.GetDebugClientUDPLevel() > 0)
-            DebugRecv("OP_ReaskAck", sender, NULL, ip);
-        if (sender && sender->UDPPacketPending())
-        {
-            CSafeMemFile data_in(packet, size);
-            if (sender->GetUDPVersion() > 3)
-            {
-                sender->ProcessFileStatus(true, &data_in, sender->GetRequestFile());
-            }
-            uint16 nRank = data_in.ReadUInt16();
-            sender->SetRemoteQueueFull(false);
-            sender->UDPReaskACK(nRank);
-            sender->AddAskedCountDown();
-        }
-        else if (sender != NULL)
-            DebugLogError(_T("Received UDP Packet (OP_REASKACK) which was not requested (pendingflag == false); Ignored packet - %s"), sender->DbgGetClientInfo());
-
-        break;
-    }
-    case OP_FILENOTFOUND:
-    {
-        theStats.AddDownDataOverheadFileRequest(size);
-        CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP_UDP(ip, port, true);
-        if (thePrefs.GetDebugClientUDPLevel() > 0)
-            DebugRecv("OP_FileNotFound", sender, NULL, ip);
-        if (sender && sender->UDPPacketPending())
-        {
-            sender->UDPReaskFNF(); // may delete 'sender'!
-            sender = NULL;
-        }
-        else if (sender != NULL)
-            DebugLogError(_T("Received UDP Packet (OP_FILENOTFOUND) which was not requested (pendingflag == false); Ignored packet - %s"), sender->DbgGetClientInfo());
-
-        break;
-    }
-    case OP_PORTTEST:
-    {
-        if (thePrefs.GetDebugClientUDPLevel() > 0)
-            DebugRecv("OP_PortTest", NULL, NULL, ip);
-        theStats.AddDownDataOverheadOther(size);
-        if (size == 1)
-        {
-            if (packet[0] == 0x12)
-            {
-                bool ret = theApp.listensocket->SendPortTestReply('1', true);
-                AddDebugLogLine(true, _T("UDP Portcheck packet arrived - ACK sent back (status=%i)"), ret);
-            }
-        }
-        break;
-    }
-    case OP_DIRECTCALLBACKREQ:
-    {
-        if (thePrefs.GetDebugClientUDPLevel() > 0)
-            DebugRecv("OP_DIRECTCALLBACKREQ", NULL, NULL, ip);
-//>>> WiZaRd::IPv6 [Xanatos]
-		// IPv6-TODO: Add IPv6 tracking
-		if (ip.Type() == CAddress::IPv4 && !theApp.clientlist->AllowCallbackRequest(_ntohl(ip.ToIPv4())))
-        //if (!theApp.clientlist->AllowCallbackRequest(ip))
-//<<< WiZaRd::IPv6 [Xanatos]
-        {
-            DebugLogWarning(_T("Ignored DirectCallback Request because this IP (%s) has sent too many request within a short time"), ipstr(ip));
             break;
         }
-        // do we accept callback requests at all?
-        if (Kademlia::CKademlia::IsRunning() && Kademlia::CKademlia::IsFirewalled())
+        case OP_QUEUEFULL:
         {
+            theStats.AddDownDataOverheadFileRequest(size);
+            CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP_UDP(ip, port, true);
+            if (thePrefs.GetDebugClientUDPLevel() > 0)
+                DebugRecv("OP_QueueFull", sender, NULL, ip);
+            if (sender && sender->UDPPacketPending())
+            {
+                sender->SetRemoteQueueFull(true);
+                sender->UDPReaskACK(0);
+            }
+            else if (sender != NULL)
+                DebugLogError(_T("Received UDP Packet (OP_QUEUEFULL) which was not requested (pendingflag == false); Ignored packet - %s"), sender->DbgGetClientInfo());
+            break;
+        }
+        case OP_REASKACK:
+        {
+            theStats.AddDownDataOverheadFileRequest(size);
+            CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP_UDP(ip, port, true);
+            if (thePrefs.GetDebugClientUDPLevel() > 0)
+                DebugRecv("OP_ReaskAck", sender, NULL, ip);
+            if (sender && sender->UDPPacketPending())
+            {
+                CSafeMemFile data_in(packet, size);
+                if (sender->GetUDPVersion() > 3)
+                {
+                    sender->ProcessFileStatus(true, &data_in, sender->GetRequestFile());
+                }
+                uint16 nRank = data_in.ReadUInt16();
+                sender->SetRemoteQueueFull(false);
+                sender->UDPReaskACK(nRank);
+                sender->AddAskedCountDown();
+            }
+            else if (sender != NULL)
+                DebugLogError(_T("Received UDP Packet (OP_REASKACK) which was not requested (pendingflag == false); Ignored packet - %s"), sender->DbgGetClientInfo());
+
+            break;
+        }
+        case OP_FILENOTFOUND:
+        {
+            theStats.AddDownDataOverheadFileRequest(size);
+            CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP_UDP(ip, port, true);
+            if (thePrefs.GetDebugClientUDPLevel() > 0)
+                DebugRecv("OP_FileNotFound", sender, NULL, ip);
+            if (sender && sender->UDPPacketPending())
+            {
+                sender->UDPReaskFNF(); // may delete 'sender'!
+                sender = NULL;
+            }
+            else if (sender != NULL)
+                DebugLogError(_T("Received UDP Packet (OP_FILENOTFOUND) which was not requested (pendingflag == false); Ignored packet - %s"), sender->DbgGetClientInfo());
+
+            break;
+        }
+        case OP_PORTTEST:
+        {
+            if (thePrefs.GetDebugClientUDPLevel() > 0)
+                DebugRecv("OP_PortTest", NULL, NULL, ip);
+            theStats.AddDownDataOverheadOther(size);
+            if (size == 1)
+            {
+                if (packet[0] == 0x12)
+                {
+                    bool ret = theApp.listensocket->SendPortTestReply('1', true);
+                    AddDebugLogLine(true, _T("UDP Portcheck packet arrived - ACK sent back (status=%i)"), ret);
+                }
+            }
+            break;
+        }
+        case OP_DIRECTCALLBACKREQ:
+        {
+            if (thePrefs.GetDebugClientUDPLevel() > 0)
+                DebugRecv("OP_DIRECTCALLBACKREQ", NULL, NULL, ip);
 //>>> WiZaRd::IPv6 [Xanatos]
-			// IPv6-TODO: Add IPv6 tracking
-			if (ip.Type() == CAddress::IPv4)
-				theApp.clientlist->AddTrackCallbackRequests(_ntohl(ip.ToIPv4()));
-            //theApp.clientlist->AddTrackCallbackRequests(ip);
+            // IPv6-TODO: Add IPv6 tracking
+            if (ip.Type() == CAddress::IPv4 && !theApp.clientlist->AllowCallbackRequest(_ntohl(ip.ToIPv4())))
+                //if (!theApp.clientlist->AllowCallbackRequest(ip))
 //<<< WiZaRd::IPv6 [Xanatos]
-            CSafeMemFile data(packet, size);
-            uint16 nRemoteTCPPort = data.ReadUInt16();
-            uchar uchUserHash[16];
-            data.ReadHash16(uchUserHash);
-            uint8 byConnectOptions = data.ReadUInt8();
-            CUpDownClient* pRequester = theApp.clientlist->FindClientByUserHash(uchUserHash, ip, nRemoteTCPPort);
-            if (pRequester == NULL)
+            {
+                DebugLogWarning(_T("Ignored DirectCallback Request because this IP (%s) has sent too many request within a short time"), ipstr(ip));
+                break;
+            }
+            // do we accept callback requests at all?
+            if (Kademlia::CKademlia::IsRunning() && Kademlia::CKademlia::IsFirewalled())
             {
 //>>> WiZaRd::IPv6 [Xanatos]
-				pRequester = new CUpDownClient(NULL, nRemoteTCPPort, ip, 0, 0);
-                //pRequester = new CUpDownClient(NULL, nRemoteTCPPort, ip, 0, 0, true);
+                // IPv6-TODO: Add IPv6 tracking
+                if (ip.Type() == CAddress::IPv4)
+                    theApp.clientlist->AddTrackCallbackRequests(_ntohl(ip.ToIPv4()));
+                //theApp.clientlist->AddTrackCallbackRequests(ip);
 //<<< WiZaRd::IPv6 [Xanatos]
-                pRequester->SetUserHash(uchUserHash);
-                theApp.clientlist->AddClient(pRequester);
+                CSafeMemFile data(packet, size);
+                uint16 nRemoteTCPPort = data.ReadUInt16();
+                uchar uchUserHash[16];
+                data.ReadHash16(uchUserHash);
+                uint8 byConnectOptions = data.ReadUInt8();
+                CUpDownClient* pRequester = theApp.clientlist->FindClientByUserHash(uchUserHash, ip, nRemoteTCPPort);
+                if (pRequester == NULL)
+                {
+//>>> WiZaRd::IPv6 [Xanatos]
+                    pRequester = new CUpDownClient(NULL, nRemoteTCPPort, ip, 0, 0);
+                    //pRequester = new CUpDownClient(NULL, nRemoteTCPPort, ip, 0, 0, true);
+//<<< WiZaRd::IPv6 [Xanatos]
+                    pRequester->SetUserHash(uchUserHash);
+                    theApp.clientlist->AddClient(pRequester);
+                }
+                pRequester->SetConnectOptions(byConnectOptions, true, false);
+                pRequester->SetDirectUDPCallbackSupport(false);
+                pRequester->SetIP(ip);
+                pRequester->SetUserPort(nRemoteTCPPort);
+                DEBUG_ONLY(DebugLog(_T("Accepting incoming DirectCallbackRequest from %s"), pRequester->DbgGetClientInfo()));
+                pRequester->TryToConnect();
             }
-            pRequester->SetConnectOptions(byConnectOptions, true, false);
-            pRequester->SetDirectUDPCallbackSupport(false);
-            pRequester->SetIP(ip);
-            pRequester->SetUserPort(nRemoteTCPPort);
-            DEBUG_ONLY(DebugLog(_T("Accepting incoming DirectCallbackRequest from %s"), pRequester->DbgGetClientInfo()));
-            pRequester->TryToConnect();
-        }
-        else
-            DebugLogWarning(_T("Ignored DirectCallback Request because we do not accept DirectCall backs at all (%s)"), ipstr(ip));
+            else
+                DebugLogWarning(_T("Ignored DirectCallback Request because we do not accept DirectCall backs at all (%s)"), ipstr(ip));
 
-        break;
-    }
-    default:
-        theStats.AddDownDataOverheadOther(size);
-        if (thePrefs.GetDebugClientUDPLevel() > 0)
-        {
-            CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP_UDP(ip, port, true);
-            Debug(_T("Unknown client UDP packet: host=%s:%u (%s) opcode=0x%02x  size=%u\n"), ipstr(ip), port, sender ? sender->DbgGetClientInfo() : L"", opcode, size);
+            break;
         }
-        return false;
+        default:
+            theStats.AddDownDataOverheadOther(size);
+            if (thePrefs.GetDebugClientUDPLevel() > 0)
+            {
+                CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP_UDP(ip, port, true);
+                Debug(_T("Unknown client UDP packet: host=%s:%u (%s) opcode=0x%02x  size=%u\n"), ipstr(ip), port, sender ? sender->DbgGetClientInfo() : L"", opcode, size);
+            }
+            return false;
     }
     return true;
 }
@@ -741,7 +741,7 @@ SocketSentBytes CClientUDPSocket::SendControlData(UINT maxNumberOfBytesToSend, U
             if (cur_packet->bEncrypt && (theApp.GetPublicIP() > 0 || cur_packet->bKad))
             {
 //>>> WiZaRd::IPv6 [Xanatos]
-				nLen = EncryptSendClient(&sendbuffer, nLen, cur_packet->pachTargetClientHashORKadID, cur_packet->bKad,  cur_packet->nReceiverVerifyKey, (cur_packet->bKad ? Kademlia::CPrefs::GetUDPVerifyKey(_ntohl(cur_packet->dwIP.ToIPv4())) : (uint16)0), cur_packet->dwIP.Type() == CAddress::IPv6);
+                nLen = EncryptSendClient(&sendbuffer, nLen, cur_packet->pachTargetClientHashORKadID, cur_packet->bKad,  cur_packet->nReceiverVerifyKey, (cur_packet->bKad ? Kademlia::CPrefs::GetUDPVerifyKey(_ntohl(cur_packet->dwIP.ToIPv4())) : (uint16)0), cur_packet->dwIP.Type() == CAddress::IPv6);
                 //nLen = EncryptSendClient(&sendbuffer, nLen, cur_packet->pachTargetClientHashORKadID, cur_packet->bKad,  cur_packet->nReceiverVerifyKey, (cur_packet->bKad ? Kademlia::CPrefs::GetUDPVerifyKey(cur_packet->dwIP) : (uint16)0));
 //<<< WiZaRd::IPv6 [Xanatos]
                 //DEBUG_ONLY(  AddDebugLogLine(DLP_VERYLOW, false, _T("Sent obfuscated UDP packet to clientIP: %s, Kad: %s, ReceiverKey: %u"), ipstr(cur_packet->dwIP), cur_packet->bKad ? _T("Yes") : _T("No"), cur_packet->nReceiverVerifyKey) );
@@ -751,9 +751,9 @@ SocketSentBytes CClientUDPSocket::SendControlData(UINT maxNumberOfBytesToSend, U
 //>>> WiZaRd::QOS
             // netfinity: This is an absurd way to enable QOS for UDP
 //>>> WiZaRd::IPv6 [Xanatos]
-			SOCKADDR_IN6 dest;
-			int iSockAddrLen = sizeof(dest);
-			cur_packet->dwIP.ToSA((SOCKADDR*)&dest, &iSockAddrLen, cur_packet->nPort);
+            SOCKADDR_IN6 dest;
+            int iSockAddrLen = sizeof(dest);
+            cur_packet->dwIP.ToSA((SOCKADDR*)&dest, &iSockAddrLen, cur_packet->nPort);
 //             sockaddr_in dest;
 //             dest.sin_family = AF_INET;
 //>>> WiZaRd::FiX?
@@ -805,12 +805,12 @@ int CClientUDPSocket::SendTo(char* lpBuf,int nBufLen, const _CIPAddress& IP, uin
 {
     // NOTE: *** This function is invoked from a *different* thread!
 //>>> WiZaRd::IPv6 [Xanatos]
-	_CIPAddress dwIP = IP;
-	dwIP.Convert(CAddress::IPv6);
-	SOCKADDR_IN6 sockAddr;
-	int iSockAddrLen = sizeof(sockAddr);
-	dwIP.ToSA((SOCKADDR*)&sockAddr, &iSockAddrLen, nPort);
-	UINT result = CAsyncSocket::SendTo(lpBuf, nBufLen, (SOCKADDR*)&sockAddr, sizeof sockAddr);
+    _CIPAddress dwIP = IP;
+    dwIP.Convert(CAddress::IPv6);
+    SOCKADDR_IN6 sockAddr;
+    int iSockAddrLen = sizeof(sockAddr);
+    dwIP.ToSA((SOCKADDR*)&sockAddr, &iSockAddrLen, nPort);
+    UINT result = CAsyncSocket::SendTo(lpBuf, nBufLen, (SOCKADDR*)&sockAddr, sizeof sockAddr);
     //UINT result = CAsyncSocket::SendTo(lpBuf,nBufLen,nPort,ipstr(dwIP));
 //<<< WiZaRd::IPv6 [Xanatos]
     if (result == (UINT)SOCKET_ERROR)
@@ -868,26 +868,26 @@ bool CClientUDPSocket::Create()
     if (thePrefs.GetUDPPort())
     {
 //>>> WiZaRd::IPv6 [Xanatos]
-		CAsyncSocket::Socket(SOCK_DGRAM, FD_READ | FD_WRITE, 0, PF_INET6);
+        CAsyncSocket::Socket(SOCK_DGRAM, FD_READ | FD_WRITE, 0, PF_INET6);
 
-		int iOptVal = 0; // Enable this socket to accept IPv4 and IPv6 packets at the same time
-		SetSockOpt(IPV6_V6ONLY, &iOptVal, sizeof iOptVal, IPPROTO_IPV6);
+        int iOptVal = 0; // Enable this socket to accept IPv4 and IPv6 packets at the same time
+        SetSockOpt(IPV6_V6ONLY, &iOptVal, sizeof iOptVal, IPPROTO_IPV6);
 
-		sockaddr_in6 us;
-		memset(&us, 0, sizeof(us));
-		us.sin6_family = AF_INET6;
-		us.sin6_port = htons(thePrefs.GetUDPPort());
-		us.sin6_flowinfo = NULL;
+        sockaddr_in6 us;
+        memset(&us, 0, sizeof(us));
+        us.sin6_family = AF_INET6;
+        us.sin6_port = htons(thePrefs.GetUDPPort());
+        us.sin6_flowinfo = NULL;
 
-		// Convert the IPv6 address to the sin6_addr structure
-		struct sockaddr_storage ss;
-		int sslen = sizeof(ss);
-		if(thePrefs.GetBindAddrA() != NULL && WSAStringToAddressA((char*)thePrefs.GetBindAddrA(), AF_INET6, NULL, (struct sockaddr*)&ss, &sslen) == 0)
-			us.sin6_addr = ((struct sockaddr_in6 *)&ss)->sin6_addr;
-		else
-			us.sin6_addr = in6addr_any;
+        // Convert the IPv6 address to the sin6_addr structure
+        struct sockaddr_storage ss;
+        int sslen = sizeof(ss);
+        if (thePrefs.GetBindAddrA() != NULL && WSAStringToAddressA((char*)thePrefs.GetBindAddrA(), AF_INET6, NULL, (struct sockaddr*)&ss, &sslen) == 0)
+            us.sin6_addr = ((struct sockaddr_in6 *)&ss)->sin6_addr;
+        else
+            us.sin6_addr = in6addr_any;
 
-		ret = CAsyncSocket::Bind((const SOCKADDR*)&us, sizeof(us)) != FALSE;
+        ret = CAsyncSocket::Bind((const SOCKADDR*)&us, sizeof(us)) != FALSE;
         //ret = CAsyncSocket::Create(thePrefs.GetUDPPort(), SOCK_DGRAM, FD_READ | FD_WRITE, thePrefs.GetBindAddrW()) != FALSE;
 //<<< WiZaRd::IPv6 [Xanatos]
         if (ret)
@@ -928,7 +928,7 @@ void CClientUDPSocket::SetConnectionEncryption(const CAddress& dwIP, uint16 nPor
 //void CClientUDPSocket::SetConnectionEncryption(UINT dwIP, uint16 nPort, bool bEncrypt, const uchar* pTargetClientHash)
 //<<< WiZaRd::IPv6 [Xanatos]
 {
-	SIpPort IpPort = {dwIP, nPort};
+    SIpPort IpPort = {dwIP, nPort};
     std::map<SIpPort, SHash>::iterator I = m_HashMap.find(IpPort);
     if (bEncrypt)
     {
@@ -980,10 +980,10 @@ union UUtpHdr
 void CClientUDPSocket::SendUtpPacket(const byte *data, size_t len, const struct sockaddr *to, socklen_t tolen)
 {
 //>>> WiZaRd::IPv6 [Xanatos]
-	CAddress IP;
-	uint16 nPort;
-	IP.FromSA(to, tolen, &nPort);
-	byte* pTargetClientHash = GetHashForEncryption(IP, nPort);
+    CAddress IP;
+    uint16 nPort;
+    IP.FromSA(to, tolen, &nPort);
+    byte* pTargetClientHash = GetHashForEncryption(IP, nPort);
     //byte* pTargetClientHash = GetHashForEncryption(((SOCKADDR_IN*)to)->sin_addr.S_un.S_addr, ntohs(((SOCKADDR_IN*)to)->sin_port));
 //<<< WiZaRd::IPv6 [Xanatos]
 
@@ -999,7 +999,7 @@ void CClientUDPSocket::SendUtpPacket(const byte *data, size_t len, const struct 
         packet->opcode = 0xFF; // Key Frame
         theStats.AddUpDataOverheadOther(packet->size);
 //>>> WiZaRd::IPv6 [Xanatos]
-		SendPacket(packet, IP, nPort, pTargetClientHash != NULL, pTargetClientHash, false, 0);
+        SendPacket(packet, IP, nPort, pTargetClientHash != NULL, pTargetClientHash, false, 0);
         //SendPacket(packet, ((SOCKADDR_IN*)to)->sin_addr.S_un.S_addr, ntohs(((SOCKADDR_IN*)to)->sin_port), pTargetClientHash != NULL, pTargetClientHash, false, 0);
 //<<< WiZaRd::IPv6 [Xanatos]
     }
@@ -1012,7 +1012,7 @@ void CClientUDPSocket::SendUtpPacket(const byte *data, size_t len, const struct 
 
     //theStats.AddUpDataOverheadOther(0); // its counted as TCP elsewhere
 //>>> WiZaRd::IPv6 [Xanatos]
-	SendPacket(frame, IP, nPort, pTargetClientHash != NULL, pTargetClientHash, false, 0);
+    SendPacket(frame, IP, nPort, pTargetClientHash != NULL, pTargetClientHash, false, 0);
     //SendPacket(frame, ((SOCKADDR_IN*)to)->sin_addr.S_un.S_addr, ntohs(((SOCKADDR_IN*)to)->sin_port), pTargetClientHash != NULL, pTargetClientHash, false, 0);
 //<<< WiZaRd::IPv6 [Xanatos]
 }

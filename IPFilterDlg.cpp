@@ -264,41 +264,41 @@ void CIPFilterDlg::OnLvnGetDispInfoIPFilter(NMHDR *pNMHDR, LRESULT *pResult)
     {
         switch (pDispInfo->item.iSubItem)
         {
-        case IPFILTER_COL_START:
-            if (pDispInfo->item.cchTextMax > 0)
-            {
-                _tcsncpy(pDispInfo->item.pszText, ipstr(htonl(m_ppIPFilterItems[pDispInfo->item.iItem]->start)), pDispInfo->item.cchTextMax);
-                pDispInfo->item.pszText[pDispInfo->item.cchTextMax - 1] = L'\0';
-            }
-            break;
-        case IPFILTER_COL_END:
-            if (pDispInfo->item.cchTextMax > 0)
-            {
-                _tcsncpy(pDispInfo->item.pszText, ipstr(htonl(m_ppIPFilterItems[pDispInfo->item.iItem]->end)), pDispInfo->item.cchTextMax);
-                pDispInfo->item.pszText[pDispInfo->item.cchTextMax - 1] = L'\0';
-            }
-            break;
-        case IPFILTER_COL_LEVEL:
-            if (pDispInfo->item.cchTextMax > 0)
-            {
-                _tcsncpy(pDispInfo->item.pszText, _itot(m_ppIPFilterItems[pDispInfo->item.iItem]->level, pDispInfo->item.pszText, 10), pDispInfo->item.cchTextMax);
-                pDispInfo->item.pszText[pDispInfo->item.cchTextMax - 1] = L'\0';
-            }
-            break;
-        case IPFILTER_COL_HITS:
-            if (pDispInfo->item.cchTextMax > 0)
-            {
-                _tcsncpy(pDispInfo->item.pszText, _itot(m_ppIPFilterItems[pDispInfo->item.iItem]->hits, pDispInfo->item.pszText, 10), pDispInfo->item.cchTextMax);
-                pDispInfo->item.pszText[pDispInfo->item.cchTextMax - 1] = L'\0';
-            }
-            break;
-        case IPFILTER_COL_DESC:
-            if (pDispInfo->item.cchTextMax > 0)
-            {
-                _tcsncpy(pDispInfo->item.pszText, CA2T(m_ppIPFilterItems[pDispInfo->item.iItem]->desc), pDispInfo->item.cchTextMax);
-                pDispInfo->item.pszText[pDispInfo->item.cchTextMax - 1] = L'\0';
-            }
-            break;
+            case IPFILTER_COL_START:
+                if (pDispInfo->item.cchTextMax > 0)
+                {
+                    _tcsncpy(pDispInfo->item.pszText, ipstr(htonl(m_ppIPFilterItems[pDispInfo->item.iItem]->start)), pDispInfo->item.cchTextMax);
+                    pDispInfo->item.pszText[pDispInfo->item.cchTextMax - 1] = L'\0';
+                }
+                break;
+            case IPFILTER_COL_END:
+                if (pDispInfo->item.cchTextMax > 0)
+                {
+                    _tcsncpy(pDispInfo->item.pszText, ipstr(htonl(m_ppIPFilterItems[pDispInfo->item.iItem]->end)), pDispInfo->item.cchTextMax);
+                    pDispInfo->item.pszText[pDispInfo->item.cchTextMax - 1] = L'\0';
+                }
+                break;
+            case IPFILTER_COL_LEVEL:
+                if (pDispInfo->item.cchTextMax > 0)
+                {
+                    _tcsncpy(pDispInfo->item.pszText, _itot(m_ppIPFilterItems[pDispInfo->item.iItem]->level, pDispInfo->item.pszText, 10), pDispInfo->item.cchTextMax);
+                    pDispInfo->item.pszText[pDispInfo->item.cchTextMax - 1] = L'\0';
+                }
+                break;
+            case IPFILTER_COL_HITS:
+                if (pDispInfo->item.cchTextMax > 0)
+                {
+                    _tcsncpy(pDispInfo->item.pszText, _itot(m_ppIPFilterItems[pDispInfo->item.iItem]->hits, pDispInfo->item.pszText, 10), pDispInfo->item.cchTextMax);
+                    pDispInfo->item.pszText[pDispInfo->item.cchTextMax - 1] = L'\0';
+                }
+                break;
+            case IPFILTER_COL_DESC:
+                if (pDispInfo->item.cchTextMax > 0)
+                {
+                    _tcsncpy(pDispInfo->item.pszText, CA2T(m_ppIPFilterItems[pDispInfo->item.iItem]->desc), pDispInfo->item.cchTextMax);
+                    pDispInfo->item.pszText[pDispInfo->item.cchTextMax - 1] = L'\0';
+                }
+                break;
         }
     }
     *pResult = 0;

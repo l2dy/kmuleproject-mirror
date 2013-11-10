@@ -41,11 +41,11 @@ bool NeedArchiveInfoPage(const CSimpleArray<CObject*>* paItems)
         EFileType eFileType = GetFileTypeEx(pFile);
         switch (eFileType)
         {
-        case ARCHIVE_ZIP:
-        case ARCHIVE_RAR:
-        case ARCHIVE_ACE:
-        case IMAGE_ISO:
-            return true;
+            case ARCHIVE_ZIP:
+            case ARCHIVE_RAR:
+            case ARCHIVE_ACE:
+            case IMAGE_ISO:
+                return true;
         }
     }
     return false;

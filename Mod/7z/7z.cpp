@@ -270,13 +270,13 @@ void CSevenZipThreadHandler::ExtractArchive(const CString& strArchive, const CSt
 
 void CSevenZipThreadHandler::ExtractFileFromArchive(const CString& strFilename, const CString& strArchive, const CString& strTargetDir)
 {
-	CString strCommandLine = L"";
-	strCommandLine.Format(L"%s.exe e \"%s\"  -o\"%s\" -ir!\"%s\"", theApp.m_pszExeName, strArchive, strTargetDir, strFilename);
+    CString strCommandLine = L"";
+    strCommandLine.Format(L"%s.exe e \"%s\"  -o\"%s\" -ir!\"%s\"", theApp.m_pszExeName, strArchive, strTargetDir, strFilename);
 
-	CSevenZipWorkerThread* thread = (CSevenZipWorkerThread*)AfxBeginThread(RUNTIME_CLASS(CSevenZipWorkerThread), THREAD_PRIORITY_BELOW_NORMAL, 0, CREATE_SUSPENDED);
-	thread->SetValues(this, strCommandLine);
+    CSevenZipWorkerThread* thread = (CSevenZipWorkerThread*)AfxBeginThread(RUNTIME_CLASS(CSevenZipWorkerThread), THREAD_PRIORITY_BELOW_NORMAL, 0, CREATE_SUSPENDED);
+    thread->SetValues(this, strCommandLine);
 
-	AddJob(thread);
+    AddJob(thread);
 }
 
 // from MainAr.cpp:

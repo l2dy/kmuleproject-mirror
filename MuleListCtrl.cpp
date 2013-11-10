@@ -321,14 +321,14 @@ int CMuleListCtrl::GetSortType(ArrowType at)
 {
     switch (at)
     {
-    case arrowDown			:
-        return 0;
-    case arrowUp			:
-        return 1;
-    case arrowDoubleDown	:
-        return 2;
-    case arrowDoubleUp		:
-        return 3;
+        case arrowDown			:
+            return 0;
+        case arrowUp			:
+            return 1;
+        case arrowDoubleDown	:
+            return 2;
+        case arrowDoubleUp		:
+            return 3;
     }
     return 0;
 }
@@ -337,14 +337,14 @@ CMuleListCtrl::ArrowType CMuleListCtrl::GetArrowType(int iat)
 {
     switch (iat)
     {
-    case 0:
-        return arrowDown;
-    case 1:
-        return arrowUp;
-    case 2:
-        return arrowDoubleDown;
-    case 3:
-        return arrowDoubleUp;
+        case 0:
+            return arrowDown;
+        case 1:
+            return arrowUp;
+        case 2:
+            return arrowDoubleDown;
+        case 3:
+            return arrowDoubleUp;
     }
     return arrowDown;
 }
@@ -813,373 +813,373 @@ BOOL CMuleListCtrl::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
     //lets look for the important messages that are essential to handle
     switch (message)
     {
-    case WM_NOTIFY:
-        if (wParam == 0)
-        {
-            if (((NMHDR*)lParam)->code == NM_RCLICK)
+        case WM_NOTIFY:
+            if (wParam == 0)
             {
-                //handle right click on headers and show column menu
-
-                POINT point;
-                GetCursorPos(&point);
-
-                CTitleMenu tmColumnMenu;
-                tmColumnMenu.CreatePopupMenu();
-
-                CHeaderCtrl *pHeaderCtrl = GetHeaderCtrl();
-                int iCount = pHeaderCtrl->GetItemCount();
-                for (int iCurrent = 1; iCurrent < iCount; iCurrent++)
+                if (((NMHDR*)lParam)->code == NM_RCLICK)
                 {
-                    HDITEM item;
-                    TCHAR text[255];
-                    item.pszText = text;
-                    item.mask = HDI_TEXT;
-                    item.cchTextMax = _countof(text);
-                    pHeaderCtrl->GetItem(iCurrent, &item);
-                    text[_countof(text) - 1] = L'\0';
+                    //handle right click on headers and show column menu
 
-                    tmColumnMenu.AppendMenu(MF_STRING | (m_aColumns[iCurrent].bHidden ? 0 : MF_CHECKED),
-                                            MLC_IDC_MENU + iCurrent, item.pszText);
-                }
-                tmColumnMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this);
-                VERIFY(tmColumnMenu.DestroyMenu());
+                    POINT point;
+                    GetCursorPos(&point);
 
-                return *pResult = TRUE;
+                    CTitleMenu tmColumnMenu;
+                    tmColumnMenu.CreatePopupMenu();
 
-            }
-            else if (((NMHDR*)lParam)->code == HDN_BEGINTRACKA || ((NMHDR*)lParam)->code == HDN_BEGINTRACKW)
-            {
-                //stop them from changeing the size of anything "before" first column
+                    CHeaderCtrl *pHeaderCtrl = GetHeaderCtrl();
+                    int iCount = pHeaderCtrl->GetItemCount();
+                    for (int iCurrent = 1; iCurrent < iCount; iCurrent++)
+                    {
+                        HDITEM item;
+                        TCHAR text[255];
+                        item.pszText = text;
+                        item.mask = HDI_TEXT;
+                        item.cchTextMax = _countof(text);
+                        pHeaderCtrl->GetItem(iCurrent, &item);
+                        text[_countof(text) - 1] = L'\0';
 
-                HD_NOTIFY *pHDN = (HD_NOTIFY*)lParam;
-                if (m_aColumns[pHDN->iItem].bHidden)
+                        tmColumnMenu.AppendMenu(MF_STRING | (m_aColumns[iCurrent].bHidden ? 0 : MF_CHECKED),
+                                                MLC_IDC_MENU + iCurrent, item.pszText);
+                    }
+                    tmColumnMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this);
+                    VERIFY(tmColumnMenu.DestroyMenu());
+
                     return *pResult = TRUE;
 
-            }
-            else if (((NMHDR*)lParam)->code == HDN_ENDDRAG)
-            {
-                //stop them from moving first column
-
-                NMHEADER *pHeader = (NMHEADER*)lParam;
-                if (pHeader->iItem != 0 && pHeader->pitem->iOrder != 0)
+                }
+                else if (((NMHDR*)lParam)->code == HDN_BEGINTRACKA || ((NMHDR*)lParam)->code == HDN_BEGINTRACKW)
                 {
+                    //stop them from changeing the size of anything "before" first column
 
-                    int iNewLoc = pHeader->pitem->iOrder - GetHiddenColumnCount();
-                    if (iNewLoc > 0)
+                    HD_NOTIFY *pHDN = (HD_NOTIFY*)lParam;
+                    if (m_aColumns[pHDN->iItem].bHidden)
+                        return *pResult = TRUE;
+
+                }
+                else if (((NMHDR*)lParam)->code == HDN_ENDDRAG)
+                {
+                    //stop them from moving first column
+
+                    NMHEADER *pHeader = (NMHEADER*)lParam;
+                    if (pHeader->iItem != 0 && pHeader->pitem->iOrder != 0)
                     {
 
-                        if (m_aColumns[pHeader->iItem].iLocation != iNewLoc)
+                        int iNewLoc = pHeader->pitem->iOrder - GetHiddenColumnCount();
+                        if (iNewLoc > 0)
                         {
 
-                            if (m_aColumns[pHeader->iItem].iLocation > iNewLoc)
+                            if (m_aColumns[pHeader->iItem].iLocation != iNewLoc)
                             {
-                                int iMax = m_aColumns[pHeader->iItem].iLocation;
-                                int iMin = iNewLoc;
-                                for (int i = 0; i < m_iColumnsTracked; i++)
+
+                                if (m_aColumns[pHeader->iItem].iLocation > iNewLoc)
                                 {
-                                    if (m_aColumns[i].iLocation >= iMin && m_aColumns[i].iLocation < iMax)
-                                        m_aColumns[i].iLocation++;
+                                    int iMax = m_aColumns[pHeader->iItem].iLocation;
+                                    int iMin = iNewLoc;
+                                    for (int i = 0; i < m_iColumnsTracked; i++)
+                                    {
+                                        if (m_aColumns[i].iLocation >= iMin && m_aColumns[i].iLocation < iMax)
+                                            m_aColumns[i].iLocation++;
+                                    }
                                 }
-                            }
 
-                            else if (m_aColumns[pHeader->iItem].iLocation < iNewLoc)
-                            {
-                                int iMin = m_aColumns[pHeader->iItem].iLocation;
-                                int iMax = iNewLoc;
-                                for (int i = 0; i < m_iColumnsTracked; i++)
+                                else if (m_aColumns[pHeader->iItem].iLocation < iNewLoc)
                                 {
-                                    if (m_aColumns[i].iLocation > iMin && m_aColumns[i].iLocation <= iMax)
-                                        m_aColumns[i].iLocation--;
+                                    int iMin = m_aColumns[pHeader->iItem].iLocation;
+                                    int iMax = iNewLoc;
+                                    for (int i = 0; i < m_iColumnsTracked; i++)
+                                    {
+                                        if (m_aColumns[i].iLocation > iMin && m_aColumns[i].iLocation <= iMax)
+                                            m_aColumns[i].iLocation--;
+                                    }
                                 }
+
+                                m_aColumns[pHeader->iItem].iLocation = iNewLoc;
+
+                                Invalidate(FALSE);
+                                break;
                             }
-
-                            m_aColumns[pHeader->iItem].iLocation = iNewLoc;
-
-                            Invalidate(FALSE);
-                            break;
                         }
                     }
+
+                    return *pResult = 1;
                 }
+                else if (((NMHDR*)lParam)->code == HDN_DIVIDERDBLCLICKA || ((NMHDR*)lParam)->code == HDN_DIVIDERDBLCLICKW)
+                {
+                    // The effect of LVSCW_AUTOSIZE_USEHEADER is as follows:
+                    //	If the listview control can query for all the items in a column, it is
+                    //	capable of computing the minimal width needed to display the item with
+                    //	the largest width. However, if the width of the header label is larger
+                    //	then the largest width of the items in a column, the width of the header label
+                    //	will overrule the width which would be needed for the items in the column. In
+                    //	practice this means, that the column could get larger than really needed
+                    //	for the items in the column (just because the width gets adjusted for also
+                    //	showing the header label).
+                    //	This is a good solution for some of our listviews which do not (yet) provide
+                    //	the according functions which would give the listview control the chance to
+                    //	query for all items in a column. This flag will thus lead to sizing the
+                    //	column at least to the width of the header label. That's at least better
+                    //	than resizing the column to zero width (which would be the alternative).
+                    //
+                    // Though, a few of our listviews are already capable of providing all the
+                    // information which is needed by the listview control to properly auto size
+                    // a column. Those listviews can set the 'm_iAutoSizeWidth' to 'LVSCW_AUTOSIZE'
+                    // which will lead to standard Windows behaviour.
+                    //
+                    if (GetStyle() & LVS_OWNERDRAWFIXED)
+                    {
+                        NMHEADER *pHeader = (NMHEADER*)lParam;
+                        // If the listview is empty, the LVSCW_AUTOSIZE_USEHEADER is more appropriate, even if
+                        // some listview has requested LVSCW_AUTOSIZE.
+                        SetColumnWidth(pHeader->iItem, GetItemCount() == 0 ? LVSCW_AUTOSIZE_USEHEADER : m_iAutoSizeWidth);
+                        return *pResult = 1;
+                    }
+                }
+            }
+            break;
+
+        case WM_COMMAND:
+            //deal with menu clicks
+            if (wParam == MLC_IDC_UPDATE)
+            {
+                UpdateLocation(lParam);
+                return *pResult = 1;
+            }
+            else if (wParam >= MLC_IDC_MENU)
+            {
+                CHeaderCtrl *pHeaderCtrl = GetHeaderCtrl();
+                int iCount = pHeaderCtrl->GetItemCount();
+
+                int iToggle = wParam - MLC_IDC_MENU;
+                if (iToggle >= iCount)
+                    break;
+
+                if (m_aColumns[iToggle].bHidden)
+                    ShowColumn(iToggle);
+                else
+                    HideColumn(iToggle);
 
                 return *pResult = 1;
             }
-            else if (((NMHDR*)lParam)->code == HDN_DIVIDERDBLCLICKA || ((NMHDR*)lParam)->code == HDN_DIVIDERDBLCLICKW)
+            break;
+
+        case LVM_DELETECOLUMN:
+            if (m_aColumns != NULL)
             {
-                // The effect of LVSCW_AUTOSIZE_USEHEADER is as follows:
-                //	If the listview control can query for all the items in a column, it is
-                //	capable of computing the minimal width needed to display the item with
-                //	the largest width. However, if the width of the header label is larger
-                //	then the largest width of the items in a column, the width of the header label
-                //	will overrule the width which would be needed for the items in the column. In
-                //	practice this means, that the column could get larger than really needed
-                //	for the items in the column (just because the width gets adjusted for also
-                //	showing the header label).
-                //	This is a good solution for some of our listviews which do not (yet) provide
-                //	the according functions which would give the listview control the chance to
-                //	query for all items in a column. This flag will thus lead to sizing the
-                //	column at least to the width of the header label. That's at least better
-                //	than resizing the column to zero width (which would be the alternative).
-                //
-                // Though, a few of our listviews are already capable of providing all the
-                // information which is needed by the listview control to properly auto size
-                // a column. Those listviews can set the 'm_iAutoSizeWidth' to 'LVSCW_AUTOSIZE'
-                // which will lead to standard Windows behaviour.
-                //
-                if (GetStyle() & LVS_OWNERDRAWFIXED)
-                {
-                    NMHEADER *pHeader = (NMHEADER*)lParam;
-                    // If the listview is empty, the LVSCW_AUTOSIZE_USEHEADER is more appropriate, even if
-                    // some listview has requested LVSCW_AUTOSIZE.
-                    SetColumnWidth(pHeader->iItem, GetItemCount() == 0 ? LVSCW_AUTOSIZE_USEHEADER : m_iAutoSizeWidth);
-                    return *pResult = 1;
-                }
+                for (int i = 0; i < m_iColumnsTracked; i++)
+                    if (m_aColumns[i].bHidden)
+                        ShowColumn(i);
+
+                delete[] m_aColumns;
+                m_aColumns = NULL; // 'new' may throw an exception
             }
-        }
-        break;
-
-    case WM_COMMAND:
-        //deal with menu clicks
-        if (wParam == MLC_IDC_UPDATE)
-        {
-            UpdateLocation(lParam);
-            return *pResult = 1;
-        }
-        else if (wParam >= MLC_IDC_MENU)
-        {
-            CHeaderCtrl *pHeaderCtrl = GetHeaderCtrl();
-            int iCount = pHeaderCtrl->GetItemCount();
-
-            int iToggle = wParam - MLC_IDC_MENU;
-            if (iToggle >= iCount)
-                break;
-
-            if (m_aColumns[iToggle].bHidden)
-                ShowColumn(iToggle);
-            else
-                HideColumn(iToggle);
-
-            return *pResult = 1;
-        }
-        break;
-
-    case LVM_DELETECOLUMN:
-        if (m_aColumns != NULL)
-        {
+            m_aColumns = new MULE_COLUMN[--m_iColumnsTracked];
             for (int i = 0; i < m_iColumnsTracked; i++)
-                if (m_aColumns[i].bHidden)
-                    ShowColumn(i);
+            {
+                m_aColumns[i].iLocation = i;
+                m_aColumns[i].bHidden = false;
+            }
+            break;
 
-            delete[] m_aColumns;
-            m_aColumns = NULL; // 'new' may throw an exception
-        }
-        m_aColumns = new MULE_COLUMN[--m_iColumnsTracked];
-        for (int i = 0; i < m_iColumnsTracked; i++)
-        {
-            m_aColumns[i].iLocation = i;
-            m_aColumns[i].bHidden = false;
-        }
-        break;
+        case LVM_INSERTCOLUMNA:
+        case LVM_INSERTCOLUMNW:
+            if (m_aColumns != NULL)
+            {
+                for (int i = 0; i < m_iColumnsTracked; i++)
+                    if (m_aColumns[i].bHidden)
+                        ShowColumn(i);
 
-    case LVM_INSERTCOLUMNA:
-    case LVM_INSERTCOLUMNW:
-        if (m_aColumns != NULL)
-        {
+                delete[] m_aColumns;
+                m_aColumns = NULL; // 'new' may throw an exception
+            }
+            m_aColumns = new MULE_COLUMN[++m_iColumnsTracked];
             for (int i = 0; i < m_iColumnsTracked; i++)
-                if (m_aColumns[i].bHidden)
-                    ShowColumn(i);
-
-            delete[] m_aColumns;
-            m_aColumns = NULL; // 'new' may throw an exception
-        }
-        m_aColumns = new MULE_COLUMN[++m_iColumnsTracked];
-        for (int i = 0; i < m_iColumnsTracked; i++)
-        {
-            m_aColumns[i].iLocation = i;
-            m_aColumns[i].bHidden = false;
-        }
-        break;
-
-    case LVM_SETITEM:
-    {
-        POSITION pos = m_Params.FindIndex(((LPLVITEM)lParam)->iItem);
-        if (pos)
-        {
-            m_Params.SetAt(pos, MLC_MAGIC);
-            if (m_eUpdateMode == lazy)
-                PostMessage(LVM_UPDATE, ((LPLVITEM)lParam)->iItem);
-            else if (m_eUpdateMode == direct)
-                UpdateLocation(((LPLVITEM)lParam)->iItem);
-        }
-        break;
-    }
-
-    case LVN_KEYDOWN:
-        break;
-
-    case LVM_SETITEMTEXT:
-        //need to check for movement
-        *pResult = DefWindowProc(message, wParam, lParam);
-        if (*pResult)
-        {
-            if (m_eUpdateMode == lazy)
-                PostMessage(WM_COMMAND, MLC_IDC_UPDATE, wParam);
-            else if (m_eUpdateMode == direct)
-                UpdateLocation(wParam);
-        }
-        return *pResult;
-
-    case LVM_SORTITEMS:
-        m_dwParamSort = (LPARAM)wParam;
-        m_SortProc = (PFNLVCOMPARE)lParam;
-        for (POSITION pos = m_Params.GetHeadPosition(); pos != NULL; m_Params.GetNext(pos))
-            m_Params.SetAt(pos, MLC_MAGIC);
-        break;
-
-    case LVM_DELETEALLITEMS:
-        if (!CListCtrl::OnWndMsg(message, wParam, lParam, pResult) && DefWindowProc(message, wParam, lParam))
-            m_Params.RemoveAll();
-        return *pResult = TRUE;
-
-    case LVM_DELETEITEM:
-        MLC_ASSERT(m_Params.GetAt(m_Params.FindIndex(wParam)) == CListCtrl::GetItemData(wParam));
-        if (!CListCtrl::OnWndMsg(message, wParam, lParam, pResult) && DefWindowProc(message, wParam, lParam))
-            m_Params.RemoveAt(m_Params.FindIndex(wParam));
-        return *pResult = TRUE;
-
-    case LVM_INSERTITEMA:
-    case LVM_INSERTITEMW:
-        //try to fix position of inserted items
-    {
-        LPLVITEM pItem = (LPLVITEM)lParam;
-        int iItem = pItem->iItem;
-        int iItemCount = GetItemCount();
-        BOOL notLast = iItem < iItemCount;
-        BOOL notFirst = iItem > 0;
-
-        if (notFirst)
-        {
-            int iNewIndex = iItem - 1;
-            POSITION pos = m_Params.FindIndex(iNewIndex);
-            int iResult = m_SortProc(pItem->lParam, GetParamAt(pos, iNewIndex), m_dwParamSort);
-            if (iResult < 0)
             {
-                POSITION posPrev = pos;
-                int iDist = iNewIndex / 2;
-                while (iDist > 1)
-                {
-                    for (int i = 0; i < iDist; i++)
-                        m_Params.GetPrev(posPrev);
-
-                    if (m_SortProc(pItem->lParam, GetParamAt(posPrev, iNewIndex - iDist), m_dwParamSort) < 0)
-                    {
-                        iNewIndex = iNewIndex - iDist;
-                        pos = posPrev;
-                    }
-                    else
-                    {
-                        posPrev = pos;
-                    }
-                    iDist /= 2;
-                }
-                while (--iNewIndex >= 0)
-                {
-                    m_Params.GetPrev(pos);
-                    if (m_SortProc(pItem->lParam, GetParamAt(pos, iNewIndex), m_dwParamSort) >= 0)
-                        break;
-                }
-                pItem->iItem = iNewIndex + 1;
-                notLast = false;
+                m_aColumns[i].iLocation = i;
+                m_aColumns[i].bHidden = false;
             }
-        }
+            break;
 
-        if (notLast)
+        case LVM_SETITEM:
         {
-            int iNewIndex = iItem;
-            POSITION pos = m_Params.FindIndex(iNewIndex);
-            int iResult = m_SortProc(pItem->lParam, GetParamAt(pos, iNewIndex), m_dwParamSort);
-            if (iResult > 0)
+            POSITION pos = m_Params.FindIndex(((LPLVITEM)lParam)->iItem);
+            if (pos)
             {
-                POSITION posNext = pos;
-                int iDist = (GetItemCount() - iNewIndex) / 2;
-                while (iDist > 1)
-                {
-                    for (int i = 0; i < iDist; i++)
-                        m_Params.GetNext(posNext);
-
-                    if (m_SortProc(pItem->lParam, GetParamAt(posNext, iNewIndex + iDist), m_dwParamSort) > 0)
-                    {
-                        iNewIndex = iNewIndex + iDist;
-                        pos = posNext;
-                    }
-                    else
-                    {
-                        posNext = pos;
-                    }
-                    iDist /= 2;
-                }
-                while (++iNewIndex < iItemCount)
-                {
-                    m_Params.GetNext(pos);
-                    if (m_SortProc(pItem->lParam, GetParamAt(pos, iNewIndex), m_dwParamSort) <= 0)
-                        break;
-                }
-                pItem->iItem = iNewIndex;
+                m_Params.SetAt(pos, MLC_MAGIC);
+                if (m_eUpdateMode == lazy)
+                    PostMessage(LVM_UPDATE, ((LPLVITEM)lParam)->iItem);
+                else if (m_eUpdateMode == direct)
+                    UpdateLocation(((LPLVITEM)lParam)->iItem);
             }
+            break;
         }
 
-        if (pItem->iItem == 0)
-        {
-            m_Params.AddHead(pItem->lParam);
-            return FALSE;
-        }
+        case LVN_KEYDOWN:
+            break;
 
-        LRESULT lResult = DefWindowProc(message, wParam, lParam);
-        if (lResult != -1)
+        case LVM_SETITEMTEXT:
+            //need to check for movement
+            *pResult = DefWindowProc(message, wParam, lParam);
+            if (*pResult)
+            {
+                if (m_eUpdateMode == lazy)
+                    PostMessage(WM_COMMAND, MLC_IDC_UPDATE, wParam);
+                else if (m_eUpdateMode == direct)
+                    UpdateLocation(wParam);
+            }
+            return *pResult;
+
+        case LVM_SORTITEMS:
+            m_dwParamSort = (LPARAM)wParam;
+            m_SortProc = (PFNLVCOMPARE)lParam;
+            for (POSITION pos = m_Params.GetHeadPosition(); pos != NULL; m_Params.GetNext(pos))
+                m_Params.SetAt(pos, MLC_MAGIC);
+            break;
+
+        case LVM_DELETEALLITEMS:
+            if (!CListCtrl::OnWndMsg(message, wParam, lParam, pResult) && DefWindowProc(message, wParam, lParam))
+                m_Params.RemoveAll();
+            return *pResult = TRUE;
+
+        case LVM_DELETEITEM:
+            MLC_ASSERT(m_Params.GetAt(m_Params.FindIndex(wParam)) == CListCtrl::GetItemData(wParam));
+            if (!CListCtrl::OnWndMsg(message, wParam, lParam, pResult) && DefWindowProc(message, wParam, lParam))
+                m_Params.RemoveAt(m_Params.FindIndex(wParam));
+            return *pResult = TRUE;
+
+        case LVM_INSERTITEMA:
+        case LVM_INSERTITEMW:
+            //try to fix position of inserted items
         {
-            if (lResult >= GetItemCount())
-                m_Params.AddTail(pItem->lParam);
-            else if (lResult == 0)
+            LPLVITEM pItem = (LPLVITEM)lParam;
+            int iItem = pItem->iItem;
+            int iItemCount = GetItemCount();
+            BOOL notLast = iItem < iItemCount;
+            BOOL notFirst = iItem > 0;
+
+            if (notFirst)
+            {
+                int iNewIndex = iItem - 1;
+                POSITION pos = m_Params.FindIndex(iNewIndex);
+                int iResult = m_SortProc(pItem->lParam, GetParamAt(pos, iNewIndex), m_dwParamSort);
+                if (iResult < 0)
+                {
+                    POSITION posPrev = pos;
+                    int iDist = iNewIndex / 2;
+                    while (iDist > 1)
+                    {
+                        for (int i = 0; i < iDist; i++)
+                            m_Params.GetPrev(posPrev);
+
+                        if (m_SortProc(pItem->lParam, GetParamAt(posPrev, iNewIndex - iDist), m_dwParamSort) < 0)
+                        {
+                            iNewIndex = iNewIndex - iDist;
+                            pos = posPrev;
+                        }
+                        else
+                        {
+                            posPrev = pos;
+                        }
+                        iDist /= 2;
+                    }
+                    while (--iNewIndex >= 0)
+                    {
+                        m_Params.GetPrev(pos);
+                        if (m_SortProc(pItem->lParam, GetParamAt(pos, iNewIndex), m_dwParamSort) >= 0)
+                            break;
+                    }
+                    pItem->iItem = iNewIndex + 1;
+                    notLast = false;
+                }
+            }
+
+            if (notLast)
+            {
+                int iNewIndex = iItem;
+                POSITION pos = m_Params.FindIndex(iNewIndex);
+                int iResult = m_SortProc(pItem->lParam, GetParamAt(pos, iNewIndex), m_dwParamSort);
+                if (iResult > 0)
+                {
+                    POSITION posNext = pos;
+                    int iDist = (GetItemCount() - iNewIndex) / 2;
+                    while (iDist > 1)
+                    {
+                        for (int i = 0; i < iDist; i++)
+                            m_Params.GetNext(posNext);
+
+                        if (m_SortProc(pItem->lParam, GetParamAt(posNext, iNewIndex + iDist), m_dwParamSort) > 0)
+                        {
+                            iNewIndex = iNewIndex + iDist;
+                            pos = posNext;
+                        }
+                        else
+                        {
+                            posNext = pos;
+                        }
+                        iDist /= 2;
+                    }
+                    while (++iNewIndex < iItemCount)
+                    {
+                        m_Params.GetNext(pos);
+                        if (m_SortProc(pItem->lParam, GetParamAt(pos, iNewIndex), m_dwParamSort) <= 0)
+                            break;
+                    }
+                    pItem->iItem = iNewIndex;
+                }
+            }
+
+            if (pItem->iItem == 0)
+            {
                 m_Params.AddHead(pItem->lParam);
-            else
-                m_Params.InsertAfter(m_Params.FindIndex(lResult - 1), pItem->lParam);
-        }
-        return *pResult = lResult;
-    }
-    break;
-
-    case WM_DESTROY:
-        SaveSettings();
-        break;
-
-    case LVM_UPDATE:
-        //better fix for old problem... normally Update(int) causes entire list to redraw
-        if (wParam == (UINT)UpdateLocation(wParam))   //no need to invalidate rect if item moved
-        {
-            RECT rcItem;
-            BOOL bResult = GetItemRect(wParam, &rcItem, LVIR_BOUNDS);
-            if (bResult)
-                InvalidateRect(&rcItem, FALSE);
-            return *pResult = bResult;
-        }
-        return *pResult = TRUE;
-
-    case WM_CONTEXTMENU:
-        // If the context menu is opened with the _mouse_ and if it was opened _outside_
-        // the client area of the list view, let Windows handle that message.
-        // Otherwise we would prevent the context menu for e.g. scrollbars to be invoked.
-        if ((HWND)wParam == m_hWnd)
-        {
-            CPoint ptMouse(lParam);
-            if (ptMouse.x != -1 || ptMouse.y != -1)
-            {
-                ScreenToClient(&ptMouse);
-                CRect rcClient;
-                GetClientRect(&rcClient);
-                if (!rcClient.PtInRect(ptMouse))
-                    return DefWindowProc(message, wParam, lParam);
+                return FALSE;
             }
+
+            LRESULT lResult = DefWindowProc(message, wParam, lParam);
+            if (lResult != -1)
+            {
+                if (lResult >= GetItemCount())
+                    m_Params.AddTail(pItem->lParam);
+                else if (lResult == 0)
+                    m_Params.AddHead(pItem->lParam);
+                else
+                    m_Params.InsertAfter(m_Params.FindIndex(lResult - 1), pItem->lParam);
+            }
+            return *pResult = lResult;
         }
         break;
+
+        case WM_DESTROY:
+            SaveSettings();
+            break;
+
+        case LVM_UPDATE:
+            //better fix for old problem... normally Update(int) causes entire list to redraw
+            if (wParam == (UINT)UpdateLocation(wParam))   //no need to invalidate rect if item moved
+            {
+                RECT rcItem;
+                BOOL bResult = GetItemRect(wParam, &rcItem, LVIR_BOUNDS);
+                if (bResult)
+                    InvalidateRect(&rcItem, FALSE);
+                return *pResult = bResult;
+            }
+            return *pResult = TRUE;
+
+        case WM_CONTEXTMENU:
+            // If the context menu is opened with the _mouse_ and if it was opened _outside_
+            // the client area of the list view, let Windows handle that message.
+            // Otherwise we would prevent the context menu for e.g. scrollbars to be invoked.
+            if ((HWND)wParam == m_hWnd)
+            {
+                CPoint ptMouse(lParam);
+                if (ptMouse.x != -1 || ptMouse.y != -1)
+                {
+                    ScreenToClient(&ptMouse);
+                    CRect rcClient;
+                    GetClientRect(&rcClient);
+                    if (!rcClient.PtInRect(ptMouse))
+                        return DefWindowProc(message, wParam, lParam);
+                }
+            }
+            break;
     }
 
     return CListCtrl::OnWndMsg(message, wParam, lParam, pResult);
@@ -1453,14 +1453,14 @@ void CMuleListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
             UINT nJustify = DT_LEFT;
             switch (lvc.fmt & LVCFMT_JUSTIFYMASK)
             {
-            case LVCFMT_RIGHT:
-                nJustify = DT_RIGHT;
-                break;
-            case LVCFMT_CENTER:
-                nJustify = DT_CENTER;
-                break;
-            default:
-                break;
+                case LVCFMT_RIGHT:
+                    nJustify = DT_RIGHT;
+                    break;
+                case LVCFMT_CENTER:
+                    nJustify = DT_CENTER;
+                    break;
+                default:
+                    break;
             }
 
             rcLabel = rcCol;

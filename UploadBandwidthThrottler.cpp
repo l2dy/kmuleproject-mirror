@@ -419,24 +419,24 @@ UINT UploadBandwidthThrottler::CalculateChangeDelta(UINT numberOfConsecutiveChan
 {
     switch (numberOfConsecutiveChanges)
     {
-    case 0:
-        return 50;
-    case 1:
-        return 50;
-    case 2:
-        return 128;
-    case 3:
-        return 256;
-    case 4:
-        return 512;
-    case 5:
-        return 512+256;
-    case 6:
-        return 1*1024;
-    case 7:
-        return 1*1024+256;
-    default:
-        return 1*1024+512;
+        case 0:
+            return 50;
+        case 1:
+            return 50;
+        case 2:
+            return 128;
+        case 3:
+            return 256;
+        case 4:
+            return 512;
+        case 5:
+            return 512+256;
+        case 6:
+            return 1*1024;
+        case 7:
+            return 1*1024+256;
+        default:
+            return 1*1024+512;
     }
 }
 
@@ -501,8 +501,8 @@ UINT UploadBandwidthThrottler::RunInternal()
         UINT nCanSend = 0;
 
         sendLocker.Lock();
-		m_eventNewDataAvailable.ResetEvent();
-		m_eventSocketAvailable.ResetEvent();
+        m_eventNewDataAvailable.ResetEvent();
+        m_eventSocketAvailable.ResetEvent();
         for (int i = 0; i < m_StandardOrder_list.GetSize() && (i < 3 || (UINT)i < GetSlotLimit(theApp.uploadqueue->GetDatarate())); i++)
         {
             if (m_StandardOrder_list[i] != NULL && m_StandardOrder_list[i]->HasQueues())
@@ -517,10 +517,10 @@ UINT UploadBandwidthThrottler::RunInternal()
 
         // if this is kept, the loop above can be a little optimized (don't count nCanSend, just use nCanSend = GetSlotLimit(theApp.uploadqueue->GetDatarate())
         /*if (theApp.uploadqueue)
-//>>> WiZaRd::ZZUL Upload [ZZ]
+        //>>> WiZaRd::ZZUL Upload [ZZ]
             nCanSend = min(nCanSend, GetSlotLimit(theApp.uploadqueue->GetDatarate()));
         //nCanSend = max(nCanSend, GetSlotLimit(theApp.uploadqueue->GetDatarate()));
-//<<< WiZaRd::ZZUL Upload [ZZ]*/
+        //<<< WiZaRd::ZZUL Upload [ZZ]*/
 
         // When no upload limit has been set in options, try to guess a good upload limit.
         bool bUploadUnlimited = (thePrefs.GetMaxUpload() == UNLIMITED);
@@ -697,18 +697,18 @@ UINT UploadBandwidthThrottler::RunInternal()
         DWORD timeSinceLastLoop = timeGetTime() - lastLoopTick; //>>> WiZaRd::ZZUL Upload [ZZ]
 
         if (timeSinceLastLoop < sleepTime)
-		{
-			/*if (nCanSend == 0)
-			{
-//				if (theApp.m_pUploadDiskIOThread != NULL)
-//					theApp.m_pUploadDiskIOThread->SocketNeedsMoreData();
-				WaitForSingleObject(m_eventNewDataAvailable, sleepTime-timeSinceLastLoop);
-			}
-			else if (cBusy == nCanSend)
-				WaitForSingleObject(m_eventSocketAvailable, sleepTime-timeSinceLastLoop);
-			else*/
-				Sleep(sleepTime-timeSinceLastLoop);
-		}
+        {
+            /*if (nCanSend == 0)
+            {
+            //				if (theApp.m_pUploadDiskIOThread != NULL)
+            //					theApp.m_pUploadDiskIOThread->SocketNeedsMoreData();
+            	WaitForSingleObject(m_eventNewDataAvailable, sleepTime-timeSinceLastLoop);
+            }
+            else if (cBusy == nCanSend)
+            	WaitForSingleObject(m_eventSocketAvailable, sleepTime-timeSinceLastLoop);
+            else*/
+            Sleep(sleepTime-timeSinceLastLoop);
+        }
 
         const DWORD thisLoopTick = timeGetTime();
         timeSinceLastLoop = thisLoopTick - lastLoopTick;
@@ -786,7 +786,7 @@ UINT UploadBandwidthThrottler::RunInternal()
 
             tempQueueLocker.Unlock();
 
-			bool bNeedMoreData = false;
+            bool bNeedMoreData = false;
 
             // Send any queued up control packets first
             while ((bytesToSpend > 0 && spentBytes < (uint64)bytesToSpend || allowedDataRate == 0 && spentBytes < 500) && (!m_ControlQueueFirst_list.IsEmpty() || !m_ControlQueue_list.IsEmpty()))
@@ -834,15 +834,15 @@ UINT UploadBandwidthThrottler::RunInternal()
                     UINT lastSpentBytes = socketSentBytes.sentBytesControlPackets + socketSentBytes.sentBytesStandardPackets;
                     spentBytes += lastSpentBytes;
                     spentOverhead += socketSentBytes.sentBytesControlPackets;
-					if (socketSentBytes.sentBytesStandardPackets > 0 && !socket->IsEnoughFileDataQueued(EMBLOCKSIZE))
-						bNeedMoreData = true;
+                    if (socketSentBytes.sentBytesStandardPackets > 0 && !socket->IsEnoughFileDataQueued(EMBLOCKSIZE))
+                        bNeedMoreData = true;
 
                     if (lastSpentBytes > 0 && slotCounter < m_highestNumberOfFullyActivatedSlots)
                         m_highestNumberOfFullyActivatedSlots = slotCounter;
 //>>> WiZaRd::ZZUL Upload [ZZ]
                     /*
-						}
-					}
+                    	}
+                    }
                     */
 //<<< WiZaRd::ZZUL Upload [ZZ]
                 }
@@ -869,13 +869,13 @@ UINT UploadBandwidthThrottler::RunInternal()
                             ThrottledFileSocket* socket = m_StandardOrder_list.GetAt(rememberedSlotCounter);
                             if(socket != NULL)
                             {
-								SocketSentBytes socketSentBytes = socket->SendFileAndControlData((UINT)min(max(doubleSendSize, (uint64)bytesToSpend/maxSlot), (uint64)bytesToSpend-spentBytes), doubleSendSize);
-								
+            					SocketSentBytes socketSentBytes = socket->SendFileAndControlData((UINT)min(max(doubleSendSize, (uint64)bytesToSpend/maxSlot), (uint64)bytesToSpend-spentBytes), doubleSendSize);
+
                                 UINT lastSpentBytes = socketSentBytes.sentBytesControlPackets + socketSentBytes.sentBytesStandardPackets;
                                 spentBytes += lastSpentBytes;
                                 spentOverhead += socketSentBytes.sentBytesControlPackets;
-								if (socketSentBytes.sentBytesStandardPackets > 0 && !socket->IsEnoughFileDataQueued(EMBLOCKSIZE))
-									bNeedMoreData = true;
+            					if (socketSentBytes.sentBytesStandardPackets > 0 && !socket->IsEnoughFileDataQueued(EMBLOCKSIZE))
+            						bNeedMoreData = true;
                             }
                             else
                                 theApp.QueueDebugLogLine(false,_T("There was a NULL socket in the UploadBandwidthThrottler Standard list (equal-for-all)! Prevented usage. Index: %i Size: %i"), rememberedSlotCounter, m_StandardOrder_list.GetSize());
@@ -893,9 +893,9 @@ UINT UploadBandwidthThrottler::RunInternal()
                 if (socket != NULL)
                 {
                     UINT bytesToSpendTemp = (UINT)(bytesToSpend-spentBytes);
-					SocketSentBytes socketSentBytes = socket->SendFileAndControlData(max(bytesToSpendTemp, doubleSendSize), doubleSendSize);
-					if (socketSentBytes.sentBytesStandardPackets > 0 && !socket->IsEnoughFileDataQueued(EMBLOCKSIZE))
-						bNeedMoreData = true;
+                    SocketSentBytes socketSentBytes = socket->SendFileAndControlData(max(bytesToSpendTemp, doubleSendSize), doubleSendSize);
+                    if (socketSentBytes.sentBytesStandardPackets > 0 && !socket->IsEnoughFileDataQueued(EMBLOCKSIZE))
+                        bNeedMoreData = true;
 
                     UINT lastSpentBytes = socketSentBytes.sentBytesControlPackets + socketSentBytes.sentBytesStandardPackets;
                     spentBytes += lastSpentBytes;
@@ -1000,14 +1000,14 @@ UINT UploadBandwidthThrottler::RunInternal()
 
 void UploadBandwidthThrottler::NewUploadDataAvailable()
 {
-	if (doRun)
-		m_eventNewDataAvailable.SetEvent();
+    if (doRun)
+        m_eventNewDataAvailable.SetEvent();
 }
 
 void UploadBandwidthThrottler::SocketAvailable()
 {
-	if (doRun)
-		m_eventSocketAvailable.SetEvent();
+    if (doRun)
+        m_eventSocketAvailable.SetEvent();
 }
 
 //>>> WiZaRd::ZZUL Upload [ZZ]

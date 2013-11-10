@@ -22,8 +22,8 @@ CUtpSocket::CUtpSocket()
 {
     m_Socket = NULL;
 
-	m_ReadBuffer.AllocBuffer(64*1024/*, false, false*/); // Note: UTP can push more data into the buffer than expected
-	m_WriteBuffer.AllocBuffer(16*1024);
+    m_ReadBuffer.AllocBuffer(64*1024/*, false, false*/); // Note: UTP can push more data into the buffer than expected
+    m_WriteBuffer.AllocBuffer(16*1024);
 
     m_ShutDown = 0;
 
@@ -72,18 +72,18 @@ void utp_state(void* userdata, int state)
     CUtpSocket* pSocket = ((CUtpSocket*)userdata);
     switch (state)
     {
-    case UTP_STATE_CONNECT:
-        pSocket->m_nLayerState = CUtpSocket::connected;
-        pSocket->OnConnect(0);
-    case UTP_STATE_WRITABLE:
-        pSocket->OnSend(0);
-        break;
-    case UTP_STATE_EOF:
-        pSocket->m_nLayerState = CUtpSocket::closed;
-        pSocket->OnClose(0);
-    case UTP_STATE_DESTROYING:
-        pSocket->Setup(NULL);
-        break;
+        case UTP_STATE_CONNECT:
+            pSocket->m_nLayerState = CUtpSocket::connected;
+            pSocket->OnConnect(0);
+        case UTP_STATE_WRITABLE:
+            pSocket->OnSend(0);
+            break;
+        case UTP_STATE_EOF:
+            pSocket->m_nLayerState = CUtpSocket::closed;
+            pSocket->OnClose(0);
+        case UTP_STATE_DESTROYING:
+            pSocket->Setup(NULL);
+            break;
     }
 }
 
@@ -162,14 +162,14 @@ void CUtpSocket::Setup(struct UTPSocket* Socket)
         UTPFunctionTable utp_callbacks = {&utp_read, &utp_write, &utp_get_rb_size, &utp_state, &utp_error, &utp_overhead};
         UTP_SetCallbacks(m_Socket, &utp_callbacks, this);
     }
-    else if(m_Socket)
-    {        
+    else if (m_Socket)
+    {
         UTP_Close(m_Socket);
         UTP_SetCallbacks(m_Socket, NULL, NULL); // make sure this will not be referred anymore
         m_Socket = NULL;
     }
-	else
-		ASSERT(0);
+    else
+        ASSERT(0);
 }
 
 void CUtpSocket::Close()
@@ -244,22 +244,22 @@ BOOL CUtpSocket::GetSockOpt(int nOptionName, void* lpOptionValue, int* lpOptionL
         return FALSE;
     switch (nOptionName)
     {
-    case TCP_NODELAY:
-        if (lpOptionLen)
-            *((char*)lpOptionValue) = 0; // This function is yet not implemented, and besides we don't need it anyway
-        return TRUE;
-    case SO_RCVBUF:
-        if (*lpOptionLen != sizeof(int))
+        case TCP_NODELAY:
+            if (lpOptionLen)
+                *((char*)lpOptionValue) = 0; // This function is yet not implemented, and besides we don't need it anyway
+            return TRUE;
+        case SO_RCVBUF:
+            if (*lpOptionLen != sizeof(int))
+                return FALSE;
+            *((int*)lpOptionValue) = m_ReadBuffer.GetLength();
+            return TRUE;
+        case SO_SNDBUF:
+            if (*lpOptionLen != sizeof(int))
+                return FALSE;
+            *((int*)lpOptionValue) = m_WriteBuffer.GetLength();
+            return TRUE;
+        default:
             return FALSE;
-        *((int*)lpOptionValue) = m_ReadBuffer.GetLength();
-        return TRUE;
-    case SO_SNDBUF:
-        if (*lpOptionLen != sizeof(int))
-            return FALSE;
-        *((int*)lpOptionValue) = m_WriteBuffer.GetLength();
-        return TRUE;
-    default:
-        return FALSE;
     }
 }
 
@@ -269,39 +269,39 @@ BOOL CUtpSocket::SetSockOpt(int nOptionName, const void* lpOptionValue, int nOpt
         return FALSE;
     switch (nOptionName)
     {
-    case TCP_NODELAY:
-        // I havn't implement the nagle Alghorytm becouse we don't need it, we usualy send's larger packets.
-        // If you think we need this funtion anyway, fill free to implement it, it isn't so complicated.
-        return FALSE;
-    case SO_RCVBUF:
-    {
-        if (nOptionLen != sizeof(int))
+        case TCP_NODELAY:
+            // I havn't implement the nagle Alghorytm becouse we don't need it, we usualy send's larger packets.
+            // If you think we need this funtion anyway, fill free to implement it, it isn't so complicated.
             return FALSE;
-        int PreAlloc = *((int*)lpOptionValue);
-        if ((int)m_ReadBuffer.GetSize() < PreAlloc)
-            PreAlloc = 0; // we can not set less than we have in buffer
-        else
-            PreAlloc -= m_ReadBuffer.GetSize();
-        // SetSize(used size to be set must not change, expantion is allowed, additional length to allocate)
-        m_ReadBuffer.SetSize(m_ReadBuffer.GetSize(), true, PreAlloc);
-        UTP_SetSockopt(m_Socket, SO_RCVBUF, (int)m_ReadBuffer.GetLength());
-        return TRUE;
-    }
-    case SO_SNDBUF:
-    {
-        if (nOptionLen != sizeof(int))
+        case SO_RCVBUF:
+        {
+            if (nOptionLen != sizeof(int))
+                return FALSE;
+            int PreAlloc = *((int*)lpOptionValue);
+            if ((int)m_ReadBuffer.GetSize() < PreAlloc)
+                PreAlloc = 0; // we can not set less than we have in buffer
+            else
+                PreAlloc -= m_ReadBuffer.GetSize();
+            // SetSize(used size to be set must not change, expantion is allowed, additional length to allocate)
+            m_ReadBuffer.SetSize(m_ReadBuffer.GetSize(), true, PreAlloc);
+            UTP_SetSockopt(m_Socket, SO_RCVBUF, (int)m_ReadBuffer.GetLength());
+            return TRUE;
+        }
+        case SO_SNDBUF:
+        {
+            if (nOptionLen != sizeof(int))
+                return FALSE;
+            int PreAlloc = *((int*)lpOptionValue);
+            if ((int)m_WriteBuffer.GetSize() < PreAlloc)
+                PreAlloc = 0; // we can not set less than we have in buffer
+            else
+                PreAlloc -= m_WriteBuffer.GetSize();
+            // SetSize(used size to be set must not change, expantion is allowed, additional length to allocate)
+            m_WriteBuffer.SetSize(m_WriteBuffer.GetSize(), true, PreAlloc);
+            UTP_SetSockopt(m_Socket, SO_SNDBUF, (int)m_WriteBuffer.GetLength());
+            return TRUE;
+        }
+        default:
             return FALSE;
-        int PreAlloc = *((int*)lpOptionValue);
-        if ((int)m_WriteBuffer.GetSize() < PreAlloc)
-            PreAlloc = 0; // we can not set less than we have in buffer
-        else
-            PreAlloc -= m_WriteBuffer.GetSize();
-        // SetSize(used size to be set must not change, expantion is allowed, additional length to allocate)
-        m_WriteBuffer.SetSize(m_WriteBuffer.GetSize(), true, PreAlloc);
-        UTP_SetSockopt(m_Socket, SO_SNDBUF, (int)m_WriteBuffer.GetLength());
-        return TRUE;
-    }
-    default:
-        return FALSE;
     }
 }

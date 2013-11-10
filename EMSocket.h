@@ -58,12 +58,12 @@ public:
     void	SetDownloadLimit(UINT limit);
     void	DisableDownloadLimit();
     BOOL	AsyncSelect(long lEvent);
-	virtual bool IsBusyExtensiveCheck();
-	virtual bool IsBusyQuickCheck() const;
-	virtual bool HasQueues(bool bOnlyStandardPackets = false) const;
-	virtual bool IsEnoughFileDataQueued(UINT nMinFilePayloadBytes) const;
-	virtual bool UseBigSendBuffer();
-	int			 DbgGetStdQueueCount() const	{return standartpacket_queue.GetCount();}
+    virtual bool IsBusyExtensiveCheck();
+    virtual bool IsBusyQuickCheck() const;
+    virtual bool HasQueues(bool bOnlyStandardPackets = false) const;
+    virtual bool IsEnoughFileDataQueued(UINT nMinFilePayloadBytes) const;
+    virtual bool UseBigSendBuffer();
+    int			 DbgGetStdQueueCount() const	{return standartpacket_queue.GetCount();}
 
     virtual UINT GetTimeOut() const;
     virtual void SetTimeOut(UINT uTimeOut);
@@ -133,11 +133,11 @@ protected:
 
 private:
     virtual SocketSentBytes Send(UINT maxNumberOfBytesToSend, UINT minFragSize, bool onlyAllowedToSendControlPacket);
-	SocketSentBytes SendStd(UINT maxNumberOfBytesToSend, UINT minFragSize, bool onlyAllowedToSendControlPacket);
-	SocketSentBytes SendOv(UINT maxNumberOfBytesToSend, UINT minFragSize, bool onlyAllowedToSendControlPacket);
+    SocketSentBytes SendStd(UINT maxNumberOfBytesToSend, UINT minFragSize, bool onlyAllowedToSendControlPacket);
+    SocketSentBytes SendOv(UINT maxNumberOfBytesToSend, UINT minFragSize, bool onlyAllowedToSendControlPacket);
     void	ClearQueues();
     virtual int Receive(void* lpBuf, int nBufLen, int nFlags = 0);
-	void	CleanUpOverlappedSendOperation(bool bCancelRequestFirst);
+    void	CleanUpOverlappedSendOperation(bool bCancelRequestFirst);
 
     UINT GetNextFragSize(UINT current, UINT minFragSize);
     bool    HasSent()
@@ -162,8 +162,8 @@ private:
     char*	sendbuffer;
     UINT	sendblen;
     UINT	sent;
-	LPWSAOVERLAPPED m_pPendingSendOperation;
-	CArray<WSABUF> m_aBufferSend;
+    LPWSAOVERLAPPED m_pPendingSendOperation;
+    CArray<WSABUF> m_aBufferSend;
 
     CTypedPtrList<CPtrList, Packet*> controlpacket_queue;
     CList<StandardPacketQueueEntry> standartpacket_queue;
@@ -182,7 +182,7 @@ private:
     bool m_bBusy;
     bool m_hasSent;
     bool m_bUsesBigSendBuffers;
-	bool m_bOverlappedSending;
+    bool m_bOverlappedSending;
 //>>> WiZaRd::Count block/success send [Xman?]
 private:
     CList<float> m_blockhistory;

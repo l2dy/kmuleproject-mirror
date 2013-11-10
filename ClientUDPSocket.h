@@ -25,7 +25,7 @@ class Packet;
 struct UDPPack
 {
     Packet* packet;
-	_CIPAddress dwIP;
+    _CIPAddress dwIP;
     uint16	nPort;
     UINT	dwTime;
     bool	bEncrypt;
@@ -90,27 +90,27 @@ private:
 
         bool operator< (const SIpPort &Other) const
         {
-			if(IP.Type() != Other.IP.Type())
-				return IP.Type() < Other.IP.Type();
-			if(IP.Type() == _CIPAddress::IPv6)
-			{
-				if(int cmp = memcmp(IP.Data(), Other.IP.Data(), 16))
-					return cmp < 0;
-			}
-			else if(IP.Type() == _CIPAddress::IPv4)
-			{
-				UINT r = IP.ToIPv4();
-				UINT l = Other.IP.ToIPv4();
-				if(r != l)
-					return r < l;
-			}
-			else
-			{
-				ASSERT(0);
-				return false;
-			}
-			return nPort < Other.nPort;
-		}
+            if (IP.Type() != Other.IP.Type())
+                return IP.Type() < Other.IP.Type();
+            if (IP.Type() == _CIPAddress::IPv6)
+            {
+                if (int cmp = memcmp(IP.Data(), Other.IP.Data(), 16))
+                    return cmp < 0;
+            }
+            else if (IP.Type() == _CIPAddress::IPv4)
+            {
+                UINT r = IP.ToIPv4();
+                UINT l = Other.IP.ToIPv4();
+                if (r != l)
+                    return r < l;
+            }
+            else
+            {
+                ASSERT(0);
+                return false;
+            }
+            return nPort < Other.nPort;
+        }
     };
 
     struct SHash

@@ -1874,12 +1874,12 @@ void CemuleDlg::DestroyMiniMule()
 {
     if (m_pMiniMule)
     {
-		if (m_pMiniMule->IsInInitDialog())
-		{
-			TRACE("%s - *** Cannot destroy Minimule, it's still in 'OnInitDialog'\n", __FUNCTION__);
-			m_pMiniMule->SetDestroyAfterInitDialog();
-		}
-		else if (!m_pMiniMule->IsInCallback()) // for safety
+        if (m_pMiniMule->IsInInitDialog())
+        {
+            TRACE("%s - *** Cannot destroy Minimule, it's still in 'OnInitDialog'\n", __FUNCTION__);
+            m_pMiniMule->SetDestroyAfterInitDialog();
+        }
+        else if (!m_pMiniMule->IsInCallback()) // for safety
         {
             TRACE(L"%s - m_pMiniMule->DestroyWindow();\n", __FUNCTION__);
             m_pMiniMule->DestroyWindow();
@@ -3388,7 +3388,7 @@ LRESULT CemuleDlg::OnUPnPResult(WPARAM wParam, LPARAM lParam)
             // remember the last working implementation
             thePrefs.SetLastWorkingUPnPImpl(theApp.m_pUPnPFinder->GetImplementation()->GetImplementationID());
             theApp.QueueLogLineEx(LOG_SUCCESS, GetResString(IDS_UPNPSUCCESS), theApp.m_pUPnPFinder->GetImplementation()->GetUsedTCPPort()
-                , theApp.m_pUPnPFinder->GetImplementation()->GetUsedUDPPort());
+                                  , theApp.m_pUPnPFinder->GetImplementation()->GetUsedUDPPort());
         }
         else
             theApp.QueueLogLineEx(LOG_ERROR, GetResString(IDS_UPNPFAILED));

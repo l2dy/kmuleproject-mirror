@@ -174,73 +174,73 @@ BOOL CStatisticsTree::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 {
     switch (wParam)
     {
-    case MP_STATTREE_RESET:
-    {
-        if (AfxMessageBox(GetResString(IDS_STATS_MBRESET_TXT), MB_YESNO | MB_ICONEXCLAMATION) == IDNO)
-            break;
-
-        thePrefs.ResetCumulativeStatistics();
-        AddLogLine(false, GetResString(IDS_STATS_NFORESET));
-        theApp.emuledlg->statisticswnd->ShowStatistics();
-
-        CString myBuffer;
-        myBuffer.Format(GetResString(IDS_STATS_LASTRESETSTATIC), thePrefs.GetStatsLastResetStr(false));
-        GetParent()->GetDlgItem(IDC_STATIC_LASTRESET)->SetWindowText(myBuffer);
-
-        break;
-    }
-    case MP_STATTREE_RESTORE:
-    {
-        if (AfxMessageBox(GetResString(IDS_STATS_MBRESTORE_TXT), MB_YESNO | MB_ICONQUESTION) == IDNO)
-            break;
-
-        if (!thePrefs.LoadStats(1))
-            LogError(LOG_STATUSBAR, GetResString(IDS_ERR_NOSTATBKUP));
-        else
+        case MP_STATTREE_RESET:
         {
-            AddLogLine(false, GetResString(IDS_STATS_NFOLOADEDBKUP));
+            if (AfxMessageBox(GetResString(IDS_STATS_MBRESET_TXT), MB_YESNO | MB_ICONEXCLAMATION) == IDNO)
+                break;
+
+            thePrefs.ResetCumulativeStatistics();
+            AddLogLine(false, GetResString(IDS_STATS_NFORESET));
+            theApp.emuledlg->statisticswnd->ShowStatistics();
+
             CString myBuffer;
             myBuffer.Format(GetResString(IDS_STATS_LASTRESETSTATIC), thePrefs.GetStatsLastResetStr(false));
             GetParent()->GetDlgItem(IDC_STATIC_LASTRESET)->SetWindowText(myBuffer);
-        }
 
-        break;
-    }
-    case MP_STATTREE_EXPANDMAIN:
-    {
-        SetRedraw(false);
-        ExpandAll(true);
-        goto lblSaveExpanded;
-    }
-    case MP_STATTREE_EXPANDALL:
-    {
-        SetRedraw(false);
-        ExpandAll();
-        goto lblSaveExpanded;
-    }
-    case MP_STATTREE_COLLAPSEALL:
-    {
-        SetRedraw(false);
-        CollapseAll();
+            break;
+        }
+        case MP_STATTREE_RESTORE:
+        {
+            if (AfxMessageBox(GetResString(IDS_STATS_MBRESTORE_TXT), MB_YESNO | MB_ICONQUESTION) == IDNO)
+                break;
+
+            if (!thePrefs.LoadStats(1))
+                LogError(LOG_STATUSBAR, GetResString(IDS_ERR_NOSTATBKUP));
+            else
+            {
+                AddLogLine(false, GetResString(IDS_STATS_NFOLOADEDBKUP));
+                CString myBuffer;
+                myBuffer.Format(GetResString(IDS_STATS_LASTRESETSTATIC), thePrefs.GetStatsLastResetStr(false));
+                GetParent()->GetDlgItem(IDC_STATIC_LASTRESET)->SetWindowText(myBuffer);
+            }
+
+            break;
+        }
+        case MP_STATTREE_EXPANDMAIN:
+        {
+            SetRedraw(false);
+            ExpandAll(true);
+            goto lblSaveExpanded;
+        }
+        case MP_STATTREE_EXPANDALL:
+        {
+            SetRedraw(false);
+            ExpandAll();
+            goto lblSaveExpanded;
+        }
+        case MP_STATTREE_COLLAPSEALL:
+        {
+            SetRedraw(false);
+            CollapseAll();
 lblSaveExpanded:
-        thePrefs.SetExpandedTreeItems(GetExpandedMask());
-        SetRedraw(true);
-        break;
-    }
-    case MP_STATTREE_COPYSEL:
-    case MP_STATTREE_COPYVIS:
-    case MP_STATTREE_COPYALL:
-    {
-        CopyText(wParam);
-        break;
-    }
-    case MP_STATTREE_HTMLCOPYSEL:
-    case MP_STATTREE_HTMLCOPYVIS:
-    case MP_STATTREE_HTMLCOPYALL:
-    {
-        CopyHTML(wParam);
-        break;
-    }
+            thePrefs.SetExpandedTreeItems(GetExpandedMask());
+            SetRedraw(true);
+            break;
+        }
+        case MP_STATTREE_COPYSEL:
+        case MP_STATTREE_COPYVIS:
+        case MP_STATTREE_COPYALL:
+        {
+            CopyText(wParam);
+            break;
+        }
+        case MP_STATTREE_HTMLCOPYSEL:
+        case MP_STATTREE_HTMLCOPYVIS:
+        case MP_STATTREE_HTMLCOPYALL:
+        {
+            CopyHTML(wParam);
+            break;
+        }
     }
 
     return true;
@@ -387,35 +387,35 @@ bool CStatisticsTree::CopyHTML(int copyMode)
 {
     switch (copyMode)
     {
-    case MP_STATTREE_HTMLCOPYSEL:
-    {
-        HTREEITEM selectedItem = GetSelectedItem();
-        if (selectedItem != NULL)
+        case MP_STATTREE_HTMLCOPYSEL:
         {
-            CString theHTML = GetHTML(true, selectedItem);
+            HTREEITEM selectedItem = GetSelectedItem();
+            if (selectedItem != NULL)
+            {
+                CString theHTML = GetHTML(true, selectedItem);
+                if (theHTML.IsEmpty())
+                    return false;
+                theApp.CopyTextToClipboard(theHTML);
+                return true;
+            }
+            return false;
+        }
+        case MP_STATTREE_HTMLCOPYVIS:
+        {
+            CString theHTML = GetHTML();
             if (theHTML.IsEmpty())
                 return false;
             theApp.CopyTextToClipboard(theHTML);
             return true;
         }
-        return false;
-    }
-    case MP_STATTREE_HTMLCOPYVIS:
-    {
-        CString theHTML = GetHTML();
-        if (theHTML.IsEmpty())
-            return false;
-        theApp.CopyTextToClipboard(theHTML);
-        return true;
-    }
-    case MP_STATTREE_HTMLCOPYALL:
-    {
-        CString theHTML = GetHTML(false);
-        if (theHTML.IsEmpty())
-            return false;
-        theApp.CopyTextToClipboard(theHTML);
-        return true;
-    }
+        case MP_STATTREE_HTMLCOPYALL:
+        {
+            CString theHTML = GetHTML(false);
+            if (theHTML.IsEmpty())
+                return false;
+            theApp.CopyTextToClipboard(theHTML);
+            return true;
+        }
     }
 
     return false;
@@ -461,35 +461,35 @@ bool CStatisticsTree::CopyText(int copyMode)
 {
     switch (copyMode)
     {
-    case MP_STATTREE_COPYSEL:
-    {
-        HTREEITEM selectedItem = GetSelectedItem();
-        if (selectedItem != NULL)
+        case MP_STATTREE_COPYSEL:
         {
-            CString theText = GetText(true, selectedItem);
+            HTREEITEM selectedItem = GetSelectedItem();
+            if (selectedItem != NULL)
+            {
+                CString theText = GetText(true, selectedItem);
+                if (theText.IsEmpty())
+                    return false;
+                theApp.CopyTextToClipboard(theText);
+                return true;
+            }
+            return false;
+        }
+        case MP_STATTREE_COPYVIS:
+        {
+            CString theText = GetText();
             if (theText.IsEmpty())
                 return false;
             theApp.CopyTextToClipboard(theText);
             return true;
         }
-        return false;
-    }
-    case MP_STATTREE_COPYVIS:
-    {
-        CString theText = GetText();
-        if (theText.IsEmpty())
-            return false;
-        theApp.CopyTextToClipboard(theText);
-        return true;
-    }
-    case MP_STATTREE_COPYALL:
-    {
-        CString theText = GetText(false);
-        if (theText.IsEmpty())
-            return false;
-        theApp.CopyTextToClipboard(theText);
-        return true;
-    }
+        case MP_STATTREE_COPYALL:
+        {
+            CString theText = GetText(false);
+            if (theText.IsEmpty())
+                return false;
+            theApp.CopyTextToClipboard(theText);
+            return true;
+        }
     }
 
     return false;

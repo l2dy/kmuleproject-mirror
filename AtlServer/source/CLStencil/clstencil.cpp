@@ -556,61 +556,61 @@ bool GetParameters(int argc, char *argv[],
         char ch = argv[i][1];
         switch (ch)
         {
-        case 'n' :
-        case 'N':
-        {
-            *pbNoLogo = TRUE;
-            continue;
-        }
-        case 'i' :
-        case 'I' :
-        {
-            *ppszInputFile = argv[++i];
-            continue;
-        }
-        case 'o' :
-        case 'O' :
-        {
-            *ppszOutputFile = argv[++i];
-            continue;
-        }
-        case 'q' :
-        case 'Q' :
-        {
-            *ppszQueryString = argv[++i];
-            continue;
-        }
-        case 'f' :
-        case 'F':
-        {
-            *ppszFormInput = argv[++i];
-            continue;
-        }
-        case 'e' :
-        case 'E':
-        {
-            *ppszErrorLog = argv[++i];
-            continue;
-        }
-        case 'c' :
-        case 'C':
-        {
-            *ppszContentType = argv[++i];
-            continue;
-        }
-        case 'v' :
-        case 'V':
-        {
-            *ppszVerb = argv[++i];
-            continue;
-        }
-        default:
-        {
-            CStringA str;
-            Emit(str, IDS_UNKNOWN_PARAM, argv[i]);
-            PrintUsage(str);
-            return false;
-        }
+            case 'n' :
+            case 'N':
+            {
+                *pbNoLogo = TRUE;
+                continue;
+            }
+            case 'i' :
+            case 'I' :
+            {
+                *ppszInputFile = argv[++i];
+                continue;
+            }
+            case 'o' :
+            case 'O' :
+            {
+                *ppszOutputFile = argv[++i];
+                continue;
+            }
+            case 'q' :
+            case 'Q' :
+            {
+                *ppszQueryString = argv[++i];
+                continue;
+            }
+            case 'f' :
+            case 'F':
+            {
+                *ppszFormInput = argv[++i];
+                continue;
+            }
+            case 'e' :
+            case 'E':
+            {
+                *ppszErrorLog = argv[++i];
+                continue;
+            }
+            case 'c' :
+            case 'C':
+            {
+                *ppszContentType = argv[++i];
+                continue;
+            }
+            case 'v' :
+            case 'V':
+            {
+                *ppszVerb = argv[++i];
+                continue;
+            }
+            default:
+            {
+                CStringA str;
+                Emit(str, IDS_UNKNOWN_PARAM, argv[i]);
+                PrintUsage(str);
+                return false;
+            }
         }
     }
 

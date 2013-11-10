@@ -717,11 +717,11 @@ typedef struct XMLDocument XMLDocument;
 extern "C" {
 #endif
 
-    void * __RPC_USER MIDL_user_allocate(size_t);
-    void __RPC_USER MIDL_user_free(void *);
+void * __RPC_USER MIDL_user_allocate(size_t);
+void __RPC_USER MIDL_user_free(void *);
 
-    /* interface __MIDL_itf_msxml2_0000 */
-    /* [local] */
+/* interface __MIDL_itf_msxml2_0000 */
+/* [local] */
 
 //+-------------------------------------------------------------------------
 //
@@ -733,21 +733,21 @@ extern "C" {
 #define CLSID_DOMDocument CLSID_DOMDocument2
 
 #ifdef __USE_MSXML2_NAMESPACE__
-    namespace MSXML2
-    {
+namespace MSXML2
+{
 #endif
 #ifndef __msxml_h__
-    typedef struct _xml_error
-    {
-        unsigned int _nLine;
-        BSTR _pchBuf;
-        unsigned int _cchBuf;
-        unsigned int _ich;
-        BSTR _pszFound;
-        BSTR _pszExpected;
-        DWORD _reserved1;
-        DWORD _reserved2;
-    } 	XML_ERROR;
+typedef struct _xml_error
+{
+    unsigned int _nLine;
+    BSTR _pchBuf;
+    unsigned int _cchBuf;
+    unsigned int _ich;
+    BSTR _pszFound;
+    BSTR _pszExpected;
+    DWORD _reserved1;
+    DWORD _reserved2;
+} 	XML_ERROR;
 
 #endif
 #ifndef __ISAXXMLReader_INTERFACE_DEFINED__
@@ -755,15 +755,15 @@ extern "C" {
 #endif
 
 
-    extern RPC_IF_HANDLE __MIDL_itf_msxml2_0000_v0_0_c_ifspec;
-    extern RPC_IF_HANDLE __MIDL_itf_msxml2_0000_v0_0_s_ifspec;
+extern RPC_IF_HANDLE __MIDL_itf_msxml2_0000_v0_0_c_ifspec;
+extern RPC_IF_HANDLE __MIDL_itf_msxml2_0000_v0_0_s_ifspec;
 
 
 #ifndef __MSXML2_LIBRARY_DEFINED__
 #define __MSXML2_LIBRARY_DEFINED__
 
-    /* library MSXML2 */
-    /* [lcid][helpstring][version][uuid] */
+/* library MSXML2 */
+/* [lcid][helpstring][version][uuid] */
 
 
 
@@ -821,57 +821,57 @@ extern "C" {
 
 #undef ParseURL
 #if !defined(__msxml_h__)
-    typedef /* [helpstring] */
-    enum tagXMLEMEM_TYPE
-    {
-        XMLELEMTYPE_ELEMENT	= 0,
-        XMLELEMTYPE_TEXT	= XMLELEMTYPE_ELEMENT + 1,
-        XMLELEMTYPE_COMMENT	= XMLELEMTYPE_TEXT + 1,
-        XMLELEMTYPE_DOCUMENT	= XMLELEMTYPE_COMMENT + 1,
-        XMLELEMTYPE_DTD	= XMLELEMTYPE_DOCUMENT + 1,
-        XMLELEMTYPE_PI	= XMLELEMTYPE_DTD + 1,
-        XMLELEMTYPE_OTHER	= XMLELEMTYPE_PI + 1
-    } 	XMLELEM_TYPE;
+typedef /* [helpstring] */
+enum tagXMLEMEM_TYPE
+{
+    XMLELEMTYPE_ELEMENT	= 0,
+    XMLELEMTYPE_TEXT	= XMLELEMTYPE_ELEMENT + 1,
+    XMLELEMTYPE_COMMENT	= XMLELEMTYPE_TEXT + 1,
+    XMLELEMTYPE_DOCUMENT	= XMLELEMTYPE_COMMENT + 1,
+    XMLELEMTYPE_DTD	= XMLELEMTYPE_DOCUMENT + 1,
+    XMLELEMTYPE_PI	= XMLELEMTYPE_DTD + 1,
+    XMLELEMTYPE_OTHER	= XMLELEMTYPE_PI + 1
+} 	XMLELEM_TYPE;
 
 #endif
 #if !defined(__msxml_h__) || defined(__IXMLElementNotificationSink_INTERFACE_DEFINED__)
-    typedef /* [helpstring] */
-    enum tagDOMNodeType
-    {
-        NODE_INVALID	= 0,
-        NODE_ELEMENT	= NODE_INVALID + 1,
-        NODE_ATTRIBUTE	= NODE_ELEMENT + 1,
-        NODE_TEXT	= NODE_ATTRIBUTE + 1,
-        NODE_CDATA_SECTION	= NODE_TEXT + 1,
-        NODE_ENTITY_REFERENCE	= NODE_CDATA_SECTION + 1,
-        NODE_ENTITY	= NODE_ENTITY_REFERENCE + 1,
-        NODE_PROCESSING_INSTRUCTION	= NODE_ENTITY + 1,
-        NODE_COMMENT	= NODE_PROCESSING_INSTRUCTION + 1,
-        NODE_DOCUMENT	= NODE_COMMENT + 1,
-        NODE_DOCUMENT_TYPE	= NODE_DOCUMENT + 1,
-        NODE_DOCUMENT_FRAGMENT	= NODE_DOCUMENT_TYPE + 1,
-        NODE_NOTATION	= NODE_DOCUMENT_FRAGMENT + 1
-    } 	DOMNodeType;
+typedef /* [helpstring] */
+enum tagDOMNodeType
+{
+    NODE_INVALID	= 0,
+    NODE_ELEMENT	= NODE_INVALID + 1,
+    NODE_ATTRIBUTE	= NODE_ELEMENT + 1,
+    NODE_TEXT	= NODE_ATTRIBUTE + 1,
+    NODE_CDATA_SECTION	= NODE_TEXT + 1,
+    NODE_ENTITY_REFERENCE	= NODE_CDATA_SECTION + 1,
+    NODE_ENTITY	= NODE_ENTITY_REFERENCE + 1,
+    NODE_PROCESSING_INSTRUCTION	= NODE_ENTITY + 1,
+    NODE_COMMENT	= NODE_PROCESSING_INSTRUCTION + 1,
+    NODE_DOCUMENT	= NODE_COMMENT + 1,
+    NODE_DOCUMENT_TYPE	= NODE_DOCUMENT + 1,
+    NODE_DOCUMENT_FRAGMENT	= NODE_DOCUMENT_TYPE + 1,
+    NODE_NOTATION	= NODE_DOCUMENT_FRAGMENT + 1
+} 	DOMNodeType;
 
 #endif
-    typedef /* [helpstring] */
-    enum _SERVERXMLHTTP_OPTION
-    {
-        SXH_OPTION_URL_CODEPAGE	= 0,
-        SXH_OPTION_ESCAPE_PERCENT_IN_URL	= SXH_OPTION_URL_CODEPAGE + 1
-    } 	SERVERXMLHTTP_OPTION;
+typedef /* [helpstring] */
+enum _SERVERXMLHTTP_OPTION
+{
+    SXH_OPTION_URL_CODEPAGE	= 0,
+    SXH_OPTION_ESCAPE_PERCENT_IN_URL	= SXH_OPTION_URL_CODEPAGE + 1
+} 	SERVERXMLHTTP_OPTION;
 
 
-    EXTERN_C const IID LIBID_MSXML2;
+EXTERN_C const IID LIBID_MSXML2;
 
 #ifndef __IXMLDOMImplementation_INTERFACE_DEFINED__
 #define __IXMLDOMImplementation_INTERFACE_DEFINED__
 
-    /* interface IXMLDOMImplementation */
-    /* [uuid][dual][oleautomation][unique][nonextensible][object][local] */
+/* interface IXMLDOMImplementation */
+/* [uuid][dual][oleautomation][unique][nonextensible][object][local] */
 
 
-    EXTERN_C const IID IID_IXMLDOMImplementation;
+EXTERN_C const IID IID_IXMLDOMImplementation;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 

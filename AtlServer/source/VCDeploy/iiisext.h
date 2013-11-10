@@ -187,27 +187,27 @@ typedef struct IISExtWebService IISExtWebService;
 extern "C" {
 #endif
 
-    void * __RPC_USER MIDL_user_allocate(size_t);
-    void __RPC_USER MIDL_user_free(void *);
+void * __RPC_USER MIDL_user_allocate(size_t);
+void __RPC_USER MIDL_user_free(void *);
 
 
 #ifndef __IISExt_LIBRARY_DEFINED__
 #define __IISExt_LIBRARY_DEFINED__
 
-    /* library IISExt */
-    /* [helpstring][version][uuid] */
+/* library IISExt */
+/* [helpstring][version][uuid] */
 
 
-    EXTERN_C const IID LIBID_IISExt;
+EXTERN_C const IID LIBID_IISExt;
 
 #ifndef __IISApplicationPool_INTERFACE_DEFINED__
 #define __IISApplicationPool_INTERFACE_DEFINED__
 
-    /* interface IISApplicationPool */
-    /* [object][dual][oleautomation][uuid] */
+/* interface IISApplicationPool */
+/* [object][dual][oleautomation][uuid] */
 
 
-    EXTERN_C const IID IID_IISApplicationPool;
+EXTERN_C const IID IID_IISApplicationPool;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 

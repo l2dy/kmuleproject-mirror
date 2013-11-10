@@ -53,16 +53,16 @@ static char THIS_FILE[] = __FILE__;
 bool CompareIP(const CUpDownClient* client, const _CIPAddress& dwIP)
 {
 //>>> WiZaRd::IPv6 [Xanatos]
-	_CIPAddress comp = dwIP.Type() == CAddress::IPv6 ? client->GetIPv6() : client->GetIP();
-	if(comp.IsNull())
-		comp = client->GetConnectIP();
-	if(!comp.IsNull())
-		return comp == dwIP;
-	return false;
-	/*if (client->GetIP() != 0)
-		return client->GetIP() == dwIP;
-	return client->GetConnectIP() == dwIP;*/
-//<<< WiZaRd::IPv6 [Xanatos]        
+    _CIPAddress comp = dwIP.Type() == CAddress::IPv6 ? client->GetIPv6() : client->GetIP();
+    if (comp.IsNull())
+        comp = client->GetConnectIP();
+    if (!comp.IsNull())
+        return comp == dwIP;
+    return false;
+    /*if (client->GetIP() != 0)
+    	return client->GetIP() == dwIP;
+    return client->GetConnectIP() == dwIP;*/
+//<<< WiZaRd::IPv6 [Xanatos]
 }
 //<<< WiZaRd::FiX
 
@@ -102,73 +102,73 @@ void CClientList::GetStatistics(UINT &ruTotalClients, int stats[NUM_CLIENTLIST_S
 
         switch (cur_client->GetClientSoft())
         {
-        case SO_EMULE:
-        case SO_OLDEMULE:
-            stats[2]++;
-            clientVersionEMule[cur_client->GetVersion()]++;
-            break;
+            case SO_EMULE:
+            case SO_OLDEMULE:
+                stats[2]++;
+                clientVersionEMule[cur_client->GetVersion()]++;
+                break;
 
 //>>> WiZaRd::kMule Version Ident
-        case SO_KMULE:
-            ++stats[20];
-            ++clientVersionKMule[cur_client->GetVersion()];
-            break;
+            case SO_KMULE:
+                ++stats[20];
+                ++clientVersionKMule[cur_client->GetVersion()];
+                break;
 //<<< WiZaRd::kMule Version Ident
 
-        case SO_EDONKEYHYBRID :
-            stats[4]++;
-            clientVersionEDonkeyHybrid[cur_client->GetVersion()]++;
-            break;
+            case SO_EDONKEYHYBRID :
+                stats[4]++;
+                clientVersionEDonkeyHybrid[cur_client->GetVersion()]++;
+                break;
 
-        case SO_AMULE:
-            stats[10]++;
-            clientVersionAMule[cur_client->GetVersion()]++;
-            break;
+            case SO_AMULE:
+                stats[10]++;
+                clientVersionAMule[cur_client->GetVersion()]++;
+                break;
 
-        case SO_EDONKEY:
-            stats[1]++;
-            clientVersionEDonkey[cur_client->GetVersion()]++;
-            break;
+            case SO_EDONKEY:
+                stats[1]++;
+                clientVersionEDonkey[cur_client->GetVersion()]++;
+                break;
 
-        case SO_MLDONKEY:
-            stats[3]++;
-            break;
+            case SO_MLDONKEY:
+                stats[3]++;
+                break;
 
-        case SO_SHAREAZA:
-            stats[11]++;
-            break;
+            case SO_SHAREAZA:
+                stats[11]++;
+                break;
 
-            // all remaining 'eMule Compatible' clients
+                // all remaining 'eMule Compatible' clients
 //>>> WiZaRd::ClientAnalyer
 // Spike2 - Enhanced Client Recognition - START
-        case SO_HYDRANODE:
-        case SO_EMULEPLUS:
-        case SO_TRUSTYFILES:
+            case SO_HYDRANODE:
+            case SO_EMULEPLUS:
+            case SO_TRUSTYFILES:
 // Spike2 - Enhanced Client Recognition - END
 //<<< WiZaRd::ClientAnalyer
-        case SO_CDONKEY:
-        case SO_XMULE:
-        case SO_LPHANT:
-            stats[5]++;
-            break;
+            case SO_CDONKEY:
+            case SO_XMULE:
+            case SO_LPHANT:
+                stats[5]++;
+                break;
 
-        default:
-            stats[0]++;
-            break;
+            default:
+                stats[0]++;
+                break;
         }
 
         if (cur_client->Credits() != NULL)
         {
             switch (cur_client->Credits()->GetCurrentIdentState(cur_client->GetIP()))
             {
-            case IS_IDENTIFIED:
-                stats[12]++;
-                break;
-            case IS_IDFAILED:
-            case IS_IDNEEDED:
-            case IS_IDBADGUY:
-                stats[13]++;
-                break;
+                case IS_IDENTIFIED:
+                    stats[12]++;
+                    break;
+                case IS_IDFAILED:
+                case IS_IDNEEDED:
+                case IS_IDBADGUY:
+                    stats[13]++;
+                    break;
             }
         }
 
@@ -177,11 +177,11 @@ void CClientList::GetStatistics(UINT &ruTotalClients, int stats[NUM_CLIENTLIST_S
 
         switch (cur_client->GetUserPort())
         {
-        case 4662:
-            stats[8]++; // Default Port
-            break;
-        default:
-            stats[9]++; // Other Port
+            case 4662:
+                stats[8]++; // Default Port
+                break;
+            default:
+                stats[9]++; // Other Port
         }
 
         // Network client stats
@@ -343,7 +343,7 @@ CUpDownClient* CClientList::FindClientByUserHash(const uchar* clienthash, const 
         {
 //>>> WiZaRd::IPv6 [Xanatos]
             if ((dwIP.IsNull() || CompareIP(cur_client, dwIP)) && (nTCPPort == 0 || nTCPPort == cur_client->GetUserPort()))
-            //if ((dwIP == 0 || CompareIP(cur_client, dwIP)) && (nTCPPort == 0 || nTCPPort == cur_client->GetUserPort()))
+                //if ((dwIP == 0 || CompareIP(cur_client, dwIP)) && (nTCPPort == 0 || nTCPPort == cur_client->GetUserPort()))
 //<<< WiZaRd::IPv6 [Xanatos]
                 return cur_client;
             else
@@ -455,10 +455,10 @@ void CClientList::RemoveAllBannedClients()
 void CClientList::AddTrackClient(CUpDownClient* toadd)
 {
 //>>> WiZaRd::IPv6 [Xanatos]
-	if(toadd->GetIP().Type() != CAddress::IPv4) // IPv6-TODO: Add IPv6 tracking
-		return;
-	UINT dwIP = _ntohl(toadd->GetIP().ToIPv4());
-	//UINT dwIP = toadd->GetIP();
+    if (toadd->GetIP().Type() != CAddress::IPv4) // IPv6-TODO: Add IPv6 tracking
+        return;
+    UINT dwIP = _ntohl(toadd->GetIP().ToIPv4());
+    //UINT dwIP = toadd->GetIP();
 //<<< WiZaRd::IPv6 [Xanatos]
     CDeletedClient* pResult = 0;
     if (m_trackedClientsList.Lookup(dwIP, pResult))
@@ -514,10 +514,10 @@ UINT CClientList::GetClientsFromIP(UINT dwIP) const
 void CClientList::TrackBadRequest(const CUpDownClient* upcClient, int nIncreaseCounter)
 {
 //>>> WiZaRd::IPv6 [Xanatos]
-	if(upcClient->GetIP().Type() != CAddress::IPv4) // IPv6-TODO: Add IPv6 tracking
-		return;
-	UINT dwIP = _ntohl(upcClient->GetIP().ToIPv4());
-	//UINT dwIP = upcClient->GetIP();
+    if (upcClient->GetIP().Type() != CAddress::IPv4) // IPv6-TODO: Add IPv6 tracking
+        return;
+    UINT dwIP = _ntohl(upcClient->GetIP().ToIPv4());
+    //UINT dwIP = upcClient->GetIP();
 //<<< WiZaRd::IPv6 [Xanatos]
     CDeletedClient* pResult = NULL;
     if (dwIP == 0)
@@ -541,10 +541,10 @@ void CClientList::TrackBadRequest(const CUpDownClient* upcClient, int nIncreaseC
 UINT CClientList::GetBadRequests(const CUpDownClient* upcClient) const
 {
 //>>> WiZaRd::IPv6 [Xanatos]
-	if(upcClient->GetIP().Type() != CAddress::IPv4) // IPv6-TODO: Add IPv6 tracking
-		return 0;
-	UINT dwIP = _ntohl(upcClient->GetIP().ToIPv4());
-	//UINT dwIP = upcClient->GetIP();
+    if (upcClient->GetIP().Type() != CAddress::IPv4) // IPv6-TODO: Add IPv6 tracking
+        return 0;
+    UINT dwIP = _ntohl(upcClient->GetIP().ToIPv4());
+    //UINT dwIP = upcClient->GetIP();
 //<<< WiZaRd::IPv6 [Xanatos]
     CDeletedClient* pResult = NULL;
     if (dwIP == 0)
@@ -641,122 +641,122 @@ void CClientList::Process()
         }
         switch (cur_client->GetKadState())
         {
-        case KS_QUEUED_FWCHECK:
-        case KS_QUEUED_FWCHECK_UDP:
-            //Another client asked us to try to connect to them to check their firewalled status.
-            cur_client->TryToConnect(true, true);
-            break;
-        case KS_CONNECTING_FWCHECK:
-            //Ignore this state as we are just waiting for results.
-            break;
-        case KS_FWCHECK_UDP:
-        case KS_CONNECTING_FWCHECK_UDP:
-            // we want a UDP firewallcheck from this client and are just waiting to get connected to send the request
-            break;
-        case KS_CONNECTED_FWCHECK:
-            //We successfully connected to the client.
-            //We now send a ack to let them know.
-            if (cur_client->GetKadVersion() >= KADEMLIA_VERSION7_49a)
-            {
-                // the result is now sent per TCP instead of UDP, because this will fail if our intern UDP port is unreachable.
-                // But we want the TCP testresult regardless if UDP is firewalled, the new UDP state and test takes care of the rest
-                ASSERT(cur_client->socket != NULL && cur_client->socket->IsConnected());
-                if (thePrefs.GetDebugClientTCPLevel() > 0)
-                    DebugSend("OP_KAD_FWTCPCHECK_ACK", cur_client);
-                Packet* pPacket = new Packet(OP_KAD_FWTCPCHECK_ACK, 0, OP_EMULEPROT);
-                if (!cur_client->SafeConnectAndSendPacket(pPacket))
-                    cur_client = NULL;
-            }
-            else
-            {
-                if (thePrefs.GetDebugClientKadUDPLevel() > 0)
-                    DebugSend("KADEMLIA_FIREWALLED_ACK_RES", cur_client->GetIP(), cur_client->GetKadPort());
-//>>> WiZaRd::IPv6 [Xanatos]
-                Kademlia::CKademlia::GetUDPListener()->SendNullPacket(KADEMLIA_FIREWALLED_ACK_RES, cur_client->GetIP().ToIPv4(), cur_client->GetKadPort(), 0, NULL);
-                //Kademlia::CKademlia::GetUDPListener()->SendNullPacket(KADEMLIA_FIREWALLED_ACK_RES, ntohl(cur_client->GetIP()), cur_client->GetKadPort(), 0, NULL);
-//<<< WiZaRd::IPv6 [Xanatos]
-            }
-            //We are done with this client. Set Kad status to KS_NONE and it will be removed in the next cycle.
-            if (cur_client != NULL)
-                cur_client->SetKadState(KS_NONE);
-            break;
-
-        case KS_INCOMING_BUDDY:
-            //A firewalled client wants us to be his buddy.
-            //If we already have a buddy, we set Kad state to KS_NONE and it's removed in the next cycle.
-            //If not, this client will change to KS_CONNECTED_BUDDY when it connects.
-            if (m_nBuddyStatus == Connected)
-                cur_client->SetKadState(KS_NONE);
-            break;
-
-        case KS_QUEUED_BUDDY:
-            //We are firewalled and want to request this client to be a buddy.
-            //But first we check to make sure we are not already trying another client.
-            //If we are not already trying. We try to connect to this client.
-            //If we are already connected to a buddy, we set this client to KS_NONE and it's removed next cycle.
-            //If we are trying to connect to a buddy, we just ignore as the one we are trying may fail and we can then try this one.
-            if (m_nBuddyStatus == Disconnected)
-            {
-                buddy = Connecting;
-                m_nBuddyStatus = Connecting;
-                cur_client->SetKadState(KS_CONNECTING_BUDDY);
+            case KS_QUEUED_FWCHECK:
+            case KS_QUEUED_FWCHECK_UDP:
+                //Another client asked us to try to connect to them to check their firewalled status.
                 cur_client->TryToConnect(true, true);
+                break;
+            case KS_CONNECTING_FWCHECK:
+                //Ignore this state as we are just waiting for results.
+                break;
+            case KS_FWCHECK_UDP:
+            case KS_CONNECTING_FWCHECK_UDP:
+                // we want a UDP firewallcheck from this client and are just waiting to get connected to send the request
+                break;
+            case KS_CONNECTED_FWCHECK:
+                //We successfully connected to the client.
+                //We now send a ack to let them know.
+                if (cur_client->GetKadVersion() >= KADEMLIA_VERSION7_49a)
+                {
+                    // the result is now sent per TCP instead of UDP, because this will fail if our intern UDP port is unreachable.
+                    // But we want the TCP testresult regardless if UDP is firewalled, the new UDP state and test takes care of the rest
+                    ASSERT(cur_client->socket != NULL && cur_client->socket->IsConnected());
+                    if (thePrefs.GetDebugClientTCPLevel() > 0)
+                        DebugSend("OP_KAD_FWTCPCHECK_ACK", cur_client);
+                    Packet* pPacket = new Packet(OP_KAD_FWTCPCHECK_ACK, 0, OP_EMULEPROT);
+                    if (!cur_client->SafeConnectAndSendPacket(pPacket))
+                        cur_client = NULL;
+                }
+                else
+                {
+                    if (thePrefs.GetDebugClientKadUDPLevel() > 0)
+                        DebugSend("KADEMLIA_FIREWALLED_ACK_RES", cur_client->GetIP(), cur_client->GetKadPort());
+//>>> WiZaRd::IPv6 [Xanatos]
+                    Kademlia::CKademlia::GetUDPListener()->SendNullPacket(KADEMLIA_FIREWALLED_ACK_RES, cur_client->GetIP().ToIPv4(), cur_client->GetKadPort(), 0, NULL);
+                    //Kademlia::CKademlia::GetUDPListener()->SendNullPacket(KADEMLIA_FIREWALLED_ACK_RES, ntohl(cur_client->GetIP()), cur_client->GetKadPort(), 0, NULL);
+//<<< WiZaRd::IPv6 [Xanatos]
+                }
+                //We are done with this client. Set Kad status to KS_NONE and it will be removed in the next cycle.
+                if (cur_client != NULL)
+                    cur_client->SetKadState(KS_NONE);
+                break;
+
+            case KS_INCOMING_BUDDY:
+                //A firewalled client wants us to be his buddy.
+                //If we already have a buddy, we set Kad state to KS_NONE and it's removed in the next cycle.
+                //If not, this client will change to KS_CONNECTED_BUDDY when it connects.
+                if (m_nBuddyStatus == Connected)
+                    cur_client->SetKadState(KS_NONE);
+                break;
+
+            case KS_QUEUED_BUDDY:
+                //We are firewalled and want to request this client to be a buddy.
+                //But first we check to make sure we are not already trying another client.
+                //If we are not already trying. We try to connect to this client.
+                //If we are already connected to a buddy, we set this client to KS_NONE and it's removed next cycle.
+                //If we are trying to connect to a buddy, we just ignore as the one we are trying may fail and we can then try this one.
+                if (m_nBuddyStatus == Disconnected)
+                {
+                    buddy = Connecting;
+                    m_nBuddyStatus = Connecting;
+                    cur_client->SetKadState(KS_CONNECTING_BUDDY);
+                    cur_client->TryToConnect(true, true);
 #ifdef INFO_WND
-                theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
+                    theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
 #endif
-            }
-            else if (m_nBuddyStatus == Connected)
-                cur_client->SetKadState(KS_NONE);
-            break;
+                }
+                else if (m_nBuddyStatus == Connected)
+                    cur_client->SetKadState(KS_NONE);
+                break;
 
-        case KS_CONNECTING_BUDDY:
-            //We are trying to connect to this client.
-            //Although it should NOT happen, we make sure we are not already connected to a buddy.
-            //If we are we set to KS_NONE and it's removed next cycle.
-            //But if we are not already connected, make sure we set the flag to connecting so we know
-            //things are working correctly.
-            if (m_nBuddyStatus == Connected)
-                cur_client->SetKadState(KS_NONE);
-            else
-            {
-                ASSERT(m_nBuddyStatus == Connecting);
-                buddy = Connecting;
-            }
-            break;
+            case KS_CONNECTING_BUDDY:
+                //We are trying to connect to this client.
+                //Although it should NOT happen, we make sure we are not already connected to a buddy.
+                //If we are we set to KS_NONE and it's removed next cycle.
+                //But if we are not already connected, make sure we set the flag to connecting so we know
+                //things are working correctly.
+                if (m_nBuddyStatus == Connected)
+                    cur_client->SetKadState(KS_NONE);
+                else
+                {
+                    ASSERT(m_nBuddyStatus == Connecting);
+                    buddy = Connecting;
+                }
+                break;
 
-        case KS_CONNECTED_BUDDY:
-            //A potential connected buddy client wanting to me in the Kad network
-            //We set our flag to connected to make sure things are still working correctly.
-            buddy = Connected;
+            case KS_CONNECTED_BUDDY:
+                //A potential connected buddy client wanting to me in the Kad network
+                //We set our flag to connected to make sure things are still working correctly.
+                buddy = Connected;
 
-            //If m_nBuddyStatus is not connected already, we set this client as our buddy!
-            if (m_nBuddyStatus != Connected)
-            {
-                m_pBuddy = cur_client;
-                m_nBuddyStatus = Connected;
+                //If m_nBuddyStatus is not connected already, we set this client as our buddy!
+                if (m_nBuddyStatus != Connected)
+                {
+                    m_pBuddy = cur_client;
+                    m_nBuddyStatus = Connected;
 #ifdef INFO_WND
-                theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
+                    theApp.emuledlg->infoWnd->UpdateMyInfo(); //>>> WiZaRd::InfoWnd
 #endif
-            }
-            if (m_pBuddy == cur_client && theApp.IsFirewalled() && cur_client->SendBuddyPingPong())
-            {
-                if (thePrefs.GetDebugClientTCPLevel() > 0)
-                    DebugSend("OP__BuddyPing", cur_client);
-                Packet* buddyPing = new Packet(OP_BUDDYPING, 0, OP_EMULEPROT);
-                theStats.AddUpDataOverheadOther(buddyPing->size);
-                VERIFY(cur_client->SendPacket(buddyPing, true, true));
-                cur_client->SetLastBuddyPingPongTime();
-            }
-            break;
+                }
+                if (m_pBuddy == cur_client && theApp.IsFirewalled() && cur_client->SendBuddyPingPong())
+                {
+                    if (thePrefs.GetDebugClientTCPLevel() > 0)
+                        DebugSend("OP__BuddyPing", cur_client);
+                    Packet* buddyPing = new Packet(OP_BUDDYPING, 0, OP_EMULEPROT);
+                    theStats.AddUpDataOverheadOther(buddyPing->size);
+                    VERIFY(cur_client->SendPacket(buddyPing, true, true));
+                    cur_client->SetLastBuddyPingPongTime();
+                }
+                break;
 
-        default:
-            if (cur_client == m_pBuddy)
-            {
-                buddy = Disconnected;
-                m_nBuddyStatus = Disconnected; //>>> WiZaRd::FiX?
-                m_pBuddy = NULL;
-            }
-            m_KadList.RemoveAt(posLast);
+            default:
+                if (cur_client == m_pBuddy)
+                {
+                    buddy = Disconnected;
+                    m_nBuddyStatus = Disconnected; //>>> WiZaRd::FiX?
+                    m_pBuddy = NULL;
+                }
+                m_KadList.RemoveAt(posLast);
         }
     }
 
@@ -938,7 +938,7 @@ bool CClientList::IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128*
     //Although the odds of this happening is very small, it could still happen.
 //>>> WiZaRd::IPv6 [Xanatos]
     if (FindClientByIP(CAddress(_ntohl(nContactIP)), contact->GetTCPPort()))
-    //if (FindClientByIP(nContactIP, contact->GetTCPPort()))
+        //if (FindClientByIP(nContactIP, contact->GetTCPPort()))
 //<<< WiZaRd::IPv6 [Xanatos]
         return false;
     else if (IsKadFirewallCheckIP(nContactIP))  // doing a kad firewall check with this IP, abort
@@ -997,7 +997,7 @@ bool CClientList::DoRequestFirewallCheckUDP(const Kademlia::CContact& contact)
     // first make sure we don't know this IP already from somewhere
 //>>> WiZaRd::IPv6 [Xanatos]
     if (FindClientByIP(CAddress(contact.GetIPAddress())) != NULL)
-    //if (FindClientByIP(ntohl(contact.GetIPAddress())) != NULL)
+        //if (FindClientByIP(ntohl(contact.GetIPAddress())) != NULL)
 //<<< WiZaRd::IPv6 [Xanatos]
         return false;
     // fine, justcreate the client object, set the state and wait

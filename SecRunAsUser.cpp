@@ -499,7 +499,7 @@ eResult CSecRunAsUser::RestartAsRestricted()
         // get our access token from the process
         if (!OpenProcessToken(GetCurrentProcess(), TOKEN_DUPLICATE | TOKEN_ASSIGN_PRIMARY | TOKEN_READ, &hProcessToken))
         {
-            throw(CString(_T("Failed to retrieve access token from process")));
+            throw (CString(_T("Failed to retrieve access token from process")));
         }
 
         // there is no easy way to check if we have already restircted token when not using the restricted sid list
@@ -509,12 +509,12 @@ eResult CSecRunAsUser::RestartAsRestricted()
         DWORD dwInertFlag;
         if (!GetTokenInformation(hProcessToken, TokenSandBoxInert, &dwInertFlag, sizeof(dwInertFlag), &dwLen))
         {
-            throw(CString(_T("Failed to Flag-Status from AccessToken")));
+            throw (CString(_T("Failed to Flag-Status from AccessToken")));
         }
         if (dwInertFlag != 0)
         {
             m_bRunningRestricted = true;
-            throw(CString(_T("Already using a restricted Token it seems (everything is fine!)")));
+            throw (CString(_T("Already using a restricted Token it seems (everything is fine!)")));
         }
 
         // get the user account SID to disable it in our new token
@@ -526,7 +526,7 @@ eResult CSecRunAsUser::RestartAsRestricted()
                 pstructUserToken = (PTOKEN_USER)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dwLen);
                 continue;
             }
-            throw(CString(_T("Failed to retrieve UserSID from AccessToken")));
+            throw (CString(_T("Failed to retrieve UserSID from AccessToken")));
         }
         if (pstructUserToken == NULL)
             throw(CString(_T("Failed to retrieve UserSID from AccessToken")));
@@ -538,7 +538,7 @@ eResult CSecRunAsUser::RestartAsRestricted()
         // create the new token
         if (!CreateRestrictedToken(hProcessToken, DISABLE_MAX_PRIVILEGE | SANDBOX_INERT, 0 /*disabled*/, &pstructUserToken->User, 0, NULL, 0, NULL, &hRestrictedToken))
         {
-            throw(CString(_T("Failed to create Restricted Token")));
+            throw (CString(_T("Failed to create Restricted Token")));
         }
 
         // do the starting job
@@ -563,7 +563,7 @@ eResult CSecRunAsUser::RestartAsRestricted()
         {
             CString e;
             GetErrorMessage(GetLastError(), e, 0);
-            throw(CString(_T("CreateProcessAsUser failed")));
+            throw (CString(_T("CreateProcessAsUser failed")));
         }
         strAppName.ReleaseBuffer();
         CloseHandle(ProcessInfo.hProcess);

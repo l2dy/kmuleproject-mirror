@@ -730,34 +730,34 @@ void SnarlInterface::CreateIconArray()
     {
         switch (i)
         {
-        case TBN_CHAT:
-            szIcon = L"presence.png";
-            break;
+            case TBN_CHAT:
+                szIcon = L"presence.png";
+                break;
 
-        case TBN_DOWNLOADFINISHED:
-            szIcon = L"good.png";
-            break;
+            case TBN_DOWNLOADFINISHED:
+                szIcon = L"good.png";
+                break;
 
-        case TBN_DOWNLOADADDED:
-            szIcon = L"warning.png";
-            break;
+            case TBN_DOWNLOADADDED:
+                szIcon = L"warning.png";
+                break;
 
-        case TBN_LOG:
-            szIcon = L"info.png";
-            break;
+            case TBN_LOG:
+                szIcon = L"info.png";
+                break;
 
-        case TBN_IMPORTANTEVENT:
-            szIcon = L"ext-error.png";
-            break;
+            case TBN_IMPORTANTEVENT:
+                szIcon = L"ext-error.png";
+                break;
 
-        case TBN_NEWVERSION:
-            szIcon = L"debug.png";
-            break;
+            case TBN_NEWVERSION:
+                szIcon = L"debug.png";
+                break;
 
-        default:
-        case TBN_NULL:
-            szIcon = L"info.png";
-            break;
+            default:
+            case TBN_NULL:
+                szIcon = L"info.png";
+                break;
         }
 
         size_t iconLen = _tcslen(szIcon);

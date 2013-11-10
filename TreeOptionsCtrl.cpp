@@ -1911,51 +1911,51 @@ BOOL CTreeOptionsCtrl::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
     NMTVCUSTOMDRAW* pCustomDraw = (NMTVCUSTOMDRAW*) pNMHDR;
     switch (pCustomDraw->nmcd.dwDrawStage)
     {
-    case CDDS_PREPAINT:
-    {
-        *pResult = CDRF_NOTIFYITEMDRAW; //Tell the control that we are interested in item notifications
-        break;
-    }
-    case CDDS_ITEMPREPAINT:
-    {
-        //Just let me know about post painting
-        *pResult = CDRF_NOTIFYPOSTPAINT;
-        break;
-    }
-    case CDDS_ITEMPOSTPAINT:
-    {
-        HTREEITEM hItem = (HTREEITEM) pCustomDraw->nmcd.dwItemSpec;
-
-        BOOL bDrawColor = FALSE;
-        CTreeOptionsItemData* pItemData = (CTreeOptionsItemData*) GetItemData(hItem);
-        if (pItemData && pItemData->m_Type == CTreeOptionsItemData::ColorBrowser && pItemData->m_bDrawColorForIcon)
-            bDrawColor = TRUE;
-
-        if (bDrawColor)
+        case CDDS_PREPAINT:
         {
-            //Draw the icon of the tree view item using the specified color
-            CDC dc;
-            dc.Attach(pCustomDraw->nmcd.hdc);
-            CRect r;
-
-            r.top = pCustomDraw->nmcd.rc.top;
-            r.bottom = pCustomDraw->nmcd.rc.bottom;
-            r.left = pCustomDraw->nmcd.rc.left;
-
-            //Allow for the indent
-            r.left += GetIndentPostion(hItem);
-
-            r.right = r.left + 16;
-            dc.FillSolidRect(&r, GetColor(hItem));
-            dc.Detach();
+            *pResult = CDRF_NOTIFYITEMDRAW; //Tell the control that we are interested in item notifications
+            break;
         }
-        *pResult = CDRF_DODEFAULT;
-        break;
-    }
-    default:
-    {
-        break;
-    }
+        case CDDS_ITEMPREPAINT:
+        {
+            //Just let me know about post painting
+            *pResult = CDRF_NOTIFYPOSTPAINT;
+            break;
+        }
+        case CDDS_ITEMPOSTPAINT:
+        {
+            HTREEITEM hItem = (HTREEITEM) pCustomDraw->nmcd.dwItemSpec;
+
+            BOOL bDrawColor = FALSE;
+            CTreeOptionsItemData* pItemData = (CTreeOptionsItemData*) GetItemData(hItem);
+            if (pItemData && pItemData->m_Type == CTreeOptionsItemData::ColorBrowser && pItemData->m_bDrawColorForIcon)
+                bDrawColor = TRUE;
+
+            if (bDrawColor)
+            {
+                //Draw the icon of the tree view item using the specified color
+                CDC dc;
+                dc.Attach(pCustomDraw->nmcd.hdc);
+                CRect r;
+
+                r.top = pCustomDraw->nmcd.rc.top;
+                r.bottom = pCustomDraw->nmcd.rc.bottom;
+                r.left = pCustomDraw->nmcd.rc.left;
+
+                //Allow for the indent
+                r.left += GetIndentPostion(hItem);
+
+                r.right = r.left + 16;
+                dc.FillSolidRect(&r, GetColor(hItem));
+                dc.Detach();
+            }
+            *pResult = CDRF_DODEFAULT;
+            break;
+        }
+        default:
+        {
+            break;
+        }
     }
 
     return TRUE; //Allow the message to be reflected again

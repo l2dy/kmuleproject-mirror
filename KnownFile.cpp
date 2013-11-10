@@ -97,7 +97,7 @@ CKnownFile::CKnownFile()
     (void)m_strComment;
     kadFileSearchID = 0;
     SetLastPublishTimeKadSrc(0,0);
-	m_bCompleteSrcUpdateNecessary = false;
+    m_bCompleteSrcUpdateNecessary = false;
     m_nCompleteSourcesCount = 1;
     m_nCompleteSourcesCountLo = 1;
     m_nCompleteSourcesCountHi = 1;
@@ -108,10 +108,10 @@ CKnownFile::CKnownFile()
     m_pCollection = NULL;
     m_timeLastSeen = 0;
     m_bAICHRecoverHashSetAvailable = false;
-	m_uiQueuedCount = 0; //>>> Queued Count
+    m_uiQueuedCount = 0; //>>> Queued Count
 //>>> WiZaRd::FileHealth
-	m_dwLastFileHealthCalc = ::GetTickCount(); 
-	m_fLastHealthValue = 0;
+    m_dwLastFileHealthCalc = ::GetTickCount();
+    m_fLastHealthValue = 0;
 //<<< WiZaRd::FileHealth
 }
 
@@ -127,7 +127,7 @@ void CKnownFile::AssertValid() const
 
     (void)m_tUtcLastModified;
     (void)statistic;
-	CHECK_BOOL(m_bCompleteSrcUpdateNecessary);
+    CHECK_BOOL(m_bCompleteSrcUpdateNecessary);
     (void)m_nCompleteSourcesCount;
     (void)m_nCompleteSourcesCountLo;
     (void)m_nCompleteSourcesCountHi;
@@ -298,8 +298,8 @@ void CKnownFile::UpdatePartsInfo()
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
         const CPartStatus* cur_status = cur_src->GetUpPartStatus();
         //This could be a partfile that just completed.. Many of these clients will not have this information.
-		if(cur_status != NULL && cur_src->GetUpPartCount() == partcount)
-        //if(cur_src->m_abyUpPartStatus && cur_src->GetUpPartCount() == partcount)
+        if (cur_status != NULL && cur_src->GetUpPartCount() == partcount)
+            //if(cur_src->m_abyUpPartStatus && cur_src->GetUpPartCount() == partcount)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         {
             for (UINT i = 0; i < partcount; i++)
@@ -311,7 +311,7 @@ void CKnownFile::UpdatePartsInfo()
         cur_src->GetUploadingAndUploadedPart(m_AvailPartFrequency, m_SOTNAvailPartFrequency); //>>> WiZaRd::Intelligent SOTN
     }
 
-	m_bCompleteSrcUpdateNecessary = true;
+    m_bCompleteSrcUpdateNecessary = true;
 
     if (theApp.sharedfiles)
         theApp.sharedfiles->UpdateFile(this);
@@ -739,188 +739,188 @@ bool CKnownFile::LoadTagsFromFile(CFileDataIO* file)
         CTag* newtag = new CTag(file, false);
         switch (newtag->GetNameID())
         {
-        case FT_FILENAME:
-        {
-            ASSERT(newtag->IsStr());
-            if (newtag->IsStr())
+            case FT_FILENAME:
             {
-                if (GetFileName().IsEmpty())
-                    SetFileName(newtag->GetStr());
-            }
-            delete newtag;
-            break;
-        }
-        case FT_FILESIZE:
-        {
-            ASSERT(newtag->IsInt64(true));
-            if (newtag->IsInt64(true))
-            {
-                SetFileSize(newtag->GetInt64());
-                m_AvailPartFrequency.SetSize(GetPartCount());
-                m_SOTNAvailPartFrequency.SetSize(GetPartCount()); //>>> WiZaRd::Intelligent SOTN
-                for (UINT i = 0; i < GetPartCount(); i++)
+                ASSERT(newtag->IsStr());
+                if (newtag->IsStr())
                 {
-                    m_AvailPartFrequency[i] = 0;
-                    m_SOTNAvailPartFrequency[i] = 0; //>>> WiZaRd::Intelligent SOTN
+                    if (GetFileName().IsEmpty())
+                        SetFileName(newtag->GetStr());
                 }
-            }
-            delete newtag;
-            break;
-        }
-        case FT_ATTRANSFERRED:
-        {
-            ASSERT(newtag->IsInt());
-            if (newtag->IsInt())
-                statistic.SetAllTimeTransferred(newtag->GetInt());
-            delete newtag;
-            break;
-        }
-        case FT_ATTRANSFERREDHI:
-        {
-            ASSERT(newtag->IsInt());
-            if (newtag->IsInt())
-                statistic.SetAllTimeTransferred(((uint64)newtag->GetInt() << 32) | (UINT)statistic.GetAllTimeTransferred());
-            delete newtag;
-            break;
-        }
-        case FT_ATREQUESTED:
-        {
-            ASSERT(newtag->IsInt());
-            if (newtag->IsInt())
-                statistic.SetAllTimeRequests(newtag->GetInt());
-            delete newtag;
-            break;
-        }
-        case FT_ATACCEPTED:
-        {
-            ASSERT(newtag->IsInt());
-            if (newtag->IsInt())
-                statistic.SetAllTimeAccepts(newtag->GetInt());
-            delete newtag;
-            break;
-        }
-        case FT_ULPRIORITY:
-        {
-            ASSERT(newtag->IsInt());
-            if (newtag->IsInt())
-            {
-                m_iUpPriority = (uint8)newtag->GetInt();
-                if (m_iUpPriority == PR_AUTO)
-                {
-                    m_iUpPriority = PR_HIGH;
-                    m_bAutoUpPriority = true;
-                }
-                else
-                {
-                    if (m_iUpPriority != PR_VERYLOW && m_iUpPriority != PR_LOW && m_iUpPriority != PR_NORMAL && m_iUpPriority != PR_HIGH && m_iUpPriority != PR_VERYHIGH)
-                        m_iUpPriority = PR_NORMAL;
-                    m_bAutoUpPriority = false;
-                }
-            }
-            delete newtag;
-            break;
-        }
-        case FT_KADLASTPUBLISHSRC:
-        {
-            ASSERT(newtag->IsInt());
-            if (newtag->IsInt())
-                SetLastPublishTimeKadSrc(newtag->GetInt(), 0);
-            if (GetLastPublishTimeKadSrc() > (UINT)time(NULL)+KADEMLIAREPUBLISHTIMES)
-            {
-                //There may be a possibility of an older client that saved a random number here.. This will check for that..
-                SetLastPublishTimeKadSrc(0,0);
-            }
-            delete newtag;
-            break;
-        }
-        case FT_KADLASTPUBLISHNOTES:
-        {
-            ASSERT(newtag->IsInt());
-            if (newtag->IsInt())
-                SetLastPublishTimeKadNotes(newtag->GetInt());
-            delete newtag;
-            break;
-        }
-        case FT_FLAGS:
-            // Misc. Flags
-            // ------------------------------------------------------------------------------
-            // Bits  3-0: Meta data version
-            //				0	untrusted meta data which was received via search results
-            //				1	trusted meta data, Unicode (strings where not stored correctly)
-            //				2	0.49c: trusted meta data, Unicode
-            // Bits 31-4: Reserved
-            ASSERT(newtag->IsInt());
-            if (newtag->IsInt())
-                m_uMetaDataVer = newtag->GetInt() & 0x0F;
-            delete newtag;
-            break;
-            // old tags: as long as they are not needed, take the chance to purge them
-        case FT_PERMISSIONS:
-            ASSERT(newtag->IsInt());
-            delete newtag;
-            break;
-        case FT_KADLASTPUBLISHKEY:
-            ASSERT(newtag->IsInt());
-            delete newtag;
-            break;
-        case FT_AICH_HASH:
-        {
-            if (!newtag->IsStr())
-            {
-                //ASSERT(0); uncomment later
+                delete newtag;
                 break;
             }
-            CAICHHash hash;
-            if (DecodeBase32(newtag->GetStr(),hash) == (UINT)CAICHHash::GetHashSize())
-                m_FileIdentifier.SetAICHHash(hash);
-            else
-                ASSERT(0);
-            delete newtag;
-            break;
-        }
-        case FT_LASTSHARED:
-            if (newtag->IsInt())
-                m_timeLastSeen = newtag->GetInt();
-            else
-                ASSERT(0);
-            delete newtag;
-            break;
-        case FT_AICHHASHSET:
-            if (newtag->IsBlob())
+            case FT_FILESIZE:
             {
-                CSafeMemFile aichHashSetFile(newtag->GetBlob(), newtag->GetBlobSize());
-                m_FileIdentifier.LoadAICHHashsetFromFile(&aichHashSetFile, false);
-                aichHashSetFile.Detach();
-                bHadAICHHashSetTag = true;
+                ASSERT(newtag->IsInt64(true));
+                if (newtag->IsInt64(true))
+                {
+                    SetFileSize(newtag->GetInt64());
+                    m_AvailPartFrequency.SetSize(GetPartCount());
+                    m_SOTNAvailPartFrequency.SetSize(GetPartCount()); //>>> WiZaRd::Intelligent SOTN
+                    for (UINT i = 0; i < GetPartCount(); i++)
+                    {
+                        m_AvailPartFrequency[i] = 0;
+                        m_SOTNAvailPartFrequency[i] = 0; //>>> WiZaRd::Intelligent SOTN
+                    }
+                }
+                delete newtag;
+                break;
             }
-            else
-                ASSERT(0);
-            delete newtag;
-            break;
-        default:
+            case FT_ATTRANSFERRED:
+            {
+                ASSERT(newtag->IsInt());
+                if (newtag->IsInt())
+                    statistic.SetAllTimeTransferred(newtag->GetInt());
+                delete newtag;
+                break;
+            }
+            case FT_ATTRANSFERREDHI:
+            {
+                ASSERT(newtag->IsInt());
+                if (newtag->IsInt())
+                    statistic.SetAllTimeTransferred(((uint64)newtag->GetInt() << 32) | (UINT)statistic.GetAllTimeTransferred());
+                delete newtag;
+                break;
+            }
+            case FT_ATREQUESTED:
+            {
+                ASSERT(newtag->IsInt());
+                if (newtag->IsInt())
+                    statistic.SetAllTimeRequests(newtag->GetInt());
+                delete newtag;
+                break;
+            }
+            case FT_ATACCEPTED:
+            {
+                ASSERT(newtag->IsInt());
+                if (newtag->IsInt())
+                    statistic.SetAllTimeAccepts(newtag->GetInt());
+                delete newtag;
+                break;
+            }
+            case FT_ULPRIORITY:
+            {
+                ASSERT(newtag->IsInt());
+                if (newtag->IsInt())
+                {
+                    m_iUpPriority = (uint8)newtag->GetInt();
+                    if (m_iUpPriority == PR_AUTO)
+                    {
+                        m_iUpPriority = PR_HIGH;
+                        m_bAutoUpPriority = true;
+                    }
+                    else
+                    {
+                        if (m_iUpPriority != PR_VERYLOW && m_iUpPriority != PR_LOW && m_iUpPriority != PR_NORMAL && m_iUpPriority != PR_HIGH && m_iUpPriority != PR_VERYHIGH)
+                            m_iUpPriority = PR_NORMAL;
+                        m_bAutoUpPriority = false;
+                    }
+                }
+                delete newtag;
+                break;
+            }
+            case FT_KADLASTPUBLISHSRC:
+            {
+                ASSERT(newtag->IsInt());
+                if (newtag->IsInt())
+                    SetLastPublishTimeKadSrc(newtag->GetInt(), 0);
+                if (GetLastPublishTimeKadSrc() > (UINT)time(NULL)+KADEMLIAREPUBLISHTIMES)
+                {
+                    //There may be a possibility of an older client that saved a random number here.. This will check for that..
+                    SetLastPublishTimeKadSrc(0,0);
+                }
+                delete newtag;
+                break;
+            }
+            case FT_KADLASTPUBLISHNOTES:
+            {
+                ASSERT(newtag->IsInt());
+                if (newtag->IsInt())
+                    SetLastPublishTimeKadNotes(newtag->GetInt());
+                delete newtag;
+                break;
+            }
+            case FT_FLAGS:
+                // Misc. Flags
+                // ------------------------------------------------------------------------------
+                // Bits  3-0: Meta data version
+                //				0	untrusted meta data which was received via search results
+                //				1	trusted meta data, Unicode (strings where not stored correctly)
+                //				2	0.49c: trusted meta data, Unicode
+                // Bits 31-4: Reserved
+                ASSERT(newtag->IsInt());
+                if (newtag->IsInt())
+                    m_uMetaDataVer = newtag->GetInt() & 0x0F;
+                delete newtag;
+                break;
+                // old tags: as long as they are not needed, take the chance to purge them
+            case FT_PERMISSIONS:
+                ASSERT(newtag->IsInt());
+                delete newtag;
+                break;
+            case FT_KADLASTPUBLISHKEY:
+                ASSERT(newtag->IsInt());
+                delete newtag;
+                break;
+            case FT_AICH_HASH:
+            {
+                if (!newtag->IsStr())
+                {
+                    //ASSERT(0); uncomment later
+                    break;
+                }
+                CAICHHash hash;
+                if (DecodeBase32(newtag->GetStr(),hash) == (UINT)CAICHHash::GetHashSize())
+                    m_FileIdentifier.SetAICHHash(hash);
+                else
+                    ASSERT(0);
+                delete newtag;
+                break;
+            }
+            case FT_LASTSHARED:
+                if (newtag->IsInt())
+                    m_timeLastSeen = newtag->GetInt();
+                else
+                    ASSERT(0);
+                delete newtag;
+                break;
+            case FT_AICHHASHSET:
+                if (newtag->IsBlob())
+                {
+                    CSafeMemFile aichHashSetFile(newtag->GetBlob(), newtag->GetBlobSize());
+                    m_FileIdentifier.LoadAICHHashsetFromFile(&aichHashSetFile, false);
+                    aichHashSetFile.Detach();
+                    bHadAICHHashSetTag = true;
+                }
+                else
+                    ASSERT(0);
+                delete newtag;
+                break;
+            default:
 //>>> WiZaRd::PowerShare
-            if (!newtag->GetNameID() && newtag->IsInt() && newtag->GetName())
-            {
-                LPCSTR tagname = newtag->GetName();
-                if (strcmp(tagname, FT_POWERSHARE) == 0)
+                if (!newtag->GetNameID() && newtag->IsInt() && newtag->GetName())
                 {
-                    SetPowerShared(newtag->GetInt() == 1);
-                    delete newtag;
-                    break;
-                }
+                    LPCSTR tagname = newtag->GetName();
+                    if (strcmp(tagname, FT_POWERSHARE) == 0)
+                    {
+                        SetPowerShared(newtag->GetInt() == 1);
+                        delete newtag;
+                        break;
+                    }
 //>>> WiZaRd::Intelligent SOTN
-                if (strcmp(tagname, FT_SOTN) == 0)
-                {
-                    SetShareOnlyTheNeed(newtag->GetInt() == 1);
-                    delete newtag;
-                    break;
-                }
+                    if (strcmp(tagname, FT_SOTN) == 0)
+                    {
+                        SetShareOnlyTheNeed(newtag->GetInt() == 1);
+                        delete newtag;
+                        break;
+                    }
 //<<< WiZaRd::Intelligent SOTN
-            }
+                }
 //<<< WiZaRd::PowerShare
-            ConvertED2KTag(newtag);
-            if (newtag)
-                taglist.Add(newtag);
+                ConvertED2KTag(newtag);
+                if (newtag)
+                    taglist.Add(newtag);
         }
     }
     if (bHadAICHHashSetTag)
@@ -1297,11 +1297,11 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
         // the client uses SourceExchange2 and requested the highest version he knows
         // and we send the highest version we know, but of course not higher than his request
 //>>> WiZaRd::ExtendedXS [Xanatos]
-		if(forClient->SupportsExtendedSourceExchange())
-			byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGEEXT_VERSION);
-		else
+        if (forClient->SupportsExtendedSourceExchange())
+            byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGEEXT_VERSION);
+        else
 //<<< WiZaRd::ExtendedXS [Xanatos]
-			byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGE2_VERSION);
+            byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGE2_VERSION);
         bIsSX2Packet = true;
         data.WriteUInt8(byUsedVersion);
 
@@ -1469,26 +1469,26 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
             nCount++;
             UINT dwID;
 //>>> WiZaRd::NatTraversal [Xanatos]
-			if (byUsedVersion >= 3 && !cur_src->HasLowID())
-            //if (byUsedVersion >= 3)
+            if (byUsedVersion >= 3 && !cur_src->HasLowID())
+                //if (byUsedVersion >= 3)
 //<<< WiZaRd::NatTraversal [Xanatos]
                 dwID = cur_src->GetUserIDHybrid();
             else
 //>>> WiZaRd::IPv6 [Xanatos]
-				dwID = ntohl(cur_src->GetUserIDHybrid()); // consistency for NAT-T
-                //dwID = cur_src->GetIP();
+                dwID = ntohl(cur_src->GetUserIDHybrid()); // consistency for NAT-T
+            //dwID = cur_src->GetIP();
 //<<< WiZaRd::IPv6 [Xanatos]
             data.WriteUInt32(dwID);
             data.WriteUInt16(cur_src->GetUserPort());
 //>>> WiZaRd::ExtendedXS [Xanatos]
-			if(forClient->SupportsExtendedSourceExchange())
-				cur_src->WriteExtendedSourceExchangeData(data);
-			else
+            if (forClient->SupportsExtendedSourceExchange())
+                cur_src->WriteExtendedSourceExchangeData(data);
+            else
 //<<< WiZaRd::ExtendedXS [Xanatos]
-			{
-				data.WriteUInt32(cur_src->GetServerIP());
-				data.WriteUInt16(cur_src->GetServerPort());
-			}
+            {
+                data.WriteUInt32(cur_src->GetServerIP());
+                data.WriteUInt16(cur_src->GetServerPort());
+            }
             if (byUsedVersion >= 2)
                 data.WriteHash16(cur_src->GetUserHash());
             if (byUsedVersion >= 4)
@@ -1540,46 +1540,46 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
 
 Packet* CKnownFile::GetEmptyXSPacket(const CUpDownClient* forClient, uint8 byRequestedVersion, uint16 nRequestedOptions) const
 {
-	CSafeMemFile data(1024);
+    CSafeMemFile data(1024);
 
-	uint8 byUsedVersion;
-	bool bIsSX2Packet;
-	if (forClient->SupportsSourceExchange2() && byRequestedVersion > 0)
-	{
-		// the client uses SourceExchange2 and requested the highest version he knows
-		// and we send the highest version we know, but of course not higher than his request
+    uint8 byUsedVersion;
+    bool bIsSX2Packet;
+    if (forClient->SupportsSourceExchange2() && byRequestedVersion > 0)
+    {
+        // the client uses SourceExchange2 and requested the highest version he knows
+        // and we send the highest version we know, but of course not higher than his request
 //>>> WiZaRd::ExtendedXS [Xanatos]
-		if(forClient->SupportsExtendedSourceExchange())
-			byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGEEXT_VERSION);
-		else
+        if (forClient->SupportsExtendedSourceExchange())
+            byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGEEXT_VERSION);
+        else
 //<<< WiZaRd::ExtendedXS [Xanatos]
-			byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGE2_VERSION);
-		bIsSX2Packet = true;
-		data.WriteUInt8(byUsedVersion);
+            byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGE2_VERSION);
+        bIsSX2Packet = true;
+        data.WriteUInt8(byUsedVersion);
 
-		// we don't support any special SX2 options yet, reserved for later use
-		if (nRequestedOptions != 0)
-			DebugLogWarning(L"Client requested unknown options for SourceExchange2: %u (%s)", nRequestedOptions, forClient->DbgGetClientInfo());
-	}
-	else
-	{
-		byUsedVersion = forClient->GetSourceExchange1Version();
-		bIsSX2Packet = false;
-		if (forClient->SupportsSourceExchange2())
-			DebugLogWarning(L"Client which announced to support SX2 sent SX1 packet instead (%s)", forClient->DbgGetClientInfo());
-	}
+        // we don't support any special SX2 options yet, reserved for later use
+        if (nRequestedOptions != 0)
+            DebugLogWarning(L"Client requested unknown options for SourceExchange2: %u (%s)", nRequestedOptions, forClient->DbgGetClientInfo());
+    }
+    else
+    {
+        byUsedVersion = forClient->GetSourceExchange1Version();
+        bIsSX2Packet = false;
+        if (forClient->SupportsSourceExchange2())
+            DebugLogWarning(L"Client which announced to support SX2 sent SX1 packet instead (%s)", forClient->DbgGetClientInfo());
+    }
 
-	data.WriteHash16(forClient->GetUploadFileID());
-	data.WriteUInt16(0);
+    data.WriteHash16(forClient->GetUploadFileID());
+    data.WriteUInt16(0);
 
-	Packet* result = new Packet(&data, OP_EMULEPROT);
-	result->opcode = bIsSX2Packet ? OP_ANSWERSOURCES2 : OP_ANSWERSOURCES;
-	// (1+)16+2+501*(4+2+4+2+16+1) = 14547 (14548) bytes max.
-	//	if (result->size > 354)
-	//		result->PackPacket();
-	if (thePrefs.GetDebugSourceExchange())
-		AddDebugLogLine(false, L"SXSend: Client source response SX2=%s, Version=%u; Count=%u, %s, File=\"%s\"", bIsSX2Packet ? L"Yes" : L"No", byUsedVersion, 0, forClient->DbgGetClientInfo(), GetFileName());
-	return result;
+    Packet* result = new Packet(&data, OP_EMULEPROT);
+    result->opcode = bIsSX2Packet ? OP_ANSWERSOURCES2 : OP_ANSWERSOURCES;
+    // (1+)16+2+501*(4+2+4+2+16+1) = 14547 (14548) bytes max.
+    //	if (result->size > 354)
+    //		result->PackPacket();
+    if (thePrefs.GetDebugSourceExchange())
+        AddDebugLogLine(false, L"SXSend: Client source response SX2=%s, Version=%u; Count=%u, %s, File=\"%s\"", bIsSX2Packet ? L"Yes" : L"No", byUsedVersion, 0, forClient->DbgGetClientInfo(), GetFileName());
+    return result;
 }
 
 void CKnownFile::SetFileComment(LPCTSTR pszComment)
@@ -1616,21 +1616,21 @@ void CKnownFile::UpdateAutoUpPriority()
         return;
 
 //>>> WiZaRd::Improved Auto Prio
-	// calc average src and adapt the prio to it
-	UINT maxsrc = theApp.uploadqueue->GetWaitingUserCount();
-	float avg = 0.0f;
-	UINT nCount = theApp.sharedfiles->GetQueuedFilesCount();
-	if(nCount)
-		avg = (float)maxsrc/nCount;
-	else
-		avg = (float)maxsrc;
+    // calc average src and adapt the prio to it
+    UINT maxsrc = theApp.uploadqueue->GetWaitingUserCount();
+    float avg = 0.0f;
+    UINT nCount = theApp.sharedfiles->GetQueuedFilesCount();
+    if (nCount)
+        avg = (float)maxsrc/nCount;
+    else
+        avg = (float)maxsrc;
 
-	const uint8 toSet = CalcPrioFromSrcAverage(GetRealQueuedCount(), avg);
-	if(GetUpPriority() != toSet)
-	{
-		SetUpPriority(toSet);
-		theApp.sharedfiles->UpdateFile(this);
-	}
+    const uint8 toSet = CalcPrioFromSrcAverage(GetRealQueuedCount(), avg);
+    if (GetUpPriority() != toSet)
+    {
+        SetUpPriority(toSet);
+        theApp.sharedfiles->UpdateFile(this);
+    }
     /*if (GetQueuedCount() > 20)
     {
         if (GetUpPriority() != PR_LOW)
@@ -1942,14 +1942,14 @@ void CKnownFile::UpdateMetaDataTags()
                     }
                 }
 
-				// WiZaRd: this seems to crash on id3lib 3.8.3 - here's the stack trace:
-				/*kMule.exe!std::list<ID3_Frame *,std::allocator<ID3_Frame *> >::_Orphan_ptr(std::list<ID3_Frame *,std::allocator<ID3_Frame *> > & _Cont, std::_List_nod<ID3_Frame *,std::allocator<ID3_Frame *> >::_Node * _Ptr)  Zeile 1533 + 0x8 Bytes	C++
-				kMule.exe!std::list<ID3_Frame *,std::allocator<ID3_Frame *> >::clear()  Zeile 1102	C++
-				kMule.exe!ID3_TagImpl::Clear()  Zeile 137	C++
-				kMule.exe!ID3_TagImpl::~ID3_TagImpl()  Zeile 124	C++
-				kMule.exe!ID3_TagImpl::`scalar deleting destructor'()  + 0x16 Bytes	C++
-				kMule.exe!ID3_Tag::~ID3_Tag()  Zeile 305 + 0x25 Bytes	C++*/
-				// It's definitely caused by myTag.CreateIterator and delete iter afterwards, so either live with mem leaks or let it crash?
+                // WiZaRd: this seems to crash on id3lib 3.8.3 - here's the stack trace:
+                /*kMule.exe!std::list<ID3_Frame *,std::allocator<ID3_Frame *> >::_Orphan_ptr(std::list<ID3_Frame *,std::allocator<ID3_Frame *> > & _Cont, std::_List_nod<ID3_Frame *,std::allocator<ID3_Frame *> >::_Node * _Ptr)  Zeile 1533 + 0x8 Bytes	C++
+                kMule.exe!std::list<ID3_Frame *,std::allocator<ID3_Frame *> >::clear()  Zeile 1102	C++
+                kMule.exe!ID3_TagImpl::Clear()  Zeile 137	C++
+                kMule.exe!ID3_TagImpl::~ID3_TagImpl()  Zeile 124	C++
+                kMule.exe!ID3_TagImpl::`scalar deleting destructor'()  + 0x16 Bytes	C++
+                kMule.exe!ID3_Tag::~ID3_Tag()  Zeile 305 + 0x25 Bytes	C++*/
+                // It's definitely caused by myTag.CreateIterator and delete iter afterwards, so either live with mem leaks or let it crash?
                 ID3_Tag::Iterator* iter = myTag.CreateIterator();
                 const ID3_Frame* frame;
                 while ((frame = iter->GetNext()) != NULL)
@@ -1957,48 +1957,48 @@ void CKnownFile::UpdateMetaDataTags()
                     ID3_FrameID eFrameID = frame->GetID();
                     switch (eFrameID)
                     {
-                    case ID3FID_LEADARTIST:
-                    {
-                        wchar_t* pszText = ID3_GetStringW(frame, ID3FN_TEXT);
-                        CString strText(pszText);
-                        TruncateED2KMetaData(strText);
-                        if (!strText.IsEmpty())
+                        case ID3FID_LEADARTIST:
                         {
-                            CTag* pTag = new CTag(FT_MEDIA_ARTIST, strText);
-                            AddTagUnique(pTag);
-                            m_uMetaDataVer = META_DATA_VER;
+                            wchar_t* pszText = ID3_GetStringW(frame, ID3FN_TEXT);
+                            CString strText(pszText);
+                            TruncateED2KMetaData(strText);
+                            if (!strText.IsEmpty())
+                            {
+                                CTag* pTag = new CTag(FT_MEDIA_ARTIST, strText);
+                                AddTagUnique(pTag);
+                                m_uMetaDataVer = META_DATA_VER;
+                            }
+                            delete[] pszText;
+                            break;
                         }
-                        delete[] pszText;
-                        break;
-                    }
-                    case ID3FID_ALBUM:
-                    {
-                        wchar_t* pszText = ID3_GetStringW(frame, ID3FN_TEXT);
-                        CString strText(pszText);
-                        TruncateED2KMetaData(strText);
-                        if (!strText.IsEmpty())
+                        case ID3FID_ALBUM:
                         {
-                            CTag* pTag = new CTag(FT_MEDIA_ALBUM, strText);
-                            AddTagUnique(pTag);
-                            m_uMetaDataVer = META_DATA_VER;
+                            wchar_t* pszText = ID3_GetStringW(frame, ID3FN_TEXT);
+                            CString strText(pszText);
+                            TruncateED2KMetaData(strText);
+                            if (!strText.IsEmpty())
+                            {
+                                CTag* pTag = new CTag(FT_MEDIA_ALBUM, strText);
+                                AddTagUnique(pTag);
+                                m_uMetaDataVer = META_DATA_VER;
+                            }
+                            delete[] pszText;
+                            break;
                         }
-                        delete[] pszText;
-                        break;
-                    }
-                    case ID3FID_TITLE:
-                    {
-                        wchar_t* pszText = ID3_GetStringW(frame, ID3FN_TEXT);
-                        CString strText(pszText);
-                        TruncateED2KMetaData(strText);
-                        if (!strText.IsEmpty())
+                        case ID3FID_TITLE:
                         {
-                            CTag* pTag = new CTag(FT_MEDIA_TITLE, strText);
-                            AddTagUnique(pTag);
-                            m_uMetaDataVer = META_DATA_VER;
+                            wchar_t* pszText = ID3_GetStringW(frame, ID3FN_TEXT);
+                            CString strText(pszText);
+                            TruncateED2KMetaData(strText);
+                            if (!strText.IsEmpty())
+                            {
+                                CTag* pTag = new CTag(FT_MEDIA_TITLE, strText);
+                                AddTagUnique(pTag);
+                                m_uMetaDataVer = META_DATA_VER;
+                            }
+                            delete[] pszText;
+                            break;
                         }
-                        delete[] pszText;
-                        break;
-                    }
                     }
                 }
                 delete iter; // accept mem leaks?
@@ -2132,7 +2132,7 @@ bool CKnownFile::PublishSrc()
         if (buddy)
         {
 //>>> WiZaRd::IPv6 [Xanatos]
-			lastBuddyIP = _ntohl(theApp.clientlist->GetBuddy()->GetIP().ToIPv4());
+            lastBuddyIP = _ntohl(theApp.clientlist->GetBuddy()->GetIP().ToIPv4());
             //lastBuddyIP = theApp.clientlist->GetBuddy()->GetIP();
 //<<< WiZaRd::IPv6 [Xanatos]
             if (lastBuddyIP != m_lastBuddyIP)
@@ -2251,39 +2251,39 @@ CString CKnownFile::GetUpPriorityDisplayString() const
     CString buffer = L"";
     switch (GetUpPriority())
     {
-    case PR_VERYLOW:
-		if (IsAutoUpPriority())
-			buffer = GetResString(IDS_PRIOAUTOVERYLOW);
-		else
-			buffer = GetResString(IDS_PRIOVERYLOW);
-        break;
-    case PR_LOW:
-        if (IsAutoUpPriority())
-            buffer = GetResString(IDS_PRIOAUTOLOW);
-        else
-            buffer =  GetResString(IDS_PRIOLOW);
-        break;
-    case PR_NORMAL:
-        if (IsAutoUpPriority())
-            buffer = GetResString(IDS_PRIOAUTONORMAL);
-        else
-            buffer = GetResString(IDS_PRIONORMAL);
-        break;
-    case PR_HIGH:
-        if (IsAutoUpPriority())
-            buffer = GetResString(IDS_PRIOAUTOHIGH);
-        else
-            buffer = GetResString(IDS_PRIOHIGH);
-        break;
-    case PR_VERYHIGH:
-		if (IsAutoUpPriority())
-			buffer = GetResString(IDS_PRIOAUTOVERYHIGH);
-		else
-			buffer = GetResString(IDS_PRIORELEASE);
-        break;
-    default:
-        buffer = L"";
-        break;
+        case PR_VERYLOW:
+            if (IsAutoUpPriority())
+                buffer = GetResString(IDS_PRIOAUTOVERYLOW);
+            else
+                buffer = GetResString(IDS_PRIOVERYLOW);
+            break;
+        case PR_LOW:
+            if (IsAutoUpPriority())
+                buffer = GetResString(IDS_PRIOAUTOLOW);
+            else
+                buffer =  GetResString(IDS_PRIOLOW);
+            break;
+        case PR_NORMAL:
+            if (IsAutoUpPriority())
+                buffer = GetResString(IDS_PRIOAUTONORMAL);
+            else
+                buffer = GetResString(IDS_PRIONORMAL);
+            break;
+        case PR_HIGH:
+            if (IsAutoUpPriority())
+                buffer = GetResString(IDS_PRIOAUTOHIGH);
+            else
+                buffer = GetResString(IDS_PRIOHIGH);
+            break;
+        case PR_VERYHIGH:
+            if (IsAutoUpPriority())
+                buffer = GetResString(IDS_PRIOAUTOVERYHIGH);
+            else
+                buffer = GetResString(IDS_PRIORELEASE);
+            break;
+        default:
+            buffer = L"";
+            break;
     }
 
     if (IsPowerShared())
@@ -2366,26 +2366,26 @@ bool CKnownFile::WritePartStatus(CSafeMemFile* file, CUpDownClient* client, cons
             // Decide chunk size for part vector (limit to 8000 sub chunks, to keep part vector size less than 1kB?)
             if (client->GetSCTVersion() >= PROTOCOL_REVISION_1)
             {
-				const UINT partCount = (UINT)((size + PARTSIZE - 1) / PARTSIZE);
-				for (UINT i = 0; i < partCount; ++i)
-				{
-					if (pThis->GetPublishedPartStatus()->IsPartialPart(i))
-					{
-						// Only send sub chunks if there are incomplete parts shared
-						if (client->GetSCTVersion() >= PROTOCOL_REVISION_2)
-						{
-							if (size <= (8000 * EMBLOCKSIZE) && pThis->GetPublishedPartStatus()->GetChunkSize() < PARTSIZE)
-								partSize = EMBLOCKSIZE;
-							sctDivider = (uint16)((PARTSIZE + partSize - 1) / partSize);
-						}
-						else if (size <= (8000 * CRUMBSIZE) && pThis->GetPublishedPartStatus()->GetChunkSize() < PARTSIZE)
-						{
-							partSize = CRUMBSIZE;
-							sctDivider = CRUMBSPERPART;
-						}
-						break;
-					}
-				}
+                const UINT partCount = (UINT)((size + PARTSIZE - 1) / PARTSIZE);
+                for (UINT i = 0; i < partCount; ++i)
+                {
+                    if (pThis->GetPublishedPartStatus()->IsPartialPart(i))
+                    {
+                        // Only send sub chunks if there are incomplete parts shared
+                        if (client->GetSCTVersion() >= PROTOCOL_REVISION_2)
+                        {
+                            if (size <= (8000 * EMBLOCKSIZE) && pThis->GetPublishedPartStatus()->GetChunkSize() < PARTSIZE)
+                                partSize = EMBLOCKSIZE;
+                            sctDivider = (uint16)((PARTSIZE + partSize - 1) / partSize);
+                        }
+                        else if (size <= (8000 * CRUMBSIZE) && pThis->GetPublishedPartStatus()->GetChunkSize() < PARTSIZE)
+                        {
+                            partSize = CRUMBSIZE;
+                            sctDivider = CRUMBSPERPART;
+                        }
+                        break;
+                    }
+                }
             }
 
             parts = (uint16)(sctDivider * (size / PARTSIZE) + ((size % PARTSIZE) + partSize - 1) / partSize);
@@ -2432,8 +2432,8 @@ bool CKnownFile::WritePartStatus(CSafeMemFile* file, CUpDownClient* client, cons
                 else
                     partCompletelyShown = false;
             }
-			else
-				partCompletelyShown = false;
+            else
+                partCompletelyShown = false;
 
             ++done;
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
@@ -2447,14 +2447,14 @@ bool CKnownFile::WritePartStatus(CSafeMemFile* file, CUpDownClient* client, cons
                 if (bWriteStatus && lastPart < partcount) //valid part
 //<<< WiZaRd::FiX
                 {
-                    if (partCompletelyShown)              
+                    if (partCompletelyShown)
                         client->m_abyUpPartStatusHidden[lastPart] = 0;  //not hidden anymore
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-					// only mark COMPLETE parts as hidden
-					else if(!bPartfile || (pThis->GetPublishedPartStatus() && pThis->GetPublishedPartStatus()->IsComplete((uint64) lastPart * PARTSIZE + subChunk * partSize, (uint64) lastPart * PARTSIZE + (subChunk + 1) * partSize - 1)))
-					//else if(!bPartfile || pThis->IsComplete(lastPart*PARTSIZE, (lastPart + 1)*PARTSIZE - 1, true))
+                    // only mark COMPLETE parts as hidden
+                    else if (!bPartfile || (pThis->GetPublishedPartStatus() && pThis->GetPublishedPartStatus()->IsComplete((uint64) lastPart * PARTSIZE + subChunk * partSize, (uint64) lastPart * PARTSIZE + (subChunk + 1) * partSize - 1)))
+                        //else if(!bPartfile || pThis->IsComplete(lastPart*PARTSIZE, (lastPart + 1)*PARTSIZE - 1, true))
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
-						client->m_abyUpPartStatusHidden[lastPart] = toSet;
+                        client->m_abyUpPartStatusHidden[lastPart] = toSet;
                 }
                 lastPart = cur_part;
                 partCompletelyShown = true;
@@ -2483,81 +2483,81 @@ bool CKnownFile::WritePartStatus(CSafeMemFile* file, CUpDownClient* client, cons
 uint8* CKnownFile::GetPartStatus(CUpDownClient* client) const
 {
 //>>> WiZaRd::ICS [enkeyDEV]
-	// We don't use SotN for ICS enabled clients because they should always see the real file status and will select the rarest chunk by themselves
+    // We don't use SotN for ICS enabled clients because they should always see the real file status and will select the rarest chunk by themselves
     bool bSOTN = GetShareOnlyTheNeed() && (!client || client->GetIncompletePartVersion() == 0);
 //<<< WiZaRd::ICS [enkeyDEV]
-	const uint16 partcount = GetPartCount();
-	const bool bUsePart = IsPartFile();
-	CPartFile* pThis = bUsePart ? (CPartFile*)this : NULL;
+    const uint16 partcount = GetPartCount();
+    const bool bUsePart = IsPartFile();
+    CPartFile* pThis = bUsePart ? (CPartFile*)this : NULL;
 //>>> Create tmp array
-	CList<int> shownChunks;
-	{
-		//the problem is that m_AvailPartFrequency will only check clients in our queue!
-		//so create a tmparray and update its values
-		CArray<uint16, uint16> tmparray;    
-		tmparray.SetSize(partcount);
+    CList<int> shownChunks;
+    {
+        //the problem is that m_AvailPartFrequency will only check clients in our queue!
+        //so create a tmparray and update its values
+        CArray<uint16, uint16> tmparray;
+        tmparray.SetSize(partcount);
 
-		// search the least available parts
-		uint16 iMinAvailablePartFrenquency = _UI16_MAX;
-		uint16 iMinAvailablePartFrenquencyPrev = _UI16_MAX;
-		for (uint16 i = 0; i < partcount; i++)
-		{
-			if (bUsePart)
-				tmparray[i] = (pThis->GetSrcPartFrequency(i) + (pThis->IsComplete(PARTSIZE*i, PARTSIZE*(i+1)-1, true) ? 1 : 0));
-			else if (!m_AvailPartFrequency.IsEmpty())
-				tmparray[i] = m_AvailPartFrequency[i];
-			else
-				tmparray[i] = 0;
-			if (!m_SOTNAvailPartFrequency.IsEmpty())
-				tmparray[i] = tmparray[i] + m_SOTNAvailPartFrequency[i];
+        // search the least available parts
+        uint16 iMinAvailablePartFrenquency = _UI16_MAX;
+        uint16 iMinAvailablePartFrenquencyPrev = _UI16_MAX;
+        for (uint16 i = 0; i < partcount; i++)
+        {
+            if (bUsePart)
+                tmparray[i] = (pThis->GetSrcPartFrequency(i) + (pThis->IsComplete(PARTSIZE*i, PARTSIZE*(i+1)-1, true) ? 1 : 0));
+            else if (!m_AvailPartFrequency.IsEmpty())
+                tmparray[i] = m_AvailPartFrequency[i];
+            else
+                tmparray[i] = 0;
+            if (!m_SOTNAvailPartFrequency.IsEmpty())
+                tmparray[i] = tmparray[i] + m_SOTNAvailPartFrequency[i];
 
-			// a part qualifies if the remote client doesn't have it but we have
-			if ((!client						//we don't have to check client
-				|| !client->IsPartAvailable(i))	//or he does not own that part
-				&& (!bUsePart					//of course it's complete if it's a complete file
-				|| pThis->IsComplete(PARTSIZE*i, PARTSIZE*(i+1)-1, true)) //or the part is complete
-				)
-			{
-				if (tmparray[i] < iMinAvailablePartFrenquency)
-					iMinAvailablePartFrenquency = tmparray[i];
-				else if (tmparray[i] < iMinAvailablePartFrenquencyPrev)
-					iMinAvailablePartFrenquencyPrev = tmparray[i];
-			}
-		}
+            // a part qualifies if the remote client doesn't have it but we have
+            if ((!client						//we don't have to check client
+                    || !client->IsPartAvailable(i))	//or he does not own that part
+                    && (!bUsePart					//of course it's complete if it's a complete file
+                        || pThis->IsComplete(PARTSIZE*i, PARTSIZE*(i+1)-1, true)) //or the part is complete
+               )
+            {
+                if (tmparray[i] < iMinAvailablePartFrenquency)
+                    iMinAvailablePartFrenquency = tmparray[i];
+                else if (tmparray[i] < iMinAvailablePartFrenquencyPrev)
+                    iMinAvailablePartFrenquencyPrev = tmparray[i];
+            }
+        }
 
-		/*
-		// if all parts are equally rare, don't hide anything
-		if (iMinAvailablePartFrenquency == _UI16_MAX)
-			bSOTN = false;
-		*/
+        /*
+        // if all parts are equally rare, don't hide anything
+        if (iMinAvailablePartFrenquency == _UI16_MAX)
+        	bSOTN = false;
+        */
 
-		CArray<int> minFreqArray;
-		CArray<int> lastminFreqArray;
-		for (uint16 i = 0; i < partcount; i++)
-		{
-			if(tmparray[i] == iMinAvailablePartFrenquency)
-				minFreqArray.Add(i);
-			else if (tmparray[i] == iMinAvailablePartFrenquencyPrev)
-				lastminFreqArray.Add(i);
-		}		
-		const UINT targetValues = (minFreqArray.GetCount() + lastminFreqArray.GetCount()) < 3 ? (minFreqArray.GetCount() + lastminFreqArray.GetCount()) : 3;
-		while((UINT)shownChunks.GetCount() < targetValues && !minFreqArray.IsEmpty())
-		{
-			int index = rand() % minFreqArray.GetCount();
-			int val = minFreqArray[index];
+        CArray<int> minFreqArray;
+        CArray<int> lastminFreqArray;
+        for (uint16 i = 0; i < partcount; i++)
+        {
+            if (tmparray[i] == iMinAvailablePartFrenquency)
+                minFreqArray.Add(i);
+            else if (tmparray[i] == iMinAvailablePartFrenquencyPrev)
+                lastminFreqArray.Add(i);
+        }
+        const UINT targetValues = (minFreqArray.GetCount() + lastminFreqArray.GetCount()) < 3 ? (minFreqArray.GetCount() + lastminFreqArray.GetCount()) : 3;
+        while ((UINT)shownChunks.GetCount() < targetValues && !minFreqArray.IsEmpty())
+        {
+            int index = rand() % minFreqArray.GetCount();
+            int val = minFreqArray[index];
 
-			shownChunks.AddTail(val);
-			minFreqArray.RemoveAt(index);
-		}
-		while((UINT)shownChunks.GetCount() < targetValues && !lastminFreqArray.IsEmpty())
-		{
-			int index = rand() % lastminFreqArray.GetCount();
-			int val = lastminFreqArray[index];
+            shownChunks.AddTail(val);
+            minFreqArray.RemoveAt(index);
+        }
+        while ((UINT)shownChunks.GetCount() < targetValues && !lastminFreqArray.IsEmpty())
+        {
+            int index = rand() % lastminFreqArray.GetCount();
+            int val = lastminFreqArray[index];
 
-			shownChunks.AddTail(val);
-			lastminFreqArray.RemoveAt(index);
-		}
-	}
+            shownChunks.AddTail(val);
+            lastminFreqArray.RemoveAt(index);
+        }
+    }
 //<<< Create tmp array
 
     uint16	partCount = GetED2KPartCount();
@@ -2581,18 +2581,18 @@ uint8* CKnownFile::GetPartStatus(CUpDownClient* client) const
                 {
                     if (pThis->GetPublishedPartStatus()->IsPartialPart(i))
                     {
-						// Only send sub chunks if there are incomplete parts shared
-						if (client->GetSCTVersion() >= PROTOCOL_REVISION_2)
-						{
-							if (size <= (8000 * EMBLOCKSIZE) && pThis->GetPublishedPartStatus()->GetChunkSize() < PARTSIZE)
-								partSize = EMBLOCKSIZE;
-							sctDivider = (uint16)((PARTSIZE + partSize - 1) / partSize);
-						}
-						else if (size <= (8000 * CRUMBSIZE) && pThis->GetPublishedPartStatus()->GetChunkSize() < PARTSIZE)
-						{
-							partSize = CRUMBSIZE;
-							sctDivider = CRUMBSPERPART;
-						}
+                        // Only send sub chunks if there are incomplete parts shared
+                        if (client->GetSCTVersion() >= PROTOCOL_REVISION_2)
+                        {
+                            if (size <= (8000 * EMBLOCKSIZE) && pThis->GetPublishedPartStatus()->GetChunkSize() < PARTSIZE)
+                                partSize = EMBLOCKSIZE;
+                            sctDivider = (uint16)((PARTSIZE + partSize - 1) / partSize);
+                        }
+                        else if (size <= (8000 * CRUMBSIZE) && pThis->GetPublishedPartStatus()->GetChunkSize() < PARTSIZE)
+                        {
+                            partSize = CRUMBSIZE;
+                            sctDivider = CRUMBSPERPART;
+                        }
                         break;
                     }
                 }
@@ -2603,10 +2603,10 @@ uint8* CKnownFile::GetPartStatus(CUpDownClient* client) const
     }
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
-	//First check if we hide something...
-	uint8*	abyTmpPartStatus = new uint8[partCount];
-	memset(abyTmpPartStatus, 0, partCount*sizeof(uint8)); //show all
-	bool	bNeedThisFunction = bUsePart; //we need it for part files in any case...    
+    //First check if we hide something...
+    uint8*	abyTmpPartStatus = new uint8[partCount];
+    memset(abyTmpPartStatus, 0, partCount*sizeof(uint8)); //show all
+    bool	bNeedThisFunction = bUsePart; //we need it for part files in any case...
 
     for (uint16 i = 0; i < partCount; ++i)
     {
@@ -2619,11 +2619,11 @@ uint8* CKnownFile::GetPartStatus(CUpDownClient* client) const
         //we allow to send this chunk if either...
         const bool bShowPart = !bSOTN														// SOTN is OFF
                                //|| (tmparray[cur_part] <= iMinAvailablePartFrenquencyPrev)	// it's one of the rarest chunks TODO
-							   || shownChunks.Find(cur_part)
+                               || shownChunks.Find(cur_part)
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
                                // or if it's complete, already
                                || (client && client->IsPartAvailable(cur_part) && (!bUsePart || (pThis->GetPublishedPartStatus() && pThis->GetPublishedPartStatus()->IsComplete((uint64) cur_part * PARTSIZE + subChunk * partSize, (uint64) cur_part * PARTSIZE + (subChunk + 1) * partSize - 1)))); // show parts that the other client has
-								//|| (client && client->IsPartAvailable(cur_part) && (!bUsePart || pThis->IsComplete((uint64) i * partSize, (uint64) (i + 1) * partSize - 1, true))); // show parts that the other client has
+        //|| (client && client->IsPartAvailable(cur_part) && (!bUsePart || pThis->IsComplete((uint64) i * partSize, (uint64) (i + 1) * partSize - 1, true))); // show parts that the other client has
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
         if (!bShowPart)
@@ -2667,9 +2667,9 @@ bool CKnownFile::IsSharedInKad() const
         if (theApp.IsFirewalled() && theApp.IsConnected())
         {
 //>>> WiZaRd::IPv6 [Xanatos]
-			if ((theApp.clientlist->GetBuddy() && (GetLastPublishBuddy() == _ntohl(theApp.clientlist->GetBuddy()->GetIP().ToIPv4())))
-			//if ((theApp.clientlist->GetBuddy() && (GetLastPublishBuddy() == theApp.clientlist->GetBuddy()->GetIP()))
-//<<< WiZaRd::IPv6 [Xanatos]            
+            if ((theApp.clientlist->GetBuddy() && (GetLastPublishBuddy() == _ntohl(theApp.clientlist->GetBuddy()->GetIP().ToIPv4())))
+                    //if ((theApp.clientlist->GetBuddy() && (GetLastPublishBuddy() == theApp.clientlist->GetBuddy()->GetIP()))
+//<<< WiZaRd::IPv6 [Xanatos]
                     || (Kademlia::CKademlia::IsRunning() && !Kademlia::CUDPFirewallTester::IsFirewalledUDP(true) && Kademlia::CUDPFirewallTester::IsVerified()))
             {
                 bSharedInKad = true;
@@ -3030,317 +3030,317 @@ CString CKnownFile::GetFeedBackString() const
 //>>> WiZaRd::Queued Count
 void	CKnownFile::IncRealQueuedCount(CUpDownClient* /*client*/)
 {
-	if(m_uiQueuedCount == 0)
-		theApp.sharedfiles->IncQueuedFilesCount();
-	++m_uiQueuedCount;
-	UpdateAutoUpPriority(); //>>> WiZaRd::Improved Auto Prio
+    if (m_uiQueuedCount == 0)
+        theApp.sharedfiles->IncQueuedFilesCount();
+    ++m_uiQueuedCount;
+    UpdateAutoUpPriority(); //>>> WiZaRd::Improved Auto Prio
 }
 
 void	CKnownFile::DecRealQueuedCount(CUpDownClient* /*client*/)
-{	
-	if(m_uiQueuedCount > 0)
-		--m_uiQueuedCount;
-	else 
-		ASSERT(0);	
-	if(m_uiQueuedCount == 0)
-		theApp.sharedfiles->DecQueuedFilesCount();
-	UpdateAutoUpPriority(); //>>> WiZaRd::Improved Auto Prio
+{
+    if (m_uiQueuedCount > 0)
+        --m_uiQueuedCount;
+    else
+        ASSERT(0);
+    if (m_uiQueuedCount == 0)
+        theApp.sharedfiles->DecQueuedFilesCount();
+    UpdateAutoUpPriority(); //>>> WiZaRd::Improved Auto Prio
 }
 //<<< WiZaRd::Queued Count
 //>>> WiZaRd::FileHealth
 float CKnownFile::GetFileHealth()
-{	
-	if(::GetTickCount() - m_dwLastFileHealthCalc >= SEC2MS(15))
-	{
-		m_dwLastFileHealthCalc = ::GetTickCount();
+{
+    if (::GetTickCount() - m_dwLastFileHealthCalc >= SEC2MS(15))
+    {
+        m_dwLastFileHealthCalc = ::GetTickCount();
 
-		//just to be sure... clear variables before proceeding
-		m_fLastHealthValue = 0;
+        //just to be sure... clear variables before proceeding
+        m_fLastHealthValue = 0;
 
-		//now, here, we calculate the average availability of each chunk
-		const uint16 parts = GetPartCount();
-		UINT completesources = 1;
-		UINT counter = 0;
-		float sum = 0;
+        //now, here, we calculate the average availability of each chunk
+        const uint16 parts = GetPartCount();
+        UINT completesources = 1;
+        UINT counter = 0;
+        float sum = 0;
 
-		//if we do not have the file complete
-		CPartFile* pFile = NULL;
-		if(IsPartFile())
-			pFile = (CPartFile*)this;
+        //if we do not have the file complete
+        CPartFile* pFile = NULL;
+        if (IsPartFile())
+            pFile = (CPartFile*)this;
 
-		CList<const CUpDownClient*> list;
-		if(pFile)
-		{
-			completesources = 0; //... remove us as "complete source"
-			sum += pFile->GetPercentCompleted(); //... and add us as a partial source
-			++counter;
-			
-			for(POSITION pos = pFile->srclist.GetHeadPosition(); pos;)
-			{
-				const CUpDownClient* client = pFile->srclist.GetNext(pos);
-				const CPartStatus* status = client->GetPartStatus();
-				if(!status /*|| client->GetPartCount() != parts*/)
-					continue;
+        CList<const CUpDownClient*> list;
+        if (pFile)
+        {
+            completesources = 0; //... remove us as "complete source"
+            sum += pFile->GetPercentCompleted(); //... and add us as a partial source
+            ++counter;
 
-				list.AddTail(client);
-				uint16 tmpcount = 0;
-				for(uint16 i = 0; i < parts; ++i)
-				{
-					if(status->IsCompletePart(i))
-						++tmpcount;
-				}
+            for (POSITION pos = pFile->srclist.GetHeadPosition(); pos;)
+            {
+                const CUpDownClient* client = pFile->srclist.GetNext(pos);
+                const CPartStatus* status = client->GetPartStatus();
+                if (!status /*|| client->GetPartCount() != parts*/)
+                    continue;
 
-				if(tmpcount == parts)
-					++completesources;
-				else
-				{
-					++counter;
-					sum += (float)((double)parts != 0.0 ? (double)tmpcount/(double)parts*100.0 : 0.0);
-				}
-			}
+                list.AddTail(client);
+                uint16 tmpcount = 0;
+                for (uint16 i = 0; i < parts; ++i)
+                {
+                    if (status->IsCompletePart(i))
+                        ++tmpcount;
+                }
+
+                if (tmpcount == parts)
+                    ++completesources;
+                else
+                {
+                    ++counter;
+                    sum += (float)((double)parts != 0.0 ? (double)tmpcount/(double)parts*100.0 : 0.0);
+                }
+            }
 //>>> Keep A4AF infos
-			/*for (POSITION pos = pFile->A4AFsrclist.GetHeadPosition(); pos;)
-			{
-				const CUpDownClient* client = pFile->A4AFsrclist.GetNext(pos);
-				const CPartStatus* status = client->GetPartStatus(pFile);
-				if(!status)
-					continue;
+            /*for (POSITION pos = pFile->A4AFsrclist.GetHeadPosition(); pos;)
+            {
+            	const CUpDownClient* client = pFile->A4AFsrclist.GetNext(pos);
+            	const CPartStatus* status = client->GetPartStatus(pFile);
+            	if(!status)
+            		continue;
 
-				list.AddTail(client);
-				uint16 tmpcount = 0;
-				for(uint16 i = 0; i < parts; ++i)
-				{
-					if(status->IsCompletePart(i))
-						++tmpcount;
-				}
+            	list.AddTail(client);
+            	uint16 tmpcount = 0;
+            	for(uint16 i = 0; i < parts; ++i)
+            	{
+            		if(status->IsCompletePart(i))
+            			++tmpcount;
+            	}
 
-				if(tmpcount == parts)
-					++completesources;
-				else
-				{
-					++counter;
-					sum += (float)((double)parts != 0.0 ? (double)tmpcount/(double)parts*100.0 : 0.0);
-				}
-			}*/
+            	if(tmpcount == parts)
+            		++completesources;
+            	else
+            	{
+            		++counter;
+            		sum += (float)((double)parts != 0.0 ? (double)tmpcount/(double)parts*100.0 : 0.0);
+            	}
+            }*/
 //<<< Keep A4AF infos
-		}
+        }
 
-		for(POSITION pos = m_ClientUploadList.GetHeadPosition(); pos;)
-		{
-			const CUpDownClient* client = m_ClientUploadList.GetNext(pos);		
-			const CPartStatus* status = client->GetUpPartStatus();
-			if(status == NULL /*|| client->GetUpPartCount() != parts*/)
-				continue;
-			if(list.Find(client))
-				continue;
+        for (POSITION pos = m_ClientUploadList.GetHeadPosition(); pos;)
+        {
+            const CUpDownClient* client = m_ClientUploadList.GetNext(pos);
+            const CPartStatus* status = client->GetUpPartStatus();
+            if (status == NULL /*|| client->GetUpPartCount() != parts*/)
+                continue;
+            if (list.Find(client))
+                continue;
 
-			uint16 tmpcount = 0;
-			for(uint16 i = 0; i < parts; ++i)
-			{
-				if(status->IsCompletePart(i))
-					++tmpcount;
-			}
+            uint16 tmpcount = 0;
+            for (uint16 i = 0; i < parts; ++i)
+            {
+                if (status->IsCompletePart(i))
+                    ++tmpcount;
+            }
 
-			if(tmpcount == parts)
-				++completesources;
-			else
-			{
-				++counter;
-				sum += (float)((double)parts != 0.0 ? (double)tmpcount/(double)parts*100.0 : 0.0);
-			}
-		}
+            if (tmpcount == parts)
+                ++completesources;
+            else
+            {
+                ++counter;
+                sum += (float)((double)parts != 0.0 ? (double)tmpcount/(double)parts*100.0 : 0.0);
+            }
+        }
 
-		//we have at least X complete sources
-		completesources = max(completesources, m_nCompleteSourcesCount);
-		m_fLastHealthValue = 100.0f*completesources; // base
+        //we have at least X complete sources
+        completesources = max(completesources, m_nCompleteSourcesCount);
+        m_fLastHealthValue = 100.0f*completesources; // base
 
-		//add average completion of each chunk
-		if(counter)
-			m_fLastHealthValue += sum/counter;
-	}
-	return m_fLastHealthValue;
+        //add average completion of each chunk
+        if (counter)
+            m_fLastHealthValue += sum/counter;
+    }
+    return m_fLastHealthValue;
 }
 //<<< WiZaRd::FileHealth
 
 void CKnownFile::UpdateCompleteSrcCount()
 {
-	const UINT partcount = GetPartCount();
+    const UINT partcount = GetPartCount();
 
-	m_nCompleteSourcesCount = m_nCompleteSourcesCountLo = m_nCompleteSourcesCountHi = 0;
+    m_nCompleteSourcesCount = m_nCompleteSourcesCountLo = m_nCompleteSourcesCountHi = 0;
 
-	// retrieve users complete src count values
-	CArray<uint16, uint16> count;
-	CPartFile* pFile = IsPartFile() ? (CPartFile*)this : NULL;
-	if(pFile)
-		pFile->GetCompleteSrcCount(count);
-	GetCompleteSrcCount(count);		
+    // retrieve users complete src count values
+    CArray<uint16, uint16> count;
+    CPartFile* pFile = IsPartFile() ? (CPartFile*)this : NULL;
+    if (pFile)
+        pFile->GetCompleteSrcCount(count);
+    GetCompleteSrcCount(count);
 
-	if ((UINT)m_AvailPartFrequency.GetSize() < partcount)
-	{
-		m_AvailPartFrequency.SetSize(partcount);		
-		for (UINT i = 0; i < partcount; ++i)
-			m_AvailPartFrequency[i] = 0;
-	}
+    if ((UINT)m_AvailPartFrequency.GetSize() < partcount)
+    {
+        m_AvailPartFrequency.SetSize(partcount);
+        for (UINT i = 0; i < partcount; ++i)
+            m_AvailPartFrequency[i] = 0;
+    }
 
 //		theApp.QueueDebugLogLineEx(LOG_CA|LOG_WARNING, L"*DEBUG START*: %s", GetFileName());
-	CArray<uint16, uint16> availPartFrequency;
-	availPartFrequency.SetSize(partcount);
-	for(UINT i = 0; i < partcount; ++i)
-	{
-		availPartFrequency[i] = m_AvailPartFrequency[i];
-		if(pFile) // we may have complete src on partfiles that won't request the file, so we adjust the src count to the max of both
-			availPartFrequency[i] = max(pFile->GetSrcPartFrequency(i), availPartFrequency[i]);
+    CArray<uint16, uint16> availPartFrequency;
+    availPartFrequency.SetSize(partcount);
+    for (UINT i = 0; i < partcount; ++i)
+    {
+        availPartFrequency[i] = m_AvailPartFrequency[i];
+        if (pFile) // we may have complete src on partfiles that won't request the file, so we adjust the src count to the max of both
+            availPartFrequency[i] = max(pFile->GetSrcPartFrequency(i), availPartFrequency[i]);
 //			theApp.QueueDebugLogLineEx(LOG_CA|LOG_INFO, L"Part %u - avail: %u", i, availPartFrequency[i]);
-		if(i == 0)
-			m_nCompleteSourcesCount = availPartFrequency[i];
-		else if(m_nCompleteSourcesCount > availPartFrequency[i])
-		{
-			m_nCompleteSourcesCount = availPartFrequency[i];
+        if (i == 0)
+            m_nCompleteSourcesCount = availPartFrequency[i];
+        else if (m_nCompleteSourcesCount > availPartFrequency[i])
+        {
+            m_nCompleteSourcesCount = availPartFrequency[i];
 //				theApp.QueueDebugLogLineEx(LOG_CA|LOG_INFO, L"Complete Src Count -> %u:%u", i, m_nCompleteSourcesCount);
-		}			
-	}
+        }
+    }
 //		theApp.QueueDebugLogLineEx(LOG_CA|LOG_INFO, L"Complete Src Count: %u", m_nCompleteSourcesCount);
 
-	count.Add(m_nCompleteSourcesCount + (pFile ? 0 : 1)); // plus 1 since we have the file complete, too
+    count.Add(m_nCompleteSourcesCount + (pFile ? 0 : 1)); // plus 1 since we have the file complete, too
 
-	const int n = count.GetSize();
-	/*if(bPartFile && n < 5)
-	{
-		//Not many sources, so just use what you see..
-		m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
-		m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
-	}
-	else*/ if (n > 0)
-	{
+    const int n = count.GetSize();
+    /*if(bPartFile && n < 5)
+    {
+    	//Not many sources, so just use what you see..
+    	m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
+    	m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
+    }
+    else*/ if (n > 0)
+    {
 //#ifdef _DEBUG
 //>>> WiZaRd::Complete Files As Median
-		CMedian<uint16> median;
-		for(int i = 0; i < n; ++i)
-			median.AddVal(count[i]);
-		median.SortVals(); // sorts the internal vector
-		std::vector<uint16> medianVector = median.GetMedianVector();			
-		std::vector<uint16> median1;
-		std::vector<uint16> median2;
-		const int half = (n / 2);
-		for(int i = 0; i < half; ++i)
-		{
-			TRACE(L"Median Vector %i: %i\n", i, medianVector[i]);
-			median1.push_back(medianVector[i]);
-		}
-		for(int i = half; i < n; ++i)
-		{
-			TRACE(L"Median Vector %i: %i\n", i, medianVector[i]);
-			median2.push_back(medianVector[i]);
-		}
-		median.SetMedianVector(median1);
-		median1 = median.GetMedianVector();
-		for(size_t i = 0; i < median1.size(); ++i)
-			TRACE(L"Low Vector %i: %i\n", i, median1[i]);
-		m_nCompleteSourcesCountLo = median.GetMedian();			
-		TRACE(L"Low Median: %u\n", m_nCompleteSourcesCountLo);
+        CMedian<uint16> median;
+        for (int i = 0; i < n; ++i)
+            median.AddVal(count[i]);
+        median.SortVals(); // sorts the internal vector
+        std::vector<uint16> medianVector = median.GetMedianVector();
+        std::vector<uint16> median1;
+        std::vector<uint16> median2;
+        const int half = (n / 2);
+        for (int i = 0; i < half; ++i)
+        {
+            TRACE(L"Median Vector %i: %i\n", i, medianVector[i]);
+            median1.push_back(medianVector[i]);
+        }
+        for (int i = half; i < n; ++i)
+        {
+            TRACE(L"Median Vector %i: %i\n", i, medianVector[i]);
+            median2.push_back(medianVector[i]);
+        }
+        median.SetMedianVector(median1);
+        median1 = median.GetMedianVector();
+        for (size_t i = 0; i < median1.size(); ++i)
+            TRACE(L"Low Vector %i: %i\n", i, median1[i]);
+        m_nCompleteSourcesCountLo = median.GetMedian();
+        TRACE(L"Low Median: %u\n", m_nCompleteSourcesCountLo);
 
-		median.SetMedianVector(median2);
-		median2 = median.GetMedianVector();
-		for(size_t i = 0; i < median2.size(); ++i)
-			TRACE(L"High Vector %i: %i\n", i, median2[i]);
-		m_nCompleteSourcesCountHi = median.GetMedian();
-		TRACE(L"High Median: %u\n", m_nCompleteSourcesCountHi);
+        median.SetMedianVector(median2);
+        median2 = median.GetMedianVector();
+        for (size_t i = 0; i < median2.size(); ++i)
+            TRACE(L"High Vector %i: %i\n", i, median2[i]);
+        m_nCompleteSourcesCountHi = median.GetMedian();
+        TRACE(L"High Median: %u\n", m_nCompleteSourcesCountHi);
 
-		if(m_nCompleteSourcesCountLo < m_nCompleteSourcesCount)
-			m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
-		if(m_nCompleteSourcesCountHi < m_nCompleteSourcesCount)
-			m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
-		if(m_nCompleteSourcesCount == 0)
-		{
-			m_nCompleteSourcesCount = (m_nCompleteSourcesCountLo + m_nCompleteSourcesCountHi) / 2;
+        if (m_nCompleteSourcesCountLo < m_nCompleteSourcesCount)
+            m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
+        if (m_nCompleteSourcesCountHi < m_nCompleteSourcesCount)
+            m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
+        if (m_nCompleteSourcesCount == 0)
+        {
+            m_nCompleteSourcesCount = (m_nCompleteSourcesCountLo + m_nCompleteSourcesCountHi) / 2;
 //				theApp.QueueDebugLogLineEx(LOG_CA|LOG_INFO, L"Complete Src Count (Avg): %u", m_nCompleteSourcesCount);
-		}			
+        }
 //			theApp.QueueDebugLogLineEx(LOG_CA|LOG_WARNING, L"*DEBUG END*");
 //<<< WiZaRd::Complete Files As Median
-/*#else
-		// SLUGFILLER: heapsortCompletesrc
-		int r;
-		for (r = n/2; r--;)
-			HeapSort(count, r, n-1);
-		for (r = n; --r;)
-		{
-			uint16 t = count[r];
-			count[r] = count[0];
-			count[0] = t;
-			HeapSort(count, 0, r-1);
-		}
-		// SLUGFILLER: heapsortCompletesrc
+        /*#else
+        		// SLUGFILLER: heapsortCompletesrc
+        		int r;
+        		for (r = n/2; r--;)
+        			HeapSort(count, r, n-1);
+        		for (r = n; --r;)
+        		{
+        			uint16 t = count[r];
+        			count[r] = count[0];
+        			count[0] = t;
+        			HeapSort(count, 0, r-1);
+        		}
+        		// SLUGFILLER: heapsortCompletesrc
 
-		// calculate range
-		int i = n >> 1;			// (n / 2)
-		int j = (n * 3) >> 2;	// (n * 3) / 4
-		int k = (n * 7) >> 3;	// (n * 7) / 8
+        		// calculate range
+        		int i = n >> 1;			// (n / 2)
+        		int j = (n * 3) >> 2;	// (n * 3) / 4
+        		int k = (n * 7) >> 3;	// (n * 7) / 8
 
-		//For complete files, trust the people your uploading to more...
-		//When still a part file, adjust your guesses by 20% to what you see..
-		if (n < 20)
-		{
-			//For low guess and normal guess count
-			//	If we see more sources then the guessed low and normal, use what we see.
-			//	If we see less sources then the guessed low, adjust network accounts for 80/100%, we account for 0% with what we see and make sure we are still above the normal.
-			//For high guess
-			//  Adjust 80/100% network and 0% what we see.
-			if (count.GetAt(i) < m_nCompleteSourcesCount)
-				m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
-			else if(pFile)
-				m_nCompleteSourcesCountLo = (uint16)((float)(count.GetAt(i)*.8)+(float)(m_nCompleteSourcesCount*.2));
-			else
-				m_nCompleteSourcesCountLo = count.GetAt(i);
-			m_nCompleteSourcesCount = m_nCompleteSourcesCountLo;
-			if(pFile)
-				m_nCompleteSourcesCountHi = (uint16)((float)(count.GetAt(j)*.8)+(float)(m_nCompleteSourcesCount*.2));
-			else
-				m_nCompleteSourcesCountHi = count.GetAt(j);
-			if (m_nCompleteSourcesCountHi < m_nCompleteSourcesCount)
-				m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
-		}
-		else
-		{
-			//Many sources..
-			//For low guess
-			//	Use what we see.
-			//For normal guess
-			//	Adjust network accounts for 80/100%, we account for 0% with what we see and make sure we are still above the low.
-			//For high guess
-			//  Adjust network accounts for 80/100%, we account for 0% with what we see and make sure we are still above the normal.
-			m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
-			if(pFile)
-				m_nCompleteSourcesCount = (uint16)((float)(count.GetAt(j)*.8)+(float)(m_nCompleteSourcesCount*.2));
-			else 
-				m_nCompleteSourcesCount = count.GetAt(j);
-			if (m_nCompleteSourcesCount < m_nCompleteSourcesCountLo)
-				m_nCompleteSourcesCount = m_nCompleteSourcesCountLo;
-			if(pFile)
-				m_nCompleteSourcesCountHi = (uint16)((float)(count.GetAt(k)*.8)+(float)(m_nCompleteSourcesCount*.2));
-			else
-				m_nCompleteSourcesCountHi = count.GetAt(k);
-			if (m_nCompleteSourcesCountHi < m_nCompleteSourcesCount)
-				m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
-		}
-#endif*/
-	}	
+        		//For complete files, trust the people your uploading to more...
+        		//When still a part file, adjust your guesses by 20% to what you see..
+        		if (n < 20)
+        		{
+        			//For low guess and normal guess count
+        			//	If we see more sources then the guessed low and normal, use what we see.
+        			//	If we see less sources then the guessed low, adjust network accounts for 80/100%, we account for 0% with what we see and make sure we are still above the normal.
+        			//For high guess
+        			//  Adjust 80/100% network and 0% what we see.
+        			if (count.GetAt(i) < m_nCompleteSourcesCount)
+        				m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
+        			else if(pFile)
+        				m_nCompleteSourcesCountLo = (uint16)((float)(count.GetAt(i)*.8)+(float)(m_nCompleteSourcesCount*.2));
+        			else
+        				m_nCompleteSourcesCountLo = count.GetAt(i);
+        			m_nCompleteSourcesCount = m_nCompleteSourcesCountLo;
+        			if(pFile)
+        				m_nCompleteSourcesCountHi = (uint16)((float)(count.GetAt(j)*.8)+(float)(m_nCompleteSourcesCount*.2));
+        			else
+        				m_nCompleteSourcesCountHi = count.GetAt(j);
+        			if (m_nCompleteSourcesCountHi < m_nCompleteSourcesCount)
+        				m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
+        		}
+        		else
+        		{
+        			//Many sources..
+        			//For low guess
+        			//	Use what we see.
+        			//For normal guess
+        			//	Adjust network accounts for 80/100%, we account for 0% with what we see and make sure we are still above the low.
+        			//For high guess
+        			//  Adjust network accounts for 80/100%, we account for 0% with what we see and make sure we are still above the normal.
+        			m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
+        			if(pFile)
+        				m_nCompleteSourcesCount = (uint16)((float)(count.GetAt(j)*.8)+(float)(m_nCompleteSourcesCount*.2));
+        			else
+        				m_nCompleteSourcesCount = count.GetAt(j);
+        			if (m_nCompleteSourcesCount < m_nCompleteSourcesCountLo)
+        				m_nCompleteSourcesCount = m_nCompleteSourcesCountLo;
+        			if(pFile)
+        				m_nCompleteSourcesCountHi = (uint16)((float)(count.GetAt(k)*.8)+(float)(m_nCompleteSourcesCount*.2));
+        			else
+        				m_nCompleteSourcesCountHi = count.GetAt(k);
+        			if (m_nCompleteSourcesCountHi < m_nCompleteSourcesCount)
+        				m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
+        		}
+        #endif*/
+    }
 }
 
 void CKnownFile::GetCompleteSrcCount(CArray<uint16, uint16>& count)
 {
-	for (POSITION pos = m_ClientUploadList.GetHeadPosition(); pos != 0;)
-	{
-		CUpDownClient* cur_src = m_ClientUploadList.GetNext(pos);
-		if (cur_src->GetUpCompleteSourcesCount() != _UI16_MAX) //>>> WiZaRd::Use client info only if sent!
-			count.Add(cur_src->GetUpCompleteSourcesCount());
-	}
+    for (POSITION pos = m_ClientUploadList.GetHeadPosition(); pos != 0;)
+    {
+        CUpDownClient* cur_src = m_ClientUploadList.GetNext(pos);
+        if (cur_src->GetUpCompleteSourcesCount() != _UI16_MAX) //>>> WiZaRd::Use client info only if sent!
+            count.Add(cur_src->GetUpCompleteSourcesCount());
+    }
 }
 
 void CKnownFile::ProcessFile()
 {
-	if(m_bCompleteSrcUpdateNecessary)
-	{
-		m_bCompleteSrcUpdateNecessary = false;
-		UpdateCompleteSrcCount();
-	}
+    if (m_bCompleteSrcUpdateNecessary)
+    {
+        m_bCompleteSrcUpdateNecessary = false;
+        UpdateCompleteSrcCount();
+    }
 }

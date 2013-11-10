@@ -432,7 +432,7 @@ int CAddFileThread::Run()
 
 CSharedFileList::CSharedFileList()
 {
-	m_uiQueuedFilesCount = 0; //>>> Queued Count
+    m_uiQueuedFilesCount = 0; //>>> Queued Count
     output = NULL;
     m_Files_map.InitHashTable(1031);
     m_keywords = new CPublishKeywordList;
@@ -442,7 +442,7 @@ CSharedFileList::CSharedFileList()
     m_lastPublishKadNotes = 0;
     m_currFileKey = 0;
     bHaveSingleSharedFiles = false;
-	m_nFileUpdateTime = time(NULL);
+    m_nFileUpdateTime = time(NULL);
 
     LoadSingleSharedFilesList();
     FindSharedFiles();
@@ -458,7 +458,7 @@ CSharedFileList::~CSharedFileList()
     // SLUGFILLER: SafeHash
     delete m_keywords;
 
-	DeleteBetaFile();
+    DeleteBetaFile();
 }
 
 void CSharedFileList::CopySharedFileMap(CMap<CCKey,const CCKey&,CKnownFile*,CKnownFile*> &Files_Map)
@@ -507,7 +507,7 @@ void CSharedFileList::FindSharedFiles()
     if (tempDir.Right(1) != L"\\")
         tempDir.Append(L"\\");
 
-	DeleteBetaFile(); // just to be sure ;)
+    DeleteBetaFile(); // just to be sure ;)
     CreateBetaFile();
 
     AddFilesFromDirectory(tempDir);
@@ -796,16 +796,16 @@ uint8 GetRealPrio(uint8 in)
 {
     switch (in)
     {
-    case 4 :
-        return 0;
-    case 0 :
-        return 1;
-    case 1 :
-        return 2;
-    case 2 :
-        return 3;
-    case 3 :
-        return 4;
+        case 4 :
+            return 0;
+        case 0 :
+            return 1;
+        case 1 :
+            return 2;
+        case 2 :
+            return 3;
+        case 3 :
+            return 4;
     }
     return 0;
 }
@@ -1048,32 +1048,32 @@ CKnownFile* CSharedFileList::GetFileByIdentifier(const CFileIdentifierBase& rFil
 
 CKnownFile* CSharedFileList::GetFileByIndex(int index) const
 {
-	int count = 0;
-	CKnownFile* cur_file;
-	CCKey bufKey;
+    int count = 0;
+    CKnownFile* cur_file;
+    CCKey bufKey;
 
-	for (POSITION pos = m_Files_map.GetStartPosition(); pos != 0;)
-	{
-		m_Files_map.GetNextAssoc(pos,bufKey,cur_file);
-		if (index==count)
-			return cur_file;
-		++count;
-	}
-	return NULL;
+    for (POSITION pos = m_Files_map.GetStartPosition(); pos != 0;)
+    {
+        m_Files_map.GetNextAssoc(pos,bufKey,cur_file);
+        if (index==count)
+            return cur_file;
+        ++count;
+    }
+    return NULL;
 }
 
 CKnownFile* CSharedFileList::GetFileByAICH(const CAICHHash& rHash) const // slow
 {
-	CKnownFile* cur_file;
-	CCKey bufKey;
+    CKnownFile* cur_file;
+    CCKey bufKey;
 
-	for (POSITION pos = m_Files_map.GetStartPosition(); pos != 0;)
-	{
-		m_Files_map.GetNextAssoc(pos,bufKey,cur_file);
-		if (cur_file->GetFileIdentifierC().HasAICHHash() && cur_file->GetFileIdentifierC().GetAICHHash() == rHash)
-			return cur_file;
-	}
-	return 0;
+    for (POSITION pos = m_Files_map.GetStartPosition(); pos != 0;)
+    {
+        m_Files_map.GetNextAssoc(pos,bufKey,cur_file);
+        if (cur_file->GetFileIdentifierC().HasAICHHash() && cur_file->GetFileIdentifierC().GetAICHHash() == rHash)
+            return cur_file;
+    }
+    return 0;
 }
 
 bool CSharedFileList::IsFilePtrInList(const CKnownFile* file) const
@@ -1181,18 +1181,18 @@ void CSharedFileList::Process()
 {
     Publish();
 
-	if(time(NULL) - m_nFileUpdateTime > 0)
-	{
-		m_nFileUpdateTime = time(NULL) + (60);
-		POSITION pos = m_Files_map.GetStartPosition();
-		CCKey key;
-		CKnownFile* cur_file;
-		while (pos)
-		{			
-			m_Files_map.GetNextAssoc(pos, key, cur_file);
-			cur_file->ProcessFile();
-		}
-	}
+    if (time(NULL) - m_nFileUpdateTime > 0)
+    {
+        m_nFileUpdateTime = time(NULL) + (60);
+        POSITION pos = m_Files_map.GetStartPosition();
+        CCKey key;
+        CKnownFile* cur_file;
+        while (pos)
+        {
+            m_Files_map.GetNextAssoc(pos, key, cur_file);
+            cur_file->ProcessFile();
+        }
+    }
 }
 
 void CSharedFileList::Publish()
@@ -1287,11 +1287,11 @@ void CSharedFileList::Publish()
                 CKnownFile* pCurKnownFile = GetFileByIndex(m_currFileSrc);
                 if (pCurKnownFile
 //>>> WiZaRd::Immediate File Sharing
-					&& !(pCurKnownFile->IsPartFile()
-						&& (pCurKnownFile->GetFileSize() <= (uint64)PARTSIZE
-						|| ((CPartFile*)pCurKnownFile)->GetAvailablePartCount() == 0))
+                        && !(pCurKnownFile->IsPartFile()
+                             && (pCurKnownFile->GetFileSize() <= (uint64)PARTSIZE
+                                 || ((CPartFile*)pCurKnownFile)->GetAvailablePartCount() == 0))
 //<<< WiZaRd::Immediate File Sharing
-				)
+                   )
                 {
                     if (pCurKnownFile->PublishSrc())
                     {
@@ -1316,11 +1316,11 @@ void CSharedFileList::Publish()
                 CKnownFile* pCurKnownFile = GetFileByIndex(m_currFileNotes);
                 if (pCurKnownFile
 //>>> WiZaRd::Immediate File Sharing
-					&& !(pCurKnownFile->IsPartFile()
-						&& (pCurKnownFile->GetFileSize() <= (uint64)PARTSIZE
-						|| ((CPartFile*)pCurKnownFile)->GetAvailablePartCount() == 0))
+                        && !(pCurKnownFile->IsPartFile()
+                             && (pCurKnownFile->GetFileSize() <= (uint64)PARTSIZE
+                                 || ((CPartFile*)pCurKnownFile)->GetAvailablePartCount() == 0))
 //<<< WiZaRd::Immediate File Sharing
-				)
+                   )
                 {
                     if (pCurKnownFile->PublishNotes())
                     {

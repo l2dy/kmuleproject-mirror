@@ -157,28 +157,28 @@ enum ECols
 IMPLEMENT_DYNAMIC(CCollectionListCtrl, CMuleListCtrl)
 
 BEGIN_MESSAGE_MAP(CCollectionListCtrl, CMuleListCtrl)
-    ON_NOTIFY_REFLECT(LVN_COLUMNCLICK, OnLvnColumnClick)	
+    ON_NOTIFY_REFLECT(LVN_COLUMNCLICK, OnLvnColumnClick)
     ON_NOTIFY_REFLECT(LVN_GETDISPINFO, OnLvnGetDispInfo)
     ON_NOTIFY_REFLECT(NM_CLICK, OnNmClick)
     ON_WM_CONTEXTMENU() //>>> WiZaRd::CollectionEnhancement
-	ON_WM_KEYDOWN()
+    ON_WM_KEYDOWN()
     ON_WM_SYSCOLORCHANGE()
 END_MESSAGE_MAP()
 
 CCollectionListCtrl::CCollectionListCtrl()
     : CListCtrlItemWalk(this)
 {
-	m_bCheckBoxes = false;
-	m_bContextMenu = false;
+    m_bCheckBoxes = false;
+    m_bContextMenu = false;
 }
 
 void CCollectionListCtrl::Init(CString strNameAdd)
 {
     SetPrefsKey(_T("CollectionListCtrl") + strNameAdd);
     ASSERT((GetStyle() & LVS_SINGLESEL) == 0);
-	UINT nStyle = LVS_EX_FULLROWSELECT | LVS_EX_INFOTIP;
-	if(m_bCheckBoxes)
-		nStyle |= LVS_EX_CHECKBOXES;
+    UINT nStyle = LVS_EX_FULLROWSELECT | LVS_EX_INFOTIP;
+    if (m_bCheckBoxes)
+        nStyle |= LVS_EX_CHECKBOXES;
     SetExtendedStyle(nStyle);
 
     InsertColumn(colName, GetResString(IDS_DL_FILENAME),	LVCFMT_LEFT,  DFLT_FILENAME_COL_WIDTH);
@@ -239,72 +239,72 @@ void CCollectionListCtrl::SetAllIcons()
 
 void CCollectionListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
-	if (!theApp.emuledlg->IsRunning())
-		return;
-	if (!lpDrawItemStruct->itemData)
-		return;	
+    if (!theApp.emuledlg->IsRunning())
+        return;
+    if (!lpDrawItemStruct->itemData)
+        return;
 
-	CCustomMemDC dc(CDC::FromHandle(lpDrawItemStruct->hDC), &lpDrawItemStruct->rcItem);
-	BOOL bCtrlFocused;
-	InitItemMemDC(dc, lpDrawItemStruct, bCtrlFocused);
-	CRect cur_rec(lpDrawItemStruct->rcItem);
-	CRect rcClient;
-	GetClientRect(&rcClient);
-	const CAbstractFile* pFile = (CAbstractFile*)lpDrawItemStruct->itemData;
+    CCustomMemDC dc(CDC::FromHandle(lpDrawItemStruct->hDC), &lpDrawItemStruct->rcItem);
+    BOOL bCtrlFocused;
+    InitItemMemDC(dc, lpDrawItemStruct, bCtrlFocused);
+    CRect cur_rec(lpDrawItemStruct->rcItem);
+    CRect rcClient;
+    GetClientRect(&rcClient);
+    const CAbstractFile* pFile = (CAbstractFile*)lpDrawItemStruct->itemData;
 
-	CHeaderCtrl *pHeaderCtrl = GetHeaderCtrl();
-	int iCount = pHeaderCtrl->GetItemCount();
-	cur_rec.right = cur_rec.left - sm_iLabelOffset;
-	cur_rec.left += sm_iIconOffset;
-	for (int iCurrent = 0; iCurrent < iCount; iCurrent++)
-	{
-		int iColumn = pHeaderCtrl->OrderToIndex(iCurrent);
-		if (!IsColumnHidden(iColumn))
-		{
-			UINT uDrawTextAlignment;
-			int iColumnWidth = GetColumnWidth(iColumn, uDrawTextAlignment);
-			cur_rec.right += iColumnWidth;
-			if (cur_rec.left < cur_rec.right && HaveIntersection(rcClient, cur_rec))
-			{
-				TCHAR szItem[1024];
-				GetItemDisplayText(pFile, iColumn, szItem, _countof(szItem));
-				switch (iColumn)
-				{
-					case 0:
-					{
-						CRect rcDraw(cur_rec);
-						int iIconPosY = (rcDraw.Height() > theApp.GetSmallSytemIconSize().cy) ? ((rcDraw.Height() - theApp.GetSmallSytemIconSize().cy) / 2) : 0;
+    CHeaderCtrl *pHeaderCtrl = GetHeaderCtrl();
+    int iCount = pHeaderCtrl->GetItemCount();
+    cur_rec.right = cur_rec.left - sm_iLabelOffset;
+    cur_rec.left += sm_iIconOffset;
+    for (int iCurrent = 0; iCurrent < iCount; iCurrent++)
+    {
+        int iColumn = pHeaderCtrl->OrderToIndex(iCurrent);
+        if (!IsColumnHidden(iColumn))
+        {
+            UINT uDrawTextAlignment;
+            int iColumnWidth = GetColumnWidth(iColumn, uDrawTextAlignment);
+            cur_rec.right += iColumnWidth;
+            if (cur_rec.left < cur_rec.right && HaveIntersection(rcClient, cur_rec))
+            {
+                TCHAR szItem[1024];
+                GetItemDisplayText(pFile, iColumn, szItem, _countof(szItem));
+                switch (iColumn)
+                {
+                    case 0:
+                    {
+                        CRect rcDraw(cur_rec);
+                        int iIconPosY = (rcDraw.Height() > theApp.GetSmallSytemIconSize().cy) ? ((rcDraw.Height() - theApp.GetSmallSytemIconSize().cy) / 2) : 0;
 
-						if(m_bCheckBoxes)
-						{
-							CRect draw(rcDraw.left, rcDraw.top, rcDraw.left+16, rcDraw.bottom);
-							UINT nFlag = DFCS_BUTTONCHECK;
-							if(GetCheck(lpDrawItemStruct->itemID))
-								nFlag |= DFCS_CHECKED;
-							dc->DrawFrameControl(draw, DFC_BUTTON, nFlag);
-							rcDraw.left += 16;
-						}
+                        if (m_bCheckBoxes)
+                        {
+                            CRect draw(rcDraw.left, rcDraw.top, rcDraw.left+16, rcDraw.bottom);
+                            UINT nFlag = DFCS_BUTTONCHECK;
+                            if (GetCheck(lpDrawItemStruct->itemID))
+                                nFlag |= DFCS_CHECKED;
+                            dc->DrawFrameControl(draw, DFC_BUTTON, nFlag);
+                            rcDraw.left += 16;
+                        }
 
-						int iImage = theApp.GetFileTypeSystemImageIdx(pFile->GetFileName());
-						if (theApp.GetSystemImageList() != NULL)
-							::ImageList_Draw(theApp.GetSystemImageList(), iImage, dc->GetSafeHdc(), rcDraw.left, rcDraw.top + iIconPosY, ILD_TRANSPARENT);
-						rcDraw.left += theApp.GetSmallSytemIconSize().cx;
+                        int iImage = theApp.GetFileTypeSystemImageIdx(pFile->GetFileName());
+                        if (theApp.GetSystemImageList() != NULL)
+                            ::ImageList_Draw(theApp.GetSystemImageList(), iImage, dc->GetSafeHdc(), rcDraw.left, rcDraw.top + iIconPosY, ILD_TRANSPARENT);
+                        rcDraw.left += theApp.GetSmallSytemIconSize().cx;
 
-						rcDraw.left += sm_iLabelOffset;
-						dc->DrawText(szItem, -1, &rcDraw, MLC_DT_TEXT | uDrawTextAlignment);
-						break;
-					}
+                        rcDraw.left += sm_iLabelOffset;
+                        dc->DrawText(szItem, -1, &rcDraw, MLC_DT_TEXT | uDrawTextAlignment);
+                        break;
+                    }
 
-					default:
-						dc.DrawText(szItem, -1, &cur_rec, MLC_DT_TEXT | uDrawTextAlignment);
-						break;
-				}
-			}
-			cur_rec.left += iColumnWidth;
-		}
-	}
+                    default:
+                        dc.DrawText(szItem, -1, &cur_rec, MLC_DT_TEXT | uDrawTextAlignment);
+                        break;
+                }
+            }
+            cur_rec.left += iColumnWidth;
+        }
+    }
 
-	DrawFocusRect(dc, lpDrawItemStruct->rcItem, lpDrawItemStruct->itemState & ODS_FOCUS, bCtrlFocused, lpDrawItemStruct->itemState & ODS_SELECTED);
+    DrawFocusRect(dc, lpDrawItemStruct->rcItem, lpDrawItemStruct->itemState & ODS_FOCUS, bCtrlFocused, lpDrawItemStruct->itemState & ODS_SELECTED);
 }
 
 void CCollectionListCtrl::GetItemDisplayText(const CAbstractFile *pFile, int iSubItem, LPTSTR pszText, int cchTextMax)
@@ -315,28 +315,28 @@ void CCollectionListCtrl::GetItemDisplayText(const CAbstractFile *pFile, int iSu
         return;
     }
     pszText[0] = L'\0';
-	CString buffer = L"";
+    CString buffer = L"";
     switch (iSubItem)
     {
-		case 0:
-			buffer = pFile->GetFileName();				
-			break;
+        case 0:
+            buffer = pFile->GetFileName();
+            break;
 
-		case 1:
-			buffer = CastItoXBytes(pFile->GetFileSize());
-			break;
+        case 1:
+            buffer = CastItoXBytes(pFile->GetFileSize());
+            break;
 
-		case 2:
-			buffer = md4str(pFile->GetFileHash());
-			break;
+        case 2:
+            buffer = md4str(pFile->GetFileHash());
+            break;
 
 //>>> WiZaRd::CollectionEnhancement
-		case 3:
-			buffer = pFile->GetDownloadDirectory(true); 
-			break;
+        case 3:
+            buffer = pFile->GetDownloadDirectory(true);
+            break;
 //<<< WiZaRd::CollectionEnhancement
     }
-	_tcsncpy(pszText, buffer, cchTextMax);
+    _tcsncpy(pszText, buffer, cchTextMax);
     pszText[cchTextMax - 1] = L'\0';
 }
 
@@ -396,26 +396,26 @@ int CCollectionListCtrl::SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamS
     int iResult;
     switch (LOWORD(lParamSort))
     {
-		case colName:
-			iResult = CompareLocaleStringNoCase(item1->GetFileName(),item2->GetFileName());
-			break;
+        case colName:
+            iResult = CompareLocaleStringNoCase(item1->GetFileName(),item2->GetFileName());
+            break;
 
-		case colSize:
-			iResult = CompareUnsigned64(item1->GetFileSize(), item2->GetFileSize());
-			break;
+        case colSize:
+            iResult = CompareUnsigned64(item1->GetFileSize(), item2->GetFileSize());
+            break;
 
-		case colHash:
-			iResult = memcmp(item1->GetFileHash(), item2->GetFileHash(), 16);
-			break;
+        case colHash:
+            iResult = memcmp(item1->GetFileHash(), item2->GetFileHash(), 16);
+            break;
 
 //>>> WiZaRd::CollectionEnhancement
-		case colFolder:
-			iResult = CompareOptLocaleStringNoCaseUndefinedAtBottom(item1->GetDownloadDirectory(true), item2->GetDownloadDirectory(true), true);
-			break;
+        case colFolder:
+            iResult = CompareOptLocaleStringNoCaseUndefinedAtBottom(item1->GetDownloadDirectory(true), item2->GetDownloadDirectory(true), true);
+            break;
 //<<< WiZaRd::CollectionEnhancement
 
-		default:
-			return 0;
+        default:
+            return 0;
     }
     if (HIWORD(lParamSort))
         iResult = -iResult;
@@ -425,23 +425,23 @@ int CCollectionListCtrl::SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamS
 //>>> WiZaRd::CollectionEnhancement
 void CCollectionListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 {
-	if(m_bContextMenu)
-	{
-		UINT flag = MF_STRING;
-		if (GetNextItem(-1, LVIS_SELECTED | LVIS_FOCUSED) == -1)
-			flag = MF_GRAYED;
+    if (m_bContextMenu)
+    {
+        UINT flag = MF_STRING;
+        if (GetNextItem(-1, LVIS_SELECTED | LVIS_FOCUSED) == -1)
+            flag = MF_GRAYED;
 
-		CTitleMenu popupMenu;
-		popupMenu.CreatePopupMenu();
-		if(thePrefs.IsExtControlsEnabled())
-			popupMenu.AppendMenu(flag, MP_META_DATA, GetResString(IDS_META_DATA));
-		popupMenu.AppendMenu(flag, MP_RENAME, GetResString(IDS_FOLDER));
-		popupMenu.SetDefaultItem(thePrefs.IsExtControlsEnabled() ? MP_META_DATA : MP_RENAME);
+        CTitleMenu popupMenu;
+        popupMenu.CreatePopupMenu();
+        if (thePrefs.IsExtControlsEnabled())
+            popupMenu.AppendMenu(flag, MP_META_DATA, GetResString(IDS_META_DATA));
+        popupMenu.AppendMenu(flag, MP_RENAME, GetResString(IDS_FOLDER));
+        popupMenu.SetDefaultItem(thePrefs.IsExtControlsEnabled() ? MP_META_DATA : MP_RENAME);
 
-		GetPopupMenuPos(*this, point);
-		popupMenu.TrackPopupMenu(TPM_LEFTALIGN |TPM_RIGHTBUTTON, point.x, point.y, this);
-		//VERIFY(popupMenu.DestroyMenu());
-	}
+        GetPopupMenuPos(*this, point);
+        popupMenu.TrackPopupMenu(TPM_LEFTALIGN |TPM_RIGHTBUTTON, point.x, point.y, this);
+        //VERIFY(popupMenu.DestroyMenu());
+    }
 }
 
 BOOL CCollectionListCtrl::OnCommand(WPARAM wParam,LPARAM lParam)
@@ -459,48 +459,48 @@ BOOL CCollectionListCtrl::OnCommand(WPARAM wParam,LPARAM lParam)
         }
         switch (wParam)
         {
-			case MP_META_DATA:
-			{
-				ASSERT(m_bContextMenu && thePrefs.IsExtControlsEnabled());
-				if (!abstractFileList.IsEmpty())
-				{
-					CCollectionFileDetailsSheet dialog(abstractFileList, 0, this);
-					dialog.DoModal();
-				}
-				return TRUE;
-			}
+            case MP_META_DATA:
+            {
+                ASSERT(m_bContextMenu && thePrefs.IsExtControlsEnabled());
+                if (!abstractFileList.IsEmpty())
+                {
+                    CCollectionFileDetailsSheet dialog(abstractFileList, 0, this);
+                    dialog.DoModal();
+                }
+                return TRUE;
+            }
 
-			case MP_RENAME:
-			{
-				ASSERT(m_bContextMenu);
-				CString strDirectory = L"";
-				if (!abstractFileList.IsEmpty())
-					strDirectory = abstractFileList.GetHead()->GetDownloadDirectory();
-				InputBox inputbox;
-				CString title = GetResString(IDS_FOLDER);
-				inputbox.SetLabels(title, GetResString(IDS_FOLDER), strDirectory);
-				inputbox.SetEditFilenameMode();
-				inputbox.DoModal();
-				strDirectory = inputbox.GetInput();
-				if (!inputbox.WasCancelled())
-				{
-					LVFINDINFO find;
-					find.flags = LVFI_PARAM;
-					int iItem = -1;
-					for (POSITION pos = abstractFileList.GetHeadPosition(); pos;)
-					{
-						CAbstractFile* pAbstractFile = abstractFileList.GetNext(pos);
-						pAbstractFile->SetDownloadDirectory(strDirectory);
+            case MP_RENAME:
+            {
+                ASSERT(m_bContextMenu);
+                CString strDirectory = L"";
+                if (!abstractFileList.IsEmpty())
+                    strDirectory = abstractFileList.GetHead()->GetDownloadDirectory();
+                InputBox inputbox;
+                CString title = GetResString(IDS_FOLDER);
+                inputbox.SetLabels(title, GetResString(IDS_FOLDER), strDirectory);
+                inputbox.SetEditFilenameMode();
+                inputbox.DoModal();
+                strDirectory = inputbox.GetInput();
+                if (!inputbox.WasCancelled())
+                {
+                    LVFINDINFO find;
+                    find.flags = LVFI_PARAM;
+                    int iItem = -1;
+                    for (POSITION pos = abstractFileList.GetHeadPosition(); pos;)
+                    {
+                        CAbstractFile* pAbstractFile = abstractFileList.GetNext(pos);
+                        pAbstractFile->SetDownloadDirectory(strDirectory);
 
-						// update the displayed file
-						find.lParam = (LPARAM)pAbstractFile;
-						iItem = FindItem(&find);
-						if (iItem != -1)
-							SetItemText(iItem, colFolder, pAbstractFile->GetDownloadDirectory(true));
-					}
-				}
-				return TRUE;
-			}
+                        // update the displayed file
+                        find.lParam = (LPARAM)pAbstractFile;
+                        iItem = FindItem(&find);
+                        if (iItem != -1)
+                            SetItemText(iItem, colFolder, pAbstractFile->GetDownloadDirectory(true));
+                    }
+                }
+                return TRUE;
+            }
         }
     }
     return __super::OnCommand(wParam, lParam);
@@ -544,48 +544,48 @@ void CCollectionListCtrl::RemoveFileFromList(CAbstractFile* pAbstractFile)
 
 void CCollectionListCtrl::OnNmClick(NMHDR *pNMHDR, LRESULT * /*pResult*/)
 {
-	POINT pt;
-	::GetCursorPos(&pt);
-	ScreenToClient(&pt);
-	if (pt.x < 16)
-	{
-		NMLISTVIEW *pNMListView = (NMLISTVIEW *)pNMHDR;
-		SetCheck(pNMListView->iItem, !GetCheck(pNMListView->iItem));
-	}
+    POINT pt;
+    ::GetCursorPos(&pt);
+    ScreenToClient(&pt);
+    if (pt.x < 16)
+    {
+        NMLISTVIEW *pNMListView = (NMLISTVIEW *)pNMHDR;
+        SetCheck(pNMListView->iItem, !GetCheck(pNMListView->iItem));
+    }
 }
 
 void CCollectionListCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	if (nChar == VK_SPACE && m_bCheckBoxes)
-	{
-		SetRedraw(FALSE);
-		POSITION pos = GetFirstSelectedItemPosition();
-		while (pos != NULL)
-		{
-			int index = GetNextSelectedItem(pos);
-			if (index >= 0)
-				SetCheck(index, !GetCheck(index));
-		}
-		SetRedraw(TRUE);
-	}
+    if (nChar == VK_SPACE && m_bCheckBoxes)
+    {
+        SetRedraw(FALSE);
+        POSITION pos = GetFirstSelectedItemPosition();
+        while (pos != NULL)
+        {
+            int index = GetNextSelectedItem(pos);
+            if (index >= 0)
+                SetCheck(index, !GetCheck(index));
+        }
+        SetRedraw(TRUE);
+    }
 
-	__super::OnKeyDown(nChar, nRepCnt, nFlags);
+    __super::OnKeyDown(nChar, nRepCnt, nFlags);
 }
 
 void CCollectionListCtrl::CheckAll()
 {
-	SetRedraw(FALSE);
-	ASSERT(m_bCheckBoxes);
-	for(int i = 0; i < GetItemCount(); ++i)
-		SetCheck(i, TRUE);
-	SetRedraw(TRUE);
+    SetRedraw(FALSE);
+    ASSERT(m_bCheckBoxes);
+    for (int i = 0; i < GetItemCount(); ++i)
+        SetCheck(i, TRUE);
+    SetRedraw(TRUE);
 }
 
 void CCollectionListCtrl::UncheckAll()
 {
-	SetRedraw(FALSE);
-	ASSERT(m_bCheckBoxes);
-	for(int i = 0; i < GetItemCount(); ++i)
-		SetCheck(i, FALSE);
-	SetRedraw(TRUE);
+    SetRedraw(FALSE);
+    ASSERT(m_bCheckBoxes);
+    for (int i = 0; i < GetItemCount(); ++i)
+        SetCheck(i, FALSE);
+    SetRedraw(TRUE);
 }

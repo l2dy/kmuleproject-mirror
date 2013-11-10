@@ -226,7 +226,7 @@ protected:
     {
         SOCKET	hSocket; //Socket handle
         int		nSocketIndex; //Index of socket, required by CAsyncSocketExHelperWindow
-		bool	bIPv6; //>>> WiZaRd::IPv6 [Xanatos]
+        bool	bIPv6; //>>> WiZaRd::IPv6 [Xanatos]
     } m_SocketData;
 
     //If using layers, only the events specified with m_lEvent will send to the event handlers.

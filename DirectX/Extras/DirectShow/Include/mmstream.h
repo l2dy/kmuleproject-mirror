@@ -67,11 +67,11 @@ typedef interface IStreamSample IStreamSample;
 extern "C" {
 #endif
 
-    void * __RPC_USER MIDL_user_allocate(size_t);
-    void __RPC_USER MIDL_user_free(void *);
+void * __RPC_USER MIDL_user_allocate(size_t);
+void __RPC_USER MIDL_user_free(void *);
 
-    /* interface __MIDL_itf_mmstream_0000 */
-    /* [local] */
+/* interface __MIDL_itf_mmstream_0000 */
+/* [local] */
 
 #define MS_ERROR_CODE(x) MAKE_HRESULT(1, FACILITY_ITF, (x) + 0x400)
 #define MS_SUCCESS_CODE(x) MAKE_HRESULT(0, FACILITY_ITF, x)
@@ -89,74 +89,74 @@ extern "C" {
 #define MS_E_INVALIDSTREAMTYPE        MS_ERROR_CODE(9)
 #define MS_E_NOTRUNNING               MS_ERROR_CODE(10)
 // {A35FF56A-9FDA-11d0-8FDF-00C04FD9189D}
-    DEFINE_GUID(MSPID_PrimaryVideo,
-                0xa35ff56a, 0x9fda, 0x11d0, 0x8f, 0xdf, 0x0, 0xc0, 0x4f, 0xd9, 0x18, 0x9d);
+DEFINE_GUID(MSPID_PrimaryVideo,
+            0xa35ff56a, 0x9fda, 0x11d0, 0x8f, 0xdf, 0x0, 0xc0, 0x4f, 0xd9, 0x18, 0x9d);
 // {A35FF56B-9FDA-11d0-8FDF-00C04FD9189D}
-    DEFINE_GUID(MSPID_PrimaryAudio,
-                0xa35ff56b, 0x9fda, 0x11d0, 0x8f, 0xdf, 0x0, 0xc0, 0x4f, 0xd9, 0x18, 0x9d);
+DEFINE_GUID(MSPID_PrimaryAudio,
+            0xa35ff56b, 0x9fda, 0x11d0, 0x8f, 0xdf, 0x0, 0xc0, 0x4f, 0xd9, 0x18, 0x9d);
 #if(_WIN32_WINNT < 0x0400)
-    typedef void (__stdcall *PAPCFUNC)(
-        DWORD_PTR dwParam);
+typedef void (__stdcall *PAPCFUNC)(
+    DWORD_PTR dwParam);
 
 #endif
-    typedef LONGLONG STREAM_TIME;
+typedef LONGLONG STREAM_TIME;
 
-    typedef GUID MSPID;
+typedef GUID MSPID;
 
-    typedef REFGUID REFMSPID;
+typedef REFGUID REFMSPID;
 
-    typedef /* [public][public][public] */
-    enum __MIDL___MIDL_itf_mmstream_0000_0001
-    {
-        STREAMTYPE_READ	= 0,
-        STREAMTYPE_WRITE	= 1,
-        STREAMTYPE_TRANSFORM	= 2
-    } 	STREAM_TYPE;
+typedef /* [public][public][public] */
+enum __MIDL___MIDL_itf_mmstream_0000_0001
+{
+    STREAMTYPE_READ	= 0,
+    STREAMTYPE_WRITE	= 1,
+    STREAMTYPE_TRANSFORM	= 2
+} 	STREAM_TYPE;
 
-    typedef /* [public][public][public] */
-    enum __MIDL___MIDL_itf_mmstream_0000_0002
-    {
-        STREAMSTATE_STOP	= 0,
-        STREAMSTATE_RUN	= 1
-    } 	STREAM_STATE;
+typedef /* [public][public][public] */
+enum __MIDL___MIDL_itf_mmstream_0000_0002
+{
+    STREAMSTATE_STOP	= 0,
+    STREAMSTATE_RUN	= 1
+} 	STREAM_STATE;
 
-    typedef /* [public] */
-    enum __MIDL___MIDL_itf_mmstream_0000_0003
-    {
-        COMPSTAT_NOUPDATEOK	= 0x1,
-        COMPSTAT_WAIT	= 0x2,
-        COMPSTAT_ABORT	= 0x4
-    } 	COMPLETION_STATUS_FLAGS;
-
-
-    enum __MIDL___MIDL_itf_mmstream_0000_0004
-    {
-        MMSSF_HASCLOCK	= 0x1,
-        MMSSF_SUPPORTSEEK	= 0x2,
-        MMSSF_ASYNCHRONOUS	= 0x4
-    } ;
-
-    enum __MIDL___MIDL_itf_mmstream_0000_0005
-    {
-        SSUPDATE_ASYNC	= 0x1,
-        SSUPDATE_CONTINUOUS	= 0x2
-    } ;
+typedef /* [public] */
+enum __MIDL___MIDL_itf_mmstream_0000_0003
+{
+    COMPSTAT_NOUPDATEOK	= 0x1,
+    COMPSTAT_WAIT	= 0x2,
+    COMPSTAT_ABORT	= 0x4
+} 	COMPLETION_STATUS_FLAGS;
 
 
+enum __MIDL___MIDL_itf_mmstream_0000_0004
+{
+    MMSSF_HASCLOCK	= 0x1,
+    MMSSF_SUPPORTSEEK	= 0x2,
+    MMSSF_ASYNCHRONOUS	= 0x4
+} ;
+
+enum __MIDL___MIDL_itf_mmstream_0000_0005
+{
+    SSUPDATE_ASYNC	= 0x1,
+    SSUPDATE_CONTINUOUS	= 0x2
+} ;
 
 
 
-    extern RPC_IF_HANDLE __MIDL_itf_mmstream_0000_v0_0_c_ifspec;
-    extern RPC_IF_HANDLE __MIDL_itf_mmstream_0000_v0_0_s_ifspec;
+
+
+extern RPC_IF_HANDLE __MIDL_itf_mmstream_0000_v0_0_c_ifspec;
+extern RPC_IF_HANDLE __MIDL_itf_mmstream_0000_v0_0_s_ifspec;
 
 #ifndef __IMultiMediaStream_INTERFACE_DEFINED__
 #define __IMultiMediaStream_INTERFACE_DEFINED__
 
-    /* interface IMultiMediaStream */
-    /* [unique][uuid][local][object] */
+/* interface IMultiMediaStream */
+/* [unique][uuid][local][object] */
 
 
-    EXTERN_C const IID IID_IMultiMediaStream;
+EXTERN_C const IID IID_IMultiMediaStream;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 

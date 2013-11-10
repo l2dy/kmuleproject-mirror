@@ -68,30 +68,30 @@ void EncodeFileName::Decode(char *Name,byte *EncName,int EncSize,wchar_t *NameW,
         }
         switch (Flags>>6)
         {
-        case 0:
-            NameW[DecPos++]=EncName[EncPos++];
-            break;
-        case 1:
-            NameW[DecPos++]=EncName[EncPos++]+(HighByte<<8);
-            break;
-        case 2:
-            NameW[DecPos++]=EncName[EncPos]+(EncName[EncPos+1]<<8);
-            EncPos+=2;
-            break;
-        case 3:
-        {
-            int Length=EncName[EncPos++];
-            if (Length & 0x80)
+            case 0:
+                NameW[DecPos++]=EncName[EncPos++];
+                break;
+            case 1:
+                NameW[DecPos++]=EncName[EncPos++]+(HighByte<<8);
+                break;
+            case 2:
+                NameW[DecPos++]=EncName[EncPos]+(EncName[EncPos+1]<<8);
+                EncPos+=2;
+                break;
+            case 3:
             {
-                byte Correction=EncName[EncPos++];
-                for (Length=(Length&0x7f)+2; Length>0 && DecPos<MaxDecSize; Length--,DecPos++)
-                    NameW[DecPos]=((Name[DecPos]+Correction)&0xff)+(HighByte<<8);
+                int Length=EncName[EncPos++];
+                if (Length & 0x80)
+                {
+                    byte Correction=EncName[EncPos++];
+                    for (Length=(Length&0x7f)+2; Length>0 && DecPos<MaxDecSize; Length--,DecPos++)
+                        NameW[DecPos]=((Name[DecPos]+Correction)&0xff)+(HighByte<<8);
+                }
+                else
+                    for (Length+=2; Length>0 && DecPos<MaxDecSize; Length--,DecPos++)
+                        NameW[DecPos]=Name[DecPos];
             }
-            else
-                for (Length+=2; Length>0 && DecPos<MaxDecSize; Length--,DecPos++)
-                    NameW[DecPos]=Name[DecPos];
-        }
-        break;
+            break;
         }
         Flags<<=2;
         FlagBits-=2;
@@ -1105,22 +1105,22 @@ void CArchivePreviewDlg::UpdateArchiveDisplay(bool doscan)
     EFileType type=GetFileTypeEx(file);
     switch (type)
     {
-    case ARCHIVE_ZIP:
-        SetDlgItemText(IDC_INFO_TYPE, _T("ZIP"));
-        break;
-    case ARCHIVE_RAR:
-        SetDlgItemText(IDC_INFO_TYPE, _T("RAR"));
-        break;
-    case ARCHIVE_ACE:
-        SetDlgItemText(IDC_INFO_TYPE, _T("ACE"));
-        break;
-    case IMAGE_ISO:
-        SetDlgItemText(IDC_INFO_TYPE, _T("ISO"));
-        break;
-    default:
-        SetDlgItemText(IDC_INFO_TYPE, GetResString(IDS_ARCPREV_UNKNOWNFORMAT));
-        return;
-        break;
+        case ARCHIVE_ZIP:
+            SetDlgItemText(IDC_INFO_TYPE, _T("ZIP"));
+            break;
+        case ARCHIVE_RAR:
+            SetDlgItemText(IDC_INFO_TYPE, _T("RAR"));
+            break;
+        case ARCHIVE_ACE:
+            SetDlgItemText(IDC_INFO_TYPE, _T("ACE"));
+            break;
+        case IMAGE_ISO:
+            SetDlgItemText(IDC_INFO_TYPE, _T("ISO"));
+            break;
+        default:
+            SetDlgItemText(IDC_INFO_TYPE, GetResString(IDS_ARCPREV_UNKNOWNFORMAT));
+            return;
+            break;
     }
 
     if (!doscan)
@@ -1155,18 +1155,18 @@ void CArchivePreviewDlg::UpdateArchiveDisplay(bool doscan)
 
     switch (type)
     {
-    case ARCHIVE_ZIP:
-        ai->centralDirectoryEntries= new CTypedPtrList<CPtrList, ZIP_CentralDirectory*>;
-        break;
-    case ARCHIVE_RAR:
-        ai->RARdir = new CTypedPtrList<CPtrList, RAR_BlockFile*>;
-        break;
-    case ARCHIVE_ACE:
-        ai->ACEdir = new CTypedPtrList<CPtrList, ACE_BlockFile*>;
-        break;
-    case IMAGE_ISO:
-        ai->ISOdir = new CTypedPtrList<CPtrList, ISO_FileFolderEntry*>;
-        break;
+        case ARCHIVE_ZIP:
+            ai->centralDirectoryEntries= new CTypedPtrList<CPtrList, ZIP_CentralDirectory*>;
+            break;
+        case ARCHIVE_RAR:
+            ai->RARdir = new CTypedPtrList<CPtrList, RAR_BlockFile*>;
+            break;
+        case ARCHIVE_ACE:
+            ai->ACEdir = new CTypedPtrList<CPtrList, ACE_BlockFile*>;
+            break;
+        case IMAGE_ISO:
+            ai->ISOdir = new CTypedPtrList<CPtrList, ISO_FileFolderEntry*>;
+            break;
     }
 
     // prepare threadparams
@@ -1206,18 +1206,18 @@ UINT AFX_CDECL CArchivePreviewDlg::RunArchiveScanner(LPVOID pParam)
     {
         switch (tp->type)
         {
-        case ARCHIVE_ZIP:
-            ret=CArchiveRecovery::recoverZip(&inFile, NULL, tp, tp->filled, (inFile.GetLength() == tp->file->GetFileSize()));
-            break;
-        case ARCHIVE_RAR:
-            ret=CArchiveRecovery::recoverRar(&inFile, NULL, tp, tp->filled);
-            break;
-        case ARCHIVE_ACE:
-            ret=CArchiveRecovery::recoverAce(&inFile, NULL, tp, tp->filled);
-            break;
-        case IMAGE_ISO:
-            ret=CArchiveRecovery::recoverISO(&inFile, NULL, tp, tp->filled);
-            break;
+            case ARCHIVE_ZIP:
+                ret=CArchiveRecovery::recoverZip(&inFile, NULL, tp, tp->filled, (inFile.GetLength() == tp->file->GetFileSize()));
+                break;
+            case ARCHIVE_RAR:
+                ret=CArchiveRecovery::recoverRar(&inFile, NULL, tp, tp->filled);
+                break;
+            case ARCHIVE_ACE:
+                ret=CArchiveRecovery::recoverAce(&inFile, NULL, tp, tp->filled);
+                break;
+            case IMAGE_ISO:
+                ret=CArchiveRecovery::recoverISO(&inFile, NULL, tp, tp->filled);
+                break;
         }
 
         inFile.Close();
@@ -1271,18 +1271,18 @@ LRESULT CArchivePreviewDlg::ShowScanResults(WPARAM wParam, LPARAM lParam)
 
             switch (tp->type)
             {
-            case ARCHIVE_ZIP:
-                ShowZipResults(ret, tp);
-                break;
-            case ARCHIVE_RAR:
-                ShowRarResults(ret, tp);
-                break;
-            case ARCHIVE_ACE:
-                ShowAceResults(ret, tp);
-                break;
-            case IMAGE_ISO:
-                ShowISOResults(ret,tp);
-                break;
+                case ARCHIVE_ZIP:
+                    ShowZipResults(ret, tp);
+                    break;
+                case ARCHIVE_RAR:
+                    ShowRarResults(ret, tp);
+                    break;
+                case ARCHIVE_ACE:
+                    ShowAceResults(ret, tp);
+                    break;
+                case IMAGE_ISO:
+                    ShowISOResults(ret,tp);
+                    break;
             }
         }
         ASSERT(tp == m_activeTParams);

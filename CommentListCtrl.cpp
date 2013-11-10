@@ -94,39 +94,39 @@ int CCommentListCtrl::SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort
     int iResult;
     switch (LOWORD(lParamSort))
     {
-    case colRating:
-        if (item1->m_iRating < item2->m_iRating)
-            iResult = -1;
-        else if (item1->m_iRating > item2->m_iRating)
-            iResult = 1;
-        else
-            iResult = 0;
-        break;
+        case colRating:
+            if (item1->m_iRating < item2->m_iRating)
+                iResult = -1;
+            else if (item1->m_iRating > item2->m_iRating)
+                iResult = 1;
+            else
+                iResult = 0;
+            break;
 
-    case colComment:
-        iResult = CompareLocaleStringNoCase(item1->m_strComment, item2->m_strComment);
-        break;
+        case colComment:
+            iResult = CompareLocaleStringNoCase(item1->m_strComment, item2->m_strComment);
+            break;
 
-    case colFileName:
-        iResult = CompareLocaleStringNoCase(item1->m_strFileName, item2->m_strFileName);
-        break;
+        case colFileName:
+            iResult = CompareLocaleStringNoCase(item1->m_strFileName, item2->m_strFileName);
+            break;
 
-    case colUserName:
-        iResult = CompareLocaleStringNoCase(item1->m_strUserName, item2->m_strUserName);
-        break;
+        case colUserName:
+            iResult = CompareLocaleStringNoCase(item1->m_strUserName, item2->m_strUserName);
+            break;
 
-    case colOrigin:
-        if (item1->m_iOrigin < item2->m_iOrigin)
-            iResult = -1;
-        else if (item1->m_iOrigin > item2->m_iOrigin)
-            iResult = 1;
-        else
-            iResult = 0;
-        break;
+        case colOrigin:
+            if (item1->m_iOrigin < item2->m_iOrigin)
+                iResult = -1;
+            else if (item1->m_iOrigin > item2->m_iOrigin)
+                iResult = 1;
+            else
+                iResult = 0;
+            break;
 
-    default:
-        ASSERT(0);
-        return 0;
+        default:
+            ASSERT(0);
+            return 0;
     }
     if (HIWORD(lParamSort))
         iResult = -iResult;
@@ -172,27 +172,27 @@ BOOL CCommentListCtrl::OnCommand(WPARAM wParam, LPARAM lParam)
 {
     switch (wParam)
     {
-    case MP_COPYSELECTED:
-    {
-        CString strText;
-        POSITION posItem = GetFirstSelectedItemPosition();
-        while (posItem)
+        case MP_COPYSELECTED:
         {
-            int iItem = GetNextSelectedItem(posItem);
-            if (iItem >= 0)
+            CString strText;
+            POSITION posItem = GetFirstSelectedItemPosition();
+            while (posItem)
             {
-                CString strComment = GetItemText(iItem, colComment);
-                if (!strComment.IsEmpty())
+                int iItem = GetNextSelectedItem(posItem);
+                if (iItem >= 0)
                 {
-                    if (!strText.IsEmpty())
-                        strText += _T("\r\n");
-                    strText += strComment;
+                    CString strComment = GetItemText(iItem, colComment);
+                    if (!strComment.IsEmpty())
+                    {
+                        if (!strText.IsEmpty())
+                            strText += _T("\r\n");
+                        strText += strComment;
+                    }
                 }
             }
+            theApp.CopyTextToClipboard(strText);
+            break;
         }
-        theApp.CopyTextToClipboard(strText);
-        break;
-    }
     }
     return CMuleListCtrl::OnCommand(wParam, lParam);
 }

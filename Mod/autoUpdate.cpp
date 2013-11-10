@@ -104,62 +104,62 @@ bool	CAutoUpdate::ApplyUpdate() const
 {
     switch (m_uiUpdateApplication)
     {
-    case UPDATE_NONE:
-    case UPDATE_DOWNLOADPAGE:
-    default:
-        return false;
+        case UPDATE_NONE:
+        case UPDATE_DOWNLOADPAGE:
+        default:
+            return false;
 
-    case UPDATE_EXECUTE:
-    {
-        const CString strUpdateFile = GetUpdateFile();
-        if (::PathFileExists(strUpdateFile))
+        case UPDATE_EXECUTE:
         {
-            _ShellExecute(NULL, L"open", strUpdateFile, NULL, NULL, SW_SHOWDEFAULT);
-            if (m_bDeleteAfterUpdate)
-                _tremove(strUpdateFile);
-            return true;
-        }
-        return false;
-    }
-
-    case UPDATE_REPLACE:
-    case UPDATE_EXTRACT: //>>> WiZaRd::kMule
-    {
-        TCHAR tchBuffer[MAX_PATH];
-        ::GetModuleFileName(NULL, tchBuffer, _countof(tchBuffer));
-        tchBuffer[_countof(tchBuffer) - 1] = L'\0';
-        CString strExePath = tchBuffer;
-
-        CString strBak = L"";
-        strBak.Format(L"%s_%s.bak", strExePath, MOD_VERSION_BUILD);
-        _tremove(strBak);
-        const CString strUpdateFile = GetUpdateFile();
-
-        // create a backup in case something goes wrong
-        if (_trename(strExePath, strBak) == 0)
-        {
-            if (m_uiUpdateApplication == UPDATE_REPLACE)
+            const CString strUpdateFile = GetUpdateFile();
+            if (::PathFileExists(strUpdateFile))
             {
-                if ((m_bDeleteAfterUpdate && ::MoveFileEx(strUpdateFile, strExePath, MOVEFILE_COPY_ALLOWED|MOVEFILE_WRITE_THROUGH))
-                        || ::CopyFile(strUpdateFile, strExePath, TRUE))
-                    return true; //update done ;)
+                _ShellExecute(NULL, L"open", strUpdateFile, NULL, NULL, SW_SHOWDEFAULT);
+                if (m_bDeleteAfterUpdate)
+                    _tremove(strUpdateFile);
+                return true;
             }
+            return false;
+        }
+
+        case UPDATE_REPLACE:
+        case UPDATE_EXTRACT: //>>> WiZaRd::kMule
+        {
+            TCHAR tchBuffer[MAX_PATH];
+            ::GetModuleFileName(NULL, tchBuffer, _countof(tchBuffer));
+            tchBuffer[_countof(tchBuffer) - 1] = L'\0';
+            CString strExePath = tchBuffer;
+
+            CString strBak = L"";
+            strBak.Format(L"%s_%s.bak", strExePath, MOD_VERSION_BUILD);
+            _tremove(strBak);
+            const CString strUpdateFile = GetUpdateFile();
+
+            // create a backup in case something goes wrong
+            if (_trename(strExePath, strBak) == 0)
+            {
+                if (m_uiUpdateApplication == UPDATE_REPLACE)
+                {
+                    if ((m_bDeleteAfterUpdate && ::MoveFileEx(strUpdateFile, strExePath, MOVEFILE_COPY_ALLOWED|MOVEFILE_WRITE_THROUGH))
+                            || ::CopyFile(strUpdateFile, strExePath, TRUE))
+                        return true; //update done ;)
+                }
 //>>> WiZaRd::kMule
-            else
-            {
-                if (Extract(strUpdateFile, strExePath, L"kMule.exe", m_bDeleteAfterUpdate, 1, L"kMule.exe"))
-                    return true;
-            }
+                else
+                {
+                    if (Extract(strUpdateFile, strExePath, L"kMule.exe", m_bDeleteAfterUpdate, 1, L"kMule.exe"))
+                        return true;
+                }
 //<<< WiZaRd::kMule
-        }
+            }
 
-        //update failed!?
-        ASSERT(0);
-        //restore the old file
-        _tremove(strExePath);
-        _trename(strBak, strExePath);
-        return false;
-    }
+            //update failed!?
+            ASSERT(0);
+            //restore the old file
+            _tremove(strExePath);
+            _trename(strBak, strExePath);
+            return false;
+        }
     }
 }
 
@@ -182,28 +182,28 @@ uint8	CAutoUpdate::IsUpdateAvail()
             strTok.Trim();
             switch (count)
             {
-            case 0:
-            {
-                m_strUpdateURL = strTok;
-                int pos = m_strUpdateURL.ReverseFind(L'/');
-                if (pos != -1)
-                    m_strTempFile = m_strUpdateURL.Mid(pos+1);
-                else
-                    m_strTempFile = L"update.exe";
-                break;
-            }
+                case 0:
+                {
+                    m_strUpdateURL = strTok;
+                    int pos = m_strUpdateURL.ReverseFind(L'/');
+                    if (pos != -1)
+                        m_strTempFile = m_strUpdateURL.Mid(pos+1);
+                    else
+                        m_strTempFile = L"update.exe";
+                    break;
+                }
 
-            case 1:
-                ret = (uint8)_tstoi(strTok);
-                break;
+                case 1:
+                    ret = (uint8)_tstoi(strTok);
+                    break;
 
-            case 2:
-                m_uiUpdateApplication = (uint8)_tstoi(strTok);
-                break;
+                case 2:
+                    m_uiUpdateApplication = (uint8)_tstoi(strTok);
+                    break;
 
-            case 3:
-                m_bDeleteAfterUpdate = _tstoi(strTok) != 0;
-                break;
+                case 3:
+                    m_bDeleteAfterUpdate = _tstoi(strTok) != 0;
+                    break;
             }
 
             strTok = response.Tokenize(L"\r\n", curPos);

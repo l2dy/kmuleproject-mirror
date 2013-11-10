@@ -230,17 +230,17 @@ void CContact::UpdateType()
     UINT uHours = (time(NULL)-m_tCreated)/HR2S(1);
     switch (uHours)
     {
-    case 0:
-        m_byType = 2;
-        m_tExpires = time(NULL) + HR2S(1);
-        break;
-    case 1:
-        m_byType = 1;
-        m_tExpires = time(NULL) + (unsigned)HR2S(1.5);
-        break;
-    default:
-        m_byType = 0;
-        m_tExpires = time(NULL) + HR2S(2);
+        case 0:
+            m_byType = 2;
+            m_tExpires = time(NULL) + HR2S(1);
+            break;
+        case 1:
+            m_byType = 1;
+            m_tExpires = time(NULL) + (unsigned)HR2S(1.5);
+            break;
+        default:
+            m_byType = 0;
+            m_tExpires = time(NULL) + HR2S(2);
     }
 }
 
@@ -252,12 +252,12 @@ time_t CContact::GetLastSeen() const
     {
         switch (m_byType)
         {
-        case 2:
-            return m_tExpires - HR2S(1);
-        case 1:
-            return m_tExpires - (unsigned)HR2S(1.5);
-        case 0:
-            return m_tExpires - HR2S(2);
+            case 2:
+                return m_tExpires - HR2S(1);
+            case 1:
+                return m_tExpires - (unsigned)HR2S(1.5);
+            case 0:
+                return m_tExpires - HR2S(2);
         }
     }
     return 0;

@@ -514,11 +514,11 @@ typedef interface IWMImageInfo IWMImageInfo;
 extern "C" {
 #endif
 
-    void * __RPC_USER MIDL_user_allocate(size_t);
-    void __RPC_USER MIDL_user_free(void *);
+void * __RPC_USER MIDL_user_allocate(size_t);
+void __RPC_USER MIDL_user_free(void *);
 
-    /* interface __MIDL_itf_wmsdkidl_0000 */
-    /* [local] */
+/* interface __MIDL_itf_wmsdkidl_0000 */
+/* [local] */
 
 //=========================================================================
 //
@@ -526,7 +526,7 @@ extern "C" {
 // Copyright (C) Microsoft Corporation.  All Rights Reserved.
 //
 //=========================================================================
-    typedef unsigned __int64 QWORD;
+typedef unsigned __int64 QWORD;
 
 
 
@@ -581,98 +581,98 @@ extern "C" {
 // These are the special case attributes that give information
 // about the Windows Media file.
 //
-    static const DWORD g_dwWMSpecialAttributes = 20;
-    static const WCHAR g_wszWMDuration[] =L"Duration";
-    static const WCHAR g_wszWMBitrate[] =L"Bitrate";
-    static const WCHAR g_wszWMSeekable[] =L"Seekable";
-    static const WCHAR g_wszWMStridable[] =L"Stridable";
-    static const WCHAR g_wszWMBroadcast[] =L"Broadcast";
-    static const WCHAR g_wszWMProtected[] =L"Is_Protected";
-    static const WCHAR g_wszWMTrusted[] =L"Is_Trusted";
-    static const WCHAR g_wszWMSignature_Name[] =L"Signature_Name";
-    static const WCHAR g_wszWMHasAudio[] =L"HasAudio";
-    static const WCHAR g_wszWMHasImage[] =L"HasImage";
-    static const WCHAR g_wszWMHasScript[] =L"HasScript";
-    static const WCHAR g_wszWMHasVideo[] =L"HasVideo";
-    static const WCHAR g_wszWMCurrentBitrate[] =L"CurrentBitrate";
-    static const WCHAR g_wszWMOptimalBitrate[] =L"OptimalBitrate";
-    static const WCHAR g_wszWMHasAttachedImages[] =L"HasAttachedImages";
-    static const WCHAR g_wszWMSkipBackward[] =L"Can_Skip_Backward";
-    static const WCHAR g_wszWMSkipForward[] =L"Can_Skip_Forward";
-    static const WCHAR g_wszWMNumberOfFrames[] =L"NumberOfFrames";
-    static const WCHAR g_wszWMFileSize[] =L"FileSize";
-    static const WCHAR g_wszWMHasArbitraryDataStream[] =L"HasArbitraryDataStream";
-    static const WCHAR g_wszWMHasFileTransferStream[] =L"HasFileTransferStream";
-    static const WCHAR g_wszWMContainerFormat[] =L"WM/ContainerFormat";
+static const DWORD g_dwWMSpecialAttributes = 20;
+static const WCHAR g_wszWMDuration[] =L"Duration";
+static const WCHAR g_wszWMBitrate[] =L"Bitrate";
+static const WCHAR g_wszWMSeekable[] =L"Seekable";
+static const WCHAR g_wszWMStridable[] =L"Stridable";
+static const WCHAR g_wszWMBroadcast[] =L"Broadcast";
+static const WCHAR g_wszWMProtected[] =L"Is_Protected";
+static const WCHAR g_wszWMTrusted[] =L"Is_Trusted";
+static const WCHAR g_wszWMSignature_Name[] =L"Signature_Name";
+static const WCHAR g_wszWMHasAudio[] =L"HasAudio";
+static const WCHAR g_wszWMHasImage[] =L"HasImage";
+static const WCHAR g_wszWMHasScript[] =L"HasScript";
+static const WCHAR g_wszWMHasVideo[] =L"HasVideo";
+static const WCHAR g_wszWMCurrentBitrate[] =L"CurrentBitrate";
+static const WCHAR g_wszWMOptimalBitrate[] =L"OptimalBitrate";
+static const WCHAR g_wszWMHasAttachedImages[] =L"HasAttachedImages";
+static const WCHAR g_wszWMSkipBackward[] =L"Can_Skip_Backward";
+static const WCHAR g_wszWMSkipForward[] =L"Can_Skip_Forward";
+static const WCHAR g_wszWMNumberOfFrames[] =L"NumberOfFrames";
+static const WCHAR g_wszWMFileSize[] =L"FileSize";
+static const WCHAR g_wszWMHasArbitraryDataStream[] =L"HasArbitraryDataStream";
+static const WCHAR g_wszWMHasFileTransferStream[] =L"HasFileTransferStream";
+static const WCHAR g_wszWMContainerFormat[] =L"WM/ContainerFormat";
 
 ////////////////////////////////////////////////////////////////
 //
 // The content description object supports 5 basic attributes.
 //
-    static const DWORD g_dwWMContentAttributes = 5;
-    static const WCHAR g_wszWMTitle[] =L"Title";
-    static const WCHAR g_wszWMAuthor[] =L"Author";
-    static const WCHAR g_wszWMDescription[] =L"Description";
-    static const WCHAR g_wszWMRating[] =L"Rating";
-    static const WCHAR g_wszWMCopyright[] =L"Copyright";
+static const DWORD g_dwWMContentAttributes = 5;
+static const WCHAR g_wszWMTitle[] =L"Title";
+static const WCHAR g_wszWMAuthor[] =L"Author";
+static const WCHAR g_wszWMDescription[] =L"Description";
+static const WCHAR g_wszWMRating[] =L"Rating";
+static const WCHAR g_wszWMCopyright[] =L"Copyright";
 
 ////////////////////////////////////////////////////////////////
 //
 // These attributes are used to configure and query DRM settings in the reader and writer.
 //
-    static const WCHAR g_wszWMUse_DRM[] = L"Use_DRM";
-    static const WCHAR g_wszWMDRM_Flags[] = L"DRM_Flags";
-    static const WCHAR g_wszWMDRM_Level[] = L"DRM_Level";
-    static const WCHAR g_wszWMUse_Advanced_DRM[] = L"Use_Advanced_DRM";
-    static const WCHAR g_wszWMDRM_KeySeed[] = L"DRM_KeySeed";
-    static const WCHAR g_wszWMDRM_KeyID[] = L"DRM_KeyID";
-    static const WCHAR g_wszWMDRM_ContentID[] = L"DRM_ContentID";
-    static const WCHAR g_wszWMDRM_IndividualizedVersion[] = L"DRM_IndividualizedVersion";
-    static const WCHAR g_wszWMDRM_LicenseAcqURL[] = L"DRM_LicenseAcqURL";
-    static const WCHAR g_wszWMDRM_V1LicenseAcqURL[] = L"DRM_V1LicenseAcqURL";
-    static const WCHAR g_wszWMDRM_HeaderSignPrivKey[] = L"DRM_HeaderSignPrivKey";
-    static const WCHAR g_wszWMDRM_LASignaturePrivKey[] = L"DRM_LASignaturePrivKey";
-    static const WCHAR g_wszWMDRM_LASignatureCert[] = L"DRM_LASignatureCert";
-    static const WCHAR g_wszWMDRM_LASignatureLicSrvCert[] = L"DRM_LASignatureLicSrvCert";
-    static const WCHAR g_wszWMDRM_LASignatureRootCert[] = L"DRM_LASignatureRootCert";
+static const WCHAR g_wszWMUse_DRM[] = L"Use_DRM";
+static const WCHAR g_wszWMDRM_Flags[] = L"DRM_Flags";
+static const WCHAR g_wszWMDRM_Level[] = L"DRM_Level";
+static const WCHAR g_wszWMUse_Advanced_DRM[] = L"Use_Advanced_DRM";
+static const WCHAR g_wszWMDRM_KeySeed[] = L"DRM_KeySeed";
+static const WCHAR g_wszWMDRM_KeyID[] = L"DRM_KeyID";
+static const WCHAR g_wszWMDRM_ContentID[] = L"DRM_ContentID";
+static const WCHAR g_wszWMDRM_IndividualizedVersion[] = L"DRM_IndividualizedVersion";
+static const WCHAR g_wszWMDRM_LicenseAcqURL[] = L"DRM_LicenseAcqURL";
+static const WCHAR g_wszWMDRM_V1LicenseAcqURL[] = L"DRM_V1LicenseAcqURL";
+static const WCHAR g_wszWMDRM_HeaderSignPrivKey[] = L"DRM_HeaderSignPrivKey";
+static const WCHAR g_wszWMDRM_LASignaturePrivKey[] = L"DRM_LASignaturePrivKey";
+static const WCHAR g_wszWMDRM_LASignatureCert[] = L"DRM_LASignatureCert";
+static const WCHAR g_wszWMDRM_LASignatureLicSrvCert[] = L"DRM_LASignatureLicSrvCert";
+static const WCHAR g_wszWMDRM_LASignatureRootCert[] = L"DRM_LASignatureRootCert";
 
 ////////////////////////////////////////////////////////////////
 //
 // These are the additional attributes defined in the WM attribute
 // namespace that give information about the content.
 //
-    static const WCHAR g_wszWMAlbumTitle[] =L"WM/AlbumTitle";
-    static const WCHAR g_wszWMTrack[] =L"WM/Track";
-    static const WCHAR g_wszWMPromotionURL[] =L"WM/PromotionURL";
-    static const WCHAR g_wszWMAlbumCoverURL[] =L"WM/AlbumCoverURL";
-    static const WCHAR g_wszWMGenre[] =L"WM/Genre";
-    static const WCHAR g_wszWMYear[] =L"WM/Year";
-    static const WCHAR g_wszWMGenreID[] =L"WM/GenreID";
-    static const WCHAR g_wszWMMCDI[] =L"WM/MCDI";
-    static const WCHAR g_wszWMComposer[] =L"WM/Composer";
-    static const WCHAR g_wszWMLyrics[] =L"WM/Lyrics";
-    static const WCHAR g_wszWMTrackNumber[] =L"WM/TrackNumber";
-    static const WCHAR g_wszWMToolName[] =L"WM/ToolName";
-    static const WCHAR g_wszWMToolVersion[] =L"WM/ToolVersion";
-    static const WCHAR g_wszWMIsVBR[] =L"IsVBR";
-    static const WCHAR g_wszWMAlbumArtist[] =L"WM/AlbumArtist";
+static const WCHAR g_wszWMAlbumTitle[] =L"WM/AlbumTitle";
+static const WCHAR g_wszWMTrack[] =L"WM/Track";
+static const WCHAR g_wszWMPromotionURL[] =L"WM/PromotionURL";
+static const WCHAR g_wszWMAlbumCoverURL[] =L"WM/AlbumCoverURL";
+static const WCHAR g_wszWMGenre[] =L"WM/Genre";
+static const WCHAR g_wszWMYear[] =L"WM/Year";
+static const WCHAR g_wszWMGenreID[] =L"WM/GenreID";
+static const WCHAR g_wszWMMCDI[] =L"WM/MCDI";
+static const WCHAR g_wszWMComposer[] =L"WM/Composer";
+static const WCHAR g_wszWMLyrics[] =L"WM/Lyrics";
+static const WCHAR g_wszWMTrackNumber[] =L"WM/TrackNumber";
+static const WCHAR g_wszWMToolName[] =L"WM/ToolName";
+static const WCHAR g_wszWMToolVersion[] =L"WM/ToolVersion";
+static const WCHAR g_wszWMIsVBR[] =L"IsVBR";
+static const WCHAR g_wszWMAlbumArtist[] =L"WM/AlbumArtist";
 
 ////////////////////////////////////////////////////////////////
 //
 // These optional attributes may be used to give information
 // about the branding of the content.
 //
-    static const WCHAR g_wszWMBannerImageType[] =L"BannerImageType";
-    static const WCHAR g_wszWMBannerImageData[] =L"BannerImageData";
-    static const WCHAR g_wszWMBannerImageURL[] =L"BannerImageURL";
-    static const WCHAR g_wszWMCopyrightURL[] =L"CopyrightURL";
+static const WCHAR g_wszWMBannerImageType[] =L"BannerImageType";
+static const WCHAR g_wszWMBannerImageData[] =L"BannerImageData";
+static const WCHAR g_wszWMBannerImageURL[] =L"BannerImageURL";
+static const WCHAR g_wszWMCopyrightURL[] =L"CopyrightURL";
 ////////////////////////////////////////////////////////////////
 //
 // Optional attributes, used to give information
 // about video stream properties.
 //
-    static const WCHAR g_wszWMAspectRatioX[] =L"AspectRatioX";
-    static const WCHAR g_wszWMAspectRatioY[] =L"AspectRatioY";
+static const WCHAR g_wszWMAspectRatioX[] =L"AspectRatioX";
+static const WCHAR g_wszWMAspectRatioY[] =L"AspectRatioY";
 ////////////////////////////////////////////////////////////////
 //
 // Optional attributes, used to give information
@@ -683,147 +683,147 @@ extern "C" {
 //  WM_LEAKY_BUCKET_PAIR pair2
 //  ...
 //
-    static const WCHAR g_wszASFLeakyBucketPairs[] =L"ASFLeakyBucketPairs";
+static const WCHAR g_wszASFLeakyBucketPairs[] =L"ASFLeakyBucketPairs";
 ////////////////////////////////////////////////////////////////
 //
 // The NSC file supports the following attributes.
 //
-    static const DWORD g_dwWMNSCAttributes = 5;
-    static const WCHAR g_wszWMNSCName[] =L"NSC_Name";
-    static const WCHAR g_wszWMNSCAddress[] =L"NSC_Address";
-    static const WCHAR g_wszWMNSCPhone[] =L"NSC_Phone";
-    static const WCHAR g_wszWMNSCEmail[] =L"NSC_Email";
-    static const WCHAR g_wszWMNSCDescription[] =L"NSC_Description";
+static const DWORD g_dwWMNSCAttributes = 5;
+static const WCHAR g_wszWMNSCName[] =L"NSC_Name";
+static const WCHAR g_wszWMNSCAddress[] =L"NSC_Address";
+static const WCHAR g_wszWMNSCPhone[] =L"NSC_Phone";
+static const WCHAR g_wszWMNSCEmail[] =L"NSC_Email";
+static const WCHAR g_wszWMNSCDescription[] =L"NSC_Description";
 
 ////////////////////////////////////////////////////////////////
 //
 // Attributes introduced in V9
 //
-    static const WCHAR g_wszWMWriter[] =L"WM/Writer";
-    static const WCHAR g_wszWMConductor[] =L"WM/Conductor";
-    static const WCHAR g_wszWMProducer[] =L"WM/Producer";
-    static const WCHAR g_wszWMDirector[] =L"WM/Director";
-    static const WCHAR g_wszWMContentGroupDescription[] =L"WM/ContentGroupDescription";
-    static const WCHAR g_wszWMSubTitle[] =L"WM/SubTitle";
-    static const WCHAR g_wszWMPartOfSet[] =L"WM/PartOfSet";
-    static const WCHAR g_wszWMProtectionType[] =L"WM/ProtectionType";
-    static const WCHAR g_wszWMVideoHeight[] =L"WM/VideoHeight";
-    static const WCHAR g_wszWMVideoWidth[] =L"WM/VideoWidth";
-    static const WCHAR g_wszWMVideoFrameRate[] =L"WM/VideoFrameRate";
-    static const WCHAR g_wszWMMediaClassPrimaryID[] =L"WM/MediaClassPrimaryID";
-    static const WCHAR g_wszWMMediaClassSecondaryID[] =L"WM/MediaClassSecondaryID";
-    static const WCHAR g_wszWMPeriod[] = L"WM/Period";
-    static const WCHAR g_wszWMCategory[] = L"WM/Category";
-    static const WCHAR g_wszWMPicture[] =L"WM/Picture";
-    static const WCHAR g_wszWMLyrics_Synchronised[] =L"WM/Lyrics_Synchronised";
-    static const WCHAR g_wszWMOriginalLyricist[] =L"WM/OriginalLyricist";
-    static const WCHAR g_wszWMOriginalArtist[] =L"WM/OriginalArtist";
-    static const WCHAR g_wszWMOriginalAlbumTitle[] =L"WM/OriginalAlbumTitle";
-    static const WCHAR g_wszWMOriginalReleaseYear[] =L"WM/OriginalReleaseYear";
-    static const WCHAR g_wszWMOriginalFilename[] =L"WM/OriginalFilename";
-    static const WCHAR g_wszWMPublisher[] =L"WM/Publisher";
-    static const WCHAR g_wszWMEncodedBy[] =L"WM/EncodedBy";
-    static const WCHAR g_wszWMEncodingSettings[] =L"WM/EncodingSettings";
-    static const WCHAR g_wszWMEncodingTime[] =L"WM/EncodingTime";
-    static const WCHAR g_wszWMAuthorURL[] =L"WM/AuthorURL";
-    static const WCHAR g_wszWMUserWebURL[] =L"WM/UserWebURL";
-    static const WCHAR g_wszWMAudioFileURL[] =L"WM/AudioFileURL";
-    static const WCHAR g_wszWMAudioSourceURL[] =L"WM/AudioSourceURL";
-    static const WCHAR g_wszWMLanguage[] =L"WM/Language";
-    static const WCHAR g_wszWMParentalRating[] =L"WM/ParentalRating";
-    static const WCHAR g_wszWMBeatsPerMinute[] =L"WM/BeatsPerMinute";
-    static const WCHAR g_wszWMInitialKey[] =L"WM/InitialKey";
-    static const WCHAR g_wszWMMood[] =L"WM/Mood";
-    static const WCHAR g_wszWMText[] =L"WM/Text";
-    static const WCHAR g_wszWMDVDID[] =L"WM/DVDID";
-    static const WCHAR g_wszWMWMContentID[] =L"WM/WMContentID";
-    static const WCHAR g_wszWMWMCollectionID[] =L"WM/WMCollectionID";
-    static const WCHAR g_wszWMWMCollectionGroupID[] =L"WM/WMCollectionGroupID";
-    static const WCHAR g_wszWMUniqueFileIdentifier[] =L"WM/UniqueFileIdentifier";
-    static const WCHAR g_wszWMModifiedBy[] =L"WM/ModifiedBy";
-    static const WCHAR g_wszWMRadioStationName[] =L"WM/RadioStationName";
-    static const WCHAR g_wszWMRadioStationOwner[] =L"WM/RadioStationOwner";
-    static const WCHAR g_wszWMPlaylistDelay[] =L"WM/PlaylistDelay";
-    static const WCHAR g_wszWMCodec[] =L"WM/Codec";
-    static const WCHAR g_wszWMDRM[] =L"WM/DRM";
-    static const WCHAR g_wszWMISRC[] =L"WM/ISRC";
-    static const WCHAR g_wszWMProvider[] =L"WM/Provider";
-    static const WCHAR g_wszWMProviderRating[] =L"WM/ProviderRating";
-    static const WCHAR g_wszWMProviderStyle[] =L"WM/ProviderStyle";
-    static const WCHAR g_wszWMContentDistributor[] =L"WM/ContentDistributor";
-    static const WCHAR g_wszWMSubscriptionContentID[] =L"WM/SubscriptionContentID";
-    static const WCHAR g_wszWMWMADRCPeakReference[] =L"WM/WMADRCPeakReference";
-    static const WCHAR g_wszWMWMADRCPeakTarget[] =L"WM/WMADRCPeakTarget";
-    static const WCHAR g_wszWMWMADRCAverageReference[] =L"WM/WMADRCAverageReference";
-    static const WCHAR g_wszWMWMADRCAverageTarget[] =L"WM/WMADRCAverageTarget";
+static const WCHAR g_wszWMWriter[] =L"WM/Writer";
+static const WCHAR g_wszWMConductor[] =L"WM/Conductor";
+static const WCHAR g_wszWMProducer[] =L"WM/Producer";
+static const WCHAR g_wszWMDirector[] =L"WM/Director";
+static const WCHAR g_wszWMContentGroupDescription[] =L"WM/ContentGroupDescription";
+static const WCHAR g_wszWMSubTitle[] =L"WM/SubTitle";
+static const WCHAR g_wszWMPartOfSet[] =L"WM/PartOfSet";
+static const WCHAR g_wszWMProtectionType[] =L"WM/ProtectionType";
+static const WCHAR g_wszWMVideoHeight[] =L"WM/VideoHeight";
+static const WCHAR g_wszWMVideoWidth[] =L"WM/VideoWidth";
+static const WCHAR g_wszWMVideoFrameRate[] =L"WM/VideoFrameRate";
+static const WCHAR g_wszWMMediaClassPrimaryID[] =L"WM/MediaClassPrimaryID";
+static const WCHAR g_wszWMMediaClassSecondaryID[] =L"WM/MediaClassSecondaryID";
+static const WCHAR g_wszWMPeriod[] = L"WM/Period";
+static const WCHAR g_wszWMCategory[] = L"WM/Category";
+static const WCHAR g_wszWMPicture[] =L"WM/Picture";
+static const WCHAR g_wszWMLyrics_Synchronised[] =L"WM/Lyrics_Synchronised";
+static const WCHAR g_wszWMOriginalLyricist[] =L"WM/OriginalLyricist";
+static const WCHAR g_wszWMOriginalArtist[] =L"WM/OriginalArtist";
+static const WCHAR g_wszWMOriginalAlbumTitle[] =L"WM/OriginalAlbumTitle";
+static const WCHAR g_wszWMOriginalReleaseYear[] =L"WM/OriginalReleaseYear";
+static const WCHAR g_wszWMOriginalFilename[] =L"WM/OriginalFilename";
+static const WCHAR g_wszWMPublisher[] =L"WM/Publisher";
+static const WCHAR g_wszWMEncodedBy[] =L"WM/EncodedBy";
+static const WCHAR g_wszWMEncodingSettings[] =L"WM/EncodingSettings";
+static const WCHAR g_wszWMEncodingTime[] =L"WM/EncodingTime";
+static const WCHAR g_wszWMAuthorURL[] =L"WM/AuthorURL";
+static const WCHAR g_wszWMUserWebURL[] =L"WM/UserWebURL";
+static const WCHAR g_wszWMAudioFileURL[] =L"WM/AudioFileURL";
+static const WCHAR g_wszWMAudioSourceURL[] =L"WM/AudioSourceURL";
+static const WCHAR g_wszWMLanguage[] =L"WM/Language";
+static const WCHAR g_wszWMParentalRating[] =L"WM/ParentalRating";
+static const WCHAR g_wszWMBeatsPerMinute[] =L"WM/BeatsPerMinute";
+static const WCHAR g_wszWMInitialKey[] =L"WM/InitialKey";
+static const WCHAR g_wszWMMood[] =L"WM/Mood";
+static const WCHAR g_wszWMText[] =L"WM/Text";
+static const WCHAR g_wszWMDVDID[] =L"WM/DVDID";
+static const WCHAR g_wszWMWMContentID[] =L"WM/WMContentID";
+static const WCHAR g_wszWMWMCollectionID[] =L"WM/WMCollectionID";
+static const WCHAR g_wszWMWMCollectionGroupID[] =L"WM/WMCollectionGroupID";
+static const WCHAR g_wszWMUniqueFileIdentifier[] =L"WM/UniqueFileIdentifier";
+static const WCHAR g_wszWMModifiedBy[] =L"WM/ModifiedBy";
+static const WCHAR g_wszWMRadioStationName[] =L"WM/RadioStationName";
+static const WCHAR g_wszWMRadioStationOwner[] =L"WM/RadioStationOwner";
+static const WCHAR g_wszWMPlaylistDelay[] =L"WM/PlaylistDelay";
+static const WCHAR g_wszWMCodec[] =L"WM/Codec";
+static const WCHAR g_wszWMDRM[] =L"WM/DRM";
+static const WCHAR g_wszWMISRC[] =L"WM/ISRC";
+static const WCHAR g_wszWMProvider[] =L"WM/Provider";
+static const WCHAR g_wszWMProviderRating[] =L"WM/ProviderRating";
+static const WCHAR g_wszWMProviderStyle[] =L"WM/ProviderStyle";
+static const WCHAR g_wszWMContentDistributor[] =L"WM/ContentDistributor";
+static const WCHAR g_wszWMSubscriptionContentID[] =L"WM/SubscriptionContentID";
+static const WCHAR g_wszWMWMADRCPeakReference[] =L"WM/WMADRCPeakReference";
+static const WCHAR g_wszWMWMADRCPeakTarget[] =L"WM/WMADRCPeakTarget";
+static const WCHAR g_wszWMWMADRCAverageReference[] =L"WM/WMADRCAverageReference";
+static const WCHAR g_wszWMWMADRCAverageTarget[] =L"WM/WMADRCAverageTarget";
 ////////////////////////////////////////////////////////////////
 //
 // These are setting names for use in Get/SetOutputSetting
 //
-    static const WCHAR g_wszEarlyDataDelivery[] =L"EarlyDataDelivery";
-    static const WCHAR g_wszJustInTimeDecode[] =L"JustInTimeDecode";
-    static const WCHAR g_wszSingleOutputBuffer[] =L"SingleOutputBuffer";
-    static const WCHAR g_wszSoftwareScaling[] =L"SoftwareScaling";
-    static const WCHAR g_wszDeliverOnReceive[] =L"DeliverOnReceive";
-    static const WCHAR g_wszScrambledAudio[] =L"ScrambledAudio";
-    static const WCHAR g_wszDedicatedDeliveryThread[] =L"DedicatedDeliveryThread";
-    static const WCHAR g_wszEnableDiscreteOutput[] = L"EnableDiscreteOutput";
-    static const WCHAR g_wszSpeakerConfig[] = L"SpeakerConfig";
-    static const WCHAR g_wszDynamicRangeControl[] = L"DynamicRangeControl";
-    static const WCHAR g_wszAllowInterlacedOutput[] = L"AllowInterlacedOutput";
-    static const WCHAR g_wszVideoSampleDurations[] =L"VideoSampleDurations";
-    static const WCHAR g_wszStreamLanguage[] =L"StreamLanguage";
+static const WCHAR g_wszEarlyDataDelivery[] =L"EarlyDataDelivery";
+static const WCHAR g_wszJustInTimeDecode[] =L"JustInTimeDecode";
+static const WCHAR g_wszSingleOutputBuffer[] =L"SingleOutputBuffer";
+static const WCHAR g_wszSoftwareScaling[] =L"SoftwareScaling";
+static const WCHAR g_wszDeliverOnReceive[] =L"DeliverOnReceive";
+static const WCHAR g_wszScrambledAudio[] =L"ScrambledAudio";
+static const WCHAR g_wszDedicatedDeliveryThread[] =L"DedicatedDeliveryThread";
+static const WCHAR g_wszEnableDiscreteOutput[] = L"EnableDiscreteOutput";
+static const WCHAR g_wszSpeakerConfig[] = L"SpeakerConfig";
+static const WCHAR g_wszDynamicRangeControl[] = L"DynamicRangeControl";
+static const WCHAR g_wszAllowInterlacedOutput[] = L"AllowInterlacedOutput";
+static const WCHAR g_wszVideoSampleDurations[] =L"VideoSampleDurations";
+static const WCHAR g_wszStreamLanguage[] =L"StreamLanguage";
 
 ////////////////////////////////////////////////////////////////
 //
 // These are setting names for use in Get/SetInputSetting
 //
-    static const WCHAR g_wszDeinterlaceMode[] =L"DeinterlaceMode";
-    static const WCHAR g_wszInitialPatternForInverseTelecine[] =L"InitialPatternForInverseTelecine";
-    static const WCHAR g_wszJPEGCompressionQuality[] =L"JPEGCompressionQuality";
-    static const WCHAR g_wszWatermarkCLSID[] =L"WatermarkCLSID";
-    static const WCHAR g_wszWatermarkConfig[] =L"WatermarkConfig";
-    static const WCHAR g_wszInterlacedCoding[] =L"InterlacedCoding";
-    static const WCHAR g_wszFixedFrameRate[] =L"FixedFrameRate";
+static const WCHAR g_wszDeinterlaceMode[] =L"DeinterlaceMode";
+static const WCHAR g_wszInitialPatternForInverseTelecine[] =L"InitialPatternForInverseTelecine";
+static const WCHAR g_wszJPEGCompressionQuality[] =L"JPEGCompressionQuality";
+static const WCHAR g_wszWatermarkCLSID[] =L"WatermarkCLSID";
+static const WCHAR g_wszWatermarkConfig[] =L"WatermarkConfig";
+static const WCHAR g_wszInterlacedCoding[] =L"InterlacedCoding";
+static const WCHAR g_wszFixedFrameRate[] =L"FixedFrameRate";
 
 ////////////////////////////////////////////////////////////////
 //
 // All known IWMPropertyVault property names
 //
 // g_wszOriginalSourceFormatTag is obsolete and has been superceded by g_wszOriginalWaveFormat
-    static const WCHAR g_wszOriginalSourceFormatTag[] =L"_SOURCEFORMATTAG";
-    static const WCHAR g_wszOriginalWaveFormat[] =L"_ORIGINALWAVEFORMAT";
-    static const WCHAR g_wszEDL[] =L"_EDL";
-    static const WCHAR g_wszComplexity[] =L"_COMPLEXITYEX";
-    static const WCHAR g_wszDecoderComplexityRequested[] =L"_DECODERCOMPLEXITYPROFILE";
+static const WCHAR g_wszOriginalSourceFormatTag[] =L"_SOURCEFORMATTAG";
+static const WCHAR g_wszOriginalWaveFormat[] =L"_ORIGINALWAVEFORMAT";
+static const WCHAR g_wszEDL[] =L"_EDL";
+static const WCHAR g_wszComplexity[] =L"_COMPLEXITYEX";
+static const WCHAR g_wszDecoderComplexityRequested[] =L"_DECODERCOMPLEXITYPROFILE";
 
 ////////////////////////////////////////////////////////////////
 //
 // All known IWMIStreamProps property names
 //
-    static const WCHAR g_wszReloadIndexOnSeek[] =L"ReloadIndexOnSeek";
-    static const WCHAR g_wszStreamNumIndexObjects[] =L"StreamNumIndexObjects";
-    static const WCHAR g_wszFailSeekOnError[] =L"FailSeekOnError";
-    static const WCHAR g_wszPermitSeeksBeyondEndOfStream[] =L"PermitSeeksBeyondEndOfStream";
-    static const WCHAR g_wszUsePacketAtSeekPoint[] =L"UsePacketAtSeekPoint";
-    static const WCHAR g_wszSourceBufferTime[] =L"SourceBufferTime";
-    static const WCHAR g_wszSourceMaxBytesAtOnce[] =L"SourceMaxBytesAtOnce";
+static const WCHAR g_wszReloadIndexOnSeek[] =L"ReloadIndexOnSeek";
+static const WCHAR g_wszStreamNumIndexObjects[] =L"StreamNumIndexObjects";
+static const WCHAR g_wszFailSeekOnError[] =L"FailSeekOnError";
+static const WCHAR g_wszPermitSeeksBeyondEndOfStream[] =L"PermitSeeksBeyondEndOfStream";
+static const WCHAR g_wszUsePacketAtSeekPoint[] =L"UsePacketAtSeekPoint";
+static const WCHAR g_wszSourceBufferTime[] =L"SourceBufferTime";
+static const WCHAR g_wszSourceMaxBytesAtOnce[] =L"SourceMaxBytesAtOnce";
 
 ////////////////////////////////////////////////////////////////
 //
 // VBR encoding settings
 //
-    static const WCHAR g_wszVBREnabled[] =L"_VBRENABLED";
-    static const WCHAR g_wszVBRQuality[] =L"_VBRQUALITY";
-    static const WCHAR g_wszVBRBitrateMax[] =L"_RMAX";
-    static const WCHAR g_wszVBRBufferWindowMax[] =L"_BMAX";
+static const WCHAR g_wszVBREnabled[] =L"_VBRENABLED";
+static const WCHAR g_wszVBRQuality[] =L"_VBRQUALITY";
+static const WCHAR g_wszVBRBitrateMax[] =L"_RMAX";
+static const WCHAR g_wszVBRBufferWindowMax[] =L"_BMAX";
 
 ////////////////////////////////////////////////////////////////
 //
 // VBR Video settings
 //
-    static const WCHAR g_wszVBRPeak[] = L"VBR Peak";
-    static const WCHAR g_wszBufferAverage[] = L"Buffer Average";
+static const WCHAR g_wszVBRPeak[] = L"VBR Peak";
+static const WCHAR g_wszBufferAverage[] = L"Buffer Average";
 
 ////////////////////////////////////////////////////////////////
 //
@@ -833,58 +833,58 @@ extern "C" {
 // stream's IWMPropertyVault (see above for definition)
 // The below settings can be queried from IWMCodecInfo3::GetCodecProp()
 //
-    static const WCHAR g_wszComplexityMax[] =L"_COMPLEXITYEXMAX";
-    static const WCHAR g_wszComplexityOffline[] =L"_COMPLEXITYEXOFFLINE";
-    static const WCHAR g_wszComplexityLive[] =L"_COMPLEXITYEXLIVE";
-    static const WCHAR g_wszIsVBRSupported[] =L"_ISVBRSUPPORTED";
+static const WCHAR g_wszComplexityMax[] =L"_COMPLEXITYEXMAX";
+static const WCHAR g_wszComplexityOffline[] =L"_COMPLEXITYEXOFFLINE";
+static const WCHAR g_wszComplexityLive[] =L"_COMPLEXITYEXLIVE";
+static const WCHAR g_wszIsVBRSupported[] =L"_ISVBRSUPPORTED";
 ////////////////////////////////////////////////////////////////
 //
 // Codec enumeration settings
 //
 // g_wszVBREnabled can be used as a codec enumeration setting (see above for definition)
-    static const WCHAR g_wszNumPasses[] = L"_PASSESUSED";
+static const WCHAR g_wszNumPasses[] = L"_PASSESUSED";
 
 ////////////////////////////////////////////////////////////////
 //
 // These are WMA Voice V9 attribute names and values
 //
-    static const WCHAR g_wszMusicSpeechClassMode[] = L"MusicSpeechClassMode";
-    static const WCHAR g_wszMusicClassMode[] = L"MusicClassMode";
-    static const WCHAR g_wszSpeechClassMode[] = L"SpeechClassMode";
-    static const WCHAR g_wszMixedClassMode[] = L"MixedClassMode";
+static const WCHAR g_wszMusicSpeechClassMode[] = L"MusicSpeechClassMode";
+static const WCHAR g_wszMusicClassMode[] = L"MusicClassMode";
+static const WCHAR g_wszSpeechClassMode[] = L"SpeechClassMode";
+static const WCHAR g_wszMixedClassMode[] = L"MixedClassMode";
 
 ////////////////////////////////////////////////////////////////
 //
 // The WMA Voice V9 supports the following format property.
 //
-    static const WCHAR g_wszSpeechCaps[] = L"SpeechFormatCap";
+static const WCHAR g_wszSpeechCaps[] = L"SpeechFormatCap";
 
 ////////////////////////////////////////////////////////////////
 //
 // Multi-channel WMA properties
 //
-    static const WCHAR g_wszPeakValue[] = L"PeakValue";
-    static const WCHAR g_wszAverageLevel[] = L"AverageLevel";
-    static const WCHAR g_wszFold6To2Channels3[] = L"Fold6To2Channels3";
-    static const WCHAR g_wszFoldToChannelsTemplate[] = L"Fold%luTo%luChannels%lu";
+static const WCHAR g_wszPeakValue[] = L"PeakValue";
+static const WCHAR g_wszAverageLevel[] = L"AverageLevel";
+static const WCHAR g_wszFold6To2Channels3[] = L"Fold6To2Channels3";
+static const WCHAR g_wszFoldToChannelsTemplate[] = L"Fold%luTo%luChannels%lu";
 
 ////////////////////////////////////////////////////////////////
 //
 // Complexity profile description strings
 //
-    static const WCHAR g_wszDeviceConformanceTemplate[] = L"DeviceConformanceTemplate";
+static const WCHAR g_wszDeviceConformanceTemplate[] = L"DeviceConformanceTemplate";
 
 ////////////////////////////////////////////////////////////////
 //
 // Frame interpolation on video decode
 //
-    static const WCHAR g_wszEnableFrameInterpolation[] =L"EnableFrameInterpolation";
+static const WCHAR g_wszEnableFrameInterpolation[] =L"EnableFrameInterpolation";
 
 ////////////////////////////////////////////////////////////////
 //
 // Needs previous sample for Delta frame on video decode
 //
-    static const WCHAR g_wszNeedsPreviousSample[] =L"NeedsPreviousSample";
+static const WCHAR g_wszNeedsPreviousSample[] =L"NeedsPreviousSample";
 
 ////////////////////////////////////////////////////////////////
 //
@@ -896,474 +896,474 @@ extern "C" {
 #define WM_RESTORE_INDIVIDUALIZE    ((DWORD) 0x00000002)
 #define WAVE_FORMAT_DRM            0x0009
 
-    enum __MIDL___MIDL_itf_wmsdkidl_0000_0001
-    {
-        WEBSTREAM_SAMPLE_TYPE_FILE	= 0x1,
-        WEBSTREAM_SAMPLE_TYPE_RENDER	= 0x2
-    } ;
+enum __MIDL___MIDL_itf_wmsdkidl_0000_0001
+{
+    WEBSTREAM_SAMPLE_TYPE_FILE	= 0x1,
+    WEBSTREAM_SAMPLE_TYPE_RENDER	= 0x2
+} ;
 
-    enum __MIDL___MIDL_itf_wmsdkidl_0000_0002
-    {
-        WM_SF_CLEANPOINT	= 0x1,
-        WM_SF_DISCONTINUITY	= 0x2,
-        WM_SF_DATALOSS	= 0x4
-    } ;
+enum __MIDL___MIDL_itf_wmsdkidl_0000_0002
+{
+    WM_SF_CLEANPOINT	= 0x1,
+    WM_SF_DISCONTINUITY	= 0x2,
+    WM_SF_DATALOSS	= 0x4
+} ;
 
-    enum __MIDL___MIDL_itf_wmsdkidl_0000_0003
-    {
-        WM_SFEX_NOTASYNCPOINT	= 0x2,
-        WM_SFEX_DATALOSS	= 0x4
-    } ;
-    typedef
-    enum WMT_STATUS
-    {
-        WMT_ERROR	= 0,
-        WMT_OPENED	= 1,
-        WMT_BUFFERING_START	= 2,
-        WMT_BUFFERING_STOP	= 3,
-        WMT_EOF	= 4,
-        WMT_END_OF_FILE	= 4,
-        WMT_END_OF_SEGMENT	= 5,
-        WMT_END_OF_STREAMING	= 6,
-        WMT_LOCATING	= 7,
-        WMT_CONNECTING	= 8,
-        WMT_NO_RIGHTS	= 9,
-        WMT_MISSING_CODEC	= 10,
-        WMT_STARTED	= 11,
-        WMT_STOPPED	= 12,
-        WMT_CLOSED	= 13,
-        WMT_STRIDING	= 14,
-        WMT_TIMER	= 15,
-        WMT_INDEX_PROGRESS	= 16,
-        WMT_SAVEAS_START	= 17,
-        WMT_SAVEAS_STOP	= 18,
-        WMT_NEW_SOURCEFLAGS	= 19,
-        WMT_NEW_METADATA	= 20,
-        WMT_BACKUPRESTORE_BEGIN	= 21,
-        WMT_SOURCE_SWITCH	= 22,
-        WMT_ACQUIRE_LICENSE	= 23,
-        WMT_INDIVIDUALIZE	= 24,
-        WMT_NEEDS_INDIVIDUALIZATION	= 25,
-        WMT_NO_RIGHTS_EX	= 26,
-        WMT_BACKUPRESTORE_END	= 27,
-        WMT_BACKUPRESTORE_CONNECTING	= 28,
-        WMT_BACKUPRESTORE_DISCONNECTING	= 29,
-        WMT_ERROR_WITHURL	= 30,
-        WMT_RESTRICTED_LICENSE	= 31,
-        WMT_CLIENT_CONNECT	= 32,
-        WMT_CLIENT_DISCONNECT	= 33,
-        WMT_NATIVE_OUTPUT_PROPS_CHANGED	= 34,
-        WMT_RECONNECT_START	= 35,
-        WMT_RECONNECT_END	= 36,
-        WMT_CLIENT_CONNECT_EX	= 37,
-        WMT_CLIENT_DISCONNECT_EX	= 38,
-        WMT_SET_FEC_SPAN	= 39,
-        WMT_PREROLL_READY	= 40,
-        WMT_PREROLL_COMPLETE	= 41,
-        WMT_CLIENT_PROPERTIES	= 42,
-        WMT_LICENSEURL_SIGNATURE_STATE	= 43
-    } 	WMT_STATUS;
+enum __MIDL___MIDL_itf_wmsdkidl_0000_0003
+{
+    WM_SFEX_NOTASYNCPOINT	= 0x2,
+    WM_SFEX_DATALOSS	= 0x4
+} ;
+typedef
+enum WMT_STATUS
+{
+    WMT_ERROR	= 0,
+    WMT_OPENED	= 1,
+    WMT_BUFFERING_START	= 2,
+    WMT_BUFFERING_STOP	= 3,
+    WMT_EOF	= 4,
+    WMT_END_OF_FILE	= 4,
+    WMT_END_OF_SEGMENT	= 5,
+    WMT_END_OF_STREAMING	= 6,
+    WMT_LOCATING	= 7,
+    WMT_CONNECTING	= 8,
+    WMT_NO_RIGHTS	= 9,
+    WMT_MISSING_CODEC	= 10,
+    WMT_STARTED	= 11,
+    WMT_STOPPED	= 12,
+    WMT_CLOSED	= 13,
+    WMT_STRIDING	= 14,
+    WMT_TIMER	= 15,
+    WMT_INDEX_PROGRESS	= 16,
+    WMT_SAVEAS_START	= 17,
+    WMT_SAVEAS_STOP	= 18,
+    WMT_NEW_SOURCEFLAGS	= 19,
+    WMT_NEW_METADATA	= 20,
+    WMT_BACKUPRESTORE_BEGIN	= 21,
+    WMT_SOURCE_SWITCH	= 22,
+    WMT_ACQUIRE_LICENSE	= 23,
+    WMT_INDIVIDUALIZE	= 24,
+    WMT_NEEDS_INDIVIDUALIZATION	= 25,
+    WMT_NO_RIGHTS_EX	= 26,
+    WMT_BACKUPRESTORE_END	= 27,
+    WMT_BACKUPRESTORE_CONNECTING	= 28,
+    WMT_BACKUPRESTORE_DISCONNECTING	= 29,
+    WMT_ERROR_WITHURL	= 30,
+    WMT_RESTRICTED_LICENSE	= 31,
+    WMT_CLIENT_CONNECT	= 32,
+    WMT_CLIENT_DISCONNECT	= 33,
+    WMT_NATIVE_OUTPUT_PROPS_CHANGED	= 34,
+    WMT_RECONNECT_START	= 35,
+    WMT_RECONNECT_END	= 36,
+    WMT_CLIENT_CONNECT_EX	= 37,
+    WMT_CLIENT_DISCONNECT_EX	= 38,
+    WMT_SET_FEC_SPAN	= 39,
+    WMT_PREROLL_READY	= 40,
+    WMT_PREROLL_COMPLETE	= 41,
+    WMT_CLIENT_PROPERTIES	= 42,
+    WMT_LICENSEURL_SIGNATURE_STATE	= 43
+} 	WMT_STATUS;
 
-    typedef
-    enum WMT_RIGHTS
-    {
-        WMT_RIGHT_PLAYBACK	= 0x1,
-        WMT_RIGHT_COPY_TO_NON_SDMI_DEVICE	= 0x2,
-        WMT_RIGHT_COPY_TO_CD	= 0x8,
-        WMT_RIGHT_COPY_TO_SDMI_DEVICE	= 0x10,
-        WMT_RIGHT_ONE_TIME	= 0x20,
-        WMT_RIGHT_SAVE_STREAM_PROTECTED	= 0x40,
-        WMT_RIGHT_SDMI_TRIGGER	= 0x10000,
-        WMT_RIGHT_SDMI_NOMORECOPIES	= 0x20000
-    } 	WMT_RIGHTS;
+typedef
+enum WMT_RIGHTS
+{
+    WMT_RIGHT_PLAYBACK	= 0x1,
+    WMT_RIGHT_COPY_TO_NON_SDMI_DEVICE	= 0x2,
+    WMT_RIGHT_COPY_TO_CD	= 0x8,
+    WMT_RIGHT_COPY_TO_SDMI_DEVICE	= 0x10,
+    WMT_RIGHT_ONE_TIME	= 0x20,
+    WMT_RIGHT_SAVE_STREAM_PROTECTED	= 0x40,
+    WMT_RIGHT_SDMI_TRIGGER	= 0x10000,
+    WMT_RIGHT_SDMI_NOMORECOPIES	= 0x20000
+} 	WMT_RIGHTS;
 
-    typedef
-    enum WMT_STREAM_SELECTION
-    {
-        WMT_OFF	= 0,
-        WMT_CLEANPOINT_ONLY	= 1,
-        WMT_ON	= 2
-    } 	WMT_STREAM_SELECTION;
+typedef
+enum WMT_STREAM_SELECTION
+{
+    WMT_OFF	= 0,
+    WMT_CLEANPOINT_ONLY	= 1,
+    WMT_ON	= 2
+} 	WMT_STREAM_SELECTION;
 
-    typedef
-    enum WMT_IMAGE_TYPE
-    {
-        WMT_IT_NONE	= 0,
-        WMT_IT_BITMAP	= 1,
-        WMT_IT_JPEG	= 2,
-        WMT_IT_GIF	= 3
-    } 	WMT_IMAGE_TYPE;
+typedef
+enum WMT_IMAGE_TYPE
+{
+    WMT_IT_NONE	= 0,
+    WMT_IT_BITMAP	= 1,
+    WMT_IT_JPEG	= 2,
+    WMT_IT_GIF	= 3
+} 	WMT_IMAGE_TYPE;
 
-    typedef
-    enum WMT_ATTR_DATATYPE
-    {
-        WMT_TYPE_DWORD	= 0,
-        WMT_TYPE_STRING	= 1,
-        WMT_TYPE_BINARY	= 2,
-        WMT_TYPE_BOOL	= 3,
-        WMT_TYPE_QWORD	= 4,
-        WMT_TYPE_WORD	= 5,
-        WMT_TYPE_GUID	= 6
-    } 	WMT_ATTR_DATATYPE;
+typedef
+enum WMT_ATTR_DATATYPE
+{
+    WMT_TYPE_DWORD	= 0,
+    WMT_TYPE_STRING	= 1,
+    WMT_TYPE_BINARY	= 2,
+    WMT_TYPE_BOOL	= 3,
+    WMT_TYPE_QWORD	= 4,
+    WMT_TYPE_WORD	= 5,
+    WMT_TYPE_GUID	= 6
+} 	WMT_ATTR_DATATYPE;
 
-    typedef
-    enum WMT_ATTR_IMAGETYPE
-    {
-        WMT_IMAGETYPE_BITMAP	= 1,
-        WMT_IMAGETYPE_JPEG	= 2,
-        WMT_IMAGETYPE_GIF	= 3
-    } 	WMT_ATTR_IMAGETYPE;
+typedef
+enum WMT_ATTR_IMAGETYPE
+{
+    WMT_IMAGETYPE_BITMAP	= 1,
+    WMT_IMAGETYPE_JPEG	= 2,
+    WMT_IMAGETYPE_GIF	= 3
+} 	WMT_ATTR_IMAGETYPE;
 
-    typedef
-    enum WMT_VERSION
-    {
-        WMT_VER_4_0	= 0x40000,
-        WMT_VER_7_0	= 0x70000,
-        WMT_VER_8_0	= 0x80000,
-        WMT_VER_9_0	= 0x90000
-    } 	WMT_VERSION;
+typedef
+enum WMT_VERSION
+{
+    WMT_VER_4_0	= 0x40000,
+    WMT_VER_7_0	= 0x70000,
+    WMT_VER_8_0	= 0x80000,
+    WMT_VER_9_0	= 0x90000
+} 	WMT_VERSION;
 
-    typedef
-    enum tagWMT_STORAGE_FORMAT
-    {
-        WMT_Storage_Format_MP3	= 0,
-        WMT_Storage_Format_V1	= WMT_Storage_Format_MP3 + 1
-    } 	WMT_STORAGE_FORMAT;
+typedef
+enum tagWMT_STORAGE_FORMAT
+{
+    WMT_Storage_Format_MP3	= 0,
+    WMT_Storage_Format_V1	= WMT_Storage_Format_MP3 + 1
+} 	WMT_STORAGE_FORMAT;
 
-    typedef
-    enum tagWMT_DRMLA_TRUST
-    {
-        WMT_DRMLA_UNTRUSTED	= 0,
-        WMT_DRMLA_TRUSTED	= WMT_DRMLA_UNTRUSTED + 1,
-        WMT_DRMLA_TAMPERED	= WMT_DRMLA_TRUSTED + 1
-    } 	WMT_DRMLA_TRUST;
+typedef
+enum tagWMT_DRMLA_TRUST
+{
+    WMT_DRMLA_UNTRUSTED	= 0,
+    WMT_DRMLA_TRUSTED	= WMT_DRMLA_UNTRUSTED + 1,
+    WMT_DRMLA_TAMPERED	= WMT_DRMLA_TRUSTED + 1
+} 	WMT_DRMLA_TRUST;
 
-    typedef
-    enum tagWMT_TRANSPORT_TYPE
-    {
-        WMT_Transport_Type_Unreliable	= 0,
-        WMT_Transport_Type_Reliable	= WMT_Transport_Type_Unreliable + 1
-    } 	WMT_TRANSPORT_TYPE;
+typedef
+enum tagWMT_TRANSPORT_TYPE
+{
+    WMT_Transport_Type_Unreliable	= 0,
+    WMT_Transport_Type_Reliable	= WMT_Transport_Type_Unreliable + 1
+} 	WMT_TRANSPORT_TYPE;
 
-    typedef
-    enum WMT_NET_PROTOCOL
-    {
-        WMT_PROTOCOL_HTTP	= 0
-    } 	WMT_NET_PROTOCOL;
+typedef
+enum WMT_NET_PROTOCOL
+{
+    WMT_PROTOCOL_HTTP	= 0
+} 	WMT_NET_PROTOCOL;
 
-    typedef
-    enum WMT_PLAY_MODE
-    {
-        WMT_PLAY_MODE_AUTOSELECT	= 0,
-        WMT_PLAY_MODE_LOCAL	= 1,
-        WMT_PLAY_MODE_DOWNLOAD	= 2,
-        WMT_PLAY_MODE_STREAMING	= 3
-    } 	WMT_PLAY_MODE;
+typedef
+enum WMT_PLAY_MODE
+{
+    WMT_PLAY_MODE_AUTOSELECT	= 0,
+    WMT_PLAY_MODE_LOCAL	= 1,
+    WMT_PLAY_MODE_DOWNLOAD	= 2,
+    WMT_PLAY_MODE_STREAMING	= 3
+} 	WMT_PLAY_MODE;
 
-    typedef
-    enum WMT_PROXY_SETTINGS
-    {
-        WMT_PROXY_SETTING_NONE	= 0,
-        WMT_PROXY_SETTING_MANUAL	= 1,
-        WMT_PROXY_SETTING_AUTO	= 2,
-        WMT_PROXY_SETTING_BROWSER	= 3,
-        WMT_PROXY_SETTING_MAX	= WMT_PROXY_SETTING_BROWSER + 1
-    } 	WMT_PROXY_SETTINGS;
+typedef
+enum WMT_PROXY_SETTINGS
+{
+    WMT_PROXY_SETTING_NONE	= 0,
+    WMT_PROXY_SETTING_MANUAL	= 1,
+    WMT_PROXY_SETTING_AUTO	= 2,
+    WMT_PROXY_SETTING_BROWSER	= 3,
+    WMT_PROXY_SETTING_MAX	= WMT_PROXY_SETTING_BROWSER + 1
+} 	WMT_PROXY_SETTINGS;
 
-    typedef
-    enum WMT_CODEC_INFO_TYPE
-    {
-        WMT_CODECINFO_AUDIO	= 0,
-        WMT_CODECINFO_VIDEO	= 1,
-        WMT_CODECINFO_UNKNOWN	= 0xffffffff
-    } 	WMT_CODEC_INFO_TYPE;
-
-
-    enum __MIDL___MIDL_itf_wmsdkidl_0000_0004
-    {
-        WM_DM_NOTINTERLACED	= 0,
-        WM_DM_DEINTERLACE_NORMAL	= 1,
-        WM_DM_DEINTERLACE_HALFSIZE	= 2,
-        WM_DM_DEINTERLACE_HALFSIZEDOUBLERATE	= 3,
-        WM_DM_DEINTERLACE_INVERSETELECINE	= 4,
-        WM_DM_DEINTERLACE_VERTICALHALFSIZEDOUBLERATE	= 5
-    } ;
-
-    enum __MIDL___MIDL_itf_wmsdkidl_0000_0005
-    {
-        WM_DM_IT_DISABLE_COHERENT_MODE	= 0,
-        WM_DM_IT_FIRST_FRAME_IN_CLIP_IS_AA_TOP	= 1,
-        WM_DM_IT_FIRST_FRAME_IN_CLIP_IS_BB_TOP	= 2,
-        WM_DM_IT_FIRST_FRAME_IN_CLIP_IS_BC_TOP	= 3,
-        WM_DM_IT_FIRST_FRAME_IN_CLIP_IS_CD_TOP	= 4,
-        WM_DM_IT_FIRST_FRAME_IN_CLIP_IS_DD_TOP	= 5,
-        WM_DM_IT_FIRST_FRAME_IN_CLIP_IS_AA_BOTTOM	= 6,
-        WM_DM_IT_FIRST_FRAME_IN_CLIP_IS_BB_BOTTOM	= 7,
-        WM_DM_IT_FIRST_FRAME_IN_CLIP_IS_BC_BOTTOM	= 8,
-        WM_DM_IT_FIRST_FRAME_IN_CLIP_IS_CD_BOTTOM	= 9,
-        WM_DM_IT_FIRST_FRAME_IN_CLIP_IS_DD_BOTTOM	= 10
-    } ;
-    typedef
-    enum tagWMT_OFFSET_FORMAT
-    {
-        WMT_OFFSET_FORMAT_100NS	= 0,
-        WMT_OFFSET_FORMAT_FRAME_NUMBERS	= WMT_OFFSET_FORMAT_100NS + 1,
-        WMT_OFFSET_FORMAT_PLAYLIST_OFFSET	= WMT_OFFSET_FORMAT_FRAME_NUMBERS + 1,
-        WMT_OFFSET_FORMAT_TIMECODE	= WMT_OFFSET_FORMAT_PLAYLIST_OFFSET + 1
-    } 	WMT_OFFSET_FORMAT;
-
-    typedef
-    enum tagWMT_INDEXER_TYPE
-    {
-        WMT_IT_PRESENTATION_TIME	= 0,
-        WMT_IT_FRAME_NUMBERS	= WMT_IT_PRESENTATION_TIME + 1,
-        WMT_IT_TIMECODE	= WMT_IT_FRAME_NUMBERS + 1
-    } 	WMT_INDEXER_TYPE;
-
-    typedef
-    enum tagWMT_INDEX_TYPE
-    {
-        WMT_IT_NEAREST_DATA_UNIT	= 1,
-        WMT_IT_NEAREST_OBJECT	= WMT_IT_NEAREST_DATA_UNIT + 1,
-        WMT_IT_NEAREST_CLEAN_POINT	= WMT_IT_NEAREST_OBJECT + 1
-    } 	WMT_INDEX_TYPE;
-
-    typedef
-    enum tagWMT_FILESINK_MODE
-    {
-        WMT_FM_SINGLE_BUFFERS	= 0x1,
-        WMT_FM_FILESINK_DATA_UNITS	= 0x2,
-        WMT_FM_FILESINK_UNBUFFERED	= 0x4
-    } 	WMT_FILESINK_MODE;
-
-    typedef
-    enum tagWMT_MUSICSPEECH_CLASS_MODE
-    {
-        WMT_MS_CLASS_MUSIC	= 0,
-        WMT_MS_CLASS_SPEECH	= 1,
-        WMT_MS_CLASS_MIXED	= 2
-    } 	WMT_MUSICSPEECH_CLASS_MODE;
-
-    typedef
-    enum tagWMT_WATERMARK_ENTRY_TYPE
-    {
-        WMT_WMETYPE_AUDIO	= 1,
-        WMT_WMETYPE_VIDEO	= 2
-    } 	WMT_WATERMARK_ENTRY_TYPE;
+typedef
+enum WMT_CODEC_INFO_TYPE
+{
+    WMT_CODECINFO_AUDIO	= 0,
+    WMT_CODECINFO_VIDEO	= 1,
+    WMT_CODECINFO_UNKNOWN	= 0xffffffff
+} 	WMT_CODEC_INFO_TYPE;
 
 
-    enum __MIDL___MIDL_itf_wmsdkidl_0000_0006
-    {
-        WM_PLAYBACK_DRC_HIGH	= 0,
-        WM_PLAYBACK_DRC_MEDIUM	= WM_PLAYBACK_DRC_HIGH + 1,
-        WM_PLAYBACK_DRC_LOW	= WM_PLAYBACK_DRC_MEDIUM + 1
-    } ;
+enum __MIDL___MIDL_itf_wmsdkidl_0000_0004
+{
+    WM_DM_NOTINTERLACED	= 0,
+    WM_DM_DEINTERLACE_NORMAL	= 1,
+    WM_DM_DEINTERLACE_HALFSIZE	= 2,
+    WM_DM_DEINTERLACE_HALFSIZEDOUBLERATE	= 3,
+    WM_DM_DEINTERLACE_INVERSETELECINE	= 4,
+    WM_DM_DEINTERLACE_VERTICALHALFSIZEDOUBLERATE	= 5
+} ;
 
-    enum __MIDL___MIDL_itf_wmsdkidl_0000_0007
-    {
-        WMT_TIMECODE_FRAMERATE_30	= 0,
-        WMT_TIMECODE_FRAMERATE_30DROP	= WMT_TIMECODE_FRAMERATE_30 + 1,
-        WMT_TIMECODE_FRAMERATE_25	= WMT_TIMECODE_FRAMERATE_30DROP + 1,
-        WMT_TIMECODE_FRAMERATE_24	= WMT_TIMECODE_FRAMERATE_25 + 1
-    } ;
-    typedef
-    enum WMT_CREDENTIAL_FLAGS
-    {
-        WMT_CREDENTIAL_SAVE	= 0x1,
-        WMT_CREDENTIAL_DONT_CACHE	= 0x2,
-        WMT_CREDENTIAL_CLEAR_TEXT	= 0x4,
-        WMT_CREDENTIAL_PROXY	= 0x8,
-        WMT_CREDENTIAL_ENCRYPT	= 0x10
-    } 	WMT_CREDENTIAL_FLAGS;
+enum __MIDL___MIDL_itf_wmsdkidl_0000_0005
+{
+    WM_DM_IT_DISABLE_COHERENT_MODE	= 0,
+    WM_DM_IT_FIRST_FRAME_IN_CLIP_IS_AA_TOP	= 1,
+    WM_DM_IT_FIRST_FRAME_IN_CLIP_IS_BB_TOP	= 2,
+    WM_DM_IT_FIRST_FRAME_IN_CLIP_IS_BC_TOP	= 3,
+    WM_DM_IT_FIRST_FRAME_IN_CLIP_IS_CD_TOP	= 4,
+    WM_DM_IT_FIRST_FRAME_IN_CLIP_IS_DD_TOP	= 5,
+    WM_DM_IT_FIRST_FRAME_IN_CLIP_IS_AA_BOTTOM	= 6,
+    WM_DM_IT_FIRST_FRAME_IN_CLIP_IS_BB_BOTTOM	= 7,
+    WM_DM_IT_FIRST_FRAME_IN_CLIP_IS_BC_BOTTOM	= 8,
+    WM_DM_IT_FIRST_FRAME_IN_CLIP_IS_CD_BOTTOM	= 9,
+    WM_DM_IT_FIRST_FRAME_IN_CLIP_IS_DD_BOTTOM	= 10
+} ;
+typedef
+enum tagWMT_OFFSET_FORMAT
+{
+    WMT_OFFSET_FORMAT_100NS	= 0,
+    WMT_OFFSET_FORMAT_FRAME_NUMBERS	= WMT_OFFSET_FORMAT_100NS + 1,
+    WMT_OFFSET_FORMAT_PLAYLIST_OFFSET	= WMT_OFFSET_FORMAT_FRAME_NUMBERS + 1,
+    WMT_OFFSET_FORMAT_TIMECODE	= WMT_OFFSET_FORMAT_PLAYLIST_OFFSET + 1
+} 	WMT_OFFSET_FORMAT;
 
-    typedef
-    enum WM_AETYPE
-    {
-        WM_AETYPE_INCLUDE	= 0x69,
-        WM_AETYPE_EXCLUDE	= 0x65
-    } 	WM_AETYPE;
+typedef
+enum tagWMT_INDEXER_TYPE
+{
+    WMT_IT_PRESENTATION_TIME	= 0,
+    WMT_IT_FRAME_NUMBERS	= WMT_IT_PRESENTATION_TIME + 1,
+    WMT_IT_TIMECODE	= WMT_IT_FRAME_NUMBERS + 1
+} 	WMT_INDEXER_TYPE;
+
+typedef
+enum tagWMT_INDEX_TYPE
+{
+    WMT_IT_NEAREST_DATA_UNIT	= 1,
+    WMT_IT_NEAREST_OBJECT	= WMT_IT_NEAREST_DATA_UNIT + 1,
+    WMT_IT_NEAREST_CLEAN_POINT	= WMT_IT_NEAREST_OBJECT + 1
+} 	WMT_INDEX_TYPE;
+
+typedef
+enum tagWMT_FILESINK_MODE
+{
+    WMT_FM_SINGLE_BUFFERS	= 0x1,
+    WMT_FM_FILESINK_DATA_UNITS	= 0x2,
+    WMT_FM_FILESINK_UNBUFFERED	= 0x4
+} 	WMT_FILESINK_MODE;
+
+typedef
+enum tagWMT_MUSICSPEECH_CLASS_MODE
+{
+    WMT_MS_CLASS_MUSIC	= 0,
+    WMT_MS_CLASS_SPEECH	= 1,
+    WMT_MS_CLASS_MIXED	= 2
+} 	WMT_MUSICSPEECH_CLASS_MODE;
+
+typedef
+enum tagWMT_WATERMARK_ENTRY_TYPE
+{
+    WMT_WMETYPE_AUDIO	= 1,
+    WMT_WMETYPE_VIDEO	= 2
+} 	WMT_WATERMARK_ENTRY_TYPE;
+
+
+enum __MIDL___MIDL_itf_wmsdkidl_0000_0006
+{
+    WM_PLAYBACK_DRC_HIGH	= 0,
+    WM_PLAYBACK_DRC_MEDIUM	= WM_PLAYBACK_DRC_HIGH + 1,
+    WM_PLAYBACK_DRC_LOW	= WM_PLAYBACK_DRC_MEDIUM + 1
+} ;
+
+enum __MIDL___MIDL_itf_wmsdkidl_0000_0007
+{
+    WMT_TIMECODE_FRAMERATE_30	= 0,
+    WMT_TIMECODE_FRAMERATE_30DROP	= WMT_TIMECODE_FRAMERATE_30 + 1,
+    WMT_TIMECODE_FRAMERATE_25	= WMT_TIMECODE_FRAMERATE_30DROP + 1,
+    WMT_TIMECODE_FRAMERATE_24	= WMT_TIMECODE_FRAMERATE_25 + 1
+} ;
+typedef
+enum WMT_CREDENTIAL_FLAGS
+{
+    WMT_CREDENTIAL_SAVE	= 0x1,
+    WMT_CREDENTIAL_DONT_CACHE	= 0x2,
+    WMT_CREDENTIAL_CLEAR_TEXT	= 0x4,
+    WMT_CREDENTIAL_PROXY	= 0x8,
+    WMT_CREDENTIAL_ENCRYPT	= 0x10
+} 	WMT_CREDENTIAL_FLAGS;
+
+typedef
+enum WM_AETYPE
+{
+    WM_AETYPE_INCLUDE	= 0x69,
+    WM_AETYPE_EXCLUDE	= 0x65
+} 	WM_AETYPE;
 
 
 #pragma pack(push)
 
 #pragma pack(2)
-    typedef struct _WMStreamPrioritizationRecord
-    {
-        WORD wStreamNumber;
-        BOOL fMandatory;
-    } 	WM_STREAM_PRIORITY_RECORD;
+typedef struct _WMStreamPrioritizationRecord
+{
+    WORD wStreamNumber;
+    BOOL fMandatory;
+} 	WM_STREAM_PRIORITY_RECORD;
 
 
 #pragma pack(pop)
-    typedef struct _WMWriterStatistics
-    {
-        QWORD qwSampleCount;
-        QWORD qwByteCount;
-        QWORD qwDroppedSampleCount;
-        QWORD qwDroppedByteCount;
-        DWORD dwCurrentBitrate;
-        DWORD dwAverageBitrate;
-        DWORD dwExpectedBitrate;
-        DWORD dwCurrentSampleRate;
-        DWORD dwAverageSampleRate;
-        DWORD dwExpectedSampleRate;
-    } 	WM_WRITER_STATISTICS;
+typedef struct _WMWriterStatistics
+{
+    QWORD qwSampleCount;
+    QWORD qwByteCount;
+    QWORD qwDroppedSampleCount;
+    QWORD qwDroppedByteCount;
+    DWORD dwCurrentBitrate;
+    DWORD dwAverageBitrate;
+    DWORD dwExpectedBitrate;
+    DWORD dwCurrentSampleRate;
+    DWORD dwAverageSampleRate;
+    DWORD dwExpectedSampleRate;
+} 	WM_WRITER_STATISTICS;
 
-    typedef struct _WMWriterStatisticsEx
-    {
-        DWORD dwBitratePlusOverhead;
-        DWORD dwCurrentSampleDropRateInQueue;
-        DWORD dwCurrentSampleDropRateInCodec;
-        DWORD dwCurrentSampleDropRateInMultiplexer;
-        DWORD dwTotalSampleDropsInQueue;
-        DWORD dwTotalSampleDropsInCodec;
-        DWORD dwTotalSampleDropsInMultiplexer;
-    } 	WM_WRITER_STATISTICS_EX;
+typedef struct _WMWriterStatisticsEx
+{
+    DWORD dwBitratePlusOverhead;
+    DWORD dwCurrentSampleDropRateInQueue;
+    DWORD dwCurrentSampleDropRateInCodec;
+    DWORD dwCurrentSampleDropRateInMultiplexer;
+    DWORD dwTotalSampleDropsInQueue;
+    DWORD dwTotalSampleDropsInCodec;
+    DWORD dwTotalSampleDropsInMultiplexer;
+} 	WM_WRITER_STATISTICS_EX;
 
-    typedef struct _WMReaderStatistics
-    {
-        DWORD cbSize;
-        DWORD dwBandwidth;
-        DWORD cPacketsReceived;
-        DWORD cPacketsRecovered;
-        DWORD cPacketsLost;
-        WORD wQuality;
-    } 	WM_READER_STATISTICS;
+typedef struct _WMReaderStatistics
+{
+    DWORD cbSize;
+    DWORD dwBandwidth;
+    DWORD cPacketsReceived;
+    DWORD cPacketsRecovered;
+    DWORD cPacketsLost;
+    WORD wQuality;
+} 	WM_READER_STATISTICS;
 
-    typedef struct _WMReaderClientInfo
-    {
-        DWORD cbSize;
-        WCHAR *wszLang;
-        WCHAR *wszBrowserUserAgent;
-        WCHAR *wszBrowserWebPage;
-        QWORD qwReserved;
-        LPARAM *pReserved;
-        WCHAR *wszHostExe;
-        QWORD qwHostVersion;
-        WCHAR *wszPlayerUserAgent;
-    } 	WM_READER_CLIENTINFO;
+typedef struct _WMReaderClientInfo
+{
+    DWORD cbSize;
+    WCHAR *wszLang;
+    WCHAR *wszBrowserUserAgent;
+    WCHAR *wszBrowserWebPage;
+    QWORD qwReserved;
+    LPARAM *pReserved;
+    WCHAR *wszHostExe;
+    QWORD qwHostVersion;
+    WCHAR *wszPlayerUserAgent;
+} 	WM_READER_CLIENTINFO;
 
-    typedef struct _WMClientProperties
-    {
-        DWORD dwIPAddress;
-        DWORD dwPort;
-    } 	WM_CLIENT_PROPERTIES;
+typedef struct _WMClientProperties
+{
+    DWORD dwIPAddress;
+    DWORD dwPort;
+} 	WM_CLIENT_PROPERTIES;
 
-    typedef struct _WMClientPropertiesEx
-    {
-        DWORD cbSize;
-        LPCWSTR pwszIPAddress;
-        LPCWSTR pwszPort;
-        LPCWSTR pwszDNSName;
-    } 	WM_CLIENT_PROPERTIES_EX;
+typedef struct _WMClientPropertiesEx
+{
+    DWORD cbSize;
+    LPCWSTR pwszIPAddress;
+    LPCWSTR pwszPort;
+    LPCWSTR pwszDNSName;
+} 	WM_CLIENT_PROPERTIES_EX;
 
-    typedef struct _WMPortNumberRange
-    {
-        WORD wPortBegin;
-        WORD wPortEnd;
-    } 	WM_PORT_NUMBER_RANGE;
+typedef struct _WMPortNumberRange
+{
+    WORD wPortBegin;
+    WORD wPortEnd;
+} 	WM_PORT_NUMBER_RANGE;
 
-    typedef struct _WMT_BUFFER_SEGMENT
-    {
-        INSSBuffer *pBuffer;
-        DWORD cbOffset;
-        DWORD cbLength;
-    } 	WMT_BUFFER_SEGMENT;
+typedef struct _WMT_BUFFER_SEGMENT
+{
+    INSSBuffer *pBuffer;
+    DWORD cbOffset;
+    DWORD cbLength;
+} 	WMT_BUFFER_SEGMENT;
 
-    typedef struct _WMT_PAYLOAD_FRAGMENT
-    {
-        DWORD dwPayloadIndex;
-        WMT_BUFFER_SEGMENT segmentData;
-    } 	WMT_PAYLOAD_FRAGMENT;
+typedef struct _WMT_PAYLOAD_FRAGMENT
+{
+    DWORD dwPayloadIndex;
+    WMT_BUFFER_SEGMENT segmentData;
+} 	WMT_PAYLOAD_FRAGMENT;
 
-    typedef struct _WMT_FILESINK_DATA_UNIT
-    {
-        WMT_BUFFER_SEGMENT packetHeaderBuffer;
-        DWORD cPayloads;
-        WMT_BUFFER_SEGMENT *pPayloadHeaderBuffers;
-        DWORD cPayloadDataFragments;
-        WMT_PAYLOAD_FRAGMENT *pPayloadDataFragments;
-    } 	WMT_FILESINK_DATA_UNIT;
+typedef struct _WMT_FILESINK_DATA_UNIT
+{
+    WMT_BUFFER_SEGMENT packetHeaderBuffer;
+    DWORD cPayloads;
+    WMT_BUFFER_SEGMENT *pPayloadHeaderBuffers;
+    DWORD cPayloadDataFragments;
+    WMT_PAYLOAD_FRAGMENT *pPayloadDataFragments;
+} 	WMT_FILESINK_DATA_UNIT;
 
-    typedef struct _WMT_WEBSTREAM_FORMAT
-    {
-        WORD cbSize;
-        WORD cbSampleHeaderFixedData;
-        WORD wVersion;
-        WORD wReserved;
-    } 	WMT_WEBSTREAM_FORMAT;
+typedef struct _WMT_WEBSTREAM_FORMAT
+{
+    WORD cbSize;
+    WORD cbSampleHeaderFixedData;
+    WORD wVersion;
+    WORD wReserved;
+} 	WMT_WEBSTREAM_FORMAT;
 
-    typedef struct _WMT_WEBSTREAM_SAMPLE_HEADER
-    {
-        WORD cbLength;
-        WORD wPart;
-        WORD cTotalParts;
-        WORD wSampleType;
-        WCHAR wszURL[ 1 ];
-    } 	WMT_WEBSTREAM_SAMPLE_HEADER;
+typedef struct _WMT_WEBSTREAM_SAMPLE_HEADER
+{
+    WORD cbLength;
+    WORD wPart;
+    WORD cTotalParts;
+    WORD wSampleType;
+    WCHAR wszURL[ 1 ];
+} 	WMT_WEBSTREAM_SAMPLE_HEADER;
 
-    typedef struct _WMAddressAccessEntry
-    {
-        DWORD dwIPAddress;
-        DWORD dwMask;
-    } 	WM_ADDRESS_ACCESSENTRY;
+typedef struct _WMAddressAccessEntry
+{
+    DWORD dwIPAddress;
+    DWORD dwMask;
+} 	WM_ADDRESS_ACCESSENTRY;
 
 
 #pragma pack(push)
 
 #pragma pack(1)
-    typedef struct _WMPicture
-    {
-        LPWSTR pwszMIMEType;
-        BYTE bPictureType;
-        LPWSTR pwszDescription;
-        DWORD dwDataLen;
-        BYTE *pbData;
-    } 	WM_PICTURE;
+typedef struct _WMPicture
+{
+    LPWSTR pwszMIMEType;
+    BYTE bPictureType;
+    LPWSTR pwszDescription;
+    DWORD dwDataLen;
+    BYTE *pbData;
+} 	WM_PICTURE;
 
-    typedef struct _WMSynchronisedLyrics
-    {
-        BYTE bTimeStampFormat;
-        BYTE bContentType;
-        LPWSTR pwszContentDescriptor;
-        DWORD dwLyricsLen;
-        BYTE *pbLyrics;
-    } 	WM_SYNCHRONISED_LYRICS;
+typedef struct _WMSynchronisedLyrics
+{
+    BYTE bTimeStampFormat;
+    BYTE bContentType;
+    LPWSTR pwszContentDescriptor;
+    DWORD dwLyricsLen;
+    BYTE *pbLyrics;
+} 	WM_SYNCHRONISED_LYRICS;
 
-    typedef struct _WMUserWebURL
-    {
-        LPWSTR pwszDescription;
-        LPWSTR pwszURL;
-    } 	WM_USER_WEB_URL;
+typedef struct _WMUserWebURL
+{
+    LPWSTR pwszDescription;
+    LPWSTR pwszURL;
+} 	WM_USER_WEB_URL;
 
-    typedef struct _WMUserText
-    {
-        LPWSTR pwszDescription;
-        LPWSTR pwszText;
-    } 	WM_USER_TEXT;
+typedef struct _WMUserText
+{
+    LPWSTR pwszDescription;
+    LPWSTR pwszText;
+} 	WM_USER_TEXT;
 
-    typedef struct _WMLeakyBucketPair
-    {
-        DWORD dwBitrate;
-        DWORD msBufferWindow;
-    } 	WM_LEAKY_BUCKET_PAIR;
+typedef struct _WMLeakyBucketPair
+{
+    DWORD dwBitrate;
+    DWORD msBufferWindow;
+} 	WM_LEAKY_BUCKET_PAIR;
 
 
 #pragma pack(pop)
-    typedef struct _WM_LICENSE_STATE_DATA
-    {
-        DWORD dwSize;
-        DWORD dwNumStates;
-        DRM_LICENSE_STATE_DATA stateData[ 1 ];
-    } 	WM_LICENSE_STATE_DATA;
+typedef struct _WM_LICENSE_STATE_DATA
+{
+    DWORD dwSize;
+    DWORD dwNumStates;
+    DRM_LICENSE_STATE_DATA stateData[ 1 ];
+} 	WM_LICENSE_STATE_DATA;
 
-    typedef struct __WMT_WATERMARK_ENTRY
-    {
-        WMT_WATERMARK_ENTRY_TYPE wmetType;
-        CLSID clsid;
-        UINT cbDisplayName;
-        LPWSTR pwszDisplayName;
-    } 	WMT_WATERMARK_ENTRY;
+typedef struct __WMT_WATERMARK_ENTRY
+{
+    WMT_WATERMARK_ENTRY_TYPE wmetType;
+    CLSID clsid;
+    UINT cbDisplayName;
+    LPWSTR pwszDisplayName;
+} 	WMT_WATERMARK_ENTRY;
 
 #define WMT_VIDEOIMAGE_SAMPLE_INPUT_FRAME      1 // sample has input frame 
 #define WMT_VIDEOIMAGE_SAMPLE_OUTPUT_FRAME     2 // sample produces output frame 
@@ -1375,325 +1375,325 @@ extern "C" {
 #define WMT_VIDEOIMAGE_SAMPLE_ADV_BLENDING 8 // BlendCoef2 also used (not valid without BlendCoef1) 
 #define WMT_VIDEOIMAGE_INTEGER_DENOMINATOR 65536L
 #define WMT_VIDEOIMAGE_MAGIC_NUMBER 0x1d4a45f2
-    typedef struct __WMT_VIDEOIMAGE_SAMPLE
-    {
-        DWORD dwMagic;
-        ULONG cbStruct;
-        DWORD dwControlFlags;
-        DWORD dwInputFlagsCur;
-        LONG lCurMotionXtoX;
-        LONG lCurMotionYtoX;
-        LONG lCurMotionXoffset;
-        LONG lCurMotionXtoY;
-        LONG lCurMotionYtoY;
-        LONG lCurMotionYoffset;
-        LONG lCurBlendCoef1;
-        LONG lCurBlendCoef2;
-        DWORD dwInputFlagsPrev;
-        LONG lPrevMotionXtoX;
-        LONG lPrevMotionYtoX;
-        LONG lPrevMotionXoffset;
-        LONG lPrevMotionXtoY;
-        LONG lPrevMotionYtoY;
-        LONG lPrevMotionYoffset;
-        LONG lPrevBlendCoef1;
-        LONG lPrevBlendCoef2;
-    } 	WMT_VIDEOIMAGE_SAMPLE;
+typedef struct __WMT_VIDEOIMAGE_SAMPLE
+{
+    DWORD dwMagic;
+    ULONG cbStruct;
+    DWORD dwControlFlags;
+    DWORD dwInputFlagsCur;
+    LONG lCurMotionXtoX;
+    LONG lCurMotionYtoX;
+    LONG lCurMotionXoffset;
+    LONG lCurMotionXtoY;
+    LONG lCurMotionYtoY;
+    LONG lCurMotionYoffset;
+    LONG lCurBlendCoef1;
+    LONG lCurBlendCoef2;
+    DWORD dwInputFlagsPrev;
+    LONG lPrevMotionXtoX;
+    LONG lPrevMotionYtoX;
+    LONG lPrevMotionXoffset;
+    LONG lPrevMotionXtoY;
+    LONG lPrevMotionYtoY;
+    LONG lPrevMotionYoffset;
+    LONG lPrevBlendCoef1;
+    LONG lPrevBlendCoef2;
+} 	WMT_VIDEOIMAGE_SAMPLE;
 
-    typedef struct _WMMediaType
-    {
-        GUID majortype;
-        GUID subtype;
-        BOOL bFixedSizeSamples;
-        BOOL bTemporalCompression;
-        ULONG lSampleSize;
-        GUID formattype;
-        IUnknown *pUnk;
-        ULONG cbFormat;
-        /* [size_is] */
-        BYTE *pbFormat;
-    } 	WM_MEDIA_TYPE;
+typedef struct _WMMediaType
+{
+    GUID majortype;
+    GUID subtype;
+    BOOL bFixedSizeSamples;
+    BOOL bTemporalCompression;
+    ULONG lSampleSize;
+    GUID formattype;
+    IUnknown *pUnk;
+    ULONG cbFormat;
+    /* [size_is] */
+    BYTE *pbFormat;
+} 	WM_MEDIA_TYPE;
 
-    typedef struct tagWMVIDEOINFOHEADER
-    {
-        //
-        // The bit we really want to use.
-        //
-        RECT rcSource;
+typedef struct tagWMVIDEOINFOHEADER
+{
+    //
+    // The bit we really want to use.
+    //
+    RECT rcSource;
 
-        //
-        // Where the video should go.
-        //
-        RECT rcTarget;
+    //
+    // Where the video should go.
+    //
+    RECT rcTarget;
 
-        //
-        // Approximate bit data rate.
-        //
-        DWORD dwBitRate;
+    //
+    // Approximate bit data rate.
+    //
+    DWORD dwBitRate;
 
-        //
-        // Bit error rate for this stream.
-        //
-        DWORD dwBitErrorRate;
+    //
+    // Bit error rate for this stream.
+    //
+    DWORD dwBitErrorRate;
 
-        //
-        // Average time per frame (100ns units).
-        //
-        LONGLONG AvgTimePerFrame;
+    //
+    // Average time per frame (100ns units).
+    //
+    LONGLONG AvgTimePerFrame;
 
-        BITMAPINFOHEADER bmiHeader;
-    } WMVIDEOINFOHEADER;
-    typedef struct tagWMVIDEOINFOHEADER2
-    {
-        //
-        // The bit we really want to use.
-        //
-        RECT rcSource;
+    BITMAPINFOHEADER bmiHeader;
+} WMVIDEOINFOHEADER;
+typedef struct tagWMVIDEOINFOHEADER2
+{
+    //
+    // The bit we really want to use.
+    //
+    RECT rcSource;
 
-        //
-        // Where the video should go.
-        //
-        RECT rcTarget;
+    //
+    // Where the video should go.
+    //
+    RECT rcTarget;
 
-        //
-        // Approximate bit data rate.
-        //
-        DWORD dwBitRate;
+    //
+    // Approximate bit data rate.
+    //
+    DWORD dwBitRate;
 
-        //
-        // Bit error rate for this stream.
-        //
-        DWORD dwBitErrorRate;
+    //
+    // Bit error rate for this stream.
+    //
+    DWORD dwBitErrorRate;
 
-        //
-        // Average time per frame (100ns units).
-        //
-        LONGLONG AvgTimePerFrame;
+    //
+    // Average time per frame (100ns units).
+    //
+    LONGLONG AvgTimePerFrame;
 
-        //
-        // Use AMINTERLACE_* defines. Reject connection if undefined bits are not 0.
-        //
-        DWORD dwInterlaceFlags;
+    //
+    // Use AMINTERLACE_* defines. Reject connection if undefined bits are not 0.
+    //
+    DWORD dwInterlaceFlags;
 
-        //
-        // use AMCOPYPROTECT_* defines. Reject connection if undefined bits are not 0.
-        //
-        DWORD dwCopyProtectFlags;
+    //
+    // use AMCOPYPROTECT_* defines. Reject connection if undefined bits are not 0.
+    //
+    DWORD dwCopyProtectFlags;
 
-        //
-        // X dimension of picture aspect ratio, e.g. 16 for 16x9 display.
-        //
-        DWORD dwPictAspectRatioX;
+    //
+    // X dimension of picture aspect ratio, e.g. 16 for 16x9 display.
+    //
+    DWORD dwPictAspectRatioX;
 
-        //
-        // Y dimension of picture aspect ratio, e.g.  9 for 16x9 display.
-        //
-        DWORD dwPictAspectRatioY;
+    //
+    // Y dimension of picture aspect ratio, e.g.  9 for 16x9 display.
+    //
+    DWORD dwPictAspectRatioY;
 
-        //
-        // Must be 0; reject connection otherwise.
-        //
-        DWORD dwReserved1;
+    //
+    // Must be 0; reject connection otherwise.
+    //
+    DWORD dwReserved1;
 
-        //
-        // Must be 0; reject connection otherwise.
-        //
-        DWORD dwReserved2;
+    //
+    // Must be 0; reject connection otherwise.
+    //
+    DWORD dwReserved2;
 
-        BITMAPINFOHEADER bmiHeader;
-    } WMVIDEOINFOHEADER2;
-    typedef struct tagWMMPEG2VIDEOINFO
-    {
-        //
-        // Video info header2.
-        //
-        WMVIDEOINFOHEADER2 hdr;
+    BITMAPINFOHEADER bmiHeader;
+} WMVIDEOINFOHEADER2;
+typedef struct tagWMMPEG2VIDEOINFO
+{
+    //
+    // Video info header2.
+    //
+    WMVIDEOINFOHEADER2 hdr;
 
-        //
-        // Not used for DVD.
-        //
-        DWORD dwStartTimeCode;
+    //
+    // Not used for DVD.
+    //
+    DWORD dwStartTimeCode;
 
-        //
-        // Is 0 for DVD (no sequence header).
-        //
-        DWORD cbSequenceHeader;
+    //
+    // Is 0 for DVD (no sequence header).
+    //
+    DWORD cbSequenceHeader;
 
-        //
-        // Use enum MPEG2Profile.
-        //
-        DWORD dwProfile;
+    //
+    // Use enum MPEG2Profile.
+    //
+    DWORD dwProfile;
 
-        //
-        // Use enum MPEG2Level.
-        //
-        DWORD dwLevel;
+    //
+    // Use enum MPEG2Level.
+    //
+    DWORD dwLevel;
 
-        //
-        // Use AMMPEG2_* defines.  Reject connection if undefined bits are not 0.
-        //
-        DWORD dwFlags;
+    //
+    // Use AMMPEG2_* defines.  Reject connection if undefined bits are not 0.
+    //
+    DWORD dwFlags;
 
-        //
-        // Sequence header.
-        //
-        DWORD dwSequenceHeader[1];
+    //
+    // Sequence header.
+    //
+    DWORD dwSequenceHeader[1];
 
-    } WMMPEG2VIDEOINFO;
-    typedef struct tagWMSCRIPTFORMAT
-    {
-        GUID    scriptType;
-    } WMSCRIPTFORMAT;
+} WMMPEG2VIDEOINFO;
+typedef struct tagWMSCRIPTFORMAT
+{
+    GUID    scriptType;
+} WMSCRIPTFORMAT;
 // 00000000-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_Base
-    EXTERN_GUID(WMMEDIASUBTYPE_Base,
-                0x00000000, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_Base,
+            0x00000000, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 73646976-0000-0010-8000-00AA00389B71  'vids' == WMMEDIATYPE_Video
-    EXTERN_GUID(WMMEDIATYPE_Video,
-                0x73646976, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+EXTERN_GUID(WMMEDIATYPE_Video,
+            0x73646976, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 // e436eb78-524f-11ce-9f53-0020af0ba770            MEDIASUBTYPE_RGB1
-    EXTERN_GUID(WMMEDIASUBTYPE_RGB1,
-                0xe436eb78, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
+EXTERN_GUID(WMMEDIASUBTYPE_RGB1,
+            0xe436eb78, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
 // e436eb79-524f-11ce-9f53-0020af0ba770            MEDIASUBTYPE_RGB4
-    EXTERN_GUID(WMMEDIASUBTYPE_RGB4,
-                0xe436eb79, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
+EXTERN_GUID(WMMEDIASUBTYPE_RGB4,
+            0xe436eb79, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
 // e436eb7a-524f-11ce-9f53-0020af0ba770            MEDIASUBTYPE_RGB8
-    EXTERN_GUID(WMMEDIASUBTYPE_RGB8,
-                0xe436eb7a, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
+EXTERN_GUID(WMMEDIASUBTYPE_RGB8,
+            0xe436eb7a, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
 // e436eb7b-524f-11ce-9f53-0020af0ba770            MEDIASUBTYPE_RGB565
-    EXTERN_GUID(WMMEDIASUBTYPE_RGB565,
-                0xe436eb7b, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
+EXTERN_GUID(WMMEDIASUBTYPE_RGB565,
+            0xe436eb7b, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
 // e436eb7c-524f-11ce-9f53-0020af0ba770            MEDIASUBTYPE_RGB555
-    EXTERN_GUID(WMMEDIASUBTYPE_RGB555,
-                0xe436eb7c, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
+EXTERN_GUID(WMMEDIASUBTYPE_RGB555,
+            0xe436eb7c, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
 // e436eb7d-524f-11ce-9f53-0020af0ba770            MEDIASUBTYPE_RGB24
-    EXTERN_GUID(WMMEDIASUBTYPE_RGB24,
-                0xe436eb7d, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
+EXTERN_GUID(WMMEDIASUBTYPE_RGB24,
+            0xe436eb7d, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
 // e436eb7e-524f-11ce-9f53-0020af0ba770            MEDIASUBTYPE_RGB32
-    EXTERN_GUID(WMMEDIASUBTYPE_RGB32,
-                0xe436eb7e, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
+EXTERN_GUID(WMMEDIASUBTYPE_RGB32,
+            0xe436eb7e, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
 // 30323449-0000-0010-8000-00AA00389B71  'YV12' ==  MEDIASUBTYPE_I420
-    EXTERN_GUID(WMMEDIASUBTYPE_I420,
-                0x30323449, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_I420,
+            0x30323449, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 // 56555949-0000-0010-8000-00AA00389B71  'YV12' ==  MEDIASUBTYPE_IYUV
-    EXTERN_GUID(WMMEDIASUBTYPE_IYUV,
-                0x56555949, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_IYUV,
+            0x56555949, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 // 31313259-0000-0010-8000-00AA00389B71  'YV12' ==  MEDIASUBTYPE_YV12
-    EXTERN_GUID(WMMEDIASUBTYPE_YV12,
-                0x32315659, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_YV12,
+            0x32315659, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 // 32595559-0000-0010-8000-00AA00389B71  'YUY2' == MEDIASUBTYPE_YUY2
-    EXTERN_GUID(WMMEDIASUBTYPE_YUY2,
-                0x32595559, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_YUY2,
+            0x32595559, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 // 59565955-0000-0010-8000-00AA00389B71  'UYVY' ==  MEDIASUBTYPE_UYVY
-    EXTERN_GUID(WMMEDIASUBTYPE_UYVY,
-                0x59565955, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_UYVY,
+            0x59565955, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 // 55595659-0000-0010-8000-00AA00389B71  'YVYU' == MEDIASUBTYPE_YVYU
-    EXTERN_GUID(WMMEDIASUBTYPE_YVYU,
-                0x55595659, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_YVYU,
+            0x55595659, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 // 39555659-0000-0010-8000-00AA00389B71  'YVU9' == MEDIASUBTYPE_YVU9
-    EXTERN_GUID(WMMEDIASUBTYPE_YVU9,
-                0x39555659, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_YVU9,
+            0x39555659, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 // 1d4a45f2-e5f6-4b44-8388-f0ae5c0e0c37            MEDIASUBTYPE_VIDEOIMAGE
-    EXTERN_GUID(WMMEDIASUBTYPE_VIDEOIMAGE,
-                0x1d4a45f2, 0xe5f6, 0x4b44, 0x83, 0x88, 0xf0, 0xae, 0x5c, 0x0e, 0x0c, 0x37);
+EXTERN_GUID(WMMEDIASUBTYPE_VIDEOIMAGE,
+            0x1d4a45f2, 0xe5f6, 0x4b44, 0x83, 0x88, 0xf0, 0xae, 0x5c, 0x0e, 0x0c, 0x37);
 // 3334504D-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_MP43
-    EXTERN_GUID(WMMEDIASUBTYPE_MP43,
-                0x3334504D, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_MP43,
+            0x3334504D, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 5334504D-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_MP4S
-    EXTERN_GUID(WMMEDIASUBTYPE_MP4S,
-                0x5334504D, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_MP4S,
+            0x5334504D, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 31564D57-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_WMV1
-    EXTERN_GUID(WMMEDIASUBTYPE_WMV1,
-                0x31564D57, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_WMV1,
+            0x31564D57, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 32564D57-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_WMV2
-    EXTERN_GUID(WMMEDIASUBTYPE_WMV2,
-                0x32564D57, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_WMV2,
+            0x32564D57, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 3153534D-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_MSS1
-    EXTERN_GUID(WMMEDIASUBTYPE_MSS1,
-                0x3153534D, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_MSS1,
+            0x3153534D, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // e06d8026-db46-11cf-b4d1-00805f6cbbea            WMMEDIASUBTYPE_MPEG2_VIDEO
-    EXTERN_GUID(WMMEDIASUBTYPE_MPEG2_VIDEO,
-                0xe06d8026, 0xdb46, 0x11cf, 0xb4, 0xd1, 0x00, 0x80, 0x5f, 0x6c, 0xbb, 0xea);
+EXTERN_GUID(WMMEDIASUBTYPE_MPEG2_VIDEO,
+            0xe06d8026, 0xdb46, 0x11cf, 0xb4, 0xd1, 0x00, 0x80, 0x5f, 0x6c, 0xbb, 0xea);
 // 73647561-0000-0010-8000-00AA00389B71  'auds' == WMMEDIATYPE_Audio
-    EXTERN_GUID(WMMEDIATYPE_Audio,
-                0x73647561, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+EXTERN_GUID(WMMEDIATYPE_Audio,
+            0x73647561, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 // 00000001-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_PCM
-    EXTERN_GUID(WMMEDIASUBTYPE_PCM,
-                0x00000001, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_PCM,
+            0x00000001, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 00000009-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_DRM
-    EXTERN_GUID(WMMEDIASUBTYPE_DRM,
-                0x00000009, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_DRM,
+            0x00000009, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 00000162-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_WMAudioV9
-    EXTERN_GUID(WMMEDIASUBTYPE_WMAudioV9,
-                0x00000162, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_WMAudioV9,
+            0x00000162, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 00000163-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_WMAudio_Lossless
-    EXTERN_GUID(WMMEDIASUBTYPE_WMAudio_Lossless,
-                0x00000163, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_WMAudio_Lossless,
+            0x00000163, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 3253534D-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_MSS2
-    EXTERN_GUID(WMMEDIASUBTYPE_MSS2,
-                0x3253534D, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_MSS2,
+            0x3253534D, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 0000000A-0000-0010-8000-00AA00389B71        WMMEDIASUBTYPE_WMSP1
-    EXTERN_GUID(WMMEDIASUBTYPE_WMSP1,
-                0x0000000A,0x0000,0x0010,0x80,0x00,0x00,0xAA,0x00,0x38,0x9B,0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_WMSP1,
+            0x0000000A,0x0000,0x0010,0x80,0x00,0x00,0xAA,0x00,0x38,0x9B,0x71);
 // 33564D57-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_WMV3
-    EXTERN_GUID(WMMEDIASUBTYPE_WMV3,
-                0x33564D57, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_WMV3,
+            0x33564D57, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 50564D57-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_WMVP
-    EXTERN_GUID(WMMEDIASUBTYPE_WMVP,
-                0x50564D57, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_WMVP,
+            0x50564D57, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 00000161-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_WMAudioV8
-    EXTERN_GUID(WMMEDIASUBTYPE_WMAudioV8,
-                0x00000161, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_WMAudioV8,
+            0x00000161, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 00000161-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_WMAudioV7
-    EXTERN_GUID(WMMEDIASUBTYPE_WMAudioV7,
-                0x00000161, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_WMAudioV7,
+            0x00000161, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 00000161-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_WMAudioV2
-    EXTERN_GUID(WMMEDIASUBTYPE_WMAudioV2,
-                0x00000161, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_WMAudioV2,
+            0x00000161, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 00000130-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_ACELPnet
-    EXTERN_GUID(WMMEDIASUBTYPE_ACELPnet,
-                0x00000130, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_ACELPnet,
+            0x00000130, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 00000050-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_MP3
-    EXTERN_GUID(WMMEDIASUBTYPE_MP3,
-                0x00000055, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_MP3,
+            0x00000055, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 776257d4-c627-41cb-8f81-7ac7ff1c40cc            WMMEDIASUBTYPE_WebStream
-    EXTERN_GUID(WMMEDIASUBTYPE_WebStream,
-                0x776257d4, 0xc627, 0x41cb, 0x8f, 0x81, 0x7a, 0xc7, 0xff, 0x1c, 0x40, 0xcc);
+EXTERN_GUID(WMMEDIASUBTYPE_WebStream,
+            0x776257d4, 0xc627, 0x41cb, 0x8f, 0x81, 0x7a, 0xc7, 0xff, 0x1c, 0x40, 0xcc);
 // 73636d64-0000-0010-8000-00AA00389B71  'scmd' == WMMEDIATYPE_Script
-    EXTERN_GUID(WMMEDIATYPE_Script,
-                0x73636d64, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+EXTERN_GUID(WMMEDIATYPE_Script,
+            0x73636d64, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 // 34A50FD8-8AA5-4386-81FE-A0EFE0488E31  'imag' == WMMEDIATYPE_Image
-    EXTERN_GUID(WMMEDIATYPE_Image,
-                0x34a50fd8, 0x8aa5, 0x4386, 0x81, 0xfe, 0xa0, 0xef, 0xe0, 0x48, 0x8e, 0x31);
+EXTERN_GUID(WMMEDIATYPE_Image,
+            0x34a50fd8, 0x8aa5, 0x4386, 0x81, 0xfe, 0xa0, 0xef, 0xe0, 0x48, 0x8e, 0x31);
 // D9E47579-930E-4427-ADFC-AD80F290E470  'fxfr' == WMMEDIATYPE_FileTransfer
-    EXTERN_GUID(WMMEDIATYPE_FileTransfer,
-                0xd9e47579, 0x930e, 0x4427, 0xad, 0xfc, 0xad, 0x80, 0xf2, 0x90, 0xe4, 0x70);
+EXTERN_GUID(WMMEDIATYPE_FileTransfer,
+            0xd9e47579, 0x930e, 0x4427, 0xad, 0xfc, 0xad, 0x80, 0xf2, 0x90, 0xe4, 0x70);
 // 9BBA1EA7-5AB2-4829-BA57-0940209BCF3E      'text' == WMMEDIATYPE_Text
-    EXTERN_GUID(WMMEDIATYPE_Text,
-                0x9bba1ea7, 0x5ab2, 0x4829, 0xba, 0x57, 0x9, 0x40, 0x20, 0x9b, 0xcf, 0x3e);
+EXTERN_GUID(WMMEDIATYPE_Text,
+            0x9bba1ea7, 0x5ab2, 0x4829, 0xba, 0x57, 0x9, 0x40, 0x20, 0x9b, 0xcf, 0x3e);
 // 05589f80-c356-11ce-bf01-00aa0055595a        WMFORMAT_VideoInfo
-    EXTERN_GUID(WMFORMAT_VideoInfo,
-                0x05589f80, 0xc356, 0x11ce, 0xbf, 0x01, 0x00, 0xaa, 0x00, 0x55, 0x59, 0x5a);
+EXTERN_GUID(WMFORMAT_VideoInfo,
+            0x05589f80, 0xc356, 0x11ce, 0xbf, 0x01, 0x00, 0xaa, 0x00, 0x55, 0x59, 0x5a);
 // e06d80e3-db46-11cf-b4d1-00805f6cbbea        WMFORMAT_MPEG2Video
-    EXTERN_GUID(WMFORMAT_MPEG2Video,
-                0xe06d80e3, 0xdb46, 0x11cf, 0xb4, 0xd1, 0x00, 0x80, 0x05f, 0x6c, 0xbb, 0xea);
+EXTERN_GUID(WMFORMAT_MPEG2Video,
+            0xe06d80e3, 0xdb46, 0x11cf, 0xb4, 0xd1, 0x00, 0x80, 0x05f, 0x6c, 0xbb, 0xea);
 // 05589f81-c356-11ce-bf01-00aa0055595a        WMFORMAT_WaveFormatEx
-    EXTERN_GUID(WMFORMAT_WaveFormatEx,
-                0x05589f81, 0xc356, 0x11ce, 0xbf, 0x01, 0x00, 0xaa, 0x00, 0x55, 0x59, 0x5a);
+EXTERN_GUID(WMFORMAT_WaveFormatEx,
+            0x05589f81, 0xc356, 0x11ce, 0xbf, 0x01, 0x00, 0xaa, 0x00, 0x55, 0x59, 0x5a);
 // 5C8510F2-DEBE-4ca7-BBA5-F07A104F8DFF        WMFORMAT_Script
-    EXTERN_GUID(WMFORMAT_Script,
-                0x5c8510f2, 0xdebe, 0x4ca7, 0xbb, 0xa5, 0xf0, 0x7a, 0x10, 0x4f, 0x8d, 0xff);
+EXTERN_GUID(WMFORMAT_Script,
+            0x5c8510f2, 0xdebe, 0x4ca7, 0xbb, 0xa5, 0xf0, 0x7a, 0x10, 0x4f, 0x8d, 0xff);
 // da1e6b13-8359-4050-b398-388e965bf00c        WMFORMAT_WebStream
-    EXTERN_GUID(WMFORMAT_WebStream,
-                0xda1e6b13, 0x8359, 0x4050, 0xb3, 0x98, 0x38, 0x8e, 0x96, 0x5b, 0xf0, 0x0c);
+EXTERN_GUID(WMFORMAT_WebStream,
+            0xda1e6b13, 0x8359, 0x4050, 0xb3, 0x98, 0x38, 0x8e, 0x96, 0x5b, 0xf0, 0x0c);
 // 82f38a70-c29f-11d1-97ad-00a0c95ea850        WMSCRIPTTYPE_TwoStrings
-    EXTERN_GUID(WMSCRIPTTYPE_TwoStrings,
-                0x82f38a70,0xc29f,0x11d1,0x97,0xad,0x00,0xa0,0xc9,0x5e,0xa8,0x50);
-    EXTERN_GUID(WM_SampleExtensionGUID_OutputCleanPoint, 0xf72a3c6f, 0x6eb4, 0x4ebc, 0xb1, 0x92, 0x9, 0xad, 0x97, 0x59, 0xe8, 0x28);
-    EXTERN_GUID(WM_SampleExtensionGUID_Timecode, 0x399595ec, 0x8667, 0x4e2d, 0x8f, 0xdb, 0x98, 0x81, 0x4c, 0xe7, 0x6c, 0x1e);
-    EXTERN_GUID(WM_SampleExtensionGUID_FileName, 0xe165ec0e, 0x19ed, 0x45d7, 0xb4, 0xa7, 0x25, 0xcb, 0xd1, 0xe2, 0x8e, 0x9b);
-    EXTERN_GUID(WM_SampleExtensionGUID_ContentType, 0xd590dc20, 0x07bc, 0x436c, 0x9c, 0xf7, 0xf3, 0xbb, 0xfb, 0xf1, 0xa4, 0xdc);
-    EXTERN_GUID(WM_SampleExtensionGUID_PixelAspectRatio, 0x1b1ee554, 0xf9ea, 0x4bc8, 0x82, 0x1a, 0x37, 0x6b, 0x74, 0xe4, 0xc4, 0xb8);
-    EXTERN_GUID(WM_SampleExtensionGUID_SampleDuration, 0xc6bd9450, 0x867f, 0x4907, 0x83, 0xa3, 0xc7, 0x79, 0x21, 0xb7, 0x33, 0xad);
+EXTERN_GUID(WMSCRIPTTYPE_TwoStrings,
+            0x82f38a70,0xc29f,0x11d1,0x97,0xad,0x00,0xa0,0xc9,0x5e,0xa8,0x50);
+EXTERN_GUID(WM_SampleExtensionGUID_OutputCleanPoint, 0xf72a3c6f, 0x6eb4, 0x4ebc, 0xb1, 0x92, 0x9, 0xad, 0x97, 0x59, 0xe8, 0x28);
+EXTERN_GUID(WM_SampleExtensionGUID_Timecode, 0x399595ec, 0x8667, 0x4e2d, 0x8f, 0xdb, 0x98, 0x81, 0x4c, 0xe7, 0x6c, 0x1e);
+EXTERN_GUID(WM_SampleExtensionGUID_FileName, 0xe165ec0e, 0x19ed, 0x45d7, 0xb4, 0xa7, 0x25, 0xcb, 0xd1, 0xe2, 0x8e, 0x9b);
+EXTERN_GUID(WM_SampleExtensionGUID_ContentType, 0xd590dc20, 0x07bc, 0x436c, 0x9c, 0xf7, 0xf3, 0xbb, 0xfb, 0xf1, 0xa4, 0xdc);
+EXTERN_GUID(WM_SampleExtensionGUID_PixelAspectRatio, 0x1b1ee554, 0xf9ea, 0x4bc8, 0x82, 0x1a, 0x37, 0x6b, 0x74, 0xe4, 0xc4, 0xb8);
+EXTERN_GUID(WM_SampleExtensionGUID_SampleDuration, 0xc6bd9450, 0x867f, 0x4907, 0x83, 0xa3, 0xc7, 0x79, 0x21, 0xb7, 0x33, 0xad);
 #define WM_SampleExtension_ContentType_Size      1
 #define WM_SampleExtension_PixelAspectRatio_Size 2
 #define WM_SampleExtension_Timecode_Size            14
@@ -1705,130 +1705,130 @@ extern "C" {
 #pragma pack(push)
 
 #pragma pack(2)
-    typedef struct _WMT_TIMECODE_EXTENSION_DATA
-    {
-        WORD wRange;
-        DWORD dwTimecode;
-        DWORD dwUserbits;
-        DWORD dwAmFlags;
-    } 	WMT_TIMECODE_EXTENSION_DATA;
+typedef struct _WMT_TIMECODE_EXTENSION_DATA
+{
+    WORD wRange;
+    DWORD dwTimecode;
+    DWORD dwUserbits;
+    DWORD dwAmFlags;
+} 	WMT_TIMECODE_EXTENSION_DATA;
 
 
 #pragma pack(pop)
-    EXTERN_GUID(IID_IWMMediaProps,         0x96406bce,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
-    EXTERN_GUID(IID_IWMVideoMediaProps,    0x96406bcf,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
-    EXTERN_GUID(IID_IWMWriter,             0x96406bd4,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
-    EXTERN_GUID(IID_IWMInputMediaProps,    0x96406bd5,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
-    EXTERN_GUID(IID_IWMReader,             0x96406bd6,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
-    EXTERN_GUID(IID_IWMSyncReader,         0x9397f121,0x7705,0x4dc9,0xb0,0x49,0x98,0xb6,0x98,0x18,0x84,0x14);
-    EXTERN_GUID(IID_IWMSyncReader2,        0xfaed3d21,0x1b6b,0x4af7,0x8c,0xb6,0x3e,0x18,0x9b,0xbc,0x18,0x7b);
-    EXTERN_GUID(IID_IWMOutputMediaProps,   0x96406bd7,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
-    EXTERN_GUID(IID_IWMStatusCallback,     0x6d7cdc70,0x9888,0x11d3,0x8e,0xdc,0x00,0xc0,0x4f,0x61,0x09,0xcf);
-    EXTERN_GUID(IID_IWMReaderCallback,     0x96406bd8,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
-    EXTERN_GUID(IID_IWMCredentialCallback, 0x342e0eb7,0xe651,0x450c,0x97,0x5b,0x2a,0xce,0x2c,0x90,0xc4,0x8e);
-    EXTERN_GUID(IID_IWMMetadataEditor,     0x96406bd9,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
-    EXTERN_GUID(IID_IWMMetadataEditor2,    0x203cffe3,0x2e18,0x4fdf,0xb5,0x9d,0x6e,0x71,0x53,0x05,0x34,0xcf);
-    EXTERN_GUID(IID_IWMDRMEditor,          0xFF130EBC,0xA6C3,0x42A6,0xB4,0x01,0xC3,0x38,0x2C,0x3E,0x08,0xB3);
-    EXTERN_GUID(IID_IWMHeaderInfo,         0x96406bda,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
-    EXTERN_GUID(IID_IWMHeaderInfo2,        0x15cf9781,0x454e,0x482e,0xb3,0x93,0x85,0xfa,0xe4,0x87,0xa8,0x10);
-    EXTERN_GUID(IID_IWMHeaderInfo3,        0x15CC68E3,0x27CC,0x4ecd,0xB2,0x22,0x3F,0x5D,0x02,0xD8,0x0B,0xD5);
-    EXTERN_GUID(IID_IWMProfileManager,     0xd16679f2,0x6ca0,0x472d,0x8d,0x31,0x2f,0x5d,0x55,0xae,0xe1,0x55);
-    EXTERN_GUID(IID_IWMProfileManager2,    0x7a924e51,0x73c1,0x494d,0x80,0x19,0x23,0xd3,0x7e,0xd9,0xb8,0x9a);
-    EXTERN_GUID(IID_IWMProfileManagerLanguage, 0xba4dcc78,0x7ee0,0x4ab8,0xb2,0x7a,0xdb,0xce,0x8b,0xc5,0x14,0x54);
-    EXTERN_GUID(IID_IWMProfile,            0x96406bdb,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
-    EXTERN_GUID(IID_IWMProfile2,           0x07e72d33,0xd94e,0x4be7,0x88,0x43,0x60,0xae,0x5f,0xf7,0xe5,0xf5);
-    EXTERN_GUID(IID_IWMProfile3,           0x00ef96cc,0xa461,0x4546,0x8b,0xcd,0xc9,0xa2,0x8f,0x0e,0x06,0xf5);
-    EXTERN_GUID(IID_IWMStreamConfig,       0x96406bdc,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
-    EXTERN_GUID(IID_IWMStreamConfig2,      0x7688d8cb,0xfc0d,0x43bd,0x94,0x59,0x5a,0x8d,0xec,0x20,0x0c,0xfa);
-    EXTERN_GUID(IID_IWMStreamConfig3,      0xcb164104,0x3aa9,0x45a7,0x9a,0xc9,0x4d,0xae,0xe1,0x31,0xd6,0xe1);
-    EXTERN_GUID(IID_IWMStreamList,         0x96406bdd,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
-    EXTERN_GUID(IID_IWMMutualExclusion,    0x96406bde,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
-    EXTERN_GUID(IID_IWMMutualExclusion2,   0x302b57d,0x89d1,0x4ba2,0x85,0xc9,0x16,0x6f,0x2c,0x53,0xeb,0x91);
-    EXTERN_GUID(IID_IWMBandwidthSharing,   0xad694af1,0xf8d9,0x42f8,0xbc,0x47,0x70,0x31,0x1b,0x0c,0x4f,0x9e);
-    EXTERN_GUID(IID_IWMStreamPrioritization, 0x8c1c6090,0xf9a8,0x4748,0x8e,0xc3,0xdd,0x11,0x08,0xba,0x1e,0x77);
-    EXTERN_GUID(IID_IWMWriterAdvanced,     0x96406be3,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
-    EXTERN_GUID(IID_IWMWriterAdvanced2,    0x962dc1ec,0xc046,0x4db8,0x9c,0xc7,0x26,0xce,0xae,0x50,0x08,0x17);
-    EXTERN_GUID(IID_IWMWriterAdvanced3,    0x2cd6492d,0x7c37,0x4e76,0x9d,0x3b,0x59,0x26,0x11,0x83,0xa2,0x2e);
-    EXTERN_GUID(IID_IWMWriterPreprocess,   0xfc54a285,0x38c4,0x45b5,0xaa,0x23,0x85,0xb9,0xf7,0xcb,0x42,0x4b);
-    EXTERN_GUID(IID_IWMWriterSink,         0x96406be4,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
-    EXTERN_GUID(IID_IWMWriterFileSink,     0x96406be5,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
-    EXTERN_GUID(IID_IWMWriterFileSink2,    0x14282ba7,0x4aef,0x4205,0x8c,0xe5,0xc2,0x29,0x03,0x5a,0x05,0xbc);
-    EXTERN_GUID(IID_IWMWriterFileSink3,    0x3fea4feb,0x2945,0x47a7,0xa1,0xdd,0xc5,0x3a,0x8f,0xc4,0xc4,0x5c);
-    EXTERN_GUID(IID_IWMWriterNetworkSink,  0x96406be7,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
-    EXTERN_GUID(IID_IWMClientConnections,  0x73c66010,0xa299,0x41df,0xb1,0xf0,0xcc,0xf0,0x3b,0x09,0xc1,0xc6);
-    EXTERN_GUID(IID_IWMClientConnections2, 0x4091571e,0x4701,0x4593,0xbb,0x3d,0xd5,0xf5,0xf0,0xc7,0x42,0x46);
-    EXTERN_GUID(IID_IWMReaderAdvanced,     0x96406bea,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
-    EXTERN_GUID(IID_IWMReaderAdvanced2,    0xae14a945,0xb90c,0x4d0d,0x91,0x27,0x80,0xd6,0x65,0xf7,0xd7,0x3e);
-    EXTERN_GUID(IID_IWMReaderAdvanced3,    0x5dc0674b,0xf04b,0x4a4e,0x9f,0x2a,0xb1,0xaf,0xde,0x2c,0x81,0x00);
-    EXTERN_GUID(IID_IWMReaderAdvanced4,    0x945a76a2,0x12ae,0x4d48,0xbd,0x3c,0xcd,0x1d,0x90,0x39,0x9b,0x85);
-    EXTERN_GUID(IID_IWMDRMReader,          0xd2827540,0x3ee7,0x432c,0xb1,0x4c,0xdc,0x17,0xf0,0x85,0xd3,0xb3);
-    EXTERN_GUID(IID_IWMReaderCallbackAdvanced, 0x96406beb,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
-    EXTERN_GUID(IID_IWMReaderNetworkConfig,0x96406bec,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
-    EXTERN_GUID(IID_IWMReaderStreamClock,  0x96406bed,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
-    EXTERN_GUID(IID_IWMIndexer,            0x6d7cdc71,0x9888,0x11d3,0x8e,0xdc,0x00,0xc0,0x4f,0x61,0x09,0xcf);
-    EXTERN_GUID(IID_IWMIndexer2,           0xb70f1e42,0x6255,0x4df0,0xa6,0xb9,0x02,0xb2,0x12,0xd9,0xe2,0xbb);
-    EXTERN_GUID(IID_IWMReaderAllocatorEx,  0x9f762fa7,0xa22e,0x428d,0x93,0xc9,0xac,0x82,0xf3,0xaa,0xfe,0x5a);
-    EXTERN_GUID(IID_IWMReaderTypeNegotiation, 0xfdbe5592,0x81a1,0x41ea,0x93,0xbd,0x73,0x5c,0xad,0x1a,0xdc,0x5);
-    EXTERN_GUID(IID_IWMLicenseBackup,      0x05E5AC9F,0x3FB6,0x4508,0xBB,0x43,0xA4,0x06,0x7B,0xA1,0xEB,0xE8);
-    EXTERN_GUID(IID_IWMLicenseRestore,     0xC70B6334,0xa22e,0x4efb,0xA2,0x45,0x15,0xE6,0x5A,0x00,0x4A,0x13);
-    EXTERN_GUID(IID_IWMBackupRestoreProps, 0x3C8E0DA6,0x996F,0x4ff3,0xA1,0xAF,0x48,0x38,0xF9,0x37,0x7e,0x2e);
-    EXTERN_GUID(IID_IWMPacketSize,         0xcdfb97ab,0x188f,0x40b3,0xb6,0x43,0x5b,0x79,0x03,0x97,0x5c,0x59);
-    EXTERN_GUID(IID_IWMPacketSize2,        0x8bfc2b9e,0xb646,0x4233,0xa8,0x77,0x1c,0x6a,0x7,0x96,0x69,0xdc);
-    EXTERN_GUID(IID_IWMRegisterCallback,   0xcf4b1f99,0x4de2,0x4e49,0xa3,0x63,0x25,0x27,0x40,0xd9,0x9b,0xc1);
-    EXTERN_GUID(IID_IWMWriterPostView,     0x81e20ce4,0x75ef,0x491a,0x80,0x04,0xfc,0x53,0xc4,0x5b,0xdc,0x3e);
-    EXTERN_GUID(IID_IWMWriterPostViewCallback, 0xd9d6549d,0xa193,0x4f24,0xb3,0x08,0x03,0x12,0x3d,0x9b,0x7f,0x8d);
-    EXTERN_GUID(IID_IWMCodecInfo,          0xa970f41e,0x34de,0x4a98,0xb3,0xba,0xe4,0xb3,0xca,0x75,0x28,0xf0);
-    EXTERN_GUID(IID_IWMCodecInfo2,         0xaa65e273,0xb686,0x4056,0x91,0xec,0xdd,0x76,0x8d,0x4d,0xf7,0x10);
-    EXTERN_GUID(IID_IWMCodecInfo3,         0x7e51f487,0x4d93,0x4f98,0x8a,0xb4,0x27,0xd0,0x56,0x5a,0xdc,0x51);
-    EXTERN_GUID(IID_IWMPropertyVault,      0x72995A79,0x5090,0x42a4,0x9C,0x8C,0xD9,0xD0,0xB6,0xD3,0x4B,0xE5);
-    EXTERN_GUID(IID_IWMIStreamProps,       0x6816dad3,0x2b4b,0x4c8e,0x81,0x49,0x87,0x4c,0x34,0x83,0xa7,0x53);
-    EXTERN_GUID(IID_IWMLanguageList,       0xdf683f00,0x2d49,0x4d8e,0x92,0xb7,0xfb,0x19,0xf6,0xa0,0xdc,0x57);
-    EXTERN_GUID(IID_IWMDRMWriter,           0xd6ea5dd0,0x12a0,0x43f4,0x90,0xab,0xa3,0xfd,0x45,0x1e,0x6a,0x07);
-    EXTERN_GUID(IID_IWMWriterPushSink,      0xdc10e6a5,0x072c,0x467d,0xbf,0x57,0x63,0x30,0xa9,0xdd,0xe1,0x2a);
-    EXTERN_GUID(IID_IWMReaderNetworkConfig2,0xd979a853,0x042b,0x4050,0x83,0x87,0xc9,0x39,0xdb,0x22,0x01,0x3f);
-    EXTERN_GUID(IID_IWMWatermarkInfo,       0x6f497062,0xf2e2,0x4624,0x8e,0xa7,0x9d,0xd4,0x0d,0x81,0xfc,0x8d);
-    EXTERN_GUID(IID_IWMReaderAccelerator,   0xbddc4d08,0x944d,0x4d52,0xa6,0x12,0x46,0xc3,0xfd,0xa0,0x7d,0xd4);
-    EXTERN_GUID(IID_IWMReaderTimecode,        0xf369e2f0,0xe081,0x4fe6,0x84,0x50,0xb8,0x10,0xb2,0xf4,0x10,0xd1);
-    EXTERN_GUID(IID_IWMImageInfo,            0x9f0aa3b6,0x7267,0x4d89,0x88,0xf2,0xba,0x91,0x5a,0xa5,0xc4,0xc6);
-    EXTERN_GUID(IID_IWMAddressAccess,        0xBB3C6389,0x1633,0x4e92,0xAF,0x14,0x9F,0x31,0x73,0xBA,0x39,0xD0);
-    EXTERN_GUID(IID_IWMAddressAccess2,       0x65a83fc2,0x3e98,0x4d4d,0x81,0xb5,0x2a,0x74,0x28,0x86,0xb3,0x3d);
-    EXTERN_GUID(CLSID_WMMUTEX_Language, 0xD6E22A00,0x35DA,0x11D1,0x90,0x34,0x00,0xA0,0xC9,0x03,0x49,0xBE);
-    EXTERN_GUID(CLSID_WMMUTEX_Bitrate, 0xD6E22A01,0x35DA,0x11D1,0x90,0x34,0x00,0xA0,0xC9,0x03,0x49,0xBE);
-    EXTERN_GUID(CLSID_WMMUTEX_Presentation, 0xD6E22A02,0x35DA,0x11D1,0x90,0x34,0x00,0xA0,0xC9,0x03,0x49,0xBE);
-    EXTERN_GUID(CLSID_WMMUTEX_Unknown, 0xD6E22A03,0x35DA,0x11D1,0x90,0x34,0x00,0xA0,0xC9,0x03,0x49,0xBE);
-    EXTERN_GUID(CLSID_WMBandwidthSharing_Exclusive, 0xaf6060aa,0x5197,0x11d2,0xb6,0xaf,0x00,0xc0,0x4f,0xd9,0x08,0xe9);
-    EXTERN_GUID(CLSID_WMBandwidthSharing_Partial, 0xaf6060ab,0x5197,0x11d2,0xb6,0xaf,0x00,0xc0,0x4f,0xd9,0x08,0xe9);
+EXTERN_GUID(IID_IWMMediaProps,         0x96406bce,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
+EXTERN_GUID(IID_IWMVideoMediaProps,    0x96406bcf,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
+EXTERN_GUID(IID_IWMWriter,             0x96406bd4,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
+EXTERN_GUID(IID_IWMInputMediaProps,    0x96406bd5,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
+EXTERN_GUID(IID_IWMReader,             0x96406bd6,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
+EXTERN_GUID(IID_IWMSyncReader,         0x9397f121,0x7705,0x4dc9,0xb0,0x49,0x98,0xb6,0x98,0x18,0x84,0x14);
+EXTERN_GUID(IID_IWMSyncReader2,        0xfaed3d21,0x1b6b,0x4af7,0x8c,0xb6,0x3e,0x18,0x9b,0xbc,0x18,0x7b);
+EXTERN_GUID(IID_IWMOutputMediaProps,   0x96406bd7,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
+EXTERN_GUID(IID_IWMStatusCallback,     0x6d7cdc70,0x9888,0x11d3,0x8e,0xdc,0x00,0xc0,0x4f,0x61,0x09,0xcf);
+EXTERN_GUID(IID_IWMReaderCallback,     0x96406bd8,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
+EXTERN_GUID(IID_IWMCredentialCallback, 0x342e0eb7,0xe651,0x450c,0x97,0x5b,0x2a,0xce,0x2c,0x90,0xc4,0x8e);
+EXTERN_GUID(IID_IWMMetadataEditor,     0x96406bd9,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
+EXTERN_GUID(IID_IWMMetadataEditor2,    0x203cffe3,0x2e18,0x4fdf,0xb5,0x9d,0x6e,0x71,0x53,0x05,0x34,0xcf);
+EXTERN_GUID(IID_IWMDRMEditor,          0xFF130EBC,0xA6C3,0x42A6,0xB4,0x01,0xC3,0x38,0x2C,0x3E,0x08,0xB3);
+EXTERN_GUID(IID_IWMHeaderInfo,         0x96406bda,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
+EXTERN_GUID(IID_IWMHeaderInfo2,        0x15cf9781,0x454e,0x482e,0xb3,0x93,0x85,0xfa,0xe4,0x87,0xa8,0x10);
+EXTERN_GUID(IID_IWMHeaderInfo3,        0x15CC68E3,0x27CC,0x4ecd,0xB2,0x22,0x3F,0x5D,0x02,0xD8,0x0B,0xD5);
+EXTERN_GUID(IID_IWMProfileManager,     0xd16679f2,0x6ca0,0x472d,0x8d,0x31,0x2f,0x5d,0x55,0xae,0xe1,0x55);
+EXTERN_GUID(IID_IWMProfileManager2,    0x7a924e51,0x73c1,0x494d,0x80,0x19,0x23,0xd3,0x7e,0xd9,0xb8,0x9a);
+EXTERN_GUID(IID_IWMProfileManagerLanguage, 0xba4dcc78,0x7ee0,0x4ab8,0xb2,0x7a,0xdb,0xce,0x8b,0xc5,0x14,0x54);
+EXTERN_GUID(IID_IWMProfile,            0x96406bdb,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
+EXTERN_GUID(IID_IWMProfile2,           0x07e72d33,0xd94e,0x4be7,0x88,0x43,0x60,0xae,0x5f,0xf7,0xe5,0xf5);
+EXTERN_GUID(IID_IWMProfile3,           0x00ef96cc,0xa461,0x4546,0x8b,0xcd,0xc9,0xa2,0x8f,0x0e,0x06,0xf5);
+EXTERN_GUID(IID_IWMStreamConfig,       0x96406bdc,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
+EXTERN_GUID(IID_IWMStreamConfig2,      0x7688d8cb,0xfc0d,0x43bd,0x94,0x59,0x5a,0x8d,0xec,0x20,0x0c,0xfa);
+EXTERN_GUID(IID_IWMStreamConfig3,      0xcb164104,0x3aa9,0x45a7,0x9a,0xc9,0x4d,0xae,0xe1,0x31,0xd6,0xe1);
+EXTERN_GUID(IID_IWMStreamList,         0x96406bdd,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
+EXTERN_GUID(IID_IWMMutualExclusion,    0x96406bde,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
+EXTERN_GUID(IID_IWMMutualExclusion2,   0x302b57d,0x89d1,0x4ba2,0x85,0xc9,0x16,0x6f,0x2c,0x53,0xeb,0x91);
+EXTERN_GUID(IID_IWMBandwidthSharing,   0xad694af1,0xf8d9,0x42f8,0xbc,0x47,0x70,0x31,0x1b,0x0c,0x4f,0x9e);
+EXTERN_GUID(IID_IWMStreamPrioritization, 0x8c1c6090,0xf9a8,0x4748,0x8e,0xc3,0xdd,0x11,0x08,0xba,0x1e,0x77);
+EXTERN_GUID(IID_IWMWriterAdvanced,     0x96406be3,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
+EXTERN_GUID(IID_IWMWriterAdvanced2,    0x962dc1ec,0xc046,0x4db8,0x9c,0xc7,0x26,0xce,0xae,0x50,0x08,0x17);
+EXTERN_GUID(IID_IWMWriterAdvanced3,    0x2cd6492d,0x7c37,0x4e76,0x9d,0x3b,0x59,0x26,0x11,0x83,0xa2,0x2e);
+EXTERN_GUID(IID_IWMWriterPreprocess,   0xfc54a285,0x38c4,0x45b5,0xaa,0x23,0x85,0xb9,0xf7,0xcb,0x42,0x4b);
+EXTERN_GUID(IID_IWMWriterSink,         0x96406be4,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
+EXTERN_GUID(IID_IWMWriterFileSink,     0x96406be5,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
+EXTERN_GUID(IID_IWMWriterFileSink2,    0x14282ba7,0x4aef,0x4205,0x8c,0xe5,0xc2,0x29,0x03,0x5a,0x05,0xbc);
+EXTERN_GUID(IID_IWMWriterFileSink3,    0x3fea4feb,0x2945,0x47a7,0xa1,0xdd,0xc5,0x3a,0x8f,0xc4,0xc4,0x5c);
+EXTERN_GUID(IID_IWMWriterNetworkSink,  0x96406be7,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
+EXTERN_GUID(IID_IWMClientConnections,  0x73c66010,0xa299,0x41df,0xb1,0xf0,0xcc,0xf0,0x3b,0x09,0xc1,0xc6);
+EXTERN_GUID(IID_IWMClientConnections2, 0x4091571e,0x4701,0x4593,0xbb,0x3d,0xd5,0xf5,0xf0,0xc7,0x42,0x46);
+EXTERN_GUID(IID_IWMReaderAdvanced,     0x96406bea,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
+EXTERN_GUID(IID_IWMReaderAdvanced2,    0xae14a945,0xb90c,0x4d0d,0x91,0x27,0x80,0xd6,0x65,0xf7,0xd7,0x3e);
+EXTERN_GUID(IID_IWMReaderAdvanced3,    0x5dc0674b,0xf04b,0x4a4e,0x9f,0x2a,0xb1,0xaf,0xde,0x2c,0x81,0x00);
+EXTERN_GUID(IID_IWMReaderAdvanced4,    0x945a76a2,0x12ae,0x4d48,0xbd,0x3c,0xcd,0x1d,0x90,0x39,0x9b,0x85);
+EXTERN_GUID(IID_IWMDRMReader,          0xd2827540,0x3ee7,0x432c,0xb1,0x4c,0xdc,0x17,0xf0,0x85,0xd3,0xb3);
+EXTERN_GUID(IID_IWMReaderCallbackAdvanced, 0x96406beb,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
+EXTERN_GUID(IID_IWMReaderNetworkConfig,0x96406bec,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
+EXTERN_GUID(IID_IWMReaderStreamClock,  0x96406bed,0x2b2b,0x11d3,0xb3,0x6b,0x00,0xc0,0x4f,0x61,0x08,0xff);
+EXTERN_GUID(IID_IWMIndexer,            0x6d7cdc71,0x9888,0x11d3,0x8e,0xdc,0x00,0xc0,0x4f,0x61,0x09,0xcf);
+EXTERN_GUID(IID_IWMIndexer2,           0xb70f1e42,0x6255,0x4df0,0xa6,0xb9,0x02,0xb2,0x12,0xd9,0xe2,0xbb);
+EXTERN_GUID(IID_IWMReaderAllocatorEx,  0x9f762fa7,0xa22e,0x428d,0x93,0xc9,0xac,0x82,0xf3,0xaa,0xfe,0x5a);
+EXTERN_GUID(IID_IWMReaderTypeNegotiation, 0xfdbe5592,0x81a1,0x41ea,0x93,0xbd,0x73,0x5c,0xad,0x1a,0xdc,0x5);
+EXTERN_GUID(IID_IWMLicenseBackup,      0x05E5AC9F,0x3FB6,0x4508,0xBB,0x43,0xA4,0x06,0x7B,0xA1,0xEB,0xE8);
+EXTERN_GUID(IID_IWMLicenseRestore,     0xC70B6334,0xa22e,0x4efb,0xA2,0x45,0x15,0xE6,0x5A,0x00,0x4A,0x13);
+EXTERN_GUID(IID_IWMBackupRestoreProps, 0x3C8E0DA6,0x996F,0x4ff3,0xA1,0xAF,0x48,0x38,0xF9,0x37,0x7e,0x2e);
+EXTERN_GUID(IID_IWMPacketSize,         0xcdfb97ab,0x188f,0x40b3,0xb6,0x43,0x5b,0x79,0x03,0x97,0x5c,0x59);
+EXTERN_GUID(IID_IWMPacketSize2,        0x8bfc2b9e,0xb646,0x4233,0xa8,0x77,0x1c,0x6a,0x7,0x96,0x69,0xdc);
+EXTERN_GUID(IID_IWMRegisterCallback,   0xcf4b1f99,0x4de2,0x4e49,0xa3,0x63,0x25,0x27,0x40,0xd9,0x9b,0xc1);
+EXTERN_GUID(IID_IWMWriterPostView,     0x81e20ce4,0x75ef,0x491a,0x80,0x04,0xfc,0x53,0xc4,0x5b,0xdc,0x3e);
+EXTERN_GUID(IID_IWMWriterPostViewCallback, 0xd9d6549d,0xa193,0x4f24,0xb3,0x08,0x03,0x12,0x3d,0x9b,0x7f,0x8d);
+EXTERN_GUID(IID_IWMCodecInfo,          0xa970f41e,0x34de,0x4a98,0xb3,0xba,0xe4,0xb3,0xca,0x75,0x28,0xf0);
+EXTERN_GUID(IID_IWMCodecInfo2,         0xaa65e273,0xb686,0x4056,0x91,0xec,0xdd,0x76,0x8d,0x4d,0xf7,0x10);
+EXTERN_GUID(IID_IWMCodecInfo3,         0x7e51f487,0x4d93,0x4f98,0x8a,0xb4,0x27,0xd0,0x56,0x5a,0xdc,0x51);
+EXTERN_GUID(IID_IWMPropertyVault,      0x72995A79,0x5090,0x42a4,0x9C,0x8C,0xD9,0xD0,0xB6,0xD3,0x4B,0xE5);
+EXTERN_GUID(IID_IWMIStreamProps,       0x6816dad3,0x2b4b,0x4c8e,0x81,0x49,0x87,0x4c,0x34,0x83,0xa7,0x53);
+EXTERN_GUID(IID_IWMLanguageList,       0xdf683f00,0x2d49,0x4d8e,0x92,0xb7,0xfb,0x19,0xf6,0xa0,0xdc,0x57);
+EXTERN_GUID(IID_IWMDRMWriter,           0xd6ea5dd0,0x12a0,0x43f4,0x90,0xab,0xa3,0xfd,0x45,0x1e,0x6a,0x07);
+EXTERN_GUID(IID_IWMWriterPushSink,      0xdc10e6a5,0x072c,0x467d,0xbf,0x57,0x63,0x30,0xa9,0xdd,0xe1,0x2a);
+EXTERN_GUID(IID_IWMReaderNetworkConfig2,0xd979a853,0x042b,0x4050,0x83,0x87,0xc9,0x39,0xdb,0x22,0x01,0x3f);
+EXTERN_GUID(IID_IWMWatermarkInfo,       0x6f497062,0xf2e2,0x4624,0x8e,0xa7,0x9d,0xd4,0x0d,0x81,0xfc,0x8d);
+EXTERN_GUID(IID_IWMReaderAccelerator,   0xbddc4d08,0x944d,0x4d52,0xa6,0x12,0x46,0xc3,0xfd,0xa0,0x7d,0xd4);
+EXTERN_GUID(IID_IWMReaderTimecode,        0xf369e2f0,0xe081,0x4fe6,0x84,0x50,0xb8,0x10,0xb2,0xf4,0x10,0xd1);
+EXTERN_GUID(IID_IWMImageInfo,            0x9f0aa3b6,0x7267,0x4d89,0x88,0xf2,0xba,0x91,0x5a,0xa5,0xc4,0xc6);
+EXTERN_GUID(IID_IWMAddressAccess,        0xBB3C6389,0x1633,0x4e92,0xAF,0x14,0x9F,0x31,0x73,0xBA,0x39,0xD0);
+EXTERN_GUID(IID_IWMAddressAccess2,       0x65a83fc2,0x3e98,0x4d4d,0x81,0xb5,0x2a,0x74,0x28,0x86,0xb3,0x3d);
+EXTERN_GUID(CLSID_WMMUTEX_Language, 0xD6E22A00,0x35DA,0x11D1,0x90,0x34,0x00,0xA0,0xC9,0x03,0x49,0xBE);
+EXTERN_GUID(CLSID_WMMUTEX_Bitrate, 0xD6E22A01,0x35DA,0x11D1,0x90,0x34,0x00,0xA0,0xC9,0x03,0x49,0xBE);
+EXTERN_GUID(CLSID_WMMUTEX_Presentation, 0xD6E22A02,0x35DA,0x11D1,0x90,0x34,0x00,0xA0,0xC9,0x03,0x49,0xBE);
+EXTERN_GUID(CLSID_WMMUTEX_Unknown, 0xD6E22A03,0x35DA,0x11D1,0x90,0x34,0x00,0xA0,0xC9,0x03,0x49,0xBE);
+EXTERN_GUID(CLSID_WMBandwidthSharing_Exclusive, 0xaf6060aa,0x5197,0x11d2,0xb6,0xaf,0x00,0xc0,0x4f,0xd9,0x08,0xe9);
+EXTERN_GUID(CLSID_WMBandwidthSharing_Partial, 0xaf6060ab,0x5197,0x11d2,0xb6,0xaf,0x00,0xc0,0x4f,0xd9,0x08,0xe9);
 // {B42CDE2B-6178-4a2c-A375-89DD3FD7F497}
-    EXTERN_GUID(WMT_DMOCATEGORY_AUDIO_WATERMARK, 0x65221c5a, 0xfa75, 0x4b39, 0xb5, 0x0c, 0x06, 0xc3, 0x36, 0xb6, 0xa3, 0xef);
+EXTERN_GUID(WMT_DMOCATEGORY_AUDIO_WATERMARK, 0x65221c5a, 0xfa75, 0x4b39, 0xb5, 0x0c, 0x06, 0xc3, 0x36, 0xb6, 0xa3, 0xef);
 // {E77797C6-18AF-4458-BBDD-492D3F78FC8F}
-    EXTERN_GUID(WMT_DMOCATEGORY_VIDEO_WATERMARK, 0x187cc922, 0x8efc, 0x4404, 0x9d, 0xaf, 0x63, 0xf4, 0x83, 0x0d, 0xf1, 0xbc);
+EXTERN_GUID(WMT_DMOCATEGORY_VIDEO_WATERMARK, 0x187cc922, 0x8efc, 0x4404, 0x9d, 0xaf, 0x63, 0xf4, 0x83, 0x0d, 0xf1, 0xbc);
 #define WM_MAX_VIDEO_STREAMS            0x3f
 #define WM_MAX_STREAMS                  0x3f
-    HRESULT STDMETHODCALLTYPE WMIsContentProtected(const WCHAR *pwszFileName, BOOL *pfIsProtected);
-    HRESULT STDMETHODCALLTYPE WMCreateCertificate(IUnknown** pUnkCert);
-    HRESULT STDMETHODCALLTYPE WMCreateWriter(IUnknown* pUnkCert, IWMWriter **ppWriter);
-    HRESULT STDMETHODCALLTYPE WMCreateReader(IUnknown* pUnkCert, DWORD dwRights, IWMReader **ppReader);
-    HRESULT STDMETHODCALLTYPE WMCreateSyncReader(IUnknown* pUnkCert, DWORD dwRights, IWMSyncReader **ppSyncReader);
-    HRESULT STDMETHODCALLTYPE WMCreateEditor(IWMMetadataEditor **ppEditor);
-    HRESULT STDMETHODCALLTYPE WMCreateIndexer(IWMIndexer **ppIndexer);
-    HRESULT STDMETHODCALLTYPE WMCreateBackupRestorer(IUnknown *pCallback, IWMLicenseBackup **ppBackup);
-    HRESULT STDMETHODCALLTYPE WMCreateProfileManager(IWMProfileManager **ppProfileManager);
-    HRESULT STDMETHODCALLTYPE WMCreateWriterFileSink(IWMWriterFileSink **ppSink);
-    HRESULT STDMETHODCALLTYPE WMCreateWriterNetworkSink(IWMWriterNetworkSink **ppSink);
-    HRESULT STDMETHODCALLTYPE WMCreateWriterPushSink(IWMWriterPushSink **ppSink);
+HRESULT STDMETHODCALLTYPE WMIsContentProtected(const WCHAR *pwszFileName, BOOL *pfIsProtected);
+HRESULT STDMETHODCALLTYPE WMCreateCertificate(IUnknown** pUnkCert);
+HRESULT STDMETHODCALLTYPE WMCreateWriter(IUnknown* pUnkCert, IWMWriter **ppWriter);
+HRESULT STDMETHODCALLTYPE WMCreateReader(IUnknown* pUnkCert, DWORD dwRights, IWMReader **ppReader);
+HRESULT STDMETHODCALLTYPE WMCreateSyncReader(IUnknown* pUnkCert, DWORD dwRights, IWMSyncReader **ppSyncReader);
+HRESULT STDMETHODCALLTYPE WMCreateEditor(IWMMetadataEditor **ppEditor);
+HRESULT STDMETHODCALLTYPE WMCreateIndexer(IWMIndexer **ppIndexer);
+HRESULT STDMETHODCALLTYPE WMCreateBackupRestorer(IUnknown *pCallback, IWMLicenseBackup **ppBackup);
+HRESULT STDMETHODCALLTYPE WMCreateProfileManager(IWMProfileManager **ppProfileManager);
+HRESULT STDMETHODCALLTYPE WMCreateWriterFileSink(IWMWriterFileSink **ppSink);
+HRESULT STDMETHODCALLTYPE WMCreateWriterNetworkSink(IWMWriterNetworkSink **ppSink);
+HRESULT STDMETHODCALLTYPE WMCreateWriterPushSink(IWMWriterPushSink **ppSink);
 
 
-    extern RPC_IF_HANDLE __MIDL_itf_wmsdkidl_0000_v0_0_c_ifspec;
-    extern RPC_IF_HANDLE __MIDL_itf_wmsdkidl_0000_v0_0_s_ifspec;
+extern RPC_IF_HANDLE __MIDL_itf_wmsdkidl_0000_v0_0_c_ifspec;
+extern RPC_IF_HANDLE __MIDL_itf_wmsdkidl_0000_v0_0_s_ifspec;
 
 #ifndef __IWMMediaProps_INTERFACE_DEFINED__
 #define __IWMMediaProps_INTERFACE_DEFINED__
 
-    /* interface IWMMediaProps */
-    /* [local][unique][helpstring][uuid][object] */
+/* interface IWMMediaProps */
+/* [local][unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IWMMediaProps;
+EXTERN_C const IID IID_IWMMediaProps;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 

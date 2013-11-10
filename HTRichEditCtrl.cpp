@@ -163,12 +163,12 @@ LRESULT CHTRichEditCtrl::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
-    case WM_ERASEBKGND:
-        if (m_bNoPaint)
-            return TRUE;
-    case WM_PAINT:
-        if (m_bNoPaint)
-            return TRUE;
+        case WM_ERASEBKGND:
+            if (m_bNoPaint)
+                return TRUE;
+        case WM_PAINT:
+            if (m_bNoPaint)
+                return TRUE;
     }
     return CRichEditCtrl::WindowProc(message, wParam, lParam);
 }
@@ -628,21 +628,21 @@ BOOL CHTRichEditCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 {
     switch (wParam)
     {
-    case MP_COPYSELECTED:
-        CopySelectedItems();
-        break;
-    case MP_SELECTALL:
-        SelectAllItems();
-        break;
-    case MP_REMOVEALL:
-        Reset();
-        break;
-    case MP_SAVELOG:
-        SaveLog();
-        break;
-    case MP_AUTOSCROLL:
-        m_bAutoScroll = !m_bAutoScroll;
-        break;
+        case MP_COPYSELECTED:
+            CopySelectedItems();
+            break;
+        case MP_SELECTALL:
+            SelectAllItems();
+            break;
+        case MP_REMOVEALL:
+            Reset();
+            break;
+        case MP_SAVELOG:
+            SaveLog();
+            break;
+        case MP_AUTOSCROLL:
+            m_bAutoScroll = !m_bAutoScroll;
+            break;
     }
     return TRUE;
 }

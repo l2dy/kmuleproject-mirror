@@ -329,55 +329,55 @@ void CSearchListCtrl::Localize()
     {
         switch (icol)
         {
-        case 0:
-            strRes = GetResString(IDS_DL_FILENAME);
-            break;
-        case 1:
-            strRes = GetResString(IDS_DL_SIZE);
-            break;
-        case 2:
-            strRes = GetResString(IDS_SEARCHAVAIL) + (thePrefs.IsExtControlsEnabled() ? _T(" (") + GetResString(IDS_DL_SOURCES) + _T(')') : L"");
-            break;
-        case 3:
-            strRes = GetResString(IDS_COMPLSOURCES);
-            break;
-        case 4:
-            strRes = GetResString(IDS_TYPE);
-            break;
-        case 5:
-            strRes = GetResString(IDS_FILEID);
-            break;
-        case 6:
-            strRes = GetResString(IDS_ARTIST);
-            break;
-        case 7:
-            strRes = GetResString(IDS_ALBUM);
-            break;
-        case 8:
-            strRes = GetResString(IDS_TITLE);
-            break;
-        case 9:
-            strRes = GetResString(IDS_LENGTH);
-            break;
-        case 10:
-            strRes = GetResString(IDS_BITRATE);
-            break;
-        case 11:
-            strRes = GetResString(IDS_CODEC);
-            break;
-        case 12:
-            strRes = GetResString(IDS_FOLDER);
-            break;
-        case 13:
-            strRes = GetResString(IDS_KNOWN);
-            break;
-        case 14:
-            strRes = GetResString(IDS_AICHHASH);
-            break;
+            case 0:
+                strRes = GetResString(IDS_DL_FILENAME);
+                break;
+            case 1:
+                strRes = GetResString(IDS_DL_SIZE);
+                break;
+            case 2:
+                strRes = GetResString(IDS_SEARCHAVAIL) + (thePrefs.IsExtControlsEnabled() ? _T(" (") + GetResString(IDS_DL_SOURCES) + _T(')') : L"");
+                break;
+            case 3:
+                strRes = GetResString(IDS_COMPLSOURCES);
+                break;
+            case 4:
+                strRes = GetResString(IDS_TYPE);
+                break;
+            case 5:
+                strRes = GetResString(IDS_FILEID);
+                break;
+            case 6:
+                strRes = GetResString(IDS_ARTIST);
+                break;
+            case 7:
+                strRes = GetResString(IDS_ALBUM);
+                break;
+            case 8:
+                strRes = GetResString(IDS_TITLE);
+                break;
+            case 9:
+                strRes = GetResString(IDS_LENGTH);
+                break;
+            case 10:
+                strRes = GetResString(IDS_BITRATE);
+                break;
+            case 11:
+                strRes = GetResString(IDS_CODEC);
+                break;
+            case 12:
+                strRes = GetResString(IDS_FOLDER);
+                break;
+            case 13:
+                strRes = GetResString(IDS_KNOWN);
+                break;
+            case 14:
+                strRes = GetResString(IDS_AICHHASH);
+                break;
 //>>> WiZaRd::AntiFake
-        case 15:
-            strRes = GetResString(IDS_CMT_FAKE);
-            break;
+            case 15:
+                strRes = GetResString(IDS_CMT_FAKE);
+                break;
 //<<< WiZaRd::AntiFake
         }
 
@@ -639,13 +639,13 @@ void CSearchListCtrl::OnLvnColumnClick(NMHDR *pNMHDR, LRESULT *pResult)
     {
         switch (pNMListView->iSubItem)
         {
-        case 2: // Availability
-        case 3: // Complete Sources
-            sortAscending = false;
-            break;
-        default:
-            sortAscending = true;
-            break;
+            case 2: // Availability
+            case 3: // Complete Sources
+                sortAscending = false;
+                break;
+            default:
+                sortAscending = true;
+                break;
         }
     }
     else
@@ -718,17 +718,17 @@ int CSearchListCtrl::CompareChild(const CSearchFile *item1, const CSearchFile *i
     int iResult = 0;
     switch (iColumn)
     {
-    case 0:		//filename
-        iResult = CompareLocaleStringNoCase(item1->GetFileName(), item2->GetFileName());
-        break;
+        case 0:		//filename
+            iResult = CompareLocaleStringNoCase(item1->GetFileName(), item2->GetFileName());
+            break;
 
-    case 14: // AICH Hash
-        iResult = CompareAICHHash(item1->GetFileIdentifierC(), item2->GetFileIdentifierC(), true);
-        break;
-    default:
-        // always sort by descending availability
-        iResult = -CompareUnsigned(item1->GetIntTagValue(FT_SOURCES), item2->GetIntTagValue(FT_SOURCES));
-        break;
+        case 14: // AICH Hash
+            iResult = CompareAICHHash(item1->GetFileIdentifierC(), item2->GetFileIdentifierC(), true);
+            break;
+        default:
+            // always sort by descending availability
+            iResult = -CompareUnsigned(item1->GetIntTagValue(FT_SOURCES), item2->GetIntTagValue(FT_SOURCES));
+            break;
     }
     if (lParamSort >= 100)
         iResult = -iResult;
@@ -764,91 +764,91 @@ int CSearchListCtrl::Compare(const CSearchFile *item1, const CSearchFile *item2,
 
     switch (lParamSort)
     {
-    case 0: //filename asc
-        return CompareLocaleStringNoCase(item1->GetFileName(),item2->GetFileName());
+        case 0: //filename asc
+            return CompareLocaleStringNoCase(item1->GetFileName(),item2->GetFileName());
 
-    case 1: //size asc
-        return CompareUnsigned64(item1->GetFileSize(), item2->GetFileSize());
+        case 1: //size asc
+            return CompareUnsigned64(item1->GetFileSize(), item2->GetFileSize());
 
-    case 2: //sources asc
-        return CompareUnsigned(item1->GetIntTagValue(FT_SOURCES), item2->GetIntTagValue(FT_SOURCES));
+        case 2: //sources asc
+            return CompareUnsigned(item1->GetIntTagValue(FT_SOURCES), item2->GetIntTagValue(FT_SOURCES));
 
-    case 3: // complete sources asc
-        if (item1->GetIntTagValue(FT_SOURCES) == 0 || item2->GetIntTagValue(FT_SOURCES) == 0 || item1->IsKademlia() || item2->IsKademlia())
-            return 0; // should never happen, just a sanity check
-        return CompareUnsigned((item1->GetIntTagValue(FT_COMPLETE_SOURCES)*100)/item1->GetIntTagValue(FT_SOURCES), (item2->GetIntTagValue(FT_COMPLETE_SOURCES)*100)/item2->GetIntTagValue(FT_SOURCES));
+        case 3: // complete sources asc
+            if (item1->GetIntTagValue(FT_SOURCES) == 0 || item2->GetIntTagValue(FT_SOURCES) == 0 || item1->IsKademlia() || item2->IsKademlia())
+                return 0; // should never happen, just a sanity check
+            return CompareUnsigned((item1->GetIntTagValue(FT_COMPLETE_SOURCES)*100)/item1->GetIntTagValue(FT_SOURCES), (item2->GetIntTagValue(FT_COMPLETE_SOURCES)*100)/item2->GetIntTagValue(FT_SOURCES));
 
-    case 4: //type asc
-    {
-        int iResult = item1->GetFileTypeDisplayStr().Compare(item2->GetFileTypeDisplayStr());
-        // if the type is equal, subsort by extension
-        if (iResult == 0)
+        case 4: //type asc
         {
-            LPCTSTR pszExt1 = PathFindExtension(item1->GetFileName());
-            LPCTSTR pszExt2 = PathFindExtension(item2->GetFileName());
-            if ((pszExt1 == NULL) ^ (pszExt2 == NULL))
-                return pszExt1 == NULL ? 1 : (-1);
-            else
-                return  pszExt1 != NULL ? _tcsicmp(pszExt1, pszExt2) : 0;
-        }
-        else
-            return iResult;
-    }
-    case 5: //filehash asc
-        return memcmp(item1->GetFileHash(),item2->GetFileHash(),16);
-
-    case 6:
-        return CompareOptLocaleStringNoCaseUndefinedAtBottom(item1->GetStrTagValue(FT_MEDIA_ARTIST), item2->GetStrTagValue(FT_MEDIA_ARTIST), bSortAscending);
-
-    case 7:
-        return CompareOptLocaleStringNoCaseUndefinedAtBottom(item1->GetStrTagValue(FT_MEDIA_ALBUM), item2->GetStrTagValue(FT_MEDIA_ALBUM), bSortAscending);
-
-    case 8:
-        return CompareOptLocaleStringNoCaseUndefinedAtBottom(item1->GetStrTagValue(FT_MEDIA_TITLE), item2->GetStrTagValue(FT_MEDIA_TITLE), bSortAscending);
-
-    case 9:
-        return CompareUnsignedUndefinedAtBottom(item1->GetIntTagValue(FT_MEDIA_LENGTH), item2->GetIntTagValue(FT_MEDIA_LENGTH), bSortAscending);
-
-    case 10:
-        return CompareUnsignedUndefinedAtBottom(item1->GetIntTagValue(FT_MEDIA_BITRATE), item2->GetIntTagValue(FT_MEDIA_BITRATE), bSortAscending);
-
-    case 11:
-        return CompareOptLocaleStringNoCaseUndefinedAtBottom(GetCodecDisplayName(item1->GetStrTagValue(FT_MEDIA_CODEC)), GetCodecDisplayName(item2->GetStrTagValue(FT_MEDIA_CODEC)), bSortAscending);
-
-    case 12: //path asc
-        return CompareOptLocaleStringNoCaseUndefinedAtBottom(item1->GetDirectory(), item2->GetDirectory(), bSortAscending);
-
-    case 13:
-        return item1->GetKnownType() - item2->GetKnownType();
-
-    case 14:
-        return CompareAICHHash(item1->GetFileIdentifierC(), item2->GetFileIdentifierC(), bSortAscending);
-//>>> WiZaRd::AntiFake
-    case 15:
-    {
-        int rating1 = 0;
-        int rating2 = 0;
-        CString str1 = GetFakeComment(item1, !thePrefs.IsExtControlsEnabled(), &rating1);
-        CString str2 = GetFakeComment(item2, !thePrefs.IsExtControlsEnabled(), &rating2);
-        if (rating1 != rating2)
-        {
-            if (bSortAscending)
-                return CompareUnsigned(rating1, rating2);
-            else
-                return CompareUnsigned(rating2, rating1);
-        }
-        else
-        {
-            if (thePrefs.IsExtControlsEnabled())
+            int iResult = item1->GetFileTypeDisplayStr().Compare(item2->GetFileTypeDisplayStr());
+            // if the type is equal, subsort by extension
+            if (iResult == 0)
             {
-                str1.Remove(L'\n');
-                str1.Replace(L'\t', L' ');
-                str2.Remove(L'\n');
-                str2.Replace(L'\t', L' ');
+                LPCTSTR pszExt1 = PathFindExtension(item1->GetFileName());
+                LPCTSTR pszExt2 = PathFindExtension(item2->GetFileName());
+                if ((pszExt1 == NULL) ^ (pszExt2 == NULL))
+                    return pszExt1 == NULL ? 1 : (-1);
+                else
+                    return  pszExt1 != NULL ? _tcsicmp(pszExt1, pszExt2) : 0;
             }
-            return CompareLocaleStringNoCase(str1, str2);
+            else
+                return iResult;
         }
-    }
+        case 5: //filehash asc
+            return memcmp(item1->GetFileHash(),item2->GetFileHash(),16);
+
+        case 6:
+            return CompareOptLocaleStringNoCaseUndefinedAtBottom(item1->GetStrTagValue(FT_MEDIA_ARTIST), item2->GetStrTagValue(FT_MEDIA_ARTIST), bSortAscending);
+
+        case 7:
+            return CompareOptLocaleStringNoCaseUndefinedAtBottom(item1->GetStrTagValue(FT_MEDIA_ALBUM), item2->GetStrTagValue(FT_MEDIA_ALBUM), bSortAscending);
+
+        case 8:
+            return CompareOptLocaleStringNoCaseUndefinedAtBottom(item1->GetStrTagValue(FT_MEDIA_TITLE), item2->GetStrTagValue(FT_MEDIA_TITLE), bSortAscending);
+
+        case 9:
+            return CompareUnsignedUndefinedAtBottom(item1->GetIntTagValue(FT_MEDIA_LENGTH), item2->GetIntTagValue(FT_MEDIA_LENGTH), bSortAscending);
+
+        case 10:
+            return CompareUnsignedUndefinedAtBottom(item1->GetIntTagValue(FT_MEDIA_BITRATE), item2->GetIntTagValue(FT_MEDIA_BITRATE), bSortAscending);
+
+        case 11:
+            return CompareOptLocaleStringNoCaseUndefinedAtBottom(GetCodecDisplayName(item1->GetStrTagValue(FT_MEDIA_CODEC)), GetCodecDisplayName(item2->GetStrTagValue(FT_MEDIA_CODEC)), bSortAscending);
+
+        case 12: //path asc
+            return CompareOptLocaleStringNoCaseUndefinedAtBottom(item1->GetDirectory(), item2->GetDirectory(), bSortAscending);
+
+        case 13:
+            return item1->GetKnownType() - item2->GetKnownType();
+
+        case 14:
+            return CompareAICHHash(item1->GetFileIdentifierC(), item2->GetFileIdentifierC(), bSortAscending);
+//>>> WiZaRd::AntiFake
+        case 15:
+        {
+            int rating1 = 0;
+            int rating2 = 0;
+            CString str1 = GetFakeComment(item1, !thePrefs.IsExtControlsEnabled(), &rating1);
+            CString str2 = GetFakeComment(item2, !thePrefs.IsExtControlsEnabled(), &rating2);
+            if (rating1 != rating2)
+            {
+                if (bSortAscending)
+                    return CompareUnsigned(rating1, rating2);
+                else
+                    return CompareUnsigned(rating2, rating1);
+            }
+            else
+            {
+                if (thePrefs.IsExtControlsEnabled())
+                {
+                    str1.Remove(L'\n');
+                    str1.Replace(L'\t', L' ');
+                    str2.Remove(L'\n');
+                    str2.Replace(L'\t', L' ');
+                }
+                return CompareLocaleStringNoCase(str1, str2);
+            }
+        }
 //<<< WiZaRd::AntiFake
     }
     return 0;
@@ -948,161 +948,161 @@ BOOL CSearchListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 
         switch (wParam)
         {
-        case MP_GETED2KLINK:
-        {
-            CWaitCursor curWait;
-            CString clpbrd;
-            POSITION pos = selectedList.GetHeadPosition();
-            while (pos != NULL)
+            case MP_GETED2KLINK:
             {
-                file = selectedList.GetNext(pos);
-                if (!clpbrd.IsEmpty())
-                    clpbrd += _T("\r\n");
-                clpbrd += file->GetED2kLink();
-            }
-            theApp.CopyTextToClipboard(clpbrd);
-            return TRUE;
-        }
-        case MP_GETHTMLED2KLINK:
-        {
-            CWaitCursor curWait;
-            CString clpbrd;
-            POSITION pos = selectedList.GetHeadPosition();
-            while (pos != NULL)
-            {
-                file = selectedList.GetNext(pos);
-                if (!clpbrd.IsEmpty())
-                    clpbrd += _T("<br />\r\n");
-                clpbrd += file->GetED2kLink(false, true);
-            }
-            theApp.CopyTextToClipboard(clpbrd);
-            return TRUE;
-        }
-        case MP_RESUME:
-            if (thePrefs.IsExtControlsEnabled())
-                theApp.emuledlg->searchwnd->DownloadSelected(false);
-            else
-                theApp.emuledlg->searchwnd->DownloadSelected();
-            return TRUE;
-        case MP_RESUMEPAUSED:
-            theApp.emuledlg->searchwnd->DownloadSelected(true);
-            return TRUE;
-        case IDA_ENTER:
-            theApp.emuledlg->searchwnd->DownloadSelected();
-            return TRUE;
-        case MP_REMOVESELECTED:
-        case MPG_DELETE:
-        {
-            CWaitCursor curWait;
-            SetRedraw(FALSE);
-            POSITION pos = selectedList.GetHeadPosition();
-            while (pos != NULL)
-            {
-                file = selectedList.GetNext(pos);
-                HideSources(file);
-                theApp.searchlist->RemoveResult(file);
-            }
-            AutoSelectItem();
-            SetRedraw(TRUE);
-            return TRUE;
-        }
-        case MP_DETAIL:
-        case MPG_ALTENTER:
-        {
-            CSearchResultFileDetailSheet sheet(selectedList, 0, this);
-            sheet.DoModal();
-            return TRUE;
-        }
-        case MP_CMT:
-        {
-            CSearchResultFileDetailSheet sheet(selectedList, IDD_COMMENTLST, this);
-            sheet.DoModal();
-            return TRUE;
-        }
-        case MP_PREVIEW:
-            if (file)
-            {
-                if (file->GetPreviews().GetSize() > 0)
+                CWaitCursor curWait;
+                CString clpbrd;
+                POSITION pos = selectedList.GetHeadPosition();
+                while (pos != NULL)
                 {
-                    // already have previews
-                    (new PreviewDlg())->SetFile(file);
+                    file = selectedList.GetNext(pos);
+                    if (!clpbrd.IsEmpty())
+                        clpbrd += _T("\r\n");
+                    clpbrd += file->GetED2kLink();
                 }
-                else
-                {
-                    CUpDownClient* newclient = new CUpDownClient(NULL, file->GetClientPort(),file->GetClientID(),file->GetClientServerIP(),file->GetClientServerPort(), true);
-                    if (!theApp.clientlist->AttachToAlreadyKnown(&newclient,NULL))
-                    {
-                        theApp.clientlist->AddClient(newclient);
-                    }
-                    newclient->SendPreviewRequest(file);
-                    // add to res - later
-                    AddLogLine(true, _T("Preview Requested - Please wait"));
-                }
-            }
-            return TRUE;
-        case MP_MARKASSPAM:
-        {
-            CWaitCursor curWait;
-            SetRedraw(FALSE);
-            POSITION pos = selectedList.GetHeadPosition();
-            bool bContainsNotSpamFile = false;
-            while (pos != NULL)
-            {
-                file = selectedList.GetNext(pos);
-                if (!file->IsConsideredSpam())
-                {
-                    bContainsNotSpamFile = true;
-                    break;
-                }
-            }
-            pos = selectedList.GetHeadPosition();
-            while (pos != NULL)
-            {
-                file = selectedList.GetNext(pos);
-                if (file->IsConsideredSpam() && bContainsNotSpamFile)
-                {
-                    continue;
-                }
-                else if (file->IsConsideredSpam() && !bContainsNotSpamFile)
-                {
-                    theApp.searchlist->MarkFileAsNotSpam(file, false, true);
-                }
-                else if (!file->IsConsideredSpam() && bContainsNotSpamFile)
-                {
-                    theApp.searchlist->MarkFileAsSpam(file, false, true);
-                }
-                else if (!file->IsConsideredSpam() && !bContainsNotSpamFile)
-                {
-                    continue;
-                }
-            }
-            theApp.searchlist->RecalculateSpamRatings(file->GetSearchID(), bContainsNotSpamFile, !bContainsNotSpamFile, true);
-            SetRedraw(TRUE);
-            return TRUE;
-        }
-        default:
-            if (wParam>=MP_WEBURL && wParam<=MP_WEBURL+256)
-            {
-                theWebServices.RunURL(file, wParam);
+                theApp.CopyTextToClipboard(clpbrd);
                 return TRUE;
             }
-            break;
+            case MP_GETHTMLED2KLINK:
+            {
+                CWaitCursor curWait;
+                CString clpbrd;
+                POSITION pos = selectedList.GetHeadPosition();
+                while (pos != NULL)
+                {
+                    file = selectedList.GetNext(pos);
+                    if (!clpbrd.IsEmpty())
+                        clpbrd += _T("<br />\r\n");
+                    clpbrd += file->GetED2kLink(false, true);
+                }
+                theApp.CopyTextToClipboard(clpbrd);
+                return TRUE;
+            }
+            case MP_RESUME:
+                if (thePrefs.IsExtControlsEnabled())
+                    theApp.emuledlg->searchwnd->DownloadSelected(false);
+                else
+                    theApp.emuledlg->searchwnd->DownloadSelected();
+                return TRUE;
+            case MP_RESUMEPAUSED:
+                theApp.emuledlg->searchwnd->DownloadSelected(true);
+                return TRUE;
+            case IDA_ENTER:
+                theApp.emuledlg->searchwnd->DownloadSelected();
+                return TRUE;
+            case MP_REMOVESELECTED:
+            case MPG_DELETE:
+            {
+                CWaitCursor curWait;
+                SetRedraw(FALSE);
+                POSITION pos = selectedList.GetHeadPosition();
+                while (pos != NULL)
+                {
+                    file = selectedList.GetNext(pos);
+                    HideSources(file);
+                    theApp.searchlist->RemoveResult(file);
+                }
+                AutoSelectItem();
+                SetRedraw(TRUE);
+                return TRUE;
+            }
+            case MP_DETAIL:
+            case MPG_ALTENTER:
+            {
+                CSearchResultFileDetailSheet sheet(selectedList, 0, this);
+                sheet.DoModal();
+                return TRUE;
+            }
+            case MP_CMT:
+            {
+                CSearchResultFileDetailSheet sheet(selectedList, IDD_COMMENTLST, this);
+                sheet.DoModal();
+                return TRUE;
+            }
+            case MP_PREVIEW:
+                if (file)
+                {
+                    if (file->GetPreviews().GetSize() > 0)
+                    {
+                        // already have previews
+                        (new PreviewDlg())->SetFile(file);
+                    }
+                    else
+                    {
+                        CUpDownClient* newclient = new CUpDownClient(NULL, file->GetClientPort(),file->GetClientID(),file->GetClientServerIP(),file->GetClientServerPort(), true);
+                        if (!theApp.clientlist->AttachToAlreadyKnown(&newclient,NULL))
+                        {
+                            theApp.clientlist->AddClient(newclient);
+                        }
+                        newclient->SendPreviewRequest(file);
+                        // add to res - later
+                        AddLogLine(true, _T("Preview Requested - Please wait"));
+                    }
+                }
+                return TRUE;
+            case MP_MARKASSPAM:
+            {
+                CWaitCursor curWait;
+                SetRedraw(FALSE);
+                POSITION pos = selectedList.GetHeadPosition();
+                bool bContainsNotSpamFile = false;
+                while (pos != NULL)
+                {
+                    file = selectedList.GetNext(pos);
+                    if (!file->IsConsideredSpam())
+                    {
+                        bContainsNotSpamFile = true;
+                        break;
+                    }
+                }
+                pos = selectedList.GetHeadPosition();
+                while (pos != NULL)
+                {
+                    file = selectedList.GetNext(pos);
+                    if (file->IsConsideredSpam() && bContainsNotSpamFile)
+                    {
+                        continue;
+                    }
+                    else if (file->IsConsideredSpam() && !bContainsNotSpamFile)
+                    {
+                        theApp.searchlist->MarkFileAsNotSpam(file, false, true);
+                    }
+                    else if (!file->IsConsideredSpam() && bContainsNotSpamFile)
+                    {
+                        theApp.searchlist->MarkFileAsSpam(file, false, true);
+                    }
+                    else if (!file->IsConsideredSpam() && !bContainsNotSpamFile)
+                    {
+                        continue;
+                    }
+                }
+                theApp.searchlist->RecalculateSpamRatings(file->GetSearchID(), bContainsNotSpamFile, !bContainsNotSpamFile, true);
+                SetRedraw(TRUE);
+                return TRUE;
+            }
+            default:
+                if (wParam>=MP_WEBURL && wParam<=MP_WEBURL+256)
+                {
+                    theWebServices.RunURL(file, wParam);
+                    return TRUE;
+                }
+                break;
         }
     }
     switch (wParam)
     {
-    case MP_REMOVEALL:
-    {
-        CWaitCursor curWait;
-        theApp.emuledlg->searchwnd->DeleteAllSearches();
-        break;
-    }
-    case MP_REMOVE:
-    {
-        CWaitCursor curWait;
-        theApp.emuledlg->searchwnd->DeleteSearch(m_nResultsID);
-        break;
-    }
+        case MP_REMOVEALL:
+        {
+            CWaitCursor curWait;
+            theApp.emuledlg->searchwnd->DeleteAllSearches();
+            break;
+        }
+        case MP_REMOVE:
+        {
+            CWaitCursor curWait;
+            theApp.emuledlg->searchwnd->DeleteSearch(m_nResultsID);
+            break;
+        }
     }
 
     return FALSE;
@@ -1206,99 +1206,99 @@ void CSearchListCtrl::OnLvnGetInfoTip(NMHDR *pNMHDR, LRESULT *pResult)
                         CString strTag;
                         switch (tag->GetNameID())
                         {
-                            /*case FT_FILENAME:
-                                strTag.Format(_T("%s: %s"), GetResString(IDS_SW_NAME), tag->GetStr());
+                                /*case FT_FILENAME:
+                                    strTag.Format(_T("%s: %s"), GetResString(IDS_SW_NAME), tag->GetStr());
+                                    break;
+                                case FT_FILESIZE:
+                                    strTag.Format(_T("%s: %s"), GetResString(IDS_DL_SIZE), FormatFileSize(tag->GetInt64()));
+                                    break;*/
+                            case FT_FILETYPE:
+                                strTag.Format(_T("%s: %s"), GetResString(IDS_TYPE), tag->GetStr());
                                 break;
-                            case FT_FILESIZE:
-                                strTag.Format(_T("%s: %s"), GetResString(IDS_DL_SIZE), FormatFileSize(tag->GetInt64()));
-                                break;*/
-                        case FT_FILETYPE:
-                            strTag.Format(_T("%s: %s"), GetResString(IDS_TYPE), tag->GetStr());
-                            break;
-                        case FT_FILEFORMAT:
-                            strTag.Format(_T("%s: %s"), GetResString(IDS_SEARCHEXTENTION), tag->GetStr());
-                            break;
-                        case FT_SOURCES:
-                            strTag.Format(_T("%s: %u"), GetResString(IDS_SEARCHAVAIL), tag->GetInt());
-                            break;
-                        case 0x13: // remote client's upload file priority (tested with Hybrid 0.47)
-                            if (tag->GetInt() == 0)
-                                strTag = GetResString(IDS_PRIORITY) + _T(": ") + GetResString(IDS_PRIONORMAL);
-                            else if (tag->GetInt() == 2)
-                                strTag = GetResString(IDS_PRIORITY) + _T(": ") + GetResString(IDS_PRIOHIGH);
-                            else if (tag->GetInt() == -2)
-                                strTag = GetResString(IDS_PRIORITY) + _T(": ") + GetResString(IDS_PRIOLOW);
+                            case FT_FILEFORMAT:
+                                strTag.Format(_T("%s: %s"), GetResString(IDS_SEARCHEXTENTION), tag->GetStr());
+                                break;
+                            case FT_SOURCES:
+                                strTag.Format(_T("%s: %u"), GetResString(IDS_SEARCHAVAIL), tag->GetInt());
+                                break;
+                            case 0x13: // remote client's upload file priority (tested with Hybrid 0.47)
+                                if (tag->GetInt() == 0)
+                                    strTag = GetResString(IDS_PRIORITY) + _T(": ") + GetResString(IDS_PRIONORMAL);
+                                else if (tag->GetInt() == 2)
+                                    strTag = GetResString(IDS_PRIORITY) + _T(": ") + GetResString(IDS_PRIOHIGH);
+                                else if (tag->GetInt() == -2)
+                                    strTag = GetResString(IDS_PRIORITY) + _T(": ") + GetResString(IDS_PRIOLOW);
 #ifdef _DEBUG
-                            else
-                                strTag.Format(_T("%s: %d (***Unknown***)"), GetResString(IDS_PRIORITY), tag->GetInt());
+                                else
+                                    strTag.Format(_T("%s: %d (***Unknown***)"), GetResString(IDS_PRIORITY), tag->GetInt());
 #endif
-                            break;
-                        default:
-                        {
-                            bool bUnkTag = false;
-                            bool bSkipTag = false;
-                            if (tag->GetNameID() == FT_FILENAME || tag->GetNameID() == FT_FILESIZE)
-                                bSkipTag = true;
-                            else if (tag->GetName())
+                                break;
+                            default:
                             {
-                                strTag.Format(_T("%hs: "), tag->GetName());
-                                strTag = strTag.Left(1).MakeUpper() + strTag.Mid(1);
-                            }
-                            else
-                            {
-                                extern CString GetName(const CTag* pTag);
-                                CString strTagName = GetName(tag);
-                                if (!strTagName.IsEmpty())
+                                bool bUnkTag = false;
+                                bool bSkipTag = false;
+                                if (tag->GetNameID() == FT_FILENAME || tag->GetNameID() == FT_FILESIZE)
+                                    bSkipTag = true;
+                                else if (tag->GetName())
                                 {
-                                    strTag.Format(_T("%s: "), strTagName);
+                                    strTag.Format(_T("%hs: "), tag->GetName());
+                                    strTag = strTag.Left(1).MakeUpper() + strTag.Mid(1);
                                 }
                                 else
                                 {
-#ifdef _DEBUG
-                                    strTag.Format(_T("Unknown tag #%02X: "), tag->GetNameID());
-#else
-                                    bUnkTag = true;
-#endif
-                                }
-                            }
-                            if (!bUnkTag && !bSkipTag)
-                            {
-                                if (tag->IsStr())
-                                    strTag += tag->GetStr();
-                                else if (tag->IsInt())
-                                {
-                                    if (tag->GetNameID() == FT_MEDIA_LENGTH)
+                                    extern CString GetName(const CTag* pTag);
+                                    CString strTagName = GetName(tag);
+                                    if (!strTagName.IsEmpty())
                                     {
-                                        CString strTemp;
-                                        SecToTimeLength(tag->GetInt(), strTemp);
-                                        strTag += strTemp;
+                                        strTag.Format(_T("%s: "), strTagName);
                                     }
                                     else
                                     {
-                                        TCHAR szBuff[16];
-                                        _itot(tag->GetInt(), szBuff, 10);
-                                        strTag += szBuff;
+#ifdef _DEBUG
+                                        strTag.Format(_T("Unknown tag #%02X: "), tag->GetNameID());
+#else
+                                        bUnkTag = true;
+#endif
                                     }
                                 }
-                                else if (tag->IsFloat())
+                                if (!bUnkTag && !bSkipTag)
                                 {
-                                    TCHAR szBuff[32];
-                                    _sntprintf(szBuff, _countof(szBuff), _T("%f"), tag->GetFloat());
-                                    szBuff[_countof(szBuff) - 1] = L'\0';
-                                    strTag += szBuff;
-                                }
-                                else if (!bSkipTag)
-                                {
+                                    if (tag->IsStr())
+                                        strTag += tag->GetStr();
+                                    else if (tag->IsInt())
+                                    {
+                                        if (tag->GetNameID() == FT_MEDIA_LENGTH)
+                                        {
+                                            CString strTemp;
+                                            SecToTimeLength(tag->GetInt(), strTemp);
+                                            strTag += strTemp;
+                                        }
+                                        else
+                                        {
+                                            TCHAR szBuff[16];
+                                            _itot(tag->GetInt(), szBuff, 10);
+                                            strTag += szBuff;
+                                        }
+                                    }
+                                    else if (tag->IsFloat())
+                                    {
+                                        TCHAR szBuff[32];
+                                        _sntprintf(szBuff, _countof(szBuff), _T("%f"), tag->GetFloat());
+                                        szBuff[_countof(szBuff) - 1] = L'\0';
+                                        strTag += szBuff;
+                                    }
+                                    else if (!bSkipTag)
+                                    {
 #ifdef _DEBUG
-                                    CString strBuff;
-                                    strBuff.Format(_T("Unknown value type=#%02X"), tag->GetType());
-                                    strTag += strBuff;
+                                        CString strBuff;
+                                        strBuff.Format(_T("Unknown value type=#%02X"), tag->GetType());
+                                        strTag += strBuff;
 #else
-                                    strTag.Empty();
+                                        strTag.Empty();
 #endif
+                                    }
                                 }
                             }
-                        }
                         }
                         if (!strTag.IsEmpty())
                         {
@@ -1792,25 +1792,25 @@ void CSearchListCtrl::DrawSourceChild(CDC *dc, int nColumn, LPRECT lpRect, UINT 
     GetItemDisplayText(src, nColumn, szItem, _countof(szItem));
     switch (nColumn)
     {
-    case 0:  		// file name
-    {
-        UINT uOffset = 8 + 8 + theApp.GetSmallSytemIconSize().cy + sm_iLabelOffset;
-        if ((thePrefs.ShowRatingIndicator() && (src->HasComment() || src->HasRating() || src->IsKadCommentSearchRunning()))
-                || src->IsConsideredSpam())
-            uOffset += 16;
-        lpRect->left += uOffset;
-        dc->DrawText(szItem, -1, lpRect, MLC_DT_TEXT | uDrawTextAlignment);
-        lpRect->left -= uOffset;
-        break;
-    }
+        case 0:  		// file name
+        {
+            UINT uOffset = 8 + 8 + theApp.GetSmallSytemIconSize().cy + sm_iLabelOffset;
+            if ((thePrefs.ShowRatingIndicator() && (src->HasComment() || src->HasRating() || src->IsKadCommentSearchRunning()))
+                    || src->IsConsideredSpam())
+                uOffset += 16;
+            lpRect->left += uOffset;
+            dc->DrawText(szItem, -1, lpRect, MLC_DT_TEXT | uDrawTextAlignment);
+            lpRect->left -= uOffset;
+            break;
+        }
 
-    case 4:			// file type
-    case 5:			// file hash
-        break;
+        case 4:			// file type
+        case 5:			// file hash
+            break;
 
-    default:
-        dc->DrawText(szItem, -1, lpRect, MLC_DT_TEXT | uDrawTextAlignment);
-        break;
+        default:
+            dc->DrawText(szItem, -1, lpRect, MLC_DT_TEXT | uDrawTextAlignment);
+            break;
     }
 }
 
@@ -1820,33 +1820,33 @@ void CSearchListCtrl::DrawSourceParent(CDC *dc, int nColumn, LPRECT lpRect, UINT
     GetItemDisplayText(src, nColumn, szItem, _countof(szItem));
     switch (nColumn)
     {
-    case 0:  		// file name
-    {
-        UINT uOffset = 8 + theApp.GetSmallSytemIconSize().cx + sm_iLabelOffset;
-        if ((thePrefs.ShowRatingIndicator() && (src->HasComment() || src->HasRating() || src->IsKadCommentSearchRunning()))
-                || src->IsConsideredSpam())
-            uOffset += 16;
-        lpRect->left += uOffset;
-        dc->DrawText(szItem, -1, lpRect, MLC_DT_TEXT | uDrawTextAlignment);
-        lpRect->left -= uOffset;
-        break;
-    }
+        case 0:  		// file name
+        {
+            UINT uOffset = 8 + theApp.GetSmallSytemIconSize().cx + sm_iLabelOffset;
+            if ((thePrefs.ShowRatingIndicator() && (src->HasComment() || src->HasRating() || src->IsKadCommentSearchRunning()))
+                    || src->IsConsideredSpam())
+                uOffset += 16;
+            lpRect->left += uOffset;
+            dc->DrawText(szItem, -1, lpRect, MLC_DT_TEXT | uDrawTextAlignment);
+            lpRect->left -= uOffset;
+            break;
+        }
 
-    case 3: 		// complete sources
-    {
-        bool bComplete = IsComplete(src, src->GetSourceCount());
-        COLORREF crOldTextColor = 0;
-        if (!bComplete)
-            crOldTextColor = dc->SetTextColor(RGB(255, 0, 0));
-        dc->DrawText(szItem, -1, lpRect, MLC_DT_TEXT | uDrawTextAlignment);
-        if (!bComplete)
-            dc->SetTextColor(crOldTextColor);
-        break;
-    }
+        case 3: 		// complete sources
+        {
+            bool bComplete = IsComplete(src, src->GetSourceCount());
+            COLORREF crOldTextColor = 0;
+            if (!bComplete)
+                crOldTextColor = dc->SetTextColor(RGB(255, 0, 0));
+            dc->DrawText(szItem, -1, lpRect, MLC_DT_TEXT | uDrawTextAlignment);
+            if (!bComplete)
+                dc->SetTextColor(crOldTextColor);
+            break;
+        }
 
-    default:
-        dc->DrawText(szItem, -1, lpRect, MLC_DT_TEXT | uDrawTextAlignment);
-        break;
+        default:
+            dc->DrawText(szItem, -1, lpRect, MLC_DT_TEXT | uDrawTextAlignment);
+            break;
     }
 }
 
@@ -1941,154 +1941,154 @@ void CSearchListCtrl::GetItemDisplayText(const CSearchFile *src, int iSubItem, L
     pszText[0] = L'\0';
     switch (iSubItem)
     {
-    case 0:			// file name
-        _tcsncpy(pszText, src->GetFileName(), cchTextMax);
-        break;
+        case 0:			// file name
+            _tcsncpy(pszText, src->GetFileName(), cchTextMax);
+            break;
 
-    case 1:			// file size
-        if (src->GetListParent() == NULL
-                || (thePrefs.GetDebugSearchResultDetailLevel() >= 1 && src->GetFileSize() != src->GetListParent()->GetFileSize()))
-        {
-            _tcsncpy(pszText, FormatFileSize(src->GetFileSize()), cchTextMax);
-        }
-        break;
-
-    case 2:			// avail
-        if (src->GetListParent() == NULL)
-        {
-            CString strBuffer;
-            strBuffer.Format(_T("%u"), src->GetSourceCount());
-            if (thePrefs.IsExtControlsEnabled())
+        case 1:			// file size
+            if (src->GetListParent() == NULL
+                    || (thePrefs.GetDebugSearchResultDetailLevel() >= 1 && src->GetFileSize() != src->GetListParent()->GetFileSize()))
             {
-                if (src->IsKademlia())
-                {
-                    UINT nKnownPublisher = (src->GetKadPublishInfo() & 0x00FF0000) >> 16;
-                    if (nKnownPublisher > 0)
-                        strBuffer.AppendFormat(_T(" (%u)"), nKnownPublisher);
-                }
-                else
-                {
-                    int iClients = src->GetClientsCount();
-                    if (iClients > 0)
-                        strBuffer.AppendFormat(_T(" (%u)"), iClients);
-                }
+                _tcsncpy(pszText, FormatFileSize(src->GetFileSize()), cchTextMax);
             }
+            break;
+
+        case 2:			// avail
+            if (src->GetListParent() == NULL)
+            {
+                CString strBuffer;
+                strBuffer.Format(_T("%u"), src->GetSourceCount());
+                if (thePrefs.IsExtControlsEnabled())
+                {
+                    if (src->IsKademlia())
+                    {
+                        UINT nKnownPublisher = (src->GetKadPublishInfo() & 0x00FF0000) >> 16;
+                        if (nKnownPublisher > 0)
+                            strBuffer.AppendFormat(_T(" (%u)"), nKnownPublisher);
+                    }
+                    else
+                    {
+                        int iClients = src->GetClientsCount();
+                        if (iClients > 0)
+                            strBuffer.AppendFormat(_T(" (%u)"), iClients);
+                    }
+                }
 #ifdef _DEBUG
-            if (src->GetKadPublishInfo() == 0)
-                strBuffer += _T(" | -");
+                if (src->GetKadPublishInfo() == 0)
+                    strBuffer += _T(" | -");
+                else
+                    strBuffer.AppendFormat(_T(" | Names:%u, Pubs:%u, Trust:%0.2f"),
+                                           (src->GetKadPublishInfo() & 0xFF000000) >> 24,
+                                           (src->GetKadPublishInfo() & 0x00FF0000) >> 16,
+                                           (float)(src->GetKadPublishInfo() & 0x0000FFFF) / 100.0f);
+#endif
+                _tcsncpy(pszText, strBuffer, cchTextMax);
+            }
             else
-                strBuffer.AppendFormat(_T(" | Names:%u, Pubs:%u, Trust:%0.2f"),
-                                       (src->GetKadPublishInfo() & 0xFF000000) >> 24,
-                                       (src->GetKadPublishInfo() & 0x00FF0000) >> 16,
-                                       (float)(src->GetKadPublishInfo() & 0x0000FFFF) / 100.0f);
-#endif
-            _tcsncpy(pszText, strBuffer, cchTextMax);
-        }
-        else
+            {
+                _sntprintf(pszText, cchTextMax, _T("%u"), src->GetListChildCount());
+            }
+            break;
+
+        case 3:			// complete sources
+            if (src->GetListParent() == NULL
+                    || (thePrefs.GetDebugSearchResultDetailLevel() >= 1 && thePrefs.IsExtControlsEnabled()))
+            {
+                _tcsncpy(pszText, GetCompleteSourcesDisplayString(src, src->GetSourceCount()), cchTextMax);
+            }
+            break;
+
+        case 4:			// file type
+            if (src->GetListParent() == NULL)
+                _tcsncpy(pszText, src->GetFileTypeDisplayStr(), cchTextMax);
+            break;
+
+        case 5:			// file hash
+            if (src->GetListParent() == NULL)
+                _tcsncpy(pszText, md4str(src->GetFileHash()), cchTextMax);
+            break;
+
+        case 6:
+            _tcsncpy(pszText, src->GetStrTagValue(FT_MEDIA_ARTIST), cchTextMax);
+            break;
+
+        case 7:
+            _tcsncpy(pszText, src->GetStrTagValue(FT_MEDIA_ALBUM), cchTextMax);
+            break;
+
+        case 8:
+            _tcsncpy(pszText, src->GetStrTagValue(FT_MEDIA_TITLE), cchTextMax);
+            break;
+
+        case 9:
         {
-            _sntprintf(pszText, cchTextMax, _T("%u"), src->GetListChildCount());
+            UINT nMediaLength = src->GetIntTagValue(FT_MEDIA_LENGTH);
+            if (nMediaLength)
+            {
+                CString buffer;
+                SecToTimeLength(nMediaLength, buffer);
+                _tcsncpy(pszText, buffer, cchTextMax);
+            }
+            break;
         }
-        break;
 
-    case 3:			// complete sources
-        if (src->GetListParent() == NULL
-                || (thePrefs.GetDebugSearchResultDetailLevel() >= 1 && thePrefs.IsExtControlsEnabled()))
+        case 10:
         {
-            _tcsncpy(pszText, GetCompleteSourcesDisplayString(src, src->GetSourceCount()), cchTextMax);
+            UINT nBitrate = src->GetIntTagValue(FT_MEDIA_BITRATE);
+            if (nBitrate)
+                _sntprintf(pszText, cchTextMax, _T("%u %s"), nBitrate, GetResString(IDS_KBITSSEC));
+            break;
         }
-        break;
 
-    case 4:			// file type
-        if (src->GetListParent() == NULL)
-            _tcsncpy(pszText, src->GetFileTypeDisplayStr(), cchTextMax);
-        break;
+        case 11:
+            _tcsncpy(pszText, GetCodecDisplayName(src->GetStrTagValue(FT_MEDIA_CODEC)), cchTextMax);
+            break;
 
-    case 5:			// file hash
-        if (src->GetListParent() == NULL)
-            _tcsncpy(pszText, md4str(src->GetFileHash()), cchTextMax);
-        break;
+        case 12:		// dir
+            if (src->GetDirectory())
+                _tcsncpy(pszText, src->GetDirectory(), cchTextMax);
+            break;
 
-    case 6:
-        _tcsncpy(pszText, src->GetStrTagValue(FT_MEDIA_ARTIST), cchTextMax);
-        break;
-
-    case 7:
-        _tcsncpy(pszText, src->GetStrTagValue(FT_MEDIA_ALBUM), cchTextMax);
-        break;
-
-    case 8:
-        _tcsncpy(pszText, src->GetStrTagValue(FT_MEDIA_TITLE), cchTextMax);
-        break;
-
-    case 9:
-    {
-        UINT nMediaLength = src->GetIntTagValue(FT_MEDIA_LENGTH);
-        if (nMediaLength)
-        {
-            CString buffer;
-            SecToTimeLength(nMediaLength, buffer);
-            _tcsncpy(pszText, buffer, cchTextMax);
-        }
-        break;
-    }
-
-    case 10:
-    {
-        UINT nBitrate = src->GetIntTagValue(FT_MEDIA_BITRATE);
-        if (nBitrate)
-            _sntprintf(pszText, cchTextMax, _T("%u %s"), nBitrate, GetResString(IDS_KBITSSEC));
-        break;
-    }
-
-    case 11:
-        _tcsncpy(pszText, GetCodecDisplayName(src->GetStrTagValue(FT_MEDIA_CODEC)), cchTextMax);
-        break;
-
-    case 12:		// dir
-        if (src->GetDirectory())
-            _tcsncpy(pszText, src->GetDirectory(), cchTextMax);
-        break;
-
-    case 13:
-        if (src->m_eKnown == CSearchFile::Shared)
-            _tcsncpy(pszText, GetResString(IDS_SHARED), cchTextMax);
-        else if (src->m_eKnown == CSearchFile::Downloading)
-            _tcsncpy(pszText, GetResString(IDS_DOWNLOADING), cchTextMax);
-        else if (src->m_eKnown == CSearchFile::Downloaded)
-            _tcsncpy(pszText, GetResString(IDS_DOWNLOADED), cchTextMax);
-        else if (src->m_eKnown == CSearchFile::Cancelled)
-            _tcsncpy(pszText, GetResString(IDS_CANCELLED), cchTextMax);
-        else if (src->IsConsideredSpam())
-            _tcsncpy(pszText, GetResString(IDS_SPAM), cchTextMax);
+        case 13:
+            if (src->m_eKnown == CSearchFile::Shared)
+                _tcsncpy(pszText, GetResString(IDS_SHARED), cchTextMax);
+            else if (src->m_eKnown == CSearchFile::Downloading)
+                _tcsncpy(pszText, GetResString(IDS_DOWNLOADING), cchTextMax);
+            else if (src->m_eKnown == CSearchFile::Downloaded)
+                _tcsncpy(pszText, GetResString(IDS_DOWNLOADED), cchTextMax);
+            else if (src->m_eKnown == CSearchFile::Cancelled)
+                _tcsncpy(pszText, GetResString(IDS_CANCELLED), cchTextMax);
+            else if (src->IsConsideredSpam())
+                _tcsncpy(pszText, GetResString(IDS_SPAM), cchTextMax);
 #ifdef _DEBUG
-        {
-            pszText[cchTextMax - 1] = L'\0';
-            CString strBuffer(pszText);
-            if (!strBuffer.IsEmpty())
-                strBuffer += _T(' ');
-            DEBUG_ONLY(strBuffer.AppendFormat(_T("SR: %u%%"), src->GetSpamRating()));
-            _tcsncpy(pszText, strBuffer, cchTextMax);
-        }
+            {
+                pszText[cchTextMax - 1] = L'\0';
+                CString strBuffer(pszText);
+                if (!strBuffer.IsEmpty())
+                    strBuffer += _T(' ');
+                DEBUG_ONLY(strBuffer.AppendFormat(_T("SR: %u%%"), src->GetSpamRating()));
+                _tcsncpy(pszText, strBuffer, cchTextMax);
+            }
 #endif
-        break;
-    case 14:
-        if (src->GetFileIdentifierC().HasAICHHash())
-            _tcsncpy(pszText, src->GetFileIdentifierC().GetAICHHash().GetString(), cchTextMax);
-        break;
+            break;
+        case 14:
+            if (src->GetFileIdentifierC().HasAICHHash())
+                _tcsncpy(pszText, src->GetFileIdentifierC().GetAICHHash().GetString(), cchTextMax);
+            break;
 
 //>>> WiZaRd::AntiFake
-    case 15:
-    {
-        CString str = GetFakeComment(src, !thePrefs.IsExtControlsEnabled());
-        if (thePrefs.IsExtControlsEnabled())
+        case 15:
         {
-            str.Remove(L'\n');
-            str.Replace(L'\t', L' ');
+            CString str = GetFakeComment(src, !thePrefs.IsExtControlsEnabled());
+            if (thePrefs.IsExtControlsEnabled())
+            {
+                str.Remove(L'\n');
+                str.Replace(L'\t', L' ');
+            }
+            if (!str.IsEmpty())
+                _tcsncpy(pszText, str, cchTextMax);
+            break;
         }
-        if (!str.IsEmpty())
-            _tcsncpy(pszText, str, cchTextMax);
-        break;
-    }
 //<<< WiZaRd::AntiFake
     }
 

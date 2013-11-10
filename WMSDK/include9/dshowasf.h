@@ -77,11 +77,11 @@ typedef interface IConfigAsfWriter2 IConfigAsfWriter2;
 extern "C" {
 #endif
 
-    void * __RPC_USER MIDL_user_allocate(size_t);
-    void __RPC_USER MIDL_user_free(void *);
+void * __RPC_USER MIDL_user_allocate(size_t);
+void __RPC_USER MIDL_user_free(void *);
 
-    /* interface __MIDL_itf_dshowasf_0000 */
-    /* [local] */
+/* interface __MIDL_itf_dshowasf_0000 */
+/* [local] */
 
 //=========================================================================
 //
@@ -89,10 +89,10 @@ extern "C" {
 // Copyright (C) Microsoft Corporation.  All Rights Reserved.
 //
 //=========================================================================
-    EXTERN_GUID(IID_IConfigAsfWriter2,0x7989ccaa, 0x53f0, 0x44f0, 0x88, 0x4a, 0xf3, 0xb0, 0x3f, 0x6a, 0xe0, 0x66);
-    EXTERN_GUID(IID_IConfigAsfWriter,0x45086030,0xF7E4,0x486a,0xB5,0x04,0x82,0x6B,0xB5,0x79,0x2A,0x3B);
-    EXTERN_GUID(IID_IAMWMBufferPass,0x6dd816d7, 0xe740, 0x4123, 0x9e, 0x24, 0x24, 0x44, 0x41, 0x26, 0x44, 0xd8);
-    EXTERN_GUID(IID_IAMWMBufferPassCallback,0xb25b8372, 0xd2d2, 0x44b2, 0x86, 0x53, 0x1b, 0x8d, 0xae, 0x33, 0x24, 0x89);
+EXTERN_GUID(IID_IConfigAsfWriter2,0x7989ccaa, 0x53f0, 0x44f0, 0x88, 0x4a, 0xf3, 0xb0, 0x3f, 0x6a, 0xe0, 0x66);
+EXTERN_GUID(IID_IConfigAsfWriter,0x45086030,0xF7E4,0x486a,0xB5,0x04,0x82,0x6B,0xB5,0x79,0x2A,0x3B);
+EXTERN_GUID(IID_IAMWMBufferPass,0x6dd816d7, 0xe740, 0x4123, 0x9e, 0x24, 0x24, 0x44, 0x41, 0x26, 0x44, 0xd8);
+EXTERN_GUID(IID_IAMWMBufferPassCallback,0xb25b8372, 0xd2d2, 0x44b2, 0x86, 0x53, 0x1b, 0x8d, 0xae, 0x33, 0x24, 0x89);
 #ifndef EC_PREPROCESS_COMPLETE
 #define EC_PREPROCESS_COMPLETE 0x56
 #endif
@@ -104,17 +104,17 @@ extern "C" {
 
 
 
-    extern RPC_IF_HANDLE __MIDL_itf_dshowasf_0000_v0_0_c_ifspec;
-    extern RPC_IF_HANDLE __MIDL_itf_dshowasf_0000_v0_0_s_ifspec;
+extern RPC_IF_HANDLE __MIDL_itf_dshowasf_0000_v0_0_c_ifspec;
+extern RPC_IF_HANDLE __MIDL_itf_dshowasf_0000_v0_0_s_ifspec;
 
 #ifndef __IAMWMBufferPass_INTERFACE_DEFINED__
 #define __IAMWMBufferPass_INTERFACE_DEFINED__
 
-    /* interface IAMWMBufferPass */
-    /* [unique][uuid][object] */
+/* interface IAMWMBufferPass */
+/* [unique][uuid][object] */
 
 
-    EXTERN_C const IID IID_IAMWMBufferPass;
+EXTERN_C const IID IID_IAMWMBufferPass;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 

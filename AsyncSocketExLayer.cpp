@@ -390,53 +390,53 @@ void CAsyncSocketExLayer::CallEvent(int nEvent, int nErrorCode)
     m_nCriticalError=nErrorCode;
     switch (nEvent)
     {
-    case FD_READ:
-    case FD_FORCEREAD:
-        if (GetLayerState()==connected)
-        {
-            if (nErrorCode)
-                SetLayerState(aborted);
-            OnReceive(nErrorCode);
-        }
-        break;
-    case FD_WRITE:
-        if (GetLayerState()==connected)
-        {
-            if (nErrorCode)
-                SetLayerState(aborted);
-            OnSend(nErrorCode);
-        }
-        break;
-    case FD_CONNECT:
-        if (GetLayerState()==connecting)
-        {
-            if (!nErrorCode)
-                SetLayerState(connected);
-            else
-                SetLayerState(aborted);
-            OnConnect(nErrorCode);
-        }
-        break;
-    case FD_ACCEPT:
-        if (GetLayerState()==listening)
-        {
-            if (!nErrorCode)
-                SetLayerState(connected);
-            else
-                SetLayerState(aborted);
-            OnAccept(nErrorCode);
-        }
-        break;
-    case FD_CLOSE:
-        if (GetLayerState()==connected)
-        {
-            if (nErrorCode)
-                SetLayerState(aborted);
-            else
-                SetLayerState(closed);
-            OnClose(nErrorCode);
-        }
-        break;
+        case FD_READ:
+        case FD_FORCEREAD:
+            if (GetLayerState()==connected)
+            {
+                if (nErrorCode)
+                    SetLayerState(aborted);
+                OnReceive(nErrorCode);
+            }
+            break;
+        case FD_WRITE:
+            if (GetLayerState()==connected)
+            {
+                if (nErrorCode)
+                    SetLayerState(aborted);
+                OnSend(nErrorCode);
+            }
+            break;
+        case FD_CONNECT:
+            if (GetLayerState()==connecting)
+            {
+                if (!nErrorCode)
+                    SetLayerState(connected);
+                else
+                    SetLayerState(aborted);
+                OnConnect(nErrorCode);
+            }
+            break;
+        case FD_ACCEPT:
+            if (GetLayerState()==listening)
+            {
+                if (!nErrorCode)
+                    SetLayerState(connected);
+                else
+                    SetLayerState(aborted);
+                OnAccept(nErrorCode);
+            }
+            break;
+        case FD_CLOSE:
+            if (GetLayerState()==connected)
+            {
+                if (nErrorCode)
+                    SetLayerState(aborted);
+                else
+                    SetLayerState(closed);
+                OnClose(nErrorCode);
+            }
+            break;
     }
 }
 

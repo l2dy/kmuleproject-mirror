@@ -552,6 +552,11 @@
     <None Include="Mod\changelog.txt" />
     <None Include="Mod\main features.txt" />
     <None Include="res\all.ico" />
+    <None Include="res\ANALYZER0.ico" />
+    <None Include="res\ANALYZER1.ico" />
+    <None Include="res\ANALYZER2.ico" />
+    <None Include="res\ANALYZER3.ico" />
+    <None Include="res\ANALYZER4.ico" />
     <None Include="res\ArchivePreview.ico" />
     <None Include="res\Badguy.ico" />
     <None Include="res\bold.ico" />
@@ -709,6 +714,7 @@
     <None Include="res\KadStoreFile.ico" />
     <None Include="res\KadStoreWord.ico" />
     <None Include="res\KadWordSearch.ico" />
+    <None Include="res\left.ico" />
     <None Include="res\ListAdd.ico" />
     <None Include="res\ListRemove.ico" />
     <None Include="res\ListViewSortDown.bmp" />
@@ -749,6 +755,7 @@
     <None Include="res\Restore.ico" />
     <None Include="res\RestoreWindow.gif" />
     <None Include="res\RestoreWindow.ico" />
+    <None Include="res\right.ico" />
     <None Include="res\Scheduler.ico" />
     <None Include="res\Search.ico" />
     <None Include="res\SearchEdit.ico" />
@@ -823,6 +830,7 @@
     <None Include="res\TrayBtnMetallic.bmp" />
     <None Include="res\TrayConnected.ico" />
     <None Include="res\TrayDisconnected.ico" />
+    <None Include="res\TrayFirewalled.ico" />
     <None Include="res\TrayLowID.ico" />
     <None Include="res\Tweak.ico" />
     <None Include="res\underline.ico" />

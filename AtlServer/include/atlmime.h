@@ -91,18 +91,18 @@ inline size_t SetRfc822Time(__out_ecount_part_z_opt(dwLen, return) LPSTR szDate,
     dwTimeZoneId = GetTimeZoneInformation(&tzi);
     switch (dwTimeZoneId)
     {
-    case TIME_ZONE_ID_STANDARD:
-        ltzBias = tzi.Bias + tzi.StandardBias;
-        break;
+        case TIME_ZONE_ID_STANDARD:
+            ltzBias = tzi.Bias + tzi.StandardBias;
+            break;
 
-    case TIME_ZONE_ID_DAYLIGHT:
-        ltzBias = tzi.Bias + tzi.DaylightBias;
-        break;
+        case TIME_ZONE_ID_DAYLIGHT:
+            ltzBias = tzi.Bias + tzi.DaylightBias;
+            break;
 
-    case TIME_ZONE_ID_UNKNOWN:
-    default:
-        ltzBias = tzi.Bias;
-        break;
+        case TIME_ZONE_ID_UNKNOWN:
+        default:
+            ltzBias = tzi.Bias;
+            break;
     }
 
     // Set Hour Minutes and time zone dif
@@ -1280,23 +1280,23 @@ protected:
 
         switch (m_nEncodingScheme)
         {
-        case ATLSMTP_BASE64_ENCODE:
-            m_pszEncodeString = "base64";
-            *pnLineLength = ATLSMTP_MAX_BASE64_LINE_LENGTH;
-            *pnRequiredLength = Base64EncodeGetRequiredLength(ATLSMTP_MAX_BASE64_LINE_LENGTH);
-            break;
-        case ATLSMTP_UUENCODE:
-            m_pszEncodeString ="uuencode";
-            *pnLineLength = ATLSMTP_MAX_UUENCODE_LINE_LENGTH;
-            *pnRequiredLength = UUEncodeGetRequiredLength(ATLSMTP_MAX_UUENCODE_LINE_LENGTH);
-            break;
-        case ATLSMTP_QP_ENCODE:
-            m_pszEncodeString = "quoted-printable";
-            *pnLineLength = ATLSMTP_MAX_QP_LINE_LENGTH;
-            *pnRequiredLength = QPEncodeGetRequiredLength(ATLSMTP_MAX_QP_LINE_LENGTH);
-            break;
-        default:
-            return FALSE;
+            case ATLSMTP_BASE64_ENCODE:
+                m_pszEncodeString = "base64";
+                *pnLineLength = ATLSMTP_MAX_BASE64_LINE_LENGTH;
+                *pnRequiredLength = Base64EncodeGetRequiredLength(ATLSMTP_MAX_BASE64_LINE_LENGTH);
+                break;
+            case ATLSMTP_UUENCODE:
+                m_pszEncodeString ="uuencode";
+                *pnLineLength = ATLSMTP_MAX_UUENCODE_LINE_LENGTH;
+                *pnRequiredLength = UUEncodeGetRequiredLength(ATLSMTP_MAX_UUENCODE_LINE_LENGTH);
+                break;
+            case ATLSMTP_QP_ENCODE:
+                m_pszEncodeString = "quoted-printable";
+                *pnLineLength = ATLSMTP_MAX_QP_LINE_LENGTH;
+                *pnRequiredLength = QPEncodeGetRequiredLength(ATLSMTP_MAX_QP_LINE_LENGTH);
+                break;
+            default:
+                return FALSE;
         }
         return TRUE;
     }
@@ -1472,33 +1472,33 @@ public:
             nEncodedLength = nRequiredLength;
             switch (m_nEncodingScheme)
             {
-            case ATLSMTP_BASE64_ENCODE:
-                //if we are at the end of input (dwCurrRead < dwToGet), output the trailing padding if necessary
-                //(ATL_FLAG_NONE)
-                bRet = Base64Encode(spData, dwCurrRead, currBuffer, &nEncodedLength,
-                                    (dwCurrRead < dwToGet ? ATL_BASE64_FLAG_NONE: ATL_BASE64_FLAG_NOPAD));
-                //Base64Encoding needs explicit CRLF added
-                if (dwCurrRead < dwToGet)
-                {
-                    currBuffer[nEncodedLength++] = '\r';
-                    currBuffer[nEncodedLength++] = '\n';
-                }
-                break;
-            case ATLSMTP_UUENCODE:
-                //if we are at the beginning of the input, output the header (ATL_UUENCODE_HEADER)
-                //if we are the end of input (dwCurrRead < dwToGet), output the 'end'
-                //we are encoding for purposes of sending mail, so stuff dots (ATL_UUENCODE_DOT)
-                bRet = UUEncode(spData, dwCurrRead, currBuffer, &nEncodedLength, m_szFileName,
-                                (dwTotalRead > 0 ? 0 : ATLSMTP_UUENCODE_HEADER) |
-                                (dwCurrRead < dwToGet ? ATLSMTP_UUENCODE_END : 0) |
-                                ((dwFlags & ATLSMTP_FORMAT_SMTP) ? ATLSMTP_UUENCODE_DOT : 0));
-                break;
-            case ATLSMTP_QP_ENCODE:
-                //we are encoding for purposes of sending mail, so stuff dots
-                bRet = QPEncode(spData, dwCurrRead, currBuffer, &nEncodedLength,
-                                ((dwFlags & ATLSMTP_FORMAT_SMTP) ? ATLSMTP_QPENCODE_DOT : 0) |
-                                (dwCurrRead < dwToGet ? 0 : ATLSMTP_QPENCODE_TRAILING_SOFT));
-                break;
+                case ATLSMTP_BASE64_ENCODE:
+                    //if we are at the end of input (dwCurrRead < dwToGet), output the trailing padding if necessary
+                    //(ATL_FLAG_NONE)
+                    bRet = Base64Encode(spData, dwCurrRead, currBuffer, &nEncodedLength,
+                                        (dwCurrRead < dwToGet ? ATL_BASE64_FLAG_NONE: ATL_BASE64_FLAG_NOPAD));
+                    //Base64Encoding needs explicit CRLF added
+                    if (dwCurrRead < dwToGet)
+                    {
+                        currBuffer[nEncodedLength++] = '\r';
+                        currBuffer[nEncodedLength++] = '\n';
+                    }
+                    break;
+                case ATLSMTP_UUENCODE:
+                    //if we are at the beginning of the input, output the header (ATL_UUENCODE_HEADER)
+                    //if we are the end of input (dwCurrRead < dwToGet), output the 'end'
+                    //we are encoding for purposes of sending mail, so stuff dots (ATL_UUENCODE_DOT)
+                    bRet = UUEncode(spData, dwCurrRead, currBuffer, &nEncodedLength, m_szFileName,
+                                    (dwTotalRead > 0 ? 0 : ATLSMTP_UUENCODE_HEADER) |
+                                    (dwCurrRead < dwToGet ? ATLSMTP_UUENCODE_END : 0) |
+                                    ((dwFlags & ATLSMTP_FORMAT_SMTP) ? ATLSMTP_UUENCODE_DOT : 0));
+                    break;
+                case ATLSMTP_QP_ENCODE:
+                    //we are encoding for purposes of sending mail, so stuff dots
+                    bRet = QPEncode(spData, dwCurrRead, currBuffer, &nEncodedLength,
+                                    ((dwFlags & ATLSMTP_FORMAT_SMTP) ? ATLSMTP_QPENCODE_DOT : 0) |
+                                    (dwCurrRead < dwToGet ? 0 : ATLSMTP_QPENCODE_TRAILING_SOFT));
+                    break;
             }
             //try to send the encoded data
 #ifdef ATLSMTP_DOUBLE_BUFFERED
@@ -1739,26 +1739,26 @@ public:
                 dwCurrChunk = dwToGet;
             switch (m_nEncodingScheme)
             {
-            case ATLSMTP_BASE64_ENCODE:
-                bRet = Base64Encode(((LPBYTE)(m_pvRaw))+dwRead, dwCurrChunk, currBuffer, &nDestLen,
-                                    (dwRead < m_dwLength) ? ATL_BASE64_FLAG_NONE : ATL_BASE64_FLAG_NOPAD);
-                if (dwRead+dwCurrChunk == m_dwLength)
-                {
-                    currBuffer[nDestLen++] = '\r';
-                    currBuffer[nDestLen++] = '\n';
-                }
-                break;
-            case ATLSMTP_UUENCODE:
-                bRet = UUEncode(((LPBYTE)(m_pvRaw))+dwRead, dwCurrChunk, currBuffer, &nDestLen, _T("rawdata"),
-                                (dwRead > 0 ? 0 : ATLSMTP_UUENCODE_HEADER) |
-                                (dwRead+dwCurrChunk == m_dwLength ? ATLSMTP_UUENCODE_END : 0) |
-                                ((dwFlags & ATLSMTP_FORMAT_SMTP) ? ATLSMTP_UUENCODE_DOT : 0));
-                break;
-            case ATLSMTP_QP_ENCODE:
-                bRet = QPEncode(((LPBYTE)(m_pvRaw))+dwRead, dwCurrChunk, currBuffer, &nDestLen,
-                                ((dwFlags & ATLSMTP_FORMAT_SMTP) ? ATLSMTP_QPENCODE_DOT : 0) |
-                                (dwRead+dwCurrChunk == m_dwLength ? 0 : ATLSMTP_QPENCODE_TRAILING_SOFT));
-                break;
+                case ATLSMTP_BASE64_ENCODE:
+                    bRet = Base64Encode(((LPBYTE)(m_pvRaw))+dwRead, dwCurrChunk, currBuffer, &nDestLen,
+                                        (dwRead < m_dwLength) ? ATL_BASE64_FLAG_NONE : ATL_BASE64_FLAG_NOPAD);
+                    if (dwRead+dwCurrChunk == m_dwLength)
+                    {
+                        currBuffer[nDestLen++] = '\r';
+                        currBuffer[nDestLen++] = '\n';
+                    }
+                    break;
+                case ATLSMTP_UUENCODE:
+                    bRet = UUEncode(((LPBYTE)(m_pvRaw))+dwRead, dwCurrChunk, currBuffer, &nDestLen, _T("rawdata"),
+                                    (dwRead > 0 ? 0 : ATLSMTP_UUENCODE_HEADER) |
+                                    (dwRead+dwCurrChunk == m_dwLength ? ATLSMTP_UUENCODE_END : 0) |
+                                    ((dwFlags & ATLSMTP_FORMAT_SMTP) ? ATLSMTP_UUENCODE_DOT : 0));
+                    break;
+                case ATLSMTP_QP_ENCODE:
+                    bRet = QPEncode(((LPBYTE)(m_pvRaw))+dwRead, dwCurrChunk, currBuffer, &nDestLen,
+                                    ((dwFlags & ATLSMTP_FORMAT_SMTP) ? ATLSMTP_QPENCODE_DOT : 0) |
+                                    (dwRead+dwCurrChunk == m_dwLength ? 0 : ATLSMTP_QPENCODE_TRAILING_SOFT));
+                    break;
             }
             if (!bRet)
                 break;

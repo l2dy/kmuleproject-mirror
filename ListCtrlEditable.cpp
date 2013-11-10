@@ -179,11 +179,11 @@ BOOL CEditableListCtrl::PreTranslateMessage(MSG* pMsg)
 
         switch (m_iCol)
         {
-        case 0:
-            break;
-        case 1:
-            ShowEditCtrl();
-            break;
+            case 0:
+                break;
+            case 1:
+                ShowEditCtrl();
+                break;
         }
         return TRUE;
     }
@@ -197,12 +197,12 @@ void CEditableListCtrl::OnSetFocus(CWnd* pOldWnd)
 
     switch (m_iCol)
     {
-    case 0:
-        break;
-    case 1:
-        if (pOldWnd != m_pctrlEdit)
-            ShowEditCtrl();
-        break;
+        case 0:
+            break;
+        case 1:
+            if (pOldWnd != m_pctrlEdit)
+                ShowEditCtrl();
+            break;
     }
 }
 
@@ -352,13 +352,13 @@ void CEditableListCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 
     switch (m_iCol)
     {
-    case 0:
-        m_iCol = 1;
-        ShowEditCtrl();
-        break;
-    case 1:
-        ShowEditCtrl();
-        break;
+        case 0:
+            m_iCol = 1;
+            ShowEditCtrl();
+            break;
+        case 1:
+            ShowEditCtrl();
+            break;
     }
 }
 
@@ -419,14 +419,14 @@ BOOL CEditableListCtrl::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 {
     switch (((NMHDR*)lParam)->code)
     {
-    case HDN_BEGINTRACKW:
-    case HDN_BEGINTRACKA:
-        if (m_pctrlEdit && m_pctrlEdit->IsWindowVisible())
-            m_pctrlEdit->ShowWindow(SW_HIDE);
-        if (m_pctrlComboBox && m_pctrlComboBox->IsWindowVisible())
-            m_pctrlComboBox->ShowWindow(SW_HIDE);
-        *pResult = 0;
-        break;
+        case HDN_BEGINTRACKW:
+        case HDN_BEGINTRACKA:
+            if (m_pctrlEdit && m_pctrlEdit->IsWindowVisible())
+                m_pctrlEdit->ShowWindow(SW_HIDE);
+            if (m_pctrlComboBox && m_pctrlComboBox->IsWindowVisible())
+                m_pctrlComboBox->ShowWindow(SW_HIDE);
+            *pResult = 0;
+            break;
     }
 
     return CListCtrl::OnNotify(wParam, lParam, pResult);

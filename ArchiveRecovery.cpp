@@ -1220,15 +1220,15 @@ bool CArchiveRecovery::validateRarFileBlock(RAR_BlockFile *block)
 
     switch (block->METHOD)
     {
-    case 0x30: // storing
-    case 0x31: // fastest compression
-    case 0x32: // fast compression
-    case 0x33: // normal compression
-    case 0x34: // good compression
-    case 0x35: // best compression
-        break;
-    default:
-        return false;
+        case 0x30: // storing
+        case 0x31: // fastest compression
+        case 0x32: // fast compression
+        case 0x33: // normal compression
+        case 0x34: // good compression
+        case 0x35: // best compression
+            break;
+        default:
+            return false;
     }
 
     if (block->HEAD_FLAGS & 0x0200)

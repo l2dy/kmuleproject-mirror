@@ -277,13 +277,13 @@ LRESULT CButtonST::OnSetCheck(WPARAM wParam, LPARAM /*lParam*/)
 
     switch (wParam)
     {
-    case BST_CHECKED:
-    case BST_INDETERMINATE:	// Indeterminate state is handled like checked state
-        SetCheck(1);
-        break;
-    default:
-        SetCheck(0);
-        break;
+        case BST_CHECKED:
+        case BST_INDETERMINATE:	// Indeterminate state is handled like checked state
+            SetCheck(1);
+            break;
+        default:
+            SetCheck(0);
+            break;
     } // switch
 
     return 0;
@@ -727,57 +727,57 @@ void CButtonST::PrepareImageRect(BOOL bHasTitle, RECT* rpItem, CRect* rpTitle, B
 
     switch (m_byAlign)
     {
-    case ST_ALIGN_HORIZ:
-        if (bHasTitle == FALSE)
-        {
-            // Center image horizontally
-            rpImage->left += ((rpImage->Width() - (long)dwWidth)/2);
-        }
-        else
-        {
-            // Image must be placed just inside the focus rect
-            rpImage->left += m_ptImageOrg.x;
-            rpTitle->left += dwWidth + m_ptImageOrg.x;
-        }
-        // Center image vertically
-        rpImage->top += ((rpImage->Height() - (long)dwHeight)/2);
-        break;
-
-    case ST_ALIGN_HORIZ_RIGHT:
-        GetClientRect(&rBtn);
-        if (bHasTitle == FALSE)
-        {
-            // Center image horizontally
-            rpImage->left += ((rpImage->Width() - (long)dwWidth)/2);
-        }
-        else
-        {
-            // Image must be placed just inside the focus rect
-            rpTitle->right = rpTitle->Width() - dwWidth - m_ptImageOrg.x;
-            rpTitle->left = m_ptImageOrg.x;
-            rpImage->left = rBtn.right - dwWidth - m_ptImageOrg.x;
+        case ST_ALIGN_HORIZ:
+            if (bHasTitle == FALSE)
+            {
+                // Center image horizontally
+                rpImage->left += ((rpImage->Width() - (long)dwWidth)/2);
+            }
+            else
+            {
+                // Image must be placed just inside the focus rect
+                rpImage->left += m_ptImageOrg.x;
+                rpTitle->left += dwWidth + m_ptImageOrg.x;
+            }
             // Center image vertically
             rpImage->top += ((rpImage->Height() - (long)dwHeight)/2);
-        }
-        break;
+            break;
 
-    case ST_ALIGN_VERT:
-        // Center image horizontally
-        rpImage->left += ((rpImage->Width() - (long)dwWidth)/2);
-        if (bHasTitle == FALSE)
-        {
-            // Center image vertically
-            rpImage->top += ((rpImage->Height() - (long)dwHeight)/2);
-        }
-        else
-        {
-            rpImage->top = m_ptImageOrg.y;
-            rpTitle->top += dwHeight;
-        }
-        break;
+        case ST_ALIGN_HORIZ_RIGHT:
+            GetClientRect(&rBtn);
+            if (bHasTitle == FALSE)
+            {
+                // Center image horizontally
+                rpImage->left += ((rpImage->Width() - (long)dwWidth)/2);
+            }
+            else
+            {
+                // Image must be placed just inside the focus rect
+                rpTitle->right = rpTitle->Width() - dwWidth - m_ptImageOrg.x;
+                rpTitle->left = m_ptImageOrg.x;
+                rpImage->left = rBtn.right - dwWidth - m_ptImageOrg.x;
+                // Center image vertically
+                rpImage->top += ((rpImage->Height() - (long)dwHeight)/2);
+            }
+            break;
 
-    case ST_ALIGN_OVERLAP:
-        break;
+        case ST_ALIGN_VERT:
+            // Center image horizontally
+            rpImage->left += ((rpImage->Width() - (long)dwWidth)/2);
+            if (bHasTitle == FALSE)
+            {
+                // Center image vertically
+                rpImage->top += ((rpImage->Height() - (long)dwHeight)/2);
+            }
+            else
+            {
+                rpImage->top = m_ptImageOrg.y;
+                rpTitle->top += dwHeight;
+            }
+            break;
+
+        case ST_ALIGN_OVERLAP:
+            break;
     } // switch
 
     // If button is pressed then press image also
@@ -1292,14 +1292,14 @@ DWORD CButtonST::SetAlign(BYTE byAlign, BOOL bRepaint)
 {
     switch (byAlign)
     {
-    case ST_ALIGN_HORIZ:
-    case ST_ALIGN_HORIZ_RIGHT:
-    case ST_ALIGN_VERT:
-    case ST_ALIGN_OVERLAP:
-        m_byAlign = byAlign;
-        if (bRepaint)	Invalidate();
-        return BTNST_OK;
-        break;
+        case ST_ALIGN_HORIZ:
+        case ST_ALIGN_HORIZ_RIGHT:
+        case ST_ALIGN_VERT:
+        case ST_ALIGN_OVERLAP:
+            m_byAlign = byAlign;
+            if (bRepaint)	Invalidate();
+            return BTNST_OK;
+            break;
     } // switch
 
     return BTNST_INVALIDALIGN;
@@ -1326,16 +1326,16 @@ DWORD CButtonST::SetPressedStyle(BYTE byStyle, BOOL bRepaint)
 {
     switch (byStyle)
     {
-    case BTNST_PRESSED_LEFTRIGHT:
-        m_ptPressedOffset.x = 1;
-        m_ptPressedOffset.y = 1;
-        break;
-    case BTNST_PRESSED_TOPBOTTOM:
-        m_ptPressedOffset.x = 0;
-        m_ptPressedOffset.y = 2;
-        break;
-    default:
-        return BTNST_INVALIDPRESSEDSTYLE;
+        case BTNST_PRESSED_LEFTRIGHT:
+            m_ptPressedOffset.x = 1;
+            m_ptPressedOffset.y = 1;
+            break;
+        case BTNST_PRESSED_TOPBOTTOM:
+            m_ptPressedOffset.x = 0;
+            m_ptPressedOffset.y = 2;
+            break;
+        default:
+            return BTNST_INVALIDPRESSEDSTYLE;
     } // switch
 
     if (bRepaint)	Invalidate();

@@ -113,7 +113,7 @@ BOOL CClientDetailPage::OnSetActive()
         else
             buffer = GetResString(IDS_IDENTNOSUPPORT);
 #if defined(_DEBUG)
-		buffer.AppendFormat(L" (%s)", client->IsObfuscatedConnectionEstablished() ? GetResString(IDS_ENABLED) : GetResString(IDS_DISABLED));
+        buffer.AppendFormat(L" (%s)", client->IsObfuscatedConnectionEstablished() ? GetResString(IDS_ENABLED) : GetResString(IDS_DISABLED));
 #endif
         GetDlgItem(IDC_OBFUSCATION_STAT)->SetWindowText(buffer);
 
@@ -163,17 +163,17 @@ BOOL CClientDetailPage::OnSetActive()
             {
                 switch (client->Credits()->GetCurrentIdentState(client->GetIP()))
                 {
-                case IS_NOTAVAILABLE:
-                    GetDlgItem(IDC_CDIDENT)->SetWindowText(GetResString(IDS_IDENTNOSUPPORT));
-                    break;
-                case IS_IDFAILED:
-                case IS_IDNEEDED:
-                case IS_IDBADGUY:
-                    GetDlgItem(IDC_CDIDENT)->SetWindowText(GetResString(IDS_IDENTFAILED));
-                    break;
-                case IS_IDENTIFIED:
-                    GetDlgItem(IDC_CDIDENT)->SetWindowText(GetResString(IDS_IDENTOK));
-                    break;
+                    case IS_NOTAVAILABLE:
+                        GetDlgItem(IDC_CDIDENT)->SetWindowText(GetResString(IDS_IDENTNOSUPPORT));
+                        break;
+                    case IS_IDFAILED:
+                    case IS_IDNEEDED:
+                    case IS_IDBADGUY:
+                        GetDlgItem(IDC_CDIDENT)->SetWindowText(GetResString(IDS_IDENTFAILED));
+                        break;
+                    case IS_IDENTIFIED:
+                        GetDlgItem(IDC_CDIDENT)->SetWindowText(GetResString(IDS_IDENTOK));
+                        break;
                 }
             }
             else
@@ -193,35 +193,35 @@ BOOL CClientDetailPage::OnSetActive()
             buffer.Append(L" || ?");
         GetDlgItem(IDC_DRATIO)->SetWindowText(buffer);
         GetDlgItem(IDC_ANTILEECH_LABEL)->SetWindowText(GetResString(IDS_ANTILEECH_LABEL));
-		if(client->GetAntiLeechData() == NULL)
-			buffer = GetResString(IDS_UNAVAILABLE);
+        if (client->GetAntiLeechData() == NULL)
+            buffer = GetResString(IDS_UNAVAILABLE);
         else
-		{
-			if(client->IsBadGuy() || client->GetAntiLeechData()->GetBadForThisSession() != 0)
-				buffer = client->GetAntiLeechData()->GetAntiLeechDataString();			
+        {
+            if (client->IsBadGuy() || client->GetAntiLeechData()->GetBadForThisSession() != 0)
+                buffer = client->GetAntiLeechData()->GetAntiLeechDataString();
 #ifdef _DEBUG
-			if(client->GetAntiLeechData()->GetBadForThisSession() != 0)
-				buffer += L"\r\nVery bad guy!"; // very bad guy!
-			else
-			{
-				float fCAScore = client->GetAntiLeechData()->GetScore();
-				/*if(fCAScore < 0)
-					buffer += L"\r\nVery bad guy!"; // very bad guy!
-				else*/ if(fCAScore < 0.5)
-					buffer += L"\r\nBad guy!"; // bad guy!
-				else if(fCAScore < 1.3)
-					buffer.AppendFormat(L"\r\n%s!", GetResString(IDS_NO_BAD_BEHAVIOUR_DETECTED));  // no important data
-				else if(fCAScore < 3.0)
-					buffer += L"\r\nGood score!";  // good score!
-				else
-					buffer += L"\r\nVery good score!"; // very good score!
-			}
+            if (client->GetAntiLeechData()->GetBadForThisSession() != 0)
+                buffer += L"\r\nVery bad guy!"; // very bad guy!
+            else
+            {
+                float fCAScore = client->GetAntiLeechData()->GetScore();
+                /*if(fCAScore < 0)
+                	buffer += L"\r\nVery bad guy!"; // very bad guy!
+                else*/ if (fCAScore < 0.5)
+                    buffer += L"\r\nBad guy!"; // bad guy!
+                else if (fCAScore < 1.3)
+                    buffer.AppendFormat(L"\r\n%s!", GetResString(IDS_NO_BAD_BEHAVIOUR_DETECTED));  // no important data
+                else if (fCAScore < 3.0)
+                    buffer += L"\r\nGood score!";  // good score!
+                else
+                    buffer += L"\r\nVery good score!"; // very good score!
+            }
 #else
-			else
-				buffer = GetResString(IDS_NO_BAD_BEHAVIOUR_DETECTED);
+            else
+                buffer = GetResString(IDS_NO_BAD_BEHAVIOUR_DETECTED);
 #endif
-		}
-		GetDlgItem(IDC_ANTILEECH_INFO)->SetWindowText(buffer);
+        }
+        GetDlgItem(IDC_ANTILEECH_INFO)->SetWindowText(buffer);
 //<<< WiZaRd::ClientAnalyzer
 
         if (client->GetUserName() && client->Credits()!=NULL)

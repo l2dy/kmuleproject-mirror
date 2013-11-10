@@ -1160,60 +1160,60 @@ HRESULT CCodeTypeBuilder::ProcessElement(
 
             switch (p->GetElementType())
             {
-            case XSD_COMPLEXTYPE:
-            {
-                hr = ProcessComplexType(static_cast<CComplexType *>(p), pContainer, dwFlags);
-
-                if ((fTopLevel != TRUE) && (SUCCEEDED(hr)) && (spCodeElem != NULL))
+                case XSD_COMPLEXTYPE:
                 {
-                    CODETYPEMAP::CPair *pPair = m_codeTypes.Lookup(static_cast<CComplexType *>(p));
-                    ATLASSERT(pPair != NULL);
-                    *spCodeElem = pPair->m_value;
-                }
+                    hr = ProcessComplexType(static_cast<CComplexType *>(p), pContainer, dwFlags);
 
-                break;
-            }
-            case XSD_SIMPLETYPE:
-            {
-                XSDTYPE xsdType = XSDTYPE_UNK;
-                DWORD dwTypeFlags = 0;
-                hr = ProcessSimpleType(static_cast<CSimpleType *>(p), &xsdType, &dwTypeFlags);
-
-                if ((fTopLevel != TRUE) && (SUCCEEDED(hr)) && (spCodeElem != NULL))
-                {
-                    if (xsdType != XSDTYPE_UNK)
+                    if ((fTopLevel != TRUE) && (SUCCEEDED(hr)) && (spCodeElem != NULL))
                     {
-                        spCodeElem->SetXSDType(xsdType);
-                        spCodeElem->SetElement(pElem);
-                        if (spCodeElem->GetNamespace().GetLength() == 0)
-                        {
-                            spCodeElem->SetNamespace(p->GetParentSchema()->GetTargetNamespace());
-                        }
-                    }
-                    else
-                    {
-                        CODESIMPLETYPEMAP::CPair *pPair = m_codeEnums.Lookup(static_cast<CSimpleType *>(p));
+                        CODETYPEMAP::CPair *pPair = m_codeTypes.Lookup(static_cast<CComplexType *>(p));
                         ATLASSERT(pPair != NULL);
                         *spCodeElem = pPair->m_value;
                     }
+
+                    break;
                 }
-                break;
-            }
-            case XSD_UNSUPPORTED:
-            {
-                if ((fTopLevel != TRUE) && (spCodeElem != NULL))
+                case XSD_SIMPLETYPE:
                 {
-                    spCodeElem->SetXSDType(XSDTYPE_STRING);
-                    spCodeElem->SetElement(pElem);
-                    hr = S_OK;
+                    XSDTYPE xsdType = XSDTYPE_UNK;
+                    DWORD dwTypeFlags = 0;
+                    hr = ProcessSimpleType(static_cast<CSimpleType *>(p), &xsdType, &dwTypeFlags);
+
+                    if ((fTopLevel != TRUE) && (SUCCEEDED(hr)) && (spCodeElem != NULL))
+                    {
+                        if (xsdType != XSDTYPE_UNK)
+                        {
+                            spCodeElem->SetXSDType(xsdType);
+                            spCodeElem->SetElement(pElem);
+                            if (spCodeElem->GetNamespace().GetLength() == 0)
+                            {
+                                spCodeElem->SetNamespace(p->GetParentSchema()->GetTargetNamespace());
+                            }
+                        }
+                        else
+                        {
+                            CODESIMPLETYPEMAP::CPair *pPair = m_codeEnums.Lookup(static_cast<CSimpleType *>(p));
+                            ATLASSERT(pPair != NULL);
+                            *spCodeElem = pPair->m_value;
+                        }
+                    }
+                    break;
                 }
-                break;
-            }
-            default:
-            {
-                hr = E_FAIL;
-                break;
-            }
+                case XSD_UNSUPPORTED:
+                {
+                    if ((fTopLevel != TRUE) && (spCodeElem != NULL))
+                    {
+                        spCodeElem->SetXSDType(XSDTYPE_STRING);
+                        spCodeElem->SetElement(pElem);
+                        hr = S_OK;
+                    }
+                    break;
+                }
+                default:
+                {
+                    hr = E_FAIL;
+                    break;
+                }
             }
 
             if (FAILED(hr))
@@ -1728,99 +1728,99 @@ HRESULT CCodeTypeBuilder::ProcessSchemaElement(
     HRESULT hr = E_FAIL;
     switch (pElem->GetElementType())
     {
-    case XSD_COMPLEXTYPE:
-    {
-        CComplexType *pCplx = static_cast<CComplexType *>(pElem);
-        DWORD dwTypeFlags = IsArrayDefinition(pCplx);
-        CElement *pVarArrElement = NULL;
-        if (dwTypeFlags & CODEFLAG_FIXEDARRAY)
+        case XSD_COMPLEXTYPE:
         {
-            hr = ProcessArray(pCplx, pContainer, pCodeElem, dwFlags);
-            if (pCodeElem->GetNamespace().GetLength() == 0)
+            CComplexType *pCplx = static_cast<CComplexType *>(pElem);
+            DWORD dwTypeFlags = IsArrayDefinition(pCplx);
+            CElement *pVarArrElement = NULL;
+            if (dwTypeFlags & CODEFLAG_FIXEDARRAY)
             {
-                pCodeElem->SetNamespace(pElem->GetParentSchema()->GetTargetNamespace());
+                hr = ProcessArray(pCplx, pContainer, pCodeElem, dwFlags);
+                if (pCodeElem->GetNamespace().GetLength() == 0)
+                {
+                    pCodeElem->SetNamespace(pElem->GetParentSchema()->GetTargetNamespace());
+                }
             }
-        }
-        else if (dwTypeFlags & CODEFLAG_DYNARRAY)
-        {
-            EmitFileWarning(IDS_SDL_INVALID_ARRAY_DESC, pElem, 0);
-            pCodeElem->SetXSDType(XSDTYPE_STRING);
-            if (pCodeElem->GetNamespace().GetLength() == 0)
+            else if (dwTypeFlags & CODEFLAG_DYNARRAY)
             {
-                pCodeElem->SetNamespace(pElem->GetParentSchema()->GetTargetNamespace());
+                EmitFileWarning(IDS_SDL_INVALID_ARRAY_DESC, pElem, 0);
+                pCodeElem->SetXSDType(XSDTYPE_STRING);
+                if (pCodeElem->GetNamespace().GetLength() == 0)
+                {
+                    pCodeElem->SetNamespace(pElem->GetParentSchema()->GetTargetNamespace());
+                }
+                hr = S_OK;
             }
-            hr = S_OK;
-        }
-        else if ((dwTypeFlags == CODEFLAG_ERR) && (IsVarArrayDefinition(pCplx,dwFlags, &pVarArrElement) != FALSE))
-        {
-            ATLASSERT(pVarArrElement != NULL);
-            hr = ProcessVarArray(pVarArrElement, pContainer, pCodeElem, dwFlags);
-            if (pCodeElem->GetNamespace().GetLength() == 0)
+            else if ((dwTypeFlags == CODEFLAG_ERR) && (IsVarArrayDefinition(pCplx,dwFlags, &pVarArrElement) != FALSE))
             {
-                pCodeElem->SetNamespace(pElem->GetParentSchema()->GetTargetNamespace());
+                ATLASSERT(pVarArrElement != NULL);
+                hr = ProcessVarArray(pVarArrElement, pContainer, pCodeElem, dwFlags);
+                if (pCodeElem->GetNamespace().GetLength() == 0)
+                {
+                    pCodeElem->SetNamespace(pElem->GetParentSchema()->GetTargetNamespace());
+                }
             }
-        }
-        else
-        {
-            hr = ProcessComplexType(pCplx, pContainer, dwFlags);
-            if (SUCCEEDED(hr) && (pContainer != NULL))
+            else
             {
-                CODETYPEMAP::CPair *pPair = m_codeTypes.Lookup(pCplx);
+                hr = ProcessComplexType(pCplx, pContainer, dwFlags);
+                if (SUCCEEDED(hr) && (pContainer != NULL))
+                {
+                    CODETYPEMAP::CPair *pPair = m_codeTypes.Lookup(pCplx);
+                    ATLASSERT(pPair != NULL);
+                    *pCodeElem = pPair->m_value;
+                }
+            }
+
+            if (FAILED(hr))
+            {
+                break;
+            }
+
+            break;
+        }
+        case XSD_SIMPLETYPE:
+        {
+            XSDTYPE xsdType = XSDTYPE_UNK;
+            DWORD dwTypeFlags = 0;
+            hr = ProcessSimpleType(static_cast<CSimpleType *>(pElem), &xsdType, &dwTypeFlags);
+
+            if (FAILED(hr))
+            {
+                break;
+            }
+
+            if (xsdType != XSDTYPE_UNK)
+            {
+                pCodeElem->SetXSDType(xsdType);
+                pCodeElem->SetElement(pElem);
+                if (pCodeElem->GetNamespace().GetLength() == 0)
+                {
+                    pCodeElem->SetNamespace(pElem->GetParentSchema()->GetTargetNamespace());
+                }
+            }
+            else if (pContainer != NULL)
+            {
+                CODESIMPLETYPEMAP::CPair *pPair = m_codeEnums.Lookup(static_cast<CSimpleType *>(pElem));
                 ATLASSERT(pPair != NULL);
                 *pCodeElem = pPair->m_value;
             }
-        }
 
-        if (FAILED(hr))
-        {
             break;
         }
-
-        break;
-    }
-    case XSD_SIMPLETYPE:
-    {
-        XSDTYPE xsdType = XSDTYPE_UNK;
-        DWORD dwTypeFlags = 0;
-        hr = ProcessSimpleType(static_cast<CSimpleType *>(pElem), &xsdType, &dwTypeFlags);
-
-        if (FAILED(hr))
+        case XSD_UNSUPPORTED:
         {
-            break;
-        }
-
-        if (xsdType != XSDTYPE_UNK)
-        {
-            pCodeElem->SetXSDType(xsdType);
-            pCodeElem->SetElement(pElem);
-            if (pCodeElem->GetNamespace().GetLength() == 0)
+            if (pContainer != NULL)
             {
-                pCodeElem->SetNamespace(pElem->GetParentSchema()->GetTargetNamespace());
+                pCodeElem->SetXSDType(XSDTYPE_STRING);
+                pCodeElem->SetElement(pElem);
             }
+            break;
         }
-        else if (pContainer != NULL)
+        default:
         {
-            CODESIMPLETYPEMAP::CPair *pPair = m_codeEnums.Lookup(static_cast<CSimpleType *>(pElem));
-            ATLASSERT(pPair != NULL);
-            *pCodeElem = pPair->m_value;
+            hr = E_FAIL;
+            break;
         }
-
-        break;
-    }
-    case XSD_UNSUPPORTED:
-    {
-        if (pContainer != NULL)
-        {
-            pCodeElem->SetXSDType(XSDTYPE_STRING);
-            pCodeElem->SetElement(pElem);
-        }
-        break;
-    }
-    default:
-    {
-        hr = E_FAIL;
-        break;
-    }
     }
 
     if (SUCCEEDED(hr))

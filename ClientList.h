@@ -92,11 +92,11 @@ public:
     void	DeleteAll();
     bool	AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket* sender);
 //>>> WiZaRd::IPv6 [Xanatos]
-	CUpDownClient* FindClientByIP(const _CIPAddress& IP, UINT port) const;
-	CUpDownClient* FindClientByUserHash(const uchar* clienthash, const _CIPAddress& IP = _CIPAddress(), uint16 nTCPPort = 0) const;
-	CUpDownClient* FindClientByIP(const _CIPAddress& IP) const;
-	CUpDownClient* FindClientByIP_UDP(const _CIPAddress& IP, UINT nUDPport) const;
-	CUpDownClient* FindClientByIP_KadPort(const _CIPAddress& IP, uint16 port) const;
+    CUpDownClient* FindClientByIP(const _CIPAddress& IP, UINT port) const;
+    CUpDownClient* FindClientByUserHash(const uchar* clienthash, const _CIPAddress& IP = _CIPAddress(), uint16 nTCPPort = 0) const;
+    CUpDownClient* FindClientByIP(const _CIPAddress& IP) const;
+    CUpDownClient* FindClientByIP_UDP(const _CIPAddress& IP, UINT nUDPport) const;
+    CUpDownClient* FindClientByIP_KadPort(const _CIPAddress& IP, uint16 port) const;
 //     CUpDownClient* FindClientByIP(UINT clientip, UINT port) const;
 //     CUpDownClient* FindClientByUserHash(const uchar* clienthash, UINT dwIP = 0, uint16 nTCPPort = 0) const;
 //     CUpDownClient* FindClientByIP(UINT clientip) const;
@@ -104,7 +104,7 @@ public:
 //	   CUpDownClient* FindClientByIP_KadPort(UINT ip, uint16 port) const;
 //<<< WiZaRd::IPv6 [Xanatos]
     CUpDownClient* FindClientByServerID(UINT uServerIP, UINT uUserID) const;
-    CUpDownClient* FindClientByUserID_KadPort(UINT clientID,uint16 kadPort) const;    
+    CUpDownClient* FindClientByUserID_KadPort(UINT clientID,uint16 kadPort) const;
 
     // Banned clients
     void	AddBannedClient(UINT dwIP);

@@ -46,16 +46,16 @@ void CUpDownClient::SendModInfoPacket() const
 
     CList<CTag*> tagList; // netfinity: Add tags to a linked list to prevent mismatch
     tagList.AddTail(new CTag(CT_MOD_VERSION, MOD_VERSION));
-	
-	// Misc mod community features	
-	const UINT uSupportsUPS			= 1; //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
-	const UINT uSupportsIPv6		= 1; //>>> WiZaRd::IPv6 [Xanatos]
-	const UINT uSupportsExtXS		= 1; //>>> WiZaRd::ExtendedXS [Xanatos]	
-	tagList.AddTail(new CTag(CT_EMULE_MISCOPTIONS1,
-		(uSupportsUPS			<<  2) |	//>>> WiZaRd::Unsolicited PartStatus [Netfinity]
-		(uSupportsIPv6			<<  1) |	//>>> WiZaRd::IPv6 [Xanatos]
-		(uSupportsExtXS			<<  0)		//>>> WiZaRd::ExtendedXS [Xanatos]
-		));
+
+    // Misc mod community features
+    const UINT uSupportsUPS			= 1; //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
+    const UINT uSupportsIPv6		= 1; //>>> WiZaRd::IPv6 [Xanatos]
+    const UINT uSupportsExtXS		= 1; //>>> WiZaRd::ExtendedXS [Xanatos]
+    tagList.AddTail(new CTag(CT_EMULE_MISCOPTIONS1,
+                             (uSupportsUPS			<<  2) |	//>>> WiZaRd::Unsolicited PartStatus [Netfinity]
+                             (uSupportsIPv6			<<  1) |	//>>> WiZaRd::IPv6 [Xanatos]
+                             (uSupportsExtXS			<<  0)		//>>> WiZaRd::ExtendedXS [Xanatos]
+                            ));
 
 
     // we are done writing tags... flush them into the packet
@@ -101,52 +101,52 @@ void CUpDownClient::ProcessModInfoPacket(const uchar* pachPacket, const UINT nSi
         CTag temptag(&data, false);
         switch (temptag.GetNameID()) // here we distinguish only tags with an uint8 ID, all named tags are handled below
         {
-			case CT_MOD_VERSION:
-			{
-				if (temptag.IsStr())
-					m_strModVersion = temptag.GetStr();
-				else if (temptag.IsInt())
-					m_strModVersion.Format(L"%u", temptag.GetInt());
-				else
-					m_strModVersion = L"<Unknown>";
+            case CT_MOD_VERSION:
+            {
+                if (temptag.IsStr())
+                    m_strModVersion = temptag.GetStr();
+                else if (temptag.IsInt())
+                    m_strModVersion.Format(L"%u", temptag.GetInt());
+                else
+                    m_strModVersion = L"<Unknown>";
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
-				if (bDbgInfo)
-					m_strModInfo.AppendFormat(L"\n  ModID=%s", m_strModVersion);
+                if (bDbgInfo)
+                    m_strModInfo.AppendFormat(L"\n  ModID=%s", m_strModVersion);
 #endif
-				break;
-			}
+                break;
+            }
 
-			case CT_EMULE_MISCOPTIONS1:
-			{
-				//  1 UPS support
-				//	1 IPv6 support
-				//	1 ExtendedXS
-				if (temptag.IsInt())
-				{
-					m_fSupportsUnsolicitedPartStatus = (temptag.GetInt() >>  2) & 0x01; //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
-					m_fSupportsIPv6			= (temptag.GetInt() >>  1) & 0x01; //>>> WiZaRd::IPv6 [Xanatos]
-					m_fSupportsExtendedXS	= (temptag.GetInt() >>  0) & 0x01; //>>> WiZaRd::ExtendedXS [Xanatos]
+            case CT_EMULE_MISCOPTIONS1:
+            {
+                //  1 UPS support
+                //	1 IPv6 support
+                //	1 ExtendedXS
+                if (temptag.IsInt())
+                {
+                    m_fSupportsUnsolicitedPartStatus = (temptag.GetInt() >>  2) & 0x01; //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
+                    m_fSupportsIPv6			= (temptag.GetInt() >>  1) & 0x01; //>>> WiZaRd::IPv6 [Xanatos]
+                    m_fSupportsExtendedXS	= (temptag.GetInt() >>  0) & 0x01; //>>> WiZaRd::ExtendedXS [Xanatos]
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
-					if (bDbgInfo)
-						m_strModInfo.AppendFormat(L"\n  UPS=%u  IPv6=%u  ExtendedXS=%u", m_fSupportsUnsolicitedPartStatus, m_fSupportsIPv6, m_fSupportsExtendedXS);
+                    if (bDbgInfo)
+                        m_strModInfo.AppendFormat(L"\n  UPS=%u  IPv6=%u  ExtendedXS=%u", m_fSupportsUnsolicitedPartStatus, m_fSupportsIPv6, m_fSupportsExtendedXS);
 #endif
-				}
+                }
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
-				else if (bDbgInfo)
-					m_strModInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+                else if (bDbgInfo)
+                    m_strModInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
 #endif
-				break;
-			}
+                break;
+            }
 
-			default:
-			{
-				// now we handle custom named tags, we use a series of (else)if's and strcmp, note: this is *not* unicode!!!
+            default:
+            {
+                // now we handle custom named tags, we use a series of (else)if's and strcmp, note: this is *not* unicode!!!
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
-				if (bDbgInfo)
-					m_strModInfo.AppendFormat(L"\n  ***UnkTag=%s", temptag.GetFullInfo());
+                if (bDbgInfo)
+                    m_strModInfo.AppendFormat(L"\n  ***UnkTag=%s", temptag.GetFullInfo());
 #endif
-				break;
-			}
+                break;
+            }
         }
     }
 
@@ -156,7 +156,7 @@ void CUpDownClient::ProcessModInfoPacket(const uchar* pachPacket, const UINT nSi
         m_strModInfo.AppendFormat(L"\n  ***AddData: %u bytes", data.GetLength() - data.GetPosition());
 #endif
 
-	InitClientSoftwareVersion();
+    InitClientSoftwareVersion();
 }
 
 bool CClientReqSocket::ProcessModPacket(const BYTE* packet, const UINT size, const UINT opcode, const UINT uRawSize)
@@ -177,37 +177,37 @@ bool CClientReqSocket::ProcessModPacket(const BYTE* packet, const UINT size, con
 
             switch (opcode) // dispatch particular packets
             {
-                // for the mod prot v1 (capability exchange) only this one packet is relevant, the mod info packet
-            case OP_MODINFOPACKET:
-            {
+                    // for the mod prot v1 (capability exchange) only this one packet is relevant, the mod info packet
+                case OP_MODINFOPACKET:
+                {
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
-                if (thePrefs.GetDebugClientTCPLevel() > 0)
-                    DebugRecv("OP__ModInfoPacket", client);
+                    if (thePrefs.GetDebugClientTCPLevel() > 0)
+                        DebugRecv("OP__ModInfoPacket", client);
 #endif
-                theStats.AddDownDataOverheadOther(uRawSize);
+                    theStats.AddDownDataOverheadOther(uRawSize);
 
-                if (!client->SupportsModProt()) // just pure formality
-                    throw CString(L"Received Mod Info Packet from a client which does not support this feature!");
+                    if (!client->SupportsModProt()) // just pure formality
+                        throw CString(L"Received Mod Info Packet from a client which does not support this feature!");
 
-                // Process the packet
-                client->ProcessModInfoPacket(packet, size);
+                    // Process the packet
+                    client->ProcessModInfoPacket(packet, size);
 
-                // Now after we have all informations about the client the connection is established
-                client->ConnectionEstablished();
+                    // Now after we have all informations about the client the connection is established
+                    client->ConnectionEstablished();
 
-                // start secure identification, if
-                //  - we have received OP_MODINFOPACKET, (Mod prot compatible new eMule mods)
-                if (client->GetInfoPacketsReceived() == IP_BOTH)
-                    client->InfoPacketsReceived();
-                break;
-            }
+                    // start secure identification, if
+                    //  - we have received OP_MODINFOPACKET, (Mod prot compatible new eMule mods)
+                    if (client->GetInfoPacketsReceived() == IP_BOTH)
+                        client->InfoPacketsReceived();
+                    break;
+                }
 
-            default: // handle unknown packets
-            {
-                theStats.AddDownDataOverheadOther(uRawSize);
-                PacketToDebugLogLine(L"Mod", packet, size, opcode);
-                break;
-            }
+                default: // handle unknown packets
+                {
+                    theStats.AddDownDataOverheadOther(uRawSize);
+                    PacketToDebugLogLine(L"Mod", packet, size, opcode);
+                    break;
+                }
             }
         }
         catch (CFileException* error)

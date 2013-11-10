@@ -868,27 +868,27 @@ CXDialogTemplate::CXDialogTemplate(HWND hWnd,
     // set default button
     switch (nStyle & MB_DEFMASK)
     {
-    case MB_DEFBUTTON1 :
-        m_nDefButton = 1;
-        break;
-    case MB_DEFBUTTON2 :
-        m_nDefButton = 2;
-        break;
-    case MB_DEFBUTTON3 :
-        m_nDefButton = 3;
-        break;
-    case MB_DEFBUTTON4 :
-        m_nDefButton = 4;
-        break;
-    case MB_DEFBUTTON5 :
-        m_nDefButton = 5;
-        break;
-    case MB_DEFBUTTON6 :
-        m_nDefButton = 6;
-        break;
-    default:
-        m_nDefButton = 1;
-        break;
+        case MB_DEFBUTTON1 :
+            m_nDefButton = 1;
+            break;
+        case MB_DEFBUTTON2 :
+            m_nDefButton = 2;
+            break;
+        case MB_DEFBUTTON3 :
+            m_nDefButton = 3;
+            break;
+        case MB_DEFBUTTON4 :
+            m_nDefButton = 4;
+            break;
+        case MB_DEFBUTTON5 :
+            m_nDefButton = 5;
+            break;
+        case MB_DEFBUTTON6 :
+            m_nDefButton = 6;
+            break;
+        default:
+            m_nDefButton = 1;
+            break;
     }
 
     // store company name to use for saving checkbox state in registry
@@ -1163,18 +1163,18 @@ CXDialogTemplate::CXDialogTemplate(HWND hWnd,
 
         switch (nStyle & MB_ICONMASK)
         {
-        case MB_ICONEXCLAMATION:
-            lpIcon = (LPTSTR)IDI_EXCLAMATION;
-            break;
-        case MB_ICONHAND:
-            lpIcon = (LPTSTR)IDI_HAND;
-            break;
-        case MB_ICONQUESTION:
-            lpIcon = (LPTSTR)IDI_QUESTION;
-            break;
-        case MB_ICONASTERISK:
-            lpIcon = (LPTSTR)IDI_ASTERISK;
-            break;
+            case MB_ICONEXCLAMATION:
+                lpIcon = (LPTSTR)IDI_EXCLAMATION;
+                break;
+            case MB_ICONHAND:
+                lpIcon = (LPTSTR)IDI_HAND;
+                break;
+            case MB_ICONQUESTION:
+                lpIcon = (LPTSTR)IDI_QUESTION;
+                break;
+            case MB_ICONASTERISK:
+                lpIcon = (LPTSTR)IDI_ASTERISK;
+                break;
         }
 
         if (lpIcon)
@@ -1233,60 +1233,60 @@ CXDialogTemplate::CXDialogTemplate(HWND hWnd,
 
         switch (nStyle & MB_TYPEMASK)
         {
-        case MB_ABORTRETRYIGNORE:
-            cItems = 3;
-            nWidthStdButtons = m_nButtonWidths[eAbort] +
-                               m_nButtonWidths[eRetry] +
-                               m_nButtonWidths[eIgnore];
-            break;
-        case MB_CANCELTRYCONTINUE:
-            cItems = 3;
-            nWidthStdButtons = m_nButtonWidths[eCancel] +
-                               m_nButtonWidths[eTryAgain] +
-                               m_nButtonWidths[eContinue];
-            break;
-        case MB_CONTINUEABORT:
-            cItems = 2;
-            nWidthStdButtons = m_nButtonWidths[eContinue] +
-                               m_nButtonWidths[eAbort];
-            break;
-        case MB_IGNOREIGNOREALLCANCEL:
-            cItems = 3;
-            nWidthStdButtons = m_nButtonWidths[eIgnore] +
-                               m_nButtonWidths[eIgnoreAll] +
-                               m_nButtonWidths[eCancel];
-            break;
-        case MB_OK:
-            cItems = 1;
-            nWidthStdButtons = m_nButtonWidths[eOK];
-            break;
-        case MB_OKCANCEL:
-            cItems = 2;
-            nWidthStdButtons = m_nButtonWidths[eOK] +
-                               m_nButtonWidths[eCancel];
-            break;
-        case MB_RETRYCANCEL:
-            cItems = 2;
-            nWidthStdButtons = m_nButtonWidths[eRetry] +
-                               m_nButtonWidths[eCancel];
-            break;
-        case MB_SKIPSKIPALLCANCEL:
-            cItems = 3;
-            nWidthStdButtons = m_nButtonWidths[eSkip] +
-                               m_nButtonWidths[eSkipAll] +
-                               m_nButtonWidths[eCancel];
-            break;
-        case MB_YESNO:
-            cItems = 2;
-            nWidthStdButtons = m_nButtonWidths[eYes] +
-                               m_nButtonWidths[eNo];
-            break;
-        case MB_YESNOCANCEL:
-            cItems = 3;
-            nWidthStdButtons = m_nButtonWidths[eYes] +
-                               m_nButtonWidths[eNo] +
-                               m_nButtonWidths[eCancel];
-            break;
+            case MB_ABORTRETRYIGNORE:
+                cItems = 3;
+                nWidthStdButtons = m_nButtonWidths[eAbort] +
+                                   m_nButtonWidths[eRetry] +
+                                   m_nButtonWidths[eIgnore];
+                break;
+            case MB_CANCELTRYCONTINUE:
+                cItems = 3;
+                nWidthStdButtons = m_nButtonWidths[eCancel] +
+                                   m_nButtonWidths[eTryAgain] +
+                                   m_nButtonWidths[eContinue];
+                break;
+            case MB_CONTINUEABORT:
+                cItems = 2;
+                nWidthStdButtons = m_nButtonWidths[eContinue] +
+                                   m_nButtonWidths[eAbort];
+                break;
+            case MB_IGNOREIGNOREALLCANCEL:
+                cItems = 3;
+                nWidthStdButtons = m_nButtonWidths[eIgnore] +
+                                   m_nButtonWidths[eIgnoreAll] +
+                                   m_nButtonWidths[eCancel];
+                break;
+            case MB_OK:
+                cItems = 1;
+                nWidthStdButtons = m_nButtonWidths[eOK];
+                break;
+            case MB_OKCANCEL:
+                cItems = 2;
+                nWidthStdButtons = m_nButtonWidths[eOK] +
+                                   m_nButtonWidths[eCancel];
+                break;
+            case MB_RETRYCANCEL:
+                cItems = 2;
+                nWidthStdButtons = m_nButtonWidths[eRetry] +
+                                   m_nButtonWidths[eCancel];
+                break;
+            case MB_SKIPSKIPALLCANCEL:
+                cItems = 3;
+                nWidthStdButtons = m_nButtonWidths[eSkip] +
+                                   m_nButtonWidths[eSkipAll] +
+                                   m_nButtonWidths[eCancel];
+                break;
+            case MB_YESNO:
+                cItems = 2;
+                nWidthStdButtons = m_nButtonWidths[eYes] +
+                                   m_nButtonWidths[eNo];
+                break;
+            case MB_YESNOCANCEL:
+                cItems = 3;
+                nWidthStdButtons = m_nButtonWidths[eYes] +
+                                   m_nButtonWidths[eNo] +
+                                   m_nButtonWidths[eCancel];
+                break;
         }
 
         if (nStyle & MB_YESTOALL)
@@ -1443,78 +1443,78 @@ CXDialogTemplate::CXDialogTemplate(HWND hWnd,
 
         switch (nStyle & MB_TYPEMASK)
         {
-        case MB_OK:
-            x += AddButton(eOK, IDOK, x, y);
-            Set(OkButton);
-            break;
+            case MB_OK:
+                x += AddButton(eOK, IDOK, x, y);
+                Set(OkButton);
+                break;
 
-        case MB_OKCANCEL:
-            x += AddButton(eOK, IDOK, x, y);
-            x += AddButton(eCancel, IDCANCEL, x, y);
-            Set(CancelButton);
-            break;
+            case MB_OKCANCEL:
+                x += AddButton(eOK, IDOK, x, y);
+                x += AddButton(eCancel, IDCANCEL, x, y);
+                Set(CancelButton);
+                break;
 
-        case MB_YESNO:
-            x += AddButton(eYes, IDYES, x, y);
-            if (nStyle & MB_YESTOALL)
-                x += AddButton(eYesToAll, IDYESTOALL, x, y);
-            x += AddButton(eNo, IDNO, x, y);
-            if (nStyle & MB_NOTOALL)
-                x += AddButton(eNoToAll, IDNOTOALL, x, y);
-            break;
+            case MB_YESNO:
+                x += AddButton(eYes, IDYES, x, y);
+                if (nStyle & MB_YESTOALL)
+                    x += AddButton(eYesToAll, IDYESTOALL, x, y);
+                x += AddButton(eNo, IDNO, x, y);
+                if (nStyle & MB_NOTOALL)
+                    x += AddButton(eNoToAll, IDNOTOALL, x, y);
+                break;
 
-        case MB_YESNOCANCEL:
-            x += AddButton(eYes, IDYES, x, y);
-            if (nStyle & MB_YESTOALL)
-                x += AddButton(eYesToAll, IDYESTOALL, x, y);
-            x += AddButton(eNo, IDNO, x, y);
-            if (nStyle & MB_NOTOALL)
-                x += AddButton(eNoToAll, IDNOTOALL, x, y);
-            x += AddButton(eCancel, IDCANCEL, x, y);
-            Set(CancelButton);
-            break;
+            case MB_YESNOCANCEL:
+                x += AddButton(eYes, IDYES, x, y);
+                if (nStyle & MB_YESTOALL)
+                    x += AddButton(eYesToAll, IDYESTOALL, x, y);
+                x += AddButton(eNo, IDNO, x, y);
+                if (nStyle & MB_NOTOALL)
+                    x += AddButton(eNoToAll, IDNOTOALL, x, y);
+                x += AddButton(eCancel, IDCANCEL, x, y);
+                Set(CancelButton);
+                break;
 
-        case MB_ABORTRETRYIGNORE:
-            x += AddButton(eAbort, IDABORT, x, y);
-            x += AddButton(eRetry, IDRETRY, x, y);
-            x += AddButton(eIgnore, IDIGNORE, x, y);
-            break;
+            case MB_ABORTRETRYIGNORE:
+                x += AddButton(eAbort, IDABORT, x, y);
+                x += AddButton(eRetry, IDRETRY, x, y);
+                x += AddButton(eIgnore, IDIGNORE, x, y);
+                break;
 
-        case MB_RETRYCANCEL:
-            x += AddButton(eRetry, IDRETRY, x, y);
-            x += AddButton(eCancel, IDCANCEL, x, y);
-            Set(CancelButton);
-            break;
+            case MB_RETRYCANCEL:
+                x += AddButton(eRetry, IDRETRY, x, y);
+                x += AddButton(eCancel, IDCANCEL, x, y);
+                Set(CancelButton);
+                break;
 
-        case MB_CONTINUEABORT:
-            x += AddButton(eContinue, IDCONTINUE, x, y);
-            x += AddButton(eAbort, IDABORT, x, y);
-            break;
+            case MB_CONTINUEABORT:
+                x += AddButton(eContinue, IDCONTINUE, x, y);
+                x += AddButton(eAbort, IDABORT, x, y);
+                break;
 
-        case MB_CANCELTRYCONTINUE:
-            x += AddButton(eCancel, IDCANCEL, x, y);
-            x += AddButton(eTryAgain, IDTRYAGAIN, x, y);
-            x += AddButton(eContinue, IDCONTINUE, x, y);
-            Set(CancelButton);
-            break;
+            case MB_CANCELTRYCONTINUE:
+                x += AddButton(eCancel, IDCANCEL, x, y);
+                x += AddButton(eTryAgain, IDTRYAGAIN, x, y);
+                x += AddButton(eContinue, IDCONTINUE, x, y);
+                Set(CancelButton);
+                break;
 
-        case MB_SKIPSKIPALLCANCEL:
-            x += AddButton(eSkip, IDSKIP, x, y);
-            x += AddButton(eSkipAll, IDSKIPALL, x, y);
-            x += AddButton(eCancel, IDCANCEL, x, y);
-            Set(CancelButton);
-            break;
+            case MB_SKIPSKIPALLCANCEL:
+                x += AddButton(eSkip, IDSKIP, x, y);
+                x += AddButton(eSkipAll, IDSKIPALL, x, y);
+                x += AddButton(eCancel, IDCANCEL, x, y);
+                Set(CancelButton);
+                break;
 
-        case MB_IGNOREIGNOREALLCANCEL:
-            x += AddButton(eIgnore, IDIGNORE, x, y);
-            x += AddButton(eIgnoreAll, IDIGNOREALL, x, y);
-            x += AddButton(eCancel, IDCANCEL, x, y);
-            Set(CancelButton);
-            break;
+            case MB_IGNOREIGNOREALLCANCEL:
+                x += AddButton(eIgnore, IDIGNORE, x, y);
+                x += AddButton(eIgnoreAll, IDIGNOREALL, x, y);
+                x += AddButton(eCancel, IDCANCEL, x, y);
+                Set(CancelButton);
+                break;
 
-        default:
-            x += AddButton(eOK, IDOK, x, y);
-            break;
+            default:
+                x += AddButton(eOK, IDOK, x, y);
+                break;
         }
     }
     else
@@ -1786,450 +1786,450 @@ INT_PTR CALLBACK CXDialogTemplate::MsgBoxDlgProc(HWND hwnd,
 
     switch (message)
     {
-    case WM_CTLCOLORSTATIC:		//+++1.8
-    {
-        if (Me->m_hBackgroundBrush)
+        case WM_CTLCOLORSTATIC:		//+++1.8
         {
-            HWND hStatic = ::GetDlgItem(hwnd, Me->m_nMessageId);
-            if (Me->m_crBackground == CLR_INVALID)
-                ::SetBkColor((HDC)wParam, ::GetSysColor(COLOR_WINDOW));
-            else
-                ::SetBkColor((HDC)wParam, Me->m_crBackground);
-            if (Me->m_crText == CLR_INVALID)
-                ::SetTextColor((HDC)wParam, ::GetSysColor(COLOR_WINDOWTEXT));
-            else
-                ::SetTextColor((HDC)wParam, Me->m_crText);
-            if (hStatic && (hStatic == (HWND)lParam))
-                return (LRESULT)Me->m_hBackgroundBrush;
-        }
-        return FALSE;
-    }
-
-    case WM_ERASEBKGND:			//+++1.8
-    {
-        if (Me->m_hBackgroundBrush)
-        {
-            HDC hdc = (HDC) wParam;
-
-            CXRect rect;
-            ::GetClientRect(hwnd, &rect);
-
-            // first fill entire client area
-            HBRUSH hBrush = ::CreateSolidBrush(::GetSysColor(COLOR_BTNFACE));
-            ::FillRect(hdc, &rect, hBrush);
-            ::DeleteObject(hBrush);
-
-            // next fill message background
-            rect.bottom = Me->m_msgrect.bottom;
             if (Me->m_hBackgroundBrush)
-                ::FillRect(hdc, &rect, Me->m_hBackgroundBrush);
-
-            return TRUE;
+            {
+                HWND hStatic = ::GetDlgItem(hwnd, Me->m_nMessageId);
+                if (Me->m_crBackground == CLR_INVALID)
+                    ::SetBkColor((HDC)wParam, ::GetSysColor(COLOR_WINDOW));
+                else
+                    ::SetBkColor((HDC)wParam, Me->m_crBackground);
+                if (Me->m_crText == CLR_INVALID)
+                    ::SetTextColor((HDC)wParam, ::GetSysColor(COLOR_WINDOWTEXT));
+                else
+                    ::SetTextColor((HDC)wParam, Me->m_crText);
+                if (hStatic && (hStatic == (HWND)lParam))
+                    return (LRESULT)Me->m_hBackgroundBrush;
+            }
+            return FALSE;
         }
-        return FALSE;
-    }
 
-    case WM_INITDIALOG:
-    {
-        TRACE(_T("in CXDialogTemplate::MsgBoxDlgProc - WM_INITDIALOG\n"));
-        //m_hWnd = hwnd;
-
-        ::SetWindowLongPtr(hwnd, GWLP_USERDATA, lParam);	// save it for the others
-        Me = (CXDialogTemplate*) lParam;
-        _ASSERTE(Me);
-
-        HDC hdc = ::CreateDC(_T("DISPLAY"), NULL, NULL, NULL);
-        _ASSERTE(hdc);
-
-        ::SelectObject(hdc, Me->m_hFont);
-        ::DeleteDC(hdc);
-        UINT nID;
-
-        for (nID = FirstControlId; nID < Me->m_nMaxID; nID++)
+        case WM_ERASEBKGND:			//+++1.8
         {
-            hwndChild = ::GetDlgItem(hwnd, nID);
-            if (::IsWindow(hwndChild))
+            if (Me->m_hBackgroundBrush)
+            {
+                HDC hdc = (HDC) wParam;
+
+                CXRect rect;
+                ::GetClientRect(hwnd, &rect);
+
+                // first fill entire client area
+                HBRUSH hBrush = ::CreateSolidBrush(::GetSysColor(COLOR_BTNFACE));
+                ::FillRect(hdc, &rect, hBrush);
+                ::DeleteObject(hBrush);
+
+                // next fill message background
+                rect.bottom = Me->m_msgrect.bottom;
+                if (Me->m_hBackgroundBrush)
+                    ::FillRect(hdc, &rect, Me->m_hBackgroundBrush);
+
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+        case WM_INITDIALOG:
+        {
+            TRACE(_T("in CXDialogTemplate::MsgBoxDlgProc - WM_INITDIALOG\n"));
+            //m_hWnd = hwnd;
+
+            ::SetWindowLongPtr(hwnd, GWLP_USERDATA, lParam);	// save it for the others
+            Me = (CXDialogTemplate*) lParam;
+            _ASSERTE(Me);
+
+            HDC hdc = ::CreateDC(_T("DISPLAY"), NULL, NULL, NULL);
+            _ASSERTE(hdc);
+
+            ::SelectObject(hdc, Me->m_hFont);
+            ::DeleteDC(hdc);
+            UINT nID;
+
+            for (nID = FirstControlId; nID < Me->m_nMaxID; nID++)
+            {
+                hwndChild = ::GetDlgItem(hwnd, nID);
+                if (::IsWindow(hwndChild))
+                    ::SendMessage(hwndChild, WM_SETFONT, (WPARAM)Me->m_hFont, 0);
+                else
+                    break;
+            }
+            for (nID = 1; nID <= ID_XMESSAGEBOX_LAST_ID; nID++)
+            {
+                hwndChild = ::GetDlgItem(hwnd, nID);
+                if (hwndChild && ::IsWindow(hwndChild))
+                {
+                    ::SendMessage(hwndChild, WM_SETFONT, (WPARAM)Me->m_hFont, 0);
+
+                    // disable all buttons if disabled seconds specified
+                    if (Me->m_nDisabledSeconds)
+                    {
+                        TCHAR szClassName[MAX_PATH];
+                        ::GetClassName(hwndChild, szClassName, countof(szClassName)-2);
+                        if (_tcsicmp(szClassName, _T("Button")) == 0)
+                        {
+                            ::EnableWindow(hwndChild, FALSE);
+                        }
+                        ::EnableMenuItem(GetSystemMenu(hwnd, FALSE), SC_CLOSE, MF_GRAYED);
+                    }
+                }
+            }
+
+            hwndChild = ::GetDlgItem(hwnd, IdExHelp);
+            if (hwndChild && ::IsWindow(hwndChild))
                 ::SendMessage(hwndChild, WM_SETFONT, (WPARAM)Me->m_hFont, 0);
-            else
-                break;
-        }
-        for (nID = 1; nID <= ID_XMESSAGEBOX_LAST_ID; nID++)
-        {
-            hwndChild = ::GetDlgItem(hwnd, nID);
+
+            hwndChild = ::GetDlgItem(hwnd, IdDoNotAskAgain);
             if (hwndChild && ::IsWindow(hwndChild))
             {
                 ::SendMessage(hwndChild, WM_SETFONT, (WPARAM)Me->m_hFont, 0);
-
-                // disable all buttons if disabled seconds specified
-                if (Me->m_nDisabledSeconds)
-                {
-                    TCHAR szClassName[MAX_PATH];
-                    ::GetClassName(hwndChild, szClassName, countof(szClassName)-2);
-                    if (_tcsicmp(szClassName, _T("Button")) == 0)
-                    {
-                        ::EnableWindow(hwndChild, FALSE);
-                    }
-                    ::EnableMenuItem(GetSystemMenu(hwnd, FALSE), SC_CLOSE, MF_GRAYED);
-                }
+                CheckDlgButton(hwnd, IdDoNotAskAgain, 0);
             }
-        }
 
-        hwndChild = ::GetDlgItem(hwnd, IdExHelp);
-        if (hwndChild && ::IsWindow(hwndChild))
-            ::SendMessage(hwndChild, WM_SETFONT, (WPARAM)Me->m_hFont, 0);
+            hwndChild = ::GetDlgItem(hwnd, IdExReport);
+            if (hwndChild && ::IsWindow(hwndChild))
+                ::SendMessage(hwndChild, WM_SETFONT, (WPARAM)Me->m_hFont, 0);
 
-        hwndChild = ::GetDlgItem(hwnd, IdDoNotAskAgain);
-        if (hwndChild && ::IsWindow(hwndChild))
-        {
-            ::SendMessage(hwndChild, WM_SETFONT, (WPARAM)Me->m_hFont, 0);
-            CheckDlgButton(hwnd, IdDoNotAskAgain, 0);
-        }
+            hwndChild = ::GetDlgItem(hwnd, Me->m_nDefId);
+            if (hwndChild && ::IsWindow(hwndChild))
+                ::SetFocus(hwndChild);
 
-        hwndChild = ::GetDlgItem(hwnd, IdExReport);
-        if (hwndChild && ::IsWindow(hwndChild))
-            ::SendMessage(hwndChild, WM_SETFONT, (WPARAM)Me->m_hFont, 0);
+            // disable close button just like real MessageBox
+            if (!Me->Option(CancelOrOkButton))
+                ::EnableMenuItem(GetSystemMenu(hwnd, FALSE), SC_CLOSE, MF_GRAYED);
 
-        hwndChild = ::GetDlgItem(hwnd, Me->m_nDefId);
-        if (hwndChild && ::IsWindow(hwndChild))
-            ::SetFocus(hwndChild);
+            if (Me->m_hIcon)
+            {
+                HWND hwndIcon;
 
-        // disable close button just like real MessageBox
-        if (!Me->Option(CancelOrOkButton))
-            ::EnableMenuItem(GetSystemMenu(hwnd, FALSE), SC_CLOSE, MF_GRAYED);
+                hwndIcon = ::GetDlgItem(hwnd, 1000);
+                ::SetWindowLongPtr(hwndIcon, GWLP_WNDPROC, (LONG_PTR) IconProc);
+                ::SetWindowLongPtr(hwndIcon, GWLP_USERDATA, (LONG_PTR) Me->m_hIcon);
+            }
 
-        if (Me->m_hIcon)
-        {
-            HWND hwndIcon;
+            if (Me->m_nStyle & MB_TOPMOST)
+                ::SetWindowPos(hwnd, HWND_TOPMOST, 0,0,0,0, SWP_NOMOVE|SWP_NOSIZE);
 
-            hwndIcon = ::GetDlgItem(hwnd, 1000);
-            ::SetWindowLongPtr(hwndIcon, GWLP_WNDPROC, (LONG_PTR) IconProc);
-            ::SetWindowLongPtr(hwndIcon, GWLP_USERDATA, (LONG_PTR) Me->m_hIcon);
-        }
+            if (Me->m_nStyle & MB_SETFOREGROUND)
+                ::SetForegroundWindow(hwnd);
 
-        if (Me->m_nStyle & MB_TOPMOST)
-            ::SetWindowPos(hwnd, HWND_TOPMOST, 0,0,0,0, SWP_NOMOVE|SWP_NOSIZE);
+            if (Me->m_X || Me->m_Y)
+            {
+                // caller has specified screen coordinates
+                CXRect dlgRect;
+                ::GetWindowRect(hwnd, &dlgRect);
+                ::MoveWindow(hwnd, Me->m_X, Me->m_Y, dlgRect.Width(), dlgRect.Height(), TRUE);
+            }
+            else if (GetParent(hwnd) != NULL)
+            {
+                // code to center dialog (necessary if not called by MFC app)
+                // [suggested by Tom Wright]
+                CXRect mainRect, dlgRect;
+                ::GetWindowRect(::GetParent(hwnd), &mainRect);
+                ::GetWindowRect(hwnd, &dlgRect);
+                int x = (mainRect.right  + mainRect.left)/2 - dlgRect.Width()/2;
+                int y =	(mainRect.bottom + mainRect.top) /2 - dlgRect.Height()/2;
+                ::MoveWindow(hwnd, x, y, dlgRect.Width(), dlgRect.Height(), TRUE);
+            }
 
-        if (Me->m_nStyle & MB_SETFOREGROUND)
+            // display seconds countdown if timeout specified
+            if (Me->m_nTimeoutSeconds > 0)
+                ::SetTimer(hwnd, 1, 1000, NULL);
+
+            if (Me->m_nDisabledSeconds > 0)
+                ::SetTimer(hwnd, 2, 1000, NULL);
+
             ::SetForegroundWindow(hwnd);
 
-        if (Me->m_X || Me->m_Y)
+            return FALSE;
+
+        } // case WM_INITDIALOG
+
+        case WM_COMMAND:
         {
-            // caller has specified screen coordinates
-            CXRect dlgRect;
-            ::GetWindowRect(hwnd, &dlgRect);
-            ::MoveWindow(hwnd, Me->m_X, Me->m_Y, dlgRect.Width(), dlgRect.Height(), TRUE);
-        }
-        else if (GetParent(hwnd) != NULL)
-        {
-            // code to center dialog (necessary if not called by MFC app)
-            // [suggested by Tom Wright]
-            CXRect mainRect, dlgRect;
-            ::GetWindowRect(::GetParent(hwnd), &mainRect);
-            ::GetWindowRect(hwnd, &dlgRect);
-            int x = (mainRect.right  + mainRect.left)/2 - dlgRect.Width()/2;
-            int y =	(mainRect.bottom + mainRect.top) /2 - dlgRect.Height()/2;
-            ::MoveWindow(hwnd, x, y, dlgRect.Width(), dlgRect.Height(), TRUE);
-        }
+            TRACE(_T("WM_COMMAND\n"));
+            // user clicked on something - stop the timer
+            ::KillTimer(hwnd, 1);
 
-        // display seconds countdown if timeout specified
-        if (Me->m_nTimeoutSeconds > 0)
-            ::SetTimer(hwnd, 1, 1000, NULL);
-
-        if (Me->m_nDisabledSeconds > 0)
-            ::SetTimer(hwnd, 2, 1000, NULL);
-
-        ::SetForegroundWindow(hwnd);
-
-        return FALSE;
-
-    } // case WM_INITDIALOG
-
-    case WM_COMMAND:
-    {
-        TRACE(_T("WM_COMMAND\n"));
-        // user clicked on something - stop the timer
-        ::KillTimer(hwnd, 1);
-
-        if (Me->GetDefaultButtonId())
-        {
-            HWND hwndDefButton = ::GetDlgItem(hwnd, Me->GetDefaultButtonId());
-            if (hwndDefButton && ::IsWindow(hwndDefButton))
+            if (Me->GetDefaultButtonId())
             {
-                if (Me->m_szDefaultButton[0] != L'\0')
+                HWND hwndDefButton = ::GetDlgItem(hwnd, Me->GetDefaultButtonId());
+                if (hwndDefButton && ::IsWindow(hwndDefButton))
                 {
-                    ::SetWindowText(hwndDefButton, Me->m_szDefaultButton);
+                    if (Me->m_szDefaultButton[0] != L'\0')
+                    {
+                        ::SetWindowText(hwndDefButton, Me->m_szDefaultButton);
+                    }
                 }
             }
-        }
 
-        switch (wParam)
-        {
-        case IDCLOSE:
-            TRACE(_T("IDCLOSE\n"));
-            return TRUE;
+            switch (wParam)
+            {
+                case IDCLOSE:
+                    TRACE(_T("IDCLOSE\n"));
+                    return TRUE;
 
-        case IDCANCEL:
-            TRACE(_T("IDCANCEL\n"));
-            if (Me->Option(CancelButton))
-            {
-                Me->m_bEnded = TRUE;
-                Me->m_nReturnValue = IDCANCEL;
-            }
-            else if (Me->Option(OkButton))
-            {
-                Me->m_bEnded = TRUE;
-                Me->m_nReturnValue = IDOK;
-            }
-            return FALSE;
+                case IDCANCEL:
+                    TRACE(_T("IDCANCEL\n"));
+                    if (Me->Option(CancelButton))
+                    {
+                        Me->m_bEnded = TRUE;
+                        Me->m_nReturnValue = IDCANCEL;
+                    }
+                    else if (Me->Option(OkButton))
+                    {
+                        Me->m_bEnded = TRUE;
+                        Me->m_nReturnValue = IDOK;
+                    }
+                    return FALSE;
 
-        case IdExHelp:
-        {
-            TCHAR szBuf[_MAX_PATH*2] = { 0 };
-            ::GetModuleFileName(NULL, szBuf, countof(szBuf) - 1);
-            if (_tcslen(szBuf) > 0)
-            {
-                TCHAR *cp = _tcsrchr(szBuf, _T('.'));
-                if (cp)
+                case IdExHelp:
                 {
-                    _tcscpy(cp, _T(".hlp"));
-                    ::WinHelp(hwnd, szBuf,
-                              (Me->m_nHelpId == 0) ? HELP_PARTIALKEY : HELP_CONTEXT,
-                              Me->m_nHelpId);
+                    TCHAR szBuf[_MAX_PATH*2] = { 0 };
+                    ::GetModuleFileName(NULL, szBuf, countof(szBuf) - 1);
+                    if (_tcslen(szBuf) > 0)
+                    {
+                        TCHAR *cp = _tcsrchr(szBuf, _T('.'));
+                        if (cp)
+                        {
+                            _tcscpy(cp, _T(".hlp"));
+                            ::WinHelp(hwnd, szBuf,
+                                      (Me->m_nHelpId == 0) ? HELP_PARTIALKEY : HELP_CONTEXT,
+                                      Me->m_nHelpId);
+                        }
+                    }
+                    return FALSE;
                 }
-            }
-            return FALSE;
-        }
 
-        case IdExReport:
-        {
-            if (Me->m_lpReportFunc)
-                Me->m_lpReportFunc(Me->GetMessageText(), Me->m_dwReportUserData);
-            return FALSE;
-        }
+                case IdExReport:
+                {
+                    if (Me->m_lpReportFunc)
+                        Me->m_lpReportFunc(Me->GetMessageText(), Me->m_dwReportUserData);
+                    return FALSE;
+                }
 
-        case IdDoNotAskAgain: //IdDoNotAskAgain & DoNotTellAgain share the same id!!
-            return FALSE;
+                case IdDoNotAskAgain: //IdDoNotAskAgain & DoNotTellAgain share the same id!!
+                    return FALSE;
 
-        default:
-        {
-            hwndChild = ::GetDlgItem(hwnd, IdDoNotAskAgain);
-            BOOL bFlag = FALSE;
+                default:
+                {
+                    hwndChild = ::GetDlgItem(hwnd, IdDoNotAskAgain);
+                    BOOL bFlag = FALSE;
 
-            if (hwndChild && ::IsWindow(hwndChild))
-                bFlag = (BOOL)::SendMessage(hwndChild, BM_GETCHECK, 0, 0);
+                    if (hwndChild && ::IsWindow(hwndChild))
+                        bFlag = (BOOL)::SendMessage(hwndChild, BM_GETCHECK, 0, 0);
 
-            if (Me->Option(DoNotAskAgain))
-                wParam |= bFlag ? MB_DONOTASKAGAIN : 0;
-            else if (Me->Option(DoNotTellAgain))
-                wParam |= bFlag ? MB_DONOTTELLAGAIN : 0;
-            else if (Me->Option(DoNotShowAgain))
-                wParam |= bFlag ? MB_DONOTSHOWAGAIN : 0;
+                    if (Me->Option(DoNotAskAgain))
+                        wParam |= bFlag ? MB_DONOTASKAGAIN : 0;
+                    else if (Me->Option(DoNotTellAgain))
+                        wParam |= bFlag ? MB_DONOTTELLAGAIN : 0;
+                    else if (Me->Option(DoNotShowAgain))
+                        wParam |= bFlag ? MB_DONOTSHOWAGAIN : 0;
 
 #ifndef XMESSAGEBOX_DO_NOT_SAVE_CHECKBOX
 
-            // save return code in ini file if Do Not Ask style and
-            // module name were specified
+                    // save return code in ini file if Do Not Ask style and
+                    // module name were specified
 
-            if (bFlag && Me->m_lpszModule &&
-                    (Me->m_lpszModule[0] != L'\0'))
-            {
-                TCHAR szPathName[MAX_PATH*2];
+                    if (bFlag && Me->m_lpszModule &&
+                            (Me->m_lpszModule[0] != L'\0'))
+                    {
+                        TCHAR szPathName[MAX_PATH*2];
 
-                // get full path to ini file
-                szPathName[0] = L'\0';
-                ::GetModuleFileName(NULL, szPathName, countof(szPathName)-1);
+                        // get full path to ini file
+                        szPathName[0] = L'\0';
+                        ::GetModuleFileName(NULL, szPathName, countof(szPathName)-1);
 
-                TCHAR *cp = _tcsrchr(szPathName, _T('\\'));
-                if (cp != NULL)
-                    *(cp+1) = L'\0';
-                _tcscat(szPathName, XMESSAGEBOX_INI_FILE);
+                        TCHAR *cp = _tcsrchr(szPathName, _T('\\'));
+                        if (cp != NULL)
+                            *(cp+1) = L'\0';
+                        _tcscat(szPathName, XMESSAGEBOX_INI_FILE);
 
-                // key is module name and line
-                TCHAR szKey[MAX_PATH*2];
-                _tcscpy(szKey, Me->m_lpszModule);
-                TRACE(_T("szKey=<%s>\n"), szKey);
+                        // key is module name and line
+                        TCHAR szKey[MAX_PATH*2];
+                        _tcscpy(szKey, Me->m_lpszModule);
+                        TRACE(_T("szKey=<%s>\n"), szKey);
 
-                encode(szKey);		// simple encoding to obscure module name
+                        encode(szKey);		// simple encoding to obscure module name
 
-                TCHAR szLine[100];
-                szLine[0] = L'\0';
-                _tcscat(szKey, _itot(Me->m_nLine, szLine, 10));
+                        TCHAR szLine[100];
+                        szLine[0] = L'\0';
+                        _tcscat(szKey, _itot(Me->m_nLine, szLine, 10));
 
-                TRACE(_T("szKey=<%s>\n"), szKey);
+                        TRACE(_T("szKey=<%s>\n"), szKey);
 
 #ifndef XMESSAGEBOX_USE_PROFILE_FILE
 
-                WriteRegistry(Me->m_szCompanyName, szKey, wParam);
-                TRACE(_T("writing data to registry: wParam=0x%08X\n"), wParam);
+                        WriteRegistry(Me->m_szCompanyName, szKey, wParam);
+                        TRACE(_T("writing data to registry: wParam=0x%08X\n"), wParam);
 
 #else
 
-                // data string is hex value of XMessageBox return code
-                TCHAR szData[100];
-                _stprintf(szData, _T("%08X"), wParam);
+                        // data string is hex value of XMessageBox return code
+                        TCHAR szData[100];
+                        _stprintf(szData, _T("%08X"), wParam);
 
 
-                ::WritePrivateProfileString(_T("DoNotAsk"),		// section name
-                                            szKey,				// key name
-                                            szData,				// string to add
-                                            szPathName);		// initialization file
+                        ::WritePrivateProfileString(_T("DoNotAsk"),		// section name
+                                                    szKey,				// key name
+                                                    szData,				// string to add
+                                                    szPathName);		// initialization file
 #endif	// XMESSAGEBOX_USE_PROFILE_FILE
 
 
 
 #ifdef _DEBUG
-                // verify that we can read data
+                        // verify that we can read data
 
-                DWORD dwData = 0;
+                        DWORD dwData = 0;
 
 #ifndef XMESSAGEBOX_USE_PROFILE_FILE
 
-                // read from registry
+                        // read from registry
 
-                dwData = ReadRegistry(Me->m_szCompanyName, szKey);
-                TRACE(_T("ReadRegistry: dwData=0x%08X\n"), dwData);
+                        dwData = ReadRegistry(Me->m_szCompanyName, szKey);
+                        TRACE(_T("ReadRegistry: dwData=0x%08X\n"), dwData);
 
 #else
-                // read from ini file
+                        // read from ini file
 
-                TCHAR szBuf[100];
-                ::GetPrivateProfileString(_T("DoNotAsk"),	// section name
-                                          szKey,			// key name
-                                          L"",			// default string
-                                          szBuf,			// destination buffer
-                                          countof(szBuf)-1,	// size of destination buffer
-                                          szPathName);		// initialization file name
+                        TCHAR szBuf[100];
+                        ::GetPrivateProfileString(_T("DoNotAsk"),	// section name
+                                                  szKey,			// key name
+                                                  L"",			// default string
+                                                  szBuf,			// destination buffer
+                                                  countof(szBuf)-1,	// size of destination buffer
+                                                  szPathName);		// initialization file name
 
-                dwData = _tcstoul(szBuf, NULL, 16);
-                TRACE(_T("szBuf=<%s>  dwData=0x%08X\n"), szBuf, dwData);
+                        dwData = _tcstoul(szBuf, NULL, 16);
+                        TRACE(_T("szBuf=<%s>  dwData=0x%08X\n"), szBuf, dwData);
 
 #endif	// XMESSAGEBOX_USE_PROFILE_FILE
 
-                _ASSERTE(dwData == (DWORD) wParam);
+                        _ASSERTE(dwData == (DWORD) wParam);
 
 #endif	// _DEBUG
-            }
+                    }
 #endif	// XMESSAGEBOX_DO_NOT_SAVE_CHECKBOX
 
-            Me->m_bEnded = TRUE;
-            Me->m_nReturnValue = wParam;
+                    Me->m_bEnded = TRUE;
+                    Me->m_nReturnValue = wParam;
+
+                    return FALSE;
+
+                } // default
+
+            } // switch (wParam)
+
+        } // case WM_COMMAND
+
+        case WM_LBUTTONDOWN:
+        case WM_NCLBUTTONDOWN:
+        {
+            // user clicked on dialog or titlebar - stop the timer
+            ::KillTimer(hwnd, 1);
+
+            if (Me->GetDefaultButtonId())
+            {
+                HWND hwndDefButton = ::GetDlgItem(hwnd, Me->GetDefaultButtonId());
+                if (hwndDefButton && ::IsWindow(hwndDefButton))
+                {
+                    if (Me->m_szDefaultButton[0] != L'\0')
+                    {
+                        ::SetWindowText(hwndDefButton, Me->m_szDefaultButton);
+                    }
+                }
+            }
 
             return FALSE;
+        }
 
-        } // default
-
-        } // switch (wParam)
-
-    } // case WM_COMMAND
-
-    case WM_LBUTTONDOWN:
-    case WM_NCLBUTTONDOWN:
-    {
-        // user clicked on dialog or titlebar - stop the timer
-        ::KillTimer(hwnd, 1);
-
-        if (Me->GetDefaultButtonId())
+        case WM_TIMER:		// used for timeout
         {
-            HWND hwndDefButton = ::GetDlgItem(hwnd, Me->GetDefaultButtonId());
-            if (hwndDefButton && ::IsWindow(hwndDefButton))
+            if (wParam == 1)			// timeout timer
             {
-                if (Me->m_szDefaultButton[0] != L'\0')
+                if (Me->m_nTimeoutSeconds <= 0)
                 {
-                    ::SetWindowText(hwndDefButton, Me->m_szDefaultButton);
+                    ::KillTimer(hwnd, wParam);
+
+                    // time's up, select default button
+                    ::SendMessage(hwnd, WM_COMMAND,
+                                  Me->GetDefaultButtonId() | MB_TIMEOUT, 0);
+
+                    return FALSE;
                 }
-            }
-        }
 
-        return FALSE;
-    }
+                if (Me->GetDefaultButtonId() == 0)
+                    return FALSE;
 
-    case WM_TIMER:		// used for timeout
-    {
-        if (wParam == 1)			// timeout timer
-        {
-            if (Me->m_nTimeoutSeconds <= 0)
-            {
-                ::KillTimer(hwnd, wParam);
+                HWND hwndDefButton = ::GetDlgItem(hwnd, Me->GetDefaultButtonId());
+                if (hwndDefButton == NULL || !::IsWindow(hwndDefButton))
+                    return FALSE;
 
-                // time's up, select default button
-                ::SendMessage(hwnd, WM_COMMAND,
-                              Me->GetDefaultButtonId() | MB_TIMEOUT, 0);
-
-                return FALSE;
-            }
-
-            if (Me->GetDefaultButtonId() == 0)
-                return FALSE;
-
-            HWND hwndDefButton = ::GetDlgItem(hwnd, Me->GetDefaultButtonId());
-            if (hwndDefButton == NULL || !::IsWindow(hwndDefButton))
-                return FALSE;
-
-            if (Me->m_szDefaultButton[0] == L'\0')
-            {
-                // first time - get text of default button
-                ::GetWindowText(hwndDefButton, Me->m_szDefaultButton,
-                                MaxButtonStringSize);
-            }
-
-            TCHAR szButtonText[MaxButtonStringSize*2];
-            _stprintf(szButtonText, XMESSAGEBOX_TIMEOUT_TEXT_FORMAT,
-                      Me->m_szDefaultButton, Me->m_nTimeoutSeconds);
-
-            ::SetWindowText(hwndDefButton, szButtonText);
-
-            Me->m_nTimeoutSeconds--;
-        }
-        else if (wParam == 2)		// disabled timer
-        {
-            if (Me->m_nDisabledSeconds <= 0)
-            {
-                // disabled timer has expired, enable all controls
-
-                ::KillTimer(hwnd, wParam);
-
-                for (UINT nID = 1; nID <= ID_XMESSAGEBOX_LAST_ID; nID++)
+                if (Me->m_szDefaultButton[0] == L'\0')
                 {
-                    hwndChild = ::GetDlgItem(hwnd, nID);
-                    if (hwndChild && ::IsWindow(hwndChild))
+                    // first time - get text of default button
+                    ::GetWindowText(hwndDefButton, Me->m_szDefaultButton,
+                                    MaxButtonStringSize);
+                }
+
+                TCHAR szButtonText[MaxButtonStringSize*2];
+                _stprintf(szButtonText, XMESSAGEBOX_TIMEOUT_TEXT_FORMAT,
+                          Me->m_szDefaultButton, Me->m_nTimeoutSeconds);
+
+                ::SetWindowText(hwndDefButton, szButtonText);
+
+                Me->m_nTimeoutSeconds--;
+            }
+            else if (wParam == 2)		// disabled timer
+            {
+                if (Me->m_nDisabledSeconds <= 0)
+                {
+                    // disabled timer has expired, enable all controls
+
+                    ::KillTimer(hwnd, wParam);
+
+                    for (UINT nID = 1; nID <= ID_XMESSAGEBOX_LAST_ID; nID++)
                     {
-                        // enable all buttons
-                        TCHAR szClassName[MAX_PATH];
-                        ::GetClassName(hwndChild, szClassName, countof(szClassName)-2);
-                        if (_tcsicmp(szClassName, _T("Button")) == 0)
+                        hwndChild = ::GetDlgItem(hwnd, nID);
+                        if (hwndChild && ::IsWindow(hwndChild))
                         {
-                            ::EnableWindow(hwndChild, TRUE);
+                            // enable all buttons
+                            TCHAR szClassName[MAX_PATH];
+                            ::GetClassName(hwndChild, szClassName, countof(szClassName)-2);
+                            if (_tcsicmp(szClassName, _T("Button")) == 0)
+                            {
+                                ::EnableWindow(hwndChild, TRUE);
+                            }
                         }
-                    }
-                } // for
+                    } // for
 
-                if (Me->Option(CancelOrOkButton))
-                    ::EnableMenuItem(GetSystemMenu(hwnd, FALSE), SC_CLOSE, MF_ENABLED);
+                    if (Me->Option(CancelOrOkButton))
+                        ::EnableMenuItem(GetSystemMenu(hwnd, FALSE), SC_CLOSE, MF_ENABLED);
 
-                // restore original caption
-                ::SetWindowText(hwnd, Me->m_lpszCaption);
+                    // restore original caption
+                    ::SetWindowText(hwnd, Me->m_lpszCaption);
 
-                ::RedrawWindow(hwnd, NULL, NULL, RDW_INVALIDATE|RDW_UPDATENOW);
-            }
-            else
-            {
-#ifndef XMESSAGEBOX_NO_DISABLED_COUNTDOWN
-                // update caption with disabled timer countdown
-                if (Me->m_lpszCaption)
-                {
-                    TCHAR *pszCaption = new TCHAR [_tcslen(Me->m_lpszCaption) + 100];
-                    _tcscpy(pszCaption, Me->m_lpszCaption);
-                    _tcscat(pszCaption, _T(" "));
-                    _itot(Me->m_nDisabledSeconds, &pszCaption[_tcslen(pszCaption)], 10);
-                    ::SetWindowText(hwnd, pszCaption);
-                    delete [] pszCaption;
+                    ::RedrawWindow(hwnd, NULL, NULL, RDW_INVALIDATE|RDW_UPDATENOW);
                 }
+                else
+                {
+#ifndef XMESSAGEBOX_NO_DISABLED_COUNTDOWN
+                    // update caption with disabled timer countdown
+                    if (Me->m_lpszCaption)
+                    {
+                        TCHAR *pszCaption = new TCHAR [_tcslen(Me->m_lpszCaption) + 100];
+                        _tcscpy(pszCaption, Me->m_lpszCaption);
+                        _tcscat(pszCaption, _T(" "));
+                        _itot(Me->m_nDisabledSeconds, &pszCaption[_tcslen(pszCaption)], 10);
+                        ::SetWindowText(hwnd, pszCaption);
+                        delete [] pszCaption;
+                    }
 #endif
-                Me->m_nDisabledSeconds--;
+                    Me->m_nDisabledSeconds--;
+                }
             }
+            return FALSE;
         }
-        return FALSE;
-    }
 
     } // switch (message)
 
@@ -2685,38 +2685,38 @@ void CXDialogItem::AddItem(CXDialogTemplate& dialog,
 
     switch (ctrltype)
     {
-    case ICON:
-        m_dlgItemTemplate.style = WS_CHILD | SS_ICON | WS_VISIBLE;
-        break;
+        case ICON:
+            m_dlgItemTemplate.style = WS_CHILD | SS_ICON | WS_VISIBLE;
+            break;
 
-    case BUTTON:
-        dialog.GetButtonCount()++;
-        m_dlgItemTemplate.style = WS_VISIBLE | WS_CHILD | WS_TABSTOP;
-        if (dialog.GetButtonCount() == dialog.GetDefaultButton())
-        {
-            m_dlgItemTemplate.style |= BS_DEFPUSHBUTTON;
-            dialog.SetDefaultButtonId(nID);
-        }
-        else
-        {
-            m_dlgItemTemplate.style |= BS_PUSHBUTTON;
-        }
-        break;
+        case BUTTON:
+            dialog.GetButtonCount()++;
+            m_dlgItemTemplate.style = WS_VISIBLE | WS_CHILD | WS_TABSTOP;
+            if (dialog.GetButtonCount() == dialog.GetDefaultButton())
+            {
+                m_dlgItemTemplate.style |= BS_DEFPUSHBUTTON;
+                dialog.SetDefaultButtonId(nID);
+            }
+            else
+            {
+                m_dlgItemTemplate.style |= BS_PUSHBUTTON;
+            }
+            break;
 
-    case CHECKBOX:
-        m_dlgItemTemplate.style = WS_VISIBLE | WS_CHILD | WS_TABSTOP | BS_AUTOCHECKBOX;
-        break;
+        case CHECKBOX:
+            m_dlgItemTemplate.style = WS_VISIBLE | WS_CHILD | WS_TABSTOP | BS_AUTOCHECKBOX;
+            break;
 
-    case EDITCONTROL:
-        m_dlgItemTemplate.style = WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_MULTILINE | ES_LEFT;
-        break;
+        case EDITCONTROL:
+            m_dlgItemTemplate.style = WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_MULTILINE | ES_LEFT;
+            break;
 
-    case STATICTEXT:
-        m_dlgItemTemplate.style = WS_CHILD | WS_VISIBLE | SS_LEFT;
-        break;
+        case STATICTEXT:
+            m_dlgItemTemplate.style = WS_CHILD | WS_VISIBLE | SS_LEFT;
+            break;
 
-    default:
-        _ASSERTE(FALSE); // should never get here
+        default:
+            _ASSERTE(FALSE); // should never get here
     }
 
     int stringLength = (int)(lpszCaption ? _tcslen(lpszCaption) : 0);	//+++1.5

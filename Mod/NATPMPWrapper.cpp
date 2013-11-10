@@ -523,51 +523,51 @@ int CNATPMPThread::Run()
             _ENATPMPTask task = m_pOwner->m_taskList.GetNext(pos);
             switch (task)
             {
-            case eInitializeNATPMP:
-                if (!m_pNATPMP->Reset())
-                    bSucceeded = false;
-                break;
-
-            case eRetrievePublicIP:
-                if (!m_pNATPMP->Reset())
-                    bSucceeded = false;
-                break;
-
-            case eMapTCPPorts:
-                for (POSITION pos = m_pOwner->m_portList[NATPMP_PROTOCOL_TCP-1].GetHeadPosition(); pos;)
-                {
-                    uint16 port = m_pOwner->m_portList[NATPMP_PROTOCOL_TCP-1].GetNext(pos);
-                    if (m_pNATPMP->AddPortMapping(port, port, NATPMP_PROTOCOL_TCP, DFLT_NATPMP_LIFETIME))
-                        m_pOwner->StartRefreshTimer();
-                    else
+                case eInitializeNATPMP:
+                    if (!m_pNATPMP->Reset())
                         bSucceeded = false;
-                }
-                break;
+                    break;
 
-            case eMapUDPPorts:
-                for (POSITION pos = m_pOwner->m_portList[NATPMP_PROTOCOL_UDP-1].GetHeadPosition(); pos;)
-                {
-                    uint16 port = m_pOwner->m_portList[NATPMP_PROTOCOL_UDP-1].GetNext(pos);
-                    if (m_pNATPMP->AddPortMapping(port, port, NATPMP_PROTOCOL_UDP, DFLT_NATPMP_LIFETIME))
-                        m_pOwner->StartRefreshTimer();
-                    else
+                case eRetrievePublicIP:
+                    if (!m_pNATPMP->Reset())
                         bSucceeded = false;
-                }
-                break;
+                    break;
 
-            case eDeleteTCPMappings:
-                if (!m_pNATPMP->RemovePortMappings(NATPMP_PROTOCOL_TCP))
-                    bSucceeded = false;
-                break;
+                case eMapTCPPorts:
+                    for (POSITION pos = m_pOwner->m_portList[NATPMP_PROTOCOL_TCP-1].GetHeadPosition(); pos;)
+                    {
+                        uint16 port = m_pOwner->m_portList[NATPMP_PROTOCOL_TCP-1].GetNext(pos);
+                        if (m_pNATPMP->AddPortMapping(port, port, NATPMP_PROTOCOL_TCP, DFLT_NATPMP_LIFETIME))
+                            m_pOwner->StartRefreshTimer();
+                        else
+                            bSucceeded = false;
+                    }
+                    break;
 
-            case eDeleteUDPMappings:
-                if (!m_pNATPMP->RemovePortMappings(NATPMP_PROTOCOL_UDP))
-                    bSucceeded = false;
-                break;
+                case eMapUDPPorts:
+                    for (POSITION pos = m_pOwner->m_portList[NATPMP_PROTOCOL_UDP-1].GetHeadPosition(); pos;)
+                    {
+                        uint16 port = m_pOwner->m_portList[NATPMP_PROTOCOL_UDP-1].GetNext(pos);
+                        if (m_pNATPMP->AddPortMapping(port, port, NATPMP_PROTOCOL_UDP, DFLT_NATPMP_LIFETIME))
+                            m_pOwner->StartRefreshTimer();
+                        else
+                            bSucceeded = false;
+                    }
+                    break;
 
-            default:
-                theApp.QueueDebugLogLineEx(LOG_ERROR, L"NAT-PMP: can't handle unknown task %u", task);
-                break;
+                case eDeleteTCPMappings:
+                    if (!m_pNATPMP->RemovePortMappings(NATPMP_PROTOCOL_TCP))
+                        bSucceeded = false;
+                    break;
+
+                case eDeleteUDPMappings:
+                    if (!m_pNATPMP->RemovePortMappings(NATPMP_PROTOCOL_UDP))
+                        bSucceeded = false;
+                    break;
+
+                default:
+                    theApp.QueueDebugLogLineEx(LOG_ERROR, L"NAT-PMP: can't handle unknown task %u", task);
+                    break;
             }
         }
         m_pOwner->m_settingsLock.Unlock();

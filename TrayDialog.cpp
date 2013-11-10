@@ -66,8 +66,8 @@ DWORD GetShellVersion()
 //	static const bool bSupportsExtendedToolTips = GetDllVersion(TEXT("comctl32.dll")) >= MAKELONG(5,0);
 //    static const bool bSupportsExtendedToolTips = GetDllVersion(TEXT("shell32.dll")) >= MAKELONG(5,0);
 //    return bSupportsExtendedToolTips;
-	static const DWORD dwShellVersion = GetDllVersion(TEXT("shell32.dll"));
-	return dwShellVersion;
+    static const DWORD dwShellVersion = GetDllVersion(TEXT("shell32.dll"));
+    return dwShellVersion;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -87,52 +87,52 @@ END_MESSAGE_MAP()
 CTrayDialog::CTrayDialog(UINT uIDD,CWnd* pParent /*=NULL*/)
     : CTrayDialogBase(uIDD, pParent)
 {
-	ZeroMemory(&m_nidIconData, sizeof(NOTIFYICONDATA));
-	const DWORD version = GetShellVersion();
+    ZeroMemory(&m_nidIconData, sizeof(NOTIFYICONDATA));
+    const DWORD version = GetShellVersion();
 #ifdef NOTIFYICON_VERSION_4
-	if(version >= MAKEDLLVERULL(6,0,6,0))
-	{
-		m_nidIconData.cbSize = sizeof(NOTIFYICONDATA);
-		m_nidIconData.uVersion = NOTIFYICON_VERSION_4;
-	}
-	else if(version >= MAKEDLLVERULL(6,0,0,0))
-	{
-		m_nidIconData.cbSize = NOTIFYICONDATA_V3_SIZE;
-		m_nidIconData.uVersion = NOTIFYICON_VERSION_4;
-	}
-	else 
+    if (version >= MAKEDLLVERULL(6,0,6,0))
+    {
+        m_nidIconData.cbSize = sizeof(NOTIFYICONDATA);
+        m_nidIconData.uVersion = NOTIFYICON_VERSION_4;
+    }
+    else if (version >= MAKEDLLVERULL(6,0,0,0))
+    {
+        m_nidIconData.cbSize = NOTIFYICONDATA_V3_SIZE;
+        m_nidIconData.uVersion = NOTIFYICON_VERSION_4;
+    }
+    else
 #endif
-	if(version >= MAKEDLLVERULL(5,0,0,0))
-	{
-		m_nidIconData.cbSize = NOTIFYICONDATA_V2_SIZE;
-		m_nidIconData.uVersion = NOTIFYICON_VERSION;
-	}
-	else
-	{
-		m_nidIconData.cbSize = NOTIFYICONDATA_V1_SIZE;
-		m_nidIconData.uVersion = 0;
-	}
-    m_nidIconData.hWnd = 0;    
+        if (version >= MAKEDLLVERULL(5,0,0,0))
+        {
+            m_nidIconData.cbSize = NOTIFYICONDATA_V2_SIZE;
+            m_nidIconData.uVersion = NOTIFYICON_VERSION;
+        }
+        else
+        {
+            m_nidIconData.cbSize = NOTIFYICONDATA_V1_SIZE;
+            m_nidIconData.uVersion = 0;
+        }
+    m_nidIconData.hWnd = 0;
     m_nidIconData.uCallbackMessage = UM_TRAY_ICON_NOTIFY_MESSAGE;
     m_nidIconData.hIcon = 0;
     m_nidIconData.szTip[0] = L'\0';
     m_nidIconData.uFlags = NIF_MESSAGE;
 
 #ifdef NOTIFYICON_VERSION_4
-	// NOTIFYICON_VERSION_4 requires that the tooltip is drawn by the user
-	if(m_nidIconData.uVersion == NOTIFYICON_VERSION_4)
-		m_nidIconData.uFlags |= NIF_SHOWTIP;
+    // NOTIFYICON_VERSION_4 requires that the tooltip is drawn by the user
+    if (m_nidIconData.uVersion == NOTIFYICON_VERSION_4)
+        m_nidIconData.uFlags |= NIF_SHOWTIP;
 #endif
 #if (_WIN32_IE >= 0x600)
-	// Windows 7 and later: A registered GUID that identifies the icon. This value overrides uID and is the recommended method of identifying the icon. The NIF_GUID flag must be set in the uFlags member.
-	if (thePrefs.GetWindowsVersion() >= _WINVER_7_)
-	{
-		m_nidIconData.uFlags |= NIF_GUID;
-		CLSIDFromString(EMULE_GUID_BASE, &m_nidIconData.guidItem);
-	}
-	else
+    // Windows 7 and later: A registered GUID that identifies the icon. This value overrides uID and is the recommended method of identifying the icon. The NIF_GUID flag must be set in the uFlags member.
+    if (thePrefs.GetWindowsVersion() >= _WINVER_7_)
+    {
+        m_nidIconData.uFlags |= NIF_GUID;
+        CLSIDFromString(EMULE_GUID_BASE, &m_nidIconData.guidItem);
+    }
+    else
 #endif
-		m_nidIconData.uID = 1;
+        m_nidIconData.uID = 1;
 
     m_bTrayIconVisible = false;
     m_pbMinimizeToTray = NULL;
@@ -215,8 +215,8 @@ BOOL CTrayDialog::TrayShow()
 {
     BOOL bSuccess = FALSE;
 //>>> WiZaRd::FiX?
-	// Sometimes m_bTrayIconVisible is true but the icon isn't shown? There's no harm in trying to add the icon again as far as I know...
-//	if (!m_bTrayIconVisible) 
+    // Sometimes m_bTrayIconVisible is true but the icon isn't shown? There's no harm in trying to add the icon again as far as I know...
+//	if (!m_bTrayIconVisible)
 //<<< WiZaRd::FiX?
     {
         bSuccess = Shell_NotifyIcon(NIM_ADD, &m_nidIconData);
@@ -230,8 +230,8 @@ BOOL CTrayDialog::TrayHide()
 {
     BOOL bSuccess = FALSE;
 //>>> WiZaRd::FiX?
-	// Sometimes m_bTrayIconVisible is true but the icon isn't shown? There's no harm in trying to delete the icon again as far as I know...
-//	if (!m_bTrayIconVisible) 
+    // Sometimes m_bTrayIconVisible is true but the icon isn't shown? There's no harm in trying to delete the icon again as far as I know...
+//	if (!m_bTrayIconVisible)
 //<<< WiZaRd::FiX?
     {
         bSuccess = Shell_NotifyIcon(NIM_DELETE, &m_nidIconData);
@@ -287,87 +287,87 @@ LRESULT CTrayDialog::OnTrayNotify(WPARAM wParam, LPARAM lParam)
 {
     CPoint pt;
     UINT uMsg = 0;
-	UINT uID = 0;
+    UINT uID = 0;
 #ifdef NOTIFYICON_VERSION_4
-	if(m_nidIconData.uVersion == NOTIFYICON_VERSION_4)
-	{
-		// contains notification events, such as NIN_BALLOONSHOW, NIN_POPUPOPEN, or WM_CONTEXTMENU.
-		uMsg = LOWORD(lParam);
-		// contains the icon ID. Icon IDs are restricted to a length of 16 bits
-		uID = HIWORD(lParam);
-		
-		pt.x = GET_X_LPARAM(wParam);
-		pt.y = GET_Y_LPARAM(wParam);
-	}
-	else
+    if (m_nidIconData.uVersion == NOTIFYICON_VERSION_4)
+    {
+        // contains notification events, such as NIN_BALLOONSHOW, NIN_POPUPOPEN, or WM_CONTEXTMENU.
+        uMsg = LOWORD(lParam);
+        // contains the icon ID. Icon IDs are restricted to a length of 16 bits
+        uID = HIWORD(lParam);
+
+        pt.x = GET_X_LPARAM(wParam);
+        pt.y = GET_Y_LPARAM(wParam);
+    }
+    else
 #endif
-	{		
-		uMsg = (UINT)lParam;	
-		uID = (UINT)wParam;
+    {
+        uMsg = (UINT)lParam;
+        uID = (UINT)wParam;
 
-		GetCursorPos(&pt);
-	}
+        GetCursorPos(&pt);
+    }
 
-	if (uID != 1)
-		return 0;
+    if (uID != 1)
+        return 0;
 
     switch (uMsg)
     {
-    case WM_MOUSEMOVE:        
-        ClientToScreen(&pt);
-        OnTrayMouseMove(pt);
-        break;
+        case WM_MOUSEMOVE:
+            ClientToScreen(&pt);
+            OnTrayMouseMove(pt);
+            break;
 
-    case WM_LBUTTONDOWN:
-        GetCursorPos(&pt);
-        ClientToScreen(&pt);
-        OnTrayLButtonDown(pt);
-        break;
+        case WM_LBUTTONDOWN:
+            GetCursorPos(&pt);
+            ClientToScreen(&pt);
+            OnTrayLButtonDown(pt);
+            break;
 
-    case WM_LBUTTONUP:
-        // Handle the WM_LBUTTONUP only if we know that there was also an according
-        // WM_LBUTTONDOWN or WM_LBUTTONDBLCLK on our tray bar icon. If we would handle
-        // WM_LBUTTONUP without checking this, we may get a single WM_LBUTTONUP message
-        // whereby the according WM_LBUTTONDOWN message was meant for some other tray bar
-        // icon.
-        if (m_bLButtonDblClk)
-        {
-            KillSingleClickTimer();
-            RestoreWindow();
-            m_bLButtonDblClk = false;
-        }
-        else if (m_bLButtonDown)
-        {
-            if (m_uSingleClickTimer == 0)
+        case WM_LBUTTONUP:
+            // Handle the WM_LBUTTONUP only if we know that there was also an according
+            // WM_LBUTTONDOWN or WM_LBUTTONDBLCLK on our tray bar icon. If we would handle
+            // WM_LBUTTONUP without checking this, we may get a single WM_LBUTTONUP message
+            // whereby the according WM_LBUTTONDOWN message was meant for some other tray bar
+            // icon.
+            if (m_bLButtonDblClk)
             {
-                if (!IsWindowVisible())
-                    m_uSingleClickTimer = SetTimer(IDT_SINGLE_CLICK, 300, NULL);
+                KillSingleClickTimer();
+                RestoreWindow();
+                m_bLButtonDblClk = false;
             }
-            m_bLButtonDown = false;
-        }
-        break;
+            else if (m_bLButtonDown)
+            {
+                if (m_uSingleClickTimer == 0)
+                {
+                    if (!IsWindowVisible())
+                        m_uSingleClickTimer = SetTimer(IDT_SINGLE_CLICK, 300, NULL);
+                }
+                m_bLButtonDown = false;
+            }
+            break;
 
-    case WM_LBUTTONDBLCLK:
-        KillSingleClickTimer();
-        GetCursorPos(&pt);
-        ClientToScreen(&pt);
-        OnTrayLButtonDblClk(pt);
-        break;
+        case WM_LBUTTONDBLCLK:
+            KillSingleClickTimer();
+            GetCursorPos(&pt);
+            ClientToScreen(&pt);
+            OnTrayLButtonDblClk(pt);
+            break;
 
-    case WM_RBUTTONUP:
-    case WM_CONTEXTMENU:
-        KillSingleClickTimer();
-        GetCursorPos(&pt);
-        //ClientToScreen(&pt);
-        OnTrayRButtonUp(pt);
-        break;
+        case WM_RBUTTONUP:
+        case WM_CONTEXTMENU:
+            KillSingleClickTimer();
+            GetCursorPos(&pt);
+            //ClientToScreen(&pt);
+            OnTrayRButtonUp(pt);
+            break;
 
-    case WM_RBUTTONDBLCLK:
-        KillSingleClickTimer();
-        GetCursorPos(&pt);
-        ClientToScreen(&pt);
-        OnTrayRButtonDblClk(pt);
-        break;
+        case WM_RBUTTONDBLCLK:
+            KillSingleClickTimer();
+            GetCursorPos(&pt);
+            ClientToScreen(&pt);
+            OnTrayRButtonDblClk(pt);
+            break;
     }
     return 1;
 }
@@ -385,10 +385,10 @@ void CTrayDialog::OnTimer(UINT nIDEvent)
 {
     if (nIDEvent == m_uSingleClickTimer)
     {
-		TRACE("%s: nIDEvent=%u\n", __FUNCTION__, nIDEvent);
-		// Kill that timer before calling 'OnTrayLButtonUp' which may create the MiniMule window asynchronously!
-		KillSingleClickTimer();
-		OnTrayLButtonUp(CPoint(0, 0));
+        TRACE("%s: nIDEvent=%u\n", __FUNCTION__, nIDEvent);
+        // Kill that timer before calling 'OnTrayLButtonUp' which may create the MiniMule window asynchronously!
+        KillSingleClickTimer();
+        OnTrayLButtonUp(CPoint(0, 0));
     }
     CDialogMinTrayBtn<CResizableDialog>::OnTimer(nIDEvent);
 }

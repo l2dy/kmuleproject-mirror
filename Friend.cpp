@@ -58,7 +58,7 @@ CFriend::CFriend(const uchar* abyUserhash, UINT dwLastSeen, const _CIPAddress& d
                  UINT dwLastChatted, LPCTSTR pszName, UINT dwHasHash)
 {
     m_dwLastSeen = dwLastSeen;
-	m_dwLastUsedIP = dwLastUsedIP;
+    m_dwLastUsedIP = dwLastUsedIP;
     m_nLastUsedPort = nLastUsedPort;
     m_dwLastChatted = dwLastChatted;
     if (dwHasHash && abyUserhash)
@@ -108,15 +108,15 @@ void CFriend::LoadFromFile(CFileDataIO* file)
 {
     file->ReadHash16(m_abyUserhash);
 //>>> WiZaRd::IPv6 [Xanatos]
-	UINT dwIP = file->ReadUInt32();
-	if(dwIP == -1)
-	{
-		byte uIP[16];
-		file->ReadHash16(uIP);
-		m_dwLastUsedIP = _CIPAddress(uIP);
-	}
-	else
-		m_dwLastUsedIP = _CIPAddress(_ntohl(dwIP));
+    UINT dwIP = file->ReadUInt32();
+    if (dwIP == -1)
+    {
+        byte uIP[16];
+        file->ReadHash16(uIP);
+        m_dwLastUsedIP = _CIPAddress(uIP);
+    }
+    else
+        m_dwLastUsedIP = _CIPAddress(_ntohl(dwIP));
     //m_dwLastUsedIP = file->ReadUInt32();
 //<<< WiZaRd::IPv6 [Xanatos]
     m_nLastUsedPort = file->ReadUInt16();
@@ -129,23 +129,23 @@ void CFriend::LoadFromFile(CFileDataIO* file)
         CTag* newtag = new CTag(file, false);
         switch (newtag->GetNameID())
         {
-        case FF_NAME:
-        {
-            ASSERT(newtag->IsStr());
-            if (newtag->IsStr())
+            case FF_NAME:
             {
-                if (m_strName.IsEmpty())
-                    m_strName = newtag->GetStr();
+                ASSERT(newtag->IsStr());
+                if (newtag->IsStr())
+                {
+                    if (m_strName.IsEmpty())
+                        m_strName = newtag->GetStr();
+                }
+                break;
             }
-            break;
-        }
-        case FF_KADID:
-        {
-            ASSERT(newtag->IsHash());
-            if (newtag->IsHash())
-                md4cpy(m_abyKadID, newtag->GetHash());
-            break;
-        }
+            case FF_KADID:
+            {
+                ASSERT(newtag->IsHash());
+                if (newtag->IsHash())
+                    md4cpy(m_abyKadID, newtag->GetHash());
+                break;
+            }
         }
         delete newtag;
     }
@@ -155,13 +155,13 @@ void CFriend::WriteToFile(CFileDataIO* file)
 {
     file->WriteHash16(m_abyUserhash);
 //>>> WiZaRd::IPv6 [Xanatos]
-	if(m_dwLastUsedIP.Type() == CAddress::IPv6)
-	{
-		file->WriteUInt32(_UI32_MAX);
-		file->WriteHash16(m_dwLastUsedIP.Data());
-	}
-	else
-		file->WriteUInt32(_ntohl(m_dwLastUsedIP.ToIPv4()));
+    if (m_dwLastUsedIP.Type() == CAddress::IPv6)
+    {
+        file->WriteUInt32(_UI32_MAX);
+        file->WriteHash16(m_dwLastUsedIP.Data());
+    }
+    else
+        file->WriteUInt32(_ntohl(m_dwLastUsedIP.ToIPv4()));
     //file->WriteUInt32(m_dwLastUsedIP);
 //<<< WiZaRd::IPv6 [Xanatos]
     file->WriteUInt16(m_nLastUsedPort);
@@ -280,7 +280,7 @@ CUpDownClient* CFriend::GetClientForChatSession()
     else
     {
 //>>> WiZaRd::IPv6 [Xanatos]
-		pResult = new CUpDownClient(0, m_nLastUsedPort, m_dwLastUsedIP, 0, 0);
+        pResult = new CUpDownClient(0, m_nLastUsedPort, m_dwLastUsedIP, 0, 0);
         //pResult = new CUpDownClient(0, m_nLastUsedPort, m_dwLastUsedIP, 0, 0, true);
 //<<< WiZaRd::IPv6 [Xanatos]
 //>>> WiZaRd::Easy ModVersion
@@ -305,11 +305,11 @@ bool CFriend::TryToConnect(CFriendConnectionListener* pConnectionReport)
         return true;
     }
 //>>> WiZaRd::IPv6 [Xanatos]
-	if (isnulmd4(m_abyKadID) && (m_dwLastUsedIP.IsNull() || m_nLastUsedPort == 0) 
-		&& (GetLinkedClient() == NULL || GetLinkedClient()->GetConnectIP().IsNull() || GetLinkedClient()->GetUserPort() == 0))
+    if (isnulmd4(m_abyKadID) && (m_dwLastUsedIP.IsNull() || m_nLastUsedPort == 0)
+            && (GetLinkedClient() == NULL || GetLinkedClient()->GetConnectIP().IsNull() || GetLinkedClient()->GetUserPort() == 0))
 //     if (isnulmd4(m_abyKadID) && (m_dwLastUsedIP == 0 || m_nLastUsedPort == 0)
 // 			&& (GetLinkedClient() == NULL || GetLinkedClient()->GetConnectIP() == 0 || GetLinkedClient()->GetUserPort() == 0))
-//<<< WiZaRd::IPv6 [Xanatos]            
+//<<< WiZaRd::IPv6 [Xanatos]
     {
         pConnectionReport->ReportConnectionProgress(m_LinkedClient, _T("*** ") + GetResString(IDS_CONNECTING), false);
         pConnectionReport->ConnectingResult(GetLinkedClient(), false);
@@ -352,111 +352,111 @@ void CFriend::UpdateFriendConnectionState(EFriendConnectReport eEvent)
     }
     switch (eEvent)
     {
-    case FCR_ESTABLISHED:
-    case FCR_USERHASHVERIFIED:
-        // connection established, userhash fits, check secureident
-        if (GetLinkedClient()->HasPassedSecureIdent(true))
-        {
-            // well here we are done, connecting worked out fine
-            m_FriendConnectState = FCS_NONE;
-            for (POSITION pos = m_liConnectionReport.GetHeadPosition(); pos != 0;)
-                m_liConnectionReport.GetNext(pos)->ConnectingResult(GetLinkedClient(), true);
-            m_liConnectionReport.RemoveAll();
-            FindKadID(); // fetch the kadid of this friend if we don't have it already
-        }
-        else
-        {
-            ASSERT(eEvent != FCR_USERHASHVERIFIED);
-            // we connected, the userhash matches, now we wait for the authentification
-            // nothing todo, just report about it
-            for (POSITION pos = m_liConnectionReport.GetHeadPosition(); pos != 0; m_liConnectionReport.GetNext(pos))
+        case FCR_ESTABLISHED:
+        case FCR_USERHASHVERIFIED:
+            // connection established, userhash fits, check secureident
+            if (GetLinkedClient()->HasPassedSecureIdent(true))
             {
-                m_liConnectionReport.GetAt(pos)->ReportConnectionProgress(GetLinkedClient(),  _T(" ...") + GetResString(IDS_TREEOPTIONS_OK) + _T("\n"), true);
-                m_liConnectionReport.GetAt(pos)->ReportConnectionProgress(GetLinkedClient(), _T("*** ") + CString(_T("Authenticating friend")) /*to stringlist*/, false);
+                // well here we are done, connecting worked out fine
+                m_FriendConnectState = FCS_NONE;
+                for (POSITION pos = m_liConnectionReport.GetHeadPosition(); pos != 0;)
+                    m_liConnectionReport.GetNext(pos)->ConnectingResult(GetLinkedClient(), true);
+                m_liConnectionReport.RemoveAll();
+                FindKadID(); // fetch the kadid of this friend if we don't have it already
             }
-            if (m_FriendConnectState == FCS_CONNECTING)
-                m_FriendConnectState = FCS_AUTH;
-            else  // client must have connected to use while we tried something else (like search for him an kad)
+            else
             {
-                ASSERT(0);
-                m_FriendConnectState = FCS_AUTH;
-            }
-        }
-        break;
-    case FCR_DISCONNECTED:
-        // disconnected, lets see which state we were in
-        if (m_FriendConnectState == FCS_CONNECTING || m_FriendConnectState == FCS_AUTH)
-        {
-            if (m_FriendConnectState == FCS_CONNECTING && Kademlia::CKademlia::IsRunning()
-                    &&  Kademlia::CKademlia::IsConnected() && !isnulmd4(m_abyKadID)
-                    && (m_dwLastKadSearch == 0 || ::GetTickCount() - m_dwLastKadSearch > MIN2MS(10)))
-            {
-                // connecting failed to the last known IP, now we search kad for an updated IP of our friend
-                m_FriendConnectState = FCS_KADSEARCHING;
-                m_dwLastKadSearch = ::GetTickCount();
+                ASSERT(eEvent != FCR_USERHASHVERIFIED);
+                // we connected, the userhash matches, now we wait for the authentification
+                // nothing todo, just report about it
                 for (POSITION pos = m_liConnectionReport.GetHeadPosition(); pos != 0; m_liConnectionReport.GetNext(pos))
                 {
-                    m_liConnectionReport.GetAt(pos)->ReportConnectionProgress(GetLinkedClient(), _T(" ...") + GetResString(IDS_FAILED) + _T("\n"), true);
-                    m_liConnectionReport.GetAt(pos)->ReportConnectionProgress(GetLinkedClient(), _T("*** ") + GetResString(IDS_SEARCHINGFRIENDKAD), false);
+                    m_liConnectionReport.GetAt(pos)->ReportConnectionProgress(GetLinkedClient(),  _T(" ...") + GetResString(IDS_TREEOPTIONS_OK) + _T("\n"), true);
+                    m_liConnectionReport.GetAt(pos)->ReportConnectionProgress(GetLinkedClient(), _T("*** ") + CString(_T("Authenticating friend")) /*to stringlist*/, false);
                 }
-                Kademlia::CKademlia::FindIPByNodeID(*this, m_abyKadID);
-                break;
+                if (m_FriendConnectState == FCS_CONNECTING)
+                    m_FriendConnectState = FCS_AUTH;
+                else  // client must have connected to use while we tried something else (like search for him an kad)
+                {
+                    ASSERT(0);
+                    m_FriendConnectState = FCS_AUTH;
+                }
             }
-            m_FriendConnectState = FCS_NONE;
-            for (POSITION pos = m_liConnectionReport.GetHeadPosition(); pos != 0;)
-                m_liConnectionReport.GetNext(pos)->ConnectingResult(GetLinkedClient(), false);
-            m_liConnectionReport.RemoveAll();
-        }
-        else // FCS_KADSEARCHING, shouldn't happen
-            ASSERT(0);
-        break;
-    case FCR_USERHASHFAILED:
-    {
-        // the client we connected to, had a different userhash then we expected
-        // drop the linked client object and create a new one, because we don't want to have anything todo
-        // with this instance as it is not our friend which we try to connect to
-        // the connection try counts as failed
-        CUpDownClient* pOld = m_LinkedClient;
-        SetLinkedClient(NULL); // removing old one
-        GetClientForChatSession(); // creating new instance with the hash we search for
-        m_LinkedClient->SetChatState(MS_CONNECTING);
-        for (POSITION pos = m_liConnectionReport.GetHeadPosition(); pos != 0;) // inform others about the change
-            m_liConnectionReport.GetNext(pos)->ClientObjectChanged(pOld, GetLinkedClient());
-        pOld->SetChatState(MS_NONE);
-
-        if (m_FriendConnectState == FCS_CONNECTING || m_FriendConnectState == FCS_AUTH)
+            break;
+        case FCR_DISCONNECTED:
+            // disconnected, lets see which state we were in
+            if (m_FriendConnectState == FCS_CONNECTING || m_FriendConnectState == FCS_AUTH)
+            {
+                if (m_FriendConnectState == FCS_CONNECTING && Kademlia::CKademlia::IsRunning()
+                        &&  Kademlia::CKademlia::IsConnected() && !isnulmd4(m_abyKadID)
+                        && (m_dwLastKadSearch == 0 || ::GetTickCount() - m_dwLastKadSearch > MIN2MS(10)))
+                {
+                    // connecting failed to the last known IP, now we search kad for an updated IP of our friend
+                    m_FriendConnectState = FCS_KADSEARCHING;
+                    m_dwLastKadSearch = ::GetTickCount();
+                    for (POSITION pos = m_liConnectionReport.GetHeadPosition(); pos != 0; m_liConnectionReport.GetNext(pos))
+                    {
+                        m_liConnectionReport.GetAt(pos)->ReportConnectionProgress(GetLinkedClient(), _T(" ...") + GetResString(IDS_FAILED) + _T("\n"), true);
+                        m_liConnectionReport.GetAt(pos)->ReportConnectionProgress(GetLinkedClient(), _T("*** ") + GetResString(IDS_SEARCHINGFRIENDKAD), false);
+                    }
+                    Kademlia::CKademlia::FindIPByNodeID(*this, m_abyKadID);
+                    break;
+                }
+                m_FriendConnectState = FCS_NONE;
+                for (POSITION pos = m_liConnectionReport.GetHeadPosition(); pos != 0;)
+                    m_liConnectionReport.GetNext(pos)->ConnectingResult(GetLinkedClient(), false);
+                m_liConnectionReport.RemoveAll();
+            }
+            else // FCS_KADSEARCHING, shouldn't happen
+                ASSERT(0);
+            break;
+        case FCR_USERHASHFAILED:
         {
+            // the client we connected to, had a different userhash then we expected
+            // drop the linked client object and create a new one, because we don't want to have anything todo
+            // with this instance as it is not our friend which we try to connect to
+            // the connection try counts as failed
+            CUpDownClient* pOld = m_LinkedClient;
+            SetLinkedClient(NULL); // removing old one
+            GetClientForChatSession(); // creating new instance with the hash we search for
+            m_LinkedClient->SetChatState(MS_CONNECTING);
+            for (POSITION pos = m_liConnectionReport.GetHeadPosition(); pos != 0;) // inform others about the change
+                m_liConnectionReport.GetNext(pos)->ClientObjectChanged(pOld, GetLinkedClient());
+            pOld->SetChatState(MS_NONE);
+
+            if (m_FriendConnectState == FCS_CONNECTING || m_FriendConnectState == FCS_AUTH)
+            {
+                ASSERT(m_FriendConnectState == FCS_AUTH);
+                // todo: kad here
+                m_FriendConnectState = FCS_NONE;
+                for (POSITION pos = m_liConnectionReport.GetHeadPosition(); pos != 0;)
+                    m_liConnectionReport.GetNext(pos)->ConnectingResult(GetLinkedClient(), false);
+                m_liConnectionReport.RemoveAll();
+            }
+            else // FCS_KADSEARCHING, shouldn't happen
+                ASSERT(0);
+            break;
+        }
+        case FCR_SECUREIDENTFAILED:
+            // the client has the fitting userhash, but failed secureident - so we don't want to talk to him
+            // we stop our search here in any case, multiple clientobjects with the same userhash would mess with other things
+            // and its unlikely that we would find him on kad in this case too
             ASSERT(m_FriendConnectState == FCS_AUTH);
-            // todo: kad here
             m_FriendConnectState = FCS_NONE;
             for (POSITION pos = m_liConnectionReport.GetHeadPosition(); pos != 0;)
                 m_liConnectionReport.GetNext(pos)->ConnectingResult(GetLinkedClient(), false);
             m_liConnectionReport.RemoveAll();
-        }
-        else // FCS_KADSEARCHING, shouldn't happen
+            break;
+        case FCR_DELETED:
+            // mh, this should actually never happen i'm sure
+            // todo: in any case, stop any connection tries, notify other etc
+            m_FriendConnectState = FCS_NONE;
+            for (POSITION pos = m_liConnectionReport.GetHeadPosition(); pos != 0;)
+                m_liConnectionReport.GetNext(pos)->ConnectingResult(GetLinkedClient(), false);
+            m_liConnectionReport.RemoveAll();
+            break;
+        default:
             ASSERT(0);
-        break;
-    }
-    case FCR_SECUREIDENTFAILED:
-        // the client has the fitting userhash, but failed secureident - so we don't want to talk to him
-        // we stop our search here in any case, multiple clientobjects with the same userhash would mess with other things
-        // and its unlikely that we would find him on kad in this case too
-        ASSERT(m_FriendConnectState == FCS_AUTH);
-        m_FriendConnectState = FCS_NONE;
-        for (POSITION pos = m_liConnectionReport.GetHeadPosition(); pos != 0;)
-            m_liConnectionReport.GetNext(pos)->ConnectingResult(GetLinkedClient(), false);
-        m_liConnectionReport.RemoveAll();
-        break;
-    case FCR_DELETED:
-        // mh, this should actually never happen i'm sure
-        // todo: in any case, stop any connection tries, notify other etc
-        m_FriendConnectState = FCS_NONE;
-        for (POSITION pos = m_liConnectionReport.GetHeadPosition(); pos != 0;)
-            m_liConnectionReport.GetNext(pos)->ConnectingResult(GetLinkedClient(), false);
-        m_liConnectionReport.RemoveAll();
-        break;
-    default:
-        ASSERT(0);
     }
 }
 
@@ -467,8 +467,8 @@ void CFriend::FindKadID()
     {
         DebugLog(_T("Searching KadID for friend %s by IP %s"), m_strName.IsEmpty() ? _T("(Unknown)") : m_strName, ipstr(GetLinkedClient()->GetConnectIP()));
 //>>> WiZaRd::IPv6 [Xanatos]
-		if(!GetLinkedClient()->GetIPv4().IsNull())
-			Kademlia::CKademlia::FindNodeIDByIP(*this, _ntohl(GetLinkedClient()->GetIP().ToIPv4()), GetLinkedClient()->GetUserPort(), GetLinkedClient()->GetKadPort(), GetLinkedClient()->GetKadVersion());
+        if (!GetLinkedClient()->GetIPv4().IsNull())
+            Kademlia::CKademlia::FindNodeIDByIP(*this, _ntohl(GetLinkedClient()->GetIP().ToIPv4()), GetLinkedClient()->GetUserPort(), GetLinkedClient()->GetKadPort(), GetLinkedClient()->GetKadVersion());
         //Kademlia::CKademlia::FindNodeIDByIP(*this, GetLinkedClient()->GetConnectIP(), GetLinkedClient()->GetUserPort(), GetLinkedClient()->GetKadPort(), GetLinkedClient()->GetKadVersion());
 //<<< WiZaRd::IPv6 [Xanatos]
     }
@@ -504,8 +504,8 @@ void CFriend::KadSearchIPByNodeIDResult(Kademlia::EKadClientSearchRes eStatus, U
         {
             DebugLog(_T("Successfully fetched IP (%s) by KadID (%s) for friend %s"), ipstr(dwIP), md4str(m_abyKadID), m_strName.IsEmpty() ? _T("(Unknown)") : m_strName);
 //>>> WiZaRd::IPv6 [Xanatos]
-			if (_ntohl(GetLinkedClient()->GetIP().ToIPv4()) != dwIP || GetLinkedClient()->GetUserPort() != nPort)
-            //if (GetLinkedClient()->GetConnectIP() != dwIP || GetLinkedClient()->GetUserPort() != nPort)
+            if (_ntohl(GetLinkedClient()->GetIP().ToIPv4()) != dwIP || GetLinkedClient()->GetUserPort() != nPort)
+                //if (GetLinkedClient()->GetConnectIP() != dwIP || GetLinkedClient()->GetUserPort() != nPort)
 //<<< WiZaRd::IPv6 [Xanatos]
             {
                 // retry to connect with our new found IP
@@ -523,7 +523,7 @@ void CFriend::KadSearchIPByNodeIDResult(Kademlia::EKadClientSearchRes eStatus, U
                     UpdateFriendConnectionState(FCR_ESTABLISHED);
                 }
 //>>> WiZaRd::IPv6 [Xanatos]
-				m_dwLastUsedIP = _CIPAddress(_ntohl(dwIP));
+                m_dwLastUsedIP = _CIPAddress(_ntohl(dwIP));
                 //m_dwLastUsedIP = dwIP;
 //<<< WiZaRd::IPv6 [Xanatos]
                 m_nLastUsedPort = nPort;

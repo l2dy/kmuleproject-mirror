@@ -171,17 +171,17 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(BYTE* pbyBufIn, int nBufLen,
 
     switch (pbyBufIn[0])
     {
-    case OP_EMULEPROT:
-    case OP_KADEMLIAPACKEDPROT:
-    case OP_KADEMLIAHEADER:
-    case OP_UDPRESERVEDPROT1:
-    case OP_UDPRESERVEDPROT2:
-    case OP_PACKEDPROT:
+        case OP_EMULEPROT:
+        case OP_KADEMLIAPACKEDPROT:
+        case OP_KADEMLIAHEADER:
+        case OP_UDPRESERVEDPROT1:
+        case OP_UDPRESERVEDPROT2:
+        case OP_PACKEDPROT:
 //>>> WiZaRd::ModProt
-    case OP_MODPROT_PACKED:
-    case OP_MODPROT:
+        case OP_MODPROT_PACKED:
+        case OP_MODPROT:
 //<<< WiZaRd::ModProt
-        return nResult; // no encrypted packet (see description on top)
+            return nResult; // no encrypted packet (see description on top)
     }
 
     // might be an encrypted packet, try to decrypt
@@ -224,24 +224,24 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(BYTE* pbyBufIn, int nBufLen,
             bKad = false;
             bKadRecvKeyUsed = false;
 //>>> WiZaRd::IPv6 [Xanatos]
-			uchar achKeyData[35];
-			int len;
-			md4cpy(achKeyData, thePrefs.GetUserHash());
-			achKeyData[20] = MAGICVALUE_UDP;
-			if(dwIP.Type() == CAddress::IPv6)
-			{
-				len = 35;
-				memcpy(achKeyData + 16, dwIP.Data(), 16);
-				memcpy(achKeyData + 33, pbyBufIn + 1, 2); // random key part sent from remote client
-			}
-			else
-			{
-				len = 23;
-				UINT uIP = _ntohl(dwIP.ToIPv4());
-				memcpy(achKeyData + 16, &uIP, 4);
-				memcpy(achKeyData + 21, pbyBufIn + 1, 2); // random key part sent from remote client
-			}
-			md5.Calculate(achKeyData, len);
+            uchar achKeyData[35];
+            int len;
+            md4cpy(achKeyData, thePrefs.GetUserHash());
+            achKeyData[20] = MAGICVALUE_UDP;
+            if (dwIP.Type() == CAddress::IPv6)
+            {
+                len = 35;
+                memcpy(achKeyData + 16, dwIP.Data(), 16);
+                memcpy(achKeyData + 33, pbyBufIn + 1, 2); // random key part sent from remote client
+            }
+            else
+            {
+                len = 23;
+                UINT uIP = _ntohl(dwIP.ToIPv4());
+                memcpy(achKeyData + 16, &uIP, 4);
+                memcpy(achKeyData + 21, pbyBufIn + 1, 2); // random key part sent from remote client
+            }
+            md5.Calculate(achKeyData, len);
             /*uchar achKeyData[23];
             md4cpy(achKeyData, thePrefs.GetUserHash());
             achKeyData[20] = MAGICVALUE_UDP;
@@ -259,7 +259,7 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(BYTE* pbyBufIn, int nBufLen,
             {
                 uchar achKeyData[6];
 //>>> WiZaRd::IPv6 [Xanatos]
-				PokeUInt32(achKeyData, Kademlia::CPrefs::GetUDPVerifyKey(_ntohl(dwIP.ToIPv4())));
+                PokeUInt32(achKeyData, Kademlia::CPrefs::GetUDPVerifyKey(_ntohl(dwIP.ToIPv4())));
                 //PokeUInt32(achKeyData, Kademlia::CPrefs::GetUDPVerifyKey(dwIP));
 //<<< WiZaRd::IPv6 [Xanatos]
                 memcpy(achKeyData + 4, pbyBufIn + 1, 2); // random key part sent from remote client
@@ -321,7 +321,7 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(BYTE* pbyBufIn, int nBufLen,
     else
     {
 //>>> WiZaRd::IPv6 [Xanatos]
-		DebugLogWarning(_T("Obfuscated packet expected but magicvalue mismatch on UDP packet from clientIP: %s, Possible RecvKey: %u"), ipstr(dwIP), Kademlia::CPrefs::GetUDPVerifyKey(_ntohl(dwIP.ToIPv4())));
+        DebugLogWarning(_T("Obfuscated packet expected but magicvalue mismatch on UDP packet from clientIP: %s, Possible RecvKey: %u"), ipstr(dwIP), Kademlia::CPrefs::GetUDPVerifyKey(_ntohl(dwIP.ToIPv4())));
         //DebugLogWarning(_T("Obfuscated packet expected but magicvalue mismatch on UDP packet from clientIP: %s, Possible RecvKey: %u"), ipstr(dwIP), Kademlia::CPrefs::GetUDPVerifyKey(dwIP));
 //<<< WiZaRd::IPv6 [Xanatos]
         return nBufLen; // pass through, let the Receivefunction do the errorhandling on this junk
@@ -379,24 +379,24 @@ int CEncryptedDatagramSocket::EncryptSendClient(uchar** ppbyBuf, int nBufLen, co
     else
     {
 //>>> WiZaRd::IPv6 [Xanatos]
-		uchar achKeyData[35];
-		int len;
-		md4cpy(achKeyData, pachClientHashOrKadID);
-		achKeyData[20] = MAGICVALUE_UDP;
-		if(bIPv6)
-		{
-			len = 35;
-			memcpy(achKeyData + 16, theApp.GetPublicIPv6().Data(), 16);
-			memcpy(achKeyData + 33, &nRandomKeyPart, 2); // random key part sent from remote client
-		}
-		else
-		{
-			len = 23;
-			UINT dwIP = theApp.GetPublicIP();
-			memcpy(achKeyData + 16, &dwIP, 4);
-			memcpy(achKeyData + 21, &nRandomKeyPart, 2); // random key part sent from remote client
-		}
-		md5.Calculate(achKeyData, len);
+        uchar achKeyData[35];
+        int len;
+        md4cpy(achKeyData, pachClientHashOrKadID);
+        achKeyData[20] = MAGICVALUE_UDP;
+        if (bIPv6)
+        {
+            len = 35;
+            memcpy(achKeyData + 16, theApp.GetPublicIPv6().Data(), 16);
+            memcpy(achKeyData + 33, &nRandomKeyPart, 2); // random key part sent from remote client
+        }
+        else
+        {
+            len = 23;
+            UINT dwIP = theApp.GetPublicIP();
+            memcpy(achKeyData + 16, &dwIP, 4);
+            memcpy(achKeyData + 21, &nRandomKeyPart, 2); // random key part sent from remote client
+        }
+        md5.Calculate(achKeyData, len);
         /*uchar achKeyData[23];
         md4cpy(achKeyData, pachClientHashOrKadID);
         UINT dwIP = theApp.GetPublicIP();
@@ -424,19 +424,19 @@ int CEncryptedDatagramSocket::EncryptSendClient(uchar** ppbyBuf, int nBufLen, co
         bool bOk = false;
         switch (bySemiRandomNotProtocolMarker)  // not allowed values
         {
-        case OP_EMULEPROT:
-        case OP_KADEMLIAPACKEDPROT:
-        case OP_KADEMLIAHEADER:
-        case OP_UDPRESERVEDPROT1:
-        case OP_UDPRESERVEDPROT2:
-        case OP_PACKEDPROT:
+            case OP_EMULEPROT:
+            case OP_KADEMLIAPACKEDPROT:
+            case OP_KADEMLIAHEADER:
+            case OP_UDPRESERVEDPROT1:
+            case OP_UDPRESERVEDPROT2:
+            case OP_PACKEDPROT:
 //>>> WiZaRd::ModProt
-        case OP_MODPROT_PACKED:
-        case OP_MODPROT:
+            case OP_MODPROT_PACKED:
+            case OP_MODPROT:
 //<<< WiZaRd::ModProt
-            break;
-        default:
-            bOk = true;
+                break;
+            default:
+                bOk = true;
         }
         if (bOk)
             break;

@@ -199,11 +199,11 @@ int CPartFileConvert::performConvertToeMule(CString folder)
         pfconverting->partmettype = (uint8)eFormat;
         switch (pfconverting->partmettype)
         {
-        case PMT_UNKNOWN:
-        case PMT_BADFORMAT:
-            delete file;
-            return CONV_BADFORMAT;
-            break;
+            case PMT_UNKNOWN:
+            case PMT_BADFORMAT:
+                delete file;
+                return CONV_BADFORMAT;
+                break;
         }
     }
     else
@@ -589,26 +589,26 @@ CString CPartFileConvert::GetReturncodeText(int ret)
 {
     switch (ret)
     {
-    case CONV_OK				:
-        return GetResString(IDS_DL_TRANSFCOMPL);
-    case CONV_INPROGRESS		:
-        return GetResString(IDS_IMP_INPROGR);
-    case CONV_OUTOFDISKSPACE	:
-        return GetResString(IDS_IMP_ERR_DISKSP);
-    case CONV_PARTMETNOTFOUND	:
-        return GetResString(IDS_IMP_ERR_PARTMETIO);
-    case CONV_IOERROR			:
-        return GetResString(IDS_IMP_ERR_IO);
-    case CONV_FAILED			:
-        return GetResString(IDS_IMP_ERR_FAILED);
-    case CONV_QUEUE				:
-        return GetResString(IDS_IMP_STATUSQUEUED);
-    case CONV_ALREADYEXISTS		:
-        return GetResString(IDS_IMP_ALRDWL);
-    case CONV_BADFORMAT			:
-        return GetResString(IDS_IMP_ERR_BADFORMAT);
-    default:
-        return _T("?");
+        case CONV_OK				:
+            return GetResString(IDS_DL_TRANSFCOMPL);
+        case CONV_INPROGRESS		:
+            return GetResString(IDS_IMP_INPROGR);
+        case CONV_OUTOFDISKSPACE	:
+            return GetResString(IDS_IMP_ERR_DISKSP);
+        case CONV_PARTMETNOTFOUND	:
+            return GetResString(IDS_IMP_ERR_PARTMETIO);
+        case CONV_IOERROR			:
+            return GetResString(IDS_IMP_ERR_IO);
+        case CONV_FAILED			:
+            return GetResString(IDS_IMP_ERR_FAILED);
+        case CONV_QUEUE				:
+            return GetResString(IDS_IMP_STATUSQUEUED);
+        case CONV_ALREADYEXISTS		:
+            return GetResString(IDS_IMP_ALRDWL);
+        case CONV_BADFORMAT			:
+            return GetResString(IDS_IMP_ERR_BADFORMAT);
+        default:
+            return _T("?");
     }
 }
 

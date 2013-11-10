@@ -1036,9 +1036,9 @@ CUpDownClient* CUploadQueue::GetWaitingClientByIP_UDP(const _CIPAddress& IP, uin
     {
         CUpDownClient* cur_client = waitinglist.GetNext(pos);
 //>>> WiZaRd::IPv6 [Xanatos]
-		if ((IP.Type() == CAddress::IPv6 ? IP == cur_client->GetIPv6() : IP == cur_client->GetIP()) && nUDPPort == cur_client->GetUDPPort())
-			return cur_client;
-		else if ((IP.Type() == CAddress::IPv6 ? IP == cur_client->GetIPv6() : IP == cur_client->GetIP()) && bIgnorePortOnUniqueIP)
+        if ((IP.Type() == CAddress::IPv6 ? IP == cur_client->GetIPv6() : IP == cur_client->GetIP()) && nUDPPort == cur_client->GetUDPPort())
+            return cur_client;
+        else if ((IP.Type() == CAddress::IPv6 ? IP == cur_client->GetIPv6() : IP == cur_client->GetIP()) && bIgnorePortOnUniqueIP)
 //         if (dwIP == cur_client->GetIP() && nUDPPort == cur_client->GetUDPPort())
 //             return cur_client;
 //         else if (dwIP == cur_client->GetIP() && bIgnorePortOnUniqueIP)
@@ -1066,8 +1066,8 @@ CUpDownClient* CUploadQueue::GetWaitingClientByIP(const _CIPAddress& IP)
     {
         CUpDownClient* cur_client = waitinglist.GetNext(pos);
 //>>> WiZaRd::IPv6 [Xanatos]
-		if (IP.Type() == CAddress::IPv6 ? IP == cur_client->GetIPv6() : IP == cur_client->GetIP())
-        //if (dwIP == cur_client->GetIP())
+        if (IP.Type() == CAddress::IPv6 ? IP == cur_client->GetIPv6() : IP == cur_client->GetIP())
+            //if (dwIP == cur_client->GetIP())
 //<<< WiZaRd::IPv6 [Xanatos]
             return cur_client;
     }
@@ -1239,9 +1239,9 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
         return;
     }
 //>>> WiZaRd::IPv6 [Xanatos]
-	// IPv6-TODO: Add IPv6 ban list
-	else if (client->GetIP().Type() == CAddress::IPv4 && theApp.clientlist->GetClientsFromIP(_ntohl(client->GetIP().ToIPv4())) >= 3)
-    //else if (theApp.clientlist->GetClientsFromIP(client->GetIP()) >= 3)
+    // IPv6-TODO: Add IPv6 ban list
+    else if (client->GetIP().Type() == CAddress::IPv4 && theApp.clientlist->GetClientsFromIP(_ntohl(client->GetIP().ToIPv4())) >= 3)
+        //else if (theApp.clientlist->GetClientsFromIP(client->GetIP()) >= 3)
 //<<< WiZaRd::IPv6 [Xanatos]
     {
         if (thePrefs.GetVerbose())
@@ -1261,7 +1261,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
             AddUpNextClient(L"Small File Priority Slot", client);
             return;
         }
-		
+
         // cap the list
         // the queue limit in prefs is only a soft limit. Hard limit is 25% higher, to let in powershare clients and other
         // high ranking clients after soft limit has been reached
@@ -1316,7 +1316,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
         m_bStatisticsWaitingListDirty = true;
         waitinglist.AddTail(client);
         client->SetUploadState(US_ONUPLOADQUEUE);
-		reqfile->IncRealQueuedCount(client); //>>> QueuedCount
+        reqfile->IncRealQueuedCount(client); //>>> QueuedCount
 //>>> WiZaRd::ZZUL Upload [ZZ]
         // Add client to waiting list. If addInFirstPlace is set, client should not have its waiting time resetted
         theApp.emuledlg->transferwnd->GetQueueList()->AddClient(client, (addInFirstPlace == false));
@@ -1480,9 +1480,9 @@ void CUploadQueue::RemoveFromWaitingQueue(POSITION pos, bool updatewindow)
     todelete->SetUploadState(US_NONE);
 
 //>>> QueuedCount
-	CKnownFile* oldreqfile = todelete->GetUploadFileID() ? theApp.sharedfiles->GetFileByID(todelete->GetUploadFileID()) : NULL;
-	if (oldreqfile)
-		oldreqfile->DecRealQueuedCount(todelete); 
+    CKnownFile* oldreqfile = todelete->GetUploadFileID() ? theApp.sharedfiles->GetFileByID(todelete->GetUploadFileID()) : NULL;
+    if (oldreqfile)
+        oldreqfile->DecRealQueuedCount(todelete);
 //<<< QueuedCount
 }
 
@@ -1587,7 +1587,7 @@ VOID CALLBACK CUploadQueue::UploadTimer(HWND /*hwnd*/, UINT /*uMsg*/, UINT_PTR /
         {
             counter=0;
 
-			theApp.UpdateIPv6(); //>>> WiZaRd::IPv6 [Xanatos]
+            theApp.UpdateIPv6(); //>>> WiZaRd::IPv6 [Xanatos]
 
             // try to use different time intervals here to not create any disk-IO bottle necks by saving all files at once
             theApp.clientcredits->Process();	// 13 minutes
@@ -1609,12 +1609,12 @@ VOID CALLBACK CUploadQueue::UploadTimer(HWND /*hwnd*/, UINT /*uMsg*/, UINT_PTR /
             }
 
             theApp.listensocket->UpdateConnectionsStatus();
-			if (thePrefs.WatchClipboard4ED2KLinks())
-			{
-				// TODO: Remove this from here. This has to be done with a clipboard chain
-				// and *not* with a timer!!
-				theApp.SearchClipboard();
-			}
+            if (thePrefs.WatchClipboard4ED2KLinks())
+            {
+                // TODO: Remove this from here. This has to be done with a clipboard chain
+                // and *not* with a timer!!
+                theApp.SearchClipboard();
+            }
 
             // 2 seconds
             i2Secs++;
@@ -1844,7 +1844,7 @@ UINT CUploadQueue::GetWaitingUserForFileCount(const CSimpleArray<CObject*>& raFi
         {
             //if (md4cmp(((CKnownFile*)raFiles[i])->GetFileHash(), cur_client->GetUploadFileID()) == 0)
             //    nResult++;
-			nResult += ((CKnownFile*)raFiles[i])->GetRealQueuedCount();
+            nResult += ((CKnownFile*)raFiles[i])->GetRealQueuedCount();
         }
     }
 //<<< QueuedCount

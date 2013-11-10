@@ -395,12 +395,12 @@ void CRoutingZone::WriteFile()
 #ifdef _DEBUG
 void CRoutingZone::DbgWriteBootstrapFile()
 {
-	// don't overwrite a bootstrap nodes.dat with an empty one, if we didn't finished probing
-	if (!CKademlia::s_liBootstapList.IsEmpty() && GetNumContacts() == 0)
-	{
-		DebugLogWarning(L"Skipped storing nodes.dat, because we have an unfinished bootstrap of the nodes.dat version and no contacts in our routing table");
-		return;
-	}
+    // don't overwrite a bootstrap nodes.dat with an empty one, if we didn't finished probing
+    if (!CKademlia::s_liBootstapList.IsEmpty() && GetNumContacts() == 0)
+    {
+        DebugLogWarning(L"Skipped storing nodes.dat, because we have an unfinished bootstrap of the nodes.dat version and no contacts in our routing table");
+        return;
+    }
     DebugLogWarning(L"Writing special bootstrap nodes.dat - not intended for normal use");
     try
     {
@@ -412,12 +412,12 @@ void CRoutingZone::DbgWriteBootstrapFile()
         {
             setvbuf(file.m_pStream, NULL, _IOFBF, 32768);
 
-            // The bootstrap method gets a very nice sample of contacts to save.            
+            // The bootstrap method gets a very nice sample of contacts to save.
             CUInt128 uRandom(CUInt128((ULONG)0), 0);
             CUInt128 uDistance = uRandom;
             uDistance.Xor(uMe);
- 			ContactMap mapContacts;
- 			GetClosestTo(2, uRandom, uDistance, 1200, &mapContacts, false, false);			
+            ContactMap mapContacts;
+            GetClosestTo(2, uRandom, uDistance, 1200, &mapContacts, false, false);
             // filter out Kad1 nodes
             for (ContactMap::iterator itContactMap = mapContacts.begin(); itContactMap != mapContacts.end();)
             {
@@ -579,9 +579,9 @@ bool CRoutingZone::Add(CContact* pContact, bool& bUpdate, bool& bOutIPVerified)
                     if (pContactUpdate->GetVersion() >= KADEMLIA_VERSION1_46c && pContactUpdate->GetVersion() < KADEMLIA_VERSION6_49aBETA)
                     {
                         ASSERT(!pContactUpdate->GetReceivedHelloPacket());
-						if(pContactUpdate->GetIPAddress() != pContact->GetIPAddress() || pContactUpdate->GetVersion() != pContact->GetVersion())
-							AddDebugLogLine(DLP_VERYLOW, false, _T("Accepted update for legacy kad2 contact, because of first HELLO (%s -> %s, %u -> %u)")
-                                        , ipstr(ntohl(pContactUpdate->GetIPAddress())), ipstr(ntohl(pContact->GetIPAddress())), pContactUpdate->GetVersion(), pContact->GetVersion());
+                        if (pContactUpdate->GetIPAddress() != pContact->GetIPAddress() || pContactUpdate->GetVersion() != pContact->GetVersion())
+                            AddDebugLogLine(DLP_VERYLOW, false, _T("Accepted update for legacy kad2 contact, because of first HELLO (%s -> %s, %u -> %u)")
+                                            , ipstr(ntohl(pContactUpdate->GetIPAddress())), ipstr(ntohl(pContact->GetIPAddress())), pContactUpdate->GetVersion(), pContact->GetVersion());
                     }
 #endif
                     // All other nodes (Kad1, Kad2 > 0.49a with UDPKey checked or not set, first hello updates) are allowed to do full updates

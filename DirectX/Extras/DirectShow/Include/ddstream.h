@@ -62,28 +62,28 @@ typedef interface IDirectDrawStreamSample IDirectDrawStreamSample;
 extern "C" {
 #endif
 
-    void * __RPC_USER MIDL_user_allocate(size_t);
-    void __RPC_USER MIDL_user_free(void *);
+void * __RPC_USER MIDL_user_allocate(size_t);
+void __RPC_USER MIDL_user_free(void *);
 
-    /* interface __MIDL_itf_ddstream_0000 */
-    /* [local] */
+/* interface __MIDL_itf_ddstream_0000 */
+/* [local] */
 
 //
 //   The following declarations within the 'if 0' block are dummy typedefs used to make
 //   the ddstream.idl file build.  The actual definitions are contained in DDRAW.H
 //
 #if 0
-    typedef void *LPDDSURFACEDESC;
+typedef void *LPDDSURFACEDESC;
 
-    typedef struct tDDSURFACEDESC DDSURFACEDESC;
+typedef struct tDDSURFACEDESC DDSURFACEDESC;
 
 #endif
 #include <ddraw.h>
 
-    enum __MIDL___MIDL_itf_ddstream_0000_0001
-    {
-        DDSFF_PROGRESSIVERENDER	= 0x1
-    } ;
+enum __MIDL___MIDL_itf_ddstream_0000_0001
+{
+    DDSFF_PROGRESSIVERENDER	= 0x1
+} ;
 
 
 
@@ -91,17 +91,17 @@ extern "C" {
 
 
 
-    extern RPC_IF_HANDLE __MIDL_itf_ddstream_0000_v0_0_c_ifspec;
-    extern RPC_IF_HANDLE __MIDL_itf_ddstream_0000_v0_0_s_ifspec;
+extern RPC_IF_HANDLE __MIDL_itf_ddstream_0000_v0_0_c_ifspec;
+extern RPC_IF_HANDLE __MIDL_itf_ddstream_0000_v0_0_s_ifspec;
 
 #ifndef __IDirectDrawMediaStream_INTERFACE_DEFINED__
 #define __IDirectDrawMediaStream_INTERFACE_DEFINED__
 
-    /* interface IDirectDrawMediaStream */
-    /* [unique][uuid][local][object] */
+/* interface IDirectDrawMediaStream */
+/* [unique][uuid][local][object] */
 
 
-    EXTERN_C const IID IID_IDirectDrawMediaStream;
+EXTERN_C const IID IID_IDirectDrawMediaStream;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 

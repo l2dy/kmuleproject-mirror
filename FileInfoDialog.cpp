@@ -851,18 +851,18 @@ LRESULT CFileInfoDialog::OnMediaInfoResult(WPARAM, LPARAM lParam)
         {
             switch (ami.audio.nChannels)
             {
-            case 1:
-                SetDlgItemText(IDC_ACHANNEL, _T("1 (Mono)"));
-                break;
-            case 2:
-                SetDlgItemText(IDC_ACHANNEL, _T("2 (Stereo)"));
-                break;
-            case 5:
-                SetDlgItemText(IDC_ACHANNEL, _T("5.1 (Surround)"));
-                break;
-            default:
-                SetDlgItemInt(IDC_ACHANNEL, ami.audio.nChannels, FALSE);
-                break;
+                case 1:
+                    SetDlgItemText(IDC_ACHANNEL, _T("1 (Mono)"));
+                    break;
+                case 2:
+                    SetDlgItemText(IDC_ACHANNEL, _T("2 (Stereo)"));
+                    break;
+                case 5:
+                    SetDlgItemText(IDC_ACHANNEL, _T("5.1 (Surround)"));
+                    break;
+                default:
+                    SetDlgItemInt(IDC_ACHANNEL, ami.audio.nChannels, FALSE);
+                    break;
             }
         }
         else
@@ -1104,36 +1104,36 @@ bool CGetMediaInfoThread::GetMediaInfo(HWND hWndOwner, const CShareableFile* pFi
 
                 switch (mp3info->version)
                 {
-                case MPEGVERSION_2_5:
-                    mi->strAudioFormat = _T("MPEG-2.5,");
-                    mi->audio.wFormatTag = WAVE_FORMAT_MPEGLAYER3;
-                    break;
-                case MPEGVERSION_2:
-                    mi->strAudioFormat = _T("MPEG-2,");
-                    mi->audio.wFormatTag = WAVE_FORMAT_MPEGLAYER3;
-                    break;
-                case MPEGVERSION_1:
-                    mi->strAudioFormat = _T("MPEG-1,");
-                    mi->audio.wFormatTag = WAVE_FORMAT_MPEGLAYER3;
-                    break;
-                default:
-                    break;
+                    case MPEGVERSION_2_5:
+                        mi->strAudioFormat = _T("MPEG-2.5,");
+                        mi->audio.wFormatTag = WAVE_FORMAT_MPEGLAYER3;
+                        break;
+                    case MPEGVERSION_2:
+                        mi->strAudioFormat = _T("MPEG-2,");
+                        mi->audio.wFormatTag = WAVE_FORMAT_MPEGLAYER3;
+                        break;
+                    case MPEGVERSION_1:
+                        mi->strAudioFormat = _T("MPEG-1,");
+                        mi->audio.wFormatTag = WAVE_FORMAT_MPEGLAYER3;
+                        break;
+                    default:
+                        break;
                 }
                 mi->strAudioFormat += _T(" ");
 
                 switch (mp3info->layer)
                 {
-                case MPEGLAYER_III:
-                    mi->strAudioFormat += _T("Layer 3");
-                    break;
-                case MPEGLAYER_II:
-                    mi->strAudioFormat += _T("Layer 2");
-                    break;
-                case MPEGLAYER_I:
-                    mi->strAudioFormat += _T("Layer 1");
-                    break;
-                default:
-                    break;
+                    case MPEGLAYER_III:
+                        mi->strAudioFormat += _T("Layer 3");
+                        break;
+                    case MPEGLAYER_II:
+                        mi->strAudioFormat += _T("Layer 2");
+                        break;
+                    case MPEGLAYER_I:
+                        mi->strAudioFormat += _T("Layer 1");
+                        break;
+                    default:
+                        break;
                 }
                 if (!bSingleFile)
                 {
@@ -1150,26 +1150,26 @@ bool CGetMediaInfoThread::GetMediaInfo(HWND hWndOwner, const CShareableFile* pFi
                     mi->strInfo << _T("   Mode:\t");
                 switch (mp3info->channelmode)
                 {
-                case MP3CHANNELMODE_STEREO:
-                    if (!bSingleFile)
-                        mi->strInfo << _T("Stereo");
-                    mi->audio.nChannels = 2;
-                    break;
-                case MP3CHANNELMODE_JOINT_STEREO:
-                    if (!bSingleFile)
-                        mi->strInfo << _T("Joint Stereo");
-                    mi->audio.nChannels = 2;
-                    break;
-                case MP3CHANNELMODE_DUAL_CHANNEL:
-                    if (!bSingleFile)
-                        mi->strInfo << _T("Dual Channel");
-                    mi->audio.nChannels = 2;
-                    break;
-                case MP3CHANNELMODE_SINGLE_CHANNEL:
-                    if (!bSingleFile)
-                        mi->strInfo << _T("Mono");
-                    mi->audio.nChannels = 1;
-                    break;
+                    case MP3CHANNELMODE_STEREO:
+                        if (!bSingleFile)
+                            mi->strInfo << _T("Stereo");
+                        mi->audio.nChannels = 2;
+                        break;
+                    case MP3CHANNELMODE_JOINT_STEREO:
+                        if (!bSingleFile)
+                            mi->strInfo << _T("Joint Stereo");
+                        mi->audio.nChannels = 2;
+                        break;
+                    case MP3CHANNELMODE_DUAL_CHANNEL:
+                        if (!bSingleFile)
+                            mi->strInfo << _T("Dual Channel");
+                        mi->audio.nChannels = 2;
+                        break;
+                    case MP3CHANNELMODE_SINGLE_CHANNEL:
+                        if (!bSingleFile)
+                            mi->strInfo << _T("Mono");
+                        mi->audio.nChannels = 1;
+                        break;
                 }
                 if (!bSingleFile)
                     mi->strInfo << _T("\n");
@@ -1222,309 +1222,309 @@ bool CGetMediaInfoThread::GetMediaInfo(HWND hWndOwner, const CShareableFile* pFi
                 ID3_FrameID eFrameID = frame->GetID();
                 switch (eFrameID)
                 {
-                case ID3FID_ALBUM:
-                case ID3FID_COMPOSER:
-                case ID3FID_CONTENTTYPE:
-                case ID3FID_COPYRIGHT:
-                case ID3FID_DATE:
-                case ID3FID_PLAYLISTDELAY:
-                case ID3FID_ENCODEDBY:
-                case ID3FID_LYRICIST:
-                case ID3FID_FILETYPE:
-                case ID3FID_TIME:
-                case ID3FID_CONTENTGROUP:
-                case ID3FID_TITLE:
-                case ID3FID_SUBTITLE:
-                case ID3FID_INITIALKEY:
-                case ID3FID_LANGUAGE:
-                case ID3FID_MEDIATYPE:
-                case ID3FID_ORIGALBUM:
-                case ID3FID_ORIGFILENAME:
-                case ID3FID_ORIGLYRICIST:
-                case ID3FID_ORIGARTIST:
-                case ID3FID_ORIGYEAR:
-                case ID3FID_FILEOWNER:
-                case ID3FID_LEADARTIST:
-                case ID3FID_BAND:
-                case ID3FID_CONDUCTOR:
-                case ID3FID_MIXARTIST:
-                case ID3FID_PARTINSET:
-                case ID3FID_PUBLISHER:
-                case ID3FID_TRACKNUM:
-                case ID3FID_RECORDINGDATES:
-                case ID3FID_NETRADIOSTATION:
-                case ID3FID_NETRADIOOWNER:
-                case ID3FID_SIZE:
-                case ID3FID_ISRC:
-                case ID3FID_ENCODERSETTINGS:
-                case ID3FID_YEAR:
-                {
-                    wchar_t *sText = ID3_GetStringW(frame, ID3FN_TEXT);
-                    CString strText(sText);
-                    strText.Trim();
-                    strFidInfo << strText;
-                    delete[] sText;
-                    break;
-                }
-                case ID3FID_BPM:
-                {
-                    wchar_t *sText = ID3_GetStringW(frame, ID3FN_TEXT);
-                    long lLength = _wtol(sText);
-                    if (lLength) // check for != "0"
-                        strFidInfo << sText;
-                    delete[] sText;
-                    break;
-                }
-                case ID3FID_SONGLEN:
-                {
-                    wchar_t *sText = ID3_GetStringW(frame, ID3FN_TEXT);
-                    long lLength = _wtol(sText) / 1000;
-                    if (lLength)
+                    case ID3FID_ALBUM:
+                    case ID3FID_COMPOSER:
+                    case ID3FID_CONTENTTYPE:
+                    case ID3FID_COPYRIGHT:
+                    case ID3FID_DATE:
+                    case ID3FID_PLAYLISTDELAY:
+                    case ID3FID_ENCODEDBY:
+                    case ID3FID_LYRICIST:
+                    case ID3FID_FILETYPE:
+                    case ID3FID_TIME:
+                    case ID3FID_CONTENTGROUP:
+                    case ID3FID_TITLE:
+                    case ID3FID_SUBTITLE:
+                    case ID3FID_INITIALKEY:
+                    case ID3FID_LANGUAGE:
+                    case ID3FID_MEDIATYPE:
+                    case ID3FID_ORIGALBUM:
+                    case ID3FID_ORIGFILENAME:
+                    case ID3FID_ORIGLYRICIST:
+                    case ID3FID_ORIGARTIST:
+                    case ID3FID_ORIGYEAR:
+                    case ID3FID_FILEOWNER:
+                    case ID3FID_LEADARTIST:
+                    case ID3FID_BAND:
+                    case ID3FID_CONDUCTOR:
+                    case ID3FID_MIXARTIST:
+                    case ID3FID_PARTINSET:
+                    case ID3FID_PUBLISHER:
+                    case ID3FID_TRACKNUM:
+                    case ID3FID_RECORDINGDATES:
+                    case ID3FID_NETRADIOSTATION:
+                    case ID3FID_NETRADIOOWNER:
+                    case ID3FID_SIZE:
+                    case ID3FID_ISRC:
+                    case ID3FID_ENCODERSETTINGS:
+                    case ID3FID_YEAR:
                     {
-                        CString strLength;
-                        SecToTimeLength(lLength, strLength);
-                        strFidInfo << strLength;
-                    }
-                    delete[] sText;
-                    break;
-                }
-                case ID3FID_USERTEXT:
-                {
-                    wchar_t
-                    *sText = ID3_GetStringW(frame, ID3FN_TEXT),
-                     *sDesc = ID3_GetStringW(frame, ID3FN_DESCRIPTION);
-                    CString strText(sText);
-                    strText.Trim();
-                    if (!strText.IsEmpty())
-                    {
-                        CString strDesc(sDesc);
-                        strDesc.Trim();
-                        if (!strDesc.IsEmpty())
-                            strFidInfo << _T("(") << strDesc << _T(")");
-
-                        if (!strDesc.IsEmpty())
-                            strFidInfo << _T(": ");
+                        wchar_t *sText = ID3_GetStringW(frame, ID3FN_TEXT);
+                        CString strText(sText);
+                        strText.Trim();
                         strFidInfo << strText;
+                        delete[] sText;
+                        break;
                     }
-                    delete[] sText;
-                    delete[] sDesc;
-                    break;
-                }
-                case ID3FID_COMMENT:
-                case ID3FID_UNSYNCEDLYRICS:
-                {
-                    wchar_t
-                    *sText = ID3_GetStringW(frame, ID3FN_TEXT),
-                     *sDesc = ID3_GetStringW(frame, ID3FN_DESCRIPTION),
-                      *sLang = ID3_GetStringW(frame, ID3FN_LANGUAGE);
-                    CString strText(sText);
-                    strText.Trim();
-                    if (!strText.IsEmpty())
+                    case ID3FID_BPM:
                     {
-                        CString strDesc(sDesc);
-                        strDesc.Trim();
-                        if (strDesc == _T("ID3v1 Comment"))
-                            strDesc.Empty();
-                        if (!strDesc.IsEmpty())
-                            strFidInfo << _T("(") << strDesc << _T(")");
-
-                        CString strLang(sLang);
-                        strLang.Trim();
-                        if (!strLang.IsEmpty())
-                            strFidInfo << _T("[") << strLang << _T("]");
-
-                        if (!strDesc.IsEmpty() || !strLang.IsEmpty())
-                            strFidInfo << _T(": ");
-                        strFidInfo << strText;
+                        wchar_t *sText = ID3_GetStringW(frame, ID3FN_TEXT);
+                        long lLength = _wtol(sText);
+                        if (lLength) // check for != "0"
+                            strFidInfo << sText;
+                        delete[] sText;
+                        break;
                     }
-                    delete[] sText;
-                    delete[] sDesc;
-                    delete[] sLang;
-                    break;
-                }
-                case ID3FID_WWWAUDIOFILE:
-                case ID3FID_WWWARTIST:
-                case ID3FID_WWWAUDIOSOURCE:
-                case ID3FID_WWWCOMMERCIALINFO:
-                case ID3FID_WWWCOPYRIGHT:
-                case ID3FID_WWWPUBLISHER:
-                case ID3FID_WWWPAYMENT:
-                case ID3FID_WWWRADIOPAGE:
-                {
-                    wchar_t *sURL = ID3_GetStringW(frame, ID3FN_URL);
-                    CString strURL(sURL);
-                    strURL.Trim();
-                    strFidInfo << strURL;
-                    delete[] sURL;
-                    break;
-                }
-                case ID3FID_WWWUSER:
-                {
-                    wchar_t
-                    *sURL = ID3_GetStringW(frame, ID3FN_URL),
-                     *sDesc = ID3_GetStringW(frame, ID3FN_DESCRIPTION);
-                    CString strURL(sURL);
-                    strURL.Trim();
-                    if (!strURL.IsEmpty())
+                    case ID3FID_SONGLEN:
                     {
-                        CString strDesc(sDesc);
-                        strDesc.Trim();
-                        if (!strDesc.IsEmpty())
-                            strFidInfo << _T("(") << strDesc << _T(")");
+                        wchar_t *sText = ID3_GetStringW(frame, ID3FN_TEXT);
+                        long lLength = _wtol(sText) / 1000;
+                        if (lLength)
+                        {
+                            CString strLength;
+                            SecToTimeLength(lLength, strLength);
+                            strFidInfo << strLength;
+                        }
+                        delete[] sText;
+                        break;
+                    }
+                    case ID3FID_USERTEXT:
+                    {
+                        wchar_t
+                        *sText = ID3_GetStringW(frame, ID3FN_TEXT),
+                         *sDesc = ID3_GetStringW(frame, ID3FN_DESCRIPTION);
+                        CString strText(sText);
+                        strText.Trim();
+                        if (!strText.IsEmpty())
+                        {
+                            CString strDesc(sDesc);
+                            strDesc.Trim();
+                            if (!strDesc.IsEmpty())
+                                strFidInfo << _T("(") << strDesc << _T(")");
 
-                        if (!strDesc.IsEmpty())
-                            strFidInfo << _T(": ");
+                            if (!strDesc.IsEmpty())
+                                strFidInfo << _T(": ");
+                            strFidInfo << strText;
+                        }
+                        delete[] sText;
+                        delete[] sDesc;
+                        break;
+                    }
+                    case ID3FID_COMMENT:
+                    case ID3FID_UNSYNCEDLYRICS:
+                    {
+                        wchar_t
+                        *sText = ID3_GetStringW(frame, ID3FN_TEXT),
+                         *sDesc = ID3_GetStringW(frame, ID3FN_DESCRIPTION),
+                          *sLang = ID3_GetStringW(frame, ID3FN_LANGUAGE);
+                        CString strText(sText);
+                        strText.Trim();
+                        if (!strText.IsEmpty())
+                        {
+                            CString strDesc(sDesc);
+                            strDesc.Trim();
+                            if (strDesc == _T("ID3v1 Comment"))
+                                strDesc.Empty();
+                            if (!strDesc.IsEmpty())
+                                strFidInfo << _T("(") << strDesc << _T(")");
+
+                            CString strLang(sLang);
+                            strLang.Trim();
+                            if (!strLang.IsEmpty())
+                                strFidInfo << _T("[") << strLang << _T("]");
+
+                            if (!strDesc.IsEmpty() || !strLang.IsEmpty())
+                                strFidInfo << _T(": ");
+                            strFidInfo << strText;
+                        }
+                        delete[] sText;
+                        delete[] sDesc;
+                        delete[] sLang;
+                        break;
+                    }
+                    case ID3FID_WWWAUDIOFILE:
+                    case ID3FID_WWWARTIST:
+                    case ID3FID_WWWAUDIOSOURCE:
+                    case ID3FID_WWWCOMMERCIALINFO:
+                    case ID3FID_WWWCOPYRIGHT:
+                    case ID3FID_WWWPUBLISHER:
+                    case ID3FID_WWWPAYMENT:
+                    case ID3FID_WWWRADIOPAGE:
+                    {
+                        wchar_t *sURL = ID3_GetStringW(frame, ID3FN_URL);
+                        CString strURL(sURL);
+                        strURL.Trim();
                         strFidInfo << strURL;
-                    }
-                    delete[] sURL;
-                    delete[] sDesc;
-                    break;
-                }
-                case ID3FID_INVOLVEDPEOPLE:
-                {
-                    size_t nItems = frame->GetField(ID3FN_TEXT)->GetNumTextItems();
-                    for (size_t nIndex = 0; nIndex < nItems; nIndex++)
-                    {
-                        wchar_t *sPeople = ID3_GetStringW(frame, ID3FN_TEXT, nIndex);
-                        strFidInfo << sPeople;
-                        delete[] sPeople;
-                        if (nIndex + 1 < nItems)
-                            strFidInfo << _T(", ");
-                    }
-                    break;
-                }
-                case ID3FID_PICTURE:
-                {
-                    wchar_t
-                    *sMimeType = ID3_GetStringW(frame, ID3FN_MIMETYPE),
-                     *sDesc	   = ID3_GetStringW(frame, ID3FN_DESCRIPTION),
-                       *sFormat   = ID3_GetStringW(frame, ID3FN_IMAGEFORMAT);
-                    size_t
-                    nPicType   = frame->GetField(ID3FN_PICTURETYPE)->Get(),
-                    nDataSize  = frame->GetField(ID3FN_DATA)->Size();
-                    strFidInfo << _T("(") << sDesc << _T(")[") << sFormat << _T(", ")
-                               << nPicType << _T("]: ") << sMimeType << _T(", ") << nDataSize << _T(" bytes");
-                    delete[] sMimeType;
-                    delete[] sDesc;
-                    delete[] sFormat;
-                    break;
-                }
-                case ID3FID_GENERALOBJECT:
-                {
-                    wchar_t
-                    *sMimeType = ID3_GetStringW(frame, ID3FN_MIMETYPE),
-                     *sDesc = ID3_GetStringW(frame, ID3FN_DESCRIPTION),
-                      *sFileName = ID3_GetStringW(frame, ID3FN_FILENAME);
-                    size_t
-                    nDataSize = frame->GetField(ID3FN_DATA)->Size();
-                    strFidInfo << _T("(") << sDesc << _T(")[")
-                               << sFileName << _T("]: ") << sMimeType << _T(", ") << nDataSize << _T(" bytes");
-                    delete[] sMimeType;
-                    delete[] sDesc;
-                    delete[] sFileName;
-                    break;
-                }
-                case ID3FID_UNIQUEFILEID:
-                {
-                    wchar_t *sOwner = ID3_GetStringW(frame, ID3FN_OWNER);
-                    size_t nDataSize = frame->GetField(ID3FN_DATA)->Size();
-                    strFidInfo << sOwner << _T(", ") << nDataSize << _T(" bytes");
-                    delete[] sOwner;
-                    break;
-                }
-                case ID3FID_PLAYCOUNTER:
-                {
-                    size_t nCounter = frame->GetField(ID3FN_COUNTER)->Get();
-                    strFidInfo << nCounter;
-                    break;
-                }
-                case ID3FID_POPULARIMETER:
-                {
-                    wchar_t *sEmail = ID3_GetStringW(frame, ID3FN_EMAIL);
-                    size_t
-                    nCounter = frame->GetField(ID3FN_COUNTER)->Get(),
-                    nRating = frame->GetField(ID3FN_RATING)->Get();
-                    strFidInfo << sEmail << _T(", counter=") << nCounter << _T(" rating=") << nRating;
-                    delete[] sEmail;
-                    break;
-                }
-                case ID3FID_CRYPTOREG:
-                case ID3FID_GROUPINGREG:
-                {
-                    wchar_t *sOwner = ID3_GetStringW(frame, ID3FN_OWNER);
-                    size_t
-                    nSymbol = frame->GetField(ID3FN_ID)->Get(),
-                    nDataSize = frame->GetField(ID3FN_DATA)->Size();
-                    strFidInfo << _T("(") << nSymbol << _T("): ") << sOwner << _T(", ") << nDataSize << _T(" bytes");
-                    break;
-                }
-                case ID3FID_SYNCEDLYRICS:
-                {
-                    wchar_t
-                    *sDesc = ID3_GetStringW(frame, ID3FN_DESCRIPTION),
-                     *sLang = ID3_GetStringW(frame, ID3FN_LANGUAGE);
-                    size_t
-                    //nTimestamp = frame->GetField(ID3FN_TIMESTAMPFORMAT)->Get(),
-                    nRating = frame->GetField(ID3FN_CONTENTTYPE)->Get();
-                    //const char* format = (2 == nTimestamp) ? "ms" : "frames";
-                    strFidInfo << _T("(") << sDesc << _T(")[") << sLang << _T("]: ");
-                    switch (nRating)
-                    {
-                    case ID3CT_OTHER:
-                        strFidInfo << _T("Other");
-                        break;
-                    case ID3CT_LYRICS:
-                        strFidInfo << _T("Lyrics");
-                        break;
-                    case ID3CT_TEXTTRANSCRIPTION:
-                        strFidInfo << _T("Text transcription");
-                        break;
-                    case ID3CT_MOVEMENT:
-                        strFidInfo << _T("Movement/part name");
-                        break;
-                    case ID3CT_EVENTS:
-                        strFidInfo << _T("Events");
-                        break;
-                    case ID3CT_CHORD:
-                        strFidInfo << _T("Chord");
-                        break;
-                    case ID3CT_TRIVIA:
-                        strFidInfo << _T("Trivia/'pop up' information");
+                        delete[] sURL;
                         break;
                     }
-                    /*ID3_Field* fld = frame->GetField(ID3FN_DATA);
-                    if (fld)
+                    case ID3FID_WWWUSER:
                     {
-                    	ID3_MemoryReader mr(fld->GetRawBinary(), fld->BinSize());
-                    	while (!mr.atEnd())
-                    	{
-                    		strFidInfo << io::readString(mr).c_str();
-                    		strFidInfo << " [" << io::readBENumber(mr, sizeof(UINT)) << " "
-                    			<< format << "] ";
-                    	}
-                    }*/
-                    delete[] sDesc;
-                    delete[] sLang;
-                    break;
-                }
-                case ID3FID_AUDIOCRYPTO:
-                case ID3FID_EQUALIZATION:
-                case ID3FID_EVENTTIMING:
-                case ID3FID_CDID:
-                case ID3FID_MPEGLOOKUP:
-                case ID3FID_OWNERSHIP:
-                case ID3FID_PRIVATE:
-                case ID3FID_POSITIONSYNC:
-                case ID3FID_BUFFERSIZE:
-                case ID3FID_VOLUMEADJ:
-                case ID3FID_REVERB:
-                case ID3FID_SYNCEDTEMPO:
-                case ID3FID_METACRYPTO:
-                    //strFidInfo << _T(" (unimplemented)");
-                    break;
-                default:
-                    //strFidInfo << _T(" frame");
-                    break;
+                        wchar_t
+                        *sURL = ID3_GetStringW(frame, ID3FN_URL),
+                         *sDesc = ID3_GetStringW(frame, ID3FN_DESCRIPTION);
+                        CString strURL(sURL);
+                        strURL.Trim();
+                        if (!strURL.IsEmpty())
+                        {
+                            CString strDesc(sDesc);
+                            strDesc.Trim();
+                            if (!strDesc.IsEmpty())
+                                strFidInfo << _T("(") << strDesc << _T(")");
+
+                            if (!strDesc.IsEmpty())
+                                strFidInfo << _T(": ");
+                            strFidInfo << strURL;
+                        }
+                        delete[] sURL;
+                        delete[] sDesc;
+                        break;
+                    }
+                    case ID3FID_INVOLVEDPEOPLE:
+                    {
+                        size_t nItems = frame->GetField(ID3FN_TEXT)->GetNumTextItems();
+                        for (size_t nIndex = 0; nIndex < nItems; nIndex++)
+                        {
+                            wchar_t *sPeople = ID3_GetStringW(frame, ID3FN_TEXT, nIndex);
+                            strFidInfo << sPeople;
+                            delete[] sPeople;
+                            if (nIndex + 1 < nItems)
+                                strFidInfo << _T(", ");
+                        }
+                        break;
+                    }
+                    case ID3FID_PICTURE:
+                    {
+                        wchar_t
+                        *sMimeType = ID3_GetStringW(frame, ID3FN_MIMETYPE),
+                         *sDesc	   = ID3_GetStringW(frame, ID3FN_DESCRIPTION),
+                           *sFormat   = ID3_GetStringW(frame, ID3FN_IMAGEFORMAT);
+                        size_t
+                        nPicType   = frame->GetField(ID3FN_PICTURETYPE)->Get(),
+                        nDataSize  = frame->GetField(ID3FN_DATA)->Size();
+                        strFidInfo << _T("(") << sDesc << _T(")[") << sFormat << _T(", ")
+                                   << nPicType << _T("]: ") << sMimeType << _T(", ") << nDataSize << _T(" bytes");
+                        delete[] sMimeType;
+                        delete[] sDesc;
+                        delete[] sFormat;
+                        break;
+                    }
+                    case ID3FID_GENERALOBJECT:
+                    {
+                        wchar_t
+                        *sMimeType = ID3_GetStringW(frame, ID3FN_MIMETYPE),
+                         *sDesc = ID3_GetStringW(frame, ID3FN_DESCRIPTION),
+                          *sFileName = ID3_GetStringW(frame, ID3FN_FILENAME);
+                        size_t
+                        nDataSize = frame->GetField(ID3FN_DATA)->Size();
+                        strFidInfo << _T("(") << sDesc << _T(")[")
+                                   << sFileName << _T("]: ") << sMimeType << _T(", ") << nDataSize << _T(" bytes");
+                        delete[] sMimeType;
+                        delete[] sDesc;
+                        delete[] sFileName;
+                        break;
+                    }
+                    case ID3FID_UNIQUEFILEID:
+                    {
+                        wchar_t *sOwner = ID3_GetStringW(frame, ID3FN_OWNER);
+                        size_t nDataSize = frame->GetField(ID3FN_DATA)->Size();
+                        strFidInfo << sOwner << _T(", ") << nDataSize << _T(" bytes");
+                        delete[] sOwner;
+                        break;
+                    }
+                    case ID3FID_PLAYCOUNTER:
+                    {
+                        size_t nCounter = frame->GetField(ID3FN_COUNTER)->Get();
+                        strFidInfo << nCounter;
+                        break;
+                    }
+                    case ID3FID_POPULARIMETER:
+                    {
+                        wchar_t *sEmail = ID3_GetStringW(frame, ID3FN_EMAIL);
+                        size_t
+                        nCounter = frame->GetField(ID3FN_COUNTER)->Get(),
+                        nRating = frame->GetField(ID3FN_RATING)->Get();
+                        strFidInfo << sEmail << _T(", counter=") << nCounter << _T(" rating=") << nRating;
+                        delete[] sEmail;
+                        break;
+                    }
+                    case ID3FID_CRYPTOREG:
+                    case ID3FID_GROUPINGREG:
+                    {
+                        wchar_t *sOwner = ID3_GetStringW(frame, ID3FN_OWNER);
+                        size_t
+                        nSymbol = frame->GetField(ID3FN_ID)->Get(),
+                        nDataSize = frame->GetField(ID3FN_DATA)->Size();
+                        strFidInfo << _T("(") << nSymbol << _T("): ") << sOwner << _T(", ") << nDataSize << _T(" bytes");
+                        break;
+                    }
+                    case ID3FID_SYNCEDLYRICS:
+                    {
+                        wchar_t
+                        *sDesc = ID3_GetStringW(frame, ID3FN_DESCRIPTION),
+                         *sLang = ID3_GetStringW(frame, ID3FN_LANGUAGE);
+                        size_t
+                        //nTimestamp = frame->GetField(ID3FN_TIMESTAMPFORMAT)->Get(),
+                        nRating = frame->GetField(ID3FN_CONTENTTYPE)->Get();
+                        //const char* format = (2 == nTimestamp) ? "ms" : "frames";
+                        strFidInfo << _T("(") << sDesc << _T(")[") << sLang << _T("]: ");
+                        switch (nRating)
+                        {
+                            case ID3CT_OTHER:
+                                strFidInfo << _T("Other");
+                                break;
+                            case ID3CT_LYRICS:
+                                strFidInfo << _T("Lyrics");
+                                break;
+                            case ID3CT_TEXTTRANSCRIPTION:
+                                strFidInfo << _T("Text transcription");
+                                break;
+                            case ID3CT_MOVEMENT:
+                                strFidInfo << _T("Movement/part name");
+                                break;
+                            case ID3CT_EVENTS:
+                                strFidInfo << _T("Events");
+                                break;
+                            case ID3CT_CHORD:
+                                strFidInfo << _T("Chord");
+                                break;
+                            case ID3CT_TRIVIA:
+                                strFidInfo << _T("Trivia/'pop up' information");
+                                break;
+                        }
+                        /*ID3_Field* fld = frame->GetField(ID3FN_DATA);
+                        if (fld)
+                        {
+                        	ID3_MemoryReader mr(fld->GetRawBinary(), fld->BinSize());
+                        	while (!mr.atEnd())
+                        	{
+                        		strFidInfo << io::readString(mr).c_str();
+                        		strFidInfo << " [" << io::readBENumber(mr, sizeof(UINT)) << " "
+                        			<< format << "] ";
+                        	}
+                        }*/
+                        delete[] sDesc;
+                        delete[] sLang;
+                        break;
+                    }
+                    case ID3FID_AUDIOCRYPTO:
+                    case ID3FID_EQUALIZATION:
+                    case ID3FID_EVENTTIMING:
+                    case ID3FID_CDID:
+                    case ID3FID_MPEGLOOKUP:
+                    case ID3FID_OWNERSHIP:
+                    case ID3FID_PRIVATE:
+                    case ID3FID_POSITIONSYNC:
+                    case ID3FID_BUFFERSIZE:
+                    case ID3FID_VOLUMEADJ:
+                    case ID3FID_REVERB:
+                    case ID3FID_SYNCEDTEMPO:
+                    case ID3FID_METACRYPTO:
+                        //strFidInfo << _T(" (unimplemented)");
+                        break;
+                    default:
+                        //strFidInfo << _T(" frame");
+                        break;
                 }
 
                 if (!strFidInfo.IsEmpty())

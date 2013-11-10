@@ -1038,9 +1038,6 @@
     <ClCompile Include="Mod\ModProt.cpp">
       <Filter>Mod\Source</Filter>
     </ClCompile>
-    <ClCompile Include="Mod\QOS.cpp">
-      <Filter>Mod\Header</Filter>
-    </ClCompile>
     <ClCompile Include="Mod\NATPMPWrapper.cpp">
       <Filter>Mod\Source</Filter>
     </ClCompile>
@@ -1067,6 +1064,9 @@
     </ClCompile>
     <ClCompile Include="Mod\Median.cpp">
       <Filter>Mod\Header</Filter>
+    </ClCompile>
+    <ClCompile Include="Mod\QOS.cpp">
+      <Filter>Mod\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1977,6 +1977,30 @@
     </None>
     <None Include="res\up.ico">
       <Filter>Resource Files\Icons</Filter>
+    </None>
+    <None Include="res\TrayFirewalled.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\ANALYZER4.ico">
+      <Filter>Resource Files\Icons</Filter>
+    </None>
+    <None Include="res\ANALYZER0.ico">
+      <Filter>Resource Files\Icons</Filter>
+    </None>
+    <None Include="res\ANALYZER1.ico">
+      <Filter>Resource Files\Icons</Filter>
+    </None>
+    <None Include="res\ANALYZER2.ico">
+      <Filter>Resource Files\Icons</Filter>
+    </None>
+    <None Include="res\ANALYZER3.ico">
+      <Filter>Resource Files\Icons</Filter>
+    </None>
+    <None Include="res\left.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\right.ico">
+      <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

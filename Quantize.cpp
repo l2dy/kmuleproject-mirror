@@ -42,47 +42,47 @@ BOOL CQuantizer::ProcessImage(HANDLE hImage)
     switch (ds.biBitCount)
     {
 
-    case 1:	// 1-bit DIB
-    case 4:	// 4-bit DIB
-    case 8:	// 8-bit DIB
-        for	(i=0; i<ds.biHeight;	i++)
-        {
-            for	(j=0; j<ds.biWidth; j++)
+        case 1:	// 1-bit DIB
+        case 4:	// 4-bit DIB
+        case 8:	// 8-bit DIB
+            for	(i=0; i<ds.biHeight;	i++)
             {
-                BYTE idx=GetPixelIndex(j,i,ds.biBitCount,effwdt,pbBits);
-                BYTE* pal = (BYTE*)(hImage) + sizeof(BITMAPINFOHEADER);
-                long ldx = idx*sizeof(RGBQUAD);
-                b = pal[ldx++];
-                g = pal[ldx++];
-                r = pal[ldx];
-                AddColor(&m_pTree,	r, g, b, m_nColorBits, 0, &m_nLeafCount,
-                         m_pReducibleNodes);
-                while (m_nLeafCount	> m_nMaxColors)
-                    ReduceTree(m_nColorBits, &m_nLeafCount,
-                               m_pReducibleNodes);
+                for	(j=0; j<ds.biWidth; j++)
+                {
+                    BYTE idx=GetPixelIndex(j,i,ds.biBitCount,effwdt,pbBits);
+                    BYTE* pal = (BYTE*)(hImage) + sizeof(BITMAPINFOHEADER);
+                    long ldx = idx*sizeof(RGBQUAD);
+                    b = pal[ldx++];
+                    g = pal[ldx++];
+                    r = pal[ldx];
+                    AddColor(&m_pTree,	r, g, b, m_nColorBits, 0, &m_nLeafCount,
+                             m_pReducibleNodes);
+                    while (m_nLeafCount	> m_nMaxColors)
+                        ReduceTree(m_nColorBits, &m_nLeafCount,
+                                   m_pReducibleNodes);
+                }
             }
-        }
 
-        break;
-    case 24: //	24-bit DIB
-        for	(i=0; i<ds.biHeight;	i++)
-        {
-            for	(j=0; j<ds.biWidth; j++)
+            break;
+        case 24: //	24-bit DIB
+            for	(i=0; i<ds.biHeight;	i++)
             {
-                b =	*pbBits++;
-                g =	*pbBits++;
-                r =	*pbBits++;
-                AddColor(&m_pTree,	r, g, b, m_nColorBits, 0, &m_nLeafCount,
-                         m_pReducibleNodes);
-                while (m_nLeafCount	> m_nMaxColors)
-                    ReduceTree(m_nColorBits, &m_nLeafCount, m_pReducibleNodes);
+                for	(j=0; j<ds.biWidth; j++)
+                {
+                    b =	*pbBits++;
+                    g =	*pbBits++;
+                    r =	*pbBits++;
+                    AddColor(&m_pTree,	r, g, b, m_nColorBits, 0, &m_nLeafCount,
+                             m_pReducibleNodes);
+                    while (m_nLeafCount	> m_nMaxColors)
+                        ReduceTree(m_nColorBits, &m_nLeafCount, m_pReducibleNodes);
+                }
+                pbBits += nPad;
             }
-            pbBits += nPad;
-        }
-        break;
+            break;
 
-    default: //	Unrecognized color format
-        return FALSE;
+        default: //	Unrecognized color format
+            return FALSE;
     }
     return TRUE;
 }

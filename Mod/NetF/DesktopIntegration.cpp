@@ -61,29 +61,29 @@ HINSTANCE CDesktopIntegration::ShellExecute(HWND hwnd, LPCWSTR lpOperation, LPCW
     CString		strOptions = lpParameters;
 
     //if(thePrefs.WeNeedWineCompatibility())
-    if(lpOperation && _tcscmp(lpOperation, L"open") == 0)
+    if (lpOperation && _tcscmp(lpOperation, L"open") == 0)
     {
         switch (_GetDesktopType())
         {
-			case GNOME_DESKTOP:
-			{
-				//lpOperation = L"open";
-				strApp.Format(L"\"%s\"", _NativeToWindowsPath("/usr/bin/gnome-open"));
-				strOptions.Format(L"\"%s\"", _WindowsToNativePath(lpFile));
-				break;
-			}
+            case GNOME_DESKTOP:
+            {
+                //lpOperation = L"open";
+                strApp.Format(L"\"%s\"", _NativeToWindowsPath("/usr/bin/gnome-open"));
+                strOptions.Format(L"\"%s\"", _WindowsToNativePath(lpFile));
+                break;
+            }
 
-			case KDE_DESKTOP:
-			{
-				//lpOperation = L"open";
-				strApp.Format(L"\"%s\"", _NativeToWindowsPath("/usr/bin/kfmclient"));
-				strOptions.Format(L"exec \"file:%s\"", _WindowsToNativePath(lpFile));
-				break;
-			}
+            case KDE_DESKTOP:
+            {
+                //lpOperation = L"open";
+                strApp.Format(L"\"%s\"", _NativeToWindowsPath("/usr/bin/kfmclient"));
+                strOptions.Format(L"exec \"file:%s\"", _WindowsToNativePath(lpFile));
+                break;
+            }
 
-			case WINDOWS_DESKTOP:
-			default:
-				break;
+            case WINDOWS_DESKTOP:
+            default:
+                break;
         }
     }
     if (strOptions.IsEmpty())

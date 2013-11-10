@@ -144,42 +144,42 @@ bool CFirewallOpener::DoAction(const EFOCAction eAction, const CICSRuleInfo& riP
                     bFoundAtLeastOneConn = true;
                     switch (eAction)
                     {
-                    case FOC_ADDRULE:
-                    {
-                        bool bResult;
-                        // we do not want to overwrite an existing rule
-                        if (FindRule(FOC_FINDRULEBYPORT, riPortRule, pNSC, NULL))
+                        case FOC_ADDRULE:
                         {
-                            bResult = true;
+                            bool bResult;
+                            // we do not want to overwrite an existing rule
+                            if (FindRule(FOC_FINDRULEBYPORT, riPortRule, pNSC, NULL))
+                            {
+                                bResult = true;
+                            }
+                            else
+                                bResult = AddRule(riPortRule, pNSC, pNCP);
+                            bSuccess = bSuccess && bResult;
+                            if (bResult && !bPartialSucceeded)
+                                m_liAddedRules.Add(riPortRule); // keep track of added rules
+                            bPartialSucceeded = bPartialSucceeded || bResult;
+                            break;
                         }
-                        else
-                            bResult = AddRule(riPortRule, pNSC, pNCP);
-                        bSuccess = bSuccess && bResult;
-                        if (bResult && !bPartialSucceeded)
-                            m_liAddedRules.Add(riPortRule); // keep track of added rules
-                        bPartialSucceeded = bPartialSucceeded || bResult;
-                        break;
-                    }
-                    case FOC_FWCONNECTIONEXISTS:
-                        return true;
-                    case FOC_DELETERULEBYNAME:
-                    case FOC_DELETERULEEXCACT:
-                        bSuccess = bSuccess && FindRule(eAction, riPortRule, pNSC, NULL);
-                        break;
-                    case FOC_FINDRULEBYNAME:
-                        if (FindRule(FOC_FINDRULEBYNAME, riPortRule, pNSC, NULL))
+                        case FOC_FWCONNECTIONEXISTS:
                             return true;
-                        else
-                            bSuccess = false;
-                        break;
-                    case FOC_FINDRULEBYPORT:
-                        if (FindRule(FOC_FINDRULEBYPORT, riPortRule, pNSC, NULL))
-                            return true;
-                        else
-                            bSuccess = false;
-                        break;
-                    default:
-                        ASSERT(false);
+                        case FOC_DELETERULEBYNAME:
+                        case FOC_DELETERULEEXCACT:
+                            bSuccess = bSuccess && FindRule(eAction, riPortRule, pNSC, NULL);
+                            break;
+                        case FOC_FINDRULEBYNAME:
+                            if (FindRule(FOC_FINDRULEBYNAME, riPortRule, pNSC, NULL))
+                                return true;
+                            else
+                                bSuccess = false;
+                            break;
+                        case FOC_FINDRULEBYPORT:
+                            if (FindRule(FOC_FINDRULEBYPORT, riPortRule, pNSC, NULL))
+                                return true;
+                            else
+                                bSuccess = false;
+                            break;
+                        default:
+                            ASSERT(false);
                     }
                 }
             }
@@ -240,39 +240,39 @@ bool CFirewallOpener::FindRule(const EFOCAction eAction, const CICSRuleInfo& riP
             pNSPMP->get_Name(&bstrName);
             switch (eAction)
             {
-            case FOC_FINDRULEBYPORT:
-                if (riPortRule.m_nPortNumber == uExternal && riPortRule.m_byProtocol == ucProt)
-                {
-                    if (outNSPMP != NULL)
-                        *outNSPMP = pNSPM;
-                    return true;
-                }
-                break;
-            case FOC_FINDRULEBYNAME:
-                if (riPortRule.m_strRuleName == CString(bstrName))
-                {
-                    if (outNSPMP != NULL)
-                        *outNSPMP = pNSPM;
-                    return true;
-                }
-                break;
-            case FOC_DELETERULEEXCACT:
-                if (riPortRule.m_strRuleName == CString(bstrName)
-                        && riPortRule.m_nPortNumber == uExternal && riPortRule.m_byProtocol == ucProt)
-                {
-                    RETURN_ON_FAIL(pNSC->RemovePortMapping(pNSPM));
-                    theApp.QueueDebugLogLine(false,_T("Rule removed"));
-                }
-                break;
-            case FOC_DELETERULEBYNAME:
-                if (riPortRule.m_strRuleName == CString(bstrName))
-                {
-                    RETURN_ON_FAIL(pNSC->RemovePortMapping(pNSPM));
-                    theApp.QueueDebugLogLine(false,_T("Rule removed"));
-                }
-                break;
-            default:
-                ASSERT(0);
+                case FOC_FINDRULEBYPORT:
+                    if (riPortRule.m_nPortNumber == uExternal && riPortRule.m_byProtocol == ucProt)
+                    {
+                        if (outNSPMP != NULL)
+                            *outNSPMP = pNSPM;
+                        return true;
+                    }
+                    break;
+                case FOC_FINDRULEBYNAME:
+                    if (riPortRule.m_strRuleName == CString(bstrName))
+                    {
+                        if (outNSPMP != NULL)
+                            *outNSPMP = pNSPM;
+                        return true;
+                    }
+                    break;
+                case FOC_DELETERULEEXCACT:
+                    if (riPortRule.m_strRuleName == CString(bstrName)
+                            && riPortRule.m_nPortNumber == uExternal && riPortRule.m_byProtocol == ucProt)
+                    {
+                        RETURN_ON_FAIL(pNSC->RemovePortMapping(pNSPM));
+                        theApp.QueueDebugLogLine(false,_T("Rule removed"));
+                    }
+                    break;
+                case FOC_DELETERULEBYNAME:
+                    if (riPortRule.m_strRuleName == CString(bstrName))
+                    {
+                        RETURN_ON_FAIL(pNSC->RemovePortMapping(pNSPM));
+                        theApp.QueueDebugLogLine(false,_T("Rule removed"));
+                    }
+                    break;
+                default:
+                    ASSERT(0);
             }
         }
         var.Clear();
@@ -280,13 +280,13 @@ bool CFirewallOpener::FindRule(const EFOCAction eAction, const CICSRuleInfo& riP
 
     switch (eAction)
     {
-    case FOC_DELETERULEBYNAME:
-    case FOC_DELETERULEEXCACT:
-        return true;
-    case FOC_FINDRULEBYPORT:
-    case FOC_FINDRULEBYNAME:
-    default:
-        return false;
+        case FOC_DELETERULEBYNAME:
+        case FOC_DELETERULEEXCACT:
+            return true;
+        case FOC_FINDRULEBYPORT:
+        case FOC_FINDRULEBYNAME:
+        default:
+            return false;
     }
 }
 

@@ -400,111 +400,111 @@ void CSharedDirsTreeCtrl::FilterTreeReloadTree()
 
         switch (pCurrent->m_eItemType)
         {
-        case SDI_ALL:
-        {
+            case SDI_ALL:
+            {
 //>>> WiZaRd::SharedView Ed2kType [Avi3k]
-            for (int i = 0; i < ARRSIZE(_aEd2kTypeView); i++)
-            {
-                CDirectoryItem* pEd2kType = new CDirectoryItem(L"", 0, SDI_ED2KFILETYPE_ALL, _aEd2kTypeView[i].eType);
-                pEd2kType->m_htItem = InsertItem(TVIF_TEXT | TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE, GetResString(_aEd2kTypeView[i].uStringId), i+SV_OFFSET, i+SV_OFFSET, 0, 0, (LPARAM)pEd2kType, pCurrent->m_htItem, TVI_LAST);
-                pCurrent->liSubDirectories.AddTail(pEd2kType);
-            }
+                for (int i = 0; i < ARRSIZE(_aEd2kTypeView); i++)
+                {
+                    CDirectoryItem* pEd2kType = new CDirectoryItem(L"", 0, SDI_ED2KFILETYPE_ALL, _aEd2kTypeView[i].eType);
+                    pEd2kType->m_htItem = InsertItem(TVIF_TEXT | TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE, GetResString(_aEd2kTypeView[i].uStringId), i+SV_OFFSET, i+SV_OFFSET, 0, 0, (LPARAM)pEd2kType, pCurrent->m_htItem, TVI_LAST);
+                    pCurrent->liSubDirectories.AddTail(pEd2kType);
+                }
 //<<< WiZaRd::SharedView Ed2kType [Avi3k]
-            break;
-        }
-        case SDI_INCOMING:
-        {
-            CString strMainIncDir = thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR);
-            if (strMainIncDir.Right(1) == L"\\")
-            {
-                strMainIncDir = strMainIncDir.Left(strMainIncDir.GetLength()-1);
+                break;
             }
-            bool bShowWarning = false;
-            if (thePrefs.GetCatCount() > 1)
+            case SDI_INCOMING:
             {
-                m_strliCatIncomingDirs.RemoveAll();
-                for (int i = 0; i < thePrefs.GetCatCount(); i++)
+                CString strMainIncDir = thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR);
+                if (strMainIncDir.Right(1) == L"\\")
                 {
-                    Category_Struct* pCatStruct = thePrefs.GetCategory(i);
-                    if (pCatStruct != NULL)
+                    strMainIncDir = strMainIncDir.Left(strMainIncDir.GetLength()-1);
+                }
+                bool bShowWarning = false;
+                if (thePrefs.GetCatCount() > 1)
+                {
+                    m_strliCatIncomingDirs.RemoveAll();
+                    for (int i = 0; i < thePrefs.GetCatCount(); i++)
                     {
-                        CString strCatIncomingPath = pCatStruct->strIncomingPath;
-                        if (strCatIncomingPath.Right(1) == L"\\")
+                        Category_Struct* pCatStruct = thePrefs.GetCategory(i);
+                        if (pCatStruct != NULL)
                         {
-                            strCatIncomingPath = strCatIncomingPath.Left(strCatIncomingPath.GetLength()-1);
-                        }
-                        if (!strCatIncomingPath.IsEmpty() && strCatIncomingPath.CompareNoCase(strMainIncDir) != 0
-                                && m_strliCatIncomingDirs.Find(strCatIncomingPath) == NULL)
-                        {
-                            m_strliCatIncomingDirs.AddTail(strCatIncomingPath);
-                            bool bAccessible = _taccess(strCatIncomingPath, 00) == 0;
-                            CString strName = GetFolderLabel(strCatIncomingPath, true, bAccessible);
-                            CDirectoryItem* pCatInc = new CDirectoryItem(strCatIncomingPath, 0, SDI_CATINCOMING);
-                            pCatInc->m_htItem = InsertItem(TVIF_TEXT | TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE, strName, 5, 5, 0, 0, (LPARAM)pCatInc, pCurrent->m_htItem, TVI_SORT);
-                            if (!bAccessible)
+                            CString strCatIncomingPath = pCatStruct->strIncomingPath;
+                            if (strCatIncomingPath.Right(1) == L"\\")
                             {
-                                SetItemState(pCatInc->m_htItem, INDEXTOOVERLAYMASK(2), TVIS_OVERLAYMASK);
-                                bShowWarning = true;
+                                strCatIncomingPath = strCatIncomingPath.Left(strCatIncomingPath.GetLength()-1);
                             }
-                            pCurrent->liSubDirectories.AddTail(pCatInc);
+                            if (!strCatIncomingPath.IsEmpty() && strCatIncomingPath.CompareNoCase(strMainIncDir) != 0
+                                    && m_strliCatIncomingDirs.Find(strCatIncomingPath) == NULL)
+                            {
+                                m_strliCatIncomingDirs.AddTail(strCatIncomingPath);
+                                bool bAccessible = _taccess(strCatIncomingPath, 00) == 0;
+                                CString strName = GetFolderLabel(strCatIncomingPath, true, bAccessible);
+                                CDirectoryItem* pCatInc = new CDirectoryItem(strCatIncomingPath, 0, SDI_CATINCOMING);
+                                pCatInc->m_htItem = InsertItem(TVIF_TEXT | TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE, strName, 5, 5, 0, 0, (LPARAM)pCatInc, pCurrent->m_htItem, TVI_SORT);
+                                if (!bAccessible)
+                                {
+                                    SetItemState(pCatInc->m_htItem, INDEXTOOVERLAYMASK(2), TVIS_OVERLAYMASK);
+                                    bShowWarning = true;
+                                }
+                                pCurrent->liSubDirectories.AddTail(pCatInc);
+                            }
                         }
                     }
                 }
-            }
 //>>> WiZaRd::SharedView Ed2kType [WiZaRd]
-            for (int i = 0; i < ARRSIZE(_aEd2kTypeView); i++)
-            {
-                CDirectoryItem* pEd2kType = new CDirectoryItem(L"", 0, SDI_ED2KFILETYPE_INC, _aEd2kTypeView[i].eType);
-                pEd2kType->m_htItem = InsertItem(TVIF_TEXT | TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE, GetResString(_aEd2kTypeView[i].uStringId), i+SV_OFFSET, i+SV_OFFSET, 0, 0, (LPARAM)pEd2kType, pCurrent->m_htItem, TVI_LAST);
-                pCurrent->liSubDirectories.AddTail(pEd2kType);
-            }
-//<<< WiZaRd::SharedView Ed2kType [WiZaRd]
-            SetItemState(pCurrent->m_htItem, bShowWarning ? INDEXTOOVERLAYMASK(2) : 0, TVIS_OVERLAYMASK);
-            break;
-        }
-        case SDI_TEMP:
-            if (thePrefs.GetCatCount() > 1)
-            {
-                for (int i = 0; i < thePrefs.GetCatCount(); i++)
+                for (int i = 0; i < ARRSIZE(_aEd2kTypeView); i++)
                 {
-                    Category_Struct* pCatStruct = thePrefs.GetCategory(i);
-                    if (pCatStruct != NULL)
+                    CDirectoryItem* pEd2kType = new CDirectoryItem(L"", 0, SDI_ED2KFILETYPE_INC, _aEd2kTypeView[i].eType);
+                    pEd2kType->m_htItem = InsertItem(TVIF_TEXT | TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE, GetResString(_aEd2kTypeView[i].uStringId), i+SV_OFFSET, i+SV_OFFSET, 0, 0, (LPARAM)pEd2kType, pCurrent->m_htItem, TVI_LAST);
+                    pCurrent->liSubDirectories.AddTail(pEd2kType);
+                }
+//<<< WiZaRd::SharedView Ed2kType [WiZaRd]
+                SetItemState(pCurrent->m_htItem, bShowWarning ? INDEXTOOVERLAYMASK(2) : 0, TVIS_OVERLAYMASK);
+                break;
+            }
+            case SDI_TEMP:
+                if (thePrefs.GetCatCount() > 1)
+                {
+                    for (int i = 0; i < thePrefs.GetCatCount(); i++)
                     {
-                        //temp dir
-                        CDirectoryItem* pCatTemp = new CDirectoryItem(L"", 0, SDI_TEMP, i);
-                        pCatTemp->m_htItem = InsertItem(TVIF_TEXT | TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE, pCatStruct->strTitle, 3, 3, 0, 0, (LPARAM)pCatTemp, pCurrent->m_htItem, TVI_LAST);
-                        pCurrent->liSubDirectories.AddTail(pCatTemp);
+                        Category_Struct* pCatStruct = thePrefs.GetCategory(i);
+                        if (pCatStruct != NULL)
+                        {
+                            //temp dir
+                            CDirectoryItem* pCatTemp = new CDirectoryItem(L"", 0, SDI_TEMP, i);
+                            pCatTemp->m_htItem = InsertItem(TVIF_TEXT | TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE, pCatStruct->strTitle, 3, 3, 0, 0, (LPARAM)pCatTemp, pCurrent->m_htItem, TVI_LAST);
+                            pCurrent->liSubDirectories.AddTail(pCatTemp);
 
+                        }
                     }
                 }
-            }
 //>>> WiZaRd::SharedView Ed2kType [WiZaRd]
-            for (int i = 0; i < ARRSIZE(_aEd2kTypeView); i++)
-            {
-                CDirectoryItem* pEd2kType = new CDirectoryItem(L"", 0, SDI_ED2KFILETYPE_TMP, _aEd2kTypeView[i].eType);
-                pEd2kType->m_htItem = InsertItem(TVIF_TEXT | TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE, GetResString(_aEd2kTypeView[i].uStringId), i+SV_OFFSET, i+SV_OFFSET, 0, 0, (LPARAM)pEd2kType, pCurrent->m_htItem, TVI_LAST);
-                pCurrent->liSubDirectories.AddTail(pEd2kType);
-            }
+                for (int i = 0; i < ARRSIZE(_aEd2kTypeView); i++)
+                {
+                    CDirectoryItem* pEd2kType = new CDirectoryItem(L"", 0, SDI_ED2KFILETYPE_TMP, _aEd2kTypeView[i].eType);
+                    pEd2kType->m_htItem = InsertItem(TVIF_TEXT | TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE, GetResString(_aEd2kTypeView[i].uStringId), i+SV_OFFSET, i+SV_OFFSET, 0, 0, (LPARAM)pEd2kType, pCurrent->m_htItem, TVI_LAST);
+                    pCurrent->liSubDirectories.AddTail(pEd2kType);
+                }
 //<<< WiZaRd::SharedView Ed2kType [WiZaRd]
-            break;
-        case SDI_DIRECTORY:
-        {
-            // add subdirectories
-            bool bShowWarning = false;
-            FilterTreeAddSubDirectories(pCurrent, m_strliSharedDirs, 0, bShowWarning, true);
+                break;
+            case SDI_DIRECTORY:
+            {
+                // add subdirectories
+                bool bShowWarning = false;
+                FilterTreeAddSubDirectories(pCurrent, m_strliSharedDirs, 0, bShowWarning, true);
 //>>> WiZaRd::SharedView Ed2kType [WiZaRd]
-            for (int i = 0; i < ARRSIZE(_aEd2kTypeView); i++)
-            {
-                CDirectoryItem* pEd2kType = new CDirectoryItem(L"", 0, SDI_ED2KFILETYPE_SUB, _aEd2kTypeView[i].eType);
-                pEd2kType->m_htItem = InsertItem(TVIF_TEXT | TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE, GetResString(_aEd2kTypeView[i].uStringId), i+SV_OFFSET, i+SV_OFFSET, 0, 0, (LPARAM)pEd2kType, pCurrent->m_htItem, TVI_LAST);
-                pCurrent->liSubDirectories.AddTail(pEd2kType);
-            }
+                for (int i = 0; i < ARRSIZE(_aEd2kTypeView); i++)
+                {
+                    CDirectoryItem* pEd2kType = new CDirectoryItem(L"", 0, SDI_ED2KFILETYPE_SUB, _aEd2kTypeView[i].eType);
+                    pEd2kType->m_htItem = InsertItem(TVIF_TEXT | TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE, GetResString(_aEd2kTypeView[i].uStringId), i+SV_OFFSET, i+SV_OFFSET, 0, 0, (LPARAM)pEd2kType, pCurrent->m_htItem, TVI_LAST);
+                    pCurrent->liSubDirectories.AddTail(pEd2kType);
+                }
 //<<< WiZaRd::SharedView Ed2kType [WiZaRd]
-            SetItemState(pCurrent->m_htItem, bShowWarning ? INDEXTOOVERLAYMASK(2) : 0, TVIS_OVERLAYMASK);
-            break;
-        }
-        default:
-            ASSERT(0);
+                SetItemState(pCurrent->m_htItem, bShowWarning ? INDEXTOOVERLAYMASK(2) : 0, TVIS_OVERLAYMASK);
+                break;
+            }
+            default:
+                ASSERT(0);
         }
     }
 
@@ -758,55 +758,55 @@ BOOL CSharedDirsTreeCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
     {
         switch (wParam)
         {
-        case MP_OPENFOLDER:
-            if (pSelectedDir && !pSelectedDir->m_strFullPath.IsEmpty() /*&& pSelectedDir->m_eItemType == SDI_NO*/)
-                _ShellExecute(NULL, _T("open"), pSelectedDir->m_strFullPath, NULL, NULL, SW_SHOW);
-            else if (pSelectedDir && pSelectedDir->m_eItemType == SDI_INCOMING)
-                _ShellExecute(NULL, _T("open"), thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR), NULL, NULL, SW_SHOW);
-            else if (pSelectedDir && pSelectedDir->m_eItemType == SDI_TEMP)
-                _ShellExecute(NULL, _T("open"), thePrefs.GetTempDir(), NULL, NULL, SW_SHOW);
-            break;
-        case MP_SHAREDIR:
-            EditSharedDirectories(pSelectedDir, true, false);
-            break;
-        case MP_SHAREDIRSUB:
-            EditSharedDirectories(pSelectedDir, true, true);
-            break;
-        case MP_UNSHAREDIR:
-            EditSharedDirectories(pSelectedDir, false, false);
-            break;
-        case MP_UNSHAREDIRSUB:
-            EditSharedDirectories(pSelectedDir, false, true);
-            break;
+            case MP_OPENFOLDER:
+                if (pSelectedDir && !pSelectedDir->m_strFullPath.IsEmpty() /*&& pSelectedDir->m_eItemType == SDI_NO*/)
+                    _ShellExecute(NULL, _T("open"), pSelectedDir->m_strFullPath, NULL, NULL, SW_SHOW);
+                else if (pSelectedDir && pSelectedDir->m_eItemType == SDI_INCOMING)
+                    _ShellExecute(NULL, _T("open"), thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR), NULL, NULL, SW_SHOW);
+                else if (pSelectedDir && pSelectedDir->m_eItemType == SDI_TEMP)
+                    _ShellExecute(NULL, _T("open"), thePrefs.GetTempDir(), NULL, NULL, SW_SHOW);
+                break;
+            case MP_SHAREDIR:
+                EditSharedDirectories(pSelectedDir, true, false);
+                break;
+            case MP_SHAREDIRSUB:
+                EditSharedDirectories(pSelectedDir, true, true);
+                break;
+            case MP_UNSHAREDIR:
+                EditSharedDirectories(pSelectedDir, false, false);
+                break;
+            case MP_UNSHAREDIRSUB:
+                EditSharedDirectories(pSelectedDir, false, true);
+                break;
 
 //>>> WiZaRd::SharePermissions
-        case MP_SHAREPERM_PREF:
-        case MP_SHAREPERM_ALL:
-        case MP_SHAREPERM_FRIENDS:
-        case MP_SHAREPERM_NONE:
-        {
-            if (!pSelectedDir->m_strFullPath.IsEmpty())
+            case MP_SHAREPERM_PREF:
+            case MP_SHAREPERM_ALL:
+            case MP_SHAREPERM_FRIENDS:
+            case MP_SHAREPERM_NONE:
             {
-                CString strPath = pSelectedDir->m_strFullPath;
-                if (strPath.Right(1) != L"\\")
-                    strPath.Append(L"\\");
-                uint8 toSet = (uint8)(wParam - MP_SHAREPERM_PREF);
-                bool bFound = false;
-                for (POSITION pos = thePrefs.shareddir_list.GetHeadPosition(), pos2 = thePrefs.shareddir_list_permissions.GetHeadPosition(); pos != NULL && !bFound;)
+                if (!pSelectedDir->m_strFullPath.IsEmpty())
                 {
-                    CString strCurrentDir = thePrefs.shareddir_list.GetNext(pos);
-                    POSITION posLast2 = pos2;
-                    thePrefs.shareddir_list_permissions.GetNext(pos2);
-
-                    if (strPath.CompareNoCase(strCurrentDir) == 0)
+                    CString strPath = pSelectedDir->m_strFullPath;
+                    if (strPath.Right(1) != L"\\")
+                        strPath.Append(L"\\");
+                    uint8 toSet = (uint8)(wParam - MP_SHAREPERM_PREF);
+                    bool bFound = false;
+                    for (POSITION pos = thePrefs.shareddir_list.GetHeadPosition(), pos2 = thePrefs.shareddir_list_permissions.GetHeadPosition(); pos != NULL && !bFound;)
                     {
-                        bFound = true;
-                        thePrefs.shareddir_list_permissions.SetAt(posLast2, toSet);
+                        CString strCurrentDir = thePrefs.shareddir_list.GetNext(pos);
+                        POSITION posLast2 = pos2;
+                        thePrefs.shareddir_list_permissions.GetNext(pos2);
+
+                        if (strPath.CompareNoCase(strCurrentDir) == 0)
+                        {
+                            bFound = true;
+                            thePrefs.shareddir_list_permissions.SetAt(posLast2, toSet);
+                        }
                     }
                 }
+                break;
             }
-            break;
-        }
 //<<< WiZaRd::SharePermissions
         }
     }
@@ -824,120 +824,120 @@ BOOL CSharedDirsTreeCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 
         switch (wParam)
         {
-        case MP_GETED2KLINK:
-        {
-            CString str;
-            POSITION pos = selectedList.GetHeadPosition();
-            while (pos != NULL)
+            case MP_GETED2KLINK:
             {
-                CShareableFile* file = selectedList.GetNext(pos);
-                if (file->IsKindOf(RUNTIME_CLASS(CKnownFile)))
+                CString str;
+                POSITION pos = selectedList.GetHeadPosition();
+                while (pos != NULL)
                 {
-                    if (!str.IsEmpty())
-                        str += _T("\r\n");
-                    str += ((CKnownFile*)file)->GetED2kLink();
+                    CShareableFile* file = selectedList.GetNext(pos);
+                    if (file->IsKindOf(RUNTIME_CLASS(CKnownFile)))
+                    {
+                        if (!str.IsEmpty())
+                            str += _T("\r\n");
+                        str += ((CKnownFile*)file)->GetED2kLink();
+                    }
                 }
+                theApp.CopyTextToClipboard(str);
+                break;
             }
-            theApp.CopyTextToClipboard(str);
-            break;
-        }
-        // file operations
-        case MP_REMOVE:
-        case MPG_DELETE:
-        {
-            if (IDNO == AfxMessageBox(GetResString(IDS_CONFIRM_FILEDELETE),MB_ICONWARNING | MB_ICONQUESTION | MB_DEFBUTTON2 | MB_YESNO))
-                return TRUE;
+            // file operations
+            case MP_REMOVE:
+            case MPG_DELETE:
+            {
+                if (IDNO == AfxMessageBox(GetResString(IDS_CONFIRM_FILEDELETE),MB_ICONWARNING | MB_ICONQUESTION | MB_DEFBUTTON2 | MB_YESNO))
+                    return TRUE;
 
-            m_pSharedFilesCtrl->SetRedraw(FALSE);
-            bool bRemovedItems = false;
-            while (!selectedList.IsEmpty())
-            {
-                CShareableFile* myfile = selectedList.RemoveHead();
-                if (!myfile || myfile->IsPartFile())
-                    continue;
+                m_pSharedFilesCtrl->SetRedraw(FALSE);
+                bool bRemovedItems = false;
+                while (!selectedList.IsEmpty())
+                {
+                    CShareableFile* myfile = selectedList.RemoveHead();
+                    if (!myfile || myfile->IsPartFile())
+                        continue;
 
-                bool delsucc = ShellDeleteFile(myfile->GetFilePath());
-                if (delsucc)
-                {
-                    if (myfile->IsKindOf(RUNTIME_CLASS(CKnownFile)))
-                        theApp.sharedfiles->RemoveFile((CKnownFile*)myfile, true);
-                    bRemovedItems = true;
-                    if (myfile->IsKindOf(RUNTIME_CLASS(CPartFile)))
-                        theApp.emuledlg->transferwnd->GetDownloadList()->ClearCompleted(static_cast<CPartFile*>(myfile));
+                    bool delsucc = ShellDeleteFile(myfile->GetFilePath());
+                    if (delsucc)
+                    {
+                        if (myfile->IsKindOf(RUNTIME_CLASS(CKnownFile)))
+                            theApp.sharedfiles->RemoveFile((CKnownFile*)myfile, true);
+                        bRemovedItems = true;
+                        if (myfile->IsKindOf(RUNTIME_CLASS(CPartFile)))
+                            theApp.emuledlg->transferwnd->GetDownloadList()->ClearCompleted(static_cast<CPartFile*>(myfile));
+                    }
+                    else
+                    {
+                        CString strError;
+                        strError.Format(GetResString(IDS_ERR_DELFILE) + _T("\r\n\r\n%s"), myfile->GetFilePath(), GetErrorMessage(GetLastError()));
+                        AfxMessageBox(strError);
+                    }
                 }
-                else
+                m_pSharedFilesCtrl->SetRedraw(TRUE);
+                if (bRemovedItems)
                 {
-                    CString strError;
-                    strError.Format(GetResString(IDS_ERR_DELFILE) + _T("\r\n\r\n%s"), myfile->GetFilePath(), GetErrorMessage(GetLastError()));
-                    AfxMessageBox(strError);
+                    m_pSharedFilesCtrl->AutoSelectItem();
+                    // Depending on <no-idea> this does not always cause a
+                    // LVN_ITEMACTIVATE message sent. So, explicitly redraw
+                    // the item.
+                    theApp.emuledlg->sharedfileswnd->ShowSelectedFilesDetails();
+                    theApp.emuledlg->sharedfileswnd->OnSingleFileShareStatusChanged(); // might have been a single shared file
                 }
+                break;
             }
-            m_pSharedFilesCtrl->SetRedraw(TRUE);
-            if (bRemovedItems)
+            case MP_CMT:
+                ShowFileDialog(selectedList, IDD_COMMENT);
+                break;
+            case MP_DETAIL:
+            case MPG_ALTENTER:
+                ShowFileDialog(selectedList);
+                break;
+            case MP_SHOWED2KLINK:
+                ShowFileDialog(selectedList, IDD_ED2KLINK);
+                break;
+            case MP_PRIOVERYLOW:
+            case MP_PRIOLOW:
+            case MP_PRIONORMAL:
+            case MP_PRIOHIGH:
+            case MP_PRIOVERYHIGH:
+            case MP_PRIOAUTO:
             {
-                m_pSharedFilesCtrl->AutoSelectItem();
-                // Depending on <no-idea> this does not always cause a
-                // LVN_ITEMACTIVATE message sent. So, explicitly redraw
-                // the item.
-                theApp.emuledlg->sharedfileswnd->ShowSelectedFilesDetails();
-                theApp.emuledlg->sharedfileswnd->OnSingleFileShareStatusChanged(); // might have been a single shared file
-            }
-            break;
-        }
-        case MP_CMT:
-            ShowFileDialog(selectedList, IDD_COMMENT);
-            break;
-        case MP_DETAIL:
-        case MPG_ALTENTER:
-            ShowFileDialog(selectedList);
-            break;
-        case MP_SHOWED2KLINK:
-            ShowFileDialog(selectedList, IDD_ED2KLINK);
-            break;
-        case MP_PRIOVERYLOW:
-        case MP_PRIOLOW:
-        case MP_PRIONORMAL:
-        case MP_PRIOHIGH:
-        case MP_PRIOVERYHIGH:
-        case MP_PRIOAUTO:
-        {
-            bool bSelected = false;
-            POSITION pos = selectedList.GetHeadPosition();
-            while (pos != NULL)
-            {
-                if (!selectedList.GetAt(pos)->IsKindOf(RUNTIME_CLASS(CKnownFile)))
-                    continue;
-                CKnownFile* file = (CKnownFile*)selectedList.GetNext(pos);
-                file->SetAutoUpPriority(wParam == MP_PRIOAUTO);
-                switch (wParam)
+                bool bSelected = false;
+                POSITION pos = selectedList.GetHeadPosition();
+                while (pos != NULL)
                 {
-                case MP_PRIOVERYLOW:
-                    file->SetUpPriority(PR_VERYLOW);
-                    break;
-                case MP_PRIOLOW:
-                    file->SetUpPriority(PR_LOW);
-                    break;
-                case MP_PRIONORMAL:
-                    file->SetUpPriority(PR_NORMAL);
-                    break;
-                case MP_PRIOHIGH:
-                    file->SetUpPriority(PR_HIGH);
-                    break;
-                case MP_PRIOVERYHIGH:
-                    file->SetUpPriority(PR_VERYHIGH);
-                    break;
-                case MP_PRIOAUTO:
-                    file->UpdateAutoUpPriority();
-                    break;
+                    if (!selectedList.GetAt(pos)->IsKindOf(RUNTIME_CLASS(CKnownFile)))
+                        continue;
+                    CKnownFile* file = (CKnownFile*)selectedList.GetNext(pos);
+                    file->SetAutoUpPriority(wParam == MP_PRIOAUTO);
+                    switch (wParam)
+                    {
+                        case MP_PRIOVERYLOW:
+                            file->SetUpPriority(PR_VERYLOW);
+                            break;
+                        case MP_PRIOLOW:
+                            file->SetUpPriority(PR_LOW);
+                            break;
+                        case MP_PRIONORMAL:
+                            file->SetUpPriority(PR_NORMAL);
+                            break;
+                        case MP_PRIOHIGH:
+                            file->SetUpPriority(PR_HIGH);
+                            break;
+                        case MP_PRIOVERYHIGH:
+                            file->SetUpPriority(PR_VERYHIGH);
+                            break;
+                        case MP_PRIOAUTO:
+                            file->UpdateAutoUpPriority();
+                            break;
+                    }
+                    m_pSharedFilesCtrl->UpdateFile(file, false, &bSelected);
                 }
-                m_pSharedFilesCtrl->UpdateFile(file, false, &bSelected);
+                if (bSelected)
+                    theApp.emuledlg->sharedfileswnd->ShowSelectedFilesDetails();
+                break;
             }
-            if (bSelected)
-                theApp.emuledlg->sharedfileswnd->ShowSelectedFilesDetails();
-            break;
-        }
-        default:
-            break;
+            default:
+                break;
         }
     }
     return TRUE;

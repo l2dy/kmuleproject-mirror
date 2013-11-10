@@ -222,15 +222,15 @@ unsigned int CDepSettings::Load(LPCSTR szSettingsPath)
             {
                 switch (nIso)
                 {
-                case 0:
-                    m_nAppIsolation = nIso;
-                    break;
-                case 1:
-                    m_nAppIsolation = 2;
-                    break;
-                case 2:
-                    m_nAppIsolation = 1;
-                    break;
+                    case 0:
+                        m_nAppIsolation = nIso;
+                        break;
+                    case 1:
+                        m_nAppIsolation = 2;
+                        break;
+                    case 2:
+                        m_nAppIsolation = 1;
+                        break;
                 }
             }
         }

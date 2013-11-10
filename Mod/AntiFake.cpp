@@ -207,25 +207,25 @@ bool	ColorSearchFile(const CSearchFile* content, CCustomMemDC* dc)
     const COLORREF cr = dc->GetBkColor();
     switch (GetFakeAlyzerRating(content, NULL))
     {
-    case FA_FAKE:
-        dc->FillBackground(RGB(GetRValue(cr), GetGValue(cr)*0.85, GetBValue(cr)*0.85));
-        return true;
+        case FA_FAKE:
+            dc->FillBackground(RGB(GetRValue(cr), GetGValue(cr)*0.85, GetBValue(cr)*0.85));
+            return true;
 
-    case FA_SUSPECT:
-        dc->FillBackground(RGB(GetRValue(cr), GetGValue(cr), GetBValue(cr)*0.85));
-        return true;
+        case FA_SUSPECT:
+            dc->FillBackground(RGB(GetRValue(cr), GetGValue(cr), GetBValue(cr)*0.85));
+            return true;
 
-    case FA_GOOD:
-        dc->FillBackground(RGB(GetRValue(cr)*0.85, GetGValue(cr), GetBValue(cr)*0.85));
-        return true;
+        case FA_GOOD:
+            dc->FillBackground(RGB(GetRValue(cr)*0.85, GetGValue(cr), GetBValue(cr)*0.85));
+            return true;
 
-    case FA_OK:
-        dc->FillBackground(RGB(GetRValue(cr)*0.85, GetGValue(cr)*0.85, GetBValue(cr)));
-        return true;
+        case FA_OK:
+            dc->FillBackground(RGB(GetRValue(cr)*0.85, GetGValue(cr)*0.85, GetBValue(cr)));
+            return true;
 
-    case FA_UNKNOWN:
-    default:
-        return false;
+        case FA_UNKNOWN:
+        default:
+            return false;
     }
 }
 
@@ -239,17 +239,17 @@ CString	GetFakeComment(const CSearchFile* content, const bool bSimple, int* i)
     {
         switch (r)
         {
-        default:
-        case FA_UNKNOWN:
-            return L"NEUTRAL";
-        case FA_OK:
-            return L"OK";
-        case FA_GOOD:
-            return L"GOOD";
-        case FA_SUSPECT:
-            return L"SUSPECT";
-        case FA_FAKE:
-            return L"FAKE";
+            default:
+            case FA_UNKNOWN:
+                return L"NEUTRAL";
+            case FA_OK:
+                return L"OK";
+            case FA_GOOD:
+                return L"GOOD";
+            case FA_SUSPECT:
+                return L"SUSPECT";
+            case FA_FAKE:
+                return L"FAKE";
         }
     }
     if (ret.IsEmpty())

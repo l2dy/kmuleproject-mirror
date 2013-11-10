@@ -496,13 +496,11 @@ typedef struct DxtKey DxtKey;
 extern "C" {
 #endif
 
-    void * __RPC_USER MIDL_user_allocate(size_t);
-    void __RPC_USER MIDL_user_free(void *);
+void * __RPC_USER MIDL_user_allocate(size_t);
+void __RPC_USER MIDL_user_free(void *);
 
-    /* interface __MIDL_itf_qedit_0000 */
-    /* [local] */
-
-
+/* interface __MIDL_itf_qedit_0000 */
+/* [local] */
 
 
 
@@ -511,120 +509,122 @@ extern "C" {
 
 
 
-    typedef /* [public] */
-    enum __MIDL___MIDL_itf_qedit_0000_0001
-    {
-        DEXTERF_JUMP	= 0,
-        DEXTERF_INTERPOLATE	= DEXTERF_JUMP + 1
-    } 	DEXTERF;
-
-    typedef /* [public][public][public][public] */ struct __MIDL___MIDL_itf_qedit_0000_0002
-    {
-        BSTR Name;
-        DISPID dispID;
-        LONG nValues;
-    } 	DEXTER_PARAM;
-
-    typedef /* [public][public][public][public] */ struct __MIDL___MIDL_itf_qedit_0000_0003
-    {
-        VARIANT v;
-        REFERENCE_TIME rt;
-        DWORD dwInterp;
-    } 	DEXTER_VALUE;
 
 
-    enum __MIDL___MIDL_itf_qedit_0000_0004
-    {
-        DEXTER_AUDIO_JUMP	= 0,
-        DEXTER_AUDIO_INTERPOLATE	= DEXTER_AUDIO_JUMP + 1
-    } ;
-    typedef /* [public] */ struct __MIDL___MIDL_itf_qedit_0000_0005
-    {
-        REFERENCE_TIME rtEnd;
-        double dLevel;
-        BOOL bMethod;
-    } 	DEXTER_AUDIO_VOLUMEENVELOPE;
+typedef /* [public] */
+enum __MIDL___MIDL_itf_qedit_0000_0001
+{
+    DEXTERF_JUMP	= 0,
+    DEXTERF_INTERPOLATE	= DEXTERF_JUMP + 1
+} 	DEXTERF;
+
+typedef /* [public][public][public][public] */ struct __MIDL___MIDL_itf_qedit_0000_0002
+{
+    BSTR Name;
+    DISPID dispID;
+    LONG nValues;
+} 	DEXTER_PARAM;
+
+typedef /* [public][public][public][public] */ struct __MIDL___MIDL_itf_qedit_0000_0003
+{
+    VARIANT v;
+    REFERENCE_TIME rt;
+    DWORD dwInterp;
+} 	DEXTER_VALUE;
 
 
-    enum __MIDL___MIDL_itf_qedit_0000_0006
-    {
-        TIMELINE_INSERT_MODE_INSERT	= 1,
-        TIMELINE_INSERT_MODE_OVERLAY	= 2
-    } ;
-    typedef /* [public][public][public][public][public][public][public][public] */
-    enum __MIDL___MIDL_itf_qedit_0000_0007
-    {
-        TIMELINE_MAJOR_TYPE_COMPOSITE	= 1,
-        TIMELINE_MAJOR_TYPE_TRACK	= 2,
-        TIMELINE_MAJOR_TYPE_SOURCE	= 4,
-        TIMELINE_MAJOR_TYPE_TRANSITION	= 8,
-        TIMELINE_MAJOR_TYPE_EFFECT	= 16,
-        TIMELINE_MAJOR_TYPE_GROUP	= 128
-    } 	TIMELINE_MAJOR_TYPE;
-
-    typedef /* [public] */
-    enum __MIDL___MIDL_itf_qedit_0000_0008
-    {
-        DEXTERF_BOUNDING	= -1,
-        DEXTERF_EXACTLY_AT	= 0,
-        DEXTERF_FORWARDS	= 1
-    } 	DEXTERF_TRACK_SEARCH_FLAGS;
-
-    typedef struct _SCompFmt0
-    {
-        long nFormatId;
-        AM_MEDIA_TYPE MediaType;
-    } 	SCompFmt0;
+enum __MIDL___MIDL_itf_qedit_0000_0004
+{
+    DEXTER_AUDIO_JUMP	= 0,
+    DEXTER_AUDIO_INTERPOLATE	= DEXTER_AUDIO_JUMP + 1
+} ;
+typedef /* [public] */ struct __MIDL___MIDL_itf_qedit_0000_0005
+{
+    REFERENCE_TIME rtEnd;
+    double dLevel;
+    BOOL bMethod;
+} 	DEXTER_AUDIO_VOLUMEENVELOPE;
 
 
-    enum __MIDL___MIDL_itf_qedit_0000_0009
-    {
-        RESIZEF_STRETCH	= 0,
-        RESIZEF_CROP	= RESIZEF_STRETCH + 1,
-        RESIZEF_PRESERVEASPECTRATIO	= RESIZEF_CROP + 1,
-        RESIZEF_PRESERVEASPECTRATIO_NOLETTERBOX	= RESIZEF_PRESERVEASPECTRATIO + 1
-    } ;
+enum __MIDL___MIDL_itf_qedit_0000_0006
+{
+    TIMELINE_INSERT_MODE_INSERT	= 1,
+    TIMELINE_INSERT_MODE_OVERLAY	= 2
+} ;
+typedef /* [public][public][public][public][public][public][public][public] */
+enum __MIDL___MIDL_itf_qedit_0000_0007
+{
+    TIMELINE_MAJOR_TYPE_COMPOSITE	= 1,
+    TIMELINE_MAJOR_TYPE_TRACK	= 2,
+    TIMELINE_MAJOR_TYPE_SOURCE	= 4,
+    TIMELINE_MAJOR_TYPE_TRANSITION	= 8,
+    TIMELINE_MAJOR_TYPE_EFFECT	= 16,
+    TIMELINE_MAJOR_TYPE_GROUP	= 128
+} 	TIMELINE_MAJOR_TYPE;
 
-    enum __MIDL___MIDL_itf_qedit_0000_0010
-    {
-        CONNECTF_DYNAMIC_NONE	= 0,
-        CONNECTF_DYNAMIC_SOURCES	= 0x1,
-        CONNECTF_DYNAMIC_EFFECTS	= 0x2
-    } ;
+typedef /* [public] */
+enum __MIDL___MIDL_itf_qedit_0000_0008
+{
+    DEXTERF_BOUNDING	= -1,
+    DEXTERF_EXACTLY_AT	= 0,
+    DEXTERF_FORWARDS	= 1
+} 	DEXTERF_TRACK_SEARCH_FLAGS;
 
-    enum __MIDL___MIDL_itf_qedit_0000_0011
-    {
-        SFN_VALIDATEF_CHECK	= 0x1,
-        SFN_VALIDATEF_POPUP	= 0x2,
-        SFN_VALIDATEF_TELLME	= 0x4,
-        SFN_VALIDATEF_REPLACE	= 0x8,
-        SFN_VALIDATEF_USELOCAL	= 0x10,
-        SFN_VALIDATEF_NOFIND	= 0x20,
-        SFN_VALIDATEF_IGNOREMUTED	= 0x40,
-        SFN_VALIDATEF_END	= SFN_VALIDATEF_IGNOREMUTED + 1
-    } ;
-
-    enum __MIDL___MIDL_itf_qedit_0000_0012
-    {
-        DXTKEY_RGB	= 0,
-        DXTKEY_NONRED	= DXTKEY_RGB + 1,
-        DXTKEY_LUMINANCE	= DXTKEY_NONRED + 1,
-        DXTKEY_ALPHA	= DXTKEY_LUMINANCE + 1,
-        DXTKEY_HUE	= DXTKEY_ALPHA + 1
-    } ;
+typedef struct _SCompFmt0
+{
+    long nFormatId;
+    AM_MEDIA_TYPE MediaType;
+} 	SCompFmt0;
 
 
-    extern RPC_IF_HANDLE __MIDL_itf_qedit_0000_v0_0_c_ifspec;
-    extern RPC_IF_HANDLE __MIDL_itf_qedit_0000_v0_0_s_ifspec;
+enum __MIDL___MIDL_itf_qedit_0000_0009
+{
+    RESIZEF_STRETCH	= 0,
+    RESIZEF_CROP	= RESIZEF_STRETCH + 1,
+    RESIZEF_PRESERVEASPECTRATIO	= RESIZEF_CROP + 1,
+    RESIZEF_PRESERVEASPECTRATIO_NOLETTERBOX	= RESIZEF_PRESERVEASPECTRATIO + 1
+} ;
+
+enum __MIDL___MIDL_itf_qedit_0000_0010
+{
+    CONNECTF_DYNAMIC_NONE	= 0,
+    CONNECTF_DYNAMIC_SOURCES	= 0x1,
+    CONNECTF_DYNAMIC_EFFECTS	= 0x2
+} ;
+
+enum __MIDL___MIDL_itf_qedit_0000_0011
+{
+    SFN_VALIDATEF_CHECK	= 0x1,
+    SFN_VALIDATEF_POPUP	= 0x2,
+    SFN_VALIDATEF_TELLME	= 0x4,
+    SFN_VALIDATEF_REPLACE	= 0x8,
+    SFN_VALIDATEF_USELOCAL	= 0x10,
+    SFN_VALIDATEF_NOFIND	= 0x20,
+    SFN_VALIDATEF_IGNOREMUTED	= 0x40,
+    SFN_VALIDATEF_END	= SFN_VALIDATEF_IGNOREMUTED + 1
+} ;
+
+enum __MIDL___MIDL_itf_qedit_0000_0012
+{
+    DXTKEY_RGB	= 0,
+    DXTKEY_NONRED	= DXTKEY_RGB + 1,
+    DXTKEY_LUMINANCE	= DXTKEY_NONRED + 1,
+    DXTKEY_ALPHA	= DXTKEY_LUMINANCE + 1,
+    DXTKEY_HUE	= DXTKEY_ALPHA + 1
+} ;
+
+
+extern RPC_IF_HANDLE __MIDL_itf_qedit_0000_v0_0_c_ifspec;
+extern RPC_IF_HANDLE __MIDL_itf_qedit_0000_v0_0_s_ifspec;
 
 #ifndef __IPropertySetter_INTERFACE_DEFINED__
 #define __IPropertySetter_INTERFACE_DEFINED__
 
-    /* interface IPropertySetter */
-    /* [unique][helpstring][uuid][object] */
+/* interface IPropertySetter */
+/* [unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IPropertySetter;
+EXTERN_C const IID IID_IPropertySetter;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 

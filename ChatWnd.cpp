@@ -147,17 +147,17 @@ void CChatWnd::ShowFriendMsgDetails(CFriend* pFriend)
             {
                 switch (pFriend->GetLinkedClient()->Credits()->GetCurrentIdentState(pFriend->GetLinkedClient()->GetIP()))
                 {
-                case IS_NOTAVAILABLE:
-                    GetDlgItem(IDC_FRIENDS_IDENTIFICACION_EDIT)->SetWindowText(GetResString(IDS_IDENTNOSUPPORT));
-                    break;
-                case IS_IDFAILED:
-                case IS_IDNEEDED:
-                case IS_IDBADGUY:
-                    GetDlgItem(IDC_FRIENDS_IDENTIFICACION_EDIT)->SetWindowText(GetResString(IDS_IDENTFAILED));
-                    break;
-                case IS_IDENTIFIED:
-                    GetDlgItem(IDC_FRIENDS_IDENTIFICACION_EDIT)->SetWindowText(GetResString(IDS_IDENTOK));
-                    break;
+                    case IS_NOTAVAILABLE:
+                        GetDlgItem(IDC_FRIENDS_IDENTIFICACION_EDIT)->SetWindowText(GetResString(IDS_IDENTNOSUPPORT));
+                        break;
+                    case IS_IDFAILED:
+                    case IS_IDNEEDED:
+                    case IS_IDBADGUY:
+                        GetDlgItem(IDC_FRIENDS_IDENTIFICACION_EDIT)->SetWindowText(GetResString(IDS_IDENTFAILED));
+                        break;
+                    case IS_IDENTIFIED:
+                        GetDlgItem(IDC_FRIENDS_IDENTIFICACION_EDIT)->SetWindowText(GetResString(IDS_IDENTOK));
+                        break;
                 }
             }
             else
@@ -339,43 +339,43 @@ LRESULT CChatWnd::DefWindowProc(UINT uMessage, WPARAM wParam, LPARAM lParam)
 {
     switch (uMessage)
     {
-    case WM_PAINT:
-        if (m_wndSplitterHorz)
-        {
-            CRect rcWnd;
-            GetWindowRect(rcWnd);
-            if (rcWnd.Width() > 0)
+        case WM_PAINT:
+            if (m_wndSplitterHorz)
             {
-                CRect rcSpl;
-                m_FriendListCtrl.GetWindowRect(rcSpl);
-                ScreenToClient(rcSpl);
-                rcSpl.left = rcSpl.right + SPLITTER_HORZ_MARGIN;
-                rcSpl.right = rcSpl.left + SPLITTER_HORZ_WIDTH;
-                ScreenToClient(rcWnd);
-                rcSpl.bottom = rcWnd.bottom - 6;
-                m_wndSplitterHorz.MoveWindow(rcSpl, TRUE);
+                CRect rcWnd;
+                GetWindowRect(rcWnd);
+                if (rcWnd.Width() > 0)
+                {
+                    CRect rcSpl;
+                    m_FriendListCtrl.GetWindowRect(rcSpl);
+                    ScreenToClient(rcSpl);
+                    rcSpl.left = rcSpl.right + SPLITTER_HORZ_MARGIN;
+                    rcSpl.right = rcSpl.left + SPLITTER_HORZ_WIDTH;
+                    ScreenToClient(rcWnd);
+                    rcSpl.bottom = rcWnd.bottom - 6;
+                    m_wndSplitterHorz.MoveWindow(rcSpl, TRUE);
+                }
             }
-        }
-        break;
+            break;
 
-    case WM_NOTIFY:
-        if (wParam == IDC_SPLITTER_FRIEND)
-        {
-            SPC_NMHDR* pHdr = (SPC_NMHDR*)lParam;
-            DoResize(pHdr->delta);
-        }
-        break;
+        case WM_NOTIFY:
+            if (wParam == IDC_SPLITTER_FRIEND)
+            {
+                SPC_NMHDR* pHdr = (SPC_NMHDR*)lParam;
+                DoResize(pHdr->delta);
+            }
+            break;
 
-    case WM_SIZE:
-        if (m_wndSplitterHorz)
-        {
-            CRect rcWnd;
-            GetWindowRect(rcWnd);
-            ScreenToClient(rcWnd);
-            m_wndSplitterHorz.SetRange(rcWnd.left + SPLITTER_HORZ_RANGE_MIN + SPLITTER_HORZ_WIDTH/2,
-                                       rcWnd.left + SPLITTER_HORZ_RANGE_MAX - SPLITTER_HORZ_WIDTH/2);
-        }
-        break;
+        case WM_SIZE:
+            if (m_wndSplitterHorz)
+            {
+                CRect rcWnd;
+                GetWindowRect(rcWnd);
+                ScreenToClient(rcWnd);
+                m_wndSplitterHorz.SetRange(rcWnd.left + SPLITTER_HORZ_RANGE_MIN + SPLITTER_HORZ_WIDTH/2,
+                                           rcWnd.left + SPLITTER_HORZ_RANGE_MAX - SPLITTER_HORZ_WIDTH/2);
+            }
+            break;
     }
     return CResizableDialog::DefWindowProc(uMessage, wParam, lParam);
 }
@@ -522,9 +522,9 @@ BOOL CChatWnd::OnCommand(WPARAM wParam, LPARAM lParam)
 {
     switch (wParam)
     {
-    case IDC_SMILEY:
-        OnBnClickedSmiley();
-        break;
+        case IDC_SMILEY:
+            OnBnClickedSmiley();
+            break;
     }
     return CResizableDialog::OnCommand(wParam, lParam);
 }

@@ -36,42 +36,42 @@ inline HRESULT GetBooleanValue(bool *pbOut, const wchar_t *wsz, int cch)
 
     switch (wsz[0])
     {
-    case L'1':
-    {
-        if (cch == 1)
+        case L'1':
         {
-            *pbOut = true;
-            hr = S_OK;
+            if (cch == 1)
+            {
+                *pbOut = true;
+                hr = S_OK;
+            }
+            break;
         }
-        break;
-    }
-    case L'0':
-    {
-        if (cch == 1)
+        case L'0':
         {
-            *pbOut = false;
-            hr = S_OK;
+            if (cch == 1)
+            {
+                *pbOut = false;
+                hr = S_OK;
+            }
+            break;
         }
-        break;
-    }
-    case L't':
-    {
-        if ((cch==sizeof("true")-1) && (!wcsncmp(wsz, L"true", cch)))
+        case L't':
         {
-            *pbOut = true;
-            hr = S_OK;
+            if ((cch==sizeof("true")-1) && (!wcsncmp(wsz, L"true", cch)))
+            {
+                *pbOut = true;
+                hr = S_OK;
+            }
+            break;
         }
-        break;
-    }
-    case L'f':
-    {
-        if ((cch==sizeof("false")-1) && (!wcsncmp(wsz, L"false", cch)))
+        case L'f':
         {
-            *pbOut = false;
-            hr = S_OK;
+            if ((cch==sizeof("false")-1) && (!wcsncmp(wsz, L"false", cch)))
+            {
+                *pbOut = false;
+                hr = S_OK;
+            }
+            break;
         }
-        break;
-    }
     }
 
     return hr;

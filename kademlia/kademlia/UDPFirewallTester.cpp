@@ -181,23 +181,23 @@ void CUDPFirewallTester::SetUDPFWCheckResult(const bool bSucceeded, const bool b
 
 bool CUDPFirewallTester::ReCheckFirewallUDP(const bool bSetUnverified)
 {
-	bool checked = false;
-	if(CUDPFirewallTester::GetRunningFWChecks())
-	{
-		//ASSERT(m_byFWChecksRunningUDP == 0);
-		m_byFWChecksRunningUDP = 0;
-		m_byFWChecksFinishedUDP = 0;
-		m_dwLastSucceededTime = 0;
-		m_dwTestStart = ::GetTickCount();
-		m_bTimedOut = false;
-		m_bFirewalledLastStateUDP = m_bFirewalledUDP;
-		m_bIsFWVerifiedUDP = (m_bIsFWVerifiedUDP && !bSetUnverified);
-		CSearchManager::FindNodeFWCheckUDP(); // start a lookup for a random node to find suitable IPs
-		m_bNodeSearchStarted = true;
-		CKademlia::GetPrefs()->FindExternKadPort(true);
-		checked = true;
-	}
-	return checked;
+    bool checked = false;
+    if (CUDPFirewallTester::GetRunningFWChecks())
+    {
+        //ASSERT(m_byFWChecksRunningUDP == 0);
+        m_byFWChecksRunningUDP = 0;
+        m_byFWChecksFinishedUDP = 0;
+        m_dwLastSucceededTime = 0;
+        m_dwTestStart = ::GetTickCount();
+        m_bTimedOut = false;
+        m_bFirewalledLastStateUDP = m_bFirewalledUDP;
+        m_bIsFWVerifiedUDP = (m_bIsFWVerifiedUDP && !bSetUnverified);
+        CSearchManager::FindNodeFWCheckUDP(); // start a lookup for a random node to find suitable IPs
+        m_bNodeSearchStarted = true;
+        CKademlia::GetPrefs()->FindExternKadPort(true);
+        checked = true;
+    }
+    return checked;
 }
 
 void CUDPFirewallTester::Connected()
@@ -236,11 +236,11 @@ void CUDPFirewallTester::Reset()
 void CUDPFirewallTester::AddPossibleTestContact(const CUInt128 &uClientID, const UINT uIp, const uint16 uUdpPort, const uint16 uTcpPort, const CUInt128 &uTarget, const uint8 uVersion, const CKadUDPKey& cUDPKey, const bool bIPVerified)
 {
     if (IsFWCheckUDPRunning())
-	{
-		// add the possible contact to our list - no checks in advance
-		m_liPossibleTestClients.AddHead(CContact(uClientID, uIp, uUdpPort, uTcpPort, uTarget, uVersion, cUDPKey, bIPVerified));
-		QueryNextClient();
-	}
+    {
+        // add the possible contact to our list - no checks in advance
+        m_liPossibleTestClients.AddHead(CContact(uClientID, uIp, uUdpPort, uTcpPort, uTarget, uVersion, cUDPKey, bIPVerified));
+        QueryNextClient();
+    }
 }
 
 void CUDPFirewallTester::QueryNextClient()  // try the next available client for the firewallcheck
@@ -297,5 +297,5 @@ bool CUDPFirewallTester::IsVerified()
 
 uint8 CUDPFirewallTester::GetRunningFWChecks()
 {
-	return m_byFWChecksRunningUDP;
+    return m_byFWChecksRunningUDP;
 }

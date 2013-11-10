@@ -57,37 +57,37 @@ void CMuleStatusBarCtrl::OnLButtonDblClk(UINT /*nFlags*/, CPoint point)
     int iPane = GetPaneAtPosition(point);
     switch (iPane)
     {
-    case SBarLog:
+        case SBarLog:
 #ifdef INFO_WND
-        theApp.emuledlg->SetActiveDialog(theApp.emuledlg->infoWnd); //>>> WiZaRd::InfoWnd
+            theApp.emuledlg->SetActiveDialog(theApp.emuledlg->infoWnd); //>>> WiZaRd::InfoWnd
 #else
-        if (thePrefs.GetLog2Disk())
-            ShellOpenFile(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + L"eMule.log");
-        if (thePrefs.GetDebug2Disk())
-            ShellOpenFile(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + L"eMule_Verbose.log");
+            if (thePrefs.GetLog2Disk())
+                ShellOpenFile(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + L"eMule.log");
+            if (thePrefs.GetDebug2Disk())
+                ShellOpenFile(thePrefs.GetMuleDirectory(EMULE_LOGDIR) + L"eMule_Verbose.log");
 #endif
-        break;
+            break;
 
-    case SBarUsers:
-        ShowNetworkInfo();
-        break;
+        case SBarUsers:
+            ShowNetworkInfo();
+            break;
 
-    case SBarUpDown:
-        theApp.emuledlg->SetActiveDialog(theApp.emuledlg->statisticswnd);
-        break;
+        case SBarUpDown:
+            theApp.emuledlg->SetActiveDialog(theApp.emuledlg->statisticswnd);
+            break;
 
-    case SBarConnected:
-        ShowNetworkInfo();
-        break;
+        case SBarConnected:
+            ShowNetworkInfo();
+            break;
 
-    case SBarChatMsg:
-        theApp.emuledlg->SetActiveDialog(theApp.emuledlg->chatwnd);
-        break;
+        case SBarChatMsg:
+            theApp.emuledlg->SetActiveDialog(theApp.emuledlg->chatwnd);
+            break;
 
 //>>> WiZaRd::USS Status Pane [Eulero]
-    case SBarUSS:
-        theApp.emuledlg->ShowPreferences(IDD_PPG_TWEAKS);
-        break;
+        case SBarUSS:
+            theApp.emuledlg->ShowPreferences(IDD_PPG_TWEAKS);
+            break;
 //<<< WiZaRd::USS Status Pane [Eulero]
     }
 }

@@ -839,8 +839,8 @@ YYSTYPE const * const yyvaluep;
 # endif
     switch (yytype)
     {
-    default:
-        break;
+        default:
+            break;
     }
 }
 
@@ -1037,24 +1037,24 @@ yytnamerr(char *yyres, const char *yystr)
         for (;;)
             switch (*++yyp)
             {
-            case '\'':
-            case ',':
-                goto do_not_strip_quotes;
-
-            case '\\':
-                if (*++yyp != '\\')
+                case '\'':
+                case ',':
                     goto do_not_strip_quotes;
-                /* Fall through.  */
-            default:
-                if (yyres)
-                    yyres[yyn] = *yyp;
-                yyn++;
-                break;
 
-            case '"':
-                if (yyres)
-                    yyres[yyn] = '\0';
-                return yyn;
+                case '\\':
+                    if (*++yyp != '\\')
+                        goto do_not_strip_quotes;
+                    /* Fall through.  */
+                default:
+                    if (yyres)
+                        yyres[yyn] = *yyp;
+                    yyn++;
+                    break;
+
+                case '"':
+                    if (yyres)
+                        yyres[yyn] = '\0';
+                    return yyn;
             }
 do_not_strip_quotes:
         ;
@@ -1203,8 +1203,8 @@ YYSTYPE *yyvaluep;
     switch (yytype)
     {
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 
@@ -1508,526 +1508,526 @@ yyreduce:
     YY_REDUCE_PRINT(yyn);
     switch (yyn)
     {
-    case 2:
-
-    {
-        ParsedSearchExpression((yyvsp[(1) - (2)].pexpr));
-        delete(yyvsp[(1) - (2)].pexpr);
-        return 0;
-        ;
-    }
-    break;
-
-    case 3:
-
-    {
-        CSearchExpr* pexpr = new CSearchExpr(&CSearchAttr((yyvsp[(1) - (2)].pstr)));
-        ParsedSearchExpression(pexpr);
-        delete pexpr;
-        delete(yyvsp[(1) - (2)].pstr);
-        return 0;
-        ;
-    }
-    break;
-
-    case 4:
-
-    {
-        yyerror(GetResString(IDS_SEARCH_GENERALERROR));
-        delete(yyvsp[(1) - (2)].pexpr);
-        return 1;
-        ;
-    }
-    break;
-
-    case 5:
-
-    {
-        (yyval.pexpr) = (yyvsp[(1) - (1)].pexpr);
-        ;
-    }
-    break;
-
-    case 6:
-
-    {
-        CSearchExpr* pexpr = new CSearchExpr;
-        pexpr->Add(SEARCHOP_AND);
-        pexpr->Add((yyvsp[(1) - (2)].pexpr));
-        pexpr->Add((yyvsp[(2) - (2)].pexpr));
-        (yyval.pexpr) = pexpr;
-        delete(yyvsp[(1) - (2)].pexpr);
-        delete(yyvsp[(2) - (2)].pexpr);
-        ;
-    }
-    break;
-
-    case 7:
-
-    {
-        (yyval.pexpr) = new CSearchExpr((yyvsp[(1) - (1)].pattr));
-        delete(yyvsp[(1) - (1)].pattr);
-        ;
-    }
-    break;
-
-    case 8:
-
-    {
-        CSearchExpr* pexpr = new CSearchExpr;
-        pexpr->Add(SEARCHOP_AND);
-        pexpr->Add((yyvsp[(1) - (3)].pexpr));
-        pexpr->Add((yyvsp[(3) - (3)].pexpr));
-        (yyval.pexpr) = pexpr;
-        delete(yyvsp[(1) - (3)].pexpr);
-        delete(yyvsp[(3) - (3)].pexpr);
-        ;
-    }
-    break;
-
-    case 9:
-
-    {
-        CSearchExpr* pexpr = new CSearchExpr;
-        pexpr->Add(SEARCHOP_OR);
-        pexpr->Add((yyvsp[(1) - (3)].pexpr));
-        pexpr->Add((yyvsp[(3) - (3)].pexpr));
-        (yyval.pexpr) = pexpr;
-        delete(yyvsp[(1) - (3)].pexpr);
-        delete(yyvsp[(3) - (3)].pexpr);
-        ;
-    }
-    break;
-
-    case 10:
-
-    {
-        CSearchExpr* pexpr = new CSearchExpr;
-        pexpr->Add(SEARCHOP_NOT);
-        pexpr->Add((yyvsp[(1) - (3)].pexpr));
-        pexpr->Add((yyvsp[(3) - (3)].pexpr));
-        (yyval.pexpr) = pexpr;
-        delete(yyvsp[(1) - (3)].pexpr);
-        delete(yyvsp[(3) - (3)].pexpr);
-        ;
-    }
-    break;
-
-    case 11:
-
-    {
-        (yyval.pexpr) = (yyvsp[(2) - (3)].pexpr);
-        ;
-    }
-    break;
-
-    case 12:
-
-    {
-        yyerror(GetResString(IDS_SEARCH_MISSINGANDRIGHT));
-        delete(yyvsp[(1) - (3)].pexpr);
-        return 1;
-        ;
-    }
-    break;
-
-    case 13:
-
-    {
-        yyerror(GetResString(IDS_SEARCH_MISSINGORRIGHT));
-        delete(yyvsp[(1) - (3)].pexpr);
-        return 1;
-        ;
-    }
-    break;
-
-    case 14:
-
-    {
-        yyerror(GetResString(IDS_SEARCH_MISSINGNOTRIGHT));
-        delete(yyvsp[(1) - (3)].pexpr);
-        return 1;
-        ;
-    }
-    break;
-
-    case 15:
-
-    {
-        yyerror(GetResString(IDS_SEARCH_MISSINGEXPRPARANT));
-        return 1;
-        ;
-    }
-    break;
-
-    case 16:
-
-    {
-        yyerror(GetResString(IDS_SEARCH_MISSINGCLOSINGPARANT));
-        delete(yyvsp[(2) - (3)].pexpr);
-        return 1;
-        ;
-    }
-    break;
-
-    case 17:
-
-    {
-        (yyval.pattr) = new CSearchAttr((yyvsp[(1) - (1)].pstr));
-        delete(yyvsp[(1) - (1)].pstr);
-        ;
-    }
-    break;
-
-    case 18:
-
-    {
-        (yyval.pattr) = new CSearchAttr(FT_FILESIZE, (yyvsp[(2) - (3)].iopr), (yyvsp[(3) - (3)].num));
-        ;
-    }
-    break;
-
-    case 19:
-
-    {
-        (yyval.pattr) = new CSearchAttr(FT_FILETYPE, (yyvsp[(3) - (3)].pstr));
-        delete(yyvsp[(3) - (3)].pstr);
-        ;
-    }
-    break;
-
-    case 20:
-
-    {
-        (yyval.pattr) = new CSearchAttr(FT_FILEFORMAT, (yyvsp[(3) - (3)].pstr));
-        delete(yyvsp[(3) - (3)].pstr);
-        ;
-    }
-    break;
-
-    case 21:
-
-    {
-        (yyval.pattr) = new CSearchAttr(FT_SOURCES, (yyvsp[(2) - (3)].iopr), (yyvsp[(3) - (3)].num));
-        ;
-    }
-    break;
-
-    case 22:
-
-    {
-        (yyval.pattr) = new CSearchAttr(FT_COMPLETE_SOURCES, (yyvsp[(2) - (3)].iopr), (yyvsp[(3) - (3)].num));
-        ;
-    }
-    break;
-
-    case 23:
-
-    {
-        (yyval.pattr) = new CSearchAttr(FT_FILERATING, (yyvsp[(2) - (3)].iopr), (yyvsp[(3) - (3)].num));
-        ;
-    }
-    break;
-
-    case 24:
-
-    {
-        (yyval.pattr) = new CSearchAttr(FT_MEDIA_BITRATE, (yyvsp[(2) - (3)].iopr), (yyvsp[(3) - (3)].num));
-        ;
-    }
-    break;
-
-    case 25:
-
-    {
-        (yyval.pattr) = new CSearchAttr(FT_MEDIA_LENGTH, (yyvsp[(2) - (3)].iopr), (yyvsp[(3) - (3)].num));
-        ;
-    }
-    break;
-
-    case 26:
-
-    {
-        (yyval.pattr) = new CSearchAttr(FT_MEDIA_CODEC, (yyvsp[(3) - (3)].pstr));
-        delete(yyvsp[(3) - (3)].pstr);
-        ;
-    }
-    break;
-
-    case 27:
-
-    {
-        (yyval.pattr) = new CSearchAttr(FT_MEDIA_TITLE, (yyvsp[(3) - (3)].pstr));
-        delete(yyvsp[(3) - (3)].pstr);
-        ;
-    }
-    break;
-
-    case 28:
-
-    {
-        (yyval.pattr) = new CSearchAttr(FT_MEDIA_ALBUM, (yyvsp[(3) - (3)].pstr));
-        delete(yyvsp[(3) - (3)].pstr);
-        ;
-    }
-    break;
-
-    case 29:
-
-    {
-        (yyval.pattr) = new CSearchAttr(FT_MEDIA_ARTIST, (yyvsp[(3) - (3)].pstr));
-        delete(yyvsp[(3) - (3)].pstr);
-        ;
-    }
-    break;
-
-    case 30:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_OPRERR), DbgGetSearchOperatorName((yyvsp[(1) - (1)].iopr)));
-        return 1; ;
-    }
-    break;
-
-    case 31:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@size"));
-        return 1; ;
-    }
-    break;
-
-    case 32:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@size"));
-        return 1; ;
-    }
-    break;
-
-    case 33:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@type"));
-        return 1; ;
-    }
-    break;
-
-    case 34:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@type"));
-        return 1; ;
-    }
-    break;
-
-    case 35:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@ext"));
-        return 1; ;
-    }
-    break;
-
-    case 36:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@ext"));
-        return 1; ;
-    }
-    break;
-
-    case 37:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@sources"));
-        return 1; ;
-    }
-    break;
-
-    case 38:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@sources"));
-        return 1; ;
-    }
-    break;
-
-    case 39:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@complete"));
-        return 1; ;
-    }
-    break;
-
-    case 40:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@complete"));
-        return 1; ;
-    }
-    break;
-
-    case 41:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@rating"));
-        return 1; ;
-    }
-    break;
-
-    case 42:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@rating"));
-        return 1; ;
-    }
-    break;
-
-    case 43:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@bitrate"));
-        return 1; ;
-    }
-    break;
-
-    case 44:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@bitrate"));
-        return 1; ;
-    }
-    break;
-
-    case 45:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@length"));
-        return 1; ;
-    }
-    break;
-
-    case 46:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@length"));
-        return 1; ;
-    }
-    break;
-
-    case 47:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@codec"));
-        return 1; ;
-    }
-    break;
-
-    case 48:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@codec"));
-        return 1; ;
-    }
-    break;
-
-    case 49:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@title"));
-        return 1; ;
-    }
-    break;
-
-    case 50:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@title"));
-        return 1; ;
-    }
-    break;
-
-    case 51:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@album"));
-        return 1; ;
-    }
-    break;
-
-    case 52:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@album"));
-        return 1; ;
-    }
-    break;
-
-    case 53:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@artist"));
-        return 1; ;
-    }
-    break;
-
-    case 54:
-
-    {
-        yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@artist"));
-        return 1; ;
-    }
-    break;
-
-    case 55:
-
-    {
-        (yyval.iopr) = ED2K_SEARCH_OP_EQUAL; ;
-    }
-    break;
-
-    case 56:
-
-    {
-        (yyval.iopr) = ED2K_SEARCH_OP_GREATER; ;
-    }
-    break;
-
-    case 57:
-
-    {
-        (yyval.iopr) = ED2K_SEARCH_OP_LESS; ;
-    }
-    break;
-
-    case 58:
-
-    {
-        (yyval.iopr) = ED2K_SEARCH_OP_GREATER_EQUAL; ;
-    }
-    break;
-
-    case 59:
-
-    {
-        (yyval.iopr) = ED2K_SEARCH_OP_LESS_EQUAL; ;
-    }
-    break;
-
-    case 60:
-
-    {
-        (yyval.iopr) = ED2K_SEARCH_OP_NOTEQUAL; ;
-    }
-    break;
-
-
-    /* Line 1267 of yacc.c.  */
-
-    default:
+        case 2:
+
+        {
+            ParsedSearchExpression((yyvsp[(1) - (2)].pexpr));
+            delete(yyvsp[(1) - (2)].pexpr);
+            return 0;
+            ;
+        }
         break;
+
+        case 3:
+
+        {
+            CSearchExpr* pexpr = new CSearchExpr(&CSearchAttr((yyvsp[(1) - (2)].pstr)));
+            ParsedSearchExpression(pexpr);
+            delete pexpr;
+            delete(yyvsp[(1) - (2)].pstr);
+            return 0;
+            ;
+        }
+        break;
+
+        case 4:
+
+        {
+            yyerror(GetResString(IDS_SEARCH_GENERALERROR));
+            delete(yyvsp[(1) - (2)].pexpr);
+            return 1;
+            ;
+        }
+        break;
+
+        case 5:
+
+        {
+            (yyval.pexpr) = (yyvsp[(1) - (1)].pexpr);
+            ;
+        }
+        break;
+
+        case 6:
+
+        {
+            CSearchExpr* pexpr = new CSearchExpr;
+            pexpr->Add(SEARCHOP_AND);
+            pexpr->Add((yyvsp[(1) - (2)].pexpr));
+            pexpr->Add((yyvsp[(2) - (2)].pexpr));
+            (yyval.pexpr) = pexpr;
+            delete(yyvsp[(1) - (2)].pexpr);
+            delete(yyvsp[(2) - (2)].pexpr);
+            ;
+        }
+        break;
+
+        case 7:
+
+        {
+            (yyval.pexpr) = new CSearchExpr((yyvsp[(1) - (1)].pattr));
+            delete(yyvsp[(1) - (1)].pattr);
+            ;
+        }
+        break;
+
+        case 8:
+
+        {
+            CSearchExpr* pexpr = new CSearchExpr;
+            pexpr->Add(SEARCHOP_AND);
+            pexpr->Add((yyvsp[(1) - (3)].pexpr));
+            pexpr->Add((yyvsp[(3) - (3)].pexpr));
+            (yyval.pexpr) = pexpr;
+            delete(yyvsp[(1) - (3)].pexpr);
+            delete(yyvsp[(3) - (3)].pexpr);
+            ;
+        }
+        break;
+
+        case 9:
+
+        {
+            CSearchExpr* pexpr = new CSearchExpr;
+            pexpr->Add(SEARCHOP_OR);
+            pexpr->Add((yyvsp[(1) - (3)].pexpr));
+            pexpr->Add((yyvsp[(3) - (3)].pexpr));
+            (yyval.pexpr) = pexpr;
+            delete(yyvsp[(1) - (3)].pexpr);
+            delete(yyvsp[(3) - (3)].pexpr);
+            ;
+        }
+        break;
+
+        case 10:
+
+        {
+            CSearchExpr* pexpr = new CSearchExpr;
+            pexpr->Add(SEARCHOP_NOT);
+            pexpr->Add((yyvsp[(1) - (3)].pexpr));
+            pexpr->Add((yyvsp[(3) - (3)].pexpr));
+            (yyval.pexpr) = pexpr;
+            delete(yyvsp[(1) - (3)].pexpr);
+            delete(yyvsp[(3) - (3)].pexpr);
+            ;
+        }
+        break;
+
+        case 11:
+
+        {
+            (yyval.pexpr) = (yyvsp[(2) - (3)].pexpr);
+            ;
+        }
+        break;
+
+        case 12:
+
+        {
+            yyerror(GetResString(IDS_SEARCH_MISSINGANDRIGHT));
+            delete(yyvsp[(1) - (3)].pexpr);
+            return 1;
+            ;
+        }
+        break;
+
+        case 13:
+
+        {
+            yyerror(GetResString(IDS_SEARCH_MISSINGORRIGHT));
+            delete(yyvsp[(1) - (3)].pexpr);
+            return 1;
+            ;
+        }
+        break;
+
+        case 14:
+
+        {
+            yyerror(GetResString(IDS_SEARCH_MISSINGNOTRIGHT));
+            delete(yyvsp[(1) - (3)].pexpr);
+            return 1;
+            ;
+        }
+        break;
+
+        case 15:
+
+        {
+            yyerror(GetResString(IDS_SEARCH_MISSINGEXPRPARANT));
+            return 1;
+            ;
+        }
+        break;
+
+        case 16:
+
+        {
+            yyerror(GetResString(IDS_SEARCH_MISSINGCLOSINGPARANT));
+            delete(yyvsp[(2) - (3)].pexpr);
+            return 1;
+            ;
+        }
+        break;
+
+        case 17:
+
+        {
+            (yyval.pattr) = new CSearchAttr((yyvsp[(1) - (1)].pstr));
+            delete(yyvsp[(1) - (1)].pstr);
+            ;
+        }
+        break;
+
+        case 18:
+
+        {
+            (yyval.pattr) = new CSearchAttr(FT_FILESIZE, (yyvsp[(2) - (3)].iopr), (yyvsp[(3) - (3)].num));
+            ;
+        }
+        break;
+
+        case 19:
+
+        {
+            (yyval.pattr) = new CSearchAttr(FT_FILETYPE, (yyvsp[(3) - (3)].pstr));
+            delete(yyvsp[(3) - (3)].pstr);
+            ;
+        }
+        break;
+
+        case 20:
+
+        {
+            (yyval.pattr) = new CSearchAttr(FT_FILEFORMAT, (yyvsp[(3) - (3)].pstr));
+            delete(yyvsp[(3) - (3)].pstr);
+            ;
+        }
+        break;
+
+        case 21:
+
+        {
+            (yyval.pattr) = new CSearchAttr(FT_SOURCES, (yyvsp[(2) - (3)].iopr), (yyvsp[(3) - (3)].num));
+            ;
+        }
+        break;
+
+        case 22:
+
+        {
+            (yyval.pattr) = new CSearchAttr(FT_COMPLETE_SOURCES, (yyvsp[(2) - (3)].iopr), (yyvsp[(3) - (3)].num));
+            ;
+        }
+        break;
+
+        case 23:
+
+        {
+            (yyval.pattr) = new CSearchAttr(FT_FILERATING, (yyvsp[(2) - (3)].iopr), (yyvsp[(3) - (3)].num));
+            ;
+        }
+        break;
+
+        case 24:
+
+        {
+            (yyval.pattr) = new CSearchAttr(FT_MEDIA_BITRATE, (yyvsp[(2) - (3)].iopr), (yyvsp[(3) - (3)].num));
+            ;
+        }
+        break;
+
+        case 25:
+
+        {
+            (yyval.pattr) = new CSearchAttr(FT_MEDIA_LENGTH, (yyvsp[(2) - (3)].iopr), (yyvsp[(3) - (3)].num));
+            ;
+        }
+        break;
+
+        case 26:
+
+        {
+            (yyval.pattr) = new CSearchAttr(FT_MEDIA_CODEC, (yyvsp[(3) - (3)].pstr));
+            delete(yyvsp[(3) - (3)].pstr);
+            ;
+        }
+        break;
+
+        case 27:
+
+        {
+            (yyval.pattr) = new CSearchAttr(FT_MEDIA_TITLE, (yyvsp[(3) - (3)].pstr));
+            delete(yyvsp[(3) - (3)].pstr);
+            ;
+        }
+        break;
+
+        case 28:
+
+        {
+            (yyval.pattr) = new CSearchAttr(FT_MEDIA_ALBUM, (yyvsp[(3) - (3)].pstr));
+            delete(yyvsp[(3) - (3)].pstr);
+            ;
+        }
+        break;
+
+        case 29:
+
+        {
+            (yyval.pattr) = new CSearchAttr(FT_MEDIA_ARTIST, (yyvsp[(3) - (3)].pstr));
+            delete(yyvsp[(3) - (3)].pstr);
+            ;
+        }
+        break;
+
+        case 30:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_OPRERR), DbgGetSearchOperatorName((yyvsp[(1) - (1)].iopr)));
+            return 1; ;
+        }
+        break;
+
+        case 31:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@size"));
+            return 1; ;
+        }
+        break;
+
+        case 32:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@size"));
+            return 1; ;
+        }
+        break;
+
+        case 33:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@type"));
+            return 1; ;
+        }
+        break;
+
+        case 34:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@type"));
+            return 1; ;
+        }
+        break;
+
+        case 35:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@ext"));
+            return 1; ;
+        }
+        break;
+
+        case 36:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@ext"));
+            return 1; ;
+        }
+        break;
+
+        case 37:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@sources"));
+            return 1; ;
+        }
+        break;
+
+        case 38:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@sources"));
+            return 1; ;
+        }
+        break;
+
+        case 39:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@complete"));
+            return 1; ;
+        }
+        break;
+
+        case 40:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@complete"));
+            return 1; ;
+        }
+        break;
+
+        case 41:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@rating"));
+            return 1; ;
+        }
+        break;
+
+        case 42:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@rating"));
+            return 1; ;
+        }
+        break;
+
+        case 43:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@bitrate"));
+            return 1; ;
+        }
+        break;
+
+        case 44:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@bitrate"));
+            return 1; ;
+        }
+        break;
+
+        case 45:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@length"));
+            return 1; ;
+        }
+        break;
+
+        case 46:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@length"));
+            return 1; ;
+        }
+        break;
+
+        case 47:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@codec"));
+            return 1; ;
+        }
+        break;
+
+        case 48:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@codec"));
+            return 1; ;
+        }
+        break;
+
+        case 49:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@title"));
+            return 1; ;
+        }
+        break;
+
+        case 50:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@title"));
+            return 1; ;
+        }
+        break;
+
+        case 51:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@album"));
+            return 1; ;
+        }
+        break;
+
+        case 52:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@album"));
+            return 1; ;
+        }
+        break;
+
+        case 53:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@artist"));
+            return 1; ;
+        }
+        break;
+
+        case 54:
+
+        {
+            yyerrorf(GetResString(IDS_SEARCH_ATTRERR), _T("@artist"));
+            return 1; ;
+        }
+        break;
+
+        case 55:
+
+        {
+            (yyval.iopr) = ED2K_SEARCH_OP_EQUAL; ;
+        }
+        break;
+
+        case 56:
+
+        {
+            (yyval.iopr) = ED2K_SEARCH_OP_GREATER; ;
+        }
+        break;
+
+        case 57:
+
+        {
+            (yyval.iopr) = ED2K_SEARCH_OP_LESS; ;
+        }
+        break;
+
+        case 58:
+
+        {
+            (yyval.iopr) = ED2K_SEARCH_OP_GREATER_EQUAL; ;
+        }
+        break;
+
+        case 59:
+
+        {
+            (yyval.iopr) = ED2K_SEARCH_OP_LESS_EQUAL; ;
+        }
+        break;
+
+        case 60:
+
+        {
+            (yyval.iopr) = ED2K_SEARCH_OP_NOTEQUAL; ;
+        }
+        break;
+
+
+        /* Line 1267 of yacc.c.  */
+
+        default:
+            break;
     }
     YY_SYMBOL_PRINT("-> $$ =", yyr1[yyn], &yyval, &yyloc);
 

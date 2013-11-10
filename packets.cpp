@@ -768,8 +768,8 @@ bool CTag::WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode) const
     // don't write tags of unknown types, we wouldn't be able to read them in again
     // and the met file would be corrupted
 //>>> WiZaRd::ExtendedXS [Xanatos]
-	if (IsHash() || IsStr() || IsInt() || IsFloat() || IsBlob() || IsInt64())
-    //if (IsStr() || IsInt() || IsFloat() || IsBlob() || IsInt64())
+    if (IsHash() || IsStr() || IsInt() || IsFloat() || IsBlob() || IsInt64())
+        //if (IsStr() || IsInt() || IsFloat() || IsBlob() || IsInt64())
 //<<< WiZaRd::ExtendedXS [Xanatos]
     {
         file->WriteUInt8(m_uType);
@@ -809,10 +809,10 @@ bool CTag::WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode) const
             file->Write(m_pData, m_nBlobSize);
         }
 //>>> WiZaRd::ExtendedXS [Xanatos]
-		else if(IsHash())
-		{
-			file->WriteHash16(m_pData);
-		}
+        else if (IsHash())
+        {
+            file->WriteHash16(m_pData);
+        }
 //<<< WiZaRd::ExtendedXS [Xanatos]
         //TODO: Support more tag types
         else

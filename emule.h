@@ -200,7 +200,7 @@ public:
     void		UpdateLargeIconSize();
     bool		IsXPThemeActive() const;
     bool		IsVistaThemeActive() const;
-	bool		IsWinSock2Available() const;
+    bool		IsWinSock2Available() const;
 
     bool		GetLangHelpFilePath(CString& strResult);
     void		SetHelpFilePath(LPCTSTR pszHelpFilePath);
@@ -254,7 +254,7 @@ protected:
 
     UINT		m_dwPublicIP;
     bool		m_bAutoStart;
-	WSADATA		m_wsaData;
+    WSADATA		m_wsaData;
 
     // Splash screen
 //>>> WiZaRd::New Splash [TBH]
@@ -294,11 +294,11 @@ private:
 //<<< WiZaRd::Automatic Restart
 //>>> WiZaRd::IPv6 [Xanatos]
 public:
-	const _CIPAddress&	GetPublicIPv6() const		{return m_PublicIPv6;}
-	void		SetPublicIPv6(const CAddress& IP)	{m_PublicIPv6 = IP;}
-	void		UpdateIPv6();
+    const _CIPAddress&	GetPublicIPv6() const		{return m_PublicIPv6;}
+    void		SetPublicIPv6(const CAddress& IP)	{m_PublicIPv6 = IP;}
+    void		UpdateIPv6();
 private:
-	_CIPAddress m_PublicIPv6;
+    _CIPAddress m_PublicIPv6;
 //<<< WiZaRd::IPv6 [Xanatos]
 };
 

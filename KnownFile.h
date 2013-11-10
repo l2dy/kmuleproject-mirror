@@ -152,7 +152,7 @@ public:
     bool	PublishNotes();
 
     // file sharing
-	Packet* GetEmptyXSPacket(const CUpDownClient* forClient, uint8 byRequestedVersion, uint16 nRequestedOptions) const;
+    Packet* GetEmptyXSPacket(const CUpDownClient* forClient, uint8 byRequestedVersion, uint16 nRequestedOptions) const;
     virtual Packet* CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 byRequestedVersion, uint16 nRequestedOptions) const;
     UINT	GetMetaDataVer() const
     {
@@ -271,24 +271,24 @@ public:
 //<<< WiZaRd::Upload Feedback
 //>>> WiZaRd::Queued Count
 private:
-	UINT	m_uiQueuedCount;
+    UINT	m_uiQueuedCount;
 public:
-	UINT	GetRealQueuedCount() const	{return m_uiQueuedCount;}
-	void	IncRealQueuedCount(CUpDownClient* client);
-	void	DecRealQueuedCount(CUpDownClient* client);
+    UINT	GetRealQueuedCount() const	{return m_uiQueuedCount;}
+    void	IncRealQueuedCount(CUpDownClient* client);
+    void	DecRealQueuedCount(CUpDownClient* client);
 //<<< WiZaRd::Queued Count
 //>>> WiZaRd::FileHealth
 public:
-	float	GetFileHealth();
+    float	GetFileHealth();
 private:
-	UINT	m_dwLastFileHealthCalc;
-	float	m_fLastHealthValue;
+    UINT	m_dwLastFileHealthCalc;
+    float	m_fLastHealthValue;
 //<<< WiZaRd::FileHealth
 protected:
-	bool	m_bCompleteSrcUpdateNecessary;
+    bool	m_bCompleteSrcUpdateNecessary;
 public:
-	void	ProcessFile();
+    void	ProcessFile();
 protected:
-	void	UpdateCompleteSrcCount();
-	void	GetCompleteSrcCount(CArray<uint16, uint16>& count);
+    void	UpdateCompleteSrcCount();
+    void	GetCompleteSrcCount(CArray<uint16, uint16>& count);
 };

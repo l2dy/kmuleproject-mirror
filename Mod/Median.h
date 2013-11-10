@@ -23,57 +23,57 @@
 template <class T> class CMedian
 {
 public:
-	CMedian()	{}
-	~CMedian()	{}
+    CMedian()	{}
+    ~CMedian()	{}
 
-	void	AddVal(const T& val)
-	{
-		m_MedianValues.push_back(val);
-	}
+    void	AddVal(const T& val)
+    {
+        m_MedianValues.push_back(val);
+    }
 
-	void	Clear()
-	{
-		m_MedianValues.clear();
-	}
+    void	Clear()
+    {
+        m_MedianValues.clear();
+    }
 
-	void	SetMedianVector(const std::vector<T> vec)
-	{
-		m_MedianValues = vec;
-	}
+    void	SetMedianVector(const std::vector<T> vec)
+    {
+        m_MedianValues = vec;
+    }
 
-	T		GetMedian()
-	{
-		std::vector<T>::size_type number = m_MedianValues.size();
+    T		GetMedian()
+    {
+        std::vector<T>::size_type number = m_MedianValues.size();
 
-		if(number == 0)
-			return 0;
-		if(number == 1) 
-			return m_MedianValues.at(0);
-		if(number == 2) 
-			return (m_MedianValues.at(0)+m_MedianValues.at(1))/2;
+        if (number == 0)
+            return 0;
+        if (number == 1)
+            return m_MedianValues.at(0);
+        if (number == 2)
+            return (m_MedianValues.at(0)+m_MedianValues.at(1))/2;
 
-		// if more than 2 elements, we need to sort them to find the middle.
-		SortVals();
+        // if more than 2 elements, we need to sort them to find the middle.
+        SortVals();
 
-		T ret;
-		if(number%2)
-			ret = m_MedianValues.at(number/2);
-		else
-			ret = (m_MedianValues.at(number/2-1) + m_MedianValues.at(number/2))/2;
+        T ret;
+        if (number%2)
+            ret = m_MedianValues.at(number/2);
+        else
+            ret = (m_MedianValues.at(number/2-1) + m_MedianValues.at(number/2))/2;
 
-		return ret;
-	}
+        return ret;
+    }
 
-	std::vector<T>	GetMedianVector() const
-	{
-		return m_MedianValues;
-	}
+    std::vector<T>	GetMedianVector() const
+    {
+        return m_MedianValues;
+    }
 
-	void	SortVals()
-	{
-		sort(m_MedianValues.begin(), m_MedianValues.end());
-	}
+    void	SortVals()
+    {
+        sort(m_MedianValues.begin(), m_MedianValues.end());
+    }
 
 private:
-	std::vector<T>	m_MedianValues;
+    std::vector<T>	m_MedianValues;
 };

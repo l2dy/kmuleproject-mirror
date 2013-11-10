@@ -287,19 +287,19 @@ UINT CALLBACK CPPgDisplay::ChooseFontHook(HWND hdlg, UINT uiMsg, WPARAM wParam, 
     // Do our own Hook processing
     switch (uiMsg)
     {
-    case WM_COMMAND:
-        if (LOWORD(wParam) == psh3/*Apply*/ && HIWORD(wParam) == BN_CLICKED)
-        {
-            LOGFONT lf;
-            CFontDialog *pDlg = (CFontDialog *)CWnd::FromHandle(hdlg);
-            ASSERT(pDlg != NULL);
-            if (pDlg != NULL)
+        case WM_COMMAND:
+            if (LOWORD(wParam) == psh3/*Apply*/ && HIWORD(wParam) == BN_CLICKED)
             {
-                pDlg->GetCurrentFont(&lf);
-                theApp.emuledlg->ApplyHyperTextFont(&lf);
+                LOGFONT lf;
+                CFontDialog *pDlg = (CFontDialog *)CWnd::FromHandle(hdlg);
+                ASSERT(pDlg != NULL);
+                if (pDlg != NULL)
+                {
+                    pDlg->GetCurrentFont(&lf);
+                    theApp.emuledlg->ApplyHyperTextFont(&lf);
+                }
             }
-        }
-        break;
+            break;
     }
 
     // If the hook procedure returns zero, the default dialog box procedure processes the message.

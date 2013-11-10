@@ -119,77 +119,77 @@ void CAddSourceDlg::OnBnClickedButton1()
 
     switch (m_nSourceType)
     {
-    case 0:
-    {
-        CString sip;
-        GetDlgItem(IDC_EDIT2)->GetWindowText(sip);
-        if (sip.IsEmpty())
-            return;
-
-        // if the port is specified with the IP, ignore any possible specified port in the port control
-        uint16 port;
-        int iColon = sip.Find(_T(':'));
-        if (iColon != -1)
+        case 0:
         {
-            port = (uint16)_tstoi(sip.Mid(iColon + 1));
-            sip = sip.Left(iColon);
-        }
-        else
-        {
-            BOOL bTranslated = FALSE;
-            port = (uint16)GetDlgItemInt(IDC_EDIT3, &bTranslated, FALSE);
-            if (!bTranslated)
+            CString sip;
+            GetDlgItem(IDC_EDIT2)->GetWindowText(sip);
+            if (sip.IsEmpty())
                 return;
-        }
 
-        UINT ip;
-        if ((ip = inet_addr(CT2CA(sip))) == INADDR_NONE && _tcscmp(sip, _T("255.255.255.255")) != 0)
-            ip = 0;
-        if (IsGoodIPPort(ip, port))
-        {
-            CUpDownClient* toadd = new CUpDownClient(m_pFile, port, ntohl(ip), 0, 0);
-            toadd->SetSourceFrom(SF_PASSIVE);
-            theApp.downloadqueue->CheckAndAddSource(m_pFile, toadd);
-        }
-        break;
-    }
-    case 1:
-    {
-        CString strURL;
-        GetDlgItem(IDC_EDIT10)->GetWindowText(strURL);
-        if (!strURL.IsEmpty())
-        {
-            TCHAR szScheme[INTERNET_MAX_SCHEME_LENGTH];
-            TCHAR szHostName[INTERNET_MAX_HOST_NAME_LENGTH];
-            TCHAR szUrlPath[INTERNET_MAX_PATH_LENGTH];
-            TCHAR szUserName[INTERNET_MAX_USER_NAME_LENGTH];
-            TCHAR szPassword[INTERNET_MAX_PASSWORD_LENGTH];
-            TCHAR szExtraInfo[INTERNET_MAX_URL_LENGTH];
-            URL_COMPONENTS Url = {0};
-            Url.dwStructSize = sizeof(Url);
-            Url.lpszScheme = szScheme;
-            Url.dwSchemeLength = ARRSIZE(szScheme);
-            Url.lpszHostName = szHostName;
-            Url.dwHostNameLength = ARRSIZE(szHostName);
-            Url.lpszUserName = szUserName;
-            Url.dwUserNameLength = ARRSIZE(szUserName);
-            Url.lpszPassword = szPassword;
-            Url.dwPasswordLength = ARRSIZE(szPassword);
-            Url.lpszUrlPath = szUrlPath;
-            Url.dwUrlPathLength = ARRSIZE(szUrlPath);
-            Url.lpszExtraInfo = szExtraInfo;
-            Url.dwExtraInfoLength = ARRSIZE(szExtraInfo);
-            if (InternetCrackUrl(strURL, 0, 0, &Url) && Url.dwHostNameLength > 0 && Url.dwHostNameLength < INTERNET_MAX_HOST_NAME_LENGTH)
+            // if the port is specified with the IP, ignore any possible specified port in the port control
+            uint16 port;
+            int iColon = sip.Find(_T(':'));
+            if (iColon != -1)
             {
-                SUnresolvedHostname* hostname = new SUnresolvedHostname;
-                hostname->strURL = strURL;
-                hostname->strHostname = szHostName;
-                theApp.downloadqueue->AddToResolved(m_pFile, hostname);
-                delete hostname;
+                port = (uint16)_tstoi(sip.Mid(iColon + 1));
+                sip = sip.Left(iColon);
             }
+            else
+            {
+                BOOL bTranslated = FALSE;
+                port = (uint16)GetDlgItemInt(IDC_EDIT3, &bTranslated, FALSE);
+                if (!bTranslated)
+                    return;
+            }
+
+            UINT ip;
+            if ((ip = inet_addr(CT2CA(sip))) == INADDR_NONE && _tcscmp(sip, _T("255.255.255.255")) != 0)
+                ip = 0;
+            if (IsGoodIPPort(ip, port))
+            {
+                CUpDownClient* toadd = new CUpDownClient(m_pFile, port, ntohl(ip), 0, 0);
+                toadd->SetSourceFrom(SF_PASSIVE);
+                theApp.downloadqueue->CheckAndAddSource(m_pFile, toadd);
+            }
+            break;
         }
-        break;
-    }
+        case 1:
+        {
+            CString strURL;
+            GetDlgItem(IDC_EDIT10)->GetWindowText(strURL);
+            if (!strURL.IsEmpty())
+            {
+                TCHAR szScheme[INTERNET_MAX_SCHEME_LENGTH];
+                TCHAR szHostName[INTERNET_MAX_HOST_NAME_LENGTH];
+                TCHAR szUrlPath[INTERNET_MAX_PATH_LENGTH];
+                TCHAR szUserName[INTERNET_MAX_USER_NAME_LENGTH];
+                TCHAR szPassword[INTERNET_MAX_PASSWORD_LENGTH];
+                TCHAR szExtraInfo[INTERNET_MAX_URL_LENGTH];
+                URL_COMPONENTS Url = {0};
+                Url.dwStructSize = sizeof(Url);
+                Url.lpszScheme = szScheme;
+                Url.dwSchemeLength = ARRSIZE(szScheme);
+                Url.lpszHostName = szHostName;
+                Url.dwHostNameLength = ARRSIZE(szHostName);
+                Url.lpszUserName = szUserName;
+                Url.dwUserNameLength = ARRSIZE(szUserName);
+                Url.lpszPassword = szPassword;
+                Url.dwPasswordLength = ARRSIZE(szPassword);
+                Url.lpszUrlPath = szUrlPath;
+                Url.dwUrlPathLength = ARRSIZE(szUrlPath);
+                Url.lpszExtraInfo = szExtraInfo;
+                Url.dwExtraInfoLength = ARRSIZE(szExtraInfo);
+                if (InternetCrackUrl(strURL, 0, 0, &Url) && Url.dwHostNameLength > 0 && Url.dwHostNameLength < INTERNET_MAX_HOST_NAME_LENGTH)
+                {
+                    SUnresolvedHostname* hostname = new SUnresolvedHostname;
+                    hostname->strURL = strURL;
+                    hostname->strHostname = szHostName;
+                    theApp.downloadqueue->AddToResolved(m_pFile, hostname);
+                    delete hostname;
+                }
+            }
+            break;
+        }
     }
 }
 

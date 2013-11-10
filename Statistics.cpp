@@ -276,29 +276,29 @@ float CStatistics::GetAvgDownloadRate(int averageType)
     DWORD running;
     switch (averageType)
     {
-    case AVG_SESSION:
-        if (theStats.transferStarttime == 0)
-            return 0.0F;
-        running = (GetTickCount() - theStats.transferStarttime) / 1000;
-        if (running < 5)
-            return 0.0F;
-        return (float)(theStats.sessionReceivedBytes / 1024) / running;
+        case AVG_SESSION:
+            if (theStats.transferStarttime == 0)
+                return 0.0F;
+            running = (GetTickCount() - theStats.transferStarttime) / 1000;
+            if (running < 5)
+                return 0.0F;
+            return (float)(theStats.sessionReceivedBytes / 1024) / running;
 
-    case AVG_TOTAL:
-        if (theStats.transferStarttime == 0)
-            return thePrefs.GetConnAvgDownRate();
-        running = (GetTickCount() - theStats.transferStarttime) / 1000;
-        if (running < 5)
-            return thePrefs.GetConnAvgDownRate();
-        return (((float)(theStats.sessionReceivedBytes / 1024) / running) + thePrefs.GetConnAvgDownRate()) / 2.0F;
+        case AVG_TOTAL:
+            if (theStats.transferStarttime == 0)
+                return thePrefs.GetConnAvgDownRate();
+            running = (GetTickCount() - theStats.transferStarttime) / 1000;
+            if (running < 5)
+                return thePrefs.GetConnAvgDownRate();
+            return (((float)(theStats.sessionReceivedBytes / 1024) / running) + thePrefs.GetConnAvgDownRate()) / 2.0F;
 
-    default:
-        if (downrateHistory.size() == 0)
+        default:
+            if (downrateHistory.size() == 0)
+                return 0.0F;
+            float deltat = (downrateHistory.front().timestamp - downrateHistory.back().timestamp) / 1000.0F;
+            if (deltat > 0.0F)
+                return ((downrateHistory.front().datalen - downrateHistory.back().datalen) / deltat) / 1024.0F;
             return 0.0F;
-        float deltat = (downrateHistory.front().timestamp - downrateHistory.back().timestamp) / 1000.0F;
-        if (deltat > 0.0F)
-            return ((downrateHistory.front().datalen - downrateHistory.back().datalen) / deltat) / 1024.0F;
-        return 0.0F;
     }
 }
 
@@ -307,29 +307,29 @@ float CStatistics::GetAvgUploadRate(int averageType)
     DWORD running;
     switch (averageType)
     {
-    case AVG_SESSION:
-        if (theStats.transferStarttime == 0)
-            return 0.0F;
-        running = (GetTickCount() - theStats.transferStarttime) / 1000;
-        if (running < 5)
-            return 0.0F;
-        return (float)(theStats.sessionSentBytes / 1024) / running;
+        case AVG_SESSION:
+            if (theStats.transferStarttime == 0)
+                return 0.0F;
+            running = (GetTickCount() - theStats.transferStarttime) / 1000;
+            if (running < 5)
+                return 0.0F;
+            return (float)(theStats.sessionSentBytes / 1024) / running;
 
-    case AVG_TOTAL:
-        if (theStats.transferStarttime == 0)
-            return thePrefs.GetConnAvgUpRate();
-        running = (GetTickCount() - theStats.transferStarttime) / 1000;
-        if (running < 5)
-            return thePrefs.GetConnAvgUpRate();
-        return (((float)(theStats.sessionSentBytes / 1024) / running) + thePrefs.GetConnAvgUpRate()) / 2.0F;
+        case AVG_TOTAL:
+            if (theStats.transferStarttime == 0)
+                return thePrefs.GetConnAvgUpRate();
+            running = (GetTickCount() - theStats.transferStarttime) / 1000;
+            if (running < 5)
+                return thePrefs.GetConnAvgUpRate();
+            return (((float)(theStats.sessionSentBytes / 1024) / running) + thePrefs.GetConnAvgUpRate()) / 2.0F;
 
-    default:
-        if (uprateHistory.size() == 0)
+        default:
+            if (uprateHistory.size() == 0)
+                return 0.0F;
+            float deltat = (uprateHistory.front().timestamp - uprateHistory.back().timestamp) / 1000.0F;
+            if (deltat > 0.0F)
+                return ((uprateHistory.front().datalen - uprateHistory.back().datalen) / deltat) / 1024.0F;
             return 0.0F;
-        float deltat = (uprateHistory.front().timestamp - uprateHistory.back().timestamp) / 1000.0F;
-        if (deltat > 0.0F)
-            return ((uprateHistory.front().datalen - uprateHistory.back().datalen) / deltat) / 1024.0F;
-        return 0.0F;
     }
 }
 

@@ -159,26 +159,26 @@ bool CCollection::InitCollectionFromFile(const CString& sFilePath, CString sFile
                     CTag tag(&data, true);
                     switch (tag.GetNameID())
                     {
-                    case FT_FILENAME:
-                    {
-                        if (tag.IsStr())
-                            m_sCollectionName = tag.GetStr();
-                        break;
-                    }
-                    case FT_COLLECTIONAUTHOR:
-                    {
-                        if (tag.IsStr())
-                            m_sCollectionAuthorName = tag.GetStr();
-                        break;
-                    }
-                    case FT_COLLECTIONAUTHORKEY:
-                    {
-                        if (tag.IsBlob())
+                        case FT_FILENAME:
                         {
-                            SetCollectionAuthorKey(tag.GetBlob(), tag.GetBlobSize());
+                            if (tag.IsStr())
+                                m_sCollectionName = tag.GetStr();
+                            break;
                         }
-                        break;
-                    }
+                        case FT_COLLECTIONAUTHOR:
+                        {
+                            if (tag.IsStr())
+                                m_sCollectionAuthorName = tag.GetStr();
+                            break;
+                        }
+                        case FT_COLLECTIONAUTHORKEY:
+                        {
+                            if (tag.IsBlob())
+                            {
+                                SetCollectionAuthorKey(tag.GetBlob(), tag.GetBlobSize());
+                            }
+                            break;
+                        }
                     }
                     headerTagCount--;
                 }

@@ -176,54 +176,54 @@ void CClientListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
                 GetItemDisplayText(client, iColumn, szItem, _countof(szItem));
                 switch (iColumn)
                 {
-                case 0:
-                {
-//>>> WiZaRd::ClientAnalyzer
-                    int plusminus = 0;
-					int iCAIconIndex = client->GetAnalyzerIconIndex();
-					if(iCAIconIndex != -1)
+                    case 0:
                     {
+//>>> WiZaRd::ClientAnalyzer
+                        int plusminus = 0;
+                        int iCAIconIndex = client->GetAnalyzerIconIndex();
+                        if (iCAIconIndex != -1)
+                        {
+                            int iIconPosY = (cur_rec.Height() > 16) ? ((cur_rec.Height() - 16) / 2) : 1;
+                            POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
+                            m_ImageList.Draw(dc, 18 + iCAIconIndex, point, ILD_NORMAL);
+                            cur_rec.left += 17;
+                            plusminus += 17;
+                        }
+//<<< WiZaRd::ClientAnalyzer
+                        int iImage = GetClientImageIndex(client->IsFriend(), client->GetClientSoft(), client->Credits() && client->Credits()->GetScoreRatio(client->GetIP()) > 1, client->ExtProtocolAvailable());
+
+                        UINT nOverlayImage = 0;
+                        if ((client->Credits() && client->Credits()->GetCurrentIdentState(client->GetIP()) == IS_IDENTIFIED))
+                            nOverlayImage |= 1;
+                        if (client->IsObfuscatedConnectionEstablished())
+                            nOverlayImage |= 2;
                         int iIconPosY = (cur_rec.Height() > 16) ? ((cur_rec.Height() - 16) / 2) : 1;
                         POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
-                        m_ImageList.Draw(dc, 18 + iCAIconIndex, point, ILD_NORMAL);
-                        cur_rec.left += 17;
-                        plusminus += 17;
-                    }
-//<<< WiZaRd::ClientAnalyzer
-                    int iImage = GetClientImageIndex(client->IsFriend(), client->GetClientSoft(), client->Credits() && client->Credits()->GetScoreRatio(client->GetIP()) > 1, client->ExtProtocolAvailable());
+                        m_ImageList.Draw(dc, iImage, point, ILD_NORMAL | INDEXTOOVERLAYMASK(nOverlayImage));
 
-                    UINT nOverlayImage = 0;
-                    if ((client->Credits() && client->Credits()->GetCurrentIdentState(client->GetIP()) == IS_IDENTIFIED))
-                        nOverlayImage |= 1;
-                    if (client->IsObfuscatedConnectionEstablished())
-                        nOverlayImage |= 2;
-                    int iIconPosY = (cur_rec.Height() > 16) ? ((cur_rec.Height() - 16) / 2) : 1;
-                    POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
-                    m_ImageList.Draw(dc, iImage, point, ILD_NORMAL | INDEXTOOVERLAYMASK(nOverlayImage));
-
-                    cur_rec.left += 16 + sm_iLabelOffset;
+                        cur_rec.left += 16 + sm_iLabelOffset;
 
 //>>> WiZaRd::ModIconMappings
-                    int icoindex = client->GetModIconIndex();
-                    if (icoindex != MODMAP_NONE)
-                    {
-                        POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
-                        theApp.theModIconMap->DrawModIcon(dc, icoindex, point, ILD_NORMAL);
-                        cur_rec.left += 17;
-                        plusminus += 17;
-                    }
+                        int icoindex = client->GetModIconIndex();
+                        if (icoindex != MODMAP_NONE)
+                        {
+                            POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
+                            theApp.theModIconMap->DrawModIcon(dc, icoindex, point, ILD_NORMAL);
+                            cur_rec.left += 17;
+                            plusminus += 17;
+                        }
 //<<< WiZaRd::ModIconMappings
 
-                    dc.DrawText(szItem, -1, &cur_rec, MLC_DT_TEXT | uDrawTextAlignment);
-                    cur_rec.left -= 16;
-                    cur_rec.right -= sm_iSubItemInset;
-                    cur_rec.left -= plusminus; //>>> WiZaRd::ClientAnalyzer
-                    break;
-                }
+                        dc.DrawText(szItem, -1, &cur_rec, MLC_DT_TEXT | uDrawTextAlignment);
+                        cur_rec.left -= 16;
+                        cur_rec.right -= sm_iSubItemInset;
+                        cur_rec.left -= plusminus; //>>> WiZaRd::ClientAnalyzer
+                        break;
+                    }
 
-                default:
-                    dc.DrawText(szItem, -1, &cur_rec, MLC_DT_TEXT | uDrawTextAlignment);
-                    break;
+                    default:
+                        dc.DrawText(szItem, -1, &cur_rec, MLC_DT_TEXT | uDrawTextAlignment);
+                        break;
                 }
             }
             cur_rec.left += iColumnWidth;
@@ -243,45 +243,45 @@ void CClientListCtrl::GetItemDisplayText(const CUpDownClient *client, int iSubIt
     pszText[0] = L'\0';
     switch (iSubItem)
     {
-    case 0:
-        if (client->GetUserName() == NULL)
-            _sntprintf(pszText, cchTextMax, _T("(%s)"), GetResString(IDS_UNKNOWN));
-        else
-            _tcsncpy(pszText, client->GetUserName(), cchTextMax);
-        break;
+        case 0:
+            if (client->GetUserName() == NULL)
+                _sntprintf(pszText, cchTextMax, _T("(%s)"), GetResString(IDS_UNKNOWN));
+            else
+                _tcsncpy(pszText, client->GetUserName(), cchTextMax);
+            break;
 
-    case 1:
-        _tcsncpy(pszText, client->GetUploadStateDisplayString(), cchTextMax);
-        break;
+        case 1:
+            _tcsncpy(pszText, client->GetUploadStateDisplayString(), cchTextMax);
+            break;
 
-    case 2:
-        _tcsncpy(pszText, client->credits != NULL ? CastItoXBytes(client->credits->GetUploadedTotal(), false, false) : L"", cchTextMax);
-        break;
+        case 2:
+            _tcsncpy(pszText, client->credits != NULL ? CastItoXBytes(client->credits->GetUploadedTotal(), false, false) : L"", cchTextMax);
+            break;
 
-    case 3:
-        _tcsncpy(pszText, client->GetDownloadStateDisplayString(), cchTextMax);
-        break;
+        case 3:
+            _tcsncpy(pszText, client->GetDownloadStateDisplayString(), cchTextMax);
+            break;
 
-    case 4:
-        _tcsncpy(pszText, client->credits != NULL ? CastItoXBytes(client->credits->GetDownloadedTotal(), false, false) : L"", cchTextMax);
-        break;
+        case 4:
+            _tcsncpy(pszText, client->credits != NULL ? CastItoXBytes(client->credits->GetDownloadedTotal(), false, false) : L"", cchTextMax);
+            break;
 
-    case 5:
-    {
-        CString sBuffer = client->DbgGetFullClientSoftVer();
-        if (sBuffer.IsEmpty())
-            sBuffer = GetResString(IDS_UNKNOWN);
-        _tcsncpy(pszText, sBuffer, cchTextMax);
-        break;
-    }
+        case 5:
+        {
+            CString sBuffer = client->DbgGetFullClientSoftVer();
+            if (sBuffer.IsEmpty())
+                sBuffer = GetResString(IDS_UNKNOWN);
+            _tcsncpy(pszText, sBuffer, cchTextMax);
+            break;
+        }
 
-    case 6:
-        _tcsncpy(pszText, GetResString((client->socket && client->socket->IsConnected()) ? IDS_YES : IDS_NO), cchTextMax);
-        break;
+        case 6:
+            _tcsncpy(pszText, GetResString((client->socket && client->socket->IsConnected()) ? IDS_YES : IDS_NO), cchTextMax);
+            break;
 
-    case 7:
-        _tcsncpy(pszText, md4str(client->GetUserHash()), cchTextMax);
-        break;
+        case 7:
+            _tcsncpy(pszText, md4str(client->GetUserHash()), cchTextMax);
+            break;
     }
     pszText[cchTextMax - 1] = L'\0';
 }
@@ -320,16 +320,16 @@ void CClientListCtrl::OnLvnColumnClick(NMHDR *pNMHDR, LRESULT *pResult)
     {
         switch (pNMListView->iSubItem)
         {
-        case 1: // Upload State
-        case 2: // Uploaded Total
-        case 4: // Downloaded Total
-        case 5: // Client Software
-        case 6: // Connected
-            sortAscending = false;
-            break;
-        default:
-            sortAscending = true;
-            break;
+            case 1: // Upload State
+            case 2: // Uploaded Total
+            case 4: // Downloaded Total
+            case 5: // Client Software
+            case 6: // Connected
+                sortAscending = false;
+                break;
+            default:
+                sortAscending = true;
+                break;
         }
     }
     else
@@ -351,70 +351,70 @@ int CClientListCtrl::SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
     int iResult = 0;
     switch (iColumn)
     {
-    case 0:
-        if (item1->GetUserName() && item2->GetUserName())
-            iResult = CompareLocaleStringNoCase(item1->GetUserName(), item2->GetUserName());
-        else if (item1->GetUserName() == NULL)
-            iResult = 1; // place clients with no usernames at bottom
-        else if (item2->GetUserName() == NULL)
-            iResult = -1; // place clients with no usernames at bottom
-        break;
+        case 0:
+            if (item1->GetUserName() && item2->GetUserName())
+                iResult = CompareLocaleStringNoCase(item1->GetUserName(), item2->GetUserName());
+            else if (item1->GetUserName() == NULL)
+                iResult = 1; // place clients with no usernames at bottom
+            else if (item2->GetUserName() == NULL)
+                iResult = -1; // place clients with no usernames at bottom
+            break;
 
-    case 1:
-        iResult = item1->GetUploadState() - item2->GetUploadState();
-        break;
+        case 1:
+            iResult = item1->GetUploadState() - item2->GetUploadState();
+            break;
 
-    case 2:
-        if (item1->credits && item2->credits)
-            iResult = CompareUnsigned64(item1->credits->GetUploadedTotal(), item2->credits->GetUploadedTotal());
-        else if (item1->credits)
-            iResult = 1;
-        else
-            iResult = -1;
-        break;
-
-    case 3:
-        if (item1->GetDownloadState() == item2->GetDownloadState())
-        {
-            if (item1->IsRemoteQueueFull() && item2->IsRemoteQueueFull())
-                iResult = 0;
-            else if (item1->IsRemoteQueueFull())
+        case 2:
+            if (item1->credits && item2->credits)
+                iResult = CompareUnsigned64(item1->credits->GetUploadedTotal(), item2->credits->GetUploadedTotal());
+            else if (item1->credits)
                 iResult = 1;
-            else if (item2->IsRemoteQueueFull())
+            else
                 iResult = -1;
-        }
-        else
-            iResult = item1->GetDownloadState() - item2->GetDownloadState();
-        break;
+            break;
 
-    case 4:
-        if (item1->credits && item2->credits)
-            iResult = CompareUnsigned64(item1->credits->GetDownloadedTotal(), item2->credits->GetDownloadedTotal());
-        else if (item1->credits)
-            iResult = 1;
-        else
-            iResult = -1;
-        break;
+        case 3:
+            if (item1->GetDownloadState() == item2->GetDownloadState())
+            {
+                if (item1->IsRemoteQueueFull() && item2->IsRemoteQueueFull())
+                    iResult = 0;
+                else if (item1->IsRemoteQueueFull())
+                    iResult = 1;
+                else if (item2->IsRemoteQueueFull())
+                    iResult = -1;
+            }
+            else
+                iResult = item1->GetDownloadState() - item2->GetDownloadState();
+            break;
 
-    case 5:
-        //Proper sorting ;)
-        iResult = item1->GetClientSoft() - item2->GetClientSoft();
-        if (iResult == 0)
-            iResult = CompareLocaleStringNoCase(item1->DbgGetFullClientSoftVer(), item2->DbgGetFullClientSoftVer());
-        break;
+        case 4:
+            if (item1->credits && item2->credits)
+                iResult = CompareUnsigned64(item1->credits->GetDownloadedTotal(), item2->credits->GetDownloadedTotal());
+            else if (item1->credits)
+                iResult = 1;
+            else
+                iResult = -1;
+            break;
 
-    case 6:
-        if (item1->socket && item2->socket)
-            iResult = item1->socket->IsConnected() - item2->socket->IsConnected();
-        else if (item1->socket)
-            iResult = 1;
-        else
-            iResult = -1;
-        break;
+        case 5:
+            //Proper sorting ;)
+            iResult = item1->GetClientSoft() - item2->GetClientSoft();
+            if (iResult == 0)
+                iResult = CompareLocaleStringNoCase(item1->DbgGetFullClientSoftVer(), item2->DbgGetFullClientSoftVer());
+            break;
 
-    case 7:
-        iResult = memcmp(item1->GetUserHash(), item2->GetUserHash(), 16);
-        break;
+        case 6:
+            if (item1->socket && item2->socket)
+                iResult = item1->socket->IsConnected() - item2->socket->IsConnected();
+            else if (item1->socket)
+                iResult = 1;
+            else
+                iResult = -1;
+            break;
+
+        case 7:
+            iResult = memcmp(item1->GetUserHash(), item2->GetUserHash(), 16);
+            break;
     }
 
     if (lParamSort >= 100)
@@ -480,9 +480,9 @@ BOOL CClientListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 
     switch (wParam)
     {
-    case MP_FIND:
-        OnFindStart();
-        return TRUE;
+        case MP_FIND:
+            OnFindStart();
+            return TRUE;
     }
 
     int iSel = GetNextItem(-1, LVIS_SELECTED | LVIS_FOCUSED);
@@ -491,59 +491,59 @@ BOOL CClientListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
         CUpDownClient* client = (CUpDownClient*)GetItemData(iSel);
         switch (wParam)
         {
-        case MP_SHOWLIST:
-            client->RequestSharedFileList();
-            break;
-        case MP_MESSAGE:
-            theApp.emuledlg->chatwnd->StartSession(client);
-            break;
-        case MP_ADDFRIEND:
-            if (theApp.friendlist->AddFriend(client))
-                Update(iSel);
-            break;
+            case MP_SHOWLIST:
+                client->RequestSharedFileList();
+                break;
+            case MP_MESSAGE:
+                theApp.emuledlg->chatwnd->StartSession(client);
+                break;
+            case MP_ADDFRIEND:
+                if (theApp.friendlist->AddFriend(client))
+                    Update(iSel);
+                break;
 //>>> Tux::FriendHandling
-        case MP_REMOVEFRIEND:
-            if (client && client->IsFriend())
-            {
-                theApp.friendlist->RemoveFriend(client->m_Friend);
-                Update(iSel);
-            }
-            break;
-        case MP_FRIENDSLOT:
-            if (client)
-            {
-                bool IsAlready;
-                IsAlready = client->GetFriendSlot();
-                theApp.friendlist->RemoveAllFriendSlots();
-                if (!IsAlready)
-                    client->SetFriendSlot(true);
-                Update(iSel);
-            }
-            break;
+            case MP_REMOVEFRIEND:
+                if (client && client->IsFriend())
+                {
+                    theApp.friendlist->RemoveFriend(client->m_Friend);
+                    Update(iSel);
+                }
+                break;
+            case MP_FRIENDSLOT:
+                if (client)
+                {
+                    bool IsAlready;
+                    IsAlready = client->GetFriendSlot();
+                    theApp.friendlist->RemoveAllFriendSlots();
+                    if (!IsAlready)
+                        client->SetFriendSlot(true);
+                    Update(iSel);
+                }
+                break;
 //<<< Tux::FriendHandling
-        case MP_UNBAN:
-            if (client->IsBanned())
+            case MP_UNBAN:
+                if (client->IsBanned())
+                {
+                    client->UnBan();
+                    Update(iSel);
+                }
+                break;
+            case MP_DETAIL:
+            case MPG_ALTENTER:
+            case IDA_ENTER:
             {
-                client->UnBan();
-                Update(iSel);
+                CClientDetailDialog dialog(client, this);
+                dialog.DoModal();
+                break;
             }
-            break;
-        case MP_DETAIL:
-        case MPG_ALTENTER:
-        case IDA_ENTER:
-        {
-            CClientDetailDialog dialog(client, this);
-            dialog.DoModal();
-            break;
-        }
-        case MP_BOOT:
-            if (client->GetKadPort() && client->GetKadVersion() > 1)
+            case MP_BOOT:
+                if (client->GetKadPort() && client->GetKadVersion() > 1)
 //>>> WiZaRd::IPv6 [Xanatos]
-				if(!client->GetIPv4().IsNull())
-					Kademlia::CKademlia::Bootstrap(client->GetIPv4().ToIPv4(), client->GetKadPort());
+                    if (!client->GetIPv4().IsNull())
+                        Kademlia::CKademlia::Bootstrap(client->GetIPv4().ToIPv4(), client->GetKadPort());
                 //Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
 //<<< WiZaRd::IPv6 [Xanatos]
-            break;
+                break;
         }
     }
     return true;

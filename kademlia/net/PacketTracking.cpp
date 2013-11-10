@@ -65,23 +65,23 @@ bool CPacketTracking::IsTrackedOutListRequestPacket(uint8 byOpcode) const
 {
     switch (byOpcode)
     {
-    case KADEMLIA2_BOOTSTRAP_REQ:
-    case KADEMLIA2_HELLO_REQ:
-    case KADEMLIA2_HELLO_RES:
-    case KADEMLIA2_REQ:
-    case KADEMLIA_SEARCH_NOTES_REQ:
-    case KADEMLIA2_SEARCH_NOTES_REQ:
-    case KADEMLIA_PUBLISH_REQ:
-    case KADEMLIA2_PUBLISH_KEY_REQ:
-    case KADEMLIA2_PUBLISH_SOURCE_REQ:
-    case KADEMLIA2_PUBLISH_NOTES_REQ:
-    case KADEMLIA_FINDBUDDY_REQ:
-    case KADEMLIA_CALLBACK_REQ:
-    case KADEMLIA2_PING:
-        return true;
-        break;
-    default:
-        return false;
+        case KADEMLIA2_BOOTSTRAP_REQ:
+        case KADEMLIA2_HELLO_REQ:
+        case KADEMLIA2_HELLO_RES:
+        case KADEMLIA2_REQ:
+        case KADEMLIA_SEARCH_NOTES_REQ:
+        case KADEMLIA2_SEARCH_NOTES_REQ:
+        case KADEMLIA_PUBLISH_REQ:
+        case KADEMLIA2_PUBLISH_KEY_REQ:
+        case KADEMLIA2_PUBLISH_SOURCE_REQ:
+        case KADEMLIA2_PUBLISH_NOTES_REQ:
+        case KADEMLIA_FINDBUDDY_REQ:
+        case KADEMLIA_CALLBACK_REQ:
+        case KADEMLIA2_PING:
+            return true;
+            break;
+        default:
+            return false;
     }
 
 }
@@ -117,50 +117,50 @@ bool CPacketTracking::InTrackListIsAllowedPacket(UINT uIP, uint8 byOpcode, bool 
     const byte byDbgOrgOpcode = byOpcode;
     switch (byOpcode)
     {
-    case KADEMLIA2_BOOTSTRAP_REQ:
-        iAllowedPacketsPerMinute = 2;
-        break;
-    case KADEMLIA2_HELLO_REQ:
-        iAllowedPacketsPerMinute = 3;
-        break;
-    case KADEMLIA2_REQ:
-        iAllowedPacketsPerMinute = 10;
-        break;
-    case KADEMLIA2_SEARCH_NOTES_REQ:
-        iAllowedPacketsPerMinute = 3;
-        break;
-    case KADEMLIA2_SEARCH_KEY_REQ:
-        iAllowedPacketsPerMinute = 3;
-        break;
-    case KADEMLIA2_SEARCH_SOURCE_REQ:
-        iAllowedPacketsPerMinute = 3;
-        break;
-    case KADEMLIA2_PUBLISH_KEY_REQ:
-        iAllowedPacketsPerMinute = 3;
-        break;
-    case KADEMLIA2_PUBLISH_SOURCE_REQ:
-        iAllowedPacketsPerMinute = 2;
-        break;
-    case KADEMLIA2_PUBLISH_NOTES_REQ:
-        iAllowedPacketsPerMinute = 2;
-        break;
-    case KADEMLIA_FIREWALLED2_REQ:
-        byOpcode = KADEMLIA_FIREWALLED_REQ;
-    case KADEMLIA_FIREWALLED_REQ:
-        iAllowedPacketsPerMinute = 2;
-        break;
-    case KADEMLIA_FINDBUDDY_REQ:
-        iAllowedPacketsPerMinute = 2;
-        break;
-    case KADEMLIA_CALLBACK_REQ:
-        iAllowedPacketsPerMinute = 1;
-        break;
-    case KADEMLIA2_PING:
-        iAllowedPacketsPerMinute = 2;
-        break;
-    default:
-        // not any request packets, so its a response packet - no further checks on this point
-        return true;
+        case KADEMLIA2_BOOTSTRAP_REQ:
+            iAllowedPacketsPerMinute = 2;
+            break;
+        case KADEMLIA2_HELLO_REQ:
+            iAllowedPacketsPerMinute = 3;
+            break;
+        case KADEMLIA2_REQ:
+            iAllowedPacketsPerMinute = 10;
+            break;
+        case KADEMLIA2_SEARCH_NOTES_REQ:
+            iAllowedPacketsPerMinute = 3;
+            break;
+        case KADEMLIA2_SEARCH_KEY_REQ:
+            iAllowedPacketsPerMinute = 3;
+            break;
+        case KADEMLIA2_SEARCH_SOURCE_REQ:
+            iAllowedPacketsPerMinute = 3;
+            break;
+        case KADEMLIA2_PUBLISH_KEY_REQ:
+            iAllowedPacketsPerMinute = 3;
+            break;
+        case KADEMLIA2_PUBLISH_SOURCE_REQ:
+            iAllowedPacketsPerMinute = 2;
+            break;
+        case KADEMLIA2_PUBLISH_NOTES_REQ:
+            iAllowedPacketsPerMinute = 2;
+            break;
+        case KADEMLIA_FIREWALLED2_REQ:
+            byOpcode = KADEMLIA_FIREWALLED_REQ;
+        case KADEMLIA_FIREWALLED_REQ:
+            iAllowedPacketsPerMinute = 2;
+            break;
+        case KADEMLIA_FINDBUDDY_REQ:
+            iAllowedPacketsPerMinute = 2;
+            break;
+        case KADEMLIA_CALLBACK_REQ:
+            iAllowedPacketsPerMinute = 1;
+            break;
+        case KADEMLIA2_PING:
+            iAllowedPacketsPerMinute = 2;
+            break;
+        default:
+            // not any request packets, so its a response packet - no further checks on this point
+            return true;
     }
     const UINT iSecondsPerPacket = 60 / iAllowedPacketsPerMinute;
     const UINT dwCurrentTick = ::GetTickCount();

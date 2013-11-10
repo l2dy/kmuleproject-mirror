@@ -110,14 +110,14 @@ CUpDownClient::CUpDownClient(CPartFile* in_reqfile, uint16 in_port, UINT in_user
 //>>> WiZaRd::IPv6 [Xanatos]
 CUpDownClient::CUpDownClient(CPartFile* in_reqfile, uint16 in_port, const CAddress& IP, UINT in_serverip, uint16 in_serverport)
 {
-	socket = NULL;
-	reqfile = in_reqfile;
-	Init();
-	m_nUserPort = in_port;
-	m_nUserIDHybrid = IP.ToIPv4();
-	m_nConnectIP = IP;
-	m_dwServerIP = in_serverip;
-	m_nServerPort = in_serverport;
+    socket = NULL;
+    reqfile = in_reqfile;
+    Init();
+    m_nUserPort = in_port;
+    m_nUserIDHybrid = IP.ToIPv4();
+    m_nConnectIP = IP;
+    m_dwServerIP = in_serverip;
+    m_nServerPort = in_serverport;
 }
 //<<< WiZaRd::IPv6 [Xanatos]
 
@@ -144,7 +144,7 @@ void CUpDownClient::Init()
     m_incompletepartVer = 0;
 //<<< WiZaRd::ICS [enkeyDEV]
 //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
-	m_byFileRequestState = 0;
+    m_byFileRequestState = 0;
 //<<< WiZaRd::Unsolicited PartStatus [Netfinity]
     m_abySeenPartStatus = NULL; //>>> WiZaRd::AntiHideOS [netfinity]
     m_nChatstate = MS_NONE;
@@ -227,17 +227,17 @@ void CUpDownClient::Init()
     m_nBuddyIP = 0;
     m_nBuddyPort = 0;
 //>>> WiZaRd::IPv6 [Xanatos]
-	_CIPAddress IP;
-	if (socket)
-	{
-		SOCKADDR_IN6 sockAddr = {0};
-		int nSockAddrLen = sizeof(sockAddr);
-		socket->GetPeerName((SOCKADDR*)&sockAddr, &nSockAddrLen);
-		IP.FromSA((SOCKADDR*)&sockAddr, nSockAddrLen);
-		//IP.Convert(CAddress::IPv4); // check if its a maped v4 address done in SetIP
-	}
-	SetIP(IP);
-	m_bOpenIPv6 = false;
+    _CIPAddress IP;
+    if (socket)
+    {
+        SOCKADDR_IN6 sockAddr = {0};
+        int nSockAddrLen = sizeof(sockAddr);
+        socket->GetPeerName((SOCKADDR*)&sockAddr, &nSockAddrLen);
+        IP.FromSA((SOCKADDR*)&sockAddr, nSockAddrLen);
+        //IP.Convert(CAddress::IPv4); // check if its a maped v4 address done in SetIP
+    }
+    SetIP(IP);
+    m_bOpenIPv6 = false;
     /*if (socket)
     {
         SOCKADDR_IN sockAddr = {0};
@@ -491,309 +491,309 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
         CTag temptag(data, true);
         switch (temptag.GetNameID())
         {
-        case CT_NAME:
-            if (temptag.IsStr())
-            {
-                free(m_pszUsername);
-                m_pszUsername = _tcsdup(temptag.GetStr());
-                if (bDbgInfo)
+            case CT_NAME:
+                if (temptag.IsStr())
                 {
-                    if (m_pszUsername)  //filter username for bad chars
+                    free(m_pszUsername);
+                    m_pszUsername = _tcsdup(temptag.GetStr());
+                    if (bDbgInfo)
                     {
-                        TCHAR* psz = m_pszUsername;
-                        while (*psz != L'\0')
+                        if (m_pszUsername)  //filter username for bad chars
                         {
-                            if (*psz == L'\n' || *psz == L'\r')
-                                *psz = L' ';
-                            psz++;
+                            TCHAR* psz = m_pszUsername;
+                            while (*psz != L'\0')
+                            {
+                                if (*psz == L'\n' || *psz == L'\r')
+                                    *psz = L' ';
+                                psz++;
+                            }
                         }
+                        m_strHelloInfo.AppendFormat(L"\n  Name='%s'", m_pszUsername);
                     }
-                    m_strHelloInfo.AppendFormat(L"\n  Name='%s'", m_pszUsername);
                 }
-            }
-            else if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
-            bNick = true; //>>> WiZaRd::ClientAnalyzer
-            break;
-
-        case CT_VERSION:
-            if (temptag.IsInt())
-            {
-                if (bDbgInfo)
-                    m_strHelloInfo.AppendFormat(L"\n  Version=%u", temptag.GetInt());
-                m_nClientVersion = temptag.GetInt();
-            }
-            else if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
-            break;
-
-        case CT_PORT:
-            if (temptag.IsInt())
-            {
-                if (bDbgInfo)
-                    m_strHelloInfo.AppendFormat(L"\n  Port=%u", temptag.GetInt());
-                nUserPort = (uint16)temptag.GetInt();
-            }
-            else if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
-            break;
-
-        case CT_MOD_VERSION:
-            if (temptag.IsStr())
-                m_strModVersion = temptag.GetStr();
-            else if (temptag.IsInt())
-                m_strModVersion.Format(L"ModID=%u", temptag.GetInt());
-            else
-                m_strModVersion = L"ModID=<Unknown>";
-            if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(L"\n  ModID=%s", m_strModVersion);
-            bMod = true; //>>> WiZaRd::ClientAnalyzer
-            break;
-
-        case CT_EMULE_UDPPORTS:
-            // 16 KAD Port
-            // 16 UDP Port
-            if (temptag.IsInt())
-            {
-                m_nKadPort = (uint16)(temptag.GetInt() >> 16);
-                m_nUDPPort = (uint16)temptag.GetInt();
-                if (bDbgInfo)
-                    m_strHelloInfo.AppendFormat(L"\n  KadPort=%u  UDPPort=%u", m_nKadPort, m_nUDPPort);
-                dwEmuleTags |= 1;
-                bWasUDPPortSent = true; //>>> WiZaRd::ClientAnalyzer //>>> zz_fly::Bad Shareaza detection
-            }
-            else if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
-            break;
-
-        case CT_EMULE_BUDDYUDP:
-            // 16 --Reserved for future use--
-            // 16 BUDDY Port
-            if (temptag.IsInt())
-            {
-                m_nBuddyPort = (uint16)temptag.GetInt();
-                if (bDbgInfo)
-                    m_strHelloInfo.AppendFormat(L"\n  BuddyPort=%u", m_nBuddyPort);
-            }
-            else if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
-            break;
-
-        case CT_EMULE_BUDDYIP:
-            // 32 BUDDY IP
-            if (temptag.IsInt())
-            {
-                m_nBuddyIP = temptag.GetInt();
-                if (bDbgInfo)
-                    m_strHelloInfo.AppendFormat(L"\n  BuddyIP=%s", ipstr(m_nBuddyIP));
-            }
-            else if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
-            break;
-
-//>>> WiZaRd::NatTraversal [Xanatos]
-        case CT_EMULE_BUDDYID:
-            if (temptag.IsHash())
-            {
-                SetBuddyID(temptag.GetHash());
-                if (bDbgInfo)
-                    m_strHelloInfo.AppendFormat(L"\n  BuddyID=%s", md4str(temptag.GetHash()));
-            }
-            else if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
-            break;
-//<<< WiZaRd::NatTraversal [Xanatos]
-
-        case CT_EMULE_MISCOPTIONS1:
-            //  3 AICH Version (0 = not supported)
-            //  1 Unicode
-            //  4 UDP version
-            //  4 Data compression version
-            //  4 Secure Ident
-            //  4 Source Exchange - deprecated
-            //  4 Ext. Requests
-            //  4 Comments
-            //	1 PeerChache supported
-            //	1 No 'View Shared Files' supported
-            //	1 MultiPacket - deprecated with FileIdentifiers/MultipacketExt2
-            //  1 Preview
-            if (temptag.IsInt())
-            {
-                m_fSupportsAICH			= (temptag.GetInt() >> 29) & 0x07;
-                m_bUnicodeSupport		= (temptag.GetInt() >> 28) & 0x01;
-                m_byUDPVer				= (uint8)((temptag.GetInt() >> 24) & 0x0f);
-                m_byDataCompVer			= (uint8)((temptag.GetInt() >> 20) & 0x0f);
-                m_bySupportSecIdent		= (uint8)((temptag.GetInt() >> 16) & 0x0f);
-                m_bySourceExchange1Ver	= (uint8)((temptag.GetInt() >> 12) & 0x0f);
-                m_byExtendedRequestsVer	= (uint8)((temptag.GetInt() >>  8) & 0x0f);
-                m_byAcceptCommentVer	= (uint8)((temptag.GetInt() >>  4) & 0x0f);
-                UINT m_fPeerCache		= (temptag.GetInt() >>  3) & 0x01;
-                m_fNoViewSharedFiles	= (temptag.GetInt() >>  2) & 0x01;
-                m_bMultiPacket			= (temptag.GetInt() >>  1) & 0x01;
-                m_fSupportsPreview		= (temptag.GetInt() >>  0) & 0x01;
-                dwEmuleTags |= 2;
-                if (bDbgInfo)
-                {
-                    m_strHelloInfo.AppendFormat(L"\n  PeerCache=%u  UDPVer=%u  DataComp=%u  SecIdent=%u  SrcExchg=%u"
-                                                L"  ExtReq=%u  Commnt=%u  Preview=%u  NoViewFiles=%u  Unicode=%u",
-                                                m_fPeerCache, m_byUDPVer, m_byDataCompVer, m_bySupportSecIdent, m_bySourceExchange1Ver,
-                                                m_byExtendedRequestsVer, m_byAcceptCommentVer, m_fSupportsPreview, m_fNoViewSharedFiles, m_bUnicodeSupport);
-                }
-//>>> WiZaRd::ClientAnalyzer
-//>>> zz_fly::Bad Shareaza detection
-                if (!bWasUDPPortSent)
-                    bIsBadShareaza = true;
-//<<< zz_fly::Bad Shareaza detection
-//<<< WiZaRd::ClientAnalyzer
-            }
-            else if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
-            break;
-
-        case CT_EMULE_MISCOPTIONS2:
-            //	18 Reserved
-            //   1 Supports new FileIdentifiers/MultipacketExt2
-            //   1 Direct UDP Callback supported and available
-            //	 1 Supports ChatCaptchas
-            //	 1 Supports SourceExachnge2 Packets, ignores SX1 Packet Version
-            //	 1 Requires CryptLayer
-            //	 1 Requests CryptLayer
-            //	 1 Supports CryptLayer
-            //	 1 Reserved (ModBit)
-            //   1 Ext Multipacket (Hash+Size instead of Hash) - deprecated with FileIdentifiers/MultipacketExt2
-            //   1 Large Files (includes support for 64bit tags)
-            //   4 Kad Version - will go up to version 15 only (may need to add another field at some point in the future)
-            if (temptag.IsInt())
-            {
-                m_fSupportsFileIdent	= (temptag.GetInt() >>  13) & 0x01;
-                m_fDirectUDPCallback	= (temptag.GetInt() >>  12) & 0x01;
-                m_fSupportsCaptcha	    = (temptag.GetInt() >>  11) & 0x01;
-                m_fSupportsSourceEx2	= (temptag.GetInt() >>  10) & 0x01;
-                m_fRequiresCryptLayer	= (temptag.GetInt() >>  9) & 0x01;
-                m_fRequestsCryptLayer	= (temptag.GetInt() >>  8) & 0x01;
-                m_fSupportsCryptLayer	= (temptag.GetInt() >>  7) & 0x01;
-//>>> WiZaRd::ModProt
-                // reserved 1
-                m_fSupportsModProt		= (temptag.GetInt() >>  6) & 0x01;
-//<<< WiZaRd::ModProt
-                m_fExtMultiPacket		= (temptag.GetInt() >>  5) & 0x01;
-                m_fSupportsLargeFiles   = (temptag.GetInt() >>  4) & 0x01;
-                m_byKadVersion			= (uint8)((temptag.GetInt() >>  0) & 0x0f);
-                dwEmuleTags |= 8;
-                if (bDbgInfo)
-//>>> WiZaRd::ModProt
-                    m_strHelloInfo.AppendFormat(L"\n  KadVersion=%u, LargeFiles=%u ExtMultiPacket=%u CryptLayerSupport=%u CryptLayerRequest=%u CryptLayerRequires=%u m_fSupportsSourceEx2=%u  SupportsCaptcha=%u DirectUDPCallback=%u m_fSupportsModProt=%u", m_byKadVersion, m_fSupportsLargeFiles, m_fExtMultiPacket, m_fSupportsCryptLayer, m_fRequestsCryptLayer, m_fRequiresCryptLayer, m_fSupportsSourceEx2, m_fSupportsCaptcha, m_fDirectUDPCallback, m_fSupportsModProt);
-                //m_strHelloInfo.AppendFormat(L"\n  KadVersion=%u, LargeFiles=%u ExtMultiPacket=%u CryptLayerSupport=%u CryptLayerRequest=%u CryptLayerRequires=%u SupportsSourceEx2=%u SupportsCaptcha=%u DirectUDPCallback=%u", m_byKadVersion, m_fSupportsLargeFiles, m_fExtMultiPacket, m_fSupportsCryptLayer, m_fRequestsCryptLayer, m_fRequiresCryptLayer, m_fSupportsSourceEx2, m_fSupportsCaptcha, m_fDirectUDPCallback);
-//<<< WiZaRd::ModProt
-                m_fRequestsCryptLayer &= m_fSupportsCryptLayer;
-                m_fRequiresCryptLayer &= m_fRequestsCryptLayer;
-//>>> WiZaRd::ClientAnalyzer
-//>>> zz_fly::Bad Shareaza detection
-                if (!bWasUDPPortSent)
-                    bIsBadShareaza = true;
-//<<< zz_fly::Bad Shareaza detection
-//<<< WiZaRd::ClientAnalyzer
-            }
-            else if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
-            break;
-
-        case CT_EMULE_VERSION:
-            //  8 Compatible Client ID
-            //  7 Mjr Version (Doesn't really matter..)
-            //  7 Min Version (Only need 0-99)
-            //  3 Upd Version (Only need 0-5)
-            //  7 Bld Version (Only need 0-99) -- currently not used
-            if (temptag.IsInt())
-            {
-                m_byCompatibleClient = (uint8)((temptag.GetInt() >> 24));
-                m_uiRealVersion = temptag.GetInt(); //>>> WiZaRd::ClientAnalyzer
-                m_nClientVersion = temptag.GetInt() & 0x00ffffff;
-                m_byEmuleVersion = 0x99;
-                m_fSharedDirectories = 1;
-                dwEmuleTags |= 4;
-                if (bDbgInfo)
-                    m_strHelloInfo.AppendFormat(L"\n  ClientVer=%u.%u.%u.%u  Comptbl=%u", (m_nClientVersion >> 17) & 0x7f, (m_nClientVersion >> 10) & 0x7f, (m_nClientVersion >> 7) & 0x07, m_nClientVersion & 0x7f, m_byCompatibleClient);
-            }
-            else if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
-            break;
-
-//>>> WiZaRd::ICS [enkeyDEV]
-        case ET_INCOMPLETEPARTS:
-            if (temptag.IsInt())
-            {
-                m_incompletepartVer = (uint8)temptag.GetInt();
-                if (bDbgInfo)
-                    m_strHelloInfo.AppendFormat(L"\n  IncVer=%u", m_incompletepartVer);
-            }
-            break;
-            //flow over
-//<<< WiZaRd::ICS [enkeyDEV]
-//>>> WiZaRd::IPv6 [Xanatos]
-		case CT_NEOMULE_YOUR_IP:
-			if(temptag.IsInt())
-			{
-				CAddress UserIPv4(_ntohl(temptag.GetInt()));
-				// IPv6-TODO: do something with it
-				if (bDbgInfo)
-					m_strHelloInfo.AppendFormat(L"\n  YourIPv4=%s", ipstr(UserIPv4));
-			}
-			else if(temptag.IsHash())
-			{
-				CAddress UserIPv6(temptag.GetHash());
-				// IPv6-TODO: do something with it
-				if (bDbgInfo)
-					m_strHelloInfo.AppendFormat(L"\n  YourIPv6=%s", ipstr(UserIPv6));
-			}
-			else if (bDbgInfo)
-				m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
-			break;
-		case CT_NEOMULE_IP_V6:
-			if(temptag.IsHash())
-			{
-				SetIPv6(CAddress(temptag.GetHash()));
-				if (bDbgInfo)
-					m_strHelloInfo.AppendFormat(L"\n  IPv6=%s", ipstr(m_UserIPv6));
-			}
-			else if (bDbgInfo)
-				m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
-			break;
-//<<< WiZaRd::IPv6 [Xanatos]
-//>>> WiZaRd::ModProt
-		case CT_NEOMULE_MISCOPTIONS:
-			if (temptag.IsInt()) 
-			{
-				m_fSupportsIPv6			= (temptag.GetInt() >>  2) & 0x01; //>>> WiZaRd::IPv6 [Xanatos]
-				m_fSupportsNatTraversal	= (temptag.GetInt() >>  1) & 0x01; //>>> WiZaRd::NatTraversal [Xanatos]
-				m_fSupportsExtendedXS	= (temptag.GetInt() >>  0) & 0x01; //>>> WiZaRd::ExtendedXS [Xanatos]
-#if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
-				if (bDbgInfo)
-					m_strHelloInfo.AppendFormat(L"\n  IPv6=%u  NatTraveral=%u  ExtendedXS=%u", m_fSupportsIPv6, m_fSupportsNatTraversal, m_fSupportsExtendedXS);
-#endif
-			}
-#if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
-			else if (bDbgInfo)
-				m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
-#endif
-			break;
-//<<< WiZaRd::ModProt
-
-        default:
-            // Since eDonkeyHybrid 1.3 is no longer sending the additional Int32 at the end of the Hello packet,
-            // we use the "pr=1" tag to determine them.
-            if (temptag.GetName() && temptag.GetName()[0]=='p' && temptag.GetName()[1]=='r')
-            {
-//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-                if (temptag.IsInt())
-                    m_nProtocolRevision = temptag.GetInt();
                 else if (bDbgInfo)
                     m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+                bNick = true; //>>> WiZaRd::ClientAnalyzer
+                break;
+
+            case CT_VERSION:
+                if (temptag.IsInt())
+                {
+                    if (bDbgInfo)
+                        m_strHelloInfo.AppendFormat(L"\n  Version=%u", temptag.GetInt());
+                    m_nClientVersion = temptag.GetInt();
+                }
+                else if (bDbgInfo)
+                    m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+                break;
+
+            case CT_PORT:
+                if (temptag.IsInt())
+                {
+                    if (bDbgInfo)
+                        m_strHelloInfo.AppendFormat(L"\n  Port=%u", temptag.GetInt());
+                    nUserPort = (uint16)temptag.GetInt();
+                }
+                else if (bDbgInfo)
+                    m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+                break;
+
+            case CT_MOD_VERSION:
+                if (temptag.IsStr())
+                    m_strModVersion = temptag.GetStr();
+                else if (temptag.IsInt())
+                    m_strModVersion.Format(L"ModID=%u", temptag.GetInt());
+                else
+                    m_strModVersion = L"ModID=<Unknown>";
+                if (bDbgInfo)
+                    m_strHelloInfo.AppendFormat(L"\n  ModID=%s", m_strModVersion);
+                bMod = true; //>>> WiZaRd::ClientAnalyzer
+                break;
+
+            case CT_EMULE_UDPPORTS:
+                // 16 KAD Port
+                // 16 UDP Port
+                if (temptag.IsInt())
+                {
+                    m_nKadPort = (uint16)(temptag.GetInt() >> 16);
+                    m_nUDPPort = (uint16)temptag.GetInt();
+                    if (bDbgInfo)
+                        m_strHelloInfo.AppendFormat(L"\n  KadPort=%u  UDPPort=%u", m_nKadPort, m_nUDPPort);
+                    dwEmuleTags |= 1;
+                    bWasUDPPortSent = true; //>>> WiZaRd::ClientAnalyzer //>>> zz_fly::Bad Shareaza detection
+                }
+                else if (bDbgInfo)
+                    m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+                break;
+
+            case CT_EMULE_BUDDYUDP:
+                // 16 --Reserved for future use--
+                // 16 BUDDY Port
+                if (temptag.IsInt())
+                {
+                    m_nBuddyPort = (uint16)temptag.GetInt();
+                    if (bDbgInfo)
+                        m_strHelloInfo.AppendFormat(L"\n  BuddyPort=%u", m_nBuddyPort);
+                }
+                else if (bDbgInfo)
+                    m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+                break;
+
+            case CT_EMULE_BUDDYIP:
+                // 32 BUDDY IP
+                if (temptag.IsInt())
+                {
+                    m_nBuddyIP = temptag.GetInt();
+                    if (bDbgInfo)
+                        m_strHelloInfo.AppendFormat(L"\n  BuddyIP=%s", ipstr(m_nBuddyIP));
+                }
+                else if (bDbgInfo)
+                    m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+                break;
+
+//>>> WiZaRd::NatTraversal [Xanatos]
+            case CT_EMULE_BUDDYID:
+                if (temptag.IsHash())
+                {
+                    SetBuddyID(temptag.GetHash());
+                    if (bDbgInfo)
+                        m_strHelloInfo.AppendFormat(L"\n  BuddyID=%s", md4str(temptag.GetHash()));
+                }
+                else if (bDbgInfo)
+                    m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+                break;
+//<<< WiZaRd::NatTraversal [Xanatos]
+
+            case CT_EMULE_MISCOPTIONS1:
+                //  3 AICH Version (0 = not supported)
+                //  1 Unicode
+                //  4 UDP version
+                //  4 Data compression version
+                //  4 Secure Ident
+                //  4 Source Exchange - deprecated
+                //  4 Ext. Requests
+                //  4 Comments
+                //	1 PeerChache supported
+                //	1 No 'View Shared Files' supported
+                //	1 MultiPacket - deprecated with FileIdentifiers/MultipacketExt2
+                //  1 Preview
+                if (temptag.IsInt())
+                {
+                    m_fSupportsAICH			= (temptag.GetInt() >> 29) & 0x07;
+                    m_bUnicodeSupport		= (temptag.GetInt() >> 28) & 0x01;
+                    m_byUDPVer				= (uint8)((temptag.GetInt() >> 24) & 0x0f);
+                    m_byDataCompVer			= (uint8)((temptag.GetInt() >> 20) & 0x0f);
+                    m_bySupportSecIdent		= (uint8)((temptag.GetInt() >> 16) & 0x0f);
+                    m_bySourceExchange1Ver	= (uint8)((temptag.GetInt() >> 12) & 0x0f);
+                    m_byExtendedRequestsVer	= (uint8)((temptag.GetInt() >>  8) & 0x0f);
+                    m_byAcceptCommentVer	= (uint8)((temptag.GetInt() >>  4) & 0x0f);
+                    UINT m_fPeerCache		= (temptag.GetInt() >>  3) & 0x01;
+                    m_fNoViewSharedFiles	= (temptag.GetInt() >>  2) & 0x01;
+                    m_bMultiPacket			= (temptag.GetInt() >>  1) & 0x01;
+                    m_fSupportsPreview		= (temptag.GetInt() >>  0) & 0x01;
+                    dwEmuleTags |= 2;
+                    if (bDbgInfo)
+                    {
+                        m_strHelloInfo.AppendFormat(L"\n  PeerCache=%u  UDPVer=%u  DataComp=%u  SecIdent=%u  SrcExchg=%u"
+                                                    L"  ExtReq=%u  Commnt=%u  Preview=%u  NoViewFiles=%u  Unicode=%u",
+                                                    m_fPeerCache, m_byUDPVer, m_byDataCompVer, m_bySupportSecIdent, m_bySourceExchange1Ver,
+                                                    m_byExtendedRequestsVer, m_byAcceptCommentVer, m_fSupportsPreview, m_fNoViewSharedFiles, m_bUnicodeSupport);
+                    }
+//>>> WiZaRd::ClientAnalyzer
+//>>> zz_fly::Bad Shareaza detection
+                    if (!bWasUDPPortSent)
+                        bIsBadShareaza = true;
+//<<< zz_fly::Bad Shareaza detection
+//<<< WiZaRd::ClientAnalyzer
+                }
+                else if (bDbgInfo)
+                    m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+                break;
+
+            case CT_EMULE_MISCOPTIONS2:
+                //	18 Reserved
+                //   1 Supports new FileIdentifiers/MultipacketExt2
+                //   1 Direct UDP Callback supported and available
+                //	 1 Supports ChatCaptchas
+                //	 1 Supports SourceExachnge2 Packets, ignores SX1 Packet Version
+                //	 1 Requires CryptLayer
+                //	 1 Requests CryptLayer
+                //	 1 Supports CryptLayer
+                //	 1 Reserved (ModBit)
+                //   1 Ext Multipacket (Hash+Size instead of Hash) - deprecated with FileIdentifiers/MultipacketExt2
+                //   1 Large Files (includes support for 64bit tags)
+                //   4 Kad Version - will go up to version 15 only (may need to add another field at some point in the future)
+                if (temptag.IsInt())
+                {
+                    m_fSupportsFileIdent	= (temptag.GetInt() >>  13) & 0x01;
+                    m_fDirectUDPCallback	= (temptag.GetInt() >>  12) & 0x01;
+                    m_fSupportsCaptcha	    = (temptag.GetInt() >>  11) & 0x01;
+                    m_fSupportsSourceEx2	= (temptag.GetInt() >>  10) & 0x01;
+                    m_fRequiresCryptLayer	= (temptag.GetInt() >>  9) & 0x01;
+                    m_fRequestsCryptLayer	= (temptag.GetInt() >>  8) & 0x01;
+                    m_fSupportsCryptLayer	= (temptag.GetInt() >>  7) & 0x01;
+//>>> WiZaRd::ModProt
+                    // reserved 1
+                    m_fSupportsModProt		= (temptag.GetInt() >>  6) & 0x01;
+//<<< WiZaRd::ModProt
+                    m_fExtMultiPacket		= (temptag.GetInt() >>  5) & 0x01;
+                    m_fSupportsLargeFiles   = (temptag.GetInt() >>  4) & 0x01;
+                    m_byKadVersion			= (uint8)((temptag.GetInt() >>  0) & 0x0f);
+                    dwEmuleTags |= 8;
+                    if (bDbgInfo)
+//>>> WiZaRd::ModProt
+                        m_strHelloInfo.AppendFormat(L"\n  KadVersion=%u, LargeFiles=%u ExtMultiPacket=%u CryptLayerSupport=%u CryptLayerRequest=%u CryptLayerRequires=%u m_fSupportsSourceEx2=%u  SupportsCaptcha=%u DirectUDPCallback=%u m_fSupportsModProt=%u", m_byKadVersion, m_fSupportsLargeFiles, m_fExtMultiPacket, m_fSupportsCryptLayer, m_fRequestsCryptLayer, m_fRequiresCryptLayer, m_fSupportsSourceEx2, m_fSupportsCaptcha, m_fDirectUDPCallback, m_fSupportsModProt);
+                    //m_strHelloInfo.AppendFormat(L"\n  KadVersion=%u, LargeFiles=%u ExtMultiPacket=%u CryptLayerSupport=%u CryptLayerRequest=%u CryptLayerRequires=%u SupportsSourceEx2=%u SupportsCaptcha=%u DirectUDPCallback=%u", m_byKadVersion, m_fSupportsLargeFiles, m_fExtMultiPacket, m_fSupportsCryptLayer, m_fRequestsCryptLayer, m_fRequiresCryptLayer, m_fSupportsSourceEx2, m_fSupportsCaptcha, m_fDirectUDPCallback);
+//<<< WiZaRd::ModProt
+                    m_fRequestsCryptLayer &= m_fSupportsCryptLayer;
+                    m_fRequiresCryptLayer &= m_fRequestsCryptLayer;
+//>>> WiZaRd::ClientAnalyzer
+//>>> zz_fly::Bad Shareaza detection
+                    if (!bWasUDPPortSent)
+                        bIsBadShareaza = true;
+//<<< zz_fly::Bad Shareaza detection
+//<<< WiZaRd::ClientAnalyzer
+                }
+                else if (bDbgInfo)
+                    m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+                break;
+
+            case CT_EMULE_VERSION:
+                //  8 Compatible Client ID
+                //  7 Mjr Version (Doesn't really matter..)
+                //  7 Min Version (Only need 0-99)
+                //  3 Upd Version (Only need 0-5)
+                //  7 Bld Version (Only need 0-99) -- currently not used
+                if (temptag.IsInt())
+                {
+                    m_byCompatibleClient = (uint8)((temptag.GetInt() >> 24));
+                    m_uiRealVersion = temptag.GetInt(); //>>> WiZaRd::ClientAnalyzer
+                    m_nClientVersion = temptag.GetInt() & 0x00ffffff;
+                    m_byEmuleVersion = 0x99;
+                    m_fSharedDirectories = 1;
+                    dwEmuleTags |= 4;
+                    if (bDbgInfo)
+                        m_strHelloInfo.AppendFormat(L"\n  ClientVer=%u.%u.%u.%u  Comptbl=%u", (m_nClientVersion >> 17) & 0x7f, (m_nClientVersion >> 10) & 0x7f, (m_nClientVersion >> 7) & 0x07, m_nClientVersion & 0x7f, m_byCompatibleClient);
+                }
+                else if (bDbgInfo)
+                    m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+                break;
+
+//>>> WiZaRd::ICS [enkeyDEV]
+            case ET_INCOMPLETEPARTS:
+                if (temptag.IsInt())
+                {
+                    m_incompletepartVer = (uint8)temptag.GetInt();
+                    if (bDbgInfo)
+                        m_strHelloInfo.AppendFormat(L"\n  IncVer=%u", m_incompletepartVer);
+                }
+                break;
+                //flow over
+//<<< WiZaRd::ICS [enkeyDEV]
+//>>> WiZaRd::IPv6 [Xanatos]
+            case CT_NEOMULE_YOUR_IP:
+                if (temptag.IsInt())
+                {
+                    CAddress UserIPv4(_ntohl(temptag.GetInt()));
+                    // IPv6-TODO: do something with it
+                    if (bDbgInfo)
+                        m_strHelloInfo.AppendFormat(L"\n  YourIPv4=%s", ipstr(UserIPv4));
+                }
+                else if (temptag.IsHash())
+                {
+                    CAddress UserIPv6(temptag.GetHash());
+                    // IPv6-TODO: do something with it
+                    if (bDbgInfo)
+                        m_strHelloInfo.AppendFormat(L"\n  YourIPv6=%s", ipstr(UserIPv6));
+                }
+                else if (bDbgInfo)
+                    m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+                break;
+            case CT_NEOMULE_IP_V6:
+                if (temptag.IsHash())
+                {
+                    SetIPv6(CAddress(temptag.GetHash()));
+                    if (bDbgInfo)
+                        m_strHelloInfo.AppendFormat(L"\n  IPv6=%s", ipstr(m_UserIPv6));
+                }
+                else if (bDbgInfo)
+                    m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+                break;
+//<<< WiZaRd::IPv6 [Xanatos]
+//>>> WiZaRd::ModProt
+            case CT_NEOMULE_MISCOPTIONS:
+                if (temptag.IsInt())
+                {
+                    m_fSupportsIPv6			= (temptag.GetInt() >>  2) & 0x01; //>>> WiZaRd::IPv6 [Xanatos]
+                    m_fSupportsNatTraversal	= (temptag.GetInt() >>  1) & 0x01; //>>> WiZaRd::NatTraversal [Xanatos]
+                    m_fSupportsExtendedXS	= (temptag.GetInt() >>  0) & 0x01; //>>> WiZaRd::ExtendedXS [Xanatos]
+#if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
+                    if (bDbgInfo)
+                        m_strHelloInfo.AppendFormat(L"\n  IPv6=%u  NatTraveral=%u  ExtendedXS=%u", m_fSupportsIPv6, m_fSupportsNatTraversal, m_fSupportsExtendedXS);
+#endif
+                }
+#if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
+                else if (bDbgInfo)
+                    m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+#endif
+                break;
+//<<< WiZaRd::ModProt
+
+            default:
+                // Since eDonkeyHybrid 1.3 is no longer sending the additional Int32 at the end of the Hello packet,
+                // we use the "pr=1" tag to determine them.
+                if (temptag.GetName() && temptag.GetName()[0]=='p' && temptag.GetName()[1]=='r')
+                {
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+                    if (temptag.IsInt())
+                        m_nProtocolRevision = temptag.GetInt();
+                    else if (bDbgInfo)
+                        m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
-                bPrTag = true;
-            }
-            if (bDbgInfo)
-                m_strHelloInfo.AppendFormat(L"\n  ***UnkTag=%s", temptag.GetFullInfo());
+                    bPrTag = true;
+                }
+                if (bDbgInfo)
+                    m_strHelloInfo.AppendFormat(L"\n  ***UnkTag=%s", temptag.GetFullInfo());
         }
     }
     m_nUserPort = nUserPort;
@@ -842,13 +842,13 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
     }
 
 //>>> WiZaRd::IPv6 [Xanatos]
-	_CIPAddress IP;
-	SOCKADDR_IN6 sockAddr = {0};
-	int nSockAddrLen = sizeof(sockAddr);
-	socket->GetPeerName((SOCKADDR*)&sockAddr, &nSockAddrLen);
-	IP.FromSA((SOCKADDR*)&sockAddr, nSockAddrLen);
-	//IP.Convert(CAddress::IPv4); // check if its a maped v4 address done in SetIP
-	SetIP(IP);
+    _CIPAddress IP;
+    SOCKADDR_IN6 sockAddr = {0};
+    int nSockAddrLen = sizeof(sockAddr);
+    socket->GetPeerName((SOCKADDR*)&sockAddr, &nSockAddrLen);
+    IP.FromSA((SOCKADDR*)&sockAddr, nSockAddrLen);
+    //IP.Convert(CAddress::IPv4); // check if its a maped v4 address done in SetIP
+    SetIP(IP);
     /*SOCKADDR_IN sockAddr = {0};
     int nSockAddrLen = sizeof(sockAddr);
     socket->GetPeerName((SOCKADDR*)&sockAddr, &nSockAddrLen);
@@ -860,11 +860,11 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
     //(c)Kad users with a *.*.*.0 IPs will look like a lowID user they are actually a highID user.. They can be detected easily
     //because they will send a ID that is the same as their IP.
 //>>> WiZaRd::IPv6 [Xanatos]
-	if(!m_dwUserIP.IsNull())
-	{
-		if(!HasLowID() || m_nUserIDHybrid == 0 || m_nUserIDHybrid == _ntohl(m_dwUserIP.ToIPv4())) 
-			m_nUserIDHybrid = m_dwUserIP.ToIPv4();
-	}
+    if (!m_dwUserIP.IsNull())
+    {
+        if (!HasLowID() || m_nUserIDHybrid == 0 || m_nUserIDHybrid == _ntohl(m_dwUserIP.ToIPv4()))
+            m_nUserIDHybrid = m_dwUserIP.ToIPv4();
+    }
 //    if (!HasLowID() || m_nUserIDHybrid == 0 || m_nUserIDHybrid == m_dwUserIP)
 //        m_nUserIDHybrid = ntohl(m_dwUserIP);
 //<<< WiZaRd::IPv6 [Xanatos]
@@ -874,9 +874,9 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
     {
         credits = pFoundCredits;
 //>>> WiZaRd::IPv6 [Xanatos]
-		if (GetConnectIP().Type() == CAddress::IPv4 // IPv6-TODO: Add IPv6 ban list
-			&& !theApp.clientlist->ComparePriorUserhash(_ntohl(GetConnectIP().ToIPv4()), m_nUserPort, pFoundCredits))
-        //if (!theApp.clientlist->ComparePriorUserhash(m_dwUserIP, m_nUserPort, pFoundCredits))
+        if (GetConnectIP().Type() == CAddress::IPv4 // IPv6-TODO: Add IPv6 ban list
+                && !theApp.clientlist->ComparePriorUserhash(_ntohl(GetConnectIP().ToIPv4()), m_nUserPort, pFoundCredits))
+            //if (!theApp.clientlist->ComparePriorUserhash(m_dwUserIP, m_nUserPort, pFoundCredits))
 //<<< WiZaRd::IPv6 [Xanatos]
         {
             if (thePrefs.GetLogBannedClients())
@@ -1121,139 +1121,139 @@ void CUpDownClient::ProcessMuleInfoPacket(const uchar* pachPacket, UINT nSize)
         CTag temptag(&data, false);
         switch (temptag.GetNameID())
         {
-        case ET_COMPRESSION:
-            // Bits 31- 8: 0 - reserved
-            // Bits  7- 0: data compression version
-            if (temptag.IsInt())
-            {
-                m_byDataCompVer = (uint8)temptag.GetInt();
-                if (bDbgInfo)
-                    m_strMuleInfo.AppendFormat(L"\n  Compr=%u", (UINT)temptag.GetInt());
-            }
-            else if (bDbgInfo)
-                m_strMuleInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
-            break;
+            case ET_COMPRESSION:
+                // Bits 31- 8: 0 - reserved
+                // Bits  7- 0: data compression version
+                if (temptag.IsInt())
+                {
+                    m_byDataCompVer = (uint8)temptag.GetInt();
+                    if (bDbgInfo)
+                        m_strMuleInfo.AppendFormat(L"\n  Compr=%u", (UINT)temptag.GetInt());
+                }
+                else if (bDbgInfo)
+                    m_strMuleInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+                break;
 
-        case ET_UDPPORT:
-            // Bits 31-16: 0 - reserved
-            // Bits 15- 0: UDP port
-            if (temptag.IsInt())
-            {
-                m_nUDPPort = (uint16)temptag.GetInt();
-                if (bDbgInfo)
-                    m_strMuleInfo.AppendFormat(L"\n  UDPPort=%u", (UINT)temptag.GetInt());
-            }
-            else if (bDbgInfo)
-                m_strMuleInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
-            break;
+            case ET_UDPPORT:
+                // Bits 31-16: 0 - reserved
+                // Bits 15- 0: UDP port
+                if (temptag.IsInt())
+                {
+                    m_nUDPPort = (uint16)temptag.GetInt();
+                    if (bDbgInfo)
+                        m_strMuleInfo.AppendFormat(L"\n  UDPPort=%u", (UINT)temptag.GetInt());
+                }
+                else if (bDbgInfo)
+                    m_strMuleInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+                break;
 
-        case ET_UDPVER:
-            // Bits 31- 8: 0 - reserved
-            // Bits  7- 0: UDP protocol version
-            if (temptag.IsInt())
-            {
-                m_byUDPVer = (uint8)temptag.GetInt();
-                if (bDbgInfo)
-                    m_strMuleInfo.AppendFormat(L"\n  UDPVer=%u", (UINT)temptag.GetInt());
-            }
-            else if (bDbgInfo)
-                m_strMuleInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
-            break;
+            case ET_UDPVER:
+                // Bits 31- 8: 0 - reserved
+                // Bits  7- 0: UDP protocol version
+                if (temptag.IsInt())
+                {
+                    m_byUDPVer = (uint8)temptag.GetInt();
+                    if (bDbgInfo)
+                        m_strMuleInfo.AppendFormat(L"\n  UDPVer=%u", (UINT)temptag.GetInt());
+                }
+                else if (bDbgInfo)
+                    m_strMuleInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+                break;
 
-        case ET_SOURCEEXCHANGE:
-            // Bits 31- 8: 0 - reserved
-            // Bits  7- 0: source exchange protocol version
-            if (temptag.IsInt())
-            {
-                m_bySourceExchange1Ver = (uint8)temptag.GetInt();
-                if (bDbgInfo)
-                    m_strMuleInfo.AppendFormat(L"\n  SrcExch=%u", (UINT)temptag.GetInt());
-            }
-            else if (bDbgInfo)
-                m_strMuleInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
-            break;
+            case ET_SOURCEEXCHANGE:
+                // Bits 31- 8: 0 - reserved
+                // Bits  7- 0: source exchange protocol version
+                if (temptag.IsInt())
+                {
+                    m_bySourceExchange1Ver = (uint8)temptag.GetInt();
+                    if (bDbgInfo)
+                        m_strMuleInfo.AppendFormat(L"\n  SrcExch=%u", (UINT)temptag.GetInt());
+                }
+                else if (bDbgInfo)
+                    m_strMuleInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+                break;
 
-        case ET_COMMENTS:
-            // Bits 31- 8: 0 - reserved
-            // Bits  7- 0: comments version
-            if (temptag.IsInt())
-            {
-                m_byAcceptCommentVer = (uint8)temptag.GetInt();
-                if (bDbgInfo)
-                    m_strMuleInfo.AppendFormat(L"\n  Commnts=%u", (UINT)temptag.GetInt());
-            }
-            else if (bDbgInfo)
-                m_strMuleInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
-            break;
+            case ET_COMMENTS:
+                // Bits 31- 8: 0 - reserved
+                // Bits  7- 0: comments version
+                if (temptag.IsInt())
+                {
+                    m_byAcceptCommentVer = (uint8)temptag.GetInt();
+                    if (bDbgInfo)
+                        m_strMuleInfo.AppendFormat(L"\n  Commnts=%u", (UINT)temptag.GetInt());
+                }
+                else if (bDbgInfo)
+                    m_strMuleInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+                break;
 
-        case ET_EXTENDEDREQUEST:
-            // Bits 31- 8: 0 - reserved
-            // Bits  7- 0: extended requests version
-            if (temptag.IsInt())
-            {
-                m_byExtendedRequestsVer = (uint8)temptag.GetInt();
-                if (bDbgInfo)
-                    m_strMuleInfo.AppendFormat(L"\n  ExtReq=%u", (UINT)temptag.GetInt());
-            }
-            else if (bDbgInfo)
-                m_strMuleInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
-            break;
+            case ET_EXTENDEDREQUEST:
+                // Bits 31- 8: 0 - reserved
+                // Bits  7- 0: extended requests version
+                if (temptag.IsInt())
+                {
+                    m_byExtendedRequestsVer = (uint8)temptag.GetInt();
+                    if (bDbgInfo)
+                        m_strMuleInfo.AppendFormat(L"\n  ExtReq=%u", (UINT)temptag.GetInt());
+                }
+                else if (bDbgInfo)
+                    m_strMuleInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+                break;
 
-        case ET_COMPATIBLECLIENT:
-            // Bits 31- 8: 0 - reserved
-            // Bits  7- 0: compatible client ID
-            if (temptag.IsInt())
-            {
-                m_byCompatibleClient = (uint8)temptag.GetInt();
-                if (bDbgInfo)
-                    m_strMuleInfo.AppendFormat(L"\n  Comptbl=%u", (UINT)temptag.GetInt());
-            }
-            else if (bDbgInfo)
-                m_strMuleInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
-            break;
+            case ET_COMPATIBLECLIENT:
+                // Bits 31- 8: 0 - reserved
+                // Bits  7- 0: compatible client ID
+                if (temptag.IsInt())
+                {
+                    m_byCompatibleClient = (uint8)temptag.GetInt();
+                    if (bDbgInfo)
+                        m_strMuleInfo.AppendFormat(L"\n  Comptbl=%u", (UINT)temptag.GetInt());
+                }
+                else if (bDbgInfo)
+                    m_strMuleInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+                break;
 
-        case ET_FEATURES:
-            // Bits 31- 8: 0 - reserved
-            // Bit	    7: Preview
-            // Bit   6- 0: secure identification
-            if (temptag.IsInt())
-            {
-                m_bySupportSecIdent = (uint8)((temptag.GetInt()) & 3);
-                m_fSupportsPreview  = (temptag.GetInt() >> 7) & 1;
-                if (bDbgInfo)
-                    m_strMuleInfo.AppendFormat(L"\n  SecIdent=%u  Preview=%u", m_bySupportSecIdent, m_fSupportsPreview);
-            }
-            else if (bDbgInfo)
-                m_strMuleInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
-            break;
+            case ET_FEATURES:
+                // Bits 31- 8: 0 - reserved
+                // Bit	    7: Preview
+                // Bit   6- 0: secure identification
+                if (temptag.IsInt())
+                {
+                    m_bySupportSecIdent = (uint8)((temptag.GetInt()) & 3);
+                    m_fSupportsPreview  = (temptag.GetInt() >> 7) & 1;
+                    if (bDbgInfo)
+                        m_strMuleInfo.AppendFormat(L"\n  SecIdent=%u  Preview=%u", m_bySupportSecIdent, m_fSupportsPreview);
+                }
+                else if (bDbgInfo)
+                    m_strMuleInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
+                break;
 
-        case ET_MOD_VERSION:
-            if (temptag.IsStr())
-                m_strModVersion = temptag.GetStr();
-            else if (temptag.IsInt())
-                m_strModVersion.Format(L"ModID=%u", temptag.GetInt());
-            else
-                m_strModVersion = L"ModID=<Unknwon>";
-            if (bDbgInfo)
-                m_strMuleInfo.AppendFormat(L"\n  ModID=%s", m_strModVersion);
-            bMod = true; //>>> WiZaRd::ClientAnalyzer
-            break;
+            case ET_MOD_VERSION:
+                if (temptag.IsStr())
+                    m_strModVersion = temptag.GetStr();
+                else if (temptag.IsInt())
+                    m_strModVersion.Format(L"ModID=%u", temptag.GetInt());
+                else
+                    m_strModVersion = L"ModID=<Unknwon>";
+                if (bDbgInfo)
+                    m_strMuleInfo.AppendFormat(L"\n  ModID=%s", m_strModVersion);
+                bMod = true; //>>> WiZaRd::ClientAnalyzer
+                break;
 
 //>>> WiZaRd::ICS [enkeyDEV]
-        case ET_INCOMPLETEPARTS:
-            if (temptag.IsInt())
-            {
-                m_incompletepartVer = (uint8)temptag.GetInt();
-                if (bDbgInfo)
-                    m_strMuleInfo.AppendFormat(L"\n  IncVer=%u", m_incompletepartVer);
-            }
-            break;
-            //flow over
+            case ET_INCOMPLETEPARTS:
+                if (temptag.IsInt())
+                {
+                    m_incompletepartVer = (uint8)temptag.GetInt();
+                    if (bDbgInfo)
+                        m_strMuleInfo.AppendFormat(L"\n  IncVer=%u", m_incompletepartVer);
+                }
+                break;
+                //flow over
 //<<< WiZaRd::ICS [enkeyDEV]
 
-        default:
-            if (bDbgInfo)
-                m_strMuleInfo.AppendFormat(L"\n  ***UnkTag=%s", temptag.GetFullInfo());
+            default:
+                if (bDbgInfo)
+                    m_strMuleInfo.AppendFormat(L"\n  ***UnkTag=%s", temptag.GetFullInfo());
         }
     }
     if (m_byDataCompVer == 0)
@@ -1365,14 +1365,14 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
         ++tagcount;
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 //>>> WiZaRd::IPv6 [Xanatos]
-	++tagcount;
-	if(!theApp.GetPublicIPv6().IsNull())
-		tagcount += 1;
+    ++tagcount;
+    if (!theApp.GetPublicIPv6().IsNull())
+        tagcount += 1;
 //<<< WiZaRd::IPv6 [Xanatos]
 //>>> WiZaRd::ModProt
-	const bool bSendMiscHelloTag = !m_pszUsername || SupportsExtendedSourceExchange() || SupportsIPv6() || SupportsNatTraversal();
-	if(bSendMiscHelloTag)
-		++tagcount;
+    const bool bSendMiscHelloTag = !m_pszUsername || SupportsExtendedSourceExchange() || SupportsIPv6() || SupportsNatTraversal();
+    if (bSendMiscHelloTag)
+        ++tagcount;
 //<<< WiZaRd::ModProt
 
     data->WriteUInt32(tagcount);
@@ -1434,7 +1434,7 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
     if (theApp.clientlist->GetBuddy() && theApp.IsFirewalled())
     {
 //>>> WiZaRd::IPv6 [Xanatos]
-		CTag tagBuddyIP(CT_EMULE_BUDDYIP, _ntohl(theApp.clientlist->GetBuddy()->GetIP().ToIPv4())); 
+        CTag tagBuddyIP(CT_EMULE_BUDDYIP, _ntohl(theApp.clientlist->GetBuddy()->GetIP().ToIPv4()));
         //CTag tagBuddyIP(CT_EMULE_BUDDYIP, theApp.clientlist->GetBuddy()->GetIP());
 //<<< WiZaRd::IPv6 [Xanatos]
         tagBuddyIP.WriteTagToFile(data);
@@ -1556,33 +1556,33 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
     }
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 //>>> WiZaRd::IPv6 [Xanatos]
-	if(GetConnectIP().Type() == CAddress::IPv6)
-	{
-		CTag tagYourIP(CT_NEOMULE_YOUR_IP, GetConnectIP().Data());
-		tagYourIP.WriteTagToFile(data);
-	}
-	else
-	{
-		CTag tagYourIP(CT_NEOMULE_YOUR_IP, _ntohl(GetConnectIP().ToIPv4()));
-		tagYourIP.WriteTagToFile(data);
-	}
+    if (GetConnectIP().Type() == CAddress::IPv6)
+    {
+        CTag tagYourIP(CT_NEOMULE_YOUR_IP, GetConnectIP().Data());
+        tagYourIP.WriteTagToFile(data);
+    }
+    else
+    {
+        CTag tagYourIP(CT_NEOMULE_YOUR_IP, _ntohl(GetConnectIP().ToIPv4()));
+        tagYourIP.WriteTagToFile(data);
+    }
 
-	if(!theApp.GetPublicIPv6().IsNull())
-	{
-		CTag tagIPv6(CT_NEOMULE_IP_V6, theApp.GetPublicIPv6().Data()); 
-		tagIPv6.WriteTagToFile(data);
-	}
+    if (!theApp.GetPublicIPv6().IsNull())
+    {
+        CTag tagIPv6(CT_NEOMULE_IP_V6, theApp.GetPublicIPv6().Data());
+        tagIPv6.WriteTagToFile(data);
+    }
 //<<< WiZaRd::IPv6 [Xanatos]
-//>>> WiZaRd::ModProt	
-	const UINT uSupportsExtXS		= 1; //>>> WiZaRd::ExtendedXS [Xanatos]
-	const UINT uSupportsNatTraversal = 1; //>>> WiZaRd::NatTraversal [Xanatos]
-	const UINT uSupportsIPv6		= 1; //>>> WiZaRd::IPv6 [Xanatos]	
-	CTag tagMisOptionsN(CT_NEOMULE_MISCOPTIONS, 
-		((uSupportsIPv6			<<  2) |	//>>> WiZaRd::IPv6 [Xanatos]
-		(uSupportsNatTraversal	<<  1) |	//>>> WiZaRd::NatTraversal [Xanatos]
-		(uSupportsExtXS			<<  0)		//>>> WiZaRd::ExtendedXS [Xanatos]
-		));
-	tagMisOptionsN.WriteTagToFile(data);
+//>>> WiZaRd::ModProt
+    const UINT uSupportsExtXS		= 1; //>>> WiZaRd::ExtendedXS [Xanatos]
+    const UINT uSupportsNatTraversal = 1; //>>> WiZaRd::NatTraversal [Xanatos]
+    const UINT uSupportsIPv6		= 1; //>>> WiZaRd::IPv6 [Xanatos]
+    CTag tagMisOptionsN(CT_NEOMULE_MISCOPTIONS,
+                        ((uSupportsIPv6			<<  2) |	//>>> WiZaRd::IPv6 [Xanatos]
+                         (uSupportsNatTraversal	<<  1) |	//>>> WiZaRd::NatTraversal [Xanatos]
+                         (uSupportsExtXS			<<  0)		//>>> WiZaRd::ExtendedXS [Xanatos]
+                        ));
+    tagMisOptionsN.WriteTagToFile(data);
 //<<< WiZaRd::ModProt
 
     data->WriteUInt32(0);
@@ -1658,13 +1658,13 @@ bool CUpDownClient::Disconnected(LPCTSTR pszReason, bool bFromSocket)
 
     if (GetKadState() == KS_QUEUED_FWCHECK_UDP || GetKadState() == KS_CONNECTING_FWCHECK_UDP)
 //>>> WiZaRd::IPv6 [Xanatos]
-		Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, true, GetConnectIP().ToIPv4(), 0); // inform the tester that this test was canceled
-        //Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, true, ntohl(GetConnectIP()), 0); // inform the tester that this test was canceled
+        Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, true, GetConnectIP().ToIPv4(), 0); // inform the tester that this test was canceled
+    //Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, true, ntohl(GetConnectIP()), 0); // inform the tester that this test was canceled
 //<<< WiZaRd::IPv6 [Xanatos]
     else if (GetKadState() == KS_FWCHECK_UDP)
 //>>> WiZaRd::IPv6 [Xanatos]
-		Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, false, GetConnectIP().ToIPv4(), 0); // inform the tester that this test has failed
-        //Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, false, ntohl(GetConnectIP()), 0); // inform the tester that this test has failed
+        Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, false, GetConnectIP().ToIPv4(), 0); // inform the tester that this test has failed
+    //Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, false, ntohl(GetConnectIP()), 0); // inform the tester that this test has failed
 //<<< WiZaRd::IPv6 [Xanatos]
     else if (GetKadState() == KS_CONNECTED_BUDDY)
         DebugLogWarning(L"Buddy client disconnected - %s, %s", pszReason, DbgGetClientInfo());
@@ -1741,17 +1741,17 @@ bool CUpDownClient::Disconnected(LPCTSTR pszReason, bool bFromSocket)
     bool bDelete = true;
     switch (m_nUploadState)
     {
-    case US_ONUPLOADQUEUE:
-        bDelete = false;
-        break;
+        case US_ONUPLOADQUEUE:
+            bDelete = false;
+            break;
     }
     switch (m_nDownloadState)
     {
-    case DS_ONQUEUE:
-    case DS_TOOMANYCONNS:
-    case DS_NONEEDEDPARTS:
-    case DS_LOWTOLOWIP:
-        bDelete = false;
+        case DS_ONQUEUE:
+        case DS_TOOMANYCONNS:
+        case DS_NONEEDEDPARTS:
+        case DS_LOWTOLOWIP:
+            bDelete = false;
     }
 
     // Dead Source Handling
@@ -1812,7 +1812,7 @@ bool CUpDownClient::Disconnected(LPCTSTR pszReason, bool bFromSocket)
         SetSentCancelTransfer(0);
         m_bHelloAnswerPending = false;
         m_fQueueRankPending = 0;
-		m_byFileRequestState = 0; //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
+        m_byFileRequestState = 0; //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
         m_fFailedFileIdReqs = 0;
         m_fUnaskQueueRankRecv = 0;
         m_fSentOutOfPartReqs = 0;
@@ -1910,17 +1910,17 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
     }
 
 //>>> WiZaRd::IPv6 [Xanatos]
-	if(m_UserIPv4.IsNull())
-		m_UserIPv4 = CAddress(m_nUserIDHybrid);
+    if (m_UserIPv4.IsNull())
+        m_UserIPv4 = CAddress(m_nUserIDHybrid);
 
-	bool bUseIPv6 = m_bOpenIPv6 && !theApp.GetPublicIPv6().IsNull();
-	if(bUseIPv6)
-		UpdateIP(m_UserIPv6);
-	else
-		UpdateIP(m_UserIPv4);
+    bool bUseIPv6 = m_bOpenIPv6 && !theApp.GetPublicIPv6().IsNull();
+    if (bUseIPv6)
+        UpdateIP(m_UserIPv6);
+    else
+        UpdateIP(m_UserIPv4);
 
-	// IPv6-TODO: Add IPv6 ban list and IpFilter
-	UINT uClientIP = bUseIPv6 ? 0 : (!GetIP().IsNull() ? _ntohl(GetIP().ToIPv4()) : _ntohl(GetConnectIP().ToIPv4()));
+    // IPv6-TODO: Add IPv6 ban list and IpFilter
+    UINT uClientIP = bUseIPv6 ? 0 : (!GetIP().IsNull() ? _ntohl(GetIP().ToIPv4()) : _ntohl(GetConnectIP().ToIPv4()));
     //UINT uClientIP = (GetIP() != 0) ? GetIP() : GetConnectIP();
 //<<< WiZaRd::IPv6 [Xanatos]
     if (uClientIP == 0 && !HasLowID())
@@ -1956,59 +1956,59 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
     }
 
 //>>> WiZaRd::IPv6 [Xanatos]
-	if(!bUseIPv6) // Note: if an IPv6 is specified in the hello it means it is not firewalled, and if we are IPv6 enabled we use it
+    if (!bUseIPv6) // Note: if an IPv6 is specified in the hello it means it is not firewalled, and if we are IPv6 enabled we use it
 //<<< WiZaRd::IPv6 [Xanatos]
 //>>> WiZaRd::NatTraversal [Xanatos]
-    if (HasLowID() && !bUseUTP)
-        //if (HasLowID())
+        if (HasLowID() && !bUseUTP)
+            //if (HasLowID())
 //<<< WiZaRd::NatTraversal [Xanatos]
-    {
-        ASSERT(pClassSocket == NULL);
+        {
+            ASSERT(pClassSocket == NULL);
 //>>> WiZaRd::NatTraversal [Xanatos]
-        if (!theApp.CanDoCallback(this))
-            //if (!theApp.CanDoCallback()) // lowid2lowid check used for the whole function, don't remove
+            if (!theApp.CanDoCallback(this))
+                //if (!theApp.CanDoCallback()) // lowid2lowid check used for the whole function, don't remove
 //<<< WiZaRd::NatTraversal [Xanatos]
-        {
-            // We cannot reach this client, so we hard fail to connect, if this client should be kept,
-            // for example because we might want to wait a bit and hope we get a highid, this check has
-            // to be done before calling this function
-            if (Disconnected(L"LowID->LowID"))
             {
-                delete this;
-                return false;
+                // We cannot reach this client, so we hard fail to connect, if this client should be kept,
+                // for example because we might want to wait a bit and hope we get a highid, this check has
+                // to be done before calling this function
+                if (Disconnected(L"LowID->LowID"))
+                {
+                    delete this;
+                    return false;
+                }
+                return true;
             }
-            return true;
-        }
 
-        // are callbacks disallowed?
-        if (bNoCallbacks)
-        {
-            DebugLogError(L"TryToConnect: Would like to do callback on a no-callback client, %s", DbgGetClientInfo());
-            if (Disconnected(L"LowID: No Callback Option allowed"))
+            // are callbacks disallowed?
+            if (bNoCallbacks)
             {
-                delete this;
-                return false;
+                DebugLogError(L"TryToConnect: Would like to do callback on a no-callback client, %s", DbgGetClientInfo());
+                if (Disconnected(L"LowID: No Callback Option allowed"))
+                {
+                    delete this;
+                    return false;
+                }
+                return true;
             }
-            return true;
-        }
 
-        // Is any callback available?
+            // Is any callback available?
 //>>> WiZaRd::IPv6 [Xanatos]
-		if (!( (SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && !GetConnectIP().IsNull()) // Direct Callback
-        //if (!((SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && GetConnectIP() != 0)  // Direct Callback
+            if (!((SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && !GetConnectIP().IsNull())  // Direct Callback
+                    //if (!((SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && GetConnectIP() != 0)  // Direct Callback
 //<<< WiZaRd::IPv6 [Xanatos]
-                || (HasValidBuddyID() && Kademlia::CKademlia::IsConnected()) // Kad Callback
-             ))
-        {
-            // Nope
-            if (Disconnected(L"LowID: No Callback Option available"))
+                    || (HasValidBuddyID() && Kademlia::CKademlia::IsConnected()) // Kad Callback
+                 ))
             {
-                delete this;
-                return false;
+                // Nope
+                if (Disconnected(L"LowID: No Callback Option available"))
+                {
+                    delete this;
+                    return false;
+                }
+                return true;
             }
-            return true;
         }
-    }
 
     // Prechecks finished, now for the real connecting
     ////////////////////////////////////////////////////
@@ -2021,10 +2021,10 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
     // if direct callback is possible and we are firewalled use UTP
 //>>> WiZaRd::IPv6 [Xanatos]
     //bUseUTP = (SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && GetConnectIP() != 0) && theApp.IsFirewalled();
-	bUseUTP = (SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && !GetConnectIP().IsNull()) && theApp.IsFirewalled();
+    bUseUTP = (SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && !GetConnectIP().IsNull()) && theApp.IsFirewalled();
 //<<< WiZaRd::IPv6 [Xanatos]
     if (!HasLowID() || bUseUTP || bUseIPv6) //>>> WiZaRd::IPv6 [Xanatos]
-	//if (!HasLowID())
+        //if (!HasLowID())
 //<<< WiZaRd::NatTraversal [Xanatos]
     {
         m_nConnectingState = CCS_DIRECTTCP;
@@ -2049,8 +2049,8 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
     ////////////////////////////////////////////////////////////
     // 4) Direct Callback Connections
 //>>> WiZaRd::IPv6 [Xanatos]
-	else if (SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && !GetConnectIP().IsNull())
-    //else if (SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && GetConnectIP() != 0)
+    else if (SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && !GetConnectIP().IsNull())
+        //else if (SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && GetConnectIP() != 0)
 //<<< WiZaRd::IPv6 [Xanatos]
     {
         m_nConnectingState = CCS_DIRECTCALLBACK;
@@ -2114,7 +2114,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
                 theApp.downloadqueue->AddUDPFileReasks();
                 // FIXME: We dont know which kadversion the buddy has, so we need to send unencrypted
 //>>> WiZaRd::IPv6 [Xanatos]
-				theApp.clientudp->SendPacket(response, _CIPAddress(_ntohl(GetBuddyIP())), GetBuddyPort(), false, NULL, true, 0);
+                theApp.clientudp->SendPacket(response, _CIPAddress(_ntohl(GetBuddyIP())), GetBuddyPort(), false, NULL, true, 0);
                 //theApp.clientudp->SendPacket(response, GetBuddyIP(), GetBuddyPort(), false, NULL, true, 0);
 //<<< WiZaRd::IPv6 [Xanatos]
 
@@ -2134,7 +2134,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
                 theStats.AddUpDataOverheadKad(packet->size);
                 // FIXME: We dont know which kadversion the buddy has, so we need to send unencrypted
 //>>> WiZaRd::IPv6 [Xanatos]
-				theApp.clientudp->SendPacket(packet, _CIPAddress(_ntohl(GetBuddyIP())), GetBuddyPort(), false, NULL, true, 0);
+                theApp.clientudp->SendPacket(packet, _CIPAddress(_ntohl(GetBuddyIP())), GetBuddyPort(), false, NULL, true, 0);
                 //theApp.clientudp->SendPacket(packet, GetBuddyIP(), GetBuddyPort(), false, NULL, true, 0);
 //<<< WiZaRd::IPv6 [Xanatos]
                 SetDownloadState(DS_WAITCALLBACKKAD);
@@ -2217,21 +2217,21 @@ void CUpDownClient::Connect()
     //Try to always tell the socket to WaitForOnConnect before you call Connect.
     socket->WaitForOnConnect();
 //>>> WiZaRd::IPv6 [Xanatos]
-	SOCKADDR_IN6 sockAddr;
-	int nSockAddrLen = sizeof(sockAddr);
-	_CIPAddress IP = GetConnectIP();
-	IP.Convert(CAddress::IPv6); // the socket works with IPv6 adresses only
+    SOCKADDR_IN6 sockAddr;
+    int nSockAddrLen = sizeof(sockAddr);
+    _CIPAddress IP = GetConnectIP();
+    IP.Convert(CAddress::IPv6); // the socket works with IPv6 adresses only
     //SOCKADDR_IN sockAddr = {0};
     //sockAddr.sin_family = AF_INET;
-	//sockAddr.sin_addr.S_un.S_addr = GetConnectIP();
+    //sockAddr.sin_addr.S_un.S_addr = GetConnectIP();
 //>>> WiZaRd::NatTraversal [Xanatos]
     if (socket->HaveUtpLayer())
         //sockAddr.sin_port = htons(GetKadPort() ? GetKadPort() : GetUDPPort());
-		IP.ToSA((SOCKADDR*)&sockAddr, &nSockAddrLen, GetKadPort() ? GetKadPort() : GetUDPPort());
+        IP.ToSA((SOCKADDR*)&sockAddr, &nSockAddrLen, GetKadPort() ? GetKadPort() : GetUDPPort());
     else
 //<<< WiZaRd::NatTraversal [Xanatos]
         //sockAddr.sin_port = htons(GetUserPort());
-		IP.ToSA((SOCKADDR*)&sockAddr, &nSockAddrLen, GetUserPort());    
+        IP.ToSA((SOCKADDR*)&sockAddr, &nSockAddrLen, GetUserPort());
 //<<< WiZaRd::IPv6 [Xanatos]
     socket->Connect((SOCKADDR*)&sockAddr, sizeof sockAddr);
     SendHelloPacket();
@@ -2260,19 +2260,19 @@ void CUpDownClient::ConnectionEstablished()
 
     switch (GetKadState())
     {
-    case KS_CONNECTING_FWCHECK:
-        SetKadState(KS_CONNECTED_FWCHECK);
-        break;
-    case KS_CONNECTING_BUDDY:
-    case KS_INCOMING_BUDDY:
-        DEBUG_ONLY(DebugLog(L"Set KS_CONNECTED_BUDDY for client %s", DbgGetClientInfo()));
-        SetKadState(KS_CONNECTED_BUDDY);
-        break;
-    case KS_CONNECTING_FWCHECK_UDP:
-        SetKadState(KS_FWCHECK_UDP);
-        DEBUG_ONLY(DebugLog(L"Set KS_FWCHECK_UDP for client %s", DbgGetClientInfo()));
-        SendFirewallCheckUDPRequest();
-        break;
+        case KS_CONNECTING_FWCHECK:
+            SetKadState(KS_CONNECTED_FWCHECK);
+            break;
+        case KS_CONNECTING_BUDDY:
+        case KS_INCOMING_BUDDY:
+            DEBUG_ONLY(DebugLog(L"Set KS_CONNECTED_BUDDY for client %s", DbgGetClientInfo()));
+            SetKadState(KS_CONNECTED_BUDDY);
+            break;
+        case KS_CONNECTING_FWCHECK_UDP:
+            SetKadState(KS_FWCHECK_UDP);
+            DEBUG_ONLY(DebugLog(L"Set KS_FWCHECK_UDP for client %s", DbgGetClientInfo()));
+            SendFirewallCheckUDPRequest();
+            break;
     }
 
     if (GetChatState() == MS_CONNECTING || GetChatState() == MS_CHATTING)
@@ -2289,13 +2289,13 @@ void CUpDownClient::ConnectionEstablished()
 
     switch (GetDownloadState())
     {
-    case DS_CONNECTING:
-    case DS_WAITCALLBACK:
-    case DS_WAITCALLBACKKAD:
-        m_bReaskPending = false;
-        SetDownloadState(DS_CONNECTED);
-        SendFileRequest();
-        break;
+        case DS_CONNECTING:
+        case DS_WAITCALLBACK:
+        case DS_WAITCALLBACKKAD:
+            m_bReaskPending = false;
+            SetDownloadState(DS_CONNECTED);
+            SendFileRequest();
+            break;
     }
 
     if (m_bReaskPending)
@@ -2310,16 +2310,16 @@ void CUpDownClient::ConnectionEstablished()
 
     switch (GetUploadState())
     {
-    case US_CONNECTING:
-        if (theApp.uploadqueue->IsDownloading(this))
-        {
-            SetUploadState(US_UPLOADING);
-            if (thePrefs.GetDebugClientTCPLevel() > 0)
-                DebugSend("OP__AcceptUploadReq", this);
-            Packet* packet = new Packet(OP_ACCEPTUPLOADREQ,0);
-            theStats.AddUpDataOverheadFileRequest(packet->size);
-            SendPacket(packet,true);
-        }
+        case US_CONNECTING:
+            if (theApp.uploadqueue->IsDownloading(this))
+            {
+                SetUploadState(US_UPLOADING);
+                if (thePrefs.GetDebugClientTCPLevel() > 0)
+                    DebugSend("OP__AcceptUploadReq", this);
+                Packet* packet = new Packet(OP_ACCEPTUPLOADREQ,0);
+                theStats.AddUpDataOverheadFileRequest(packet->size);
+                SendPacket(packet,true);
+            }
     }
 
     if (m_iFileListRequested == 1)
@@ -2355,115 +2355,115 @@ void CUpDownClient::InitClientSoftwareVersion()
             CString pszSoftware;
             switch (m_byCompatibleClient)
             {
-            case SO_CDONKEY:
-                m_clientSoft = SO_CDONKEY;
-                pszSoftware = L"cDonkey";
-                break;
-            case SO_XMULE:
-                m_clientSoft = SO_XMULE;
-                pszSoftware = L"xMule";
-                break;
-            case SO_AMULE:
-                m_clientSoft = SO_AMULE;
-                pszSoftware = L"aMule";
-                break;
-            case SO_SHAREAZA:
+                case SO_CDONKEY:
+                    m_clientSoft = SO_CDONKEY;
+                    pszSoftware = L"cDonkey";
+                    break;
+                case SO_XMULE:
+                    m_clientSoft = SO_XMULE;
+                    pszSoftware = L"xMule";
+                    break;
+                case SO_AMULE:
+                    m_clientSoft = SO_AMULE;
+                    pszSoftware = L"aMule";
+                    break;
+                case SO_SHAREAZA:
 //>>> WiZaRd::ClientAnalyzer
 // Spike2 - Enhanced Client Recognition - START
-                // removed "case 40"... this is now integrated here
-            case SO_SHAREAZA2:
-            case SO_SHAREAZA3:
-            case SO_SHAREAZA4:
+                    // removed "case 40"... this is now integrated here
+                case SO_SHAREAZA2:
+                case SO_SHAREAZA3:
+                case SO_SHAREAZA4:
 // Spike2 - Enhanced Client Recognition - END
 //<<< WiZaRd::ClientAnalyzer
-                m_clientSoft = SO_SHAREAZA;
-                pszSoftware = L"Shareaza";
-                break;
-            case SO_LPHANT:
-                m_clientSoft = SO_LPHANT;
-                pszSoftware = L"lphant";
-                break;
+                    m_clientSoft = SO_SHAREAZA;
+                    pszSoftware = L"Shareaza";
+                    break;
+                case SO_LPHANT:
+                    m_clientSoft = SO_LPHANT;
+                    pszSoftware = L"lphant";
+                    break;
 //>>> WiZaRd::ClientAnalyzer
 // Spike2 - Enhanced Client Recognition - START
-            case SO_EMULEPLUS:
-                m_clientSoft = SO_EMULEPLUS;
-                pszSoftware = L"eMule Plus";
-                break;
-            case SO_HYDRANODE:
-                m_clientSoft = SO_HYDRANODE;
-                pszSoftware = L"Hydranode";
-                break;
-            case SO_TRUSTYFILES:
-                m_clientSoft = SO_TRUSTYFILES;
-                pszSoftware = L"TrustyFiles";
-                break;
-            case SO_EASYMULE2:
-                m_clientSoft = SO_EASYMULE2;
-                pszSoftware = L"EasyMule2";
-                break;
-            case SO_NEOLOADER:
-                m_clientSoft = SO_NEOLOADER;
-                pszSoftware = L"NeoLoader";
-                break;
+                case SO_EMULEPLUS:
+                    m_clientSoft = SO_EMULEPLUS;
+                    pszSoftware = L"eMule Plus";
+                    break;
+                case SO_HYDRANODE:
+                    m_clientSoft = SO_HYDRANODE;
+                    pszSoftware = L"Hydranode";
+                    break;
+                case SO_TRUSTYFILES:
+                    m_clientSoft = SO_TRUSTYFILES;
+                    pszSoftware = L"TrustyFiles";
+                    break;
+                case SO_EASYMULE2:
+                    m_clientSoft = SO_EASYMULE2;
+                    pszSoftware = L"EasyMule2";
+                    break;
+                case SO_NEOLOADER:
+                    m_clientSoft = SO_NEOLOADER;
+                    pszSoftware = L"NeoLoader";
+                    break;
 //>>> WiZaRd::kMule Version Ident
-                // not used, yet...
-            case SO_KMULE:
-                m_clientSoft = SO_KMULE;
-                pszSoftware = L"kMule";
-                break;
+                    // not used, yet...
+                case SO_KMULE:
+                    m_clientSoft = SO_KMULE;
+                    pszSoftware = L"kMule";
+                    break;
 //<<< WiZaRd::kMule Version Ident
 // Spike2 - Enhanced Client Recognition - END
 //<<< WiZaRd::ClientAnalyzer
-            default:
-                if (m_bIsML
-                        || m_byCompatibleClient == SO_MLDONKEY
+                default:
+                    if (m_bIsML
+                            || m_byCompatibleClient == SO_MLDONKEY
 //>>> WiZaRd::ClientAnalyzer // Spike2 - Enhanced Client Recognition
-                        || m_byCompatibleClient == SO_MLDONKEY2
-                        || m_byCompatibleClient == SO_MLDONKEY3)
+                            || m_byCompatibleClient == SO_MLDONKEY2
+                            || m_byCompatibleClient == SO_MLDONKEY3)
 //<<< WiZaRd::ClientAnalyzer // Spike2 - Enhanced Client Recognition
-                {
-                    m_clientSoft = SO_MLDONKEY;
-                    pszSoftware = L"MLdonkey";
-                }
-                else if (m_bIsHybrid
+                    {
+                        m_clientSoft = SO_MLDONKEY;
+                        pszSoftware = L"MLdonkey";
+                    }
+                    else if (m_bIsHybrid
 //>>> WiZaRd::ClientAnalyzer // Spike2 - Enhanced Client Recognition
-                         || m_byCompatibleClient == SO_EDONKEYHYBRID)
+                             || m_byCompatibleClient == SO_EDONKEYHYBRID)
 //<<< WiZaRd::ClientAnalyzer // Spike2 - Enhanced Client Recognition
-                {
-                    m_clientSoft = SO_EDONKEYHYBRID;
-                    pszSoftware = L"eDonkeyHybrid";
-                }
-                else if (m_byCompatibleClient != 0)
-                {
+                    {
+                        m_clientSoft = SO_EDONKEYHYBRID;
+                        pszSoftware = L"eDonkeyHybrid";
+                    }
+                    else if (m_byCompatibleClient != 0)
+                    {
 //>>> WiZaRd::ClientAnalyzer
 // Spike2 - Enhanced Client Recognition - START
 //WiZaRd: this is highly unreliable and thus I removed it
-                    // Recognize other Shareazas - just to be sure :)
-                    /*if (StrStrI(m_pszUsername, L"shareaza"))
-                    {
-                    	m_clientSoft = SO_SHAREAZA;
-                    	pszSoftware = L"Shareaza";
-                    }
-                    // Recognize all eMulePlus - just to be sure !
-                    else*/ if (StrStr(m_strModVersion, L"Plus 1"))
-                    {
-                        m_clientSoft = SO_EMULEPLUS;
-                        pszSoftware = L"eMule Plus";
-                    }
-                    else
+                        // Recognize other Shareazas - just to be sure :)
+                        /*if (StrStrI(m_pszUsername, L"shareaza"))
+                        {
+                        	m_clientSoft = SO_SHAREAZA;
+                        	pszSoftware = L"Shareaza";
+                        }
+                        // Recognize all eMulePlus - just to be sure !
+                        else*/ if (StrStr(m_strModVersion, L"Plus 1"))
+                        {
+                            m_clientSoft = SO_EMULEPLUS;
+                            pszSoftware = L"eMule Plus";
+                        }
+                        else
 // Spike2 - Enhanced Client Recognition - END
 //<<< WiZaRd::ClientAnalyzer
-                    {
-                        m_clientSoft = SO_XMULE; // means: 'eMule Compatible'
-                        pszSoftware = L"eMule Compat";
+                        {
+                            m_clientSoft = SO_XMULE; // means: 'eMule Compatible'
+                            pszSoftware = L"eMule Compat";
+                        }
                     }
-                }
-                else
-                {
-                    m_clientSoft = SO_EMULE;
-                    pszSoftware = L"eMule";
-                }
-                break;
+                    else
+                    {
+                        m_clientSoft = SO_EMULE;
+                        pszSoftware = L"eMule";
+                    }
+                    break;
             }
 
             if (m_byEmuleVersion == 0)
@@ -2770,7 +2770,7 @@ void CUpDownClient::SendSignaturePacket()
 
     uint8 byChaIPKind = 0;
 //>>> WiZaRd::IPv6 [Xanatos]
-	_CIPAddress ChallengeIP;
+    _CIPAddress ChallengeIP;
     //UINT ChallengeIP = 0;
 //<<< WiZaRd::IPv6 [Xanatos]
     if (bUseV2)
@@ -2954,15 +2954,15 @@ void CUpDownClient::ProcessSecIdentStatePacket(const uchar* pachPacket, UINT nSi
     }
     switch (pachPacket[0])
     {
-    case 0:
-        m_SecureIdentState = IS_UNAVAILABLE;
-        break;
-    case 1:
-        m_SecureIdentState = IS_SIGNATURENEEDED;
-        break;
-    case 2:
-        m_SecureIdentState = IS_KEYANDSIGNEEDED;
-        break;
+        case 0:
+            m_SecureIdentState = IS_UNAVAILABLE;
+            break;
+        case 1:
+            m_SecureIdentState = IS_SIGNATURENEEDED;
+            break;
+        case 2:
+            m_SecureIdentState = IS_KEYANDSIGNEEDED;
+            break;
     }
     credits->m_dwCryptRndChallengeFrom = PeekUInt32(pachPacket+1);
 }
@@ -3013,10 +3013,10 @@ bool CUpDownClient::IsBanned() const
         return true;
 //<<< WiZaRd::Optimization
 //>>> WiZaRd::IPv6 [Xanatos]
-	// IPv6-TODO: Add IPv6 ban list
-	if(GetIP().ToIPv4() == 0)
-		return false;
-	return theApp.clientlist->IsBannedClient(_ntohl(GetConnectIP().ToIPv4()));
+    // IPv6-TODO: Add IPv6 ban list
+    if (GetIP().ToIPv4() == 0)
+        return false;
+    return theApp.clientlist->IsBannedClient(_ntohl(GetConnectIP().ToIPv4()));
     //return theApp.clientlist->IsBannedClient(GetConnectIP());
 //<<< WiZaRd::IPv6 [Xanatos]
 }
@@ -3396,8 +3396,8 @@ CString CUpDownClient::DbgGetClientInfo(bool bFormatIP) const
             if (HasLowID())
             {
 //>>> WiZaRd::IPv6 [Xanatos]
-				if (!GetConnectIP().IsNull())
-                //if (GetConnectIP())
+                if (!GetConnectIP().IsNull())
+                    //if (GetConnectIP())
 //<<< WiZaRd::IPv6 [Xanatos]
                 {
                     str.Format(L"%u@%s (%s) '%s' (%s,%s/%s/%s)",
@@ -3455,45 +3455,45 @@ CString CUpDownClient::GetDownloadStateDisplayString() const
     CString strState;
     switch (GetDownloadState())
     {
-    case DS_CONNECTING:
-        strState = GetResString(IDS_CONNECTING);
-        break;
-    case DS_CONNECTED:
-        strState = GetResString(IDS_ASKING);
-        break;
-    case DS_WAITCALLBACK:
-        strState = GetResString(IDS_CONNVIASERVER);
-        break;
-    case DS_ONQUEUE:
-        if (IsRemoteQueueFull())
-            strState = GetResString(IDS_QUEUEFULL);
-        else
-            strState = GetResString(IDS_ONQUEUE);
-        break;
-    case DS_DOWNLOADING:
-        strState = GetResString(IDS_TRANSFERRING);
-        break;
-    case DS_REQHASHSET:
-        strState = GetResString(IDS_RECHASHSET);
-        break;
-    case DS_NONEEDEDPARTS:
-        strState = GetResString(IDS_NONEEDEDPARTS);
-        break;
-    case DS_LOWTOLOWIP:
-        strState = GetResString(IDS_NOCONNECTLOW2LOW);
-        break;
-    case DS_TOOMANYCONNS:
-        strState = GetResString(IDS_TOOMANYCONNS);
-        break;
-    case DS_ERROR:
-        strState = GetResString(IDS_ERROR);
-        break;
-    case DS_WAITCALLBACKKAD:
-        strState = GetResString(IDS_KAD_WAITCBK);
-        break;
-    case DS_TOOMANYCONNSKAD:
-        strState = GetResString(IDS_KAD_TOOMANDYKADLKPS);
-        break;
+        case DS_CONNECTING:
+            strState = GetResString(IDS_CONNECTING);
+            break;
+        case DS_CONNECTED:
+            strState = GetResString(IDS_ASKING);
+            break;
+        case DS_WAITCALLBACK:
+            strState = GetResString(IDS_CONNVIASERVER);
+            break;
+        case DS_ONQUEUE:
+            if (IsRemoteQueueFull())
+                strState = GetResString(IDS_QUEUEFULL);
+            else
+                strState = GetResString(IDS_ONQUEUE);
+            break;
+        case DS_DOWNLOADING:
+            strState = GetResString(IDS_TRANSFERRING);
+            break;
+        case DS_REQHASHSET:
+            strState = GetResString(IDS_RECHASHSET);
+            break;
+        case DS_NONEEDEDPARTS:
+            strState = GetResString(IDS_NONEEDEDPARTS);
+            break;
+        case DS_LOWTOLOWIP:
+            strState = GetResString(IDS_NOCONNECTLOW2LOW);
+            break;
+        case DS_TOOMANYCONNS:
+            strState = GetResString(IDS_TOOMANYCONNS);
+            break;
+        case DS_ERROR:
+            strState = GetResString(IDS_ERROR);
+            break;
+        case DS_WAITCALLBACKKAD:
+            strState = GetResString(IDS_KAD_WAITCBK);
+            break;
+        case DS_TOOMANYCONNSKAD:
+            strState = GetResString(IDS_KAD_TOOMANDYKADLKPS);
+            break;
     }
 
     return strState;
@@ -3504,30 +3504,30 @@ CString CUpDownClient::GetUploadStateDisplayString() const
     CString strState;
     switch (GetUploadState())
     {
-    case US_ONUPLOADQUEUE:
-        strState = GetResString(IDS_ONQUEUE);
-        break;
-    case US_BANNED:
-        strState = GetResString(IDS_BANNED);
-        break;
-    case US_CONNECTING:
-        strState = GetResString(IDS_CONNECTING);
-        break;
-    case US_UPLOADING:
+        case US_ONUPLOADQUEUE:
+            strState = GetResString(IDS_ONQUEUE);
+            break;
+        case US_BANNED:
+            strState = GetResString(IDS_BANNED);
+            break;
+        case US_CONNECTING:
+            strState = GetResString(IDS_CONNECTING);
+            break;
+        case US_UPLOADING:
 //>>> WiZaRd::ZZUL Upload [ZZ]
-        if (IsScheduledForRemoval())
-            strState = GetScheduledRemovalDisplayReason();
-        else
-//<<< WiZaRd::ZZUL Upload [ZZ]
-            if (GetPayloadInBuffer() == 0 && GetNumberOfRequestedBlocksInQueue() == 0 && thePrefs.IsExtControlsEnabled())
-                strState = GetResString(IDS_US_STALLEDW4BR);
-            else if (GetPayloadInBuffer() == 0 && thePrefs.IsExtControlsEnabled())
-                strState = GetResString(IDS_US_STALLEDREADINGFDISK);
-            else if (GetSlotNumber() <= theApp.uploadqueue->GetActiveUploadsCount())
-                strState = GetResString(IDS_TRANSFERRING);
+            if (IsScheduledForRemoval())
+                strState = GetScheduledRemovalDisplayReason();
             else
-                strState = GetResString(IDS_TRICKLING);
-        break;
+//<<< WiZaRd::ZZUL Upload [ZZ]
+                if (GetPayloadInBuffer() == 0 && GetNumberOfRequestedBlocksInQueue() == 0 && thePrefs.IsExtControlsEnabled())
+                    strState = GetResString(IDS_US_STALLEDW4BR);
+                else if (GetPayloadInBuffer() == 0 && thePrefs.IsExtControlsEnabled())
+                    strState = GetResString(IDS_US_STALLEDREADINGFDISK);
+                else if (GetSlotNumber() <= theApp.uploadqueue->GetActiveUploadsCount())
+                    strState = GetResString(IDS_TRANSFERRING);
+                else
+                    strState = GetResString(IDS_TRICKLING);
+            break;
     }
 
     return strState;
@@ -3549,26 +3549,26 @@ void CUpDownClient::SendPublicIPRequest()
 void CUpDownClient::ProcessPublicIPAnswer(const BYTE* pbyData, UINT uSize)
 {
 //>>> WiZaRd::IPv6 [Xanatos]
-	if (uSize != 4 && uSize != 20) // IPv4 [uint32 IPv4] // IPv6 [uint32 -1][16 bytes IPv6]
-		throw GetResString(IDS_ERR_WRONGPACKAGESIZE);
+    if (uSize != 4 && uSize != 20) // IPv4 [uint32 IPv4] // IPv6 [uint32 -1][16 bytes IPv6]
+        throw GetResString(IDS_ERR_WRONGPACKAGESIZE);
 
-	if (m_fNeedOurPublicIP == 1) // did we?
-		m_fNeedOurPublicIP = 0;
-	else
-		return;
+    if (m_fNeedOurPublicIP == 1) // did we?
+        m_fNeedOurPublicIP = 0;
+    else
+        return;
 
-	UINT dwIP = PeekUInt32(pbyData);
-	if(dwIP != -1)
-	{
-		if (theApp.GetPublicIP() == 0 && !::IsLowID(dwIP) )
-			theApp.SetPublicIP(dwIP);
-	}
-	else
-	{
-		byte uIP[16];
-		memcpy(uIP, pbyData+4, 16);
-		// IPv6-TODO: add global IPV6 handling
-	}
+    UINT dwIP = PeekUInt32(pbyData);
+    if (dwIP != -1)
+    {
+        if (theApp.GetPublicIP() == 0 && !::IsLowID(dwIP))
+            theApp.SetPublicIP(dwIP);
+    }
+    else
+    {
+        byte uIP[16];
+        memcpy(uIP, pbyData+4, 16);
+        // IPv6-TODO: add global IPV6 handling
+    }
     /*if (uSize != 4)
         throw GetResString(IDS_ERR_WRONGPACKAGESIZE);
     UINT dwIP = PeekUInt32(pbyData);
@@ -3952,7 +3952,7 @@ void CUpDownClient::SendFirewallCheckUDPRequest()
              || GetKadVersion() <= KADEMLIA_VERSION5_48a || GetKadPort() == 0)
     {
 //>>> WiZaRd::IPv6 [Xanatos]
-		Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, true, GetIP().ToIPv4(), 0); // inform the tester that this test was cancelled
+        Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, true, GetIP().ToIPv4(), 0); // inform the tester that this test was cancelled
         //Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, true, ntohl(GetIP()), 0); // inform the tester that this test was cancelled
 //<<< WiZaRd::IPv6 [Xanatos]
         SetKadState(KS_NONE);
@@ -3962,7 +3962,7 @@ void CUpDownClient::SendFirewallCheckUDPRequest()
     data.WriteUInt16(Kademlia::CKademlia::GetPrefs()->GetInternKadPort());
     data.WriteUInt16(Kademlia::CKademlia::GetPrefs()->GetExternalKadPort());
 //>>> WiZaRd::IPv6 [Xanatos]
-	data.WriteUInt32(Kademlia::CKademlia::GetPrefs()->GetUDPVerifyKey(_ntohl(GetConnectIP().ToIPv4())));
+    data.WriteUInt32(Kademlia::CKademlia::GetPrefs()->GetUDPVerifyKey(_ntohl(GetConnectIP().ToIPv4())));
     //data.WriteUInt32(Kademlia::CKademlia::GetPrefs()->GetUDPVerifyKey(GetConnectIP()));
 //<<< WiZaRd::IPv6 [Xanatos]
     Packet* packet = new Packet(&data, OP_EMULEPROT, OP_FWCHECKUDPREQ);
@@ -3982,8 +3982,8 @@ void CUpDownClient::ProcessFirewallCheckUDPRequest(CSafeMemFile* data)
     if (GetUploadState() != US_NONE || GetDownloadState() != DS_NONE || GetChatState() != MS_NONE)
         bErrorAlreadyKnown = true;
 //>>> WiZaRd::IPv6 [Xanatos]
-	else if (Kademlia::CKademlia::GetRoutingZone()->GetContact(GetConnectIP().ToIPv4(), 0, false) != NULL)
-    //else if (Kademlia::CKademlia::GetRoutingZone()->GetContact(ntohl(GetConnectIP()), 0, false) != NULL)
+    else if (Kademlia::CKademlia::GetRoutingZone()->GetContact(GetConnectIP().ToIPv4(), 0, false) != NULL)
+        //else if (Kademlia::CKademlia::GetRoutingZone()->GetContact(ntohl(GetConnectIP()), 0, false) != NULL)
 //<<< WiZaRd::IPv6 [Xanatos]
         bErrorAlreadyKnown = true;
 
@@ -4004,9 +4004,9 @@ void CUpDownClient::ProcessFirewallCheckUDPRequest(CSafeMemFile* data)
     if (thePrefs.GetDebugClientKadUDPLevel() > 0)
 //>>> WiZaRd::IPv6 [Xanatos]
         //DebugSend("KADEMLIA2_FIREWALLUDP", ntohl(GetConnectIP()), nRemoteInternPort);
-    //Kademlia::CKademlia::GetUDPListener()->SendPacket(&fileTestPacket1, KADEMLIA2_FIREWALLUDP, ntohl(GetConnectIP())
-		DebugSend("KADEMLIA2_FIREWALLUDP", GetConnectIP().ToIPv4(), nRemoteInternPort);
-	Kademlia::CKademlia::GetUDPListener()->SendPacket(&fileTestPacket1, KADEMLIA2_FIREWALLUDP, GetConnectIP().ToIPv4()
+        //Kademlia::CKademlia::GetUDPListener()->SendPacket(&fileTestPacket1, KADEMLIA2_FIREWALLUDP, ntohl(GetConnectIP())
+        DebugSend("KADEMLIA2_FIREWALLUDP", GetConnectIP().ToIPv4(), nRemoteInternPort);
+    Kademlia::CKademlia::GetUDPListener()->SendPacket(&fileTestPacket1, KADEMLIA2_FIREWALLUDP, GetConnectIP().ToIPv4()
 //<<< WiZaRd::IPv6 [Xanatos]
             , nRemoteInternPort, Kademlia::CKadUDPKey(dwSenderKey, theApp.GetPublicIP(false)), NULL);
 
@@ -4019,9 +4019,9 @@ void CUpDownClient::ProcessFirewallCheckUDPRequest(CSafeMemFile* data)
         if (thePrefs.GetDebugClientKadUDPLevel() > 0)
 //>>> WiZaRd::IPv6 [Xanatos]
             //DebugSend("KADEMLIA2_FIREWALLUDP", ntohl(GetConnectIP()), nRemoteExternPort);
-        //Kademlia::CKademlia::GetUDPListener()->SendPacket(&fileTestPacket2, KADEMLIA2_FIREWALLUDP, ntohl(GetConnectIP())
-			DebugSend("KADEMLIA2_FIREWALLUDP", GetConnectIP().ToIPv4(), nRemoteExternPort);
-		Kademlia::CKademlia::GetUDPListener()->SendPacket(&fileTestPacket2, KADEMLIA2_FIREWALLUDP, GetConnectIP().ToIPv4()
+            //Kademlia::CKademlia::GetUDPListener()->SendPacket(&fileTestPacket2, KADEMLIA2_FIREWALLUDP, ntohl(GetConnectIP())
+            DebugSend("KADEMLIA2_FIREWALLUDP", GetConnectIP().ToIPv4(), nRemoteExternPort);
+        Kademlia::CKademlia::GetUDPListener()->SendPacket(&fileTestPacket2, KADEMLIA2_FIREWALLUDP, GetConnectIP().ToIPv4()
 //<<< WiZaRd::IPv6 [Xanatos]
                 , nRemoteExternPort, Kademlia::CKadUDPKey(dwSenderKey, theApp.GetPublicIP(false)), NULL);
     }
@@ -4136,29 +4136,29 @@ bool CUpDownClient::IsBadGuy() const
 
 int CUpDownClient::GetAnalyzerIconIndex() const
 {
-	int ret = -1;
+    int ret = -1;
 
-	if (pAntiLeechData != NULL)
-	{		
-		if(pAntiLeechData->GetBadForThisSession() != 0)
-			ret = 0; // very bad guy!
-		else
-		{
-			float fCAScore = pAntiLeechData->GetScore();
-			/*if(fCAScore < 0)
-				ret = 0; // very bad guy!
-			else*/ if(fCAScore < 0.5)
-				ret = 1; // bad guy!
-			else if(fCAScore < 1.3)
-				ret = 2; // no important data
-			else if(fCAScore < 3.0)
-				ret = 3; // good score!
-			else
-				ret = 4; // very good score!
-		}
-	}
+    if (pAntiLeechData != NULL)
+    {
+        if (pAntiLeechData->GetBadForThisSession() != 0)
+            ret = 0; // very bad guy!
+        else
+        {
+            float fCAScore = pAntiLeechData->GetScore();
+            /*if(fCAScore < 0)
+            	ret = 0; // very bad guy!
+            else*/ if (fCAScore < 0.5)
+                ret = 1; // bad guy!
+            else if (fCAScore < 1.3)
+                ret = 2; // no important data
+            else if (fCAScore < 3.0)
+                ret = 3; // good score!
+            else
+                ret = 4; // very good score!
+        }
+    }
 
-	return ret;
+    return ret;
 }
 
 void	CUpDownClient::ProcessSourceRequest(const BYTE* packet, const UINT size, const UINT opcode, const UINT uRawSize, CSafeMemFile* data, CKnownFile* kreqfile)
@@ -4430,69 +4430,69 @@ int	CUpDownClient::GetModIconIndex() const
 //>>> WiZaRd::ExtendedXS [Xanatos]
 void CUpDownClient::WriteExtendedSourceExchangeData(CSafeMemFile& data) const
 {
-	CList<CTag*> tagList;
+    CList<CTag*> tagList;
 
 //>>> WiZaRd::NatTraversal [Xanatos]
-	if (HasLowID())
-	{
-		if(SupportsDirectUDPCallback())
-		{
+    if (HasLowID())
+    {
+        if (SupportsDirectUDPCallback())
+        {
 //>>> WiZaRd::IPv6 [Xanatos]
-			tagList.AddTail(new CTag(CT_EMULE_ADDRESS, _ntohl(GetIPv4().ToIPv4())));
-			//tagList.AddTail(new CTag(CT_EMULE_ADDRESS, GetIP())); 
+            tagList.AddTail(new CTag(CT_EMULE_ADDRESS, _ntohl(GetIPv4().ToIPv4())));
+            //tagList.AddTail(new CTag(CT_EMULE_ADDRESS, GetIP()));
 //<<< WiZaRd::IPv6 [Xanatos]
-			tagList.AddTail(new CTag(CT_EMULE_UDPPORTS, 
-				((UINT)GetKadPort() << 16) |
-				((UINT)GetUDPPort() <<  0)
-				));
-		}
+            tagList.AddTail(new CTag(CT_EMULE_UDPPORTS,
+                                     ((UINT)GetKadPort() << 16) |
+                                     ((UINT)GetUDPPort() <<  0)
+                                    ));
+        }
 
-		if(GetBuddyIP())
-		{
-			tagList.AddTail(new CTag(CT_EMULE_BUDDYIP, GetBuddyIP())); 
-			tagList.AddTail(new CTag(CT_EMULE_BUDDYUDP, 
-				//	( RESERVED						 )
-				((UINT)GetBuddyPort() ) 
-				));
-		}
+        if (GetBuddyIP())
+        {
+            tagList.AddTail(new CTag(CT_EMULE_BUDDYIP, GetBuddyIP()));
+            tagList.AddTail(new CTag(CT_EMULE_BUDDYUDP,
+                                     //	( RESERVED						 )
+                                     ((UINT)GetBuddyPort())
+                                    ));
+        }
 
-		if(!isnulmd4(GetBuddyID()))
-			tagList.AddTail(new CTag(CT_EMULE_BUDDYID, GetBuddyID()));
-	}
+        if (!isnulmd4(GetBuddyID()))
+            tagList.AddTail(new CTag(CT_EMULE_BUDDYID, GetBuddyID()));
+    }
 //<<< WiZaRd::NatTraversal [Xanatos]
 
-	if(GetServerIP() != 0)
-	{
-		tagList.AddTail(new CTag(CT_EMULE_SERVERIP, GetServerIP())); 
-		tagList.AddTail(new CTag(CT_EMULE_SERVERTCP, 
-			//	( RESERVED						  )
-			((UINT)GetServerPort() )
-			)); 
-	}
+    if (GetServerIP() != 0)
+    {
+        tagList.AddTail(new CTag(CT_EMULE_SERVERIP, GetServerIP()));
+        tagList.AddTail(new CTag(CT_EMULE_SERVERTCP,
+                                 //	( RESERVED						  )
+                                 ((UINT)GetServerPort())
+                                ));
+    }
 
 //>>> WiZaRd::IPv6 [Xanatos]
-	if(IsIPv6Open())
-		tagList.AddTail(new CTag(CT_NEOMULE_IP_V6, GetIPv6().Data()));
+    if (IsIPv6Open())
+        tagList.AddTail(new CTag(CT_NEOMULE_IP_V6, GetIPv6().Data()));
 //<<< WiZaRd::IPv6 [Xanatos]
 
-	data.WriteUInt8((uint8)tagList.GetCount()); // max 255 tags - plenty of fun for everyone ;)
-	while(!tagList.IsEmpty())
-	{
-		CTag* emTag = tagList.RemoveHead();
-		if (emTag)
-			emTag->WriteNewEd2kTag(&data);
-		delete emTag;
-	}
+    data.WriteUInt8((uint8)tagList.GetCount()); // max 255 tags - plenty of fun for everyone ;)
+    while (!tagList.IsEmpty())
+    {
+        CTag* emTag = tagList.RemoveHead();
+        if (emTag)
+            emTag->WriteNewEd2kTag(&data);
+        delete emTag;
+    }
 }
 //<<< WiZaRd::ExtendedXS [Xanatos]
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 int CUpDownClient::GetSCTVersion() const
 {
-	return m_nProtocolRevision;
+    return m_nProtocolRevision;
 }
 
 bool CUpDownClient::SupportsSCT() const
 {
-	return m_nProtocolRevision > PROTOCOL_REVISION_0;
+    return m_nProtocolRevision > PROTOCOL_REVISION_0;
 }
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]

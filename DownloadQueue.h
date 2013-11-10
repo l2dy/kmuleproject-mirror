@@ -95,8 +95,8 @@ public:
 
     // sources
 //>>> WiZaRd::IPv6 [Xanatos]
-	CUpDownClient* GetDownloadClientByIP(const CAddress& IP);
-	CUpDownClient* GetDownloadClientByIP_UDP(const CAddress& IP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs = NULL);
+    CUpDownClient* GetDownloadClientByIP(const CAddress& IP);
+    CUpDownClient* GetDownloadClientByIP_UDP(const CAddress& IP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs = NULL);
 //     CUpDownClient* GetDownloadClientByIP(UINT dwIP);
 //     CUpDownClient* GetDownloadClientByIP_UDP(UINT dwIP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs = NULL);
 //<<< WiZaRd::IPv6 [Xanatos]
@@ -150,7 +150,7 @@ public:
     }
     bool	DoKademliaFileRequest();
 //>>> WiZaRd::IPv6 [Xanatos]
-	void	KademliaSearchFile(UINT searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pkadID, uint8 type, UINT ip, uint16 tcp, uint16 udp, UINT dwBuddyIP, uint16 dwBuddyPort, uint8 byCryptOptions, const Kademlia::CUInt128* pIPv6);
+    void	KademliaSearchFile(UINT searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pkadID, uint8 type, UINT ip, uint16 tcp, uint16 udp, UINT dwBuddyIP, uint16 dwBuddyPort, uint8 byCryptOptions, const Kademlia::CUInt128* pIPv6);
     //void	KademliaSearchFile(UINT searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pkadID, uint8 type, UINT ip, uint16 tcp, uint16 udp, UINT dwBuddyIP, uint16 dwBuddyPort, uint8 byCryptOptions);
 //<<< WiZaRd::IPv6 [Xanatos]
 
@@ -207,6 +207,6 @@ private:
 //<<< WiZaRd::AutoLH
 //>>> WiZaRd::Improved Auto Prio
 public:
-	void	GetActiveFilesAndSourceCount(UINT& files, UINT& srcs);
+    void	GetActiveFilesAndSourceCount(UINT& files, UINT& srcs);
 //<<< WiZaRd::Improved Auto Prio
 };

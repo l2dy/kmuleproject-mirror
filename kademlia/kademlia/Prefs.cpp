@@ -241,8 +241,8 @@ void CPrefs::SetKademliaFiles()
         nKadAverage = 108;
     }
 #ifdef _DEBUG
-	else
-		AddDebugLogLine(DLP_VERYLOW, false, L"Kad file estimate used Kad avg: %u", nKadAverage);
+    else
+        AddDebugLogLine(DLP_VERYLOW, false, L"Kad file estimate used Kad avg: %u", nKadAverage);
 #endif
 
     m_uKademliaFiles = nKadAverage*m_uKademliaUsers;

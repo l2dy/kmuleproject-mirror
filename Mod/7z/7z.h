@@ -59,7 +59,7 @@ public:
     FILE*	GetCustomStream();
 
     void	ExtractArchive(const CString& strArchive, const CString& strTargetDir);
-	void	ExtractFileFromArchive(const CString& strFilename, const CString& strArchive, const CString& strTargetDir);
+    void	ExtractFileFromArchive(const CString& strFilename, const CString& strArchive, const CString& strTargetDir);
     bool	IsSevenZipAvailable() const;
 
 private:

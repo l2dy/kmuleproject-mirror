@@ -165,83 +165,83 @@ CKadTag *CDataIO::ReadTag(bool bOptACP)
 
         switch (byType)
         {
-            // NOTE: This tag data type is accepted and stored only to give us the possibility to upgrade
-            // the net in some months.
-            //
-            // And still.. it doesnt't work this way without breaking backward compatibility. To properly
-            // do this without messing up the network the following would have to be done:
-            //	 -	those tag types have to be ignored by any client, otherwise those tags would also be sent (and
-            //		that's really the problem)
-            //
-            //	 -	ignoring means, each client has to read and right throw away those tags, so those tags get
-            //		get never stored in any tag list which might be sent by that client to some other client.
-            //
-            //	 -	all calling functions have to be changed to deal with the 'nr. of tags' attribute (which was
-            //		already parsed) correctly.. just ignoring those tags here is not enough, any taglists have to
-            //		be built with the knowledge that the 'nr. of tags' attribute may get decreased during the tag
-            //		reading..
-            //
-            // If those new tags would just be stored and sent to remote clients, any malicious or just bugged
-            // client could let send a lot of nodes "corrupted" packets...
-            //
-        case TAGTYPE_HASH:
-        {
-            BYTE byValue[16];
-            ReadHash(byValue);
-            pRetVal = new CKadTagHash(pcName, byValue);
-            break;
-        }
-
-        case TAGTYPE_STRING:
-            pRetVal = new CKadTagStr(pcName, ReadStringUTF8(bOptACP));
-            break;
-
-        case TAGTYPE_UINT64:
-            pRetVal = new CKadTagUInt64(pcName, ReadUInt64());
-            break;
-
-        case TAGTYPE_UINT32:
-            pRetVal = new CKadTagUInt32(pcName, ReadUInt32());
-            break;
-
-        case TAGTYPE_UINT16:
-            pRetVal = new CKadTagUInt16(pcName, ReadUInt16());
-            break;
-
-        case TAGTYPE_UINT8:
-            pRetVal = new CKadTagUInt8(pcName, ReadUInt8());
-            break;
-
-        case TAGTYPE_FLOAT32:
-            pRetVal = new CKadTagFloat(pcName, ReadFloat());
-            break;
-
-            // NOTE: This tag data type is accepted and stored only to give us the possibility to upgrade
-            // the net in some months.
-            //
-            // And still.. it doesnt't work this way without breaking backward compatibility
-        case TAGTYPE_BSOB:
-        {
-            uint8 uSize;
-            BYTE* pValue = ReadBsob(&uSize);
-            try
+                // NOTE: This tag data type is accepted and stored only to give us the possibility to upgrade
+                // the net in some months.
+                //
+                // And still.. it doesnt't work this way without breaking backward compatibility. To properly
+                // do this without messing up the network the following would have to be done:
+                //	 -	those tag types have to be ignored by any client, otherwise those tags would also be sent (and
+                //		that's really the problem)
+                //
+                //	 -	ignoring means, each client has to read and right throw away those tags, so those tags get
+                //		get never stored in any tag list which might be sent by that client to some other client.
+                //
+                //	 -	all calling functions have to be changed to deal with the 'nr. of tags' attribute (which was
+                //		already parsed) correctly.. just ignoring those tags here is not enough, any taglists have to
+                //		be built with the knowledge that the 'nr. of tags' attribute may get decreased during the tag
+                //		reading..
+                //
+                // If those new tags would just be stored and sent to remote clients, any malicious or just bugged
+                // client could let send a lot of nodes "corrupted" packets...
+                //
+            case TAGTYPE_HASH:
             {
-                pRetVal = new CKadTagBsob(pcName, pValue, uSize);
+                BYTE byValue[16];
+                ReadHash(byValue);
+                pRetVal = new CKadTagHash(pcName, byValue);
+                break;
             }
-            catch (CException*)
+
+            case TAGTYPE_STRING:
+                pRetVal = new CKadTagStr(pcName, ReadStringUTF8(bOptACP));
+                break;
+
+            case TAGTYPE_UINT64:
+                pRetVal = new CKadTagUInt64(pcName, ReadUInt64());
+                break;
+
+            case TAGTYPE_UINT32:
+                pRetVal = new CKadTagUInt32(pcName, ReadUInt32());
+                break;
+
+            case TAGTYPE_UINT16:
+                pRetVal = new CKadTagUInt16(pcName, ReadUInt16());
+                break;
+
+            case TAGTYPE_UINT8:
+                pRetVal = new CKadTagUInt8(pcName, ReadUInt8());
+                break;
+
+            case TAGTYPE_FLOAT32:
+                pRetVal = new CKadTagFloat(pcName, ReadFloat());
+                break;
+
+                // NOTE: This tag data type is accepted and stored only to give us the possibility to upgrade
+                // the net in some months.
+                //
+                // And still.. it doesnt't work this way without breaking backward compatibility
+            case TAGTYPE_BSOB:
             {
+                uint8 uSize;
+                BYTE* pValue = ReadBsob(&uSize);
+                try
+                {
+                    pRetVal = new CKadTagBsob(pcName, pValue, uSize);
+                }
+                catch (CException*)
+                {
+                    delete[] pValue;
+                    throw;
+                }
                 delete[] pValue;
-                throw;
+                break;
             }
-            delete[] pValue;
-            break;
-        }
 
-        default:
+            default:
 //>>> WiZaRd
-            //this exception is not handled properly anywhere!
-            //throw new CNotSupportedException;
-            throw CString(L"An unsupported operation was attempted!");
+                //this exception is not handled properly anywhere!
+                //throw new CNotSupportedException;
+                throw CString(L"An unsupported operation was attempted!");
 //<<< WiZaRd
         }
         delete [] pcName;
@@ -337,36 +337,36 @@ void CDataIO::WriteTag(const CKadTag* pTag)
 
         switch (uType)
         {
-        case TAGTYPE_HASH:
-            // Do NOT use this to transfer any tags for at least half a year!!
-            WriteHash(pTag->GetHash());
-            ASSERT(0);
-            break;
-        case TAGTYPE_STRING:
-        {
-            CUnicodeToUTF8 utf8(pTag->GetStr());
-            WriteUInt16((uint16)utf8.GetLength());
-            WriteArray(utf8, utf8.GetLength());
-            break;
-        }
-        case TAGTYPE_UINT64:
-            WriteUInt64(pTag->GetInt());
-            break;
-        case TAGTYPE_UINT32:
-            WriteUInt32((UINT)pTag->GetInt());
-            break;
-        case TAGTYPE_UINT16:
-            WriteUInt16((uint16)pTag->GetInt());
-            break;
-        case TAGTYPE_UINT8:
-            WriteUInt8((uint8)pTag->GetInt());
-            break;
-        case TAGTYPE_FLOAT32:
-            WriteFloat(pTag->GetFloat());
-            break;
-        case TAGTYPE_BSOB:
-            WriteBsob(pTag->GetBsob(), pTag->GetBsobSize());
-            break;
+            case TAGTYPE_HASH:
+                // Do NOT use this to transfer any tags for at least half a year!!
+                WriteHash(pTag->GetHash());
+                ASSERT(0);
+                break;
+            case TAGTYPE_STRING:
+            {
+                CUnicodeToUTF8 utf8(pTag->GetStr());
+                WriteUInt16((uint16)utf8.GetLength());
+                WriteArray(utf8, utf8.GetLength());
+                break;
+            }
+            case TAGTYPE_UINT64:
+                WriteUInt64(pTag->GetInt());
+                break;
+            case TAGTYPE_UINT32:
+                WriteUInt32((UINT)pTag->GetInt());
+                break;
+            case TAGTYPE_UINT16:
+                WriteUInt16((uint16)pTag->GetInt());
+                break;
+            case TAGTYPE_UINT8:
+                WriteUInt8((uint8)pTag->GetInt());
+                break;
+            case TAGTYPE_FLOAT32:
+                WriteFloat(pTag->GetFloat());
+                break;
+            case TAGTYPE_BSOB:
+                WriteBsob(pTag->GetBsob(), pTag->GetBsobSize());
+                break;
         }
     }
     catch (CIOException *ioe)

@@ -263,15 +263,15 @@ bool CAICHHashTree::ReCalculateHash(CAICHHashAlgo* hashalg, bool bDontReplace)
         else
             return m_bHashValid;
     }
-    else if(((m_pLeftTree != NULL) ^ (m_pRightTree != NULL)))
-	{
-		// WiZaRd: *test*
-		//ASSERT(0);
-		theApp.QueueDebugLogLineEx(LOG_ERROR, L"DEBUG: Invalid hash - original code would allow it!");
-		return true;        
-	}
-	else
-		return true;
+    else if (((m_pLeftTree != NULL) ^ (m_pRightTree != NULL)))
+    {
+        // WiZaRd: *test*
+        //ASSERT(0);
+        theApp.QueueDebugLogLineEx(LOG_ERROR, L"DEBUG: Invalid hash - original code would allow it!");
+        return true;
+    }
+    else
+        return true;
 }
 
 bool CAICHHashTree::VerifyHashTree(CAICHHashAlgo* hashalg, bool bDeleteBadTrees)
@@ -834,9 +834,9 @@ bool CAICHRecoveryHashSet::ReadRecoveryData(uint64 nPartStartPos, CSafeMemFile* 
         }
     }
 //>>> WiZaRd::FiX [netfinity]
-	// netfinity: New versions of CreateRecoveryData always write a 16bit integer here, so we have to read it or skip it
-	else if (fileDataIn->GetLength() - fileDataIn->GetPosition() > 1)
-		fileDataIn->ReadUInt16();
+    // netfinity: New versions of CreateRecoveryData always write a 16bit integer here, so we have to read it or skip it
+    else if (fileDataIn->GetLength() - fileDataIn->GetPosition() > 1)
+        fileDataIn->ReadUInt16();
 //<<< WiZaRd::FiX [netfinity]
 
     if (nHashsAvailable == 0)
@@ -914,9 +914,9 @@ bool CAICHRecoveryHashSet::SaveHashSet()
         if (header != KNOWN2_MET_VERSION)
             AfxThrowFileException(CFileException::endOfFile, 0, file.GetFileName());
 
-		// first we check if the hashset we want to write is already stored
-		ULONGLONG nTmp;
-		if (m_mapAICHHashsStored.Lookup(m_pHashTree.m_Hash, nTmp) == TRUE)
+        // first we check if the hashset we want to write is already stored
+        ULONGLONG nTmp;
+        if (m_mapAICHHashsStored.Lookup(m_pHashTree.m_Hash, nTmp) == TRUE)
         {
             theApp.QueueDebugLogLine(false, _T("AICH Hashset to write should be already present in known2.met - %s"), m_pHashTree.m_Hash.GetString());
             // this hashset if already available, no need to save it again
@@ -926,7 +926,7 @@ bool CAICHRecoveryHashSet::SaveHashSet()
         // write hashset
         UINT nExistingSize = (UINT)file.GetLength();
         file.SeekToEnd();
-		ULONGLONG nHashSetWritePosition = file.GetPosition();
+        ULONGLONG nHashSetWritePosition = file.GetPosition();
 
         m_pHashTree.m_Hash.Write(&file);
         UINT nHashCount = (UINT)((PARTSIZE/EMBLOCKSIZE + ((PARTSIZE % EMBLOCKSIZE != 0)? 1 : 0)) * (m_pHashTree.m_nDataSize/PARTSIZE));
@@ -1008,37 +1008,37 @@ bool CAICHRecoveryHashSet::LoadHashSet()
         if (header != KNOWN2_MET_VERSION)
             AfxThrowFileException(CFileException::endOfFile, 0, file.GetFileName());
 
-		CAICHHash CurrentHash;
-		UINT nExistingSize = (UINT)file.GetLength();
-		UINT nHashCount;
+        CAICHHash CurrentHash;
+        UINT nExistingSize = (UINT)file.GetLength();
+        UINT nHashCount;
 
-		bool bUseExpectedPos = true;
-		ULONGLONG nExpectedHashSetPos = 0;
-		if (m_mapAICHHashsStored.Lookup(m_pHashTree.m_Hash, nExpectedHashSetPos) == FALSE || nExpectedHashSetPos >= nExistingSize)
-		{
-			bUseExpectedPos = false;
-			theApp.QueueDebugLogLine(false, _T("AICH Hashset to read not present in AICH hash index - %s"), m_pHashTree.m_Hash.GetString());
-		}	
+        bool bUseExpectedPos = true;
+        ULONGLONG nExpectedHashSetPos = 0;
+        if (m_mapAICHHashsStored.Lookup(m_pHashTree.m_Hash, nExpectedHashSetPos) == FALSE || nExpectedHashSetPos >= nExistingSize)
+        {
+            bUseExpectedPos = false;
+            theApp.QueueDebugLogLine(false, _T("AICH Hashset to read not present in AICH hash index - %s"), m_pHashTree.m_Hash.GetString());
+        }
 
-		while (file.GetPosition() < nExistingSize)
-		{
-			if (bUseExpectedPos)
-			{
-				ULONGLONG nFallbackPos = file.GetPosition();
-				file.Seek(nExpectedHashSetPos, CFile::begin);
-				CurrentHash.Read(&file);
-				if (m_pHashTree.m_Hash != CurrentHash)
-				{
-					ASSERT( false );
-					theApp.QueueDebugLogLine(false, _T("AICH Hashset to read not present at expected position according to AICH hash index - %s"), m_pHashTree.m_Hash.GetString());
-					// fallback and do a full search of the file for the hashset
-					file.Seek(nFallbackPos, CFile::begin);
-					CurrentHash.Read(&file);	
-				}
-				bUseExpectedPos = false;
-			}
-			else
-				CurrentHash.Read(&file);
+        while (file.GetPosition() < nExistingSize)
+        {
+            if (bUseExpectedPos)
+            {
+                ULONGLONG nFallbackPos = file.GetPosition();
+                file.Seek(nExpectedHashSetPos, CFile::begin);
+                CurrentHash.Read(&file);
+                if (m_pHashTree.m_Hash != CurrentHash)
+                {
+                    ASSERT(false);
+                    theApp.QueueDebugLogLine(false, _T("AICH Hashset to read not present at expected position according to AICH hash index - %s"), m_pHashTree.m_Hash.GetString());
+                    // fallback and do a full search of the file for the hashset
+                    file.Seek(nFallbackPos, CFile::begin);
+                    CurrentHash.Read(&file);
+                }
+                bUseExpectedPos = false;
+            }
+            else
+                CurrentHash.Read(&file);
             if (m_pHashTree.m_Hash == CurrentHash)
             {
                 // found Hashset
@@ -1145,12 +1145,12 @@ void CAICHRecoveryHashSet::UntrustedHashReceived(const CAICHHash& Hash, const _C
 {
     switch (GetStatus())
     {
-    case AICH_EMPTY:
-    case AICH_UNTRUSTED:
-    case AICH_TRUSTED:
-        break;
-    default:
-        return;
+        case AICH_EMPTY:
+        case AICH_UNTRUSTED:
+        case AICH_TRUSTED:
+            break;
+        default:
+            return;
     }
     bool bFound = false;
     bool bAdded = false;
@@ -1285,16 +1285,16 @@ CAICHRequestedData CAICHRecoveryHashSet::GetAICHReqDetails(const  CUpDownClient*
 
 bool CAICHRecoveryHashSet::AddStoredAICHHash(CAICHHash Hash, ULONGLONG nFilePos)
 {
-	ULONGLONG nTmp;
-	if (m_mapAICHHashsStored.Lookup(Hash, nTmp) == TRUE)
+    ULONGLONG nTmp;
+    if (m_mapAICHHashsStored.Lookup(Hash, nTmp) == TRUE)
     {
         theApp.QueueDebugLogLine(false, L"AICH hash storing is not unique - %s", Hash.GetString());
         ASSERT(0);
-		return false;
+        return false;
     }
 
-	m_mapAICHHashsStored.SetAt(Hash, nFilePos);
-	return true;
+    m_mapAICHHashsStored.SetAt(Hash, nFilePos);
+    return true;
 }
 
 bool CAICHRecoveryHashSet::IsPartDataAvailable(uint64 nPartStartPos)

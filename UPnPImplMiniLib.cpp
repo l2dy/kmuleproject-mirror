@@ -294,18 +294,18 @@ int CUPnPImplMiniLib::CStartDiscoveryThread::Run()
             bool bNotFound = false;
             switch (iResult)
             {
-            case 1:
-                DebugLog(L"Found valid IGD : %S", m_pOwner->m_pURLs->controlURL);
-                break;
-            case 2:
-                DebugLog(L"Found a (not connected?) IGD : %S - Trying to continue anyway", m_pOwner->m_pURLs->controlURL);
-                break;
-            case 3:
-                DebugLog(L"UPnP device found. Is it an IGD ? : %S - Trying to continue anyway", m_pOwner->m_pURLs->controlURL);
-                break;
-            default:
-                DebugLog(L"Found device (igd ?) : %S - Aborting", m_pOwner->m_pURLs->controlURL != NULL ? m_pOwner->m_pURLs->controlURL : "(none)");
-                bNotFound = true;
+                case 1:
+                    DebugLog(L"Found valid IGD : %S", m_pOwner->m_pURLs->controlURL);
+                    break;
+                case 2:
+                    DebugLog(L"Found a (not connected?) IGD : %S - Trying to continue anyway", m_pOwner->m_pURLs->controlURL);
+                    break;
+                case 3:
+                    DebugLog(L"UPnP device found. Is it an IGD ? : %S - Trying to continue anyway", m_pOwner->m_pURLs->controlURL);
+                    break;
+                default:
+                    DebugLog(L"Found device (igd ?) : %S - Aborting", m_pOwner->m_pURLs->controlURL != NULL ? m_pOwner->m_pURLs->controlURL : "(none)");
+                    bNotFound = true;
             }
             if (bNotFound || m_pOwner->m_pURLs->controlURL == NULL)
             {

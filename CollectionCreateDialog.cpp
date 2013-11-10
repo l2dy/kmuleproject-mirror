@@ -148,11 +148,11 @@ BOOL CCollectionCreateDialog::OnInitDialog(void)
     else
         SetWindowText(GetResString(IDS_MODIFYCOLLECTION) + _T(": ") + m_pCollection->m_sCollectionName);
 
-	m_CollectionListCtrl.SetContextMenu(true);
-	m_CollectionListCtrl.SetCheckboxes(true);
+    m_CollectionListCtrl.SetContextMenu(true);
+    m_CollectionListCtrl.SetCheckboxes(true);
     m_CollectionListCtrl.Init(_T("CollectionCreateR"));
-	m_CollectionAvailListCtrl.SetContextMenu(false);
-	m_CollectionAvailListCtrl.SetCheckboxes(true);
+    m_CollectionAvailListCtrl.SetContextMenu(false);
+    m_CollectionAvailListCtrl.SetCheckboxes(true);
     m_CollectionAvailListCtrl.Init(_T("CollectionCreateL"));
 
 //>>> WiZaRd::CollectionEnhancement
@@ -172,11 +172,11 @@ BOOL CCollectionCreateDialog::OnInitDialog(void)
     SetDlgItemText(IDC_CCOLL_BASICOPTIONS, GetResString(IDS_LD_BASICOPT));
     SetDlgItemText(IDC_CCOLL_ADVANCEDOPTIONS, GetResString(IDS_LD_ADVANCEDOPT));
 
-    AddAnchor(IDC_COLLECTIONAVAILLIST, TOP_LEFT, BOTTOM_CENTER);	
-	AddAnchor(IDC_COLLECTIONADD, MIDDLE_CENTER);
-	AddAnchor(IDC_COLLECTIONREMOVE, MIDDLE_CENTER);
-	AddAnchor(IDC_COLLECTIONLISTLABEL, TOP_CENTER);
-	AddAnchor(IDC_COLLECTIONLISTICON, TOP_CENTER);
+    AddAnchor(IDC_COLLECTIONAVAILLIST, TOP_LEFT, BOTTOM_CENTER);
+    AddAnchor(IDC_COLLECTIONADD, MIDDLE_CENTER);
+    AddAnchor(IDC_COLLECTIONREMOVE, MIDDLE_CENTER);
+    AddAnchor(IDC_COLLECTIONLISTLABEL, TOP_CENTER);
+    AddAnchor(IDC_COLLECTIONLISTICON, TOP_CENTER);
     AddAnchor(IDC_COLLECTIONLISTCTRL, TOP_CENTER, BOTTOM_RIGHT);
     AddAnchor(IDC_CCOLL_SAVE, BOTTOM_RIGHT);
     AddAnchor(IDC_CCOLL_CANCEL, BOTTOM_RIGHT);
@@ -212,19 +212,19 @@ BOOL CCollectionCreateDialog::OnInitDialog(void)
 
 void CCollectionCreateDialog::AddSelectedFiles(void)
 {
-	CAbstractFile* pAbstractFile = NULL;
-	CCollectionFile* pCollectionFile = NULL;
-	for(int index = 0; index < m_CollectionAvailListCtrl.GetItemCount(); ++index)
-	{
-		if(m_CollectionAvailListCtrl.GetCheck(index))
-		{
-			pAbstractFile = (CAbstractFile*)m_CollectionAvailListCtrl.GetItemData(index);
-			pCollectionFile = m_pCollection->AddFileToCollection(pAbstractFile, true);
-			if (pCollectionFile)
-				m_CollectionListCtrl.AddFileToList(pCollectionFile);
-		}
-	}
-	
+    CAbstractFile* pAbstractFile = NULL;
+    CCollectionFile* pCollectionFile = NULL;
+    for (int index = 0; index < m_CollectionAvailListCtrl.GetItemCount(); ++index)
+    {
+        if (m_CollectionAvailListCtrl.GetCheck(index))
+        {
+            pAbstractFile = (CAbstractFile*)m_CollectionAvailListCtrl.GetItemData(index);
+            pCollectionFile = m_pCollection->AddFileToCollection(pAbstractFile, true);
+            if (pCollectionFile)
+                m_CollectionListCtrl.AddFileToList(pCollectionFile);
+        }
+    }
+
     CString strTitle;
     strTitle.Format(GetResString(IDS_COLLECTIONLIST) + _T(" (%u)"), m_CollectionListCtrl.GetItemCount());
     m_CollectionListLabel.SetWindowText(strTitle);
@@ -234,20 +234,20 @@ void CCollectionCreateDialog::AddSelectedFiles(void)
 
 void CCollectionCreateDialog::RemoveSelectedFiles(void)
 {
-	CTypedPtrList<CPtrList, CCollectionFile*> collectionFileList;
-	CCollectionFile* pCollectionFile = NULL;
-	for(int index = 0; index < m_CollectionListCtrl.GetItemCount(); ++index)
-	{
-		if(m_CollectionListCtrl.GetCheck(index))
-			collectionFileList.AddTail((CCollectionFile*)m_CollectionListCtrl.GetItemData(index));
-	}
+    CTypedPtrList<CPtrList, CCollectionFile*> collectionFileList;
+    CCollectionFile* pCollectionFile = NULL;
+    for (int index = 0; index < m_CollectionListCtrl.GetItemCount(); ++index)
+    {
+        if (m_CollectionListCtrl.GetCheck(index))
+            collectionFileList.AddTail((CCollectionFile*)m_CollectionListCtrl.GetItemData(index));
+    }
 
-	while(!collectionFileList.IsEmpty())
-	{
-		pCollectionFile = collectionFileList.RemoveHead();
-		m_CollectionListCtrl.RemoveFileFromList(pCollectionFile);
-		m_pCollection->RemoveFileFromCollection(pCollectionFile);
-	}
+    while (!collectionFileList.IsEmpty())
+    {
+        pCollectionFile = collectionFileList.RemoveHead();
+        m_CollectionListCtrl.RemoveFileFromList(pCollectionFile);
+        m_pCollection->RemoveFileFromCollection(pCollectionFile);
+    }
 
     CString strTitle;
     strTitle.Format(GetResString(IDS_COLLECTIONLIST) + _T(" (%u)"), m_CollectionListCtrl.GetItemCount());

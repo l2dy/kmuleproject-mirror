@@ -64,11 +64,11 @@ void CDownloadQueue::AddPartFilesToShare()
     {
         CPartFile* cur_file = filelist.GetNext(pos);
         if (cur_file->GetStatus(true) == PS_READY
-			|| (cur_file->GetStatus(true) == PS_EMPTY && !cur_file->m_bMD4HashsetNeeded)) //>>> WiZaRd::Immediate File Sharing
-		{
-			cur_file->SetStatus(PS_READY); //>>> WiZaRd::Immediate File Sharing
+                || (cur_file->GetStatus(true) == PS_EMPTY && !cur_file->m_bMD4HashsetNeeded)) //>>> WiZaRd::Immediate File Sharing
+        {
+            cur_file->SetStatus(PS_READY); //>>> WiZaRd::Immediate File Sharing
             theApp.sharedfiles->SafeAddKFile(cur_file, true);
-		}
+        }
     }
 }
 
@@ -111,11 +111,11 @@ void CDownloadQueue::Init()
                 count++;
                 filelist.AddTail(toadd);			// to downloadqueue
                 if (toadd->GetStatus(true) == PS_READY
-					|| (toadd->GetStatus(true) == PS_EMPTY && !toadd->m_bMD4HashsetNeeded)) //>>> WiZaRd::Immediate File Sharing
-				{
-					toadd->SetStatus(PS_READY); //>>> WiZaRd::Immediate File Sharing
+                        || (toadd->GetStatus(true) == PS_EMPTY && !toadd->m_bMD4HashsetNeeded)) //>>> WiZaRd::Immediate File Sharing
+                {
+                    toadd->SetStatus(PS_READY); //>>> WiZaRd::Immediate File Sharing
                     theApp.sharedfiles->SafeAddKFile(toadd); // part files are always shared files
-				}
+                }
                 theApp.emuledlg->transferwnd->GetDownloadList()->AddFile(toadd);// show in downloadwindow
             }
             else
@@ -138,11 +138,11 @@ void CDownloadQueue::Init()
                 count++;
                 filelist.AddTail(toadd);			// to downloadqueue
                 if (toadd->GetStatus(true) == PS_READY
-					|| (toadd->GetStatus(true) == PS_EMPTY && !toadd->m_bMD4HashsetNeeded)) //>>> WiZaRd::Immediate File Sharing
-				{
-					toadd->SetStatus(PS_READY); //>>> WiZaRd::Immediate File Sharing
+                        || (toadd->GetStatus(true) == PS_EMPTY && !toadd->m_bMD4HashsetNeeded)) //>>> WiZaRd::Immediate File Sharing
+                {
+                    toadd->SetStatus(PS_READY); //>>> WiZaRd::Immediate File Sharing
                     theApp.sharedfiles->SafeAddKFile(toadd); // part files are always shared files
-				}
+                }
                 theApp.emuledlg->transferwnd->GetDownloadList()->AddFile(toadd);// show in downloadwindow
 
                 AddLogLine(false, GetResString(IDS_RECOVERED_PARTMET), toadd->GetFileName());
@@ -331,13 +331,13 @@ void CDownloadQueue::AddFileLinkToDownload(CED2KFileLink* pLink, int cat)
     if (partfile)
     {
 //>>> WiZaRd::Immediate File Sharing
-		if (partfile->GetStatus(true) == PS_READY 
-			|| (partfile->GetStatus() == PS_EMPTY && !partfile->m_bMD4HashsetNeeded))
-		{
-			partfile->SetStatus(PS_READY);
-			if(theApp.sharedfiles->GetFileByID(partfile->GetFileHash()) == NULL)	
-				theApp.sharedfiles->SafeAddKFile(partfile);
-		}
+        if (partfile->GetStatus(true) == PS_READY
+                || (partfile->GetStatus() == PS_EMPTY && !partfile->m_bMD4HashsetNeeded))
+        {
+            partfile->SetStatus(PS_READY);
+            if (theApp.sharedfiles->GetFileByID(partfile->GetFileHash()) == NULL)
+                theApp.sharedfiles->SafeAddKFile(partfile);
+        }
 //<<< WiZaRd::Immediate File Sharing
 
         // match the fileidentifier and only if the are the same add possible sources
@@ -351,23 +351,23 @@ void CDownloadQueue::AddFileLinkToDownload(CED2KFileLink* pLink, int cat)
                 partfile->GetAICHRecoveryHashSet()->FreeHashSet();
             }
 
-			if (pLink->HasValidSources())
-				partfile->AddClientSources(pLink->SourcesList, 1, false);
+            if (pLink->HasValidSources())
+                partfile->AddClientSources(pLink->SourcesList, 1, false);
 
-			if (pLink->HasHostnameSources())
-			{
-				POSITION pos = pLink->m_HostnameSourcesList.GetHeadPosition();
-				while (pos != NULL)
-				{
-					const SUnresolvedHostname* pUnresHost = pLink->m_HostnameSourcesList.GetNext(pos);
-					m_srcwnd.AddToResolve(pLink->GetHashKey(), pUnresHost->strHostname, pUnresHost->nPort, pUnresHost->strURL);
-				}
-			}
+            if (pLink->HasHostnameSources())
+            {
+                POSITION pos = pLink->m_HostnameSourcesList.GetHeadPosition();
+                while (pos != NULL)
+                {
+                    const SUnresolvedHostname* pUnresHost = pLink->m_HostnameSourcesList.GetNext(pos);
+                    m_srcwnd.AddToResolve(pLink->GetHashKey(), pUnresHost->strHostname, pUnresHost->nPort, pUnresHost->strURL);
+                }
+            }
         }
         else
             DebugLogWarning(_T("FileIdentifier mismatch when trying to add ed2k link to existing download - AICH Hash or Size might differ, no sources added. File: %s"),
                             partfile->GetFileName());
-	}
+    }
 }
 
 void CDownloadQueue::AddToResolved(CPartFile* pFile, SUnresolvedHostname* pUH)
@@ -388,13 +388,13 @@ void CDownloadQueue::AddDownload(CPartFile* newfile,bool paused)
     SortByPriority();
     CheckDiskspace();
 //>>> WiZaRd::Immediate File Sharing
-	if (newfile->GetStatus(true) == PS_READY 
-		|| (newfile->GetStatus(true) == PS_EMPTY && !newfile->m_bMD4HashsetNeeded))
-	{
-		newfile->SetStatus(PS_READY);
-		if(theApp.sharedfiles->GetFileByID(newfile->GetFileHash()) == NULL)	
-			theApp.sharedfiles->SafeAddKFile(newfile);
-	}
+    if (newfile->GetStatus(true) == PS_READY
+            || (newfile->GetStatus(true) == PS_EMPTY && !newfile->m_bMD4HashsetNeeded))
+    {
+        newfile->SetStatus(PS_READY);
+        if (theApp.sharedfiles->GetFileByID(newfile->GetFileHash()) == NULL)
+            theApp.sharedfiles->SafeAddKFile(newfile);
+    }
 //<<< WiZaRd::Immediate File Sharing
     theApp.emuledlg->transferwnd->GetDownloadList()->AddFile(newfile);
     AddLogLine(true, GetResString(IDS_NEWDOWNLOAD), newfile->GetFileName());
@@ -907,11 +907,11 @@ void CDownloadQueue::CheckDiskspace()
         CPartFile* cur_file = filelist.GetNext(pos1);
         switch (cur_file->GetStatus())
         {
-        case PS_PAUSED:
-        case PS_ERROR:
-        case PS_COMPLETING:
-        case PS_COMPLETE:
-            continue;
+            case PS_PAUSED:
+            case PS_ERROR:
+            case PS_COMPLETING:
+            case PS_COMPLETE:
+                continue;
         }
 
         uint64 nTotalAvailableSpace = 0;
@@ -993,8 +993,8 @@ CUpDownClient* CDownloadQueue::GetDownloadClientByIP(const _CIPAddress& dwIP)
         {
             CUpDownClient* cur_client = cur_file->srclist.GetNext(pos2);
 //>>> WiZaRd::IPv6 [Xanatos]
-			if (dwIP.Type() == CAddress::IPv6 ? dwIP == cur_client->GetIPv6() : dwIP == cur_client->GetIP())
-            //if (dwIP == cur_client->GetIP())
+            if (dwIP.Type() == CAddress::IPv6 ? dwIP == cur_client->GetIPv6() : dwIP == cur_client->GetIP())
+                //if (dwIP == cur_client->GetIP())
 //<<< WiZaRd::IPv6 [Xanatos]
                 return cur_client;
         }
@@ -1017,13 +1017,13 @@ CUpDownClient* CDownloadQueue::GetDownloadClientByIP_UDP(const _CIPAddress& dwIP
         {
             CUpDownClient* cur_client = cur_file->srclist.GetNext(pos2);
 //>>> WiZaRd::IPv6 [Xanatos]
-			if ((dwIP.Type() == CAddress::IPv6 ? dwIP == cur_client->GetIPv6() : dwIP == cur_client->GetIP()) && nUDPPort == cur_client->GetUDPPort())
-            //if (dwIP == cur_client->GetIP() && nUDPPort == cur_client->GetUDPPort())
+            if ((dwIP.Type() == CAddress::IPv6 ? dwIP == cur_client->GetIPv6() : dwIP == cur_client->GetIP()) && nUDPPort == cur_client->GetUDPPort())
+                //if (dwIP == cur_client->GetIP() && nUDPPort == cur_client->GetUDPPort())
 //<<< WiZaRd::IPv6 [Xanatos]
                 return cur_client;
 //>>> WiZaRd::IPv6 [Xanatos]
-			else if ((dwIP.Type() == CAddress::IPv6 ? dwIP == cur_client->GetIPv6() : dwIP == cur_client->GetIP()) && bIgnorePortOnUniqueIP && cur_client != pMatchingIPClient)
-            //else if (dwIP == cur_client->GetIP() && bIgnorePortOnUniqueIP && cur_client != pMatchingIPClient)
+            else if ((dwIP.Type() == CAddress::IPv6 ? dwIP == cur_client->GetIPv6() : dwIP == cur_client->GetIP()) && bIgnorePortOnUniqueIP && cur_client != pMatchingIPClient)
+                //else if (dwIP == cur_client->GetIP() && bIgnorePortOnUniqueIP && cur_client != pMatchingIPClient)
 //<<< WiZaRd::IPv6 [Xanatos]
             {
                 pMatchingIPClient = cur_client;
@@ -1129,30 +1129,30 @@ void CDownloadQueue::SetCatStatus(UINT cat, int newstatus)
         {
             switch (newstatus)
             {
-            case MP_CANCEL:
-                cur_file->DeleteFile();
-                reset = true;
-                break;
-            case MP_PAUSE:
-                cur_file->PauseFile(false, false);
-                resort = true;
-                break;
-            case MP_STOP:
-                cur_file->StopFile(false, false);
-                resort = true;
-                break;
-            case MP_RESUME:
-                if (cur_file->CanResumeFile())
-                {
-                    if (cur_file->GetStatus() == PS_INSUFFICIENT)
-                        cur_file->ResumeFileInsufficient();
-                    else
+                case MP_CANCEL:
+                    cur_file->DeleteFile();
+                    reset = true;
+                    break;
+                case MP_PAUSE:
+                    cur_file->PauseFile(false, false);
+                    resort = true;
+                    break;
+                case MP_STOP:
+                    cur_file->StopFile(false, false);
+                    resort = true;
+                    break;
+                case MP_RESUME:
+                    if (cur_file->CanResumeFile())
                     {
-                        cur_file->ResumeFile(false);
-                        resort = true;
+                        if (cur_file->GetStatus() == PS_INSUFFICIENT)
+                            cur_file->ResumeFileInsufficient();
+                        else
+                        {
+                            cur_file->ResumeFile(false);
+                            resort = true;
+                        }
                     }
-                }
-                break;
+                    break;
             }
         }
         filelist.GetNext(pos);
@@ -1427,89 +1427,89 @@ void CDownloadQueue::KademliaSearchFile(UINT searchID, const Kademlia::CUInt128*
     //DEBUG_ONLY( DebugLog(_T("Kadsource received, type %u, IP %s"), type, ipstr(ED2Kip)) );
     switch (type)
     {
-    case 4:
-    case 1:
-    {
-        //NonFirewalled users
-        if (!tcp)
+        case 4:
+        case 1:
         {
-            if (thePrefs.GetVerbose())
-                AddDebugLogLine(false, _T("Ignored source (IP=%s) received from Kademlia, no tcp port received"), ipstr(ip));
-            return;
-        }
-        ctemp = new CUpDownClient(temp,tcp,ip,0,0,false);
-        ctemp->SetSourceFrom(SF_KADEMLIA);
-        // not actually sent or needed for HighID sources
-        //ctemp->SetServerIP(serverip);
-        //ctemp->SetServerPort(serverport);
-        ctemp->SetKadPort(udp);
-        byte cID[16];
-        pcontactID->ToByteArray(cID);
-        ctemp->SetUserHash(cID);
-        break;
-    }
-    case 2:
-    {
-        //Don't use this type... Some clients will process it wrong..
-        break;
-    }
-    case 5:
-    case 3:
-    {
-        //This will be a firewaled client connected to Kad only.
-        // if we are firewalled ourself, the source is useless to us
-        if (theApp.IsFirewalled())
-            break;
-
-        //We set the clientID to 1 as a Kad user only has 1 buddy.
-        ctemp = new CUpDownClient(temp,tcp,1,0,0,false);
-        //The only reason we set the real IP is for when we get a callback
-        //from this firewalled source, the compare method will match them.
-        ctemp->SetSourceFrom(SF_KADEMLIA);
-        ctemp->SetKadPort(udp);
-        byte cID[16];
-        pcontactID->ToByteArray(cID);
-        ctemp->SetUserHash(cID);
-        pbuddyID->ToByteArray(cID);
-        ctemp->SetBuddyID(cID);
-        ctemp->SetBuddyIP(dwBuddyIP);
-        ctemp->SetBuddyPort(dwBuddyPort);
-        break;
-    }
-    case 6:
-    {
-        // firewalled source which supports direct udp callback
-        // if we are firewalled ourself, the source is useless to us
-        if (theApp.IsFirewalled())
-            break;
-
-        if ((byCryptOptions & 0x08) == 0)
-        {
-            DebugLogWarning(_T("Received Kad source type 6 (direct callback) which has the direct callback flag not set (%s)"), ipstr(ED2Kip));
+            //NonFirewalled users
+            if (!tcp)
+            {
+                if (thePrefs.GetVerbose())
+                    AddDebugLogLine(false, _T("Ignored source (IP=%s) received from Kademlia, no tcp port received"), ipstr(ip));
+                return;
+            }
+            ctemp = new CUpDownClient(temp,tcp,ip,0,0,false);
+            ctemp->SetSourceFrom(SF_KADEMLIA);
+            // not actually sent or needed for HighID sources
+            //ctemp->SetServerIP(serverip);
+            //ctemp->SetServerPort(serverport);
+            ctemp->SetKadPort(udp);
+            byte cID[16];
+            pcontactID->ToByteArray(cID);
+            ctemp->SetUserHash(cID);
             break;
         }
-        ctemp = new CUpDownClient(temp, tcp, 1, 0, 0, false);
-        ctemp->SetSourceFrom(SF_KADEMLIA);
-        ctemp->SetKadPort(udp);
+        case 2:
+        {
+            //Don't use this type... Some clients will process it wrong..
+            break;
+        }
+        case 5:
+        case 3:
+        {
+            //This will be a firewaled client connected to Kad only.
+            // if we are firewalled ourself, the source is useless to us
+            if (theApp.IsFirewalled())
+                break;
+
+            //We set the clientID to 1 as a Kad user only has 1 buddy.
+            ctemp = new CUpDownClient(temp,tcp,1,0,0,false);
+            //The only reason we set the real IP is for when we get a callback
+            //from this firewalled source, the compare method will match them.
+            ctemp->SetSourceFrom(SF_KADEMLIA);
+            ctemp->SetKadPort(udp);
+            byte cID[16];
+            pcontactID->ToByteArray(cID);
+            ctemp->SetUserHash(cID);
+            pbuddyID->ToByteArray(cID);
+            ctemp->SetBuddyID(cID);
+            ctemp->SetBuddyIP(dwBuddyIP);
+            ctemp->SetBuddyPort(dwBuddyPort);
+            break;
+        }
+        case 6:
+        {
+            // firewalled source which supports direct udp callback
+            // if we are firewalled ourself, the source is useless to us
+            if (theApp.IsFirewalled())
+                break;
+
+            if ((byCryptOptions & 0x08) == 0)
+            {
+                DebugLogWarning(_T("Received Kad source type 6 (direct callback) which has the direct callback flag not set (%s)"), ipstr(ED2Kip));
+                break;
+            }
+            ctemp = new CUpDownClient(temp, tcp, 1, 0, 0, false);
+            ctemp->SetSourceFrom(SF_KADEMLIA);
+            ctemp->SetKadPort(udp);
 //>>> WiZaRd::IPv6 [Xanatos]
-		ctemp->SetIP(CAddress(_ntohl(ED2Kip))); // need to set the Ip address, which cannot be used for TCP but for UDP
-        //ctemp->SetIP(ED2Kip); // need to set the Ip address, which cannot be used for TCP but for UDP
+            ctemp->SetIP(CAddress(_ntohl(ED2Kip))); // need to set the Ip address, which cannot be used for TCP but for UDP
+            //ctemp->SetIP(ED2Kip); // need to set the Ip address, which cannot be used for TCP but for UDP
 //<<< WiZaRd::IPv6 [Xanatos]
-        byte cID[16];
-        pcontactID->ToByteArray(cID);
-        ctemp->SetUserHash(cID);
-    }
+            byte cID[16];
+            pcontactID->ToByteArray(cID);
+            ctemp->SetUserHash(cID);
+        }
     }
 
     if (ctemp != NULL)
     {
 //>>> WiZaRd::IPv6 [Xanatos]
-		if(*pIPv6 != 0)
-		{
-			CAddress IPv6(CAddress::IPv6);
-			pIPv6->ToByteArray((byte*)IPv6.Data());
-			ctemp->SetIPv6(IPv6);
-		}
+        if (*pIPv6 != 0)
+        {
+            CAddress IPv6(CAddress::IPv6);
+            pIPv6->ToByteArray((byte*)IPv6.Data());
+            ctemp->SetIPv6(IPv6);
+        }
 //<<< WiZaRd::IPv6 [Xanatos]
 
         // add encryption settings
@@ -1660,13 +1660,13 @@ CString CDownloadQueue::GetOptimalTempDir(UINT nCat, EMFileSize nFileSize)
         sint64 llNeededForCompletion = 0;
         switch (pCurFile->GetStatus(false))
         {
-        case PS_READY:
-        case PS_EMPTY:
-        case PS_WAITINGFORHASH:
-        case PS_INSUFFICIENT:
-            llNeededForCompletion = pCurFile->GetFileSize() - pCurFile->GetRealFileSize();
-            if (llNeededForCompletion < 0)
-                llNeededForCompletion = 0;
+            case PS_READY:
+            case PS_EMPTY:
+            case PS_WAITINGFORHASH:
+            case PS_INSUFFICIENT:
+                llNeededForCompletion = pCurFile->GetFileSize() - pCurFile->GetRealFileSize();
+                if (llNeededForCompletion < 0)
+                    llNeededForCompletion = 0;
         }
         llBuffer = 0;
         mapNeededSpaceOnDrive.Lookup(nDriveNumber, llBuffer);
@@ -1755,15 +1755,15 @@ void CDownloadQueue::RefilterAllComments()
 //>>> WiZaRd::Improved Auto Prio
 void	CDownloadQueue::GetActiveFilesAndSourceCount(UINT& files, UINT& srcs)
 {
-	for (POSITION pos = theApp.downloadqueue->filelist.GetHeadPosition(); pos;)
-	{
-		const CPartFile* cur_file = theApp.downloadqueue->filelist.GetNext(pos);
-		if (!cur_file->IsStopped() && !cur_file->IsPaused() //just to be sure...
-			&& (cur_file->GetStatus() == PS_READY || cur_file->GetStatus() == PS_EMPTY))
-		{
-			++files;
-			srcs += cur_file->GetSourceCount();
-		}
-	}
+    for (POSITION pos = theApp.downloadqueue->filelist.GetHeadPosition(); pos;)
+    {
+        const CPartFile* cur_file = theApp.downloadqueue->filelist.GetNext(pos);
+        if (!cur_file->IsStopped() && !cur_file->IsPaused() //just to be sure...
+                && (cur_file->GetStatus() == PS_READY || cur_file->GetStatus() == PS_EMPTY))
+        {
+            ++files;
+            srcs += cur_file->GetSourceCount();
+        }
+    }
 }
 //<<< WiZaRd::Improved Auto Prio

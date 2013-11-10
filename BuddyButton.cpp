@@ -44,39 +44,39 @@ static LRESULT CALLBACK BuddyButtonSubClassedProc(HWND hWnd, UINT uMessage, WPAR
 
     switch (uMessage)
     {
-    case WM_NCDESTROY:
-        SetWindowLong(hWnd, GWL_WNDPROC, (LONG)pfnOldWndProc);
-        VERIFY(RemoveProp(hWnd, s_szPropOldWndProc) != NULL);
-        VERIFY(RemoveProp(hWnd, s_szPropBuddyData) != NULL);
-        delete pBuddyData;
-        break;
+        case WM_NCDESTROY:
+            SetWindowLong(hWnd, GWL_WNDPROC, (LONG)pfnOldWndProc);
+            VERIFY(RemoveProp(hWnd, s_szPropOldWndProc) != NULL);
+            VERIFY(RemoveProp(hWnd, s_szPropBuddyData) != NULL);
+            delete pBuddyData;
+            break;
 
-    case WM_NCHITTEST:
-    {
-        LRESULT lResult = CallWindowProc(pfnOldWndProc, hWnd, uMessage, wParam, lParam);
-        if (lResult == HTNOWHERE)
-            lResult = HTTRANSPARENT;
-        return lResult;
-    }
+        case WM_NCHITTEST:
+        {
+            LRESULT lResult = CallWindowProc(pfnOldWndProc, hWnd, uMessage, wParam, lParam);
+            if (lResult == HTNOWHERE)
+                lResult = HTTRANSPARENT;
+            return lResult;
+        }
 
-    case WM_NCCALCSIZE:
-    {
-        LRESULT lResult = CallWindowProc(pfnOldWndProc, hWnd, uMessage, wParam, lParam);
-        LPNCCALCSIZE_PARAMS lpNCCS = (LPNCCALCSIZE_PARAMS)lParam;
-        lpNCCS->rgrc[0].right -= pBuddyData->m_uButtonWidth;
-        return lResult;
-    }
+        case WM_NCCALCSIZE:
+        {
+            LRESULT lResult = CallWindowProc(pfnOldWndProc, hWnd, uMessage, wParam, lParam);
+            LPNCCALCSIZE_PARAMS lpNCCS = (LPNCCALCSIZE_PARAMS)lParam;
+            lpNCCS->rgrc[0].right -= pBuddyData->m_uButtonWidth;
+            return lResult;
+        }
 
-    case WM_SIZE:
-    {
-        CRect rc;
-        GetClientRect(hWnd, rc);
-        rc.left = rc.right;
-        rc.right = rc.left + pBuddyData->m_uButtonWidth;
-        MapWindowPoints(hWnd, GetParent(hWnd), (LPPOINT)&rc, 2);
-        SetWindowPos(pBuddyData->m_hwndButton, NULL, rc.left, rc.top, rc.Width(), rc.Height(), SWP_NOZORDER);
-        break;
-    }
+        case WM_SIZE:
+        {
+            CRect rc;
+            GetClientRect(hWnd, rc);
+            rc.left = rc.right;
+            rc.right = rc.left + pBuddyData->m_uButtonWidth;
+            MapWindowPoints(hWnd, GetParent(hWnd), (LPPOINT)&rc, 2);
+            SetWindowPos(pBuddyData->m_hwndButton, NULL, rc.left, rc.top, rc.Width(), rc.Height(), SWP_NOZORDER);
+            break;
+        }
     }
     return CallWindowProc(pfnOldWndProc, hWnd, uMessage, wParam, lParam);
 }

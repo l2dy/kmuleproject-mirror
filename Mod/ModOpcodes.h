@@ -105,9 +105,9 @@ enum eSharePermissions
 // Special values
 enum
 {
-	PROTOCOL_REVISION_0 = 0,
-	PROTOCOL_REVISION_1 = 1,
-	PROTOCOL_REVISION_2 = 2
+    PROTOCOL_REVISION_0 = 0,
+    PROTOCOL_REVISION_1 = 1,
+    PROTOCOL_REVISION_2 = 2
 };
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 

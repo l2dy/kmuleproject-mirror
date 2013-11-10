@@ -189,72 +189,72 @@ BOOL CFriendListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 
     switch (wParam)
     {
-    case MP_MESSAGE:
-        if (cur_friend)
-        {
-            theApp.emuledlg->chatwnd->StartSession(cur_friend->GetClientForChatSession());
-        }
-        break;
-    case MP_REMOVEFRIEND:
-        if (cur_friend)
-        {
-            theApp.friendlist->RemoveFriend(cur_friend);
-            // auto select next item after deleted one.
-            if (iSel < GetItemCount())
+        case MP_MESSAGE:
+            if (cur_friend)
             {
-                SetSelectionMark(iSel);
-                SetItemState(iSel, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+                theApp.emuledlg->chatwnd->StartSession(cur_friend->GetClientForChatSession());
             }
-            theApp.emuledlg->chatwnd->UpdateSelectedFriendMsgDetails();
-        }
-        break;
-    case MP_ADDFRIEND:
-    {
-        CAddFriend dialog2;
-        dialog2.DoModal();
-        break;
-    }
-    case MP_DETAIL:
-    case MPG_ALTENTER:
-    case IDA_ENTER:
-        if (cur_friend)
-            ShowFriendDetails(cur_friend);
-        break;
-    case MP_SHOWLIST:
-        if (cur_friend)
-        {
-            if (cur_friend->GetLinkedClient(true))
-                cur_friend->GetLinkedClient()->RequestSharedFileList();
-            else
+            break;
+        case MP_REMOVEFRIEND:
+            if (cur_friend)
             {
+                theApp.friendlist->RemoveFriend(cur_friend);
+                // auto select next item after deleted one.
+                if (iSel < GetItemCount())
+                {
+                    SetSelectionMark(iSel);
+                    SetItemState(iSel, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+                }
+                theApp.emuledlg->chatwnd->UpdateSelectedFriendMsgDetails();
+            }
+            break;
+        case MP_ADDFRIEND:
+        {
+            CAddFriend dialog2;
+            dialog2.DoModal();
+            break;
+        }
+        case MP_DETAIL:
+        case MPG_ALTENTER:
+        case IDA_ENTER:
+            if (cur_friend)
+                ShowFriendDetails(cur_friend);
+            break;
+        case MP_SHOWLIST:
+            if (cur_friend)
+            {
+                if (cur_friend->GetLinkedClient(true))
+                    cur_friend->GetLinkedClient()->RequestSharedFileList();
+                else
+                {
 //>>> WiZaRd::IPv6 [Xanatos]
-				CUpDownClient* newclient = new CUpDownClient(0, cur_friend->m_nLastUsedPort, cur_friend->m_dwLastUsedIP, 0, 0);
-                //CUpDownClient* newclient = new CUpDownClient(0, cur_friend->m_nLastUsedPort, cur_friend->m_dwLastUsedIP, 0, 0, true);
+                    CUpDownClient* newclient = new CUpDownClient(0, cur_friend->m_nLastUsedPort, cur_friend->m_dwLastUsedIP, 0, 0);
+                    //CUpDownClient* newclient = new CUpDownClient(0, cur_friend->m_nLastUsedPort, cur_friend->m_dwLastUsedIP, 0, 0, true);
 //<<< WiZaRd::IPv6 [Xanatos]
 //>>> WiZaRd::Easy ModVersion
-                //Short note: because of the overhead saving code in baseclient by Morph
-                //const bool bSend = !m_pszUsername || !m_strModVersion.IsEmpty();
-                //we must ensure that the name for a real new client is really NULL
+                    //Short note: because of the overhead saving code in baseclient by Morph
+                    //const bool bSend = !m_pszUsername || !m_strModVersion.IsEmpty();
+                    //we must ensure that the name for a real new client is really NULL
 //				newclient->SetUserName(cur_friend->m_strName);
 //<<< WiZaRd::Easy ModVersion
-                newclient->SetUserHash(cur_friend->m_abyUserhash); //>>> WiZaRd::FiX - missing in official?
-                theApp.clientlist->AddClient(newclient);
-                newclient->RequestSharedFileList();
+                    newclient->SetUserHash(cur_friend->m_abyUserhash); //>>> WiZaRd::FiX - missing in official?
+                    theApp.clientlist->AddClient(newclient);
+                    newclient->RequestSharedFileList();
+                }
             }
-        }
-        break;
-    case MP_FRIENDSLOT:
-        if (cur_friend)
-        {
-            bool bIsAlready = cur_friend->GetFriendSlot();
-            theApp.friendlist->RemoveAllFriendSlots();
-            if (!bIsAlready)
-                cur_friend->SetFriendSlot(true);
-        }
-        break;
-    case MP_FIND:
-        OnFindStart();
-        break;
+            break;
+        case MP_FRIENDSLOT:
+            if (cur_friend)
+            {
+                bool bIsAlready = cur_friend->GetFriendSlot();
+                theApp.friendlist->RemoveAllFriendSlots();
+                if (!bIsAlready)
+                    cur_friend->SetFriendSlot(true);
+            }
+            break;
+        case MP_FIND:
+            OnFindStart();
+            break;
     }
     return true;
 }
@@ -324,12 +324,12 @@ int CFriendListCtrl::SortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
     int iResult;
     switch (LOWORD(lParamSort))
     {
-    case 0:
-        iResult = CompareLocaleStringNoCase(item1->m_strName, item2->m_strName);
-        break;
+        case 0:
+            iResult = CompareLocaleStringNoCase(item1->m_strName, item2->m_strName);
+            break;
 
-    default:
-        return 0;
+        default:
+            return 0;
     }
     if (HIWORD(lParamSort))
         iResult = -iResult;

@@ -3084,12 +3084,12 @@ public:
 
     static bool CompareElements(__in INARGTYPE cookie1, __in INARGTYPE cookie2)
     {
-        return(cookie1.m_strName == cookie2.m_strName);
+        return (cookie1.m_strName == cookie2.m_strName);
     }
 
     static int CompareElementsOrdered(__in INARGTYPE cookie1, __in INARGTYPE cookie2)
     {
-        return(cookie1.m_strName.Compare(cookie2.m_strName));
+        return (cookie1.m_strName.Compare(cookie2.m_strName));
     }
 };
 
@@ -4068,7 +4068,7 @@ private:
         char *s1, *s2;
 
         if (!*str2)
-            return((char *)str1);
+            return ((char *)str1);
 
         while (*cp)
         {
@@ -4082,13 +4082,13 @@ private:
 
             if (!*s2)
             {
-                return(cp);
+                return (cp);
             }
 
             cp++;
         }
 
-        return(NULL);
+        return (NULL);
     }
 
 
@@ -4100,7 +4100,7 @@ private:
         char *s1, *s2;
 
         if (!*str2)
-            return((char *)str1);
+            return ((char *)str1);
 
         while (cp != str1End)
         {
@@ -4125,7 +4125,7 @@ private:
             cp++;
         }
 
-        return(NULL);
+        return (NULL);
     }
 
     inline __checkReturn char * _strstrex(__in const char * str1, __in const char * str2, __in const char * str1End)
@@ -4136,7 +4136,7 @@ private:
         char *s1, *s2;
 
         if (!*str2)
-            return((char *)str1);
+            return ((char *)str1);
 
         while (cp != str1End)
         {
@@ -4161,7 +4161,7 @@ private:
             cp++;
         }
 
-        return(NULL);
+        return (NULL);
     }
 
     ATL_NOINLINE __checkReturn BOOL InitializeParser() throw()
@@ -7994,135 +7994,135 @@ inline HTTP_CODE _AtlGetHandlerName(__in LPCSTR szFileName, __out_ecount(MAX_PAT
         {
             switch (nState)
             {
-            case 0:
-                //  0 = default/unknown
+                case 0:
+                    //  0 = default/unknown
 
-                // look for the first curly
-                szCurly = strchr(pszBuf, '{');
-                if (!szCurly)
-                {
-                    // skip to the end of the buffer
-                    pszBuf = szBuf+dwRead-1;
-                }
-                else
-                {
-                    pszBuf = szCurly;
-                    nState = 1;
-                }
-                break;
-            case 1:
-                //  1 = have "{"
-                if (*pszBuf == '{')
-                {
-                    nState = 2;
-                }
-                else
-                {
-                    nState = 0; // if the next character is not a '{', start over
-                }
-                break;
-            case 2:
-                if (!isspace(static_cast<unsigned char>(*pszBuf)))
-                {
-                    pszHandlerPos = szHandler;
-                    pszBuf--;
-                    nState = 3;
-                }
-                break;
-            case 3:
-                //  3 = partial handler "h..."
-                if (*pszBuf != *pszHandlerPos)
-                {
-                    // not a handler, skip tag
-                    nState = 6;
-                }
-                else
-                {
-                    pszHandlerPos++;
-                    if (!*pszHandlerPos) // at the end of the "handler" part
-                        nState = 4;
-                }
-                break;
-            case 4:
-                //  4 = have "handler" -- skip spaces
-                if (!isspace(static_cast<unsigned char>(*pszBuf)))
-                {
-                    if (*pszBuf == '\"')
+                    // look for the first curly
+                    szCurly = strchr(pszBuf, '{');
+                    if (!szCurly)
                     {
-                        bInQuote = true;
+                        // skip to the end of the buffer
+                        pszBuf = szBuf+dwRead-1;
                     }
                     else
                     {
-                        pszBuf--;
+                        pszBuf = szCurly;
+                        nState = 1;
                     }
-                    nState = 5;
-                }
-                break;
-            case 5:
-                //  5 = have "handler" -- get name
-                if (isspace(static_cast<unsigned char>(*pszBuf)) && !bInQuote)
-                {
-                    if (*(pszHandlerName-1) != '/')
+                    break;
+                case 1:
+                    //  1 = have "{"
+                    if (*pszBuf == '{')
                     {
-                        // end of the name -- jump to getting the first '}'
+                        nState = 2;
+                    }
+                    else
+                    {
+                        nState = 0; // if the next character is not a '{', start over
+                    }
+                    break;
+                case 2:
+                    if (!isspace(static_cast<unsigned char>(*pszBuf)))
+                    {
+                        pszHandlerPos = szHandler;
+                        pszBuf--;
+                        nState = 3;
+                    }
+                    break;
+                case 3:
+                    //  3 = partial handler "h..."
+                    if (*pszBuf != *pszHandlerPos)
+                    {
+                        // not a handler, skip tag
                         nState = 6;
                     }
                     else
                     {
-                        nState = 4;
+                        pszHandlerPos++;
+                        if (!*pszHandlerPos) // at the end of the "handler" part
+                            nState = 4;
                     }
-                }
-                else if (*pszBuf == '}')
-                {
-                    // end of the name -- jump to getting the second '}'
-                    nState = 7;
-                }
-                else if (*pszBuf == '\"')
-                {
-                    if (bInQuote)
+                    break;
+                case 4:
+                    //  4 = have "handler" -- skip spaces
+                    if (!isspace(static_cast<unsigned char>(*pszBuf)))
                     {
-                        bInQuote = false;
+                        if (*pszBuf == '\"')
+                        {
+                            bInQuote = true;
+                        }
+                        else
+                        {
+                            pszBuf--;
+                        }
+                        nState = 5;
+                    }
+                    break;
+                case 5:
+                    //  5 = have "handler" -- get name
+                    if (isspace(static_cast<unsigned char>(*pszBuf)) && !bInQuote)
+                    {
+                        if (*(pszHandlerName-1) != '/')
+                        {
+                            // end of the name -- jump to getting the first '}'
+                            nState = 6;
+                        }
+                        else
+                        {
+                            nState = 4;
+                        }
+                    }
+                    else if (*pszBuf == '}')
+                    {
+                        // end of the name -- jump to getting the second '}'
+                        nState = 7;
+                    }
+                    else if (*pszBuf == '\"')
+                    {
+                        if (bInQuote)
+                        {
+                            bInQuote = false;
+                        }
+                        else
+                        {
+                            hcErr = HTTP_FAIL;
+                            nState = 8;
+                        }
                     }
                     else
                     {
-                        hcErr = HTTP_FAIL;
-                        nState = 8;
+                        // ensure we don't overwrite the buffer
+                        if (pszHandlerName-szHandlerName >= MAX_PATH+ATL_MAX_HANDLER_NAME_LEN+1)
+                        {
+                            hcErr =  HTTP_FAIL;
+                            nState = 8;
+                        }
+                        else
+                        {
+                            *pszHandlerName++ = *pszBuf;
+                        }
                     }
-                }
-                else
-                {
-                    // ensure we don't overwrite the buffer
-                    if (pszHandlerName-szHandlerName >= MAX_PATH+ATL_MAX_HANDLER_NAME_LEN+1)
+                    break;
+                case 6:
+                    //  6 = scan until first '}'
+                    if (*pszBuf == '}')
+                        nState = 7;
+                    break;
+                case 7:
+                    //  7 = better be '}'
+                    if (*pszBuf != '}')
                     {
-                        hcErr =  HTTP_FAIL;
+                        hcErr = AtlsHttpError(500, ISE_SUBERR_BAD_HANDLER_TAG);
                         nState = 8;
                     }
+                    if (*szHandlerName)
+                        nState = 8;
                     else
-                    {
-                        *pszHandlerName++ = *pszBuf;
-                    }
-                }
-                break;
-            case 6:
-                //  6 = scan until first '}'
-                if (*pszBuf == '}')
-                    nState = 7;
-                break;
-            case 7:
-                //  7 = better be '}'
-                if (*pszBuf != '}')
-                {
-                    hcErr = AtlsHttpError(500, ISE_SUBERR_BAD_HANDLER_TAG);
-                    nState = 8;
-                }
-                if (*szHandlerName)
-                    nState = 8;
-                else
-                    nState = 0;
-                break;
-            default:
-                ATLASSERT(FALSE);
-                return HTTP_INTERNAL_SERVER_ERROR;
+                        nState = 0;
+                    break;
+                default:
+                    ATLASSERT(FALSE);
+                    return HTTP_INTERNAL_SERVER_ERROR;
             }
 
             pszBuf++;
@@ -10454,63 +10454,76 @@ extern "C" __declspec(allocate("ATLS$C")) __declspec(selectany) \
 ATL::_HANDLER_ENTRY * const __phdlrEntry_ ## className ## _ ## lineNum = &__hdlrEntry_ ## className ## _ ## lineNum; \
 HANDLER_ENTRY_PRAGMA(className, lineNum) \
 __if_not_exists(GetAtlHandlerByName) \
-{ \
+{ 
+\
 extern "C" ATL_NOINLINE inline BOOL __declspec(dllexport) __stdcall GetAtlHandlerByName(LPCSTR szHandlerName, IIsapiExtension *pExtension, IUnknown **ppHandler) throw() \
-{ \
-	*ppHandler = NULL; \
-	ATL::_HANDLER_ENTRY **pEntry = &__phdlrA; \
-	while (pEntry != &__phdlrZ) \
-	{ \
-		if (*pEntry && (*pEntry)->szName) \
-		{ \
-			if (strcmp((*pEntry)->szName, szHandlerName)==0) \
-			{ \
-				return (*(*pEntry)->pfnCreate)(pExtension, ppHandler); \
-			} \
-		} \
-		pEntry++; \
-	} \
-	return FALSE; \
+{
+    \
+    *ppHandler = NULL; \
+    ATL::_HANDLER_ENTRY **pEntry = &__phdlrA; \
+    while (pEntry != &__phdlrZ) \
+    {
+        \
+        if (*pEntry && (*pEntry)->szName) \
+        {
+            \
+            if (strcmp((*pEntry)->szName, szHandlerName)==0) \
+            {
+                \
+                return (*(*pEntry)->pfnCreate)(pExtension, ppHandler); \
+            } \
+        } \
+        pEntry++; \
+    } \
+    return FALSE; \
 } \
 extern "C" ATL_NOINLINE inline  BOOL __declspec(dllexport) __stdcall InitializeAtlHandlers(IHttpServerContext *pContext, IIsapiExtension *pExt) throw() \
-{ \
-	ATL::_HANDLER_ENTRY **pEntry = &__phdlrA; \
-	BOOL bRet = TRUE; \
-	while (pEntry != &__phdlrZ) \
-	{ \
-		if (*pEntry && (*pEntry)->szName && (*pEntry)->pfnInit) \
-		{ \
-			bRet = (*(*pEntry)->pfnInit)(pContext, pExt); \
-			if (!bRet) \
-				break; \
-		} \
-		pEntry++; \
-	} \
-	if (!bRet) \
-	{ \
-		if (pEntry == &__phdlrA) \
-			return FALSE; \
-		do \
-		{ \
-			pEntry--; \
-			if(*pEntry) \
-				(*(*pEntry)->pfnUninit)(); \
-		} \
-		while (pEntry != &__phdlrA); \
-	} \
-	return bRet; \
+{
+    \
+    ATL::_HANDLER_ENTRY **pEntry = &__phdlrA; \
+    BOOL bRet = TRUE; \
+    while (pEntry != &__phdlrZ) \
+    {
+        \
+        if (*pEntry && (*pEntry)->szName && (*pEntry)->pfnInit) \
+        {
+            \
+            bRet = (*(*pEntry)->pfnInit)(pContext, pExt); \
+            if (!bRet) \
+                break; \
+        } \
+        pEntry++; \
+    } \
+    if (!bRet) \
+    {
+        \
+        if (pEntry == &__phdlrA) \
+            return FALSE; \
+        do \
+        {
+            \
+            pEntry--; \
+            if (*pEntry) \
+                (*(*pEntry)->pfnUninit)(); \
+        } \
+        while (pEntry != &__phdlrA); \
+    } \
+    return bRet; \
 } \
 extern "C" ATL_NOINLINE inline void __declspec(dllexport) __stdcall UninitializeAtlHandlers() throw() \
-{\
-	ATL::_HANDLER_ENTRY **pEntry = &__phdlrA; \
-	while (pEntry != &__phdlrZ) \
-	{ \
-		if (*pEntry && (*pEntry)->szName && (*pEntry)->pfnUninit) \
-		{ \
-			(*(*pEntry)->pfnUninit)(); \
-		} \
-		pEntry++; \
-	} \
+{
+    \
+    ATL::_HANDLER_ENTRY **pEntry = &__phdlrA; \
+    while (pEntry != &__phdlrZ) \
+    {
+        \
+        if (*pEntry && (*pEntry)->szName && (*pEntry)->pfnUninit) \
+        {
+            \
+            (*(*pEntry)->pfnUninit)(); \
+        } \
+        pEntry++; \
+    } \
 } \
 }
 

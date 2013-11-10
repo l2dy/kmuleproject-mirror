@@ -177,11 +177,11 @@ void CMuleToolbarCtrl::Init(void)
 
         switch (TBButtons[i].idCommand)
         {
-        case TBBTN_OPTIONS:
-        case TBBTN_TOOLS:
-        case TBBTN_HELP:
-            TBButtons[i].fsStyle = TBSTYLE_BUTTON;
-            break;
+            case TBBTN_OPTIONS:
+            case TBBTN_TOOLS:
+            case TBBTN_HELP:
+                TBButtons[i].fsStyle = TBSTYLE_BUTTON;
+                break;
         }
     }
 
@@ -674,129 +674,129 @@ BOOL CMuleToolbarCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 {
     switch (wParam)
     {
-    case MP_SELECTTOOLBARBITMAPDIR:
-    {
-        TCHAR buffer[MAX_PATH];
-        _sntprintf(buffer, _countof(buffer), _T("%s"), thePrefs.GetMuleDirectory(EMULE_TOOLBARDIR));
-        buffer[_countof(buffer) - 1] = L'\0';
-        if (SelectDir(m_hWnd, buffer, GetResString(IDS_SELECTTOOLBARBITMAPDIR)))
-            thePrefs.SetMuleDirectory(EMULE_TOOLBARDIR, buffer);
-        break;
-    }
-    case MP_CUSTOMIZETOOLBAR:
-        Customize();
-        break;
+        case MP_SELECTTOOLBARBITMAPDIR:
+        {
+            TCHAR buffer[MAX_PATH];
+            _sntprintf(buffer, _countof(buffer), _T("%s"), thePrefs.GetMuleDirectory(EMULE_TOOLBARDIR));
+            buffer[_countof(buffer) - 1] = L'\0';
+            if (SelectDir(m_hWnd, buffer, GetResString(IDS_SELECTTOOLBARBITMAPDIR)))
+                thePrefs.SetMuleDirectory(EMULE_TOOLBARDIR, buffer);
+            break;
+        }
+        case MP_CUSTOMIZETOOLBAR:
+            Customize();
+            break;
 
-    case MP_SELECTTOOLBARBITMAP:
-    {
-        // we could also load "*.jpg" here, but because of the typical non solid background of JPGs this
-        // doesn't make sense here.
-        CString strFilter=GetResString(IDS_LOADFILTER_EMTOOLBAR)+ _T(" (");
-        for (int f = 0; f < _countof(s_apszTBFiles); f++)
+        case MP_SELECTTOOLBARBITMAP:
         {
-            if (f > 0)
-                strFilter += _T(';');
-            strFilter += s_apszTBFiles[f];
-        }
-        strFilter += _T(")|");
-        for (int f = 0; f < _countof(s_apszTBFiles); f++)
-        {
-            if (f > 0)
-                strFilter += _T(';');
-            strFilter += s_apszTBFiles[f];
-        }
-        strFilter += _T("||");
-        CFileDialog dialog(TRUE, EMULTB_BASEEXT _T(".bmp"), NULL, OFN_HIDEREADONLY | OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST, strFilter, NULL, 0);
-        if (IDOK == dialog.DoModal())
-            if (thePrefs.GetToolbarBitmapSettings()!=dialog.GetPathName())
+            // we could also load "*.jpg" here, but because of the typical non solid background of JPGs this
+            // doesn't make sense here.
+            CString strFilter=GetResString(IDS_LOADFILTER_EMTOOLBAR)+ _T(" (");
+            for (int f = 0; f < _countof(s_apszTBFiles); f++)
             {
-                ChangeToolbarBitmap(dialog.GetPathName(), true);
-                thePrefs.SetToolbarBitmapSettings(dialog.GetPathName());
+                if (f > 0)
+                    strFilter += _T(';');
+                strFilter += s_apszTBFiles[f];
             }
-        break;
-    }
-
-    case MP_LARGEICONS:
-        m_sizBtnBmp.cx = m_sizBtnBmp.cy = 32;
-        ForceRecalcLayout();
-        ChangeToolbarBitmap(thePrefs.GetToolbarBitmapSettings(), true);
-        thePrefs.SetToolbarIconSize(m_sizBtnBmp);
-        break;
-
-    case MP_SMALLICONS:
-        m_sizBtnBmp.cx = m_sizBtnBmp.cy = 16;
-        ForceRecalcLayout();
-        ChangeToolbarBitmap(thePrefs.GetToolbarBitmapSettings(), true);
-        thePrefs.SetToolbarIconSize(m_sizBtnBmp);
-        break;
-
-    case MP_NOTEXTLABELS:
-        ForceRecalcLayout();
-        ChangeTextLabelStyle(NoLabels, true);
-        thePrefs.SetToolbarLabelSettings(NoLabels);
-        break;
-
-    case MP_TEXTLABELS:
-        ForceRecalcLayout();
-        ChangeTextLabelStyle(LabelsBelow, true);
-        thePrefs.SetToolbarLabelSettings(LabelsBelow);
-        break;
-
-    case MP_TEXTLABELSONRIGHT:
-        ForceRecalcLayout();
-        ChangeTextLabelStyle(LabelsRight, true);
-        thePrefs.SetToolbarLabelSettings(LabelsRight);
-        break;
-
-    case MP_SELECT_SKIN_DIR:
-    {
-        TCHAR buffer[MAX_PATH];
-        _sntprintf(buffer, _countof(buffer), _T("%s"), thePrefs.GetMuleDirectory(EMULE_SKINDIR, false));
-        buffer[_countof(buffer) - 1] = L'\0';
-        if (SelectDir(m_hWnd, buffer, GetResString(IDS_SELSKINPROFILEDIR)))
-            thePrefs.SetMuleDirectory(EMULE_SKINDIR, buffer);
-        break;
-    }
-    case MP_SELECT_SKIN_FILE:
-    {
-        CString strFilter=GetResString(IDS_LOADFILTER_EMSKINFILES) + _T(" (");
-        for (int f = 0; f < _countof(s_apszSkinFiles); f++)
-        {
-            if (f > 0)
-                strFilter += _T(';');
-            strFilter += s_apszSkinFiles[f];
-        }
-        strFilter += _T(")|");
-        for (int f = 0; f < _countof(s_apszSkinFiles); f++)
-        {
-            if (f > 0)
-                strFilter += _T(';');
-            strFilter += s_apszSkinFiles[f];
-        }
-        strFilter += _T("||");
-        CFileDialog dialog(TRUE, EMULSKIN_BASEEXT _T(".ini"), NULL, OFN_HIDEREADONLY | OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST, strFilter, NULL, 0);
-        if (dialog.DoModal() == IDOK)
-        {
-            if (thePrefs.GetSkinProfile().CompareNoCase(dialog.GetPathName()) != 0)
-                theApp.ApplySkin(dialog.GetPathName());
-        }
-        break;
-    }
-
-    default:
-        if (wParam >= MP_TOOLBARBITMAP && wParam < MP_TOOLBARBITMAP + MAX_TOOLBAR_FILES)
-        {
-            if (thePrefs.GetToolbarBitmapSettings().CompareNoCase(m_astrToolbarPaths[wParam-MP_TOOLBARBITMAP]) != 0)
+            strFilter += _T(")|");
+            for (int f = 0; f < _countof(s_apszTBFiles); f++)
             {
-                ChangeToolbarBitmap(m_astrToolbarPaths[wParam-MP_TOOLBARBITMAP], true);
-                thePrefs.SetToolbarBitmapSettings(m_astrToolbarPaths[wParam-MP_TOOLBARBITMAP]);
+                if (f > 0)
+                    strFilter += _T(';');
+                strFilter += s_apszTBFiles[f];
             }
+            strFilter += _T("||");
+            CFileDialog dialog(TRUE, EMULTB_BASEEXT _T(".bmp"), NULL, OFN_HIDEREADONLY | OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST, strFilter, NULL, 0);
+            if (IDOK == dialog.DoModal())
+                if (thePrefs.GetToolbarBitmapSettings()!=dialog.GetPathName())
+                {
+                    ChangeToolbarBitmap(dialog.GetPathName(), true);
+                    thePrefs.SetToolbarBitmapSettings(dialog.GetPathName());
+                }
+            break;
         }
-        else if (wParam >= MP_SKIN_PROFILE && wParam < MP_SKIN_PROFILE + MAX_SKIN_FILES)
+
+        case MP_LARGEICONS:
+            m_sizBtnBmp.cx = m_sizBtnBmp.cy = 32;
+            ForceRecalcLayout();
+            ChangeToolbarBitmap(thePrefs.GetToolbarBitmapSettings(), true);
+            thePrefs.SetToolbarIconSize(m_sizBtnBmp);
+            break;
+
+        case MP_SMALLICONS:
+            m_sizBtnBmp.cx = m_sizBtnBmp.cy = 16;
+            ForceRecalcLayout();
+            ChangeToolbarBitmap(thePrefs.GetToolbarBitmapSettings(), true);
+            thePrefs.SetToolbarIconSize(m_sizBtnBmp);
+            break;
+
+        case MP_NOTEXTLABELS:
+            ForceRecalcLayout();
+            ChangeTextLabelStyle(NoLabels, true);
+            thePrefs.SetToolbarLabelSettings(NoLabels);
+            break;
+
+        case MP_TEXTLABELS:
+            ForceRecalcLayout();
+            ChangeTextLabelStyle(LabelsBelow, true);
+            thePrefs.SetToolbarLabelSettings(LabelsBelow);
+            break;
+
+        case MP_TEXTLABELSONRIGHT:
+            ForceRecalcLayout();
+            ChangeTextLabelStyle(LabelsRight, true);
+            thePrefs.SetToolbarLabelSettings(LabelsRight);
+            break;
+
+        case MP_SELECT_SKIN_DIR:
         {
-            if (thePrefs.GetSkinProfile().CompareNoCase(m_astrSkinPaths[wParam - MP_SKIN_PROFILE]) != 0)
-                theApp.ApplySkin(m_astrSkinPaths[wParam - MP_SKIN_PROFILE]);
+            TCHAR buffer[MAX_PATH];
+            _sntprintf(buffer, _countof(buffer), _T("%s"), thePrefs.GetMuleDirectory(EMULE_SKINDIR, false));
+            buffer[_countof(buffer) - 1] = L'\0';
+            if (SelectDir(m_hWnd, buffer, GetResString(IDS_SELSKINPROFILEDIR)))
+                thePrefs.SetMuleDirectory(EMULE_SKINDIR, buffer);
+            break;
         }
+        case MP_SELECT_SKIN_FILE:
+        {
+            CString strFilter=GetResString(IDS_LOADFILTER_EMSKINFILES) + _T(" (");
+            for (int f = 0; f < _countof(s_apszSkinFiles); f++)
+            {
+                if (f > 0)
+                    strFilter += _T(';');
+                strFilter += s_apszSkinFiles[f];
+            }
+            strFilter += _T(")|");
+            for (int f = 0; f < _countof(s_apszSkinFiles); f++)
+            {
+                if (f > 0)
+                    strFilter += _T(';');
+                strFilter += s_apszSkinFiles[f];
+            }
+            strFilter += _T("||");
+            CFileDialog dialog(TRUE, EMULSKIN_BASEEXT _T(".ini"), NULL, OFN_HIDEREADONLY | OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST, strFilter, NULL, 0);
+            if (dialog.DoModal() == IDOK)
+            {
+                if (thePrefs.GetSkinProfile().CompareNoCase(dialog.GetPathName()) != 0)
+                    theApp.ApplySkin(dialog.GetPathName());
+            }
+            break;
+        }
+
+        default:
+            if (wParam >= MP_TOOLBARBITMAP && wParam < MP_TOOLBARBITMAP + MAX_TOOLBAR_FILES)
+            {
+                if (thePrefs.GetToolbarBitmapSettings().CompareNoCase(m_astrToolbarPaths[wParam-MP_TOOLBARBITMAP]) != 0)
+                {
+                    ChangeToolbarBitmap(m_astrToolbarPaths[wParam-MP_TOOLBARBITMAP], true);
+                    thePrefs.SetToolbarBitmapSettings(m_astrToolbarPaths[wParam-MP_TOOLBARBITMAP]);
+                }
+            }
+            else if (wParam >= MP_SKIN_PROFILE && wParam < MP_SKIN_PROFILE + MAX_SKIN_FILES)
+            {
+                if (thePrefs.GetSkinProfile().CompareNoCase(m_astrSkinPaths[wParam - MP_SKIN_PROFILE]) != 0)
+                    theApp.ApplySkin(m_astrSkinPaths[wParam - MP_SKIN_PROFILE]);
+            }
     }
 
     return true;
@@ -808,18 +808,18 @@ void CMuleToolbarCtrl::ChangeTextLabelStyle(EToolbarLabelType eLabelType, bool b
     {
         switch (eLabelType)
         {
-        case NoLabels:
-            SetStyle(GetStyle() & ~TBSTYLE_LIST);
-            SetMaxTextRows(0);
-            break;
-        case LabelsBelow:
-            SetStyle(GetStyle() & ~TBSTYLE_LIST);
-            SetMaxTextRows(1);
-            break;
-        case LabelsRight:
-            SetStyle(GetStyle() | TBSTYLE_LIST);
-            SetMaxTextRows(1);
-            break;
+            case NoLabels:
+                SetStyle(GetStyle() & ~TBSTYLE_LIST);
+                SetMaxTextRows(0);
+                break;
+            case LabelsBelow:
+                SetStyle(GetStyle() & ~TBSTYLE_LIST);
+                SetMaxTextRows(1);
+                break;
+            case LabelsRight:
+                SetStyle(GetStyle() | TBSTYLE_LIST);
+                SetMaxTextRows(1);
+                break;
         }
 
         for (int i = 0; i < m_buttoncount; i++)

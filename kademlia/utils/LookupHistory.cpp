@@ -173,26 +173,26 @@ CString	CLookupHistory::GetTypeName() const
 {
     switch (m_uType)
     {
-    case CSearch::FILE:
-        return GetResString(IDS_KAD_SEARCHSRC);
-    case CSearch::KEYWORD:
-        return GetResString(IDS_KAD_SEARCHKW);
-    case CSearch::NODE:
-    case CSearch::NODECOMPLETE:
-    case CSearch::NODESPECIAL:
-    case CSearch::NODEFWCHECKUDP:
-        return GetResString(IDS_KAD_NODE);
-    case CSearch::STOREFILE:
-        return GetResString(IDS_KAD_STOREFILE);
-    case CSearch::STOREKEYWORD:
-        return GetResString(IDS_KAD_STOREKW);
-    case CSearch::FINDBUDDY:
-        return GetResString(IDS_FINDBUDDY);
-    case CSearch::STORENOTES:
-        return GetResString(IDS_STORENOTES);
-    case CSearch::NOTES:
-        return GetResString(IDS_NOTES);
-    default:
-        return GetResString(IDS_KAD_UNKNOWN);
+        case CSearch::FILE:
+            return GetResString(IDS_KAD_SEARCHSRC);
+        case CSearch::KEYWORD:
+            return GetResString(IDS_KAD_SEARCHKW);
+        case CSearch::NODE:
+        case CSearch::NODECOMPLETE:
+        case CSearch::NODESPECIAL:
+        case CSearch::NODEFWCHECKUDP:
+            return GetResString(IDS_KAD_NODE);
+        case CSearch::STOREFILE:
+            return GetResString(IDS_KAD_STOREFILE);
+        case CSearch::STOREKEYWORD:
+            return GetResString(IDS_KAD_STOREKW);
+        case CSearch::FINDBUDDY:
+            return GetResString(IDS_FINDBUDDY);
+        case CSearch::STORENOTES:
+            return GetResString(IDS_STORENOTES);
+        case CSearch::NOTES:
+            return GetResString(IDS_NOTES);
+        default:
+            return GetResString(IDS_KAD_UNKNOWN);
     }
 }

@@ -162,7 +162,7 @@ void CSearchResultsWnd::OnInitialUpdate()
         GetDlgItem(IDC_STATIC_DLTOof)->SetFont(&theApp.m_fontSymbol);
         GetDlgItem(IDC_STATIC_DLTOof)->SetWindowText(GetExStyle() & WS_EX_LAYOUTRTL ? _T("3") : _T("4")); // show a right-arrow
     }
-	m_ctlOpenParamsWnd.ShowWindow(SW_HIDE);
+    m_ctlOpenParamsWnd.ShowWindow(SW_HIDE);
 }
 
 void CSearchResultsWnd::DoDataExchange(CDataExchange* pDX)
@@ -181,22 +181,22 @@ void CSearchResultsWnd::StartSearch(SSearchParams* pParams)
 {
     switch (pParams->eType)
     {
-    case SearchTypeKademlia:
-        StartNewSearch(pParams);
-        break;
+        case SearchTypeKademlia:
+            StartNewSearch(pParams);
+            break;
 
 //>>> WiZaRd::CustomSearches
-        /*
-        		case SearchTypeFileDonkey:
-        			ShellOpenFile(CreateWebQuery(pParams));
-        			delete pParams;
-        		return;
-        */
+            /*
+            		case SearchTypeFileDonkey:
+            			ShellOpenFile(CreateWebQuery(pParams));
+            			delete pParams;
+            		return;
+            */
 //<<< WiZaRd::CustomSearches
 
-    default:
-        ASSERT(0);
-        delete pParams;
+        default:
+            ASSERT(0);
+            delete pParams;
     }
 }
 
@@ -448,40 +448,40 @@ CString DbgGetFileMetaTagName(UINT uMetaTagID)
 {
     switch (uMetaTagID)
     {
-    case FT_FILENAME:
-        return _T("@Name");
-    case FT_FILESIZE:
-        return _T("@Size");
-    case FT_FILESIZE_HI:
-        return _T("@SizeHI");
-    case FT_FILETYPE:
-        return _T("@Type");
-    case FT_FILEFORMAT:
-        return _T("@Format");
-    case FT_LASTSEENCOMPLETE:
-        return _T("@LastSeenComplete");
-    case FT_SOURCES:
-        return _T("@Sources");
-    case FT_COMPLETE_SOURCES:
-        return _T("@Complete");
-    case FT_MEDIA_ARTIST:
-        return _T("@Artist");
-    case FT_MEDIA_ALBUM:
-        return _T("@Album");
-    case FT_MEDIA_TITLE:
-        return _T("@Title");
-    case FT_MEDIA_LENGTH:
-        return _T("@Length");
-    case FT_MEDIA_BITRATE:
-        return _T("@Bitrate");
-    case FT_MEDIA_CODEC:
-        return _T("@Codec");
-    case FT_FILECOMMENT:
-        return _T("@Comment");
-    case FT_FILERATING:
-        return _T("@Rating");
-    case FT_FILEHASH:
-        return _T("@Filehash");
+        case FT_FILENAME:
+            return _T("@Name");
+        case FT_FILESIZE:
+            return _T("@Size");
+        case FT_FILESIZE_HI:
+            return _T("@SizeHI");
+        case FT_FILETYPE:
+            return _T("@Type");
+        case FT_FILEFORMAT:
+            return _T("@Format");
+        case FT_LASTSEENCOMPLETE:
+            return _T("@LastSeenComplete");
+        case FT_SOURCES:
+            return _T("@Sources");
+        case FT_COMPLETE_SOURCES:
+            return _T("@Complete");
+        case FT_MEDIA_ARTIST:
+            return _T("@Artist");
+        case FT_MEDIA_ALBUM:
+            return _T("@Album");
+        case FT_MEDIA_TITLE:
+            return _T("@Title");
+        case FT_MEDIA_LENGTH:
+            return _T("@Length");
+        case FT_MEDIA_BITRATE:
+            return _T("@Bitrate");
+        case FT_MEDIA_CODEC:
+            return _T("@Codec");
+        case FT_FILECOMMENT:
+            return _T("@Comment");
+        case FT_FILERATING:
+            return _T("@Rating");
+        case FT_FILEHASH:
+            return _T("@Filehash");
     }
 
     CString buffer;
@@ -1435,8 +1435,8 @@ BOOL CSearchResultsWnd::OnHelpInfo(HELPINFO* /*pHelpInfo*/)
 
 LRESULT CSearchResultsWnd::OnIdleUpdateCmdUI(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
-	// if the application is not ready, default to "visible"
-    if(theApp.emuledlg != NULL && theApp.emuledlg->searchwnd != NULL && !theApp.emuledlg->searchwnd->IsSearchParamsWndVisible())
+    // if the application is not ready, default to "visible"
+    if (theApp.emuledlg != NULL && theApp.emuledlg->searchwnd != NULL && !theApp.emuledlg->searchwnd->IsSearchParamsWndVisible())
         m_ctlOpenParamsWnd.ShowWindow(SW_SHOW);
     else
         m_ctlOpenParamsWnd.ShowWindow(SW_HIDE);
@@ -1472,16 +1472,16 @@ BOOL CSearchResultsSelector::OnCommand(WPARAM wParam, LPARAM lParam)
 {
     switch (wParam)
     {
-    case MP_RESTORESEARCHPARAMS:
-    {
-        int iTab = GetTabUnderContextMenu();
-        if (iTab != -1)
+        case MP_RESTORESEARCHPARAMS:
         {
-            GetParent()->SendMessage(UM_DBLCLICKTAB, (WPARAM)iTab);
-            return TRUE;
+            int iTab = GetTabUnderContextMenu();
+            if (iTab != -1)
+            {
+                GetParent()->SendMessage(UM_DBLCLICKTAB, (WPARAM)iTab);
+                return TRUE;
+            }
+            break;
         }
-        break;
-    }
     }
     return CClosableTabCtrl::OnCommand(wParam, lParam);
 }
@@ -1580,18 +1580,18 @@ BOOL CSearchResultsWnd::OnCommand(WPARAM wParam, LPARAM lParam)
 {
     switch (wParam)
     {
-    case MP_REMOVEALL:
-        DeleteAllSearches();
-        return TRUE;
-    case MP_SHOW_FILESIZE_DFLT:
-        searchlistctrl.SetFileSizeFormat(fsizeDefault);
-        return TRUE;
-    case MP_SHOW_FILESIZE_KBYTE:
-        searchlistctrl.SetFileSizeFormat(fsizeKByte);
-        return TRUE;
-    case MP_SHOW_FILESIZE_MBYTE:
-        searchlistctrl.SetFileSizeFormat(fsizeMByte);
-        return TRUE;
+        case MP_REMOVEALL:
+            DeleteAllSearches();
+            return TRUE;
+        case MP_SHOW_FILESIZE_DFLT:
+            searchlistctrl.SetFileSizeFormat(fsizeDefault);
+            return TRUE;
+        case MP_SHOW_FILESIZE_KBYTE:
+            searchlistctrl.SetFileSizeFormat(fsizeKByte);
+            return TRUE;
+        case MP_SHOW_FILESIZE_MBYTE:
+            searchlistctrl.SetFileSizeFormat(fsizeMByte);
+            return TRUE;
     }
     return CResizableFormView::OnCommand(wParam, lParam);
 }

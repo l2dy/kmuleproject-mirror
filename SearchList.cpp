@@ -219,7 +219,7 @@ UINT CSearchList::ProcessSearchAnswer(const uchar* in_packet, UINT size,
         if (Sender)
         {
 //>>> WiZaRd::IPv6 [Xanatos]
-			toadd->SetClientID(_ntohl(Sender->GetIP().ToIPv4()));
+            toadd->SetClientID(_ntohl(Sender->GetIP().ToIPv4()));
             //toadd->SetClientID(Sender->GetIP());
 //<<< WiZaRd::IPv6 [Xanatos]
             toadd->SetClientPort(Sender->GetUserPort());
@@ -296,23 +296,23 @@ void CSearchList::GetWebList(CQArray<SearchFileStruct, SearchFileStruct> *Search
 
             switch (iSortBy)
             {
-            case 0:
-                structFile.m_strIndex = structFile.m_strFileName;
-                break;
-            case 1:
-                structFile.m_strIndex.Format(_T("%10u"), structFile.m_uFileSize);
-                break;
-            case 2:
-                structFile.m_strIndex = structFile.m_strFileHash;
-                break;
-            case 3:
-                structFile.m_strIndex.Format(_T("%09u"), structFile.m_uSourceCount);
-                break;
-            case 4:
-                structFile.m_strIndex = structFile.m_strFileType;
-                break;
-            default:
-                structFile.m_strIndex.Empty();
+                case 0:
+                    structFile.m_strIndex = structFile.m_strFileName;
+                    break;
+                case 1:
+                    structFile.m_strIndex.Format(_T("%10u"), structFile.m_uFileSize);
+                    break;
+                case 2:
+                    structFile.m_strIndex = structFile.m_strFileHash;
+                    break;
+                case 3:
+                    structFile.m_strIndex.Format(_T("%09u"), structFile.m_uSourceCount);
+                    break;
+                case 4:
+                    structFile.m_strIndex = structFile.m_strFileType;
+                    break;
+                default:
+                    structFile.m_strIndex.Empty();
             }
             SearchFileArray->Add(structFile);
         }
@@ -404,7 +404,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse, UINT dwFro
                 if (thePrefs.GetLogBannedClients())
                 {
 //>>> WiZaRd::IPv6 [Xanatos]
-					CUpDownClient* pClient = theApp.clientlist->FindClientByIP(_CIPAddress(_ntohl(userid)));
+                    CUpDownClient* pClient = theApp.clientlist->FindClientByIP(_CIPAddress(_ntohl(userid)));
                     //CUpDownClient* pClient = theApp.clientlist->FindClientByIP(userid);
 //<<< WiZaRd::IPv6 [Xanatos]
                     AddDebugLogLine(false, _T("Ignored source (IP=%s) received from server - banned client %s"), ipstr(userid), pClient->DbgGetClientInfo());
@@ -1499,66 +1499,66 @@ void CSearchList::LoadSpamFilter()
             CTag tag(&file, false);
             switch (tag.GetNameID())
             {
-            case SP_FILEHASHSPAM:
-                ASSERT(tag.IsHash());
-                if (tag.IsHash())
-                    m_mapKnownSpamHashs.SetAt(CSKey(tag.GetHash()), true);
-                break;
-            case SP_FILEHASHNOSPAM:
-                ASSERT(tag.IsHash());
-                if (tag.IsHash())
-                {
-                    m_mapKnownSpamHashs.SetAt(CSKey(tag.GetHash()), false);
-                    nDbgFileHashPos++;
-                }
-                break;
-            case SP_FILEFULLNAME:
-                ASSERT(tag.IsStr());
-                if (tag.IsStr())
-                    m_astrKnownSpamNames.Add(tag.GetStr());
-                break;
-            case SP_FILESIMILARNAME:
-                ASSERT(tag.IsStr());
-                if (tag.IsStr())
-                    m_astrKnownSimilarSpamNames.Add(tag.GetStr());
-                break;
-            case SP_FILESOURCEIP:
-                ASSERT(tag.IsInt());
-                if (tag.IsInt())
-                    m_mapKnownSpamSourcesIPs.SetAt(tag.GetInt(), true);
-                break;
-            case SP_FILESERVERIP:
-                ASSERT(tag.IsInt());
-                if (tag.IsInt())
-                    m_mapKnownSpamServerIPs.SetAt(tag.GetInt(), true);
-                break;
-            case SP_FILESIZE:
-                ASSERT(tag.IsInt64());
-                if (tag.IsInt64())
-                    m_aui64KnownSpamSizes.Add(tag.GetInt64());
-                break;
-            case SP_UDPSERVERSPAMRATIO:
-                ASSERT(tag.IsBlob() && tag.GetBlobSize() == 12);
-                if (tag.IsBlob() && tag.GetBlobSize() == 12)
-                {
-                    const BYTE* pBuffer = tag.GetBlob();
-                    UDPServerRecord* pRecord = new UDPServerRecord;
-                    pRecord->m_nResults = PeekUInt32(&pBuffer[4]);
-                    pRecord->m_nSpamResults = PeekUInt32(&pBuffer[8]);
-                    m_aUDPServerRecords.SetAt(PeekUInt32(&pBuffer[0]), pRecord);
-                    int nRatio;
-                    if (pRecord->m_nResults >= pRecord->m_nSpamResults && pRecord->m_nResults != 0)
+                case SP_FILEHASHSPAM:
+                    ASSERT(tag.IsHash());
+                    if (tag.IsHash())
+                        m_mapKnownSpamHashs.SetAt(CSKey(tag.GetHash()), true);
+                    break;
+                case SP_FILEHASHNOSPAM:
+                    ASSERT(tag.IsHash());
+                    if (tag.IsHash())
                     {
-                        nRatio = (pRecord->m_nSpamResults * 100) / pRecord->m_nResults;
+                        m_mapKnownSpamHashs.SetAt(CSKey(tag.GetHash()), false);
+                        nDbgFileHashPos++;
                     }
-                    else
-                        nRatio = 100;
-                    DEBUG_ONLY(DebugLog(_T("UDP Server Spam Record: IP: %s, Results: %u, SpamResults: %u, Ratio: %u")
-                                        , ipstr(PeekUInt32(&pBuffer[0])), pRecord->m_nResults, pRecord->m_nSpamResults, nRatio));
-                }
-                break;
-            default:
-                ASSERT(0);
+                    break;
+                case SP_FILEFULLNAME:
+                    ASSERT(tag.IsStr());
+                    if (tag.IsStr())
+                        m_astrKnownSpamNames.Add(tag.GetStr());
+                    break;
+                case SP_FILESIMILARNAME:
+                    ASSERT(tag.IsStr());
+                    if (tag.IsStr())
+                        m_astrKnownSimilarSpamNames.Add(tag.GetStr());
+                    break;
+                case SP_FILESOURCEIP:
+                    ASSERT(tag.IsInt());
+                    if (tag.IsInt())
+                        m_mapKnownSpamSourcesIPs.SetAt(tag.GetInt(), true);
+                    break;
+                case SP_FILESERVERIP:
+                    ASSERT(tag.IsInt());
+                    if (tag.IsInt())
+                        m_mapKnownSpamServerIPs.SetAt(tag.GetInt(), true);
+                    break;
+                case SP_FILESIZE:
+                    ASSERT(tag.IsInt64());
+                    if (tag.IsInt64())
+                        m_aui64KnownSpamSizes.Add(tag.GetInt64());
+                    break;
+                case SP_UDPSERVERSPAMRATIO:
+                    ASSERT(tag.IsBlob() && tag.GetBlobSize() == 12);
+                    if (tag.IsBlob() && tag.GetBlobSize() == 12)
+                    {
+                        const BYTE* pBuffer = tag.GetBlob();
+                        UDPServerRecord* pRecord = new UDPServerRecord;
+                        pRecord->m_nResults = PeekUInt32(&pBuffer[4]);
+                        pRecord->m_nSpamResults = PeekUInt32(&pBuffer[8]);
+                        m_aUDPServerRecords.SetAt(PeekUInt32(&pBuffer[0]), pRecord);
+                        int nRatio;
+                        if (pRecord->m_nResults >= pRecord->m_nSpamResults && pRecord->m_nResults != 0)
+                        {
+                            nRatio = (pRecord->m_nSpamResults * 100) / pRecord->m_nResults;
+                        }
+                        else
+                            nRatio = 100;
+                        DEBUG_ONLY(DebugLog(_T("UDP Server Spam Record: IP: %s, Results: %u, SpamResults: %u, Ratio: %u")
+                                            , ipstr(PeekUInt32(&pBuffer[0])), pRecord->m_nResults, pRecord->m_nSpamResults, nRatio));
+                    }
+                    break;
+                default:
+                    ASSERT(0);
             }
         }
         file.Close();

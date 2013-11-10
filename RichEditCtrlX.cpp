@@ -221,24 +221,24 @@ BOOL CRichEditCtrlX::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 {
     switch (wParam)
     {
-    case MP_UNDO:
-        Undo();
-        break;
-    case MP_CUT:
-        Cut();
-        break;
-    case MP_COPYSELECTED:
-        Copy();
-        break;
-    case MP_PASTE:
-        Paste();
-        break;
-    case MP_REMOVESELECTED:
-        Clear();
-        break;
-    case MP_SELECTALL:
-        SetSel(0, -1);
-        break;
+        case MP_UNDO:
+            Undo();
+            break;
+        case MP_CUT:
+            Cut();
+            break;
+        case MP_COPYSELECTED:
+            Copy();
+            break;
+        case MP_PASTE:
+            Paste();
+            break;
+        case MP_REMOVESELECTED:
+            Clear();
+            break;
+        case MP_SELECTALL:
+            SetSel(0, -1);
+            break;
     }
     return TRUE;
 }

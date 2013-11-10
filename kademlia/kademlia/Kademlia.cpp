@@ -118,7 +118,7 @@ void CKademlia::Start(CPrefs *pPrefs)
         m_tBigTimer = time(NULL);
         // First Firewall check is done on connect, init next check.
         //m_tNextFirewallCheck = time(NULL) + (HR2S(1));
-		m_tNextFirewallCheck = time(NULL)  + MIN2S(15);
+        m_tNextFirewallCheck = time(NULL)  + MIN2S(15);
         m_tNextUPnPCheck = m_tNextFirewallCheck - MIN2S(1);
         // Find a buddy after the first 5mins of starting the client.
         // We wait just in case it takes a bit for the client to determine firewall status..
@@ -218,7 +218,7 @@ void CKademlia::Process()
         bUpdateUserFile = true;
         m_tStatusUpdate = MIN2S(1) + tNow;
     }
-	// WiZaRd: only automatically recheck firewalled status if we ARE firewalled
+    // WiZaRd: only automatically recheck firewalled status if we ARE firewalled
     if (m_tNextFirewallCheck <= tNow && Kademlia::CKademlia::IsConnected() && Kademlia::CKademlia::IsFirewalled())
         RecheckFirewalled();
     if (m_tNextUPnPCheck != 0 && m_tNextUPnPCheck <= tNow)
@@ -734,7 +734,7 @@ bool CKademlia::IsRunningInLANMode()
 //>>> WiZaRd::IPFiltering
 void CKademlia::RemoveFilteredContacts()
 {
-	CRoutingZone* routingZone = CKademlia::GetRoutingZone();
+    CRoutingZone* routingZone = CKademlia::GetRoutingZone();
     if (routingZone)
         routingZone->RemoveFilteredContacts();
 }

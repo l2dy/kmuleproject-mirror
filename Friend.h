@@ -61,10 +61,10 @@ public:
     CFriend();
     CFriend(CUpDownClient* client);
 //>>> WiZaRd::IPv6 [Xanatos]
-	CFriend(const uchar* abyUserhash, UINT dwLastSeen, const _CIPAddress& LastUsedIP, uint16 nLastUsedPort, 
+    CFriend(const uchar* abyUserhash, UINT dwLastSeen, const _CIPAddress& LastUsedIP, uint16 nLastUsedPort,
 //     CFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort,
 //<<< WiZaRd::IPv6 [Xanatos]
-		UINT dwLastChatted, LPCTSTR pszName, UINT dwHasHash);
+            UINT dwLastChatted, LPCTSTR pszName, UINT dwHasHash);
 
     ~CFriend();
 

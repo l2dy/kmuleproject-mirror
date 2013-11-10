@@ -458,167 +458,167 @@ LRESULT CStatisticsDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam
 {
     switch (message)
     {
-    case WM_PAINT:
-        if (m_wndSplitterstat)
-        {
-            CRect rctree,rcSpl,rcW;
-            GetWindowRect(rcW);
-            ScreenToClient(rcW);
-
-            GetDlgItem(IDC_STATTREE)->GetWindowRect(rctree);
-            ScreenToClient(rctree);
-
-            if (rcW.Width()>0)
+        case WM_PAINT:
+            if (m_wndSplitterstat)
             {
-                rcSpl.left = rctree.right;
-                rcSpl.right = rcSpl.left + 4;
-                rcSpl.top = rcW.top + 2;
-                rcSpl.bottom = rcW.bottom - 5;
-                m_wndSplitterstat.MoveWindow(rcSpl,true);
+                CRect rctree,rcSpl,rcW;
+                GetWindowRect(rcW);
+                ScreenToClient(rcW);
+
+                GetDlgItem(IDC_STATTREE)->GetWindowRect(rctree);
+                ScreenToClient(rctree);
+
+                if (rcW.Width()>0)
+                {
+                    rcSpl.left = rctree.right;
+                    rcSpl.right = rcSpl.left + 4;
+                    rcSpl.top = rcW.top + 2;
+                    rcSpl.bottom = rcW.bottom - 5;
+                    m_wndSplitterstat.MoveWindow(rcSpl,true);
+                }
             }
-        }
-        if (m_wndSplitterstat_HL)
-        {
-            CRect rcUp,rcSpl,rcW;
-            CWnd* pWnd;
-
-            GetWindowRect(rcW);
-            ScreenToClient(rcW);
-
-            pWnd = &m_UploadOMeter;
-            pWnd->GetWindowRect(rcUp);
-
-            ScreenToClient(rcUp);
-
-            if (rcW.Height()>0)
+            if (m_wndSplitterstat_HL)
             {
-                rcSpl.left = rcUp.left;
-                rcSpl.right = rcUp.right;
-                rcSpl.top = rcUp.bottom;
-                rcSpl.bottom = rcUp.bottom + 4;
-                m_wndSplitterstat_HL.MoveWindow(rcSpl,true);
+                CRect rcUp,rcSpl,rcW;
+                CWnd* pWnd;
+
+                GetWindowRect(rcW);
+                ScreenToClient(rcW);
+
+                pWnd = &m_UploadOMeter;
+                pWnd->GetWindowRect(rcUp);
+
+                ScreenToClient(rcUp);
+
+                if (rcW.Height()>0)
+                {
+                    rcSpl.left = rcUp.left;
+                    rcSpl.right = rcUp.right;
+                    rcSpl.top = rcUp.bottom;
+                    rcSpl.bottom = rcUp.bottom + 4;
+                    m_wndSplitterstat_HL.MoveWindow(rcSpl,true);
+                }
             }
-        }
-        if (m_wndSplitterstat_HR)
-        {
-            CRect rcDown,rcSpl,rcW;
-            CWnd* pWnd;
-
-            GetWindowRect(rcW);
-            ScreenToClient(rcW);
-
-            pWnd = &m_DownloadOMeter;
-            pWnd->GetWindowRect(rcDown);
-            ScreenToClient(rcDown);
-
-            if (rcW.Height()>0)
+            if (m_wndSplitterstat_HR)
             {
-                rcSpl.left = rcDown.left;
-                rcSpl.right = rcDown.right;
-                rcSpl.top = rcDown.bottom;
-                rcSpl.bottom = rcDown.bottom + 4;
-                m_wndSplitterstat_HR.MoveWindow(rcSpl,true);
-            }
-        }
-        break;
-    case WM_NOTIFY:
-        if (wParam == IDC_SPLITTER_STAT)
-        {
-            SPC_NMHDR* pHdr = (SPC_NMHDR*) lParam;
-            DoResize_V(pHdr->delta);
-        }
-        else if (wParam == IDC_SPLITTER_STAT_HL)
-        {
-            SPC_NMHDR* pHdr = (SPC_NMHDR*) lParam;
-            DoResize_HL(pHdr->delta);
-        }
-        else if (wParam == IDC_SPLITTER_STAT_HR)
-        {
-            SPC_NMHDR* pHdr = (SPC_NMHDR*) lParam;
-            DoResize_HR(pHdr->delta);
-        }
-        break;
+                CRect rcDown,rcSpl,rcW;
+                CWnd* pWnd;
 
-    case WM_WINDOWPOSCHANGED:
-        if (m_wndSplitterstat)
-            m_wndSplitterstat.Invalidate();
-        if (m_wndSplitterstat_HL)
-            m_wndSplitterstat_HL.Invalidate();
-        if (m_wndSplitterstat_HR)
-            m_wndSplitterstat_HR.Invalidate();
-        break;
+                GetWindowRect(rcW);
+                ScreenToClient(rcW);
 
-    case WM_SIZE:
-    {
-        //set range
-        if (m_wndSplitterstat)
-        {
-            CRect rcW;
-            GetWindowRect(rcW);
-            ScreenToClient(rcW);
-            if (rcW.Width()>0)
-            {
-                CRect rcSpl;
-                CRect rcTree,rcDown;
-                stattree.GetWindowRect(rcTree);
-                m_DownloadOMeter.GetWindowRect(rcDown);
-                ScreenToClient(rcTree);
+                pWnd = &m_DownloadOMeter;
+                pWnd->GetWindowRect(rcDown);
                 ScreenToClient(rcDown);
-                long splitposstat=thePrefs.GetSplitterbarPositionStat()*rcW.Width()/100;
-                rcSpl.left = splitposstat;
-                rcSpl.right = rcSpl.left + 4;
-                rcSpl.top = rcW.top + 2;
-                rcSpl.bottom = rcW.bottom - 5;
-                m_wndSplitterstat.MoveWindow(rcSpl,true);
-                m_wndSplitterstat.SetRange(rcW.left+11, rcW.right-11);
+
+                if (rcW.Height()>0)
+                {
+                    rcSpl.left = rcDown.left;
+                    rcSpl.right = rcDown.right;
+                    rcSpl.top = rcDown.bottom;
+                    rcSpl.bottom = rcDown.bottom + 4;
+                    m_wndSplitterstat_HR.MoveWindow(rcSpl,true);
+                }
             }
-        }
-        if (m_wndSplitterstat_HR)
-        {
-            CRect rcW;
-            GetWindowRect(rcW);
-            ScreenToClient(rcW);
-            if (rcW.Width()>0)
+            break;
+        case WM_NOTIFY:
+            if (wParam == IDC_SPLITTER_STAT)
             {
-                CRect rcSpl;
-                CRect rcDown;
-                m_DownloadOMeter.GetWindowRect(rcDown);
-                ScreenToClient(rcDown);
-                long splitposstat=thePrefs.GetSplitterbarPositionStat()*rcW.Width()/100;
-                long splitposstat_HR=thePrefs.GetSplitterbarPositionStat_HR()*rcW.Height()/100;
-                long splitposstat_HL=thePrefs.GetSplitterbarPositionStat_HL()*rcW.Height()/100;
-                rcSpl.left = splitposstat + 7;
-                rcSpl.right = rcW.right - 14;
-                rcSpl.top = splitposstat_HR;
-                rcSpl.bottom = rcSpl.top + 4;
-                m_wndSplitterstat_HR.MoveWindow(rcSpl,true);
-                m_wndSplitterstat_HR.SetRange(rcW.top+3, splitposstat_HL-4);
+                SPC_NMHDR* pHdr = (SPC_NMHDR*) lParam;
+                DoResize_V(pHdr->delta);
             }
-        }
-        if (m_wndSplitterstat_HL)
-        {
-            CRect rcW;
-            GetWindowRect(rcW);
-            ScreenToClient(rcW);
-            if (rcW.Width()>0)
+            else if (wParam == IDC_SPLITTER_STAT_HL)
             {
-                CRect rcSpl;
-                CRect rcStat;
-                m_Statistics.GetWindowRect(rcStat);
-                ScreenToClient(rcStat);
-                long splitposstat=thePrefs.GetSplitterbarPositionStat()*rcW.Width()/100;
-                long splitposstat_HR=thePrefs.GetSplitterbarPositionStat_HR()*rcW.Height()/100;
-                long splitposstat_HL=thePrefs.GetSplitterbarPositionStat_HL()*rcW.Height()/100;
-                rcSpl.left = splitposstat + 7;
-                rcSpl.right = rcW.right - 14;
-                rcSpl.top = splitposstat_HL;
-                rcSpl.bottom = rcSpl.top + 4;
-                m_wndSplitterstat_HL.MoveWindow(rcSpl,true);
-                m_wndSplitterstat_HL.SetRange(splitposstat_HR+14, rcW.bottom-7);
+                SPC_NMHDR* pHdr = (SPC_NMHDR*) lParam;
+                DoResize_HL(pHdr->delta);
             }
+            else if (wParam == IDC_SPLITTER_STAT_HR)
+            {
+                SPC_NMHDR* pHdr = (SPC_NMHDR*) lParam;
+                DoResize_HR(pHdr->delta);
+            }
+            break;
+
+        case WM_WINDOWPOSCHANGED:
+            if (m_wndSplitterstat)
+                m_wndSplitterstat.Invalidate();
+            if (m_wndSplitterstat_HL)
+                m_wndSplitterstat_HL.Invalidate();
+            if (m_wndSplitterstat_HR)
+                m_wndSplitterstat_HR.Invalidate();
+            break;
+
+        case WM_SIZE:
+        {
+            //set range
+            if (m_wndSplitterstat)
+            {
+                CRect rcW;
+                GetWindowRect(rcW);
+                ScreenToClient(rcW);
+                if (rcW.Width()>0)
+                {
+                    CRect rcSpl;
+                    CRect rcTree,rcDown;
+                    stattree.GetWindowRect(rcTree);
+                    m_DownloadOMeter.GetWindowRect(rcDown);
+                    ScreenToClient(rcTree);
+                    ScreenToClient(rcDown);
+                    long splitposstat=thePrefs.GetSplitterbarPositionStat()*rcW.Width()/100;
+                    rcSpl.left = splitposstat;
+                    rcSpl.right = rcSpl.left + 4;
+                    rcSpl.top = rcW.top + 2;
+                    rcSpl.bottom = rcW.bottom - 5;
+                    m_wndSplitterstat.MoveWindow(rcSpl,true);
+                    m_wndSplitterstat.SetRange(rcW.left+11, rcW.right-11);
+                }
+            }
+            if (m_wndSplitterstat_HR)
+            {
+                CRect rcW;
+                GetWindowRect(rcW);
+                ScreenToClient(rcW);
+                if (rcW.Width()>0)
+                {
+                    CRect rcSpl;
+                    CRect rcDown;
+                    m_DownloadOMeter.GetWindowRect(rcDown);
+                    ScreenToClient(rcDown);
+                    long splitposstat=thePrefs.GetSplitterbarPositionStat()*rcW.Width()/100;
+                    long splitposstat_HR=thePrefs.GetSplitterbarPositionStat_HR()*rcW.Height()/100;
+                    long splitposstat_HL=thePrefs.GetSplitterbarPositionStat_HL()*rcW.Height()/100;
+                    rcSpl.left = splitposstat + 7;
+                    rcSpl.right = rcW.right - 14;
+                    rcSpl.top = splitposstat_HR;
+                    rcSpl.bottom = rcSpl.top + 4;
+                    m_wndSplitterstat_HR.MoveWindow(rcSpl,true);
+                    m_wndSplitterstat_HR.SetRange(rcW.top+3, splitposstat_HL-4);
+                }
+            }
+            if (m_wndSplitterstat_HL)
+            {
+                CRect rcW;
+                GetWindowRect(rcW);
+                ScreenToClient(rcW);
+                if (rcW.Width()>0)
+                {
+                    CRect rcSpl;
+                    CRect rcStat;
+                    m_Statistics.GetWindowRect(rcStat);
+                    ScreenToClient(rcStat);
+                    long splitposstat=thePrefs.GetSplitterbarPositionStat()*rcW.Width()/100;
+                    long splitposstat_HR=thePrefs.GetSplitterbarPositionStat_HR()*rcW.Height()/100;
+                    long splitposstat_HL=thePrefs.GetSplitterbarPositionStat_HL()*rcW.Height()/100;
+                    rcSpl.left = splitposstat + 7;
+                    rcSpl.right = rcW.right - 14;
+                    rcSpl.top = splitposstat_HL;
+                    rcSpl.bottom = rcSpl.top + 4;
+                    m_wndSplitterstat_HL.MoveWindow(rcSpl,true);
+                    m_wndSplitterstat_HL.SetRange(splitposstat_HR+14, rcW.bottom-7);
+                }
+            }
+            break;
         }
-        break;
-    }
     }
     return CResizableDialog::DefWindowProc(message, wParam, lParam);
 }

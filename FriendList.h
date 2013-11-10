@@ -39,8 +39,8 @@ public:
     void		ShowFriends() const;
     bool		AddFriend(CUpDownClient* toadd);
 //>>> WiZaRd::IPv6 [Xanatos]
-	bool		AddFriend(const uchar* abyUserhash, UINT dwLastSeen, const _CIPAddress& dwLastUsedIP, uint16 nLastUsedPort, 
-    //bool		AddFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort,
+    bool		AddFriend(const uchar* abyUserhash, UINT dwLastSeen, const _CIPAddress& dwLastUsedIP, uint16 nLastUsedPort,
+                          //bool		AddFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort,
 //<<< WiZaRd::IPv6 [Xanatos]
                           UINT dwLastChatted, LPCTSTR pszName, UINT dwHasHash);
     void		RemoveFriend(CFriend* todel);

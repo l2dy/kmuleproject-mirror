@@ -160,30 +160,30 @@ BOOL CPPgGeneral::OnInitDialog()
         if (ret==0)
             switch (aLanguageIDs[i])
             {
-            case LANGID_UG_CN:
-                _tcscpy(szLang,_T("Uyghur"));
-                break;
-            case LANGID_GL_ES:
-                _tcscpy(szLang,_T("Galician"));
-                break;
-            case LANGID_FR_BR:
-                _tcscpy(szLang,_T("Breton (Brezhoneg)"));
-                break;
-            case LANGID_MT_MT:
-                _tcscpy(szLang,_T("Maltese"));
-                break;
-            case LANGID_ES_AS:
-                _tcscpy(szLang,_T("Asturian"));
-                break;
-            case LANGID_VA_ES:
-                _tcscpy(szLang,_T("Valencian"));
-                break;
-            case LANGID_VA_ES_RACV:
-                _tcscpy(szLang, _T("Valencian (RACV)"));
-                break;
-            default:
-                ASSERT(0);
-                _tcscpy(szLang,_T("?(unknown language)?"));
+                case LANGID_UG_CN:
+                    _tcscpy(szLang,_T("Uyghur"));
+                    break;
+                case LANGID_GL_ES:
+                    _tcscpy(szLang,_T("Galician"));
+                    break;
+                case LANGID_FR_BR:
+                    _tcscpy(szLang,_T("Breton (Brezhoneg)"));
+                    break;
+                case LANGID_MT_MT:
+                    _tcscpy(szLang,_T("Maltese"));
+                    break;
+                case LANGID_ES_AS:
+                    _tcscpy(szLang,_T("Asturian"));
+                    break;
+                case LANGID_VA_ES:
+                    _tcscpy(szLang,_T("Valencian"));
+                    break;
+                case LANGID_VA_ES_RACV:
+                    _tcscpy(szLang, _T("Valencian (RACV)"));
+                    break;
+                default:
+                    ASSERT(0);
+                    _tcscpy(szLang,_T("?(unknown language)?"));
             }
 
         m_language.SetItemData(m_language.AddString(szLang), aLanguageIDs[i]);

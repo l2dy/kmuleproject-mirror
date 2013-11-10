@@ -261,12 +261,12 @@ void CFileDetailDialogName::OnLvnColumnClick(NMHDR *pNMHDR, LRESULT *pResult)
     {
         switch (pNMListView->iSubItem)
         {
-        case 1: // Count
-            sortAscending = false;
-            break;
-        default:
-            sortAscending = true;
-            break;
+            case 1: // Count
+                sortAscending = false;
+                break;
+            default:
+                sortAscending = true;
+                break;
         }
     }
     else
@@ -286,15 +286,15 @@ int CALLBACK CFileDetailDialogName::CompareListNameItems(LPARAM lParam1, LPARAM 
     int iResult = 0;
     switch (lParamSort)
     {
-    case 0:
-    case 10:
-        iResult = CompareLocaleStringNoCase(item1->filename, item2->filename);
-        break;
+        case 0:
+        case 10:
+            iResult = CompareLocaleStringNoCase(item1->filename, item2->filename);
+            break;
 
-    case 1:
-    case 11:
-        iResult = CompareUnsigned(item1->count, item2->count);
-        break;
+        case 1:
+        case 11:
+            iResult = CompareUnsigned(item1->count, item2->count);
+            break;
     }
 
     if (lParamSort >= 10)
@@ -336,15 +336,15 @@ BOOL CFileDetailDialogName::OnCommand(WPARAM wParam,LPARAM lParam)
     {
         switch (wParam)
         {
-        case MP_MESSAGE:
-            TakeOver();
-            return true;
-        case MP_COPYSELECTED:
-            Copy();
-            return true;
-        case MP_RESTORE:
-            FillSourcenameList();
-            return true;
+            case MP_MESSAGE:
+                TakeOver();
+                return true;
+            case MP_COPYSELECTED:
+                Copy();
+                return true;
+            case MP_RESTORE:
+                FillSourcenameList();
+                return true;
         }
     }
     return CResizablePage::OnCommand(wParam, lParam);

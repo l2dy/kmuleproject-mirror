@@ -155,15 +155,15 @@ void CreateNetworkInfo(CRichEditCtrlX& rCtrl, CHARFORMAT& rcfDef, CHARFORMAT& rc
             rCtrl << GetResString(IDS_BUDDY) << _T(":\t");
             switch (theApp.clientlist->GetBuddyStatus())
             {
-            case Disconnected:
-                rCtrl << GetResString(IDS_BUDDYNONE);
-                break;
-            case Connecting:
-                rCtrl << GetResString(IDS_CONNECTING);
-                break;
-            case Connected:
-                rCtrl << GetResString(IDS_CONNECTED);
-                break;
+                case Disconnected:
+                    rCtrl << GetResString(IDS_BUDDYNONE);
+                    break;
+                case Connecting:
+                    rCtrl << GetResString(IDS_CONNECTING);
+                    break;
+                case Connected:
+                    rCtrl << GetResString(IDS_CONNECTED);
+                    break;
             }
             rCtrl << _T("\r\n");
         }

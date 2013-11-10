@@ -33,7 +33,7 @@ static char THIS_FILE[] = __FILE__;
 // fairly simply captcha generator, might be improved is spammers think its really worth it solving captchas on eMule
 
 static const char schCaptchaContent[34] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'
-        , 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+                                           , 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9'
                                           };
 
 CCaptchaGenerator::CCaptchaGenerator(UINT nLetterCount)

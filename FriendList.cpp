@@ -173,8 +173,8 @@ CFriend* CFriendList::SearchFriend(const uchar* abyUserHash, _CIPAddress dwIP, u
         else
         {
 //>>> WiZaRd::IPv6 [Xanatos]
-			if (cur_friend->m_dwLastUsedIP == dwIP && !dwIP.IsNull() && cur_friend->m_nLastUsedPort == nPort && nPort != 0)
-            //if (cur_friend->m_dwLastUsedIP == dwIP && dwIP != 0 && cur_friend->m_nLastUsedPort == nPort && nPort != 0)
+            if (cur_friend->m_dwLastUsedIP == dwIP && !dwIP.IsNull() && cur_friend->m_nLastUsedPort == nPort && nPort != 0)
+                //if (cur_friend->m_dwLastUsedIP == dwIP && dwIP != 0 && cur_friend->m_nLastUsedPort == nPort && nPort != 0)
 //<<< WiZaRd::IPv6 [Xanatos]
                 return cur_friend;
         }
@@ -203,7 +203,7 @@ void CFriendList::ShowFriends() const
 
 //You can add a friend without a IP to allow the IRC to trade links with lowID users.
 //>>> WiZaRd::IPv6 [Xanatos]
-bool CFriendList::AddFriend(const uchar* abyUserhash, UINT dwLastSeen, const _CIPAddress& dwLastUsedIP, uint16 nLastUsedPort, 
+bool CFriendList::AddFriend(const uchar* abyUserhash, UINT dwLastSeen, const _CIPAddress& dwLastUsedIP, uint16 nLastUsedPort,
 //bool CFriendList::AddFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort,
 //<<< WiZaRd::IPv6 [Xanatos]
                             UINT dwLastChatted, LPCTSTR pszName, UINT dwHasHash)
@@ -211,8 +211,8 @@ bool CFriendList::AddFriend(const uchar* abyUserhash, UINT dwLastSeen, const _CI
     // client must have an IP (HighID) or a hash
     // TODO: check if this can be switched to a hybridID so clients with *.*.*.0 can be added..
 //>>> WiZaRd::IPv6 [Xanatos]
-	if (dwLastUsedIP.Type() == CAddress::IPv4 && IsLowID(_ntohl(dwLastUsedIP.ToIPv4())) && dwHasHash==0)
-		return false;
+    if (dwLastUsedIP.Type() == CAddress::IPv4 && IsLowID(_ntohl(dwLastUsedIP.ToIPv4())) && dwHasHash==0)
+        return false;
 //     if (IsLowID(dwLastUsedIP) && dwHasHash==0)
 //         return false;
 //<<< WiZaRd::IPv6 [Xanatos]

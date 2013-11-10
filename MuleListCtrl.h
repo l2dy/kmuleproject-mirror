@@ -92,16 +92,16 @@ public:
         }
         switch (lvcol.fmt & LVCFMT_JUSTIFYMASK)
         {
-        default:
-        case LVCFMT_LEFT:
-            uDrawTextAlignment = DT_LEFT;
-            break;
-        case LVCFMT_RIGHT:
-            uDrawTextAlignment = DT_RIGHT;
-            break;
-        case LVCFMT_CENTER:
-            uDrawTextAlignment = DT_CENTER;
-            break;
+            default:
+            case LVCFMT_LEFT:
+                uDrawTextAlignment = DT_LEFT;
+                break;
+            case LVCFMT_RIGHT:
+                uDrawTextAlignment = DT_RIGHT;
+                break;
+            case LVCFMT_CENTER:
+                uDrawTextAlignment = DT_CENTER;
+                break;
         }
         return lvcol.cx;
     }

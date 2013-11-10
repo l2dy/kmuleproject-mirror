@@ -46,6 +46,9 @@
 #include "SharedFileList.h"
 #include "ToolbarWnd.h"
 #include "./Mod/ModIconMapping.h" //>>> WiZaRd::ModIconMappings
+#ifdef _DEBUG
+#include "packets.h"
+#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -482,158 +485,158 @@ void CDownloadListCtrl::GetFileItemDisplayText(CPartFile *lpPartFile, int iSubIt
     pszText[0] = L'\0';
     switch (iSubItem)
     {
-    case 0: 	// file name
-        _tcsncpy(pszText, lpPartFile->GetFileName(), cchTextMax);
-        break;
+        case 0: 	// file name
+            _tcsncpy(pszText, lpPartFile->GetFileName(), cchTextMax);
+            break;
 
-    case 1:		// size
-        _tcsncpy(pszText, CastItoXBytes(lpPartFile->GetFileSize(), false, false), cchTextMax);
-        break;
+        case 1:		// size
+            _tcsncpy(pszText, CastItoXBytes(lpPartFile->GetFileSize(), false, false), cchTextMax);
+            break;
 
-    case 2:		// transferred
-        _tcsncpy(pszText, CastItoXBytes(lpPartFile->GetTransferred(), false, false), cchTextMax);
-        break;
+        case 2:		// transferred
+            _tcsncpy(pszText, CastItoXBytes(lpPartFile->GetTransferred(), false, false), cchTextMax);
+            break;
 
-    case 3:		// transferred complete
-        _tcsncpy(pszText, CastItoXBytes(lpPartFile->GetCompletedSize(), false, false), cchTextMax);
-        break;
+        case 3:		// transferred complete
+            _tcsncpy(pszText, CastItoXBytes(lpPartFile->GetCompletedSize(), false, false), cchTextMax);
+            break;
 
-    case 4:		// speed
-        if (lpPartFile->GetTransferringSrcCount())
-            _tcsncpy(pszText, CastItoXBytes(lpPartFile->GetDatarate(), false, true), cchTextMax);
-        break;
+        case 4:		// speed
+            if (lpPartFile->GetTransferringSrcCount())
+                _tcsncpy(pszText, CastItoXBytes(lpPartFile->GetDatarate(), false, true), cchTextMax);
+            break;
 
-    case 5: 	// progress
-        _sntprintf(pszText, cchTextMax, _T("%s: %.1f%%"), GetResString(IDS_DL_PROGRESS), lpPartFile->GetPercentCompleted());
-        break;
+        case 5: 	// progress
+            _sntprintf(pszText, cchTextMax, _T("%s: %.1f%%"), GetResString(IDS_DL_PROGRESS), lpPartFile->GetPercentCompleted());
+            break;
 
-    case 6:	 	// sources
-    {
-        CString strBuffer;
-        UINT sc = lpPartFile->GetSourceCount();
-// ZZ:DownloadManager -->
-        if (!(lpPartFile->GetStatus() == PS_PAUSED && sc == 0) && lpPartFile->GetStatus() != PS_COMPLETE)
+        case 6:	 	// sources
         {
-            UINT ncsc = lpPartFile->GetNotCurrentSourcesCount();
-            strBuffer.Format(_T("%i"), sc - ncsc);
-            if (ncsc > 0)
-                strBuffer.AppendFormat(_T("/%i"), sc);
-            if (thePrefs.IsExtControlsEnabled() && lpPartFile->GetSrcA4AFCount() > 0)
-                strBuffer.AppendFormat(_T("+%i"), lpPartFile->GetSrcA4AFCount());
-            if (lpPartFile->GetTransferringSrcCount() > 0)
-                strBuffer.AppendFormat(_T(" (%i)"), lpPartFile->GetTransferringSrcCount());
-        }
+            CString strBuffer;
+            UINT sc = lpPartFile->GetSourceCount();
+// ZZ:DownloadManager -->
+            if (!(lpPartFile->GetStatus() == PS_PAUSED && sc == 0) && lpPartFile->GetStatus() != PS_COMPLETE)
+            {
+                UINT ncsc = lpPartFile->GetNotCurrentSourcesCount();
+                strBuffer.Format(_T("%i"), sc - ncsc);
+                if (ncsc > 0)
+                    strBuffer.AppendFormat(_T("/%i"), sc);
+                if (thePrefs.IsExtControlsEnabled() && lpPartFile->GetSrcA4AFCount() > 0)
+                    strBuffer.AppendFormat(_T("+%i"), lpPartFile->GetSrcA4AFCount());
+                if (lpPartFile->GetTransferringSrcCount() > 0)
+                    strBuffer.AppendFormat(_T(" (%i)"), lpPartFile->GetTransferringSrcCount());
+            }
 // <-- ZZ:DownloadManager
 //>>> WiZaRd::AutoHL
 //		if (thePrefs.IsExtControlsEnabled() && lpPartFile->GetPrivateMaxSources() != 0)
 //<<< WiZaRd::AutoHL
-        strBuffer.AppendFormat(_T(" [%i]"), lpPartFile->GetPrivateMaxSources());
+            strBuffer.AppendFormat(_T(" [%i]"), lpPartFile->GetPrivateMaxSources());
 //>>> WiZaRd::AutoHL
-        if (thePrefs.IsUseAutoHL() == -1) //show indicator when there's no global setting
-            strBuffer.Append(lpPartFile->UseAutoHL() ? L"V" : L"F"); //variable/fixed
+            if (thePrefs.IsUseAutoHL() == -1) //show indicator when there's no global setting
+                strBuffer.Append(lpPartFile->UseAutoHL() ? L"V" : L"F"); //variable/fixed
 //<<< WiZaRd::AutoHL
-        _tcsncpy(pszText, strBuffer, cchTextMax);
-        break;
-    }
+            _tcsncpy(pszText, strBuffer, cchTextMax);
+            break;
+        }
 
-    case 7:		// prio
-        switch (lpPartFile->GetDownPriority())
-        {
+        case 7:		// prio
+            switch (lpPartFile->GetDownPriority())
+            {
 //>>> WiZaRd::Improved Auto Prio
-		case PR_VERYLOW:
-			if (lpPartFile->IsAutoDownPriority())
-				_tcsncpy(pszText, GetResString(IDS_PRIOAUTOVERYLOW), cchTextMax);
-			else
-				_tcsncpy(pszText, GetResString(IDS_PRIOVERYLOW), cchTextMax);
-			break;
+                case PR_VERYLOW:
+                    if (lpPartFile->IsAutoDownPriority())
+                        _tcsncpy(pszText, GetResString(IDS_PRIOAUTOVERYLOW), cchTextMax);
+                    else
+                        _tcsncpy(pszText, GetResString(IDS_PRIOVERYLOW), cchTextMax);
+                    break;
 //<<< WiZaRd::Improved Auto Prio
 
-        case PR_LOW:
-            if (lpPartFile->IsAutoDownPriority())
-                _tcsncpy(pszText, GetResString(IDS_PRIOAUTOLOW), cchTextMax);
-            else
-                _tcsncpy(pszText, GetResString(IDS_PRIOLOW), cchTextMax);
-            break;
+                case PR_LOW:
+                    if (lpPartFile->IsAutoDownPriority())
+                        _tcsncpy(pszText, GetResString(IDS_PRIOAUTOLOW), cchTextMax);
+                    else
+                        _tcsncpy(pszText, GetResString(IDS_PRIOLOW), cchTextMax);
+                    break;
 
-        case PR_NORMAL:
-            if (lpPartFile->IsAutoDownPriority())
-                _tcsncpy(pszText, GetResString(IDS_PRIOAUTONORMAL), cchTextMax);
-            else
-                _tcsncpy(pszText, GetResString(IDS_PRIONORMAL), cchTextMax);
-            break;
+                case PR_NORMAL:
+                    if (lpPartFile->IsAutoDownPriority())
+                        _tcsncpy(pszText, GetResString(IDS_PRIOAUTONORMAL), cchTextMax);
+                    else
+                        _tcsncpy(pszText, GetResString(IDS_PRIONORMAL), cchTextMax);
+                    break;
 
-        case PR_HIGH:
-            if (lpPartFile->IsAutoDownPriority())
-                _tcsncpy(pszText, GetResString(IDS_PRIOAUTOHIGH), cchTextMax);
-            else
-                _tcsncpy(pszText, GetResString(IDS_PRIOHIGH), cchTextMax);
-            break;
+                case PR_HIGH:
+                    if (lpPartFile->IsAutoDownPriority())
+                        _tcsncpy(pszText, GetResString(IDS_PRIOAUTOHIGH), cchTextMax);
+                    else
+                        _tcsncpy(pszText, GetResString(IDS_PRIOHIGH), cchTextMax);
+                    break;
 
 //>>> WiZaRd::Improved Auto Prio
-		case PR_VERYHIGH:
-			if (lpPartFile->IsAutoDownPriority())
-				_tcsncpy(pszText, GetResString(IDS_PRIOAUTOVERYHIGH), cchTextMax);
-			else
-				_tcsncpy(pszText, GetResString(IDS_PRIOHIGH), cchTextMax);
-			break;
+                case PR_VERYHIGH:
+                    if (lpPartFile->IsAutoDownPriority())
+                        _tcsncpy(pszText, GetResString(IDS_PRIOAUTOVERYHIGH), cchTextMax);
+                    else
+                        _tcsncpy(pszText, GetResString(IDS_PRIOHIGH), cchTextMax);
+                    break;
 //<<< WiZaRd::Improved Auto Prio
-        }
-        break;
+            }
+            break;
 
-    case 8:
-        _tcsncpy(pszText, lpPartFile->getPartfileStatus(), cchTextMax);
-        break;
+        case 8:
+            _tcsncpy(pszText, lpPartFile->getPartfileStatus(), cchTextMax);
+            break;
 
-    case 9:		// remaining time & size
-        if (lpPartFile->GetStatus() != PS_COMPLETING && lpPartFile->GetStatus() != PS_COMPLETE)
+        case 9:		// remaining time & size
+            if (lpPartFile->GetStatus() != PS_COMPLETING && lpPartFile->GetStatus() != PS_COMPLETE)
+            {
+                time_t restTime;
+                if (!thePrefs.UseSimpleTimeRemainingComputation())
+                    restTime = lpPartFile->getTimeRemaining();
+                else
+                    restTime = lpPartFile->getTimeRemainingSimple();
+                _sntprintf(pszText, cchTextMax, _T("%s (%s)"), CastSecondsToHM(restTime), CastItoXBytes((lpPartFile->GetFileSize() - lpPartFile->GetCompletedSize()), false, false));
+            }
+            break;
+
+        case 10:  	// last seen complete
         {
-            time_t restTime;
-            if (!thePrefs.UseSimpleTimeRemainingComputation())
-                restTime = lpPartFile->getTimeRemaining();
+            CString strBuffer;
+            if (lpPartFile->m_nCompleteSourcesCountLo == 0)
+                strBuffer.Format(_T("< %u"), lpPartFile->m_nCompleteSourcesCountHi);
+            else if (lpPartFile->m_nCompleteSourcesCountLo == lpPartFile->m_nCompleteSourcesCountHi)
+                strBuffer.Format(_T("%u"), lpPartFile->m_nCompleteSourcesCountLo);
             else
-                restTime = lpPartFile->getTimeRemainingSimple();
-            _sntprintf(pszText, cchTextMax, _T("%s (%s)"), CastSecondsToHM(restTime), CastItoXBytes((lpPartFile->GetFileSize() - lpPartFile->GetCompletedSize()), false, false));
+                strBuffer.Format(_T("%u - %u"), lpPartFile->m_nCompleteSourcesCountLo, lpPartFile->m_nCompleteSourcesCountHi);
+
+            if (lpPartFile->lastseencomplete == NULL)
+                _sntprintf(pszText, cchTextMax, _T("%s (%s)"), GetResString(IDS_NEVER), strBuffer);
+            else
+                _sntprintf(pszText, cchTextMax, _T("%s (%s)"), lpPartFile->lastseencomplete.Format(thePrefs.GetDateTimeFormat4Lists()), strBuffer);
+            break;
         }
-        break;
 
-    case 10:  	// last seen complete
-    {
-        CString strBuffer;
-        if (lpPartFile->m_nCompleteSourcesCountLo == 0)
-            strBuffer.Format(_T("< %u"), lpPartFile->m_nCompleteSourcesCountHi);
-        else if (lpPartFile->m_nCompleteSourcesCountLo == lpPartFile->m_nCompleteSourcesCountHi)
-            strBuffer.Format(_T("%u"), lpPartFile->m_nCompleteSourcesCountLo);
-        else
-            strBuffer.Format(_T("%u - %u"), lpPartFile->m_nCompleteSourcesCountLo, lpPartFile->m_nCompleteSourcesCountHi);
+        case 11: // last receive
+            if (lpPartFile->GetFileDate() != NULL && lpPartFile->GetCompletedSize() > (uint64)0)
+                _tcsncpy(pszText, lpPartFile->GetCFileDate().Format(thePrefs.GetDateTimeFormat4Lists()), cchTextMax);
+            else
+                _tcsncpy(pszText, GetResString(IDS_NEVER), cchTextMax);
+            break;
 
-        if (lpPartFile->lastseencomplete == NULL)
-            _sntprintf(pszText, cchTextMax, _T("%s (%s)"), GetResString(IDS_NEVER), strBuffer);
-        else
-            _sntprintf(pszText, cchTextMax, _T("%s (%s)"), lpPartFile->lastseencomplete.Format(thePrefs.GetDateTimeFormat4Lists()), strBuffer);
-        break;
-    }
+        case 12: // cat
+            _tcsncpy(pszText, (lpPartFile->GetCategory() != 0) ? thePrefs.GetCategory(lpPartFile->GetCategory())->strTitle : L"", cchTextMax);
+            break;
 
-    case 11: // last receive
-        if (lpPartFile->GetFileDate() != NULL && lpPartFile->GetCompletedSize() > (uint64)0)
-            _tcsncpy(pszText, lpPartFile->GetCFileDate().Format(thePrefs.GetDateTimeFormat4Lists()), cchTextMax);
-        else
-            _tcsncpy(pszText, GetResString(IDS_NEVER), cchTextMax);
-        break;
-
-    case 12: // cat
-        _tcsncpy(pszText, (lpPartFile->GetCategory() != 0) ? thePrefs.GetCategory(lpPartFile->GetCategory())->strTitle : L"", cchTextMax);
-        break;
-
-    case 13: // added on
-        if (lpPartFile->GetCrCFileDate() != NULL)
-            _tcsncpy(pszText, lpPartFile->GetCrCFileDate().Format(thePrefs.GetDateTimeFormat4Lists()), cchTextMax);
-        else
-            _tcsncpy(pszText, _T("?"), cchTextMax);
-        break;
+        case 13: // added on
+            if (lpPartFile->GetCrCFileDate() != NULL)
+                _tcsncpy(pszText, lpPartFile->GetCrCFileDate().Format(thePrefs.GetDateTimeFormat4Lists()), cchTextMax);
+            else
+                _tcsncpy(pszText, _T("?"), cchTextMax);
+            break;
 
 //>>> Health Indicator File Availability [WiZaRd]
-    case 14:
-        break;
+        case 14:
+            break;
 //<<< Health Indicator File Availability [WiZaRd]
     }
     pszText[cchTextMax - 1] = L'\0';
@@ -646,125 +649,125 @@ void CDownloadListCtrl::DrawFileItem(CDC *dc, int nColumn, LPCRECT lpRect, UINT 
     GetFileItemDisplayText(pPartFile, nColumn, szItem, _countof(szItem));
     switch (nColumn)
     {
-    case 0:  	// file name
-    {
-        CRect rcDraw(lpRect);
-        int iIconPosY = (rcDraw.Height() > theApp.GetSmallSytemIconSize().cy) ? ((rcDraw.Height() - theApp.GetSmallSytemIconSize().cy) / 2) : 0;
-        int iImage = theApp.GetFileTypeSystemImageIdx(pPartFile->GetFileName());
-        if (theApp.GetSystemImageList() != NULL)
-            ::ImageList_Draw(theApp.GetSystemImageList(), iImage, dc->GetSafeHdc(), rcDraw.left, rcDraw.top + iIconPosY, ILD_TRANSPARENT);
-        rcDraw.left += theApp.GetSmallSytemIconSize().cx;
+        case 0:  	// file name
+        {
+            CRect rcDraw(lpRect);
+            int iIconPosY = (rcDraw.Height() > theApp.GetSmallSytemIconSize().cy) ? ((rcDraw.Height() - theApp.GetSmallSytemIconSize().cy) / 2) : 0;
+            int iImage = theApp.GetFileTypeSystemImageIdx(pPartFile->GetFileName());
+            if (theApp.GetSystemImageList() != NULL)
+                ::ImageList_Draw(theApp.GetSystemImageList(), iImage, dc->GetSafeHdc(), rcDraw.left, rcDraw.top + iIconPosY, ILD_TRANSPARENT);
+            rcDraw.left += theApp.GetSmallSytemIconSize().cx;
 
 //>>> FDC [BlueSonicBoy]
-        if (pPartFile->DissimilarName() && m_iFDC != -1)
-        {
-            m_ImageList.Draw(dc, m_iFDC, rcDraw.TopLeft(), ILD_NORMAL);
-            rcDraw.left += 16;
-        }
+            if (pPartFile->DissimilarName() && m_iFDC != -1)
+            {
+                m_ImageList.Draw(dc, m_iFDC, rcDraw.TopLeft(), ILD_NORMAL);
+                rcDraw.left += 16;
+            }
 //<<< FDC [BlueSonicBoy]
 //>>> PreviewIndicator [WiZaRd]
-        if (thePrefs.GetPreviewIndicatorMode() == ePIM_Icon && pPartFile->IsReadyForPreview())
-        {
-            m_ImageList.Draw(dc, m_iPreview, rcDraw.TopLeft(), ILD_NORMAL);
-            rcDraw.left += 16;
-        }
+            if (thePrefs.GetPreviewIndicatorMode() == ePIM_Icon && pPartFile->IsReadyForPreview())
+            {
+                m_ImageList.Draw(dc, m_iPreview, rcDraw.TopLeft(), ILD_NORMAL);
+                rcDraw.left += 16;
+            }
 //<<< PreviewIndicator [WiZaRd]
 
-        if (thePrefs.ShowRatingIndicator() && (pPartFile->HasComment() || pPartFile->HasRating() || pPartFile->IsKadCommentSearchRunning()))
-        {
-            m_ImageList.Draw(dc, pPartFile->UserRating(true) + 22+6, CPoint(rcDraw.left + 2, rcDraw.top + iIconPosY), ILD_NORMAL);
-            rcDraw.left += 2 + RATING_ICON_WIDTH;
+            if (thePrefs.ShowRatingIndicator() && (pPartFile->HasComment() || pPartFile->HasRating() || pPartFile->IsKadCommentSearchRunning()))
+            {
+                m_ImageList.Draw(dc, pPartFile->UserRating(true) + 22+6, CPoint(rcDraw.left + 2, rcDraw.top + iIconPosY), ILD_NORMAL);
+                rcDraw.left += 2 + RATING_ICON_WIDTH;
+            }
+
+            rcDraw.left += sm_iLabelOffset;
+            dc->DrawText(szItem, -1, &rcDraw, MLC_DT_TEXT | uDrawTextAlignment);
+            break;
         }
 
-        rcDraw.left += sm_iLabelOffset;
-        dc->DrawText(szItem, -1, &rcDraw, MLC_DT_TEXT | uDrawTextAlignment);
-        break;
-    }
-
-    case 5:  	// progress
-    {
-        CRect rcDraw(*lpRect);
-        rcDraw.bottom--;
-        rcDraw.top++;
-
-        int iWidth = rcDraw.Width();
-        int iHeight = rcDraw.Height();
-        if (pCtrlItem->status == (HBITMAP)NULL)
-            VERIFY(pCtrlItem->status.CreateBitmap(1, 1, 1, 8, NULL));
-        CDC cdcStatus;
-        HGDIOBJ hOldBitmap;
-        cdcStatus.CreateCompatibleDC(dc);
-        int cx = pCtrlItem->status.GetBitmapDimension().cx;
-        DWORD dwTicks = GetTickCount();
-        if (pCtrlItem->dwUpdated + DLC_BARUPDATE < dwTicks || cx !=  iWidth || !pCtrlItem->dwUpdated)
+        case 5:  	// progress
         {
-            pCtrlItem->status.DeleteObject();
-            pCtrlItem->status.CreateCompatibleBitmap(dc, iWidth, iHeight);
-            pCtrlItem->status.SetBitmapDimension(iWidth, iHeight);
-            hOldBitmap = cdcStatus.SelectObject(pCtrlItem->status);
+            CRect rcDraw(*lpRect);
+            rcDraw.bottom--;
+            rcDraw.top++;
 
-            RECT rec_status;
-            rec_status.left = 0;
-            rec_status.top = 0;
-            rec_status.bottom = iHeight;
-            rec_status.right = iWidth;
-            pPartFile->DrawStatusBar(&cdcStatus,  &rec_status, thePrefs.UseFlatBar());
-            pCtrlItem->dwUpdated = dwTicks + (rand() % 128);
-        }
-        else
-            hOldBitmap = cdcStatus.SelectObject(pCtrlItem->status);
-        dc->BitBlt(rcDraw.left, rcDraw.top, iWidth, iHeight,  &cdcStatus, 0, 0, SRCCOPY);
-        cdcStatus.SelectObject(hOldBitmap);
+            int iWidth = rcDraw.Width();
+            int iHeight = rcDraw.Height();
+            if (pCtrlItem->status == (HBITMAP)NULL)
+                VERIFY(pCtrlItem->status.CreateBitmap(1, 1, 1, 8, NULL));
+            CDC cdcStatus;
+            HGDIOBJ hOldBitmap;
+            cdcStatus.CreateCompatibleDC(dc);
+            int cx = pCtrlItem->status.GetBitmapDimension().cx;
+            DWORD dwTicks = GetTickCount();
+            if (pCtrlItem->dwUpdated + DLC_BARUPDATE < dwTicks || cx !=  iWidth || !pCtrlItem->dwUpdated)
+            {
+                pCtrlItem->status.DeleteObject();
+                pCtrlItem->status.CreateCompatibleBitmap(dc, iWidth, iHeight);
+                pCtrlItem->status.SetBitmapDimension(iWidth, iHeight);
+                hOldBitmap = cdcStatus.SelectObject(pCtrlItem->status);
 
-        if (thePrefs.GetUseDwlPercentage())
-        {
-            COLORREF oldclr = dc->SetTextColor(RGB(255, 255, 255));
-            int iOMode = dc->SetBkMode(TRANSPARENT);
-            _sntprintf(szItem, _countof(szItem), _T("%.1f%%"), pPartFile->GetPercentCompleted());
-            szItem[_countof(szItem) - 1] = L'\0';
-            dc->DrawText(szItem, -1, &rcDraw, (MLC_DT_TEXT & ~DT_LEFT) | DT_CENTER);
-            dc->SetBkMode(iOMode);
-            dc->SetTextColor(oldclr);
+                RECT rec_status;
+                rec_status.left = 0;
+                rec_status.top = 0;
+                rec_status.bottom = iHeight;
+                rec_status.right = iWidth;
+                pPartFile->DrawStatusBar(&cdcStatus,  &rec_status, thePrefs.UseFlatBar());
+                pCtrlItem->dwUpdated = dwTicks + (rand() % 128);
+            }
+            else
+                hOldBitmap = cdcStatus.SelectObject(pCtrlItem->status);
+            dc->BitBlt(rcDraw.left, rcDraw.top, iWidth, iHeight,  &cdcStatus, 0, 0, SRCCOPY);
+            cdcStatus.SelectObject(hOldBitmap);
+
+            if (thePrefs.GetUseDwlPercentage())
+            {
+                COLORREF oldclr = dc->SetTextColor(RGB(255, 255, 255));
+                int iOMode = dc->SetBkMode(TRANSPARENT);
+                _sntprintf(szItem, _countof(szItem), _T("%.1f%%"), pPartFile->GetPercentCompleted());
+                szItem[_countof(szItem) - 1] = L'\0';
+                dc->DrawText(szItem, -1, &rcDraw, (MLC_DT_TEXT & ~DT_LEFT) | DT_CENTER);
+                dc->SetBkMode(iOMode);
+                dc->SetTextColor(oldclr);
+            }
+            break;
         }
-        break;
-    }
 
 //>>> Health Indicator File Availability [WiZaRd]
-    case 14:
-    {
-        CRect rcDraw(lpRect);
-        int available = !pPartFile->IsPartFile() ? 100 : (pPartFile->GetAvailablePartCount()*100/pPartFile->GetPartCount()); //get available parts in %
-        POINT pt = rcDraw.TopLeft();
-        if (available >= 25) // 25%-49% display first bar
-            m_ImageList.Draw(dc, m_iHealthIndex, pt, ILD_NORMAL);
-        else
-            m_ImageList.Draw(dc, m_iHealthIndex+4, pt, ILD_NORMAL);
-        pt.x += 10;
+        case 14:
+        {
+            CRect rcDraw(lpRect);
+            int available = !pPartFile->IsPartFile() ? 100 : (pPartFile->GetAvailablePartCount()*100/pPartFile->GetPartCount()); //get available parts in %
+            POINT pt = rcDraw.TopLeft();
+            if (available >= 25) // 25%-49% display first bar
+                m_ImageList.Draw(dc, m_iHealthIndex, pt, ILD_NORMAL);
+            else
+                m_ImageList.Draw(dc, m_iHealthIndex+4, pt, ILD_NORMAL);
+            pt.x += 10;
 
-        if (available >= 50) // 50%-74% display second bar
-            m_ImageList.Draw(dc, m_iHealthIndex+1, pt, ILD_NORMAL);
-        else
-            m_ImageList.Draw(dc, m_iHealthIndex+5, pt, ILD_NORMAL);
-        pt.x += 10;
+            if (available >= 50) // 50%-74% display second bar
+                m_ImageList.Draw(dc, m_iHealthIndex+1, pt, ILD_NORMAL);
+            else
+                m_ImageList.Draw(dc, m_iHealthIndex+5, pt, ILD_NORMAL);
+            pt.x += 10;
 
-        if (available >= 75) // 75%-99% display third bar
-            m_ImageList.Draw(dc, m_iHealthIndex+2, pt, ILD_NORMAL);
-        else
-            m_ImageList.Draw(dc, m_iHealthIndex+6, pt, ILD_NORMAL);
-        pt.x += 10;
+            if (available >= 75) // 75%-99% display third bar
+                m_ImageList.Draw(dc, m_iHealthIndex+2, pt, ILD_NORMAL);
+            else
+                m_ImageList.Draw(dc, m_iHealthIndex+6, pt, ILD_NORMAL);
+            pt.x += 10;
 
-        if (available == 100) // 100% display all fours
-            m_ImageList.Draw(dc, m_iHealthIndex+3, pt, ILD_NORMAL);
-        else
-            m_ImageList.Draw(dc, m_iHealthIndex+7, pt, ILD_NORMAL);
-        pt.x += 10;
-        break;
-    }
+            if (available == 100) // 100% display all fours
+                m_ImageList.Draw(dc, m_iHealthIndex+3, pt, ILD_NORMAL);
+            else
+                m_ImageList.Draw(dc, m_iHealthIndex+7, pt, ILD_NORMAL);
+            pt.x += 10;
+            break;
+        }
 //<<< Health Indicator File Availability [WiZaRd]
 
-    default:
-        dc->DrawText(szItem, -1, const_cast<LPRECT>(lpRect), MLC_DT_TEXT | uDrawTextAlignment);
-        break;
+        default:
+            dc->DrawText(szItem, -1, const_cast<LPRECT>(lpRect), MLC_DT_TEXT | uDrawTextAlignment);
+            break;
     }
 }
 
@@ -779,128 +782,128 @@ void CDownloadListCtrl::GetSourceItemDisplayText(const CtrlItem_Struct *pCtrlIte
     pszText[0] = L'\0';
     switch (iSubItem)
     {
-    case 0: 	// icon, name, status
-        if (pClient->GetUserName() == NULL)
-            _sntprintf(pszText, cchTextMax, _T("(%s)"), GetResString(IDS_UNKNOWN));
-        else
-            _tcsncpy(pszText, pClient->GetUserName(), cchTextMax);
-        break;
-
-    case 1:		// size
-        switch (pClient->GetSourceFrom())
-        {
-        case SF_SERVER:
-            _tcsncpy(pszText, _T("eD2K Server"), cchTextMax);
+        case 0: 	// icon, name, status
+            if (pClient->GetUserName() == NULL)
+                _sntprintf(pszText, cchTextMax, _T("(%s)"), GetResString(IDS_UNKNOWN));
+            else
+                _tcsncpy(pszText, pClient->GetUserName(), cchTextMax);
             break;
-        case SF_KADEMLIA:
-            _tcsncpy(pszText, GetResString(IDS_KADEMLIA), cchTextMax);
-            break;
-        case SF_SOURCE_EXCHANGE:
-            _tcsncpy(pszText, GetResString(IDS_SE), cchTextMax);
-            break;
-        case SF_PASSIVE:
-            _tcsncpy(pszText, GetResString(IDS_PASSIVE), cchTextMax);
-            break;
-        case SF_LINK:
-            _tcsncpy(pszText, GetResString(IDS_SW_LINK), cchTextMax);
-            break;
-//>>> Tux::searchCatch
-        case SF_SEARCH:
-            _tcsncpy(pszText, GetResString(IDS_SW_SEARCHBOX), cchTextMax);
-            break;
-//<<< Tux::searchCatch
-        }
-        break;
 
-    case 2:		// transferred
-    case 3:		// completed
-        // - 'Transferred' column: Show transferred data
-        // - 'Completed' column: If 'Transferred' column is hidden, show the amount of transferred data
-        //	  in 'Completed' column. This is plain wrong (at least when receiving compressed data), but
-        //	  users seem to got used to it.
-        if (iSubItem == 2 || IsColumnHidden(2))
-        {
-            if (pCtrlItem->type == AVAILABLE_SOURCE && pClient->GetTransferredDown())
-                _tcsncpy(pszText, CastItoXBytes(pClient->GetTransferredDown(), false, false), cchTextMax);
-        }
-        break;
-
-    case 4:		// speed
-        if (pCtrlItem->type == AVAILABLE_SOURCE && pClient->GetDownloadDatarate())
-        {
-            if (pClient->GetDownloadDatarate())
-                _tcsncpy(pszText, CastItoXBytes(pClient->GetDownloadDatarate(), false, true), cchTextMax);
-        }
-        break;
-
-    case 5: 	// file info
-        _tcsncpy(pszText, GetResString(IDS_DL_PROGRESS), cchTextMax);
-        break;
-
-    case 6:		// sources
-        _tcsncpy(pszText, pClient->DbgGetFullClientSoftVer(), cchTextMax);
-        break;
-
-    case 7:		// prio
-        if (pClient->GetDownloadState() == DS_ONQUEUE)
-        {
-            if (pClient->IsRemoteQueueFull())
-                _tcsncpy(pszText, GetResString(IDS_QUEUEFULL), cchTextMax);
-            else if (pClient->GetRemoteQueueRank())
-                _sntprintf(pszText, cchTextMax, _T("QR: %u"), pClient->GetRemoteQueueRank());
-        }
-        break;
-
-    case 8:  	// status
-    {
-        CString strBuffer;
-        if (pCtrlItem->type == AVAILABLE_SOURCE)
-        {
-            strBuffer = pClient->GetDownloadStateDisplayString();
-        }
-        else
-        {
-            strBuffer = GetResString(IDS_ASKED4ANOTHERFILE);
-// ZZ:DownloadManager -->
-            if (thePrefs.IsExtControlsEnabled())
+        case 1:		// size
+            switch (pClient->GetSourceFrom())
             {
-                if (pClient->IsInNoNeededList(pCtrlItem->owner))
-                    strBuffer += _T(" (") + GetResString(IDS_NONEEDEDPARTS) + _T(')');
-                else if (pClient->GetDownloadState() == DS_DOWNLOADING)
-                    strBuffer += _T(" (") + GetResString(IDS_TRANSFERRING) + _T(')');
-                else if (const_cast<CUpDownClient *>(pClient)->IsSwapSuspended(pClient->GetRequestFile()))
-                    strBuffer += _T(" (") + GetResString(IDS_SOURCESWAPBLOCKED) + _T(')');
-
-                if (pClient->GetRequestFile() && pClient->GetRequestFile()->GetFileName())
-                    strBuffer.AppendFormat(_T(": \"%s\""), pClient->GetRequestFile()->GetFileName());
+                case SF_SERVER:
+                    _tcsncpy(pszText, _T("eD2K Server"), cchTextMax);
+                    break;
+                case SF_KADEMLIA:
+                    _tcsncpy(pszText, GetResString(IDS_KADEMLIA), cchTextMax);
+                    break;
+                case SF_SOURCE_EXCHANGE:
+                    _tcsncpy(pszText, GetResString(IDS_SE), cchTextMax);
+                    break;
+                case SF_PASSIVE:
+                    _tcsncpy(pszText, GetResString(IDS_PASSIVE), cchTextMax);
+                    break;
+                case SF_LINK:
+                    _tcsncpy(pszText, GetResString(IDS_SW_LINK), cchTextMax);
+                    break;
+//>>> Tux::searchCatch
+                case SF_SEARCH:
+                    _tcsncpy(pszText, GetResString(IDS_SW_SEARCHBOX), cchTextMax);
+                    break;
+//<<< Tux::searchCatch
             }
+            break;
+
+        case 2:		// transferred
+        case 3:		// completed
+            // - 'Transferred' column: Show transferred data
+            // - 'Completed' column: If 'Transferred' column is hidden, show the amount of transferred data
+            //	  in 'Completed' column. This is plain wrong (at least when receiving compressed data), but
+            //	  users seem to got used to it.
+            if (iSubItem == 2 || IsColumnHidden(2))
+            {
+                if (pCtrlItem->type == AVAILABLE_SOURCE && pClient->GetTransferredDown())
+                    _tcsncpy(pszText, CastItoXBytes(pClient->GetTransferredDown(), false, false), cchTextMax);
+            }
+            break;
+
+        case 4:		// speed
+            if (pCtrlItem->type == AVAILABLE_SOURCE && pClient->GetDownloadDatarate())
+            {
+                if (pClient->GetDownloadDatarate())
+                    _tcsncpy(pszText, CastItoXBytes(pClient->GetDownloadDatarate(), false, true), cchTextMax);
+            }
+            break;
+
+        case 5: 	// file info
+            _tcsncpy(pszText, GetResString(IDS_DL_PROGRESS), cchTextMax);
+            break;
+
+        case 6:		// sources
+            _tcsncpy(pszText, pClient->DbgGetFullClientSoftVer(), cchTextMax);
+            break;
+
+        case 7:		// prio
+            if (pClient->GetDownloadState() == DS_ONQUEUE)
+            {
+                if (pClient->IsRemoteQueueFull())
+                    _tcsncpy(pszText, GetResString(IDS_QUEUEFULL), cchTextMax);
+                else if (pClient->GetRemoteQueueRank())
+                    _sntprintf(pszText, cchTextMax, _T("QR: %u"), pClient->GetRemoteQueueRank());
+            }
+            break;
+
+        case 8:  	// status
+        {
+            CString strBuffer;
+            if (pCtrlItem->type == AVAILABLE_SOURCE)
+            {
+                strBuffer = pClient->GetDownloadStateDisplayString();
+            }
+            else
+            {
+                strBuffer = GetResString(IDS_ASKED4ANOTHERFILE);
+// ZZ:DownloadManager -->
+                if (thePrefs.IsExtControlsEnabled())
+                {
+                    if (pClient->IsInNoNeededList(pCtrlItem->owner))
+                        strBuffer += _T(" (") + GetResString(IDS_NONEEDEDPARTS) + _T(')');
+                    else if (pClient->GetDownloadState() == DS_DOWNLOADING)
+                        strBuffer += _T(" (") + GetResString(IDS_TRANSFERRING) + _T(')');
+                    else if (const_cast<CUpDownClient *>(pClient)->IsSwapSuspended(pClient->GetRequestFile()))
+                        strBuffer += _T(" (") + GetResString(IDS_SOURCESWAPBLOCKED) + _T(')');
+
+                    if (pClient->GetRequestFile() && pClient->GetRequestFile()->GetFileName())
+                        strBuffer.AppendFormat(_T(": \"%s\""), pClient->GetRequestFile()->GetFileName());
+                }
+            }
+
+            if (thePrefs.IsExtControlsEnabled() && !pClient->m_OtherRequests_list.IsEmpty())
+                strBuffer.Append(_T("*"));
+// ZZ:DownloadManager <--
+            _tcsncpy(pszText, strBuffer, cchTextMax);
+            break;
         }
 
-        if (thePrefs.IsExtControlsEnabled() && !pClient->m_OtherRequests_list.IsEmpty())
-            strBuffer.Append(_T("*"));
-// ZZ:DownloadManager <--
-        _tcsncpy(pszText, strBuffer, cchTextMax);
-        break;
-    }
+        case 9:		// remaining time & size
+            break;
 
-    case 9:		// remaining time & size
-        break;
+        case 10:	// last seen complete
+            break;
 
-    case 10:	// last seen complete
-        break;
+        case 11:	// last received
+            break;
 
-    case 11:	// last received
-        break;
+        case 12:	// category
+            break;
 
-    case 12:	// category
-        break;
-
-    case 13:	// added on
-        break;
+        case 13:	// added on
+            break;
 
 //>>> Health Indicator File Availability [WiZaRd]
-    case 14:
-        break;
+        case 14:
+            break;
 //<<< Health Indicator File Availability [WiZaRd]
     }
     pszText[cchTextMax - 1] = L'\0';
@@ -913,181 +916,181 @@ void CDownloadListCtrl::DrawSourceItem(CDC *dc, int nColumn, LPCRECT lpRect, UIN
     GetSourceItemDisplayText(pCtrlItem, nColumn, szItem, _countof(szItem));
     switch (nColumn)
     {
-    case 0:  	// icon, name, status
-    {
-        CRect cur_rec(*lpRect);
-        int iIconPosY = (cur_rec.Height() > 16) ? ((cur_rec.Height() - 16) / 2) : 1;
-        POINT point = {cur_rec.left, cur_rec.top + iIconPosY};
-        if (pCtrlItem->type == AVAILABLE_SOURCE)
+        case 0:  	// icon, name, status
         {
-            switch (pClient->GetDownloadState())
-            {
-            case DS_CONNECTING:
-                m_ImageList.Draw(dc, 22+3, point, ILD_NORMAL);
-                break;
-            case DS_CONNECTED:
-                m_ImageList.Draw(dc, 22+3, point, ILD_NORMAL);
-                break;
-            case DS_WAITCALLBACKKAD:
-            case DS_WAITCALLBACK:
-                m_ImageList.Draw(dc, 22+3, point, ILD_NORMAL);
-                break;
-            case DS_ONQUEUE:
-                if (pClient->IsRemoteQueueFull())
-                    m_ImageList.Draw(dc, 22+4, point, ILD_NORMAL);
-                else
-                    m_ImageList.Draw(dc, 22+2, point, ILD_NORMAL);
-                break;
-            case DS_DOWNLOADING:
-                m_ImageList.Draw(dc, 22+1, point, ILD_NORMAL);
-                break;
-            case DS_REQHASHSET:
-                m_ImageList.Draw(dc, 22+1, point, ILD_NORMAL);
-                break;
-            case DS_NONEEDEDPARTS:
-                m_ImageList.Draw(dc, 22+4, point, ILD_NORMAL);
-                break;
-            case DS_ERROR:
-                m_ImageList.Draw(dc, 22+4, point, ILD_NORMAL);
-                break;
-            case DS_TOOMANYCONNS:
-            case DS_TOOMANYCONNSKAD:
-                m_ImageList.Draw(dc, 22+3, point, ILD_NORMAL);
-                break;
-            default:
-                m_ImageList.Draw(dc, 22+5, point, ILD_NORMAL);
-                break;
-            }
-        }
-        else
-        {
-            m_ImageList.Draw(dc, 22+4, point, ILD_NORMAL);
-        }
-        cur_rec.left += 20;
-
-//>>> WiZaRd::ClientAnalyzer
-        int plusminus = 0;
-		int iCAIconIndex = pClient->GetAnalyzerIconIndex();
-        if(iCAIconIndex != -1)
-        {
+            CRect cur_rec(*lpRect);
             int iIconPosY = (cur_rec.Height() > 16) ? ((cur_rec.Height() - 16) / 2) : 1;
             POINT point = {cur_rec.left, cur_rec.top + iIconPosY};
-            m_ImageList.Draw(dc, 18 + iCAIconIndex, point, ILD_NORMAL);
-            cur_rec.left += 17;
-            plusminus += 17;
-        }
+            if (pCtrlItem->type == AVAILABLE_SOURCE)
+            {
+                switch (pClient->GetDownloadState())
+                {
+                    case DS_CONNECTING:
+                        m_ImageList.Draw(dc, 22+3, point, ILD_NORMAL);
+                        break;
+                    case DS_CONNECTED:
+                        m_ImageList.Draw(dc, 22+3, point, ILD_NORMAL);
+                        break;
+                    case DS_WAITCALLBACKKAD:
+                    case DS_WAITCALLBACK:
+                        m_ImageList.Draw(dc, 22+3, point, ILD_NORMAL);
+                        break;
+                    case DS_ONQUEUE:
+                        if (pClient->IsRemoteQueueFull())
+                            m_ImageList.Draw(dc, 22+4, point, ILD_NORMAL);
+                        else
+                            m_ImageList.Draw(dc, 22+2, point, ILD_NORMAL);
+                        break;
+                    case DS_DOWNLOADING:
+                        m_ImageList.Draw(dc, 22+1, point, ILD_NORMAL);
+                        break;
+                    case DS_REQHASHSET:
+                        m_ImageList.Draw(dc, 22+1, point, ILD_NORMAL);
+                        break;
+                    case DS_NONEEDEDPARTS:
+                        m_ImageList.Draw(dc, 22+4, point, ILD_NORMAL);
+                        break;
+                    case DS_ERROR:
+                        m_ImageList.Draw(dc, 22+4, point, ILD_NORMAL);
+                        break;
+                    case DS_TOOMANYCONNS:
+                    case DS_TOOMANYCONNSKAD:
+                        m_ImageList.Draw(dc, 22+3, point, ILD_NORMAL);
+                        break;
+                    default:
+                        m_ImageList.Draw(dc, 22+5, point, ILD_NORMAL);
+                        break;
+                }
+            }
+            else
+            {
+                m_ImageList.Draw(dc, 22+4, point, ILD_NORMAL);
+            }
+            cur_rec.left += 20;
+
+//>>> WiZaRd::ClientAnalyzer
+            int plusminus = 0;
+            int iCAIconIndex = pClient->GetAnalyzerIconIndex();
+            if (iCAIconIndex != -1)
+            {
+                int iIconPosY = (cur_rec.Height() > 16) ? ((cur_rec.Height() - 16) / 2) : 1;
+                POINT point = {cur_rec.left, cur_rec.top + iIconPosY};
+                m_ImageList.Draw(dc, 18 + iCAIconIndex, point, ILD_NORMAL);
+                cur_rec.left += 17;
+                plusminus += 17;
+            }
 //<<< WiZaRd::ClientAnalyzer
 
-        int iImage = GetClientImageIndex(pClient->IsFriend(), pClient->GetClientSoft(), pClient->Credits() && pClient->Credits()->GetScoreRatio(pClient->GetIP()) > 1, pClient->ExtProtocolAvailable());
+            int iImage = GetClientImageIndex(pClient->IsFriend(), pClient->GetClientSoft(), pClient->Credits() && pClient->Credits()->GetScoreRatio(pClient->GetIP()) > 1, pClient->ExtProtocolAvailable());
 
-        UINT nOverlayImage = 0;
-        if ((pClient->Credits() && pClient->Credits()->GetCurrentIdentState(pClient->GetIP()) == IS_IDENTIFIED))
-            nOverlayImage |= 1;
-        if (pClient->IsObfuscatedConnectionEstablished())
-            nOverlayImage |= 2;
-        POINT point2 = { cur_rec.left, cur_rec.top + iIconPosY };
-        m_ImageList.Draw(dc, iImage, point2, ILD_NORMAL | INDEXTOOVERLAYMASK(nOverlayImage));
-        cur_rec.left += 20;
+            UINT nOverlayImage = 0;
+            if ((pClient->Credits() && pClient->Credits()->GetCurrentIdentState(pClient->GetIP()) == IS_IDENTIFIED))
+                nOverlayImage |= 1;
+            if (pClient->IsObfuscatedConnectionEstablished())
+                nOverlayImage |= 2;
+            POINT point2 = { cur_rec.left, cur_rec.top + iIconPosY };
+            m_ImageList.Draw(dc, iImage, point2, ILD_NORMAL | INDEXTOOVERLAYMASK(nOverlayImage));
+            cur_rec.left += 20;
 
 //>>> WiZaRd::ModIconMappings
-        int icoindex = pClient->GetModIconIndex();
-        if (icoindex != MODMAP_NONE)
-        {
-            POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
-            theApp.theModIconMap->DrawModIcon(dc, icoindex, point, ILD_NORMAL);
-            cur_rec.left += 17;
-            plusminus += 17;
-        }
+            int icoindex = pClient->GetModIconIndex();
+            if (icoindex != MODMAP_NONE)
+            {
+                POINT point = { cur_rec.left, cur_rec.top + iIconPosY };
+                theApp.theModIconMap->DrawModIcon(dc, icoindex, point, ILD_NORMAL);
+                cur_rec.left += 17;
+                plusminus += 17;
+            }
 //<<< WiZaRd::ModIconMappings
 
-        dc->DrawText(szItem, -1, &cur_rec, MLC_DT_TEXT | uDrawTextAlignment);
-        cur_rec.left -= plusminus; //>>> WiZaRd::ClientAnalyzer
-        break;
-    }
-
-    case 5:  	// file info
-    {
-        CRect rcDraw(*lpRect);
-        rcDraw.bottom--;
-        rcDraw.top++;
-
-        int iWidth = rcDraw.Width();
-        int iHeight = rcDraw.Height();
-        if (pCtrlItem->status == (HBITMAP)NULL)
-            VERIFY(pCtrlItem->status.CreateBitmap(1, 1, 1, 8, NULL));
-        CDC cdcStatus;
-        HGDIOBJ hOldBitmap;
-        cdcStatus.CreateCompatibleDC(dc);
-        int cx = pCtrlItem->status.GetBitmapDimension().cx;
-        DWORD dwTicks = GetTickCount();
-        if (pCtrlItem->dwUpdated + DLC_BARUPDATE < dwTicks || cx !=  iWidth  || !pCtrlItem->dwUpdated)
-        {
-            pCtrlItem->status.DeleteObject();
-            pCtrlItem->status.CreateCompatibleBitmap(dc, iWidth, iHeight);
-            pCtrlItem->status.SetBitmapDimension(iWidth, iHeight);
-            hOldBitmap = cdcStatus.SelectObject(pCtrlItem->status);
-
-            RECT rec_status;
-            rec_status.left = 0;
-            rec_status.top = 0;
-            rec_status.bottom = iHeight;
-            rec_status.right = iWidth;
-            pClient->DrawStatusBar(&cdcStatus,  &rec_status,(pCtrlItem->type == UNAVAILABLE_SOURCE), thePrefs.UseFlatBar());
-            pCtrlItem->dwUpdated = dwTicks + (rand() % 128);
+            dc->DrawText(szItem, -1, &cur_rec, MLC_DT_TEXT | uDrawTextAlignment);
+            cur_rec.left -= plusminus; //>>> WiZaRd::ClientAnalyzer
+            break;
         }
-        else
-            hOldBitmap = cdcStatus.SelectObject(pCtrlItem->status);
-        dc->BitBlt(rcDraw.left, rcDraw.top, iWidth, iHeight,  &cdcStatus, 0, 0, SRCCOPY);
-        cdcStatus.SelectObject(hOldBitmap);
-        break;
-    }
 
-    case 9:		// remaining time & size
-    case 10:	// last seen complete
-    case 11:	// last received
-    case 12:	// category
-    case 13:	// added on
-        break;
+        case 5:  	// file info
+        {
+            CRect rcDraw(*lpRect);
+            rcDraw.bottom--;
+            rcDraw.top++;
+
+            int iWidth = rcDraw.Width();
+            int iHeight = rcDraw.Height();
+            if (pCtrlItem->status == (HBITMAP)NULL)
+                VERIFY(pCtrlItem->status.CreateBitmap(1, 1, 1, 8, NULL));
+            CDC cdcStatus;
+            HGDIOBJ hOldBitmap;
+            cdcStatus.CreateCompatibleDC(dc);
+            int cx = pCtrlItem->status.GetBitmapDimension().cx;
+            DWORD dwTicks = GetTickCount();
+            if (pCtrlItem->dwUpdated + DLC_BARUPDATE < dwTicks || cx !=  iWidth  || !pCtrlItem->dwUpdated)
+            {
+                pCtrlItem->status.DeleteObject();
+                pCtrlItem->status.CreateCompatibleBitmap(dc, iWidth, iHeight);
+                pCtrlItem->status.SetBitmapDimension(iWidth, iHeight);
+                hOldBitmap = cdcStatus.SelectObject(pCtrlItem->status);
+
+                RECT rec_status;
+                rec_status.left = 0;
+                rec_status.top = 0;
+                rec_status.bottom = iHeight;
+                rec_status.right = iWidth;
+                pClient->DrawStatusBar(&cdcStatus,  &rec_status,(pCtrlItem->type == UNAVAILABLE_SOURCE), thePrefs.UseFlatBar());
+                pCtrlItem->dwUpdated = dwTicks + (rand() % 128);
+            }
+            else
+                hOldBitmap = cdcStatus.SelectObject(pCtrlItem->status);
+            dc->BitBlt(rcDraw.left, rcDraw.top, iWidth, iHeight,  &cdcStatus, 0, 0, SRCCOPY);
+            cdcStatus.SelectObject(hOldBitmap);
+            break;
+        }
+
+        case 9:		// remaining time & size
+        case 10:	// last seen complete
+        case 11:	// last received
+        case 12:	// category
+        case 13:	// added on
+            break;
 
 //>>> Health Indicator File Availability [WiZaRd]
-    case 14:
-    {
-		if (pCtrlItem->type == AVAILABLE_SOURCE)
-		{
-			CRect rcDraw(lpRect);
-			int available = pClient->IsCompleteSource() ? 100 : (pClient->GetAvailablePartCount()*100/pCtrlItem->owner->GetPartCount()); //get available parts in %
-			POINT pt = rcDraw.TopLeft();
-			if (available >= 25) // 25%-49% display first bar
-				m_ImageList.Draw(dc, m_iHealthIndex, pt, ILD_NORMAL);
-			else
-				m_ImageList.Draw(dc, m_iHealthIndex+4, pt, ILD_NORMAL);
-			pt.x += 10;
+        case 14:
+        {
+            if (pCtrlItem->type == AVAILABLE_SOURCE)
+            {
+                CRect rcDraw(lpRect);
+                int available = pClient->IsCompleteSource() ? 100 : (pClient->GetAvailablePartCount()*100/pCtrlItem->owner->GetPartCount()); //get available parts in %
+                POINT pt = rcDraw.TopLeft();
+                if (available >= 25) // 25%-49% display first bar
+                    m_ImageList.Draw(dc, m_iHealthIndex, pt, ILD_NORMAL);
+                else
+                    m_ImageList.Draw(dc, m_iHealthIndex+4, pt, ILD_NORMAL);
+                pt.x += 10;
 
-			if (available >= 50) // 50%-74% display second bar
-				m_ImageList.Draw(dc, m_iHealthIndex+1, pt, ILD_NORMAL);
-			else
-				m_ImageList.Draw(dc, m_iHealthIndex+5, pt, ILD_NORMAL);
-			pt.x += 10;
+                if (available >= 50) // 50%-74% display second bar
+                    m_ImageList.Draw(dc, m_iHealthIndex+1, pt, ILD_NORMAL);
+                else
+                    m_ImageList.Draw(dc, m_iHealthIndex+5, pt, ILD_NORMAL);
+                pt.x += 10;
 
-			if (available >= 75) // 75%-99% display third bar
-				m_ImageList.Draw(dc, m_iHealthIndex+2, pt, ILD_NORMAL);
-			else
-				m_ImageList.Draw(dc, m_iHealthIndex+6, pt, ILD_NORMAL);
-			pt.x += 10;
+                if (available >= 75) // 75%-99% display third bar
+                    m_ImageList.Draw(dc, m_iHealthIndex+2, pt, ILD_NORMAL);
+                else
+                    m_ImageList.Draw(dc, m_iHealthIndex+6, pt, ILD_NORMAL);
+                pt.x += 10;
 
-			if (available == 100) // 100% display all fours
-				m_ImageList.Draw(dc, m_iHealthIndex+3, pt, ILD_NORMAL);
-			else
-				m_ImageList.Draw(dc, m_iHealthIndex+7, pt, ILD_NORMAL);
-			pt.x += 10;
-		}
-        break;
-    }
+                if (available == 100) // 100% display all fours
+                    m_ImageList.Draw(dc, m_iHealthIndex+3, pt, ILD_NORMAL);
+                else
+                    m_ImageList.Draw(dc, m_iHealthIndex+7, pt, ILD_NORMAL);
+                pt.x += 10;
+            }
+            break;
+        }
 //<<< Health Indicator File Availability [WiZaRd]
 
-    default:
-        dc->DrawText(szItem, -1, const_cast<LPRECT>(lpRect), MLC_DT_TEXT | uDrawTextAlignment);
-        break;
+        default:
+            dc->DrawText(szItem, -1, const_cast<LPRECT>(lpRect), MLC_DT_TEXT | uDrawTextAlignment);
+            break;
     }
 }
 
@@ -1459,8 +1462,8 @@ void CDownloadListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
                 if (pFile->IsAutoDownPriority())
                     uCurPrioMenuItem = MP_PRIOAUTO;
 //>>> WiZaRd::Improved Auto Prio
-				else if(pFile->GetDownPriority() == PR_VERYHIGH)
-					uCurPrioMenuItem = MP_PRIOVERYHIGH;
+                else if (pFile->GetDownPriority() == PR_VERYHIGH)
+                    uCurPrioMenuItem = MP_PRIOVERYHIGH;
 //<<< WiZaRd::Improved Auto Prio
                 else if (pFile->GetDownPriority() == PR_HIGH)
                     uCurPrioMenuItem = MP_PRIOHIGH;
@@ -1469,8 +1472,8 @@ void CDownloadListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
                 else if (pFile->GetDownPriority() == PR_LOW)
                     uCurPrioMenuItem = MP_PRIOLOW;
 //>>> WiZaRd::Improved Auto Prio
-				else if(pFile->GetDownPriority() == PR_VERYLOW)
-					uCurPrioMenuItem = MP_PRIOVERYLOW;
+                else if (pFile->GetDownPriority() == PR_VERYLOW)
+                    uCurPrioMenuItem = MP_PRIOVERYLOW;
 //<<< WiZaRd::Improved Auto Prio
                 else
                     ASSERT(0);
@@ -1600,7 +1603,17 @@ void CDownloadListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
         }
         else
         {
-            const CUpDownClient* client = (CUpDownClient*)content->value;
+            //const CUpDownClient* client = (CUpDownClient*)content->value;
+            CUpDownClient* client = (CUpDownClient*)content->value;
+#ifdef _DEBUG
+            CPartFile* kreqfile = client->GetRequestFile();
+            Packet* tosend = kreqfile->CreateSrcInfoPacket(client, SOURCEEXCHANGEEXT_VERSION, 0);
+            //WiZaRd: explicitly answer with "0" sources so the remote client doesn't hammer us
+            if (tosend == NULL)
+                tosend = kreqfile->GetEmptyXSPacket(client, SOURCEEXCHANGEEXT_VERSION, 0);
+            client->ProcessSourceAnswer((const BYTE*)tosend->pBuffer, tosend->size, tosend->opcode, tosend->size);
+            delete tosend;
+#endif
             CTitleMenu ClientMenu;
             ClientMenu.CreatePopupMenu();
             ClientMenu.AddMenuTitle(GetResString(IDS_CLIENTS), true);
@@ -1770,8 +1783,8 @@ CTitleMenu* CDownloadListCtrl::GetPrioMenu()
                 if (pFile->IsAutoDownPriority())
                     uCurPrioMenuItem = MP_PRIOAUTO;
 //>>> WiZaRd::Improved Auto Prio
-				else if(pFile->GetDownPriority() == PR_VERYHIGH)
-					uCurPrioMenuItem = MP_PRIOVERYHIGH;
+                else if (pFile->GetDownPriority() == PR_VERYHIGH)
+                    uCurPrioMenuItem = MP_PRIOVERYHIGH;
 //<<< WiZaRd::Improved Auto Prio
                 else if (pFile->GetDownPriority() == PR_HIGH)
                     uCurPrioMenuItem = MP_PRIOHIGH;
@@ -1780,8 +1793,8 @@ CTitleMenu* CDownloadListCtrl::GetPrioMenu()
                 else if (pFile->GetDownPriority() == PR_LOW)
                     uCurPrioMenuItem = MP_PRIOLOW;
 //>>> WiZaRd::Improved Auto Prio
-				else if(pFile->GetDownPriority() == PR_VERYLOW)
-					uCurPrioMenuItem = MP_PRIOVERYLOW;
+                else if (pFile->GetDownPriority() == PR_VERYLOW)
+                    uCurPrioMenuItem = MP_PRIOVERYLOW;
 //<<< WiZaRd::Improved Auto Prio
                 else
                     ASSERT(0);
@@ -1807,17 +1820,17 @@ BOOL CDownloadListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 
     switch (wParam)
     {
-    case MP_PASTE:
-        if (theApp.IsEd2kFileLinkInClipboard())
-            theApp.PasteClipboard(curTab);
-        return TRUE;
-    case MP_FIND:
-        OnFindStart();
-        return TRUE;
-    case MP_TOGGLEDTOOLBAR:
-        thePrefs.SetDownloadToolbar(true);
-        theApp.emuledlg->transferwnd->ShowToolbar(true);
-        return TRUE;
+        case MP_PASTE:
+            if (theApp.IsEd2kFileLinkInClipboard())
+                theApp.PasteClipboard(curTab);
+            return TRUE;
+        case MP_FIND:
+            OnFindStart();
+            return TRUE;
+        case MP_TOGGLEDTOOLBAR:
+            thePrefs.SetDownloadToolbar(true);
+            theApp.emuledlg->transferwnd->ShowToolbar(true);
+            return TRUE;
     }
 
     int iSel = GetNextItem(-1, LVIS_SELECTED | LVIS_FOCUSED);
@@ -1848,365 +1861,365 @@ BOOL CDownloadListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
             CPartFile* file = (CPartFile*)content->value;
             switch (wParam)
             {
-            case MP_CANCEL:
-            case MPG_DELETE: // keyboard del will continue to remove completed files from the screen while cancel will now also be available for complete files
-            {
-                if (selectedCount > 0)
+                case MP_CANCEL:
+                case MPG_DELETE: // keyboard del will continue to remove completed files from the screen while cancel will now also be available for complete files
                 {
-                    SetRedraw(false);
-                    CString fileList;
-                    bool validdelete = false;
-                    bool removecompl = false;
-                    int cFiles = 0;
-                    const int iMaxDisplayFiles = 10;
-                    for (pos = selectedList.GetHeadPosition(); pos != 0;)
+                    if (selectedCount > 0)
                     {
-                        CPartFile* cur_file = selectedList.GetNext(pos);
-                        if (cur_file->GetStatus() != PS_COMPLETING && (cur_file->GetStatus() != PS_COMPLETE || wParam == MP_CANCEL))
+                        SetRedraw(false);
+                        CString fileList;
+                        bool validdelete = false;
+                        bool removecompl = false;
+                        int cFiles = 0;
+                        const int iMaxDisplayFiles = 10;
+                        for (pos = selectedList.GetHeadPosition(); pos != 0;)
                         {
-                            validdelete = true;
-                            cFiles++;
-                            if (cFiles < iMaxDisplayFiles)
-                                fileList.Append(_T("\n") + CString(cur_file->GetFileName()));
-                            else if (cFiles == iMaxDisplayFiles && pos != NULL)
-                                fileList.Append(_T("\n..."));
-                        }
-                        else if (cur_file->GetStatus() == PS_COMPLETE)
-                            removecompl = true;
-                    }
-                    CString quest;
-                    if (selectedCount == 1)
-                        quest = GetResString(IDS_Q_CANCELDL2);
-                    else
-                        quest = GetResString(IDS_Q_CANCELDL);
-                    if ((removecompl && !validdelete) || (validdelete && AfxMessageBox(quest + fileList, MB_DEFBUTTON2 | MB_ICONQUESTION | MB_YESNO) == IDYES))
-                    {
-                        bool bRemovedItems = false;
-                        while (!selectedList.IsEmpty())
-                        {
-                            HideSources(selectedList.GetHead());
-                            switch (selectedList.GetHead()->GetStatus())
+                            CPartFile* cur_file = selectedList.GetNext(pos);
+                            if (cur_file->GetStatus() != PS_COMPLETING && (cur_file->GetStatus() != PS_COMPLETE || wParam == MP_CANCEL))
                             {
-                            case PS_WAITINGFORHASH:
-                            case PS_HASHING:
-                            case PS_COMPLETING:
-                                selectedList.RemoveHead();
-                                bRemovedItems = true;
-                                break;
-                            case PS_COMPLETE:
-                                if (wParam == MP_CANCEL)
-                                {
-                                    bool delsucc = ShellDeleteFile(selectedList.GetHead()->GetFilePath());
-                                    if (delsucc)
-                                    {
-                                        theApp.sharedfiles->RemoveFile(selectedList.GetHead(), true);
-                                    }
-                                    else
-                                    {
-                                        CString strError;
-                                        strError.Format(GetResString(IDS_ERR_DELFILE) + _T("\r\n\r\n%s"), selectedList.GetHead()->GetFilePath(), GetErrorMessage(GetLastError()));
-                                        AfxMessageBox(strError);
-                                    }
-                                }
-                                RemoveFile(selectedList.GetHead());
-                                selectedList.RemoveHead();
-                                bRemovedItems = true;
-                                break;
-                            case PS_PAUSED:
-                                selectedList.GetHead()->DeleteFile();
-                                selectedList.RemoveHead();
-                                bRemovedItems = true;
-                                break;
-                            default:
-                                if (selectedList.GetHead()->GetCategory())
-                                    theApp.downloadqueue->StartNextFileIfPrefs(selectedList.GetHead()->GetCategory());
-                                selectedList.GetHead()->DeleteFile();
-                                selectedList.RemoveHead();
-                                bRemovedItems = true;
+                                validdelete = true;
+                                cFiles++;
+                                if (cFiles < iMaxDisplayFiles)
+                                    fileList.Append(_T("\n") + CString(cur_file->GetFileName()));
+                                else if (cFiles == iMaxDisplayFiles && pos != NULL)
+                                    fileList.Append(_T("\n..."));
                             }
+                            else if (cur_file->GetStatus() == PS_COMPLETE)
+                                removecompl = true;
                         }
-                        if (bRemovedItems)
-                        {
-                            AutoSelectItem();
-                            theApp.emuledlg->transferwnd->UpdateCatTabTitles();
-                        }
-                    }
-                    SetRedraw(true);
-                }
-                break;
-            }
-
-			case MP_PRIOVERYHIGH: //>>> WiZaRd::Improved Auto Prio
-			case MP_PRIOHIGH:
-			case MP_PRIONORMAL:
-			case MP_PRIOLOW:
-			case MP_PRIOVERYLOW: //>>> WiZaRd::Improved Auto Prio
-			case MP_PRIOAUTO:
-			{
-				SetRedraw(FALSE);
-				CPartFile* partfile = NULL;
-				uint8 newPrio = PR_NORMAL;
-				switch (wParam)
-				{
-//>>> WiZaRd::Improved Auto Prio
-					case MP_PRIOVERYLOW:
-						newPrio = PR_VERYLOW;
-						break;
-//<<< WiZaRd::Improved Auto Prio
-					case MP_PRIOLOW:
-						newPrio = PR_LOW;
-						break;
-					case MP_PRIONORMAL:
-						newPrio = PR_NORMAL;
-						break;
-					case MP_PRIOHIGH:
-						newPrio = PR_HIGH;
-						break;
-//>>> WiZaRd::Improved Auto Prio
-					case MP_PRIOVERYHIGH:
-						newPrio = PR_VERYHIGH;
-						break;
-//<<< WiZaRd::Improved Auto Prio
-					case MP_PRIOAUTO:
-						newPrio = PR_AUTO;
-						break;
-				}
-				while (!selectedList.IsEmpty())
-				{
-					partfile = selectedList.GetHead();
-					partfile->SetAutoDownPriority(wParam == MP_PRIOAUTO);
-					if(newPrio == PR_AUTO)
-					{
-						//partfile->SetDownPriority(PR_HIGH);
-						partfile->UpdateAutoDownPriority();
-					}
-					else
-						partfile->SetDownPriority(newPrio);					
-					selectedList.RemoveHead();
-				}
-				SetRedraw(TRUE);
-				break;
-			}
-            case MP_PAUSE:
-                SetRedraw(false);
-                while (!selectedList.IsEmpty())
-                {
-                    CPartFile* partfile = selectedList.GetHead();
-                    if (partfile->CanPauseFile())
-                        partfile->PauseFile();
-                    selectedList.RemoveHead();
-                }
-                SetRedraw(true);
-                break;
-            case MP_RESUME:
-                SetRedraw(false);
-                while (!selectedList.IsEmpty())
-                {
-                    CPartFile* partfile = selectedList.GetHead();
-                    if (partfile->CanResumeFile())
-                    {
-                        if (partfile->GetStatus() == PS_INSUFFICIENT)
-                            partfile->ResumeFileInsufficient();
+                        CString quest;
+                        if (selectedCount == 1)
+                            quest = GetResString(IDS_Q_CANCELDL2);
                         else
-                            partfile->ResumeFile();
-                    }
-                    selectedList.RemoveHead();
-                }
-                SetRedraw(true);
-                break;
-            case MP_STOP:
-                SetRedraw(false);
-                while (!selectedList.IsEmpty())
-                {
-                    CPartFile *partfile = selectedList.GetHead();
-                    if (partfile->CanStopFile())
-                    {
-                        HideSources(partfile);
-//>>> FDC [BlueSonicBoy]
-                        // TODO: why should we reset here?
-                        partfile->ResetFDC();
-//<<< FDC [BlueSonicBoy]
-                        partfile->StopFile();
-                    }
-                    selectedList.RemoveHead();
-                }
-                SetRedraw(true);
-                theApp.emuledlg->transferwnd->UpdateCatTabTitles();
-                break;
-            case MP_CLEARCOMPLETED:
-                SetRedraw(false);
-                ClearCompleted();
-                SetRedraw(true);
-                break;
-            case MPG_F2:
-                if (GetAsyncKeyState(VK_CONTROL) < 0 || selectedCount > 1)
-                {
-                    // when ctrl is pressed -> filename cleanup
-                    if (IDYES==AfxMessageBox(GetResString(IDS_MANUAL_FILENAMECLEANUP),MB_YESNO))
-                        while (!selectedList.IsEmpty())
+                            quest = GetResString(IDS_Q_CANCELDL);
+                        if ((removecompl && !validdelete) || (validdelete && AfxMessageBox(quest + fileList, MB_DEFBUTTON2 | MB_ICONQUESTION | MB_YESNO) == IDYES))
                         {
-                            CPartFile *partfile = selectedList.GetHead();
-                            if (partfile->IsPartFile())
+                            bool bRemovedItems = false;
+                            while (!selectedList.IsEmpty())
                             {
-                                partfile->SetFileName(CleanupFilename(partfile->GetFileName()));
+                                HideSources(selectedList.GetHead());
+                                switch (selectedList.GetHead()->GetStatus())
+                                {
+                                    case PS_WAITINGFORHASH:
+                                    case PS_HASHING:
+                                    case PS_COMPLETING:
+                                        selectedList.RemoveHead();
+                                        bRemovedItems = true;
+                                        break;
+                                    case PS_COMPLETE:
+                                        if (wParam == MP_CANCEL)
+                                        {
+                                            bool delsucc = ShellDeleteFile(selectedList.GetHead()->GetFilePath());
+                                            if (delsucc)
+                                            {
+                                                theApp.sharedfiles->RemoveFile(selectedList.GetHead(), true);
+                                            }
+                                            else
+                                            {
+                                                CString strError;
+                                                strError.Format(GetResString(IDS_ERR_DELFILE) + _T("\r\n\r\n%s"), selectedList.GetHead()->GetFilePath(), GetErrorMessage(GetLastError()));
+                                                AfxMessageBox(strError);
+                                            }
+                                        }
+                                        RemoveFile(selectedList.GetHead());
+                                        selectedList.RemoveHead();
+                                        bRemovedItems = true;
+                                        break;
+                                    case PS_PAUSED:
+                                        selectedList.GetHead()->DeleteFile();
+                                        selectedList.RemoveHead();
+                                        bRemovedItems = true;
+                                        break;
+                                    default:
+                                        if (selectedList.GetHead()->GetCategory())
+                                            theApp.downloadqueue->StartNextFileIfPrefs(selectedList.GetHead()->GetCategory());
+                                        selectedList.GetHead()->DeleteFile();
+                                        selectedList.RemoveHead();
+                                        bRemovedItems = true;
+                                }
                             }
-                            selectedList.RemoveHead();
+                            if (bRemovedItems)
+                            {
+                                AutoSelectItem();
+                                theApp.emuledlg->transferwnd->UpdateCatTabTitles();
+                            }
                         }
-                }
-                else
-                {
-                    if (file->GetStatus() != PS_COMPLETE && file->GetStatus() != PS_COMPLETING)
-                    {
-                        InputBox inputbox;
-                        CString title = GetResString(IDS_RENAME);
-                        title.Remove(_T('&'));
-                        inputbox.SetLabels(title, GetResString(IDS_DL_FILENAME), file->GetFileName());
-                        inputbox.SetEditFilenameMode();
-                        if (inputbox.DoModal()==IDOK && !inputbox.GetInput().IsEmpty() && IsValidEd2kString(inputbox.GetInput()))
-                        {
-                            file->SetFileName(inputbox.GetInput(), true);
-                            file->UpdateDisplayedInfo();
-                            file->SavePartFile();
-                        }
+                        SetRedraw(true);
                     }
-                    else
-                        MessageBeep(MB_OK);
+                    break;
                 }
-                break;
-            case MP_METINFO:
-            case MPG_ALTENTER:
-                ShowFileDialog(0);
-                break;
-            case MP_COPYSELECTED:
-            case MP_GETED2KLINK:
-            {
-                CString str;
-                while (!selectedList.IsEmpty())
-                {
-                    if (!str.IsEmpty())
-                        str += _T("\r\n");
-                    str += ((CAbstractFile*)selectedList.GetHead())->GetED2kLink();
-                    selectedList.RemoveHead();
-                }
-                theApp.CopyTextToClipboard(str);
-                break;
-            }
-            case MP_OPEN:
-            case IDA_ENTER:
-                if (selectedCount > 1)
-                    break;
-                if (file->CanOpenFile())
-                    file->OpenFile();
-                break;
-            case MP_TRY_TO_GET_PREVIEW_PARTS:
-                if (selectedCount > 1)
-                    break;
-                file->SetPreviewPrio(!file->GetPreviewPrio());
-                break;
-            case MP_PREVIEW:
-                if (selectedCount > 1)
-                    break;
-                file->PreviewFile();
-                break;
-            case MP_PAUSEONPREVIEW:
-            {
-                bool bAllPausedOnPreview = true;
-                for (pos = selectedList.GetHeadPosition(); pos != 0;)
-                    bAllPausedOnPreview = ((CPartFile*)selectedList.GetNext(pos))->IsPausingOnPreview() && bAllPausedOnPreview;
-                while (!selectedList.IsEmpty())
-                {
-                    CPartFile* pPartFile = selectedList.RemoveHead();
-                    if (pPartFile->IsPreviewableFileType() && !pPartFile->IsReadyForPreview())
-                        pPartFile->SetPauseOnPreview(!bAllPausedOnPreview);
 
-                }
-                break;
-            }
-            case MP_VIEWFILECOMMENTS:
-                ShowFileDialog(IDD_COMMENTLST);
-                break;
-//>>> FDC [BlueSonicBoy]
-            case MP_FILENAME:
-                ShowFileDialog(IDD_FILEDETAILS_NAME);
-                break;
-//<<< FDC [BlueSonicBoy]
-            case MP_SHOWED2KLINK:
-                ShowFileDialog(IDD_ED2KLINK);
-                break;
-            case MP_SETSOURCELIMIT:
-            {
-                CString temp;
-                temp.Format(_T("%u"),file->GetPrivateMaxSources());
-                InputBox inputbox;
-                CString title = GetResString(IDS_SETPFSLIMIT);
-                inputbox.SetLabels(title, GetResString(IDS_SETPFSLIMITEXPLAINED), temp);
-
-                if (inputbox.DoModal() == IDOK)
+                case MP_PRIOVERYHIGH: //>>> WiZaRd::Improved Auto Prio
+                case MP_PRIOHIGH:
+                case MP_PRIONORMAL:
+                case MP_PRIOLOW:
+                case MP_PRIOVERYLOW: //>>> WiZaRd::Improved Auto Prio
+                case MP_PRIOAUTO:
                 {
-                    temp = inputbox.GetInput();
-                    int newlimit = _tstoi(temp);
-                    while (!selectedList.IsEmpty())
+                    SetRedraw(FALSE);
+                    CPartFile* partfile = NULL;
+                    uint8 newPrio = PR_NORMAL;
+                    switch (wParam)
                     {
-                        CPartFile *partfile = selectedList.GetHead();
-                        partfile->SetPrivateMaxSources(newlimit);
-                        selectedList.RemoveHead();
-                        partfile->UpdateDisplayedInfo(true);
-                    }
-                }
-                break;
-            }
-            case MP_ADDSOURCE:
-            {
-                if (selectedCount > 1)
-                    break;
-                CAddSourceDlg as;
-                as.SetFile(file);
-                as.DoModal();
-                break;
-            }
-//>>> WiZaRd::AutoHL
-            case MP_AUTOHL_ON:
-            case MP_AUTOHL_OFF:
-                SetRedraw(FALSE);
-                while (!selectedList.IsEmpty())
-                    selectedList.RemoveHead()->SetUseAutoHL(wParam == MP_AUTOHL_ON);
-                SetRedraw(TRUE);
-                break;
-//<<< WiZaRd::AutoHL
-            default:
-                if (wParam>=MP_WEBURL && wParam<=MP_WEBURL+99)
-                {
-                    theWebServices.RunURL(file, wParam);
-                }
-                else if ((wParam >= MP_ASSIGNCAT && wParam<=MP_ASSIGNCAT+99) || wParam == MP_NEWCAT)
-                {
-                    int nCatNumber;
-                    if (wParam == MP_NEWCAT)
-                    {
-                        nCatNumber = theApp.emuledlg->transferwnd->AddCategoryInteractive();
-                        if (nCatNumber == 0) // Creation canceled
+//>>> WiZaRd::Improved Auto Prio
+                        case MP_PRIOVERYLOW:
+                            newPrio = PR_VERYLOW;
+                            break;
+//<<< WiZaRd::Improved Auto Prio
+                        case MP_PRIOLOW:
+                            newPrio = PR_LOW;
+                            break;
+                        case MP_PRIONORMAL:
+                            newPrio = PR_NORMAL;
+                            break;
+                        case MP_PRIOHIGH:
+                            newPrio = PR_HIGH;
+                            break;
+//>>> WiZaRd::Improved Auto Prio
+                        case MP_PRIOVERYHIGH:
+                            newPrio = PR_VERYHIGH;
+                            break;
+//<<< WiZaRd::Improved Auto Prio
+                        case MP_PRIOAUTO:
+                            newPrio = PR_AUTO;
                             break;
                     }
-                    else
-                        nCatNumber = wParam - MP_ASSIGNCAT;
-                    SetRedraw(FALSE);
                     while (!selectedList.IsEmpty())
                     {
-                        CPartFile *partfile = selectedList.GetHead();
-                        partfile->SetCategory(nCatNumber);
-                        partfile->UpdateDisplayedInfo(true);
+                        partfile = selectedList.GetHead();
+                        partfile->SetAutoDownPriority(wParam == MP_PRIOAUTO);
+                        if (newPrio == PR_AUTO)
+                        {
+                            //partfile->SetDownPriority(PR_HIGH);
+                            partfile->UpdateAutoDownPriority();
+                        }
+                        else
+                            partfile->SetDownPriority(newPrio);
                         selectedList.RemoveHead();
                     }
                     SetRedraw(TRUE);
-                    UpdateCurrentCategoryView();
-                    if (thePrefs.ShowCatTabInfos())
-                        theApp.emuledlg->transferwnd->UpdateCatTabTitles();
+                    break;
                 }
-                else if (wParam>=MP_PREVIEW_APP_MIN && wParam<=MP_PREVIEW_APP_MAX)
+                case MP_PAUSE:
+                    SetRedraw(false);
+                    while (!selectedList.IsEmpty())
+                    {
+                        CPartFile* partfile = selectedList.GetHead();
+                        if (partfile->CanPauseFile())
+                            partfile->PauseFile();
+                        selectedList.RemoveHead();
+                    }
+                    SetRedraw(true);
+                    break;
+                case MP_RESUME:
+                    SetRedraw(false);
+                    while (!selectedList.IsEmpty())
+                    {
+                        CPartFile* partfile = selectedList.GetHead();
+                        if (partfile->CanResumeFile())
+                        {
+                            if (partfile->GetStatus() == PS_INSUFFICIENT)
+                                partfile->ResumeFileInsufficient();
+                            else
+                                partfile->ResumeFile();
+                        }
+                        selectedList.RemoveHead();
+                    }
+                    SetRedraw(true);
+                    break;
+                case MP_STOP:
+                    SetRedraw(false);
+                    while (!selectedList.IsEmpty())
+                    {
+                        CPartFile *partfile = selectedList.GetHead();
+                        if (partfile->CanStopFile())
+                        {
+                            HideSources(partfile);
+//>>> FDC [BlueSonicBoy]
+                            // TODO: why should we reset here?
+                            partfile->ResetFDC();
+//<<< FDC [BlueSonicBoy]
+                            partfile->StopFile();
+                        }
+                        selectedList.RemoveHead();
+                    }
+                    SetRedraw(true);
+                    theApp.emuledlg->transferwnd->UpdateCatTabTitles();
+                    break;
+                case MP_CLEARCOMPLETED:
+                    SetRedraw(false);
+                    ClearCompleted();
+                    SetRedraw(true);
+                    break;
+                case MPG_F2:
+                    if (GetAsyncKeyState(VK_CONTROL) < 0 || selectedCount > 1)
+                    {
+                        // when ctrl is pressed -> filename cleanup
+                        if (IDYES==AfxMessageBox(GetResString(IDS_MANUAL_FILENAMECLEANUP),MB_YESNO))
+                            while (!selectedList.IsEmpty())
+                            {
+                                CPartFile *partfile = selectedList.GetHead();
+                                if (partfile->IsPartFile())
+                                {
+                                    partfile->SetFileName(CleanupFilename(partfile->GetFileName()));
+                                }
+                                selectedList.RemoveHead();
+                            }
+                    }
+                    else
+                    {
+                        if (file->GetStatus() != PS_COMPLETE && file->GetStatus() != PS_COMPLETING)
+                        {
+                            InputBox inputbox;
+                            CString title = GetResString(IDS_RENAME);
+                            title.Remove(_T('&'));
+                            inputbox.SetLabels(title, GetResString(IDS_DL_FILENAME), file->GetFileName());
+                            inputbox.SetEditFilenameMode();
+                            if (inputbox.DoModal()==IDOK && !inputbox.GetInput().IsEmpty() && IsValidEd2kString(inputbox.GetInput()))
+                            {
+                                file->SetFileName(inputbox.GetInput(), true);
+                                file->UpdateDisplayedInfo();
+                                file->SavePartFile();
+                            }
+                        }
+                        else
+                            MessageBeep(MB_OK);
+                    }
+                    break;
+                case MP_METINFO:
+                case MPG_ALTENTER:
+                    ShowFileDialog(0);
+                    break;
+                case MP_COPYSELECTED:
+                case MP_GETED2KLINK:
                 {
-                    thePreviewApps.RunApp(file, wParam);
+                    CString str;
+                    while (!selectedList.IsEmpty())
+                    {
+                        if (!str.IsEmpty())
+                            str += _T("\r\n");
+                        str += ((CAbstractFile*)selectedList.GetHead())->GetED2kLink();
+                        selectedList.RemoveHead();
+                    }
+                    theApp.CopyTextToClipboard(str);
+                    break;
                 }
-                break;
+                case MP_OPEN:
+                case IDA_ENTER:
+                    if (selectedCount > 1)
+                        break;
+                    if (file->CanOpenFile())
+                        file->OpenFile();
+                    break;
+                case MP_TRY_TO_GET_PREVIEW_PARTS:
+                    if (selectedCount > 1)
+                        break;
+                    file->SetPreviewPrio(!file->GetPreviewPrio());
+                    break;
+                case MP_PREVIEW:
+                    if (selectedCount > 1)
+                        break;
+                    file->PreviewFile();
+                    break;
+                case MP_PAUSEONPREVIEW:
+                {
+                    bool bAllPausedOnPreview = true;
+                    for (pos = selectedList.GetHeadPosition(); pos != 0;)
+                        bAllPausedOnPreview = ((CPartFile*)selectedList.GetNext(pos))->IsPausingOnPreview() && bAllPausedOnPreview;
+                    while (!selectedList.IsEmpty())
+                    {
+                        CPartFile* pPartFile = selectedList.RemoveHead();
+                        if (pPartFile->IsPreviewableFileType() && !pPartFile->IsReadyForPreview())
+                            pPartFile->SetPauseOnPreview(!bAllPausedOnPreview);
+
+                    }
+                    break;
+                }
+                case MP_VIEWFILECOMMENTS:
+                    ShowFileDialog(IDD_COMMENTLST);
+                    break;
+//>>> FDC [BlueSonicBoy]
+                case MP_FILENAME:
+                    ShowFileDialog(IDD_FILEDETAILS_NAME);
+                    break;
+//<<< FDC [BlueSonicBoy]
+                case MP_SHOWED2KLINK:
+                    ShowFileDialog(IDD_ED2KLINK);
+                    break;
+                case MP_SETSOURCELIMIT:
+                {
+                    CString temp;
+                    temp.Format(_T("%u"),file->GetPrivateMaxSources());
+                    InputBox inputbox;
+                    CString title = GetResString(IDS_SETPFSLIMIT);
+                    inputbox.SetLabels(title, GetResString(IDS_SETPFSLIMITEXPLAINED), temp);
+
+                    if (inputbox.DoModal() == IDOK)
+                    {
+                        temp = inputbox.GetInput();
+                        int newlimit = _tstoi(temp);
+                        while (!selectedList.IsEmpty())
+                        {
+                            CPartFile *partfile = selectedList.GetHead();
+                            partfile->SetPrivateMaxSources(newlimit);
+                            selectedList.RemoveHead();
+                            partfile->UpdateDisplayedInfo(true);
+                        }
+                    }
+                    break;
+                }
+                case MP_ADDSOURCE:
+                {
+                    if (selectedCount > 1)
+                        break;
+                    CAddSourceDlg as;
+                    as.SetFile(file);
+                    as.DoModal();
+                    break;
+                }
+//>>> WiZaRd::AutoHL
+                case MP_AUTOHL_ON:
+                case MP_AUTOHL_OFF:
+                    SetRedraw(FALSE);
+                    while (!selectedList.IsEmpty())
+                        selectedList.RemoveHead()->SetUseAutoHL(wParam == MP_AUTOHL_ON);
+                    SetRedraw(TRUE);
+                    break;
+//<<< WiZaRd::AutoHL
+                default:
+                    if (wParam>=MP_WEBURL && wParam<=MP_WEBURL+99)
+                    {
+                        theWebServices.RunURL(file, wParam);
+                    }
+                    else if ((wParam >= MP_ASSIGNCAT && wParam<=MP_ASSIGNCAT+99) || wParam == MP_NEWCAT)
+                    {
+                        int nCatNumber;
+                        if (wParam == MP_NEWCAT)
+                        {
+                            nCatNumber = theApp.emuledlg->transferwnd->AddCategoryInteractive();
+                            if (nCatNumber == 0) // Creation canceled
+                                break;
+                        }
+                        else
+                            nCatNumber = wParam - MP_ASSIGNCAT;
+                        SetRedraw(FALSE);
+                        while (!selectedList.IsEmpty())
+                        {
+                            CPartFile *partfile = selectedList.GetHead();
+                            partfile->SetCategory(nCatNumber);
+                            partfile->UpdateDisplayedInfo(true);
+                            selectedList.RemoveHead();
+                        }
+                        SetRedraw(TRUE);
+                        UpdateCurrentCategoryView();
+                        if (thePrefs.ShowCatTabInfos())
+                            theApp.emuledlg->transferwnd->UpdateCatTabTitles();
+                    }
+                    else if (wParam>=MP_PREVIEW_APP_MIN && wParam<=MP_PREVIEW_APP_MAX)
+                    {
+                        thePreviewApps.RunApp(file, wParam);
+                    }
+                    break;
             }
         }
         else
@@ -2215,63 +2228,63 @@ BOOL CDownloadListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 
             switch (wParam)
             {
-            case MP_SHOWLIST:
-                client->RequestSharedFileList();
-                break;
-            case MP_MESSAGE:
-                theApp.emuledlg->chatwnd->StartSession(client);
-                break;
-            case MP_ADDFRIEND:
-                if (theApp.friendlist->AddFriend(client))
-                    UpdateItem(client);
-                break;
+                case MP_SHOWLIST:
+                    client->RequestSharedFileList();
+                    break;
+                case MP_MESSAGE:
+                    theApp.emuledlg->chatwnd->StartSession(client);
+                    break;
+                case MP_ADDFRIEND:
+                    if (theApp.friendlist->AddFriend(client))
+                        UpdateItem(client);
+                    break;
 //>>> Tux::FriendHandling
-            case MP_REMOVEFRIEND:
-                if (client && client->IsFriend())
-                {
-                    theApp.friendlist->RemoveFriend(client->m_Friend);
-                    UpdateItem(client);
-                }
-                break;
-            case MP_FRIENDSLOT:
-                if (client)
-                {
-                    bool IsAlready;
-                    IsAlready = client->GetFriendSlot();
-                    theApp.friendlist->RemoveAllFriendSlots();
-                    if (!IsAlready)
-                        client->SetFriendSlot(true);
-                    UpdateItem(client);
-                }
-                break;
+                case MP_REMOVEFRIEND:
+                    if (client && client->IsFriend())
+                    {
+                        theApp.friendlist->RemoveFriend(client->m_Friend);
+                        UpdateItem(client);
+                    }
+                    break;
+                case MP_FRIENDSLOT:
+                    if (client)
+                    {
+                        bool IsAlready;
+                        IsAlready = client->GetFriendSlot();
+                        theApp.friendlist->RemoveAllFriendSlots();
+                        if (!IsAlready)
+                            client->SetFriendSlot(true);
+                        UpdateItem(client);
+                    }
+                    break;
 //<<< Tux::FriendHandling
-            case MP_DETAIL:
-            case MPG_ALTENTER:
-                ShowClientDialog(client);
-                break;
-            case MP_BOOT:
-                if (client->GetKadPort() && client->GetKadVersion() > 1)
+                case MP_DETAIL:
+                case MPG_ALTENTER:
+                    ShowClientDialog(client);
+                    break;
+                case MP_BOOT:
+                    if (client->GetKadPort() && client->GetKadVersion() > 1)
 //>>> WiZaRd::IPv6 [Xanatos]
-				if(!client->GetIPv4().IsNull())
-					Kademlia::CKademlia::Bootstrap(client->GetIPv4().ToIPv4(), client->GetKadPort());
-					//Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
+                        if (!client->GetIPv4().IsNull())
+                            Kademlia::CKademlia::Bootstrap(client->GetIPv4().ToIPv4(), client->GetKadPort());
+                    //Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
 //<<< WiZaRd::IPv6 [Xanatos]
-                break;
+                    break;
 // ZZ:DownloadManager -->
 #ifdef _DEBUG
-            case MP_A4AF_CHECK_THIS_NOW:
-            {
-                CPartFile* file = (CPartFile*)content->owner;
-                if (file->GetStatus(false) == PS_READY || file->GetStatus(false) == PS_EMPTY)
+                case MP_A4AF_CHECK_THIS_NOW:
                 {
-                    if (client->GetDownloadState() != DS_DOWNLOADING)
+                    CPartFile* file = (CPartFile*)content->owner;
+                    if (file->GetStatus(false) == PS_READY || file->GetStatus(false) == PS_EMPTY)
                     {
-                        client->SwapToAnotherFile(_T("Manual init of source check. Test to be like ProcessA4AFClients(). CDownloadListCtrl::OnCommand() MP_SWAP_A4AF_DEBUG_THIS"), false, false, false, NULL, true, true, true); // ZZ:DownloadManager
-                        UpdateItem(file);
+                        if (client->GetDownloadState() != DS_DOWNLOADING)
+                        {
+                            client->SwapToAnotherFile(_T("Manual init of source check. Test to be like ProcessA4AFClients(). CDownloadListCtrl::OnCommand() MP_SWAP_A4AF_DEBUG_THIS"), false, false, false, NULL, true, true, true); // ZZ:DownloadManager
+                            UpdateItem(file);
+                        }
                     }
+                    break;
                 }
-                break;
-            }
 #endif
 // <-- ZZ:DownloadManager
             }
@@ -2281,9 +2294,9 @@ BOOL CDownloadListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
     {
         switch (wParam)
         {
-        case MP_CLEARCOMPLETED:
-            ClearCompleted();
-            break;
+            case MP_CLEARCOMPLETED:
+                ClearCompleted();
+                break;
         }
     }
     m_availableCommandsDirty = true;
@@ -2298,20 +2311,20 @@ void CDownloadListCtrl::OnLvnColumnClick(NMHDR *pNMHDR, LRESULT *pResult)
     {
         switch (pNMListView->iSubItem)
         {
-        case 2: // Transferred
-        case 3: // Completed
-        case 4: // Download rate
-        case 5: // Progress
-        case 6: // Sources / Client Software
-            sortAscending = false;
-            break;
-        case 9:
-            // Keep the current 'm_bRemainSort' for that column, but reset to 'ascending'
-            sortAscending = true;
-            break;
-        default:
-            sortAscending = true;
-            break;
+            case 2: // Transferred
+            case 3: // Completed
+            case 4: // Download rate
+            case 5: // Progress
+            case 6: // Sources / Client Software
+                sortAscending = false;
+                break;
+            case 9:
+                // Keep the current 'm_bRemainSort' for that column, but reset to 'ascending'
+                sortAscending = true;
+                break;
+            default:
+                sortAscending = true;
+                break;
         }
     }
     else
@@ -2464,116 +2477,116 @@ int CDownloadListCtrl::Compare(const CPartFile *file1, const CPartFile *file2, L
     int comp = 0;
     switch (lParamSort)
     {
-    case 0: //filename asc
-        comp = CompareLocaleStringNoCase(file1->GetFileName(), file2->GetFileName());
-        break;
+        case 0: //filename asc
+            comp = CompareLocaleStringNoCase(file1->GetFileName(), file2->GetFileName());
+            break;
 
-    case 1: //size asc
-        comp = CompareUnsigned64(file1->GetFileSize(), file2->GetFileSize());
-        break;
+        case 1: //size asc
+            comp = CompareUnsigned64(file1->GetFileSize(), file2->GetFileSize());
+            break;
 
-    case 2: //transferred asc
-        comp = CompareUnsigned64(file1->GetTransferred(), file2->GetTransferred());
-        break;
+        case 2: //transferred asc
+            comp = CompareUnsigned64(file1->GetTransferred(), file2->GetTransferred());
+            break;
 
-    case 3: //completed asc
-        comp = CompareUnsigned64(file1->GetCompletedSize(), file2->GetCompletedSize());
-        break;
+        case 3: //completed asc
+            comp = CompareUnsigned64(file1->GetCompletedSize(), file2->GetCompletedSize());
+            break;
 
-    case 4: //speed asc
-        comp = CompareUnsigned(file1->GetDatarate(), file2->GetDatarate());
-        break;
+        case 4: //speed asc
+            comp = CompareUnsigned(file1->GetDatarate(), file2->GetDatarate());
+            break;
 
-    case 5: //progress asc
-        comp = CompareFloat(file1->GetPercentCompleted(), file2->GetPercentCompleted());
-        break;
+        case 5: //progress asc
+            comp = CompareFloat(file1->GetPercentCompleted(), file2->GetPercentCompleted());
+            break;
 
-    case 6: //sources asc
-        comp = CompareUnsigned(file1->GetSourceCount(), file2->GetSourceCount());
-        break;
+        case 6: //sources asc
+            comp = CompareUnsigned(file1->GetSourceCount(), file2->GetSourceCount());
+            break;
 
-    case 7: //priority asc
-        comp = CompareUnsigned(file1->GetDownPriority(), file2->GetDownPriority());
-        break;
+        case 7: //priority asc
+            comp = CompareUnsigned(file1->GetDownPriority(), file2->GetDownPriority());
+            break;
 
-    case 8: //Status asc
-        comp = CompareUnsigned(file1->getPartfileStatusRang(), file2->getPartfileStatusRang());
-        break;
+        case 8: //Status asc
+            comp = CompareUnsigned(file1->getPartfileStatusRang(), file2->getPartfileStatusRang());
+            break;
 
-    case 9: //Remaining Time asc
-    {
-        //Make ascending sort so we can have the smaller remaining time on the top
-        //instead of unknowns so we can see which files are about to finish better..
-        time_t f1 = file1->getTimeRemaining();
-        time_t f2 = file2->getTimeRemaining();
-        //Same, do nothing.
-        if (f1 == f2)
+        case 9: //Remaining Time asc
         {
-            comp = 0;
+            //Make ascending sort so we can have the smaller remaining time on the top
+            //instead of unknowns so we can see which files are about to finish better..
+            time_t f1 = file1->getTimeRemaining();
+            time_t f2 = file2->getTimeRemaining();
+            //Same, do nothing.
+            if (f1 == f2)
+            {
+                comp = 0;
+                break;
+            }
+
+            //If descending, put first on top as it is unknown
+            //If ascending, put first on bottom as it is unknown
+            if (f1 == -1)
+            {
+                comp = 1;
+                break;
+            }
+
+            //If descending, put second on top as it is unknown
+            //If ascending, put second on bottom as it is unknown
+            if (f2 == -1)
+            {
+                comp = -1;
+                break;
+            }
+
+            //If descending, put first on top as it is bigger.
+            //If ascending, put first on bottom as it is bigger.
+            comp = CompareUnsigned(f1, f2);
             break;
         }
 
-        //If descending, put first on top as it is unknown
-        //If ascending, put first on bottom as it is unknown
-        if (f1 == -1)
-        {
-            comp = 1;
+        case 90: //Remaining SIZE asc
+            comp = CompareUnsigned64(file1->GetFileSize() - file1->GetCompletedSize(), file2->GetFileSize() - file2->GetCompletedSize());
             break;
-        }
 
-        //If descending, put second on top as it is unknown
-        //If ascending, put second on bottom as it is unknown
-        if (f2 == -1)
-        {
-            comp = -1;
+        case 10: //last seen complete asc
+            if (file1->lastseencomplete > file2->lastseencomplete)
+                comp = 1;
+            else if (file1->lastseencomplete < file2->lastseencomplete)
+                comp = -1;
             break;
-        }
 
-        //If descending, put first on top as it is bigger.
-        //If ascending, put first on bottom as it is bigger.
-        comp = CompareUnsigned(f1, f2);
-        break;
-    }
+        case 11: //last received Time asc
+            if (file1->GetFileDate() > file2->GetFileDate())
+                comp = 1;
+            else if (file1->GetFileDate() < file2->GetFileDate())
+                comp = -1;
+            break;
 
-    case 90: //Remaining SIZE asc
-        comp = CompareUnsigned64(file1->GetFileSize() - file1->GetCompletedSize(), file2->GetFileSize() - file2->GetCompletedSize());
-        break;
+        case 12:
+            //TODO: 'GetCategory' SHOULD be a 'const' function and 'GetResString' should NOT be called..
+            comp = CompareLocaleStringNoCase((const_cast<CPartFile*>(file1)->GetCategory() != 0) ? thePrefs.GetCategory(const_cast<CPartFile*>(file1)->GetCategory())->strTitle:GetResString(IDS_ALL),
+                                             (const_cast<CPartFile*>(file2)->GetCategory() != 0) ? thePrefs.GetCategory(const_cast<CPartFile*>(file2)->GetCategory())->strTitle:GetResString(IDS_ALL));
+            break;
 
-    case 10: //last seen complete asc
-        if (file1->lastseencomplete > file2->lastseencomplete)
-            comp = 1;
-        else if (file1->lastseencomplete < file2->lastseencomplete)
-            comp = -1;
-        break;
-
-    case 11: //last received Time asc
-        if (file1->GetFileDate() > file2->GetFileDate())
-            comp = 1;
-        else if (file1->GetFileDate() < file2->GetFileDate())
-            comp = -1;
-        break;
-
-    case 12:
-        //TODO: 'GetCategory' SHOULD be a 'const' function and 'GetResString' should NOT be called..
-        comp = CompareLocaleStringNoCase((const_cast<CPartFile*>(file1)->GetCategory() != 0) ? thePrefs.GetCategory(const_cast<CPartFile*>(file1)->GetCategory())->strTitle:GetResString(IDS_ALL),
-                                         (const_cast<CPartFile*>(file2)->GetCategory() != 0) ? thePrefs.GetCategory(const_cast<CPartFile*>(file2)->GetCategory())->strTitle:GetResString(IDS_ALL));
-        break;
-
-    case 13: // added on asc
-        if (file1->GetCrCFileDate() > file2->GetCrCFileDate())
-            comp = 1;
-        else if (file1->GetCrCFileDate() < file2->GetCrCFileDate())
-            comp = -1;
-        break;
+        case 13: // added on asc
+            if (file1->GetCrCFileDate() > file2->GetCrCFileDate())
+                comp = 1;
+            else if (file1->GetCrCFileDate() < file2->GetCrCFileDate())
+                comp = -1;
+            break;
 
 //>>> Health Indicator File Availability [WiZaRd]
-    case 14:
-	{
-		float val1 = (float)(!file1->IsPartFile() ? 100 : (file1->GetAvailablePartCount()*100.0/file1->GetPartCount()));
-		float val2 = (float)(!file2->IsPartFile() ? 100 : (file2->GetAvailablePartCount()*100.0/file2->GetPartCount()));
-        comp = CompareFloat(val1, val2);
-        break;
-	}
+        case 14:
+        {
+            float val1 = (float)(!file1->IsPartFile() ? 100 : (file1->GetAvailablePartCount()*100.0/file1->GetPartCount()));
+            float val2 = (float)(!file2->IsPartFile() ? 100 : (file2->GetAvailablePartCount()*100.0/file2->GetPartCount()));
+            comp = CompareFloat(val1, val2);
+            break;
+        }
 //<<< Health Indicator File Availability [WiZaRd]
     }
     return comp;
@@ -2583,77 +2596,77 @@ int CDownloadListCtrl::Compare(const CUpDownClient *client1, const CUpDownClient
 {
     switch (lParamSort)
     {
-    case 0: //name asc
-        if (client1->GetUserName() && client2->GetUserName())
-            return CompareLocaleStringNoCase(client1->GetUserName(), client2->GetUserName());
-        else if (client1->GetUserName() == NULL)
-            return 1; // place clients with no usernames at bottom
-        else if (client2->GetUserName() == NULL)
-            return -1; // place clients with no usernames at bottom
-        return 0;
+        case 0: //name asc
+            if (client1->GetUserName() && client2->GetUserName())
+                return CompareLocaleStringNoCase(client1->GetUserName(), client2->GetUserName());
+            else if (client1->GetUserName() == NULL)
+                return 1; // place clients with no usernames at bottom
+            else if (client2->GetUserName() == NULL)
+                return -1; // place clients with no usernames at bottom
+            return 0;
 
-    case 1: //size but we use status asc
-        return client1->GetSourceFrom() - client2->GetSourceFrom();
+        case 1: //size but we use status asc
+            return client1->GetSourceFrom() - client2->GetSourceFrom();
 
-    case 2://transferred asc
-    case 3://completed asc
-        return CompareUnsigned(client1->GetTransferredDown(), client2->GetTransferredDown());
+        case 2://transferred asc
+        case 3://completed asc
+            return CompareUnsigned(client1->GetTransferredDown(), client2->GetTransferredDown());
 
-    case 4: //speed asc
-        return CompareUnsigned(client1->GetDownloadDatarate(), client2->GetDownloadDatarate());
-		    
-    case 5: //progress asc
-        return CompareUnsigned(client1->GetAvailablePartCount(), client2->GetAvailablePartCount());
+        case 4: //speed asc
+            return CompareUnsigned(client1->GetDownloadDatarate(), client2->GetDownloadDatarate());
 
-    case 6:
-    {
-        //Proper sorting ;)
-        int iResult = client1->GetClientSoft() - client2->GetClientSoft();
-        if (iResult == 0)
-            iResult = CompareLocaleStringNoCase(client1->DbgGetFullClientSoftVer(), client2->DbgGetFullClientSoftVer());
-        return iResult;
-    }
+        case 5: //progress asc
+            return CompareUnsigned(client1->GetAvailablePartCount(), client2->GetAvailablePartCount());
 
-    case 7: //qr asc
-        if (client1->GetDownloadState() == DS_DOWNLOADING)
+        case 6:
         {
-            if (client2->GetDownloadState() == DS_DOWNLOADING)
-                return 0;
-            else
-                return -1;
+            //Proper sorting ;)
+            int iResult = client1->GetClientSoft() - client2->GetClientSoft();
+            if (iResult == 0)
+                iResult = CompareLocaleStringNoCase(client1->DbgGetFullClientSoftVer(), client2->DbgGetFullClientSoftVer());
+            return iResult;
         }
-        else if (client2->GetDownloadState() == DS_DOWNLOADING)
-            return 1;
 
-        if (client1->GetRemoteQueueRank() == 0 && client1->GetDownloadState() == DS_ONQUEUE && client1->IsRemoteQueueFull())
-            return 1;
-        if (client2->GetRemoteQueueRank() == 0 && client2->GetDownloadState() == DS_ONQUEUE && client2->IsRemoteQueueFull())
-            return -1;
-        if (client1->GetRemoteQueueRank() == 0)
-            return 1;
-        if (client2->GetRemoteQueueRank() == 0)
-            return -1;
-        return CompareUnsigned(client1->GetRemoteQueueRank(), client2->GetRemoteQueueRank());
-
-    case 8:
-        if (client1->GetDownloadState() == client2->GetDownloadState())
-        {
-            if (client1->IsRemoteQueueFull() && client2->IsRemoteQueueFull())
-                return 0;
-            else if (client1->IsRemoteQueueFull())
+        case 7: //qr asc
+            if (client1->GetDownloadState() == DS_DOWNLOADING)
+            {
+                if (client2->GetDownloadState() == DS_DOWNLOADING)
+                    return 0;
+                else
+                    return -1;
+            }
+            else if (client2->GetDownloadState() == DS_DOWNLOADING)
                 return 1;
-            else if (client2->IsRemoteQueueFull())
+
+            if (client1->GetRemoteQueueRank() == 0 && client1->GetDownloadState() == DS_ONQUEUE && client1->IsRemoteQueueFull())
+                return 1;
+            if (client2->GetRemoteQueueRank() == 0 && client2->GetDownloadState() == DS_ONQUEUE && client2->IsRemoteQueueFull())
                 return -1;
-        }
-        return client1->GetDownloadState() - client2->GetDownloadState();
+            if (client1->GetRemoteQueueRank() == 0)
+                return 1;
+            if (client2->GetRemoteQueueRank() == 0)
+                return -1;
+            return CompareUnsigned(client1->GetRemoteQueueRank(), client2->GetRemoteQueueRank());
+
+        case 8:
+            if (client1->GetDownloadState() == client2->GetDownloadState())
+            {
+                if (client1->IsRemoteQueueFull() && client2->IsRemoteQueueFull())
+                    return 0;
+                else if (client1->IsRemoteQueueFull())
+                    return 1;
+                else if (client2->IsRemoteQueueFull())
+                    return -1;
+            }
+            return client1->GetDownloadState() - client2->GetDownloadState();
 
 //>>> Health Indicator File Availability [WiZaRd]
-		case 14:
-		{
-			float val1 = (float)(client1->IsCompleteSource() ? 100 : (client1->GetAvailablePartCount()*100.0/client1->GetRequestFile()->GetPartCount()));
-			float val2 = (float)(client2->IsCompleteSource() ? 100 : (client2->GetAvailablePartCount()*100.0/client2->GetRequestFile()->GetPartCount()));
-			return CompareFloat(val1, val2);
-		}
+        case 14:
+        {
+            float val1 = (float)(client1->IsCompleteSource() ? 100 : (client1->GetAvailablePartCount()*100.0/client1->GetRequestFile()->GetPartCount()));
+            float val2 = (float)(client2->IsCompleteSource() ? 100 : (client2->GetAvailablePartCount()*100.0/client2->GetRequestFile()->GetPartCount()));
+            return CompareFloat(val1, val2);
+        }
 //<<< Health Indicator File Availability [WiZaRd]
     }
 
@@ -2732,11 +2745,11 @@ void CDownloadListCtrl::CreateMenues()
     //
     m_PrioMenu.CreateMenu();
     m_PrioMenu.AddMenuTitle(NULL, true);
-	m_PrioMenu.AppendMenu(MF_STRING, MP_PRIOVERYLOW, GetResString(IDS_PRIOVERYLOW), L"DOWNLOAD"); //>>> WiZaRd::Improved Auto Prio
+    m_PrioMenu.AppendMenu(MF_STRING, MP_PRIOVERYLOW, GetResString(IDS_PRIOVERYLOW), L"DOWNLOAD"); //>>> WiZaRd::Improved Auto Prio
     m_PrioMenu.AppendMenu(MF_STRING, MP_PRIOLOW, GetResString(IDS_PRIOLOW), L"PRIO_LOW");
     m_PrioMenu.AppendMenu(MF_STRING, MP_PRIONORMAL, GetResString(IDS_PRIONORMAL), L"PRIO_NORMAL");
     m_PrioMenu.AppendMenu(MF_STRING, MP_PRIOHIGH, GetResString(IDS_PRIOHIGH), L"PRIO_HIGH");
-	m_PrioMenu.AppendMenu(MF_STRING, MP_PRIOVERYHIGH, GetResString(IDS_PRIORELEASE), L"UPLOAD"); //>>> WiZaRd::Improved Auto Prio
+    m_PrioMenu.AppendMenu(MF_STRING, MP_PRIOVERYHIGH, GetResString(IDS_PRIORELEASE), L"UPLOAD"); //>>> WiZaRd::Improved Auto Prio
     m_PrioMenu.AppendMenu(MF_STRING, MP_PRIOAUTO, GetResString(IDS_PRIOAUTO), L"PRIO_AUTO");
     m_FileMenu.AppendMenu(MF_STRING|MF_POPUP, (UINT_PTR)m_PrioMenu.m_hMenu, GetResString(IDS_PRIORITY) + _T(" (") + GetResString(IDS_DOWNLOAD) + _T(")"), _T("FILEPRIORITY"));
 

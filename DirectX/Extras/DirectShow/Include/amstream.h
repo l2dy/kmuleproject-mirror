@@ -111,11 +111,11 @@ typedef struct AMMultiMediaStream AMMultiMediaStream;
 extern "C" {
 #endif
 
-    void * __RPC_USER MIDL_user_allocate(size_t);
-    void __RPC_USER MIDL_user_free(void *);
+void * __RPC_USER MIDL_user_allocate(size_t);
+void __RPC_USER MIDL_user_free(void *);
 
-    /* interface __MIDL_itf_amstream_0000 */
-    /* [local] */
+/* interface __MIDL_itf_amstream_0000 */
+/* [local] */
 
 #include <ddraw.h>
 #include <mmsystem.h>
@@ -130,49 +130,49 @@ extern "C" {
 
 
 
-    enum __MIDL___MIDL_itf_amstream_0000_0001
-    {
-        AMMSF_NOGRAPHTHREAD	= 0x1
-    } ;
+enum __MIDL___MIDL_itf_amstream_0000_0001
+{
+    AMMSF_NOGRAPHTHREAD	= 0x1
+} ;
 
-    enum __MIDL___MIDL_itf_amstream_0000_0002
-    {
-        AMMSF_ADDDEFAULTRENDERER	= 0x1,
-        AMMSF_CREATEPEER	= 0x2,
-        AMMSF_STOPIFNOSAMPLES	= 0x4,
-        AMMSF_NOSTALL	= 0x8
-    } ;
+enum __MIDL___MIDL_itf_amstream_0000_0002
+{
+    AMMSF_ADDDEFAULTRENDERER	= 0x1,
+    AMMSF_CREATEPEER	= 0x2,
+    AMMSF_STOPIFNOSAMPLES	= 0x4,
+    AMMSF_NOSTALL	= 0x8
+} ;
 
-    enum __MIDL___MIDL_itf_amstream_0000_0003
-    {
-        AMMSF_RENDERTYPEMASK	= 0x3,
-        AMMSF_RENDERTOEXISTING	= 0,
-        AMMSF_RENDERALLSTREAMS	= 0x1,
-        AMMSF_NORENDER	= 0x2,
-        AMMSF_NOCLOCK	= 0x4,
-        AMMSF_RUN	= 0x8
-    } ;
-    typedef /* [public][public][public][public][public][v1_enum] */
-    enum __MIDL___MIDL_itf_amstream_0000_0004
-    {
-        Disabled	= 0,
-        ReadData	= 1,
-        RenderData	= 2
-    } 	OUTPUT_STATE;
+enum __MIDL___MIDL_itf_amstream_0000_0003
+{
+    AMMSF_RENDERTYPEMASK	= 0x3,
+    AMMSF_RENDERTOEXISTING	= 0,
+    AMMSF_RENDERALLSTREAMS	= 0x1,
+    AMMSF_NORENDER	= 0x2,
+    AMMSF_NOCLOCK	= 0x4,
+    AMMSF_RUN	= 0x8
+} ;
+typedef /* [public][public][public][public][public][v1_enum] */
+enum __MIDL___MIDL_itf_amstream_0000_0004
+{
+    Disabled	= 0,
+    ReadData	= 1,
+    RenderData	= 2
+} 	OUTPUT_STATE;
 
 
 
-    extern RPC_IF_HANDLE __MIDL_itf_amstream_0000_v0_0_c_ifspec;
-    extern RPC_IF_HANDLE __MIDL_itf_amstream_0000_v0_0_s_ifspec;
+extern RPC_IF_HANDLE __MIDL_itf_amstream_0000_v0_0_c_ifspec;
+extern RPC_IF_HANDLE __MIDL_itf_amstream_0000_v0_0_s_ifspec;
 
 #ifndef __IDirectShowStream_INTERFACE_DEFINED__
 #define __IDirectShowStream_INTERFACE_DEFINED__
 
-    /* interface IDirectShowStream */
-    /* [unique][helpstring][dual][uuid][object] */
+/* interface IDirectShowStream */
+/* [unique][helpstring][dual][uuid][object] */
 
 
-    EXTERN_C const IID IID_IDirectShowStream;
+EXTERN_C const IID IID_IDirectShowStream;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
