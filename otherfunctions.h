@@ -512,4 +512,4 @@ ULONG GetBestInterfaceIP(const ULONG dest_addr); //>>> WiZaRd::Find Best Interfa
 bool IsDirectoryWriteable(LPCTSTR pszDirectory); //>>> WiZaRd
 void CreateBetaFile();
 void DeleteBetaFile();
-void GetPartStartAndEnd(const UINT uPartNumber, const EMFileSize filesize, uint64& uStart, uint64& uEnd);
+void GetPartStartAndEnd(const UINT uPartNumber, const uint64 partsize, const EMFileSize filesize, uint64& uStart, uint64& uEnd);

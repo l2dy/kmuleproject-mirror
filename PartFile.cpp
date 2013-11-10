@@ -2506,6 +2506,7 @@ void CPartFile::DrawShareStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, boo
     s_ChunkBar.SetWidth(rect->right - rect->left);
     s_ChunkBar.Fill(crNotShared);
 
+	COLORREF crSCT = RGB(255, 128, 0); //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
     if (!onlygreyrect)
     {
         const COLORREF crMissing = RGB(255, 0, 0);
@@ -2524,30 +2525,66 @@ void CPartFile::DrawShareStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, boo
             crHave = RGB(104, 104, 104);
             crNooneAsked = RGB(104, 104, 104);
         }
-        for (UINT i = 0; i < GetPartCount(); i++)
-        {
-            if (IsComplete((uint64)i*PARTSIZE,((uint64)(i+1)*PARTSIZE)-1, true))
-            {
-                if (GetStatus() != PS_PAUSED || m_ClientUploadList.GetSize() > 0 || m_nCompleteSourcesCountHi > 0)
-                {
-                    UINT frequency;
-                    if (GetStatus() != PS_PAUSED && !m_SrcpartFrequency.IsEmpty())
-                        frequency = m_SrcpartFrequency[i];
-                    else if (!m_AvailPartFrequency.IsEmpty())
-                        frequency = max(m_AvailPartFrequency[i], m_nCompleteSourcesCountLo);
-                    else
-                        frequency = m_nCompleteSourcesCountLo;
 
-                    if (frequency > 0)
-                    {
-                        COLORREF color = RGB(0, (22*(frequency-1) >= 210) ? 0 : 210-(22*(frequency-1)), 255);
-                        s_ChunkBar.FillRange(PARTSIZE*(uint64)(i),PARTSIZE*(uint64)(i+1),color);
-                    }
-                    else
-                        s_ChunkBar.FillRange(PARTSIZE*(uint64)(i),PARTSIZE*(uint64)(i+1),crMissing);
-                }
-                else
-                    s_ChunkBar.FillRange(PARTSIZE*(uint64)(i),PARTSIZE*(uint64)(i+1),crNooneAsked);
+		uint64 uStart = 0;
+		uint64 uEnd = 0;
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+		UINT nPartCount = GetPartCount();
+		const UINT nStepCount = (m_pPartStatus) ? m_pPartStatus->GetCrumbsCount() : nPartCount;
+		bool bCompletePart = m_pPartStatus ? m_pPartStatus->IsCompletePart(0) : false;
+		for (UINT i = 0, nPart = 0; i < nStepCount; ++i)
+        //for (UINT i = 0; i < GetPartCount(); i++)
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+        {
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+			uint64 partsize = PARTSIZE;
+			if(m_pPartStatus)
+			{
+				partsize = CRUMBSIZE;
+				if(i != 0 && (i % CRUMBSPERPART) == 0)
+				{
+					++nPart;
+					bCompletePart = m_pPartStatus->IsCompletePart(nPart);
+				}
+			}
+			else
+			{
+				++nPart;
+				bCompletePart = false;
+			}
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+			GetPartStartAndEnd(i, partsize, GetFileSize(), uStart, uEnd);
+            if (IsComplete(uStart, uEnd-1, true))
+            {
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+				if(bCompletePart)
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+				{
+					if (GetStatus() != PS_PAUSED || m_ClientUploadList.GetSize() > 0 || m_nCompleteSourcesCountHi > 0)
+					{
+						UINT frequency;
+						if (GetStatus() != PS_PAUSED && !m_SrcpartFrequency.IsEmpty())
+							frequency = m_SrcpartFrequency[nPart];
+						else if (!m_AvailPartFrequency.IsEmpty())
+							frequency = max(m_AvailPartFrequency[nPart], m_nCompleteSourcesCountLo);
+						else
+							frequency = m_nCompleteSourcesCountLo;
+
+						if (frequency > 0)
+						{
+							COLORREF color = RGB(0, (22*(frequency-1) >= 210) ? 0 : 210-(22*(frequency-1)), 255);
+							s_ChunkBar.FillRange(uStart, uEnd, color);
+						}
+						else
+							s_ChunkBar.FillRange(uStart, uEnd, crMissing);
+					}
+					else
+						s_ChunkBar.FillRange(uStart, uEnd, crNooneAsked);
+				}
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+				else
+					s_ChunkBar.FillRange(uStart, uEnd, crSCT);
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
             }
         }
     }
@@ -5073,7 +5110,7 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
 		if(pClient && pClient->SupportsExtendedSourceExchange())
 		{
 			uint8 tagcount = sources->ReadUInt8();
-			for (uint8 i = 0; i < tagcount; i++)
+			for (uint8 i = 0; i < tagcount; ++i)
 			{
 				CTag temptag(sources, true);
 				switch (temptag.GetNameID())
@@ -5126,6 +5163,7 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
 
 					default:
 						AddDebugLogLine(false, L"Ignoring unknown ExtSX Tag from: %s", pClient->DbgGetClientInfo());
+						break;
 				}
 			}
 

@@ -57,9 +57,7 @@ void CUpDownClient::DrawUpStatusBar(CDC* dc, RECT* rect, bool onlygreyrect, bool
 	COLORREF crBoth;
     COLORREF crNextSending;    
     COLORREF crSending;
-#ifdef _DEBUG
 	COLORREF crSCT = RGB(255, 128, 0); //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-#endif
 
     if (GetSlotNumber() <= theApp.uploadqueue->GetActiveUploadsCount() ||
             (GetUploadState() != US_UPLOADING && GetUploadState() != US_CONNECTING))
@@ -82,7 +80,7 @@ void CUpDownClient::DrawUpStatusBar(CDC* dc, RECT* rect, bool onlygreyrect, bool
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
     const CPartStatus* abyUpPartStatus = GetUpPartStatus();    
 	UINT nUpPartCount = GetUpPartCount();
-	UINT nStepCount = nUpPartCount;
+	const UINT nStepCount = (abyUpPartStatus && SupportsSCT()) ? abyUpPartStatus->GetCrumbsCount() : nUpPartCount;
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     CKnownFile* currequpfile = GetUploadReqFile();
     EMFileSize filesize = PARTSIZE;
@@ -91,13 +89,10 @@ void CUpDownClient::DrawUpStatusBar(CDC* dc, RECT* rect, bool onlygreyrect, bool
     else
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
         if (abyUpPartStatus && SupportsSCT())
-		{
-			nStepCount = abyUpPartStatus->GetCrumbsCount();
             filesize = (uint64)(CRUMBSIZE * (uint64)abyUpPartStatus->GetCrumbsCount());
-		}
         else
-            filesize = (uint64)(PARTSIZE * (uint64)GetUpPartCount());
-    //filesize = (uint64)(PARTSIZE * (uint64)m_nUpPartCount);
+            filesize = (uint64)(PARTSIZE * (uint64)nUpPartCount);
+    //filesize = (uint64)(PARTSIZE * (uint64)nUpPartCount);
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     // wistily: UpStatusFix
 
@@ -111,14 +106,16 @@ void CUpDownClient::DrawUpStatusBar(CDC* dc, RECT* rect, bool onlygreyrect, bool
     if (!onlygreyrect && abyUpPartStatus)
     {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]	
-		bool bCompletePart = false;
+		bool bCompletePart = abyUpPartStatus ? abyUpPartStatus->IsCompletePart(0) : false;
 		for (UINT i = 0, nPart = 0; i < nStepCount; ++i)
 		//for (UINT i = 0; i < nUpPartCount; ++i)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 		{
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+			uint64 partsize = PARTSIZE;
 			if(abyUpPartStatus && SupportsSCT())
 			{
+				partsize = CRUMBSIZE;
 				if(i != 0 && (i % CRUMBSPERPART) == 0)
 				{
 					++nPart;
@@ -131,17 +128,17 @@ void CUpDownClient::DrawUpStatusBar(CDC* dc, RECT* rect, bool onlygreyrect, bool
 				bCompletePart = false;
 			}
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
-			GetPartStartAndEnd(i, filesize, uStart, uEnd);
+			GetPartStartAndEnd(i, partsize, filesize, uStart, uEnd);
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 			//if(IsUpPartAvailable(i))
 			if(abyUpPartStatus && abyUpPartStatus->IsComplete(uStart, uEnd-1))
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 			{
-#ifdef _DEBUG
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 				if(SupportsSCT() && !bCompletePart)
 					s_StatusBar.FillRange(uStart, uEnd, crSCT);
 				else
-#endif
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 					s_UpStatusBar.FillRange(uStart, uEnd, crBoth);
 			}
 //>>> WiZaRd::Intelligent SOTN
@@ -163,7 +160,7 @@ void CUpDownClient::DrawUpStatusBar(CDC* dc, RECT* rect, bool onlygreyrect, bool
         block = m_BlockRequests_queue.GetHead();
         if (block)
         {
-			GetPartStartAndEnd((UINT)(block->StartOffset/PARTSIZE), filesize, uStart, uEnd);
+			GetPartStartAndEnd((UINT)(block->StartOffset/PARTSIZE), PARTSIZE, filesize, uStart, uEnd);
             s_UpStatusBar.FillRange(uStart, uEnd, crNextSending);
         }
     }
@@ -171,7 +168,7 @@ void CUpDownClient::DrawUpStatusBar(CDC* dc, RECT* rect, bool onlygreyrect, bool
 	for (POSITION pos = m_DoneBlocks_list.GetHeadPosition(); pos != 0;)
     {
         block = m_DoneBlocks_list.GetNext(pos);
-		GetPartStartAndEnd((UINT)(block->StartOffset/PARTSIZE), filesize, uStart, uEnd);
+		GetPartStartAndEnd((UINT)(block->StartOffset/PARTSIZE), PARTSIZE, filesize, uStart, uEnd);
 		if(bFirst)
 		{
 			bFirst = false;

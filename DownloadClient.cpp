@@ -62,9 +62,7 @@ void CUpDownClient::DrawStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bool
 	COLORREF crNextPending;
 	COLORREF crClientPartial = RGB(170, 50, 224); //>>> WiZaRd::ICS [enkeyDEV]
 	COLORREF crClientSeen = RGB(150, 240, 240); //>>> WiZaRd::AntiHideOS [netfinity]
-#ifdef _DEBUG
 	COLORREF crSCT = RGB(255, 128, 0); //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-#endif
 
 	if (bFlat)
 	{
@@ -86,20 +84,17 @@ void CUpDownClient::DrawStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bool
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
     const CPartStatus* abyPartStatus = GetPartStatus();    
 	UINT nPartCount = GetPartCount();
-	UINT nStepCount = nPartCount;
+	const UINT nStepCount = (abyPartStatus && SupportsSCT()) ? abyPartStatus->GetCrumbsCount() : nPartCount;
 	EMFileSize filesize = PARTSIZE;
 	if(reqfile)
 		filesize = reqfile->GetFileSize();
 	else
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 		if (abyPartStatus && SupportsSCT())
-		{
-			nStepCount = abyPartStatus->GetCrumbsCount();
 			filesize = (uint64)(CRUMBSIZE * (uint64)abyPartStatus->GetCrumbsCount());
-		}
 		else
-			filesize = (uint64)(PARTSIZE * (uint64)GetUpPartCount());
-	//filesize = (uint64)(PARTSIZE * (uint64)m_nUpPartCount);
+			filesize = (uint64)(PARTSIZE * (uint64)nPartCount);
+	//filesize = (uint64)(PARTSIZE * (uint64)nPartCount);
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]	
 
 	s_StatusBar.SetFileSize(filesize);
@@ -129,14 +124,16 @@ void CUpDownClient::DrawStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bool
         }
 
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]	
-		bool bCompletePart = false;
+		bool bCompletePart = abyPartStatus ? abyPartStatus->IsCompletePart(0) : false;
 		for (UINT i = 0, nPart = 0; i < nStepCount; ++i)
         //for (UINT i = 0; i < nPartCount; ++i)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+			uint64 partsize = PARTSIZE;
 			if(abyPartStatus && SupportsSCT())
 			{
+				partsize = CRUMBSIZE;
 				if(i != 0 && (i % CRUMBSPERPART) == 0)
 				{
 					++nPart;
@@ -149,7 +146,7 @@ void CUpDownClient::DrawStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bool
 				bCompletePart = false;
 			}
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
-            GetPartStartAndEnd(i, filesize, uStart, uEnd);
+            GetPartStartAndEnd(i, partsize, filesize, uStart, uEnd);
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
             //if (IsPartAvailable(i))
 			if(abyPartStatus && abyPartStatus->IsComplete(uStart, uEnd-1))
@@ -157,10 +154,10 @@ void CUpDownClient::DrawStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bool
             {
                 if (reqfile->IsComplete(uStart, uEnd-1, false))
                     s_StatusBar.FillRange(uStart, uEnd, crBoth);
-#ifdef _DEBUG
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 				else if(SupportsSCT() && !bCompletePart)
 					s_StatusBar.FillRange(uStart, uEnd, crSCT);
-#endif
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
                 else if (GetSessionDown() > 0 && m_nDownloadState == DS_DOWNLOADING && m_nLastBlockOffset >= uStart && m_nLastBlockOffset < uEnd)
                     s_StatusBar.FillRange(uStart, uEnd, crPending);
                 else if (pcNextPendingBlks != NULL && pcNextPendingBlks[nPart] == 1)
@@ -2886,33 +2883,35 @@ void CUpDownClient::ProcessAICHRequest(const uchar* packet, UINT size)
     if (pKnownFile != NULL)
     {
         if (pKnownFile->IsAICHRecoverHashSetAvailable() && pKnownFile->GetFileIdentifier().HasAICHHash()
-                && pKnownFile->GetFileIdentifier().GetAICHHash() == ahMasterHash && pKnownFile->GetPartCount() > nPart
+                && pKnownFile->GetPartCount() > nPart
                 && pKnownFile->GetFileSize() > (uint64)EMBLOCKSIZE && (uint64)pKnownFile->GetFileSize() - PARTSIZE*(uint64)nPart > EMBLOCKSIZE)
         {
-            CSafeMemFile fileResponse;
-            fileResponse.WriteHash16(pKnownFile->GetFileHash());
-            fileResponse.WriteUInt16(nPart);
-            pKnownFile->GetFileIdentifier().GetAICHHash().Write(&fileResponse);
-            CAICHRecoveryHashSet recHashSet(pKnownFile, pKnownFile->GetFileSize());
-            recHashSet.SetMasterHash(pKnownFile->GetFileIdentifier().GetAICHHash(), AICH_HASHSETCOMPLETE);
-            if (recHashSet.CreatePartRecoveryData((uint64)nPart*PARTSIZE, &fileResponse))
-            {
-                AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Successfully created and sent recoverydata for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
-                if (thePrefs.GetDebugClientTCPLevel() > 0)
-                    DebugSend("OP__AichAnswer", this, pKnownFile->GetFileHash());
-                Packet* packAnswer = new Packet(&fileResponse, OP_EMULEPROT, OP_AICHANSWER);
-                theStats.AddUpDataOverheadFileRequest(packAnswer->size);
-                SafeConnectAndSendPacket(packAnswer);
-                return;
-            }
-            else
-                AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to create recoverydata for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
+			if(pKnownFile->GetFileIdentifier().GetAICHHash() == ahMasterHash)
+			{
+				CSafeMemFile fileResponse;
+				fileResponse.WriteHash16(pKnownFile->GetFileHash());
+				fileResponse.WriteUInt16(nPart);
+				pKnownFile->GetFileIdentifier().GetAICHHash().Write(&fileResponse);
+				CAICHRecoveryHashSet recHashSet(pKnownFile, pKnownFile->GetFileSize());
+				recHashSet.SetMasterHash(pKnownFile->GetFileIdentifier().GetAICHHash(), AICH_HASHSETCOMPLETE);
+				if (recHashSet.CreatePartRecoveryData((uint64)nPart*PARTSIZE, &fileResponse))
+				{
+					AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Successfully created and sent recoverydata for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
+					if (thePrefs.GetDebugClientTCPLevel() > 0)
+						DebugSend("OP__AichAnswer", this, pKnownFile->GetFileHash());
+					Packet* packAnswer = new Packet(&fileResponse, OP_EMULEPROT, OP_AICHANSWER);
+					theStats.AddUpDataOverheadFileRequest(packAnswer->size);
+					SafeConnectAndSendPacket(packAnswer);
+					return;
+				}
+				else
+					AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to create recoverydata for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
+			}
+			else
+				AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to create recoverydata - requested Hash differs from Masterhash for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
         }
         else
-        {
-            AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to create recoverydata - Hashset not ready or requested Hash differs from Masterhash for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
-        }
-
+            AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to create recoverydata - Hashset not ready for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
     }
     else
         AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to find requested shared file -  %s", DbgGetClientInfo());
