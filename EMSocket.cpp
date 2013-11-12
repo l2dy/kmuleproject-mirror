@@ -1854,8 +1854,13 @@ float CEMSocket::GetAndStepBlockRatio()
 //>>> WiZaRd::NatTraversal [Xanatos]
 CUtpSocket* CEMSocket::InitUtpSupport()
 {
-    m_pUtpLayer = new CUtpSocket;
-    AddLayer(m_pUtpLayer);
-    return m_pUtpLayer;
+	if(m_pUtpLayer == NULL)
+	{
+		m_pUtpLayer = new CUtpSocket;
+		AddLayer(m_pUtpLayer);		
+	}
+	else
+		ASSERT(0);
+	return m_pUtpLayer;
 }
 //<<< WiZaRd::NatTraversal [Xanatos]

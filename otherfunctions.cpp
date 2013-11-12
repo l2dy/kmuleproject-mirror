@@ -4625,6 +4625,93 @@ bool IsPortInUse(const uint16 port)
     return IsTCPPortInUse(port) || IsUDPPortInUse(port);
 }
 
+bool PortStateInUse(const DWORD dwState)
+{
+	bool inUse = false;
+
+	switch(dwState)
+	{
+		case MIB_TCP_STATE_CLOSED:
+		case MIB_TCP_STATE_FIN_WAIT1:
+		case MIB_TCP_STATE_FIN_WAIT2:
+		case MIB_TCP_STATE_CLOSE_WAIT:
+		case MIB_TCP_STATE_CLOSING:
+		case MIB_TCP_STATE_LAST_ACK:
+		case MIB_TCP_STATE_TIME_WAIT:
+		case MIB_TCP_STATE_DELETE_TCB:
+			break;
+
+		case MIB_TCP_STATE_SYN_SENT:
+		case MIB_TCP_STATE_SYN_RCVD:
+		case MIB_TCP_STATE_ESTAB:
+		case MIB_TCP_STATE_LISTEN:
+			inUse = true;
+			break;
+	}
+	return inUse;
+}
+
+CString DebugPortState(const DWORD dwState)
+{
+	CString strState = L"";
+
+	switch(dwState)
+	{
+		case MIB_TCP_STATE_CLOSED:
+			strState = L"CLOSED";
+			break;
+
+		case MIB_TCP_STATE_LISTEN:
+			strState = L"LISTEN";
+			break;
+
+		case MIB_TCP_STATE_SYN_SENT:
+			strState = L"SYN_SENT";
+			break;
+
+		case MIB_TCP_STATE_SYN_RCVD:
+			strState = L"SYN_RCVD";
+			break;
+
+		case MIB_TCP_STATE_ESTAB:
+			strState = L"ESTAB";
+			break;
+
+		case MIB_TCP_STATE_FIN_WAIT1:
+			strState = L"FIN_WAIT1";
+			break;
+
+		case MIB_TCP_STATE_FIN_WAIT2:
+			strState = L"FIN_WAIT2";
+			break;
+
+		case MIB_TCP_STATE_CLOSE_WAIT:
+			strState = L"CLOSE_WAIT";
+			break;
+
+		case MIB_TCP_STATE_CLOSING:
+			strState = L"CLOSING";
+			break;
+
+		case MIB_TCP_STATE_LAST_ACK:
+			strState = L"LAST_ACK";
+			break;
+
+		case MIB_TCP_STATE_TIME_WAIT:
+			strState = L"TIME_WAIT";
+			break;
+
+		case MIB_TCP_STATE_DELETE_TCB:
+			strState = L"DELETE_TCB";
+			break;
+
+		default:
+			strState.Format(L"Error: unknown state %u", dwState);
+			break;
+	}
+	return strState;
+}
+
 bool IsTCPPortInUse(const uint16 port)
 {
     // Get table of currently used TCP ports.
@@ -4642,8 +4729,13 @@ bool IsTCPPortInUse(const uint16 port)
             // is treated as not available.
             if (pTCPTab->table[e].dwLocalPort == nPortBE)
             {
-                bPortIsFree = false;
-                theApp.QueueDebugLogLineEx(LOG_WARNING, L"* TCP Port %u (%u) already in use (state %u)", port, nPortBE, pTCPTab->table[e].dwState);
+				if(PortStateInUse(pTCPTab->table[e].dwState))
+				{
+					bPortIsFree = false;
+					theApp.QueueDebugLogLineEx(LOG_WARNING, L"* TCP Port %u (%u) already in use (state %s)", port, nPortBE, DebugPortState(pTCPTab->table[e].dwState));
+				}
+				else
+					theApp.QueueDebugLogLineEx(LOG_WARNING, L"* TCP Port %u (%u) already in use (state %s)", port, nPortBE, DebugPortState(pTCPTab->table[e].dwState));
             }
         }
     }
@@ -4668,7 +4760,7 @@ bool IsUDPPortInUse(const uint16 port)
             if (pUDPTab->table[e].dwLocalPort == nPortBE)
             {
                 bPortIsFree = false;
-                theApp.QueueDebugLogLineEx(LOG_WARNING, L"* UDP Port %u (%u) already in use (state %u)", port, nPortBE);
+                theApp.QueueDebugLogLineEx(LOG_WARNING, L"* UDP Port %u (%u) already in use", port, nPortBE);
             }
         }
     }

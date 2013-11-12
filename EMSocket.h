@@ -210,10 +210,7 @@ private:
 //>>> WiZaRd::NatTraversal [Xanatos]
 public:
     CUtpSocket* InitUtpSupport();
-    CUtpSocket* GetUtpLayer()
-    {
-        return m_pUtpLayer;
-    }
+    CUtpSocket* GetUtpLayer() const		{return m_pUtpLayer;}
 protected:
     CUtpSocket* m_pUtpLayer;
 //<<< WiZaRd::NatTraversal [Xanatos]

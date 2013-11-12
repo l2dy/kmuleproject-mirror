@@ -1435,8 +1435,11 @@ BOOL CSearchResultsWnd::OnHelpInfo(HELPINFO* /*pHelpInfo*/)
 
 LRESULT CSearchResultsWnd::OnIdleUpdateCmdUI(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
-    // if the application is not ready, default to "visible"
-    if (theApp.emuledlg != NULL && theApp.emuledlg->searchwnd != NULL && !theApp.emuledlg->searchwnd->IsSearchParamsWndVisible())
+    // if the application is not ready, default to "not visible"
+    if (theApp.emuledlg != NULL 
+		&& theApp.emuledlg->searchwnd != NULL 
+		&& theApp.emuledlg->GetActiveDialog() == (CWnd*)theApp.emuledlg->searchwnd 
+		&& !theApp.emuledlg->searchwnd->IsSearchParamsWndVisible())
         m_ctlOpenParamsWnd.ShowWindow(SW_SHOW);
     else
         m_ctlOpenParamsWnd.ShowWindow(SW_HIDE);

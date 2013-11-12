@@ -3358,19 +3358,19 @@ void CPartFile::AddSources(CSafeMemFile* sources, UINT serverip, uint16 serverpo
             if (theApp.ipfilter->IsFiltered(userid))
             {
                 if (thePrefs.GetLogFilteredIPs())
-                    AddDebugLogLine(false, _T("Ignored source (IP=%s) received from server - IP filter (%s)"), ipstr(userid), theApp.ipfilter->GetLastHit());
+                    AddDebugLogLine(false, L"Ignored source (IP=%s) received from server - IP filter (%s)", ipstr(userid), theApp.ipfilter->GetLastHit());
                 continue;
             }
             if (theApp.clientlist->IsBannedClient(userid))
             {
 #ifdef _DEBUG
                 if (thePrefs.GetLogBannedClients())
-                {
-                    CString strDbgClientInfo;
+                {                    
 //>>> WiZaRd::IPv6 [Xanatos]
                     CUpDownClient* pClient = theApp.clientlist->FindClientByIP(_CIPAddress(_ntohl(userid)));
                     //CUpDownClient* pClient = theApp.clientlist->FindClientByIP(userid);
 //<<< WiZaRd::IPv6 [Xanatos]
+					CString strDbgClientInfo = L"";
                     if (pClient)
                         strDbgClientInfo.Format(L" - banned client %s", pClient->DbgGetClientInfo());
                     AddDebugLogLine(false, L"Ignored source (IP=%s) received from server%s", ipstr(userid), strDbgClientInfo);
@@ -4942,10 +4942,10 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
 
     if (thePrefs.GetDebugSourceExchange())
     {
-        CString strDbgClientInfo;
+        CString strDbgClientInfo = L"";
         if (pClient)
-            strDbgClientInfo.Format(_T("%s, "), pClient->DbgGetClientInfo());
-        AddDebugLogLine(false, _T("SXRecv: Client source response; SX2=%s, Ver=%u, %sFile=\"%s\""), bSourceExchange2 ? _T("Yes") : _T("No"), uClientSXVersion, strDbgClientInfo, GetFileName());
+            strDbgClientInfo.Format(L"%s, ", pClient->DbgGetClientInfo());
+        AddDebugLogLine(false, L"SXRecv: Client source response; SX2=%s, Ver=%u, %sFile=\"%s\"", bSourceExchange2 ? _T("Yes") : _T("No"), uClientSXVersion, strDbgClientInfo, GetFileName());
     }
 
     UINT uPacketSXVersion = 0;
@@ -4966,10 +4966,10 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
             {
                 if (thePrefs.GetVerbose())
                 {
-                    CString strDbgClientInfo;
+                    CString strDbgClientInfo = L"";
                     if (pClient)
-                        strDbgClientInfo.Format(_T("%s, "), pClient->DbgGetClientInfo());
-                    DebugLogWarning(_T("Received invalid SX packet (v%u, count=%u, size=%u), %sFile=\"%s\""), uClientSXVersion, nCount, uDataSize, strDbgClientInfo, GetFileName());
+                        strDbgClientInfo.Format(L"%s, ", pClient->DbgGetClientInfo());
+                    DebugLogWarning(L"Received invalid SX packet (v%u, count=%u, size=%u), %sFile=\"%s\"", uClientSXVersion, nCount, uDataSize, strDbgClientInfo, GetFileName());
                 }
                 return;
             }
@@ -4983,10 +4983,10 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
             {
                 if (thePrefs.GetVerbose())
                 {
-                    CString strDbgClientInfo;
+                    CString strDbgClientInfo = L"";
                     if (pClient)
-                        strDbgClientInfo.Format(_T("%s, "), pClient->DbgGetClientInfo());
-                    DebugLogWarning(_T("Received invalid SX packet (v%u, count=%u, size=%u), %sFile=\"%s\""), uClientSXVersion, nCount, uDataSize, strDbgClientInfo, GetFileName());
+                        strDbgClientInfo.Format(L"%s, ", pClient->DbgGetClientInfo());
+                    DebugLogWarning(L"Received invalid SX packet (v%u, count=%u, size=%u), %sFile=\"%s\"", uClientSXVersion, nCount, uDataSize, strDbgClientInfo, GetFileName());
                 }
                 return;
             }
@@ -5003,10 +5003,10 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
             {
                 if (thePrefs.GetVerbose())
                 {
-                    CString strDbgClientInfo;
+                    CString strDbgClientInfo = L"";
                     if (pClient)
-                        strDbgClientInfo.Format(_T("%s, "), pClient->DbgGetClientInfo());
-                    DebugLogWarning(_T("Received invalid SX packet (v%u, count=%u, size=%u), %sFile=\"%s\""), uClientSXVersion, nCount, uDataSize, strDbgClientInfo, GetFileName());
+                        strDbgClientInfo.Format(L"%s, ", pClient->DbgGetClientInfo());
+                    DebugLogWarning(L"Received invalid SX packet (v%u, count=%u, size=%u), %sFile=\"%s\"", uClientSXVersion, nCount, uDataSize, strDbgClientInfo, GetFileName());
                 }
                 return;
             }
@@ -5019,10 +5019,10 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
             // above code. Though a client which does not understand v5+ should never receive such a packet.
             if (thePrefs.GetVerbose())
             {
-                CString strDbgClientInfo;
+                CString strDbgClientInfo = L"";
                 if (pClient)
-                    strDbgClientInfo.Format(_T("%s, "), pClient->DbgGetClientInfo());
-                DebugLogWarning(_T("Received invalid SX packet (v%u, count=%u, size=%u), %sFile=\"%s\""), uClientSXVersion, nCount, uDataSize, strDbgClientInfo, GetFileName());
+                    strDbgClientInfo.Format(L"%s, ", pClient->DbgGetClientInfo());
+                DebugLogWarning(L"Received invalid SX packet (v%u, count=%u, size=%u), %sFile=\"%s\"", uClientSXVersion, nCount, uDataSize, strDbgClientInfo, GetFileName());
             }
             return;
         }
@@ -5034,17 +5034,16 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
         // We only check if the version is known by us and do a quick sanitize check on known version
         // other then SX1, the packet will be ignored if any error appears, since it can't be a "misunderstanding" anymore
 //>>> WiZaRd::ExtendedXS [Xanatos]
-        if ((pClient && uClientSXVersion > (pClient->SupportsExtendedSourceExchange() ? SOURCEEXCHANGEEXT_VERSION : SOURCEEXCHANGE2_VERSION)) || uClientSXVersion == 0)
+        if (uClientSXVersion > (pClient && pClient->SupportsExtendedSourceExchange() ? SOURCEEXCHANGEEXT_VERSION : SOURCEEXCHANGE2_VERSION) || uClientSXVersion == 0)
             //if (uClientSXVersion > SOURCEEXCHANGE2_VERSION || uClientSXVersion == 0)
 //<<< WiZaRd::ExtendedXS [Xanatos]
         {
             if (thePrefs.GetVerbose())
             {
-                CString strDbgClientInfo;
+                CString strDbgClientInfo = L"";
                 if (pClient)
-                    strDbgClientInfo.Format(_T("%s, "), pClient->DbgGetClientInfo());
-
-                DebugLogWarning(_T("Received invalid SX2 packet - Version unknown (v%u), %sFile=\"%s\""), uClientSXVersion, strDbgClientInfo, GetFileName());
+                    strDbgClientInfo.Format(L"%s, ", pClient->DbgGetClientInfo());
+                DebugLogWarning(L"Received invalid SX2 packet - Version unknown (v%u), %sFile=\"%s\"", uClientSXVersion, strDbgClientInfo, GetFileName());
             }
             return;
         }
@@ -5079,10 +5078,10 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
                 ASSERT(0);
                 if (thePrefs.GetVerbose())
                 {
-                    CString strDbgClientInfo;
+                    CString strDbgClientInfo = L"";
                     if (pClient)
-                        strDbgClientInfo.Format(_T("%s, "), pClient->DbgGetClientInfo());
-                    DebugLogWarning(_T("Received invalid/corrupt SX2 packet (v%u, count=%u, size=%u), %sFile=\"%s\""), uClientSXVersion, nCount, uDataSize, strDbgClientInfo, GetFileName());
+                        strDbgClientInfo.Format(L"%s, ", pClient->DbgGetClientInfo());
+                    DebugLogWarning(L"Received invalid/corrupt SX2 packet (v%u, count=%u, size=%u), %sFile=\"%s\"", uClientSXVersion, nCount, uDataSize, strDbgClientInfo, GetFileName());
                 }
                 return;
             }
@@ -5172,9 +5171,9 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
                 ASSERT(0);
                 if (thePrefs.GetVerbose())
                 {
-                    CString strDbgClientInfo;
+                    CString strDbgClientInfo = L"";
                     if (pClient)
-                        strDbgClientInfo.Format(_T("%s, "), pClient->DbgGetClientInfo());
+                        strDbgClientInfo.Format(L"%s, ", pClient->DbgGetClientInfo());
                     DebugLogWarning(L"Received invalid/corrupt ExtSX packet (v%u, count=%u, size=%u), %sFile=\"%s\"", uClientSXVersion, nCount, uDataSize, strDbgClientInfo, GetFileName());
                 }
                 return;
@@ -5220,12 +5219,12 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
                 {
 #ifdef _DEBUG
                     if (thePrefs.GetLogBannedClients())
-                    {
-                        CString strDbgClientInfo;
+                    {                        
 //>>> WiZaRd::IPv6 [Xanatos]
                         CUpDownClient* pClient = theApp.clientlist->FindClientByIP(_CIPAddress(_ntohl(dwIDED2K)));
                         //CUpDownClient* pClient = theApp.clientlist->FindClientByIP(dwIDED2K);
 //<<< WiZaRd::IPv6 [Xanatos]
+						CString strDbgClientInfo = L"";
                         if (pClient)
                             strDbgClientInfo.Format(L" - banned client %s", pClient->DbgGetClientInfo());
                         AddDebugLogLine(false, L"Ignored source (IP=%s) received via source exchange%s", ipstr(dwIDED2K), strDbgClientInfo);
@@ -5265,12 +5264,12 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
                 {
 #ifdef _DEBUG
                     if (thePrefs.GetLogBannedClients())
-                    {
-                        CString strDbgClientInfo;
+                    {                        
 //>>> WiZaRd::IPv6 [Xanatos]
                         CUpDownClient* pClient = theApp.clientlist->FindClientByIP(_CIPAddress(_ntohl(dwID)));
                         //CUpDownClient* pClient = theApp.clientlist->FindClientByIP(dwID);
 //<<< WiZaRd::IPv6 [Xanatos]
+						CString strDbgClientInfo = L"";
                         if (pClient)
                             strDbgClientInfo.Format(L" - banned client %s", pClient->DbgGetClientInfo());
                         AddDebugLogLine(false, L"Ignored source (IP=%s) received via source exchange%s", ipstr(dwID), strDbgClientInfo);
@@ -6915,11 +6914,9 @@ void CPartFile::SetFileSize(EMFileSize nFileSize)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 }
 
-bool	CPartFile::IsCompletePart(const UINT part, const bool bOnlyReal) const
+bool	CPartFile::IsCompletePart(const UINT part, const bool bIgnoreBufferedData) const
 {
-    if (!bOnlyReal)
-        return IsComplete((uint64)part*PARTSIZE, (uint64)(part+1)*PARTSIZE-1, false);
-    return IsComplete((uint64)part*PARTSIZE, (uint64)(part+1)*PARTSIZE-1, true); //ignore buffered data!
+    return IsComplete((uint64)part*PARTSIZE, (uint64)(part+1)*PARTSIZE-1, bIgnoreBufferedData);
 }
 
 //>>> WiZaRd::ICS [enkeyDEV]

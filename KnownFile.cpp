@@ -2329,12 +2329,13 @@ bool CKnownFile::WriteSafePartStatus(CSafeMemFile* data_out, CUpDownClient* send
 
     //i.e. "complete file"
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-    if (sender && sender->GetSCTVersion() > PROTOCOL_REVISION_1)
+	// we send the default state here!
+    /*if (sender && sender->GetSCTVersion() > PROTOCOL_REVISION_1)
     {
         data_out->WriteUInt16(1);
         data_out->WriteUInt8(0);
     }
-    else
+    else*/
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         data_out->WriteUInt16(0);
     return false;
@@ -2484,7 +2485,8 @@ uint8* CKnownFile::GetPartStatus(CUpDownClient* client) const
 {
 //>>> WiZaRd::ICS [enkeyDEV]
     // We don't use SotN for ICS enabled clients because they should always see the real file status and will select the rarest chunk by themselves
-    bool bSOTN = GetShareOnlyTheNeed() && (!client || client->GetIncompletePartVersion() == 0);
+	// Unfortunately, we cannot trust that they implemented it properly, so we opt for using SOTN in that case to improve file spreading
+    bool bSOTN = GetShareOnlyTheNeed() /*&& (!client || client->GetIncompletePartVersion() == 0)*/;
 //<<< WiZaRd::ICS [enkeyDEV]
     const uint16 partcount = GetPartCount();
     const bool bUsePart = IsPartFile();

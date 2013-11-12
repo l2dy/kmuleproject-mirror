@@ -85,10 +85,7 @@ public:
 
     virtual BOOL ShutDown(int nHow = sends);
 
-    virtual bool IsUtpLayer()
-    {
-        return true;
-    }
+    virtual bool IsUtpLayer() const  {return true;}
 
     //Attributes
     BOOL GetSockOpt(int nOptionName, void* lpOptionValue, int* lpOptionLen);

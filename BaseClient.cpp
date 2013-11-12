@@ -2020,11 +2020,11 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
 //>>> WiZaRd::NatTraversal [Xanatos]
     // if direct callback is possible and we are firewalled use UTP
 //>>> WiZaRd::IPv6 [Xanatos]
-    //bUseUTP = (SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && GetConnectIP() != 0) && theApp.IsFirewalled();
-    bUseUTP = (SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && !GetConnectIP().IsNull()) && theApp.IsFirewalled();
+    //bUseUTP = SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && GetConnectIP() != 0 && theApp.IsFirewalled();
+    bUseUTP = SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && !GetConnectIP().IsNull() && theApp.IsFirewalled();
 //<<< WiZaRd::IPv6 [Xanatos]
     if (!HasLowID() || bUseUTP || bUseIPv6) //>>> WiZaRd::IPv6 [Xanatos]
-        //if (!HasLowID())
+    //if (!HasLowID())
 //<<< WiZaRd::NatTraversal [Xanatos]
     {
         m_nConnectingState = CCS_DIRECTTCP;
@@ -2050,7 +2050,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
     // 4) Direct Callback Connections
 //>>> WiZaRd::IPv6 [Xanatos]
     else if (SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && !GetConnectIP().IsNull())
-        //else if (SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && GetConnectIP() != 0)
+    //else if (SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && GetConnectIP() != 0)
 //<<< WiZaRd::IPv6 [Xanatos]
     {
         m_nConnectingState = CCS_DIRECTCALLBACK;
