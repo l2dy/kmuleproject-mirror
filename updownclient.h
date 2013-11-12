@@ -1311,9 +1311,5 @@ private:
 public:
     bool	SupportUnsolicitedPartStatus() const	{return m_fSupportsUnsolicitedPartStatus;}
 //<<< WiZaRd::Unsolicited PartStatus [Netfinity]
-//>>> Tux::ProxyStatus
-public:
-    bool m_bWeAreProxified;
-//<<< Tux::ProxyStatus
 };
 //#pragma pack()

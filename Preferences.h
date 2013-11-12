@@ -2588,6 +2588,19 @@ public:
     }
     static	void	ClearUserDirs();
 //<<< WiZaRd
+//>>> Tux::ProxyStatus
+private:
+    static  bool     m_bWeAreProxified;
+private:
+    static  bool    IsProxified()
+    {
+        return m_bWeAreProxified;
+    }
+    static  bool    SetProxified(const bool b)
+    {
+        m_bWeAreProxified = b;
+    }
+//<<< Tux::ProxyStatus
 };
 
 extern CPreferences thePrefs;

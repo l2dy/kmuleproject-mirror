@@ -91,7 +91,6 @@
 #include "UPnPImplWrapper.h"
 #include <dbt.h>
 #include "XMessageBox.h"
-#include "updownclient.h" //>>> Tux::ProxyStatus
 #include "./Mod/autoUpdate.h" //>>> WiZaRd::AutoUpdate
 #include "./Mod/extractfile.h" //>>> WiZaRd::MediaInfoDLL Update
 #include "./Mod/CustomSearches.h" //>>> WiZaRd::CustomSearches
@@ -1012,7 +1011,7 @@ CString CemuleDlg::GetConnectionStateString()
     else
         status = GetResString(IDS_NOTCONNECTED);
 //>>> Tux::ProxyStatus
-    if (m_bWeAreProxified)
+    if (thePrefs.IsProxified())
         status += " (Proxy)";
 //<<< Tux::ProxyStatus
     return status;
