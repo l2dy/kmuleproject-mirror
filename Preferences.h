@@ -2596,7 +2596,7 @@ private:
     {
         return m_bWeAreProxified;
     }
-    static  bool    SetProxified(const bool b)
+    static  void    SetProxified(const bool b)
     {
         m_bWeAreProxified = b;
     }

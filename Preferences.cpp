@@ -438,6 +438,7 @@ bool	CPreferences::m_bNeedsWineCompatibility; //>>> WiZaRd::Wine Compatibility
 bool	CPreferences::m_bModIconDllAutoUpdate;
 CString	CPreferences::m_strModIconDllUpdateURL;
 //<<< WiZaRd::ModIconDLL Update
+bool    CPreferences::m_bWeAreProxified; //>>> Tux::Proxy display
 
 CPreferences::CPreferences()
 {
