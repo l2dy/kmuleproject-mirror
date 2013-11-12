@@ -244,3 +244,4 @@ XXXXYYZZ:
 ! fixed crash on ip-filter update if blocked nodes are currently in use [WiZaRd]
 ~ part files are shared ASAP, now [WiZaRd]
 ~ new kMule try icons [WiZaRd]
++ proxy connections are now displayed in the status bar [Tuxman]
