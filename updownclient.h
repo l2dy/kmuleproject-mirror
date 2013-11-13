@@ -1091,8 +1091,7 @@ protected:
          m_fSupportsModProt	  : 1, //>>> WiZaRd::ModProt
          m_fSupportsNatTraversal : 1, //>>> WiZaRd::NatTraversal [Xanatos]
          m_fSupportsIPv6 : 1, //>>> WiZaRd::IPv6 [Xanatos]
-         m_fSupportsExtendedXS : 1, //>>> WiZaRd::ExtendedXS [Xanatos]
-         m_fSupportsUnsolicitedPartStatus : 1; //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
+         m_fSupportsExtendedXS : 1; //>>> WiZaRd::ExtendedXS [Xanatos]
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 public:
     CTypedPtrList<CPtrList, Pending_Block_Struct*>	 m_PendingBlocks_list;
@@ -1308,8 +1307,6 @@ public:
 //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
 private:
     uint8	m_byFileRequestState;
-public:
-    bool	SupportUnsolicitedPartStatus() const	{return m_fSupportsUnsolicitedPartStatus;}
 //<<< WiZaRd::Unsolicited PartStatus [Netfinity]
 };
 //#pragma pack()

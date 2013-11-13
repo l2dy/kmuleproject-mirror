@@ -2591,7 +2591,7 @@ public:
 //>>> Tux::ProxyStatus
 private:
     static  bool     m_bWeAreProxified;
-private:
+public:
     static  bool    IsProxified()
     {
         return m_bWeAreProxified;
