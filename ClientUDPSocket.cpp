@@ -744,7 +744,7 @@ SocketSentBytes CClientUDPSocket::SendControlData(UINT maxNumberOfBytesToSend, U
                 nLen = EncryptSendClient(&sendbuffer, nLen, cur_packet->pachTargetClientHashORKadID, cur_packet->bKad,  cur_packet->nReceiverVerifyKey, (cur_packet->bKad ? Kademlia::CPrefs::GetUDPVerifyKey(_ntohl(cur_packet->dwIP.ToIPv4())) : (uint16)0), cur_packet->dwIP.Type() == CAddress::IPv6);
                 //nLen = EncryptSendClient(&sendbuffer, nLen, cur_packet->pachTargetClientHashORKadID, cur_packet->bKad,  cur_packet->nReceiverVerifyKey, (cur_packet->bKad ? Kademlia::CPrefs::GetUDPVerifyKey(cur_packet->dwIP) : (uint16)0));
 //<<< WiZaRd::IPv6 [Xanatos]
-                //DEBUG_ONLY(  AddDebugLogLine(DLP_VERYLOW, false, _T("Sent obfuscated UDP packet to clientIP: %s, Kad: %s, ReceiverKey: %u"), ipstr(cur_packet->dwIP), cur_packet->bKad ? _T("Yes") : _T("No"), cur_packet->nReceiverVerifyKey) );
+                //DEBUG_ONLY(  AddDebugLogLine(DLP_VERYLOW, false, _T("Sent obfuscated UDP packet to clientIP: %s, Kad: %s, ReceiverKey: %u"), ipstr(cur_packet->dwIP), cur_packet->bKad ? GetResString(IDS_YES) : GetResString(IDS_NO), cur_packet->nReceiverVerifyKey) );
             }
 
 #ifdef USE_QOS

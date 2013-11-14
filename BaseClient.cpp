@@ -306,9 +306,12 @@ void CUpDownClient::Init()
     m_cCaptchasSent = 0;
     m_fSupportsFileIdent = 0;
 //>>> WiZaRd::ModProt
-    m_fSupportsModProt = 0;
+    m_fSupportsModProt		= 0;
     m_bSupportsLowIDUDPPing = false; //>>> LowID UDP Ping Support
 //<<< WiZaRd::ModProt
+	m_fSupportsIPv6			= 0; //>>> WiZaRd::IPv6 [Xanatos]
+	m_fSupportsNatTraversal	= 0; //>>> WiZaRd::NatTraversal [Xanatos]
+	m_fSupportsExtendedXS	= 0; //>>> WiZaRd::ExtendedXS [Xanatos]
 }
 
 CUpDownClient::~CUpDownClient()
@@ -433,6 +436,9 @@ void CUpDownClient::ClearHelloProperties()
     m_fSupportsModProt = 0;
     m_bSupportsLowIDUDPPing = false; //>>> LowID UDP Ping Support
 //<<< WiZaRd::ModProt
+	m_fSupportsIPv6			= 0; //>>> WiZaRd::IPv6 [Xanatos]
+	m_fSupportsNatTraversal	= 0; //>>> WiZaRd::NatTraversal [Xanatos]
+	m_fSupportsExtendedXS	= 0; //>>> WiZaRd::ExtendedXS [Xanatos]
 }
 
 bool CUpDownClient::ProcessHelloPacket(const uchar* pachPacket, UINT nSize)
@@ -2060,7 +2066,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
         data.WriteUInt16(thePrefs.GetPort()); // needs to know our port
         data.WriteHash16(thePrefs.GetUserHash()); // and userhash
         // our connection settings
-        data.WriteUInt8(GetMyConnectOptions(true, false));
+        data.WriteUInt8(GetMyConnectOptions(true, false, false)); //>>> WiZaRd::NatTraversal [Xanatos]
         if (thePrefs.GetDebugClientUDPLevel() > 0)
             DebugSend("OP_DIRECTCALLBACKREQ", this);
         Packet* packet = new Packet(&data, OP_EMULEPROT);
@@ -2104,7 +2110,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
                 data.WriteHash16(hash); // a invalid NULL hash indicates that this is a Custom Packet, not a file reask
 
                 data.WriteHash16(thePrefs.GetUserHash());
-                data.WriteUInt8(GetMyConnectOptions(true, true));
+                data.WriteUInt8(GetMyConnectOptions(true, true, true)); //>>> WiZaRd::NatTraversal [Xanatos]
 
                 if (thePrefs.GetDebugClientUDPLevel() > 0)
                     DebugSend("OP__ReaskCallbackUDP", this, reqfile->GetFileHash());
@@ -4028,7 +4034,29 @@ void CUpDownClient::ProcessFirewallCheckUDPRequest(CSafeMemFile* data)
     DebugLog(L"Answered UDP Firewallcheck request (%s)", DbgGetClientInfo());
 }
 
-void CUpDownClient::SetConnectOptions(uint8 byOptions, bool bEncryption, bool bCallback)
+uint8 CUpDownClient::GetConnectOptions(const bool bEncryption, const bool bCallback, const bool bNATTraversal) const  //>>> WiZaRd::NatTraversal [Xanatos]
+{
+// ConnectSettings - SourceExchange V4
+	// 4 Reserved (!)
+	// 1 DirectCallback Supported/Available
+	// 1 CryptLayer Required
+	// 1 CryptLayer Requested
+	// 1 CryptLayer Supported
+	const uint8 uSupportsCryptLayer		= (bEncryption && SupportsCryptLayer()) ? 1 : 0;
+	const uint8 uRequestsCryptLayer		= (bEncryption && RequestsCryptLayer()) ? 1 : 0;
+	const uint8 uRequiresCryptLayer		= (bEncryption && RequiresCryptLayer()) ? 1 : 0;
+//>>> WiZaRd::NatTraversal [Xanatos]
+	const uint8 uDirectUDPCallback		= (bCallback && SupportsDirectUDPCallback()) ? 1 : 0;
+	const uint8 uSupportsNatTraversal	= (bNATTraversal && SupportsNatTraversal()) ? 1 : 0;
+
+	//const uint8 uDirectUDPCallback	= cur_src->SupportsDirectUDPCallback() ? 1 : 0;
+	//const uint8 byCryptOptions = /*(uDirectUDPCallback << 3) |*/ (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
+	uint8 byCryptOptions = (uSupportsNatTraversal << 7) | (uDirectUDPCallback << 3) | (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
+//<<< WiZaRd::NatTraversal [Xanatos]
+	return byCryptOptions;
+}
+
+void CUpDownClient::SetConnectOptions(const uint8 byOptions, const bool bEncryption, const bool bCallback)
 {
     SetCryptLayerSupport((byOptions & 0x01) != 0 && bEncryption);
     SetCryptLayerRequest((byOptions & 0x02) != 0 && bEncryption);

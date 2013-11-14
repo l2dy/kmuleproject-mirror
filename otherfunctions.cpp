@@ -4247,7 +4247,7 @@ bool _tmakepathlimit(TCHAR *path, const TCHAR *drive, const TCHAR *dir, const TC
     }
 }
 
-uint8 GetMyConnectOptions(bool bEncryption, bool bCallback)
+uint8 GetMyConnectOptions(const bool bEncryption, const bool bCallback, const bool bNATTraversal) //>>> WiZaRd::NatTraversal [Xanatos]
 {
     // Connect options Tag
     // 4 Reserved (!)
@@ -4256,13 +4256,13 @@ uint8 GetMyConnectOptions(bool bEncryption, bool bCallback)
     // 1 CryptLayer Requested
     // 1 CryptLayer Supported
     const uint8 uSupportsCryptLayer	= (bEncryption) ? 1 : 0;
-    const uint8 uRequestsCryptLayer	= (thePrefs.IsClientCryptLayerRequested() && bEncryption) ? 1 : 0;
-    const uint8 uRequiresCryptLayer	= (thePrefs.IsClientCryptLayerRequired() && bEncryption) ? 1 : 0;
+    const uint8 uRequestsCryptLayer	= (bEncryption && thePrefs.IsClientCryptLayerRequested()) ? 1 : 0;
+    const uint8 uRequiresCryptLayer	= (bEncryption && thePrefs.IsClientCryptLayerRequired()) ? 1 : 0;
     // direct callback is only possible if connected to kad, tcp firewalled and verified UDP open (for example on a full cone NAT)
     const uint8 uDirectUDPCallback	= (bCallback && theApp.IsFirewalled() && Kademlia::CKademlia::IsRunning() && !Kademlia::CUDPFirewallTester::IsFirewalledUDP(true) && Kademlia::CUDPFirewallTester::IsVerified()) ? 1 : 0;
 
 //>>> WiZaRd::NatTraversal [Xanatos]
-    const uint8 uSupportsNatTraversal	= 1/*(bCallback) ? 1 : 0*/; //>>> WiZaRd::FiX for NAT-T
+    const uint8 uSupportsNatTraversal	= bNATTraversal ? 1 : 0;
     const uint8 byCryptOptions = (uSupportsNatTraversal << 7) | (uDirectUDPCallback << 3) | (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
     //const uint8 byCryptOptions = (uDirectUDPCallback << 3) | (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
 //<<< WiZaRd::NatTraversal [Xanatos]

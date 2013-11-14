@@ -449,7 +449,8 @@ public:
     {
         m_fDirectUDPCallback = bVal ? 1 : 0;
     }
-    void			SetConnectOptions(uint8 byOptions, bool bEncryption = true, bool bCallback = true); // shortcut, sets crypt, callback etc based from the tagvalue we recieve
+	uint8			GetConnectOptions(const bool bEncryption, const bool bCallback, const bool bNATTraversal) const; //>>> WiZaRd::NatTraversal [Xanatos]
+    void			SetConnectOptions(const uint8 byOptions, const bool bEncryption, const bool bCallback); // shortcut, sets crypt, callback etc based from the tagvalue we receive
     bool			IsObfuscatedConnectionEstablished() const;
     bool			ShouldReceiveCryptUDPPackets() const;
 

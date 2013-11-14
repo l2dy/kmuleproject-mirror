@@ -1513,7 +1513,7 @@ void CDownloadQueue::KademliaSearchFile(UINT searchID, const Kademlia::CUInt128*
 //<<< WiZaRd::IPv6 [Xanatos]
 
         // add encryption settings
-        ctemp->SetConnectOptions(byCryptOptions);
+        ctemp->SetConnectOptions(byCryptOptions, true, true);
         CheckAndAddSource(temp, ctemp);
     }
 }

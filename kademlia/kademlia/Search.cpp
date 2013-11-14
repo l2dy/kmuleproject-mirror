@@ -786,7 +786,7 @@ void CSearch::StorePacket()
                     }
                 }
 
-                listTag.push_back(new CKadTagUInt8(TAG_ENCRYPTION, CKademlia::GetPrefs()->GetMyConnectOptions(true, true)));
+                listTag.push_back(new CKadTagUInt8(TAG_ENCRYPTION, GetMyConnectOptions(true, true, true))); //>>> WiZaRd::NatTraversal [Xanatos]
 
 //>>> WiZaRd::IPv6 [Xanatos]
                 if (!theApp.GetPublicIPv6().IsNull())

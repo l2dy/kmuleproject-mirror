@@ -176,7 +176,7 @@ void CKademliaUDPListener::FirewalledCheck(UINT uIP, uint16 uUDPPort, CKadUDPKey
         CSafeMemFile fileIO(19);
         fileIO.WriteUInt16(thePrefs.GetPort());
         fileIO.WriteUInt128(&CKademlia::GetPrefs()->GetClientHash());
-        fileIO.WriteUInt8(CKademlia::GetPrefs()->GetMyConnectOptions(true, false));
+        fileIO.WriteUInt8(GetMyConnectOptions(true, false, false)); //>>> WiZaRd::NatTraversal [Xanatos]
         if (thePrefs.GetDebugClientKadUDPLevel() > 0)
             DebugSend("KADEMLIA_FIREWALLED2_REQ", uIP, uUDPPort);
         SendPacket(&fileIO, KADEMLIA_FIREWALLED2_REQ, uIP, uUDPPort, senderUDPKey, NULL);
@@ -1927,7 +1927,7 @@ void CKademliaUDPListener::Process_KADEMLIA_FINDBUDDY_REQ(const byte *pbyPacketD
     fileIO2.WriteUInt128(&CKademlia::GetPrefs()->GetClientHash());
     fileIO2.WriteUInt16(thePrefs.GetPort());
     if (!senderUDPKey.IsEmpty()) // remove check for later versions
-        fileIO2.WriteUInt8(CKademlia::GetPrefs()->GetMyConnectOptions(true, false)); // new since 0.49a, old mules will ignore it (hopefully ;) )
+        fileIO2.WriteUInt8(GetMyConnectOptions(true, false, false)); // new since 0.49a, old mules will ignore it (hopefully ;) ) //>>> WiZaRd::NatTraversal [Xanatos]
     if (thePrefs.GetDebugClientKadUDPLevel() > 0)
         DebugSend("KADEMLIA_FINDBUDDY_RES", uIP, uUDPPort);
 

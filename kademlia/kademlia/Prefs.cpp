@@ -445,29 +445,46 @@ void CPrefs::SetExternKadPort(uint16 uVal, UINT uFromIP)
 {
     if (FindExternKadPort(false))
     {
-        for (int i = 0; i < m_anExternPortIPs.GetCount(); i++)
+		// check if the remote client already sent a possible port
+		bool bFound = false;
+        for (int i = 0; i < m_anExternPortReplies.GetCount(); ++i)
         {
-            if (m_anExternPortIPs[i] == uFromIP)
-                return;
+            if(m_anExternPortReplies[i].dwIP == uFromIP)
+			{
+				if(m_anExternPortReplies[i].nPort == uVal)
+					return;
+				else
+				{
+					DebugLog(L"Received new possible external Kad Port %u (old: %u) from %s", uVal, m_anExternPortReplies[i].nPort, ipstr(ntohl(uFromIP)));
+					m_anExternPortReplies[i].nPort = uVal;
+					bFound = true;
+					break;
+				}
+			}
         }
-        m_anExternPortIPs.Add(uFromIP);
-        DebugLog(_T("Received possible external Kad Port %u from %s"), uVal, ipstr(ntohl(uFromIP)));
+		if(!bFound)
+		{
+			DebugLog(L"Received possible external Kad Port %u from %s", uVal, ipstr(ntohl(uFromIP)));
+			m_anExternPortReplies.Add(externPortReply(uFromIP, uVal));
+		}
+			
         // if 2 out of 3 tries result in the same external port its fine, otherwise consider it as unreliable
-        for (int i = 0; i < m_anExternPorts.GetCount(); i++)
+        for (int i = 0; i < m_anExternPortReplies.GetCount(); ++i)
         {
-            if (m_anExternPorts[i] == uVal)
+            if (m_anExternPortReplies[i].nPort == uVal)
             {
                 m_nExternKadPort = uVal;
-                DebugLog(_T("Set external Kad Port to %u"), uVal);
-                while (m_anExternPortIPs.GetCount() < EXTERNAL_PORT_ASKIPS)
-                    m_anExternPortIPs.Add(0); // add empty entries so we know the check has finished even if we asked less than max IPs
+                DebugLog(L"Set external Kad Port to %u", uVal);
+                while (m_anExternPortReplies.GetCount() < EXTERNAL_PORT_ASKIPS)
+                    m_anExternPortReplies.Add(externPortReply(uFromIP, uVal)); // add empty entries so we know the check has finished even if we asked less than max IPs
                 return;
             }
         }
-        m_anExternPorts.Add(uVal);
+
+		// if we have already received EXTERNAL_PORT_ASKIPS replies without getting a valid external port, we should cancel searching 
         if (!FindExternKadPort(false))
         {
-            DebugLog(_T("Our external port seems unreliable, not using it for firewallchecks"), uVal);
+            DebugLog(L"Our external port seems unreliable, not using it for firewallchecks", uVal);
             m_nExternKadPort = 0;
         }
     }
@@ -480,20 +497,10 @@ uint16 CPrefs::GetInternKadPort() const
 
 bool CPrefs::FindExternKadPort(bool bReset)
 {
-    if (!bReset)
-        return  m_anExternPortIPs.GetCount() < EXTERNAL_PORT_ASKIPS && !Kademlia::CKademlia::IsRunningInLANMode();
-    else
-    {
-        m_anExternPortIPs.RemoveAll();
-        m_anExternPorts.RemoveAll();
-        return true;
-    }
-}
+    if (bReset)
+		m_anExternPortReplies.RemoveAll();
 
-
-uint8 CPrefs::GetMyConnectOptions(bool bEncryption, bool bCallback)
-{
-    return ::GetMyConnectOptions(bEncryption, bCallback);
+	return m_anExternPortReplies.GetCount() < EXTERNAL_PORT_ASKIPS && !Kademlia::CKademlia::IsRunningInLANMode();
 }
 
 float CPrefs::StatsGetFirewalledRatio(bool bUDP) const

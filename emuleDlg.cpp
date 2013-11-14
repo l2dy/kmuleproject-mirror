@@ -3850,7 +3850,7 @@ void CemuleDlg::SetTaskbarIconColor()
     uint16 iBrightness = (uint16)sqrt(((iRed * iRed * 0.241f) + (iGreen * iGreen * 0.691f) + (iBlue * iBlue * 0.068f)));
     ASSERT(iBrightness <= 255);
     bBrightTaskbarIconSpeed = iBrightness < 132;
-    DebugLog(_T("Taskbar Notifier Color: R:%u G:%u B:%u, Brightness: %u, Transparent: %s"), iRed, iGreen, iBlue, iBrightness, bTransparent ? _T("Yes") : _T("No"));
+    DebugLog(_T("Taskbar Notifier Color: R:%u G:%u B:%u, Brightness: %u, Transparent: %s"), iRed, iGreen, iBlue, iBrightness, bTransparent ? GetResString(IDS_YES) : GetResString(IDS_NO));
     if (bBrightTaskbarIconSpeed || bTransparent)
         thePrefs.SetStatsColor(11, RGB(255, 255, 255));
     else

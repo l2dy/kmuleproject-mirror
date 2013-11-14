@@ -33,6 +33,17 @@ there client on the eMule forum..
 
 namespace Kademlia
 {
+struct externPortReply
+{
+	externPortReply(const UINT IP = 0, const uint16 Port = 0)
+	{
+		dwIP = IP;
+		nPort = Port;
+	}
+	UINT	dwIP;
+	uint16	nPort;
+};
+
 class CPrefs
 {
 public:
@@ -86,7 +97,6 @@ public:
     void		SetExternKadPort(uint16 uVal, UINT nFromIP);
     bool		FindExternKadPort(bool bReset = false);
     uint16		GetInternKadPort() const;
-    uint8		GetMyConnectOptions(bool bEncryption = true, bool bCallback = true);
     void		StatsIncUDPFirewalledNodes(bool bFirewalled);
     void		StatsIncTCPFirewalledNodes(bool bFirewalled);
     float		StatsGetFirewalledRatio(bool bUDP) const;
@@ -120,8 +130,7 @@ private:
     bool m_bLastFirewallState;
     bool m_bUseExternKadPort;
     uint16 m_nExternKadPort;
-    CArray<UINT> m_anExternPortIPs;
-    CArray<uint16> m_anExternPorts;
+    CArray<externPortReply> m_anExternPortReplies;
     UINT m_nStatsUDPOpenNodes;
     UINT m_nStatsUDPFirewalledNodes;
     UINT m_nStatsTCPOpenNodes;

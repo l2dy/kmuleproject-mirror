@@ -1492,32 +1492,7 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
             if (byUsedVersion >= 2)
                 data.WriteHash16(cur_src->GetUserHash());
             if (byUsedVersion >= 4)
-            {
-                // ConnectSettings - SourceExchange V4
-                // 4 Reserved (!)
-                // 1 DirectCallback Supported/Available
-                // 1 CryptLayer Required
-                // 1 CryptLayer Requested
-                // 1 CryptLayer Supported
-                const uint8 uSupportsCryptLayer	= cur_src->SupportsCryptLayer() ? 1 : 0;
-                const uint8 uRequestsCryptLayer	= cur_src->RequestsCryptLayer() ? 1 : 0;
-                const uint8 uRequiresCryptLayer	= cur_src->RequiresCryptLayer() ? 1 : 0;
-
-//>>> WiZaRd::NatTraversal [Xanatos]
-                uint8 byCryptOptions = (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
-
-                if (forClient->SupportsNatTraversal()) //>>> WiZaRd::FiX for NAT-T
-                {
-                    const uint8 uDirectUDPCallback		= cur_src->SupportsDirectUDPCallback() ? 1 : 0;
-                    const uint8 uSupportsNatTraversal	= cur_src->SupportsNatTraversal() ? 1 : 0;
-                    byCryptOptions |= (uSupportsNatTraversal << 7) | (uDirectUDPCallback << 3);
-                }
-
-//                //const uint8 uDirectUDPCallback	= cur_src->SupportsDirectUDPCallback() ? 1 : 0;
-//                const uint8 byCryptOptions = /*(uDirectUDPCallback << 3) |*/ (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
-//<<< WiZaRd::NatTraversal [Xanatos]
-                data.WriteUInt8(byCryptOptions);
-            }
+				data.WriteUInt8(cur_src->GetConnectOptions(true, forClient->SupportsNatTraversal(), forClient->SupportsNatTraversal())); //>>> WiZaRd::NatTraversal [Xanatos]
             if (nCount > 500)
                 break;
         }
@@ -1534,7 +1509,7 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
     if (result->size > 354)
         result->PackPacket();
     if (thePrefs.GetDebugSourceExchange())
-        AddDebugLogLine(false, _T("SXSend: Client source response SX2=%s, Version=%u; Count=%u, %s, File=\"%s\""), bIsSX2Packet ? _T("Yes") : _T("No"), byUsedVersion, nCount, forClient->DbgGetClientInfo(), GetFileName());
+        AddDebugLogLine(false, _T("SXSend: Client source response SX2=%s, Version=%u; Count=%u, %s, File=\"%s\""), bIsSX2Packet ? GetResString(IDS_YES) : GetResString(IDS_NO), byUsedVersion, nCount, forClient->DbgGetClientInfo(), GetFileName());
     return result;
 }
 
@@ -1578,7 +1553,7 @@ Packet* CKnownFile::GetEmptyXSPacket(const CUpDownClient* forClient, uint8 byReq
     //	if (result->size > 354)
     //		result->PackPacket();
     if (thePrefs.GetDebugSourceExchange())
-        AddDebugLogLine(false, L"SXSend: Client source response SX2=%s, Version=%u; Count=%u, %s, File=\"%s\"", bIsSX2Packet ? L"Yes" : L"No", byUsedVersion, 0, forClient->DbgGetClientInfo(), GetFileName());
+        AddDebugLogLine(false, L"SXSend: Client source response SX2=%s, Version=%u; Count=%u, %s, File=\"%s\"", bIsSX2Packet ? GetResString(IDS_YES) : GetResString(IDS_NO), byUsedVersion, 0, forClient->DbgGetClientInfo(), GetFileName());
     return result;
 }
 
@@ -2215,8 +2190,8 @@ CString CKnownFile::GetInfoSummary(bool bNoFormatCommands) const
         strType = _T("-");
     CString dbgInfo;
 #ifdef _DEBUG
-    dbgInfo.Format(_T("\nAICH Part HashSet: %s\nAICH Rec HashSet: %s"), m_FileIdentifier.HasExpectedAICHHashCount() ? _T("Yes") : _T("No")
-                   , IsAICHRecoverHashSetAvailable() ? _T("Yes") : _T("No"));
+    dbgInfo.Format(_T("\nAICH Part HashSet: %s\nAICH Rec HashSet: %s"), m_FileIdentifier.HasExpectedAICHHashCount() ? GetResString(IDS_YES) : GetResString(IDS_NO)
+                   , IsAICHRecoverHashSetAvailable() ? GetResString(IDS_YES) : GetResString(IDS_NO));
 #endif
 
     CString strHeadFormatCommand = bNoFormatCommands ? L"" : _T("<br_head>");

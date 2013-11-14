@@ -406,7 +406,7 @@ void TriggerPortTest(uint16 tcp, uint16 udp);
 bool IsGoodIP(UINT nIP, bool forceCheck = false);
 bool IsGoodIPPort(UINT nIP, uint16 nPort);
 bool IsLANIP(UINT nIP);
-uint8 GetMyConnectOptions(bool bEncryption = true, bool bCallback = true);
+uint8 GetMyConnectOptions(const bool bEncryption, const bool bCallback, const bool bNATTraversal); //>>> WiZaRd::NatTraversal [Xanatos]
 //No longer need seperate lowID checks as we now know the servers just give *.*.*.0 users a lowID
 __inline bool IsLowID(UINT id)
 {

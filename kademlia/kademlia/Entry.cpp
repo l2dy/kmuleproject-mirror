@@ -589,17 +589,17 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* pFromEntry)
     delete pNewAICHHash;
     /*//DEBUG_ONLY(
     	DebugLog(_T("Kad: EntryTrack: Indexed Keyword, Refresh: %s, Current Publisher: %s, Total Publishers: %u, Total different Names: %u,TrustValue: %.2f, file: %s"),
-    		(bRefresh ? _T("Yes") : _T("No")), ipstr(ntohl(m_uIP)), m_pliPublishingIPs->GetCount(), m_listFileNames.GetCount(), m_fTrustValue, m_uSourceID.ToHexString());
+    		(bRefresh ? GetResString(IDS_YES) : GetResString(IDS_NO)), ipstr(ntohl(m_uIP)), m_pliPublishingIPs->GetCount(), m_listFileNames.GetCount(), m_fTrustValue, m_uSourceID.ToHexString());
     	//);*/
     /*if (m_aAICHHashs.GetCount() == 1)
     {
     		DebugLog(_T("Kad: EntryTrack: Indexed Keyword, Refresh: %s, Current Publisher: %s, Total Publishers: %u, Total different Names: %u,TrustValue: %.2f, file: %s, AICH Hash: %s, Popularity: %u"),
-    		(bRefresh ? _T("Yes") : _T("No")), ipstr(ntohl(m_uIP)), m_pliPublishingIPs->GetCount(), m_listFileNames.GetCount(), m_fTrustValue, m_uSourceID.ToHexString(), m_aAICHHashs[0].GetString(), m_anAICHHashPopularity[0]);
+    		(bRefresh ? GetResString(IDS_YES) : GetResString(IDS_NO)), ipstr(ntohl(m_uIP)), m_pliPublishingIPs->GetCount(), m_listFileNames.GetCount(), m_fTrustValue, m_uSourceID.ToHexString(), m_aAICHHashs[0].GetString(), m_anAICHHashPopularity[0]);
     }
     else if (m_aAICHHashs.GetCount() > 1)
     {
     		DebugLog(_T("Kad: EntryTrack: Indexed Keyword, Refresh: %s, Current Publisher: %s, Total Publishers: %u, Total different Names: %u,TrustValue: %.2f, file: %s, AICH Hash: %u - dumping"),
-    		(bRefresh ? _T("Yes") : _T("No")), ipstr(ntohl(m_uIP)), m_pliPublishingIPs->GetCount(), m_listFileNames.GetCount(), m_fTrustValue, m_uSourceID.ToHexString(), m_aAICHHashs.GetCount());
+    		(bRefresh ? GetResString(IDS_YES) : GetResString(IDS_NO)), ipstr(ntohl(m_uIP)), m_pliPublishingIPs->GetCount(), m_listFileNames.GetCount(), m_fTrustValue, m_uSourceID.ToHexString(), m_aAICHHashs.GetCount());
     		for (int i = 0; i < m_aAICHHashs.GetCount(); i++)
     		{
     			DebugLog(_T("Hash: %s, Populalrity: %u"),  m_aAICHHashs[i].GetString(), m_anAICHHashPopularity[i]);

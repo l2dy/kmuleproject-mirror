@@ -338,7 +338,7 @@ void CPartFile::Init()
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
     m_pPartStatus = new CPartFileStatus(this);
     m_pPublishedPartStatus = NULL;
-    m_nLastShareableChunkScan = clock();
+    m_nLastShareableChunkScan = clock() - static_cast<clock_t>(rand()) % RESCAN_SHAREABLE_INTERVAL; // Spread out chunk scanning to not overload CPU and network
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 }
 
@@ -1451,6 +1451,22 @@ EPartFileLoadResult CPartFile::LoadPartFile(LPCTSTR in_directory,LPCTSTR in_file
             return PLR_LOADSUCCESS;
         }
 
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+		//netfinity: Mark downloaded pieces in CorruptionBlackBox for more efficient recovery
+		uint64	curOffs = 0;
+		for (POSITION pos = gaplist.GetHeadPosition(); pos != 0;)
+		{
+			Gap_Struct* gap = gaplist.GetNext(pos);
+			if (gap->start > curOffs)
+			{
+				m_CorruptionBlackBox.TransferredData(curOffs, gap->start - 1ULL, NULL);
+				curOffs = gap->end + 1ULL;
+			}
+		}
+		if (curOffs < m_nFileSize)
+			m_CorruptionBlackBox.TransferredData(curOffs, m_nFileSize - 1ULL, NULL);
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+
         if (!isnewstyle) // not for importing
         {
             // check date of .part file - if its wrong, rehash file
@@ -2407,15 +2423,49 @@ bool CPartFile::GetNextEmptyBlockInPart(UINT const partNumber, Requested_Block_S
     if (end > partEnd)
         end = partEnd;
 
-    // Return the result
-    if (result != NULL)
-    {
-        result->StartOffset = start;
-        result->EndOffset = end;
-        md4cpy(result->FileID, GetFileHash());
-        result->transferred = 0;
-    }
-    return true;
+	// If this gap has not already been requested, we have found a valid entry
+	if (!IsAlreadyRequested(start, end, true))
+	{
+		// Was this block to be returned
+		if (result != NULL)
+		{
+			result->StartOffset = start;
+			result->EndOffset = end;
+			md4cpy(result->FileID, GetFileHash());
+			result->transferred = 0;
+		}
+		return true;
+	}
+	else
+	{
+		uint64 tempStart = start;
+		uint64 tempEnd = end;
+
+		bool shrinkSucceeded = ShrinkToAvoidAlreadyRequested(tempStart, tempEnd);
+		if (shrinkSucceeded)
+		{
+			const bool realSucceeded = (start != tempStart) || (end != tempEnd);
+			if (realSucceeded && thePrefs.GetLogUlDlEvents())
+				AddDebugLogLine(false, _T("Shrunk interval to prevent collision with already requested block: Old interval %I64u-%I64u. New interval: %I64u-%I64u. File %s."), start, end, tempStart, tempEnd, GetFileName());
+
+			// Was this block to be returned
+			if (result != NULL)
+			{
+				result->StartOffset = tempStart;
+				result->EndOffset = tempEnd;
+				md4cpy(result->FileID, GetFileHash());
+				result->transferred = 0;
+			}
+			return true;
+		}
+		/*else
+		{
+			// Reposition to end of that gap
+			start = end + 1;
+		}*/
+		return false;
+	}
+    //return true;
 }
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
@@ -2530,21 +2580,22 @@ void CPartFile::DrawShareStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, boo
         uint64 uEnd = 0;
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
         UINT nPartCount = GetPartCount();
-        const UINT nStepCount = (m_pPartStatus) ? m_pPartStatus->GetCrumbsCount() : nPartCount;
-        bool bCompletePart = m_pPartStatus ? m_pPartStatus->IsCompletePart(0) : false;
+		const CPartStatus* abyPartStatus = GetPublishedPartStatus(); // GetPartStatus()
+        const UINT nStepCount = (abyPartStatus) ? abyPartStatus->GetCrumbsCount() : nPartCount;
+        bool bCompletePart = abyPartStatus ? abyPartStatus->IsCompletePart(0) : false;
         for (UINT i = 0, nPart = 0; i < nStepCount; ++i)
             //for (UINT i = 0; i < GetPartCount(); i++)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
             uint64 partsize = PARTSIZE;
-            if (m_pPartStatus)
+            if (abyPartStatus)
             {
                 partsize = CRUMBSIZE;
                 if (i != 0 && (i % CRUMBSPERPART) == 0)
                 {
                     ++nPart;
-                    bCompletePart = m_pPartStatus->IsCompletePart(nPart);
+                    bCompletePart = abyPartStatus->IsCompletePart(nPart);
                 }
             }
             else
@@ -3458,7 +3509,7 @@ void CPartFile::UpdatePartsInfo()
     if ((UINT)m_SrcpartFrequency.GetSize() < partcount)
         m_SrcpartFrequency.SetSize(partcount);
 //>>> WiZaRd::ICS [enkeyDEV]
-    if ((uint16)m_SrcIncPartFrequency.GetSize() < partcount)
+    if ((UINT)m_SrcIncPartFrequency.GetSize() < partcount)
         m_SrcIncPartFrequency.SetSize(partcount);
 //<<< WiZaRd::ICS [enkeyDEV]
     for (UINT i = 0; i < partcount; ++i)
@@ -3501,7 +3552,6 @@ void CPartFile::UpdatePartsInfo()
 
     m_bCompleteSrcUpdateNecessary = true;
 
-    NewSrcIncPartsInfo(); //>>> WiZaRd::ICS [enkeyDEV]
     UpdateDisplayedInfo();
 }
 
@@ -4889,31 +4939,7 @@ Packet* CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 byR
             if (byUsedVersion >= 2)
                 data.WriteHash16(cur_src->GetUserHash());
             if (byUsedVersion >= 4)
-            {
-                // ConnectSettings - SourceExchange V4
-                // 4 Reserved (!)
-                // 1 DirectCallback Supported/Available
-                // 1 CryptLayer Required
-                // 1 CryptLayer Requested
-                // 1 CryptLayer Supported
-                const uint8 uSupportsCryptLayer	= cur_src->SupportsCryptLayer() ? 1 : 0;
-                const uint8 uRequestsCryptLayer	= cur_src->RequestsCryptLayer() ? 1 : 0;
-                const uint8 uRequiresCryptLayer	= cur_src->RequiresCryptLayer() ? 1 : 0;
-//>>> WiZaRd::NatTraversal [Xanatos]
-                uint8 byCryptOptions = (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
-
-                //if(forClient->SupportsSourceExchangeExt())
-                if (forClient->SupportsNatTraversal()) //>>> WiZaRd::FiX for NAT-T
-                {
-                    const uint8 uDirectUDPCallback		= cur_src->SupportsDirectUDPCallback() ? 1 : 0;
-                    const uint8 uSupportsNatTraversal	= cur_src->SupportsNatTraversal() ? 1 : 0;
-                    byCryptOptions |= (uSupportsNatTraversal << 7) | (uDirectUDPCallback << 3);
-                }
-//                //const uint8 uDirectUDPCallback	= cur_src->SupportsDirectUDPCallback() ? 1 : 0;
-//                const uint8 byCryptOptions = /*(uDirectUDPCallback << 3) |*/ (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
-//<<< WiZaRd::NatTraversal [Xanatos]
-                data.WriteUInt8(byCryptOptions);
-            }
+                data.WriteUInt8(cur_src->GetConnectOptions(true, forClient->SupportsNatTraversal(), forClient->SupportsNatTraversal())); //>>> WiZaRd::NatTraversal [Xanatos]
             if (nCount > 500)
                 break;
         }
@@ -4929,7 +4955,7 @@ Packet* CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 byR
     if (result->size > 354)
         result->PackPacket();
     if (thePrefs.GetDebugSourceExchange())
-        AddDebugLogLine(false, _T("SXSend: Client source response SX2=%s, Version=%u; Count=%u, %s, File=\"%s\""), bIsSX2Packet ? _T("Yes") : _T("No"), byUsedVersion, nCount, forClient->DbgGetClientInfo(), GetFileName());
+        AddDebugLogLine(false, _T("SXSend: Client source response SX2=%s, Version=%u; Count=%u, %s, File=\"%s\""), bIsSX2Packet ? GetResString(IDS_YES) : GetResString(IDS_NO), byUsedVersion, nCount, forClient->DbgGetClientInfo(), GetFileName());
     return result;
 }
 
@@ -4945,7 +4971,7 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
         CString strDbgClientInfo = L"";
         if (pClient)
             strDbgClientInfo.Format(L"%s, ", pClient->DbgGetClientInfo());
-        AddDebugLogLine(false, L"SXRecv: Client source response; SX2=%s, Ver=%u, %sFile=\"%s\"", bSourceExchange2 ? _T("Yes") : _T("No"), uClientSXVersion, strDbgClientInfo, GetFileName());
+        AddDebugLogLine(false, L"SXRecv: Client source response; SX2=%s, Ver=%u, %sFile=\"%s\"", bSourceExchange2 ? GetResString(IDS_YES) : GetResString(IDS_NO), uClientSXVersion, strDbgClientInfo, GetFileName());
     }
 
     UINT uPacketSXVersion = 0;
@@ -5687,7 +5713,7 @@ void CPartFile::FlushBuffer(bool forcewait, bool bNoAICH)
                     if (m_uCorruptionLoss >= uRecovered) // check, in case the tag was not present in part.met
                         m_uCorruptionLoss -= uRecovered;
                     // here we can't know if we have to subtract the amount of recovered data from the session stats
-                    // or the cumulative stats, so we subtract from where we can which leads eventuall to correct
+                    // or the cumulative stats, so we subtract from where we can which leads eventually to correct
                     // total stats
                     if (thePrefs.sesLostFromCorruption >= uRecovered)
                         thePrefs.sesLostFromCorruption -= uRecovered;
@@ -6600,12 +6626,10 @@ void CPartFile::RequestAICHRecovery(UINT nPart)
         if (IsCorruptedPart(nPart))
         {
             m_CorruptionBlackBox.CorruptedData(PARTSIZE*(uint64)nPart, PARTSIZE*(uint64)nPart+PARTSIZE-1);
-            m_CorruptionBlackBox.EvaluateData((uint16)nPart/*, this, PARTSIZE*/);
-            SavePartFile();
-#ifdef USE_GENERIC_PARTSTATUS
-            if (m_pPublishedPartStatus)
-                m_pPublishedPartStatus->ClearPart(nPart);
-#endif
+            m_CorruptionBlackBox.EvaluateData(nPart, this, PARTSIZE);
+			if (m_pPublishedPartStatus)
+				m_pPublishedPartStatus->ClearPart(nPart);
+            SavePartFile();            
         }
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         return;
@@ -6638,19 +6662,23 @@ void CPartFile::RequestAICHRecovery(UINT nPart)
                 && (*pCurClient->GetReqFileAICHHash()) == m_pAICHRecoveryHashSet->GetMasterHash())
         {
             if (pCurClient->HasLowID())
-                cAICHLowIDClients++;
+                ++cAICHLowIDClients;
             else
-                cAICHClients++;
+                ++cAICHClients;
         }
     }
     if ((cAICHClients | cAICHLowIDClients) == 0)
     {
         AddDebugLogLine(DLP_DEFAULT, false, _T("Unable to request AICH Recoverydata because found no client who supports it and has the same hash as the trusted one"));
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+		// netfinity: Use CorruptionBlackBox even when AICH data is not available
         if (IsCorruptedPart(nPart))
         {
+			m_CorruptionBlackBox.CorruptedData(PARTSIZE*(uint64)nPart, PARTSIZE*(uint64)nPart+PARTSIZE-1);
+			m_CorruptionBlackBox.EvaluateData(nPart, this, PARTSIZE);			
             if (m_pPublishedPartStatus)
                 m_pPublishedPartStatus->ClearPart(nPart);
+			SavePartFile();
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         }
         return;
@@ -6769,9 +6797,12 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
             }
             if (pOurBlock->m_Hash == pVerifiedBlock->m_Hash)
             {
-                FillGap(PARTSIZE*(uint64)nPart+pos, PARTSIZE*(uint64)nPart + pos + (nBlockSize-1));
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+				// netfinity: Removed - Let the CorruptionBlackBox add gaps where the corrupt data is
+				//nRecovered += nBlockSize;
+                //FillGap(PARTSIZE*(uint64)nPart+pos, PARTSIZE*(uint64)nPart + pos + (nBlockSize-1));
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
                 RemoveBlockFromList(PARTSIZE*(uint64)nPart+pos, PARTSIZE*(uint64)nPart + pos + (nBlockSize-1));
-                nRecovered += nBlockSize;
                 // tell the blackbox about the verified data
                 m_CorruptionBlackBox.VerifiedData(PARTSIZE*(uint64)nPart+pos, PARTSIZE*(uint64)nPart + pos + (nBlockSize-1));
                 m_pPublishedPartStatus->Set(PARTSIZE*(uint64)nPart+pos, PARTSIZE*(uint64)nPart + pos + (nBlockSize-1)); //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
@@ -6783,7 +6814,16 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
                 m_pPublishedPartStatus->Clear(PARTSIZE*(uint64)nPart+pos, PARTSIZE*(uint64)nPart + pos + (nBlockSize-1)); //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
             }
         }
-        m_CorruptionBlackBox.EvaluateData((uint16)nPart);
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+		// netfinity: Let the CorruptionBlackBox add gaps where the corrupt data is
+		FillGap(PARTSIZE*(uint64)nPart, PARTSIZE*(uint64)nPart + length - 1);
+		uint64 nFlushedBytes = m_CorruptionBlackBox.EvaluateData(nPart, this);
+		if(nFlushedBytes > length)
+			nRecovered = 0;
+		else
+			nRecovered = length - (UINT)nFlushedBytes;
+		//m_CorruptionBlackBox.EvaluateData((uint16)nPart);
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
         if (m_uCorruptionLoss >= nRecovered)
             m_uCorruptionLoss -= nRecovered;
@@ -6946,20 +6986,20 @@ void CPartFile::NewSrcIncPartsInfo()
 {
     const uint16 partcount = GetPartCount();
 
-    if (m_SrcIncPartFrequency.GetSize() < partcount)
+    if((UINT)m_SrcIncPartFrequency.GetSize() < partcount)
         m_SrcIncPartFrequency.SetSize(partcount);
 
-    for (uint16 i = 0; i < partcount; ++i)
+    for(UINT i = 0; i < partcount; ++i)
         m_SrcIncPartFrequency[i] = 0;
 
     for (POSITION pos = srclist.GetHeadPosition(); pos != NULL;)
     {
         CUpDownClient* cur_src = srclist.GetNext(pos);
-        for (uint16 i = 0; i < partcount; ++i)
+        for (UINT i = 0; i < partcount; ++i)
             if (cur_src->IsIncPartAvailable(i))
                 ++m_SrcIncPartFrequency[i];
     }
-    //UpdateDisplayedInfo(); // Not displayed
+    UpdateDisplayedInfo();
 }
 
 uint16* CPartFile::CalcDownloadingParts(CUpDownClient* client)
@@ -7040,9 +7080,8 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
     {
         if (
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-            GetNextEmptyBlockInPart(part_idx, 0, EMBLOCKSIZE, sender->GetPartStatus(), sender))
-            //sender->IsPartAvailable(part_idx)
-            //&& GetNextEmptyBlockInPart(part_idx, 0))
+            GetNextEmptyBlockInPart(part_idx, NULL, EMBLOCKSIZE, sender->GetPartStatus(), sender))
+            //sender->IsPartAvailable(part_idx) && GetNextEmptyBlockInPart(part_idx, 0))
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         {
             UINT complete_src = 0;
@@ -7147,9 +7186,9 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 
     if (sender->m_lastPartAsked != _UI16_MAX
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-            && GetNextEmptyBlockInPart(sender->m_lastPartAsked, 0, EMBLOCKSIZE, sender->GetPartStatus(), sender))
+            && GetNextEmptyBlockInPart(sender->m_lastPartAsked, NULL, EMBLOCKSIZE, sender->GetPartStatus(), sender))
         //&& sender->IsPartAvailable(sender->m_lastPartAsked)
-        //&& GetNextEmptyBlockInPart(sender->m_lastPartAsked, 0))
+        //&& GetNextEmptyBlockInPart(sender->m_lastPartAsked, NULL))
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     {
         chunk_list.AddHead(sender->m_lastPartAsked);
@@ -7446,19 +7485,19 @@ clock_t CPartFile::EstimatePartCompletion(const UINT nPart) const
 // Helper func to be called whenever a part completes
 void CPartFile::CompletedPart(UINT nPartNumber)
 {
+	// Successfully completed part, make it available for sharing
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
     if (m_pPublishedPartStatus)
         m_pPublishedPartStatus->SetPart(nPartNumber);
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
-    if (theApp.emuledlg->IsRunning() // may be called during shutdown!
-            && status == PS_EMPTY
+    if (status == PS_EMPTY
             && m_FileIdentifier.HasExpectedMD4HashCount()
             && !m_bMD4HashsetNeeded)
-    {
-        // Successfully completed part, make it available for sharing
+    {        
         SetStatus(PS_READY);
-        theApp.sharedfiles->SafeAddKFile(this);
+		if(theApp.emuledlg && theApp.emuledlg->IsRunning()) // may be called during shutdown!
+			theApp.sharedfiles->SafeAddKFile(this);
     }
 }
 

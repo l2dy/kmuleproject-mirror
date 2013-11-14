@@ -536,7 +536,7 @@ bool CRoutingZone::Add(CContact* pContact, bool& bUpdate, bool& bOutIPVerified)
                     // from the packet which wants to update this contact in order to make sure this is not a try to
                     // hijack this entry
                     DebugLogWarning(_T("Kad: Sender (%s) tried to update contact entry but failed to provide the proper sender key (Sent Empty: %s) for the entry (%s) - denying update")
-                                    , ipstr(ntohl(pContact->GetIPAddress())), pContact->GetUDPKey().GetKeyValue(theApp.GetPublicIP(false)) == 0 ? _T("Yes") : _T("No")
+                                    , ipstr(ntohl(pContact->GetIPAddress())), pContact->GetUDPKey().GetKeyValue(theApp.GetPublicIP(false)) == 0 ? GetResString(IDS_YES) : GetResString(IDS_NO)
                                     , ipstr(ntohl(pContactUpdate->GetIPAddress())));
                     bUpdate = false;
                 }

@@ -583,23 +583,27 @@ void CUpDownClient::SendFileRequest()
 
 void CUpDownClient::SendStartupLoadReq()
 {
-    if (socket==NULL || reqfile==NULL)
+    if (socket == NULL || reqfile == NULL)
     {
         ASSERT(0);
         return;
     }
-    m_fQueueRankPending = 1;
-    m_fUnaskQueueRankRecv = 0;
-    m_byFileRequestState = 2; //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
-    if (thePrefs.GetDebugClientTCPLevel() > 0)
-        DebugSend("OP__StartupLoadReq", this);
-    CSafeMemFile dataStartupLoadReq(16);
-    dataStartupLoadReq.WriteHash16(reqfile->GetFileHash());
-    Packet* packet = new Packet(&dataStartupLoadReq);
-    packet->opcode = OP_STARTUPLOADREQ;
-    theStats.AddUpDataOverheadFileRequest(packet->size);
-    SetDownloadState(DS_ONQUEUE);
-    SendPacket(packet, true);
+	if (m_byFileRequestState != 1) //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
+		theApp.QueueDebugLogLineEx(LOG_WARNING, L"%hs with FileRequestState=%u", __FUNCTION__, m_byFileRequestState);
+	{
+		m_fQueueRankPending = 1;
+		m_fUnaskQueueRankRecv = 0;
+		m_byFileRequestState = 2; //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
+		if (thePrefs.GetDebugClientTCPLevel() > 0)
+			DebugSend("OP__StartupLoadReq", this);
+		CSafeMemFile dataStartupLoadReq(16);
+		dataStartupLoadReq.WriteHash16(reqfile->GetFileHash());
+		Packet* packet = new Packet(&dataStartupLoadReq);
+		packet->opcode = OP_STARTUPLOADREQ;
+		theStats.AddUpDataOverheadFileRequest(packet->size);
+		SetDownloadState(DS_ONQUEUE);
+		SendPacket(packet, true);
+	}
 }
 
 void CUpDownClient::ProcessFileInfo(CSafeMemFile* data, CPartFile* file)
@@ -685,7 +689,7 @@ void CUpDownClient::ProcessFileInfo(CSafeMemFile* data, CPartFile* file)
         if (reqfile->m_bMD4HashsetNeeded || (reqfile->IsAICHPartHashSetNeeded() && SupportsFileIdentifiers()
                                              && GetReqFileAICHHash() != NULL && *GetReqFileAICHHash() == reqfile->GetFileIdentifier().GetAICHHash()))
             SendHashSetRequest();
-        else if (m_byFileRequestState == 1) //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
+        else
             SendStartupLoadReq();
         reqfile->UpdatePartsInfo();
     }
@@ -819,7 +823,7 @@ bool CUpDownClient::ProcessDownloadFileStatus(const bool bUDPPacket, bool bMerge
         else if (reqfile->m_bMD4HashsetNeeded || (reqfile->IsAICHPartHashSetNeeded() && SupportsFileIdentifiers()
                  && GetReqFileAICHHash() != NULL && *GetReqFileAICHHash() == reqfile->GetFileIdentifier().GetAICHHash())) //If we are using the eMule filerequest packets, this is taken care of in the Multipacket!
             SendHashSetRequest();
-        else if (m_byFileRequestState == 1) //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
+        else
             SendStartupLoadReq();
     }
     else
@@ -1128,9 +1132,8 @@ void CUpDownClient::ProcessHashSet(const uchar* packet, UINT size, bool bFileIde
                 theApp.sharedfiles->SafeAddKFile(reqfile);
         }
 //<<< WiZaRd::Immediate File Sharing
-    }
-    if (m_byFileRequestState == 1) //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
-        SendStartupLoadReq();
+    }    
+    SendStartupLoadReq();
 }
 
 void CUpDownClient::CreateBlockRequests(int iMaxBlocks)
@@ -1270,9 +1273,9 @@ void CUpDownClient::SendBlockRequests()
                     CString strInfo;
                     strInfo.Format(_T("  Block request %u: "), i);
                     strInfo += DbgGetBlockInfo(block);
-                    strInfo.AppendFormat(_T(",  Complete=%s"), reqfile->IsComplete(block->StartOffset, block->EndOffset, false) ? _T("Yes(NOTE:)") : _T("No"));
-                    strInfo.AppendFormat(_T(",  PureGap=%s"), reqfile->IsPureGap(block->StartOffset, block->EndOffset) ? _T("Yes") : _T("No(NOTE:)"));
-                    strInfo.AppendFormat(_T(",  AlreadyReq=%s"), reqfile->IsAlreadyRequested(block->StartOffset, block->EndOffset) ? _T("Yes") : _T("No(NOTE:)"));
+                    strInfo.AppendFormat(_T(",  Complete=%s"), reqfile->IsComplete(block->StartOffset, block->EndOffset, false) ? _T("Yes(NOTE:)") : GetResString(IDS_NO));
+                    strInfo.AppendFormat(_T(",  PureGap=%s"), reqfile->IsPureGap(block->StartOffset, block->EndOffset) ? GetResString(IDS_YES) : _T("No(NOTE:)"));
+                    strInfo.AppendFormat(_T(",  AlreadyReq=%s"), reqfile->IsAlreadyRequested(block->StartOffset, block->EndOffset) ? GetResString(IDS_YES) : _T("No(NOTE:)"));
                     strInfo += _T('\n');
                     Debug(strInfo);
                 }
@@ -1320,9 +1323,9 @@ void CUpDownClient::SendBlockRequests()
                     CString strInfo;
                     strInfo.Format(_T("  Block request %u: "), i);
                     strInfo += DbgGetBlockInfo(block);
-                    strInfo.AppendFormat(_T(",  Complete=%s"), reqfile->IsComplete(block->StartOffset, block->EndOffset, false) ? _T("Yes(NOTE:)") : _T("No"));
-                    strInfo.AppendFormat(_T(",  PureGap=%s"), reqfile->IsPureGap(block->StartOffset, block->EndOffset) ? _T("Yes") : _T("No(NOTE:)"));
-                    strInfo.AppendFormat(_T(",  AlreadyReq=%s"), reqfile->IsAlreadyRequested(block->StartOffset, block->EndOffset) ? _T("Yes") : _T("No(NOTE:)"));
+                    strInfo.AppendFormat(_T(",  Complete=%s"), reqfile->IsComplete(block->StartOffset, block->EndOffset, false) ? _T("Yes(NOTE:)") : GetResString(IDS_NO));
+                    strInfo.AppendFormat(_T(",  PureGap=%s"), reqfile->IsPureGap(block->StartOffset, block->EndOffset) ? GetResString(IDS_YES) : _T("No(NOTE:)"));
+                    strInfo.AppendFormat(_T(",  AlreadyReq=%s"), reqfile->IsAlreadyRequested(block->StartOffset, block->EndOffset) ? GetResString(IDS_YES) : _T("No(NOTE:)"));
                     strInfo += _T('\n');
                     Debug(strInfo);
                 }
@@ -2129,7 +2132,7 @@ bool CUpDownClient::SwapToAnotherFile(LPCTSTR reason, bool bIgnoreNoNeeded, bool
     bool printDebug = debug && thePrefs.GetLogA4AF();
 
     if (printDebug)
-        AddDebugLogLine(DLP_LOW, false, _T("ooo Debug: Switching source %s Remove = %s; bIgnoreNoNeeded = %s; allowSame = %s; Reason = \"%s\""), DbgGetClientInfo(), (bRemoveCompletely ? _T("Yes") : _T("No")), (bIgnoreNoNeeded ? _T("Yes") : _T("No")), (allowSame ? _T("Yes") : _T("No")), reason);
+        AddDebugLogLine(DLP_LOW, false, _T("ooo Debug: Switching source %s Remove = %s; bIgnoreNoNeeded = %s; allowSame = %s; Reason = \"%s\""), DbgGetClientInfo(), (bRemoveCompletely ? GetResString(IDS_YES) : GetResString(IDS_NO)), (bIgnoreNoNeeded ? GetResString(IDS_YES) : GetResString(IDS_NO)), (allowSame ? GetResString(IDS_YES) : GetResString(IDS_NO)), reason);
 
     if (!bRemoveCompletely && allowSame && thePrefs.GetA4AFSaveCpu())
     {
@@ -2394,7 +2397,7 @@ bool CUpDownClient::SwapToAnotherFile(LPCTSTR reason, bool bIgnoreNoNeeded, bool
                 }
                 else if (thePrefs.GetLogA4AF() && reqfile == SwapTo)
                 {
-                    AddDebugLogLine(DLP_LOW, false, _T("ooo Didn't swap source due to source exchange possibility. %s Remove = %s '%s' Reason: %s"), DbgGetClientInfo(), (bRemoveCompletely ? _T("Yes") : _T("No")), (this->reqfile)?this->reqfile->GetFileName():_T("null"), strInfo);
+                    AddDebugLogLine(DLP_LOW, false, _T("ooo Didn't swap source due to source exchange possibility. %s Remove = %s '%s' Reason: %s"), DbgGetClientInfo(), (bRemoveCompletely ? GetResString(IDS_YES) : GetResString(IDS_NO)), (this->reqfile)?this->reqfile->GetFileName():_T("null"), strInfo);
                 }
             }
             else if (printDebug)
@@ -2431,7 +2434,7 @@ bool CUpDownClient::SwapToAnotherFile(LPCTSTR reason, bool bIgnoreNoNeeded, bool
 bool CUpDownClient::DoSwap(CPartFile* SwapTo, bool bRemoveCompletely, LPCTSTR reason)
 {
     if (thePrefs.GetLogA4AF())
-        AddDebugLogLine(DLP_LOW, false, _T("ooo Swapped source %s Remove = %s '%s'   -->   %s Reason: %s"), DbgGetClientInfo(), (bRemoveCompletely ? _T("Yes") : _T("No")), (this->reqfile)?this->reqfile->GetFileName():_T("null"), SwapTo->GetFileName(), reason);
+        AddDebugLogLine(DLP_LOW, false, _T("ooo Swapped source %s Remove = %s '%s'   -->   %s Reason: %s"), DbgGetClientInfo(), (bRemoveCompletely ? GetResString(IDS_YES) : GetResString(IDS_NO)), (this->reqfile)?this->reqfile->GetFileName():_T("null"), SwapTo->GetFileName(), reason);
 
     // 17-Dez-2003 [bc]: This "reqfile->srclists[sourcesslot].Find(this)" was the only place where
     // the usage of the "CPartFile::srclists[100]" is more effective than using one list. If this
@@ -2444,7 +2447,7 @@ bool CUpDownClient::DoSwap(CPartFile* SwapTo, bool bRemoveCompletely, LPCTSTR re
     }
     else
     {
-        AddDebugLogLine(DLP_HIGH, true, _T("o-o Unsync between parfile->srclist and client otherfiles list. Swapping client where client has file as reqfile, but file doesn't have client in srclist. %s Remove = %s '%s'   -->   '%s'  SwapReason: %s"), DbgGetClientInfo(), (bRemoveCompletely ? _T("Yes") : _T("No")), (this->reqfile)?this->reqfile->GetFileName():_T("null"), SwapTo->GetFileName(), reason);
+        AddDebugLogLine(DLP_HIGH, true, _T("o-o Unsync between parfile->srclist and client otherfiles list. Swapping client where client has file as reqfile, but file doesn't have client in srclist. %s Remove = %s '%s'   -->   '%s'  SwapReason: %s"), DbgGetClientInfo(), (bRemoveCompletely ? GetResString(IDS_YES) : GetResString(IDS_NO)), (this->reqfile)?this->reqfile->GetFileName():_T("null"), SwapTo->GetFileName(), reason);
     }
 
     // remove this client from the A4AF list of our new reqfile
@@ -2455,7 +2458,7 @@ bool CUpDownClient::DoSwap(CPartFile* SwapTo, bool bRemoveCompletely, LPCTSTR re
     }
     else
     {
-        AddDebugLogLine(DLP_HIGH, true, _T("o-o Unsync between parfile->srclist and client otherfiles list. Swapping client where client has file in another list, but file doesn't have client in a4af srclist. %s Remove = %s '%s'   -->   '%s'  SwapReason: %s"), DbgGetClientInfo(), (bRemoveCompletely ? _T("Yes") : _T("No")), (this->reqfile)?this->reqfile->GetFileName():_T("null"), SwapTo->GetFileName(), reason);
+        AddDebugLogLine(DLP_HIGH, true, _T("o-o Unsync between parfile->srclist and client otherfiles list. Swapping client where client has file in another list, but file doesn't have client in a4af srclist. %s Remove = %s '%s'   -->   '%s'  SwapReason: %s"), DbgGetClientInfo(), (bRemoveCompletely ? GetResString(IDS_YES) : GetResString(IDS_NO)), (this->reqfile)?this->reqfile->GetFileName():_T("null"), SwapTo->GetFileName(), reason);
     }
     theApp.emuledlg->transferwnd->GetDownloadList()->RemoveSource(this,SwapTo);
 
@@ -2993,8 +2996,8 @@ void CUpDownClient::SendHashSetRequest()
                 ASSERT(0);
                 return;
             }
-            DEBUG_ONLY(DebugLog(_T("Sending HashSet Request: MD4 %s, AICH %s to client %s"), m_fHashsetRequestingMD4 ? _T("Yes") : _T("No")
-                                , m_fHashsetRequestingAICH ? _T("Yes") : _T("No"), DbgGetClientInfo()));
+            DEBUG_ONLY(DebugLog(_T("Sending HashSet Request: MD4 %s, AICH %s to client %s"), m_fHashsetRequestingMD4 ? GetResString(IDS_YES) : GetResString(IDS_NO)
+                                , m_fHashsetRequestingAICH ? GetResString(IDS_YES) : GetResString(IDS_NO), DbgGetClientInfo()));
             filePacket.WriteUInt8(byOptions);
             packet = new Packet(&filePacket, OP_EMULEPROT, OP_HASHSETREQUEST2);
         }
@@ -3049,27 +3052,30 @@ UINT	CUpDownClient::GetPartCount() const
 //>>> WiZaRd::ICS [enkeyDEV]
 void CUpDownClient::ProcessFileIncStatus(CSafeMemFile* data, const UINT size, const bool readHash)
 {
+	delete[] m_abyIncPartStatus;
+	m_abyIncPartStatus = NULL;
+
     UNREFERENCED_PARAMETER(size);
     if (GetIncompletePartVersion() == 0)
-        throw CString(L"Client send ICS data without supporting it!");
+        throw CString(L"Client sent ICS data without supporting it!");
     if (readHash)
     {
+		if (reqfile == NULL)
+			throw GetResString(IDS_ERR_WRONGFILEID) + L" (ProcessFileIncStatus; reqfile==NULL)";
         uchar cfilehash[16];
-        data->ReadHash16(cfilehash);
-        if (reqfile==NULL)
-            throw GetResString(IDS_ERR_WRONGFILEID) + _T(" (ProcessFileIncStatus; reqfile==NULL)");
+        data->ReadHash16(cfilehash);        
         if (md4cmp(cfilehash, reqfile->GetFileHash()))
-            throw GetResString(IDS_ERR_WRONGFILEID) + _T(" (ProcessFileIncStatus; reqfile!=file)");
+            throw GetResString(IDS_ERR_WRONGFILEID) + L" (ProcessFileIncStatus; reqfile!=file)";
     }
-    uint16 nED2KPartCount = data->ReadUInt16();
-    delete[] m_abyIncPartStatus;
-    m_abyIncPartStatus = NULL;
+
+	uint16 nED2KPartCount = data->ReadUInt16();
     if (!nED2KPartCount)
     {
         //no need to allocate! no info available!
 //		m_nPartCount = reqfile->GetPartCount();
 //		m_abyIncPartStatus = new uint8[m_nPartCount];
 //		memset(m_abyIncPartStatus, 0, m_nPartCount);
+		throw CString(L"Client sent ICS data for a complete file?!");
     }
     else
     {
@@ -3077,11 +3083,12 @@ void CUpDownClient::ProcessFileIncStatus(CSafeMemFile* data, const UINT size, co
         {
             if (thePrefs.GetVerbose())
             {
-                DebugLogWarning(_T("FileName: \"%s\" (\"%s\")"), reqfile->GetFileName(), m_strClientFilename);
-                DebugLogWarning(_T("FileStatus: %s"), DbgGetFileStatus(nED2KPartCount, data));
+                DebugLogWarning(L"FileName: \"%s\" (\"%s\")", reqfile->GetFileName(), m_strClientFilename);
+                DebugLogWarning(L"FileStatus: %s", DbgGetFileStatus(nED2KPartCount, data));
             }
-            CString strError;
-            strError.Format(_T("ProcessFileIncStatus - wrong part number recv=%u  expected=%u  %s"), nED2KPartCount, reqfile->GetED2KPartCount(), DbgGetFileInfo(reqfile->GetFileHash()));
+
+            CString strError = L"";
+            strError.Format(L"ProcessFileIncStatus - wrong part number recv=%u  expected=%u  %s", nED2KPartCount, reqfile->GetED2KPartCount(), DbgGetFileInfo(reqfile->GetFileHash()));
 //			m_nPartCount = 0;  //do not reset... in case of malformed packet we would loose all data
             throw strError;
         }

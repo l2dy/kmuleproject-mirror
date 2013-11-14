@@ -243,5 +243,38 @@ XXXXYYZZ:
 + added support for peerblock cache.p2b format - orignal by ElKarro [WiZaRd]
 ! fixed crash on ip-filter update if blocked nodes are currently in use [WiZaRd]
 ~ part files are shared ASAP, now [WiZaRd]
-~ new kMule try icons [WiZaRd]
+~ new kMule tray icons [WiZaRd]
+~ optimized iSOTN: we will only show 3 parts at most [WiZaRd]
+~ collections are even better now! opened collections now feature checkboxes to select the items to download as well as 2 buttons to check/uncheck all items [WiZaRd]
+! fixed manually adjusting download priorities - thx to Sir Boagalott [WiZaRd]
+
+Beta 20131109:
+! fixed autoscrolling in "about" window [WiZaRd]
+~ prevent new firewall rechecks if some are already running (to prevent ASSERT in UDPFirewallTester::RecheckFirewallUDP) [WiZaRd]
+! fixed small display glitch in display window [WiZaRd]
+
+Beta 20131110:
+> updated miniupnplib support to v1.8 (07/10/2013) [WiZaRd]
+~ draw SCT orange parts in UL/DL/shared window [WiZaRd]
+~ recheck firewalled status only if necessary [WiZaRd]
+~ "Search Parameters" button is now hidden by default to avoid confusion [WiZaRd]
+
+Beta 20131111:
+! fixed "uploading" label in upper list - thx to SS1900 [WiZaRd]
+~ reverted firewall checks to once per hour [WiZaRd]
+! fixed part status exchange on part files [WiZaRd]
+! applied latest AICH hash fixes from 0.50b repo [WiZaRd]
+
+Beta 20131112:
+~ "Search Parameters" button is now properly hidden even if the windows don't match [WiZaRd]
+~ ignore ports being in "shutdown" state when checking if they are already in use [WiZaRd]
+! fixed a bug in source exchange introduced with extended XS [WiZaRd]
+
+Beta 20131113:
 + proxy connections are now displayed in the status bar [Tuxman]
+~ applied corruptionblackbox rewrite from WARP as it may be needed for SCT [WiZaRd]
+
+Beta 20131114:
+~ added missing default settings for extXS, IPv6, NAT-T [WiZaRd]
+
+ed2k://|file|SCT%20collection%20test.emulecollection|203|CB0910E2A9BEE2F811C2C1CDEAA211D2|h=P7U5ZUPG6IVXRJFGBK55BYL34E65DE77|/
