@@ -153,7 +153,8 @@ void CCorruptionBlackBox::TransferredData(uint64 nStartPos, uint64 nEndPos, cons
             if (m_aaRecords[nPart][i].m_nStartPos >= nRelStartPos && m_aaRecords[nPart][i].m_nEndPos <= nRelEndPos)
             {
                 // old one is included in new one -> delete
-                ndbgRewritten += (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
+				if(m_aaRecords[nPart][i].m_dwIP != 0)
+					ndbgRewritten += (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
                 m_aaRecords[nPart].RemoveAt(i);
                 i--;
             }
@@ -183,29 +184,28 @@ void CCorruptionBlackBox::TransferredData(uint64 nStartPos, uint64 nEndPos, cons
             {
                 // old one laps over new one on the right site
                 ASSERT(nRelEndPos - m_aaRecords[nPart][i].m_nStartPos > 0);
-                ndbgRewritten += nRelEndPos - m_aaRecords[nPart][i].m_nStartPos;
+				if(m_aaRecords[nPart][i].m_dwIP != 0)
+					ndbgRewritten += nRelEndPos - m_aaRecords[nPart][i].m_nStartPos;
                 m_aaRecords[nPart][i].m_nStartPos = nRelEndPos + 1;
             }
             else if (m_aaRecords[nPart][i].m_nEndPos >= nRelStartPos && m_aaRecords[nPart][i].m_nEndPos <= nRelEndPos)
             {
                 // old one laps over new one on the left site
                 ASSERT(m_aaRecords[nPart][i].m_nEndPos - nRelStartPos > 0);
-                ndbgRewritten += m_aaRecords[nPart][i].m_nEndPos - nRelStartPos;
+				if(m_aaRecords[nPart][i].m_dwIP != 0)
+					ndbgRewritten += m_aaRecords[nPart][i].m_nEndPos - nRelStartPos;
                 m_aaRecords[nPart][i].m_nEndPos = nRelStartPos - 1;
             }
         }
     }
-    if (posMerge != (-1))
-    {
+
+	if (posMerge != (-1))
         VERIFY(m_aaRecords[nPart][posMerge].Merge(nRelStartPos, nRelEndPos, dwSenderIP, BBR_NONE));
-    }
     else
         m_aaRecords[nPart].Add(CCBBRecord(nRelStartPos, nRelEndPos, dwSenderIP, BBR_NONE));
 
     if (ndbgRewritten > 0)
-    {
         DEBUG_ONLY(AddDebugLogLine(DLP_DEFAULT, false, L"CorruptionBlackBox: Debug: %i bytes were rewritten and records replaced with new stats (2)", ndbgRewritten));
-    }
 }
 
 void CCorruptionBlackBox::VerifiedData(uint64 nStartPos, uint64 nEndPos)

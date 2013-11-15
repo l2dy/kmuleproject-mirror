@@ -806,14 +806,14 @@ void CKeyEntry::ReadPublishTrackingDataFromFile(CDataIO* pData, bool bIncludesAI
     }
     RecalcualteTrustValue();
 #ifdef _DEBUG
-    if (m_aAICHHashs.GetCount() == 1)
+    /*if (m_aAICHHashs.GetCount() == 1)
         DebugLog(_T("Loaded 1 AICH Hash (%s, publishers %u of %u) for file %s"), m_aAICHHashs[0].GetString(), m_anAICHHashPopularity[0], m_pliPublishingIPs->GetCount(), m_uSourceID.ToHexString());
     else if (m_aAICHHashs.GetCount() > 1)
     {
         DebugLogWarning(_T("Loaded multiple (%u) AICH Hashs for file %s, dumping..."), m_aAICHHashs.GetCount(), m_uSourceID.ToHexString());
         for (int i = 0; i < m_aAICHHashs.GetCount(); i++)
             DebugLog(_T("%s - %u out of %u publishers"), m_aAICHHashs[i].GetString(), m_anAICHHashPopularity[i], m_pliPublishingIPs->GetCount());
-    }
+    }*/
     //if (GetTrustValue() < 1.0f)
     //DEBUG_ONLY( DebugLog(_T("Loaded %u different names, %u different publishIPs (trustvalue = %.2f) for file %s"), nNameCount, nIPCount, GetTrustValue(), m_uSourceID.ToHexString()) );
 #endif

@@ -545,7 +545,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse, UINT dwFro
                             }
                             else if (!child->DidFoundMultipleAICH())
                             {
-                                DEBUG_ONLY(DebugLog(_T("Kad: SearchList: AddToList: Received searchresult with new AICH hash %s, taking over to existing result. Entry: %s"), toadd->GetFileIdentifier().GetAICHHash().GetString(), child->GetFileName()));
+                                //DEBUG_ONLY(DebugLog(_T("Kad: SearchList: AddToList: Received searchresult with new AICH hash %s, taking over to existing result. Entry: %s"), toadd->GetFileIdentifier().GetAICHHash().GetString(), child->GetFileName()));
                                 child->GetFileIdentifier().SetAICHHash(toadd->GetFileIdentifier().GetAICHHash());
                             }
                         }
@@ -889,22 +889,22 @@ void CSearchList::KademliaSearchKeyword(UINT searchID, const Kademlia::CUInt128*
         CSearchFile* tempFile = new CSearchFile(temp, eStrEncode == utf8strRaw, searchID, 0, 0, 0, true);
         tempFile->SetKadPublishInfo(uKadPublishInfo);
         // About the AICH hash: We received a list of possible AICH Hashs for this file and now have to deceide what to do
-        // If it wasn't for backwards compability, the choice would be easy: Each different md4+aich+size is its own result,
+        // If it wasn't for backwards compatibility, the choice would be easy: Each different md4+aich+size is its own result,
         // but we can'T do this alone for the fact that for the next years we will always have publishers which don'T report
-        // the AICH hash at all (which would mean ahving a different entry, which leads to double files in searchresults). So here is what we do for now:
-        // If we have excactly 1 AICH hash and more than 1/3 of the publishers reported it, we set it as verified AICH hash for
+        // the AICH hash at all (which would mean having a different entry, which leads to double files in searchresults). So here is what we do for now:
+        // If we have exactly 1 AICH hash and more than 1/3 of the publishers reported it, we set it as verified AICH hash for
         // the file (which is as good as using a ed2k link with an AICH hash attached). If less publishers reported it or if we
         // have multiple AICH hashes, we ignore them and use the MD4 only.
         // This isn't a perfect solution, but it makes sure not to open any new attack vectors (a wrong AICH hash means we cannot
-        // download the file sucessfully) nor to confuse users by requiering them to select an entry out of several equal looking results.
+        // download the file successfully) nor to confuse users by requiring them to select an entry out of several equal looking results.
         // Once the majority of nodes in the network publishes AICH hashes, this might get reworked to make the AICH hash more sticky
         if (raAICHHashs.GetCount() == 1 && raAICHHashPopularity.GetCount() == 1)
         {
             uint8 byPublishers = (uint8)((uKadPublishInfo & 0x00FF0000) >> 16);
             if (byPublishers > 0 && raAICHHashPopularity[0] > 0 && byPublishers / raAICHHashPopularity[0] <= 3)
             {
-                DEBUG_ONLY(DebugLog(_T("Received accepted AICH Hash for search result %s, %u out of %u Publishers, Hash: %s")
-                                    , tempFile->GetFileName(), raAICHHashPopularity[0], byPublishers, raAICHHashs[0].GetString()));
+                //DEBUG_ONLY(DebugLog(_T("Received accepted AICH Hash for search result %s, %u out of %u Publishers, Hash: %s")
+                //                    , tempFile->GetFileName(), raAICHHashPopularity[0], byPublishers, raAICHHashs[0].GetString()));
                 tempFile->GetFileIdentifier().SetAICHHash(raAICHHashs[0]);
             }
             else
