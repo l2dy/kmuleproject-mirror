@@ -204,9 +204,15 @@ bool CUrlClient::SendHttpBlockRequests()
     return true;
 }
 
-bool CUrlClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntimeClass* /*pClassSocket*/)
+//>>> WiZaRd::NatTraversal [Xanatos]
+bool CUrlClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntimeClass* /*pClassSocket*/, bool bUseUTP)
+//bool CUrlClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntimeClass* /*pClassSocket*/)
+//<<< WiZaRd::NatTraversal [Xanatos]
 {
-    return CUpDownClient::TryToConnect(bIgnoreMaxCon, bNoCallbacks, RUNTIME_CLASS(CHttpClientDownSocket));
+//>>> WiZaRd::NatTraversal [Xanatos]
+    //return CUpDownClient::TryToConnect(bIgnoreMaxCon, bNoCallbacks, RUNTIME_CLASS(CHttpClientDownSocket));
+	return CUpDownClient::TryToConnect(bIgnoreMaxCon, bNoCallbacks, RUNTIME_CLASS(CHttpClientDownSocket), bUseUTP);
+//<<< WiZaRd::NatTraversal [Xanatos]
 }
 
 void CUrlClient::Connect()
