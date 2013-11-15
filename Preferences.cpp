@@ -6,7 +6,7 @@
 //as published by the Free Software Foundation; either
 //version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
+//This program is distributed in the hope that it will be useful, 
 //but WITHOUT ANY WARRANTY; without even the implied warranty of
 //MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //GNU General Public License for more details.
@@ -361,7 +361,7 @@ CStringList CPreferences::addresses_list;
 CString CPreferences::m_strFileCommentsFilePath;
 Preferences_Ext_Struct* CPreferences::prefsExt;
 WORD	CPreferences::m_wWinVer;
-CArray<Category_Struct*,Category_Struct*> CPreferences::catMap;
+CArray<Category_Struct*, Category_Struct*> CPreferences::catMap;
 bool	CPreferences::m_bRunAsUser;
 bool	CPreferences::m_bPreferRestrictedOverUser;
 bool	CPreferences::m_bUseOldTimeRemaining;
@@ -508,7 +508,7 @@ void CPreferences::Init()
     }
     else
     {
-        if (fread(prefsExt,sizeof(Preferences_Ext_Struct),1,preffile) != 1 || ferror(preffile))
+        if (fread(prefsExt, sizeof(Preferences_Ext_Struct), 1, preffile) != 1 || ferror(preffile))
             SetStandartValues();
 
         md4cpy(userhash, prefsExt->userhash);
@@ -643,7 +643,7 @@ void CPreferences::Init()
     userhash[14] = 111;
 
     // Explicitly inform the user about errors with incoming/temp folders!
-    if (!PathFileExists(GetMuleDirectory(EMULE_INCOMINGDIR)) && !::CreateDirectory(GetMuleDirectory(EMULE_INCOMINGDIR),0))
+    if (!PathFileExists(GetMuleDirectory(EMULE_INCOMINGDIR)) && !::CreateDirectory(GetMuleDirectory(EMULE_INCOMINGDIR), 0))
     {
         /*CString strError;
         strError.Format(GetResString(IDS_ERR_CREATE_DIR), GetResString(IDS_PW_INCOMING), GetMuleDirectory(EMULE_INCOMINGDIR), GetErrorMessage(GetLastError()));
@@ -656,7 +656,7 @@ void CPreferences::Init()
             AfxMessageBox(strError, MB_ICONERROR);
         }*/
     }
-    if (!PathFileExists(GetTempDir()) && !::CreateDirectory(GetTempDir(),0))
+    if (!PathFileExists(GetTempDir()) && !::CreateDirectory(GetTempDir(), 0))
     {
         /*CString strError;
         strError.Format(GetResString(IDS_ERR_CREATE_DIR), GetResString(IDS_PW_TEMP), GetTempDir(), GetErrorMessage(GetLastError()));
@@ -725,9 +725,9 @@ bool CPreferences::IsTempFile(const CString& rstrDirectory, const CString& rstrN
     strNameLower += L"|"; // append an EOS character which we can query for
     static const LPCTSTR _apszNotSharedExts[] =
     {
-        L"%u.part" L"%c",
-        L"%u.part.met" L"%c",
-        L"%u.part.met" PARTMET_BAK_EXT L"%c",
+        L"%u.part" L"%c", 
+        L"%u.part.met" L"%c", 
+        L"%u.part.met" PARTMET_BAK_EXT L"%c", 
         L"%u.part.met" PARTMET_TMP_EXT L"%c"
     };
     for (int i = 0; i < _countof(_apszNotSharedExts); i++)
@@ -840,7 +840,7 @@ void CPreferences::SaveStats(int bBackUp)
     ini.WriteUInt64(L"DownDataPort_4662", GetCumDownDataPort_4662());
     ini.WriteUInt64(L"DownDataPort_OTHER", GetCumDownDataPort_OTHER());
 
-    ini.WriteUInt64(L"DownOverheadTotal",theStats.GetDownDataOverheadFileRequest() +
+    ini.WriteUInt64(L"DownOverheadTotal", theStats.GetDownDataOverheadFileRequest() +
                     theStats.GetDownDataOverheadSourceExchange() +
                     theStats.GetDownDataOverheadKad() +
                     theStats.GetDownDataOverheadOther() +
@@ -1010,14 +1010,14 @@ void CPreferences::SaveCompletedDownloadsStat()
 
     CIni ini(GetMuleDirectory(EMULE_CONFIGDIR) + L"statistics.ini", L"Statistics");
 
-    ini.WriteInt(L"DownCompletedFiles",			GetDownCompletedFiles());
-    ini.WriteInt(L"DownSessionCompletedFiles",	GetDownSessionCompletedFiles());
+    ini.WriteInt(L"DownCompletedFiles", 			GetDownCompletedFiles());
+    ini.WriteInt(L"DownSessionCompletedFiles", 	GetDownSessionCompletedFiles());
 } // SaveCompletedDownloadsStat()
 
-void CPreferences::Add2SessionTransferData(UINT uClientID, UINT uClientPort, BOOL bFromPF,
+void CPreferences::Add2SessionTransferData(UINT uClientID, UINT uClientPort, BOOL bFromPF, 
         BOOL bUpDown, UINT bytes, bool sentToFriend)
 {
-    //	This function adds the transferred bytes to the appropriate variables,
+    //	This function adds the transferred bytes to the appropriate variables, 
     //	as well as to the totals for all clients. - Khaos
     //	PARAMETERS:
     //	uClientID - The identifier for which client software sent or received this data, eg SO_EMULE
@@ -1482,7 +1482,7 @@ bool CPreferences::Save()
         prefsExt->EmuleWindowPlacement=EmuleWindowPlacement;
         md4cpy(prefsExt->userhash, userhash);
 
-        error = fwrite(prefsExt,sizeof(Preferences_Ext_Struct),1,preffile)!=1;
+        error = fwrite(prefsExt, sizeof(Preferences_Ext_Struct), 1, preffile)!=1;
         if (thePrefs.GetCommitFiles() >= 2 || (thePrefs.GetCommitFiles() >= 1 && !theApp.emuledlg->IsRunning()))
         {
             fflush(preffile); // flush file stream buffers to disk buffers
@@ -1535,7 +1535,7 @@ bool CPreferences::Save()
         catch (CFileException* error)
         {
             TCHAR buffer[MAX_CFEXP_ERRORMSG];
-            error->GetErrorMessage(buffer,_countof(buffer));
+            error->GetErrorMessage(buffer, _countof(buffer));
             if (thePrefs.GetVerbose())
                 AddDebugLogLine(true, L"Failed to save %s - %s", strFullPath, buffer);
             error->Delete();
@@ -1601,60 +1601,64 @@ void CPreferences::SavePreferences()
     ini.WriteString(L"TempDirs", tempdirs);
 
     ini.WriteInt(L"MinUpload", minupload);
-    ini.WriteInt(L"MaxUpload",maxupload);
-    ini.WriteInt(L"MaxDownload",maxdownload);
-    ini.WriteInt(L"MaxConnections",maxconnections);
-    ini.WriteInt(L"MaxHalfConnections",maxhalfconnections);
+    ini.WriteInt(L"MaxUpload", maxupload);
+    ini.WriteInt(L"MaxDownload", maxdownload);
+    ini.WriteInt(L"MaxConnections", maxconnections);
+    ini.WriteInt(L"MaxHalfConnections", maxhalfconnections);
     ini.WriteBool(L"ConditionalTCPAccept", m_bConditionalTCPAccept);
-    ini.WriteInt(L"Port",port);
-    ini.WriteInt(L"UDPPort",udpport);
-    ini.WriteInt(L"MaxSourcesPerFile",maxsourceperfile);
-    ini.WriteWORD(L"Language",m_wLanguageID);
-    ini.WriteInt(L"SeeShare",m_iSeeShares);
-    ini.WriteInt(L"StatGraphsInterval",trafficOMeterInterval);
-    ini.WriteInt(L"StatsInterval",statsInterval);
-    ini.WriteBool(L"StatsFillGraphs",m_bFillGraphs);
-    ini.WriteInt(L"DownloadCapacity",maxGraphDownloadRate);
-    ini.WriteInt(L"UploadCapacityNew",maxGraphUploadRate);
-    ini.WriteInt(L"SplitterbarPosition",splitterbarPosition);
-    ini.WriteInt(L"SplitterbarPositionStat",splitterbarPositionStat+1);
-    ini.WriteInt(L"SplitterbarPositionStat_HL",splitterbarPositionStat_HL+1);
-    ini.WriteInt(L"SplitterbarPositionStat_HR",splitterbarPositionStat_HR+1);
-    ini.WriteInt(L"SplitterbarPositionFriend",splitterbarPositionFriend);
-    ini.WriteInt(L"SplitterbarPositionShared",splitterbarPositionShared);
+    ini.WriteInt(L"Port", port);
+    ini.WriteInt(L"UDPPort", udpport);
+    ini.WriteInt(L"MaxSourcesPerFile", maxsourceperfile);
+    ini.WriteWORD(L"Language", m_wLanguageID);
+    ini.WriteInt(L"SeeShare", m_iSeeShares);
+    ini.WriteInt(L"StatGraphsInterval", trafficOMeterInterval);
+    ini.WriteInt(L"StatsInterval", statsInterval);
+    ini.WriteBool(L"StatsFillGraphs", m_bFillGraphs);
+    ini.WriteInt(L"DownloadCapacity", maxGraphDownloadRate);
+    ini.WriteInt(L"UploadCapacityNew", maxGraphUploadRate);
+    ini.WriteInt(L"SplitterbarPosition", splitterbarPosition);
+    ini.WriteInt(L"SplitterbarPositionStat", splitterbarPositionStat+1);
+    ini.WriteInt(L"SplitterbarPositionStat_HL", splitterbarPositionStat_HL+1);
+    ini.WriteInt(L"SplitterbarPositionStat_HR", splitterbarPositionStat_HR+1);
+    ini.WriteInt(L"SplitterbarPositionFriend", splitterbarPositionFriend);
+    ini.WriteInt(L"SplitterbarPositionShared", splitterbarPositionShared);
 //>>> WiZaRd::Advanced Transfer Window Layout [Stulle]
-//    ini.WriteInt(L"TransferWnd1",m_uTransferWnd1);
-//    ini.WriteInt(L"TransferWnd2",m_uTransferWnd2);
+//    ini.WriteInt(L"TransferWnd1", m_uTransferWnd1);
+//    ini.WriteInt(L"TransferWnd2", m_uTransferWnd2);
 //<<< WiZaRd::Advanced Transfer Window Layout [Stulle]
-    ini.WriteInt(L"VariousStatisticsMaxValue",statsMax);
-    ini.WriteInt(L"StatsAverageMinutes",statsAverageMinutes);
-    ini.WriteInt(L"MaxConnectionsPerFiveSeconds",MaxConperFive);
-    ini.WriteInt(L"Check4NewVersionDelay",versioncheckdays);
+    ini.WriteInt(L"VariousStatisticsMaxValue", statsMax);
+    ini.WriteInt(L"StatsAverageMinutes", statsAverageMinutes);
+    ini.WriteInt(L"MaxConnectionsPerFiveSeconds", MaxConperFive);
+    ini.WriteInt(L"Check4NewVersionDelay", versioncheckdays);
 
-    ini.WriteBool(L"UpdateNotifyTestClient",updatenotify);
+    ini.WriteBool(L"UpdateNotifyTestClient", updatenotify);
     if (IsRunningAeroGlassTheme())
-        ini.WriteBool(L"MinToTray_Aero",mintotray);
+        ini.WriteBool(L"MinToTray_Aero", mintotray);
     else
-        ini.WriteBool(L"MinToTray",mintotray);
+        ini.WriteBool(L"MinToTray", mintotray);
     ini.WriteBool(L"PreventStandby", m_bPreventStandby);
     ini.WriteBool(L"StoreSearches", m_bStoreSearches);
-    ini.WriteBool(L"Splashscreen",splashscreen);
-    ini.WriteBool(L"BringToFront",bringtoforeground);
-    ini.WriteBool(L"TransferDoubleClick",transferDoubleclick);
-    ini.WriteBool(L"ConfirmExit",confirmExit);
-    ini.WriteBool(L"FilterBadIPs",filterLANIPs);
-    ini.WriteBool(L"OnlineSignature",onlineSig);
-    ini.WriteBool(L"StartupMinimized",startMinimized);
-    ini.WriteBool(L"AutoStart",m_bAutoStart);
-    ini.WriteInt(L"LastMainWndDlgID",m_iLastMainWndDlgID);
-    ini.WriteBool(L"ShowRatesOnTitle",showRatesInTitle);
-    ini.WriteBool(L"IndicateRatings",indicateratings);
-    ini.WriteBool(L"WatchClipboard4ED2kFilelinks",watchclipboard);
-    ini.WriteInt(L"SearchMethod",m_iSearchMethod);
-    ini.WriteBool(L"SparsePartFiles",m_bSparsePartFiles);
-    ini.WriteBool(L"ResolveSharedShellLinks",m_bResolveSharedShellLinks);
-    ini.WriteString(L"YourHostname",m_strYourHostname);
-    ini.WriteBool(L"CheckFileOpen",m_bCheckFileOpen);
+    ini.WriteBool(L"Splashscreen", splashscreen);
+    ini.WriteBool(L"BringToFront", bringtoforeground);
+    ini.WriteBool(L"TransferDoubleClick", transferDoubleclick);
+	ini.WriteBool(L"BeepOnError", beepOnError);
+    ini.WriteBool(L"ConfirmExit", confirmExit);
+    ini.WriteBool(L"FilterBadIPs", filterLANIPs);
+    ini.WriteBool(L"OnlineSignature", onlineSig);
+    ini.WriteBool(L"StartupMinimized", startMinimized);
+    ini.WriteBool(L"AutoStart", m_bAutoStart);
+	ini.GetBool(L"RestoreLastMainWndDlg", m_bRestoreLastMainWndDlg);
+    ini.WriteInt(L"LastMainWndDlgID", m_iLastMainWndDlgID);
+    ini.WriteBool(L"ShowRatesOnTitle", showRatesInTitle);
+	ini.WriteBool(L"IconflashOnNewMessage", m_bIconflashOnNewMessage);
+    ini.WriteBool(L"IndicateRatings", indicateratings);
+    ini.WriteBool(L"WatchClipboard4ED2kFilelinks", watchclipboard);
+    ini.WriteInt(L"SearchMethod", m_iSearchMethod);
+    ini.WriteBool(L"SparsePartFiles", m_bSparsePartFiles);
+    ini.WriteBool(L"ResolveSharedShellLinks", m_bResolveSharedShellLinks);
+    ini.WriteString(L"YourHostname", m_strYourHostname);
+	ini.WriteBool(L"KeepUnavailableFixedSharedDirs", m_bKeepUnavailableFixedSharedDirs);
+    ini.WriteBool(L"CheckFileOpen", m_bCheckFileOpen);
 
     // Barry - New properties...
     ini.WriteBool(L"AutoTakeED2KLinks", autotakeed2klinks);
@@ -1662,18 +1666,22 @@ void CPreferences::SavePreferences()
     ini.WriteInt(L"3DDepth", depth3D);
     ini.WriteBool(L"MiniMule", m_bEnableMiniMule);
 
-    ini.WriteString(L"TxtEditor",m_strTxtEditor);
-    ini.WriteString(L"VideoPlayer",m_strVideoPlayer);
-    ini.WriteString(L"VideoPlayerArgs",m_strVideoPlayerArgs);
-    ini.WriteString(L"ExtractFolder",m_strExtractFolder);
-    ini.WriteBool(L"ExtractToIncomingDir",m_bExtractToIncomingDir);
-    ini.WriteBool(L"ExtractArchives",m_bExtractArchives);
-    ini.WriteString(L"MessageFilter",messageFilter);
-    ini.WriteString(L"CommentFilter",commentFilter);
-    ini.WriteString(L"DateTimeFormat",GetDateTimeFormat());
-    ini.WriteString(L"DateTimeFormat4Log",GetDateTimeFormat4Log());
-    ini.WriteString(L"FilenameCleanups",filenameCleanups);
-    ini.WriteInt(L"ExtractMetaData",m_iExtractMetaData);
+	ini.WriteInt(L"MaxChatHistoryLines", m_iMaxChatHistory);
+	ini.WriteInt(L"MaxMessageSessions", maxmsgsessions);
+	ini.WriteBool(L"ShowActiveDownloadsBold", m_bShowActiveDownloadsBold);
+
+    ini.WriteString(L"TxtEditor", m_strTxtEditor);
+    ini.WriteString(L"VideoPlayer", m_strVideoPlayer);
+    ini.WriteString(L"VideoPlayerArgs", m_strVideoPlayerArgs);
+    ini.WriteString(L"ExtractFolder", m_strExtractFolder);
+    ini.WriteBool(L"ExtractToIncomingDir", m_bExtractToIncomingDir);
+    ini.WriteBool(L"ExtractArchives", m_bExtractArchives);
+    ini.WriteString(L"MessageFilter", messageFilter);
+    ini.WriteString(L"CommentFilter", commentFilter);
+    ini.WriteString(L"DateTimeFormat", GetDateTimeFormat());
+    ini.WriteString(L"DateTimeFormat4Log", GetDateTimeFormat4Log());
+    ini.WriteString(L"FilenameCleanups", filenameCleanups);
+    ini.WriteInt(L"ExtractMetaData", m_iExtractMetaData);
 
     ini.DeleteKey(L"IRCAddTimestamp"); // delete old setting
     ini.WriteBool(L"AddTimestamp", m_bAddTimeStamp);
@@ -1690,17 +1698,21 @@ void CPreferences::SavePreferences()
     ini.WriteBool(L"LogUlDlEvents", m_bLogUlDlEvents);
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
     // following options are for debugging or when using an external debug device viewer only.
-    ini.WriteInt(L"DebugClientTCP",m_iDebugClientTCPLevel);
-    ini.WriteInt(L"DebugClientUDP",m_iDebugClientUDPLevel);
-    ini.WriteInt(L"DebugClientKadUDP",m_iDebugClientKadUDPLevel);
+    ini.WriteInt(L"DebugClientTCP", m_iDebugClientTCPLevel);
+    ini.WriteInt(L"DebugClientUDP", m_iDebugClientUDPLevel);
+    ini.WriteInt(L"DebugClientKadUDP", m_iDebugClientKadUDPLevel);
 #endif
     ini.WriteBool(L"PreviewPrio", m_bpreviewprio);
     ini.WriteBool(L"ShowOverhead", m_bshowoverhead);
     ini.WriteBool(L"VideoPreviewBackupped", moviePreviewBackup);
+	ini.WriteInt(L"PreviewSmallBlocks", m_iPreviewSmallBlocks);
+	ini.WriteBool(L"PreviewCopiedArchives", m_bPreviewCopiedArchives);
+	ini.WriteInt(L"InspectAllFileTypes", m_iInspectAllFileTypes);
     ini.WriteInt(L"StartNextFile", m_istartnextfile);
 
     ini.DeleteKey(L"FileBufferSizePref"); // delete old 'file buff size' setting
     ini.WriteInt(L"FileBufferSize", m_iFileBufferSize);
+	ini.GetInt(L"FileBufferTimeLimit", m_uFileBufferTimeLimit / 1000);
 
     ini.DeleteKey(L"QueueSizePref"); // delete old 'queue size' setting
     ini.WriteInt(L"QueueSize", m_iQueueSize);
@@ -1708,29 +1720,38 @@ void CPreferences::SavePreferences()
     ini.WriteInt(L"CommitFiles", m_iCommitFiles);
     ini.WriteBool(L"DAPPref", m_bDAP);
     ini.WriteBool(L"UAPPref", m_bUAP);
-    ini.WriteBool(L"DisableKnownClientList",m_bDisableKnownClientList);
-    ini.WriteBool(L"DisableQueueList",m_bDisableQueueList);
-    ini.WriteBool(L"SaveLogToDisk",log2disk);
+	ini.WriteBool(L"PreviewOnIconDblClk", m_bPreviewOnIconDblClk);
+    ini.WriteBool(L"DisableKnownClientList", m_bDisableKnownClientList);
+    ini.WriteBool(L"DisableQueueList", m_bDisableQueueList);
+    ini.WriteBool(L"SaveLogToDisk", log2disk);
     ini.WriteBool(L"SaveAnalyzerLogToDisk", m_bLogAnalyzerToDisk); //>>> WiZaRd::ClientAnalyzer
-    ini.WriteBool(L"SaveDebugToDisk",debug2disk);
-    ini.WriteBool(L"MessagesFromFriendsOnly",msgonlyfriends);
-    ini.WriteBool(L"ShowInfoOnCatTabs",showCatTabInfos);
-    ini.WriteBool(L"AutoFilenameCleanup",autofilenamecleanup);
-    ini.WriteBool(L"ShowExtControls",m_bExtControls);
-    ini.WriteBool(L"UseAutocompletion",m_bUseAutocompl);
-    ini.WriteBool(L"AutoClearCompleted",m_bRemoveFinishedDownloads);
-    ini.WriteBool(L"TransflstRemainOrder",m_bTransflstRemain);
-    ini.WriteBool(L"UseSimpleTimeRemainingcomputation",m_bUseOldTimeRemaining);
-    ini.WriteBool(L"AllocateFullFile",m_bAllocFull);
+	ini.WriteInt(L"MaxLogFileSize", uMaxLogFileSize);
+	ini.WriteInt(L"MaxLogBuff", iMaxLogBuff/1024);
+	ini.WriteInt(L"LogFileFormat", m_iLogFileFormat);
+    ini.WriteBool(L"SaveDebugToDisk", debug2disk);
+    ini.WriteBool(L"MessagesFromFriendsOnly", msgonlyfriends);
+    ini.WriteBool(L"ShowInfoOnCatTabs", showCatTabInfos);
+    ini.WriteBool(L"AutoFilenameCleanup", autofilenamecleanup);
+    ini.WriteBool(L"ShowExtControls", m_bExtControls);
+    ini.WriteBool(L"UseAutocompletion", m_bUseAutocompl);
+	ini.WriteBool(L"AdjustNTFSDaylightFileTime", m_bAdjustNTFSDaylightFileTime);
+	ini.WriteBool(L"RearrangeKadSearchKeywords", m_bRearrangeKadSearchKeywords);
+    ini.WriteBool(L"AutoClearCompleted", m_bRemoveFinishedDownloads);
+    ini.WriteBool(L"TransflstRemainOrder", m_bTransflstRemain);
+    ini.WriteBool(L"UseSimpleTimeRemainingcomputation", m_bUseOldTimeRemaining);
+    ini.WriteBool(L"AllocateFullFile", m_bAllocFull);
     ini.WriteBool(L"ShowSharedFilesDetails", m_bShowSharedFilesDetails);
     ini.WriteBool(L"AutoShowLookups", m_bAutoShowLookups);
+	ini.WriteBool(L"ShowUpDownIconInTaskbar", m_bShowUpDownIconInTaskbar);
+	ini.WriteBool(L"ForceSpeedsToKB", m_bForceSpeedsToKB);
+	ini.WriteBool(L"ExtraPreviewWithMenu", m_bExtraPreviewWithMenu);
 
     ini.WriteInt(L"VersionCheckLastAutomatic", versioncheckLastAutomatic);
-    ini.WriteInt(L"FilterLevel",filterlevel);
+    ini.WriteInt(L"FilterLevel", filterlevel);
 
-    ini.WriteBool(L"ShowDwlPercentage",m_bShowDwlPercentage);
-    ini.WriteBool(L"RemoveFilesToBin",m_bRemove2bin);
-    //ini.WriteBool(L"ShowCopyEd2kLinkCmd",m_bShowCopyEd2kLinkCmd);
+    ini.WriteBool(L"ShowDwlPercentage", m_bShowDwlPercentage);
+    ini.WriteBool(L"RemoveFilesToBin", m_bRemove2bin);
+    ini.WriteBool(L"ShowCopyEd2kLinkCmd", m_bShowCopyEd2kLinkCmd);
     ini.WriteBool(L"AutoArchivePreviewStart", m_bAutomaticArcPreviewStart);
 
     // Toolbar
@@ -1739,6 +1760,9 @@ void CPreferences::SavePreferences()
     ini.WriteString(L"ToolbarBitmapFolder", m_sToolbarBitmapFolder);
     ini.WriteInt(L"ToolbarLabels", m_nToolbarLabels);
     ini.WriteInt(L"ToolbarIconSize", m_sizToolbarIconSize.cx);
+	ini.WriteInt(L"StraightWindowStyles", m_iStraightWindowStyles);
+	ini.WriteBool(L"UseSystemFontForMainControls", m_bUseSystemFontForMainControls);
+	ini.WriteBool(L"RTLWindowsLayout", m_bRTLWindowsLayout);
     ini.WriteString(L"SkinProfile", m_strSkinProfile);
     ini.WriteString(L"SkinProfileDir", m_strSkinProfileDir);
 
@@ -1761,8 +1785,10 @@ void CPreferences::SavePreferences()
     ini.WriteBool(L"OpenPortsOnStartUp", m_bOpenPortsOnStartUp);
     ini.WriteInt(L"DebugLogLevel", m_byLogLevel);
     ini.WriteInt(L"WinXPSP2OrHigher", IsRunningXPSP2OrHigher());
+	ini.WriteString(L"BindAddr", m_strBindAddrW);
     ini.WriteBool(L"RememberCancelledFiles", m_bRememberCancelledFiles);
     ini.WriteBool(L"RememberDownloadedFiles", m_bRememberDownloadedFiles);
+	ini.WriteBool(L"PartiallyPurgeOldKnownFiles", m_bPartiallyPurgeOldKnownFiles);
 
     ini.WriteBool(L"WinaTransToolbar", m_bWinaTransToolbar);
     ini.WriteBool(L"ShowDownloadToolbar", m_bShowDownloadToolbar);
@@ -1770,30 +1796,31 @@ void CPreferences::SavePreferences()
     ini.WriteBool(L"CryptLayerRequested", m_bCryptLayerRequested);
     ini.WriteBool(L"CryptLayerRequired", m_bCryptLayerRequired);
     ini.WriteInt(L"KadUDPKey", m_dwKadUDPKey);
+	ini.WriteInt(L"CryptTCPPaddingLength", m_byCryptTCPPaddingLength);
 
     ///////////////////////////////////////////////////////////////////////////
     // Section: "Proxy"
     //
-    ini.WriteBool(L"ProxyEnablePassword",proxy.EnablePassword,L"Proxy");
-    ini.WriteBool(L"ProxyEnableProxy",proxy.UseProxy,L"Proxy");
-    ini.WriteString(L"ProxyName",CStringW(proxy.name),L"Proxy");
-    ini.WriteString(L"ProxyPassword",CStringW(proxy.password),L"Proxy");
-    ini.WriteString(L"ProxyUser",CStringW(proxy.user),L"Proxy");
-    ini.WriteInt(L"ProxyPort",proxy.port,L"Proxy");
-    ini.WriteInt(L"ProxyType",proxy.type,L"Proxy");
+    ini.WriteBool(L"ProxyEnablePassword", proxy.EnablePassword, L"Proxy");
+    ini.WriteBool(L"ProxyEnableProxy", proxy.UseProxy, L"Proxy");
+    ini.WriteString(L"ProxyName", CStringW(proxy.name), L"Proxy");
+    ini.WriteString(L"ProxyPassword", CStringW(proxy.password), L"Proxy");
+    ini.WriteString(L"ProxyUser", CStringW(proxy.user), L"Proxy");
+    ini.WriteInt(L"ProxyPort", proxy.port, L"Proxy");
+    ini.WriteInt(L"ProxyType", proxy.type, L"Proxy");
 
 
     ///////////////////////////////////////////////////////////////////////////
     // Section: "Statistics"
     //
-    ini.WriteInt(L"statsConnectionsGraphRatio", statsConnectionsGraphRatio,L"Statistics");
+    ini.WriteInt(L"statsConnectionsGraphRatio", statsConnectionsGraphRatio, L"Statistics");
     ini.WriteString(L"statsExpandedTreeItems", m_strStatsExpandedTreeItems);
     CString buffer2;
     for (int i=0; i<15; i++)
     {
-        buffer.Format(L"0x%06x",GetStatsColor(i));
-        buffer2.Format(L"StatColor%i",i);
-        ini.WriteString(buffer2,buffer,L"Statistics");
+        buffer.Format(L"0x%06x", GetStatsColor(i));
+        buffer2.Format(L"StatColor%i", i);
+        ini.WriteString(buffer2, buffer, L"Statistics");
     }
     ini.WriteBool(L"HasCustomTaskIconColor", bHasCustomTaskIconColor, L"Statistics");
 
@@ -1805,6 +1832,8 @@ void CPreferences::SavePreferences()
     ini.WriteBool(L"SkipWANPPPSetup", m_bSkipWANPPPSetup);
     ini.WriteBool(L"CloseUPnPOnExit", m_bCloseUPnPOnExit);
     ini.WriteInt(L"LastWorkingImplementation", m_nLastWorkingImpl);
+	ini.WriteBool(L"DisableMiniUPNPLibImpl", m_bIsMinilibImplDisabled);
+	ini.WriteBool(L"DisableWinServImpl", m_bIsWinServImplDisabled);
 
     SavekMulePrefs();
 }
@@ -1864,50 +1893,50 @@ void CPreferences::ResetStatsColor(int index)
     switch (index)
     {
         case  0:
-            m_adwStatsColors[ 0]=RGB(0,  0, 0);
+            m_adwStatsColors[ 0]=RGB(0, 0, 0);
             break;
         case  1:
-            m_adwStatsColors[ 1]=RGB(255,255,255);
+            m_adwStatsColors[ 1]=RGB(255, 255, 255);
             break;
         case  2:
-            m_adwStatsColors[ 2]=RGB(128,255,128);
+            m_adwStatsColors[ 2]=RGB(128, 255, 128);
             break;
         case  3:
-            m_adwStatsColors[ 3]=RGB(0,210,  0);
+            m_adwStatsColors[ 3]=RGB(0, 210, 0);
             break;
         case  4:
-            m_adwStatsColors[ 4]=RGB(0,128,  0);
+            m_adwStatsColors[ 4]=RGB(0, 128, 0);
             break;
         case  5:
-            m_adwStatsColors[ 5]=RGB(255,128,128);
+            m_adwStatsColors[ 5]=RGB(255, 128, 128);
             break;
         case  6:
-            m_adwStatsColors[ 6]=RGB(200,  0,  0);
+            m_adwStatsColors[ 6]=RGB(200, 0, 0);
             break;
         case  7:
-            m_adwStatsColors[ 7]=RGB(140,  0,  0);
+            m_adwStatsColors[ 7]=RGB(140, 0, 0);
             break;
         case  8:
-            m_adwStatsColors[ 8]=RGB(150,150,255);
+            m_adwStatsColors[ 8]=RGB(150, 150, 255);
             break;
         case  9:
-            m_adwStatsColors[ 9]=RGB(192,  0,192);
+            m_adwStatsColors[ 9]=RGB(192, 0, 192);
             break;
         case 10:
-            m_adwStatsColors[10]=RGB(255,255,128);
+            m_adwStatsColors[10]=RGB(255, 255, 128);
             break;
         case 11:
-            m_adwStatsColors[11]=RGB(0,  0,  0);
+            m_adwStatsColors[11]=RGB(0, 0, 0);
             bHasCustomTaskIconColor = false;
             break;
         case 12:
-            m_adwStatsColors[12]=RGB(255,255,255);
+            m_adwStatsColors[12]=RGB(255, 255, 255);
             break;
         case 13:
-            m_adwStatsColors[13]=RGB(255,255,255);
+            m_adwStatsColors[13]=RGB(255, 255, 255);
             break;
         case 14:
-            m_adwStatsColors[14]=RGB(255,190,190);
+            m_adwStatsColors[14]=RGB(255, 190, 190);
             break;
     }
 }
@@ -1944,7 +1973,7 @@ void CPreferences::IniCopy(CString si, CString di)
     if (!s.IsEmpty())
     {
         ini.SetSection(L"ListControlSetup");
-        ini.WriteString(di,s);
+        ini.WriteString(di, s);
     }
 }
 
@@ -1973,7 +2002,7 @@ void CPreferences::LoadPreferences()
     m_iDbgHeap = 0;
 #endif
 
-    updatenotify=ini.GetBool(L"UpdateNotifyTestClient",true);
+    updatenotify=ini.GetBool(L"UpdateNotifyTestClient", true);
 
     SetUserNick(ini.GetStringUTF8(L"Nick", DEFAULT_NICK));
     if (strNick.IsEmpty())
@@ -2011,7 +2040,7 @@ void CPreferences::LoadPreferences()
             {
                 if (PathFileExists(atmp)==FALSE)
                 {
-                    CreateDirectory(atmp,NULL);
+                    CreateDirectory(atmp, NULL);
                     if (PathFileExists(atmp)==TRUE || tempdir.GetCount()==0)
                         tempdir.Add(atmp);
                 }
@@ -2022,23 +2051,23 @@ void CPreferences::LoadPreferences()
         atmp = tempdirs.Tokenize(L"|", curPos);
     }
 
-    maxGraphDownloadRate=ini.GetInt(L"DownloadCapacity",96);
+    maxGraphDownloadRate=ini.GetInt(L"DownloadCapacity", 96);
     if (maxGraphDownloadRate==0)
         maxGraphDownloadRate=96;
 
-    maxGraphUploadRate = ini.GetInt(L"UploadCapacityNew",-1);
+    maxGraphUploadRate = ini.GetInt(L"UploadCapacityNew", -1);
     if (maxGraphUploadRate == 0)
         maxGraphUploadRate = UNLIMITED;
     else if (maxGraphUploadRate == -1)
     {
         // converting value from prior versions
         int nOldUploadCapacity = ini.GetInt(L"UploadCapacity", 16);
-        if (nOldUploadCapacity == 16 && ini.GetInt(L"MaxUpload",12) == 12)
+        if (nOldUploadCapacity == 16 && ini.GetInt(L"MaxUpload", 12) == 12)
         {
             // either this is a complete new install, or the prior version used the default value
             // in both cases, set the new default values to unlimited
             maxGraphUploadRate = UNLIMITED;
-            ini.WriteInt(L"MaxUpload",UNLIMITED, MOD_VERSION_PLAIN);
+            ini.WriteInt(L"MaxUpload", UNLIMITED, MOD_VERSION_PLAIN);
         }
         else
             maxGraphUploadRate = nOldUploadCapacity; // use old custoum value
@@ -2047,15 +2076,15 @@ void CPreferences::LoadPreferences()
     minupload=(uint16)ini.GetInt(L"MinUpload", 1);
     if (minupload < 1)
         minupload = 1;
-    maxupload=(uint16)ini.GetInt(L"MaxUpload",UNLIMITED);
+    maxupload=(uint16)ini.GetInt(L"MaxUpload", UNLIMITED);
     if (maxupload > maxGraphUploadRate && maxupload != UNLIMITED)
         maxupload = (uint16)(maxGraphUploadRate * .8);
 
     maxdownload=(uint16)ini.GetInt(L"MaxDownload", UNLIMITED);
     if (maxdownload > maxGraphDownloadRate && maxdownload != UNLIMITED)
         maxdownload = (uint16)(maxGraphDownloadRate * .8);
-    maxconnections=ini.GetInt(L"MaxConnections",GetRecommendedMaxConnections());
-    maxhalfconnections=ini.GetInt(L"MaxHalfConnections",9);
+    maxconnections=ini.GetInt(L"MaxConnections", GetRecommendedMaxConnections());
+    maxhalfconnections=ini.GetInt(L"MaxHalfConnections", 9);
     m_bConditionalTCPAccept = ini.GetBool(L"ConditionalTCPAccept", false);
 
     // reset max halfopen to a default if OS changed to SP2 (or higher) or away
@@ -2090,40 +2119,40 @@ void CPreferences::LoadPreferences()
     else
         udpport = (uint16)iPort;
 
-    maxsourceperfile=ini.GetInt(L"MaxSourcesPerFile",400);
-    m_wLanguageID=ini.GetWORD(L"Language",0);
-    m_iSeeShares=(EViewSharedFilesAccess)ini.GetInt(L"SeeShare",vsfaNobody);
-    trafficOMeterInterval=ini.GetInt(L"StatGraphsInterval",3);
-    statsInterval=ini.GetInt(L"statsInterval",5);
+    maxsourceperfile=ini.GetInt(L"MaxSourcesPerFile", 400);
+    m_wLanguageID=ini.GetWORD(L"Language", 0);
+    m_iSeeShares=(EViewSharedFilesAccess)ini.GetInt(L"SeeShare", vsfaNobody);
+    trafficOMeterInterval=ini.GetInt(L"StatGraphsInterval", 3);
+    statsInterval=ini.GetInt(L"statsInterval", 5);
     m_bFillGraphs=ini.GetBool(L"StatsFillGraphs");
-    dontcompressavi=ini.GetBool(L"DontCompressAvi",false);
+    dontcompressavi=ini.GetBool(L"DontCompressAvi", false);
 
-    splitterbarPosition=ini.GetInt(L"SplitterbarPosition",75);
+    splitterbarPosition=ini.GetInt(L"SplitterbarPosition", 75);
     if (splitterbarPosition < 9)
         splitterbarPosition = 9;
     else if (splitterbarPosition > 93)
         splitterbarPosition = 93;
-    splitterbarPositionStat=ini.GetInt(L"SplitterbarPositionStat",30);
-    splitterbarPositionStat_HL=ini.GetInt(L"SplitterbarPositionStat_HL",66);
-    splitterbarPositionStat_HR=ini.GetInt(L"SplitterbarPositionStat_HR",33);
+    splitterbarPositionStat=ini.GetInt(L"SplitterbarPositionStat", 30);
+    splitterbarPositionStat_HL=ini.GetInt(L"SplitterbarPositionStat_HL", 66);
+    splitterbarPositionStat_HR=ini.GetInt(L"SplitterbarPositionStat_HR", 33);
     if (splitterbarPositionStat_HR+1>=splitterbarPositionStat_HL)
     {
         splitterbarPositionStat_HL = 66;
         splitterbarPositionStat_HR = 33;
     }
-    splitterbarPositionFriend=ini.GetInt(L"SplitterbarPositionFriend",170);
-    splitterbarPositionShared=ini.GetInt(L"SplitterbarPositionShared",179);
+    splitterbarPositionFriend=ini.GetInt(L"SplitterbarPositionFriend", 170);
+    splitterbarPositionShared=ini.GetInt(L"SplitterbarPositionShared", 179);
 
 //>>> WiZaRd::Advanced Transfer Window Layout [Stulle]
-//    m_uTransferWnd1 = ini.GetInt(L"TransferWnd1",0);
-//    m_uTransferWnd2 = ini.GetInt(L"TransferWnd2",1);
+//    m_uTransferWnd1 = ini.GetInt(L"TransferWnd1", 0);
+//    m_uTransferWnd2 = ini.GetInt(L"TransferWnd2", 1);
 //<<< WiZaRd::Advanced Transfer Window Layout [Stulle]
 
-    statsMax=ini.GetInt(L"VariousStatisticsMaxValue",100);
-    statsAverageMinutes=ini.GetInt(L"StatsAverageMinutes",5);
-    MaxConperFive=ini.GetInt(L"MaxConnectionsPerFiveSeconds",GetDefaultMaxConperFive());
+    statsMax=ini.GetInt(L"VariousStatisticsMaxValue", 100);
+    statsAverageMinutes=ini.GetInt(L"StatsAverageMinutes", 5);
+    MaxConperFive=ini.GetInt(L"MaxConnectionsPerFiveSeconds", GetDefaultMaxConperFive());
 
-    // since the minimize to tray button is not working under Aero (at least not at this point),
+    // since the minimize to tray button is not working under Aero (at least not at this point), 
     // we enable map the minimize to tray on the minimize button by default if Aero is running
     if (IsRunningAeroGlassTheme())
         mintotray=ini.GetBool(L"MinToTray_Aero", true);
@@ -2132,32 +2161,32 @@ void CPreferences::LoadPreferences()
 
     m_bPreventStandby = ini.GetBool(L"PreventStandby", false);
     m_bStoreSearches = ini.GetBool(L"StoreSearches", true);
-    splashscreen=ini.GetBool(L"Splashscreen",true);
-    bringtoforeground=ini.GetBool(L"BringToFront",true);
-    transferDoubleclick=ini.GetBool(L"TransferDoubleClick",true);
-    beepOnError=ini.GetBool(L"BeepOnError",true);
-    confirmExit=ini.GetBool(L"ConfirmExit",true);
-    filterLANIPs=ini.GetBool(L"FilterBadIPs",true);
-    m_bAllocLocalHostIP=ini.GetBool(L"AllowLocalHostIP",false);
-    showRatesInTitle=ini.GetBool(L"ShowRatesOnTitle",true);
-    m_bIconflashOnNewMessage=ini.GetBool(L"IconflashOnNewMessage",true);
+    splashscreen=ini.GetBool(L"Splashscreen", true);
+    bringtoforeground=ini.GetBool(L"BringToFront", true);
+    transferDoubleclick=ini.GetBool(L"TransferDoubleClick", true);
+    beepOnError=ini.GetBool(L"BeepOnError", true);
+    confirmExit=ini.GetBool(L"ConfirmExit", true);
+    filterLANIPs=ini.GetBool(L"FilterBadIPs", true);
+    m_bAllocLocalHostIP=ini.GetBool(L"AllowLocalHostIP", false);
+    showRatesInTitle=ini.GetBool(L"ShowRatesOnTitle", true);
+    m_bIconflashOnNewMessage=ini.GetBool(L"IconflashOnNewMessage", true);
 
-    onlineSig=ini.GetBool(L"OnlineSignature",false);
-    startMinimized=ini.GetBool(L"StartupMinimized",false);
-    m_bAutoStart=ini.GetBool(L"AutoStart",false);
-    m_bRestoreLastMainWndDlg=ini.GetBool(L"RestoreLastMainWndDlg",false);
-    m_iLastMainWndDlgID=ini.GetInt(L"LastMainWndDlgID",0);
+    onlineSig=ini.GetBool(L"OnlineSignature", false);
+    startMinimized=ini.GetBool(L"StartupMinimized", false);
+    m_bAutoStart=ini.GetBool(L"AutoStart", false);
+    m_bRestoreLastMainWndDlg=ini.GetBool(L"RestoreLastMainWndDlg", false);
+    m_iLastMainWndDlgID=ini.GetInt(L"LastMainWndDlgID", 0);
 
-    m_bTransflstRemain =ini.GetBool(L"TransflstRemainOrder",false);
-    filterlevel=ini.GetInt(L"FilterLevel",127);
-    m_bSparsePartFiles=ini.GetBool(L"SparsePartFiles",false);  // http://support.microsoft.com/kb/967351
-    m_bResolveSharedShellLinks=ini.GetBool(L"ResolveSharedShellLinks",false);
+    m_bTransflstRemain =ini.GetBool(L"TransflstRemainOrder", false);
+    filterlevel=ini.GetInt(L"FilterLevel", 127);
+    m_bSparsePartFiles=ini.GetBool(L"SparsePartFiles", false);  // http://support.microsoft.com/kb/967351
+    m_bResolveSharedShellLinks=ini.GetBool(L"ResolveSharedShellLinks", false);
     m_bKeepUnavailableFixedSharedDirs = ini.GetBool(L"KeepUnavailableFixedSharedDirs", false);
     m_strYourHostname=ini.GetString(L"YourHostname", L"");
 
     // Barry - New properties...
-    autotakeed2klinks = ini.GetBool(L"AutoTakeED2KLinks",true);
-    addnewfilespaused = ini.GetBool(L"AddNewFilesPaused",false);
+    autotakeed2klinks = ini.GetBool(L"AutoTakeED2KLinks", true);
+    addnewfilespaused = ini.GetBool(L"AddNewFilesPaused", false);
     depth3D = ini.GetInt(L"3DDepth", 5);
     m_bEnableMiniMule = ini.GetBool(L"MiniMule", true);
 
@@ -2171,7 +2200,7 @@ void CPreferences::LoadPreferences()
     log2disk = ini.GetBool(L"SaveLogToDisk", false);
     m_bLogAnalyzerToDisk = ini.GetBool(L"SaveAnalyzerLogToDisk", false); //>>> WiZaRd::ClientAnalyzer
     uMaxLogFileSize = ini.GetInt(L"MaxLogFileSize", 1024*1024);
-    iMaxLogBuff = ini.GetInt(L"MaxLogBuff",64) * 1024;
+    iMaxLogBuff = ini.GetInt(L"MaxLogBuff", 64) * 1024;
     m_iLogFileFormat = (ELogFileFormat)ini.GetInt(L"LogFileFormat", Unicode);
     m_bEnableVerboseOptions=ini.GetBool(L"VerboseOptions", true);
     m_bLogAnalyzerEvents = ini.GetBool(L"LogAnalyzerEvents", true); //>>> WiZaRd::ClientAnalyzer
@@ -2180,18 +2209,18 @@ void CPreferences::LoadPreferences()
 #ifdef _DEBUG
         m_bVerbose = ini.GetBool(L"Verbose", true);
 #else
-        m_bVerbose=ini.GetBool(L"Verbose",false);
+        m_bVerbose=ini.GetBool(L"Verbose", false);
 #endif
-        m_bFullVerbose=ini.GetBool(L"FullVerbose",false);
+        m_bFullVerbose=ini.GetBool(L"FullVerbose", false);
         debug2disk=ini.GetBool(L"SaveDebugToDisk", false);
-        m_bDebugSourceExchange=ini.GetBool(L"DebugSourceExchange",false);
+        m_bDebugSourceExchange=ini.GetBool(L"DebugSourceExchange", false);
         m_bLogBannedClients=ini.GetBool(L"LogBannedClients", true);
-        m_bLogRatingDescReceived=ini.GetBool(L"LogRatingDescReceived",true);
-        m_bLogSecureIdent=ini.GetBool(L"LogSecureIdent",true);
-        m_bLogFilteredIPs=ini.GetBool(L"LogFilteredIPs",true);
-        m_bLogFileSaving=ini.GetBool(L"LogFileSaving",false);
-        m_bLogA4AF=ini.GetBool(L"LogA4AF",false); // ZZ:DownloadManager
-        m_bLogUlDlEvents=ini.GetBool(L"LogUlDlEvents",true);
+        m_bLogRatingDescReceived=ini.GetBool(L"LogRatingDescReceived", true);
+        m_bLogSecureIdent=ini.GetBool(L"LogSecureIdent", true);
+        m_bLogFilteredIPs=ini.GetBool(L"LogFilteredIPs", true);
+        m_bLogFileSaving=ini.GetBool(L"LogFileSaving", false);
+        m_bLogA4AF=ini.GetBool(L"LogA4AF", false); // ZZ:DownloadManager
+        m_bLogUlDlEvents=ini.GetBool(L"LogUlDlEvents", true);
     }
 
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
@@ -2210,15 +2239,15 @@ void CPreferences::LoadPreferences()
     */
 #endif
 
-    m_bpreviewprio=ini.GetBool(L"PreviewPrio",false);
-    m_bupdatequeuelist=ini.GetBool(L"UpdateQueueListPref",false);
-    m_istartnextfile=ini.GetInt(L"StartNextFile",0);
-    m_bshowoverhead=ini.GetBool(L"ShowOverhead",false);
-    moviePreviewBackup=ini.GetBool(L"VideoPreviewBackupped",false);
+    m_bpreviewprio=ini.GetBool(L"PreviewPrio", false);
+    m_bupdatequeuelist=ini.GetBool(L"UpdateQueueListPref", false);
+    m_istartnextfile=ini.GetInt(L"StartNextFile", 0);
+    m_bshowoverhead=ini.GetBool(L"ShowOverhead", false);
+    moviePreviewBackup=ini.GetBool(L"VideoPreviewBackupped", false);
     m_iPreviewSmallBlocks=ini.GetInt(L"PreviewSmallBlocks", 0);
     m_bPreviewCopiedArchives=ini.GetBool(L"PreviewCopiedArchives", true);
     m_iInspectAllFileTypes=ini.GetInt(L"InspectAllFileTypes", 0);
-    m_bAllocFull=ini.GetBool(L"AllocateFullFile",0);
+    m_bAllocFull=ini.GetBool(L"AllocateFullFile", 0);
     m_bAutomaticArcPreviewStart=ini.GetBool(L"AutoArchivePreviewStart", true);
     m_bShowSharedFilesDetails = ini.GetBool(L"ShowSharedFilesDetails", true);
     m_bAutoShowLookups = ini.GetBool(L"AutoShowLookups", true);
@@ -2227,64 +2256,64 @@ void CPreferences::LoadPreferences()
     m_bExtraPreviewWithMenu = ini.GetBool(L"ExtraPreviewWithMenu", false);
 
     // read file buffer size (with backward compatibility)
-    m_iFileBufferSize=ini.GetInt(L"FileBufferSizePref",0); // old setting
+    m_iFileBufferSize=ini.GetInt(L"FileBufferSizePref", 0); // old setting
     if (m_iFileBufferSize == 0)
         m_iFileBufferSize = 10*1024*1024;
     else
         m_iFileBufferSize = ((m_iFileBufferSize*15000 + 512)/1024)*1024;
-    m_iFileBufferSize=ini.GetInt(L"FileBufferSize",m_iFileBufferSize);
+    m_iFileBufferSize=ini.GetInt(L"FileBufferSize", m_iFileBufferSize);
 //>>> WiZaRd::IntelliFlush
     //was 1min. - changed to 15min. default because with IntelliFlush, we basically don't care
     m_uFileBufferTimeLimit = SEC2MS(ini.GetInt(L"FileBufferTimeLimit", 915));
 //<<< WiZaRd::IntelliFlush
 
     // read queue size (with backward compatibility)
-    m_iQueueSize=ini.GetInt(L"QueueSizePref",0); // old setting
+    m_iQueueSize=ini.GetInt(L"QueueSizePref", 0); // old setting
     if (m_iQueueSize == 0)
         m_iQueueSize = 50*100;
     else
         m_iQueueSize = m_iQueueSize*100;
-    m_iQueueSize=ini.GetInt(L"QueueSize",m_iQueueSize);
+    m_iQueueSize=ini.GetInt(L"QueueSize", m_iQueueSize);
 
     m_iCommitFiles=ini.GetInt(L"CommitFiles", 2); // 1 = "commit" on application shut down; 2 = "commit" on each file saveing
-    versioncheckdays=ini.GetInt(L"Check4NewVersionDelay",5);
-    m_bDAP=ini.GetBool(L"DAPPref",true);
-    m_bUAP=ini.GetBool(L"UAPPref",true);
-    m_bPreviewOnIconDblClk=ini.GetBool(L"PreviewOnIconDblClk",false);
-    m_bCheckFileOpen=ini.GetBool(L"CheckFileOpen",true);
-    indicateratings=ini.GetBool(L"IndicateRatings",true);
-    watchclipboard=ini.GetBool(L"WatchClipboard4ED2kFilelinks",false);
-    m_iSearchMethod=ini.GetInt(L"SearchMethod",0);
+    versioncheckdays=ini.GetInt(L"Check4NewVersionDelay", 5);
+    m_bDAP=ini.GetBool(L"DAPPref", true);
+    m_bUAP=ini.GetBool(L"UAPPref", true);
+    m_bPreviewOnIconDblClk=ini.GetBool(L"PreviewOnIconDblClk", false);
+    m_bCheckFileOpen=ini.GetBool(L"CheckFileOpen", true);
+    indicateratings=ini.GetBool(L"IndicateRatings", true);
+    watchclipboard=ini.GetBool(L"WatchClipboard4ED2kFilelinks", false);
+    m_iSearchMethod=ini.GetInt(L"SearchMethod", 0);
 
-    showCatTabInfos=ini.GetBool(L"ShowInfoOnCatTabs",false);
-//	resumeSameCat=ini.GetBool(L"ResumeNextFromSameCat",false);
-    dontRecreateGraphs =ini.GetBool(L"DontRecreateStatGraphsOnResize",false);
-    m_bExtControls =ini.GetBool(L"ShowExtControls",false);
+    showCatTabInfos=ini.GetBool(L"ShowInfoOnCatTabs", false);
+//	resumeSameCat=ini.GetBool(L"ResumeNextFromSameCat", false);
+    dontRecreateGraphs =ini.GetBool(L"DontRecreateStatGraphsOnResize", false);
+    m_bExtControls =ini.GetBool(L"ShowExtControls", false);
 
-    versioncheckLastAutomatic=ini.GetInt(L"VersionCheckLastAutomatic",0);
-    m_bDisableKnownClientList=ini.GetBool(L"DisableKnownClientList",false);
-    m_bDisableQueueList=ini.GetBool(L"DisableQueueList",false);
-    msgonlyfriends=ini.GetBool(L"MessagesFromFriendsOnly",false);
-    msgsecure=ini.GetBool(L"MessageFromValidSourcesOnly",true);
-    autofilenamecleanup=ini.GetBool(L"AutoFilenameCleanup",false);
-    m_bUseAutocompl=ini.GetBool(L"UseAutocompletion",true);
-    m_bShowDwlPercentage=ini.GetBool(L"ShowDwlPercentage",true);
-    m_bRemove2bin=ini.GetBool(L"RemoveFilesToBin",true);
-    m_bShowCopyEd2kLinkCmd=ini.GetBool(L"ShowCopyEd2kLinkCmd",false);
+    versioncheckLastAutomatic=ini.GetInt(L"VersionCheckLastAutomatic", 0);
+    m_bDisableKnownClientList=ini.GetBool(L"DisableKnownClientList", false);
+    m_bDisableQueueList=ini.GetBool(L"DisableQueueList", false);
+    msgonlyfriends=ini.GetBool(L"MessagesFromFriendsOnly", false);
+    msgsecure=ini.GetBool(L"MessageFromValidSourcesOnly", true);
+    autofilenamecleanup=ini.GetBool(L"AutoFilenameCleanup", false);
+    m_bUseAutocompl=ini.GetBool(L"UseAutocompletion", true);
+    m_bShowDwlPercentage=ini.GetBool(L"ShowDwlPercentage", true);
+    m_bRemove2bin=ini.GetBool(L"RemoveFilesToBin", true);
+    m_bShowCopyEd2kLinkCmd=ini.GetBool(L"ShowCopyEd2kLinkCmd", false);
 
-    m_iMaxChatHistory=ini.GetInt(L"MaxChatHistoryLines",100);
+    m_iMaxChatHistory=ini.GetInt(L"MaxChatHistoryLines", 100);
     if (m_iMaxChatHistory < 1)
         m_iMaxChatHistory = 100;
-    maxmsgsessions=ini.GetInt(L"MaxMessageSessions",50);
+    maxmsgsessions=ini.GetInt(L"MaxMessageSessions", 50);
     m_bShowActiveDownloadsBold = ini.GetBool(L"ShowActiveDownloadsBold", false);
 
     m_strTxtEditor = ini.GetString(L"TxtEditor", L"notepad.exe");
     m_strVideoPlayer = ini.GetString(L"VideoPlayer", L"");
-    m_strVideoPlayerArgs = ini.GetString(L"VideoPlayerArgs",L"");
+    m_strVideoPlayerArgs = ini.GetString(L"VideoPlayerArgs", L"");
 
-    m_strExtractFolder = ini.GetString(L"ExtractFolder",L"");
-    m_bExtractToIncomingDir = ini.GetBool(L"ExtractToIncomingDir",true);
-    m_bExtractArchives = ini.GetBool(L"ExtractArchives",true);
+    m_strExtractFolder = ini.GetString(L"ExtractFolder", L"");
+    m_bExtractToIncomingDir = ini.GetBool(L"ExtractToIncomingDir", true);
+    m_bExtractArchives = ini.GetBool(L"ExtractArchives", true);
 
 //>>> WiZaRd::Promote VLC
     if (m_strVideoPlayer.IsEmpty() || !::PathFileExists(m_strVideoPlayer))
@@ -2297,18 +2326,18 @@ void CPreferences::LoadPreferences()
     }
 //<<< WiZaRd::Promote VLC
 
-    messageFilter=ini.GetStringLong(L"MessageFilter",L"fastest download speed|fastest eMule");
-    commentFilter = ini.GetStringLong(L"CommentFilter",L"http://|https://|ftp://|www.|ftp.");
+    messageFilter=ini.GetStringLong(L"MessageFilter", L"fastest download speed|fastest eMule");
+    commentFilter = ini.GetStringLong(L"CommentFilter", L"http://|https://|ftp://|www.|ftp.");
     commentFilter.MakeLower();
-    filenameCleanups=ini.GetStringLong(L"FilenameCleanups",L"http|www.|.com|.de|.org|.net|shared|powered|sponsored|sharelive|filedonkey|");
+    filenameCleanups=ini.GetStringLong(L"FilenameCleanups", L"http|www.|.com|.de|.org|.net|shared|powered|sponsored|sharelive|filedonkey|");
     m_iExtractMetaData = ini.GetInt(L"ExtractMetaData", 1); // 0=disable, 1=mp3, 2=MediaDet
     if (m_iExtractMetaData > 1)
         m_iExtractMetaData = 1;
     m_bAdjustNTFSDaylightFileTime=ini.GetBool(L"AdjustNTFSDaylightFileTime", true);
     m_bRearrangeKadSearchKeywords = ini.GetBool(L"RearrangeKadSearchKeywords", true);
 
-    m_bRemoveFinishedDownloads=ini.GetBool(L"AutoClearCompleted",false);
-    m_bUseOldTimeRemaining= ini.GetBool(L"UseSimpleTimeRemainingcomputation",false);
+    m_bRemoveFinishedDownloads=ini.GetBool(L"AutoClearCompleted", false);
+    m_bUseOldTimeRemaining= ini.GetBool(L"UseSimpleTimeRemainingcomputation", false);
 
     // Toolbar
     m_sToolbarSettings = ini.GetString(L"ToolbarSetting", strDefaultToolbar);
@@ -2319,8 +2348,8 @@ void CPreferences::LoadPreferences()
     m_nToolbarLabels = (EToolbarLabelType)ini.GetInt(L"ToolbarLabels", CMuleToolbarCtrl::GetDefaultLabelType());
     m_bReBarToolbar = ini.GetBool(L"ReBarToolbar", 1);
     m_sizToolbarIconSize.cx = m_sizToolbarIconSize.cy = ini.GetInt(L"ToolbarIconSize", 32);
-    m_iStraightWindowStyles=ini.GetInt(L"StraightWindowStyles",0);
-    m_bUseSystemFontForMainControls=ini.GetBool(L"UseSystemFontForMainControls",0);
+    m_iStraightWindowStyles=ini.GetInt(L"StraightWindowStyles", 0);
+    m_bUseSystemFontForMainControls=ini.GetBool(L"UseSystemFontForMainControls", 0);
     m_bRTLWindowsLayout = ini.GetBool(L"RTLWindowsLayout");
     m_strSkinProfile = ini.GetString(L"SkinProfile", L"");
     m_strSkinProfileDir = ini.GetString(L"SkinProfileDir", L"");
@@ -2385,13 +2414,13 @@ void CPreferences::LoadPreferences()
     ///////////////////////////////////////////////////////////////////////////
     // Section: "Proxy"
     //
-    proxy.EnablePassword = ini.GetBool(L"ProxyEnablePassword",false,L"Proxy");
-    proxy.UseProxy = ini.GetBool(L"ProxyEnableProxy",false,L"Proxy");
+    proxy.EnablePassword = ini.GetBool(L"ProxyEnablePassword", false, L"Proxy");
+    proxy.UseProxy = ini.GetBool(L"ProxyEnableProxy", false, L"Proxy");
     proxy.name = CStringA(ini.GetString(L"ProxyName", L"", L"Proxy"));
     proxy.user = CStringA(ini.GetString(L"ProxyUser", L"", L"Proxy"));
     proxy.password = CStringA(ini.GetString(L"ProxyPassword", L"", L"Proxy"));
-    proxy.port = (uint16)ini.GetInt(L"ProxyPort",1080,L"Proxy");
-    proxy.type = (uint16)ini.GetInt(L"ProxyType",PROXYTYPE_SOCKS5,L"Proxy");
+    proxy.port = (uint16)ini.GetInt(L"ProxyPort", 1080, L"Proxy");
+    proxy.type = (uint16)ini.GetInt(L"ProxyType", PROXYTYPE_SOCKS5, L"Proxy");
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -2399,7 +2428,7 @@ void CPreferences::LoadPreferences()
     //
     statsSaveInterval = ini.GetInt(L"SaveInterval", 60, L"Statistics");
     statsConnectionsGraphRatio = ini.GetInt(L"statsConnectionsGraphRatio", 3, L"Statistics");
-    m_strStatsExpandedTreeItems = ini.GetString(L"statsExpandedTreeItems",L"111000000100000110000010000011110000010010",L"Statistics");
+    m_strStatsExpandedTreeItems = ini.GetString(L"statsExpandedTreeItems", L"111000000100000110000010000011110000010010", L"Statistics");
     CString buffer2;
     for (int i = 0; i < _countof(m_adwStatsColors); i++)
     {
@@ -2408,7 +2437,7 @@ void CPreferences::LoadPreferences()
         if (_stscanf(ini.GetString(buffer2, L"", L"Statistics"), L"%i", &m_adwStatsColors[i]) != 1)
             ResetStatsColor(i);
     }
-    bHasCustomTaskIconColor = ini.GetBool(L"HasCustomTaskIconColor",false, L"Statistics");
+    bHasCustomTaskIconColor = ini.GetBool(L"HasCustomTaskIconColor", false, L"Statistics");
     m_bShowVerticalHourMarkers = ini.GetBool(L"ShowVerticalHourMarkers", true, L"Statistics");
 
     // -khaos--+++> Load Stats
@@ -2739,7 +2768,7 @@ bool CPreferences::IsRunAsUserEnabled()
 
 bool CPreferences::GetUseReBarToolbar()
 {
-    return GetReBarToolbar() && theApp.m_ullComCtrlVer >= MAKEDLLVERULL(5,8,0,0);
+    return GetReBarToolbar() && theApp.m_ullComCtrlVer >= MAKEDLLVERULL(5, 8, 0, 0);
 }
 
 int	CPreferences::GetMaxGraphUploadRate(bool bEstimateIfUnlimited)
@@ -3093,7 +3122,7 @@ bool CPreferences::GetSparsePartFiles()
     // to this file.
     // It was suggested that Vista might limits the dataruns, which would lead to such a behavior, but wouldn't
     // make much sense for a sparse file implementation nevertheless.
-    // Due to the fact that eMule wirtes a lot small blocks into sparse files and flushs them every 6 seconds,
+    // Due to the fact that eMule wirtes a lot small blocks into sparse files and flushs them every 6 seconds, 
     // this problem pops up sooner or later for all big files. I don't see any way to walk arround this for now
     // Update: This problem seems to be fixed on Win7, possibly on earlier Vista ServicePacks too
     //		   In any case, we allow sparse files for vesions earlier and later than Vista
@@ -3103,7 +3132,7 @@ bool CPreferences::GetSparsePartFiles()
 bool CPreferences::IsRunningAeroGlassTheme()
 {
     // This is important for all functions which need to draw in the NC-Area (glass style)
-    // Aero by default does not allow this, any drawing will not be visible. This can be turned off,
+    // Aero by default does not allow this, any drawing will not be visible. This can be turned off, 
     // but Vista will not deliver the Glass style then as background when calling the default draw function
     // in other words, its draw all or nothing yourself - eMule chooses currently nothing
     static bool bAeroAlreadyDetected = false;
