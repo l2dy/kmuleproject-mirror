@@ -77,18 +77,17 @@ IMPLEMENT_DYNAMIC(CUpDownClient, CObject)
 
 CUpDownClient::CUpDownClient(CClientReqSocket* sender)
 {
-    socket = sender;
-    reqfile = NULL;
-    Init();
+	Init();
+	socket = sender;	
 }
 
-CUpDownClient::CUpDownClient(CPartFile* in_reqfile, uint16 in_port, UINT in_userid,UINT in_serverip, uint16 in_serverport, bool ed2kID)
+CUpDownClient::CUpDownClient(CPartFile* in_reqfile, const uint16 in_port, const UINT in_userid, const UINT in_serverip, const uint16 in_serverport, const bool ed2kID)
 {
     //Converting to the HybridID system.. The ED2K system didn't take into account of IP address ending in 0..
     //All IP addresses ending in 0 were assumed to be a lowID because of the calculations.
-    socket = NULL;
+	Init();
     reqfile = in_reqfile;
-    Init();
+
     m_nUserPort = in_port;
     //If this is a ED2K source, check if it's a lowID.. If not, convert it to a HyrbidID.
     //Else, it's already in hybrid form.
@@ -100,20 +99,27 @@ CUpDownClient::CUpDownClient(CPartFile* in_reqfile, uint16 in_port, UINT in_user
     //If highID and ED2K source, incoming ID and IP are equal..
     //If highID and Kad source, incoming IP needs ntohl for the IP
     if (!HasLowID() && ed2kID)
-        m_nConnectIP = _CIPAddress(in_userid);
+//>>> WiZaRd::IPv6 [Xanatos]
+		m_nConnectIP = _CIPAddress(ntohl(in_userid));
+        //m_nConnectIP = _CIPAddress(in_userid);
+//<<< WiZaRd::IPv6 [Xanatos]
     else if (!HasLowID())
-        m_nConnectIP = _CIPAddress(ntohl(in_userid));
+//>>> WiZaRd::IPv6 [Xanatos]
+//>>> WiZaRd::IPv6 [Xanatos]
+		m_nConnectIP = _CIPAddress(in_userid);
+        //m_nConnectIP = _CIPAddress(ntohl(in_userid));
+//<<< WiZaRd::IPv6 [Xanatos]
     m_dwServerIP = in_serverip;
     m_nServerPort = in_serverport;
 }
 
 //>>> WiZaRd::IPv6 [Xanatos]
-CUpDownClient::CUpDownClient(CPartFile* in_reqfile, uint16 in_port, const CAddress& IP, UINT in_serverip, uint16 in_serverport)
-{
-    socket = NULL;
-    reqfile = in_reqfile;
+CUpDownClient::CUpDownClient(CPartFile* in_reqfile, const uint16 in_port, const CAddress& IP, const UINT in_serverip, const uint16 in_serverport, const bool ed2kID)
+{    
     Init();
-    m_nUserPort = in_port;
+	reqfile = in_reqfile;
+
+	m_nUserPort = in_port;
     m_nUserIDHybrid = IP.ToIPv4();
     m_nConnectIP = IP;
     m_dwServerIP = in_serverip;
@@ -123,6 +129,8 @@ CUpDownClient::CUpDownClient(CPartFile* in_reqfile, uint16 in_port, const CAddre
 
 void CUpDownClient::Init()
 {
+	reqfile = NULL;
+	socket = NULL;
     m_iModIconIndex = MODMAP_NONE; //>>> WiZaRd::ModIconMapper
 //>>> WiZaRd::ZZUL Upload [ZZ]
     m_nCurQueueSessionUp = 0;
@@ -866,13 +874,10 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
     //(c)Kad users with a *.*.*.0 IPs will look like a lowID user they are actually a highID user.. They can be detected easily
     //because they will send a ID that is the same as their IP.
 //>>> WiZaRd::IPv6 [Xanatos]
-    if (!m_dwUserIP.IsNull())
-    {
-        if (!HasLowID() || m_nUserIDHybrid == 0 || m_nUserIDHybrid == _ntohl(m_dwUserIP.ToIPv4()))
-            m_nUserIDHybrid = m_dwUserIP.ToIPv4();
-    }
-//    if (!HasLowID() || m_nUserIDHybrid == 0 || m_nUserIDHybrid == m_dwUserIP)
-//        m_nUserIDHybrid = ntohl(m_dwUserIP);
+	if (!HasLowID() || m_nUserIDHybrid == 0 || m_nUserIDHybrid == _ntohl(GetIP().ToIPv4()))
+		m_nUserIDHybrid = GetIP().ToIPv4();
+//    if (!HasLowID() || m_nUserIDHybrid == 0 || m_nUserIDHybrid == GetIP())
+//        m_nUserIDHybrid = ntohl(GetIP());
 //<<< WiZaRd::IPv6 [Xanatos]
 
     CClientCredits* pFoundCredits = theApp.clientcredits->GetCredit(m_achUserHash);
@@ -881,8 +886,8 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
         credits = pFoundCredits;
 //>>> WiZaRd::IPv6 [Xanatos]
         if (GetConnectIP().Type() == CAddress::IPv4 // IPv6-TODO: Add IPv6 ban list
-                && !theApp.clientlist->ComparePriorUserhash(_ntohl(GetConnectIP().ToIPv4()), m_nUserPort, pFoundCredits))
-            //if (!theApp.clientlist->ComparePriorUserhash(m_dwUserIP, m_nUserPort, pFoundCredits))
+                && !theApp.clientlist->ComparePriorUserhash(_ntohl(GetIP().ToIPv4()), m_nUserPort, pFoundCredits))
+            //if (!theApp.clientlist->ComparePriorUserhash(GetIP(), m_nUserPort, pFoundCredits))
 //<<< WiZaRd::IPv6 [Xanatos]
         {
             if (thePrefs.GetLogBannedClients())
@@ -1010,7 +1015,6 @@ void CUpDownClient::SendHelloPacket()
     SendPacket(packet, true);
 
     m_bHelloAnswerPending = true;
-    return;
 }
 
 void CUpDownClient::SendMuleInfoPacket(bool bAnswer)
@@ -1710,9 +1714,13 @@ bool CUpDownClient::Disconnected(LPCTSTR pszReason, bool bFromSocket)
     {
         // ensure that all possible block requests are removed from the partfile
         ClearDownloadBlockRequests();
-        if (GetDownloadState() == DS_CONNECTED)  // successfully connected, but probably didn't responsed to our filerequest
+        if (GetDownloadState() == DS_CONNECTED)  // successfully connected, but probably didn't respond to our filerequest
         {
+#ifdef _DEBUG
+			theApp.QueueLogLineEx(LOG_WARNING, L"Add to deadsourcelist in %hs:%u prevented!", __FUNCTION__, __LINE__);
+#else
             theApp.clientlist->m_globDeadSourceList.AddDeadSource(this);
+#endif
             theApp.downloadqueue->RemoveSource(this);
         }
     }
@@ -1775,7 +1783,11 @@ bool CUpDownClient::Disconnected(LPCTSTR pszReason, bool bFromSocket)
     {
         if (m_nDownloadState != DS_NONE) // Unable to connect = Remove any downloadstate
             theApp.downloadqueue->RemoveSource(this);
+#ifdef _DEBUG
+		theApp.QueueLogLineEx(LOG_WARNING, L"Add to deadsourcelist in %hs:%u prevented!", __FUNCTION__, __LINE__);
+#else
         theApp.clientlist->m_globDeadSourceList.AddDeadSource(this);
+#endif
         bDelete = true;
     }
 
@@ -1916,10 +1928,9 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
     }
 
 //>>> WiZaRd::IPv6 [Xanatos]
-    if (m_UserIPv4.IsNull())
-        m_UserIPv4 = CAddress(m_nUserIDHybrid);
-
-    bool bUseIPv6 = m_bOpenIPv6 && !theApp.GetPublicIPv6().IsNull();
+    const bool bUseIPv6 = m_bOpenIPv6 && !theApp.GetPublicIPv6().IsNull();
+	if (m_UserIPv4.IsNull())
+		m_UserIPv4 = CAddress(m_nUserIDHybrid);
     if (bUseIPv6)
         UpdateIP(m_UserIPv6);
     else
@@ -1964,6 +1975,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
 //>>> WiZaRd::IPv6 [Xanatos]
     if (!bUseIPv6) // Note: if an IPv6 is specified in the hello it means it is not firewalled, and if we are IPv6 enabled we use it
 //<<< WiZaRd::IPv6 [Xanatos]
+	{
 //>>> WiZaRd::NatTraversal [Xanatos]
         if (HasLowID() && !bUseUTP)
             //if (HasLowID())
@@ -2015,6 +2027,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
                 return true;
             }
         }
+	}
 
     // Prechecks finished, now for the real connecting
     ////////////////////////////////////////////////////
@@ -2109,6 +2122,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
                 md4clr(hash);
                 data.WriteHash16(hash); // a invalid NULL hash indicates that this is a Custom Packet, not a file reask
 
+				data.WriteUInt8(OP_RENDEZVOUS);
                 data.WriteHash16(thePrefs.GetUserHash());
                 data.WriteUInt8(GetMyConnectOptions(true, true, true)); //>>> WiZaRd::NatTraversal [Xanatos]
 
@@ -3838,15 +3852,9 @@ void CUpDownClient::ProcessChatMessage(CSafeMemFile* data, UINT nLength)
         }
         if (bIsSpam)
         {
-            if (IsSpammer())
-            {
-                if (thePrefs.GetVerbose())
-                    AddDebugLogLine(false, L"'%s' has been marked as spammer", GetUserName());
-            }
             SetSpammer(true);
             theApp.emuledlg->chatwnd->chatselector.EndSession(this);
             return;
-
         }
     }
 

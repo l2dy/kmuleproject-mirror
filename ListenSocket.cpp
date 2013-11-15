@@ -579,9 +579,7 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
                                 if (client->GetRequestFile())
                                     client->DontSwapTo(client->GetRequestFile()); // ZZ:DownloadManager
                                 if (!client->SwapToAnotherFile(_T("Source says it doesn't have the file. CClientReqSocket::ProcessPacket()"), true, true, true, NULL, false, false))   // ZZ:DownloadManager
-                                {
                                     theApp.downloadqueue->RemoveSource(client);
-                                }
                                 break;
                         }
                         break;

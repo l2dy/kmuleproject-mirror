@@ -279,10 +279,7 @@ CUpDownClient* CFriend::GetClientForChatSession()
         pResult = GetLinkedClient(false);
     else
     {
-//>>> WiZaRd::IPv6 [Xanatos]
-        pResult = new CUpDownClient(0, m_nLastUsedPort, m_dwLastUsedIP, 0, 0);
-        //pResult = new CUpDownClient(0, m_nLastUsedPort, m_dwLastUsedIP, 0, 0, true);
-//<<< WiZaRd::IPv6 [Xanatos]
+        pResult = new CUpDownClient(0, m_nLastUsedPort, m_dwLastUsedIP, 0, 0, true);
 //>>> WiZaRd::Easy ModVersion
         //Short note: because of the overhead saving code in baseclient by Morph
         //const bool bSend = !m_pszUsername || !m_strModVersion.IsEmpty();

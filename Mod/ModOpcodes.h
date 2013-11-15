@@ -131,6 +131,7 @@ enum
 //<<< WiZaRd::ModProt
 //>>> WiZaRd::NatTraversal [Xanatos]
 #define CT_EMULE_BUDDYID			0xBF
+#define OP_RENDEZVOUS				0xA0
 #define OP_HOLEPUNCH				0xA1
 //<<< WiZaRd::NatTraversal [Xanatos]
 //>>> WiZaRd::ExtendedXS [Xanatos]

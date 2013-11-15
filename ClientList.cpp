@@ -53,7 +53,7 @@ static char THIS_FILE[] = __FILE__;
 bool CompareIP(const CUpDownClient* client, const _CIPAddress& dwIP)
 {
 //>>> WiZaRd::IPv6 [Xanatos]
-    _CIPAddress comp = dwIP.Type() == CAddress::IPv6 ? client->GetIPv6() : client->GetIP();
+    _CIPAddress comp = dwIP.Type() == CAddress::IPv6 ? client->GetIPv6() : client->GetIPv4();
     if (comp.IsNull())
         comp = client->GetConnectIP();
     if (!comp.IsNull())

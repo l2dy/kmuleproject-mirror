@@ -557,7 +557,7 @@ bool CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
         if (!md4cmp(source->GetUserHash(), thePrefs.GetUserHash()))
         {
             if (thePrefs.GetVerbose())
-                AddDebugLogLine(false, _T("Tried to add source with matching hash to your own."));
+                AddDebugLogLine(false, L"Tried to add source with matching hash to your own.");
             delete source;
             return false;
         }
@@ -565,9 +565,11 @@ bool CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
     // filter sources which are known to be temporarily dead/useless
     if (theApp.clientlist->m_globDeadSourceList.IsDeadSource(source) || sender->m_DeadSourceList.IsDeadSource(source))
     {
-        //if (thePrefs.GetLogFilteredIPs())
-        //	AddDebugLogLine(DLP_DEFAULT, false, _T("Rejected source because it was found on the DeadSourcesList (%s) for file %s : %s")
-        //	,sender->m_DeadSourceList.IsDeadSource(source)? _T("Local") : _T("Global"), sender->GetFileName(), source->DbgGetClientInfo() );
+#ifdef _DEBUG
+        if (thePrefs.GetLogFilteredIPs())
+        	AddDebugLogLine(DLP_DEFAULT, false, L"Rejected source because it was found on the DeadSourcesList (%s) for file %s : %s"
+        	,sender->m_DeadSourceList.IsDeadSource(source)? L"Local" : L"Global", sender->GetFileName(), source->DbgGetClientInfo() );
+#endif
         delete source;
         return false;
     }
@@ -577,7 +579,7 @@ bool CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
     {
 #if defined(_DEBUG) || defined(_BETA)
         //if (thePrefs.GetDebugSourceExchange()) // TODO: Uncomment after testing
-        AddDebugLogLine(DLP_DEFAULT, false, _T("Rejected source because CryptLayer-Setting (Obfuscation) was incompatible for file %s : %s"), sender->GetFileName(), source->DbgGetClientInfo());
+        AddDebugLogLine(DLP_DEFAULT, false, L"Rejected source because CryptLayer-Setting (Obfuscation) was incompatible for file %s : %s", sender->GetFileName(), source->DbgGetClientInfo());
 #endif
         delete source;
         return false;
@@ -605,9 +607,7 @@ bool CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
                     theApp.emuledlg->transferwnd->GetDownloadList()->AddSource(sender,cur_client,true);
                     delete source;
                     if (cur_client->GetDownloadState() != DS_CONNECTED)
-                    {
-                        cur_client->SwapToAnotherFile(_T("New A4AF source found. CDownloadQueue::CheckAndAddSource()"), false, false, false, NULL, true, false); // ZZ:DownloadManager
-                    }
+                        cur_client->SwapToAnotherFile(L"New A4AF source found. CDownloadQueue::CheckAndAddSource()", false, false, false, NULL, true, false); // ZZ:DownloadManager
                     return false;
                 }
                 else
@@ -630,9 +630,9 @@ bool CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
             // downloading) we may get a little in trouble here when "moving" this source to some other partfile without
             // further checks and updates.
             if (md4cmp(source->GetRequestFile()->GetFileHash(), sender->GetFileHash()) != 0)
-                AddDebugLogLine(false, _T("*** CDownloadQueue::CheckAndAddSource -- added potential wrong source (%u)(diff. filehash) to file \"%s\""), source->GetUserIDHybrid(), sender->GetFileName());
+                AddDebugLogLine(false, L"*** CDownloadQueue::CheckAndAddSource -- added potential wrong source (%u)(diff. filehash) to file \"%s\"", source->GetUserIDHybrid(), sender->GetFileName());
             if (source->GetRequestFile()->GetPartCount() != 0 && source->GetRequestFile()->GetPartCount() != sender->GetPartCount())
-                AddDebugLogLine(false, _T("*** CDownloadQueue::CheckAndAddSource -- added potential wrong source (%u)(diff. partcount) to file \"%s\""), source->GetUserIDHybrid(), sender->GetFileName());
+                AddDebugLogLine(false, L"*** CDownloadQueue::CheckAndAddSource -- added potential wrong source (%u)(diff. partcount) to file \"%s\"", source->GetUserIDHybrid(), sender->GetFileName());
         }
 #endif
         source->SetRequestFile(sender);
@@ -647,9 +647,7 @@ bool CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 
 #ifdef _DEBUG
     if (thePrefs.GetVerbose() && source->GetPartCount()!=0 && source->GetPartCount()!=sender->GetPartCount())
-    {
-        DEBUG_ONLY(AddDebugLogLine(false, _T("*** CDownloadQueue::CheckAndAddSource -- New added source (%u, %s) had still value in partcount"), source->GetUserIDHybrid(), sender->GetFileName()));
-    }
+        AddDebugLogLine(false, L"*** CDownloadQueue::CheckAndAddSource -- New added source (%u, %s) had still value in partcount", source->GetUserIDHybrid(), sender->GetFileName());
 #endif
 
     sender->srclist.AddTail(source);

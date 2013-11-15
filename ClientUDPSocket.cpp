@@ -667,10 +667,7 @@ bool CClientUDPSocket::ProcessPacket(const BYTE* packet, UINT size, uint8 opcode
                 CUpDownClient* pRequester = theApp.clientlist->FindClientByUserHash(uchUserHash, ip, nRemoteTCPPort);
                 if (pRequester == NULL)
                 {
-//>>> WiZaRd::IPv6 [Xanatos]
-                    pRequester = new CUpDownClient(NULL, nRemoteTCPPort, ip, 0, 0);
-                    //pRequester = new CUpDownClient(NULL, nRemoteTCPPort, ip, 0, 0, true);
-//<<< WiZaRd::IPv6 [Xanatos]
+                    pRequester = new CUpDownClient(NULL, nRemoteTCPPort, ip, 0, 0, true);
                     pRequester->SetUserHash(uchUserHash);
                     theApp.clientlist->AddClient(pRequester);
                 }
@@ -686,6 +683,30 @@ bool CClientUDPSocket::ProcessPacket(const BYTE* packet, UINT size, uint8 opcode
 
             break;
         }
+//>>> WiZaRd::IPv6 [Xanatos]
+		case OP_RENDEZVOUS:
+		{
+			CSafeMemFile data(packet, size);
+			// Note: we don't get here from the socket directly but from our buddy, the IP and port arguments are the one seen by the buddy
+			uchar uchUserHash[16];
+			data.ReadHash16(uchUserHash);
+			uint8 byConnectOptions = data.ReadUInt8();
+
+			CUpDownClient* callback = theApp.clientlist->FindClientByIP_UDP(ip, port);
+			if(callback == NULL)
+			{
+				callback = new CUpDownClient(NULL, 0, ip, 0, 0);				
+				callback->SetKadPort(port);
+				theApp.clientlist->AddClient(callback);
+			}
+			callback->SetConnectOptions(byConnectOptions, true, true);
+			callback->SetNatTraversalSupport(true);
+			callback->TryToConnect(true, false, NULL, true);
+			break;
+		}
+		case OP_HOLEPUNCH:
+			break;
+//<<< WiZaRd::IPv6 [Xanatos]
         default:
             theStats.AddDownDataOverheadOther(size);
             if (thePrefs.GetDebugClientUDPLevel() > 0)

@@ -84,7 +84,8 @@ public:
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Base
     CUpDownClient(CClientReqSocket* sender = 0);
-    CUpDownClient(CPartFile* in_reqfile, uint16 in_port, UINT in_userid, UINT in_serverup, uint16 in_serverport, bool ed2kID = false);
+    CUpDownClient(CPartFile* in_reqfile, const uint16 in_port, const UINT in_userid, const UINT in_serverup, const uint16 in_serverport, const bool ed2kID = false);
+	CUpDownClient(CPartFile* in_reqfile, const uint16 in_port, const _CIPAddress& IP, const UINT in_serverup, const uint16 in_serverport, const bool ed2kID = false); //>>> WiZaRd::IPv6 [Xanatos]
     virtual ~CUpDownClient();
 
     void			StartDownload();
@@ -1278,8 +1279,7 @@ public:
     void	SetNatTraversalSupport(bool bVal)	{m_fSupportsNatTraversal = bVal ? 1 : 0;}
 //<<< WiZaRd::NatTraversal [Xanatos]
 //>>> WiZaRd::IPv6 [Xanatos]
-public:
-    CUpDownClient(CPartFile* in_reqfile, uint16 in_port, const _CIPAddress& IP, UINT in_serverup, uint16 in_serverport);
+public:    
     bool	SupportsIPv6() const							{return m_fSupportsIPv6;}
     const CAddress&	GetIPv4() const							{return m_UserIPv4;}
     const CAddress&	GetIPv6() const							{return m_UserIPv6;}
