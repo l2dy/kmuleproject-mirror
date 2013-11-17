@@ -959,8 +959,6 @@ void CemuleDlg::AddLogText(UINT uFlags, LPCTSTR pszText)
                 infoWnd->StatusSelector.HighlightItem(CInfoWnd::PaneLog, TRUE);
 //<<< WiZaRd::InfoWnd
 #endif
-            if (!(uFlags & LOG_DONTNOTIFY) && ready)
-                ShowNotifier(pszText, TBN_LOG);
             if (thePrefs.GetLog2Disk())
                 theLog.Log(temp, iLen);
         }
@@ -2242,14 +2240,6 @@ void CemuleDlg::ShowNotifier(LPCTSTR pszText, int iMsgType)
 //>>> Tux::SnarlSupport
             snarlTitle = GetResString(IDS_TBN_ONNEWDOWNLOAD);
             snarlClass = L"NewDownload";
-//<<< Tux::SnarlSupport
-            break;
-
-        case TBN_LOG:
-//>>> Tux::SnarlSupport
-            // TODO: rauswerfen
-            snarlTitle = GetResString(IDS_SV_LOG);
-            snarlClass = L"Log";
 //<<< Tux::SnarlSupport
             break;
 

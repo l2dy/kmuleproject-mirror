@@ -742,10 +742,6 @@ void SnarlInterface::CreateIconArray()
                 szIcon = L"warning.png";
                 break;
 
-            case TBN_LOG:
-                szIcon = L"info.png";
-                break;
-
             case TBN_IMPORTANTEVENT:
                 szIcon = L"ext-error.png";
                 break;
@@ -789,10 +785,6 @@ void SnarlInterface::CreateIconArray()
 
     		case TBN_DOWNLOADADDED:
     			szIcons[i].Format(L"%s,%u", exePath, 71);
-    			break;
-
-    		case TBN_LOG:
-    			szIcons[i].Format(L"%s,%u", exePath, 75);
     			break;
 
     		case TBN_IMPORTANTEVENT:
