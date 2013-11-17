@@ -146,14 +146,15 @@ CRoutingZone::~CRoutingZone()
     }
 }
 
-void CRoutingZone::ReadFile(CString strSpecialNodesdate)
+UINT CRoutingZone::ReadFile(CString strSpecialNodesdate)
 {
+	UINT uValidContacts = 0;
     if (m_pSuperZone != NULL || (m_sFilename.IsEmpty() && strSpecialNodesdate.IsEmpty()))
     {
         ASSERT(0);
-        return;
+        return uValidContacts;
     }
-    bool bDoHaveVerifiedContacts = false;
+	    
     // Read in the saved contact list.
     try
     {
@@ -179,9 +180,9 @@ void CRoutingZone::ReadFile(CString strSpecialNodesdate)
                         if (nBoostrapEdition == 1)
                         {
                             // this is a special bootstrap-only nodes.dat, handle it in a separate reading function
-                            ReadBootstrapNodesDat(file);
+                            uValidContacts = ReadBootstrapNodesDat(file);
                             file.Close();
-                            return;
+                            return uValidContacts;
                         }
                     }
                     if (uVersion >= 1 && uVersion <= 3) // those version we know, others we ignore
@@ -191,8 +192,8 @@ void CRoutingZone::ReadFile(CString strSpecialNodesdate)
                     AddDebugLogLine(false, GetResString(IDS_ERR_KADCONTACTS));
             }
             if (uNumContacts != 0 && uNumContacts * 25 <= (file.GetLength() - file.GetPosition()))
-            {
-                UINT uValidContacts = 0;
+            {   
+				bool bDoHaveVerifiedContacts = false;
                 CUInt128 uID;
                 while (uNumContacts)
                 {
@@ -237,11 +238,11 @@ void CRoutingZone::ReadFile(CString strSpecialNodesdate)
                             {
                                 // This was not a dead contact, Inc counter if add was successful
                                 if (AddUnfiltered(uID, uIP, uUDPPort, uTCPPort, uContactVersion, kadUDPKey, bVerified, false, true, false))
-                                    uValidContacts++;
+                                    ++uValidContacts;
                             }
                         }
                     }
-                    uNumContacts--;
+                    --uNumContacts;
                 }
                 AddLogLine(false, GetResString(IDS_KADCONTACTSREAD), uValidContacts);
                 if (!bDoHaveVerifiedContacts)
@@ -260,9 +261,10 @@ void CRoutingZone::ReadFile(CString strSpecialNodesdate)
         e->Delete();
         DebugLogError(L"CFileException in CRoutingZone::readFile");
     }
+	return uValidContacts;
 }
 
-void CRoutingZone::ReadBootstrapNodesDat(CFileDataIO& file)
+UINT CRoutingZone::ReadBootstrapNodesDat(CFileDataIO& file)
 {
     // Bootstrap versions of nodes.dat files, are in the style of version 1 nodes.dats. The difference is that
     // they will contain more contacts 500-1000 instead 50, and those contacts are not added into the routingtable
@@ -271,15 +273,15 @@ void CRoutingZone::ReadBootstrapNodesDat(CFileDataIO& file)
     // a normal nodes.dat with eMule, those 50 nodes would be kinda DDOSed because everyone adds them to their routing
     // table, while with this style, we don't actually add any of the contacts to our routing table in the end and we
     // ask only one of those 1000 contacts one time (well or more until we find an alive one).
+	UINT uValidContacts = 0;
     if (!CKademlia::s_liBootstapList.IsEmpty())
     {
         ASSERT(0);
-        return;
+        return uValidContacts;
     }
     UINT uNumContacts = file.ReadUInt32();
     if (uNumContacts != 0 && uNumContacts * 25 == (file.GetLength() - file.GetPosition()))
-    {
-        UINT uValidContacts = 0;
+    {        
         CUInt128 uID;
         while (uNumContacts)
         {
@@ -338,6 +340,7 @@ void CRoutingZone::ReadBootstrapNodesDat(CFileDataIO& file)
         AddLogLine(false, GetResString(IDS_KADCONTACTSREAD), CKademlia::s_liBootstapList.GetCount());
         DebugLog(L"Loaded Bootstrap nodes.dat, selected %u out of %u valid contacts", CKademlia::s_liBootstapList.GetCount(), uValidContacts);
     }
+	return uValidContacts;
 }
 
 void CRoutingZone::WriteFile()
@@ -787,7 +790,7 @@ UINT CRoutingZone::Consolidate()
 
 
         StartTimer();
-        uMergeCount++;
+        ++uMergeCount;
     }
     return uMergeCount;
 }
@@ -984,7 +987,7 @@ UINT CRoutingZone::GetBootstrapContacts(ContactList *plistResult, UINT uMaxRequi
             for (ContactList::const_iterator itContactList = top.begin(); itContactList != top.end(); ++itContactList)
             {
                 plistResult->push_back(*itContactList);
-                uRetVal++;
+                ++uRetVal;
                 if (uRetVal == uMaxRequired)
                     break;
             }

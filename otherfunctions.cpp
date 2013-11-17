@@ -4262,7 +4262,7 @@ uint8 GetMyConnectOptions(const bool bEncryption, const bool bCallback, const bo
     const uint8 uDirectUDPCallback	= (bCallback && theApp.IsFirewalled() && Kademlia::CKademlia::IsRunning() && !Kademlia::CUDPFirewallTester::IsFirewalledUDP(true) && Kademlia::CUDPFirewallTester::IsVerified()) ? 1 : 0;
 
 //>>> WiZaRd::NatTraversal [Xanatos]
-    const uint8 uSupportsNatTraversal	= bNATTraversal ? 1 : 0;
+	const uint8 uSupportsNatTraversal	= bNATTraversal ? 1 : 0;
     const uint8 byCryptOptions = (uSupportsNatTraversal << 7) | (uDirectUDPCallback << 3) | (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
     //const uint8 byCryptOptions = (uDirectUDPCallback << 3) | (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
 //<<< WiZaRd::NatTraversal [Xanatos]
@@ -4412,8 +4412,9 @@ void ShowNetworkInfo()
     dlg.DoModal();
 }
 
-void UpdateNodesDatFromURL(CString strURL)
+bool UpdateNodesDatFromURL(CString strURL)
 {
+	bool success = false;
     CString strTempFilename;
     strTempFilename.Format(L"%stemp-%d-nodes.dat", thePrefs.GetMuleDirectory(EMULE_CONFIGDIR), ::GetTickCount());
 
@@ -4424,18 +4425,18 @@ void UpdateNodesDatFromURL(CString strURL)
     dlgDownload.m_sURLToDownload = strURL;
     dlgDownload.m_sFileToDownloadInto = strTempFilename;
     if (dlgDownload.DoModal() != IDOK)
-    {
         LogError(LOG_STATUSBAR, GetResString(IDS_ERR_FAILEDDOWNLOADNODES), strURL);
-        return;
-    }
-
-    if (!Kademlia::CKademlia::IsRunning())
-    {
-        Kademlia::CKademlia::Start();
-        theApp.emuledlg->ShowConnectionState();
-    }
-    Kademlia::CKademlia::GetRoutingZone()->ReadFile(strTempFilename);
-    (void)_tremove(strTempFilename);
+	else
+	{
+		if (!Kademlia::CKademlia::IsRunning())
+		{
+			Kademlia::CKademlia::Start();
+			theApp.emuledlg->ShowConnectionState();
+		}
+		success = Kademlia::CKademlia::GetRoutingZone()->ReadFile(strTempFilename) != 0;
+		(void)_tremove(strTempFilename);
+	}
+	return success;
 }
 
 CList<Kademlia::CContact*> m_lContacts;
@@ -5321,8 +5322,7 @@ void DeleteBetaFile()
 void GetPartStartAndEnd(const UINT uPartNumber, const uint64 partsize, const EMFileSize emFileSize, uint64& uStart, uint64& uEnd)
 {
     uStart = partsize*(uint64)uPartNumber;
-    if (partsize*(uint64)(uPartNumber+1) > emFileSize)
+	uEnd = partsize*(uint64)(uPartNumber+1);
+	if(uEnd > emFileSize)
         uEnd = emFileSize;
-    else
-        uEnd = partsize*(uint64)(uPartNumber+1);
 }

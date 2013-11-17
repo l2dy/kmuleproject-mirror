@@ -465,7 +465,7 @@ namespace Kademlia
 {
 class CContact;
 };
-void	UpdateNodesDatFromURL(CString strURL);
+bool	UpdateNodesDatFromURL(CString strURL);
 bool	ContactAdd(Kademlia::CContact* pContact);
 void	ContactRem(Kademlia::CContact* pContact);
 UINT	GetKadContactCount();

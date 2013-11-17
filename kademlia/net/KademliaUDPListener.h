@@ -53,8 +53,8 @@ class CKademliaUDPListener : public CPacketTracking
     friend class CSearch;
 public:
     ~CKademliaUDPListener();
-    void Bootstrap(LPCTSTR uIP, uint16 uUDPPort);
-    void Bootstrap(UINT uIP, uint16 uUDPPort, uint8 byKadVersion = 0, const CUInt128* uCryptTargetID = NULL);
+    bool Bootstrap(LPCTSTR uIP, const uint16 uUDPPort);
+    bool Bootstrap(const UINT uIP, const uint16 uUDPPort, const uint8 byKadVersion = 0, const CUInt128* uCryptTargetID = NULL);
     void FirewalledCheck(UINT uIP, uint16 uUDPPort, CKadUDPKey senderUDPKey, uint8 byKadVersion);
     void SendMyDetails(byte byOpcode, UINT uIP, uint16 uUDPPort, uint8 byKadVersion, CKadUDPKey targetUDPKey, const CUInt128* uCryptTargetID, bool bRequestAckPackage);
     void SendPublishSourcePacket(CContact* pContact, const CUInt128& uTargetID, const CUInt128& uContactID, const TagList& tags);

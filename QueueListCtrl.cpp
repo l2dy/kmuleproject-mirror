@@ -661,10 +661,9 @@ BOOL CQueueListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                 break;
             }
             case MP_BOOT:
-                if (client->GetKadPort() && client->GetKadVersion() > 1)
+                ASSERT(client && client->IsEd2kClient() && client->GetKadPort()!=0 && client->GetKadVersion() > 1);
 //>>> WiZaRd::IPv6 [Xanatos]
-                    if (!client->GetIPv4().IsNull())
-                        Kademlia::CKademlia::Bootstrap(client->GetIPv4().ToIPv4(), client->GetKadPort());
+				Kademlia::CKademlia::Bootstrap(client->GetIP().ToIPv4(), client->GetKadPort());
                 //Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
 //<<< WiZaRd::IPv6 [Xanatos]
                 break;

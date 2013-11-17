@@ -340,28 +340,30 @@ void CKademlia::Process()
         }
     }
 
-    if (!IsConnected() && !s_liBootstapList.IsEmpty()
-            && (tNow - m_tBootstrap > 15 || (GetRoutingZone()->GetNumContacts() == 0 && tNow - m_tBootstrap >= 2)))
-    {
-        CContact* pContact = s_liBootstapList.RemoveHead();
-        m_tBootstrap = tNow;
-        DebugLog(_T("Trying to Bootstrap Kad from %s, Distance: %s, Version: %u, %u Contacts left"), ipstr(ntohl(pContact->GetIPAddress())), pContact->GetDistance().ToHexString(),  pContact->GetVersion(), s_liBootstapList.GetCount());
-        m_pInstance->m_pUDPListener->Bootstrap(pContact->GetIPAddress(), pContact->GetUDPPort(), pContact->GetVersion(), &pContact->GetClientID());
-        delete pContact;
-    }
-
+    if(CKademlia::BootstrappingNeeded())
+	{
+		if(!s_liBootstapList.IsEmpty())
+		{
+			m_tBootstrap = tNow;
+			CContact* pContact = s_liBootstapList.RemoveHead();			
+			DebugLog(_T("Trying to Bootstrap Kad from %s, Distance: %s, Version: %u, %u Contacts left"), ipstr(ntohl(pContact->GetIPAddress())), pContact->GetDistance().ToHexString(),  pContact->GetVersion(), s_liBootstapList.GetCount());
+			m_pInstance->m_pUDPListener->Bootstrap(pContact->GetIPAddress(), pContact->GetUDPPort(), pContact->GetVersion(), &pContact->GetClientID());
+			delete pContact;
+		}
 //>>> WiZaRd::Nodes.dat Autoupdate
-    static bool bUpdated = false;
-    if (!bUpdated && !IsConnected())
-    {
-        const CString strFilename = thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + L"nodes.dat";
-        if (!::PathFileExists(strFilename) || GetKadContactCount() == 0)
-        {
-            bUpdated = true;
-            UpdateNodesDatFromURL(MOD_NODES_URL);
-        }
-    }
+		else
+		{
+			static bool bUpdated = false;
+			if (!bUpdated)
+			{
+				m_tBootstrap = tNow;
+				const CString strFilename = thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + L"nodes.dat";
+				//if (!::PathFileExists(strFilename) || GetKadContactCount() == 0)
+					bUpdated = UpdateNodesDatFromURL(MOD_NODES_URL);
+			}
+		}
 //<<< WiZaRd::Nodes.dat Autoupdate
+	}
 
     if (GetUDPListener() != NULL)
         GetUDPListener()->ExpireClientSearch(); // function does only one compare in most cases, so no real need for a timer
@@ -457,22 +459,16 @@ bool CKademlia::GetPublish()
     return false;
 }
 
-void CKademlia::Bootstrap(LPCTSTR szHost, uint16 uPort)
+void CKademlia::Bootstrap(LPCTSTR szHost, const uint16 uPort)
 {
-    if (m_pInstance && m_pInstance->m_pUDPListener && !IsConnected() && time(NULL) - m_tBootstrap > 10)
-    {
+	if(CKademlia::BootstrappingNeeded() && m_pInstance->m_pUDPListener->Bootstrap(szHost, uPort))
         m_tBootstrap = time(NULL);
-        m_pInstance->m_pUDPListener->Bootstrap(szHost, uPort);
-    }
 }
 
-void CKademlia::Bootstrap(UINT uIP, uint16 uPort)
+void CKademlia::Bootstrap(const UINT uIP, const uint16 uPort)
 {
-    if (m_pInstance && m_pInstance->m_pUDPListener && !IsConnected() && time(NULL) - m_tBootstrap > 10)
-    {
+    if(CKademlia::BootstrappingNeeded() && m_pInstance->m_pUDPListener->Bootstrap(uIP, uPort))
         m_tBootstrap = time(NULL);
-        m_pInstance->m_pUDPListener->Bootstrap(uIP, uPort);
-    }
 }
 
 void CKademlia::RecheckFirewalled()
@@ -729,6 +725,15 @@ bool CKademlia::IsRunningInLANMode()
         }
     }
     return m_bLANMode;
+}
+
+bool CKademlia::BootstrappingNeeded()
+{
+	time_t tNow = time(NULL);		
+	return m_pInstance 
+		&& m_pInstance->m_pUDPListener
+		&& !IsConnected() 		
+		&& (tNow - m_tBootstrap > 15 || (GetRoutingZone()->GetNumContacts() == 0 && tNow - m_tBootstrap >= 2));
 }
 
 //>>> WiZaRd::IPFiltering

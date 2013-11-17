@@ -301,7 +301,7 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
                     bool bNewClient = !client;
                     if (bNewClient)
                     {
-                        // create new client to save standart informations
+                        // create new client to save standard information
                         client = new CUpDownClient(this);
                     }
 
@@ -348,7 +348,7 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
 
                     theApp.emuledlg->transferwnd->GetClientList()->RefreshClient(client);
 
-                    // send a response packet with standart informations
+                    // send a response packet with standard information
                     if (client->GetHashType() == SO_EMULE && !bIsMuleHello)
                         client->SendMuleInfoPacket(false);
 
@@ -376,8 +376,7 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
 
                         if (client->GetKadPort() && client->GetKadVersion() > 1)
 //>>> WiZaRd::IPv6 [Xanatos]
-                            if (!client->GetIPv4().IsNull())
-                                Kademlia::CKademlia::Bootstrap(client->GetIPv4().ToIPv4(), client->GetKadPort());
+                                Kademlia::CKademlia::Bootstrap(client->GetIP().ToIPv4(), client->GetKadPort());
                         //Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
 //<<< WiZaRd::IPv6 [Xanatos]
                     }
@@ -1254,8 +1253,7 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
 
                     if (client->GetKadPort() && client->GetKadVersion() > 1)
 //>>> WiZaRd::IPv6 [Xanatos]
-                        if (!client->GetIPv4().IsNull())
-                            Kademlia::CKademlia::Bootstrap(client->GetIPv4().ToIPv4(), client->GetKadPort());
+                            Kademlia::CKademlia::Bootstrap(client->GetIP().ToIPv4(), client->GetKadPort());
                     //Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
 //<<< WiZaRd::IPv6 [Xanatos]
 
@@ -1378,7 +1376,7 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
                                 // no passive adding of files with only one part
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
                                 if (reqfile->IsPartFile() && reqfile->GetFileSize() > (client->SupportsSCT() ? (uint64)CRUMBSIZE : (uint64)PARTSIZE))
-                                    //if (reqfile->IsPartFile() && reqfile->GetFileSize() > (uint64)PARTSIZE)
+								//if (reqfile->IsPartFile() && reqfile->GetFileSize() > (uint64)PARTSIZE)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
                                 {
                                     if (((CPartFile*)reqfile)->GetMaxSources() > ((CPartFile*)reqfile)->GetSourceCount())
@@ -1471,8 +1469,7 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
 
                     if (client->GetKadPort() && client->GetKadVersion() > 1)
 //>>> WiZaRd::IPv6 [Xanatos]
-                        if (!client->GetIPv4().IsNull())
-                            Kademlia::CKademlia::Bootstrap(client->GetIPv4().ToIPv4(), client->GetKadPort());
+                            Kademlia::CKademlia::Bootstrap(client->GetIP().ToIPv4(), client->GetKadPort());
                     //Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
 //<<< WiZaRd::IPv6 [Xanatos]
 

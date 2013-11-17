@@ -75,31 +75,37 @@ CKademliaUDPListener::~CKademliaUDPListener()
 }
 
 // Used by Kad1.0 and Kad 2.0
-void CKademliaUDPListener::Bootstrap(LPCTSTR szHost, uint16 uUDPPort)
+bool CKademliaUDPListener::Bootstrap(LPCTSTR szHost, const uint16 uUDPPort)
 {
     UINT uRetVal = 0;
     if (_istalpha((_TUCHAR)szHost[0]))
     {
         hostent *php = gethostbyname(CT2CA(szHost));
         if (php == NULL)
-            return;
+            return false;
         memcpy(&uRetVal, php->h_addr, sizeof(uRetVal));
     }
     else
         uRetVal = inet_addr(CT2CA(szHost));
-    Bootstrap(ntohl(uRetVal), uUDPPort);
+    return Bootstrap(ntohl(uRetVal), uUDPPort);
 }
 
 // Used by Kad1.0 and Kad 2.0
-void CKademliaUDPListener::Bootstrap(UINT uIP, uint16 uUDPPort, uint8 byKadVersion, const CUInt128* uCryptTargetID)
+bool CKademliaUDPListener::Bootstrap(UINT uIP, const uint16 uUDPPort, const uint8 byKadVersion, const CUInt128* uCryptTargetID)
 {
-    if (thePrefs.GetDebugClientKadUDPLevel() > 0)
-        DebugSend("KADEMLIA2_BOOTSTRAP_REQ", uIP, uUDPPort);
-    CSafeMemFile fileIO(0);
-    if (byKadVersion >= KADEMLIA_VERSION6_49aBETA)
-        SendPacket(&fileIO, KADEMLIA2_BOOTSTRAP_REQ, uIP, uUDPPort, 0, uCryptTargetID);
-    else
-        SendPacket(&fileIO, KADEMLIA2_BOOTSTRAP_REQ, uIP, uUDPPort, 0, NULL);
+	bool sent = false;
+	if(uIP != 0 && uUDPPort != 0)
+	{
+		if (thePrefs.GetDebugClientKadUDPLevel() > 0)
+			DebugSend("KADEMLIA2_BOOTSTRAP_REQ", uIP, uUDPPort);
+		CSafeMemFile fileIO(0);
+		if (byKadVersion >= KADEMLIA_VERSION6_49aBETA)
+			SendPacket(&fileIO, KADEMLIA2_BOOTSTRAP_REQ, uIP, uUDPPort, 0, uCryptTargetID);
+		else
+			SendPacket(&fileIO, KADEMLIA2_BOOTSTRAP_REQ, uIP, uUDPPort, 0, NULL);
+		sent = true;
+	}
+	return sent;
 }
 
 // Used by Kad1.0 and Kad 2.0

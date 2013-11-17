@@ -46,9 +46,6 @@
 #include "SharedFileList.h"
 #include "ToolbarWnd.h"
 #include "./Mod/ModIconMapping.h" //>>> WiZaRd::ModIconMappings
-#ifdef _DEBUG
-#include "packets.h"
-#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1603,17 +1600,8 @@ void CDownloadListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
         }
         else
         {
-            //const CUpDownClient* client = (CUpDownClient*)content->value;
-            CUpDownClient* client = (CUpDownClient*)content->value;
-#ifdef _DEBUG
-            CPartFile* kreqfile = client->GetRequestFile();
-            Packet* tosend = kreqfile->CreateSrcInfoPacket(client, SOURCEEXCHANGEEXT_VERSION, 0);
-            //WiZaRd: explicitly answer with "0" sources so the remote client doesn't hammer us
-            if (tosend == NULL)
-                tosend = kreqfile->GetEmptyXSPacket(client, SOURCEEXCHANGEEXT_VERSION, 0);
-            client->ProcessSourceAnswer((const BYTE*)tosend->pBuffer, tosend->size, tosend->opcode, tosend->size);
-            delete tosend;
-#endif
+            const CUpDownClient* client = (CUpDownClient*)content->value;
+
             CTitleMenu ClientMenu;
             ClientMenu.CreatePopupMenu();
             ClientMenu.AddMenuTitle(GetResString(IDS_CLIENTS), true);
@@ -1644,9 +1632,7 @@ void CDownloadListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 // ZZ:DownloadManager -->
 #ifdef _DEBUG
                 if (content->type == UNAVAILABLE_SOURCE)
-                {
                     A4AFMenu.AppendMenu(MF_STRING,MP_A4AF_CHECK_THIS_NOW,GetResString(IDS_A4AF_CHECK_THIS_NOW));
-                }
 # endif
 // <-- ZZ:DownloadManager
                 if (A4AFMenu.GetMenuItemCount()>0)
@@ -2263,10 +2249,9 @@ BOOL CDownloadListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                     ShowClientDialog(client);
                     break;
                 case MP_BOOT:
-                    if (client->GetKadPort() && client->GetKadVersion() > 1)
+                    ASSERT(client && client->IsEd2kClient() && client->GetKadPort()!=0 && client->GetKadVersion() > 1);
 //>>> WiZaRd::IPv6 [Xanatos]
-                        if (!client->GetIPv4().IsNull())
-                            Kademlia::CKademlia::Bootstrap(client->GetIPv4().ToIPv4(), client->GetKadPort());
+					Kademlia::CKademlia::Bootstrap(client->GetIP().ToIPv4(), client->GetKadPort());
                     //Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
 //<<< WiZaRd::IPv6 [Xanatos]
                     break;
