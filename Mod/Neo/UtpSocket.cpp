@@ -3,6 +3,7 @@
 //
 
 #include "stdafx.h"
+#ifdef NAT_TRAVERSAL
 #include "UtpSocket.h"
 #include "../../libutp/utp.h"
 #include "emule.h"
@@ -305,3 +306,4 @@ BOOL CUtpSocket::SetSockOpt(int nOptionName, const void* lpOptionValue, int nOpt
             return FALSE;
     }
 }
+#endif

@@ -3,6 +3,7 @@
 //
 
 #include "stdafx.h"
+#ifdef IPV6_SUPPORT
 #include "Address.h"
 
 #ifndef WIN32
@@ -32,47 +33,105 @@
 
 CAddress::CAddress(EAF eAF)
 {
-    m_eAF = eAF;
-    memset(m_IP, 0, 16);
+	Init();
+    m_eAF = eAF;    
 }
 
 CAddress::CAddress(const byte* IP)
 {
+	Init();
     m_eAF = IPv6;
-    memcpy(m_IP, IP, Len());
+    memcpy(m_IP, IP, GetSize());
 }
 
 CAddress::CAddress(UINT IP) // must be same as with Qt
 {
+	Init();
     m_eAF = IPv4;
     IP = _ntohl(IP);
-    memcpy(m_IP, &IP, Len());
+    memcpy(m_IP, &IP, GetSize());
 }
+
+CAddress::~CAddress()
+{
+}
+
+bool CAddress::operator < (const CAddress &Other) const
+{
+	if (m_eAF != Other.m_eAF) 
+		return m_eAF < Other.m_eAF;
+	return memcmp(m_IP, Other.m_IP, GetSize()) < 0;
+}
+
+bool CAddress::operator > (const CAddress &Other) const
+{
+	if (m_eAF != Other.m_eAF) 
+		return m_eAF > Other.m_eAF;
+	return memcmp(m_IP, Other.m_IP, GetSize()) > 0;
+}
+
+bool CAddress::operator == (const CAddress &Other) const	
+{
+	return (m_eAF == Other.m_eAF) && memcmp(m_IP, Other.m_IP, GetSize()) == 0;
+}
+
+bool CAddress::operator != (const CAddress &Other) const	
+{
+	return !(*this == Other);
+}
+
+void CAddress::Init()
+{
+	m_eAF = None;
+	memset(m_IP, 0, 16);
+}
+
 
 UINT CAddress::ToIPv4() const // must be same as with Qt*/
 {
     UINT ip = 0;
     if (m_eAF == IPv4)
-        memcpy(&ip, m_IP, Len());
+        memcpy(&ip, m_IP, GetSize());
     return _ntohl(ip);
 }
 
-size_t CAddress::Len() const
+size_t CAddress::GetSize() const
 {
-    return m_eAF == IPv6 ? 16 : 4;
+	switch (m_eAF)
+	{
+		case IPv4:	return 4; 
+		case IPv6:	return 16; 
+		default:	return 0; 
+	}
 }
 
-int CAddress::AF() const
+int CAddress::GetAF() const
 {
     return m_eAF == IPv6 ? AF_INET6 : AF_INET;
+}
+
+CAddress::EAF	CAddress::GetType() const
+{
+	return m_eAF;
+}
+
+const unsigned char* CAddress::Data() const
+{
+	return m_IP;
 }
 
 std::string CAddress::ToString() const
 {
     char Dest[65] = {'\0'};
     if (m_eAF != None)
-        _inet_ntop(AF(), m_IP, Dest, 65);
+        _inet_ntop(GetAF(), m_IP, Dest, sizeof(Dest));
     return Dest;
+}
+
+std::wstring CAddress::ToStringW() const 
+{
+	std::string s = ToString(); 
+	return std::wstring(s.begin(), s.end());
 }
 
 bool CAddress::FromString(const std::string Str)
@@ -82,11 +141,14 @@ bool CAddress::FromString(const std::string Str)
     else if (Str.find(":") != std::string::npos)
         m_eAF = IPv6;
     else
+	{
+		ASSERT(0);
         return false;
-    return _inet_pton(AF(), Str.c_str(), m_IP) == 1;
+	}
+    return _inet_pton(GetAF(), Str.c_str(), m_IP) == 1;
 }
 
-void CAddress::FromSA(const sockaddr* sa, int sa_len, uint16* pPort)
+void CAddress::FromSA(const sockaddr* sa, const int sa_len, uint16* pPort)
 {
     switch (sa->sa_family)
     {
@@ -101,6 +163,7 @@ void CAddress::FromSA(const sockaddr* sa, int sa_len, uint16* pPort)
                 *pPort = _ntohs(sa4->sin_port);
             break;
         }
+
         case AF_INET6:
         {
             ASSERT(sizeof(sockaddr_in6) == sa_len);
@@ -112,17 +175,18 @@ void CAddress::FromSA(const sockaddr* sa, int sa_len, uint16* pPort)
                 *pPort  = _ntohs(sa6->sin6_port);
             break;
         }
+
         default:
         {
             //WiZaRd: happens e.g. when a disconnect occurs and we don't have the IP, yet
-            //ASSERT(0);
+            ASSERT(0);
             m_eAF = None;
             break;
         }
     }
 }
 
-void CAddress::ToSA(sockaddr* sa, int *sa_len, uint16 uPort) const
+void CAddress::ToSA(sockaddr* sa, int *sa_len, const uint16 uPort) const
 {
     switch (m_eAF)
     {
@@ -135,9 +199,10 @@ void CAddress::ToSA(sockaddr* sa, int *sa_len, uint16 uPort) const
 
             sa4->sin_family = AF_INET;
             sa4->sin_addr.s_addr = *((UINT*)m_IP);
-            sa4->sin_port = _ntohs(uPort);
+            sa4->sin_port = htons(uPort);
             break;
         }
+
         case IPv6:
         {
             ASSERT(sizeof(sockaddr_in6) <= *sa_len);
@@ -147,9 +212,10 @@ void CAddress::ToSA(sockaddr* sa, int *sa_len, uint16 uPort) const
 
             sa6->sin6_family = AF_INET6;
             memcpy(&sa6->sin6_addr, m_IP, 16);
-            sa6->sin6_port = _ntohs(uPort);
+            sa6->sin6_port = htons(uPort);
             break;
         }
+
         default:
             ASSERT(0);
     }
@@ -166,32 +232,37 @@ bool CAddress::IsNull() const
     return true;
 }
 
-bool CAddress::Convert(EAF eAF)
+bool CAddress::ConvertTo(const EAF eAF)
 {
-    if (eAF == m_eAF)
-        return true;
-    if (eAF == IPv6)
-    {
-        m_IP[12] = m_IP[0];
-        m_IP[13] = m_IP[1];
-        m_IP[14] = m_IP[2];
-        m_IP[15] = m_IP[3];
+	bool bConverted = true;
+    if (eAF != m_eAF)
+	{
+		if (eAF == IPv6)
+		{
+			m_IP[12] = m_IP[0];
+			m_IP[13] = m_IP[1];
+			m_IP[14] = m_IP[2];
+			m_IP[15] = m_IP[3];
 
-        m_IP[10] = m_IP[11] = 0xFF;
-        m_IP[0] = m_IP[1] = m_IP[2] = m_IP[3] = m_IP[4] = m_IP[5] = m_IP[6] = m_IP[7] = m_IP[8] = m_IP[9] = 0;
-    }
-    else if (m_IP[10] == 0xFF && m_IP[11] == 0xFF
-             && !m_IP[0] && !m_IP[1] && !m_IP[2] && !m_IP[3] && !m_IP[4] && !m_IP[5] && !m_IP[6] && !m_IP[7] && !m_IP[8] && !m_IP[9])
-    {
-        m_IP[0] = m_IP[12];
-        m_IP[1] = m_IP[13];
-        m_IP[2] = m_IP[14];
-        m_IP[3] = m_IP[15];
-    }
-    else
-        return false;
-    m_eAF = eAF;
-    return true;
+			m_IP[10] = m_IP[11] = 0xFF;
+			m_IP[0] = m_IP[1] = m_IP[2] = m_IP[3] = m_IP[4] = m_IP[5] = m_IP[6] = m_IP[7] = m_IP[8] = m_IP[9] = 0;
+
+			m_eAF = eAF;
+		}
+		else if (m_IP[10] == 0xFF && m_IP[11] == 0xFF
+				 && !m_IP[0] && !m_IP[1] && !m_IP[2] && !m_IP[3] && !m_IP[4] && !m_IP[5] && !m_IP[6] && !m_IP[7] && !m_IP[8] && !m_IP[9])
+		{
+			m_IP[0] = m_IP[12];
+			m_IP[1] = m_IP[13];
+			m_IP[2] = m_IP[14];
+			m_IP[3] = m_IP[15];
+
+			m_eAF = eAF;
+		}
+		else
+			bConverted = false;
+	}    
+    return bConverted;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -208,7 +279,7 @@ char* _inet_ntop(int af, const void *src, char *dst, int size)
         if (size < INET_ADDRSTRLEN)
         {
             errno = ENOSPC;
-            return 0;
+            return NULL;
         }
         p = (unsigned char*)&(((struct in_addr*)src)->s_addr);
         sprintf(dst, "%d.%d.%d.%d", p[0], p[1], p[2], p[3]);
@@ -218,12 +289,13 @@ char* _inet_ntop(int af, const void *src, char *dst, int size)
     if (af != AF_INET6)
     {
         errno = EAFNOSUPPORT;
-        return 0;
+        return NULL;
     }
+
     if (size < INET6_ADDRSTRLEN)
     {
         errno = ENOSPC;
-        return 0;
+        return NULL;
     }
 
     p = (unsigned char*)((struct in6_addr*)src)->s6_addr;
@@ -362,3 +434,4 @@ int _inet_pton(int af, const char *src, void *dst)
     }
     return 1;
 }
+#endif

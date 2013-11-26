@@ -182,7 +182,7 @@ void CUDPFirewallTester::SetUDPFWCheckResult(const bool bSucceeded, const bool b
 bool CUDPFirewallTester::ReCheckFirewallUDP(const bool bSetUnverified)
 {
     bool checked = false;
-    if (CUDPFirewallTester::GetRunningFWChecks())
+    if (CUDPFirewallTester::GetRunningFWChecks() == 0)
     {
         //ASSERT(m_byFWChecksRunningUDP == 0);
         m_byFWChecksRunningUDP = 0;

@@ -54,7 +54,7 @@ void CUrlClient::SetRequestFile(CPartFile* pReqFile)
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
         delete m_pPartStatus;
         m_pPartStatus = NULL; // In case CAICHStatusVector constructor fails
-        m_pPartStatus = new CAICHStatusVector(pReqFile);
+        m_pPartStatus = new CAICHStatusVector(pReqFile->GetFileSize());
         m_pPartStatus->Set(0, pReqFile->GetFileSize() - 1ULL);
         //m_nPartCount = reqfile->GetPartCount();
         //m_abyPartStatus = new uint8[m_nPartCount];
@@ -122,20 +122,23 @@ bool CUrlClient::SetUrl(LPCTSTR pszUrl, UINT nIP)
     SetUserName(szUrl);
 
     //NOTE: be very careful with what is stored in the following IP/ID/Port members!
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
     if (nIP)
-        m_nConnectIP = _CIPAddress(_ntohl(nIP));
+        m_nConnectIP = CAddress(_ntohl(nIP));
     else
-        m_nConnectIP = _CIPAddress(_ntohl(inet_addr(CT2A(szHostName))));
+        m_nConnectIP = CAddress(_ntohl(inet_addr(CT2A(szHostName))));
     m_nUserIDHybrid = m_nConnectIP.ToIPv4();
-    /*if (nIP)
+//<<< WiZaRd::IPv6 [Xanatos]
+#else
+    if (nIP)
         m_nConnectIP = nIP;
     else
         m_nConnectIP = inet_addr(CT2A(szHostName));
     //	if (m_nConnectIP == INADDR_NONE)
     //		m_nConnectIP = 0;
-    m_nUserIDHybrid = htonl(m_nConnectIP);*/
-//<<< WiZaRd::IPv6 [Xanatos]
+    m_nUserIDHybrid = htonl(m_nConnectIP);
+#endif
     ASSERT(m_nUserIDHybrid != 0);
     m_nUserPort = Url.nPort;
     return true;
@@ -204,23 +207,26 @@ bool CUrlClient::SendHttpBlockRequests()
     return true;
 }
 
-//>>> WiZaRd::NatTraversal [Xanatos]
-bool CUrlClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntimeClass* /*pClassSocket*/, bool bUseUTP)
-//bool CUrlClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntimeClass* /*pClassSocket*/)
-//<<< WiZaRd::NatTraversal [Xanatos]
+#ifdef NAT_TRAVERSAL
+bool CUrlClient::TryToConnect(const bool bIgnoreMaxCon, const bool bNoCallbacks, CRuntimeClass* /*pClassSocket*/, const bool bUseUTP) //>>> WiZaRd::NatTraversal [Xanatos]
+#else
+bool CUrlClient::TryToConnect(const bool bIgnoreMaxCon, const bool bNoCallbacks, CRuntimeClass* /*pClassSocket*/)
+#endif
 {
-//>>> WiZaRd::NatTraversal [Xanatos]
-    //return CUpDownClient::TryToConnect(bIgnoreMaxCon, bNoCallbacks, RUNTIME_CLASS(CHttpClientDownSocket));
-	return CUpDownClient::TryToConnect(bIgnoreMaxCon, bNoCallbacks, RUNTIME_CLASS(CHttpClientDownSocket), bUseUTP);
-//<<< WiZaRd::NatTraversal [Xanatos]
+#ifdef NAT_TRAVERSAL
+	return CUpDownClient::TryToConnect(bIgnoreMaxCon, bNoCallbacks, RUNTIME_CLASS(CHttpClientDownSocket), bUseUTP); //>>> WiZaRd::NatTraversal [Xanatos]
+#else
+	return CUpDownClient::TryToConnect(bIgnoreMaxCon, bNoCallbacks, RUNTIME_CLASS(CHttpClientDownSocket));
+#endif
 }
 
 void CUrlClient::Connect()
 {
-//>>> WiZaRd::IPv6 [Xanatos]
-    if (!GetConnectIP().IsNull() && GetConnectIP().ToIPv4() != INADDR_NONE)
-        //if (GetConnectIP() != 0 && GetConnectIP() != INADDR_NONE)
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+    if (!GetConnectIP().IsNull() && GetConnectIP().ToIPv4() != INADDR_NONE) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+	if (GetConnectIP() != 0 && GetConnectIP() != INADDR_NONE)
+#endif
     {
         CUpDownClient::Connect();
         return;

@@ -205,6 +205,20 @@ void CKademlia::Process()
 {
     if (m_pInstance == NULL || !m_bRunning)
         return;
+
+//>>> WiZaRd::Save nodes.dat regularly
+	static DWORD dwLastSavedNodes = ::GetTickCount();
+	const DWORD timer = ::GetTickCount();
+	if (timer - dwLastSavedNodes > MIN2MS(15))
+	{
+		dwLastSavedNodes = timer;
+		m_pInstance->m_pRoutingZone->WriteFile();
+#ifdef _DEBUG
+		m_pInstance->m_pRoutingZone->DbgWriteBootstrapFile();
+#endif
+	}			
+//<<< WiZaRd::Save nodes.dat regularly
+
     bool bUpdateUserFile = false;
     UINT uMaxUsers = 0;
     UINT uTempUsers = 0;
@@ -358,7 +372,7 @@ void CKademlia::Process()
 			{
 				m_tBootstrap = tNow;
 				const CString strFilename = thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + L"nodes.dat";
-				//if (!::PathFileExists(strFilename) || GetKadContactCount() == 0)
+				if (!::PathFileExists(strFilename) || GetKadContactCount() == 0)
 					bUpdated = UpdateNodesDatFromURL(MOD_NODES_URL);
 			}
 		}
@@ -484,6 +498,7 @@ void CKademlia::RecheckFirewalled()
             m_pInstance->m_pPrefs->SetRecheckIP();
             // also UDP check
             CUDPFirewallTester::ReCheckFirewallUDP(false);
+			theApp.QueueLogLineEx(LOG_WARNING, L"Rechecking firewalled state - DON'T PANIC, this will just take a few moments! Last firewalled state: %s", m_pInstance->GetPrefs()->GetLastFirewalledState() ? GetResString(IDS_FIREWALLED) : GetResString(IDS_IDHIGH));
         }
     }
 

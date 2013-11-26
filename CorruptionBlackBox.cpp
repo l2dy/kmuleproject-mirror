@@ -114,14 +114,18 @@ void CCorruptionBlackBox::TransferredData(uint64 nStartPos, uint64 nEndPos, cons
         return;
     }
 
-//>>> WiZaRd::IPv6 [Xanatos]
 	UINT dwSenderIP = 0;
-	if(pSender && pSender->GetIP().Type() == CAddress::IPv4) // IPv6-TODO: Add IPv6 ban list
+#ifdef IPV6_SUPPORT
+//>>> WiZaRd::IPv6 [Xanatos]	
+	if(pSender && pSender->GetIP().GetType() == CAddress::IPv4) // IPv6-TODO: Add IPv6 ban list
 		dwSenderIP = _ntohl(pSender->GetIP().ToIPv4());
-    //UINT dwSenderIP = pSender->GetIP();
 //<<< WiZaRd::IPv6 [Xanatos]
-    // we store records seperated for each part, so we don't have to search all entries everytime
+#else
+	if(pSender)
+		dwSenderIP = pSender->GetIP();
+#endif
 
+    // we store records separated for each part, so we don't have to search all entries every time
     // convert pos to relative block pos
     UINT nPart = (UINT)(nStartPos / PARTSIZE);
     uint64 nRelStartPos = nStartPos - (uint64)nPart*PARTSIZE;
@@ -551,10 +555,11 @@ uint64 CCorruptionBlackBox::EvaluateData(UINT nPart, CPartFile* pFile, uint64 ev
 				// netfinity: Don't ban on a single partial involvement
 				if (aDataVerified[k] + aDataCorrupt[k] + aDataPossiblyCorrupt[k] > evalBlockSize || aDataCorrupt[k] > 0)
 				{
-//>>> WiZaRd::IPv6 [Xanatos]
-					CUpDownClient* pEvilClient = theApp.clientlist->FindClientByIP(_CIPAddress(_ntohl(aGuiltyClients[k])));
-					//CUpDownClient* pEvilClient = theApp.clientlist->FindClientByIP(aGuiltyClients[k]);
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+					CUpDownClient* pEvilClient = theApp.clientlist->FindClientByIP(CAddress(_ntohl(aGuiltyClients[k]))); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+					CUpDownClient* pEvilClient = theApp.clientlist->FindClientByIP(aGuiltyClients[k]);
+#endif
 					if (pEvilClient != NULL)
 					{
 						AddDebugLogLine(DLP_HIGH, false, L"CorruptionBlackBox: Banning: Found client which sent %s of %s corrupted data, %s", CastItoXBytes(aDataCorrupt[k]), CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])), pEvilClient->DbgGetClientInfo());
@@ -587,10 +592,11 @@ uint64 CCorruptionBlackBox::EvaluateData(UINT nPart, CPartFile* pFile, uint64 ev
 			}
 			else
 			{
-//>>> WiZaRd::IPv6 [Xanatos]
-                CUpDownClient* pSuspectClient = theApp.clientlist->FindClientByIP(_CIPAddress(_ntohl(aGuiltyClients[k])));
-                //CUpDownClient* pSuspectClient = theApp.clientlist->FindClientByIP(aGuiltyClients[k]);
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+                CUpDownClient* pSuspectClient = theApp.clientlist->FindClientByIP(CAddress(_ntohl(aGuiltyClients[k]))); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+                CUpDownClient* pSuspectClient = theApp.clientlist->FindClientByIP(aGuiltyClients[k]);
+#endif
 				if (pSuspectClient != NULL)
 				{
 					AddDebugLogLine(DLP_DEFAULT, false, L"CorruptionBlackBox: Reporting: Found client which probably sent %s of %s corrupted data, but it is within the acceptable limit, %s", CastItoXBytes(aDataCorrupt[k]), CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])), pSuspectClient->DbgGetClientInfo());
@@ -654,10 +660,11 @@ uint64 CCorruptionBlackBox::EvaluateData(UINT nPart, CPartFile* pFile, uint64 ev
             if (nCorruptPercentage > CBB_BANTHRESHOLD)
             {
 
-//>>> WiZaRd::IPv6 [Xanatos]
-                CUpDownClient* pEvilClient = theApp.clientlist->FindClientByIP(_CIPAddress(_ntohl(aGuiltyClients[k])));
-                //CUpDownClient* pEvilClient = theApp.clientlist->FindClientByIP(aGuiltyClients[k]);
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+                CUpDownClient* pEvilClient = theApp.clientlist->FindClientByIP(CAddress(_ntohl(aGuiltyClients[k]))); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+                CUpDownClient* pEvilClient = theApp.clientlist->FindClientByIP(aGuiltyClients[k]);
+#endif
                 if (pEvilClient != NULL)
                 {
                     AddDebugLogLine(DLP_HIGH, false, L"CorruptionBlackBox: Banning: Found client which send %s of %s corrupted data, %s"), CastItoXBytes(aDataCorrupt[k]), CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])), pEvilClient->DbgGetClientInfo());
@@ -673,10 +680,11 @@ uint64 CCorruptionBlackBox::EvaluateData(UINT nPart, CPartFile* pFile, uint64 ev
             }
             else
             {
-//>>> WiZaRd::IPv6 [Xanatos]
-                CUpDownClient* pSuspectClient = theApp.clientlist->FindClientByIP(_CIPAddress(_ntohl(aGuiltyClients[k])));
-                //CUpDownClient* pSuspectClient = theApp.clientlist->FindClientByIP(aGuiltyClients[k]);
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+                CUpDownClient* pSuspectClient = theApp.clientlist->FindClientByIP(CAddress(_ntohl(aGuiltyClients[k]))); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+                CUpDownClient* pSuspectClient = theApp.clientlist->FindClientByIP(aGuiltyClients[k]);
+#endif
                 if (pSuspectClient != NULL)
                 {
                     AddDebugLogLine(DLP_DEFAULT, false, L"CorruptionBlackBox: Reporting: Found client which probably sent %s of %s corrupted data, but it is within the acceptable limit, %s", CastItoXBytes(aDataCorrupt[k]), CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])), pSuspectClient->DbgGetClientInfo());

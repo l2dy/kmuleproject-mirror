@@ -1441,6 +1441,24 @@ void CDownloadListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
                     file1 = pFile;
                 iSelectedItems++;
 
+#ifdef _DEBUG
+				if(bFirstItem)
+				{
+					const uint64 filesize = pFile->GetFileSize();
+					const uint64 realsize = pFile->GetRealFileSize();
+					const UINT nPartCount = pFile->GetPartCount();
+					theApp.QueueLogLineEx(LOG_WARNING, L"Partsizes for %s, %u parts:", pFile->GetFileName(), nPartCount, filesize, CastItoXBytes(filesize));					
+					theApp.QueueLogLineEx(LOG_INFO, L"Part %u-%u: %I64u (%s)", 0, nPartCount-2, PARTSIZE, CastItoXBytes(PARTSIZE));					
+					UINT length = PARTSIZE;
+					if ((ULONGLONG)PARTSIZE*(uint64)(nPartCount) > filesize)
+					{
+						length = (UINT)(filesize - ((ULONGLONG)PARTSIZE*(uint64)(nPartCount-1)));
+						ASSERT(length <= PARTSIZE);
+					}
+					theApp.QueueLogLineEx(LOG_INFO, L"Part %u: %u (%s)", nPartCount-1, length, CastItoXBytes(length));
+					theApp.QueueLogLineEx(LOG_WARNING, L"Filesizes: %I64u (%s) - real: %I64u (%s)", filesize, CastItoXBytes(filesize), realsize, CastItoXBytes(realsize));
+				}
+#endif				
                 bool bFileDone = (pFile->GetStatus()==PS_COMPLETE || pFile->GetStatus()==PS_COMPLETING);
                 iFilesToCancel += pFile->GetStatus() != PS_COMPLETING ? 1 : 0;
                 iFilesNotDone += !bFileDone ? 1 : 0;
@@ -2250,10 +2268,11 @@ BOOL CDownloadListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                     break;
                 case MP_BOOT:
                     ASSERT(client && client->IsEd2kClient() && client->GetKadPort()!=0 && client->GetKadVersion() > 1);
-//>>> WiZaRd::IPv6 [Xanatos]
-					Kademlia::CKademlia::Bootstrap(client->GetIP().ToIPv4(), client->GetKadPort());
-                    //Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+					Kademlia::CKademlia::Bootstrap(client->GetIP().ToIPv4(), client->GetKadPort()); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+                    Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
+#endif
                     break;
 // ZZ:DownloadManager -->
 #ifdef _DEBUG

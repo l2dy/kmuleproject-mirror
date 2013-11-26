@@ -61,10 +61,14 @@ CQOS::~CQOS()
 {
     // just to be sure
     const DWORD error = RemoveSocket_internal(NULL);
+#ifndef _DEBUG
+	(void)error;
+#else
     if (m_qosSockets.IsEmpty())
         ASSERT(error == 0 || error == ERROR_NOT_FOUND);
     else
         ASSERT(error == 0);
+#endif
 
     // Free qWAVE API
     if (m_qosHandle != NULL)
@@ -83,10 +87,14 @@ BOOL CQOS::Reinitialize()
     if (m_qosHandle != NULL)
     {
         const DWORD error = RemoveSocket_internal(NULL);
+#ifndef _DEBUG
+		(void)error;
+#else
         if (m_qosSockets.IsEmpty())
             ASSERT(error == 0 || error == ERROR_NOT_FOUND);
         else
             ASSERT(error == 0);
+#endif
         m_pQOSCloseHandle(m_qosHandle);
         m_qosHandle = NULL;
     }

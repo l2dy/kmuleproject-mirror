@@ -243,7 +243,6 @@ private:
     bool	m_bShareOnlyTheNeed;
 public:
     bool	WriteSafePartStatus(CSafeMemFile* file, CUpDownClient* client, const bool bUDP = false);
-    bool	WritePartStatus(CSafeMemFile* file, CUpDownClient* client, const bool bUDP);
     void	SetShareOnlyTheNeed(bool newValue)
     {
         m_bShareOnlyTheNeed = newValue;

@@ -633,13 +633,16 @@ bool CAICHHashTree::ReduceToBaseSize(uint64 nBaseSize)
 
 /////////////////////////////////////////////////////////////////////////////////////////
 ///CAICHUntrustedHash
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
-bool CAICHUntrustedHash::AddSigningIP(const _CIPAddress& dwIP, bool bTestOnly)
+bool CAICHUntrustedHash::AddSigningIP(const CAddress& dwIP, const bool bTestOnly)
 {
-//bool CAICHUntrustedHash::AddSigningIP(UINT dwIP, bool bTestOnly)
-// {
-//     dwIP &= 0x00F0FFFF; // we use only the 20 most significant bytes for unique IPs
 //<<< WiZaRd::IPv6 [Xanatos]
+#else
+bool CAICHUntrustedHash::AddSigningIP(UINT dwIP, const bool bTestOnly)
+{
+    dwIP &= 0x00F0FFFF; // we use only the 20 most significant bytes for unique IPs
+#endif
     for (int i=0; i < m_adwIpsSigning.GetCount(); i++)
     {
         if (m_adwIpsSigning[i] == dwIP)
@@ -737,7 +740,7 @@ bool CAICHRecoveryHashSet::CreatePartRecoveryData(uint64 nPartStartPos, CFileDat
     bool bResult;
     uint8 nLevel = 0;
     UINT nPartSize = (UINT)min(PARTSIZE, (uint64)m_pOwner->GetFileSize()-nPartStartPos);
-    m_pHashTree.FindHash(nPartStartPos, nPartSize,&nLevel);
+    m_pHashTree.FindHash(nPartStartPos, nPartSize, &nLevel);
     uint16 nHashsToWrite = (uint16)((nLevel-1) + nPartSize/EMBLOCKSIZE + ((nPartSize % EMBLOCKSIZE != 0)? 1:0));
     const bool bUse32BitIdentifier = m_pOwner->IsLargeFile();
 
@@ -791,7 +794,7 @@ bool CAICHRecoveryHashSet::ReadRecoveryData(uint64 nPartStartPos, CSafeMemFile* 
 
     uint8 nLevel = 0;
     UINT nPartSize = (UINT)min(PARTSIZE, (uint64)m_pOwner->GetFileSize()-nPartStartPos);
-    m_pHashTree.FindHash(nPartStartPos, nPartSize,&nLevel);
+    m_pHashTree.FindHash(nPartStartPos, nPartSize, &nLevel);
     uint16 nHashsToRead = (uint16)((nLevel-1) + nPartSize/EMBLOCKSIZE + ((nPartSize % EMBLOCKSIZE != 0)? 1:0));
 
     // read hashs with 16 bit identifier
@@ -802,7 +805,7 @@ bool CAICHRecoveryHashSet::ReadRecoveryData(uint64 nPartStartPos, CSafeMemFile* 
         theApp.QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("Failed to read RecoveryData for %s - Received datasize/amounts of hashs was invalid (1)"), m_pOwner->GetFileName());
         return false;
     }
-    DEBUG_ONLY(theApp.QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("read RecoveryData for %s - Received packet with  %u 16bit hash identifiers)"), m_pOwner->GetFileName(), nHashsAvailable));
+    DEBUG_ONLY(theApp.QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("read RecoveryData for %s - Received packet with %u 16bit hash identifiers)"), m_pOwner->GetFileName(), nHashsAvailable));
     for (UINT i = 0; i != nHashsAvailable; i++)
     {
         uint16 wHashIdent = fileDataIn->ReadUInt16();
@@ -821,11 +824,11 @@ bool CAICHRecoveryHashSet::ReadRecoveryData(uint64 nPartStartPos, CSafeMemFile* 
         nHashsAvailable = fileDataIn->ReadUInt16();
         if (fileDataIn->GetLength()-fileDataIn->GetPosition() < nHashsToRead*(HASHSIZE+4) || (nHashsToRead != nHashsAvailable && nHashsAvailable != 0))
         {
-            // this check is redunant, CSafememfile would catch such an error too
+            // this check is redundant, CSafememfile would catch such an error too
             theApp.QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("Failed to read RecoveryData for %s - Received datasize/amounts of hashs was invalid (2)"), m_pOwner->GetFileName());
             return false;
         }
-        DEBUG_ONLY(theApp.QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("read RecoveryData for %s - Received packet with  %u 32bit hash identifiers)"), m_pOwner->GetFileName(), nHashsAvailable));
+        DEBUG_ONLY(theApp.QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("read RecoveryData for %s - Received packet with %u 32bit hash identifiers)"), m_pOwner->GetFileName(), nHashsAvailable));
         for (UINT i = 0; i != nHashsToRead; i++)
         {
             UINT wHashIdent = fileDataIn->ReadUInt32();
@@ -850,7 +853,6 @@ bool CAICHRecoveryHashSet::ReadRecoveryData(uint64 nPartStartPos, CSafeMemFile* 
         theApp.QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("Failed to read RecoveryData for %s - Packet didn't contained any hashs"), m_pOwner->GetFileName());
         return false;
     }
-
 
     if (VerifyHashTree(true))
     {
@@ -1144,10 +1146,11 @@ void CAICHRecoveryHashSet::SetFileSize(EMFileSize nSize)
     m_pHashTree.SetBaseSize((nSize <= (uint64)PARTSIZE) ? EMBLOCKSIZE : PARTSIZE);
 }
 
-//>>> WiZaRd::IPv6 [Xanatos]
-void CAICHRecoveryHashSet::UntrustedHashReceived(const CAICHHash& Hash, const _CIPAddress& dwFromIP)
-//void CAICHRecoveryHashSet::UntrustedHashReceived(const CAICHHash& Hash, UINT dwFromIP)
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+void CAICHRecoveryHashSet::UntrustedHashReceived(const CAICHHash& Hash, const CAddress& dwFromIP) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+void CAICHRecoveryHashSet::UntrustedHashReceived(const CAICHHash& Hash, const UINT dwFromIP)
+#endif
 {
     switch (GetStatus())
     {
@@ -1245,7 +1248,7 @@ void CAICHRecoveryHashSet::ClientAICHRequestFailed(CUpDownClient* pClient)
         return;
     if (theApp.downloadqueue->IsPartFile(data.m_pPartFile))
     {
-        theApp.QueueDebugLogLine(false, _T("AICH Request failed, Trying to ask another client (file %s, Part: %u,  Client%s)"), data.m_pPartFile->GetFileName(), data.m_nPart, pClient->DbgGetClientInfo());
+        theApp.QueueDebugLogLine(false, L"AICH Request failed, Trying to ask another client (file %s, Part: %u,  Client: %s)", data.m_pPartFile->GetFileName(), data.m_nPart, pClient->DbgGetClientInfo());
         data.m_pPartFile->RequestAICHRecovery(data.m_nPart);
     }
 }
@@ -1268,9 +1271,7 @@ bool CAICHRecoveryHashSet::IsClientRequestPending(const CPartFile* pForFile, uin
     for (POSITION pos = m_liRequestedData.GetHeadPosition(); pos != 0; m_liRequestedData.GetNext(pos))
     {
         if (m_liRequestedData.GetAt(pos).m_pPartFile == pForFile && m_liRequestedData.GetAt(pos).m_nPart == nPart)
-        {
             return true;
-        }
     }
     return false;
 }
@@ -1280,9 +1281,7 @@ CAICHRequestedData CAICHRecoveryHashSet::GetAICHReqDetails(const  CUpDownClient*
     for (POSITION pos = m_liRequestedData.GetHeadPosition(); pos != 0; m_liRequestedData.GetNext(pos))
     {
         if (m_liRequestedData.GetAt(pos).m_pClient == pClient)
-        {
             return m_liRequestedData.GetAt(pos);
-        }
     }
     ASSERT(0);
     CAICHRequestedData empty;

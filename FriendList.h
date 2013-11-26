@@ -31,17 +31,22 @@ public:
     void		SaveList();
     bool		LoadList();
     void		RefreshFriend(CFriend* torefresh) const;
-    CFriend*	SearchFriend(const uchar* achUserHash, _CIPAddress dwIP, uint16 nPort) const;
+#ifdef IPV6_SUPPORT
+    CFriend*	SearchFriend(const uchar* achUserHash, CAddress dwIP, uint16 nPort) const; //>>> WiZaRd::IPv6 [Xanatos]
+#else
+	CFriend*	SearchFriend(const uchar* achUserHash, const UINT dwIP, const uint16 nPort) const;
+#endif
     void		SetWindow(CFriendListCtrl* NewWnd)
     {
         m_wndOutput = NewWnd;
     }
     void		ShowFriends() const;
     bool		AddFriend(CUpDownClient* toadd);
-//>>> WiZaRd::IPv6 [Xanatos]
-    bool		AddFriend(const uchar* abyUserhash, UINT dwLastSeen, const _CIPAddress& dwLastUsedIP, uint16 nLastUsedPort,
-                          //bool		AddFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort,
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+    bool		AddFriend(const uchar* abyUserhash, UINT dwLastSeen, const CAddress& dwLastUsedIP, uint16 nLastUsedPort, //>>> WiZaRd::IPv6 [Xanatos]
+#else
+	bool		AddFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort,
+#endif
                           UINT dwLastChatted, LPCTSTR pszName, UINT dwHasHash);
     void		RemoveFriend(CFriend* todel);
     void		RemoveAllFriendSlots();

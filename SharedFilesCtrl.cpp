@@ -699,7 +699,7 @@ void CSharedFilesCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 
                         if (thePrefs.ShowRatingIndicator() && (file->HasComment() || file->HasRating() || file->IsKadCommentSearchRunning()))
                         {
-                            m_ImageList.Draw(dc, file->UserRating(true) + 3, CPoint(cur_rec.left + 2, cur_rec.top + iIconPosY), ILD_NORMAL);
+                            m_ImageList.Draw(dc, file->UserRating(true) + 1, CPoint(cur_rec.left + 2, cur_rec.top + iIconPosY), ILD_NORMAL);
                             cur_rec.left += 2 + 16;
                             iIconDrawWidth += 2 + 16;
                         }

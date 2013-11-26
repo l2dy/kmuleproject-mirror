@@ -94,12 +94,15 @@ public:
     void	RefilterAllComments();
 
     // sources
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
     CUpDownClient* GetDownloadClientByIP(const CAddress& IP);
-    CUpDownClient* GetDownloadClientByIP_UDP(const CAddress& IP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs = NULL);
-//     CUpDownClient* GetDownloadClientByIP(UINT dwIP);
-//     CUpDownClient* GetDownloadClientByIP_UDP(UINT dwIP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs = NULL);
+    CUpDownClient* GetDownloadClientByIP_UDP(const CAddress& IP, const uint16 nUDPPort, const bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs = NULL);
 //<<< WiZaRd::IPv6 [Xanatos]
+#else
+     CUpDownClient* GetDownloadClientByIP(const UINT dwIP);
+     CUpDownClient* GetDownloadClientByIP_UDP(const UINT dwIP, const uint16 nUDPPort, const bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs = NULL);
+#endif
     bool	IsInList(const CUpDownClient* client) const;
 
     bool    CheckAndAddSource(CPartFile* sender,CUpDownClient* source);
@@ -149,10 +152,11 @@ public:
         lastkademliafilerequest = ::GetTickCount();
     }
     bool	DoKademliaFileRequest();
-//>>> WiZaRd::IPv6 [Xanatos]
-    void	KademliaSearchFile(UINT searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pkadID, uint8 type, UINT ip, uint16 tcp, uint16 udp, UINT dwBuddyIP, uint16 dwBuddyPort, uint8 byCryptOptions, const Kademlia::CUInt128* pIPv6);
-    //void	KademliaSearchFile(UINT searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pkadID, uint8 type, UINT ip, uint16 tcp, uint16 udp, UINT dwBuddyIP, uint16 dwBuddyPort, uint8 byCryptOptions);
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+    void	KademliaSearchFile(UINT searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pkadID, uint8 type, UINT ip, uint16 tcp, uint16 udp, UINT dwBuddyIP, uint16 dwBuddyPort, uint8 byCryptOptions, const Kademlia::CUInt128* pIPv6); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+    void	KademliaSearchFile(UINT searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pkadID, uint8 type, UINT ip, uint16 tcp, uint16 udp, UINT dwBuddyIP, uint16 dwBuddyPort, uint8 byCryptOptions);
+#endif
 
     // check diskspace
     void	SortByPriority();

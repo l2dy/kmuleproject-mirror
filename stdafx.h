@@ -10,6 +10,9 @@
 #endif
 
 #define INFO_WND		//>>> WiZaRd::InfoWnd
+#define NAT_TRAVERSAL	//>>> WiZaRd::NatTraversal [Xanatos]
+//#define IPV6_SUPPORT	//>>> WiZaRd::IPv6 [Xanatos]
+
 //>>> WiZaRd::DesktopIntegration [Netfinity]
 //#define WINE_SUPPORT
 //#ifdef	WINE_SUPPORT

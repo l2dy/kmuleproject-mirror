@@ -156,7 +156,11 @@ void CFriendList::SaveList()
     }
 }
 
-CFriend* CFriendList::SearchFriend(const uchar* abyUserHash, _CIPAddress dwIP, uint16 nPort) const
+#ifdef IPV6_SUPPORT
+CFriend* CFriendList::SearchFriend(const uchar* abyUserHash, CAddress dwIP, const uint16 nPort) const //>>> WiZaRd::IPv6 [Xanatos]
+#else
+CFriend* CFriendList::SearchFriend(const uchar* abyUserHash, const UINT dwIP, const uint16 nPort) const
+#endif
 {
     POSITION pos = m_listFriends.GetHeadPosition();
     while (pos)
@@ -172,10 +176,11 @@ CFriend* CFriendList::SearchFriend(const uchar* abyUserHash, _CIPAddress dwIP, u
         }
         else
         {
-//>>> WiZaRd::IPv6 [Xanatos]
-            if (cur_friend->m_dwLastUsedIP == dwIP && !dwIP.IsNull() && cur_friend->m_nLastUsedPort == nPort && nPort != 0)
-                //if (cur_friend->m_dwLastUsedIP == dwIP && dwIP != 0 && cur_friend->m_nLastUsedPort == nPort && nPort != 0)
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+            if (cur_friend->m_dwLastUsedIP == dwIP && !dwIP.IsNull() && cur_friend->m_nLastUsedPort == nPort && nPort != 0) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+			if (cur_friend->m_dwLastUsedIP == dwIP && dwIP != 0 && cur_friend->m_nLastUsedPort == nPort && nPort != 0)
+#endif
                 return cur_friend;
         }
     }
@@ -202,20 +207,24 @@ void CFriendList::ShowFriends() const
 }
 
 //You can add a friend without a IP to allow the IRC to trade links with lowID users.
-//>>> WiZaRd::IPv6 [Xanatos]
-bool CFriendList::AddFriend(const uchar* abyUserhash, UINT dwLastSeen, const _CIPAddress& dwLastUsedIP, uint16 nLastUsedPort,
-//bool CFriendList::AddFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort,
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+bool CFriendList::AddFriend(const uchar* abyUserhash, UINT dwLastSeen, const CAddress& dwLastUsedIP, uint16 nLastUsedPort, //>>> WiZaRd::IPv6 [Xanatos]
+#else
+bool CFriendList::AddFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort,
+#endif
                             UINT dwLastChatted, LPCTSTR pszName, UINT dwHasHash)
 {
     // client must have an IP (HighID) or a hash
     // TODO: check if this can be switched to a hybridID so clients with *.*.*.0 can be added..
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
-    if (dwLastUsedIP.Type() == CAddress::IPv4 && IsLowID(_ntohl(dwLastUsedIP.ToIPv4())) && dwHasHash==0)
+    if (dwLastUsedIP.GetType() == CAddress::IPv4 && IsLowID(_ntohl(dwLastUsedIP.ToIPv4())) && dwHasHash==0)
         return false;
-//     if (IsLowID(dwLastUsedIP) && dwHasHash==0)
-//         return false;
 //<<< WiZaRd::IPv6 [Xanatos]
+#else
+	if (IsLowID(dwLastUsedIP) && dwHasHash==0)
+		return false;
+#endif
     if (SearchFriend(abyUserhash, dwLastUsedIP, nLastUsedPort) != NULL)
         return false;
     CFriend* Record = new CFriend(abyUserhash, dwLastSeen, dwLastUsedIP, nLastUsedPort, dwLastChatted, pszName, dwHasHash);

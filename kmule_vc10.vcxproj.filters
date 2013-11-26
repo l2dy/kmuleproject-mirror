@@ -97,12 +97,6 @@
     <Filter Include="Mod\NetF">
       <UniqueIdentifier>{bd497397-b28e-44ad-b3d3-29d7834f1fd8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Mod\NetF\Source">
-      <UniqueIdentifier>{0e952cb9-f964-463f-8aab-5731bb102aa4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mod\NetF\Header">
-      <UniqueIdentifier>{e06e5e16-c879-487a-a15c-fa36a8b922c4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Mod\Neo">
       <UniqueIdentifier>{8f56296c-af1f-43d1-a471-0feb077a9850}</UniqueIdentifier>
     </Filter>
@@ -1029,12 +1023,6 @@
     <ClCompile Include="kademlia\io\KadFileIO.cpp">
       <Filter>Source Files\Kademlia</Filter>
     </ClCompile>
-    <ClCompile Include="Mod\NetF\CrumbHashSet.cpp">
-      <Filter>Mod\NetF\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Mod\NetF\PartStatus.cpp">
-      <Filter>Mod\NetF\Source</Filter>
-    </ClCompile>
     <ClCompile Include="Mod\ModProt.cpp">
       <Filter>Mod\Source</Filter>
     </ClCompile>
@@ -1043,9 +1031,6 @@
     </ClCompile>
     <ClCompile Include="Mod\InfoWnd.cpp">
       <Filter>Mod\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Mod\NetF\DesktopIntegration.cpp">
-      <Filter>Mod\NetF\Source</Filter>
     </ClCompile>
     <ClCompile Include="Mod\copyrights.cpp">
       <Filter>Mod\Source</Filter>
@@ -1062,11 +1047,20 @@
     <ClCompile Include="Mod\Neo\Address.cpp">
       <Filter>Mod\Neo</Filter>
     </ClCompile>
-    <ClCompile Include="Mod\Median.cpp">
-      <Filter>Mod\Header</Filter>
-    </ClCompile>
     <ClCompile Include="Mod\QOS.cpp">
       <Filter>Mod\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Mod\Median.cpp">
+      <Filter>Mod\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Mod\NetF\PartStatus.cpp">
+      <Filter>Mod\NetF</Filter>
+    </ClCompile>
+    <ClCompile Include="Mod\NetF\CrumbHashSet.cpp">
+      <Filter>Mod\NetF</Filter>
+    </ClCompile>
+    <ClCompile Include="Mod\NetF\DesktopIntegration.cpp">
+      <Filter>Mod\NetF</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1084,7 +1078,7 @@
     </MASM>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\emule.rc2">
+    <None Include="res\kmule.rc2">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="res\InetDownload.avi">
@@ -1096,16 +1090,16 @@
     <None Include="res\WideCharLowerMap.bin">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\setup\eMule Light.tmpl">
+    <None Include="..\setup\kMule Light.tmpl">
       <Filter>Templates</Filter>
     </None>
-    <None Include="..\setup\eMule.tmpl">
+    <None Include="..\setup\kMule.tmpl">
       <Filter>Templates</Filter>
     </None>
     <None Include="..\setup\staticservers.dat">
       <Filter>Templates</Filter>
     </None>
-    <None Include="..\setup\Template.eMuleSkin.ini">
+    <None Include="..\setup\Template.kMuleSkin.ini">
       <Filter>Templates</Filter>
     </None>
     <None Include="..\setup\webservices.dat">
@@ -3042,12 +3036,6 @@
     <ClInclude Include="kademlia\io\KadFileIO.h">
       <Filter>Header Files\Kademlia</Filter>
     </ClInclude>
-    <ClInclude Include="Mod\NetF\PartStatus.h">
-      <Filter>Mod\NetF\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Mod\NetF\CrumbHashSet.h">
-      <Filter>Mod\NetF\Header</Filter>
-    </ClInclude>
     <ClInclude Include="Mod\ModProt.h">
       <Filter>Mod\Header</Filter>
     </ClInclude>
@@ -3059,9 +3047,6 @@
     </ClInclude>
     <ClInclude Include="Mod\InfoWnd.h">
       <Filter>Mod\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Mod\NetF\DesktopIntegration.h">
-      <Filter>Mod\NetF\Header</Filter>
     </ClInclude>
     <ClInclude Include="Mod\copyrights.h">
       <Filter>Mod\Header</Filter>
@@ -3081,9 +3066,18 @@
     <ClInclude Include="Mod\Median.h">
       <Filter>Mod\Header</Filter>
     </ClInclude>
+    <ClInclude Include="Mod\NetF\PartStatus.h">
+      <Filter>Mod\NetF</Filter>
+    </ClInclude>
+    <ClInclude Include="Mod\NetF\DesktopIntegration.h">
+      <Filter>Mod\NetF</Filter>
+    </ClInclude>
+    <ClInclude Include="Mod\NetF\CrumbHashSet.h">
+      <Filter>Mod\NetF</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="emule.rc">
+    <ResourceCompile Include="kmule.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

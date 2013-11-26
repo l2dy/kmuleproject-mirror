@@ -40,7 +40,9 @@
 #include "Kademlia/Kademlia/Prefs.h"
 #include "Log.h"
 #include "./Mod/ClientAnalyzer.h" //>>> WiZaRd::ClientAnalyzer
+#ifdef NAT_TRAVERSAL
 #include "./Mod/Neo/UtpSocket.h" //>>> WiZaRd::NatTraversal [Xanatos]
+#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -667,11 +669,11 @@ void CUploadQueue::Process()
 
         if (lastClient != NULL && !lastClient->IsScheduledForRemoval() /*lastClient->GetUpStartTimeDelay() > 3*1000*/)
         {
-            // There's too many open uploads (propably due to the user changing
+            // There's too many open uploads (probably due to the user changing
             // the upload limit to a lower value). Remove the last opened upload and put
             // it back on the waitinglist. When it is put back, it get
             // to keep its waiting time. This means it is likely to soon be
-            // choosen for upload again.
+            // chosen for upload again.
 
             // Remove from upload list.
             ScheduleRemovalFromUploadQueue(lastClient, _T("Too many upload slots opened for current ul speed"), GetResString(IDS_UPLOAD_TOO_MANY_SLOTS), true /*, true*/);
@@ -722,7 +724,13 @@ void CUploadQueue::Process()
         else
         {
 //>>> WiZaRd::ZZUL Upload [ZZ]
-            if (!cur_client->IsScheduledForRemoval() || ::GetTickCount()-m_nLastStartUpload <= SEC2MS(11) && cur_client->GetSlotNumber() <= GetActiveUploadsCount()+ 2 || ::GetTickCount()-m_nLastStartUpload <= SEC2MS(1) && cur_client->GetSlotNumber() <= GetActiveUploadsCount()+ 10 || ::GetTickCount()-m_nLastStartUpload <= 150 || !cur_client->GetScheduledRemovalLimboComplete() || pos != NULL || cur_client->GetSlotNumber() <= GetActiveUploadsCount() || ForceNewClient(true))
+            if (!cur_client->IsScheduledForRemoval() 
+				|| (::GetTickCount()-m_nLastStartUpload <= SEC2MS(11) && cur_client->GetSlotNumber() <= GetActiveUploadsCount()+ 2)
+				|| (::GetTickCount()-m_nLastStartUpload <= SEC2MS(1) && cur_client->GetSlotNumber() <= GetActiveUploadsCount()+ 10)
+				|| ::GetTickCount()-m_nLastStartUpload <= 150 
+				|| !cur_client->GetScheduledRemovalLimboComplete() 
+				|| cur_client->GetSlotNumber() <= GetActiveUploadsCount() 
+				|| ForceNewClient(true))
 //<<< WiZaRd::ZZUL Upload [ZZ]
             {
 //>>> WiZaRd::Drop Blocking Sockets [Xman?]
@@ -747,9 +755,9 @@ void CUploadQueue::Process()
             else
             {
                 bool keepWaitingTime = cur_client->GetScheduledUploadShouldKeepWaitingTime();
-                RemoveFromUploadQueue(cur_client, (CString)_T("Scheduled for removal: ") + cur_client->GetScheduledRemovalDebugReason(), true, keepWaitingTime);
-                AddClientToQueue(cur_client, true, keepWaitingTime);
-                m_nLastStartUpload = ::GetTickCount()-SEC2MS(9);
+                if(RemoveFromUploadQueue(cur_client, (CString)_T("Scheduled for removal: ") + cur_client->GetScheduledRemovalDebugReason(), true, keepWaitingTime))
+					AddClientToQueue(cur_client, true, keepWaitingTime);					
+				m_nLastStartUpload = ::GetTickCount()-SEC2MS(9);
             }
 //<<< WiZaRd::ZZUL Upload [ZZ]
         }
@@ -777,7 +785,7 @@ void CUploadQueue::Process()
                 {
                     theApp.QueueDebugLogLineEx(LOG_WARNING, L"Client %s is blocking too often and max slots are reached: avg20: %1.2f%%, all: %1.2f%%, avg. ul: %s",
                                                blockclient->DbgGetClientInfo(), blockclient->socket->GetBlockingRatio(), blockclient->socket->GetOverallBlockingRatio(), CastItoXBytes(blockclient->GetSessionUp()/blockclient->GetUpStartTimeDelay()*1000.0f, false, true));
-                    blockclient->SendOutOfPartReqsAndAddToWaitingQueue(); //we SHOULD send this, no?
+					AddClientToQueue(blockclient, true);
 
                     m_BlockStopList.AddHead(curTick); //remember when this happened
                     //because there are some users out there which set a too high uploadlimit, this code isn't usable
@@ -1025,24 +1033,28 @@ bool CUploadQueue::CanForceClient(UINT curUploadSlots) const
     return false;
 }
 
-//>>> WiZaRd::IPv6 [Xanatos]
-CUpDownClient* CUploadQueue::GetWaitingClientByIP_UDP(const _CIPAddress& IP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs)
-//CUpDownClient* CUploadQueue::GetWaitingClientByIP_UDP(UINT dwIP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs)
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+CUpDownClient* CUploadQueue::GetWaitingClientByIP_UDP(const CAddress& IP, const uint16 nUDPPort, const bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+CUpDownClient* CUploadQueue::GetWaitingClientByIP_UDP(const UINT dwIP, const uint16 nUDPPort, const bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs)
+#endif
 {
     CUpDownClient* pMatchingIPClient = NULL;
     UINT cMatches = 0;
     for (POSITION pos = waitinglist.GetHeadPosition(); pos != 0;)
     {
         CUpDownClient* cur_client = waitinglist.GetNext(pos);
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
-        if ((IP.Type() == CAddress::IPv6 ? IP == cur_client->GetIPv6() : IP == cur_client->GetIP()) && nUDPPort == cur_client->GetUDPPort())
+        if ((IP.GetType() == CAddress::IPv6 ? IP == cur_client->GetIPv6() : IP == cur_client->GetIP()) && nUDPPort == cur_client->GetUDPPort())
             return cur_client;
-        else if ((IP.Type() == CAddress::IPv6 ? IP == cur_client->GetIPv6() : IP == cur_client->GetIP()) && bIgnorePortOnUniqueIP)
-//         if (dwIP == cur_client->GetIP() && nUDPPort == cur_client->GetUDPPort())
-//             return cur_client;
-//         else if (dwIP == cur_client->GetIP() && bIgnorePortOnUniqueIP)
+        else if ((IP.GetType() == CAddress::IPv6 ? IP == cur_client->GetIPv6() : IP == cur_client->GetIP()) && bIgnorePortOnUniqueIP)
 //<<< WiZaRd::IPv6 [Xanatos]
+#else
+		if (dwIP == cur_client->GetIP() && nUDPPort == cur_client->GetUDPPort())
+			return cur_client;
+		else if (dwIP == cur_client->GetIP() && bIgnorePortOnUniqueIP)
+#endif
         {
             pMatchingIPClient = cur_client;
             cMatches++;
@@ -1057,18 +1069,20 @@ CUpDownClient* CUploadQueue::GetWaitingClientByIP_UDP(const _CIPAddress& IP, uin
         return NULL;
 }
 
-//>>> WiZaRd::IPv6 [Xanatos]
-CUpDownClient* CUploadQueue::GetWaitingClientByIP(const _CIPAddress& IP)
-//CUpDownClient* CUploadQueue::GetWaitingClientByIP(UINT dwIP)
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+CUpDownClient* CUploadQueue::GetWaitingClientByIP(const CAddress& IP) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+CUpDownClient* CUploadQueue::GetWaitingClientByIP(const UINT dwIP)
+#endif
 {
     for (POSITION pos = waitinglist.GetHeadPosition(); pos != 0;)
     {
         CUpDownClient* cur_client = waitinglist.GetNext(pos);
-//>>> WiZaRd::IPv6 [Xanatos]
-        if (IP.Type() == CAddress::IPv6 ? IP == cur_client->GetIPv6() : IP == cur_client->GetIP())
-            //if (dwIP == cur_client->GetIP())
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+        if (IP.GetType() == CAddress::IPv6 ? IP == cur_client->GetIPv6() : IP == cur_client->GetIP()) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+		if (dwIP == cur_client->GetIP())
+#endif
             return cur_client;
     }
     return 0;
@@ -1238,11 +1252,14 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
             DEBUG_ONLY(AddDebugLogLine(false,_T("%s's (%s) request to enter the queue was rejected, because of too many clients with the same IP"), client->GetUserName(), ipstr(client->GetConnectIP())));
         return;
     }
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
     // IPv6-TODO: Add IPv6 ban list
-    else if (client->GetIP().Type() == CAddress::IPv4 && theApp.clientlist->GetClientsFromIP(_ntohl(client->GetIP().ToIPv4())) >= 3)
-        //else if (theApp.clientlist->GetClientsFromIP(client->GetIP()) >= 3)
+    else if (client->GetIP().GetType() == CAddress::IPv4 && theApp.clientlist->GetClientsFromIP(_ntohl(client->GetIP().ToIPv4())) >= 3)
 //<<< WiZaRd::IPv6 [Xanatos]
+#else
+     else if (theApp.clientlist->GetClientsFromIP(client->GetIP()) >= 3)
+#endif
     {
         if (thePrefs.GetVerbose())
             DEBUG_ONLY(AddDebugLogLine(false,_T("%s's (%s) request to enter the queue was rejected, because of too many clients with the same IP (found in TrackedClientsList)"), client->GetUserName(), ipstr(client->GetConnectIP())));
@@ -1363,16 +1380,7 @@ bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client, LPCTSTR pszReaso
         CUpDownClient* curClient = uploadinglist.GetNext(pos);
         if (client == curClient)
         {
-//>>> WiZaRd::ZZUL Upload [ZZ]
-            if (client->socket)
-            {
-                if (thePrefs.GetDebugClientTCPLevel() > 0)
-                    DebugSend("OP__OutOfPartReqs", client);
-                Packet* pCancelTransferPacket = new Packet(OP_OUTOFPARTREQS, 0);
-                theStats.AddUpDataOverheadFileRequest(pCancelTransferPacket->size);
-                client->socket->SendPacket(pCancelTransferPacket, true, true);
-            }
-//<<< WiZaRd::ZZUL Upload [ZZ]
+            client->SendOutOfPartReqs(); //>>> WiZaRd::ZZUL Upload [ZZ]
             if (updatewindow)
                 theApp.emuledlg->transferwnd->GetUploadList()->RemoveClient(client);
 
@@ -1553,7 +1561,9 @@ VOID CALLBACK CUploadQueue::UploadTimer(HWND /*hwnd*/, UINT /*uMsg*/, UINT_PTR /
         theApp.HandleLogQueues();
         // Elandal: ThreadSafeLogging <--
 
+#ifdef NAT_TRAVERSAL
         CUtpSocket::Process(); //>>> WiZaRd::NatTraversal [Xanatos]
+#endif
 
         // ZZ:UploadSpeedSense -->
         theApp.lastCommonRouteFinder->SetPrefs(thePrefs.IsDynUpEnabled(),
@@ -1587,7 +1597,9 @@ VOID CALLBACK CUploadQueue::UploadTimer(HWND /*hwnd*/, UINT /*uMsg*/, UINT_PTR /
         {
             counter=0;
 
+#ifdef IPV6_SUPPORT
             theApp.UpdateIPv6(); //>>> WiZaRd::IPv6 [Xanatos]
+#endif
 
             // try to use different time intervals here to not create any disk-IO bottle necks by saving all files at once
             theApp.clientcredits->Process();	// 13 minutes
@@ -1820,7 +1832,7 @@ VOID CALLBACK CUploadQueue::HSUploadTimer(HWND /*hwnd*/, UINT /*uMsg*/, UINT_PTR
     // all we do is feed the uploadslots with data, which is normally done only every 100ms with the big timer
     // the counting, checks etc etc are all done on the normal timer
     // the biggest effect comes actually from the BigBuffer parameter on CreateNextBlockPackage,
-    // but beeing able to fetch a request packet up to 1/10 sec earlier gives also a slight speedbump
+    // but being able to fetch a request packet up to 1/10 sec earlier gives also a slight speedbump
     for (POSITION pos = theApp.uploadqueue->uploadinglist.GetHeadPosition(); pos != NULL;)
     {
         CUpDownClient* cur_client = theApp.uploadqueue->uploadinglist.GetNext(pos);

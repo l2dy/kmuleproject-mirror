@@ -618,10 +618,11 @@ BOOL CChatSelector::OnCommand(WPARAM wParam, LPARAM lParam)
             const CChatItem* ci = GetItemByIndex(m_iContextIndex);
             if (ci)
             {
-//>>> WiZaRd::IPv6 [Xanatos]
-                CFriend* fr = theApp.friendlist->SearchFriend(ci->client->GetUserHash(), _CIPAddress(), 0);
-                //CFriend* fr = theApp.friendlist->SearchFriend(ci->client->GetUserHash(), 0, 0);
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+                CFriend* fr = theApp.friendlist->SearchFriend(ci->client->GetUserHash(), CAddress(), 0); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+                CFriend* fr = theApp.friendlist->SearchFriend(ci->client->GetUserHash(), 0, 0);
+#endif
                 if (!fr)
                     theApp.friendlist->AddFriend(ci->client);
             }
@@ -632,10 +633,11 @@ BOOL CChatSelector::OnCommand(WPARAM wParam, LPARAM lParam)
             const CChatItem* ci = GetItemByIndex(m_iContextIndex);
             if (ci)
             {
-//>>> WiZaRd::IPv6 [Xanatos]
-                CFriend* fr = theApp.friendlist->SearchFriend(ci->client->GetUserHash(), _CIPAddress(), 0);
-                //CFriend* fr = theApp.friendlist->SearchFriend(ci->client->GetUserHash(), 0, 0);
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+                CFriend* fr = theApp.friendlist->SearchFriend(ci->client->GetUserHash(), CAddress(), 0); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+                CFriend* fr = theApp.friendlist->SearchFriend(ci->client->GetUserHash(), 0, 0);
+#endif
                 if (fr)
                     theApp.friendlist->RemoveFriend(fr);
             }
@@ -671,10 +673,11 @@ void CChatSelector::OnContextMenu(CWnd*, CPoint point)
     if (ci == NULL)
         return;
 
-//>>> WiZaRd::IPv6 [Xanatos]
-    CFriend* pFriend = theApp.friendlist->SearchFriend(ci->client->GetUserHash(), _CIPAddress(), 0);
-    //CFriend* pFriend = theApp.friendlist->SearchFriend(ci->client->GetUserHash(), 0, 0);
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+    CFriend* pFriend = theApp.friendlist->SearchFriend(ci->client->GetUserHash(), CAddress(), 0); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+    CFriend* pFriend = theApp.friendlist->SearchFriend(ci->client->GetUserHash(), 0, 0);
+#endif
 
     CTitleMenu menu;
     menu.CreatePopupMenu();

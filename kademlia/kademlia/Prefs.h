@@ -101,6 +101,8 @@ public:
     void		StatsIncTCPFirewalledNodes(bool bFirewalled);
     float		StatsGetFirewalledRatio(bool bUDP) const;
     float		StatsGetKadV8Ratio();
+	bool		GetLastFirewalledState() const		{return m_bLastFirewallState;}
+	bool		GetCurrentFirewalledState() const	{return m_uFirewalled < 2;}
 
     static UINT GetUDPVerifyKey(UINT dwTargetIP);
 private:

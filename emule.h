@@ -176,10 +176,6 @@ public:
     bool		IsConnected();
     bool		IsConnecting();
     bool		IsFirewalled();
-//>>> WiZaRd::NatTraversal [Xanatos]
-    bool		CanDoCallback(const CUpDownClient* client);
-    //bool		CanDoCallback();
-//<<< WiZaRd::NatTraversal [Xanatos]
     UINT		GetID();
     UINT		GetPublicIP(bool bIgnoreKadIP = false) const;	// return current (valid) public IP or 0 if unknown
     void		SetPublicIP(const UINT dwIP);
@@ -293,12 +289,14 @@ private:
     bool	m_bRestartApp;
 //<<< WiZaRd::Automatic Restart
 //>>> WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
 public:
-    const _CIPAddress&	GetPublicIPv6() const		{return m_PublicIPv6;}
+    const CAddress&	GetPublicIPv6() const			{return m_PublicIPv6;}
     void		SetPublicIPv6(const CAddress& IP)	{m_PublicIPv6 = IP;}
     void		UpdateIPv6();
 private:
-    _CIPAddress m_PublicIPv6;
+    CAddress m_PublicIPv6;
+#endif
 //<<< WiZaRd::IPv6 [Xanatos]
 };
 

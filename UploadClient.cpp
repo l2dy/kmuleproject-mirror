@@ -106,28 +106,12 @@ void CUpDownClient::DrawUpStatusBar(CDC* dc, RECT* rect, bool onlygreyrect, bool
     if (!onlygreyrect && abyUpPartStatus)
     {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-        bool bCompletePart = abyUpPartStatus ? abyUpPartStatus->IsCompletePart(0) : false;
-        for (UINT i = 0, nPart = 0; i < nStepCount; ++i)
+        bool bCompletePart = abyUpPartStatus && SupportsSCT() ? abyUpPartStatus->IsCompletePart(0) : false;
+		const uint64 partsize = abyUpPartStatus && SupportsSCT() ? CRUMBSIZE : PARTSIZE;
+        for (UINT i = 0, nPart = 0; i < nStepCount;)
             //for (UINT i = 0; i < nUpPartCount; ++i)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         {
-//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-            uint64 partsize = PARTSIZE;
-            if (abyUpPartStatus && SupportsSCT())
-            {
-                partsize = CRUMBSIZE;
-                if (i != 0 && (i % CRUMBSPERPART) == 0)
-                {
-                    ++nPart;
-                    bCompletePart = abyUpPartStatus->IsCompletePart(nPart);
-                }
-            }
-            else
-            {
-                ++nPart;
-                bCompletePart = false;
-            }
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
             GetPartStartAndEnd(i, partsize, filesize, uStart, uEnd);
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
             //if(IsUpPartAvailable(i))
@@ -152,6 +136,20 @@ void CUpDownClient::DrawUpStatusBar(CDC* dc, RECT* rect, bool onlygreyrect, bool
                     s_UpStatusBar.FillRange(uStart, uEnd, RGB(140, 0, 26));
             }
 //<<< WiZaRd::Intelligent SOTN
+
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+            ++i;
+            if (abyUpPartStatus && SupportsSCT())
+            {
+                if ((i % CRUMBSPERPART) == 0)
+                {
+                    ++nPart;
+                    bCompletePart = nPart < abyUpPartStatus->GetPartCount() && abyUpPartStatus->IsCompletePart(nPart);
+                }
+            }
+            else
+                ++nPart;
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         }
     }
     const Requested_Block_Struct* block = NULL;
@@ -586,7 +584,7 @@ bool CUpDownClient::ProcessExtendedInfo(CSafeMemFile* data, CKnownFile* file, co
         return true;
     }
 
-    m_pUpPartStatus = CPartStatus::CreatePartStatus(data, file); //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+    m_pUpPartStatus = CPartStatus::CreatePartStatus(data, file->GetFileSize()); //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 	    
 //>>> WiZaRd::Intelligent SOTN
 	const UINT nUpPartCount = GetUpPartCount();
@@ -616,7 +614,7 @@ bool CUpDownClient::ProcessExtendedInfo(CSafeMemFile* data, CKnownFile* file, co
 bool CUpDownClient::ProcessUploadFileStatus(const bool bUDPPacket, CKnownFile* file, bool bMergeIfPossible)
 {
     // netfinity: Update download partstatus if we are downloading this file and there is more pieces available in the upload partstatus
-    bMergeIfPossible = bMergeIfPossible && reqfile == file;
+    bMergeIfPossible = bMergeIfPossible && reqfile && !md4cmp(GetUploadFileID(), reqfile->GetFileHash());
     if (bMergeIfPossible)
     {
         if (m_pPartStatus == NULL)
@@ -631,16 +629,7 @@ bool CUpDownClient::ProcessUploadFileStatus(const bool bUDPPacket, CKnownFile* f
 //<<< WiZaRd::AntiHideOS [netfinity]
         }
         else
-        {
-            for (UINT uCrumb = 0; uCrumb < m_pUpPartStatus->GetCrumbsCount(); ++uCrumb)
-            {
-                if (m_pUpPartStatus->IsCompleteCrumb(uCrumb))
-                    m_pPartStatus->SetCrumb(uCrumb);
-            }
-        }
-
-        UpdateDisplayedInfo(false);
-        reqfile->UpdateAvailablePartsCount();
+			m_pPartStatus->Merge(m_pUpPartStatus);
     }
 
 //>>> Passive Src Finding
@@ -1057,11 +1046,7 @@ UINT CUpDownClient::SendBlockData()
 
             if (wasRemoved)
             {
-                //if (thePrefs.GetDebugClientTCPLevel() > 0)
-                // DebugSend("OP__OutOfPartReqs", this);
-                //Packet* pCancelTransferPacket = new Packet(OP_OUTOFPARTREQS, 0);
-                //theStats.AddUpDataOverheadFileRequest(pCancelTransferPacket->size);
-                //socket->SendPacket(pCancelTransferPacket,true,true);
+				//SendOutOfPartReqs();
                 // WiZaRd:: todo?
             }
             else
@@ -1074,7 +1059,8 @@ UINT CUpDownClient::SendBlockData()
                 if (theApp.uploadqueue->CheckForTimeOver(this))
         		{
         			theApp.uploadqueue->RemoveFromUploadQueue(this, _T("Completed transfer"), true);
-        			SendOutOfPartReqsAndAddToWaitingQueue();
+        			SendOutOfPartReqs();
+					theApp.uploadqueue->AddClientToQueue(this, true);
         		}
         		else
         		{
@@ -1126,7 +1112,7 @@ UINT CUpDownClient::SendBlockData()
     return (UINT)(sentBytesCompleteFile + sentBytesPartFile);
 }
 
-void CUpDownClient::SendOutOfPartReqsAndAddToWaitingQueue()
+void CUpDownClient::SendOutOfPartReqs()
 {
     //OP_OUTOFPARTREQS will tell the downloading client to go back to OnQueue..
     //The main reason for this is that if we put the client back on queue and it goes
@@ -1140,7 +1126,6 @@ void CUpDownClient::SendOutOfPartReqsAndAddToWaitingQueue()
     theStats.AddUpDataOverheadFileRequest(pPacket->size);
     SendPacket(pPacket, true);
     m_fSentOutOfPartReqs = 1;
-    theApp.uploadqueue->AddClientToQueue(this, true);
 }
 
 /**
@@ -1350,16 +1335,19 @@ void CUpDownClient::AddRequestCount(const uchar* fileid)
 
 void  CUpDownClient::UnBan()
 {
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
     // IPv6-TODO: Add IPv6 ban list
     if (GetIPv4().IsNull())
         return;
 //<<< WiZaRd::IPv6 [Xanatos]
+#endif
     theApp.clientlist->AddTrackClient(this);
-//>>> WiZaRd::IPv6 [Xanatos]
-    theApp.clientlist->RemoveBannedClient(_ntohl(GetIP().ToIPv4()));
-    //theApp.clientlist->RemoveBannedClient(GetIP());
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+    theApp.clientlist->RemoveBannedClient(_ntohl(GetIP().ToIPv4())); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+    theApp.clientlist->RemoveBannedClient(GetIP());
+#endif
     SetUploadState(US_NONE);
     ClearWaitStartTime();
     theApp.emuledlg->transferwnd->ShowQueueCount(theApp.uploadqueue->GetWaitingUserCount());
@@ -1373,11 +1361,13 @@ void  CUpDownClient::UnBan()
 
 void CUpDownClient::Ban(LPCTSTR pszReason)
 {
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
     // IPv6-TODO: Add IPv6 ban list
     if (GetIPv4().IsNull())
         return;
 //<<< WiZaRd::IPv6 [Xanatos]
+#endif
     SetChatState(MS_NONE);
     theApp.clientlist->AddTrackClient(this);
     if (!IsBanned())
@@ -1392,10 +1382,11 @@ void CUpDownClient::Ban(LPCTSTR pszReason)
             AddDebugLogLine(false,_T("Banned: (refreshed): %s; %s"), pszReason==NULL ? _T("Aggressive behaviour") : pszReason, DbgGetClientInfo());
     }
 #endif
-//>>> WiZaRd::IPv6 [Xanatos]
-    theApp.clientlist->AddBannedClient(_ntohl(GetIP().ToIPv4()));
-    //theApp.clientlist->AddBannedClient(GetIP());
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+    theApp.clientlist->AddBannedClient(_ntohl(GetIP().ToIPv4())); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+    theApp.clientlist->AddBannedClient(GetIP());
+#endif
     SetUploadState(US_BANNED);
     theApp.emuledlg->transferwnd->ShowQueueCount(theApp.uploadqueue->GetWaitingUserCount());
     theApp.emuledlg->transferwnd->GetQueueList()->RefreshClient(this);
@@ -1654,7 +1645,7 @@ CKnownFile*	CUpDownClient::GetUploadReqFile() const
 {
     CKnownFile* currequpfile = NULL;
 
-    if (requpfileid)
+    if (GetUploadFileID())
     {
         currequpfile = theApp.sharedfiles->GetFileByID(requpfileid);
         if (currequpfile == NULL && SupportsSCT())

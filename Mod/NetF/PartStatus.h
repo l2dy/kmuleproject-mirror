@@ -22,8 +22,6 @@ class CSafeMemFile;
 
 class CPartStatus
 {
-private:
-    CKnownFile*				m_pStatusFile;
 public:
     CPartStatus();
     // Destructor
@@ -64,10 +62,9 @@ public:
     virtual bool			IsCompletePart(UINT part) const {return IsComplete((uint64) part * PARTSIZE, (uint64)(part + 1) * PARTSIZE - 1ULL);}
     virtual bool			IsPartialPart(UINT part) const {return IsPartial((uint64) part * PARTSIZE, (uint64)(part + 1) * PARTSIZE - 1ULL);}
     // Read/Write part status vectors
-    static CPartStatus*		CreatePartStatus(CSafeMemFile* data, CKnownFile* pFile, bool defState = true);
+    static CPartStatus*		CreatePartStatus(CSafeMemFile* data, const uint64 size, bool defState = true);
     virtual void			WritePartStatus(CSafeMemFile* data, int protocolRevision = PROTOCOL_REVISION_0, bool defState = true) const;
-    CKnownFile*				GetStatusFile() const;
-    void					SetStatusFile(CKnownFile* pFile);
+	void					Merge(const CPartStatus* toMerge);
 };
 
 /*class CGenericStatusVector : public CPartStatus
@@ -97,7 +94,6 @@ class CAICHStatusVector : public CPartStatus
 public:
     // Constructors / Destructor
     CAICHStatusVector(uint64 size);
-    CAICHStatusVector(CKnownFile* pFile);
     CAICHStatusVector(const CPartStatus* source);
     ~CAICHStatusVector();
     // Cloning
@@ -131,7 +127,7 @@ class CCrumbStatusVector : public CPartStatus
 {
 public:
     // Constructors / Destructor
-    CCrumbStatusVector(CKnownFile* pFile);
+	CCrumbStatusVector(uint64 size);
     CCrumbStatusVector(const CPartStatus* source);
     ~CCrumbStatusVector();
     // Cloning
@@ -162,7 +158,6 @@ private:
 {
 public:
 	// Constructors / Destructor
-			CPartStatusVector(CKnownFile* pFile);
 			CPartStatusVector(const CPartStatus* source);
 			~CPartStatusVector();
 	// Cloning

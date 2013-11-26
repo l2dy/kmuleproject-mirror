@@ -21,8 +21,8 @@ typedef CEMFileSize			EMFileSize;
 typedef unsigned __int64	EMFileSize;
 #endif
 
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
 #include "./Mod/Neo/Address.h"
-#define	_CIPAddress			CAddress
-//#define	_CIPAddress			UINT
 //<<< WiZaRd::IPv6 [Xanatos]
+#endif

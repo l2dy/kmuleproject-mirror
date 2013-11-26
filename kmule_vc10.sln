@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kMule", "emule_vc10.vcxproj", "{584EA69D-3443-4197-8994-364880FC1B9B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kMule", "kmule_vc10.vcxproj", "{584EA69D-3443-4197-8994-364880FC1B9B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib_vc10", "..\zlib\zlib_vc10.vcxproj", "{0520C60D-0A55-4663-B30B-8C63614285E2}"
 EndProject

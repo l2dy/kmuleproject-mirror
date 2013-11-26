@@ -55,7 +55,11 @@ CClientCredits::CClientCredits(CreditStruct* in_credits)
     InitalizeIdent();
     m_dwUnSecureWaitTime = 0;
     m_dwSecureWaitTime = 0;
-    //m_dwWaitTimeIP = 0; //>>> WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+	m_dwWaitTimeIP = CAddress(); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+	m_dwWaitTimeIP = 0;
+#endif
 //>>> WiZaRd::CPU calm down
     m_bForceCheckScoreRatio = true;
     m_fSavedScoreRatio = 1.0f;
@@ -70,7 +74,11 @@ CClientCredits::CClientCredits(const uchar* key)
     InitalizeIdent();
     m_dwUnSecureWaitTime = ::GetTickCount();
     m_dwSecureWaitTime = ::GetTickCount();
-    //m_dwWaitTimeIP = 0; //>>> WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+	m_dwWaitTimeIP = CAddress(); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+    m_dwWaitTimeIP = 0;
+#endif
 //>>> WiZaRd::CPU calm down
     m_bForceCheckScoreRatio = true;
     m_fSavedScoreRatio = 1.0f;
@@ -82,15 +90,14 @@ CClientCredits::~CClientCredits()
     delete m_pCredits;
 }
 
-//>>> WiZaRd::IPv6 [Xanatos]
-void CClientCredits::AddDownloaded(UINT bytes, const _CIPAddress& dwForIP)
-//void CClientCredits::AddDownloaded(UINT bytes, UINT dwForIP)
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+void CClientCredits::AddDownloaded(const UINT bytes, const CAddress& dwForIP) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+void CClientCredits::AddDownloaded(const UINT bytes, const UINT dwForIP)
+#endif
 {
     if ((GetCurrentIdentState(dwForIP) == IS_IDFAILED || GetCurrentIdentState(dwForIP) == IS_IDBADGUY || GetCurrentIdentState(dwForIP) == IS_IDNEEDED) && theApp.clientcredits->CryptoAvailable())
-    {
         return;
-    }
 
     //encode
     uint64 current = (((uint64)m_pCredits->nDownloadedHi << 32) | m_pCredits->nDownloadedLo) + bytes;
@@ -100,15 +107,14 @@ void CClientCredits::AddDownloaded(UINT bytes, const _CIPAddress& dwForIP)
     m_pCredits->nDownloadedHi = (UINT)(current >> 32);
 }
 
-//>>> WiZaRd::IPv6 [Xanatos]
-void CClientCredits::AddUploaded(UINT bytes, const _CIPAddress& dwForIP)
-//void CClientCredits::AddUploaded(UINT bytes, UINT dwForIP)
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+void CClientCredits::AddUploaded(const UINT bytes, const CAddress& dwForIP) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+void CClientCredits::AddUploaded(const UINT bytes, const UINT dwForIP)
+#endif
 {
     if ((GetCurrentIdentState(dwForIP) == IS_IDFAILED || GetCurrentIdentState(dwForIP) == IS_IDBADGUY || GetCurrentIdentState(dwForIP) == IS_IDNEEDED) && theApp.clientcredits->CryptoAvailable())
-    {
         return;
-    }
 
     //encode
     uint64 current = (((uint64)m_pCredits->nUploadedHi << 32) | m_pCredits->nUploadedLo) + bytes;
@@ -130,10 +136,11 @@ uint64 CClientCredits::GetDownloadedTotal() const
     return ((uint64)m_pCredits->nDownloadedHi << 32) | m_pCredits->nDownloadedLo;
 }
 
-//>>> WiZaRd::IPv6 [Xanatos]
-float CClientCredits::GetScoreRatio(const _CIPAddress& dwForIP) /*const*/ //>>> WiZaRd::CPU calm down
-//float CClientCredits::GetScoreRatio(UINT dwForIP) /*const*/ //>>> WiZaRd::CPU calm down
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+float CClientCredits::GetScoreRatio(const CAddress& dwForIP) /*const*/ //>>> WiZaRd::CPU calm down //>>> WiZaRd::IPv6 [Xanatos]
+#else
+float CClientCredits::GetScoreRatio(const UINT dwForIP) /*const*/ //>>> WiZaRd::CPU calm down
+#endif
 {
     // check the client ident status
     if ((GetCurrentIdentState(dwForIP) == IS_IDFAILED || GetCurrentIdentState(dwForIP) == IS_IDBADGUY || GetCurrentIdentState(dwForIP) == IS_IDNEEDED) && theApp.clientcredits->CryptoAvailable())
@@ -409,16 +416,18 @@ void CClientCredits::InitalizeIdent()
     }
     m_dwCryptRndChallengeFor = 0;
     m_dwCryptRndChallengeFrom = 0;
-//>>> WiZaRd::IPv6 [Xanatos]
-    m_dwIdentIP = CAddress();
-    //m_dwIdentIP = 0;
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+    m_dwIdentIP = CAddress(); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+    m_dwIdentIP = 0;
+#endif
 }
 
-//>>> WiZaRd::IPv6 [Xanatos]
-void CClientCredits::Verified(const _CIPAddress& dwForIP)
-//void CClientCredits::Verified(UINT dwForIP)
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+void CClientCredits::Verified(const CAddress& dwForIP) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+void CClientCredits::Verified(const UINT dwForIP)
+#endif
 {
     m_dwIdentIP = dwForIP;
 
@@ -451,10 +460,11 @@ bool CClientCredits::SetSecureIdent(const uchar* pachIdent, uint8 nIdentLen)  //
     return true;
 }
 
-//>>> WiZaRd::IPv6 [Xanatos]
-EIdentState	CClientCredits::GetCurrentIdentState(const _CIPAddress& dwForIP) const
-//EIdentState	CClientCredits::GetCurrentIdentState(UINT dwForIP) const
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+EIdentState	CClientCredits::GetCurrentIdentState(const CAddress& dwForIP) const //>>> WiZaRd::IPv6 [Xanatos]
+#else
+EIdentState	CClientCredits::GetCurrentIdentState(const UINT dwForIP) const
+#endif
 {
     if (IdentState != IS_IDENTIFIED)
         return IdentState;
@@ -541,10 +551,11 @@ bool CClientCreditsList::CreateKeyPair()
 }
 
 uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, uchar* pachOutput, uint8 nMaxSize,
-//>>> WiZaRd::IPv6 [Xanatos]
-        const _CIPAddress& ChallengeIP, uint8 byChaIPKind,
-        //UINT ChallengeIP, uint8 byChaIPKind,
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+        const CAddress& ChallengeIP, uint8 byChaIPKind, //>>> WiZaRd::IPv6 [Xanatos]
+#else
+        const UINT ChallengeIP, uint8 byChaIPKind,
+#endif
         CryptoPP::RSASSA_PKCS1v15_SHA_Signer* sigkey)
 {
     // sigkey param is used for debug only
@@ -562,10 +573,11 @@ uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, uchar* pachOu
 
         SecByteBlock sbbSignature(sigkey->SignatureLength());
         AutoSeededRandomPool rng;
-//>>> WiZaRd::IPv6 [Xanatos]
-        byte abyBuffer[MAXPUBKEYSIZE+4+16+1];
-        //byte abyBuffer[MAXPUBKEYSIZE+9];
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+        byte abyBuffer[MAXPUBKEYSIZE+4+16+1]; //>>> WiZaRd::IPv6 [Xanatos]
+#else
+        byte abyBuffer[MAXPUBKEYSIZE+9];
+#endif
         UINT keylen = pTarget->GetSecIDKeyLen();
         memcpy(abyBuffer,pTarget->GetSecureIdent(),keylen);
         // 4 additional bytes random data send from this client
@@ -575,8 +587,9 @@ uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, uchar* pachOu
         uint16 ChIpLen = 0;
         if (byChaIPKind != 0)
         {
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
-            if (ChallengeIP.Type() == CAddress::IPv6)
+            if (ChallengeIP.GetType() == CAddress::IPv6)
             {
                 ChIpLen = 16+1;
                 memcpy(abyBuffer+keylen+4, ChallengeIP.Data(), 16);
@@ -588,10 +601,12 @@ uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, uchar* pachOu
                 PokeUInt32(abyBuffer+keylen+4, _ntohl(ChallengeIP.ToIPv4()));
                 PokeUInt8(abyBuffer+keylen+4+4, byChaIPKind);
             }
-            /*ChIpLen = 5;
-            PokeUInt32(abyBuffer+keylen+4, ChallengeIP);
-            PokeUInt8(abyBuffer+keylen+4+4, byChaIPKind);*/
 //<<< WiZaRd::IPv6 [Xanatos]
+#else
+            ChIpLen = 5;
+            PokeUInt32(abyBuffer+keylen+4, ChallengeIP);
+            PokeUInt8(abyBuffer+keylen+4+4, byChaIPKind);
+#endif
         }
         sigkey->SignMessage(rng, abyBuffer ,keylen+4+ChIpLen , sbbSignature.begin());
         ArraySink asink(pachOutput, nMaxSize);
@@ -607,10 +622,11 @@ uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, uchar* pachOu
 }
 
 bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uchar* pachSignature, uint8 nInputSize,
-//>>> WiZaRd::IPv6 [Xanatos]
-                                     const _CIPAddress& dwForIP, uint8 byChaIPKind)
-//UINT dwForIP, uint8 byChaIPKind)
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+                                     const CAddress& dwForIP, uint8 byChaIPKind) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+									const UINT dwForIP, uint8 byChaIPKind)
+#endif
 {
     ASSERT(pTarget);
     ASSERT(pachSignature);
@@ -625,10 +641,11 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uchar* pachS
         StringSource ss_Pubkey((byte*)pTarget->GetSecureIdent(),pTarget->GetSecIDKeyLen(),true,0);
         RSASSA_PKCS1v15_SHA_Verifier pubkey(ss_Pubkey);
         // 4 additional bytes random data send from this client +5 bytes v2
-//>>> WiZaRd::IPv6 [Xanatos]
-        byte abyBuffer[MAXPUBKEYSIZE+4+16+1];
-        //byte abyBuffer[MAXPUBKEYSIZE+9];
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+        byte abyBuffer[MAXPUBKEYSIZE+4+16+1]; //>>> WiZaRd::IPv6 [Xanatos]
+#else
+        byte abyBuffer[MAXPUBKEYSIZE+9];
+#endif
         memcpy(abyBuffer,m_abyMyPublicKey,m_nMyPublicKeyLen);
         UINT challenge = pTarget->m_dwCryptRndChallengeFor;
         ASSERT(challenge != 0);
@@ -638,11 +655,12 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uchar* pachS
         uint8 nChIpSize = 0;
         if (byChaIPKind != 0)
         {
-//>>> WiZaRd::IPv6 [Xanatos]
-            _CIPAddress ChallengeIP;
-            //nChIpSize = 5;
-            //UINT ChallengeIP = 0;
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+            CAddress ChallengeIP; //>>> WiZaRd::IPv6 [Xanatos]
+#else
+            nChIpSize = 5;
+            UINT ChallengeIP = 0;
+#endif
             switch (byChaIPKind)
             {
                 case CRYPT_CIP_LOCALCLIENT:
@@ -653,21 +671,24 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uchar* pachS
                 {
                     if (thePrefs.GetLogSecureIdent())
                         AddDebugLogLine(false, _T("Warning: Maybe SecureHash Ident fails because LocalIP is unknown"));
-//>>> WiZaRd::IPv6 [Xanatos]
-                    ChallengeIP = _CIPAddress(_ntohl(GetLocalIP()));
-                    //ChallengeIP = GetLocalIP();
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+                    ChallengeIP = CAddress(_ntohl(GetLocalIP())); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+                    ChallengeIP = GetLocalIP();
+#endif
                 }
                 break;
                 case CRYPT_CIP_NONECLIENT: // maybe not supported in future versions
-//>>> WiZaRd::IPv6 [Xanatos]
-                    ChallengeIP = _CIPAddress();
-                    //ChallengeIP = 0;
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+                    ChallengeIP = CAddress(); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+                    ChallengeIP = 0;
+#endif
                     break;
             }
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
-            if (ChallengeIP.Type() == CAddress::IPv6)
+            if (ChallengeIP.GetType() == CAddress::IPv6)
             {
                 nChIpSize = 16+1;
                 memcpy(abyBuffer+m_nMyPublicKeyLen+4, ChallengeIP.Data(), 16);
@@ -679,9 +700,11 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uchar* pachS
                 PokeUInt32(abyBuffer+m_nMyPublicKeyLen+4, _ntohl(ChallengeIP.ToIPv4()));
                 PokeUInt8(abyBuffer+m_nMyPublicKeyLen+4+4, byChaIPKind);
             }
-            //PokeUInt32(abyBuffer+m_nMyPublicKeyLen+4, ChallengeIP);
-            //PokeUInt8(abyBuffer+m_nMyPublicKeyLen+4+4, byChaIPKind);
 //<<< WiZaRd::IPv6 [Xanatos]
+#else
+            PokeUInt32(abyBuffer+m_nMyPublicKeyLen+4, ChallengeIP);
+            PokeUInt8(abyBuffer+m_nMyPublicKeyLen+4+4, byChaIPKind);
+#endif
         }
         //v2 end
 
@@ -736,10 +759,11 @@ bool CClientCreditsList::Debug_CheckCrypting()
     // create signature with fake priv key
     uchar pachSignature[200];
     memset(pachSignature,0,200);
-//>>> WiZaRd::IPv6 [Xanatos]
-    uint8 sigsize = CreateSignature(newcredits,pachSignature,200,CAddress(),false, &priv);
-    //uint8 sigsize = CreateSignature(newcredits,pachSignature,200,0,false, &priv);
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+    uint8 sigsize = CreateSignature(newcredits,pachSignature,200,CAddress(),false, &priv); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+    uint8 sigsize = CreateSignature(newcredits,pachSignature,200,0,false, &priv);
+#endif
 
     // next fake client uses the random created public key
     CreditStruct* newcstruct2 = new CreditStruct;
@@ -755,10 +779,11 @@ bool CClientCreditsList::Debug_CheckCrypting()
     newcredits2->SetSecureIdent(abyPublicKey,PublicKeyLen);
 
     //now verify this signature - if it's true everything is fine
-//>>> WiZaRd::IPv6 [Xanatos]
-    bool bResult = VerifyIdent(newcredits2,pachSignature,sigsize,CAddress(),0);
-    //bool bResult = VerifyIdent(newcredits2,pachSignature,sigsize,0,0);
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+    bool bResult = VerifyIdent(newcredits2,pachSignature,sigsize,CAddress(),0); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+    bool bResult = VerifyIdent(newcredits2,pachSignature,sigsize,0,0);
+#endif
 
     delete newcredits;
     delete newcredits2;
@@ -767,10 +792,11 @@ bool CClientCreditsList::Debug_CheckCrypting()
 }
 #endif
 
-//>>> WiZaRd::IPv6 [Xanatos]
-UINT CClientCredits::GetSecureWaitStartTime(const _CIPAddress& dwForIP)
-//UINT CClientCredits::GetSecureWaitStartTime(UINT dwForIP)
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+UINT CClientCredits::GetSecureWaitStartTime(const CAddress& dwForIP) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+UINT CClientCredits::GetSecureWaitStartTime(const UINT dwForIP)
+#endif
 {
     if (m_dwUnSecureWaitTime == 0 || m_dwSecureWaitTime == 0)
         SetSecWaitStartTime(dwForIP);
@@ -810,10 +836,11 @@ UINT CClientCredits::GetSecureWaitStartTime(const _CIPAddress& dwForIP)
     }
 }
 
-//>>> WiZaRd::IPv6 [Xanatos]
-void CClientCredits::SetSecWaitStartTime(const _CIPAddress& dwForIP)
-//void CClientCredits::SetSecWaitStartTime(UINT dwForIP)
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+void CClientCredits::SetSecWaitStartTime(const CAddress& dwForIP) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+void CClientCredits::SetSecWaitStartTime(const UINT dwForIP)
+#endif
 {
     m_dwUnSecureWaitTime = ::GetTickCount()-1;
     m_dwSecureWaitTime = ::GetTickCount()-1;

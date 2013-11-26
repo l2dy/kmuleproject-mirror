@@ -37,7 +37,11 @@ static char THIS_FILE[] = __FILE__;
 CFriend::CFriend(void)
 {
     m_dwLastSeen = 0;
-    //m_dwLastUsedIP = 0; //>>> WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+	m_dwLastUsedIP = CAddress(); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+    m_dwLastUsedIP = 0; 
+#endif
     m_nLastUsedPort = 0;
     m_dwLastChatted = 0;
     (void)m_strName;
@@ -51,10 +55,11 @@ CFriend::CFriend(void)
 }
 
 //Added this to work with the IRC.. Probably a better way to do it.. But wanted this in the release..
-//>>> WiZaRd::IPv6 [Xanatos]
-//CFriend::CFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort,
-CFriend::CFriend(const uchar* abyUserhash, UINT dwLastSeen, const _CIPAddress& dwLastUsedIP, uint16 nLastUsedPort,
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+CFriend::CFriend(const uchar* abyUserhash, UINT dwLastSeen, const CAddress& dwLastUsedIP, uint16 nLastUsedPort, //>>> WiZaRd::IPv6 [Xanatos]
+#else
+CFriend::CFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort, 
+#endif
                  UINT dwLastChatted, LPCTSTR pszName, UINT dwHasHash)
 {
     m_dwLastSeen = dwLastSeen;
@@ -62,9 +67,7 @@ CFriend::CFriend(const uchar* abyUserhash, UINT dwLastSeen, const _CIPAddress& d
     m_nLastUsedPort = nLastUsedPort;
     m_dwLastChatted = dwLastChatted;
     if (dwHasHash && abyUserhash)
-    {
         md4cpy(m_abyUserhash,abyUserhash);
-    }
     else
         md4clr(m_abyUserhash);
     md4clr(m_abyKadID);
@@ -107,18 +110,21 @@ CFriend::~CFriend(void)
 void CFriend::LoadFromFile(CFileDataIO* file)
 {
     file->ReadHash16(m_abyUserhash);
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
     UINT dwIP = file->ReadUInt32();
-    if (dwIP == -1)
+    if (dwIP == _UI32_MAX)
     {
         byte uIP[16];
         file->ReadHash16(uIP);
-        m_dwLastUsedIP = _CIPAddress(uIP);
+        m_dwLastUsedIP = CAddress(uIP);
     }
     else
-        m_dwLastUsedIP = _CIPAddress(_ntohl(dwIP));
-    //m_dwLastUsedIP = file->ReadUInt32();
+        m_dwLastUsedIP = CAddress(_ntohl(dwIP));
 //<<< WiZaRd::IPv6 [Xanatos]
+#else
+    m_dwLastUsedIP = file->ReadUInt32();
+#endif
     m_nLastUsedPort = file->ReadUInt16();
     m_dwLastSeen = file->ReadUInt32();
     m_dwLastChatted = file->ReadUInt32();
@@ -154,16 +160,19 @@ void CFriend::LoadFromFile(CFileDataIO* file)
 void CFriend::WriteToFile(CFileDataIO* file)
 {
     file->WriteHash16(m_abyUserhash);
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
-    if (m_dwLastUsedIP.Type() == CAddress::IPv6)
+    if (m_dwLastUsedIP.GetType() == CAddress::IPv6)
     {
         file->WriteUInt32(_UI32_MAX);
         file->WriteHash16(m_dwLastUsedIP.Data());
     }
     else
-        file->WriteUInt32(_ntohl(m_dwLastUsedIP.ToIPv4()));
-    //file->WriteUInt32(m_dwLastUsedIP);
+        file->WriteUInt32(_ntohl(m_dwLastUsedIP.ToIPv4()));    
 //<<< WiZaRd::IPv6 [Xanatos]
+#else
+	file->WriteUInt32(m_dwLastUsedIP);
+#endif
     file->WriteUInt16(m_nLastUsedPort);
     file->WriteUInt32(m_dwLastSeen);
     file->WriteUInt32(m_dwLastChatted);
@@ -203,9 +212,7 @@ bool CFriend::HasKadID() const
 void CFriend::SetFriendSlot(bool newValue)
 {
     if (GetLinkedClient() != NULL)
-    {
         m_LinkedClient->SetFriendSlot(newValue);
-    }
 
     m_friendSlot = newValue;
 }
@@ -301,12 +308,15 @@ bool CFriend::TryToConnect(CFriendConnectionListener* pConnectionReport)
         m_liConnectionReport.AddTail(pConnectionReport);
         return true;
     }
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
     if (isnulmd4(m_abyKadID) && (m_dwLastUsedIP.IsNull() || m_nLastUsedPort == 0)
             && (GetLinkedClient() == NULL || GetLinkedClient()->GetConnectIP().IsNull() || GetLinkedClient()->GetUserPort() == 0))
-//     if (isnulmd4(m_abyKadID) && (m_dwLastUsedIP == 0 || m_nLastUsedPort == 0)
-// 			&& (GetLinkedClient() == NULL || GetLinkedClient()->GetConnectIP() == 0 || GetLinkedClient()->GetUserPort() == 0))
 //<<< WiZaRd::IPv6 [Xanatos]
+#else
+    if (isnulmd4(m_abyKadID) && (m_dwLastUsedIP == 0 || m_nLastUsedPort == 0)
+ 		&& (GetLinkedClient() == NULL || GetLinkedClient()->GetConnectIP() == 0 || GetLinkedClient()->GetUserPort() == 0))
+#endif
     {
         pConnectionReport->ReportConnectionProgress(m_LinkedClient, _T("*** ") + GetResString(IDS_CONNECTING), false);
         pConnectionReport->ConnectingResult(GetLinkedClient(), false);
@@ -463,11 +473,11 @@ void CFriend::FindKadID()
             && GetLinkedClient()->GetKadPort() != 0 && GetLinkedClient()->GetKadVersion() >= 2)
     {
         DebugLog(_T("Searching KadID for friend %s by IP %s"), m_strName.IsEmpty() ? _T("(Unknown)") : m_strName, ipstr(GetLinkedClient()->GetConnectIP()));
-//>>> WiZaRd::IPv6 [Xanatos]
-        if (!GetLinkedClient()->GetIPv4().IsNull())
-            Kademlia::CKademlia::FindNodeIDByIP(*this, _ntohl(GetLinkedClient()->GetIP().ToIPv4()), GetLinkedClient()->GetUserPort(), GetLinkedClient()->GetKadPort(), GetLinkedClient()->GetKadVersion());
-        //Kademlia::CKademlia::FindNodeIDByIP(*this, GetLinkedClient()->GetConnectIP(), GetLinkedClient()->GetUserPort(), GetLinkedClient()->GetKadPort(), GetLinkedClient()->GetKadVersion());
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+		Kademlia::CKademlia::FindNodeIDByIP(*this, _ntohl(GetLinkedClient()->GetConnectIP().ToIPv4()), GetLinkedClient()->GetUserPort(), GetLinkedClient()->GetKadPort(), GetLinkedClient()->GetKadVersion()); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+        Kademlia::CKademlia::FindNodeIDByIP(*this, GetLinkedClient()->GetConnectIP(), GetLinkedClient()->GetUserPort(), GetLinkedClient()->GetKadPort(), GetLinkedClient()->GetKadVersion());
+#endif
     }
 }
 
@@ -500,10 +510,11 @@ void CFriend::KadSearchIPByNodeIDResult(Kademlia::EKadClientSearchRes eStatus, U
         if (eStatus == Kademlia::KCSR_SUCCEEDED && GetLinkedClient(true) != NULL)
         {
             DebugLog(_T("Successfully fetched IP (%s) by KadID (%s) for friend %s"), ipstr(dwIP), md4str(m_abyKadID), m_strName.IsEmpty() ? _T("(Unknown)") : m_strName);
-//>>> WiZaRd::IPv6 [Xanatos]
-            if (_ntohl(GetLinkedClient()->GetIP().ToIPv4()) != dwIP || GetLinkedClient()->GetUserPort() != nPort)
-                //if (GetLinkedClient()->GetConnectIP() != dwIP || GetLinkedClient()->GetUserPort() != nPort)
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+            if (_ntohl(GetLinkedClient()->GetIP().ToIPv4()) != dwIP || GetLinkedClient()->GetUserPort() != nPort) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+			if (GetLinkedClient()->GetConnectIP() != dwIP || GetLinkedClient()->GetUserPort() != nPort)
+#endif
             {
                 // retry to connect with our new found IP
                 for (POSITION pos = m_liConnectionReport.GetHeadPosition(); pos != 0; m_liConnectionReport.GetNext(pos))
@@ -519,10 +530,11 @@ void CFriend::KadSearchIPByNodeIDResult(Kademlia::EKadClientSearchRes eStatus, U
                     ASSERT(0);
                     UpdateFriendConnectionState(FCR_ESTABLISHED);
                 }
-//>>> WiZaRd::IPv6 [Xanatos]
-                m_dwLastUsedIP = _CIPAddress(_ntohl(dwIP));
-                //m_dwLastUsedIP = dwIP;
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+                m_dwLastUsedIP = CAddress(_ntohl(dwIP)); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+				m_dwLastUsedIP = dwIP;
+#endif
                 m_nLastUsedPort = nPort;
                 m_LinkedClient->SetIP(m_dwLastUsedIP);
                 m_LinkedClient->SetUserPort(nPort);

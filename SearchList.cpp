@@ -218,10 +218,11 @@ UINT CSearchList::ProcessSearchAnswer(const uchar* in_packet, UINT size,
         }
         if (Sender)
         {
-//>>> WiZaRd::IPv6 [Xanatos]
-            toadd->SetClientID(_ntohl(Sender->GetIP().ToIPv4()));
-            //toadd->SetClientID(Sender->GetIP());
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+            toadd->SetClientID(_ntohl(Sender->GetIP().ToIPv4())); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+            toadd->SetClientID(Sender->GetIP());
+#endif
             toadd->SetClientPort(Sender->GetUserPort());
             toadd->SetClientServerIP(Sender->GetServerIP());
             toadd->SetClientServerPort(Sender->GetServerPort());
@@ -403,11 +404,13 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse, UINT dwFro
 #ifdef _DEBUG
                 if (thePrefs.GetLogBannedClients())
                 {
-//>>> WiZaRd::IPv6 [Xanatos]
-                    CUpDownClient* pClient = theApp.clientlist->FindClientByIP(_CIPAddress(_ntohl(userid)));
-                    //CUpDownClient* pClient = theApp.clientlist->FindClientByIP(userid);
-//<<< WiZaRd::IPv6 [Xanatos]
-                    AddDebugLogLine(false, _T("Ignored source (IP=%s) received from server - banned client %s"), ipstr(userid), pClient->DbgGetClientInfo());
+#ifdef IPV6_SUPPORT
+                    CUpDownClient* pClient = theApp.clientlist->FindClientByIP(CAddress(_ntohl(userid))); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+                    CUpDownClient* pClient = theApp.clientlist->FindClientByIP(userid);
+#endif
+					if(pClient)
+						AddDebugLogLine(false, _T("Ignored source (IP=%s) received from server - banned client %s"), ipstr(userid), pClient->DbgGetClientInfo());
                 }
 #endif
                 bAdd = false;

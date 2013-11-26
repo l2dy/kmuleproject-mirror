@@ -85,7 +85,9 @@ public:
     // Base
     CUpDownClient(CClientReqSocket* sender = 0);
     CUpDownClient(CPartFile* in_reqfile, const uint16 in_port, const UINT in_userid, const UINT in_serverup, const uint16 in_serverport, const bool ed2kID = false);
-	CUpDownClient(CPartFile* in_reqfile, const uint16 in_port, const _CIPAddress& IP, const UINT in_serverup, const uint16 in_serverport, const bool ed2kID = false); //>>> WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+	CUpDownClient(CPartFile* in_reqfile, const uint16 in_port, const CAddress& IP, const UINT in_serverup, const uint16 in_serverport, const bool ed2kID = false); //>>> WiZaRd::IPv6 [Xanatos]
+#endif
     virtual ~CUpDownClient();
 
     void			StartDownload();
@@ -97,10 +99,11 @@ public:
     }
     virtual bool	Disconnected(LPCTSTR pszReason, bool bFromSocket = false);
 
-//>>> WiZaRd::NatTraversal [Xanatos]
-    virtual bool	TryToConnect(bool bIgnoreMaxCon = false, bool bNoCallbacks = false, CRuntimeClass* pClassSocket = NULL, bool bUseUTP = false);
-    //virtual bool	TryToConnect(bool bIgnoreMaxCon = false, bool bNoCallbacks = false, CRuntimeClass* pClassSocket = NULL);
-//<<< WiZaRd::NatTraversal [Xanatos]
+#ifdef NAT_TRAVERSAL
+    virtual bool	TryToConnect(const bool bIgnoreMaxCon = false, const bool bNoCallbacks = false, CRuntimeClass* pClassSocket = NULL, const bool bAllowUTP = false); //>>> WiZaRd::NatTraversal [Xanatos]
+#else
+    virtual bool	TryToConnect(const bool bIgnoreMaxCon = false, const bool bNoCallbacks = false, CRuntimeClass* pClassSocket = NULL);
+#endif
     virtual void	Connect();
     virtual void	ConnectionEstablished();
     virtual void	OnSocketConnected(int nErrorCode);
@@ -119,188 +122,70 @@ public:
         return m_pszUsername;
     }
     void			SetUserName(LPCTSTR pszNewName);
-    _CIPAddress		GetIP() const
+#ifdef IPV6_SUPPORT
+    CAddress		GetIP() const //>>> WiZaRd::IPv6 [Xanatos]
+#else
+	UINT			GetIP() const
+#endif
     {
         return m_dwUserIP;
     }
-    void			SetIP(_CIPAddress val)   //Only use this when you know the real IP or when your clearing it.
-    {
-//>>> WiZaRd::IPv6 [Xanatos]
-        if (val.Convert(CAddress::IPv4)) // Check if the IP is a mapped IPv4
-            m_UserIPv4 = val;
-        else
-            m_UserIPv6 = val;
-        UpdateIP(val);
-//<<< WiZaRd::IPv6 [Xanatos]
-        //m_dwUserIP = val;
-        //m_nConnectIP = val;
-    }
-    __inline bool	HasLowID() const
-    {
-        return (m_nUserIDHybrid < 16777216);
-    }
-    _CIPAddress		GetConnectIP() const
-    {
-        return m_nConnectIP;
-    }
-    uint16			GetUserPort() const
-    {
-        return m_nUserPort;
-    }
-    void			SetUserPort(uint16 val)
-    {
-        m_nUserPort = val;
-    }
-    UINT			GetTransferredUp() const
-    {
-        return m_nTransferredUp;
-    }
-    UINT			GetTransferredDown() const
-    {
-        return m_nTransferredDown;
-    }
-    UINT			GetServerIP() const
-    {
-        return m_dwServerIP;
-    }
-    void			SetServerIP(UINT nIP)
-    {
-        m_dwServerIP = nIP;
-    }
-    uint16			GetServerPort() const
-    {
-        return m_nServerPort;
-    }
-    void			SetServerPort(uint16 nPort)
-    {
-        m_nServerPort = nPort;
-    }
-    const uchar*	GetUserHash() const
-    {
-        return (uchar*)m_achUserHash;
-    }
+#ifdef IPV6_SUPPORT
+	void			SetIP(CAddress val);   //Only use this when you know the real IP or when your clearing it. //>>> WiZaRd::IPv6 [Xanatos]
+#else
+    void			SetIP(const UINT val);   //Only use this when you know the real IP or when your clearing it.
+#endif
+
+	__inline bool	HasLowID() const			{return (m_nUserIDHybrid < 16777216);}
+#ifdef IPV6_SUPPORT
+    CAddress		GetConnectIP() const		{return m_nConnectIP;} //>>> WiZaRd::IPv6 [Xanatos]
+#else
+	UINT			GetConnectIP() const		{return m_nConnectIP;}
+#endif
+    uint16			GetUserPort() const			{return m_nUserPort;}
+    void			SetUserPort(const uint16 val)	{m_nUserPort = val;}
+    UINT			GetTransferredUp() const	{return m_nTransferredUp;}
+    UINT			GetTransferredDown() const	{return m_nTransferredDown;}
+    UINT			GetServerIP() const			{return m_dwServerIP;}
+    void			SetServerIP(const UINT nIP)		{m_dwServerIP = nIP;}
+    uint16			GetServerPort() const		{return m_nServerPort;}
+    void			SetServerPort(const uint16 nPort)	{m_nServerPort = nPort;}
+    const uchar*	GetUserHash() const			{return (uchar*)m_achUserHash;}
     void			SetUserHash(const uchar* pUserHash);
     bool			HasValidHash() const;
     int				GetHashType() const;
-    const uchar*	GetBuddyID() const
-    {
-        return (uchar*)m_achBuddyID;
-    }
+    const uchar*	GetBuddyID() const			{return (uchar*)m_achBuddyID;}
     void			SetBuddyID(const uchar* m_achTempBuddyID);
-    bool			HasValidBuddyID() const
-    {
-        return m_bBuddyIDValid;
-    }
-    void			SetBuddyIP(UINT val)
-    {
-        m_nBuddyIP = val;
-    }
-    UINT			GetBuddyIP() const
-    {
-        return m_nBuddyIP;
-    }
-    void			SetBuddyPort(uint16 val)
-    {
-        m_nBuddyPort = val;
-    }
-    uint16			GetBuddyPort() const
-    {
-        return m_nBuddyPort;
-    }
-    EClientSoftware	GetClientSoft() const
-    {
-        return (EClientSoftware)m_clientSoft;
-    }
-    const CString&	GetClientSoftVer() const
-    {
-        return m_strClientSoftware;
-    }
-    const CString&	GetClientModVer() const
-    {
-        return m_strModVersion;
-    }
+    bool			HasValidBuddyID() const		{return m_bBuddyIDValid;}
+    void			SetBuddyIP(const UINT val)	{m_nBuddyIP = val;}
+    UINT			GetBuddyIP() const			{return m_nBuddyIP;}
+    void			SetBuddyPort(const uint16 val)	{m_nBuddyPort = val;}
+    uint16			GetBuddyPort() const		{return m_nBuddyPort;}
+    EClientSoftware	GetClientSoft() const		{return (EClientSoftware)m_clientSoft;}
+    const CString&	GetClientSoftVer() const	{return m_strClientSoftware;}
+    const CString&	GetClientModVer() const		{return m_strModVersion;}
     void			InitClientSoftwareVersion();
-    UINT			GetVersion() const
-    {
-        return m_nClientVersion;
-    }
-    uint8			GetMuleVersion() const
-    {
-        return m_byEmuleVersion;
-    }
-    bool			ExtProtocolAvailable() const
-    {
-        return m_bEmuleProtocol;
-    }
-    bool			SupportMultiPacket() const
-    {
-        return m_bMultiPacket;
-    }
-    bool			SupportExtMultiPacket() const
-    {
-        return m_fExtMultiPacket;
-    }
-    bool			SupportsLargeFiles() const
-    {
-        return m_fSupportsLargeFiles;
-    }
-    bool			SupportsFileIdentifiers() const
-    {
-        return m_fSupportsFileIdent;
-    }
-    bool			IsEmuleClient() const
-    {
-        return m_byEmuleVersion!=0;
-    }
-    uint8			GetSourceExchange1Version() const
-    {
-        return m_bySourceExchange1Ver;
-    }
-    bool			SupportsSourceExchange2() const
-    {
-        return m_fSupportsSourceEx2;
-    }
-    CClientCredits* Credits() const
-    {
-        return credits;
-    }
+    UINT			GetVersion() const			{return m_nClientVersion;}
+    uint8			GetMuleVersion() const		{return m_byEmuleVersion;}
+    bool			ExtProtocolAvailable() const	{return m_bEmuleProtocol;}
+    bool			SupportMultiPacket() const	{return m_bMultiPacket;}
+    bool			SupportExtMultiPacket() const	{return m_fExtMultiPacket;}
+    bool			SupportsLargeFiles() const	{return m_fSupportsLargeFiles;}
+    bool			SupportsFileIdentifiers() const	{return m_fSupportsFileIdent;}
+    bool			IsEmuleClient() const		{return m_byEmuleVersion != 0;}
+    uint8			GetSourceExchange1Version() const	{return m_bySourceExchange1Ver;}
+    bool			SupportsSourceExchange2() const	{return m_fSupportsSourceEx2;}
+    CClientCredits* Credits() const				{return credits;}
     bool			IsBanned() const;
-    const CString&	GetClientFilename() const
-    {
-        return m_strClientFilename;
-    }
-    void			SetClientFilename(const CString& fileName)
-    {
-        m_strClientFilename = fileName;
-    }
-    uint16			GetUDPPort() const
-    {
-        return m_nUDPPort;
-    }
-    void			SetUDPPort(uint16 nPort)
-    {
-        m_nUDPPort = nPort;
-    }
-    uint8			GetUDPVersion() const
-    {
-        return m_byUDPVer;
-    }
-    bool			SupportsUDP() const
-    {
-        return GetUDPVersion() != 0 && m_nUDPPort != 0;
-    }
-    uint16			GetKadPort() const
-    {
-        return m_nKadPort;
-    }
-    void			SetKadPort(uint16 nPort)
-    {
-        m_nKadPort = nPort;
-    }
-    uint8			GetExtendedRequestsVersion() const
-    {
-        return m_byExtendedRequestsVer;
-    }
+    const CString&	GetClientFilename() const	{return m_strClientFilename;}
+    void			SetClientFilename(const CString& fileName)	{m_strClientFilename = fileName;}
+    uint16			GetUDPPort() const			{return m_nUDPPort;}
+    void			SetUDPPort(const uint16 nPort)	{m_nUDPPort = nPort;}
+    uint8			GetUDPVersion() const		{return m_byUDPVer;}
+	bool			SupportsUDP() const			{return GetUDPVersion() != 0 && m_nUDPPort != 0;}
+    uint16			GetKadPort() const			{return m_nKadPort;}
+    void			SetKadPort(const uint16 nPort)	{m_nKadPort = nPort;}
+    uint8			GetExtendedRequestsVersion() const	{return m_byExtendedRequestsVer;}
     void			RequestSharedFileList();
     void			ProcessSharedFileList(const uchar* pachPacket, UINT nSize, LPCTSTR pszDirectory = NULL);
     EConnectingState GetConnectingState() const
@@ -430,6 +315,7 @@ public:
     {
         return RequestsCryptLayer() && m_fRequiresCryptLayer;
     }
+	bool			CanDoCallback() const;
     bool			SupportsDirectUDPCallback() const
     {
         return m_fDirectUDPCallback != 0 && HasValidHash() && GetKadPort() != 0;
@@ -450,7 +336,11 @@ public:
     {
         m_fDirectUDPCallback = bVal ? 1 : 0;
     }
+#ifdef NAT_TRAVERSAL
 	uint8			GetConnectOptions(const bool bEncryption, const bool bCallback, const bool bNATTraversal) const; //>>> WiZaRd::NatTraversal [Xanatos]
+#else
+	uint8			GetConnectOptions(const bool bEncryption, const bool bCallback) const;
+#endif
     void			SetConnectOptions(const uint8 byOptions, const bool bEncryption, const bool bCallback); // shortcut, sets crypt, callback etc based from the tagvalue we receive
     bool			IsObfuscatedConnectionEstablished() const;
     bool			ShouldReceiveCryptUDPPackets() const;
@@ -627,7 +517,7 @@ public:
     virtual void	ProcessBlockPacket(const uchar* packet, UINT size, bool packed, bool bI64Offsets);
     virtual void	ProcessHttpBlockPacket(const BYTE* pucData, UINT uSize);
     void			ClearDownloadBlockRequests();
-    void			SendOutOfPartReqsAndAddToWaitingQueue();
+    void			SendOutOfPartReqs();
     UINT			CalculateDownloadRate();
     uint16			GetAvailablePartCount() const;
     bool			SwapToAnotherFile(LPCTSTR pszReason, bool bIgnoreNoNeeded, bool ignoreSuspensions, bool bRemoveCompletely, CPartFile* toFile = NULL, bool allowSame = true, bool isAboutToAsk = false, bool debug = false); // ZZ:DownloadManager
@@ -897,8 +787,15 @@ protected:
     void	SendFirewallCheckUDPRequest();
     void	SendHashSetRequest();
 
-    _CIPAddress	m_nConnectIP;		// holds the supposed IP or (after we had a connection) the real IP
-    _CIPAddress	m_dwUserIP;			// holds 0 (real IP not yet available) or the real IP (after we had a connection)
+#ifdef IPV6_SUPPORT
+//>>> WiZaRd::IPv6 [Xanatos]
+    CAddress	m_nConnectIP;		// holds the supposed IP or (after we had a connection) the real IP
+    CAddress	m_dwUserIP;			// holds 0 (real IP not yet available) or the real IP (after we had a connection)
+//<<< WiZaRd::IPv6 [Xanatos]
+#else
+	UINT	m_nConnectIP;		// holds the supposed IP or (after we had a connection) the real IP
+	UINT	m_dwUserIP;			// holds 0 (real IP not yet available) or the real IP (after we had a connection)
+#endif
     UINT	m_dwServerIP;
     UINT	m_nUserIDHybrid;
     uint16	m_nUserPort;
@@ -929,7 +826,11 @@ protected:
     uint8	m_byInfopacketsReceived;	// have we received the edonkeyprot and emuleprot packet already (see InfoPacketsReceived() )
     uint8	m_bySupportSecIdent;
     //--group to aligned int32
-    _CIPAddress	m_dwLastSignatureIP; //>>> WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+    CAddress	m_dwLastSignatureIP; //>>> WiZaRd::IPv6 [Xanatos]
+#else
+	UINT	m_dwLastSignatureIP;
+#endif
     CString m_strClientSoftware;
     CString m_strModVersion;
     UINT	m_dwLastSourceRequest;
@@ -1090,9 +991,13 @@ protected:
     UINT m_fHashsetRequestingAICH : 1, // 31 bits left
          m_fAICHHashRequested : 1, //>>> Security Check
          m_fSourceExchangeRequested : 1, //>>> Security Check
-         m_fSupportsModProt	  : 1, //>>> WiZaRd::ModProt
-         m_fSupportsNatTraversal : 1, //>>> WiZaRd::NatTraversal [Xanatos]
-         m_fSupportsIPv6 : 1, //>>> WiZaRd::IPv6 [Xanatos]
+		 m_fSupportsModProt	  : 1, //>>> WiZaRd::ModProt
+#ifdef NAT_TRAVERSAL
+		 m_fSupportsNatTraversal : 1, //>>> WiZaRd::NatTraversal [Xanatos]
+#endif
+#ifdef IPV6_SUPPORT
+		 m_fSupportsIPv6 : 1, //>>> WiZaRd::IPv6 [Xanatos]
+#endif
          m_fSupportsExtendedXS : 1; //>>> WiZaRd::ExtendedXS [Xanatos]
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 public:
@@ -1131,7 +1036,6 @@ public:
 //<<< WiZaRd::ICS [enkeyDEV]
 //>>> WiZaRd::AntiHideOS [netfinity]
 public:
-    bool	IsPartialSource() const;
     uint8*	m_abySeenPartStatus;
 //<<< WiZaRd::AntiHideOS [netfinity]
 //>>> WiZaRd::ClientAnalyzer
@@ -1273,33 +1177,28 @@ public:
     void	SendModInfoPacket() const;
     void	ProcessModInfoPacket(const uchar* pachPacket, const UINT nSize);
 //<<< WiZaRd::ModProt
+#ifdef NAT_TRAVERSAL
 //>>> WiZaRd::NatTraversal [Xanatos]
 public:
     bool	SupportsNatTraversal() const		{return m_fSupportsNatTraversal;}
     void	SetNatTraversalSupport(bool bVal)	{m_fSupportsNatTraversal = bVal ? 1 : 0;}
 //<<< WiZaRd::NatTraversal [Xanatos]
+#endif
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
 public:    
     bool	SupportsIPv6() const							{return m_fSupportsIPv6;}
     const CAddress&	GetIPv4() const							{return m_UserIPv4;}
     const CAddress&	GetIPv6() const							{return m_UserIPv6;}
     bool	IsIPv6Open() const								{return m_bOpenIPv6;}
-    void	UpdateIP(const CAddress& val)
-    {
-        m_nConnectIP = val;
-        m_dwUserIP = val;
-    }
-    void			SetIPv6(const CAddress& val)
-    {
-        ASSERT(val.Type() == CAddress::IPv6);
-        m_UserIPv6 = val;
-        m_bOpenIPv6 = true;
-    }
+    void	UpdateIP(const CAddress& val);
+    void	SetIPv6(const CAddress& val);
 protected:
-    _CIPAddress m_UserIPv6;
+    CAddress m_UserIPv6;
     bool	 m_bOpenIPv6;
-    _CIPAddress m_UserIPv4;
+    CAddress m_UserIPv4;
 //<<< WiZaRd::IPv6 [Xanatos]
+#endif
 //>>> WiZaRd::ExtendedXS [Xanatos]
 public:
     bool	SupportsExtendedSourceExchange() const	{return m_fSupportsExtendedXS;}

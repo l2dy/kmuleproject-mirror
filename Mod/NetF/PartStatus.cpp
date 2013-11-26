@@ -19,6 +19,10 @@
 #include "SafeFile.h"
 #include "Log.h"
 #include "PartFile.h"
+#ifdef _DEBUG
+#include "emule.h"
+#include "Log.h"
+#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -28,22 +32,31 @@ static char THIS_FILE[] = __FILE__;
 
 CPartStatus::CPartStatus()
 {
-    m_pStatusFile = NULL;
 }
 
 CPartStatus::~CPartStatus()
 {
-    ASSERT(m_pStatusFile == NULL);
 }
 
-CKnownFile* CPartStatus::GetStatusFile() const
+void CPartStatus::Merge(const CPartStatus* toMerge)
 {
-    return m_pStatusFile;
-}
+	uint64	uStart = 0ULL;
+	uint64	uEnd = toMerge->GetSize() - 1ULL;
+	while(toMerge->FindFirstComplete(uStart, uEnd))
+	{
+#ifdef _DEBUG
+		if(!this->IsComplete(uStart, uEnd))
+		{
+			theApp.QueueLogLineEx(LOG_INFO, L"%hs: range %I64u-%I64u merged to partstatus!", __FUNCTION__, uStart, uEnd);
+			this->Set(uStart, uEnd);
+		}
+#else
+		this->Set(uStart, uEnd);
+#endif
 
-void CPartStatus::SetStatusFile(CKnownFile* pFile)
-{
-    m_pStatusFile = pFile;
+		uStart = uEnd + 1ULL;
+		uEnd = uEnd - 1ULL;
+	}
 }
 
 uint64
@@ -129,9 +142,8 @@ CPartStatus::FindFirstNeeded(uint64& start, uint64& stop, const CPartStatus* con
 }
 
 CPartStatus*
-CPartStatus::CreatePartStatus(CSafeMemFile* const data, CKnownFile* pFile, const bool defState)
+CPartStatus::CreatePartStatus(CSafeMemFile* const data, const uint64 size, const bool defState)
 {
-    uint64 size = pFile->GetFileSize();
     uint64	sctSize = 0ULL;
     uint16	sctDivider = 0;
     uint16	sctCount;
@@ -145,7 +157,7 @@ CPartStatus::CreatePartStatus(CSafeMemFile* const data, CKnownFile* pFile, const
         // Special case
         if (sctCount == 0)
         {
-            partStatus = new CAICHStatusVector(pFile); // temporarily used until standard container is implemented
+            partStatus = new CAICHStatusVector(size); // temporarily used until standard container is implemented
             if (defState == true)
                 partStatus->Set(0, size - 1);
             else
@@ -155,7 +167,7 @@ CPartStatus::CreatePartStatus(CSafeMemFile* const data, CKnownFile* pFile, const
         // Future versions of the protocol may send a partmap of size 1 to indicate it doesn't have any data to share yet!
         else if (sctCount == 1)
         {
-            partStatus = new CAICHStatusVector(pFile); // temporarily used until standard container is implemented
+            partStatus = new CAICHStatusVector(size); // temporarily used until standard container is implemented
             if (data->ReadUInt8() & 0x01)
                 partStatus->Set(0, size - 1);
             else
@@ -167,7 +179,7 @@ CPartStatus::CreatePartStatus(CSafeMemFile* const data, CKnownFile* pFile, const
         // Check for standard part vector
         if ((UINT) sctCount == (UINT)((size + (PARTSIZE - 1)) / PARTSIZE))
         {
-            partStatus = new CAICHStatusVector(pFile); // temporarily used until standard container is implemented
+            partStatus = new CAICHStatusVector(size); // temporarily used until standard container is implemented
             sctSize = PARTSIZE;
             sctDivider = 1;
         }
@@ -175,7 +187,7 @@ CPartStatus::CreatePartStatus(CSafeMemFile* const data, CKnownFile* pFile, const
         else if ((UINT) sctCount == (UINT)(53 * wholePartCount + ((size % PARTSIZE) + (EMBLOCKSIZE - 1)) / EMBLOCKSIZE))
         {
             DebugLog(_T(__FUNCTION__) _T("; Part vector has AICH sub chunks! :)"));
-            partStatus = new CAICHStatusVector(pFile);
+            partStatus = new CAICHStatusVector(size);
             sctSize = EMBLOCKSIZE;
             sctDivider = EMBLOCKSPERPART;
         }
@@ -184,35 +196,35 @@ CPartStatus::CreatePartStatus(CSafeMemFile* const data, CKnownFile* pFile, const
             if ((UINT) sctCount == (UINT)(27 * wholePartCount + ((size % PARTSIZE) + (2 * EMBLOCKSIZE - 1)) / (2 * EMBLOCKSIZE)))
             {
                 DebugLog(_T(__FUNCTION__) _T("; Part vector has AICH x2 sub chunks! :)"));
-                partStatus = new CAICHStatusVector(pFile);
+                partStatus = new CAICHStatusVector(size);
                 sctSize = 2 * EMBLOCKSIZE;
                 sctDivider = 27;
             }
             else if ((UINT) sctCount == (UINT)(14 * wholePartCount + ((size % PARTSIZE) + (4 * EMBLOCKSIZE - 1)) / (4 * EMBLOCKSIZE)))
             {
                 DebugLog(_T(__FUNCTION__) _T("; Part vector has AICH x4 sub chunks! :)"));
-                partStatus = new CAICHStatusVector(pFile);
+                partStatus = new CAICHStatusVector(size);
                 sctSize = 4 * EMBLOCKSIZE;
                 sctDivider = 14;
             }
             else if ((UINT) sctCount == (UINT)(7 * wholePartCount + ((size % PARTSIZE) + (8 * EMBLOCKSIZE - 1)) / (8 * EMBLOCKSIZE)))
             {
                 DebugLog(_T(__FUNCTION__) _T("; Part vector has AICH x8 sub chunks! :)"));
-                partStatus = new CAICHStatusVector(pFile);
+                partStatus = new CAICHStatusVector(size);
                 sctSize = 8 * EMBLOCKSIZE;
                 sctDivider = 7;
             }
             else if ((UINT) sctCount == (UINT)(4 * wholePartCount + ((size % PARTSIZE) + (16 * EMBLOCKSIZE - 1)) / (16 * EMBLOCKSIZE)))
             {
                 DebugLog(_T(__FUNCTION__) _T("; Part vector has AICH x16 sub chunks! :)"));
-                partStatus = new CAICHStatusVector(pFile);
+                partStatus = new CAICHStatusVector(size);
                 sctSize = 16 * EMBLOCKSIZE;
                 sctDivider = 4;
             }
             else if ((UINT) sctCount == (UINT)(2 * wholePartCount + ((size % PARTSIZE) + (32 * EMBLOCKSIZE - 1)) / (32 * EMBLOCKSIZE)))
             {
                 DebugLog(_T(__FUNCTION__) _T("; Part vector has AICH x32 sub chunks! :)"));
-                partStatus = new CAICHStatusVector(pFile);
+                partStatus = new CAICHStatusVector(size);
                 sctSize = 32 * EMBLOCKSIZE;
                 sctDivider = 2;
             }
@@ -221,7 +233,7 @@ CPartStatus::CreatePartStatus(CSafeMemFile* const data, CKnownFile* pFile, const
         if (sctSize == 0ULL && (UINT) sctCount == (UINT)((size + (CRUMBSIZE - 1)) / CRUMBSIZE))
         {
             DebugLog(_T(__FUNCTION__) _T("; Part vector has crumbs! :)"));
-            partStatus = new CCrumbStatusVector(pFile);
+            partStatus = new CCrumbStatusVector(size);
             sctSize = CRUMBSIZE;
             sctDivider = CRUMBSPERPART;
         }
@@ -404,23 +416,8 @@ CAICHStatusVector::CAICHStatusVector(const uint64 size)
         m_chunks[i] = 0;
 }
 
-CAICHStatusVector::CAICHStatusVector(CKnownFile* pFile)
-{
-    SetStatusFile(pFile);
-    uint64 size = GetStatusFile()->GetFileSize();
-
-    UINT const chunks_count = _GetAICHCount(size);
-    size_t const vector_size = (chunks_count + 7) / 8;
-    m_size = size;
-    m_chunks = new uint8[vector_size];
-    for (UINT i = 0; i < vector_size; i++)
-        m_chunks[i] = 0;
-}
-
 CAICHStatusVector::CAICHStatusVector(const CPartStatus* const source)
 {
-    SetStatusFile(source->GetStatusFile());
-
     const uint64 size = source->GetSize();
     const UINT chunks_count = _GetAICHCount(size);
     m_size = size;
@@ -436,11 +433,6 @@ CAICHStatusVector::CAICHStatusVector(const CPartStatus* const source)
 
 CAICHStatusVector::~CAICHStatusVector()
 {
-    if (GetStatusFile())
-    {
-        //GetStatusFile()->RemoveFromPartsInfo(this);
-        SetStatusFile(NULL);
-    }
     delete[] m_chunks;
 }
 
@@ -566,11 +558,8 @@ CAICHStatusVector::FindFirstNeeded(uint64& start, uint64& stop) const
 //	CCrumbStatusVector
 //
 
-CCrumbStatusVector::CCrumbStatusVector(CKnownFile* pFile)
+CCrumbStatusVector::CCrumbStatusVector(const uint64 size)
 {
-    SetStatusFile(pFile);
-    uint64 size = GetStatusFile()->GetFileSize();
-
     UINT const chunks_count = (UINT)((size + (CRUMBSIZE - 1)) / CRUMBSIZE);
     size_t const vector_size = (chunks_count + 7) / 8;
     m_size = size;
@@ -596,11 +585,6 @@ CCrumbStatusVector::CCrumbStatusVector(const CPartStatus* const source)
 
 CCrumbStatusVector::~CCrumbStatusVector()
 {
-    if (GetStatusFile())
-    {
-        //GetStatusFile()->RemoveFromPartsInfo(this);
-        SetStatusFile(NULL);
-    }
     delete[] m_chunks;
 }
 

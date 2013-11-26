@@ -18,32 +18,32 @@ public:
     CAddress(EAF eAF = None);
     explicit CAddress(const byte* IP);
     explicit CAddress(UINT IP); // must be same as with Qt, must be in host order
+	virtual ~CAddress();
 
-    bool			FromString(const std::string Str);
-    std::string		ToString() const;
-    std::wstring	ToStringW() const {std::string s = ToString(); return std::wstring(s.begin(),s.end());}
+	bool operator < (const CAddress &Other) const;
+	bool operator > (const CAddress &Other) const;
+	bool operator == (const CAddress &Other) const;
+	bool operator != (const CAddress &Other) const;
+
+	void			Init();
+    bool			FromString(const std::string Str);    
+    std::wstring	ToStringW() const;
     UINT			ToIPv4() const; // must be same as with Qt, must be in host order
 
     bool			IsNull() const;
 
-    bool			Convert(EAF eAF);
+    bool			ConvertTo(const EAF eAF);
 
-    void			FromSA(const sockaddr* sa, int sa_len, uint16* pPort = NULL) ;
-    void			ToSA(sockaddr* sa, int *sa_len, uint16 uPort = 0) const;
+    void			FromSA(const sockaddr* sa, const int sa_len, uint16* pPort = NULL) ;
+    void			ToSA(sockaddr* sa, int *sa_len, const uint16 uPort = 0) const;
+	
+    int				GetAF() const;
+    EAF				GetType() const;
+    const unsigned char* Data() const;
+	size_t			GetSize() const;
 
-    bool operator < (const CAddress &Other) const
-    {
-        if (m_eAF != Other.m_eAF) return m_eAF < Other.m_eAF;
-        return memcmp(m_IP, Other.m_IP, Len()) < 0;
-    }
-    bool operator == (const CAddress &Other) const	{return (m_eAF == Other.m_eAF) && memcmp(m_IP, Other.m_IP, Len()) == 0;}
-    bool operator != (const CAddress &Other) const	{return !(*this == Other);}
-
-    size_t			Len() const;
-    int				AF() const;
-    __inline EAF	Type() const					{return m_eAF;}
-    __inline const unsigned char*Data() const		{return m_IP;}
-__inline size_t	Size() const					{switch (m_eAF) {case IPv4: return 4; case IPv6: return 16; default: return 0; }}
+private:
+	std::string		ToString() const;
 
 protected:
     byte			m_IP[16];
@@ -53,20 +53,29 @@ protected:
 char* _inet_ntop(int af, const void *src, char *dst, int size);
 int _inet_pton(int af, const char *src, void *dst);
 
+#if 1
+#define _ntohl	ntohl
+#define _ntohs	ntohs
+#else
 __inline UINT _ntohl(UINT IP)
 {
-    UINT PI;
+    UINT PI = 0;
+
     ((byte*)&PI)[0] = ((byte*)&IP)[3];
     ((byte*)&PI)[1] = ((byte*)&IP)[2];
     ((byte*)&PI)[2] = ((byte*)&IP)[1];
     ((byte*)&PI)[3] = ((byte*)&IP)[0];
+
     return PI;
 }
 
 __inline uint16 _ntohs(uint16 PT)
 {
-    uint16 TP;
+    uint16 TP = 0;
+
     ((byte*)&TP)[0] = ((byte*)&PT)[1];
     ((byte*)&TP)[1] = ((byte*)&PT)[0];
+
     return TP;
 }
+#endif

@@ -107,7 +107,10 @@ LONG CMiniDumper::TopLevelFilter(struct _EXCEPTION_POINTERS* pExceptionInfo)
         {
             // Ask user if they want to save a dump file
             // Do *NOT* localize that string (in fact, do not use MFC to load it)!
-            if (MessageBox(NULL, L"kMule crashed :-(\r\n\r\nA diagnostic file can be created which will help the author to resolve this problem. This file will be saved on your Disk (and not sent).\r\n\r\nDo you want to create this file now?", m_szAppName, MB_ICONSTOP | MB_YESNO) == IDYES)
+//>>> WiZaRd::Automatically create dump files
+			// The message box is nice but Windows may close the app because it "doesn't react anymore" and the dump information will be lost, thus, we automatically create a dump if possible
+            //if (MessageBox(NULL, L"kMule crashed :-(\r\n\r\nA diagnostic file can be created which will help the author to resolve this problem. This file will be saved on your Disk (and not sent).\r\n\r\nDo you want to create this file now?", m_szAppName, MB_ICONSTOP | MB_YESNO) == IDYES)
+//<<< WiZaRd::Automatically create dump files
             {
                 // Create full path for DUMP file
                 TCHAR szDumpPath[MAX_PATH];

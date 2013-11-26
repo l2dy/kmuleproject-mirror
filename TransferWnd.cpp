@@ -666,7 +666,7 @@ void CTransferWnd::UpdateListCount(EWnd2 listindex, int iCount /*=-1*/)
 //>>> WiZaRd::ZZUL Upload [ZZ]
                         strBuffer.AppendFormat(_T(" %i/%i"), theApp.uploadqueue->GetActiveUploadsCountLongPerspective(), theApp.uploadqueue->GetEffectiveUploadListCount());
 //<<< WiZaRd::ZZUL Upload [ZZ]
-                        m_btnWnd2->SetWindowText(GetResString(IDS_UPLOADING) + strBuffer);
+                        m_btnWnd1->SetWindowText(GetResString(IDS_UPLOADING) + strBuffer);
                     }
                     break;
                 case IDC_QUEUELIST:

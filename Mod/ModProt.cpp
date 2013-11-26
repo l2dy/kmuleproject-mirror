@@ -48,10 +48,14 @@ void CUpDownClient::SendModInfoPacket() const
     tagList.AddTail(new CTag(CT_MOD_VERSION, MOD_VERSION));
 
     // Misc mod community features
+#ifdef IPV6_SUPPORT	
     const UINT uSupportsIPv6		= 1; //>>> WiZaRd::IPv6 [Xanatos]
+#endif
     const UINT uSupportsExtXS		= 1; //>>> WiZaRd::ExtendedXS [Xanatos]
     tagList.AddTail(new CTag(CT_EMULE_MISCOPTIONS1,
+#ifdef IPV6_SUPPORT	
                              (uSupportsIPv6			<<  1) |	//>>> WiZaRd::IPv6 [Xanatos]
+#endif
                              (uSupportsExtXS			<<  0)		//>>> WiZaRd::ExtendedXS [Xanatos]
                             ));
 
@@ -121,7 +125,11 @@ void CUpDownClient::ProcessModInfoPacket(const uchar* pachPacket, const UINT nSi
                 //	1 ExtendedXS
                 if (temptag.IsInt())
                 {
+#ifdef IPV6_SUPPORT	
                     m_fSupportsIPv6			= (temptag.GetInt() >>  1) & 0x01; //>>> WiZaRd::IPv6 [Xanatos]
+#else
+					UINT m_fSupportsIPv6	= (temptag.GetInt() >>  1) & 0x01; //>>> WiZaRd::IPv6 [Xanatos]
+#endif
                     m_fSupportsExtendedXS	= (temptag.GetInt() >>  0) & 0x01; //>>> WiZaRd::ExtendedXS [Xanatos]
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
                     if (bDbgInfo)
@@ -189,13 +197,13 @@ bool CClientReqSocket::ProcessModPacket(const BYTE* packet, const UINT size, con
                     // Process the packet
                     client->ProcessModInfoPacket(packet, size);
 
-                    // Now after we have all informations about the client the connection is established
-                    client->ConnectionEstablished();
-
                     // start secure identification, if
                     //  - we have received OP_MODINFOPACKET, (Mod prot compatible new eMule mods)
                     if (client->GetInfoPacketsReceived() == IP_BOTH)
                         client->InfoPacketsReceived();
+
+					// Now after we have all informations about the client the connection is established
+					client->ConnectionEstablished();
                     break;
                 }
 
@@ -242,10 +250,11 @@ bool CClientReqSocket::ProcessModPacket(const BYTE* packet, const UINT size, con
     return true;
 }
 
-//>>> WiZaRd::IPv6 [Xanatos]
-bool CClientUDPSocket::ProcessModPacket(BYTE* /*packet*/, const UINT size, const uint8 opcode, const _CIPAddress& ip, const uint16 port)
-//bool CClientUDPSocket::ProcessModPacket(BYTE* /*packet*/, const UINT size, const uint8 opcode, const UINT ip, const uint16 port)
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+bool CClientUDPSocket::ProcessModPacket(BYTE* /*packet*/, const UINT size, const uint8 opcode, const CAddress& ip, const uint16 port) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+bool CClientUDPSocket::ProcessModPacket(BYTE* /*packet*/, const UINT size, const uint8 opcode, const UINT ip, const uint16 port)
+#endif
 {
 //	const UINT protocol = OP_MODPROT;
     CUpDownClient* client = theApp.clientlist->FindClientByIP_UDP(ip, port);

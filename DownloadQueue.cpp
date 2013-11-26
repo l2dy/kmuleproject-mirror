@@ -979,10 +979,11 @@ void CDownloadQueue::GetDownloadSourcesStats(SDownloadStats& results)
     }
 }
 
-//>>> WiZaRd::IPv6 [Xanatos]
-CUpDownClient* CDownloadQueue::GetDownloadClientByIP(const _CIPAddress& dwIP)
-//CUpDownClient* CDownloadQueue::GetDownloadClientByIP(UINT dwIP)
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+CUpDownClient* CDownloadQueue::GetDownloadClientByIP(const CAddress& dwIP) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+CUpDownClient* CDownloadQueue::GetDownloadClientByIP(const UINT dwIP)
+#endif
 {
     for (POSITION pos = filelist.GetHeadPosition(); pos != 0;)
     {
@@ -990,20 +991,22 @@ CUpDownClient* CDownloadQueue::GetDownloadClientByIP(const _CIPAddress& dwIP)
         for (POSITION pos2 = cur_file->srclist.GetHeadPosition(); pos2 != 0;)
         {
             CUpDownClient* cur_client = cur_file->srclist.GetNext(pos2);
-//>>> WiZaRd::IPv6 [Xanatos]
-            if (dwIP.Type() == CAddress::IPv6 ? dwIP == cur_client->GetIPv6() : dwIP == cur_client->GetIP())
-                //if (dwIP == cur_client->GetIP())
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+            if (dwIP.GetType() == CAddress::IPv6 ? dwIP == cur_client->GetIPv6() : dwIP == cur_client->GetIP()) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+			if (dwIP == cur_client->GetIP())
+#endif
                 return cur_client;
         }
     }
     return NULL;
 }
 
-//>>> WiZaRd::IPv6 [Xanatos]
-CUpDownClient* CDownloadQueue::GetDownloadClientByIP_UDP(const _CIPAddress& dwIP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs)
-//CUpDownClient* CDownloadQueue::GetDownloadClientByIP_UDP(UINT dwIP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs)
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+CUpDownClient* CDownloadQueue::GetDownloadClientByIP_UDP(const CAddress& dwIP, const uint16 nUDPPort, const bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+CUpDownClient* CDownloadQueue::GetDownloadClientByIP_UDP(const UINT dwIP, const uint16 nUDPPort, const bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs)
+#endif
 {
     CUpDownClient* pMatchingIPClient = NULL;
     UINT cMatches = 0;
@@ -1014,15 +1017,17 @@ CUpDownClient* CDownloadQueue::GetDownloadClientByIP_UDP(const _CIPAddress& dwIP
         for (POSITION pos2 = cur_file->srclist.GetHeadPosition(); pos2 != 0;)
         {
             CUpDownClient* cur_client = cur_file->srclist.GetNext(pos2);
-//>>> WiZaRd::IPv6 [Xanatos]
-            if ((dwIP.Type() == CAddress::IPv6 ? dwIP == cur_client->GetIPv6() : dwIP == cur_client->GetIP()) && nUDPPort == cur_client->GetUDPPort())
-                //if (dwIP == cur_client->GetIP() && nUDPPort == cur_client->GetUDPPort())
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+            if ((dwIP.GetType() == CAddress::IPv6 ? dwIP == cur_client->GetIPv6() : dwIP == cur_client->GetIP()) && nUDPPort == cur_client->GetUDPPort()) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+			if (dwIP == cur_client->GetIP() && nUDPPort == cur_client->GetUDPPort())
+#endif
                 return cur_client;
-//>>> WiZaRd::IPv6 [Xanatos]
-            else if ((dwIP.Type() == CAddress::IPv6 ? dwIP == cur_client->GetIPv6() : dwIP == cur_client->GetIP()) && bIgnorePortOnUniqueIP && cur_client != pMatchingIPClient)
-                //else if (dwIP == cur_client->GetIP() && bIgnorePortOnUniqueIP && cur_client != pMatchingIPClient)
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+            else if ((dwIP.GetType() == CAddress::IPv6 ? dwIP == cur_client->GetIPv6() : dwIP == cur_client->GetIP()) && bIgnorePortOnUniqueIP && cur_client != pMatchingIPClient) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+			else if (dwIP == cur_client->GetIP() && bIgnorePortOnUniqueIP && cur_client != pMatchingIPClient)
+#endif
             {
                 pMatchingIPClient = cur_client;
                 cMatches++;
@@ -1399,10 +1404,11 @@ bool CDownloadQueue::DoKademliaFileRequest()
     return ((::GetTickCount() - lastkademliafilerequest) > KADEMLIAASKTIME);
 }
 
-//>>> WiZaRd::IPv6 [Xanatos]
-void CDownloadQueue::KademliaSearchFile(UINT searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pbuddyID, uint8 type, UINT ip, uint16 tcp, uint16 udp, UINT dwBuddyIP, uint16 dwBuddyPort, uint8 byCryptOptions, const Kademlia::CUInt128* pIPv6)
-//void CDownloadQueue::KademliaSearchFile(UINT searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pbuddyID, uint8 type, UINT ip, uint16 tcp, uint16 udp, UINT dwBuddyIP, uint16 dwBuddyPort, uint8 byCryptOptions)
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+void CDownloadQueue::KademliaSearchFile(UINT searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pbuddyID, uint8 type, UINT ip, uint16 tcp, uint16 udp, UINT dwBuddyIP, uint16 dwBuddyPort, uint8 byCryptOptions, const Kademlia::CUInt128* pIPv6) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+void CDownloadQueue::KademliaSearchFile(UINT searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pbuddyID, uint8 type, UINT ip, uint16 tcp, uint16 udp, UINT dwBuddyIP, uint16 dwBuddyPort, uint8 byCryptOptions)
+#endif
 {
     //Safety measure to make sure we are looking for these sources
     CPartFile* temp = GetFileByKadFileSearchID(searchID);
@@ -1454,7 +1460,7 @@ void CDownloadQueue::KademliaSearchFile(UINT searchID, const Kademlia::CUInt128*
         case 5:
         case 3:
         {
-            //This will be a firewaled client connected to Kad only.
+            //This will be a firewalled client connected to Kad only.
             // if we are firewalled ourself, the source is useless to us
             if (theApp.IsFirewalled())
                 break;
@@ -1489,26 +1495,30 @@ void CDownloadQueue::KademliaSearchFile(UINT searchID, const Kademlia::CUInt128*
             ctemp = new CUpDownClient(temp, tcp, 1, 0, 0, false);
             ctemp->SetSourceFrom(SF_KADEMLIA);
             ctemp->SetKadPort(udp);
-//>>> WiZaRd::IPv6 [Xanatos]
-            ctemp->SetIP(CAddress(_ntohl(ED2Kip))); // need to set the Ip address, which cannot be used for TCP but for UDP
-            //ctemp->SetIP(ED2Kip); // need to set the Ip address, which cannot be used for TCP but for UDP
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+            ctemp->SetIP(CAddress(_ntohl(ED2Kip))); // need to set the IP address, which cannot be used for TCP but for UDP //>>> WiZaRd::IPv6 [Xanatos]
+#else
+            ctemp->SetIP(ED2Kip); // need to set the IP address, which cannot be used for TCP but for UDP
+#endif
             byte cID[16];
             pcontactID->ToByteArray(cID);
             ctemp->SetUserHash(cID);
+			break;
         }
     }
 
     if (ctemp != NULL)
     {
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
-        if (*pIPv6 != 0)
+        if (pIPv6 != NULL && *pIPv6 != 0)
         {
             CAddress IPv6(CAddress::IPv6);
             pIPv6->ToByteArray((byte*)IPv6.Data());
             ctemp->SetIPv6(IPv6);
         }
 //<<< WiZaRd::IPv6 [Xanatos]
+#endif
 
         // add encryption settings
         ctemp->SetConnectOptions(byCryptOptions, true, true);

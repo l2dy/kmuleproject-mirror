@@ -127,10 +127,9 @@ void CKademliaUDPListener::SendMyDetails(byte byOpcode, UINT uIP, uint16 uUDPPor
             byTagCount++;
         if (byKadVersion >= KADEMLIA_VERSION8_49b
                 && (bRequestAckPackage || CKademlia::GetPrefs()->GetFirewalled() ||  CUDPFirewallTester::IsFirewalledUDP(true)))
-        {
             byTagCount++;
-        }
-        byteIOResponse.WriteUInt8(byTagCount);
+
+		byteIOResponse.WriteUInt8(byTagCount);
         if (!CKademlia::GetPrefs()->GetUseExternKadPort())
             byteIOResponse.WriteTag(&CKadTagUInt16(TAG_SOURCEUPORT, CKademlia::GetPrefs()->GetInternKadPort()));
         if (byKadVersion >= KADEMLIA_VERSION8_49b
@@ -155,7 +154,8 @@ void CKademliaUDPListener::SendMyDetails(byte byOpcode, UINT uIP, uint16 uUDPPor
         {
             if (uCryptTargetID == NULL || isnulmd4(uCryptTargetID->GetDataPtr())) //>>> WiZaRd::FiX
             {
-                DebugLogWarning(_T("Sending hello response to crypt enabled Kad Node which provided an empty NodeID: %s (%u)"), ipstr(ntohl(uIP)), byKadVersion);
+				// WiZaRd: this can happen if we search for our friends' node IDs
+                DebugLogWarning(L"Sending hello response to crypt enabled Kad Node which provided an empty NodeID: %s (%u)", ipstr(ntohl(uIP)), byKadVersion);
                 SendPacket(byPacket, uLen,  uIP, uUDPPort, targetUDPKey, NULL);
             }
             else
@@ -182,7 +182,11 @@ void CKademliaUDPListener::FirewalledCheck(UINT uIP, uint16 uUDPPort, CKadUDPKey
         CSafeMemFile fileIO(19);
         fileIO.WriteUInt16(thePrefs.GetPort());
         fileIO.WriteUInt128(&CKademlia::GetPrefs()->GetClientHash());
-        fileIO.WriteUInt8(GetMyConnectOptions(true, false, false)); //>>> WiZaRd::NatTraversal [Xanatos]
+#ifdef NAT_TRAVERSAL
+		fileIO.WriteUInt8(GetMyConnectOptions(true, false, false)); //>>> WiZaRd::NatTraversal [Xanatos]
+#else
+        fileIO.WriteUInt8(GetMyConnectOptions(true, false));
+#endif
         if (thePrefs.GetDebugClientKadUDPLevel() > 0)
             DebugSend("KADEMLIA_FIREWALLED2_REQ", uIP, uUDPPort);
         SendPacket(&fileIO, KADEMLIA_FIREWALLED2_REQ, uIP, uUDPPort, senderUDPKey, NULL);
@@ -217,9 +221,7 @@ void CKademliaUDPListener::SendPublishSourcePacket(CContact* pContact, const CUI
         byteIO.WriteUInt128(uContactID);
         byteIO.WriteTagList(tags);
         if (thePrefs.GetDebugClientKadUDPLevel() > 0)
-        {
             DebugSend("KADEMLIA2_PUBLISH_SOURCE_REQ", pContact->GetIPAddress(), pContact->GetUDPPort());
-        }
     }
     else
     {
@@ -230,9 +232,7 @@ void CKademliaUDPListener::SendPublishSourcePacket(CContact* pContact, const CUI
         byteIO.WriteUInt128(uContactID);
         byteIO.WriteTagList(tags);
         if (thePrefs.GetDebugClientKadUDPLevel() > 0)
-        {
             DebugSend("KADEMLIA_PUBLISH_REQ", pContact->GetIPAddress(), pContact->GetUDPPort());
-        }
     }
     UINT uLen = sizeof(byPacket) - byteIO.GetAvailable();
     if (pContact->GetVersion() >= 6/*>48b*/) // obfuscated?
@@ -617,7 +617,7 @@ void CKademliaUDPListener::Process_KADEMLIA2_HELLO_REQ(const byte *pbyPacketData
 
     if (bAddedOrUpdated && !bValidReceiverKey && byContactVersion == KADEMLIA_VERSION7_49a && !HasActiveLegacyChallenge(uIP))
     {
-        // Kad Version 7 doesnt supports HELLO_RES_ACK, but sender/receiver keys, so send a ping to validate
+        // Kad Version 7 doesn't supports HELLO_RES_ACK, but sender/receiver keys, so send a ping to validate
         AddLegacyChallenge(uContactID, (ULONG)0, uIP, KADEMLIA2_PING);
         SendNullPacket(KADEMLIA2_PING, uIP, uUDPPort, senderUDPKey, NULL);
 #ifdef _DEBUG
@@ -1251,7 +1251,7 @@ void CKademliaUDPListener::Process_KADEMLIA_SEARCH_RES(const byte *pbyPacketData
             throw;
         }
         CSearchManager::ProcessResult(uTarget, uAnswer, pTags, uIP, uUDPPort);
-        uCount--;
+        --uCount;
     }
 }
 
@@ -1295,7 +1295,7 @@ void CKademliaUDPListener::Process_KADEMLIA2_SEARCH_RES(const byte *pbyPacketDat
             throw;
         }
         CSearchManager::ProcessResult(uTarget, uAnswer, pTags, uIP, uUDPPort);
-        uCount--;
+        --uCount;
     }
 }
 
@@ -1697,7 +1697,7 @@ void CKademliaUDPListener::Process_KADEMLIA_SEARCH_NOTES_RES(const byte *pbyPack
             throw;
         }
         CSearchManager::ProcessResult(uTarget, uAnswer, pTags, uIP, uUDPPort);
-        uCount--;
+        --uCount;
     }
 }
 
@@ -1933,7 +1933,11 @@ void CKademliaUDPListener::Process_KADEMLIA_FINDBUDDY_REQ(const byte *pbyPacketD
     fileIO2.WriteUInt128(&CKademlia::GetPrefs()->GetClientHash());
     fileIO2.WriteUInt16(thePrefs.GetPort());
     if (!senderUDPKey.IsEmpty()) // remove check for later versions
+#ifdef NAT_TRAVERSAL
         fileIO2.WriteUInt8(GetMyConnectOptions(true, false, false)); // new since 0.49a, old mules will ignore it (hopefully ;) ) //>>> WiZaRd::NatTraversal [Xanatos]
+#else
+		fileIO2.WriteUInt8(GetMyConnectOptions(true, false)); // new since 0.49a, old mules will ignore it (hopefully ;) )
+#endif
     if (thePrefs.GetDebugClientKadUDPLevel() > 0)
         DebugSend("KADEMLIA_FINDBUDDY_RES", uIP, uUDPPort);
 
@@ -2119,10 +2123,11 @@ void CKademliaUDPListener::SendPacket(const byte *pbyData, UINT uLenData, UINT u
     if (uLenData > 200)
         pPacket->PackPacket();
     theStats.AddUpDataOverheadKad(pPacket->size);
-//>>> WiZaRd::IPv6 [Xanatos]
-    theApp.clientudp->SendPacket(pPacket, _CIPAddress(uDestinationHost), uDestinationPort, true
-                                 //theApp.clientudp->SendPacket(pPacket, ntohl(uDestinationHost), uDestinationPort, true
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+    theApp.clientudp->SendPacket(pPacket, CAddress(uDestinationHost), uDestinationPort, true //>>> WiZaRd::IPv6 [Xanatos]
+#else
+	theApp.clientudp->SendPacket(pPacket, ntohl(uDestinationHost), uDestinationPort, true
+#endif
                                  , (uCryptTargetID != NULL) ? uCryptTargetID->GetData() : NULL
                                  , true , targetUDPKey.GetKeyValue(theApp.GetPublicIP(false)));
 }
@@ -2138,10 +2143,11 @@ void CKademliaUDPListener::SendPacket(const byte *pbyData, UINT uLenData, byte b
     if (uLenData > 200)
         pPacket->PackPacket();
     theStats.AddUpDataOverheadKad(pPacket->size);
-//>>> WiZaRd::IPv6 [Xanatos]
-    theApp.clientudp->SendPacket(pPacket, _CIPAddress(uDestinationHost), uDestinationPort, true
-                                 //theApp.clientudp->SendPacket(pPacket, ntohl(uDestinationHost), uDestinationPort, true
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+    theApp.clientudp->SendPacket(pPacket, CAddress(uDestinationHost), uDestinationPort, true //>>> WiZaRd::IPv6 [Xanatos]
+#else
+	theApp.clientudp->SendPacket(pPacket, ntohl(uDestinationHost), uDestinationPort, true
+#endif
                                  , (uCryptTargetID != NULL) ? uCryptTargetID->GetData() : NULL
                                  , true , targetUDPKey.GetKeyValue(theApp.GetPublicIP(false)));
 }
@@ -2154,10 +2160,11 @@ void CKademliaUDPListener::SendPacket(CSafeMemFile *pbyData, byte byOpcode, UINT
     if (pPacket->size > 200)
         pPacket->PackPacket();
     theStats.AddUpDataOverheadKad(pPacket->size);
-//>>> WiZaRd::IPv6 [Xanatos]
-    theApp.clientudp->SendPacket(pPacket, CAddress(uDestinationHost), uDestinationPort, true
-                                 //theApp.clientudp->SendPacket(pPacket, ntohl(uDestinationHost), uDestinationPort, true
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+    theApp.clientudp->SendPacket(pPacket, CAddress(uDestinationHost), uDestinationPort, true //>>> WiZaRd::IPv6 [Xanatos]
+#else
+	theApp.clientudp->SendPacket(pPacket, ntohl(uDestinationHost), uDestinationPort, true
+#endif
                                  , (uCryptTargetID != NULL) ? uCryptTargetID->GetData() : NULL
                                  , true , targetUDPKey.GetKeyValue(theApp.GetPublicIP(false)));
 }

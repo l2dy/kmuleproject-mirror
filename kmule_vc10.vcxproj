@@ -17,7 +17,7 @@
   <PropertyGroup Label="Globals">
     <ProjectName>kMule</ProjectName>
     <ProjectGuid>{584EA69D-3443-4197-8994-364880FC1B9B}</ProjectGuid>
-    <RootNamespace>emule</RootNamespace>
+    <RootNamespace>kMule</RootNamespace>
     <Keyword>MFCProj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -109,7 +109,7 @@
       </IgnoreAllDefaultLibraries>
     </Link>
     <Manifest>
-      <AssemblyIdentity>Microsoft.Windows.emule, processorArchitecture=X86, version=1.0.0.0, type=win32</AssemblyIdentity>
+      <AssemblyIdentity>Microsoft.Windows.kmule, processorArchitecture=X86, version=1.0.0.0, type=win32</AssemblyIdentity>
     </Manifest>
     <PostBuildEvent>
       <Command>
@@ -155,7 +155,7 @@
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <Manifest>
-      <AssemblyIdentity>Microsoft.Windows.emule, processorArchitecture=X86, version=1.0.0.0, type=win32</AssemblyIdentity>
+      <AssemblyIdentity>Microsoft.Windows.kmule, processorArchitecture=X86, version=1.0.0.0, type=win32</AssemblyIdentity>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -640,7 +640,7 @@
     <None Include="res\eD2kLink.ico" />
     <None Include="res\eD2kLinkPaste.ico" />
     <None Include="res\Empty.ico" />
-    <None Include="res\emule.rc2" />
+    <None Include="res\kmule.rc2" />
     <None Include="res\emuleCollAdd.ico" />
     <None Include="res\emuleCollectionFileType.ico" />
     <None Include="res\emuleCollEdit.ico" />
@@ -850,10 +850,10 @@
     <None Include="res\Web.ico" />
     <None Include="res\WideCharLowerMap.bin" />
     <None Include="res\Wizard.ico" />
-    <None Include="..\setup\eMule Light.tmpl" />
-    <None Include="..\setup\eMule.tmpl" />
+    <None Include="..\setup\kMule Light.tmpl" />
+    <None Include="..\setup\kMule.tmpl" />
     <None Include="..\setup\staticservers.dat" />
-    <None Include="..\setup\Template.eMuleSkin.ini" />
+    <None Include="..\setup\Template.kMuleSkin.ini" />
     <None Include="..\setup\webservices.dat" />
     <None Include="..\docs\kademlia\changelog.txt" />
     <None Include="..\docs\readme.txt" />
@@ -1220,7 +1220,7 @@
     <ClInclude Include="TrayMenuBtn.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="emule.rc" />
+    <ResourceCompile Include="kmule.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
@@ -1228,7 +1228,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties RESOURCE_FILE="emule.rc" />
+      <UserProperties RESOURCE_FILE="kmule.rc" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

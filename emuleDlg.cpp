@@ -1167,6 +1167,7 @@ void CemuleDlg::ShowTransferRate(bool bForceAll)
     {
         statusbar->SetText(strTransferRate, SBarUpDown, 0);
         ShowTransferStateIcon();
+		ShowConnectionStateIcon();
     }
     if (IsWindowVisible() && thePrefs.ShowRatesOnTitle())
     {
@@ -1181,9 +1182,7 @@ void CemuleDlg::ShowTransferRate(bool bForceAll)
         SetWindowText(szBuff);
     }
     if (m_pMiniMule && m_pMiniMule->m_hWnd && m_pMiniMule->IsWindowVisible() && !m_pMiniMule->IsInInitDialog())
-    {
         m_pMiniMule->UpdateContent(m_uUpDatarate, m_uDownDatarate);
-    }
 }
 
 void CemuleDlg::ShowPing()

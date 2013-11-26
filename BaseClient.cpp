@@ -79,6 +79,32 @@ CUpDownClient::CUpDownClient(CClientReqSocket* sender)
 {
 	Init();
 	socket = sender;	
+
+#ifdef IPV6_SUPPORT
+//>>> WiZaRd::IPv6 [Xanatos]
+	CAddress IP;
+	if (socket)
+	{
+		SOCKADDR_IN6 sockAddr = {0};
+		int nSockAddrLen = sizeof(sockAddr);
+		socket->GetPeerName((SOCKADDR*)&sockAddr, &nSockAddrLen);
+		IP.FromSA((SOCKADDR*)&sockAddr, nSockAddrLen);
+		//IP.Convert(CAddress::IPv4); // check if its a mapped v4 address done in SetIP
+	}
+	SetIP(IP);
+	m_bOpenIPv6 = false;
+//<<< WiZaRd::IPv6 [Xanatos]
+#else
+	if(socket)
+	{
+		SOCKADDR_IN sockAddr = {0};
+		int nSockAddrLen = sizeof(sockAddr);
+		socket->GetPeerName((SOCKADDR*)&sockAddr, &nSockAddrLen);
+		SetIP(sockAddr.sin_addr.S_un.S_addr);
+	}
+	else
+		SetIP(0);
+#endif
 }
 
 CUpDownClient::CUpDownClient(CPartFile* in_reqfile, const uint16 in_port, const UINT in_userid, const UINT in_serverip, const uint16 in_serverport, const bool ed2kID)
@@ -96,23 +122,29 @@ CUpDownClient::CUpDownClient(CPartFile* in_reqfile, const uint16 in_port, const 
     else
         m_nUserIDHybrid = in_userid;
 
-    //If highID and ED2K source, incoming ID and IP are equal..
+	//If highID and ED2K source, incoming ID and IP are equal..
     //If highID and Kad source, incoming IP needs ntohl for the IP
     if (!HasLowID() && ed2kID)
-//>>> WiZaRd::IPv6 [Xanatos]
-		m_nConnectIP = _CIPAddress(ntohl(in_userid));
-        //m_nConnectIP = _CIPAddress(in_userid);
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+		m_nConnectIP = CAddress(ntohl(in_userid)); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+        m_nConnectIP = in_userid;
+#endif
     else if (!HasLowID())
-//>>> WiZaRd::IPv6 [Xanatos]
-//>>> WiZaRd::IPv6 [Xanatos]
-		m_nConnectIP = _CIPAddress(in_userid);
-        //m_nConnectIP = _CIPAddress(ntohl(in_userid));
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+		m_nConnectIP = CAddress(in_userid); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+        m_nConnectIP = ntohl(in_userid);
+#endif
     m_dwServerIP = in_serverip;
     m_nServerPort = in_serverport;
+
+// #ifdef _DEBUG
+// 	theApp.QueueLogLineEx(LOG_INFO, L"New client instance with ID: %u - ed2kID? %s - lowID? %s - hybridID: %u", in_userid, ed2kID ? GetResString(IDS_YES) : GetResString(IDS_NO), IsLowID(in_userid) ? GetResString(IDS_YES) : GetResString(IDS_NO), m_nUserIDHybrid);
+// #endif
 }
 
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
 CUpDownClient::CUpDownClient(CPartFile* in_reqfile, const uint16 in_port, const CAddress& IP, const UINT in_serverip, const uint16 in_serverport, const bool ed2kID)
 {    
@@ -124,8 +156,13 @@ CUpDownClient::CUpDownClient(CPartFile* in_reqfile, const uint16 in_port, const 
     m_nConnectIP = IP;
     m_dwServerIP = in_serverip;
     m_nServerPort = in_serverport;
+
+// #ifdef _DEBUG
+// 	theApp.QueueLogLineEx(LOG_INFO, L"New IPv6 client instance with IP: %u - ed2kID? %s - hybridID: %u", ipstr(IP), ed2kID ? GetResString(IDS_YES) : GetResString(IDS_NO), m_nUserIDHybrid);
+// #endif
 }
 //<<< WiZaRd::IPv6 [Xanatos]
+#endif
 
 void CUpDownClient::Init()
 {
@@ -234,28 +271,15 @@ void CUpDownClient::Init()
     SetBuddyID(NULL);
     m_nBuddyIP = 0;
     m_nBuddyPort = 0;
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
-    _CIPAddress IP;
-    if (socket)
-    {
-        SOCKADDR_IN6 sockAddr = {0};
-        int nSockAddrLen = sizeof(sockAddr);
-        socket->GetPeerName((SOCKADDR*)&sockAddr, &nSockAddrLen);
-        IP.FromSA((SOCKADDR*)&sockAddr, nSockAddrLen);
-        //IP.Convert(CAddress::IPv4); // check if its a maped v4 address done in SetIP
-    }
+    CAddress IP;
     SetIP(IP);
     m_bOpenIPv6 = false;
-    /*if (socket)
-    {
-        SOCKADDR_IN sockAddr = {0};
-        int nSockAddrLen = sizeof(sockAddr);
-        socket->GetPeerName((SOCKADDR*)&sockAddr, &nSockAddrLen);
-        SetIP(sockAddr.sin_addr.S_un.S_addr);
-    }
-    else
-        SetIP(0);*/
 //<<< WiZaRd::IPv6 [Xanatos]
+#else
+	SetIP(0);
+#endif
     m_fHashsetRequestingAICH = 0;
     m_fHashsetRequestingMD4 = 0;
     m_fSharedDirectories = 0;
@@ -299,7 +323,7 @@ void CUpDownClient::Init()
     lastSwapForSourceExchangeTick = 0;
     m_pReqFileAICHHash = NULL;
     m_fSupportsAICH = 0;
-    m_fAICHRequested = 0;
+    m_fAICHRequested = FALSE;
     m_byKadVersion = 0;
     SetLastBuddyPingPongTime();
     m_fSentOutOfPartReqs = 0;
@@ -317,8 +341,12 @@ void CUpDownClient::Init()
     m_fSupportsModProt		= 0;
     m_bSupportsLowIDUDPPing = false; //>>> LowID UDP Ping Support
 //<<< WiZaRd::ModProt
+#ifdef IPV6_SUPPORT	
 	m_fSupportsIPv6			= 0; //>>> WiZaRd::IPv6 [Xanatos]
+#endif
+#ifdef NAT_TRAVERSAL
 	m_fSupportsNatTraversal	= 0; //>>> WiZaRd::NatTraversal [Xanatos]
+#endif
 	m_fSupportsExtendedXS	= 0; //>>> WiZaRd::ExtendedXS [Xanatos]
 }
 
@@ -444,15 +472,25 @@ void CUpDownClient::ClearHelloProperties()
     m_fSupportsModProt = 0;
     m_bSupportsLowIDUDPPing = false; //>>> LowID UDP Ping Support
 //<<< WiZaRd::ModProt
+#ifdef IPV6_SUPPORT	
 	m_fSupportsIPv6			= 0; //>>> WiZaRd::IPv6 [Xanatos]
+#endif
+#ifdef NAT_TRAVERSAL
 	m_fSupportsNatTraversal	= 0; //>>> WiZaRd::NatTraversal [Xanatos]
+#endif
 	m_fSupportsExtendedXS	= 0; //>>> WiZaRd::ExtendedXS [Xanatos]
 }
 
 bool CUpDownClient::ProcessHelloPacket(const uchar* pachPacket, UINT nSize)
 {
     CSafeMemFile data(pachPacket, nSize);
-    data.ReadUInt8(); // read size of userhash
+    const uint8 hashSize = data.ReadUInt8(); // read size of userhash
+	if(hashSize != 16)
+	{
+		CString strMessage = L"";
+		strMessage.Format(L"Client %s sent wrong hashsize (%u) in hello packet!", DbgGetClientInfo(), hashSize);
+		throw strMessage;
+	}
     // reset all client properties; a client may not send a particular emule tag any longer
     ClearHelloProperties();
     return ProcessHelloTypePacket(&data);
@@ -480,6 +518,9 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
     if (bDbgInfo)
         m_strHelloInfo.AppendFormat(L"Hash=%s (%s)", md4str(m_achUserHash), DbgGetHashTypeString(m_achUserHash));
     m_nUserIDHybrid = data->ReadUInt32();
+// #ifdef _DEBUG
+// 	theApp.QueueLogLineEx(LOG_INFO, L"Read hybridID from hello: %u (%s)", m_nUserIDHybrid, DbgGetClientInfo());
+// #endif
     if (bDbgInfo)
         m_strHelloInfo.AppendFormat(L"  UserID=%u (%s)", m_nUserIDHybrid, ipstr(m_nUserIDHybrid));
     uint16 nUserPort = data->ReadUInt16(); // hmm clientport is sent twice - why?
@@ -605,6 +646,7 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
                     m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
                 break;
 
+#ifdef NAT_TRAVERSAL
 //>>> WiZaRd::NatTraversal [Xanatos]
             case CT_EMULE_BUDDYID:
                 if (temptag.IsHash())
@@ -617,6 +659,7 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
                     m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
                 break;
 //<<< WiZaRd::NatTraversal [Xanatos]
+#endif
 
             case CT_EMULE_MISCOPTIONS1:
                 //  3 AICH Version (0 = not supported)
@@ -745,6 +788,7 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
                 //flow over
 //<<< WiZaRd::ICS [enkeyDEV]
 //>>> WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT	
             case CT_NEOMULE_YOUR_IP:
                 if (temptag.IsInt())
                 {
@@ -773,17 +817,26 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
                 else if (bDbgInfo)
                     m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
                 break;
+#endif
 //<<< WiZaRd::IPv6 [Xanatos]
 //>>> WiZaRd::ModProt
             case CT_NEOMULE_MISCOPTIONS:
                 if (temptag.IsInt())
                 {
+#ifdef IPV6_SUPPORT	
                     m_fSupportsIPv6			= (temptag.GetInt() >>  2) & 0x01; //>>> WiZaRd::IPv6 [Xanatos]
+#else
+					UINT m_fSupportsIPv6			= (temptag.GetInt() >>  2) & 0x01; //>>> WiZaRd::IPv6 [Xanatos]
+#endif
+#ifdef NAT_TRAVERSAL
                     m_fSupportsNatTraversal	= (temptag.GetInt() >>  1) & 0x01; //>>> WiZaRd::NatTraversal [Xanatos]
+#elif defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
+					UINT m_fSupportsNatTraversal	= (temptag.GetInt() >>  1) & 0x01; //>>> WiZaRd::NatTraversal [Xanatos]
+#endif
                     m_fSupportsExtendedXS	= (temptag.GetInt() >>  0) & 0x01; //>>> WiZaRd::ExtendedXS [Xanatos]
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
                     if (bDbgInfo)
-                        m_strHelloInfo.AppendFormat(L"\n  IPv6=%u  NatTraveral=%u  ExtendedXS=%u", m_fSupportsIPv6, m_fSupportsNatTraversal, m_fSupportsExtendedXS);
+                        m_strHelloInfo.AppendFormat(L"\n  IPv6=%u  NatTraversal=%u  ExtendedXS=%u", m_fSupportsIPv6, m_fSupportsNatTraversal, m_fSupportsExtendedXS);
 #endif
                 }
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
@@ -800,13 +853,16 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
                 {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
                     if (temptag.IsInt())
+					{
                         m_nProtocolRevision = temptag.GetInt();
+						m_strHelloInfo.AppendFormat(L"\n  ProtocolRevision=%u", m_nProtocolRevision);
+					}
                     else if (bDbgInfo)
                         m_strHelloInfo.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
                     bPrTag = true;
                 }
-                if (bDbgInfo)
+                else if (bDbgInfo)
                     m_strHelloInfo.AppendFormat(L"\n  ***UnkTag=%s", temptag.GetFullInfo());
         }
     }
@@ -855,40 +911,49 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
             m_strHelloInfo.AppendFormat(L"\n  ***AddData: %u bytes", uAddHelloDataSize);
     }
 
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
-    _CIPAddress IP;
-    SOCKADDR_IN6 sockAddr = {0};
-    int nSockAddrLen = sizeof(sockAddr);
-    socket->GetPeerName((SOCKADDR*)&sockAddr, &nSockAddrLen);
-    IP.FromSA((SOCKADDR*)&sockAddr, nSockAddrLen);
-    //IP.Convert(CAddress::IPv4); // check if its a maped v4 address done in SetIP
-    SetIP(IP);
-    /*SOCKADDR_IN sockAddr = {0};
-    int nSockAddrLen = sizeof(sockAddr);
-    socket->GetPeerName((SOCKADDR*)&sockAddr, &nSockAddrLen);
-    SetIP(sockAddr.sin_addr.S_un.S_addr);*/
+	CAddress IP;
+	SOCKADDR_IN6 sockAddr = {0};
+	int nSockAddrLen = sizeof(sockAddr);
+	socket->GetPeerName((SOCKADDR*)&sockAddr, &nSockAddrLen);
+	IP.FromSA((SOCKADDR*)&sockAddr, nSockAddrLen);
+	//IP.Convert(CAddress::IPv4); // check if its a maped v4 address done in SetIP
+	SetIP(IP);
 //<<< WiZaRd::IPv6 [Xanatos]
+#else
+	SOCKADDR_IN sockAddr = {0};
+	int nSockAddrLen = sizeof(sockAddr);
+	socket->GetPeerName((SOCKADDR*)&sockAddr, &nSockAddrLen);
+	SetIP(sockAddr.sin_addr.S_un.S_addr);
+#endif
 
     //(a)If this is a highID user, store the ID in the Hybrid format.
     //(b)Some older clients will not send a ID, these client are HighID users that are not connected to a server.
     //(c)Kad users with a *.*.*.0 IPs will look like a lowID user they are actually a highID user.. They can be detected easily
     //because they will send a ID that is the same as their IP.
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
-	if (!HasLowID() || m_nUserIDHybrid == 0 || m_nUserIDHybrid == _ntohl(GetIP().ToIPv4()))
+	if(!HasLowID() || m_nUserIDHybrid == 0 || m_nUserIDHybrid == _ntohl(GetIP().ToIPv4()))
 		m_nUserIDHybrid = GetIP().ToIPv4();
-//    if (!HasLowID() || m_nUserIDHybrid == 0 || m_nUserIDHybrid == GetIP())
-//        m_nUserIDHybrid = ntohl(GetIP());
 //<<< WiZaRd::IPv6 [Xanatos]
+#else
+    if (!HasLowID() || m_nUserIDHybrid == 0 || m_nUserIDHybrid == GetIP())
+        m_nUserIDHybrid = ntohl(GetIP());
+#endif
 
     CClientCredits* pFoundCredits = theApp.clientcredits->GetCredit(m_achUserHash);
     if (credits == NULL)
     {
         credits = pFoundCredits;
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
-        if (GetConnectIP().Type() == CAddress::IPv4 // IPv6-TODO: Add IPv6 ban list
-                && !theApp.clientlist->ComparePriorUserhash(_ntohl(GetIP().ToIPv4()), m_nUserPort, pFoundCredits))
-            //if (!theApp.clientlist->ComparePriorUserhash(GetIP(), m_nUserPort, pFoundCredits))
+        if (GetConnectIP().GetType() == CAddress::IPv4 // IPv6-TODO: Add IPv6 ban list
+                && !theApp.clientlist->ComparePriorUserhash(_ntohl(GetConnectIP().ToIPv4()), m_nUserPort, pFoundCredits))            
 //<<< WiZaRd::IPv6 [Xanatos]
+#else
+		if (!theApp.clientlist->ComparePriorUserhash(GetConnectIP(), m_nUserPort, pFoundCredits))
+#endif
         {
             if (thePrefs.GetLogBannedClients())
                 AddDebugLogLine(false, L"Clients: %s (%s), Banreason: Userhash changed (Found in TrackedClientsList)", GetUserName(), ipstr(GetConnectIP()));
@@ -944,9 +1009,7 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
         m_byInfopacketsReceived |= IP_EMULEPROTPACK;
     }
     else if (bPrTag)
-    {
         m_bIsHybrid = true;
-    }
 
     InitClientSoftwareVersion();
 
@@ -1275,9 +1338,7 @@ void CUpDownClient::ProcessMuleInfoPacket(const uchar* pachPacket, UINT nSize)
         m_incompletepartVer = 0;	//>>> WiZaRd::ICS [enkeyDEV] //hmmm why is this reset?
     }
     if (bDbgInfo && data.GetPosition() < data.GetLength())
-    {
         m_strMuleInfo.AppendFormat(L"\n  ***AddData: %u bytes", data.GetLength() - data.GetPosition());
-    }
 
     m_bEmuleProtocol = true;
     m_byInfopacketsReceived |= IP_EMULEPROTPACK;
@@ -1342,12 +1403,13 @@ void CUpDownClient::SendHelloAnswer()
 void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 {
     data->WriteHash16(thePrefs.GetUserHash());
-    UINT clientid;
-    clientid = theApp.GetID();
+    UINT clientid = theApp.GetID();
+#ifdef NAT_TRAVERSAL
 //>>> WiZaRd::NatTraversal [Xanatos]
-    if (clientid == 0 && socket->HaveUtpLayer())
+    if (clientid == 0 && socket && socket->HaveUtpLayer())
         clientid = 1; // we must send a ID != 0 otherwise the remote client would think we have a HighID
 //<<< WiZaRd::NatTraversal [Xanatos]
+#endif
 
     data->WriteUInt32(clientid);
     data->WriteUInt16(thePrefs.GetPort());
@@ -1355,10 +1417,11 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
     UINT tagcount = 6;
 
     if (theApp.clientlist->GetBuddy() && theApp.IsFirewalled())
-//>>> WiZaRd::NatTraversal [Xanatos]
-        tagcount += 3;
-    //tagcount += 2;
-//<<< WiZaRd::NatTraversal [Xanatos]
+#ifdef NAT_TRAVERSAL
+        tagcount += 3; //>>> WiZaRd::NatTraversal [Xanatos]
+#else
+		tagcount += 2;
+#endif
 //>>> WiZaRd::Easy ModVersion
     const bool bSend = !m_pszUsername || !m_strModVersion.IsEmpty();
     if (bSend)
@@ -1374,13 +1437,21 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
     if (bSendSCT)
         ++tagcount;
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
     ++tagcount;
     if (!theApp.GetPublicIPv6().IsNull())
-        tagcount += 1;
+        ++tagcount;
 //<<< WiZaRd::IPv6 [Xanatos]
+#endif
 //>>> WiZaRd::ModProt
-    const bool bSendMiscHelloTag = !m_pszUsername || SupportsExtendedSourceExchange() || SupportsIPv6() || SupportsNatTraversal();
+	bool bSendMiscHelloTag = !m_pszUsername || SupportsExtendedSourceExchange();
+#ifdef NAT_TRAVERSAL
+	bSendMiscHelloTag = bSendMiscHelloTag || SupportsNatTraversal();
+#endif
+#ifdef IPV6_SUPPORT
+	bSendMiscHelloTag = bSendMiscHelloTag || SupportsIPv6();
+#endif
     if (bSendMiscHelloTag)
         ++tagcount;
 //<<< WiZaRd::ModProt
@@ -1443,10 +1514,11 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 
     if (theApp.clientlist->GetBuddy() && theApp.IsFirewalled())
     {
-//>>> WiZaRd::IPv6 [Xanatos]
-        CTag tagBuddyIP(CT_EMULE_BUDDYIP, _ntohl(theApp.clientlist->GetBuddy()->GetIP().ToIPv4()));
-        //CTag tagBuddyIP(CT_EMULE_BUDDYIP, theApp.clientlist->GetBuddy()->GetIP());
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+        CTag tagBuddyIP(CT_EMULE_BUDDYIP, _ntohl(theApp.clientlist->GetBuddy()->GetIP().ToIPv4())); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+        CTag tagBuddyIP(CT_EMULE_BUDDYIP, theApp.clientlist->GetBuddy()->GetIP());
+#endif
         tagBuddyIP.WriteTagToFile(data);
 
         CTag tagBuddyPort(CT_EMULE_BUDDYUDP,
@@ -1455,10 +1527,12 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
                          );
         tagBuddyPort.WriteTagToFile(data);
 
+#ifdef NAT_TRAVERSAL
 //>>> WiZaRd::NatTraversal [Xanatos]
         CTag tagBuddyID(CT_EMULE_BUDDYID, theApp.clientlist->GetBuddy()->GetBuddyID());
         tagBuddyID.WriteTagToFile(data);
 //<<< WiZaRd::NatTraversal [Xanatos]
+#endif
     }
 
     // eMule Misc. Options #1
@@ -1565,8 +1639,9 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
         tagProtocolRevision.WriteTagToFile(data);
     }
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
-    if (GetConnectIP().Type() == CAddress::IPv6)
+    if (GetConnectIP().GetType() == CAddress::IPv6)
     {
         CTag tagYourIP(CT_NEOMULE_YOUR_IP, GetConnectIP().Data());
         tagYourIP.WriteTagToFile(data);
@@ -1583,14 +1658,23 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
         tagIPv6.WriteTagToFile(data);
     }
 //<<< WiZaRd::IPv6 [Xanatos]
+#endif
 //>>> WiZaRd::ModProt
     const UINT uSupportsExtXS		= 1; //>>> WiZaRd::ExtendedXS [Xanatos]
+#ifdef NAT_TRAVERSAL
     const UINT uSupportsNatTraversal = 1; //>>> WiZaRd::NatTraversal [Xanatos]
+#endif
+#ifdef IPV6_SUPPORT	
     const UINT uSupportsIPv6		= 1; //>>> WiZaRd::IPv6 [Xanatos]
-    CTag tagMisOptionsN(CT_NEOMULE_MISCOPTIONS,
-                        ((uSupportsIPv6			<<  2) |	//>>> WiZaRd::IPv6 [Xanatos]
+#endif
+    CTag tagMisOptionsN(CT_NEOMULE_MISCOPTIONS, (
+#ifdef IPV6_SUPPORT	
+                        (uSupportsIPv6			<<  2) |	//>>> WiZaRd::IPv6 [Xanatos]
+#endif
+#ifdef NAT_TRAVERSAL
                          (uSupportsNatTraversal	<<  1) |	//>>> WiZaRd::NatTraversal [Xanatos]
-                         (uSupportsExtXS			<<  0)		//>>> WiZaRd::ExtendedXS [Xanatos]
+#endif
+                         (uSupportsExtXS		<<  0)		//>>> WiZaRd::ExtendedXS [Xanatos]
                         ));
     tagMisOptionsN.WriteTagToFile(data);
 //<<< WiZaRd::ModProt
@@ -1667,25 +1751,25 @@ bool CUpDownClient::Disconnected(LPCTSTR pszReason, bool bFromSocket)
         DebugLogError(L"Direct Callback failed - %s", DbgGetClientInfo());
 
     if (GetKadState() == KS_QUEUED_FWCHECK_UDP || GetKadState() == KS_CONNECTING_FWCHECK_UDP)
-//>>> WiZaRd::IPv6 [Xanatos]
-        Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, true, GetConnectIP().ToIPv4(), 0); // inform the tester that this test was canceled
-    //Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, true, ntohl(GetConnectIP()), 0); // inform the tester that this test was canceled
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+        Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, true, GetConnectIP().ToIPv4(), 0); // inform the tester that this test was canceled //>>> WiZaRd::IPv6 [Xanatos]
+#else
+		Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, true, ntohl(GetConnectIP()), 0); // inform the tester that this test was canceled
+#endif
     else if (GetKadState() == KS_FWCHECK_UDP)
-//>>> WiZaRd::IPv6 [Xanatos]
-        Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, false, GetConnectIP().ToIPv4(), 0); // inform the tester that this test has failed
-    //Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, false, ntohl(GetConnectIP()), 0); // inform the tester that this test has failed
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+        Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, false, GetConnectIP().ToIPv4(), 0); // inform the tester that this test has failed //>>> WiZaRd::IPv6 [Xanatos]
+#else
+		Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, false, ntohl(GetConnectIP()), 0); // inform the tester that this test has failed
+#endif
     else if (GetKadState() == KS_CONNECTED_BUDDY)
         DebugLogWarning(L"Buddy client disconnected - %s, %s", pszReason, DbgGetClientInfo());
     //If this is a KAD client object, just delete it!
     SetKadState(KS_NONE);
 
-    if (GetUploadState() == US_UPLOADING || GetUploadState() == US_CONNECTING)
-    {
-        // sets US_NONE
+	// sets US_NONE
+	if (GetUploadState() == US_UPLOADING || GetUploadState() == US_CONNECTING)
         theApp.uploadqueue->RemoveFromUploadQueue(this, CString(L"CUpDownClient::Disconnected: ") + pszReason);
-    }
 
     // 28-Jun-2004 [bc]: re-applied this patch which was in 0.30b-0.30e. it does not seem to solve the bug but
     // it does not hurt either...
@@ -1717,10 +1801,9 @@ bool CUpDownClient::Disconnected(LPCTSTR pszReason, bool bFromSocket)
         if (GetDownloadState() == DS_CONNECTED)  // successfully connected, but probably didn't respond to our filerequest
         {
 #ifdef _DEBUG
-			theApp.QueueLogLineEx(LOG_WARNING, L"Add to deadsourcelist in %hs:%u prevented!", __FUNCTION__, __LINE__);
-#else
-            theApp.clientlist->m_globDeadSourceList.AddDeadSource(this);
+			theApp.QueueLogLineEx(LOG_WARNING, L"Adding %s to deadsourcelist in %hs:%u (%s)!", DbgGetClientInfo(), __FUNCTION__, __LINE__, pszReason);
 #endif
+            theApp.clientlist->m_globDeadSourceList.AddDeadSource(this);
             theApp.downloadqueue->RemoveSource(this);
         }
     }
@@ -1733,7 +1816,7 @@ bool CUpDownClient::Disconnected(LPCTSTR pszReason, bool bFromSocket)
     }
 
     // The remote client does not have to answer with OP_HASHSETANSWER *immediatly*
-    // after we've sent OP_HASHSETREQUEST. It may occure that a (buggy) remote client
+    // after we've sent OP_HASHSETREQUEST. It may occur that a (buggy) remote client
     // is sending use another OP_FILESTATUS which would let us change to DL-state to DS_ONQUEUE.
     if (m_fHashsetRequestingMD4 && (reqfile != NULL))
         reqfile->m_bMD4HashsetNeeded = true;
@@ -1766,6 +1849,7 @@ bool CUpDownClient::Disconnected(LPCTSTR pszReason, bool bFromSocket)
         case DS_NONEEDEDPARTS:
         case DS_LOWTOLOWIP:
             bDelete = false;
+			break;
     }
 
     // Dead Source Handling
@@ -1784,10 +1868,9 @@ bool CUpDownClient::Disconnected(LPCTSTR pszReason, bool bFromSocket)
         if (m_nDownloadState != DS_NONE) // Unable to connect = Remove any downloadstate
             theApp.downloadqueue->RemoveSource(this);
 #ifdef _DEBUG
-		theApp.QueueLogLineEx(LOG_WARNING, L"Add to deadsourcelist in %hs:%u prevented!", __FUNCTION__, __LINE__);
-#else
-        theApp.clientlist->m_globDeadSourceList.AddDeadSource(this);
+		theApp.QueueLogLineEx(LOG_WARNING, L"Adding %s to deadsourcelist in %hs:%u (%s)!", DbgGetClientInfo(), __FUNCTION__, __LINE__, pszReason);
 #endif
+        theApp.clientlist->m_globDeadSourceList.AddDeadSource(this);
         bDelete = true;
     }
 
@@ -1842,8 +1925,11 @@ bool CUpDownClient::Disconnected(LPCTSTR pszReason, bool bFromSocket)
 //false means the client was deleted!
 //true means the client was not deleted!
 //>>> WiZaRd::NatTraversal [Xanatos]
-bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntimeClass* pClassSocket, bool bUseUTP)
-//bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntimeClass* pClassSocket)
+#ifdef NAT_TRAVERSAL
+bool CUpDownClient::TryToConnect(const bool bIgnoreMaxCon, const bool bNoCallbacks, CRuntimeClass* pClassSocket, const bool bAllowUTP)
+#else
+bool CUpDownClient::TryToConnect(const bool bIgnoreMaxCon, const bool bNoCallbacks, CRuntimeClass* pClassSocket)
+#endif
 //<<< WiZaRd::NatTraversal [Xanatos]
 {
     // There are 7 possible ways how we are going to connect in this function, sorted by priority:
@@ -1862,10 +1948,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
     //		We want to connect for some download related thing (for example reasking), but the client has a LowID and
     //		is on our uploadqueue. So we are smart and safing ressources by just waiting untill he reasks us, so we don't
     //		have to do the ressource intensive options 6 or 7. *)
-    // 6) Server Callback
-    //		This client is firewalled, but connected to our server. We sent the server a callback request to forward to
-    //		the client and hope for the best
-    // 7) Kad Callback
+    // 6) Kad Callback
     //		This client is firewalled, but has a Kad buddy. We sent the buddy a callback request to forward to the client
     //		and hope for the best
 
@@ -1927,8 +2010,10 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
             return true;
     }
 
+#ifdef IPV6_SUPPORT	
 //>>> WiZaRd::IPv6 [Xanatos]
-    const bool bUseIPv6 = m_bOpenIPv6 && !theApp.GetPublicIPv6().IsNull();
+	// just to be sure: only use IPv6 if the remote client indicates his support
+    const bool bUseIPv6 = m_bOpenIPv6 /*&& SupportsIPv6()*/ && !theApp.GetPublicIPv6().IsNull();
 	if (m_UserIPv4.IsNull())
 		m_UserIPv4 = CAddress(m_nUserIDHybrid);
     if (bUseIPv6)
@@ -1937,9 +2022,11 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
         UpdateIP(m_UserIPv4);
 
     // IPv6-TODO: Add IPv6 ban list and IpFilter
-    UINT uClientIP = bUseIPv6 ? 0 : (!GetIP().IsNull() ? _ntohl(GetIP().ToIPv4()) : _ntohl(GetConnectIP().ToIPv4()));
-    //UINT uClientIP = (GetIP() != 0) ? GetIP() : GetConnectIP();
+    UINT uClientIP = bUseIPv6 ? 0 : (!GetIP().IsNull() ? _ntohl(GetIP().ToIPv4()) : _ntohl(GetConnectIP().ToIPv4()));    
 //<<< WiZaRd::IPv6 [Xanatos]
+#else
+	UINT uClientIP = (GetIP() != 0) ? GetIP() : GetConnectIP();
+#endif
     if (uClientIP == 0 && !HasLowID())
         uClientIP = ntohl(m_nUserIDHybrid);
     if (uClientIP)
@@ -1972,20 +2059,19 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
         }
     }
 
-//>>> WiZaRd::IPv6 [Xanatos]
-    if (!bUseIPv6) // Note: if an IPv6 is specified in the hello it means it is not firewalled, and if we are IPv6 enabled we use it
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT	
+    if (!bUseIPv6) // Note: if an IPv6 is specified in the hello it means it is not firewalled, and if we are IPv6 enabled we use it //>>> WiZaRd::IPv6 [Xanatos]
+#endif
 	{
-//>>> WiZaRd::NatTraversal [Xanatos]
-        if (HasLowID() && !bUseUTP)
-            //if (HasLowID())
-//<<< WiZaRd::NatTraversal [Xanatos]
+#ifdef NAT_TRAVERSAL
+        if (HasLowID() && !bAllowUTP) //>>> WiZaRd::NatTraversal [Xanatos]
+#else
+		if (HasLowID())
+#endif
         {
             ASSERT(pClassSocket == NULL);
-//>>> WiZaRd::NatTraversal [Xanatos]
-            if (!theApp.CanDoCallback(this))
-                //if (!theApp.CanDoCallback()) // lowid2lowid check used for the whole function, don't remove
-//<<< WiZaRd::NatTraversal [Xanatos]
+			// lowid2lowid check used for the whole function, don't remove
+            if (!CanDoCallback())
             {
                 // We cannot reach this client, so we hard fail to connect, if this client should be kept,
                 // for example because we might want to wait a bit and hope we get a highid, this check has
@@ -2011,10 +2097,11 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
             }
 
             // Is any callback available?
-//>>> WiZaRd::IPv6 [Xanatos]
-            if (!((SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && !GetConnectIP().IsNull())  // Direct Callback
-                    //if (!((SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && GetConnectIP() != 0)  // Direct Callback
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT	
+            if (!((SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && !GetConnectIP().IsNull())  // Direct Callback //>>> WiZaRd::IPv6 [Xanatos]
+#else
+			if (!((SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && GetConnectIP() != 0)  // Direct Callback
+#endif
                     || (HasValidBuddyID() && Kademlia::CKademlia::IsConnected()) // Kad Callback
                  ))
             {
@@ -2036,25 +2123,34 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
 
     ////////////////////////////////////////////////////////////
     // 3) Normal Outgoing TCP Connection
+#ifndef IPV6_SUPPORT
+	const bool bUseIPv6 = false;
+#endif
+#ifdef NAT_TRAVERSAL
 //>>> WiZaRd::NatTraversal [Xanatos]
     // if direct callback is possible and we are firewalled use UTP
-//>>> WiZaRd::IPv6 [Xanatos]
-    //bUseUTP = SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && GetConnectIP() != 0 && theApp.IsFirewalled();
-    bUseUTP = SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && !GetConnectIP().IsNull() && theApp.IsFirewalled();
-//<<< WiZaRd::IPv6 [Xanatos]
-    if (!HasLowID() || bUseUTP || bUseIPv6) //>>> WiZaRd::IPv6 [Xanatos]
-    //if (!HasLowID())
+#ifdef IPV6_SUPPORT
+    const bool bUseUTP = /*bAllowUTP && */SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && !GetConnectIP().IsNull() && theApp.IsFirewalled() /*&& SupportsNatTraversal()*/; //>>> WiZaRd::IPv6 [Xanatos]
+#else
+	const bool bUseUTP = /*bAllowUTP && */SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && GetConnectIP() != 0 && theApp.IsFirewalled() /*&& SupportsNatTraversal()*/;
+#endif    
 //<<< WiZaRd::NatTraversal [Xanatos]
+#else
+	const bool bUseUTP = false;
+#endif
+    if (!HasLowID() || bUseUTP || bUseIPv6)
     {
         m_nConnectingState = CCS_DIRECTTCP;
         if (pClassSocket == NULL)
             pClassSocket = RUNTIME_CLASS(CClientReqSocket);
         socket = static_cast<CClientReqSocket*>(pClassSocket->CreateObject());
         socket->SetClient(this);
+#ifdef NAT_TRAVERSAL
 //>>> WiZaRd::NatTraversal [Xanatos]
         if (bUseUTP)
             socket->InitUtpSupport();
 //<<< WiZaRd::NatTraversal [Xanatos]
+#endif
         if (!socket->Create())
         {
             socket->Safe_Delete();
@@ -2067,10 +2163,11 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
     }
     ////////////////////////////////////////////////////////////
     // 4) Direct Callback Connections
-//>>> WiZaRd::IPv6 [Xanatos]
-    else if (SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && !GetConnectIP().IsNull())
-    //else if (SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && GetConnectIP() != 0)
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+    else if (SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && !GetConnectIP().IsNull()) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+    else if (SupportsDirectUDPCallback() && thePrefs.GetUDPPort() != 0 && GetConnectIP() != 0)
+#endif
     {
         m_nConnectingState = CCS_DIRECTCALLBACK;
         // TODO LOGREMOVE
@@ -2079,7 +2176,11 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
         data.WriteUInt16(thePrefs.GetPort()); // needs to know our port
         data.WriteHash16(thePrefs.GetUserHash()); // and userhash
         // our connection settings
-        data.WriteUInt8(GetMyConnectOptions(true, false, false)); //>>> WiZaRd::NatTraversal [Xanatos]
+#ifdef NAT_TRAVERSAL
+		data.WriteUInt8(GetMyConnectOptions(true, false, false)); //>>> WiZaRd::NatTraversal [Xanatos]
+#else
+        data.WriteUInt8(GetMyConnectOptions(true, false));
+#endif
         if (thePrefs.GetDebugClientUDPLevel() > 0)
             DebugSend("OP_DIRECTCALLBACKREQ", this);
         Packet* packet = new Packet(&data, OP_EMULEPROT);
@@ -2089,7 +2190,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
         return true;
     }
     ////////////////////////////////////////////////////////////
-    // 6) Server Callback + 7) Kad Callback
+    // 6) Kad Callback
     if (GetDownloadState() == DS_CONNECTING)
         SetDownloadState(DS_WAITCALLBACK);
 
@@ -2099,22 +2200,20 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
         DebugLogError(L"LowID and US_CONNECTING (%s)", DbgGetClientInfo());
     }
 
-    if (HasValidBuddyID() && Kademlia::CKademlia::IsConnected())
+    if (HasValidBuddyID() && Kademlia::CKademlia::IsConnected() && ((GetBuddyIP() && GetBuddyPort()) || reqfile != NULL))
     {
         m_nConnectingState = CCS_KADCALLBACK;
         if (GetBuddyIP() && GetBuddyPort())
         {
+#ifdef NAT_TRAVERSAL
 //>>> WiZaRd::NatTraversal [Xanatos]
-            if (theApp.IsFirewalled())
+            if (theApp.IsFirewalled() /*&& SupportsNatTraversal()*/)
             {
                 // Here we know we need a bidirectional hole punch so we request a UTP Callback
-                ASSERT(SupportsNatTraversal());
-
-                DebugLog(_T("Hole Punch on port %u to client %s (%s) "), GetKadPort(), DbgGetClientInfo(), md4str(GetUserHash()));
+                DebugLog(L"Hole Punch on port %u to client %s (%s)", GetKadPort(), DbgGetClientInfo(), md4str(GetUserHash()));
                 Packet* dummy = new Packet(OP_EMULEPROT);
                 dummy->opcode = OP_HOLEPUNCH;
                 theApp.clientudp->SendPacket(dummy, GetConnectIP(), GetKadPort(), ShouldReceiveCryptUDPPackets(), GetUserHash(), false, 0);
-
 
                 CSafeMemFile data(128);
                 data.WriteHash16(GetBuddyID());
@@ -2132,16 +2231,18 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
                 response->opcode = OP_REASKCALLBACKUDP;
                 theStats.AddUpDataOverheadFileRequest(response->size);
                 theApp.downloadqueue->AddUDPFileReasks();
-                // FIXME: We dont know which kadversion the buddy has, so we need to send unencrypted
-//>>> WiZaRd::IPv6 [Xanatos]
-                theApp.clientudp->SendPacket(response, _CIPAddress(_ntohl(GetBuddyIP())), GetBuddyPort(), false, NULL, true, 0);
-                //theApp.clientudp->SendPacket(response, GetBuddyIP(), GetBuddyPort(), false, NULL, true, 0);
-//<<< WiZaRd::IPv6 [Xanatos]
+                // FIXME: We don't know which kadversion the buddy has, so we need to send unencrypted
+#ifdef IPV6_SUPPORT
+                theApp.clientudp->SendPacket(response, CAddress(_ntohl(GetBuddyIP())), GetBuddyPort(), false, NULL, true, 0); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+                theApp.clientudp->SendPacket(response, GetBuddyIP(), GetBuddyPort(), false, NULL, true, 0);
+#endif
 
                 return true;
             }
             else
 //<<< WiZaRd::NatTraversal [Xanatos]
+#endif
             {
                 CSafeMemFile bio(34);
                 bio.WriteUInt128(&Kademlia::CUInt128(GetBuddyID()));
@@ -2152,16 +2253,18 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
                 Packet* packet = new Packet(&bio, OP_KADEMLIAHEADER);
                 packet->opcode = KADEMLIA_CALLBACK_REQ;
                 theStats.AddUpDataOverheadKad(packet->size);
-                // FIXME: We dont know which kadversion the buddy has, so we need to send unencrypted
-//>>> WiZaRd::IPv6 [Xanatos]
-                theApp.clientudp->SendPacket(packet, _CIPAddress(_ntohl(GetBuddyIP())), GetBuddyPort(), false, NULL, true, 0);
-                //theApp.clientudp->SendPacket(packet, GetBuddyIP(), GetBuddyPort(), false, NULL, true, 0);
-//<<< WiZaRd::IPv6 [Xanatos]
+                // FIXME: We don't know which kadversion the buddy has, so we need to send unencrypted
+#ifdef IPV6_SUPPORT
+                theApp.clientudp->SendPacket(packet, CAddress(_ntohl(GetBuddyIP())), GetBuddyPort(), false, NULL, true, 0); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+                theApp.clientudp->SendPacket(packet, GetBuddyIP(), GetBuddyPort(), false, NULL, true, 0);
+#endif
                 SetDownloadState(DS_WAITCALLBACKKAD);
             }
         }
-        else
+        else if (reqfile != NULL)
         {
+#ifdef NAT_TRAVERSAL
 //>>> WiZaRd::NatTraversal [Xanatos]
             if (theApp.IsFirewalled())
             {
@@ -2174,6 +2277,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
                 return true;
             }
 //<<< WiZaRd::NatTraversal [Xanatos]
+#endif
 
             // I don't think we should ever have a buddy without its IP (anymore), but nevertheless let the functionality in
             //Create search to find buddy.
@@ -2217,43 +2321,59 @@ void CUpDownClient::Connect()
     if (HasValidHash() && SupportsCryptLayer() && (RequestsCryptLayer() || thePrefs.IsClientCryptLayerRequested()))
     {
         //DebugLog(L"Enabling CryptLayer on outgoing connection to client %s", DbgGetClientInfo()); // to be removed later
+#ifdef NAT_TRAVERSAL
 //>>> WiZaRd::NatTraversal [Xanatos]
         if (socket->HaveUtpLayer())
-            theApp.clientudp->SetConnectionEncryption(GetIP(), GetKadPort(), true, GetUserHash());
+            theApp.clientudp->SetConnectionEncryption(GetConnectIP(), GetKadPort(), true, GetUserHash());
         else
 //<<< WiZaRd::NatTraversal [Xanatos]
+#endif
             socket->SetConnectionEncryption(true, GetUserHash(), false);
     }
     else
     {
+#ifdef NAT_TRAVERSAL
 //>>> WiZaRd::NatTraversal [Xanatos]
         if (socket->HaveUtpLayer())
             theApp.clientudp->SetConnectionEncryption(GetConnectIP(), GetKadPort(), false);
         else
 //<<< WiZaRd::NatTraversal [Xanatos]
+#endif
             socket->SetConnectionEncryption(false, NULL, false);
     }
 
     //Try to always tell the socket to WaitForOnConnect before you call Connect.
     socket->WaitForOnConnect();
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
-    SOCKADDR_IN6 sockAddr;
-    int nSockAddrLen = sizeof(sockAddr);
-    _CIPAddress IP = GetConnectIP();
-    IP.Convert(CAddress::IPv6); // the socket works with IPv6 adresses only
-    //SOCKADDR_IN sockAddr = {0};
-    //sockAddr.sin_family = AF_INET;
-    //sockAddr.sin_addr.S_un.S_addr = GetConnectIP();
+	SOCKADDR_IN6 sockAddr;
+	int nSockAddrLen = sizeof(sockAddr);
+	CAddress IP = GetConnectIP();
+	IP.Convert(CAddress::IPv6); // the socket works with IPv6 adresses only
+#ifdef NAT_TRAVERSAL
 //>>> WiZaRd::NatTraversal [Xanatos]
-    if (socket->HaveUtpLayer())
-        //sockAddr.sin_port = htons(GetKadPort() ? GetKadPort() : GetUDPPort());
-        IP.ToSA((SOCKADDR*)&sockAddr, &nSockAddrLen, GetKadPort() ? GetKadPort() : GetUDPPort());
-    else
+	if(socket->HaveUtpLayer())
+		IP.ToSA((SOCKADDR*)&sockAddr, &nSockAddrLen, GetKadPort() ? GetKadPort() : GetUDPPort());
+	else
 //<<< WiZaRd::NatTraversal [Xanatos]
-        //sockAddr.sin_port = htons(GetUserPort());
-        IP.ToSA((SOCKADDR*)&sockAddr, &nSockAddrLen, GetUserPort());
+#endif
+		IP.ToSA((SOCKADDR*)&sockAddr, &nSockAddrLen, GetUserPort());
+	socket->Connect((SOCKADDR*)&sockAddr, sizeof sockAddr);
 //<<< WiZaRd::IPv6 [Xanatos]
-    socket->Connect((SOCKADDR*)&sockAddr, sizeof sockAddr);
+#else
+	SOCKADDR_IN sockAddr = {0};
+	sockAddr.sin_family = AF_INET;
+#ifdef NAT_TRAVERSAL
+//>>> WiZaRd::NatTraversal [Xanatos]
+	if(socket->HaveUtpLayer())
+		sockAddr.sin_port = htons(GetKadPort() ? GetKadPort() : GetUDPPort());
+	else
+//<<< WiZaRd::NatTraversal [Xanatos]
+#endif
+		sockAddr.sin_port = htons(GetUserPort());
+	sockAddr.sin_addr.S_un.S_addr = GetConnectIP();
+	socket->Connect((SOCKADDR*)&sockAddr, sizeof sockAddr);
+#endif
     SendHelloPacket();
 }
 
@@ -2789,10 +2909,11 @@ void CUpDownClient::SendSignaturePacket()
         bUseV2 = true;
 
     uint8 byChaIPKind = 0;
-//>>> WiZaRd::IPv6 [Xanatos]
-    _CIPAddress ChallengeIP;
-    //UINT ChallengeIP = 0;
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+    CAddress ChallengeIP; //>>> WiZaRd::IPv6 [Xanatos]
+#else
+    UINT ChallengeIP = 0;
+#endif
     if (bUseV2)
     {
         // we cannot do not know for sure our public ip, so use the remote clients one
@@ -2995,9 +3116,7 @@ void CUpDownClient::InfoPacketsReceived()
     m_byInfopacketsReceived = IP_NONE;
 
     if (m_bySupportSecIdent)
-    {
         SendSecIdentStatePacket();
-    }
 }
 
 void CUpDownClient::ResetFileStatusInfo()
@@ -3032,13 +3151,16 @@ bool CUpDownClient::IsBanned() const
     if (GetUploadState() == US_BANNED)
         return true;
 //<<< WiZaRd::Optimization
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
     // IPv6-TODO: Add IPv6 ban list
-    if (GetIP().ToIPv4() == 0)
+    if (GetConnectIP().ToIPv4() == 0)
         return false;
     return theApp.clientlist->IsBannedClient(_ntohl(GetConnectIP().ToIPv4()));
-    //return theApp.clientlist->IsBannedClient(GetConnectIP());
 //<<< WiZaRd::IPv6 [Xanatos]
+#else
+    return theApp.clientlist->IsBannedClient(GetConnectIP());
+#endif
 }
 
 void CUpDownClient::SendPreviewRequest(const CAbstractFile* pForFile)
@@ -3054,9 +3176,7 @@ void CUpDownClient::SendPreviewRequest(const CAbstractFile* pForFile)
         SafeConnectAndSendPacket(packet);
     }
     else
-    {
         LogWarning(LOG_STATUSBAR, GetResString(IDS_ERR_PREVIEWALREADY));
-    }
 }
 
 void CUpDownClient::SendPreviewAnswer(const CKnownFile* pForFile, CxImage** imgFrames, uint8 nCount)
@@ -3415,22 +3535,23 @@ CString CUpDownClient::DbgGetClientInfo(bool bFormatIP) const
         {
             if (HasLowID())
             {
-//>>> WiZaRd::IPv6 [Xanatos]
-                if (!GetConnectIP().IsNull())
-                    //if (GetConnectIP())
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+                if (!GetConnectIP().IsNull()) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+				if (GetConnectIP())
+#endif
                 {
-                    str.Format(L"%u@%s (%s) '%s' (%s,%s/%s/%s)",
-                               GetUserIDHybrid(), ipstr(GetServerIP()),
-                               ipstr(GetConnectIP()),
+                    str.Format(L"%u@%s:%u (%s:%u) '%s' (%s,%s/%s/%s)",
+                               GetUserIDHybrid(), ipstr(GetServerIP()), GetServerPort(),
+                               ipstr(GetConnectIP()), GetUserPort(),
                                GetUserName(),
                                DbgGetFullClientSoftVer(),
                                DbgGetDownloadState(), DbgGetUploadState(), DbgGetKadState());
                 }
                 else
                 {
-                    str.Format(L"%u@%s '%s' (%s,%s/%s/%s)",
-                               GetUserIDHybrid(), ipstr(GetServerIP()),
+                    str.Format(L"%u@%s:%u '%s' (%s,%s/%s/%s)",
+                               GetUserIDHybrid(), ipstr(GetServerIP()), GetServerPort(),
                                GetUserName(),
                                DbgGetFullClientSoftVer(),
                                DbgGetDownloadState(), DbgGetUploadState(), DbgGetKadState());
@@ -3438,8 +3559,8 @@ CString CUpDownClient::DbgGetClientInfo(bool bFormatIP) const
             }
             else
             {
-                str.Format(bFormatIP ? L"%-15s '%s' (%s,%s/%s/%s)" : L"%s '%s' (%s,%s/%s/%s)",
-                           ipstr(GetConnectIP()),
+                str.Format(bFormatIP ? L"%-15s:%u '%s' (%s,%s/%s/%s)" : L"%s:%u '%s' (%s,%s/%s/%s)",
+                           ipstr(GetConnectIP()), GetUserPort(),
                            GetUserName(),
                            DbgGetFullClientSoftVer(),
                            DbgGetDownloadState(), DbgGetUploadState(), DbgGetKadState());
@@ -3568,37 +3689,46 @@ void CUpDownClient::SendPublicIPRequest()
 
 void CUpDownClient::ProcessPublicIPAnswer(const BYTE* pbyData, UINT uSize)
 {
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
     if (uSize != 4 && uSize != 20) // IPv4 [uint32 IPv4] // IPv6 [uint32 -1][16 bytes IPv6]
         throw GetResString(IDS_ERR_WRONGPACKAGESIZE);
 
     if (m_fNeedOurPublicIP == 1) // did we?
+	{
         m_fNeedOurPublicIP = 0;
-    else
-        return;
-
-    UINT dwIP = PeekUInt32(pbyData);
-    if (dwIP != -1)
-    {
-        if (theApp.GetPublicIP() == 0 && !::IsLowID(dwIP))
-            theApp.SetPublicIP(dwIP);
-    }
-    else
-    {
-        byte uIP[16];
-        memcpy(uIP, pbyData+4, 16);
-        // IPv6-TODO: add global IPV6 handling
-    }
-    /*if (uSize != 4)
-        throw GetResString(IDS_ERR_WRONGPACKAGESIZE);
-    UINT dwIP = PeekUInt32(pbyData);
-    if (m_fNeedOurPublicIP == 1)  // did we?
-    {
-        m_fNeedOurPublicIP = 0;
-        if (theApp.GetPublicIP() == 0 && !::IsLowID(dwIP))
-            theApp.SetPublicIP(dwIP);
-    }*/
+	
+		UINT dwIP = PeekUInt32(pbyData);
+		if (dwIP != _UI32_MAX)
+		{
+			if(theApp.GetPublicIP() == 0 && !::IsLowID(dwIP))
+				theApp.SetPublicIP(dwIP);
+		}
+		else
+		{
+			byte uIP[16];
+			memcpy(uIP, pbyData+4, 16);
+			// IPv6-TODO: add global IPV6 handling
+			CAddress IPv6(uIP);
+			dwIP = IPv6.ToIPv4();
+			if(theApp.GetPublicIP() == 0 && !::IsLowID(dwIP))
+				theApp.SetPublicIP(dwIP);
+			if(theApp.GetPublicIPv6().IsNull())
+				theApp.SetPublicIPv6(IPv6);
+		}
+	}
 //<<< WiZaRd::IPv6 [Xanatos]
+#else
+	if (uSize != 4)
+		throw GetResString(IDS_ERR_WRONGPACKAGESIZE);
+	UINT dwIP = PeekUInt32(pbyData);
+	if (m_fNeedOurPublicIP == 1)  // did we?
+	{
+		m_fNeedOurPublicIP = 0;
+		if (theApp.GetPublicIP() == 0 && !::IsLowID(dwIP))
+			theApp.SetPublicIP(dwIP);
+	}
+#endif
 }
 
 void CUpDownClient::CheckFailedFileIdReqs(const uchar* aucFileHash)
@@ -3653,11 +3783,13 @@ bool  CUpDownClient::IsObfuscatedConnectionEstablished() const
 {
     if (socket != NULL && socket->IsConnected())
     {
+#ifdef NAT_TRAVERSAL
 //>>> WiZaRd::NatTraversal [Xanatos]
         if (socket->HaveUtpLayer())
             return theApp.clientudp->IsObfuscating(GetConnectIP(), GetKadPort());
         else
 //<<< WiZaRd::NatTraversal [Xanatos]
+#endif
             return socket->IsObfuscating();
     }
     else
@@ -3965,20 +4097,22 @@ void CUpDownClient::SendFirewallCheckUDPRequest()
     else if (GetUploadState() != US_NONE || GetDownloadState() != DS_NONE || GetChatState() != MS_NONE
              || GetKadVersion() <= KADEMLIA_VERSION5_48a || GetKadPort() == 0)
     {
-//>>> WiZaRd::IPv6 [Xanatos]
-        Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, true, GetIP().ToIPv4(), 0); // inform the tester that this test was cancelled
-        //Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, true, ntohl(GetIP()), 0); // inform the tester that this test was cancelled
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+        Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, true, GetIP().ToIPv4(), 0); // inform the tester that this test was canceled //>>> WiZaRd::IPv6 [Xanatos]
+#else
+        Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, true, ntohl(GetIP()), 0); // inform the tester that this test was canceled
+#endif
         SetKadState(KS_NONE);
         return;
     }
     CSafeMemFile data;
     data.WriteUInt16(Kademlia::CKademlia::GetPrefs()->GetInternKadPort());
     data.WriteUInt16(Kademlia::CKademlia::GetPrefs()->GetExternalKadPort());
-//>>> WiZaRd::IPv6 [Xanatos]
-    data.WriteUInt32(Kademlia::CKademlia::GetPrefs()->GetUDPVerifyKey(_ntohl(GetConnectIP().ToIPv4())));
-    //data.WriteUInt32(Kademlia::CKademlia::GetPrefs()->GetUDPVerifyKey(GetConnectIP()));
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+    data.WriteUInt32(Kademlia::CKademlia::GetPrefs()->GetUDPVerifyKey(_ntohl(GetConnectIP().ToIPv4()))); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+    data.WriteUInt32(Kademlia::CKademlia::GetPrefs()->GetUDPVerifyKey(GetConnectIP()));
+#endif
     Packet* packet = new Packet(&data, OP_EMULEPROT, OP_FWCHECKUDPREQ);
     theStats.AddUpDataOverheadKad(packet->size);
     SafeConnectAndSendPacket(packet);
@@ -3995,10 +4129,11 @@ void CUpDownClient::ProcessFirewallCheckUDPRequest(CSafeMemFile* data)
     bool bErrorAlreadyKnown = false;
     if (GetUploadState() != US_NONE || GetDownloadState() != DS_NONE || GetChatState() != MS_NONE)
         bErrorAlreadyKnown = true;
-//>>> WiZaRd::IPv6 [Xanatos]
-    else if (Kademlia::CKademlia::GetRoutingZone()->GetContact(GetConnectIP().ToIPv4(), 0, false) != NULL)
-        //else if (Kademlia::CKademlia::GetRoutingZone()->GetContact(ntohl(GetConnectIP()), 0, false) != NULL)
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT	
+    else if (Kademlia::CKademlia::GetRoutingZone()->GetContact(GetConnectIP().ToIPv4(), 0, false) != NULL) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+	else if (Kademlia::CKademlia::GetRoutingZone()->GetContact(ntohl(GetConnectIP()), 0, false) != NULL)
+#endif
         bErrorAlreadyKnown = true;
 
     uint16 nRemoteInternPort = data->ReadUInt16();
@@ -4016,12 +4151,15 @@ void CUpDownClient::ProcessFirewallCheckUDPRequest(CSafeMemFile* data)
     fileTestPacket1.WriteUInt8(bErrorAlreadyKnown ? 1 : 0);
     fileTestPacket1.WriteUInt16(nRemoteInternPort);
     if (thePrefs.GetDebugClientKadUDPLevel() > 0)
-//>>> WiZaRd::IPv6 [Xanatos]
-        //DebugSend("KADEMLIA2_FIREWALLUDP", ntohl(GetConnectIP()), nRemoteInternPort);
-        //Kademlia::CKademlia::GetUDPListener()->SendPacket(&fileTestPacket1, KADEMLIA2_FIREWALLUDP, ntohl(GetConnectIP())
-        DebugSend("KADEMLIA2_FIREWALLUDP", GetConnectIP().ToIPv4(), nRemoteInternPort);
+#ifdef IPV6_SUPPORT	
+//>>> WiZaRd::IPv6 [Xanatos]        
+		DebugSend("KADEMLIA2_FIREWALLUDP", GetConnectIP().ToIPv4(), nRemoteInternPort);
     Kademlia::CKademlia::GetUDPListener()->SendPacket(&fileTestPacket1, KADEMLIA2_FIREWALLUDP, GetConnectIP().ToIPv4()
 //<<< WiZaRd::IPv6 [Xanatos]
+#else
+		DebugSend("KADEMLIA2_FIREWALLUDP", ntohl(GetConnectIP()), nRemoteInternPort);
+	Kademlia::CKademlia::GetUDPListener()->SendPacket(&fileTestPacket1, KADEMLIA2_FIREWALLUDP, ntohl(GetConnectIP())
+#endif
             , nRemoteInternPort, Kademlia::CKadUDPKey(dwSenderKey, theApp.GetPublicIP(false)), NULL);
 
     // if the client has a router with PAT (and therefore a different extern port than intern), test this port too
@@ -4031,18 +4169,26 @@ void CUpDownClient::ProcessFirewallCheckUDPRequest(CSafeMemFile* data)
         fileTestPacket2.WriteUInt8(bErrorAlreadyKnown ? 1 : 0);
         fileTestPacket2.WriteUInt16(nRemoteExternPort);
         if (thePrefs.GetDebugClientKadUDPLevel() > 0)
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
-            //DebugSend("KADEMLIA2_FIREWALLUDP", ntohl(GetConnectIP()), nRemoteExternPort);
-            //Kademlia::CKademlia::GetUDPListener()->SendPacket(&fileTestPacket2, KADEMLIA2_FIREWALLUDP, ntohl(GetConnectIP())
-            DebugSend("KADEMLIA2_FIREWALLUDP", GetConnectIP().ToIPv4(), nRemoteExternPort);
+			DebugSend("KADEMLIA2_FIREWALLUDP", GetConnectIP().ToIPv4(), nRemoteExternPort);
         Kademlia::CKademlia::GetUDPListener()->SendPacket(&fileTestPacket2, KADEMLIA2_FIREWALLUDP, GetConnectIP().ToIPv4()
 //<<< WiZaRd::IPv6 [Xanatos]
+#else
+			DebugSend("KADEMLIA2_FIREWALLUDP", ntohl(GetConnectIP()), nRemoteExternPort);
+		Kademlia::CKademlia::GetUDPListener()->SendPacket(&fileTestPacket2, KADEMLIA2_FIREWALLUDP, ntohl(GetConnectIP())	
+#endif
+
                 , nRemoteExternPort, Kademlia::CKadUDPKey(dwSenderKey, theApp.GetPublicIP(false)), NULL);
     }
     DebugLog(L"Answered UDP Firewallcheck request (%s)", DbgGetClientInfo());
 }
 
+#ifdef NAT_TRAVERSAL
 uint8 CUpDownClient::GetConnectOptions(const bool bEncryption, const bool bCallback, const bool bNATTraversal) const  //>>> WiZaRd::NatTraversal [Xanatos]
+#else
+uint8 CUpDownClient::GetConnectOptions(const bool bEncryption, const bool bCallback) const
+#endif
 {
 // ConnectSettings - SourceExchange V4
 	// 4 Reserved (!)
@@ -4055,7 +4201,11 @@ uint8 CUpDownClient::GetConnectOptions(const bool bEncryption, const bool bCallb
 	const uint8 uRequiresCryptLayer		= (bEncryption && RequiresCryptLayer()) ? 1 : 0;
 //>>> WiZaRd::NatTraversal [Xanatos]
 	const uint8 uDirectUDPCallback		= (bCallback && SupportsDirectUDPCallback()) ? 1 : 0;
+#ifdef NAT_TRAVERSAL
 	const uint8 uSupportsNatTraversal	= (bNATTraversal && SupportsNatTraversal()) ? 1 : 0;
+#else
+	const uint8 uSupportsNatTraversal	= 0;
+#endif
 
 	//const uint8 uDirectUDPCallback	= cur_src->SupportsDirectUDPCallback() ? 1 : 0;
 	//const uint8 byCryptOptions = /*(uDirectUDPCallback << 3) |*/ (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
@@ -4070,7 +4220,9 @@ void CUpDownClient::SetConnectOptions(const uint8 byOptions, const bool bEncrypt
     SetCryptLayerRequest((byOptions & 0x02) != 0 && bEncryption);
     SetCryptLayerRequires((byOptions & 0x04) != 0 && bEncryption);
     SetDirectUDPCallbackSupport((byOptions & 0x08) != 0 && bCallback);
+#ifdef NAT_TRAVERSAL
     SetNatTraversalSupport((byOptions & 0x80) != 0/* && bCallback*/); //>>> WiZaRd::NatTraversal [Xanatos]
+#endif
 }
 
 void CUpDownClient::SendSharedDirectories()
@@ -4396,6 +4548,79 @@ void	CUpDownClient::SetFriendSlot(const bool bNV)
 //<<< WiZaRd::ZZUL Upload [ZZ]
 }
 
+bool CUpDownClient::CanDoCallback() const
+{
+#ifdef NAT_TRAVERSAL
+//>>> WiZaRd::NatTraversal [Xanatos]
+	// Note: this is meant for debug purpose only, when we add a source by the CAddSourceDlg
+	if (SupportsNatTraversal() && GetUserPort() == 0)
+		return true; // the client does not have a TCP port and is NAT traversal enabled we can try it
+//<<< WiZaRd::NatTraversal [Xanatos]
+#endif
+	if (Kademlia::CKademlia::IsConnected())
+	{
+		if (Kademlia::CKademlia::IsFirewalled())
+		{
+#ifdef NAT_TRAVERSAL
+//>>> WiZaRd::NatTraversal [Xanatos]
+			//Both Connected - Both Firewalled, but both Nat Traversal Enabled
+			if (SupportsNatTraversal())
+				return true;
+//<<< WiZaRd::NatTraversal [Xanatos]
+#endif
+			//Only Kad Connected - Kad Firewalled
+			return false;
+		}
+		else
+		{
+			//Only Kad Conected - Kad Open
+			return true;
+		}
+	}
+	else
+	{
+		//We are not connected at all!
+		return false;
+	}
+}
+
+#ifdef IPV6_SUPPORT
+void CUpDownClient::SetIP(CAddress val)   //Only use this when you know the real IP or when your clearing it. //>>> WiZaRd::IPv6 [Xanatos]
+#else
+void	CUpDownClient::SetIP(const UINT val)   //Only use this when you know the real IP or when your clearing it.
+#endif
+{
+#ifdef IPV6_SUPPORT
+//>>> WiZaRd::IPv6 [Xanatos]
+    if (val.ConvertTo(CAddress::IPv4)) // Check if the IP is a mapped IPv4
+        m_UserIPv4 = val;
+    else
+        m_UserIPv6 = val;
+    UpdateIP(val);
+//<<< WiZaRd::IPv6 [Xanatos]
+#else
+    m_dwUserIP = val;
+    m_nConnectIP = val;
+#endif
+}
+
+#ifdef IPV6_SUPPORT
+//>>> WiZaRd::IPv6 [Xanatos]
+void CUpDownClient::UpdateIP(const CAddress& val)
+{
+	m_nConnectIP = val;
+	m_dwUserIP = val;
+}
+
+void CUpDownClient::SetIPv6(const CAddress& val)
+{
+	ASSERT(val.GetType() == CAddress::IPv6);
+	m_UserIPv6 = val;
+	m_bOpenIPv6 = true;
+}
+//<<< WiZaRd::IPv6 [Xanatos]
+#endif
+
 //>>> WiZaRd::ZZUL Upload [ZZ]
 void	CUpDownClient::ScheduleRemovalFromUploadQueue(LPCTSTR pszDebugReason, CString strDisplayReason, bool keepWaitingTimeIntact)
 {
@@ -4473,10 +4698,11 @@ void CUpDownClient::WriteExtendedSourceExchangeData(CSafeMemFile& data) const
     {
         if (SupportsDirectUDPCallback())
         {
-//>>> WiZaRd::IPv6 [Xanatos]
-            tagList.AddTail(new CTag(CT_EMULE_ADDRESS, _ntohl(GetIPv4().ToIPv4())));
-            //tagList.AddTail(new CTag(CT_EMULE_ADDRESS, GetIP()));
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+            tagList.AddTail(new CTag(CT_EMULE_ADDRESS, _ntohl(GetIPv4().ToIPv4()))); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+            tagList.AddTail(new CTag(CT_EMULE_ADDRESS, GetIP()));
+#endif
             tagList.AddTail(new CTag(CT_EMULE_UDPPORTS,
                                      ((UINT)GetKadPort() << 16) |
                                      ((UINT)GetUDPPort() <<  0)
@@ -4506,10 +4732,12 @@ void CUpDownClient::WriteExtendedSourceExchangeData(CSafeMemFile& data) const
                                 ));
     }
 
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
     if (IsIPv6Open())
         tagList.AddTail(new CTag(CT_NEOMULE_IP_V6, GetIPv6().Data()));
 //<<< WiZaRd::IPv6 [Xanatos]
+#endif
 
     data.WriteUInt8((uint8)tagList.GetCount()); // max 255 tags - plenty of fun for everyone ;)
     while (!tagList.IsEmpty())

@@ -159,10 +159,11 @@ void CAddFriend::OnAddBtn()
         // why did we offer an edit control for entering the userhash but did not store it?
         ;
 
-//>>> WiZaRd::IPv6 [Xanatos]
-        if (!theApp.friendlist->AddFriend(NULL, 0, CAddress(_ntohl(ip)), (uint16)uPort, 0, strUserName, 0))
-            //if (!theApp.friendlist->AddFriend(NULL, 0, ip, (uint16)uPort, 0, strUserName, 0))
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+        if (!theApp.friendlist->AddFriend(NULL, 0, CAddress(_ntohl(ip)), (uint16)uPort, 0, strUserName, 0)) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+		if (!theApp.friendlist->AddFriend(NULL, 0, ip, (uint16)uPort, 0, strUserName, 0))
+#endif
         {
             AfxMessageBox(GetResString(IDS_WRN_FRIENDDUPLIPPORT));
             GetDlgItem(IDC_IP)->SetFocus();

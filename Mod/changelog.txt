@@ -276,5 +276,25 @@ Beta 20131113:
 
 Beta 20131114:
 ~ added missing default settings for extXS, IPv6, NAT-T [WiZaRd]
+! fixed URL downloads (broken due to NAT-T) [WiZaRd]
+
+Beta 20131117:
+~ fixed SCT part status sending [WiZaRd]
+~ fixed SCT part status display [WiZaRd]
+~ store default .ini only values [WiZaRd]
+- removed SNARL log notifications [WiZaRd]
+
+Beta 201311xx:
+! fixed wrong comment icons in sharedfilelist - thx to SS1900 [WiZaRd]
+~ save nodes.dat regularly [WiZaRd]
+~ always save .dmp files [WiZaRd]
+~ additional debug output on AICH requests/answers [WiZaRd]
+~ additional log line on FW recheck [WiZaRd]
+
+* IPv6 support is currently disabled [WiZaRd]
+* NAT-T support is currently disabled [WiZaRd]
 
 ed2k://|file|SCT%20collection%20test.emulecollection|203|CB0910E2A9BEE2F811C2C1CDEAA211D2|h=P7U5ZUPG6IVXRJFGBK55BYL34E65DE77|/
+ed2k://|file|SCT%20test%202%20all.rar|141861860|64E00D650C8180ABAFEB921DD58CA4B8|h=7RPXW34AE566EFRN47I5AUZHBJTIX2CV|/|sources,69.60.230.240:5662|/
+ed2k://|file|SCT%20kM%201.rar|77726337|A2C158421EAE1363C56C4BB3CF35134D|h=RODDI47MGZ3OHYXJZ22UFVAYJW5V43YI|/|sources,69.60.230.240:5662|/
+ed2k://|file|kMule.Beta.SCT.Test.File.rar|887674874|5DD5EE7C113FCB791E5DB88DE04C237C|h=PTBI7RG3NLXT7I5YVZQHFAK6KQHC2XQR|f=\kMule\|/|sources,88.71.239.9:45064|/

@@ -2477,7 +2477,7 @@ void CPartFile::FillGap(uint64 start, uint64 end)
     for (pos1 = gaplist.GetHeadPosition(); (pos2 = pos1) != NULL;)
     {
         Gap_Struct* cur_gap = gaplist.GetNext(pos1);
-        if (cur_gap->start >= start && cur_gap->end <= end)  // our part fills this gap completly
+        if (cur_gap->start >= start && cur_gap->end <= end)  // our part fills this gap completely
         {
             gaplist.RemoveAt(pos2);
             delete cur_gap;
@@ -2583,27 +2583,11 @@ void CPartFile::DrawShareStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, boo
 		const CPartStatus* abyPartStatus = GetPublishedPartStatus(); // GetPartStatus()
         const UINT nStepCount = (abyPartStatus) ? abyPartStatus->GetCrumbsCount() : nPartCount;
         bool bCompletePart = abyPartStatus ? abyPartStatus->IsCompletePart(0) : false;
-        for (UINT i = 0, nPart = 0; i < nStepCount; ++i)
+		const uint64 partsize = abyPartStatus ? CRUMBSIZE : PARTSIZE;
+        for (UINT i = 0, nPart = 0; i < nStepCount;)
             //for (UINT i = 0; i < GetPartCount(); i++)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         {
-//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-            uint64 partsize = PARTSIZE;
-            if (abyPartStatus)
-            {
-                partsize = CRUMBSIZE;
-                if (i != 0 && (i % CRUMBSPERPART) == 0)
-                {
-                    ++nPart;
-                    bCompletePart = abyPartStatus->IsCompletePart(nPart);
-                }
-            }
-            else
-            {
-                ++nPart;
-                bCompletePart = false;
-            }
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
             GetPartStartAndEnd(i, partsize, GetFileSize(), uStart, uEnd);
             if (IsComplete(uStart, uEnd-1, true))
             {
@@ -2637,6 +2621,19 @@ void CPartFile::DrawShareStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, boo
                     s_ChunkBar.FillRange(uStart, uEnd, crSCT);
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
             }
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]            
+			++i;
+			if (abyPartStatus)
+			{
+				if ((i % CRUMBSPERPART) == 0)
+				{
+					++nPart;
+					bCompletePart = nPart < abyPartStatus->GetPartCount() && abyPartStatus->IsCompletePart(nPart);
+				}
+			}
+			else
+				++nPart;
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         }
     }
     s_ChunkBar.Draw(dc, rect->left, rect->top, bFlat);
@@ -3011,21 +3008,22 @@ UINT CPartFile::Process(UINT reducedownload, UINT icounter/*in percent*/)
 
             if (m_pAICHRecoveryHashSet && m_pAICHRecoveryHashSet->HasValidMasterHash() && (m_pAICHRecoveryHashSet->GetStatus() == AICH_TRUSTED || m_pAICHRecoveryHashSet->GetStatus() == AICH_VERIFIED))
             {
-                bool canRequestRecoveryData = false;
-                for (POSITION pos = srclist.GetHeadPosition(); pos != NULL;)
-                {
-                    CUpDownClient* const pCurClient = srclist.GetNext(pos);
-                    if (pCurClient->IsSupportingAICH() && pCurClient->GetReqFileAICHHash() != NULL && !pCurClient->IsAICHReqPending()
-                            && (*pCurClient->GetReqFileAICHHash()) == m_pAICHRecoveryHashSet->GetMasterHash())
-                    {
-                        canRequestRecoveryData = true;
-                        break;
-                    }
-                }
+				if (GetPublishedPartStatus() && GetDonePartStatus())
+				{
+					// quick check to see if we can request AICH recovery data at all
+					bool canRequestRecoveryData = false;
+					for (POSITION pos = srclist.GetHeadPosition(); pos != NULL;)
+					{
+						CUpDownClient* const pCurClient = srclist.GetNext(pos);
+						if (pCurClient->IsSupportingAICH() && pCurClient->GetReqFileAICHHash() != NULL && !pCurClient->IsAICHReqPending()
+								&& (*pCurClient->GetReqFileAICHHash()) == m_pAICHRecoveryHashSet->GetMasterHash())
+						{
+							canRequestRecoveryData = true;
+							break;
+						}
+					}
 
-                // Check if there are any incompletes that aren't shared
-                if (GetPublishedPartStatus() && GetDonePartStatus())
-                {
+					// Check if there are any incompletes that aren't shared                
                     uint64 start = 0;
                     uint64 stop = ~0ULL;
                     CList<uint16> partsToRequestsRecoveryData;
@@ -3039,51 +3037,7 @@ UINT CPartFile::Process(UINT reducedownload, UINT icounter/*in percent*/)
                             if (!IsCorruptedPart(part) && EstimatePartCompletion(part) >= FORCE_AICH_TIME)
                             {
                                 if (m_pAICHRecoveryHashSet->IsPartDataAvailable(part * PARTSIZE))
-                                {
-                                    // TODO!
-                                    UINT uPartNumber = part;
-                                    UINT partRange = PARTSIZE - 1;
-                                    if (part == lastPart && m_hpartfile.GetLength() % PARTSIZE > 0)
-                                        partRange = (UINT)(m_hpartfile.GetLength() % PARTSIZE) - 1;
-
-                                    // Is part corrupt
-                                    bool bAICHAgreed = false;
-                                    if (!HashSinglePart(uPartNumber, &bAICHAgreed))
-                                    {
-                                        LogWarning(LOG_STATUSBAR, GetResString(IDS_ERR_PARTCORRUPT), uPartNumber, GetFileName());
-                                        AddGap(PARTSIZE*(uint64)uPartNumber, PARTSIZE*(uint64)uPartNumber + partRange);
-
-                                        // add part to corrupted list, if not already there
-                                        if (!IsCorruptedPart(uPartNumber))
-                                            corrupted_list.AddTail((uint16)uPartNumber);
-
-                                        // request AICH recovery data, except if AICH already agreed anyway or we explicitly don't want to
-                                        if (/*!bNoAICH &&*/ !bAICHAgreed)
-                                            RequestAICHRecovery((uint16)uPartNumber);
-
-                                        // update stats
-                                        m_uCorruptionLoss += (partRange + 1);
-                                        thePrefs.Add2LostFromCorruption(partRange + 1);
-                                    }
-                                    else
-                                    {
-                                        if (!m_bMD4HashsetNeeded)
-                                        {
-                                            if (thePrefs.GetVerbose())
-                                                AddDebugLogLine(DLP_VERYLOW, false, L"Finished part %u of \"%s\"", uPartNumber, GetFileName());
-                                        }
-
-                                        // tell the blackbox about the verified data
-                                        m_CorruptionBlackBox.VerifiedData(PARTSIZE*(uint64)uPartNumber, PARTSIZE*(uint64)uPartNumber + partRange);
-
-                                        // if this part was successfully completed (although ICH is active), remove from corrupted list
-                                        POSITION posCorrupted = corrupted_list.Find((uint16)uPartNumber);
-                                        if (posCorrupted)
-                                            corrupted_list.RemoveAt(posCorrupted);
-
-                                        CompletedPart(uPartNumber);
-                                    }
-                                }
+									AICHRecoveryDataAvailable(part);
                                 else if (canRequestRecoveryData)
                                     partsToRequestsRecoveryData.AddTail(part);
                             }
@@ -3187,10 +3141,7 @@ UINT CPartFile::Process(UINT reducedownload, UINT icounter/*in percent*/)
                     if (cur_src->HasLowID())
                     {
                         //Make sure we still cannot callback to this Client..
-//>>> WiZaRd::NatTraversal [Xanatos]
-                        if (!theApp.CanDoCallback(cur_src))
-                            //if (!theApp.CanDoCallback())
-//<<< WiZaRd::NatTraversal [Xanatos]
+                        if (!cur_src->CanDoCallback())
                         {
                             //If we are almost maxed on sources, slowly remove these client to see if we can find a better source.
                             if (((dwCurTick - lastpurgetime) > SEC2MS(30)) && (this->GetSourceCount() >= (GetMaxSources()*.8)))
@@ -3402,8 +3353,10 @@ void CPartFile::AddSources(CSafeMemFile* sources, UINT serverip, uint16 serverpo
             if (!IsGoodIP(userid))
             {
                 // check for 0-IP, localhost and optionally for LAN addresses
-                //if (thePrefs.GetLogFilteredIPs())
-                //	AddDebugLogLine(false, _T("Ignored source (IP=%s) received from server - bad IP"), ipstr(userid));
+#ifdef _DEBUG
+                if (thePrefs.GetLogFilteredIPs())
+                	AddDebugLogLine(false, L"Ignored source (IP=%s) received from server - bad IP", ipstr(userid));
+#endif
                 continue;
             }
             if (theApp.ipfilter->IsFiltered(userid))
@@ -3417,10 +3370,11 @@ void CPartFile::AddSources(CSafeMemFile* sources, UINT serverip, uint16 serverpo
 #ifdef _DEBUG
                 if (thePrefs.GetLogBannedClients())
                 {                    
-//>>> WiZaRd::IPv6 [Xanatos]
-                    CUpDownClient* pClient = theApp.clientlist->FindClientByIP(_CIPAddress(_ntohl(userid)));
-                    //CUpDownClient* pClient = theApp.clientlist->FindClientByIP(userid);
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+                    CUpDownClient* pClient = theApp.clientlist->FindClientByIP(CAddress(_ntohl(userid))); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+                    CUpDownClient* pClient = theApp.clientlist->FindClientByIP(userid);
+#endif
 					CString strDbgClientInfo = L"";
                     if (pClient)
                         strDbgClientInfo.Format(L" - banned client %s", pClient->DbgGetClientInfo());
@@ -3434,8 +3388,10 @@ void CPartFile::AddSources(CSafeMemFile* sources, UINT serverip, uint16 serverpo
         // additionally check for LowID and own IP
         if (!CanAddSource(userid, port, &debug_lowiddropped))
         {
-            //if (thePrefs.GetLogFilteredIPs())
-            //	AddDebugLogLine(false, _T("Ignored source (IP=%s) received from server"), ipstr(userid));
+#ifdef _DEBUG
+            if (thePrefs.GetLogFilteredIPs())
+            	AddDebugLogLine(false, L"Ignored source (IP=%s:%u) received from server - failed CanAddSource", ipstr(userid), port);
+#endif
             continue;
         }
 
@@ -3470,21 +3426,23 @@ void CPartFile::AddSource(LPCTSTR pszURL, UINT nIP)
     if (!IsGoodIP(nIP))
     {
         // check for 0-IP, localhost and optionally for LAN addresses
-        //if (thePrefs.GetLogFilteredIPs())
-        //	AddDebugLogLine(false, _T("Ignored URL source (IP=%s) \"%s\" - bad IP"), ipstr(nIP), pszURL);
+#ifdef _DEBUG
+        if (thePrefs.GetLogFilteredIPs())
+        	AddDebugLogLine(false, L"Ignored URL source (IP=%s) \"%s\" - bad IP", ipstr(nIP), pszURL);
+#endif
         return;
     }
     if (theApp.ipfilter->IsFiltered(nIP))
     {
         if (thePrefs.GetLogFilteredIPs())
-            AddDebugLogLine(false, _T("Ignored URL source (IP=%s) \"%s\" - IP filter (%s)"), ipstr(nIP), pszURL, theApp.ipfilter->GetLastHit());
+            AddDebugLogLine(false, L"Ignored URL source (IP=%s) \"%s\" - IP filter (%s)", ipstr(nIP), pszURL, theApp.ipfilter->GetLastHit());
         return;
     }
 
     CUrlClient* client = new CUrlClient;
     if (!client->SetUrl(pszURL, nIP))
     {
-        LogError(LOG_STATUSBAR, _T("Failed to process URL source \"%s\""), pszURL);
+        LogError(LOG_STATUSBAR, L"Failed to process URL source \"%s\"", pszURL);
         delete client;
         return;
     }
@@ -4763,13 +4721,13 @@ void CPartFile::UpdateAvailablePartsCount()
 {
     UINT availablecounter = 0;
     UINT iPartCount = GetPartCount();
-    for (UINT ixPart = 0; ixPart < iPartCount; ixPart++)
+    for (UINT ixPart = 0; ixPart < iPartCount; ++ixPart)
     {
         for (POSITION pos = srclist.GetHeadPosition(); pos;)
         {
             if (srclist.GetNext(pos)->IsPartAvailable(ixPart))
             {
-                availablecounter++;
+                ++availablecounter;
                 break;
             }
         }
@@ -4787,7 +4745,7 @@ Packet* CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 byR
     if (md4cmp(forClient->GetUploadFileID(), GetFileHash()) != 0)
     {
         // should never happen
-        DEBUG_ONLY(DebugLogError(_T("*** %hs - client (%s) upload file \"%s\" does not match file \"%s\""), __FUNCTION__, forClient->DbgGetClientInfo(), DbgGetFileInfo(forClient->GetUploadFileID()), GetFileName()));
+        DEBUG_ONLY(DebugLogError(L"*** %hs - client (%s) upload file \"%s\" does not match file \"%s\"", __FUNCTION__, forClient->DbgGetClientInfo(), DbgGetFileInfo(forClient->GetUploadFileID()), GetFileName()));
         ASSERT(0);
         return NULL;
     }
@@ -4797,7 +4755,7 @@ Packet* CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 byR
             && !(forClient->GetUpPartCount() == GetPartCount() && forClient->GetUpPartStatus() != NULL))
     {
         // should never happen
-        DEBUG_ONLY(DebugLogError(_T("*** %hs - part count (%u) of client (%s) does not match part count (%u) of file \"%s\""), __FUNCTION__, forClient->GetUpPartCount(), forClient->DbgGetClientInfo(), GetPartCount(), GetFileName()));
+        DEBUG_ONLY(DebugLogError(L"*** %hs - part count (%u) of client (%s) does not match part count (%u) of file \"%s\"", __FUNCTION__, forClient->GetUpPartCount(), forClient->DbgGetClientInfo(), GetPartCount(), GetFileName()));
         ASSERT(0);
         return NULL;
     }
@@ -4824,14 +4782,14 @@ Packet* CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 byR
 
         // we don't support any special SX2 options yet, reserved for later use
         if (nRequestedOptions != 0)
-            DebugLogWarning(_T("Client requested unknown options for SourceExchange2: %u (%s)"), nRequestedOptions, forClient->DbgGetClientInfo());
+            DebugLogWarning(L"Client requested unknown options for SourceExchange2: %u (%s)", nRequestedOptions, forClient->DbgGetClientInfo());
     }
     else
     {
         byUsedVersion = forClient->GetSourceExchange1Version();
         bIsSX2Packet = false;
         if (forClient->SupportsSourceExchange2())
-            DebugLogWarning(_T("Client which announced to support SX2 sent SX1 packet instead (%s)"), forClient->DbgGetClientInfo());
+            DebugLogWarning(L"Client which announced to support SX2 sent SX1 packet instead (%s)", forClient->DbgGetClientInfo());
     }
 
     UINT nCount = 0;
@@ -4847,10 +4805,11 @@ Packet* CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 byR
     {
         bNeeded = false;
         const CUpDownClient* cur_src = srclist.GetNext(pos);
-//>>> WiZaRd::NatTraversal [Xanatos]
-        if ((cur_src->HasLowID() && !cur_src->SupportsNatTraversal()) || !cur_src->IsValidSource())
-            //if (cur_src->HasLowID() || !cur_src->IsValidSource())
-//<<< WiZaRd::NatTraversal [Xanatos]
+#ifdef NAT_TRAVERSAL
+        if ((cur_src->HasLowID() && !cur_src->SupportsNatTraversal()) || !cur_src->IsValidSource()) //>>> WiZaRd::NatTraversal [Xanatos]
+#else
+		if (cur_src->HasLowID() || !cur_src->IsValidSource())
+#endif
             continue;
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
         const CPartStatus* const srcstatus = cur_src->GetPartStatus();
@@ -4910,7 +4869,7 @@ Packet* CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 byR
             {
                 // should never happen
                 if (thePrefs.GetVerbose())
-                    DEBUG_ONLY(DebugLogError(_T("*** %hs - found source (%s) with wrong partcount (%u) attached to partfile \"%s\" (partcount=%u)"), __FUNCTION__, cur_src->DbgGetClientInfo(), cur_src->GetPartCount(), GetFileName(), GetPartCount()));
+                    DEBUG_ONLY(DebugLogError(L"*** %hs - found source (%s) with wrong partcount (%u) attached to partfile \"%s\" (partcount=%u)", __FUNCTION__, cur_src->DbgGetClientInfo(), cur_src->GetPartCount(), GetFileName(), GetPartCount()));
             }
         }
 
@@ -4939,7 +4898,11 @@ Packet* CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 byR
             if (byUsedVersion >= 2)
                 data.WriteHash16(cur_src->GetUserHash());
             if (byUsedVersion >= 4)
+#ifdef NAT_TRAVERSAL
                 data.WriteUInt8(cur_src->GetConnectOptions(true, forClient->SupportsNatTraversal(), forClient->SupportsNatTraversal())); //>>> WiZaRd::NatTraversal [Xanatos]
+#else
+				data.WriteUInt8(cur_src->GetConnectOptions(true, false));
+#endif
             if (nCount > 500)
                 break;
         }
@@ -4955,7 +4918,7 @@ Packet* CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 byR
     if (result->size > 354)
         result->PackPacket();
     if (thePrefs.GetDebugSourceExchange())
-        AddDebugLogLine(false, _T("SXSend: Client source response SX2=%s, Version=%u; Count=%u, %s, File=\"%s\""), bIsSX2Packet ? GetResString(IDS_YES) : GetResString(IDS_NO), byUsedVersion, nCount, forClient->DbgGetClientInfo(), GetFileName());
+        AddDebugLogLine(false, L"SXSend: Client source response SX2=%s, Version=%u; Count=%u, %s, File=\"%s\"", bIsSX2Packet ? GetResString(IDS_YES) : GetResString(IDS_NO), byUsedVersion, nCount, forClient->DbgGetClientInfo(), GetFileName());
     return result;
 }
 
@@ -4966,18 +4929,25 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
 
     UINT nCount = 0;
 
+	const bool bExtendedXS = pClient && pClient->SupportsExtendedSourceExchange(); //>>> WiZaRd::ExtendedXS [Xanatos]
     if (thePrefs.GetDebugSourceExchange())
     {
         CString strDbgClientInfo = L"";
         if (pClient)
             strDbgClientInfo.Format(L"%s, ", pClient->DbgGetClientInfo());
-        AddDebugLogLine(false, L"SXRecv: Client source response; SX2=%s, Ver=%u, %sFile=\"%s\"", bSourceExchange2 ? GetResString(IDS_YES) : GetResString(IDS_NO), uClientSXVersion, strDbgClientInfo, GetFileName());
+        AddDebugLogLine(false, L"SXRecv: Client source response; ExtXS=%s, SX2=%s, Ver=%u, %sFile=\"%s\"", bExtendedXS ? GetResString(IDS_YES) : GetResString(IDS_NO), bSourceExchange2 ? GetResString(IDS_YES) : GetResString(IDS_NO), uClientSXVersion, strDbgClientInfo, GetFileName());
     }
 
+#ifdef _DEBUG
+	theApp.QueueDebugLogLineEx(LOG_WARNING, L"*** XS START");
+#endif
     UINT uPacketSXVersion = 0;
     UINT uDataSize = 0;
     if (!bSourceExchange2)
     {
+#ifdef _DEBUG
+		theApp.QueueDebugLogLineEx(LOG_WARNING, L"* XS v1 START");
+#endif
         // for SX1 (deprecated):
         // Check if the data size matches the 'nCount' for v1 or v2 and eventually correct the source
         // exchange version while reading the packet data. Otherwise we could experience a higher
@@ -5053,14 +5023,20 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
             return;
         }
         ASSERT(uPacketSXVersion != 0);
+#ifdef _DEBUG
+		theApp.QueueDebugLogLineEx(LOG_WARNING, L"* XS v1 END");
+#endif
     }
     else
     {
+#ifdef _DEBUG
+		theApp.QueueDebugLogLineEx(LOG_WARNING, L"* XS v2 START");
+#endif
         // for SX2:
         // We only check if the version is known by us and do a quick sanitize check on known version
         // other then SX1, the packet will be ignored if any error appears, since it can't be a "misunderstanding" anymore
 //>>> WiZaRd::ExtendedXS [Xanatos]
-        if (uClientSXVersion > (pClient && pClient->SupportsExtendedSourceExchange() ? SOURCEEXCHANGEEXT_VERSION : SOURCEEXCHANGE2_VERSION) || uClientSXVersion == 0)
+        if (uClientSXVersion > (bExtendedXS ? SOURCEEXCHANGEEXT_VERSION : SOURCEEXCHANGE2_VERSION) || uClientSXVersion == 0)
             //if (uClientSXVersion > SOURCEEXCHANGE2_VERSION || uClientSXVersion == 0)
 //<<< WiZaRd::ExtendedXS [Xanatos]
         {
@@ -5077,7 +5053,7 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
         nCount = sources->ReadUInt16();
         uDataSize = (UINT)(sources->GetLength() - sources->GetPosition());
 //>>> WiZaRd::ExtendedXS [Xanatos]
-        if (pClient && pClient->SupportsExtendedSourceExchange())
+        if (bExtendedXS)
             uPacketSXVersion = 4;
         else // Note: Since the extended Format has variable length entries such a simple integrity test can not be performed
 //<<< WiZaRd::ExtendedXS [Xanatos]
@@ -5113,10 +5089,22 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
             }
             uPacketSXVersion = uClientSXVersion;
         }
+#ifdef _DEBUG
+		theApp.QueueDebugLogLineEx(LOG_WARNING, L"* XS v2 END");
+#endif
     }
 
-    for (UINT i = 0; i < nCount; i++)
+	UINT droppedSources = 0;
+	UINT filteredSources = 0;
+	UINT failedToAddSources = 0;
+#ifdef _DEBUG
+	theApp.QueueDebugLogLineEx(LOG_WARNING, L"* XS adding START");
+#endif
+    for (UINT i = 0; i < nCount; ++i)
     {
+#ifdef _DEBUG
+		theApp.QueueDebugLogLineEx(LOG_WARNING, L"* XS %u/%u START", i, nCount);
+#endif
         UINT dwID = sources->ReadUInt32();
         uint16 nPort = sources->ReadUInt16();
 //>>> WiZaRd::ExtendedXS [Xanatos]
@@ -5125,14 +5113,16 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
         UINT dwServerIP = 0;
         uint16 nServerPort = 0;
         UINT dwIP = 0;
+#ifdef IPV6_SUPPORT
         CAddress IPv6; //>>> WiZaRd::IPv6 [Xanatos]
+#endif
         uint16 nUDPPort = 0;
         uint16 nKadPort = 0;
         UINT dwBuddyIP = 0;
         uint16 nBuddyPort = 0;
         byte BuddyID[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        bool bError = false;
-        if (pClient && pClient->SupportsExtendedSourceExchange())
+		CString strError = L"";
+        if (bExtendedXS)
         {
             uint8 tagcount = sources->ReadUInt8();
             for (uint8 i = 0; i < tagcount; ++i)
@@ -5144,6 +5134,8 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
                     case CT_EMULE_ADDRESS:
                         if (temptag.IsInt())
                             dwIP = temptag.GetInt();
+						else
+							strError.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
                         break;
                     case CT_EMULE_UDPPORTS:
                         if (temptag.IsInt())
@@ -5151,48 +5143,66 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
                             nKadPort = (uint16)(temptag.GetInt() >> 16);
                             nUDPPort = (uint16)temptag.GetInt();
                         }
+						else
+							strError.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
                         break;
 
                     case CT_EMULE_BUDDYIP:
                         if (temptag.IsInt())
                             dwBuddyIP = temptag.GetInt();
+						else
+							strError.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
                         break;
                     case CT_EMULE_BUDDYUDP:
                         if (temptag.IsInt())
                             nBuddyPort = (uint16)temptag.GetInt();
+						else
+							strError.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
                         break;
                     case CT_EMULE_BUDDYID:
                         if (temptag.IsHash())
                             md4cpy(BuddyID, temptag.GetHash());
+						else
+							strError.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
                         break;
 //<<< WiZaRd::NatTraversal [Xanatos]
 
                     case CT_EMULE_SERVERIP:
                         if (temptag.IsInt())
                             dwServerIP = temptag.GetInt();
+						else
+							strError.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
                         break;
                     case CT_EMULE_SERVERTCP:
                         if (temptag.IsInt())
-                            dwServerIP = (uint16)temptag.GetInt();
+                            nServerPort = (uint16)temptag.GetInt();
+						else
+							strError.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
                         break;
 
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
                     case CT_NEOMULE_IP_V6:
-                    {
-                        byte uIP[16];
-                        md4cpy(uIP, temptag.GetHash());
-                        IPv6 = CAddress(uIP);
+						if (temptag.IsHash())
+						{
+							byte uIP[16];
+							md4cpy(uIP, temptag.GetHash());
+							IPv6 = CAddress(uIP);
+						}
+						else
+							strError.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
                         break;
-                    }
 //<<< WiZaRd::IPv6 [Xanatos]
+#endif
 
                     default:
                         AddDebugLogLine(false, L"Ignoring unknown ExtSX Tag from: %s", pClient->DbgGetClientInfo());
+						strError.AppendFormat(L"\n  ***UnkType=%s", temptag.GetFullInfo());
                         break;
                 }
             }
 
-            if (bError)
+            if (!strError.IsEmpty())
             {
                 ASSERT(0);
                 if (thePrefs.GetVerbose())
@@ -5201,6 +5211,9 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
                     if (pClient)
                         strDbgClientInfo.Format(L"%s, ", pClient->DbgGetClientInfo());
                     DebugLogWarning(L"Received invalid/corrupt ExtSX packet (v%u, count=%u, size=%u), %sFile=\"%s\"", uClientSXVersion, nCount, uDataSize, strDbgClientInfo, GetFileName());
+#ifdef _DEBUG
+					theApp.QueueDebugLogLineEx(LOG_ERROR, L"Extended Error Information: %s", strError);
+#endif
                 }
                 return;
             }
@@ -5226,19 +5239,27 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
             UINT dwIDED2K = ntohl(dwID);
 
             // check the HighID(IP) - "Filter LAN IPs" and "IPfilter" the received sources IP addresses
+#ifdef _DEBUG
+			if (IsLowID(dwIDED2K) != IsLowID(dwID))
+				theApp.QueueDebugLogLineEx(LOG_INFO, L"Checking %s (%s) instead of %s (%s)", ipstr(dwIDED2K), IsLowID(dwIDED2K) ? GetResString(IDS_IDLOW) : GetResString(IDS_IDHIGH), ipstr(dwID), IsLowID(dwID) ? GetResString(IDS_IDLOW) : GetResString(IDS_IDHIGH));
+#endif
             if (!IsLowID(dwID))
             {
                 if (!IsGoodIP(dwIDED2K))
                 {
                     // check for 0-IP, localhost and optionally for LAN addresses
-                    //if (thePrefs.GetLogFilteredIPs())
-                    //	AddDebugLogLine(false, _T("Ignored source (IP=%s) received via source exchange - bad IP"), ipstr(dwIDED2K));
+#ifdef _DEBUG
+                    if (thePrefs.GetLogFilteredIPs())
+                    	AddDebugLogLine(false, L"Ignored source (IP=%s) received via source exchange - bad IP", ipstr(dwIDED2K));
+#endif
+					++droppedSources;
                     continue;
                 }
                 if (theApp.ipfilter->IsFiltered(dwIDED2K))
                 {
                     if (thePrefs.GetLogFilteredIPs())
                         AddDebugLogLine(false, L"Ignored source (IP=%s) received via source exchange - IP filter (%s)", ipstr(dwIDED2K), theApp.ipfilter->GetLastHit());
+					++filteredSources;
                     continue;
                 }
                 if (theApp.clientlist->IsBannedClient(dwIDED2K))
@@ -5246,16 +5267,18 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
 #ifdef _DEBUG
                     if (thePrefs.GetLogBannedClients())
                     {                        
-//>>> WiZaRd::IPv6 [Xanatos]
-                        CUpDownClient* pClient = theApp.clientlist->FindClientByIP(_CIPAddress(_ntohl(dwIDED2K)));
-                        //CUpDownClient* pClient = theApp.clientlist->FindClientByIP(dwIDED2K);
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+                        CUpDownClient* pBannedClient = theApp.clientlist->FindClientByIP(CAddress(_ntohl(dwIDED2K))); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+                        CUpDownClient* pBannedClient = theApp.clientlist->FindClientByIP(dwIDED2K);
+#endif
 						CString strDbgClientInfo = L"";
-                        if (pClient)
-                            strDbgClientInfo.Format(L" - banned client %s", pClient->DbgGetClientInfo());
+                        if (pBannedClient)
+                            strDbgClientInfo.Format(L" - banned client %s", pBannedClient->DbgGetClientInfo());
                         AddDebugLogLine(false, L"Ignored source (IP=%s) received via source exchange%s", ipstr(dwIDED2K), strDbgClientInfo);
                     }
 #endif
+					++filteredSources;
                     continue;
                 }
             }
@@ -5263,8 +5286,11 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
             // additionally check for LowID and own IP
             if (!CanAddSource(dwID, nPort, NULL, false))
             {
-                //if (thePrefs.GetLogFilteredIPs())
-                //	AddDebugLogLine(false, _T("Ignored source (IP=%s) received via source exchange"), ipstr(dwIDED2K));
+#ifdef _DEBUG
+                if (thePrefs.GetLogFilteredIPs())
+                	AddDebugLogLine(false, L"Ignored source (IP=%s:%u) received via source exchange - failed CanAddSource", ipstr(dwIDED2K), nPort);
+#endif
+				++droppedSources;
                 continue;
             }
         }
@@ -5276,14 +5302,18 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
                 if (!IsGoodIP(dwID))
                 {
                     // check for 0-IP, localhost and optionally for LAN addresses
-                    //if (thePrefs.GetLogFilteredIPs())
-                    //	AddDebugLogLine(false, _T("Ignored source (IP=%s) received via source exchange - bad IP"), ipstr(dwID));
+#ifdef _DEBUG
+                    if (thePrefs.GetLogFilteredIPs())
+                    	AddDebugLogLine(false, L"Ignored source (IP=%s) received via source exchange - bad IP", ipstr(dwID));
+#endif
+					++droppedSources;
                     continue;
                 }
                 if (theApp.ipfilter->IsFiltered(dwID))
                 {
                     if (thePrefs.GetLogFilteredIPs())
                         AddDebugLogLine(false, L"Ignored source (IP=%s) received via source exchange - IP filter (%s)", ipstr(dwID), theApp.ipfilter->GetLastHit());
+					++filteredSources;
                     continue;
                 }
                 if (theApp.clientlist->IsBannedClient(dwID))
@@ -5291,46 +5321,56 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
 #ifdef _DEBUG
                     if (thePrefs.GetLogBannedClients())
                     {                        
-//>>> WiZaRd::IPv6 [Xanatos]
-                        CUpDownClient* pClient = theApp.clientlist->FindClientByIP(_CIPAddress(_ntohl(dwID)));
-                        //CUpDownClient* pClient = theApp.clientlist->FindClientByIP(dwID);
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+                        CUpDownClient* pBannedClient = theApp.clientlist->FindClientByIP(CAddress(_ntohl(dwID))); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+                        CUpDownClient* pBannedClient = theApp.clientlist->FindClientByIP(dwID);
+#endif
 						CString strDbgClientInfo = L"";
-                        if (pClient)
-                            strDbgClientInfo.Format(L" - banned client %s", pClient->DbgGetClientInfo());
+                        if (pBannedClient)
+                            strDbgClientInfo.Format(L" - banned client %s", pBannedClient->DbgGetClientInfo());
                         AddDebugLogLine(false, L"Ignored source (IP=%s) received via source exchange%s", ipstr(dwID), strDbgClientInfo);
                     }
 #endif
+					++filteredSources;
                     continue;
                 }
             }
 
             // additionally check for LowID and own IP
-            if (!CanAddSource(dwID, nPort))
+            if (!CanAddSource(dwID, nPort, NULL, true))
             {
-                //if (thePrefs.GetLogFilteredIPs())
-                //	AddDebugLogLine(false, _T("Ignored source (IP=%s) received via source exchange"), ipstr(dwID));
+#ifdef _DEBUG
+                if (thePrefs.GetLogFilteredIPs())
+                	AddDebugLogLine(false, L"Ignored source (IP=%s:%u) received via source exchange - failed CanAddSource", ipstr(dwID), nPort);
+#endif
+				++droppedSources;
                 continue;
             }
         }
 
         if (GetMaxSources() > GetSourceCount())
         {
-            CUpDownClient* newsource;
+#ifdef _DEBUG
+			theApp.QueueDebugLogLineEx(LOG_WARNING, L"* XS add client");
+#endif
+            CUpDownClient* newsource = NULL;
             if (uPacketSXVersion >= 3)
                 newsource = new CUpDownClient(this, nPort, dwID, dwServerIP, nServerPort, false);
             else
                 newsource = new CUpDownClient(this, nPort, dwID, dwServerIP, nServerPort, true);
 //>>> WiZaRd::ExtendedXS [Xanatos]
-            if (pClient && pClient->SupportsExtendedSourceExchange())
+            if (bExtendedXS)
             {
 //>>> WiZaRd::NatTraversal [Xanatos]
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
                 if (dwIP)
                     newsource->SetIP(CAddress(_ntohl(dwIP)));
                 if (!IPv6.IsNull())
                     newsource->SetIPv6(IPv6);
 //<<< WiZaRd::IPv6 [Xanatos]
+#endif
                 if (nUDPPort)
                     newsource->SetUDPPort(nUDPPort);
                 if (nKadPort)
@@ -5351,14 +5391,28 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
             {
                 newsource->SetConnectOptions(byCryptOptions, true, false);
                 //if (thePrefs.GetDebugSourceExchange()) // remove this log later
-                //	AddDebugLogLine(false, _T("Received CryptLayer aware (%u) source from V4 Sourceexchange (%s)"), byCryptOptions, newsource->DbgGetClientInfo());
+                //	AddDebugLogLine(false, L"Received CryptLayer aware (%u) source from V4 Sourceexchange (%s)"), byCryptOptions, newsource->DbgGetClientInfo());
             }
             newsource->SetSourceFrom(SF_SOURCE_EXCHANGE);
-            theApp.downloadqueue->CheckAndAddSource(this, newsource);
+            if(!theApp.downloadqueue->CheckAndAddSource(this, newsource))
+				++failedToAddSources;
         }
         else
             break;
     }
+#ifdef _DEBUG
+	theApp.QueueDebugLogLineEx(LOG_WARNING, L"* XS adding END");
+#endif
+#ifdef _DEBUG
+	theApp.QueueDebugLogLineEx(LOG_WARNING, L"*** XS END");
+#endif
+	if (thePrefs.GetDebugSourceExchange())
+	{
+		CString strDbgClientInfo = L"";
+		if (pClient)
+			strDbgClientInfo.Format(L"%s, ", pClient->DbgGetClientInfo());
+		AddDebugLogLine(false, L"SXRecv: received sources: %u - dropped: %u - filtered: %u - failed to add: %u", nCount, droppedSources, filteredSources, failedToAddSources);
+	}
 }
 
 // making this function return a higher when more sources have the extended
@@ -5654,7 +5708,8 @@ void CPartFile::FlushBuffer(bool forcewait, bool bNoAICH)
                 if (!HashSinglePart(uPartNumber, &bAICHAgreed))
                 {
                     LogWarning(LOG_STATUSBAR, GetResString(IDS_ERR_PARTCORRUPT), uPartNumber, GetFileName());
-                    AddGap(PARTSIZE*(uint64)uPartNumber, PARTSIZE*(uint64)uPartNumber + partRange);
+					// netfinity: Only create gap if recovery data could not be requested (might start download already good data otherwise)
+                    //AddGap(PARTSIZE*(uint64)uPartNumber, PARTSIZE*(uint64)uPartNumber + partRange);
 
                     // add part to corrupted list, if not already there
                     if (!IsCorruptedPart(uPartNumber))
@@ -5733,45 +5788,7 @@ void CPartFile::FlushBuffer(bool forcewait, bool bNoAICH)
                         && m_pAICHRecoveryHashSet->IsPartDataAvailable((uint64)uPartNumber * PARTSIZE))
                 {
                     if (EstimatePartCompletion(uPartNumber) >= FORCE_AICH_TIME)
-                    {
-                        // Is part corrupt
-                        bool bAICHAgreed = false;
-                        if (!HashSinglePart(uPartNumber, &bAICHAgreed))
-                        {
-                            LogWarning(LOG_STATUSBAR, GetResString(IDS_ERR_PARTCORRUPT), uPartNumber, GetFileName());
-                            AddGap(PARTSIZE*(uint64)uPartNumber, PARTSIZE*(uint64)uPartNumber + partRange);
-
-                            // add part to corrupted list, if not already there
-                            if (!IsCorruptedPart(uPartNumber))
-                                corrupted_list.AddTail((uint16)uPartNumber);
-
-                            // request AICH recovery data, except if AICH already agreed anyway or we explicitly don't want to
-                            if (!bNoAICH && !bAICHAgreed)
-                                RequestAICHRecovery((uint16)uPartNumber);
-
-                            // update stats
-                            m_uCorruptionLoss += (partRange + 1);
-                            thePrefs.Add2LostFromCorruption(partRange + 1);
-                        }
-                        else
-                        {
-                            if (!m_bMD4HashsetNeeded)
-                            {
-                                if (thePrefs.GetVerbose())
-                                    AddDebugLogLine(DLP_VERYLOW, false, L"Finished part %u of \"%s\"", uPartNumber, GetFileName());
-                            }
-
-                            // tell the blackbox about the verified data
-                            m_CorruptionBlackBox.VerifiedData(PARTSIZE*(uint64)uPartNumber, PARTSIZE*(uint64)uPartNumber + partRange);
-
-                            // if this part was successfully completed (although ICH is active), remove from corrupted list
-                            POSITION posCorrupted = corrupted_list.Find((uint16)uPartNumber);
-                            if (posCorrupted)
-                                corrupted_list.RemoveAt(posCorrupted);
-
-                            CompletedPart(uPartNumber);
-                        }
-                    }
+                        AICHRecoveryDataAvailable(uPartNumber);
                 }
             }
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
@@ -6642,7 +6659,7 @@ void CPartFile::RequestAICHRecovery(UINT nPart)
         return;
     }
 
-    // first check if we have already the recoverydata, no need to rerequest it then
+    // first check if we have already the recoverydata, no need to re-request it then
     if (m_pAICHRecoveryHashSet->IsPartDataAvailable((uint64)nPart*PARTSIZE))
     {
         AddDebugLogLine(DLP_DEFAULT, false, _T("Found PartRecoveryData in memory"));
@@ -6683,11 +6700,11 @@ void CPartFile::RequestAICHRecovery(UINT nPart)
         }
         return;
     }
-    UINT nSeclectedClient;
+    UINT nSelectedClient;
     if (cAICHClients > 0)
-        nSeclectedClient = (rand() % cAICHClients) + 1;
+        nSelectedClient = (rand() % cAICHClients) + 1;
     else
-        nSeclectedClient = (rand() % cAICHLowIDClients) + 1;
+        nSelectedClient = (rand() % cAICHLowIDClients) + 1;
 
     CUpDownClient* pClient = NULL;
     for (POSITION pos = srclist.GetHeadPosition(); pos != NULL;)
@@ -6699,14 +6716,14 @@ void CPartFile::RequestAICHRecovery(UINT nPart)
             if (cAICHClients > 0)
             {
                 if (!pCurClient->HasLowID())
-                    nSeclectedClient--;
+                    --nSelectedClient;
             }
             else
             {
                 ASSERT(pCurClient->HasLowID());
-                nSeclectedClient--;
+                --nSelectedClient;
             }
-            if (nSeclectedClient == 0)
+            if (nSelectedClient == 0)
             {
                 pClient = pCurClient;
                 break;
@@ -6742,7 +6759,7 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
     /*// if the part was already ok, it would now be complete
     if (IsComplete((uint64)nPart*PARTSIZE, (((uint64)nPart*PARTSIZE)+length)-1, true))
     {
-        AddDebugLogLine(DLP_DEFAULT, false, _T("Processing AICH Recovery data: The part (%u) is already complete, canceling"));
+        AddDebugLogLine(DLP_DEFAULT, false, L"Processing AICH Recovery data: The part (%u) is already complete, canceling"));
         return;
     }*/
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
@@ -6750,7 +6767,7 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
     const CAICHHashTree* pVerifiedHash = m_pAICHRecoveryHashSet->m_pHashTree.FindExistingHash((uint64)nPart*PARTSIZE, length);
     if (pVerifiedHash == NULL || !pVerifiedHash->m_bHashValid)
     {
-        AddDebugLogLine(DLP_DEFAULT, false, _T("Processing AICH Recovery data: Unable to get verified hash from hashset (should never happen)"));
+        AddDebugLogLine(DLP_DEFAULT, false, L"Processing AICH Recovery data: Unable to get verified hash from hashset (should never happen)");
         ASSERT(0);
         return;
     }
@@ -6769,7 +6786,7 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
 
     if (!htOurHash.m_bHashValid)
     {
-        AddDebugLogLine(DLP_DEFAULT, false, _T("Processing AICH Recovery data: Failed to retrieve AICH Hashset of corrupt part"));
+        AddDebugLogLine(DLP_DEFAULT, false, L"Processing AICH Recovery data: Failed to retrieve AICH Hashset of corrupt part");
         ASSERT(0);
         return;
     }
@@ -6830,7 +6847,6 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
         if (thePrefs.sesLostFromCorruption >= nRecovered)
             thePrefs.sesLostFromCorruption -= nRecovered;
 
-
         // ok now some sanity checks
         if (IsComplete((uint64)nPart*PARTSIZE, (((uint64)nPart*PARTSIZE)+length)-1, true))
         {
@@ -6838,10 +6854,10 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
             // make sure that HashSinglePart() (MD4 and possibly AICH again) agrees to this fact too, for Verified Hashes problems are handled within that functions, otherwise:
             if (!HashSinglePart(nPart))
             {
-                AddDebugLogLine(DLP_DEFAULT, false, _T("Processing AICH Recovery data: The part (%u) got completed while recovering - but MD4 says it corrupt! Setting hashset to error state, deleting part"), nPart);
+                AddDebugLogLine(DLP_DEFAULT, false, L"Processing AICH Recovery data: The part (%u) got completed while recovering - but MD4 says it's corrupt! Setting hashset to error state, deleting part", nPart);
                 // now we are fu... unhappy
                 if (!m_FileIdentifier.HasAICHHash())
-                    m_pAICHRecoveryHashSet->SetStatus(AICH_ERROR); // set it to error on unverified hashs
+                    m_pAICHRecoveryHashSet->SetStatus(AICH_ERROR); // set it to error on unverified hashes
                 AddGap(PARTSIZE*(uint64)nPart, (((uint64)nPart*PARTSIZE)+length)-1);
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
                 if (m_pPublishedPartStatus)
@@ -6852,7 +6868,7 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
             }
             else
             {
-                AddDebugLogLine(DLP_DEFAULT, false, _T("Processing AICH Recovery data: The part (%u) got completed while recovering and HashSinglePart() (MD4) agrees"), nPart);
+                AddDebugLogLine(DLP_DEFAULT, false, L"Processing AICH Recovery data: The part (%u) got completed while recovering and HashSinglePart() (MD4) agrees", nPart);
                 // alrighty not so bad
                 POSITION posCorrupted = corrupted_list.Find((uint16)nPart);
                 if (posCorrupted)
@@ -6884,7 +6900,7 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
             const CAICHHashTree* const pOurBlock = htOurHash.FindHash(pos, nBlockSize);
             if (pVerifiedBlock == NULL || pOurBlock == NULL || !pVerifiedBlock->m_bHashValid || !pOurBlock->m_bHashValid)
             {
-                ASSERT(false);
+                ASSERT(0);
                 continue;
             }
             if (pOurBlock->m_Hash == pVerifiedBlock->m_Hash)
@@ -6896,9 +6912,10 @@ void CPartFile::AICHRecoveryDataAvailable(UINT nPart)
 
     if (oldPublishedPartStatus->IsNeeded(m_pPublishedPartStatus))
     {
-        AddDebugLogLine(DLP_DEFAULT, false, _T("Processing AICH Recovery data: New sub chunks available!"));
+        AddDebugLogLine(DLP_DEFAULT, false, L"Processing AICH Recovery data: New sub chunks available!");
         // TODO: Possibly inform clients we are uploading too about the new chunks (only relevant if the part is rare or is being downloaded by the client)
     }
+	delete oldPublishedPartStatus;
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 }
 
@@ -6942,15 +6959,15 @@ void CPartFile::RefilterFileComments()
 void CPartFile::SetFileSize(EMFileSize nFileSize)
 {
     ASSERT(m_pAICHRecoveryHashSet != NULL);
-//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-    if (nFileSize == GetFileSize() && m_pPublishedPartStatus)
-        return;
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	const bool bFileSizeChange = nFileSize != GetFileSize(); //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
     m_pAICHRecoveryHashSet->SetFileSize(nFileSize);
     CKnownFile::SetFileSize(nFileSize);
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-    delete m_pPublishedPartStatus;
-    m_pPublishedPartStatus = new CAICHStatusVector(nFileSize);
+	if(bFileSizeChange)
+	{
+		delete m_pPublishedPartStatus;
+		m_pPublishedPartStatus = new CAICHStatusVector(nFileSize);
+	}
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 }
 
@@ -7450,35 +7467,37 @@ bool CPartFileStatus::FindFirstNeeded(uint64& start, uint64& stop) const
 
 // Estimate time to part completion
 clock_t CPartFile::EstimatePartCompletion(const UINT nPart) const
-{
-    UINT partDownloadRate = 0;
-    uint64 partRemaining = GetDonePartStatus()->GetNeeded((uint64) nPart * PARTSIZE, (uint64)(nPart + 1) * PARTSIZE - 1ULL);
+{    
+	if(GetDonePartStatus())
+	{
+		uint64 partRemaining = GetDonePartStatus()->GetNeeded((uint64) nPart * PARTSIZE, (uint64)(nPart + 1) * PARTSIZE - 1ULL);
 
-    for (POSITION pos = m_downloadingSourceList.GetHeadPosition(); pos!=0;)
-    {
-        CUpDownClient* const cur_src = m_downloadingSourceList.GetNext(pos);
-        if (thePrefs.m_iDbgHeap >= 2)
-            ASSERT_VALID(cur_src);
-        if (cur_src && cur_src->socket && cur_src->GetDownloadState() == DS_DOWNLOADING)
-        {
-            bool isDownloadingPart = false;
-            for (POSITION pos = cur_src->m_PendingBlocks_list.GetHeadPosition(); pos !=0;)
-            {
-                Pending_Block_Struct* const pendBlock = cur_src->m_PendingBlocks_list.GetNext(pos);
-                if (pendBlock->block->StartOffset >= ((uint64) nPart * PARTSIZE) && pendBlock->block->StartOffset < (((uint64) nPart + 1) * PARTSIZE))
-                {
-                    isDownloadingPart = true;
-                    break;
-                }
-            }
-            if (isDownloadingPart)
-                partDownloadRate += cur_src->GetDownloadDatarate();
-        }
-    }
-
-    if (partDownloadRate > 0)
-        return static_cast<clock_t>(partRemaining / partDownloadRate) * CLOCKS_PER_SEC;
-    return ~0UL;
+		UINT partDownloadRate = 0;
+		for (POSITION pos = m_downloadingSourceList.GetHeadPosition(); pos!=0;)
+		{
+			CUpDownClient* const cur_src = m_downloadingSourceList.GetNext(pos);
+			if (thePrefs.m_iDbgHeap >= 2)
+				ASSERT_VALID(cur_src);
+			if (cur_src && cur_src->socket && cur_src->GetDownloadState() == DS_DOWNLOADING)
+			{
+				bool isDownloadingPart = false;
+				for (POSITION pos = cur_src->m_PendingBlocks_list.GetHeadPosition(); pos !=0;)
+				{
+					Pending_Block_Struct* const pendBlock = cur_src->m_PendingBlocks_list.GetNext(pos);
+					if (pendBlock->block->StartOffset >= ((uint64) nPart * PARTSIZE) && pendBlock->block->StartOffset < (((uint64) nPart + 1) * PARTSIZE))
+					{
+						isDownloadingPart = true;
+						break;
+					}
+				}
+				if (isDownloadingPart)
+					partDownloadRate += cur_src->GetDownloadDatarate();
+			}
+		}
+		if (partDownloadRate > 0)
+	        return static_cast<clock_t>(partRemaining / partDownloadRate) * CLOCKS_PER_SEC;
+	}
+    return FORCE_AICH_TIME;
 }
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
@@ -7512,20 +7531,4 @@ UINT CPartFile::GetCompletePartCount() const
     }
 
     return count;
-}
-
-void CPartFile::GetCompleteSrcCount(CArray<uint16, uint16>& count)
-{
-    /*
-    	// WiZaRd: while thinking about this... we don't need the partfile info, do we?
-    	// It's only valid for the same file as requested but in that case, we will get that info from CKnownFile?
-    	for (POSITION pos = srclist.GetHeadPosition(); pos != 0;)
-    	{
-    		CUpDownClient* cur_src = srclist.GetNext(pos);
-    		if (cur_src->GetUpCompleteSourcesCount() != _UI16_MAX	//>>> WiZaRd::Use client info only if sent!
-    			&& cur_src->GetUploadFileID()			// and only if a file was requested (which will use the complete src count
-    			&& md4cmp(cur_src->GetUploadFileID(), GetFileHash()) == 0)	// and only if it's the SAME file!
-    			count.Add(cur_src->GetUpCompleteSourcesCount());
-    	}
-    */
 }

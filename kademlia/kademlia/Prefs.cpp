@@ -161,7 +161,7 @@ void CPrefs::SetIPAddress(UINT uVal)
     }
     //If the last check matches this one, reset our current IP.
     //If the last check does not match, wait for our next incoming IP.
-    //This happens for two reasons.. We just changed our IP, or a client responsed with a bad IP.
+    //This happens for two reasons.. We just changed our IP, or a client responded with a bad IP.
     if (uVal == m_uIPLast)
         m_uIP = uVal;
     else
@@ -185,24 +185,23 @@ bool CPrefs::HasHadContact() const
 
 bool CPrefs::GetFirewalled() const
 {
-    if (m_uFirewalled < 2)
-    {
-        //Not enough people have told us we are open but we may be doing a recheck
-        //at the moment which will give a false lowID.. Therefore we check to see
-        //if we are still rechecking and will report our last known state..
-        if (GetRecheckIP())
-            return m_bLastFirewallState;
-        return true;
-    }
-    //We had enough tell us we are not firewalled..
-    return false;
+	// We had enough tell us we are not firewalled...
+	bool bFirewalled = (m_uFirewalled < 2);
+	//Not enough people have told us we are open but we may be doing a recheck
+	//at the moment which will give a false lowID.. Therefore we check to see
+	//if we are still rechecking and will report our last known state..	
+	if(bFirewalled && GetRecheckIP())
+		bFirewalled = m_bLastFirewallState;        
+	return bFirewalled;
 }
 void CPrefs::SetFirewalled()
 {
     const bool bFirewalled = GetFirewalled();
     //We are checking our firewall state.. Let keep a snapshot of our
-    //current state to prevent false reports during the recheck..
-    m_bLastFirewallState = (m_uFirewalled < 2);
+    //current state to prevent false reports during the recheck...
+	// Firewalled checks shouldn't be triggered while GetRecheckIP() is still active?
+	//ASSERT(bFirewalled == (m_uFirewalled < 2));
+    m_bLastFirewallState = bFirewalled;
     m_uFirewalled = 0;
     if (bFirewalled != GetFirewalled())
         theApp.emuledlg->ShowConnectionState();
@@ -306,7 +305,7 @@ void CPrefs::SetRecheckIP()
 
 void CPrefs::IncRecheckIP()
 {
-    m_uRecheckip++;
+    ++m_uRecheckip;
 }
 
 void CPrefs::SetLastContact()

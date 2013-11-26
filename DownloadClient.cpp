@@ -124,28 +124,12 @@ void CUpDownClient::DrawStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bool
         }
 
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-        bool bCompletePart = abyPartStatus ? abyPartStatus->IsCompletePart(0) : false;
-        for (UINT i = 0, nPart = 0; i < nStepCount; ++i)
+        bool bCompletePart = abyPartStatus && SupportsSCT() ? abyPartStatus->IsCompletePart(0) : false;
+		const uint64 partsize = abyPartStatus && SupportsSCT() ? CRUMBSIZE : PARTSIZE;
+        for (UINT i = 0, nPart = 0; i < nStepCount;)
             //for (UINT i = 0; i < nPartCount; ++i)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         {
-//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-            uint64 partsize = PARTSIZE;
-            if (abyPartStatus && SupportsSCT())
-            {
-                partsize = CRUMBSIZE;
-                if (i != 0 && (i % CRUMBSPERPART) == 0)
-                {
-                    ++nPart;
-                    bCompletePart = abyPartStatus->IsCompletePart(nPart);
-                }
-            }
-            else
-            {
-                ++nPart;
-                bCompletePart = false;
-            }
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
             GetPartStartAndEnd(i, partsize, filesize, uStart, uEnd);
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
             //if (IsPartAvailable(i))
@@ -173,6 +157,20 @@ void CUpDownClient::DrawStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bool
             else if (m_abyIncPartStatus && m_abyIncPartStatus[nPart])
                 s_StatusBar.FillRange(uStart, uEnd, crClientPartial);
 //<<< WiZaRd::ICS [enkeyDEV]
+
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+			++i;
+            if (abyPartStatus && SupportsSCT())
+            {
+                if ((i % CRUMBSPERPART) == 0)
+                {
+                    ++nPart;
+                    bCompletePart = nPart < abyPartStatus->GetPartCount() && abyPartStatus->IsCompletePart(nPart);
+                }
+            }
+            else
+                ++nPart;
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         }
         delete[] pcNextPendingBlks;
     }
@@ -188,10 +186,11 @@ bool CUpDownClient::Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash) c
     if (HasLowID())
     {
         //User is firewalled.. Must do two checks..
-//>>> WiZaRd::IPv6 [Xanatos]
-        if ((!GetIPv4().IsNull() && GetIPv4() == tocomp->GetIPv4()) || (!GetIPv6().IsNull() && GetIPv6() == tocomp->GetIPv6()))
-            //if (GetIP()!=0 && GetIP() == tocomp->GetIP())
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+        if ((!GetIPv4().IsNull() && GetIPv4() == tocomp->GetIPv4()) || (!GetIPv6().IsNull() && GetIPv6() == tocomp->GetIPv6())) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+		if (GetIP()!=0 && GetIP() == tocomp->GetIP())
+#endif
         {
             //The IP of both match
             if (GetUserPort()!=0 && GetUserPort() == tocomp->GetUserPort())
@@ -223,14 +222,17 @@ bool CUpDownClient::Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash) c
         return false;
     }
 
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
     if (((!GetIPv4().IsNull() && GetIPv4() == tocomp->GetIPv4()) || (!GetIPv6().IsNull() && GetIPv6() == tocomp->GetIPv6()))
             || (GetUserIDHybrid()!=0 && GetUserIDHybrid() == tocomp->GetUserIDHybrid())
             || (!GetConnectIP().IsNull() && GetConnectIP() == tocomp->GetConnectIP())) //WiZaRd: fallback for "fresh" clients
-//     if ((GetIP()!=0 && GetIP() == tocomp->GetIP())
-//             || (GetUserIDHybrid()!=0 && GetUserIDHybrid() == tocomp->GetUserIDHybrid())
-//             || (GetConnectIP()!=0 && GetConnectIP() == tocomp->GetConnectIP())) //WiZaRd: fallback for "fresh" clients
 //<<< WiZaRd::IPv6 [Xanatos]
+#else
+     if ((GetIP()!=0 && GetIP() == tocomp->GetIP())
+             || (GetUserIDHybrid()!=0 && GetUserIDHybrid() == tocomp->GetUserIDHybrid())
+             || (GetConnectIP()!=0 && GetConnectIP() == tocomp->GetConnectIP())) //WiZaRd: fallback for "fresh" clients
+#endif
     {
         //The IP of both match
         if (GetUserPort()!=0 && GetUserPort() == tocomp->GetUserPort())
@@ -279,10 +281,7 @@ bool CUpDownClient::AskForDownload()
             return true;
         }
         // if we are lowid <-> lowid but contacted the source before already, keep it in the hope that we might turn highid again
-//>>> WiZaRd::NatTraversal [Xanatos]
-        if (HasLowID() && !theApp.CanDoCallback(this) && GetLastAskedTime() > 0)
-            //if (HasLowID() && !theApp.CanDoCallback() && GetLastAskedTime() > 0)
-//<<< WiZaRd::NatTraversal [Xanatos]
+        if (HasLowID() && !CanDoCallback() && GetLastAskedTime() > 0)
         {
             if (GetDownloadState() != DS_LOWTOLOWIP)
                 SetDownloadState(DS_LOWTOLOWIP);
@@ -407,11 +406,13 @@ void CUpDownClient::SendFileRequest()
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
             dataFileReq.WriteUInt8(OP_SETREQFILEID);
 
-        if (IsEmuleClient())
+//>>> WiZaRd::FiX? Moved down!
+        /*if (IsEmuleClient())
         {
             SetRemoteQueueFull(true);
             SetRemoteQueueRank(0);
-        }
+        }*/
+//<<< WiZaRd::FiX? Moved down!
 
         // OP_REQUESTSOURCES // OP_REQUESTSOURCES2
         if (IsSourceRequestAllowed())
@@ -510,11 +511,13 @@ void CUpDownClient::SendFileRequest()
             SendPacket(packet, true);
         }
 
-        if (IsEmuleClient())
+//>>> WiZaRd::FiX? Moved down!
+        /*if (IsEmuleClient())
         {
             SetRemoteQueueFull(true);
             SetRemoteQueueRank(0);
-        }
+        }*/
+//<<< WiZaRd::FiX? Moved down!
 
         if (IsSourceRequestAllowed())
         {
@@ -588,11 +591,26 @@ void CUpDownClient::SendStartupLoadReq()
         ASSERT(0);
         return;
     }
+
+//>>> WiZaRd::FiX? Moved down!
+	if(GetDownloadState() == DS_DOWNLOADING)
+	{
+		SendBlockRequests();
+		return;
+	}
+
+	if (IsEmuleClient())
+    {
+        SetRemoteQueueFull(true);
+        SetRemoteQueueRank(0);
+    }
+//<<< WiZaRd::FiX? Moved down!
+
 	if (m_byFileRequestState != 1) //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
 		theApp.QueueDebugLogLineEx(LOG_WARNING, L"%hs with FileRequestState=%u", __FUNCTION__, m_byFileRequestState);
 	{
 		m_fQueueRankPending = 1;
-		m_fUnaskQueueRankRecv = 0;
+		//m_fUnaskQueueRankRecv = 0; //>>> WiZaRd - FiX? Why should we reset it here?!
 		m_byFileRequestState = 2; //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
 		if (thePrefs.GetDebugClientTCPLevel() > 0)
 			DebugSend("OP__StartupLoadReq", this);
@@ -630,68 +648,32 @@ void CUpDownClient::ProcessFileInfo(CSafeMemFile* data, CPartFile* file)
         //if (reqfile->GetPartCount() == 1)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     {
+		const UINT nOldPartCount = GetPartCount();
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
         delete m_pPartStatus;
         m_pPartStatus = NULL; // In case CAICHStatusVector constructor fails
-        m_pPartStatus = new CAICHStatusVector(file);
+        m_pPartStatus = new CAICHStatusVector(file->GetFileSize());
         m_pPartStatus->Set(0, reqfile->GetFileSize() - 1ULL);
-        const UINT nPartCount = reqfile->GetPartCount();
+        const UINT nPartCount = GetPartCount();
         //delete[] m_abyPartStatus;
         //m_abyPartStatus = NULL;
         //m_nPartCount = reqfile->GetPartCount();
         //m_abyPartStatus = new uint8[m_nPartCount];
         //memset(m_abyPartStatus,1,m_nPartCount);
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
-//>>> WiZaRd::ICS [enkeyDEV]
-        delete[] m_abyIncPartStatus;
-        m_abyIncPartStatus = NULL;
-//<<< WiZaRd::ICS [enkeyDEV]
 //>>> WiZaRd::AntiHideOS [netfinity]
-        delete[] m_abySeenPartStatus;
-        m_abySeenPartStatus = NULL;
+		// no need for AHOS on single part files
+		delete[] m_abySeenPartStatus;
+		m_abySeenPartStatus = NULL;
 //<<< WiZaRd::AntiHideOS [netfinity]
-        m_bCompleteSource = true;
-//>>> WiZaRd::ClientAnalyzer
-        if (pAntiLeechData)
-            pAntiLeechData->Check4FileFaker();
-//<<< WiZaRd::ClientAnalyzer
-
-        if (thePrefs.GetDebugClientTCPLevel() > 0)
-        {			
-			TCHAR* psz = new TCHAR[nPartCount + 1];
-			int iNeeded = 0;
-			for(UINT i = 0; i < nPartCount; i++)
-			{
-				if(IsPartAvailable(i))
-				{
-					if(!reqfile->IsCompletePart(i, false))
-					{
-						psz[i] = L'X';
-						++iNeeded;	
-					}
-					else
-						psz[i] = L'#';
-				}
-				else 
-				{
-					if(!reqfile->IsCompletePart(i, false))
-						++iNeeded;
-					psz[i] = L'.';
-				}
-			}
-			psz[nPartCount] = L'\0';
-			Debug(L"  Parts=%u  %s  Needed=%u\n", nPartCount, psz, iNeeded);
-			delete[] psz;
-        }
-        UpdateDisplayedInfo();
-        reqfile->UpdateAvailablePartsCount();
-        // even if the file is <= PARTSIZE, we _may_ need the hashset for that file (if the file size == PARTSIZE)
-        if (reqfile->m_bMD4HashsetNeeded || (reqfile->IsAICHPartHashSetNeeded() && SupportsFileIdentifiers()
-                                             && GetReqFileAICHHash() != NULL && *GetReqFileAICHHash() == reqfile->GetFileIdentifier().GetAICHHash()))
-            SendHashSetRequest();
-        else
-            SendStartupLoadReq();
-        reqfile->UpdatePartsInfo();
+//>>> WiZaRd::ICS [enkeyDEV]
+		if (nOldPartCount != nPartCount)
+		{
+			delete[] m_abyIncPartStatus;
+			m_abyIncPartStatus = NULL;
+		}
+//<<< WiZaRd::ICS [enkeyDEV]
+		ProcessDownloadFileStatus(false);
     }
 }
 
@@ -707,21 +689,31 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPart
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
     delete m_pPartStatus;
     m_pPartStatus = NULL; // In case we fail to create the part status object
-    m_pPartStatus = CPartStatus::CreatePartStatus(data, reqfile);
-//>>> WiZaRd::AntiHideOS [netfinity]
+    m_pPartStatus = CPartStatus::CreatePartStatus(data, reqfile->GetFileSize());
 	const UINT nPartCount = GetPartCount();
+//>>> WiZaRd::AntiHideOS [netfinity]	
     if (m_abySeenPartStatus == NULL || nOldPartCount != nPartCount)
     {
+		delete[] m_abySeenPartStatus;
+		m_abySeenPartStatus = NULL;
         m_abySeenPartStatus = new uint8[nPartCount];
         memset(m_abySeenPartStatus, 0, nPartCount);
     }
 //<<< WiZaRd::AntiHideOS [netfinity]
+//>>> WiZaRd::ICS [enkeyDEV]
+	if (nOldPartCount != nPartCount)
+	{
+		delete[] m_abyIncPartStatus;
+		m_abyIncPartStatus = NULL;
+	}
+//<<< WiZaRd::ICS [enkeyDEV]
 
     ProcessDownloadFileStatus(bUdpPacket);
 }
 
 bool CUpDownClient::ProcessDownloadFileStatus(const bool bUDPPacket, bool bMergeIfPossible)
 {
+	m_bCompleteSource = false; // clear that flag, just to be sure
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
     // netfinity: Update upload partstatus if we are downloading this file and there is more pieces available in the download partstatus
     bMergeIfPossible = bMergeIfPossible && !md4cmp(GetUploadFileID(), reqfile->GetFileHash());
@@ -730,13 +722,7 @@ bool CUpDownClient::ProcessDownloadFileStatus(const bool bUDPPacket, bool bMerge
         if (m_pUpPartStatus == NULL)
             m_pUpPartStatus = m_pPartStatus->Clone();
         else
-        {
-            for (UINT uCrumb = 0; uCrumb < m_pPartStatus->GetCrumbsCount(); ++uCrumb)
-            {
-                if (m_pPartStatus->IsCompleteCrumb(uCrumb))
-                    m_pUpPartStatus->SetCrumb(uCrumb);
-            }
-        }
+			m_pUpPartStatus->Merge(m_pPartStatus);
     }
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
@@ -750,7 +736,7 @@ bool CUpDownClient::ProcessDownloadFileStatus(const bool bUDPPacket, bool bMerge
 	    
     uint16 done = 0;
     uint16 complcount = 0; //>>> WiZaRd: Anti HideOS
-    const bool checkSeenParts = IsPartialSource(); //>>> WiZaRd::AntiHideOS [netfinity]
+	const bool checkSeenParts = m_abySeenPartStatus != NULL && !md4cmp(GetUploadFileID(), reqfile->GetFileHash()); //>>> WiZaRd::AntiHideOS [netfinity]
     while (done != nPartCount)
     {
         bool bPartAvail = IsPartAvailable(done);
@@ -762,7 +748,7 @@ bool CUpDownClient::ProcessDownloadFileStatus(const bool bUDPPacket, bool bMerge
 //<<< WiZaRd::AntiHideOS [netfinity]
            )
         {
-            if (!bPartsNeeded && !reqfile->IsComplete((uint64)done*PARTSIZE, ((uint64)(done+1)*PARTSIZE)-1, false))
+            if (!bPartsNeeded && !reqfile->IsCompletePart(done, false))
                 bPartsNeeded = true;
             ++complcount; //>>> WiZaRd: Anti HideOS
         }
@@ -1058,14 +1044,14 @@ void CUpDownClient::ProcessHashSet(const uchar* packet, UINT size, bool bFileIde
     if (bFileIdentifiers)
     {
         if (!m_fHashsetRequestingMD4 && !m_fHashsetRequestingAICH)
-            throw CString(_T("unwanted hashset2"));
+            throw CString(L"unwanted hashset2");
         CFileIdentifierSA fileIdent;
         if (!fileIdent.ReadIdentifier(&data))
-            throw CString(_T("Invalid FileIdentifier"));
+            throw CString(L"Invalid FileIdentifier");
         if (reqfile == NULL || !reqfile->GetFileIdentifier().CompareRelaxed(fileIdent))
         {
             CheckFailedFileIdReqs(packet);
-            throw GetResString(IDS_ERR_WRONGFILEID) + _T(" (ProcessHashSet2)");
+            throw GetResString(IDS_ERR_WRONGFILEID) + L" (ProcessHashSet2)";
         }
         bool bMD4 = m_fHashsetRequestingMD4 != 0;
         bool bAICH = m_fHashsetRequestingAICH != 0;
@@ -1081,40 +1067,30 @@ void CUpDownClient::ProcessHashSet(const uchar* packet, UINT size, bool bFileIde
         }
         if (m_fHashsetRequestingMD4 && !bMD4)
         {
-            DebugLogWarning(_T("Client was unable to deliver requested MD4 hashset (shouldn't happen) - %s, file: %s"), DbgGetClientInfo(), reqfile->GetFileName());
+            DebugLogWarning(L"Client was unable to deliver requested MD4 hashset (shouldn't happen) - %s, file: %s", DbgGetClientInfo(), reqfile->GetFileName());
             reqfile->m_bMD4HashsetNeeded = true;
         }
         else if (m_fHashsetRequestingMD4)
-            DebugLog(_T("Received valid MD4 Hashset (FileIdentifiers) form %s, file: %s"), DbgGetClientInfo(), reqfile->GetFileName());
+            DebugLog(L"Received valid MD4 Hashset (FileIdentifiers) form %s, file: %s", DbgGetClientInfo(), reqfile->GetFileName());
 
         if (m_fHashsetRequestingAICH && !bAICH)
         {
-            DebugLogWarning(_T("Client was unable to deliver requested AICH part hashset, asking other clients - %s, file: %s"), DbgGetClientInfo(), reqfile->GetFileName());
+            DebugLogWarning(L"Client was unable to deliver requested AICH part hashset, asking other clients - %s, file: %s", DbgGetClientInfo(), reqfile->GetFileName());
             reqfile->SetAICHHashSetNeeded(true);
         }
         else if (m_fHashsetRequestingAICH)
-            DebugLog(_T("Received valid AICH Part Hashset from %s, file: %s"), DbgGetClientInfo(), reqfile->GetFileName());
+            DebugLog(L"Received valid AICH Part Hashset from %s, file: %s", DbgGetClientInfo(), reqfile->GetFileName());
         m_fHashsetRequestingMD4 = 0;
         m_fHashsetRequestingAICH = 0;
-
-//>>> WiZaRd::Immediate File Sharing
-        if (reqfile->GetStatus(true) == PS_READY
-                || (reqfile->GetStatus() == PS_EMPTY && !reqfile->m_bMD4HashsetNeeded))
-        {
-            reqfile->SetStatus(PS_READY);
-            if (theApp.sharedfiles->GetFileByID(reqfile->GetFileHash()) == NULL)
-                theApp.sharedfiles->SafeAddKFile(reqfile);
-        }
-//<<< WiZaRd::Immediate File Sharing
     }
     else
     {
         if (!m_fHashsetRequestingMD4)
-            throw CString(_T("unwanted hashset"));
+            throw CString(L"unwanted hashset");
         if ((!reqfile) || md4cmp(packet,reqfile->GetFileHash()))
         {
             CheckFailedFileIdReqs(packet);
-            throw GetResString(IDS_ERR_WRONGFILEID) + _T(" (ProcessHashSet)");
+            throw GetResString(IDS_ERR_WRONGFILEID) + L" (ProcessHashSet)";
         }
         m_fHashsetRequestingMD4 = 0;
         if (!reqfile->GetFileIdentifier().LoadMD4HashsetFromFile(&data, true))
@@ -1122,17 +1098,21 @@ void CUpDownClient::ProcessHashSet(const uchar* packet, UINT size, bool bFileIde
             reqfile->m_bMD4HashsetNeeded = true;
             throw GetResString(IDS_ERR_BADHASHSET);
         }
+    }    
 
 //>>> WiZaRd::Immediate File Sharing
-        if (reqfile->GetStatus(true) == PS_READY
-                || (reqfile->GetStatus() == PS_EMPTY && !reqfile->m_bMD4HashsetNeeded))
-        {
-            reqfile->SetStatus(PS_READY);
-            if (theApp.sharedfiles->GetFileByID(reqfile->GetFileHash()) == NULL)
-                theApp.sharedfiles->SafeAddKFile(reqfile);
-        }
+    if (reqfile->GetStatus(true) == PS_READY
+            || (reqfile->GetStatus() == PS_EMPTY && !reqfile->m_bMD4HashsetNeeded))
+    {
+        reqfile->SetStatus(PS_READY);
+        if (theApp.sharedfiles->GetFileByID(reqfile->GetFileHash()) == NULL)
+            theApp.sharedfiles->SafeAddKFile(reqfile);
+    }
 //<<< WiZaRd::Immediate File Sharing
-    }    
+//>>> WiZaRd:FiX?
+	// the remote client may have added us to his upload in the meantime
+	if(GetDownloadState() != DS_DOWNLOADING)
+//<<< WiZaRd:FiX?
     SendStartupLoadReq();
 }
 
@@ -1974,11 +1954,12 @@ void CUpDownClient::UDPReaskForDownload()
             response->opcode = OP_REASKCALLBACKUDP;
             theStats.AddUpDataOverheadFileRequest(response->size);
             theApp.downloadqueue->AddUDPFileReasks();
-            // FIXME: We dont know which kadversion the buddy has, so we need to send unencrypted
-//>>> WiZaRd::IPv6 [Xanatos]
-            theApp.clientudp->SendPacket(response, CAddress(_ntohl(GetBuddyIP())), GetBuddyPort(), false, NULL, true, 0);
-            //theApp.clientudp->SendPacket(response, GetBuddyIP(), GetBuddyPort(), false, NULL, true, 0);
-//<<< WiZaRd::IPv6 [Xanatos]
+            // FIXME: We don't know which kadversion the buddy has, so we need to send unencrypted
+#ifdef IPV6_SUPPORT
+            theApp.clientudp->SendPacket(response, CAddress(_ntohl(GetBuddyIP())), GetBuddyPort(), false, NULL, true, 0); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+            theApp.clientudp->SendPacket(response, GetBuddyIP(), GetBuddyPort(), false, NULL, true, 0);
+#endif
             m_nTotalUDPPackets++;
         }
     }
@@ -2682,9 +2663,7 @@ void CUpDownClient::ProcessAcceptUpload()
     {
         SetSentCancelTransfer(0);
         if (GetDownloadState() == DS_ONQUEUE)
-        {
             StartDownload();
-        }
     }
     else
     {
@@ -2747,9 +2726,7 @@ UINT CUpDownClient::GetLastAskedTime(const CPartFile* partFile) const
 {
     CPartFile* file = (CPartFile*)partFile;
     if (file == NULL)
-    {
         file = reqfile;
-    }
 
     DWORD lastChangedTick;
     return m_fileReaskTimes.Lookup(file, lastChangedTick)? lastChangedTick : 0;
@@ -2784,53 +2761,72 @@ void CUpDownClient::SendAICHRequest(CPartFile* pForFile, uint16 nPart)
 
 void CUpDownClient::ProcessAICHAnswer(const uchar* packet, UINT size)
 {
-    if (m_fAICHRequested == FALSE)
-    {
-        throw CString(_T("Received unrequested AICH Packet"));
-    }
-    m_fAICHRequested = FALSE;
+    if(!IsAICHReqPending())
+        throw CString(L"Received unrequested AICH Packet");
 
+	m_fAICHRequested = FALSE;
     CSafeMemFile data(packet, size);
-    if (size <= 16)
-    {
-        CAICHRecoveryHashSet::ClientAICHRequestFailed(this);
-        return;
-    }
-    uchar abyHash[16];
-    data.ReadHash16(abyHash);
-    CPartFile* pPartFile = theApp.downloadqueue->GetFileByID(abyHash);
-    CAICHRequestedData request = CAICHRecoveryHashSet::GetAICHReqDetails(this);
-    uint16 nPart = data.ReadUInt16();
-    if (pPartFile != NULL && request.m_pPartFile == pPartFile && request.m_pClient == this && nPart == request.m_nPart)
-    {
-        CAICHHash ahMasterHash(&data);
-        if ((pPartFile->GetAICHRecoveryHashSet()->GetStatus() == AICH_TRUSTED || pPartFile->GetAICHRecoveryHashSet()->GetStatus() == AICH_VERIFIED)
-                && ahMasterHash == pPartFile->GetAICHRecoveryHashSet()->GetMasterHash())
-        {
-            if (pPartFile->GetAICHRecoveryHashSet()->ReadRecoveryData((uint64)request.m_nPart*PARTSIZE, &data))
-            {
-                // finally all checks passed, everything seem to be fine
-                theApp.QueueDebugLogLineEx(LOG_SUCCESS, L"AICH Packet Answer: Succeeded to read and validate received recoverydata");
-                CAICHRecoveryHashSet::RemoveClientAICHRequest(this);
-                pPartFile->AICHRecoveryDataAvailable(request.m_nPart);
-                return;
-            }
-            else
-                theApp.QueueDebugLogLineEx(LOG_ERROR, L"AICH Packet Answer: Failed to read and validate received recoverydata");
-        }
-        else
-            theApp.QueueDebugLogLineEx(LOG_ERROR, L"AICH Packet Answer: Masterhash differs from packethash or hashset has no trusted Masterhash");
-    }
-    else
-        theApp.QueueDebugLogLineEx(LOG_ERROR, L"AICH Packet Answer: requested values differ from values in packet");
-
+	if(size < 16)
+	{
+		CAICHRecoveryHashSet::ClientAICHRequestFailed(this);
+		throw L"Received AICH Answer Packet with wrong size";
+	}
+    else if (size > 16)
+	{
+		uchar abyHash[16];
+		data.ReadHash16(abyHash);
+		CPartFile* pPartFile = theApp.downloadqueue->GetFileByID(abyHash);		
+		uint16 nPart = data.ReadUInt16();
+		if (pPartFile != NULL)			
+		{
+			CAICHRequestedData request = CAICHRecoveryHashSet::GetAICHReqDetails(this);
+			if(request.m_pPartFile == pPartFile)
+			{
+				if(request.m_pClient == this)
+				{
+					if(nPart == request.m_nPart)
+					{
+						CAICHHash ahMasterHash(&data);
+						if (pPartFile->GetAICHRecoveryHashSet()->GetStatus() == AICH_TRUSTED || pPartFile->GetAICHRecoveryHashSet()->GetStatus() == AICH_VERIFIED)								
+						{
+							if(ahMasterHash == pPartFile->GetAICHRecoveryHashSet()->GetMasterHash())
+							{
+								if (pPartFile->GetAICHRecoveryHashSet()->ReadRecoveryData((uint64)request.m_nPart*PARTSIZE, &data))
+								{
+									// finally all checks passed, everything seem to be fine
+									theApp.QueueDebugLogLineEx(LOG_SUCCESS, L"AICH Packet Answer: Succeeded to read and validate received recoverydata");
+									CAICHRecoveryHashSet::RemoveClientAICHRequest(this);
+									pPartFile->AICHRecoveryDataAvailable(request.m_nPart);
+									return;
+								}
+								else
+									theApp.QueueDebugLogLineEx(LOG_ERROR, L"AICH Packet Answer: Failed to read and validate received recoverydata from %s", DbgGetClientInfo());
+							}
+							else
+								theApp.QueueDebugLogLineEx(LOG_ERROR, L"AICH Packet Answer: Masterhash differs from packethash in packet from %s", DbgGetClientInfo());
+						}
+						else
+							theApp.QueueDebugLogLineEx(LOG_ERROR, L"AICH Packet Answer: Hashset has no trusted Masterhash in packet from %s", DbgGetClientInfo());
+					}
+					else
+						theApp.QueueDebugLogLineEx(LOG_ERROR, L"AICH Packet Answer: received data for part %u instead of %u from %s", nPart, request.m_nPart, DbgGetClientInfo());
+				}
+				else
+					theApp.QueueDebugLogLineEx(LOG_ERROR, L"AICH Packet Answer: received data from client '%s' instead of '%s' (should never happen)", DbgGetClientInfo(), request.m_pClient->DbgGetClientInfo());
+			}
+			else
+				theApp.QueueDebugLogLineEx(LOG_ERROR, L"AICH Packet Answer: received data for file '%s' instead of '%s' from %s", pPartFile->GetFileName(), request.m_pPartFile->GetFileName(), DbgGetClientInfo());
+		}
+		else
+			theApp.QueueDebugLogLineEx(LOG_ERROR, L"AICH Packet Answer: file with hash %s not found in packet from %s", md4str(abyHash), DbgGetClientInfo());
+	}
     CAICHRecoveryHashSet::ClientAICHRequestFailed(this);
 }
 
 void CUpDownClient::ProcessAICHRequest(const uchar* packet, UINT size)
 {
     if (size != (UINT)(16 + 2 + CAICHHash::GetHashSize()))
-        throw CString(_T("Received AICH Request Packet with wrong size"));
+        throw L"Received AICH Request Packet with wrong size";
 
     CSafeMemFile data(packet, size);
     uchar abyHash[16];
@@ -2840,39 +2836,52 @@ void CUpDownClient::ProcessAICHRequest(const uchar* packet, UINT size)
     CKnownFile* pKnownFile = theApp.sharedfiles->GetFileByID(abyHash);
     if (pKnownFile != NULL)
     {
-        if (pKnownFile->IsAICHRecoverHashSetAvailable() && pKnownFile->GetFileIdentifier().HasAICHHash()
-                && pKnownFile->GetPartCount() > nPart
-                && pKnownFile->GetFileSize() > (uint64)EMBLOCKSIZE && (uint64)pKnownFile->GetFileSize() - PARTSIZE*(uint64)nPart > EMBLOCKSIZE)
+        if (pKnownFile->GetFileIdentifier().HasAICHHash())
         {
-            if (pKnownFile->GetFileIdentifier().GetAICHHash() == ahMasterHash)
-            {
-                CSafeMemFile fileResponse;
-                fileResponse.WriteHash16(pKnownFile->GetFileHash());
-                fileResponse.WriteUInt16(nPart);
-                pKnownFile->GetFileIdentifier().GetAICHHash().Write(&fileResponse);
-                CAICHRecoveryHashSet recHashSet(pKnownFile, pKnownFile->GetFileSize());
-                recHashSet.SetMasterHash(pKnownFile->GetFileIdentifier().GetAICHHash(), AICH_HASHSETCOMPLETE);
-                if (recHashSet.CreatePartRecoveryData((uint64)nPart*PARTSIZE, &fileResponse))
-                {
-                    AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Successfully created and sent recoverydata for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
-                    if (thePrefs.GetDebugClientTCPLevel() > 0)
-                        DebugSend("OP__AichAnswer", this, pKnownFile->GetFileHash());
-                    Packet* packAnswer = new Packet(&fileResponse, OP_EMULEPROT, OP_AICHANSWER);
-                    theStats.AddUpDataOverheadFileRequest(packAnswer->size);
-                    SafeConnectAndSendPacket(packAnswer);
-                    return;
-                }
-                else
-                    AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to create recoverydata for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
-            }
-            else
-                AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to create recoverydata - requested Hash differs from Masterhash for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
+			if(pKnownFile->IsAICHRecoverHashSetAvailable())
+			{
+				if(pKnownFile->GetPartCount() > nPart)
+				{
+					if(pKnownFile->GetFileSize() > (uint64)EMBLOCKSIZE && (uint64)pKnownFile->GetFileSize() - PARTSIZE*(uint64)nPart > EMBLOCKSIZE)
+					{
+						if (pKnownFile->GetFileIdentifier().GetAICHHash() == ahMasterHash)
+						{
+							CSafeMemFile fileResponse;
+							fileResponse.WriteHash16(pKnownFile->GetFileHash());
+							fileResponse.WriteUInt16(nPart);
+							pKnownFile->GetFileIdentifier().GetAICHHash().Write(&fileResponse);
+							CAICHRecoveryHashSet recHashSet(pKnownFile, pKnownFile->GetFileSize());
+							recHashSet.SetMasterHash(pKnownFile->GetFileIdentifier().GetAICHHash(), AICH_HASHSETCOMPLETE);
+							if (recHashSet.CreatePartRecoveryData((uint64)nPart*PARTSIZE, &fileResponse))
+							{
+								AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Successfully created and sent recoverydata for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
+								if (thePrefs.GetDebugClientTCPLevel() > 0)
+									DebugSend("OP__AichAnswer", this, pKnownFile->GetFileHash());
+								Packet* packAnswer = new Packet(&fileResponse, OP_EMULEPROT, OP_AICHANSWER);
+								theStats.AddUpDataOverheadFileRequest(packAnswer->size);
+								SafeConnectAndSendPacket(packAnswer);
+								return;
+							}
+							else
+								AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to create recoverydata for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
+						}
+						else
+							AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to create recoverydata - requested Hash differs from Masterhash for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());	
+					}
+					else
+						AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to create recoverydata - partsize insufficient for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
+				}
+				else
+					AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to create recoverydata - part out of bounds for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());					
+			}
+			else
+				AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to create recoverydata - Hashset not ready for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
         }
         else
-            AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to create recoverydata - Hashset not ready for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
+            AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to create recoverydata - AICH hash missing for %s to %s", pKnownFile->GetFileName(), DbgGetClientInfo());
     }
     else
-        AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to find requested shared file -  %s", DbgGetClientInfo());
+        AddDebugLogLine(DLP_HIGH, false, L"AICH Packet Request: Failed to find requested shared file with hash %s -  %s", md4str(abyHash), DbgGetClientInfo());
 
     if (thePrefs.GetDebugClientTCPLevel() > 0)
         DebugSend("OP__AichAnswer", this, abyHash);
@@ -3125,16 +3134,6 @@ bool CUpDownClient::IsIncPartAvailable(const UINT iPart) const
     return	(iPart >= m_nPartCount || m_abyIncPartStatus == NULL) ? 0 : m_abyIncPartStatus[iPart] == 1;
 }
 //<<< WiZaRd::ICS [enkeyDEV]
-//>>> WiZaRd::AntiHideOS [netfinity]
-bool CUpDownClient::IsPartialSource() const
-{
-    if (reqfile == NULL || m_abySeenPartStatus == NULL)
-        return false;
-
-    CKnownFile* file = GetUploadReqFile();
-    return file == reqfile;
-}
-//<<< WiZaRd::AntiHideOS [netfinity]
 //>>> WiZaRd::Endgame Improvement
 UINT CUpDownClient::GetAvgDownSpeed() const
 {

@@ -19,7 +19,9 @@
 #include "OtherFunctions.h"
 #include "ThrottledSocket.h" // ZZ:UploadBandWithThrottler
 
+#ifdef NAT_TRAVERSAL
 class CUtpSocket; //>>> WiZaRd::NatTraversal [Xanatos]
+#endif
 class CAsyncProxySocketLayer;
 class Packet;
 
@@ -207,6 +209,7 @@ private:
     bool	bufferExpanded;
     CCriticalSection statsLocker;
 //<<< WiZaRd::ZZUL Upload [ZZ]
+#ifdef NAT_TRAVERSAL
 //>>> WiZaRd::NatTraversal [Xanatos]
 public:
     CUtpSocket* InitUtpSupport();
@@ -214,4 +217,5 @@ public:
 protected:
     CUtpSocket* m_pUtpLayer;
 //<<< WiZaRd::NatTraversal [Xanatos]
+#endif
 };

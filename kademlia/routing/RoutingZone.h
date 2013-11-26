@@ -88,11 +88,14 @@ private:
     CRoutingZone(CRoutingZone *pSuper_zone, int iLevel, const CUInt128 &uZone_index);
     void Init(CRoutingZone *pSuper_zone, int iLevel, const CUInt128 &uZone_index);
     UINT ReadBootstrapNodesDat(CFileDataIO& file);
+
+public: //>>> WiZaRd::Save nodes.dat regularly
 #ifdef _DEBUG
     void DbgWriteBootstrapFile();
 #endif
-
     void WriteFile();
+private: //>>> WiZaRd::Save nodes.dat regularly
+
     bool IsLeaf() const;
     bool CanSplit() const;
     // Returns all contacts from this zone tree that are no deeper than *depth* from the current zone.

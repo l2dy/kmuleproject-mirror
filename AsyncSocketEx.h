@@ -101,9 +101,15 @@ public:
     virtual ~CAsyncSocketEx();
 
     //Creates a socket.
+#ifdef IPV6_SUPPORT
     BOOL Create(UINT nSocketPort = 0, int nSocketType = SOCK_STREAM,
                 long lEvent = FD_READ | FD_WRITE | FD_OOB | FD_ACCEPT |	FD_CONNECT | FD_CLOSE,
                 LPCSTR lpszSocketAddress = NULL, BOOL bReuseAddr = FALSE, bool bIPv6 = FALSE); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+	BOOL Create(UINT nSocketPort = 0, int nSocketType = SOCK_STREAM,
+		long lEvent = FD_READ | FD_WRITE | FD_OOB | FD_ACCEPT |	FD_CONNECT | FD_CLOSE,
+		LPCSTR lpszSocketAddress = NULL, BOOL bReuseAddr = FALSE);
+#endif
 
 
     //Attributes
@@ -205,7 +211,9 @@ public:
     BOOL AddLayer(CAsyncSocketExLayer *pLayer);
 #endif //NOLAYERS
 
+#ifdef NAT_TRAVERSAL
     BOOL HaveUtpLayer(bool bActive = false); //>>> WiZaRd::NatTraversal [Xanatos]
+#endif
 
     //Returns the handle of the socket.
     SOCKET GetSocketHandle();
@@ -221,12 +229,14 @@ public:
 #endif
 
 protected:
-    //Strucure to hold the socket data
+    //Structure to hold the socket data
     struct t_AsyncSocketExData
     {
         SOCKET	hSocket; //Socket handle
         int		nSocketIndex; //Index of socket, required by CAsyncSocketExHelperWindow
+#ifdef IPV6_SUPPORT
         bool	bIPv6; //>>> WiZaRd::IPv6 [Xanatos]
+#endif
     } m_SocketData;
 
     //If using layers, only the events specified with m_lEvent will send to the event handlers.

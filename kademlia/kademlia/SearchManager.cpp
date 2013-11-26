@@ -322,7 +322,7 @@ void CSearchManager::JumpStart()
                 {
                     delete itSearchMap->second;
                     itSearchMap = m_mapSearches.erase(itSearchMap);
-                    //Don't do anything after this.. We are already at the next entry.
+                    //Don't do anything after this... we are already at the next entry.
                     continue;
                 }
                 else if (itSearchMap->second->GetAnswers() >= SEARCHFILE_TOTAL || itSearchMap->second->m_tCreated + SEARCHFILE_LIFETIME - SEC(20) < tNow)
@@ -510,22 +510,22 @@ void CSearchManager::UpdateStats()
         switch (itSearchMap->second->GetSearchTypes())
         {
             case CSearch::FILE:
-                uTotalFile++;
+                ++uTotalFile;
                 break;
             case CSearch::STOREFILE:
-                uTotalStoreSrc++;
+                ++uTotalStoreSrc;
                 break;
             case CSearch::STOREKEYWORD:
-                uTotalStoreKey++;
+                ++uTotalStoreKey;
                 break;
             case CSearch::FINDSOURCE:
-                uTotalSource++;
+                ++uTotalSource;
                 break;
             case CSearch::STORENOTES:
-                uTotalStoreNotes++;
+                ++uTotalStoreNotes;
                 break;
             case CSearch::NOTES:
-                uTotalNotes++;
+                ++uTotalNotes;
                 break;
         }
     }
@@ -668,8 +668,6 @@ void CSearchManager::CancelNodeFWCheckUDPSearch()
     for (SearchMap::iterator itSearchMap = m_mapSearches.begin(); itSearchMap != m_mapSearches.end(); ++itSearchMap)
     {
         if (itSearchMap->second->GetSearchTypes() == CSearch::NODEFWCHECKUDP)
-        {
             itSearchMap->second->PrepareToStop();
-        }
     }
 }

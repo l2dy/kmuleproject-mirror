@@ -149,10 +149,11 @@ CEncryptedDatagramSocket::~CEncryptedDatagramSocket()
 
 }
 
-//>>> WiZaRd::IPv6 [Xanatos]
-int CEncryptedDatagramSocket::DecryptReceivedClient(BYTE* pbyBufIn, int nBufLen, BYTE** ppbyBufOut, const _CIPAddress& dwIP, UINT* nReceiverVerifyKey, UINT* nSenderVerifyKey) const
-//int CEncryptedDatagramSocket::DecryptReceivedClient(BYTE* pbyBufIn, int nBufLen, BYTE** ppbyBufOut, UINT dwIP, UINT* nReceiverVerifyKey, UINT* nSenderVerifyKey) const
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+int CEncryptedDatagramSocket::DecryptReceivedClient(BYTE* pbyBufIn, int nBufLen, BYTE** ppbyBufOut, const CAddress& dwIP, UINT* nReceiverVerifyKey, UINT* nSenderVerifyKey) const //>>> WiZaRd::IPv6 [Xanatos]
+#else
+int CEncryptedDatagramSocket::DecryptReceivedClient(BYTE* pbyBufIn, int nBufLen, BYTE** ppbyBufOut, UINT dwIP, UINT* nReceiverVerifyKey, UINT* nSenderVerifyKey) const
+#endif
 {
     int nResult = nBufLen;
     *ppbyBufOut = pbyBufIn;
@@ -223,12 +224,13 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(BYTE* pbyBufIn, int nBufLen,
             // ed2k packet
             bKad = false;
             bKadRecvKeyUsed = false;
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
             uchar achKeyData[35];
             int len;
             md4cpy(achKeyData, thePrefs.GetUserHash());
             achKeyData[20] = MAGICVALUE_UDP;
-            if (dwIP.Type() == CAddress::IPv6)
+            if (dwIP.GetType() == CAddress::IPv6)
             {
                 len = 35;
                 memcpy(achKeyData + 16, dwIP.Data(), 16);
@@ -242,13 +244,15 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(BYTE* pbyBufIn, int nBufLen,
                 memcpy(achKeyData + 21, pbyBufIn + 1, 2); // random key part sent from remote client
             }
             md5.Calculate(achKeyData, len);
-            /*uchar achKeyData[23];
+//<<< WiZaRd::IPv6 [Xanatos]
+#else
+            uchar achKeyData[23];
             md4cpy(achKeyData, thePrefs.GetUserHash());
             achKeyData[20] = MAGICVALUE_UDP;
             memcpy(achKeyData + 16, &dwIP, 4);
             memcpy(achKeyData + 21, pbyBufIn + 1, 2); // random key part sent from remote client
-            md5.Calculate(achKeyData, sizeof(achKeyData));*/
-//<<< WiZaRd::IPv6 [Xanatos]
+            md5.Calculate(achKeyData, sizeof(achKeyData));
+#endif
         }
         else if (byCurrentTry == 2)
         {
@@ -258,10 +262,11 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(BYTE* pbyBufIn, int nBufLen,
             if (Kademlia::CKademlia::GetPrefs())
             {
                 uchar achKeyData[6];
-//>>> WiZaRd::IPv6 [Xanatos]
-                PokeUInt32(achKeyData, Kademlia::CPrefs::GetUDPVerifyKey(_ntohl(dwIP.ToIPv4())));
-                //PokeUInt32(achKeyData, Kademlia::CPrefs::GetUDPVerifyKey(dwIP));
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+                PokeUInt32(achKeyData, Kademlia::CPrefs::GetUDPVerifyKey(_ntohl(dwIP.ToIPv4()))); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+                PokeUInt32(achKeyData, Kademlia::CPrefs::GetUDPVerifyKey(dwIP));
+#endif
                 memcpy(achKeyData + 4, pbyBufIn + 1, 2); // random key part sent from remote client
                 md5.Calculate(achKeyData, sizeof(achKeyData));
             }
@@ -320,10 +325,11 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(BYTE* pbyBufIn, int nBufLen,
     }
     else
     {
-//>>> WiZaRd::IPv6 [Xanatos]
-        DebugLogWarning(_T("Obfuscated packet expected but magicvalue mismatch on UDP packet from clientIP: %s, Possible RecvKey: %u"), ipstr(dwIP), Kademlia::CPrefs::GetUDPVerifyKey(_ntohl(dwIP.ToIPv4())));
-        //DebugLogWarning(_T("Obfuscated packet expected but magicvalue mismatch on UDP packet from clientIP: %s, Possible RecvKey: %u"), ipstr(dwIP), Kademlia::CPrefs::GetUDPVerifyKey(dwIP));
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+        DebugLogWarning(_T("Obfuscated packet expected but magicvalue mismatch on UDP packet from clientIP: %s, Possible RecvKey: %u"), ipstr(dwIP), Kademlia::CPrefs::GetUDPVerifyKey(_ntohl(dwIP.ToIPv4()))); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+        DebugLogWarning(_T("Obfuscated packet expected but magicvalue mismatch on UDP packet from clientIP: %s, Possible RecvKey: %u"), ipstr(dwIP), Kademlia::CPrefs::GetUDPVerifyKey(dwIP));
+#endif
         return nBufLen; // pass through, let the Receivefunction do the errorhandling on this junk
     }
 }
@@ -332,10 +338,11 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(BYTE* pbyBufIn, int nBufLen,
 // pachClientHashOrKadID != NULL									-> pachClientHashOrKadID
 // pachClientHashOrKadID == NULL && bKad && nReceiverVerifyKey != 0 -> nReceiverVerifyKey
 // else																-> ASSERT
-//>>> WiZaRd::IPv6 [Xanatos]
-int CEncryptedDatagramSocket::EncryptSendClient(uchar** ppbyBuf, int nBufLen, const uchar* pachClientHashOrKadID, bool bKad, UINT nReceiverVerifyKey, UINT nSenderVerifyKey, bool bIPv6) const
-//int CEncryptedDatagramSocket::EncryptSendClient(uchar** ppbyBuf, int nBufLen, const uchar* pachClientHashOrKadID, bool bKad, UINT nReceiverVerifyKey, UINT nSenderVerifyKey) const
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+int CEncryptedDatagramSocket::EncryptSendClient(uchar** ppbyBuf, int nBufLen, const uchar* pachClientHashOrKadID, bool bKad, UINT nReceiverVerifyKey, UINT nSenderVerifyKey, bool bIPv6) const //>>> WiZaRd::IPv6 [Xanatos]
+#else
+int CEncryptedDatagramSocket::EncryptSendClient(uchar** ppbyBuf, int nBufLen, const uchar* pachClientHashOrKadID, bool bKad, UINT nReceiverVerifyKey, UINT nSenderVerifyKey) const
+#endif
 {
     ASSERT(theApp.GetPublicIP() != 0 || bKad);
     ASSERT(pachClientHashOrKadID != NULL || nReceiverVerifyKey != 0);
@@ -378,12 +385,13 @@ int CEncryptedDatagramSocket::EncryptSendClient(uchar** ppbyBuf, int nBufLen, co
     }
     else
     {
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
         uchar achKeyData[35];
         int len;
         md4cpy(achKeyData, pachClientHashOrKadID);
         achKeyData[20] = MAGICVALUE_UDP;
-        if (bIPv6)
+        if (bIPv6 && !theApp.GetPublicIPv6().IsNull())
         {
             len = 35;
             memcpy(achKeyData + 16, theApp.GetPublicIPv6().Data(), 16);
@@ -397,14 +405,16 @@ int CEncryptedDatagramSocket::EncryptSendClient(uchar** ppbyBuf, int nBufLen, co
             memcpy(achKeyData + 21, &nRandomKeyPart, 2); // random key part sent from remote client
         }
         md5.Calculate(achKeyData, len);
-        /*uchar achKeyData[23];
+//<<< WiZaRd::IPv6 [Xanatos]
+#else
+        uchar achKeyData[23];
         md4cpy(achKeyData, pachClientHashOrKadID);
         UINT dwIP = theApp.GetPublicIP();
         memcpy(achKeyData+16, &dwIP, 4);
         memcpy(achKeyData+21, &nRandomKeyPart, 2);
         achKeyData[20] = MAGICVALUE_UDP;
-        md5.Calculate(achKeyData, sizeof(achKeyData));*/
-//<<< WiZaRd::IPv6 [Xanatos]
+        md5.Calculate(achKeyData, sizeof(achKeyData));
+#endif
     }
     RC4_Key_Struct keySendKey;
     RC4CreateKey(md5.GetRawHash(), 16, &keySendKey, true);

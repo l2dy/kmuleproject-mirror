@@ -406,7 +406,11 @@ void TriggerPortTest(uint16 tcp, uint16 udp);
 bool IsGoodIP(UINT nIP, bool forceCheck = false);
 bool IsGoodIPPort(UINT nIP, uint16 nPort);
 bool IsLANIP(UINT nIP);
+#ifdef NAT_TRAVERSAL
 uint8 GetMyConnectOptions(const bool bEncryption, const bool bCallback, const bool bNATTraversal); //>>> WiZaRd::NatTraversal [Xanatos]
+#else
+uint8 GetMyConnectOptions(const bool bEncryption, const bool bCallback);
+#endif
 //No longer need seperate lowID checks as we now know the servers just give *.*.*.0 users a lowID
 __inline bool IsLowID(UINT id)
 {
@@ -502,12 +506,14 @@ int		GetClientImageIndex(const bool bFriend, const UINT nClientVersion, const bo
 HCURSOR		CreateHandCursor();
 //<<< WiZaRd::Additional Functions
 uint8	CalcPrioFromSrcAverage(const UINT srcs, const float avg); //>>> WiZaRd::Improved Auto Prio
+#ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
 void DebugRecv(LPCSTR pszMsg, const CUpDownClient* client, const uchar* packet, const CAddress& IP);
 void DebugRecv(LPCSTR pszOpcode, const CAddress& IP, uint16 port);
 void DebugSend(LPCSTR pszOpcode, const CAddress& IP, uint16 port);
 CString ipstr(const CAddress& IP);
 //<<< WiZaRd::IPv6 [Xanatos]
+#endif
 ULONG GetBestInterfaceIP(const ULONG dest_addr); //>>> WiZaRd::Find Best Interface IP [netfinity]
 bool IsDirectoryWriteable(LPCTSTR pszDirectory); //>>> WiZaRd
 void CreateBetaFile();

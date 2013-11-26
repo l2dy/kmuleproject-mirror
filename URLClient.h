@@ -37,10 +37,11 @@ public:
         return false;
     }
 
-//>>> WiZaRd::NatTraversal [Xanatos]
-    virtual bool	TryToConnect(bool bIgnoreMaxCon = false, bool bNoCallbacks = false, CRuntimeClass* pClassSocket = NULL, bool bUseUTP = false);
-    //virtual bool	TryToConnect(bool bIgnoreMaxCon = false, bool bNoCallbacks = false, CRuntimeClass* pClassSocket = NULL);
-//<<< WiZaRd::NatTraversal [Xanatos]
+#ifdef NAT_TRAVERSAL
+    virtual bool	TryToConnect(const bool bIgnoreMaxCon = false, const bool bNoCallbacks = false, CRuntimeClass* pClassSocket = NULL, const bool bUseUTP = false); //>>> WiZaRd::NatTraversal [Xanatos]
+#else
+    virtual bool	TryToConnect(const bool bIgnoreMaxCon = false, const bool bNoCallbacks = false, CRuntimeClass* pClassSocket = NULL);
+#endif
     virtual void Connect();
     virtual void OnSocketConnected(int nErrorCode);
     virtual bool Disconnected(LPCTSTR pszReason, bool bFromSocket = false);

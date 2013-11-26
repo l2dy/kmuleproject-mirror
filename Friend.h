@@ -60,10 +60,11 @@ class CFriend : public Kademlia::CKadClientSearcher
 public:
     CFriend();
     CFriend(CUpDownClient* client);
-//>>> WiZaRd::IPv6 [Xanatos]
-    CFriend(const uchar* abyUserhash, UINT dwLastSeen, const _CIPAddress& LastUsedIP, uint16 nLastUsedPort,
-//     CFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort,
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+    CFriend(const uchar* abyUserhash, UINT dwLastSeen, const CAddress& LastUsedIP, uint16 nLastUsedPort, //>>> WiZaRd::IPv6 [Xanatos]
+#else
+	CFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort,
+#endif
             UINT dwLastChatted, LPCTSTR pszName, UINT dwHasHash);
 
     ~CFriend();
@@ -71,7 +72,11 @@ public:
     uchar	m_abyUserhash[16];
 
     UINT	m_dwLastSeen;
-    _CIPAddress	m_dwLastUsedIP;
+#ifdef IPV6_SUPPORT
+	CAddress	m_dwLastUsedIP;
+#else
+    UINT	m_dwLastUsedIP;
+#endif
     uint16	m_nLastUsedPort;
     UINT	m_dwLastChatted;
     CString m_strName;

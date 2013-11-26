@@ -229,16 +229,18 @@ public:
         m_Hash = k1.m_Hash ;
         return *this;
     }
-//>>> WiZaRd::IPv6 [Xanatos]
-    bool	AddSigningIP(const _CIPAddress& IP, bool bTestOnly);
-    //bool	AddSigningIP(UINT dwIP, bool bTestOnly);
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+    bool	AddSigningIP(const CAddress& IP, const bool bTestOnly); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+    bool	AddSigningIP(UINT dwIP, const bool bTestOnly);
+#endif
 
     CAICHHash				m_Hash;
-//>>> WiZaRd::IPv6 [Xanatos]
-    CArray<_CIPAddress, _CIPAddress>	m_adwIpsSigning;
-    //CArray<UINT, UINT>	m_adwIpsSigning;
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+    CArray<CAddress, CAddress>	m_adwIpsSigning; //>>> WiZaRd::IPv6 [Xanatos]
+#else
+    CArray<UINT, UINT>	m_adwIpsSigning;
+#endif
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -275,10 +277,11 @@ public:
     bool			ReadRecoveryData(uint64 nPartStartPos, CSafeMemFile* fileDataIn);
     bool			ReCalculateHash(bool bDontReplace = false);
     bool			VerifyHashTree(bool bDeleteBadTrees);
-//>>> WiZaRd::IPv6 [Xanatos]
-    void			UntrustedHashReceived(const CAICHHash& Hash, const _CIPAddress& FromIP);
-    //void			UntrustedHashReceived(const CAICHHash& Hash, UINT dwFromIP);
-//<<< WiZaRd::IPv6 [Xanatos]
+#ifdef IPV6_SUPPORT
+    void			UntrustedHashReceived(const CAICHHash& Hash, const CAddress& FromIP); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+    void			UntrustedHashReceived(const CAICHHash& Hash, UINT dwFromIP);
+#endif
     bool			IsPartDataAvailable(uint64 nPartStartPos);
     void			SetStatus(EAICHStatus bNewValue)
     {
