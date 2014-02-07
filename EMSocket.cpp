@@ -1328,7 +1328,7 @@ SocketSentBytes CEMSocket::SendOv(UINT maxNumberOfBytesToSend, UINT minFragSize,
                 ++sendcount_overall;
             }
 //<<< WiZaRd::Count block/success send [Xman?]
-            UINT result = WSASend(GetSocketHandle(), m_aBufferSend.GetData(), m_aBufferSend.GetCount(), &dwBytesSent, 0, m_pPendingSendOperation, NULL);
+            UINT result = CEncryptedStreamSocket::SendOv(m_aBufferSend, dwBytesSent, m_pPendingSendOperation);
             if (result == SOCKET_ERROR)
             {
                 int nError = WSAGetLastError();

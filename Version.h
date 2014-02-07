@@ -31,7 +31,7 @@
 #define VERSION_MJR		0
 #define VERSION_MIN		50
 #define VERSION_UPDATE	0
-#define VERSION_BUILD	4
+#define VERSION_BUILD	4 // tux note: official *mule is at "9" now..
 #define DBG_VERSION_BUILD	33 //change this to detect more modfakers :) //>>> WiZaRd::ClientAnalyzer
 
 // NOTE: This version string is also used by the language DLLs!
