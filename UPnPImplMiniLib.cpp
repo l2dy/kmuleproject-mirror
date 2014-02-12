@@ -359,7 +359,7 @@ bool CUPnPImplMiniLib::CStartDiscoveryThread::OpenPort(uint16 nPort, bool bTCP, 
 
     // if we are refreshing ports, check first if the mapping is still fine and only try to open if not
     char achOutIP[20];
-    char achOutPort[10];
+    char achOutPort[6]; // see upnpcommands.h
     char achOutDesc[80];
     char achOutEnabled[4];
     char achOutLeaseDuration[16];
@@ -369,10 +369,10 @@ bool CUPnPImplMiniLib::CStartDiscoveryThread::OpenPort(uint16 nPort, bool bTCP, 
         achOutIP[0] = 0;
         if (bTCP)
             nResult = UPNP_GetSpecificPortMappingEntry(m_pOwner->m_pURLs->controlURL, m_pOwner->m_pIGDData->first.servicetype
-                      , achPort, achTCP, achOutIP, achOutPort, achOutDesc, achOutEnabled, achOutLeaseDuration);
+                      , achPort, achTCP, NULL/*remoteHost*/, achOutIP, achOutPort, achOutDesc, achOutEnabled, achOutLeaseDuration);
         else
             nResult = UPNP_GetSpecificPortMappingEntry(m_pOwner->m_pURLs->controlURL, m_pOwner->m_pIGDData->first.servicetype
-                      , achPort, achUDP, achOutIP, achOutPort, achOutDesc, achOutEnabled, achOutLeaseDuration);
+                      , achPort, achUDP, NULL/*remoteHost*/, achOutIP, achOutPort, achOutDesc, achOutEnabled, achOutLeaseDuration);
 
         if (nResult == UPNPCOMMAND_SUCCESS && achOutIP[0] != 0)
         {
@@ -403,20 +403,20 @@ bool CUPnPImplMiniLib::CStartDiscoveryThread::OpenPort(uint16 nPort, bool bTCP, 
     achOutIP[0] = 0;
     if (bTCP)
         nResult = UPNP_GetSpecificPortMappingEntry(m_pOwner->m_pURLs->controlURL, m_pOwner->m_pIGDData->first.servicetype
-                  , achPort, achTCP, achOutIP, achOutPort, achOutDesc, achOutEnabled, achOutLeaseDuration);
+                  , achPort, achTCP, NULL/*remoteHost*/, achOutIP, achOutPort, achOutDesc, achOutEnabled, achOutLeaseDuration);
     else
         nResult = UPNP_GetSpecificPortMappingEntry(m_pOwner->m_pURLs->controlURL, m_pOwner->m_pIGDData->first.servicetype
-                  , achPort, achUDP, achOutIP, achOutPort, achOutDesc, achOutEnabled, achOutLeaseDuration);
+                  , achPort, achUDP, NULL/*remoteHost*/, achOutIP, achOutPort, achOutDesc, achOutEnabled, achOutLeaseDuration);
 
     if (nResult == UPNPCOMMAND_SUCCESS && achOutIP[0] != 0)
     {
-        DebugLog(L"Sucessfully added mapping for port %u (%s) on local IP %S", nPort, bTCP ? L"TCP" : L"UDP", achOutIP);
+        DebugLog(L"Successfully added mapping for port %u (%s) on local IP %S", nPort, bTCP ? L"TCP" : L"UDP", achOutIP);
         return true;
     }
     else
     {
-        DebugLogWarning(L"Failed to verfiy mapping for port %u (%s) on local IP %S - considering as failed", nPort, bTCP ? L"TCP" : L"UDP", achOutIP);
-        // maybe counting this as error is a bit harsh as this may lead to false negatives, however if we would risk false postives
+        DebugLogWarning(L"Failed to verify mapping for port %u (%s) on local IP %S - considering as failed", nPort, bTCP ? L"TCP" : L"UDP", achOutIP);
+        // maybe counting this as error is a bit harsh as this may lead to false negatives, however if we would risk false positives
         // this would mean that the fallback implementations are not tried because eMule thinks it worked out fine
         return false;
     }
