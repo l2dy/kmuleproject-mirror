@@ -32,7 +32,7 @@ public:
 // Operations
 public:
     void KillThread();
-    virtual void SingleStep() = 0;
+    virtual void SingleStep()	{ AfxDebugBreak(); }
 
 // Overrides
     // ClassWizard generated virtual function overrides

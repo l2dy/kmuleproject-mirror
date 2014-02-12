@@ -62,12 +62,12 @@ public:
     @return
     	TRUE on success, FALSE otherwise.
     */
-    virtual BOOL Create(DWORD dwWindowStyle, const RECT &rect, CWnd *pwndParent, UINT nID) = 0;
+    virtual BOOL Create(DWORD /*dwWindowStyle*/, const RECT& /*rect*/, CWnd* /*pwndParent*/, UINT /*nID*/) { AfxDebugBreak(); return FALSE; }
 
     /**
     Returns a pointer to the window object, that represents the frame.
     */
-    virtual CWnd* GetWnd() = 0;
+    virtual CWnd* GetWnd() { AfxDebugBreak(); return NULL; }
 
     /**
     Enables or disables page caption.

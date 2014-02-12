@@ -38,8 +38,8 @@ public:
         return SocketSentBytes(false, 0, 0);;
     }
 //>>> WiZaRd::ZZUL Upload [ZZ]
-//    virtual DWORD GetLastCalledSend() = 0;
-//    virtual UINT	GetNeededBytes() = 0;
+//    virtual DWORD GetLastCalledSend() { AfxDebugBreak(); return 0; }
+//    virtual UINT	GetNeededBytes()	{ AfxDebugBreak(); return 0; }
 //<<< WiZaRd::ZZUL Upload [ZZ]
     virtual bool IsBusyExtensiveCheck()
     {

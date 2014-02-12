@@ -25,6 +25,8 @@
 #include "OtherFunctions.h"
 #include "Statistics.h"
 #include "ClientCredits.h"
+#include "emule.h"
+#include "ClientList.h"
 #include "./Mod/ClientAnalyzer.h" //>>> WiZaRd::ClientAnalyzer
 #include "./Mod/NetF/PartStatus.h" //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
@@ -240,10 +242,15 @@ void CUrlClient::Connect()
 void CUrlClient::OnSocketConnected(int nErrorCode)
 {
     if (nErrorCode == 0)
-    {
-        ConnectionEstablished(); //>>> WiZaRd::Fix HTTP downloads
-        SendHttpBlockRequests();
-    }
+        ConnectionEstablished();
+}
+
+void CUrlClient::ConnectionEstablished()
+{
+	m_nConnectingState = CCS_NONE;
+	theApp.clientlist->RemoveConnectingClient(this);
+	SendHttpBlockRequests();
+	SetDownStartTime();
 }
 
 void CUrlClient::SendHelloPacket()

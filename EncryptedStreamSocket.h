@@ -116,7 +116,7 @@ protected:
     int Send(const void* lpBuf, int nBufLen, int nFlags = 0);
     int SendOv(CArray<WSABUF>& raBuffer, DWORD& dwBytesSent, LPWSAOVERLAPPED lpOverlapped);
     int Receive(void* lpBuf, int nBufLen, int nFlags = 0);
-    virtual void	OnError(int nErrorCode) = 0;
+    virtual void	OnError(int /*nErrorCode*/)	{ AfxDebugBreak(); }
     virtual void	OnSend(int nErrorCode);
     CString			DbgGetIPString();
     void			CryptPrepareSendData(uchar* pBuffer, UINT nLen);

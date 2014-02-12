@@ -122,8 +122,8 @@ protected:
     virtual int	OnLayerCallback(const CAsyncSocketExLayer *pLayer, int nType, int nCode, WPARAM wParam, LPARAM lParam);
 
     virtual void	DataReceived(const BYTE* pcData, UINT uSize);
-    virtual bool	PacketReceived(Packet* packet) = 0;
-    virtual void	OnError(int nErrorCode) = 0;
+    virtual bool	PacketReceived(Packet* /*packet*/)	{ AfxDebugBreak(); return false; }
+    virtual void	OnError(int /*nErrorCode*/)			{ AfxDebugBreak(); }
     virtual void	OnClose(int nErrorCode);
     virtual void	OnSend(int nErrorCode);
     virtual void	OnReceive(int nErrorCode);

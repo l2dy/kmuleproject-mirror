@@ -162,10 +162,10 @@ template<> inline UINT AFXAPI HashKey(const CAICHHash& key)
 class CAICHHashAlgo
 {
 public:
-    virtual void	Reset() = 0;
-    virtual void	Add(LPCVOID pData, DWORD nLength) = 0;
-    virtual void	Finish(CAICHHash& Hash) = 0;
-    virtual void	GetHash(CAICHHash& Hash) = 0;
+    virtual void	Reset()									{ AfxDebugBreak(); }
+    virtual void	Add(LPCVOID /*pData*/, DWORD /*nLength*/)	{ AfxDebugBreak(); }
+    virtual void	Finish(CAICHHash& /*Hash*/)				{ AfxDebugBreak(); }
+    virtual void	GetHash(CAICHHash& /*Hash*/)			{ AfxDebugBreak(); }
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////

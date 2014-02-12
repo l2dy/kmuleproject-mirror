@@ -179,7 +179,7 @@ public:
     }
     virtual ~CKadTag()
     {}
-    virtual CKadTag* Copy() = 0;
+    virtual CKadTag* Copy() { AfxDebugBreak(); return NULL; }
 
     bool IsStr()  const
     {

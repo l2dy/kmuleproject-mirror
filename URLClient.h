@@ -32,10 +32,7 @@ public:
     bool SetUrl(LPCTSTR pszUrl, UINT nIP = 0);
 
     virtual void SetRequestFile(CPartFile* pReqFile);
-    virtual bool IsEd2kClient() const
-    {
-        return false;
-    }
+    virtual bool IsEd2kClient() const	{return false;}
 
 #ifdef NAT_TRAVERSAL
     virtual bool	TryToConnect(const bool bIgnoreMaxCon = false, const bool bNoCallbacks = false, CRuntimeClass* pClassSocket = NULL, const bool bUseUTP = false); //>>> WiZaRd::NatTraversal [Xanatos]
@@ -44,6 +41,7 @@ public:
 #endif
     virtual void Connect();
     virtual void OnSocketConnected(int nErrorCode);
+	virtual void ConnectionEstablished();
     virtual bool Disconnected(LPCTSTR pszReason, bool bFromSocket = false);
 
     virtual void SendHelloPacket();

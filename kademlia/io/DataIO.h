@@ -65,8 +65,8 @@ public:
     void WriteTag(LPCSTR szName, uint64 uValue);
     void WriteTag(LPCSTR szName, float fValue);
     void WriteTagList(const TagList& tagList);
-    virtual void ReadArray(LPVOID lpResult, UINT uByteCount) = 0;
-    virtual void WriteArray(LPCVOID lpVal, UINT uByteCount) = 0;
-    virtual UINT GetAvailable() const = 0;
+	virtual void ReadArray(LPVOID /*lpResult*/, UINT /*uByteCount*/)	{ AfxDebugBreak(); }
+    virtual void WriteArray(LPCVOID /*lpVal*/, UINT /*uByteCount*/)		{ AfxDebugBreak(); }
+    virtual UINT GetAvailable() const									{ AfxDebugBreak(); return 0; }
 };
 }

@@ -326,6 +326,12 @@ protected:
     afx_msg LRESULT OnSevenZipJobDone(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnSevenZipJobFailed(WPARAM wParam, LPARAM lParam);
 //<<< WiZaRd::7zip
+	afx_msg LRESULT OnUploadTimer(WPARAM wParam, LPARAM lParam);  //>>> WiZaRd::Catch exceptions
+
+//>>> WiZaRd::Fix crash on exit
+private:
+	CWinThread* m_AICHSyncThread;
+//<<< WiZaRd::Fix crash on exit
 };
 
 
@@ -343,6 +349,7 @@ enum EEMuleAppMsgs
     TM_SEVENZIP_JOB_DONE,
     TM_SEVENZIP_JOB_FAILED,
 //<<< WiZaRd::7zip
+	TM_UPLOAD_TIMER, //>>> WiZaRd::Catch exceptions
 };
 
 enum EWebinterfaceOrders

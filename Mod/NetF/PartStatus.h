@@ -27,16 +27,16 @@ public:
     // Destructor
     virtual					~CPartStatus();
     // Cloning
-    virtual CPartStatus*	Clone() = 0;
+    virtual CPartStatus*	Clone()								{ AfxDebugBreak(); return NULL; }
     // Manipulation routines (has to be overriden)
-    virtual void			Set(uint64 start, uint64 stop) = 0;
-    virtual void			Clear(uint64 start, uint64 stop) = 0;
+    virtual void			Set(uint64 /*start*/, uint64 /*stop*/)		{ AfxDebugBreak(); }
+    virtual void			Clear(uint64 /*start*/, uint64 /*stop*/)	{ AfxDebugBreak(); }
     // Bytes (has to be overriden)
-    virtual uint64			GetSize() const = 0;
-    virtual uint64			GetChunkSize() const = 0;
-    virtual bool			IsComplete(uint64 start = 0, uint64 stop = ~0ULL) const = 0;
-    virtual bool			FindFirstComplete(uint64& start, uint64& stop) const = 0;
-    virtual bool			FindFirstNeeded(uint64& start, uint64& stop) const = 0;
+    virtual uint64			GetSize() const						{ AfxDebugBreak(); return 0; }
+	virtual uint64			GetChunkSize() const				{ AfxDebugBreak(); return 0; }
+    virtual bool			IsComplete(uint64 /*start*/ = 0, uint64 /*stop*/ = ~0ULL) const	{ AfxDebugBreak(); return false; }
+    virtual bool			FindFirstComplete(uint64& /*start*/, uint64& /*stop*/) const	{ AfxDebugBreak(); return false; }
+    virtual bool			FindFirstNeeded(uint64& /*start*/, uint64& /*stop*/) const		{ AfxDebugBreak(); return false; }
     // Bytes
     virtual uint64			GetCompleted(uint64 start = 0, uint64 stop = ~0ULL) const;
     virtual uint64			GetNeeded(uint64 start = 0, uint64 stop = ~0ULL) const;
