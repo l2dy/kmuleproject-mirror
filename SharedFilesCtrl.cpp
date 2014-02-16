@@ -1333,7 +1333,6 @@ BOOL CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                     wParam -= (MP_PSPRIOAUTO-MP_PRIOAUTO);
 //<<< WiZaRd::PowerShare
                 bool bSelected = false;
-                POSITION pos = selectedList.GetHeadPosition();
                 uint8 newPrio = PR_NORMAL;
                 switch (wParam)
                 {
@@ -1356,11 +1355,11 @@ BOOL CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                         newPrio = PR_AUTO;
                         break;
                 }
-                while (pos != NULL)
+                for (POSITION pos = selectedList.GetHeadPosition(); pos != NULL; selectedList.GetNext(pos))
                 {
                     if (!selectedList.GetAt(pos)->IsKindOf(RUNTIME_CLASS(CKnownFile)))
                         continue;
-                    CKnownFile* file = (CKnownFile*)selectedList.GetNext(pos);
+                    CKnownFile* file = (CKnownFile*)selectedList.GetAt(pos);
                     file->SetAutoUpPriority(wParam == MP_PRIOAUTO);
                     if (newPrio == PR_AUTO)
                         file->UpdateAutoUpPriority();

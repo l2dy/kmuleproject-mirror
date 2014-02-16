@@ -1212,7 +1212,6 @@ void CUpDownClient::SendBlockRequests()
                     SetDownloadState(DS_ERROR);
                     return;
                 }
-                break;
             }
         }
     }

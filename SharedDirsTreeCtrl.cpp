@@ -902,12 +902,11 @@ BOOL CSharedDirsTreeCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
             case MP_PRIOAUTO:
             {
                 bool bSelected = false;
-                POSITION pos = selectedList.GetHeadPosition();
-                while (pos != NULL)
+                for (POSITION pos = selectedList.GetHeadPosition(); pos != NULL; selectedList.GetNext(pos))
                 {
                     if (!selectedList.GetAt(pos)->IsKindOf(RUNTIME_CLASS(CKnownFile)))
                         continue;
-                    CKnownFile* file = (CKnownFile*)selectedList.GetNext(pos);
+                    CKnownFile* file = (CKnownFile*)selectedList.GetAt(pos);
                     file->SetAutoUpPriority(wParam == MP_PRIOAUTO);
                     switch (wParam)
                     {
