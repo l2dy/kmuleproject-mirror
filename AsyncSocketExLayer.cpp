@@ -62,6 +62,9 @@ to tim.kosse@gmx.de
 */
 #include "stdafx.h"
 #include "AsyncSocketExLayer.h"
+//>>> Tux::ProxyStatus
+#include "Preferences.h"
+//<<< Tux::ProxyStatus
 
 #include "AsyncSocketEx.h"
 
@@ -239,8 +242,8 @@ int CAsyncSocketExLayer::SendNext(const void *lpBuf, int nBufLen, int nFlags /*=
         ASSERT(m_pOwnerSocket);
         return send(m_pOwnerSocket->GetSocketHandle(), (LPSTR)lpBuf, nBufLen, nFlags);
     }
-    else
-        return m_pNextLayer->Send(lpBuf, nBufLen, nFlags);
+
+    return m_pNextLayer->Send(lpBuf, nBufLen, nFlags);
 }
 
 int CAsyncSocketExLayer::ReceiveNext(void *lpBuf, int nBufLen, int nFlags /*=0*/)
@@ -266,8 +269,8 @@ int CAsyncSocketExLayer::ReceiveNext(void *lpBuf, int nBufLen, int nFlags /*=0*/
         ASSERT(m_pOwnerSocket);
         return recv(m_pOwnerSocket->GetSocketHandle(), (LPSTR)lpBuf, nBufLen, nFlags);
     }
-    else
-        return m_pNextLayer->Receive(lpBuf, nBufLen, nFlags);
+
+    return m_pNextLayer->Receive(lpBuf, nBufLen, nFlags);
 }
 
 BOOL CAsyncSocketExLayer::ConnectNext(LPCSTR lpszHostAddress, UINT nHostPort)
@@ -344,8 +347,8 @@ BOOL CAsyncSocketExLayer::GetPeerNameNext(CString& rPeerAddress, UINT& rPeerPort
             rPeerAddress = inet_ntoa(sockAddr.sin_addr);
             return TRUE;
         }
-        else
-            return FALSE;
+
+        return FALSE;
     }
 }
 
@@ -365,8 +368,8 @@ BOOL CAsyncSocketExLayer::GetPeerNameNext(SOCKADDR* lpSockAddr, int* lpSockAddrL
         ASSERT(m_pOwnerSocket);
         if (!getpeername(m_pOwnerSocket->GetSocketHandle(), lpSockAddr, lpSockAddrLen))
             return TRUE;
-        else
-            return FALSE;
+
+        return FALSE;
     }
 }
 
@@ -438,6 +441,10 @@ void CAsyncSocketExLayer::CallEvent(int nEvent, int nErrorCode)
             }
             break;
     }
+
+//>>> Tux::ProxyStatus
+    thePrefs.SetProxified(GetLayerState() == connected);
+//<<< Tux::ProxyStatus
 }
 
 BOOL CAsyncSocketExLayer::Create(UINT nSocketPort, int nSocketType, long lEvent, LPCSTR lpszSocketAddress)
@@ -575,6 +582,6 @@ BOOL CAsyncSocketExLayer::ShutDownNext(int nHow /*=sends*/)
         ASSERT(m_pOwnerSocket);
         return shutdown(m_pOwnerSocket->GetSocketHandle(), nHow);
     }
-    else
-        return m_pNextLayer->ShutDownNext(nHow);
+
+    return m_pNextLayer->ShutDownNext(nHow);
 }

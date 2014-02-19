@@ -117,9 +117,6 @@ Version history
 #include "stdafx.h"
 #include "AsyncProxySocketLayer.h"
 #include "CBase64coding.hpp"
-//>>> Tux::ProxyStatus
-#include "Preferences.h"
-//<<< Tux::ProxyStatus
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -851,10 +848,6 @@ void CAsyncProxySocketLayer::OnConnect(int nErrorCode)
         return;
     }
 
-//>>> Tux::ProxyStatus
-     thePrefs.SetProxified(false);
-//<<< Tux::ProxyStatus
-
     if (nErrorCode)
     {
         // Can't connect to proxy
@@ -1130,10 +1123,6 @@ void CAsyncProxySocketLayer::OnConnect(int nErrorCode)
         else
             ASSERT(0);
 
-//>>> Tux::ProxyStatus
-        thePrefs.SetProxified(true);
-//<<< Tux::ProxyStatus
-
         //Now we'll wait for the response, handled in OnReceive
         m_nProxyOpState++;
     }
@@ -1234,9 +1223,6 @@ int CAsyncProxySocketLayer::GetProxyType() const
 
 void CAsyncProxySocketLayer::Close()
 {
-//>>> Tux::ProxyStatus
-    thePrefs.SetProxified(false);
-//<<< Tux::ProxyStatus
     m_ProxyData.strProxyHost.Empty();
     m_ProxyData.strProxyUser.Empty();
     m_ProxyData.strProxyPass.Empty();
