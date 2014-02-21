@@ -807,26 +807,22 @@ BOOL CemuleApp::InitInstance()
         if (timeGetDevCaps(&tc, sizeof(TIMECAPS)) == TIMERR_NOERROR)
         {
             m_wTimerRes = min(max(tc.wPeriodMin, 1), tc.wPeriodMax);
-            if (m_wTimerRes > 0)
+            if(m_wTimerRes > 0)
             {
                 MMRESULT mmResult = timeBeginPeriod(m_wTimerRes);
-                if (thePrefs.GetVerbose())
+                if(thePrefs.GetVerbose())
                 {
                     if (mmResult == TIMERR_NOERROR)
-                    {
-                        theApp.QueueDebugLogLine(false,_T("Succeeded to set timer resolution to %i ms."), m_wTimerRes);
-                    }
+                        theApp.QueueDebugLogLineEx(LOG_SUCCESS, L"Succeeded to set timer resolution to %ims.", m_wTimerRes);
                     else
                     {
-                        theApp.QueueDebugLogLine(false,_T("Failed to set timer resolution to %i ms."), m_wTimerRes);
+                        theApp.QueueDebugLogLineEx(LOG_ERROR, L"Failed to set timer resolution to %ims.", m_wTimerRes);
                         m_wTimerRes = 0;
                     }
                 }
             }
-            else
-            {
-                theApp.QueueDebugLogLine(false,_T("m_wTimerRes == 0. Not setting timer resolution."));
-            }
+            else if(thePrefs.GetVerbose())
+                theApp.QueueDebugLogLineEx(LOG_WARNING, L"m_wTimerRes == 0. Not setting timer resolution.");
         }
     }
 
@@ -1095,10 +1091,10 @@ CString CemuleApp::CreateKadSourceLink(const CAbstractFile* f)
     {
         CString KadID;
         Kademlia::CKademlia::GetPrefs()->GetKadID().Xor(Kademlia::CUInt128(true)).ToHexString(&KadID);
-        strLink.Format(_T("ed2k://|file|%s|%I64u|%s|/|kadsources,%s:%s|/"),
+        strLink.Format(L"ed2k://|file|%s|%I64u|%s|/|kadsources,%s:%s|/",
                        EncodeUrlUtf8(StripInvalidFilenameChars(f->GetFileName())),
                        f->GetFileSize(),
-                       EncodeBase16(f->GetFileHash(),16),
+                       md4str(f->GetFileHash()),
                        md4str(thePrefs.GetUserHash()), KadID);
     }
     return strLink;

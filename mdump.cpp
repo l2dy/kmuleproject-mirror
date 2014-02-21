@@ -62,6 +62,9 @@ void CMiniDumper::Enable(LPCTSTR pszAppName, bool bShowErrors, LPCTSTR pszDumpDi
         hDbgHelpDll = NULL;
         pfnMiniDumpWriteDump = NULL;
     }
+	
+	// WiZaRd: Force .dmp creation on runtime errors!
+	_set_abort_behavior(_CALL_REPORTFAULT, _WRITE_ABORT_MSG | _CALL_REPORTFAULT);
 }
 
 #define DBGHELP_HINT L"You can get the required DBGHELP.DLL by downloading the \"User Mode Process Dumper\" from \"Microsoft Download Center\".\r\n\r\n" \
@@ -206,9 +209,10 @@ void CMiniDumper::InvalidParameterHandler(const wchar_t *pszExpression, const wc
     (nLine);
     (pReserved);
 
-    TRACE(L"Invalid parameter detected in function %s."
-          L" File: %s Line: %d\n", pszFunction, pszFile, nLine);
-    TRACE(L"Expression: %s\n", pszExpression);
+	CString strErrorLine = L"";
+	strErrorLine.Format(L"Invalid parameter detected in function %s.\nFile: %s Line: %d\nExpression: %s\n", pszFunction, pszFile, nLine, pszExpression);	
+    TRACE(strErrorLine);
+	AfxMessageBox(strErrorLine);
     /*_call_reportfault(_CRT_DEBUGGER_INVALIDPARAMETER,
     	STATUS_INVALID_CRUNTIME_PARAMETER,
     	EXCEPTION_NONCONTINUABLE);*/

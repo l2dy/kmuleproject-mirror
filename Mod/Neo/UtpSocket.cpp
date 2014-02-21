@@ -169,8 +169,9 @@ void CUtpSocket::Setup(struct UTPSocket* Socket)
         UTP_SetCallbacks(m_Socket, NULL, NULL); // make sure this will not be referred anymore
         m_Socket = NULL;
     }
-    else
-        ASSERT(0);
+	// Can happen if a socket is initiated as UTP but no connection has been established
+    /*else
+        ASSERT(0);*/
 }
 
 void CUtpSocket::Close()

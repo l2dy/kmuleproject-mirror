@@ -208,7 +208,9 @@ const CAICHHashTree* CAICHHashTree::FindExistingHash(uint64 nStartPos, uint64 nS
         {
             if (nStartPos + nSize > nLeft)  // sanity
             {
+#ifdef ALL_ASSERTS
                 ASSERT(false);
+#endif
                 return NULL;
             }
             if (m_pLeftTree == NULL || !m_pLeftTree->m_bHashValid)
@@ -362,7 +364,7 @@ void CAICHHashTree::SetBlockHash(uint64 nSize, uint64 nStartPos, CAICHHashAlgo* 
     if (pToInsert == NULL)  // sanity
     {
         ASSERT(false);
-        theApp.QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("Critical Error: Failed to Insert SHA-HashBlock, FindHash() failed!"));
+        theApp.QueueDebugLogLineEx(/*DLP_VERYHIGH,*/LOG_ERROR, L"Critical Error: Failed to insert SHA-HashBlock, FindHash() failed!");
         return;
     }
 
@@ -370,7 +372,7 @@ void CAICHHashTree::SetBlockHash(uint64 nSize, uint64 nStartPos, CAICHHashAlgo* 
     if (pToInsert->GetBaseSize() != EMBLOCKSIZE || pToInsert->m_nDataSize != nSize)
     {
         ASSERT(false);
-        theApp.QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("Critical Error: Logical error on values in SetBlockHashFromData"));
+        theApp.QueueDebugLogLineEx(/*DLP_VERYHIGH,*/LOG_ERROR, L"Critical Error: Logical error on values in SetBlockHashFromData");
         return;
     }
 

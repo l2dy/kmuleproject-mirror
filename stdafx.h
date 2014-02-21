@@ -11,7 +11,9 @@
 
 #define INFO_WND		//>>> WiZaRd::InfoWnd
 #define NAT_TRAVERSAL	//>>> WiZaRd::NatTraversal [Xanatos]
-//#define IPV6_SUPPORT	//>>> WiZaRd::IPv6 [Xanatos]
+#define IPV6_SUPPORT	//>>> WiZaRd::IPv6 [Xanatos]
+//#define ANTI_HIDEOS		//>>> WiZaRd::Anti HideOS - obsolete with SCT partstatus merging
+//#define ALL_ASSERTS	//>>> WiZaRd::Used to disable some known ASSERTs to allow for better debugging
 
 //>>> WiZaRd::DesktopIntegration [Netfinity]
 //#define WINE_SUPPORT

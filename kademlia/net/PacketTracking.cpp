@@ -213,7 +213,7 @@ bool CPacketTracking::InTrackListIsAllowedPacket(UINT uIP, uint8 byOpcode, bool 
             {
                 // this is so far above the limit that it has to be an intentional flood / misuse in any case
                 // so we take the next higher punishment and ban the IP
-                DebugLogWarning(_T("Kad: Massive request flood detected for opcode 0x%X (0x%X) from IP %s - Banning IP"), byOpcode, byDbgOrgOpcode, ipstr(ntohl(uIP)));
+                DebugLogError(L"Kad: Massive request flood detected for opcode 0x%X (0x%X) from IP %s - Banning IP", byOpcode, byDbgOrgOpcode, ipstr(ntohl(uIP)));
                 theApp.clientlist->AddBannedClient(ntohl(uIP));
                 return false; // drop packet
             }
@@ -223,7 +223,7 @@ bool CPacketTracking::InTrackListIsAllowedPacket(UINT uIP, uint8 byOpcode, bool 
                 if (!rCurTrackedRequest.m_bDbgLogged)
                 {
                     rCurTrackedRequest.m_bDbgLogged = true;
-                    DebugLog(_T("Kad: Request flood detected for opcode 0x%X (0x%X) from IP %s - Dropping packets with this opcode"), byOpcode, byDbgOrgOpcode, ipstr(ntohl(uIP)));
+                    DebugLogWarning(L"Kad: Request flood detected for opcode 0x%X (0x%X) from IP %s - Dropping packets with this opcode", byOpcode, byDbgOrgOpcode, ipstr(ntohl(uIP)));
                 }
                 return false; // drop packet
             }
@@ -262,7 +262,8 @@ void CPacketTracking::InTrackListCleanup()
             delete curEntry;
         }
     }
-    DebugLog(_T("Cleaned up Kad Incoming Requests Tracklist, entries before: %u, after %u"), dbgOldSize, m_liTrackPacketsIn.GetCount());
+	if(dbgOldSize != (UINT)m_liTrackPacketsIn.GetCount())
+		DebugLog(L"Cleaned up Kad Incoming Requests Tracklist, entries before: %u, after %u", dbgOldSize, m_liTrackPacketsIn.GetCount());
 }
 
 void CPacketTracking::AddLegacyChallenge(CUInt128 uContactID, CUInt128 uChallengeID, UINT uIP, uint8 byOpcode)

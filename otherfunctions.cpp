@@ -3625,8 +3625,11 @@ void AddAutoStart()
                 L"Software\\Microsoft\\Windows\\CurrentVersion\\Run",
                 REG_NONE,REG_OPTION_NON_VOLATILE,
                 KEY_ALL_ACCESS,	NULL,NULL);
-    mKey.SetStringValue(strKeyName, sFullExeCommand);
-    mKey.Close();
+	if (mKey != NULL)
+	{
+		mKey.SetStringValue(strKeyName, sFullExeCommand);
+		mKey.Close();
+	}
 #endif
 }
 
@@ -3639,8 +3642,11 @@ void RemAutoStart()
                 L"Software\\Microsoft\\Windows\\CurrentVersion\\Run",
                 REG_NONE,REG_OPTION_NON_VOLATILE,
                 KEY_ALL_ACCESS,	NULL,NULL);
-    mKey.DeleteValue(strKeyName);
-    mKey.Close();
+	if (mKey != NULL)
+	{
+		mKey.DeleteValue(strKeyName);
+		mKey.Close();
+	}
 }
 
 int FontPointSizeToLogUnits(int nPointSize)

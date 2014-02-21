@@ -214,6 +214,7 @@ UINT CSearchList::ProcessSearchAnswer(const uchar* in_packet, UINT size,
         if (toadd->IsLargeFile() && (Sender == NULL || !Sender->SupportsLargeFiles()))
         {
             DebugLogWarning(_T("Client offers large file (%s) but doesn't announced support for it - ignoring file"), toadd->GetFileName());
+			delete toadd;
             continue;
         }
         if (Sender)

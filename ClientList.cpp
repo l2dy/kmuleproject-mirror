@@ -51,7 +51,7 @@ static char THIS_FILE[] = __FILE__;
 //>>> WiZaRd::FiX
 //helper function... use the available IP
 #ifdef IPV6_SUPPORT
-bool CompareIP(const CUpDownClient* client, const CAddress& dwIP) #ifdef IPV6_SUPPORT
+bool CompareIP(const CUpDownClient* client, const CAddress& dwIP) //>>> WiZaRd::IPv6 [Xanatos]
 #else
 bool CompareIP(const CUpDownClient* client, const UINT dwIP)
 #endif
@@ -240,7 +240,7 @@ void CClientList::RemoveClient(CUpDownClient* toremove, LPCTSTR pszReason)
     POSITION pos = list.Find(toremove);
     if (pos)
     {
-        theApp.uploadqueue->RemoveFromUploadQueue(toremove, CString(_T("CClientList::RemoveClient: ")) + pszReason);
+        theApp.uploadqueue->RemoveFromUploadQueue(toremove, L"CClientList::RemoveClient: " + CString(pszReason));
         theApp.uploadqueue->RemoveFromWaitingQueue(toremove);
         theApp.downloadqueue->RemoveSource(toremove);
         theApp.emuledlg->transferwnd->GetClientList()->RemoveClient(toremove);

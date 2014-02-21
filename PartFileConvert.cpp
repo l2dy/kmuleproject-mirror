@@ -216,7 +216,7 @@ int CPartFileConvert::performConvertToeMule(CString folder)
 
     pfconverting->size=file->GetFileSize();
     pfconverting->filename=file->GetFileName();
-    pfconverting->filehash= EncodeBase16(file->GetFileHash() ,16);
+    pfconverting->filehash= md4str(file->GetFileHash());
     UpdateGUI(pfconverting);
 
     if (theApp.downloadqueue->GetFileByID(file->GetFileHash())!=0)

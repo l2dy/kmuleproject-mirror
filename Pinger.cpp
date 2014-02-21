@@ -100,6 +100,7 @@
 #include "Pinger.h"
 #include "emuledlg.h"
 #include "OtherFunctions.h"
+#include "Log.h"
 
 extern CString GetErrorMessage(DWORD dwError, DWORD dwFlags);
 
@@ -540,11 +541,7 @@ PingStatus Pinger::PingICMP(UINT lAddr, UINT ttl, bool doLog)
         returnValue.success = false;
         returnValue.error = lastError;
         if (doLog)
-        {
-            theApp.QueueDebugLogLine(false,_T("Error from %s: Error=%i"),
-                                     ipstr(stDestAddr),
-                                     returnValue.error);
-        }
+            theApp.QueueDebugLogLineEx(LOG_ERROR, L"Error from %s: Error=%i", ipstr(stDestAddr), returnValue.error);
     }
 
     return returnValue;

@@ -43,11 +43,11 @@ public:
     void		ShowFriends() const;
     bool		AddFriend(CUpDownClient* toadd);
 #ifdef IPV6_SUPPORT
-    bool		AddFriend(const uchar* abyUserhash, UINT dwLastSeen, const CAddress& dwLastUsedIP, uint16 nLastUsedPort, //>>> WiZaRd::IPv6 [Xanatos]
+    bool		AddFriend(const uchar* abyUserhash, UINT dwLastSeen, const CAddress& dwLastUsedIP, uint16 nLastUsedPort, //>>> WiZaRd::IPv6 [Xanatos] 
 #else
 	bool		AddFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort,
 #endif
-                          UINT dwLastChatted, LPCTSTR pszName, UINT dwHasHash);
+                          UINT dwLastChatted, LPCTSTR pszName, UINT dwHasHash, const CString& strComment); //>>> WiZaRd::FriendComment
     void		RemoveFriend(CFriend* todel);
     void		RemoveAllFriendSlots();
     void		Process();

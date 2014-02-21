@@ -61,7 +61,9 @@ void CUpDownClient::DrawStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bool
     COLORREF crPending;
     COLORREF crNextPending;
     COLORREF crClientPartial = RGB(170, 50, 224); //>>> WiZaRd::ICS [enkeyDEV]
+#ifdef ANTI_HIDEOS
     COLORREF crClientSeen = RGB(150, 240, 240); //>>> WiZaRd::AntiHideOS [netfinity]
+#endif
     COLORREF crSCT = RGB(255, 128, 0); //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
     if (bFlat)
@@ -107,7 +109,10 @@ void CUpDownClient::DrawStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bool
     if (!onlygreyrect
             && (abyPartStatus
                 || m_abyIncPartStatus	//>>> WiZaRd::ICS [enkeyDEV]
-                || m_abySeenPartStatus)	//>>> WiZaRd::AntiHideOS [netfinity]
+#ifdef ANTI_HIDEOS
+                || m_abySeenPartStatus	//>>> WiZaRd::AntiHideOS [netfinity]
+#endif
+				)
        )
     {
         BYTE* pcNextPendingBlks = NULL;
@@ -149,10 +154,12 @@ void CUpDownClient::DrawStatusBar(CDC* dc, LPCRECT rect, bool onlygreyrect, bool
                 else
                     s_StatusBar.FillRange(uStart, uEnd, crClientOnly);
             }
+#ifdef ANTI_HIDEOS
 //>>> WiZaRd::AntiHideOS [netfinity]
             else if (m_abySeenPartStatus && m_abySeenPartStatus[nPart])
                 s_StatusBar.FillRange(uStart, uEnd, crClientSeen);
 //<<< WiZaRd::AntiHideOS [netfinity]
+#endif
 //>>> WiZaRd::ICS [enkeyDEV]
             else if (m_abyIncPartStatus && m_abyIncPartStatus[nPart])
                 s_StatusBar.FillRange(uStart, uEnd, crClientPartial);
@@ -296,12 +303,12 @@ bool CUpDownClient::AskForDownload()
     return TryToConnect();
 }
 
-bool CUpDownClient::IsSourceRequestAllowed() const
+bool CUpDownClient::IsSourceRequestAllowed(const bool bLog) const
 {
-    return IsSourceRequestAllowed(reqfile);
+    return IsSourceRequestAllowed(reqfile, bLog);
 }
 
-bool CUpDownClient::IsSourceRequestAllowed(CPartFile* partfile, bool sourceExchangeCheck) const
+bool CUpDownClient::IsSourceRequestAllowed(CPartFile* partfile, bool sourceExchangeCheck, const bool bLog) const
 {
     //if client has the correct extended protocol
     if (!ExtProtocolAvailable() || !(SupportsSourceExchange2() || GetSourceExchange1Version() > 1))
@@ -313,8 +320,8 @@ bool CUpDownClient::IsSourceRequestAllowed(CPartFile* partfile, bool sourceExcha
 
     if (partfile != reqfile)
     {
-        uSources++;
-        uValidSources++;
+        ++uSources;
+        ++uValidSources;
     }
 
     if (uSources >= reqfile->GetMaxSourcePerFileSoft())
@@ -328,29 +335,39 @@ bool CUpDownClient::IsSourceRequestAllowed(CPartFile* partfile, bool sourceExcha
     const bool bNeverAskedBefore = GetLastAskedForSources() == 0;
     const UINT uReqValidSources = reqfile->GetValidSourcesCount();
 
-    return (
-               //AND if...
-               (
-                   //source is not complete and file is very rare
-                   (!m_bCompleteSource
-                    && (bNeverAskedBefore || nTimePassedClient > SOURCECLIENTREASKS)
-                    && (uSources <= RARE_FILE/5)
-                    && (!sourceExchangeCheck || partfile == reqfile || uValidSources < uReqValidSources && uReqValidSources > 3)
-                   ) ||
-                   //source is not complete and file is rare
-                   (!m_bCompleteSource
-                    && (bNeverAskedBefore || nTimePassedClient > SOURCECLIENTREASKS)
-                    && (uSources <= RARE_FILE || (!sourceExchangeCheck || partfile == reqfile) && uSources <= RARE_FILE / 2 + uValidSources)
-                    && (nTimePassedFile > SOURCECLIENTREASKF)
-                    && (!sourceExchangeCheck || partfile == reqfile || uValidSources < SOURCECLIENTREASKS/SOURCECLIENTREASKF && uValidSources < uReqValidSources)
-                   ) ||
-                   // OR if file is not rare
-                   ((bNeverAskedBefore || nTimePassedClient > (unsigned)(SOURCECLIENTREASKS * MINCOMMONPENALTY))
-                    && (nTimePassedFile > (unsigned)(SOURCECLIENTREASKF * MINCOMMONPENALTY))
-                    && (!sourceExchangeCheck || partfile == reqfile || uValidSources < SOURCECLIENTREASKS/SOURCECLIENTREASKF && uValidSources < uReqValidSources)
-                   )
-               )
-           );
+	//AND if...
+	bool bRequestAllowed = false;
+	if(!m_bCompleteSource && (bNeverAskedBefore || nTimePassedClient > SOURCECLIENTREASKS))
+	{
+		//source is not complete and file is very rare
+		if(uSources <= RARE_FILE/5 && (!sourceExchangeCheck || partfile == reqfile || uValidSources < uReqValidSources && uReqValidSources > 3))
+		{
+			bRequestAllowed = true;
+			if(bLog)
+				theApp.QueueDebugLogLineEx(LOG_WARNING, L"XS request to %s allowed (1) - times passed: client: %s, file: %s", DbgGetClientInfo(), CastSecondsToHM(nTimePassedClient), CastSecondsToHM(nTimePassedFile));
+		}
+		//source is not complete and file is rare
+		else if((uSources <= RARE_FILE || (!sourceExchangeCheck || partfile == reqfile) && uSources <= RARE_FILE / 2 + uValidSources)
+					&& nTimePassedFile > SOURCECLIENTREASKF
+                    && (!sourceExchangeCheck || partfile == reqfile || uValidSources < SOURCECLIENTREASKS/SOURCECLIENTREASKF && uValidSources < uReqValidSources))
+		{
+			bRequestAllowed = true;
+			if(bLog)
+				theApp.QueueDebugLogLineEx(LOG_WARNING, L"XS request to %s allowed (2) - times passed: client: %s, file: %s", DbgGetClientInfo(), CastSecondsToHM(nTimePassedClient), CastSecondsToHM(nTimePassedFile));
+		}
+	}
+	// OR if file is not rare
+	if(!bRequestAllowed && (bNeverAskedBefore || nTimePassedClient > (unsigned)(SOURCECLIENTREASKS * MINCOMMONPENALTY))
+		&& (nTimePassedFile > (unsigned)(SOURCECLIENTREASKF * MINCOMMONPENALTY))
+		&& (!sourceExchangeCheck || partfile == reqfile || uValidSources < SOURCECLIENTREASKS/SOURCECLIENTREASKF && uValidSources < uReqValidSources))
+	{
+		bRequestAllowed = true;
+		if(bLog)
+			theApp.QueueDebugLogLineEx(LOG_WARNING, L"XS request to %s allowed (3) - times passed: client: %s, file: %s", DbgGetClientInfo(), CastSecondsToHM(nTimePassedClient), CastSecondsToHM(nTimePassedFile));
+	}
+	if(bLog && !bRequestAllowed)
+		theApp.QueueDebugLogLineEx(LOG_WARNING, L"XS request to %s denied - times passed: client: %s, file: %s", DbgGetClientInfo(), CastSecondsToHM(nTimePassedClient), CastSecondsToHM(nTimePassedFile));
+	return bRequestAllowed;
 }
 
 void CUpDownClient::SendFileRequest()
@@ -415,7 +432,7 @@ void CUpDownClient::SendFileRequest()
 //<<< WiZaRd::FiX? Moved down!
 
         // OP_REQUESTSOURCES // OP_REQUESTSOURCES2
-        if (IsSourceRequestAllowed())
+        if (IsSourceRequestAllowed(true))
         {
             if (thePrefs.GetDebugClientTCPLevel() > 0)
             {
@@ -438,13 +455,12 @@ void CUpDownClient::SendFileRequest()
                 dataFileReq.WriteUInt16(nOptions);
             }
             else
-            {
                 dataFileReq.WriteUInt8(OP_REQUESTSOURCES);
-            }
-            reqfile->SetLastAnsweredTimeTimeout();
+
+			reqfile->SetLastAnsweredTimeTimeout();
             SetLastAskedForSources();
             if (thePrefs.GetDebugSourceExchange())
-                AddDebugLogLine(false, _T("SXSend (%s): Client source request; %s, File=\"%s\""),SupportsSourceExchange2() ? _T("Version 2") : _T("Version 1"), DbgGetClientInfo(), reqfile->GetFileName());
+                AddDebugLogLine(false, L"SX: sending %s request to %s for file \"%s\"", SupportsSourceExchange2() ? (SupportsExtendedSourceExchange() ? L"extXS" : L"v2") : L"v1", DbgGetClientInfo(), reqfile->GetFileName()); //>>> WiZaRd::ExtendedXS [Xanatos]
 //>>> WiZaRd::ClientAnalyzer
             m_fSourceExchangeRequested = TRUE; //>>> Security Check
             //Because official client has a bug, only count the XSReqs under special conditions
@@ -519,7 +535,7 @@ void CUpDownClient::SendFileRequest()
         }*/
 //<<< WiZaRd::FiX? Moved down!
 
-        if (IsSourceRequestAllowed())
+        if (IsSourceRequestAllowed(true))
         {
             if (thePrefs.GetDebugClientTCPLevel() > 0)
             {
@@ -555,7 +571,7 @@ void CUpDownClient::SendFileRequest()
             SendPacket(packet, true);
             SetLastAskedForSources();
             if (thePrefs.GetDebugSourceExchange())
-                AddDebugLogLine(false, _T("SXSend (%s): Client source request; %s, File=\"%s\""),SupportsSourceExchange2() ? _T("Version 2") : _T("Version 1"), DbgGetClientInfo(), reqfile->GetFileName());
+				AddDebugLogLine(false, L"SX: sending %s request to %s for file \"%s\"", SupportsSourceExchange2() ? (SupportsExtendedSourceExchange() ? L"extXS" : L"v2") : L"v1", DbgGetClientInfo(), reqfile->GetFileName()); //>>> WiZaRd::ExtendedXS [Xanatos]
 //>>> WiZaRd::ClientAnalyzer
             m_fSourceExchangeRequested = TRUE; //>>> Security Check
             //Because official client has a bug, only count the XSReqs under special conditions
@@ -661,11 +677,13 @@ void CUpDownClient::ProcessFileInfo(CSafeMemFile* data, CPartFile* file)
         //m_abyPartStatus = new uint8[m_nPartCount];
         //memset(m_abyPartStatus,1,m_nPartCount);
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+#ifdef ANTI_HIDEOS
 //>>> WiZaRd::AntiHideOS [netfinity]
 		// no need for AHOS on single part files
 		delete[] m_abySeenPartStatus;
 		m_abySeenPartStatus = NULL;
 //<<< WiZaRd::AntiHideOS [netfinity]
+#endif
 //>>> WiZaRd::ICS [enkeyDEV]
 		if (nOldPartCount != nPartCount)
 		{
@@ -691,6 +709,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPart
     m_pPartStatus = NULL; // In case we fail to create the part status object
     m_pPartStatus = CPartStatus::CreatePartStatus(data, reqfile->GetFileSize());
 	const UINT nPartCount = GetPartCount();
+#ifdef ANTI_HIDEOS
 //>>> WiZaRd::AntiHideOS [netfinity]	
     if (m_abySeenPartStatus == NULL || nOldPartCount != nPartCount)
     {
@@ -700,6 +719,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPart
         memset(m_abySeenPartStatus, 0, nPartCount);
     }
 //<<< WiZaRd::AntiHideOS [netfinity]
+#endif
 //>>> WiZaRd::ICS [enkeyDEV]
 	if (nOldPartCount != nPartCount)
 	{
@@ -716,7 +736,7 @@ bool CUpDownClient::ProcessDownloadFileStatus(const bool bUDPPacket, bool bMerge
 	m_bCompleteSource = false; // clear that flag, just to be sure
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
     // netfinity: Update upload partstatus if we are downloading this file and there is more pieces available in the download partstatus
-    bMergeIfPossible = bMergeIfPossible && !md4cmp(GetUploadFileID(), reqfile->GetFileHash());
+    bMergeIfPossible = bMergeIfPossible && GetUploadFileID() && !md4cmp(GetUploadFileID(), reqfile->GetFileHash());
     if (bMergeIfPossible)
     {
         if (m_pUpPartStatus == NULL)
@@ -736,16 +756,39 @@ bool CUpDownClient::ProcessDownloadFileStatus(const bool bUDPPacket, bool bMerge
 	    
     uint16 done = 0;
     uint16 complcount = 0; //>>> WiZaRd: Anti HideOS
-	const bool checkSeenParts = m_abySeenPartStatus != NULL && !md4cmp(GetUploadFileID(), reqfile->GetFileHash()); //>>> WiZaRd::AntiHideOS [netfinity]
+#ifdef ANTI_HIDEOS
+	const bool checkSeenParts = m_abySeenPartStatus != NULL && GetUploadFileID() && !md4cmp(GetUploadFileID(), reqfile->GetFileHash()); //>>> WiZaRd::AntiHideOS [netfinity]
+#endif
+//>>> WiZaRd::Auto-ICS for Sub-Chunk-Transfer
+	bool bPartialPartFound = false;
+	if(m_abyIncPartStatus == NULL)
+	{
+		m_abyIncPartStatus = new uint8[nPartCount];
+		memset(m_abyIncPartStatus, 0, nPartCount);
+	}
+//<<< WiZaRd::Auto-ICS for Sub-Chunk-Transfer
     while (done != nPartCount)
     {
+//>>> WiZaRd::Auto-ICS for Sub-Chunk-Transfer
+		if(m_pPartStatus->IsPartialPart(done))
+		{
+			bPartialPartFound = true;
+			m_abyIncPartStatus[done] = 1;
+		}
+//<<< WiZaRd::Auto-ICS for Sub-Chunk-Transfer
         bool bPartAvail = IsPartAvailable(done);
-        if (bPartAvail)
-            m_abySeenPartStatus[done] = 1; //>>> WiZaRd::AntiHideOS [netfinity]
+#ifdef ANTI_HIDEOS
+//>>> WiZaRd::AntiHideOS [netfinity]
+        if (checkSeenParts && bPartAvail)
+            m_abySeenPartStatus[done] = 1;
+//<<< WiZaRd::AntiHideOS [netfinity]
+#endif
         if (bPartAvail
+#ifdef ANTI_HIDEOS
 //>>> WiZaRd::AntiHideOS [netfinity]
                 || (checkSeenParts && m_abySeenPartStatus[done])
 //<<< WiZaRd::AntiHideOS [netfinity]
+#endif
            )
         {
             if (!bPartsNeeded && !reqfile->IsCompletePart(done, false))
@@ -756,6 +799,13 @@ bool CUpDownClient::ProcessDownloadFileStatus(const bool bUDPPacket, bool bMerge
     }
     m_bCompleteSource = (complcount == nPartCount); //>>> WiZaRd: Anti HideOS
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+//>>> WiZaRd::Auto-ICS for Sub-Chunk-Transfer
+	if(!bPartialPartFound)
+	{
+		delete[] m_abyIncPartStatus;
+		m_abyIncPartStatus = NULL;
+	}
+//<<< WiZaRd::Auto-ICS for Sub-Chunk-Transfer
 //>>> WiZaRd::ClientAnalyzer
     if (pAntiLeechData)
         pAntiLeechData->Check4FileFaker();
@@ -868,9 +918,7 @@ void CUpDownClient::ClearDownloadBlockRequests()
     {
         Pending_Block_Struct *pending = m_PendingBlocks_list.GetNext(pos);
         if (reqfile)
-        {
             reqfile->RemoveBlockFromList(pending->block->StartOffset, pending->block->EndOffset);
-        }
 
         delete pending->block;
         // Not always allocated
@@ -1014,10 +1062,12 @@ void CUpDownClient::SetDownloadState(EDownloadState nNewState, LPCTSTR pszReason
                 delete[] m_abyIncPartStatus;
                 m_abyIncPartStatus = NULL;
 //<<< WiZaRd::ICS [enkeyDEV]
+#ifdef ANTI_HIDEOS
 //>>> WiZaRd::AntiHideOS [netfinity]
                 delete[] m_abySeenPartStatus;
                 m_abySeenPartStatus = NULL;
 //<<< WiZaRd::AntiHideOS [netfinity]
+#endif
             }
             if (socket && nNewState != DS_ERROR)
                 socket->DisableDownloadLimit();
@@ -1212,6 +1262,7 @@ void CUpDownClient::SendBlockRequests()
                     SetDownloadState(DS_ERROR);
                     return;
                 }
+                break;
             }
         }
     }
@@ -1790,6 +1841,12 @@ uint16 CUpDownClient::GetAvailablePartCount() const
 
 void CUpDownClient::SetRemoteQueueRank(UINT nr, bool bUpdateDisplay)
 {
+//>>> WiZaRd::QR History
+	if(nr == 0 || GetDownloadState() == DS_NONEEDEDPARTS) //buggy, e.g. Shareaza
+		m_iQueueRankDifference = 0;    
+	else if(m_nRemoteQueueRank /*&& nr != m_nRemoteQueueRank*/)
+		m_iQueueRankDifference = (nr - m_nRemoteQueueRank);
+//<<< WiZaRd::QR History
     m_nRemoteQueueRank = nr;
     UpdateDisplayedInfo(bUpdateDisplay);
 }
@@ -1841,7 +1898,7 @@ void CUpDownClient::UDPReaskFNF()
                 if (GetUploadState() != US_NONE)
                 {
                     if (theApp.uploadqueue->IsDownloading(this))
-                        theApp.uploadqueue->RemoveFromUploadQueue(this, L"Src says he does not have the file he's downloading (UDP)", true, true);
+                        theApp.uploadqueue->RemoveFromUploadQueue(this, L"Src says he does not have the file he's downloading (UDP)", true);
                     else //if(GetUploadState() == US_ONUPLOADQUEUE)
                         theApp.uploadqueue->RemoveFromWaitingQueue(this);
                 }
@@ -1917,9 +1974,7 @@ void CUpDownClient::UDPReaskForDownload()
                 return;
 
             if (SwapToAnotherFile(_T("A4AF check before OP__ReaskFilePing. CUpDownClient::UDPReaskForDownload()"), true, false, false, NULL, true, true))
-            {
                 return; // we swapped, so need to go to tcp
-            }
 
             m_bUDPPending = true;
             CSafeMemFile data(128);
@@ -2741,6 +2796,7 @@ void CUpDownClient::SetReqFileAICHHash(CAICHHash* val)
 
 void CUpDownClient::SendAICHRequest(CPartFile* pForFile, uint16 nPart)
 {
+	ASSERT(m_fAICHRequested == NULL);
     CAICHRequestedData request;
     request.m_nPart = nPart;
     request.m_pClient = this;
@@ -2762,20 +2818,18 @@ void CUpDownClient::ProcessAICHAnswer(const uchar* packet, UINT size)
 {
     if(!IsAICHReqPending())
         throw CString(L"Received unrequested AICH Packet");
-
 	m_fAICHRequested = FALSE;
-    CSafeMemFile data(packet, size);
 	if(size < 16)
 	{
 		CAICHRecoveryHashSet::ClientAICHRequestFailed(this);
-		throw L"Received AICH Answer Packet with wrong size";
+		throw CString(L"Received AICH Answer Packet with wrong size");
 	}
-    else if (size > 16)
+	else if(size != 16)
 	{
+		CSafeMemFile data(packet, size);
 		uchar abyHash[16];
 		data.ReadHash16(abyHash);
-		CPartFile* pPartFile = theApp.downloadqueue->GetFileByID(abyHash);		
-		uint16 nPart = data.ReadUInt16();
+		CPartFile* pPartFile = theApp.downloadqueue->GetFileByID(abyHash);			
 		if (pPartFile != NULL)			
 		{
 			CAICHRequestedData request = CAICHRecoveryHashSet::GetAICHReqDetails(this);
@@ -2783,6 +2837,7 @@ void CUpDownClient::ProcessAICHAnswer(const uchar* packet, UINT size)
 			{
 				if(request.m_pClient == this)
 				{
+					uint16 nPart = data.ReadUInt16();
 					if(nPart == request.m_nPart)
 					{
 						CAICHHash ahMasterHash(&data);
@@ -2819,7 +2874,7 @@ void CUpDownClient::ProcessAICHAnswer(const uchar* packet, UINT size)
 		else
 			theApp.QueueDebugLogLineEx(LOG_ERROR, L"AICH Packet Answer: file with hash %s not found in packet from %s", md4str(abyHash), DbgGetClientInfo());
 	}
-    CAICHRecoveryHashSet::ClientAICHRequestFailed(this);
+	CAICHRecoveryHashSet::ClientAICHRequestFailed(this);
 }
 
 void CUpDownClient::ProcessAICHRequest(const uchar* packet, UINT size)
@@ -2886,6 +2941,7 @@ void CUpDownClient::ProcessAICHRequest(const uchar* packet, UINT size)
         DebugSend("OP__AichAnswer", this, abyHash);
     Packet* packAnswer = new Packet(OP_AICHANSWER, 16, OP_EMULEPROT);
     md4cpy(packAnswer->pBuffer, abyHash);
+	//PokeUInt16(packAnswer->pBuffer+16, nPart);
     theStats.AddUpDataOverheadFileRequest(packAnswer->size);
     SafeConnectAndSendPacket(packAnswer);
 }

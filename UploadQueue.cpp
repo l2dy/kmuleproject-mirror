@@ -214,7 +214,7 @@ CUpDownClient* CUploadQueue::FindBestClientInQueue(bool allowLowIdAddNextConnect
         {
             //This client has either not been seen in a long time, or we no longer share the file he wanted anymore..
             //cur_client->ClearWaitStartTime(); //>>> WiZaRd::ZZUL Upload [ZZ]
-            RemoveFromWaitingQueue(pos2,true);
+            RemoveFromWaitingQueue(pos2);
             continue;
         }
 
@@ -503,7 +503,7 @@ bool CUploadQueue::AddUpNextClient(LPCTSTR pszReason, CUpDownClient* directadd)
 
         if(newclient)
         {
-            RemoveFromWaitingQueue(newclient, true);
+            RemoveFromWaitingQueue(newclient);
             theApp.emuledlg->transferwnd->ShowQueueCount(waitinglist.GetCount());
         }
     }
@@ -717,8 +717,8 @@ void CUploadQueue::Process()
         //It seems chatting or friend slots can get stuck at times in upload.. This needs looked into..
         if (!cur_client->socket)
         {
-            RemoveFromUploadQueue(cur_client, _T("Uploading to client without socket? (CUploadQueue::Process)"));
-            if (cur_client->Disconnected(_T("CUploadQueue::Process")))
+            RemoveFromUploadQueue(cur_client, L"Uploading to client without socket? (CUploadQueue::Process)");
+            if (cur_client->Disconnected(L"CUploadQueue::Process"))
                 delete cur_client;
         }
         else
@@ -755,7 +755,7 @@ void CUploadQueue::Process()
             else
             {
                 bool keepWaitingTime = cur_client->GetScheduledUploadShouldKeepWaitingTime();
-                if(RemoveFromUploadQueue(cur_client, (CString)_T("Scheduled for removal: ") + cur_client->GetScheduledRemovalDebugReason(), true, keepWaitingTime))
+                if(RemoveFromUploadQueue(cur_client, L"Scheduled for removal: " + CString(cur_client->GetScheduledRemovalDebugReason()), keepWaitingTime))
 					AddClientToQueue(cur_client, true, keepWaitingTime);					
 				m_nLastStartUpload = ::GetTickCount()-SEC2MS(9);
             }
@@ -781,7 +781,7 @@ void CUploadQueue::Process()
             if (blockclient->socket->GetOverallBlockingRatio() > thePrefs.GetMaxBlockRate()	//95% of all send were blocked
                     && blockclient->socket->GetBlockingRatio() > thePrefs.GetMaxBlockRate20())	//96% the last 20 seconds
             {
-                if (RemoveFromUploadQueue(blockclient, L"Blocking", true, true))
+                if (RemoveFromUploadQueue(blockclient, L"Blocking", true))
                 {
                     theApp.QueueDebugLogLineEx(LOG_WARNING, L"Client %s is blocking too often and max slots are reached: avg20: %1.2f%%, all: %1.2f%%, avg. ul: %s",
                                                blockclient->DbgGetClientInfo(), blockclient->socket->GetBlockingRatio(), blockclient->socket->GetOverallBlockingRatio(), CastItoXBytes(blockclient->GetSessionUp()/blockclient->GetUpStartTimeDelay()*1000.0f, false, true));
@@ -1190,7 +1190,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
                 if (thePrefs.GetLogUlDlEvents())
                     AddDebugLogLine(true, _T("Adding ****lowid when reconnecting. Client: %s"), client->DbgGetClientInfo());
                 //client->m_bAddNextConnect = false; //>>> WiZaRd::Fix for LowID slots only on connection [VQB]
-                RemoveFromWaitingQueue(client, true);
+                RemoveFromWaitingQueue(client);
                 // statistic values // TODO: Maybe we should change this to count each request for a file only once and ignore reasks
                 reqfile->statistic.AddRequest();
                 AddUpNextClient(_T("Adding ****lowid when reconnecting."), client);
@@ -1218,7 +1218,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
                 //client has a valid secure hash, add him remove other one
                 if (thePrefs.GetVerbose())
                     AddDebugLogLine(false, GetResString(IDS_SAMEUSERHASH), client->GetUserName(), cur_client->GetUserName(), cur_client->GetUserName());
-                RemoveFromWaitingQueue(pos2,true);
+                RemoveFromWaitingQueue(pos2);
                 if (!cur_client->socket)
                 {
                     if (cur_client->Disconnected(_T("AddClientToQueue - same userhash 1")))
@@ -1230,7 +1230,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
                 // remove both since we do not know who the bad one is
                 if (thePrefs.GetVerbose())
                     AddDebugLogLine(false, GetResString(IDS_SAMEUSERHASH), client->GetUserName() ,cur_client->GetUserName(), _T("Both"));
-                RemoveFromWaitingQueue(pos2,true);
+                RemoveFromWaitingQueue(pos2);
                 if (!cur_client->socket)
                 {
                     if (cur_client->Disconnected(_T("AddClientToQueue - same userhash 2")))
@@ -1274,7 +1274,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
         // emule collection will bypass the queue
         if (reqfile && reqfile->GetFileSize() < theApp.uploadqueue->GetSmallFileSize())
         {
-            RemoveFromWaitingQueue(client, true);
+            RemoveFromWaitingQueue(client);
             AddUpNextClient(L"Small File Priority Slot", client);
             return;
         }
@@ -1365,7 +1365,7 @@ float CUploadQueue::GetAverageCombinedFilePrioAndCredit()
     return m_fAverageCombinedFilePrioAndCredit;
 }
 
-bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client, LPCTSTR pszReason, bool updatewindow, bool earlyabort)
+bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client, const CString strReason, const bool earlyabort)
 {
     bool result = false;
     UINT slotCounter = 1;
@@ -1381,13 +1381,12 @@ bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client, LPCTSTR pszReaso
         if (client == curClient)
         {
             client->SendOutOfPartReqs(); //>>> WiZaRd::ZZUL Upload [ZZ]
-            if (updatewindow)
-                theApp.emuledlg->transferwnd->GetUploadList()->RemoveClient(client);
+			theApp.emuledlg->transferwnd->GetUploadList()->RemoveClient(client);
 
             if (thePrefs.GetLogUlDlEvents())
 //>>> WiZaRd::ZZUL Upload [ZZ]
-                AddDebugLogLine(DLP_DEFAULT, true,_T("Removing client from upload list: %s Client: %s Transferred: %s SessionUp: %s QueueSessionUp: %s QueueSessionPayload: %s In buffer: %s Req blocks: %i File: %s"), pszReason==NULL ? L"" : pszReason, client->DbgGetClientInfo(), CastSecondsToHM(client->GetUpStartTimeDelay()/1000), CastItoXBytes(client->GetSessionUp(), false, false), CastItoXBytes(client->GetQueueSessionUp(), false, false), CastItoXBytes(client->GetQueueSessionPayloadUp(), false, false), CastItoXBytes(client->GetPayloadInBuffer()), client->GetNumberOfRequestedBlocksInQueue(), (theApp.sharedfiles->GetFileByID(client->GetUploadFileID())?theApp.sharedfiles->GetFileByID(client->GetUploadFileID())->GetFileName():L""));
-            //AddDebugLogLine(DLP_DEFAULT, true,_T("Removing client from upload list: %s Client: %s Transferred: %s SessionUp: %s QueueSessionPayload: %s In buffer: %s Req blocks: %i File: %s"), pszReason==NULL ? L"" : pszReason, client->DbgGetClientInfo(), CastSecondsToHM( client->GetUpStartTimeDelay()/1000), CastItoXBytes(client->GetSessionUp(), false, false), CastItoXBytes(client->GetQueueSessionPayloadUp(), false, false), CastItoXBytes(client->GetPayloadInBuffer()), client->GetNumberOfRequestedBlocksInQueue(), (theApp.sharedfiles->GetFileByID(client->GetUploadFileID())?theApp.sharedfiles->GetFileByID(client->GetUploadFileID())->GetFileName():L""));
+                AddDebugLogLine(DLP_DEFAULT, true, L"Removing client from upload list: %s Client: %s Transferred: %s SessionUp: %s QueueSessionUp: %s QueueSessionPayload: %s In buffer: %s Req blocks: %i File: %s", strReason, client->DbgGetClientInfo(), CastSecondsToHM(client->GetUpStartTimeDelay()/1000), CastItoXBytes(client->GetSessionUp(), false, false), CastItoXBytes(client->GetQueueSessionUp(), false, false), CastItoXBytes(client->GetQueueSessionPayloadUp(), false, false), CastItoXBytes(client->GetPayloadInBuffer()), client->GetNumberOfRequestedBlocksInQueue(), (theApp.sharedfiles->GetFileByID(client->GetUploadFileID())?theApp.sharedfiles->GetFileByID(client->GetUploadFileID())->GetFileName():L""));
+            //AddDebugLogLine(DLP_DEFAULT, true, L"Removing client from upload list: %s Client: %s Transferred: %s SessionUp: %s QueueSessionPayload: %s In buffer: %s Req blocks: %i File: %s", strReason, client->DbgGetClientInfo(), CastSecondsToHM( client->GetUpStartTimeDelay()/1000), CastItoXBytes(client->GetSessionUp(), false, false), CastItoXBytes(client->GetQueueSessionPayloadUp(), false, false), CastItoXBytes(client->GetPayloadInBuffer()), client->GetNumberOfRequestedBlocksInQueue(), (theApp.sharedfiles->GetFileByID(client->GetUploadFileID())?theApp.sharedfiles->GetFileByID(client->GetUploadFileID())->GetFileName():L""));
 //<<< WiZaRd::ZZUL Upload [ZZ]
 //>>> WiZaRd::Fix for LowID slots only on connection [VQB]
             //client->m_bAddNextConnect = false;
@@ -1460,28 +1459,27 @@ UINT CUploadQueue::GetAverageUpTime()
     return 0;
 }
 
-bool CUploadQueue::RemoveFromWaitingQueue(CUpDownClient* client, bool updatewindow)
+bool CUploadQueue::RemoveFromWaitingQueue(CUpDownClient* client)
 {
     POSITION pos = waitinglist.Find(client);
     if (pos)
     {
-        RemoveFromWaitingQueue(pos,updatewindow);
+        RemoveFromWaitingQueue(pos);
         return true;
     }
     else
         return false;
 }
 
-void CUploadQueue::RemoveFromWaitingQueue(POSITION pos, bool updatewindow)
+void CUploadQueue::RemoveFromWaitingQueue(POSITION pos)
 {
     m_bStatisticsWaitingListDirty = true;
     CUpDownClient* todelete = waitinglist.GetAt(pos);
     waitinglist.RemoveAt(pos);
-    if (updatewindow)
-    {
-        theApp.emuledlg->transferwnd->GetQueueList()->RemoveClient(todelete);
-        theApp.emuledlg->transferwnd->ShowQueueCount(waitinglist.GetCount());
-    }
+
+	theApp.emuledlg->transferwnd->GetQueueList()->RemoveClient(todelete);
+	theApp.emuledlg->transferwnd->ShowQueueCount(waitinglist.GetCount());
+
 //>>> WiZaRd::Fix for LowID slots only on connection [VQB]
     //todelete->m_bAddNextConnect = false;
 //<<< WiZaRd::Fix for LowID slots only on connection [VQB]
@@ -1556,179 +1554,187 @@ VOID CALLBACK CUploadQueue::UploadTimer(HWND /*hwnd*/, UINT /*uMsg*/, UINT_PTR /
         if (!theApp.emuledlg->IsRunning())
             return;
 
-        // Elandal:ThreadSafeLogging -->
-        // other threads may have queued up log lines. This prints them.
-        theApp.HandleLogQueues();
-        // Elandal: ThreadSafeLogging <--
+		theApp.emuledlg->PostMessage(TM_UPLOAD_TIMER, NULL, NULL); //>>> WiZaRd::Catch exceptions
+	}
+	CATCH_DFLT_EXCEPTIONS(L"CUploadQueue::UploadTimer")
+}
+
+//>>> WiZaRd::Catch exceptions
+// Called via messages so force crashes to be dumped
+void CUploadQueue::UploadTimer()
+{
+//<<< WiZaRd::Catch exceptions
+    // Elandal:ThreadSafeLogging -->
+    // other threads may have queued up log lines. This prints them.
+    theApp.HandleLogQueues();
+    // Elandal: ThreadSafeLogging <--
 
 #ifdef NAT_TRAVERSAL
-        CUtpSocket::Process(); //>>> WiZaRd::NatTraversal [Xanatos]
+    CUtpSocket::Process(); //>>> WiZaRd::NatTraversal [Xanatos]
 #endif
 
-        // ZZ:UploadSpeedSense -->
-        theApp.lastCommonRouteFinder->SetPrefs(thePrefs.IsDynUpEnabled(),
-                                               theApp.uploadqueue->GetDatarate(),
-                                               thePrefs.GetMinUpload()*1024,
-                                               (thePrefs.GetMaxUpload() != 0) ? thePrefs.GetMaxUpload() * 1024 : thePrefs.GetMaxGraphUploadRate(false) * 1024,
-                                               thePrefs.IsDynUpUseMillisecondPingTolerance(),
-                                               (thePrefs.GetDynUpPingTolerance() > 100) ? ((thePrefs.GetDynUpPingTolerance() - 100) / 100.0f) : 0,
-                                               thePrefs.GetDynUpPingToleranceMilliseconds(),
-                                               thePrefs.GetDynUpGoingUpDivider(),
-                                               thePrefs.GetDynUpGoingDownDivider(),
-                                               thePrefs.GetDynUpNumberOfPings(),
+    // ZZ:UploadSpeedSense -->
+    theApp.lastCommonRouteFinder->SetPrefs(thePrefs.IsDynUpEnabled(),
+                                            theApp.uploadqueue->GetDatarate(),
+                                            thePrefs.GetMinUpload()*1024,
+                                            (thePrefs.GetMaxUpload() != 0) ? thePrefs.GetMaxUpload() * 1024 : thePrefs.GetMaxGraphUploadRate(false) * 1024,
+                                            thePrefs.IsDynUpUseMillisecondPingTolerance(),
+                                            (thePrefs.GetDynUpPingTolerance() > 100) ? ((thePrefs.GetDynUpPingTolerance() - 100) / 100.0f) : 0,
+                                            thePrefs.GetDynUpPingToleranceMilliseconds(),
+                                            thePrefs.GetDynUpGoingUpDivider(),
+                                            thePrefs.GetDynUpGoingDownDivider(),
+                                            thePrefs.GetDynUpNumberOfPings(),
 //>>> WiZaRd::ZZUL Upload [ZZ]
-                                               10, // PENDING: Hard coded min pLowestPingAllowed
-                                               theApp.uploadqueue->GetActiveUploadsCount() > (UINT)theApp.uploadqueue->GetUploadQueueLength());
-        //20); // PENDING: Hard coded min pLowestPingAllowed
+                                            10, // PENDING: Hard coded min pLowestPingAllowed
+                                            theApp.uploadqueue->GetActiveUploadsCount() > (UINT)theApp.uploadqueue->GetUploadQueueLength());
+    //20); // PENDING: Hard coded min pLowestPingAllowed
 //<<< WiZaRd::ZZUL Upload [ZZ]
-        // ZZ:UploadSpeedSense <--
+    // ZZ:UploadSpeedSense <--
 
-        theApp.uploadqueue->Process();
-        theApp.downloadqueue->Process();
-        if (thePrefs.ShowOverhead())
-        {
-            theStats.CompUpDatarateOverhead();
-            theStats.CompDownDatarateOverhead();
-        }
-        counter++;
+    theApp.uploadqueue->Process();
+    theApp.downloadqueue->Process();
+    if (thePrefs.ShowOverhead())
+    {
+        theStats.CompUpDatarateOverhead();
+        theStats.CompDownDatarateOverhead();
+    }
+    counter++;
 
-        // one second
-        if (counter >= 10)
-        {
-            counter=0;
+    // one second
+    if (counter >= 10)
+    {
+        counter=0;
 
 #ifdef IPV6_SUPPORT
-            theApp.UpdateIPv6(); //>>> WiZaRd::IPv6 [Xanatos]
+        theApp.UpdateIPv6(); //>>> WiZaRd::IPv6 [Xanatos]
 #endif
 
-            // try to use different time intervals here to not create any disk-IO bottle necks by saving all files at once
-            theApp.clientcredits->Process();	// 13 minutes
-            theApp.knownfiles->Process();		// 11 minutes
-            theApp.antileechlist->Process();	// 18 minutes  //>>> WiZaRd::ClientAnalyzer
-            theApp.friendlist->Process();		// 19 minutes
-            theApp.clientlist->Process();
-            theApp.sharedfiles->Process();
-            if (Kademlia::CKademlia::IsRunning())
+        // try to use different time intervals here to not create any disk-IO bottle necks by saving all files at once
+        theApp.clientcredits->Process();	// 13 minutes
+        theApp.knownfiles->Process();		// 11 minutes
+        theApp.antileechlist->Process();	// 18 minutes  //>>> WiZaRd::ClientAnalyzer
+        theApp.friendlist->Process();		// 19 minutes
+        theApp.clientlist->Process();
+        theApp.sharedfiles->Process();
+        if (Kademlia::CKademlia::IsRunning())
+        {
+            Kademlia::CKademlia::Process();
+            if (Kademlia::CKademlia::GetPrefs()->HasLostConnection())
             {
-                Kademlia::CKademlia::Process();
-                if (Kademlia::CKademlia::GetPrefs()->HasLostConnection())
-                {
-                    LogError(LOG_STATUSBAR, GetResString(IDS_ERR_LOSTC), GetResString(IDS_KADEMLIA));
-                    Kademlia::CKademlia::Stop();
-                    theApp.emuledlg->ShowConnectionState();
-                    Kademlia::CKademlia::Start(); //>>> WiZaRd::Kad Reconnect
-                }
-            }
-
-            theApp.listensocket->UpdateConnectionsStatus();
-            if (thePrefs.WatchClipboard4ED2KLinks())
-            {
-                // TODO: Remove this from here. This has to be done with a clipboard chain
-                // and *not* with a timer!!
-                theApp.SearchClipboard();
-            }
-
-            // 2 seconds
-            i2Secs++;
-            if (i2Secs>=2)
-            {
-                i2Secs=0;
-
-                // Update connection stats...
-                theStats.UpdateConnectionStats((float)theApp.uploadqueue->GetDatarate()/1024, (float)theApp.downloadqueue->GetDatarate()/1024);
-#ifdef HAVE_WIN7_SDK_H
-                theApp.emuledlg->UpdateStatusBarProgress();
-#endif
-            }
-
-            // display graphs
-            if (thePrefs.GetTrafficOMeterInterval()>0)
-            {
-                igraph++;
-
-                if (igraph >= (UINT)(thePrefs.GetTrafficOMeterInterval()))
-                {
-                    igraph=0;
-                    //theApp.emuledlg->statisticswnd->SetCurrentRate((float)(theApp.uploadqueue->Getavgupload()/theApp.uploadqueue->Getavg())/1024,(float)(theApp.uploadqueue->Getavgdownload()/theApp.uploadqueue->Getavg())/1024);
-                    theApp.emuledlg->statisticswnd->SetCurrentRate((float)(theApp.uploadqueue->GetDatarate())/1024,(float)(theApp.downloadqueue->GetDatarate())/1024);
-                    //theApp.uploadqueue->Zeroavg();
-                }
-            }
-            if (theApp.emuledlg->activewnd == theApp.emuledlg->statisticswnd && theApp.emuledlg->IsWindowVisible())
-            {
-                // display stats
-                if (thePrefs.GetStatsInterval()>0)
-                {
-                    istats++;
-
-                    if (istats >= (UINT)(thePrefs.GetStatsInterval()))
-                    {
-                        istats=0;
-                        theApp.emuledlg->statisticswnd->ShowStatistics();
-                    }
-                }
-            }
-
-            theApp.uploadqueue->UpdateDatarates();
-
-            //save rates every second
-            theStats.RecordRate();
-
-            // ZZ:UploadSpeedSense -->
-            theApp.emuledlg->ShowPing();
-
-            /*bool gotEnoughHosts = */
-            theApp.clientlist->GiveClientsForTraceRoute();
-            // ZZ:UploadSpeedSense <--
-
-            if (theApp.emuledlg->IsTrayIconToFlash())
-                theApp.emuledlg->ShowTransferRate(true);
-
-            sec++;
-            // *** 5 seconds **********************************************
-            if (sec >= 5)
-            {
-#ifdef _DEBUG
-                if (thePrefs.m_iDbgHeap > 0 && !AfxCheckMemory())
-                    AfxDebugBreak();
-#endif
-
-                sec = 0;
-                theApp.listensocket->Process();
-                theApp.OnlineSig(); // Added By Bouc7
-                if (!theApp.emuledlg->IsTrayIconToFlash())
-                    theApp.emuledlg->ShowTransferRate();
-
-                thePrefs.EstimateMaxUploadCap(theApp.uploadqueue->GetDatarate()/1024);
-
-                // update cat-titles with downloadinfos only when needed
-                if (thePrefs.ShowCatTabInfos() &&
-                        theApp.emuledlg->activewnd == theApp.emuledlg->transferwnd &&
-                        theApp.emuledlg->IsWindowVisible())
-                    theApp.emuledlg->transferwnd->UpdateCatTabTitles(false);
-
-                theApp.emuledlg->transferwnd->UpdateListCount(CTransferDlg::wnd2Uploading, -1);
-            }
-
-            statsave++;
-            // *** 60 seconds *********************************************
-            if (statsave >= 60)
-            {
-                statsave=0;
-
-                if (thePrefs.GetPreventStandby())
-                    theApp.ResetStandByIdleTimer(); // Reset Windows idle standby timer if necessary
-            }
-
-            s_uSaveStatistics++;
-            if (s_uSaveStatistics >= thePrefs.GetStatsSaveInterval())
-            {
-                s_uSaveStatistics = 0;
-                thePrefs.SaveStats();
+                LogError(LOG_STATUSBAR, GetResString(IDS_ERR_LOSTC), GetResString(IDS_KADEMLIA));
+                Kademlia::CKademlia::Stop();
+                theApp.emuledlg->ShowConnectionState();
+                Kademlia::CKademlia::Start(); //>>> WiZaRd::Kad Reconnect
             }
         }
+
+        theApp.listensocket->UpdateConnectionsStatus();
+        if (thePrefs.WatchClipboard4ED2KLinks())
+        {
+            // TODO: Remove this from here. This has to be done with a clipboard chain
+            // and *not* with a timer!!
+            theApp.SearchClipboard();
+        }
+
+        // 2 seconds
+        i2Secs++;
+        if (i2Secs>=2)
+        {
+            i2Secs=0;
+
+            // Update connection stats...
+            theStats.UpdateConnectionStats((float)theApp.uploadqueue->GetDatarate()/1024, (float)theApp.downloadqueue->GetDatarate()/1024);
+#ifdef HAVE_WIN7_SDK_H
+            theApp.emuledlg->UpdateStatusBarProgress();
+#endif
+        }
+
+        // display graphs
+        if (thePrefs.GetTrafficOMeterInterval()>0)
+        {
+            igraph++;
+
+            if (igraph >= (UINT)(thePrefs.GetTrafficOMeterInterval()))
+            {
+                igraph=0;
+                //theApp.emuledlg->statisticswnd->SetCurrentRate((float)(theApp.uploadqueue->Getavgupload()/theApp.uploadqueue->Getavg())/1024,(float)(theApp.uploadqueue->Getavgdownload()/theApp.uploadqueue->Getavg())/1024);
+                theApp.emuledlg->statisticswnd->SetCurrentRate((float)(theApp.uploadqueue->GetDatarate())/1024,(float)(theApp.downloadqueue->GetDatarate())/1024);
+                //theApp.uploadqueue->Zeroavg();
+            }
+        }
+        if (theApp.emuledlg->activewnd == theApp.emuledlg->statisticswnd && theApp.emuledlg->IsWindowVisible())
+        {
+            // display stats
+            if (thePrefs.GetStatsInterval()>0)
+            {
+                istats++;
+
+                if (istats >= (UINT)(thePrefs.GetStatsInterval()))
+                {
+                    istats=0;
+                    theApp.emuledlg->statisticswnd->ShowStatistics();
+                }
+            }
+        }
+
+        theApp.uploadqueue->UpdateDatarates();
+
+        //save rates every second
+        theStats.RecordRate();
+
+        // ZZ:UploadSpeedSense -->
+        theApp.emuledlg->ShowPing();
+
+        /*bool gotEnoughHosts = */
+        theApp.clientlist->GiveClientsForTraceRoute();
+        // ZZ:UploadSpeedSense <--
+
+        if (theApp.emuledlg->IsTrayIconToFlash())
+            theApp.emuledlg->ShowTransferRate(true);
+
+        sec++;
+        // *** 5 seconds **********************************************
+        if (sec >= 5)
+        {
+#ifdef _DEBUG
+            if (thePrefs.m_iDbgHeap > 0 && !AfxCheckMemory())
+                AfxDebugBreak();
+#endif
+
+            sec = 0;
+            theApp.listensocket->Process();
+            theApp.OnlineSig(); // Added By Bouc7
+            if (!theApp.emuledlg->IsTrayIconToFlash())
+                theApp.emuledlg->ShowTransferRate();
+
+            thePrefs.EstimateMaxUploadCap(theApp.uploadqueue->GetDatarate()/1024);
+
+            // update cat-titles with downloadinfos only when needed
+            if (thePrefs.ShowCatTabInfos() &&
+                    theApp.emuledlg->activewnd == theApp.emuledlg->transferwnd &&
+                    theApp.emuledlg->IsWindowVisible())
+                theApp.emuledlg->transferwnd->UpdateCatTabTitles(false);
+
+            theApp.emuledlg->transferwnd->UpdateListCount(CTransferDlg::wnd2Uploading, -1);
+        }
+
+        statsave++;
+        // *** 60 seconds *********************************************
+        if (statsave >= 60)
+        {
+            statsave=0;
+
+            if (thePrefs.GetPreventStandby())
+                theApp.ResetStandByIdleTimer(); // Reset Windows idle standby timer if necessary
+        }
+
+        s_uSaveStatistics++;
+        if (s_uSaveStatistics >= thePrefs.GetStatsSaveInterval())
+        {
+            s_uSaveStatistics = 0;
+            thePrefs.SaveStats();
+        }
     }
-    CATCH_DFLT_EXCEPTIONS(_T("CUploadQueue::UploadTimer"))
 }
 
 CUpDownClient* CUploadQueue::GetNextClient(const CUpDownClient* lastclient)
@@ -2372,7 +2378,7 @@ bool CUploadQueue::AddUpNextClient(LPCTSTR pszReason, CUpDownClient* directadd, 
 
             if (!IsDownloading(newclient) && !newclient->IsScheduledForRemoval())
             {
-                RemoveFromWaitingQueue(newclient, true);
+                RemoveFromWaitingQueue(newclient);
                 theApp.emuledlg->transferwnd->ShowQueueCount(waitinglist.GetCount());
                 //} else {
                 //    newclient->UnscheduleForRemoval();

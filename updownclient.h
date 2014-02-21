@@ -533,8 +533,8 @@ public:
     {
         return m_bUDPPending;
     }
-    bool			IsSourceRequestAllowed() const;
-    bool            IsSourceRequestAllowed(CPartFile* partfile, bool sourceExchangeCheck = false) const; // ZZ:DownloadManager
+    bool			IsSourceRequestAllowed(const bool bLog = false) const;
+    bool            IsSourceRequestAllowed(CPartFile* partfile, const bool sourceExchangeCheck = false, const bool bLog = false) const; // ZZ:DownloadManager
 
     bool			IsValidSource() const;
     ESourceFrom		GetSourceFrom() const
@@ -1034,10 +1034,12 @@ public:
     }
     bool	IsIncPartAvailable(const UINT iPart) const;
 //<<< WiZaRd::ICS [enkeyDEV]
+#ifdef ANTI_HIDEOS
 //>>> WiZaRd::AntiHideOS [netfinity]
 public:
     uint8*	m_abySeenPartStatus;
 //<<< WiZaRd::AntiHideOS [netfinity]
+#endif
 //>>> WiZaRd::ClientAnalyzer
 private:
     CAntiLeechData* pAntiLeechData; //>>> WiZaRd::ClientAnalyzer
@@ -1208,5 +1210,11 @@ public:
 private:
     uint8	m_byFileRequestState;
 //<<< WiZaRd::Unsolicited PartStatus [Netfinity]
+//>>> WiZaRd::QR History
+private:
+	int		m_iQueueRankDifference;
+public:
+	int		GetQRDifference() const				{return m_iQueueRankDifference;}
+//<<< WiZaRd::QR History
 };
 //#pragma pack()

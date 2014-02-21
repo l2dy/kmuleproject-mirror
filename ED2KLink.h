@@ -37,11 +37,11 @@ public:
 
     typedef enum { kFile , kNodesList, kSearch, kInvalid } LinkType;
 
-    virtual LinkType GetKind() const = 0;
-    virtual void GetLink(CString& lnk) const = 0;
-    virtual class CED2KFileLink* GetFileLink() = 0;
-    virtual class CED2KNodesListLink* GetNodesListLink() = 0;
-    virtual class CED2KSearchLink* GetSearchLink() = 0;
+    virtual LinkType GetKind() const						{ AfxDebugBreak(); return kInvalid; }
+    virtual void GetLink(CString& /*lnk*/) const			{ AfxDebugBreak(); }
+    virtual class CED2KFileLink* GetFileLink()				{ AfxDebugBreak(); return NULL; }
+    virtual class CED2KNodesListLink* GetNodesListLink()	{ AfxDebugBreak(); return NULL; }
+    virtual class CED2KSearchLink* GetSearchLink()			{ AfxDebugBreak(); return NULL; }
 };
 
 class CED2KFileLink : public CED2KLink

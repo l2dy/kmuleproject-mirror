@@ -175,7 +175,7 @@ BOOL CPPgAbout::OnInitDialog()
     // footer
     credits.Format(L"\n_____________________________________________\n");
     aboutInfo->AddLine(credits, -1, false, RGB(0, 0, 0), RGB(255, 255, 255), CFM_BOLD);
-    credits.Format(L"Copyright (C) 2012-2013 tuxman/WiZaRd");
+    credits.Format(L"Copyright (C) 2012-2014 tuxman/WiZaRd");
     aboutInfo->AddLine(getCenteredString(credits) + L"\n", -1, false, RGB(0, 0, 0), RGB(255, 255, 255), 0);
     credits.Format(L"%s is licensed under the GPL", MOD_VERSION_PLAIN);
     aboutInfo->AddLine(getCenteredString(credits) + L"\n", -1, false, RGB(0, 0, 0), RGB(255, 255, 255), 0);

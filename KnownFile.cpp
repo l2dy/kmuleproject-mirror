@@ -1248,7 +1248,7 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
     if (md4cmp(forClient->GetUploadFileID(), GetFileHash())!=0)
     {
         // should never happen
-        DEBUG_ONLY(DebugLogError(_T("*** %hs - client (%s) upload file \"%s\" does not match file \"%s\""), __FUNCTION__, forClient->DbgGetClientInfo(), DbgGetFileInfo(forClient->GetUploadFileID()), GetFileName()));
+        DEBUG_ONLY(DebugLogError(L"*** %hs - client (%s) upload file \"%s\" does not match file \"%s\"", __FUNCTION__, forClient->DbgGetClientInfo(), DbgGetFileInfo(forClient->GetUploadFileID()), GetFileName()));
         ASSERT(0);
         return NULL;
     }
@@ -1258,7 +1258,7 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
             && !(forClient->GetUpPartCount()==GetPartCount() && forClient->GetUpPartStatus()!=NULL))
     {
         // should never happen
-        DEBUG_ONLY(DebugLogError(_T("*** %hs - part count (%u) of client (%s) does not match part count (%u) of file \"%s\""), __FUNCTION__, forClient->GetUpPartCount(), forClient->DbgGetClientInfo(), GetPartCount(), GetFileName()));
+        DEBUG_ONLY(DebugLogError(L"*** %hs - part count (%u) of client (%s) does not match part count (%u) of file \"%s\"", __FUNCTION__, forClient->GetUpPartCount(), forClient->DbgGetClientInfo(), GetPartCount(), GetFileName()));
         ASSERT(0);
         return NULL;
     }
@@ -1279,39 +1279,58 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
             byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGE2_VERSION);
         bIsSX2Packet = true;
         data.WriteUInt8(byUsedVersion);
+//>>> WiZaRd::ExtendedXS [Xanatos]
+		// WiZaRd: Fix extendedXS: the byUsedVersion value is used below to determine which data is written
+		// The remote client will set it to its XS2 version if we are using extXS and thus, XS packets will be malformed and cause exceptions if we don't sync it here
+		if (forClient->SupportsExtendedSourceExchange())
+			byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGE2_VERSION);
+//<<< WiZaRd::ExtendedXS [Xanatos]
 
         // we don't support any special SX2 options yet, reserved for later use
         if (nRequestedOptions != 0)
-            DebugLogWarning(_T("Client requested unknown options for SourceExchange2: %u (%s)"), nRequestedOptions, forClient->DbgGetClientInfo());
+            DebugLogWarning(L"Client requested unknown options for SourceExchange2: %u (%s)", nRequestedOptions, forClient->DbgGetClientInfo());
     }
     else
     {
         byUsedVersion = forClient->GetSourceExchange1Version();
         bIsSX2Packet = false;
         if (forClient->SupportsSourceExchange2())
-            DebugLogWarning(_T("Client which announced to support SX2 sent SX1 packet instead (%s)"), forClient->DbgGetClientInfo());
+            DebugLogWarning(L"Client which announced to support SX2 sent SX1 packet instead (%s)", forClient->DbgGetClientInfo());
     }
 
     uint16 nCount = 0;
     data.WriteHash16(forClient->GetUploadFileID());
     data.WriteUInt16(nCount);
+
     UINT cDbgNoSrc = 0;
+	bool bNeeded = false;
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+    const CPartStatus* rcvstatus = forClient->GetUpPartStatus();     
+    //const uint8* rcvstatus = forClient->GetUpPartStatus();
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+	if(rcvstatus == NULL)
+	{
+		ASSERT(forClient->GetUpPartCount() == 0);
+		TRACE(L"%hs, requesting client has no chunk status - %s", __FUNCTION__, forClient->DbgGetClientInfo());
+	}
+	else
+		ASSERT(forClient->GetUpPartCount() == GetPartCount());
     for (POSITION pos = m_ClientUploadList.GetHeadPosition(); pos != 0;)
     {
+		bNeeded = false;
         /*const*/ CUpDownClient* cur_src = m_ClientUploadList.GetNext(pos);
 
         // some rare issue seen in a crashdumps, hopefully fixed already, but to be sure we double check here
-        // TODO: remove check next version, as it uses ressources and shouldn't be necessary
+        // TODO: remove check next version, as it uses resources and shouldn't be necessary
         if (!theApp.clientlist->IsValidClient(cur_src))
         {
 #ifdef _BETA
             throw new CUserException();
 #endif
             ASSERT(0);
-            DebugLogError(_T("Invalid client in uploading list for file %s"), GetFileName());
-            return NULL;
+            DebugLogError(L"Invalid client in uploading list for file %s", GetFileName());
+            continue;
         }
-
 #ifdef NAT_TRAVERSAL
         if ((cur_src->HasLowID() && !cur_src->SupportsNatTraversal()) || cur_src == forClient || !(cur_src->GetUploadState() == US_UPLOADING || cur_src->GetUploadState() == US_ONUPLOADQUEUE)) //>>> WiZaRd::NatTraversal [Xanatos]
 #else
@@ -1320,129 +1339,66 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
             continue;
         if (!cur_src->IsEd2kClient())
             continue;
-
-        bool bNeeded = false;
+        
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-        const CPartStatus* rcvstatus = forClient->GetUpPartStatus();
-        if (rcvstatus)
+        const CPartStatus* const srcstatus = cur_src->GetUpPartStatus();
+		//const uint8* srcstatus = cur_src->GetUpPartStatus();
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+        if (srcstatus)
         {
-            ASSERT(forClient->GetUpPartCount() == GetPartCount());
-            const CPartStatus* srcstatus = cur_src->GetUpPartStatus();
-            if (srcstatus)
+            if (cur_src->GetUpPartCount() == GetPartCount())
             {
-                ASSERT(cur_src->GetUpPartCount() == GetPartCount());
-                if (cur_src->GetUpPartCount() == forClient->GetUpPartCount())
-                {
-                    if (rcvstatus->IsNeeded(srcstatus))
-                    {
-                        // We know the receiving client needs a chunk from this client.
-                        bNeeded = true;
-                    }
-                }
-                else
-                {
-                    // should never happen
-                    //if (thePrefs.GetVerbose())
-                    DEBUG_ONLY(DebugLogError(_T("*** %hs - found source (%s) with wrong part count (%u) attached to file \"%s\" (partcount=%u)"), __FUNCTION__, cur_src->DbgGetClientInfo(), cur_src->GetUpPartCount(), GetFileName(), GetPartCount()));
-                }
-            }
-            else
-            {
-                cDbgNoSrc++;
-                // This client doesn't support upload chunk status. So just send it and hope for the best.
-                bNeeded = true;
-            }
-        }
-        else
-        {
-            ASSERT(forClient->GetUpPartCount() == 0);
-            TRACE(_T("%hs, requesting client has no chunk status - %s"), __FUNCTION__, forClient->DbgGetClientInfo());
-            // remote client does not support upload chunk status, search sources which have at least one complete part
-            // we could even sort the list of sources by available chunks to return as much sources as possible which
-            // have the most available chunks. but this could be a noticeable performance problem.
-            const CPartStatus* srcstatus = cur_src->GetUpPartStatus();
-            if (srcstatus)
-            {
-                if (srcstatus->IsNeeded())
-                {
-                    // this client has at least one chunk
-                    bNeeded = true;
-                }
-            }
-            else
-            {
-                // This client doesn't support upload chunk status. So just send it and hope for the best.
-                bNeeded = true;
-            }
-        }
-        /*
-        const uint8* rcvstatus = forClient->GetUpPartStatus();
-        if (rcvstatus)
-        {
-            ASSERT(forClient->GetUpPartCount() == GetPartCount());
-            const uint8* srcstatus = cur_src->GetUpPartStatus();
-            if (srcstatus)
-            {
-                ASSERT(cur_src->GetUpPartCount() == GetPartCount());
-                if (cur_src->GetUpPartCount() == forClient->GetUpPartCount())
-                {
-                    for (UINT x = 0; x < GetPartCount(); x++)
+                if (rcvstatus)
+                {                    
+                    // only send sources which have needed parts for this client
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+					bNeeded = rcvstatus->IsNeeded(srcstatus);
+                    /*for (UINT x = 0; x < GetUpPartCount(); x++)
                     {
                         if (srcstatus[x] && !rcvstatus[x])
                         {
-                            // We know the receiving client needs a chunk from this client.
                             bNeeded = true;
                             break;
                         }
-                    }
+                    }*/
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
                 }
                 else
                 {
-                    // should never happen
-                    //if (thePrefs.GetVerbose())
-                    DEBUG_ONLY(DebugLogError(_T("*** %hs - found source (%s) with wrong part count (%u) attached to file \"%s\" (partcount=%u)"), __FUNCTION__, cur_src->DbgGetClientInfo(), cur_src->GetUpPartCount(), GetFileName(), GetPartCount()));
-                }
-            }
-            else
-            {
-                cDbgNoSrc++;
-                // This client doesn't support upload chunk status. So just send it and hope for the best.
-                bNeeded = true;
-            }
-        }
-        else
-        {
-            ASSERT(forClient->GetUpPartCount() == 0);
-            TRACE(_T("%hs, requesting client has no chunk status - %s"), __FUNCTION__, forClient->DbgGetClientInfo());
-            // remote client does not support upload chunk status, search sources which have at least one complete part
-            // we could even sort the list of sources by available chunks to return as much sources as possible which
-            // have the most available chunks. but this could be a noticeable performance problem.
-            const uint8* srcstatus = cur_src->GetUpPartStatus();
-            if (srcstatus)
-            {
-                ASSERT(cur_src->GetUpPartCount() == GetPartCount());
-                for (UINT x = 0; x < GetPartCount(); x++)
-                {
-                    if (srcstatus[x])
+					// remote client does not support chunk status, search sources which have at least one complete part
+					// we could even sort the list of sources by available chunks to return as much sources as possible which
+					// have the most available chunks. but this could be a noticeable performance problem.
+                    // We know this client is valid. But don't know the part count status.. So, currently we just send them.
+//>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+					bNeeded = rcvstatus->IsNeeded(srcstatus);
+                    /*for (UINT x = 0; x < GetUpPartCount(); x++)
                     {
-                        // this client has at least one chunk
-                        bNeeded = true;
-                        break;
-                    }
+                        if (srcstatus[x])
+                        {
+                            bNeeded = true;
+                            break;
+                        }
+                    }*/
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
                 }
             }
             else
             {
-                // This client doesn't support upload chunk status. So just send it and hope for the best.
-                bNeeded = true;
+                // should never happen
+                if (thePrefs.GetVerbose())
+                    DEBUG_ONLY(DebugLogError(L"*** %hs - found source (%s) with wrong partcount (%u) attached to file \"%s\" (partcount=%u)", __FUNCTION__, cur_src->DbgGetClientInfo(), cur_src->GetPartCount(), GetFileName(), GetPartCount()));
             }
         }
-        */
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+		else
+		{
+			++cDbgNoSrc;
+			// This client doesn't support chunk status. So just send it and hope for the best.
+			bNeeded = true;
+		}
 
         if (bNeeded)
         {
-            nCount++;
+            ++nCount;
             UINT dwID;
 //>>> WiZaRd::NatTraversal [Xanatos]
             if (byUsedVersion >= 3 && !cur_src->HasLowID())
@@ -1477,25 +1433,27 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
                 break;
         }
     }
-    TRACE(_T("%hs: Out of %u clients, %u had no valid chunk status\n"), __FUNCTION__, m_ClientUploadList.GetCount(), cDbgNoSrc);
-    if (!nCount)
-        return 0;
-    data.Seek(bIsSX2Packet ? 17 : 16, SEEK_SET);
-    data.WriteUInt16((uint16)nCount);
+    TRACE(L"%hs: Out of %u clients, %u had no valid chunk status\n", __FUNCTION__, m_ClientUploadList.GetCount(), cDbgNoSrc);
+	Packet* result = NULL;
+	if(nCount)
+	{
+		data.Seek(bIsSX2Packet ? 17 : 16, SEEK_SET);
+		data.WriteUInt16(nCount);
 
-    Packet* result = new Packet(&data, OP_EMULEPROT);
-    result->opcode = bIsSX2Packet ? OP_ANSWERSOURCES2 : OP_ANSWERSOURCES;
-    // (1+)16+2+501*(4+2+4+2+16+1) = 14547 (14548) bytes max.
-    if (result->size > 354)
-        result->PackPacket();
-    if (thePrefs.GetDebugSourceExchange())
-        AddDebugLogLine(false, _T("SXSend: Client source response SX2=%s, Version=%u; Count=%u, %s, File=\"%s\""), bIsSX2Packet ? GetResString(IDS_YES) : GetResString(IDS_NO), byUsedVersion, nCount, forClient->DbgGetClientInfo(), GetFileName());
+		result = new Packet(&data, OP_EMULEPROT);
+		result->opcode = bIsSX2Packet ? OP_ANSWERSOURCES2 : OP_ANSWERSOURCES;
+		// (1+)16+2+501*(4+2+4+2+16+1) = 14547 (14548) bytes max.
+		if (result->size > 354)
+			result->PackPacket();
+		if (thePrefs.GetDebugSourceExchange())
+			AddDebugLogLine(false, L"SX: created response extXS=%s, SX2=%s, Version=%u; Count=%u for %s on file \"%s\"", forClient->SupportsExtendedSourceExchange() ? GetResString(IDS_YES) : GetResString(IDS_NO), bIsSX2Packet ? GetResString(IDS_YES) : GetResString(IDS_NO), byUsedVersion, nCount, forClient->DbgGetClientInfo(), GetFileName()); //>>> WiZaRd::ExtendedXS [Xanatos]
+	}
     return result;
 }
 
 Packet* CKnownFile::GetEmptyXSPacket(const CUpDownClient* forClient, uint8 byRequestedVersion, uint16 nRequestedOptions) const
 {
-    CSafeMemFile data(1024);
+    CSafeMemFile data(1+16+2); // max packet size
 
     uint8 byUsedVersion;
     bool bIsSX2Packet;
@@ -1511,6 +1469,12 @@ Packet* CKnownFile::GetEmptyXSPacket(const CUpDownClient* forClient, uint8 byReq
             byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGE2_VERSION);
         bIsSX2Packet = true;
         data.WriteUInt8(byUsedVersion);
+//>>> WiZaRd::ExtendedXS [Xanatos]
+		// WiZaRd: Fix extendedXS: the byUsedVersion value is used below to determine which data is written
+		// The remote client will set it to its XS2 version if we are using extXS and thus, XS packets will be malformed and cause exceptions if we don't sync it here
+		if (forClient->SupportsExtendedSourceExchange())
+			byUsedVersion = min(byRequestedVersion, (uint8)SOURCEEXCHANGE2_VERSION);
+//<<< WiZaRd::ExtendedXS [Xanatos]
 
         // we don't support any special SX2 options yet, reserved for later use
         if (nRequestedOptions != 0)
@@ -1533,7 +1497,7 @@ Packet* CKnownFile::GetEmptyXSPacket(const CUpDownClient* forClient, uint8 byReq
     //	if (result->size > 354)
     //		result->PackPacket();
     if (thePrefs.GetDebugSourceExchange())
-        AddDebugLogLine(false, L"SXSend: Client source response SX2=%s, Version=%u; Count=%u, %s, File=\"%s\"", bIsSX2Packet ? GetResString(IDS_YES) : GetResString(IDS_NO), byUsedVersion, 0, forClient->DbgGetClientInfo(), GetFileName());
+		AddDebugLogLine(false, L"SX: created empty response extXS=%s, SX2=%s, Version=%u; Count=%u for %s on file \"%s\"", forClient->SupportsExtendedSourceExchange() ? GetResString(IDS_YES) : GetResString(IDS_NO), bIsSX2Packet ? GetResString(IDS_YES) : GetResString(IDS_NO), byUsedVersion, 0, forClient->DbgGetClientInfo(), GetFileName()); //>>> WiZaRd::ExtendedXS [Xanatos]
     return result;
 }
 
@@ -2295,6 +2259,7 @@ bool CKnownFile::WriteSafePartStatus(CSafeMemFile* data_out, CUpDownClient* send
 //<<< WiZaRd::ICS [enkeyDEV]
     const uint16 filePartCount = GetPartCount();
     CPartFile* pThis = IsPartFile() ? (CPartFile*)this : NULL;
+	const bool bUpload = sender && sender->GetUploadFileID() && !md4cmp(sender->GetUploadFileID(), GetFileHash());
 
 //>>> Create tmp array
     CList<int> shownChunks;
@@ -2324,7 +2289,8 @@ bool CKnownFile::WriteSafePartStatus(CSafeMemFile* data_out, CUpDownClient* send
 
             // a part qualifies if the remote client doesn't have it but we have
             if ((sender == NULL						//we don't have to check client
-                    || !sender->IsPartAvailable(i))	//or he does not own that part
+                    || (bUpload && !sender->IsUpPartAvailable(i))	//or he does not own that part
+					|| (!bUpload && !sender->IsPartAvailable(i)))	//or he does not own that part
                     && (pThis == NULL				//of course it's complete if it's a complete file
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
 						|| (pThis->GetPublishedPartStatus() && pThis->GetPublishedPartStatus()->IsCompletePart(i))) //or the part is complete
@@ -2355,18 +2321,20 @@ bool CKnownFile::WriteSafePartStatus(CSafeMemFile* data_out, CUpDownClient* send
                 lastminFreqArray.Add(i);
         }
         const UINT targetValues = (minFreqArray.GetCount() + lastminFreqArray.GetCount()) < 3 ? (minFreqArray.GetCount() + lastminFreqArray.GetCount()) : 3;
+		int index = 0;
+		int val = 0;
         while ((UINT)shownChunks.GetCount() < targetValues && !minFreqArray.IsEmpty())
         {
-            int index = rand() % minFreqArray.GetCount();
-            int val = minFreqArray[index];
+            index = rand() % minFreqArray.GetCount();
+            val = minFreqArray[index];
 
             shownChunks.AddTail(val);
             minFreqArray.RemoveAt(index);
         }
         while ((UINT)shownChunks.GetCount() < targetValues && !lastminFreqArray.IsEmpty())
         {
-            int index = rand() % lastminFreqArray.GetCount();
-            int val = lastminFreqArray[index];
+            index = rand() % lastminFreqArray.GetCount();
+            val = lastminFreqArray[index];
 
             shownChunks.AddTail(val);
             lastminFreqArray.RemoveAt(index);
@@ -2400,7 +2368,7 @@ bool CKnownFile::WriteSafePartStatus(CSafeMemFile* data_out, CUpDownClient* send
                     {
                         if (size <= (8000 * EMBLOCKSIZE) && pThis->GetPublishedPartStatus()->GetChunkSize() < PARTSIZE)
                             partSize = EMBLOCKSIZE;
-                        sctDivider = (uint16)((PARTSIZE + partSize - 1) / partSize);
+                        sctDivider = (uint16)((PARTSIZE + partSize - 1) / partSize); // TODO: floor() needed?
                     }
                     else if (size <= (8000 * CRUMBSIZE) && pThis->GetPublishedPartStatus()->GetChunkSize() < PARTSIZE)
                     {
@@ -2427,7 +2395,7 @@ bool CKnownFile::WriteSafePartStatus(CSafeMemFile* data_out, CUpDownClient* send
     //check if we sent the status for the same file as we requested to download off that client
     //if NOT then we can't write the data because the partcount may differ, etc.
     //The best way to "fix" that would be to save all partstatus' we receive
-    const bool bWriteStatus = sender && sender->m_abyUpPartStatusHidden && sender->GetUploadFileID() && !md4cmp(sender->GetUploadFileID(), GetFileHash());
+    const bool bWriteStatus = bUpload && sender->m_abyUpPartStatusHidden;
 //<<< WiZaRd::FiX
 
     //and now write it down...
@@ -2435,7 +2403,8 @@ bool CKnownFile::WriteSafePartStatus(CSafeMemFile* data_out, CUpDownClient* send
     UINT lastPart = 0;
 	UINT cur_part = 0;
 	// only mark COMPLETE parts as hidden
-	bool partCompletelyShown = pThis == NULL || (pThis->GetPublishedPartStatus() && pThis->GetPublishedPartStatus()->IsCompletePart(cur_part));
+	bool bPartComplete = pThis == NULL || (pThis->GetPublishedPartStatus() && pThis->GetPublishedPartStatus()->IsCompletePart(cur_part));
+	bool bPartCompletelyShown = bPartComplete;
     while (done != sctCount)
     {
         //fill one uint8 with data...
@@ -2448,25 +2417,26 @@ bool CKnownFile::WriteSafePartStatus(CSafeMemFile* data_out, CUpDownClient* send
 			//cur_part = done;
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
-			//we allow to send this chunk if either...
 			if(cur_part < filePartCount) // valid part?
-			{
-				// If it's a complete chunk
+			{				
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+				// is this part/crumb available for sharing?
 				//if((pThis == NULL || (pThis->IsCompletePart(curPart))
 				if((pThis == NULL || (pThis->GetPublishedPartStatus() && pThis->GetPublishedPartStatus()->IsComplete((uint64)cur_part*PARTSIZE + subChunk*partSize, (uint64)cur_part*PARTSIZE + (subChunk+1)*partSize - 1)))
+					&& (
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
-					&& (!bSOTN								// and SOTN is OFF
-					|| shownChunks.Find(cur_part))			// or SOTN allows this chunk (one of the 3 rarest chunks)
+						(!bSOTN	|| shownChunks.Find(cur_part))				// and SOTN is OFF or SOTN allows this chunk (one of the 3 rarest chunks)
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-					|| (sender && sender->IsPartAvailable(cur_part)) // or the remote client also has this chunk
+						|| (sender && ((bUpload && sender->IsUpPartAvailable(cur_part) || (!bUpload && sender->IsPartAvailable(cur_part)))))	// or the remote client also has this chunk
+						|| !bPartComplete									// or the part is not shown completely (i.e. it's a crumb - always show those!)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
+						)
 				)
 					towrite |= (1<<i);
 				else
 				{
-					partCompletelyShown = false;
-					bNeedThisFunction = true;
+					bNeedThisFunction = true;						// SOTN indicator
+					bPartCompletelyShown = false;
 				}
 			}
             ++done;
@@ -2480,14 +2450,16 @@ bool CKnownFile::WriteSafePartStatus(CSafeMemFile* data_out, CUpDownClient* send
             {
                 if (bWriteStatus && lastPart < filePartCount) // valid part
                 {
-                    if (partCompletelyShown)
-                        sender->m_abyUpPartStatusHidden[lastPart] = 0;  //not hidden anymore
+					if(!bPartCompletelyShown && bPartComplete) // don't flag partial parts as "hidden"
+						sender->m_abyUpPartStatusHidden[lastPart] = toSet;
 					else
-                        sender->m_abyUpPartStatusHidden[lastPart] = toSet;
+                        sender->m_abyUpPartStatusHidden[lastPart] = 0;  //not hidden anymore
+					
                 }
                 lastPart = cur_part;
-                partCompletelyShown = cur_part < filePartCount // valid part
+                bPartComplete = cur_part < filePartCount // valid part
 										&& (pThis == NULL || (pThis->GetPublishedPartStatus() && pThis->GetPublishedPartStatus()->IsCompletePart(cur_part)));
+				bPartCompletelyShown = bPartComplete;
             }
             if (done == sctCount)
                 break;
@@ -2495,12 +2467,14 @@ bool CKnownFile::WriteSafePartStatus(CSafeMemFile* data_out, CUpDownClient* send
         partInfo.AddTail(towrite);
     }
 
+	// write down the part info if we hid something...
 	if(bNeedThisFunction)
 	{
 		data_out->WriteUInt16(sctCount);
 		while(!partInfo.IsEmpty())
 			data_out->WriteUInt8(partInfo.RemoveHead());
 	}
+	// otherwise, show the complete file
 	else
 		data_out->WriteUInt16(0);
 	return bNeedThisFunction;
@@ -3055,8 +3029,10 @@ void CKnownFile::UpdateCompleteSrcCount()
             m_nCompleteSourcesCount = availPartFrequency[i];
         else if (m_nCompleteSourcesCount > availPartFrequency[i])
             m_nCompleteSourcesCount = availPartFrequency[i];
-    }
-	count.Add(m_nCompleteSourcesCount + (pFile ? 0 : 1)); // plus 1 since we have the file complete, too
+    }	
+	if(m_nCompleteSourcesCount == 0 && pFile == NULL)
+		m_nCompleteSourcesCount = 1; // we have the file complete, too
+	count.Add(m_nCompleteSourcesCount); 
 
     const int n = count.GetSize();
     /*if(bPartFile && n < 5)

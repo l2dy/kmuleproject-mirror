@@ -26,6 +26,7 @@
 #include "ListenSocket.h"
 #include "Kademlia/Kademlia/Kademlia.h"
 #include "Log.h"
+#include "ClientCredits.h" //>>> WiZaRd::Data without Client
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -52,6 +53,7 @@ CFriend::CFriend(void)
     m_dwLastKadSearch = 0;
 
     m_friendSlot = false;
+	m_strComment = L""; //>>> WiZaRd::FriendComment
 }
 
 //Added this to work with the IRC.. Probably a better way to do it.. But wanted this in the release..
@@ -60,7 +62,7 @@ CFriend::CFriend(const uchar* abyUserhash, UINT dwLastSeen, const CAddress& dwLa
 #else
 CFriend::CFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort, 
 #endif
-                 UINT dwLastChatted, LPCTSTR pszName, UINT dwHasHash)
+                 UINT dwLastChatted, LPCTSTR pszName, UINT dwHasHash, const CString& strComment)
 {
     m_dwLastSeen = dwLastSeen;
     m_dwLastUsedIP = dwLastUsedIP;
@@ -76,6 +78,12 @@ CFriend::CFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, u
     m_friendSlot = false;
     m_FriendConnectState = FCS_NONE;
     m_dwLastKadSearch = 0;
+	m_strComment = strComment; //>>> WiZaRd::FriendComment
+//>>> WiZaRd::Data without Client
+	m_strSoft = L"";
+	m_uiUploaded = -1;
+	m_uiDownloaded = -1;
+//<<< WiZaRd::Data without Client
 }
 
 CFriend::CFriend(CUpDownClient* client)
@@ -91,7 +99,14 @@ CFriend::CFriend(CUpDownClient* client)
     m_dwLastKadSearch = 0;
     md4clr(m_abyKadID);
     md4cpy(m_abyUserhash, client->GetUserHash());
-    SetLinkedClient(client);
+
+	m_strComment = L""; //>>> WiZaRd::FriendComment
+//>>> WiZaRd::Data without Client
+	m_strSoft = L"";
+	m_uiUploaded = -1;
+	m_uiDownloaded = -1;
+//<<< WiZaRd::Data without Client
+	SetLinkedClient(client);
 }
 
 CFriend::~CFriend(void)
@@ -152,6 +167,32 @@ void CFriend::LoadFromFile(CFileDataIO* file)
                     md4cpy(m_abyKadID, newtag->GetHash());
                 break;
             }
+			default:
+			{
+				if(newtag->GetNameID() == 0)
+				{
+					const LPCSTR tagname = newtag->GetName();
+					if(newtag->IsStr())
+					{
+//>>> WiZaRd::FriendComment
+						if(strcmp(tagname, FF_COMMENT) == 0)
+							m_strComment = newtag->GetStr(); 
+//<<< WiZaRd::FriendComment
+//>>> WiZaRd::Data without Client
+						else if(strcmp(tagname, FF_SOFT) == 0)
+							m_strSoft = newtag->GetStr(); 
+					}
+					else if(newtag->IsInt64())
+					{
+						if(strcmp(tagname, FF_UPLOAD) == 0)
+							m_uiUploaded = newtag->GetInt64();
+						else if(strcmp(tagname, FF_DOWNLOAD) == 0)
+							m_uiDownloaded = newtag->GetInt64();
+//<<< WiZaRd::Data without Client
+					}
+				}
+				break;
+			}
         }
         delete newtag;
     }
@@ -193,6 +234,40 @@ void CFriend::WriteToFile(CFileDataIO* file)
         tag.WriteNewEd2kTag(file);
         uTagCount++;
     }
+//>>> WiZaRd::FriendComment
+	if(!m_strComment.IsEmpty())
+	{
+		CTag wrtag(FF_COMMENT, m_strComment);
+		wrtag.WriteTagToFile(file);
+		++uTagCount;
+	}
+//<<< WiZaRd::FriendComment
+//>>> WiZaRd::Data without Client
+	if(m_LinkedClient != NULL || !m_strSoft.IsEmpty())
+	{
+		if(m_LinkedClient)
+			m_strSoft = m_LinkedClient->DbgGetFullClientSoftVer();
+		CTag wrtag(FF_SOFT, m_strSoft);
+		wrtag.WriteTagToFile(file);
+		++uTagCount;
+	}
+	if(m_LinkedClient != NULL && m_LinkedClient->Credits()/* && m_LinkedClient->Credits()->GetUploadedTotal()*/)
+		m_uiUploaded = m_LinkedClient->Credits()->GetUploadedTotal();
+	if(m_uiUploaded != -1)
+	{
+		CTag wrtag(FF_UPLOAD, m_uiUploaded, true);
+		wrtag.WriteTagToFile(file);
+		++uTagCount;
+	}
+	if(m_LinkedClient != NULL && m_LinkedClient->Credits()/* && m_LinkedClient->Credits()->GetDownloadedTotal()*/)
+		m_uiDownloaded = m_LinkedClient->Credits()->GetDownloadedTotal();
+	if(m_uiDownloaded != -1)
+	{
+		CTag wrtag(FF_DOWNLOAD, m_uiDownloaded, true);
+		wrtag.WriteTagToFile(file);
+		++uTagCount;
+	}
+//<<< WiZaRd::Data without Client
 
     file->Seek(uTagCountFilePos, CFile::begin);
     file->WriteUInt32(uTagCount);
@@ -220,13 +295,9 @@ void CFriend::SetFriendSlot(bool newValue)
 bool CFriend::GetFriendSlot() const
 {
     if (GetLinkedClient() != NULL)
-    {
         return m_LinkedClient->GetFriendSlot();
-    }
     else
-    {
         return m_friendSlot;
-    }
 }
 
 void CFriend::SetLinkedClient(CUpDownClient* linkedClient)
@@ -246,6 +317,15 @@ void CFriend::SetLinkedClient(CUpDownClient* linkedClient)
             m_strName = linkedClient->GetUserName();
             md4cpy(m_abyUserhash,linkedClient->GetUserHash());
 
+//>>> WiZaRd::Data without Client
+			m_strSoft = linkedClient->DbgGetFullClientSoftVer();
+			if(linkedClient->Credits())
+			{
+				m_uiUploaded = linkedClient->Credits()->GetUploadedTotal();
+				m_uiDownloaded = linkedClient->Credits()->GetDownloadedTotal();
+			}
+//<<< WiZaRd::Data without Client
+
             //we try to find the KadID here if necessary because if we already have a connection to this client
             //then we would *not* search the KadID until a reconnect is done - which is stupid!
             FindKadID();
@@ -255,11 +335,16 @@ void CFriend::SetLinkedClient(CUpDownClient* linkedClient)
         else if (m_LinkedClient != NULL)
         {
             m_friendSlot = m_LinkedClient->GetFriendSlot();
-        }
+//>>> WiZaRd::Data without Client
+			m_strSoft = m_LinkedClient->DbgGetFullClientSoftVer();
+			if(m_LinkedClient->Credits())
+			{
+				m_uiUploaded = m_LinkedClient->Credits()->GetUploadedTotal();
+				m_uiDownloaded = m_LinkedClient->Credits()->GetDownloadedTotal();
+			}
+//<<< WiZaRd::Data without Client
 
-        if (m_LinkedClient != NULL)
-        {
-            // the old client is no longer friend, since it is no longer the linked client
+			// the old client is no longer friend, since it is no longer the linked client
             m_LinkedClient->SetFriendSlot(false);
             m_LinkedClient->m_Friend = NULL;
         }
@@ -554,3 +639,95 @@ void CFriend::KadSearchIPByNodeIDResult(Kademlia::EKadClientSearchRes eStatus, U
     else
         ASSERT(0);
 }
+
+//>>> WiZaRd::Data without Client
+CString	CFriend::GetFriendName() const
+{
+	if(GetLinkedClient())
+		return GetLinkedClient()->GetUserName();
+	if (!m_strName.IsEmpty())
+		return m_strName;
+	return GetResString(IDS_UNKNOWN);
+}
+
+CString CFriend::GetFriendHash() const
+{
+	if (GetLinkedClient())
+		return md4str(GetLinkedClient()->GetUserHash());
+	if (HasUserhash())
+		return md4str(m_abyUserhash);
+	return GetResString(IDS_UNKNOWN);
+}
+
+CString CFriend::GetFriendKadID() const
+{
+	if (HasKadID())
+		return md4str(m_abyKadID);
+	return GetResString(IDS_UNKNOWN);
+}
+
+CString	CFriend::GetIdentState() const
+{
+	if (GetLinkedClient())
+	{
+		if (theApp.clientcredits->CryptoAvailable() && GetLinkedClient()->Credits())
+		{
+			switch(GetLinkedClient()->Credits()->GetCurrentIdentState(GetLinkedClient()->GetIP()))
+			{
+				case IS_NOTAVAILABLE:
+					return GetResString(IDS_IDENTNOSUPPORT);
+				case IS_IDFAILED:
+				case IS_IDNEEDED:
+				case IS_IDBADGUY:
+					return GetResString(IDS_IDENTFAILED);
+				case IS_IDENTIFIED:
+					return GetResString(IDS_IDENTOK);
+			}
+		}
+		else
+			return GetResString(IDS_IDENTNOSUPPORT);
+	}
+	return GetResString(IDS_UNKNOWN);
+}
+
+CString	CFriend::GetFriendSoft() const
+{
+	if (GetLinkedClient())
+		return GetLinkedClient()->DbgGetFullClientSoftVer();
+	if (!m_strSoft.IsEmpty())
+		return m_strSoft;
+	return GetResString(IDS_UNKNOWN);
+}
+
+CString	CFriend::GetFriendUpload() const
+{
+	if(GetLinkedClient() && GetLinkedClient()->GetUploadState() == US_UPLOADING)
+		return CastItoXBytes(GetLinkedClient()->GetDatarate(), false, true);
+	return L"-";
+}
+
+CString	CFriend::GetFriendUploaded() const
+{
+	if(GetLinkedClient() && GetLinkedClient()->Credits())
+		return CastItoXBytes(GetLinkedClient()->Credits()->GetUploadedTotal(), false, false);
+	if(m_uiUploaded > -1)
+		return CastItoXBytes((uint64)m_uiUploaded, false, false);
+	return GetResString(IDS_UNKNOWN);
+}
+
+CString	CFriend::GetFriendDownload() const
+{
+	if(GetLinkedClient() && GetLinkedClient()->GetDownloadState() == DS_DOWNLOADING)
+		return CastItoXBytes(GetLinkedClient()->GetDownloadDatarate(), false, true);
+	return L"-";
+}
+
+CString	CFriend::GetFriendDownloaded() const
+{
+	if(GetLinkedClient() && GetLinkedClient()->Credits())
+		return CastItoXBytes(GetLinkedClient()->Credits()->GetDownloadedTotal(), false, false);
+	if(m_uiDownloaded != -1)
+		return CastItoXBytes((uint64)m_uiDownloaded, false, false);
+	return GetResString(IDS_UNKNOWN);
+}
+//<<< WiZaRd::Data without Client

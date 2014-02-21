@@ -348,14 +348,13 @@ public:
 
 void CUpDownClient::CreateNextBlockPackage(bool bBigBuffer)
 {
-    // See if we can do an early return. There may be no new blocks to load from disk and add to buffer, or buffer may be large enough allready.
-    const UINT nBufferLimit = bBigBuffer ? (800 * 1024) : (50 * 1024);
+    // See if we can do an early return. There may be no new blocks to load from disk and add to buffer, or buffer may be large enough already.
+//>>> WiZaRd::Improve Buffering	
+    const UINT nBufferLimit = bBigBuffer ? (6 * EMBLOCKSIZE * 1024) : (EMBLOCKSIZE * 1024);
+//<<< WiZaRd::Improve Buffering
     if (m_BlockRequests_queue.IsEmpty() || // There are no new blocks requested
             (m_addedPayloadQueueSession > GetQueueSessionPayloadUp() && GetPayloadInBuffer() > nBufferLimit))
-    {
-        // the buffered data is large enough allready
-        return;
-    }
+        return; // the buffered data is large enough already
 
     CFile file;
     byte* filedata = 0;
@@ -384,10 +383,9 @@ void CUpDownClient::CreateNextBlockPackage(bool bBigBuffer)
                 // Because the moving of part file into the incoming directory may take a noticable
                 // amount of time, we can not wait for 'm_FileCompleteMutex' and block the main thread.
                 if (!((CPartFile*)srcfile)->m_FileCompleteMutex.Lock(0))  // just do a quick test of the mutex's state and return if it's locked.
-                {
                     return;
-                }
-                lockFile.m_pObject = &((CPartFile*)srcfile)->m_FileCompleteMutex;
+
+				lockFile.m_pObject = &((CPartFile*)srcfile)->m_FileCompleteMutex;
                 // If it's a part file which we are uploading the file remains locked until we've read the
                 // current block. This way the file completion thread can not (try to) "move" the file into
                 // the incoming directory.
@@ -395,41 +393,18 @@ void CUpDownClient::CreateNextBlockPackage(bool bBigBuffer)
                 fullname = RemoveFileExtension(((CPartFile*)srcfile)->GetFullName());
             }
             else
-            {
                 fullname.Format(_T("%s\\%s"),srcfile->GetPath(),srcfile->GetFileName());
-            }
 
             uint64 i64uTogo;
             if (currentblock->StartOffset > currentblock->EndOffset)
-            {
                 i64uTogo = currentblock->EndOffset + (srcfile->GetFileSize() - currentblock->StartOffset);
-            }
             else
             {
                 i64uTogo = currentblock->EndOffset - currentblock->StartOffset;
                 if (srcfile->IsPartFile() && !((CPartFile*)srcfile)->IsComplete(currentblock->StartOffset,currentblock->EndOffset-1, true))
                     throw GetResString(IDS_ERR_INCOMPLETEBLOCK);
 //>>> WiZaRd::Intelligent SOTN
-                const CPartStatus* m_abyUpPartStatus = GetUpPartStatus(); //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-                if (m_abyUpPartStatus == NULL)
-                {
-                    CString err;
-                    err.Format(L"Client (%s) asked for blocks without telling us what he needs (should never happen!)", DbgGetClientInfo());
-                    throw err;
-                }
-                if (m_abyUpPartStatusHidden)
-                {
-                    for (uint16 i = (uint16)(currentblock->StartOffset/PARTSIZE); i < srcfile->GetPartCount() && i < (uint16)((currentblock->EndOffset-1)/PARTSIZE+1); ++i)
-                    {
-                        if (m_abyUpPartStatusHidden[i] != 0)
-                        {
-//							CString err;
-//							err.Format(L"Client (%s) requested part %u of %s which is actually hidden!?", DbgGetClientInfo(), i, srcfile->GetFileName());
-//							throw err;
-                            theApp.QueueDebugLogLineEx(LOG_ERROR, L"Client (%s) requested part %u of %s which is actually hidden via %s!?", DbgGetClientInfo(), i, srcfile->GetFileName(), m_abyUpPartStatusHidden[i] == 1 ? L"TCP" : L"UDP");
-                        }
-                    }
-                }
+				// see "AddReqBlock" 
 //<<< WiZaRd::Intelligent SOTN
             }
 
@@ -476,7 +451,7 @@ void CUpDownClient::CreateNextBlockPackage(bool bBigBuffer)
             // check extension to decide whether to compress or not
             //This code is EXTREMELY slow... and considering that it's called VERY often, we shouldn't rely so heavily on it!
             //One thing we could do is to cache the fileext, though that requires too many changes right now... and it's the same with
-            //some kind of compressability evaluation - so here's a little optimization - better than nothing :)
+            //some kind of compressibility evaluation - so here's a little optimization - better than nothing :)
             //can't be compressed anyways, no need to call expensive checks below
             bool compFlag = m_byDataCompVer == 1;
             if (compFlag)
@@ -502,16 +477,10 @@ void CUpDownClient::CreateNextBlockPackage(bool bBigBuffer)
                         if (pos > -1)
                             ext = ext.Mid(pos);
                         ext.MakeLower();
-//>>> taz::more
 //>>> WiZaRd::ExtCheck
-                        //reworked taz' code and removed the duplicate (archive) checks
-//						compFlag = (ext!=_T(".zip") && ext!=_T(".cbz") && ext!=_T(".rar") && ext!=_T(".cbr") && ext!=_T(".ace") && ext!=_T(".ogm"));
                         compFlag = (ext!=L".ogm"
                                     && ext!=L".ape" && ext!=L".flac" && ext!=L".wmv" && ext!=L".asf"&& ext!=L".flv" && ext!=L".depot");
-//						compFlag = (ext!=L".zip" && ext!=L".cbz" && ext!=L".rar" && ext!=L".cbr" && ext!=L".ace" && ext!=L".ogm"
-//							&& ext!=L".7z" && ext!=L".ape" && ext!=L".flac" && ext!=L".wmv" && ext!=L".asf"&& ext!=L".flv" && ext!=L".gz" && ext!=L".tgz" && ext!=L".arj" && ext!=L".bz2" && ext!=L".cab" && ext!=L".depot");
 //<<< WiZaRd::ExtCheck
-//<<< taz::more
                         if (compFlag && ext==_T(".avi") && thePrefs.GetDontCompressAvi())
                             compFlag = false;
                     }
@@ -536,7 +505,7 @@ void CUpDownClient::CreateNextBlockPackage(bool bBigBuffer)
     {
         if (thePrefs.GetVerbose())
             DebugLogWarning(GetResString(IDS_ERR_CLIENTERRORED), GetUserName(), error);
-        theApp.uploadqueue->RemoveFromUploadQueue(this, _T("Client error: ") + error);
+        theApp.uploadqueue->RemoveFromUploadQueue(this, L"Client error: " + error);
         delete[] filedata;
         return;
     }
@@ -545,8 +514,8 @@ void CUpDownClient::CreateNextBlockPackage(bool bBigBuffer)
         TCHAR szError[MAX_CFEXP_ERRORMSG];
         e->GetErrorMessage(szError, ARRSIZE(szError));
         if (thePrefs.GetVerbose())
-            DebugLogWarning(_T("Failed to create upload package for %s - %s"), GetUserName(), szError);
-        theApp.uploadqueue->RemoveFromUploadQueue(this, ((CString)_T("Failed to create upload package.")) + szError);
+            DebugLogWarning(L"Failed to create upload package for %s - %s", GetUserName(), szError);
+        theApp.uploadqueue->RemoveFromUploadQueue(this, L"Failed to create upload package." + CString(szError));
         delete[] filedata;
         e->Delete();
         return;
@@ -620,6 +589,7 @@ bool CUpDownClient::ProcessUploadFileStatus(const bool bUDPPacket, CKnownFile* f
         if (m_pPartStatus == NULL)
         {
             m_pPartStatus = m_pUpPartStatus->Clone();
+#ifdef ANTI_HIDEOS
 //>>> WiZaRd::AntiHideOS [netfinity]
             if (m_abySeenPartStatus == NULL)
             {
@@ -627,6 +597,7 @@ bool CUpDownClient::ProcessUploadFileStatus(const bool bUDPPacket, CKnownFile* f
                 memset(m_abySeenPartStatus, 0, m_pPartStatus->GetPartCount());
             }
 //<<< WiZaRd::AntiHideOS [netfinity]
+#endif
         }
         else
 			m_pPartStatus->Merge(m_pUpPartStatus);
@@ -913,7 +884,7 @@ bool CUpDownClient::AddReqBlock(Requested_Block_Struct* reqblock, const bool bCh
 
 //>>> WiZaRd::Small File Slot
         const uint64 smallFileSize = theApp.uploadqueue->GetSmallFileSize();
-        if (pDownloadingFile && pDownloadingFile->GetFileSize() < smallFileSize)
+        if (pDownloadingFile->GetFileSize() < smallFileSize)
         {
             //he requests a different file?
             if (md4cmp(reqblock->FileID, requpfileid) != 0)
@@ -928,6 +899,43 @@ bool CUpDownClient::AddReqBlock(Requested_Block_Struct* reqblock, const bool bCh
             }
         }
 //<<< WiZaRd::Small File Slot
+
+//>>> WiZaRd::Intelligent SOTN
+		if(GetUploadFileID() && !md4cmp(pDownloadingFile, GetUploadFileID()))
+		{
+			const CPartStatus* abyUpPartStatus = GetUpPartStatus(); //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+			if (abyUpPartStatus == NULL)
+			{
+				CString strError = L"";
+				strError.Format(L"Client (%s) asked for a block without telling us his part status, first (should never happen!)", DbgGetClientInfo());
+				throw strError;
+			}
+			if (m_abyUpPartStatusHidden)
+			{
+				const UINT nRequestedPart = (UINT)(reqblock->StartOffset / PARTSIZE);
+				{
+					if (m_abyUpPartStatusHidden[nRequestedPart] != 0)
+					{
+						CString strError = L"";
+						strError.Format(L"Client (%s) requested part %u of %s which is actually hidden via %s!?", DbgGetClientInfo(), nRequestedPart, pDownloadingFile->GetFileName(), m_abyUpPartStatusHidden[nRequestedPart] == 1 ? L"TCP" : L"UDP");
+						theApp.QueueDebugLogLineEx(LOG_ERROR, strError);
+						CString partStatus = L"";
+						for(UINT i = 0; i < abyUpPartStatus->GetPartCount(); ++i)
+						{
+							if(abyUpPartStatus->IsCompletePart(i))
+								partStatus.Append(L"#");
+							else if(m_abyUpPartStatusHidden[i] != 0)
+								partStatus.Append(L"x");
+							else
+								partStatus.Append(L".");
+						}
+						theApp.QueueDebugLogLineEx(LOG_WARNING, L"Partstatus (#: complete, x: hidden, .: missing): %s", partStatus);
+//						throw strError;
+					}
+				}
+			}
+        }
+//<<< WiZaRd::Intelligent SOTN
     }
 
     for (POSITION pos = m_DoneBlocks_list.GetHeadPosition(); pos != 0;)
@@ -1058,7 +1066,7 @@ UINT CUpDownClient::SendBlockData()
         /*
                 if (theApp.uploadqueue->CheckForTimeOver(this))
         		{
-        			theApp.uploadqueue->RemoveFromUploadQueue(this, _T("Completed transfer"), true);
+        			theApp.uploadqueue->RemoveFromUploadQueue(this, L"Completed transfer");
         			SendOutOfPartReqs();
 					theApp.uploadqueue->AddClientToQueue(this, true);
         		}
@@ -1516,10 +1524,10 @@ void CUpDownClient::GetUploadingAndUploadedPart(CArray<uint16>& arr, CArray<uint
 {
     //count any part that has NOT been hidden so we have an array that counts the visibility of the chunks
     //with that information, we can select the least visible chunk later on
-    const UINT m_nUpPartCount = GetUpPartCount(); //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+    const UINT nUpPartCount = GetUpPartCount(); //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
     if (m_abyUpPartStatusHidden)
     {
-        for (UINT i = 0; i < m_nUpPartCount; ++i)
+        for (UINT i = 0; i < nUpPartCount; ++i)
             if (m_abyUpPartStatusHidden[i] == 0)
                 ++arrHidden[i];
     }

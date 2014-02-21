@@ -87,7 +87,7 @@ public:
         m_FileIdentifier.SetMD4Hash(pucFileHash);
     }
     bool HasNullHash() const;
-    CString GetED2kLink(bool bHashset = false, bool bHTML = false, bool bHostname = false, bool bSource = false, UINT dwSourceIP = 0) const;
+    CString GetED2kLink(const bool bHashset = false, const bool bFolder = false, const bool bHTML = false, const bool bHostname = false, const bool bSource = false, const UINT dwSourceIP = 0) const; //>>> WiZaRd::CollectionEnhancement
 
 
     EMFileSize		GetFileSize() const
@@ -159,7 +159,7 @@ public:
     const CString& GetFileComment() /*const*/;
     UINT	GetFileRating() /*const*/;
     void	LoadComment();
-    virtual void	UpdateFileRatingCommentAvail(bool bForceUpdate = true) = 0;
+    virtual void	UpdateFileRatingCommentAvail(bool /*bForceUpdate*/ = true) { AfxDebugBreak(); }
 
     bool	AddNote(Kademlia::CEntry* pEntry);
     void	RefilterKadNotes(bool bUpdate = true);

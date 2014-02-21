@@ -36,7 +36,7 @@
 #define MOD_VERSION			GetModVersion()
 //#define MOD_VERSION_MJR		0
 //#define MOD_VERSION_MIN		1
-#define MOD_VERSION_BUILD	L"20131124"
+#define MOD_VERSION_BUILD	L"20140221"
 // has to be changed on lang updates - also remember to recreate and upload the new lang files :)
 #define MOD_LANG_VERSION	2 // just to be sure so everybody receives our updates
 CString GetModVersionNumber();

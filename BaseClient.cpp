@@ -146,7 +146,7 @@ CUpDownClient::CUpDownClient(CPartFile* in_reqfile, const uint16 in_port, const 
 
 #ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
-CUpDownClient::CUpDownClient(CPartFile* in_reqfile, const uint16 in_port, const CAddress& IP, const UINT in_serverip, const uint16 in_serverport, const bool ed2kID)
+CUpDownClient::CUpDownClient(CPartFile* in_reqfile, const uint16 in_port, const CAddress& IP, const UINT in_serverip, const uint16 in_serverport, const bool /*ed2kID*/)
 {    
     Init();
 	reqfile = in_reqfile;
@@ -191,7 +191,9 @@ void CUpDownClient::Init()
 //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
     m_byFileRequestState = 0;
 //<<< WiZaRd::Unsolicited PartStatus [Netfinity]
+#ifdef ANTI_HIDEOS
     m_abySeenPartStatus = NULL; //>>> WiZaRd::AntiHideOS [netfinity]
+#endif
     m_nChatstate = MS_NONE;
     m_nKadState = KS_NONE;
     m_nChatCaptchaState = CA_NONE;
@@ -348,6 +350,7 @@ void CUpDownClient::Init()
 	m_fSupportsNatTraversal	= 0; //>>> WiZaRd::NatTraversal [Xanatos]
 #endif
 	m_fSupportsExtendedXS	= 0; //>>> WiZaRd::ExtendedXS [Xanatos]
+	m_iQueueRankDifference	= 0; //>>> WiZaRd::QR History
 }
 
 CUpDownClient::~CUpDownClient()
@@ -356,10 +359,12 @@ CUpDownClient::~CUpDownClient()
     delete[] m_abyIncPartStatus;
     m_abyIncPartStatus = NULL;
 //<<< WiZaRd::ICS [enkeyDEV]
+#ifdef ANTI_HIDEOS
 //>>> WiZaRd::AntiHideOS [netfinity]
     delete[] m_abySeenPartStatus;
     m_abySeenPartStatus = NULL;
 //<<< WiZaRd::AntiHideOS [netfinity]
+#endif
 //>>> WiZaRd::Intelligent SOTN
     delete[] m_abyUpPartStatusHidden;
     m_abyUpPartStatusHidden = NULL;
@@ -472,13 +477,6 @@ void CUpDownClient::ClearHelloProperties()
     m_fSupportsModProt = 0;
     m_bSupportsLowIDUDPPing = false; //>>> LowID UDP Ping Support
 //<<< WiZaRd::ModProt
-#ifdef IPV6_SUPPORT	
-	m_fSupportsIPv6			= 0; //>>> WiZaRd::IPv6 [Xanatos]
-#endif
-#ifdef NAT_TRAVERSAL
-	m_fSupportsNatTraversal	= 0; //>>> WiZaRd::NatTraversal [Xanatos]
-#endif
-	m_fSupportsExtendedXS	= 0; //>>> WiZaRd::ExtendedXS [Xanatos]
 }
 
 bool CUpDownClient::ProcessHelloPacket(const uchar* pachPacket, UINT nSize)
@@ -1801,7 +1799,7 @@ bool CUpDownClient::Disconnected(LPCTSTR pszReason, bool bFromSocket)
         if (GetDownloadState() == DS_CONNECTED)  // successfully connected, but probably didn't respond to our filerequest
         {
 #ifdef _DEBUG
-			theApp.QueueLogLineEx(LOG_WARNING, L"Adding %s to deadsourcelist in %hs:%u (%s)!", DbgGetClientInfo(), __FUNCTION__, __LINE__, pszReason);
+			//theApp.QueueLogLineEx(LOG_WARNING, L"Adding %s to deadsourcelist in %hs:%u (%s)!", DbgGetClientInfo(), __FUNCTION__, __LINE__, pszReason);
 #endif
             theApp.clientlist->m_globDeadSourceList.AddDeadSource(this);
             theApp.downloadqueue->RemoveSource(this);
@@ -1868,7 +1866,7 @@ bool CUpDownClient::Disconnected(LPCTSTR pszReason, bool bFromSocket)
         if (m_nDownloadState != DS_NONE) // Unable to connect = Remove any downloadstate
             theApp.downloadqueue->RemoveSource(this);
 #ifdef _DEBUG
-		theApp.QueueLogLineEx(LOG_WARNING, L"Adding %s to deadsourcelist in %hs:%u (%s)!", DbgGetClientInfo(), __FUNCTION__, __LINE__, pszReason);
+		//theApp.QueueLogLineEx(LOG_WARNING, L"Adding %s to deadsourcelist in %hs:%u (%s)!", DbgGetClientInfo(), __FUNCTION__, __LINE__, pszReason);
 #endif
         theApp.clientlist->m_globDeadSourceList.AddDeadSource(this);
         bDelete = true;
@@ -2349,7 +2347,7 @@ void CUpDownClient::Connect()
 	SOCKADDR_IN6 sockAddr;
 	int nSockAddrLen = sizeof(sockAddr);
 	CAddress IP = GetConnectIP();
-	IP.Convert(CAddress::IPv6); // the socket works with IPv6 adresses only
+	IP.ConvertTo(CAddress::IPv6); // the socket works with IPv6 adresses only
 #ifdef NAT_TRAVERSAL
 //>>> WiZaRd::NatTraversal [Xanatos]
 	if(socket->HaveUtpLayer())
@@ -3132,10 +3130,12 @@ void CUpDownClient::ResetFileStatusInfo()
     delete[] m_abyIncPartStatus;
     m_abyIncPartStatus = NULL;
 //<<< WiZaRd::ICS [enkeyDev]
+#ifdef ANTI_HIDEOS
 //>>> WiZaRd::AntiHideOS [netfinity]
     delete[] m_abySeenPartStatus;
     m_abySeenPartStatus = NULL;
 //<<< WiZaRd::AntiHideOS [netfinity]
+#endif
     m_nRemoteQueueRank = 0;
     m_strClientFilename.Empty();
     m_bCompleteSource = false;
@@ -3339,7 +3339,10 @@ void CUpDownClient::AssertValid() const
     CHECK_BOOL(m_bGPLEvilDoerMod);
 //<<< WiZaRd::ClientAnalyzer
     (void)m_abyIncPartStatus;  //>>> WiZaRd::ICS [enkeyDev]
+#ifdef ANTI_HIDEOS
     (void)m_abySeenPartStatus; //>>> WiZaRd::AntiHideOS [netfinity]
+#endif
+	CHECK_PTR(m_abyUpPartStatusHidden); //>>> WiZaRd::Intelligent SOTN
 
     CHECK_OBJ(socket);
     CHECK_PTR(credits);
@@ -3347,7 +3350,7 @@ void CUpDownClient::AssertValid() const
     CHECK_OBJ(reqfile);
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
     (void)m_pUpPartStatus;
-    (void)m_pPartStatus;
+    (void)m_pPartStatus;	
     //(void)m_abyUpPartStatus;
     //(void)m_nUpPartCount;
     //(void)m_abyPartStatus;
@@ -4389,9 +4392,9 @@ void	CUpDownClient::ProcessSourceRequest(const BYTE* packet, const UINT size, co
     if (thePrefs.GetDebugSourceExchange())
     {
         if (bMultipacket)
-            AddDebugLogLine(false, L"SXRecv: Client source request; %s, File=\"%s\"", DbgGetClientInfo(), kreqfile->GetFileName());
+            AddDebugLogLine(false, L"SX: received request from %s for file \"%s\"", DbgGetClientInfo(), kreqfile->GetFileName());
         else
-            AddDebugLogLine(false, L"SXRecv: Client source request; %s, %s", DbgGetClientInfo(), DbgGetFileInfo(packet));
+            AddDebugLogLine(false, L"SX: received request from %s for %s", DbgGetClientInfo(), DbgGetFileInfo(packet));
     }
 
     //Although this shouldn't happen, it's a just in case to any Mods that mess with version numbers.

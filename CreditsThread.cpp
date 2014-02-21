@@ -128,9 +128,7 @@ void CCreditsThread::SingleStep()
 {
     // if this is our first time, initialize the credits
     if (m_dcCredits.m_hDC == NULL)
-    {
         CreateCredits();
-    }
 
     // track scroll position
     static int nScrollY = 0;
@@ -145,9 +143,7 @@ void CCreditsThread::SingleStep()
     nStart.QuadPart = 0;
 
     if (!QueryPerformanceFrequency(&nFrequency))
-    {
         bTimerValid = FALSE;
-    }
     else
     {
         bTimerValid = TRUE;
@@ -185,14 +181,10 @@ void CCreditsThread::SingleStep()
         nTimeInMilliseconds = (int)((nEnd.QuadPart - nStart.QuadPart) * 1000 / nFrequency.QuadPart);
 
         if (nTimeInMilliseconds < m_nDelay)
-        {
             Sleep(m_nDelay - nTimeInMilliseconds);
-        }
     }
     else
-    {
         Sleep(m_nDelay);
-    }
 }
 
 void CCreditsThread::PaintBk(CDC* pDC)
@@ -298,9 +290,7 @@ void CCreditsThread::CreateCredits()
             }
 
             if (nColor != nLastColor)
-            {
                 m_dcCredits.SetTextColor(m_arColors.GetAt(nColor));
-            }
 
             CRect rect(0, y, m_rectScreen.Width(), y + nTextHeight);
 
@@ -401,16 +391,15 @@ void CCreditsThread::InitFonts()
 void CCreditsThread::InitColors()
 {
     // define each color we'll be using
-
-    m_arColors.Add(PALETTERGB(0, 0, 0));	// 0 = BLACK
-    m_arColors.Add(PALETTERGB(90, 90, 90));	// 1 = very dark gray
-    m_arColors.Add(PALETTERGB(128, 128, 128));		// 2 = DARK GRAY
+    m_arColors.Add(PALETTERGB(0, 0, 0));		// 0 = BLACK
+    m_arColors.Add(PALETTERGB(90, 90, 90));		// 1 = very dark gray
+    m_arColors.Add(PALETTERGB(128, 128, 128));	// 2 = DARK GRAY
     m_arColors.Add(PALETTERGB(192, 192, 192));	// 3 = LIGHT GRAY
     m_arColors.Add(PALETTERGB(200, 50, 50));	// 4 = very light gray
     m_arColors.Add(PALETTERGB(255, 255, 128));	// 5 white
-    m_arColors.Add(PALETTERGB(0, 0, 128));	// 6 dark blue
+    m_arColors.Add(PALETTERGB(0, 0, 128));		// 6 dark blue
     m_arColors.Add(PALETTERGB(128, 128, 255));	// 7 light blue
-    m_arColors.Add(PALETTERGB(0, 106, 0));	// 8 dark green
+    m_arColors.Add(PALETTERGB(0, 106, 0));		// 8 dark green
 }
 
 void CCreditsThread::InitText()
@@ -424,7 +413,7 @@ void CCreditsThread::InitText()
 
     /*
     	You may NOT modify this copyright message. You may add your name, if you
-    	changed or improved this code, but you mot not delete any part of this message,
+    	changed or improved this code, but you may not delete any part of this message,
     	make it invisible etc.
     */
 

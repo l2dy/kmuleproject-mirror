@@ -115,5 +115,13 @@
 #define IDC_UNCHECKALL					4074
 #define IDS_CHECKALL					4075
 #define IDS_UNCHECKALL					4076
+//>>> WiZaRd::CollectionEnhancement
+#define IDC_LD_FOLDER					4077
+#define IDS_LD_FOLDER					4078
+//<<< WiZaRd::CollectionEnhancement
+//>>> WiZaRd::FriendComment
+#define IDC_FRIENDS_COMMENT				4079
+#define IDC_FRIENDS_COMMENT_EDIT		4080
+//<<< WiZaRd::FriendComment
 
 // this line is needed or we get a "fatal error RC1004: unexpected end of file found" - thanks for those wonderful bugs, Microsoft!

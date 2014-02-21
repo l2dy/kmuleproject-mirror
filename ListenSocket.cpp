@@ -541,7 +541,8 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
                         theStats.AddUpDataOverheadFileRequest(packet->size);
                         SendPacket(packet, true);
 //>>> WiZaRd::ICS [enkeyDEV]
-                        if (client->GetIncompletePartVersion() && reqfile->IsPartFile())
+						// TODO: Do we need to send ICS data on complete files or to crumb-supporting clients? They will receive a detailed crumb status...
+                        if (client->GetIncompletePartVersion() && client->GetClientSoft() == SO_KMULE && reqfile->IsPartFile()) //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
                         {
                             CSafeMemFile data(16+16);
                             data.WriteHash16(reqfile->GetFileHash());
@@ -729,9 +730,12 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
 //>>> WiZaRd::ClientAnalyzer
                     //stat-fix - it's wrong to add this session as failed!
                     //however, as the session actually failed, we should count it in our private stats
-                    if (client->GetAntiLeechData())
+//>>> WiZaRd::ZZUL Upload [ZZ]
+                    //if (client->GetAntiLeechData() && client->GetSessionUp() == 0)
+					if (client->GetAntiLeechData() && client->GetQueueSessionUp() == 0)
+//<<< WiZaRd::ZZUL Upload [ZZ]
                         client->GetAntiLeechData()->AddULSession(true);
-                    theApp.uploadqueue->RemoveFromUploadQueue(client, _T("Remote client canceled transfer."), true, true);
+                    theApp.uploadqueue->RemoveFromUploadQueue(client, L"Remote client canceled transfer.", true);
 //<<< WiZaRd::ClientAnalyzer
                     break;
                 }
@@ -745,9 +749,12 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
 //>>> WiZaRd::ClientAnalyzer
                         //stat-fix - it's wrong to add this session as failed!
                         //however, as the session actually failed, we should count it in our private stats
-                        if (client->GetAntiLeechData())
+//>>> WiZaRd::ZZUL Upload [ZZ]
+						//if (client->GetAntiLeechData() && client->GetSessionUp() == 0)
+						if (client->GetAntiLeechData() && client->GetQueueSessionUp() == 0)
+//<<< WiZaRd::ZZUL Upload [ZZ]
                             client->GetAntiLeechData()->AddULSession(true);
-                        theApp.uploadqueue->RemoveFromUploadQueue(client, _T("Remote client ended transfer."), true, true);
+                        theApp.uploadqueue->RemoveFromUploadQueue(client, L"Remote client ended transfer.", true);
 //<<< WiZaRd::ClientAnalyzer
                     }
                     else
@@ -1429,7 +1436,8 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
                                 data_out.WriteUInt8(OP_FILESTATUS);
                                 reqfile->WriteSafePartStatus(&data_out, client); //>>> WiZaRd::Intelligent SOTN
 //>>> WiZaRd::ICS [enkeyDEV]
-                                if (client->GetIncompletePartVersion() && reqfile->IsPartFile())
+								// TODO: Do we need to send ICS data on complete files or to crumb-supporting clients? They will receive a detailed crumb status...
+								if (client->GetIncompletePartVersion() && client->GetClientSoft() == SO_KMULE && reqfile->IsPartFile()) //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
                                 {
                                     data_out.WriteUInt8(OP_FILEINCSTATUS);
                                     ((CPartFile*)reqfile)->WriteIncPartStatus(&data_out);
@@ -2195,9 +2203,9 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
     catch (CClientException* ex) // nearly same as the 'CString' exception but with optional deleting of the client
     {
         if (thePrefs.GetVerbose() && !ex->m_strMsg.IsEmpty())
-            DebugLogWarning(_T("Error: %s - while processing eMule packet: opcode=%s  size=%u; %s"), ex->m_strMsg, DbgGetMuleClientTCPOpcode(opcode), size, DbgGetClientInfo());
+            DebugLogWarning(L"Error: %s - while processing eMule packet: opcode=%s  size=%u; %s", ex->m_strMsg, DbgGetMuleClientTCPOpcode(opcode), size, DbgGetClientInfo());
         if (client && ex->m_bDelete)
-            client->SetDownloadState(DS_ERROR, _T("Error while processing eMule packet: ") + ex->m_strMsg);
+            client->SetDownloadState(DS_ERROR, L"Error while processing eMule packet: " + ex->m_strMsg);
         Disconnect(ex->m_strMsg);
         ex->Delete();
         return false;
@@ -2205,10 +2213,10 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
     catch (CString error)
     {
         if (thePrefs.GetVerbose() && !error.IsEmpty())
-            DebugLogWarning(_T("Error: %s - while processing eMule packet: opcode=%s  size=%u; %s"), error, DbgGetMuleClientTCPOpcode(opcode), size, DbgGetClientInfo());
+            DebugLogWarning(L"Error: %s - while processing eMule packet: opcode=%s  size=%u; %s", error, DbgGetMuleClientTCPOpcode(opcode), size, DbgGetClientInfo());
         if (client)
-            client->SetDownloadState(DS_ERROR, _T("ProcessExtPacket error. ") + error);
-        Disconnect(_T("ProcessExtPacket error. ") + error);
+            client->SetDownloadState(DS_ERROR, L"ProcessExtPacket error. " + error);
+        Disconnect(L"ProcessExtPacket error. " + error);
         return false;
     }
     return true;

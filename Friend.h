@@ -41,6 +41,12 @@ enum EFriendConnectReport
 
 #define	FF_NAME		0x01
 #define	FF_KADID	0x02
+#define FF_COMMENT	"CMT" //>>> WiZaRd::FriendComment
+//>>> WiZaRd::Data without Client
+#define FF_SOFT			"SFT"
+#define FF_UPLOAD		"FUL"
+#define FF_DOWNLOAD		"FDL"
+//<<< WiZaRd::Data without Client
 
 ///////////////////////////////////////////////////////////////////////////////
 // CFriendConnectionListener
@@ -48,9 +54,9 @@ enum EFriendConnectReport
 class CFriendConnectionListener
 {
 public:
-    virtual void	ReportConnectionProgress(CUpDownClient* pClient, CString strProgressDesc, bool bNoTimeStamp) = 0;
-    virtual void	ConnectingResult(CUpDownClient* pClient, bool bSuccess) = 0;
-    virtual void	ClientObjectChanged(CUpDownClient* pOldClient, CUpDownClient* pNewClient) = 0;
+    virtual void	ReportConnectionProgress(CUpDownClient* /*pClient*/, CString /*strProgressDesc*/, bool /*bNoTimeStamp*/)	{ AfxDebugBreak(); }
+    virtual void	ConnectingResult(CUpDownClient* /*pClient*/, bool /*bSuccess*/)												{ AfxDebugBreak(); }
+    virtual void	ClientObjectChanged(CUpDownClient* /*pOldClient*/, CUpDownClient* /*pNewClient*/)							{ AfxDebugBreak(); }
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -65,7 +71,7 @@ public:
 #else
 	CFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort,
 #endif
-            UINT dwLastChatted, LPCTSTR pszName, UINT dwHasHash);
+            UINT dwLastChatted, LPCTSTR pszName, UINT dwHasHash, const CString& strComment); //>>> WiZaRd::FriendComment
 
     ~CFriend();
 
@@ -80,6 +86,7 @@ public:
     uint16	m_nLastUsedPort;
     UINT	m_dwLastChatted;
     CString m_strName;
+	CString m_strComment; //>>> WiZaRd::FriendComment
 
     CUpDownClient*	GetLinkedClient(bool bValidCheck = false) const;
     void			SetLinkedClient(CUpDownClient* linkedClient);
@@ -115,4 +122,21 @@ private:
     EFriendConnectState			m_FriendConnectState;
     CTypedPtrList<CPtrList, CFriendConnectionListener*> m_liConnectionReport;
     CUpDownClient*				m_LinkedClient;
+
+//>>> WiZaRd::Data without Client
+public:
+	CString	GetFriendName() const;
+	CString GetFriendHash() const;
+	CString	GetFriendKadID() const;
+	CString	GetIdentState() const;
+	CString	GetFriendSoft() const;
+	CString	GetFriendUpload() const;
+	CString	GetFriendUploaded() const;
+	CString	GetFriendDownload() const;
+	CString	GetFriendDownloaded() const;
+private:
+	sint64	m_uiUploaded;
+	sint64	m_uiDownloaded;
+	CString	m_strSoft;
+//<<< WiZaRd::Data without Client
 };

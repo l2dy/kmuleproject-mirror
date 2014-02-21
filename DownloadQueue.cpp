@@ -729,12 +729,10 @@ bool CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
     sender->srclist.AddTail(source);
     source->SetSourceFrom(SF_PASSIVE);
     if (thePrefs.GetDebugSourceExchange())
-        AddDebugLogLine(false, _T("SXRecv: Passively added source; %s, File=\"%s\""), source->DbgGetClientInfo(), sender->GetFileName());
+        AddDebugLogLine(false, L"%hs: passively added source %s to file \"%s\"", __FUNCTION__, source->DbgGetClientInfo(), sender->GetFileName());
 #ifdef _DEBUG
     if (thePrefs.GetVerbose() && source->GetPartCount()!=0 && source->GetPartCount()!=sender->GetPartCount())
-    {
-        DEBUG_ONLY(AddDebugLogLine(false, _T("*** CDownloadQueue::CheckAndAddKnownSource -- New added source (%u, %s) had still value in partcount"), source->GetUserIDHybrid(), sender->GetFileName()));
-    }
+        AddDebugLogLine(false, _T("*** CDownloadQueue::CheckAndAddKnownSource -- New added source (%u, %s) had still value in partcount"), source->GetUserIDHybrid(), sender->GetFileName());
 #endif
 
     theApp.emuledlg->transferwnd->GetDownloadList()->AddSource(sender,source,false);

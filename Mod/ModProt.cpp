@@ -97,6 +97,15 @@ void CUpDownClient::ProcessModInfoPacket(const uchar* pachPacket, const UINT nSi
         m_strModInfo.AppendFormat(L"  Tags=%u", tagcount);
 #endif
 
+	// just to be sure: clear all mod related stuff, first
+#ifdef IPV6_SUPPORT	
+	m_fSupportsIPv6			= 0; //>>> WiZaRd::IPv6 [Xanatos]
+#endif
+#ifdef NAT_TRAVERSAL
+	m_fSupportsNatTraversal	= 0; //>>> WiZaRd::NatTraversal [Xanatos]
+#endif
+	m_fSupportsExtendedXS	= 0; //>>> WiZaRd::ExtendedXS [Xanatos]
+
     // now we are going to read all of them
     for (UINT i = 0; i < tagcount; ++i)
     {

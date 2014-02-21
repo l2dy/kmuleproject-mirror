@@ -28,8 +28,8 @@ public:
 
     void	Process();
     //void	AddClientToQueue(CUpDownClient* client,bool bIgnoreTimelimit = false); //>>> WiZaRd::ZZUL Upload [ZZ]
-    bool	RemoveFromUploadQueue(CUpDownClient* client, LPCTSTR pszReason = NULL, bool updatewindow = true, bool earlyabort = false);
-    bool	RemoveFromWaitingQueue(CUpDownClient* client,bool updatewindow = true);
+    bool	RemoveFromUploadQueue(CUpDownClient* client, const CString strReason = L"", const bool earlyabort = false);
+    bool	RemoveFromWaitingQueue(CUpDownClient* client);
     bool	IsOnUploadQueue(CUpDownClient* client)	const
     {
         return (waitinglist.Find(client) != 0);
@@ -117,7 +117,7 @@ public:
     CUpDownClientPtrList uploadinglist;
 
 protected:
-    void		RemoveFromWaitingQueue(POSITION pos, bool updatewindow);
+    void		RemoveFromWaitingQueue(POSITION pos);
     bool		AcceptNewClient(UINT curUploadSlots) const;
 //>>> WiZaRd::ZZUL Upload [ZZ]
     //bool		AcceptNewClient(bool addOnNextConnect = false) const;
@@ -223,4 +223,8 @@ private:
     CUpDownClient* FindBestScheduledForRemovalClientInUploadListThatCanBeReinstated() const;
     DWORD   m_dwLastCheckedForHighPrioClient;
 //<<< WiZaRd::ZZUL Upload [ZZ]
+//>>> WiZaRd::Catch exceptions
+public:
+	void	UploadTimer();
+//<<< WiZaRd::Catch exceptions
 };

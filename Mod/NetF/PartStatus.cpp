@@ -46,13 +46,9 @@ void CPartStatus::Merge(const CPartStatus* toMerge)
 	{
 #ifdef _DEBUG
 		if(!this->IsComplete(uStart, uEnd))
-		{
 			theApp.QueueLogLineEx(LOG_INFO, L"%hs: range %I64u-%I64u merged to partstatus!", __FUNCTION__, uStart, uEnd);
-			this->Set(uStart, uEnd);
-		}
-#else
-		this->Set(uStart, uEnd);
 #endif
+		this->Set(uStart, uEnd);
 
 		uStart = uEnd + 1ULL;
 		uEnd = uEnd - 1ULL;
@@ -186,7 +182,7 @@ CPartStatus::CreatePartStatus(CSafeMemFile* const data, const uint64 size, const
         // Check for AICH chunks
         else if ((UINT) sctCount == (UINT)(53 * wholePartCount + ((size % PARTSIZE) + (EMBLOCKSIZE - 1)) / EMBLOCKSIZE))
         {
-            DebugLog(_T(__FUNCTION__) _T("; Part vector has AICH sub chunks! :)"));
+            DebugLog(_T(__FUNCTION__) L"; Part vector has %u AICH sub chunks! :)", sctCount);
             partStatus = new CAICHStatusVector(size);
             sctSize = EMBLOCKSIZE;
             sctDivider = EMBLOCKSPERPART;
@@ -195,35 +191,35 @@ CPartStatus::CreatePartStatus(CSafeMemFile* const data, const uint64 size, const
         {
             if ((UINT) sctCount == (UINT)(27 * wholePartCount + ((size % PARTSIZE) + (2 * EMBLOCKSIZE - 1)) / (2 * EMBLOCKSIZE)))
             {
-                DebugLog(_T(__FUNCTION__) _T("; Part vector has AICH x2 sub chunks! :)"));
+                DebugLog(_T(__FUNCTION__) L"; Part vector has %u AICH x2 sub chunks! :)");
                 partStatus = new CAICHStatusVector(size);
                 sctSize = 2 * EMBLOCKSIZE;
                 sctDivider = 27;
             }
             else if ((UINT) sctCount == (UINT)(14 * wholePartCount + ((size % PARTSIZE) + (4 * EMBLOCKSIZE - 1)) / (4 * EMBLOCKSIZE)))
             {
-                DebugLog(_T(__FUNCTION__) _T("; Part vector has AICH x4 sub chunks! :)"));
+                DebugLog(_T(__FUNCTION__) L"; Part vector has %u AICH x4 sub chunks! :)");
                 partStatus = new CAICHStatusVector(size);
                 sctSize = 4 * EMBLOCKSIZE;
                 sctDivider = 14;
             }
             else if ((UINT) sctCount == (UINT)(7 * wholePartCount + ((size % PARTSIZE) + (8 * EMBLOCKSIZE - 1)) / (8 * EMBLOCKSIZE)))
             {
-                DebugLog(_T(__FUNCTION__) _T("; Part vector has AICH x8 sub chunks! :)"));
+                DebugLog(_T(__FUNCTION__) L"; Part vector has %u AICH x8 sub chunks! :)");
                 partStatus = new CAICHStatusVector(size);
                 sctSize = 8 * EMBLOCKSIZE;
                 sctDivider = 7;
             }
             else if ((UINT) sctCount == (UINT)(4 * wholePartCount + ((size % PARTSIZE) + (16 * EMBLOCKSIZE - 1)) / (16 * EMBLOCKSIZE)))
             {
-                DebugLog(_T(__FUNCTION__) _T("; Part vector has AICH x16 sub chunks! :)"));
+                DebugLog(_T(__FUNCTION__) L"; Part vector has %u AICH x16 sub chunks! :)");
                 partStatus = new CAICHStatusVector(size);
                 sctSize = 16 * EMBLOCKSIZE;
                 sctDivider = 4;
             }
             else if ((UINT) sctCount == (UINT)(2 * wholePartCount + ((size % PARTSIZE) + (32 * EMBLOCKSIZE - 1)) / (32 * EMBLOCKSIZE)))
             {
-                DebugLog(_T(__FUNCTION__) _T("; Part vector has AICH x32 sub chunks! :)"));
+                DebugLog(_T(__FUNCTION__) L"; Part vector has %u AICH x32 sub chunks! :)");
                 partStatus = new CAICHStatusVector(size);
                 sctSize = 32 * EMBLOCKSIZE;
                 sctDivider = 2;
@@ -232,7 +228,7 @@ CPartStatus::CreatePartStatus(CSafeMemFile* const data, const uint64 size, const
         // Check for Crumbs
         if (sctSize == 0ULL && (UINT) sctCount == (UINT)((size + (CRUMBSIZE - 1)) / CRUMBSIZE))
         {
-            DebugLog(_T(__FUNCTION__) _T("; Part vector has crumbs! :)"));
+            DebugLog(_T(__FUNCTION__) L"; Part vector has %u crumbs! :)", sctCount);
             partStatus = new CCrumbStatusVector(size);
             sctSize = CRUMBSIZE;
             sctDivider = CRUMBSPERPART;
@@ -264,7 +260,7 @@ CPartStatus::CreatePartStatus(CSafeMemFile* const data, const uint64 size, const
         uint64	start = 0, stop = 0;
         bool	laststate = false;
         uint8	tmp = 0;
-        for (uint16 i = 0; i < sctCount; i++)
+        for (uint16 i = 0; i < sctCount; ++i)
         {
             uint16 const shift = i & 0x0007;
             uint16 const part = i / sctDivider;

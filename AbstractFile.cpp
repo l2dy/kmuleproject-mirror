@@ -474,7 +474,7 @@ void CAbstractFile::RefilterKadNotes(bool bUpdate)
         UpdateFileRatingCommentAvail();
 }
 
-CString CAbstractFile::GetED2kLink(bool bHashset, bool bHTML, bool bHostname, bool bSource, UINT dwSourceIP) const
+CString CAbstractFile::GetED2kLink(const bool bHashset, const bool bFolder, const bool bHTML, const bool bHostname, const bool bSource, const UINT dwSourceIP) const //>>> WiZaRd::CollectionEnhancement
 {
     if (this == NULL)
     {
@@ -482,50 +482,53 @@ CString CAbstractFile::GetED2kLink(bool bHashset, bool bHTML, bool bHostname, bo
         return L"";
     }
     CString strLink, strBuffer;
-    strLink.Format(_T("ed2k://|file|%s|%I64u|%s|"),
+    strLink.Format(L"ed2k://|file|%s|%I64u|%s|",
                    EncodeUrlUtf8(StripInvalidFilenameChars(GetFileName())),
                    GetFileSize(),
-                   EncodeBase16(GetFileHash(),16));
+                   md4str(GetFileHash()));
 
     if (bHTML)
-        strLink = _T("<a href=\"") + strLink;
+        strLink = L"<a href=\"" + strLink;
     if (bHashset && GetFileIdentifierC().GetAvailableMD4PartHashCount() > 0 && GetFileIdentifierC().HasExpectedMD4HashCount())
     {
-        strLink += _T("p=");
+        strLink += L"p=";
         for (UINT j = 0; j < GetFileIdentifierC().GetAvailableMD4PartHashCount(); j++)
         {
             if (j > 0)
-                strLink += _T(':');
-            strLink += EncodeBase16(GetFileIdentifierC().GetMD4PartHash(j), 16);
+                strLink += L':';
+            strLink += md4str(GetFileIdentifierC().GetMD4PartHash(j));
         }
-        strLink += _T('|');
+        strLink += L'|';
     }
 
     if (GetFileIdentifierC().HasAICHHash())
     {
-        strBuffer.Format(_T("h=%s|"), GetFileIdentifierC().GetAICHHash().GetString());
+        strBuffer.Format(L"h=%s|", GetFileIdentifierC().GetAICHHash().GetString());
         strLink += strBuffer;
     }
 
 //>>> WiZaRd::CollectionEnhancement
-    CString strDirectory = GetDownloadDirectory();
-    if (!strDirectory.IsEmpty())
-        strLink.AppendFormat(L"f=%s|", strDirectory);
+	if(bFolder)
+	{
+		CString strDirectory = GetDownloadDirectory();
+		if (!strDirectory.IsEmpty())
+			strLink.AppendFormat(L"f=%s|", strDirectory);
+	}
 //<<< WiZaRd::CollectionEnhancement
 
-    strLink += _T('/');
-    if (bHostname && !thePrefs.GetYourHostname().IsEmpty() && thePrefs.GetYourHostname().Find(_T('.')) != -1)
+    strLink += L'/';
+    if (bHostname && !thePrefs.GetYourHostname().IsEmpty() && thePrefs.GetYourHostname().Find(L'.') != -1)
     {
-        strBuffer.Format(_T("|sources,%s:%i|/"), thePrefs.GetYourHostname(), thePrefs.GetPort());
+        strBuffer.Format(L"|sources,%s:%i|/", thePrefs.GetYourHostname(), thePrefs.GetPort());
         strLink += strBuffer;
     }
     else if (bSource && dwSourceIP != 0)
     {
-        strBuffer.Format(_T("|sources,%i.%i.%i.%i:%i|/"),(uint8)dwSourceIP,(uint8)(dwSourceIP>>8),(uint8)(dwSourceIP>>16),(uint8)(dwSourceIP>>24), thePrefs.GetPort());
+        strBuffer.Format(L"|sources,%i.%i.%i.%i:%i|/",(uint8)dwSourceIP,(uint8)(dwSourceIP>>8),(uint8)(dwSourceIP>>16),(uint8)(dwSourceIP>>24), thePrefs.GetPort());
         strLink += strBuffer;
     }
     if (bHTML)
-        strLink += _T("\">") + StripInvalidFilenameChars(GetFileName()) + _T("</a>");
+        strLink += L"\">" + StripInvalidFilenameChars(GetFileName()) + L"</a>";
 
     return strLink;
 }

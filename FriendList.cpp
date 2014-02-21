@@ -212,7 +212,7 @@ bool CFriendList::AddFriend(const uchar* abyUserhash, UINT dwLastSeen, const CAd
 #else
 bool CFriendList::AddFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort,
 #endif
-                            UINT dwLastChatted, LPCTSTR pszName, UINT dwHasHash)
+                            UINT dwLastChatted, LPCTSTR pszName, UINT dwHasHash, const CString& strComment) //>>> WiZaRd::FriendComment
 {
     // client must have an IP (HighID) or a hash
     // TODO: check if this can be switched to a hybridID so clients with *.*.*.0 can be added..
@@ -227,8 +227,8 @@ bool CFriendList::AddFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLa
 #endif
     if (SearchFriend(abyUserhash, dwLastUsedIP, nLastUsedPort) != NULL)
         return false;
-    CFriend* Record = new CFriend(abyUserhash, dwLastSeen, dwLastUsedIP, nLastUsedPort, dwLastChatted, pszName, dwHasHash);
-    m_listFriends.AddTail(Record);
+
+	m_listFriends.AddTail(new CFriend(abyUserhash, dwLastSeen, dwLastUsedIP, nLastUsedPort, dwLastChatted, pszName, dwHasHash, strComment));
     ShowFriends();
     SaveList();
     return true;

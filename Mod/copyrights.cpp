@@ -34,7 +34,7 @@ static char THIS_FILE[] = __FILE__;
 void PrintCopyrights()
 {
     theApp.QueueLogLineEx(LOG_WARNING, L"** Copyright Information:");
-    theApp.QueueLogLineEx(LOG_SUCCESS, L"%s (c) 2012-2013 %s Team (tuxman/WiZaRd) - %s - Build%s", MOD_VERSION_PLAIN, MOD_VERSION_PLAIN, MOD_HOMEPAGE, GetModVersionNumber());
+    theApp.QueueLogLineEx(LOG_SUCCESS, L"%s (c) 2012-2014 %s Team (tuxman/WiZaRd) - %s - Build%s", MOD_VERSION_PLAIN, MOD_VERSION_PLAIN, MOD_HOMEPAGE, GetModVersionNumber());
     theApp.QueueLogLineEx(LOG_WARNING, L"%s is using code from:", MOD_VERSION_PLAIN);
     theApp.QueueLogLineEx(LOG_SUCCESS, L"eMule (c) 2002-2009 Merkur - http://www.emule-project.net/ - v%u.%u%c",VERSION_MJR, VERSION_MIN, L'a' + VERSION_UPDATE);
     theApp.QueueLogLineEx(LOG_SUCCESS, L"%s - 7z.org - %s (%s)", MY_COPYRIGHT, kCopyrightString, MY_7ZIP_VERSION, MY_DATE); //>>> WiZaRd::7zip
@@ -42,5 +42,4 @@ void PrintCopyrights()
 #ifdef USE_NAT_PMP
     theApp.QueueLogLineEx(LOG_SUCCESS, L"libnatpmp (c) 2007-2012 Thomas Bernard - http://miniupnp.free.fr/ - Build %s", LIBNAT_VERSION_STRING); //>>> WiZaRd::NAT-PMP
 #endif
-    theApp.QueueLogLineEx(LOG_WARNING, L"**");
 }

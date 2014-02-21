@@ -1582,23 +1582,23 @@ void CTransferWnd::EditCatTabLabel(int index,CString newlabel)
             newlabel.Append(_T(")"));
     }
 
-    int count,dwl;
     if (thePrefs.ShowCatTabInfos())
     {
         CPartFile* cur_file;
-        count=dwl=0;
-        for (int i=0; i<theApp.downloadqueue->GetFileCount(); i++)
+        int count = 0;
+		int dwl = 0;
+        for (int i = 0; i < theApp.downloadqueue->GetFileCount(); ++i)
         {
-            cur_file=theApp.downloadqueue->GetFileByIndex(i);
-            if (cur_file==0) continue;
+            cur_file = theApp.downloadqueue->GetFileByIndex(i);
+            if (cur_file == NULL) 
+				continue;
             if (cur_file->CheckShowItemInGivenCat(index))
-            {
-                if (cur_file->GetTransferringSrcCount()>0) ++dwl;
-            }
+                if (cur_file->GetTransferringSrcCount()>0) 
+					++dwl;
         }
-        CString title=newlabel;
+        CString title = newlabel;
         downloadlistctrl.GetCompleteDownloads(index, count);
-        newlabel.Format(_T("%s %i/%i"),title,dwl,count);
+        newlabel.Format(L"%s %i/%i", title, dwl, count);
     }
 
     tabitem.pszText = newlabel.LockBuffer();

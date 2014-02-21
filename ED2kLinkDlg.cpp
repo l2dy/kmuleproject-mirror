@@ -35,6 +35,7 @@ IMPLEMENT_DYNAMIC(CED2kLinkDlg, CResizablePage)
 BEGIN_MESSAGE_MAP(CED2kLinkDlg, CResizablePage)
     ON_BN_CLICKED(IDC_LD_CLIPBOARDBUT, OnBnClickedClipboard)
     ON_BN_CLICKED(IDC_LD_SOURCECHE, OnSettingsChange)
+	ON_BN_CLICKED(IDC_LD_FOLDER, OnSettingsChange) //>>> WiZaRd::CollectionEnhancement
     ON_BN_CLICKED(IDC_LD_HTMLCHE, OnSettingsChange)
     ON_BN_CLICKED(IDC_LD_HOSTNAMECHE, OnSettingsChange)
     ON_BN_CLICKED(IDC_LD_HASHSETCHE, OnSettingsChange)
@@ -67,14 +68,13 @@ BOOL CED2kLinkDlg::OnInitDialog()
     CResizablePage::OnInitDialog();
     InitWindowStyles(this);
 
-
-
     if (!m_bReducedDlg)
     {
         AddAnchor(IDC_LD_BASICGROUP,BOTTOM_LEFT,BOTTOM_RIGHT);
         AddAnchor(IDC_LD_SOURCECHE,BOTTOM_LEFT,BOTTOM_LEFT);
         AddAnchor(IDC_LD_ADVANCEDGROUP,BOTTOM_LEFT,BOTTOM_RIGHT);
-        AddAnchor(IDC_LD_HTMLCHE,BOTTOM_LEFT,BOTTOM_LEFT);
+		AddAnchor(IDC_LD_FOLDER,BOTTOM_LEFT,BOTTOM_LEFT);
+        AddAnchor(IDC_LD_HTMLCHE,BOTTOM_LEFT,BOTTOM_LEFT); //>>> WiZaRd::CollectionEnhancement
         AddAnchor(IDC_LD_HASHSETCHE,BOTTOM_LEFT,BOTTOM_LEFT);
         AddAnchor(IDC_LD_HOSTNAMECHE,BOTTOM_LEFT,BOTTOM_LEFT);
 
@@ -93,6 +93,8 @@ BOOL CED2kLinkDlg::OnInitDialog()
             GetDlgItem(IDC_LD_HOSTNAMECHE)->EnableWindow(FALSE);
             ((CButton*)GetDlgItem(IDC_LD_HOSTNAMECHE))->SetCheck(BST_UNCHECKED);
         }
+
+		((CButton*)GetDlgItem(IDC_LD_FOLDER))->SetCheck(BST_CHECKED); //>>> WiZaRd::CollectionEnhancement
     }
     else
     {
@@ -110,7 +112,8 @@ BOOL CED2kLinkDlg::OnInitDialog()
         GetDlgItem(IDC_LD_BASICGROUP)->ShowWindow(SW_HIDE);
         GetDlgItem(IDC_LD_SOURCECHE)->ShowWindow(SW_HIDE);
         GetDlgItem(IDC_LD_ADVANCEDGROUP)->ShowWindow(SW_HIDE);
-        GetDlgItem(IDC_LD_HTMLCHE)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_LD_FOLDER)->ShowWindow(SW_HIDE); //>>> WiZaRd::CollectionEnhancement
+        GetDlgItem(IDC_LD_HTMLCHE)->ShowWindow(SW_HIDE); 
         GetDlgItem(IDC_LD_HASHSETCHE)->ShowWindow(SW_HIDE);
         GetDlgItem(IDC_LD_HOSTNAMECHE)->ShowWindow(SW_HIDE);
     }
@@ -140,13 +143,9 @@ BOOL CED2kLinkDlg::OnSetActive()
             bShowHTML = TRUE;
             CKnownFile* file = STATIC_DOWNCAST(CKnownFile, (*m_paFiles)[i]);
             if (file->GetFileIdentifier().GetAvailableMD4PartHashCount() > 0 && file->GetFileIdentifier().HasExpectedMD4HashCount())
-            {
                 bShowHashset = TRUE;
-            }
             if (file->GetFileIdentifier().HasAICHHash())
-            {
                 bShowAICH = TRUE;
-            }
             if (bShowHashset && bShowAICH)
                 break;
         }
@@ -178,6 +177,7 @@ void CED2kLinkDlg::Localize(void)
         GetDlgItem(IDC_LD_BASICGROUP)->SetWindowText(GetResString(IDS_LD_BASICOPT));
         GetDlgItem(IDC_LD_SOURCECHE)->SetWindowText(GetResString(IDS_LD_ADDSOURCE));
         GetDlgItem(IDC_LD_ADVANCEDGROUP)->SetWindowText(GetResString(IDS_LD_ADVANCEDOPT));
+		GetDlgItem(IDC_LD_FOLDER)->SetWindowText(GetResString(IDS_LD_FOLDER)); //>>> WiZaRd::CollectionEnhancement
         GetDlgItem(IDC_LD_HTMLCHE)->SetWindowText(GetResString(IDS_LD_ADDHTML));
         GetDlgItem(IDC_LD_HASHSETCHE)->SetWindowText(GetResString(IDS_LD_ADDHASHSET));
         GetDlgItem(IDC_LD_HOSTNAMECHE)->SetWindowText(GetResString(IDS_LD_HOSTNAME));
@@ -189,6 +189,7 @@ void CED2kLinkDlg::UpdateLink()
     CString strLinks;
     CString strBuffer;
     const bool bHashset = ((CButton*)GetDlgItem(IDC_LD_HASHSETCHE))->GetCheck() == BST_CHECKED;
+	const bool bFolder = ((CButton*)GetDlgItem(IDC_LD_FOLDER))->GetCheck() == BST_CHECKED; //>>> WiZaRd::CollectionEnhancement
     const bool bHTML = ((CButton*)GetDlgItem(IDC_LD_HTMLCHE))->GetCheck() == BST_CHECKED;
     const bool bSource = ((CButton*)GetDlgItem(IDC_LD_SOURCECHE))->GetCheck() == BST_CHECKED && theApp.IsConnected() && theApp.GetPublicIP() != 0 && !theApp.IsFirewalled();
     const bool bHostname = ((CButton*)GetDlgItem(IDC_LD_HOSTNAMECHE))->GetCheck() == BST_CHECKED && theApp.IsConnected() && !theApp.IsFirewalled()
@@ -203,7 +204,7 @@ void CED2kLinkDlg::UpdateLink()
             strLinks += _T("\r\n\r\n");
 
         CKnownFile* file = STATIC_DOWNCAST(CKnownFile, (*m_paFiles)[i]);
-        strLinks += file->GetED2kLink(bHashset, bHTML, bHostname, bSource, theApp.GetPublicIP());
+        strLinks += file->GetED2kLink(bHashset, bFolder, bHTML, bHostname, bSource, theApp.GetPublicIP()); //>>> WiZaRd::CollectionEnhancement
     }
     m_ctrlLinkEdit.SetWindowText(strLinks);
 

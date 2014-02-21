@@ -498,7 +498,9 @@ void CKademlia::RecheckFirewalled()
             m_pInstance->m_pPrefs->SetRecheckIP();
             // also UDP check
             CUDPFirewallTester::ReCheckFirewallUDP(false);
+#ifdef _DEBUG
 			theApp.QueueLogLineEx(LOG_WARNING, L"Rechecking firewalled state - DON'T PANIC, this will just take a few moments! Last firewalled state: %s", m_pInstance->GetPrefs()->GetLastFirewalledState() ? GetResString(IDS_FIREWALLED) : GetResString(IDS_IDHIGH));
+#endif
         }
     }
 

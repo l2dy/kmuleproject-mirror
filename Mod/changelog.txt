@@ -248,48 +248,41 @@ XXXXYYZZ:
 ~ collections are even better now! opened collections now feature checkboxes to select the items to download as well as 2 buttons to check/uncheck all items [WiZaRd]
 ! fixed manually adjusting download priorities - thx to Sir Boagalott [WiZaRd]
 
-Beta 20131109:
+From Beta Builds:
+> updated miniupnplib support to v1.9 (31/01/2014) [WiZaRd]
 ! fixed autoscrolling in "about" window [WiZaRd]
 ~ prevent new firewall rechecks if some are already running (to prevent ASSERT in UDPFirewallTester::RecheckFirewallUDP) [WiZaRd]
 ! fixed small display glitch in display window [WiZaRd]
-
-Beta 20131110:
-> updated miniupnplib support to v1.8 (07/10/2013) [WiZaRd]
 ~ draw SCT orange parts in UL/DL/shared window [WiZaRd]
 ~ recheck firewalled status only if necessary [WiZaRd]
 ~ "Search Parameters" button is now hidden by default to avoid confusion [WiZaRd]
-
-Beta 20131111:
+~ "Search Parameters" button is now properly hidden even if the windows don't match [WiZaRd]
 ! fixed "uploading" label in upper list - thx to SS1900 [WiZaRd]
 ~ reverted firewall checks to once per hour [WiZaRd]
 ! fixed part status exchange on part files [WiZaRd]
 ! applied latest AICH hash fixes from 0.50b repo [WiZaRd]
-
-Beta 20131112:
-~ "Search Parameters" button is now properly hidden even if the windows don't match [WiZaRd]
 ~ ignore ports being in "shutdown" state when checking if they are already in use [WiZaRd]
 ! fixed a bug in source exchange introduced with extended XS [WiZaRd]
-
-Beta 20131113:
 + proxy connections are now displayed in the status bar [Tuxman]
 ~ applied corruptionblackbox rewrite from WARP as it may be needed for SCT [WiZaRd]
-
-Beta 20131114:
 ~ added missing default settings for extXS, IPv6, NAT-T [WiZaRd]
 ! fixed URL downloads (broken due to NAT-T) [WiZaRd]
-
-Beta 20131117:
 ~ fixed SCT part status sending [WiZaRd]
 ~ fixed SCT part status display [WiZaRd]
 ~ store default .ini only values [WiZaRd]
 - removed SNARL log notifications [WiZaRd]
-
-Beta 201311xx:
 ! fixed wrong comment icons in sharedfilelist - thx to SS1900 [WiZaRd]
 ~ save nodes.dat regularly [WiZaRd]
 ~ always save .dmp files [WiZaRd]
 ~ additional debug output on AICH requests/answers [WiZaRd]
-~ additional log line on FW recheck [WiZaRd]
+~ additional debug log line on FW recheck [WiZaRd]
+~ crumbs (partial parts) are now always shown to supporting clients [WiZaRd]
+~ improved upload buffering to 1...6 blocks buffer [WiZaRd]
+! added proper threadhandling for AICH sync thread to prevent crashes on exit [WiZaRd]
++ added possibility to switch off folder support when creating ed2k links [WiZaRd]
++ added possibility to add a friend comment [WiZaRd]
+~ friend data will now be available even if the friend is offline - as long as we did connect to it, once [WiZaRd]
+
 
 * IPv6 support is currently disabled [WiZaRd]
 * NAT-T support is currently disabled [WiZaRd]

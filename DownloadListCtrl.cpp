@@ -87,9 +87,10 @@ CDownloadListCtrl::CDownloadListCtrl()
     SetSkinKey(L"DownloadsLv");
     m_dwLastAvailableCommandsCheck = 0;
     m_availableCommandsDirty = true;
-    m_iFDC = -1; //>>> FDC [BlueSonicBoy]
-    m_iPreview = -1; //>>> PreviewIndicator [WiZaRd]
-    m_iHealthIndex = -1; //>>> Health Indicator File Availability [WiZaRd]
+    m_iFDC = -1; //>>> WiZaRd::FDC [BlueSonicBoy]
+    m_iPreview = -1; //>>> WiZaRd::PreviewIndicator
+    m_iHealthIndex = -1; //>>> WiZaRd::Health Indicator File Availability
+	m_iQRIndex = -1; //>>> WiZaRd::QR History
 }
 
 CDownloadListCtrl::~CDownloadListCtrl()
@@ -145,7 +146,7 @@ void CDownloadListCtrl::Init()
     InsertColumn(11, lsctitle,							LVCFMT_LEFT,  120,						-1, true);
     InsertColumn(12, GetResString(IDS_CAT),				LVCFMT_LEFT,  100,						-1, true);
     InsertColumn(13, GetResString(IDS_ADDEDON),			LVCFMT_LEFT,  120);
-    InsertColumn(14, GetResString(IDS_SEARCHAVAIL),		LVCFMT_LEFT,   70);	//>>> Health Indicator File Availability [WiZaRd]
+    InsertColumn(14, GetResString(IDS_SEARCHAVAIL),		LVCFMT_LEFT,   70);	//>>> WiZaRd::Health Indicator File Availability
 
     SetAllIcons();
     Localize();
@@ -205,9 +206,9 @@ void CDownloadListCtrl::SetAllIcons()
     m_ImageList.Add(CTempIconLoader(_T("Rating_Good")));
     m_ImageList.Add(CTempIconLoader(_T("Rating_Excellent")));
     m_ImageList.Add(CTempIconLoader(_T("Collection_Search"))); // rating for comments are searched on kad
-    m_iFDC = m_ImageList.Add(CTempIconLoader(L"Dissimilar_Name")); //>>> FDC [BlueSonicBoy]
-    m_iPreview = m_ImageList.Add(CTempIconLoader(L"PREVIEW")); //>>> PreviewIndicator [WiZaRd]
-//>>> Health Indicator File Availability [WiZaRd]
+    m_iFDC = m_ImageList.Add(CTempIconLoader(L"Dissimilar_Name")); //>>> WiZaRd::FDC [BlueSonicBoy]
+    m_iPreview = m_ImageList.Add(CTempIconLoader(L"PREVIEW")); //>>> WiZaRd::PreviewIndicator
+//>>> WiZaRd::Health Indicator File Availability
     m_iHealthIndex = m_ImageList.Add(CTempIconLoader(L"HEALTH_0"));
     m_ImageList.Add(CTempIconLoader(L"HEALTH_1"));
     m_ImageList.Add(CTempIconLoader(L"HEALTH_2"));
@@ -216,7 +217,12 @@ void CDownloadListCtrl::SetAllIcons()
     m_ImageList.Add(CTempIconLoader(L"HEALTH_5"));
     m_ImageList.Add(CTempIconLoader(L"HEALTH_6"));
     m_ImageList.Add(CTempIconLoader(L"HEALTH_7"));
-//<<< Health Indicator File Availability [WiZaRd]
+//<<< WiZaRd::Health Indicator File Availability
+//>>> WiZaRd::QR History
+	m_iQRIndex = m_ImageList.Add(CTempIconLoader(L"QR_EQUAL"));
+	m_ImageList.Add(CTempIconLoader(L"QR_UP"));	
+	m_ImageList.Add(CTempIconLoader(L"QR_DOWN"));
+//<<< WiZaRd::QR History
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("ClientSecureOvl"))), 1);
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("OverlayObfu"))), 2);
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("OverlaySecureObfu"))), 3);
@@ -574,7 +580,7 @@ void CDownloadListCtrl::GetFileItemDisplayText(CPartFile *lpPartFile, int iSubIt
                     if (lpPartFile->IsAutoDownPriority())
                         _tcsncpy(pszText, GetResString(IDS_PRIOAUTOVERYHIGH), cchTextMax);
                     else
-                        _tcsncpy(pszText, GetResString(IDS_PRIOHIGH), cchTextMax);
+                        _tcsncpy(pszText, GetResString(IDS_PRIORELEASE), cchTextMax);
                     break;
 //<<< WiZaRd::Improved Auto Prio
             }
@@ -631,10 +637,10 @@ void CDownloadListCtrl::GetFileItemDisplayText(CPartFile *lpPartFile, int iSubIt
                 _tcsncpy(pszText, _T("?"), cchTextMax);
             break;
 
-//>>> Health Indicator File Availability [WiZaRd]
+//>>> WiZaRd::Health Indicator File Availability
         case 14:
             break;
-//<<< Health Indicator File Availability [WiZaRd]
+//<<< WiZaRd::Health Indicator File Availability
     }
     pszText[cchTextMax - 1] = L'\0';
 }
@@ -655,20 +661,20 @@ void CDownloadListCtrl::DrawFileItem(CDC *dc, int nColumn, LPCRECT lpRect, UINT 
                 ::ImageList_Draw(theApp.GetSystemImageList(), iImage, dc->GetSafeHdc(), rcDraw.left, rcDraw.top + iIconPosY, ILD_TRANSPARENT);
             rcDraw.left += theApp.GetSmallSytemIconSize().cx;
 
-//>>> FDC [BlueSonicBoy]
+//>>> WiZaRd::FDC [BlueSonicBoy]
             if (pPartFile->DissimilarName() && m_iFDC != -1)
             {
                 m_ImageList.Draw(dc, m_iFDC, rcDraw.TopLeft(), ILD_NORMAL);
                 rcDraw.left += 16;
             }
-//<<< FDC [BlueSonicBoy]
-//>>> PreviewIndicator [WiZaRd]
+//<<< WiZaRd::FDC [BlueSonicBoy]
+//>>> WiZaRd::PreviewIndicator
             if (thePrefs.GetPreviewIndicatorMode() == ePIM_Icon && pPartFile->IsReadyForPreview())
             {
                 m_ImageList.Draw(dc, m_iPreview, rcDraw.TopLeft(), ILD_NORMAL);
                 rcDraw.left += 16;
             }
-//<<< PreviewIndicator [WiZaRd]
+//<<< WiZaRd::PreviewIndicator
 
             if (thePrefs.ShowRatingIndicator() && (pPartFile->HasComment() || pPartFile->HasRating() || pPartFile->IsKadCommentSearchRunning()))
             {
@@ -729,7 +735,7 @@ void CDownloadListCtrl::DrawFileItem(CDC *dc, int nColumn, LPCRECT lpRect, UINT 
             break;
         }
 
-//>>> Health Indicator File Availability [WiZaRd]
+//>>> WiZaRd::Health Indicator File Availability
         case 14:
         {
             CRect rcDraw(lpRect);
@@ -760,7 +766,7 @@ void CDownloadListCtrl::DrawFileItem(CDC *dc, int nColumn, LPCRECT lpRect, UINT 
             pt.x += 10;
             break;
         }
-//<<< Health Indicator File Availability [WiZaRd]
+//<<< WiZaRd::Health Indicator File Availability
 
         default:
             dc->DrawText(szItem, -1, const_cast<LPRECT>(lpRect), MLC_DT_TEXT | uDrawTextAlignment);
@@ -847,7 +853,14 @@ void CDownloadListCtrl::GetSourceItemDisplayText(const CtrlItem_Struct *pCtrlIte
                 if (pClient->IsRemoteQueueFull())
                     _tcsncpy(pszText, GetResString(IDS_QUEUEFULL), cchTextMax);
                 else if (pClient->GetRemoteQueueRank())
-                    _sntprintf(pszText, cchTextMax, _T("QR: %u"), pClient->GetRemoteQueueRank());
+				{
+//>>> WiZaRd::QR History
+					if(pClient->GetQRDifference())
+						_sntprintf(pszText, cchTextMax, L"QR: %u (%+i)", pClient->GetRemoteQueueRank(), pClient->GetQRDifference());
+					else
+//<<< WiZaRd::QR History
+						_sntprintf(pszText, cchTextMax, L"QR: %u", pClient->GetRemoteQueueRank());
+				}
             }
             break;
 
@@ -855,9 +868,7 @@ void CDownloadListCtrl::GetSourceItemDisplayText(const CtrlItem_Struct *pCtrlIte
         {
             CString strBuffer;
             if (pCtrlItem->type == AVAILABLE_SOURCE)
-            {
                 strBuffer = pClient->GetDownloadStateDisplayString();
-            }
             else
             {
                 strBuffer = GetResString(IDS_ASKED4ANOTHERFILE);
@@ -898,10 +909,10 @@ void CDownloadListCtrl::GetSourceItemDisplayText(const CtrlItem_Struct *pCtrlIte
         case 13:	// added on
             break;
 
-//>>> Health Indicator File Availability [WiZaRd]
+//>>> WiZaRd::Health Indicator File Availability
         case 14:
             break;
-//<<< Health Indicator File Availability [WiZaRd]
+//<<< WiZaRd::Health Indicator File Availability
     }
     pszText[cchTextMax - 1] = L'\0';
 }
@@ -960,9 +971,7 @@ void CDownloadListCtrl::DrawSourceItem(CDC *dc, int nColumn, LPCRECT lpRect, UIN
                 }
             }
             else
-            {
                 m_ImageList.Draw(dc, 22+4, point, ILD_NORMAL);
-            }
             cur_rec.left += 20;
 
 //>>> WiZaRd::ClientAnalyzer
@@ -1042,6 +1051,30 @@ void CDownloadListCtrl::DrawSourceItem(CDC *dc, int nColumn, LPCRECT lpRect, UIN
             break;
         }
 
+//>>> WiZaRd::QR History
+		case 7:
+		{
+			CRect rcDraw(lpRect);
+			if(pClient->GetDownloadState() == DS_ONQUEUE && !pClient->IsRemoteQueueFull() && pClient->GetRemoteQueueRank())
+			{
+				int draw = m_iQRIndex; // "QR_EQUAL"		
+				if(pClient->GetQRDifference())
+				{
+					if(pClient->GetQRDifference() > 0)
+						draw += 2; // "QR_DOWN"
+					else
+						draw += 1; // "QR_UP"
+				}
+				
+				POINT pt = rcDraw.TopLeft();
+				m_ImageList.Draw(dc, draw, pt, ILD_NORMAL);
+				rcDraw.left += 8;
+			}
+			dc->DrawText(szItem, -1, rcDraw, MLC_DT_TEXT | uDrawTextAlignment);
+			break;
+		}
+//<<< WiZaRd::QR History
+
         case 9:		// remaining time & size
         case 10:	// last seen complete
         case 11:	// last received
@@ -1049,7 +1082,7 @@ void CDownloadListCtrl::DrawSourceItem(CDC *dc, int nColumn, LPCRECT lpRect, UIN
         case 13:	// added on
             break;
 
-//>>> Health Indicator File Availability [WiZaRd]
+//>>> WiZaRd::Health Indicator File Availability
         case 14:
         {
             if (pCtrlItem->type == AVAILABLE_SOURCE)
@@ -1083,7 +1116,7 @@ void CDownloadListCtrl::DrawSourceItem(CDC *dc, int nColumn, LPCRECT lpRect, UIN
             }
             break;
         }
-//<<< Health Indicator File Availability [WiZaRd]
+//<<< WiZaRd::Health Indicator File Availability
 
         default:
             dc->DrawText(szItem, -1, const_cast<LPRECT>(lpRect), MLC_DT_TEXT | uDrawTextAlignment);
@@ -1441,24 +1474,6 @@ void CDownloadListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
                     file1 = pFile;
                 iSelectedItems++;
 
-#ifdef _DEBUG
-				if(bFirstItem)
-				{
-					const uint64 filesize = pFile->GetFileSize();
-					const uint64 realsize = pFile->GetRealFileSize();
-					const UINT nPartCount = pFile->GetPartCount();
-					theApp.QueueLogLineEx(LOG_WARNING, L"Partsizes for %s, %u parts:", pFile->GetFileName(), nPartCount, filesize, CastItoXBytes(filesize));					
-					theApp.QueueLogLineEx(LOG_INFO, L"Part %u-%u: %I64u (%s)", 0, nPartCount-2, PARTSIZE, CastItoXBytes(PARTSIZE));					
-					UINT length = PARTSIZE;
-					if ((ULONGLONG)PARTSIZE*(uint64)(nPartCount) > filesize)
-					{
-						length = (UINT)(filesize - ((ULONGLONG)PARTSIZE*(uint64)(nPartCount-1)));
-						ASSERT(length <= PARTSIZE);
-					}
-					theApp.QueueLogLineEx(LOG_INFO, L"Part %u: %u (%s)", nPartCount-1, length, CastItoXBytes(length));
-					theApp.QueueLogLineEx(LOG_WARNING, L"Filesizes: %I64u (%s) - real: %I64u (%s)", filesize, CastItoXBytes(filesize), realsize, CastItoXBytes(realsize));
-				}
-#endif				
                 bool bFileDone = (pFile->GetStatus()==PS_COMPLETE || pFile->GetStatus()==PS_COMPLETING);
                 iFilesToCancel += pFile->GetStatus() != PS_COMPLETING ? 1 : 0;
                 iFilesNotDone += !bFileDone ? 1 : 0;
@@ -2039,10 +2054,10 @@ BOOL CDownloadListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                         if (partfile->CanStopFile())
                         {
                             HideSources(partfile);
-//>>> FDC [BlueSonicBoy]
+//>>> WiZaRd::FDC [BlueSonicBoy]
                             // TODO: why should we reset here?
                             partfile->ResetFDC();
-//<<< FDC [BlueSonicBoy]
+//<<< WiZaRd::FDC [BlueSonicBoy]
                             partfile->StopFile();
                         }
                         selectedList.RemoveHead();
@@ -2142,11 +2157,11 @@ BOOL CDownloadListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                 case MP_VIEWFILECOMMENTS:
                     ShowFileDialog(IDD_COMMENTLST);
                     break;
-//>>> FDC [BlueSonicBoy]
+//>>> WiZaRd::FDC [BlueSonicBoy]
                 case MP_FILENAME:
                     ShowFileDialog(IDD_FILEDETAILS_NAME);
                     break;
-//<<< FDC [BlueSonicBoy]
+//<<< WiZaRd::FDC [BlueSonicBoy]
                 case MP_SHOWED2KLINK:
                     ShowFileDialog(IDD_ED2KLINK);
                     break;
@@ -2583,7 +2598,7 @@ int CDownloadListCtrl::Compare(const CPartFile *file1, const CPartFile *file2, L
                 comp = -1;
             break;
 
-//>>> Health Indicator File Availability [WiZaRd]
+//>>> WiZaRd::Health Indicator File Availability
         case 14:
         {
             float val1 = (float)(!file1->IsPartFile() ? 100 : (file1->GetAvailablePartCount()*100.0/file1->GetPartCount()));
@@ -2591,7 +2606,7 @@ int CDownloadListCtrl::Compare(const CPartFile *file1, const CPartFile *file2, L
             comp = CompareFloat(val1, val2);
             break;
         }
-//<<< Health Indicator File Availability [WiZaRd]
+//<<< WiZaRd::Health Indicator File Availability
     }
     return comp;
 }
@@ -2664,14 +2679,14 @@ int CDownloadListCtrl::Compare(const CUpDownClient *client1, const CUpDownClient
             }
             return client1->GetDownloadState() - client2->GetDownloadState();
 
-//>>> Health Indicator File Availability [WiZaRd]
+//>>> WiZaRd::Health Indicator File Availability
         case 14:
         {
             float val1 = (float)(client1->IsCompleteSource() ? 100 : (client1->GetAvailablePartCount()*100.0/client1->GetRequestFile()->GetPartCount()));
             float val2 = (float)(client2->IsCompleteSource() ? 100 : (client2->GetAvailablePartCount()*100.0/client2->GetRequestFile()->GetPartCount()));
             return CompareFloat(val1, val2);
         }
-//<<< Health Indicator File Availability [WiZaRd]
+//<<< WiZaRd::Health Indicator File Availability
     }
 
     return 0;
@@ -2882,6 +2897,7 @@ int CDownloadListCtrl::GetFilesCountInCurCat()
 
 void CDownloadListCtrl::ShowFilesCount()
 {
+	theApp.emuledlg->transferwnd->UpdateCatTabTitles();
     theApp.emuledlg->transferwnd->UpdateFilesCount(GetFilesCountInCurCat());
 }
 
@@ -2924,7 +2940,7 @@ int CDownloadListCtrl::GetCompleteDownloads(int cat, int& total)
 {
     total = 0;
     int count = 0;
-    for (ListItems::const_iterator it = m_ListItems.begin(); it != m_ListItems.end(); it++)
+    for (ListItems::const_iterator it = m_ListItems.begin(); it != m_ListItems.end(); ++it)
     {
         const CtrlItem_Struct* cur_item = it->second;
         if (cur_item->type == FILE_TYPE)
@@ -2932,9 +2948,9 @@ int CDownloadListCtrl::GetCompleteDownloads(int cat, int& total)
             /*const*/ CPartFile* file = reinterpret_cast<CPartFile*>(cur_item->value);
             if (file->CheckShowItemInGivenCat(cat) || cat==-1)
             {
-                total++;
+                ++total;
                 if (file->GetStatus() == PS_COMPLETE)
-                    count++;
+                    ++count;
             }
         }
     }

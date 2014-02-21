@@ -124,9 +124,10 @@ public:
     bool	ReportAvailableCommands(CList<int>& liAvailableCommands);
 
 protected:
-    int			m_iFDC; //>>> FDC [BlueSonicBoy]
-    int			m_iPreview; //>>> PreviewIndicator [WiZaRd]
-    int			m_iHealthIndex; //>>> Health Indicator File Availability [WiZaRd]
+    int			m_iFDC; //>>> WiZaRd::FDC [BlueSonicBoy]
+    int			m_iPreview; //>>> WiZaRd::PreviewIndicator
+    int			m_iHealthIndex; //>>> WiZaRd::Health Indicator File Availability
+	int			m_iQRIndex; //>>> WiZaRd::QR History
     CImageList  m_ImageList;
     CTitleMenu	m_PrioMenu;
     CTitleMenu	m_FileMenu;

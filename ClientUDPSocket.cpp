@@ -891,7 +891,7 @@ bool CClientUDPSocket::SendPacket(Packet* packet, UINT dwIP, uint16 nPort, bool 
 
 #ifdef _DEBUG
     if (newpending->packet->size > UDP_KAD_MAXFRAGMENT)
-        DebugLogWarning(_T("Sending UDP packet > UDP_KAD_MAXFRAGMENT, opcode: %X, size: %u"), packet->opcode, packet->size);
+        DebugLogWarning(L"Sending UDP packet > UDP_KAD_MAXFRAGMENT to %s:%u, opcode: 0x%X, size: %u", ipstr(dwIP), nPort, packet->opcode, packet->size);
 #endif
 
     if (newpending->bEncrypt && pachTargetClientHashORKadID != NULL)
