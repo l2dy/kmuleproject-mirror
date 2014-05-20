@@ -617,7 +617,7 @@ BOOL CemuleApp::InitInstance()
     CWinApp::InitInstance();
 
     memset(&m_wsaData, 0, sizeof(WSADATA));
-    if (!InitWinsock2(&m_wsaData))
+    if(RunningWine() || !InitWinsock2(&m_wsaData)) //>>> WiZaRd::Wine Compatibility
     {
         memset(&m_wsaData, 0, sizeof(WSADATA));
         if (!AfxSocketInit(&m_wsaData))
@@ -625,8 +625,7 @@ BOOL CemuleApp::InitInstance()
             AfxMessageBox(GetResString(IDS_SOCKETS_INIT_FAILED));
             return FALSE;
         }
-    }
-    TRACE(L"Using WinSock v%u.%u...\n", LOBYTE(m_wsaData.wVersion), HIBYTE(m_wsaData.wVersion));
+    }    
 #if _MFC_VER==0x0700 || _MFC_VER==0x0710 || _MFC_VER==0x0800 || _MFC_VER==0x0900 || _MFC_VER==0x0A00
     atexit(__AfxSocketTerm);
 #else
@@ -750,6 +749,7 @@ BOOL CemuleApp::InitInstance()
     }
     theApp.QueueLogLine(LOG_INFO, L"Starting " + GetClientVersionString());
     theApp.QueueLogLine(LOG_WARNING, L"Based upon " + GetClientVersionStringBase());
+	theApp.QueueLogLine(LOG_INFO, L"Using WinSock v%u.%u", LOBYTE(m_wsaData.wVersion), HIBYTE(m_wsaData.wVersion));
 
     SetConsoleCtrlHandler(ConsoleCtrlHandler, TRUE);
 
