@@ -327,7 +327,7 @@ void CSharedDirsTreeCtrl::FilterTreeAddSubDirectories(CDirectoryItem* pDirectory
         int nLevel, bool &rbShowWarning, bool bParentAccessible)
 {
     // just some sanity check against too deep shared dirs
-    // shouldnt be needed, but never trust the filesystem or a recursive function ;)
+    // shouldn't be needed, but never trust the filesystem or a recursive function ;)
     if (nLevel > 14)
     {
         ASSERT(0);
@@ -385,10 +385,7 @@ void CSharedDirsTreeCtrl::FilterTreeReloadTree()
     // store current selection
     CDirectoryItem* pOldSelectedItem = NULL;
     if (GetSelectedFilter() != NULL)
-    {
         pOldSelectedItem = GetSelectedFilter()->CloneContent();
-    }
-
 
     // create the tree substructure of directories we want to show
     POSITION pos = m_pRootDirectoryItem->liSubDirectories.GetHeadPosition();
@@ -1207,10 +1204,9 @@ void CSharedDirsTreeCtrl::OnTvnGetdispinfo(NMHDR *pNMHDR, LRESULT *pResult)
 void CSharedDirsTreeCtrl::AddSharedDirectory(CString strDir, bool bSubDirectories)
 {
     if (!FileSystemTreeIsShared(strDir) && thePrefs.IsShareableDirectory(strDir))
-    {
         m_strliSharedDirs.AddTail(strDir);
-    }
-    if (bSubDirectories)
+
+	if (bSubDirectories)
     {
         if (strDir.Right(1) != L"\\")
             strDir += L"\\";
@@ -1230,9 +1226,8 @@ void CSharedDirsTreeCtrl::AddSharedDirectory(CString strDir, bool bSubDirectorie
 void CSharedDirsTreeCtrl::RemoveSharedDirectory(CString strDir, bool bSubDirectories)
 {
     if (strDir.Right(1) == L"\\")
-    {
         strDir = strDir.Left(strDir.GetLength()-1);
-    }
+
     strDir.MakeLower();
     POSITION pos1, pos2;
     for (pos1 = m_strliSharedDirs.GetHeadPosition(); (pos2 = pos1) != NULL;)
@@ -1278,9 +1273,7 @@ void CSharedDirsTreeCtrl::FileSystemTreeUpdateShareState(const CDirectoryItem* p
     SetItemState(pDir->m_htItem, FileSystemTreeIsShared(pDir->m_strFullPath) ? INDEXTOOVERLAYMASK(1) : 0, TVIS_OVERLAYMASK);
     POSITION pos = pDir->liSubDirectories.GetHeadPosition();
     while (pos != NULL)
-    {
         FileSystemTreeUpdateShareState(pDir->liSubDirectories.GetNext(pos));
-    }
 }
 
 void CSharedDirsTreeCtrl::FileSystemTreeSetShareState(const CDirectoryItem* pDir, bool bSubDirectories)
@@ -1291,9 +1284,7 @@ void CSharedDirsTreeCtrl::FileSystemTreeSetShareState(const CDirectoryItem* pDir
     {
         POSITION pos = pDir->liSubDirectories.GetHeadPosition();
         while (pos != NULL)
-        {
             FileSystemTreeSetShareState(pDir->liSubDirectories.GetNext(pos), true);
-        }
     }
 }
 
@@ -1368,9 +1359,9 @@ void CSharedDirsTreeCtrl::EditSharedDirectories(const CDirectoryItem* pDir, bool
             thePrefs.shareddir_list_permissions.RemoveAt(posLast2);
         }
     }
-    while (!m_strliSharedDirs.IsEmpty())
+    for(POSITION pos = m_strliSharedDirs.GetHeadPosition(); pos;)
     {
-        CString strPath = m_strliSharedDirs.RemoveHead();
+        CString strPath = m_strliSharedDirs.GetNext(pos);
         if (strPath.Right(1) != L"\\")
             strPath.Append(L"\\");
         thePrefs.shareddir_list.AddTail(strPath);
@@ -1401,13 +1392,9 @@ void CSharedDirsTreeCtrl::Reload(bool bForce)
                 CString str1 = m_strliSharedDirs.GetNext(pos);
                 CString str2 = thePrefs.shareddir_list.GetNext(pos2);
                 if (str1.Right(1) == L"\\")
-                {
                     str1 = str1.Left(str1.GetLength()-1);
-                }
                 if (str2.Right(1) == L"\\")
-                {
                     str2 = str2.Left(str2.GetLength()-1);
-                }
                 if (str1.CompareNoCase(str2) != 0)
                 {
                     bChanged = true;
@@ -1437,9 +1424,7 @@ void CSharedDirsTreeCtrl::Reload(bool bForce)
                 {
                     POSITION pos = m_strliCatIncomingDirs.Find(strCatIncomingPath);
                     if (pos != NULL)
-                    {
                         strliFound.AddTail(strCatIncomingPath);
-                    }
                     else
                     {
                         bChanged = true;
@@ -1473,9 +1458,7 @@ void CSharedDirsTreeCtrl::FetchSharedDirsList()
     {
         CString strPath = thePrefs.shareddir_list.GetNext(pos);
         if (strPath.Right(1) == L"\\")
-        {
             strPath = strPath.Left(strPath.GetLength()-1);
-        }
         m_strliSharedDirs.AddTail(strPath);
     }
 }
@@ -1571,9 +1554,7 @@ void CSharedDirsTreeCtrl::OnMouseMove(UINT nFlags, CPoint point)
                     SetCursor(AfxGetApp()->LoadStandardCursor(IDC_NO));
             }
             else
-            {
                 SetCursor(AfxGetApp()->LoadStandardCursor(IDC_NO));
-            }
         }
 
         CImageList::DragShowNolock(TRUE);
@@ -1605,9 +1586,7 @@ void CSharedDirsTreeCtrl::OnLButtonUp(UINT nFlags, CPoint point)
                 HTREEITEM htReal = m_pRootUnsharedDirectries->FindItem(m_pDraggingItem);
                 // get the original drag src
                 if (htReal != NULL && (pRealDragItem = (CDirectoryItem*)GetItemData(htReal)) != NULL)
-                {
                     EditSharedDirectories(pRealDragItem, true, false);
-                }
                 else
                 {
                     // item was deleted - no problem as when we dont need to update the visible part
@@ -1685,7 +1664,7 @@ bool CSharedDirsTreeCtrl::ShowFileSystemDirectory(const CString& strDir)
 
 bool CSharedDirsTreeCtrl::ShowSharedDirectory(const CString& strDir)
 {
-    // expand directories untill we find our target directory and select it
+    // expand directories until we find our target directory and select it
     POSITION pos = m_pRootDirectoryItem->liSubDirectories.GetHeadPosition();
     while (pos != NULL)
     {
