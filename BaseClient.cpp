@@ -1658,14 +1658,16 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 //<<< WiZaRd::IPv6 [Xanatos]
 #endif
 //>>> WiZaRd::ModProt
-    const UINT uSupportsExtXS		= 1; //>>> WiZaRd::ExtendedXS [Xanatos]
+	if(bSendMiscHelloTag)
+	{
+		const UINT uSupportsExtXS		= 1; //>>> WiZaRd::ExtendedXS [Xanatos]
 #ifdef NAT_TRAVERSAL
-    const UINT uSupportsNatTraversal = 1; //>>> WiZaRd::NatTraversal [Xanatos]
+		const UINT uSupportsNatTraversal = 1; //>>> WiZaRd::NatTraversal [Xanatos]
 #endif
 #ifdef IPV6_SUPPORT	
-    const UINT uSupportsIPv6		= 1; //>>> WiZaRd::IPv6 [Xanatos]
+		const UINT uSupportsIPv6		= 1; //>>> WiZaRd::IPv6 [Xanatos]
 #endif
-    CTag tagMisOptionsN(CT_NEOMULE_MISCOPTIONS, (
+		CTag tagMisOptionsN(CT_NEOMULE_MISCOPTIONS, (
 #ifdef IPV6_SUPPORT	
                         (uSupportsIPv6			<<  2) |	//>>> WiZaRd::IPv6 [Xanatos]
 #endif
@@ -1674,7 +1676,8 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 #endif
                          (uSupportsExtXS		<<  0)		//>>> WiZaRd::ExtendedXS [Xanatos]
                         ));
-    tagMisOptionsN.WriteTagToFile(data);
+		tagMisOptionsN.WriteTagToFile(data);
+	}
 //<<< WiZaRd::ModProt
 
     data->WriteUInt32(0);
