@@ -347,9 +347,11 @@ UINT AFX_CDECL LastCommonRouteFinder::RunProc(LPVOID pParam)
  * @return always returns 0.
  */
 UINT LastCommonRouteFinder::RunInternal()
-{
-    Pinger pinger;
+{    
     bool hasSucceededAtLeastOnce = false;
+	Pinger pinger;
+	if(!pinger.Init())
+		doRun = false;
 
     while (doRun)
     {

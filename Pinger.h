@@ -223,6 +223,7 @@ public:
     ~Pinger();
 
     PingStatus Ping(UINT lAddr, UINT ttl = DEFAULT_TTL, bool doLog = false, bool useUdp = false);
+	bool Init();
 
     void PIcmpErr(int nICMPErr);
 

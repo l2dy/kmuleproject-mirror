@@ -159,6 +159,24 @@ static const LPCTSTR aszSendEchoErr[] =
 
 Pinger::Pinger()
 {
+	hICMP = NULL;
+	udpStarted = false;
+
+	memset(&stIPInfo, 0, sizeof(stIPInfo));
+}
+
+bool Pinger::Init()
+{
+	bool success = false;
+	hICMP_DLL = NULL;
+	udpStarted = false;	
+
+	// Init IPInfo structure
+	stIPInfo.Tos      = 0;
+	stIPInfo.Flags    = 0;
+	stIPInfo.OptionsSize = 0;
+	stIPInfo.OptionsData = NULL;
+
     // udp start
     sockaddr_in sa;     // for UDP and raw sockets
 
@@ -166,8 +184,7 @@ Pinger::Pinger()
     sa.sin_family = AF_INET;
     sa.sin_addr.s_addr = INADDR_ANY;
     sa.sin_port = 0;
-
-    udpStarted = false;
+	    
     // attempt to initialize raw ICMP socket
     is = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
     if (is != INVALID_SOCKET)
@@ -184,53 +201,41 @@ Pinger::Pinger()
             // NB! no need to bind this at a moment - will be bound later, implicitly at sendto
             us = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
             if (us == INVALID_SOCKET)
-            {
                 closesocket(is);            // ignore return value - we need to close it anyway!
-            }
             else
-            {
                 udpStarted = true;
-            }
         }
     }
     // udp end
 
     // Open ICMP.DLL
     hICMP_DLL = LoadLibrary(_T("ICMP.DLL"));
-    if (hICMP_DLL == 0)
-    {
-        theApp.QueueDebugLogLine(false,_T("Pinger: LoadLibrary() failed: Unable to locate ICMP.DLL!"));
-        return;
-    }
+    if (hICMP_DLL != 0)
+	{
+		// Get pointers to ICMP.DLL functions
+		lpfnIcmpCreateFile  = (IcmpCreateFile*)GetProcAddress(hICMP_DLL, "IcmpCreateFile");
+		lpfnIcmpCloseHandle = (IcmpCloseHandle*)GetProcAddress(hICMP_DLL, "IcmpCloseHandle");
+		lpfnIcmpSendEcho    = (IcmpSendEcho*)GetProcAddress(hICMP_DLL, "IcmpSendEcho");
+		if (lpfnIcmpCreateFile && lpfnIcmpCloseHandle && lpfnIcmpSendEcho)
+		{
+			// Open the ping service
+			hICMP = (HANDLE) lpfnIcmpCreateFile();
+			if (hICMP != INVALID_HANDLE_VALUE)
+				success = true;
+			else
+			{
+				int nErr = GetLastError();
+				theApp.QueueDebugLogLineEx(LOG_ERROR, L"Pinger: IcmpCreateFile() failed, err: %u", nErr);
+				PIcmpErr(nErr);
+			}
+		}
+		else
+			theApp.QueueDebugLogLineEx(LOG_ERROR, L"Pinger: GetProcAddr() failed for at least one function.");
+	}
+	else
+        theApp.QueueDebugLogLineEx(LOG_ERROR, L"Pinger: LoadLibrary() failed: Unable to locate ICMP.DLL!");
 
-    // Get pointers to ICMP.DLL functions
-    lpfnIcmpCreateFile  = (IcmpCreateFile*)GetProcAddress(hICMP_DLL,"IcmpCreateFile");
-    lpfnIcmpCloseHandle = (IcmpCloseHandle*)GetProcAddress(hICMP_DLL,"IcmpCloseHandle");
-    lpfnIcmpSendEcho    = (IcmpSendEcho*)GetProcAddress(hICMP_DLL,"IcmpSendEcho");
-    if ((!lpfnIcmpCreateFile) ||
-            (!lpfnIcmpCloseHandle) ||
-            (!lpfnIcmpSendEcho))
-    {
-
-        theApp.QueueDebugLogLine(false,_T("Pinger: GetProcAddr() failed for at least one function."));
-        return;
-    }
-
-    // Open the ping service
-    hICMP = (HANDLE) lpfnIcmpCreateFile();
-    if (hICMP == INVALID_HANDLE_VALUE)
-    {
-        int nErr = GetLastError();
-        theApp.QueueDebugLogLine(false, _T("Pinger: IcmpCreateFile() failed, err: %u"), nErr);
-        PIcmpErr(nErr);
-        return;
-    }
-
-    // Init IPInfo structure
-    stIPInfo.Tos      = 0;
-    stIPInfo.Flags    = 0;
-    stIPInfo.OptionsSize = 0;
-    stIPInfo.OptionsData = NULL;
+	return success;
 }
 
 Pinger::~Pinger()
@@ -248,7 +253,7 @@ Pinger::~Pinger()
     if (fRet == FALSE)
     {
         int nErr = GetLastError();
-        theApp.QueueDebugLogLine(false,_T("Error closing ICMP handle, err: %u"), nErr);
+        theApp.QueueDebugLogLineEx(LOG_ERROR, L"Error closing ICMP handle, err: %u", nErr);
         PIcmpErr(nErr);
     }
 
@@ -259,13 +264,9 @@ Pinger::~Pinger()
 PingStatus Pinger::Ping(UINT lAddr, UINT ttl, bool doLog, bool useUdp)
 {
     if (useUdp && udpStarted)
-    {
         return PingUDP(lAddr, ttl, doLog);
-    }
     else
-    {
         return PingICMP(lAddr, ttl, doLog);
-    }
 }
 
 PingStatus Pinger::PingUDP(UINT lAddr, UINT ttl, bool doLog)
@@ -552,17 +553,10 @@ void Pinger::PIcmpErr(int nICMPErr)
 {
     int  nErrIndex = nICMPErr - IP_STATUS_BASE;
 
+	// Error value is out of range, display normally
     if ((nICMPErr > MAX_ICMP_ERR_STRING) ||
-            (nICMPErr < IP_STATUS_BASE+1))
-    {
-
-        // Error value is out of range, display normally
-        theApp.QueueDebugLogLine(false,_T("Pinger: %s"),GetErrorMessage(nICMPErr,1));
-    }
-    else
-    {
-
-        // Display ICMP Error String
-        theApp.QueueDebugLogLine(false,_T("%s"), aszSendEchoErr[nErrIndex]);
-    }
+            (nICMPErr < IP_STATUS_BASE+1))        
+        theApp.QueueDebugLogLineEx(LOG_ERROR, L"Pinger: %s", GetErrorMessage(nICMPErr,1));
+    else // Display ICMP Error String
+        theApp.QueueDebugLogLineEx(LOG_ERROR, L"%s", aszSendEchoErr[nErrIndex]);
 }
