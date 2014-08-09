@@ -117,6 +117,9 @@ Version history
 #include "stdafx.h"
 #include "AsyncProxySocketLayer.h"
 #include "CBase64coding.hpp"
+//>>> Tux::ProxyStatus
+#include "Preferences.h"
+//<<< Tux::ProxyStatus
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -776,6 +779,9 @@ BOOL CAsyncProxySocketLayer::Connect(LPCSTR lpszHostAddress, UINT nHostPort)
                     if (nErrorCode != WSAEWOULDBLOCK)
                     {
                         DoLayerCallback(LAYERCALLBACK_LAYERSPECIFIC, PROXYERROR_NOCONN, nErrorCode);
+//>>> ProxyStatus
+                        thePrefs.SetProxified(res);
+//<<< ProxyStatus
                         return FALSE;
                     }
                 }
@@ -786,12 +792,18 @@ BOOL CAsyncProxySocketLayer::Connect(LPCSTR lpszHostAddress, UINT nHostPort)
                 m_pProxyPeerHost = new CHAR[strlen(lpszHostAddress) + 1];
                 strcpy(m_pProxyPeerHost, lpszHostAddress);
                 m_nProxyOpID = PROXYOP_CONNECT;
+//>>> ProxyStatus
+                thePrefs.SetProxified(res);
+//<<< ProxyStatus
                 return TRUE;
             }
             else
             {
                 DoLayerCallback(LAYERCALLBACK_LAYERSPECIFIC, PROXYERROR_CANTRESOLVEHOST, 0);
                 WSASetLastError(WSAEINVAL);
+//>>> ProxyStatus
+                thePrefs.SetProxified(res);
+//<<< ProxyStatus
                 return FALSE;
             }
         }
@@ -807,6 +819,9 @@ BOOL CAsyncProxySocketLayer::Connect(LPCSTR lpszHostAddress, UINT nHostPort)
         m_pProxyPeerHost = new CHAR[strlen(lpszHostAddress) + 1];
         strcpy(m_pProxyPeerHost, lpszHostAddress);
     }
+//>>> ProxyStatus
+    thePrefs.SetProxified(res);
+//<<< ProxyStatus
     return res;
 }
 
@@ -833,10 +848,16 @@ BOOL CAsyncProxySocketLayer::Connect(const SOCKADDR* lpSockAddr, int nSockAddrLe
         if (nErrorCode != WSAEWOULDBLOCK)
         {
             DoLayerCallback(LAYERCALLBACK_LAYERSPECIFIC, PROXYERROR_NOCONN, nErrorCode);
+//>>> ProxyStatus
+            thePrefs.SetProxified(res);
+//<<< ProxyStatus
             return FALSE;
         }
     }
 
+//>>> ProxyStatus
+    thePrefs.SetProxified(res);
+//<<< ProxyStatus
     return res;
 }
 
@@ -1148,12 +1169,18 @@ BOOL CAsyncProxySocketLayer::Listen(int nConnectionBacklog)
         if (nErrorCode != WSAEWOULDBLOCK)
         {
             DoLayerCallback(LAYERCALLBACK_LAYERSPECIFIC, PROXYERROR_NOCONN, nErrorCode);
+//>>> ProxyStatus
+            thePrefs.SetProxified(res);
+//<<< ProxyStatus
             return FALSE;
         }
     }
     m_nProxyPeerPort = 0;
     m_nProxyPeerIP = (unsigned int)nConnectionBacklog; // ???????????????????
     m_nProxyOpID = PROXYOP_BIND;
+//>>> ProxyStatus
+    thePrefs.SetProxified(res);
+//<<< ProxyStatus
     return TRUE;
 }
 

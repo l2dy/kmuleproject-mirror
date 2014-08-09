@@ -62,9 +62,6 @@ to tim.kosse@gmx.de
 */
 #include "stdafx.h"
 #include "AsyncSocketExLayer.h"
-//>>> Tux::ProxyStatus
-#include "Preferences.h"
-//<<< Tux::ProxyStatus
 
 #include "AsyncSocketEx.h"
 
@@ -441,10 +438,6 @@ void CAsyncSocketExLayer::CallEvent(int nEvent, int nErrorCode)
             }
             break;
     }
-
-//>>> Tux::ProxyStatus
-    thePrefs.SetProxified(GetLayerState() == connected);
-//<<< Tux::ProxyStatus
 }
 
 BOOL CAsyncSocketExLayer::Create(UINT nSocketPort, int nSocketType, long lEvent, LPCSTR lpszSocketAddress)
