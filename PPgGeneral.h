@@ -5,7 +5,7 @@ class CPPgGeneral : public CPropertyPage
 {
     DECLARE_DYNAMIC(CPPgGeneral)
 
-public:
+  public:
     CPPgGeneral();
     virtual ~CPPgGeneral();
 
@@ -14,7 +14,7 @@ public:
 
     void Localize(void);
 
-protected:
+  protected:
     CComboBox m_language;
     void LoadSettings(void);
     void UpdateEd2kLinkFixCtrl();

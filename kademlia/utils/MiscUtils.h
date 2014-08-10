@@ -34,10 +34,10 @@ namespace Kademlia
 {
 class CMiscUtils
 {
-public:
+  public:
     static void IPAddressToString(UINT uIP, CString *pString);
     static void DebugHexDump(const byte *pbyData, UINT uLenData);
-private:
+  private:
     static CString m_sAppDirectory;
 };
 }

@@ -18,7 +18,7 @@ typedef struct
 class CTreeOptionsCtrlEx :
     public CTreeOptionsCtrl
 {
-public:
+  public:
     CTreeOptionsCtrlEx(UINT uImageListColorFlags = ILC_COLOR);
     virtual ~CTreeOptionsCtrlEx(void);
 
@@ -30,7 +30,7 @@ public:
     virtual void HandleChildControlLosingFocus();
     BOOL NotifyParent(UINT uCode, HTREEITEM hItem);
 
-protected:
+  protected:
     UINT m_uImageListColorFlags;
 
     virtual void HandleCheckBox(HTREEITEM hItem, BOOL bCheck);
@@ -60,7 +60,7 @@ class CNumTreeOptionsEdit : public CTreeOptionsEdit
 {
     DECLARE_DYNCREATE(CNumTreeOptionsEdit)
 
-public:
+  public:
     CNumTreeOptionsEdit() {}
     virtual ~CNumTreeOptionsEdit() {}
 
@@ -69,7 +69,7 @@ public:
         return CTreeOptionsEdit::GetWindowStyle() | ES_NUMBER;
     }
 
-protected:
+  protected:
     bool m_bSelf;
 
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
@@ -86,11 +86,11 @@ class CTreeOptionsEditEx : public CTreeOptionsEdit
 {
     DECLARE_DYNCREATE(CTreeOptionsEditEx)
 
-public:
+  public:
     CTreeOptionsEditEx() {}
     virtual ~CTreeOptionsEditEx() {}
 
-protected:
+  protected:
     bool m_bSelf;
 
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

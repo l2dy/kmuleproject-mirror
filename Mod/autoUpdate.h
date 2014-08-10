@@ -38,7 +38,7 @@ enum eUpdateApplication
 
 class CAutoUpdate
 {
-public:
+  public:
     CAutoUpdate();
     virtual ~CAutoUpdate();
 
@@ -46,7 +46,7 @@ public:
     void	CheckForUpdates();
     bool	ApplyUpdate() const;
 
-private:
+  private:
     uint8	IsUpdateAvail();
 
     CString m_strUpdateCheckURL;
@@ -57,7 +57,7 @@ private:
     uint8	m_uiUpdateApplication;
     bool	m_bDeleteAfterUpdate;
 
-protected:
+  protected:
     CString GetUpdateFile() const;
     CWebHelper* m_pWebHelper;
 };

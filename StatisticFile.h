@@ -19,7 +19,7 @@ class CKnownFile;
 
 class CStatisticFile
 {
-public:
+  public:
     CStatisticFile()
     {
         requested = 0;
@@ -65,7 +65,7 @@ public:
 
     CKnownFile* fileParent;
 
-private:
+  private:
     UINT requested;
     UINT accepted;
     uint64 transferred;

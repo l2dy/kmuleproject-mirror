@@ -21,7 +21,7 @@ namespace Kademlia
 {
 class CKadUDPKey
 {
-public:
+  public:
     CKadUDPKey(UINT uZero = 0)
     {
         ASSERT(uZero == 0);
@@ -73,7 +73,7 @@ public:
         m_dwKey = file.ReadUInt32();
         m_dwIP = file.ReadUInt32();
     }
-private:
+  private:
     UINT		m_dwKey;
     UINT		m_dwIP;
 };

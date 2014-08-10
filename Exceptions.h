@@ -42,7 +42,7 @@
 class CMsgBoxException : public CException
 {
     DECLARE_DYNAMIC(CMsgBoxException)
-public:
+  public:
     explicit CMsgBoxException(LPCTSTR pszMsg, UINT uType = MB_ICONWARNING, UINT uHelpID = 0)
     {
         m_strMsg = pszMsg;
@@ -58,7 +58,7 @@ public:
 class CClientException : public CException
 {
     DECLARE_DYNAMIC(CClientException)
-public:
+  public:
     CClientException(LPCTSTR pszMsg, bool bDelete)
     {
         m_strMsg = pszMsg;

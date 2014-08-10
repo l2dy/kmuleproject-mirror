@@ -53,7 +53,7 @@ struct CONNECTINGCLIENT
 
 class CDeletedClient
 {
-public:
+  public:
     CDeletedClient(const CUpDownClient* pClient);
     CArray<PORTANDHASH> m_ItemsList;
     UINT				m_dwInserted;
@@ -72,7 +72,7 @@ class CClientList
 {
     friend class CClientListCtrl;
 
-public:
+  public:
     CClientList();
     ~CClientList();
 
@@ -100,11 +100,11 @@ public:
     CUpDownClient* FindClientByIP_KadPort(const CAddress& IP, uint16 port) const;
 //<<< WiZaRd::IPv6 [Xanatos]
 #else
-     CUpDownClient* FindClientByIP(UINT clientip, UINT port) const;
-     CUpDownClient* FindClientByUserHash(const uchar* clienthash, UINT dwIP = 0, uint16 nTCPPort = 0) const;
-     CUpDownClient* FindClientByIP(UINT clientip) const;
-     CUpDownClient* FindClientByIP_UDP(UINT clientip, UINT nUDPport) const;
-	 CUpDownClient* FindClientByIP_KadPort(UINT ip, uint16 port) const;
+    CUpDownClient* FindClientByIP(UINT clientip, UINT port) const;
+    CUpDownClient* FindClientByUserHash(const uchar* clienthash, UINT dwIP = 0, uint16 nTCPPort = 0) const;
+    CUpDownClient* FindClientByIP(UINT clientip) const;
+    CUpDownClient* FindClientByIP_UDP(UINT clientip, UINT nUDPport) const;
+    CUpDownClient* FindClientByIP_KadPort(UINT ip, uint16 port) const;
 #endif
     CUpDownClient* FindClientByServerID(UINT uServerIP, UINT uUserID) const;
     CUpDownClient* FindClientByUserID_KadPort(UINT clientID,uint16 kadPort) const;
@@ -170,11 +170,11 @@ public:
     void	ProcessA4AFClients() const; // ZZ:DownloadManager
     CDeadSourceList	m_globDeadSourceList;
 
-protected:
+  protected:
     void	CleanUpClientList();
     void	ProcessConnectingClientsList();
 
-private:
+  private:
     CUpDownClientPtrList list;
     CUpDownClientPtrList m_KadList;
     CMap<UINT, UINT, UINT, UINT> m_bannedList;
@@ -189,7 +189,7 @@ private:
     CList<CONNECTINGCLIENT> m_liConnectingClients;
 
 //>>> WiZaRd::ModIconMapper
-public:
+  public:
     void	UpdateModIconIndexes() const;
 //<<< WiZaRd::ModIconMapper
 };

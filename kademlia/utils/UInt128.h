@@ -34,7 +34,7 @@ namespace Kademlia
 {
 class CUInt128
 {
-public:
+  public:
     CUInt128();
     CUInt128(bool bFill);
     CUInt128(ULONG uValue);
@@ -86,7 +86,7 @@ public:
     bool operator>= (ULONG uValue) const;
     bool operator== (ULONG uValue) const;
     bool operator!= (ULONG uValue) const;
-private:
+  private:
     ULONG		m_uData[4];
 };
 }

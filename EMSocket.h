@@ -40,7 +40,7 @@ struct StandardPacketQueueEntry
 class CEMSocket : public CEncryptedStreamSocket, public ThrottledFileSocket // ZZ:UploadBandWithThrottler
 {
     DECLARE_DYNAMIC(CEMSocket)
-public:
+  public:
     CEMSocket();
     virtual ~CEMSocket();
 
@@ -118,7 +118,7 @@ public:
     virtual void Dump(CDumpContext& dc) const;
 #endif
 
-protected:
+  protected:
     virtual int	OnLayerCallback(const CAsyncSocketExLayer *pLayer, int nType, int nCode, WPARAM wParam, LPARAM lParam);
 
     virtual void	DataReceived(const BYTE* pcData, UINT uSize);
@@ -133,7 +133,7 @@ protected:
     CAsyncProxySocketLayer* m_pProxyLayer;
     CString m_strLastProxyError;
 
-private:
+  private:
     virtual SocketSentBytes Send(UINT maxNumberOfBytesToSend, UINT minFragSize, bool onlyAllowedToSendControlPacket);
     SocketSentBytes SendStd(UINT maxNumberOfBytesToSend, UINT minFragSize, bool onlyAllowedToSendControlPacket);
     SocketSentBytes SendOv(UINT maxNumberOfBytesToSend, UINT minFragSize, bool onlyAllowedToSendControlPacket);
@@ -186,7 +186,7 @@ private:
     bool m_bUsesBigSendBuffers;
     bool m_bOverlappedSending;
 //>>> WiZaRd::Count block/success send [Xman?]
-private:
+  private:
     CList<float> m_blockhistory;
 
     float	avg_block_ratio;		//the average block of last 20 seconds
@@ -195,13 +195,13 @@ private:
     UINT	sendcount;
     UINT	blockedsendcount_overall;
     UINT	sendcount_overall;
-public:
+  public:
     virtual	float	GetOverallBlockingRatio() const;
     virtual	float	GetBlockingRatio() const;
     virtual	float	GetAndStepBlockRatio();
 //<<< WiZaRd::Count block/success send [Xman?]
 //>>> WiZaRd::ZZUL Upload [ZZ]
-private:
+  private:
     UINT	GetNeededBytes(const char* sendbuffer, const UINT sendblen, const UINT sent, const bool currentPacket_is_controlpacket, const DWORD lastCalledSend);
     UINT	m_actualPayloadSizeSentForThisPacket;
     bool	m_bConnectionIsReadyForSend;
@@ -211,10 +211,10 @@ private:
 //<<< WiZaRd::ZZUL Upload [ZZ]
 #ifdef NAT_TRAVERSAL
 //>>> WiZaRd::NatTraversal [Xanatos]
-public:
+  public:
     CUtpSocket* InitUtpSupport();
     CUtpSocket* GetUtpLayer() const		{return m_pUtpLayer;}
-protected:
+  protected:
     CUtpSocket* m_pUtpLayer;
 //<<< WiZaRd::NatTraversal [Xanatos]
 #endif

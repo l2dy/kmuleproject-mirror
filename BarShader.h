@@ -2,7 +2,7 @@
 
 class CBarShader
 {
-public:
+  public:
     CBarShader(UINT height = 1, UINT width = 1);
     ~CBarShader(void);
 
@@ -40,7 +40,7 @@ public:
     void Draw(CDC* dc, int iLeft, int iTop, bool bFlat);
     void DrawPreview(CDC* dc, int iLeft, int iTop, UINT previewLevel);		//Cax2 aqua bar
 
-protected:
+  protected:
     void BuildModifiers();
     void FillRect(CDC *dc, LPRECT rectSpan, float fRed, float fGreen, float fBlue, bool bFlat);
     void FillRect(CDC *dc, LPRECT rectSpan, COLORREF color, bool bFlat);
@@ -52,7 +52,7 @@ protected:
     EMFileSize m_uFileSize;
     bool	m_bIsPreview;
 
-private:
+  private:
     CRBMap<uint64, COLORREF> m_Spans;	// SLUGFILLER: speedBarShader
     float *m_Modifiers;
     UINT m_used3dlevel;

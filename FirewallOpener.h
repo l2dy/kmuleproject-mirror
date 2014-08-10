@@ -49,7 +49,7 @@ enum EFOCAction
 /// CICSRuleInfo
 class CICSRuleInfo
 {
-public:
+  public:
     CICSRuleInfo()								{}
     CICSRuleInfo(const CICSRuleInfo& ri)
     {
@@ -83,7 +83,7 @@ public:
 
 class CFirewallOpener
 {
-public:
+  public:
     CFirewallOpener(void);
     ~CFirewallOpener(void);
     bool			OpenPort(const CICSRuleInfo& riPortRule);
@@ -96,7 +96,7 @@ public:
     void			UnInit();
     bool			Init(bool bPreInit = false);
 
-protected:
+  protected:
 
     bool			AddRule(const CICSRuleInfo& riPortRule, const INetSharingConfigurationPtr pNSC, const INetConnectionPropsPtr pNCP);
     bool			DoAction(const EFOCAction eAction, const CICSRuleInfo& riPortRule);
@@ -104,7 +104,7 @@ protected:
 
     CArray<CICSRuleInfo> m_liAddedRules;
 
-private:
+  private:
     INetSharingManager*		m_pINetSM;
     bool					m_bInited;
 };

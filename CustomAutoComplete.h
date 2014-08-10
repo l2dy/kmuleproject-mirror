@@ -10,7 +10,7 @@
 class CCustomAutoComplete :
     public IEnumString
 {
-private:
+  private:
     CStringArray m_asList;
     CComPtr<IAutoComplete> m_pac;
 
@@ -20,13 +20,13 @@ private:
     int m_iMaxItemCount;
 
     // Constructors/destructors
-public:
+  public:
     CCustomAutoComplete();
     CCustomAutoComplete(const CStringArray& p_sItemList);
     ~CCustomAutoComplete();
 
     // Implementation
-public:
+  public:
     BOOL Bind(HWND p_hWndEdit, DWORD p_dwOptions = 0, LPCTSTR p_lpszFormatString = NULL);
     VOID Unbind();
     BOOL IsBound() const
@@ -50,19 +50,19 @@ public:
     BOOL LoadList(LPCTSTR pszFileName);
     BOOL SaveList(LPCTSTR pszFileName);
 
-public:
+  public:
     STDMETHOD_(ULONG,AddRef)();
     STDMETHOD_(ULONG,Release)();
     STDMETHOD(QueryInterface)(REFIID riid, void** ppvObject);
 
-public:
+  public:
     STDMETHOD(Next)(ULONG celt, LPOLESTR* rgelt, ULONG* pceltFetched);
     STDMETHOD(Skip)(ULONG celt);
     STDMETHOD(Reset)(void);
     STDMETHOD(Clone)(IEnumString** ppenum);
 
     // Internal implementation
-private:
+  private:
     void InternalInit();
     HRESULT EnDisable(BOOL p_fEnable);
     int FindItem(const CString& rstr);

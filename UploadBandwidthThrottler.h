@@ -21,7 +21,7 @@
 class UploadBandwidthThrottler :
     public CWinThread
 {
-public:
+  public:
     UploadBandwidthThrottler(void);
     ~UploadBandwidthThrottler(void);
 
@@ -51,7 +51,7 @@ public:
 
     void Pause(bool paused);
     static UINT UploadBandwidthThrottler::GetSlotLimit(UINT currentUpSpeed);
-private:
+  private:
     static UINT RunProc(LPVOID pParam);
     UINT RunInternal();
 
@@ -82,9 +82,9 @@ private:
     bool doRun;
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
-public:
+  public:
     void SignalNoLongerBusy();
-private:
+  private:
     CCriticalSection sendBytesLocker;
     CEvent busyEvent;
 //<<< WiZaRd::ZZUL Upload [ZZ]

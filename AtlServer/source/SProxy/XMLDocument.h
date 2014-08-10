@@ -36,7 +36,7 @@ typedef CAtlPtrMap<CStringW, CXMLDocument *, CStringRefElementTraits<CStringW> >
 
 class CXMLDocument : public CXMLElement
 {
-private:
+  private:
 
     XMLDOCTYPE m_docType;
     CStringW m_strDocumentUri;
@@ -47,7 +47,7 @@ private:
     //
     XMLDOCMAP m_docMap;
 
-public:
+  public:
     virtual ~CXMLDocument() = 0;
     CXMLDocument(XMLDOCTYPE docType = UNKDOC);
 

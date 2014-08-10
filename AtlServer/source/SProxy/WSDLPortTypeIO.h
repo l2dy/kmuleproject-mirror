@@ -16,7 +16,7 @@ class CWSDLMessage;
 
 class CWSDLPortTypeIO : public CXMLElement
 {
-private:
+  private:
 
     CStringW m_strName;
     CQName   m_message;
@@ -28,7 +28,7 @@ private:
     CAtlPtrList<CSoapHeader *> m_headers;
     CAtlPtrList<CSoapFault *> m_faults;
 
-public:
+  public:
 
     inline CWSDLPortTypeIO()
         :m_pMessage(NULL)

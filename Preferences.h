@@ -94,7 +94,7 @@ struct Category_Struct
 
 class CPreferences
 {
-public:
+  public:
     static	CString	strNick;
     // ZZ:UploadSpeedSense -->
     static	uint16	minupload;
@@ -2311,7 +2311,7 @@ public:
         return m_bPreventStandby;
     }
 
-protected:
+  protected:
     static	CString m_strFileCommentsFilePath;
     static	Preferences_Ext_Struct* prefsExt;
     static	WORD m_wWinVer;
@@ -2332,18 +2332,18 @@ protected:
     static CString	GetDefaultDirectory(EDefaultDirectory eDirectory, bool bCreate = true);
 
 //>>> WiZaRd::IntelliFlush
-public:
+  public:
     static	void	SetFileBufferSize(const UINT& i)
     {
         m_iFileBufferSize = i;
     }
 //<<< WiZaRd::IntelliFlush
 //>>> WiZaRd::IPFilter-Update
-private:
+  private:
     static	bool	m_bAutoUpdateIPFilter;
     static	UINT	m_uiIPfilterVersion;
     static	CString	m_strUpdateURLIPFilter;
-public:
+  public:
     static	CString	GetUpdateURLIPFilter()
     {
         return m_strUpdateURLIPFilter;
@@ -2366,11 +2366,11 @@ public:
     }
 //<<< WiZaRd::IPFilter-Update
 //>>> WiZaRd::MediaInfoDLL Update
-private:
+  private:
     static	bool	m_bMediaInfoDllAutoUpdate;
     static	UINT	m_uiMediaInfoDllVersion;
 
-public:
+  public:
     static	CString	m_strMediaInfoDllUpdateURL;
 
     static	bool	IsAutoUpdateMediaInfoDllEnabled()
@@ -2397,10 +2397,10 @@ public:
     }
 //<<< WiZaRd::MediaInfoDLL Update
 //>>> PreviewIndicator [WiZaRd]
-private:
+  private:
     static	uint8		m_uiPreviewIndicatorMode;
     static	COLORREF m_crPreviewReadyColor; //>>> jerrybg::ColorPreviewReadyFiles [WiZaRd]
-public:
+  public:
     static	uint8		GetPreviewIndicatorMode()
     {
         return m_uiPreviewIndicatorMode;
@@ -2413,9 +2413,9 @@ public:
 //<<< jerrybg::ColorPreviewReadyFiles [WiZaRd]
 //<<< PreviewIndicator [WiZaRd]
 //>>> WiZaRd::Advanced Transfer Window Layout [Stulle]
-private:
+  private:
     static bool		m_bSplitWindow;
-public:
+  public:
     static	bool	GetSplitWindow()
     {
         return m_bSplitWindow;
@@ -2426,31 +2426,31 @@ public:
     }
 //<<< WiZaRd::Advanced Transfer Window Layout [Stulle]
 //>>> WiZaRd::SimpleProgress
-private:
+  private:
     static	bool	m_bUseSimpleProgress;
-public:
+  public:
     static	bool	GetUseSimpleProgress()
     {
         return m_bUseSimpleProgress;
     }
 //<<< WiZaRd::SimpleProgress
 //>>> WiZaRd::AntiFake
-private:
+  private:
     static	uint8	m_uiSpamFilterMode;
-public:
+  public:
     static	uint8	GetSpamFilterMode()
     {
         return m_uiSpamFilterMode;
     }
 //<<< WiZaRd::AntiFake
 //>>> WiZaRd::AutoHL
-private:
+  private:
     static  uint16	m_iMinAutoHL;
     static	uint16	m_iMaxAutoHL;
     static	uint16	m_iMaxSourcesHL;
     static	sint8	m_iUseAutoHL;
     static	uint16	m_iAutoHLUpdateTimer;
-public:
+  public:
     static	uint16	GetAutoHLUpdateTimer()
     {
         return m_iAutoHLUpdateTimer;
@@ -2493,10 +2493,10 @@ public:
     }
 //<<< WiZaRd::AutoHL
 //>>> WiZaRd::Remove forbidden files
-private:
+  private:
     static	bool	m_bRemoveForbiddenFiles;
     static	CString	m_strForbiddenFileFilters;
-public:
+  public:
     static	bool	IsForbiddenFile(const CString& rstrName);
     static	bool	RemoveForbiddenFiles()
     {
@@ -2516,12 +2516,12 @@ public:
     }
 //<<< WiZaRd::Remove forbidden files
 //>>> WiZaRd::Drop Blocking Sockets [Xman?]
-private:
+  private:
     static	bool	m_bDropBlockingSession;
     static	bool	m_bDropBlockingSockets;
     static	float	m_fMaxBlockRate;
     static	float	m_fMaxBlockRate20;
-public:
+  public:
     static	bool	DropBlockingSockets()
     {
         return m_bDropBlockingSession && m_bDropBlockingSockets;
@@ -2548,18 +2548,18 @@ public:
     }
 //<<< WiZaRd::Drop Blocking Sockets [Xman?]
 //>>> WiZaRd::Wine Compatibility
-private:
+  private:
     static bool		m_bNeedsWineCompatibility;
-public:
+  public:
     static bool		WeNeedWineCompatibility()
     {
         return m_bNeedsWineCompatibility;
     }
 //<<< WiZaRd::Wine Compatibility
 //>>> WiZaRd::ModIconDLL Update
-private:
+  private:
     static	bool	m_bModIconDllAutoUpdate;
-public:
+  public:
     static	CString	m_strModIconDllUpdateURL;
 
     static	bool	IsAutoUpdateModIconDllEnabled()
@@ -2577,7 +2577,7 @@ public:
     }
 //<<< WiZaRd::ModIconDLL Update
 //>>> WiZaRd
-public:
+  public:
     static	int		GetCurrentUserDirMode()
     {
         return m_nCurrentUserDirMode;
@@ -2589,9 +2589,9 @@ public:
     static	void	ClearUserDirs();
 //<<< WiZaRd
 //>>> Tux::ProxyStatus
-private:
+  private:
     static  bool     m_bWeAreProxified;
-public:
+  public:
     static  bool    IsProxified()
     {
         return m_bWeAreProxified;

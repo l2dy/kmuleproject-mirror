@@ -61,7 +61,7 @@ class CemuleDlg : public CTrayDialog
     friend class CMuleToolbarCtrl;
     friend class CMiniMule;
 
-public:
+  public:
     CemuleDlg(CWnd* pParent = NULL);
     ~CemuleDlg();
 
@@ -154,10 +154,10 @@ public:
     uint8			status;
 
 //>>> Snarl Support
-private:
+  private:
     bool	m_bSnarlRegistered;
     SnarlInterface* snarlInterface;
-public:
+  public:
     void	HookSnarl();
     void	UnhookSnarl();
 //<<< Snarl Support
@@ -166,7 +166,7 @@ public:
 //<<< WiZaRd::MediaInfoDLL Update
     afx_msg void OnClose(); //>>> WiZaRd::Automatic Restart
 
-protected:
+  protected:
     HICON			m_hIcon;
     bool			ready;
     bool			m_bStartMinimizedChecked;
@@ -326,11 +326,11 @@ protected:
     afx_msg LRESULT OnSevenZipJobDone(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnSevenZipJobFailed(WPARAM wParam, LPARAM lParam);
 //<<< WiZaRd::7zip
-	afx_msg LRESULT OnUploadTimer(WPARAM wParam, LPARAM lParam);  //>>> WiZaRd::Catch exceptions
+    afx_msg LRESULT OnUploadTimer(WPARAM wParam, LPARAM lParam);  //>>> WiZaRd::Catch exceptions
 
 //>>> WiZaRd::Fix crash on exit
-private:
-	CWinThread* m_AICHSyncThread;
+  private:
+    CWinThread* m_AICHSyncThread;
 //<<< WiZaRd::Fix crash on exit
 };
 
@@ -349,7 +349,7 @@ enum EEMuleAppMsgs
     TM_SEVENZIP_JOB_DONE,
     TM_SEVENZIP_JOB_FAILED,
 //<<< WiZaRd::7zip
-	TM_UPLOAD_TIMER, //>>> WiZaRd::Catch exceptions
+    TM_UPLOAD_TIMER, //>>> WiZaRd::Catch exceptions
 };
 
 enum EWebinterfaceOrders

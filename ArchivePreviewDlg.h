@@ -31,7 +31,7 @@ class CArchivePreviewDlg : public CResizablePage
 {
     DECLARE_DYNAMIC(CArchivePreviewDlg)
 
-public:
+  public:
     CArchivePreviewDlg();
     virtual ~CArchivePreviewDlg();
 
@@ -49,7 +49,7 @@ public:
 // Dialog Data
     enum { IDD = IDD_ARCHPREV };
 
-protected:
+  protected:
     const CSimpleArray<CObject*>* m_paFiles;
     archiveScannerThreadParams_s* m_activeTParams;
 

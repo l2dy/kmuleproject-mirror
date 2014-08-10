@@ -100,46 +100,46 @@ EXTERN_C const IID IID_IWMPlayerTimestampHook;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("28580dda-d98e-48d0-b7ae-69e473a02825")
+MIDL_INTERFACE("28580dda-d98e-48d0-b7ae-69e473a02825")
 IWMPlayerTimestampHook :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual HRESULT STDMETHODCALLTYPE MapTimestamp(
-            /* [in] */ REFERENCE_TIME rtIn,
-            /* [out] */ REFERENCE_TIME *prtOut) = 0;
+    virtual HRESULT STDMETHODCALLTYPE MapTimestamp(
+        /* [in] */ REFERENCE_TIME rtIn,
+        /* [out] */ REFERENCE_TIME *prtOut) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IWMPlayerTimestampHookVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IWMPlayerTimestampHookVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IWMPlayerTimestampHook * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IWMPlayerTimestampHook * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IWMPlayerTimestampHook * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IWMPlayerTimestampHook * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IWMPlayerTimestampHook * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IWMPlayerTimestampHook * This);
 
-        HRESULT(STDMETHODCALLTYPE *MapTimestamp)(
-            IWMPlayerTimestampHook * This,
-            /* [in] */ REFERENCE_TIME rtIn,
-            /* [out] */ REFERENCE_TIME *prtOut);
+    HRESULT(STDMETHODCALLTYPE *MapTimestamp)(
+        IWMPlayerTimestampHook * This,
+        /* [in] */ REFERENCE_TIME rtIn,
+        /* [out] */ REFERENCE_TIME *prtOut);
 
-        END_INTERFACE
-    } IWMPlayerTimestampHookVtbl;
+    END_INTERFACE
+} IWMPlayerTimestampHookVtbl;
 
-    interface IWMPlayerTimestampHook
-    {
-        CONST_VTBL struct IWMPlayerTimestampHookVtbl *lpVtbl;
-    };
+interface IWMPlayerTimestampHook
+{
+    CONST_VTBL struct IWMPlayerTimestampHookVtbl *lpVtbl;
+};
 
 
 
@@ -166,17 +166,17 @@ public:
 
 
 
-    HRESULT STDMETHODCALLTYPE IWMPlayerTimestampHook_MapTimestamp_Proxy(
-        IWMPlayerTimestampHook * This,
-        /* [in] */ REFERENCE_TIME rtIn,
-        /* [out] */ REFERENCE_TIME *prtOut);
+HRESULT STDMETHODCALLTYPE IWMPlayerTimestampHook_MapTimestamp_Proxy(
+    IWMPlayerTimestampHook * This,
+    /* [in] */ REFERENCE_TIME rtIn,
+    /* [out] */ REFERENCE_TIME *prtOut);
 
 
-    void __RPC_STUB IWMPlayerTimestampHook_MapTimestamp_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMPlayerTimestampHook_MapTimestamp_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -186,66 +186,66 @@ public:
 #ifndef __IWMCodecAMVideoAccelerator_INTERFACE_DEFINED__
 #define __IWMCodecAMVideoAccelerator_INTERFACE_DEFINED__
 
-    /* interface IWMCodecAMVideoAccelerator */
-    /* [local][unique][helpstring][uuid][object] */
+/* interface IWMCodecAMVideoAccelerator */
+/* [local][unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IWMCodecAMVideoAccelerator;
+EXTERN_C const IID IID_IWMCodecAMVideoAccelerator;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("d98ee251-34e0-4a2d-9312-9b4c788d9fa1")
+MIDL_INTERFACE("d98ee251-34e0-4a2d-9312-9b4c788d9fa1")
 IWMCodecAMVideoAccelerator :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual HRESULT STDMETHODCALLTYPE SetAcceleratorInterface(
-            /* [in] */ IAMVideoAccelerator *pIAMVA) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetAcceleratorInterface(
+        /* [in] */ IAMVideoAccelerator *pIAMVA) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE NegotiateConnection(
-            /* [in] */ DMO_MEDIA_TYPE *pMediaType) = 0;
+    virtual HRESULT STDMETHODCALLTYPE NegotiateConnection(
+        /* [in] */ DMO_MEDIA_TYPE *pMediaType) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetPlayerNotify(
-            /* [in] */ IWMPlayerTimestampHook *pHook) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetPlayerNotify(
+        /* [in] */ IWMPlayerTimestampHook *pHook) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IWMCodecAMVideoAcceleratorVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IWMCodecAMVideoAcceleratorVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IWMCodecAMVideoAccelerator * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IWMCodecAMVideoAccelerator * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IWMCodecAMVideoAccelerator * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IWMCodecAMVideoAccelerator * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IWMCodecAMVideoAccelerator * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IWMCodecAMVideoAccelerator * This);
 
-        HRESULT(STDMETHODCALLTYPE *SetAcceleratorInterface)(
-            IWMCodecAMVideoAccelerator * This,
-            /* [in] */ IAMVideoAccelerator *pIAMVA);
+    HRESULT(STDMETHODCALLTYPE *SetAcceleratorInterface)(
+        IWMCodecAMVideoAccelerator * This,
+        /* [in] */ IAMVideoAccelerator *pIAMVA);
 
-        HRESULT(STDMETHODCALLTYPE *NegotiateConnection)(
-            IWMCodecAMVideoAccelerator * This,
-            /* [in] */ DMO_MEDIA_TYPE *pMediaType);
+    HRESULT(STDMETHODCALLTYPE *NegotiateConnection)(
+        IWMCodecAMVideoAccelerator * This,
+        /* [in] */ DMO_MEDIA_TYPE *pMediaType);
 
-        HRESULT(STDMETHODCALLTYPE *SetPlayerNotify)(
-            IWMCodecAMVideoAccelerator * This,
-            /* [in] */ IWMPlayerTimestampHook *pHook);
+    HRESULT(STDMETHODCALLTYPE *SetPlayerNotify)(
+        IWMCodecAMVideoAccelerator * This,
+        /* [in] */ IWMPlayerTimestampHook *pHook);
 
-        END_INTERFACE
-    } IWMCodecAMVideoAcceleratorVtbl;
+    END_INTERFACE
+} IWMCodecAMVideoAcceleratorVtbl;
 
-    interface IWMCodecAMVideoAccelerator
-    {
-        CONST_VTBL struct IWMCodecAMVideoAcceleratorVtbl *lpVtbl;
-    };
+interface IWMCodecAMVideoAccelerator
+{
+    CONST_VTBL struct IWMCodecAMVideoAcceleratorVtbl *lpVtbl;
+};
 
 
 
@@ -278,40 +278,40 @@ public:
 
 
 
-    HRESULT STDMETHODCALLTYPE IWMCodecAMVideoAccelerator_SetAcceleratorInterface_Proxy(
-        IWMCodecAMVideoAccelerator * This,
-        /* [in] */ IAMVideoAccelerator *pIAMVA);
+HRESULT STDMETHODCALLTYPE IWMCodecAMVideoAccelerator_SetAcceleratorInterface_Proxy(
+    IWMCodecAMVideoAccelerator * This,
+    /* [in] */ IAMVideoAccelerator *pIAMVA);
 
 
-    void __RPC_STUB IWMCodecAMVideoAccelerator_SetAcceleratorInterface_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMCodecAMVideoAccelerator_SetAcceleratorInterface_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IWMCodecAMVideoAccelerator_NegotiateConnection_Proxy(
-        IWMCodecAMVideoAccelerator * This,
-        /* [in] */ DMO_MEDIA_TYPE *pMediaType);
+HRESULT STDMETHODCALLTYPE IWMCodecAMVideoAccelerator_NegotiateConnection_Proxy(
+    IWMCodecAMVideoAccelerator * This,
+    /* [in] */ DMO_MEDIA_TYPE *pMediaType);
 
 
-    void __RPC_STUB IWMCodecAMVideoAccelerator_NegotiateConnection_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMCodecAMVideoAccelerator_NegotiateConnection_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IWMCodecAMVideoAccelerator_SetPlayerNotify_Proxy(
-        IWMCodecAMVideoAccelerator * This,
-        /* [in] */ IWMPlayerTimestampHook *pHook);
+HRESULT STDMETHODCALLTYPE IWMCodecAMVideoAccelerator_SetPlayerNotify_Proxy(
+    IWMCodecAMVideoAccelerator * This,
+    /* [in] */ IWMPlayerTimestampHook *pHook);
 
 
-    void __RPC_STUB IWMCodecAMVideoAccelerator_SetPlayerNotify_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMCodecAMVideoAccelerator_SetPlayerNotify_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -321,61 +321,61 @@ public:
 #ifndef __IWMCodecVideoAccelerator_INTERFACE_DEFINED__
 #define __IWMCodecVideoAccelerator_INTERFACE_DEFINED__
 
-    /* interface IWMCodecVideoAccelerator */
-    /* [local][unique][helpstring][uuid][object] */
+/* interface IWMCodecVideoAccelerator */
+/* [local][unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IWMCodecVideoAccelerator;
+EXTERN_C const IID IID_IWMCodecVideoAccelerator;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("990641b0-739f-4e94-a808-9888da8f75af")
+MIDL_INTERFACE("990641b0-739f-4e94-a808-9888da8f75af")
 IWMCodecVideoAccelerator :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual HRESULT STDMETHODCALLTYPE NegotiateConnection(
-            /* [in] */ IAMVideoAccelerator *pIAMVA,
-            /* [in] */ DMO_MEDIA_TYPE *pMediaType) = 0;
+    virtual HRESULT STDMETHODCALLTYPE NegotiateConnection(
+        /* [in] */ IAMVideoAccelerator *pIAMVA,
+        /* [in] */ DMO_MEDIA_TYPE *pMediaType) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetPlayerNotify(
-            /* [in] */ IWMPlayerTimestampHook *pHook) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetPlayerNotify(
+        /* [in] */ IWMPlayerTimestampHook *pHook) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IWMCodecVideoAcceleratorVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IWMCodecVideoAcceleratorVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IWMCodecVideoAccelerator * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IWMCodecVideoAccelerator * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IWMCodecVideoAccelerator * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IWMCodecVideoAccelerator * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IWMCodecVideoAccelerator * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IWMCodecVideoAccelerator * This);
 
-        HRESULT(STDMETHODCALLTYPE *NegotiateConnection)(
-            IWMCodecVideoAccelerator * This,
-            /* [in] */ IAMVideoAccelerator *pIAMVA,
-            /* [in] */ DMO_MEDIA_TYPE *pMediaType);
+    HRESULT(STDMETHODCALLTYPE *NegotiateConnection)(
+        IWMCodecVideoAccelerator * This,
+        /* [in] */ IAMVideoAccelerator *pIAMVA,
+        /* [in] */ DMO_MEDIA_TYPE *pMediaType);
 
-        HRESULT(STDMETHODCALLTYPE *SetPlayerNotify)(
-            IWMCodecVideoAccelerator * This,
-            /* [in] */ IWMPlayerTimestampHook *pHook);
+    HRESULT(STDMETHODCALLTYPE *SetPlayerNotify)(
+        IWMCodecVideoAccelerator * This,
+        /* [in] */ IWMPlayerTimestampHook *pHook);
 
-        END_INTERFACE
-    } IWMCodecVideoAcceleratorVtbl;
+    END_INTERFACE
+} IWMCodecVideoAcceleratorVtbl;
 
-    interface IWMCodecVideoAccelerator
-    {
-        CONST_VTBL struct IWMCodecVideoAcceleratorVtbl *lpVtbl;
-    };
+interface IWMCodecVideoAccelerator
+{
+    CONST_VTBL struct IWMCodecVideoAcceleratorVtbl *lpVtbl;
+};
 
 
 
@@ -405,38 +405,38 @@ public:
 
 
 
-    HRESULT STDMETHODCALLTYPE IWMCodecVideoAccelerator_NegotiateConnection_Proxy(
-        IWMCodecVideoAccelerator * This,
-        /* [in] */ IAMVideoAccelerator *pIAMVA,
-        /* [in] */ DMO_MEDIA_TYPE *pMediaType);
+HRESULT STDMETHODCALLTYPE IWMCodecVideoAccelerator_NegotiateConnection_Proxy(
+    IWMCodecVideoAccelerator * This,
+    /* [in] */ IAMVideoAccelerator *pIAMVA,
+    /* [in] */ DMO_MEDIA_TYPE *pMediaType);
 
 
-    void __RPC_STUB IWMCodecVideoAccelerator_NegotiateConnection_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMCodecVideoAccelerator_NegotiateConnection_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IWMCodecVideoAccelerator_SetPlayerNotify_Proxy(
-        IWMCodecVideoAccelerator * This,
-        /* [in] */ IWMPlayerTimestampHook *pHook);
+HRESULT STDMETHODCALLTYPE IWMCodecVideoAccelerator_SetPlayerNotify_Proxy(
+    IWMCodecVideoAccelerator * This,
+    /* [in] */ IWMPlayerTimestampHook *pHook);
 
 
-    void __RPC_STUB IWMCodecVideoAccelerator_SetPlayerNotify_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMCodecVideoAccelerator_SetPlayerNotify_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
 #endif 	/* __IWMCodecVideoAccelerator_INTERFACE_DEFINED__ */
 
 
-    /* Additional Prototypes for ALL interfaces */
+/* Additional Prototypes for ALL interfaces */
 
-    /* end of Additional Prototypes */
+/* end of Additional Prototypes */
 
 #ifdef __cplusplus
 }

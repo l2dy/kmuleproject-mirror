@@ -28,7 +28,7 @@ typedef BOOL (WINAPI *t_QOSSetFlow)(HANDLE QOSHandle, QOS_FLOWID FlowId, QOS_SET
 // Adaption of Netfinitys' QOS implementation from NetF WARP
 class CQOS
 {
-public:
+  public:
     CQOS();
     virtual ~CQOS();
 
@@ -37,7 +37,7 @@ public:
     BOOL				RemoveSocket(SOCKET socket);
     BOOL				SetDataRate(DWORD datarate);
 
-private:
+  private:
     DWORD				AddSocket_internal(SOCKET socket, const SOCKADDR* dest);
     DWORD				RemoveSocket_internal(SOCKET socket);
     DWORD				SetDataRate_internal(DWORD datarate);

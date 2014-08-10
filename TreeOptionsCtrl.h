@@ -47,12 +47,12 @@ class CTreeOptionsBrowseButton;
 //Class which represents a combo box used by the tree options class
 class CTreeOptionsCombo : public CComboBox
 {
-public:
+  public:
     //Constructors / Destructors
     CTreeOptionsCombo();
     virtual ~CTreeOptionsCombo();
 
-protected:
+  protected:
     //Misc methods
     void SetButtonBuddy(CTreeOptionsBrowseButton* pButton)
     {
@@ -94,12 +94,12 @@ protected:
 //Class which represents a combo box which allows a Font Name to be specified
 class CTreeOptionsFontNameCombo : public CTreeOptionsCombo
 {
-public:
+  public:
     //Constructors / Destructors
     CTreeOptionsFontNameCombo();
     virtual ~CTreeOptionsFontNameCombo();
 
-protected:
+  protected:
     //{{AFX_VIRTUAL(CTreeOptionsFontNameCombo)
     //}}AFX_VIRTUAL
 
@@ -121,12 +121,12 @@ protected:
 //Class which represents a combo box which allows a True / False value to be specified
 class CTreeOptionsBooleanCombo : public CTreeOptionsCombo
 {
-public:
+  public:
     //Constructors / Destructors
     CTreeOptionsBooleanCombo();
     virtual ~CTreeOptionsBooleanCombo();
 
-protected:
+  protected:
     //{{AFX_VIRTUAL(CTreeOptionsBooleanCombo)
     //}}AFX_VIRTUAL
 
@@ -148,12 +148,12 @@ class CTreeOptionsBrowseButton;
 //Class which represents an edit box used by the tree options class
 class CTreeOptionsEdit : public CEdit
 {
-public:
+  public:
     //Constructors / Destructors
     CTreeOptionsEdit();
     virtual ~CTreeOptionsEdit();
 
-protected:
+  protected:
     //Misc methods
     void SetTreeBuddy(CTreeOptionsCtrl* pTreeCtrl)
     {
@@ -204,12 +204,12 @@ protected:
 //Class which represents the spin control which can be used in association with an edit box by the tree options class
 class CTreeOptionsSpinCtrl : public CSpinButtonCtrl
 {
-public:
+  public:
     //Constructors / Destructors
     CTreeOptionsSpinCtrl();
     virtual ~CTreeOptionsSpinCtrl();
 
-protected:
+  protected:
     //Misc methods
     void SetTreeBuddy(CTreeOptionsCtrl* pTreeCtrl);
     void SetEditBuddy(CTreeOptionsEdit* pEdit);
@@ -242,12 +242,12 @@ protected:
 //Class which represents the browse button which can be used in association with an edit box by the tree options class
 class CTreeOptionsBrowseButton : public CButton
 {
-public:
+  public:
     //Constructors / Destructors
     CTreeOptionsBrowseButton();
     virtual ~CTreeOptionsBrowseButton();
 
-protected:
+  protected:
     //Misc methods
     void            SetTreeBuddy(CTreeOptionsCtrl* pTreeCtrl);
     void            SetTreeItem(HTREEITEM hItem)
@@ -296,12 +296,12 @@ protected:
 //Class which is used for browsing for filenames
 class CTreeOptionsFileDialog : public CFileDialog
 {
-public:
+  public:
     //Constructors / Destructors
     CTreeOptionsFileDialog(BOOL bOpenFileDialog, LPCTSTR lpszDefExt = NULL, LPCTSTR lpszFileName = NULL,
                            DWORD dwFlags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,	LPCTSTR lpszFilter = NULL, CWnd* pParentWnd = NULL);
 
-protected:
+  protected:
     DECLARE_DYNAMIC(CTreeOptionsFileDialog)
 
     virtual void OnInitDone();
@@ -317,7 +317,7 @@ protected:
 //Class which represents a date / time control used by the list options class
 class CTreeOptionsDateCtrl : public CDateTimeCtrl
 {
-public:
+  public:
     //Constructors / Destructors
     CTreeOptionsDateCtrl();
     virtual ~CTreeOptionsDateCtrl();
@@ -325,7 +325,7 @@ public:
     //Methods
     virtual CString GetDisplayText(const SYSTEMTIME& st);
 
-protected:
+  protected:
     //Misc methods
     void SetTreeBuddy(CTreeOptionsCtrl* pTreeCtrl)
     {
@@ -371,7 +371,7 @@ protected:
 //Class which represents a time control used by the list options class
 class CTreeOptionsTimeCtrl : public CTreeOptionsDateCtrl
 {
-public:
+  public:
     //Constructors / Destructors
     CTreeOptionsTimeCtrl();
     virtual ~CTreeOptionsTimeCtrl();
@@ -379,7 +379,7 @@ public:
     //methods
     virtual CString GetDisplayText(const SYSTEMTIME& st);
 
-protected:
+  protected:
     virtual DWORD GetWindowStyle();
 
     //{{AFX_VIRTUAL(CTreeOptionsTimeCtrl)
@@ -398,7 +398,7 @@ protected:
 //Class which represents IP Address control used by the list options class
 class CTreeOptionsIPAddressCtrl : public CIPAddressCtrl
 {
-public:
+  public:
     //Constructors / Destructors
     CTreeOptionsIPAddressCtrl();
     virtual ~CTreeOptionsIPAddressCtrl();
@@ -406,7 +406,7 @@ public:
     //methods
     virtual CString GetDisplayText(DWORD dwAddress);
 
-protected:
+  protected:
     //Misc methods
     void SetTreeBuddy(CTreeOptionsCtrl* pTreeCtrl)
     {
@@ -452,7 +452,7 @@ protected:
 //Class which is stored in the tree options item data
 class CTreeOptionsItemData
 {
-public:
+  public:
     //Enums
     enum ControlType
     {
@@ -504,7 +504,7 @@ public:
 //The actual tree options control class
 class CTreeOptionsCtrl : public CTreeCtrl
 {
-public:
+  public:
     //Constructors / Destructors
     CTreeOptionsCtrl();
     virtual ~CTreeOptionsCtrl();
@@ -631,7 +631,7 @@ public:
     virtual HTREEITEM CopyItem(HTREEITEM hItem, HTREEITEM htiNewParent, HTREEITEM htiAfter = TVI_LAST);
     virtual HTREEITEM CopyBranch(HTREEITEM htiBranch, HTREEITEM htiNewParent, HTREEITEM htiAfter = TVI_LAST);
 
-protected:
+  protected:
     //Variables
     CImageList                 m_ilTree;
     UINT                       m_nilID;

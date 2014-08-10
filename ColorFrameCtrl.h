@@ -5,7 +5,7 @@
 
 class CColorFrameCtrl : public CWnd
 {
-public:
+  public:
     CColorFrameCtrl();
     virtual ~CColorFrameCtrl();
 
@@ -17,7 +17,7 @@ public:
     COLORREF m_crBackColor;        // background color
     COLORREF m_crFrameColor;       // frame color
 
-protected:
+  protected:
     CRect  m_rectClient;
     CBrush m_brushBack;
     CBrush m_brushFrame;

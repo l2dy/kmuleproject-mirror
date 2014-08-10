@@ -15,11 +15,11 @@ class CElement;
 
 class CElementParser : public CParserBase
 {
-private:
+  private:
 
     CElement * m_pElem;
 
-public:
+  public:
 
     inline CElementParser(ISAXXMLReader *pReader, CParserBase *pParent, DWORD dwLevel, CElement * pElem)
         :CParserBase(pReader, pParent, dwLevel), m_pElem(pElem)

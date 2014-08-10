@@ -27,7 +27,7 @@
 
 class CModIconMapper
 {
-public:
+  public:
     CModIconMapper();
     ~CModIconMapper();
 
@@ -46,33 +46,33 @@ public:
         return &modimagelist;
     }; //>>> JvA::Redesigned Client Detail Dialog [BlueSonicBoy]
 
-public:
+  public:
     DWORD	GetVersion() const;
     CString	GetVersionString() const;
 
-private:
+  private:
     typedef DWORD (__cdecl *GETDLLVERSION)();
     GETDLLVERSION DLLGetVersion;
 
-public:
+  public:
     void	FillModIconList();
-private:
+  private:
     typedef int (__cdecl *DLLFILLMODICONLIST)(CImageList* pImageList);
     DLLFILLMODICONLIST DLLFillModIconList;
 
-public:
+  public:
     int		GetIconIndexForModstring(const CString& strMod);
-private:
+  private:
     typedef int (__cdecl *DLLGETICONINDEXFORMODSTRING)(const CString& strMessage);
     DLLGETICONINDEXFORMODSTRING DLLGetIconIndexForModstring;
 
-public:
+  public:
     void	DumpIconList() const;
-private:
+  private:
     typedef CString(__cdecl *DLLDUMPICONLIST)();
     DLLDUMPICONLIST DLLDumpIconList;
 
-private:
+  private:
     HINSTANCE	m_hDLLInstance;
     bool		m_bDLLAvailable;
     CImageList modimagelist;

@@ -12,7 +12,7 @@
 
 class CWSDLPortType : public CXMLElement
 {
-private:
+  private:
 
     CStringW m_strDocumentation;
     CStringW m_strName;
@@ -21,7 +21,7 @@ private:
 
     PORTYPEOPERATIONMAP m_operations;
 
-public:
+  public:
 
     inline CWSDLPortTypeOperation * AddOperation(CWSDLPortTypeOperation *p)
     {

@@ -43,7 +43,7 @@ class CDlgPageWizard : public CPropertyPageEx
 {
     DECLARE_DYNCREATE(CDlgPageWizard)
 
-public:
+  public:
     CDlgPageWizard();
 
     CDlgPageWizard(UINT nIDTemplate, LPCTSTR pszCaption = NULL, LPCTSTR pszHeaderTitle = NULL, LPCTSTR pszHeaderSubTitle = NULL)
@@ -67,7 +67,7 @@ public:
         }
     }
 
-protected:
+  protected:
     CString m_strCaption;
 
     virtual BOOL OnSetActive();
@@ -122,7 +122,7 @@ class CPPgWiz1Welcome : public CDlgPageWizard
 {
     DECLARE_DYNAMIC(CPPgWiz1Welcome)
 
-public:
+  public:
     CPPgWiz1Welcome();
     CPPgWiz1Welcome(UINT nIDTemplate, LPCTSTR pszCaption = NULL, LPCTSTR pszHeaderTitle = NULL, LPCTSTR pszHeaderSubTitle = NULL)
         : CDlgPageWizard(nIDTemplate, pszCaption, pszHeaderTitle, pszHeaderSubTitle)
@@ -134,7 +134,7 @@ public:
 // Dialog Data
     enum { IDD = IDD_WIZ1_WELCOME };
 
-protected:
+  protected:
     CFont m_FontTitle;
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
@@ -187,7 +187,7 @@ class CPPgWiz1General : public CDlgPageWizard
 {
     DECLARE_DYNAMIC(CPPgWiz1General)
 
-public:
+  public:
     CPPgWiz1General();
     CPPgWiz1General(UINT nIDTemplate, LPCTSTR pszCaption = NULL, LPCTSTR pszHeaderTitle = NULL, LPCTSTR pszHeaderSubTitle = NULL)
         : CDlgPageWizard(nIDTemplate, pszCaption, pszHeaderTitle, pszHeaderSubTitle)
@@ -203,7 +203,7 @@ public:
     CString m_strNick;
     int m_iAutoStart;
 
-protected:
+  protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
     DECLARE_MESSAGE_MAP()
@@ -248,7 +248,7 @@ class CPPgWiz1Ports : public CDlgPageWizard
 {
     DECLARE_DYNAMIC(CPPgWiz1Ports)
 
-public:
+  public:
     CPPgWiz1Ports();
     CPPgWiz1Ports(UINT nIDTemplate, LPCTSTR pszCaption = NULL, LPCTSTR pszHeaderTitle = NULL, LPCTSTR pszHeaderSubTitle = NULL)
         : CDlgPageWizard(nIDTemplate, pszCaption, pszHeaderTitle, pszHeaderSubTitle)
@@ -279,7 +279,7 @@ public:
 // Dialog Data
     enum { IDD = IDD_WIZ1_PORTS };
 
-protected:
+  protected:
     CString			lastudp;
     virtual void	DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     void			ResetUPnPProgress();
@@ -486,7 +486,7 @@ class CPPgWiz1UlPrio : public CDlgPageWizard
 {
     DECLARE_DYNAMIC(CPPgWiz1UlPrio)
 
-public:
+  public:
     CPPgWiz1UlPrio();
     CPPgWiz1UlPrio(UINT nIDTemplate, LPCTSTR pszCaption = NULL, LPCTSTR pszHeaderTitle = NULL, LPCTSTR pszHeaderSubTitle = NULL)
         : CDlgPageWizard(nIDTemplate, pszCaption, pszHeaderTitle, pszHeaderSubTitle)
@@ -503,7 +503,7 @@ public:
     int m_iUAP;
     int m_iDAP;
 
-protected:
+  protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
     DECLARE_MESSAGE_MAP()
@@ -630,7 +630,7 @@ class CPPgWiz1Upload : public CDlgPageWizard
 {
     DECLARE_DYNAMIC(CPPgWiz1Upload)
 
-public:
+  public:
     CPPgWiz1Upload();
     CPPgWiz1Upload(UINT nIDTemplate, LPCTSTR pszCaption = NULL, LPCTSTR pszHeaderTitle = NULL, LPCTSTR pszHeaderSubTitle = NULL)
         : CDlgPageWizard(nIDTemplate, pszCaption, pszHeaderTitle, pszHeaderSubTitle)
@@ -652,7 +652,7 @@ public:
     int m_iDownload;
     int m_iUpload;
 
-protected:
+  protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
     DECLARE_MESSAGE_MAP()
@@ -849,7 +849,7 @@ class CPPgWiz1End : public CDlgPageWizard
 {
     DECLARE_DYNAMIC(CPPgWiz1End)
 
-public:
+  public:
     CPPgWiz1End();
     CPPgWiz1End(UINT nIDTemplate, LPCTSTR pszCaption = NULL, LPCTSTR pszHeaderTitle = NULL, LPCTSTR pszHeaderSubTitle = NULL)
         : CDlgPageWizard(nIDTemplate, pszCaption, pszHeaderTitle, pszHeaderSubTitle)
@@ -861,7 +861,7 @@ public:
 // Dialog Data
     enum { IDD = IDD_WIZ1_END };
 
-protected:
+  protected:
     CFont m_FontTitle;
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
@@ -916,11 +916,11 @@ class CPShtWiz1 : public CPropertySheetEx
 {
     DECLARE_DYNAMIC(CPShtWiz1)
 
-public:
+  public:
     CPShtWiz1(UINT nIDCaption, CWnd* pParentWnd = NULL, UINT iSelectPage = 0);
     virtual ~CPShtWiz1();
 
-protected:
+  protected:
     DECLARE_MESSAGE_MAP()
 };
 

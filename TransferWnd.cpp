@@ -1586,15 +1586,15 @@ void CTransferWnd::EditCatTabLabel(int index,CString newlabel)
     {
         CPartFile* cur_file;
         int count = 0;
-		int dwl = 0;
+        int dwl = 0;
         for (int i = 0; i < theApp.downloadqueue->GetFileCount(); ++i)
         {
             cur_file = theApp.downloadqueue->GetFileByIndex(i);
-            if (cur_file == NULL) 
-				continue;
+            if (cur_file == NULL)
+                continue;
             if (cur_file->CheckShowItemInGivenCat(index))
-                if (cur_file->GetTransferringSrcCount()>0) 
-					++dwl;
+                if (cur_file->GetTransferringSrcCount()>0)
+                    ++dwl;
         }
         CString title = newlabel;
         downloadlistctrl.GetCompleteDownloads(index, count);

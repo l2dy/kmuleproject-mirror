@@ -85,13 +85,13 @@ class CGetMediaInfoThread : public CWinThread
 {
     DECLARE_DYNCREATE(CGetMediaInfoThread)
 
-protected:
+  protected:
     CGetMediaInfoThread()
     {
         m_hWndOwner = NULL;
     }
 
-public:
+  public:
     virtual BOOL InitInstance();
     virtual int	Run();
     void SetValues(HWND hWnd, const CSimpleArray<CObject*>* paFiles, HFONT hFont)
@@ -102,7 +102,7 @@ public:
         m_hFont = hFont;
     }
 
-private:
+  private:
     bool GetMediaInfo(HWND hWndOwner, const CShareableFile* pFile, SMediaInfo* mi, bool bSingleFile);
     void WarnAboutWrongFileExtension(SMediaInfo* mi, LPCTSTR pszFileName, LPCTSTR pszExtensions);
 
@@ -117,7 +117,7 @@ private:
 
 class CMediaInfoDLL
 {
-public:
+  public:
     CMediaInfoDLL()
     {
         m_bInitialized = FALSE;
@@ -324,7 +324,7 @@ public:
         return 0;
     }
 
-protected:
+  protected:
     ULONGLONG m_ullVersion;
     BOOL m_bInitialized;
     HINSTANCE m_hLib;

@@ -35,18 +35,18 @@ namespace Kademlia
 {
 struct externPortReply
 {
-	externPortReply(const UINT IP = 0, const uint16 Port = 0)
-	{
-		dwIP = IP;
-		nPort = Port;
-	}
-	UINT	dwIP;
-	uint16	nPort;
+    externPortReply(const UINT IP = 0, const uint16 Port = 0)
+    {
+        dwIP = IP;
+        nPort = Port;
+    }
+    UINT	dwIP;
+    uint16	nPort;
 };
 
 class CPrefs
 {
-public:
+  public:
     CPrefs();
     ~CPrefs();
 
@@ -101,11 +101,11 @@ public:
     void		StatsIncTCPFirewalledNodes(bool bFirewalled);
     float		StatsGetFirewalledRatio(bool bUDP) const;
     float		StatsGetKadV8Ratio();
-	bool		GetLastFirewalledState() const		{return m_bLastFirewallState;}
-	bool		GetCurrentFirewalledState() const	{return m_uFirewalled < 2;}
+    bool		GetLastFirewalledState() const		{return m_bLastFirewallState;}
+    bool		GetCurrentFirewalledState() const	{return m_uFirewalled < 2;}
 
     static UINT GetUDPVerifyKey(UINT dwTargetIP);
-private:
+  private:
     void Init(LPCTSTR szFilename);
     void Reset();
     void SetDefaults();

@@ -21,7 +21,7 @@
 class CToolTipCtrlX : public CToolTipCtrl
 {
     DECLARE_DYNAMIC(CToolTipCtrlX)
-public:
+  public:
     CToolTipCtrlX();
     virtual ~CToolTipCtrlX();
 
@@ -33,7 +33,7 @@ public:
     }
     BOOL SubclassWindow(HWND hWnd);
 
-protected:
+  protected:
     bool m_bCol1Bold;
     bool m_bShowFileIcon;
     CRect m_rcScreen;

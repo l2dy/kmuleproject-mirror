@@ -31,7 +31,7 @@
 
 class CIni
 {
-public:
+  public:
     // If the IniFilename contains no path,
     // the module-directory will be add to the FileName,
     // to avoid storing in the windows-directory
@@ -112,7 +112,7 @@ public:
     int			Parse(const CString&, int nOffset, CString &rstrOut);
     void		DeleteKey(LPCTSTR lpszKey);
 
-private:
+  private:
     void Init(LPCTSTR lpszIniFile, LPCTSTR lpszSection = NULL);
     LPTSTR GetLPCSTR(LPCTSTR lpszEntry, LPCTSTR lpszSection, LPCTSTR lpszDefault);
 

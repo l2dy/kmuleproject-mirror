@@ -101,7 +101,7 @@ struct CPerfObject
 
 class CPerfMon
 {
-public:
+  public:
     virtual ~CPerfMon() throw();
 
 #ifdef _ATL_PERF_REGISTER
@@ -173,7 +173,7 @@ public:
 
     // implementation
 
-public:
+  public:
     // PerfMon entry point helpers
     DWORD Open(LPWSTR lpDeviceNames) throw();
     DWORD Collect(__in_z LPWSTR lpwszValue, __deref_inout_bcount(*pcbBytes) LPVOID* lppData, __inout LPDWORD lpcbBytes, __inout LPDWORD lpcObjectTypes) throw();
@@ -247,7 +247,7 @@ public:
         UINT nOffset,
         INT nDefaultScale) throw();
 
-protected:
+  protected:
     void ClearMap() throw();
 
     virtual LPCTSTR GetAppName() const throw() = 0;
@@ -409,7 +409,7 @@ protected:
     HRESULT _UnregisterStrings() throw();
     HRESULT _RegisterAllStrings(UINT nRes, HINSTANCE hResInstance) throw();
 #endif
-private:
+  private:
     CAtlArray<CategoryInfo> m_categories;
     CAutoPtrArray<CAtlFileMappingBase> m_aMem;
     CMutex m_lock;
@@ -421,7 +421,7 @@ private:
 
 class CPerfLock
 {
-public:
+  public:
     CPerfLock(CPerfMon* pPerfMon, DWORD dwTimeout = INFINITE)
     {
         ATLENSURE(pPerfMon != NULL);
@@ -440,7 +440,7 @@ public:
         return m_hrStatus;
     }
 
-private:
+  private:
     CPerfMon* m_pPerfMon;
     HRESULT m_hrStatus;
 };
@@ -501,7 +501,7 @@ class CAssertValidField
 template<>
 class CAssertValidField< PERF_SIZE_DWORD >
 {
-public:
+  public:
     template< class C > static void AssertValidFieldType(ULONG C::*) throw() { }
     template< class C > static void AssertValidFieldType(LONG C::*) throw() { }
 };
@@ -509,7 +509,7 @@ public:
 template<>
 class CAssertValidField< PERF_SIZE_LARGE >
 {
-public:
+  public:
     template< class C > static void AssertValidFieldType(ULONGLONG C::*) throw() { }
     template< class C > static void AssertValidFieldType(LONGLONG C::*) throw() { }
 };
@@ -616,7 +616,7 @@ extern "C" DWORD __declspec(dllexport) WINAPI ClosePerfMon() throw();
 // this class handles integrating the registration with CComModule
 class _CAtlPerfSetFuncPtr
 {
-public:
+  public:
     _CAtlPerfSetFuncPtr()
     {
         _pPerfRegFunc = RegisterPerfMon;

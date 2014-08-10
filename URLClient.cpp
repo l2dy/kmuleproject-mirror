@@ -216,9 +216,9 @@ bool CUrlClient::TryToConnect(const bool bIgnoreMaxCon, const bool bNoCallbacks,
 #endif
 {
 #ifdef NAT_TRAVERSAL
-	return CUpDownClient::TryToConnect(bIgnoreMaxCon, bNoCallbacks, RUNTIME_CLASS(CHttpClientDownSocket), bUseUTP); //>>> WiZaRd::NatTraversal [Xanatos]
+    return CUpDownClient::TryToConnect(bIgnoreMaxCon, bNoCallbacks, RUNTIME_CLASS(CHttpClientDownSocket), bUseUTP); //>>> WiZaRd::NatTraversal [Xanatos]
 #else
-	return CUpDownClient::TryToConnect(bIgnoreMaxCon, bNoCallbacks, RUNTIME_CLASS(CHttpClientDownSocket));
+    return CUpDownClient::TryToConnect(bIgnoreMaxCon, bNoCallbacks, RUNTIME_CLASS(CHttpClientDownSocket));
 #endif
 }
 
@@ -227,7 +227,7 @@ void CUrlClient::Connect()
 #ifdef IPV6_SUPPORT
     if (!GetConnectIP().IsNull() && GetConnectIP().ToIPv4() != INADDR_NONE) //>>> WiZaRd::IPv6 [Xanatos]
 #else
-	if (GetConnectIP() != 0 && GetConnectIP() != INADDR_NONE)
+    if (GetConnectIP() != 0 && GetConnectIP() != INADDR_NONE)
 #endif
     {
         CUpDownClient::Connect();
@@ -247,10 +247,10 @@ void CUrlClient::OnSocketConnected(int nErrorCode)
 
 void CUrlClient::ConnectionEstablished()
 {
-	m_nConnectingState = CCS_NONE;
-	theApp.clientlist->RemoveConnectingClient(this);
-	SendHttpBlockRequests();
-	SetDownStartTime();
+    m_nConnectingState = CCS_NONE;
+    theApp.clientlist->RemoveConnectingClient(this);
+    SendHttpBlockRequests();
+    SetDownStartTime();
 }
 
 void CUrlClient::SendHelloPacket()

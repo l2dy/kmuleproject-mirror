@@ -47,21 +47,21 @@ typedef struct
 class CSHA : public CAICHHashAlgo
 {
 // Construction
-public:
+  public:
     CSHA();
     virtual ~CSHA();
 
     static bool VerifyImplementation();
 
 // Attributes
-protected:
+  protected:
     // NOTE: if you change this, modify the offsets in SHA_ASM.ASM accordingly
     DWORD	m_nCount[2];
     DWORD	m_nHash[5];
     DWORD	m_nBuffer[16];
 
 // Operations
-public:
+  public:
     // CAICHHashAlgo interface
     virtual void	Reset();
     virtual void	Add(LPCVOID pData, DWORD nLength);

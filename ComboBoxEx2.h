@@ -3,7 +3,7 @@
 class CComboBoxEx2 : public CComboBoxEx
 {
     DECLARE_DYNAMIC(CComboBoxEx2)
-public:
+  public:
     CComboBoxEx2();
     virtual ~CComboBoxEx2();
 
@@ -13,7 +13,7 @@ public:
 
     virtual BOOL PreTranslateMessage(MSG* pMsg);
 
-protected:
+  protected:
     DECLARE_MESSAGE_MAP()
 };
 

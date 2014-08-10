@@ -18,7 +18,7 @@ All rights reserved.
 
 class CHttpDownloadDlg : public CDialog
 {
-public:
+  public:
 //Constructors / Destructors
     CHttpDownloadDlg(CWnd* pParent = NULL);
 
@@ -34,7 +34,7 @@ public:
         return m_sError;
     }
 
-protected:
+  protected:
     //{{AFX_DATA(CHttpDownloadDlg)
     enum { IDD = IDD_HTTPDOWNLOAD };
     CStatic m_ctrlStatus;

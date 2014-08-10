@@ -2,7 +2,7 @@
 
 class CEnBitmap : public CBitmap
 {
-public:
+  public:
     CEnBitmap();
     virtual ~CEnBitmap();
 
@@ -14,7 +14,7 @@ public:
     static BOOL GetResource(LPCTSTR lpName, LPCTSTR lpType, HMODULE hInst, void* pResource, int& nBufSize);
     static IPicture* LoadFromBuffer(BYTE* pBuff, int nSize);
 
-protected:
+  protected:
     BOOL Attach(IPicture* pPicture, COLORREF crBack);
 
 };

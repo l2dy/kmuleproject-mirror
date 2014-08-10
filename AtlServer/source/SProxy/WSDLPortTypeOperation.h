@@ -17,7 +17,7 @@
 
 class CSoapOperation
 {
-private:
+  private:
     CStringW m_strSoapAction;
     SOAPSTYLE m_style;
 
@@ -31,7 +31,7 @@ private:
         return E_FAIL;
     }
 
-public:
+  public:
 
     CSoapOperation()
         :m_style(SOAPSTYLE_UNK)
@@ -85,11 +85,11 @@ public:
 
 class CHttpOperation
 {
-private:
+  private:
 
     CStringW m_strLocation;
 
-public:
+  public:
 
     inline HRESULT SetLocation(const wchar_t *wszName, int cchName)
     {
@@ -119,7 +119,7 @@ public:
 
 class CWSDLPortTypeOperation : public CXMLElement
 {
-private:
+  private:
 
     CStringW            m_strName;
     CStringW            m_strDocumentation;
@@ -130,7 +130,7 @@ private:
     CAutoPtr<CSoapOperation> m_pSoapOperation;
     CAutoPtr<CHttpOperation> m_pHttpOperation;
 
-public:
+  public:
 
     inline CSoapOperation * AddSoapOperation(CSoapOperation *pBinding = NULL)
     {

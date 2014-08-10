@@ -148,13 +148,13 @@ CRoutingZone::~CRoutingZone()
 
 UINT CRoutingZone::ReadFile(CString strSpecialNodesdate)
 {
-	UINT uValidContacts = 0;
+    UINT uValidContacts = 0;
     if (m_pSuperZone != NULL || (m_sFilename.IsEmpty() && strSpecialNodesdate.IsEmpty()))
     {
         ASSERT(0);
         return uValidContacts;
     }
-	    
+
     // Read in the saved contact list.
     try
     {
@@ -192,8 +192,8 @@ UINT CRoutingZone::ReadFile(CString strSpecialNodesdate)
                     AddDebugLogLine(false, GetResString(IDS_ERR_KADCONTACTS));
             }
             if (uNumContacts != 0 && uNumContacts * 25 <= (file.GetLength() - file.GetPosition()))
-            {   
-				bool bDoHaveVerifiedContacts = false;
+            {
+                bool bDoHaveVerifiedContacts = false;
                 CUInt128 uID;
                 while (uNumContacts)
                 {
@@ -261,7 +261,7 @@ UINT CRoutingZone::ReadFile(CString strSpecialNodesdate)
         e->Delete();
         DebugLogError(L"CFileException in CRoutingZone::readFile");
     }
-	return uValidContacts;
+    return uValidContacts;
 }
 
 UINT CRoutingZone::ReadBootstrapNodesDat(CFileDataIO& file)
@@ -273,7 +273,7 @@ UINT CRoutingZone::ReadBootstrapNodesDat(CFileDataIO& file)
     // a normal nodes.dat with eMule, those 50 nodes would be kinda DDOSed because everyone adds them to their routing
     // table, while with this style, we don't actually add any of the contacts to our routing table in the end and we
     // ask only one of those 1000 contacts one time (well or more until we find an alive one).
-	UINT uValidContacts = 0;
+    UINT uValidContacts = 0;
     if (!CKademlia::s_liBootstapList.IsEmpty())
     {
         ASSERT(0);
@@ -281,7 +281,7 @@ UINT CRoutingZone::ReadBootstrapNodesDat(CFileDataIO& file)
     }
     UINT uNumContacts = file.ReadUInt32();
     if (uNumContacts != 0 && uNumContacts * 25 == (file.GetLength() - file.GetPosition()))
-    {        
+    {
         CUInt128 uID;
         while (uNumContacts)
         {
@@ -340,7 +340,7 @@ UINT CRoutingZone::ReadBootstrapNodesDat(CFileDataIO& file)
         AddLogLine(false, GetResString(IDS_KADCONTACTSREAD), CKademlia::s_liBootstapList.GetCount());
         DebugLog(L"Loaded Bootstrap nodes.dat, selected %u out of %u valid contacts", CKademlia::s_liBootstapList.GetCount(), uValidContacts);
     }
-	return uValidContacts;
+    return uValidContacts;
 }
 
 void CRoutingZone::WriteFile()

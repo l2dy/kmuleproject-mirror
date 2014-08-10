@@ -23,7 +23,7 @@ class PreviewDlg : public CDialog
 {
     DECLARE_DYNAMIC(PreviewDlg)
 
-public:
+  public:
     PreviewDlg(CWnd* pParent = NULL);   // standard constructor
     virtual ~PreviewDlg();
 
@@ -36,7 +36,7 @@ public:
 // Dialog Data
     enum { IDD = IDD_PREVIEWDIALOG };
 
-protected:
+  protected:
     const CSearchFile* m_pFile;
     int m_nCurrentImage;
     CStatic m_ImageStatic;

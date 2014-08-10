@@ -24,7 +24,7 @@ class CQueueListCtrl : public CMuleListCtrl, public CListCtrlItemWalk
 {
     DECLARE_DYNAMIC(CQueueListCtrl)
 
-public:
+  public:
     CQueueListCtrl();
     virtual ~CQueueListCtrl();
 
@@ -44,7 +44,7 @@ public:
     void	ShowSelectedUserDetails();
     void	ShowQueueClients();
 
-protected:
+  protected:
     CImageList m_ImageList;
     UINT_PTR m_hTimer;
 

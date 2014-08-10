@@ -1800,14 +1800,14 @@ void CAntiLeechData::SetParent(CUpDownClient* client, const bool bSetOnly)
             m_uiReaskTime = MIN_REQUESTTIME*2;
             break;
 
-            //21 mins - reask time by old version of the client
-            //taken from eMule+ source
+        //21 mins - reask time by old version of the client
+        //taken from eMule+ source
         case SO_EDONKEY:
         case SO_OLDEMULE:
             m_uiReaskTime = MIN2MS(21);
             break;
 
-            //eMule+ uses 1 minute less, though this shouldn't hurt...
+        //eMule+ uses 1 minute less, though this shouldn't hurt...
         case SO_EMULEPLUS:
             m_uiReaskTime = MIN2MS(28);
             break;
@@ -1816,7 +1816,7 @@ void CAntiLeechData::SetParent(CUpDownClient* client, const bool bSetOnly)
             m_uiReaskTime = FILEREASKTIME;
             break;
 
-            //any information about those 3 clients? I couldn't find their default reasktime...
+        //any information about those 3 clients? I couldn't find their default reasktime...
 //		case SO_TRUSTYFILES:
 //		case SO_HYDRANODE:
 //		case SO_EASYMULE2:

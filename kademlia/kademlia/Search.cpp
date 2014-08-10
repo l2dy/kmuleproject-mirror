@@ -783,13 +783,13 @@ void CSearch::StorePacket()
                 }
 
 #ifdef NAT_TRAVERSAL
-				listTag.push_back(new CKadTagUInt8(TAG_ENCRYPTION, GetMyConnectOptions(true, true, true))); //>>> WiZaRd::NatTraversal [Xanatos]
+                listTag.push_back(new CKadTagUInt8(TAG_ENCRYPTION, GetMyConnectOptions(true, true, true))); //>>> WiZaRd::NatTraversal [Xanatos]
 #else
                 listTag.push_back(new CKadTagUInt8(TAG_ENCRYPTION, GetMyConnectOptions(true, true)));
 #endif
 
 //>>> WiZaRd::IPv6 [Xanatos]
-#ifdef IPV6_SUPPORT	
+#ifdef IPV6_SUPPORT
                 if (!theApp.GetPublicIPv6().IsNull())
                 {
                     CUInt128 IPv6(theApp.GetPublicIPv6().Data());
@@ -1067,7 +1067,7 @@ void CSearch::ProcessResultFile(const CUInt128 &uAnswer, TagList *plistInfo)
     uint8 byCryptOptions = 0; // 0 = not supported
 #ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
-	bool bIPv6 = false;
+    bool bIPv6 = false;
     CUInt128 IPv6;
 //<<< WiZaRd::IPv6 [Xanatos]
 #endif
@@ -1105,10 +1105,10 @@ void CSearch::ProcessResultFile(const CUInt128 &uAnswer, TagList *plistInfo)
         {
             uchar ucharIPv6[16];
             if (pTag->IsStr() && strmd4(pTag->GetStr(), ucharIPv6))
-			{
+            {
                 IPv6 = CUInt128(ucharIPv6);
-				bIPv6 = true;
-			}
+                bIPv6 = true;
+            }
             else
                 TRACE("+++ Invalid TAG_IPv6 tag\n");
         }

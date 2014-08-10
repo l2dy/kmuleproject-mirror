@@ -6,7 +6,7 @@
 #pragma warning(disable:4100) // unreferenced formal parameter
 class CVisualStylesXP
 {
-public:
+  public:
     CVisualStylesXP(void);
     ~CVisualStylesXP(void);
 
@@ -96,7 +96,7 @@ public:
     HRESULT DrawThemeParentBackground(HWND hwnd, HDC hdc, RECT* prc);
     HRESULT EnableTheming(BOOL fEnable);
 
-private:
+  private:
     static HMODULE m_hThemeDll;
     static void* GetProc(LPCSTR szProc, void* pfnFail);
 

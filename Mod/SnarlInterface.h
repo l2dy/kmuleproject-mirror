@@ -163,7 +163,7 @@ enum AppFlags
 template<class T>
 class SnarlParameterList
 {
-public:
+  public:
     typedef std::pair<std::basic_string<T>, std::basic_string<T> > PairType;
 
     SnarlParameterList()
@@ -204,7 +204,7 @@ public:
         return list;
     }
 
-private:
+  private:
     std::vector<PairType> list;
 };
 
@@ -213,11 +213,11 @@ private:
 // ----------------------------------------------------------------------------------------
 class SnarlInterface
 {
-public:
+  public:
     /// <summary>Requests strings known by Snarl</summary>
     class Requests
     {
-    public:
+      public:
         static LPCSTR  AddActionA()
         {
             return  "addaction";
@@ -485,7 +485,7 @@ public:
     /*LONG32 UpdateApp(LPCSTR title = NULL, LPCSTR icon = NULL);
     LONG32 UpdateApp(LPCWSTR title = NULL, LPCWSTR icon = NULL);*/
 
-private:
+  private:
     /// <summary>Convert a unicode string to UTF8</summary>
     /// <returns>Returns pointer to the new string - Remember to delete [] returned string !</returns>
     /// <remarks>Remember to call FreeString on returned string !!!</remarks>
@@ -504,9 +504,9 @@ private:
     LPWSTR szPasswordW;
 
 //>>> WiZaRd
-private:
+  private:
     static CString szIcons[TBN_DOWNLOADADDED];
-public:
+  public:
     static void DestroyIconArray();
     static void CreateIconArray();
     static LPCTSTR GetIcon(const int iIconIndex);

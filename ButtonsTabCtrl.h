@@ -4,11 +4,11 @@ class CButtonsTabCtrl : public CTabCtrl
 {
     DECLARE_DYNAMIC(CButtonsTabCtrl)
 
-public:
+  public:
     CButtonsTabCtrl();
     virtual ~CButtonsTabCtrl();
 
-protected:
+  protected:
     void InternalInit();
 
     virtual void PreSubclassWindow();

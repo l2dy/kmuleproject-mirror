@@ -4,7 +4,7 @@ class CPPgFiles : public CPropertyPage
 {
     DECLARE_DYNAMIC(CPPgFiles)
 
-public:
+  public:
     CPPgFiles();
     virtual ~CPPgFiles();
 
@@ -13,7 +13,7 @@ public:
 
     void Localize(void);
 
-protected:
+  protected:
     CListBox m_uncfolders;
     HICON m_icoBrowse;
 

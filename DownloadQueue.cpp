@@ -567,8 +567,8 @@ bool CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
     {
 #ifdef _DEBUG
         if (thePrefs.GetLogFilteredIPs())
-        	AddDebugLogLine(DLP_DEFAULT, false, L"Rejected source because it was found on the DeadSourcesList (%s) for file %s : %s"
-        	,sender->m_DeadSourceList.IsDeadSource(source)? L"Local" : L"Global", sender->GetFileName(), source->DbgGetClientInfo() );
+            AddDebugLogLine(DLP_DEFAULT, false, L"Rejected source because it was found on the DeadSourcesList (%s) for file %s : %s"
+                            ,sender->m_DeadSourceList.IsDeadSource(source)? L"Local" : L"Global", sender->GetFileName(), source->DbgGetClientInfo());
 #endif
         delete source;
         return false;
@@ -992,7 +992,7 @@ CUpDownClient* CDownloadQueue::GetDownloadClientByIP(const UINT dwIP)
 #ifdef IPV6_SUPPORT
             if (dwIP.GetType() == CAddress::IPv6 ? dwIP == cur_client->GetIPv6() : dwIP == cur_client->GetIP()) //>>> WiZaRd::IPv6 [Xanatos]
 #else
-			if (dwIP == cur_client->GetIP())
+            if (dwIP == cur_client->GetIP())
 #endif
                 return cur_client;
         }
@@ -1018,13 +1018,13 @@ CUpDownClient* CDownloadQueue::GetDownloadClientByIP_UDP(const UINT dwIP, const 
 #ifdef IPV6_SUPPORT
             if ((dwIP.GetType() == CAddress::IPv6 ? dwIP == cur_client->GetIPv6() : dwIP == cur_client->GetIP()) && nUDPPort == cur_client->GetUDPPort()) //>>> WiZaRd::IPv6 [Xanatos]
 #else
-			if (dwIP == cur_client->GetIP() && nUDPPort == cur_client->GetUDPPort())
+            if (dwIP == cur_client->GetIP() && nUDPPort == cur_client->GetUDPPort())
 #endif
                 return cur_client;
 #ifdef IPV6_SUPPORT
             else if ((dwIP.GetType() == CAddress::IPv6 ? dwIP == cur_client->GetIPv6() : dwIP == cur_client->GetIP()) && bIgnorePortOnUniqueIP && cur_client != pMatchingIPClient) //>>> WiZaRd::IPv6 [Xanatos]
 #else
-			else if (dwIP == cur_client->GetIP() && bIgnorePortOnUniqueIP && cur_client != pMatchingIPClient)
+            else if (dwIP == cur_client->GetIP() && bIgnorePortOnUniqueIP && cur_client != pMatchingIPClient)
 #endif
             {
                 pMatchingIPClient = cur_client;
@@ -1499,7 +1499,7 @@ void CDownloadQueue::KademliaSearchFile(UINT searchID, const Kademlia::CUInt128*
             byte cID[16];
             pcontactID->ToByteArray(cID);
             ctemp->SetUserHash(cID);
-			break;
+            break;
         }
     }
 

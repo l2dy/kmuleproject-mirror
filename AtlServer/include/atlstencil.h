@@ -174,10 +174,10 @@ public:\
 template <class T>
 class ITagReplacerImpl : public ITagReplacer
 {
-protected:
+  protected:
     IWriteStream *m_pStream;
 
-public:
+  public:
     typedef HTTP_CODE(T::*REPLACEMENT_METHOD)();
     typedef HTTP_CODE(T::*REPLACEMENT_METHOD_EX)(void *pvParam);
 
@@ -708,7 +708,7 @@ struct StencilToken
 class CStencil :
     public IMemoryCacheClient
 {
-private:
+  private:
     LPCSTR m_pBufferStart; // Beginning of CHAR buffer that holds the stencil.
     // For mapped files this is the beginning of the mapping.
     LPCSTR m_pBufferEnd; // End of CHAR buffer that holds the stencil.
@@ -742,7 +742,7 @@ private:
     class CParseErrorProvider : public ITagReplacerImpl<CParseErrorProvider>,
         public CComObjectRootEx<CComSingleThreadModel>
     {
-    public:
+      public:
         BEGIN_COM_MAP(CParseErrorProvider)
         COM_INTERFACE_ENTRY(ITagReplacer)
         END_COM_MAP()
@@ -835,7 +835,7 @@ private:
     class CSaveThreadLocale
     {
         LCID m_locale;
-    public:
+      public:
         CSaveThreadLocale() throw()
         {
             m_locale = GetThreadLocale();
@@ -872,7 +872,7 @@ private:
         return HTTP_FAIL;
     }
 
-protected:
+  protected:
 
     ITagReplacer *m_pReplacer;
     IAtlMemMgr *m_pMemMgr;
@@ -935,7 +935,7 @@ protected:
         return dwIndex;
     }
 
-public:
+  public:
 
     enum PARSE_TOKEN_RESULT { INVALID_TOKEN, NORMAL_TOKEN, RESERVED_TOKEN };
 
@@ -2346,7 +2346,7 @@ public:
 
 struct StencilIncludeInfo
 {
-public:
+  public:
     CHAR m_szQueryString[ATL_URL_MAX_URL_LENGTH+1];
     CHAR m_szFileName[MAX_PATH];
 };
@@ -2356,7 +2356,7 @@ class CIncludeServerContext :
     public CComObjectRootEx<CComMultiThreadModel>,
     public CWrappedServerContext
 {
-public:
+  public:
     BEGIN_COM_MAP(CIncludeServerContext)
     COM_INTERFACE_ENTRY(IHttpServerContext)
     END_COM_MAP()
@@ -2491,7 +2491,7 @@ class CIDServerContext :
     public CComObjectRootEx<CComMultiThreadModel>,
     public CWrappedServerContext
 {
-public:
+  public:
     CHttpResponse *m_pResponse;
     CHttpRequest *m_pRequest;
 
@@ -2667,7 +2667,7 @@ struct CStringPair
 class CStringPairElementTraits :
     public CElementTraitsBase< CStringPair >
 {
-private:
+  private:
 
     static ULONG HashStr(ULONG nHash, CStringElementTraits<CStringA>::INARGTYPE str)
     {
@@ -2682,7 +2682,7 @@ private:
         return (nHash);
     }
 
-public:
+  public:
     static ULONG Hash(INARGTYPE pair) throw()
     {
         ULONG nHash = HashStr(0, pair.strDllPath);
@@ -2702,7 +2702,7 @@ public:
 
 class CHtmlStencil : public CStencil
 {
-private:
+  private:
 
     ATL_NOINLINE HTTP_CODE RenderInclude(
         ITagReplacer *pReplacer,
@@ -2745,7 +2745,7 @@ private:
     class CAllocIncludeAsyncContext :
         public CAllocContextBase
     {
-    public:
+      public:
         CAllocIncludeAsyncContext(CIncludeServerContext *pBase) :
             m_pBase(pBase)
         {
@@ -2767,7 +2767,7 @@ private:
             return HTTP_SUCCESS;
         }
 
-    private:
+      private:
         CIncludeServerContext *m_pBase;
     };  // CAllocIncludeAsyncContext
 
@@ -2794,7 +2794,7 @@ private:
 
     }
 
-protected:
+  protected:
     CAtlMap<CStringA, CStringPair,
             CStringElementTraits<CStringA>, CStringPairElementTraits > m_arrExtraHandlers;
     CHAR m_szBaseDir[MAX_PATH];
@@ -2803,7 +2803,7 @@ protected:
     CComPtr<IStencilCache> m_spStencilCache;
     CComPtr<IDllCache> m_spDllCache;
 
-public:
+  public:
     typedef CAtlMap<CStringA, CStringPair,
             CStringElementTraits<CStringA>, CStringPairElementTraits > mapType;
     typedef CStencil baseType;
@@ -3352,7 +3352,7 @@ template <class THandler, class StencilType=CHtmlStencil>
 class CHtmlTagReplacer :
     public ITagReplacerImpl<THandler>
 {
-protected:
+  protected:
     typedef StencilType StencilType;
 
     CSimpleArray<HINSTANCE> m_hInstHandlers;
@@ -3364,7 +3364,7 @@ protected:
 
     AtlServerRequest m_RequestInfo;
 
-public:
+  public:
     // public members
 
     CHtmlTagReplacer() throw() :
@@ -3833,20 +3833,20 @@ public:
 // into a stream. The stream will be returned as the HTTP response upon completion
 // of the HTTP request.
 template <	class THandler,
-          class ThreadModel=CComSingleThreadModel,
-          class TagReplacerType=CHtmlTagReplacer<THandler>
-          >
+            class ThreadModel=CComSingleThreadModel,
+            class TagReplacerType=CHtmlTagReplacer<THandler>
+            >
 class CRequestHandlerT :
     public TagReplacerType,
     public CComObjectRootEx<ThreadModel>,
     public IRequestHandlerImpl<THandler>
 {
-protected:
+  protected:
     CStencilState m_state;
     CComObjectStackEx<CIDServerContext> m_SafeSrvCtx;
     typedef CRequestHandlerT<THandler, ThreadModel, TagReplacerType> _requestHandler;
 
-public:
+  public:
     BEGIN_COM_MAP(_requestHandler)
     COM_INTERFACE_ENTRY(IRequestHandler)
     COM_INTERFACE_ENTRY(ITagReplacer)

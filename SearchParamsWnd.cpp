@@ -563,7 +563,7 @@ void CSearchParamsWnd::InitMethodsCtrl()
 
 class SFileTypeCbEntry
 {
-public:
+  public:
 #if _MSC_VER>=1400
     SFileTypeCbEntry()
     {

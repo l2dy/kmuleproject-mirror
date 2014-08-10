@@ -1024,11 +1024,11 @@ BOOL CHTRichEditCtrl::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 
 class CBitmapDataObject : public CCmdTarget
 {
-public:
+  public:
     CBitmapDataObject(HBITMAP hBitmap);
     virtual ~CBitmapDataObject();
 
-protected:
+  protected:
     DECLARE_INTERFACE_MAP();
 
     BEGIN_INTERFACE_PART(DataObject, IDataObject)

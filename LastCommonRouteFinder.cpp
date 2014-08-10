@@ -151,7 +151,7 @@ bool LastCommonRouteFinder::AddHostsToCheck(CUpDownClientPtrList &list)
 #ifdef IPV6_SUPPORT
                     UINT ip = _ntohl(client->GetIP().ToIPv4()); //>>> WiZaRd::IPv6 [Xanatos]
 #else
-					UINT ip = client->GetIP();
+                    UINT ip = client->GetIP();
 #endif
                     AddHostToCheckNoLock(ip);
                 }
@@ -347,11 +347,11 @@ UINT AFX_CDECL LastCommonRouteFinder::RunProc(LPVOID pParam)
  * @return always returns 0.
  */
 UINT LastCommonRouteFinder::RunInternal()
-{    
+{
     bool hasSucceededAtLeastOnce = false;
-	Pinger pinger;
-	if(!pinger.Init())
-		doRun = false;
+    Pinger pinger;
+    if (!pinger.Init())
+        doRun = false;
 
     while (doRun)
     {
@@ -526,30 +526,30 @@ UINT LastCommonRouteFinder::RunInternal()
                                 IN_ADDR stDestAddr;
                                 stDestAddr.s_addr = curAddress;
                                 if (pingStatus.success == true && pingStatus.status == IP_SUCCESS)
-								{
-									theApp.QueueDebugLogLineEx(LOG_SUCCESS, L"UploadSpeedSense: Host was too close! Removing this host. (TTL: %i IP: %s status: %i). Removing this host and restarting host collection.", ttl, ipstr(stDestAddr), pingStatus.status);
+                                {
+                                    theApp.QueueDebugLogLineEx(LOG_SUCCESS, L"UploadSpeedSense: Host was too close! Removing this host. (TTL: %i IP: %s status: %i). Removing this host and restarting host collection.", ttl, ipstr(stDestAddr), pingStatus.status);
 
-									hostsToTraceRoute.RemoveKey(curAddress);
-								}
-								else if (pingStatus.success == true && pingStatus.status == IP_DEST_HOST_UNREACHABLE)
-								{
-									theApp.QueueDebugLogLineEx(LOG_ERROR, L"UploadSpeedSense: Host unreacheable! (TTL: %i IP: %s status: %i). Removing this host. Status info follows.", ttl, ipstr(stDestAddr), pingStatus.status);
-									pinger.PIcmpErr(pingStatus.status);
+                                    hostsToTraceRoute.RemoveKey(curAddress);
+                                }
+                                else if (pingStatus.success == true && pingStatus.status == IP_DEST_HOST_UNREACHABLE)
+                                {
+                                    theApp.QueueDebugLogLineEx(LOG_ERROR, L"UploadSpeedSense: Host unreacheable! (TTL: %i IP: %s status: %i). Removing this host. Status info follows.", ttl, ipstr(stDestAddr), pingStatus.status);
+                                    pinger.PIcmpErr(pingStatus.status);
 
-									hostsToTraceRoute.RemoveKey(curAddress);
-								}
-								else if (pingStatus.success == true)
-								{
-									theApp.QueueDebugLogLineEx(LOG_ERROR, L"UploadSpeedSense: Unknown ping status! (TTL: %i IP: %s status: %i). Reason follows. Changing ping method to see if it helps.", ttl, ipstr(stDestAddr), pingStatus.status);
-									pinger.PIcmpErr(pingStatus.status);
-									useUdp = !useUdp;
-								}
-								else
-								{
-									if (pingStatus.error == IP_REQ_TIMED_OUT)
-									{
-										theApp.QueueDebugLogLineEx(LOG_ERROR, L"UploadSpeedSense: Timeout when pinging a host! (TTL: %i IP: %s Error: %i). Keeping host. Error info follows.", ttl, ipstr(stDestAddr), pingStatus.error);
-										pinger.PIcmpErr(pingStatus.error);
+                                    hostsToTraceRoute.RemoveKey(curAddress);
+                                }
+                                else if (pingStatus.success == true)
+                                {
+                                    theApp.QueueDebugLogLineEx(LOG_ERROR, L"UploadSpeedSense: Unknown ping status! (TTL: %i IP: %s status: %i). Reason follows. Changing ping method to see if it helps.", ttl, ipstr(stDestAddr), pingStatus.status);
+                                    pinger.PIcmpErr(pingStatus.status);
+                                    useUdp = !useUdp;
+                                }
+                                else
+                                {
+                                    if (pingStatus.error == IP_REQ_TIMED_OUT)
+                                    {
+                                        theApp.QueueDebugLogLineEx(LOG_ERROR, L"UploadSpeedSense: Timeout when pinging a host! (TTL: %i IP: %s Error: %i). Keeping host. Error info follows.", ttl, ipstr(stDestAddr), pingStatus.error);
+                                        pinger.PIcmpErr(pingStatus.error);
 
                                         if (hostsToTraceRouteCounter > 2 && lastSuccedingPingAddress == 0)
                                         {

@@ -76,7 +76,7 @@ namespace ATL
 class CSessionNameGenerator :
     public CCryptProv
 {
-public:
+  public:
     bool m_bCryptNotAvailable;
     enum {MIN_SESSION_KEY_LEN=5};
 
@@ -206,7 +206,7 @@ public:
 // by the database persisted session service.
 class CDefaultQueryClass
 {
-public:
+  public:
     LPCTSTR GetSessionRefDelete() throw()
     {
         return 	_T("DELETE FROM SessionReferences ")
@@ -328,7 +328,7 @@ public:
 // Contains the data for the session variable accessors
 class CSessionDataBase
 {
-public:
+  public:
     TCHAR m_szSessionID[MAX_SESSION_KEY_LEN];
     TCHAR m_VariableName[MAX_VARIABLE_NAME_LENGTH];
     BYTE m_VariableValue[MAX_VARIABLE_VALUE_LENGTH];
@@ -385,7 +385,7 @@ public:
 // of a session and the name of a variable.
 class CSessionDataSelector : public CSessionDataBase
 {
-public:
+  public:
     BEGIN_COLUMN_MAP(CSessionDataSelector)
     COLUMN_ENTRY(1, m_szSessionID)
     COLUMN_ENTRY(2, m_VariableName)
@@ -402,7 +402,7 @@ public:
 // of a session.
 class CAllSessionDataSelector : public CSessionDataBase
 {
-public:
+  public:
     BEGIN_COLUMN_MAP(CAllSessionDataSelector)
     COLUMN_ENTRY(1, m_szSessionID)
     COLUMN_ENTRY(2, m_VariableName)
@@ -417,7 +417,7 @@ public:
 // Use to update the value of a session variable
 class CSessionDataUpdator : public CSessionDataBase
 {
-public:
+  public:
     BEGIN_PARAM_MAP(CSessionDataUpdator)
     SET_PARAM_TYPE(DBPARAMIO_INPUT)
     COLUMN_ENTRY_LENGTH(1, m_VariableValue, m_VariableLen)
@@ -430,7 +430,7 @@ public:
 // session name and the name of the variable
 class CSessionDataDeletor
 {
-public:
+  public:
     CSessionDataDeletor()
     {
         m_szSessionID[0] = '\0';
@@ -468,7 +468,7 @@ public:
 
 class CSessionDataDeleteAll
 {
-public:
+  public:
     TCHAR m_szSessionID[MAX_SESSION_KEY_LEN];
     HRESULT Assign(LPCTSTR szSessionID) throw()
     {
@@ -493,7 +493,7 @@ public:
 // a given session ID.
 class CCountAccessor
 {
-public:
+  public:
     LONG m_nCount;
     TCHAR m_szSessionID[MAX_SESSION_KEY_LEN];
     CCountAccessor() throw()
@@ -529,7 +529,7 @@ public:
 // references table, given a session ID
 class CSessionRefUpdator
 {
-public:
+  public:
     TCHAR m_SessionID[MAX_SESSION_KEY_LEN];
     HRESULT Assign(LPCTSTR szSessionID) throw()
     {
@@ -549,7 +549,7 @@ public:
 
 class CSessionRefIsExpired
 {
-public:
+  public:
     TCHAR m_SessionID[MAX_SESSION_KEY_LEN];
     TCHAR m_SessionIDOut[MAX_SESSION_KEY_LEN];
     HRESULT Assign(LPCTSTR szSessionID) throw()
@@ -574,7 +574,7 @@ public:
 
 class CSetAllTimeouts
 {
-public:
+  public:
     unsigned __int64 m_dwNewTimeout;
     HRESULT Assign(unsigned __int64 dwNewValue)
     {
@@ -589,7 +589,7 @@ public:
 
 class CSessionRefUpdateTimeout
 {
-public:
+  public:
     TCHAR m_SessionID[MAX_SESSION_KEY_LEN];
     unsigned __int64 m_nNewTimeout;
     HRESULT Assign(LPCTSTR szSessionID, unsigned __int64 nNewTimeout) throw()
@@ -616,7 +616,7 @@ public:
 
 class CSessionRefSelector
 {
-public:
+  public:
     TCHAR m_SessionID[MAX_SESSION_KEY_LEN];
     int m_RefCount;
     HRESULT Assign(LPCTSTR szSessionID) throw()
@@ -641,7 +641,7 @@ public:
 
 class CSessionRefCount
 {
-public:
+  public:
     LONG m_nCount;
     BEGIN_COLUMN_MAP(CSessionRefCount)
     COLUMN_ENTRY(1, m_nCount)
@@ -652,7 +652,7 @@ public:
 // references table.
 class CSessionRefCreator
 {
-public:
+  public:
     TCHAR m_SessionID[MAX_SESSION_KEY_LEN];
     unsigned __int64 m_TimeoutMs;
     HRESULT Assign(LPCTSTR szSessionID, unsigned __int64 timeout) throw()
@@ -704,7 +704,7 @@ class CDBSession:
 
 {
     typedef CCommand<CAccessor<CAllSessionDataSelector> >  iterator_accessor;
-public:
+  public:
     typedef QueryClass DBQUERYCLASS_TYPE;
     BEGIN_COM_MAP(CDBSession)
     COM_INTERFACE_ENTRY(ISession)
@@ -1336,7 +1336,7 @@ public:
     }
 
 
-protected:
+  protected:
     TCHAR m_szSessionName[MAX_SESSION_KEY_LEN];
     unsigned __int64 m_dwTimeout;
     CComPtr<IServiceProvider> m_spServiceProvider;
@@ -1352,7 +1352,7 @@ class CDBSessionServiceImplT
     wchar_t m_szConnectionString[MAX_CONNECTION_STRING_LEN];
     CComPtr<IServiceProvider> m_spServiceProvider;
     typename TDBSession::DBQUERYCLASS_TYPE m_QueryObj;
-public:
+  public:
     typedef const wchar_t* SERVICEIMPL_INITPARAM_TYPE;
     CDBSessionServiceImplT() throw()
     {
@@ -1722,7 +1722,7 @@ template<>
 class CElementTraits<SESSIONPTRTYPE> :
     public CElementTraitsBase<SESSIONPTRTYPE>
 {
-public:
+  public:
     static ULONG Hash(INARGTYPE obj) throw()
     {
         return ((ULONG)(ULONG_PTR)obj.p);
@@ -1749,7 +1749,7 @@ class CMemSession :
     public ISession,
     public CComObjectRootEx<CComGlobalsThreadModel>
 {
-public:
+  public:
     BEGIN_COM_MAP(CMemSession)
     COM_INTERFACE_ENTRY(ISession)
     END_COM_MAP()
@@ -2009,7 +2009,7 @@ public:
         return S_OK;
     }
 
-protected:
+  protected:
     typedef CAtlMap<CStringA,
             CComVariant,
             CStringElementTraits<CStringA> > VarMapType;
@@ -2027,7 +2027,7 @@ protected:
 //
 class CMemSessionServiceImpl
 {
-public:
+  public:
     typedef void* SERVICEIMPL_INITPARAM_TYPE;
     CMemSessionServiceImpl() throw()
     {
@@ -2350,12 +2350,12 @@ class CSessionStateService :
     public IWorkerThreadClient,
     public CComObjectRootEx<CComGlobalsThreadModel>
 {
-protected:
+  protected:
     MonitorClass m_Monitor;
     HANDLE m_hTimer;
     CComPtr<IServiceProvider> m_spServiceProvider;
     TServiceImplClass m_SessionServiceImpl;
-public:
+  public:
     // Construction/Initialization
     CSessionStateService() throw() :
         m_hTimer(NULL)

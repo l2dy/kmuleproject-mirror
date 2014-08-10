@@ -19,7 +19,7 @@
 
 class CSchema : public CXSDElement
 {
-private:
+  private:
 
     typedef CAtlPtrMap<CStringW, CComplexType *, CStringRefElementTraits<CStringW> > COMPLEXTYPEMAP;
     typedef CAtlPtrMap<CStringW, CSimpleType *, CStringRefElementTraits<CStringW> > SIMPLETYPEMAP;
@@ -35,7 +35,7 @@ private:
     CStringW m_strName;
     CStringW m_strID;
 
-public:
+  public:
 
     CComplexType * AddComplexType(CComplexType * p);
     CSimpleType * AddSimpleType(CSimpleType * p);

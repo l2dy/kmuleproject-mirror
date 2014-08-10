@@ -23,7 +23,7 @@ class CPPgAbout : public CPropertyPage
 {
     DECLARE_DYNAMIC(CPPgAbout)
 
-public:
+  public:
     CPPgAbout();
     virtual ~CPPgAbout();
 
@@ -32,11 +32,11 @@ public:
 
     void Localize();
 
-private:
+  private:
     CHTRichEditCtrl* aboutInfo;
     CFont	m_AboutFont;
 
-protected:
+  protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     virtual BOOL OnInitDialog();
     virtual BOOL OnApply();

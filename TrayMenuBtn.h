@@ -5,7 +5,7 @@
 
 class CTrayMenuBtn : public CWnd
 {
-public:
+  public:
     CTrayMenuBtn();
     virtual ~CTrayMenuBtn();
 
@@ -20,7 +20,7 @@ public:
     CString m_strText;
     CFont	m_cfFont;
 
-protected:
+  protected:
     DECLARE_MESSAGE_MAP()
     afx_msg void OnMouseMove(UINT nFlags, CPoint point);
     afx_msg void OnLButtonUp(UINT nFlags, CPoint point);

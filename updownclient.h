@@ -78,7 +78,7 @@ class CUpDownClient : public CObject
     DECLARE_DYNAMIC(CUpDownClient)
 
     friend class CUploadQueue;
-public:
+  public:
     void PrintUploadStatus();
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -86,7 +86,7 @@ public:
     CUpDownClient(CClientReqSocket* sender = 0);
     CUpDownClient(CPartFile* in_reqfile, const uint16 in_port, const UINT in_userid, const UINT in_serverup, const uint16 in_serverport, const bool ed2kID = false);
 #ifdef IPV6_SUPPORT
-	CUpDownClient(CPartFile* in_reqfile, const uint16 in_port, const CAddress& IP, const UINT in_serverup, const uint16 in_serverport, const bool ed2kID = false); //>>> WiZaRd::IPv6 [Xanatos]
+    CUpDownClient(CPartFile* in_reqfile, const uint16 in_port, const CAddress& IP, const UINT in_serverup, const uint16 in_serverport, const bool ed2kID = false); //>>> WiZaRd::IPv6 [Xanatos]
 #endif
     virtual ~CUpDownClient();
 
@@ -125,22 +125,22 @@ public:
 #ifdef IPV6_SUPPORT
     CAddress		GetIP() const //>>> WiZaRd::IPv6 [Xanatos]
 #else
-	UINT			GetIP() const
+    UINT			GetIP() const
 #endif
     {
         return m_dwUserIP;
     }
 #ifdef IPV6_SUPPORT
-	void			SetIP(CAddress val);   //Only use this when you know the real IP or when your clearing it. //>>> WiZaRd::IPv6 [Xanatos]
+    void			SetIP(CAddress val);   //Only use this when you know the real IP or when your clearing it. //>>> WiZaRd::IPv6 [Xanatos]
 #else
     void			SetIP(const UINT val);   //Only use this when you know the real IP or when your clearing it.
 #endif
 
-	__inline bool	HasLowID() const			{return (m_nUserIDHybrid < 16777216);}
+    __inline bool	HasLowID() const			{return (m_nUserIDHybrid < 16777216);}
 #ifdef IPV6_SUPPORT
     CAddress		GetConnectIP() const		{return m_nConnectIP;} //>>> WiZaRd::IPv6 [Xanatos]
 #else
-	UINT			GetConnectIP() const		{return m_nConnectIP;}
+    UINT			GetConnectIP() const		{return m_nConnectIP;}
 #endif
     uint16			GetUserPort() const			{return m_nUserPort;}
     void			SetUserPort(const uint16 val)	{m_nUserPort = val;}
@@ -182,7 +182,7 @@ public:
     uint16			GetUDPPort() const			{return m_nUDPPort;}
     void			SetUDPPort(const uint16 nPort)	{m_nUDPPort = nPort;}
     uint8			GetUDPVersion() const		{return m_byUDPVer;}
-	bool			SupportsUDP() const			{return GetUDPVersion() != 0 && m_nUDPPort != 0;}
+    bool			SupportsUDP() const			{return GetUDPVersion() != 0 && m_nUDPPort != 0;}
     uint16			GetKadPort() const			{return m_nKadPort;}
     void			SetKadPort(const uint16 nPort)	{m_nKadPort = nPort;}
     uint8			GetExtendedRequestsVersion() const	{return m_byExtendedRequestsVer;}
@@ -315,7 +315,7 @@ public:
     {
         return RequestsCryptLayer() && m_fRequiresCryptLayer;
     }
-	bool			CanDoCallback() const;
+    bool			CanDoCallback() const;
     bool			SupportsDirectUDPCallback() const
     {
         return m_fDirectUDPCallback != 0 && HasValidHash() && GetKadPort() != 0;
@@ -337,9 +337,9 @@ public:
         m_fDirectUDPCallback = bVal ? 1 : 0;
     }
 #ifdef NAT_TRAVERSAL
-	uint8			GetConnectOptions(const bool bEncryption, const bool bCallback, const bool bNATTraversal) const; //>>> WiZaRd::NatTraversal [Xanatos]
+    uint8			GetConnectOptions(const bool bEncryption, const bool bCallback, const bool bNATTraversal) const; //>>> WiZaRd::NatTraversal [Xanatos]
 #else
-	uint8			GetConnectOptions(const bool bEncryption, const bool bCallback) const;
+    uint8			GetConnectOptions(const bool bEncryption, const bool bCallback) const;
 #endif
     void			SetConnectOptions(const uint8 byOptions, const bool bEncryption, const bool bCallback); // shortcut, sets crypt, callback etc based from the tagvalue we receive
     bool			IsObfuscatedConnectionEstablished() const;
@@ -777,7 +777,7 @@ public:
     virtual bool ProcessHttpDownResponse(const CStringAArray& astrHeaders);
     virtual bool ProcessHttpDownResponseBody(const BYTE* pucData, UINT uSize);
 
-protected:
+  protected:
     // base
     void	Init();
     bool	ProcessHelloTypePacket(CSafeMemFile* data);
@@ -793,8 +793,8 @@ protected:
     CAddress	m_dwUserIP;			// holds 0 (real IP not yet available) or the real IP (after we had a connection)
 //<<< WiZaRd::IPv6 [Xanatos]
 #else
-	UINT	m_nConnectIP;		// holds the supposed IP or (after we had a connection) the real IP
-	UINT	m_dwUserIP;			// holds 0 (real IP not yet available) or the real IP (after we had a connection)
+    UINT	m_nConnectIP;		// holds the supposed IP or (after we had a connection) the real IP
+    UINT	m_dwUserIP;			// holds 0 (real IP not yet available) or the real IP (after we had a connection)
 #endif
     UINT	m_dwServerIP;
     UINT	m_nUserIDHybrid;
@@ -829,7 +829,7 @@ protected:
 #ifdef IPV6_SUPPORT
     CAddress	m_dwLastSignatureIP; //>>> WiZaRd::IPv6 [Xanatos]
 #else
-	UINT	m_dwLastSignatureIP;
+    UINT	m_dwLastSignatureIP;
 #endif
     CString m_strClientSoftware;
     CString m_strModVersion;
@@ -991,20 +991,20 @@ protected:
     UINT m_fHashsetRequestingAICH : 1, // 31 bits left
          m_fAICHHashRequested : 1, //>>> Security Check
          m_fSourceExchangeRequested : 1, //>>> Security Check
-		 m_fSupportsModProt	  : 1, //>>> WiZaRd::ModProt
+         m_fSupportsModProt	  : 1, //>>> WiZaRd::ModProt
 #ifdef NAT_TRAVERSAL
-		 m_fSupportsNatTraversal : 1, //>>> WiZaRd::NatTraversal [Xanatos]
+         m_fSupportsNatTraversal : 1, //>>> WiZaRd::NatTraversal [Xanatos]
 #endif
 #ifdef IPV6_SUPPORT
-		 m_fSupportsIPv6 : 1, //>>> WiZaRd::IPv6 [Xanatos]
+         m_fSupportsIPv6 : 1, //>>> WiZaRd::IPv6 [Xanatos]
 #endif
          m_fSupportsExtendedXS : 1; //>>> WiZaRd::ExtendedXS [Xanatos]
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-public:
+  public:
     CTypedPtrList<CPtrList, Pending_Block_Struct*>	 m_PendingBlocks_list;
     CTypedPtrList<CPtrList, Requested_Block_Struct*> m_DownloadBlocks_list;
 
-protected:
+  protected:
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     bool    m_bSourceExchangeSwapped; // ZZ:DownloadManager
     DWORD   lastSwapForSourceExchangeTick; // ZZ:DownloadManaager
@@ -1020,13 +1020,13 @@ protected:
         lastSwapForSourceExchangeTick = ::GetTickCount();    // ZZ:DownloadManager
     }
 
-public:
+  public:
     bool	HasSmallFileUploadSlot() const; //>>> WiZaRd::Small File Slot
 //>>> WiZaRd::ICS [enkeyDEV]
-private:
+  private:
     uint8	m_incompletepartVer;
     uint8*	m_abyIncPartStatus;
-public:
+  public:
     void	ProcessFileIncStatus(CSafeMemFile* data, const UINT size, const bool readHash = false);
     uint8	GetIncompletePartVersion() const
     {
@@ -1036,19 +1036,19 @@ public:
 //<<< WiZaRd::ICS [enkeyDEV]
 #ifdef ANTI_HIDEOS
 //>>> WiZaRd::AntiHideOS [netfinity]
-public:
+  public:
     uint8*	m_abySeenPartStatus;
 //<<< WiZaRd::AntiHideOS [netfinity]
 #endif
 //>>> WiZaRd::ClientAnalyzer
-private:
+  private:
     CAntiLeechData* pAntiLeechData; //>>> WiZaRd::ClientAnalyzer
     UINT	m_uiRealVersion;
 //>>> WiZaRd::More GPLEvilDoers
     bool	m_bGPLEvilDoerNick;
     bool	m_bGPLEvilDoerMod;
 //<<< WiZaRd::More GPLEvilDoers
-public:
+  public:
     void	SetAntiLeechData(CAntiLeechData* data)
     {
         pAntiLeechData = data;   //>>> WiZaRd::ClientAnalyzer
@@ -1079,28 +1079,28 @@ public:
 
 //>>> WiZaRd::BadClientFlag
 //"bad" doesn't mean "leecher" here but "bad for the network"
-private:
+  private:
     bool	m_bIsBadClient;
-public:
+  public:
     bool	IsBadClient() const
     {
         return m_bIsBadClient;
     }
 //<<< WiZaRd::BadClientFlag
-public:
+  public:
     bool	DownloadingAndUploadingFilesAreEqual(CKnownFile* reqfile);
 //<<< WiZaRd::ClientAnalyzer
 //>>> WiZaRd::PowerShare
-public:
+  public:
     bool	IsPowerShared() const;
 //<<< WiZaRd::PowerShare
 //>>> WiZaRd::Intelligent SOTN
-public:
+  public:
     uint8*	m_abyUpPartStatusHidden;
     void	GetUploadingAndUploadedPart(CArray<uint16>& arr, CArray<uint16>& arrHidden);
 //<<< WiZaRd::Intelligent SOTN
 //>>> WiZaRd::Endgame Improvement
-public:
+  public:
     UINT	GetPendingBlockCount() const
     {
         return (UINT)m_PendingBlocks_list.GetCount();
@@ -1113,16 +1113,16 @@ public:
     UINT	GetDownTime() const;
 //<<< WiZaRd::Endgame Improvement
 //>>> WiZaRd::Detect UDP problem clients
-public:
+  public:
     bool	IsUDPDisabled() const
     {
         return m_uiFailedUDPPacketsInARow > 3;
     }
-private:
+  private:
     uint8	m_uiFailedUDPPacketsInARow;
 //<<< WiZaRd::Detect UDP problem clients
 //>>> WiZaRd::ZZUL Upload [ZZ]
-public:
+  public:
     UINT		GetSessionPayloadUp() const;
     UINT		GetQueueSessionUp() const;
     void		ResetQueueSessionUp();
@@ -1135,7 +1135,7 @@ public:
     LPCTSTR		GetScheduledRemovalDebugReason() const;
     CString     GetScheduledRemovalDisplayReason() const;
     bool		GetScheduledRemovalLimboComplete() const;
-private:
+  private:
     UINT		m_nCurSessionPayloadUp;
     UINT        m_nCurQueueSessionUp;
     UINT        m_curSessionAmountNumber;
@@ -1146,18 +1146,18 @@ private:
     DWORD		m_bScheduledForRemovalAtTick;
 //<<< WiZaRd::ZZUL Upload [ZZ]
 //>>> WiZaRd::ModIconMapper
-private:
+  private:
     int			m_iModIconIndex;
-public:
+  public:
     int			GetModIconIndex() const;
     void		CheckModIconIndex();
 //<<< WiZaRd::ModIconMapper
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-private:
+  private:
     int			m_nProtocolRevision;
     bool		ProcessDownloadFileStatus(const bool bUDPPacket, bool bMergeIfPossible = true);
     bool		ProcessUploadFileStatus(const bool bUDPPacket, CKnownFile* file, bool bMergeIfPossible = true);
-public:
+  public:
     CKnownFile*	GetUploadReqFile() const;
     int			GetSCTVersion() const;
     bool		SupportsSCT() const;
@@ -1166,55 +1166,55 @@ public:
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 //>>> WiZaRd::ModProt
 //>>> LowID UDP Ping Support
-private:
+  private:
     bool	m_bSupportsLowIDUDPPing;
-public:
+  public:
     bool	SupportsLowIDUDPPing() const
     {
         return m_bSupportsLowIDUDPPing;
     }
 //<<< LowID UDP Ping Support
-public:
+  public:
     bool	SupportsModProt() const	{return m_fSupportsModProt;}
     void	SendModInfoPacket() const;
     void	ProcessModInfoPacket(const uchar* pachPacket, const UINT nSize);
 //<<< WiZaRd::ModProt
 #ifdef NAT_TRAVERSAL
 //>>> WiZaRd::NatTraversal [Xanatos]
-public:
+  public:
     bool	SupportsNatTraversal() const		{return m_fSupportsNatTraversal;}
     void	SetNatTraversalSupport(bool bVal)	{m_fSupportsNatTraversal = bVal ? 1 : 0;}
 //<<< WiZaRd::NatTraversal [Xanatos]
 #endif
 #ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
-public:    
+  public:
     bool	SupportsIPv6() const							{return m_fSupportsIPv6;}
     const CAddress&	GetIPv4() const							{return m_UserIPv4;}
     const CAddress&	GetIPv6() const							{return m_UserIPv6;}
     bool	IsIPv6Open() const								{return m_bOpenIPv6;}
     void	UpdateIP(const CAddress& val);
     void	SetIPv6(const CAddress& val);
-protected:
+  protected:
     CAddress m_UserIPv6;
     bool	 m_bOpenIPv6;
     CAddress m_UserIPv4;
 //<<< WiZaRd::IPv6 [Xanatos]
 #endif
 //>>> WiZaRd::ExtendedXS [Xanatos]
-public:
+  public:
     bool	SupportsExtendedSourceExchange() const	{return m_fSupportsExtendedXS;}
     void	WriteExtendedSourceExchangeData(CSafeMemFile& data) const;
 //<<< WiZaRd::ExtendedXS [Xanatos]
 //>>> WiZaRd::Unsolicited PartStatus [Netfinity]
-private:
+  private:
     uint8	m_byFileRequestState;
 //<<< WiZaRd::Unsolicited PartStatus [Netfinity]
 //>>> WiZaRd::QR History
-private:
-	int		m_iQueueRankDifference;
-public:
-	int		GetQRDifference() const				{return m_iQueueRankDifference;}
+  private:
+    int		m_iQueueRankDifference;
+  public:
+    int		GetQRDifference() const				{return m_iQueueRankDifference;}
 //<<< WiZaRd::QR History
 };
 //#pragma pack()

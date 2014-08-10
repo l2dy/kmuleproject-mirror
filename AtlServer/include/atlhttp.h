@@ -125,7 +125,7 @@ struct ATL_NAVIGATE_DATA
 
 class CAtlNavigateData : public ATL_NAVIGATE_DATA
 {
-public:
+  public:
     CAtlNavigateData() throw(); // public construction
     CAtlNavigateData(const CAtlNavigateData &rhs);
     CAtlNavigateData(const ATL_NAVIGATE_DATA &rhs);
@@ -160,7 +160,7 @@ template <class TSocketClass>
 class CAtlHttpClientT :
     private TSocketClass
 {
-public:
+  public:
     CAtlHttpClientT() throw();
     virtual ~CAtlHttpClientT()
     {
@@ -269,7 +269,7 @@ public:
     {
         m_bSilentLogonOk = bSet;
     }
-protected:
+  protected:
     DWORD WriteWithNoData(LPCSTR pRequest, DWORD dwRequestLen);
     DWORD WriteWithCallback(LPCSTR pRequest, DWORD dwRequestLen);
     DWORD WriteWithChunks(LPCSTR pRequest, DWORD dwRequestLen);
@@ -380,7 +380,7 @@ typedef HRESULT(IAuthInfo::*PFNAUTHFUNC)(LPTSTR szPwd, DWORD *pdwSize);
 // objects
 class CAtlBaseAuthObject
 {
-public:
+  public:
     CAtlBaseAuthObject();
     virtual bool Authenticate(LPCTSTR szAuthTypes, bool bProxy) = 0;
     virtual void Init(CAtlHttpClient *pSocket, IAuthInfo *pAuthInfo) = 0;
@@ -395,7 +395,7 @@ extern __declspec(selectany)const TCHAR * const g_pszProxyAuthenticate = _T("pro
 class CNTLMAuthObject :
     public CAtlBaseAuthObject
 {
-public:
+  public:
     virtual ~CNTLMAuthObject() throw();
     CNTLMAuthObject() throw();
     CNTLMAuthObject(IAuthInfo *pAuthInfo) throw();
@@ -408,7 +408,7 @@ public:
 
     // Called by the CAtlHttpClient class to initialize this authentication object.
     virtual bool Authenticate(LPCTSTR szAuthTypes, bool bProxy) throw();
-protected:
+  protected:
     bool AcquireCredHandle() throw();
     // This function creates an NTML Authorization header
     // and sends it to the HTTP server.
@@ -434,7 +434,7 @@ protected:
 class CBasicAuthObject :
     public CAtlBaseAuthObject
 {
-public:
+  public:
     CBasicAuthObject() throw();
     CBasicAuthObject(IAuthInfo *pAuthInfo) throw();
     void SetAuthInfo(IAuthInfo *pAuthInfo) throw();
@@ -446,7 +446,7 @@ public:
 
     // Called by the CAtlHttpClient class to initialize this authentication object.
     virtual void Init(CAtlHttpClient *pSocket, IAuthInfo *pAuthInfo=NULL) throw();
-protected:
+  protected:
     bool DoBasicAuthenticate() throw();
     bool CrackRealm(LPCTSTR szHeader) throw();
 
@@ -519,7 +519,7 @@ inline bool _AtlGetAuthInfoHelper(IAuthInfo *pObj, PFNAUTHFUNC pFunc, CAuthInfoB
 //
 class CSecAuthIdentity : public SEC_WINNT_AUTH_IDENTITY_EX
 {
-public:
+  public:
     CSecAuthIdentity() throw()
     {
         Version = SEC_WINNT_AUTH_IDENTITY_VERSION;
@@ -560,7 +560,7 @@ public:
         return true;
     }
 
-protected:
+  protected:
     CAuthInfoBuffType buffUserName;
     CAuthInfoBuffType buffPassword;
     CAuthInfoBuffType buffDomain;
@@ -568,7 +568,7 @@ protected:
 
 class CSecBuffer : public SecBuffer
 {
-public:
+  public:
     CSecBuffer() throw()
     {
         cbBuffer = 0;
@@ -631,14 +631,14 @@ public:
         return (SecBuffer*)this;
     }
 
-protected:
+  protected:
     unsigned long m_cbAlloc;
 
 }; // CSecBuffer
 
 class CSecBufferDesc : public SecBufferDesc
 {
-public:
+  public:
     CSecBufferDesc() throw()
     {
         ulVersion = SECBUFFER_VERSION;

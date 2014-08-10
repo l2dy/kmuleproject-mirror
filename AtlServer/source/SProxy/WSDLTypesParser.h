@@ -13,11 +13,11 @@ class CWSDLType;
 
 class CWSDLTypesParser : public CParserBase
 {
-private:
+  private:
 
     CWSDLType * m_pType;
 
-public:
+  public:
 
     inline CWSDLTypesParser()
     {

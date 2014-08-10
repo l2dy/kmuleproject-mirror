@@ -128,7 +128,7 @@ struct CAntiLeechStruct
 
 class CAntiLeechData
 {
-public:
+  public:
     CAntiLeechData(CFileDataIO* file);
     CAntiLeechData(const uchar* key);
 
@@ -299,7 +299,7 @@ public:
     }
 //<<< CTempCAList
 
-private:
+  private:
     CUpDownClient* m_pParent;
     UINT	m_uiReaskTime;
     UINT	m_uiLastXS;
@@ -314,7 +314,7 @@ private:
 
 class CTempCAList
 {
-public:
+  public:
     CTempCAList();
     ~CTempCAList();
 
@@ -322,7 +322,7 @@ public:
     void	ResetParent(CUpDownClient* client);
     void	Verify(CUpDownClient* client);
 
-private:
+  private:
     CMap<CCKey, const CCKey&, CList<CAntiLeechData*>*, CList<CAntiLeechData*>* > m_DataList;
 };
 
@@ -331,7 +331,7 @@ private:
 
 class CAntiLeechDataList
 {
-public:
+  public:
     CAntiLeechDataList();
     ~CAntiLeechDataList();
 
@@ -372,11 +372,11 @@ public:
         UINT	dwAdded;
     };
 //<<< Store corrupt part senders
-protected:
+  protected:
     bool	LoadList(const CString& path = L"");
     void	SaveList();
 
-private:
+  private:
     CTempCAList		m_TempList; //>>> CTempCAList
     CMap<CCKey, const CCKey&, corruptPartSenderInfo*, corruptPartSenderInfo*>	m_mapBadClients; //>>> Store corrupt part senders
     CMap<CCKey, const CCKey&, CAntiLeechData*, CAntiLeechData*> m_mapClients;

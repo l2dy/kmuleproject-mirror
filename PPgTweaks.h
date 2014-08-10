@@ -5,7 +5,7 @@ class CPPgTweaks : public CPropertyPage
 {
     DECLARE_DYNAMIC(CPPgTweaks)
 
-public:
+  public:
     CPPgTweaks();
     virtual ~CPPgTweaks();
 
@@ -14,7 +14,7 @@ public:
 
     void Localize(void);
 
-protected:
+  protected:
     UINT m_iFileBufferSize;
     UINT m_iQueueSize;
     int m_iMaxConnPerFive;

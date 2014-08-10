@@ -25,7 +25,7 @@ enum E_DebugFSAtion
 
 class CEMFileSize
 {
-public:
+  public:
     CEMFileSize()
     {
         m_nSize = (uint64)(-1);
@@ -354,7 +354,7 @@ public:
         return CEMFileSize(k1, k2.m_nSize, DFSA_DIV);
     }
 
-private:
+  private:
     CEMFileSize(uint64 nSize1, uint64 nSize2, E_DebugFSAtion edfsAction)
     {
         if (edfsAction == DFSA_ADD)

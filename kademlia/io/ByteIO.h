@@ -35,7 +35,7 @@ namespace Kademlia
 {
 class CByteIO : public CDataIO
 {
-public:
+  public:
     CByteIO(byte* pbyBuffer, UINT uAvailable);
     CByteIO(const byte* pbyBuffer, UINT uAvailable);
 
@@ -48,7 +48,7 @@ public:
         return m_uUsed;
     }
     void Reset();
-private:
+  private:
     bool m_bReadOnly;
     byte* m_pbyBuffer;
     UINT m_uAvailable;

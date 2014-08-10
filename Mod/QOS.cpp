@@ -62,7 +62,7 @@ CQOS::~CQOS()
     // just to be sure
     const DWORD error = RemoveSocket_internal(NULL);
 #ifndef _DEBUG
-	(void)error;
+    (void)error;
 #else
     if (m_qosSockets.IsEmpty())
         ASSERT(error == 0 || error == ERROR_NOT_FOUND);
@@ -88,7 +88,7 @@ BOOL CQOS::Reinitialize()
     {
         const DWORD error = RemoveSocket_internal(NULL);
 #ifndef _DEBUG
-		(void)error;
+        (void)error;
 #else
         if (m_qosSockets.IsEmpty())
             ASSERT(error == 0 || error == ERROR_NOT_FOUND);

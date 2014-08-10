@@ -617,7 +617,7 @@ BOOL CemuleApp::InitInstance()
     CWinApp::InitInstance();
 
     memset(&m_wsaData, 0, sizeof(WSADATA));
-    if(RunningWine() || !InitWinsock2(&m_wsaData)) //>>> WiZaRd::Wine Compatibility
+    if (RunningWine() || !InitWinsock2(&m_wsaData)) //>>> WiZaRd::Wine Compatibility
     {
         memset(&m_wsaData, 0, sizeof(WSADATA));
         if (!AfxSocketInit(&m_wsaData))
@@ -625,7 +625,7 @@ BOOL CemuleApp::InitInstance()
             AfxMessageBox(GetResString(IDS_SOCKETS_INIT_FAILED));
             return FALSE;
         }
-    }    
+    }
 #if _MFC_VER==0x0700 || _MFC_VER==0x0710 || _MFC_VER==0x0800 || _MFC_VER==0x0900 || _MFC_VER==0x0A00
     atexit(__AfxSocketTerm);
 #else
@@ -749,7 +749,7 @@ BOOL CemuleApp::InitInstance()
     }
     theApp.QueueLogLine(LOG_INFO, L"Starting " + GetClientVersionString());
     theApp.QueueLogLine(LOG_WARNING, L"Based upon " + GetClientVersionStringBase());
-	theApp.QueueLogLine(LOG_INFO, L"Using WinSock v%u.%u", LOBYTE(m_wsaData.wVersion), HIBYTE(m_wsaData.wVersion));
+    theApp.QueueLogLine(LOG_INFO, L"Using WinSock v%u.%u", LOBYTE(m_wsaData.wVersion), HIBYTE(m_wsaData.wVersion));
 
     SetConsoleCtrlHandler(ConsoleCtrlHandler, TRUE);
 
@@ -807,10 +807,10 @@ BOOL CemuleApp::InitInstance()
         if (timeGetDevCaps(&tc, sizeof(TIMECAPS)) == TIMERR_NOERROR)
         {
             m_wTimerRes = min(max(tc.wPeriodMin, 1), tc.wPeriodMax);
-            if(m_wTimerRes > 0)
+            if (m_wTimerRes > 0)
             {
                 MMRESULT mmResult = timeBeginPeriod(m_wTimerRes);
-                if(thePrefs.GetVerbose())
+                if (thePrefs.GetVerbose())
                 {
                     if (mmResult == TIMERR_NOERROR)
                         theApp.QueueDebugLogLineEx(LOG_SUCCESS, L"Succeeded to set timer resolution to %ims.", m_wTimerRes);
@@ -821,7 +821,7 @@ BOOL CemuleApp::InitInstance()
                     }
                 }
             }
-            else if(thePrefs.GetVerbose())
+            else if (thePrefs.GetVerbose())
                 theApp.QueueDebugLogLineEx(LOG_WARNING, L"m_wTimerRes == 0. Not setting timer resolution.");
         }
     }
@@ -1509,12 +1509,12 @@ UINT CemuleApp::GetID()
 {
     UINT ID = 0;
     if (Kademlia::CKademlia::IsConnected())
-	{
-		if(Kademlia::CKademlia::IsFirewalled())
-			ID = 1;
-		else
-			ID = ntohl(Kademlia::CKademlia::GetIPAddress());
-	}
+    {
+        if (Kademlia::CKademlia::IsFirewalled())
+            ID = 1;
+        else
+            ID = ntohl(Kademlia::CKademlia::GetIPAddress());
+    }
     return ID;
 }
 
@@ -2541,78 +2541,78 @@ void	CemuleApp::UpdateIPv6()
 {
     ULONG outBufLen = 0;
     DWORD dwRetVal = GetAdaptersAddresses(AF_INET6/*AF_UNSPEC*/, GAA_FLAG_INCLUDE_PREFIX, NULL, NULL, &outBufLen);
-	if(dwRetVal == ERROR_SUCCESS)
-	{
-		CAddress IPv6;
-		CList<CAddress> possibleAddresses;
-		PIP_ADAPTER_ADDRESSES pAddresses = (IP_ADAPTER_ADDRESSES*)malloc(outBufLen);
-		if (GetAdaptersAddresses(AF_INET6/*AF_UNSPEC*/, GAA_FLAG_INCLUDE_PREFIX | GAA_FLAG_SKIP_MULTICAST | GAA_FLAG_SKIP_DNS_SERVER | GAA_FLAG_INCLUDE_TUNNEL_BINDINGORDER, NULL, pAddresses, &outBufLen) == NO_ERROR)
-		{
-			for (PIP_ADAPTER_ADDRESSES pCurrAddresses = pAddresses; pCurrAddresses; pCurrAddresses = pCurrAddresses->Next)
-			{
-				for (PIP_ADAPTER_UNICAST_ADDRESS pUnicast = pCurrAddresses->FirstUnicastAddress; pUnicast != NULL; pUnicast = pUnicast->Next)
-				{
-					if (pUnicast->Address.lpSockaddr->sa_family != AF_INET6)
-						continue;
+    if (dwRetVal == ERROR_SUCCESS)
+    {
+        CAddress IPv6;
+        CList<CAddress> possibleAddresses;
+        PIP_ADAPTER_ADDRESSES pAddresses = (IP_ADAPTER_ADDRESSES*)malloc(outBufLen);
+        if (GetAdaptersAddresses(AF_INET6/*AF_UNSPEC*/, GAA_FLAG_INCLUDE_PREFIX | GAA_FLAG_SKIP_MULTICAST | GAA_FLAG_SKIP_DNS_SERVER | GAA_FLAG_INCLUDE_TUNNEL_BINDINGORDER, NULL, pAddresses, &outBufLen) == NO_ERROR)
+        {
+            for (PIP_ADAPTER_ADDRESSES pCurrAddresses = pAddresses; pCurrAddresses; pCurrAddresses = pCurrAddresses->Next)
+            {
+                for (PIP_ADAPTER_UNICAST_ADDRESS pUnicast = pCurrAddresses->FirstUnicastAddress; pUnicast != NULL; pUnicast = pUnicast->Next)
+                {
+                    if (pUnicast->Address.lpSockaddr->sa_family != AF_INET6)
+                        continue;
 
-					sockaddr_in6 *sa_in6 = (sockaddr_in6 *)pUnicast->Address.lpSockaddr;
-					if (sa_in6->sin6_addr.u.Byte[0] == 0x00)
-						continue; // IP is local loopback address
-					if (sa_in6->sin6_addr.u.Byte[0] == 0xFE && sa_in6->sin6_addr.u.Byte[1] == 0x80)
-						continue; // IP that is constructed from MAC address, and is only available to machines on the same switch.
-					if (sa_in6->sin6_addr.u.Byte[11] == 0xFF && sa_in6->sin6_addr.u.Byte[12] == 0xFE)
-						continue; // IP that is constructed from MAC address and ISP provided subnet prefix. This could be seen as your static IP.
-					if(sa_in6->sin6_addr.u.Byte[0] == 0x20 && sa_in6->sin6_addr.u.Byte[1] == 0x01 && sa_in6->sin6_addr.u.Byte[2] == 0x00 && sa_in6->sin6_addr.u.Byte[3] == 0x00) 
-						continue; // is a Teredo address http://en.wikipedia.org/wiki/Teredo_tunneling
+                    sockaddr_in6 *sa_in6 = (sockaddr_in6 *)pUnicast->Address.lpSockaddr;
+                    if (sa_in6->sin6_addr.u.Byte[0] == 0x00)
+                        continue; // IP is local loopback address
+                    if (sa_in6->sin6_addr.u.Byte[0] == 0xFE && sa_in6->sin6_addr.u.Byte[1] == 0x80)
+                        continue; // IP that is constructed from MAC address, and is only available to machines on the same switch.
+                    if (sa_in6->sin6_addr.u.Byte[11] == 0xFF && sa_in6->sin6_addr.u.Byte[12] == 0xFE)
+                        continue; // IP that is constructed from MAC address and ISP provided subnet prefix. This could be seen as your static IP.
+                    if (sa_in6->sin6_addr.u.Byte[0] == 0x20 && sa_in6->sin6_addr.u.Byte[1] == 0x01 && sa_in6->sin6_addr.u.Byte[2] == 0x00 && sa_in6->sin6_addr.u.Byte[3] == 0x00)
+                        continue; // is a Teredo address http://en.wikipedia.org/wiki/Teredo_tunneling
 
-					// IP that is constructed from ISP provided subnet prefix and some random digits.
-					// This IP changes every time you power on your PC, and is the IP newer versions of Windows uses as the preferred source IP.					
-					IPv6.FromSA(pUnicast->Address.lpSockaddr, pUnicast->Address.iSockaddrLength);
-					possibleAddresses.AddTail(IPv6);
-					//break;
-				}
-			}
-		}
-		if(possibleAddresses.IsEmpty())
-			; // nothing to do
-		else
-		{
-			if(possibleAddresses.GetCount() == 1)
-				IPv6 = possibleAddresses.GetHead();
-			// try to determine the most likely IPv6 by checking against our public IPv4
-			else if(theApp.GetPublicIP() != 0)
-			{
-				IPv6 = CAddress((UINT)0);
-				for(POSITION pos = possibleAddresses.GetHeadPosition(); pos;)
-				{					
-					CAddress tmpIPv6 = possibleAddresses.GetNext(pos);
-					if(tmpIPv6.ToIPv4() == theApp.GetPublicIP())
-						IPv6 = tmpIPv6;
-				}
-			}
-			if (IPv6 != theApp.GetPublicIPv6())
-			{
-				theApp.SetPublicIPv6(IPv6);
-				theApp.QueueLogLineEx(LOG_SUCCESS, L"Found Public IPv6: %s", ipstr(IPv6));
-			}
-		}
-		if (pAddresses)
-			free(pAddresses);
-	}
-	/*else
-	{
-		CString strError = L"No addresses were found for the requested parameters";
-		if (dwRetVal != ERROR_NO_DATA)
-		{
-			LPVOID lpMsgBuf = NULL;
-			if (FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, 
-				NULL, dwRetVal, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language				
-				(LPTSTR)&lpMsgBuf, 0, NULL))
-				strError.Format(L"%s", lpMsgBuf);
-			LocalFree(lpMsgBuf);
-		}
-		theApp.QueueDebugLogLineEx(LOG_ERROR, L"GetAdaptersAddresses failed: %s", strError);
-	}*/
+                    // IP that is constructed from ISP provided subnet prefix and some random digits.
+                    // This IP changes every time you power on your PC, and is the IP newer versions of Windows uses as the preferred source IP.
+                    IPv6.FromSA(pUnicast->Address.lpSockaddr, pUnicast->Address.iSockaddrLength);
+                    possibleAddresses.AddTail(IPv6);
+                    //break;
+                }
+            }
+        }
+        if (possibleAddresses.IsEmpty())
+            ; // nothing to do
+        else
+        {
+            if (possibleAddresses.GetCount() == 1)
+                IPv6 = possibleAddresses.GetHead();
+            // try to determine the most likely IPv6 by checking against our public IPv4
+            else if (theApp.GetPublicIP() != 0)
+            {
+                IPv6 = CAddress((UINT)0);
+                for (POSITION pos = possibleAddresses.GetHeadPosition(); pos;)
+                {
+                    CAddress tmpIPv6 = possibleAddresses.GetNext(pos);
+                    if (tmpIPv6.ToIPv4() == theApp.GetPublicIP())
+                        IPv6 = tmpIPv6;
+                }
+            }
+            if (IPv6 != theApp.GetPublicIPv6())
+            {
+                theApp.SetPublicIPv6(IPv6);
+                theApp.QueueLogLineEx(LOG_SUCCESS, L"Found Public IPv6: %s", ipstr(IPv6));
+            }
+        }
+        if (pAddresses)
+            free(pAddresses);
+    }
+    /*else
+    {
+    	CString strError = L"No addresses were found for the requested parameters";
+    	if (dwRetVal != ERROR_NO_DATA)
+    	{
+    		LPVOID lpMsgBuf = NULL;
+    		if (FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+    			NULL, dwRetVal, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
+    			(LPTSTR)&lpMsgBuf, 0, NULL))
+    			strError.Format(L"%s", lpMsgBuf);
+    		LocalFree(lpMsgBuf);
+    	}
+    	theApp.QueueDebugLogLineEx(LOG_ERROR, L"GetAdaptersAddresses failed: %s", strError);
+    }*/
 }
 #endif
 //<<< WiZaRd::IPv6 [Xanatos]

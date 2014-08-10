@@ -67,7 +67,7 @@ bool CompareIP(const CUpDownClient* client, const UINT dwIP)
 //<<< WiZaRd::IPv6 [Xanatos]
 #else
     if (client->GetIP() != 0)
-    	return client->GetIP() == dwIP;
+        return client->GetIP() == dwIP;
     return client->GetConnectIP() == dwIP;
 #endif
 }
@@ -145,7 +145,7 @@ void CClientList::GetStatistics(UINT &ruTotalClients, int stats[NUM_CLIENTLIST_S
                 stats[11]++;
                 break;
 
-                // all remaining 'eMule Compatible' clients
+            // all remaining 'eMule Compatible' clients
 //>>> WiZaRd::ClientAnalyer
 // Spike2 - Enhanced Client Recognition - START
             case SO_HYDRANODE:
@@ -353,7 +353,7 @@ CUpDownClient* CClientList::FindClientByUserHash(const uchar* clienthash, const 
 #ifdef IPV6_SUPPORT
             if ((dwIP.IsNull() || CompareIP(cur_client, dwIP)) && (nTCPPort == 0 || nTCPPort == cur_client->GetUserPort())) //>>> WiZaRd::IPv6 [Xanatos]
 #else
-			if ((dwIP == 0 || CompareIP(cur_client, dwIP)) && (nTCPPort == 0 || nTCPPort == cur_client->GetUserPort()))
+            if ((dwIP == 0 || CompareIP(cur_client, dwIP)) && (nTCPPort == 0 || nTCPPort == cur_client->GetUserPort()))
 #endif
                 return cur_client;
             else
@@ -472,10 +472,10 @@ void CClientList::AddTrackClient(CUpDownClient* toadd)
     if (toadd->GetIP().GetType() != CAddress::IPv4) // IPv6-TODO: Add IPv6 tracking
         return;
 
-    UINT dwIP = _ntohl(toadd->GetIP().ToIPv4());    
+    UINT dwIP = _ntohl(toadd->GetIP().ToIPv4());
 //<<< WiZaRd::IPv6 [Xanatos]
 #else
-	UINT dwIP = toadd->GetIP();
+    UINT dwIP = toadd->GetIP();
 #endif
     CDeletedClient* pResult = 0;
     if (m_trackedClientsList.Lookup(dwIP, pResult))
@@ -533,10 +533,10 @@ void CClientList::TrackBadRequest(const CUpDownClient* upcClient, int nIncreaseC
     if (upcClient->GetIP().GetType() != CAddress::IPv4) // IPv6-TODO: Add IPv6 tracking
         return;
 
-    UINT dwIP = _ntohl(upcClient->GetIP().ToIPv4());    
+    UINT dwIP = _ntohl(upcClient->GetIP().ToIPv4());
 //<<< WiZaRd::IPv6 [Xanatos]
 #else
-	UINT dwIP = upcClient->GetIP();
+    UINT dwIP = upcClient->GetIP();
 #endif
     if (dwIP == 0)
     {
@@ -564,10 +564,10 @@ UINT CClientList::GetBadRequests(const CUpDownClient* upcClient) const
     if (upcClient->GetIP().GetType() != CAddress::IPv4) // IPv6-TODO: Add IPv6 tracking
         return 0;
 
-    UINT dwIP = _ntohl(upcClient->GetIP().ToIPv4());    
+    UINT dwIP = _ntohl(upcClient->GetIP().ToIPv4());
 //<<< WiZaRd::IPv6 [Xanatos]
 #else
-	UINT dwIP = upcClient->GetIP();
+    UINT dwIP = upcClient->GetIP();
 #endif
     if (dwIP == 0)
     {
@@ -920,7 +920,7 @@ bool CClientList::RequestTCP(Kademlia::CContact* contact, uint8 byConnectOptions
 #endif
     }
 #if 1
-	pNewClient->SetConnectOptions(byConnectOptions, true, false); // WiZaRd: need to set encrypt options anyways?
+    pNewClient->SetConnectOptions(byConnectOptions, true, false); // WiZaRd: need to set encrypt options anyways?
 #endif
     m_KadList.AddTail(pNewClient);
     //This method checks if this is a dup already.
@@ -981,25 +981,25 @@ bool CClientList::IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128*
         return false; // don't connect ourself
 
 //>>> WiZaRd::FiX?
-	if(buddyID == NULL)
-	{
-		theApp.QueueDebugLogLineEx(LOG_ERROR, L"Received empty buddyID in %hs", __FUNCTION__);
-		return false;
-	}
-	byte ID[16];
-	buddyID->ToByteArray(ID);
-	if(isnulmd4(ID)) 
-	{
-		theApp.QueueDebugLogLineEx(LOG_ERROR, L"Received invalid buddyID in %hs", __FUNCTION__);
-		return false;
-	}
+    if (buddyID == NULL)
+    {
+        theApp.QueueDebugLogLineEx(LOG_ERROR, L"Received empty buddyID in %hs", __FUNCTION__);
+        return false;
+    }
+    byte ID[16];
+    buddyID->ToByteArray(ID);
+    if (isnulmd4(ID))
+    {
+        theApp.QueueDebugLogLineEx(LOG_ERROR, L"Received invalid buddyID in %hs", __FUNCTION__);
+        return false;
+    }
 //<<< WiZaRd::FiX?
 
     //Add client to the lists to be processed.
     CUpDownClient* pNewClient = new CUpDownClient(0, contact->GetTCPPort(), contact->GetIPAddress(), 0, 0, false);
     pNewClient->SetKadPort(contact->GetUDPPort());
     pNewClient->SetKadState(KS_INCOMING_BUDDY);
-	pNewClient->SetBuddyID(ID);
+    pNewClient->SetBuddyID(ID);
     contact->GetClientID().ToByteArray(ID);
     pNewClient->SetUserHash(ID); //??
     AddToKadList(pNewClient);
@@ -1042,7 +1042,7 @@ bool CClientList::DoRequestFirewallCheckUDP(const Kademlia::CContact& contact)
 #ifdef IPV6_SUPPORT
     if (FindClientByIP(CAddress(contact.GetIPAddress())) != NULL) //>>> WiZaRd::IPv6 [Xanatos]
 #else
-	if (FindClientByIP(ntohl(contact.GetIPAddress())) != NULL)
+    if (FindClientByIP(ntohl(contact.GetIPAddress())) != NULL)
 #endif
         return false;
     // fine, just create the client object, set the state and wait

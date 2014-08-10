@@ -13,11 +13,11 @@ class CWSDLPortType;
 
 class CWSDLPortTypeParser : public CParserBase
 {
-private:
+  private:
 
     CWSDLPortType * m_pPortType;
 
-public:
+  public:
 
     inline CWSDLPortTypeParser(ISAXXMLReader *pReader, CParserBase *pParent, DWORD dwLevel, CWSDLPortType * pPortType = NULL)
         :CParserBase(pReader, pParent, dwLevel), m_pPortType(pPortType)

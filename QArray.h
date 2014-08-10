@@ -120,7 +120,7 @@ template <class T> BOOL QuickSort(T *pArr, int iSize, BOOL bAscending = TRUE)
 
 template <class T, class PT> class CQArray : public CArray <T, PT>
 {
-public:
+  public:
     void QuickSort(BOOL bAscending = TRUE);
 };
 

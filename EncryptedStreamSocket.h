@@ -89,7 +89,7 @@ struct RC4_Key_Struct;
 class CEncryptedStreamSocket : public CAsyncSocketEx
 {
     DECLARE_DYNAMIC(CEncryptedStreamSocket)
-public:
+  public:
     CEncryptedStreamSocket();
     virtual ~CEncryptedStreamSocket();
 
@@ -112,7 +112,7 @@ public:
     uint8	m_dbgbyEncryptionRequested;
     uint8	m_dbgbyEncryptionMethodSet;
 
-protected:
+  protected:
     int Send(const void* lpBuf, int nBufLen, int nFlags = 0);
     int SendOv(CArray<WSABUF>& raBuffer, DWORD& dwBytesSent, LPWSAOVERLAPPED lpOverlapped);
     int Receive(void* lpBuf, int nBufLen, int nFlags = 0);
@@ -129,7 +129,7 @@ protected:
     bool	m_bFullReceive;
     bool	m_bServerCrypt;
 
-private:
+  private:
     int		Negotiate(const uchar* pBuffer, UINT nLen);
     void	StartNegotiation(bool bOutgoing);
     int		SendNegotiatingData(const void* lpBuf, UINT nBufLen, UINT nStartCryptFromByte = 0, bool bDelaySend = false);

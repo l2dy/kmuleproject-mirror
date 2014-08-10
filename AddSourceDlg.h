@@ -37,7 +37,7 @@ class CAddSourceDlg : public CResizableDialog
 {
     DECLARE_DYNAMIC(CAddSourceDlg)
 
-public:
+  public:
     CAddSourceDlg(CWnd* pParent = NULL);   // standard constructor
     virtual ~CAddSourceDlg();
 
@@ -46,7 +46,7 @@ public:
 // Dialog Data
     enum { IDD = IDD_ADDSOURCE };
 
-protected:
+  protected:
     CPartFile* m_pFile;
     int m_nSourceType;
 

@@ -24,7 +24,7 @@ class CClientListCtrl : public CMuleListCtrl, public CListCtrlItemWalk
 {
     DECLARE_DYNAMIC(CClientListCtrl)
 
-public:
+  public:
     CClientListCtrl();
 
     void	Init();
@@ -43,7 +43,7 @@ public:
     void	ShowSelectedUserDetails();
     void	ShowKnownClients();
 
-protected:
+  protected:
     CImageList m_ImageList;
 
     void SetAllIcons();

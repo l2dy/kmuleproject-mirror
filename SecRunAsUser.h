@@ -193,7 +193,7 @@ typedef _com_ptr_t<_com_IIID<IADsWinNTSystemInfo,&IID_IADsWinNTSystemInfo>	>  IA
 
 class CSecRunAsUser
 {
-public:
+  public:
     CSecRunAsUser();
     ~CSecRunAsUser();
 
@@ -212,7 +212,7 @@ public:
     }
     CStringW	GetCurrentUserW();
 
-protected:
+  protected:
     eResult	PrepareUser();
     eResult	RestartAsUser();
     eResult	RestartAsRestricted();
@@ -224,7 +224,7 @@ protected:
     bool	LoadAPI();
     void	FreeAPI();
 
-private:
+  private:
     CStringW ADSPath;
     CStringW m_strPassword;
     CStringW m_strDomain;

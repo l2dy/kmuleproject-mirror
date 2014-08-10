@@ -7,7 +7,7 @@ class CTitleMenu;
 
 class CWebServices
 {
-public:
+  public:
     CWebServices();
 
     CString GetDefaultServicesFile() const;
@@ -26,7 +26,7 @@ public:
     bool RunURL(const CAbstractFile* file, UINT uMenuID);
     void Edit();
 
-protected:
+  protected:
     struct SEd2kLinkService
     {
         UINT uMenuID;

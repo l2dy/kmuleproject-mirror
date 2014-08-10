@@ -24,14 +24,14 @@ class CDirectDownloadDlg : public CResizableDialog
 {
     DECLARE_DYNAMIC(CDirectDownloadDlg)
 
-public:
+  public:
     CDirectDownloadDlg(CWnd* pParent = NULL);   // standard constructor
     virtual ~CDirectDownloadDlg();
 
 // Dialog Data
     enum { IDD = IDD_DIRECT_DOWNLOAD };
 
-protected:
+  protected:
     HICON m_icnWnd;
     CIconStatic m_ctrlDirectDlFrm;
     CButtonsTabCtrl	m_cattabs;

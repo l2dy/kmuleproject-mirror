@@ -2,7 +2,7 @@
 
 class CEditableListCtrl : public CListCtrl
 {
-public:
+  public:
     CEditableListCtrl();
 
     CEdit* GetEditCtrl() const
@@ -13,7 +13,7 @@ public:
 
     virtual BOOL PreTranslateMessage(MSG* pMsg);
 
-protected:
+  protected:
     CEdit* m_pctrlEdit;
     CComboBox* m_pctrlComboBox;
     int m_iRow;

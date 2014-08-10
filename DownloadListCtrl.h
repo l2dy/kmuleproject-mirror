@@ -42,7 +42,7 @@ class CtrlItem_Struct : public CObject
 {
     DECLARE_DYNAMIC(CtrlItem_Struct)
 
-public:
+  public:
     ~CtrlItem_Struct()
     {
         status.DeleteObject();
@@ -62,7 +62,7 @@ public:
 
 class CDownloadListListCtrlItemWalk : public CListCtrlItemWalk
 {
-public:
+  public:
     CDownloadListListCtrlItemWalk(CDownloadListCtrl* pListCtrl);
 
     virtual CObject* GetNextSelectableItem();
@@ -73,7 +73,7 @@ public:
         m_eItemType = eItemType;
     }
 
-protected:
+  protected:
     CDownloadListCtrl* m_pDownloadListCtrl;
     ItemType m_eItemType;
 };
@@ -87,7 +87,7 @@ class CDownloadListCtrl : public CMuleListCtrl, public CDownloadListListCtrlItem
     DECLARE_DYNAMIC(CDownloadListCtrl)
     friend class CDownloadListListCtrlItemWalk;
 
-public:
+  public:
     CDownloadListCtrl();
     virtual ~CDownloadListCtrl();
 
@@ -123,11 +123,11 @@ public:
     float	GetFinishedSize();
     bool	ReportAvailableCommands(CList<int>& liAvailableCommands);
 
-protected:
+  protected:
     int			m_iFDC; //>>> WiZaRd::FDC [BlueSonicBoy]
     int			m_iPreview; //>>> WiZaRd::PreviewIndicator
     int			m_iHealthIndex; //>>> WiZaRd::Health Indicator File Availability
-	int			m_iQRIndex; //>>> WiZaRd::QR History
+    int			m_iQRIndex; //>>> WiZaRd::QR History
     CImageList  m_ImageList;
     CTitleMenu	m_PrioMenu;
     CTitleMenu	m_FileMenu;

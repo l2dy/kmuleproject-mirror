@@ -5,7 +5,7 @@ class CPPgConnection : public CPropertyPage
 {
     DECLARE_DYNAMIC(CPPgConnection)
 
-public:
+  public:
     CPPgConnection();
     virtual ~CPPgConnection();
 
@@ -15,7 +15,7 @@ public:
     void Localize(void);
     void LoadSettings(void);
 
-protected:
+  protected:
 //>>> WiZaRd::Ratio Indicator
     int		lastRatio;
     HICON	ratioIcon;

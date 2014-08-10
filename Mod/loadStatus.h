@@ -18,7 +18,7 @@
 
 class CLoadStatus
 {
-public:
+  public:
     CLoadStatus();
     virtual ~CLoadStatus();
 
@@ -29,7 +29,7 @@ public:
     void	UpdateCount(const UINT iCount);
     void	Complete();
 
-private:
+  private:
     UINT	m_uLineCount;
     UINT	m_uLastPercent;
     UINT	m_uPercent;

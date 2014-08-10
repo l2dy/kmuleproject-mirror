@@ -15,11 +15,11 @@
 
 class CEnumeration
 {
-private:
+  private:
 
     CStringW m_strValue;
 
-public:
+  public:
 
     inline HRESULT SetValue(const wchar_t *wszValue, int cchValue)
     {
@@ -54,7 +54,7 @@ public:
 class CEnumerationElementTraits :
     public CElementTraitsBase<CEnumeration>
 {
-public:
+  public:
 
     static ULONG Hash(INARGTYPE e)
     {
@@ -93,7 +93,7 @@ ENCODING_TYPE GetEncodingAttribute(const wchar_t *wszVal, int cchVal);
 
 class CSimpleType : public CXSDElement
 {
-private:
+  private:
 
     CAtlList<CEnumeration, CEnumerationElementTraits > m_enumerations;
     ENCODING_TYPE m_encType;
@@ -104,7 +104,7 @@ private:
     CStringW m_strName;
     CQName m_base;
 
-public:
+  public:
 
     CSimpleType()
         :m_encType(ENCODING_UNK), m_nLength(-1), m_nMaxLength(-1), m_nMinLength(-1)

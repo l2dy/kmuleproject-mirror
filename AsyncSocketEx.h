@@ -88,7 +88,7 @@ class CCriticalSectionWrapper;
 class CAsyncSocketEx : public CObject
 {
     DECLARE_DYNAMIC(CAsyncSocketEx)
-public:
+  public:
     ///////////////////////////////////////
     //Functions that imitate CAsyncSocket//
     ///////////////////////////////////////
@@ -106,9 +106,9 @@ public:
                 long lEvent = FD_READ | FD_WRITE | FD_OOB | FD_ACCEPT |	FD_CONNECT | FD_CLOSE,
                 LPCSTR lpszSocketAddress = NULL, BOOL bReuseAddr = FALSE, bool bIPv6 = FALSE); //>>> WiZaRd::IPv6 [Xanatos]
 #else
-	BOOL Create(UINT nSocketPort = 0, int nSocketType = SOCK_STREAM,
-		long lEvent = FD_READ | FD_WRITE | FD_OOB | FD_ACCEPT |	FD_CONNECT | FD_CLOSE,
-		LPCSTR lpszSocketAddress = NULL, BOOL bReuseAddr = FALSE);
+    BOOL Create(UINT nSocketPort = 0, int nSocketType = SOCK_STREAM,
+                long lEvent = FD_READ | FD_WRITE | FD_OOB | FD_ACCEPT |	FD_CONNECT | FD_CLOSE,
+                LPCSTR lpszSocketAddress = NULL, BOOL bReuseAddr = FALSE);
 #endif
 
 
@@ -228,7 +228,7 @@ public:
     virtual void Dump(CDumpContext& dc) const;
 #endif
 
-protected:
+  protected:
     //Structure to hold the socket data
     struct t_AsyncSocketExData
     {

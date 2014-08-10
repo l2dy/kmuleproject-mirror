@@ -42,7 +42,7 @@ class CKadUDPKey;
 class CKadClientSearcher;
 class CKademlia
 {
-public:
+  public:
     CKademlia();
 
     static void Start();
@@ -63,9 +63,9 @@ public:
     static UINT GetTotalStoreNotes();
     static UINT GetTotalFile();
     static bool	GetPublish();
-    static UINT GetIPAddress();	
-	static void	Bootstrap(LPCTSTR szHost, const uint16 uPort);
-    static void	Bootstrap(const UINT uIP, const uint16 uPort);    
+    static UINT GetIPAddress();
+    static void	Bootstrap(LPCTSTR szHost, const uint16 uPort);
+    static void	Bootstrap(const UINT uIP, const uint16 uPort);
     static void	ProcessPacket(const byte* pbyData, UINT uLenData, UINT uIP, uint16 uPort, bool bValidReceiverKey, CKadUDPKey senderUDPKey);
     static void	AddEvent(CRoutingZone *pZone);
     static void	RemoveEvent(CRoutingZone *pZone);
@@ -80,8 +80,8 @@ public:
 
     static _ContactList	s_liBootstapList;
 
-private:
-	static bool BootstrappingNeeded();
+  private:
+    static bool BootstrappingNeeded();
     static UINT CalculateKadUsersNew();
 
     static CKademlia *m_pInstance;
@@ -106,7 +106,7 @@ private:
     CIndexed *m_pIndexed;
 
 //>>> WiZaRd::IPFiltering
-public:
+  public:
     static void RemoveFilteredContacts();
 //<<< WiZaRd::IPFiltering
 };

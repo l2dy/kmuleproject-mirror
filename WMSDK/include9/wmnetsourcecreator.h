@@ -93,107 +93,107 @@ EXTERN_C const IID IID_INSNetSourceCreator;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("0C0E4080-9081-11d2-BEEC-0060082F2054")
+MIDL_INTERFACE("0C0E4080-9081-11d2-BEEC-0060082F2054")
 INSNetSourceCreator :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual HRESULT STDMETHODCALLTYPE Initialize(void) = 0;
+    virtual HRESULT STDMETHODCALLTYPE Initialize(void) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE CreateNetSource(
-            /* [in] */ LPCWSTR pszStreamName,
-            /* [in] */ IUnknown *pMonitor,
-            /* [in] */ BYTE *pData,
-            /* [in] */ IUnknown *pUserContext,
-            /* [in] */ IUnknown *pCallback,
-            /* [in] */ QWORD qwContext) = 0;
+    virtual HRESULT STDMETHODCALLTYPE CreateNetSource(
+        /* [in] */ LPCWSTR pszStreamName,
+        /* [in] */ IUnknown *pMonitor,
+        /* [in] */ BYTE *pData,
+        /* [in] */ IUnknown *pUserContext,
+        /* [in] */ IUnknown *pCallback,
+        /* [in] */ QWORD qwContext) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetNetSourceProperties(
-            /* [in] */ LPCWSTR pszStreamName,
-            /* [out] */ IUnknown **ppPropertiesNode) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetNetSourceProperties(
+        /* [in] */ LPCWSTR pszStreamName,
+        /* [out] */ IUnknown **ppPropertiesNode) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetNetSourceSharedNamespace(
-            /* [out] */ IUnknown **ppSharedNamespace) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetNetSourceSharedNamespace(
+        /* [out] */ IUnknown **ppSharedNamespace) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetNetSourceAdminInterface(
-            /* [in] */ LPCWSTR pszStreamName,
-            /* [out] */ VARIANT *pVal) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetNetSourceAdminInterface(
+        /* [in] */ LPCWSTR pszStreamName,
+        /* [out] */ VARIANT *pVal) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetNumProtocolsSupported(
-            /* [out] */ DWORD *pcProtocols) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetNumProtocolsSupported(
+        /* [out] */ DWORD *pcProtocols) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetProtocolName(
-            /* [in] */ DWORD dwProtocolNum,
-            /* [out] */ WCHAR *pwszProtocolName,
-            /* [out][in] */ WORD *pcchProtocolName) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetProtocolName(
+        /* [in] */ DWORD dwProtocolNum,
+        /* [out] */ WCHAR *pwszProtocolName,
+        /* [out][in] */ WORD *pcchProtocolName) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE Shutdown(void) = 0;
+    virtual HRESULT STDMETHODCALLTYPE Shutdown(void) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct INSNetSourceCreatorVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct INSNetSourceCreatorVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            INSNetSourceCreator * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        INSNetSourceCreator * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            INSNetSourceCreator * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        INSNetSourceCreator * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            INSNetSourceCreator * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        INSNetSourceCreator * This);
 
-        HRESULT(STDMETHODCALLTYPE *Initialize)(
-            INSNetSourceCreator * This);
+    HRESULT(STDMETHODCALLTYPE *Initialize)(
+        INSNetSourceCreator * This);
 
-        HRESULT(STDMETHODCALLTYPE *CreateNetSource)(
-            INSNetSourceCreator * This,
-            /* [in] */ LPCWSTR pszStreamName,
-            /* [in] */ IUnknown *pMonitor,
-            /* [in] */ BYTE *pData,
-            /* [in] */ IUnknown *pUserContext,
-            /* [in] */ IUnknown *pCallback,
-            /* [in] */ QWORD qwContext);
+    HRESULT(STDMETHODCALLTYPE *CreateNetSource)(
+        INSNetSourceCreator * This,
+        /* [in] */ LPCWSTR pszStreamName,
+        /* [in] */ IUnknown *pMonitor,
+        /* [in] */ BYTE *pData,
+        /* [in] */ IUnknown *pUserContext,
+        /* [in] */ IUnknown *pCallback,
+        /* [in] */ QWORD qwContext);
 
-        HRESULT(STDMETHODCALLTYPE *GetNetSourceProperties)(
-            INSNetSourceCreator * This,
-            /* [in] */ LPCWSTR pszStreamName,
-            /* [out] */ IUnknown **ppPropertiesNode);
+    HRESULT(STDMETHODCALLTYPE *GetNetSourceProperties)(
+        INSNetSourceCreator * This,
+        /* [in] */ LPCWSTR pszStreamName,
+        /* [out] */ IUnknown **ppPropertiesNode);
 
-        HRESULT(STDMETHODCALLTYPE *GetNetSourceSharedNamespace)(
-            INSNetSourceCreator * This,
-            /* [out] */ IUnknown **ppSharedNamespace);
+    HRESULT(STDMETHODCALLTYPE *GetNetSourceSharedNamespace)(
+        INSNetSourceCreator * This,
+        /* [out] */ IUnknown **ppSharedNamespace);
 
-        HRESULT(STDMETHODCALLTYPE *GetNetSourceAdminInterface)(
-            INSNetSourceCreator * This,
-            /* [in] */ LPCWSTR pszStreamName,
-            /* [out] */ VARIANT *pVal);
+    HRESULT(STDMETHODCALLTYPE *GetNetSourceAdminInterface)(
+        INSNetSourceCreator * This,
+        /* [in] */ LPCWSTR pszStreamName,
+        /* [out] */ VARIANT *pVal);
 
-        HRESULT(STDMETHODCALLTYPE *GetNumProtocolsSupported)(
-            INSNetSourceCreator * This,
-            /* [out] */ DWORD *pcProtocols);
+    HRESULT(STDMETHODCALLTYPE *GetNumProtocolsSupported)(
+        INSNetSourceCreator * This,
+        /* [out] */ DWORD *pcProtocols);
 
-        HRESULT(STDMETHODCALLTYPE *GetProtocolName)(
-            INSNetSourceCreator * This,
-            /* [in] */ DWORD dwProtocolNum,
-            /* [out] */ WCHAR *pwszProtocolName,
-            /* [out][in] */ WORD *pcchProtocolName);
+    HRESULT(STDMETHODCALLTYPE *GetProtocolName)(
+        INSNetSourceCreator * This,
+        /* [in] */ DWORD dwProtocolNum,
+        /* [out] */ WCHAR *pwszProtocolName,
+        /* [out][in] */ WORD *pcchProtocolName);
 
-        HRESULT(STDMETHODCALLTYPE *Shutdown)(
-            INSNetSourceCreator * This);
+    HRESULT(STDMETHODCALLTYPE *Shutdown)(
+        INSNetSourceCreator * This);
 
-        END_INTERFACE
-    } INSNetSourceCreatorVtbl;
+    END_INTERFACE
+} INSNetSourceCreatorVtbl;
 
-    interface INSNetSourceCreator
-    {
-        CONST_VTBL struct INSNetSourceCreatorVtbl *lpVtbl;
-    };
+interface INSNetSourceCreator
+{
+    CONST_VTBL struct INSNetSourceCreatorVtbl *lpVtbl;
+};
 
 
 
@@ -241,121 +241,121 @@ public:
 
 
 
-    HRESULT STDMETHODCALLTYPE INSNetSourceCreator_Initialize_Proxy(
-        INSNetSourceCreator * This);
+HRESULT STDMETHODCALLTYPE INSNetSourceCreator_Initialize_Proxy(
+    INSNetSourceCreator * This);
 
 
-    void __RPC_STUB INSNetSourceCreator_Initialize_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB INSNetSourceCreator_Initialize_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE INSNetSourceCreator_CreateNetSource_Proxy(
-        INSNetSourceCreator * This,
-        /* [in] */ LPCWSTR pszStreamName,
-        /* [in] */ IUnknown *pMonitor,
-        /* [in] */ BYTE *pData,
-        /* [in] */ IUnknown *pUserContext,
-        /* [in] */ IUnknown *pCallback,
-        /* [in] */ QWORD qwContext);
+HRESULT STDMETHODCALLTYPE INSNetSourceCreator_CreateNetSource_Proxy(
+    INSNetSourceCreator * This,
+    /* [in] */ LPCWSTR pszStreamName,
+    /* [in] */ IUnknown *pMonitor,
+    /* [in] */ BYTE *pData,
+    /* [in] */ IUnknown *pUserContext,
+    /* [in] */ IUnknown *pCallback,
+    /* [in] */ QWORD qwContext);
 
 
-    void __RPC_STUB INSNetSourceCreator_CreateNetSource_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB INSNetSourceCreator_CreateNetSource_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE INSNetSourceCreator_GetNetSourceProperties_Proxy(
-        INSNetSourceCreator * This,
-        /* [in] */ LPCWSTR pszStreamName,
-        /* [out] */ IUnknown **ppPropertiesNode);
+HRESULT STDMETHODCALLTYPE INSNetSourceCreator_GetNetSourceProperties_Proxy(
+    INSNetSourceCreator * This,
+    /* [in] */ LPCWSTR pszStreamName,
+    /* [out] */ IUnknown **ppPropertiesNode);
 
 
-    void __RPC_STUB INSNetSourceCreator_GetNetSourceProperties_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB INSNetSourceCreator_GetNetSourceProperties_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE INSNetSourceCreator_GetNetSourceSharedNamespace_Proxy(
-        INSNetSourceCreator * This,
-        /* [out] */ IUnknown **ppSharedNamespace);
+HRESULT STDMETHODCALLTYPE INSNetSourceCreator_GetNetSourceSharedNamespace_Proxy(
+    INSNetSourceCreator * This,
+    /* [out] */ IUnknown **ppSharedNamespace);
 
 
-    void __RPC_STUB INSNetSourceCreator_GetNetSourceSharedNamespace_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB INSNetSourceCreator_GetNetSourceSharedNamespace_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE INSNetSourceCreator_GetNetSourceAdminInterface_Proxy(
-        INSNetSourceCreator * This,
-        /* [in] */ LPCWSTR pszStreamName,
-        /* [out] */ VARIANT *pVal);
+HRESULT STDMETHODCALLTYPE INSNetSourceCreator_GetNetSourceAdminInterface_Proxy(
+    INSNetSourceCreator * This,
+    /* [in] */ LPCWSTR pszStreamName,
+    /* [out] */ VARIANT *pVal);
 
 
-    void __RPC_STUB INSNetSourceCreator_GetNetSourceAdminInterface_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB INSNetSourceCreator_GetNetSourceAdminInterface_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE INSNetSourceCreator_GetNumProtocolsSupported_Proxy(
-        INSNetSourceCreator * This,
-        /* [out] */ DWORD *pcProtocols);
+HRESULT STDMETHODCALLTYPE INSNetSourceCreator_GetNumProtocolsSupported_Proxy(
+    INSNetSourceCreator * This,
+    /* [out] */ DWORD *pcProtocols);
 
 
-    void __RPC_STUB INSNetSourceCreator_GetNumProtocolsSupported_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB INSNetSourceCreator_GetNumProtocolsSupported_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE INSNetSourceCreator_GetProtocolName_Proxy(
-        INSNetSourceCreator * This,
-        /* [in] */ DWORD dwProtocolNum,
-        /* [out] */ WCHAR *pwszProtocolName,
-        /* [out][in] */ WORD *pcchProtocolName);
+HRESULT STDMETHODCALLTYPE INSNetSourceCreator_GetProtocolName_Proxy(
+    INSNetSourceCreator * This,
+    /* [in] */ DWORD dwProtocolNum,
+    /* [out] */ WCHAR *pwszProtocolName,
+    /* [out][in] */ WORD *pcchProtocolName);
 
 
-    void __RPC_STUB INSNetSourceCreator_GetProtocolName_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB INSNetSourceCreator_GetProtocolName_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE INSNetSourceCreator_Shutdown_Proxy(
-        INSNetSourceCreator * This);
+HRESULT STDMETHODCALLTYPE INSNetSourceCreator_Shutdown_Proxy(
+    INSNetSourceCreator * This);
 
 
-    void __RPC_STUB INSNetSourceCreator_Shutdown_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB INSNetSourceCreator_Shutdown_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
 #endif 	/* __INSNetSourceCreator_INTERFACE_DEFINED__ */
 
 
-    /* Additional Prototypes for ALL interfaces */
+/* Additional Prototypes for ALL interfaces */
 
-    unsigned long             __RPC_USER  VARIANT_UserSize(unsigned long *, unsigned long            , VARIANT *);
-    unsigned char * __RPC_USER  VARIANT_UserMarshal(unsigned long *, unsigned char *, VARIANT *);
-    unsigned char * __RPC_USER  VARIANT_UserUnmarshal(unsigned long *, unsigned char *, VARIANT *);
-    void                      __RPC_USER  VARIANT_UserFree(unsigned long *, VARIANT *);
+unsigned long             __RPC_USER  VARIANT_UserSize(unsigned long *, unsigned long            , VARIANT *);
+unsigned char * __RPC_USER  VARIANT_UserMarshal(unsigned long *, unsigned char *, VARIANT *);
+unsigned char * __RPC_USER  VARIANT_UserUnmarshal(unsigned long *, unsigned char *, VARIANT *);
+void                      __RPC_USER  VARIANT_UserFree(unsigned long *, VARIANT *);
 
-    /* end of Additional Prototypes */
+/* end of Additional Prototypes */
 
 #ifdef __cplusplus
 }

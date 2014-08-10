@@ -138,7 +138,7 @@ static char THIS_FILE[] = __FILE__;
 #pragma pack(4)
 class _CHandleMap
 {
-private:	// implementation
+  private:	// implementation
     CFixedAllocNoSync m_alloc;
     void (PASCAL* m_pfnConstructObject)(CObject* pObject);
     void (PASCAL* m_pfnDestructObject)(CObject* pObject);
@@ -149,7 +149,7 @@ private:	// implementation
     int m_nHandles;			// 1 or 2 (for CDC)
 
 // Constructor/Destructor
-public:
+  public:
     _CHandleMap(CRuntimeClass* pClass,
                 void (PASCAL* pfnConstructObject)(CObject* pObject),
                 void (PASCAL* pfnDestructObject)(CObject* pObject),
@@ -164,7 +164,7 @@ public:
     }
 
 // Operations
-public:
+  public:
     CObject* FromHandle(HANDLE h);
     void DeleteTemp();
 

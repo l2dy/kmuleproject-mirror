@@ -8,15 +8,15 @@ class C3DPreviewControl : public CStatic
 {
     DECLARE_DYNAMIC(C3DPreviewControl)
 
-public:
+  public:
     C3DPreviewControl();
     virtual ~C3DPreviewControl();
 
-protected:
+  protected:
     DECLARE_MESSAGE_MAP()
     int m_iSliderPos;
     static CBarShader s_preview;
-public:
+  public:
     // Sets "slider" position for type of preview
     void SetSliderPos(int iPos);
     afx_msg void OnPaint();

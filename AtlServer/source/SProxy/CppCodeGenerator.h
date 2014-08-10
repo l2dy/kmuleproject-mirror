@@ -74,14 +74,14 @@ class CCppCodeGenerator :
     public ITagReplacerImpl<CCppCodeGenerator>,
     public CComObjectRootEx<CComSingleThreadModel>
 {
-public:
+  public:
 
     BEGIN_COM_MAP(CCppCodeGenerator)
     COM_INTERFACE_ENTRY(IUnknown)
     COM_INTERFACE_ENTRY(ITagReplacer)
     END_COM_MAP()
 
-private:
+  private:
 
     CCodeProxy *m_pProxy;
 
@@ -108,9 +108,9 @@ private:
 
     const char *m_szNamespace;
 
-protected:
+  protected:
 
-public:
+  public:
 
     CCppCodeGenerator(CCodeProxy *pProxy = NULL)
         : m_pProxy(pProxy),
@@ -750,11 +750,11 @@ public:
 
 class CWriteStreamOnFileA : public IWriteStream
 {
-private:
+  private:
 
     HANDLE m_hFile;
 
-public:
+  public:
 
     CWriteStreamOnFileA()
         :m_hFile(INVALID_HANDLE_VALUE)
@@ -828,7 +828,7 @@ public:
 
 class CWriteStreamOnStdout : public IWriteStream
 {
-public:
+  public:
 
     HRESULT WriteStream(LPCSTR szOut, int nLen, LPDWORD pdwWritten)
     {

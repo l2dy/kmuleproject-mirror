@@ -23,7 +23,7 @@ class CFileDataIO;
 // CFileIdentifierBase
 class CFileIdentifierBase
 {
-public:
+  public:
     virtual ~CFileIdentifierBase();
 
     virtual EMFileSize GetFileSize() const;
@@ -58,7 +58,7 @@ public:
         m_bHasValidAICHHash = false;
     }
 
-protected:
+  protected:
     CFileIdentifierBase();
     CFileIdentifierBase(const CFileIdentifierBase& rFileIdentifier);
 
@@ -72,7 +72,7 @@ protected:
 // Member of all CAbstractFiles, including hashsets
 class CFileIdentifier : public CFileIdentifierBase
 {
-public:
+  public:
     CFileIdentifier(EMFileSize&	rFileSize);
     CFileIdentifier(const CFileIdentifier& rFileIdentifier, EMFileSize&	rFileSize);
     virtual ~CFileIdentifier();
@@ -135,7 +135,7 @@ public:
     {
         return m_aAICHPartHashSet;
     }
-private:
+  private:
     EMFileSize&				m_rFileSize;
     CArray<uchar*, uchar*>	m_aMD4HashSet;
     CArray<CAICHHash>		m_aAICHPartHashSet;
@@ -146,7 +146,7 @@ private:
 // Stand alone file identifier, for creating out of protocol packages, comparing and stand-alone storing, exluding hashsets
 class CFileIdentifierSA : public CFileIdentifierBase
 {
-public:
+  public:
     CFileIdentifierSA(const uchar* pucFileHash, EMFileSize FileSize, const CAICHHash& rHash, bool bAICHHashValid);
     CFileIdentifierSA();
 
@@ -158,7 +158,7 @@ public:
 
     bool	ReadIdentifier(CFileDataIO* pFile, bool bKadValidWithoutMd4 = false);
 
-private:
+  private:
     EMFileSize				m_nFileSize;
 };
 

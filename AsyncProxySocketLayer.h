@@ -123,15 +123,15 @@ Version history
 class CAsyncProxySocketLayer : public CAsyncSocketExLayer
 {
 // Attribute
-public:
+  public:
 
 // Operationen
-public:
+  public:
     CAsyncProxySocketLayer();
     virtual ~CAsyncProxySocketLayer();
 
 // Überschreibungen
-public:
+  public:
     virtual void Close();
     virtual BOOL Connect(LPCSTR lpHostAddress, UINT nHostPort);
     virtual BOOL Connect(const SOCKADDR* lpSockAddr, int nSockAddrLen);
@@ -159,7 +159,7 @@ public:
     virtual BOOL GetPeerName(SOCKADDR* lpSockAddr, int* lpSockAddrLen);
 
 // Implementierung
-protected:
+  protected:
     virtual BOOL Accept(CAsyncSocketEx& rConnectedSocket, SOCKADDR* lpSockAddr = NULL, int* lpSockAddrLen = NULL);
     virtual int Send(const void* lpBuf, int nBufLen, int nFlags = 0);
     virtual int Receive(void* lpBuf, int nBufLen, int nFlags = 0);
@@ -171,7 +171,7 @@ protected:
     virtual void OnReceive(int nErrorCode);
     virtual void OnSend(int nErrorCode);
 
-private:
+  private:
     void Reset();
     void ClearBuffer();		//Clears the receive buffer
 

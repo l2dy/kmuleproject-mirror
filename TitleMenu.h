@@ -30,7 +30,7 @@ typedef BOOL (WINAPI* TGetMenuInfo)(
 
 class CTitleMenu : public CMenu
 {
-public:
+  public:
     CTitleMenu();
     virtual ~CTitleMenu();
 
@@ -83,7 +83,7 @@ public:
     virtual void MeasureItem(LPMEASUREITEMSTRUCT lpMIS);
     virtual void DrawItem(LPDRAWITEMSTRUCT lpDIS);
 
-protected:
+  protected:
     CString m_strTitle;
     long m_clRight;
     long m_clLeft;

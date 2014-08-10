@@ -218,16 +218,16 @@ struct ICMPHeader
 
 class Pinger
 {
-public:
+  public:
     Pinger();
     ~Pinger();
 
     PingStatus Ping(UINT lAddr, UINT ttl = DEFAULT_TTL, bool doLog = false, bool useUdp = false);
-	bool Init();
+    bool Init();
 
     void PIcmpErr(int nICMPErr);
 
-private:
+  private:
     void DisplayErr(int nWSAErr);
 
     bool udpStarted;

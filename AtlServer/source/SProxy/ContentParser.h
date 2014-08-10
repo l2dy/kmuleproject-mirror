@@ -17,11 +17,11 @@ class CContent;
 
 class CContentParser : public CParserBase
 {
-private:
+  private:
 
     CContent *m_pContent;
 
-public:
+  public:
 
     inline CContentParser(ISAXXMLReader *pReader, CParserBase *pParent, DWORD dwLevel, CContent *pContent = NULL)
         :CParserBase(pReader, pParent, dwLevel), m_pContent(pContent)

@@ -32,17 +32,17 @@ class CFrameGrabThread : public CWinThread
 {
     DECLARE_DYNCREATE(CFrameGrabThread)
 
-protected:
+  protected:
     CFrameGrabThread();           // protected constructor used by dynamic creation
     virtual ~CFrameGrabThread();
     DECLARE_MESSAGE_MAP()
     UINT	GrabFrames();
-public:
+  public:
     virtual	BOOL	InitInstance();
     virtual int		Run();
     void	SetValues(const CKnownFile* in_pOwner,CString in_strFileName,uint8 in_nFramesToGrab, double in_dStartTime, bool in_bReduceColor, uint16 in_nMaxWidth, void* pSender);
 
-private:
+  private:
     CString strFileName;
     uint8 nFramesToGrab;
     CxImage** imgResults;

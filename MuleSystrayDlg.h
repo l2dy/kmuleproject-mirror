@@ -2,7 +2,7 @@
 
 class CInputBox : public CEdit
 {
-protected:
+  protected:
     afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 
     DECLARE_MESSAGE_MAP()
@@ -19,7 +19,7 @@ protected:
 class CMuleSystrayDlg : public CDialog
 {
 // Construction
-public:
+  public:
     CMuleSystrayDlg(CWnd* pParent, CPoint pt, int iMaxUp, int iMaxDown, int iCurUp, int iCurDown);
     ~CMuleSystrayDlg();
 
@@ -41,13 +41,13 @@ public:
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CMuleSystrayDlg)
-protected:
+  protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
     //}}AFX_VIRTUAL
 
 // Implementation
-protected:
+  protected:
     CTrayMenuBtn m_ctrlSpeed;
     CTrayMenuBtn m_ctrlAllToMax;
     CTrayMenuBtn m_ctrlAllToMin;

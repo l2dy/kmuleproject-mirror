@@ -58,7 +58,7 @@ extern UINT g_uMainThreadId;
 
 class CCounter
 {
-public:
+  public:
     CCounter(int& ri)
         : m_ri(ri)
     {

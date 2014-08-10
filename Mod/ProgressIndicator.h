@@ -18,13 +18,13 @@
 
 class CProgressIndicator
 {
-public:
+  public:
     CProgressIndicator();
     void Initialise(const CString& strFilePath, const CString& strProgressString, const CString& strFinishString);
     void UpdateProgress(const double& progress);
     ~CProgressIndicator();
 
-private:
+  private:
     CString m_strFilePath;
     CString m_strProgressString;
     CString	m_strFinishString;

@@ -25,10 +25,10 @@ class CCryptKey;
 
 class CCryptProv
 {
-protected:
+  protected:
     HCRYPTPROV m_hProv;
 
-public:
+  public:
     CCryptProv() throw();
     CCryptProv(const CCryptProv& prov) throw();
     explicit CCryptProv(HCRYPTPROV hProv, BOOL bTakeOwnership = FALSE) throw();
@@ -80,10 +80,10 @@ public:
 // Provides base functionality of hashes.
 class CCryptHash
 {
-protected:
+  protected:
     HCRYPTHASH m_hHash;
 
-public:
+  public:
     CCryptHash() throw();
     CCryptHash(const CCryptHash& hash) throw();
     explicit CCryptHash(HCRYPTHASH hHash, BOOL bTakeOwnership = FALSE) throw();
@@ -127,10 +127,10 @@ public:
 // Provides the functionality for cryptographic keys, i.e. encrypting, decrypting.
 class CCryptKey
 {
-protected:
+  protected:
     HCRYPTKEY m_hKey;
 
-public:
+  public:
     CCryptKey() throw();
     CCryptKey(const CCryptKey& key) throw();
     explicit CCryptKey(HCRYPTKEY hKey, BOOL bTakeOwnership = FALSE) throw();
@@ -236,7 +236,7 @@ public:
 // from the same password will be identical.
 class CCryptDerivedKey : public CCryptKey
 {
-public:
+  public:
     HRESULT Initialize(
         CCryptProv &Prov,
         CCryptHash &Hash,
@@ -254,7 +254,7 @@ public:
 // signing hashes.
 class CCryptRandomKey : public CCryptKey
 {
-public:
+  public:
     HRESULT Initialize(
         CCryptProv &Prov,
         ALG_ID algid = CALG_RC4,
@@ -265,7 +265,7 @@ public:
 // Obtains the user's key exchange key pair.
 class CCryptUserExKey : public CCryptKey
 {
-public:
+  public:
     HRESULT Initialize(CCryptProv &Prov) throw();
     HRESULT Create(CCryptProv &Prov) throw();
 }; // class CCryptUserExKey
@@ -274,7 +274,7 @@ public:
 // Obtains the user's signature key pair
 class CCryptUserSigKey : public CCryptKey
 {
-public:
+  public:
     HRESULT Initialize(CCryptProv &Prov) throw();
     HRESULT Create(CCryptProv &Prov) throw();
 }; // class CCryptUserSigKey
@@ -283,7 +283,7 @@ public:
 // Forms a key from an imported key blob
 class CCryptImportKey : public CCryptKey
 {
-public:
+  public:
     HRESULT Initialize(
         CCryptProv &Prov,
         BYTE * pbData,
@@ -297,7 +297,7 @@ public:
 // A generic hash that may or may not take a key.
 class CCryptKeyedHash : public CCryptHash
 {
-public:
+  public:
 
     HRESULT Initialize(CCryptProv &Prov, ALG_ID Algid, CCryptKey &Key, DWORD dwFlags) throw();
 }; // class CCryptKeyedHash
@@ -306,7 +306,7 @@ public:
 // RSA's MD5 hash (RSA's most recent hash as of 9/7/99);
 class CCryptMD5Hash : public CCryptHash
 {
-public:
+  public:
 
     HRESULT Initialize(CCryptProv &Prov, LPCTSTR szText = NULL) throw();
 }; // class CCryptMD5Hash
@@ -315,7 +315,7 @@ public:
 // RSA's MD4 hash
 class CCryptMD4Hash : public CCryptHash
 {
-public:
+  public:
 
     HRESULT Initialize(CCryptProv &Prov, LPCTSTR szText = NULL) throw();
 }; // class CCryptMD4Hash
@@ -325,7 +325,7 @@ public:
 // RSA's MD2 hash
 class CCryptMD2Hash : public CCryptHash
 {
-public:
+  public:
 
     HRESULT Initialize(CCryptProv &Prov, LPCTSTR szText = NULL) throw();
 }; // class CCryptMD2Hash
@@ -335,7 +335,7 @@ public:
 // The Secure Hash Algorithm hash, from NIST and NSA.  Technically, SHA-1.
 class CCryptSHAHash : public CCryptHash
 {
-public:
+  public:
 
     HRESULT Initialize(CCryptProv &Prov, LPCTSTR szText = NULL) throw();
 }; // class CCryptSHAHash
@@ -348,7 +348,7 @@ typedef CCryptSHAHash CCryptSHA1Hash;
 // Hash-base Message Authentication Code keyed hash
 class CCryptHMACHash : public CCryptHash
 {
-public:
+  public:
     HRESULT Initialize(CCryptProv &Prov, CCryptKey &Key, LPCTSTR szText = NULL) throw();
 }; // class CCryptHMACHash
 
@@ -356,7 +356,7 @@ public:
 // Message Authentication Code keyed hash.  Believed to be less secure than HMAC
 class CCryptMACHash : public CCryptHash
 {
-public:
+  public:
     HRESULT Initialize(CCryptProv &Prov, CCryptKey &Key, LPCTSTR szText = NULL) throw();
 }; // class CCryptMACHash
 
@@ -364,7 +364,7 @@ public:
 // Hash algorithm used by Secure Socket Layer
 class CCryptSSL3SHAMD5Hash : public CCryptHash
 {
-public:
+  public:
     HRESULT Initialize(CCryptProv &Prov, CCryptKey &Key, LPCTSTR szText = NULL) throw();
 }; // class CCryptSSl3SHAMD5Hash
 

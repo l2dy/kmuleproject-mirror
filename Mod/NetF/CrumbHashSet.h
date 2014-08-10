@@ -21,13 +21,13 @@ class CSafeMemFile;
 
 class CCrumbHashSet
 {
-public:
+  public:
     CCrumbHashSet(UINT crumbCount, CSafeMemFile* data = NULL);
     ~CCrumbHashSet();
     const unsigned char*	GetSHAHash() const;
     const unsigned char*	GetCrumbHash(UINT index) const;
     void					SetCrumbHash(UINT index, unsigned char* hash);
-private:
+  private:
     unsigned char*	m_CrumbHashSet;
     UINT			m_CrumbCount;
     unsigned char	m_SHAHash[CRUMBSPERPART];

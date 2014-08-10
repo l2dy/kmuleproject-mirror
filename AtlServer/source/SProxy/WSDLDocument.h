@@ -26,7 +26,7 @@
 
 class CWSDLDocument : public CXMLDocument
 {
-private:
+  private:
 
     typedef CAtlPtrMap<CStringW, CWSDLMessage *, CStringRefElementTraits<CStringW> > MESSAGEMAP;
     typedef CAtlPtrMap<CStringW, CWSDLPortType *, CStringRefElementTraits<CStringW> > PORTMAP;
@@ -42,7 +42,7 @@ private:
 
     CStringW m_strName;
 
-public:
+  public:
 
     inline CWSDLDocument()
     {

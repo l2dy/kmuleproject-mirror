@@ -628,144 +628,144 @@ EXTERN_C const IID IID_IPropertySetter;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("AE9472BD-B0C3-11D2-8D24-00A0C9441E20")
+MIDL_INTERFACE("AE9472BD-B0C3-11D2-8D24-00A0C9441E20")
 IPropertySetter :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual HRESULT STDMETHODCALLTYPE LoadXML(
-            /* [in] */ IUnknown *pxml) = 0;
+    virtual HRESULT STDMETHODCALLTYPE LoadXML(
+        /* [in] */ IUnknown *pxml) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE PrintXML(
-            /* [out] */ char *pszXML,
-            /* [in] */ int cbXML,
-            /* [out] */ int *pcbPrinted,
-            /* [in] */ int indent) = 0;
+    virtual HRESULT STDMETHODCALLTYPE PrintXML(
+        /* [out] */ char *pszXML,
+        /* [in] */ int cbXML,
+        /* [out] */ int *pcbPrinted,
+        /* [in] */ int indent) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE CloneProps(
-            /* [out] */ IPropertySetter **ppSetter,
-            /* [in] */ REFERENCE_TIME rtStart,
-            /* [in] */ REFERENCE_TIME rtStop) = 0;
+    virtual HRESULT STDMETHODCALLTYPE CloneProps(
+        /* [out] */ IPropertySetter **ppSetter,
+        /* [in] */ REFERENCE_TIME rtStart,
+        /* [in] */ REFERENCE_TIME rtStop) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE AddProp(
-            /* [in] */ DEXTER_PARAM Param,
-            /* [in] */ DEXTER_VALUE *paValue) = 0;
+    virtual HRESULT STDMETHODCALLTYPE AddProp(
+        /* [in] */ DEXTER_PARAM Param,
+        /* [in] */ DEXTER_VALUE *paValue) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetProps(
-            /* [out] */ LONG *pcParams,
-            /* [out] */ DEXTER_PARAM **paParam,
-            /* [out] */ DEXTER_VALUE **paValue) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetProps(
+        /* [out] */ LONG *pcParams,
+        /* [out] */ DEXTER_PARAM **paParam,
+        /* [out] */ DEXTER_VALUE **paValue) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE FreeProps(
-            /* [in] */ LONG cParams,
-            /* [in] */ DEXTER_PARAM *paParam,
-            /* [in] */ DEXTER_VALUE *paValue) = 0;
+    virtual HRESULT STDMETHODCALLTYPE FreeProps(
+        /* [in] */ LONG cParams,
+        /* [in] */ DEXTER_PARAM *paParam,
+        /* [in] */ DEXTER_VALUE *paValue) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE ClearProps(void) = 0;
+    virtual HRESULT STDMETHODCALLTYPE ClearProps(void) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SaveToBlob(
-            /* [out] */ LONG *pcSize,
-            /* [out] */ BYTE **ppb) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SaveToBlob(
+        /* [out] */ LONG *pcSize,
+        /* [out] */ BYTE **ppb) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE LoadFromBlob(
-            /* [in] */ LONG cSize,
-            /* [in] */ BYTE *pb) = 0;
+    virtual HRESULT STDMETHODCALLTYPE LoadFromBlob(
+        /* [in] */ LONG cSize,
+        /* [in] */ BYTE *pb) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetProps(
-            /* [in] */ IUnknown *pTarget,
-            /* [in] */ REFERENCE_TIME rtNow) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetProps(
+        /* [in] */ IUnknown *pTarget,
+        /* [in] */ REFERENCE_TIME rtNow) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE PrintXMLW(
-            /* [out] */ WCHAR *pszXML,
-            /* [in] */ int cchXML,
-            /* [out] */ int *pcchPrinted,
-            /* [in] */ int indent) = 0;
+    virtual HRESULT STDMETHODCALLTYPE PrintXMLW(
+        /* [out] */ WCHAR *pszXML,
+        /* [in] */ int cchXML,
+        /* [out] */ int *pcchPrinted,
+        /* [in] */ int indent) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IPropertySetterVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IPropertySetterVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IPropertySetter * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IPropertySetter * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IPropertySetter * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IPropertySetter * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IPropertySetter * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IPropertySetter * This);
 
-        HRESULT(STDMETHODCALLTYPE *LoadXML)(
-            IPropertySetter * This,
-            /* [in] */ IUnknown *pxml);
+    HRESULT(STDMETHODCALLTYPE *LoadXML)(
+        IPropertySetter * This,
+        /* [in] */ IUnknown *pxml);
 
-        HRESULT(STDMETHODCALLTYPE *PrintXML)(
-            IPropertySetter * This,
-            /* [out] */ char *pszXML,
-            /* [in] */ int cbXML,
-            /* [out] */ int *pcbPrinted,
-            /* [in] */ int indent);
+    HRESULT(STDMETHODCALLTYPE *PrintXML)(
+        IPropertySetter * This,
+        /* [out] */ char *pszXML,
+        /* [in] */ int cbXML,
+        /* [out] */ int *pcbPrinted,
+        /* [in] */ int indent);
 
-        HRESULT(STDMETHODCALLTYPE *CloneProps)(
-            IPropertySetter * This,
-            /* [out] */ IPropertySetter **ppSetter,
-            /* [in] */ REFERENCE_TIME rtStart,
-            /* [in] */ REFERENCE_TIME rtStop);
+    HRESULT(STDMETHODCALLTYPE *CloneProps)(
+        IPropertySetter * This,
+        /* [out] */ IPropertySetter **ppSetter,
+        /* [in] */ REFERENCE_TIME rtStart,
+        /* [in] */ REFERENCE_TIME rtStop);
 
-        HRESULT(STDMETHODCALLTYPE *AddProp)(
-            IPropertySetter * This,
-            /* [in] */ DEXTER_PARAM Param,
-            /* [in] */ DEXTER_VALUE *paValue);
+    HRESULT(STDMETHODCALLTYPE *AddProp)(
+        IPropertySetter * This,
+        /* [in] */ DEXTER_PARAM Param,
+        /* [in] */ DEXTER_VALUE *paValue);
 
-        HRESULT(STDMETHODCALLTYPE *GetProps)(
-            IPropertySetter * This,
-            /* [out] */ LONG *pcParams,
-            /* [out] */ DEXTER_PARAM **paParam,
-            /* [out] */ DEXTER_VALUE **paValue);
+    HRESULT(STDMETHODCALLTYPE *GetProps)(
+        IPropertySetter * This,
+        /* [out] */ LONG *pcParams,
+        /* [out] */ DEXTER_PARAM **paParam,
+        /* [out] */ DEXTER_VALUE **paValue);
 
-        HRESULT(STDMETHODCALLTYPE *FreeProps)(
-            IPropertySetter * This,
-            /* [in] */ LONG cParams,
-            /* [in] */ DEXTER_PARAM *paParam,
-            /* [in] */ DEXTER_VALUE *paValue);
+    HRESULT(STDMETHODCALLTYPE *FreeProps)(
+        IPropertySetter * This,
+        /* [in] */ LONG cParams,
+        /* [in] */ DEXTER_PARAM *paParam,
+        /* [in] */ DEXTER_VALUE *paValue);
 
-        HRESULT(STDMETHODCALLTYPE *ClearProps)(
-            IPropertySetter * This);
+    HRESULT(STDMETHODCALLTYPE *ClearProps)(
+        IPropertySetter * This);
 
-        HRESULT(STDMETHODCALLTYPE *SaveToBlob)(
-            IPropertySetter * This,
-            /* [out] */ LONG *pcSize,
-            /* [out] */ BYTE **ppb);
+    HRESULT(STDMETHODCALLTYPE *SaveToBlob)(
+        IPropertySetter * This,
+        /* [out] */ LONG *pcSize,
+        /* [out] */ BYTE **ppb);
 
-        HRESULT(STDMETHODCALLTYPE *LoadFromBlob)(
-            IPropertySetter * This,
-            /* [in] */ LONG cSize,
-            /* [in] */ BYTE *pb);
+    HRESULT(STDMETHODCALLTYPE *LoadFromBlob)(
+        IPropertySetter * This,
+        /* [in] */ LONG cSize,
+        /* [in] */ BYTE *pb);
 
-        HRESULT(STDMETHODCALLTYPE *SetProps)(
-            IPropertySetter * This,
-            /* [in] */ IUnknown *pTarget,
-            /* [in] */ REFERENCE_TIME rtNow);
+    HRESULT(STDMETHODCALLTYPE *SetProps)(
+        IPropertySetter * This,
+        /* [in] */ IUnknown *pTarget,
+        /* [in] */ REFERENCE_TIME rtNow);
 
-        HRESULT(STDMETHODCALLTYPE *PrintXMLW)(
-            IPropertySetter * This,
-            /* [out] */ WCHAR *pszXML,
-            /* [in] */ int cchXML,
-            /* [out] */ int *pcchPrinted,
-            /* [in] */ int indent);
+    HRESULT(STDMETHODCALLTYPE *PrintXMLW)(
+        IPropertySetter * This,
+        /* [out] */ WCHAR *pszXML,
+        /* [in] */ int cchXML,
+        /* [out] */ int *pcchPrinted,
+        /* [in] */ int indent);
 
-        END_INTERFACE
-    } IPropertySetterVtbl;
+    END_INTERFACE
+} IPropertySetterVtbl;
 
-    interface IPropertySetter
-    {
-        CONST_VTBL struct IPropertySetterVtbl *lpVtbl;
-    };
+interface IPropertySetter
+{
+    CONST_VTBL struct IPropertySetterVtbl *lpVtbl;
+};
 
 
 
@@ -822,151 +822,151 @@ public:
 
 
 
-    HRESULT STDMETHODCALLTYPE IPropertySetter_LoadXML_Proxy(
-        IPropertySetter * This,
-        /* [in] */ IUnknown *pxml);
+HRESULT STDMETHODCALLTYPE IPropertySetter_LoadXML_Proxy(
+    IPropertySetter * This,
+    /* [in] */ IUnknown *pxml);
 
 
-    void __RPC_STUB IPropertySetter_LoadXML_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IPropertySetter_LoadXML_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IPropertySetter_PrintXML_Proxy(
-        IPropertySetter * This,
-        /* [out] */ char *pszXML,
-        /* [in] */ int cbXML,
-        /* [out] */ int *pcbPrinted,
-        /* [in] */ int indent);
+HRESULT STDMETHODCALLTYPE IPropertySetter_PrintXML_Proxy(
+    IPropertySetter * This,
+    /* [out] */ char *pszXML,
+    /* [in] */ int cbXML,
+    /* [out] */ int *pcbPrinted,
+    /* [in] */ int indent);
 
 
-    void __RPC_STUB IPropertySetter_PrintXML_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IPropertySetter_PrintXML_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IPropertySetter_CloneProps_Proxy(
-        IPropertySetter * This,
-        /* [out] */ IPropertySetter **ppSetter,
-        /* [in] */ REFERENCE_TIME rtStart,
-        /* [in] */ REFERENCE_TIME rtStop);
+HRESULT STDMETHODCALLTYPE IPropertySetter_CloneProps_Proxy(
+    IPropertySetter * This,
+    /* [out] */ IPropertySetter **ppSetter,
+    /* [in] */ REFERENCE_TIME rtStart,
+    /* [in] */ REFERENCE_TIME rtStop);
 
 
-    void __RPC_STUB IPropertySetter_CloneProps_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IPropertySetter_CloneProps_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IPropertySetter_AddProp_Proxy(
-        IPropertySetter * This,
-        /* [in] */ DEXTER_PARAM Param,
-        /* [in] */ DEXTER_VALUE *paValue);
+HRESULT STDMETHODCALLTYPE IPropertySetter_AddProp_Proxy(
+    IPropertySetter * This,
+    /* [in] */ DEXTER_PARAM Param,
+    /* [in] */ DEXTER_VALUE *paValue);
 
 
-    void __RPC_STUB IPropertySetter_AddProp_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IPropertySetter_AddProp_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IPropertySetter_GetProps_Proxy(
-        IPropertySetter * This,
-        /* [out] */ LONG *pcParams,
-        /* [out] */ DEXTER_PARAM **paParam,
-        /* [out] */ DEXTER_VALUE **paValue);
+HRESULT STDMETHODCALLTYPE IPropertySetter_GetProps_Proxy(
+    IPropertySetter * This,
+    /* [out] */ LONG *pcParams,
+    /* [out] */ DEXTER_PARAM **paParam,
+    /* [out] */ DEXTER_VALUE **paValue);
 
 
-    void __RPC_STUB IPropertySetter_GetProps_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IPropertySetter_GetProps_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IPropertySetter_FreeProps_Proxy(
-        IPropertySetter * This,
-        /* [in] */ LONG cParams,
-        /* [in] */ DEXTER_PARAM *paParam,
-        /* [in] */ DEXTER_VALUE *paValue);
+HRESULT STDMETHODCALLTYPE IPropertySetter_FreeProps_Proxy(
+    IPropertySetter * This,
+    /* [in] */ LONG cParams,
+    /* [in] */ DEXTER_PARAM *paParam,
+    /* [in] */ DEXTER_VALUE *paValue);
 
 
-    void __RPC_STUB IPropertySetter_FreeProps_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IPropertySetter_FreeProps_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IPropertySetter_ClearProps_Proxy(
-        IPropertySetter * This);
+HRESULT STDMETHODCALLTYPE IPropertySetter_ClearProps_Proxy(
+    IPropertySetter * This);
 
 
-    void __RPC_STUB IPropertySetter_ClearProps_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IPropertySetter_ClearProps_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IPropertySetter_SaveToBlob_Proxy(
-        IPropertySetter * This,
-        /* [out] */ LONG *pcSize,
-        /* [out] */ BYTE **ppb);
+HRESULT STDMETHODCALLTYPE IPropertySetter_SaveToBlob_Proxy(
+    IPropertySetter * This,
+    /* [out] */ LONG *pcSize,
+    /* [out] */ BYTE **ppb);
 
 
-    void __RPC_STUB IPropertySetter_SaveToBlob_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IPropertySetter_SaveToBlob_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IPropertySetter_LoadFromBlob_Proxy(
-        IPropertySetter * This,
-        /* [in] */ LONG cSize,
-        /* [in] */ BYTE *pb);
+HRESULT STDMETHODCALLTYPE IPropertySetter_LoadFromBlob_Proxy(
+    IPropertySetter * This,
+    /* [in] */ LONG cSize,
+    /* [in] */ BYTE *pb);
 
 
-    void __RPC_STUB IPropertySetter_LoadFromBlob_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IPropertySetter_LoadFromBlob_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IPropertySetter_SetProps_Proxy(
-        IPropertySetter * This,
-        /* [in] */ IUnknown *pTarget,
-        /* [in] */ REFERENCE_TIME rtNow);
+HRESULT STDMETHODCALLTYPE IPropertySetter_SetProps_Proxy(
+    IPropertySetter * This,
+    /* [in] */ IUnknown *pTarget,
+    /* [in] */ REFERENCE_TIME rtNow);
 
 
-    void __RPC_STUB IPropertySetter_SetProps_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IPropertySetter_SetProps_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IPropertySetter_PrintXMLW_Proxy(
-        IPropertySetter * This,
-        /* [out] */ WCHAR *pszXML,
-        /* [in] */ int cchXML,
-        /* [out] */ int *pcchPrinted,
-        /* [in] */ int indent);
+HRESULT STDMETHODCALLTYPE IPropertySetter_PrintXMLW_Proxy(
+    IPropertySetter * This,
+    /* [out] */ WCHAR *pszXML,
+    /* [in] */ int cchXML,
+    /* [out] */ int *pcchPrinted,
+    /* [in] */ int indent);
 
 
-    void __RPC_STUB IPropertySetter_PrintXMLW_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IPropertySetter_PrintXMLW_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -976,233 +976,233 @@ public:
 #ifndef __IDxtCompositor_INTERFACE_DEFINED__
 #define __IDxtCompositor_INTERFACE_DEFINED__
 
-    /* interface IDxtCompositor */
-    /* [unique][helpstring][dual][uuid][object] */
+/* interface IDxtCompositor */
+/* [unique][helpstring][dual][uuid][object] */
 
 
-    EXTERN_C const IID IID_IDxtCompositor;
+EXTERN_C const IID IID_IDxtCompositor;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("BB44391E-6ABD-422f-9E2E-385C9DFF51FC")
+MIDL_INTERFACE("BB44391E-6ABD-422f-9E2E-385C9DFF51FC")
 IDxtCompositor :
-    public IDXEffect
-    {
+public IDXEffect
+{
 public:
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_OffsetX(
-            /* [retval][out] */ long *pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_OffsetX(
+        /* [retval][out] */ long *pVal) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_OffsetX(
-            /* [in] */ long newVal) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_OffsetX(
+        /* [in] */ long newVal) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_OffsetY(
-            /* [retval][out] */ long *pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_OffsetY(
+        /* [retval][out] */ long *pVal) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_OffsetY(
-            /* [in] */ long newVal) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_OffsetY(
+        /* [in] */ long newVal) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Width(
-            /* [retval][out] */ long *pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Width(
+        /* [retval][out] */ long *pVal) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_Width(
-            /* [in] */ long newVal) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_Width(
+        /* [in] */ long newVal) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Height(
-            /* [retval][out] */ long *pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Height(
+        /* [retval][out] */ long *pVal) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_Height(
-            /* [in] */ long newVal) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_Height(
+        /* [in] */ long newVal) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_SrcOffsetX(
-            /* [retval][out] */ long *pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_SrcOffsetX(
+        /* [retval][out] */ long *pVal) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_SrcOffsetX(
-            /* [in] */ long newVal) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_SrcOffsetX(
+        /* [in] */ long newVal) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_SrcOffsetY(
-            /* [retval][out] */ long *pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_SrcOffsetY(
+        /* [retval][out] */ long *pVal) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_SrcOffsetY(
-            /* [in] */ long newVal) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_SrcOffsetY(
+        /* [in] */ long newVal) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_SrcWidth(
-            /* [retval][out] */ long *pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_SrcWidth(
+        /* [retval][out] */ long *pVal) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_SrcWidth(
-            /* [in] */ long newVal) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_SrcWidth(
+        /* [in] */ long newVal) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_SrcHeight(
-            /* [retval][out] */ long *pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_SrcHeight(
+        /* [retval][out] */ long *pVal) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_SrcHeight(
-            /* [in] */ long newVal) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_SrcHeight(
+        /* [in] */ long newVal) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IDxtCompositorVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IDxtCompositorVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IDxtCompositor * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IDxtCompositor * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IDxtCompositor * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IDxtCompositor * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IDxtCompositor * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IDxtCompositor * This);
 
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
-            IDxtCompositor * This,
-            /* [out] */ UINT *pctinfo);
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
+        IDxtCompositor * This,
+        /* [out] */ UINT *pctinfo);
 
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
-            IDxtCompositor * This,
-            /* [in] */ UINT iTInfo,
-            /* [in] */ LCID lcid,
-            /* [out] */ ITypeInfo **ppTInfo);
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
+        IDxtCompositor * This,
+        /* [in] */ UINT iTInfo,
+        /* [in] */ LCID lcid,
+        /* [out] */ ITypeInfo **ppTInfo);
 
-        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
-            IDxtCompositor * This,
-            /* [in] */ REFIID riid,
-            /* [size_is][in] */ LPOLESTR *rgszNames,
-            /* [in] */ UINT cNames,
-            /* [in] */ LCID lcid,
-            /* [size_is][out] */ DISPID *rgDispId);
+    HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
+        IDxtCompositor * This,
+        /* [in] */ REFIID riid,
+        /* [size_is][in] */ LPOLESTR *rgszNames,
+        /* [in] */ UINT cNames,
+        /* [in] */ LCID lcid,
+        /* [size_is][out] */ DISPID *rgDispId);
 
-        /* [local] */
-        HRESULT(STDMETHODCALLTYPE *Invoke)(
-            IDxtCompositor * This,
-            /* [in] */ DISPID dispIdMember,
-            /* [in] */ REFIID riid,
-            /* [in] */ LCID lcid,
-            /* [in] */ WORD wFlags,
-            /* [out][in] */ DISPPARAMS *pDispParams,
-            /* [out] */ VARIANT *pVarResult,
-            /* [out] */ EXCEPINFO *pExcepInfo,
-            /* [out] */ UINT *puArgErr);
+    /* [local] */
+    HRESULT(STDMETHODCALLTYPE *Invoke)(
+        IDxtCompositor * This,
+        /* [in] */ DISPID dispIdMember,
+        /* [in] */ REFIID riid,
+        /* [in] */ LCID lcid,
+        /* [in] */ WORD wFlags,
+        /* [out][in] */ DISPPARAMS *pDispParams,
+        /* [out] */ VARIANT *pVarResult,
+        /* [out] */ EXCEPINFO *pExcepInfo,
+        /* [out] */ UINT *puArgErr);
 
-        /* [id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_Capabilities)(
-            IDxtCompositor * This,
-            /* [retval][out] */ long *pVal);
+    /* [id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_Capabilities)(
+        IDxtCompositor * This,
+        /* [retval][out] */ long *pVal);
 
-        /* [id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_Progress)(
-            IDxtCompositor * This,
-            /* [retval][out] */ float *pVal);
+    /* [id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_Progress)(
+        IDxtCompositor * This,
+        /* [retval][out] */ float *pVal);
 
-        /* [id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_Progress)(
-            IDxtCompositor * This,
-            /* [in] */ float newVal);
+    /* [id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_Progress)(
+        IDxtCompositor * This,
+        /* [in] */ float newVal);
 
-        /* [id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_StepResolution)(
-            IDxtCompositor * This,
-            /* [retval][out] */ float *pVal);
+    /* [id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_StepResolution)(
+        IDxtCompositor * This,
+        /* [retval][out] */ float *pVal);
 
-        /* [id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_Duration)(
-            IDxtCompositor * This,
-            /* [retval][out] */ float *pVal);
+    /* [id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_Duration)(
+        IDxtCompositor * This,
+        /* [retval][out] */ float *pVal);
 
-        /* [id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_Duration)(
-            IDxtCompositor * This,
-            /* [in] */ float newVal);
+    /* [id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_Duration)(
+        IDxtCompositor * This,
+        /* [in] */ float newVal);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_OffsetX)(
-            IDxtCompositor * This,
-            /* [retval][out] */ long *pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_OffsetX)(
+        IDxtCompositor * This,
+        /* [retval][out] */ long *pVal);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_OffsetX)(
-            IDxtCompositor * This,
-            /* [in] */ long newVal);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_OffsetX)(
+        IDxtCompositor * This,
+        /* [in] */ long newVal);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_OffsetY)(
-            IDxtCompositor * This,
-            /* [retval][out] */ long *pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_OffsetY)(
+        IDxtCompositor * This,
+        /* [retval][out] */ long *pVal);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_OffsetY)(
-            IDxtCompositor * This,
-            /* [in] */ long newVal);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_OffsetY)(
+        IDxtCompositor * This,
+        /* [in] */ long newVal);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_Width)(
-            IDxtCompositor * This,
-            /* [retval][out] */ long *pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_Width)(
+        IDxtCompositor * This,
+        /* [retval][out] */ long *pVal);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_Width)(
-            IDxtCompositor * This,
-            /* [in] */ long newVal);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_Width)(
+        IDxtCompositor * This,
+        /* [in] */ long newVal);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_Height)(
-            IDxtCompositor * This,
-            /* [retval][out] */ long *pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_Height)(
+        IDxtCompositor * This,
+        /* [retval][out] */ long *pVal);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_Height)(
-            IDxtCompositor * This,
-            /* [in] */ long newVal);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_Height)(
+        IDxtCompositor * This,
+        /* [in] */ long newVal);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_SrcOffsetX)(
-            IDxtCompositor * This,
-            /* [retval][out] */ long *pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_SrcOffsetX)(
+        IDxtCompositor * This,
+        /* [retval][out] */ long *pVal);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_SrcOffsetX)(
-            IDxtCompositor * This,
-            /* [in] */ long newVal);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_SrcOffsetX)(
+        IDxtCompositor * This,
+        /* [in] */ long newVal);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_SrcOffsetY)(
-            IDxtCompositor * This,
-            /* [retval][out] */ long *pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_SrcOffsetY)(
+        IDxtCompositor * This,
+        /* [retval][out] */ long *pVal);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_SrcOffsetY)(
-            IDxtCompositor * This,
-            /* [in] */ long newVal);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_SrcOffsetY)(
+        IDxtCompositor * This,
+        /* [in] */ long newVal);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_SrcWidth)(
-            IDxtCompositor * This,
-            /* [retval][out] */ long *pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_SrcWidth)(
+        IDxtCompositor * This,
+        /* [retval][out] */ long *pVal);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_SrcWidth)(
-            IDxtCompositor * This,
-            /* [in] */ long newVal);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_SrcWidth)(
+        IDxtCompositor * This,
+        /* [in] */ long newVal);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_SrcHeight)(
-            IDxtCompositor * This,
-            /* [retval][out] */ long *pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_SrcHeight)(
+        IDxtCompositor * This,
+        /* [retval][out] */ long *pVal);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_SrcHeight)(
-            IDxtCompositor * This,
-            /* [in] */ long newVal);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_SrcHeight)(
+        IDxtCompositor * This,
+        /* [in] */ long newVal);
 
-        END_INTERFACE
-    } IDxtCompositorVtbl;
+    END_INTERFACE
+} IDxtCompositorVtbl;
 
-    interface IDxtCompositor
-    {
-        CONST_VTBL struct IDxtCompositorVtbl *lpVtbl;
-    };
+interface IDxtCompositor
+{
+    CONST_VTBL struct IDxtCompositorVtbl *lpVtbl;
+};
 
 
 
@@ -1306,211 +1306,211 @@ public:
 
 
 
-    /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE IDxtCompositor_get_OffsetX_Proxy(
-        IDxtCompositor * This,
-        /* [retval][out] */ long *pVal);
+/* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE IDxtCompositor_get_OffsetX_Proxy(
+    IDxtCompositor * This,
+    /* [retval][out] */ long *pVal);
 
 
-    void __RPC_STUB IDxtCompositor_get_OffsetX_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtCompositor_get_OffsetX_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtCompositor_put_OffsetX_Proxy(
-        IDxtCompositor * This,
-        /* [in] */ long newVal);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtCompositor_put_OffsetX_Proxy(
+    IDxtCompositor * This,
+    /* [in] */ long newVal);
 
 
-    void __RPC_STUB IDxtCompositor_put_OffsetX_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtCompositor_put_OffsetX_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IDxtCompositor_get_OffsetY_Proxy(
-        IDxtCompositor * This,
-        /* [retval][out] */ long *pVal);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IDxtCompositor_get_OffsetY_Proxy(
+    IDxtCompositor * This,
+    /* [retval][out] */ long *pVal);
 
 
-    void __RPC_STUB IDxtCompositor_get_OffsetY_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtCompositor_get_OffsetY_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtCompositor_put_OffsetY_Proxy(
-        IDxtCompositor * This,
-        /* [in] */ long newVal);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtCompositor_put_OffsetY_Proxy(
+    IDxtCompositor * This,
+    /* [in] */ long newVal);
 
 
-    void __RPC_STUB IDxtCompositor_put_OffsetY_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtCompositor_put_OffsetY_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IDxtCompositor_get_Width_Proxy(
-        IDxtCompositor * This,
-        /* [retval][out] */ long *pVal);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IDxtCompositor_get_Width_Proxy(
+    IDxtCompositor * This,
+    /* [retval][out] */ long *pVal);
 
 
-    void __RPC_STUB IDxtCompositor_get_Width_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtCompositor_get_Width_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtCompositor_put_Width_Proxy(
-        IDxtCompositor * This,
-        /* [in] */ long newVal);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtCompositor_put_Width_Proxy(
+    IDxtCompositor * This,
+    /* [in] */ long newVal);
 
 
-    void __RPC_STUB IDxtCompositor_put_Width_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtCompositor_put_Width_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IDxtCompositor_get_Height_Proxy(
-        IDxtCompositor * This,
-        /* [retval][out] */ long *pVal);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IDxtCompositor_get_Height_Proxy(
+    IDxtCompositor * This,
+    /* [retval][out] */ long *pVal);
 
 
-    void __RPC_STUB IDxtCompositor_get_Height_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtCompositor_get_Height_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtCompositor_put_Height_Proxy(
-        IDxtCompositor * This,
-        /* [in] */ long newVal);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtCompositor_put_Height_Proxy(
+    IDxtCompositor * This,
+    /* [in] */ long newVal);
 
 
-    void __RPC_STUB IDxtCompositor_put_Height_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtCompositor_put_Height_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IDxtCompositor_get_SrcOffsetX_Proxy(
-        IDxtCompositor * This,
-        /* [retval][out] */ long *pVal);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IDxtCompositor_get_SrcOffsetX_Proxy(
+    IDxtCompositor * This,
+    /* [retval][out] */ long *pVal);
 
 
-    void __RPC_STUB IDxtCompositor_get_SrcOffsetX_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtCompositor_get_SrcOffsetX_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtCompositor_put_SrcOffsetX_Proxy(
-        IDxtCompositor * This,
-        /* [in] */ long newVal);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtCompositor_put_SrcOffsetX_Proxy(
+    IDxtCompositor * This,
+    /* [in] */ long newVal);
 
 
-    void __RPC_STUB IDxtCompositor_put_SrcOffsetX_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtCompositor_put_SrcOffsetX_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IDxtCompositor_get_SrcOffsetY_Proxy(
-        IDxtCompositor * This,
-        /* [retval][out] */ long *pVal);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IDxtCompositor_get_SrcOffsetY_Proxy(
+    IDxtCompositor * This,
+    /* [retval][out] */ long *pVal);
 
 
-    void __RPC_STUB IDxtCompositor_get_SrcOffsetY_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtCompositor_get_SrcOffsetY_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtCompositor_put_SrcOffsetY_Proxy(
-        IDxtCompositor * This,
-        /* [in] */ long newVal);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtCompositor_put_SrcOffsetY_Proxy(
+    IDxtCompositor * This,
+    /* [in] */ long newVal);
 
 
-    void __RPC_STUB IDxtCompositor_put_SrcOffsetY_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtCompositor_put_SrcOffsetY_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IDxtCompositor_get_SrcWidth_Proxy(
-        IDxtCompositor * This,
-        /* [retval][out] */ long *pVal);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IDxtCompositor_get_SrcWidth_Proxy(
+    IDxtCompositor * This,
+    /* [retval][out] */ long *pVal);
 
 
-    void __RPC_STUB IDxtCompositor_get_SrcWidth_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtCompositor_get_SrcWidth_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtCompositor_put_SrcWidth_Proxy(
-        IDxtCompositor * This,
-        /* [in] */ long newVal);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtCompositor_put_SrcWidth_Proxy(
+    IDxtCompositor * This,
+    /* [in] */ long newVal);
 
 
-    void __RPC_STUB IDxtCompositor_put_SrcWidth_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtCompositor_put_SrcWidth_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IDxtCompositor_get_SrcHeight_Proxy(
-        IDxtCompositor * This,
-        /* [retval][out] */ long *pVal);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IDxtCompositor_get_SrcHeight_Proxy(
+    IDxtCompositor * This,
+    /* [retval][out] */ long *pVal);
 
 
-    void __RPC_STUB IDxtCompositor_get_SrcHeight_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtCompositor_get_SrcHeight_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtCompositor_put_SrcHeight_Proxy(
-        IDxtCompositor * This,
-        /* [in] */ long newVal);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtCompositor_put_SrcHeight_Proxy(
+    IDxtCompositor * This,
+    /* [in] */ long newVal);
 
 
-    void __RPC_STUB IDxtCompositor_put_SrcHeight_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtCompositor_put_SrcHeight_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -1520,137 +1520,137 @@ public:
 #ifndef __IDxtAlphaSetter_INTERFACE_DEFINED__
 #define __IDxtAlphaSetter_INTERFACE_DEFINED__
 
-    /* interface IDxtAlphaSetter */
-    /* [unique][helpstring][dual][uuid][object] */
+/* interface IDxtAlphaSetter */
+/* [unique][helpstring][dual][uuid][object] */
 
 
-    EXTERN_C const IID IID_IDxtAlphaSetter;
+EXTERN_C const IID IID_IDxtAlphaSetter;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("4EE9EAD9-DA4D-43d0-9383-06B90C08B12B")
+MIDL_INTERFACE("4EE9EAD9-DA4D-43d0-9383-06B90C08B12B")
 IDxtAlphaSetter :
-    public IDXEffect
-    {
+public IDXEffect
+{
 public:
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Alpha(
-            /* [retval][out] */ long *pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Alpha(
+        /* [retval][out] */ long *pVal) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_Alpha(
-            /* [in] */ long newVal) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_Alpha(
+        /* [in] */ long newVal) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_AlphaRamp(
-            /* [retval][out] */ double *pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_AlphaRamp(
+        /* [retval][out] */ double *pVal) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_AlphaRamp(
-            /* [in] */ double newVal) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_AlphaRamp(
+        /* [in] */ double newVal) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IDxtAlphaSetterVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IDxtAlphaSetterVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IDxtAlphaSetter * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IDxtAlphaSetter * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IDxtAlphaSetter * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IDxtAlphaSetter * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IDxtAlphaSetter * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IDxtAlphaSetter * This);
 
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
-            IDxtAlphaSetter * This,
-            /* [out] */ UINT *pctinfo);
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
+        IDxtAlphaSetter * This,
+        /* [out] */ UINT *pctinfo);
 
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
-            IDxtAlphaSetter * This,
-            /* [in] */ UINT iTInfo,
-            /* [in] */ LCID lcid,
-            /* [out] */ ITypeInfo **ppTInfo);
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
+        IDxtAlphaSetter * This,
+        /* [in] */ UINT iTInfo,
+        /* [in] */ LCID lcid,
+        /* [out] */ ITypeInfo **ppTInfo);
 
-        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
-            IDxtAlphaSetter * This,
-            /* [in] */ REFIID riid,
-            /* [size_is][in] */ LPOLESTR *rgszNames,
-            /* [in] */ UINT cNames,
-            /* [in] */ LCID lcid,
-            /* [size_is][out] */ DISPID *rgDispId);
+    HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
+        IDxtAlphaSetter * This,
+        /* [in] */ REFIID riid,
+        /* [size_is][in] */ LPOLESTR *rgszNames,
+        /* [in] */ UINT cNames,
+        /* [in] */ LCID lcid,
+        /* [size_is][out] */ DISPID *rgDispId);
 
-        /* [local] */
-        HRESULT(STDMETHODCALLTYPE *Invoke)(
-            IDxtAlphaSetter * This,
-            /* [in] */ DISPID dispIdMember,
-            /* [in] */ REFIID riid,
-            /* [in] */ LCID lcid,
-            /* [in] */ WORD wFlags,
-            /* [out][in] */ DISPPARAMS *pDispParams,
-            /* [out] */ VARIANT *pVarResult,
-            /* [out] */ EXCEPINFO *pExcepInfo,
-            /* [out] */ UINT *puArgErr);
+    /* [local] */
+    HRESULT(STDMETHODCALLTYPE *Invoke)(
+        IDxtAlphaSetter * This,
+        /* [in] */ DISPID dispIdMember,
+        /* [in] */ REFIID riid,
+        /* [in] */ LCID lcid,
+        /* [in] */ WORD wFlags,
+        /* [out][in] */ DISPPARAMS *pDispParams,
+        /* [out] */ VARIANT *pVarResult,
+        /* [out] */ EXCEPINFO *pExcepInfo,
+        /* [out] */ UINT *puArgErr);
 
-        /* [id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_Capabilities)(
-            IDxtAlphaSetter * This,
-            /* [retval][out] */ long *pVal);
+    /* [id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_Capabilities)(
+        IDxtAlphaSetter * This,
+        /* [retval][out] */ long *pVal);
 
-        /* [id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_Progress)(
-            IDxtAlphaSetter * This,
-            /* [retval][out] */ float *pVal);
+    /* [id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_Progress)(
+        IDxtAlphaSetter * This,
+        /* [retval][out] */ float *pVal);
 
-        /* [id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_Progress)(
-            IDxtAlphaSetter * This,
-            /* [in] */ float newVal);
+    /* [id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_Progress)(
+        IDxtAlphaSetter * This,
+        /* [in] */ float newVal);
 
-        /* [id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_StepResolution)(
-            IDxtAlphaSetter * This,
-            /* [retval][out] */ float *pVal);
+    /* [id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_StepResolution)(
+        IDxtAlphaSetter * This,
+        /* [retval][out] */ float *pVal);
 
-        /* [id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_Duration)(
-            IDxtAlphaSetter * This,
-            /* [retval][out] */ float *pVal);
+    /* [id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_Duration)(
+        IDxtAlphaSetter * This,
+        /* [retval][out] */ float *pVal);
 
-        /* [id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_Duration)(
-            IDxtAlphaSetter * This,
-            /* [in] */ float newVal);
+    /* [id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_Duration)(
+        IDxtAlphaSetter * This,
+        /* [in] */ float newVal);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_Alpha)(
-            IDxtAlphaSetter * This,
-            /* [retval][out] */ long *pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_Alpha)(
+        IDxtAlphaSetter * This,
+        /* [retval][out] */ long *pVal);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_Alpha)(
-            IDxtAlphaSetter * This,
-            /* [in] */ long newVal);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_Alpha)(
+        IDxtAlphaSetter * This,
+        /* [in] */ long newVal);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_AlphaRamp)(
-            IDxtAlphaSetter * This,
-            /* [retval][out] */ double *pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_AlphaRamp)(
+        IDxtAlphaSetter * This,
+        /* [retval][out] */ double *pVal);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_AlphaRamp)(
-            IDxtAlphaSetter * This,
-            /* [in] */ double newVal);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_AlphaRamp)(
+        IDxtAlphaSetter * This,
+        /* [in] */ double newVal);
 
-        END_INTERFACE
-    } IDxtAlphaSetterVtbl;
+    END_INTERFACE
+} IDxtAlphaSetterVtbl;
 
-    interface IDxtAlphaSetter
-    {
-        CONST_VTBL struct IDxtAlphaSetterVtbl *lpVtbl;
-    };
+interface IDxtAlphaSetter
+{
+    CONST_VTBL struct IDxtAlphaSetterVtbl *lpVtbl;
+};
 
 
 
@@ -1718,55 +1718,55 @@ public:
 
 
 
-    /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE IDxtAlphaSetter_get_Alpha_Proxy(
-        IDxtAlphaSetter * This,
-        /* [retval][out] */ long *pVal);
+/* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE IDxtAlphaSetter_get_Alpha_Proxy(
+    IDxtAlphaSetter * This,
+    /* [retval][out] */ long *pVal);
 
 
-    void __RPC_STUB IDxtAlphaSetter_get_Alpha_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtAlphaSetter_get_Alpha_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtAlphaSetter_put_Alpha_Proxy(
-        IDxtAlphaSetter * This,
-        /* [in] */ long newVal);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtAlphaSetter_put_Alpha_Proxy(
+    IDxtAlphaSetter * This,
+    /* [in] */ long newVal);
 
 
-    void __RPC_STUB IDxtAlphaSetter_put_Alpha_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtAlphaSetter_put_Alpha_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IDxtAlphaSetter_get_AlphaRamp_Proxy(
-        IDxtAlphaSetter * This,
-        /* [retval][out] */ double *pVal);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IDxtAlphaSetter_get_AlphaRamp_Proxy(
+    IDxtAlphaSetter * This,
+    /* [retval][out] */ double *pVal);
 
 
-    void __RPC_STUB IDxtAlphaSetter_get_AlphaRamp_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtAlphaSetter_get_AlphaRamp_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtAlphaSetter_put_AlphaRamp_Proxy(
-        IDxtAlphaSetter * This,
-        /* [in] */ double newVal);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtAlphaSetter_put_AlphaRamp_Proxy(
+    IDxtAlphaSetter * This,
+    /* [in] */ double newVal);
 
 
-    void __RPC_STUB IDxtAlphaSetter_put_AlphaRamp_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtAlphaSetter_put_AlphaRamp_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -1776,291 +1776,291 @@ public:
 #ifndef __IDxtJpeg_INTERFACE_DEFINED__
 #define __IDxtJpeg_INTERFACE_DEFINED__
 
-    /* interface IDxtJpeg */
-    /* [unique][helpstring][dual][uuid][object] */
+/* interface IDxtJpeg */
+/* [unique][helpstring][dual][uuid][object] */
 
 
-    EXTERN_C const IID IID_IDxtJpeg;
+EXTERN_C const IID IID_IDxtJpeg;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("DE75D011-7A65-11D2-8CEA-00A0C9441E20")
+MIDL_INTERFACE("DE75D011-7A65-11D2-8CEA-00A0C9441E20")
 IDxtJpeg :
-    public IDXEffect
-    {
+public IDXEffect
+{
 public:
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_MaskNum(
-            /* [retval][out] */ long *__MIDL_0021) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_MaskNum(
+        /* [retval][out] */ long *__MIDL_0021) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_MaskNum(
-            /* [in] */ long __MIDL_0022) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_MaskNum(
+        /* [in] */ long __MIDL_0022) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_MaskName(
-            /* [retval][out] */ BSTR *pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_MaskName(
+        /* [retval][out] */ BSTR *pVal) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_MaskName(
-            /* [in] */ BSTR newVal) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_MaskName(
+        /* [in] */ BSTR newVal) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_ScaleX(
-            /* [retval][out] */ double *__MIDL_0023) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_ScaleX(
+        /* [retval][out] */ double *__MIDL_0023) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_ScaleX(
-            /* [in] */ double __MIDL_0024) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_ScaleX(
+        /* [in] */ double __MIDL_0024) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_ScaleY(
-            /* [retval][out] */ double *__MIDL_0025) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_ScaleY(
+        /* [retval][out] */ double *__MIDL_0025) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_ScaleY(
-            /* [in] */ double __MIDL_0026) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_ScaleY(
+        /* [in] */ double __MIDL_0026) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_OffsetX(
-            /* [retval][out] */ long *__MIDL_0027) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_OffsetX(
+        /* [retval][out] */ long *__MIDL_0027) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_OffsetX(
-            /* [in] */ long __MIDL_0028) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_OffsetX(
+        /* [in] */ long __MIDL_0028) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_OffsetY(
-            /* [retval][out] */ long *__MIDL_0029) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_OffsetY(
+        /* [retval][out] */ long *__MIDL_0029) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_OffsetY(
-            /* [in] */ long __MIDL_0030) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_OffsetY(
+        /* [in] */ long __MIDL_0030) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_ReplicateX(
-            /* [retval][out] */ long *pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_ReplicateX(
+        /* [retval][out] */ long *pVal) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_ReplicateX(
-            /* [in] */ long newVal) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_ReplicateX(
+        /* [in] */ long newVal) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_ReplicateY(
-            /* [retval][out] */ long *pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_ReplicateY(
+        /* [retval][out] */ long *pVal) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_ReplicateY(
-            /* [in] */ long newVal) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_ReplicateY(
+        /* [in] */ long newVal) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_BorderColor(
-            /* [retval][out] */ long *pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_BorderColor(
+        /* [retval][out] */ long *pVal) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_BorderColor(
-            /* [in] */ long newVal) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_BorderColor(
+        /* [in] */ long newVal) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_BorderWidth(
-            /* [retval][out] */ long *pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_BorderWidth(
+        /* [retval][out] */ long *pVal) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_BorderWidth(
-            /* [in] */ long newVal) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_BorderWidth(
+        /* [in] */ long newVal) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_BorderSoftness(
-            /* [retval][out] */ long *pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_BorderSoftness(
+        /* [retval][out] */ long *pVal) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_BorderSoftness(
-            /* [in] */ long newVal) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_BorderSoftness(
+        /* [in] */ long newVal) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE ApplyChanges(void) = 0;
+    virtual HRESULT STDMETHODCALLTYPE ApplyChanges(void) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE LoadDefSettings(void) = 0;
+    virtual HRESULT STDMETHODCALLTYPE LoadDefSettings(void) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IDxtJpegVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IDxtJpegVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IDxtJpeg * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IDxtJpeg * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IDxtJpeg * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IDxtJpeg * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IDxtJpeg * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IDxtJpeg * This);
 
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
-            IDxtJpeg * This,
-            /* [out] */ UINT *pctinfo);
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
+        IDxtJpeg * This,
+        /* [out] */ UINT *pctinfo);
 
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
-            IDxtJpeg * This,
-            /* [in] */ UINT iTInfo,
-            /* [in] */ LCID lcid,
-            /* [out] */ ITypeInfo **ppTInfo);
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
+        IDxtJpeg * This,
+        /* [in] */ UINT iTInfo,
+        /* [in] */ LCID lcid,
+        /* [out] */ ITypeInfo **ppTInfo);
 
-        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
-            IDxtJpeg * This,
-            /* [in] */ REFIID riid,
-            /* [size_is][in] */ LPOLESTR *rgszNames,
-            /* [in] */ UINT cNames,
-            /* [in] */ LCID lcid,
-            /* [size_is][out] */ DISPID *rgDispId);
+    HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
+        IDxtJpeg * This,
+        /* [in] */ REFIID riid,
+        /* [size_is][in] */ LPOLESTR *rgszNames,
+        /* [in] */ UINT cNames,
+        /* [in] */ LCID lcid,
+        /* [size_is][out] */ DISPID *rgDispId);
 
-        /* [local] */
-        HRESULT(STDMETHODCALLTYPE *Invoke)(
-            IDxtJpeg * This,
-            /* [in] */ DISPID dispIdMember,
-            /* [in] */ REFIID riid,
-            /* [in] */ LCID lcid,
-            /* [in] */ WORD wFlags,
-            /* [out][in] */ DISPPARAMS *pDispParams,
-            /* [out] */ VARIANT *pVarResult,
-            /* [out] */ EXCEPINFO *pExcepInfo,
-            /* [out] */ UINT *puArgErr);
+    /* [local] */
+    HRESULT(STDMETHODCALLTYPE *Invoke)(
+        IDxtJpeg * This,
+        /* [in] */ DISPID dispIdMember,
+        /* [in] */ REFIID riid,
+        /* [in] */ LCID lcid,
+        /* [in] */ WORD wFlags,
+        /* [out][in] */ DISPPARAMS *pDispParams,
+        /* [out] */ VARIANT *pVarResult,
+        /* [out] */ EXCEPINFO *pExcepInfo,
+        /* [out] */ UINT *puArgErr);
 
-        /* [id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_Capabilities)(
-            IDxtJpeg * This,
-            /* [retval][out] */ long *pVal);
+    /* [id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_Capabilities)(
+        IDxtJpeg * This,
+        /* [retval][out] */ long *pVal);
 
-        /* [id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_Progress)(
-            IDxtJpeg * This,
-            /* [retval][out] */ float *pVal);
+    /* [id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_Progress)(
+        IDxtJpeg * This,
+        /* [retval][out] */ float *pVal);
 
-        /* [id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_Progress)(
-            IDxtJpeg * This,
-            /* [in] */ float newVal);
+    /* [id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_Progress)(
+        IDxtJpeg * This,
+        /* [in] */ float newVal);
 
-        /* [id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_StepResolution)(
-            IDxtJpeg * This,
-            /* [retval][out] */ float *pVal);
+    /* [id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_StepResolution)(
+        IDxtJpeg * This,
+        /* [retval][out] */ float *pVal);
 
-        /* [id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_Duration)(
-            IDxtJpeg * This,
-            /* [retval][out] */ float *pVal);
+    /* [id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_Duration)(
+        IDxtJpeg * This,
+        /* [retval][out] */ float *pVal);
 
-        /* [id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_Duration)(
-            IDxtJpeg * This,
-            /* [in] */ float newVal);
+    /* [id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_Duration)(
+        IDxtJpeg * This,
+        /* [in] */ float newVal);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_MaskNum)(
-            IDxtJpeg * This,
-            /* [retval][out] */ long *__MIDL_0021);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_MaskNum)(
+        IDxtJpeg * This,
+        /* [retval][out] */ long *__MIDL_0021);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_MaskNum)(
-            IDxtJpeg * This,
-            /* [in] */ long __MIDL_0022);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_MaskNum)(
+        IDxtJpeg * This,
+        /* [in] */ long __MIDL_0022);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_MaskName)(
-            IDxtJpeg * This,
-            /* [retval][out] */ BSTR *pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_MaskName)(
+        IDxtJpeg * This,
+        /* [retval][out] */ BSTR *pVal);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_MaskName)(
-            IDxtJpeg * This,
-            /* [in] */ BSTR newVal);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_MaskName)(
+        IDxtJpeg * This,
+        /* [in] */ BSTR newVal);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_ScaleX)(
-            IDxtJpeg * This,
-            /* [retval][out] */ double *__MIDL_0023);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_ScaleX)(
+        IDxtJpeg * This,
+        /* [retval][out] */ double *__MIDL_0023);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_ScaleX)(
-            IDxtJpeg * This,
-            /* [in] */ double __MIDL_0024);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_ScaleX)(
+        IDxtJpeg * This,
+        /* [in] */ double __MIDL_0024);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_ScaleY)(
-            IDxtJpeg * This,
-            /* [retval][out] */ double *__MIDL_0025);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_ScaleY)(
+        IDxtJpeg * This,
+        /* [retval][out] */ double *__MIDL_0025);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_ScaleY)(
-            IDxtJpeg * This,
-            /* [in] */ double __MIDL_0026);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_ScaleY)(
+        IDxtJpeg * This,
+        /* [in] */ double __MIDL_0026);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_OffsetX)(
-            IDxtJpeg * This,
-            /* [retval][out] */ long *__MIDL_0027);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_OffsetX)(
+        IDxtJpeg * This,
+        /* [retval][out] */ long *__MIDL_0027);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_OffsetX)(
-            IDxtJpeg * This,
-            /* [in] */ long __MIDL_0028);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_OffsetX)(
+        IDxtJpeg * This,
+        /* [in] */ long __MIDL_0028);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_OffsetY)(
-            IDxtJpeg * This,
-            /* [retval][out] */ long *__MIDL_0029);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_OffsetY)(
+        IDxtJpeg * This,
+        /* [retval][out] */ long *__MIDL_0029);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_OffsetY)(
-            IDxtJpeg * This,
-            /* [in] */ long __MIDL_0030);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_OffsetY)(
+        IDxtJpeg * This,
+        /* [in] */ long __MIDL_0030);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_ReplicateX)(
-            IDxtJpeg * This,
-            /* [retval][out] */ long *pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_ReplicateX)(
+        IDxtJpeg * This,
+        /* [retval][out] */ long *pVal);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_ReplicateX)(
-            IDxtJpeg * This,
-            /* [in] */ long newVal);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_ReplicateX)(
+        IDxtJpeg * This,
+        /* [in] */ long newVal);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_ReplicateY)(
-            IDxtJpeg * This,
-            /* [retval][out] */ long *pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_ReplicateY)(
+        IDxtJpeg * This,
+        /* [retval][out] */ long *pVal);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_ReplicateY)(
-            IDxtJpeg * This,
-            /* [in] */ long newVal);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_ReplicateY)(
+        IDxtJpeg * This,
+        /* [in] */ long newVal);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_BorderColor)(
-            IDxtJpeg * This,
-            /* [retval][out] */ long *pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_BorderColor)(
+        IDxtJpeg * This,
+        /* [retval][out] */ long *pVal);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_BorderColor)(
-            IDxtJpeg * This,
-            /* [in] */ long newVal);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_BorderColor)(
+        IDxtJpeg * This,
+        /* [in] */ long newVal);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_BorderWidth)(
-            IDxtJpeg * This,
-            /* [retval][out] */ long *pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_BorderWidth)(
+        IDxtJpeg * This,
+        /* [retval][out] */ long *pVal);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_BorderWidth)(
-            IDxtJpeg * This,
-            /* [in] */ long newVal);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_BorderWidth)(
+        IDxtJpeg * This,
+        /* [in] */ long newVal);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_BorderSoftness)(
-            IDxtJpeg * This,
-            /* [retval][out] */ long *pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_BorderSoftness)(
+        IDxtJpeg * This,
+        /* [retval][out] */ long *pVal);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_BorderSoftness)(
-            IDxtJpeg * This,
-            /* [in] */ long newVal);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_BorderSoftness)(
+        IDxtJpeg * This,
+        /* [in] */ long newVal);
 
-        HRESULT(STDMETHODCALLTYPE *ApplyChanges)(
-            IDxtJpeg * This);
+    HRESULT(STDMETHODCALLTYPE *ApplyChanges)(
+        IDxtJpeg * This);
 
-        HRESULT(STDMETHODCALLTYPE *LoadDefSettings)(
-            IDxtJpeg * This);
+    HRESULT(STDMETHODCALLTYPE *LoadDefSettings)(
+        IDxtJpeg * This);
 
-        END_INTERFACE
-    } IDxtJpegVtbl;
+    END_INTERFACE
+} IDxtJpegVtbl;
 
-    interface IDxtJpeg
-    {
-        CONST_VTBL struct IDxtJpegVtbl *lpVtbl;
-    };
+interface IDxtJpeg
+{
+    CONST_VTBL struct IDxtJpegVtbl *lpVtbl;
+};
 
 
 
@@ -2188,311 +2188,311 @@ public:
 
 
 
-    /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE IDxtJpeg_get_MaskNum_Proxy(
-        IDxtJpeg * This,
-        /* [retval][out] */ long *__MIDL_0021);
+/* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE IDxtJpeg_get_MaskNum_Proxy(
+    IDxtJpeg * This,
+    /* [retval][out] */ long *__MIDL_0021);
 
 
-    void __RPC_STUB IDxtJpeg_get_MaskNum_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtJpeg_get_MaskNum_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtJpeg_put_MaskNum_Proxy(
-        IDxtJpeg * This,
-        /* [in] */ long __MIDL_0022);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtJpeg_put_MaskNum_Proxy(
+    IDxtJpeg * This,
+    /* [in] */ long __MIDL_0022);
 
 
-    void __RPC_STUB IDxtJpeg_put_MaskNum_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtJpeg_put_MaskNum_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IDxtJpeg_get_MaskName_Proxy(
-        IDxtJpeg * This,
-        /* [retval][out] */ BSTR *pVal);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IDxtJpeg_get_MaskName_Proxy(
+    IDxtJpeg * This,
+    /* [retval][out] */ BSTR *pVal);
 
 
-    void __RPC_STUB IDxtJpeg_get_MaskName_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtJpeg_get_MaskName_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtJpeg_put_MaskName_Proxy(
-        IDxtJpeg * This,
-        /* [in] */ BSTR newVal);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtJpeg_put_MaskName_Proxy(
+    IDxtJpeg * This,
+    /* [in] */ BSTR newVal);
 
 
-    void __RPC_STUB IDxtJpeg_put_MaskName_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtJpeg_put_MaskName_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IDxtJpeg_get_ScaleX_Proxy(
-        IDxtJpeg * This,
-        /* [retval][out] */ double *__MIDL_0023);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IDxtJpeg_get_ScaleX_Proxy(
+    IDxtJpeg * This,
+    /* [retval][out] */ double *__MIDL_0023);
 
 
-    void __RPC_STUB IDxtJpeg_get_ScaleX_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtJpeg_get_ScaleX_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtJpeg_put_ScaleX_Proxy(
-        IDxtJpeg * This,
-        /* [in] */ double __MIDL_0024);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtJpeg_put_ScaleX_Proxy(
+    IDxtJpeg * This,
+    /* [in] */ double __MIDL_0024);
 
 
-    void __RPC_STUB IDxtJpeg_put_ScaleX_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtJpeg_put_ScaleX_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IDxtJpeg_get_ScaleY_Proxy(
-        IDxtJpeg * This,
-        /* [retval][out] */ double *__MIDL_0025);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IDxtJpeg_get_ScaleY_Proxy(
+    IDxtJpeg * This,
+    /* [retval][out] */ double *__MIDL_0025);
 
 
-    void __RPC_STUB IDxtJpeg_get_ScaleY_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtJpeg_get_ScaleY_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtJpeg_put_ScaleY_Proxy(
-        IDxtJpeg * This,
-        /* [in] */ double __MIDL_0026);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtJpeg_put_ScaleY_Proxy(
+    IDxtJpeg * This,
+    /* [in] */ double __MIDL_0026);
 
 
-    void __RPC_STUB IDxtJpeg_put_ScaleY_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtJpeg_put_ScaleY_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IDxtJpeg_get_OffsetX_Proxy(
-        IDxtJpeg * This,
-        /* [retval][out] */ long *__MIDL_0027);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IDxtJpeg_get_OffsetX_Proxy(
+    IDxtJpeg * This,
+    /* [retval][out] */ long *__MIDL_0027);
 
 
-    void __RPC_STUB IDxtJpeg_get_OffsetX_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtJpeg_get_OffsetX_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtJpeg_put_OffsetX_Proxy(
-        IDxtJpeg * This,
-        /* [in] */ long __MIDL_0028);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtJpeg_put_OffsetX_Proxy(
+    IDxtJpeg * This,
+    /* [in] */ long __MIDL_0028);
 
 
-    void __RPC_STUB IDxtJpeg_put_OffsetX_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtJpeg_put_OffsetX_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IDxtJpeg_get_OffsetY_Proxy(
-        IDxtJpeg * This,
-        /* [retval][out] */ long *__MIDL_0029);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IDxtJpeg_get_OffsetY_Proxy(
+    IDxtJpeg * This,
+    /* [retval][out] */ long *__MIDL_0029);
 
 
-    void __RPC_STUB IDxtJpeg_get_OffsetY_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtJpeg_get_OffsetY_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtJpeg_put_OffsetY_Proxy(
-        IDxtJpeg * This,
-        /* [in] */ long __MIDL_0030);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtJpeg_put_OffsetY_Proxy(
+    IDxtJpeg * This,
+    /* [in] */ long __MIDL_0030);
 
 
-    void __RPC_STUB IDxtJpeg_put_OffsetY_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtJpeg_put_OffsetY_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IDxtJpeg_get_ReplicateX_Proxy(
-        IDxtJpeg * This,
-        /* [retval][out] */ long *pVal);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IDxtJpeg_get_ReplicateX_Proxy(
+    IDxtJpeg * This,
+    /* [retval][out] */ long *pVal);
 
 
-    void __RPC_STUB IDxtJpeg_get_ReplicateX_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtJpeg_get_ReplicateX_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtJpeg_put_ReplicateX_Proxy(
-        IDxtJpeg * This,
-        /* [in] */ long newVal);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtJpeg_put_ReplicateX_Proxy(
+    IDxtJpeg * This,
+    /* [in] */ long newVal);
 
 
-    void __RPC_STUB IDxtJpeg_put_ReplicateX_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtJpeg_put_ReplicateX_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IDxtJpeg_get_ReplicateY_Proxy(
-        IDxtJpeg * This,
-        /* [retval][out] */ long *pVal);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IDxtJpeg_get_ReplicateY_Proxy(
+    IDxtJpeg * This,
+    /* [retval][out] */ long *pVal);
 
 
-    void __RPC_STUB IDxtJpeg_get_ReplicateY_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtJpeg_get_ReplicateY_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtJpeg_put_ReplicateY_Proxy(
-        IDxtJpeg * This,
-        /* [in] */ long newVal);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtJpeg_put_ReplicateY_Proxy(
+    IDxtJpeg * This,
+    /* [in] */ long newVal);
 
 
-    void __RPC_STUB IDxtJpeg_put_ReplicateY_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtJpeg_put_ReplicateY_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IDxtJpeg_get_BorderColor_Proxy(
-        IDxtJpeg * This,
-        /* [retval][out] */ long *pVal);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IDxtJpeg_get_BorderColor_Proxy(
+    IDxtJpeg * This,
+    /* [retval][out] */ long *pVal);
 
 
-    void __RPC_STUB IDxtJpeg_get_BorderColor_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtJpeg_get_BorderColor_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtJpeg_put_BorderColor_Proxy(
-        IDxtJpeg * This,
-        /* [in] */ long newVal);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtJpeg_put_BorderColor_Proxy(
+    IDxtJpeg * This,
+    /* [in] */ long newVal);
 
 
-    void __RPC_STUB IDxtJpeg_put_BorderColor_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtJpeg_put_BorderColor_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IDxtJpeg_get_BorderWidth_Proxy(
-        IDxtJpeg * This,
-        /* [retval][out] */ long *pVal);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IDxtJpeg_get_BorderWidth_Proxy(
+    IDxtJpeg * This,
+    /* [retval][out] */ long *pVal);
 
 
-    void __RPC_STUB IDxtJpeg_get_BorderWidth_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtJpeg_get_BorderWidth_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtJpeg_put_BorderWidth_Proxy(
-        IDxtJpeg * This,
-        /* [in] */ long newVal);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtJpeg_put_BorderWidth_Proxy(
+    IDxtJpeg * This,
+    /* [in] */ long newVal);
 
 
-    void __RPC_STUB IDxtJpeg_put_BorderWidth_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtJpeg_put_BorderWidth_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IDxtJpeg_get_BorderSoftness_Proxy(
-        IDxtJpeg * This,
-        /* [retval][out] */ long *pVal);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IDxtJpeg_get_BorderSoftness_Proxy(
+    IDxtJpeg * This,
+    /* [retval][out] */ long *pVal);
 
 
-    void __RPC_STUB IDxtJpeg_get_BorderSoftness_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtJpeg_get_BorderSoftness_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtJpeg_put_BorderSoftness_Proxy(
-        IDxtJpeg * This,
-        /* [in] */ long newVal);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtJpeg_put_BorderSoftness_Proxy(
+    IDxtJpeg * This,
+    /* [in] */ long newVal);
 
 
-    void __RPC_STUB IDxtJpeg_put_BorderSoftness_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtJpeg_put_BorderSoftness_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IDxtJpeg_ApplyChanges_Proxy(
-        IDxtJpeg * This);
+HRESULT STDMETHODCALLTYPE IDxtJpeg_ApplyChanges_Proxy(
+    IDxtJpeg * This);
 
 
-    void __RPC_STUB IDxtJpeg_ApplyChanges_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtJpeg_ApplyChanges_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IDxtJpeg_LoadDefSettings_Proxy(
-        IDxtJpeg * This);
+HRESULT STDMETHODCALLTYPE IDxtJpeg_LoadDefSettings_Proxy(
+    IDxtJpeg * This);
 
 
-    void __RPC_STUB IDxtJpeg_LoadDefSettings_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtJpeg_LoadDefSettings_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -2502,201 +2502,201 @@ public:
 #ifndef __IDxtKey_INTERFACE_DEFINED__
 #define __IDxtKey_INTERFACE_DEFINED__
 
-    /* interface IDxtKey */
-    /* [unique][helpstring][dual][uuid][object] */
+/* interface IDxtKey */
+/* [unique][helpstring][dual][uuid][object] */
 
 
-    EXTERN_C const IID IID_IDxtKey;
+EXTERN_C const IID IID_IDxtKey;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("3255de56-38fb-4901-b980-94b438010d7b")
+MIDL_INTERFACE("3255de56-38fb-4901-b980-94b438010d7b")
 IDxtKey :
-    public IDXEffect
-    {
+public IDXEffect
+{
 public:
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_KeyType(
-            /* [retval][out] */ int *__MIDL_0031) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_KeyType(
+        /* [retval][out] */ int *__MIDL_0031) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_KeyType(
-            /* [in] */ int __MIDL_0032) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_KeyType(
+        /* [in] */ int __MIDL_0032) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Hue(
-            /* [retval][out] */ int *__MIDL_0033) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Hue(
+        /* [retval][out] */ int *__MIDL_0033) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_Hue(
-            /* [in] */ int __MIDL_0034) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_Hue(
+        /* [in] */ int __MIDL_0034) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Luminance(
-            /* [retval][out] */ int *__MIDL_0035) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Luminance(
+        /* [retval][out] */ int *__MIDL_0035) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_Luminance(
-            /* [in] */ int __MIDL_0036) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_Luminance(
+        /* [in] */ int __MIDL_0036) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_RGB(
-            /* [retval][out] */ DWORD *__MIDL_0037) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_RGB(
+        /* [retval][out] */ DWORD *__MIDL_0037) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_RGB(
-            /* [in] */ DWORD __MIDL_0038) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_RGB(
+        /* [in] */ DWORD __MIDL_0038) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Similarity(
-            /* [retval][out] */ int *__MIDL_0039) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Similarity(
+        /* [retval][out] */ int *__MIDL_0039) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_Similarity(
-            /* [in] */ int __MIDL_0040) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_Similarity(
+        /* [in] */ int __MIDL_0040) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Invert(
-            /* [retval][out] */ BOOL *__MIDL_0041) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Invert(
+        /* [retval][out] */ BOOL *__MIDL_0041) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_Invert(
-            /* [in] */ BOOL __MIDL_0042) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_Invert(
+        /* [in] */ BOOL __MIDL_0042) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IDxtKeyVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IDxtKeyVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IDxtKey * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IDxtKey * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IDxtKey * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IDxtKey * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IDxtKey * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IDxtKey * This);
 
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
-            IDxtKey * This,
-            /* [out] */ UINT *pctinfo);
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
+        IDxtKey * This,
+        /* [out] */ UINT *pctinfo);
 
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
-            IDxtKey * This,
-            /* [in] */ UINT iTInfo,
-            /* [in] */ LCID lcid,
-            /* [out] */ ITypeInfo **ppTInfo);
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
+        IDxtKey * This,
+        /* [in] */ UINT iTInfo,
+        /* [in] */ LCID lcid,
+        /* [out] */ ITypeInfo **ppTInfo);
 
-        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
-            IDxtKey * This,
-            /* [in] */ REFIID riid,
-            /* [size_is][in] */ LPOLESTR *rgszNames,
-            /* [in] */ UINT cNames,
-            /* [in] */ LCID lcid,
-            /* [size_is][out] */ DISPID *rgDispId);
+    HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
+        IDxtKey * This,
+        /* [in] */ REFIID riid,
+        /* [size_is][in] */ LPOLESTR *rgszNames,
+        /* [in] */ UINT cNames,
+        /* [in] */ LCID lcid,
+        /* [size_is][out] */ DISPID *rgDispId);
 
-        /* [local] */
-        HRESULT(STDMETHODCALLTYPE *Invoke)(
-            IDxtKey * This,
-            /* [in] */ DISPID dispIdMember,
-            /* [in] */ REFIID riid,
-            /* [in] */ LCID lcid,
-            /* [in] */ WORD wFlags,
-            /* [out][in] */ DISPPARAMS *pDispParams,
-            /* [out] */ VARIANT *pVarResult,
-            /* [out] */ EXCEPINFO *pExcepInfo,
-            /* [out] */ UINT *puArgErr);
+    /* [local] */
+    HRESULT(STDMETHODCALLTYPE *Invoke)(
+        IDxtKey * This,
+        /* [in] */ DISPID dispIdMember,
+        /* [in] */ REFIID riid,
+        /* [in] */ LCID lcid,
+        /* [in] */ WORD wFlags,
+        /* [out][in] */ DISPPARAMS *pDispParams,
+        /* [out] */ VARIANT *pVarResult,
+        /* [out] */ EXCEPINFO *pExcepInfo,
+        /* [out] */ UINT *puArgErr);
 
-        /* [id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_Capabilities)(
-            IDxtKey * This,
-            /* [retval][out] */ long *pVal);
+    /* [id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_Capabilities)(
+        IDxtKey * This,
+        /* [retval][out] */ long *pVal);
 
-        /* [id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_Progress)(
-            IDxtKey * This,
-            /* [retval][out] */ float *pVal);
+    /* [id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_Progress)(
+        IDxtKey * This,
+        /* [retval][out] */ float *pVal);
 
-        /* [id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_Progress)(
-            IDxtKey * This,
-            /* [in] */ float newVal);
+    /* [id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_Progress)(
+        IDxtKey * This,
+        /* [in] */ float newVal);
 
-        /* [id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_StepResolution)(
-            IDxtKey * This,
-            /* [retval][out] */ float *pVal);
+    /* [id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_StepResolution)(
+        IDxtKey * This,
+        /* [retval][out] */ float *pVal);
 
-        /* [id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_Duration)(
-            IDxtKey * This,
-            /* [retval][out] */ float *pVal);
+    /* [id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_Duration)(
+        IDxtKey * This,
+        /* [retval][out] */ float *pVal);
 
-        /* [id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_Duration)(
-            IDxtKey * This,
-            /* [in] */ float newVal);
+    /* [id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_Duration)(
+        IDxtKey * This,
+        /* [in] */ float newVal);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_KeyType)(
-            IDxtKey * This,
-            /* [retval][out] */ int *__MIDL_0031);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_KeyType)(
+        IDxtKey * This,
+        /* [retval][out] */ int *__MIDL_0031);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_KeyType)(
-            IDxtKey * This,
-            /* [in] */ int __MIDL_0032);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_KeyType)(
+        IDxtKey * This,
+        /* [in] */ int __MIDL_0032);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_Hue)(
-            IDxtKey * This,
-            /* [retval][out] */ int *__MIDL_0033);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_Hue)(
+        IDxtKey * This,
+        /* [retval][out] */ int *__MIDL_0033);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_Hue)(
-            IDxtKey * This,
-            /* [in] */ int __MIDL_0034);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_Hue)(
+        IDxtKey * This,
+        /* [in] */ int __MIDL_0034);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_Luminance)(
-            IDxtKey * This,
-            /* [retval][out] */ int *__MIDL_0035);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_Luminance)(
+        IDxtKey * This,
+        /* [retval][out] */ int *__MIDL_0035);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_Luminance)(
-            IDxtKey * This,
-            /* [in] */ int __MIDL_0036);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_Luminance)(
+        IDxtKey * This,
+        /* [in] */ int __MIDL_0036);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_RGB)(
-            IDxtKey * This,
-            /* [retval][out] */ DWORD *__MIDL_0037);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_RGB)(
+        IDxtKey * This,
+        /* [retval][out] */ DWORD *__MIDL_0037);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_RGB)(
-            IDxtKey * This,
-            /* [in] */ DWORD __MIDL_0038);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_RGB)(
+        IDxtKey * This,
+        /* [in] */ DWORD __MIDL_0038);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_Similarity)(
-            IDxtKey * This,
-            /* [retval][out] */ int *__MIDL_0039);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_Similarity)(
+        IDxtKey * This,
+        /* [retval][out] */ int *__MIDL_0039);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_Similarity)(
-            IDxtKey * This,
-            /* [in] */ int __MIDL_0040);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_Similarity)(
+        IDxtKey * This,
+        /* [in] */ int __MIDL_0040);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_Invert)(
-            IDxtKey * This,
-            /* [retval][out] */ BOOL *__MIDL_0041);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_Invert)(
+        IDxtKey * This,
+        /* [retval][out] */ BOOL *__MIDL_0041);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_Invert)(
-            IDxtKey * This,
-            /* [in] */ BOOL __MIDL_0042);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_Invert)(
+        IDxtKey * This,
+        /* [in] */ BOOL __MIDL_0042);
 
-        END_INTERFACE
-    } IDxtKeyVtbl;
+    END_INTERFACE
+} IDxtKeyVtbl;
 
-    interface IDxtKey
-    {
-        CONST_VTBL struct IDxtKeyVtbl *lpVtbl;
-    };
+interface IDxtKey
+{
+    CONST_VTBL struct IDxtKeyVtbl *lpVtbl;
+};
 
 
 
@@ -2788,159 +2788,159 @@ public:
 
 
 
-    /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE IDxtKey_get_KeyType_Proxy(
-        IDxtKey * This,
-        /* [retval][out] */ int *__MIDL_0031);
+/* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE IDxtKey_get_KeyType_Proxy(
+    IDxtKey * This,
+    /* [retval][out] */ int *__MIDL_0031);
 
 
-    void __RPC_STUB IDxtKey_get_KeyType_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtKey_get_KeyType_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtKey_put_KeyType_Proxy(
-        IDxtKey * This,
-        /* [in] */ int __MIDL_0032);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtKey_put_KeyType_Proxy(
+    IDxtKey * This,
+    /* [in] */ int __MIDL_0032);
 
 
-    void __RPC_STUB IDxtKey_put_KeyType_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtKey_put_KeyType_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IDxtKey_get_Hue_Proxy(
-        IDxtKey * This,
-        /* [retval][out] */ int *__MIDL_0033);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IDxtKey_get_Hue_Proxy(
+    IDxtKey * This,
+    /* [retval][out] */ int *__MIDL_0033);
 
 
-    void __RPC_STUB IDxtKey_get_Hue_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtKey_get_Hue_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtKey_put_Hue_Proxy(
-        IDxtKey * This,
-        /* [in] */ int __MIDL_0034);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtKey_put_Hue_Proxy(
+    IDxtKey * This,
+    /* [in] */ int __MIDL_0034);
 
 
-    void __RPC_STUB IDxtKey_put_Hue_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtKey_put_Hue_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IDxtKey_get_Luminance_Proxy(
-        IDxtKey * This,
-        /* [retval][out] */ int *__MIDL_0035);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IDxtKey_get_Luminance_Proxy(
+    IDxtKey * This,
+    /* [retval][out] */ int *__MIDL_0035);
 
 
-    void __RPC_STUB IDxtKey_get_Luminance_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtKey_get_Luminance_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtKey_put_Luminance_Proxy(
-        IDxtKey * This,
-        /* [in] */ int __MIDL_0036);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtKey_put_Luminance_Proxy(
+    IDxtKey * This,
+    /* [in] */ int __MIDL_0036);
 
 
-    void __RPC_STUB IDxtKey_put_Luminance_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtKey_put_Luminance_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IDxtKey_get_RGB_Proxy(
-        IDxtKey * This,
-        /* [retval][out] */ DWORD *__MIDL_0037);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IDxtKey_get_RGB_Proxy(
+    IDxtKey * This,
+    /* [retval][out] */ DWORD *__MIDL_0037);
 
 
-    void __RPC_STUB IDxtKey_get_RGB_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtKey_get_RGB_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtKey_put_RGB_Proxy(
-        IDxtKey * This,
-        /* [in] */ DWORD __MIDL_0038);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtKey_put_RGB_Proxy(
+    IDxtKey * This,
+    /* [in] */ DWORD __MIDL_0038);
 
 
-    void __RPC_STUB IDxtKey_put_RGB_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtKey_put_RGB_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IDxtKey_get_Similarity_Proxy(
-        IDxtKey * This,
-        /* [retval][out] */ int *__MIDL_0039);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IDxtKey_get_Similarity_Proxy(
+    IDxtKey * This,
+    /* [retval][out] */ int *__MIDL_0039);
 
 
-    void __RPC_STUB IDxtKey_get_Similarity_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtKey_get_Similarity_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtKey_put_Similarity_Proxy(
-        IDxtKey * This,
-        /* [in] */ int __MIDL_0040);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtKey_put_Similarity_Proxy(
+    IDxtKey * This,
+    /* [in] */ int __MIDL_0040);
 
 
-    void __RPC_STUB IDxtKey_put_Similarity_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtKey_put_Similarity_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IDxtKey_get_Invert_Proxy(
-        IDxtKey * This,
-        /* [retval][out] */ BOOL *__MIDL_0041);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IDxtKey_get_Invert_Proxy(
+    IDxtKey * This,
+    /* [retval][out] */ BOOL *__MIDL_0041);
 
 
-    void __RPC_STUB IDxtKey_get_Invert_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtKey_get_Invert_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IDxtKey_put_Invert_Proxy(
-        IDxtKey * This,
-        /* [in] */ BOOL __MIDL_0042);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IDxtKey_put_Invert_Proxy(
+    IDxtKey * This,
+    /* [in] */ BOOL __MIDL_0042);
 
 
-    void __RPC_STUB IDxtKey_put_Invert_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IDxtKey_put_Invert_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -2950,65 +2950,65 @@ public:
 #ifndef __IMediaLocator_INTERFACE_DEFINED__
 #define __IMediaLocator_INTERFACE_DEFINED__
 
-    /* interface IMediaLocator */
-    /* [unique][helpstring][uuid][object] */
+/* interface IMediaLocator */
+/* [unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IMediaLocator;
+EXTERN_C const IID IID_IMediaLocator;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("288581E0-66CE-11d2-918F-00C0DF10D434")
+MIDL_INTERFACE("288581E0-66CE-11d2-918F-00C0DF10D434")
 IMediaLocator :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual HRESULT STDMETHODCALLTYPE FindMediaFile(
-            BSTR Input,
-            BSTR FilterString,
-            BSTR *pOutput,
-            long Flags) = 0;
+    virtual HRESULT STDMETHODCALLTYPE FindMediaFile(
+        BSTR Input,
+        BSTR FilterString,
+        BSTR *pOutput,
+        long Flags) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE AddFoundLocation(
-            BSTR DirectoryName) = 0;
+    virtual HRESULT STDMETHODCALLTYPE AddFoundLocation(
+        BSTR DirectoryName) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IMediaLocatorVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IMediaLocatorVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IMediaLocator * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IMediaLocator * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IMediaLocator * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IMediaLocator * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IMediaLocator * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IMediaLocator * This);
 
-        HRESULT(STDMETHODCALLTYPE *FindMediaFile)(
-            IMediaLocator * This,
-            BSTR Input,
-            BSTR FilterString,
-            BSTR *pOutput,
-            long Flags);
+    HRESULT(STDMETHODCALLTYPE *FindMediaFile)(
+        IMediaLocator * This,
+        BSTR Input,
+        BSTR FilterString,
+        BSTR *pOutput,
+        long Flags);
 
-        HRESULT(STDMETHODCALLTYPE *AddFoundLocation)(
-            IMediaLocator * This,
-            BSTR DirectoryName);
+    HRESULT(STDMETHODCALLTYPE *AddFoundLocation)(
+        IMediaLocator * This,
+        BSTR DirectoryName);
 
-        END_INTERFACE
-    } IMediaLocatorVtbl;
+    END_INTERFACE
+} IMediaLocatorVtbl;
 
-    interface IMediaLocator
-    {
-        CONST_VTBL struct IMediaLocatorVtbl *lpVtbl;
-    };
+interface IMediaLocator
+{
+    CONST_VTBL struct IMediaLocatorVtbl *lpVtbl;
+};
 
 
 
@@ -3038,31 +3038,31 @@ public:
 
 
 
-    HRESULT STDMETHODCALLTYPE IMediaLocator_FindMediaFile_Proxy(
-        IMediaLocator * This,
-        BSTR Input,
-        BSTR FilterString,
-        BSTR *pOutput,
-        long Flags);
+HRESULT STDMETHODCALLTYPE IMediaLocator_FindMediaFile_Proxy(
+    IMediaLocator * This,
+    BSTR Input,
+    BSTR FilterString,
+    BSTR *pOutput,
+    long Flags);
 
 
-    void __RPC_STUB IMediaLocator_FindMediaFile_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IMediaLocator_FindMediaFile_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IMediaLocator_AddFoundLocation_Proxy(
-        IMediaLocator * This,
-        BSTR DirectoryName);
+HRESULT STDMETHODCALLTYPE IMediaLocator_AddFoundLocation_Proxy(
+    IMediaLocator * This,
+    BSTR DirectoryName);
 
 
-    void __RPC_STUB IMediaLocator_AddFoundLocation_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IMediaLocator_AddFoundLocation_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -3072,187 +3072,187 @@ public:
 #ifndef __IMediaDet_INTERFACE_DEFINED__
 #define __IMediaDet_INTERFACE_DEFINED__
 
-    /* interface IMediaDet */
-    /* [unique][helpstring][uuid][object] */
+/* interface IMediaDet */
+/* [unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IMediaDet;
+EXTERN_C const IID IID_IMediaDet;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("65BD0710-24D2-4ff7-9324-ED2E5D3ABAFA")
+MIDL_INTERFACE("65BD0710-24D2-4ff7-9324-ED2E5D3ABAFA")
 IMediaDet :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Filter(
-            /* [retval][out] */ IUnknown **pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Filter(
+        /* [retval][out] */ IUnknown **pVal) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_Filter(
-            /* [in] */ IUnknown *newVal) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_Filter(
+        /* [in] */ IUnknown *newVal) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_OutputStreams(
-            /* [retval][out] */ long *pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_OutputStreams(
+        /* [retval][out] */ long *pVal) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_CurrentStream(
-            /* [retval][out] */ long *pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_CurrentStream(
+        /* [retval][out] */ long *pVal) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_CurrentStream(
-            /* [in] */ long newVal) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_CurrentStream(
+        /* [in] */ long newVal) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_StreamType(
-            /* [retval][out] */ GUID *pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_StreamType(
+        /* [retval][out] */ GUID *pVal) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_StreamTypeB(
-            /* [retval][out] */ BSTR *pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_StreamTypeB(
+        /* [retval][out] */ BSTR *pVal) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_StreamLength(
-            /* [retval][out] */ double *pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_StreamLength(
+        /* [retval][out] */ double *pVal) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Filename(
-            /* [retval][out] */ BSTR *pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Filename(
+        /* [retval][out] */ BSTR *pVal) = 0;
 
-        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_Filename(
-            /* [in] */ BSTR newVal) = 0;
+    virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_Filename(
+        /* [in] */ BSTR newVal) = 0;
 
-        virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE GetBitmapBits(
-            double StreamTime,
-            long *pBufferSize,
-            char *pBuffer,
-            long Width,
-            long Height) = 0;
+    virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE GetBitmapBits(
+        double StreamTime,
+        long *pBufferSize,
+        char *pBuffer,
+        long Width,
+        long Height) = 0;
 
-        virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE WriteBitmapBits(
-            double StreamTime,
-            long Width,
-            long Height,
-            BSTR Filename) = 0;
+    virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE WriteBitmapBits(
+        double StreamTime,
+        long Width,
+        long Height,
+        BSTR Filename) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_StreamMediaType(
-            /* [retval][out] */ AM_MEDIA_TYPE *pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_StreamMediaType(
+        /* [retval][out] */ AM_MEDIA_TYPE *pVal) = 0;
 
-        virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE GetSampleGrabber(
-            /* [out] */ ISampleGrabber **ppVal) = 0;
+    virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE GetSampleGrabber(
+        /* [out] */ ISampleGrabber **ppVal) = 0;
 
-        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_FrameRate(
-            /* [retval][out] */ double *pVal) = 0;
+    virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_FrameRate(
+        /* [retval][out] */ double *pVal) = 0;
 
-        virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE EnterBitmapGrabMode(
-            double SeekTime) = 0;
+    virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE EnterBitmapGrabMode(
+        double SeekTime) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IMediaDetVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IMediaDetVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IMediaDet * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IMediaDet * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IMediaDet * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IMediaDet * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IMediaDet * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IMediaDet * This);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_Filter)(
-            IMediaDet * This,
-            /* [retval][out] */ IUnknown **pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_Filter)(
+        IMediaDet * This,
+        /* [retval][out] */ IUnknown **pVal);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_Filter)(
-            IMediaDet * This,
-            /* [in] */ IUnknown *newVal);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_Filter)(
+        IMediaDet * This,
+        /* [in] */ IUnknown *newVal);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_OutputStreams)(
-            IMediaDet * This,
-            /* [retval][out] */ long *pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_OutputStreams)(
+        IMediaDet * This,
+        /* [retval][out] */ long *pVal);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_CurrentStream)(
-            IMediaDet * This,
-            /* [retval][out] */ long *pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_CurrentStream)(
+        IMediaDet * This,
+        /* [retval][out] */ long *pVal);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_CurrentStream)(
-            IMediaDet * This,
-            /* [in] */ long newVal);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_CurrentStream)(
+        IMediaDet * This,
+        /* [in] */ long newVal);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_StreamType)(
-            IMediaDet * This,
-            /* [retval][out] */ GUID *pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_StreamType)(
+        IMediaDet * This,
+        /* [retval][out] */ GUID *pVal);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_StreamTypeB)(
-            IMediaDet * This,
-            /* [retval][out] */ BSTR *pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_StreamTypeB)(
+        IMediaDet * This,
+        /* [retval][out] */ BSTR *pVal);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_StreamLength)(
-            IMediaDet * This,
-            /* [retval][out] */ double *pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_StreamLength)(
+        IMediaDet * This,
+        /* [retval][out] */ double *pVal);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_Filename)(
-            IMediaDet * This,
-            /* [retval][out] */ BSTR *pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_Filename)(
+        IMediaDet * This,
+        /* [retval][out] */ BSTR *pVal);
 
-        /* [helpstring][id][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_Filename)(
-            IMediaDet * This,
-            /* [in] */ BSTR newVal);
+    /* [helpstring][id][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_Filename)(
+        IMediaDet * This,
+        /* [in] */ BSTR newVal);
 
-        /* [helpstring][id] */
-        HRESULT(STDMETHODCALLTYPE *GetBitmapBits)(
-            IMediaDet * This,
-            double StreamTime,
-            long *pBufferSize,
-            char *pBuffer,
-            long Width,
-            long Height);
+    /* [helpstring][id] */
+    HRESULT(STDMETHODCALLTYPE *GetBitmapBits)(
+        IMediaDet * This,
+        double StreamTime,
+        long *pBufferSize,
+        char *pBuffer,
+        long Width,
+        long Height);
 
-        /* [helpstring][id] */
-        HRESULT(STDMETHODCALLTYPE *WriteBitmapBits)(
-            IMediaDet * This,
-            double StreamTime,
-            long Width,
-            long Height,
-            BSTR Filename);
+    /* [helpstring][id] */
+    HRESULT(STDMETHODCALLTYPE *WriteBitmapBits)(
+        IMediaDet * This,
+        double StreamTime,
+        long Width,
+        long Height,
+        BSTR Filename);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_StreamMediaType)(
-            IMediaDet * This,
-            /* [retval][out] */ AM_MEDIA_TYPE *pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_StreamMediaType)(
+        IMediaDet * This,
+        /* [retval][out] */ AM_MEDIA_TYPE *pVal);
 
-        /* [helpstring][id] */
-        HRESULT(STDMETHODCALLTYPE *GetSampleGrabber)(
-            IMediaDet * This,
-            /* [out] */ ISampleGrabber **ppVal);
+    /* [helpstring][id] */
+    HRESULT(STDMETHODCALLTYPE *GetSampleGrabber)(
+        IMediaDet * This,
+        /* [out] */ ISampleGrabber **ppVal);
 
-        /* [helpstring][id][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_FrameRate)(
-            IMediaDet * This,
-            /* [retval][out] */ double *pVal);
+    /* [helpstring][id][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_FrameRate)(
+        IMediaDet * This,
+        /* [retval][out] */ double *pVal);
 
-        /* [helpstring][id] */
-        HRESULT(STDMETHODCALLTYPE *EnterBitmapGrabMode)(
-            IMediaDet * This,
-            double SeekTime);
+    /* [helpstring][id] */
+    HRESULT(STDMETHODCALLTYPE *EnterBitmapGrabMode)(
+        IMediaDet * This,
+        double SeekTime);
 
-        END_INTERFACE
-    } IMediaDetVtbl;
+    END_INTERFACE
+} IMediaDetVtbl;
 
-    interface IMediaDet
-    {
-        CONST_VTBL struct IMediaDetVtbl *lpVtbl;
-    };
+interface IMediaDet
+{
+    CONST_VTBL struct IMediaDetVtbl *lpVtbl;
+};
 
 
 
@@ -3324,218 +3324,218 @@ public:
 
 
 
-    /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE IMediaDet_get_Filter_Proxy(
-        IMediaDet * This,
-        /* [retval][out] */ IUnknown **pVal);
+/* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE IMediaDet_get_Filter_Proxy(
+    IMediaDet * This,
+    /* [retval][out] */ IUnknown **pVal);
 
 
-    void __RPC_STUB IMediaDet_get_Filter_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IMediaDet_get_Filter_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IMediaDet_put_Filter_Proxy(
-        IMediaDet * This,
-        /* [in] */ IUnknown *newVal);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IMediaDet_put_Filter_Proxy(
+    IMediaDet * This,
+    /* [in] */ IUnknown *newVal);
 
 
-    void __RPC_STUB IMediaDet_put_Filter_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IMediaDet_put_Filter_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IMediaDet_get_OutputStreams_Proxy(
-        IMediaDet * This,
-        /* [retval][out] */ long *pVal);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IMediaDet_get_OutputStreams_Proxy(
+    IMediaDet * This,
+    /* [retval][out] */ long *pVal);
 
 
-    void __RPC_STUB IMediaDet_get_OutputStreams_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IMediaDet_get_OutputStreams_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IMediaDet_get_CurrentStream_Proxy(
-        IMediaDet * This,
-        /* [retval][out] */ long *pVal);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IMediaDet_get_CurrentStream_Proxy(
+    IMediaDet * This,
+    /* [retval][out] */ long *pVal);
 
 
-    void __RPC_STUB IMediaDet_get_CurrentStream_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IMediaDet_get_CurrentStream_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IMediaDet_put_CurrentStream_Proxy(
-        IMediaDet * This,
-        /* [in] */ long newVal);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IMediaDet_put_CurrentStream_Proxy(
+    IMediaDet * This,
+    /* [in] */ long newVal);
 
 
-    void __RPC_STUB IMediaDet_put_CurrentStream_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IMediaDet_put_CurrentStream_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IMediaDet_get_StreamType_Proxy(
-        IMediaDet * This,
-        /* [retval][out] */ GUID *pVal);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IMediaDet_get_StreamType_Proxy(
+    IMediaDet * This,
+    /* [retval][out] */ GUID *pVal);
 
 
-    void __RPC_STUB IMediaDet_get_StreamType_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IMediaDet_get_StreamType_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IMediaDet_get_StreamTypeB_Proxy(
-        IMediaDet * This,
-        /* [retval][out] */ BSTR *pVal);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IMediaDet_get_StreamTypeB_Proxy(
+    IMediaDet * This,
+    /* [retval][out] */ BSTR *pVal);
 
 
-    void __RPC_STUB IMediaDet_get_StreamTypeB_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IMediaDet_get_StreamTypeB_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IMediaDet_get_StreamLength_Proxy(
-        IMediaDet * This,
-        /* [retval][out] */ double *pVal);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IMediaDet_get_StreamLength_Proxy(
+    IMediaDet * This,
+    /* [retval][out] */ double *pVal);
 
 
-    void __RPC_STUB IMediaDet_get_StreamLength_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IMediaDet_get_StreamLength_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IMediaDet_get_Filename_Proxy(
-        IMediaDet * This,
-        /* [retval][out] */ BSTR *pVal);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IMediaDet_get_Filename_Proxy(
+    IMediaDet * This,
+    /* [retval][out] */ BSTR *pVal);
 
 
-    void __RPC_STUB IMediaDet_get_Filename_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IMediaDet_get_Filename_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propput] */
-    HRESULT STDMETHODCALLTYPE IMediaDet_put_Filename_Proxy(
-        IMediaDet * This,
-        /* [in] */ BSTR newVal);
+/* [helpstring][id][propput] */
+HRESULT STDMETHODCALLTYPE IMediaDet_put_Filename_Proxy(
+    IMediaDet * This,
+    /* [in] */ BSTR newVal);
 
 
-    void __RPC_STUB IMediaDet_put_Filename_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IMediaDet_put_Filename_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id] */
-    HRESULT STDMETHODCALLTYPE IMediaDet_GetBitmapBits_Proxy(
-        IMediaDet * This,
-        double StreamTime,
-        long *pBufferSize,
-        char *pBuffer,
-        long Width,
-        long Height);
+/* [helpstring][id] */
+HRESULT STDMETHODCALLTYPE IMediaDet_GetBitmapBits_Proxy(
+    IMediaDet * This,
+    double StreamTime,
+    long *pBufferSize,
+    char *pBuffer,
+    long Width,
+    long Height);
 
 
-    void __RPC_STUB IMediaDet_GetBitmapBits_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IMediaDet_GetBitmapBits_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id] */
-    HRESULT STDMETHODCALLTYPE IMediaDet_WriteBitmapBits_Proxy(
-        IMediaDet * This,
-        double StreamTime,
-        long Width,
-        long Height,
-        BSTR Filename);
+/* [helpstring][id] */
+HRESULT STDMETHODCALLTYPE IMediaDet_WriteBitmapBits_Proxy(
+    IMediaDet * This,
+    double StreamTime,
+    long Width,
+    long Height,
+    BSTR Filename);
 
 
-    void __RPC_STUB IMediaDet_WriteBitmapBits_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IMediaDet_WriteBitmapBits_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IMediaDet_get_StreamMediaType_Proxy(
-        IMediaDet * This,
-        /* [retval][out] */ AM_MEDIA_TYPE *pVal);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IMediaDet_get_StreamMediaType_Proxy(
+    IMediaDet * This,
+    /* [retval][out] */ AM_MEDIA_TYPE *pVal);
 
 
-    void __RPC_STUB IMediaDet_get_StreamMediaType_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IMediaDet_get_StreamMediaType_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id] */
-    HRESULT STDMETHODCALLTYPE IMediaDet_GetSampleGrabber_Proxy(
-        IMediaDet * This,
-        /* [out] */ ISampleGrabber **ppVal);
+/* [helpstring][id] */
+HRESULT STDMETHODCALLTYPE IMediaDet_GetSampleGrabber_Proxy(
+    IMediaDet * This,
+    /* [out] */ ISampleGrabber **ppVal);
 
 
-    void __RPC_STUB IMediaDet_GetSampleGrabber_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IMediaDet_GetSampleGrabber_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id][propget] */
-    HRESULT STDMETHODCALLTYPE IMediaDet_get_FrameRate_Proxy(
-        IMediaDet * This,
-        /* [retval][out] */ double *pVal);
+/* [helpstring][id][propget] */
+HRESULT STDMETHODCALLTYPE IMediaDet_get_FrameRate_Proxy(
+    IMediaDet * This,
+    /* [retval][out] */ double *pVal);
 
 
-    void __RPC_STUB IMediaDet_get_FrameRate_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IMediaDet_get_FrameRate_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id] */
-    HRESULT STDMETHODCALLTYPE IMediaDet_EnterBitmapGrabMode_Proxy(
-        IMediaDet * This,
-        double SeekTime);
+/* [helpstring][id] */
+HRESULT STDMETHODCALLTYPE IMediaDet_EnterBitmapGrabMode_Proxy(
+    IMediaDet * This,
+    double SeekTime);
 
 
-    void __RPC_STUB IMediaDet_EnterBitmapGrabMode_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IMediaDet_EnterBitmapGrabMode_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -3545,119 +3545,119 @@ public:
 #ifndef __IGrfCache_INTERFACE_DEFINED__
 #define __IGrfCache_INTERFACE_DEFINED__
 
-    /* interface IGrfCache */
-    /* [unique][helpstring][uuid][object] */
+/* interface IGrfCache */
+/* [unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IGrfCache;
+EXTERN_C const IID IID_IGrfCache;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("AE9472BE-B0C3-11D2-8D24-00A0C9441E20")
+MIDL_INTERFACE("AE9472BE-B0C3-11D2-8D24-00A0C9441E20")
 IGrfCache :
-    public IDispatch
-    {
+public IDispatch
+{
 public:
-        virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE AddFilter(
-            IGrfCache *ChainedCache,
-            LONGLONG ID,
-            const IBaseFilter *pFilter,
-            LPCWSTR pName) = 0;
+    virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE AddFilter(
+        IGrfCache *ChainedCache,
+        LONGLONG ID,
+        const IBaseFilter *pFilter,
+        LPCWSTR pName) = 0;
 
-        virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE ConnectPins(
-            IGrfCache *ChainedCache,
-            LONGLONG PinID1,
-            const IPin *pPin1,
-            LONGLONG PinID2,
-            const IPin *pPin2) = 0;
+    virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE ConnectPins(
+        IGrfCache *ChainedCache,
+        LONGLONG PinID1,
+        const IPin *pPin1,
+        LONGLONG PinID2,
+        const IPin *pPin2) = 0;
 
-        virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE SetGraph(
-            const IGraphBuilder *pGraph) = 0;
+    virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE SetGraph(
+        const IGraphBuilder *pGraph) = 0;
 
-        virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE DoConnectionsNow(void) = 0;
+    virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE DoConnectionsNow(void) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IGrfCacheVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IGrfCacheVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IGrfCache * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IGrfCache * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IGrfCache * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IGrfCache * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IGrfCache * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IGrfCache * This);
 
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
-            IGrfCache * This,
-            /* [out] */ UINT *pctinfo);
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
+        IGrfCache * This,
+        /* [out] */ UINT *pctinfo);
 
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
-            IGrfCache * This,
-            /* [in] */ UINT iTInfo,
-            /* [in] */ LCID lcid,
-            /* [out] */ ITypeInfo **ppTInfo);
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
+        IGrfCache * This,
+        /* [in] */ UINT iTInfo,
+        /* [in] */ LCID lcid,
+        /* [out] */ ITypeInfo **ppTInfo);
 
-        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
-            IGrfCache * This,
-            /* [in] */ REFIID riid,
-            /* [size_is][in] */ LPOLESTR *rgszNames,
-            /* [in] */ UINT cNames,
-            /* [in] */ LCID lcid,
-            /* [size_is][out] */ DISPID *rgDispId);
+    HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
+        IGrfCache * This,
+        /* [in] */ REFIID riid,
+        /* [size_is][in] */ LPOLESTR *rgszNames,
+        /* [in] */ UINT cNames,
+        /* [in] */ LCID lcid,
+        /* [size_is][out] */ DISPID *rgDispId);
 
-        /* [local] */
-        HRESULT(STDMETHODCALLTYPE *Invoke)(
-            IGrfCache * This,
-            /* [in] */ DISPID dispIdMember,
-            /* [in] */ REFIID riid,
-            /* [in] */ LCID lcid,
-            /* [in] */ WORD wFlags,
-            /* [out][in] */ DISPPARAMS *pDispParams,
-            /* [out] */ VARIANT *pVarResult,
-            /* [out] */ EXCEPINFO *pExcepInfo,
-            /* [out] */ UINT *puArgErr);
+    /* [local] */
+    HRESULT(STDMETHODCALLTYPE *Invoke)(
+        IGrfCache * This,
+        /* [in] */ DISPID dispIdMember,
+        /* [in] */ REFIID riid,
+        /* [in] */ LCID lcid,
+        /* [in] */ WORD wFlags,
+        /* [out][in] */ DISPPARAMS *pDispParams,
+        /* [out] */ VARIANT *pVarResult,
+        /* [out] */ EXCEPINFO *pExcepInfo,
+        /* [out] */ UINT *puArgErr);
 
-        /* [helpstring][id] */
-        HRESULT(STDMETHODCALLTYPE *AddFilter)(
-            IGrfCache * This,
-            IGrfCache *ChainedCache,
-            LONGLONG ID,
-            const IBaseFilter *pFilter,
-            LPCWSTR pName);
+    /* [helpstring][id] */
+    HRESULT(STDMETHODCALLTYPE *AddFilter)(
+        IGrfCache * This,
+        IGrfCache *ChainedCache,
+        LONGLONG ID,
+        const IBaseFilter *pFilter,
+        LPCWSTR pName);
 
-        /* [helpstring][id] */
-        HRESULT(STDMETHODCALLTYPE *ConnectPins)(
-            IGrfCache * This,
-            IGrfCache *ChainedCache,
-            LONGLONG PinID1,
-            const IPin *pPin1,
-            LONGLONG PinID2,
-            const IPin *pPin2);
+    /* [helpstring][id] */
+    HRESULT(STDMETHODCALLTYPE *ConnectPins)(
+        IGrfCache * This,
+        IGrfCache *ChainedCache,
+        LONGLONG PinID1,
+        const IPin *pPin1,
+        LONGLONG PinID2,
+        const IPin *pPin2);
 
-        /* [helpstring][id] */
-        HRESULT(STDMETHODCALLTYPE *SetGraph)(
-            IGrfCache * This,
-            const IGraphBuilder *pGraph);
+    /* [helpstring][id] */
+    HRESULT(STDMETHODCALLTYPE *SetGraph)(
+        IGrfCache * This,
+        const IGraphBuilder *pGraph);
 
-        /* [helpstring][id] */
-        HRESULT(STDMETHODCALLTYPE *DoConnectionsNow)(
-            IGrfCache * This);
+    /* [helpstring][id] */
+    HRESULT(STDMETHODCALLTYPE *DoConnectionsNow)(
+        IGrfCache * This);
 
-        END_INTERFACE
-    } IGrfCacheVtbl;
+    END_INTERFACE
+} IGrfCacheVtbl;
 
-    interface IGrfCache
-    {
-        CONST_VTBL struct IGrfCacheVtbl *lpVtbl;
-    };
+interface IGrfCache
+{
+    CONST_VTBL struct IGrfCacheVtbl *lpVtbl;
+};
 
 
 
@@ -3706,61 +3706,61 @@ public:
 
 
 
-    /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE IGrfCache_AddFilter_Proxy(
-        IGrfCache * This,
-        IGrfCache *ChainedCache,
-        LONGLONG ID,
-        const IBaseFilter *pFilter,
-        LPCWSTR pName);
+/* [helpstring][id] */ HRESULT STDMETHODCALLTYPE IGrfCache_AddFilter_Proxy(
+    IGrfCache * This,
+    IGrfCache *ChainedCache,
+    LONGLONG ID,
+    const IBaseFilter *pFilter,
+    LPCWSTR pName);
 
 
-    void __RPC_STUB IGrfCache_AddFilter_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IGrfCache_AddFilter_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id] */
-    HRESULT STDMETHODCALLTYPE IGrfCache_ConnectPins_Proxy(
-        IGrfCache * This,
-        IGrfCache *ChainedCache,
-        LONGLONG PinID1,
-        const IPin *pPin1,
-        LONGLONG PinID2,
-        const IPin *pPin2);
+/* [helpstring][id] */
+HRESULT STDMETHODCALLTYPE IGrfCache_ConnectPins_Proxy(
+    IGrfCache * This,
+    IGrfCache *ChainedCache,
+    LONGLONG PinID1,
+    const IPin *pPin1,
+    LONGLONG PinID2,
+    const IPin *pPin2);
 
 
-    void __RPC_STUB IGrfCache_ConnectPins_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IGrfCache_ConnectPins_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id] */
-    HRESULT STDMETHODCALLTYPE IGrfCache_SetGraph_Proxy(
-        IGrfCache * This,
-        const IGraphBuilder *pGraph);
+/* [helpstring][id] */
+HRESULT STDMETHODCALLTYPE IGrfCache_SetGraph_Proxy(
+    IGrfCache * This,
+    const IGraphBuilder *pGraph);
 
 
-    void __RPC_STUB IGrfCache_SetGraph_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IGrfCache_SetGraph_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id] */
-    HRESULT STDMETHODCALLTYPE IGrfCache_DoConnectionsNow_Proxy(
-        IGrfCache * This);
+/* [helpstring][id] */
+HRESULT STDMETHODCALLTYPE IGrfCache_DoConnectionsNow_Proxy(
+    IGrfCache * This);
 
 
-    void __RPC_STUB IGrfCache_DoConnectionsNow_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IGrfCache_DoConnectionsNow_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -3770,194 +3770,194 @@ public:
 #ifndef __IRenderEngine_INTERFACE_DEFINED__
 #define __IRenderEngine_INTERFACE_DEFINED__
 
-    /* interface IRenderEngine */
-    /* [unique][helpstring][uuid][object] */
+/* interface IRenderEngine */
+/* [unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IRenderEngine;
+EXTERN_C const IID IID_IRenderEngine;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("6BEE3A81-66C9-11d2-918F-00C0DF10D434")
+MIDL_INTERFACE("6BEE3A81-66C9-11d2-918F-00C0DF10D434")
 IRenderEngine :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual HRESULT STDMETHODCALLTYPE SetTimelineObject(
-            IAMTimeline *pTimeline) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetTimelineObject(
+        IAMTimeline *pTimeline) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetTimelineObject(
-            /* [out] */ IAMTimeline **ppTimeline) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetTimelineObject(
+        /* [out] */ IAMTimeline **ppTimeline) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetFilterGraph(
-            /* [out] */ IGraphBuilder **ppFG) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetFilterGraph(
+        /* [out] */ IGraphBuilder **ppFG) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetFilterGraph(
-            IGraphBuilder *pFG) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetFilterGraph(
+        IGraphBuilder *pFG) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetInterestRange(
-            REFERENCE_TIME Start,
-            REFERENCE_TIME Stop) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetInterestRange(
+        REFERENCE_TIME Start,
+        REFERENCE_TIME Stop) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetInterestRange2(
-            double Start,
-            double Stop) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetInterestRange2(
+        double Start,
+        double Stop) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetRenderRange(
-            REFERENCE_TIME Start,
-            REFERENCE_TIME Stop) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetRenderRange(
+        REFERENCE_TIME Start,
+        REFERENCE_TIME Stop) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetRenderRange2(
-            double Start,
-            double Stop) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetRenderRange2(
+        double Start,
+        double Stop) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetGroupOutputPin(
-            long Group,
-            /* [out] */ IPin **ppRenderPin) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetGroupOutputPin(
+        long Group,
+        /* [out] */ IPin **ppRenderPin) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE ScrapIt(void) = 0;
+    virtual HRESULT STDMETHODCALLTYPE ScrapIt(void) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE RenderOutputPins(void) = 0;
+    virtual HRESULT STDMETHODCALLTYPE RenderOutputPins(void) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetVendorString(
-            /* [retval][out] */ BSTR *pVendorID) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetVendorString(
+        /* [retval][out] */ BSTR *pVendorID) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE ConnectFrontEnd(void) = 0;
+    virtual HRESULT STDMETHODCALLTYPE ConnectFrontEnd(void) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetSourceConnectCallback(
-            IGrfCache *pCallback) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetSourceConnectCallback(
+        IGrfCache *pCallback) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetDynamicReconnectLevel(
-            long Level) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetDynamicReconnectLevel(
+        long Level) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE DoSmartRecompression(void) = 0;
+    virtual HRESULT STDMETHODCALLTYPE DoSmartRecompression(void) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE UseInSmartRecompressionGraph(void) = 0;
+    virtual HRESULT STDMETHODCALLTYPE UseInSmartRecompressionGraph(void) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetSourceNameValidation(
-            BSTR FilterString,
-            IMediaLocator *pOverride,
-            LONG Flags) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetSourceNameValidation(
+        BSTR FilterString,
+        IMediaLocator *pOverride,
+        LONG Flags) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE Commit(void) = 0;
+    virtual HRESULT STDMETHODCALLTYPE Commit(void) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE Decommit(void) = 0;
+    virtual HRESULT STDMETHODCALLTYPE Decommit(void) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetCaps(
-            long Index,
-            long *pReturn) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetCaps(
+        long Index,
+        long *pReturn) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IRenderEngineVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IRenderEngineVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IRenderEngine * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IRenderEngine * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IRenderEngine * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IRenderEngine * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IRenderEngine * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IRenderEngine * This);
 
-        HRESULT(STDMETHODCALLTYPE *SetTimelineObject)(
-            IRenderEngine * This,
-            IAMTimeline *pTimeline);
+    HRESULT(STDMETHODCALLTYPE *SetTimelineObject)(
+        IRenderEngine * This,
+        IAMTimeline *pTimeline);
 
-        HRESULT(STDMETHODCALLTYPE *GetTimelineObject)(
-            IRenderEngine * This,
-            /* [out] */ IAMTimeline **ppTimeline);
+    HRESULT(STDMETHODCALLTYPE *GetTimelineObject)(
+        IRenderEngine * This,
+        /* [out] */ IAMTimeline **ppTimeline);
 
-        HRESULT(STDMETHODCALLTYPE *GetFilterGraph)(
-            IRenderEngine * This,
-            /* [out] */ IGraphBuilder **ppFG);
+    HRESULT(STDMETHODCALLTYPE *GetFilterGraph)(
+        IRenderEngine * This,
+        /* [out] */ IGraphBuilder **ppFG);
 
-        HRESULT(STDMETHODCALLTYPE *SetFilterGraph)(
-            IRenderEngine * This,
-            IGraphBuilder *pFG);
+    HRESULT(STDMETHODCALLTYPE *SetFilterGraph)(
+        IRenderEngine * This,
+        IGraphBuilder *pFG);
 
-        HRESULT(STDMETHODCALLTYPE *SetInterestRange)(
-            IRenderEngine * This,
-            REFERENCE_TIME Start,
-            REFERENCE_TIME Stop);
+    HRESULT(STDMETHODCALLTYPE *SetInterestRange)(
+        IRenderEngine * This,
+        REFERENCE_TIME Start,
+        REFERENCE_TIME Stop);
 
-        HRESULT(STDMETHODCALLTYPE *SetInterestRange2)(
-            IRenderEngine * This,
-            double Start,
-            double Stop);
+    HRESULT(STDMETHODCALLTYPE *SetInterestRange2)(
+        IRenderEngine * This,
+        double Start,
+        double Stop);
 
-        HRESULT(STDMETHODCALLTYPE *SetRenderRange)(
-            IRenderEngine * This,
-            REFERENCE_TIME Start,
-            REFERENCE_TIME Stop);
+    HRESULT(STDMETHODCALLTYPE *SetRenderRange)(
+        IRenderEngine * This,
+        REFERENCE_TIME Start,
+        REFERENCE_TIME Stop);
 
-        HRESULT(STDMETHODCALLTYPE *SetRenderRange2)(
-            IRenderEngine * This,
-            double Start,
-            double Stop);
+    HRESULT(STDMETHODCALLTYPE *SetRenderRange2)(
+        IRenderEngine * This,
+        double Start,
+        double Stop);
 
-        HRESULT(STDMETHODCALLTYPE *GetGroupOutputPin)(
-            IRenderEngine * This,
-            long Group,
-            /* [out] */ IPin **ppRenderPin);
+    HRESULT(STDMETHODCALLTYPE *GetGroupOutputPin)(
+        IRenderEngine * This,
+        long Group,
+        /* [out] */ IPin **ppRenderPin);
 
-        HRESULT(STDMETHODCALLTYPE *ScrapIt)(
-            IRenderEngine * This);
+    HRESULT(STDMETHODCALLTYPE *ScrapIt)(
+        IRenderEngine * This);
 
-        HRESULT(STDMETHODCALLTYPE *RenderOutputPins)(
-            IRenderEngine * This);
+    HRESULT(STDMETHODCALLTYPE *RenderOutputPins)(
+        IRenderEngine * This);
 
-        HRESULT(STDMETHODCALLTYPE *GetVendorString)(
-            IRenderEngine * This,
-            /* [retval][out] */ BSTR *pVendorID);
+    HRESULT(STDMETHODCALLTYPE *GetVendorString)(
+        IRenderEngine * This,
+        /* [retval][out] */ BSTR *pVendorID);
 
-        HRESULT(STDMETHODCALLTYPE *ConnectFrontEnd)(
-            IRenderEngine * This);
+    HRESULT(STDMETHODCALLTYPE *ConnectFrontEnd)(
+        IRenderEngine * This);
 
-        HRESULT(STDMETHODCALLTYPE *SetSourceConnectCallback)(
-            IRenderEngine * This,
-            IGrfCache *pCallback);
+    HRESULT(STDMETHODCALLTYPE *SetSourceConnectCallback)(
+        IRenderEngine * This,
+        IGrfCache *pCallback);
 
-        HRESULT(STDMETHODCALLTYPE *SetDynamicReconnectLevel)(
-            IRenderEngine * This,
-            long Level);
+    HRESULT(STDMETHODCALLTYPE *SetDynamicReconnectLevel)(
+        IRenderEngine * This,
+        long Level);
 
-        HRESULT(STDMETHODCALLTYPE *DoSmartRecompression)(
-            IRenderEngine * This);
+    HRESULT(STDMETHODCALLTYPE *DoSmartRecompression)(
+        IRenderEngine * This);
 
-        HRESULT(STDMETHODCALLTYPE *UseInSmartRecompressionGraph)(
-            IRenderEngine * This);
+    HRESULT(STDMETHODCALLTYPE *UseInSmartRecompressionGraph)(
+        IRenderEngine * This);
 
-        HRESULT(STDMETHODCALLTYPE *SetSourceNameValidation)(
-            IRenderEngine * This,
-            BSTR FilterString,
-            IMediaLocator *pOverride,
-            LONG Flags);
+    HRESULT(STDMETHODCALLTYPE *SetSourceNameValidation)(
+        IRenderEngine * This,
+        BSTR FilterString,
+        IMediaLocator *pOverride,
+        LONG Flags);
 
-        HRESULT(STDMETHODCALLTYPE *Commit)(
-            IRenderEngine * This);
+    HRESULT(STDMETHODCALLTYPE *Commit)(
+        IRenderEngine * This);
 
-        HRESULT(STDMETHODCALLTYPE *Decommit)(
-            IRenderEngine * This);
+    HRESULT(STDMETHODCALLTYPE *Decommit)(
+        IRenderEngine * This);
 
-        HRESULT(STDMETHODCALLTYPE *GetCaps)(
-            IRenderEngine * This,
-            long Index,
-            long *pReturn);
+    HRESULT(STDMETHODCALLTYPE *GetCaps)(
+        IRenderEngine * This,
+        long Index,
+        long *pReturn);
 
-        END_INTERFACE
-    } IRenderEngineVtbl;
+    END_INTERFACE
+} IRenderEngineVtbl;
 
-    interface IRenderEngine
-    {
-        CONST_VTBL struct IRenderEngineVtbl *lpVtbl;
-    };
+interface IRenderEngine
+{
+    CONST_VTBL struct IRenderEngineVtbl *lpVtbl;
+};
 
 
 
@@ -4044,257 +4044,257 @@ public:
 
 
 
-    HRESULT STDMETHODCALLTYPE IRenderEngine_SetTimelineObject_Proxy(
-        IRenderEngine * This,
-        IAMTimeline *pTimeline);
+HRESULT STDMETHODCALLTYPE IRenderEngine_SetTimelineObject_Proxy(
+    IRenderEngine * This,
+    IAMTimeline *pTimeline);
 
 
-    void __RPC_STUB IRenderEngine_SetTimelineObject_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IRenderEngine_SetTimelineObject_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IRenderEngine_GetTimelineObject_Proxy(
-        IRenderEngine * This,
-        /* [out] */ IAMTimeline **ppTimeline);
+HRESULT STDMETHODCALLTYPE IRenderEngine_GetTimelineObject_Proxy(
+    IRenderEngine * This,
+    /* [out] */ IAMTimeline **ppTimeline);
 
 
-    void __RPC_STUB IRenderEngine_GetTimelineObject_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IRenderEngine_GetTimelineObject_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IRenderEngine_GetFilterGraph_Proxy(
-        IRenderEngine * This,
-        /* [out] */ IGraphBuilder **ppFG);
+HRESULT STDMETHODCALLTYPE IRenderEngine_GetFilterGraph_Proxy(
+    IRenderEngine * This,
+    /* [out] */ IGraphBuilder **ppFG);
 
 
-    void __RPC_STUB IRenderEngine_GetFilterGraph_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IRenderEngine_GetFilterGraph_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IRenderEngine_SetFilterGraph_Proxy(
-        IRenderEngine * This,
-        IGraphBuilder *pFG);
+HRESULT STDMETHODCALLTYPE IRenderEngine_SetFilterGraph_Proxy(
+    IRenderEngine * This,
+    IGraphBuilder *pFG);
 
 
-    void __RPC_STUB IRenderEngine_SetFilterGraph_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IRenderEngine_SetFilterGraph_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IRenderEngine_SetInterestRange_Proxy(
-        IRenderEngine * This,
-        REFERENCE_TIME Start,
-        REFERENCE_TIME Stop);
+HRESULT STDMETHODCALLTYPE IRenderEngine_SetInterestRange_Proxy(
+    IRenderEngine * This,
+    REFERENCE_TIME Start,
+    REFERENCE_TIME Stop);
 
 
-    void __RPC_STUB IRenderEngine_SetInterestRange_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IRenderEngine_SetInterestRange_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IRenderEngine_SetInterestRange2_Proxy(
-        IRenderEngine * This,
-        double Start,
-        double Stop);
+HRESULT STDMETHODCALLTYPE IRenderEngine_SetInterestRange2_Proxy(
+    IRenderEngine * This,
+    double Start,
+    double Stop);
 
 
-    void __RPC_STUB IRenderEngine_SetInterestRange2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IRenderEngine_SetInterestRange2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IRenderEngine_SetRenderRange_Proxy(
-        IRenderEngine * This,
-        REFERENCE_TIME Start,
-        REFERENCE_TIME Stop);
+HRESULT STDMETHODCALLTYPE IRenderEngine_SetRenderRange_Proxy(
+    IRenderEngine * This,
+    REFERENCE_TIME Start,
+    REFERENCE_TIME Stop);
 
 
-    void __RPC_STUB IRenderEngine_SetRenderRange_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IRenderEngine_SetRenderRange_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IRenderEngine_SetRenderRange2_Proxy(
-        IRenderEngine * This,
-        double Start,
-        double Stop);
+HRESULT STDMETHODCALLTYPE IRenderEngine_SetRenderRange2_Proxy(
+    IRenderEngine * This,
+    double Start,
+    double Stop);
 
 
-    void __RPC_STUB IRenderEngine_SetRenderRange2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IRenderEngine_SetRenderRange2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IRenderEngine_GetGroupOutputPin_Proxy(
-        IRenderEngine * This,
-        long Group,
-        /* [out] */ IPin **ppRenderPin);
+HRESULT STDMETHODCALLTYPE IRenderEngine_GetGroupOutputPin_Proxy(
+    IRenderEngine * This,
+    long Group,
+    /* [out] */ IPin **ppRenderPin);
 
 
-    void __RPC_STUB IRenderEngine_GetGroupOutputPin_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IRenderEngine_GetGroupOutputPin_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IRenderEngine_ScrapIt_Proxy(
-        IRenderEngine * This);
+HRESULT STDMETHODCALLTYPE IRenderEngine_ScrapIt_Proxy(
+    IRenderEngine * This);
 
 
-    void __RPC_STUB IRenderEngine_ScrapIt_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IRenderEngine_ScrapIt_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IRenderEngine_RenderOutputPins_Proxy(
-        IRenderEngine * This);
+HRESULT STDMETHODCALLTYPE IRenderEngine_RenderOutputPins_Proxy(
+    IRenderEngine * This);
 
 
-    void __RPC_STUB IRenderEngine_RenderOutputPins_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IRenderEngine_RenderOutputPins_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IRenderEngine_GetVendorString_Proxy(
-        IRenderEngine * This,
-        /* [retval][out] */ BSTR *pVendorID);
+HRESULT STDMETHODCALLTYPE IRenderEngine_GetVendorString_Proxy(
+    IRenderEngine * This,
+    /* [retval][out] */ BSTR *pVendorID);
 
 
-    void __RPC_STUB IRenderEngine_GetVendorString_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IRenderEngine_GetVendorString_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IRenderEngine_ConnectFrontEnd_Proxy(
-        IRenderEngine * This);
+HRESULT STDMETHODCALLTYPE IRenderEngine_ConnectFrontEnd_Proxy(
+    IRenderEngine * This);
 
 
-    void __RPC_STUB IRenderEngine_ConnectFrontEnd_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IRenderEngine_ConnectFrontEnd_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IRenderEngine_SetSourceConnectCallback_Proxy(
-        IRenderEngine * This,
-        IGrfCache *pCallback);
+HRESULT STDMETHODCALLTYPE IRenderEngine_SetSourceConnectCallback_Proxy(
+    IRenderEngine * This,
+    IGrfCache *pCallback);
 
 
-    void __RPC_STUB IRenderEngine_SetSourceConnectCallback_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IRenderEngine_SetSourceConnectCallback_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IRenderEngine_SetDynamicReconnectLevel_Proxy(
-        IRenderEngine * This,
-        long Level);
+HRESULT STDMETHODCALLTYPE IRenderEngine_SetDynamicReconnectLevel_Proxy(
+    IRenderEngine * This,
+    long Level);
 
 
-    void __RPC_STUB IRenderEngine_SetDynamicReconnectLevel_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IRenderEngine_SetDynamicReconnectLevel_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IRenderEngine_DoSmartRecompression_Proxy(
-        IRenderEngine * This);
+HRESULT STDMETHODCALLTYPE IRenderEngine_DoSmartRecompression_Proxy(
+    IRenderEngine * This);
 
 
-    void __RPC_STUB IRenderEngine_DoSmartRecompression_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IRenderEngine_DoSmartRecompression_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IRenderEngine_UseInSmartRecompressionGraph_Proxy(
-        IRenderEngine * This);
+HRESULT STDMETHODCALLTYPE IRenderEngine_UseInSmartRecompressionGraph_Proxy(
+    IRenderEngine * This);
 
 
-    void __RPC_STUB IRenderEngine_UseInSmartRecompressionGraph_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IRenderEngine_UseInSmartRecompressionGraph_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IRenderEngine_SetSourceNameValidation_Proxy(
-        IRenderEngine * This,
-        BSTR FilterString,
-        IMediaLocator *pOverride,
-        LONG Flags);
+HRESULT STDMETHODCALLTYPE IRenderEngine_SetSourceNameValidation_Proxy(
+    IRenderEngine * This,
+    BSTR FilterString,
+    IMediaLocator *pOverride,
+    LONG Flags);
 
 
-    void __RPC_STUB IRenderEngine_SetSourceNameValidation_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IRenderEngine_SetSourceNameValidation_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IRenderEngine_Commit_Proxy(
-        IRenderEngine * This);
+HRESULT STDMETHODCALLTYPE IRenderEngine_Commit_Proxy(
+    IRenderEngine * This);
 
 
-    void __RPC_STUB IRenderEngine_Commit_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IRenderEngine_Commit_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IRenderEngine_Decommit_Proxy(
-        IRenderEngine * This);
+HRESULT STDMETHODCALLTYPE IRenderEngine_Decommit_Proxy(
+    IRenderEngine * This);
 
 
-    void __RPC_STUB IRenderEngine_Decommit_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IRenderEngine_Decommit_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IRenderEngine_GetCaps_Proxy(
-        IRenderEngine * This,
-        long Index,
-        long *pReturn);
+HRESULT STDMETHODCALLTYPE IRenderEngine_GetCaps_Proxy(
+    IRenderEngine * This,
+    long Index,
+    long *pReturn);
 
 
-    void __RPC_STUB IRenderEngine_GetCaps_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IRenderEngine_GetCaps_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -4304,52 +4304,52 @@ public:
 #ifndef __IRenderEngine2_INTERFACE_DEFINED__
 #define __IRenderEngine2_INTERFACE_DEFINED__
 
-    /* interface IRenderEngine2 */
-    /* [unique][helpstring][uuid][object] */
+/* interface IRenderEngine2 */
+/* [unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IRenderEngine2;
+EXTERN_C const IID IID_IRenderEngine2;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("6BEE3A82-66C9-11d2-918F-00C0DF10D434")
+MIDL_INTERFACE("6BEE3A82-66C9-11d2-918F-00C0DF10D434")
 IRenderEngine2 :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual HRESULT STDMETHODCALLTYPE SetResizerGUID(
-            GUID ResizerGuid) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetResizerGUID(
+        GUID ResizerGuid) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IRenderEngine2Vtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IRenderEngine2Vtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IRenderEngine2 * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IRenderEngine2 * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IRenderEngine2 * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IRenderEngine2 * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IRenderEngine2 * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IRenderEngine2 * This);
 
-        HRESULT(STDMETHODCALLTYPE *SetResizerGUID)(
-            IRenderEngine2 * This,
-            GUID ResizerGuid);
+    HRESULT(STDMETHODCALLTYPE *SetResizerGUID)(
+        IRenderEngine2 * This,
+        GUID ResizerGuid);
 
-        END_INTERFACE
-    } IRenderEngine2Vtbl;
+    END_INTERFACE
+} IRenderEngine2Vtbl;
 
-    interface IRenderEngine2
-    {
-        CONST_VTBL struct IRenderEngine2Vtbl *lpVtbl;
-    };
+interface IRenderEngine2
+{
+    CONST_VTBL struct IRenderEngine2Vtbl *lpVtbl;
+};
 
 
 
@@ -4376,16 +4376,16 @@ public:
 
 
 
-    HRESULT STDMETHODCALLTYPE IRenderEngine2_SetResizerGUID_Proxy(
-        IRenderEngine2 * This,
-        GUID ResizerGuid);
+HRESULT STDMETHODCALLTYPE IRenderEngine2_SetResizerGUID_Proxy(
+    IRenderEngine2 * This,
+    GUID ResizerGuid);
 
 
-    void __RPC_STUB IRenderEngine2_SetResizerGUID_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IRenderEngine2_SetResizerGUID_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -4395,56 +4395,56 @@ public:
 #ifndef __IFindCompressorCB_INTERFACE_DEFINED__
 #define __IFindCompressorCB_INTERFACE_DEFINED__
 
-    /* interface IFindCompressorCB */
-    /* [unique][helpstring][uuid][object] */
+/* interface IFindCompressorCB */
+/* [unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IFindCompressorCB;
+EXTERN_C const IID IID_IFindCompressorCB;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("F03FA8DE-879A-4d59-9B2C-26BB1CF83461")
+MIDL_INTERFACE("F03FA8DE-879A-4d59-9B2C-26BB1CF83461")
 IFindCompressorCB :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual HRESULT STDMETHODCALLTYPE GetCompressor(
-            AM_MEDIA_TYPE *pType,
-            AM_MEDIA_TYPE *pCompType,
-            /* [out] */ IBaseFilter **ppFilter) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetCompressor(
+        AM_MEDIA_TYPE *pType,
+        AM_MEDIA_TYPE *pCompType,
+        /* [out] */ IBaseFilter **ppFilter) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IFindCompressorCBVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IFindCompressorCBVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IFindCompressorCB * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IFindCompressorCB * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IFindCompressorCB * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IFindCompressorCB * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IFindCompressorCB * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IFindCompressorCB * This);
 
-        HRESULT(STDMETHODCALLTYPE *GetCompressor)(
-            IFindCompressorCB * This,
-            AM_MEDIA_TYPE *pType,
-            AM_MEDIA_TYPE *pCompType,
-            /* [out] */ IBaseFilter **ppFilter);
+    HRESULT(STDMETHODCALLTYPE *GetCompressor)(
+        IFindCompressorCB * This,
+        AM_MEDIA_TYPE *pType,
+        AM_MEDIA_TYPE *pCompType,
+        /* [out] */ IBaseFilter **ppFilter);
 
-        END_INTERFACE
-    } IFindCompressorCBVtbl;
+    END_INTERFACE
+} IFindCompressorCBVtbl;
 
-    interface IFindCompressorCB
-    {
-        CONST_VTBL struct IFindCompressorCBVtbl *lpVtbl;
-    };
+interface IFindCompressorCB
+{
+    CONST_VTBL struct IFindCompressorCBVtbl *lpVtbl;
+};
 
 
 
@@ -4471,18 +4471,18 @@ public:
 
 
 
-    HRESULT STDMETHODCALLTYPE IFindCompressorCB_GetCompressor_Proxy(
-        IFindCompressorCB * This,
-        AM_MEDIA_TYPE *pType,
-        AM_MEDIA_TYPE *pCompType,
-        /* [out] */ IBaseFilter **ppFilter);
+HRESULT STDMETHODCALLTYPE IFindCompressorCB_GetCompressor_Proxy(
+    IFindCompressorCB * This,
+    AM_MEDIA_TYPE *pType,
+    AM_MEDIA_TYPE *pCompType,
+    /* [out] */ IBaseFilter **ppFilter);
 
 
-    void __RPC_STUB IFindCompressorCB_GetCompressor_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IFindCompressorCB_GetCompressor_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -4492,70 +4492,70 @@ public:
 #ifndef __ISmartRenderEngine_INTERFACE_DEFINED__
 #define __ISmartRenderEngine_INTERFACE_DEFINED__
 
-    /* interface ISmartRenderEngine */
-    /* [unique][helpstring][uuid][object] */
+/* interface ISmartRenderEngine */
+/* [unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_ISmartRenderEngine;
+EXTERN_C const IID IID_ISmartRenderEngine;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("F03FA8CE-879A-4d59-9B2C-26BB1CF83461")
+MIDL_INTERFACE("F03FA8CE-879A-4d59-9B2C-26BB1CF83461")
 ISmartRenderEngine :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual HRESULT STDMETHODCALLTYPE SetGroupCompressor(
-            long Group,
-            IBaseFilter *pCompressor) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetGroupCompressor(
+        long Group,
+        IBaseFilter *pCompressor) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetGroupCompressor(
-            long Group,
-            IBaseFilter **pCompressor) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetGroupCompressor(
+        long Group,
+        IBaseFilter **pCompressor) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetFindCompressorCB(
-            IFindCompressorCB *pCallback) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetFindCompressorCB(
+        IFindCompressorCB *pCallback) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct ISmartRenderEngineVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct ISmartRenderEngineVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            ISmartRenderEngine * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        ISmartRenderEngine * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            ISmartRenderEngine * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        ISmartRenderEngine * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            ISmartRenderEngine * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        ISmartRenderEngine * This);
 
-        HRESULT(STDMETHODCALLTYPE *SetGroupCompressor)(
-            ISmartRenderEngine * This,
-            long Group,
-            IBaseFilter *pCompressor);
+    HRESULT(STDMETHODCALLTYPE *SetGroupCompressor)(
+        ISmartRenderEngine * This,
+        long Group,
+        IBaseFilter *pCompressor);
 
-        HRESULT(STDMETHODCALLTYPE *GetGroupCompressor)(
-            ISmartRenderEngine * This,
-            long Group,
-            IBaseFilter **pCompressor);
+    HRESULT(STDMETHODCALLTYPE *GetGroupCompressor)(
+        ISmartRenderEngine * This,
+        long Group,
+        IBaseFilter **pCompressor);
 
-        HRESULT(STDMETHODCALLTYPE *SetFindCompressorCB)(
-            ISmartRenderEngine * This,
-            IFindCompressorCB *pCallback);
+    HRESULT(STDMETHODCALLTYPE *SetFindCompressorCB)(
+        ISmartRenderEngine * This,
+        IFindCompressorCB *pCallback);
 
-        END_INTERFACE
-    } ISmartRenderEngineVtbl;
+    END_INTERFACE
+} ISmartRenderEngineVtbl;
 
-    interface ISmartRenderEngine
-    {
-        CONST_VTBL struct ISmartRenderEngineVtbl *lpVtbl;
-    };
+interface ISmartRenderEngine
+{
+    CONST_VTBL struct ISmartRenderEngineVtbl *lpVtbl;
+};
 
 
 
@@ -4588,42 +4588,42 @@ public:
 
 
 
-    HRESULT STDMETHODCALLTYPE ISmartRenderEngine_SetGroupCompressor_Proxy(
-        ISmartRenderEngine * This,
-        long Group,
-        IBaseFilter *pCompressor);
+HRESULT STDMETHODCALLTYPE ISmartRenderEngine_SetGroupCompressor_Proxy(
+    ISmartRenderEngine * This,
+    long Group,
+    IBaseFilter *pCompressor);
 
 
-    void __RPC_STUB ISmartRenderEngine_SetGroupCompressor_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB ISmartRenderEngine_SetGroupCompressor_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE ISmartRenderEngine_GetGroupCompressor_Proxy(
-        ISmartRenderEngine * This,
-        long Group,
-        IBaseFilter **pCompressor);
+HRESULT STDMETHODCALLTYPE ISmartRenderEngine_GetGroupCompressor_Proxy(
+    ISmartRenderEngine * This,
+    long Group,
+    IBaseFilter **pCompressor);
 
 
-    void __RPC_STUB ISmartRenderEngine_GetGroupCompressor_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB ISmartRenderEngine_GetGroupCompressor_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE ISmartRenderEngine_SetFindCompressorCB_Proxy(
-        ISmartRenderEngine * This,
-        IFindCompressorCB *pCallback);
+HRESULT STDMETHODCALLTYPE ISmartRenderEngine_SetFindCompressorCB_Proxy(
+    ISmartRenderEngine * This,
+    IFindCompressorCB *pCallback);
 
 
-    void __RPC_STUB ISmartRenderEngine_SetFindCompressorCB_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB ISmartRenderEngine_SetFindCompressorCB_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -4633,364 +4633,364 @@ public:
 #ifndef __IAMTimelineObj_INTERFACE_DEFINED__
 #define __IAMTimelineObj_INTERFACE_DEFINED__
 
-    /* interface IAMTimelineObj */
-    /* [unique][helpstring][uuid][local][object] */
+/* interface IAMTimelineObj */
+/* [unique][helpstring][uuid][local][object] */
 
 
-    EXTERN_C const IID IID_IAMTimelineObj;
+EXTERN_C const IID IID_IAMTimelineObj;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("78530B77-61F9-11D2-8CAD-00A024580902")
+MIDL_INTERFACE("78530B77-61F9-11D2-8CAD-00A024580902")
 IAMTimelineObj :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetStartStop(
-            REFERENCE_TIME *pStart,
-            REFERENCE_TIME *pStop) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetStartStop(
+        REFERENCE_TIME *pStart,
+        REFERENCE_TIME *pStop) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetStartStop2(
-            REFTIME *pStart,
-            REFTIME *pStop) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetStartStop2(
+        REFTIME *pStart,
+        REFTIME *pStop) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE FixTimes(
-            REFERENCE_TIME *pStart,
-            REFERENCE_TIME *pStop) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE FixTimes(
+        REFERENCE_TIME *pStart,
+        REFERENCE_TIME *pStop) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE FixTimes2(
-            REFTIME *pStart,
-            REFTIME *pStop) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE FixTimes2(
+        REFTIME *pStart,
+        REFTIME *pStop) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetStartStop(
-            REFERENCE_TIME Start,
-            REFERENCE_TIME Stop) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetStartStop(
+        REFERENCE_TIME Start,
+        REFERENCE_TIME Stop) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetStartStop2(
-            REFTIME Start,
-            REFTIME Stop) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetStartStop2(
+        REFTIME Start,
+        REFTIME Stop) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetPropertySetter(
-            /* [retval][out] */ IPropertySetter **pVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetPropertySetter(
+        /* [retval][out] */ IPropertySetter **pVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetPropertySetter(
-            IPropertySetter *newVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetPropertySetter(
+        IPropertySetter *newVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetSubObject(
-            /* [retval][out] */ IUnknown **pVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetSubObject(
+        /* [retval][out] */ IUnknown **pVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetSubObject(
-            IUnknown *newVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetSubObject(
+        IUnknown *newVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetSubObjectGUID(
-            GUID newVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetSubObjectGUID(
+        GUID newVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetSubObjectGUIDB(
-            BSTR newVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetSubObjectGUIDB(
+        BSTR newVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetSubObjectGUID(
-            GUID *pVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetSubObjectGUID(
+        GUID *pVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetSubObjectGUIDB(
-            /* [retval][out] */ BSTR *pVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetSubObjectGUIDB(
+        /* [retval][out] */ BSTR *pVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetSubObjectLoaded(
-            BOOL *pVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetSubObjectLoaded(
+        BOOL *pVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetTimelineType(
-            TIMELINE_MAJOR_TYPE *pVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetTimelineType(
+        TIMELINE_MAJOR_TYPE *pVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetTimelineType(
-            TIMELINE_MAJOR_TYPE newVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetTimelineType(
+        TIMELINE_MAJOR_TYPE newVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetUserID(
-            long *pVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetUserID(
+        long *pVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetUserID(
-            long newVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetUserID(
+        long newVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetGenID(
-            long *pVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetGenID(
+        long *pVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetUserName(
-            /* [retval][out] */ BSTR *pVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetUserName(
+        /* [retval][out] */ BSTR *pVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetUserName(
-            BSTR newVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetUserName(
+        BSTR newVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetUserData(
-            BYTE *pData,
-            long *pSize) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetUserData(
+        BYTE *pData,
+        long *pSize) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetUserData(
-            BYTE *pData,
-            long Size) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetUserData(
+        BYTE *pData,
+        long Size) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetMuted(
-            BOOL *pVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetMuted(
+        BOOL *pVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetMuted(
-            BOOL newVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetMuted(
+        BOOL newVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetLocked(
-            BOOL *pVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetLocked(
+        BOOL *pVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetLocked(
-            BOOL newVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetLocked(
+        BOOL newVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetDirtyRange(
-            REFERENCE_TIME *pStart,
-            REFERENCE_TIME *pStop) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetDirtyRange(
+        REFERENCE_TIME *pStart,
+        REFERENCE_TIME *pStop) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetDirtyRange2(
-            REFTIME *pStart,
-            REFTIME *pStop) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetDirtyRange2(
+        REFTIME *pStart,
+        REFTIME *pStop) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetDirtyRange(
-            REFERENCE_TIME Start,
-            REFERENCE_TIME Stop) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetDirtyRange(
+        REFERENCE_TIME Start,
+        REFERENCE_TIME Stop) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetDirtyRange2(
-            REFTIME Start,
-            REFTIME Stop) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetDirtyRange2(
+        REFTIME Start,
+        REFTIME Stop) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE ClearDirty(void) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE ClearDirty(void) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE Remove(void) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE Remove(void) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE RemoveAll(void) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE RemoveAll(void) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetTimelineNoRef(
-            IAMTimeline **ppResult) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetTimelineNoRef(
+        IAMTimeline **ppResult) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetGroupIBelongTo(
-            /* [out] */ IAMTimelineGroup **ppGroup) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetGroupIBelongTo(
+        /* [out] */ IAMTimelineGroup **ppGroup) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetEmbedDepth(
-            long *pVal) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetEmbedDepth(
+        long *pVal) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IAMTimelineObjVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IAMTimelineObjVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IAMTimelineObj * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IAMTimelineObj * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IAMTimelineObj * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IAMTimelineObj * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IAMTimelineObj * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IAMTimelineObj * This);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetStartStop)(
-            IAMTimelineObj * This,
-            REFERENCE_TIME *pStart,
-            REFERENCE_TIME *pStop);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetStartStop)(
+        IAMTimelineObj * This,
+        REFERENCE_TIME *pStart,
+        REFERENCE_TIME *pStop);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetStartStop2)(
-            IAMTimelineObj * This,
-            REFTIME *pStart,
-            REFTIME *pStop);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetStartStop2)(
+        IAMTimelineObj * This,
+        REFTIME *pStart,
+        REFTIME *pStop);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *FixTimes)(
-            IAMTimelineObj * This,
-            REFERENCE_TIME *pStart,
-            REFERENCE_TIME *pStop);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *FixTimes)(
+        IAMTimelineObj * This,
+        REFERENCE_TIME *pStart,
+        REFERENCE_TIME *pStop);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *FixTimes2)(
-            IAMTimelineObj * This,
-            REFTIME *pStart,
-            REFTIME *pStop);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *FixTimes2)(
+        IAMTimelineObj * This,
+        REFTIME *pStart,
+        REFTIME *pStop);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetStartStop)(
-            IAMTimelineObj * This,
-            REFERENCE_TIME Start,
-            REFERENCE_TIME Stop);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetStartStop)(
+        IAMTimelineObj * This,
+        REFERENCE_TIME Start,
+        REFERENCE_TIME Stop);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetStartStop2)(
-            IAMTimelineObj * This,
-            REFTIME Start,
-            REFTIME Stop);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetStartStop2)(
+        IAMTimelineObj * This,
+        REFTIME Start,
+        REFTIME Stop);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetPropertySetter)(
-            IAMTimelineObj * This,
-            /* [retval][out] */ IPropertySetter **pVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetPropertySetter)(
+        IAMTimelineObj * This,
+        /* [retval][out] */ IPropertySetter **pVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetPropertySetter)(
-            IAMTimelineObj * This,
-            IPropertySetter *newVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetPropertySetter)(
+        IAMTimelineObj * This,
+        IPropertySetter *newVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetSubObject)(
-            IAMTimelineObj * This,
-            /* [retval][out] */ IUnknown **pVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetSubObject)(
+        IAMTimelineObj * This,
+        /* [retval][out] */ IUnknown **pVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetSubObject)(
-            IAMTimelineObj * This,
-            IUnknown *newVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetSubObject)(
+        IAMTimelineObj * This,
+        IUnknown *newVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetSubObjectGUID)(
-            IAMTimelineObj * This,
-            GUID newVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetSubObjectGUID)(
+        IAMTimelineObj * This,
+        GUID newVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetSubObjectGUIDB)(
-            IAMTimelineObj * This,
-            BSTR newVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetSubObjectGUIDB)(
+        IAMTimelineObj * This,
+        BSTR newVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetSubObjectGUID)(
-            IAMTimelineObj * This,
-            GUID *pVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetSubObjectGUID)(
+        IAMTimelineObj * This,
+        GUID *pVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetSubObjectGUIDB)(
-            IAMTimelineObj * This,
-            /* [retval][out] */ BSTR *pVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetSubObjectGUIDB)(
+        IAMTimelineObj * This,
+        /* [retval][out] */ BSTR *pVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetSubObjectLoaded)(
-            IAMTimelineObj * This,
-            BOOL *pVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetSubObjectLoaded)(
+        IAMTimelineObj * This,
+        BOOL *pVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetTimelineType)(
-            IAMTimelineObj * This,
-            TIMELINE_MAJOR_TYPE *pVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetTimelineType)(
+        IAMTimelineObj * This,
+        TIMELINE_MAJOR_TYPE *pVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetTimelineType)(
-            IAMTimelineObj * This,
-            TIMELINE_MAJOR_TYPE newVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetTimelineType)(
+        IAMTimelineObj * This,
+        TIMELINE_MAJOR_TYPE newVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetUserID)(
-            IAMTimelineObj * This,
-            long *pVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetUserID)(
+        IAMTimelineObj * This,
+        long *pVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetUserID)(
-            IAMTimelineObj * This,
-            long newVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetUserID)(
+        IAMTimelineObj * This,
+        long newVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetGenID)(
-            IAMTimelineObj * This,
-            long *pVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetGenID)(
+        IAMTimelineObj * This,
+        long *pVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetUserName)(
-            IAMTimelineObj * This,
-            /* [retval][out] */ BSTR *pVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetUserName)(
+        IAMTimelineObj * This,
+        /* [retval][out] */ BSTR *pVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetUserName)(
-            IAMTimelineObj * This,
-            BSTR newVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetUserName)(
+        IAMTimelineObj * This,
+        BSTR newVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetUserData)(
-            IAMTimelineObj * This,
-            BYTE *pData,
-            long *pSize);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetUserData)(
+        IAMTimelineObj * This,
+        BYTE *pData,
+        long *pSize);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetUserData)(
-            IAMTimelineObj * This,
-            BYTE *pData,
-            long Size);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetUserData)(
+        IAMTimelineObj * This,
+        BYTE *pData,
+        long Size);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetMuted)(
-            IAMTimelineObj * This,
-            BOOL *pVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetMuted)(
+        IAMTimelineObj * This,
+        BOOL *pVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetMuted)(
-            IAMTimelineObj * This,
-            BOOL newVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetMuted)(
+        IAMTimelineObj * This,
+        BOOL newVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetLocked)(
-            IAMTimelineObj * This,
-            BOOL *pVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetLocked)(
+        IAMTimelineObj * This,
+        BOOL *pVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetLocked)(
-            IAMTimelineObj * This,
-            BOOL newVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetLocked)(
+        IAMTimelineObj * This,
+        BOOL newVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetDirtyRange)(
-            IAMTimelineObj * This,
-            REFERENCE_TIME *pStart,
-            REFERENCE_TIME *pStop);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetDirtyRange)(
+        IAMTimelineObj * This,
+        REFERENCE_TIME *pStart,
+        REFERENCE_TIME *pStop);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetDirtyRange2)(
-            IAMTimelineObj * This,
-            REFTIME *pStart,
-            REFTIME *pStop);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetDirtyRange2)(
+        IAMTimelineObj * This,
+        REFTIME *pStart,
+        REFTIME *pStop);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetDirtyRange)(
-            IAMTimelineObj * This,
-            REFERENCE_TIME Start,
-            REFERENCE_TIME Stop);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetDirtyRange)(
+        IAMTimelineObj * This,
+        REFERENCE_TIME Start,
+        REFERENCE_TIME Stop);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetDirtyRange2)(
-            IAMTimelineObj * This,
-            REFTIME Start,
-            REFTIME Stop);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetDirtyRange2)(
+        IAMTimelineObj * This,
+        REFTIME Start,
+        REFTIME Stop);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *ClearDirty)(
-            IAMTimelineObj * This);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *ClearDirty)(
+        IAMTimelineObj * This);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *Remove)(
-            IAMTimelineObj * This);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *Remove)(
+        IAMTimelineObj * This);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *RemoveAll)(
-            IAMTimelineObj * This);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *RemoveAll)(
+        IAMTimelineObj * This);
 
-        HRESULT(STDMETHODCALLTYPE *GetTimelineNoRef)(
-            IAMTimelineObj * This,
-            IAMTimeline **ppResult);
+    HRESULT(STDMETHODCALLTYPE *GetTimelineNoRef)(
+        IAMTimelineObj * This,
+        IAMTimeline **ppResult);
 
-        HRESULT(STDMETHODCALLTYPE *GetGroupIBelongTo)(
-            IAMTimelineObj * This,
-            /* [out] */ IAMTimelineGroup **ppGroup);
+    HRESULT(STDMETHODCALLTYPE *GetGroupIBelongTo)(
+        IAMTimelineObj * This,
+        /* [out] */ IAMTimelineGroup **ppGroup);
 
-        HRESULT(STDMETHODCALLTYPE *GetEmbedDepth)(
-            IAMTimelineObj * This,
-            long *pVal);
+    HRESULT(STDMETHODCALLTYPE *GetEmbedDepth)(
+        IAMTimelineObj * This,
+        long *pVal);
 
-        END_INTERFACE
-    } IAMTimelineObjVtbl;
+    END_INTERFACE
+} IAMTimelineObjVtbl;
 
-    interface IAMTimelineObj
-    {
-        CONST_VTBL struct IAMTimelineObjVtbl *lpVtbl;
-    };
+interface IAMTimelineObj
+{
+    CONST_VTBL struct IAMTimelineObjVtbl *lpVtbl;
+};
 
 
 
@@ -5128,503 +5128,503 @@ public:
 
 
 
-    /* [helpstring] */ HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetStartStop_Proxy(
-        IAMTimelineObj * This,
-        REFERENCE_TIME *pStart,
-        REFERENCE_TIME *pStop);
+/* [helpstring] */ HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetStartStop_Proxy(
+    IAMTimelineObj * This,
+    REFERENCE_TIME *pStart,
+    REFERENCE_TIME *pStop);
 
 
-    void __RPC_STUB IAMTimelineObj_GetStartStop_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_GetStartStop_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetStartStop2_Proxy(
-        IAMTimelineObj * This,
-        REFTIME *pStart,
-        REFTIME *pStop);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetStartStop2_Proxy(
+    IAMTimelineObj * This,
+    REFTIME *pStart,
+    REFTIME *pStop);
 
 
-    void __RPC_STUB IAMTimelineObj_GetStartStop2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_GetStartStop2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_FixTimes_Proxy(
-        IAMTimelineObj * This,
-        REFERENCE_TIME *pStart,
-        REFERENCE_TIME *pStop);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_FixTimes_Proxy(
+    IAMTimelineObj * This,
+    REFERENCE_TIME *pStart,
+    REFERENCE_TIME *pStop);
 
 
-    void __RPC_STUB IAMTimelineObj_FixTimes_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_FixTimes_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_FixTimes2_Proxy(
-        IAMTimelineObj * This,
-        REFTIME *pStart,
-        REFTIME *pStop);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_FixTimes2_Proxy(
+    IAMTimelineObj * This,
+    REFTIME *pStart,
+    REFTIME *pStop);
 
 
-    void __RPC_STUB IAMTimelineObj_FixTimes2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_FixTimes2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetStartStop_Proxy(
-        IAMTimelineObj * This,
-        REFERENCE_TIME Start,
-        REFERENCE_TIME Stop);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetStartStop_Proxy(
+    IAMTimelineObj * This,
+    REFERENCE_TIME Start,
+    REFERENCE_TIME Stop);
 
 
-    void __RPC_STUB IAMTimelineObj_SetStartStop_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_SetStartStop_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetStartStop2_Proxy(
-        IAMTimelineObj * This,
-        REFTIME Start,
-        REFTIME Stop);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetStartStop2_Proxy(
+    IAMTimelineObj * This,
+    REFTIME Start,
+    REFTIME Stop);
 
 
-    void __RPC_STUB IAMTimelineObj_SetStartStop2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_SetStartStop2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetPropertySetter_Proxy(
-        IAMTimelineObj * This,
-        /* [retval][out] */ IPropertySetter **pVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetPropertySetter_Proxy(
+    IAMTimelineObj * This,
+    /* [retval][out] */ IPropertySetter **pVal);
 
 
-    void __RPC_STUB IAMTimelineObj_GetPropertySetter_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_GetPropertySetter_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetPropertySetter_Proxy(
-        IAMTimelineObj * This,
-        IPropertySetter *newVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetPropertySetter_Proxy(
+    IAMTimelineObj * This,
+    IPropertySetter *newVal);
 
 
-    void __RPC_STUB IAMTimelineObj_SetPropertySetter_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_SetPropertySetter_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetSubObject_Proxy(
-        IAMTimelineObj * This,
-        /* [retval][out] */ IUnknown **pVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetSubObject_Proxy(
+    IAMTimelineObj * This,
+    /* [retval][out] */ IUnknown **pVal);
 
 
-    void __RPC_STUB IAMTimelineObj_GetSubObject_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_GetSubObject_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetSubObject_Proxy(
-        IAMTimelineObj * This,
-        IUnknown *newVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetSubObject_Proxy(
+    IAMTimelineObj * This,
+    IUnknown *newVal);
 
 
-    void __RPC_STUB IAMTimelineObj_SetSubObject_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_SetSubObject_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetSubObjectGUID_Proxy(
-        IAMTimelineObj * This,
-        GUID newVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetSubObjectGUID_Proxy(
+    IAMTimelineObj * This,
+    GUID newVal);
 
 
-    void __RPC_STUB IAMTimelineObj_SetSubObjectGUID_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_SetSubObjectGUID_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetSubObjectGUIDB_Proxy(
-        IAMTimelineObj * This,
-        BSTR newVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetSubObjectGUIDB_Proxy(
+    IAMTimelineObj * This,
+    BSTR newVal);
 
 
-    void __RPC_STUB IAMTimelineObj_SetSubObjectGUIDB_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_SetSubObjectGUIDB_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetSubObjectGUID_Proxy(
-        IAMTimelineObj * This,
-        GUID *pVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetSubObjectGUID_Proxy(
+    IAMTimelineObj * This,
+    GUID *pVal);
 
 
-    void __RPC_STUB IAMTimelineObj_GetSubObjectGUID_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_GetSubObjectGUID_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetSubObjectGUIDB_Proxy(
-        IAMTimelineObj * This,
-        /* [retval][out] */ BSTR *pVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetSubObjectGUIDB_Proxy(
+    IAMTimelineObj * This,
+    /* [retval][out] */ BSTR *pVal);
 
 
-    void __RPC_STUB IAMTimelineObj_GetSubObjectGUIDB_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_GetSubObjectGUIDB_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetSubObjectLoaded_Proxy(
-        IAMTimelineObj * This,
-        BOOL *pVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetSubObjectLoaded_Proxy(
+    IAMTimelineObj * This,
+    BOOL *pVal);
 
 
-    void __RPC_STUB IAMTimelineObj_GetSubObjectLoaded_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_GetSubObjectLoaded_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetTimelineType_Proxy(
-        IAMTimelineObj * This,
-        TIMELINE_MAJOR_TYPE *pVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetTimelineType_Proxy(
+    IAMTimelineObj * This,
+    TIMELINE_MAJOR_TYPE *pVal);
 
 
-    void __RPC_STUB IAMTimelineObj_GetTimelineType_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_GetTimelineType_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetTimelineType_Proxy(
-        IAMTimelineObj * This,
-        TIMELINE_MAJOR_TYPE newVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetTimelineType_Proxy(
+    IAMTimelineObj * This,
+    TIMELINE_MAJOR_TYPE newVal);
 
 
-    void __RPC_STUB IAMTimelineObj_SetTimelineType_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_SetTimelineType_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetUserID_Proxy(
-        IAMTimelineObj * This,
-        long *pVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetUserID_Proxy(
+    IAMTimelineObj * This,
+    long *pVal);
 
 
-    void __RPC_STUB IAMTimelineObj_GetUserID_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_GetUserID_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetUserID_Proxy(
-        IAMTimelineObj * This,
-        long newVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetUserID_Proxy(
+    IAMTimelineObj * This,
+    long newVal);
 
 
-    void __RPC_STUB IAMTimelineObj_SetUserID_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_SetUserID_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetGenID_Proxy(
-        IAMTimelineObj * This,
-        long *pVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetGenID_Proxy(
+    IAMTimelineObj * This,
+    long *pVal);
 
 
-    void __RPC_STUB IAMTimelineObj_GetGenID_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_GetGenID_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetUserName_Proxy(
-        IAMTimelineObj * This,
-        /* [retval][out] */ BSTR *pVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetUserName_Proxy(
+    IAMTimelineObj * This,
+    /* [retval][out] */ BSTR *pVal);
 
 
-    void __RPC_STUB IAMTimelineObj_GetUserName_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_GetUserName_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetUserName_Proxy(
-        IAMTimelineObj * This,
-        BSTR newVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetUserName_Proxy(
+    IAMTimelineObj * This,
+    BSTR newVal);
 
 
-    void __RPC_STUB IAMTimelineObj_SetUserName_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_SetUserName_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetUserData_Proxy(
-        IAMTimelineObj * This,
-        BYTE *pData,
-        long *pSize);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetUserData_Proxy(
+    IAMTimelineObj * This,
+    BYTE *pData,
+    long *pSize);
 
 
-    void __RPC_STUB IAMTimelineObj_GetUserData_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_GetUserData_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetUserData_Proxy(
-        IAMTimelineObj * This,
-        BYTE *pData,
-        long Size);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetUserData_Proxy(
+    IAMTimelineObj * This,
+    BYTE *pData,
+    long Size);
 
 
-    void __RPC_STUB IAMTimelineObj_SetUserData_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_SetUserData_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetMuted_Proxy(
-        IAMTimelineObj * This,
-        BOOL *pVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetMuted_Proxy(
+    IAMTimelineObj * This,
+    BOOL *pVal);
 
 
-    void __RPC_STUB IAMTimelineObj_GetMuted_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_GetMuted_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetMuted_Proxy(
-        IAMTimelineObj * This,
-        BOOL newVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetMuted_Proxy(
+    IAMTimelineObj * This,
+    BOOL newVal);
 
 
-    void __RPC_STUB IAMTimelineObj_SetMuted_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_SetMuted_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetLocked_Proxy(
-        IAMTimelineObj * This,
-        BOOL *pVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetLocked_Proxy(
+    IAMTimelineObj * This,
+    BOOL *pVal);
 
 
-    void __RPC_STUB IAMTimelineObj_GetLocked_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_GetLocked_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetLocked_Proxy(
-        IAMTimelineObj * This,
-        BOOL newVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetLocked_Proxy(
+    IAMTimelineObj * This,
+    BOOL newVal);
 
 
-    void __RPC_STUB IAMTimelineObj_SetLocked_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_SetLocked_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetDirtyRange_Proxy(
-        IAMTimelineObj * This,
-        REFERENCE_TIME *pStart,
-        REFERENCE_TIME *pStop);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetDirtyRange_Proxy(
+    IAMTimelineObj * This,
+    REFERENCE_TIME *pStart,
+    REFERENCE_TIME *pStop);
 
 
-    void __RPC_STUB IAMTimelineObj_GetDirtyRange_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_GetDirtyRange_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetDirtyRange2_Proxy(
-        IAMTimelineObj * This,
-        REFTIME *pStart,
-        REFTIME *pStop);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetDirtyRange2_Proxy(
+    IAMTimelineObj * This,
+    REFTIME *pStart,
+    REFTIME *pStop);
 
 
-    void __RPC_STUB IAMTimelineObj_GetDirtyRange2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_GetDirtyRange2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetDirtyRange_Proxy(
-        IAMTimelineObj * This,
-        REFERENCE_TIME Start,
-        REFERENCE_TIME Stop);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetDirtyRange_Proxy(
+    IAMTimelineObj * This,
+    REFERENCE_TIME Start,
+    REFERENCE_TIME Stop);
 
 
-    void __RPC_STUB IAMTimelineObj_SetDirtyRange_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_SetDirtyRange_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetDirtyRange2_Proxy(
-        IAMTimelineObj * This,
-        REFTIME Start,
-        REFTIME Stop);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_SetDirtyRange2_Proxy(
+    IAMTimelineObj * This,
+    REFTIME Start,
+    REFTIME Stop);
 
 
-    void __RPC_STUB IAMTimelineObj_SetDirtyRange2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_SetDirtyRange2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_ClearDirty_Proxy(
-        IAMTimelineObj * This);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_ClearDirty_Proxy(
+    IAMTimelineObj * This);
 
 
-    void __RPC_STUB IAMTimelineObj_ClearDirty_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_ClearDirty_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_Remove_Proxy(
-        IAMTimelineObj * This);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_Remove_Proxy(
+    IAMTimelineObj * This);
 
 
-    void __RPC_STUB IAMTimelineObj_Remove_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_Remove_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_RemoveAll_Proxy(
-        IAMTimelineObj * This);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_RemoveAll_Proxy(
+    IAMTimelineObj * This);
 
 
-    void __RPC_STUB IAMTimelineObj_RemoveAll_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_RemoveAll_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetTimelineNoRef_Proxy(
-        IAMTimelineObj * This,
-        IAMTimeline **ppResult);
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetTimelineNoRef_Proxy(
+    IAMTimelineObj * This,
+    IAMTimeline **ppResult);
 
 
-    void __RPC_STUB IAMTimelineObj_GetTimelineNoRef_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_GetTimelineNoRef_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetGroupIBelongTo_Proxy(
-        IAMTimelineObj * This,
-        /* [out] */ IAMTimelineGroup **ppGroup);
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetGroupIBelongTo_Proxy(
+    IAMTimelineObj * This,
+    /* [out] */ IAMTimelineGroup **ppGroup);
 
 
-    void __RPC_STUB IAMTimelineObj_GetGroupIBelongTo_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_GetGroupIBelongTo_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetEmbedDepth_Proxy(
-        IAMTimelineObj * This,
-        long *pVal);
+HRESULT STDMETHODCALLTYPE IAMTimelineObj_GetEmbedDepth_Proxy(
+    IAMTimelineObj * This,
+    long *pVal);
 
 
-    void __RPC_STUB IAMTimelineObj_GetEmbedDepth_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineObj_GetEmbedDepth_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -5634,83 +5634,83 @@ public:
 #ifndef __IAMTimelineEffectable_INTERFACE_DEFINED__
 #define __IAMTimelineEffectable_INTERFACE_DEFINED__
 
-    /* interface IAMTimelineEffectable */
-    /* [unique][helpstring][uuid][object] */
+/* interface IAMTimelineEffectable */
+/* [unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IAMTimelineEffectable;
+EXTERN_C const IID IID_IAMTimelineEffectable;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("EAE58537-622E-11d2-8CAD-00A024580902")
+MIDL_INTERFACE("EAE58537-622E-11d2-8CAD-00A024580902")
 IAMTimelineEffectable :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE EffectInsBefore(
-            IAMTimelineObj *pFX,
-            long priority) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE EffectInsBefore(
+        IAMTimelineObj *pFX,
+        long priority) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE EffectSwapPriorities(
-            long PriorityA,
-            long PriorityB) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE EffectSwapPriorities(
+        long PriorityA,
+        long PriorityB) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE EffectGetCount(
-            long *pCount) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE EffectGetCount(
+        long *pCount) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetEffect(
-            /* [out] */ IAMTimelineObj **ppFx,
-            long Which) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetEffect(
+        /* [out] */ IAMTimelineObj **ppFx,
+        long Which) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IAMTimelineEffectableVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IAMTimelineEffectableVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IAMTimelineEffectable * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IAMTimelineEffectable * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IAMTimelineEffectable * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IAMTimelineEffectable * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IAMTimelineEffectable * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IAMTimelineEffectable * This);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *EffectInsBefore)(
-            IAMTimelineEffectable * This,
-            IAMTimelineObj *pFX,
-            long priority);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *EffectInsBefore)(
+        IAMTimelineEffectable * This,
+        IAMTimelineObj *pFX,
+        long priority);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *EffectSwapPriorities)(
-            IAMTimelineEffectable * This,
-            long PriorityA,
-            long PriorityB);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *EffectSwapPriorities)(
+        IAMTimelineEffectable * This,
+        long PriorityA,
+        long PriorityB);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *EffectGetCount)(
-            IAMTimelineEffectable * This,
-            long *pCount);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *EffectGetCount)(
+        IAMTimelineEffectable * This,
+        long *pCount);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetEffect)(
-            IAMTimelineEffectable * This,
-            /* [out] */ IAMTimelineObj **ppFx,
-            long Which);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetEffect)(
+        IAMTimelineEffectable * This,
+        /* [out] */ IAMTimelineObj **ppFx,
+        long Which);
 
-        END_INTERFACE
-    } IAMTimelineEffectableVtbl;
+    END_INTERFACE
+} IAMTimelineEffectableVtbl;
 
-    interface IAMTimelineEffectable
-    {
-        CONST_VTBL struct IAMTimelineEffectableVtbl *lpVtbl;
-    };
+interface IAMTimelineEffectable
+{
+    CONST_VTBL struct IAMTimelineEffectableVtbl *lpVtbl;
+};
 
 
 
@@ -5746,58 +5746,58 @@ public:
 
 
 
-    /* [helpstring] */ HRESULT STDMETHODCALLTYPE IAMTimelineEffectable_EffectInsBefore_Proxy(
-        IAMTimelineEffectable * This,
-        IAMTimelineObj *pFX,
-        long priority);
+/* [helpstring] */ HRESULT STDMETHODCALLTYPE IAMTimelineEffectable_EffectInsBefore_Proxy(
+    IAMTimelineEffectable * This,
+    IAMTimelineObj *pFX,
+    long priority);
 
 
-    void __RPC_STUB IAMTimelineEffectable_EffectInsBefore_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineEffectable_EffectInsBefore_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineEffectable_EffectSwapPriorities_Proxy(
-        IAMTimelineEffectable * This,
-        long PriorityA,
-        long PriorityB);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineEffectable_EffectSwapPriorities_Proxy(
+    IAMTimelineEffectable * This,
+    long PriorityA,
+    long PriorityB);
 
 
-    void __RPC_STUB IAMTimelineEffectable_EffectSwapPriorities_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineEffectable_EffectSwapPriorities_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineEffectable_EffectGetCount_Proxy(
-        IAMTimelineEffectable * This,
-        long *pCount);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineEffectable_EffectGetCount_Proxy(
+    IAMTimelineEffectable * This,
+    long *pCount);
 
 
-    void __RPC_STUB IAMTimelineEffectable_EffectGetCount_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineEffectable_EffectGetCount_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineEffectable_GetEffect_Proxy(
-        IAMTimelineEffectable * This,
-        /* [out] */ IAMTimelineObj **ppFx,
-        long Which);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineEffectable_GetEffect_Proxy(
+    IAMTimelineEffectable * This,
+    /* [out] */ IAMTimelineObj **ppFx,
+    long Which);
 
 
-    void __RPC_STUB IAMTimelineEffectable_GetEffect_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineEffectable_GetEffect_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -5807,53 +5807,53 @@ public:
 #ifndef __IAMTimelineEffect_INTERFACE_DEFINED__
 #define __IAMTimelineEffect_INTERFACE_DEFINED__
 
-    /* interface IAMTimelineEffect */
-    /* [unique][helpstring][uuid][object] */
+/* interface IAMTimelineEffect */
+/* [unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IAMTimelineEffect;
+EXTERN_C const IID IID_IAMTimelineEffect;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("BCE0C264-622D-11d2-8CAD-00A024580902")
+MIDL_INTERFACE("BCE0C264-622D-11d2-8CAD-00A024580902")
 IAMTimelineEffect :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE EffectGetPriority(
-            long *pVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE EffectGetPriority(
+        long *pVal) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IAMTimelineEffectVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IAMTimelineEffectVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IAMTimelineEffect * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IAMTimelineEffect * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IAMTimelineEffect * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IAMTimelineEffect * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IAMTimelineEffect * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IAMTimelineEffect * This);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *EffectGetPriority)(
-            IAMTimelineEffect * This,
-            long *pVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *EffectGetPriority)(
+        IAMTimelineEffect * This,
+        long *pVal);
 
-        END_INTERFACE
-    } IAMTimelineEffectVtbl;
+    END_INTERFACE
+} IAMTimelineEffectVtbl;
 
-    interface IAMTimelineEffect
-    {
-        CONST_VTBL struct IAMTimelineEffectVtbl *lpVtbl;
-    };
+interface IAMTimelineEffect
+{
+    CONST_VTBL struct IAMTimelineEffectVtbl *lpVtbl;
+};
 
 
 
@@ -5880,16 +5880,16 @@ public:
 
 
 
-    /* [helpstring] */ HRESULT STDMETHODCALLTYPE IAMTimelineEffect_EffectGetPriority_Proxy(
-        IAMTimelineEffect * This,
-        long *pVal);
+/* [helpstring] */ HRESULT STDMETHODCALLTYPE IAMTimelineEffect_EffectGetPriority_Proxy(
+    IAMTimelineEffect * This,
+    long *pVal);
 
 
-    void __RPC_STUB IAMTimelineEffect_EffectGetPriority_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineEffect_EffectGetPriority_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -5899,105 +5899,105 @@ public:
 #ifndef __IAMTimelineTransable_INTERFACE_DEFINED__
 #define __IAMTimelineTransable_INTERFACE_DEFINED__
 
-    /* interface IAMTimelineTransable */
-    /* [unique][helpstring][uuid][object] */
+/* interface IAMTimelineTransable */
+/* [unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IAMTimelineTransable;
+EXTERN_C const IID IID_IAMTimelineTransable;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("378FA386-622E-11d2-8CAD-00A024580902")
+MIDL_INTERFACE("378FA386-622E-11d2-8CAD-00A024580902")
 IAMTimelineTransable :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE TransAdd(
-            IAMTimelineObj *pTrans) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE TransAdd(
+        IAMTimelineObj *pTrans) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE TransGetCount(
-            long *pCount) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE TransGetCount(
+        long *pCount) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetNextTrans(
-            /* [out] */ IAMTimelineObj **ppTrans,
-            REFERENCE_TIME *pInOut) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetNextTrans(
+        /* [out] */ IAMTimelineObj **ppTrans,
+        REFERENCE_TIME *pInOut) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetNextTrans2(
-            /* [out] */ IAMTimelineObj **ppTrans,
-            REFTIME *pInOut) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetNextTrans2(
+        /* [out] */ IAMTimelineObj **ppTrans,
+        REFTIME *pInOut) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetTransAtTime(
-            /* [out] */ IAMTimelineObj **ppObj,
-            REFERENCE_TIME Time,
-            long SearchDirection) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetTransAtTime(
+        /* [out] */ IAMTimelineObj **ppObj,
+        REFERENCE_TIME Time,
+        long SearchDirection) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetTransAtTime2(
-            /* [out] */ IAMTimelineObj **ppObj,
-            REFTIME Time,
-            long SearchDirection) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetTransAtTime2(
+        /* [out] */ IAMTimelineObj **ppObj,
+        REFTIME Time,
+        long SearchDirection) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IAMTimelineTransableVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IAMTimelineTransableVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IAMTimelineTransable * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IAMTimelineTransable * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IAMTimelineTransable * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IAMTimelineTransable * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IAMTimelineTransable * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IAMTimelineTransable * This);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *TransAdd)(
-            IAMTimelineTransable * This,
-            IAMTimelineObj *pTrans);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *TransAdd)(
+        IAMTimelineTransable * This,
+        IAMTimelineObj *pTrans);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *TransGetCount)(
-            IAMTimelineTransable * This,
-            long *pCount);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *TransGetCount)(
+        IAMTimelineTransable * This,
+        long *pCount);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetNextTrans)(
-            IAMTimelineTransable * This,
-            /* [out] */ IAMTimelineObj **ppTrans,
-            REFERENCE_TIME *pInOut);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetNextTrans)(
+        IAMTimelineTransable * This,
+        /* [out] */ IAMTimelineObj **ppTrans,
+        REFERENCE_TIME *pInOut);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetNextTrans2)(
-            IAMTimelineTransable * This,
-            /* [out] */ IAMTimelineObj **ppTrans,
-            REFTIME *pInOut);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetNextTrans2)(
+        IAMTimelineTransable * This,
+        /* [out] */ IAMTimelineObj **ppTrans,
+        REFTIME *pInOut);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetTransAtTime)(
-            IAMTimelineTransable * This,
-            /* [out] */ IAMTimelineObj **ppObj,
-            REFERENCE_TIME Time,
-            long SearchDirection);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetTransAtTime)(
+        IAMTimelineTransable * This,
+        /* [out] */ IAMTimelineObj **ppObj,
+        REFERENCE_TIME Time,
+        long SearchDirection);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetTransAtTime2)(
-            IAMTimelineTransable * This,
-            /* [out] */ IAMTimelineObj **ppObj,
-            REFTIME Time,
-            long SearchDirection);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetTransAtTime2)(
+        IAMTimelineTransable * This,
+        /* [out] */ IAMTimelineObj **ppObj,
+        REFTIME Time,
+        long SearchDirection);
 
-        END_INTERFACE
-    } IAMTimelineTransableVtbl;
+    END_INTERFACE
+} IAMTimelineTransableVtbl;
 
-    interface IAMTimelineTransable
-    {
-        CONST_VTBL struct IAMTimelineTransableVtbl *lpVtbl;
-    };
+interface IAMTimelineTransable
+{
+    CONST_VTBL struct IAMTimelineTransableVtbl *lpVtbl;
+};
 
 
 
@@ -6039,87 +6039,87 @@ public:
 
 
 
-    /* [helpstring] */ HRESULT STDMETHODCALLTYPE IAMTimelineTransable_TransAdd_Proxy(
-        IAMTimelineTransable * This,
-        IAMTimelineObj *pTrans);
+/* [helpstring] */ HRESULT STDMETHODCALLTYPE IAMTimelineTransable_TransAdd_Proxy(
+    IAMTimelineTransable * This,
+    IAMTimelineObj *pTrans);
 
 
-    void __RPC_STUB IAMTimelineTransable_TransAdd_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTransable_TransAdd_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineTransable_TransGetCount_Proxy(
-        IAMTimelineTransable * This,
-        long *pCount);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineTransable_TransGetCount_Proxy(
+    IAMTimelineTransable * This,
+    long *pCount);
 
 
-    void __RPC_STUB IAMTimelineTransable_TransGetCount_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTransable_TransGetCount_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineTransable_GetNextTrans_Proxy(
-        IAMTimelineTransable * This,
-        /* [out] */ IAMTimelineObj **ppTrans,
-        REFERENCE_TIME *pInOut);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineTransable_GetNextTrans_Proxy(
+    IAMTimelineTransable * This,
+    /* [out] */ IAMTimelineObj **ppTrans,
+    REFERENCE_TIME *pInOut);
 
 
-    void __RPC_STUB IAMTimelineTransable_GetNextTrans_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTransable_GetNextTrans_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineTransable_GetNextTrans2_Proxy(
-        IAMTimelineTransable * This,
-        /* [out] */ IAMTimelineObj **ppTrans,
-        REFTIME *pInOut);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineTransable_GetNextTrans2_Proxy(
+    IAMTimelineTransable * This,
+    /* [out] */ IAMTimelineObj **ppTrans,
+    REFTIME *pInOut);
 
 
-    void __RPC_STUB IAMTimelineTransable_GetNextTrans2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTransable_GetNextTrans2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineTransable_GetTransAtTime_Proxy(
-        IAMTimelineTransable * This,
-        /* [out] */ IAMTimelineObj **ppObj,
-        REFERENCE_TIME Time,
-        long SearchDirection);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineTransable_GetTransAtTime_Proxy(
+    IAMTimelineTransable * This,
+    /* [out] */ IAMTimelineObj **ppObj,
+    REFERENCE_TIME Time,
+    long SearchDirection);
 
 
-    void __RPC_STUB IAMTimelineTransable_GetTransAtTime_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTransable_GetTransAtTime_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineTransable_GetTransAtTime2_Proxy(
-        IAMTimelineTransable * This,
-        /* [out] */ IAMTimelineObj **ppObj,
-        REFTIME Time,
-        long SearchDirection);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineTransable_GetTransAtTime2_Proxy(
+    IAMTimelineTransable * This,
+    /* [out] */ IAMTimelineObj **ppObj,
+    REFTIME Time,
+    long SearchDirection);
 
 
-    void __RPC_STUB IAMTimelineTransable_GetTransAtTime2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTransable_GetTransAtTime2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -6129,59 +6129,59 @@ public:
 #ifndef __IAMTimelineSplittable_INTERFACE_DEFINED__
 #define __IAMTimelineSplittable_INTERFACE_DEFINED__
 
-    /* interface IAMTimelineSplittable */
-    /* [unique][helpstring][uuid][object] */
+/* interface IAMTimelineSplittable */
+/* [unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IAMTimelineSplittable;
+EXTERN_C const IID IID_IAMTimelineSplittable;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("A0F840A0-D590-11d2-8D55-00A0C9441E20")
+MIDL_INTERFACE("A0F840A0-D590-11d2-8D55-00A0C9441E20")
 IAMTimelineSplittable :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual HRESULT STDMETHODCALLTYPE SplitAt(
-            REFERENCE_TIME Time) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SplitAt(
+        REFERENCE_TIME Time) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SplitAt2(
-            REFTIME Time) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SplitAt2(
+        REFTIME Time) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IAMTimelineSplittableVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IAMTimelineSplittableVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IAMTimelineSplittable * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IAMTimelineSplittable * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IAMTimelineSplittable * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IAMTimelineSplittable * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IAMTimelineSplittable * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IAMTimelineSplittable * This);
 
-        HRESULT(STDMETHODCALLTYPE *SplitAt)(
-            IAMTimelineSplittable * This,
-            REFERENCE_TIME Time);
+    HRESULT(STDMETHODCALLTYPE *SplitAt)(
+        IAMTimelineSplittable * This,
+        REFERENCE_TIME Time);
 
-        HRESULT(STDMETHODCALLTYPE *SplitAt2)(
-            IAMTimelineSplittable * This,
-            REFTIME Time);
+    HRESULT(STDMETHODCALLTYPE *SplitAt2)(
+        IAMTimelineSplittable * This,
+        REFTIME Time);
 
-        END_INTERFACE
-    } IAMTimelineSplittableVtbl;
+    END_INTERFACE
+} IAMTimelineSplittableVtbl;
 
-    interface IAMTimelineSplittable
-    {
-        CONST_VTBL struct IAMTimelineSplittableVtbl *lpVtbl;
-    };
+interface IAMTimelineSplittable
+{
+    CONST_VTBL struct IAMTimelineSplittableVtbl *lpVtbl;
+};
 
 
 
@@ -6211,28 +6211,28 @@ public:
 
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimelineSplittable_SplitAt_Proxy(
-        IAMTimelineSplittable * This,
-        REFERENCE_TIME Time);
+HRESULT STDMETHODCALLTYPE IAMTimelineSplittable_SplitAt_Proxy(
+    IAMTimelineSplittable * This,
+    REFERENCE_TIME Time);
 
 
-    void __RPC_STUB IAMTimelineSplittable_SplitAt_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineSplittable_SplitAt_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimelineSplittable_SplitAt2_Proxy(
-        IAMTimelineSplittable * This,
-        REFTIME Time);
+HRESULT STDMETHODCALLTYPE IAMTimelineSplittable_SplitAt2_Proxy(
+    IAMTimelineSplittable * This,
+    REFTIME Time);
 
 
-    void __RPC_STUB IAMTimelineSplittable_SplitAt2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineSplittable_SplitAt2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -6242,109 +6242,109 @@ public:
 #ifndef __IAMTimelineTrans_INTERFACE_DEFINED__
 #define __IAMTimelineTrans_INTERFACE_DEFINED__
 
-    /* interface IAMTimelineTrans */
-    /* [unique][helpstring][uuid][object] */
+/* interface IAMTimelineTrans */
+/* [unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IAMTimelineTrans;
+EXTERN_C const IID IID_IAMTimelineTrans;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("BCE0C265-622D-11d2-8CAD-00A024580902")
+MIDL_INTERFACE("BCE0C265-622D-11d2-8CAD-00A024580902")
 IAMTimelineTrans :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetCutPoint(
-            REFERENCE_TIME *pTLTime) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetCutPoint(
+        REFERENCE_TIME *pTLTime) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetCutPoint2(
-            REFTIME *pTLTime) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetCutPoint2(
+        REFTIME *pTLTime) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetCutPoint(
-            REFERENCE_TIME TLTime) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetCutPoint(
+        REFERENCE_TIME TLTime) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetCutPoint2(
-            REFTIME TLTime) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetCutPoint2(
+        REFTIME TLTime) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetSwapInputs(
-            BOOL *pVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetSwapInputs(
+        BOOL *pVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetSwapInputs(
-            BOOL pVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetSwapInputs(
+        BOOL pVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetCutsOnly(
-            BOOL *pVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetCutsOnly(
+        BOOL *pVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetCutsOnly(
-            BOOL pVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetCutsOnly(
+        BOOL pVal) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IAMTimelineTransVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IAMTimelineTransVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IAMTimelineTrans * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IAMTimelineTrans * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IAMTimelineTrans * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IAMTimelineTrans * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IAMTimelineTrans * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IAMTimelineTrans * This);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetCutPoint)(
-            IAMTimelineTrans * This,
-            REFERENCE_TIME *pTLTime);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetCutPoint)(
+        IAMTimelineTrans * This,
+        REFERENCE_TIME *pTLTime);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetCutPoint2)(
-            IAMTimelineTrans * This,
-            REFTIME *pTLTime);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetCutPoint2)(
+        IAMTimelineTrans * This,
+        REFTIME *pTLTime);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetCutPoint)(
-            IAMTimelineTrans * This,
-            REFERENCE_TIME TLTime);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetCutPoint)(
+        IAMTimelineTrans * This,
+        REFERENCE_TIME TLTime);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetCutPoint2)(
-            IAMTimelineTrans * This,
-            REFTIME TLTime);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetCutPoint2)(
+        IAMTimelineTrans * This,
+        REFTIME TLTime);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetSwapInputs)(
-            IAMTimelineTrans * This,
-            BOOL *pVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetSwapInputs)(
+        IAMTimelineTrans * This,
+        BOOL *pVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetSwapInputs)(
-            IAMTimelineTrans * This,
-            BOOL pVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetSwapInputs)(
+        IAMTimelineTrans * This,
+        BOOL pVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetCutsOnly)(
-            IAMTimelineTrans * This,
-            BOOL *pVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetCutsOnly)(
+        IAMTimelineTrans * This,
+        BOOL *pVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetCutsOnly)(
-            IAMTimelineTrans * This,
-            BOOL pVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetCutsOnly)(
+        IAMTimelineTrans * This,
+        BOOL pVal);
 
-        END_INTERFACE
-    } IAMTimelineTransVtbl;
+    END_INTERFACE
+} IAMTimelineTransVtbl;
 
-    interface IAMTimelineTrans
-    {
-        CONST_VTBL struct IAMTimelineTransVtbl *lpVtbl;
-    };
+interface IAMTimelineTrans
+{
+    CONST_VTBL struct IAMTimelineTransVtbl *lpVtbl;
+};
 
 
 
@@ -6392,107 +6392,107 @@ public:
 
 
 
-    /* [helpstring] */ HRESULT STDMETHODCALLTYPE IAMTimelineTrans_GetCutPoint_Proxy(
-        IAMTimelineTrans * This,
-        REFERENCE_TIME *pTLTime);
+/* [helpstring] */ HRESULT STDMETHODCALLTYPE IAMTimelineTrans_GetCutPoint_Proxy(
+    IAMTimelineTrans * This,
+    REFERENCE_TIME *pTLTime);
 
 
-    void __RPC_STUB IAMTimelineTrans_GetCutPoint_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTrans_GetCutPoint_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineTrans_GetCutPoint2_Proxy(
-        IAMTimelineTrans * This,
-        REFTIME *pTLTime);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineTrans_GetCutPoint2_Proxy(
+    IAMTimelineTrans * This,
+    REFTIME *pTLTime);
 
 
-    void __RPC_STUB IAMTimelineTrans_GetCutPoint2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTrans_GetCutPoint2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineTrans_SetCutPoint_Proxy(
-        IAMTimelineTrans * This,
-        REFERENCE_TIME TLTime);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineTrans_SetCutPoint_Proxy(
+    IAMTimelineTrans * This,
+    REFERENCE_TIME TLTime);
 
 
-    void __RPC_STUB IAMTimelineTrans_SetCutPoint_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTrans_SetCutPoint_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineTrans_SetCutPoint2_Proxy(
-        IAMTimelineTrans * This,
-        REFTIME TLTime);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineTrans_SetCutPoint2_Proxy(
+    IAMTimelineTrans * This,
+    REFTIME TLTime);
 
 
-    void __RPC_STUB IAMTimelineTrans_SetCutPoint2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTrans_SetCutPoint2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineTrans_GetSwapInputs_Proxy(
-        IAMTimelineTrans * This,
-        BOOL *pVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineTrans_GetSwapInputs_Proxy(
+    IAMTimelineTrans * This,
+    BOOL *pVal);
 
 
-    void __RPC_STUB IAMTimelineTrans_GetSwapInputs_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTrans_GetSwapInputs_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineTrans_SetSwapInputs_Proxy(
-        IAMTimelineTrans * This,
-        BOOL pVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineTrans_SetSwapInputs_Proxy(
+    IAMTimelineTrans * This,
+    BOOL pVal);
 
 
-    void __RPC_STUB IAMTimelineTrans_SetSwapInputs_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTrans_SetSwapInputs_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineTrans_GetCutsOnly_Proxy(
-        IAMTimelineTrans * This,
-        BOOL *pVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineTrans_GetCutsOnly_Proxy(
+    IAMTimelineTrans * This,
+    BOOL *pVal);
 
 
-    void __RPC_STUB IAMTimelineTrans_GetCutsOnly_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTrans_GetCutsOnly_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineTrans_SetCutsOnly_Proxy(
-        IAMTimelineTrans * This,
-        BOOL pVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineTrans_SetCutsOnly_Proxy(
+    IAMTimelineTrans * This,
+    BOOL pVal);
 
 
-    void __RPC_STUB IAMTimelineTrans_SetCutsOnly_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTrans_SetCutsOnly_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -6502,232 +6502,232 @@ public:
 #ifndef __IAMTimelineSrc_INTERFACE_DEFINED__
 #define __IAMTimelineSrc_INTERFACE_DEFINED__
 
-    /* interface IAMTimelineSrc */
-    /* [unique][helpstring][uuid][object] */
+/* interface IAMTimelineSrc */
+/* [unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IAMTimelineSrc;
+EXTERN_C const IID IID_IAMTimelineSrc;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("78530B79-61F9-11D2-8CAD-00A024580902")
+MIDL_INTERFACE("78530B79-61F9-11D2-8CAD-00A024580902")
 IAMTimelineSrc :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetMediaTimes(
-            REFERENCE_TIME *pStart,
-            REFERENCE_TIME *pStop) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetMediaTimes(
+        REFERENCE_TIME *pStart,
+        REFERENCE_TIME *pStop) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetMediaTimes2(
-            REFTIME *pStart,
-            REFTIME *pStop) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetMediaTimes2(
+        REFTIME *pStart,
+        REFTIME *pStop) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE ModifyStopTime(
-            REFERENCE_TIME Stop) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE ModifyStopTime(
+        REFERENCE_TIME Stop) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE ModifyStopTime2(
-            REFTIME Stop) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE ModifyStopTime2(
+        REFTIME Stop) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE FixMediaTimes(
-            REFERENCE_TIME *pStart,
-            REFERENCE_TIME *pStop) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE FixMediaTimes(
+        REFERENCE_TIME *pStart,
+        REFERENCE_TIME *pStop) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE FixMediaTimes2(
-            REFTIME *pStart,
-            REFTIME *pStop) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE FixMediaTimes2(
+        REFTIME *pStart,
+        REFTIME *pStop) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetMediaTimes(
-            REFERENCE_TIME Start,
-            REFERENCE_TIME Stop) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetMediaTimes(
+        REFERENCE_TIME Start,
+        REFERENCE_TIME Stop) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetMediaTimes2(
-            REFTIME Start,
-            REFTIME Stop) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetMediaTimes2(
+        REFTIME Start,
+        REFTIME Stop) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetMediaLength(
-            REFERENCE_TIME Length) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetMediaLength(
+        REFERENCE_TIME Length) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetMediaLength2(
-            REFTIME Length) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetMediaLength2(
+        REFTIME Length) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetMediaLength(
-            REFERENCE_TIME *pLength) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetMediaLength(
+        REFERENCE_TIME *pLength) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetMediaLength2(
-            REFTIME *pLength) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetMediaLength2(
+        REFTIME *pLength) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetMediaName(
-            /* [retval][out] */ BSTR *pVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetMediaName(
+        /* [retval][out] */ BSTR *pVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetMediaName(
-            BSTR newVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetMediaName(
+        BSTR newVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SpliceWithNext(
-            IAMTimelineObj *pNext) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SpliceWithNext(
+        IAMTimelineObj *pNext) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetStreamNumber(
-            long *pVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetStreamNumber(
+        long *pVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetStreamNumber(
-            long Val) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetStreamNumber(
+        long Val) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE IsNormalRate(
-            BOOL *pVal) = 0;
+    virtual HRESULT STDMETHODCALLTYPE IsNormalRate(
+        BOOL *pVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetDefaultFPS(
-            double *pFPS) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetDefaultFPS(
+        double *pFPS) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetDefaultFPS(
-            double FPS) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetDefaultFPS(
+        double FPS) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetStretchMode(
-            int *pnStretchMode) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetStretchMode(
+        int *pnStretchMode) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetStretchMode(
-            int nStretchMode) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetStretchMode(
+        int nStretchMode) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IAMTimelineSrcVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IAMTimelineSrcVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IAMTimelineSrc * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IAMTimelineSrc * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IAMTimelineSrc * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IAMTimelineSrc * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IAMTimelineSrc * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IAMTimelineSrc * This);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetMediaTimes)(
-            IAMTimelineSrc * This,
-            REFERENCE_TIME *pStart,
-            REFERENCE_TIME *pStop);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetMediaTimes)(
+        IAMTimelineSrc * This,
+        REFERENCE_TIME *pStart,
+        REFERENCE_TIME *pStop);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetMediaTimes2)(
-            IAMTimelineSrc * This,
-            REFTIME *pStart,
-            REFTIME *pStop);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetMediaTimes2)(
+        IAMTimelineSrc * This,
+        REFTIME *pStart,
+        REFTIME *pStop);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *ModifyStopTime)(
-            IAMTimelineSrc * This,
-            REFERENCE_TIME Stop);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *ModifyStopTime)(
+        IAMTimelineSrc * This,
+        REFERENCE_TIME Stop);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *ModifyStopTime2)(
-            IAMTimelineSrc * This,
-            REFTIME Stop);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *ModifyStopTime2)(
+        IAMTimelineSrc * This,
+        REFTIME Stop);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *FixMediaTimes)(
-            IAMTimelineSrc * This,
-            REFERENCE_TIME *pStart,
-            REFERENCE_TIME *pStop);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *FixMediaTimes)(
+        IAMTimelineSrc * This,
+        REFERENCE_TIME *pStart,
+        REFERENCE_TIME *pStop);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *FixMediaTimes2)(
-            IAMTimelineSrc * This,
-            REFTIME *pStart,
-            REFTIME *pStop);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *FixMediaTimes2)(
+        IAMTimelineSrc * This,
+        REFTIME *pStart,
+        REFTIME *pStop);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetMediaTimes)(
-            IAMTimelineSrc * This,
-            REFERENCE_TIME Start,
-            REFERENCE_TIME Stop);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetMediaTimes)(
+        IAMTimelineSrc * This,
+        REFERENCE_TIME Start,
+        REFERENCE_TIME Stop);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetMediaTimes2)(
-            IAMTimelineSrc * This,
-            REFTIME Start,
-            REFTIME Stop);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetMediaTimes2)(
+        IAMTimelineSrc * This,
+        REFTIME Start,
+        REFTIME Stop);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetMediaLength)(
-            IAMTimelineSrc * This,
-            REFERENCE_TIME Length);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetMediaLength)(
+        IAMTimelineSrc * This,
+        REFERENCE_TIME Length);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetMediaLength2)(
-            IAMTimelineSrc * This,
-            REFTIME Length);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetMediaLength2)(
+        IAMTimelineSrc * This,
+        REFTIME Length);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetMediaLength)(
-            IAMTimelineSrc * This,
-            REFERENCE_TIME *pLength);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetMediaLength)(
+        IAMTimelineSrc * This,
+        REFERENCE_TIME *pLength);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetMediaLength2)(
-            IAMTimelineSrc * This,
-            REFTIME *pLength);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetMediaLength2)(
+        IAMTimelineSrc * This,
+        REFTIME *pLength);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetMediaName)(
-            IAMTimelineSrc * This,
-            /* [retval][out] */ BSTR *pVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetMediaName)(
+        IAMTimelineSrc * This,
+        /* [retval][out] */ BSTR *pVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetMediaName)(
-            IAMTimelineSrc * This,
-            BSTR newVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetMediaName)(
+        IAMTimelineSrc * This,
+        BSTR newVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SpliceWithNext)(
-            IAMTimelineSrc * This,
-            IAMTimelineObj *pNext);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SpliceWithNext)(
+        IAMTimelineSrc * This,
+        IAMTimelineObj *pNext);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetStreamNumber)(
-            IAMTimelineSrc * This,
-            long *pVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetStreamNumber)(
+        IAMTimelineSrc * This,
+        long *pVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetStreamNumber)(
-            IAMTimelineSrc * This,
-            long Val);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetStreamNumber)(
+        IAMTimelineSrc * This,
+        long Val);
 
-        HRESULT(STDMETHODCALLTYPE *IsNormalRate)(
-            IAMTimelineSrc * This,
-            BOOL *pVal);
+    HRESULT(STDMETHODCALLTYPE *IsNormalRate)(
+        IAMTimelineSrc * This,
+        BOOL *pVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetDefaultFPS)(
-            IAMTimelineSrc * This,
-            double *pFPS);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetDefaultFPS)(
+        IAMTimelineSrc * This,
+        double *pFPS);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetDefaultFPS)(
-            IAMTimelineSrc * This,
-            double FPS);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetDefaultFPS)(
+        IAMTimelineSrc * This,
+        double FPS);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetStretchMode)(
-            IAMTimelineSrc * This,
-            int *pnStretchMode);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetStretchMode)(
+        IAMTimelineSrc * This,
+        int *pnStretchMode);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetStretchMode)(
-            IAMTimelineSrc * This,
-            int nStretchMode);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetStretchMode)(
+        IAMTimelineSrc * This,
+        int nStretchMode);
 
-        END_INTERFACE
-    } IAMTimelineSrcVtbl;
+    END_INTERFACE
+} IAMTimelineSrcVtbl;
 
-    interface IAMTimelineSrc
-    {
-        CONST_VTBL struct IAMTimelineSrcVtbl *lpVtbl;
-    };
+interface IAMTimelineSrc
+{
+    CONST_VTBL struct IAMTimelineSrcVtbl *lpVtbl;
+};
 
 
 
@@ -6817,294 +6817,294 @@ public:
 
 
 
-    /* [helpstring] */ HRESULT STDMETHODCALLTYPE IAMTimelineSrc_GetMediaTimes_Proxy(
-        IAMTimelineSrc * This,
-        REFERENCE_TIME *pStart,
-        REFERENCE_TIME *pStop);
+/* [helpstring] */ HRESULT STDMETHODCALLTYPE IAMTimelineSrc_GetMediaTimes_Proxy(
+    IAMTimelineSrc * This,
+    REFERENCE_TIME *pStart,
+    REFERENCE_TIME *pStop);
 
 
-    void __RPC_STUB IAMTimelineSrc_GetMediaTimes_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineSrc_GetMediaTimes_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineSrc_GetMediaTimes2_Proxy(
-        IAMTimelineSrc * This,
-        REFTIME *pStart,
-        REFTIME *pStop);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineSrc_GetMediaTimes2_Proxy(
+    IAMTimelineSrc * This,
+    REFTIME *pStart,
+    REFTIME *pStop);
 
 
-    void __RPC_STUB IAMTimelineSrc_GetMediaTimes2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineSrc_GetMediaTimes2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineSrc_ModifyStopTime_Proxy(
-        IAMTimelineSrc * This,
-        REFERENCE_TIME Stop);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineSrc_ModifyStopTime_Proxy(
+    IAMTimelineSrc * This,
+    REFERENCE_TIME Stop);
 
 
-    void __RPC_STUB IAMTimelineSrc_ModifyStopTime_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineSrc_ModifyStopTime_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineSrc_ModifyStopTime2_Proxy(
-        IAMTimelineSrc * This,
-        REFTIME Stop);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineSrc_ModifyStopTime2_Proxy(
+    IAMTimelineSrc * This,
+    REFTIME Stop);
 
 
-    void __RPC_STUB IAMTimelineSrc_ModifyStopTime2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineSrc_ModifyStopTime2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineSrc_FixMediaTimes_Proxy(
-        IAMTimelineSrc * This,
-        REFERENCE_TIME *pStart,
-        REFERENCE_TIME *pStop);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineSrc_FixMediaTimes_Proxy(
+    IAMTimelineSrc * This,
+    REFERENCE_TIME *pStart,
+    REFERENCE_TIME *pStop);
 
 
-    void __RPC_STUB IAMTimelineSrc_FixMediaTimes_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineSrc_FixMediaTimes_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineSrc_FixMediaTimes2_Proxy(
-        IAMTimelineSrc * This,
-        REFTIME *pStart,
-        REFTIME *pStop);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineSrc_FixMediaTimes2_Proxy(
+    IAMTimelineSrc * This,
+    REFTIME *pStart,
+    REFTIME *pStop);
 
 
-    void __RPC_STUB IAMTimelineSrc_FixMediaTimes2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineSrc_FixMediaTimes2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineSrc_SetMediaTimes_Proxy(
-        IAMTimelineSrc * This,
-        REFERENCE_TIME Start,
-        REFERENCE_TIME Stop);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineSrc_SetMediaTimes_Proxy(
+    IAMTimelineSrc * This,
+    REFERENCE_TIME Start,
+    REFERENCE_TIME Stop);
 
 
-    void __RPC_STUB IAMTimelineSrc_SetMediaTimes_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineSrc_SetMediaTimes_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineSrc_SetMediaTimes2_Proxy(
-        IAMTimelineSrc * This,
-        REFTIME Start,
-        REFTIME Stop);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineSrc_SetMediaTimes2_Proxy(
+    IAMTimelineSrc * This,
+    REFTIME Start,
+    REFTIME Stop);
 
 
-    void __RPC_STUB IAMTimelineSrc_SetMediaTimes2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineSrc_SetMediaTimes2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineSrc_SetMediaLength_Proxy(
-        IAMTimelineSrc * This,
-        REFERENCE_TIME Length);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineSrc_SetMediaLength_Proxy(
+    IAMTimelineSrc * This,
+    REFERENCE_TIME Length);
 
 
-    void __RPC_STUB IAMTimelineSrc_SetMediaLength_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineSrc_SetMediaLength_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineSrc_SetMediaLength2_Proxy(
-        IAMTimelineSrc * This,
-        REFTIME Length);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineSrc_SetMediaLength2_Proxy(
+    IAMTimelineSrc * This,
+    REFTIME Length);
 
 
-    void __RPC_STUB IAMTimelineSrc_SetMediaLength2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineSrc_SetMediaLength2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineSrc_GetMediaLength_Proxy(
-        IAMTimelineSrc * This,
-        REFERENCE_TIME *pLength);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineSrc_GetMediaLength_Proxy(
+    IAMTimelineSrc * This,
+    REFERENCE_TIME *pLength);
 
 
-    void __RPC_STUB IAMTimelineSrc_GetMediaLength_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineSrc_GetMediaLength_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineSrc_GetMediaLength2_Proxy(
-        IAMTimelineSrc * This,
-        REFTIME *pLength);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineSrc_GetMediaLength2_Proxy(
+    IAMTimelineSrc * This,
+    REFTIME *pLength);
 
 
-    void __RPC_STUB IAMTimelineSrc_GetMediaLength2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineSrc_GetMediaLength2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineSrc_GetMediaName_Proxy(
-        IAMTimelineSrc * This,
-        /* [retval][out] */ BSTR *pVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineSrc_GetMediaName_Proxy(
+    IAMTimelineSrc * This,
+    /* [retval][out] */ BSTR *pVal);
 
 
-    void __RPC_STUB IAMTimelineSrc_GetMediaName_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineSrc_GetMediaName_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineSrc_SetMediaName_Proxy(
-        IAMTimelineSrc * This,
-        BSTR newVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineSrc_SetMediaName_Proxy(
+    IAMTimelineSrc * This,
+    BSTR newVal);
 
 
-    void __RPC_STUB IAMTimelineSrc_SetMediaName_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineSrc_SetMediaName_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineSrc_SpliceWithNext_Proxy(
-        IAMTimelineSrc * This,
-        IAMTimelineObj *pNext);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineSrc_SpliceWithNext_Proxy(
+    IAMTimelineSrc * This,
+    IAMTimelineObj *pNext);
 
 
-    void __RPC_STUB IAMTimelineSrc_SpliceWithNext_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineSrc_SpliceWithNext_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineSrc_GetStreamNumber_Proxy(
-        IAMTimelineSrc * This,
-        long *pVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineSrc_GetStreamNumber_Proxy(
+    IAMTimelineSrc * This,
+    long *pVal);
 
 
-    void __RPC_STUB IAMTimelineSrc_GetStreamNumber_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineSrc_GetStreamNumber_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineSrc_SetStreamNumber_Proxy(
-        IAMTimelineSrc * This,
-        long Val);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineSrc_SetStreamNumber_Proxy(
+    IAMTimelineSrc * This,
+    long Val);
 
 
-    void __RPC_STUB IAMTimelineSrc_SetStreamNumber_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineSrc_SetStreamNumber_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimelineSrc_IsNormalRate_Proxy(
-        IAMTimelineSrc * This,
-        BOOL *pVal);
+HRESULT STDMETHODCALLTYPE IAMTimelineSrc_IsNormalRate_Proxy(
+    IAMTimelineSrc * This,
+    BOOL *pVal);
 
 
-    void __RPC_STUB IAMTimelineSrc_IsNormalRate_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineSrc_IsNormalRate_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineSrc_GetDefaultFPS_Proxy(
-        IAMTimelineSrc * This,
-        double *pFPS);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineSrc_GetDefaultFPS_Proxy(
+    IAMTimelineSrc * This,
+    double *pFPS);
 
 
-    void __RPC_STUB IAMTimelineSrc_GetDefaultFPS_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineSrc_GetDefaultFPS_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineSrc_SetDefaultFPS_Proxy(
-        IAMTimelineSrc * This,
-        double FPS);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineSrc_SetDefaultFPS_Proxy(
+    IAMTimelineSrc * This,
+    double FPS);
 
 
-    void __RPC_STUB IAMTimelineSrc_SetDefaultFPS_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineSrc_SetDefaultFPS_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineSrc_GetStretchMode_Proxy(
-        IAMTimelineSrc * This,
-        int *pnStretchMode);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineSrc_GetStretchMode_Proxy(
+    IAMTimelineSrc * This,
+    int *pnStretchMode);
 
 
-    void __RPC_STUB IAMTimelineSrc_GetStretchMode_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineSrc_GetStretchMode_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineSrc_SetStretchMode_Proxy(
-        IAMTimelineSrc * This,
-        int nStretchMode);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineSrc_SetStretchMode_Proxy(
+    IAMTimelineSrc * This,
+    int nStretchMode);
 
 
-    void __RPC_STUB IAMTimelineSrc_SetStretchMode_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineSrc_SetStretchMode_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -7114,178 +7114,178 @@ public:
 #ifndef __IAMTimelineTrack_INTERFACE_DEFINED__
 #define __IAMTimelineTrack_INTERFACE_DEFINED__
 
-    /* interface IAMTimelineTrack */
-    /* [unique][helpstring][uuid][object] */
+/* interface IAMTimelineTrack */
+/* [unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IAMTimelineTrack;
+EXTERN_C const IID IID_IAMTimelineTrack;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("EAE58538-622E-11d2-8CAD-00A024580902")
+MIDL_INTERFACE("EAE58538-622E-11d2-8CAD-00A024580902")
 IAMTimelineTrack :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SrcAdd(
-            IAMTimelineObj *pSource) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SrcAdd(
+        IAMTimelineObj *pSource) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetNextSrc(
-            /* [out] */ IAMTimelineObj **ppSrc,
-            REFERENCE_TIME *pInOut) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetNextSrc(
+        /* [out] */ IAMTimelineObj **ppSrc,
+        REFERENCE_TIME *pInOut) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetNextSrc2(
-            /* [out] */ IAMTimelineObj **ppSrc,
-            REFTIME *pInOut) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetNextSrc2(
+        /* [out] */ IAMTimelineObj **ppSrc,
+        REFTIME *pInOut) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE MoveEverythingBy(
-            REFERENCE_TIME Start,
-            REFERENCE_TIME MoveBy) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE MoveEverythingBy(
+        REFERENCE_TIME Start,
+        REFERENCE_TIME MoveBy) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE MoveEverythingBy2(
-            REFTIME Start,
-            REFTIME MoveBy) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE MoveEverythingBy2(
+        REFTIME Start,
+        REFTIME MoveBy) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetSourcesCount(
-            long *pVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetSourcesCount(
+        long *pVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE AreYouBlank(
-            long *pVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE AreYouBlank(
+        long *pVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetSrcAtTime(
-            /* [out] */ IAMTimelineObj **ppSrc,
-            REFERENCE_TIME Time,
-            long SearchDirection) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetSrcAtTime(
+        /* [out] */ IAMTimelineObj **ppSrc,
+        REFERENCE_TIME Time,
+        long SearchDirection) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetSrcAtTime2(
-            /* [out] */ IAMTimelineObj **ppSrc,
-            REFTIME Time,
-            long SearchDirection) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetSrcAtTime2(
+        /* [out] */ IAMTimelineObj **ppSrc,
+        REFTIME Time,
+        long SearchDirection) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE InsertSpace(
-            REFERENCE_TIME rtStart,
-            REFERENCE_TIME rtEnd) = 0;
+    virtual HRESULT STDMETHODCALLTYPE InsertSpace(
+        REFERENCE_TIME rtStart,
+        REFERENCE_TIME rtEnd) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE InsertSpace2(
-            REFTIME rtStart,
-            REFTIME rtEnd) = 0;
+    virtual HRESULT STDMETHODCALLTYPE InsertSpace2(
+        REFTIME rtStart,
+        REFTIME rtEnd) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE ZeroBetween(
-            REFERENCE_TIME rtStart,
-            REFERENCE_TIME rtEnd) = 0;
+    virtual HRESULT STDMETHODCALLTYPE ZeroBetween(
+        REFERENCE_TIME rtStart,
+        REFERENCE_TIME rtEnd) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE ZeroBetween2(
-            REFTIME rtStart,
-            REFTIME rtEnd) = 0;
+    virtual HRESULT STDMETHODCALLTYPE ZeroBetween2(
+        REFTIME rtStart,
+        REFTIME rtEnd) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetNextSrcEx(
-            IAMTimelineObj *pLast,
-            /* [out] */ IAMTimelineObj **ppNext) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetNextSrcEx(
+        IAMTimelineObj *pLast,
+        /* [out] */ IAMTimelineObj **ppNext) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IAMTimelineTrackVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IAMTimelineTrackVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IAMTimelineTrack * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IAMTimelineTrack * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IAMTimelineTrack * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IAMTimelineTrack * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IAMTimelineTrack * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IAMTimelineTrack * This);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SrcAdd)(
-            IAMTimelineTrack * This,
-            IAMTimelineObj *pSource);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SrcAdd)(
+        IAMTimelineTrack * This,
+        IAMTimelineObj *pSource);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetNextSrc)(
-            IAMTimelineTrack * This,
-            /* [out] */ IAMTimelineObj **ppSrc,
-            REFERENCE_TIME *pInOut);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetNextSrc)(
+        IAMTimelineTrack * This,
+        /* [out] */ IAMTimelineObj **ppSrc,
+        REFERENCE_TIME *pInOut);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetNextSrc2)(
-            IAMTimelineTrack * This,
-            /* [out] */ IAMTimelineObj **ppSrc,
-            REFTIME *pInOut);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetNextSrc2)(
+        IAMTimelineTrack * This,
+        /* [out] */ IAMTimelineObj **ppSrc,
+        REFTIME *pInOut);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *MoveEverythingBy)(
-            IAMTimelineTrack * This,
-            REFERENCE_TIME Start,
-            REFERENCE_TIME MoveBy);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *MoveEverythingBy)(
+        IAMTimelineTrack * This,
+        REFERENCE_TIME Start,
+        REFERENCE_TIME MoveBy);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *MoveEverythingBy2)(
-            IAMTimelineTrack * This,
-            REFTIME Start,
-            REFTIME MoveBy);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *MoveEverythingBy2)(
+        IAMTimelineTrack * This,
+        REFTIME Start,
+        REFTIME MoveBy);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetSourcesCount)(
-            IAMTimelineTrack * This,
-            long *pVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetSourcesCount)(
+        IAMTimelineTrack * This,
+        long *pVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *AreYouBlank)(
-            IAMTimelineTrack * This,
-            long *pVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *AreYouBlank)(
+        IAMTimelineTrack * This,
+        long *pVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetSrcAtTime)(
-            IAMTimelineTrack * This,
-            /* [out] */ IAMTimelineObj **ppSrc,
-            REFERENCE_TIME Time,
-            long SearchDirection);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetSrcAtTime)(
+        IAMTimelineTrack * This,
+        /* [out] */ IAMTimelineObj **ppSrc,
+        REFERENCE_TIME Time,
+        long SearchDirection);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetSrcAtTime2)(
-            IAMTimelineTrack * This,
-            /* [out] */ IAMTimelineObj **ppSrc,
-            REFTIME Time,
-            long SearchDirection);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetSrcAtTime2)(
+        IAMTimelineTrack * This,
+        /* [out] */ IAMTimelineObj **ppSrc,
+        REFTIME Time,
+        long SearchDirection);
 
-        HRESULT(STDMETHODCALLTYPE *InsertSpace)(
-            IAMTimelineTrack * This,
-            REFERENCE_TIME rtStart,
-            REFERENCE_TIME rtEnd);
+    HRESULT(STDMETHODCALLTYPE *InsertSpace)(
+        IAMTimelineTrack * This,
+        REFERENCE_TIME rtStart,
+        REFERENCE_TIME rtEnd);
 
-        HRESULT(STDMETHODCALLTYPE *InsertSpace2)(
-            IAMTimelineTrack * This,
-            REFTIME rtStart,
-            REFTIME rtEnd);
+    HRESULT(STDMETHODCALLTYPE *InsertSpace2)(
+        IAMTimelineTrack * This,
+        REFTIME rtStart,
+        REFTIME rtEnd);
 
-        HRESULT(STDMETHODCALLTYPE *ZeroBetween)(
-            IAMTimelineTrack * This,
-            REFERENCE_TIME rtStart,
-            REFERENCE_TIME rtEnd);
+    HRESULT(STDMETHODCALLTYPE *ZeroBetween)(
+        IAMTimelineTrack * This,
+        REFERENCE_TIME rtStart,
+        REFERENCE_TIME rtEnd);
 
-        HRESULT(STDMETHODCALLTYPE *ZeroBetween2)(
-            IAMTimelineTrack * This,
-            REFTIME rtStart,
-            REFTIME rtEnd);
+    HRESULT(STDMETHODCALLTYPE *ZeroBetween2)(
+        IAMTimelineTrack * This,
+        REFTIME rtStart,
+        REFTIME rtEnd);
 
-        HRESULT(STDMETHODCALLTYPE *GetNextSrcEx)(
-            IAMTimelineTrack * This,
-            IAMTimelineObj *pLast,
-            /* [out] */ IAMTimelineObj **ppNext);
+    HRESULT(STDMETHODCALLTYPE *GetNextSrcEx)(
+        IAMTimelineTrack * This,
+        IAMTimelineObj *pLast,
+        /* [out] */ IAMTimelineObj **ppNext);
 
-        END_INTERFACE
-    } IAMTimelineTrackVtbl;
+    END_INTERFACE
+} IAMTimelineTrackVtbl;
 
-    interface IAMTimelineTrack
-    {
-        CONST_VTBL struct IAMTimelineTrackVtbl *lpVtbl;
-    };
+interface IAMTimelineTrack
+{
+    CONST_VTBL struct IAMTimelineTrackVtbl *lpVtbl;
+};
 
 
 
@@ -7351,193 +7351,193 @@ public:
 
 
 
-    /* [helpstring] */ HRESULT STDMETHODCALLTYPE IAMTimelineTrack_SrcAdd_Proxy(
-        IAMTimelineTrack * This,
-        IAMTimelineObj *pSource);
+/* [helpstring] */ HRESULT STDMETHODCALLTYPE IAMTimelineTrack_SrcAdd_Proxy(
+    IAMTimelineTrack * This,
+    IAMTimelineObj *pSource);
 
 
-    void __RPC_STUB IAMTimelineTrack_SrcAdd_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTrack_SrcAdd_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineTrack_GetNextSrc_Proxy(
-        IAMTimelineTrack * This,
-        /* [out] */ IAMTimelineObj **ppSrc,
-        REFERENCE_TIME *pInOut);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineTrack_GetNextSrc_Proxy(
+    IAMTimelineTrack * This,
+    /* [out] */ IAMTimelineObj **ppSrc,
+    REFERENCE_TIME *pInOut);
 
 
-    void __RPC_STUB IAMTimelineTrack_GetNextSrc_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTrack_GetNextSrc_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineTrack_GetNextSrc2_Proxy(
-        IAMTimelineTrack * This,
-        /* [out] */ IAMTimelineObj **ppSrc,
-        REFTIME *pInOut);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineTrack_GetNextSrc2_Proxy(
+    IAMTimelineTrack * This,
+    /* [out] */ IAMTimelineObj **ppSrc,
+    REFTIME *pInOut);
 
 
-    void __RPC_STUB IAMTimelineTrack_GetNextSrc2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTrack_GetNextSrc2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineTrack_MoveEverythingBy_Proxy(
-        IAMTimelineTrack * This,
-        REFERENCE_TIME Start,
-        REFERENCE_TIME MoveBy);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineTrack_MoveEverythingBy_Proxy(
+    IAMTimelineTrack * This,
+    REFERENCE_TIME Start,
+    REFERENCE_TIME MoveBy);
 
 
-    void __RPC_STUB IAMTimelineTrack_MoveEverythingBy_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTrack_MoveEverythingBy_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineTrack_MoveEverythingBy2_Proxy(
-        IAMTimelineTrack * This,
-        REFTIME Start,
-        REFTIME MoveBy);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineTrack_MoveEverythingBy2_Proxy(
+    IAMTimelineTrack * This,
+    REFTIME Start,
+    REFTIME MoveBy);
 
 
-    void __RPC_STUB IAMTimelineTrack_MoveEverythingBy2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTrack_MoveEverythingBy2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineTrack_GetSourcesCount_Proxy(
-        IAMTimelineTrack * This,
-        long *pVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineTrack_GetSourcesCount_Proxy(
+    IAMTimelineTrack * This,
+    long *pVal);
 
 
-    void __RPC_STUB IAMTimelineTrack_GetSourcesCount_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTrack_GetSourcesCount_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineTrack_AreYouBlank_Proxy(
-        IAMTimelineTrack * This,
-        long *pVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineTrack_AreYouBlank_Proxy(
+    IAMTimelineTrack * This,
+    long *pVal);
 
 
-    void __RPC_STUB IAMTimelineTrack_AreYouBlank_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTrack_AreYouBlank_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineTrack_GetSrcAtTime_Proxy(
-        IAMTimelineTrack * This,
-        /* [out] */ IAMTimelineObj **ppSrc,
-        REFERENCE_TIME Time,
-        long SearchDirection);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineTrack_GetSrcAtTime_Proxy(
+    IAMTimelineTrack * This,
+    /* [out] */ IAMTimelineObj **ppSrc,
+    REFERENCE_TIME Time,
+    long SearchDirection);
 
 
-    void __RPC_STUB IAMTimelineTrack_GetSrcAtTime_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTrack_GetSrcAtTime_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineTrack_GetSrcAtTime2_Proxy(
-        IAMTimelineTrack * This,
-        /* [out] */ IAMTimelineObj **ppSrc,
-        REFTIME Time,
-        long SearchDirection);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineTrack_GetSrcAtTime2_Proxy(
+    IAMTimelineTrack * This,
+    /* [out] */ IAMTimelineObj **ppSrc,
+    REFTIME Time,
+    long SearchDirection);
 
 
-    void __RPC_STUB IAMTimelineTrack_GetSrcAtTime2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTrack_GetSrcAtTime2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimelineTrack_InsertSpace_Proxy(
-        IAMTimelineTrack * This,
-        REFERENCE_TIME rtStart,
-        REFERENCE_TIME rtEnd);
+HRESULT STDMETHODCALLTYPE IAMTimelineTrack_InsertSpace_Proxy(
+    IAMTimelineTrack * This,
+    REFERENCE_TIME rtStart,
+    REFERENCE_TIME rtEnd);
 
 
-    void __RPC_STUB IAMTimelineTrack_InsertSpace_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTrack_InsertSpace_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimelineTrack_InsertSpace2_Proxy(
-        IAMTimelineTrack * This,
-        REFTIME rtStart,
-        REFTIME rtEnd);
+HRESULT STDMETHODCALLTYPE IAMTimelineTrack_InsertSpace2_Proxy(
+    IAMTimelineTrack * This,
+    REFTIME rtStart,
+    REFTIME rtEnd);
 
 
-    void __RPC_STUB IAMTimelineTrack_InsertSpace2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTrack_InsertSpace2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimelineTrack_ZeroBetween_Proxy(
-        IAMTimelineTrack * This,
-        REFERENCE_TIME rtStart,
-        REFERENCE_TIME rtEnd);
+HRESULT STDMETHODCALLTYPE IAMTimelineTrack_ZeroBetween_Proxy(
+    IAMTimelineTrack * This,
+    REFERENCE_TIME rtStart,
+    REFERENCE_TIME rtEnd);
 
 
-    void __RPC_STUB IAMTimelineTrack_ZeroBetween_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTrack_ZeroBetween_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimelineTrack_ZeroBetween2_Proxy(
-        IAMTimelineTrack * This,
-        REFTIME rtStart,
-        REFTIME rtEnd);
+HRESULT STDMETHODCALLTYPE IAMTimelineTrack_ZeroBetween2_Proxy(
+    IAMTimelineTrack * This,
+    REFTIME rtStart,
+    REFTIME rtEnd);
 
 
-    void __RPC_STUB IAMTimelineTrack_ZeroBetween2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTrack_ZeroBetween2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimelineTrack_GetNextSrcEx_Proxy(
-        IAMTimelineTrack * This,
-        IAMTimelineObj *pLast,
-        /* [out] */ IAMTimelineObj **ppNext);
+HRESULT STDMETHODCALLTYPE IAMTimelineTrack_GetNextSrcEx_Proxy(
+    IAMTimelineTrack * This,
+    IAMTimelineObj *pLast,
+    /* [out] */ IAMTimelineObj **ppNext);
 
 
-    void __RPC_STUB IAMTimelineTrack_GetNextSrcEx_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineTrack_GetNextSrcEx_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -7547,59 +7547,59 @@ public:
 #ifndef __IAMTimelineVirtualTrack_INTERFACE_DEFINED__
 #define __IAMTimelineVirtualTrack_INTERFACE_DEFINED__
 
-    /* interface IAMTimelineVirtualTrack */
-    /* [unique][helpstring][uuid][object] */
+/* interface IAMTimelineVirtualTrack */
+/* [unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IAMTimelineVirtualTrack;
+EXTERN_C const IID IID_IAMTimelineVirtualTrack;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("A8ED5F80-C2C7-11d2-8D39-00A0C9441E20")
+MIDL_INTERFACE("A8ED5F80-C2C7-11d2-8D39-00A0C9441E20")
 IAMTimelineVirtualTrack :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE TrackGetPriority(
-            long *pPriority) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE TrackGetPriority(
+        long *pPriority) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetTrackDirty(void) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetTrackDirty(void) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IAMTimelineVirtualTrackVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IAMTimelineVirtualTrackVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IAMTimelineVirtualTrack * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IAMTimelineVirtualTrack * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IAMTimelineVirtualTrack * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IAMTimelineVirtualTrack * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IAMTimelineVirtualTrack * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IAMTimelineVirtualTrack * This);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *TrackGetPriority)(
-            IAMTimelineVirtualTrack * This,
-            long *pPriority);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *TrackGetPriority)(
+        IAMTimelineVirtualTrack * This,
+        long *pPriority);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetTrackDirty)(
-            IAMTimelineVirtualTrack * This);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetTrackDirty)(
+        IAMTimelineVirtualTrack * This);
 
-        END_INTERFACE
-    } IAMTimelineVirtualTrackVtbl;
+    END_INTERFACE
+} IAMTimelineVirtualTrackVtbl;
 
-    interface IAMTimelineVirtualTrack
-    {
-        CONST_VTBL struct IAMTimelineVirtualTrackVtbl *lpVtbl;
-    };
+interface IAMTimelineVirtualTrack
+{
+    CONST_VTBL struct IAMTimelineVirtualTrackVtbl *lpVtbl;
+};
 
 
 
@@ -7629,28 +7629,28 @@ public:
 
 
 
-    /* [helpstring] */ HRESULT STDMETHODCALLTYPE IAMTimelineVirtualTrack_TrackGetPriority_Proxy(
-        IAMTimelineVirtualTrack * This,
-        long *pPriority);
+/* [helpstring] */ HRESULT STDMETHODCALLTYPE IAMTimelineVirtualTrack_TrackGetPriority_Proxy(
+    IAMTimelineVirtualTrack * This,
+    long *pPriority);
 
 
-    void __RPC_STUB IAMTimelineVirtualTrack_TrackGetPriority_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineVirtualTrack_TrackGetPriority_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineVirtualTrack_SetTrackDirty_Proxy(
-        IAMTimelineVirtualTrack * This);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineVirtualTrack_SetTrackDirty_Proxy(
+    IAMTimelineVirtualTrack * This);
 
 
-    void __RPC_STUB IAMTimelineVirtualTrack_SetTrackDirty_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineVirtualTrack_SetTrackDirty_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -7660,128 +7660,128 @@ public:
 #ifndef __IAMTimelineComp_INTERFACE_DEFINED__
 #define __IAMTimelineComp_INTERFACE_DEFINED__
 
-    /* interface IAMTimelineComp */
-    /* [unique][helpstring][uuid][object] */
+/* interface IAMTimelineComp */
+/* [unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IAMTimelineComp;
+EXTERN_C const IID IID_IAMTimelineComp;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("EAE58536-622E-11d2-8CAD-00A024580902")
+MIDL_INTERFACE("EAE58536-622E-11d2-8CAD-00A024580902")
 IAMTimelineComp :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE VTrackInsBefore(
-            IAMTimelineObj *pVirtualTrack,
-            long Priority) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE VTrackInsBefore(
+        IAMTimelineObj *pVirtualTrack,
+        long Priority) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE VTrackSwapPriorities(
-            long VirtualTrackA,
-            long VirtualTrackB) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE VTrackSwapPriorities(
+        long VirtualTrackA,
+        long VirtualTrackB) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE VTrackGetCount(
-            long *pVal) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE VTrackGetCount(
+        long *pVal) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetVTrack(
-            /* [out] */ IAMTimelineObj **ppVirtualTrack,
-            long Which) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetVTrack(
+        /* [out] */ IAMTimelineObj **ppVirtualTrack,
+        long Which) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetCountOfType(
-            long *pVal,
-            long *pValWithComps,
-            TIMELINE_MAJOR_TYPE MajorType) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetCountOfType(
+        long *pVal,
+        long *pValWithComps,
+        TIMELINE_MAJOR_TYPE MajorType) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetRecursiveLayerOfType(
-            /* [out] */ IAMTimelineObj **ppVirtualTrack,
-            long WhichLayer,
-            TIMELINE_MAJOR_TYPE Type) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetRecursiveLayerOfType(
+        /* [out] */ IAMTimelineObj **ppVirtualTrack,
+        long WhichLayer,
+        TIMELINE_MAJOR_TYPE Type) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetRecursiveLayerOfTypeI(
-            /* [out] */ IAMTimelineObj **ppVirtualTrack,
-            /* [out][in] */ long *pWhichLayer,
-            TIMELINE_MAJOR_TYPE Type) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetRecursiveLayerOfTypeI(
+        /* [out] */ IAMTimelineObj **ppVirtualTrack,
+        /* [out][in] */ long *pWhichLayer,
+        TIMELINE_MAJOR_TYPE Type) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetNextVTrack(
-            IAMTimelineObj *pVirtualTrack,
-            /* [out] */ IAMTimelineObj **ppNextVirtualTrack) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetNextVTrack(
+        IAMTimelineObj *pVirtualTrack,
+        /* [out] */ IAMTimelineObj **ppNextVirtualTrack) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IAMTimelineCompVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IAMTimelineCompVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IAMTimelineComp * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IAMTimelineComp * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IAMTimelineComp * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IAMTimelineComp * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IAMTimelineComp * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IAMTimelineComp * This);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *VTrackInsBefore)(
-            IAMTimelineComp * This,
-            IAMTimelineObj *pVirtualTrack,
-            long Priority);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *VTrackInsBefore)(
+        IAMTimelineComp * This,
+        IAMTimelineObj *pVirtualTrack,
+        long Priority);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *VTrackSwapPriorities)(
-            IAMTimelineComp * This,
-            long VirtualTrackA,
-            long VirtualTrackB);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *VTrackSwapPriorities)(
+        IAMTimelineComp * This,
+        long VirtualTrackA,
+        long VirtualTrackB);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *VTrackGetCount)(
-            IAMTimelineComp * This,
-            long *pVal);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *VTrackGetCount)(
+        IAMTimelineComp * This,
+        long *pVal);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetVTrack)(
-            IAMTimelineComp * This,
-            /* [out] */ IAMTimelineObj **ppVirtualTrack,
-            long Which);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetVTrack)(
+        IAMTimelineComp * This,
+        /* [out] */ IAMTimelineObj **ppVirtualTrack,
+        long Which);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetCountOfType)(
-            IAMTimelineComp * This,
-            long *pVal,
-            long *pValWithComps,
-            TIMELINE_MAJOR_TYPE MajorType);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetCountOfType)(
+        IAMTimelineComp * This,
+        long *pVal,
+        long *pValWithComps,
+        TIMELINE_MAJOR_TYPE MajorType);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetRecursiveLayerOfType)(
-            IAMTimelineComp * This,
-            /* [out] */ IAMTimelineObj **ppVirtualTrack,
-            long WhichLayer,
-            TIMELINE_MAJOR_TYPE Type);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetRecursiveLayerOfType)(
+        IAMTimelineComp * This,
+        /* [out] */ IAMTimelineObj **ppVirtualTrack,
+        long WhichLayer,
+        TIMELINE_MAJOR_TYPE Type);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetRecursiveLayerOfTypeI)(
-            IAMTimelineComp * This,
-            /* [out] */ IAMTimelineObj **ppVirtualTrack,
-            /* [out][in] */ long *pWhichLayer,
-            TIMELINE_MAJOR_TYPE Type);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetRecursiveLayerOfTypeI)(
+        IAMTimelineComp * This,
+        /* [out] */ IAMTimelineObj **ppVirtualTrack,
+        /* [out][in] */ long *pWhichLayer,
+        TIMELINE_MAJOR_TYPE Type);
 
-        HRESULT(STDMETHODCALLTYPE *GetNextVTrack)(
-            IAMTimelineComp * This,
-            IAMTimelineObj *pVirtualTrack,
-            /* [out] */ IAMTimelineObj **ppNextVirtualTrack);
+    HRESULT(STDMETHODCALLTYPE *GetNextVTrack)(
+        IAMTimelineComp * This,
+        IAMTimelineObj *pVirtualTrack,
+        /* [out] */ IAMTimelineObj **ppNextVirtualTrack);
 
-        END_INTERFACE
-    } IAMTimelineCompVtbl;
+    END_INTERFACE
+} IAMTimelineCompVtbl;
 
-    interface IAMTimelineComp
-    {
-        CONST_VTBL struct IAMTimelineCompVtbl *lpVtbl;
-    };
+interface IAMTimelineComp
+{
+    CONST_VTBL struct IAMTimelineCompVtbl *lpVtbl;
+};
 
 
 
@@ -7829,116 +7829,116 @@ public:
 
 
 
-    /* [helpstring] */ HRESULT STDMETHODCALLTYPE IAMTimelineComp_VTrackInsBefore_Proxy(
-        IAMTimelineComp * This,
-        IAMTimelineObj *pVirtualTrack,
-        long Priority);
+/* [helpstring] */ HRESULT STDMETHODCALLTYPE IAMTimelineComp_VTrackInsBefore_Proxy(
+    IAMTimelineComp * This,
+    IAMTimelineObj *pVirtualTrack,
+    long Priority);
 
 
-    void __RPC_STUB IAMTimelineComp_VTrackInsBefore_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineComp_VTrackInsBefore_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineComp_VTrackSwapPriorities_Proxy(
-        IAMTimelineComp * This,
-        long VirtualTrackA,
-        long VirtualTrackB);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineComp_VTrackSwapPriorities_Proxy(
+    IAMTimelineComp * This,
+    long VirtualTrackA,
+    long VirtualTrackB);
 
 
-    void __RPC_STUB IAMTimelineComp_VTrackSwapPriorities_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineComp_VTrackSwapPriorities_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineComp_VTrackGetCount_Proxy(
-        IAMTimelineComp * This,
-        long *pVal);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineComp_VTrackGetCount_Proxy(
+    IAMTimelineComp * This,
+    long *pVal);
 
 
-    void __RPC_STUB IAMTimelineComp_VTrackGetCount_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineComp_VTrackGetCount_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineComp_GetVTrack_Proxy(
-        IAMTimelineComp * This,
-        /* [out] */ IAMTimelineObj **ppVirtualTrack,
-        long Which);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineComp_GetVTrack_Proxy(
+    IAMTimelineComp * This,
+    /* [out] */ IAMTimelineObj **ppVirtualTrack,
+    long Which);
 
 
-    void __RPC_STUB IAMTimelineComp_GetVTrack_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineComp_GetVTrack_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineComp_GetCountOfType_Proxy(
-        IAMTimelineComp * This,
-        long *pVal,
-        long *pValWithComps,
-        TIMELINE_MAJOR_TYPE MajorType);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineComp_GetCountOfType_Proxy(
+    IAMTimelineComp * This,
+    long *pVal,
+    long *pValWithComps,
+    TIMELINE_MAJOR_TYPE MajorType);
 
 
-    void __RPC_STUB IAMTimelineComp_GetCountOfType_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineComp_GetCountOfType_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineComp_GetRecursiveLayerOfType_Proxy(
-        IAMTimelineComp * This,
-        /* [out] */ IAMTimelineObj **ppVirtualTrack,
-        long WhichLayer,
-        TIMELINE_MAJOR_TYPE Type);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineComp_GetRecursiveLayerOfType_Proxy(
+    IAMTimelineComp * This,
+    /* [out] */ IAMTimelineObj **ppVirtualTrack,
+    long WhichLayer,
+    TIMELINE_MAJOR_TYPE Type);
 
 
-    void __RPC_STUB IAMTimelineComp_GetRecursiveLayerOfType_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineComp_GetRecursiveLayerOfType_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineComp_GetRecursiveLayerOfTypeI_Proxy(
-        IAMTimelineComp * This,
-        /* [out] */ IAMTimelineObj **ppVirtualTrack,
-        /* [out][in] */ long *pWhichLayer,
-        TIMELINE_MAJOR_TYPE Type);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineComp_GetRecursiveLayerOfTypeI_Proxy(
+    IAMTimelineComp * This,
+    /* [out] */ IAMTimelineObj **ppVirtualTrack,
+    /* [out][in] */ long *pWhichLayer,
+    TIMELINE_MAJOR_TYPE Type);
 
 
-    void __RPC_STUB IAMTimelineComp_GetRecursiveLayerOfTypeI_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineComp_GetRecursiveLayerOfTypeI_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimelineComp_GetNextVTrack_Proxy(
-        IAMTimelineComp * This,
-        IAMTimelineObj *pVirtualTrack,
-        /* [out] */ IAMTimelineObj **ppNextVirtualTrack);
+HRESULT STDMETHODCALLTYPE IAMTimelineComp_GetNextVTrack_Proxy(
+    IAMTimelineComp * This,
+    IAMTimelineObj *pVirtualTrack,
+    /* [out] */ IAMTimelineObj **ppNextVirtualTrack);
 
 
-    void __RPC_STUB IAMTimelineComp_GetNextVTrack_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineComp_GetNextVTrack_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -7948,197 +7948,197 @@ public:
 #ifndef __IAMTimelineGroup_INTERFACE_DEFINED__
 #define __IAMTimelineGroup_INTERFACE_DEFINED__
 
-    /* interface IAMTimelineGroup */
-    /* [unique][helpstring][uuid][object] */
+/* interface IAMTimelineGroup */
+/* [unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IAMTimelineGroup;
+EXTERN_C const IID IID_IAMTimelineGroup;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("9EED4F00-B8A6-11d2-8023-00C0DF10D434")
+MIDL_INTERFACE("9EED4F00-B8A6-11d2-8023-00C0DF10D434")
 IAMTimelineGroup :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetTimeline(
-            IAMTimeline *pTimeline) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetTimeline(
+        IAMTimeline *pTimeline) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetTimeline(
-            /* [out] */ IAMTimeline **ppTimeline) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetTimeline(
+        /* [out] */ IAMTimeline **ppTimeline) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetPriority(
-            long *pPriority) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetPriority(
+        long *pPriority) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetMediaType(
-            /* [out] */ AM_MEDIA_TYPE *__MIDL_0043) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetMediaType(
+        /* [out] */ AM_MEDIA_TYPE *__MIDL_0043) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetMediaType(
-            /* [in] */ AM_MEDIA_TYPE *__MIDL_0044) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetMediaType(
+        /* [in] */ AM_MEDIA_TYPE *__MIDL_0044) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetOutputFPS(
-            double FPS) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetOutputFPS(
+        double FPS) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetOutputFPS(
-            double *pFPS) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetOutputFPS(
+        double *pFPS) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetGroupName(
-            BSTR pGroupName) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetGroupName(
+        BSTR pGroupName) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetGroupName(
-            /* [retval][out] */ BSTR *pGroupName) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetGroupName(
+        /* [retval][out] */ BSTR *pGroupName) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetPreviewMode(
-            BOOL fPreview) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetPreviewMode(
+        BOOL fPreview) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetPreviewMode(
-            BOOL *pfPreview) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetPreviewMode(
+        BOOL *pfPreview) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetMediaTypeForVB(
-            /* [in] */ long Val) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetMediaTypeForVB(
+        /* [in] */ long Val) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetOutputBuffering(
-            /* [out] */ int *pnBuffer) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetOutputBuffering(
+        /* [out] */ int *pnBuffer) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetOutputBuffering(
-            /* [in] */ int nBuffer) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetOutputBuffering(
+        /* [in] */ int nBuffer) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetSmartRecompressFormat(
-            long *pFormat) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetSmartRecompressFormat(
+        long *pFormat) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetSmartRecompressFormat(
-            long **ppFormat) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetSmartRecompressFormat(
+        long **ppFormat) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE IsSmartRecompressFormatSet(
-            BOOL *pVal) = 0;
+    virtual HRESULT STDMETHODCALLTYPE IsSmartRecompressFormatSet(
+        BOOL *pVal) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE IsRecompressFormatDirty(
-            BOOL *pVal) = 0;
+    virtual HRESULT STDMETHODCALLTYPE IsRecompressFormatDirty(
+        BOOL *pVal) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE ClearRecompressFormatDirty(void) = 0;
+    virtual HRESULT STDMETHODCALLTYPE ClearRecompressFormatDirty(void) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetRecompFormatFromSource(
-            IAMTimelineSrc *pSource) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetRecompFormatFromSource(
+        IAMTimelineSrc *pSource) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IAMTimelineGroupVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IAMTimelineGroupVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IAMTimelineGroup * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IAMTimelineGroup * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IAMTimelineGroup * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IAMTimelineGroup * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IAMTimelineGroup * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IAMTimelineGroup * This);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetTimeline)(
-            IAMTimelineGroup * This,
-            IAMTimeline *pTimeline);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetTimeline)(
+        IAMTimelineGroup * This,
+        IAMTimeline *pTimeline);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetTimeline)(
-            IAMTimelineGroup * This,
-            /* [out] */ IAMTimeline **ppTimeline);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetTimeline)(
+        IAMTimelineGroup * This,
+        /* [out] */ IAMTimeline **ppTimeline);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetPriority)(
-            IAMTimelineGroup * This,
-            long *pPriority);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetPriority)(
+        IAMTimelineGroup * This,
+        long *pPriority);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetMediaType)(
-            IAMTimelineGroup * This,
-            /* [out] */ AM_MEDIA_TYPE *__MIDL_0043);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetMediaType)(
+        IAMTimelineGroup * This,
+        /* [out] */ AM_MEDIA_TYPE *__MIDL_0043);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetMediaType)(
-            IAMTimelineGroup * This,
-            /* [in] */ AM_MEDIA_TYPE *__MIDL_0044);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetMediaType)(
+        IAMTimelineGroup * This,
+        /* [in] */ AM_MEDIA_TYPE *__MIDL_0044);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetOutputFPS)(
-            IAMTimelineGroup * This,
-            double FPS);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetOutputFPS)(
+        IAMTimelineGroup * This,
+        double FPS);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetOutputFPS)(
-            IAMTimelineGroup * This,
-            double *pFPS);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetOutputFPS)(
+        IAMTimelineGroup * This,
+        double *pFPS);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetGroupName)(
-            IAMTimelineGroup * This,
-            BSTR pGroupName);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetGroupName)(
+        IAMTimelineGroup * This,
+        BSTR pGroupName);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetGroupName)(
-            IAMTimelineGroup * This,
-            /* [retval][out] */ BSTR *pGroupName);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetGroupName)(
+        IAMTimelineGroup * This,
+        /* [retval][out] */ BSTR *pGroupName);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetPreviewMode)(
-            IAMTimelineGroup * This,
-            BOOL fPreview);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetPreviewMode)(
+        IAMTimelineGroup * This,
+        BOOL fPreview);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetPreviewMode)(
-            IAMTimelineGroup * This,
-            BOOL *pfPreview);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetPreviewMode)(
+        IAMTimelineGroup * This,
+        BOOL *pfPreview);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetMediaTypeForVB)(
-            IAMTimelineGroup * This,
-            /* [in] */ long Val);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetMediaTypeForVB)(
+        IAMTimelineGroup * This,
+        /* [in] */ long Val);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetOutputBuffering)(
-            IAMTimelineGroup * This,
-            /* [out] */ int *pnBuffer);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetOutputBuffering)(
+        IAMTimelineGroup * This,
+        /* [out] */ int *pnBuffer);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetOutputBuffering)(
-            IAMTimelineGroup * This,
-            /* [in] */ int nBuffer);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetOutputBuffering)(
+        IAMTimelineGroup * This,
+        /* [in] */ int nBuffer);
 
-        HRESULT(STDMETHODCALLTYPE *SetSmartRecompressFormat)(
-            IAMTimelineGroup * This,
-            long *pFormat);
+    HRESULT(STDMETHODCALLTYPE *SetSmartRecompressFormat)(
+        IAMTimelineGroup * This,
+        long *pFormat);
 
-        HRESULT(STDMETHODCALLTYPE *GetSmartRecompressFormat)(
-            IAMTimelineGroup * This,
-            long **ppFormat);
+    HRESULT(STDMETHODCALLTYPE *GetSmartRecompressFormat)(
+        IAMTimelineGroup * This,
+        long **ppFormat);
 
-        HRESULT(STDMETHODCALLTYPE *IsSmartRecompressFormatSet)(
-            IAMTimelineGroup * This,
-            BOOL *pVal);
+    HRESULT(STDMETHODCALLTYPE *IsSmartRecompressFormatSet)(
+        IAMTimelineGroup * This,
+        BOOL *pVal);
 
-        HRESULT(STDMETHODCALLTYPE *IsRecompressFormatDirty)(
-            IAMTimelineGroup * This,
-            BOOL *pVal);
+    HRESULT(STDMETHODCALLTYPE *IsRecompressFormatDirty)(
+        IAMTimelineGroup * This,
+        BOOL *pVal);
 
-        HRESULT(STDMETHODCALLTYPE *ClearRecompressFormatDirty)(
-            IAMTimelineGroup * This);
+    HRESULT(STDMETHODCALLTYPE *ClearRecompressFormatDirty)(
+        IAMTimelineGroup * This);
 
-        HRESULT(STDMETHODCALLTYPE *SetRecompFormatFromSource)(
-            IAMTimelineGroup * This,
-            IAMTimelineSrc *pSource);
+    HRESULT(STDMETHODCALLTYPE *SetRecompFormatFromSource)(
+        IAMTimelineGroup * This,
+        IAMTimelineSrc *pSource);
 
-        END_INTERFACE
-    } IAMTimelineGroupVtbl;
+    END_INTERFACE
+} IAMTimelineGroupVtbl;
 
-    interface IAMTimelineGroup
-    {
-        CONST_VTBL struct IAMTimelineGroupVtbl *lpVtbl;
-    };
+interface IAMTimelineGroup
+{
+    CONST_VTBL struct IAMTimelineGroupVtbl *lpVtbl;
+};
 
 
 
@@ -8222,256 +8222,256 @@ public:
 
 
 
-    /* [helpstring] */ HRESULT STDMETHODCALLTYPE IAMTimelineGroup_SetTimeline_Proxy(
-        IAMTimelineGroup * This,
-        IAMTimeline *pTimeline);
+/* [helpstring] */ HRESULT STDMETHODCALLTYPE IAMTimelineGroup_SetTimeline_Proxy(
+    IAMTimelineGroup * This,
+    IAMTimeline *pTimeline);
 
 
-    void __RPC_STUB IAMTimelineGroup_SetTimeline_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineGroup_SetTimeline_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineGroup_GetTimeline_Proxy(
-        IAMTimelineGroup * This,
-        /* [out] */ IAMTimeline **ppTimeline);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineGroup_GetTimeline_Proxy(
+    IAMTimelineGroup * This,
+    /* [out] */ IAMTimeline **ppTimeline);
 
 
-    void __RPC_STUB IAMTimelineGroup_GetTimeline_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineGroup_GetTimeline_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineGroup_GetPriority_Proxy(
-        IAMTimelineGroup * This,
-        long *pPriority);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineGroup_GetPriority_Proxy(
+    IAMTimelineGroup * This,
+    long *pPriority);
 
 
-    void __RPC_STUB IAMTimelineGroup_GetPriority_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineGroup_GetPriority_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineGroup_GetMediaType_Proxy(
-        IAMTimelineGroup * This,
-        /* [out] */ AM_MEDIA_TYPE *__MIDL_0043);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineGroup_GetMediaType_Proxy(
+    IAMTimelineGroup * This,
+    /* [out] */ AM_MEDIA_TYPE *__MIDL_0043);
 
 
-    void __RPC_STUB IAMTimelineGroup_GetMediaType_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineGroup_GetMediaType_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineGroup_SetMediaType_Proxy(
-        IAMTimelineGroup * This,
-        /* [in] */ AM_MEDIA_TYPE *__MIDL_0044);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineGroup_SetMediaType_Proxy(
+    IAMTimelineGroup * This,
+    /* [in] */ AM_MEDIA_TYPE *__MIDL_0044);
 
 
-    void __RPC_STUB IAMTimelineGroup_SetMediaType_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineGroup_SetMediaType_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineGroup_SetOutputFPS_Proxy(
-        IAMTimelineGroup * This,
-        double FPS);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineGroup_SetOutputFPS_Proxy(
+    IAMTimelineGroup * This,
+    double FPS);
 
 
-    void __RPC_STUB IAMTimelineGroup_SetOutputFPS_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineGroup_SetOutputFPS_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineGroup_GetOutputFPS_Proxy(
-        IAMTimelineGroup * This,
-        double *pFPS);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineGroup_GetOutputFPS_Proxy(
+    IAMTimelineGroup * This,
+    double *pFPS);
 
 
-    void __RPC_STUB IAMTimelineGroup_GetOutputFPS_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineGroup_GetOutputFPS_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineGroup_SetGroupName_Proxy(
-        IAMTimelineGroup * This,
-        BSTR pGroupName);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineGroup_SetGroupName_Proxy(
+    IAMTimelineGroup * This,
+    BSTR pGroupName);
 
 
-    void __RPC_STUB IAMTimelineGroup_SetGroupName_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineGroup_SetGroupName_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineGroup_GetGroupName_Proxy(
-        IAMTimelineGroup * This,
-        /* [retval][out] */ BSTR *pGroupName);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineGroup_GetGroupName_Proxy(
+    IAMTimelineGroup * This,
+    /* [retval][out] */ BSTR *pGroupName);
 
 
-    void __RPC_STUB IAMTimelineGroup_GetGroupName_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineGroup_GetGroupName_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineGroup_SetPreviewMode_Proxy(
-        IAMTimelineGroup * This,
-        BOOL fPreview);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineGroup_SetPreviewMode_Proxy(
+    IAMTimelineGroup * This,
+    BOOL fPreview);
 
 
-    void __RPC_STUB IAMTimelineGroup_SetPreviewMode_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineGroup_SetPreviewMode_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineGroup_GetPreviewMode_Proxy(
-        IAMTimelineGroup * This,
-        BOOL *pfPreview);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineGroup_GetPreviewMode_Proxy(
+    IAMTimelineGroup * This,
+    BOOL *pfPreview);
 
 
-    void __RPC_STUB IAMTimelineGroup_GetPreviewMode_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineGroup_GetPreviewMode_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineGroup_SetMediaTypeForVB_Proxy(
-        IAMTimelineGroup * This,
-        /* [in] */ long Val);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineGroup_SetMediaTypeForVB_Proxy(
+    IAMTimelineGroup * This,
+    /* [in] */ long Val);
 
 
-    void __RPC_STUB IAMTimelineGroup_SetMediaTypeForVB_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineGroup_SetMediaTypeForVB_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineGroup_GetOutputBuffering_Proxy(
-        IAMTimelineGroup * This,
-        /* [out] */ int *pnBuffer);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineGroup_GetOutputBuffering_Proxy(
+    IAMTimelineGroup * This,
+    /* [out] */ int *pnBuffer);
 
 
-    void __RPC_STUB IAMTimelineGroup_GetOutputBuffering_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineGroup_GetOutputBuffering_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimelineGroup_SetOutputBuffering_Proxy(
-        IAMTimelineGroup * This,
-        /* [in] */ int nBuffer);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimelineGroup_SetOutputBuffering_Proxy(
+    IAMTimelineGroup * This,
+    /* [in] */ int nBuffer);
 
 
-    void __RPC_STUB IAMTimelineGroup_SetOutputBuffering_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineGroup_SetOutputBuffering_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimelineGroup_SetSmartRecompressFormat_Proxy(
-        IAMTimelineGroup * This,
-        long *pFormat);
+HRESULT STDMETHODCALLTYPE IAMTimelineGroup_SetSmartRecompressFormat_Proxy(
+    IAMTimelineGroup * This,
+    long *pFormat);
 
 
-    void __RPC_STUB IAMTimelineGroup_SetSmartRecompressFormat_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineGroup_SetSmartRecompressFormat_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimelineGroup_GetSmartRecompressFormat_Proxy(
-        IAMTimelineGroup * This,
-        long **ppFormat);
+HRESULT STDMETHODCALLTYPE IAMTimelineGroup_GetSmartRecompressFormat_Proxy(
+    IAMTimelineGroup * This,
+    long **ppFormat);
 
 
-    void __RPC_STUB IAMTimelineGroup_GetSmartRecompressFormat_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineGroup_GetSmartRecompressFormat_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimelineGroup_IsSmartRecompressFormatSet_Proxy(
-        IAMTimelineGroup * This,
-        BOOL *pVal);
+HRESULT STDMETHODCALLTYPE IAMTimelineGroup_IsSmartRecompressFormatSet_Proxy(
+    IAMTimelineGroup * This,
+    BOOL *pVal);
 
 
-    void __RPC_STUB IAMTimelineGroup_IsSmartRecompressFormatSet_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineGroup_IsSmartRecompressFormatSet_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimelineGroup_IsRecompressFormatDirty_Proxy(
-        IAMTimelineGroup * This,
-        BOOL *pVal);
+HRESULT STDMETHODCALLTYPE IAMTimelineGroup_IsRecompressFormatDirty_Proxy(
+    IAMTimelineGroup * This,
+    BOOL *pVal);
 
 
-    void __RPC_STUB IAMTimelineGroup_IsRecompressFormatDirty_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineGroup_IsRecompressFormatDirty_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimelineGroup_ClearRecompressFormatDirty_Proxy(
-        IAMTimelineGroup * This);
+HRESULT STDMETHODCALLTYPE IAMTimelineGroup_ClearRecompressFormatDirty_Proxy(
+    IAMTimelineGroup * This);
 
 
-    void __RPC_STUB IAMTimelineGroup_ClearRecompressFormatDirty_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineGroup_ClearRecompressFormatDirty_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimelineGroup_SetRecompFormatFromSource_Proxy(
-        IAMTimelineGroup * This,
-        IAMTimelineSrc *pSource);
+HRESULT STDMETHODCALLTYPE IAMTimelineGroup_SetRecompFormatFromSource_Proxy(
+    IAMTimelineGroup * This,
+    IAMTimelineSrc *pSource);
 
 
-    void __RPC_STUB IAMTimelineGroup_SetRecompFormatFromSource_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimelineGroup_SetRecompFormatFromSource_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -8481,278 +8481,278 @@ public:
 #ifndef __IAMTimeline_INTERFACE_DEFINED__
 #define __IAMTimeline_INTERFACE_DEFINED__
 
-    /* interface IAMTimeline */
-    /* [unique][helpstring][uuid][object] */
+/* interface IAMTimeline */
+/* [unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IAMTimeline;
+EXTERN_C const IID IID_IAMTimeline;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("78530B74-61F9-11D2-8CAD-00A024580902")
+MIDL_INTERFACE("78530B74-61F9-11D2-8CAD-00A024580902")
 IAMTimeline :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE CreateEmptyNode(
-            /* [out] */ IAMTimelineObj **ppObj,
-            TIMELINE_MAJOR_TYPE Type) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE CreateEmptyNode(
+        /* [out] */ IAMTimelineObj **ppObj,
+        TIMELINE_MAJOR_TYPE Type) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE AddGroup(
-            IAMTimelineObj *pGroup) = 0;
+    virtual HRESULT STDMETHODCALLTYPE AddGroup(
+        IAMTimelineObj *pGroup) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE RemGroupFromList(
-            IAMTimelineObj *pGroup) = 0;
+    virtual HRESULT STDMETHODCALLTYPE RemGroupFromList(
+        IAMTimelineObj *pGroup) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetGroup(
-            /* [out] */ IAMTimelineObj **ppGroup,
-            long WhichGroup) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetGroup(
+        /* [out] */ IAMTimelineObj **ppGroup,
+        long WhichGroup) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetGroupCount(
-            long *pCount) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetGroupCount(
+        long *pCount) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE ClearAllGroups(void) = 0;
+    virtual HRESULT STDMETHODCALLTYPE ClearAllGroups(void) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetInsertMode(
-            long *pMode) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetInsertMode(
+        long *pMode) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetInsertMode(
-            long Mode) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetInsertMode(
+        long Mode) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE EnableTransitions(
-            BOOL fEnabled) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE EnableTransitions(
+        BOOL fEnabled) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE TransitionsEnabled(
-            BOOL *pfEnabled) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE TransitionsEnabled(
+        BOOL *pfEnabled) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE EnableEffects(
-            BOOL fEnabled) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE EnableEffects(
+        BOOL fEnabled) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE EffectsEnabled(
-            BOOL *pfEnabled) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE EffectsEnabled(
+        BOOL *pfEnabled) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetInterestRange(
-            REFERENCE_TIME Start,
-            REFERENCE_TIME Stop) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetInterestRange(
+        REFERENCE_TIME Start,
+        REFERENCE_TIME Stop) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetDuration(
-            REFERENCE_TIME *pDuration) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetDuration(
+        REFERENCE_TIME *pDuration) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetDuration2(
-            double *pDuration) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetDuration2(
+        double *pDuration) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetDefaultFPS(
-            double FPS) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE SetDefaultFPS(
+        double FPS) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetDefaultFPS(
-            double *pFPS) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetDefaultFPS(
+        double *pFPS) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE IsDirty(
-            BOOL *pDirty) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE IsDirty(
+        BOOL *pDirty) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetDirtyRange(
-            REFERENCE_TIME *pStart,
-            REFERENCE_TIME *pStop) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetDirtyRange(
+        REFERENCE_TIME *pStart,
+        REFERENCE_TIME *pStop) = 0;
 
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetCountOfType(
-            long Group,
-            long *pVal,
-            long *pValWithComps,
-            TIMELINE_MAJOR_TYPE MajorType) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE GetCountOfType(
+        long Group,
+        long *pVal,
+        long *pValWithComps,
+        TIMELINE_MAJOR_TYPE MajorType) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE ValidateSourceNames(
-            long ValidateFlags,
-            IMediaLocator *pOverride,
-            LONG_PTR NotifyEventHandle) = 0;
+    virtual HRESULT STDMETHODCALLTYPE ValidateSourceNames(
+        long ValidateFlags,
+        IMediaLocator *pOverride,
+        LONG_PTR NotifyEventHandle) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetDefaultTransition(
-            GUID *pGuid) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetDefaultTransition(
+        GUID *pGuid) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetDefaultTransition(
-            GUID *pGuid) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetDefaultTransition(
+        GUID *pGuid) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetDefaultEffect(
-            GUID *pGuid) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetDefaultEffect(
+        GUID *pGuid) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetDefaultEffect(
-            GUID *pGuid) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetDefaultEffect(
+        GUID *pGuid) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetDefaultTransitionB(
-            BSTR pGuid) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetDefaultTransitionB(
+        BSTR pGuid) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetDefaultTransitionB(
-            /* [retval][out] */ BSTR *pGuid) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetDefaultTransitionB(
+        /* [retval][out] */ BSTR *pGuid) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetDefaultEffectB(
-            BSTR pGuid) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetDefaultEffectB(
+        BSTR pGuid) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetDefaultEffectB(
-            /* [retval][out] */ BSTR *pGuid) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetDefaultEffectB(
+        /* [retval][out] */ BSTR *pGuid) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IAMTimelineVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IAMTimelineVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IAMTimeline * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IAMTimeline * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IAMTimeline * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IAMTimeline * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IAMTimeline * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IAMTimeline * This);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *CreateEmptyNode)(
-            IAMTimeline * This,
-            /* [out] */ IAMTimelineObj **ppObj,
-            TIMELINE_MAJOR_TYPE Type);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *CreateEmptyNode)(
+        IAMTimeline * This,
+        /* [out] */ IAMTimelineObj **ppObj,
+        TIMELINE_MAJOR_TYPE Type);
 
-        HRESULT(STDMETHODCALLTYPE *AddGroup)(
-            IAMTimeline * This,
-            IAMTimelineObj *pGroup);
+    HRESULT(STDMETHODCALLTYPE *AddGroup)(
+        IAMTimeline * This,
+        IAMTimelineObj *pGroup);
 
-        HRESULT(STDMETHODCALLTYPE *RemGroupFromList)(
-            IAMTimeline * This,
-            IAMTimelineObj *pGroup);
+    HRESULT(STDMETHODCALLTYPE *RemGroupFromList)(
+        IAMTimeline * This,
+        IAMTimelineObj *pGroup);
 
-        HRESULT(STDMETHODCALLTYPE *GetGroup)(
-            IAMTimeline * This,
-            /* [out] */ IAMTimelineObj **ppGroup,
-            long WhichGroup);
+    HRESULT(STDMETHODCALLTYPE *GetGroup)(
+        IAMTimeline * This,
+        /* [out] */ IAMTimelineObj **ppGroup,
+        long WhichGroup);
 
-        HRESULT(STDMETHODCALLTYPE *GetGroupCount)(
-            IAMTimeline * This,
-            long *pCount);
+    HRESULT(STDMETHODCALLTYPE *GetGroupCount)(
+        IAMTimeline * This,
+        long *pCount);
 
-        HRESULT(STDMETHODCALLTYPE *ClearAllGroups)(
-            IAMTimeline * This);
+    HRESULT(STDMETHODCALLTYPE *ClearAllGroups)(
+        IAMTimeline * This);
 
-        HRESULT(STDMETHODCALLTYPE *GetInsertMode)(
-            IAMTimeline * This,
-            long *pMode);
+    HRESULT(STDMETHODCALLTYPE *GetInsertMode)(
+        IAMTimeline * This,
+        long *pMode);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetInsertMode)(
-            IAMTimeline * This,
-            long Mode);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetInsertMode)(
+        IAMTimeline * This,
+        long Mode);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *EnableTransitions)(
-            IAMTimeline * This,
-            BOOL fEnabled);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *EnableTransitions)(
+        IAMTimeline * This,
+        BOOL fEnabled);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *TransitionsEnabled)(
-            IAMTimeline * This,
-            BOOL *pfEnabled);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *TransitionsEnabled)(
+        IAMTimeline * This,
+        BOOL *pfEnabled);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *EnableEffects)(
-            IAMTimeline * This,
-            BOOL fEnabled);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *EnableEffects)(
+        IAMTimeline * This,
+        BOOL fEnabled);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *EffectsEnabled)(
-            IAMTimeline * This,
-            BOOL *pfEnabled);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *EffectsEnabled)(
+        IAMTimeline * This,
+        BOOL *pfEnabled);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetInterestRange)(
-            IAMTimeline * This,
-            REFERENCE_TIME Start,
-            REFERENCE_TIME Stop);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetInterestRange)(
+        IAMTimeline * This,
+        REFERENCE_TIME Start,
+        REFERENCE_TIME Stop);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetDuration)(
-            IAMTimeline * This,
-            REFERENCE_TIME *pDuration);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetDuration)(
+        IAMTimeline * This,
+        REFERENCE_TIME *pDuration);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetDuration2)(
-            IAMTimeline * This,
-            double *pDuration);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetDuration2)(
+        IAMTimeline * This,
+        double *pDuration);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *SetDefaultFPS)(
-            IAMTimeline * This,
-            double FPS);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *SetDefaultFPS)(
+        IAMTimeline * This,
+        double FPS);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetDefaultFPS)(
-            IAMTimeline * This,
-            double *pFPS);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetDefaultFPS)(
+        IAMTimeline * This,
+        double *pFPS);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *IsDirty)(
-            IAMTimeline * This,
-            BOOL *pDirty);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *IsDirty)(
+        IAMTimeline * This,
+        BOOL *pDirty);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetDirtyRange)(
-            IAMTimeline * This,
-            REFERENCE_TIME *pStart,
-            REFERENCE_TIME *pStop);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetDirtyRange)(
+        IAMTimeline * This,
+        REFERENCE_TIME *pStart,
+        REFERENCE_TIME *pStop);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *GetCountOfType)(
-            IAMTimeline * This,
-            long Group,
-            long *pVal,
-            long *pValWithComps,
-            TIMELINE_MAJOR_TYPE MajorType);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *GetCountOfType)(
+        IAMTimeline * This,
+        long Group,
+        long *pVal,
+        long *pValWithComps,
+        TIMELINE_MAJOR_TYPE MajorType);
 
-        HRESULT(STDMETHODCALLTYPE *ValidateSourceNames)(
-            IAMTimeline * This,
-            long ValidateFlags,
-            IMediaLocator *pOverride,
-            LONG_PTR NotifyEventHandle);
+    HRESULT(STDMETHODCALLTYPE *ValidateSourceNames)(
+        IAMTimeline * This,
+        long ValidateFlags,
+        IMediaLocator *pOverride,
+        LONG_PTR NotifyEventHandle);
 
-        HRESULT(STDMETHODCALLTYPE *SetDefaultTransition)(
-            IAMTimeline * This,
-            GUID *pGuid);
+    HRESULT(STDMETHODCALLTYPE *SetDefaultTransition)(
+        IAMTimeline * This,
+        GUID *pGuid);
 
-        HRESULT(STDMETHODCALLTYPE *GetDefaultTransition)(
-            IAMTimeline * This,
-            GUID *pGuid);
+    HRESULT(STDMETHODCALLTYPE *GetDefaultTransition)(
+        IAMTimeline * This,
+        GUID *pGuid);
 
-        HRESULT(STDMETHODCALLTYPE *SetDefaultEffect)(
-            IAMTimeline * This,
-            GUID *pGuid);
+    HRESULT(STDMETHODCALLTYPE *SetDefaultEffect)(
+        IAMTimeline * This,
+        GUID *pGuid);
 
-        HRESULT(STDMETHODCALLTYPE *GetDefaultEffect)(
-            IAMTimeline * This,
-            GUID *pGuid);
+    HRESULT(STDMETHODCALLTYPE *GetDefaultEffect)(
+        IAMTimeline * This,
+        GUID *pGuid);
 
-        HRESULT(STDMETHODCALLTYPE *SetDefaultTransitionB)(
-            IAMTimeline * This,
-            BSTR pGuid);
+    HRESULT(STDMETHODCALLTYPE *SetDefaultTransitionB)(
+        IAMTimeline * This,
+        BSTR pGuid);
 
-        HRESULT(STDMETHODCALLTYPE *GetDefaultTransitionB)(
-            IAMTimeline * This,
-            /* [retval][out] */ BSTR *pGuid);
+    HRESULT(STDMETHODCALLTYPE *GetDefaultTransitionB)(
+        IAMTimeline * This,
+        /* [retval][out] */ BSTR *pGuid);
 
-        HRESULT(STDMETHODCALLTYPE *SetDefaultEffectB)(
-            IAMTimeline * This,
-            BSTR pGuid);
+    HRESULT(STDMETHODCALLTYPE *SetDefaultEffectB)(
+        IAMTimeline * This,
+        BSTR pGuid);
 
-        HRESULT(STDMETHODCALLTYPE *GetDefaultEffectB)(
-            IAMTimeline * This,
-            /* [retval][out] */ BSTR *pGuid);
+    HRESULT(STDMETHODCALLTYPE *GetDefaultEffectB)(
+        IAMTimeline * This,
+        /* [retval][out] */ BSTR *pGuid);
 
-        END_INTERFACE
-    } IAMTimelineVtbl;
+    END_INTERFACE
+} IAMTimelineVtbl;
 
-    interface IAMTimeline
-    {
-        CONST_VTBL struct IAMTimelineVtbl *lpVtbl;
-    };
+interface IAMTimeline
+{
+    CONST_VTBL struct IAMTimelineVtbl *lpVtbl;
+};
 
 
 
@@ -8863,373 +8863,373 @@ public:
 
 
 
-    /* [helpstring] */ HRESULT STDMETHODCALLTYPE IAMTimeline_CreateEmptyNode_Proxy(
-        IAMTimeline * This,
-        /* [out] */ IAMTimelineObj **ppObj,
-        TIMELINE_MAJOR_TYPE Type);
+/* [helpstring] */ HRESULT STDMETHODCALLTYPE IAMTimeline_CreateEmptyNode_Proxy(
+    IAMTimeline * This,
+    /* [out] */ IAMTimelineObj **ppObj,
+    TIMELINE_MAJOR_TYPE Type);
 
 
-    void __RPC_STUB IAMTimeline_CreateEmptyNode_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_CreateEmptyNode_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimeline_AddGroup_Proxy(
-        IAMTimeline * This,
-        IAMTimelineObj *pGroup);
+HRESULT STDMETHODCALLTYPE IAMTimeline_AddGroup_Proxy(
+    IAMTimeline * This,
+    IAMTimelineObj *pGroup);
 
 
-    void __RPC_STUB IAMTimeline_AddGroup_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_AddGroup_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimeline_RemGroupFromList_Proxy(
-        IAMTimeline * This,
-        IAMTimelineObj *pGroup);
+HRESULT STDMETHODCALLTYPE IAMTimeline_RemGroupFromList_Proxy(
+    IAMTimeline * This,
+    IAMTimelineObj *pGroup);
 
 
-    void __RPC_STUB IAMTimeline_RemGroupFromList_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_RemGroupFromList_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimeline_GetGroup_Proxy(
-        IAMTimeline * This,
-        /* [out] */ IAMTimelineObj **ppGroup,
-        long WhichGroup);
+HRESULT STDMETHODCALLTYPE IAMTimeline_GetGroup_Proxy(
+    IAMTimeline * This,
+    /* [out] */ IAMTimelineObj **ppGroup,
+    long WhichGroup);
 
 
-    void __RPC_STUB IAMTimeline_GetGroup_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_GetGroup_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimeline_GetGroupCount_Proxy(
-        IAMTimeline * This,
-        long *pCount);
+HRESULT STDMETHODCALLTYPE IAMTimeline_GetGroupCount_Proxy(
+    IAMTimeline * This,
+    long *pCount);
 
 
-    void __RPC_STUB IAMTimeline_GetGroupCount_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_GetGroupCount_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimeline_ClearAllGroups_Proxy(
-        IAMTimeline * This);
+HRESULT STDMETHODCALLTYPE IAMTimeline_ClearAllGroups_Proxy(
+    IAMTimeline * This);
 
 
-    void __RPC_STUB IAMTimeline_ClearAllGroups_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_ClearAllGroups_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimeline_GetInsertMode_Proxy(
-        IAMTimeline * This,
-        long *pMode);
+HRESULT STDMETHODCALLTYPE IAMTimeline_GetInsertMode_Proxy(
+    IAMTimeline * This,
+    long *pMode);
 
 
-    void __RPC_STUB IAMTimeline_GetInsertMode_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_GetInsertMode_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimeline_SetInsertMode_Proxy(
-        IAMTimeline * This,
-        long Mode);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimeline_SetInsertMode_Proxy(
+    IAMTimeline * This,
+    long Mode);
 
 
-    void __RPC_STUB IAMTimeline_SetInsertMode_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_SetInsertMode_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimeline_EnableTransitions_Proxy(
-        IAMTimeline * This,
-        BOOL fEnabled);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimeline_EnableTransitions_Proxy(
+    IAMTimeline * This,
+    BOOL fEnabled);
 
 
-    void __RPC_STUB IAMTimeline_EnableTransitions_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_EnableTransitions_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimeline_TransitionsEnabled_Proxy(
-        IAMTimeline * This,
-        BOOL *pfEnabled);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimeline_TransitionsEnabled_Proxy(
+    IAMTimeline * This,
+    BOOL *pfEnabled);
 
 
-    void __RPC_STUB IAMTimeline_TransitionsEnabled_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_TransitionsEnabled_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimeline_EnableEffects_Proxy(
-        IAMTimeline * This,
-        BOOL fEnabled);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimeline_EnableEffects_Proxy(
+    IAMTimeline * This,
+    BOOL fEnabled);
 
 
-    void __RPC_STUB IAMTimeline_EnableEffects_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_EnableEffects_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimeline_EffectsEnabled_Proxy(
-        IAMTimeline * This,
-        BOOL *pfEnabled);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimeline_EffectsEnabled_Proxy(
+    IAMTimeline * This,
+    BOOL *pfEnabled);
 
 
-    void __RPC_STUB IAMTimeline_EffectsEnabled_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_EffectsEnabled_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimeline_SetInterestRange_Proxy(
-        IAMTimeline * This,
-        REFERENCE_TIME Start,
-        REFERENCE_TIME Stop);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimeline_SetInterestRange_Proxy(
+    IAMTimeline * This,
+    REFERENCE_TIME Start,
+    REFERENCE_TIME Stop);
 
 
-    void __RPC_STUB IAMTimeline_SetInterestRange_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_SetInterestRange_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimeline_GetDuration_Proxy(
-        IAMTimeline * This,
-        REFERENCE_TIME *pDuration);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimeline_GetDuration_Proxy(
+    IAMTimeline * This,
+    REFERENCE_TIME *pDuration);
 
 
-    void __RPC_STUB IAMTimeline_GetDuration_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_GetDuration_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimeline_GetDuration2_Proxy(
-        IAMTimeline * This,
-        double *pDuration);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimeline_GetDuration2_Proxy(
+    IAMTimeline * This,
+    double *pDuration);
 
 
-    void __RPC_STUB IAMTimeline_GetDuration2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_GetDuration2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimeline_SetDefaultFPS_Proxy(
-        IAMTimeline * This,
-        double FPS);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimeline_SetDefaultFPS_Proxy(
+    IAMTimeline * This,
+    double FPS);
 
 
-    void __RPC_STUB IAMTimeline_SetDefaultFPS_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_SetDefaultFPS_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimeline_GetDefaultFPS_Proxy(
-        IAMTimeline * This,
-        double *pFPS);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimeline_GetDefaultFPS_Proxy(
+    IAMTimeline * This,
+    double *pFPS);
 
 
-    void __RPC_STUB IAMTimeline_GetDefaultFPS_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_GetDefaultFPS_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimeline_IsDirty_Proxy(
-        IAMTimeline * This,
-        BOOL *pDirty);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimeline_IsDirty_Proxy(
+    IAMTimeline * This,
+    BOOL *pDirty);
 
 
-    void __RPC_STUB IAMTimeline_IsDirty_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_IsDirty_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimeline_GetDirtyRange_Proxy(
-        IAMTimeline * This,
-        REFERENCE_TIME *pStart,
-        REFERENCE_TIME *pStop);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimeline_GetDirtyRange_Proxy(
+    IAMTimeline * This,
+    REFERENCE_TIME *pStart,
+    REFERENCE_TIME *pStop);
 
 
-    void __RPC_STUB IAMTimeline_GetDirtyRange_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_GetDirtyRange_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring] */
-    HRESULT STDMETHODCALLTYPE IAMTimeline_GetCountOfType_Proxy(
-        IAMTimeline * This,
-        long Group,
-        long *pVal,
-        long *pValWithComps,
-        TIMELINE_MAJOR_TYPE MajorType);
+/* [helpstring] */
+HRESULT STDMETHODCALLTYPE IAMTimeline_GetCountOfType_Proxy(
+    IAMTimeline * This,
+    long Group,
+    long *pVal,
+    long *pValWithComps,
+    TIMELINE_MAJOR_TYPE MajorType);
 
 
-    void __RPC_STUB IAMTimeline_GetCountOfType_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_GetCountOfType_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimeline_ValidateSourceNames_Proxy(
-        IAMTimeline * This,
-        long ValidateFlags,
-        IMediaLocator *pOverride,
-        LONG_PTR NotifyEventHandle);
+HRESULT STDMETHODCALLTYPE IAMTimeline_ValidateSourceNames_Proxy(
+    IAMTimeline * This,
+    long ValidateFlags,
+    IMediaLocator *pOverride,
+    LONG_PTR NotifyEventHandle);
 
 
-    void __RPC_STUB IAMTimeline_ValidateSourceNames_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_ValidateSourceNames_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimeline_SetDefaultTransition_Proxy(
-        IAMTimeline * This,
-        GUID *pGuid);
+HRESULT STDMETHODCALLTYPE IAMTimeline_SetDefaultTransition_Proxy(
+    IAMTimeline * This,
+    GUID *pGuid);
 
 
-    void __RPC_STUB IAMTimeline_SetDefaultTransition_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_SetDefaultTransition_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimeline_GetDefaultTransition_Proxy(
-        IAMTimeline * This,
-        GUID *pGuid);
+HRESULT STDMETHODCALLTYPE IAMTimeline_GetDefaultTransition_Proxy(
+    IAMTimeline * This,
+    GUID *pGuid);
 
 
-    void __RPC_STUB IAMTimeline_GetDefaultTransition_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_GetDefaultTransition_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimeline_SetDefaultEffect_Proxy(
-        IAMTimeline * This,
-        GUID *pGuid);
+HRESULT STDMETHODCALLTYPE IAMTimeline_SetDefaultEffect_Proxy(
+    IAMTimeline * This,
+    GUID *pGuid);
 
 
-    void __RPC_STUB IAMTimeline_SetDefaultEffect_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_SetDefaultEffect_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimeline_GetDefaultEffect_Proxy(
-        IAMTimeline * This,
-        GUID *pGuid);
+HRESULT STDMETHODCALLTYPE IAMTimeline_GetDefaultEffect_Proxy(
+    IAMTimeline * This,
+    GUID *pGuid);
 
 
-    void __RPC_STUB IAMTimeline_GetDefaultEffect_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_GetDefaultEffect_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimeline_SetDefaultTransitionB_Proxy(
-        IAMTimeline * This,
-        BSTR pGuid);
+HRESULT STDMETHODCALLTYPE IAMTimeline_SetDefaultTransitionB_Proxy(
+    IAMTimeline * This,
+    BSTR pGuid);
 
 
-    void __RPC_STUB IAMTimeline_SetDefaultTransitionB_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_SetDefaultTransitionB_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimeline_GetDefaultTransitionB_Proxy(
-        IAMTimeline * This,
-        /* [retval][out] */ BSTR *pGuid);
+HRESULT STDMETHODCALLTYPE IAMTimeline_GetDefaultTransitionB_Proxy(
+    IAMTimeline * This,
+    /* [retval][out] */ BSTR *pGuid);
 
 
-    void __RPC_STUB IAMTimeline_GetDefaultTransitionB_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_GetDefaultTransitionB_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimeline_SetDefaultEffectB_Proxy(
-        IAMTimeline * This,
-        BSTR pGuid);
+HRESULT STDMETHODCALLTYPE IAMTimeline_SetDefaultEffectB_Proxy(
+    IAMTimeline * This,
+    BSTR pGuid);
 
 
-    void __RPC_STUB IAMTimeline_SetDefaultEffectB_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_SetDefaultEffectB_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IAMTimeline_GetDefaultEffectB_Proxy(
-        IAMTimeline * This,
-        /* [retval][out] */ BSTR *pGuid);
+HRESULT STDMETHODCALLTYPE IAMTimeline_GetDefaultEffectB_Proxy(
+    IAMTimeline * This,
+    /* [retval][out] */ BSTR *pGuid);
 
 
-    void __RPC_STUB IAMTimeline_GetDefaultEffectB_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMTimeline_GetDefaultEffectB_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -9239,203 +9239,203 @@ public:
 #ifndef __IXml2Dex_INTERFACE_DEFINED__
 #define __IXml2Dex_INTERFACE_DEFINED__
 
-    /* interface IXml2Dex */
-    /* [unique][helpstring][uuid][object] */
+/* interface IXml2Dex */
+/* [unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IXml2Dex;
+EXTERN_C const IID IID_IXml2Dex;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("18C628ED-962A-11D2-8D08-00A0C9441E20")
+MIDL_INTERFACE("18C628ED-962A-11D2-8D08-00A0C9441E20")
 IXml2Dex :
-    public IDispatch
-    {
+public IDispatch
+{
 public:
-        virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE CreateGraphFromFile(
-            /* [out] */ IUnknown **ppGraph,
-            IUnknown *pTimeline,
-            BSTR Filename) = 0;
+    virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE CreateGraphFromFile(
+        /* [out] */ IUnknown **ppGraph,
+        IUnknown *pTimeline,
+        BSTR Filename) = 0;
 
-        virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE WriteGrfFile(
-            IUnknown *pGraph,
-            BSTR FileName) = 0;
+    virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE WriteGrfFile(
+        IUnknown *pGraph,
+        BSTR FileName) = 0;
 
-        virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE WriteXMLFile(
-            IUnknown *pTimeline,
-            BSTR FileName) = 0;
+    virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE WriteXMLFile(
+        IUnknown *pTimeline,
+        BSTR FileName) = 0;
 
-        virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE ReadXMLFile(
-            IUnknown *pTimeline,
-            BSTR XMLName) = 0;
+    virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE ReadXMLFile(
+        IUnknown *pTimeline,
+        BSTR XMLName) = 0;
 
-        virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE Delete(
-            IUnknown *pTimeline,
-            double dStart,
-            double dEnd) = 0;
+    virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE Delete(
+        IUnknown *pTimeline,
+        double dStart,
+        double dEnd) = 0;
 
-        virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE WriteXMLPart(
-            IUnknown *pTimeline,
-            double dStart,
-            double dEnd,
-            BSTR FileName) = 0;
+    virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE WriteXMLPart(
+        IUnknown *pTimeline,
+        double dStart,
+        double dEnd,
+        BSTR FileName) = 0;
 
-        virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE PasteXMLFile(
-            IUnknown *pTimeline,
-            double dStart,
-            BSTR FileName) = 0;
+    virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE PasteXMLFile(
+        IUnknown *pTimeline,
+        double dStart,
+        BSTR FileName) = 0;
 
-        virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE CopyXML(
-            IUnknown *pTimeline,
-            double dStart,
-            double dEnd) = 0;
+    virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE CopyXML(
+        IUnknown *pTimeline,
+        double dStart,
+        double dEnd) = 0;
 
-        virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE PasteXML(
-            IUnknown *pTimeline,
-            double dStart) = 0;
+    virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE PasteXML(
+        IUnknown *pTimeline,
+        double dStart) = 0;
 
-        virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE Reset(void) = 0;
+    virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE Reset(void) = 0;
 
-        virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE ReadXML(
-            IUnknown *pTimeline,
-            IUnknown *pXML) = 0;
+    virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE ReadXML(
+        IUnknown *pTimeline,
+        IUnknown *pXML) = 0;
 
-        virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE WriteXML(
-            IUnknown *pTimeline,
-            BSTR *pbstrXML) = 0;
+    virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE WriteXML(
+        IUnknown *pTimeline,
+        BSTR *pbstrXML) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IXml2DexVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IXml2DexVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IXml2Dex * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IXml2Dex * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IXml2Dex * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IXml2Dex * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IXml2Dex * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IXml2Dex * This);
 
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
-            IXml2Dex * This,
-            /* [out] */ UINT *pctinfo);
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
+        IXml2Dex * This,
+        /* [out] */ UINT *pctinfo);
 
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
-            IXml2Dex * This,
-            /* [in] */ UINT iTInfo,
-            /* [in] */ LCID lcid,
-            /* [out] */ ITypeInfo **ppTInfo);
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
+        IXml2Dex * This,
+        /* [in] */ UINT iTInfo,
+        /* [in] */ LCID lcid,
+        /* [out] */ ITypeInfo **ppTInfo);
 
-        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
-            IXml2Dex * This,
-            /* [in] */ REFIID riid,
-            /* [size_is][in] */ LPOLESTR *rgszNames,
-            /* [in] */ UINT cNames,
-            /* [in] */ LCID lcid,
-            /* [size_is][out] */ DISPID *rgDispId);
+    HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
+        IXml2Dex * This,
+        /* [in] */ REFIID riid,
+        /* [size_is][in] */ LPOLESTR *rgszNames,
+        /* [in] */ UINT cNames,
+        /* [in] */ LCID lcid,
+        /* [size_is][out] */ DISPID *rgDispId);
 
-        /* [local] */
-        HRESULT(STDMETHODCALLTYPE *Invoke)(
-            IXml2Dex * This,
-            /* [in] */ DISPID dispIdMember,
-            /* [in] */ REFIID riid,
-            /* [in] */ LCID lcid,
-            /* [in] */ WORD wFlags,
-            /* [out][in] */ DISPPARAMS *pDispParams,
-            /* [out] */ VARIANT *pVarResult,
-            /* [out] */ EXCEPINFO *pExcepInfo,
-            /* [out] */ UINT *puArgErr);
+    /* [local] */
+    HRESULT(STDMETHODCALLTYPE *Invoke)(
+        IXml2Dex * This,
+        /* [in] */ DISPID dispIdMember,
+        /* [in] */ REFIID riid,
+        /* [in] */ LCID lcid,
+        /* [in] */ WORD wFlags,
+        /* [out][in] */ DISPPARAMS *pDispParams,
+        /* [out] */ VARIANT *pVarResult,
+        /* [out] */ EXCEPINFO *pExcepInfo,
+        /* [out] */ UINT *puArgErr);
 
-        /* [helpstring][id] */
-        HRESULT(STDMETHODCALLTYPE *CreateGraphFromFile)(
-            IXml2Dex * This,
-            /* [out] */ IUnknown **ppGraph,
-            IUnknown *pTimeline,
-            BSTR Filename);
+    /* [helpstring][id] */
+    HRESULT(STDMETHODCALLTYPE *CreateGraphFromFile)(
+        IXml2Dex * This,
+        /* [out] */ IUnknown **ppGraph,
+        IUnknown *pTimeline,
+        BSTR Filename);
 
-        /* [helpstring][id] */
-        HRESULT(STDMETHODCALLTYPE *WriteGrfFile)(
-            IXml2Dex * This,
-            IUnknown *pGraph,
-            BSTR FileName);
+    /* [helpstring][id] */
+    HRESULT(STDMETHODCALLTYPE *WriteGrfFile)(
+        IXml2Dex * This,
+        IUnknown *pGraph,
+        BSTR FileName);
 
-        /* [helpstring][id] */
-        HRESULT(STDMETHODCALLTYPE *WriteXMLFile)(
-            IXml2Dex * This,
-            IUnknown *pTimeline,
-            BSTR FileName);
+    /* [helpstring][id] */
+    HRESULT(STDMETHODCALLTYPE *WriteXMLFile)(
+        IXml2Dex * This,
+        IUnknown *pTimeline,
+        BSTR FileName);
 
-        /* [helpstring][id] */
-        HRESULT(STDMETHODCALLTYPE *ReadXMLFile)(
-            IXml2Dex * This,
-            IUnknown *pTimeline,
-            BSTR XMLName);
+    /* [helpstring][id] */
+    HRESULT(STDMETHODCALLTYPE *ReadXMLFile)(
+        IXml2Dex * This,
+        IUnknown *pTimeline,
+        BSTR XMLName);
 
-        /* [helpstring][id] */
-        HRESULT(STDMETHODCALLTYPE *Delete)(
-            IXml2Dex * This,
-            IUnknown *pTimeline,
-            double dStart,
-            double dEnd);
+    /* [helpstring][id] */
+    HRESULT(STDMETHODCALLTYPE *Delete)(
+        IXml2Dex * This,
+        IUnknown *pTimeline,
+        double dStart,
+        double dEnd);
 
-        /* [helpstring][id] */
-        HRESULT(STDMETHODCALLTYPE *WriteXMLPart)(
-            IXml2Dex * This,
-            IUnknown *pTimeline,
-            double dStart,
-            double dEnd,
-            BSTR FileName);
+    /* [helpstring][id] */
+    HRESULT(STDMETHODCALLTYPE *WriteXMLPart)(
+        IXml2Dex * This,
+        IUnknown *pTimeline,
+        double dStart,
+        double dEnd,
+        BSTR FileName);
 
-        /* [helpstring][id] */
-        HRESULT(STDMETHODCALLTYPE *PasteXMLFile)(
-            IXml2Dex * This,
-            IUnknown *pTimeline,
-            double dStart,
-            BSTR FileName);
+    /* [helpstring][id] */
+    HRESULT(STDMETHODCALLTYPE *PasteXMLFile)(
+        IXml2Dex * This,
+        IUnknown *pTimeline,
+        double dStart,
+        BSTR FileName);
 
-        /* [helpstring][id] */
-        HRESULT(STDMETHODCALLTYPE *CopyXML)(
-            IXml2Dex * This,
-            IUnknown *pTimeline,
-            double dStart,
-            double dEnd);
+    /* [helpstring][id] */
+    HRESULT(STDMETHODCALLTYPE *CopyXML)(
+        IXml2Dex * This,
+        IUnknown *pTimeline,
+        double dStart,
+        double dEnd);
 
-        /* [helpstring][id] */
-        HRESULT(STDMETHODCALLTYPE *PasteXML)(
-            IXml2Dex * This,
-            IUnknown *pTimeline,
-            double dStart);
+    /* [helpstring][id] */
+    HRESULT(STDMETHODCALLTYPE *PasteXML)(
+        IXml2Dex * This,
+        IUnknown *pTimeline,
+        double dStart);
 
-        /* [helpstring][id] */
-        HRESULT(STDMETHODCALLTYPE *Reset)(
-            IXml2Dex * This);
+    /* [helpstring][id] */
+    HRESULT(STDMETHODCALLTYPE *Reset)(
+        IXml2Dex * This);
 
-        /* [helpstring][id] */
-        HRESULT(STDMETHODCALLTYPE *ReadXML)(
-            IXml2Dex * This,
-            IUnknown *pTimeline,
-            IUnknown *pXML);
+    /* [helpstring][id] */
+    HRESULT(STDMETHODCALLTYPE *ReadXML)(
+        IXml2Dex * This,
+        IUnknown *pTimeline,
+        IUnknown *pXML);
 
-        /* [helpstring][id] */
-        HRESULT(STDMETHODCALLTYPE *WriteXML)(
-            IXml2Dex * This,
-            IUnknown *pTimeline,
-            BSTR *pbstrXML);
+    /* [helpstring][id] */
+    HRESULT(STDMETHODCALLTYPE *WriteXML)(
+        IXml2Dex * This,
+        IUnknown *pTimeline,
+        BSTR *pbstrXML);
 
-        END_INTERFACE
-    } IXml2DexVtbl;
+    END_INTERFACE
+} IXml2DexVtbl;
 
-    interface IXml2Dex
-    {
-        CONST_VTBL struct IXml2DexVtbl *lpVtbl;
-    };
+interface IXml2Dex
+{
+    CONST_VTBL struct IXml2DexVtbl *lpVtbl;
+};
 
 
 
@@ -9508,175 +9508,175 @@ public:
 
 
 
-    /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE IXml2Dex_CreateGraphFromFile_Proxy(
-        IXml2Dex * This,
-        /* [out] */ IUnknown **ppGraph,
-        IUnknown *pTimeline,
-        BSTR Filename);
+/* [helpstring][id] */ HRESULT STDMETHODCALLTYPE IXml2Dex_CreateGraphFromFile_Proxy(
+    IXml2Dex * This,
+    /* [out] */ IUnknown **ppGraph,
+    IUnknown *pTimeline,
+    BSTR Filename);
 
 
-    void __RPC_STUB IXml2Dex_CreateGraphFromFile_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IXml2Dex_CreateGraphFromFile_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id] */
-    HRESULT STDMETHODCALLTYPE IXml2Dex_WriteGrfFile_Proxy(
-        IXml2Dex * This,
-        IUnknown *pGraph,
-        BSTR FileName);
+/* [helpstring][id] */
+HRESULT STDMETHODCALLTYPE IXml2Dex_WriteGrfFile_Proxy(
+    IXml2Dex * This,
+    IUnknown *pGraph,
+    BSTR FileName);
 
 
-    void __RPC_STUB IXml2Dex_WriteGrfFile_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IXml2Dex_WriteGrfFile_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id] */
-    HRESULT STDMETHODCALLTYPE IXml2Dex_WriteXMLFile_Proxy(
-        IXml2Dex * This,
-        IUnknown *pTimeline,
-        BSTR FileName);
+/* [helpstring][id] */
+HRESULT STDMETHODCALLTYPE IXml2Dex_WriteXMLFile_Proxy(
+    IXml2Dex * This,
+    IUnknown *pTimeline,
+    BSTR FileName);
 
 
-    void __RPC_STUB IXml2Dex_WriteXMLFile_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IXml2Dex_WriteXMLFile_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id] */
-    HRESULT STDMETHODCALLTYPE IXml2Dex_ReadXMLFile_Proxy(
-        IXml2Dex * This,
-        IUnknown *pTimeline,
-        BSTR XMLName);
+/* [helpstring][id] */
+HRESULT STDMETHODCALLTYPE IXml2Dex_ReadXMLFile_Proxy(
+    IXml2Dex * This,
+    IUnknown *pTimeline,
+    BSTR XMLName);
 
 
-    void __RPC_STUB IXml2Dex_ReadXMLFile_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IXml2Dex_ReadXMLFile_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id] */
-    HRESULT STDMETHODCALLTYPE IXml2Dex_Delete_Proxy(
-        IXml2Dex * This,
-        IUnknown *pTimeline,
-        double dStart,
-        double dEnd);
+/* [helpstring][id] */
+HRESULT STDMETHODCALLTYPE IXml2Dex_Delete_Proxy(
+    IXml2Dex * This,
+    IUnknown *pTimeline,
+    double dStart,
+    double dEnd);
 
 
-    void __RPC_STUB IXml2Dex_Delete_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IXml2Dex_Delete_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id] */
-    HRESULT STDMETHODCALLTYPE IXml2Dex_WriteXMLPart_Proxy(
-        IXml2Dex * This,
-        IUnknown *pTimeline,
-        double dStart,
-        double dEnd,
-        BSTR FileName);
+/* [helpstring][id] */
+HRESULT STDMETHODCALLTYPE IXml2Dex_WriteXMLPart_Proxy(
+    IXml2Dex * This,
+    IUnknown *pTimeline,
+    double dStart,
+    double dEnd,
+    BSTR FileName);
 
 
-    void __RPC_STUB IXml2Dex_WriteXMLPart_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IXml2Dex_WriteXMLPart_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id] */
-    HRESULT STDMETHODCALLTYPE IXml2Dex_PasteXMLFile_Proxy(
-        IXml2Dex * This,
-        IUnknown *pTimeline,
-        double dStart,
-        BSTR FileName);
+/* [helpstring][id] */
+HRESULT STDMETHODCALLTYPE IXml2Dex_PasteXMLFile_Proxy(
+    IXml2Dex * This,
+    IUnknown *pTimeline,
+    double dStart,
+    BSTR FileName);
 
 
-    void __RPC_STUB IXml2Dex_PasteXMLFile_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IXml2Dex_PasteXMLFile_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id] */
-    HRESULT STDMETHODCALLTYPE IXml2Dex_CopyXML_Proxy(
-        IXml2Dex * This,
-        IUnknown *pTimeline,
-        double dStart,
-        double dEnd);
+/* [helpstring][id] */
+HRESULT STDMETHODCALLTYPE IXml2Dex_CopyXML_Proxy(
+    IXml2Dex * This,
+    IUnknown *pTimeline,
+    double dStart,
+    double dEnd);
 
 
-    void __RPC_STUB IXml2Dex_CopyXML_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IXml2Dex_CopyXML_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id] */
-    HRESULT STDMETHODCALLTYPE IXml2Dex_PasteXML_Proxy(
-        IXml2Dex * This,
-        IUnknown *pTimeline,
-        double dStart);
+/* [helpstring][id] */
+HRESULT STDMETHODCALLTYPE IXml2Dex_PasteXML_Proxy(
+    IXml2Dex * This,
+    IUnknown *pTimeline,
+    double dStart);
 
 
-    void __RPC_STUB IXml2Dex_PasteXML_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IXml2Dex_PasteXML_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id] */
-    HRESULT STDMETHODCALLTYPE IXml2Dex_Reset_Proxy(
-        IXml2Dex * This);
+/* [helpstring][id] */
+HRESULT STDMETHODCALLTYPE IXml2Dex_Reset_Proxy(
+    IXml2Dex * This);
 
 
-    void __RPC_STUB IXml2Dex_Reset_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IXml2Dex_Reset_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id] */
-    HRESULT STDMETHODCALLTYPE IXml2Dex_ReadXML_Proxy(
-        IXml2Dex * This,
-        IUnknown *pTimeline,
-        IUnknown *pXML);
+/* [helpstring][id] */
+HRESULT STDMETHODCALLTYPE IXml2Dex_ReadXML_Proxy(
+    IXml2Dex * This,
+    IUnknown *pTimeline,
+    IUnknown *pXML);
 
 
-    void __RPC_STUB IXml2Dex_ReadXML_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IXml2Dex_ReadXML_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][id] */
-    HRESULT STDMETHODCALLTYPE IXml2Dex_WriteXML_Proxy(
-        IXml2Dex * This,
-        IUnknown *pTimeline,
-        BSTR *pbstrXML);
+/* [helpstring][id] */
+HRESULT STDMETHODCALLTYPE IXml2Dex_WriteXML_Proxy(
+    IXml2Dex * This,
+    IUnknown *pTimeline,
+    BSTR *pbstrXML);
 
 
-    void __RPC_STUB IXml2Dex_WriteXML_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IXml2Dex_WriteXML_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -9686,61 +9686,61 @@ public:
 #ifndef __IAMErrorLog_INTERFACE_DEFINED__
 #define __IAMErrorLog_INTERFACE_DEFINED__
 
-    /* interface IAMErrorLog */
-    /* [unique][helpstring][uuid][object] */
+/* interface IAMErrorLog */
+/* [unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IAMErrorLog;
+EXTERN_C const IID IID_IAMErrorLog;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("E43E73A2-0EFA-11d3-9601-00A0C9441E20")
+MIDL_INTERFACE("E43E73A2-0EFA-11d3-9601-00A0C9441E20")
 IAMErrorLog :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE LogError(
-            long Severity,
-            BSTR pErrorString,
-            long ErrorCode,
-            long hresult,
-            /* [in] */ VARIANT *pExtraInfo) = 0;
+    virtual /* [helpstring] */ HRESULT STDMETHODCALLTYPE LogError(
+        long Severity,
+        BSTR pErrorString,
+        long ErrorCode,
+        long hresult,
+        /* [in] */ VARIANT *pExtraInfo) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IAMErrorLogVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IAMErrorLogVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IAMErrorLog * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IAMErrorLog * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IAMErrorLog * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IAMErrorLog * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IAMErrorLog * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IAMErrorLog * This);
 
-        /* [helpstring] */
-        HRESULT(STDMETHODCALLTYPE *LogError)(
-            IAMErrorLog * This,
-            long Severity,
-            BSTR pErrorString,
-            long ErrorCode,
-            long hresult,
-            /* [in] */ VARIANT *pExtraInfo);
+    /* [helpstring] */
+    HRESULT(STDMETHODCALLTYPE *LogError)(
+        IAMErrorLog * This,
+        long Severity,
+        BSTR pErrorString,
+        long ErrorCode,
+        long hresult,
+        /* [in] */ VARIANT *pExtraInfo);
 
-        END_INTERFACE
-    } IAMErrorLogVtbl;
+    END_INTERFACE
+} IAMErrorLogVtbl;
 
-    interface IAMErrorLog
-    {
-        CONST_VTBL struct IAMErrorLogVtbl *lpVtbl;
-    };
+interface IAMErrorLog
+{
+    CONST_VTBL struct IAMErrorLogVtbl *lpVtbl;
+};
 
 
 
@@ -9767,20 +9767,20 @@ public:
 
 
 
-    /* [helpstring] */ HRESULT STDMETHODCALLTYPE IAMErrorLog_LogError_Proxy(
-        IAMErrorLog * This,
-        long Severity,
-        BSTR pErrorString,
-        long ErrorCode,
-        long hresult,
-        /* [in] */ VARIANT *pExtraInfo);
+/* [helpstring] */ HRESULT STDMETHODCALLTYPE IAMErrorLog_LogError_Proxy(
+    IAMErrorLog * This,
+    long Severity,
+    BSTR pErrorString,
+    long ErrorCode,
+    long hresult,
+    /* [in] */ VARIANT *pExtraInfo);
 
 
-    void __RPC_STUB IAMErrorLog_LogError_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMErrorLog_LogError_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -9790,61 +9790,61 @@ public:
 #ifndef __IAMSetErrorLog_INTERFACE_DEFINED__
 #define __IAMSetErrorLog_INTERFACE_DEFINED__
 
-    /* interface IAMSetErrorLog */
-    /* [unique][helpstring][uuid][object] */
+/* interface IAMSetErrorLog */
+/* [unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IAMSetErrorLog;
+EXTERN_C const IID IID_IAMSetErrorLog;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("963566DA-BE21-4eaf-88E9-35704F8F52A1")
+MIDL_INTERFACE("963566DA-BE21-4eaf-88E9-35704F8F52A1")
 IAMSetErrorLog :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual /* [helpstring][propget] */ HRESULT STDMETHODCALLTYPE get_ErrorLog(
-            /* [retval][out] */ IAMErrorLog **pVal) = 0;
+    virtual /* [helpstring][propget] */ HRESULT STDMETHODCALLTYPE get_ErrorLog(
+        /* [retval][out] */ IAMErrorLog **pVal) = 0;
 
-        virtual /* [helpstring][propput] */ HRESULT STDMETHODCALLTYPE put_ErrorLog(
-            /* [in] */ IAMErrorLog *newVal) = 0;
+    virtual /* [helpstring][propput] */ HRESULT STDMETHODCALLTYPE put_ErrorLog(
+        /* [in] */ IAMErrorLog *newVal) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IAMSetErrorLogVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IAMSetErrorLogVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IAMSetErrorLog * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IAMSetErrorLog * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IAMSetErrorLog * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IAMSetErrorLog * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IAMSetErrorLog * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IAMSetErrorLog * This);
 
-        /* [helpstring][propget] */
-        HRESULT(STDMETHODCALLTYPE *get_ErrorLog)(
-            IAMSetErrorLog * This,
-            /* [retval][out] */ IAMErrorLog **pVal);
+    /* [helpstring][propget] */
+    HRESULT(STDMETHODCALLTYPE *get_ErrorLog)(
+        IAMSetErrorLog * This,
+        /* [retval][out] */ IAMErrorLog **pVal);
 
-        /* [helpstring][propput] */
-        HRESULT(STDMETHODCALLTYPE *put_ErrorLog)(
-            IAMSetErrorLog * This,
-            /* [in] */ IAMErrorLog *newVal);
+    /* [helpstring][propput] */
+    HRESULT(STDMETHODCALLTYPE *put_ErrorLog)(
+        IAMSetErrorLog * This,
+        /* [in] */ IAMErrorLog *newVal);
 
-        END_INTERFACE
-    } IAMSetErrorLogVtbl;
+    END_INTERFACE
+} IAMSetErrorLogVtbl;
 
-    interface IAMSetErrorLog
-    {
-        CONST_VTBL struct IAMSetErrorLogVtbl *lpVtbl;
-    };
+interface IAMSetErrorLog
+{
+    CONST_VTBL struct IAMSetErrorLogVtbl *lpVtbl;
+};
 
 
 
@@ -9874,29 +9874,29 @@ public:
 
 
 
-    /* [helpstring][propget] */ HRESULT STDMETHODCALLTYPE IAMSetErrorLog_get_ErrorLog_Proxy(
-        IAMSetErrorLog * This,
-        /* [retval][out] */ IAMErrorLog **pVal);
+/* [helpstring][propget] */ HRESULT STDMETHODCALLTYPE IAMSetErrorLog_get_ErrorLog_Proxy(
+    IAMSetErrorLog * This,
+    /* [retval][out] */ IAMErrorLog **pVal);
 
 
-    void __RPC_STUB IAMSetErrorLog_get_ErrorLog_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMSetErrorLog_get_ErrorLog_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [helpstring][propput] */
-    HRESULT STDMETHODCALLTYPE IAMSetErrorLog_put_ErrorLog_Proxy(
-        IAMSetErrorLog * This,
-        /* [in] */ IAMErrorLog *newVal);
+/* [helpstring][propput] */
+HRESULT STDMETHODCALLTYPE IAMSetErrorLog_put_ErrorLog_Proxy(
+    IAMSetErrorLog * This,
+    /* [in] */ IAMErrorLog *newVal);
 
 
-    void __RPC_STUB IAMSetErrorLog_put_ErrorLog_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMSetErrorLog_put_ErrorLog_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -9906,65 +9906,65 @@ public:
 #ifndef __ISampleGrabberCB_INTERFACE_DEFINED__
 #define __ISampleGrabberCB_INTERFACE_DEFINED__
 
-    /* interface ISampleGrabberCB */
-    /* [unique][helpstring][local][uuid][object] */
+/* interface ISampleGrabberCB */
+/* [unique][helpstring][local][uuid][object] */
 
 
-    EXTERN_C const IID IID_ISampleGrabberCB;
+EXTERN_C const IID IID_ISampleGrabberCB;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("0579154A-2B53-4994-B0D0-E773148EFF85")
+MIDL_INTERFACE("0579154A-2B53-4994-B0D0-E773148EFF85")
 ISampleGrabberCB :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual HRESULT STDMETHODCALLTYPE SampleCB(
-            double SampleTime,
-            IMediaSample *pSample) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SampleCB(
+        double SampleTime,
+        IMediaSample *pSample) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE BufferCB(
-            double SampleTime,
-            BYTE *pBuffer,
-            long BufferLen) = 0;
+    virtual HRESULT STDMETHODCALLTYPE BufferCB(
+        double SampleTime,
+        BYTE *pBuffer,
+        long BufferLen) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct ISampleGrabberCBVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct ISampleGrabberCBVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            ISampleGrabberCB * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        ISampleGrabberCB * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            ISampleGrabberCB * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        ISampleGrabberCB * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            ISampleGrabberCB * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        ISampleGrabberCB * This);
 
-        HRESULT(STDMETHODCALLTYPE *SampleCB)(
-            ISampleGrabberCB * This,
-            double SampleTime,
-            IMediaSample *pSample);
+    HRESULT(STDMETHODCALLTYPE *SampleCB)(
+        ISampleGrabberCB * This,
+        double SampleTime,
+        IMediaSample *pSample);
 
-        HRESULT(STDMETHODCALLTYPE *BufferCB)(
-            ISampleGrabberCB * This,
-            double SampleTime,
-            BYTE *pBuffer,
-            long BufferLen);
+    HRESULT(STDMETHODCALLTYPE *BufferCB)(
+        ISampleGrabberCB * This,
+        double SampleTime,
+        BYTE *pBuffer,
+        long BufferLen);
 
-        END_INTERFACE
-    } ISampleGrabberCBVtbl;
+    END_INTERFACE
+} ISampleGrabberCBVtbl;
 
-    interface ISampleGrabberCB
-    {
-        CONST_VTBL struct ISampleGrabberCBVtbl *lpVtbl;
-    };
+interface ISampleGrabberCB
+{
+    CONST_VTBL struct ISampleGrabberCBVtbl *lpVtbl;
+};
 
 
 
@@ -9994,31 +9994,31 @@ public:
 
 
 
-    HRESULT STDMETHODCALLTYPE ISampleGrabberCB_SampleCB_Proxy(
-        ISampleGrabberCB * This,
-        double SampleTime,
-        IMediaSample *pSample);
+HRESULT STDMETHODCALLTYPE ISampleGrabberCB_SampleCB_Proxy(
+    ISampleGrabberCB * This,
+    double SampleTime,
+    IMediaSample *pSample);
 
 
-    void __RPC_STUB ISampleGrabberCB_SampleCB_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB ISampleGrabberCB_SampleCB_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE ISampleGrabberCB_BufferCB_Proxy(
-        ISampleGrabberCB * This,
-        double SampleTime,
-        BYTE *pBuffer,
-        long BufferLen);
+HRESULT STDMETHODCALLTYPE ISampleGrabberCB_BufferCB_Proxy(
+    ISampleGrabberCB * This,
+    double SampleTime,
+    BYTE *pBuffer,
+    long BufferLen);
 
 
-    void __RPC_STUB ISampleGrabberCB_BufferCB_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB ISampleGrabberCB_BufferCB_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -10028,98 +10028,98 @@ public:
 #ifndef __ISampleGrabber_INTERFACE_DEFINED__
 #define __ISampleGrabber_INTERFACE_DEFINED__
 
-    /* interface ISampleGrabber */
-    /* [unique][helpstring][local][uuid][object] */
+/* interface ISampleGrabber */
+/* [unique][helpstring][local][uuid][object] */
 
 
-    EXTERN_C const IID IID_ISampleGrabber;
+EXTERN_C const IID IID_ISampleGrabber;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("6B652FFF-11FE-4fce-92AD-0266B5D7C78F")
+MIDL_INTERFACE("6B652FFF-11FE-4fce-92AD-0266B5D7C78F")
 ISampleGrabber :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual HRESULT STDMETHODCALLTYPE SetOneShot(
-            BOOL OneShot) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetOneShot(
+        BOOL OneShot) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetMediaType(
-            const AM_MEDIA_TYPE *pType) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetMediaType(
+        const AM_MEDIA_TYPE *pType) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetConnectedMediaType(
-            AM_MEDIA_TYPE *pType) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetConnectedMediaType(
+        AM_MEDIA_TYPE *pType) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetBufferSamples(
-            BOOL BufferThem) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetBufferSamples(
+        BOOL BufferThem) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetCurrentBuffer(
-            /* [out][in] */ long *pBufferSize,
-            /* [out] */ long *pBuffer) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetCurrentBuffer(
+        /* [out][in] */ long *pBufferSize,
+        /* [out] */ long *pBuffer) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetCurrentSample(
-            /* [retval][out] */ IMediaSample **ppSample) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetCurrentSample(
+        /* [retval][out] */ IMediaSample **ppSample) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetCallback(
-            ISampleGrabberCB *pCallback,
-            long WhichMethodToCallback) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetCallback(
+        ISampleGrabberCB *pCallback,
+        long WhichMethodToCallback) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct ISampleGrabberVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct ISampleGrabberVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            ISampleGrabber * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        ISampleGrabber * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            ISampleGrabber * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        ISampleGrabber * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            ISampleGrabber * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        ISampleGrabber * This);
 
-        HRESULT(STDMETHODCALLTYPE *SetOneShot)(
-            ISampleGrabber * This,
-            BOOL OneShot);
+    HRESULT(STDMETHODCALLTYPE *SetOneShot)(
+        ISampleGrabber * This,
+        BOOL OneShot);
 
-        HRESULT(STDMETHODCALLTYPE *SetMediaType)(
-            ISampleGrabber * This,
-            const AM_MEDIA_TYPE *pType);
+    HRESULT(STDMETHODCALLTYPE *SetMediaType)(
+        ISampleGrabber * This,
+        const AM_MEDIA_TYPE *pType);
 
-        HRESULT(STDMETHODCALLTYPE *GetConnectedMediaType)(
-            ISampleGrabber * This,
-            AM_MEDIA_TYPE *pType);
+    HRESULT(STDMETHODCALLTYPE *GetConnectedMediaType)(
+        ISampleGrabber * This,
+        AM_MEDIA_TYPE *pType);
 
-        HRESULT(STDMETHODCALLTYPE *SetBufferSamples)(
-            ISampleGrabber * This,
-            BOOL BufferThem);
+    HRESULT(STDMETHODCALLTYPE *SetBufferSamples)(
+        ISampleGrabber * This,
+        BOOL BufferThem);
 
-        HRESULT(STDMETHODCALLTYPE *GetCurrentBuffer)(
-            ISampleGrabber * This,
-            /* [out][in] */ long *pBufferSize,
-            /* [out] */ long *pBuffer);
+    HRESULT(STDMETHODCALLTYPE *GetCurrentBuffer)(
+        ISampleGrabber * This,
+        /* [out][in] */ long *pBufferSize,
+        /* [out] */ long *pBuffer);
 
-        HRESULT(STDMETHODCALLTYPE *GetCurrentSample)(
-            ISampleGrabber * This,
-            /* [retval][out] */ IMediaSample **ppSample);
+    HRESULT(STDMETHODCALLTYPE *GetCurrentSample)(
+        ISampleGrabber * This,
+        /* [retval][out] */ IMediaSample **ppSample);
 
-        HRESULT(STDMETHODCALLTYPE *SetCallback)(
-            ISampleGrabber * This,
-            ISampleGrabberCB *pCallback,
-            long WhichMethodToCallback);
+    HRESULT(STDMETHODCALLTYPE *SetCallback)(
+        ISampleGrabber * This,
+        ISampleGrabberCB *pCallback,
+        long WhichMethodToCallback);
 
-        END_INTERFACE
-    } ISampleGrabberVtbl;
+    END_INTERFACE
+} ISampleGrabberVtbl;
 
-    interface ISampleGrabber
-    {
-        CONST_VTBL struct ISampleGrabberVtbl *lpVtbl;
-    };
+interface ISampleGrabber
+{
+    CONST_VTBL struct ISampleGrabberVtbl *lpVtbl;
+};
 
 
 
@@ -10164,90 +10164,90 @@ public:
 
 
 
-    HRESULT STDMETHODCALLTYPE ISampleGrabber_SetOneShot_Proxy(
-        ISampleGrabber * This,
-        BOOL OneShot);
+HRESULT STDMETHODCALLTYPE ISampleGrabber_SetOneShot_Proxy(
+    ISampleGrabber * This,
+    BOOL OneShot);
 
 
-    void __RPC_STUB ISampleGrabber_SetOneShot_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB ISampleGrabber_SetOneShot_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE ISampleGrabber_SetMediaType_Proxy(
-        ISampleGrabber * This,
-        const AM_MEDIA_TYPE *pType);
+HRESULT STDMETHODCALLTYPE ISampleGrabber_SetMediaType_Proxy(
+    ISampleGrabber * This,
+    const AM_MEDIA_TYPE *pType);
 
 
-    void __RPC_STUB ISampleGrabber_SetMediaType_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB ISampleGrabber_SetMediaType_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE ISampleGrabber_GetConnectedMediaType_Proxy(
-        ISampleGrabber * This,
-        AM_MEDIA_TYPE *pType);
+HRESULT STDMETHODCALLTYPE ISampleGrabber_GetConnectedMediaType_Proxy(
+    ISampleGrabber * This,
+    AM_MEDIA_TYPE *pType);
 
 
-    void __RPC_STUB ISampleGrabber_GetConnectedMediaType_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB ISampleGrabber_GetConnectedMediaType_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE ISampleGrabber_SetBufferSamples_Proxy(
-        ISampleGrabber * This,
-        BOOL BufferThem);
+HRESULT STDMETHODCALLTYPE ISampleGrabber_SetBufferSamples_Proxy(
+    ISampleGrabber * This,
+    BOOL BufferThem);
 
 
-    void __RPC_STUB ISampleGrabber_SetBufferSamples_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB ISampleGrabber_SetBufferSamples_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE ISampleGrabber_GetCurrentBuffer_Proxy(
-        ISampleGrabber * This,
-        /* [out][in] */ long *pBufferSize,
-        /* [out] */ long *pBuffer);
+HRESULT STDMETHODCALLTYPE ISampleGrabber_GetCurrentBuffer_Proxy(
+    ISampleGrabber * This,
+    /* [out][in] */ long *pBufferSize,
+    /* [out] */ long *pBuffer);
 
 
-    void __RPC_STUB ISampleGrabber_GetCurrentBuffer_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB ISampleGrabber_GetCurrentBuffer_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE ISampleGrabber_GetCurrentSample_Proxy(
-        ISampleGrabber * This,
-        /* [retval][out] */ IMediaSample **ppSample);
+HRESULT STDMETHODCALLTYPE ISampleGrabber_GetCurrentSample_Proxy(
+    ISampleGrabber * This,
+    /* [retval][out] */ IMediaSample **ppSample);
 
 
-    void __RPC_STUB ISampleGrabber_GetCurrentSample_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB ISampleGrabber_GetCurrentSample_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE ISampleGrabber_SetCallback_Proxy(
-        ISampleGrabber * This,
-        ISampleGrabberCB *pCallback,
-        long WhichMethodToCallback);
+HRESULT STDMETHODCALLTYPE ISampleGrabber_SetCallback_Proxy(
+    ISampleGrabber * This,
+    ISampleGrabberCB *pCallback,
+    long WhichMethodToCallback);
 
 
-    void __RPC_STUB ISampleGrabber_SetCallback_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB ISampleGrabber_SetCallback_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -10258,99 +10258,99 @@ public:
 #ifndef __DexterLib_LIBRARY_DEFINED__
 #define __DexterLib_LIBRARY_DEFINED__
 
-    /* library DexterLib */
-    /* [helpstring][version][uuid] */
+/* library DexterLib */
+/* [helpstring][version][uuid] */
 
 
-    EXTERN_C const IID LIBID_DexterLib;
+EXTERN_C const IID LIBID_DexterLib;
 
 #ifndef __IResize_INTERFACE_DEFINED__
 #define __IResize_INTERFACE_DEFINED__
 
-    /* interface IResize */
-    /* [unique][helpstring][uuid][object] */
+/* interface IResize */
+/* [unique][helpstring][uuid][object] */
 
 
-    EXTERN_C const IID IID_IResize;
+EXTERN_C const IID IID_IResize;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("4ada63a0-72d5-11d2-952a-0060081840bc")
+MIDL_INTERFACE("4ada63a0-72d5-11d2-952a-0060081840bc")
 IResize :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual HRESULT STDMETHODCALLTYPE get_Size(
-            /* [out] */ int *piHeight,
-            /* [out] */ int *piWidth,
-            /* [out] */ long *pFlag) = 0;
+    virtual HRESULT STDMETHODCALLTYPE get_Size(
+        /* [out] */ int *piHeight,
+        /* [out] */ int *piWidth,
+        /* [out] */ long *pFlag) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE get_InputSize(
-            /* [out] */ int *piHeight,
-            /* [out] */ int *piWidth) = 0;
+    virtual HRESULT STDMETHODCALLTYPE get_InputSize(
+        /* [out] */ int *piHeight,
+        /* [out] */ int *piWidth) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE put_Size(
-            /* [in] */ int Height,
-            /* [in] */ int Width,
-            /* [in] */ long Flag) = 0;
+    virtual HRESULT STDMETHODCALLTYPE put_Size(
+        /* [in] */ int Height,
+        /* [in] */ int Width,
+        /* [in] */ long Flag) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE get_MediaType(
-            /* [out] */ AM_MEDIA_TYPE *pmt) = 0;
+    virtual HRESULT STDMETHODCALLTYPE get_MediaType(
+        /* [out] */ AM_MEDIA_TYPE *pmt) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE put_MediaType(
-            /* [in] */ const AM_MEDIA_TYPE *pmt) = 0;
+    virtual HRESULT STDMETHODCALLTYPE put_MediaType(
+        /* [in] */ const AM_MEDIA_TYPE *pmt) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IResizeVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IResizeVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IResize * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IResize * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IResize * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IResize * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IResize * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IResize * This);
 
-        HRESULT(STDMETHODCALLTYPE *get_Size)(
-            IResize * This,
-            /* [out] */ int *piHeight,
-            /* [out] */ int *piWidth,
-            /* [out] */ long *pFlag);
+    HRESULT(STDMETHODCALLTYPE *get_Size)(
+        IResize * This,
+        /* [out] */ int *piHeight,
+        /* [out] */ int *piWidth,
+        /* [out] */ long *pFlag);
 
-        HRESULT(STDMETHODCALLTYPE *get_InputSize)(
-            IResize * This,
-            /* [out] */ int *piHeight,
-            /* [out] */ int *piWidth);
+    HRESULT(STDMETHODCALLTYPE *get_InputSize)(
+        IResize * This,
+        /* [out] */ int *piHeight,
+        /* [out] */ int *piWidth);
 
-        HRESULT(STDMETHODCALLTYPE *put_Size)(
-            IResize * This,
-            /* [in] */ int Height,
-            /* [in] */ int Width,
-            /* [in] */ long Flag);
+    HRESULT(STDMETHODCALLTYPE *put_Size)(
+        IResize * This,
+        /* [in] */ int Height,
+        /* [in] */ int Width,
+        /* [in] */ long Flag);
 
-        HRESULT(STDMETHODCALLTYPE *get_MediaType)(
-            IResize * This,
-            /* [out] */ AM_MEDIA_TYPE *pmt);
+    HRESULT(STDMETHODCALLTYPE *get_MediaType)(
+        IResize * This,
+        /* [out] */ AM_MEDIA_TYPE *pmt);
 
-        HRESULT(STDMETHODCALLTYPE *put_MediaType)(
-            IResize * This,
-            /* [in] */ const AM_MEDIA_TYPE *pmt);
+    HRESULT(STDMETHODCALLTYPE *put_MediaType)(
+        IResize * This,
+        /* [in] */ const AM_MEDIA_TYPE *pmt);
 
-        END_INTERFACE
-    } IResizeVtbl;
+    END_INTERFACE
+} IResizeVtbl;
 
-    interface IResize
-    {
-        CONST_VTBL struct IResizeVtbl *lpVtbl;
-    };
+interface IResize
+{
+    CONST_VTBL struct IResizeVtbl *lpVtbl;
+};
 
 
 
@@ -10389,265 +10389,265 @@ public:
 
 
 
-    HRESULT STDMETHODCALLTYPE IResize_get_Size_Proxy(
-        IResize * This,
-        /* [out] */ int *piHeight,
-        /* [out] */ int *piWidth,
-        /* [out] */ long *pFlag);
+HRESULT STDMETHODCALLTYPE IResize_get_Size_Proxy(
+    IResize * This,
+    /* [out] */ int *piHeight,
+    /* [out] */ int *piWidth,
+    /* [out] */ long *pFlag);
 
 
-    void __RPC_STUB IResize_get_Size_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IResize_get_Size_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IResize_get_InputSize_Proxy(
-        IResize * This,
-        /* [out] */ int *piHeight,
-        /* [out] */ int *piWidth);
+HRESULT STDMETHODCALLTYPE IResize_get_InputSize_Proxy(
+    IResize * This,
+    /* [out] */ int *piHeight,
+    /* [out] */ int *piWidth);
 
 
-    void __RPC_STUB IResize_get_InputSize_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IResize_get_InputSize_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IResize_put_Size_Proxy(
-        IResize * This,
-        /* [in] */ int Height,
-        /* [in] */ int Width,
-        /* [in] */ long Flag);
+HRESULT STDMETHODCALLTYPE IResize_put_Size_Proxy(
+    IResize * This,
+    /* [in] */ int Height,
+    /* [in] */ int Width,
+    /* [in] */ long Flag);
 
 
-    void __RPC_STUB IResize_put_Size_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IResize_put_Size_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IResize_get_MediaType_Proxy(
-        IResize * This,
-        /* [out] */ AM_MEDIA_TYPE *pmt);
+HRESULT STDMETHODCALLTYPE IResize_get_MediaType_Proxy(
+    IResize * This,
+    /* [out] */ AM_MEDIA_TYPE *pmt);
 
 
-    void __RPC_STUB IResize_get_MediaType_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IResize_get_MediaType_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IResize_put_MediaType_Proxy(
-        IResize * This,
-        /* [in] */ const AM_MEDIA_TYPE *pmt);
+HRESULT STDMETHODCALLTYPE IResize_put_MediaType_Proxy(
+    IResize * This,
+    /* [in] */ const AM_MEDIA_TYPE *pmt);
 
 
-    void __RPC_STUB IResize_put_MediaType_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IResize_put_MediaType_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
 #endif 	/* __IResize_INTERFACE_DEFINED__ */
 
 
-    EXTERN_C const CLSID CLSID_AMTimeline;
+EXTERN_C const CLSID CLSID_AMTimeline;
 
 #ifdef __cplusplus
 
-    class DECLSPEC_UUID("78530B75-61F9-11D2-8CAD-00A024580902")
-            AMTimeline;
+class DECLSPEC_UUID("78530B75-61F9-11D2-8CAD-00A024580902")
+    AMTimeline;
 #endif
 
-    EXTERN_C const CLSID CLSID_AMTimelineObj;
+EXTERN_C const CLSID CLSID_AMTimelineObj;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("78530B78-61F9-11D2-8CAD-00A024580902")
-            AMTimelineObj;
+    AMTimelineObj;
 #endif
 
-    EXTERN_C const CLSID CLSID_AMTimelineSrc;
+EXTERN_C const CLSID CLSID_AMTimelineSrc;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("78530B7A-61F9-11D2-8CAD-00A024580902")
-            AMTimelineSrc;
+    AMTimelineSrc;
 #endif
 
-    EXTERN_C const CLSID CLSID_AMTimelineTrack;
+EXTERN_C const CLSID CLSID_AMTimelineTrack;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("8F6C3C50-897B-11d2-8CFB-00A0C9441E20")
-            AMTimelineTrack;
+    AMTimelineTrack;
 #endif
 
-    EXTERN_C const CLSID CLSID_AMTimelineComp;
+EXTERN_C const CLSID CLSID_AMTimelineComp;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("74D2EC80-6233-11d2-8CAD-00A024580902")
-            AMTimelineComp;
+    AMTimelineComp;
 #endif
 
-    EXTERN_C const CLSID CLSID_AMTimelineGroup;
+EXTERN_C const CLSID CLSID_AMTimelineGroup;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("F6D371E1-B8A6-11d2-8023-00C0DF10D434")
-            AMTimelineGroup;
+    AMTimelineGroup;
 #endif
 
-    EXTERN_C const CLSID CLSID_AMTimelineTrans;
+EXTERN_C const CLSID CLSID_AMTimelineTrans;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("74D2EC81-6233-11d2-8CAD-00A024580902")
-            AMTimelineTrans;
+    AMTimelineTrans;
 #endif
 
-    EXTERN_C const CLSID CLSID_AMTimelineEffect;
+EXTERN_C const CLSID CLSID_AMTimelineEffect;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("74D2EC82-6233-11d2-8CAD-00A024580902")
-            AMTimelineEffect;
+    AMTimelineEffect;
 #endif
 
-    EXTERN_C const CLSID CLSID_RenderEngine;
+EXTERN_C const CLSID CLSID_RenderEngine;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("64D8A8E0-80A2-11d2-8CF3-00A0C9441E20")
-            RenderEngine;
+    RenderEngine;
 #endif
 
-    EXTERN_C const CLSID CLSID_SmartRenderEngine;
+EXTERN_C const CLSID CLSID_SmartRenderEngine;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("498B0949-BBE9-4072-98BE-6CCAEB79DC6F")
-            SmartRenderEngine;
+    SmartRenderEngine;
 #endif
 
-    EXTERN_C const CLSID CLSID_AudMixer;
+EXTERN_C const CLSID CLSID_AudMixer;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("036A9790-C153-11d2-9EF7-006008039E37")
-            AudMixer;
+    AudMixer;
 #endif
 
-    EXTERN_C const CLSID CLSID_Xml2Dex;
+EXTERN_C const CLSID CLSID_Xml2Dex;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("18C628EE-962A-11D2-8D08-00A0C9441E20")
-            Xml2Dex;
+    Xml2Dex;
 #endif
 
-    EXTERN_C const CLSID CLSID_MediaLocator;
+EXTERN_C const CLSID CLSID_MediaLocator;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("CC1101F2-79DC-11D2-8CE6-00A0C9441E20")
-            MediaLocator;
+    MediaLocator;
 #endif
 
-    EXTERN_C const CLSID CLSID_PropertySetter;
+EXTERN_C const CLSID CLSID_PropertySetter;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("ADF95821-DED7-11d2-ACBE-0080C75E246E")
-            PropertySetter;
+    PropertySetter;
 #endif
 
-    EXTERN_C const CLSID CLSID_MediaDet;
+EXTERN_C const CLSID CLSID_MediaDet;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("65BD0711-24D2-4ff7-9324-ED2E5D3ABAFA")
-            MediaDet;
+    MediaDet;
 #endif
 
-    EXTERN_C const CLSID CLSID_SampleGrabber;
+EXTERN_C const CLSID CLSID_SampleGrabber;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("C1F400A0-3F08-11d3-9F0B-006008039E37")
-            SampleGrabber;
+    SampleGrabber;
 #endif
 
-    EXTERN_C const CLSID CLSID_NullRenderer;
+EXTERN_C const CLSID CLSID_NullRenderer;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("C1F400A4-3F08-11d3-9F0B-006008039E37")
-            NullRenderer;
+    NullRenderer;
 #endif
 
-    EXTERN_C const CLSID CLSID_DxtCompositor;
+EXTERN_C const CLSID CLSID_DxtCompositor;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("BB44391D-6ABD-422f-9E2E-385C9DFF51FC")
-            DxtCompositor;
+    DxtCompositor;
 #endif
 
-    EXTERN_C const CLSID CLSID_DxtAlphaSetter;
+EXTERN_C const CLSID CLSID_DxtAlphaSetter;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("506D89AE-909A-44f7-9444-ABD575896E35")
-            DxtAlphaSetter;
+    DxtAlphaSetter;
 #endif
 
-    EXTERN_C const CLSID CLSID_DxtJpeg;
+EXTERN_C const CLSID CLSID_DxtJpeg;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("DE75D012-7A65-11D2-8CEA-00A0C9441E20")
-            DxtJpeg;
+    DxtJpeg;
 #endif
 
-    EXTERN_C const CLSID CLSID_ColorSource;
+EXTERN_C const CLSID CLSID_ColorSource;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("0cfdd070-581a-11d2-9ee6-006008039e37")
-            ColorSource;
+    ColorSource;
 #endif
 
-    EXTERN_C const CLSID CLSID_DxtKey;
+EXTERN_C const CLSID CLSID_DxtKey;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("C5B19592-145E-11d3-9F04-006008039E37")
-            DxtKey;
+    DxtKey;
 #endif
 #endif /* __DexterLib_LIBRARY_DEFINED__ */
 
-    /* interface __MIDL_itf_qedit_0484 */
-    /* [local] */
+/* interface __MIDL_itf_qedit_0484 */
+/* [local] */
 
 
-    enum __MIDL___MIDL_itf_qedit_0484_0001
-    {
-        E_NOTINTREE	= 0x80040400,
-        E_RENDER_ENGINE_IS_BROKEN	= 0x80040401,
-        E_MUST_INIT_RENDERER	= 0x80040402,
-        E_NOTDETERMINED	= 0x80040403,
-        E_NO_TIMELINE	= 0x80040404,
-        S_WARN_OUTPUTRESET	= 40404
-    } ;
+enum __MIDL___MIDL_itf_qedit_0484_0001
+{
+    E_NOTINTREE	= 0x80040400,
+    E_RENDER_ENGINE_IS_BROKEN	= 0x80040401,
+    E_MUST_INIT_RENDERER	= 0x80040402,
+    E_NOTDETERMINED	= 0x80040403,
+    E_NO_TIMELINE	= 0x80040404,
+    S_WARN_OUTPUTRESET	= 40404
+} ;
 #define DEX_IDS_BAD_SOURCE_NAME    1400
 #define DEX_IDS_BAD_SOURCE_NAME2    1401
 #define DEX_IDS_MISSING_SOURCE_NAME    1402
@@ -10674,28 +10674,28 @@ class DECLSPEC_UUID("C5B19592-145E-11d3-9F04-006008039E37")
 #define DEX_IDS_GRAPH_ERROR        1427
 #define DEX_IDS_GRID_ERROR        1428
 #define DEX_IDS_INTERFACE_ERROR    1429
-    EXTERN_GUID(CLSID_VideoEffects1Category, 0xcc7bfb42, 0xf175, 0x11d1, 0xa3, 0x92, 0x0, 0xe0, 0x29, 0x1f, 0x39, 0x59);
-    EXTERN_GUID(CLSID_VideoEffects2Category, 0xcc7bfb43, 0xf175, 0x11d1, 0xa3, 0x92, 0x0, 0xe0, 0x29, 0x1f, 0x39, 0x59);
-    EXTERN_GUID(CLSID_AudioEffects1Category, 0xcc7bfb44, 0xf175, 0x11d1, 0xa3, 0x92, 0x0, 0xe0, 0x29, 0x1f, 0x39, 0x59);
-    EXTERN_GUID(CLSID_AudioEffects2Category, 0xcc7bfb45, 0xf175, 0x11d1, 0xa3, 0x92, 0x0, 0xe0, 0x29, 0x1f, 0x39, 0x59);
+EXTERN_GUID(CLSID_VideoEffects1Category, 0xcc7bfb42, 0xf175, 0x11d1, 0xa3, 0x92, 0x0, 0xe0, 0x29, 0x1f, 0x39, 0x59);
+EXTERN_GUID(CLSID_VideoEffects2Category, 0xcc7bfb43, 0xf175, 0x11d1, 0xa3, 0x92, 0x0, 0xe0, 0x29, 0x1f, 0x39, 0x59);
+EXTERN_GUID(CLSID_AudioEffects1Category, 0xcc7bfb44, 0xf175, 0x11d1, 0xa3, 0x92, 0x0, 0xe0, 0x29, 0x1f, 0x39, 0x59);
+EXTERN_GUID(CLSID_AudioEffects2Category, 0xcc7bfb45, 0xf175, 0x11d1, 0xa3, 0x92, 0x0, 0xe0, 0x29, 0x1f, 0x39, 0x59);
 
 
-    extern RPC_IF_HANDLE __MIDL_itf_qedit_0484_v0_0_c_ifspec;
-    extern RPC_IF_HANDLE __MIDL_itf_qedit_0484_v0_0_s_ifspec;
+extern RPC_IF_HANDLE __MIDL_itf_qedit_0484_v0_0_c_ifspec;
+extern RPC_IF_HANDLE __MIDL_itf_qedit_0484_v0_0_s_ifspec;
 
-    /* Additional Prototypes for ALL interfaces */
+/* Additional Prototypes for ALL interfaces */
 
-    unsigned long             __RPC_USER  BSTR_UserSize(unsigned long *, unsigned long            , BSTR *);
-    unsigned char * __RPC_USER  BSTR_UserMarshal(unsigned long *, unsigned char *, BSTR *);
-    unsigned char * __RPC_USER  BSTR_UserUnmarshal(unsigned long *, unsigned char *, BSTR *);
-    void                      __RPC_USER  BSTR_UserFree(unsigned long *, BSTR *);
+unsigned long             __RPC_USER  BSTR_UserSize(unsigned long *, unsigned long            , BSTR *);
+unsigned char * __RPC_USER  BSTR_UserMarshal(unsigned long *, unsigned char *, BSTR *);
+unsigned char * __RPC_USER  BSTR_UserUnmarshal(unsigned long *, unsigned char *, BSTR *);
+void                      __RPC_USER  BSTR_UserFree(unsigned long *, BSTR *);
 
-    unsigned long             __RPC_USER  VARIANT_UserSize(unsigned long *, unsigned long            , VARIANT *);
-    unsigned char * __RPC_USER  VARIANT_UserMarshal(unsigned long *, unsigned char *, VARIANT *);
-    unsigned char * __RPC_USER  VARIANT_UserUnmarshal(unsigned long *, unsigned char *, VARIANT *);
-    void                      __RPC_USER  VARIANT_UserFree(unsigned long *, VARIANT *);
+unsigned long             __RPC_USER  VARIANT_UserSize(unsigned long *, unsigned long            , VARIANT *);
+unsigned char * __RPC_USER  VARIANT_UserMarshal(unsigned long *, unsigned char *, VARIANT *);
+unsigned char * __RPC_USER  VARIANT_UserUnmarshal(unsigned long *, unsigned char *, VARIANT *);
+void                      __RPC_USER  VARIANT_UserFree(unsigned long *, VARIANT *);
 
-    /* end of Additional Prototypes */
+/* end of Additional Prototypes */
 
 #ifdef __cplusplus
 }

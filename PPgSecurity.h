@@ -6,7 +6,7 @@ class CPPgSecurity : public CPropertyPage
 {
     DECLARE_DYNAMIC(CPPgSecurity)
 
-public:
+  public:
     CPPgSecurity();
     virtual ~CPPgSecurity();
 
@@ -16,7 +16,7 @@ public:
     void Localize(void);
     void DeleteDDB();
 
-protected:
+  protected:
     CCustomAutoComplete* m_pacIPFilterURL;
 
     void LoadSettings(void);

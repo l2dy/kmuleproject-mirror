@@ -13,7 +13,7 @@
 
 class CWSDLPort : public CXMLElement
 {
-private:
+  private:
     CStringW m_strName;
     CQName   m_binding;
 
@@ -22,7 +22,7 @@ private:
 
     CWSDLBinding * m_pBinding;
 
-public:
+  public:
 
     CWSDLPort(CWSDLBinding *pBinding = NULL)
         :m_pBinding(pBinding)

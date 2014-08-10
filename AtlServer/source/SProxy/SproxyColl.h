@@ -11,11 +11,11 @@
 template <typename E, class ETraits = CElementTraits<E> >
 class CAtlPtrList : public CAtlList<E, ETraits>
 {
-private:
+  private:
     typedef CAtlList<E, ETraits> Base;
     BOOL m_bAttached;
 
-public:
+  public:
 
     CAtlPtrList()
         :m_bAttached(TRUE)
@@ -52,11 +52,11 @@ public:
 template <typename K, typename V, class KTraits = CElementTraits<K>, class VTraits = CElementTraits<V> >
 class CAtlPtrMap : public CAtlMap<K, V, KTraits, VTraits>
 {
-private:
+  private:
     typedef CAtlMap<K, V, KTraits, VTraits> Base;
     BOOL m_bAttached;
 
-public:
+  public:
 
     CAtlPtrMap()
         :m_bAttached(TRUE)

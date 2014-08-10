@@ -31,21 +31,21 @@ class CQuantizer
         struct _NODE* pChild[8];    // Pointers to child nodes
         struct _NODE* pNext;        // Pointer to next reducible node
     } NODE;
-protected:
+  protected:
     NODE* m_pTree;
     UINT m_nLeafCount;
     NODE* m_pReducibleNodes[9];
     UINT m_nMaxColors;
     UINT m_nColorBits;
 
-public:
+  public:
     CQuantizer(UINT nMaxColors, UINT nColorBits);
     virtual ~CQuantizer();
     BOOL ProcessImage(HANDLE hImage);
     UINT GetColorCount();
     void SetColorTable(RGBQUAD* prgb);
 
-protected:
+  protected:
     void AddColor(NODE** ppNode, BYTE r, BYTE g, BYTE b, UINT nColorBits,
                   UINT nLevel, UINT* pLeafCount, NODE** pReducibleNodes);
     void* CreateNode(UINT nLevel, UINT nColorBits, UINT* pLeafCount,

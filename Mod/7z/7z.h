@@ -30,14 +30,14 @@ int ExecuteSevenZipCommandLine(LPCTSTR pszCommandLine);
 class CSevenZipWorkerThread : public CWinThread
 {
     DECLARE_DYNCREATE(CSevenZipWorkerThread)
-protected:
+  protected:
     CSevenZipWorkerThread();
-public:
+  public:
     virtual BOOL InitInstance();
     virtual int	Run();
     void	SetValues(CSevenZipThreadHandler* pOwner, const CString pszCommandLine);
 
-private:
+  private:
     CSevenZipThreadHandler* m_pOwner;
 
     CString		m_strCommandLine;
@@ -48,7 +48,7 @@ private:
 class CSevenZipThreadHandler
 {
     friend class CSevenZipWorkerThread;
-public:
+  public:
     CSevenZipThreadHandler();
     virtual ~CSevenZipThreadHandler();
 
@@ -62,7 +62,7 @@ public:
     void	ExtractFileFromArchive(const CString& strFilename, const CString& strArchive, const CString& strTargetDir);
     bool	IsSevenZipAvailable() const;
 
-private:
+  private:
     void	AddJob(CSevenZipWorkerThread* thread);
     void	KillJobQueue();
 

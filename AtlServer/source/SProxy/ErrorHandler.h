@@ -10,9 +10,9 @@
 
 class CErrorHandler : public ISAXErrorHandler
 {
-private:
+  private:
     const wchar_t * m_wszLocation;
-public:
+  public:
     CErrorHandler()
         :m_wszLocation(NULL)
     {

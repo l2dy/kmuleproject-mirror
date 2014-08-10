@@ -26,7 +26,7 @@ class CShareableFile : public CAbstractFile
 {
     DECLARE_DYNAMIC(CShareableFile)
 
-public:
+  public:
     CShareableFile();
     virtual ~CShareableFile()						{};
     virtual void UpdateFileRatingCommentAvail(bool /*bForceUpdate = false*/)
@@ -75,7 +75,7 @@ public:
 
     virtual CString	GetInfoSummary(bool bNoFormatCommands = false) const;
 
-protected:
+  protected:
     CString					m_strDirectory;
     CString					m_strFilePath;
     CString					m_strSharedDirectory;

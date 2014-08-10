@@ -24,7 +24,7 @@ class CToolbarWnd: public CDialogBar
 {
     DECLARE_DYNAMIC(CToolbarWnd);
 
-public:
+  public:
     CToolbarWnd(void);
     virtual ~CToolbarWnd(void);
 
@@ -42,7 +42,7 @@ public:
     virtual void OnUpdateCmdUI(CFrameWnd* pTarget, BOOL bDisableIfNoHndler);
     virtual BOOL PreTranslateMessage(MSG* pMsg);
 
-protected:
+  protected:
     HCURSOR m_hcurMove;
     CSize m_szMRU;
     CSize m_szFloat;

@@ -1874,7 +1874,7 @@ bool GetAttributeEx(IWMHeaderInfo3 *pIWMHeaderInfo, WORD wStream, LPCWSTR pwszNa
 
 class CFileStream : public IStream
 {
-public:
+  public:
     static HRESULT OpenFile(LPCTSTR pszFileName, IStream **ppStream,
                             DWORD dwDesiredAccess = GENERIC_READ,
                             DWORD dwShareMode = FILE_SHARE_READ | FILE_SHARE_WRITE,
@@ -2064,7 +2064,7 @@ public:
         return E_NOTIMPL;
     }
 
-private:
+  private:
     CFileStream(HANDLE hFile, DWORD grfMode)
     {
         m_lRefCount = 0;
@@ -2085,7 +2085,7 @@ private:
 
 class CWmvCoreDLL
 {
-public:
+  public:
     CWmvCoreDLL()
     {
         m_bInitialized = false;

@@ -72,11 +72,11 @@ class CSharedFileDetailsSheet : public CListViewWalkerPropertySheet
 {
     DECLARE_DYNAMIC(CSharedFileDetailsSheet)
 
-public:
+  public:
     CSharedFileDetailsSheet(CTypedPtrList<CPtrList, CShareableFile*>& aFiles, UINT uPshInvokePage = 0, CListCtrlItemWalk* pListCtrl = NULL);
     virtual ~CSharedFileDetailsSheet();
 
-protected:
+  protected:
     CFileInfoDialog		m_wndMediaInfo;
     CMetaDataDlg		m_wndMetaData;
     CED2kLinkDlg		m_wndFileLink;
@@ -417,7 +417,7 @@ void CSharedFilesCtrl::AddFile(const CShareableFile* file)
                 if (file->IsPartFile())
                     return;
             case SDI_NO:
-                // some shared directory
+            // some shared directory
             case SDI_CATINCOMING:
                 // Categories with special incoming dirs
                 if (CompareDirectories(file->GetSharedDirectory(), m_pDirectoryFilter->m_strFullPath) != 0)

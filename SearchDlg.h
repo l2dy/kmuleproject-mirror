@@ -14,7 +14,7 @@ class CSearchDlg : public CFrameWnd
 {
     DECLARE_DYNCREATE(CSearchDlg)
 
-public:
+  public:
     CSearchDlg();           // protected constructor used by dynamic creation
     virtual ~CSearchDlg();
     CSearchResultsWnd* m_pwndResults;
@@ -58,7 +58,7 @@ public:
 
     void UpdateSearch(CSearchFile* pSearchFile);
 
-protected:
+  protected:
     CSearchParamsWnd* m_pwndParams;
 
     virtual BOOL PreTranslateMessage(MSG* pMsg);
@@ -72,7 +72,7 @@ protected:
     afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
 
 //>>> WiZaRd:CustomSearches
-public:
+  public:
     void UpdateSearchList();
 //<<< WiZaRd:CustomSearches
 };

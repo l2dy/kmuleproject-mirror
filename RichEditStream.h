@@ -5,7 +5,7 @@
 
 class CRichEditStream : public CRichEditCtrl
 {
-public:
+  public:
     CRichEditStream();
     virtual ~CRichEditStream();
 
@@ -36,7 +36,7 @@ public:
 
     void GetRTFText(CStringA& rstrText);
 
-protected:
+  protected:
     static DWORD CALLBACK StreamOutCallback(DWORD_PTR dwCookie, LPBYTE pbBuff, LONG cb, LONG *pcb);
     DECLARE_MESSAGE_MAP()
 };

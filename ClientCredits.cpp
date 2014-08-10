@@ -56,9 +56,9 @@ CClientCredits::CClientCredits(CreditStruct* in_credits)
     m_dwUnSecureWaitTime = 0;
     m_dwSecureWaitTime = 0;
 #ifdef IPV6_SUPPORT
-	m_dwWaitTimeIP = CAddress(); //>>> WiZaRd::IPv6 [Xanatos]
+    m_dwWaitTimeIP = CAddress(); //>>> WiZaRd::IPv6 [Xanatos]
 #else
-	m_dwWaitTimeIP = 0;
+    m_dwWaitTimeIP = 0;
 #endif
 //>>> WiZaRd::CPU calm down
     m_bForceCheckScoreRatio = true;
@@ -75,7 +75,7 @@ CClientCredits::CClientCredits(const uchar* key)
     m_dwUnSecureWaitTime = ::GetTickCount();
     m_dwSecureWaitTime = ::GetTickCount();
 #ifdef IPV6_SUPPORT
-	m_dwWaitTimeIP = CAddress(); //>>> WiZaRd::IPv6 [Xanatos]
+    m_dwWaitTimeIP = CAddress(); //>>> WiZaRd::IPv6 [Xanatos]
 #else
     m_dwWaitTimeIP = 0;
 #endif
@@ -625,7 +625,7 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uchar* pachS
 #ifdef IPV6_SUPPORT
                                      const CAddress& dwForIP, uint8 byChaIPKind) //>>> WiZaRd::IPv6 [Xanatos]
 #else
-									const UINT dwForIP, uint8 byChaIPKind)
+                                     const UINT dwForIP, uint8 byChaIPKind)
 #endif
 {
     ASSERT(pTarget);

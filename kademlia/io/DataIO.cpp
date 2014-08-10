@@ -165,25 +165,25 @@ CKadTag *CDataIO::ReadTag(bool bOptACP)
 
         switch (byType)
         {
-                // NOTE: This tag data type is accepted and stored only to give us the possibility to upgrade
-                // the net in some months.
-                //
-                // And still.. it doesnt't work this way without breaking backward compatibility. To properly
-                // do this without messing up the network the following would have to be done:
-                //	 -	those tag types have to be ignored by any client, otherwise those tags would also be sent (and
-                //		that's really the problem)
-                //
-                //	 -	ignoring means, each client has to read and right throw away those tags, so those tags get
-                //		get never stored in any tag list which might be sent by that client to some other client.
-                //
-                //	 -	all calling functions have to be changed to deal with the 'nr. of tags' attribute (which was
-                //		already parsed) correctly.. just ignoring those tags here is not enough, any taglists have to
-                //		be built with the knowledge that the 'nr. of tags' attribute may get decreased during the tag
-                //		reading..
-                //
-                // If those new tags would just be stored and sent to remote clients, any malicious or just bugged
-                // client could let send a lot of nodes "corrupted" packets...
-                //
+            // NOTE: This tag data type is accepted and stored only to give us the possibility to upgrade
+            // the net in some months.
+            //
+            // And still.. it doesnt't work this way without breaking backward compatibility. To properly
+            // do this without messing up the network the following would have to be done:
+            //	 -	those tag types have to be ignored by any client, otherwise those tags would also be sent (and
+            //		that's really the problem)
+            //
+            //	 -	ignoring means, each client has to read and right throw away those tags, so those tags get
+            //		get never stored in any tag list which might be sent by that client to some other client.
+            //
+            //	 -	all calling functions have to be changed to deal with the 'nr. of tags' attribute (which was
+            //		already parsed) correctly.. just ignoring those tags here is not enough, any taglists have to
+            //		be built with the knowledge that the 'nr. of tags' attribute may get decreased during the tag
+            //		reading..
+            //
+            // If those new tags would just be stored and sent to remote clients, any malicious or just bugged
+            // client could let send a lot of nodes "corrupted" packets...
+            //
             case TAGTYPE_HASH:
             {
                 BYTE byValue[16];
@@ -216,10 +216,10 @@ CKadTag *CDataIO::ReadTag(bool bOptACP)
                 pRetVal = new CKadTagFloat(pcName, ReadFloat());
                 break;
 
-                // NOTE: This tag data type is accepted and stored only to give us the possibility to upgrade
-                // the net in some months.
-                //
-                // And still.. it doesnt't work this way without breaking backward compatibility
+            // NOTE: This tag data type is accepted and stored only to give us the possibility to upgrade
+            // the net in some months.
+            //
+            // And still.. it doesnt't work this way without breaking backward compatibility
             case TAGTYPE_BSOB:
             {
                 uint8 uSize;

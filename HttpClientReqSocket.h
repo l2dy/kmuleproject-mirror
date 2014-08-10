@@ -33,7 +33,7 @@ class CHttpClientReqSocket : public CClientReqSocket
 {
     DECLARE_DYNCREATE(CHttpClientReqSocket)
 
-public:
+  public:
     virtual CUpDownClient* GetClient() const
     {
         return client;
@@ -52,7 +52,7 @@ public:
     void SetHttpState(EHttpSocketState eState);
     void ClearHttpHeaders();
 
-protected:
+  protected:
     CHttpClientReqSocket(CUpDownClient* client = NULL);
     virtual ~CHttpClientReqSocket();
 
@@ -80,10 +80,10 @@ class CHttpClientDownSocket : public CHttpClientReqSocket
 {
     DECLARE_DYNCREATE(CHttpClientDownSocket)
 
-public:
+  public:
     CHttpClientDownSocket(CUpDownClient* client = NULL);
 
-protected:
+  protected:
     virtual ~CHttpClientDownSocket();
 
     virtual bool ProcessHttpResponse();

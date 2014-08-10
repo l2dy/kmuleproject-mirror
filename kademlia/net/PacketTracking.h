@@ -59,11 +59,11 @@ struct TrackPacketsIn_Struct
 
 class CPacketTracking
 {
-public:
+  public:
     CPacketTracking();
     virtual ~CPacketTracking();
 
-protected:
+  protected:
     void AddTrackedOutPacket(UINT dwIP, uint8 byOpcode);
     bool IsOnOutTrackList(UINT dwIP, uint8 byOpcode, bool bDontRemove = false);
     bool InTrackListIsAllowedPacket(UINT uIP, uint8 byOpcode, bool bValidReceiverkey);
@@ -72,7 +72,7 @@ protected:
     bool IsLegacyChallenge(CUInt128 uChallengeID, UINT uIP, uint8 byOpcode, CUInt128& ruContactID);
     bool HasActiveLegacyChallenge(UINT uIP) const;
 
-private:
+  private:
     bool IsTrackedOutListRequestPacket(uint8 byOpcode) const;
     CList<TrackPackets_Struct> listTrackedRequests;
     CList<TrackChallenge_Struct> listChallengeRequests;

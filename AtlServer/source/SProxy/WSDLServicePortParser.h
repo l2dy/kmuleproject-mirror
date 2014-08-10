@@ -13,11 +13,11 @@ class CWSDLPort;
 
 class CWSDLServicePortParser : public CParserBase
 {
-private:
+  private:
 
     CWSDLPort *m_pPort;
 
-public:
+  public:
 
     inline CWSDLServicePortParser(ISAXXMLReader *pReader, CParserBase *pParent, DWORD dwLevel, CWSDLPort *pPort = NULL)
         :CParserBase(pReader, pParent, dwLevel), m_pPort(pPort)

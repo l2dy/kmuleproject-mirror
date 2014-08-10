@@ -14,7 +14,7 @@
 template <typename T>
 class CXSDElementPtrTraits :  public CElementTraitsBase<T>
 {
-public:
+  public:
     typedef T* INARGTYPE;
     typedef T*& OUTARGTYPE;
 
@@ -99,7 +99,7 @@ public:
 
 class CCodeTypeBuilder
 {
-private:
+  private:
 
     CWSDLDocument * m_pDoc;
     CCodeProxy * m_pProxy;
@@ -144,7 +144,7 @@ private:
     // global counter for duplicate names
     int m_nNameCounter;
 
-public:
+  public:
 
     CCodeTypeBuilder(CWSDLDocument *pDoc = NULL, CCodeProxy * pProxy = NULL)
         :m_pDoc(pDoc), m_pProxy(pProxy), m_nNameCounter(0)
@@ -170,7 +170,7 @@ public:
 
     HRESULT Build(CCodeProxy * pCodeProxy = NULL, CWSDLDocument *pDoc = NULL);
 
-private:
+  private:
 
     HRESULT ProcessService(CWSDLService *pSvc);
 

@@ -26,7 +26,7 @@ class CSearchFile : public CAbstractFile
 
     friend class CPartFile;
     friend class CSearchListCtrl;
-public:
+  public:
     CSearchFile(CFileDataIO* in_data, bool bOptUTF8, UINT nSearchID,
                 UINT nServerIP=0, uint16 nServerPort=0,
                 LPCTSTR pszDirectory = NULL,
@@ -273,7 +273,7 @@ public:
         m_eKnown = eType;
     }
 
-private:
+  private:
     bool	m_bMultipleAICHFound;
     bool	m_bKademlia;
     bool	m_bServerUDPAnswer;

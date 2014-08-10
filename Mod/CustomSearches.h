@@ -20,7 +20,7 @@ class CComboBoxEx2;
 
 class CCustomSearch
 {
-public:
+  public:
     CCustomSearch(const CString& name = L"WEB", const CString& url = L"http://", const CString& types = L"", const CString& lang = L"multi");
     virtual ~CCustomSearch();
     bool operator==(const CCustomSearch& ws);
@@ -34,19 +34,19 @@ public:
     CString GetSearchType(const CString& search) const;
     CString	GetSaveString() const;
 
-private:
+  private:
     CString strName;
     CString strURL;
     CString strTypes;
     CString strLang;
 
-protected:
+  protected:
     CString GetMainURL() const;
 };
 
 class CCustomSearches
 {
-public:
+  public:
     CCustomSearches();
     virtual ~CCustomSearches();
 
@@ -65,7 +65,7 @@ public:
 
 //	bool    Download(const CString& strURL = L"");
 
-private:
+  private:
     bool	m_bDefaultSearch;
     CArray<CCustomSearch*> m_aWebs;
 };

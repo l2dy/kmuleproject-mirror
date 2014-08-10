@@ -24,7 +24,7 @@ class CSearchParamsWnd : public CDialogBar
     DECLARE_DYNAMIC(CSearchParamsWnd);
 
 // Construction
-public:
+  public:
     CSearchParamsWnd();
     virtual ~CSearchParamsWnd();
 
@@ -48,7 +48,7 @@ public:
     virtual void OnUpdateCmdUI(CFrameWnd* pTarget, BOOL bDisableIfNoHndler);
     virtual BOOL PreTranslateMessage(MSG* pMsg);
 
-protected:
+  protected:
     HCURSOR m_hcurMove;
     CComboBoxEx2 m_ctlMethod;
     CComboBoxEx2 m_ctlFileType;
@@ -98,7 +98,7 @@ protected:
     afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
 
 //>>> WiZaRd::CustomSearches
-public:
+  public:
     void UpdateSearchList();
 //<<< WiZaRd::CustomSearches
 };

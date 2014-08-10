@@ -81,7 +81,7 @@ static char THIS_FILE[] = __FILE__;
 #ifndef CCRITICALSECTIONWRAPPERINCLUDED
 class CCriticalSectionWrapper
 {
-public:
+  public:
     CCriticalSectionWrapper()
     {
         InitializeCriticalSection(&m_criticalSection);
@@ -100,7 +100,7 @@ public:
     {
         LeaveCriticalSection(&m_criticalSection);
     }
-protected:
+  protected:
     CRITICAL_SECTION m_criticalSection;
 };
 #define CCRITICALSECTIONWRAPPERINCLUDED
@@ -123,7 +123,7 @@ CAsyncSocketEx::t_AsyncSocketExThreadDataList *CAsyncSocketEx::m_spAsyncSocketEx
 
 class CAsyncSocketExHelperWindow
 {
-public:
+  public:
     CAsyncSocketExHelperWindow()
     {
         //Initialize data
@@ -470,7 +470,7 @@ public:
         return m_hWnd;
     }
 
-private:
+  private:
     HWND m_hWnd;
     struct t_AsyncSocketExWindowData
     {
@@ -515,8 +515,8 @@ BOOL CAsyncSocketEx::Create(UINT nSocketPort /*=0*/, int nSocketType /*=SOCK_STR
                             LPCSTR lpszSocketAddress /*=NULL*/, BOOL bReuseAddr /*=FALSE*/, bool bIPv6 /*=FALSE*/) //>>> WiZaRd::IPv6 [Xanatos]
 #else
 BOOL CAsyncSocketEx::Create(UINT nSocketPort /*=0*/, int nSocketType /*=SOCK_STREAM*/,
-	long lEvent /*=FD_READ | FD_WRITE | FD_OOB | FD_ACCEPT | FD_CONNECT | FD_CLOSE*/,
-	LPCSTR lpszSocketAddress /*=NULL*/, BOOL bReuseAddr /*=FALSE*/)
+                            long lEvent /*=FD_READ | FD_WRITE | FD_OOB | FD_ACCEPT | FD_CONNECT | FD_CLOSE*/,
+                            LPCSTR lpszSocketAddress /*=NULL*/, BOOL bReuseAddr /*=FALSE*/)
 #endif
 {
     //Close the socket, although this should not happen
@@ -543,7 +543,7 @@ BOOL CAsyncSocketEx::Create(UINT nSocketPort /*=0*/, int nSocketType /*=SOCK_STR
 #ifdef IPV6_SUPPORT
         SOCKET hSocket = socket(bIPv6 ? AF_INET6 : AF_INET, nSocketType, 0); //>>> WiZaRd::IPv6 [Xanatos]
 #else
-		SOCKET hSocket = socket(AF_INET, nSocketType, 0);
+        SOCKET hSocket = socket(AF_INET, nSocketType, 0);
 #endif
         if (hSocket == INVALID_SOCKET)
             return FALSE;

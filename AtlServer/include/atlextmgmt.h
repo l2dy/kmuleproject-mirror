@@ -216,7 +216,7 @@ __interface IThreadPoolMgr
 
 class CThreadPoolMgrObject
 {
-public:
+  public:
     CThreadPoolMgrObject() throw()
     {
     }
@@ -262,7 +262,7 @@ public:
         return m_spThreadPoolConfig ? HTTP_SUCCESS : HTTP_ERROR(500, ISE_SUBERR_UNEXPECTED);
     }
 
-private:
+  private:
     CComPtr<IThreadPoolConfig> m_spThreadPoolConfig;
 };
 
@@ -284,7 +284,7 @@ class CThreadPoolManager :
     public IThreadPoolMgr
 {
 #pragma warning(pop)
-public:
+  public:
     [soap_method]
     STDMETHOD(SetSize)(int nNumThreads)
     {
@@ -317,7 +317,7 @@ public:
         }
         return hcErr;
     }
-private:
+  private:
     CThreadPoolMgrObject m_PoolMgr;
 };
 #endif //_ATL_THREADPOOL_NOWEBSERVICE
@@ -329,7 +329,7 @@ private:
 [request_handler(name=ID_THREADMGR_SRFHANDLER_NAME)]
 class CThreadMgrStencil
 {
-public:
+  public:
     CThreadMgrStencil() :
         m_nColor(ATL_COLOR_TR1)
     {
@@ -450,7 +450,7 @@ public:
                    "?Handler=" ID_THREADMGR_SRFHANDLER_NAME
                );
     }
-private:
+  private:
     CThreadPoolMgrObject m_PoolMgr;
     long m_nColor;
     CString m_strUrl;
@@ -466,7 +466,7 @@ private:
 // Stencil cache management
 class CStencilCacheMgrObject
 {
-public:
+  public:
     CStencilCacheMgrObject()
     {
 
@@ -651,7 +651,7 @@ public:
                ? HTTP_SUCCESS : HTTP_ERROR(500, ISE_SUBERR_UNEXPECTED);
     }
 
-private:
+  private:
     CComPtr<IMemoryCacheStats> m_spMemCacheStats;
     CComPtr<IStencilCacheControl> m_spStencilCacheControl;
 };
@@ -694,7 +694,7 @@ class CStencilCacheManager :
     public IStencilCacheMgr
 {
 #pragma warning(pop)
-public:
+  public:
     [ soap_method ]
     STDMETHOD(GetCurrentEntryCount)(__int64 *pdwSize)
     {
@@ -787,7 +787,7 @@ public:
         }
         return hcErr;
     }
-private:
+  private:
     CStencilCacheMgrObject m_MgrObj;
 };
 #endif //_ATL_STENCILCACHE_NOWEBSERVICE
@@ -811,7 +811,7 @@ struct CCache_data
 [request_handler(name=ID_STENCILCACHEMGR_SRFHANDLER_NAME)]
 class CStencilMgr
 {
-public:
+  public:
     CStencilMgr()
     {
         m_pData = (CCache_data*)INVALID_DATA_PTR;
@@ -960,7 +960,7 @@ public:
             m_HttpResponse << cr;
         return HTTP_SUCCESS;
     }
-private:
+  private:
     static CCache_data* GetCacheData()
     {
         static CCache_data cache_data[] =
@@ -1003,7 +1003,7 @@ struct _DLL_CACHE_ENTRY
 
 class CDllMgrObject
 {
-public:
+  public:
     HRESULT GetEntries(DWORD dwCount, _DLL_CACHE_ENTRY *pEntries, DWORD *pdwCopied)
     {
         ATLASSUME(m_spDllCache);
@@ -1066,7 +1066,7 @@ public:
         return m_spDllCache ? HTTP_SUCCESS : HTTP_ERROR(500, ISE_SUBERR_UNEXPECTED);
     }
 
-private:
+  private:
     CComPtr<IDllCache> m_spDllCache;
 
 }; // CDllMgrObject
@@ -1102,7 +1102,7 @@ class CDllCacheManager :
     public IDllCacheMgr
 {
 #pragma warning(pop)
-public:
+  public:
     [soap_method]
     HRESULT GetEntries(DWORD dwCount, _DLL_CACHE_ENTRY *pEntries, DWORD *pdwCopied)
     {
@@ -1134,7 +1134,7 @@ public:
         return hcErr;
     }
 
-protected:
+  protected:
     CDllMgrObject m_MgrObj;
 };
 #endif _ATL_DLLCACHE_NOWEBSERVICE
@@ -1147,7 +1147,7 @@ protected:
 ]
 class CDllCacheMgr
 {
-public:
+  public:
     CDllCacheMgr() : m_nColor(ATL_COLOR_TR1),
         m_nEnumCount(INVALID_INDEX),
         m_nEnumIndex(INVALID_INDEX),

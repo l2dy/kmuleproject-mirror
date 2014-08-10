@@ -17,7 +17,7 @@ class CComplexType;
 
 class CContent : public CXSDElement
 {
-private:
+  private:
 
     // restriction/extension
     CComplexType * m_pType;
@@ -25,9 +25,9 @@ private:
     BOOL m_bMixed;
     CStringW m_strID;
 
-protected:
+  protected:
 
-public:
+  public:
 
     CContent()
         :m_pType(NULL), m_bMixed(FALSE)

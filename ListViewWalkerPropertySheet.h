@@ -6,7 +6,7 @@ class CListViewPropertySheet : public CResizableSheet
 {
     DECLARE_DYNAMIC(CListViewPropertySheet)
 
-public:
+  public:
     CListViewPropertySheet() {}
     CListViewPropertySheet(UINT nIDCaption, CWnd* pParentWnd = NULL, UINT iSelectPage = 0);
     CListViewPropertySheet(LPCTSTR pszCaption, CWnd* pParentWnd = NULL, UINT iSelectPage = 0);
@@ -22,7 +22,7 @@ public:
     }
     void	InsertPage(int iIndex, CPropertyPage* pPage);
 
-protected:
+  protected:
     CSimpleArray<CObject*> m_aItems;
     void ChangedData();
     DECLARE_MESSAGE_MAP()
@@ -34,7 +34,7 @@ class CListViewWalkerPropertySheet : public CListViewPropertySheet
 {
     DECLARE_DYNAMIC(CListViewWalkerPropertySheet)
 
-public:
+  public:
     CListViewWalkerPropertySheet(CListCtrlItemWalk* pListCtrl)
     {
         m_pListCtrl = pListCtrl;
@@ -44,7 +44,7 @@ public:
     virtual ~CListViewWalkerPropertySheet();
 
 
-protected:
+  protected:
     CListCtrlItemWalk* m_pListCtrl;
     CButton m_ctlPrev;
     CButton m_ctlNext;

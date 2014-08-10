@@ -102,7 +102,7 @@ enum FACET_TYPE
 
 class CFacetLookup
 {
-public:
+  public:
 
     struct HashNode
     {
@@ -113,12 +113,12 @@ public:
         FACET_TYPE data;
     };
 
-protected:
+  protected:
     const static HashNode m_data[34];
     const static size_t m_size = 30;
     const static size_t m_tableSize = 15;
 
-public:
+  public:
 
     static unsigned long Hash(const wchar_t * sz)
     {

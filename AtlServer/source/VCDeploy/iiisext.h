@@ -211,179 +211,179 @@ EXTERN_C const IID IID_IISApplicationPool;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("0B3CB1E1-829A-4c06-8B09-F56DA1894C88")
+MIDL_INTERFACE("0B3CB1E1-829A-4c06-8B09-F56DA1894C88")
 IISApplicationPool :
-    public IADs
-    {
+public IADs
+{
 public:
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE Recycle(void) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE Recycle(void) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE EnumAppsInPool(
-            /* [retval][out] */ VARIANT *bstrBuffer) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE EnumAppsInPool(
+        /* [retval][out] */ VARIANT *bstrBuffer) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE Start(void) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE Start(void) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE Stop(void) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE Stop(void) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IISApplicationPoolVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IISApplicationPoolVtbl
+{
+    BEGIN_INTERFACE
 
-        /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IISApplicationPool * This,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [out][idldescattr] */ void **ppvObj,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IISApplicationPool * This,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [out][idldescattr] */ void **ppvObj,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *AddRef)(
-            IISApplicationPool * This,
-            /* [retval][out] */ unsigned long *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *AddRef)(
+        IISApplicationPool * This,
+        /* [retval][out] */ unsigned long *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Release)(
-            IISApplicationPool * This,
-            /* [retval][out] */ unsigned long *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Release)(
+        IISApplicationPool * This,
+        /* [retval][out] */ unsigned long *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
-            IISApplicationPool * This,
-            /* [out][idldescattr] */ unsigned UINT *pctinfo,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
+        IISApplicationPool * This,
+        /* [out][idldescattr] */ unsigned UINT *pctinfo,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
-            IISApplicationPool * This,
-            /* [in][idldescattr] */ unsigned UINT itinfo,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [out][idldescattr] */ void **pptinfo,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
+        IISApplicationPool * This,
+        /* [in][idldescattr] */ unsigned UINT itinfo,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [out][idldescattr] */ void **pptinfo,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
-            IISApplicationPool * This,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [in][idldescattr] */ signed char **rgszNames,
-            /* [in][idldescattr] */ unsigned UINT cNames,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [out][idldescattr] */ signed long *rgdispid,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
+        IISApplicationPool * This,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [in][idldescattr] */ signed char **rgszNames,
+        /* [in][idldescattr] */ unsigned UINT cNames,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [out][idldescattr] */ signed long *rgdispid,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Invoke)(
-            IISApplicationPool * This,
-            /* [in][idldescattr] */ signed long dispidMember,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [in][idldescattr] */ unsigned short wFlags,
-            /* [in][idldescattr] */ struct DISPPARAMS *pdispparams,
-            /* [out][idldescattr] */ VARIANT *pvarResult,
-            /* [out][idldescattr] */ struct EXCEPINFO *pexcepinfo,
-            /* [out][idldescattr] */ unsigned UINT *puArgErr,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Invoke)(
+        IISApplicationPool * This,
+        /* [in][idldescattr] */ signed long dispidMember,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [in][idldescattr] */ unsigned short wFlags,
+        /* [in][idldescattr] */ struct DISPPARAMS *pdispparams,
+        /* [out][idldescattr] */ VARIANT *pvarResult,
+        /* [out][idldescattr] */ struct EXCEPINFO *pexcepinfo,
+        /* [out][idldescattr] */ unsigned UINT *puArgErr,
+        /* [retval][out] */ void *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Name)(
-            IISApplicationPool * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Name)(
+        IISApplicationPool * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Class)(
-            IISApplicationPool * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Class)(
+        IISApplicationPool * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_GUID)(
-            IISApplicationPool * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_GUID)(
+        IISApplicationPool * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
-            IISApplicationPool * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
+        IISApplicationPool * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Parent)(
-            IISApplicationPool * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Parent)(
+        IISApplicationPool * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Schema)(
-            IISApplicationPool * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Schema)(
+        IISApplicationPool * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetInfo)(
-            IISApplicationPool * This,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetInfo)(
+        IISApplicationPool * This,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *SetInfo)(
-            IISApplicationPool * This,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *SetInfo)(
+        IISApplicationPool * This,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Get)(
-            IISApplicationPool * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [retval][out] */ VARIANT *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Get)(
+        IISApplicationPool * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [retval][out] */ VARIANT *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Put)(
-            IISApplicationPool * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [in][idldescattr] */ VARIANT vProp,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Put)(
+        IISApplicationPool * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [in][idldescattr] */ VARIANT vProp,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetEx)(
-            IISApplicationPool * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [retval][out] */ VARIANT *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetEx)(
+        IISApplicationPool * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [retval][out] */ VARIANT *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *PutEx)(
-            IISApplicationPool * This,
-            /* [in][idldescattr] */ signed long lnControlCode,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [in][idldescattr] */ VARIANT vProp,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *PutEx)(
+        IISApplicationPool * This,
+        /* [in][idldescattr] */ signed long lnControlCode,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [in][idldescattr] */ VARIANT vProp,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
-            IISApplicationPool * This,
-            /* [in][idldescattr] */ VARIANT vProperties,
-            /* [in][idldescattr] */ signed long lnReserved,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
+        IISApplicationPool * This,
+        /* [in][idldescattr] */ VARIANT vProperties,
+        /* [in][idldescattr] */ signed long lnReserved,
+        /* [retval][out] */ void *retval);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *Recycle)(
-            IISApplicationPool * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *Recycle)(
+        IISApplicationPool * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *EnumAppsInPool)(
-            IISApplicationPool * This,
-            /* [retval][out] */ VARIANT *bstrBuffer);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *EnumAppsInPool)(
+        IISApplicationPool * This,
+        /* [retval][out] */ VARIANT *bstrBuffer);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *Start)(
-            IISApplicationPool * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *Start)(
+        IISApplicationPool * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *Stop)(
-            IISApplicationPool * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *Stop)(
+        IISApplicationPool * This);
 
-        END_INTERFACE
-    } IISApplicationPoolVtbl;
+    END_INTERFACE
+} IISApplicationPoolVtbl;
 
-    interface IISApplicationPool
-    {
-        CONST_VTBL struct IISApplicationPoolVtbl *lpVtbl;
-    };
+interface IISApplicationPool
+{
+    CONST_VTBL struct IISApplicationPoolVtbl *lpVtbl;
+};
 
 
 
@@ -470,52 +470,52 @@ public:
 
 
 
-    /* [id] */ HRESULT STDMETHODCALLTYPE IISApplicationPool_Recycle_Proxy(
-        IISApplicationPool * This);
+/* [id] */ HRESULT STDMETHODCALLTYPE IISApplicationPool_Recycle_Proxy(
+    IISApplicationPool * This);
 
 
-    void __RPC_STUB IISApplicationPool_Recycle_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISApplicationPool_Recycle_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISApplicationPool_EnumAppsInPool_Proxy(
-        IISApplicationPool * This,
-        /* [retval][out] */ VARIANT *bstrBuffer);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISApplicationPool_EnumAppsInPool_Proxy(
+    IISApplicationPool * This,
+    /* [retval][out] */ VARIANT *bstrBuffer);
 
 
-    void __RPC_STUB IISApplicationPool_EnumAppsInPool_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISApplicationPool_EnumAppsInPool_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISApplicationPool_Start_Proxy(
-        IISApplicationPool * This);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISApplicationPool_Start_Proxy(
+    IISApplicationPool * This);
 
 
-    void __RPC_STUB IISApplicationPool_Start_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISApplicationPool_Start_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISApplicationPool_Stop_Proxy(
-        IISApplicationPool * This);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISApplicationPool_Stop_Proxy(
+    IISApplicationPool * This);
 
 
-    void __RPC_STUB IISApplicationPool_Stop_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISApplicationPool_Stop_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -525,161 +525,161 @@ public:
 #ifndef __IISApplicationPools_INTERFACE_DEFINED__
 #define __IISApplicationPools_INTERFACE_DEFINED__
 
-    /* interface IISApplicationPools */
-    /* [object][dual][oleautomation][uuid] */
+/* interface IISApplicationPools */
+/* [object][dual][oleautomation][uuid] */
 
 
-    EXTERN_C const IID IID_IISApplicationPools;
+EXTERN_C const IID IID_IISApplicationPools;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("587F123F-49B4-49dd-939E-F4547AA3FA75")
+MIDL_INTERFACE("587F123F-49B4-49dd-939E-F4547AA3FA75")
 IISApplicationPools :
-    public IADs
-    {
+public IADs
+{
 public:
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IISApplicationPoolsVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IISApplicationPoolsVtbl
+{
+    BEGIN_INTERFACE
 
-        /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IISApplicationPools * This,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [out][idldescattr] */ void **ppvObj,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IISApplicationPools * This,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [out][idldescattr] */ void **ppvObj,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *AddRef)(
-            IISApplicationPools * This,
-            /* [retval][out] */ unsigned long *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *AddRef)(
+        IISApplicationPools * This,
+        /* [retval][out] */ unsigned long *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Release)(
-            IISApplicationPools * This,
-            /* [retval][out] */ unsigned long *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Release)(
+        IISApplicationPools * This,
+        /* [retval][out] */ unsigned long *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
-            IISApplicationPools * This,
-            /* [out][idldescattr] */ unsigned UINT *pctinfo,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
+        IISApplicationPools * This,
+        /* [out][idldescattr] */ unsigned UINT *pctinfo,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
-            IISApplicationPools * This,
-            /* [in][idldescattr] */ unsigned UINT itinfo,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [out][idldescattr] */ void **pptinfo,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
+        IISApplicationPools * This,
+        /* [in][idldescattr] */ unsigned UINT itinfo,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [out][idldescattr] */ void **pptinfo,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
-            IISApplicationPools * This,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [in][idldescattr] */ signed char **rgszNames,
-            /* [in][idldescattr] */ unsigned UINT cNames,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [out][idldescattr] */ signed long *rgdispid,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
+        IISApplicationPools * This,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [in][idldescattr] */ signed char **rgszNames,
+        /* [in][idldescattr] */ unsigned UINT cNames,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [out][idldescattr] */ signed long *rgdispid,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Invoke)(
-            IISApplicationPools * This,
-            /* [in][idldescattr] */ signed long dispidMember,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [in][idldescattr] */ unsigned short wFlags,
-            /* [in][idldescattr] */ struct DISPPARAMS *pdispparams,
-            /* [out][idldescattr] */ VARIANT *pvarResult,
-            /* [out][idldescattr] */ struct EXCEPINFO *pexcepinfo,
-            /* [out][idldescattr] */ unsigned UINT *puArgErr,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Invoke)(
+        IISApplicationPools * This,
+        /* [in][idldescattr] */ signed long dispidMember,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [in][idldescattr] */ unsigned short wFlags,
+        /* [in][idldescattr] */ struct DISPPARAMS *pdispparams,
+        /* [out][idldescattr] */ VARIANT *pvarResult,
+        /* [out][idldescattr] */ struct EXCEPINFO *pexcepinfo,
+        /* [out][idldescattr] */ unsigned UINT *puArgErr,
+        /* [retval][out] */ void *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Name)(
-            IISApplicationPools * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Name)(
+        IISApplicationPools * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Class)(
-            IISApplicationPools * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Class)(
+        IISApplicationPools * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_GUID)(
-            IISApplicationPools * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_GUID)(
+        IISApplicationPools * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
-            IISApplicationPools * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
+        IISApplicationPools * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Parent)(
-            IISApplicationPools * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Parent)(
+        IISApplicationPools * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Schema)(
-            IISApplicationPools * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Schema)(
+        IISApplicationPools * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetInfo)(
-            IISApplicationPools * This,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetInfo)(
+        IISApplicationPools * This,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *SetInfo)(
-            IISApplicationPools * This,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *SetInfo)(
+        IISApplicationPools * This,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Get)(
-            IISApplicationPools * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [retval][out] */ VARIANT *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Get)(
+        IISApplicationPools * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [retval][out] */ VARIANT *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Put)(
-            IISApplicationPools * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [in][idldescattr] */ VARIANT vProp,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Put)(
+        IISApplicationPools * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [in][idldescattr] */ VARIANT vProp,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetEx)(
-            IISApplicationPools * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [retval][out] */ VARIANT *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetEx)(
+        IISApplicationPools * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [retval][out] */ VARIANT *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *PutEx)(
-            IISApplicationPools * This,
-            /* [in][idldescattr] */ signed long lnControlCode,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [in][idldescattr] */ VARIANT vProp,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *PutEx)(
+        IISApplicationPools * This,
+        /* [in][idldescattr] */ signed long lnControlCode,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [in][idldescattr] */ VARIANT vProp,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
-            IISApplicationPools * This,
-            /* [in][idldescattr] */ VARIANT vProperties,
-            /* [in][idldescattr] */ signed long lnReserved,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
+        IISApplicationPools * This,
+        /* [in][idldescattr] */ VARIANT vProperties,
+        /* [in][idldescattr] */ signed long lnReserved,
+        /* [retval][out] */ void *retval);
 
-        END_INTERFACE
-    } IISApplicationPoolsVtbl;
+    END_INTERFACE
+} IISApplicationPoolsVtbl;
 
-    interface IISApplicationPools
-    {
-        CONST_VTBL struct IISApplicationPoolsVtbl *lpVtbl;
-    };
+interface IISApplicationPools
+{
+    CONST_VTBL struct IISApplicationPoolsVtbl *lpVtbl;
+};
 
 
 
@@ -761,311 +761,311 @@ public:
 #ifndef __IISWebService_INTERFACE_DEFINED__
 #define __IISWebService_INTERFACE_DEFINED__
 
-    /* interface IISWebService */
-    /* [object][dual][oleautomation][uuid] */
+/* interface IISWebService */
+/* [object][dual][oleautomation][uuid] */
 
 
-    EXTERN_C const IID IID_IISWebService;
+EXTERN_C const IID IID_IISWebService;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("EE46D40C-1B38-4a02-898D-358E74DFC9D2")
+MIDL_INTERFACE("EE46D40C-1B38-4a02-898D-358E74DFC9D2")
 IISWebService :
-    public IADs
-    {
+public IADs
+{
 public:
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE GetCurrentMode(
-            /* [retval][out] */ VARIANT *pvServerMode) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE GetCurrentMode(
+        /* [retval][out] */ VARIANT *pvServerMode) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE CreateNewSite(
-            /* [in] */ BSTR bstrServerComment,
-            /* [in] */ VARIANT *pvServerBindings,
-            /* [in] */ BSTR bstrRootVDirPath,
-            /* [optional][in] */ VARIANT vServerID,
-            /* [retval][out] */ VARIANT *pvActualID) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE CreateNewSite(
+        /* [in] */ BSTR bstrServerComment,
+        /* [in] */ VARIANT *pvServerBindings,
+        /* [in] */ BSTR bstrRootVDirPath,
+        /* [optional][in] */ VARIANT vServerID,
+        /* [retval][out] */ VARIANT *pvActualID) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE EnableApplication(
-            /* [in] */ BSTR bstrAppName) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE EnableApplication(
+        /* [in] */ BSTR bstrAppName) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE RemoveApplication(
-            /* [in] */ BSTR bstrAppName) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE RemoveApplication(
+        /* [in] */ BSTR bstrAppName) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE ListApplications(
-            /* [retval][out] */ VARIANT *bstrBuffer) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE ListApplications(
+        /* [retval][out] */ VARIANT *bstrBuffer) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AddDependency(
-            /* [in] */ BSTR bstrApplication,
-            /* [in] */ BSTR bstrGroupID) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE AddDependency(
+        /* [in] */ BSTR bstrApplication,
+        /* [in] */ BSTR bstrGroupID) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE RemoveDependency(
-            /* [in] */ BSTR bstrApplication,
-            /* [in] */ BSTR bstrGroupID) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE RemoveDependency(
+        /* [in] */ BSTR bstrApplication,
+        /* [in] */ BSTR bstrGroupID) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE EnableWebServiceExtension(
-            /* [in] */ BSTR bstrExtension) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE EnableWebServiceExtension(
+        /* [in] */ BSTR bstrExtension) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE DisableWebServiceExtension(
-            /* [in] */ BSTR bstrExtension) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE DisableWebServiceExtension(
+        /* [in] */ BSTR bstrExtension) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE ListWebServiceExtensions(
-            /* [retval][out] */ VARIANT *bstrBuffer) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE ListWebServiceExtensions(
+        /* [retval][out] */ VARIANT *bstrBuffer) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE EnableExtensionFile(
-            /* [in] */ BSTR bstrExtensionFile) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE EnableExtensionFile(
+        /* [in] */ BSTR bstrExtensionFile) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE DisableExtensionFile(
-            /* [in] */ BSTR bstrExtensionFile) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE DisableExtensionFile(
+        /* [in] */ BSTR bstrExtensionFile) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AddExtensionFile(
-            /* [in] */ BSTR bstrExtensionFile,
-            /* [in] */ VARIANT bAccess,
-            /* [in] */ BSTR bstrGroupID,
-            /* [in] */ VARIANT bCanDelete,
-            /* [in] */ BSTR bstrDescription) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE AddExtensionFile(
+        /* [in] */ BSTR bstrExtensionFile,
+        /* [in] */ VARIANT bAccess,
+        /* [in] */ BSTR bstrGroupID,
+        /* [in] */ VARIANT bCanDelete,
+        /* [in] */ BSTR bstrDescription) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE DeleteExtensionFileRecord(
-            /* [in] */ BSTR bstrExtensionFile) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE DeleteExtensionFileRecord(
+        /* [in] */ BSTR bstrExtensionFile) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE ListExtensionFiles(
-            /* [retval][out] */ VARIANT *bstrBuffer) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE ListExtensionFiles(
+        /* [retval][out] */ VARIANT *bstrBuffer) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE QueryGroupIDStatus(
-            /* [in] */ BSTR bstrGroupID,
-            /* [retval][out] */ VARIANT *bstrBuffer) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE QueryGroupIDStatus(
+        /* [in] */ BSTR bstrGroupID,
+        /* [retval][out] */ VARIANT *bstrBuffer) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IISWebServiceVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IISWebServiceVtbl
+{
+    BEGIN_INTERFACE
 
-        /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IISWebService * This,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [out][idldescattr] */ void **ppvObj,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IISWebService * This,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [out][idldescattr] */ void **ppvObj,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *AddRef)(
-            IISWebService * This,
-            /* [retval][out] */ unsigned long *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *AddRef)(
+        IISWebService * This,
+        /* [retval][out] */ unsigned long *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Release)(
-            IISWebService * This,
-            /* [retval][out] */ unsigned long *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Release)(
+        IISWebService * This,
+        /* [retval][out] */ unsigned long *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
-            IISWebService * This,
-            /* [out][idldescattr] */ unsigned UINT *pctinfo,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
+        IISWebService * This,
+        /* [out][idldescattr] */ unsigned UINT *pctinfo,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
-            IISWebService * This,
-            /* [in][idldescattr] */ unsigned UINT itinfo,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [out][idldescattr] */ void **pptinfo,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
+        IISWebService * This,
+        /* [in][idldescattr] */ unsigned UINT itinfo,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [out][idldescattr] */ void **pptinfo,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
-            IISWebService * This,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [in][idldescattr] */ signed char **rgszNames,
-            /* [in][idldescattr] */ unsigned UINT cNames,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [out][idldescattr] */ signed long *rgdispid,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
+        IISWebService * This,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [in][idldescattr] */ signed char **rgszNames,
+        /* [in][idldescattr] */ unsigned UINT cNames,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [out][idldescattr] */ signed long *rgdispid,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Invoke)(
-            IISWebService * This,
-            /* [in][idldescattr] */ signed long dispidMember,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [in][idldescattr] */ unsigned short wFlags,
-            /* [in][idldescattr] */ struct DISPPARAMS *pdispparams,
-            /* [out][idldescattr] */ VARIANT *pvarResult,
-            /* [out][idldescattr] */ struct EXCEPINFO *pexcepinfo,
-            /* [out][idldescattr] */ unsigned UINT *puArgErr,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Invoke)(
+        IISWebService * This,
+        /* [in][idldescattr] */ signed long dispidMember,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [in][idldescattr] */ unsigned short wFlags,
+        /* [in][idldescattr] */ struct DISPPARAMS *pdispparams,
+        /* [out][idldescattr] */ VARIANT *pvarResult,
+        /* [out][idldescattr] */ struct EXCEPINFO *pexcepinfo,
+        /* [out][idldescattr] */ unsigned UINT *puArgErr,
+        /* [retval][out] */ void *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Name)(
-            IISWebService * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Name)(
+        IISWebService * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Class)(
-            IISWebService * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Class)(
+        IISWebService * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_GUID)(
-            IISWebService * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_GUID)(
+        IISWebService * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
-            IISWebService * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
+        IISWebService * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Parent)(
-            IISWebService * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Parent)(
+        IISWebService * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Schema)(
-            IISWebService * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Schema)(
+        IISWebService * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetInfo)(
-            IISWebService * This,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetInfo)(
+        IISWebService * This,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *SetInfo)(
-            IISWebService * This,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *SetInfo)(
+        IISWebService * This,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Get)(
-            IISWebService * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [retval][out] */ VARIANT *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Get)(
+        IISWebService * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [retval][out] */ VARIANT *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Put)(
-            IISWebService * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [in][idldescattr] */ VARIANT vProp,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Put)(
+        IISWebService * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [in][idldescattr] */ VARIANT vProp,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetEx)(
-            IISWebService * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [retval][out] */ VARIANT *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetEx)(
+        IISWebService * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [retval][out] */ VARIANT *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *PutEx)(
-            IISWebService * This,
-            /* [in][idldescattr] */ signed long lnControlCode,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [in][idldescattr] */ VARIANT vProp,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *PutEx)(
+        IISWebService * This,
+        /* [in][idldescattr] */ signed long lnControlCode,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [in][idldescattr] */ VARIANT vProp,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
-            IISWebService * This,
-            /* [in][idldescattr] */ VARIANT vProperties,
-            /* [in][idldescattr] */ signed long lnReserved,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
+        IISWebService * This,
+        /* [in][idldescattr] */ VARIANT vProperties,
+        /* [in][idldescattr] */ signed long lnReserved,
+        /* [retval][out] */ void *retval);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *GetCurrentMode)(
-            IISWebService * This,
-            /* [retval][out] */ VARIANT *pvServerMode);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *GetCurrentMode)(
+        IISWebService * This,
+        /* [retval][out] */ VARIANT *pvServerMode);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *CreateNewSite)(
-            IISWebService * This,
-            /* [in] */ BSTR bstrServerComment,
-            /* [in] */ VARIANT *pvServerBindings,
-            /* [in] */ BSTR bstrRootVDirPath,
-            /* [optional][in] */ VARIANT vServerID,
-            /* [retval][out] */ VARIANT *pvActualID);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *CreateNewSite)(
+        IISWebService * This,
+        /* [in] */ BSTR bstrServerComment,
+        /* [in] */ VARIANT *pvServerBindings,
+        /* [in] */ BSTR bstrRootVDirPath,
+        /* [optional][in] */ VARIANT vServerID,
+        /* [retval][out] */ VARIANT *pvActualID);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *EnableApplication)(
-            IISWebService * This,
-            /* [in] */ BSTR bstrAppName);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *EnableApplication)(
+        IISWebService * This,
+        /* [in] */ BSTR bstrAppName);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *RemoveApplication)(
-            IISWebService * This,
-            /* [in] */ BSTR bstrAppName);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *RemoveApplication)(
+        IISWebService * This,
+        /* [in] */ BSTR bstrAppName);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *ListApplications)(
-            IISWebService * This,
-            /* [retval][out] */ VARIANT *bstrBuffer);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *ListApplications)(
+        IISWebService * This,
+        /* [retval][out] */ VARIANT *bstrBuffer);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AddDependency)(
-            IISWebService * This,
-            /* [in] */ BSTR bstrApplication,
-            /* [in] */ BSTR bstrGroupID);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AddDependency)(
+        IISWebService * This,
+        /* [in] */ BSTR bstrApplication,
+        /* [in] */ BSTR bstrGroupID);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *RemoveDependency)(
-            IISWebService * This,
-            /* [in] */ BSTR bstrApplication,
-            /* [in] */ BSTR bstrGroupID);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *RemoveDependency)(
+        IISWebService * This,
+        /* [in] */ BSTR bstrApplication,
+        /* [in] */ BSTR bstrGroupID);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *EnableWebServiceExtension)(
-            IISWebService * This,
-            /* [in] */ BSTR bstrExtension);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *EnableWebServiceExtension)(
+        IISWebService * This,
+        /* [in] */ BSTR bstrExtension);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *DisableWebServiceExtension)(
-            IISWebService * This,
-            /* [in] */ BSTR bstrExtension);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *DisableWebServiceExtension)(
+        IISWebService * This,
+        /* [in] */ BSTR bstrExtension);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *ListWebServiceExtensions)(
-            IISWebService * This,
-            /* [retval][out] */ VARIANT *bstrBuffer);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *ListWebServiceExtensions)(
+        IISWebService * This,
+        /* [retval][out] */ VARIANT *bstrBuffer);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *EnableExtensionFile)(
-            IISWebService * This,
-            /* [in] */ BSTR bstrExtensionFile);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *EnableExtensionFile)(
+        IISWebService * This,
+        /* [in] */ BSTR bstrExtensionFile);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *DisableExtensionFile)(
-            IISWebService * This,
-            /* [in] */ BSTR bstrExtensionFile);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *DisableExtensionFile)(
+        IISWebService * This,
+        /* [in] */ BSTR bstrExtensionFile);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AddExtensionFile)(
-            IISWebService * This,
-            /* [in] */ BSTR bstrExtensionFile,
-            /* [in] */ VARIANT bAccess,
-            /* [in] */ BSTR bstrGroupID,
-            /* [in] */ VARIANT bCanDelete,
-            /* [in] */ BSTR bstrDescription);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AddExtensionFile)(
+        IISWebService * This,
+        /* [in] */ BSTR bstrExtensionFile,
+        /* [in] */ VARIANT bAccess,
+        /* [in] */ BSTR bstrGroupID,
+        /* [in] */ VARIANT bCanDelete,
+        /* [in] */ BSTR bstrDescription);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *DeleteExtensionFileRecord)(
-            IISWebService * This,
-            /* [in] */ BSTR bstrExtensionFile);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *DeleteExtensionFileRecord)(
+        IISWebService * This,
+        /* [in] */ BSTR bstrExtensionFile);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *ListExtensionFiles)(
-            IISWebService * This,
-            /* [retval][out] */ VARIANT *bstrBuffer);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *ListExtensionFiles)(
+        IISWebService * This,
+        /* [retval][out] */ VARIANT *bstrBuffer);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *QueryGroupIDStatus)(
-            IISWebService * This,
-            /* [in] */ BSTR bstrGroupID,
-            /* [retval][out] */ VARIANT *bstrBuffer);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *QueryGroupIDStatus)(
+        IISWebService * This,
+        /* [in] */ BSTR bstrGroupID,
+        /* [retval][out] */ VARIANT *bstrBuffer);
 
-        END_INTERFACE
-    } IISWebServiceVtbl;
+    END_INTERFACE
+} IISWebServiceVtbl;
 
-    interface IISWebService
-    {
-        CONST_VTBL struct IISWebServiceVtbl *lpVtbl;
-    };
+interface IISWebService
+{
+    CONST_VTBL struct IISWebServiceVtbl *lpVtbl;
+};
 
 
 
@@ -1188,222 +1188,222 @@ public:
 
 
 
-    /* [id] */ HRESULT STDMETHODCALLTYPE IISWebService_GetCurrentMode_Proxy(
-        IISWebService * This,
-        /* [retval][out] */ VARIANT *pvServerMode);
+/* [id] */ HRESULT STDMETHODCALLTYPE IISWebService_GetCurrentMode_Proxy(
+    IISWebService * This,
+    /* [retval][out] */ VARIANT *pvServerMode);
 
 
-    void __RPC_STUB IISWebService_GetCurrentMode_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISWebService_GetCurrentMode_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISWebService_CreateNewSite_Proxy(
-        IISWebService * This,
-        /* [in] */ BSTR bstrServerComment,
-        /* [in] */ VARIANT *pvServerBindings,
-        /* [in] */ BSTR bstrRootVDirPath,
-        /* [optional][in] */ VARIANT vServerID,
-        /* [retval][out] */ VARIANT *pvActualID);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISWebService_CreateNewSite_Proxy(
+    IISWebService * This,
+    /* [in] */ BSTR bstrServerComment,
+    /* [in] */ VARIANT *pvServerBindings,
+    /* [in] */ BSTR bstrRootVDirPath,
+    /* [optional][in] */ VARIANT vServerID,
+    /* [retval][out] */ VARIANT *pvActualID);
 
 
-    void __RPC_STUB IISWebService_CreateNewSite_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISWebService_CreateNewSite_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISWebService_EnableApplication_Proxy(
-        IISWebService * This,
-        /* [in] */ BSTR bstrAppName);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISWebService_EnableApplication_Proxy(
+    IISWebService * This,
+    /* [in] */ BSTR bstrAppName);
 
 
-    void __RPC_STUB IISWebService_EnableApplication_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISWebService_EnableApplication_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISWebService_RemoveApplication_Proxy(
-        IISWebService * This,
-        /* [in] */ BSTR bstrAppName);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISWebService_RemoveApplication_Proxy(
+    IISWebService * This,
+    /* [in] */ BSTR bstrAppName);
 
 
-    void __RPC_STUB IISWebService_RemoveApplication_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISWebService_RemoveApplication_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISWebService_ListApplications_Proxy(
-        IISWebService * This,
-        /* [retval][out] */ VARIANT *bstrBuffer);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISWebService_ListApplications_Proxy(
+    IISWebService * This,
+    /* [retval][out] */ VARIANT *bstrBuffer);
 
 
-    void __RPC_STUB IISWebService_ListApplications_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISWebService_ListApplications_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISWebService_AddDependency_Proxy(
-        IISWebService * This,
-        /* [in] */ BSTR bstrApplication,
-        /* [in] */ BSTR bstrGroupID);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISWebService_AddDependency_Proxy(
+    IISWebService * This,
+    /* [in] */ BSTR bstrApplication,
+    /* [in] */ BSTR bstrGroupID);
 
 
-    void __RPC_STUB IISWebService_AddDependency_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISWebService_AddDependency_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISWebService_RemoveDependency_Proxy(
-        IISWebService * This,
-        /* [in] */ BSTR bstrApplication,
-        /* [in] */ BSTR bstrGroupID);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISWebService_RemoveDependency_Proxy(
+    IISWebService * This,
+    /* [in] */ BSTR bstrApplication,
+    /* [in] */ BSTR bstrGroupID);
 
 
-    void __RPC_STUB IISWebService_RemoveDependency_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISWebService_RemoveDependency_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISWebService_EnableWebServiceExtension_Proxy(
-        IISWebService * This,
-        /* [in] */ BSTR bstrExtension);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISWebService_EnableWebServiceExtension_Proxy(
+    IISWebService * This,
+    /* [in] */ BSTR bstrExtension);
 
 
-    void __RPC_STUB IISWebService_EnableWebServiceExtension_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISWebService_EnableWebServiceExtension_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISWebService_DisableWebServiceExtension_Proxy(
-        IISWebService * This,
-        /* [in] */ BSTR bstrExtension);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISWebService_DisableWebServiceExtension_Proxy(
+    IISWebService * This,
+    /* [in] */ BSTR bstrExtension);
 
 
-    void __RPC_STUB IISWebService_DisableWebServiceExtension_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISWebService_DisableWebServiceExtension_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISWebService_ListWebServiceExtensions_Proxy(
-        IISWebService * This,
-        /* [retval][out] */ VARIANT *bstrBuffer);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISWebService_ListWebServiceExtensions_Proxy(
+    IISWebService * This,
+    /* [retval][out] */ VARIANT *bstrBuffer);
 
 
-    void __RPC_STUB IISWebService_ListWebServiceExtensions_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISWebService_ListWebServiceExtensions_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISWebService_EnableExtensionFile_Proxy(
-        IISWebService * This,
-        /* [in] */ BSTR bstrExtensionFile);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISWebService_EnableExtensionFile_Proxy(
+    IISWebService * This,
+    /* [in] */ BSTR bstrExtensionFile);
 
 
-    void __RPC_STUB IISWebService_EnableExtensionFile_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISWebService_EnableExtensionFile_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISWebService_DisableExtensionFile_Proxy(
-        IISWebService * This,
-        /* [in] */ BSTR bstrExtensionFile);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISWebService_DisableExtensionFile_Proxy(
+    IISWebService * This,
+    /* [in] */ BSTR bstrExtensionFile);
 
 
-    void __RPC_STUB IISWebService_DisableExtensionFile_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISWebService_DisableExtensionFile_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISWebService_AddExtensionFile_Proxy(
-        IISWebService * This,
-        /* [in] */ BSTR bstrExtensionFile,
-        /* [in] */ VARIANT bAccess,
-        /* [in] */ BSTR bstrGroupID,
-        /* [in] */ VARIANT bCanDelete,
-        /* [in] */ BSTR bstrDescription);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISWebService_AddExtensionFile_Proxy(
+    IISWebService * This,
+    /* [in] */ BSTR bstrExtensionFile,
+    /* [in] */ VARIANT bAccess,
+    /* [in] */ BSTR bstrGroupID,
+    /* [in] */ VARIANT bCanDelete,
+    /* [in] */ BSTR bstrDescription);
 
 
-    void __RPC_STUB IISWebService_AddExtensionFile_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISWebService_AddExtensionFile_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISWebService_DeleteExtensionFileRecord_Proxy(
-        IISWebService * This,
-        /* [in] */ BSTR bstrExtensionFile);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISWebService_DeleteExtensionFileRecord_Proxy(
+    IISWebService * This,
+    /* [in] */ BSTR bstrExtensionFile);
 
 
-    void __RPC_STUB IISWebService_DeleteExtensionFileRecord_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISWebService_DeleteExtensionFileRecord_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISWebService_ListExtensionFiles_Proxy(
-        IISWebService * This,
-        /* [retval][out] */ VARIANT *bstrBuffer);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISWebService_ListExtensionFiles_Proxy(
+    IISWebService * This,
+    /* [retval][out] */ VARIANT *bstrBuffer);
 
 
-    void __RPC_STUB IISWebService_ListExtensionFiles_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISWebService_ListExtensionFiles_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISWebService_QueryGroupIDStatus_Proxy(
-        IISWebService * This,
-        /* [in] */ BSTR bstrGroupID,
-        /* [retval][out] */ VARIANT *bstrBuffer);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISWebService_QueryGroupIDStatus_Proxy(
+    IISWebService * This,
+    /* [in] */ BSTR bstrGroupID,
+    /* [retval][out] */ VARIANT *bstrBuffer);
 
 
-    void __RPC_STUB IISWebService_QueryGroupIDStatus_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISWebService_QueryGroupIDStatus_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -1413,255 +1413,255 @@ public:
 #ifndef __IISDsCrMap_INTERFACE_DEFINED__
 #define __IISDsCrMap_INTERFACE_DEFINED__
 
-    /* interface IISDsCrMap */
-    /* [object][dual][oleautomation][uuid] */
+/* interface IISDsCrMap */
+/* [object][dual][oleautomation][uuid] */
 
 
-    EXTERN_C const IID IID_IISDsCrMap;
+EXTERN_C const IID IID_IISDsCrMap;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("edcd6a60-b053-11d0-a62f-00a0c922e752")
+MIDL_INTERFACE("edcd6a60-b053-11d0-a62f-00a0c922e752")
 IISDsCrMap :
-    public IADs
-    {
+public IADs
+{
 public:
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE CreateMapping(
-            /* [in] */ VARIANT vCert,
-            /* [in] */ BSTR bstrNtAcct,
-            /* [in] */ BSTR bstrNtPwd,
-            /* [in] */ BSTR bstrName,
-            /* [in] */ LONG lEnabled) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE CreateMapping(
+        /* [in] */ VARIANT vCert,
+        /* [in] */ BSTR bstrNtAcct,
+        /* [in] */ BSTR bstrNtPwd,
+        /* [in] */ BSTR bstrName,
+        /* [in] */ LONG lEnabled) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE GetMapping(
-            /* [in] */ LONG lMethod,
-            /* [in] */ VARIANT vKey,
-            /* [out] */ VARIANT *pvCert,
-            /* [out] */ VARIANT *pbstrNtAcct,
-            /* [out] */ VARIANT *pbstrNtPwd,
-            /* [out] */ VARIANT *pbstrName,
-            /* [out] */ VARIANT *plEnabled) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE GetMapping(
+        /* [in] */ LONG lMethod,
+        /* [in] */ VARIANT vKey,
+        /* [out] */ VARIANT *pvCert,
+        /* [out] */ VARIANT *pbstrNtAcct,
+        /* [out] */ VARIANT *pbstrNtPwd,
+        /* [out] */ VARIANT *pbstrName,
+        /* [out] */ VARIANT *plEnabled) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE DeleteMapping(
-            /* [in] */ LONG lMethod,
-            /* [in] */ VARIANT vKey) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE DeleteMapping(
+        /* [in] */ LONG lMethod,
+        /* [in] */ VARIANT vKey) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE SetEnabled(
-            /* [in] */ LONG lMethod,
-            /* [in] */ VARIANT vKey,
-            /* [in] */ LONG lEnabled) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE SetEnabled(
+        /* [in] */ LONG lMethod,
+        /* [in] */ VARIANT vKey,
+        /* [in] */ LONG lEnabled) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE SetName(
-            /* [in] */ LONG lMethod,
-            /* [in] */ VARIANT vKey,
-            /* [in] */ BSTR bstrName) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE SetName(
+        /* [in] */ LONG lMethod,
+        /* [in] */ VARIANT vKey,
+        /* [in] */ BSTR bstrName) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE SetPwd(
-            /* [in] */ LONG lMethod,
-            /* [in] */ VARIANT vKey,
-            /* [in] */ BSTR bstrPwd) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE SetPwd(
+        /* [in] */ LONG lMethod,
+        /* [in] */ VARIANT vKey,
+        /* [in] */ BSTR bstrPwd) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE SetAcct(
-            /* [in] */ LONG lMethod,
-            /* [in] */ VARIANT vKey,
-            /* [in] */ BSTR bstrAcct) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE SetAcct(
+        /* [in] */ LONG lMethod,
+        /* [in] */ VARIANT vKey,
+        /* [in] */ BSTR bstrAcct) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IISDsCrMapVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IISDsCrMapVtbl
+{
+    BEGIN_INTERFACE
 
-        /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IISDsCrMap * This,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [out][idldescattr] */ void **ppvObj,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IISDsCrMap * This,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [out][idldescattr] */ void **ppvObj,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *AddRef)(
-            IISDsCrMap * This,
-            /* [retval][out] */ unsigned long *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *AddRef)(
+        IISDsCrMap * This,
+        /* [retval][out] */ unsigned long *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Release)(
-            IISDsCrMap * This,
-            /* [retval][out] */ unsigned long *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Release)(
+        IISDsCrMap * This,
+        /* [retval][out] */ unsigned long *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
-            IISDsCrMap * This,
-            /* [out][idldescattr] */ unsigned UINT *pctinfo,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
+        IISDsCrMap * This,
+        /* [out][idldescattr] */ unsigned UINT *pctinfo,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
-            IISDsCrMap * This,
-            /* [in][idldescattr] */ unsigned UINT itinfo,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [out][idldescattr] */ void **pptinfo,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
+        IISDsCrMap * This,
+        /* [in][idldescattr] */ unsigned UINT itinfo,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [out][idldescattr] */ void **pptinfo,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
-            IISDsCrMap * This,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [in][idldescattr] */ signed char **rgszNames,
-            /* [in][idldescattr] */ unsigned UINT cNames,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [out][idldescattr] */ signed long *rgdispid,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
+        IISDsCrMap * This,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [in][idldescattr] */ signed char **rgszNames,
+        /* [in][idldescattr] */ unsigned UINT cNames,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [out][idldescattr] */ signed long *rgdispid,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Invoke)(
-            IISDsCrMap * This,
-            /* [in][idldescattr] */ signed long dispidMember,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [in][idldescattr] */ unsigned short wFlags,
-            /* [in][idldescattr] */ struct DISPPARAMS *pdispparams,
-            /* [out][idldescattr] */ VARIANT *pvarResult,
-            /* [out][idldescattr] */ struct EXCEPINFO *pexcepinfo,
-            /* [out][idldescattr] */ unsigned UINT *puArgErr,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Invoke)(
+        IISDsCrMap * This,
+        /* [in][idldescattr] */ signed long dispidMember,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [in][idldescattr] */ unsigned short wFlags,
+        /* [in][idldescattr] */ struct DISPPARAMS *pdispparams,
+        /* [out][idldescattr] */ VARIANT *pvarResult,
+        /* [out][idldescattr] */ struct EXCEPINFO *pexcepinfo,
+        /* [out][idldescattr] */ unsigned UINT *puArgErr,
+        /* [retval][out] */ void *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Name)(
-            IISDsCrMap * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Name)(
+        IISDsCrMap * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Class)(
-            IISDsCrMap * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Class)(
+        IISDsCrMap * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_GUID)(
-            IISDsCrMap * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_GUID)(
+        IISDsCrMap * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
-            IISDsCrMap * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
+        IISDsCrMap * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Parent)(
-            IISDsCrMap * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Parent)(
+        IISDsCrMap * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Schema)(
-            IISDsCrMap * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Schema)(
+        IISDsCrMap * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetInfo)(
-            IISDsCrMap * This,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetInfo)(
+        IISDsCrMap * This,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *SetInfo)(
-            IISDsCrMap * This,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *SetInfo)(
+        IISDsCrMap * This,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Get)(
-            IISDsCrMap * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [retval][out] */ VARIANT *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Get)(
+        IISDsCrMap * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [retval][out] */ VARIANT *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Put)(
-            IISDsCrMap * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [in][idldescattr] */ VARIANT vProp,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Put)(
+        IISDsCrMap * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [in][idldescattr] */ VARIANT vProp,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetEx)(
-            IISDsCrMap * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [retval][out] */ VARIANT *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetEx)(
+        IISDsCrMap * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [retval][out] */ VARIANT *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *PutEx)(
-            IISDsCrMap * This,
-            /* [in][idldescattr] */ signed long lnControlCode,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [in][idldescattr] */ VARIANT vProp,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *PutEx)(
+        IISDsCrMap * This,
+        /* [in][idldescattr] */ signed long lnControlCode,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [in][idldescattr] */ VARIANT vProp,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
-            IISDsCrMap * This,
-            /* [in][idldescattr] */ VARIANT vProperties,
-            /* [in][idldescattr] */ signed long lnReserved,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
+        IISDsCrMap * This,
+        /* [in][idldescattr] */ VARIANT vProperties,
+        /* [in][idldescattr] */ signed long lnReserved,
+        /* [retval][out] */ void *retval);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *CreateMapping)(
-            IISDsCrMap * This,
-            /* [in] */ VARIANT vCert,
-            /* [in] */ BSTR bstrNtAcct,
-            /* [in] */ BSTR bstrNtPwd,
-            /* [in] */ BSTR bstrName,
-            /* [in] */ LONG lEnabled);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *CreateMapping)(
+        IISDsCrMap * This,
+        /* [in] */ VARIANT vCert,
+        /* [in] */ BSTR bstrNtAcct,
+        /* [in] */ BSTR bstrNtPwd,
+        /* [in] */ BSTR bstrName,
+        /* [in] */ LONG lEnabled);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *GetMapping)(
-            IISDsCrMap * This,
-            /* [in] */ LONG lMethod,
-            /* [in] */ VARIANT vKey,
-            /* [out] */ VARIANT *pvCert,
-            /* [out] */ VARIANT *pbstrNtAcct,
-            /* [out] */ VARIANT *pbstrNtPwd,
-            /* [out] */ VARIANT *pbstrName,
-            /* [out] */ VARIANT *plEnabled);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *GetMapping)(
+        IISDsCrMap * This,
+        /* [in] */ LONG lMethod,
+        /* [in] */ VARIANT vKey,
+        /* [out] */ VARIANT *pvCert,
+        /* [out] */ VARIANT *pbstrNtAcct,
+        /* [out] */ VARIANT *pbstrNtPwd,
+        /* [out] */ VARIANT *pbstrName,
+        /* [out] */ VARIANT *plEnabled);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *DeleteMapping)(
-            IISDsCrMap * This,
-            /* [in] */ LONG lMethod,
-            /* [in] */ VARIANT vKey);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *DeleteMapping)(
+        IISDsCrMap * This,
+        /* [in] */ LONG lMethod,
+        /* [in] */ VARIANT vKey);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *SetEnabled)(
-            IISDsCrMap * This,
-            /* [in] */ LONG lMethod,
-            /* [in] */ VARIANT vKey,
-            /* [in] */ LONG lEnabled);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *SetEnabled)(
+        IISDsCrMap * This,
+        /* [in] */ LONG lMethod,
+        /* [in] */ VARIANT vKey,
+        /* [in] */ LONG lEnabled);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *SetName)(
-            IISDsCrMap * This,
-            /* [in] */ LONG lMethod,
-            /* [in] */ VARIANT vKey,
-            /* [in] */ BSTR bstrName);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *SetName)(
+        IISDsCrMap * This,
+        /* [in] */ LONG lMethod,
+        /* [in] */ VARIANT vKey,
+        /* [in] */ BSTR bstrName);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *SetPwd)(
-            IISDsCrMap * This,
-            /* [in] */ LONG lMethod,
-            /* [in] */ VARIANT vKey,
-            /* [in] */ BSTR bstrPwd);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *SetPwd)(
+        IISDsCrMap * This,
+        /* [in] */ LONG lMethod,
+        /* [in] */ VARIANT vKey,
+        /* [in] */ BSTR bstrPwd);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *SetAcct)(
-            IISDsCrMap * This,
-            /* [in] */ LONG lMethod,
-            /* [in] */ VARIANT vKey,
-            /* [in] */ BSTR bstrAcct);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *SetAcct)(
+        IISDsCrMap * This,
+        /* [in] */ LONG lMethod,
+        /* [in] */ VARIANT vKey,
+        /* [in] */ BSTR bstrAcct);
 
-        END_INTERFACE
-    } IISDsCrMapVtbl;
+    END_INTERFACE
+} IISDsCrMapVtbl;
 
-    interface IISDsCrMap
-    {
-        CONST_VTBL struct IISDsCrMapVtbl *lpVtbl;
-    };
+interface IISDsCrMap
+{
+    CONST_VTBL struct IISDsCrMapVtbl *lpVtbl;
+};
 
 
 
@@ -1757,113 +1757,113 @@ public:
 
 
 
-    /* [id] */ HRESULT STDMETHODCALLTYPE IISDsCrMap_CreateMapping_Proxy(
-        IISDsCrMap * This,
-        /* [in] */ VARIANT vCert,
-        /* [in] */ BSTR bstrNtAcct,
-        /* [in] */ BSTR bstrNtPwd,
-        /* [in] */ BSTR bstrName,
-        /* [in] */ LONG lEnabled);
+/* [id] */ HRESULT STDMETHODCALLTYPE IISDsCrMap_CreateMapping_Proxy(
+    IISDsCrMap * This,
+    /* [in] */ VARIANT vCert,
+    /* [in] */ BSTR bstrNtAcct,
+    /* [in] */ BSTR bstrNtPwd,
+    /* [in] */ BSTR bstrName,
+    /* [in] */ LONG lEnabled);
 
 
-    void __RPC_STUB IISDsCrMap_CreateMapping_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISDsCrMap_CreateMapping_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISDsCrMap_GetMapping_Proxy(
-        IISDsCrMap * This,
-        /* [in] */ LONG lMethod,
-        /* [in] */ VARIANT vKey,
-        /* [out] */ VARIANT *pvCert,
-        /* [out] */ VARIANT *pbstrNtAcct,
-        /* [out] */ VARIANT *pbstrNtPwd,
-        /* [out] */ VARIANT *pbstrName,
-        /* [out] */ VARIANT *plEnabled);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISDsCrMap_GetMapping_Proxy(
+    IISDsCrMap * This,
+    /* [in] */ LONG lMethod,
+    /* [in] */ VARIANT vKey,
+    /* [out] */ VARIANT *pvCert,
+    /* [out] */ VARIANT *pbstrNtAcct,
+    /* [out] */ VARIANT *pbstrNtPwd,
+    /* [out] */ VARIANT *pbstrName,
+    /* [out] */ VARIANT *plEnabled);
 
 
-    void __RPC_STUB IISDsCrMap_GetMapping_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISDsCrMap_GetMapping_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISDsCrMap_DeleteMapping_Proxy(
-        IISDsCrMap * This,
-        /* [in] */ LONG lMethod,
-        /* [in] */ VARIANT vKey);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISDsCrMap_DeleteMapping_Proxy(
+    IISDsCrMap * This,
+    /* [in] */ LONG lMethod,
+    /* [in] */ VARIANT vKey);
 
 
-    void __RPC_STUB IISDsCrMap_DeleteMapping_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISDsCrMap_DeleteMapping_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISDsCrMap_SetEnabled_Proxy(
-        IISDsCrMap * This,
-        /* [in] */ LONG lMethod,
-        /* [in] */ VARIANT vKey,
-        /* [in] */ LONG lEnabled);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISDsCrMap_SetEnabled_Proxy(
+    IISDsCrMap * This,
+    /* [in] */ LONG lMethod,
+    /* [in] */ VARIANT vKey,
+    /* [in] */ LONG lEnabled);
 
 
-    void __RPC_STUB IISDsCrMap_SetEnabled_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISDsCrMap_SetEnabled_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISDsCrMap_SetName_Proxy(
-        IISDsCrMap * This,
-        /* [in] */ LONG lMethod,
-        /* [in] */ VARIANT vKey,
-        /* [in] */ BSTR bstrName);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISDsCrMap_SetName_Proxy(
+    IISDsCrMap * This,
+    /* [in] */ LONG lMethod,
+    /* [in] */ VARIANT vKey,
+    /* [in] */ BSTR bstrName);
 
 
-    void __RPC_STUB IISDsCrMap_SetName_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISDsCrMap_SetName_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISDsCrMap_SetPwd_Proxy(
-        IISDsCrMap * This,
-        /* [in] */ LONG lMethod,
-        /* [in] */ VARIANT vKey,
-        /* [in] */ BSTR bstrPwd);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISDsCrMap_SetPwd_Proxy(
+    IISDsCrMap * This,
+    /* [in] */ LONG lMethod,
+    /* [in] */ VARIANT vKey,
+    /* [in] */ BSTR bstrPwd);
 
 
-    void __RPC_STUB IISDsCrMap_SetPwd_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISDsCrMap_SetPwd_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISDsCrMap_SetAcct_Proxy(
-        IISDsCrMap * This,
-        /* [in] */ LONG lMethod,
-        /* [in] */ VARIANT vKey,
-        /* [in] */ BSTR bstrAcct);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISDsCrMap_SetAcct_Proxy(
+    IISDsCrMap * This,
+    /* [in] */ LONG lMethod,
+    /* [in] */ VARIANT vKey,
+    /* [in] */ BSTR bstrAcct);
 
 
-    void __RPC_STUB IISDsCrMap_SetAcct_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISDsCrMap_SetAcct_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -1873,231 +1873,231 @@ public:
 #ifndef __IISApp_INTERFACE_DEFINED__
 #define __IISApp_INTERFACE_DEFINED__
 
-    /* interface IISApp */
-    /* [object][dual][oleautomation][uuid] */
+/* interface IISApp */
+/* [object][dual][oleautomation][uuid] */
 
 
-    EXTERN_C const IID IID_IISApp;
+EXTERN_C const IID IID_IISApp;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("46FBBB80-0192-11d1-9C39-00A0C922E703")
+MIDL_INTERFACE("46FBBB80-0192-11d1-9C39-00A0C922E703")
 IISApp :
-    public IADs
-    {
+public IADs
+{
 public:
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppCreate(
-            /* [in] */ VARIANT_BOOL bSetInProcFlag) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppCreate(
+        /* [in] */ VARIANT_BOOL bSetInProcFlag) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppDelete(void) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppDelete(void) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppDeleteRecursive(void) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppDeleteRecursive(void) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppUnLoad(void) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppUnLoad(void) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppUnLoadRecursive(void) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppUnLoadRecursive(void) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppDisable(void) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppDisable(void) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppDisableRecursive(void) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppDisableRecursive(void) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppEnable(void) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppEnable(void) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppEnableRecursive(void) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppEnableRecursive(void) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppGetStatus(
-            /* [out] */ DWORD *pdwStatus) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppGetStatus(
+        /* [out] */ DWORD *pdwStatus) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AspAppRestart(void) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE AspAppRestart(void) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IISAppVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IISAppVtbl
+{
+    BEGIN_INTERFACE
 
-        /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IISApp * This,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [out][idldescattr] */ void **ppvObj,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IISApp * This,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [out][idldescattr] */ void **ppvObj,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *AddRef)(
-            IISApp * This,
-            /* [retval][out] */ unsigned long *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *AddRef)(
+        IISApp * This,
+        /* [retval][out] */ unsigned long *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Release)(
-            IISApp * This,
-            /* [retval][out] */ unsigned long *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Release)(
+        IISApp * This,
+        /* [retval][out] */ unsigned long *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
-            IISApp * This,
-            /* [out][idldescattr] */ unsigned UINT *pctinfo,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
+        IISApp * This,
+        /* [out][idldescattr] */ unsigned UINT *pctinfo,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
-            IISApp * This,
-            /* [in][idldescattr] */ unsigned UINT itinfo,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [out][idldescattr] */ void **pptinfo,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
+        IISApp * This,
+        /* [in][idldescattr] */ unsigned UINT itinfo,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [out][idldescattr] */ void **pptinfo,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
-            IISApp * This,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [in][idldescattr] */ signed char **rgszNames,
-            /* [in][idldescattr] */ unsigned UINT cNames,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [out][idldescattr] */ signed long *rgdispid,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
+        IISApp * This,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [in][idldescattr] */ signed char **rgszNames,
+        /* [in][idldescattr] */ unsigned UINT cNames,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [out][idldescattr] */ signed long *rgdispid,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Invoke)(
-            IISApp * This,
-            /* [in][idldescattr] */ signed long dispidMember,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [in][idldescattr] */ unsigned short wFlags,
-            /* [in][idldescattr] */ struct DISPPARAMS *pdispparams,
-            /* [out][idldescattr] */ VARIANT *pvarResult,
-            /* [out][idldescattr] */ struct EXCEPINFO *pexcepinfo,
-            /* [out][idldescattr] */ unsigned UINT *puArgErr,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Invoke)(
+        IISApp * This,
+        /* [in][idldescattr] */ signed long dispidMember,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [in][idldescattr] */ unsigned short wFlags,
+        /* [in][idldescattr] */ struct DISPPARAMS *pdispparams,
+        /* [out][idldescattr] */ VARIANT *pvarResult,
+        /* [out][idldescattr] */ struct EXCEPINFO *pexcepinfo,
+        /* [out][idldescattr] */ unsigned UINT *puArgErr,
+        /* [retval][out] */ void *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Name)(
-            IISApp * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Name)(
+        IISApp * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Class)(
-            IISApp * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Class)(
+        IISApp * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_GUID)(
-            IISApp * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_GUID)(
+        IISApp * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
-            IISApp * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
+        IISApp * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Parent)(
-            IISApp * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Parent)(
+        IISApp * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Schema)(
-            IISApp * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Schema)(
+        IISApp * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetInfo)(
-            IISApp * This,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetInfo)(
+        IISApp * This,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *SetInfo)(
-            IISApp * This,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *SetInfo)(
+        IISApp * This,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Get)(
-            IISApp * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [retval][out] */ VARIANT *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Get)(
+        IISApp * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [retval][out] */ VARIANT *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Put)(
-            IISApp * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [in][idldescattr] */ VARIANT vProp,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Put)(
+        IISApp * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [in][idldescattr] */ VARIANT vProp,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetEx)(
-            IISApp * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [retval][out] */ VARIANT *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetEx)(
+        IISApp * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [retval][out] */ VARIANT *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *PutEx)(
-            IISApp * This,
-            /* [in][idldescattr] */ signed long lnControlCode,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [in][idldescattr] */ VARIANT vProp,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *PutEx)(
+        IISApp * This,
+        /* [in][idldescattr] */ signed long lnControlCode,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [in][idldescattr] */ VARIANT vProp,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
-            IISApp * This,
-            /* [in][idldescattr] */ VARIANT vProperties,
-            /* [in][idldescattr] */ signed long lnReserved,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
+        IISApp * This,
+        /* [in][idldescattr] */ VARIANT vProperties,
+        /* [in][idldescattr] */ signed long lnReserved,
+        /* [retval][out] */ void *retval);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppCreate)(
-            IISApp * This,
-            /* [in] */ VARIANT_BOOL bSetInProcFlag);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppCreate)(
+        IISApp * This,
+        /* [in] */ VARIANT_BOOL bSetInProcFlag);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppDelete)(
-            IISApp * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppDelete)(
+        IISApp * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppDeleteRecursive)(
-            IISApp * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppDeleteRecursive)(
+        IISApp * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppUnLoad)(
-            IISApp * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppUnLoad)(
+        IISApp * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppUnLoadRecursive)(
-            IISApp * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppUnLoadRecursive)(
+        IISApp * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppDisable)(
-            IISApp * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppDisable)(
+        IISApp * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppDisableRecursive)(
-            IISApp * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppDisableRecursive)(
+        IISApp * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppEnable)(
-            IISApp * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppEnable)(
+        IISApp * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppEnableRecursive)(
-            IISApp * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppEnableRecursive)(
+        IISApp * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppGetStatus)(
-            IISApp * This,
-            /* [out] */ DWORD *pdwStatus);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppGetStatus)(
+        IISApp * This,
+        /* [out] */ DWORD *pdwStatus);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AspAppRestart)(
-            IISApp * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AspAppRestart)(
+        IISApp * This);
 
-        END_INTERFACE
-    } IISAppVtbl;
+    END_INTERFACE
+} IISAppVtbl;
 
-    interface IISApp
-    {
-        CONST_VTBL struct IISAppVtbl *lpVtbl;
-    };
+interface IISApp
+{
+    CONST_VTBL struct IISAppVtbl *lpVtbl;
+};
 
 
 
@@ -2205,137 +2205,137 @@ public:
 
 
 
-    /* [id] */ HRESULT STDMETHODCALLTYPE IISApp_AppCreate_Proxy(
-        IISApp * This,
-        /* [in] */ VARIANT_BOOL bSetInProcFlag);
+/* [id] */ HRESULT STDMETHODCALLTYPE IISApp_AppCreate_Proxy(
+    IISApp * This,
+    /* [in] */ VARIANT_BOOL bSetInProcFlag);
 
 
-    void __RPC_STUB IISApp_AppCreate_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISApp_AppCreate_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISApp_AppDelete_Proxy(
-        IISApp * This);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISApp_AppDelete_Proxy(
+    IISApp * This);
 
 
-    void __RPC_STUB IISApp_AppDelete_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISApp_AppDelete_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISApp_AppDeleteRecursive_Proxy(
-        IISApp * This);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISApp_AppDeleteRecursive_Proxy(
+    IISApp * This);
 
 
-    void __RPC_STUB IISApp_AppDeleteRecursive_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISApp_AppDeleteRecursive_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISApp_AppUnLoad_Proxy(
-        IISApp * This);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISApp_AppUnLoad_Proxy(
+    IISApp * This);
 
 
-    void __RPC_STUB IISApp_AppUnLoad_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISApp_AppUnLoad_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISApp_AppUnLoadRecursive_Proxy(
-        IISApp * This);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISApp_AppUnLoadRecursive_Proxy(
+    IISApp * This);
 
 
-    void __RPC_STUB IISApp_AppUnLoadRecursive_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISApp_AppUnLoadRecursive_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISApp_AppDisable_Proxy(
-        IISApp * This);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISApp_AppDisable_Proxy(
+    IISApp * This);
 
 
-    void __RPC_STUB IISApp_AppDisable_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISApp_AppDisable_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISApp_AppDisableRecursive_Proxy(
-        IISApp * This);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISApp_AppDisableRecursive_Proxy(
+    IISApp * This);
 
 
-    void __RPC_STUB IISApp_AppDisableRecursive_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISApp_AppDisableRecursive_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISApp_AppEnable_Proxy(
-        IISApp * This);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISApp_AppEnable_Proxy(
+    IISApp * This);
 
 
-    void __RPC_STUB IISApp_AppEnable_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISApp_AppEnable_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISApp_AppEnableRecursive_Proxy(
-        IISApp * This);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISApp_AppEnableRecursive_Proxy(
+    IISApp * This);
 
 
-    void __RPC_STUB IISApp_AppEnableRecursive_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISApp_AppEnableRecursive_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISApp_AppGetStatus_Proxy(
-        IISApp * This,
-        /* [out] */ DWORD *pdwStatus);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISApp_AppGetStatus_Proxy(
+    IISApp * This,
+    /* [out] */ DWORD *pdwStatus);
 
 
-    void __RPC_STUB IISApp_AppGetStatus_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISApp_AppGetStatus_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISApp_AspAppRestart_Proxy(
-        IISApp * This);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISApp_AspAppRestart_Proxy(
+    IISApp * This);
 
 
-    void __RPC_STUB IISApp_AspAppRestart_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISApp_AspAppRestart_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -2345,223 +2345,223 @@ public:
 #ifndef __IISApp2_INTERFACE_DEFINED__
 #define __IISApp2_INTERFACE_DEFINED__
 
-    /* interface IISApp2 */
-    /* [object][dual][oleautomation][uuid] */
+/* interface IISApp2 */
+/* [object][dual][oleautomation][uuid] */
 
 
-    EXTERN_C const IID IID_IISApp2;
+EXTERN_C const IID IID_IISApp2;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("603DCBEA-7350-11d2-A7BE-0000F8085B95")
+MIDL_INTERFACE("603DCBEA-7350-11d2-A7BE-0000F8085B95")
 IISApp2 :
-    public IISApp
-    {
+public IISApp
+{
 public:
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppCreate2(
-            /* [in] */ LONG lAppMode) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppCreate2(
+        /* [in] */ LONG lAppMode) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppGetStatus2(
-            /* [retval][out] */ LONG *lpStatus) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppGetStatus2(
+        /* [retval][out] */ LONG *lpStatus) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IISApp2Vtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IISApp2Vtbl
+{
+    BEGIN_INTERFACE
 
-        /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IISApp2 * This,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [out][idldescattr] */ void **ppvObj,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IISApp2 * This,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [out][idldescattr] */ void **ppvObj,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *AddRef)(
-            IISApp2 * This,
-            /* [retval][out] */ unsigned long *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *AddRef)(
+        IISApp2 * This,
+        /* [retval][out] */ unsigned long *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Release)(
-            IISApp2 * This,
-            /* [retval][out] */ unsigned long *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Release)(
+        IISApp2 * This,
+        /* [retval][out] */ unsigned long *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
-            IISApp2 * This,
-            /* [out][idldescattr] */ unsigned UINT *pctinfo,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
+        IISApp2 * This,
+        /* [out][idldescattr] */ unsigned UINT *pctinfo,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
-            IISApp2 * This,
-            /* [in][idldescattr] */ unsigned UINT itinfo,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [out][idldescattr] */ void **pptinfo,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
+        IISApp2 * This,
+        /* [in][idldescattr] */ unsigned UINT itinfo,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [out][idldescattr] */ void **pptinfo,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
-            IISApp2 * This,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [in][idldescattr] */ signed char **rgszNames,
-            /* [in][idldescattr] */ unsigned UINT cNames,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [out][idldescattr] */ signed long *rgdispid,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
+        IISApp2 * This,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [in][idldescattr] */ signed char **rgszNames,
+        /* [in][idldescattr] */ unsigned UINT cNames,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [out][idldescattr] */ signed long *rgdispid,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Invoke)(
-            IISApp2 * This,
-            /* [in][idldescattr] */ signed long dispidMember,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [in][idldescattr] */ unsigned short wFlags,
-            /* [in][idldescattr] */ struct DISPPARAMS *pdispparams,
-            /* [out][idldescattr] */ VARIANT *pvarResult,
-            /* [out][idldescattr] */ struct EXCEPINFO *pexcepinfo,
-            /* [out][idldescattr] */ unsigned UINT *puArgErr,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Invoke)(
+        IISApp2 * This,
+        /* [in][idldescattr] */ signed long dispidMember,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [in][idldescattr] */ unsigned short wFlags,
+        /* [in][idldescattr] */ struct DISPPARAMS *pdispparams,
+        /* [out][idldescattr] */ VARIANT *pvarResult,
+        /* [out][idldescattr] */ struct EXCEPINFO *pexcepinfo,
+        /* [out][idldescattr] */ unsigned UINT *puArgErr,
+        /* [retval][out] */ void *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Name)(
-            IISApp2 * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Name)(
+        IISApp2 * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Class)(
-            IISApp2 * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Class)(
+        IISApp2 * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_GUID)(
-            IISApp2 * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_GUID)(
+        IISApp2 * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
-            IISApp2 * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
+        IISApp2 * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Parent)(
-            IISApp2 * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Parent)(
+        IISApp2 * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Schema)(
-            IISApp2 * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Schema)(
+        IISApp2 * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetInfo)(
-            IISApp2 * This,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetInfo)(
+        IISApp2 * This,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *SetInfo)(
-            IISApp2 * This,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *SetInfo)(
+        IISApp2 * This,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Get)(
-            IISApp2 * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [retval][out] */ VARIANT *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Get)(
+        IISApp2 * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [retval][out] */ VARIANT *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Put)(
-            IISApp2 * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [in][idldescattr] */ VARIANT vProp,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Put)(
+        IISApp2 * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [in][idldescattr] */ VARIANT vProp,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetEx)(
-            IISApp2 * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [retval][out] */ VARIANT *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetEx)(
+        IISApp2 * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [retval][out] */ VARIANT *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *PutEx)(
-            IISApp2 * This,
-            /* [in][idldescattr] */ signed long lnControlCode,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [in][idldescattr] */ VARIANT vProp,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *PutEx)(
+        IISApp2 * This,
+        /* [in][idldescattr] */ signed long lnControlCode,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [in][idldescattr] */ VARIANT vProp,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
-            IISApp2 * This,
-            /* [in][idldescattr] */ VARIANT vProperties,
-            /* [in][idldescattr] */ signed long lnReserved,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
+        IISApp2 * This,
+        /* [in][idldescattr] */ VARIANT vProperties,
+        /* [in][idldescattr] */ signed long lnReserved,
+        /* [retval][out] */ void *retval);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppCreate)(
-            IISApp2 * This,
-            /* [in] */ VARIANT_BOOL bSetInProcFlag);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppCreate)(
+        IISApp2 * This,
+        /* [in] */ VARIANT_BOOL bSetInProcFlag);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppDelete)(
-            IISApp2 * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppDelete)(
+        IISApp2 * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppDeleteRecursive)(
-            IISApp2 * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppDeleteRecursive)(
+        IISApp2 * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppUnLoad)(
-            IISApp2 * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppUnLoad)(
+        IISApp2 * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppUnLoadRecursive)(
-            IISApp2 * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppUnLoadRecursive)(
+        IISApp2 * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppDisable)(
-            IISApp2 * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppDisable)(
+        IISApp2 * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppDisableRecursive)(
-            IISApp2 * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppDisableRecursive)(
+        IISApp2 * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppEnable)(
-            IISApp2 * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppEnable)(
+        IISApp2 * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppEnableRecursive)(
-            IISApp2 * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppEnableRecursive)(
+        IISApp2 * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppGetStatus)(
-            IISApp2 * This,
-            /* [out] */ DWORD *pdwStatus);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppGetStatus)(
+        IISApp2 * This,
+        /* [out] */ DWORD *pdwStatus);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AspAppRestart)(
-            IISApp2 * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AspAppRestart)(
+        IISApp2 * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppCreate2)(
-            IISApp2 * This,
-            /* [in] */ LONG lAppMode);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppCreate2)(
+        IISApp2 * This,
+        /* [in] */ LONG lAppMode);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppGetStatus2)(
-            IISApp2 * This,
-            /* [retval][out] */ LONG *lpStatus);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppGetStatus2)(
+        IISApp2 * This,
+        /* [retval][out] */ LONG *lpStatus);
 
-        END_INTERFACE
-    } IISApp2Vtbl;
+    END_INTERFACE
+} IISApp2Vtbl;
 
-    interface IISApp2
-    {
-        CONST_VTBL struct IISApp2Vtbl *lpVtbl;
-    };
+interface IISApp2
+{
+    CONST_VTBL struct IISApp2Vtbl *lpVtbl;
+};
 
 
 
@@ -2676,29 +2676,29 @@ public:
 
 
 
-    /* [id] */ HRESULT STDMETHODCALLTYPE IISApp2_AppCreate2_Proxy(
-        IISApp2 * This,
-        /* [in] */ LONG lAppMode);
+/* [id] */ HRESULT STDMETHODCALLTYPE IISApp2_AppCreate2_Proxy(
+    IISApp2 * This,
+    /* [in] */ LONG lAppMode);
 
 
-    void __RPC_STUB IISApp2_AppCreate2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISApp2_AppCreate2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISApp2_AppGetStatus2_Proxy(
-        IISApp2 * This,
-        /* [retval][out] */ LONG *lpStatus);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISApp2_AppGetStatus2_Proxy(
+    IISApp2 * This,
+    /* [retval][out] */ LONG *lpStatus);
 
 
-    void __RPC_STUB IISApp2_AppGetStatus2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISApp2_AppGetStatus2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -2708,229 +2708,229 @@ public:
 #ifndef __IISApp3_INTERFACE_DEFINED__
 #define __IISApp3_INTERFACE_DEFINED__
 
-    /* interface IISApp3 */
-    /* [object][dual][oleautomation][uuid] */
+/* interface IISApp3 */
+/* [object][dual][oleautomation][uuid] */
 
 
-    EXTERN_C const IID IID_IISApp3;
+EXTERN_C const IID IID_IISApp3;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("2812B639-8FAC-4510-96C5-71DDBD1F54FC")
+MIDL_INTERFACE("2812B639-8FAC-4510-96C5-71DDBD1F54FC")
 IISApp3 :
-    public IISApp2
-    {
+public IISApp2
+{
 public:
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppCreate3(
-            /* [in] */ LONG lAppMode,
-            /* [in] */ VARIANT bstrAppPooI,
-            /* [in] */ VARIANT bCreatePool) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE AppCreate3(
+        /* [in] */ LONG lAppMode,
+        /* [in] */ VARIANT bstrAppPooI,
+        /* [in] */ VARIANT bCreatePool) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IISApp3Vtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IISApp3Vtbl
+{
+    BEGIN_INTERFACE
 
-        /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IISApp3 * This,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [out][idldescattr] */ void **ppvObj,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IISApp3 * This,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [out][idldescattr] */ void **ppvObj,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *AddRef)(
-            IISApp3 * This,
-            /* [retval][out] */ unsigned long *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *AddRef)(
+        IISApp3 * This,
+        /* [retval][out] */ unsigned long *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Release)(
-            IISApp3 * This,
-            /* [retval][out] */ unsigned long *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Release)(
+        IISApp3 * This,
+        /* [retval][out] */ unsigned long *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
-            IISApp3 * This,
-            /* [out][idldescattr] */ unsigned UINT *pctinfo,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
+        IISApp3 * This,
+        /* [out][idldescattr] */ unsigned UINT *pctinfo,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
-            IISApp3 * This,
-            /* [in][idldescattr] */ unsigned UINT itinfo,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [out][idldescattr] */ void **pptinfo,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
+        IISApp3 * This,
+        /* [in][idldescattr] */ unsigned UINT itinfo,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [out][idldescattr] */ void **pptinfo,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
-            IISApp3 * This,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [in][idldescattr] */ signed char **rgszNames,
-            /* [in][idldescattr] */ unsigned UINT cNames,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [out][idldescattr] */ signed long *rgdispid,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
+        IISApp3 * This,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [in][idldescattr] */ signed char **rgszNames,
+        /* [in][idldescattr] */ unsigned UINT cNames,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [out][idldescattr] */ signed long *rgdispid,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Invoke)(
-            IISApp3 * This,
-            /* [in][idldescattr] */ signed long dispidMember,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [in][idldescattr] */ unsigned short wFlags,
-            /* [in][idldescattr] */ struct DISPPARAMS *pdispparams,
-            /* [out][idldescattr] */ VARIANT *pvarResult,
-            /* [out][idldescattr] */ struct EXCEPINFO *pexcepinfo,
-            /* [out][idldescattr] */ unsigned UINT *puArgErr,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Invoke)(
+        IISApp3 * This,
+        /* [in][idldescattr] */ signed long dispidMember,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [in][idldescattr] */ unsigned short wFlags,
+        /* [in][idldescattr] */ struct DISPPARAMS *pdispparams,
+        /* [out][idldescattr] */ VARIANT *pvarResult,
+        /* [out][idldescattr] */ struct EXCEPINFO *pexcepinfo,
+        /* [out][idldescattr] */ unsigned UINT *puArgErr,
+        /* [retval][out] */ void *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Name)(
-            IISApp3 * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Name)(
+        IISApp3 * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Class)(
-            IISApp3 * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Class)(
+        IISApp3 * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_GUID)(
-            IISApp3 * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_GUID)(
+        IISApp3 * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
-            IISApp3 * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
+        IISApp3 * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Parent)(
-            IISApp3 * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Parent)(
+        IISApp3 * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Schema)(
-            IISApp3 * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Schema)(
+        IISApp3 * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetInfo)(
-            IISApp3 * This,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetInfo)(
+        IISApp3 * This,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *SetInfo)(
-            IISApp3 * This,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *SetInfo)(
+        IISApp3 * This,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Get)(
-            IISApp3 * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [retval][out] */ VARIANT *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Get)(
+        IISApp3 * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [retval][out] */ VARIANT *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Put)(
-            IISApp3 * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [in][idldescattr] */ VARIANT vProp,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Put)(
+        IISApp3 * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [in][idldescattr] */ VARIANT vProp,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetEx)(
-            IISApp3 * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [retval][out] */ VARIANT *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetEx)(
+        IISApp3 * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [retval][out] */ VARIANT *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *PutEx)(
-            IISApp3 * This,
-            /* [in][idldescattr] */ signed long lnControlCode,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [in][idldescattr] */ VARIANT vProp,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *PutEx)(
+        IISApp3 * This,
+        /* [in][idldescattr] */ signed long lnControlCode,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [in][idldescattr] */ VARIANT vProp,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
-            IISApp3 * This,
-            /* [in][idldescattr] */ VARIANT vProperties,
-            /* [in][idldescattr] */ signed long lnReserved,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
+        IISApp3 * This,
+        /* [in][idldescattr] */ VARIANT vProperties,
+        /* [in][idldescattr] */ signed long lnReserved,
+        /* [retval][out] */ void *retval);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppCreate)(
-            IISApp3 * This,
-            /* [in] */ VARIANT_BOOL bSetInProcFlag);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppCreate)(
+        IISApp3 * This,
+        /* [in] */ VARIANT_BOOL bSetInProcFlag);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppDelete)(
-            IISApp3 * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppDelete)(
+        IISApp3 * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppDeleteRecursive)(
-            IISApp3 * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppDeleteRecursive)(
+        IISApp3 * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppUnLoad)(
-            IISApp3 * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppUnLoad)(
+        IISApp3 * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppUnLoadRecursive)(
-            IISApp3 * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppUnLoadRecursive)(
+        IISApp3 * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppDisable)(
-            IISApp3 * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppDisable)(
+        IISApp3 * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppDisableRecursive)(
-            IISApp3 * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppDisableRecursive)(
+        IISApp3 * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppEnable)(
-            IISApp3 * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppEnable)(
+        IISApp3 * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppEnableRecursive)(
-            IISApp3 * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppEnableRecursive)(
+        IISApp3 * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppGetStatus)(
-            IISApp3 * This,
-            /* [out] */ DWORD *pdwStatus);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppGetStatus)(
+        IISApp3 * This,
+        /* [out] */ DWORD *pdwStatus);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AspAppRestart)(
-            IISApp3 * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AspAppRestart)(
+        IISApp3 * This);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppCreate2)(
-            IISApp3 * This,
-            /* [in] */ LONG lAppMode);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppCreate2)(
+        IISApp3 * This,
+        /* [in] */ LONG lAppMode);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppGetStatus2)(
-            IISApp3 * This,
-            /* [retval][out] */ LONG *lpStatus);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppGetStatus2)(
+        IISApp3 * This,
+        /* [retval][out] */ LONG *lpStatus);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *AppCreate3)(
-            IISApp3 * This,
-            /* [in] */ LONG lAppMode,
-            /* [in] */ VARIANT bstrAppPooI,
-            /* [in] */ VARIANT bCreatePool);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *AppCreate3)(
+        IISApp3 * This,
+        /* [in] */ LONG lAppMode,
+        /* [in] */ VARIANT bstrAppPooI,
+        /* [in] */ VARIANT bCreatePool);
 
-        END_INTERFACE
-    } IISApp3Vtbl;
+    END_INTERFACE
+} IISApp3Vtbl;
 
-    interface IISApp3
-    {
-        CONST_VTBL struct IISApp3Vtbl *lpVtbl;
-    };
+interface IISApp3
+{
+    CONST_VTBL struct IISApp3Vtbl *lpVtbl;
+};
 
 
 
@@ -3049,18 +3049,18 @@ public:
 
 
 
-    /* [id] */ HRESULT STDMETHODCALLTYPE IISApp3_AppCreate3_Proxy(
-        IISApp3 * This,
-        /* [in] */ LONG lAppMode,
-        /* [in] */ VARIANT bstrAppPooI,
-        /* [in] */ VARIANT bCreatePool);
+/* [id] */ HRESULT STDMETHODCALLTYPE IISApp3_AppCreate3_Proxy(
+    IISApp3 * This,
+    /* [in] */ LONG lAppMode,
+    /* [in] */ VARIANT bstrAppPooI,
+    /* [in] */ VARIANT bCreatePool);
 
 
-    void __RPC_STUB IISApp3_AppCreate3_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISApp3_AppCreate3_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -3070,211 +3070,211 @@ public:
 #ifndef __IISComputer_INTERFACE_DEFINED__
 #define __IISComputer_INTERFACE_DEFINED__
 
-    /* interface IISComputer */
-    /* [object][dual][oleautomation][uuid] */
+/* interface IISComputer */
+/* [object][dual][oleautomation][uuid] */
 
 
-    EXTERN_C const IID IID_IISComputer;
+EXTERN_C const IID IID_IISComputer;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("CF87A2E0-078B-11d1-9C3D-00A0C922E703")
+MIDL_INTERFACE("CF87A2E0-078B-11d1-9C3D-00A0C922E703")
 IISComputer :
-    public IADs
-    {
+public IADs
+{
 public:
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE Backup(
-            /* [in] */ BSTR bstrLocation,
-            /* [in] */ LONG lVersion,
-            /* [in] */ LONG lFlags) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE Backup(
+        /* [in] */ BSTR bstrLocation,
+        /* [in] */ LONG lVersion,
+        /* [in] */ LONG lFlags) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE Restore(
-            /* [in] */ BSTR bstrLocation,
-            /* [in] */ LONG lVersion,
-            /* [in] */ LONG lFlags) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE Restore(
+        /* [in] */ BSTR bstrLocation,
+        /* [in] */ LONG lVersion,
+        /* [in] */ LONG lFlags) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE EnumBackups(
-            /* [in] */ BSTR bstrLocation,
-            /* [in] */ LONG lIndex,
-            /* [out] */ VARIANT *pvVersion,
-            /* [out] */ VARIANT *pvLocations,
-            /* [out] */ VARIANT *pvDate) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE EnumBackups(
+        /* [in] */ BSTR bstrLocation,
+        /* [in] */ LONG lIndex,
+        /* [out] */ VARIANT *pvVersion,
+        /* [out] */ VARIANT *pvLocations,
+        /* [out] */ VARIANT *pvDate) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE DeleteBackup(
-            /* [in] */ BSTR bstrLocation,
-            /* [in] */ LONG lVersion) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE DeleteBackup(
+        /* [in] */ BSTR bstrLocation,
+        /* [in] */ LONG lVersion) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IISComputerVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IISComputerVtbl
+{
+    BEGIN_INTERFACE
 
-        /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IISComputer * This,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [out][idldescattr] */ void **ppvObj,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IISComputer * This,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [out][idldescattr] */ void **ppvObj,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *AddRef)(
-            IISComputer * This,
-            /* [retval][out] */ unsigned long *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *AddRef)(
+        IISComputer * This,
+        /* [retval][out] */ unsigned long *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Release)(
-            IISComputer * This,
-            /* [retval][out] */ unsigned long *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Release)(
+        IISComputer * This,
+        /* [retval][out] */ unsigned long *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
-            IISComputer * This,
-            /* [out][idldescattr] */ unsigned UINT *pctinfo,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
+        IISComputer * This,
+        /* [out][idldescattr] */ unsigned UINT *pctinfo,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
-            IISComputer * This,
-            /* [in][idldescattr] */ unsigned UINT itinfo,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [out][idldescattr] */ void **pptinfo,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
+        IISComputer * This,
+        /* [in][idldescattr] */ unsigned UINT itinfo,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [out][idldescattr] */ void **pptinfo,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
-            IISComputer * This,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [in][idldescattr] */ signed char **rgszNames,
-            /* [in][idldescattr] */ unsigned UINT cNames,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [out][idldescattr] */ signed long *rgdispid,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
+        IISComputer * This,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [in][idldescattr] */ signed char **rgszNames,
+        /* [in][idldescattr] */ unsigned UINT cNames,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [out][idldescattr] */ signed long *rgdispid,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Invoke)(
-            IISComputer * This,
-            /* [in][idldescattr] */ signed long dispidMember,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [in][idldescattr] */ unsigned short wFlags,
-            /* [in][idldescattr] */ struct DISPPARAMS *pdispparams,
-            /* [out][idldescattr] */ VARIANT *pvarResult,
-            /* [out][idldescattr] */ struct EXCEPINFO *pexcepinfo,
-            /* [out][idldescattr] */ unsigned UINT *puArgErr,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Invoke)(
+        IISComputer * This,
+        /* [in][idldescattr] */ signed long dispidMember,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [in][idldescattr] */ unsigned short wFlags,
+        /* [in][idldescattr] */ struct DISPPARAMS *pdispparams,
+        /* [out][idldescattr] */ VARIANT *pvarResult,
+        /* [out][idldescattr] */ struct EXCEPINFO *pexcepinfo,
+        /* [out][idldescattr] */ unsigned UINT *puArgErr,
+        /* [retval][out] */ void *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Name)(
-            IISComputer * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Name)(
+        IISComputer * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Class)(
-            IISComputer * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Class)(
+        IISComputer * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_GUID)(
-            IISComputer * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_GUID)(
+        IISComputer * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
-            IISComputer * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
+        IISComputer * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Parent)(
-            IISComputer * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Parent)(
+        IISComputer * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Schema)(
-            IISComputer * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Schema)(
+        IISComputer * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetInfo)(
-            IISComputer * This,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetInfo)(
+        IISComputer * This,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *SetInfo)(
-            IISComputer * This,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *SetInfo)(
+        IISComputer * This,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Get)(
-            IISComputer * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [retval][out] */ VARIANT *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Get)(
+        IISComputer * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [retval][out] */ VARIANT *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Put)(
-            IISComputer * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [in][idldescattr] */ VARIANT vProp,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Put)(
+        IISComputer * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [in][idldescattr] */ VARIANT vProp,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetEx)(
-            IISComputer * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [retval][out] */ VARIANT *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetEx)(
+        IISComputer * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [retval][out] */ VARIANT *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *PutEx)(
-            IISComputer * This,
-            /* [in][idldescattr] */ signed long lnControlCode,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [in][idldescattr] */ VARIANT vProp,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *PutEx)(
+        IISComputer * This,
+        /* [in][idldescattr] */ signed long lnControlCode,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [in][idldescattr] */ VARIANT vProp,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
-            IISComputer * This,
-            /* [in][idldescattr] */ VARIANT vProperties,
-            /* [in][idldescattr] */ signed long lnReserved,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
+        IISComputer * This,
+        /* [in][idldescattr] */ VARIANT vProperties,
+        /* [in][idldescattr] */ signed long lnReserved,
+        /* [retval][out] */ void *retval);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *Backup)(
-            IISComputer * This,
-            /* [in] */ BSTR bstrLocation,
-            /* [in] */ LONG lVersion,
-            /* [in] */ LONG lFlags);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *Backup)(
+        IISComputer * This,
+        /* [in] */ BSTR bstrLocation,
+        /* [in] */ LONG lVersion,
+        /* [in] */ LONG lFlags);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *Restore)(
-            IISComputer * This,
-            /* [in] */ BSTR bstrLocation,
-            /* [in] */ LONG lVersion,
-            /* [in] */ LONG lFlags);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *Restore)(
+        IISComputer * This,
+        /* [in] */ BSTR bstrLocation,
+        /* [in] */ LONG lVersion,
+        /* [in] */ LONG lFlags);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *EnumBackups)(
-            IISComputer * This,
-            /* [in] */ BSTR bstrLocation,
-            /* [in] */ LONG lIndex,
-            /* [out] */ VARIANT *pvVersion,
-            /* [out] */ VARIANT *pvLocations,
-            /* [out] */ VARIANT *pvDate);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *EnumBackups)(
+        IISComputer * This,
+        /* [in] */ BSTR bstrLocation,
+        /* [in] */ LONG lIndex,
+        /* [out] */ VARIANT *pvVersion,
+        /* [out] */ VARIANT *pvLocations,
+        /* [out] */ VARIANT *pvDate);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *DeleteBackup)(
-            IISComputer * This,
-            /* [in] */ BSTR bstrLocation,
-            /* [in] */ LONG lVersion);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *DeleteBackup)(
+        IISComputer * This,
+        /* [in] */ BSTR bstrLocation,
+        /* [in] */ LONG lVersion);
 
-        END_INTERFACE
-    } IISComputerVtbl;
+    END_INTERFACE
+} IISComputerVtbl;
 
-    interface IISComputer
-    {
-        CONST_VTBL struct IISComputerVtbl *lpVtbl;
-    };
+interface IISComputer
+{
+    CONST_VTBL struct IISComputerVtbl *lpVtbl;
+};
 
 
 
@@ -3361,64 +3361,64 @@ public:
 
 
 
-    /* [id] */ HRESULT STDMETHODCALLTYPE IISComputer_Backup_Proxy(
-        IISComputer * This,
-        /* [in] */ BSTR bstrLocation,
-        /* [in] */ LONG lVersion,
-        /* [in] */ LONG lFlags);
+/* [id] */ HRESULT STDMETHODCALLTYPE IISComputer_Backup_Proxy(
+    IISComputer * This,
+    /* [in] */ BSTR bstrLocation,
+    /* [in] */ LONG lVersion,
+    /* [in] */ LONG lFlags);
 
 
-    void __RPC_STUB IISComputer_Backup_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISComputer_Backup_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISComputer_Restore_Proxy(
-        IISComputer * This,
-        /* [in] */ BSTR bstrLocation,
-        /* [in] */ LONG lVersion,
-        /* [in] */ LONG lFlags);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISComputer_Restore_Proxy(
+    IISComputer * This,
+    /* [in] */ BSTR bstrLocation,
+    /* [in] */ LONG lVersion,
+    /* [in] */ LONG lFlags);
 
 
-    void __RPC_STUB IISComputer_Restore_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISComputer_Restore_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISComputer_EnumBackups_Proxy(
-        IISComputer * This,
-        /* [in] */ BSTR bstrLocation,
-        /* [in] */ LONG lIndex,
-        /* [out] */ VARIANT *pvVersion,
-        /* [out] */ VARIANT *pvLocations,
-        /* [out] */ VARIANT *pvDate);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISComputer_EnumBackups_Proxy(
+    IISComputer * This,
+    /* [in] */ BSTR bstrLocation,
+    /* [in] */ LONG lIndex,
+    /* [out] */ VARIANT *pvVersion,
+    /* [out] */ VARIANT *pvLocations,
+    /* [out] */ VARIANT *pvDate);
 
 
-    void __RPC_STUB IISComputer_EnumBackups_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISComputer_EnumBackups_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISComputer_DeleteBackup_Proxy(
-        IISComputer * This,
-        /* [in] */ BSTR bstrLocation,
-        /* [in] */ LONG lVersion);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISComputer_DeleteBackup_Proxy(
+    IISComputer * This,
+    /* [in] */ BSTR bstrLocation,
+    /* [in] */ LONG lVersion);
 
 
-    void __RPC_STUB IISComputer_DeleteBackup_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISComputer_DeleteBackup_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -3428,254 +3428,254 @@ public:
 #ifndef __IISComputer2_INTERFACE_DEFINED__
 #define __IISComputer2_INTERFACE_DEFINED__
 
-    /* interface IISComputer2 */
-    /* [object][dual][oleautomation][uuid] */
+/* interface IISComputer2 */
+/* [object][dual][oleautomation][uuid] */
 
 
-    EXTERN_C const IID IID_IISComputer2;
+EXTERN_C const IID IID_IISComputer2;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("63d89839-5762-4a68-b1b9-3507ea76cbbf")
+MIDL_INTERFACE("63d89839-5762-4a68-b1b9-3507ea76cbbf")
 IISComputer2 :
-    public IISComputer
-    {
+public IISComputer
+{
 public:
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE BackupWithPassword(
-            /* [in] */ BSTR bstrLocation,
-            /* [in] */ LONG lVersion,
-            /* [in] */ LONG lFlags,
-            /* [in] */ BSTR bstrPassword) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE BackupWithPassword(
+        /* [in] */ BSTR bstrLocation,
+        /* [in] */ LONG lVersion,
+        /* [in] */ LONG lFlags,
+        /* [in] */ BSTR bstrPassword) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE RestoreWithPassword(
-            /* [in] */ BSTR bstrLocation,
-            /* [in] */ LONG lVersion,
-            /* [in] */ LONG lFlags,
-            /* [in] */ BSTR bstrPassword) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE RestoreWithPassword(
+        /* [in] */ BSTR bstrLocation,
+        /* [in] */ LONG lVersion,
+        /* [in] */ LONG lFlags,
+        /* [in] */ BSTR bstrPassword) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE Export(
-            /* [in] */ BSTR bstrPassword,
-            /* [in] */ BSTR bstrFilename,
-            /* [in] */ BSTR bstrSourcePath,
-            /* [in] */ LONG lFlags) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE Export(
+        /* [in] */ BSTR bstrPassword,
+        /* [in] */ BSTR bstrFilename,
+        /* [in] */ BSTR bstrSourcePath,
+        /* [in] */ LONG lFlags) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE Import(
-            /* [in] */ BSTR bstrPassword,
-            /* [in] */ BSTR bstrFilename,
-            /* [in] */ BSTR bstrSourcePath,
-            /* [in] */ BSTR bstrDestPath,
-            /* [in] */ LONG lFlags) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE Import(
+        /* [in] */ BSTR bstrPassword,
+        /* [in] */ BSTR bstrFilename,
+        /* [in] */ BSTR bstrSourcePath,
+        /* [in] */ BSTR bstrDestPath,
+        /* [in] */ LONG lFlags) = 0;
 
-        virtual /* [id] */ HRESULT STDMETHODCALLTYPE SaveData(void) = 0;
+    virtual /* [id] */ HRESULT STDMETHODCALLTYPE SaveData(void) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IISComputer2Vtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IISComputer2Vtbl
+{
+    BEGIN_INTERFACE
 
-        /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IISComputer2 * This,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [out][idldescattr] */ void **ppvObj,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */ HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IISComputer2 * This,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [out][idldescattr] */ void **ppvObj,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *AddRef)(
-            IISComputer2 * This,
-            /* [retval][out] */ unsigned long *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *AddRef)(
+        IISComputer2 * This,
+        /* [retval][out] */ unsigned long *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Release)(
-            IISComputer2 * This,
-            /* [retval][out] */ unsigned long *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Release)(
+        IISComputer2 * This,
+        /* [retval][out] */ unsigned long *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
-            IISComputer2 * This,
-            /* [out][idldescattr] */ unsigned UINT *pctinfo,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfoCount)(
+        IISComputer2 * This,
+        /* [out][idldescattr] */ unsigned UINT *pctinfo,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
-            IISComputer2 * This,
-            /* [in][idldescattr] */ unsigned UINT itinfo,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [out][idldescattr] */ void **pptinfo,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetTypeInfo)(
+        IISComputer2 * This,
+        /* [in][idldescattr] */ unsigned UINT itinfo,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [out][idldescattr] */ void **pptinfo,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
-            IISComputer2 * This,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [in][idldescattr] */ signed char **rgszNames,
-            /* [in][idldescattr] */ unsigned UINT cNames,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [out][idldescattr] */ signed long *rgdispid,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetIDsOfNames)(
+        IISComputer2 * This,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [in][idldescattr] */ signed char **rgszNames,
+        /* [in][idldescattr] */ unsigned UINT cNames,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [out][idldescattr] */ signed long *rgdispid,
+        /* [retval][out] */ void *retval);
 
-        /* [id][restricted][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Invoke)(
-            IISComputer2 * This,
-            /* [in][idldescattr] */ signed long dispidMember,
-            /* [in][idldescattr] */ struct GUID *riid,
-            /* [in][idldescattr] */ unsigned long lcid,
-            /* [in][idldescattr] */ unsigned short wFlags,
-            /* [in][idldescattr] */ struct DISPPARAMS *pdispparams,
-            /* [out][idldescattr] */ VARIANT *pvarResult,
-            /* [out][idldescattr] */ struct EXCEPINFO *pexcepinfo,
-            /* [out][idldescattr] */ unsigned UINT *puArgErr,
-            /* [retval][out] */ void *retval);
+    /* [id][restricted][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Invoke)(
+        IISComputer2 * This,
+        /* [in][idldescattr] */ signed long dispidMember,
+        /* [in][idldescattr] */ struct GUID *riid,
+        /* [in][idldescattr] */ unsigned long lcid,
+        /* [in][idldescattr] */ unsigned short wFlags,
+        /* [in][idldescattr] */ struct DISPPARAMS *pdispparams,
+        /* [out][idldescattr] */ VARIANT *pvarResult,
+        /* [out][idldescattr] */ struct EXCEPINFO *pexcepinfo,
+        /* [out][idldescattr] */ unsigned UINT *puArgErr,
+        /* [retval][out] */ void *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Name)(
-            IISComputer2 * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Name)(
+        IISComputer2 * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Class)(
-            IISComputer2 * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Class)(
+        IISComputer2 * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_GUID)(
-            IISComputer2 * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_GUID)(
+        IISComputer2 * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
-            IISComputer2 * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_ADsPath)(
+        IISComputer2 * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Parent)(
-            IISComputer2 * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Parent)(
+        IISComputer2 * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][propget][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *get_Schema)(
-            IISComputer2 * This,
-            /* [retval][out] */ BSTR *retval);
+    /* [id][propget][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *get_Schema)(
+        IISComputer2 * This,
+        /* [retval][out] */ BSTR *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetInfo)(
-            IISComputer2 * This,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetInfo)(
+        IISComputer2 * This,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *SetInfo)(
-            IISComputer2 * This,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *SetInfo)(
+        IISComputer2 * This,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Get)(
-            IISComputer2 * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [retval][out] */ VARIANT *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Get)(
+        IISComputer2 * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [retval][out] */ VARIANT *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *Put)(
-            IISComputer2 * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [in][idldescattr] */ VARIANT vProp,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *Put)(
+        IISComputer2 * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [in][idldescattr] */ VARIANT vProp,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetEx)(
-            IISComputer2 * This,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [retval][out] */ VARIANT *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetEx)(
+        IISComputer2 * This,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [retval][out] */ VARIANT *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *PutEx)(
-            IISComputer2 * This,
-            /* [in][idldescattr] */ signed long lnControlCode,
-            /* [in][idldescattr] */ BSTR bstrName,
-            /* [in][idldescattr] */ VARIANT vProp,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *PutEx)(
+        IISComputer2 * This,
+        /* [in][idldescattr] */ signed long lnControlCode,
+        /* [in][idldescattr] */ BSTR bstrName,
+        /* [in][idldescattr] */ VARIANT vProp,
+        /* [retval][out] */ void *retval);
 
-        /* [id][funcdescattr] */
-        HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
-            IISComputer2 * This,
-            /* [in][idldescattr] */ VARIANT vProperties,
-            /* [in][idldescattr] */ signed long lnReserved,
-            /* [retval][out] */ void *retval);
+    /* [id][funcdescattr] */
+    HRESULT(STDMETHODCALLTYPE *GetInfoEx)(
+        IISComputer2 * This,
+        /* [in][idldescattr] */ VARIANT vProperties,
+        /* [in][idldescattr] */ signed long lnReserved,
+        /* [retval][out] */ void *retval);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *Backup)(
-            IISComputer2 * This,
-            /* [in] */ BSTR bstrLocation,
-            /* [in] */ LONG lVersion,
-            /* [in] */ LONG lFlags);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *Backup)(
+        IISComputer2 * This,
+        /* [in] */ BSTR bstrLocation,
+        /* [in] */ LONG lVersion,
+        /* [in] */ LONG lFlags);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *Restore)(
-            IISComputer2 * This,
-            /* [in] */ BSTR bstrLocation,
-            /* [in] */ LONG lVersion,
-            /* [in] */ LONG lFlags);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *Restore)(
+        IISComputer2 * This,
+        /* [in] */ BSTR bstrLocation,
+        /* [in] */ LONG lVersion,
+        /* [in] */ LONG lFlags);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *EnumBackups)(
-            IISComputer2 * This,
-            /* [in] */ BSTR bstrLocation,
-            /* [in] */ LONG lIndex,
-            /* [out] */ VARIANT *pvVersion,
-            /* [out] */ VARIANT *pvLocations,
-            /* [out] */ VARIANT *pvDate);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *EnumBackups)(
+        IISComputer2 * This,
+        /* [in] */ BSTR bstrLocation,
+        /* [in] */ LONG lIndex,
+        /* [out] */ VARIANT *pvVersion,
+        /* [out] */ VARIANT *pvLocations,
+        /* [out] */ VARIANT *pvDate);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *DeleteBackup)(
-            IISComputer2 * This,
-            /* [in] */ BSTR bstrLocation,
-            /* [in] */ LONG lVersion);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *DeleteBackup)(
+        IISComputer2 * This,
+        /* [in] */ BSTR bstrLocation,
+        /* [in] */ LONG lVersion);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *BackupWithPassword)(
-            IISComputer2 * This,
-            /* [in] */ BSTR bstrLocation,
-            /* [in] */ LONG lVersion,
-            /* [in] */ LONG lFlags,
-            /* [in] */ BSTR bstrPassword);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *BackupWithPassword)(
+        IISComputer2 * This,
+        /* [in] */ BSTR bstrLocation,
+        /* [in] */ LONG lVersion,
+        /* [in] */ LONG lFlags,
+        /* [in] */ BSTR bstrPassword);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *RestoreWithPassword)(
-            IISComputer2 * This,
-            /* [in] */ BSTR bstrLocation,
-            /* [in] */ LONG lVersion,
-            /* [in] */ LONG lFlags,
-            /* [in] */ BSTR bstrPassword);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *RestoreWithPassword)(
+        IISComputer2 * This,
+        /* [in] */ BSTR bstrLocation,
+        /* [in] */ LONG lVersion,
+        /* [in] */ LONG lFlags,
+        /* [in] */ BSTR bstrPassword);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *Export)(
-            IISComputer2 * This,
-            /* [in] */ BSTR bstrPassword,
-            /* [in] */ BSTR bstrFilename,
-            /* [in] */ BSTR bstrSourcePath,
-            /* [in] */ LONG lFlags);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *Export)(
+        IISComputer2 * This,
+        /* [in] */ BSTR bstrPassword,
+        /* [in] */ BSTR bstrFilename,
+        /* [in] */ BSTR bstrSourcePath,
+        /* [in] */ LONG lFlags);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *Import)(
-            IISComputer2 * This,
-            /* [in] */ BSTR bstrPassword,
-            /* [in] */ BSTR bstrFilename,
-            /* [in] */ BSTR bstrSourcePath,
-            /* [in] */ BSTR bstrDestPath,
-            /* [in] */ LONG lFlags);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *Import)(
+        IISComputer2 * This,
+        /* [in] */ BSTR bstrPassword,
+        /* [in] */ BSTR bstrFilename,
+        /* [in] */ BSTR bstrSourcePath,
+        /* [in] */ BSTR bstrDestPath,
+        /* [in] */ LONG lFlags);
 
-        /* [id] */
-        HRESULT(STDMETHODCALLTYPE *SaveData)(
-            IISComputer2 * This);
+    /* [id] */
+    HRESULT(STDMETHODCALLTYPE *SaveData)(
+        IISComputer2 * This);
 
-        END_INTERFACE
-    } IISComputer2Vtbl;
+    END_INTERFACE
+} IISComputer2Vtbl;
 
-    interface IISComputer2
-    {
-        CONST_VTBL struct IISComputer2Vtbl *lpVtbl;
-    };
+interface IISComputer2
+{
+    CONST_VTBL struct IISComputer2Vtbl *lpVtbl;
+};
 
 
 
@@ -3778,146 +3778,146 @@ public:
 
 
 
-    /* [id] */ HRESULT STDMETHODCALLTYPE IISComputer2_BackupWithPassword_Proxy(
-        IISComputer2 * This,
-        /* [in] */ BSTR bstrLocation,
-        /* [in] */ LONG lVersion,
-        /* [in] */ LONG lFlags,
-        /* [in] */ BSTR bstrPassword);
+/* [id] */ HRESULT STDMETHODCALLTYPE IISComputer2_BackupWithPassword_Proxy(
+    IISComputer2 * This,
+    /* [in] */ BSTR bstrLocation,
+    /* [in] */ LONG lVersion,
+    /* [in] */ LONG lFlags,
+    /* [in] */ BSTR bstrPassword);
 
 
-    void __RPC_STUB IISComputer2_BackupWithPassword_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISComputer2_BackupWithPassword_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISComputer2_RestoreWithPassword_Proxy(
-        IISComputer2 * This,
-        /* [in] */ BSTR bstrLocation,
-        /* [in] */ LONG lVersion,
-        /* [in] */ LONG lFlags,
-        /* [in] */ BSTR bstrPassword);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISComputer2_RestoreWithPassword_Proxy(
+    IISComputer2 * This,
+    /* [in] */ BSTR bstrLocation,
+    /* [in] */ LONG lVersion,
+    /* [in] */ LONG lFlags,
+    /* [in] */ BSTR bstrPassword);
 
 
-    void __RPC_STUB IISComputer2_RestoreWithPassword_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISComputer2_RestoreWithPassword_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISComputer2_Export_Proxy(
-        IISComputer2 * This,
-        /* [in] */ BSTR bstrPassword,
-        /* [in] */ BSTR bstrFilename,
-        /* [in] */ BSTR bstrSourcePath,
-        /* [in] */ LONG lFlags);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISComputer2_Export_Proxy(
+    IISComputer2 * This,
+    /* [in] */ BSTR bstrPassword,
+    /* [in] */ BSTR bstrFilename,
+    /* [in] */ BSTR bstrSourcePath,
+    /* [in] */ LONG lFlags);
 
 
-    void __RPC_STUB IISComputer2_Export_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISComputer2_Export_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISComputer2_Import_Proxy(
-        IISComputer2 * This,
-        /* [in] */ BSTR bstrPassword,
-        /* [in] */ BSTR bstrFilename,
-        /* [in] */ BSTR bstrSourcePath,
-        /* [in] */ BSTR bstrDestPath,
-        /* [in] */ LONG lFlags);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISComputer2_Import_Proxy(
+    IISComputer2 * This,
+    /* [in] */ BSTR bstrPassword,
+    /* [in] */ BSTR bstrFilename,
+    /* [in] */ BSTR bstrSourcePath,
+    /* [in] */ BSTR bstrDestPath,
+    /* [in] */ LONG lFlags);
 
 
-    void __RPC_STUB IISComputer2_Import_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISComputer2_Import_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    /* [id] */
-    HRESULT STDMETHODCALLTYPE IISComputer2_SaveData_Proxy(
-        IISComputer2 * This);
+/* [id] */
+HRESULT STDMETHODCALLTYPE IISComputer2_SaveData_Proxy(
+    IISComputer2 * This);
 
 
-    void __RPC_STUB IISComputer2_SaveData_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IISComputer2_SaveData_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
 #endif 	/* __IISComputer2_INTERFACE_DEFINED__ */
 
 
-    EXTERN_C const CLSID CLSID_IISExtComputer;
+EXTERN_C const CLSID CLSID_IISExtComputer;
 
 #ifdef __cplusplus
 
-    class DECLSPEC_UUID("91ef9258-afec-11d1-9868-00a0c922e703")
-            IISExtComputer;
+class DECLSPEC_UUID("91ef9258-afec-11d1-9868-00a0c922e703")
+    IISExtComputer;
 #endif
 
-    EXTERN_C const CLSID CLSID_IISExtApp;
+EXTERN_C const CLSID CLSID_IISExtApp;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("b4f34438-afec-11d1-9868-00a0c922e703")
-            IISExtApp;
+    IISExtApp;
 #endif
 
-    EXTERN_C const CLSID CLSID_IISExtServer;
+EXTERN_C const CLSID CLSID_IISExtServer;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("c3b32488-afec-11d1-9868-00a0c922e703")
-            IISExtServer;
+    IISExtServer;
 #endif
 
-    EXTERN_C const CLSID CLSID_IISExtDsCrMap;
+EXTERN_C const CLSID CLSID_IISExtDsCrMap;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("bc36cde8-afeb-11d1-9868-00a0c922e703")
-            IISExtDsCrMap;
+    IISExtDsCrMap;
 #endif
 
-    EXTERN_C const CLSID CLSID_IISExtApplicationPool;
+EXTERN_C const CLSID CLSID_IISExtApplicationPool;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("E99F9D0C-FB39-402b-9EEB-AA185237BD34")
-            IISExtApplicationPool;
+    IISExtApplicationPool;
 #endif
 
-    EXTERN_C const CLSID CLSID_IISExtApplicationPools;
+EXTERN_C const CLSID CLSID_IISExtApplicationPools;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("95863074-A389-406a-A2D7-D98BFC95B905")
-            IISExtApplicationPools;
+    IISExtApplicationPools;
 #endif
 
-    EXTERN_C const CLSID CLSID_IISExtWebService;
+EXTERN_C const CLSID CLSID_IISExtWebService;
 
 #ifdef __cplusplus
 
 class DECLSPEC_UUID("40B8F873-B30E-475d-BEC5-4D0EBB0DBAF3")
-            IISExtWebService;
+    IISExtWebService;
 #endif
 #endif /* __IISExt_LIBRARY_DEFINED__ */
 
-    /* Additional Prototypes for ALL interfaces */
+/* Additional Prototypes for ALL interfaces */
 
-    /* end of Additional Prototypes */
+/* end of Additional Prototypes */
 
 #ifdef __cplusplus
 }

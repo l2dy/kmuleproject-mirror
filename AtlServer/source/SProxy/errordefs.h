@@ -92,7 +92,7 @@ extern const EMITDESC g_Emits[] =
 
 class CEmitError
 {
-private:
+  private:
 
     bool m_bEmitted;
     bool m_bEmitWarnings;
@@ -155,7 +155,7 @@ private:
         }
     }
 
-public:
+  public:
 
     CEmitError()
         :m_bEmitted(false), m_bEmitWarnings(true)

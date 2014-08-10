@@ -7,7 +7,7 @@
 
 class CAddress
 {
-public:
+  public:
     enum EAF
     {
         None = 0,
@@ -18,15 +18,15 @@ public:
     CAddress(EAF eAF = None);
     explicit CAddress(const byte* IP);
     explicit CAddress(UINT IP); // must be same as with Qt, must be in host order
-	virtual ~CAddress();
+    virtual ~CAddress();
 
-	bool operator < (const CAddress &Other) const;
-	bool operator > (const CAddress &Other) const;
-	bool operator == (const CAddress &Other) const;
-	bool operator != (const CAddress &Other) const;
+    bool operator < (const CAddress &Other) const;
+    bool operator > (const CAddress &Other) const;
+    bool operator == (const CAddress &Other) const;
+    bool operator != (const CAddress &Other) const;
 
-	void			Init();
-    bool			FromString(const std::string Str);    
+    void			Init();
+    bool			FromString(const std::string Str);
     std::wstring	ToStringW() const;
     UINT			ToIPv4() const; // must be same as with Qt, must be in host order
 
@@ -36,16 +36,16 @@ public:
 
     void			FromSA(const sockaddr* sa, const int sa_len, uint16* pPort = NULL) ;
     void			ToSA(sockaddr* sa, int *sa_len, const uint16 uPort = 0) const;
-	
+
     int				GetAF() const;
     EAF				GetType() const;
     const unsigned char* Data() const;
-	size_t			GetSize() const;
+    size_t			GetSize() const;
 
-private:
-	std::string		ToString() const;
+  private:
+    std::string		ToString() const;
 
-protected:
+  protected:
     byte			m_IP[16];
     EAF				m_eAF;
 };

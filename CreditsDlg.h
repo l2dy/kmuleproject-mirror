@@ -9,7 +9,7 @@
 class CCreditsDlg : public CDialog
 {
 // Construction
-public:
+  public:
     void KillThread();
     void StartThread();
     CCreditsDlg(CWnd* pParent = NULL);   // standard constructor
@@ -30,12 +30,12 @@ public:
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CCreditsDlg)
-protected:
+  protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
 // Implementation
-protected:
+  protected:
 
     // Generated message map functions
     //{{AFX_MSG(CCreditsDlg)
@@ -46,6 +46,6 @@ protected:
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
-private:
+  private:
     CBitmap m_imgSplash;
 };

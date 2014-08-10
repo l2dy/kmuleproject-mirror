@@ -22,7 +22,7 @@ struct ConvertJob;
 
 class CPartFileConvert
 {
-public:
+  public:
     static int	ScanFolderToAdd(CString folder,bool deletesource=false);
     static void ConvertToeMule(CString folder,bool deletesource=false);
     static void CPartFileConvert::StartThread();
@@ -37,7 +37,7 @@ public:
     static CString GetReturncodeText(int ret);
     static void Localize();
 
-private:
+  private:
     CPartFileConvert(void); // Just use static recover method
 
     static int performConvertToeMule(CString folder);
@@ -50,7 +50,7 @@ private:
 class CPartFileConvertDlg : public CResizableDialog
 {
     DECLARE_DYNAMIC(CPartFileConvertDlg)
-public:
+  public:
     CPartFileConvertDlg(CWnd* pParent = NULL);   // standard constructor
     virtual ~CPartFileConvertDlg();
 
@@ -61,7 +61,7 @@ public:
     void RemoveJob(ConvertJob* job);
     void UpdateJobInfo(ConvertJob* job);
 
-protected:
+  protected:
     HICON m_icnWnd;
     CProgressCtrlX pb_current;
     CListCtrl	   joblist;

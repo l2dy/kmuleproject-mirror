@@ -30,7 +30,7 @@
 class CStatisticsDlg : public CResizableDialog
 {
     DECLARE_DYNAMIC(CStatisticsDlg)
-public:
+  public:
     CStatisticsDlg(CWnd* pParent = NULL);   // standard constructor
     ~CStatisticsDlg();
     enum { IDD = IDD_STATISTICS };
@@ -51,7 +51,7 @@ public:
     CStatisticsTree stattree;
     // <-----khaos-
 
-private:
+  private:
     COScopeCtrl m_DownloadOMeter,m_UploadOMeter,m_Statistics;
     TOOLINFO tt;
 
@@ -113,7 +113,7 @@ private:
     HTREEITEM h_allocs;
     HTREEITEM h_allocSizes[32];
 
-protected:
+  protected:
     void SetAllIcons();
 
     virtual BOOL OnInitDialog();

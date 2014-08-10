@@ -100,13 +100,13 @@ typedef struct tagNM_PPTOOLTIP_DISPLAY
 class CPPToolTip : public CWnd
 {
 // Construction
-public:
+  public:
     virtual BOOL Create(CWnd* pParentWnd, BOOL bBalloonSize = TRUE);
     CPPToolTip();
     virtual ~CPPToolTip();
 
 // Attributes
-public:
+  public:
     enum {	PPTTSZ_ROUNDED_CX = 0,
             PPTTSZ_ROUNDED_CY,
             PPTTSZ_MARGIN_CX,
@@ -188,7 +188,7 @@ public:
             PPTOOLTIP_MAX_EFFECTS
          };
 
-protected:
+  protected:
     enum {	PPTOOLTIP_SHOW = 0x100, //the identifier of the timer for show the tooltip
             PPTOOLTIP_HIDE = 0x101  //the identifier of the timer for hide the tooltip
          };
@@ -247,17 +247,17 @@ protected:
 
 
 // Operations
-public:
+  public:
 
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CPPToolTip)
-public:
+  public:
     virtual BOOL PreTranslateMessage(MSG* pMsg);
     //}}AFX_VIRTUAL
 
 // Implementation
-public:
+  public:
     //Functions for the styles
     void  SetStyles(DWORD nStyles, int nIndexTool = PPTOOLTIP_TOOL_NOEXIST); //Sets New Style
     void  ModifyStyles(DWORD nAddStyles, DWORD nRemoveStyles, int nIndexTool = PPTOOLTIP_TOOL_NOEXIST); //Modifies styles
@@ -359,7 +359,7 @@ public:
     void Pop();
 
     // Generated message map functions
-protected:
+  protected:
 
     LRESULT OnAddTool(WPARAM wParam, LPARAM lParam);
     HWND GetWndFromPoint(CPoint & pt, BOOL bGetDisabled = TRUE) const;

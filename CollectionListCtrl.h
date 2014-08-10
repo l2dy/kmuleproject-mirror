@@ -25,7 +25,7 @@ class CCollectionListCtrl : public CMuleListCtrl, public CListCtrlItemWalk
 {
     DECLARE_DYNAMIC(CCollectionListCtrl)
 
-public:
+  public:
     CCollectionListCtrl();
 
     void Init(CString strNameAdd);
@@ -38,7 +38,7 @@ public:
     void CheckAll();
     void UncheckAll();
 
-protected:
+  protected:
     bool	m_bCheckBoxes;
     bool	m_bContextMenu;
     CImageList m_ImageList;

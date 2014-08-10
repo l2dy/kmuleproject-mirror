@@ -31,7 +31,7 @@ typedef struct SPC_NMHDR
 
 class CSplitterControl : public CStatic
 {
-public:
+  public:
     CSplitterControl();
     virtual	~CSplitterControl();
 
@@ -46,7 +46,7 @@ public:
     static void ChangeWidth(CWnd* pWnd, int dx, DWORD dwFlag = CW_LEFTALIGN);
     static void ChangeHeight(CWnd* pWnd, int dy, DWORD dwFlag = CW_TOPALIGN);
 
-protected:
+  protected:
     static HCURSOR m_hcurMoveVert;
     static HCURSOR m_hcurMoveHorz;
     BOOL	m_bIsPressed;

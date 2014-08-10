@@ -239,8 +239,8 @@ void CClientReqSocket::Safe_Delete()
     deltimer = ::GetTickCount();
 #ifdef NAT_TRAVERSAL
     if (m_SocketData.hSocket != INVALID_SOCKET || HaveUtpLayer()) // deadlake PROXYSUPPORT - changed to AsyncSocketEx //>>> WiZaRd::NatTraversal [Xanatos]
-#else 
-	if (m_SocketData.hSocket != INVALID_SOCKET) // deadlake PROXYSUPPORT - changed to AsyncSocketEx
+#else
+    if (m_SocketData.hSocket != INVALID_SOCKET) // deadlake PROXYSUPPORT - changed to AsyncSocketEx
 #endif
         ShutDown(SD_BOTH);
     if (client)
@@ -378,7 +378,7 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
                                 client->InfoPacketsReceived();
 
 #ifdef IPV6_SUPPORT
-						Kademlia::CKademlia::Bootstrap(client->GetIP().ToIPv4(), client->GetKadPort()); //>>> WiZaRd::IPv6 [Xanatos]
+                        Kademlia::CKademlia::Bootstrap(client->GetIP().ToIPv4(), client->GetKadPort()); //>>> WiZaRd::IPv6 [Xanatos]
 #else
                         Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
 #endif
@@ -541,7 +541,7 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
                         theStats.AddUpDataOverheadFileRequest(packet->size);
                         SendPacket(packet, true);
 //>>> WiZaRd::ICS [enkeyDEV]
-						// TODO: Do we need to send ICS data on complete files or to crumb-supporting clients? They will receive a detailed crumb status...
+                        // TODO: Do we need to send ICS data on complete files or to crumb-supporting clients? They will receive a detailed crumb status...
                         if (client->GetIncompletePartVersion() && client->GetClientSoft() == SO_KMULE && reqfile->IsPartFile()) //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
                         {
                             CSafeMemFile data(16+16);
@@ -732,7 +732,7 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
                     //however, as the session actually failed, we should count it in our private stats
 //>>> WiZaRd::ZZUL Upload [ZZ]
                     //if (client->GetAntiLeechData() && client->GetSessionUp() == 0)
-					if (client->GetAntiLeechData() && client->GetQueueSessionUp() == 0)
+                    if (client->GetAntiLeechData() && client->GetQueueSessionUp() == 0)
 //<<< WiZaRd::ZZUL Upload [ZZ]
                         client->GetAntiLeechData()->AddULSession(true);
                     theApp.uploadqueue->RemoveFromUploadQueue(client, L"Remote client canceled transfer.", true);
@@ -750,8 +750,8 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
                         //stat-fix - it's wrong to add this session as failed!
                         //however, as the session actually failed, we should count it in our private stats
 //>>> WiZaRd::ZZUL Upload [ZZ]
-						//if (client->GetAntiLeechData() && client->GetSessionUp() == 0)
-						if (client->GetAntiLeechData() && client->GetQueueSessionUp() == 0)
+                        //if (client->GetAntiLeechData() && client->GetSessionUp() == 0)
+                        if (client->GetAntiLeechData() && client->GetQueueSessionUp() == 0)
 //<<< WiZaRd::ZZUL Upload [ZZ]
                             client->GetAntiLeechData()->AddULSession(true);
                         theApp.uploadqueue->RemoveFromUploadQueue(client, L"Remote client ended transfer.", true);
@@ -853,7 +853,7 @@ bool CClientReqSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode)
 #ifdef IPV6_SUPPORT
                     else if (nNewUserID == ntohl(client->GetIP().ToIPv4())) //>>> WiZaRd::IPv6 [Xanatos]
 #else
-					else if (nNewUserID == client->GetIP())
+                    else if (nNewUserID == client->GetIP())
 #endif
                     {
                         // client changed server and has a HighID(IP)
@@ -1263,7 +1263,7 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
                     client->CheckHandshakeFinished();
 
 #ifdef IPV6_SUPPORT
-					Kademlia::CKademlia::Bootstrap(client->GetIP().ToIPv4(), client->GetKadPort()); //>>> WiZaRd::IPv6 [Xanatos]
+                    Kademlia::CKademlia::Bootstrap(client->GetIP().ToIPv4(), client->GetKadPort()); //>>> WiZaRd::IPv6 [Xanatos]
 #else
                     Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
 #endif
@@ -1387,7 +1387,7 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
                                 // no passive adding of files with only one part
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
                                 if (reqfile->IsPartFile() && reqfile->GetFileSize() > (client->SupportsSCT() ? (uint64)CRUMBSIZE : (uint64)PARTSIZE))
-								//if (reqfile->IsPartFile() && reqfile->GetFileSize() > (uint64)PARTSIZE)
+                                    //if (reqfile->IsPartFile() && reqfile->GetFileSize() > (uint64)PARTSIZE)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
                                 {
                                     if (((CPartFile*)reqfile)->GetMaxSources() > ((CPartFile*)reqfile)->GetSourceCount())
@@ -1436,8 +1436,8 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
                                 data_out.WriteUInt8(OP_FILESTATUS);
                                 reqfile->WriteSafePartStatus(&data_out, client); //>>> WiZaRd::Intelligent SOTN
 //>>> WiZaRd::ICS [enkeyDEV]
-								// TODO: Do we need to send ICS data on complete files or to crumb-supporting clients? They will receive a detailed crumb status...
-								if (client->GetIncompletePartVersion() && client->GetClientSoft() == SO_KMULE && reqfile->IsPartFile()) //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
+                                // TODO: Do we need to send ICS data on complete files or to crumb-supporting clients? They will receive a detailed crumb status...
+                                if (client->GetIncompletePartVersion() && client->GetClientSoft() == SO_KMULE && reqfile->IsPartFile()) //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
                                 {
                                     data_out.WriteUInt8(OP_FILEINCSTATUS);
                                     ((CPartFile*)reqfile)->WriteIncPartStatus(&data_out);
@@ -1480,7 +1480,7 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
                     client->CheckHandshakeFinished();
 
 #ifdef IPV6_SUPPORT
-					Kademlia::CKademlia::Bootstrap(client->GetIP().ToIPv4(), client->GetKadPort()); //>>> WiZaRd::IPv6 [Xanatos]
+                    Kademlia::CKademlia::Bootstrap(client->GetIP().ToIPv4(), client->GetKadPort()); //>>> WiZaRd::IPv6 [Xanatos]
 #else
                     Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
 #endif
@@ -1728,8 +1728,8 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
                     }
 //<<< WiZaRd::IPv6 [Xanatos]
 #else
-					Packet* pPacket = new Packet(OP_PUBLICIP_ANSWER, 4, OP_EMULEPROT);
-					PokeUInt32(pPacket->pBuffer, client->GetIP());
+                    Packet* pPacket = new Packet(OP_PUBLICIP_ANSWER, 4, OP_EMULEPROT);
+                    PokeUInt32(pPacket->pBuffer, client->GetIP());
 #endif
                     theStats.AddUpDataOverheadOther(pPacket->size);
                     SendPacket(pPacket);
@@ -1841,8 +1841,8 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
 
 #ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
-					CAddress destip;
-                    int Offset = 4;                    
+                    CAddress destip;
+                    int Offset = 4;
                     UINT dwIP = data_in.ReadUInt32();
                     if (dwIP == -1)
                     {
@@ -1852,10 +1852,10 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
                         destip = CAddress(uIP);
                     }
                     else
-                        destip = CAddress(_ntohl(dwIP));                    
+                        destip = CAddress(_ntohl(dwIP));
 //<<< WiZaRd::IPv6 [Xanatos]
 #else
-					UINT destip = data_in.ReadUInt32();
+                    UINT destip = data_in.ReadUInt32();
 #endif
                     uint16 destport = data_in.ReadUInt16();
                     uchar reqfilehash[16];
@@ -2148,7 +2148,7 @@ bool CClientReqSocket::ProcessExtPacket(const BYTE* packet, UINT size, UINT opco
 #ifdef IPV6_SUPPORT
                     if (theApp.clientlist->IsKadFirewallCheckIP(_ntohl(client->GetIP().ToIPv4()))) //>>> WiZaRd::IPv6 [Xanatos]
 #else
-					if (theApp.clientlist->IsKadFirewallCheckIP(client->GetIP()))
+                    if (theApp.clientlist->IsKadFirewallCheckIP(client->GetIP()))
 #endif
                     {
                         if (Kademlia::CKademlia::IsRunning())
@@ -2248,20 +2248,20 @@ CString CClientReqSocket::DbgGetClientInfo()
     CString str;
 #ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
-	CAddress IP;
+    CAddress IP;
     SOCKADDR_IN6 sockAddr = {0};
     int nSockAddrLen = sizeof(sockAddr);
-    GetPeerName((SOCKADDR*)&sockAddr, &nSockAddrLen);    
+    GetPeerName((SOCKADDR*)&sockAddr, &nSockAddrLen);
     IP.FromSA((SOCKADDR*)&sockAddr, nSockAddrLen);
-	if (!IP.IsNull() && (client == NULL || IP != client->GetIP()))
-		str.AppendFormat(_T("IP=%s"), ipstr(IP));
+    if (!IP.IsNull() && (client == NULL || IP != client->GetIP()))
+        str.AppendFormat(_T("IP=%s"), ipstr(IP));
 //<<< WiZaRd::IPv6 [Xanatos]
 #else
-	SOCKADDR_IN sockAddr = {0};
-	int nSockAddrLen = sizeof(sockAddr);
-	GetPeerName((SOCKADDR*)&sockAddr, &nSockAddrLen);
+    SOCKADDR_IN sockAddr = {0};
+    int nSockAddrLen = sizeof(sockAddr);
+    GetPeerName((SOCKADDR*)&sockAddr, &nSockAddrLen);
     if (sockAddr.sin_addr.S_un.S_addr != 0 && (client == NULL || sockAddr.sin_addr.S_un.S_addr != client->GetIP()))
-		str.AppendFormat(_T("IP=%s"), ipstr(sockAddr.sin_addr));
+        str.AppendFormat(_T("IP=%s"), ipstr(sockAddr.sin_addr));
 #endif
 
     if (client)
@@ -2353,7 +2353,7 @@ bool CClientReqSocket::PacketReceivedCppEH(Packet* packet)
             bResult = ProcessExtPacket((const BYTE*)packet->pBuffer, packet->size, packet->opcode, uRawSize);
             break;
 //>>> WiZaRd::ModProt
-            // dispatch mod packets to the right processing functions
+        // dispatch mod packets to the right processing functions
         case OP_MODPROT_PACKED:
             if (!packet->UnPackPacket())
             {
@@ -2596,7 +2596,7 @@ bool CListenSocket::StartListening()
 #ifdef IPV6_SUPPORT
     if (!Create(thePrefs.GetPort(), SOCK_STREAM, FD_ACCEPT, thePrefs.GetBindAddrA(), FALSE/*bReuseAddr*/, TRUE)) //>>> WiZaRd::IPv6 [Xanatos]
 #else
-	if (!Create(thePrefs.GetPort(), SOCK_STREAM, FD_ACCEPT, thePrefs.GetBindAddrA(), FALSE/*bReuseAddr*/))
+    if (!Create(thePrefs.GetPort(), SOCK_STREAM, FD_ACCEPT, thePrefs.GetBindAddrA(), FALSE/*bReuseAddr*/))
 #endif
     {
         CString strError;
@@ -2684,40 +2684,40 @@ void CListenSocket::StopListening()
 static int s_iAcceptConnectionCondRejected;
 
 int CALLBACK AcceptConnectionCond(LPWSABUF lpCallerId, LPWSABUF /*lpCallerData*/, LPQOS /*lpSQOS*/, LPQOS /*lpGQOS*/,
-                                   LPWSABUF /*lpCalleeId*/, LPWSABUF /*lpCalleeData*/, GROUP FAR* /*g*/, DWORD /*dwCallbackData*/)
+                                  LPWSABUF /*lpCalleeId*/, LPWSABUF /*lpCalleeData*/, GROUP FAR* /*g*/, DWORD /*dwCallbackData*/)
 {
-     if (lpCallerId && lpCallerId->buf && lpCallerId->len >= sizeof SOCKADDR_IN)
-     {
-         LPSOCKADDR_IN pSockAddr = (LPSOCKADDR_IN)lpCallerId->buf;
-         ASSERT(pSockAddr->sin_addr.S_un.S_addr != 0 && pSockAddr->sin_addr.S_un.S_addr != INADDR_NONE);
+    if (lpCallerId && lpCallerId->buf && lpCallerId->len >= sizeof SOCKADDR_IN)
+    {
+        LPSOCKADDR_IN pSockAddr = (LPSOCKADDR_IN)lpCallerId->buf;
+        ASSERT(pSockAddr->sin_addr.S_un.S_addr != 0 && pSockAddr->sin_addr.S_un.S_addr != INADDR_NONE);
 
-         if (theApp.ipfilter->IsFiltered(pSockAddr->sin_addr.S_un.S_addr))
-         {
-             if (thePrefs.GetLogFilteredIPs())
-                 AddDebugLogLine(false, _T("Rejecting connection attempt (IP=%s) - IP filter (%s)"), ipstr(pSockAddr->sin_addr.S_un.S_addr), theApp.ipfilter->GetLastHit());
-             s_iAcceptConnectionCondRejected = 1;
-             return CF_REJECT;
-         }
+        if (theApp.ipfilter->IsFiltered(pSockAddr->sin_addr.S_un.S_addr))
+        {
+            if (thePrefs.GetLogFilteredIPs())
+                AddDebugLogLine(false, _T("Rejecting connection attempt (IP=%s) - IP filter (%s)"), ipstr(pSockAddr->sin_addr.S_un.S_addr), theApp.ipfilter->GetLastHit());
+            s_iAcceptConnectionCondRejected = 1;
+            return CF_REJECT;
+        }
 
-         if (theApp.clientlist->IsBannedClient(pSockAddr->sin_addr.S_un.S_addr))
-         {
-             if (thePrefs.GetLogBannedClients())
-             {
-                 CUpDownClient* pClient = theApp.clientlist->FindClientByIP(pSockAddr->sin_addr.S_un.S_addr);
-				 if(pClient)
-					AddDebugLogLine(false, _T("Rejecting connection attempt of banned client %s %s"), ipstr(pSockAddr->sin_addr.S_un.S_addr), pClient->DbgGetClientInfo());
-             }
-             s_iAcceptConnectionCondRejected = 2;
-             return CF_REJECT;
-         }
-     }
-     else
-     {
-         if (thePrefs.GetVerbose())
-             DebugLogError(_T("Client TCP socket: AcceptConnectionCond unexpected lpCallerId"));
-     }
+        if (theApp.clientlist->IsBannedClient(pSockAddr->sin_addr.S_un.S_addr))
+        {
+            if (thePrefs.GetLogBannedClients())
+            {
+                CUpDownClient* pClient = theApp.clientlist->FindClientByIP(pSockAddr->sin_addr.S_un.S_addr);
+                if (pClient)
+                    AddDebugLogLine(false, _T("Rejecting connection attempt of banned client %s %s"), ipstr(pSockAddr->sin_addr.S_un.S_addr), pClient->DbgGetClientInfo());
+            }
+            s_iAcceptConnectionCondRejected = 2;
+            return CF_REJECT;
+        }
+    }
+    else
+    {
+        if (thePrefs.GetVerbose())
+            DebugLogError(_T("Client TCP socket: AcceptConnectionCond unexpected lpCallerId"));
+    }
 
-     return CF_ACCEPT;
+    return CF_ACCEPT;
 }
 #endif
 
@@ -2749,7 +2749,7 @@ void CListenSocket::OnAccept(int nErrorCode)
 #ifdef IPV6_SUPPORT
             SOCKADDR_IN6 SockAddr = {0}; //>>> WiZaRd::IPv6 [Xanatos]
 #else
-			SOCKADDR_IN SockAddr = {0};
+            SOCKADDR_IN SockAddr = {0};
 #endif
             int iSockAddrLen = sizeof SockAddr;
 #ifdef IPV6_SUPPORT
@@ -2840,7 +2840,7 @@ void CListenSocket::OnAccept(int nErrorCode)
 #ifdef IPV6_SUPPORT
                 if (memcmp(&SockAddr.sin6_addr, &in6addr_any, sizeof in6addr_any) == 0)  // for safety.. //>>> WiZaRd::IPv6 [Xanatos]
 #else
-				if (SockAddr.sin_addr.S_un.S_addr == 0) // for safety..
+                if (SockAddr.sin_addr.S_un.S_addr == 0) // for safety..
 #endif
                 {
                     iSockAddrLen = sizeof SockAddr;
@@ -2849,10 +2849,10 @@ void CListenSocket::OnAccept(int nErrorCode)
 //>>> WiZaRd::IPv6 [Xanatos]
                     CAddress address;
                     address.FromSA((SOCKADDR*)&SockAddr, iSockAddrLen);
-                    DebugLogWarning(L"SockAddr.sin_addr.S_un.S_addr == 0;  GetPeerName returned %s", ipstr(address));                    
+                    DebugLogWarning(L"SockAddr.sin_addr.S_un.S_addr == 0;  GetPeerName returned %s", ipstr(address));
 //<<< WiZaRd::IPv6 [Xanatos]
 #else
-					DebugLogWarning(L"SockAddr.sin_addr.S_un.S_addr == 0;  GetPeerName returned %s", ipstr(SockAddr.sin_addr.S_un.S_addr));
+                    DebugLogWarning(L"SockAddr.sin_addr.S_un.S_addr == 0;  GetPeerName returned %s", ipstr(SockAddr.sin_addr.S_un.S_addr));
 #endif
                 }
 
@@ -2919,7 +2919,7 @@ void CListenSocket::Process()
 #ifdef NAT_TRAVERSAL
             if (cur_sock->m_SocketData.hSocket != INVALID_SOCKET || cur_sock->HaveUtpLayer(true)) //>>> WiZaRd::NatTraversal [Xanatos]
 #else
-			if (cur_sock->m_SocketData.hSocket != INVALID_SOCKET)
+            if (cur_sock->m_SocketData.hSocket != INVALID_SOCKET)
 #endif
                 cur_sock->Close();			// calls 'closesocket'
             else

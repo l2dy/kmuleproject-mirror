@@ -31,7 +31,7 @@ struct CurrentPingStruct
 class LastCommonRouteFinder :
     public CWinThread
 {
-public:
+  public:
     LastCommonRouteFinder();
     ~LastCommonRouteFinder();
 
@@ -51,7 +51,7 @@ public:
     void InitiateFastReactionPeriod();
 
     UINT GetUpload();
-private:
+  private:
     static UINT RunProc(LPVOID pParam);
     UINT RunInternal();
 

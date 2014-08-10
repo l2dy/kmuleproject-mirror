@@ -94,7 +94,7 @@ inline ATTRIBUTEUSE GetAttributeUse(const wchar_t *wsz, int cch)
 
 class CAttribute : public CXSDElement
 {
-private:
+  private:
 
     ATTRIBUTEFORM m_attrForm;
     ATTRIBUTEUSE m_attrUse;
@@ -107,9 +107,9 @@ private:
     // WSDL:arrayType attribute
     CStringW m_strArrayType;
 
-protected:
+  protected:
 
-public:
+  public:
 
     // REVIEW: set to defaults?
     CAttribute()

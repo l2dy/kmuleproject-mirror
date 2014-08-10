@@ -32,7 +32,7 @@ enum TBPSTATES
 
 class CStatistics
 {
-public:
+  public:
     CStatistics();   // standard constructor
 
     void	Init();
@@ -198,7 +198,7 @@ public:
         return m_nUpDataOverheadOtherPackets;
     }
 
-public:
+  public:
     //	Cumulative Stats
     static float	maxDown;
     static float	maxDownavg;
@@ -232,7 +232,7 @@ public:
     static UINT	filteredclients;
     static DWORD	starttime;
 
-private:
+  private:
     typedef struct TransferredData
     {
         UINT	datalen;
@@ -269,11 +269,11 @@ private:
     CList<TransferredData> m_AvarageUDRO_list;
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
-public:
+  public:
     uint64  GetTotalCompletedBytes() const;
     void    IncTotalCompletedBytes(const uint64 toAdd);
     void    DecTotalCompletedBytes(const uint64 toDec);
-private:
+  private:
     uint64  m_nTotalCompletedBytes;
 //<<< WiZaRd::ZZUL Upload [ZZ]
 };

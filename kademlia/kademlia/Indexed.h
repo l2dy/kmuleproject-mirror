@@ -60,13 +60,13 @@ class CKadUDPKey;
 class CKeyEntry;
 class CIndexed
 {
-public:
+  public:
     class CLoadDataThread : public CWinThread
     {
         DECLARE_DYNCREATE(CLoadDataThread)
-    protected:
+      protected:
         CLoadDataThread();
-    public:
+      public:
         virtual BOOL InitInstance();
         virtual int	Run();
         void	SetValues(CIndexed* pOwner)
@@ -74,7 +74,7 @@ public:
             m_pOwner = pOwner;
         }
 
-    private:
+      private:
         CIndexed* m_pOwner;
     };
 
@@ -95,7 +95,7 @@ public:
     UINT m_uTotalIndexNotes;
     UINT m_uTotalIndexLoad;
 
-private:
+  private:
     void ReadFile(void);
     void Clean(void);
     time_t m_tLastClean;

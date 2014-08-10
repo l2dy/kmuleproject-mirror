@@ -12,7 +12,7 @@ class CCommentDialogLst : public CResizablePage
 {
     DECLARE_DYNAMIC(CCommentDialogLst)
 
-public:
+  public:
     CCommentDialogLst();
     virtual ~CCommentDialogLst();
 
@@ -25,7 +25,7 @@ public:
 // Dialog Data
     enum { IDD = IDD_COMMENTLST };
 
-protected:
+  protected:
     CString m_strCaption;
     CCommentListCtrl m_lstComments;
     const CSimpleArray<CObject*>* m_paFiles;

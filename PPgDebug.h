@@ -9,14 +9,14 @@ class CPPgDebug : public CPropertyPage
 {
     DECLARE_DYNAMIC(CPPgDebug)
 
-public:
+  public:
     CPPgDebug();
     virtual ~CPPgDebug();
 
 // Dialog Data
     enum { IDD = IDD_PPG_DEBUG };
 
-protected:
+  protected:
     HTREEITEM m_htiClient;
 
     // detail level items

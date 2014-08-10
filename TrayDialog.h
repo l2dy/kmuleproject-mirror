@@ -6,10 +6,10 @@
 
 class CTrayDialog : public CDialogMinTrayBtn<CResizableDialog>
 {
-protected:
+  protected:
     typedef CDialogMinTrayBtn<CResizableDialog> CTrayDialogBase;
 
-public:
+  public:
     CTrayDialog(UINT uIDD, CWnd* pParent = NULL);   // standard constructor
 
     void TraySetMinimizeToTray(bool* pbMinimizeToTray);
@@ -34,7 +34,7 @@ public:
     virtual void OnTrayRButtonDblClk(CPoint pt);
     virtual void OnTrayMouseMove(CPoint pt);
 
-protected:
+  protected:
     bool* m_pbMinimizeToTray;
     bool m_bCurIconDelete;
     HICON m_hPrevIconDelete;

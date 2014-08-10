@@ -67,7 +67,7 @@ enum AppState
 
 class CemuleApp : public CWinApp
 {
-public:
+  public:
     CemuleApp(LPCTSTR lpszAppName = NULL);
 
     // ZZ:UploadSpeedSense -->
@@ -221,7 +221,7 @@ public:
         return m_bAutoStart;
     }
 
-protected:
+  protected:
     bool ProcessCommandline();
     void SetTimeOnTransfer();
     static BOOL CALLBACK SearchEmuleWindow(HWND hWnd, LPARAM lParam);
@@ -254,11 +254,11 @@ protected:
 
     // Splash screen
 //>>> WiZaRd::New Splash [TBH]
-private:
+  private:
     //CSplashScreen*	m_pSplashWnd;
     CSplashScreenEx*	m_pSplashWnd;
     DWORD			m_dwSplashTime;
-public:
+  public:
     void			ShowSplash();
     void			DestroySplash();
     bool			IsSplashActive() const
@@ -268,15 +268,15 @@ public:
     void			SetSplashText(const CString& s);
 //<<< WiZaRd::New Splash [TBH]
 
-private:
+  private:
     UINT     m_wTimerRes;
 //>>> WiZaRd::Easy ModVersion
-public:
+  public:
     CString  GetClientVersionString() const;
     CString  GetClientVersionStringBase(const bool bDebug = false) const;
 //<<< WiZaRd::Easy ModVersion
 //>>> WiZaRd::Automatic Restart
-public:
+  public:
     bool	IsRestartPlanned() const
     {
         return m_bRestartApp;
@@ -285,16 +285,16 @@ public:
     {
         m_bRestartApp = true;
     }
-private:
+  private:
     bool	m_bRestartApp;
 //<<< WiZaRd::Automatic Restart
 //>>> WiZaRd::IPv6 [Xanatos]
 #ifdef IPV6_SUPPORT
-public:
+  public:
     const CAddress&	GetPublicIPv6() const			{return m_PublicIPv6;}
     void		SetPublicIPv6(const CAddress& IP)	{m_PublicIPv6 = IP;}
     void		UpdateIPv6();
-private:
+  private:
     CAddress m_PublicIPv6;
 #endif
 //<<< WiZaRd::IPv6 [Xanatos]
@@ -308,7 +308,7 @@ extern CemuleApp theApp;
 
 class CTempIconLoader
 {
-public:
+  public:
     // because nearly all icons we are loading are 16x16, the default size is specified as 16 and not as 32 nor LR_DEFAULTSIZE
     CTempIconLoader(LPCTSTR pszResourceID, int cx = 16, int cy = 16, UINT uFlags = LR_DEFAULTCOLOR);
     CTempIconLoader(UINT uResourceID, int cx = 16, int cy = 16, UINT uFlags = LR_DEFAULTCOLOR);
@@ -319,6 +319,6 @@ public:
         return this == NULL ? NULL : m_hIcon;
     }
 
-protected:
+  protected:
     HICON m_hIcon;
 };

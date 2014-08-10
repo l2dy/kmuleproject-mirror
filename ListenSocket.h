@@ -34,7 +34,7 @@ class CClientReqSocket : public CEMSocket
     friend class CListenSocket;
     DECLARE_DYNCREATE(CClientReqSocket)
 
-public:
+  public:
     CClientReqSocket(CUpDownClient* in_client = NULL);
 
     void	SetClient(CUpDownClient* pClient);
@@ -55,7 +55,7 @@ public:
 
     CUpDownClient*	client;
     void		 OnReceive(int nErrorCode);
-protected:
+  protected:
     virtual ~CClientReqSocket();
     virtual void Close()
     {
@@ -86,7 +86,7 @@ protected:
     UINT	m_nOnConnect;
 
 //>>> WiZaRd::ZZUL Upload [ZZ]
-public:
+  public:
     bool    ExpandReceiveBuffer();
 //<<< WiZaRd::ZZUL Upload [ZZ]
 };
@@ -96,7 +96,7 @@ class CListenSocket : public CAsyncSocketEx
 {
     friend class CClientReqSocket;
 
-public:
+  public:
     CListenSocket();
     virtual ~CListenSocket();
 
@@ -155,7 +155,7 @@ public:
         return m_nComp;
     }
 
-private:
+  private:
     bool bListening;
     CTypedPtrList<CPtrList, CClientReqSocket*> socket_list;
     uint16	m_OpenSocketsInterval;

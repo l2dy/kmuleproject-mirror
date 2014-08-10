@@ -101,11 +101,11 @@ void CreateNetworkInfo(CRichEditCtrlX& rCtrl, CHARFORMAT& rcfDef, CHARFORMAT& rc
 
         rCtrl << GetResString(IDS_PW_NICK) << L":\t" << thePrefs.GetUserNick() << L"\r\n";
         rCtrl << GetResString(IDS_CD_UHASH) << L"\t" << md4str((uchar*)thePrefs.GetUserHash()) << L"\r\n";
-		rCtrl << GetResString(IDS_IP) << L":\t" << ipstr(theApp.GetPublicIP()) << L"\r\n";
+        rCtrl << GetResString(IDS_IP) << L":\t" << ipstr(theApp.GetPublicIP()) << L"\r\n";
 //>>> WiZaRd::IPv6 [Xanatos]
 #ifdef IPV6_SUPPORT
-		if(!theApp.GetPublicIPv6().IsNull())
-			rCtrl << GetResString(IDS_IP) << L" (v6):\t" << ipstr(theApp.GetPublicIPv6()) << L"\r\n";
+        if (!theApp.GetPublicIPv6().IsNull())
+            rCtrl << GetResString(IDS_IP) << L" (v6):\t" << ipstr(theApp.GetPublicIPv6()) << L"\r\n";
 #endif
 //<<< WiZaRd::IPv6 [Xanatos]
         rCtrl << _T("TCP-") << GetResString(IDS_PORT) << L":\t" << thePrefs.GetPort() << L"\r\n";

@@ -67,14 +67,14 @@ class /*AFX_EXT_CLASS*/ CTreePropSheet : public CPropertySheet
     DECLARE_DYNAMIC(CTreePropSheet)
 
 // Construction/Destruction
-public:
+  public:
     CTreePropSheet();
     CTreePropSheet(UINT nIDCaption, CWnd* pParentWnd = NULL, UINT iSelectPage = 0);
     CTreePropSheet(LPCTSTR pszCaption, CWnd* pParentWnd = NULL, UINT iSelectPage = 0);
     virtual ~CTreePropSheet();
 
 // Operations
-public:
+  public:
     /**
     Call this method, if you would like to use a tree control to browse
     the pages, instead of the tab control.
@@ -185,7 +185,7 @@ public:
     CTreeCtrl* GetPageTreeControl();
 
 // Public helpers
-public:
+  public:
     //@{
     /**
     This helper allows you to easily set the icon of a property page.
@@ -245,7 +245,7 @@ public:
     static BOOL DestroyPageIcon(CPropertyPage *pPage);
 
 // Overridable implementation helpers
-protected:
+  protected:
     /**
     Will be called to generate the message, that should be displayed on
     an empty page, when the sheet is in tree view mode
@@ -285,7 +285,7 @@ protected:
     virtual CPropPageFrame* CreatePageFrame();
 
 // Implementation helpers
-protected:
+  protected:
     /**
     Moves all childs by the specified amount of pixels.
 
@@ -392,14 +392,14 @@ protected:
     void ActivateNextPage();
 
 // Overridings
-protected:
+  protected:
     //{{AFX_VIRTUAL(CTreePropSheet)
-public:
+  public:
     virtual BOOL OnInitDialog();
     //}}AFX_VIRTUAL
 
 // Message handlers
-protected:
+  protected:
     //{{AFX_MSG(CTreePropSheet)
     afx_msg void OnDestroy();
     //}}AFX_MSG
@@ -414,7 +414,7 @@ protected:
     DECLARE_MESSAGE_MAP()
 
 // Properties
-private:
+  private:
     /** TRUE if we should use the tree control instead of the tab ctrl. */
     BOOL m_bTreeViewMode;
 
@@ -453,7 +453,7 @@ private:
     int m_nPageTreeWidth;
 
 // Static Properties
-private:
+  private:
     /** The id of the tree view control, that shows the pages. */
     static const UINT s_unPageTreeId;
 };

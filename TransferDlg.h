@@ -29,7 +29,7 @@ class CTransferDlg : public CFrameWnd
 {
     DECLARE_DYNCREATE(CTransferDlg)
 
-public:
+  public:
     enum EWnd2
     {
         wnd2Downloading = 0,
@@ -65,7 +65,7 @@ public:
     CClientListCtrl*		GetClientList();
     CDownloadClientsCtrl*	GetDownloadClientsList();
 
-protected:
+  protected:
     CToolbarWnd* m_pwndToolbar;
 
     virtual BOOL PreTranslateMessage(MSG* pMsg);

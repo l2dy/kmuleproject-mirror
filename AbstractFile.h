@@ -49,7 +49,7 @@ class CAbstractFile: public CObject
 {
     DECLARE_DYNAMIC(CAbstractFile)
 
-public:
+  public:
     CAbstractFile();
     CAbstractFile(const CAbstractFile* pAbstractFile);
     virtual ~CAbstractFile();
@@ -180,7 +180,7 @@ public:
     virtual void Dump(CDumpContext& dc) const;
 #endif
 
-protected:
+  protected:
     CFileIdentifier m_FileIdentifier;
     CString			m_strFileName;
     EMFileSize		m_nFileSize;
@@ -195,9 +195,9 @@ protected:
     CKadEntryPtrList m_kadNotes;
 
 //>>> WiZaRd::CollectionEnhancement
-private:
+  private:
     CString	m_strDownloadDirectory;
-public:
+  public:
     void	SetDownloadDirectory();
     void	SetDownloadDirectory(const CString& strFolder);
     CString	GetDownloadDirectory(const bool bForDisplay = false) const;

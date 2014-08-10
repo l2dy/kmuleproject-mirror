@@ -508,12 +508,12 @@ CString CAbstractFile::GetED2kLink(const bool bHashset, const bool bFolder, cons
     }
 
 //>>> WiZaRd::CollectionEnhancement
-	if(bFolder)
-	{
-		CString strDirectory = GetDownloadDirectory();
-		if (!strDirectory.IsEmpty())
-			strLink.AppendFormat(L"f=%s|", strDirectory);
-	}
+    if (bFolder)
+    {
+        CString strDirectory = GetDownloadDirectory();
+        if (!strDirectory.IsEmpty())
+            strLink.AppendFormat(L"f=%s|", strDirectory);
+    }
 //<<< WiZaRd::CollectionEnhancement
 
     strLink += L'/';

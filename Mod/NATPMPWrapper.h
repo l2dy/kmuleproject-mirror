@@ -48,7 +48,7 @@ class CNATPMPThreadWrapper
 {
     friend class CNATPMPThread;
 
-public:
+  public:
     CNATPMPThreadWrapper();
     virtual ~CNATPMPThreadWrapper();
 
@@ -63,7 +63,7 @@ public:
     void		StartRefreshTimer();
     void		KillRefreshTimer();
 
-private:
+  private:
     void		StartThread();
     void		AddPort(const uint16 port, const int protocol, const bool bLock = true);
     static VOID CALLBACK RefreshTimer(HWND hWnd, UINT nMsg, UINT nId, DWORD dwTime);
@@ -81,10 +81,10 @@ private:
 class CNATPMPThread : public CWinThread
 {
     DECLARE_DYNCREATE(CNATPMPThread)
-protected:
+  protected:
     CNATPMPThread();
 
-public:
+  public:
     virtual BOOL InitInstance();
     virtual int	Run();
     void	SetValues(CNATPMPThreadWrapper* pOwner)
@@ -92,14 +92,14 @@ public:
         m_pOwner = pOwner;
     }
 
-private:
+  private:
     CNATPMPThreadWrapper*	m_pOwner;
 };
 
 class CNATPMP
 {
     friend class CNATPMPThreadWrapper;
-public:
+  public:
     CNATPMP();
     virtual ~CNATPMP();
 
@@ -117,7 +117,7 @@ public:
     bool		RemoveAllPortMappings();
     bool		Reset();
 
-private:
+  private:
     bool		Init();
     bool		UnInit();
     bool		PerformMapping(const uint16 publicPort, const uint16 privatePort, const int protocol, const UINT lifeTime);

@@ -172,7 +172,7 @@ struct CFlusherCacheData
 // Also gives the skeleton for all of the flushers
 class CNoFlusher
 {
-public:
+  public:
     void Add(CFlusherCacheData * /*pItem*/) { }
     void Remove(CFlusherCacheData * /*pItem*/) { }
     void Access(CFlusherCacheData * /*pItem*/) { }
@@ -190,7 +190,7 @@ public:
 // Old flusher -- oldest items are flushed first
 class COldFlusher
 {
-public:
+  public:
     CFlusherCacheData * pHead;
     CFlusherCacheData * pTail;
 
@@ -261,7 +261,7 @@ public:
 // Least recently used flusher -- the item that was accessed the longest time ago is flushed
 class CLRUFlusher : public COldFlusher
 {
-public:
+  public:
     // Move it to the tail of the list
     void Access(CFlusherCacheData * pItem)
     {
@@ -275,7 +275,7 @@ public:
 // Least often used flusher
 class CLOUFlusher : public COldFlusher
 {
-public:
+  public:
     // Adds to the tail of the list
     void Add(CFlusherCacheData * pItem)
     {
@@ -345,7 +345,7 @@ class COrFlushers
     CFirst m_First;
     CSecond m_Second;
     BOOL m_bWhich;
-public:
+  public:
     COrFlushers()
     {
         m_bWhich = FALSE;
@@ -417,7 +417,7 @@ struct CCullerCacheData
 
 class CNoExpireCuller
 {
-public:
+  public:
     void Add(CCullerCacheData * /*pItem*/) { }
     void Commit(CCullerCacheData * /*pItem*/) { }
     void Access(CCullerCacheData * /*pItem*/) { }
@@ -437,7 +437,7 @@ public:
 
 class CExpireCuller
 {
-public:
+  public:
     CFileTime m_cftCurrent;
     CCullerCacheData *pHead;
     CCullerCacheData *pTail;
@@ -560,7 +560,7 @@ public:
 
 class CLifetimeCuller : public CExpireCuller
 {
-public:
+  public:
     void Add(CCullerCacheData * pItem)
     {
         ATLENSURE(pItem);
@@ -594,7 +594,7 @@ public:
 template <__int64 ftLifespan>
 class CFixedLifetimeCuller : public CExpireCuller
 {
-public:
+  public:
     void Commit(CCullerCacheData * pItem)
     {
         ATLASSERT(pItem);
@@ -626,7 +626,7 @@ class COrCullers
 {
     CFirst m_First;
     CSecond m_Second;
-public:
+  public:
     void Add(CCullerCacheData * pItem)
     {
         m_First.Add(pItem);
@@ -706,26 +706,26 @@ public:
 //            be identical to that of CComCriticalSection (see atlbase.h)
 //  StatClass: Class used to contain statistics about this cache.
 template <class T,
-         class DataType,
-         class NodeInfo=CCacheDataBase,
-         class keyType=CFixedStringKey,
-         class KeyTrait=CStringElementTraits<CFixedStringKey >,
-         class Flusher=COldFlusher,
-         class Culler=CExpireCuller,
-         class SyncClass=CComCriticalSection,
+          class DataType,
+          class NodeInfo=CCacheDataBase,
+          class keyType=CFixedStringKey,
+          class KeyTrait=CStringElementTraits<CFixedStringKey >,
+          class Flusher=COldFlusher,
+          class Culler=CExpireCuller,
+          class SyncClass=CComCriticalSection,
 #ifdef __ATLPERF_H__
-         class StatClass=CStdStatClass >
+          class StatClass=CStdStatClass >
 #else // __ATLPERF_H__
-         class StatClass=CNoStatClass >
+          class StatClass=CNoStatClass >
 #endif // __ATLPERF_H__
 class CMemoryCacheBase
 {
-protected:
+  protected:
     typedef keyType keytype;
     struct NodeType : public __CACHEITEM,
-        public NodeInfo,
-        public CFlusherCacheData,
-        public CCullerCacheData
+            public NodeInfo,
+            public CFlusherCacheData,
+            public CCullerCacheData
     {
         NodeType()
         {
@@ -751,7 +751,7 @@ protected:
     DWORD m_dwMaxEntries;
 
     BOOL m_bInitialized;
-public:
+  public:
 
     mapType m_hashTable;
     CMemoryCacheBase() :
@@ -1173,7 +1173,7 @@ public:
         return S_OK;
     }
 
-protected:
+  protected:
 
     // Checks to see if the cache can accommodate any new entries within
     // its allocation and entry count limits.
@@ -1204,7 +1204,7 @@ protected:
 
     }
 
-protected:
+  protected:
     // Takes the element at pos in the hash table and removes it from
     // the cache.  If there are no references, then the entry is
     // deleted, otherwise it is deleted by ReleaseEntry when the
@@ -1271,24 +1271,24 @@ struct CCacheDataEx : public CCacheDataBase
 
 template <typename DataType,
 #ifdef __ATLPERF_H__
-         class StatClass=CStdStatClass,
+          class StatClass=CStdStatClass,
 #else // __ATLPERF_H__
-         class StatClass=CNoStatClass,
+          class StatClass=CNoStatClass,
 #endif // __ATLPERF_H__
-         class FlushClass=COldFlusher,
-         class keyType=CFixedStringKey,  class KeyTrait=CStringElementTraits<CFixedStringKey >,
-         class SyncClass=CComCriticalSection,
-         class CullClass=CExpireCuller >
+          class FlushClass=COldFlusher,
+          class keyType=CFixedStringKey,  class KeyTrait=CStringElementTraits<CFixedStringKey >,
+          class SyncClass=CComCriticalSection,
+          class CullClass=CExpireCuller >
 class CMemoryCache:
     public CMemoryCacheBase<CMemoryCache<DataType, StatClass, FlushClass, keyType, KeyTrait, SyncClass, CullClass>, DataType, CCacheDataEx,
     keyType, KeyTrait, FlushClass, CullClass, SyncClass, StatClass>
 {
-protected:
+  protected:
     CComPtr<IServiceProvider> m_spServiceProv;
     CComPtr<IDllCache> m_spDllCache;
     typedef CMemoryCacheBase<CMemoryCache<DataType, StatClass, FlushClass, keyType, KeyTrait, SyncClass, CullClass>, DataType, CCacheDataEx,
             keyType, KeyTrait, FlushClass, CullClass, SyncClass, StatClass> baseClass;
-public:
+  public:
     virtual ~CMemoryCache()
     {
     }
@@ -1386,7 +1386,7 @@ struct CPerfStatObject : public CPerfObject
 // CCachePerfMon - the interface to CPerfMon, with associated definitions
 class CCachePerfMon : public CPerfMon
 {
-public:
+  public:
     BEGIN_PERF_MAP(_T("ATL Server:Cache"))
     CHAIN_PERF_CATEGORY(CPerfStatObject)
     END_PERF_MAP()
@@ -1398,11 +1398,11 @@ public:
 // This class provides the implementation of a standard cache statistics accounting class
 class CStdStatClass
 {
-protected:
+  protected:
     CPerfStatObject* m_pStats;
     CPerfStatObject m_stats;
 
-public:
+  public:
 
     CStdStatClass()
     {
@@ -1501,7 +1501,7 @@ public:
 // This is a noop stat class
 class CNoStatClass
 {
-public:
+  public:
     HRESULT Initialize()
     {
         return S_OK;
@@ -1553,7 +1553,7 @@ class CPerfStatClass : public CStdStatClass
     CPerfStatObject * m_pPerfObject;
     CCachePerfMon m_PerfMon;
 
-public:
+  public:
 
     HRESULT Initialize(__in_z_opt LPWSTR szName=NULL)
     {
@@ -1633,29 +1633,29 @@ public:
 // as the implementation.
 template <class MonitorClass,
 #ifdef __ATLPERF_H__
-         class StatClass=CStdStatClass,
+          class StatClass=CStdStatClass,
 #else // __ATLPERF_H__
-         class StatClass=CNoStatClass,
+          class StatClass=CNoStatClass,
 #endif // __ATLPERF_H__
-         class SyncObj=CComCriticalSection,
-         class FlushClass=COldFlusher,
-         class CullClass=CExpireCuller >
+          class SyncObj=CComCriticalSection,
+          class FlushClass=COldFlusher,
+          class CullClass=CExpireCuller >
 class CBlobCache : public CMemoryCache<void*, StatClass, FlushClass, CFixedStringKey,
     CStringElementTraits<CFixedStringKey >, SyncObj, CullClass>,
-public IMemoryCache,
-public IMemoryCacheControl,
-public IMemoryCacheStats,
-public IWorkerThreadClient
+    public IMemoryCache,
+    public IMemoryCacheControl,
+    public IMemoryCacheStats,
+    public IWorkerThreadClient
 {
     typedef CMemoryCache<void*, StatClass, FlushClass, CFixedStringKey,
             CStringElementTraits<CFixedStringKey>, SyncObj, CullClass> cacheBase;
 
     MonitorClass m_Monitor;
 
-protected:
+  protected:
     HANDLE m_hTimer;
 
-public:
+  public:
     CBlobCache() : m_hTimer(NULL)
     {
     }
@@ -1941,7 +1941,7 @@ public:
 
 class CNoDllCachePeer
 {
-public:
+  public:
     struct DllInfo
     {
     };
@@ -1968,7 +1968,7 @@ template <class MonitorClass, class Peer=CNoDllCachePeer>
 class CDllCache : public IDllCache,
     public IWorkerThreadClient
 {
-protected:
+  protected:
     CComCriticalSection m_critSec;
     CSimpleArray<DLL_CACHE_ENTRY> m_Dlls;
     CSimpleArray<typename Peer::DllInfo> m_DllInfos;
@@ -1982,7 +1982,7 @@ protected:
         m_Dlls.RemoveAt(m_Dlls.GetSize()-1);
     }
 
-public:
+  public:
     Peer m_Peer;
 
     CDllCache() :
@@ -2356,24 +2356,24 @@ public IUnknown
 
 template <class MonitorClass,
 #ifdef __ATLPERF_H__
-         class StatClass=CStdStatClass,
+          class StatClass=CStdStatClass,
 #else // __ATLPERF_H__
-         class StatClass=CNoStatClass,
+          class StatClass=CNoStatClass,
 #endif // __ATLPERF_H__
-         class SyncClass=CComCriticalSection,
-         class FlushClass=COldFlusher,
-         class CullClass=CLifetimeCuller >
+          class SyncClass=CComCriticalSection,
+          class FlushClass=COldFlusher,
+          class CullClass=CLifetimeCuller >
 class CStencilCache :
     public CMemoryCacheBase<CStencilCache<MonitorClass, StatClass, SyncClass, FlushClass, CullClass>, void *, CCacheDataEx,
     CFixedStringKey,  CStringElementTraitsI<CFixedStringKey >,
     FlushClass, CullClass, SyncClass, StatClass>,
-public IStencilCache,
-public IStencilCacheControl,
-public IWorkerThreadClient,
-public IMemoryCacheStats,
-public CComObjectRootEx<CComGlobalsThreadModel>
+    public IStencilCache,
+    public IStencilCacheControl,
+    public IWorkerThreadClient,
+    public IMemoryCacheStats,
+    public CComObjectRootEx<CComGlobalsThreadModel>
 {
-protected:
+  protected:
     typedef CMemoryCacheBase<CStencilCache<MonitorClass, StatClass, SyncClass, FlushClass, CullClass>, void *, CCacheDataEx,
             CFixedStringKey,  CStringElementTraitsI<CFixedStringKey >,
             FlushClass, CullClass, SyncClass, StatClass> cacheBase;
@@ -2383,7 +2383,7 @@ protected:
     HANDLE m_hTimer;
     CComPtr<IDllCache> m_spDllCache;
 
-public:
+  public:
 
     CStencilCache() :
         m_dwdwStencilLifespan(ATL_STENCIL_LIFESPAN),
@@ -2666,7 +2666,7 @@ public IUnknown
 
 class CNoFileCachePeer
 {
-public:
+  public:
     struct PeerInfo
     {
     };
@@ -2694,24 +2694,24 @@ struct CCacheDataPeer : public CCacheDataBase
 // maximum number of entries, expiration of entries, etc. -- inherits from
 // CMemoryCacheBase
 template <
-class MonitorClass,
+    class MonitorClass,
 #ifdef __ATLPERF_H__
-      class StatClass=CStdStatClass,
+    class StatClass=CStdStatClass,
 #else // __ATLPERF_H__
-      class StatClass=CNoStatClass,
+    class StatClass=CNoStatClass,
 #endif // __ATLPERF_H__
-      class FileCachePeer=CNoFileCachePeer,
-      class FlushClass=COldFlusher,
-      class SyncClass=CComCriticalSection,
-      class CullClass=CExpireCuller >
+    class FileCachePeer=CNoFileCachePeer,
+    class FlushClass=COldFlusher,
+    class SyncClass=CComCriticalSection,
+    class CullClass=CExpireCuller >
 class CFileCache:
     public CMemoryCacheBase<CFileCache<MonitorClass, StatClass, FileCachePeer, FlushClass, SyncClass, CullClass>, LPSTR, CCacheDataPeer<FileCachePeer>,
     CFixedStringKey,  CStringElementTraits<CFixedStringKey >,
     FlushClass, CullClass, SyncClass, StatClass>,
-public IWorkerThreadClient,
-public IFileCache,
-public IMemoryCacheControl,
-public IMemoryCacheStats
+    public IWorkerThreadClient,
+    public IFileCache,
+    public IMemoryCacheControl,
+    public IMemoryCacheStats
 {
     typedef CMemoryCacheBase<CFileCache<MonitorClass, StatClass, FileCachePeer, FlushClass, SyncClass, CullClass>, LPSTR, CCacheDataPeer<FileCachePeer>,
             CFixedStringKey,  CStringElementTraits<CFixedStringKey >,
@@ -2719,10 +2719,10 @@ public IMemoryCacheStats
 
     MonitorClass m_Monitor;
 
-protected:
+  protected:
     HANDLE m_hTimer;
 
-public:
+  public:
 
     CFileCache() : m_hTimer(NULL)
     {
@@ -3128,7 +3128,7 @@ template <>
 class CElementTraits< CDataConnection > :
     public CElementTraitsBase< CDataConnection >
 {
-public:
+  public:
     static ULONG Hash(INARGTYPE t)
     {
         return (ULONG(ULONG_PTR(&t)));
@@ -3156,7 +3156,7 @@ class CDataSourceCache :
     public IDataSourceCache,
     public CComObjectRootEx<CComGlobalsThreadModel>
 {
-public:
+  public:
     BEGIN_COM_MAP(CDataSourceCache)
     COM_INTERFACE_ENTRY(IDataSourceCache)
     END_COM_MAP()
@@ -3269,7 +3269,7 @@ public:
         return (bRet && (bool)*pSession)? hr : E_FAIL;
     }
 
-protected:
+  protected:
     atlDataSourceCacheMap m_ConnectionMap;
     TCritSec m_cs;
 };

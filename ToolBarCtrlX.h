@@ -19,7 +19,7 @@
 class CToolBarCtrlX : public CToolBarCtrl
 {
     DECLARE_DYNAMIC(CToolBarCtrlX)
-public:
+  public:
     CToolBarCtrlX();
     virtual ~CToolBarCtrlX();
 
@@ -42,6 +42,6 @@ public:
 
     int AddString(const CString& strToAdd);
 
-protected:
+  protected:
     DECLARE_MESSAGE_MAP()
 };

@@ -33,20 +33,20 @@
 
 CAddress::CAddress(EAF eAF)
 {
-	Init();
-    m_eAF = eAF;    
+    Init();
+    m_eAF = eAF;
 }
 
 CAddress::CAddress(const byte* IP)
 {
-	Init();
+    Init();
     m_eAF = IPv6;
     memcpy(m_IP, IP, GetSize());
 }
 
 CAddress::CAddress(UINT IP) // must be same as with Qt
 {
-	Init();
+    Init();
     m_eAF = IPv4;
     IP = _ntohl(IP);
     memcpy(m_IP, &IP, GetSize());
@@ -58,32 +58,32 @@ CAddress::~CAddress()
 
 bool CAddress::operator < (const CAddress &Other) const
 {
-	if (m_eAF != Other.m_eAF) 
-		return m_eAF < Other.m_eAF;
-	return memcmp(m_IP, Other.m_IP, GetSize()) < 0;
+    if (m_eAF != Other.m_eAF)
+        return m_eAF < Other.m_eAF;
+    return memcmp(m_IP, Other.m_IP, GetSize()) < 0;
 }
 
 bool CAddress::operator > (const CAddress &Other) const
 {
-	if (m_eAF != Other.m_eAF) 
-		return m_eAF > Other.m_eAF;
-	return memcmp(m_IP, Other.m_IP, GetSize()) > 0;
+    if (m_eAF != Other.m_eAF)
+        return m_eAF > Other.m_eAF;
+    return memcmp(m_IP, Other.m_IP, GetSize()) > 0;
 }
 
-bool CAddress::operator == (const CAddress &Other) const	
+bool CAddress::operator == (const CAddress &Other) const
 {
-	return (m_eAF == Other.m_eAF) && memcmp(m_IP, Other.m_IP, GetSize()) == 0;
+    return (m_eAF == Other.m_eAF) && memcmp(m_IP, Other.m_IP, GetSize()) == 0;
 }
 
-bool CAddress::operator != (const CAddress &Other) const	
+bool CAddress::operator != (const CAddress &Other) const
 {
-	return !(*this == Other);
+    return !(*this == Other);
 }
 
 void CAddress::Init()
 {
-	m_eAF = None;
-	memset(m_IP, 0, 16);
+    m_eAF = None;
+    memset(m_IP, 0, 16);
 }
 
 
@@ -97,12 +97,12 @@ UINT CAddress::ToIPv4() const // must be same as with Qt*/
 
 size_t CAddress::GetSize() const
 {
-	switch (m_eAF)
-	{
-		case IPv4:	return 4; 
-		case IPv6:	return 16; 
-		default:	return 0; 
-	}
+    switch (m_eAF)
+    {
+        case IPv4:	return 4;
+        case IPv6:	return 16;
+        default:	return 0;
+    }
 }
 
 int CAddress::GetAF() const
@@ -112,12 +112,12 @@ int CAddress::GetAF() const
 
 CAddress::EAF	CAddress::GetType() const
 {
-	return m_eAF;
+    return m_eAF;
 }
 
 const unsigned char* CAddress::Data() const
 {
-	return m_IP;
+    return m_IP;
 }
 
 std::string CAddress::ToString() const
@@ -128,10 +128,10 @@ std::string CAddress::ToString() const
     return Dest;
 }
 
-std::wstring CAddress::ToStringW() const 
+std::wstring CAddress::ToStringW() const
 {
-	std::string s = ToString(); 
-	return std::wstring(s.begin(), s.end());
+    std::string s = ToString();
+    return std::wstring(s.begin(), s.end());
 }
 
 bool CAddress::FromString(const std::string Str)
@@ -141,10 +141,10 @@ bool CAddress::FromString(const std::string Str)
     else if (Str.find(":") != std::string::npos)
         m_eAF = IPv6;
     else
-	{
-		ASSERT(0);
+    {
+        ASSERT(0);
         return false;
-	}
+    }
     return _inet_pton(GetAF(), Str.c_str(), m_IP) == 1;
 }
 
@@ -234,34 +234,34 @@ bool CAddress::IsNull() const
 
 bool CAddress::ConvertTo(const EAF eAF)
 {
-	bool bConverted = true;
+    bool bConverted = true;
     if (eAF != m_eAF)
-	{
-		if (eAF == IPv6)
-		{
-			m_IP[12] = m_IP[0];
-			m_IP[13] = m_IP[1];
-			m_IP[14] = m_IP[2];
-			m_IP[15] = m_IP[3];
+    {
+        if (eAF == IPv6)
+        {
+            m_IP[12] = m_IP[0];
+            m_IP[13] = m_IP[1];
+            m_IP[14] = m_IP[2];
+            m_IP[15] = m_IP[3];
 
-			m_IP[10] = m_IP[11] = 0xFF;
-			m_IP[0] = m_IP[1] = m_IP[2] = m_IP[3] = m_IP[4] = m_IP[5] = m_IP[6] = m_IP[7] = m_IP[8] = m_IP[9] = 0;
+            m_IP[10] = m_IP[11] = 0xFF;
+            m_IP[0] = m_IP[1] = m_IP[2] = m_IP[3] = m_IP[4] = m_IP[5] = m_IP[6] = m_IP[7] = m_IP[8] = m_IP[9] = 0;
 
-			m_eAF = eAF;
-		}
-		else if (m_IP[10] == 0xFF && m_IP[11] == 0xFF
-				 && !m_IP[0] && !m_IP[1] && !m_IP[2] && !m_IP[3] && !m_IP[4] && !m_IP[5] && !m_IP[6] && !m_IP[7] && !m_IP[8] && !m_IP[9])
-		{
-			m_IP[0] = m_IP[12];
-			m_IP[1] = m_IP[13];
-			m_IP[2] = m_IP[14];
-			m_IP[3] = m_IP[15];
+            m_eAF = eAF;
+        }
+        else if (m_IP[10] == 0xFF && m_IP[11] == 0xFF
+                 && !m_IP[0] && !m_IP[1] && !m_IP[2] && !m_IP[3] && !m_IP[4] && !m_IP[5] && !m_IP[6] && !m_IP[7] && !m_IP[8] && !m_IP[9])
+        {
+            m_IP[0] = m_IP[12];
+            m_IP[1] = m_IP[13];
+            m_IP[2] = m_IP[14];
+            m_IP[3] = m_IP[15];
 
-			m_eAF = eAF;
-		}
-		else
-			bConverted = false;
-	}    
+            m_eAF = eAF;
+        }
+        else
+            bConverted = false;
+    }
     return bConverted;
 }
 

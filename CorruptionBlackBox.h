@@ -26,15 +26,15 @@ enum EBBRStatus
     BBR_VERIFIED,
     BBR_CORRUPTED,
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	BBR_POSSIBLYCORRUPTED, // netfinity: Sender was involved in a corrupt block, but was not alone
-	BBR_FLUSHED // netfinity: We need to track which corrupted blocks we added gaps for
+    BBR_POSSIBLYCORRUPTED, // netfinity: Sender was involved in a corrupt block, but was not alone
+    BBR_FLUSHED // netfinity: We need to track which corrupted blocks we added gaps for
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 };
 
 
 class CCBBRecord
 {
-public:
+  public:
     CCBBRecord(uint64 nStartPos = 0, uint64 nEndPos = 0, UINT dwIP = 0, EBBRStatus BBRStatus = BBR_NONE);
     CCBBRecord(const CCBBRecord& cv)			{ *this = cv; }
     CCBBRecord& operator=(const CCBBRecord& cv);
@@ -53,7 +53,7 @@ typedef CArray<CCBBRecord> CRecordArray;
 
 class CCorruptionBlackBox
 {
-public:
+  public:
     CCorruptionBlackBox()			{}
     ~CCorruptionBlackBox()			{}
     void	Init(EMFileSize nFileSize);
@@ -62,10 +62,10 @@ public:
     void	VerifiedData(uint64 nStartPos, uint64 nEndPos);
     void	CorruptedData(uint64 nStartPos, uint64 nEndPos);
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	uint64	EvaluateData(UINT nPart, CPartFile* pFile = NULL, uint64 evalBlockSize = EMBLOCKSIZE);
+    uint64	EvaluateData(UINT nPart, CPartFile* pFile = NULL, uint64 evalBlockSize = EMBLOCKSIZE);
     //void	EvaluateData(UINT nPart);
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
-private:
+  private:
     CArray<CRecordArray> m_aaRecords;
 };

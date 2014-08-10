@@ -6,7 +6,7 @@
 //as published by the Free Software Foundation; either
 //version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful, 
+//This program is distributed in the hope that it will be useful,
 //but WITHOUT ANY WARRANTY; without even the implied warranty of
 //MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //GNU General Public License for more details.
@@ -725,9 +725,9 @@ bool CPreferences::IsTempFile(const CString& rstrDirectory, const CString& rstrN
     strNameLower += L"|"; // append an EOS character which we can query for
     static const LPCTSTR _apszNotSharedExts[] =
     {
-        L"%u.part" L"%c", 
-        L"%u.part.met" L"%c", 
-        L"%u.part.met" PARTMET_BAK_EXT L"%c", 
+        L"%u.part" L"%c",
+        L"%u.part.met" L"%c",
+        L"%u.part.met" PARTMET_BAK_EXT L"%c",
         L"%u.part.met" PARTMET_TMP_EXT L"%c"
     };
     for (int i = 0; i < _countof(_apszNotSharedExts); i++)
@@ -1014,10 +1014,10 @@ void CPreferences::SaveCompletedDownloadsStat()
     ini.WriteInt(L"DownSessionCompletedFiles", 	GetDownSessionCompletedFiles());
 } // SaveCompletedDownloadsStat()
 
-void CPreferences::Add2SessionTransferData(UINT uClientID, UINT uClientPort, BOOL bFromPF, 
+void CPreferences::Add2SessionTransferData(UINT uClientID, UINT uClientPort, BOOL bFromPF,
         BOOL bUpDown, UINT bytes, bool sentToFriend)
 {
-    //	This function adds the transferred bytes to the appropriate variables, 
+    //	This function adds the transferred bytes to the appropriate variables,
     //	as well as to the totals for all clients. - Khaos
     //	PARAMETERS:
     //	uClientID - The identifier for which client software sent or received this data, eg SO_EMULE
@@ -1032,7 +1032,7 @@ void CPreferences::Add2SessionTransferData(UINT uClientID, UINT uClientPort, BOO
             //	Upline Data
             switch (uClientID)
             {
-                    // Update session client breakdown stats for sent bytes...
+                // Update session client breakdown stats for sent bytes...
                 case SO_EMULE:
                 case SO_OLDEMULE:
                     sesUpData_EMULE+=bytes;
@@ -1068,11 +1068,11 @@ void CPreferences::Add2SessionTransferData(UINT uClientID, UINT uClientPort, BOO
 
             switch (uClientPort)
             {
-                    // Update session port breakdown stats for sent bytes...
+                // Update session port breakdown stats for sent bytes...
                 case 4662:
                     sesUpDataPort_4662+=bytes;
                     break;
-                    //case (UINT)-2:		sesUpDataPort_URL+=bytes;		break;
+                //case (UINT)-2:		sesUpDataPort_URL+=bytes;		break;
                 default:
                     sesUpDataPort_OTHER+=bytes;
                     break;
@@ -1090,7 +1090,7 @@ void CPreferences::Add2SessionTransferData(UINT uClientID, UINT uClientPort, BOO
             // Downline Data
             switch (uClientID)
             {
-                    // Update session client breakdown stats for received bytes...
+                // Update session client breakdown stats for received bytes...
                 case SO_EMULE:
                 case SO_OLDEMULE:
                     sesDownData_EMULE+=bytes;
@@ -1129,14 +1129,14 @@ void CPreferences::Add2SessionTransferData(UINT uClientID, UINT uClientPort, BOO
 
             switch (uClientPort)
             {
-                    // Update session port breakdown stats for received bytes...
-                    // For now we are only going to break it down by default and non-default.
-                    // A statistical analysis of all data sent from every single port/domain is
-                    // beyond the scope of this add-on.
+                // Update session port breakdown stats for received bytes...
+                // For now we are only going to break it down by default and non-default.
+                // A statistical analysis of all data sent from every single port/domain is
+                // beyond the scope of this add-on.
                 case 4662:
                     sesDownDataPort_4662+=bytes;
                     break;
-                    //case (UINT)-2:		sesDownDataPort_URL+=bytes;		break;
+                //case (UINT)-2:		sesDownDataPort_URL+=bytes;		break;
                 default:
                     sesDownDataPort_OTHER+=bytes;
                     break;
@@ -1641,23 +1641,23 @@ void CPreferences::SavePreferences()
     ini.WriteBool(L"Splashscreen", splashscreen);
     ini.WriteBool(L"BringToFront", bringtoforeground);
     ini.WriteBool(L"TransferDoubleClick", transferDoubleclick);
-	ini.WriteBool(L"BeepOnError", beepOnError);
+    ini.WriteBool(L"BeepOnError", beepOnError);
     ini.WriteBool(L"ConfirmExit", confirmExit);
     ini.WriteBool(L"FilterBadIPs", filterLANIPs);
     ini.WriteBool(L"OnlineSignature", onlineSig);
     ini.WriteBool(L"StartupMinimized", startMinimized);
     ini.WriteBool(L"AutoStart", m_bAutoStart);
-	ini.GetBool(L"RestoreLastMainWndDlg", m_bRestoreLastMainWndDlg);
+    ini.GetBool(L"RestoreLastMainWndDlg", m_bRestoreLastMainWndDlg);
     ini.WriteInt(L"LastMainWndDlgID", m_iLastMainWndDlgID);
     ini.WriteBool(L"ShowRatesOnTitle", showRatesInTitle);
-	ini.WriteBool(L"IconflashOnNewMessage", m_bIconflashOnNewMessage);
+    ini.WriteBool(L"IconflashOnNewMessage", m_bIconflashOnNewMessage);
     ini.WriteBool(L"IndicateRatings", indicateratings);
     ini.WriteBool(L"WatchClipboard4ED2kFilelinks", watchclipboard);
     ini.WriteInt(L"SearchMethod", m_iSearchMethod);
     ini.WriteBool(L"SparsePartFiles", m_bSparsePartFiles);
     ini.WriteBool(L"ResolveSharedShellLinks", m_bResolveSharedShellLinks);
     ini.WriteString(L"YourHostname", m_strYourHostname);
-	ini.WriteBool(L"KeepUnavailableFixedSharedDirs", m_bKeepUnavailableFixedSharedDirs);
+    ini.WriteBool(L"KeepUnavailableFixedSharedDirs", m_bKeepUnavailableFixedSharedDirs);
     ini.WriteBool(L"CheckFileOpen", m_bCheckFileOpen);
 
     // Barry - New properties...
@@ -1666,9 +1666,9 @@ void CPreferences::SavePreferences()
     ini.WriteInt(L"3DDepth", depth3D);
     ini.WriteBool(L"MiniMule", m_bEnableMiniMule);
 
-	ini.WriteInt(L"MaxChatHistoryLines", m_iMaxChatHistory);
-	ini.WriteInt(L"MaxMessageSessions", maxmsgsessions);
-	ini.WriteBool(L"ShowActiveDownloadsBold", m_bShowActiveDownloadsBold);
+    ini.WriteInt(L"MaxChatHistoryLines", m_iMaxChatHistory);
+    ini.WriteInt(L"MaxMessageSessions", maxmsgsessions);
+    ini.WriteBool(L"ShowActiveDownloadsBold", m_bShowActiveDownloadsBold);
 
     ini.WriteString(L"TxtEditor", m_strTxtEditor);
     ini.WriteString(L"VideoPlayer", m_strVideoPlayer);
@@ -1705,14 +1705,14 @@ void CPreferences::SavePreferences()
     ini.WriteBool(L"PreviewPrio", m_bpreviewprio);
     ini.WriteBool(L"ShowOverhead", m_bshowoverhead);
     ini.WriteBool(L"VideoPreviewBackupped", moviePreviewBackup);
-	ini.WriteInt(L"PreviewSmallBlocks", m_iPreviewSmallBlocks);
-	ini.WriteBool(L"PreviewCopiedArchives", m_bPreviewCopiedArchives);
-	ini.WriteInt(L"InspectAllFileTypes", m_iInspectAllFileTypes);
+    ini.WriteInt(L"PreviewSmallBlocks", m_iPreviewSmallBlocks);
+    ini.WriteBool(L"PreviewCopiedArchives", m_bPreviewCopiedArchives);
+    ini.WriteInt(L"InspectAllFileTypes", m_iInspectAllFileTypes);
     ini.WriteInt(L"StartNextFile", m_istartnextfile);
 
     ini.DeleteKey(L"FileBufferSizePref"); // delete old 'file buff size' setting
     ini.WriteInt(L"FileBufferSize", m_iFileBufferSize);
-	ini.GetInt(L"FileBufferTimeLimit", m_uFileBufferTimeLimit / 1000);
+    ini.GetInt(L"FileBufferTimeLimit", m_uFileBufferTimeLimit / 1000);
 
     ini.DeleteKey(L"QueueSizePref"); // delete old 'queue size' setting
     ini.WriteInt(L"QueueSize", m_iQueueSize);
@@ -1720,31 +1720,31 @@ void CPreferences::SavePreferences()
     ini.WriteInt(L"CommitFiles", m_iCommitFiles);
     ini.WriteBool(L"DAPPref", m_bDAP);
     ini.WriteBool(L"UAPPref", m_bUAP);
-	ini.WriteBool(L"PreviewOnIconDblClk", m_bPreviewOnIconDblClk);
+    ini.WriteBool(L"PreviewOnIconDblClk", m_bPreviewOnIconDblClk);
     ini.WriteBool(L"DisableKnownClientList", m_bDisableKnownClientList);
     ini.WriteBool(L"DisableQueueList", m_bDisableQueueList);
     ini.WriteBool(L"SaveLogToDisk", log2disk);
     ini.WriteBool(L"SaveAnalyzerLogToDisk", m_bLogAnalyzerToDisk); //>>> WiZaRd::ClientAnalyzer
-	ini.WriteInt(L"MaxLogFileSize", uMaxLogFileSize);
-	ini.WriteInt(L"MaxLogBuff", iMaxLogBuff/1024);
-	ini.WriteInt(L"LogFileFormat", m_iLogFileFormat);
+    ini.WriteInt(L"MaxLogFileSize", uMaxLogFileSize);
+    ini.WriteInt(L"MaxLogBuff", iMaxLogBuff/1024);
+    ini.WriteInt(L"LogFileFormat", m_iLogFileFormat);
     ini.WriteBool(L"SaveDebugToDisk", debug2disk);
     ini.WriteBool(L"MessagesFromFriendsOnly", msgonlyfriends);
     ini.WriteBool(L"ShowInfoOnCatTabs", showCatTabInfos);
     ini.WriteBool(L"AutoFilenameCleanup", autofilenamecleanup);
     ini.WriteBool(L"ShowExtControls", m_bExtControls);
     ini.WriteBool(L"UseAutocompletion", m_bUseAutocompl);
-	ini.WriteBool(L"AdjustNTFSDaylightFileTime", m_bAdjustNTFSDaylightFileTime);
-	ini.WriteBool(L"RearrangeKadSearchKeywords", m_bRearrangeKadSearchKeywords);
+    ini.WriteBool(L"AdjustNTFSDaylightFileTime", m_bAdjustNTFSDaylightFileTime);
+    ini.WriteBool(L"RearrangeKadSearchKeywords", m_bRearrangeKadSearchKeywords);
     ini.WriteBool(L"AutoClearCompleted", m_bRemoveFinishedDownloads);
     ini.WriteBool(L"TransflstRemainOrder", m_bTransflstRemain);
     ini.WriteBool(L"UseSimpleTimeRemainingcomputation", m_bUseOldTimeRemaining);
     ini.WriteBool(L"AllocateFullFile", m_bAllocFull);
     ini.WriteBool(L"ShowSharedFilesDetails", m_bShowSharedFilesDetails);
     ini.WriteBool(L"AutoShowLookups", m_bAutoShowLookups);
-	ini.WriteBool(L"ShowUpDownIconInTaskbar", m_bShowUpDownIconInTaskbar);
-	ini.WriteBool(L"ForceSpeedsToKB", m_bForceSpeedsToKB);
-	ini.WriteBool(L"ExtraPreviewWithMenu", m_bExtraPreviewWithMenu);
+    ini.WriteBool(L"ShowUpDownIconInTaskbar", m_bShowUpDownIconInTaskbar);
+    ini.WriteBool(L"ForceSpeedsToKB", m_bForceSpeedsToKB);
+    ini.WriteBool(L"ExtraPreviewWithMenu", m_bExtraPreviewWithMenu);
 
     ini.WriteInt(L"VersionCheckLastAutomatic", versioncheckLastAutomatic);
     ini.WriteInt(L"FilterLevel", filterlevel);
@@ -1760,9 +1760,9 @@ void CPreferences::SavePreferences()
     ini.WriteString(L"ToolbarBitmapFolder", m_sToolbarBitmapFolder);
     ini.WriteInt(L"ToolbarLabels", m_nToolbarLabels);
     ini.WriteInt(L"ToolbarIconSize", m_sizToolbarIconSize.cx);
-	ini.WriteInt(L"StraightWindowStyles", m_iStraightWindowStyles);
-	ini.WriteBool(L"UseSystemFontForMainControls", m_bUseSystemFontForMainControls);
-	ini.WriteBool(L"RTLWindowsLayout", m_bRTLWindowsLayout);
+    ini.WriteInt(L"StraightWindowStyles", m_iStraightWindowStyles);
+    ini.WriteBool(L"UseSystemFontForMainControls", m_bUseSystemFontForMainControls);
+    ini.WriteBool(L"RTLWindowsLayout", m_bRTLWindowsLayout);
     ini.WriteString(L"SkinProfile", m_strSkinProfile);
     ini.WriteString(L"SkinProfileDir", m_strSkinProfileDir);
 
@@ -1785,10 +1785,10 @@ void CPreferences::SavePreferences()
     ini.WriteBool(L"OpenPortsOnStartUp", m_bOpenPortsOnStartUp);
     ini.WriteInt(L"DebugLogLevel", m_byLogLevel);
     ini.WriteInt(L"WinXPSP2OrHigher", IsRunningXPSP2OrHigher());
-	ini.WriteString(L"BindAddr", m_strBindAddrW);
+    ini.WriteString(L"BindAddr", m_strBindAddrW);
     ini.WriteBool(L"RememberCancelledFiles", m_bRememberCancelledFiles);
     ini.WriteBool(L"RememberDownloadedFiles", m_bRememberDownloadedFiles);
-	ini.WriteBool(L"PartiallyPurgeOldKnownFiles", m_bPartiallyPurgeOldKnownFiles);
+    ini.WriteBool(L"PartiallyPurgeOldKnownFiles", m_bPartiallyPurgeOldKnownFiles);
 
     ini.WriteBool(L"WinaTransToolbar", m_bWinaTransToolbar);
     ini.WriteBool(L"ShowDownloadToolbar", m_bShowDownloadToolbar);
@@ -1796,7 +1796,7 @@ void CPreferences::SavePreferences()
     ini.WriteBool(L"CryptLayerRequested", m_bCryptLayerRequested);
     ini.WriteBool(L"CryptLayerRequired", m_bCryptLayerRequired);
     ini.WriteInt(L"KadUDPKey", m_dwKadUDPKey);
-	ini.WriteInt(L"CryptTCPPaddingLength", m_byCryptTCPPaddingLength);
+    ini.WriteInt(L"CryptTCPPaddingLength", m_byCryptTCPPaddingLength);
 
     ///////////////////////////////////////////////////////////////////////////
     // Section: "Proxy"
@@ -1832,8 +1832,8 @@ void CPreferences::SavePreferences()
     ini.WriteBool(L"SkipWANPPPSetup", m_bSkipWANPPPSetup);
     ini.WriteBool(L"CloseUPnPOnExit", m_bCloseUPnPOnExit);
     ini.WriteInt(L"LastWorkingImplementation", m_nLastWorkingImpl);
-	ini.WriteBool(L"DisableMiniUPNPLibImpl", m_bIsMinilibImplDisabled);
-	ini.WriteBool(L"DisableWinServImpl", m_bIsWinServImplDisabled);
+    ini.WriteBool(L"DisableMiniUPNPLibImpl", m_bIsMinilibImplDisabled);
+    ini.WriteBool(L"DisableWinServImpl", m_bIsWinServImplDisabled);
 
     SavekMulePrefs();
 }
@@ -2152,7 +2152,7 @@ void CPreferences::LoadPreferences()
     statsAverageMinutes=ini.GetInt(L"StatsAverageMinutes", 5);
     MaxConperFive=ini.GetInt(L"MaxConnectionsPerFiveSeconds", GetDefaultMaxConperFive());
 
-    // since the minimize to tray button is not working under Aero (at least not at this point), 
+    // since the minimize to tray button is not working under Aero (at least not at this point),
     // we enable map the minimize to tray on the minimize button by default if Aero is running
     if (IsRunningAeroGlassTheme())
         mintotray=ini.GetBool(L"MinToTray_Aero", true);
@@ -3122,7 +3122,7 @@ bool CPreferences::GetSparsePartFiles()
     // to this file.
     // It was suggested that Vista might limits the dataruns, which would lead to such a behavior, but wouldn't
     // make much sense for a sparse file implementation nevertheless.
-    // Due to the fact that eMule wirtes a lot small blocks into sparse files and flushs them every 6 seconds, 
+    // Due to the fact that eMule wirtes a lot small blocks into sparse files and flushs them every 6 seconds,
     // this problem pops up sooner or later for all big files. I don't see any way to walk arround this for now
     // Update: This problem seems to be fixed on Win7, possibly on earlier Vista ServicePacks too
     //		   In any case, we allow sparse files for vesions earlier and later than Vista
@@ -3132,7 +3132,7 @@ bool CPreferences::GetSparsePartFiles()
 bool CPreferences::IsRunningAeroGlassTheme()
 {
     // This is important for all functions which need to draw in the NC-Area (glass style)
-    // Aero by default does not allow this, any drawing will not be visible. This can be turned off, 
+    // Aero by default does not allow this, any drawing will not be visible. This can be turned off,
     // but Vista will not deliver the Glass style then as background when calling the default draw function
     // in other words, its draw all or nothing yourself - eMule chooses currently nothing
     static bool bAeroAlreadyDetected = false;

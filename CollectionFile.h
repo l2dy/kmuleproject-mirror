@@ -24,7 +24,7 @@ class CCollectionFile : public CAbstractFile
 {
     DECLARE_DYNAMIC(CCollectionFile)
 
-public:
+  public:
     CCollectionFile(void);
     CCollectionFile(CFileDataIO* in_data);
     CCollectionFile(CAbstractFile* copyfrom);

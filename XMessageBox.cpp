@@ -287,7 +287,7 @@ static DWORD ReadRegistry(LPCTSTR lpszCompanyName, LPCTSTR lpszKey);
 //
 class CXRect : public tagRECT
 {
-public:
+  public:
 // Constructors
     // uninitialized rectangle
     CXRect() {}
@@ -324,13 +324,13 @@ class CXDialogTemplate;
 
 class CXDialogItem
 {
-public:
+  public:
     DLGITEMTEMPLATE m_dlgItemTemplate;
     enum Econtroltype { ICON = 0x7F, BUTTON, EDITCONTROL, STATICTEXT, CHECKBOX };
     Econtroltype m_controltype;
     TCHAR * m_pszCaption;	//+++1.5
 
-public:
+  public:
     CXDialogItem(Econtroltype cType);	// default constructor will fill in default values
     CXDialogItem() {};					// default constructor, not to be called directly
     virtual ~CXDialogItem();			//+++1.5
@@ -375,7 +375,7 @@ enum EButtons
 class CXDialogTemplate
 {
 // Constructors
-public:
+  public:
     CXDialogTemplate(HWND hWnd,
                      LPCTSTR lpszMessage,
                      LPCTSTR lpszCaption,
@@ -385,7 +385,7 @@ public:
     virtual ~CXDialogTemplate();
 
 // Attributes
-public:
+  public:
     LPCTSTR	GetMessageText() const
     {
         return m_lpszMessage;
@@ -416,7 +416,7 @@ public:
     }
 
 // Operations
-public:
+  public:
     int		AddButton(EButtons eButton, UINT nID, int x, int y);
     void	AddItem(CXDialogItem::Econtroltype cType,
                     UINT nID,
@@ -432,7 +432,7 @@ public:
     int		Display();
 
 // Implementation
-protected:
+  protected:
     enum { FirstControlId = 1001};
     enum { MessageControlId = 1001};
     enum { MaxButtonStringSize = 100};

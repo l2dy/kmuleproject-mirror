@@ -179,7 +179,7 @@ CFriend* CFriendList::SearchFriend(const uchar* abyUserHash, const UINT dwIP, co
 #ifdef IPV6_SUPPORT
             if (cur_friend->m_dwLastUsedIP == dwIP && !dwIP.IsNull() && cur_friend->m_nLastUsedPort == nPort && nPort != 0) //>>> WiZaRd::IPv6 [Xanatos]
 #else
-			if (cur_friend->m_dwLastUsedIP == dwIP && dwIP != 0 && cur_friend->m_nLastUsedPort == nPort && nPort != 0)
+            if (cur_friend->m_dwLastUsedIP == dwIP && dwIP != 0 && cur_friend->m_nLastUsedPort == nPort && nPort != 0)
 #endif
                 return cur_friend;
         }
@@ -222,13 +222,13 @@ bool CFriendList::AddFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLa
         return false;
 //<<< WiZaRd::IPv6 [Xanatos]
 #else
-	if (IsLowID(dwLastUsedIP) && dwHasHash==0)
-		return false;
+    if (IsLowID(dwLastUsedIP) && dwHasHash==0)
+        return false;
 #endif
     if (SearchFriend(abyUserhash, dwLastUsedIP, nLastUsedPort) != NULL)
         return false;
 
-	m_listFriends.AddTail(new CFriend(abyUserhash, dwLastSeen, dwLastUsedIP, nLastUsedPort, dwLastChatted, pszName, dwHasHash, strComment));
+    m_listFriends.AddTail(new CFriend(abyUserhash, dwLastSeen, dwLastUsedIP, nLastUsedPort, dwLastChatted, pszName, dwHasHash, strComment));
     ShowFriends();
     SaveList();
     return true;

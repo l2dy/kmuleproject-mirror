@@ -27,7 +27,7 @@
 // >= same as > but here the version can be undefined ( for example eMule/* >= eMule/0.4.2 )
 class CClientVersionInfo
 {
-public:
+  public:
 
     CClientVersionInfo(CString strPCEncodedVersion)
     {

@@ -22,7 +22,7 @@ class CxImage;
 
 class CCaptchaGenerator
 {
-public:
+  public:
     CCaptchaGenerator(UINT nLetterCount = 4);
     ~CCaptchaGenerator(void);
 
@@ -35,7 +35,7 @@ public:
     bool	WriteCaptchaImage(CFileDataIO& file);
 
 
-private:
+  private:
     CxImage*	m_pimgCaptcha;
     CString		m_strCaptchaText;
 };

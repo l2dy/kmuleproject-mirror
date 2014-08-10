@@ -1206,7 +1206,7 @@ void CSharedDirsTreeCtrl::AddSharedDirectory(CString strDir, bool bSubDirectorie
     if (!FileSystemTreeIsShared(strDir) && thePrefs.IsShareableDirectory(strDir))
         m_strliSharedDirs.AddTail(strDir);
 
-	if (bSubDirectories)
+    if (bSubDirectories)
     {
         if (strDir.Right(1) != L"\\")
             strDir += L"\\";
@@ -1359,7 +1359,7 @@ void CSharedDirsTreeCtrl::EditSharedDirectories(const CDirectoryItem* pDir, bool
             thePrefs.shareddir_list_permissions.RemoveAt(posLast2);
         }
     }
-    for(POSITION pos = m_strliSharedDirs.GetHeadPosition(); pos;)
+    for (POSITION pos = m_strliSharedDirs.GetHeadPosition(); pos;)
     {
         CString strPath = m_strliSharedDirs.GetNext(pos);
         if (strPath.Right(1) != L"\\")

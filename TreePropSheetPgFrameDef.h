@@ -29,26 +29,26 @@ class /*AFX_EXT_CLASS*/ CPropPageFrameDefault : public CWnd,
     public CPropPageFrame
 {
 // construction/destruction
-public:
+  public:
     CPropPageFrameDefault();
     virtual ~CPropPageFrameDefault();
 
 // operations
-public:
+  public:
 
 // overridings
-public:
+  public:
     virtual BOOL Create(DWORD dwWindowStyle, const RECT &rect, CWnd *pwndParent, UINT nID);
     virtual CWnd* GetWnd();
     virtual void SetCaption(LPCTSTR lpszCaption, HICON hIcon = NULL);
 
-protected:
+  protected:
     virtual CRect CalcMsgArea();
     virtual CRect CalcCaptionArea();
     virtual void DrawCaption(CDC *pDc, CRect rect, LPCTSTR lpszCaption, HICON hIcon);
 
 // Implementation helpers
-protected:
+  protected:
     /**
     Fills a rectangular area with a gradient color starting at the left
     side with the color clrLeft and ending at the right sight with the
@@ -71,12 +71,12 @@ protected:
     */
     BOOL ThemeSupport() const;
 
-protected:
+  protected:
     //{{AFX_VIRTUAL(CPropPageFrameDefault)
     //}}AFX_VIRTUAL
 
 // message handlers
-protected:
+  protected:
     //{{AFX_MSG(CPropPageFrameDefault)
     afx_msg void OnPaint();
     afx_msg BOOL OnEraseBkgnd(CDC* pDC);
@@ -84,7 +84,7 @@ protected:
     DECLARE_MESSAGE_MAP()
 
 // attributes
-protected:
+  protected:
     /**
     Image list that contains only the current icon or nothing if there
     is no icon.

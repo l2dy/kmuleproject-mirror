@@ -9,7 +9,7 @@
 
 class CUtpSocket : public CAsyncSocketExLayer
 {
-public:
+  public:
     CUtpSocket();
     virtual ~CUtpSocket();
 
@@ -91,7 +91,7 @@ public:
     BOOL GetSockOpt(int nOptionName, void* lpOptionValue, int* lpOptionLen);
     BOOL SetSockOpt(int nOptionName, const void* lpOptionValue, int nOptionLen);
 
-protected:
+  protected:
     friend void utp_state(void* userdata, int state);
     friend void utp_error(void* userdata, int errcode);
     friend void utp_read(void* userdata, const byte* bytes, size_t count);

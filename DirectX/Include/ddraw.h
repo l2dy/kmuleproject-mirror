@@ -69,134 +69,134 @@ extern "C" {
                 ((DWORD)(BYTE)(ch2) << 16) | ((DWORD)(BYTE)(ch3) << 24 ))
 #endif //defined(MAKEFOURCC)
 
-    /*
-     * FOURCC codes for DX compressed-texture pixel formats
-     */
+/*
+ * FOURCC codes for DX compressed-texture pixel formats
+ */
 #define FOURCC_DXT1  (MAKEFOURCC('D','X','T','1'))
 #define FOURCC_DXT2  (MAKEFOURCC('D','X','T','2'))
 #define FOURCC_DXT3  (MAKEFOURCC('D','X','T','3'))
 #define FOURCC_DXT4  (MAKEFOURCC('D','X','T','4'))
 #define FOURCC_DXT5  (MAKEFOURCC('D','X','T','5'))
 
-    /*
-     * GUIDS used by DirectDraw objects
-     */
+/*
+ * GUIDS used by DirectDraw objects
+ */
 #if defined( _WIN32 ) && !defined( _NO_COM )
 
-    DEFINE_GUID(CLSID_DirectDraw,                  0xD7B70EE0,0x4340,0x11CF,0xB0,0x63,0x00,0x20,0xAF,0xC2,0xCD,0x35);
-    DEFINE_GUID(CLSID_DirectDraw7,                 0x3c305196,0x50db,0x11d3,0x9c,0xfe,0x00,0xc0,0x4f,0xd9,0x30,0xc5);
-    DEFINE_GUID(CLSID_DirectDrawClipper,           0x593817A0,0x7DB3,0x11CF,0xA2,0xDE,0x00,0xAA,0x00,0xb9,0x33,0x56);
-    DEFINE_GUID(IID_IDirectDraw,                   0x6C14DB80,0xA733,0x11CE,0xA5,0x21,0x00,0x20,0xAF,0x0B,0xE5,0x60);
-    DEFINE_GUID(IID_IDirectDraw2,                  0xB3A6F3E0,0x2B43,0x11CF,0xA2,0xDE,0x00,0xAA,0x00,0xB9,0x33,0x56);
-    DEFINE_GUID(IID_IDirectDraw4,                  0x9c59509a,0x39bd,0x11d1,0x8c,0x4a,0x00,0xc0,0x4f,0xd9,0x30,0xc5);
-    DEFINE_GUID(IID_IDirectDraw7,                  0x15e65ec0,0x3b9c,0x11d2,0xb9,0x2f,0x00,0x60,0x97,0x97,0xea,0x5b);
-    DEFINE_GUID(IID_IDirectDrawSurface,            0x6C14DB81,0xA733,0x11CE,0xA5,0x21,0x00,0x20,0xAF,0x0B,0xE5,0x60);
-    DEFINE_GUID(IID_IDirectDrawSurface2,           0x57805885,0x6eec,0x11cf,0x94,0x41,0xa8,0x23,0x03,0xc1,0x0e,0x27);
-    DEFINE_GUID(IID_IDirectDrawSurface3,           0xDA044E00,0x69B2,0x11D0,0xA1,0xD5,0x00,0xAA,0x00,0xB8,0xDF,0xBB);
-    DEFINE_GUID(IID_IDirectDrawSurface4,           0x0B2B8630,0xAD35,0x11D0,0x8E,0xA6,0x00,0x60,0x97,0x97,0xEA,0x5B);
-    DEFINE_GUID(IID_IDirectDrawSurface7,           0x06675a80,0x3b9b,0x11d2,0xb9,0x2f,0x00,0x60,0x97,0x97,0xea,0x5b);
-    DEFINE_GUID(IID_IDirectDrawPalette,            0x6C14DB84,0xA733,0x11CE,0xA5,0x21,0x00,0x20,0xAF,0x0B,0xE5,0x60);
-    DEFINE_GUID(IID_IDirectDrawClipper,            0x6C14DB85,0xA733,0x11CE,0xA5,0x21,0x00,0x20,0xAF,0x0B,0xE5,0x60);
-    DEFINE_GUID(IID_IDirectDrawColorControl,       0x4B9F0EE0,0x0D7E,0x11D0,0x9B,0x06,0x00,0xA0,0xC9,0x03,0xA3,0xB8);
-    DEFINE_GUID(IID_IDirectDrawGammaControl,       0x69C11C3E,0xB46B,0x11D1,0xAD,0x7A,0x00,0xC0,0x4F,0xC2,0x9B,0x4E);
+DEFINE_GUID(CLSID_DirectDraw,                  0xD7B70EE0,0x4340,0x11CF,0xB0,0x63,0x00,0x20,0xAF,0xC2,0xCD,0x35);
+DEFINE_GUID(CLSID_DirectDraw7,                 0x3c305196,0x50db,0x11d3,0x9c,0xfe,0x00,0xc0,0x4f,0xd9,0x30,0xc5);
+DEFINE_GUID(CLSID_DirectDrawClipper,           0x593817A0,0x7DB3,0x11CF,0xA2,0xDE,0x00,0xAA,0x00,0xb9,0x33,0x56);
+DEFINE_GUID(IID_IDirectDraw,                   0x6C14DB80,0xA733,0x11CE,0xA5,0x21,0x00,0x20,0xAF,0x0B,0xE5,0x60);
+DEFINE_GUID(IID_IDirectDraw2,                  0xB3A6F3E0,0x2B43,0x11CF,0xA2,0xDE,0x00,0xAA,0x00,0xB9,0x33,0x56);
+DEFINE_GUID(IID_IDirectDraw4,                  0x9c59509a,0x39bd,0x11d1,0x8c,0x4a,0x00,0xc0,0x4f,0xd9,0x30,0xc5);
+DEFINE_GUID(IID_IDirectDraw7,                  0x15e65ec0,0x3b9c,0x11d2,0xb9,0x2f,0x00,0x60,0x97,0x97,0xea,0x5b);
+DEFINE_GUID(IID_IDirectDrawSurface,            0x6C14DB81,0xA733,0x11CE,0xA5,0x21,0x00,0x20,0xAF,0x0B,0xE5,0x60);
+DEFINE_GUID(IID_IDirectDrawSurface2,           0x57805885,0x6eec,0x11cf,0x94,0x41,0xa8,0x23,0x03,0xc1,0x0e,0x27);
+DEFINE_GUID(IID_IDirectDrawSurface3,           0xDA044E00,0x69B2,0x11D0,0xA1,0xD5,0x00,0xAA,0x00,0xB8,0xDF,0xBB);
+DEFINE_GUID(IID_IDirectDrawSurface4,           0x0B2B8630,0xAD35,0x11D0,0x8E,0xA6,0x00,0x60,0x97,0x97,0xEA,0x5B);
+DEFINE_GUID(IID_IDirectDrawSurface7,           0x06675a80,0x3b9b,0x11d2,0xb9,0x2f,0x00,0x60,0x97,0x97,0xea,0x5b);
+DEFINE_GUID(IID_IDirectDrawPalette,            0x6C14DB84,0xA733,0x11CE,0xA5,0x21,0x00,0x20,0xAF,0x0B,0xE5,0x60);
+DEFINE_GUID(IID_IDirectDrawClipper,            0x6C14DB85,0xA733,0x11CE,0xA5,0x21,0x00,0x20,0xAF,0x0B,0xE5,0x60);
+DEFINE_GUID(IID_IDirectDrawColorControl,       0x4B9F0EE0,0x0D7E,0x11D0,0x9B,0x06,0x00,0xA0,0xC9,0x03,0xA3,0xB8);
+DEFINE_GUID(IID_IDirectDrawGammaControl,       0x69C11C3E,0xB46B,0x11D1,0xAD,0x7A,0x00,0xC0,0x4F,0xC2,0x9B,0x4E);
 
 #endif
 
-    /*============================================================================
-     *
-     * DirectDraw Structures
-     *
-     * Various structures used to invoke DirectDraw.
-     *
-     *==========================================================================*/
+/*============================================================================
+ *
+ * DirectDraw Structures
+ *
+ * Various structures used to invoke DirectDraw.
+ *
+ *==========================================================================*/
 
-    struct IDirectDraw;
-    struct IDirectDrawSurface;
-    struct IDirectDrawPalette;
-    struct IDirectDrawClipper;
+struct IDirectDraw;
+struct IDirectDrawSurface;
+struct IDirectDrawPalette;
+struct IDirectDrawClipper;
 
-    typedef struct IDirectDraw              FAR *LPDIRECTDRAW;
-    typedef struct IDirectDraw2             FAR *LPDIRECTDRAW2;
-    typedef struct IDirectDraw4             FAR *LPDIRECTDRAW4;
-    typedef struct IDirectDraw7             FAR *LPDIRECTDRAW7;
-    typedef struct IDirectDrawSurface       FAR *LPDIRECTDRAWSURFACE;
-    typedef struct IDirectDrawSurface2      FAR *LPDIRECTDRAWSURFACE2;
-    typedef struct IDirectDrawSurface3      FAR *LPDIRECTDRAWSURFACE3;
-    typedef struct IDirectDrawSurface4      FAR *LPDIRECTDRAWSURFACE4;
-    typedef struct IDirectDrawSurface7      FAR *LPDIRECTDRAWSURFACE7;
-    typedef struct IDirectDrawPalette               FAR *LPDIRECTDRAWPALETTE;
-    typedef struct IDirectDrawClipper               FAR *LPDIRECTDRAWCLIPPER;
-    typedef struct IDirectDrawColorControl          FAR *LPDIRECTDRAWCOLORCONTROL;
-    typedef struct IDirectDrawGammaControl          FAR *LPDIRECTDRAWGAMMACONTROL;
+typedef struct IDirectDraw              FAR *LPDIRECTDRAW;
+typedef struct IDirectDraw2             FAR *LPDIRECTDRAW2;
+typedef struct IDirectDraw4             FAR *LPDIRECTDRAW4;
+typedef struct IDirectDraw7             FAR *LPDIRECTDRAW7;
+typedef struct IDirectDrawSurface       FAR *LPDIRECTDRAWSURFACE;
+typedef struct IDirectDrawSurface2      FAR *LPDIRECTDRAWSURFACE2;
+typedef struct IDirectDrawSurface3      FAR *LPDIRECTDRAWSURFACE3;
+typedef struct IDirectDrawSurface4      FAR *LPDIRECTDRAWSURFACE4;
+typedef struct IDirectDrawSurface7      FAR *LPDIRECTDRAWSURFACE7;
+typedef struct IDirectDrawPalette               FAR *LPDIRECTDRAWPALETTE;
+typedef struct IDirectDrawClipper               FAR *LPDIRECTDRAWCLIPPER;
+typedef struct IDirectDrawColorControl          FAR *LPDIRECTDRAWCOLORCONTROL;
+typedef struct IDirectDrawGammaControl          FAR *LPDIRECTDRAWGAMMACONTROL;
 
-    typedef struct _DDFXROP                 FAR *LPDDFXROP;
-    typedef struct _DDSURFACEDESC           FAR *LPDDSURFACEDESC;
-    typedef struct _DDSURFACEDESC2          FAR *LPDDSURFACEDESC2;
-    typedef struct _DDCOLORCONTROL          FAR *LPDDCOLORCONTROL;
+typedef struct _DDFXROP                 FAR *LPDDFXROP;
+typedef struct _DDSURFACEDESC           FAR *LPDDSURFACEDESC;
+typedef struct _DDSURFACEDESC2          FAR *LPDDSURFACEDESC2;
+typedef struct _DDCOLORCONTROL          FAR *LPDDCOLORCONTROL;
 
-    /*
-     * API's
-     */
+/*
+ * API's
+ */
 #if (defined (WIN32) || defined( _WIN32 ) ) && !defined( _NO_COM )
 //#if defined( _WIN32 ) && !defined( _NO_ENUM )
-    typedef BOOL (FAR PASCAL * LPDDENUMCALLBACKA)(GUID FAR *, LPSTR, LPSTR, LPVOID);
-    typedef BOOL (FAR PASCAL * LPDDENUMCALLBACKW)(GUID FAR *, LPWSTR, LPWSTR, LPVOID);
-    extern HRESULT WINAPI DirectDrawEnumerateW(LPDDENUMCALLBACKW lpCallback, LPVOID lpContext);
-    extern HRESULT WINAPI DirectDrawEnumerateA(LPDDENUMCALLBACKA lpCallback, LPVOID lpContext);
-    /*
-     * Protect against old SDKs
-     */
+typedef BOOL (FAR PASCAL * LPDDENUMCALLBACKA)(GUID FAR *, LPSTR, LPSTR, LPVOID);
+typedef BOOL (FAR PASCAL * LPDDENUMCALLBACKW)(GUID FAR *, LPWSTR, LPWSTR, LPVOID);
+extern HRESULT WINAPI DirectDrawEnumerateW(LPDDENUMCALLBACKW lpCallback, LPVOID lpContext);
+extern HRESULT WINAPI DirectDrawEnumerateA(LPDDENUMCALLBACKA lpCallback, LPVOID lpContext);
+/*
+ * Protect against old SDKs
+ */
 #if !defined(HMONITOR_DECLARED) && (WINVER < 0x0500)
 #define HMONITOR_DECLARED
-    DECLARE_HANDLE(HMONITOR);
+DECLARE_HANDLE(HMONITOR);
 #endif
-    typedef BOOL (FAR PASCAL * LPDDENUMCALLBACKEXA)(GUID FAR *, LPSTR, LPSTR, LPVOID, HMONITOR);
-    typedef BOOL (FAR PASCAL * LPDDENUMCALLBACKEXW)(GUID FAR *, LPWSTR, LPWSTR, LPVOID, HMONITOR);
-    extern HRESULT WINAPI DirectDrawEnumerateExW(LPDDENUMCALLBACKEXW lpCallback, LPVOID lpContext, DWORD dwFlags);
-    extern HRESULT WINAPI DirectDrawEnumerateExA(LPDDENUMCALLBACKEXA lpCallback, LPVOID lpContext, DWORD dwFlags);
-    typedef HRESULT(WINAPI * LPDIRECTDRAWENUMERATEEXA)(LPDDENUMCALLBACKEXA lpCallback, LPVOID lpContext, DWORD dwFlags);
-    typedef HRESULT(WINAPI * LPDIRECTDRAWENUMERATEEXW)(LPDDENUMCALLBACKEXW lpCallback, LPVOID lpContext, DWORD dwFlags);
+typedef BOOL (FAR PASCAL * LPDDENUMCALLBACKEXA)(GUID FAR *, LPSTR, LPSTR, LPVOID, HMONITOR);
+typedef BOOL (FAR PASCAL * LPDDENUMCALLBACKEXW)(GUID FAR *, LPWSTR, LPWSTR, LPVOID, HMONITOR);
+extern HRESULT WINAPI DirectDrawEnumerateExW(LPDDENUMCALLBACKEXW lpCallback, LPVOID lpContext, DWORD dwFlags);
+extern HRESULT WINAPI DirectDrawEnumerateExA(LPDDENUMCALLBACKEXA lpCallback, LPVOID lpContext, DWORD dwFlags);
+typedef HRESULT(WINAPI * LPDIRECTDRAWENUMERATEEXA)(LPDDENUMCALLBACKEXA lpCallback, LPVOID lpContext, DWORD dwFlags);
+typedef HRESULT(WINAPI * LPDIRECTDRAWENUMERATEEXW)(LPDDENUMCALLBACKEXW lpCallback, LPVOID lpContext, DWORD dwFlags);
 
 #ifdef UNICODE
-    typedef LPDDENUMCALLBACKW           LPDDENUMCALLBACK;
+typedef LPDDENUMCALLBACKW           LPDDENUMCALLBACK;
 #define DirectDrawEnumerate         DirectDrawEnumerateW
-    typedef LPDDENUMCALLBACKEXW         LPDDENUMCALLBACKEX;
-    typedef LPDIRECTDRAWENUMERATEEXW        LPDIRECTDRAWENUMERATEEX;
+typedef LPDDENUMCALLBACKEXW         LPDDENUMCALLBACKEX;
+typedef LPDIRECTDRAWENUMERATEEXW        LPDIRECTDRAWENUMERATEEX;
 #define DirectDrawEnumerateEx       DirectDrawEnumerateExW
 #else
-    typedef LPDDENUMCALLBACKA           LPDDENUMCALLBACK;
+typedef LPDDENUMCALLBACKA           LPDDENUMCALLBACK;
 #define DirectDrawEnumerate         DirectDrawEnumerateA
-    typedef LPDDENUMCALLBACKEXA         LPDDENUMCALLBACKEX;
-    typedef LPDIRECTDRAWENUMERATEEXA        LPDIRECTDRAWENUMERATEEX;
+typedef LPDDENUMCALLBACKEXA         LPDDENUMCALLBACKEX;
+typedef LPDIRECTDRAWENUMERATEEXA        LPDIRECTDRAWENUMERATEEX;
 #define DirectDrawEnumerateEx       DirectDrawEnumerateExA
 #endif
-    extern HRESULT WINAPI DirectDrawCreate(GUID FAR *lpGUID, LPDIRECTDRAW FAR *lplpDD, IUnknown FAR *pUnkOuter);
-    extern HRESULT WINAPI DirectDrawCreateEx(GUID FAR * lpGuid, LPVOID  *lplpDD, REFIID  iid,IUnknown FAR *pUnkOuter);
-    extern HRESULT WINAPI DirectDrawCreateClipper(DWORD dwFlags, LPDIRECTDRAWCLIPPER FAR *lplpDDClipper, IUnknown FAR *pUnkOuter);
+extern HRESULT WINAPI DirectDrawCreate(GUID FAR *lpGUID, LPDIRECTDRAW FAR *lplpDD, IUnknown FAR *pUnkOuter);
+extern HRESULT WINAPI DirectDrawCreateEx(GUID FAR * lpGuid, LPVOID  *lplpDD, REFIID  iid,IUnknown FAR *pUnkOuter);
+extern HRESULT WINAPI DirectDrawCreateClipper(DWORD dwFlags, LPDIRECTDRAWCLIPPER FAR *lplpDDClipper, IUnknown FAR *pUnkOuter);
 #endif
-    /*
-     * Flags for DirectDrawEnumerateEx
-     * DirectDrawEnumerateEx supercedes DirectDrawEnumerate. You must use GetProcAddress to
-     * obtain a function pointer (of type LPDIRECTDRAWENUMERATEEX) to DirectDrawEnumerateEx.
-     * By default, only the primary display device is enumerated.
-     * DirectDrawEnumerate is equivalent to DirectDrawEnumerate(,,DDENUM_NONDISPLAYDEVICES)
-     */
+/*
+ * Flags for DirectDrawEnumerateEx
+ * DirectDrawEnumerateEx supercedes DirectDrawEnumerate. You must use GetProcAddress to
+ * obtain a function pointer (of type LPDIRECTDRAWENUMERATEEX) to DirectDrawEnumerateEx.
+ * By default, only the primary display device is enumerated.
+ * DirectDrawEnumerate is equivalent to DirectDrawEnumerate(,,DDENUM_NONDISPLAYDEVICES)
+ */
 
-    /*
-     * This flag causes enumeration of any GDI display devices which are part of
-     * the Windows Desktop
-     */
+/*
+ * This flag causes enumeration of any GDI display devices which are part of
+ * the Windows Desktop
+ */
 #define DDENUM_ATTACHEDSECONDARYDEVICES     0x00000001L
 
-    /*
-     * This flag causes enumeration of any GDI display devices which are not
-     * part of the Windows Desktop
-     */
+/*
+ * This flag causes enumeration of any GDI display devices which are not
+ * part of the Windows Desktop
+ */
 #define DDENUM_DETACHEDSECONDARYDEVICES     0x00000002L
 
-    /*
-     * This flag causes enumeration of non-display devices
-     */
+/*
+ * This flag causes enumeration of non-display devices
+ */
 #define DDENUM_NONDISPLAYDEVICES            0x00000004L
 
 
@@ -208,22 +208,22 @@ extern "C" {
 #define DDCREATE_EMULATIONONLY          0x00000002l
 
 #if defined(WINNT) || !defined(WIN32)
-    typedef long HRESULT;
+typedef long HRESULT;
 #endif
 
 //#ifndef WINNT
-    typedef HRESULT(FAR PASCAL * LPDDENUMMODESCALLBACK)(LPDDSURFACEDESC, LPVOID);
-    typedef HRESULT(FAR PASCAL * LPDDENUMMODESCALLBACK2)(LPDDSURFACEDESC2, LPVOID);
-    typedef HRESULT(FAR PASCAL * LPDDENUMSURFACESCALLBACK)(LPDIRECTDRAWSURFACE, LPDDSURFACEDESC, LPVOID);
-    typedef HRESULT(FAR PASCAL * LPDDENUMSURFACESCALLBACK2)(LPDIRECTDRAWSURFACE4, LPDDSURFACEDESC2, LPVOID);
-    typedef HRESULT(FAR PASCAL * LPDDENUMSURFACESCALLBACK7)(LPDIRECTDRAWSURFACE7, LPDDSURFACEDESC2, LPVOID);
+typedef HRESULT(FAR PASCAL * LPDDENUMMODESCALLBACK)(LPDDSURFACEDESC, LPVOID);
+typedef HRESULT(FAR PASCAL * LPDDENUMMODESCALLBACK2)(LPDDSURFACEDESC2, LPVOID);
+typedef HRESULT(FAR PASCAL * LPDDENUMSURFACESCALLBACK)(LPDIRECTDRAWSURFACE, LPDDSURFACEDESC, LPVOID);
+typedef HRESULT(FAR PASCAL * LPDDENUMSURFACESCALLBACK2)(LPDIRECTDRAWSURFACE4, LPDDSURFACEDESC2, LPVOID);
+typedef HRESULT(FAR PASCAL * LPDDENUMSURFACESCALLBACK7)(LPDIRECTDRAWSURFACE7, LPDDSURFACEDESC2, LPVOID);
 //#endif
 
-    /*
-     * Generic pixel format with 8-bit RGB and alpha components
-     */
-    typedef struct _DDARGB
-    {
+/*
+ * Generic pixel format with 8-bit RGB and alpha components
+ */
+typedef struct _DDARGB
+{
     BYTE blue;
     BYTE green;
     BYTE red;

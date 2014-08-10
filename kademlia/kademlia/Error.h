@@ -49,7 +49,7 @@ namespace Kademlia
 
 class CKademliaError
 {
-public:
+  public:
     CKademliaError(int iErrorCode, LPCSTR szErrorDescription)
     {
         m_iErrorCode = iErrorCode;

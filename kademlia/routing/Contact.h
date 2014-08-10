@@ -43,7 +43,7 @@ class CContact
 {
     friend class CRoutingZone;
     friend class CRoutingBin;
-public:
+  public:
     ~CContact();
     CContact();
     CContact(const CUInt128 &uClientID, UINT uIp, uint16 uUdpPort, uint16 uTcpPort, uint8 uVersion, CKadUDPKey cUDPKey, bool bIPVerified);
@@ -99,7 +99,7 @@ public:
     bool		IsIpVerified()	const;
     void		SetIpVerified(bool bIPVerified);
 
-private:
+  private:
     void	InitContact(); // Common var initialization goes here
     void	Copy(const CContact& fromContact);
 

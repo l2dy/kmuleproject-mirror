@@ -90,7 +90,7 @@ CDownloadListCtrl::CDownloadListCtrl()
     m_iFDC = -1; //>>> WiZaRd::FDC [BlueSonicBoy]
     m_iPreview = -1; //>>> WiZaRd::PreviewIndicator
     m_iHealthIndex = -1; //>>> WiZaRd::Health Indicator File Availability
-	m_iQRIndex = -1; //>>> WiZaRd::QR History
+    m_iQRIndex = -1; //>>> WiZaRd::QR History
 }
 
 CDownloadListCtrl::~CDownloadListCtrl()
@@ -219,9 +219,9 @@ void CDownloadListCtrl::SetAllIcons()
     m_ImageList.Add(CTempIconLoader(L"HEALTH_7"));
 //<<< WiZaRd::Health Indicator File Availability
 //>>> WiZaRd::QR History
-	m_iQRIndex = m_ImageList.Add(CTempIconLoader(L"QR_EQUAL"));
-	m_ImageList.Add(CTempIconLoader(L"QR_UP"));	
-	m_ImageList.Add(CTempIconLoader(L"QR_DOWN"));
+    m_iQRIndex = m_ImageList.Add(CTempIconLoader(L"QR_EQUAL"));
+    m_ImageList.Add(CTempIconLoader(L"QR_UP"));
+    m_ImageList.Add(CTempIconLoader(L"QR_DOWN"));
 //<<< WiZaRd::QR History
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("ClientSecureOvl"))), 1);
     m_ImageList.SetOverlayImage(m_ImageList.Add(CTempIconLoader(_T("OverlayObfu"))), 2);
@@ -853,14 +853,14 @@ void CDownloadListCtrl::GetSourceItemDisplayText(const CtrlItem_Struct *pCtrlIte
                 if (pClient->IsRemoteQueueFull())
                     _tcsncpy(pszText, GetResString(IDS_QUEUEFULL), cchTextMax);
                 else if (pClient->GetRemoteQueueRank())
-				{
+                {
 //>>> WiZaRd::QR History
-					if(pClient->GetQRDifference())
-						_sntprintf(pszText, cchTextMax, L"QR: %u (%+i)", pClient->GetRemoteQueueRank(), pClient->GetQRDifference());
-					else
+                    if (pClient->GetQRDifference())
+                        _sntprintf(pszText, cchTextMax, L"QR: %u (%+i)", pClient->GetRemoteQueueRank(), pClient->GetQRDifference());
+                    else
 //<<< WiZaRd::QR History
-						_sntprintf(pszText, cchTextMax, L"QR: %u", pClient->GetRemoteQueueRank());
-				}
+                        _sntprintf(pszText, cchTextMax, L"QR: %u", pClient->GetRemoteQueueRank());
+                }
             }
             break;
 
@@ -1052,27 +1052,27 @@ void CDownloadListCtrl::DrawSourceItem(CDC *dc, int nColumn, LPCRECT lpRect, UIN
         }
 
 //>>> WiZaRd::QR History
-		case 7:
-		{
-			CRect rcDraw(lpRect);
-			if(pClient->GetDownloadState() == DS_ONQUEUE && !pClient->IsRemoteQueueFull() && pClient->GetRemoteQueueRank())
-			{
-				int draw = m_iQRIndex; // "QR_EQUAL"		
-				if(pClient->GetQRDifference())
-				{
-					if(pClient->GetQRDifference() > 0)
-						draw += 2; // "QR_DOWN"
-					else
-						draw += 1; // "QR_UP"
-				}
-				
-				POINT pt = rcDraw.TopLeft();
-				m_ImageList.Draw(dc, draw, pt, ILD_NORMAL);
-				rcDraw.left += 8;
-			}
-			dc->DrawText(szItem, -1, rcDraw, MLC_DT_TEXT | uDrawTextAlignment);
-			break;
-		}
+        case 7:
+        {
+            CRect rcDraw(lpRect);
+            if (pClient->GetDownloadState() == DS_ONQUEUE && !pClient->IsRemoteQueueFull() && pClient->GetRemoteQueueRank())
+            {
+                int draw = m_iQRIndex; // "QR_EQUAL"
+                if (pClient->GetQRDifference())
+                {
+                    if (pClient->GetQRDifference() > 0)
+                        draw += 2; // "QR_DOWN"
+                    else
+                        draw += 1; // "QR_UP"
+                }
+
+                POINT pt = rcDraw.TopLeft();
+                m_ImageList.Draw(dc, draw, pt, ILD_NORMAL);
+                rcDraw.left += 8;
+            }
+            dc->DrawText(szItem, -1, rcDraw, MLC_DT_TEXT | uDrawTextAlignment);
+            break;
+        }
 //<<< WiZaRd::QR History
 
         case 9:		// remaining time & size
@@ -2284,7 +2284,7 @@ BOOL CDownloadListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
                 case MP_BOOT:
                     ASSERT(client && client->IsEd2kClient() && client->GetKadPort()!=0 && client->GetKadVersion() > 1);
 #ifdef IPV6_SUPPORT
-					Kademlia::CKademlia::Bootstrap(client->GetIP().ToIPv4(), client->GetKadPort()); //>>> WiZaRd::IPv6 [Xanatos]
+                    Kademlia::CKademlia::Bootstrap(client->GetIP().ToIPv4(), client->GetKadPort()); //>>> WiZaRd::IPv6 [Xanatos]
 #else
                     Kademlia::CKademlia::Bootstrap(ntohl(client->GetIP()), client->GetKadPort());
 #endif
@@ -2897,7 +2897,7 @@ int CDownloadListCtrl::GetFilesCountInCurCat()
 
 void CDownloadListCtrl::ShowFilesCount()
 {
-	theApp.emuledlg->transferwnd->UpdateCatTabTitles();
+    theApp.emuledlg->transferwnd->UpdateCatTabTitles();
     theApp.emuledlg->transferwnd->UpdateFilesCount(GetFilesCountInCurCat());
 }
 

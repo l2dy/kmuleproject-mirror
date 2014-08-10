@@ -41,7 +41,7 @@ typedef CTypedPtrArray<CPtrArray, SIPFilter*> CIPFilterArray;
 
 class CIPFilter
 {
-public:
+  public:
     CIPFilter();
     ~CIPFilter();
 
@@ -68,7 +68,7 @@ public:
     const CIPFilterArray& GetIPFilter() const;
     void    UpdateIPFilterURL(const CString& m_sURL = L""); //>>> WiZaRd::IPFilter-Update
 
-private:
+  private:
     const SIPFilter* m_pLastHit;
     CIPFilterArray m_iplist;
     bool m_bModified;

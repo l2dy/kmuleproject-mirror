@@ -22,7 +22,7 @@ struct IGDdatas;
 
 class CUPnPImplMiniLib: public CUPnPImpl
 {
-public:
+  public:
     CUPnPImplMiniLib();
     virtual ~CUPnPImplMiniLib();
 
@@ -39,11 +39,11 @@ public:
     class CStartDiscoveryThread : public CWinThread
     {
         DECLARE_DYNCREATE(CStartDiscoveryThread)
-    protected:
+      protected:
         CStartDiscoveryThread();
         bool	OpenPort(uint16 nPort, bool bTCP, char* pachLANIP, bool bCheckAndRefresh);
 
-    public:
+      public:
         virtual BOOL InitInstance();
         virtual int	Run();
         void	SetValues(CUPnPImplMiniLib* pOwner)
@@ -51,14 +51,14 @@ public:
             m_pOwner = pOwner;
         }
 
-    private:
+      private:
         CUPnPImplMiniLib*	m_pOwner;
     };
 
-protected:
+  protected:
     void			DeletePorts(bool bSkipLock);
 
-private:
+  private:
     void	StartThread();
     uint16	m_nOldUDPPort;
     uint16	m_nOldTCPPort;

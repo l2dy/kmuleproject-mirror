@@ -119,17 +119,17 @@ void CChatWnd::ShowFriendMsgDetails(CFriend* pFriend)
         CString buffer;
 
         // Name
-		GetDlgItem(IDC_FRIENDS_NAME_EDIT)->SetWindowText(pFriend->GetFriendName());
+        GetDlgItem(IDC_FRIENDS_NAME_EDIT)->SetWindowText(pFriend->GetFriendName());
         // Hash
-		GetDlgItem(IDC_FRIENDS_USERHASH_EDIT)->SetWindowText(pFriend->GetFriendHash());
+        GetDlgItem(IDC_FRIENDS_USERHASH_EDIT)->SetWindowText(pFriend->GetFriendHash());
         // Client
-		GetDlgItem(IDC_FRIENDS_CLIENTE_EDIT)->SetWindowText(pFriend->GetFriendSoft());
+        GetDlgItem(IDC_FRIENDS_CLIENTE_EDIT)->SetWindowText(pFriend->GetFriendSoft());
         // Identification
         GetDlgItem(IDC_FRIENDS_IDENTIFICACION_EDIT)->SetWindowText(pFriend->GetIdentState());
         // Upload and downloaded
         GetDlgItem(IDC_FRIENDS_DESCARGADO_EDIT)->SetWindowText(pFriend->GetFriendDownloaded());
-		GetDlgItem(IDC_FRIENDS_SUBIDO_EDIT)->SetWindowText(pFriend->GetFriendUploaded());
-		GetDlgItem(IDC_FRIENDS_COMMENT_EDIT)->SetWindowText(pFriend->m_strComment); //>>> WiZaRd::FriendComment
+        GetDlgItem(IDC_FRIENDS_SUBIDO_EDIT)->SetWindowText(pFriend->GetFriendUploaded());
+        GetDlgItem(IDC_FRIENDS_COMMENT_EDIT)->SetWindowText(pFriend->m_strComment); //>>> WiZaRd::FriendComment
     }
     else
     {
@@ -139,7 +139,7 @@ void CChatWnd::ShowFriendMsgDetails(CFriend* pFriend)
         GetDlgItem(IDC_FRIENDS_IDENTIFICACION_EDIT)->SetWindowText(L"-");
         GetDlgItem(IDC_FRIENDS_DESCARGADO_EDIT)->SetWindowText(L"-");
         GetDlgItem(IDC_FRIENDS_SUBIDO_EDIT)->SetWindowText(L"-");
-		GetDlgItem(IDC_FRIENDS_COMMENT_EDIT)->SetWindowText(L"-"); //>>> WiZaRd::FriendComment
+        GetDlgItem(IDC_FRIENDS_COMMENT_EDIT)->SetWindowText(L"-"); //>>> WiZaRd::FriendComment
     }
 }
 
@@ -198,7 +198,7 @@ BOOL CChatWnd::OnInitDialog()
     AddAnchor(IDC_FRIENDS_IDENT, BOTTOM_LEFT);
     AddAnchor(IDC_FRIENDS_UPLOADED, BOTTOM_LEFT);
     AddAnchor(IDC_FRIENDS_DOWNLOADED, BOTTOM_LEFT);
-	AddAnchor(IDC_FRIENDS_COMMENT, BOTTOM_LEFT); //>>> WiZaRd::FriendComment
+    AddAnchor(IDC_FRIENDS_COMMENT, BOTTOM_LEFT); //>>> WiZaRd::FriendComment
     AddAnchor(m_wndSplitterHorz, TOP_LEFT, BOTTOM_LEFT);
     AddAnchor(m_wndFormat, BOTTOM_LEFT);
     AddAnchor(m_wndMessage, BOTTOM_LEFT, BOTTOM_RIGHT);
@@ -271,8 +271,8 @@ void CChatWnd::DoResize(int iDelta)
     RemoveAnchor(IDC_FRIENDS_DESCARGADO_EDIT);
     AddAnchor(IDC_FRIENDS_DESCARGADO_EDIT, BOTTOM_LEFT);
 //>>> WiZaRd::FriendComment
-	RemoveAnchor(IDC_FRIENDS_COMMENT_EDIT);
-	AddAnchor(IDC_FRIENDS_COMMENT_EDIT, BOTTOM_LEFT);
+    RemoveAnchor(IDC_FRIENDS_COMMENT_EDIT);
+    AddAnchor(IDC_FRIENDS_COMMENT_EDIT, BOTTOM_LEFT);
 //<<< WiZaRd::FriendComment
     RemoveAnchor(m_wndSplitterHorz);
     AddAnchor(m_wndSplitterHorz, TOP_LEFT, BOTTOM_LEFT);
@@ -420,7 +420,7 @@ void CChatWnd::Localize()
     GetDlgItem(IDC_FRIENDS_IDENT)->SetWindowText(GetResString(IDS_CHAT_IDENT));
     GetDlgItem(IDC_FRIENDS_CLIENT)->SetWindowText(GetResString(IDS_CD_CSOFT));
     GetDlgItem(IDC_FRIENDS_NAME)->SetWindowText(GetResString(IDS_CD_UNAME));
-	GetDlgItem(IDC_FRIENDS_COMMENT)->SetWindowText(GetResString(IDS_COMMENT)); //>>> WiZaRd::FriendComment
+    GetDlgItem(IDC_FRIENDS_COMMENT)->SetWindowText(GetResString(IDS_COMMENT)); //>>> WiZaRd::FriendComment
     GetDlgItem(IDC_FRIENDS_USERHASH)->SetWindowText(GetResString(IDS_CD_UHASH));
     m_wndSend.SetWindowText(GetResString(IDS_CW_SEND));
     m_wndClose.SetWindowText(GetResString(IDS_CW_CLOSE));

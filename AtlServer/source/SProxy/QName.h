@@ -10,14 +10,14 @@
 
 class CQName
 {
-private:
+  private:
 
     CStringW m_strPrefix;
     CStringW m_strName;
 
     void CrackQName(const wchar_t *wszQName, int cchQName);
 
-public:
+  public:
 
     CQName()
     {

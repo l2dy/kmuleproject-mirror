@@ -34,13 +34,13 @@ namespace Kademlia
 class CDataIO;
 class CEntry
 {
-protected:
+  protected:
     struct structFileNameEntry
     {
         CKadTagValueString	m_fileName;
         UINT				m_uPopularityIndex;
     };
-public:
+  public:
     CEntry();
     virtual		~CEntry();
 
@@ -73,7 +73,7 @@ public:
     time_t	m_tLifetime;
     bool	m_bSource;
 
-protected:
+  protected:
     void		WriteTagListInc(CDataIO* pData, UINT nIncreaseTagNumber = 0);
     CList<structFileNameEntry>	m_listFileNames;
     TagList m_listTag;
@@ -81,14 +81,14 @@ protected:
 
 class CKeyEntry : public CEntry
 {
-protected:
+  protected:
     struct structPublishingIP
     {
         UINT				m_uIP;
         time_t				m_tLastPublish;
         uint16				m_byAICHHashIdx;
     };
-public:
+  public:
     CKeyEntry();
     virtual ~CKeyEntry();
 
@@ -116,7 +116,7 @@ public:
         s_mapGlobalPublishIPs.RemoveAll();
     }
 
-protected:
+  protected:
     void				RecalcualteTrustValue();
     static void			AdjustGlobalPublishTracking(UINT uIP, bool bIncrease, CString strDbgReason);
 

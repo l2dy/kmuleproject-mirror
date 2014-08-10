@@ -27,7 +27,7 @@ class CED2kLinkDlg : public CResizablePage
 {
     DECLARE_DYNAMIC(CED2kLinkDlg)
 
-public:
+  public:
     CED2kLinkDlg();
     virtual ~CED2kLinkDlg();
 
@@ -45,7 +45,7 @@ public:
 // Dialog Data
     enum { IDD = IDD_ED2KLINK };
 
-protected:
+  protected:
     CEdit m_ctrlLinkEdit;
     CString m_strCaption;
     const CSimpleArray<CObject*>* m_paFiles;

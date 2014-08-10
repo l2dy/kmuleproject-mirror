@@ -28,7 +28,7 @@ struct UDPPack
 {
     Packet* packet;
 #ifdef IPV6_SUPPORT
-	CAddress dwIP; //>>> WiZaRd::IPv6 [Xanatos]
+    CAddress dwIP; //>>> WiZaRd::IPv6 [Xanatos]
 #else
     UINT	dwIP;
 #endif
@@ -44,7 +44,7 @@ struct UDPPack
 
 class CClientUDPSocket : public CAsyncSocket, public CEncryptedDatagramSocket, public ThrottledControlSocket // ZZ:UploadBandWithThrottler (UDP)
 {
-public:
+  public:
     CClientUDPSocket();
     virtual ~CClientUDPSocket();
 
@@ -57,16 +57,16 @@ public:
 #ifdef IPV6_SUPPORT
     bool	SendPacket(Packet* packet, const CAddress& dwIP, const uint16 nPort, const bool bEncrypt, const uchar* pachTargetClientHashORKadID, const bool bKad, const UINT nReceiverVerifyKey); //>>> WiZaRd::IPv6 [Xanatos]
 #else
-	bool	SendPacket(Packet* packet, const UINT dwIP, const uint16 nPort, const bool bEncrypt, const uchar* pachTargetClientHashORKadID, const bool bKad, const UINT nReceiverVerifyKey);
+    bool	SendPacket(Packet* packet, const UINT dwIP, const uint16 nPort, const bool bEncrypt, const uchar* pachTargetClientHashORKadID, const bool bKad, const UINT nReceiverVerifyKey);
 #endif
     SocketSentBytes  SendControlData(UINT maxNumberOfBytesToSend, UINT minFragSize); // ZZ:UploadBandWithThrottler (UDP)
 
 #ifdef IPV6_SUPPORT
 //>>> WiZaRd::IPv6 [Xanatos]
-public:
-	bool	ProcessPacket(const BYTE* packet, const UINT size, const uint8 opcode, const CAddress& ip, const uint16 port);
-protected:
-	bool	ProcessModPacket(BYTE* packet, const UINT size, const uint8 opcode, const CAddress& ip, const uint16 port); //>>> WiZaRd::ModProt
+  public:
+    bool	ProcessPacket(const BYTE* packet, const UINT size, const uint8 opcode, const CAddress& ip, const uint16 port);
+  protected:
+    bool	ProcessModPacket(BYTE* packet, const UINT size, const uint8 opcode, const CAddress& ip, const uint16 port); //>>> WiZaRd::ModProt
 //<<< WiZaRd::IPv6 [Xanatos]
 #else
     bool	ProcessPacket(const BYTE* packet, const UINT size, uint8 opcode, const UINT ip, const uint16 port);
@@ -76,9 +76,9 @@ protected:
     virtual void	OnSend(int nErrorCode);
     virtual void	OnReceive(int nErrorCode);
 
-private:
+  private:
 #ifdef IPV6_SUPPORT
-	int		SendTo(char* lpBuf, int nBufLen, const CAddress& dwIP, uint16 nPort); //>>> WiZaRd::IPv6 [Xanatos]
+    int		SendTo(char* lpBuf, int nBufLen, const CAddress& dwIP, uint16 nPort); //>>> WiZaRd::IPv6 [Xanatos]
 #else
     int		SendTo(char* lpBuf, int nBufLen, const UINT dwIP, uint16 nPort);
 #endif
@@ -95,33 +95,33 @@ private:
 
 #ifdef NAT_TRAVERSAL
 //>>> WiZaRd::NatTraversal [Xanatos]
-public:    
+  public:
 #ifdef IPV6_SUPPORT
     void	SetConnectionEncryption(const CAddress& dwIP, const uint16 nPort, const bool bEncrypt, const uchar* pTargetClientHash = NULL);
     byte*	GetHashForEncryption(const CAddress& dwIP, const uint16 nPort);
     bool	IsObfuscating(const CAddress& dwIP, const uint16 nPort)
 #else
-	void	SetConnectionEncryption(const UINT dwIP, const uint16 nPort, const bool bEncrypt, const uchar* pTargetClientHash = NULL);
-	byte*	GetHashForEncryption(const UINT dwIP, const uint16 nPort);
-	bool	IsObfuscating(const UINT dwIP, const uint16 nPort)
+    void	SetConnectionEncryption(const UINT dwIP, const uint16 nPort, const bool bEncrypt, const uchar* pTargetClientHash = NULL);
+    byte*	GetHashForEncryption(const UINT dwIP, const uint16 nPort);
+    bool	IsObfuscating(const UINT dwIP, const uint16 nPort)
 #endif
     {
         return GetHashForEncryption(dwIP, nPort) != NULL;
     }
     void	SendUtpPacket(const byte *data, size_t len, const struct sockaddr *to, socklen_t tolen);
 
-private:
+  private:
     struct SIpPort
     {
 #ifdef IPV6_SUPPORT
         CAddress IP;
 #else
-		UINT	IP;
+        UINT	IP;
 #endif
         uint16 nPort;
 
         bool operator< (const SIpPort &Other) const;
-	};
+    };
 
     struct SHash
     {

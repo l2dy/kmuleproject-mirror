@@ -109,7 +109,7 @@ every class also have:
 
 class CSelect
 {
-protected:
+  protected:
     CDC * const m_pDC;
     CSelect(CDC * pDC):m_pDC(pDC)
     {
@@ -117,7 +117,7 @@ protected:
     }
     virtual ~CSelect() {}
 
-private:
+  private:
 
     // Disable copying
     CSelect& operator=(const CSelect& d);
@@ -132,7 +132,7 @@ class CSelStock : public CSelect
 {
     CGdiObject * m_pOldObj;
 
-public:
+  public:
 
     CSelStock(CDC * pDC)
         :CSelect(pDC), m_pOldObj(NULL) {}
@@ -176,7 +176,7 @@ class CSelPen	: public CSelect
     CPen	 m_NewPen;
     CPen * m_pOldPen;
 
-public:
+  public:
 
     CSelPen(CDC * pDC)
         :CSelect(pDC), m_pOldPen(NULL) {}
@@ -237,7 +237,7 @@ class CSelBrush  : public CSelect
     CBrush	 m_NewBrush;
     CBrush * m_pOldBrush;
 
-public:
+  public:
     CSelBrush(CDC * pDC)
         :CSelect(pDC), m_pOldBrush(NULL) {}
 
@@ -344,7 +344,7 @@ public:
 
 class CMyFont : public CFont
 {
-public:
+  public:
     CMyFont() {}
     CMyFont(CDC * pDC, int size, LPCTSTR face = NULL, BOOL bold = 0,
             BOOL italic = 0, BOOL underlined = 0, BOOL fixed = 0,
@@ -383,7 +383,7 @@ class CSelFont  : public CSelect
     CMyFont m_NewFont;
     CFont * m_pOldFont;
 
-public:
+  public:
 
     CSelFont(CDC * pDC)
         : CSelect(pDC), m_pOldFont(NULL) {}
@@ -464,7 +464,7 @@ class CSelBitmap	: public CSelect
     CBitmap	 m_NewBmp;
     CBitmap * m_pOldBmp;
 
-public:
+  public:
     CSelBitmap(CDC * pDC)
         : CSelect(pDC), m_pOldBmp(NULL) {}
 
@@ -524,7 +524,7 @@ class CSelPalette  : public CSelect
     BOOL m_fForceBackground;
     BOOL m_fRealizePalette;
 
-public:
+  public:
 
     CSelPalette(CDC * pDC)
         : CSelect(pDC), m_pOldPalette(NULL) {}
@@ -587,7 +587,7 @@ class CSelROP2 : public CSelect
 {
     int m_OldRop;
 
-public:
+  public:
 
     CSelROP2(CDC * pDC)
         : CSelect(pDC), m_OldRop(0)
@@ -630,7 +630,7 @@ class CSelBkMode : public CSelect
 {
     int m_OldBkMode;
 
-public:
+  public:
 
     CSelBkMode(CDC * pDC)
         : CSelect(pDC), m_OldBkMode(0)
@@ -673,7 +673,7 @@ class CSelBkColor : public CSelect
 {
     COLORREF m_OldBkColor;
 
-public:
+  public:
 
     CSelBkColor(CDC * pDC)
         : CSelect(pDC), m_OldBkColor(CLR_INVALID)
@@ -718,7 +718,7 @@ class CSelTextColor : public CSelect
 {
     COLORREF m_OldTextColor;
 
-public:
+  public:
 
     CSelTextColor(CDC * pDC)
         : CSelect(pDC), m_OldTextColor(CLR_INVALID)
@@ -763,7 +763,7 @@ class CSelTextAlign : public CSelect
 {
     UINT m_OldTextAlign;
 
-public:
+  public:
 
     CSelTextAlign(CDC * pDC)
         : CSelect(pDC), m_OldTextAlign(GDI_ERROR)
@@ -808,7 +808,7 @@ class CSelMapMode : public CSelect
 {
     int m_OldMapMode;
 
-public:
+  public:
 
     CSelMapMode(CDC * pDC)
         : CSelect(pDC), m_OldMapMode(0)
@@ -854,7 +854,7 @@ class CSaveDC : public CSelect
 {
     int m_SavedDC;
 
-public:
+  public:
 
     CSaveDC(CDC * pDC)
         : CSelect(pDC)

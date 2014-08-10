@@ -9,7 +9,7 @@ class CDirectoryTreeCtrl : public CTreeCtrl
 {
     DECLARE_DYNAMIC(CDirectoryTreeCtrl)
 
-public:
+  public:
     // initialize control
     void Init(void);
     // get all shared directories
@@ -17,7 +17,7 @@ public:
     // set shared directories
     void SetSharedDirectories(CStringList* list);
 
-private:
+  private:
     CImageList m_image;
     // add a new item
     HTREEITEM AddChildItem(HTREEITEM hRoot, CString strText);
@@ -45,13 +45,13 @@ private:
     CString m_strLastRightClicked;
     bool m_bSelectSubDirs;
 
-public:
+  public:
     // construction / destruction
     CDirectoryTreeCtrl();
     virtual ~CDirectoryTreeCtrl();
     virtual BOOL OnCommand(WPARAM wParam,LPARAM lParam);
 
-protected:
+  protected:
     DECLARE_MESSAGE_MAP()
     afx_msg void OnTvnItemexpanding(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnTvnGetdispinfo(NMHDR *pNMHDR, LRESULT *pResult);

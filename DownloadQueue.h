@@ -31,17 +31,17 @@ class CUInt128;
 class CSourceHostnameResolveWnd : public CWnd
 {
 // Construction
-public:
+  public:
     CSourceHostnameResolveWnd();
     virtual ~CSourceHostnameResolveWnd();
 
     void AddToResolve(const uchar* fileid, LPCSTR pszHostname, uint16 port, LPCTSTR pszURL = NULL);
 
-protected:
+  protected:
     DECLARE_MESSAGE_MAP()
     afx_msg LRESULT OnHostnameResolved(WPARAM wParam, LPARAM lParam);
 
-private:
+  private:
     struct Hostname_Entry
     {
         uchar fileid[16];
@@ -58,7 +58,7 @@ class CDownloadQueue
 {
     friend class CAddFileThread;
 
-public:
+  public:
     CDownloadQueue();
     ~CDownloadQueue();
 
@@ -100,8 +100,8 @@ public:
     CUpDownClient* GetDownloadClientByIP_UDP(const CAddress& IP, const uint16 nUDPPort, const bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs = NULL);
 //<<< WiZaRd::IPv6 [Xanatos]
 #else
-     CUpDownClient* GetDownloadClientByIP(const UINT dwIP);
-     CUpDownClient* GetDownloadClientByIP_UDP(const UINT dwIP, const uint16 nUDPPort, const bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs = NULL);
+    CUpDownClient* GetDownloadClientByIP(const UINT dwIP);
+    CUpDownClient* GetDownloadClientByIP_UDP(const UINT dwIP, const uint16 nUDPPort, const bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs = NULL);
 #endif
     bool	IsInList(const CUpDownClient* client) const;
 
@@ -170,7 +170,7 @@ public:
 
     CString GetOptimalTempDir(UINT nCat, EMFileSize nFileSize);
 
-private:
+  private:
     bool	CompareParts(POSITION pos1, POSITION pos2);
     void	SwapParts(POSITION pos1, POSITION pos2);
     void	HeapSort(UINT first, UINT last);
@@ -201,16 +201,16 @@ private:
     DWORD       m_dwLastA4AFtime; // ZZ:DownloadManager
 
 //>>> WiZaRd::AutoHL
-public:
+  public:
     UINT	GetHLCount() const
     {
         return m_uiHLCount;
     }
-private:
+  private:
     UINT	m_uiHLCount;
 //<<< WiZaRd::AutoLH
 //>>> WiZaRd::Improved Auto Prio
-public:
+  public:
     void	GetActiveFilesAndSourceCount(UINT& files, UINT& srcs);
 //<<< WiZaRd::Improved Auto Prio
 };

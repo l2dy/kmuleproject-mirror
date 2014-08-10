@@ -27,7 +27,7 @@ class CFileDetailDialogName : public CResizablePage
 {
     DECLARE_DYNAMIC(CFileDetailDialogName)
 
-public:
+  public:
     CFileDetailDialogName();   // standard constructor
     virtual ~CFileDetailDialogName();
 
@@ -40,7 +40,7 @@ public:
     // Dialog Data
     enum { IDD = IDD_FILEDETAILS_NAME };
 
-protected:
+  protected:
     CString m_strCaption;
     const CSimpleArray<CObject*>* m_paFiles;
     bool m_bDataChanged;

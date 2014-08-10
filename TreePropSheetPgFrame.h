@@ -41,12 +41,12 @@ DrawMsg() methods, to provide custom drawing functionality.
 class /*AFX_EXT_CLASS*/ CPropPageFrame
 {
 // Construction/Destruction
-public:
+  public:
     CPropPageFrame();
     virtual ~CPropPageFrame();
 
 // Operations
-public:
+  public:
     /**
     Has to create a window with the specified properties.
 
@@ -158,7 +158,7 @@ public:
     DWORD GetMsgFormat() const;
 
 // Overridable implementation helpers
-protected:
+  protected:
     /**
     Draws the whole frame including caption (if enabled) and message.
 
@@ -244,7 +244,7 @@ protected:
     virtual void DrawCaption(CDC *pDc, CRect rect, LPCTSTR lpszCaption, HICON hIcon);
 
 // Implementation helpers
-protected:
+  protected:
     /**
     If the m_hWnd property of the CWnd-object returend by GetWnd()
     specifies a valid window, this method will invalidate the specified
@@ -259,7 +259,7 @@ protected:
     void SafeUpdateWindow(LPCRECT lpRect = NULL);
 
 // Properties
-private:
+  private:
     /** TRUE if the caption should be drawn, FALSE otherwise. */
     BOOL m_bShowCaption;
 

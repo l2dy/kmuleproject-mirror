@@ -19,7 +19,7 @@
 
 class CIISMutex
 {
-public:
+  public:
     HANDLE hMutex;
     CIISMutex()
     {

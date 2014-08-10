@@ -87,7 +87,7 @@ CStringW DecodeDoubleEncodedUtf8(LPCWSTR pszFileName);
 template< int t_nBufferLength = SHORT_ED2K_STR*4 >
 class TUnicodeToUTF8
 {
-public:
+  public:
     TUnicodeToUTF8(const CStringW& rwstr)
     {
         int iBuffSize;
@@ -144,7 +144,7 @@ public:
         return m_iChars;
     }
 
-private:
+  private:
     int m_iChars;
     LPSTR m_psz;
     char m_acBuff[t_nBufferLength];
@@ -159,7 +159,7 @@ typedef TUnicodeToUTF8<> CUnicodeToUTF8;
 template< int t_nBufferLength = SHORT_ED2K_STR*4 >
 class TUnicodeToBOMUTF8
 {
-public:
+  public:
     TUnicodeToBOMUTF8(const CStringW& rwstr)
     {
         int iBuffSize;
@@ -198,7 +198,7 @@ public:
         return m_iChars;
     }
 
-private:
+  private:
     int m_iChars;
     LPSTR m_psz;
     char m_acBuff[t_nBufferLength];
@@ -213,7 +213,7 @@ typedef TUnicodeToBOMUTF8<> CUnicodeToBOMUTF8;
 template< int t_nBufferLength = SHORT_ED2K_STR*2 >
 class TUnicodeToMultiByte
 {
-public:
+  public:
     TUnicodeToMultiByte(const CStringW& rwstr, UINT uCodePage = _AtlGetConversionACP())
     {
         int iBuffSize;
@@ -249,7 +249,7 @@ public:
         return m_iChars;
     }
 
-private:
+  private:
     int m_iChars;
     LPSTR m_psz;
     char m_acBuff[t_nBufferLength];

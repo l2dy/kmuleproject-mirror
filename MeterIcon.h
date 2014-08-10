@@ -8,7 +8,7 @@
 
 class CMeterIcon
 {
-public:
+  public:
     CMeterIcon();
     virtual ~CMeterIcon();
 
@@ -22,7 +22,7 @@ public:
     HICON Create(const int* pBarData);
     HICON SetFrame(HICON hIcon);
 
-protected:
+  protected:
     int m_nEntries;
     bool m_bInit;
     HICON m_hFrame;

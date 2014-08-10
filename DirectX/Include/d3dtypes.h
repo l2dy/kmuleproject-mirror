@@ -231,7 +231,7 @@ typedef struct _D3DVECTOR
 #if(DIRECT3D_VERSION >= 0x0500)
 #if (defined __cplusplus) && (defined D3D_OVERLOADS)
 
-public:
+  public:
 
     // =====================================
     // Constructors

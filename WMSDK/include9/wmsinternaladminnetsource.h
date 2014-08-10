@@ -112,148 +112,148 @@ EXTERN_C const IID IID_IWMSInternalAdminNetSource;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("8BB23E5F-D127-4afb-8D02-AE5B66D54C78")
+MIDL_INTERFACE("8BB23E5F-D127-4afb-8D02-AE5B66D54C78")
 IWMSInternalAdminNetSource :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual HRESULT STDMETHODCALLTYPE Initialize(
-            /* [in] */ IUnknown *pSharedNamespace,
-            /* [in] */ IUnknown *pNamespaceNode,
-            /* [in] */ INSNetSourceCreator *pNetSourceCreator,
-            /* [in] */ BOOL fEmbeddedInServer) = 0;
+    virtual HRESULT STDMETHODCALLTYPE Initialize(
+        /* [in] */ IUnknown *pSharedNamespace,
+        /* [in] */ IUnknown *pNamespaceNode,
+        /* [in] */ INSNetSourceCreator *pNetSourceCreator,
+        /* [in] */ BOOL fEmbeddedInServer) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetNetSourceCreator(
-            /* [out] */ INSNetSourceCreator **ppNetSourceCreator) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetNetSourceCreator(
+        /* [out] */ INSNetSourceCreator **ppNetSourceCreator) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetCredentials(
-            /* [in] */ BSTR bstrRealm,
-            /* [in] */ BSTR bstrName,
-            /* [in] */ BSTR bstrPassword,
-            /* [in] */ BOOL fPersist,
-            /* [in] */ BOOL fConfirmedGood) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetCredentials(
+        /* [in] */ BSTR bstrRealm,
+        /* [in] */ BSTR bstrName,
+        /* [in] */ BSTR bstrPassword,
+        /* [in] */ BOOL fPersist,
+        /* [in] */ BOOL fConfirmedGood) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetCredentials(
-            /* [in] */ BSTR bstrRealm,
-            /* [out] */ BSTR *pbstrName,
-            /* [out] */ BSTR *pbstrPassword,
-            /* [out] */ BOOL *pfConfirmedGood) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetCredentials(
+        /* [in] */ BSTR bstrRealm,
+        /* [out] */ BSTR *pbstrName,
+        /* [out] */ BSTR *pbstrPassword,
+        /* [out] */ BOOL *pfConfirmedGood) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE DeleteCredentials(
-            /* [in] */ BSTR bstrRealm) = 0;
+    virtual HRESULT STDMETHODCALLTYPE DeleteCredentials(
+        /* [in] */ BSTR bstrRealm) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetCredentialFlags(
-            /* [out] */ DWORD *lpdwFlags) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetCredentialFlags(
+        /* [out] */ DWORD *lpdwFlags) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetCredentialFlags(
-            /* [in] */ DWORD dwFlags) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetCredentialFlags(
+        /* [in] */ DWORD dwFlags) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE FindProxyForURL(
-            /* [in] */ BSTR bstrProtocol,
-            /* [in] */ BSTR bstrHost,
-            /* [out] */ BOOL *pfProxyEnabled,
-            /* [out] */ BSTR *pbstrProxyServer,
-            /* [out] */ DWORD *pdwProxyPort,
-            /* [out][in] */ DWORD *pdwProxyContext) = 0;
+    virtual HRESULT STDMETHODCALLTYPE FindProxyForURL(
+        /* [in] */ BSTR bstrProtocol,
+        /* [in] */ BSTR bstrHost,
+        /* [out] */ BOOL *pfProxyEnabled,
+        /* [out] */ BSTR *pbstrProxyServer,
+        /* [out] */ DWORD *pdwProxyPort,
+        /* [out][in] */ DWORD *pdwProxyContext) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE RegisterProxyFailure(
-            /* [in] */ HRESULT hrParam,
-            /* [in] */ DWORD dwProxyContext) = 0;
+    virtual HRESULT STDMETHODCALLTYPE RegisterProxyFailure(
+        /* [in] */ HRESULT hrParam,
+        /* [in] */ DWORD dwProxyContext) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE ShutdownProxyContext(
-            /* [in] */ DWORD dwProxyContext) = 0;
+    virtual HRESULT STDMETHODCALLTYPE ShutdownProxyContext(
+        /* [in] */ DWORD dwProxyContext) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE IsUsingIE(
-            /* [in] */ DWORD dwProxyContext,
-            /* [out] */ BOOL *pfIsUsingIE) = 0;
+    virtual HRESULT STDMETHODCALLTYPE IsUsingIE(
+        /* [in] */ DWORD dwProxyContext,
+        /* [out] */ BOOL *pfIsUsingIE) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IWMSInternalAdminNetSourceVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IWMSInternalAdminNetSourceVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IWMSInternalAdminNetSource * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IWMSInternalAdminNetSource * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IWMSInternalAdminNetSource * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IWMSInternalAdminNetSource * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IWMSInternalAdminNetSource * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IWMSInternalAdminNetSource * This);
 
-        HRESULT(STDMETHODCALLTYPE *Initialize)(
-            IWMSInternalAdminNetSource * This,
-            /* [in] */ IUnknown *pSharedNamespace,
-            /* [in] */ IUnknown *pNamespaceNode,
-            /* [in] */ INSNetSourceCreator *pNetSourceCreator,
-            /* [in] */ BOOL fEmbeddedInServer);
+    HRESULT(STDMETHODCALLTYPE *Initialize)(
+        IWMSInternalAdminNetSource * This,
+        /* [in] */ IUnknown *pSharedNamespace,
+        /* [in] */ IUnknown *pNamespaceNode,
+        /* [in] */ INSNetSourceCreator *pNetSourceCreator,
+        /* [in] */ BOOL fEmbeddedInServer);
 
-        HRESULT(STDMETHODCALLTYPE *GetNetSourceCreator)(
-            IWMSInternalAdminNetSource * This,
-            /* [out] */ INSNetSourceCreator **ppNetSourceCreator);
+    HRESULT(STDMETHODCALLTYPE *GetNetSourceCreator)(
+        IWMSInternalAdminNetSource * This,
+        /* [out] */ INSNetSourceCreator **ppNetSourceCreator);
 
-        HRESULT(STDMETHODCALLTYPE *SetCredentials)(
-            IWMSInternalAdminNetSource * This,
-            /* [in] */ BSTR bstrRealm,
-            /* [in] */ BSTR bstrName,
-            /* [in] */ BSTR bstrPassword,
-            /* [in] */ BOOL fPersist,
-            /* [in] */ BOOL fConfirmedGood);
+    HRESULT(STDMETHODCALLTYPE *SetCredentials)(
+        IWMSInternalAdminNetSource * This,
+        /* [in] */ BSTR bstrRealm,
+        /* [in] */ BSTR bstrName,
+        /* [in] */ BSTR bstrPassword,
+        /* [in] */ BOOL fPersist,
+        /* [in] */ BOOL fConfirmedGood);
 
-        HRESULT(STDMETHODCALLTYPE *GetCredentials)(
-            IWMSInternalAdminNetSource * This,
-            /* [in] */ BSTR bstrRealm,
-            /* [out] */ BSTR *pbstrName,
-            /* [out] */ BSTR *pbstrPassword,
-            /* [out] */ BOOL *pfConfirmedGood);
+    HRESULT(STDMETHODCALLTYPE *GetCredentials)(
+        IWMSInternalAdminNetSource * This,
+        /* [in] */ BSTR bstrRealm,
+        /* [out] */ BSTR *pbstrName,
+        /* [out] */ BSTR *pbstrPassword,
+        /* [out] */ BOOL *pfConfirmedGood);
 
-        HRESULT(STDMETHODCALLTYPE *DeleteCredentials)(
-            IWMSInternalAdminNetSource * This,
-            /* [in] */ BSTR bstrRealm);
+    HRESULT(STDMETHODCALLTYPE *DeleteCredentials)(
+        IWMSInternalAdminNetSource * This,
+        /* [in] */ BSTR bstrRealm);
 
-        HRESULT(STDMETHODCALLTYPE *GetCredentialFlags)(
-            IWMSInternalAdminNetSource * This,
-            /* [out] */ DWORD *lpdwFlags);
+    HRESULT(STDMETHODCALLTYPE *GetCredentialFlags)(
+        IWMSInternalAdminNetSource * This,
+        /* [out] */ DWORD *lpdwFlags);
 
-        HRESULT(STDMETHODCALLTYPE *SetCredentialFlags)(
-            IWMSInternalAdminNetSource * This,
-            /* [in] */ DWORD dwFlags);
+    HRESULT(STDMETHODCALLTYPE *SetCredentialFlags)(
+        IWMSInternalAdminNetSource * This,
+        /* [in] */ DWORD dwFlags);
 
-        HRESULT(STDMETHODCALLTYPE *FindProxyForURL)(
-            IWMSInternalAdminNetSource * This,
-            /* [in] */ BSTR bstrProtocol,
-            /* [in] */ BSTR bstrHost,
-            /* [out] */ BOOL *pfProxyEnabled,
-            /* [out] */ BSTR *pbstrProxyServer,
-            /* [out] */ DWORD *pdwProxyPort,
-            /* [out][in] */ DWORD *pdwProxyContext);
+    HRESULT(STDMETHODCALLTYPE *FindProxyForURL)(
+        IWMSInternalAdminNetSource * This,
+        /* [in] */ BSTR bstrProtocol,
+        /* [in] */ BSTR bstrHost,
+        /* [out] */ BOOL *pfProxyEnabled,
+        /* [out] */ BSTR *pbstrProxyServer,
+        /* [out] */ DWORD *pdwProxyPort,
+        /* [out][in] */ DWORD *pdwProxyContext);
 
-        HRESULT(STDMETHODCALLTYPE *RegisterProxyFailure)(
-            IWMSInternalAdminNetSource * This,
-            /* [in] */ HRESULT hrParam,
-            /* [in] */ DWORD dwProxyContext);
+    HRESULT(STDMETHODCALLTYPE *RegisterProxyFailure)(
+        IWMSInternalAdminNetSource * This,
+        /* [in] */ HRESULT hrParam,
+        /* [in] */ DWORD dwProxyContext);
 
-        HRESULT(STDMETHODCALLTYPE *ShutdownProxyContext)(
-            IWMSInternalAdminNetSource * This,
-            /* [in] */ DWORD dwProxyContext);
+    HRESULT(STDMETHODCALLTYPE *ShutdownProxyContext)(
+        IWMSInternalAdminNetSource * This,
+        /* [in] */ DWORD dwProxyContext);
 
-        HRESULT(STDMETHODCALLTYPE *IsUsingIE)(
-            IWMSInternalAdminNetSource * This,
-            /* [in] */ DWORD dwProxyContext,
-            /* [out] */ BOOL *pfIsUsingIE);
+    HRESULT(STDMETHODCALLTYPE *IsUsingIE)(
+        IWMSInternalAdminNetSource * This,
+        /* [in] */ DWORD dwProxyContext,
+        /* [out] */ BOOL *pfIsUsingIE);
 
-        END_INTERFACE
-    } IWMSInternalAdminNetSourceVtbl;
+    END_INTERFACE
+} IWMSInternalAdminNetSourceVtbl;
 
-    interface IWMSInternalAdminNetSource
-    {
-        CONST_VTBL struct IWMSInternalAdminNetSourceVtbl *lpVtbl;
-    };
+interface IWMSInternalAdminNetSource
+{
+    CONST_VTBL struct IWMSInternalAdminNetSourceVtbl *lpVtbl;
+};
 
 
 
@@ -310,153 +310,153 @@ public:
 
 
 
-    HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource_Initialize_Proxy(
-        IWMSInternalAdminNetSource * This,
-        /* [in] */ IUnknown *pSharedNamespace,
-        /* [in] */ IUnknown *pNamespaceNode,
-        /* [in] */ INSNetSourceCreator *pNetSourceCreator,
-        /* [in] */ BOOL fEmbeddedInServer);
+HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource_Initialize_Proxy(
+    IWMSInternalAdminNetSource * This,
+    /* [in] */ IUnknown *pSharedNamespace,
+    /* [in] */ IUnknown *pNamespaceNode,
+    /* [in] */ INSNetSourceCreator *pNetSourceCreator,
+    /* [in] */ BOOL fEmbeddedInServer);
 
 
-    void __RPC_STUB IWMSInternalAdminNetSource_Initialize_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMSInternalAdminNetSource_Initialize_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource_GetNetSourceCreator_Proxy(
-        IWMSInternalAdminNetSource * This,
-        /* [out] */ INSNetSourceCreator **ppNetSourceCreator);
+HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource_GetNetSourceCreator_Proxy(
+    IWMSInternalAdminNetSource * This,
+    /* [out] */ INSNetSourceCreator **ppNetSourceCreator);
 
 
-    void __RPC_STUB IWMSInternalAdminNetSource_GetNetSourceCreator_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMSInternalAdminNetSource_GetNetSourceCreator_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource_SetCredentials_Proxy(
-        IWMSInternalAdminNetSource * This,
-        /* [in] */ BSTR bstrRealm,
-        /* [in] */ BSTR bstrName,
-        /* [in] */ BSTR bstrPassword,
-        /* [in] */ BOOL fPersist,
-        /* [in] */ BOOL fConfirmedGood);
+HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource_SetCredentials_Proxy(
+    IWMSInternalAdminNetSource * This,
+    /* [in] */ BSTR bstrRealm,
+    /* [in] */ BSTR bstrName,
+    /* [in] */ BSTR bstrPassword,
+    /* [in] */ BOOL fPersist,
+    /* [in] */ BOOL fConfirmedGood);
 
 
-    void __RPC_STUB IWMSInternalAdminNetSource_SetCredentials_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMSInternalAdminNetSource_SetCredentials_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource_GetCredentials_Proxy(
-        IWMSInternalAdminNetSource * This,
-        /* [in] */ BSTR bstrRealm,
-        /* [out] */ BSTR *pbstrName,
-        /* [out] */ BSTR *pbstrPassword,
-        /* [out] */ BOOL *pfConfirmedGood);
+HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource_GetCredentials_Proxy(
+    IWMSInternalAdminNetSource * This,
+    /* [in] */ BSTR bstrRealm,
+    /* [out] */ BSTR *pbstrName,
+    /* [out] */ BSTR *pbstrPassword,
+    /* [out] */ BOOL *pfConfirmedGood);
 
 
-    void __RPC_STUB IWMSInternalAdminNetSource_GetCredentials_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMSInternalAdminNetSource_GetCredentials_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource_DeleteCredentials_Proxy(
-        IWMSInternalAdminNetSource * This,
-        /* [in] */ BSTR bstrRealm);
+HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource_DeleteCredentials_Proxy(
+    IWMSInternalAdminNetSource * This,
+    /* [in] */ BSTR bstrRealm);
 
 
-    void __RPC_STUB IWMSInternalAdminNetSource_DeleteCredentials_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMSInternalAdminNetSource_DeleteCredentials_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource_GetCredentialFlags_Proxy(
-        IWMSInternalAdminNetSource * This,
-        /* [out] */ DWORD *lpdwFlags);
+HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource_GetCredentialFlags_Proxy(
+    IWMSInternalAdminNetSource * This,
+    /* [out] */ DWORD *lpdwFlags);
 
 
-    void __RPC_STUB IWMSInternalAdminNetSource_GetCredentialFlags_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMSInternalAdminNetSource_GetCredentialFlags_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource_SetCredentialFlags_Proxy(
-        IWMSInternalAdminNetSource * This,
-        /* [in] */ DWORD dwFlags);
+HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource_SetCredentialFlags_Proxy(
+    IWMSInternalAdminNetSource * This,
+    /* [in] */ DWORD dwFlags);
 
 
-    void __RPC_STUB IWMSInternalAdminNetSource_SetCredentialFlags_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMSInternalAdminNetSource_SetCredentialFlags_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource_FindProxyForURL_Proxy(
-        IWMSInternalAdminNetSource * This,
-        /* [in] */ BSTR bstrProtocol,
-        /* [in] */ BSTR bstrHost,
-        /* [out] */ BOOL *pfProxyEnabled,
-        /* [out] */ BSTR *pbstrProxyServer,
-        /* [out] */ DWORD *pdwProxyPort,
-        /* [out][in] */ DWORD *pdwProxyContext);
+HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource_FindProxyForURL_Proxy(
+    IWMSInternalAdminNetSource * This,
+    /* [in] */ BSTR bstrProtocol,
+    /* [in] */ BSTR bstrHost,
+    /* [out] */ BOOL *pfProxyEnabled,
+    /* [out] */ BSTR *pbstrProxyServer,
+    /* [out] */ DWORD *pdwProxyPort,
+    /* [out][in] */ DWORD *pdwProxyContext);
 
 
-    void __RPC_STUB IWMSInternalAdminNetSource_FindProxyForURL_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMSInternalAdminNetSource_FindProxyForURL_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource_RegisterProxyFailure_Proxy(
-        IWMSInternalAdminNetSource * This,
-        /* [in] */ HRESULT hrParam,
-        /* [in] */ DWORD dwProxyContext);
+HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource_RegisterProxyFailure_Proxy(
+    IWMSInternalAdminNetSource * This,
+    /* [in] */ HRESULT hrParam,
+    /* [in] */ DWORD dwProxyContext);
 
 
-    void __RPC_STUB IWMSInternalAdminNetSource_RegisterProxyFailure_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMSInternalAdminNetSource_RegisterProxyFailure_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource_ShutdownProxyContext_Proxy(
-        IWMSInternalAdminNetSource * This,
-        /* [in] */ DWORD dwProxyContext);
+HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource_ShutdownProxyContext_Proxy(
+    IWMSInternalAdminNetSource * This,
+    /* [in] */ DWORD dwProxyContext);
 
 
-    void __RPC_STUB IWMSInternalAdminNetSource_ShutdownProxyContext_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMSInternalAdminNetSource_ShutdownProxyContext_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource_IsUsingIE_Proxy(
-        IWMSInternalAdminNetSource * This,
-        /* [in] */ DWORD dwProxyContext,
-        /* [out] */ BOOL *pfIsUsingIE);
+HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource_IsUsingIE_Proxy(
+    IWMSInternalAdminNetSource * This,
+    /* [in] */ DWORD dwProxyContext,
+    /* [out] */ BOOL *pfIsUsingIE);
 
 
-    void __RPC_STUB IWMSInternalAdminNetSource_IsUsingIE_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMSInternalAdminNetSource_IsUsingIE_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -466,113 +466,113 @@ public:
 #ifndef __IWMSInternalAdminNetSource2_INTERFACE_DEFINED__
 #define __IWMSInternalAdminNetSource2_INTERFACE_DEFINED__
 
-    /* interface IWMSInternalAdminNetSource2 */
-    /* [unique][helpstring][uuid][object][local] */
+/* interface IWMSInternalAdminNetSource2 */
+/* [unique][helpstring][uuid][object][local] */
 
 
-    EXTERN_C const IID IID_IWMSInternalAdminNetSource2;
+EXTERN_C const IID IID_IWMSInternalAdminNetSource2;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("E74D58C3-CF77-4b51-AF17-744687C43EAE")
+MIDL_INTERFACE("E74D58C3-CF77-4b51-AF17-744687C43EAE")
 IWMSInternalAdminNetSource2 :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual HRESULT STDMETHODCALLTYPE SetCredentialsEx(
-            /* [in] */ BSTR bstrRealm,
-            /* [in] */ BSTR bstrUrl,
-            /* [in] */ BOOL fProxy,
-            /* [in] */ BSTR bstrName,
-            /* [in] */ BSTR bstrPassword,
-            /* [in] */ BOOL fPersist,
-            /* [in] */ BOOL fConfirmedGood) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetCredentialsEx(
+        /* [in] */ BSTR bstrRealm,
+        /* [in] */ BSTR bstrUrl,
+        /* [in] */ BOOL fProxy,
+        /* [in] */ BSTR bstrName,
+        /* [in] */ BSTR bstrPassword,
+        /* [in] */ BOOL fPersist,
+        /* [in] */ BOOL fConfirmedGood) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetCredentialsEx(
-            /* [in] */ BSTR bstrRealm,
-            /* [in] */ BSTR bstrUrl,
-            /* [in] */ BOOL fProxy,
-            /* [out] */ NETSOURCE_URLCREDPOLICY_SETTINGS *pdwUrlPolicy,
-            /* [out] */ BSTR *pbstrName,
-            /* [out] */ BSTR *pbstrPassword,
-            /* [out] */ BOOL *pfConfirmedGood) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetCredentialsEx(
+        /* [in] */ BSTR bstrRealm,
+        /* [in] */ BSTR bstrUrl,
+        /* [in] */ BOOL fProxy,
+        /* [out] */ NETSOURCE_URLCREDPOLICY_SETTINGS *pdwUrlPolicy,
+        /* [out] */ BSTR *pbstrName,
+        /* [out] */ BSTR *pbstrPassword,
+        /* [out] */ BOOL *pfConfirmedGood) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE DeleteCredentialsEx(
-            /* [in] */ BSTR bstrRealm,
-            /* [in] */ BSTR bstrUrl,
-            /* [in] */ BOOL fProxy) = 0;
+    virtual HRESULT STDMETHODCALLTYPE DeleteCredentialsEx(
+        /* [in] */ BSTR bstrRealm,
+        /* [in] */ BSTR bstrUrl,
+        /* [in] */ BOOL fProxy) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE FindProxyForURLEx(
-            /* [in] */ BSTR bstrProtocol,
-            /* [in] */ BSTR bstrHost,
-            /* [in] */ BSTR bstrUrl,
-            /* [out] */ BOOL *pfProxyEnabled,
-            /* [out] */ BSTR *pbstrProxyServer,
-            /* [out] */ DWORD *pdwProxyPort,
-            /* [out][in] */ DWORD *pdwProxyContext) = 0;
+    virtual HRESULT STDMETHODCALLTYPE FindProxyForURLEx(
+        /* [in] */ BSTR bstrProtocol,
+        /* [in] */ BSTR bstrHost,
+        /* [in] */ BSTR bstrUrl,
+        /* [out] */ BOOL *pfProxyEnabled,
+        /* [out] */ BSTR *pbstrProxyServer,
+        /* [out] */ DWORD *pdwProxyPort,
+        /* [out][in] */ DWORD *pdwProxyContext) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IWMSInternalAdminNetSource2Vtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IWMSInternalAdminNetSource2Vtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IWMSInternalAdminNetSource2 * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IWMSInternalAdminNetSource2 * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IWMSInternalAdminNetSource2 * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IWMSInternalAdminNetSource2 * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IWMSInternalAdminNetSource2 * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IWMSInternalAdminNetSource2 * This);
 
-        HRESULT(STDMETHODCALLTYPE *SetCredentialsEx)(
-            IWMSInternalAdminNetSource2 * This,
-            /* [in] */ BSTR bstrRealm,
-            /* [in] */ BSTR bstrUrl,
-            /* [in] */ BOOL fProxy,
-            /* [in] */ BSTR bstrName,
-            /* [in] */ BSTR bstrPassword,
-            /* [in] */ BOOL fPersist,
-            /* [in] */ BOOL fConfirmedGood);
+    HRESULT(STDMETHODCALLTYPE *SetCredentialsEx)(
+        IWMSInternalAdminNetSource2 * This,
+        /* [in] */ BSTR bstrRealm,
+        /* [in] */ BSTR bstrUrl,
+        /* [in] */ BOOL fProxy,
+        /* [in] */ BSTR bstrName,
+        /* [in] */ BSTR bstrPassword,
+        /* [in] */ BOOL fPersist,
+        /* [in] */ BOOL fConfirmedGood);
 
-        HRESULT(STDMETHODCALLTYPE *GetCredentialsEx)(
-            IWMSInternalAdminNetSource2 * This,
-            /* [in] */ BSTR bstrRealm,
-            /* [in] */ BSTR bstrUrl,
-            /* [in] */ BOOL fProxy,
-            /* [out] */ NETSOURCE_URLCREDPOLICY_SETTINGS *pdwUrlPolicy,
-            /* [out] */ BSTR *pbstrName,
-            /* [out] */ BSTR *pbstrPassword,
-            /* [out] */ BOOL *pfConfirmedGood);
+    HRESULT(STDMETHODCALLTYPE *GetCredentialsEx)(
+        IWMSInternalAdminNetSource2 * This,
+        /* [in] */ BSTR bstrRealm,
+        /* [in] */ BSTR bstrUrl,
+        /* [in] */ BOOL fProxy,
+        /* [out] */ NETSOURCE_URLCREDPOLICY_SETTINGS *pdwUrlPolicy,
+        /* [out] */ BSTR *pbstrName,
+        /* [out] */ BSTR *pbstrPassword,
+        /* [out] */ BOOL *pfConfirmedGood);
 
-        HRESULT(STDMETHODCALLTYPE *DeleteCredentialsEx)(
-            IWMSInternalAdminNetSource2 * This,
-            /* [in] */ BSTR bstrRealm,
-            /* [in] */ BSTR bstrUrl,
-            /* [in] */ BOOL fProxy);
+    HRESULT(STDMETHODCALLTYPE *DeleteCredentialsEx)(
+        IWMSInternalAdminNetSource2 * This,
+        /* [in] */ BSTR bstrRealm,
+        /* [in] */ BSTR bstrUrl,
+        /* [in] */ BOOL fProxy);
 
-        HRESULT(STDMETHODCALLTYPE *FindProxyForURLEx)(
-            IWMSInternalAdminNetSource2 * This,
-            /* [in] */ BSTR bstrProtocol,
-            /* [in] */ BSTR bstrHost,
-            /* [in] */ BSTR bstrUrl,
-            /* [out] */ BOOL *pfProxyEnabled,
-            /* [out] */ BSTR *pbstrProxyServer,
-            /* [out] */ DWORD *pdwProxyPort,
-            /* [out][in] */ DWORD *pdwProxyContext);
+    HRESULT(STDMETHODCALLTYPE *FindProxyForURLEx)(
+        IWMSInternalAdminNetSource2 * This,
+        /* [in] */ BSTR bstrProtocol,
+        /* [in] */ BSTR bstrHost,
+        /* [in] */ BSTR bstrUrl,
+        /* [out] */ BOOL *pfProxyEnabled,
+        /* [out] */ BSTR *pbstrProxyServer,
+        /* [out] */ DWORD *pdwProxyPort,
+        /* [out][in] */ DWORD *pdwProxyContext);
 
-        END_INTERFACE
-    } IWMSInternalAdminNetSource2Vtbl;
+    END_INTERFACE
+} IWMSInternalAdminNetSource2Vtbl;
 
-    interface IWMSInternalAdminNetSource2
-    {
-        CONST_VTBL struct IWMSInternalAdminNetSource2Vtbl *lpVtbl;
-    };
+interface IWMSInternalAdminNetSource2
+{
+    CONST_VTBL struct IWMSInternalAdminNetSource2Vtbl *lpVtbl;
+};
 
 
 
@@ -608,72 +608,72 @@ public:
 
 
 
-    HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource2_SetCredentialsEx_Proxy(
-        IWMSInternalAdminNetSource2 * This,
-        /* [in] */ BSTR bstrRealm,
-        /* [in] */ BSTR bstrUrl,
-        /* [in] */ BOOL fProxy,
-        /* [in] */ BSTR bstrName,
-        /* [in] */ BSTR bstrPassword,
-        /* [in] */ BOOL fPersist,
-        /* [in] */ BOOL fConfirmedGood);
+HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource2_SetCredentialsEx_Proxy(
+    IWMSInternalAdminNetSource2 * This,
+    /* [in] */ BSTR bstrRealm,
+    /* [in] */ BSTR bstrUrl,
+    /* [in] */ BOOL fProxy,
+    /* [in] */ BSTR bstrName,
+    /* [in] */ BSTR bstrPassword,
+    /* [in] */ BOOL fPersist,
+    /* [in] */ BOOL fConfirmedGood);
 
 
-    void __RPC_STUB IWMSInternalAdminNetSource2_SetCredentialsEx_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMSInternalAdminNetSource2_SetCredentialsEx_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource2_GetCredentialsEx_Proxy(
-        IWMSInternalAdminNetSource2 * This,
-        /* [in] */ BSTR bstrRealm,
-        /* [in] */ BSTR bstrUrl,
-        /* [in] */ BOOL fProxy,
-        /* [out] */ NETSOURCE_URLCREDPOLICY_SETTINGS *pdwUrlPolicy,
-        /* [out] */ BSTR *pbstrName,
-        /* [out] */ BSTR *pbstrPassword,
-        /* [out] */ BOOL *pfConfirmedGood);
+HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource2_GetCredentialsEx_Proxy(
+    IWMSInternalAdminNetSource2 * This,
+    /* [in] */ BSTR bstrRealm,
+    /* [in] */ BSTR bstrUrl,
+    /* [in] */ BOOL fProxy,
+    /* [out] */ NETSOURCE_URLCREDPOLICY_SETTINGS *pdwUrlPolicy,
+    /* [out] */ BSTR *pbstrName,
+    /* [out] */ BSTR *pbstrPassword,
+    /* [out] */ BOOL *pfConfirmedGood);
 
 
-    void __RPC_STUB IWMSInternalAdminNetSource2_GetCredentialsEx_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMSInternalAdminNetSource2_GetCredentialsEx_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource2_DeleteCredentialsEx_Proxy(
-        IWMSInternalAdminNetSource2 * This,
-        /* [in] */ BSTR bstrRealm,
-        /* [in] */ BSTR bstrUrl,
-        /* [in] */ BOOL fProxy);
+HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource2_DeleteCredentialsEx_Proxy(
+    IWMSInternalAdminNetSource2 * This,
+    /* [in] */ BSTR bstrRealm,
+    /* [in] */ BSTR bstrUrl,
+    /* [in] */ BOOL fProxy);
 
 
-    void __RPC_STUB IWMSInternalAdminNetSource2_DeleteCredentialsEx_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMSInternalAdminNetSource2_DeleteCredentialsEx_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource2_FindProxyForURLEx_Proxy(
-        IWMSInternalAdminNetSource2 * This,
-        /* [in] */ BSTR bstrProtocol,
-        /* [in] */ BSTR bstrHost,
-        /* [in] */ BSTR bstrUrl,
-        /* [out] */ BOOL *pfProxyEnabled,
-        /* [out] */ BSTR *pbstrProxyServer,
-        /* [out] */ DWORD *pdwProxyPort,
-        /* [out][in] */ DWORD *pdwProxyContext);
+HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource2_FindProxyForURLEx_Proxy(
+    IWMSInternalAdminNetSource2 * This,
+    /* [in] */ BSTR bstrProtocol,
+    /* [in] */ BSTR bstrHost,
+    /* [in] */ BSTR bstrUrl,
+    /* [out] */ BOOL *pfProxyEnabled,
+    /* [out] */ BSTR *pbstrProxyServer,
+    /* [out] */ DWORD *pdwProxyPort,
+    /* [out][in] */ DWORD *pdwProxyContext);
 
 
-    void __RPC_STUB IWMSInternalAdminNetSource2_FindProxyForURLEx_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMSInternalAdminNetSource2_FindProxyForURLEx_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -683,174 +683,174 @@ public:
 #ifndef __IWMSInternalAdminNetSource3_INTERFACE_DEFINED__
 #define __IWMSInternalAdminNetSource3_INTERFACE_DEFINED__
 
-    /* interface IWMSInternalAdminNetSource3 */
-    /* [unique][helpstring][uuid][object][local] */
+/* interface IWMSInternalAdminNetSource3 */
+/* [unique][helpstring][uuid][object][local] */
 
 
-    EXTERN_C const IID IID_IWMSInternalAdminNetSource3;
+EXTERN_C const IID IID_IWMSInternalAdminNetSource3;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("6b63d08e-4590-44af-9eb3-57ff1e73bf80")
+MIDL_INTERFACE("6b63d08e-4590-44af-9eb3-57ff1e73bf80")
 IWMSInternalAdminNetSource3 :
-    public IWMSInternalAdminNetSource2
-    {
+public IWMSInternalAdminNetSource2
+{
 public:
-        virtual HRESULT STDMETHODCALLTYPE GetNetSourceCreator2(
-            /* [out] */ IUnknown **ppNetSourceCreator) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetNetSourceCreator2(
+        /* [out] */ IUnknown **ppNetSourceCreator) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE FindProxyForURLEx2(
-            /* [in] */ BSTR bstrProtocol,
-            /* [in] */ BSTR bstrHost,
-            /* [in] */ BSTR bstrUrl,
-            /* [out] */ BOOL *pfProxyEnabled,
-            /* [out] */ BSTR *pbstrProxyServer,
-            /* [out] */ DWORD *pdwProxyPort,
-            /* [out][in] */ QWORD *pqwProxyContext) = 0;
+    virtual HRESULT STDMETHODCALLTYPE FindProxyForURLEx2(
+        /* [in] */ BSTR bstrProtocol,
+        /* [in] */ BSTR bstrHost,
+        /* [in] */ BSTR bstrUrl,
+        /* [out] */ BOOL *pfProxyEnabled,
+        /* [out] */ BSTR *pbstrProxyServer,
+        /* [out] */ DWORD *pdwProxyPort,
+        /* [out][in] */ QWORD *pqwProxyContext) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE RegisterProxyFailure2(
-            /* [in] */ HRESULT hrParam,
-            /* [in] */ QWORD qwProxyContext) = 0;
+    virtual HRESULT STDMETHODCALLTYPE RegisterProxyFailure2(
+        /* [in] */ HRESULT hrParam,
+        /* [in] */ QWORD qwProxyContext) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE ShutdownProxyContext2(
-            /* [in] */ QWORD qwProxyContext) = 0;
+    virtual HRESULT STDMETHODCALLTYPE ShutdownProxyContext2(
+        /* [in] */ QWORD qwProxyContext) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE IsUsingIE2(
-            /* [in] */ QWORD qwProxyContext,
-            /* [out] */ BOOL *pfIsUsingIE) = 0;
+    virtual HRESULT STDMETHODCALLTYPE IsUsingIE2(
+        /* [in] */ QWORD qwProxyContext,
+        /* [out] */ BOOL *pfIsUsingIE) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetCredentialsEx2(
-            /* [in] */ BSTR bstrRealm,
-            /* [in] */ BSTR bstrUrl,
-            /* [in] */ BOOL fProxy,
-            /* [in] */ BSTR bstrName,
-            /* [in] */ BSTR bstrPassword,
-            /* [in] */ BOOL fPersist,
-            /* [in] */ BOOL fConfirmedGood,
-            /* [in] */ BOOL fClearTextAuthentication) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetCredentialsEx2(
+        /* [in] */ BSTR bstrRealm,
+        /* [in] */ BSTR bstrUrl,
+        /* [in] */ BOOL fProxy,
+        /* [in] */ BSTR bstrName,
+        /* [in] */ BSTR bstrPassword,
+        /* [in] */ BOOL fPersist,
+        /* [in] */ BOOL fConfirmedGood,
+        /* [in] */ BOOL fClearTextAuthentication) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetCredentialsEx2(
-            /* [in] */ BSTR bstrRealm,
-            /* [in] */ BSTR bstrUrl,
-            /* [in] */ BOOL fProxy,
-            /* [in] */ BOOL fClearTextAuthentication,
-            /* [out] */ NETSOURCE_URLCREDPOLICY_SETTINGS *pdwUrlPolicy,
-            /* [out] */ BSTR *pbstrName,
-            /* [out] */ BSTR *pbstrPassword,
-            /* [out] */ BOOL *pfConfirmedGood) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetCredentialsEx2(
+        /* [in] */ BSTR bstrRealm,
+        /* [in] */ BSTR bstrUrl,
+        /* [in] */ BOOL fProxy,
+        /* [in] */ BOOL fClearTextAuthentication,
+        /* [out] */ NETSOURCE_URLCREDPOLICY_SETTINGS *pdwUrlPolicy,
+        /* [out] */ BSTR *pbstrName,
+        /* [out] */ BSTR *pbstrPassword,
+        /* [out] */ BOOL *pfConfirmedGood) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IWMSInternalAdminNetSource3Vtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IWMSInternalAdminNetSource3Vtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IWMSInternalAdminNetSource3 * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IWMSInternalAdminNetSource3 * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IWMSInternalAdminNetSource3 * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IWMSInternalAdminNetSource3 * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IWMSInternalAdminNetSource3 * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IWMSInternalAdminNetSource3 * This);
 
-        HRESULT(STDMETHODCALLTYPE *SetCredentialsEx)(
-            IWMSInternalAdminNetSource3 * This,
-            /* [in] */ BSTR bstrRealm,
-            /* [in] */ BSTR bstrUrl,
-            /* [in] */ BOOL fProxy,
-            /* [in] */ BSTR bstrName,
-            /* [in] */ BSTR bstrPassword,
-            /* [in] */ BOOL fPersist,
-            /* [in] */ BOOL fConfirmedGood);
+    HRESULT(STDMETHODCALLTYPE *SetCredentialsEx)(
+        IWMSInternalAdminNetSource3 * This,
+        /* [in] */ BSTR bstrRealm,
+        /* [in] */ BSTR bstrUrl,
+        /* [in] */ BOOL fProxy,
+        /* [in] */ BSTR bstrName,
+        /* [in] */ BSTR bstrPassword,
+        /* [in] */ BOOL fPersist,
+        /* [in] */ BOOL fConfirmedGood);
 
-        HRESULT(STDMETHODCALLTYPE *GetCredentialsEx)(
-            IWMSInternalAdminNetSource3 * This,
-            /* [in] */ BSTR bstrRealm,
-            /* [in] */ BSTR bstrUrl,
-            /* [in] */ BOOL fProxy,
-            /* [out] */ NETSOURCE_URLCREDPOLICY_SETTINGS *pdwUrlPolicy,
-            /* [out] */ BSTR *pbstrName,
-            /* [out] */ BSTR *pbstrPassword,
-            /* [out] */ BOOL *pfConfirmedGood);
+    HRESULT(STDMETHODCALLTYPE *GetCredentialsEx)(
+        IWMSInternalAdminNetSource3 * This,
+        /* [in] */ BSTR bstrRealm,
+        /* [in] */ BSTR bstrUrl,
+        /* [in] */ BOOL fProxy,
+        /* [out] */ NETSOURCE_URLCREDPOLICY_SETTINGS *pdwUrlPolicy,
+        /* [out] */ BSTR *pbstrName,
+        /* [out] */ BSTR *pbstrPassword,
+        /* [out] */ BOOL *pfConfirmedGood);
 
-        HRESULT(STDMETHODCALLTYPE *DeleteCredentialsEx)(
-            IWMSInternalAdminNetSource3 * This,
-            /* [in] */ BSTR bstrRealm,
-            /* [in] */ BSTR bstrUrl,
-            /* [in] */ BOOL fProxy);
+    HRESULT(STDMETHODCALLTYPE *DeleteCredentialsEx)(
+        IWMSInternalAdminNetSource3 * This,
+        /* [in] */ BSTR bstrRealm,
+        /* [in] */ BSTR bstrUrl,
+        /* [in] */ BOOL fProxy);
 
-        HRESULT(STDMETHODCALLTYPE *FindProxyForURLEx)(
-            IWMSInternalAdminNetSource3 * This,
-            /* [in] */ BSTR bstrProtocol,
-            /* [in] */ BSTR bstrHost,
-            /* [in] */ BSTR bstrUrl,
-            /* [out] */ BOOL *pfProxyEnabled,
-            /* [out] */ BSTR *pbstrProxyServer,
-            /* [out] */ DWORD *pdwProxyPort,
-            /* [out][in] */ DWORD *pdwProxyContext);
+    HRESULT(STDMETHODCALLTYPE *FindProxyForURLEx)(
+        IWMSInternalAdminNetSource3 * This,
+        /* [in] */ BSTR bstrProtocol,
+        /* [in] */ BSTR bstrHost,
+        /* [in] */ BSTR bstrUrl,
+        /* [out] */ BOOL *pfProxyEnabled,
+        /* [out] */ BSTR *pbstrProxyServer,
+        /* [out] */ DWORD *pdwProxyPort,
+        /* [out][in] */ DWORD *pdwProxyContext);
 
-        HRESULT(STDMETHODCALLTYPE *GetNetSourceCreator2)(
-            IWMSInternalAdminNetSource3 * This,
-            /* [out] */ IUnknown **ppNetSourceCreator);
+    HRESULT(STDMETHODCALLTYPE *GetNetSourceCreator2)(
+        IWMSInternalAdminNetSource3 * This,
+        /* [out] */ IUnknown **ppNetSourceCreator);
 
-        HRESULT(STDMETHODCALLTYPE *FindProxyForURLEx2)(
-            IWMSInternalAdminNetSource3 * This,
-            /* [in] */ BSTR bstrProtocol,
-            /* [in] */ BSTR bstrHost,
-            /* [in] */ BSTR bstrUrl,
-            /* [out] */ BOOL *pfProxyEnabled,
-            /* [out] */ BSTR *pbstrProxyServer,
-            /* [out] */ DWORD *pdwProxyPort,
-            /* [out][in] */ QWORD *pqwProxyContext);
+    HRESULT(STDMETHODCALLTYPE *FindProxyForURLEx2)(
+        IWMSInternalAdminNetSource3 * This,
+        /* [in] */ BSTR bstrProtocol,
+        /* [in] */ BSTR bstrHost,
+        /* [in] */ BSTR bstrUrl,
+        /* [out] */ BOOL *pfProxyEnabled,
+        /* [out] */ BSTR *pbstrProxyServer,
+        /* [out] */ DWORD *pdwProxyPort,
+        /* [out][in] */ QWORD *pqwProxyContext);
 
-        HRESULT(STDMETHODCALLTYPE *RegisterProxyFailure2)(
-            IWMSInternalAdminNetSource3 * This,
-            /* [in] */ HRESULT hrParam,
-            /* [in] */ QWORD qwProxyContext);
+    HRESULT(STDMETHODCALLTYPE *RegisterProxyFailure2)(
+        IWMSInternalAdminNetSource3 * This,
+        /* [in] */ HRESULT hrParam,
+        /* [in] */ QWORD qwProxyContext);
 
-        HRESULT(STDMETHODCALLTYPE *ShutdownProxyContext2)(
-            IWMSInternalAdminNetSource3 * This,
-            /* [in] */ QWORD qwProxyContext);
+    HRESULT(STDMETHODCALLTYPE *ShutdownProxyContext2)(
+        IWMSInternalAdminNetSource3 * This,
+        /* [in] */ QWORD qwProxyContext);
 
-        HRESULT(STDMETHODCALLTYPE *IsUsingIE2)(
-            IWMSInternalAdminNetSource3 * This,
-            /* [in] */ QWORD qwProxyContext,
-            /* [out] */ BOOL *pfIsUsingIE);
+    HRESULT(STDMETHODCALLTYPE *IsUsingIE2)(
+        IWMSInternalAdminNetSource3 * This,
+        /* [in] */ QWORD qwProxyContext,
+        /* [out] */ BOOL *pfIsUsingIE);
 
-        HRESULT(STDMETHODCALLTYPE *SetCredentialsEx2)(
-            IWMSInternalAdminNetSource3 * This,
-            /* [in] */ BSTR bstrRealm,
-            /* [in] */ BSTR bstrUrl,
-            /* [in] */ BOOL fProxy,
-            /* [in] */ BSTR bstrName,
-            /* [in] */ BSTR bstrPassword,
-            /* [in] */ BOOL fPersist,
-            /* [in] */ BOOL fConfirmedGood,
-            /* [in] */ BOOL fClearTextAuthentication);
+    HRESULT(STDMETHODCALLTYPE *SetCredentialsEx2)(
+        IWMSInternalAdminNetSource3 * This,
+        /* [in] */ BSTR bstrRealm,
+        /* [in] */ BSTR bstrUrl,
+        /* [in] */ BOOL fProxy,
+        /* [in] */ BSTR bstrName,
+        /* [in] */ BSTR bstrPassword,
+        /* [in] */ BOOL fPersist,
+        /* [in] */ BOOL fConfirmedGood,
+        /* [in] */ BOOL fClearTextAuthentication);
 
-        HRESULT(STDMETHODCALLTYPE *GetCredentialsEx2)(
-            IWMSInternalAdminNetSource3 * This,
-            /* [in] */ BSTR bstrRealm,
-            /* [in] */ BSTR bstrUrl,
-            /* [in] */ BOOL fProxy,
-            /* [in] */ BOOL fClearTextAuthentication,
-            /* [out] */ NETSOURCE_URLCREDPOLICY_SETTINGS *pdwUrlPolicy,
-            /* [out] */ BSTR *pbstrName,
-            /* [out] */ BSTR *pbstrPassword,
-            /* [out] */ BOOL *pfConfirmedGood);
+    HRESULT(STDMETHODCALLTYPE *GetCredentialsEx2)(
+        IWMSInternalAdminNetSource3 * This,
+        /* [in] */ BSTR bstrRealm,
+        /* [in] */ BSTR bstrUrl,
+        /* [in] */ BOOL fProxy,
+        /* [in] */ BOOL fClearTextAuthentication,
+        /* [out] */ NETSOURCE_URLCREDPOLICY_SETTINGS *pdwUrlPolicy,
+        /* [out] */ BSTR *pbstrName,
+        /* [out] */ BSTR *pbstrPassword,
+        /* [out] */ BOOL *pfConfirmedGood);
 
-        END_INTERFACE
-    } IWMSInternalAdminNetSource3Vtbl;
+    END_INTERFACE
+} IWMSInternalAdminNetSource3Vtbl;
 
-    interface IWMSInternalAdminNetSource3
-    {
-        CONST_VTBL struct IWMSInternalAdminNetSource3Vtbl *lpVtbl;
-    };
+interface IWMSInternalAdminNetSource3
+{
+    CONST_VTBL struct IWMSInternalAdminNetSource3Vtbl *lpVtbl;
+};
 
 
 
@@ -908,119 +908,119 @@ public:
 
 
 
-    HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource3_GetNetSourceCreator2_Proxy(
-        IWMSInternalAdminNetSource3 * This,
-        /* [out] */ IUnknown **ppNetSourceCreator);
+HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource3_GetNetSourceCreator2_Proxy(
+    IWMSInternalAdminNetSource3 * This,
+    /* [out] */ IUnknown **ppNetSourceCreator);
 
 
-    void __RPC_STUB IWMSInternalAdminNetSource3_GetNetSourceCreator2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMSInternalAdminNetSource3_GetNetSourceCreator2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource3_FindProxyForURLEx2_Proxy(
-        IWMSInternalAdminNetSource3 * This,
-        /* [in] */ BSTR bstrProtocol,
-        /* [in] */ BSTR bstrHost,
-        /* [in] */ BSTR bstrUrl,
-        /* [out] */ BOOL *pfProxyEnabled,
-        /* [out] */ BSTR *pbstrProxyServer,
-        /* [out] */ DWORD *pdwProxyPort,
-        /* [out][in] */ QWORD *pqwProxyContext);
+HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource3_FindProxyForURLEx2_Proxy(
+    IWMSInternalAdminNetSource3 * This,
+    /* [in] */ BSTR bstrProtocol,
+    /* [in] */ BSTR bstrHost,
+    /* [in] */ BSTR bstrUrl,
+    /* [out] */ BOOL *pfProxyEnabled,
+    /* [out] */ BSTR *pbstrProxyServer,
+    /* [out] */ DWORD *pdwProxyPort,
+    /* [out][in] */ QWORD *pqwProxyContext);
 
 
-    void __RPC_STUB IWMSInternalAdminNetSource3_FindProxyForURLEx2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMSInternalAdminNetSource3_FindProxyForURLEx2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource3_RegisterProxyFailure2_Proxy(
-        IWMSInternalAdminNetSource3 * This,
-        /* [in] */ HRESULT hrParam,
-        /* [in] */ QWORD qwProxyContext);
+HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource3_RegisterProxyFailure2_Proxy(
+    IWMSInternalAdminNetSource3 * This,
+    /* [in] */ HRESULT hrParam,
+    /* [in] */ QWORD qwProxyContext);
 
 
-    void __RPC_STUB IWMSInternalAdminNetSource3_RegisterProxyFailure2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMSInternalAdminNetSource3_RegisterProxyFailure2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource3_ShutdownProxyContext2_Proxy(
-        IWMSInternalAdminNetSource3 * This,
-        /* [in] */ QWORD qwProxyContext);
+HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource3_ShutdownProxyContext2_Proxy(
+    IWMSInternalAdminNetSource3 * This,
+    /* [in] */ QWORD qwProxyContext);
 
 
-    void __RPC_STUB IWMSInternalAdminNetSource3_ShutdownProxyContext2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMSInternalAdminNetSource3_ShutdownProxyContext2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource3_IsUsingIE2_Proxy(
-        IWMSInternalAdminNetSource3 * This,
-        /* [in] */ QWORD qwProxyContext,
-        /* [out] */ BOOL *pfIsUsingIE);
+HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource3_IsUsingIE2_Proxy(
+    IWMSInternalAdminNetSource3 * This,
+    /* [in] */ QWORD qwProxyContext,
+    /* [out] */ BOOL *pfIsUsingIE);
 
 
-    void __RPC_STUB IWMSInternalAdminNetSource3_IsUsingIE2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMSInternalAdminNetSource3_IsUsingIE2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource3_SetCredentialsEx2_Proxy(
-        IWMSInternalAdminNetSource3 * This,
-        /* [in] */ BSTR bstrRealm,
-        /* [in] */ BSTR bstrUrl,
-        /* [in] */ BOOL fProxy,
-        /* [in] */ BSTR bstrName,
-        /* [in] */ BSTR bstrPassword,
-        /* [in] */ BOOL fPersist,
-        /* [in] */ BOOL fConfirmedGood,
-        /* [in] */ BOOL fClearTextAuthentication);
+HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource3_SetCredentialsEx2_Proxy(
+    IWMSInternalAdminNetSource3 * This,
+    /* [in] */ BSTR bstrRealm,
+    /* [in] */ BSTR bstrUrl,
+    /* [in] */ BOOL fProxy,
+    /* [in] */ BSTR bstrName,
+    /* [in] */ BSTR bstrPassword,
+    /* [in] */ BOOL fPersist,
+    /* [in] */ BOOL fConfirmedGood,
+    /* [in] */ BOOL fClearTextAuthentication);
 
 
-    void __RPC_STUB IWMSInternalAdminNetSource3_SetCredentialsEx2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMSInternalAdminNetSource3_SetCredentialsEx2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource3_GetCredentialsEx2_Proxy(
-        IWMSInternalAdminNetSource3 * This,
-        /* [in] */ BSTR bstrRealm,
-        /* [in] */ BSTR bstrUrl,
-        /* [in] */ BOOL fProxy,
-        /* [in] */ BOOL fClearTextAuthentication,
-        /* [out] */ NETSOURCE_URLCREDPOLICY_SETTINGS *pdwUrlPolicy,
-        /* [out] */ BSTR *pbstrName,
-        /* [out] */ BSTR *pbstrPassword,
-        /* [out] */ BOOL *pfConfirmedGood);
+HRESULT STDMETHODCALLTYPE IWMSInternalAdminNetSource3_GetCredentialsEx2_Proxy(
+    IWMSInternalAdminNetSource3 * This,
+    /* [in] */ BSTR bstrRealm,
+    /* [in] */ BSTR bstrUrl,
+    /* [in] */ BOOL fProxy,
+    /* [in] */ BOOL fClearTextAuthentication,
+    /* [out] */ NETSOURCE_URLCREDPOLICY_SETTINGS *pdwUrlPolicy,
+    /* [out] */ BSTR *pbstrName,
+    /* [out] */ BSTR *pbstrPassword,
+    /* [out] */ BOOL *pfConfirmedGood);
 
 
-    void __RPC_STUB IWMSInternalAdminNetSource3_GetCredentialsEx2_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IWMSInternalAdminNetSource3_GetCredentialsEx2_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
 #endif 	/* __IWMSInternalAdminNetSource3_INTERFACE_DEFINED__ */
 
 
-    /* Additional Prototypes for ALL interfaces */
+/* Additional Prototypes for ALL interfaces */
 
-    /* end of Additional Prototypes */
+/* end of Additional Prototypes */
 
 #ifdef __cplusplus
 }

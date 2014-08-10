@@ -56,10 +56,10 @@
 
 struct CSMTPWSAStartup
 {
-private:
+  private:
     bool m_bInit;
 
-public:
+  public:
     CSMTPWSAStartup() throw()
         :m_bInit(false)
     {
@@ -102,7 +102,7 @@ namespace ATL
 
 class CSMTPConnection
 {
-protected:
+  protected:
 
     // the socket
     SOCKET m_hSocket;
@@ -110,7 +110,7 @@ protected:
     // the OVERLAPPED struct
     OVERLAPPED m_Overlapped;
 
-public:
+  public:
 
     CSMTPConnection() throw()
         :m_hSocket(INVALID_SOCKET)
@@ -737,7 +737,7 @@ public:
         return bRet;
     }
 
-protected:
+  protected:
 
     // disallow copy construction
     CSMTPConnection(const CSMTPConnection&) throw()

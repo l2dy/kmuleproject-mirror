@@ -29,7 +29,7 @@ class CUpDownClient;
 
 class CChatItem
 {
-public:
+  public:
     CChatItem();
     ~CChatItem();
 
@@ -43,7 +43,7 @@ public:
 //>>> WiZaRd::ChatLog [CB]
     void				OpenLog(const CString& strNick);
     void				LogMessage(const CString& strNick, const CString& strMessage);
-private:
+  private:
     CLogFile			m_ChatLog;
 //<<< WiZaRd::ChatLog [CB]
 };
@@ -56,7 +56,7 @@ class CChatSelector : public CClosableTabCtrl, CFriendConnectionListener
 {
     DECLARE_DYNAMIC(CChatSelector)
 
-public:
+  public:
     CChatSelector();
     virtual	~CChatSelector();
 
@@ -84,7 +84,7 @@ public:
     void		ReportConnectionProgress(CUpDownClient* pClient, CString strProgressDesc, bool bNoTimeStamp);
     void		ClientObjectChanged(CUpDownClient* pOldClient, CUpDownClient* pNewClient);
 
-protected:
+  protected:
     CChatWnd	*m_pParent;
     UINT_PTR	m_Timer;
     bool		m_blinkstate;

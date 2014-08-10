@@ -26,13 +26,13 @@ extern "C"
 
 class CDesktopIntegration
 {
-public:
+  public:
     CDesktopIntegration();
     virtual ~CDesktopIntegration();
 
     HINSTANCE	ShellExecute(HWND hwnd, LPCWSTR lpOperation, LPCWSTR lpFile, LPCWSTR lpParameters, LPCWSTR lpDirectory, INT nShowCmd);
 
-protected:
+  protected:
     enum EDesktop
     {
         WINDOWS_DESKTOP = 0,
@@ -46,7 +46,7 @@ protected:
     CString		_NativeToWindowsPath(CStringA path);
     CString		_WindowsToNativePath(CStringW path);
 
-private:
+  private:
     EDesktop	m_eDesktop;
     t_wine_get_dos_file_name	m_pWineUnix2NTPath;
     t_wine_get_unix_file_name	m_pWineNT2UnixPath;

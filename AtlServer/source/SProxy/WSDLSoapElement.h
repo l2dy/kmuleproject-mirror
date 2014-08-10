@@ -98,13 +98,13 @@ class CWSDLMessage;
 //     soap:fault
 class CWSDLSoapElement : public CXMLElement
 {
-private:
+  private:
 
     SOAPUSE m_use;
     CStringW m_strEncodingStyle;
     CStringW m_strNamespace;
 
-public:
+  public:
 
     CWSDLSoapElement()
         : m_use(SOAPUSE_UNK)
@@ -187,11 +187,11 @@ public:
 //     soap:headerfault
 class CWSDLSoapElementEx : public CWSDLSoapElement
 {
-private:
+  private:
 
     CStringW m_strParts;
 
-public:
+  public:
 
     inline HRESULT SetParts(const wchar_t *wszName, int cchName)
     {
@@ -225,13 +225,13 @@ class CWSDLMessage;
 //     soap:headerfault
 class CWSDLSoapHeaderElement : public CWSDLSoapElementEx
 {
-private:
+  private:
 
     CQName m_message;
     CWSDLMessage *m_pMessage;
     bool m_bRequired;
 
-public:
+  public:
 
     CWSDLSoapHeaderElement()
         : m_pMessage(NULL), m_bRequired(false)
@@ -282,11 +282,11 @@ public:
 //     soap:fault
 class CWSDLSoapFaultElement : public CWSDLSoapElement
 {
-private:
+  private:
 
     CStringW m_strName;
 
-public:
+  public:
 
     inline HRESULT SetName(const wchar_t *wszName, int cchName)
     {

@@ -11,7 +11,7 @@
 
 template <class BASE= CDialog> class CDialogMinTrayBtn : public BASE
 {
-public:
+  public:
     // constructor
     CDialogMinTrayBtn();
     CDialogMinTrayBtn(LPCTSTR lpszTemplateName, CWnd* pParentWnd = NULL);
@@ -34,7 +34,7 @@ public:
 
     void SetWindowText(LPCTSTR lpszString);
 
-protected:
+  protected:
     // messages
     virtual BOOL OnInitDialog();
     afx_msg void OnNcPaint();
@@ -52,7 +52,7 @@ protected:
     afx_msg LRESULT _OnThemeChanged();
     DECLARE_MESSAGE_MAP()
 
-private:
+  private:
     // internal methods
     void MinTrayBtnInit();
     void MinTrayBtnDraw();

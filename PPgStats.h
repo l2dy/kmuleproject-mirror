@@ -5,7 +5,7 @@ class CPPgStats : public CPropertyPage
 {
     DECLARE_DYNAMIC(CPPgStats)
 
-public:
+  public:
     CPPgStats();
     virtual ~CPPgStats();
 
@@ -14,7 +14,7 @@ public:
 
     void Localize(void);
 
-protected:
+  protected:
     int m_iStatsColors;
     DWORD* m_pdwStatsColors;
     CComboBox m_colors;

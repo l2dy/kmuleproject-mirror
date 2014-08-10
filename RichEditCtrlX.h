@@ -5,7 +5,7 @@
 
 class CRichEditCtrlX : public CRichEditCtrl
 {
-public:
+  public:
     CRichEditCtrlX();
     virtual ~CRichEditCtrlX();
 
@@ -20,7 +20,7 @@ public:
 
     void SetRTFText(const CStringA& rstrText);
 
-protected:
+  protected:
     bool m_bDisableSelectOnFocus;
     bool m_bSelfUpdate;
     bool m_bForceArrowCursor;

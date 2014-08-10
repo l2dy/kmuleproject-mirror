@@ -12,14 +12,14 @@
 
 class CWSDLService : public CXMLElement
 {
-private:
+  private:
 
     CStringW m_strDocumentation;
     CStringW m_strName;
 
     CAtlPtrList<CWSDLPort *> m_ports;
 
-public:
+  public:
 
     inline CWSDLPort * AddPort(CWSDLPort * p = NULL)
     {

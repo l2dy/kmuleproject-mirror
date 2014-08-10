@@ -28,7 +28,7 @@ enum EKadClientSearchRes
 
 class CKadClientSearcher
 {
-public:
+  public:
     virtual	void KadSearchNodeIDByIPResult(EKadClientSearchRes /*eStatus*/, const uchar* /*pachNodeID*/)	 { AfxDebugBreak(); }
     virtual	void KadSearchIPByNodeIDResult(EKadClientSearchRes /*eStatus*/, UINT /*dwIP*/, uint16 /*nPort*/) { AfxDebugBreak(); }
 };

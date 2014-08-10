@@ -186,12 +186,12 @@ void CSearchResultsWnd::StartSearch(SSearchParams* pParams)
             break;
 
 //>>> WiZaRd::CustomSearches
-            /*
-            		case SearchTypeFileDonkey:
-            			ShellOpenFile(CreateWebQuery(pParams));
-            			delete pParams;
-            		return;
-            */
+        /*
+        		case SearchTypeFileDonkey:
+        			ShellOpenFile(CreateWebQuery(pParams));
+        			delete pParams;
+        		return;
+        */
 //<<< WiZaRd::CustomSearches
 
         default:
@@ -697,7 +697,7 @@ void ParsedSearchExpression(const CSearchExpr* pexpr)
 
 class CSearchExprTarget
 {
-public:
+  public:
     CSearchExprTarget(CSafeMemFile* pData, EUtf8Str eStrEncode, bool bSupports64Bit, bool* pbPacketUsing64Bit)
     {
         m_data = pData;
@@ -812,7 +812,7 @@ public:
         m_strDbg.AppendFormat(_T("%s%s%I64u "), DbgGetFileMetaTagName(pszMetaTagID), DbgGetSearchOperatorName(uOperator), ullValue);
     }
 
-protected:
+  protected:
     CSafeMemFile* m_data;
     CString m_strDbg;
     EUtf8Str m_eStrEncode;
@@ -1436,10 +1436,10 @@ BOOL CSearchResultsWnd::OnHelpInfo(HELPINFO* /*pHelpInfo*/)
 LRESULT CSearchResultsWnd::OnIdleUpdateCmdUI(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
     // if the application is not ready, default to "not visible"
-    if (theApp.emuledlg != NULL 
-		&& theApp.emuledlg->searchwnd != NULL 
-		&& theApp.emuledlg->GetActiveDialog() == (CWnd*)theApp.emuledlg->searchwnd 
-		&& !theApp.emuledlg->searchwnd->IsSearchParamsWndVisible())
+    if (theApp.emuledlg != NULL
+            && theApp.emuledlg->searchwnd != NULL
+            && theApp.emuledlg->GetActiveDialog() == (CWnd*)theApp.emuledlg->searchwnd
+            && !theApp.emuledlg->searchwnd->IsSearchParamsWndVisible())
         m_ctlOpenParamsWnd.ShowWindow(SW_SHOW);
     else
         m_ctlOpenParamsWnd.ShowWindow(SW_HIDE);

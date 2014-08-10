@@ -3,12 +3,12 @@
 
 class CCreditsThread : public CGDIThread
 {
-public:
+  public:
     DECLARE_DYNAMIC(CCreditsThread)
     CCreditsThread(CWnd* pWnd, HDC hDC, CRect rectScreen);
 
 // Attributes
-public:
+  public:
     CRect		m_rectScreen;
     CRgn		m_rgnScreen;
 
@@ -43,7 +43,7 @@ public:
     CArray<int, int>			m_arFontHeights;
 
 // Operations
-public:
+  public:
     int CalcCreditsHeight();
     void InitText();
     void InitColors();
@@ -59,7 +59,7 @@ public:
     //}}AFX_VIRTUAL
 
 // Implementation
-protected:
+  protected:
     virtual ~CCreditsThread();
 
     // Generated message map functions

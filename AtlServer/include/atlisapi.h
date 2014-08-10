@@ -625,7 +625,7 @@ typedef void (__stdcall *UNINITIALIZEATLHANDLERS)();
 
 class CIsapiWorker
 {
-public:
+  public:
     typedef AtlServerRequest* RequestType;
     HANDLE m_hHeap;
 #ifndef ATL_NO_SOAP
@@ -768,7 +768,7 @@ struct CStencilState
 class CWrappedServerContext:
     public IHttpServerContext
 {
-public:
+  public:
     CComPtr<IHttpServerContext> m_spParent;
 
     CWrappedServerContext() throw()
@@ -928,7 +928,7 @@ class CServerContext :
     public CComObjectRootEx<CComMultiThreadModel>,
     public IHttpServerContext
 {
-public:
+  public:
     BEGIN_COM_MAP(CServerContext)
     COM_INTERFACE_ENTRY(IHttpServerContext)
     END_COM_MAP()
@@ -1299,7 +1299,7 @@ public:
                                              &dwLen, (DWORD *) pumInfo);
     }
 
-protected:
+  protected:
     // The pointer to the extension control block provided by IIS.
     EXTENSION_CONTROL_BLOCK *m_pECB;
     bool m_bHeadersHaveBeenSent;
@@ -1311,7 +1311,7 @@ protected:
 
 class CPageCachePeer
 {
-public:
+  public:
 
     struct PeerInfo
     {
@@ -1346,7 +1346,7 @@ class CCacheServerContext :
     public CWrappedServerContext,
     public IPageCacheControl
 {
-private:
+  private:
 
     CAtlTemporaryFile m_cacheFile;
     CComPtr<IFileCache> m_spCache;
@@ -1355,7 +1355,7 @@ private:
     BOOL m_bIsCached;
     CPageCachePeer::PeerInfo m_Headers;
 
-public:
+  public:
 
     BEGIN_COM_MAP(CCacheServerContext)
     COM_INTERFACE_ENTRY(IHttpServerContext)
@@ -1577,7 +1577,7 @@ public:
 
 class CValidateContext
 {
-public:
+  public:
     enum { ATL_EMPTY_PARAMS_ARE_FAILURES = 0x00000001 };
 
     CValidateContext(__in DWORD dwFlags=0) throw()
@@ -1677,7 +1677,7 @@ public:
     }
 
     DWORD m_dwFlags;
-protected:
+  protected:
     CSimpleMap<CStringA, DWORD> m_results;
     bool m_bFailures;
 }; // CValidateContext
@@ -1686,7 +1686,7 @@ protected:
 
 class CAtlValidator
 {
-public:
+  public:
     template <class T, class TCompType>
     static DWORD Validate(
         __in T value,
@@ -1745,7 +1745,7 @@ public:
 template <class TLookupClass, class TValidator = CAtlValidator>
 class CValidateObject
 {
-public:
+  public:
     // Exchange Routines
 
     // Call this function to retrieve a named value converted to your chosen data type.
@@ -2273,7 +2273,7 @@ class CCookie :
 
     const static DWORD ATLS_MAX_HTTP_DATE = 64;
 
-public:
+  public:
     // Constructs a named cookie.
     CCookie(__in LPCSTR szName) throw(...)
     {
@@ -2961,7 +2961,7 @@ public:
         return TRUE;
     }
 
-protected:
+  protected:
 // Implementation
     BOOL RenderAttributes(__out CStringA& strAttributes) const throw()
     {
@@ -2987,7 +2987,7 @@ protected:
         }
         return TRUE;
     }
-private:
+  private:
     CCookie& Copy(__in const CCookie& thatCookie) throw(...)
     {
         m_strName = thatCookie.m_strName;
@@ -3028,7 +3028,7 @@ private:
     }
 
 
-public:
+  public:
     // These are implementation only, use at your own risk!
     // Map of attribute-value pairs applied to this cookie.
     mapType m_Attributes;
@@ -3046,7 +3046,7 @@ public:
 
 class CSessionCookie : public CCookie
 {
-public:
+  public:
     CSessionCookie() throw(...)
     {
         if (!SetName(SESSION_COOKIE_NAME) ||
@@ -3073,7 +3073,7 @@ template<>
 class CElementTraits< CCookie > :
     public CElementTraitsBase< CCookie >
 {
-public:
+  public:
     typedef const CCookie& INARGTYPE;
     typedef CCookie& OUTARGTYPE;
 
@@ -3103,7 +3103,7 @@ public:
 template <typename K, typename V, typename KTraits=CElementTraits<K>, typename VTraits=CElementTraits<V> >
 class CHttpMap
 {
-private:
+  private:
 
 #ifdef ATL_HTTP_PARAM_MULTIMAP
     typedef CRBMultiMap<K, V, KTraits, VTraits> MAPTYPE;
@@ -3111,7 +3111,7 @@ private:
     typedef CAtlMap<K, V, KTraits, VTraits> MAPTYPE;
 #endif // ATL_HTTP_PARAM_MULTIMAP
 
-public:
+  public:
 
     typedef typename KTraits::INARGTYPE KINARGTYPE;
     typedef typename KTraits::OUTARGTYPE KOUTARGTYPE;
@@ -3120,13 +3120,13 @@ public:
 
     typedef typename MAPTYPE::CPair CPair;
 
-private:
+  private:
 
     bool m_bShared;
 
     MAPTYPE m_map;
 
-public:
+  public:
 
     CHttpMap() throw()
         : m_bShared(false)
@@ -3312,7 +3312,7 @@ public:
 template <typename K, typename V, typename KTraits=CElementTraits<K>, typename VTraits=CElementTraits<V> >
 class CHttpPtrMap : public CHttpMap<K, V, KTraits, VTraits>
 {
-public:
+  public:
     typedef CHttpMap<K, V, KTraits, VTraits> Base;
 
     void RemoveAll()
@@ -3348,7 +3348,7 @@ class CHttpRequestParams :
 #endif
     public CValidateObject<CHttpRequestParams>
 {
-public:
+  public:
 #if (defined(ATL_HTTP_PARAM_MAP_CASEINSENSITIVE))
     typedef CHttpMap<CStringA, CStringA, CStringElementTraitsI<CStringA>, CStringElementTraitsI<CStringA> > BaseMap;
 #else
@@ -3576,7 +3576,7 @@ public:
 // This class represents the information about a file that has been uploaded to the web server.
 class CHttpRequestFile : public IHttpFile
 {
-private:
+  private:
 
     // The name of the form field used to upload the file.
     CHAR m_szParamName[MAX_TOKEN_LENGTH];
@@ -3596,7 +3596,7 @@ private:
     // The size of the file in bytes.
     ULONGLONG m_nFileSize;
 
-public:
+  public:
 
     CHttpRequestFile() throw()
     {
@@ -3807,7 +3807,7 @@ enum ATL_FORM_FLAGS
 // and generate files as necessary from the data in the body of the request.
 class CMultiPartFormParser
 {
-protected:
+  protected:
 
     LPSTR                       m_pCurrent;
     LPSTR                       m_pEnd;
@@ -3817,7 +3817,7 @@ protected:
     BOOL                        m_bFinished;
     CComPtr<IHttpServerContext> m_spServerContext;
 
-public:
+  public:
 
     typedef CHttpMap<CStringA, IHttpFile*, CStringElementTraits<CStringA> > FILEMAPTYPE;
 
@@ -4044,7 +4044,7 @@ public:
         }
     }
 
-private:
+  private:
 
     // implementation
 
@@ -4452,7 +4452,7 @@ private:
         return ((ch != 0) && (ch != 0xd) && (ch != 0xa) && (ch != ' ') && (ch != '\"'));
     }
 
-private:
+  private:
     // Prevents copying.
     CMultiPartFormParser(__in const CMultiPartFormParser& /*that*/) throw()
     {
@@ -4478,7 +4478,7 @@ private:
 // that make up an HTTP request, as well as many other important properties of the request.
 class CHttpRequest : public IHttpRequestLookup
 {
-protected:
+  protected:
     // Implementation: Array used to map an HTTP request method (for example, "GET" or "POST")
     // from a string to a numeric constant from the HTTP_METHOD enum (HTTP_METHOD_GET or HTTP_METHOD_HEAD).
     static const char* const m_szMethodStrings[];
@@ -4520,7 +4520,7 @@ protected:
         m_requestCookies.SetShared(false);
     }
 
-public:
+  public:
 
     // Implementation: The collection of query parameters (name-value pairs) obtained from the query string.
     CHttpRequestParams m_QueryParams;
@@ -5515,7 +5515,7 @@ public:
         return bRet;
     }
 
-private:
+  private:
     struct Pair
     {
         Pair(__in const CStringA &n, __in const CStringA& v)
@@ -5534,7 +5534,7 @@ private:
         CStringA value;
     };
     static const int INVALID_COOKIE_VERSION = -1;
-public:
+  public:
 
     // Implementation: Call this function to populate m_requestCookies
     // with a collection of CCookie objects which represents the
@@ -5692,7 +5692,7 @@ public:
 
     }
 
-private:
+  private:
     // Call this function to copy a substring to a CString reference and ensure nul-termination.
     inline void CopyToCString(__out CStringA& string, __in_ecount(pEnd-pStart) LPCSTR pStart, __in LPCSTR pEnd) throw(...)
     {
@@ -5713,7 +5713,7 @@ private:
             sz = CharNextExA(nCodePage, sz, 0);
         return sz;
     }
-public:
+  public:
 
 
     __success(SUCCEEDED(return)) __checkReturn HRESULT STDMETHODCALLTYPE QueryInterface(__in REFIID riid, __deref_out void **ppv)
@@ -5772,12 +5772,12 @@ __declspec(selectany) const char* const CHttpRequest::m_szMethodStrings[] =
 //      Currency values are converted according to the locale settings of the current thread.
 class CWriteStreamHelper
 {
-protected:
+  protected:
     // Implementation: The IWriteStream interface.
     IWriteStream *m_pStream;
     UINT m_ulACP;
 
-public:
+  public:
     CWriteStreamHelper() throw()
         :m_pStream(NULL)
     {
@@ -6100,14 +6100,14 @@ public:
 template <DWORD dwSizeT=ATL_ISAPI_BUFFER_SIZE>
 class CAtlIsapiBuffer
 {
-protected:
+  protected:
     char m_szBuffer[dwSizeT];
     LPSTR m_pBuffer;
     DWORD m_dwLen;
     DWORD m_dwAlloc;
     HANDLE m_hProcHeap;
 
-public:
+  public:
     CAtlIsapiBuffer() throw()
     {
         if (dwSizeT > 0)
@@ -6250,7 +6250,7 @@ public:
 // to build up the body of the response. By default, the class improves performance by buffering the response until it is complete before sending it back to the client.
 class CHttpResponse : public IWriteStream, public CWriteStreamHelper
 {
-private:
+  private:
 
     // Implementation: A map of HTTP response headers.
     // The key is the name of the response header.
@@ -6285,7 +6285,7 @@ private:
     // when the async I/O completes
     HANDLE m_hFile;
 
-public:
+  public:
     // Implementation: The buffer used to store the response before
     // the data is sent to the client.
     CAtlIsapiBuffer<> m_strContent;
@@ -7114,7 +7114,7 @@ public:
 template <class T>
 class PerThreadWrapper : public CComObjectNoLock<T>
 {
-public:
+  public:
     void *operator new(size_t /*size*/, void *p) throw()
     {
         return p;
@@ -7191,7 +7191,7 @@ inline BOOL CreateRequestHandlerSync(__in IIsapiExtension *pExtension, __deref_o
 template <typename THandler>
 class IRequestHandlerImpl : public IRequestHandler
 {
-public:
+  public:
     HINSTANCE m_hInstHandler;
     CComPtr<IServiceProvider> m_spServiceProvider;
     CComPtr<IHttpServerContext> m_spServerContext;
@@ -7409,7 +7409,7 @@ struct CRequestStats
         return m_lActiveThreads;
     }
 
-private:
+  private:
     // not actually atomic, but it will add safely.
 
     // the returned value is not 100% guaranteed to be
@@ -7458,7 +7458,7 @@ private:
 class CStdRequestStats : public CRequestStats
 {
 
-public:
+  public:
     HRESULT Initialize() throw()
     {
         return S_OK;
@@ -7472,7 +7472,7 @@ public:
 #define PERF_REQUEST_OBJECT 100
 
 struct CPerfRequestStatObject : public CPerfObject,
-    public CRequestStats
+        public CRequestStats
 {
     DECLARE_PERF_CATEGORY_EX(PERF_REQUEST_OBJECT, IDS_PERFMON_REQUEST, IDS_PERFMON_REQUEST_HELP, PERF_DETAIL_NOVICE, 0, sizeof(CPerfRequestStatObject), MAX_PATH, -1);
     BEGIN_COUNTER_MAP(CPerfRequestStatObject)
@@ -7488,7 +7488,7 @@ struct CPerfRequestStatObject : public CPerfObject,
 
 class CRequestPerfMon : public CPerfMon
 {
-public:
+  public:
     BEGIN_PERF_MAP(_T("ATL Server:Request"))
     CHAIN_PERF_CATEGORY(CPerfRequestStatObject)
     END_PERF_MAP()
@@ -7500,7 +7500,7 @@ class CPerfMonRequestStats
     CPerfRequestStatObject * m_pPerfObjectInstance;
     CPerfRequestStatObject * m_pPerfObjectTotal;
 
-public:
+  public:
     CPerfMonRequestStats() throw()
     {
         m_pPerfObjectInstance = NULL;
@@ -7637,9 +7637,9 @@ public:
 
 class CNoRequestStats
 {
-protected:
+  protected:
 
-public:
+  public:
 
     HRESULT Initialize() throw()
     {
@@ -7704,7 +7704,7 @@ struct ATLServerDllInfo
 
 class CDllCachePeer
 {
-public:
+  public:
     struct DllInfo : public ATLServerDllInfo
     {
         DllInfo& operator=(__in const DllInfo& right) throw()
@@ -7791,7 +7791,7 @@ inline BOOL AtlImpersonateClient(__in IHttpServerContext *pServerContext)
 // level
 class CSetThreadToken
 {
-public:
+  public:
     CSetThreadToken() : m_bShouldRevert(FALSE) {}
 
     BOOL Initialize(__in AtlServerRequest *pRequestInfo)
@@ -7808,7 +7808,7 @@ public:
             _AtlRaiseException((DWORD)EXCEPTION_ACCESS_VIOLATION);
         }
     }
-protected:
+  protected:
     BOOL m_bShouldRevert;
 };
 
@@ -7823,7 +7823,7 @@ protected:
 template <class Base>
 class _CComObjectHeapNoLock : public Base
 {
-public:
+  public:
     typedef Base _BaseClass;
     HANDLE m_hHeap;
 
@@ -8288,7 +8288,7 @@ inline __checkReturn __success(return==HTTP_SUCCESS) HTTP_CODE _AtlLoadRequestHa
 class CTransferServerContext : public CComObjectRootEx<CComMultiThreadModel>,
     public CWrappedServerContext
 {
-public:
+  public:
     char m_szFileName[MAX_PATH];
     char m_szQueryString[ATL_URL_MAX_PATH_LENGTH+1];
     CStringA m_strUrl;
@@ -8510,7 +8510,7 @@ public:
 
 class CAllocContextBase
 {
-public:
+  public:
     virtual HTTP_CODE Alloc(IHttpServerContext **ppNewContext) = 0;
 };
 
@@ -8765,7 +8765,7 @@ ATL_NOINLINE inline HTTP_CODE _AtlRenderInclude(
 class CAllocTransferAsyncContext :
     public CAllocContextBase
 {
-public:
+  public:
     CAllocTransferAsyncContext(CTransferServerContext *pInitialContext):
         m_pInitialContext(pInitialContext)
     {
@@ -8786,7 +8786,7 @@ public:
         *ppNewContext  = pServerContext;
         return HTTP_SUCCESS;
     }
-private:
+  private:
     CTransferServerContext *m_pInitialContext;
 };
 
@@ -8868,15 +8868,15 @@ void __cdecl AtlsSecErrHandlerFunc(int /* nCode */, void * /* pv */)
 //		using these classes can affect server performance because they use
 //		interlocked operations internally to store the data.
 template <  class ThreadPoolClass=CThreadPool<CIsapiWorker>,
-         class CRequestStatClass=CNoRequestStats,
-         class HttpUserErrorTextProvider=CDefaultErrorProvider,
-         class WorkerThreadTraits=DefaultThreadTraits,
-         class CPageCacheStats=CNoStatClass,
-         class CStencilCacheStats=CNoStatClass>
+            class CRequestStatClass=CNoRequestStats,
+            class HttpUserErrorTextProvider=CDefaultErrorProvider,
+            class WorkerThreadTraits=DefaultThreadTraits,
+            class CPageCacheStats=CNoStatClass,
+            class CStencilCacheStats=CNoStatClass>
 class CIsapiExtension :
     public IServiceProvider, public IIsapiExtension, public IRequestStats
 {
-private:
+  private:
 
 #ifndef ATL_NO_CRITICAL_ISAPI_ERROR
 
@@ -8884,7 +8884,7 @@ private:
 
 #endif // ATL_NO_CRITICAL_ISAPI_ERROR
 
-protected:
+  protected:
     DWORD m_dwTlsIndex;
 
     typedef CWorkerThread<WorkerThreadTraits> extWorkerType;
@@ -8919,7 +8919,7 @@ protected:
 
     class CServiceEqualHelper
     {
-    public:
+      public:
         static bool IsEqual(__in const ServiceNode& t1, __in const ServiceNode& t2) throw()
         {
             return (InlineIsEqualGUID(t1.guidService, t2.guidService) != 0 &&
@@ -8929,7 +8929,7 @@ protected:
 
     CSimpleArray<ServiceNode, CServiceEqualHelper> m_serviceMap;
 
-public:
+  public:
     CWin32Heap m_heap;
 
     CRequestStatClass m_reqStats;
@@ -10454,7 +10454,7 @@ extern "C" __declspec(allocate("ATLS$C")) __declspec(selectany) \
 ATL::_HANDLER_ENTRY * const __phdlrEntry_ ## className ## _ ## lineNum = &__hdlrEntry_ ## className ## _ ## lineNum; \
 HANDLER_ENTRY_PRAGMA(className, lineNum) \
 __if_not_exists(GetAtlHandlerByName) \
-{ 
+{
 \
 extern "C" ATL_NOINLINE inline BOOL __declspec(dllexport) __stdcall GetAtlHandlerByName(LPCSTR szHandlerName, IIsapiExtension *pExtension, IUnknown **ppHandler) throw() \
 {
@@ -10555,7 +10555,7 @@ HANDLER_ENTRY(#sdlClassName, sdlClassName)
 template <class T>
 class CVerifyAuth
 {
-public:
+  public:
     HTTP_CODE IsAuthorized(__in AtlServerRequest *pInfo, __in_opt const SID* psidAuthGroup)
     {
         ATLENSURE(pInfo);
@@ -10647,7 +10647,7 @@ public:
 class CDefaultAuth :
     public CVerifyAuth<CDefaultAuth>
 {
-public:
+  public:
     virtual bool CheckAccount(__in IHttpServerContext *pContext, __in const SID* psidAuthGroup) throw()
     {
         return CheckAuthAccount(pContext, psidAuthGroup);

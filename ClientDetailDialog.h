@@ -29,7 +29,7 @@ class CClientDetailPage : public CResizablePage
 {
     DECLARE_DYNAMIC(CClientDetailPage)
 
-public:
+  public:
     CClientDetailPage();   // standard constructor
     virtual ~CClientDetailPage();
 
@@ -41,7 +41,7 @@ public:
 
     enum { IDD = IDD_SOURCEDETAILWND };
 
-protected:
+  protected:
     const CSimpleArray<CObject*>* m_paClients;
     bool m_bDataChanged;
 
@@ -64,12 +64,12 @@ class CClientDetailDialog : public CListViewWalkerPropertySheet
 {
     DECLARE_DYNAMIC(CClientDetailDialog)
 
-public:
+  public:
     CClientDetailDialog(CUpDownClient* pClient, CListCtrlItemWalk* pListCtrl = NULL);
     CClientDetailDialog(const CSimpleArray<CUpDownClient*>* paClients, CListCtrlItemWalk* pListCtrl = NULL);
     virtual ~CClientDetailDialog();
 
-protected:
+  protected:
     CClientDetailPage m_wndClient;
 
     void Construct();

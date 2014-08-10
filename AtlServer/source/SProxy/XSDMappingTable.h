@@ -439,7 +439,7 @@ struct _xsdtypemapping
 
 class CXSDTypeLookup
 {
-public:
+  public:
 
     struct HashNode
     {
@@ -450,12 +450,12 @@ public:
         _xsdtypemapping data;
     };
 
-protected:
+  protected:
     const static HashNode m_data[99];
     const static size_t m_size = 88;
     const static size_t m_tableSize = 44;
 
-public:
+  public:
 
     static unsigned long Hash(const wchar_t * sz)
     {

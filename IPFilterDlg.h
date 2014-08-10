@@ -8,14 +8,14 @@ class CIPFilterDlg : public CResizableDialog
 {
     DECLARE_DYNAMIC(CIPFilterDlg)
 
-public:
+  public:
     CIPFilterDlg(CWnd* pParent = NULL);   // standard constructor
     virtual ~CIPFilterDlg();
 
 // Dialog Data
     enum { IDD = IDD_IPFILTER };
 
-protected:
+  protected:
     static int sm_iSortColumn;
     CMenu* m_pMenuIPFilter;
     CListCtrlX m_ipfilter;

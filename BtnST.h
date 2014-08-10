@@ -79,7 +79,7 @@
 
 class CButtonST : public CButton
 {
-public:
+  public:
     CButtonST();
     ~CButtonST();
 
@@ -104,14 +104,14 @@ public:
 
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CButtonST)
-public:
+  public:
     virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
     virtual BOOL PreTranslateMessage(MSG* pMsg);
-protected:
+  protected:
     virtual void PreSubclassWindow();
     //}}AFX_VIRTUAL
 
-public:
+  public:
     DWORD SetDefaultColors(BOOL bRepaint = TRUE);
     DWORD SetColor(BYTE byColorIndex, COLORREF crColor, BOOL bRepaint = TRUE);
     DWORD GetColor(BYTE byColorIndex, COLORREF* crpColor);
@@ -187,7 +187,7 @@ public:
     POINT	m_ptImageOrg;
     POINT	m_ptPressedOffset;
 
-protected:
+  protected:
     //{{AFX_MSG(CButtonST)
     afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
     afx_msg void OnKillFocus(CWnd* pNewWnd);
@@ -231,7 +231,7 @@ protected:
     HMENU		m_hMenu;			// Handle to associated menu
 #endif
 
-private:
+  private:
     LRESULT OnSetCheck(WPARAM wParam, LPARAM lParam);
     LRESULT OnGetCheck(WPARAM wParam, LPARAM lParam);
     LRESULT OnSetStyle(WPARAM wParam, LPARAM lParam);

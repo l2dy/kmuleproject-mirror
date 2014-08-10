@@ -27,7 +27,7 @@ class CInfoWnd : public CResizableDialog
 {
     DECLARE_DYNAMIC(CInfoWnd)
 
-public:
+  public:
     CInfoWnd(CWnd* pParent = NULL);   // standard constructor
     virtual ~CInfoWnd();
 
@@ -55,7 +55,7 @@ public:
     CHTRichEditCtrl* debuglog;
     CClosableTabCtrl StatusSelector;
 
-private:
+  private:
     CIconStatic m_ctrlMyInfoFrm;
     CImageList m_imlLogPanes;
     bool	debug;
@@ -68,7 +68,7 @@ private:
     void	ResetAnalyzerLog(); //>>> WiZaRd::ClientAnalyzer
     void	ResetDebugLog();
 
-protected:
+  protected:
     void	SetAllIcons();
 
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

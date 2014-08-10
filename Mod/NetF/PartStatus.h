@@ -22,7 +22,7 @@ class CSafeMemFile;
 
 class CPartStatus
 {
-public:
+  public:
     CPartStatus();
     // Destructor
     virtual					~CPartStatus();
@@ -33,7 +33,7 @@ public:
     virtual void			Clear(uint64 /*start*/, uint64 /*stop*/)	{ AfxDebugBreak(); }
     // Bytes (has to be overriden)
     virtual uint64			GetSize() const						{ AfxDebugBreak(); return 0; }
-	virtual uint64			GetChunkSize() const				{ AfxDebugBreak(); return 0; }
+    virtual uint64			GetChunkSize() const				{ AfxDebugBreak(); return 0; }
     virtual bool			IsComplete(uint64 /*start*/ = 0, uint64 /*stop*/ = ~0ULL) const	{ AfxDebugBreak(); return false; }
     virtual bool			FindFirstComplete(uint64& /*start*/, uint64& /*stop*/) const	{ AfxDebugBreak(); return false; }
     virtual bool			FindFirstNeeded(uint64& /*start*/, uint64& /*stop*/) const		{ AfxDebugBreak(); return false; }
@@ -64,7 +64,7 @@ public:
     // Read/Write part status vectors
     static CPartStatus*		CreatePartStatus(CSafeMemFile* data, const uint64 size, bool defState = true);
     virtual void			WritePartStatus(CSafeMemFile* data, int protocolRevision = PROTOCOL_REVISION_0, bool defState = true) const;
-	void					Merge(const CPartStatus* toMerge);
+    void					Merge(const CPartStatus* toMerge);
 };
 
 /*class CGenericStatusVector : public CPartStatus
@@ -91,7 +91,7 @@ private:
 
 class CAICHStatusVector : public CPartStatus
 {
-public:
+  public:
     // Constructors / Destructor
     CAICHStatusVector(uint64 size);
     CAICHStatusVector(const CPartStatus* source);
@@ -111,7 +111,7 @@ public:
     void	ClearAICH(UINT chunk) {if (chunk < _GetAICHCount()) _ClearAICH(chunk); else throw CString(_T(__FUNCTION__) _T("; chunk out of bounds"));}
     UINT	GetAICHCount() const throw() {return _GetAICHCount();}
     bool	IsCompleteAICH(UINT chunk) const {if (chunk < _GetAICHCount()) return _IsCompleteAICH(chunk); else throw CString(_T(__FUNCTION__) _T("; chunk out of bounds"));}
-private:
+  private:
     void	_SetAICH(const UINT chunk) throw() {m_chunks[chunk >> 3] |= (1 << (chunk & 0x7));}
     void	_ClearAICH(const UINT chunk) throw() {m_chunks[chunk >> 3] &= ~(1 << (chunk & 0x7));}
     UINT	_GetAICHCount() const throw() {return _GetAICHCount(m_size);}
@@ -125,9 +125,9 @@ private:
 
 class CCrumbStatusVector : public CPartStatus
 {
-public:
+  public:
     // Constructors / Destructor
-	CCrumbStatusVector(uint64 size);
+    CCrumbStatusVector(uint64 size);
     CCrumbStatusVector(const CPartStatus* source);
     ~CCrumbStatusVector();
     // Cloning
@@ -145,7 +145,7 @@ public:
     void	ClearCrumb(UINT crumb) {if (crumb < _GetCrumbsCount()) _ClearCrumb(crumb); else throw CString(_T(__FUNCTION__) _T("; crumb out of bounds"));}
     UINT	GetCrumbsCount() const throw() {return _GetCrumbsCount();}
     bool	IsCompleteCrumb(UINT crumb) const {if (crumb < _GetCrumbsCount()) return _IsCompleteCrumb(crumb); else throw CString(_T(__FUNCTION__) _T("; crumb out of bounds"));}
-private:
+  private:
     void	_SetCrumb(const UINT crumb) throw() {m_chunks[crumb >> 3] |= (1 << (crumb & 0x7));}
     void	_ClearCrumb(const UINT crumb) throw() {m_chunks[crumb >> 3] &= ~(1 << (crumb & 0x7));}
     UINT	_GetCrumbsCount() const throw() {return (UINT)((uint64)(m_size + CRUMBSIZE - 1ULL) / CRUMBSIZE);}
@@ -187,21 +187,21 @@ private:
 
 class CPartFileStatus : public CPartStatus
 {
-public:
+  public:
     //
     CPartFileStatus(CPartFile* const file):m_file(file) {}
     ~CPartFileStatus() {}
     //
-private:
+  private:
     CPartStatus*	Clone() {return nullptr;}	// Not used! (Should throw exception?)
     void			Set(uint64, uint64) {}	// Not used! (Should throw exception?)
     void			Clear(uint64, uint64) {}	// Not used! (Should throw exception?)
-public:
+  public:
     uint64			GetSize() const {return m_file->GetFileSize();}
     uint64			GetChunkSize() const {return 1;}
     bool			IsComplete(uint64 start, uint64 stop) const {return m_file->IsComplete(start, stop, false);}
     bool			FindFirstComplete(uint64& start, uint64& stop) const;
     bool			FindFirstNeeded(uint64& start, uint64& stop) const;
-private:
+  private:
     CPartFile* const	m_file;
 };

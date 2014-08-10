@@ -17,7 +17,7 @@ class CWSDLPortType;
 
 class CSoapBinding : public CXMLElement
 {
-private:
+  private:
     CStringW m_strTransport;
     SOAPSTYLE m_style;
 
@@ -31,7 +31,7 @@ private:
         return E_FAIL;
     }
 
-public:
+  public:
 
     CSoapBinding()
         :m_style(SOAPSTYLE_UNK)
@@ -83,11 +83,11 @@ public:
 
 class CHttpBinding : public CXMLElement
 {
-private:
+  private:
 
     CStringW m_strVerb;
 
-public:
+  public:
 
     inline HRESULT SetVerb(const wchar_t *wszName, int cchName)
     {
@@ -115,7 +115,7 @@ public:
 
 class CWSDLBinding : public CXMLElement
 {
-private:
+  private:
 
     CStringW m_strName;
     CQName   m_type;
@@ -129,7 +129,7 @@ private:
 
     PORTYPEOPERATIONMAP m_operations;
 
-public:
+  public:
 
     inline CWSDLBinding()
         :m_pPortType(NULL)

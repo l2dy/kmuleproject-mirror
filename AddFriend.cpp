@@ -70,8 +70,8 @@ BOOL CAddFriend::OnInitDialog()
         SetDlgItemText(IDC_IP, ipstr(m_pShowFriend->m_dwLastUsedIP));
         SetDlgItemInt(IDC_PORT, m_pShowFriend->m_nLastUsedPort, FALSE);
         SetDlgItemText(IDC_USERNAME, m_pShowFriend->m_strName);
-		SetDlgItemText(IDC_USERHASH, m_pShowFriend->GetFriendHash());
-		SetDlgItemText(IDC_FRIENDS_COMMENT_EDIT, m_pShowFriend->m_strComment); //>>> WiZaRd::FriendComment
+        SetDlgItemText(IDC_USERHASH, m_pShowFriend->GetFriendHash());
+        SetDlgItemText(IDC_FRIENDS_COMMENT_EDIT, m_pShowFriend->m_strComment); //>>> WiZaRd::FriendComment
 
         if (m_pShowFriend->m_dwLastSeen)
         {
@@ -102,15 +102,15 @@ void CAddFriend::Localize()
     GetDlgItem(IDC_INFO2)->SetWindowText(GetResString(IDS_PAF_MOREINFO));
 
 //>>> WiZaRd::FriendComment
-	if(m_pShowFriend)
-		GetDlgItem(IDC_ADD)->SetWindowText(GetResString(IDS_TREEOPTIONS_OK));
-	else
+    if (m_pShowFriend)
+        GetDlgItem(IDC_ADD)->SetWindowText(GetResString(IDS_TREEOPTIONS_OK));
+    else
 //<<< WiZaRd::FriendComment
-		GetDlgItem(IDC_ADD)->SetWindowText(GetResString(IDS_ADD));
+        GetDlgItem(IDC_ADD)->SetWindowText(GetResString(IDS_ADD));
     GetDlgItem(IDCANCEL)->SetWindowText(m_pShowFriend ? GetResString(IDS_FD_CLOSE) : GetResString(IDS_CANCEL));
 
     GetDlgItem(IDC_STATIC31)->SetWindowText(GetResString(IDS_CD_UNAME));
-	GetDlgItem(IDC_FRIENDS_COMMENT)->SetWindowText(GetResString(IDS_COMMENT)); //>>> WiZaRd::FriendComment
+    GetDlgItem(IDC_FRIENDS_COMMENT)->SetWindowText(GetResString(IDS_COMMENT)); //>>> WiZaRd::FriendComment
     GetDlgItem(IDC_STATIC32)->SetWindowText(GetResString(IDS_CD_UHASH));
     GetDlgItem(IDC_STATIC34)->SetWindowText(m_pShowFriend ? GetResString(IDS_USERID)+_T(":") : GetResString(IDS_CD_UIP));
     GetDlgItem(IDC_STATIC35)->SetWindowText(GetResString(IDS_PORT)+_T(":"));
@@ -161,10 +161,10 @@ void CAddFriend::OnAddBtn()
         strUserName = strUserName.Left(thePrefs.GetMaxUserNickLength());
 
 //>>> WiZaRd::FriendComment
-		CString strComment = L"";
-		GetDlgItemText(IDC_FRIENDS_COMMENT_EDIT, strComment);
-		strComment.Trim();
-//<<< WiZaRd::FriendComment		
+        CString strComment = L"";
+        GetDlgItemText(IDC_FRIENDS_COMMENT_EDIT, strComment);
+        strComment.Trim();
+//<<< WiZaRd::FriendComment
 
         // why did we offer an edit control for entering the userhash but did not store it?
         ;
@@ -172,7 +172,7 @@ void CAddFriend::OnAddBtn()
 #ifdef IPV6_SUPPORT
         if (!theApp.friendlist->AddFriend(NULL, 0, CAddress(_ntohl(ip)), (uint16)uPort, 0, strUserName, 0, strComment)) //>>> WiZaRd::IPv6 [Xanatos] //>>> WiZaRd::FriendComment
 #else
-		if (!theApp.friendlist->AddFriend(NULL, 0, ip, (uint16)uPort, 0, strUserName, 0, strComment)) //>>> WiZaRd::FriendComment
+        if (!theApp.friendlist->AddFriend(NULL, 0, ip, (uint16)uPort, 0, strUserName, 0, strComment)) //>>> WiZaRd::FriendComment
 #endif
         {
             AfxMessageBox(GetResString(IDS_WRN_FRIENDDUPLIPPORT));
@@ -185,12 +185,12 @@ void CAddFriend::OnAddBtn()
         // No "update" friend's data for now -- too much work to synchronize/update all
         // possible available related data in the client list...
 //>>> WiZaRd::FriendComment
-		CString strComment = L"";
-		GetDlgItemText(IDC_FRIENDS_COMMENT_EDIT, strComment);
-		strComment.Trim();
-		m_pShowFriend->m_strComment = strComment;
-		theApp.friendlist->ShowFriends();
-//<<< WiZaRd::FriendComment				
+        CString strComment = L"";
+        GetDlgItemText(IDC_FRIENDS_COMMENT_EDIT, strComment);
+        strComment.Trim();
+        m_pShowFriend->m_strComment = strComment;
+        theApp.friendlist->ShowFriends();
+//<<< WiZaRd::FriendComment
     }
 
     OnCancel();

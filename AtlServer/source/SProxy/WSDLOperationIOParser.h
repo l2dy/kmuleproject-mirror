@@ -13,11 +13,11 @@ class CWSDLPortTypeIO;
 
 class CWSDLOperationIOParser : public CParserBase
 {
-private:
+  private:
 
     CWSDLPortTypeIO * m_pIO;
 
-public:
+  public:
 
     inline CWSDLOperationIOParser(ISAXXMLReader *pReader, CParserBase *pParent, DWORD dwLevel, CWSDLPortTypeIO * pIO = NULL)
         :CParserBase(pReader, pParent, dwLevel), m_pIO(pIO)

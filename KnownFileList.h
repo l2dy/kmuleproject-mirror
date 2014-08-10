@@ -27,7 +27,7 @@ class CKnownFileList
 {
     friend class CFileDetailDlgStatistics;
     friend class CStatisticFile;
-public:
+  public:
     CKnownFileList();
     ~CKnownFileList();
 
@@ -59,7 +59,7 @@ public:
     UINT 	m_nAcceptedTotal;
     uint64 	m_nTransferredTotal;
 
-private:
+  private:
     bool	LoadKnownFiles();
     bool	LoadCancelledFiles();
 

@@ -43,7 +43,7 @@ class CSharedCache:
     public ISharedBlobCache
 {
     typedef CBlobCache<CWorkerThread<>, CStdStatClass > basecache;
-public:
+  public:
 
     // IMemoryCacheClient method, frees data in the memory cache.
     STDMETHOD(Free)(const void *pvData)
@@ -155,7 +155,7 @@ public:
 class CSharedCacheHandler:
     public ISharedBlobCache
 {
-public:
+  public:
     [soap_method]
     STDMETHOD(AddItem)(BSTR szItemName, BSTR szData)
     {

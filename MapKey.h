@@ -19,7 +19,7 @@
 // use this class if the hash is stored somehwere else (and stays valid as long as this object exists)
 class CCKey : public CObject
 {
-public:
+  public:
     CCKey(const uchar* key = 0)
     {
         m_key = key;
@@ -50,7 +50,7 @@ template<> inline UINT AFXAPI HashKey(const CCKey& key)
 // use this class if the hash is stored somehwere inside the key (in any case safer but needs more memory)
 class CSKey : public CObject
 {
-public:
+  public:
     CSKey(const uchar* key = 0)
     {
         if (key) md4cpy(m_key, key);

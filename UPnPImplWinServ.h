@@ -66,7 +66,7 @@ class CUPnPImplWinServ: public CUPnPImpl
     friend class CDeviceFinderCallback;
     friend class CServiceCallback;
 // Construction
-public:
+  public:
     virtual ~CUPnPImplWinServ();
     CUPnPImplWinServ();
 
@@ -89,7 +89,7 @@ public:
         return false;
     };
 
-protected:
+  protected:
     void	StartDiscovery(uint16 nTCPPort, uint16 nUDPPort, uint16 nTCPWebPort, bool bSecondTry);
     void	AddDevice(DevicePointer pDevice, bool bAddChilds, int nLevel = 0);
     void	RemoveDevice(CComBSTR bsUDN);
@@ -165,7 +165,7 @@ protected:
     CString	GetLocalRoutableIP(ServicePointer pService);
 
 // Private members
-private:
+  private:
     DWORD	m_tLastEvent;	// When the last event was received?
     std::vector< DevicePointer >  m_pDevices;
     std::vector< ServicePointer > m_pServices;
@@ -195,7 +195,7 @@ private:
 class CDeviceFinderCallback
     : public IUPnPDeviceFinderCallback
 {
-public:
+  public:
     CDeviceFinderCallback(CUPnPImplWinServ& instance)
         : m_instance(instance)
     {
@@ -207,12 +207,12 @@ public:
     STDMETHODIMP_(ULONG) Release();
 
 // implementation
-private:
+  private:
     HRESULT __stdcall DeviceAdded(LONG nFindData, IUPnPDevice* pDevice);
     HRESULT __stdcall DeviceRemoved(LONG nFindData, BSTR bsUDN);
     HRESULT __stdcall SearchComplete(LONG nFindData);
 
-private:
+  private:
     CUPnPImplWinServ& m_instance;
     LONG m_lRefCount;
 };
@@ -221,7 +221,7 @@ private:
 class CServiceCallback
     : public IUPnPServiceCallback
 {
-public:
+  public:
     CServiceCallback(CUPnPImplWinServ& instance)
         : m_instance(instance)
     {
@@ -233,11 +233,11 @@ public:
     STDMETHODIMP_(ULONG) Release();
 
 // implementation
-private:
+  private:
     HRESULT __stdcall StateVariableChanged(IUPnPService* pService, LPCWSTR pszStateVarName, VARIANT varValue);
     HRESULT __stdcall ServiceInstanceDied(IUPnPService* pService);
 
-private:
+  private:
     CUPnPImplWinServ& m_instance;
     LONG m_lRefCount;
 };

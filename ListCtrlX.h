@@ -57,12 +57,12 @@ typedef bool (*LCX_FINDITEMFN)(const CListCtrlX& lv, int iItem, DWORD_PTR lParam
 class CListCtrlX : public CListCtrl
 {
 // Construction
-public:
+  public:
     CListCtrlX();
     virtual ~CListCtrlX();
 
 // Attributes
-public:
+  public:
     CWnd* m_pParent;
     CMenu* m_pMenu;
     UINT m_uIDMenu;
@@ -95,7 +95,7 @@ public:
     void UpdateSortColumn(int iColumns, LCX_COLUMN_INIT* pColumns);
 
 // Operations
-public:
+  public:
     void CreateColumns(int iColumns, LCX_COLUMN_INIT* pColumns);
     void ReadColumnStats(int iColumns, LCX_COLUMN_INIT* pColumns);
     void ReadColumnStats(int iColumns, LCX_COLUMN_INIT* pColumns, LPCTSTR pszSection);
@@ -131,7 +131,7 @@ public:
     }
     static bool FindItem(const CListCtrlX& lv, int iItem, DWORD_PTR lParam);
 
-protected:
+  protected:
     CString m_strRegKey;
     CString m_strRegPrefix;
     BOOL m_bUseHdrCtrlSortBitmaps;

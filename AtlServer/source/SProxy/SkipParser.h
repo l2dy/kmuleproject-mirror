@@ -11,7 +11,7 @@
 
 class CSkipParser : public CParserBase
 {
-public:
+  public:
 
     inline CSkipParser(ISAXXMLReader *pReader, CParserBase *pParent, DWORD dwLevel)
         :CParserBase(pReader, pParent, dwLevel)

@@ -9,7 +9,7 @@ class CDiscoMapDocument;
 class CDiscoMapParser :
     public CParserBase
 {
-public:
+  public:
     CDiscoMapParser(void);
     ~CDiscoMapParser(void);
 
@@ -23,9 +23,9 @@ public:
     TAG_METHOD_DECL(OnResults);
     TAG_METHOD_DECL(OnDiscoveryClientResult);
 
-private:
+  private:
     CAutoPtr<CDiscoMapDocument> m_pDocument;
-public:
+  public:
     CDiscoMapParser(ISAXXMLReader * pReader, CParserBase * pParent, DWORD dwLevel);
 
     CDiscoMapDocument * GetDiscoMapDocument(bool bReleaseOwnership = FALSE)

@@ -6,14 +6,14 @@
 class CIconStatic : public CStatic
 {
     DECLARE_DYNAMIC(CIconStatic)
-public:
+  public:
     CIconStatic();
     virtual ~CIconStatic();
 
     void SetIcon(LPCTSTR pszIconID);
     void SetWindowText(LPCTSTR lpszString);
 
-protected:
+  protected:
     CStatic m_wndPicture;
     CString m_strIconID;
     CString m_strText;

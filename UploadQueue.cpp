@@ -724,13 +724,13 @@ void CUploadQueue::Process()
         else
         {
 //>>> WiZaRd::ZZUL Upload [ZZ]
-            if (!cur_client->IsScheduledForRemoval() 
-				|| (::GetTickCount()-m_nLastStartUpload <= SEC2MS(11) && cur_client->GetSlotNumber() <= GetActiveUploadsCount()+ 2)
-				|| (::GetTickCount()-m_nLastStartUpload <= SEC2MS(1) && cur_client->GetSlotNumber() <= GetActiveUploadsCount()+ 10)
-				|| ::GetTickCount()-m_nLastStartUpload <= 150 
-				|| !cur_client->GetScheduledRemovalLimboComplete() 
-				|| cur_client->GetSlotNumber() <= GetActiveUploadsCount() 
-				|| ForceNewClient(true))
+            if (!cur_client->IsScheduledForRemoval()
+                    || (::GetTickCount()-m_nLastStartUpload <= SEC2MS(11) && cur_client->GetSlotNumber() <= GetActiveUploadsCount()+ 2)
+                    || (::GetTickCount()-m_nLastStartUpload <= SEC2MS(1) && cur_client->GetSlotNumber() <= GetActiveUploadsCount()+ 10)
+                    || ::GetTickCount()-m_nLastStartUpload <= 150
+                    || !cur_client->GetScheduledRemovalLimboComplete()
+                    || cur_client->GetSlotNumber() <= GetActiveUploadsCount()
+                    || ForceNewClient(true))
 //<<< WiZaRd::ZZUL Upload [ZZ]
             {
 //>>> WiZaRd::Drop Blocking Sockets [Xman?]
@@ -755,9 +755,9 @@ void CUploadQueue::Process()
             else
             {
                 bool keepWaitingTime = cur_client->GetScheduledUploadShouldKeepWaitingTime();
-                if(RemoveFromUploadQueue(cur_client, L"Scheduled for removal: " + CString(cur_client->GetScheduledRemovalDebugReason()), keepWaitingTime))
-					AddClientToQueue(cur_client, true, keepWaitingTime);					
-				m_nLastStartUpload = ::GetTickCount()-SEC2MS(9);
+                if (RemoveFromUploadQueue(cur_client, L"Scheduled for removal: " + CString(cur_client->GetScheduledRemovalDebugReason()), keepWaitingTime))
+                    AddClientToQueue(cur_client, true, keepWaitingTime);
+                m_nLastStartUpload = ::GetTickCount()-SEC2MS(9);
             }
 //<<< WiZaRd::ZZUL Upload [ZZ]
         }
@@ -785,7 +785,7 @@ void CUploadQueue::Process()
                 {
                     theApp.QueueDebugLogLineEx(LOG_WARNING, L"Client %s is blocking too often and max slots are reached: avg20: %1.2f%%, all: %1.2f%%, avg. ul: %s",
                                                blockclient->DbgGetClientInfo(), blockclient->socket->GetBlockingRatio(), blockclient->socket->GetOverallBlockingRatio(), CastItoXBytes(blockclient->GetSessionUp()/blockclient->GetUpStartTimeDelay()*1000.0f, false, true));
-					AddClientToQueue(blockclient, true);
+                    AddClientToQueue(blockclient, true);
 
                     m_BlockStopList.AddHead(curTick); //remember when this happened
                     //because there are some users out there which set a too high uploadlimit, this code isn't usable
@@ -1051,9 +1051,9 @@ CUpDownClient* CUploadQueue::GetWaitingClientByIP_UDP(const UINT dwIP, const uin
         else if ((IP.GetType() == CAddress::IPv6 ? IP == cur_client->GetIPv6() : IP == cur_client->GetIP()) && bIgnorePortOnUniqueIP)
 //<<< WiZaRd::IPv6 [Xanatos]
 #else
-		if (dwIP == cur_client->GetIP() && nUDPPort == cur_client->GetUDPPort())
-			return cur_client;
-		else if (dwIP == cur_client->GetIP() && bIgnorePortOnUniqueIP)
+        if (dwIP == cur_client->GetIP() && nUDPPort == cur_client->GetUDPPort())
+            return cur_client;
+        else if (dwIP == cur_client->GetIP() && bIgnorePortOnUniqueIP)
 #endif
         {
             pMatchingIPClient = cur_client;
@@ -1081,7 +1081,7 @@ CUpDownClient* CUploadQueue::GetWaitingClientByIP(const UINT dwIP)
 #ifdef IPV6_SUPPORT
         if (IP.GetType() == CAddress::IPv6 ? IP == cur_client->GetIPv6() : IP == cur_client->GetIP()) //>>> WiZaRd::IPv6 [Xanatos]
 #else
-		if (dwIP == cur_client->GetIP())
+        if (dwIP == cur_client->GetIP())
 #endif
             return cur_client;
     }
@@ -1258,7 +1258,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
     else if (client->GetIP().GetType() == CAddress::IPv4 && theApp.clientlist->GetClientsFromIP(_ntohl(client->GetIP().ToIPv4())) >= 3)
 //<<< WiZaRd::IPv6 [Xanatos]
 #else
-     else if (theApp.clientlist->GetClientsFromIP(client->GetIP()) >= 3)
+    else if (theApp.clientlist->GetClientsFromIP(client->GetIP()) >= 3)
 #endif
     {
         if (thePrefs.GetVerbose())
@@ -1381,7 +1381,7 @@ bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client, const CString st
         if (client == curClient)
         {
             client->SendOutOfPartReqs(); //>>> WiZaRd::ZZUL Upload [ZZ]
-			theApp.emuledlg->transferwnd->GetUploadList()->RemoveClient(client);
+            theApp.emuledlg->transferwnd->GetUploadList()->RemoveClient(client);
 
             if (thePrefs.GetLogUlDlEvents())
 //>>> WiZaRd::ZZUL Upload [ZZ]
@@ -1477,8 +1477,8 @@ void CUploadQueue::RemoveFromWaitingQueue(POSITION pos)
     CUpDownClient* todelete = waitinglist.GetAt(pos);
     waitinglist.RemoveAt(pos);
 
-	theApp.emuledlg->transferwnd->GetQueueList()->RemoveClient(todelete);
-	theApp.emuledlg->transferwnd->ShowQueueCount(waitinglist.GetCount());
+    theApp.emuledlg->transferwnd->GetQueueList()->RemoveClient(todelete);
+    theApp.emuledlg->transferwnd->ShowQueueCount(waitinglist.GetCount());
 
 //>>> WiZaRd::Fix for LowID slots only on connection [VQB]
     //todelete->m_bAddNextConnect = false;
@@ -1554,9 +1554,9 @@ VOID CALLBACK CUploadQueue::UploadTimer(HWND /*hwnd*/, UINT /*uMsg*/, UINT_PTR /
         if (!theApp.emuledlg->IsRunning())
             return;
 
-		theApp.emuledlg->PostMessage(TM_UPLOAD_TIMER, NULL, NULL); //>>> WiZaRd::Catch exceptions
-	}
-	CATCH_DFLT_EXCEPTIONS(L"CUploadQueue::UploadTimer")
+        theApp.emuledlg->PostMessage(TM_UPLOAD_TIMER, NULL, NULL); //>>> WiZaRd::Catch exceptions
+    }
+    CATCH_DFLT_EXCEPTIONS(L"CUploadQueue::UploadTimer")
 }
 
 //>>> WiZaRd::Catch exceptions
@@ -1575,18 +1575,18 @@ void CUploadQueue::UploadTimer()
 
     // ZZ:UploadSpeedSense -->
     theApp.lastCommonRouteFinder->SetPrefs(thePrefs.IsDynUpEnabled(),
-                                            theApp.uploadqueue->GetDatarate(),
-                                            thePrefs.GetMinUpload()*1024,
-                                            (thePrefs.GetMaxUpload() != 0) ? thePrefs.GetMaxUpload() * 1024 : thePrefs.GetMaxGraphUploadRate(false) * 1024,
-                                            thePrefs.IsDynUpUseMillisecondPingTolerance(),
-                                            (thePrefs.GetDynUpPingTolerance() > 100) ? ((thePrefs.GetDynUpPingTolerance() - 100) / 100.0f) : 0,
-                                            thePrefs.GetDynUpPingToleranceMilliseconds(),
-                                            thePrefs.GetDynUpGoingUpDivider(),
-                                            thePrefs.GetDynUpGoingDownDivider(),
-                                            thePrefs.GetDynUpNumberOfPings(),
+                                           theApp.uploadqueue->GetDatarate(),
+                                           thePrefs.GetMinUpload()*1024,
+                                           (thePrefs.GetMaxUpload() != 0) ? thePrefs.GetMaxUpload() * 1024 : thePrefs.GetMaxGraphUploadRate(false) * 1024,
+                                           thePrefs.IsDynUpUseMillisecondPingTolerance(),
+                                           (thePrefs.GetDynUpPingTolerance() > 100) ? ((thePrefs.GetDynUpPingTolerance() - 100) / 100.0f) : 0,
+                                           thePrefs.GetDynUpPingToleranceMilliseconds(),
+                                           thePrefs.GetDynUpGoingUpDivider(),
+                                           thePrefs.GetDynUpGoingDownDivider(),
+                                           thePrefs.GetDynUpNumberOfPings(),
 //>>> WiZaRd::ZZUL Upload [ZZ]
-                                            10, // PENDING: Hard coded min pLowestPingAllowed
-                                            theApp.uploadqueue->GetActiveUploadsCount() > (UINT)theApp.uploadqueue->GetUploadQueueLength());
+                                           10, // PENDING: Hard coded min pLowestPingAllowed
+                                           theApp.uploadqueue->GetActiveUploadsCount() > (UINT)theApp.uploadqueue->GetUploadQueueLength());
     //20); // PENDING: Hard coded min pLowestPingAllowed
 //<<< WiZaRd::ZZUL Upload [ZZ]
     // ZZ:UploadSpeedSense <--

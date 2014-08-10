@@ -13,13 +13,13 @@
 
 class CWSDLMessage : public CXMLElement
 {
-private:
+  private:
 
     CStringW m_strDocumentation;
     CStringW m_strName;
     CAtlPtrList<CWSDLMessagePart *> m_parts;
 
-public:
+  public:
 
     inline POSITION GetFirstPart()
     {

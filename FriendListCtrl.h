@@ -24,7 +24,7 @@ class CFriendListCtrl : public CMuleListCtrl
     DECLARE_DYNAMIC(CFriendListCtrl)
     friend class CFriendList;
 
-public:
+  public:
     CFriendListCtrl();
     virtual ~CFriendListCtrl();
 
@@ -32,7 +32,7 @@ public:
     void	Localize();
     void	UpdateList();
 
-protected:
+  protected:
     void	SetAllIcons();
     void	AddFriend(const CFriend* pFriend);
     void	RemoveFriend(const CFriend* pFriend);

@@ -270,7 +270,7 @@ public IUnknown
 class CBrowserCapsSvc : public IBrowserCapsSvc,
     public CComObjectRootEx<CComSingleThreadModel>
 {
-public:
+  public:
     virtual ~CBrowserCapsSvc()
     {
     }
@@ -395,7 +395,7 @@ public:
         return S_OK;
     }
 
-private:
+  private:
     static bool IsEqualAgentString(__in LPCTSTR szPattern, __in LPCTSTR szInput)
     {
         while (*szPattern && *szInput && (*szPattern == *szInput || *szPattern == '?'))
@@ -590,7 +590,7 @@ private:
 
     class CBrowserCaps : public IBrowserCaps, public CComObjectRootEx<CComSingleThreadModel>
     {
-    public:
+      public:
 
         BEGIN_COM_MAP(CBrowserCaps)
         COM_INTERFACE_ENTRY(IBrowserCaps)
@@ -756,7 +756,7 @@ private:
             return GetBooleanPropertyValue(CComBSTR(L"Update"), pbIsUpdate);
         }
 
-    private:
+      private:
         CBrowserCapsSvc::BrowserCaps * m_pCaps;
     };
 };

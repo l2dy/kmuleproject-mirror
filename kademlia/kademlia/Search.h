@@ -45,7 +45,7 @@ class CLookupHistory;
 class CSearch
 {
     friend class CSearchManager;
-public:
+  public:
     UINT		GetSearchID() const;
     UINT		GetSearchTypes() const;
     void		SetSearchTypes(UINT uVal);
@@ -98,7 +98,7 @@ public:
     CSearch();
     ~CSearch();
 
-private:
+  private:
     void Go();
     void ProcessResponse(UINT uFromIP, uint16 uFromPort, ContactList *plistResults);
     void ProcessResult(const CUInt128 &uAnswer, TagList *listInfo, UINT uFromIP, uint16 uFromPort);

@@ -118,44 +118,44 @@ EXTERN_C const IID IID_IAMWMBufferPass;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("6DD816D7-E740-4123-9E24-2444412644D8")
+MIDL_INTERFACE("6DD816D7-E740-4123-9E24-2444412644D8")
 IAMWMBufferPass :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual HRESULT STDMETHODCALLTYPE SetNotify(
-            /* [in] */ IAMWMBufferPassCallback *pCallback) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetNotify(
+        /* [in] */ IAMWMBufferPassCallback *pCallback) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IAMWMBufferPassVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IAMWMBufferPassVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IAMWMBufferPass * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IAMWMBufferPass * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IAMWMBufferPass * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IAMWMBufferPass * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IAMWMBufferPass * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IAMWMBufferPass * This);
 
-        HRESULT(STDMETHODCALLTYPE *SetNotify)(
-            IAMWMBufferPass * This,
-            /* [in] */ IAMWMBufferPassCallback *pCallback);
+    HRESULT(STDMETHODCALLTYPE *SetNotify)(
+        IAMWMBufferPass * This,
+        /* [in] */ IAMWMBufferPassCallback *pCallback);
 
-        END_INTERFACE
-    } IAMWMBufferPassVtbl;
+    END_INTERFACE
+} IAMWMBufferPassVtbl;
 
-    interface IAMWMBufferPass
-    {
-        CONST_VTBL struct IAMWMBufferPassVtbl *lpVtbl;
-    };
+interface IAMWMBufferPass
+{
+    CONST_VTBL struct IAMWMBufferPassVtbl *lpVtbl;
+};
 
 
 
@@ -182,16 +182,16 @@ public:
 
 
 
-    HRESULT STDMETHODCALLTYPE IAMWMBufferPass_SetNotify_Proxy(
-        IAMWMBufferPass * This,
-        /* [in] */ IAMWMBufferPassCallback *pCallback);
+HRESULT STDMETHODCALLTYPE IAMWMBufferPass_SetNotify_Proxy(
+    IAMWMBufferPass * This,
+    /* [in] */ IAMWMBufferPassCallback *pCallback);
 
 
-    void __RPC_STUB IAMWMBufferPass_SetNotify_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMWMBufferPass_SetNotify_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -201,58 +201,58 @@ public:
 #ifndef __IAMWMBufferPassCallback_INTERFACE_DEFINED__
 #define __IAMWMBufferPassCallback_INTERFACE_DEFINED__
 
-    /* interface IAMWMBufferPassCallback */
-    /* [unique][uuid][object] */
+/* interface IAMWMBufferPassCallback */
+/* [unique][uuid][object] */
 
 
-    EXTERN_C const IID IID_IAMWMBufferPassCallback;
+EXTERN_C const IID IID_IAMWMBufferPassCallback;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("B25B8372-D2D2-44b2-8653-1B8DAE332489")
+MIDL_INTERFACE("B25B8372-D2D2-44b2-8653-1B8DAE332489")
 IAMWMBufferPassCallback :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual HRESULT STDMETHODCALLTYPE Notify(
-            /* [in] */ INSSBuffer3 *pNSSBuffer3,
-            /* [in] */ IPin *pPin,
-            /* [in] */ REFERENCE_TIME *prtStart,
-            /* [in] */ REFERENCE_TIME *prtEnd) = 0;
+    virtual HRESULT STDMETHODCALLTYPE Notify(
+        /* [in] */ INSSBuffer3 *pNSSBuffer3,
+        /* [in] */ IPin *pPin,
+        /* [in] */ REFERENCE_TIME *prtStart,
+        /* [in] */ REFERENCE_TIME *prtEnd) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IAMWMBufferPassCallbackVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IAMWMBufferPassCallbackVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IAMWMBufferPassCallback * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IAMWMBufferPassCallback * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IAMWMBufferPassCallback * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IAMWMBufferPassCallback * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IAMWMBufferPassCallback * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IAMWMBufferPassCallback * This);
 
-        HRESULT(STDMETHODCALLTYPE *Notify)(
-            IAMWMBufferPassCallback * This,
-            /* [in] */ INSSBuffer3 *pNSSBuffer3,
-            /* [in] */ IPin *pPin,
-            /* [in] */ REFERENCE_TIME *prtStart,
-            /* [in] */ REFERENCE_TIME *prtEnd);
+    HRESULT(STDMETHODCALLTYPE *Notify)(
+        IAMWMBufferPassCallback * This,
+        /* [in] */ INSSBuffer3 *pNSSBuffer3,
+        /* [in] */ IPin *pPin,
+        /* [in] */ REFERENCE_TIME *prtStart,
+        /* [in] */ REFERENCE_TIME *prtEnd);
 
-        END_INTERFACE
-    } IAMWMBufferPassCallbackVtbl;
+    END_INTERFACE
+} IAMWMBufferPassCallbackVtbl;
 
-    interface IAMWMBufferPassCallback
-    {
-        CONST_VTBL struct IAMWMBufferPassCallbackVtbl *lpVtbl;
-    };
+interface IAMWMBufferPassCallback
+{
+    CONST_VTBL struct IAMWMBufferPassCallbackVtbl *lpVtbl;
+};
 
 
 
@@ -279,138 +279,138 @@ public:
 
 
 
-    HRESULT STDMETHODCALLTYPE IAMWMBufferPassCallback_Notify_Proxy(
-        IAMWMBufferPassCallback * This,
-        /* [in] */ INSSBuffer3 *pNSSBuffer3,
-        /* [in] */ IPin *pPin,
-        /* [in] */ REFERENCE_TIME *prtStart,
-        /* [in] */ REFERENCE_TIME *prtEnd);
+HRESULT STDMETHODCALLTYPE IAMWMBufferPassCallback_Notify_Proxy(
+    IAMWMBufferPassCallback * This,
+    /* [in] */ INSSBuffer3 *pNSSBuffer3,
+    /* [in] */ IPin *pPin,
+    /* [in] */ REFERENCE_TIME *prtStart,
+    /* [in] */ REFERENCE_TIME *prtEnd);
 
 
-    void __RPC_STUB IAMWMBufferPassCallback_Notify_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IAMWMBufferPassCallback_Notify_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
 #endif 	/* __IAMWMBufferPassCallback_INTERFACE_DEFINED__ */
 
 
-    /* interface __MIDL_itf_dshowasf_0495 */
-    /* [local] */
+/* interface __MIDL_itf_dshowasf_0495 */
+/* [local] */
 
 
-    enum _AM_ASFWRITERCONFIG_PARAM
-    {
-        AM_CONFIGASFWRITER_PARAM_AUTOINDEX	= 1,
-        AM_CONFIGASFWRITER_PARAM_MULTIPASS	= AM_CONFIGASFWRITER_PARAM_AUTOINDEX + 1,
-        AM_CONFIGASFWRITER_PARAM_DONTCOMPRESS	= AM_CONFIGASFWRITER_PARAM_MULTIPASS + 1
-    } ;
+enum _AM_ASFWRITERCONFIG_PARAM
+{
+    AM_CONFIGASFWRITER_PARAM_AUTOINDEX	= 1,
+    AM_CONFIGASFWRITER_PARAM_MULTIPASS	= AM_CONFIGASFWRITER_PARAM_AUTOINDEX + 1,
+    AM_CONFIGASFWRITER_PARAM_DONTCOMPRESS	= AM_CONFIGASFWRITER_PARAM_MULTIPASS + 1
+} ;
 
 
-    extern RPC_IF_HANDLE __MIDL_itf_dshowasf_0495_v0_0_c_ifspec;
-    extern RPC_IF_HANDLE __MIDL_itf_dshowasf_0495_v0_0_s_ifspec;
+extern RPC_IF_HANDLE __MIDL_itf_dshowasf_0495_v0_0_c_ifspec;
+extern RPC_IF_HANDLE __MIDL_itf_dshowasf_0495_v0_0_s_ifspec;
 
 #ifndef __IConfigAsfWriter_INTERFACE_DEFINED__
 #define __IConfigAsfWriter_INTERFACE_DEFINED__
 
-    /* interface IConfigAsfWriter */
-    /* [unique][uuid][object] */
+/* interface IConfigAsfWriter */
+/* [unique][uuid][object] */
 
 
-    EXTERN_C const IID IID_IConfigAsfWriter;
+EXTERN_C const IID IID_IConfigAsfWriter;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("45086030-F7E4-486a-B504-826BB5792A3B")
+MIDL_INTERFACE("45086030-F7E4-486a-B504-826BB5792A3B")
 IConfigAsfWriter :
-    public IUnknown
-    {
+public IUnknown
+{
 public:
-        virtual HRESULT STDMETHODCALLTYPE ConfigureFilterUsingProfileId(
-            /* [in] */ DWORD dwProfileId) = 0;
+    virtual HRESULT STDMETHODCALLTYPE ConfigureFilterUsingProfileId(
+        /* [in] */ DWORD dwProfileId) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetCurrentProfileId(
-            /* [out] */ DWORD *pdwProfileId) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetCurrentProfileId(
+        /* [out] */ DWORD *pdwProfileId) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE ConfigureFilterUsingProfileGuid(
-            /* [in] */ REFGUID guidProfile) = 0;
+    virtual HRESULT STDMETHODCALLTYPE ConfigureFilterUsingProfileGuid(
+        /* [in] */ REFGUID guidProfile) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetCurrentProfileGuid(
-            /* [out] */ GUID *pProfileGuid) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetCurrentProfileGuid(
+        /* [out] */ GUID *pProfileGuid) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE ConfigureFilterUsingProfile(
-            /* [in] */ IWMProfile *pProfile) = 0;
+    virtual HRESULT STDMETHODCALLTYPE ConfigureFilterUsingProfile(
+        /* [in] */ IWMProfile *pProfile) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetCurrentProfile(
-            /* [out] */ IWMProfile **ppProfile) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetCurrentProfile(
+        /* [out] */ IWMProfile **ppProfile) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetIndexMode(
-            /* [in] */ BOOL bIndexFile) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetIndexMode(
+        /* [in] */ BOOL bIndexFile) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetIndexMode(
-            /* [out] */ BOOL *pbIndexFile) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetIndexMode(
+        /* [out] */ BOOL *pbIndexFile) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IConfigAsfWriterVtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IConfigAsfWriterVtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IConfigAsfWriter * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IConfigAsfWriter * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IConfigAsfWriter * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IConfigAsfWriter * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IConfigAsfWriter * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IConfigAsfWriter * This);
 
-        HRESULT(STDMETHODCALLTYPE *ConfigureFilterUsingProfileId)(
-            IConfigAsfWriter * This,
-            /* [in] */ DWORD dwProfileId);
+    HRESULT(STDMETHODCALLTYPE *ConfigureFilterUsingProfileId)(
+        IConfigAsfWriter * This,
+        /* [in] */ DWORD dwProfileId);
 
-        HRESULT(STDMETHODCALLTYPE *GetCurrentProfileId)(
-            IConfigAsfWriter * This,
-            /* [out] */ DWORD *pdwProfileId);
+    HRESULT(STDMETHODCALLTYPE *GetCurrentProfileId)(
+        IConfigAsfWriter * This,
+        /* [out] */ DWORD *pdwProfileId);
 
-        HRESULT(STDMETHODCALLTYPE *ConfigureFilterUsingProfileGuid)(
-            IConfigAsfWriter * This,
-            /* [in] */ REFGUID guidProfile);
+    HRESULT(STDMETHODCALLTYPE *ConfigureFilterUsingProfileGuid)(
+        IConfigAsfWriter * This,
+        /* [in] */ REFGUID guidProfile);
 
-        HRESULT(STDMETHODCALLTYPE *GetCurrentProfileGuid)(
-            IConfigAsfWriter * This,
-            /* [out] */ GUID *pProfileGuid);
+    HRESULT(STDMETHODCALLTYPE *GetCurrentProfileGuid)(
+        IConfigAsfWriter * This,
+        /* [out] */ GUID *pProfileGuid);
 
-        HRESULT(STDMETHODCALLTYPE *ConfigureFilterUsingProfile)(
-            IConfigAsfWriter * This,
-            /* [in] */ IWMProfile *pProfile);
+    HRESULT(STDMETHODCALLTYPE *ConfigureFilterUsingProfile)(
+        IConfigAsfWriter * This,
+        /* [in] */ IWMProfile *pProfile);
 
-        HRESULT(STDMETHODCALLTYPE *GetCurrentProfile)(
-            IConfigAsfWriter * This,
-            /* [out] */ IWMProfile **ppProfile);
+    HRESULT(STDMETHODCALLTYPE *GetCurrentProfile)(
+        IConfigAsfWriter * This,
+        /* [out] */ IWMProfile **ppProfile);
 
-        HRESULT(STDMETHODCALLTYPE *SetIndexMode)(
-            IConfigAsfWriter * This,
-            /* [in] */ BOOL bIndexFile);
+    HRESULT(STDMETHODCALLTYPE *SetIndexMode)(
+        IConfigAsfWriter * This,
+        /* [in] */ BOOL bIndexFile);
 
-        HRESULT(STDMETHODCALLTYPE *GetIndexMode)(
-            IConfigAsfWriter * This,
-            /* [out] */ BOOL *pbIndexFile);
+    HRESULT(STDMETHODCALLTYPE *GetIndexMode)(
+        IConfigAsfWriter * This,
+        /* [out] */ BOOL *pbIndexFile);
 
-        END_INTERFACE
-    } IConfigAsfWriterVtbl;
+    END_INTERFACE
+} IConfigAsfWriterVtbl;
 
-    interface IConfigAsfWriter
-    {
-        CONST_VTBL struct IConfigAsfWriterVtbl *lpVtbl;
-    };
+interface IConfigAsfWriter
+{
+    CONST_VTBL struct IConfigAsfWriterVtbl *lpVtbl;
+};
 
 
 
@@ -458,100 +458,100 @@ public:
 
 
 
-    HRESULT STDMETHODCALLTYPE IConfigAsfWriter_ConfigureFilterUsingProfileId_Proxy(
-        IConfigAsfWriter * This,
-        /* [in] */ DWORD dwProfileId);
+HRESULT STDMETHODCALLTYPE IConfigAsfWriter_ConfigureFilterUsingProfileId_Proxy(
+    IConfigAsfWriter * This,
+    /* [in] */ DWORD dwProfileId);
 
 
-    void __RPC_STUB IConfigAsfWriter_ConfigureFilterUsingProfileId_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IConfigAsfWriter_ConfigureFilterUsingProfileId_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IConfigAsfWriter_GetCurrentProfileId_Proxy(
-        IConfigAsfWriter * This,
-        /* [out] */ DWORD *pdwProfileId);
+HRESULT STDMETHODCALLTYPE IConfigAsfWriter_GetCurrentProfileId_Proxy(
+    IConfigAsfWriter * This,
+    /* [out] */ DWORD *pdwProfileId);
 
 
-    void __RPC_STUB IConfigAsfWriter_GetCurrentProfileId_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IConfigAsfWriter_GetCurrentProfileId_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IConfigAsfWriter_ConfigureFilterUsingProfileGuid_Proxy(
-        IConfigAsfWriter * This,
-        /* [in] */ REFGUID guidProfile);
+HRESULT STDMETHODCALLTYPE IConfigAsfWriter_ConfigureFilterUsingProfileGuid_Proxy(
+    IConfigAsfWriter * This,
+    /* [in] */ REFGUID guidProfile);
 
 
-    void __RPC_STUB IConfigAsfWriter_ConfigureFilterUsingProfileGuid_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IConfigAsfWriter_ConfigureFilterUsingProfileGuid_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IConfigAsfWriter_GetCurrentProfileGuid_Proxy(
-        IConfigAsfWriter * This,
-        /* [out] */ GUID *pProfileGuid);
+HRESULT STDMETHODCALLTYPE IConfigAsfWriter_GetCurrentProfileGuid_Proxy(
+    IConfigAsfWriter * This,
+    /* [out] */ GUID *pProfileGuid);
 
 
-    void __RPC_STUB IConfigAsfWriter_GetCurrentProfileGuid_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IConfigAsfWriter_GetCurrentProfileGuid_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IConfigAsfWriter_ConfigureFilterUsingProfile_Proxy(
-        IConfigAsfWriter * This,
-        /* [in] */ IWMProfile *pProfile);
+HRESULT STDMETHODCALLTYPE IConfigAsfWriter_ConfigureFilterUsingProfile_Proxy(
+    IConfigAsfWriter * This,
+    /* [in] */ IWMProfile *pProfile);
 
 
-    void __RPC_STUB IConfigAsfWriter_ConfigureFilterUsingProfile_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IConfigAsfWriter_ConfigureFilterUsingProfile_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IConfigAsfWriter_GetCurrentProfile_Proxy(
-        IConfigAsfWriter * This,
-        /* [out] */ IWMProfile **ppProfile);
+HRESULT STDMETHODCALLTYPE IConfigAsfWriter_GetCurrentProfile_Proxy(
+    IConfigAsfWriter * This,
+    /* [out] */ IWMProfile **ppProfile);
 
 
-    void __RPC_STUB IConfigAsfWriter_GetCurrentProfile_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IConfigAsfWriter_GetCurrentProfile_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IConfigAsfWriter_SetIndexMode_Proxy(
-        IConfigAsfWriter * This,
-        /* [in] */ BOOL bIndexFile);
+HRESULT STDMETHODCALLTYPE IConfigAsfWriter_SetIndexMode_Proxy(
+    IConfigAsfWriter * This,
+    /* [in] */ BOOL bIndexFile);
 
 
-    void __RPC_STUB IConfigAsfWriter_SetIndexMode_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IConfigAsfWriter_SetIndexMode_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IConfigAsfWriter_GetIndexMode_Proxy(
-        IConfigAsfWriter * This,
-        /* [out] */ BOOL *pbIndexFile);
+HRESULT STDMETHODCALLTYPE IConfigAsfWriter_GetIndexMode_Proxy(
+    IConfigAsfWriter * This,
+    /* [out] */ BOOL *pbIndexFile);
 
 
-    void __RPC_STUB IConfigAsfWriter_GetIndexMode_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IConfigAsfWriter_GetIndexMode_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
@@ -561,113 +561,113 @@ public:
 #ifndef __IConfigAsfWriter2_INTERFACE_DEFINED__
 #define __IConfigAsfWriter2_INTERFACE_DEFINED__
 
-    /* interface IConfigAsfWriter2 */
-    /* [unique][uuid][object] */
+/* interface IConfigAsfWriter2 */
+/* [unique][uuid][object] */
 
 
-    EXTERN_C const IID IID_IConfigAsfWriter2;
+EXTERN_C const IID IID_IConfigAsfWriter2;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("7989CCAA-53F0-44f0-884A-F3B03F6AE066")
+MIDL_INTERFACE("7989CCAA-53F0-44f0-884A-F3B03F6AE066")
 IConfigAsfWriter2 :
-    public IConfigAsfWriter
-    {
+public IConfigAsfWriter
+{
 public:
-        virtual HRESULT STDMETHODCALLTYPE StreamNumFromPin(
-            /* [in] */ IPin *pPin,
-            /* [out] */ WORD *pwStreamNum) = 0;
+    virtual HRESULT STDMETHODCALLTYPE StreamNumFromPin(
+        /* [in] */ IPin *pPin,
+        /* [out] */ WORD *pwStreamNum) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE SetParam(
-            /* [in] */ DWORD dwParam,
-            /* [in] */ DWORD dwParam1,
-            /* [in] */ DWORD dwParam2) = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetParam(
+        /* [in] */ DWORD dwParam,
+        /* [in] */ DWORD dwParam1,
+        /* [in] */ DWORD dwParam2) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE GetParam(
-            /* [in] */ DWORD dwParam,
-            /* [out] */ DWORD *pdwParam1,
-            /* [out] */ DWORD *pdwParam2) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetParam(
+        /* [in] */ DWORD dwParam,
+        /* [out] */ DWORD *pdwParam1,
+        /* [out] */ DWORD *pdwParam2) = 0;
 
-        virtual HRESULT STDMETHODCALLTYPE ResetMultiPassState(void) = 0;
+    virtual HRESULT STDMETHODCALLTYPE ResetMultiPassState(void) = 0;
 
-    };
+};
 
 #else 	/* C style interface */
 
-    typedef struct IConfigAsfWriter2Vtbl
-    {
-        BEGIN_INTERFACE
+typedef struct IConfigAsfWriter2Vtbl
+{
+    BEGIN_INTERFACE
 
-        HRESULT(STDMETHODCALLTYPE *QueryInterface)(
-            IConfigAsfWriter2 * This,
-            /* [in] */ REFIID riid,
-            /* [iid_is][out] */ void **ppvObject);
+    HRESULT(STDMETHODCALLTYPE *QueryInterface)(
+        IConfigAsfWriter2 * This,
+        /* [in] */ REFIID riid,
+        /* [iid_is][out] */ void **ppvObject);
 
-        ULONG(STDMETHODCALLTYPE *AddRef)(
-            IConfigAsfWriter2 * This);
+    ULONG(STDMETHODCALLTYPE *AddRef)(
+        IConfigAsfWriter2 * This);
 
-        ULONG(STDMETHODCALLTYPE *Release)(
-            IConfigAsfWriter2 * This);
+    ULONG(STDMETHODCALLTYPE *Release)(
+        IConfigAsfWriter2 * This);
 
-        HRESULT(STDMETHODCALLTYPE *ConfigureFilterUsingProfileId)(
-            IConfigAsfWriter2 * This,
-            /* [in] */ DWORD dwProfileId);
+    HRESULT(STDMETHODCALLTYPE *ConfigureFilterUsingProfileId)(
+        IConfigAsfWriter2 * This,
+        /* [in] */ DWORD dwProfileId);
 
-        HRESULT(STDMETHODCALLTYPE *GetCurrentProfileId)(
-            IConfigAsfWriter2 * This,
-            /* [out] */ DWORD *pdwProfileId);
+    HRESULT(STDMETHODCALLTYPE *GetCurrentProfileId)(
+        IConfigAsfWriter2 * This,
+        /* [out] */ DWORD *pdwProfileId);
 
-        HRESULT(STDMETHODCALLTYPE *ConfigureFilterUsingProfileGuid)(
-            IConfigAsfWriter2 * This,
-            /* [in] */ REFGUID guidProfile);
+    HRESULT(STDMETHODCALLTYPE *ConfigureFilterUsingProfileGuid)(
+        IConfigAsfWriter2 * This,
+        /* [in] */ REFGUID guidProfile);
 
-        HRESULT(STDMETHODCALLTYPE *GetCurrentProfileGuid)(
-            IConfigAsfWriter2 * This,
-            /* [out] */ GUID *pProfileGuid);
+    HRESULT(STDMETHODCALLTYPE *GetCurrentProfileGuid)(
+        IConfigAsfWriter2 * This,
+        /* [out] */ GUID *pProfileGuid);
 
-        HRESULT(STDMETHODCALLTYPE *ConfigureFilterUsingProfile)(
-            IConfigAsfWriter2 * This,
-            /* [in] */ IWMProfile *pProfile);
+    HRESULT(STDMETHODCALLTYPE *ConfigureFilterUsingProfile)(
+        IConfigAsfWriter2 * This,
+        /* [in] */ IWMProfile *pProfile);
 
-        HRESULT(STDMETHODCALLTYPE *GetCurrentProfile)(
-            IConfigAsfWriter2 * This,
-            /* [out] */ IWMProfile **ppProfile);
+    HRESULT(STDMETHODCALLTYPE *GetCurrentProfile)(
+        IConfigAsfWriter2 * This,
+        /* [out] */ IWMProfile **ppProfile);
 
-        HRESULT(STDMETHODCALLTYPE *SetIndexMode)(
-            IConfigAsfWriter2 * This,
-            /* [in] */ BOOL bIndexFile);
+    HRESULT(STDMETHODCALLTYPE *SetIndexMode)(
+        IConfigAsfWriter2 * This,
+        /* [in] */ BOOL bIndexFile);
 
-        HRESULT(STDMETHODCALLTYPE *GetIndexMode)(
-            IConfigAsfWriter2 * This,
-            /* [out] */ BOOL *pbIndexFile);
+    HRESULT(STDMETHODCALLTYPE *GetIndexMode)(
+        IConfigAsfWriter2 * This,
+        /* [out] */ BOOL *pbIndexFile);
 
-        HRESULT(STDMETHODCALLTYPE *StreamNumFromPin)(
-            IConfigAsfWriter2 * This,
-            /* [in] */ IPin *pPin,
-            /* [out] */ WORD *pwStreamNum);
+    HRESULT(STDMETHODCALLTYPE *StreamNumFromPin)(
+        IConfigAsfWriter2 * This,
+        /* [in] */ IPin *pPin,
+        /* [out] */ WORD *pwStreamNum);
 
-        HRESULT(STDMETHODCALLTYPE *SetParam)(
-            IConfigAsfWriter2 * This,
-            /* [in] */ DWORD dwParam,
-            /* [in] */ DWORD dwParam1,
-            /* [in] */ DWORD dwParam2);
+    HRESULT(STDMETHODCALLTYPE *SetParam)(
+        IConfigAsfWriter2 * This,
+        /* [in] */ DWORD dwParam,
+        /* [in] */ DWORD dwParam1,
+        /* [in] */ DWORD dwParam2);
 
-        HRESULT(STDMETHODCALLTYPE *GetParam)(
-            IConfigAsfWriter2 * This,
-            /* [in] */ DWORD dwParam,
-            /* [out] */ DWORD *pdwParam1,
-            /* [out] */ DWORD *pdwParam2);
+    HRESULT(STDMETHODCALLTYPE *GetParam)(
+        IConfigAsfWriter2 * This,
+        /* [in] */ DWORD dwParam,
+        /* [out] */ DWORD *pdwParam1,
+        /* [out] */ DWORD *pdwParam2);
 
-        HRESULT(STDMETHODCALLTYPE *ResetMultiPassState)(
-            IConfigAsfWriter2 * This);
+    HRESULT(STDMETHODCALLTYPE *ResetMultiPassState)(
+        IConfigAsfWriter2 * This);
 
-        END_INTERFACE
-    } IConfigAsfWriter2Vtbl;
+    END_INTERFACE
+} IConfigAsfWriter2Vtbl;
 
-    interface IConfigAsfWriter2
-    {
-        CONST_VTBL struct IConfigAsfWriter2Vtbl *lpVtbl;
-    };
+interface IConfigAsfWriter2
+{
+    CONST_VTBL struct IConfigAsfWriter2Vtbl *lpVtbl;
+};
 
 
 
@@ -728,65 +728,65 @@ public:
 
 
 
-    HRESULT STDMETHODCALLTYPE IConfigAsfWriter2_StreamNumFromPin_Proxy(
-        IConfigAsfWriter2 * This,
-        /* [in] */ IPin *pPin,
-        /* [out] */ WORD *pwStreamNum);
+HRESULT STDMETHODCALLTYPE IConfigAsfWriter2_StreamNumFromPin_Proxy(
+    IConfigAsfWriter2 * This,
+    /* [in] */ IPin *pPin,
+    /* [out] */ WORD *pwStreamNum);
 
 
-    void __RPC_STUB IConfigAsfWriter2_StreamNumFromPin_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IConfigAsfWriter2_StreamNumFromPin_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IConfigAsfWriter2_SetParam_Proxy(
-        IConfigAsfWriter2 * This,
-        /* [in] */ DWORD dwParam,
-        /* [in] */ DWORD dwParam1,
-        /* [in] */ DWORD dwParam2);
+HRESULT STDMETHODCALLTYPE IConfigAsfWriter2_SetParam_Proxy(
+    IConfigAsfWriter2 * This,
+    /* [in] */ DWORD dwParam,
+    /* [in] */ DWORD dwParam1,
+    /* [in] */ DWORD dwParam2);
 
 
-    void __RPC_STUB IConfigAsfWriter2_SetParam_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IConfigAsfWriter2_SetParam_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IConfigAsfWriter2_GetParam_Proxy(
-        IConfigAsfWriter2 * This,
-        /* [in] */ DWORD dwParam,
-        /* [out] */ DWORD *pdwParam1,
-        /* [out] */ DWORD *pdwParam2);
+HRESULT STDMETHODCALLTYPE IConfigAsfWriter2_GetParam_Proxy(
+    IConfigAsfWriter2 * This,
+    /* [in] */ DWORD dwParam,
+    /* [out] */ DWORD *pdwParam1,
+    /* [out] */ DWORD *pdwParam2);
 
 
-    void __RPC_STUB IConfigAsfWriter2_GetParam_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IConfigAsfWriter2_GetParam_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
-    HRESULT STDMETHODCALLTYPE IConfigAsfWriter2_ResetMultiPassState_Proxy(
-        IConfigAsfWriter2 * This);
+HRESULT STDMETHODCALLTYPE IConfigAsfWriter2_ResetMultiPassState_Proxy(
+    IConfigAsfWriter2 * This);
 
 
-    void __RPC_STUB IConfigAsfWriter2_ResetMultiPassState_Stub(
-        IRpcStubBuffer *This,
-        IRpcChannelBuffer *_pRpcChannelBuffer,
-        PRPC_MESSAGE _pRpcMessage,
-        DWORD *_pdwStubPhase);
+void __RPC_STUB IConfigAsfWriter2_ResetMultiPassState_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
 
 
 
 #endif 	/* __IConfigAsfWriter2_INTERFACE_DEFINED__ */
 
 
-    /* Additional Prototypes for ALL interfaces */
+/* Additional Prototypes for ALL interfaces */
 
-    /* end of Additional Prototypes */
+/* end of Additional Prototypes */
 
 #ifdef __cplusplus
 }

@@ -42,7 +42,7 @@ struct SearchCtrlItem_Struct
 
 class CSortSelectionState
 {
-public:
+  public:
     UINT	m_nSortItem;
     bool	m_bSortAscending;
     UINT	m_nScrollPosition;
@@ -53,7 +53,7 @@ class CSearchListCtrl : public CMuleListCtrl, public CListCtrlItemWalk
 {
     DECLARE_DYNAMIC(CSearchListCtrl)
 
-public:
+  public:
     CSearchListCtrl();
     virtual ~CSearchListCtrl();
 
@@ -77,7 +77,7 @@ public:
     }
     void	SetFileSizeFormat(EFileSizeFormat eFormat);
 
-protected:
+  protected:
     UINT		m_nResultsID;
     CTitleMenu	m_SearchFileMenu;
     CSearchList* searchlist;

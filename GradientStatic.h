@@ -6,14 +6,14 @@
 class CGradientStatic : public CStatic
 {
 // Construction
-public:
+  public:
     CGradientStatic();
 
 // Attributes
-public:
+  public:
 
 // Operations
-public:
+  public:
 
 // Overrides
     // ClassWizard generated virtual function overrides
@@ -21,7 +21,7 @@ public:
     //}}AFX_VIRTUAL
 
 // Implementation
-public:
+  public:
     void SetFont(CFont *pFont);
     virtual ~CGradientStatic();
 
@@ -45,7 +45,7 @@ public:
     }
 
     // Generated message map functions
-protected:
+  protected:
     bool m_bInit;
     bool m_bHorizontal;
     bool m_bInvert;
@@ -71,7 +71,7 @@ protected:
     //}}AFX_MSG
 
     DECLARE_MESSAGE_MAP()
-private:
+  private:
     void DrawVerticalText(CRect *pRect);
     void DrawHorizontalText(CRect *pRect);
     void DrawVerticalGradient();

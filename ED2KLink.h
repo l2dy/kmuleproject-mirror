@@ -31,7 +31,7 @@ struct SUnresolvedHostname
 
 class CED2KLink
 {
-public:
+  public:
     static CED2KLink* CreateLinkFromUrl(const TCHAR* url);
     virtual ~CED2KLink();
 
@@ -46,7 +46,7 @@ public:
 
 class CED2KFileLink : public CED2KLink
 {
-public:
+  public:
     CED2KFileLink(const TCHAR* pszName, const TCHAR* pszSize, const TCHAR* pszHash, const CStringArray& param, const TCHAR* pszSources);
     virtual ~CED2KFileLink();
 
@@ -101,7 +101,7 @@ public:
     CSafeMemFile* m_hashset;
     CTypedPtrList<CPtrList, SUnresolvedHostname*> m_HostnameSourcesList;
 
-private:
+  private:
     CED2KFileLink();
     CED2KFileLink(const CED2KFileLink&);
     CED2KFileLink& operator=(const CED2KFileLink&);
@@ -116,7 +116,7 @@ private:
 
 class CED2KNodesListLink : public CED2KLink
 {
-public:
+  public:
     CED2KNodesListLink(const TCHAR* pszAddress);
     virtual ~CED2KNodesListLink();
 
@@ -134,13 +134,13 @@ public:
         return m_address;
     }
 
-private:
+  private:
     CString m_address;
 };
 
 class CED2KSearchLink : public CED2KLink
 {
-public:
+  public:
     CED2KSearchLink(const TCHAR* pszSearchTerm);
     virtual ~CED2KSearchLink();
 
@@ -155,6 +155,6 @@ public:
         return m_strSearchTerm;
     }
 
-private:
+  private:
     CString m_strSearchTerm;
 };

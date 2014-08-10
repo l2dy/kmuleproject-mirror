@@ -5,7 +5,7 @@ class CPPgDirectories : public CPropertyPage
 {
     DECLARE_DYNAMIC(CPPgDirectories)
 
-public:
+  public:
     CPPgDirectories();									// standard constructor
     virtual ~CPPgDirectories();
 
@@ -14,7 +14,7 @@ public:
 
     void Localize(void);
 
-protected:
+  protected:
     CListCtrl m_ctlUncPaths;
     HICON m_icoBrowse;
 

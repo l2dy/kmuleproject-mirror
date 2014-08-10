@@ -35,7 +35,7 @@ namespace Kademlia
 {
 class CDataIO
 {
-public:
+  public:
     byte ReadByte();
     uint8 ReadUInt8();
     uint16 ReadUInt16();
@@ -65,7 +65,7 @@ public:
     void WriteTag(LPCSTR szName, uint64 uValue);
     void WriteTag(LPCSTR szName, float fValue);
     void WriteTagList(const TagList& tagList);
-	virtual void ReadArray(LPVOID /*lpResult*/, UINT /*uByteCount*/)	{ AfxDebugBreak(); }
+    virtual void ReadArray(LPVOID /*lpResult*/, UINT /*uByteCount*/)	{ AfxDebugBreak(); }
     virtual void WriteArray(LPCVOID /*lpVal*/, UINT /*uByteCount*/)		{ AfxDebugBreak(); }
     virtual UINT GetAvailable() const									{ AfxDebugBreak(); return 0; }
 };

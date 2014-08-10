@@ -4,14 +4,14 @@ class CClosableTabCtrl : public CTabCtrl
 {
     DECLARE_DYNAMIC(CClosableTabCtrl)
 
-public:
+  public:
     CClosableTabCtrl();
     virtual ~CClosableTabCtrl();
     BOOL DeleteItem(int nItem);
 
     bool m_bCloseable;
 
-protected:
+  protected:
     CImageList m_ImgLstCloseButton;
     IMAGEINFO m_iiCloseButton;
     CPoint m_ptCtxMenu;

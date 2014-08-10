@@ -36,7 +36,7 @@ namespace Kademlia
 {
 class CIOException : public CException
 {
-public:
+  public:
     CIOException(int iCause = ERR_SUCCESS);
 
     BOOL GetErrorMessage(LPTSTR lpszError, UINT uMaxError, PUINT pnHelpContext = NULL);

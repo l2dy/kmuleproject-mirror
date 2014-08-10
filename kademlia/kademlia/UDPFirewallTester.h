@@ -30,7 +30,7 @@ struct UsedClient_Struct
 class CUDPFirewallTester
 {
 
-public:
+  public:
     static bool		IsFirewalledUDP(const bool bLastStateIfTesting); // Are we UDP firewalled - if unknown open is assumed unless bOnlyVerified == true
     static void		SetUDPFWCheckResult(const bool bSucceeded, const bool bTestCancelled, const UINT uFromIP, const uint16 nIncomingPort);
     static bool		ReCheckFirewallUDP(const bool bSetUnverified);
@@ -40,7 +40,7 @@ public:
     static void		Reset(); // when stopping Kad
     static void		Connected();
     static void		QueryNextClient(); // try the next available client for the firewallcheck
-private:
+  private:
     static uint8	GetRunningFWChecks();
     static bool		GetUDPCheckClientsNeeded(); // are we in search for testclients
     static bool		m_bFirewalledUDP;

@@ -43,7 +43,7 @@ DERIVED_TYPE GetDerivedByAttribute(const wchar_t * wszVal, int cchVal);
 
 class CComplexType : public CXSDElement
 {
-private:
+  private:
 
     CStringW m_strName;
     CStringW m_strID;
@@ -60,7 +60,7 @@ private:
     CONTENT_TYPE m_contentType;
     DERIVED_TYPE m_derivedBy;
 
-public:
+  public:
 
     CComplexType()
         :m_contentType(CONTENT_UNK), m_derivedBy(DERIVED_UNK), m_pContent(NULL)

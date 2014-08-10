@@ -8,7 +8,7 @@
 class CCppKeywordLookup
 
 {
-public:
+  public:
 
     struct HashNode
     {
@@ -20,12 +20,12 @@ public:
         data;
     };
 
-protected:
+  protected:
     const static HashNode m_data[352];
     const static size_t m_size = 320;
     const static size_t m_tableSize = 154;
 
-public:
+  public:
 
     static unsigned long Hash(const wchar_t * sz)
     {

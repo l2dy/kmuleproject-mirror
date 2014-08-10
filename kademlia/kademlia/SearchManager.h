@@ -46,7 +46,7 @@ class CSearchManager
 {
     friend class CRoutingZone;
     friend class CKademlia;
-public:
+  public:
     static bool IsSearching(UINT uSearchID);
     static void StopSearch(UINT uSearchID, bool bDelayDelete);
     static void StopAllSearches();
@@ -71,7 +71,7 @@ public:
     {
         m_uNextID = uNextID;
     }
-private:
+  private:
     static void FindNode(const CUInt128 &uID, bool bComplete);
     static bool FindNodeSpecial(const CUInt128 &uID, CKadClientSearcher* pRequester);
     static void CancelNodeSpecial(CKadClientSearcher* pRequester);

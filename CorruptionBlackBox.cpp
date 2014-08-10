@@ -101,7 +101,7 @@ void CCorruptionBlackBox::Free()
 void CCorruptionBlackBox::TransferredData(uint64 nStartPos, uint64 nEndPos, const CUpDownClient* pSender)
 {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	// netfinity: We might need to mark larger blocks than this sometimes when reloading a part file
+    // netfinity: We might need to mark larger blocks than this sometimes when reloading a part file
     /*if (nEndPos - nStartPos >= PARTSIZE)
     {
         ASSERT(0);
@@ -114,15 +114,15 @@ void CCorruptionBlackBox::TransferredData(uint64 nStartPos, uint64 nEndPos, cons
         return;
     }
 
-	UINT dwSenderIP = 0;
+    UINT dwSenderIP = 0;
 #ifdef IPV6_SUPPORT
-//>>> WiZaRd::IPv6 [Xanatos]	
-	if(pSender && pSender->GetIP().GetType() == CAddress::IPv4) // IPv6-TODO: Add IPv6 ban list
-		dwSenderIP = _ntohl(pSender->GetIP().ToIPv4());
+//>>> WiZaRd::IPv6 [Xanatos]
+    if (pSender && pSender->GetIP().GetType() == CAddress::IPv4) // IPv6-TODO: Add IPv6 ban list
+        dwSenderIP = _ntohl(pSender->GetIP().ToIPv4());
 //<<< WiZaRd::IPv6 [Xanatos]
 #else
-	if(pSender)
-		dwSenderIP = pSender->GetIP();
+    if (pSender)
+        dwSenderIP = pSender->GetIP();
 #endif
 
     // we store records separated for each part, so we don't have to search all entries every time
@@ -157,8 +157,8 @@ void CCorruptionBlackBox::TransferredData(uint64 nStartPos, uint64 nEndPos, cons
             if (m_aaRecords[nPart][i].m_nStartPos >= nRelStartPos && m_aaRecords[nPart][i].m_nEndPos <= nRelEndPos)
             {
                 // old one is included in new one -> delete
-				if(m_aaRecords[nPart][i].m_dwIP != 0)
-					ndbgRewritten += (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
+                if (m_aaRecords[nPart][i].m_dwIP != 0)
+                    ndbgRewritten += (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
                 m_aaRecords[nPart].RemoveAt(i);
                 i--;
             }
@@ -188,22 +188,22 @@ void CCorruptionBlackBox::TransferredData(uint64 nStartPos, uint64 nEndPos, cons
             {
                 // old one laps over new one on the right site
                 ASSERT(nRelEndPos - m_aaRecords[nPart][i].m_nStartPos > 0);
-				if(m_aaRecords[nPart][i].m_dwIP != 0)
-					ndbgRewritten += nRelEndPos - m_aaRecords[nPart][i].m_nStartPos;
+                if (m_aaRecords[nPart][i].m_dwIP != 0)
+                    ndbgRewritten += nRelEndPos - m_aaRecords[nPart][i].m_nStartPos;
                 m_aaRecords[nPart][i].m_nStartPos = nRelEndPos + 1;
             }
             else if (m_aaRecords[nPart][i].m_nEndPos >= nRelStartPos && m_aaRecords[nPart][i].m_nEndPos <= nRelEndPos)
             {
                 // old one laps over new one on the left site
                 ASSERT(m_aaRecords[nPart][i].m_nEndPos - nRelStartPos > 0);
-				if(m_aaRecords[nPart][i].m_dwIP != 0)
-					ndbgRewritten += m_aaRecords[nPart][i].m_nEndPos - nRelStartPos;
+                if (m_aaRecords[nPart][i].m_dwIP != 0)
+                    ndbgRewritten += m_aaRecords[nPart][i].m_nEndPos - nRelStartPos;
                 m_aaRecords[nPart][i].m_nEndPos = nRelStartPos - 1;
             }
         }
     }
 
-	if (posMerge != (-1))
+    if (posMerge != (-1))
         VERIFY(m_aaRecords[nPart][posMerge].Merge(nRelStartPos, nRelEndPos, dwSenderIP, BBR_NONE));
     else
         m_aaRecords[nPart].Add(CCBBRecord(nRelStartPos, nRelEndPos, dwSenderIP, BBR_NONE));
@@ -241,8 +241,8 @@ void CCorruptionBlackBox::VerifiedData(uint64 nStartPos, uint64 nEndPos)
     for (int i= 0; i < m_aaRecords[nPart].GetCount(); i++)
     {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-		if (m_aaRecords[nPart][i].m_BBRStatus != BBR_CORRUPTED)
-        //if (m_aaRecords[nPart][i].m_BBRStatus == BBR_NONE || m_aaRecords[nPart][i].m_BBRStatus == BBR_VERIFIED)
+        if (m_aaRecords[nPart][i].m_BBRStatus != BBR_CORRUPTED)
+            //if (m_aaRecords[nPart][i].m_BBRStatus == BBR_NONE || m_aaRecords[nPart][i].m_BBRStatus == BBR_VERIFIED)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         {
             if (m_aaRecords[nPart][i].m_nStartPos >= nRelStartPos && m_aaRecords[nPart][i].m_nEndPos <= nRelEndPos)
@@ -303,9 +303,9 @@ void CCorruptionBlackBox::VerifiedData(uint64 nStartPos, uint64 nEndPos)
 void CCorruptionBlackBox::CorruptedData(uint64 nStartPos, uint64 nEndPos)
 {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	// netfinity: Even if we don't have an AICH set we may be able to use the CorruptionBlackBox for whole parts
-	if(nEndPos - nStartPos >= PARTSIZE)
-    //if (nEndPos - nStartPos >= EMBLOCKSIZE)
+    // netfinity: Even if we don't have an AICH set we may be able to use the CorruptionBlackBox for whole parts
+    if (nEndPos - nStartPos >= PARTSIZE)
+        //if (nEndPos - nStartPos >= EMBLOCKSIZE)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
     {
         ASSERT(0);
@@ -329,19 +329,19 @@ void CCorruptionBlackBox::CorruptedData(uint64 nStartPos, uint64 nEndPos)
     for (int i= 0; i < m_aaRecords[nPart].GetCount(); i++)
     {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-		if (m_aaRecords[nPart][i].m_BBRStatus == BBR_NONE || m_aaRecords[nPart][i].m_BBRStatus == BBR_POSSIBLYCORRUPTED)
-        //if (m_aaRecords[nPart][i].m_BBRStatus == BBR_NONE)
+        if (m_aaRecords[nPart][i].m_BBRStatus == BBR_NONE || m_aaRecords[nPart][i].m_BBRStatus == BBR_POSSIBLYCORRUPTED)
+            //if (m_aaRecords[nPart][i].m_BBRStatus == BBR_NONE)
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         {
             if (m_aaRecords[nPart][i].m_nStartPos >= nRelStartPos && m_aaRecords[nPart][i].m_nEndPos <= nRelEndPos)
             {
                 nDbgVerifiedBytes += (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-				if (m_aaRecords[nPart][i].m_nStartPos != nRelStartPos || m_aaRecords[nPart][i].m_nEndPos != nRelEndPos)
-					m_aaRecords[nPart][i].m_BBRStatus = BBR_POSSIBLYCORRUPTED;
-				else
+                if (m_aaRecords[nPart][i].m_nStartPos != nRelStartPos || m_aaRecords[nPart][i].m_nEndPos != nRelEndPos)
+                    m_aaRecords[nPart][i].m_BBRStatus = BBR_POSSIBLYCORRUPTED;
+                else
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
-					m_aaRecords[nPart][i].m_BBRStatus = BBR_CORRUPTED;
+                    m_aaRecords[nPart][i].m_BBRStatus = BBR_CORRUPTED;
             }
             else if (m_aaRecords[nPart][i].m_nStartPos < nRelStartPos && m_aaRecords[nPart][i].m_nEndPos > nRelEndPos)
             {
@@ -366,11 +366,11 @@ void CCorruptionBlackBox::CorruptedData(uint64 nStartPos, uint64 nEndPos)
                 m_aaRecords[nPart].Add(CCBBRecord(nTmpStartPos, nTmpEndPos, m_aaRecords[nPart][i].m_dwIP, m_aaRecords[nPart][i].m_BBRStatus));
                 nDbgVerifiedBytes += (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-				if (m_aaRecords[nPart][i].m_nStartPos != nRelStartPos)
-					m_aaRecords[nPart][i].m_BBRStatus = BBR_POSSIBLYCORRUPTED;
-				else
+                if (m_aaRecords[nPart][i].m_nStartPos != nRelStartPos)
+                    m_aaRecords[nPart][i].m_BBRStatus = BBR_POSSIBLYCORRUPTED;
+                else
 //><<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
-					m_aaRecords[nPart][i].m_BBRStatus = BBR_CORRUPTED;
+                    m_aaRecords[nPart][i].m_BBRStatus = BBR_CORRUPTED;
             }
             else if (m_aaRecords[nPart][i].m_nEndPos >= nRelStartPos && m_aaRecords[nPart][i].m_nEndPos <= nRelEndPos)
             {
@@ -381,17 +381,17 @@ void CCorruptionBlackBox::CorruptedData(uint64 nStartPos, uint64 nEndPos)
                 m_aaRecords[nPart].Add(CCBBRecord(nTmpStartPos, nTmpEndPos, m_aaRecords[nPart][i].m_dwIP, m_aaRecords[nPart][i].m_BBRStatus));
                 nDbgVerifiedBytes += (m_aaRecords[nPart][i].m_nEndPos-m_aaRecords[nPart][i].m_nStartPos)+1;
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-				if (m_aaRecords[nPart][i].m_nEndPos != nRelEndPos)
-					m_aaRecords[nPart][i].m_BBRStatus = BBR_POSSIBLYCORRUPTED;
-				else
+                if (m_aaRecords[nPart][i].m_nEndPos != nRelEndPos)
+                    m_aaRecords[nPart][i].m_BBRStatus = BBR_POSSIBLYCORRUPTED;
+                else
 //><<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
-					m_aaRecords[nPart][i].m_BBRStatus = BBR_CORRUPTED;
+                    m_aaRecords[nPart][i].m_BBRStatus = BBR_CORRUPTED;
             }
         }
     }
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	if (nDbgVerifiedBytes != (nEndPos-nStartPos)+1)
-		AddDebugLogLine(DLP_HIGH, false, L"Only found and marked %s recorded bytes of %s as corrupted in the CorruptionBlackBox records (this will cause problems!)", CastItoXBytes(nDbgVerifiedBytes), CastItoXBytes((nEndPos-nStartPos)+1));
+    if (nDbgVerifiedBytes != (nEndPos-nStartPos)+1)
+        AddDebugLogLine(DLP_HIGH, false, L"Only found and marked %s recorded bytes of %s as corrupted in the CorruptionBlackBox records (this will cause problems!)", CastItoXBytes(nDbgVerifiedBytes), CastItoXBytes((nEndPos-nStartPos)+1));
 //     if (nDbgVerifiedBytes != 0)
 //         AddDebugLogLine(DLP_HIGH, false, L"Found and marked %s recorded bytes of %s as corrupted in the CorruptionBlackBox records", CastItoXBytes(nDbgVerifiedBytes), CastItoXBytes((nEndPos-nStartPos)+1));
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
@@ -403,68 +403,68 @@ uint64 CCorruptionBlackBox::EvaluateData(UINT nPart, CPartFile* pFile, uint64 ev
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 {
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-	bool	bBannedClient = false;
-	bool	bUnknownCorruptor = false;
-	uint64	nFlushedBytes = 0;
+    bool	bBannedClient = false;
+    bool	bUnknownCorruptor = false;
+    uint64	nFlushedBytes = 0;
 
-	CArray<UINT, UINT> aGuiltyClients;
-	for (int i = 0; i < m_aaRecords[nPart].GetCount(); ++i)
-	{
-		if (m_aaRecords[nPart][i].m_BBRStatus == BBR_CORRUPTED || m_aaRecords[nPart][i].m_BBRStatus == BBR_POSSIBLYCORRUPTED)
-		{
-			aGuiltyClients.Add(m_aaRecords[nPart][i].m_dwIP);
-			// netfinity: Is corrupting source unknown? 
-			if (m_aaRecords[nPart][i].m_dwIP == 0)
-				bUnknownCorruptor = true;
-		}
-	}
-
-	// netfinity: Clean corrupt blocks of unknown sources first before banning
-	if (bUnknownCorruptor)
-	{
-		if (pFile)
-		{
-			for (int i = 0; i < m_aaRecords[nPart].GetCount(); i++)
-			{
-				if (m_aaRecords[nPart][i].m_dwIP == 0 && (m_aaRecords[nPart][i].m_BBRStatus == BBR_CORRUPTED || m_aaRecords[nPart][i].m_BBRStatus == BBR_POSSIBLYCORRUPTED))
-				{
-					pFile->AddGap(nPart * PARTSIZE + m_aaRecords[nPart][i].m_nStartPos, nPart * PARTSIZE + m_aaRecords[nPart][i].m_nEndPos);
-					nFlushedBytes += (m_aaRecords[nPart][i].m_nEndPos - m_aaRecords[nPart][i].m_nStartPos) + 1;
-					// netfinity: We need to track which corrupted blocks we added gaps for
-					m_aaRecords[nPart][i].m_BBRStatus = BBR_FLUSHED;
-				}
-			}
-		}
-		DebugLogWarning(false, L"Flushed %s bytes as marked as corrupted in the CorruptionBlackBox records from unknown source(s)!)", CastItoXBytes(nFlushedBytes));
-		return nFlushedBytes;
-	}
-
-/*
     CArray<UINT, UINT> aGuiltyClients;
-    for (int i= 0; i < m_aaRecords[nPart].GetCount(); i++)
-        if (m_aaRecords[nPart][i].m_BBRStatus == BBR_CORRUPTED)
-            aGuiltyClients.Add(m_aaRecords[nPart][i].m_dwIP);
-
-    // check if any IPs are already banned, so we can skip the test for those
-    for (int k = 0; k < aGuiltyClients.GetCount();)
+    for (int i = 0; i < m_aaRecords[nPart].GetCount(); ++i)
     {
-        // remove doubles
-        for (int y = k+1; y < aGuiltyClients.GetCount();)
+        if (m_aaRecords[nPart][i].m_BBRStatus == BBR_CORRUPTED || m_aaRecords[nPart][i].m_BBRStatus == BBR_POSSIBLYCORRUPTED)
         {
-            if (aGuiltyClients[k] == aGuiltyClients[y])
-                aGuiltyClients.RemoveAt(y);
-            else
-                y++;
+            aGuiltyClients.Add(m_aaRecords[nPart][i].m_dwIP);
+            // netfinity: Is corrupting source unknown?
+            if (m_aaRecords[nPart][i].m_dwIP == 0)
+                bUnknownCorruptor = true;
         }
-        if (theApp.clientlist->IsBannedClient(aGuiltyClients[k]))
-        {
-            AddDebugLogLine(DLP_DEFAULT, false, L"CorruptionBlackBox: Suspicous IP (%s) is already banned, skipping recheck"), ipstr(aGuiltyClients[k]));
-            aGuiltyClients.RemoveAt(k);
-        }
-        else
-            k++;
     }
-*/
+
+    // netfinity: Clean corrupt blocks of unknown sources first before banning
+    if (bUnknownCorruptor)
+    {
+        if (pFile)
+        {
+            for (int i = 0; i < m_aaRecords[nPart].GetCount(); i++)
+            {
+                if (m_aaRecords[nPart][i].m_dwIP == 0 && (m_aaRecords[nPart][i].m_BBRStatus == BBR_CORRUPTED || m_aaRecords[nPart][i].m_BBRStatus == BBR_POSSIBLYCORRUPTED))
+                {
+                    pFile->AddGap(nPart * PARTSIZE + m_aaRecords[nPart][i].m_nStartPos, nPart * PARTSIZE + m_aaRecords[nPart][i].m_nEndPos);
+                    nFlushedBytes += (m_aaRecords[nPart][i].m_nEndPos - m_aaRecords[nPart][i].m_nStartPos) + 1;
+                    // netfinity: We need to track which corrupted blocks we added gaps for
+                    m_aaRecords[nPart][i].m_BBRStatus = BBR_FLUSHED;
+                }
+            }
+        }
+        DebugLogWarning(false, L"Flushed %s bytes as marked as corrupted in the CorruptionBlackBox records from unknown source(s)!)", CastItoXBytes(nFlushedBytes));
+        return nFlushedBytes;
+    }
+
+    /*
+        CArray<UINT, UINT> aGuiltyClients;
+        for (int i= 0; i < m_aaRecords[nPart].GetCount(); i++)
+            if (m_aaRecords[nPart][i].m_BBRStatus == BBR_CORRUPTED)
+                aGuiltyClients.Add(m_aaRecords[nPart][i].m_dwIP);
+
+        // check if any IPs are already banned, so we can skip the test for those
+        for (int k = 0; k < aGuiltyClients.GetCount();)
+        {
+            // remove doubles
+            for (int y = k+1; y < aGuiltyClients.GetCount();)
+            {
+                if (aGuiltyClients[k] == aGuiltyClients[y])
+                    aGuiltyClients.RemoveAt(y);
+                else
+                    y++;
+            }
+            if (theApp.clientlist->IsBannedClient(aGuiltyClients[k]))
+            {
+                AddDebugLogLine(DLP_DEFAULT, false, L"CorruptionBlackBox: Suspicous IP (%s) is already banned, skipping recheck"), ipstr(aGuiltyClients[k]));
+                aGuiltyClients.RemoveAt(k);
+            }
+            else
+                k++;
+        }
+    */
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
     if (aGuiltyClients.GetCount() > 0)
@@ -477,13 +477,13 @@ uint64 CCorruptionBlackBox::EvaluateData(UINT nPart, CPartFile* pFile, uint64 ev
         aDataCorrupt.SetSize(aGuiltyClients.GetCount());
         aDataVerified.SetSize(aGuiltyClients.GetCount());
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-		CArray<uint64> aDataPossiblyCorrupt;
-		aDataPossiblyCorrupt.SetSize(aGuiltyClients.GetCount());
+        CArray<uint64> aDataPossiblyCorrupt;
+        aDataPossiblyCorrupt.SetSize(aGuiltyClients.GetCount());
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
         for (int j = 0; j < aGuiltyClients.GetCount(); j++)
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-			aDataCorrupt[j] = aDataVerified[j] = aDataPossiblyCorrupt[j] = 0;
-            //aDataCorrupt[j] = aDataVerified[j] = 0;
+            aDataCorrupt[j] = aDataVerified[j] = aDataPossiblyCorrupt[j] = 0;
+        //aDataCorrupt[j] = aDataVerified[j] = 0;
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 
         // now the parsing
@@ -501,15 +501,15 @@ uint64 CCorruptionBlackBox::EvaluateData(UINT nPart, CPartFile* pFile, uint64 ev
                             aDataCorrupt[k] += max((m_aaRecords[iPart][i].m_nEndPos-m_aaRecords[iPart][i].m_nStartPos)+1, evalBlockSize); //EMBLOCKSIZE
                         }
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-						//else if (m_aaRecords[iPart][i].m_BBRStatus == BBR_VERIFIED)
-						else if (m_aaRecords[iPart][i].m_BBRStatus == BBR_POSSIBLYCORRUPTED)
-						{
-							// corrupted data records are always counted as at least blocksize or bigger
-							aDataPossiblyCorrupt[k] += max((m_aaRecords[iPart][i].m_nEndPos-m_aaRecords[iPart][i].m_nStartPos)+1, evalBlockSize);
-						}
-						// netfinity: If there is a banned client we want to see it as an 100% corruptor
-						else if(m_aaRecords[iPart][i].m_BBRStatus == BBR_VERIFIED && !theApp.clientlist->IsBannedClient(aGuiltyClients[k]))
-//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]                        
+                        //else if (m_aaRecords[iPart][i].m_BBRStatus == BBR_VERIFIED)
+                        else if (m_aaRecords[iPart][i].m_BBRStatus == BBR_POSSIBLYCORRUPTED)
+                        {
+                            // corrupted data records are always counted as at least blocksize or bigger
+                            aDataPossiblyCorrupt[k] += max((m_aaRecords[iPart][i].m_nEndPos-m_aaRecords[iPart][i].m_nStartPos)+1, evalBlockSize);
+                        }
+                        // netfinity: If there is a banned client we want to see it as an 100% corruptor
+                        else if (m_aaRecords[iPart][i].m_BBRStatus == BBR_VERIFIED && !theApp.clientlist->IsBannedClient(aGuiltyClients[k]))
+//<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
                         {
                             aDataVerified[k] += (m_aaRecords[iPart][i].m_nEndPos-m_aaRecords[iPart][i].m_nStartPos)+1;
                         }
@@ -519,163 +519,76 @@ uint64 CCorruptionBlackBox::EvaluateData(UINT nPart, CPartFile* pFile, uint64 ev
         }
 
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
-		// netfinity: Raise threshold on mass corruption, to avoid banning good clients
-		int	nGuiltyClientsCount = static_cast<int>(aGuiltyClients.GetCount());
-		int* nCorruptPercentage = new int[nGuiltyClientsCount];
-		int nCorruptPercentageAvg = 0;
-		int nCorruptPercentageHigh = 0;
-		int nCorruptPercentageThreshold = CBB_BANTHRESHOLD;
+        // netfinity: Raise threshold on mass corruption, to avoid banning good clients
+        int	nGuiltyClientsCount = static_cast<int>(aGuiltyClients.GetCount());
+        int* nCorruptPercentage = new int[nGuiltyClientsCount];
+        int nCorruptPercentageAvg = 0;
+        int nCorruptPercentageHigh = 0;
+        int nCorruptPercentageThreshold = CBB_BANTHRESHOLD;
 
-		for(int k = 0; k < aGuiltyClients.GetCount(); ++k)
-		{
-			// calculate the percentage of corrupted data for each client and ban
-			// him if the limit is reached
-			if ((aDataVerified[k] + aDataCorrupt[k] + aDataPossiblyCorrupt[k]) > 0)
-				nCorruptPercentage[k] = (int)(((uint64)(aDataCorrupt[k]+aDataPossiblyCorrupt[k])*100)/(aDataVerified[k] + aDataCorrupt[k] + aDataPossiblyCorrupt[k]));
-			else 
-			{
-				AddDebugLogLine(DLP_HIGH, false, L"CorruptionBlackBox: Program Error: No records for guilty client found!");
-				ASSERT(0);
-				nCorruptPercentage[k] = 0;
-			}
-			nCorruptPercentageAvg += nCorruptPercentage[k];
-			if (nCorruptPercentage[k] > nCorruptPercentageHigh)
-				nCorruptPercentageHigh = nCorruptPercentage[k];
-		}
-		nCorruptPercentageAvg /= nGuiltyClientsCount;
-		if (nCorruptPercentageAvg > nCorruptPercentageThreshold)
-			nCorruptPercentageThreshold = nCorruptPercentageAvg;
-		if (4 * nCorruptPercentageHigh / 5 > nCorruptPercentageThreshold)
-			nCorruptPercentageThreshold = 4 * nCorruptPercentageHigh / 5;
-
-		for(int k = 0; k < aGuiltyClients.GetCount(); ++k)
-		{
-			if (nCorruptPercentage[k] > nCorruptPercentageThreshold || aDataCorrupt[k] > 0)
-			{
-				// netfinity: Don't ban on a single partial involvement
-				if (aDataVerified[k] + aDataCorrupt[k] + aDataPossiblyCorrupt[k] > evalBlockSize || aDataCorrupt[k] > 0)
-				{
-#ifdef IPV6_SUPPORT
-					CUpDownClient* pEvilClient = theApp.clientlist->FindClientByIP(CAddress(_ntohl(aGuiltyClients[k]))); //>>> WiZaRd::IPv6 [Xanatos]
-#else
-					CUpDownClient* pEvilClient = theApp.clientlist->FindClientByIP(aGuiltyClients[k]);
-#endif
-					if (pEvilClient != NULL)
-					{
-						AddDebugLogLine(DLP_HIGH, false, L"CorruptionBlackBox: Banning: Found client which sent %s of %s corrupted data, %s", CastItoXBytes(aDataCorrupt[k]), CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])), pEvilClient->DbgGetClientInfo());
-						theApp.clientlist->AddTrackClient(pEvilClient);
-						pEvilClient->Ban(L"Identified as sender of corrupt data");
-					}
-					else{
-						AddDebugLogLine(DLP_HIGH, false, L"CorruptionBlackBox: Banning: Found client which sent %s of %s corrupted data, %s", CastItoXBytes(aDataCorrupt[k]), CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])), ipstr(aGuiltyClients[k]));
-						theApp.clientlist->AddBannedClient(aGuiltyClients[k]);
-					}
-					bBannedClient = true;
-				}
-				else
-					AddDebugLogLine(DLP_HIGH, false, L"CorruptionBlackBox: Flushed: Found client which sent %s of %s corrupted data, %s", CastItoXBytes(aDataCorrupt[k]), CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])), ipstr(aGuiltyClients[k]));
-
-				// netfinity: Mark data downloaded by banned client(s) as incomplete if not already done
-				if (pFile)
-				{
-					for (int i = 0; i < m_aaRecords[nPart].GetCount(); i++)
-					{
-						if (m_aaRecords[nPart][i].m_dwIP == aGuiltyClients[k] && (m_aaRecords[nPart][i].m_BBRStatus == BBR_CORRUPTED || m_aaRecords[nPart][i].m_BBRStatus == BBR_POSSIBLYCORRUPTED))
-						{
-							pFile->AddGap(nPart * PARTSIZE + m_aaRecords[nPart][i].m_nStartPos, nPart * PARTSIZE + m_aaRecords[nPart][i].m_nEndPos);
-							nFlushedBytes += (m_aaRecords[nPart][i].m_nEndPos - m_aaRecords[nPart][i].m_nStartPos) + 1;
-							// netfinity: We need to track which corrupted blocks we added gaps for
-							m_aaRecords[nPart][i].m_BBRStatus = BBR_FLUSHED;
-						}
-					}
-				}
-			}
-			else
-			{
-#ifdef IPV6_SUPPORT
-                CUpDownClient* pSuspectClient = theApp.clientlist->FindClientByIP(CAddress(_ntohl(aGuiltyClients[k]))); //>>> WiZaRd::IPv6 [Xanatos]
-#else
-                CUpDownClient* pSuspectClient = theApp.clientlist->FindClientByIP(aGuiltyClients[k]);
-#endif
-				if (pSuspectClient != NULL)
-				{
-					AddDebugLogLine(DLP_DEFAULT, false, L"CorruptionBlackBox: Reporting: Found client which probably sent %s of %s corrupted data, but it is within the acceptable limit, %s", CastItoXBytes(aDataCorrupt[k]), CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])), pSuspectClient->DbgGetClientInfo());
-					theApp.clientlist->AddTrackClient(pSuspectClient);
-				}
-				else
-					AddDebugLogLine(DLP_DEFAULT, false, L"CorruptionBlackBox: Reporting: Found client which probably sent %s of %s corrupted data, but it is within the acceptable limit, %s", CastItoXBytes(aDataCorrupt[k]), CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])), ipstr(aGuiltyClients[k]));
-			}
-		}
-	}
-	
-	// netfinity: Mark corrupt data as incomplete if no client was banned for it
-	if (pFile)
-	{
-		int purged = 0;
-		for (uint64 startBlock = (nPart * PARTSIZE); startBlock < ((nPart + 1) * PARTSIZE); startBlock += evalBlockSize)
-		{
-			uint64 endBlock = startBlock + evalBlockSize;
-			if (endBlock >= ((nPart + 1) * PARTSIZE))
-				endBlock = ((nPart + 1) * PARTSIZE) - 1;
-			// If for some reason no data been purged for the blocks where there is corruption, then do it now
-			if (pFile->IsComplete(startBlock, endBlock, false))
-			{
-				for (int i = 0; i < m_aaRecords[nPart].GetCount(); i++)
-				{
-					if (m_aaRecords[nPart][i].m_nStartPos <= endBlock && m_aaRecords[nPart][i].m_nEndPos >= startBlock)
-					{
-						if (m_aaRecords[nPart][i].m_BBRStatus == BBR_CORRUPTED || m_aaRecords[nPart][i].m_BBRStatus == BBR_POSSIBLYCORRUPTED)
-						{
-							pFile->AddGap(nPart * PARTSIZE + m_aaRecords[nPart][i].m_nStartPos, nPart * PARTSIZE + m_aaRecords[nPart][i].m_nEndPos);
-							nFlushedBytes += (m_aaRecords[nPart][i].m_nEndPos - m_aaRecords[nPart][i].m_nStartPos) + 1;
-							// netfinity: We need to track which corrupted blocks we added gaps for
-							m_aaRecords[nPart][i].m_BBRStatus = BBR_FLUSHED;
-							purged++;
-						}
-					}
-				}
-			}
-		}
-		if (purged > 0)
-			AddDebugLogLine(DLP_DEFAULT, false, L"CorruptionBlackBox: Reporting: Purged %i block(s) that was still complete while marked as corrupt after checking and banning operation!", purged);
-	}
-	if (nFlushedBytes > 0)
-		DebugLogWarning(false, L"Flushed %s bytes as marked as corrupted in the CorruptionBlackBox records!)", CastItoXBytes(nFlushedBytes));
-
-	return nFlushedBytes;
-/*
-        for (int k = 0; k < aGuiltyClients.GetCount(); k++)
+        for (int k = 0; k < aGuiltyClients.GetCount(); ++k)
         {
             // calculate the percentage of corrupted data for each client and ban
             // him if the limit is reached
-            int nCorruptPercentage;
-            if ((aDataVerified[k] + aDataCorrupt[k]) > 0)
-                nCorruptPercentage = (int)(((uint64)aDataCorrupt[k]*100)/(aDataVerified[k] + aDataCorrupt[k]));
+            if ((aDataVerified[k] + aDataCorrupt[k] + aDataPossiblyCorrupt[k]) > 0)
+                nCorruptPercentage[k] = (int)(((uint64)(aDataCorrupt[k]+aDataPossiblyCorrupt[k])*100)/(aDataVerified[k] + aDataCorrupt[k] + aDataPossiblyCorrupt[k]));
             else
             {
-                AddDebugLogLine(DLP_HIGH, false, L"CorruptionBlackBox: Program Error: No records for guilty client found!"));
+                AddDebugLogLine(DLP_HIGH, false, L"CorruptionBlackBox: Program Error: No records for guilty client found!");
                 ASSERT(0);
-                nCorruptPercentage = 0;
+                nCorruptPercentage[k] = 0;
             }
-            if (nCorruptPercentage > CBB_BANTHRESHOLD)
-            {
+            nCorruptPercentageAvg += nCorruptPercentage[k];
+            if (nCorruptPercentage[k] > nCorruptPercentageHigh)
+                nCorruptPercentageHigh = nCorruptPercentage[k];
+        }
+        nCorruptPercentageAvg /= nGuiltyClientsCount;
+        if (nCorruptPercentageAvg > nCorruptPercentageThreshold)
+            nCorruptPercentageThreshold = nCorruptPercentageAvg;
+        if (4 * nCorruptPercentageHigh / 5 > nCorruptPercentageThreshold)
+            nCorruptPercentageThreshold = 4 * nCorruptPercentageHigh / 5;
 
-#ifdef IPV6_SUPPORT
-                CUpDownClient* pEvilClient = theApp.clientlist->FindClientByIP(CAddress(_ntohl(aGuiltyClients[k]))); //>>> WiZaRd::IPv6 [Xanatos]
-#else
-                CUpDownClient* pEvilClient = theApp.clientlist->FindClientByIP(aGuiltyClients[k]);
-#endif
-                if (pEvilClient != NULL)
+        for (int k = 0; k < aGuiltyClients.GetCount(); ++k)
+        {
+            if (nCorruptPercentage[k] > nCorruptPercentageThreshold || aDataCorrupt[k] > 0)
+            {
+                // netfinity: Don't ban on a single partial involvement
+                if (aDataVerified[k] + aDataCorrupt[k] + aDataPossiblyCorrupt[k] > evalBlockSize || aDataCorrupt[k] > 0)
                 {
-                    AddDebugLogLine(DLP_HIGH, false, L"CorruptionBlackBox: Banning: Found client which send %s of %s corrupted data, %s"), CastItoXBytes(aDataCorrupt[k]), CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])), pEvilClient->DbgGetClientInfo());
-                    theApp.clientlist->AddTrackClient(pEvilClient);
-                    theApp.antileechlist->AddCorruptPartSender(pEvilClient->GetUserHash()); //>>> WiZaRd::ClientAnalyzer
-                    pEvilClient->Ban(L"Identified as sender of corrupt data"));
+#ifdef IPV6_SUPPORT
+                    CUpDownClient* pEvilClient = theApp.clientlist->FindClientByIP(CAddress(_ntohl(aGuiltyClients[k]))); //>>> WiZaRd::IPv6 [Xanatos]
+#else
+                    CUpDownClient* pEvilClient = theApp.clientlist->FindClientByIP(aGuiltyClients[k]);
+#endif
+                    if (pEvilClient != NULL)
+                    {
+                        AddDebugLogLine(DLP_HIGH, false, L"CorruptionBlackBox: Banning: Found client which sent %s of %s corrupted data, %s", CastItoXBytes(aDataCorrupt[k]), CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])), pEvilClient->DbgGetClientInfo());
+                        theApp.clientlist->AddTrackClient(pEvilClient);
+                        pEvilClient->Ban(L"Identified as sender of corrupt data");
+                    }
+                    else
+                    {
+                        AddDebugLogLine(DLP_HIGH, false, L"CorruptionBlackBox: Banning: Found client which sent %s of %s corrupted data, %s", CastItoXBytes(aDataCorrupt[k]), CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])), ipstr(aGuiltyClients[k]));
+                        theApp.clientlist->AddBannedClient(aGuiltyClients[k]);
+                    }
+                    bBannedClient = true;
                 }
                 else
+                    AddDebugLogLine(DLP_HIGH, false, L"CorruptionBlackBox: Flushed: Found client which sent %s of %s corrupted data, %s", CastItoXBytes(aDataCorrupt[k]), CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])), ipstr(aGuiltyClients[k]));
+
+                // netfinity: Mark data downloaded by banned client(s) as incomplete if not already done
+                if (pFile)
                 {
-                    AddDebugLogLine(DLP_HIGH, false, L"CorruptionBlackBox: Banning: Found client which send %s of %s corrupted data, %s"), CastItoXBytes(aDataCorrupt[k]), CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])), ipstr(aGuiltyClients[k]));
-                    theApp.clientlist->AddBannedClient(aGuiltyClients[k]);
+                    for (int i = 0; i < m_aaRecords[nPart].GetCount(); i++)
+                    {
+                        if (m_aaRecords[nPart][i].m_dwIP == aGuiltyClients[k] && (m_aaRecords[nPart][i].m_BBRStatus == BBR_CORRUPTED || m_aaRecords[nPart][i].m_BBRStatus == BBR_POSSIBLYCORRUPTED))
+                        {
+                            pFile->AddGap(nPart * PARTSIZE + m_aaRecords[nPart][i].m_nStartPos, nPart * PARTSIZE + m_aaRecords[nPart][i].m_nEndPos);
+                            nFlushedBytes += (m_aaRecords[nPart][i].m_nEndPos - m_aaRecords[nPart][i].m_nStartPos) + 1;
+                            // netfinity: We need to track which corrupted blocks we added gaps for
+                            m_aaRecords[nPart][i].m_BBRStatus = BBR_FLUSHED;
+                        }
+                    }
                 }
             }
             else
@@ -695,6 +608,94 @@ uint64 CCorruptionBlackBox::EvaluateData(UINT nPart, CPartFile* pFile, uint64 ev
             }
         }
     }
-*/
+
+    // netfinity: Mark corrupt data as incomplete if no client was banned for it
+    if (pFile)
+    {
+        int purged = 0;
+        for (uint64 startBlock = (nPart * PARTSIZE); startBlock < ((nPart + 1) * PARTSIZE); startBlock += evalBlockSize)
+        {
+            uint64 endBlock = startBlock + evalBlockSize;
+            if (endBlock >= ((nPart + 1) * PARTSIZE))
+                endBlock = ((nPart + 1) * PARTSIZE) - 1;
+            // If for some reason no data been purged for the blocks where there is corruption, then do it now
+            if (pFile->IsComplete(startBlock, endBlock, false))
+            {
+                for (int i = 0; i < m_aaRecords[nPart].GetCount(); i++)
+                {
+                    if (m_aaRecords[nPart][i].m_nStartPos <= endBlock && m_aaRecords[nPart][i].m_nEndPos >= startBlock)
+                    {
+                        if (m_aaRecords[nPart][i].m_BBRStatus == BBR_CORRUPTED || m_aaRecords[nPart][i].m_BBRStatus == BBR_POSSIBLYCORRUPTED)
+                        {
+                            pFile->AddGap(nPart * PARTSIZE + m_aaRecords[nPart][i].m_nStartPos, nPart * PARTSIZE + m_aaRecords[nPart][i].m_nEndPos);
+                            nFlushedBytes += (m_aaRecords[nPart][i].m_nEndPos - m_aaRecords[nPart][i].m_nStartPos) + 1;
+                            // netfinity: We need to track which corrupted blocks we added gaps for
+                            m_aaRecords[nPart][i].m_BBRStatus = BBR_FLUSHED;
+                            purged++;
+                        }
+                    }
+                }
+            }
+        }
+        if (purged > 0)
+            AddDebugLogLine(DLP_DEFAULT, false, L"CorruptionBlackBox: Reporting: Purged %i block(s) that was still complete while marked as corrupt after checking and banning operation!", purged);
+    }
+    if (nFlushedBytes > 0)
+        DebugLogWarning(false, L"Flushed %s bytes as marked as corrupted in the CorruptionBlackBox records!)", CastItoXBytes(nFlushedBytes));
+
+    return nFlushedBytes;
+    /*
+            for (int k = 0; k < aGuiltyClients.GetCount(); k++)
+            {
+                // calculate the percentage of corrupted data for each client and ban
+                // him if the limit is reached
+                int nCorruptPercentage;
+                if ((aDataVerified[k] + aDataCorrupt[k]) > 0)
+                    nCorruptPercentage = (int)(((uint64)aDataCorrupt[k]*100)/(aDataVerified[k] + aDataCorrupt[k]));
+                else
+                {
+                    AddDebugLogLine(DLP_HIGH, false, L"CorruptionBlackBox: Program Error: No records for guilty client found!"));
+                    ASSERT(0);
+                    nCorruptPercentage = 0;
+                }
+                if (nCorruptPercentage > CBB_BANTHRESHOLD)
+                {
+
+    #ifdef IPV6_SUPPORT
+                    CUpDownClient* pEvilClient = theApp.clientlist->FindClientByIP(CAddress(_ntohl(aGuiltyClients[k]))); //>>> WiZaRd::IPv6 [Xanatos]
+    #else
+                    CUpDownClient* pEvilClient = theApp.clientlist->FindClientByIP(aGuiltyClients[k]);
+    #endif
+                    if (pEvilClient != NULL)
+                    {
+                        AddDebugLogLine(DLP_HIGH, false, L"CorruptionBlackBox: Banning: Found client which send %s of %s corrupted data, %s"), CastItoXBytes(aDataCorrupt[k]), CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])), pEvilClient->DbgGetClientInfo());
+                        theApp.clientlist->AddTrackClient(pEvilClient);
+                        theApp.antileechlist->AddCorruptPartSender(pEvilClient->GetUserHash()); //>>> WiZaRd::ClientAnalyzer
+                        pEvilClient->Ban(L"Identified as sender of corrupt data"));
+                    }
+                    else
+                    {
+                        AddDebugLogLine(DLP_HIGH, false, L"CorruptionBlackBox: Banning: Found client which send %s of %s corrupted data, %s"), CastItoXBytes(aDataCorrupt[k]), CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])), ipstr(aGuiltyClients[k]));
+                        theApp.clientlist->AddBannedClient(aGuiltyClients[k]);
+                    }
+                }
+                else
+                {
+    #ifdef IPV6_SUPPORT
+                    CUpDownClient* pSuspectClient = theApp.clientlist->FindClientByIP(CAddress(_ntohl(aGuiltyClients[k]))); //>>> WiZaRd::IPv6 [Xanatos]
+    #else
+                    CUpDownClient* pSuspectClient = theApp.clientlist->FindClientByIP(aGuiltyClients[k]);
+    #endif
+                    if (pSuspectClient != NULL)
+                    {
+                        AddDebugLogLine(DLP_DEFAULT, false, L"CorruptionBlackBox: Reporting: Found client which probably sent %s of %s corrupted data, but it is within the acceptable limit, %s", CastItoXBytes(aDataCorrupt[k]), CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])), pSuspectClient->DbgGetClientInfo());
+                        theApp.clientlist->AddTrackClient(pSuspectClient);
+                    }
+                    else
+                        AddDebugLogLine(DLP_DEFAULT, false, L"CorruptionBlackBox: Reporting: Found client which probably sent %s of %s corrupted data, but it is within the acceptable limit, %s", CastItoXBytes(aDataCorrupt[k]), CastItoXBytes((aDataVerified[k] + aDataCorrupt[k])), ipstr(aGuiltyClients[k]));
+                }
+            }
+        }
+    */
 //<<< WiZaRd::Sub-Chunk-Transfer [Netfinity]
 }

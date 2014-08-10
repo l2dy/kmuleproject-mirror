@@ -35,7 +35,7 @@ class CKnownFile : public CShareableFile
 {
     DECLARE_DYNAMIC(CKnownFile)
 
-public:
+  public:
     CKnownFile();
     virtual ~CKnownFile();
 
@@ -204,7 +204,7 @@ public:
     virtual void Dump(CDumpContext& dc) const;
 #endif
 
-protected:
+  protected:
     //preview
     bool	GrabImage(CString strFileName, uint8 nFramesToGrab, double dStartTime, bool bReduceColor, uint16 nMaxWidth, void* pSender);
     bool	LoadTagsFromFile(CFileDataIO* file);
@@ -213,7 +213,7 @@ protected:
     static bool	CreateHash(FILE* fp, uint64 uSize, uchar* pucHash, CAICHHashTree* pShaHashOut = NULL);
     virtual void	UpdateFileRatingCommentAvail(bool bForceUpdate = false);
 
-private:
+  private:
     static CBarShader s_ShareStatusBar;
     uint16	m_iPartCount;
     uint16	m_iED2KPartCount;
@@ -230,18 +230,18 @@ private:
     bool	m_bAICHRecoverHashSetAvailable;
 
 //>>> WiZaRd::PowerShare
-private:
+  private:
     bool	m_bPowerShared;
-public:
+  public:
     UINT	guifileupdatetime; //>>> WiZaRd::PowerShare - CPU!
     bool	IsPowerShared() const;
     void	SetPowerShared(const bool b);
 //<<< WiZaRd::PowerShare
 //>>> WiZaRd::Intelligent SOTN
-private:
+  private:
     CArray<uint16/*, uint16*/> m_SOTNAvailPartFrequency;
     bool	m_bShareOnlyTheNeed;
-public:
+  public:
     bool	WriteSafePartStatus(CSafeMemFile* file, CUpDownClient* client, const bool bUDP = false);
     void	SetShareOnlyTheNeed(bool newValue)
     {
@@ -250,44 +250,44 @@ public:
     bool	GetShareOnlyTheNeed(bool m_bOnlyFile = false) const;
     uint8*	GetPartStatus(CUpDownClient* client = NULL) const;
 //<<< WiZaRd::Intelligent SOTN
-public:
+  public:
     bool	IsSharedInKad() const;
 //>>> FDC [BlueSonicBoy]
-private:
+  private:
     int 	m_iNameContinuityBad;
-public:
+  public:
     void	CheckFilename(CString FileName);
     bool	DissimilarName() const;
     void	ResetFDC();
 //<<< FDC [BlueSonicBoy]
 //>>> WiZaRd::Ratio Indicator
-public:
+  public:
     double	GetSharingRatio() const;
 //<<< WiZaRd::Ratio Indicator
 //>>> WiZaRd::Upload Feedback
-public:
+  public:
     CString GetFeedBackString() const;
 //<<< WiZaRd::Upload Feedback
 //>>> WiZaRd::Queued Count
-private:
+  private:
     UINT	m_uiQueuedCount;
-public:
+  public:
     UINT	GetRealQueuedCount() const	{return m_uiQueuedCount;}
     void	IncRealQueuedCount(CUpDownClient* client);
     void	DecRealQueuedCount(CUpDownClient* client);
 //<<< WiZaRd::Queued Count
 //>>> WiZaRd::FileHealth
-public:
+  public:
     float	GetFileHealth();
-private:
+  private:
     UINT	m_dwLastFileHealthCalc;
     float	m_fLastHealthValue;
 //<<< WiZaRd::FileHealth
-protected:
+  protected:
     bool	m_bCompleteSrcUpdateNecessary;
-public:
+  public:
     void	ProcessFile();
-protected:
+  protected:
     void	UpdateCompleteSrcCount();
     void	GetCompleteSrcCount(CArray<uint16, uint16>& count);
 };

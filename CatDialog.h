@@ -23,13 +23,13 @@ class CCustomAutoComplete;
 class CCatDialog : public CDialog
 {
     DECLARE_DYNAMIC(CCatDialog)
-public:
+  public:
     CCatDialog(int catindex);   // standard constructor
     virtual ~CCatDialog();
 
     enum { IDD = IDD_CAT };
 
-protected:
+  protected:
     Category_Struct* m_myCat;
     DWORD newcolor;
     CColorButton m_ctlColor;

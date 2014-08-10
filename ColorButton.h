@@ -18,7 +18,7 @@ void AFXAPI DDX_ColorButton(CDataExchange *pDX, int nIDC, COLORREF& crColour);
 
 class CColorButton : public CButton
 {
-public:
+  public:
     DECLARE_DYNCREATE(CColorButton);
 
     //***********************************************************************
@@ -128,13 +128,13 @@ public:
     BOOL GetTrackSelection(void) const;
 
     //{{AFX_VIRTUAL(CColorButton)
-public:
+  public:
     virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
-protected:
+  protected:
     virtual void PreSubclassWindow();
     //}}AFX_VIRTUAL
 
-protected:
+  protected:
     //{{AFX_MSG(CColorButton)
     afx_msg BOOL OnClicked();
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
@@ -171,7 +171,7 @@ protected:
     BOOL	m_bPopupActive;
     BOOL	m_bTrackSelection;
 
-private:
+  private:
 
     typedef CButton _Inherited;
 

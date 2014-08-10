@@ -4,10 +4,10 @@ struct _EXCEPTION_POINTERS;
 
 class CMiniDumper
 {
-public:
+  public:
     static void Enable(LPCTSTR pszAppName, bool bShowErrors, LPCTSTR pszDumpDir);
 
-private:
+  private:
     static TCHAR m_szAppName[MAX_PATH];
     static TCHAR m_szDumpDir[MAX_PATH];
 

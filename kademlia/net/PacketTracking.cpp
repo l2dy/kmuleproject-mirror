@@ -262,8 +262,8 @@ void CPacketTracking::InTrackListCleanup()
             delete curEntry;
         }
     }
-	if(dbgOldSize != (UINT)m_liTrackPacketsIn.GetCount())
-		DebugLog(L"Cleaned up Kad Incoming Requests Tracklist, entries before: %u, after %u", dbgOldSize, m_liTrackPacketsIn.GetCount());
+    if (dbgOldSize != (UINT)m_liTrackPacketsIn.GetCount())
+        DebugLog(L"Cleaned up Kad Incoming Requests Tracklist, entries before: %u, after %u", dbgOldSize, m_liTrackPacketsIn.GetCount());
 }
 
 void CPacketTracking::AddLegacyChallenge(CUInt128 uContactID, CUInt128 uChallengeID, UINT uIP, uint8 byOpcode)

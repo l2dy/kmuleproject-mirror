@@ -23,7 +23,7 @@
 
 class CDeadSource : public CObject
 {
-public:
+  public:
     CDeadSource(const CDeadSource& ds)
     {
         *this = ds;
@@ -65,7 +65,7 @@ template<> inline UINT AFXAPI HashKey(const CDeadSource& ds)
 class CUpDownClient;
 class CDeadSourceList
 {
-public:
+  public:
     CDeadSourceList(void);
     ~CDeadSourceList(void);
     void		AddDeadSource(const CUpDownClient* pToAdd);
@@ -77,10 +77,10 @@ public:
     }
     void		Init(bool bGlobalList);
 
-protected:
+  protected:
     void		CleanUp();
 
-private:
+  private:
     CMap<CDeadSource, const CDeadSource&, UINT, UINT> m_mapDeadSources;
     UINT	m_dwLastCleanUp;
     bool	m_bGlobalList;

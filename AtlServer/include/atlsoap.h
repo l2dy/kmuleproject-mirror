@@ -122,7 +122,7 @@ ATL_NOINLINE inline void AtlSoapTraceXML(LPBYTE pdwData, DWORD dwLen)
 
 class IStreamImpl : public IStream
 {
-public:
+  public:
 
     HRESULT __stdcall Read(void * /*pDest*/, ULONG /*nMaxLen*/, ULONG * /*pnRead*/)
     {
@@ -190,7 +190,7 @@ public:
 
 class CStreamOnServerContext : public IStreamImpl
 {
-public:
+  public:
 
     HRESULT __stdcall QueryInterface(REFIID riid, void **ppv)
     {
@@ -222,12 +222,12 @@ public:
         return 1;
     }
 
-private:
+  private:
 
     IHttpServerContext * m_pServerContext;
     DWORD m_dwBytesRead;
 
-public:
+  public:
 
     CStreamOnServerContext(IHttpServerContext *pServerContext = NULL)
         : m_pServerContext(pServerContext), m_dwBytesRead(0)
@@ -274,7 +274,7 @@ public:
 template <typename TSocketClass>
 class CReadStreamOnSocket : public IStreamImpl
 {
-public:
+  public:
 
     HRESULT __stdcall QueryInterface(REFIID riid, void **ppv)
     {
@@ -306,14 +306,14 @@ public:
         return 1;
     }
 
-private:
+  private:
 
     CAtlHttpClientT<TSocketClass> * m_pSocket;
     LPCSTR m_szBuffer;
     LPCSTR m_szCurr;
     long m_nBodyLen;
 
-public:
+  public:
 
     CReadStreamOnSocket()
         : m_pSocket(NULL), m_szBuffer(NULL), m_szCurr(NULL), m_nBodyLen(0)
@@ -381,7 +381,7 @@ public:
 class CWriteStreamOnCString : public IWriteStream
 {
 
-public:
+  public:
     CStringA m_str;
 
     virtual ~CWriteStreamOnCString()
@@ -1314,11 +1314,11 @@ namespace ATL
 
 class CSAXSoapErrorHandler : public ISAXErrorHandler
 {
-private:
+  private:
 
     CFixedStringT<CStringW, 256> m_strParseError;
 
-public:
+  public:
     virtual ~CSAXSoapErrorHandler()
     {
     }
@@ -1424,7 +1424,7 @@ public:
 class ISAXContentHandlerImpl :
     public ISAXContentHandler
 {
-public:
+  public:
 
     //
     // ISAXContentHandler interface
@@ -1524,7 +1524,7 @@ public:
 
 class CSkipHandler : public ISAXContentHandlerImpl
 {
-public:
+  public:
     virtual ~CSkipHandler()
     {
     }
@@ -1558,7 +1558,7 @@ public:
         return 1;
     }
 
-private:
+  private:
 
     DWORD m_dwReset;
     CComPtr<ISAXXMLReader> m_spReader;
@@ -1581,7 +1581,7 @@ private:
         return m_dwReset;
     }
 
-public:
+  public:
 
     CSkipHandler(ISAXContentHandler *pParent = NULL, ISAXXMLReader *pReader = NULL)
         : m_spParent(pParent), m_spReader(pReader), m_dwReset(1)
@@ -1641,7 +1641,7 @@ public:
 
 class CSAXStringBuilder : public ISAXContentHandlerImpl
 {
-public:
+  public:
 
     HRESULT __stdcall QueryInterface(REFIID riid, void **ppv)
     {
@@ -1672,7 +1672,7 @@ public:
         return 1;
     }
 
-private:
+  private:
 
     ISAXContentHandler * m_pParent;
     ISAXXMLReader * m_pReader;
@@ -1696,7 +1696,7 @@ private:
         return m_dwReset;
     }
 
-public:
+  public:
 
     CSAXStringBuilder(ISAXXMLReader *pReader = NULL, ISAXContentHandler *pParent = NULL)
         :m_pReader(pReader), m_pParent(pParent), m_dwReset(0)
@@ -2518,7 +2518,7 @@ class CSoapFault;
 
 class CSoapFaultParser : public ISAXContentHandlerImpl
 {
-private:
+  private:
 
     CSoapFault *m_pFault;
 
@@ -2543,7 +2543,7 @@ private:
     const wchar_t *m_wszSoapPrefix;
     int m_cchSoapPrefix;
 
-public:
+  public:
     virtual ~CSoapFaultParser()
     {
         m_skipHandler.DetachParent();
@@ -2695,7 +2695,7 @@ extern __declspec(selectany) const int ATLS_SOAPFAULT_CNT = 4;
 
 class CSoapFault
 {
-private:
+  private:
 
     struct _faultcode
     {
@@ -2708,7 +2708,7 @@ private:
 
     static const _faultcode s_faultCodes[];
 
-public:
+  public:
 
     // members
     SOAP_ERROR_CODE m_soapErrCode;
@@ -3025,7 +3025,7 @@ ATL_NOINLINE inline HRESULT __stdcall CSoapFaultParser::characters(
 
 class CSoapRootHandler : public ISAXContentHandlerImpl
 {
-private:
+  private:
 
     friend class _CSDLGenerator;
 
@@ -3067,7 +3067,7 @@ private:
     //
     class CBitVector
     {
-    private:
+      private:
 
         // 64 bits will handle the 99% case
         unsigned __int64 m_nBits;
@@ -3121,7 +3121,7 @@ private:
             return false;
         }
 
-    public:
+      public:
 
         CBitVector()
             : m_nBits(0), m_nSize(sizeof(m_nBits)*CHAR_BIT)
@@ -3268,7 +3268,7 @@ private:
 
     class CParseStateElementTraits : public CDefaultElementTraits<ParseState>
     {
-    public:
+      public:
         // CBitVector relocate fixup
         static void RelocateElements(ParseState* pDest, ParseState* pSrc, size_t nElements)
         {
@@ -3284,7 +3284,7 @@ private:
 
     class CResponseGenerator
     {
-    public:
+      public:
         HRESULT StartEnvelope(IWriteStream *pStream)
         {
             ATLENSURE_RETURN(pStream != NULL);
@@ -3473,7 +3473,7 @@ private:
 
     class CDocLiteralGenerator : public CResponseGenerator
     {
-    public:
+      public:
 
         HRESULT StartMap(IWriteStream *pStream, const _soapmap *pMap, bool bClient)
         {
@@ -3556,7 +3556,7 @@ private:
 
     class CPADGenerator : public CDocLiteralGenerator
     {
-    public:
+      public:
 
         virtual HRESULT StartEntry(IWriteStream *pStream, const _soapmap *pMap, const _soapmapentry *pEntry)
         {
@@ -3583,7 +3583,7 @@ private:
 
     class CRpcEncodedGenerator : public CResponseGenerator
     {
-    public:
+      public:
 
         HRESULT StartBody(IWriteStream *pStream)
         {
@@ -5525,7 +5525,7 @@ private:
         return E_FAIL;
     }
 
-protected:
+  protected:
 
     ISAXXMLReader * SetReader(ISAXXMLReader *pReader)
     {
@@ -5637,7 +5637,7 @@ protected:
         size_t nItem) = 0;
     virtual void * GetHeaderValue() = 0;
 
-public:
+  public:
 
     CSoapRootHandler(ISAXXMLReader *pReader = NULL)
         :  m_pMemMgr(&m_crtHeap), m_spReader(pReader), m_bClient(false),
@@ -6315,7 +6315,7 @@ class CSoapHandler :
     public CComObjectRootEx<CComMultiThreadModel>,
     public IRequestHandlerImpl<THandler>
 {
-protected:
+  protected:
 
     HTTP_CODE m_hcErr;
     CHttpResponse *m_pHttpResponse;
@@ -6326,7 +6326,7 @@ protected:
     // default heap is COM heap (SOAP Servers can double as COM objects)
     CComHeap m_comHeap;
 
-public:
+  public:
 
     BEGIN_COM_MAP(CSoapHandler<THandler>)
     COM_INTERFACE_ENTRY(ISAXContentHandler)
@@ -6570,7 +6570,7 @@ enum SOAPCLIENT_ERROR
 template <typename TSocketClass = ZEvtSyncSocket>
 class CSoapSocketClientT
 {
-private:
+  private:
 
     CUrl m_url;
     CWriteStreamOnCString m_writeStream;
@@ -6579,7 +6579,7 @@ private:
 
     SOAPCLIENT_ERROR m_errorState;
 
-protected:
+  protected:
 
     virtual HRESULT GetClientReader(ISAXXMLReader **pReader)
     {
@@ -6598,7 +6598,7 @@ protected:
         return hr;
     }
 
-public:
+  public:
 
     // note : not shared across stock client implementations
     CAtlHttpClientT<TSocketClass> m_socket;
@@ -6781,7 +6781,7 @@ public:
 
 class CReadStreamOnInet : public IStreamImpl
 {
-public:
+  public:
 
     HRESULT __stdcall QueryInterface(REFIID riid, void **ppv)
     {
@@ -6813,11 +6813,11 @@ public:
         return 1;
     }
 
-private:
+  private:
 
     HINTERNET m_hFile;
 
-public:
+  public:
 
     CReadStreamOnInet()
         :m_hFile(NULL)
@@ -6839,7 +6839,7 @@ public:
 
 class CSoapWininetClient
 {
-private:
+  private:
 
     CUrl m_url;
     CWriteStreamOnCString m_writeStream;
@@ -6905,7 +6905,7 @@ private:
         return E_FAIL;
     }
 
-protected:
+  protected:
 
     virtual HRESULT GetClientReader(ISAXXMLReader **pReader)
     {
@@ -6924,7 +6924,7 @@ protected:
         return hr;
     }
 
-public:
+  public:
 
     // note : not shared across stock client implementations
     HINTERNET m_hInternet;
@@ -7161,7 +7161,7 @@ public:
 #ifndef ATLSOAP_NOMSXML_INET
 class CSoapMSXMLInetClient
 {
-private:
+  private:
 
     CUrl m_url;
     CWriteStreamOnCString m_writeStream;
@@ -7200,7 +7200,7 @@ private:
         return S_OK;
     }
 
-protected:
+  protected:
 
     virtual HRESULT GetClientReader(ISAXXMLReader **pReader)
     {
@@ -7219,7 +7219,7 @@ protected:
         return hr;
     }
 
-public:
+  public:
 
     // note : not shared across stock client implementations
     CComPtr<IServerXMLHTTPRequest> m_spHttpRequest;
@@ -7416,7 +7416,7 @@ public:
 
 class _CSDLGenerator : public ITagReplacerImpl<_CSDLGenerator>
 {
-private:
+  private:
 
     typedef CAtlMap<CStringA, const _soapmap *, CStringElementTraits<CStringA> >  WSDLMAP;
     typedef CAtlMap<CStringA, const _soapmapentry *, CStringElementTraits<CStringA> > HEADERMAP;
@@ -7530,7 +7530,7 @@ private:
 
     DWORD m_dwCallFlags;
 
-protected:
+  protected:
 
     void SetWriteStream(IWriteStream *pStream)
     {
@@ -7626,7 +7626,7 @@ protected:
 
     virtual const char * GetHandlerName() = 0;
 
-public:
+  public:
 
     _CSDLGenerator()
         :m_pFuncs(NULL), m_nFunc(-1), m_nParam(-1),
@@ -8141,9 +8141,9 @@ class CSDLGenerator :
     public IRequestHandlerImpl< CSDLGenerator<THandler,szHandlerName> >,
     public CComObjectRootEx<CComSingleThreadModel>
 {
-private:
+  private:
 
-public:
+  public:
     typedef CSDLGenerator<THandler, szHandlerName> _sdlGenerator;
 
     BEGIN_COM_MAP(_sdlGenerator)

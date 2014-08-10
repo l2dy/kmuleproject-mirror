@@ -42,7 +42,7 @@ class CSharedFileList
     friend class CSharedFilesCtrl;
     friend class CClientReqSocket;
 
-public:
+  public:
     CSharedFileList();
     ~CSharedFileList();
 
@@ -107,7 +107,7 @@ public:
 
     CCriticalSection	m_mutWriteList; // don't acquire other locks while having this one in the main thread or make sure deadlocks are impossible
 
-protected:
+  protected:
     bool	AddFile(CKnownFile* pFile);
     void	AddFilesFromDirectory(const CString& rstrDirectory);
     void	FindSharedFiles();
@@ -120,7 +120,7 @@ protected:
     void	CheckAndAddSingleFile(const CFileFind& ff);
     bool	CheckAndAddSingleFile(const CString& rstrFilePath); // add specific files without editing sharing preferences
 
-private:
+  private:
     CMap<CCKey,const CCKey&,CKnownFile*,CKnownFile*> m_Files_map;
     CMap<CSKey,const CSKey&, bool, bool>			 m_UnsharedFiles_map;
     CMapStringToString m_mapPseudoDirNames;
@@ -139,36 +139,36 @@ private:
     bool bHaveSingleSharedFiles;
 
 //>>> WiZaRd::Don't send empty dirs
-public:
+  public:
     void GetUsefulDirectories(CStringList& dirList, const bool bForAFriend) const; //>>> WiZaRd::SharePermissions
 //<<< WiZaRd::Don't send empty dirs
 //>>> WiZaRd::HashingQueue Optimisation
-private:
+  private:
     UnknownFile_Struct*	getNextFileToHash();
 //<<< WiZaRd::HashingQueue Optimisation
 //>>> Queued Count
-private:
+  private:
     UINT	m_uiQueuedFilesCount;
-public:
+  public:
     UINT	GetQueuedFilesCount() const	{return m_uiQueuedFilesCount;}
     void	IncQueuedFilesCount()		{++m_uiQueuedFilesCount;}
     void	DecQueuedFilesCount()		{--m_uiQueuedFilesCount;}
 //<<< Queued Count
-private:
+  private:
     time_t	m_nFileUpdateTime;
 };
 
 class CAddFileThread : public CWinThread
 {
     DECLARE_DYNCREATE(CAddFileThread)
-protected:
+  protected:
     CAddFileThread();
-public:
+  public:
     virtual BOOL InitInstance();
     virtual int	Run();
     void	SetValues(CSharedFileList* pOwner, LPCTSTR directory, LPCTSTR filename, LPCTSTR strSharedDir, CPartFile* partfile = NULL);
 
-private:
+  private:
     CSharedFileList* m_pOwner;
     CString			 m_strDirectory;
     CString			 m_strFilename;

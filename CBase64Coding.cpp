@@ -259,7 +259,7 @@ BOOL CBase64Coding::Encode(const char * source, int len, char * destination_stri
                                                           </DL>
 
                                                           <H2>Example</H2>
-                                                              <PRE><CODE>#include &lt;wfc.h&gt;
+                                                          <PRE><CODE>#include &lt;wfc.h&gt;
 
 int _tmain(int number_of_command_line_arguments, LPCTSTR command_line_arguments[])
 {

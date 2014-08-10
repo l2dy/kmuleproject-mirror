@@ -14,7 +14,7 @@ class CXMLDocParser : public CParserBase
 {
     XMLDOCTYPE m_docType;
 
-public:
+  public:
 
     CXMLDocParser();
     CXMLDocParser(ISAXXMLReader *pReader, CParserBase *pParent, DWORD dwLevel);

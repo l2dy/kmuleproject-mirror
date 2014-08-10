@@ -23,7 +23,7 @@ namespace Kademlia
 {
 class CLookupHistory
 {
-public:
+  public:
     struct SLookupHistoryEntry
     {
         CUInt128		m_uContactID;
@@ -94,10 +94,10 @@ public:
         return m_uType;
     }
 
-protected:
+  protected:
     int				GetInterestingContactIdxByID(CUInt128 uContact) const;
 
-private:
+  private:
     CArray<SLookupHistoryEntry*> m_aHistoryEntries;
     CArray<SLookupHistoryEntry*> m_aIntrestingHistoryEntries;
     bool				m_bSearchStopped;

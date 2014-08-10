@@ -55,7 +55,7 @@ inline bool Emit(CStringA& strBuffer, UINT uID, ...)
 
 class CSProcServerContext : public IHttpServerContext
 {
-protected:
+  protected:
 
     CAtlFile m_OutFile;
     CAtlFile m_InFile;
@@ -89,7 +89,7 @@ protected:
             m_ErrFile.Close();
     }
 
-public:
+  public:
     CString m_strErr;
 
     CSProcServerContext()
@@ -623,7 +623,7 @@ public:
 
 class CSProcExtension : public IServiceProvider, public IIsapiExtension
 {
-protected:
+  protected:
 
     typedef CStencilCache<CWorkerThread<> > stencilCacheType;
     CWorkerThread<> m_WorkerThread;
@@ -665,7 +665,7 @@ protected:
 
     class CServiceEqualHelper
     {
-    public:
+      public:
         static bool IsEqual(const ServiceNode& t1, const ServiceNode& t2)
         {
             return (InlineIsEqualGUID(t1.guidService, t2.guidService) != 0);
@@ -674,7 +674,7 @@ protected:
 
     CSimpleArray<ServiceNode, CServiceEqualHelper> m_serviceMap;
 
-public:
+  public:
 
     CString m_strErr;
 

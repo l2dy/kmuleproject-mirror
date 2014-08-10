@@ -14,13 +14,13 @@ class CMuleStatusBarCtrl : public CStatusBarCtrl
 {
     DECLARE_DYNAMIC(CMuleStatusBarCtrl)
 
-public:
+  public:
     CMuleStatusBarCtrl();
     virtual ~CMuleStatusBarCtrl();
 
     void Init(void);
 
-protected:
+  protected:
     int GetPaneAtPosition(CPoint& point) const;
 
     DECLARE_MESSAGE_MAP()

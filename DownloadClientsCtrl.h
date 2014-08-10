@@ -24,7 +24,7 @@ class CDownloadClientsCtrl : public CMuleListCtrl, public CListCtrlItemWalk
 {
     DECLARE_DYNAMIC(CDownloadClientsCtrl)
 
-public:
+  public:
     CDownloadClientsCtrl();
 
     void	Init();
@@ -42,7 +42,7 @@ public:
     void	Localize();
     void	ShowSelectedUserDetails();
 
-protected:
+  protected:
     CImageList  m_ImageList;
 
     void SetAllIcons();

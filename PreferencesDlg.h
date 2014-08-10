@@ -19,7 +19,7 @@ class CPreferencesDlg : public CTreePropSheet
 {
     DECLARE_DYNAMIC(CPreferencesDlg)
 
-public:
+  public:
     CPreferencesDlg();
     virtual ~CPreferencesDlg();
 
@@ -40,7 +40,7 @@ public:
     void Localize();
     void SetStartPage(UINT uStartPageID);
 
-protected:
+  protected:
     LPCTSTR m_pPshStartPage;
     bool m_bSaveIniFile;
 
@@ -52,11 +52,11 @@ protected:
     afx_msg void OnHelp();
     afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
 
-public:
+  public:
     void UpdateShownPages();
 
 //>>> WiZaRd::Automatic Restart
-public:
+  public:
     static bool	IsRestartPlanned()
     {
         return m_bRestartApp;
@@ -65,7 +65,7 @@ public:
     {
         m_bRestartApp = true;
     }
-private:
+  private:
     static bool	m_bRestartApp;
 //<<< WiZaRd::Automatic Restart
 };

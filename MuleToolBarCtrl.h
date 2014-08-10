@@ -58,7 +58,7 @@ class CMuleToolbarCtrl : public CToolBarCtrl
 {
     DECLARE_DYNAMIC(CMuleToolbarCtrl)
 
-public:
+  public:
     CMuleToolbarCtrl();
     virtual ~CMuleToolbarCtrl();
 
@@ -75,7 +75,7 @@ public:
         return (int)LabelsBelow;
     }
 
-protected:
+  protected:
     CSize		m_sizBtnBmp;
     int			m_iPreviousHeight;
     int			m_iLastPressedButton;

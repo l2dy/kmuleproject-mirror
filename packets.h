@@ -23,7 +23,7 @@
 
 class Packet
 {
-public:
+  public:
     Packet(uint8 protocol = OP_EDONKEYPROT);
     Packet(char* header); // only used for receiving packets
     Packet(CMemFile* datafile, uint8 protocol = OP_EDONKEYPROT, uint8 ucOpcode = 0x00);
@@ -54,7 +54,7 @@ public:
     uint8	opcode;
     uint8	prot;
 
-protected:
+  protected:
     bool	m_bSplitted;
     bool	m_bLastSplitted;
     bool	m_bPacked;
@@ -70,7 +70,7 @@ protected:
 
 class CRawPacket : public Packet
 {
-public:
+  public:
     CRawPacket(const CStringA& rstr);
     CRawPacket(const char* pcData, UINT uSize, bool bFromPartFile = false);
     virtual ~CRawPacket();
@@ -98,7 +98,7 @@ class CTag
     : public CObject
 #endif
 {
-public:
+  public:
     CTag(LPCSTR pszName, uint64 uVal, bool bInt64 = false);
     CTag(uint8 uName, uint64 uVal, bool bInt64 = false);
     CTag(LPCSTR pszName, LPCTSTR pszVal);
@@ -206,7 +206,7 @@ public:
     virtual void Dump(CDumpContext& dc) const;
 #endif
 
-protected:
+  protected:
     uint8	m_uType;
     uint8	m_uName;
     LPSTR	m_pszName;

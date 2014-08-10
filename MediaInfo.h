@@ -22,7 +22,7 @@
 
 class CStringStream
 {
-public:
+  public:
     CStringStream() {}
 
     CStringStream& operator<<(LPCTSTR psz);
@@ -47,7 +47,7 @@ public:
         return str;
     }
 
-protected:
+  protected:
     CString str;
 };
 

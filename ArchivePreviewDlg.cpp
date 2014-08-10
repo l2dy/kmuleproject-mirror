@@ -34,13 +34,13 @@ static char THIS_FILE[] = __FILE__;
 // from free unRAR, Alexander L. Roshal
 class EncodeFileName
 {
-private:
+  private:
     byte *EncName;
     byte Flags;
     int FlagBits;
     int FlagsPos;
     int DestSize;
-public:
+  public:
     EncodeFileName();
     int Encode(char *Name,wchar_t *NameW,byte *EncName);
     void Decode(char *Name,byte *EncName,int EncSize,wchar_t *NameW,int MaxDecSize);

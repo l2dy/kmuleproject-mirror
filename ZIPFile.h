@@ -27,25 +27,25 @@ class CBuffer;
 class CZIPFile
 {
 // Construction
-public:
+  public:
     CZIPFile(HANDLE hAttach = INVALID_HANDLE_VALUE);
     ~CZIPFile();
 
 // File Class
-public:
+  public:
     class File
     {
-    private:
+      private:
         friend class CZIPFile;
         inline File() {};
         CZIPFile*	m_pZIP;
-    public:
+      public:
         CBuffer*	Decompress();
         BOOL		Extract(LPCTSTR pszFile);
-    public:
+      public:
         CString		m_sName;
         uint64		m_nSize;
-    protected:
+      protected:
         uint64		m_nLocalOffset;
         uint64		m_nCompressedSize;
         int			m_nCompression;
@@ -53,23 +53,23 @@ public:
     };
 
 // Attributes
-protected:
+  protected:
     BOOL	m_bAttach;
     HANDLE	m_hFile;
     File*	m_pFile;
     int		m_nFile;
 
 // Operations
-public:
+  public:
     BOOL	Open(LPCTSTR pszFile);
     BOOL	Attach(HANDLE hFile);
     BOOL	IsOpen() const;
     void	Close();
-public:
+  public:
     int		GetCount() const;
     File*	GetFile(int nFile) const;
     File*	GetFile(LPCTSTR pszFile, BOOL bPartial = FALSE) const;
-protected:
+  protected:
     BOOL	LocateCentralDirectory();
     BOOL	ParseCentralDirectory(BYTE* pDirectory, DWORD nDirectory);
     BOOL	SeekToFile(File* pFile);

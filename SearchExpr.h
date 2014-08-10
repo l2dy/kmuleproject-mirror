@@ -18,7 +18,7 @@ CString OptUtf8ToStr(const CStringA& rastr);
 
 class CSearchAttr
 {
-public:
+  public:
     CSearchAttr()
     {
         m_iTag = FT_FILENAME;
@@ -105,7 +105,7 @@ public:
 
 class CSearchExpr
 {
-public:
+  public:
     CSearchExpr()
     {
         (void)m_aExpr;

@@ -13,11 +13,11 @@ class CWSDLBinding;
 
 class CWSDLBindingParser : public CParserBase
 {
-private:
+  private:
 
     CWSDLBinding *m_pBinding;
 
-public:
+  public:
 
     inline CWSDLBindingParser(ISAXXMLReader *pReader, CParserBase *pParent, DWORD dwLevel, CWSDLBinding *pBinding = NULL)
         :CParserBase(pReader, pParent, dwLevel), m_pBinding(pBinding)

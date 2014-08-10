@@ -15,11 +15,11 @@ class CComplexType;
 
 class CComplexTypeParser : public CParserBase
 {
-private:
+  private:
 
     CComplexType * m_pComplexType;
 
-public:
+  public:
 
     inline CComplexTypeParser(ISAXXMLReader *pReader, CParserBase *pParent, DWORD dwLevel, CComplexType * pComplexType = NULL)
         :CParserBase(pReader, pParent, dwLevel), m_pComplexType(pComplexType)

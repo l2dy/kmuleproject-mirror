@@ -22,7 +22,7 @@
 
 class CIconWnd : public CStatic
 {
-public:
+  public:
     CIconWnd();
     virtual ~CIconWnd();
 
@@ -32,7 +32,7 @@ public:
     }
     void	ShowIcon(int nIconNumber);
 
-protected:
+  protected:
     int m_nCurrentIcon;
     CImageList*	m_pImageList;
 
@@ -47,7 +47,7 @@ protected:
 
 class CEditDelayed : public CEdit
 {
-public:
+  public:
     CEditDelayed();
 
     void	OnInit(CHeaderCtrl* pColumnHeader, CArray<int, int>* paIgnoredColums = NULL);
@@ -59,7 +59,7 @@ public:
         m_strAlternateText = rstrText;
     }
 
-protected:
+  protected:
     bool		m_bShuttingDown;
     UINT_PTR	m_uTimerResult;
     DWORD		m_dwLastModified;

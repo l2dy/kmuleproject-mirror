@@ -40,19 +40,19 @@ CPartStatus::~CPartStatus()
 
 void CPartStatus::Merge(const CPartStatus* toMerge)
 {
-	uint64	uStart = 0ULL;
-	uint64	uEnd = toMerge->GetSize() - 1ULL;
-	while(toMerge->FindFirstComplete(uStart, uEnd))
-	{
+    uint64	uStart = 0ULL;
+    uint64	uEnd = toMerge->GetSize() - 1ULL;
+    while (toMerge->FindFirstComplete(uStart, uEnd))
+    {
 #ifdef _DEBUG
-		if(!this->IsComplete(uStart, uEnd))
-			theApp.QueueLogLineEx(LOG_INFO, L"%hs: range %I64u-%I64u merged to partstatus!", __FUNCTION__, uStart, uEnd);
+        if (!this->IsComplete(uStart, uEnd))
+            theApp.QueueLogLineEx(LOG_INFO, L"%hs: range %I64u-%I64u merged to partstatus!", __FUNCTION__, uStart, uEnd);
 #endif
-		this->Set(uStart, uEnd);
+        this->Set(uStart, uEnd);
 
-		uStart = uEnd + 1ULL;
-		uEnd = uEnd - 1ULL;
-	}
+        uStart = uEnd + 1ULL;
+        uEnd = uEnd - 1ULL;
+    }
 }
 
 uint64

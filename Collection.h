@@ -51,7 +51,7 @@ class CCollection
 {
     friend class CCollectionCreateDialog;
     friend class CCollectionViewDialog;
-public:
+  public:
     CCollection(void);
     CCollection(const CCollection* pCollection);
     ~CCollection(void);
@@ -69,7 +69,7 @@ public:
 
     bool m_bTextFormat;
 
-private:
+  private:
     CCollectionFilesMap m_CollectionFilesMap;
     byte*	m_pabyCollectionAuthorKey;
     UINT	m_nKeySize;

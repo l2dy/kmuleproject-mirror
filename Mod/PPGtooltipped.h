@@ -13,7 +13,7 @@ class CPPgtooltipped :public CPropertyPage
     //DECLARE_DYNAMIC(CPPgtooltipped )
 
 // Construction
-public:
+  public:
     // simple construction
     CPPgtooltipped(UINT nIDTemplate);
 
@@ -22,13 +22,13 @@ public:
     void SetTool(int ControlID, int RCStringID);
     void SetTool(HTREEITEM TreeItem, int RCString);
 // Overridables
-public:
+  public:
 
 // Implementation
-public:
+  public:
     virtual ~CPPgtooltipped();
 
-protected:
+  protected:
     // private implementation data
     CPPToolTip m_Tip;
     CTreeOptionsCtrlEx *pm_tree;
@@ -39,7 +39,7 @@ protected:
 
 class CPPgtooltippedDialog :public CDialog
 {
-public:
+  public:
     // simple construction
     CPPgtooltippedDialog(UINT nIDTemplate);
 
@@ -47,9 +47,9 @@ public:
     virtual void InitTooltips();
     void SetTool(int ControlID, int RCStringID);
 // Implementation
-public:
+  public:
     virtual ~CPPgtooltippedDialog();
-protected:
+  protected:
     // private implementation data
     CPPToolTip m_Tip;
     CTreeOptionsCtrlEx *pm_tree; // not really  needed But makes it simpler

@@ -216,12 +216,12 @@ void CEMSocket::InitProxySupport()
         switch (settings.type)
         {
 //>>> Tux::Proxy Stuff
-                /*
-                			case PROXYTYPE_SOCKS4:
-                			case PROXYTYPE_SOCKS4A:
-                				m_pProxyLayer->SetProxy(settings.type, settings.name, settings.port);
-                				break;
-                */
+            /*
+            			case PROXYTYPE_SOCKS4:
+            			case PROXYTYPE_SOCKS4A:
+            				m_pProxyLayer->SetProxy(settings.type, settings.name, settings.port);
+            				break;
+            */
 //<<< Tux::Proxy Stuff
             case PROXYTYPE_SOCKS5:
             case PROXYTYPE_HTTP10:
@@ -308,7 +308,7 @@ BOOL CEMSocket::AsyncSelect(long lEvent)
 #ifdef NAT_TRAVERSAL
     if (m_SocketData.hSocket != INVALID_SOCKET || HaveUtpLayer()) //>>> WiZaRd::NatTraversal [Xanatos]
 #else
-	if (m_SocketData.hSocket != INVALID_SOCKET)
+    if (m_SocketData.hSocket != INVALID_SOCKET)
 #endif
         return CEncryptedStreamSocket::AsyncSelect(lEvent);
     return true;
@@ -1588,7 +1588,7 @@ int CEMSocket::OnLayerCallback(const CAsyncSocketExLayer *pLayer, int nType, int
                 case PROXYERROR_NOCONN:
                     // We failed to connect to the proxy.
                     m_bProxyConnectFailed = true;
-                    /* fall through */
+                /* fall through */
                 case PROXYERROR_REQUESTFAILED:
                     // We are connected to the proxy but it failed to connect to the peer.
                     if (thePrefs.GetVerbose())
@@ -1864,14 +1864,14 @@ float CEMSocket::GetAndStepBlockRatio()
 //>>> WiZaRd::NatTraversal [Xanatos]
 CUtpSocket* CEMSocket::InitUtpSupport()
 {
-	if(m_pUtpLayer == NULL)
-	{
-		m_pUtpLayer = new CUtpSocket;
-		AddLayer(m_pUtpLayer);		
-	}
-	else
-		ASSERT(0);
-	return m_pUtpLayer;
+    if (m_pUtpLayer == NULL)
+    {
+        m_pUtpLayer = new CUtpSocket;
+        AddLayer(m_pUtpLayer);
+    }
+    else
+        ASSERT(0);
+    return m_pUtpLayer;
 }
 //<<< WiZaRd::NatTraversal [Xanatos]
 #endif

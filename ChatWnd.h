@@ -28,7 +28,7 @@ class CChatWnd : public CResizableDialog
 {
     DECLARE_DYNAMIC(CChatWnd)
 
-public:
+  public:
     CChatWnd(CWnd* pParent = NULL);   // standard constructor
     virtual ~CChatWnd();
 
@@ -48,7 +48,7 @@ public:
     CFriendListCtrl m_FriendListCtrl;
     CChatSelector chatselector;
 
-protected:
+  protected:
     friend class CChatSelector;
     HICON icon_friend;
     HICON icon_msg;

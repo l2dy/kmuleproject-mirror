@@ -85,7 +85,7 @@ struct RARHeaderDataEx
 
 class CRARFile
 {
-public:
+  public:
     CRARFile();
     ~CRARFile();
 
@@ -95,7 +95,7 @@ public:
     bool Extract(LPCTSTR pszDstFilePath);
     bool Skip();
 
-protected:
+  protected:
     HMODULE m_hLibUnRar;
     CString m_strArchiveFilePath;
     HANDLE m_hArchive;

@@ -40,7 +40,7 @@ struct autoFree
     {
         free(m_p);
     }
-private:
+  private:
     TCHAR * m_p;
 };
 inline unsigned int FromHexDigit(TCHAR digit)

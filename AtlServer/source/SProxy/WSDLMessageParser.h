@@ -13,11 +13,11 @@ class CWSDLMessage;
 
 class CWSDLMessageParser : public CParserBase
 {
-private:
+  private:
 
     CWSDLMessage * m_pMessage;
 
-public:
+  public:
 
     inline CWSDLMessageParser(ISAXXMLReader *pReader, CParserBase *pParent, DWORD dwLevel, CWSDLMessage *pMessage = NULL)
         :CParserBase(pReader, pParent, dwLevel), m_pMessage(pMessage)

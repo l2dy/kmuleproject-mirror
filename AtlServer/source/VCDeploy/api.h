@@ -74,7 +74,7 @@ HRESULT ProcessAccessCheck(); // returns S_OK if process creator is a member of 
 
 class CADSIHelper
 {
-public:
+  public:
     static HRESULT FastLocalRootCheck(LPCTSTR szVRootName)
     {
         CComPtr<IMSAdminBase> spAdmBase;
@@ -302,13 +302,13 @@ public:
         ATLASSERT(m_spAds != NULL);
     }
 #endif
-protected:
+  protected:
     CComQIPtr<IADsContainer> m_spAds;
 };
 
 class CArgs
 {
-public:
+  public:
     CArgs()
     {
         m_bNoLogo = false;

@@ -27,7 +27,7 @@
 // changed class name from CMemDC to CCustomMemDC for _MSC_VER >= 1400
 class CCustomMemDC : public CDC
 {
-private:
+  private:
     CBitmap		m_bitmap;		// Offscreen bitmap
     CBitmap*	m_oldBitmap;	// bitmap originally found in CustomMemDC
     CFont*		m_oldFont;
@@ -36,7 +36,7 @@ private:
     bool		m_bMemDC;		// TRUE if CDC really is a Memory DC.
     bool		m_bFlushed;
 
-public:
+  public:
     CCustomMemDC(CDC *pDC, LPCRECT pRect = NULL, COLORREF crBackground = CLR_DEFAULT)
         : CDC()
     {

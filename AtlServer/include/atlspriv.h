@@ -47,7 +47,7 @@ namespace ATL
 // on CRT term.
 class _AtlWSAInit
 {
-public:
+  public:
     _AtlWSAInit() throw()
     {
         m_dwErr = WSAEFAULT;
@@ -83,7 +83,7 @@ __declspec(selectany)_AtlWSAInit g_HttpInit;
 
 class ZEvtSyncSocket
 {
-public:
+  public:
     ZEvtSyncSocket() throw();
     ~ZEvtSyncSocket() throw();
     operator SOCKET() throw();
@@ -102,7 +102,7 @@ public:
     DWORD SetSocketTimeout(DWORD dwNewTimeout) throw();
     bool SupportsScheme(ATL_URL_SCHEME scheme) throw();
 
-protected:
+  protected:
     DWORD m_dwCreateFlags;
     WSAEVENT m_hEventRead;
     WSAEVENT m_hEventWrite;
@@ -331,7 +331,7 @@ class CStreamOnSequentialStream :
     public IStream
 {
     CComPtr<ISequentialStream> m_spStream;
-public:
+  public:
     CStreamOnSequentialStream(ISequentialStream *pStream) throw()
     {
         ATLASSERT(pStream);
@@ -430,7 +430,7 @@ public:
 class CStreamOnByteArray :
     public IStream
 {
-public:
+  public:
     BYTE *m_pArray;
     DWORD m_dwRead;
 
@@ -541,7 +541,7 @@ public:
 class CVariantStream :
     public IStream
 {
-public:
+  public:
     CVariantStream() throw()
     {
         m_nCurrRead = 0;

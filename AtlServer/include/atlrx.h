@@ -84,7 +84,7 @@ namespace ATL
 template <typename RECHARTYPE=char>
 class CAToREChar
 {
-public:
+  public:
     CAToREChar(const char* psz) throw()
         : m_psz(psz)
     {
@@ -99,7 +99,7 @@ public:
 template<>
 class CAToREChar<wchar_t>
 {
-public:
+  public:
     CAToREChar(const char* psz) throw()
         : m_a2w(psz)
     {
@@ -109,13 +109,13 @@ public:
         return (wchar_t*)m_a2w;
     }
 
-private:
+  private:
     CA2W m_a2w;
 };
 
 class CAtlRECharTraitsA
 {
-public:
+  public:
     typedef char RECHARTYPE;
 
     static size_t GetBitFieldForRangeArrayIndex(const RECHARTYPE *sz) throw()
@@ -197,7 +197,7 @@ public:
 
 class CAtlRECharTraitsW
 {
-public:
+  public:
     typedef WCHAR RECHARTYPE;
 
     static size_t GetBitFieldForRangeArrayIndex(const RECHARTYPE *sz) throw()
@@ -279,7 +279,7 @@ public:
 
 class CAtlRECharTraitsMB
 {
-public:
+  public:
     typedef unsigned char RECHARTYPE;
 
     static size_t GetBitFieldForRangeArrayIndex(const RECHARTYPE *sz) throw()
@@ -361,7 +361,7 @@ class CAtlRegExp;	// forward declaration
 template <class CharTraits=CAtlRECharTraits>
 class CAtlREMatchContext
 {
-public:
+  public:
     friend CAtlRegExp<CharTraits>;
     typedef typename CharTraits::RECHARTYPE RECHAR;
 
@@ -393,13 +393,13 @@ public:
         pGroup->szEnd = m_Matches[nIndex].szEnd;
     }
 
-protected:
+  protected:
     CAutoVectorPtr<void *> m_Mem;
     CAutoVectorPtr<MatchGroup> m_Matches;
     CAtlArray<void *> m_stack;
     size_t m_nTos;
 
-public:
+  public:
     CAtlREMatchContext(size_t nInitStackSize=ATL_REGEXP_MIN_STACK)
     {
         m_uNumGroups = 0;
@@ -409,7 +409,7 @@ public:
         m_Match.szEnd = NULL;
     }
 
-protected:
+  protected:
     BOOL Initialize(UINT uRequiredMem, UINT uNumGroups) throw()
     {
         m_nTos = 0;
@@ -488,7 +488,7 @@ enum REParseError
 template <class CharTraits /* =CAtlRECharTraits */>
 class CAtlRegExp
 {
-public:
+  public:
     CAtlRegExp() throw()
     {
         m_uNumGroups = 0;
@@ -900,7 +900,7 @@ Error:
         return FALSE;
     }
 
-protected:
+  protected:
     REParseError m_LastError;
 
     REParseError GetLastParseError() throw()
@@ -1027,7 +1027,7 @@ protected:
     // parsing state when unwinding
     class CParseState
     {
-    public:
+      public:
         int m_nNumInstructions;
         UINT m_uNumGroups;
         UINT m_uRequiredMem;
@@ -1774,7 +1774,7 @@ protected:
     }
     // implementation
     // helpers for dumping and debugging the rx engine
-public:
+  public:
 #ifdef ATL_REGEXP_DUMP
     size_t DumpInstruction(size_t ip)
     {

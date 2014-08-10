@@ -7,23 +7,23 @@
 class CDiscoMapDocument :
     public CXMLDocument
 {
-public:
+  public:
     CDiscoMapDocument(void);
     ~CDiscoMapDocument(void);
-private:
+  private:
     typedef CAtlMap<CStringW, CStringW> SCHEMAMAP;
 
-public:
+  public:
     void SetWSDLFile(const CStringW & wsdlFile);
-private:
+  private:
     CStringW m_wsdlFile;
     SCHEMAMAP m_schemaMap;
-public:
+  public:
     void AddSchema(const CStringW & url, const CStringW & filename);
     CStringW & GetWSDLFile(void);
     CStringW & GetValue(const CStringW & value);
-private:
+  private:
     CStringW m_strPath;
-protected:
+  protected:
     CStringW & GetPath(void);
 };

@@ -70,7 +70,7 @@ enum CODEFLAGS
 
 class CCodeElement
 {
-private:
+  private:
 
     CStringW m_strName;
     DWORD    m_dwFlags;
@@ -80,7 +80,7 @@ private:
     // safe naming
     CStringA m_strSafeName;
 
-public:
+  public:
 
     CCodeElement();
     virtual ~CCodeElement() {}
@@ -104,14 +104,14 @@ public:
 
 class CCodeType
 {
-private:
+  private:
 
     XSDTYPE m_xsdType;
     CStringA m_strCodeType;
 
     CStringA m_strSafeCodeType;
 
-public:
+  public:
 
     CCodeType();
 
@@ -129,7 +129,7 @@ public:
 
 class CCodeTypedElement : public CCodeElement, public CCodeType
 {
-private:
+  private:
 
     CXSDElement * m_pElement;
     CAtlArray<int> m_arrDims;
@@ -138,7 +138,7 @@ private:
 
     CStringW m_strNamespace;
 
-public:
+  public:
 
     CCodeTypedElement()
         :m_pElement(NULL)
@@ -236,7 +236,7 @@ public:
 
 class CCodeElementContainer
 {
-private:
+  private:
 
     CStringA m_strName;
     // safe name
@@ -253,7 +253,7 @@ private:
     CStringA m_strNamespace;
     CAtlPtrList<CCodeTypedElement *> m_elements;
 
-public:
+  public:
 
     CCodeElementContainer()
         :m_dwCallFlags(0)
@@ -302,7 +302,7 @@ typedef CCodeElementContainer CCodeEnum;
 
 class CCodeProxy
 {
-private:
+  private:
 
     CStringA m_strClassName;
     CStringA m_strAddressUri;
@@ -314,7 +314,7 @@ private:
     CAtlPtrList<CCodeFunction *> m_functions;
     CAtlPtrList<CCodeTypedElement *> m_headers;
 
-public:
+  public:
 
     const CStringA& GetClassName();
     HRESULT SetClassName(const CStringW &strName);

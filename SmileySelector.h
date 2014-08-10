@@ -22,13 +22,13 @@ class CSmileySelector : public CWnd
 {
     DECLARE_DYNAMIC(CSmileySelector)
 
-public:
+  public:
     CSmileySelector();
     virtual ~CSmileySelector();
 
     BOOL Create(CWnd *pWndParent, const RECT *pRect, CEdit *pwndEdit);
 
-protected:
+  protected:
     int m_iBitmaps;
     CEdit *m_pwndEdit;
     CToolBarCtrl m_tb;

@@ -214,7 +214,7 @@ UINT CSearchList::ProcessSearchAnswer(const uchar* in_packet, UINT size,
         if (toadd->IsLargeFile() && (Sender == NULL || !Sender->SupportsLargeFiles()))
         {
             DebugLogWarning(_T("Client offers large file (%s) but doesn't announced support for it - ignoring file"), toadd->GetFileName());
-			delete toadd;
+            delete toadd;
             continue;
         }
         if (Sender)
@@ -410,8 +410,8 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse, UINT dwFro
 #else
                     CUpDownClient* pClient = theApp.clientlist->FindClientByIP(userid);
 #endif
-					if(pClient)
-						AddDebugLogLine(false, _T("Ignored source (IP=%s) received from server - banned client %s"), ipstr(userid), pClient->DbgGetClientInfo());
+                    if (pClient)
+                        AddDebugLogLine(false, _T("Ignored source (IP=%s) received from server - banned client %s"), ipstr(userid), pClient->DbgGetClientInfo());
                 }
 #endif
                 bAdd = false;

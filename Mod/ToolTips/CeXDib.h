@@ -52,7 +52,7 @@
 
 class CCeXDib
 {
-public:
+  public:
     CCeXDib();
     virtual ~CCeXDib();
 
@@ -75,7 +75,7 @@ public:
 
     BOOL WriteBMP(LPCTSTR bmpFileName);
 
-private:
+  private:
     void FreeResources();
 
     DWORD GetPaletteSize();

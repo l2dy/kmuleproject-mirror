@@ -4,7 +4,7 @@
 
 struct SocketSentBytes
 {
-public:
+  public:
     SocketSentBytes(const bool success, const UINT sentBytesStandardPackets, const UINT sentBytesControlPackets, const UINT errorThatOccured = 0) //>>> WiZaRd::ZZUL Upload [ZZ]
     {
         this->success = success;
@@ -21,7 +21,7 @@ public:
 
 class ThrottledControlSocket
 {
-public:
+  public:
     virtual SocketSentBytes SendControlData(UINT /*maxNumberOfBytesToSend*/, UINT /*minFragSize*/)
     {
         AfxDebugBreak();
@@ -31,7 +31,7 @@ public:
 
 class ThrottledFileSocket : public ThrottledControlSocket
 {
-public:
+  public:
     virtual SocketSentBytes SendFileAndControlData(UINT /*maxNumberOfBytesToSend*/, UINT /*minFragSize*/)
     {
         AfxDebugBreak();

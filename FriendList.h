@@ -22,7 +22,7 @@ class CUpDownClient;
 
 class CFriendList
 {
-public:
+  public:
     CFriendList();
     ~CFriendList();
 
@@ -34,7 +34,7 @@ public:
 #ifdef IPV6_SUPPORT
     CFriend*	SearchFriend(const uchar* achUserHash, CAddress dwIP, uint16 nPort) const; //>>> WiZaRd::IPv6 [Xanatos]
 #else
-	CFriend*	SearchFriend(const uchar* achUserHash, const UINT dwIP, const uint16 nPort) const;
+    CFriend*	SearchFriend(const uchar* achUserHash, const UINT dwIP, const uint16 nPort) const;
 #endif
     void		SetWindow(CFriendListCtrl* NewWnd)
     {
@@ -43,9 +43,9 @@ public:
     void		ShowFriends() const;
     bool		AddFriend(CUpDownClient* toadd);
 #ifdef IPV6_SUPPORT
-    bool		AddFriend(const uchar* abyUserhash, UINT dwLastSeen, const CAddress& dwLastUsedIP, uint16 nLastUsedPort, //>>> WiZaRd::IPv6 [Xanatos] 
+    bool		AddFriend(const uchar* abyUserhash, UINT dwLastSeen, const CAddress& dwLastUsedIP, uint16 nLastUsedPort, //>>> WiZaRd::IPv6 [Xanatos]
 #else
-	bool		AddFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort,
+    bool		AddFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort,
 #endif
                           UINT dwLastChatted, LPCTSTR pszName, UINT dwHasHash, const CString& strComment); //>>> WiZaRd::FriendComment
     void		RemoveFriend(CFriend* todel);
@@ -56,7 +56,7 @@ public:
         return m_listFriends.GetCount();
     }
 
-private:
+  private:
     CTypedPtrList<CPtrList, CFriend*>	m_listFriends;
     CFriendListCtrl*					m_wndOutput;
     UINT								m_nLastSaved;

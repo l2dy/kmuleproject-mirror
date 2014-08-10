@@ -60,7 +60,7 @@ enum ELogFileFormat
 
 class CLogFile
 {
-public:
+  public:
     CLogFile();
     ~CLogFile();
 
@@ -77,7 +77,7 @@ public:
     bool Logf(LPCTSTR pszFmt, ...);
     void StartNewLogFile();
 
-protected:
+  protected:
     FILE* m_fp;
     time_t m_tStarted;
     CString m_strFilePath;

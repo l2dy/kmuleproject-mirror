@@ -37,10 +37,10 @@ class CButtonsTabCtrl;
 
 class CSearchResultsSelector : public CClosableTabCtrl
 {
-public:
+  public:
     CSearchResultsSelector() {}
 
-protected:
+  protected:
     virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 
     DECLARE_MESSAGE_MAP()
@@ -54,7 +54,7 @@ class CSearchResultsWnd : public CResizableFormView
 {
     DECLARE_DYNCREATE(CSearchResultsWnd)
 
-public:
+  public:
     CSearchResultsWnd(CWnd* pParent = NULL);   // standard constructor
     virtual ~CSearchResultsWnd();
 
@@ -94,7 +94,7 @@ public:
         return m_nFilterColumn;
     }
 
-protected:
+  protected:
     CProgressCtrl searchprogress;
     CHeaderCtrl m_ctlSearchListHeader;
     CEditDelayed m_ctlFilter;

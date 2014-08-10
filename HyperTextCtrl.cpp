@@ -189,7 +189,7 @@ void CPreparedHyperText::PrepareText(const CString& sText)
                 }
                 break;
 
-                /*----------------- http -----------------*/
+            /*----------------- http -----------------*/
             case http0:
                 if (c == L't')
                     state = http1;
@@ -255,7 +255,7 @@ void CPreparedHyperText::PrepareText(const CString& sText)
                 }
                 break;
 
-                /*----------------- ed2k -----------------*/
+            /*----------------- ed2k -----------------*/
             case ed2k0:
                 if (c == L'd')
                     state = ed2k1;
@@ -320,7 +320,7 @@ void CPreparedHyperText::PrepareText(const CString& sText)
                     state = space;
                 }
                 break;
-                /*----------------- ftp -----------------*/
+            /*----------------- ftp -----------------*/
             case ftp0:
                 if (c == L't')
                     state = ftp1;
@@ -390,7 +390,7 @@ void CPreparedHyperText::PrepareText(const CString& sText)
                 }
                 break;
 
-                /*----------------- www -----------------*/
+            /*----------------- www -----------------*/
             case www0:
                 if (c == L'w')
                     state = www1;
@@ -429,7 +429,7 @@ void CPreparedHyperText::PrepareText(const CString& sText)
                 }
                 break;
 
-                /*----------------- mailto -----------------*/
+            /*----------------- mailto -----------------*/
             case mailto0:
                 if (c == L'a')
                     state = mailto1;
@@ -495,7 +495,7 @@ void CPreparedHyperText::PrepareText(const CString& sText)
                 }
                 break;
 
-                /*----------------- mailto -----------------*/
+            /*----------------- mailto -----------------*/
             case mail:
                 if (tspace(c) || i == last)
                 {

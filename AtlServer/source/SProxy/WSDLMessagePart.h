@@ -16,7 +16,7 @@ class CXSDElement;
 
 class CWSDLMessagePart : public CXMLElement
 {
-private:
+  private:
 
     CStringW m_strName;
     CQName   m_element;
@@ -25,7 +25,7 @@ private:
     CElement * m_pElement;
     CXSDElement * m_pXSDElement;
 
-public:
+  public:
 
     inline CWSDLMessagePart()
         :m_pElement(NULL), m_pXSDElement(NULL)

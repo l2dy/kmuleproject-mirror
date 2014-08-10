@@ -36,7 +36,7 @@ ColourTableEntry;
 class CColourPopup : public CWnd
 {
 // Construction
-public:
+  public:
     CColourPopup();
     CColourPopup(CPoint p, COLORREF crColour, CWnd* pParentWnd,
                  LPCTSTR szDefaultText = NULL, LPCTSTR szCustomText = NULL,
@@ -44,25 +44,25 @@ public:
     void Initialise();
 
 // Attributes
-public:
+  public:
 
 // Operations
-public:
+  public:
     BOOL Create(CPoint p, COLORREF crColour, CWnd* pParentWnd, LPCTSTR szDefaultText = NULL,
                 LPCTSTR szCustomText = NULL);
 
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CColourPopup)
-public:
+  public:
     virtual BOOL PreTranslateMessage(MSG* pMsg);
     //}}AFX_VIRTUAL
 
 // Implementation
-public:
+  public:
     virtual ~CColourPopup();
 
-protected:
+  protected:
     COLORREF* colourArrayPassed;
     BOOL GetCellRect(int nIndex, const LPRECT& rect);
     void FindCellFromColour(COLORREF crColour);
@@ -88,7 +88,7 @@ protected:
     int	 GetColumn(int nIndex) const;
 
 // protected attributes
-protected:
+  protected:
     static ColourTableEntry m_crColours[];
     int			   m_nNumColours;
     int			   m_nNumColumns, m_nNumRows;
@@ -106,7 +106,7 @@ protected:
     BOOL		   m_bChildWindowVisible;
 
     // Generated message map functions
-protected:
+  protected:
     //{{AFX_MSG(CColourPopup)
     afx_msg void OnNcDestroy();
     afx_msg void OnLButtonUp(UINT nFlags, CPoint point);

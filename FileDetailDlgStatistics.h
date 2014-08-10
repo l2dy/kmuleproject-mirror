@@ -24,7 +24,7 @@ class CFileDetailDlgStatistics : public CResizablePage
 {
     DECLARE_DYNAMIC(CFileDetailDlgStatistics)
 
-public:
+  public:
     CFileDetailDlgStatistics();
     virtual ~CFileDetailDlgStatistics();
 
@@ -38,7 +38,7 @@ public:
 // Dialog Data
     enum { IDD = IDD_FILESTATISTICS };
 
-protected:
+  protected:
     const CSimpleArray<CObject*>* m_paFiles;
     bool m_bDataChanged;
     CProgressCtrlX pop_bar;

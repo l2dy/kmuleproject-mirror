@@ -45,7 +45,7 @@ class CShareableFile;
 
 class CDirectoryItem
 {
-public:
+  public:
     CDirectoryItem(CString strFullPath, HTREEITEM htItem = TVI_ROOT, ESpecialDirectoryItems eItemType = SDI_NO, int m_nCatFilter = -1);
     ~CDirectoryItem();
     CDirectoryItem*		CloneContent()
@@ -68,7 +68,7 @@ class CSharedDirsTreeCtrl : public CTreeCtrl
 {
     DECLARE_DYNAMIC(CSharedDirsTreeCtrl)
 
-public:
+  public:
     CSharedDirsTreeCtrl();
     virtual ~CSharedDirsTreeCtrl();
 
@@ -89,7 +89,7 @@ public:
     bool			ShowSharedDirectory(const CString& strDir);
     void			ShowAllSharedFiles();
 
-protected:
+  protected:
     virtual BOOL	OnCommand(WPARAM wParam, LPARAM lParam);
     void			CreateMenues();
     void			ShowFileDialog(CTypedPtrList<CPtrList, CShareableFile*>& aFiles, UINT uPshInvokePage = 0);
@@ -124,7 +124,7 @@ protected:
     CImageList			m_imlTree;
     bool				m_bFileSystemRootDirty;
 
-private:
+  private:
     void	InitalizeStandardItems();
 
     void	FileSystemTreeCreateTree();

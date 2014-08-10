@@ -49,19 +49,19 @@
 class CStatisticsTree : public CTreeCtrl
 {
     DECLARE_DYNAMIC(CStatisticsTree)
-public:
+  public:
     CStatisticsTree();
     ~CStatisticsTree();
     virtual		BOOL	OnCommand(WPARAM wParam, LPARAM lParam);
 
-protected:
+  protected:
     DECLARE_MESSAGE_MAP()
     afx_msg		void	OnLButtonUp(UINT nFlags, CPoint point);
     afx_msg		void	OnRButtonDown(UINT nFlags, CPoint point);
     afx_msg		void	OnContextMenu(CWnd* pWnd, CPoint point);
     afx_msg		void	OnItemExpanded(NMHDR* pNMHDR, LRESULT* pResult);
 
-public:
+  public:
     void				Init();
     bool				CopyHTML(int copyMode = MP_STATTREE_HTMLCOPYSEL);
     CString				GetHTML(bool onlyVisible = true, HTREEITEM theItem = NULL, int theItemLevel = 0, bool firstItem = true);
@@ -80,7 +80,7 @@ public:
     void				CollapseAll(HTREEITEM theItem = NULL);
     CString				GetExpandedMask(HTREEITEM theItem = NULL);
     int					ApplyExpandedMask(CString theMask, HTREEITEM theItem = NULL, int theStringIndex = 0);
-private:
+  private:
     CTitleMenu			mnuContext;
     CTitleMenu			mnuHTML;
     bool				m_bExpandingAll;

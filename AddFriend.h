@@ -24,7 +24,7 @@ class CAddFriend : public CDialog
 {
     DECLARE_DYNAMIC(CAddFriend)
 
-public:
+  public:
     CAddFriend();   // standard constructor
     virtual ~CAddFriend();
 
@@ -33,7 +33,7 @@ public:
 
     void Localize();
 
-protected:
+  protected:
     HICON m_icnWnd;
     virtual BOOL OnInitDialog();
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

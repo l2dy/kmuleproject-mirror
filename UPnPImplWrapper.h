@@ -21,7 +21,7 @@ class CUPnPImpl;
 
 class CUPnPImplWrapper
 {
-public:
+  public:
     CUPnPImplWrapper();
     ~CUPnPImplWrapper();
 
@@ -32,10 +32,10 @@ public:
     bool			SwitchImplentation();
     void			Reset();
 
-protected:
+  protected:
     void			Init();
 
-private:
+  private:
     CUPnPImpl*		m_pActiveImpl;
     CTypedPtrList<CPtrList, CUPnPImpl*> m_liAvailable;
     CTypedPtrList<CPtrList, CUPnPImpl*> m_liUsed;

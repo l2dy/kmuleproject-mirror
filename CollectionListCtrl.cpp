@@ -45,11 +45,11 @@ class CCollectionFileDetailsSheet : public CListViewWalkerPropertySheet
 {
     DECLARE_DYNAMIC(CCollectionFileDetailsSheet)
 
-public:
+  public:
     CCollectionFileDetailsSheet(CTypedPtrList<CPtrList, CAbstractFile*>& aFiles, UINT uPshInvokePage = 0, CListCtrlItemWalk* pListCtrl = NULL);
     virtual ~CCollectionFileDetailsSheet();
 
-protected:
+  protected:
     CMetaDataDlg		m_wndMetaData;
 
     UINT m_uPshInvokePage;

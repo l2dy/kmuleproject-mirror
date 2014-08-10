@@ -90,7 +90,7 @@ class CUpDownClient;
 ///CAICHHash
 class CAICHHash
 {
-public:
+  public:
 
     ~CAICHHash()
     {
@@ -145,7 +145,7 @@ public:
     {
         return HASHSIZE;
     }
-private:
+  private:
     uchar m_abyBuffer[HASHSIZE];
 };
 
@@ -161,7 +161,7 @@ template<> inline UINT AFXAPI HashKey(const CAICHHash& key)
 ///CAICHHashAlgo
 class CAICHHashAlgo
 {
-public:
+  public:
     virtual void	Reset()									{ AfxDebugBreak(); }
     virtual void	Add(LPCVOID /*pData*/, DWORD /*nLength*/)	{ AfxDebugBreak(); }
     virtual void	Finish(CAICHHash& /*Hash*/)				{ AfxDebugBreak(); }
@@ -174,7 +174,7 @@ class CAICHHashTree
 {
     friend class CAICHHashTree;
     friend class CAICHRecoveryHashSet;
-public:
+  public:
     CAICHHashTree(uint64 nDataSize, bool bLeftBranch, uint64 nBaseSize);
     ~CAICHHashTree();
     void			SetBlockHash(uint64 nSize, uint64 nStartPos, CAICHHashAlgo* pHashAlg);
@@ -193,7 +193,7 @@ public:
     uint64			GetBaseSize() const;
     void			SetBaseSize(uint64 uValue);
 
-protected:
+  protected:
     CAICHHashTree*	FindHash(uint64 nStartPos, uint64 nSize, uint8* nLevel);
     const CAICHHashTree* FindExistingHash(uint64 nStartPos, uint64 nSize, uint8* nLevel) const;
     bool			CreatePartRecoveryData(uint64 nStartPos, uint64 nSize, CFileDataIO* fileDataOut, UINT wHashIdent, bool b32BitIdent);
@@ -206,13 +206,13 @@ protected:
     CAICHHashTree*	m_pLeftTree;
     CAICHHashTree*	m_pRightTree;
 
-public:
+  public:
     CAICHHash		m_Hash;
     uint64			m_nDataSize;		// size of data which is covered by this hash
     bool			m_bIsLeftBranch;	// left or right branch of the tree
     bool			m_bHashValid;		// the hash is valid and not empty
 
-private:
+  private:
     // BaseSize: to save ressources we use a bool to store the basesize as currently only two values are used
     // keep the original number based calculations and checks in the code through, so it can easily be adjusted in case we want to use hashsets with different basesizes
     bool			m_bBaseSize;		// blocksize on which the lowest hash is based on
@@ -222,7 +222,7 @@ private:
 ///CAICHUntrustedHashs
 class CAICHUntrustedHash
 {
-public:
+  public:
     CAICHUntrustedHash&	operator=(const CAICHUntrustedHash& k1)
     {
         m_adwIpsSigning.Copy(k1.m_adwIpsSigning);
@@ -247,7 +247,7 @@ public:
 ///CAICHUntrustedHashs
 class CAICHRequestedData
 {
-public:
+  public:
     CAICHRequestedData()
     {
         m_nPart = 0;
@@ -270,7 +270,7 @@ public:
 ///CAICHRecoveryHashSet
 class CAICHRecoveryHashSet
 {
-public:
+  public:
     CAICHRecoveryHashSet(CKnownFile* pOwner, EMFileSize nSize = (uint64)0);
     ~CAICHRecoveryHashSet(void);
     bool			CreatePartRecoveryData(uint64 nPartStartPos, CFileDataIO* fileDataOut, bool bDbgDontLoad = false);
@@ -325,7 +325,7 @@ public:
     CAICHHashTree	m_pHashTree;
     static CList<CAICHRequestedData>	m_liRequestedData;
     static CMutex						m_mutKnown2File;
-private:
+  private:
     static CMap<CAICHHash, const CAICHHash&, ULONGLONG, ULONGLONG>	m_mapAICHHashsStored; // contains all AICH hahses stored in known2*.met
     CKnownFile*		m_pOwner;
     EAICHStatus		m_eStatus;

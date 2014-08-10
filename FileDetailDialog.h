@@ -30,11 +30,11 @@ class CFileDetailDialog : public CListViewWalkerPropertySheet
 {
     DECLARE_DYNAMIC(CFileDetailDialog)
 
-public:
+  public:
     CFileDetailDialog(const CSimpleArray<CPartFile*>* paFiles, UINT uInvokePage = 0, CListCtrlItemWalk* pListCtrl = NULL);
     virtual ~CFileDetailDialog();
 
-protected:
+  protected:
     CFileDetailDialogInfo	m_wndInfo;
     CFileDetailDialogName	m_wndName;
     CCommentDialogLst		m_wndComments;

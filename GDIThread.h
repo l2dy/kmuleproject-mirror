@@ -8,12 +8,12 @@
 
 class CGDIThread : public CWinThread
 {
-public:
+  public:
     DECLARE_DYNAMIC(CGDIThread)
     CGDIThread(CWnd* pWnd, HDC hDC);
 
 // Attributes
-public:
+  public:
     HDC m_hDC;
     CDC m_dc;
     HANDLE m_hEventKill;
@@ -30,7 +30,7 @@ public:
     static CCriticalSection m_csGDILock;
 
 // Operations
-public:
+  public:
     void KillThread();
     virtual void SingleStep()	{ AfxDebugBreak(); }
 
@@ -40,14 +40,14 @@ public:
     //}}AFX_VIRTUAL
 
 // Implementation
-public:
+  public:
     BOOL SetWaitVRT(BOOL bWait = TRUE);
     int SetScrollDirection(int nDirection);
     int SetDelay(int nDelay);
     virtual ~CGDIThread();
     virtual void Delete();
 
-protected:
+  protected:
     virtual BOOL InitInstance();
 
     // Generated message map functions

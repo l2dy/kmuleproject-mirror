@@ -31,7 +31,7 @@ class CTransferWnd : public CResizableFormView
 {
     DECLARE_DYNCREATE(CTransferWnd)
 
-public:
+  public:
     CTransferWnd(CWnd* pParent = NULL);   // standard constructor
     virtual ~CTransferWnd();
 
@@ -82,7 +82,7 @@ public:
     CClientListCtrl			clientlistctrl;
     CDownloadClientsCtrl	downloadclientsctrl;
 
-protected:
+  protected:
     CSplitterControl m_wndSplitter;
     EWnd2		m_uWnd2;
     bool		downloadlistactive;
@@ -159,9 +159,9 @@ protected:
     afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 
 //>>> WiZaRd::Advanced Transfer Window Layout [Stulle]
-public:
+  public:
     void	UpdateListCountTop(const EWnd2 listindex);
-protected:
+  protected:
     UINT	m_dwTopListIDC;
 //<<< WiZaRd::Advanced Transfer Window Layout [Stulle]
 };

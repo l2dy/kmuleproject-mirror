@@ -24,15 +24,15 @@ class CSafeFile;
 class CAICHSyncThread : public CWinThread
 {
     DECLARE_DYNCREATE(CAICHSyncThread)
-protected:
+  protected:
     CAICHSyncThread();
-public:
+  public:
     virtual BOOL InitInstance();
     virtual int	Run();
 
-protected:
+  protected:
     bool ConvertToKnown2ToKnown264(CSafeFile* pTargetFile);
 
-private:
+  private:
     CTypedPtrList<CPtrList, CKnownFile*> m_liToHash;
 };

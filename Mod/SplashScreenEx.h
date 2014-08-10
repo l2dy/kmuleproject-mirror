@@ -27,7 +27,7 @@ class CSplashScreenEx : public CWnd
 {
     DECLARE_DYNAMIC(CSplashScreenEx)
 
-public:
+  public:
     CSplashScreenEx();
     virtual ~CSplashScreenEx();
 
@@ -46,10 +46,10 @@ public:
     void SetTextRect(const CRect& rcText);
     void SetTextFormat(const UINT uTextFormat);
 
-private:
+  private:
     void AdjustBitmap(const COLORREF col);
 
-protected:
+  protected:
     //FN_ANIMATE_WINDOW m_fnAnimateWindow;
     CWnd*	m_pWndParent;
     CBitmap m_bitmap;
@@ -70,14 +70,14 @@ protected:
     HRGN CreateRgnFromBitmap(HBITMAP hBmp, COLORREF color);
     void DrawWindow(CDC* pDC);
 
-protected:
+  protected:
     DECLARE_MESSAGE_MAP()
-public:
+  public:
     afx_msg BOOL OnEraseBkgnd(CDC* pDC);
     afx_msg void OnPaint();
     //afx_msg void OnTimer(UINT nIDEvent);
     LRESULT OnPrintClient(WPARAM wParam, LPARAM lParam);
-protected:
+  protected:
     //virtual BOOL PreTranslateMessage(MSG* pMsg);
     virtual void PostNcDestroy();
 };

@@ -51,7 +51,7 @@ struct FetchNodeID_Struct
 class CKademliaUDPListener : public CPacketTracking
 {
     friend class CSearch;
-public:
+  public:
     ~CKademliaUDPListener();
     bool Bootstrap(LPCTSTR uIP, const uint16 uUDPPort);
     bool Bootstrap(const UINT uIP, const uint16 uUDPPort, const uint8 byKadVersion = 0, const CUInt128* uCryptTargetID = NULL);
@@ -66,7 +66,7 @@ public:
 
     bool FindNodeIDByIP(CKadClientSearcher* pRequester, UINT dwIP, uint16 nTCPPort, uint16 nUDPPort, uint8 byKadVersion);
     void ExpireClientSearch(CKadClientSearcher* pExpireImmediately = NULL);
-private:
+  private:
     bool AddContact_KADEMLIA2(const byte* pbyData, UINT uLenData, UINT uIP, uint16& uUDPPort, uint8* pnOutVersion, CKadUDPKey cUDPKey, bool& rbIPVerified, bool bUpdate, bool bFromHelloReq, bool* pbOutRequestsACK, CUInt128* puOutContactID);
     void SendLegacyChallenge(UINT uIP, uint16 uUDPPort, const CUInt128& uContactID);
     static SSearchTerm* CreateSearchExpressionTree(CSafeMemFile& fileIO, int iLevel);

@@ -15,13 +15,13 @@ class CWSDLDocument;
 
 class CWSDLParser : public CParserBase
 {
-private:
+  private:
 
     IMPORTMAP m_importMap;
 
     CAutoPtr<CWSDLDocument> m_pDocument;
 
-public:
+  public:
     CWSDLParser();
     CWSDLParser(ISAXXMLReader *pReader, CParserBase *pParent, DWORD dwLevel);
 

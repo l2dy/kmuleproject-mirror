@@ -9,14 +9,14 @@ class CNetworkInfoDlg : public CResizableDialog
 {
     DECLARE_DYNAMIC(CNetworkInfoDlg)
 
-public:
+  public:
     CNetworkInfoDlg(CWnd* pParent = NULL);   // standard constructor
     virtual ~CNetworkInfoDlg();
 
 // Dialog Data
     enum { IDD = IDD_NETWORK_INFO };
 
-protected:
+  protected:
     CRichEditCtrlX m_info;
 
     virtual BOOL OnInitDialog();

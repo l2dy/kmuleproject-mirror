@@ -25,12 +25,12 @@ class CPreviewThread : public CWinThread
 {
     DECLARE_DYNCREATE(CPreviewThread)
 
-public:
+  public:
     virtual	BOOL	InitInstance();
     virtual int		Run();
     void	SetValues(CPartFile* pPartFile, LPCTSTR pszCommand, LPCTSTR pszCommandArgs);
 
-protected:
+  protected:
     CPreviewThread();			// protected constructor used by dynamic creation
     virtual ~CPreviewThread();
 
@@ -47,7 +47,7 @@ protected:
 
 class CPreviewApps
 {
-public:
+  public:
     CPreviewApps();
 
     CString GetDefaultAppsFile() const;
@@ -67,7 +67,7 @@ public:
     int GetPreviewApp(const CPartFile* file);
     bool Preview(CPartFile* file);
 
-protected:
+  protected:
     struct SPreviewApp
     {
         SPreviewApp& operator=(const SPreviewApp& rCopy)

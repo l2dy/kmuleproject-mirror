@@ -56,7 +56,7 @@ struct SSearchTerm;
 class CSearchList
 {
     friend class CSearchListCtrl;
-public:
+  public:
     CSearchList();
     ~CSearchList();
 
@@ -104,14 +104,14 @@ public:
     }
     // mobilemule
     CSearchFile*	DetachNextFile(UINT nSearchID);
-protected:
+  protected:
     SearchList*		GetSearchListForID(UINT nSearchID);
     UINT			GetSpamFilenameRatings(const CSearchFile* pSearchFile, bool bMarkAsNoSpam);
     void			LoadSpamFilter();
 
 
 
-private:
+  private:
     CTypedPtrList<CPtrList, SearchListsStruct*> m_listFileLists;
     CMap<UINT, UINT, UINT, UINT> m_foundFilesCount;
     CMap<UINT, UINT, UINT, UINT> m_foundSourcesCount;

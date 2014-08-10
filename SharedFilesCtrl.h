@@ -29,10 +29,10 @@ class CSharedFilesCtrl : public CMuleListCtrl, public CListCtrlItemWalk
 {
     friend class CSharedDirsTreeCtrl;
     DECLARE_DYNAMIC(CSharedFilesCtrl)
-public:
+  public:
     class CShareDropTarget: public COleDropTarget
     {
-    public:
+      public:
         CShareDropTarget();
         virtual ~CShareDropTarget();
         void	SetParent(CSharedFilesCtrl* pParent)
@@ -45,7 +45,7 @@ public:
         BOOL		OnDrop(CWnd* pWnd, COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point);
         void		OnDragLeave(CWnd* pWnd);
 
-    protected:
+      protected:
         IDropTargetHelper*	m_piDropHelper;
         bool				m_bUseDnDHelper;
         BOOL ReadHdropData(COleDataObject* pDataObject);
@@ -71,7 +71,7 @@ public:
     }
     void	SetDirectoryFilter(CDirectoryItem* pNewFilter, bool bRefresh = true);
 
-protected:
+  protected:
     CTitleMenu		m_SharedFilesMenu;
     CTitleMenu		m_CollectionsMenu;
 //>>> WiZaRd::PowerShare

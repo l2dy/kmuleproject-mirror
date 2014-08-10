@@ -33,14 +33,14 @@ class CSharedFileDetailsModelessSheet : public CListViewPropertySheet
 {
     DECLARE_DYNAMIC(CSharedFileDetailsModelessSheet)
 
-public:
+  public:
     CSharedFileDetailsModelessSheet();
     virtual ~CSharedFileDetailsModelessSheet();
     void SetFiles(CTypedPtrList<CPtrList, CShareableFile*>& aFiles);
     void Localize();
     void UpdateMetaDataPage();
 
-protected:
+  protected:
     CFileDetailDlgStatistics*	m_wndStatistics;
     CED2kLinkDlg*				m_wndFileLink;
     CArchivePreviewDlg*			m_wndArchiveInfo;
@@ -61,7 +61,7 @@ class CSharedFilesWnd : public CResizableDialog
 {
     DECLARE_DYNAMIC(CSharedFilesWnd)
 
-public:
+  public:
     CSharedFilesWnd(CWnd* pParent = NULL);   // standard constructor
     virtual ~CSharedFilesWnd();
 
@@ -91,7 +91,7 @@ public:
     CStringArray m_astrFilter;
     CSharedDirsTreeCtrl m_ctlSharedDirTree;
 
-private:
+  private:
 
     HICON icon_files;
     CSplitterControl m_wndSplitter;
@@ -101,7 +101,7 @@ private:
     bool			m_bDetailsVisible;
     CSharedFileDetailsModelessSheet	m_dlgDetails;
 
-protected:
+  protected:
     void SetAllIcons();
     void DoResize(int delta);
 

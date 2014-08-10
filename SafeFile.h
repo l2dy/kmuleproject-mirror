@@ -38,7 +38,7 @@ enum EUtf8Str
 
 class CFileDataIO
 {
-public:
+  public:
     virtual UINT Read(void* lpBuf, UINT nCount) = 0;
     virtual void Write(const void* lpBuf, UINT nCount) = 0;
     virtual ULONGLONG Seek(LONGLONG lOff, UINT nFrom) = 0;
@@ -73,7 +73,7 @@ public:
 
 class CSafeFile : public CFile, public CFileDataIO
 {
-public:
+  public:
     CSafeFile() {}
     CSafeFile::CSafeFile(LPCTSTR lpszFileName, UINT nOpenFlags)
         : CFile(lpszFileName, nOpenFlags) {}
@@ -91,7 +91,7 @@ public:
 
 class CSafeMemFile : public CMemFile, public CFileDataIO
 {
-public:
+  public:
     CSafeMemFile(UINT nGrowBytes = 512)
         : CMemFile(nGrowBytes) {}
     //CSafeMemFile::CSafeMemFile(BYTE* lpBuffer, UINT nBufferSize, UINT nGrowBytes = 0)
@@ -131,7 +131,7 @@ public:
 
 class CSafeBufferedFile : public CStdioFile, public CFileDataIO
 {
-public:
+  public:
     CSafeBufferedFile() {}
     CSafeBufferedFile::CSafeBufferedFile(LPCTSTR lpszFileName, UINT nOpenFlags)
         : CStdioFile(lpszFileName, nOpenFlags) {}
@@ -201,7 +201,7 @@ __inline void PokeUInt64(void* p, uint64 nVal)
 template<class T>
 class Array
 {
-public:
+  public:
     Array(UINT nCount)
     {
         m_aT = new T[nCount];
@@ -216,6 +216,6 @@ public:
         return m_aT;
     }
 
-protected:
+  protected:
     T* m_aT;
 };

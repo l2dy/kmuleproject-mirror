@@ -41,7 +41,7 @@ namespace Kademlia
 {
 class CRoutingBin
 {
-public:
+  public:
     ~CRoutingBin();
     CRoutingBin();
     bool AddContact(CContact* pContact);
@@ -65,17 +65,17 @@ public:
 
     bool m_bDontDeleteContacts;
 
-protected:
+  protected:
     static void			AdjustGlobalTracking(UINT uIP, bool bIncrease);
 
-private:
+  private:
     ContactList m_listEntries;
 
     static CMap<UINT, UINT, UINT, UINT> s_mapGlobalContactIPs;
     static CMap<UINT, UINT, UINT, UINT> s_mapGlobalContactSubnets;
 
 //>>> WiZaRd::IPFiltering
-public:
+  public:
     void		RemoveFilteredContacts();
 //<<< WiZaRd::IPFiltering
 };

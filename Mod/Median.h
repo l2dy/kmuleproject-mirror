@@ -22,7 +22,7 @@
 
 template <class T> class CMedian
 {
-public:
+  public:
     CMedian()	{}
     ~CMedian()	{}
 
@@ -74,6 +74,6 @@ public:
         sort(m_MedianValues.begin(), m_MedianValues.end());
     }
 
-private:
+  private:
     std::vector<T>	m_MedianValues;
 };

@@ -5,7 +5,7 @@
 
 class COScopeCtrl : public CWnd
 {
-public:
+  public:
     COScopeCtrl(const int NTrends = 1);
     virtual ~COScopeCtrl();
 
@@ -55,7 +55,7 @@ public:
     COLORREF m_crBackColor;        // background color
     COLORREF m_crGridColor;        // grid color
 
-protected:
+  protected:
     int m_NTrends;
 
     struct CustShiftStruct  // when m_nTrendPoints > 0, this structure will contain needed vars

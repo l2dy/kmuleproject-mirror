@@ -15,11 +15,11 @@ class CSchema;
 
 class CSchemaParser : public CParserBase
 {
-private:
+  private:
 
     CSchema * m_pSchema;
 
-public:
+  public:
 
     inline CSchemaParser(ISAXXMLReader *pReader, CParserBase *pParent, DWORD dwLevel, CSchema *pSchema = NULL)
         :CParserBase(pReader, pParent, dwLevel), m_pSchema(pSchema)

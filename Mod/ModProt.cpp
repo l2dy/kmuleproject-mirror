@@ -48,12 +48,12 @@ void CUpDownClient::SendModInfoPacket() const
     tagList.AddTail(new CTag(CT_MOD_VERSION, MOD_VERSION));
 
     // Misc mod community features
-#ifdef IPV6_SUPPORT	
+#ifdef IPV6_SUPPORT
     const UINT uSupportsIPv6		= 1; //>>> WiZaRd::IPv6 [Xanatos]
 #endif
     const UINT uSupportsExtXS		= 1; //>>> WiZaRd::ExtendedXS [Xanatos]
     tagList.AddTail(new CTag(CT_EMULE_MISCOPTIONS1,
-#ifdef IPV6_SUPPORT	
+#ifdef IPV6_SUPPORT
                              (uSupportsIPv6			<<  1) |	//>>> WiZaRd::IPv6 [Xanatos]
 #endif
                              (uSupportsExtXS			<<  0)		//>>> WiZaRd::ExtendedXS [Xanatos]
@@ -97,14 +97,14 @@ void CUpDownClient::ProcessModInfoPacket(const uchar* pachPacket, const UINT nSi
         m_strModInfo.AppendFormat(L"  Tags=%u", tagcount);
 #endif
 
-	// just to be sure: clear all mod related stuff, first
-#ifdef IPV6_SUPPORT	
-	m_fSupportsIPv6			= 0; //>>> WiZaRd::IPv6 [Xanatos]
+    // just to be sure: clear all mod related stuff, first
+#ifdef IPV6_SUPPORT
+    m_fSupportsIPv6			= 0; //>>> WiZaRd::IPv6 [Xanatos]
 #endif
 #ifdef NAT_TRAVERSAL
-	m_fSupportsNatTraversal	= 0; //>>> WiZaRd::NatTraversal [Xanatos]
+    m_fSupportsNatTraversal	= 0; //>>> WiZaRd::NatTraversal [Xanatos]
 #endif
-	m_fSupportsExtendedXS	= 0; //>>> WiZaRd::ExtendedXS [Xanatos]
+    m_fSupportsExtendedXS	= 0; //>>> WiZaRd::ExtendedXS [Xanatos]
 
     // now we are going to read all of them
     for (UINT i = 0; i < tagcount; ++i)
@@ -134,10 +134,10 @@ void CUpDownClient::ProcessModInfoPacket(const uchar* pachPacket, const UINT nSi
                 //	1 ExtendedXS
                 if (temptag.IsInt())
                 {
-#ifdef IPV6_SUPPORT	
+#ifdef IPV6_SUPPORT
                     m_fSupportsIPv6			= (temptag.GetInt() >>  1) & 0x01; //>>> WiZaRd::IPv6 [Xanatos]
 #else
-					UINT m_fSupportsIPv6	= (temptag.GetInt() >>  1) & 0x01; //>>> WiZaRd::IPv6 [Xanatos]
+                    UINT m_fSupportsIPv6	= (temptag.GetInt() >>  1) & 0x01; //>>> WiZaRd::IPv6 [Xanatos]
 #endif
                     m_fSupportsExtendedXS	= (temptag.GetInt() >>  0) & 0x01; //>>> WiZaRd::ExtendedXS [Xanatos]
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
@@ -191,7 +191,7 @@ bool CClientReqSocket::ProcessModPacket(const BYTE* packet, const UINT size, con
 
             switch (opcode) // dispatch particular packets
             {
-                    // for the mod prot v1 (capability exchange) only this one packet is relevant, the mod info packet
+                // for the mod prot v1 (capability exchange) only this one packet is relevant, the mod info packet
                 case OP_MODINFOPACKET:
                 {
 #if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
@@ -211,8 +211,8 @@ bool CClientReqSocket::ProcessModPacket(const BYTE* packet, const UINT size, con
                     if (client->GetInfoPacketsReceived() == IP_BOTH)
                         client->InfoPacketsReceived();
 
-					// Now after we have all informations about the client the connection is established
-					client->ConnectionEstablished();
+                    // Now after we have all informations about the client the connection is established
+                    client->ConnectionEstablished();
                     break;
                 }
 

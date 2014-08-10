@@ -5,7 +5,7 @@
 
 class CBuffer
 {
-public:
+  public:
     CBuffer()
     {
         Init();
@@ -37,7 +37,7 @@ public:
     virtual bool	AppendData(const void* pData, size_t uLength);
     virtual bool	ShiftData(size_t uOffset);
 
-protected:
+  protected:
     void			Init();
     bool			PrepareWrite(size_t uOffset, size_t uLength);
 

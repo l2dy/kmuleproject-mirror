@@ -25,7 +25,7 @@ class CUploadListCtrl : public CMuleListCtrl, public CListCtrlItemWalk
 {
     DECLARE_DYNAMIC(CUploadListCtrl)
 
-public:
+  public:
     CUploadListCtrl();
     virtual ~CUploadListCtrl();
 
@@ -44,7 +44,7 @@ public:
     void	Localize();
     void	ShowSelectedUserDetails();
 
-protected:
+  protected:
     CImageList m_ImageList;
     CToolTipCtrlX *m_tooltip;
 

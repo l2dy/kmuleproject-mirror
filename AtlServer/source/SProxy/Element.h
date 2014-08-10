@@ -17,7 +17,7 @@ class CSimpleType;
 
 class CElement : public CXSDElement
 {
-private:
+  private:
 
     CAtlPtrList<CXSDElement *> m_elements;
     CStringW m_strName;
@@ -30,7 +30,7 @@ private:
     CStringW m_strArrayType;
     CStringW m_strSizeIs;
 
-public:
+  public:
 
     CElement()
         :m_nMinOccurs(-1), m_nMaxOccurs(-1), m_bNullable(FALSE)

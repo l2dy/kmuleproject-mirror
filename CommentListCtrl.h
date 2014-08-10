@@ -27,7 +27,7 @@ class CCommentListCtrl : public CMuleListCtrl
 {
     DECLARE_DYNAMIC(CCommentListCtrl)
 
-public:
+  public:
     CCommentListCtrl();
     virtual ~CCommentListCtrl();
 
@@ -35,7 +35,7 @@ public:
     void AddItem(const CUpDownClient* client);
     void AddItem(const Kademlia::CEntry* entry);
 
-protected:
+  protected:
     struct SComment
     {
         SComment(const void* pClientCookie, int iRating, const CString& strComment,

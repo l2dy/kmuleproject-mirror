@@ -160,12 +160,12 @@ class CSchema;
 
 class CXSDElement : public CXMLElement
 {
-private:
+  private:
 
     XSDELEMENT_TYPE m_elementType;
     CSchema * m_pParentSchema;
 
-public:
+  public:
 
     CXSDElement(CXMLElement * pParentElement = NULL, XSDELEMENT_TYPE elementType = XSD_UNK)
         :m_elementType(elementType)

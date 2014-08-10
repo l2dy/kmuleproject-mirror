@@ -30,21 +30,21 @@ typedef union
 class CMD4
 {
 // Construction
-public:
+  public:
     CMD4();
     virtual ~CMD4();
 
     static bool VerifyImplementation();
 
 // Attributes
-protected:
+  protected:
     // NOTE: if you change this, modify the offsets in MD4_ASM.ASM accordingly
     DWORD	m_nState[4];
     DWORD	m_nCount[2];
     BYTE	m_nBuffer[64];
 
 // Operations
-public:
+  public:
     void	Reset();
     void	Add(LPCVOID pData, DWORD nLength);
     void	Finish();

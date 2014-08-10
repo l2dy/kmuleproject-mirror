@@ -13,11 +13,11 @@ class CWSDLService;
 
 class CWSDLServiceParser : public CParserBase
 {
-private:
+  private:
 
     CWSDLService *m_pService;
 
-public:
+  public:
 
     inline CWSDLServiceParser(ISAXXMLReader *pReader, CParserBase *pParent, DWORD dwLevel, CWSDLService *pService = NULL)
         :CParserBase(pReader, pParent, dwLevel), m_pService(pService)

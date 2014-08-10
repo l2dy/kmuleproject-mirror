@@ -24,14 +24,14 @@ struct LOCATORINFO
 
 class CXMLElement
 {
-private:
+  private:
 
     CXMLDocument * m_pParentDocument;
     CXMLElement * m_pParentElement;
     NAMESPACEMAP m_namespaceMap;
     LOCATORINFO m_locInfo;
 
-public:
+  public:
     virtual ~CXMLElement() = 0 {};
 
     inline CXMLElement(CXMLDocument *pDoc = NULL, CXMLElement * pParentElement = NULL)

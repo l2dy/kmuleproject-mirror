@@ -45,7 +45,7 @@ namespace Kademlia
 {
 class CKadTagNameString : protected CStringA
 {
-public:
+  public:
     CKadTagNameString()
     {}
 
@@ -115,7 +115,7 @@ public:
 
 class CKadTagValueString : public CStringW
 {
-public:
+  public:
     CKadTagValueString()
     {}
 
@@ -168,7 +168,7 @@ public:
 
 class CKadTag
 {
-public:
+  public:
     byte	m_type;
     CKadTagNameString m_name;
 
@@ -242,7 +242,7 @@ public:
         return NULL;
     }
 
-protected:
+  protected:
     CKadTag()
     {}
 }
@@ -251,7 +251,7 @@ protected:
 
 class CKadTagUnk : public CKadTag
 {
-public:
+  public:
     CKadTagUnk(byte type, LPCSTR name)
         : CKadTag(type, name)
     { }
@@ -265,7 +265,7 @@ public:
 
 class CKadTagStr : public CKadTag
 {
-public:
+  public:
     CKadTagStr(LPCSTR name, LPCWSTR value, int len)
         : CKadTag(TAGTYPE_STRING, name)
         , m_value(value, len)
@@ -286,13 +286,13 @@ public:
         return m_value;
     }
 
-protected:
+  protected:
     CKadTagValueString m_value;
 };
 
 class CKadTagUInt : public CKadTag
 {
-public:
+  public:
     CKadTagUInt(LPCSTR name, uint64 value)
         : CKadTag(0xFE, name)
         , m_value(value)
@@ -308,13 +308,13 @@ public:
         return m_value;
     }
 
-protected:
+  protected:
     uint64 m_value;
 };
 
 class CKadTagUInt64 : public CKadTag
 {
-public:
+  public:
     CKadTagUInt64(LPCSTR name, uint64 value)
         : CKadTag(TAGTYPE_UINT64, name)
         , m_value(value)
@@ -330,13 +330,13 @@ public:
         return m_value;
     }
 
-protected:
+  protected:
     uint64 m_value;
 };
 
 class CKadTagUInt32 : public CKadTag
 {
-public:
+  public:
     CKadTagUInt32(LPCSTR name, UINT value)
         : CKadTag(TAGTYPE_UINT32, name)
         , m_value(value)
@@ -352,14 +352,14 @@ public:
         return m_value;
     }
 
-protected:
+  protected:
     UINT m_value;
 };
 
 
 class CKadTagFloat : public CKadTag
 {
-public:
+  public:
     CKadTagFloat(LPCSTR name, float value)
         : CKadTag(TAGTYPE_FLOAT32, name)
         , m_value(value)
@@ -375,14 +375,14 @@ public:
         return m_value;
     }
 
-protected:
+  protected:
     float m_value;
 };
 
 
 class CKadTagBool : public CKadTag
 {
-public:
+  public:
     CKadTagBool(LPCSTR name, bool value)
         : CKadTag(TAGTYPE_BOOL, name)
         , m_value(value)
@@ -398,14 +398,14 @@ public:
         return m_value;
     }
 
-protected:
+  protected:
     bool m_value;
 };
 
 
 class CKadTagUInt16 : public CKadTag
 {
-public:
+  public:
     CKadTagUInt16(LPCSTR name, uint16 value)
         : CKadTag(TAGTYPE_UINT16, name)
         , m_value(value)
@@ -421,14 +421,14 @@ public:
         return m_value;
     }
 
-protected:
+  protected:
     uint16 m_value;
 };
 
 
 class CKadTagUInt8 : public CKadTag
 {
-public:
+  public:
     CKadTagUInt8(LPCSTR name, uint8 value)
         : CKadTag(TAGTYPE_UINT8, name)
         , m_value(value)
@@ -444,14 +444,14 @@ public:
         return m_value;
     }
 
-protected:
+  protected:
     uint8 m_value;
 };
 
 
 class CKadTagBsob : public CKadTag
 {
-public:
+  public:
     CKadTagBsob(LPCSTR name, const BYTE* value, uint8 nSize)
         : CKadTag(TAGTYPE_BSOB, name)
     {
@@ -485,7 +485,7 @@ public:
         return m_size;
     }
 
-protected:
+  protected:
     BYTE* m_value;
     uint8 m_size;
 };
@@ -493,7 +493,7 @@ protected:
 
 class CKadTagHash : public CKadTag
 {
-public:
+  public:
     CKadTagHash(LPCSTR name, const BYTE* value)
         : CKadTag(TAGTYPE_HASH, name)
     {
@@ -521,7 +521,7 @@ public:
         return m_value;
     }
 
-protected:
+  protected:
     BYTE* m_value;
 };
 }

@@ -195,7 +195,7 @@ BEGIN_MESSAGE_MAP(CemuleDlg, CTrayDialog)
     ON_MESSAGE(TM_SEVENZIP_JOB_DONE, OnSevenZipJobDone)
     ON_MESSAGE(TM_SEVENZIP_JOB_FAILED, OnSevenZipJobFailed)
 //<<< WiZaRd::7zip
-	ON_MESSAGE(TM_UPLOAD_TIMER, OnUploadTimer) //>>> WiZaRd::Catch exceptions
+    ON_MESSAGE(TM_UPLOAD_TIMER, OnUploadTimer) //>>> WiZaRd::Catch exceptions
 
 #ifdef HAVE_WIN7_SDK_H
     ON_REGISTERED_MESSAGE(UWM_TASK_BUTTON_CREATED, OnTaskbarBtnCreated)
@@ -263,7 +263,7 @@ CemuleDlg::CemuleDlg(CWnd* pParent /*=NULL*/)
     snarlInterface = new SnarlInterface;
     HookSnarl();
 //<<< TuXaRd::SnarlSupport
-	m_AICHSyncThread = NULL; //>>> WiZaRd::Fix crash on exit
+    m_AICHSyncThread = NULL; //>>> WiZaRd::Fix crash on exit
 }
 
 CemuleDlg::~CemuleDlg()
@@ -642,13 +642,13 @@ BOOL CemuleDlg::OnInitDialog()
     // start aichsyncthread
 //>>> WiZaRd::Fix crash on exit
     m_AICHSyncThread = AfxBeginThread(RUNTIME_CLASS(CAICHSyncThread), THREAD_PRIORITY_BELOW_NORMAL, 0, CREATE_SUSPENDED);
-	if (m_AICHSyncThread)
-		m_AICHSyncThread->ResumeThread();
-	else
-	{
-		ASSERT(0);
-		TRACE(L"Failed to create AICH sync thread!\n");
-	}		
+    if (m_AICHSyncThread)
+        m_AICHSyncThread->ResumeThread();
+    else
+    {
+        ASSERT(0);
+        TRACE(L"Failed to create AICH sync thread!\n");
+    }
 //<<< WiZaRd::Fix crash on exit
 
     // debug info
@@ -748,7 +748,7 @@ void CALLBACK CemuleDlg::StartupTimer(HWND /*hwnd*/, UINT /*uiMsg*/, UINT /*idEv
                 theApp.emuledlg->StopTimer();
                 break;
 
-                // Temp states that aren't actually reached
+            // Temp states that aren't actually reached
             case 1:
             case 3:
                 break;
@@ -1178,7 +1178,7 @@ void CemuleDlg::ShowTransferRate(bool bForceAll)
     {
         statusbar->SetText(strTransferRate, SBarUpDown, 0);
         ShowTransferStateIcon();
-		ShowConnectionStateIcon();
+        ShowConnectionStateIcon();
     }
     if (IsWindowVisible() && thePrefs.ShowRatesOnTitle())
     {
@@ -1703,8 +1703,8 @@ bool CemuleDlg::CanClose()
 {
     if (theApp.m_app_state == APP_STATE_RUNNING && thePrefs.IsConfirmExitEnabled())
     {
-		if (IsIconic())
-			ShowWindow(SW_SHOWNORMAL); // XMessageBox has a bug when displaying in minimized windows, but it makes sense to restore it for this prompt anyway
+        if (IsIconic())
+            ShowWindow(SW_SHOWNORMAL); // XMessageBox has a bug when displaying in minimized windows, but it makes sense to restore it for this prompt anyway
         int nResult = XMessageBox(GetSafeHwnd(), GetResString(IDS_MAIN_EXIT), GetResString(IDS_CLOSEEMULE), MB_YESNO | MB_DEFBUTTON2 | MB_DONOTASKAGAIN | MB_ICONQUESTION);
         if ((nResult & MB_DONOTASKAGAIN) > 0)
             thePrefs.SetConfirmExit(false);
@@ -1773,13 +1773,13 @@ void CemuleDlg::OnClose()
     sLock1.Lock(2000);
 
 //>>> WiZaRd::Fix crash on exit
-	if (m_AICHSyncThread != NULL)
-	{
-		HANDLE hThread = m_AICHSyncThread->m_hThread;
-		// 2 minutes to let the thread finish
-		if (WaitForSingleObject(hThread, 120000) == WAIT_TIMEOUT)
-			TerminateThread(hThread, 100);
-	}
+    if (m_AICHSyncThread != NULL)
+    {
+        HANDLE hThread = m_AICHSyncThread->m_hThread;
+        // 2 minutes to let the thread finish
+        if (WaitForSingleObject(hThread, 120000) == WAIT_TIMEOUT)
+            TerminateThread(hThread, 100);
+    }
 //<<< WiZaRd::Fix crash on exit
 
     // saving data & stuff
@@ -4003,7 +4003,7 @@ LRESULT CemuleDlg::OnSevenZipJobFailed(WPARAM /*wParam*/, LPARAM /*lParam*/)
 //>>> WiZaRd::Catch exceptions
 afx_msg LRESULT CemuleDlg::OnUploadTimer(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
-	theApp.uploadqueue->UploadTimer();
-	return 0;
+    theApp.uploadqueue->UploadTimer();
+    return 0;
 }
 //<<< WiZaRd::Catch exceptions

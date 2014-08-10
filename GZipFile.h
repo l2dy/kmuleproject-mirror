@@ -20,7 +20,7 @@ typedef struct gzFile_s *gzFile;
 
 class CGZIPFile
 {
-public:
+  public:
     CGZIPFile();
 
     bool Open(LPCTSTR pszFilePath);
@@ -29,7 +29,7 @@ public:
     CString GetUncompressedFilePath() const;
     bool Extract(LPCTSTR pszFilePath);
 
-protected:
+  protected:
     CString m_strGzFilePath;
     gzFile m_gzFile;
 };

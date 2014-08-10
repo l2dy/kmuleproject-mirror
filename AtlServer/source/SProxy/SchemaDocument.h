@@ -11,11 +11,11 @@
 
 class CSchemaDocument : public CXMLDocument
 {
-private:
+  private:
 
     CSchema m_schema;
 
-public:
+  public:
 
     inline CSchema * GetSchema()
     {

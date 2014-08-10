@@ -5,7 +5,7 @@ class CPPgProxy : public CPropertyPage
 {
     DECLARE_DYNAMIC(CPPgProxy)
 
-public:
+  public:
     CPPgProxy();
     virtual ~CPPgProxy();
 
@@ -14,7 +14,7 @@ public:
 
     void Localize(void);
 
-protected:
+  protected:
     ProxySettings proxy;
 
     void LoadSettings();

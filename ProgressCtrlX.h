@@ -53,11 +53,11 @@
 class /*UIBITS_API*/ CProgressCtrlX : public CProgressCtrl
 {
 // Construction
-public:
+  public:
     CProgressCtrlX();
 
 // Attributes
-public:
+  public:
     void SetGradientColors(COLORREF clrStart, COLORREF clrEnd)
     {
         m_ardwGradColors.SetSize(2);
@@ -193,7 +193,7 @@ public:
     }
 
 // Operations
-public:
+  public:
 
 // Overrides
     // ClassWizard generated virtual function overrides
@@ -201,10 +201,10 @@ public:
     //}}AFX_VIRTUAL
 
 // Implementation
-public:
+  public:
     virtual ~CProgressCtrlX() {}
 
-protected:
+  protected:
     struct CDrawInfo
     {
         CDC *pDC;
@@ -239,7 +239,7 @@ protected:
     CRect m_rcBorders;
 
     // Generated message map functions
-protected:
+  protected:
 
     //{{AFX_MSG(CProgressCtrlX)
     afx_msg BOOL OnEraseBkgnd(CDC* pDC);

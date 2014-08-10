@@ -31,7 +31,7 @@ class CMuleListCtrl : public CListCtrl
 {
     DECLARE_DYNAMIC(CMuleListCtrl)
 
-public:
+  public:
     CMuleListCtrl(PFNLVCOMPARE pfnCompare = SortProc, DWORD dwParamSort = 0);
     virtual ~CMuleListCtrl();
 
@@ -220,7 +220,7 @@ public:
         return m_strSkinKey;
     }
 
-protected:
+  protected:
     virtual void PreSubclassWindow();
     virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
     virtual BOOL OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
@@ -285,7 +285,7 @@ protected:
     void OnFindNext();
     void OnFindPrev();
 
-private:
+  private:
     static int	IndexToOrder(CHeaderCtrl* pHeader, int iIndex);
 
     struct MULE_COLUMN

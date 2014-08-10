@@ -182,7 +182,7 @@ class CDummy2 {};
 //
 class CParserBase : public ISAXContentHandler, public CDummy1, public CDummy2
 {
-private:
+  private:
 
     CComPtr<CParserBase> m_spParent;
     CComPtr<ISAXXMLReader> m_spReader;
@@ -208,7 +208,7 @@ private:
     //
     BOOL m_bDynamicAlloc;
 
-private:
+  private:
 
     HRESULT DispatchElement(
         const XMLTAG *pMap,
@@ -229,7 +229,7 @@ private:
                     wchar_t **pwszNs, int *pcchNs,
                     wchar_t **pwszName, int *pcchName);
 
-public:
+  public:
 
     //
     // CParserBase interface

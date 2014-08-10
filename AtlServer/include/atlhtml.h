@@ -197,7 +197,7 @@ extern __declspec(selectany) const ATL_HTML_TAG s_tags[] =
 
 class AtlHtmlAttrs
 {
-public:
+  public:
     CString m_strAttrs;
 
     AtlHtmlAttrs()
@@ -292,7 +292,7 @@ public:
 
 class CStreamOnWriteStream : public IStream
 {
-public:
+  public:
     IWriteStream *m_pWriteStream;
 
     CStreamOnWriteStream()
@@ -397,14 +397,14 @@ public:
 
 class CStreamFormatter
 {
-protected:
+  protected:
     CStreamOnWriteStream m_sows;
     IStream *m_pStream;
     BOOL m_bAddCRLF;
     BOOL m_bEmitUnicode;
     UINT m_nConversionCodepage;
 
-public:
+  public:
     CStreamFormatter()
     {
         m_pStream = NULL;
@@ -594,7 +594,7 @@ public:
 template <typename TData, int nMax=64>
 class CSimpleStack
 {
-public:
+  public:
     int m_nTop;
     TData m_Data[nMax];
 
@@ -655,7 +655,7 @@ struct HTML_SCHEME
 template <class T>
 class CHtmlGenBase : public CStreamFormatter
 {
-public:
+  public:
     T* GetOuter()
     {
         return static_cast<T*>(this);
@@ -1646,7 +1646,7 @@ public:
         return GetOuter()->StartTag(ATL_HTML_TAG_PARAM, NULL, Attrs);
     }
 
-private:
+  private:
     CString m_strState;
     HTML_SCHEME *m_pScheme;
 
@@ -1678,7 +1678,7 @@ private:
 
 class CHtmlGen : public CHtmlGenBase<CHtmlGen>
 {
-public:
+  public:
 };
 
 } // namespace ATL

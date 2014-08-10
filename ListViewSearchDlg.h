@@ -7,7 +7,7 @@ class CListViewSearchDlg : public CDialog
 {
     DECLARE_DYNAMIC(CListViewSearchDlg)
 
-public:
+  public:
     CListViewSearchDlg(CWnd* pParent = NULL);	  // standard constructor
     virtual ~CListViewSearchDlg();
 
@@ -19,7 +19,7 @@ public:
     bool m_bCanSearchInAllColumns;
     int m_iSearchColumn;
 
-protected:
+  protected:
     HICON m_icnWnd;
     CComboBox m_ctlSearchCol;
 

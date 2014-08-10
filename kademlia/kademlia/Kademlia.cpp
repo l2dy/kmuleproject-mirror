@@ -207,16 +207,16 @@ void CKademlia::Process()
         return;
 
 //>>> WiZaRd::Save nodes.dat regularly
-	static DWORD dwLastSavedNodes = ::GetTickCount();
-	const DWORD timer = ::GetTickCount();
-	if (timer - dwLastSavedNodes > MIN2MS(15))
-	{
-		dwLastSavedNodes = timer;
-		m_pInstance->m_pRoutingZone->WriteFile();
+    static DWORD dwLastSavedNodes = ::GetTickCount();
+    const DWORD timer = ::GetTickCount();
+    if (timer - dwLastSavedNodes > MIN2MS(15))
+    {
+        dwLastSavedNodes = timer;
+        m_pInstance->m_pRoutingZone->WriteFile();
 #ifdef _DEBUG
-		m_pInstance->m_pRoutingZone->DbgWriteBootstrapFile();
+        m_pInstance->m_pRoutingZone->DbgWriteBootstrapFile();
 #endif
-	}			
+    }
 //<<< WiZaRd::Save nodes.dat regularly
 
     bool bUpdateUserFile = false;
@@ -354,30 +354,30 @@ void CKademlia::Process()
         }
     }
 
-    if(CKademlia::BootstrappingNeeded())
-	{
-		if(!s_liBootstapList.IsEmpty())
-		{
-			m_tBootstrap = tNow;
-			CContact* pContact = s_liBootstapList.RemoveHead();			
-			DebugLog(_T("Trying to Bootstrap Kad from %s, Distance: %s, Version: %u, %u Contacts left"), ipstr(ntohl(pContact->GetIPAddress())), pContact->GetDistance().ToHexString(),  pContact->GetVersion(), s_liBootstapList.GetCount());
-			m_pInstance->m_pUDPListener->Bootstrap(pContact->GetIPAddress(), pContact->GetUDPPort(), pContact->GetVersion(), &pContact->GetClientID());
-			delete pContact;
-		}
+    if (CKademlia::BootstrappingNeeded())
+    {
+        if (!s_liBootstapList.IsEmpty())
+        {
+            m_tBootstrap = tNow;
+            CContact* pContact = s_liBootstapList.RemoveHead();
+            DebugLog(_T("Trying to Bootstrap Kad from %s, Distance: %s, Version: %u, %u Contacts left"), ipstr(ntohl(pContact->GetIPAddress())), pContact->GetDistance().ToHexString(),  pContact->GetVersion(), s_liBootstapList.GetCount());
+            m_pInstance->m_pUDPListener->Bootstrap(pContact->GetIPAddress(), pContact->GetUDPPort(), pContact->GetVersion(), &pContact->GetClientID());
+            delete pContact;
+        }
 //>>> WiZaRd::Nodes.dat Autoupdate
-		else
-		{
-			static bool bUpdated = false;
-			if (!bUpdated)
-			{
-				m_tBootstrap = tNow;
-				const CString strFilename = thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + L"nodes.dat";
-				if (!::PathFileExists(strFilename) || GetKadContactCount() == 0)
-					bUpdated = UpdateNodesDatFromURL(MOD_NODES_URL);
-			}
-		}
+        else
+        {
+            static bool bUpdated = false;
+            if (!bUpdated)
+            {
+                m_tBootstrap = tNow;
+                const CString strFilename = thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + L"nodes.dat";
+                if (!::PathFileExists(strFilename) || GetKadContactCount() == 0)
+                    bUpdated = UpdateNodesDatFromURL(MOD_NODES_URL);
+            }
+        }
 //<<< WiZaRd::Nodes.dat Autoupdate
-	}
+    }
 
     if (GetUDPListener() != NULL)
         GetUDPListener()->ExpireClientSearch(); // function does only one compare in most cases, so no real need for a timer
@@ -475,13 +475,13 @@ bool CKademlia::GetPublish()
 
 void CKademlia::Bootstrap(LPCTSTR szHost, const uint16 uPort)
 {
-	if(CKademlia::BootstrappingNeeded() && m_pInstance->m_pUDPListener->Bootstrap(szHost, uPort))
+    if (CKademlia::BootstrappingNeeded() && m_pInstance->m_pUDPListener->Bootstrap(szHost, uPort))
         m_tBootstrap = time(NULL);
 }
 
 void CKademlia::Bootstrap(const UINT uIP, const uint16 uPort)
 {
-    if(CKademlia::BootstrappingNeeded() && m_pInstance->m_pUDPListener->Bootstrap(uIP, uPort))
+    if (CKademlia::BootstrappingNeeded() && m_pInstance->m_pUDPListener->Bootstrap(uIP, uPort))
         m_tBootstrap = time(NULL);
 }
 
@@ -499,7 +499,7 @@ void CKademlia::RecheckFirewalled()
             // also UDP check
             CUDPFirewallTester::ReCheckFirewallUDP(false);
 #ifdef _DEBUG
-			theApp.QueueLogLineEx(LOG_WARNING, L"Rechecking firewalled state - DON'T PANIC, this will just take a few moments! Last firewalled state: %s", m_pInstance->GetPrefs()->GetLastFirewalledState() ? GetResString(IDS_FIREWALLED) : GetResString(IDS_IDHIGH));
+            theApp.QueueLogLineEx(LOG_WARNING, L"Rechecking firewalled state - DON'T PANIC, this will just take a few moments! Last firewalled state: %s", m_pInstance->GetPrefs()->GetLastFirewalledState() ? GetResString(IDS_FIREWALLED) : GetResString(IDS_IDHIGH));
 #endif
         }
     }
@@ -746,11 +746,11 @@ bool CKademlia::IsRunningInLANMode()
 
 bool CKademlia::BootstrappingNeeded()
 {
-	time_t tNow = time(NULL);		
-	return m_pInstance 
-		&& m_pInstance->m_pUDPListener
-		&& !IsConnected() 		
-		&& (tNow - m_tBootstrap > 15 || (GetRoutingZone()->GetNumContacts() == 0 && tNow - m_tBootstrap >= 2));
+    time_t tNow = time(NULL);
+    return m_pInstance
+           && m_pInstance->m_pUDPListener
+           && !IsConnected()
+           && (tNow - m_tBootstrap > 15 || (GetRoutingZone()->GetNumContacts() == 0 && tNow - m_tBootstrap >= 2));
 }
 
 //>>> WiZaRd::IPFiltering

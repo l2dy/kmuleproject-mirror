@@ -8,7 +8,7 @@
 // CDepSettings holds all of our deployment settings
 class CDepSettings
 {
-public:
+  public:
     CDepSettings();
     unsigned int Load(LPCSTR szSettingsPath);
     HRESULT GetHostList(IXMLDOMNodeList **ppList);
@@ -43,7 +43,7 @@ public:
         return m_nAppIsolation == INVALID_SETTING ? 0 : m_nAppIsolation;
     }
     short GetIISMajorVer();
-private:
+  private:
     CComPtr<IXMLDOMNodeList> m_spHostList;
     CComPtr<IXMLDOMNodeList> m_spAppMappings;
     CComPtr<IXMLDOMNodeList> m_spAppFileGroups;

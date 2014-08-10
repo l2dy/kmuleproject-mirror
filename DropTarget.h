@@ -7,7 +7,7 @@ struct PASTEURLDATA;
 
 class CMainFrameDropTarget : public COleDropTarget
 {
-public:
+  public:
     CMainFrameDropTarget();
 
     virtual DROPEFFECT OnDragEnter(CWnd* pWnd, COleDataObject* pDataObject, DWORD dwKeyState, CPoint point);
@@ -15,7 +15,7 @@ public:
     virtual BOOL OnDrop(CWnd* pWnd, COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point);
     virtual void OnDragLeave(CWnd* pWnd);
 
-protected:
+  protected:
     BOOL m_bDropDataValid;
     CLIPFORMAT m_cfHTML;
     CLIPFORMAT m_cfShellURL;

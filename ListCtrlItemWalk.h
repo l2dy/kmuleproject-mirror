@@ -2,7 +2,7 @@
 
 class CListCtrlItemWalk
 {
-public:
+  public:
     CListCtrlItemWalk(CListCtrl* pListCtrl)
     {
         m_pListCtrl = pListCtrl;
@@ -16,6 +16,6 @@ public:
         return m_pListCtrl;
     }
 
-protected:
+  protected:
     CListCtrl* m_pListCtrl;
 };

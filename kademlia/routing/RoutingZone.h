@@ -54,7 +54,7 @@ class CKadUDPKey;
 class CRoutingZone
 {
     friend CRoutingZone;
-public:
+  public:
     CRoutingZone();
     ~CRoutingZone();
 
@@ -84,17 +84,17 @@ public:
     bool		HasOnlyLANNodes() const;
     time_t m_tNextBigTimer;
     time_t m_tNextSmallTimer;
-private:
+  private:
     CRoutingZone(CRoutingZone *pSuper_zone, int iLevel, const CUInt128 &uZone_index);
     void Init(CRoutingZone *pSuper_zone, int iLevel, const CUInt128 &uZone_index);
     UINT ReadBootstrapNodesDat(CFileDataIO& file);
 
-public: //>>> WiZaRd::Save nodes.dat regularly
+  public: //>>> WiZaRd::Save nodes.dat regularly
 #ifdef _DEBUG
     void DbgWriteBootstrapFile();
 #endif
     void WriteFile();
-private: //>>> WiZaRd::Save nodes.dat regularly
+  private: //>>> WiZaRd::Save nodes.dat regularly
 
     bool IsLeaf() const;
     bool CanSplit() const;
@@ -141,7 +141,7 @@ private: //>>> WiZaRd::Save nodes.dat regularly
     CRoutingBin *m_pBin;
 
 //>>> WiZaRd::IPFiltering
-public:
+  public:
     void		RemoveFilteredContacts();
 //<<< WiZaRd::IPFiltering
 };

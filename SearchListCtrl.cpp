@@ -71,11 +71,11 @@ class CSearchResultFileDetailSheet : public CListViewWalkerPropertySheet
 {
     DECLARE_DYNAMIC(CSearchResultFileDetailSheet)
 
-public:
+  public:
     CSearchResultFileDetailSheet(CTypedPtrList<CPtrList, CSearchFile*>& paFiles, UINT uPshInvokePage = 0, CListCtrlItemWalk* pListCtrl = NULL);
     virtual ~CSearchResultFileDetailSheet();
 
-protected:
+  protected:
     CMetaDataDlg m_wndMetaData;
     CCommentDialogLst m_wndComments;
 
@@ -1206,12 +1206,12 @@ void CSearchListCtrl::OnLvnGetInfoTip(NMHDR *pNMHDR, LRESULT *pResult)
                         CString strTag;
                         switch (tag->GetNameID())
                         {
-                                /*case FT_FILENAME:
-                                    strTag.Format(_T("%s: %s"), GetResString(IDS_SW_NAME), tag->GetStr());
-                                    break;
-                                case FT_FILESIZE:
-                                    strTag.Format(_T("%s: %s"), GetResString(IDS_DL_SIZE), FormatFileSize(tag->GetInt64()));
-                                    break;*/
+                            /*case FT_FILENAME:
+                                strTag.Format(_T("%s: %s"), GetResString(IDS_SW_NAME), tag->GetStr());
+                                break;
+                            case FT_FILESIZE:
+                                strTag.Format(_T("%s: %s"), GetResString(IDS_DL_SIZE), FormatFileSize(tag->GetInt64()));
+                                break;*/
                             case FT_FILETYPE:
                                 strTag.Format(_T("%s: %s"), GetResString(IDS_TYPE), tag->GetStr());
                                 break;

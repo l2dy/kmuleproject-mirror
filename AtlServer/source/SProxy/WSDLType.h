@@ -10,13 +10,13 @@
 
 class CWSDLType : public CXMLElement
 {
-private:
+  private:
 
     CStringW m_strDocumentation;
 
     CAtlPtrList<CSchema *> m_schemas;
 
-public:
+  public:
 
     inline CSchema * AddSchema(CSchema * p = NULL)
     {

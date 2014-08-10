@@ -21,7 +21,7 @@
 
 class CWebHelper
 {
-public:
+  public:
     CWebHelper();
     virtual ~CWebHelper();
 
@@ -31,7 +31,7 @@ public:
     bool	LoadToFileFromURL(const CString& path, const CString& sURL, const CString& sUser = L"", const CString& sPass = L"");
     static void	CrackURL(CString sURL, CString& mainpage, CString& subpage);
 
-private:
+  private:
     CString m_strUserAgent;
 
     HINTERNET m_hINet;

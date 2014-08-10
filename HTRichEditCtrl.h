@@ -6,7 +6,7 @@ class CHTRichEditCtrl : public CRichEditCtrl
 {
     DECLARE_DYNAMIC(CHTRichEditCtrl)
 
-public:
+  public:
     CHTRichEditCtrl();
     virtual ~CHTRichEditCtrl();
 
@@ -63,7 +63,7 @@ public:
     void SetFont(CFont* pFont, BOOL bRedraw = TRUE);
     CFont* GetFont() const;
 
-protected:
+  protected:
     bool m_bRichEdit;
     int m_iLimitText;
     bool m_bAutoScroll;

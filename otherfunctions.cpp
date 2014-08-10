@@ -1867,7 +1867,7 @@ CString GetFileTypeDisplayStrFromED2KFileType(LPCTSTR pszED2KFileType)
 
 class CED2KFileTypes
 {
-public:
+  public:
     CED2KFileTypes()
     {
         qsort(g_aED2KFileTypes, _countof(g_aED2KFileTypes), sizeof g_aED2KFileTypes[0], CompareE2DKFileType);
@@ -3128,7 +3128,7 @@ bool IsDaylightSavingTimeActive(LONG& rlDaylightBias)
 
 class CVolumeInfo
 {
-public:
+  public:
     static bool IsNTFSVolume(LPCTSTR pszVolume)
     {
         return (_tcscmp(GetVolumeInfo(pszVolume), L"NTFS") == 0);
@@ -3182,7 +3182,7 @@ public:
         }
     }
 
-protected:
+  protected:
     static CMapStringToString m_mapVolumeInfo;
 };
 
@@ -3625,11 +3625,11 @@ void AddAutoStart()
                 L"Software\\Microsoft\\Windows\\CurrentVersion\\Run",
                 REG_NONE,REG_OPTION_NON_VOLATILE,
                 KEY_ALL_ACCESS,	NULL,NULL);
-	if (mKey != NULL)
-	{
-		mKey.SetStringValue(strKeyName, sFullExeCommand);
-		mKey.Close();
-	}
+    if (mKey != NULL)
+    {
+        mKey.SetStringValue(strKeyName, sFullExeCommand);
+        mKey.Close();
+    }
 #endif
 }
 
@@ -3642,11 +3642,11 @@ void RemAutoStart()
                 L"Software\\Microsoft\\Windows\\CurrentVersion\\Run",
                 REG_NONE,REG_OPTION_NON_VOLATILE,
                 KEY_ALL_ACCESS,	NULL,NULL);
-	if (mKey != NULL)
-	{
-		mKey.DeleteValue(strKeyName);
-		mKey.Close();
-	}
+    if (mKey != NULL)
+    {
+        mKey.DeleteValue(strKeyName);
+        mKey.Close();
+    }
 }
 
 int FontPointSizeToLogUnits(int nPointSize)
@@ -4272,9 +4272,9 @@ uint8 GetMyConnectOptions(const bool bEncryption, const bool bCallback)
     const uint8 uDirectUDPCallback	= (bCallback && theApp.IsFirewalled() && Kademlia::CKademlia::IsRunning() && !Kademlia::CUDPFirewallTester::IsFirewalledUDP(true) && Kademlia::CUDPFirewallTester::IsVerified()) ? 1 : 0;
 
 #ifdef NAT_TRAVERSAL
-	const uint8 uSupportsNatTraversal	= bNATTraversal ? 1 : 0; //>>> WiZaRd::NatTraversal [Xanatos]
+    const uint8 uSupportsNatTraversal	= bNATTraversal ? 1 : 0; //>>> WiZaRd::NatTraversal [Xanatos]
 #else
-	const uint8 uSupportsNatTraversal	= 0;
+    const uint8 uSupportsNatTraversal	= 0;
 #endif
     const uint8 byCryptOptions = (uSupportsNatTraversal << 7) | (uDirectUDPCallback << 3) | (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
     //const uint8 byCryptOptions = (uDirectUDPCallback << 3) | (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
@@ -4426,7 +4426,7 @@ void ShowNetworkInfo()
 
 bool UpdateNodesDatFromURL(CString strURL)
 {
-	bool success = false;
+    bool success = false;
     CString strTempFilename;
     strTempFilename.Format(L"%stemp-%d-nodes.dat", thePrefs.GetMuleDirectory(EMULE_CONFIGDIR), ::GetTickCount());
 
@@ -4438,17 +4438,17 @@ bool UpdateNodesDatFromURL(CString strURL)
     dlgDownload.m_sFileToDownloadInto = strTempFilename;
     if (dlgDownload.DoModal() != IDOK)
         LogError(LOG_STATUSBAR, GetResString(IDS_ERR_FAILEDDOWNLOADNODES), strURL);
-	else
-	{
-		if (!Kademlia::CKademlia::IsRunning())
-		{
-			Kademlia::CKademlia::Start();
-			theApp.emuledlg->ShowConnectionState();
-		}
-		success = Kademlia::CKademlia::GetRoutingZone()->ReadFile(strTempFilename) != 0;
-		(void)_tremove(strTempFilename);
-	}
-	return success;
+    else
+    {
+        if (!Kademlia::CKademlia::IsRunning())
+        {
+            Kademlia::CKademlia::Start();
+            theApp.emuledlg->ShowConnectionState();
+        }
+        success = Kademlia::CKademlia::GetRoutingZone()->ReadFile(strTempFilename) != 0;
+        (void)_tremove(strTempFilename);
+    }
+    return success;
 }
 
 CList<Kademlia::CContact*> m_lContacts;
@@ -4640,89 +4640,89 @@ bool IsPortInUse(const uint16 port)
 
 bool PortStateInUse(const DWORD dwState)
 {
-	bool inUse = false;
+    bool inUse = false;
 
-	switch(dwState)
-	{
-		case MIB_TCP_STATE_CLOSED:
-		case MIB_TCP_STATE_FIN_WAIT1:
-		case MIB_TCP_STATE_FIN_WAIT2:
-		case MIB_TCP_STATE_CLOSE_WAIT:
-		case MIB_TCP_STATE_CLOSING:
-		case MIB_TCP_STATE_LAST_ACK:
-		case MIB_TCP_STATE_TIME_WAIT:
-		case MIB_TCP_STATE_DELETE_TCB:
-			break;
+    switch (dwState)
+    {
+        case MIB_TCP_STATE_CLOSED:
+        case MIB_TCP_STATE_FIN_WAIT1:
+        case MIB_TCP_STATE_FIN_WAIT2:
+        case MIB_TCP_STATE_CLOSE_WAIT:
+        case MIB_TCP_STATE_CLOSING:
+        case MIB_TCP_STATE_LAST_ACK:
+        case MIB_TCP_STATE_TIME_WAIT:
+        case MIB_TCP_STATE_DELETE_TCB:
+            break;
 
-		case MIB_TCP_STATE_SYN_SENT:
-		case MIB_TCP_STATE_SYN_RCVD:
-		case MIB_TCP_STATE_ESTAB:
-		case MIB_TCP_STATE_LISTEN:
-			inUse = true;
-			break;
-	}
-	return inUse;
+        case MIB_TCP_STATE_SYN_SENT:
+        case MIB_TCP_STATE_SYN_RCVD:
+        case MIB_TCP_STATE_ESTAB:
+        case MIB_TCP_STATE_LISTEN:
+            inUse = true;
+            break;
+    }
+    return inUse;
 }
 
 CString DebugPortState(const DWORD dwState)
 {
-	CString strState = L"";
+    CString strState = L"";
 
-	switch(dwState)
-	{
-		case MIB_TCP_STATE_CLOSED:
-			strState = L"CLOSED";
-			break;
+    switch (dwState)
+    {
+        case MIB_TCP_STATE_CLOSED:
+            strState = L"CLOSED";
+            break;
 
-		case MIB_TCP_STATE_LISTEN:
-			strState = L"LISTEN";
-			break;
+        case MIB_TCP_STATE_LISTEN:
+            strState = L"LISTEN";
+            break;
 
-		case MIB_TCP_STATE_SYN_SENT:
-			strState = L"SYN_SENT";
-			break;
+        case MIB_TCP_STATE_SYN_SENT:
+            strState = L"SYN_SENT";
+            break;
 
-		case MIB_TCP_STATE_SYN_RCVD:
-			strState = L"SYN_RCVD";
-			break;
+        case MIB_TCP_STATE_SYN_RCVD:
+            strState = L"SYN_RCVD";
+            break;
 
-		case MIB_TCP_STATE_ESTAB:
-			strState = L"ESTAB";
-			break;
+        case MIB_TCP_STATE_ESTAB:
+            strState = L"ESTAB";
+            break;
 
-		case MIB_TCP_STATE_FIN_WAIT1:
-			strState = L"FIN_WAIT1";
-			break;
+        case MIB_TCP_STATE_FIN_WAIT1:
+            strState = L"FIN_WAIT1";
+            break;
 
-		case MIB_TCP_STATE_FIN_WAIT2:
-			strState = L"FIN_WAIT2";
-			break;
+        case MIB_TCP_STATE_FIN_WAIT2:
+            strState = L"FIN_WAIT2";
+            break;
 
-		case MIB_TCP_STATE_CLOSE_WAIT:
-			strState = L"CLOSE_WAIT";
-			break;
+        case MIB_TCP_STATE_CLOSE_WAIT:
+            strState = L"CLOSE_WAIT";
+            break;
 
-		case MIB_TCP_STATE_CLOSING:
-			strState = L"CLOSING";
-			break;
+        case MIB_TCP_STATE_CLOSING:
+            strState = L"CLOSING";
+            break;
 
-		case MIB_TCP_STATE_LAST_ACK:
-			strState = L"LAST_ACK";
-			break;
+        case MIB_TCP_STATE_LAST_ACK:
+            strState = L"LAST_ACK";
+            break;
 
-		case MIB_TCP_STATE_TIME_WAIT:
-			strState = L"TIME_WAIT";
-			break;
+        case MIB_TCP_STATE_TIME_WAIT:
+            strState = L"TIME_WAIT";
+            break;
 
-		case MIB_TCP_STATE_DELETE_TCB:
-			strState = L"DELETE_TCB";
-			break;
+        case MIB_TCP_STATE_DELETE_TCB:
+            strState = L"DELETE_TCB";
+            break;
 
-		default:
-			strState.Format(L"Error: unknown state %u", dwState);
-			break;
-	}
-	return strState;
+        default:
+            strState.Format(L"Error: unknown state %u", dwState);
+            break;
+    }
+    return strState;
 }
 
 bool IsTCPPortInUse(const uint16 port)
@@ -4742,13 +4742,13 @@ bool IsTCPPortInUse(const uint16 port)
             // is treated as not available.
             if (pTCPTab->table[e].dwLocalPort == nPortBE)
             {
-				if(PortStateInUse(pTCPTab->table[e].dwState))
-				{
-					bPortIsFree = false;
-					theApp.QueueDebugLogLineEx(LOG_WARNING, L"* TCP Port %u (%u) already in use (state %s)", port, nPortBE, DebugPortState(pTCPTab->table[e].dwState));
-				}
-				else
-					theApp.QueueDebugLogLineEx(LOG_WARNING, L"* TCP Port %u (%u) already in use (state %s)", port, nPortBE, DebugPortState(pTCPTab->table[e].dwState));
+                if (PortStateInUse(pTCPTab->table[e].dwState))
+                {
+                    bPortIsFree = false;
+                    theApp.QueueDebugLogLineEx(LOG_WARNING, L"* TCP Port %u (%u) already in use (state %s)", port, nPortBE, DebugPortState(pTCPTab->table[e].dwState));
+                }
+                else
+                    theApp.QueueDebugLogLineEx(LOG_WARNING, L"* TCP Port %u (%u) already in use (state %s)", port, nPortBE, DebugPortState(pTCPTab->table[e].dwState));
             }
         }
     }
@@ -5336,7 +5336,7 @@ void DeleteBetaFile()
 void GetPartStartAndEnd(const UINT uPartNumber, const uint64 partsize, const EMFileSize emFileSize, uint64& uStart, uint64& uEnd)
 {
     uStart = partsize*(uint64)uPartNumber;
-	uEnd = partsize*(uint64)(uPartNumber+1);
-	if(uEnd > emFileSize)
+    uEnd = partsize*(uint64)(uPartNumber+1);
+    if (uEnd > emFileSize)
         uEnd = emFileSize;
 }

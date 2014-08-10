@@ -2,10 +2,10 @@
 
 class CMuleBrowserControlSite : public CBrowserControlSite
 {
-public:
+  public:
     CMuleBrowserControlSite(COleControlContainer* pCtrlCont, CDHtmlDialog *pHandler);
 
-protected:
+  protected:
     URLZONE m_eUrlZone;
     void InitInternetSecurityZone();
 

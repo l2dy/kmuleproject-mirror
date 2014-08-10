@@ -24,7 +24,7 @@ class CMiniMule : public CDHtmlDialog
 {
     DECLARE_DYNCREATE(CMiniMule)
 
-public:
+  public:
     CMiniMule(CWnd* pParent = NULL);   // standard constructor
     virtual ~CMiniMule();
 
@@ -44,7 +44,7 @@ public:
     void Localize();
     void ShowHide(const bool bHide = false); //>>> WiZaRd::Static MM
 
-protected:
+  protected:
     int m_iInInitDialog;
     int m_iInCallback;
     bool m_bDestroyAfterInitDialog;

@@ -20,7 +20,7 @@
 class CDropDownButton : public CToolBarCtrlX
 {
     DECLARE_DYNAMIC(CDropDownButton)
-public:
+  public:
     CDropDownButton();
     virtual ~CDropDownButton();
 
@@ -32,7 +32,7 @@ public:
     void ResizeToMaxWidth();
     void RecalcLayout(bool bForce = false);
 
-protected:
+  protected:
     bool m_bSingleDropDownBtn;
 
     DECLARE_MESSAGE_MAP()

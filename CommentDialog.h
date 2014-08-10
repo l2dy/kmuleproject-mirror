@@ -13,7 +13,7 @@ class CCommentDialog : public CResizablePage
 {
     DECLARE_DYNAMIC(CCommentDialog)
 
-public:
+  public:
     CCommentDialog();	// standard constructor
     virtual ~CCommentDialog();
 
@@ -28,7 +28,7 @@ public:
 
     void Localize();
 
-protected:
+  protected:
     const CSimpleArray<CObject*>* m_paFiles;
     bool m_bDataChanged;
     CComboBoxEx2 m_ratebox;

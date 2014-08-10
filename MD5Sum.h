@@ -24,7 +24,7 @@ documentation and/or software.
 
 class MD5Sum
 {
-public:
+  public:
     MD5Sum();
     MD5Sum(const CString& sSource);
     MD5Sum(const unsigned char* pachSource, UINT nLen);
@@ -38,7 +38,7 @@ public:
         return m_rawHash;
     }
 
-private:
+  private:
     CString			m_sHash;
     unsigned char	m_rawHash[16];
 };

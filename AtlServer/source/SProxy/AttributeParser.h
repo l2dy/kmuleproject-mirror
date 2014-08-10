@@ -15,11 +15,11 @@ class CAttribute;
 
 class CAttributeParser : public CParserBase
 {
-private:
+  private:
 
     CAttribute *m_pAttribute;
 
-public:
+  public:
 
     inline CAttributeParser(ISAXXMLReader *pReader, CParserBase *pParent, DWORD dwLevel, CAttribute *pAttribute = NULL)
         :CParserBase(pReader, pParent, dwLevel), m_pAttribute(pAttribute)

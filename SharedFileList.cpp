@@ -59,7 +59,7 @@ typedef CSimpleArray<CKnownFile*> CSimpleKnownFileArray;
 
 class CPublishKeyword
 {
-public:
+  public:
     CPublishKeyword(const Kademlia::CKadTagValueString& rstrKeyword)
     {
         m_strKeyword = rstrKeyword;
@@ -146,7 +146,7 @@ public:
         }
     }
 
-protected:
+  protected:
     Kademlia::CKadTagValueString m_strKeyword;
     Kademlia::CUInt128 m_nKadID;
     UINT m_tNextPublishTime;
@@ -160,7 +160,7 @@ protected:
 
 class CPublishKeywordList
 {
-public:
+  public:
     CPublishKeywordList();
     ~CPublishKeywordList();
 
@@ -192,7 +192,7 @@ public:
     void Dump();
 #endif
 
-protected:
+  protected:
     // can't use a CMap - too many disadvantages in processing the 'list'
     //CTypedPtrMap<CMapStringToPtr, CString, CPublishKeyword*> m_lstKeywords;
     CTypedPtrList<CPtrList, CPublishKeyword*> m_lstKeywords;

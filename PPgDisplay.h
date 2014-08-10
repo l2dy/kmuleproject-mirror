@@ -6,7 +6,7 @@ class CPPgDisplay : public CPropertyPage
 {
     DECLARE_DYNAMIC(CPPgDisplay)
 
-public:
+  public:
     CPPgDisplay();
     virtual ~CPPgDisplay();
 
@@ -15,7 +15,7 @@ public:
 
     void Localize(void);
 
-protected:
+  protected:
 #ifdef INFO_WND
 //>>> WiZaRd::InfoWnd
     enum ESelectFont

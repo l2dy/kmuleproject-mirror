@@ -35,7 +35,7 @@ enum UPNP_IMPLEMENTATION
 
 class CUPnPImpl
 {
-public:
+  public:
     CUPnPImpl();
     virtual ~CUPnPImpl();
     struct UPnPError : std::exception {};
@@ -91,7 +91,7 @@ public:
     }
 
 // Implementation
-protected:
+  protected:
     volatile TRISTATE	m_bUPnPPortsForwarded;
     void				SendResultMessage();
     uint16				m_nUDPPort;
@@ -99,7 +99,7 @@ protected:
     uint16				m_nTCPWebPort;
     bool				m_bCheckAndRefresh;
 
-private:
+  private:
     HWND	m_hResultMessageWindow;
     UINT	m_nResultMessageID;
 
@@ -108,7 +108,7 @@ private:
 // Dummy Implementation to be used when no other implementation is available
 class CUPnPImplNone: public CUPnPImpl
 {
-public:
+  public:
     virtual void	StartDiscovery(uint16, uint16, uint16)
     {
         ASSERT(0);

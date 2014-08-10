@@ -178,7 +178,7 @@ inline DWORD GetContentTypeFromFileName(LPCTSTR szFileName, CSimpleString& strCo
 // CMimeAttachment, CMimeText, CMimeHeader.
 class CMimeBodyPart
 {
-public:
+  public:
 
     virtual ~CMimeBodyPart() = 0 {}
 
@@ -197,7 +197,7 @@ public:
 
     virtual CMimeBodyPart* Copy() = 0;
 
-protected:
+  protected:
 
     // MakeMimeHeader - pure virutal method to create a MIME header for a
     // body part.
@@ -219,7 +219,7 @@ enum ATL_MIME_PRIORITY
 // It also serves as the base class for the CMimeMessage object.
 class CMimeHeader : public CMimeBodyPart
 {
-protected:
+  protected:
 
     // Pointer to MLANG's IMultiLanguage interface.
     // This is used in doing conversion from code pages
@@ -246,7 +246,7 @@ protected:
 
     //Recipient and CC charsets are encoded in the Add methods
 
-public:
+  public:
 
     CMimeHeader() throw()
         :m_nPriority(ATL_MIME_NORMAL_PRIORITY)
@@ -809,7 +809,7 @@ public:
         return bRet;
     }
 
-protected:
+  protected:
 
     // Make the mime header
     virtual inline BOOL MakeMimeHeader(CStringA& /*header*/, LPCSTR /*szBoundary*/) throw()
@@ -1129,7 +1129,7 @@ protected:
 // It serves as a base class for CMimeFileAttachment and CMimeRawAttachment
 class CMimeAttachment : public CMimeBodyPart
 {
-protected:
+  protected:
 
     // the encoding scheme (ATLSMTP_BASE64_ENCODE, ATLSMTP_UUENCODE, ATLSMTP_QP_ENCODE)
     int      m_nEncodingScheme;
@@ -1146,7 +1146,7 @@ protected:
     // the display name of the attachment
     TCHAR    m_szDisplayName[_MAX_FNAME];
 
-public:
+  public:
     CMimeAttachment() throw()
         :m_nEncodingScheme(ATLSMTP_BASE64_ENCODE), m_pszEncodeString(NULL)
     {
@@ -1215,7 +1215,7 @@ public:
         return *this;
     }
 
-protected:
+  protected:
 
     // Make the MIME header for the attachment
     virtual inline BOOL MakeMimeHeader(CStringA& header, LPCSTR szBoundary) throw()
@@ -1308,11 +1308,11 @@ protected:
 class CMimeFileAttachment : public CMimeAttachment
 {
 
-protected:
+  protected:
     // The filename
     TCHAR m_szFileName[MAX_PATH+1];
 
-public:
+  public:
     CMimeFileAttachment() throw()
     {
         m_szFileName[0] = 0;
@@ -1567,7 +1567,7 @@ public:
 // The data provided is not a file, but a blob of raw data.
 class CMimeRawAttachment : public CMimeAttachment
 {
-protected:
+  protected:
 
     //the raw data
     void* m_pvRaw;
@@ -1578,7 +1578,7 @@ protected:
     //whether or not we own it
     bool  m_bShared;
 
-public:
+  public:
     CMimeRawAttachment() throw()
         :m_dwLength(0), m_bShared(false), m_pvRaw(NULL)
     {
@@ -1797,7 +1797,7 @@ public:
 // CMimeText - represents a text body part in MIME body
 class CMimeText : public CMimeBodyPart
 {
-protected:
+  protected:
 
     // the text
     CHeapPtr<char> m_szText;
@@ -1808,7 +1808,7 @@ protected:
     // the text length
     int      m_nTextLen;
 
-public:
+  public:
     CMimeText() throw()
         :m_nTextLen(0)
     {
@@ -1990,7 +1990,7 @@ public:
         return TRUE;
     }
 
-protected:
+  protected:
 
     // Make the MIME header
     virtual inline BOOL MakeMimeHeader(CStringA& header, LPCSTR szBoundary) throw()
@@ -2026,7 +2026,7 @@ protected:
 // CMimeMessage - the MIME message class.  Represents a full MIME message
 class CMimeMessage : public CMimeHeader
 {
-protected:
+  protected:
 
     // The list of the MIME body parts
     CAutoPtrList<CMimeBodyPart> m_BodyParts;
@@ -2034,7 +2034,7 @@ protected:
     // The display name of the message
     char m_szDisplayName[MAX_PATH+1];
 
-public:
+  public:
     CMimeMessage(IMultiLanguage *pMultiLanguage = NULL) throw()
     {
         Initialize(pMultiLanguage);
@@ -2355,7 +2355,7 @@ public:
         return TRUE;
     }
 
-protected:
+  protected:
     // Make the MIME header
     virtual inline BOOL MakeMimeHeader(CStringA& header, LPCSTR szBoundary) throw()
     {

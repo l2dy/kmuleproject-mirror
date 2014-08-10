@@ -185,22 +185,22 @@ bool CPrefs::HasHadContact() const
 
 bool CPrefs::GetFirewalled() const
 {
-	// We had enough tell us we are not firewalled...
-	bool bFirewalled = (m_uFirewalled < 2);
-	//Not enough people have told us we are open but we may be doing a recheck
-	//at the moment which will give a false lowID.. Therefore we check to see
-	//if we are still rechecking and will report our last known state..	
-	if(bFirewalled && GetRecheckIP())
-		bFirewalled = m_bLastFirewallState;        
-	return bFirewalled;
+    // We had enough tell us we are not firewalled...
+    bool bFirewalled = (m_uFirewalled < 2);
+    //Not enough people have told us we are open but we may be doing a recheck
+    //at the moment which will give a false lowID.. Therefore we check to see
+    //if we are still rechecking and will report our last known state..
+    if (bFirewalled && GetRecheckIP())
+        bFirewalled = m_bLastFirewallState;
+    return bFirewalled;
 }
 void CPrefs::SetFirewalled()
 {
     const bool bFirewalled = GetFirewalled();
     //We are checking our firewall state.. Let keep a snapshot of our
     //current state to prevent false reports during the recheck...
-	// Firewalled checks shouldn't be triggered while GetRecheckIP() is still active?
-	//ASSERT(bFirewalled == (m_uFirewalled < 2));
+    // Firewalled checks shouldn't be triggered while GetRecheckIP() is still active?
+    //ASSERT(bFirewalled == (m_uFirewalled < 2));
     m_bLastFirewallState = bFirewalled;
     m_uFirewalled = 0;
     if (bFirewalled != GetFirewalled())
@@ -444,29 +444,29 @@ void CPrefs::SetExternKadPort(uint16 uVal, UINT uFromIP)
 {
     if (FindExternKadPort(false))
     {
-		// check if the remote client already sent a possible port
-		bool bFound = false;
+        // check if the remote client already sent a possible port
+        bool bFound = false;
         for (int i = 0; i < m_anExternPortReplies.GetCount(); ++i)
         {
-            if(m_anExternPortReplies[i].dwIP == uFromIP)
-			{
-				if(m_anExternPortReplies[i].nPort == uVal)
-					return;
-				else
-				{
-					DebugLog(L"Received new possible external Kad Port %u (old: %u) from %s", uVal, m_anExternPortReplies[i].nPort, ipstr(ntohl(uFromIP)));
-					m_anExternPortReplies[i].nPort = uVal;
-					bFound = true;
-					break;
-				}
-			}
+            if (m_anExternPortReplies[i].dwIP == uFromIP)
+            {
+                if (m_anExternPortReplies[i].nPort == uVal)
+                    return;
+                else
+                {
+                    DebugLog(L"Received new possible external Kad Port %u (old: %u) from %s", uVal, m_anExternPortReplies[i].nPort, ipstr(ntohl(uFromIP)));
+                    m_anExternPortReplies[i].nPort = uVal;
+                    bFound = true;
+                    break;
+                }
+            }
         }
-		if(!bFound)
-		{
-			DebugLog(L"Received possible external Kad Port %u from %s", uVal, ipstr(ntohl(uFromIP)));
-			m_anExternPortReplies.Add(externPortReply(uFromIP, uVal));
-		}
-			
+        if (!bFound)
+        {
+            DebugLog(L"Received possible external Kad Port %u from %s", uVal, ipstr(ntohl(uFromIP)));
+            m_anExternPortReplies.Add(externPortReply(uFromIP, uVal));
+        }
+
         // if 2 out of 3 tries result in the same external port its fine, otherwise consider it as unreliable
         for (int i = 0; i < m_anExternPortReplies.GetCount(); ++i)
         {
@@ -480,7 +480,7 @@ void CPrefs::SetExternKadPort(uint16 uVal, UINT uFromIP)
             }
         }
 
-		// if we have already received EXTERNAL_PORT_ASKIPS replies without getting a valid external port, we should cancel searching 
+        // if we have already received EXTERNAL_PORT_ASKIPS replies without getting a valid external port, we should cancel searching
         if (!FindExternKadPort(false))
         {
             DebugLog(L"Our external port seems unreliable, not using it for firewallchecks", uVal);
@@ -497,9 +497,9 @@ uint16 CPrefs::GetInternKadPort() const
 bool CPrefs::FindExternKadPort(bool bReset)
 {
     if (bReset)
-		m_anExternPortReplies.RemoveAll();
+        m_anExternPortReplies.RemoveAll();
 
-	return m_anExternPortReplies.GetCount() < EXTERNAL_PORT_ASKIPS && !Kademlia::CKademlia::IsRunningInLANMode();
+    return m_anExternPortReplies.GetCount() < EXTERNAL_PORT_ASKIPS && !Kademlia::CKademlia::IsRunningInLANMode();
 }
 
 float CPrefs::StatsGetFirewalledRatio(bool bUDP) const

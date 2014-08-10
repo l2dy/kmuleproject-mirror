@@ -19,7 +19,7 @@
 class InputBox : public CDialog
 {
     DECLARE_DYNAMIC(InputBox)
-public:
+  public:
     InputBox(CWnd* pParent = NULL);   // standard constructor
     virtual ~InputBox();
 
@@ -40,7 +40,7 @@ public:
         m_bFilenameMode = isfilenamemode;
     }
 
-protected:
+  protected:
     CString m_label;
     CString m_title;
     CString m_default;

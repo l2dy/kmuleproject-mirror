@@ -22,7 +22,7 @@ typedef CTypedPtrList<CPtrList, CUpDownClient*> CUpDownClientPtrList;
 class CUploadQueue
 {
 
-public:
+  public:
     CUploadQueue();
     ~CUploadQueue();
 
@@ -91,8 +91,8 @@ public:
     CUpDownClient*	GetWaitingClientByIP(const CAddress& IP);
 //<<< WiZaRd::IPv6 [Xanatos]
 #else
-     CUpDownClient*	GetWaitingClientByIP_UDP(const UINT dwIP, const uint16 nUDPPort, const bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs = NULL);
-     CUpDownClient*	GetWaitingClientByIP(const UINT dwIP);
+    CUpDownClient*	GetWaitingClientByIP_UDP(const UINT dwIP, const uint16 nUDPPort, const bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs = NULL);
+    CUpDownClient*	GetWaitingClientByIP(const UINT dwIP);
 #endif
     CUpDownClient*	GetNextClient(const CUpDownClient* update);
 
@@ -116,7 +116,7 @@ public:
     CUpDownClientPtrList waitinglist;
     CUpDownClientPtrList uploadinglist;
 
-protected:
+  protected:
     void		RemoveFromWaitingQueue(POSITION pos);
     bool		AcceptNewClient(UINT curUploadSlots) const;
 //>>> WiZaRd::ZZUL Upload [ZZ]
@@ -129,7 +129,7 @@ protected:
     static VOID CALLBACK UploadTimer(HWND hWnd, UINT nMsg, UINT nId, DWORD dwTime);
     static VOID CALLBACK HSUploadTimer(HWND hWnd, UINT nMsg, UINT nId, DWORD dwTime);
 
-private:
+  private:
     void	UpdateMaxClientScore();
     UINT	GetMaxClientScore()
     {
@@ -178,7 +178,7 @@ private:
     bool	m_bStatisticsWaitingListDirty;
 
 //>>> WiZaRd::Small File Slot
-public:
+  public:
     uint64 GetSmallFileSize() const;
 //<<< WiZaRd::Small File Slot
 //>>> WiZaRd::ZZUL Upload [ZZ]
@@ -191,18 +191,18 @@ public:
     */
 //<<< WiZaRd::ZZUL Upload [ZZ]
 //>>> WiZaRd::Payback First
-private:
+  private:
     CList<CUpDownClient*>	m_lPaybackList;
     uint8					m_uiPaybackCount;
 //<<< WiZaRd::Payback First
-public:
+  public:
     void	StartTimer();
 //>>> WiZaRd::Drop Blocking Sockets [Xman?]
-private:
+  private:
     CList<DWORD>	m_BlockStopList;
 //<<< WiZaRd::Drop Blocking Sockets [Xman?]
 //>>> WiZaRd::ZZUL Upload [ZZ]
-public:
+  public:
     void	AddClientToQueue(CUpDownClient* client,bool bIgnoreTimelimit = false, bool addInFirstPlace = false);
     void	ScheduleRemovalFromUploadQueue(CUpDownClient* client, LPCTSTR pszDebugReason, CString strDisplayReason, bool earlyabort = false);
     UINT	GetActiveUploadsCountLongPerspective() const;
@@ -215,7 +215,7 @@ public:
     bool	ForceNewClient(bool simulateScheduledClosingOfSlot = false);
     bool    CanForceClient(UINT curUploadSlots) const;
     bool	AddUpNextClient(LPCTSTR pszReason, CUpDownClient* directadd = 0, bool highPrioCheck = false);
-private:
+  private:
     UINT	GetWantedNumberOfTrickleUploads() const;
     void	CheckForHighPrioClient();
 
@@ -224,7 +224,7 @@ private:
     DWORD   m_dwLastCheckedForHighPrioClient;
 //<<< WiZaRd::ZZUL Upload [ZZ]
 //>>> WiZaRd::Catch exceptions
-public:
-	void	UploadTimer();
+  public:
+    void	UploadTimer();
 //<<< WiZaRd::Catch exceptions
 };

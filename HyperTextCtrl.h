@@ -45,7 +45,7 @@ Copyright (C) 2001-2002 Magomed G. Abdurakhmanov
 class CHyperLink
 {
     friend class CPreparedHyperText;
-public:
+  public:
     CHyperLink(); // i_a
     CHyperLink(int iBegin, uint16 iEnd, const CString& sTitle, const CString& sCommand, const CString& sDirectory);
     CHyperLink(int iBegin, uint16 iEnd, const CString& sTitle, HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -81,7 +81,7 @@ public:
         m_iEnd = m_iInEnd;
     }
 
-protected:
+  protected:
     int m_iBegin;
     int m_iEnd;
     CString m_sTitle;
@@ -109,7 +109,7 @@ protected:
 class CKeyWord
 {
     friend class CPreparedHyperText;
-public:
+  public:
     CKeyWord();
     CKeyWord(int iBegin, uint16 iEnd, COLORREF icolor);
 
@@ -141,7 +141,7 @@ public:
     {
         return m_iEnd - m_iBegin + 1;
     }
-protected:
+  protected:
     int m_iBegin;
     int m_iEnd;
     COLORREF color;
@@ -152,7 +152,7 @@ protected:
 
 class CPreparedHyperText
 {
-public:
+  public:
     CPreparedHyperText()						{}
     CPreparedHyperText(const CString& sText);
     CPreparedHyperText(const CPreparedHyperText& src);
@@ -178,7 +178,7 @@ public:
     }
     //friend class CHyperTextCtrl;
 
-protected:
+  protected:
     CString m_sText;
     std::list<CHyperLink> m_Links;
     std::list<CKeyWord> m_KeyWords;
@@ -195,7 +195,7 @@ protected:
 // CLinePartInfo
 class CLinePartInfo
 {
-public:
+  public:
     uint16 m_xBegin;
     uint16 m_xEnd;
     CHyperLink* m_pHyperLink;
@@ -221,7 +221,7 @@ public:
 // CLineInfo
 class CLineInfo : public std::vector<CLinePartInfo>
 {
-public:
+  public:
     int m_iBegin;
     int m_iEnd;
 
@@ -245,7 +245,7 @@ public:
 // CVisPart
 class CVisPart : public CLinePartInfo
 {
-public:
+  public:
     CRect m_rcBounds;
     int m_iRealBegin;
     int m_iRealLen;
@@ -267,7 +267,7 @@ class CVisLine : public std::vector<CVisPart>
 class CHyperTextCtrl : public CWnd
 {
     DECLARE_DYNAMIC(CHyperTextCtrl)
-protected:
+  protected:
     CPreparedHyperText* m_Text;
     CPreparedHyperText  standart_Text;
     std::vector<CLineInfo> m_Lines;
@@ -297,7 +297,7 @@ protected:
     int m_iWheelDelta;				// Mouse wheel scroll delta
     DECLARE_MESSAGE_MAP()
 
-public:
+  public:
     CHyperTextCtrl();
     virtual BOOL PreTranslateMessage(MSG* /*pMsg*/)
     {
@@ -380,7 +380,7 @@ public:
         m_DefaultCursor = DefaultCursor;
     }
     void UpdateSize(bool bRepaint);
-protected:
+  protected:
     bool check_bits(DWORD Value, DWORD Mask)
     {
         return (Value & Mask) == Mask;

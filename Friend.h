@@ -53,7 +53,7 @@ enum EFriendConnectReport
 
 class CFriendConnectionListener
 {
-public:
+  public:
     virtual void	ReportConnectionProgress(CUpDownClient* /*pClient*/, CString /*strProgressDesc*/, bool /*bNoTimeStamp*/)	{ AfxDebugBreak(); }
     virtual void	ConnectingResult(CUpDownClient* /*pClient*/, bool /*bSuccess*/)												{ AfxDebugBreak(); }
     virtual void	ClientObjectChanged(CUpDownClient* /*pOldClient*/, CUpDownClient* /*pNewClient*/)							{ AfxDebugBreak(); }
@@ -63,13 +63,13 @@ public:
 // CFriend
 class CFriend : public Kademlia::CKadClientSearcher
 {
-public:
+  public:
     CFriend();
     CFriend(CUpDownClient* client);
 #ifdef IPV6_SUPPORT
     CFriend(const uchar* abyUserhash, UINT dwLastSeen, const CAddress& LastUsedIP, uint16 nLastUsedPort, //>>> WiZaRd::IPv6 [Xanatos]
 #else
-	CFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort,
+    CFriend(const uchar* abyUserhash, UINT dwLastSeen, UINT dwLastUsedIP, uint16 nLastUsedPort,
 #endif
             UINT dwLastChatted, LPCTSTR pszName, UINT dwHasHash, const CString& strComment); //>>> WiZaRd::FriendComment
 
@@ -79,14 +79,14 @@ public:
 
     UINT	m_dwLastSeen;
 #ifdef IPV6_SUPPORT
-	CAddress	m_dwLastUsedIP;
+    CAddress	m_dwLastUsedIP;
 #else
     UINT	m_dwLastUsedIP;
 #endif
     uint16	m_nLastUsedPort;
     UINT	m_dwLastChatted;
     CString m_strName;
-	CString m_strComment; //>>> WiZaRd::FriendComment
+    CString m_strComment; //>>> WiZaRd::FriendComment
 
     CUpDownClient*	GetLinkedClient(bool bValidCheck = false) const;
     void			SetLinkedClient(CUpDownClient* linkedClient);
@@ -114,7 +114,7 @@ public:
     bool	HasUserhash() const;
     bool	HasKadID() const;
 
-private:
+  private:
     uchar	m_abyKadID[16];
     bool	m_friendSlot;
     UINT	m_dwLastKadSearch;
@@ -124,19 +124,19 @@ private:
     CUpDownClient*				m_LinkedClient;
 
 //>>> WiZaRd::Data without Client
-public:
-	CString	GetFriendName() const;
-	CString GetFriendHash() const;
-	CString	GetFriendKadID() const;
-	CString	GetIdentState() const;
-	CString	GetFriendSoft() const;
-	CString	GetFriendUpload() const;
-	CString	GetFriendUploaded() const;
-	CString	GetFriendDownload() const;
-	CString	GetFriendDownloaded() const;
-private:
-	sint64	m_uiUploaded;
-	sint64	m_uiDownloaded;
-	CString	m_strSoft;
+  public:
+    CString	GetFriendName() const;
+    CString GetFriendHash() const;
+    CString	GetFriendKadID() const;
+    CString	GetIdentState() const;
+    CString	GetFriendSoft() const;
+    CString	GetFriendUpload() const;
+    CString	GetFriendUploaded() const;
+    CString	GetFriendDownload() const;
+    CString	GetFriendDownloaded() const;
+  private:
+    sint64	m_uiUploaded;
+    sint64	m_uiDownloaded;
+    CString	m_strSoft;
 //<<< WiZaRd::Data without Client
 };

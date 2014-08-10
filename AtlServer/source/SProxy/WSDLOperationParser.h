@@ -15,11 +15,11 @@ class CWSDLPortTypeOperation;
 
 class CWSDLOperationParser : public CParserBase
 {
-private:
+  private:
 
     CWSDLPortTypeOperation *m_pOperation;
 
-public:
+  public:
 
     inline CWSDLOperationParser(ISAXXMLReader *pReader, CParserBase *pParent, DWORD dwLevel, CWSDLPortTypeOperation *pOperation = NULL)
         :CParserBase(pReader, pParent, dwLevel), m_pOperation(pOperation)

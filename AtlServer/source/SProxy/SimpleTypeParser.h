@@ -14,11 +14,11 @@ class CSimpleType;
 
 class CSimpleTypeParser : public CParserBase
 {
-private:
+  private:
 
     CSimpleType * m_pType;
 
-public:
+  public:
 
     inline CSimpleTypeParser(ISAXXMLReader *pReader, CParserBase *pParent, DWORD dwLevel, CSimpleType * pType)
         :CParserBase(pReader, pParent, dwLevel), m_pType(pType)

@@ -13,7 +13,7 @@ class CTimeTick
     CTimeTick(const CTimeTick& d);
     CTimeTick& operator=(const CTimeTick& d);
 
-public:
+  public:
     CTimeTick();
     ~CTimeTick();
 
@@ -26,12 +26,12 @@ public:
     }
 
     // Implementation
-protected:
+  protected:
     static __int64 GetPerformanceFrequency();
     static float GetTimeInMilliSeconds(__int64 nTime);
 
     // Data
-private:
+  private:
     static __int64 m_nPerformanceFrequency;
 
     LARGE_INTEGER m_nTimeElapsed;

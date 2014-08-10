@@ -24,7 +24,7 @@ class CCollectionViewDialog : public CResizableDialog
 {
     DECLARE_DYNAMIC(CCollectionViewDialog)
 
-public:
+  public:
     CCollectionViewDialog(CWnd* pParent = NULL);   // standard constructor
     virtual ~CCollectionViewDialog();
 
@@ -33,7 +33,7 @@ public:
 
     void SetCollection(CCollection* pCollection);
 
-protected:
+  protected:
     CButton m_AddNewCatagory;
     CStatic m_CollectionViewListLabel;
     CStatic m_CollectionViewListIcon;

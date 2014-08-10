@@ -69,7 +69,7 @@ class CAsyncSocketExLayer
 {
     friend CAsyncSocketEx;
     friend CAsyncSocketExHelperWindow;
-protected:
+  protected:
     //Protected constructor so that CAsyncSocketExLayer can't be instantiated
     CAsyncSocketExLayer();
     virtual ~CAsyncSocketExLayer();
@@ -138,7 +138,7 @@ protected:
     // UTP layer is a layer without an underlying TCP socket there for it have to do some stuff on its own
     virtual bool IsUtpLayer() const	{return false;}
 
-protected:
+  protected:
 //private:
 //<<< WiZaRd::NatTraversal [Xanatos]
 #endif

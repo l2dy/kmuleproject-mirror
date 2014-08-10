@@ -25,7 +25,7 @@ class CUrlClient : public CUpDownClient
 {
     DECLARE_DYNAMIC(CUrlClient)
 
-public:
+  public:
     CUrlClient();
     virtual ~CUrlClient();
 
@@ -41,7 +41,7 @@ public:
 #endif
     virtual void Connect();
     virtual void OnSocketConnected(int nErrorCode);
-	virtual void ConnectionEstablished();
+    virtual void ConnectionEstablished();
     virtual bool Disconnected(LPCTSTR pszReason, bool bFromSocket = false);
 
     virtual void SendHelloPacket();

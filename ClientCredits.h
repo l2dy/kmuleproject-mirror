@@ -77,7 +77,7 @@ enum EIdentState
 class CClientCredits
 {
     friend class CClientCreditsList;
-public:
+  public:
     CClientCredits(CreditStruct* in_credits);
     CClientCredits(const uchar* key);
     ~CClientCredits();
@@ -109,12 +109,12 @@ public:
     void	SetSecWaitStartTime(const CAddress& ForIP);
 //<<< WiZaRd::IPv6 [Xanatos]
 #else
-	void	AddDownloaded(const UINT bytes, const UINT dwForIP);
-	void	AddUploaded(const UINT bytes, const UINT dwForIP);
- 	float	GetScoreRatio(const UINT dwForIP) /*const*/; //>>> WiZaRd::CPU calm down
- 	EIdentState	GetCurrentIdentState(const UINT dwForIP) const; // can be != IdentState
- 	UINT	GetSecureWaitStartTime(const UINT dwForIP);
- 	void	SetSecWaitStartTime(const UINT dwForIP);
+    void	AddDownloaded(const UINT bytes, const UINT dwForIP);
+    void	AddUploaded(const UINT bytes, const UINT dwForIP);
+    float	GetScoreRatio(const UINT dwForIP) /*const*/; //>>> WiZaRd::CPU calm down
+    EIdentState	GetCurrentIdentState(const UINT dwForIP) const; // can be != IdentState
+    UINT	GetSecureWaitStartTime(const UINT dwForIP);
+    void	SetSecWaitStartTime(const UINT dwForIP);
 #endif
     uint64	GetUploadedTotal() const;
     uint64	GetDownloadedTotal() const;
@@ -125,14 +125,14 @@ public:
     bool	SetSecureIdent(const uchar* pachIdent, uint8 nIdentLen); // Public key cannot change, use only if there is not public key yet
     UINT	m_dwCryptRndChallengeFor;
     UINT	m_dwCryptRndChallengeFrom;
-protected:
+  protected:
 #ifdef IPV6_SUPPORT
     void	Verified(const CAddress& ForIP); //>>> WiZaRd::IPv6 [Xanatos]
 #else
     void	Verified(const UINT dwForIP);
 #endif
     EIdentState IdentState;
-private:
+  private:
     void			InitalizeIdent();
     CreditStruct*	m_pCredits;
     byte			m_abyPublicKey[80];			// even keys which are not verified will be stored here, and - if verified - copied into the struct
@@ -150,7 +150,7 @@ private:
     UINT			m_dwUnSecureWaitTime;
 
 //>>> WiZaRd::CPU calm down
-private:
+  private:
     bool	m_bForceCheckScoreRatio;
     float	m_fSavedScoreRatio;
 //<<< WiZaRd::CPU calm down
@@ -158,7 +158,7 @@ private:
 
 class CClientCreditsList
 {
-public:
+  public:
     CClientCreditsList();
     ~CClientCreditsList();
 
@@ -169,8 +169,8 @@ public:
     bool	VerifyIdent(CClientCredits* pTarget, const uchar* pachSignature, uint8 nInputSize, const CAddress& dwForIP, uint8 byChaIPKind);
 //<<< WiZaRd::IPv6 [Xanatos]
 #else
-     uint8	CreateSignature(CClientCredits* pTarget, uchar* pachOutput, uint8 nMaxSize, UINT ChallengeIP, uint8 byChaIPKind, CryptoPP::RSASSA_PKCS1v15_SHA_Signer* sigkey = NULL);
-     bool	VerifyIdent(CClientCredits* pTarget, const uchar* pachSignature, uint8 nInputSize, UINT dwForIP, uint8 byChaIPKind);
+    uint8	CreateSignature(CClientCredits* pTarget, uchar* pachOutput, uint8 nMaxSize, UINT ChallengeIP, uint8 byChaIPKind, CryptoPP::RSASSA_PKCS1v15_SHA_Signer* sigkey = NULL);
+    bool	VerifyIdent(CClientCredits* pTarget, const uchar* pachSignature, uint8 nInputSize, UINT dwForIP, uint8 byChaIPKind);
 #endif
 
     CClientCredits* GetCredit(const uchar* key) ;
@@ -184,7 +184,7 @@ public:
         return m_abyMyPublicKey;
     }
     bool	CryptoAvailable();
-protected:
+  protected:
     void	LoadList();
     void	SaveList();
     void	InitalizeCrypting();
@@ -192,7 +192,7 @@ protected:
 #ifdef _DEBUG
     bool	Debug_CheckCrypting();
 #endif
-private:
+  private:
     CMap<CCKey, const CCKey&, CClientCredits*, CClientCredits*> m_mapClients;
     UINT			m_nLastSaved;
     CryptoPP::RSASSA_PKCS1v15_SHA_Signer*		m_pSignkey;
