@@ -280,9 +280,9 @@ int CPreviewApps::ReadAllApps()
         }
         fclose(readFile);
 
-        struct _stat st;
-        if (_tstat(strFilePath, &st) == 0)
-            m_tDefAppsFileLastModified = st.st_mtime;
+		struct _stat32i64 fileinfo;
+		if(_tstat32i64(strFilePath, &fileinfo) == 0)
+            m_tDefAppsFileLastModified = fileinfo.st_mtime;
     }
 
     return m_aApps.GetCount();
@@ -291,13 +291,11 @@ int CPreviewApps::ReadAllApps()
 void CPreviewApps::UpdateApps()
 {
     if (m_aApps.GetCount() == 0)
-    {
         ReadAllApps();
-    }
     else
     {
-        struct _stat st;
-        if (_tstat(GetDefaultAppsFile(), &st) == 0 && st.st_mtime > m_tDefAppsFileLastModified)
+		struct _stat32i64 fileinfo;
+        if (_tstat32i64(GetDefaultAppsFile(), &fileinfo) == 0 && fileinfo.st_mtime > m_tDefAppsFileLastModified)
             ReadAllApps();
     }
 }

@@ -2007,8 +2007,7 @@ bool CUpDownClient::TryToConnect(const bool bIgnoreMaxCon, const bool bNoCallbac
             delete this;
             return false;
         }
-        else
-            return true;
+		return true;
     }
 
 #ifdef IPV6_SUPPORT

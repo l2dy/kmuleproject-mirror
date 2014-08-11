@@ -247,7 +247,7 @@ class CKnownFile : public CShareableFile
     {
         m_bShareOnlyTheNeed = newValue;
     };
-    bool	GetShareOnlyTheNeed(bool m_bOnlyFile = false) const;
+    bool	GetShareOnlyTheNeed(const bool m_bOnlyFile = false) const;
     uint8*	GetPartStatus(CUpDownClient* client = NULL) const;
 //<<< WiZaRd::Intelligent SOTN
   public:

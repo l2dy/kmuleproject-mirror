@@ -179,7 +179,7 @@ void CAddress::FromSA(const sockaddr* sa, const int sa_len, uint16* pPort)
         default:
         {
             //WiZaRd: happens e.g. when a disconnect occurs and we don't have the IP, yet
-            ASSERT(0);
+            //ASSERT(0);
             m_eAF = None;
             break;
         }

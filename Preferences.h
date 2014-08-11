@@ -2601,6 +2601,13 @@ class CPreferences
         m_bWeAreProxified = b;
     }
 //<<< Tux::ProxyStatus
+//>>> WiZaRd::Intelligent SOTN
+private:
+	static int		m_iSOTNMode;
+public:
+	static int		IsShareOnlyTheNeed()				{return m_iSOTNMode;}
+	static void		SetShareOnlyTheNeed(const int i)	{m_iSOTNMode = i;}
+//<<< WiZaRd::Intelligent SOTN
 };
 
 extern CPreferences thePrefs;

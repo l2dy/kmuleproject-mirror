@@ -282,12 +282,9 @@ From Beta Builds:
 + added possibility to switch off folder support when creating ed2k links [WiZaRd]
 + added possibility to add a friend comment [WiZaRd]
 ~ friend data will now be available even if the friend is offline - as long as we did connect to it, once [WiZaRd]
++ added possibility to adjust iSOTN via kMule.ini [WiZaRd]
+ * "iSOTNMode=-1/0/1" in the kMule.ini file, default is -1 which means "per file", 0 = OFF, 1 = ON
 
 
 * IPv6 support is currently disabled [WiZaRd]
 * NAT-T support is currently disabled [WiZaRd]
-
-ed2k://|file|SCT%20collection%20test.emulecollection|203|CB0910E2A9BEE2F811C2C1CDEAA211D2|h=P7U5ZUPG6IVXRJFGBK55BYL34E65DE77|/
-ed2k://|file|SCT%20test%202%20all.rar|141861860|64E00D650C8180ABAFEB921DD58CA4B8|h=7RPXW34AE566EFRN47I5AUZHBJTIX2CV|/|sources,69.60.230.240:5662|/
-ed2k://|file|SCT%20kM%201.rar|77726337|A2C158421EAE1363C56C4BB3CF35134D|h=RODDI47MGZ3OHYXJZ22UFVAYJW5V43YI|/|sources,69.60.230.240:5662|/
-ed2k://|file|kMule.Beta.SCT.Test.File.rar|887674874|5DD5EE7C113FCB791E5DB88DE04C237C|h=PTBI7RG3NLXT7I5YVZQHFAK6KQHC2XQR|f=\kMule\|/|sources,88.71.239.9:45064|/

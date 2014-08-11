@@ -749,9 +749,7 @@ void CClientUDPSocket::OnSend(int nErrorCode)
     m_bWouldBlock = false;
 
     if (!controlpacket_queue.IsEmpty())
-    {
         theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this);
-    }
     sendLocker.Unlock();
 // <-- ZZ:UploadBandWithThrottler (UDP)
 }
@@ -843,7 +841,7 @@ SocketSentBytes CClientUDPSocket::SendControlData(UINT maxNumberOfBytesToSend, U
 #ifdef IPV6_SUPPORT
 int CClientUDPSocket::SendTo(char* lpBuf, const int nBufLen, const CAddress& IP, const uint16 nPort) //>>> WiZaRd::IPv6 [Xanatos]
 #else
-int CClientUDPSocket::SendTo(char* lpBuf, const int nBufLen, const  UINT dwIP, const uint16 nPort)
+int CClientUDPSocket::SendTo(char* lpBuf, const int nBufLen, const UINT dwIP, const uint16 nPort)
 #endif
 {
     // NOTE: *** This function is invoked from a *different* thread!
@@ -854,7 +852,7 @@ int CClientUDPSocket::SendTo(char* lpBuf, const int nBufLen, const  UINT dwIP, c
     SOCKADDR_IN6 sockAddr = {0};
     int iSockAddrLen = sizeof(sockAddr);
     dwIP.ToSA((SOCKADDR*)&sockAddr, &iSockAddrLen, nPort);
-    UINT result = CAsyncSocket::SendTo(lpBuf, nBufLen, (SOCKADDR*)&sockAddr, sizeof sockAddr);
+    UINT result = CAsyncSocket::SendTo(lpBuf, nBufLen, (SOCKADDR*)&sockAddr, iSockAddrLen);
 //<<< WiZaRd::IPv6 [Xanatos]
 #else
     UINT result = CAsyncSocket::SendTo(lpBuf, nBufLen, nPort, ipstr(dwIP));

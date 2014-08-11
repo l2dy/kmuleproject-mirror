@@ -1562,8 +1562,16 @@ VOID CALLBACK CUploadQueue::UploadTimer(HWND /*hwnd*/, UINT /*uMsg*/, UINT_PTR /
 //>>> WiZaRd::Catch exceptions
 // Called via messages so force crashes to be dumped
 void CUploadQueue::UploadTimer()
-{
+{	
 //<<< WiZaRd::Catch exceptions
+	// I just want to see if that happens...
+	static bool inUploadTimer = false;
+	if(inUploadTimer)
+	{
+		theApp.QueueDebugLogLineEx(LOG_WARNING, L"Calling %hs while still parsing!", __FUNCTION__);
+		return;
+	}
+	inUploadTimer = true;
     // Elandal:ThreadSafeLogging -->
     // other threads may have queued up log lines. This prints them.
     theApp.HandleLogQueues();
@@ -1598,7 +1606,7 @@ void CUploadQueue::UploadTimer()
         theStats.CompUpDatarateOverhead();
         theStats.CompDownDatarateOverhead();
     }
-    counter++;
+    ++counter;
 
     // one second
     if (counter >= 10)
@@ -1735,6 +1743,7 @@ void CUploadQueue::UploadTimer()
             thePrefs.SaveStats();
         }
     }
+	inUploadTimer = false;
 }
 
 CUpDownClient* CUploadQueue::GetNextClient(const CUpDownClient* lastclient)

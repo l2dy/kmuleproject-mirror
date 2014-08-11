@@ -559,7 +559,7 @@ bool CAICHHashTree::SetHash(CFileDataIO* fileInput, UINT wHashIdent, sint8 nLeve
         if (m_bHashValid && !bAllowOverwrite)
         {
             // not allowed to overwrite this hash, however move the filepointer by reading a hash
-            CAICHHash(file);
+            CAICHHash(fileInput);
             return true;
         }
         m_Hash.Read(fileInput);

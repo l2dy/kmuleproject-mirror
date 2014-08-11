@@ -513,8 +513,8 @@ bool CKnownFile::CreateFromFile(LPCTSTR in_directory, LPCTSTR in_filename, LPVOI
     }
 
     // set lastwrite date
-    struct _stat fileinfo;
-    if (_fstat(file->_file, &fileinfo) == 0)
+	struct _stat32i64 fileinfo;
+	if(_fstat32i64(file->_file, &fileinfo) == 0)
     {
         m_tUtcLastModified = fileinfo.st_mtime;
         AdjustNTFSDaylightFileTime(m_tUtcLastModified, strFilePath);
@@ -2480,18 +2480,18 @@ bool CKnownFile::WriteSafePartStatus(CSafeMemFile* data_out, CUpDownClient* send
     return bNeedThisFunction;
 }
 
-bool CKnownFile::GetShareOnlyTheNeed(bool m_bOnlyFile) const
+bool CKnownFile::GetShareOnlyTheNeed(const bool m_bOnlyFile) const
 {
     if (IsPartFile())
         return false;
     if (m_bOnlyFile)
         return m_bShareOnlyTheNeed;
-    /*switch(thePrefs.IsShareOnlyTheNeed())
+    switch(thePrefs.IsShareOnlyTheNeed())
     {
     	case 0:		return false;
     	case 1:		return true;
     	default:	return m_bShareOnlyTheNeed;
-    }*/
+    }
     return true;
 }
 //<<< WiZaRd::Intelligent SOTN

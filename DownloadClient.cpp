@@ -260,7 +260,7 @@ bool CUpDownClient::AskForDownload()
 
     if (m_bUDPPending)
     {
-        m_nFailedUDPPackets++;
+        ++m_nFailedUDPPackets;
 //>>> WiZaRd::Detect UDP problem clients
         if (m_uiFailedUDPPacketsInARow < 4)
             ++m_uiFailedUDPPacketsInARow;
@@ -1990,7 +1990,7 @@ void CUpDownClient::UDPReaskForDownload()
             theStats.AddUpDataOverheadFileRequest(response->size);
             theApp.downloadqueue->AddUDPFileReasks();
             theApp.clientudp->SendPacket(response, GetIP(), GetUDPPort(), ShouldReceiveCryptUDPPackets(), GetUserHash(), false, 0);
-            m_nTotalUDPPackets++;
+            ++m_nTotalUDPPackets;
         }
         else if (HasLowID() && GetBuddyIP() && GetBuddyPort() && HasValidBuddyID())
         {
@@ -2014,7 +2014,7 @@ void CUpDownClient::UDPReaskForDownload()
 #else
             theApp.clientudp->SendPacket(response, GetBuddyIP(), GetBuddyPort(), false, NULL, true, 0);
 #endif
-            m_nTotalUDPPackets++;
+            ++m_nTotalUDPPackets;
         }
     }
 }

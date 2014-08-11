@@ -1633,7 +1633,7 @@ void CDownloadListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
         }
         else
         {
-            const CUpDownClient* client = (CUpDownClient*)content->value;
+            const CUpDownClient* client = content != NULL ? (CUpDownClient*)content->value : NULL;
 
             CTitleMenu ClientMenu;
             ClientMenu.CreatePopupMenu();
