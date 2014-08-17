@@ -802,7 +802,7 @@ BOOL CAsyncProxySocketLayer::Connect(LPCSTR lpszHostAddress, UINT nHostPort)
                 DoLayerCallback(LAYERCALLBACK_LAYERSPECIFIC, PROXYERROR_CANTRESOLVEHOST, 0);
                 WSASetLastError(WSAEINVAL);
 //>>> ProxyStatus
-                thePrefs.SetProxified(res);
+                thePrefs.SetProxified(FALSE);
 //<<< ProxyStatus
                 return FALSE;
             }
