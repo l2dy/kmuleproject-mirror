@@ -1006,7 +1006,7 @@ static int input(void);
 			} \
 		}\
 \
- 
+
 #endif
 
 /* No semi-colon after return; correct usage is to write "yyterminate();" -

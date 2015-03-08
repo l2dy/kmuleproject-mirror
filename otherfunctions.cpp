@@ -1134,7 +1134,7 @@ int CWebServices::ReadAllServices()
         fclose(readFile);
 
         struct _stat32i64 fileinfo;
-        if(_tstat32i64(strFilePath, &fileinfo) == 0)
+        if (_tstat32i64(strFilePath, &fileinfo) == 0)
             m_tDefServicesFileLastModified = fileinfo.st_mtime;
     }
 
@@ -1147,7 +1147,7 @@ int CWebServices::GetAllMenuEntries(CTitleMenu* pMenu, DWORD dwFlags)
         ReadAllServices();
     else
     {
-		struct _stat32i64 fileinfo;
+        struct _stat32i64 fileinfo;
         if (_tstat32i64(GetDefaultServicesFile(), &fileinfo) == 0 && fileinfo.st_mtime > m_tDefServicesFileLastModified)
             ReadAllServices();
     }
@@ -1723,7 +1723,7 @@ struct SED2KFileType
     { L".nrg",   ED2KFT_CDIMAGE },   // Nero CD/DVD Image File
     { L".sub",   ED2KFT_CDIMAGE },   // Subtitle File
     { L".toast", ED2KFT_CDIMAGE },   // Toast Disc Image
-	    
+
     { L".css",   ED2KFT_DOCUMENT },  // Cascading Style Sheet
     { L".diz",   ED2KFT_DOCUMENT },  // Description in Zip File
     { L".doc",   ED2KFT_DOCUMENT },  // Document File
@@ -1736,59 +1736,59 @@ struct SED2KFileType
     { L".odf",   ED2KFT_DOCUMENT },  // Open Document File
     { L".odp",   ED2KFT_DOCUMENT },  // Open Document File
     { L".ods",   ED2KFT_DOCUMENT },  // Open Document File
-    { L".odt",   ED2KFT_DOCUMENT },  // Open Document File    
+    { L".odt",   ED2KFT_DOCUMENT },  // Open Document File
     { L".pmd",   ED2KFT_DOCUMENT },  // PageMaker Publication
     { L".pmv",   ED2KFT_DOCUMENT },  // PlanMaker Spreadsheet
     { L".pps",   ED2KFT_DOCUMENT },  // PowerPoint Slide Show
     { L".ppt",   ED2KFT_DOCUMENT },  // PowerPoint Presentation
-    { L".pptx",  ED2KFT_DOCUMENT },  // PowerPoint Presentation    
+    { L".pptx",  ED2KFT_DOCUMENT },  // PowerPoint Presentation
     { L".qpw",   ED2KFT_DOCUMENT },  // Quattro Pro Spreadsheet
     { L".rtf",   ED2KFT_DOCUMENT },  // Rich Text Format File
     { L".text",  ED2KFT_DOCUMENT },  // General Text File
-    { L".tmd",   ED2KFT_DOCUMENT },  // TextMaker Document    
+    { L".tmd",   ED2KFT_DOCUMENT },  // TextMaker Document
     { L".wpd",   ED2KFT_DOCUMENT },  // WordPerfect Document
     { L".wri",   ED2KFT_DOCUMENT },  // Windows Write Document
     { L".xls",   ED2KFT_DOCUMENT },  // Microsoft Excel Spreadsheet
     { L".xlsx",  ED2KFT_DOCUMENT },  // Microsoft Excel Spreadsheet
     { L".xlt",   ED2KFT_DOCUMENT },  // Microsoft Excel Template File
     { L".xltx",  ED2KFT_DOCUMENT },  // Microsoft Excel Template File
-    
-	// taken from http://en.wikipedia.org/wiki/Comparison_of_e-book_formats
-	{ L".aeh",   ED2KFT_DOCUMENT },  // Archos Reader
-	{ L".lrf",   ED2KFT_DOCUMENT },  // Sony Media
-	{ L".lrx",   ED2KFT_DOCUMENT },  // Sony Media
-	{ L".cbr",   ED2KFT_ARCHIVE },   // Comic Book RAR Archive
-	{ L".cbz",   ED2KFT_ARCHIVE },   // Comic Book ZIP Archive
-	{ L".cb7",   ED2KFT_ARCHIVE },   // Comic Book 7z Archive
-	{ L".cbt",   ED2KFT_ARCHIVE },   // Comic Book TAR Archive
-	{ L".cba",   ED2KFT_ARCHIVE },   // Comic Book ACE Archive
-	{ L".chm",   ED2KFT_DOCUMENT },  // Compiled HTML Help File
-	{ L".djvu",  ED2KFT_DOCUMENT },  // DjVu
-	{ L".epub",  ED2KFT_DOCUMENT },  // IDPF/EPUB
-	{ L".pdb",   ED2KFT_DOCUMENT },	 // Palm Media/Plucker
-	{ L".fb2",   ED2KFT_DOCUMENT },	 // FictionBook
-	{ L".xeb",   ED2KFT_DOCUMENT },	 // Apabi Reader
-	{ L".ceb",   ED2KFT_DOCUMENT },	 // Apabi Reader
-	{ L".htm",   ED2KFT_DOCUMENT },  // HTML File
-	{ L".html",  ED2KFT_DOCUMENT },  // HTML File
-	{ L".ibooks",  ED2KFT_DOCUMENT },  // iBook
-	{ L".azw",   ED2KFT_DOCUMENT },  // Kindle
-	{ L".kf8",   ED2KFT_DOCUMENT },  // Kindle
-	{ L".lit",   ED2KFT_DOCUMENT },  // Microsoft Reader
-	{ L".prc",   ED2KFT_DOCUMENT },  // Mobipocket
-	{ L".mobi",  ED2KFT_DOCUMENT },  // Mobipocket
-	{ L".pkg",   ED2KFT_DOCUMENT },  // Newton eBook
-	{ L".opf",   ED2KFT_DOCUMENT },  // Open eBook
-	{ L".pdf",   ED2KFT_DOCUMENT },  // Portable Document Format File
-	{ L".txt",   ED2KFT_DOCUMENT },  // Text File
-	{ L".ps",    ED2KFT_DOCUMENT },  // PostScript File
-	{ L".pdg",   ED2KFT_DOCUMENT },  // SSReader
-	{ L".tebr",  ED2KFT_DOCUMENT },  // TEBR
-	{ L".xml",   ED2KFT_DOCUMENT },  // XML File
-	{ L".tr2",   ED2KFT_DOCUMENT },  // TomeRaider
-	{ L".tr3",   ED2KFT_DOCUMENT },  // TomeRaider
-	{ L".xps",   ED2KFT_DOCUMENT },  // OpenXPS
-	{ L".oxps",  ED2KFT_DOCUMENT },  // OpenXPS
+
+    // taken from http://en.wikipedia.org/wiki/Comparison_of_e-book_formats
+    { L".aeh",   ED2KFT_DOCUMENT },  // Archos Reader
+    { L".lrf",   ED2KFT_DOCUMENT },  // Sony Media
+    { L".lrx",   ED2KFT_DOCUMENT },  // Sony Media
+    { L".cbr",   ED2KFT_ARCHIVE },   // Comic Book RAR Archive
+    { L".cbz",   ED2KFT_ARCHIVE },   // Comic Book ZIP Archive
+    { L".cb7",   ED2KFT_ARCHIVE },   // Comic Book 7z Archive
+    { L".cbt",   ED2KFT_ARCHIVE },   // Comic Book TAR Archive
+    { L".cba",   ED2KFT_ARCHIVE },   // Comic Book ACE Archive
+    { L".chm",   ED2KFT_DOCUMENT },  // Compiled HTML Help File
+    { L".djvu",  ED2KFT_DOCUMENT },  // DjVu
+    { L".epub",  ED2KFT_DOCUMENT },  // IDPF/EPUB
+    { L".pdb",   ED2KFT_DOCUMENT },	 // Palm Media/Plucker
+    { L".fb2",   ED2KFT_DOCUMENT },	 // FictionBook
+    { L".xeb",   ED2KFT_DOCUMENT },	 // Apabi Reader
+    { L".ceb",   ED2KFT_DOCUMENT },	 // Apabi Reader
+    { L".htm",   ED2KFT_DOCUMENT },  // HTML File
+    { L".html",  ED2KFT_DOCUMENT },  // HTML File
+    { L".ibooks",  ED2KFT_DOCUMENT },  // iBook
+    { L".azw",   ED2KFT_DOCUMENT },  // Kindle
+    { L".kf8",   ED2KFT_DOCUMENT },  // Kindle
+    { L".lit",   ED2KFT_DOCUMENT },  // Microsoft Reader
+    { L".prc",   ED2KFT_DOCUMENT },  // Mobipocket
+    { L".mobi",  ED2KFT_DOCUMENT },  // Mobipocket
+    { L".pkg",   ED2KFT_DOCUMENT },  // Newton eBook
+    { L".opf",   ED2KFT_DOCUMENT },  // Open eBook
+    { L".pdf",   ED2KFT_DOCUMENT },  // Portable Document Format File
+    { L".txt",   ED2KFT_DOCUMENT },  // Text File
+    { L".ps",    ED2KFT_DOCUMENT },  // PostScript File
+    { L".pdg",   ED2KFT_DOCUMENT },  // SSReader
+    { L".tebr",  ED2KFT_DOCUMENT },  // TEBR
+    { L".xml",   ED2KFT_DOCUMENT },  // XML File
+    { L".tr2",   ED2KFT_DOCUMENT },  // TomeRaider
+    { L".tr3",   ED2KFT_DOCUMENT },  // TomeRaider
+    { L".xps",   ED2KFT_DOCUMENT },  // OpenXPS
+    { L".oxps",  ED2KFT_DOCUMENT },  // OpenXPS
 
     { L".emulecollection", ED2KFT_EMULECOLLECTION }
 };

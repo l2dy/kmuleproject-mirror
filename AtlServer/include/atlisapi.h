@@ -7472,7 +7472,7 @@ class CStdRequestStats : public CRequestStats
 #define PERF_REQUEST_OBJECT 100
 
 struct CPerfRequestStatObject : public CPerfObject,
-        public CRequestStats
+    public CRequestStats
 {
     DECLARE_PERF_CATEGORY_EX(PERF_REQUEST_OBJECT, IDS_PERFMON_REQUEST, IDS_PERFMON_REQUEST_HELP, PERF_DETAIL_NOVICE, 0, sizeof(CPerfRequestStatObject), MAX_PATH, -1);
     BEGIN_COUNTER_MAP(CPerfRequestStatObject)

@@ -26,8 +26,8 @@ static char THIS_FILE[] = __FILE__;
 
 CUPnPImpl::CUPnPImpl()
     :	m_bUPnPPortsForwarded(TRIS_FALSE),
-        m_hResultMessageWindow(0),
-        m_nResultMessageID(0)
+      m_hResultMessageWindow(0),
+      m_nResultMessageID(0)
 {
     m_nUDPPort = 0;
     m_nTCPPort = 0;

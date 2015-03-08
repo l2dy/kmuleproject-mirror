@@ -703,6 +703,10 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPart
             throw GetResString(IDS_ERR_WRONGFILEID) + _T(" (ProcessFileStatus; reqfile==NULL)");
         throw GetResString(IDS_ERR_WRONGFILEID) + _T(" (ProcessFileStatus; reqfile!=file)");
     }
+
+    if (file->GetStatus() == PS_COMPLETE || file->GetStatus() == PS_COMPLETING)
+        return;
+
     const UINT nOldPartCount = GetPartCount();
 //>>> WiZaRd::Sub-Chunk-Transfer [Netfinity]
     delete m_pPartStatus;

@@ -55,38 +55,38 @@ const UINT CTreePropSheet::s_unPageTreeId = 0x7EEE;
 
 CTreePropSheet::CTreePropSheet()
     :	CPropertySheet(),
-        m_bPageTreeSelChangedActive(FALSE),
-        m_bTreeViewMode(TRUE),
-        m_bPageCaption(FALSE),
-        m_bTreeImages(FALSE),
-        m_nPageTreeWidth(150),
-        m_pwndPageTree(NULL),
-        m_pFrame(NULL)
+      m_bPageTreeSelChangedActive(FALSE),
+      m_bTreeViewMode(TRUE),
+      m_bPageCaption(FALSE),
+      m_bTreeImages(FALSE),
+      m_nPageTreeWidth(150),
+      m_pwndPageTree(NULL),
+      m_pFrame(NULL)
 {}
 
 
 CTreePropSheet::CTreePropSheet(UINT nIDCaption, CWnd* pParentWnd, UINT iSelectPage)
     :	CPropertySheet(nIDCaption, pParentWnd, iSelectPage),
-        m_bPageTreeSelChangedActive(FALSE),
-        m_bTreeViewMode(TRUE),
-        m_bPageCaption(FALSE),
-        m_bTreeImages(FALSE),
-        m_nPageTreeWidth(150),
-        m_pwndPageTree(NULL),
-        m_pFrame(NULL)
+      m_bPageTreeSelChangedActive(FALSE),
+      m_bTreeViewMode(TRUE),
+      m_bPageCaption(FALSE),
+      m_bTreeImages(FALSE),
+      m_nPageTreeWidth(150),
+      m_pwndPageTree(NULL),
+      m_pFrame(NULL)
 {
 }
 
 
 CTreePropSheet::CTreePropSheet(LPCTSTR pszCaption, CWnd* pParentWnd, UINT iSelectPage)
     :	CPropertySheet(pszCaption, pParentWnd, iSelectPage),
-        m_bPageTreeSelChangedActive(FALSE),
-        m_bTreeViewMode(TRUE),
-        m_bPageCaption(FALSE),
-        m_bTreeImages(FALSE),
-        m_nPageTreeWidth(150),
-        m_pwndPageTree(NULL),
-        m_pFrame(NULL)
+      m_bPageTreeSelChangedActive(FALSE),
+      m_bTreeViewMode(TRUE),
+      m_bPageCaption(FALSE),
+      m_bTreeImages(FALSE),
+      m_nPageTreeWidth(150),
+      m_pwndPageTree(NULL),
+      m_pFrame(NULL)
 {
 }
 

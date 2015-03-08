@@ -723,9 +723,9 @@ class CMemoryCacheBase
   protected:
     typedef keyType keytype;
     struct NodeType : public __CACHEITEM,
-            public NodeInfo,
-            public CFlusherCacheData,
-            public CCullerCacheData
+        public NodeInfo,
+        public CFlusherCacheData,
+        public CCullerCacheData
     {
         NodeType()
         {

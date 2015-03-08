@@ -67,6 +67,9 @@ class CKadTagNameString : protected CStringA
         return strcmp(GetString(), psz);
     }
 
+    virtual ~CKadTagNameString()
+    {}
+
     int CompareNoCase(LPCSTR psz) const throw()
     {
         ATLASSERT(AfxIsValidString(psz));
@@ -129,6 +132,9 @@ class CKadTagValueString : public CStringW
 
     CKadTagValueString(const wchar_t *psz, int iLen)
         : CStringW(psz, iLen)
+    {}
+
+    virtual ~CKadTagValueString()
     {}
 
     int CompareNoCase(LPCWSTR src) const throw()

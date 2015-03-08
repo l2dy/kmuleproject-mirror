@@ -32,9 +32,9 @@ static char THIS_FILE[] = __FILE__;
 
 CPropPageFrame::CPropPageFrame()
     :	m_bShowCaption(FALSE),
-        m_nCaptionHeight(0),
-        m_hCaptionIcon(NULL),
-        m_dwMsgFormat(DT_CENTER|DT_VCENTER|DT_NOPREFIX|DT_SINGLELINE)
+      m_nCaptionHeight(0),
+      m_hCaptionIcon(NULL),
+      m_dwMsgFormat(DT_CENTER|DT_VCENTER|DT_NOPREFIX|DT_SINGLELINE)
 {
 }
 

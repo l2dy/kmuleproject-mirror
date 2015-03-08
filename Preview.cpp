@@ -280,8 +280,8 @@ int CPreviewApps::ReadAllApps()
         }
         fclose(readFile);
 
-		struct _stat32i64 fileinfo;
-		if(_tstat32i64(strFilePath, &fileinfo) == 0)
+        struct _stat32i64 fileinfo;
+        if (_tstat32i64(strFilePath, &fileinfo) == 0)
             m_tDefAppsFileLastModified = fileinfo.st_mtime;
     }
 
@@ -294,7 +294,7 @@ void CPreviewApps::UpdateApps()
         ReadAllApps();
     else
     {
-		struct _stat32i64 fileinfo;
+        struct _stat32i64 fileinfo;
         if (_tstat32i64(GetDefaultAppsFile(), &fileinfo) == 0 && fileinfo.st_mtime > m_tDefAppsFileLastModified)
             ReadAllApps();
     }

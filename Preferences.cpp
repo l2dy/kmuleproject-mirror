@@ -1886,7 +1886,7 @@ void CPreferences::SavekMulePrefs()
     ini.WriteBool(L"AutoUpdateModIconDll", m_bModIconDllAutoUpdate);
     ini.WriteString(L"UpdateURLModIconDll", m_strModIconDllUpdateURL);
 //<<< WiZaRd::ModIconDLL Update
-	ini.WriteInt(L"iSOTNMode", m_iSOTNMode); //>>> WiZaRd::Intelligent SOTN
+    ini.WriteInt(L"iSOTNMode", m_iSOTNMode); //>>> WiZaRd::Intelligent SOTN
 }
 //<<< WiZaRd::Own Prefs
 
@@ -2517,7 +2517,7 @@ void CPreferences::LoadkMulePrefs()
     m_bModIconDllAutoUpdate = ini.GetBool(L"AutoUpdateModIconDll", true);
     m_strModIconDllUpdateURL = ini.GetString(L"UpdateURLModIconDll", MOD_MODICON_URL);
 //<<< WiZaRd::ModIconDLL Update
-	m_iSOTNMode = ini.GetInt(L"iSOTNMode", -1); //>>> WiZaRd::Intelligent SOTN
+    m_iSOTNMode = ini.GetInt(L"iSOTNMode", -1); //>>> WiZaRd::Intelligent SOTN
 }
 //<<< WiZaRd::Own Prefs
 
