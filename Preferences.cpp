@@ -75,6 +75,7 @@ uint16	CPreferences::port;
 uint16	CPreferences::udpport;
 UINT	CPreferences::maxconnections;
 UINT	CPreferences::maxhalfconnections;
+bool	CPreferences::m_bOverlappedSockets;
 bool	CPreferences::m_bConditionalTCPAccept;
 CString	CPreferences::m_strIncomingDir;
 CStringArray CPreferences::tempdir;
@@ -1606,6 +1607,7 @@ void CPreferences::SavePreferences()
     ini.WriteInt(L"MaxDownload", maxdownload);
     ini.WriteInt(L"MaxConnections", maxconnections);
     ini.WriteInt(L"MaxHalfConnections", maxhalfconnections);
+	ini.WriteInt(L"OverlappedSockets", m_bOverlappedSockets);
     ini.WriteBool(L"ConditionalTCPAccept", m_bConditionalTCPAccept);
     ini.WriteInt(L"Port", port);
     ini.WriteInt(L"UDPPort", udpport);
@@ -2085,8 +2087,9 @@ void CPreferences::LoadPreferences()
     maxdownload=(uint16)ini.GetInt(L"MaxDownload", UNLIMITED);
     if (maxdownload > maxGraphDownloadRate && maxdownload != UNLIMITED)
         maxdownload = (uint16)(maxGraphDownloadRate * .8);
-    maxconnections=ini.GetInt(L"MaxConnections", GetRecommendedMaxConnections());
-    maxhalfconnections=ini.GetInt(L"MaxHalfConnections", 9);
+    maxconnections = ini.GetInt(L"MaxConnections", GetRecommendedMaxConnections());
+    maxhalfconnections = ini.GetInt(L"MaxHalfConnections", 9);
+	m_bOverlappedSockets = ini.GetBool(L"OverlappedSockets", false); // Overlapped sockets are under investigations for buggyness (heap corruption), disable by default until fixed
     m_bConditionalTCPAccept = ini.GetBool(L"ConditionalTCPAccept", false);
 
     // reset max halfopen to a default if OS changed to SP2 (or higher) or away
@@ -2108,15 +2111,15 @@ void CPreferences::LoadPreferences()
 
     // WiZaRd:
     // It seems the "port in use" check is a bit buggy once in a while... that's why we will not check and set a different port
-    // if either the user did an update installation (i.e. it worked in the past) or has disabled UPnP (i.e. it knows what its doing)
+    // if either the user did an update installation (i.e. it worked in the past) or has disabled UPnP (i.e. the user knows what it's doing)
     int iPort = ini.GetInt(L"Port", 0);
-    if (iPort == INT_MAX || iPort == 0 || (!m_bUpdate && !m_bEnableUPnP && IsTCPPortInUse((uint16)iPort)))
+    if (iPort == INT_MAX || iPort == 0 || (!m_bUpdate && m_bEnableUPnP && IsTCPPortInUse((uint16)iPort)))
         port = GetRandomTCPPort();
     else
         port = (uint16)iPort;
 
     iPort = ini.GetInt(L"UDPPort", INT_MAX/*invalid port value*/);
-    if (iPort == INT_MAX || iPort == 0 || (!m_bUpdate && !m_bEnableUPnP && IsUDPPortInUse((uint16)iPort))) // don't allow to disable UDP!
+    if (iPort == INT_MAX || iPort == 0 || (!m_bUpdate && m_bEnableUPnP && IsUDPPortInUse((uint16)iPort))) // don't allow to disable UDP!
         udpport = GetRandomUDPPort();
     else
         udpport = (uint16)iPort;

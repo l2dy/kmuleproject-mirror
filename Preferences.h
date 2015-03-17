@@ -109,6 +109,7 @@ class CPreferences
     static	uint16	udpport;
     static	UINT	maxconnections;
     static	UINT	maxhalfconnections;
+	static	bool	m_bOverlappedSockets;
     static	bool	m_bConditionalTCPAccept;
     static	CString	m_strIncomingDir;
     static	CStringArray	tempdir;
@@ -572,14 +573,10 @@ class CPreferences
     {
         return m_pszBindAddrW;
     }
-    static	uint16	GetPort()
-    {
-        return port;
-    }
-    static	uint16	GetUDPPort()
-    {
-        return udpport;
-    }
+    static	uint16	GetPort()						{return port;}
+	static	void	SetPort(const uint16 uPort)		{port = uPort;}
+    static	uint16	GetUDPPort()					{return udpport;}
+	static	void	SetUDPPort(const uint16 uPort)	{udpport = uPort;}
     static	uchar*	GetUserHash()
     {
         return userhash;
@@ -1302,6 +1299,8 @@ class CPreferences
     {
         return maxhalfconnections;
     }
+
+	static	bool	GetUseOverlappedSockets()			{return m_bOverlappedSockets; }
     static	UINT	GetMaxSourcePerFileDefault()
     {
         return maxsourceperfile;
