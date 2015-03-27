@@ -3571,7 +3571,9 @@ void TriggerPortTest(uint16 tcp, uint16 udp)
 
     // the portcheck will need to do an obfuscated callback too if obfuscation is requested, so we have to provide our userhash so it can create the key
     if (thePrefs.IsClientCryptLayerRequested())
-        m_sTestURL += L"&obfuscated_test=" + md4str(thePrefs.GetUserHash());
+		m_sTestURL += _T("&obf=1&clienthash=") + md4str(thePrefs.GetUserHash());
+	else
+		m_sTestURL += _T("&obf=0");
 
     ShellOpenFile(m_sTestURL);
 }

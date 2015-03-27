@@ -80,6 +80,8 @@ class CTitleMenu : public CMenu
         (m_uEdgeFlags ^= remove) |= add;
     }
 
+	bool HasEnabledItems() const;
+
     virtual void MeasureItem(LPMEASUREITEMSTRUCT lpMIS);
     virtual void DrawItem(LPDRAWITEMSTRUCT lpDIS);
 

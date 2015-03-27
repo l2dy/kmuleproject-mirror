@@ -90,7 +90,7 @@ class CRoutingZone
     UINT ReadBootstrapNodesDat(CFileDataIO& file);
 
   public: //>>> WiZaRd::Save nodes.dat regularly
-#ifdef _DEBUG
+#ifdef _BOOTSTRAPNODESDAT
     void DbgWriteBootstrapFile();
 #endif
     void WriteFile();
@@ -122,7 +122,7 @@ class CRoutingZone
     CRoutingZone*		m_pSubZones[2];
     CRoutingZone*		m_pSuperZone;
     static CString		m_sFilename;
-#ifdef _DEBUG
+#ifdef _BOOTSTRAPNODESDAT
     static CString		m_sFilenameBootstrap;
 #endif
     static CUInt128		uMe;

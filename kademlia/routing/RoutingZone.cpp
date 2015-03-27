@@ -75,7 +75,7 @@ using namespace Kademlia;
 void DebugSend(LPCTSTR pszMsg, UINT uIP, uint16 uUDPPort);
 
 CString CRoutingZone::m_sFilename;
-#ifdef _DEBUG
+#ifdef _BOOTSTRAPNODESDAT
 CString CRoutingZone::m_sFilenameBootstrap;
 #endif
 CUInt128 CRoutingZone::uMe = (ULONG)0;
@@ -87,7 +87,7 @@ CRoutingZone::CRoutingZone()
     CKademlia::GetPrefs()->GetKadID(&uMe);
     // Set the preference file name.
     m_sFilename = thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + _T("nodes.dat");
-#ifdef _DEBUG
+#ifdef _BOOTSTRAPNODESDAT
     m_sFilenameBootstrap = thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + L"bootstrapNodes.dat";
 #endif
     // Init our root node.
@@ -128,7 +128,7 @@ void CRoutingZone::Init(CRoutingZone *pSuper_zone, int iLevel, const CUInt128 &u
 
 CRoutingZone::~CRoutingZone()
 {
-#ifdef _DEBUG
+#ifdef _BOOTSTRAPNODESDAT
     if (m_pSuperZone == NULL && !m_sFilenameBootstrap.IsEmpty())
         DbgWriteBootstrapFile();
 #endif
@@ -395,7 +395,7 @@ void CRoutingZone::WriteFile()
     }
 }
 
-#ifdef _DEBUG
+#ifdef _BOOTSTRAPNODESDAT
 void CRoutingZone::DbgWriteBootstrapFile()
 {
     // don't overwrite a bootstrap nodes.dat with an empty one, if we didn't finished probing
@@ -461,17 +461,21 @@ void CRoutingZone::DbgWriteBootstrapFile()
 }
 #endif
 
-
 bool CRoutingZone::CanSplit() const
 {
-    // Max levels allowed.
-    if (m_uLevel >= 127)
-        return false;
+#ifdef _BOOTSTRAPNODESDAT
+	if (Kademlia::CKademlia::GetRoutingZone()->GetNumContacts() < 2000)
+		return true;
+#endif
 
-    // Check if this zone is allowed to split.
-    if ((m_uZoneIndex < KK || m_uLevel < KBASE) && m_pBin->GetSize() == K)
-        return true;
-    return false;
+	// Max levels allowed.
+	if (m_uLevel >= 127)
+		return false;
+
+	// Check if this zone is allowed to split.
+	if ((m_uZoneIndex < KK || m_uLevel < KBASE) && m_pBin->GetSize() == K)
+		return true;
+	return false;
 }
 
 // Returns true if a contact was added or updated, false if the routing table was not touched

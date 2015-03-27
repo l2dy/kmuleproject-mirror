@@ -31,7 +31,7 @@
 #define VERSION_MJR		0
 #define VERSION_MIN		50
 #define VERSION_UPDATE	1
-#define VERSION_BUILD	14
+#define VERSION_BUILD	15
 #define DBG_VERSION_BUILD	33 //change this to detect more modfakers :) //>>> WiZaRd::ClientAnalyzer
 
 // NOTE: This version string is also used by the language DLLs!

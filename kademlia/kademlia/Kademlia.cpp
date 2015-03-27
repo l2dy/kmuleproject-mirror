@@ -213,7 +213,7 @@ void CKademlia::Process()
     {
         dwLastSavedNodes = timer;
         m_pInstance->m_pRoutingZone->WriteFile();
-#ifdef _DEBUG
+#ifdef _BOOTSTRAPNODESDAT
         m_pInstance->m_pRoutingZone->DbgWriteBootstrapFile();
 #endif
     }
@@ -231,6 +231,16 @@ void CKademlia::Process()
     {
         bUpdateUserFile = true;
         m_tStatusUpdate = MIN2S(1) + tNow;
+#ifdef _BOOTSTRAPNODESDAT
+		// do some random lookup to fill out contact list with fresh (but for routing useless) nodes which we can
+		// use for our bootstrap nodes.dat
+		if (GetRoutingZone()->GetNumContacts() < 1500)
+		{
+			CUInt128 uRandom;
+			uRandom.SetValueRandom();
+			CSearchManager::FindNode(uRandom, false);	
+		}
+#endif
     }
     // WiZaRd: only automatically recheck firewalled status if we ARE firewalled
     if (m_tNextFirewallCheck <= tNow /*&& Kademlia::CKademlia::IsConnected() && Kademlia::CKademlia::IsFirewalled()*/)
