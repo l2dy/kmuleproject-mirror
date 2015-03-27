@@ -906,48 +906,72 @@ bool CClientUDPSocket::SendPacket(Packet* packet, UINT dwIP, uint16 nPort, bool 
 // <-- ZZ:UploadBandWithThrottler (UDP)
 }
 
+//>>> WiZaRd::Ensure port creation
+bool	CClientUDPSocket::TryToCreate(const uint8 tries)
+{
+	bool bResult = true;
+	
+#ifdef IPV6_SUPPORT
+//>>> WiZaRd::IPv6 [Xanatos]
+    CAsyncSocket::Socket(SOCK_DGRAM, FD_READ | FD_WRITE, 0, PF_INET6);
+
+    int iOptVal = 0; // Enable this socket to accept IPv4 and IPv6 packets at the same time
+    SetSockOpt(IPV6_V6ONLY, &iOptVal, sizeof iOptVal, IPPROTO_IPV6);
+
+    sockaddr_in6 us = {0};
+    memset(&us, 0, sizeof(us));
+    us.sin6_family = AF_INET6;
+    us.sin6_port = htons(thePrefs.GetUDPPort());
+    us.sin6_flowinfo = NULL;
+
+    // Convert the IPv6 address to the sin6_addr structure
+    struct sockaddr_storage ss;
+    int sslen = sizeof(ss);
+    if (thePrefs.GetBindAddrA() != NULL && WSAStringToAddressA((char*)thePrefs.GetBindAddrA(), AF_INET6, NULL, (struct sockaddr*)&ss, &sslen) == 0)
+        us.sin6_addr = ((struct sockaddr_in6 *)&ss)->sin6_addr;
+    else
+        us.sin6_addr = in6addr_any;
+
+    bResult = CAsyncSocket::Bind((const SOCKADDR*)&us, sizeof(us)) != FALSE;
+//<<< WiZaRd::IPv6 [Xanatos]
+#else
+	bResult = CAsyncSocket::Create(thePrefs.GetUDPPort(), SOCK_DGRAM, FD_READ | FD_WRITE, thePrefs.GetBindAddrW()) != FALSE;
+#endif
+    if(bResult)
+    {
+        // the default socket size seems to be not enough for this UDP socket
+        // because we tend to drop packets if several flow in at the same time
+        int val = 64 * 1024;
+        if (!SetSockOpt(SO_RCVBUF, &val, sizeof(val)))
+            DebugLogError(_T("Failed to increase socket size on UDP socket"));
+    }
+//>>> WiZaRd::Ensure port creation
+    else if(tries < MAX_SOCKET_CREATION_TRIES)
+	{
+// 		CString strError;
+// 		strError.Format(GetResString(IDS_MAIN_SOCKETERROR), thePrefs.GetUDPPort());
+// 		LogError(LOG_STATUSBAR, L"%s (%s)", strError, GetErrorMessage(WSAGetLastError()));
+// 		theApp.emuledlg->ShowNotifier(strError, TBN_IMPORTANTEVENT);
+#ifdef _DEBUG
+		theApp.QueueDebugLogLineEx(LOG_WARNING, _T("Failed to create UDP socket on port %u - try #%u"), thePrefs.GetPort(), tries+1);
+#endif
+		thePrefs.SetUDPPort(GetRandomUDPPort());
+		bResult = TryToCreate(tries + 1);
+	}
+//<<< WiZaRd::Ensure port creation
+
+	return bResult;
+}
+//<<< WiZaRd::Ensure port creation
+
 bool CClientUDPSocket::Create()
 {
     bool ret = true;
 
     if (thePrefs.GetUDPPort())
     {
-#ifdef IPV6_SUPPORT
-//>>> WiZaRd::IPv6 [Xanatos]
-        CAsyncSocket::Socket(SOCK_DGRAM, FD_READ | FD_WRITE, 0, PF_INET6);
-
-        int iOptVal = 0; // Enable this socket to accept IPv4 and IPv6 packets at the same time
-        SetSockOpt(IPV6_V6ONLY, &iOptVal, sizeof iOptVal, IPPROTO_IPV6);
-
-        sockaddr_in6 us = {0};
-        memset(&us, 0, sizeof(us));
-        us.sin6_family = AF_INET6;
-        us.sin6_port = htons(thePrefs.GetUDPPort());
-        us.sin6_flowinfo = NULL;
-
-        // Convert the IPv6 address to the sin6_addr structure
-        struct sockaddr_storage ss;
-        int sslen = sizeof(ss);
-        if (thePrefs.GetBindAddrA() != NULL && WSAStringToAddressA((char*)thePrefs.GetBindAddrA(), AF_INET6, NULL, (struct sockaddr*)&ss, &sslen) == 0)
-            us.sin6_addr = ((struct sockaddr_in6 *)&ss)->sin6_addr;
-        else
-            us.sin6_addr = in6addr_any;
-
-        ret = CAsyncSocket::Bind((const SOCKADDR*)&us, sizeof(us)) != FALSE;
-//<<< WiZaRd::IPv6 [Xanatos]
-#else
-        ret = CAsyncSocket::Create(thePrefs.GetUDPPort(), SOCK_DGRAM, FD_READ | FD_WRITE, thePrefs.GetBindAddrW()) != FALSE;
-#endif
-        if (ret)
-        {
-            m_port = thePrefs.GetUDPPort();
-            // the default socket size seems to be not enough for this UDP socket
-            // because we tend to drop packets if several flow in at the same time
-            int val = 64 * 1024;
-            if (!SetSockOpt(SO_RCVBUF, &val, sizeof(val)))
-                DebugLogError(_T("Failed to increase socket size on UDP socket"));
-        }
-        else
+		ret = TryToCreate();
+		if(!ret)
         {
             CString strError;
             strError.Format(GetResString(IDS_MAIN_SOCKETERROR), thePrefs.GetUDPPort());
@@ -955,8 +979,10 @@ bool CClientUDPSocket::Create()
             theApp.emuledlg->ShowNotifier(strError, TBN_IMPORTANTEVENT);
         }
     }
+	else
+		ASSERT(0);
 
-    if (ret)
+    if(ret)
         m_port = thePrefs.GetUDPPort();
 
     return ret;

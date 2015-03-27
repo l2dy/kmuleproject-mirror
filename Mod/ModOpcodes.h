@@ -63,6 +63,7 @@ enum eSharePermissions
 };
 //<<< WiZaRd::SharePermissions
 
+#define MAX_SOCKET_CREATION_TRIES	5		//>>> WiZaRd::Ensure port creation
 #define FDC_SENSITIVITY		83				//>>> FDC [BlueSonicBoy]
 #define FT_AUTOHL		"AUTOHL"			//>>> WiZaRd::AutoHL
 

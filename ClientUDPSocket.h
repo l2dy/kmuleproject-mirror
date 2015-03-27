@@ -111,6 +111,7 @@ class CClientUDPSocket : public CAsyncSocket, public CEncryptedDatagramSocket, p
     void	SendUtpPacket(const byte *data, size_t len, const struct sockaddr *to, socklen_t tolen);
 
   private:
+	bool	TryToCreate(const uint8 tries = 0); //>>> WiZaRd::Ensure port creation  
     struct SIpPort
     {
 #ifdef IPV6_SUPPORT

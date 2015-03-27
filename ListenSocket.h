@@ -156,6 +156,7 @@ class CListenSocket : public CAsyncSocketEx
     }
 
   private:
+	bool	TryToCreate(const uint8 tries = 0); //>>> WiZaRd::Ensure port creation
     bool bListening;
     CTypedPtrList<CPtrList, CClientReqSocket*> socket_list;
     uint16	m_OpenSocketsInterval;

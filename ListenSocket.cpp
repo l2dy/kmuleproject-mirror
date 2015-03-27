@@ -2584,21 +2584,48 @@ bool CListenSocket::Rebind()
     return StartListening();
 }
 
+//>>> WiZaRd::Ensure port creation
+bool	CListenSocket::TryToCreate(const uint8 tries)
+{
+	bool bResult = true;
+
+	// Creating the socket with SO_REUSEADDR may solve LowID issues if emule was restarted
+	// quickly or started after a crash, but(!) it will also create another problem. If the
+	// socket is already used by some other application (e.g. a 2nd emule), we though bind
+	// to that socket leading to the situation that 2 applications are listening at the same
+	// port!
+#ifdef IPV6_SUPPORT
+	if (!Create(thePrefs.GetPort(), SOCK_STREAM, FD_ACCEPT, thePrefs.GetBindAddrA(), FALSE/*bReuseAddr*/, TRUE)) //>>> WiZaRd::IPv6 [Xanatos]
+#else
+	if (!Create(thePrefs.GetPort(), SOCK_STREAM, FD_ACCEPT, thePrefs.GetBindAddrA(), FALSE/*bReuseAddr*/))
+#endif
+	{
+// 		CString strError;
+// 		strError.Format(GetResString(IDS_MAIN_SOCKETERROR), thePrefs.GetPort());
+// 		LogError(LOG_STATUSBAR, L"%s (%s)", strError, GetErrorMessage(WSAGetLastError()));
+// 		theApp.emuledlg->ShowNotifier(strError, TBN_IMPORTANTEVENT);
+#ifdef _DEBUG
+		theApp.QueueDebugLogLineEx(LOG_WARNING, _T("Failed to create TCP socket on port %u - try #%u"), thePrefs.GetPort(), tries+1);
+#endif
+		if(tries < MAX_SOCKET_CREATION_TRIES)
+		{
+			thePrefs.SetPort(GetRandomTCPPort());
+			bResult = TryToCreate(tries+1);
+		}
+		else
+			bResult = false;
+	}
+
+	return bResult;
+}
+//<<< WiZaRd::Ensure port creation
+
 bool CListenSocket::StartListening()
 {
     bListening = true;
 
-    // Creating the socket with SO_REUSEADDR may solve LowID issues if emule was restarted
-    // quickly or started after a crash, but(!) it will also create another problem. If the
-    // socket is already used by some other application (e.g. a 2nd emule), we though bind
-    // to that socket leading to the situation that 2 applications are listening at the same
-    // port!
-#ifdef IPV6_SUPPORT
-    if (!Create(thePrefs.GetPort(), SOCK_STREAM, FD_ACCEPT, thePrefs.GetBindAddrA(), FALSE/*bReuseAddr*/, TRUE)) //>>> WiZaRd::IPv6 [Xanatos]
-#else
-    if (!Create(thePrefs.GetPort(), SOCK_STREAM, FD_ACCEPT, thePrefs.GetBindAddrA(), FALSE/*bReuseAddr*/))
-#endif
-    {
+    if(!TryToCreate()) //>>> WiZaRd::Ensure port creation
+	{
         CString strError;
         strError.Format(GetResString(IDS_MAIN_SOCKETERROR), thePrefs.GetPort());
         LogError(LOG_STATUSBAR, L"%s (%s)", strError, GetErrorMessage(WSAGetLastError()));

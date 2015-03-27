@@ -284,6 +284,8 @@ From Beta Builds:
 ~ friend data will now be available even if the friend is offline - as long as we did connect to it, once [WiZaRd]
 + added possibility to adjust iSOTN via kMule.ini [WiZaRd]
  * "iSOTNMode=-1/0/1" in the kMule.ini file, default is -1 which means "per file", 0 = OFF, 1 = ON
+! don't use random ports when UPnP is disabled
++ try to ensure port creation [WiZaRd]
 
 
 * IPv6 support is currently disabled [WiZaRd]
