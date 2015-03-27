@@ -2878,7 +2878,7 @@ CString CPreferences::GetDefaultDirectory(EDefaultDirectory eDirectory, bool bCr
 
         // Do we need to get SystemFolders or do we use our old Default anyway? (Executable Dir)
         if (nRegistrySetting == eDM_MultiUser
-                || (nRegistrySetting == eDM_Auto && GetWindowsVersion() >= _WINVER_VISTA_)
+                || (nRegistrySetting == eDM_PublicUser && GetWindowsVersion() >= _WINVER_VISTA_)
                 || (nRegistrySetting == eDM_Auto && (!bConfigAvailableExecuteable || GetWindowsVersion() >= _WINVER_VISTA_)))
         {
             HMODULE hShell32 = LoadLibrary(_T("shell32.dll"));

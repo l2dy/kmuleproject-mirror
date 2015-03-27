@@ -167,6 +167,7 @@ struct SMediaInfo
         fAudioLengthSec = strm.fAudioLengthSec;
         bAudioLengthEstimated = strm.bAudioLengthEstimated;
         strAudioLanguage = strm.strAudioLanguage;
+		bOutputFileName = strm.bOutputFileName;
         return *this;
     }
 

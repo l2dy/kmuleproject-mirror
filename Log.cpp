@@ -410,12 +410,12 @@ bool CLogFile::Logf(LPCTSTR pszFmt, ...)
     TCHAR szMsg[1024];
     _vsntprintf(szMsg, _countof(szMsg), pszFmt, argp);
     szMsg[_countof(szMsg) - 1] = L'\0';
+	va_end(argp);
 
     TCHAR szFullMsg[1060];
     int iLen = _sntprintf(szFullMsg, _countof(szFullMsg), _T("%s: %s\r\n"), CTime::GetCurrentTime().Format(thePrefs.GetDateTimeFormat4Log()), szMsg);
     if (iLen <= 0)
-        return false;
-    va_end(argp);
+        return false;    
     return Log(szFullMsg, iLen);
 }
 
