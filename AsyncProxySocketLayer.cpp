@@ -780,7 +780,7 @@ BOOL CAsyncProxySocketLayer::Connect(LPCSTR lpszHostAddress, UINT nHostPort)
                     {
                         DoLayerCallback(LAYERCALLBACK_LAYERSPECIFIC, PROXYERROR_NOCONN, nErrorCode);
 //>>> ProxyStatus
-                        thePrefs.SetProxified(res);
+                        thePrefs.SetProxified(res != 0);
 //<<< ProxyStatus
                         return FALSE;
                     }
@@ -793,7 +793,7 @@ BOOL CAsyncProxySocketLayer::Connect(LPCSTR lpszHostAddress, UINT nHostPort)
                 strcpy(m_pProxyPeerHost, lpszHostAddress);
                 m_nProxyOpID = PROXYOP_CONNECT;
 //>>> ProxyStatus
-                thePrefs.SetProxified(res);
+                thePrefs.SetProxified(res != 0);
 //<<< ProxyStatus
                 return TRUE;
             }
@@ -802,7 +802,7 @@ BOOL CAsyncProxySocketLayer::Connect(LPCSTR lpszHostAddress, UINT nHostPort)
                 DoLayerCallback(LAYERCALLBACK_LAYERSPECIFIC, PROXYERROR_CANTRESOLVEHOST, 0);
                 WSASetLastError(WSAEINVAL);
 //>>> ProxyStatus
-                thePrefs.SetProxified(FALSE);
+                thePrefs.SetProxified(false);
 //<<< ProxyStatus
                 return FALSE;
             }
@@ -820,7 +820,7 @@ BOOL CAsyncProxySocketLayer::Connect(LPCSTR lpszHostAddress, UINT nHostPort)
         strcpy(m_pProxyPeerHost, lpszHostAddress);
     }
 //>>> ProxyStatus
-    thePrefs.SetProxified(res);
+    thePrefs.SetProxified(res != 0);
 //<<< ProxyStatus
     return res;
 }

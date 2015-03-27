@@ -16,7 +16,6 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #include "stdafx.h"
 #include "StringConversion.h"
-#include <atlenc.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

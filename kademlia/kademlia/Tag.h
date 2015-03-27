@@ -57,6 +57,8 @@ class CKadTagNameString : protected CStringA
         : CStringA(psz, len)
     {}
 
+	virtual ~CKadTagNameString()	{}
+
     // A tag name may include character values >= 0xD0 and therefor also >= 0xF0. to prevent those
     // characters be interpreted as multi byte character sequences we have to sensure that a binary
     // string compare is performed.
@@ -66,9 +68,6 @@ class CKadTagNameString : protected CStringA
         // Do a binary string compare. (independant from any codepage and/or LC_CTYPE setting.)
         return strcmp(GetString(), psz);
     }
-
-    virtual ~CKadTagNameString()
-    {}
 
     int CompareNoCase(LPCSTR psz) const throw()
     {
@@ -134,8 +133,7 @@ class CKadTagValueString : public CStringW
         : CStringW(psz, iLen)
     {}
 
-    virtual ~CKadTagValueString()
-    {}
+	virtual ~CKadTagValueString()	{}
 
     int CompareNoCase(LPCWSTR src) const throw()
     {

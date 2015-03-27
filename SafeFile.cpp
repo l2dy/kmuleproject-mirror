@@ -19,7 +19,9 @@
 #include "Packets.h"
 #include "StringConversion.h"
 #include "kademlia/utils/UInt128.h"
+#pragma warning(disable:4127) // conditional expression is constant
 #include <atlenc.h>
+#pragma warning(default:4127) // conditional expression is constant
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

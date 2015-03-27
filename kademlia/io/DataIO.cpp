@@ -28,7 +28,9 @@ Any mod that changes anything within the Kademlia side will not be allowed to ad
 there client on the eMule forum..
 */
 #include "stdafx.h"
+#pragma warning(disable:4127) // conditional expression is constant
 #include <atlenc.h>
+#pragma warning(default:4127) // conditional expression is constant
 #include "./DataIO.h"
 #include "./IOException.h"
 #include "../kademlia/Kademlia.h"

@@ -16,7 +16,9 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #pragma once
 
+#pragma warning(disable:4127) // conditional expression is constant
 #include <atlenc.h>
+#pragma warning(default:4127) // conditional expression is constant
 
 bool IsValidEd2kString(LPCTSTR psz);
 bool IsValidEd2kStringA(LPCSTR psz);

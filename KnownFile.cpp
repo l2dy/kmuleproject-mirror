@@ -2492,7 +2492,7 @@ bool CKnownFile::GetShareOnlyTheNeed(const bool m_bOnlyFile) const
         case 1:		return true;
         default:	return m_bShareOnlyTheNeed;
     }
-    return true;
+    //return true;
 }
 //<<< WiZaRd::Intelligent SOTN
 
