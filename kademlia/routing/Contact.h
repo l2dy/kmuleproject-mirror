@@ -99,6 +99,12 @@ class CContact
     bool		IsIpVerified()	const;
     void		SetIpVerified(bool bIPVerified);
 
+	// bootstrapcontact functions only used for GUI
+	bool		IsBootstrapContact() const						{return m_bBootstrapContact;} 
+	void		SetBootstrapContact()							{m_bBootstrapContact = true;} 
+	bool		IsBootstrapFailed() const						{return m_bBootstrapFailed;}
+	void		SetBootstrapFailed()							{m_bBootstrapFailed = true;}
+
   private:
     void	InitContact(); // Common var initialization goes here
     void	Copy(const CContact& fromContact);
@@ -117,6 +123,8 @@ class CContact
     bool m_bGuiRefs;
     bool m_bIPVerified;
     bool m_bReceivedHelloPacket;
+	bool m_bBootstrapContact;
+	bool m_bBootstrapFailed;
     CKadUDPKey	m_cUDPKey;
 };
 }

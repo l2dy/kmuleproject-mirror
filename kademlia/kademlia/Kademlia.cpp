@@ -74,6 +74,7 @@ bool		CKademlia::m_bRunning = false;
 bool		CKademlia::m_bLANMode = false;
 CList<UINT, UINT> CKademlia::m_liStatsEstUsersProbes;
 _ContactList CKademlia::s_liBootstapList;
+_ContactList CKademlia::s_liTriedBootstapList;
 
 CKademlia::CKademlia()
 {
@@ -193,6 +194,9 @@ void CKademlia::Stop()
 
     while (!s_liBootstapList.IsEmpty())
         delete s_liBootstapList.RemoveHead();
+
+	while (!s_liTriedBootstapList.IsEmpty())
+		delete s_liTriedBootstapList.RemoveHead();
 
     // Make sure all zones are removed.
     m_mapEvents.clear();
@@ -363,31 +367,41 @@ void CKademlia::Process()
             theApp.emuledlg->ShowUserCount();
         }
     }
-
+		
     if (CKademlia::BootstrappingNeeded())
     {
+		static bool bUpdated = false; //>>> WiZaRd::Nodes.dat Autoupdate
         if (!s_liBootstapList.IsEmpty())
         {
+			if (!s_liTriedBootstapList.IsEmpty())
+			{
+					CContact* pLastTriedContact = s_liTriedBootstapList.GetHead();
+					pLastTriedContact->SetBootstrapFailed();
+			}
             m_tBootstrap = tNow;
             CContact* pContact = s_liBootstapList.RemoveHead();
             DebugLog(_T("Trying to Bootstrap Kad from %s, Distance: %s, Version: %u, %u Contacts left"), ipstr(ntohl(pContact->GetIPAddress())), pContact->GetDistance().ToHexString(),  pContact->GetVersion(), s_liBootstapList.GetCount());
             m_pInstance->m_pUDPListener->Bootstrap(pContact->GetIPAddress(), pContact->GetUDPPort(), pContact->GetVersion(), &pContact->GetClientID());
-            delete pContact;
+			s_liTriedBootstapList.AddHead(pContact);
         }
 //>>> WiZaRd::Nodes.dat Autoupdate
-        else
-        {
-            static bool bUpdated = false;
-            if (!bUpdated)
-            {
-                m_tBootstrap = tNow;
-                const CString strFilename = thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + L"nodes.dat";
-                if (!::PathFileExists(strFilename) || GetKadContactCount() == 0)
-                    bUpdated = UpdateNodesDatFromURL(MOD_NODES_URL);
-            }
+        else if (!bUpdated)
+		{
+			m_tBootstrap = tNow;
+			const CString strFilename = thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + L"nodes.dat";
+			if(!::PathFileExists(strFilename) || GetKadContactCount() == 0)
+				bUpdated = UpdateNodesDatFromURL(MOD_NODES_URL);
         }
 //<<< WiZaRd::Nodes.dat Autoupdate
-    }
+	}
+	else if (!IsConnected() && s_liBootstapList.IsEmpty() && !s_liTriedBootstapList.IsEmpty()  
+				&& (tNow - m_tBootstrap > 15 || (GetRoutingZone()->GetNumContacts() == 0 && tNow - m_tBootstrap >= 2)))
+	{
+		// failed to bootstrap
+		AddLogLine(true, GetResString(IDS_BOOTSTRAPFAILED));
+		while (!s_liTriedBootstapList.IsEmpty())
+			delete s_liTriedBootstapList.RemoveHead();
+	}
 
     if (GetUDPListener() != NULL)
         GetUDPListener()->ExpireClientSearch(); // function does only one compare in most cases, so no real need for a timer

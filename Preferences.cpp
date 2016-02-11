@@ -2477,7 +2477,7 @@ void CPreferences::LoadkMulePrefs()
 
 //>>> WiZaRd::IPFilter-Update
     m_uiIPfilterVersion = ini.GetInt(L"IPFilterVersion", 0);
-    m_bAutoUpdateIPFilter = ini.GetBool(L"AutoUPdateIPFilter", true);
+    m_bAutoUpdateIPFilter = ini.GetBool(L"AutoUpdateIPFilter", true);
     m_strUpdateURLIPFilter = ini.GetString(L"UpdateURLIPFilter", MOD_IPPFILTER_URL);
 //<<< WiZaRd::IPFilter-Update
 //>>> WiZaRd::MediaInfoDLL Update

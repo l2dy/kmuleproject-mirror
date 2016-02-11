@@ -849,14 +849,14 @@ BOOL CAsyncProxySocketLayer::Connect(const SOCKADDR* lpSockAddr, int nSockAddrLe
         {
             DoLayerCallback(LAYERCALLBACK_LAYERSPECIFIC, PROXYERROR_NOCONN, nErrorCode);
 //>>> ProxyStatus
-            thePrefs.SetProxified(res);
+            thePrefs.SetProxified(false);
 //<<< ProxyStatus
             return FALSE;
         }
     }
 
 //>>> ProxyStatus
-    thePrefs.SetProxified(res);
+    thePrefs.SetProxified(true);
 //<<< ProxyStatus
     return res;
 }
@@ -1170,7 +1170,7 @@ BOOL CAsyncProxySocketLayer::Listen(int nConnectionBacklog)
         {
             DoLayerCallback(LAYERCALLBACK_LAYERSPECIFIC, PROXYERROR_NOCONN, nErrorCode);
 //>>> ProxyStatus
-            thePrefs.SetProxified(res);
+            thePrefs.SetProxified(false);
 //<<< ProxyStatus
             return FALSE;
         }
@@ -1179,7 +1179,7 @@ BOOL CAsyncProxySocketLayer::Listen(int nConnectionBacklog)
     m_nProxyPeerIP = (unsigned int)nConnectionBacklog; // ???????????????????
     m_nProxyOpID = PROXYOP_BIND;
 //>>> ProxyStatus
-    thePrefs.SetProxified(res);
+    thePrefs.SetProxified(true);
 //<<< ProxyStatus
     return TRUE;
 }

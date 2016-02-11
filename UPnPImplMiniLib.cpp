@@ -263,7 +263,7 @@ int CUPnPImplMiniLib::CStartDiscoveryThread::Run()
         if (!m_pOwner->m_bCheckAndRefresh)
         {
             int error = 0;
-            UPNPDev* structDeviceList = upnpDiscover(2000, NULL, NULL, 0, 0, &error);
+            UPNPDev* structDeviceList = upnpDiscover(2000, NULL, NULL, 0, 0, 2, &error);
             if (structDeviceList == NULL)
             {
                 DebugLog(L"UPNP: No Internet Gateway Devices found, aborting");

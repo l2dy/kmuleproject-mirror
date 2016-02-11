@@ -169,6 +169,9 @@ uint8	CAutoUpdate::IsUpdateAvail()
 
     CString strUpdateCheckURL = L"";
     strUpdateCheckURL.Format(L"%s?version=%s", m_strUpdateCheckURL, m_strCurrentVersion);
+#ifdef _BETA
+	strUpdateCheckURL.AppendFormat(L"&beta=1");
+#endif
     CString response = L"";
     if (m_pWebHelper->LoadToStringFromURL(response, strUpdateCheckURL) && !response.IsEmpty())
     {

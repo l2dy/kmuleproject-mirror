@@ -708,7 +708,7 @@ void CSearch::StorePacket()
 
             if (pFile)
             {
-                // We set this mostly for GUI resonse.
+                // We set this mostly for GUI response.
                 SetGUIName(pFile->GetFileName());
 
                 // Get our clientID for the packet.

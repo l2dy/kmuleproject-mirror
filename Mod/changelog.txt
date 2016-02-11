@@ -200,7 +200,7 @@ Legend:    + added    ~ changed    - removed    ! fixed    > updated
 ! fixed wrong client icons - thx to SS1900 [WiZaRd]
 ! fixed (wrong) disabled 7z controls [WiZaRd]
 ~ added .apk support [Tuxman]
-! fixed possibly buffer overflow in statistics - thx to RejZoR [WiZaRd]
+! fixed possible buffer overflow in statistics - thx to RejZoR [WiZaRd]
 ! switched "compatible" and "default" client icons [WiZaRd]
 ! fixed crash on automatic extraction - thx to satanius [WiZaRd]
 
@@ -249,7 +249,7 @@ XXXXYYZZ:
 ! fixed manually adjusting download priorities - thx to Sir Boagalott [WiZaRd]
 
 From Beta Builds:
-> updated miniupnplib support to v1.9 (31/01/2014) [WiZaRd]
+> updated miniupnplib support to v1.9 (02/09/2016) [WiZaRd]
 ! fixed autoscrolling in "about" window [WiZaRd]
 ~ prevent new firewall rechecks if some are already running (to prevent ASSERT in UDPFirewallTester::RecheckFirewallUDP) [WiZaRd]
 ! fixed small display glitch in display window [WiZaRd]

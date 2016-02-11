@@ -463,10 +463,10 @@ bool CUPnPImplWinServ::OnSearchComplete()
 
     for (std::size_t pos = 0; pos != m_pDevices.size(); ++pos)
     {
-        GetDeviceServices(m_pDevices[ pos ]);
+        GetDeviceServices(m_pDevices[pos]);
         StartPortMapping();
 
-        if (! m_bPortIsFree)   // warn only once
+        if (!m_bPortIsFree)   // warn only once
         {
             // Add more descriptive explanation!!!
             DebugLogError(_T("UPnP port mapping failed because the port(s) are already redirected to another IP."));
@@ -475,6 +475,7 @@ bool CUPnPImplWinServ::OnSearchComplete()
     }
     if (m_bUPnPPortsForwarded == TRIS_UNKNOWN)
     {
+		DebugLogError(_T("UPnP port mapping obviously failed - aborting!"));
         m_bUPnPPortsForwarded = TRIS_FALSE;
         if (m_bServiceStartedByEmule)
             StopUPnPService();
@@ -695,10 +696,10 @@ CString CUPnPImplWinServ::GetLocalRoutableIP(ServicePointer pService)
 
 //>>> WiZaRd::Find Best Interface IP [netfinity]
     DWORD localIP = GetBestInterfaceIP(ip);
-    if (localIP != INADDR_NONE) // We found our IP address, if not we would just continue with the original algorithm
+    if (localIP != INADDR_NONE) // we found our IP address, if not we would just continue with the original algorithm
     {
         CString strLocalIP = ipstr(localIP);
-        theApp.QueueDebugLogLineEx(LOG_WARNING, L"UPnP route: %s->%s", strLocalIP, strExternalIP);
+        theApp.QueueDebugLogLineEx(LOG_WARNING, L"Corrected UPnP route: %s->%s", strLocalIP, strExternalIP);
         return strLocalIP;
     }
 //<<< WiZaRd::Find Best Interface IP [netfinity]
@@ -774,7 +775,7 @@ CString CUPnPImplWinServ::GetLocalRoutableIP(ServicePointer pService)
         }
     }
 
-    if (! strLocalIP.IsEmpty() && ! strExternalIP.IsEmpty())
+    if (!strLocalIP.IsEmpty() && ! strExternalIP.IsEmpty())
         DebugLog(_T("UPnP route: %s->%s"), strLocalIP, strExternalIP);
 
     return strLocalIP;

@@ -634,6 +634,7 @@
 #define IDS_NEW                         894
 #define IDS_ERR_TOOLARGEFILE            896
 #define IDS_MSGONLYFRIENDS              897
+#define IDS_BOOTSTRAPFAILED             898
 #define IDS_VALUE                       906
 #define IDS_FILEHASH                    915
 #define IDS_PW_PROXY                    916

@@ -34,7 +34,7 @@ CLookupHistory::CLookupHistory()
     m_bSearchStopped = false;
     m_bSearchDeleted = false;
     m_uRefCount = 1;
-    (void)m_sGUIName;
+    m_sGUIName = _T("");
 }
 
 CLookupHistory::~CLookupHistory()

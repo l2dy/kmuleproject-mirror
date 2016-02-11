@@ -143,16 +143,16 @@ void CUDPFirewallTester::SetUDPFWCheckResult(const bool bSucceeded, const bool b
             m_liPossibleTestClients.RemoveAll(); // clear list, keep used clients list through
             m_dwLastSucceededTime = ::GetTickCount(); // for delayed results, see above
             CSearchManager::CancelNodeFWCheckUDPSearch(); // cancel firewallnode searches if any are still active
-            // if this packet came to our internal port, explict set the interal port as used port from now on
+            // if this packet came to our internal port, explictly set the internal port as used port from now on
             if (nIncomingPort == CKademlia::GetPrefs()->GetInternKadPort())
             {
                 CKademlia::GetPrefs()->SetUseExternKadPort(false);
-                DebugLog(_T("New KAD Firewallstate (UDP): Open, using intern port"));
+                DebugLog(LOG_SUCCESS, _T("New KAD Firewallstate (UDP): Open, using intern port"));
             }
             else if (nIncomingPort == CKademlia::GetPrefs()->GetExternalKadPort() && nIncomingPort != 0)
             {
                 CKademlia::GetPrefs()->SetUseExternKadPort(true);
-                DebugLog(_T("New KAD Firewallstate (UDP): Open, using extern port"));
+                DebugLog(LOG_SUCCESS, _T("New KAD Firewallstate (UDP): Open, using extern port"));
             }
             theApp.emuledlg->ShowConnectionState();
 
@@ -162,7 +162,7 @@ void CUDPFirewallTester::SetUDPFWCheckResult(const bool bSucceeded, const bool b
         {
             // seems we are firewalled
             m_dwTestStart = 0;
-            DebugLog(_T("New KAD Firewallstate (UDP): Firewalled"));
+            DebugLog(LOG_ERROR, _T("New KAD Firewallstate (UDP): Firewalled"));
             m_bFirewalledUDP = true;
             m_bIsFWVerifiedUDP = true;
             m_bTimedOut = false;
